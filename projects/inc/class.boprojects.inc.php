@@ -743,8 +743,8 @@
 
 			if (is_array($error))
 			{
-				//return $error;
-				_debug_array($error);
+				return $error;
+				//_debug_array($error);
 			}
 		}
 
@@ -955,8 +955,13 @@
 				{
 					$values['edateformatted']	= $this->formatted_edate($values['edate'],False);
 					$values['pro_title']		= $this->return_value('pro',$values['project_id']);
+					$values['employees']		= $this->get_acl_for_project($values['project_id']);
 
 					$this->send_alarm($values,'mstone');
+
+					unset($values['edateformatted']);
+					unset($values['pro_title']);
+					unset($values['employees']);
 				}
 			}
 

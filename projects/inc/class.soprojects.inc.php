@@ -164,6 +164,10 @@
 			{
 				$filtermethod = ' coordinator=' . $this->account;
 			}
+			elseif ($filter == 'public')
+			{
+				$filtermethod = " access != 'private' ";
+			}
 			else
 			{
 				$filtermethod = ' coordinator=' . $this->account . " AND access='private'";

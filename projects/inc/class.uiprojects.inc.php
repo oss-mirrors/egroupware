@@ -40,22 +40,23 @@
 		var $public_functions = array
 		(
 			'hook_sidebox_menu'	=> True,
-			'list_projects'		=> True,
-			'edit_project'		=> True,
-			'delete_pa'			=> True,
-			'view_project'		=> True,
-			'list_activities'	=> True,
-			'edit_activity'		=> True,
-			'list_admins'		=> True,
-			'edit_admins'		=> True,
-			'abook'				=> True,
-			'preferences'		=> True,
-			'archive'			=> True,
-			'accounts_popup'	=> True,
-			'e_accounts_popup'	=> True,
-			'list_budget'		=> True,
-			'view_pcosts'		=> True,
-			'edit_mstone'		=> True
+			'list_projects'			=> True,
+			'list_projects_home'	=> True,
+			'edit_project'			=> True,
+			'delete_pa'				=> True,
+			'view_project'			=> True,
+			'list_activities'		=> True,
+			'edit_activity'			=> True,
+			'list_admins'			=> True,
+			'edit_admins'			=> True,
+			'abook'					=> True,
+			'preferences'			=> True,
+			'archive'				=> True,
+			'accounts_popup'		=> True,
+			'e_accounts_popup'		=> True,
+			'list_budget'			=> True,
+			'view_pcosts'			=> True,
+			'edit_mstone'			=> True
 		);
 
 		function uiprojects()
@@ -482,6 +483,162 @@
 			$GLOBALS['phpgw']->template->pfp('out','projects_list_t',True);
 		}
 
+		function list_projects_home()
+		{
+			$action		= get_var('action',array('POST','GET'));
+			$pro_main	= get_var('pro_main',array('POST','GET'));
+
+			if ($_GET['cat_id'])
+			{
+				$this->cat_id = $_GET['cat_id'];
+			}
+
+			$menuaction	= get_var('menuaction',Array('GET'));
+			if ($menuaction)
+			{
+				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'));
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+			}
+			else
+			{
+				$this->bo->cats->app_name = 'projects';
+			}
+
+			$this->t = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
+			$this->t->set_file(array('projects_list_t' => 'home_list.tpl'));
+			$this->t->set_block('projects_list_t','projects_list','list');
+
+			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+
+
+			if (!$action)
+			{
+				$action = 'mains';
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.list_projects_home',
+				'pro_main'		=> $pro_main,
+				'action'		=> $action
+			);
+
+			$this->status = 'active';
+
+			$this->bo->filter = 'public';
+			//$this->bo->limit = False;
+			$pro = $this->bo->list_projects($action,$pro_main);
+
+// --------------------- nextmatch variable template-declarations ------------------------
+
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->bo->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->bo->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bo->total_records,$this->start));
+
+// ------------------------- end nextmatch template --------------------------------------
+
+			if ($action == 'mains')
+			{
+				$action_list= '<select name="cat_id" onChange="this.form.submit();"><option value="none">' . lang('Select category') . '</option>' . "\n"
+							. $this->bo->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
+				$this->t->set_var('lang_action',lang('Jobs'));
+			}
+			else
+			{
+				$action_list= '<select name="pro_main" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
+							. $this->bo->select_project_list(array('status' => $status, 'selected' => $pro_main)) . '</select>';
+				$this->t->set_var('lang_action',lang('Work hours'));
+			}
+
+			$this->t->set_var('action_list',$action_list);
+			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
+			$this->t->set_var('status_list',$this->status_format($this->status));
+
+// ---------------- list header variable template-declarations --------------------------
+
+			$this->t->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
+			$this->t->set_var('lang_milestones',lang('milestones'));
+			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
+			$this->t->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
+			$this->t->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
+
+
+// -------------- end header declaration ---------------------------------------
+
+            for ($i=0;$i<count($pro);$i++)
+            {
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$edateout = $this->bo->formatted_edate($pro[$i]['edate']);
+
+				if ($action == 'mains')
+				{
+					$td_action = ($pro[$i]['customerout']?$pro[$i]['customerout']:'&nbsp;');
+				}
+				else
+				{
+					$td_action = ($pro[$i]['sdateout']?$pro[$i]['sdateout']:'&nbsp;');
+				}
+
+				if ($pro[$i]['level'] > 0)
+				{
+					$space = '&nbsp;.&nbsp;';
+					$spaceset = str_repeat($space,$pro[$i]['level']);
+				}
+
+// --------------- template declaration for list records -------------------------------------
+
+				$this->t->set_var(array
+				(
+					'number'		=> $pro[$i]['number'],
+					'milestones'	=> (isset($pro[$i]['mstones'])?$pro[$i]['mstones']:'&nbsp;'),
+					'title'			=> $spaceset . ($pro[$i]['title']?$pro[$i]['title']:'&nbsp;'),
+					'end_date'		=> (isset($pro[$i]['edate'])?$edateout:'&nbsp;'),
+					'coordinator'	=> $pro[$i]['coordinatorout']
+				));
+
+				$link_data['project_id'] = $pro[$i]['project_id'];
+				$link_data['public_view'] = True;
+				$link_data['menuaction'] = 'projects.uiprojects.view_project';
+				$this->t->set_var('view',$GLOBALS['phpgw']->link('/index.php',$link_data));
+				$this->t->set_var('lang_view_entry',lang('View'));
+
+				if ($action == 'mains')
+				{
+					$this->t->set_var('jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects_home&pro_main='
+										. $pro[$i]['project_id'] . '&action=subs'));
+					$this->t->set_var('lang_jobs_entry',lang('Jobs'));
+				}
+				else
+				{
+					$this->t->set_var('action_entry',''); 
+					$this->t->set_var('lang_action_entry','');
+				}
+
+				$this->t->fp('list','projects_list',True);
+			}
+
+// ------------------------- end record declaration ------------------------
+
+			$this->save_sessiondata($action);
+
+			$menuaction	= get_var('menuaction',Array('GET'));
+			if ($menuaction)
+			{
+				list($app,$class,$method) = explode('.',$menuaction);
+				$var['app_tpl']	= $method;
+				$this->t->pfp('out','projects_list_t',True);
+			}
+			else
+			{
+				return $this->t->fp('out','projects_list_t',True);
+			}
+		}
+
 		function coordinator_format($employee = '')
 		{
 			if (! $employee)
@@ -881,20 +1038,25 @@
 
 		function view_project()
 		{
-			$action		= get_var('action',array('GET'));
-			$pro_main	= get_var('pro_main',array('GET'));
-			$project_id	= get_var('project_id',array('GET'));
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_main'		=> $pro_main,
-				'action'		=> $action,
-				'project_id'	=> $project_id
-			);
+			$action			= $_GET['action'];
+			$pro_main		= $_GET['pro_main'];
+			$project_id		= $_GET['project_id'];
+			$public_view	= $_GET['public_view'];
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('view job'):lang('view project'));
-			$this->display_app_header();
+
+			if (isset($public_view))
+			{
+				$menuaction = 'projects.uiprojects.list_projects_home';
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+				$this->set_app_langs();
+			}
+			else
+			{
+				$menuaction = 'projects.uiprojects.list_projects';
+				$this->display_app_header();
+			}
 
 			$GLOBALS['phpgw']->template->set_file(array('view' => 'view.tpl'));
 			$GLOBALS['phpgw']->template->set_block('view','sub','subhandle');

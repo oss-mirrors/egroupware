@@ -50,7 +50,8 @@
 		'admin',
 		'manual',
 		'add_def_pref',
-		'deleteaccount'
+		'deleteaccount',
+		'home'
 	);
 
 /* Dependencies for this app to work */

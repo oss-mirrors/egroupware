@@ -18,6 +18,7 @@ archive	projects	de	Archiv
 are you sure you want to delete this activity	projects	de	Sind Sie sicher, dass Sie diese Aktivit&auml;t l&ouml;schen wollen ?
 are you sure you want to delete this project	projects	de	Sind Sie sicher, dass Sie dieses Projekt l&ouml;schen wollen ?
 arial	projects	de	Arial
+assignment to project %1	projects	de	Zuteilung zum Projekt %1
 bill per hour	projects	de	Preis pro Stunde
 bill per hour/workunit	projects	de	Preis pro Stunde/Arbeitseinheit
 bill per workunit	projects	de	Preis pro Arbeitseinheit
@@ -31,13 +32,14 @@ budget	projects	de	Budget
 budget main project	projects	de	Budget Hauptprojekt
 calculate	projects	de	Berechnen
 closed	projects	de	Abgeschlossen
-coordinator	projects	de	Koordinator
+coordinator	common	de	Koordinator
 courier new	projects	de	Courier New
 create delivery	projects	de	Lieferung erstellen
 create invoice	projects	de	Rechnung erstellen
 creator	projects	de	Ersteller
 customer	projects	de	Kunde
 date created	projects	de	Erstellungs-Datum
+date due of milestone %1 of project %2 has been updated	projects	de	Fälligkeit des Meilensteines %1 von Projekt %2 wurde geändert.
 delete hours	projects	de	Stunden l&ouml;schen
 deliveries	projects	de	Lieferungen
 delivery	projects	de	Lieferung
@@ -87,7 +89,7 @@ job description	projects	de	Job Beschreibung
 job has been added !	projects	de	Job wurde hinzugef&uuml;gt.
 job has been updated !	projects	de	Job wurde &uuml;berarbeitet.
 job id	projects	de	Job ID
-jobs	projects	de	Jobs
+jobs	common	de	Jobs
 large	projects	de	Gro&szlig;
 last update	projects	de	letzte Aktualisierung
 list activities	projects	de	Aktivit&auml;tenliste
@@ -97,12 +99,13 @@ list pcosts	projects	de	Plankostenliste
 list projects	projects	de	Projektliste
 list work hours	projects	de	Arbeitsstundenliste
 main project	projects	de	Hauptprojekt
-milestones	projects	de	Meilensteine
+milestones	common	de	Meilensteine
 minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
 net	projects	de	netto
+new date due of milestone %1: %2	projects	de	Neuer Fälligkeitstermin des Meilensteines %1: %2.
 new project	projects	de	Neues Projekt
-nonactive	projects	de	Nicht aktiv
+nonactive	common	de	Nicht aktiv
 number	projects	de	Nummer
 open	projects	de	Offen
 overall	projects	de	Gesammt
@@ -131,7 +134,9 @@ project	projects	de	Projekt
 project archive	projects	de	Projekt Archiv
 project billing	projects	de	Projekt Abrechnung
 project delivery	projects	de	Projekt Lieferung
-project id	projects	de	Projekt ID
+project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
+project %1 has been updated	projects	de	Projekt %1 wurde überarbeitet.
+project id	common	de	Projekt ID
 project list	projects	de	Projekt Liste
 project name	projects	de	Projekt Name
 project statistic	projects	de	Projekt Statistik
@@ -161,6 +166,7 @@ sum workunits	projects	de	Summe Arbeitseinheiten
 tahoma	projects	de	Tahoma
 tax	projects	de	Mwst.
 that id has been used already !	projects	de	Diese ID ist bereits in Benutzung !
+the choosen previous project does not have an end date specified	projects	de	F&uuml;r das gew&auml;hlte Vorprojekt wurde kein Enddatum angegeben !
 time planned	projects	de	geplante Zeit
 time planned main project	projects	de	geplante Zeit Hauptprojekt
 time used	projects	de	verbrauchte Zeit
