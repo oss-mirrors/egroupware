@@ -11,13 +11,15 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
-	$imgpath = $phpgw->common->image($appname,'navbar.gif');
-	section_start('Daily Comics',$imgpath);
-
-	section_item($phpgw->link('/comic/admin_options.php'),lang('Global Options'));
-	section_item($phpgw->link('/comic/admin_comics.php'),lang('Global Options'));
-	section_item($phpgw->link('/comic/admin_comics_reset.php'),lang('Reset Comic Data'));
-
-	section_end();
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Daily Comics';
+	$file = Array(
+		'Global Options'		=> $phpgw->link('/comic/admin_options.php'),
+		'Global Comics'	=> $phpgw->link('/comic/admin_comics.php'),
+		'Reset Comic Data'	=> $phpgw->link('/comic/admin_comics_reset.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>

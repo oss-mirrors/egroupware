@@ -10,32 +10,14 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	{
-		echo "<p>\n";
-		$imgfile = $phpgw->common->get_image_dir('stocks') . '/' . $appname . '.gif';
-		if (file_exists($imgfile))
-		{
-			$imgpath = $phpgw->common->get_image_path('stocks') . '/' . $appname . '.gif';
-		}
-		else
-		{
-			$imgfile = $phpgw->common->get_image_dir('stocks') . '/navbar.gif';
-			if (file_exists($imgfile))
-			{
-				$imgpath = $phpgw->common->get_image_path('stocks') . '/navbar.gif';
-			}
-	    	else
-			{
-    			$imgpath = '';
-			}
-		}
-
-		section_start('Stock Quotes',$imgpath);
-
-		section_item($phpgw->link('/stocks/preferences.php'),
-		lang('Select displayed stocks'));
-
-		section_end();
-	}
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Stock Quotes';
+	$file = Array(
+		'Select displayed stocks'	=> $phpgw->link('/stocks/preferences.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>
 

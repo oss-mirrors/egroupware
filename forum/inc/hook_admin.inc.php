@@ -11,11 +11,13 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
-	$imgpath = $phpgw->common->image($appname,'navbar.gif');
-	section_start($appname,$imgpath);
-
-	section_item($phpgw->link('/forum/preference_index.php'),lang('Change Forum settings'));
-
-	section_end();
+{
+// Only Modify the $file and $title variables.....
+	$title = $appname;
+	$file = Array(
+		'Change Forum Settings'		=> $phpgw->link('/forum/preference_index.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>

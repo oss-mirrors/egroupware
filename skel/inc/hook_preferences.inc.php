@@ -9,31 +9,15 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-	{
-		echo "<p>\n";
-		$imgfile = $phpgw->common->get_image_dir($appname) . '/' . $appname . '.gif';
-		if (file_exists($imgfile))
-		{
-			$imgpath = $phpgw->common->get_image_path($appname) . '/' . $appname . '.gif';
-		}
-		else
-		{
-			$imgfile = $phpgw->common->get_image_dir($appname) . '/navbar.gif';
-			if (file_exists($imgfile))
-			{
-				$imgpath = $phpgw->common->get_image_path($appname) . '/navbar.gif';
-			}
-			else
-			{
-				$imgpath = '';
-			}
-		}
-
-		section_start('skel',$imgpath);
-
-		section_item($phpgw->link('/skel/preferences.php'),
-		lang('String setting'));
-
-		section_end();
-	}
+{
+// Only Modify the $file and $title variables.....
+	$title = $appname;
+	$file = Array(
+//		'Preferences'	=> $phpgw->link('/skel/preferences.php'),
+//		'Grant Access'	=> $phpgw->link('/preferences/acl_preferences.php','acl_app='.$appname),
+//		'Edit categories'	=> $phpgw->link('/preferences/categories.php','cats_app='.$appname.'&cats_level=True&global_cats=True')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>

@@ -104,13 +104,15 @@
 			}
 		}
 	}
+//<!--   Window1=window.open('<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
+
 ?>
 
  <script>
+<!--
     self.name="first_Window";
     function addybook()
     {
-<!--   Window1=window.open('<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
        Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp'].'/addressbook.php'); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
     }
 
@@ -118,6 +120,7 @@
     {
        awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
     }
+-->
   </script>
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">

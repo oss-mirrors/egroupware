@@ -11,11 +11,13 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
-	$imgpath = $phpgw->common->image($appname,'navbar.gif');
-	section_start(ucfirst($appname),$imgpath);
-
-	section_item($phpgw->link('/headlines/admin.php'),lang('Headline Site Management'));
-
-	section_end();
+{
+// Only Modify the $file and $title variables.....
+	$title = $appname;
+	$file = Array(
+		'Headline Site Management'	=> $phpgw->link('/headlines/admin.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>

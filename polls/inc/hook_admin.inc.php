@@ -11,11 +11,13 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
-	$imgpath = $phpgw->common->image($appname,'navbar.gif');
-	section_start($appname,$imgpath);
-
-	section_item($phpgw->link('/polls/admin.php'),lang('Voting booth admin'));
-
-	section_end();
+{
+// Only Modify the $file and $title variables.....
+	$title = $appname;
+	$file = Array(
+		'Voting Booth Admin'		=> $phpgw->link('/polls/admin.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
+}
 ?>

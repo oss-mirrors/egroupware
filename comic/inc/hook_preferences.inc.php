@@ -11,30 +11,13 @@
 
 	/* $Id$ */
    
-	{
-		echo "<p>\n";
-		$imgfile = $phpgw->common->get_image_dir('comic') . '/' . $appname . '.gif';
-		if (file_exists($imgfile))
-		{
-			$imgpath = $phpgw->common->get_image_path('comic') . '/' . $appname . '.gif';
-		}
-		else
-		{
-			$imgfile = $phpgw->common->get_image_dir('comic') . '/navbar.gif';
-			if (file_exists($imgfile))
-			{
-				$imgpath = $phpgw->common->get_image_path('comic') . '/navbar.gif';
-			}
-			else
-			{
-				$imgpath = '';
-			}
-		}
-
-		section_start('Daily Comics',$imgpath);
-
-		section_item($phpgw->link('/comic/preferences.php'),lang('Preferences'));
-
-		section_end(); 
+{
+// Only Modify the $file and $title variables.....
+	$title = 'Daily Comic';
+	$file = Array(
+		'Preferences'	=> $phpgw->link('/comic/preferences.php')
+	);
+//Do not modify below this line
+	display_section($appname,$title,$file);
 }
 ?>
