@@ -182,7 +182,8 @@
 	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" )
 	{
 		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
-				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php\'">');
+				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php').'\'">';
+				//. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php\'">');
 				//,'folder=' .urlencode($folder)) . '\'">';
 				// NOTE: the folder=X variable is not really used in folder.php when called from this page
 	} else {
@@ -264,7 +265,7 @@
 		$t->set_var('mlist_backcolor',$phpgw_info["theme"]["row_on"]);
 		// big Mr. Message List is just one row in this case
 		$t->parse('V_msg_list','T_no_messages');
-        }
+	}
 // ----  Fill The Messages List  -----
 	else
 	{
