@@ -19,11 +19,7 @@
 <table style="border: 1px solid black;width:100%; margin-bottom:10px">
 	<tr class="th">
 		<td colspan="2" style="font-size: 120%; font-weight:bold">
-			<form method="POST" action="{new_act_href}">
-				<input type="hidden" name="p_id" value="{p_id}">
-				<input type="hidden" name="new_activity" value="1">
-				{lang_Add_or_edit_an_activity} <input type="submit" name="new" value="{lang_new}">
-			</form>
+				{lang_Add_or_edit_an_activity} <input type="submit" name="new_activity" value="{lang_new}">
 		</td>
 	</tr>
 	<tr>
