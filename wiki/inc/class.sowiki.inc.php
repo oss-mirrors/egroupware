@@ -186,7 +186,7 @@ class sowiki	// DB-Layer
 		                  " HAVING t1.version=MAX(t2.version) AND (body LIKE '%$text%' OR title LIKE '%$text%')",
 		                  __LINE__,__FILE__);
 		$list = array();
-		while($this->db->next_record)
+		while($this->db->next_record())
 		{
 			$list[] = $this->db->f('title');
 		}
@@ -616,7 +616,7 @@ class sowiki	// DB-Layer
 		}
 		$this->db->query("SELECT ip FROM $this->RtTbl",__LINE__,__FILE__);
 		
-		while($this->db->next_record)
+		while($this->db->next_record())
 		{
 			if(preg_match('/^\\d+\\.(\\d+\\.(\\d+\\.)?)?\\*$/',$this->db->f('ip')))
 			{ 
