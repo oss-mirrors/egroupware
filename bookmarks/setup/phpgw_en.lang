@@ -49,9 +49,11 @@ netscape bookmark filename is required!	bookmarks	en	Netscape bookmark filename 
 new	bookmarks	en	New
 or	bookmarks	en	or
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	en	Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!
+please select the categories to export	bookmarks	en	Please select the categories to export
 query condition	bookmarks	en	Query Condition
 rating	bookmarks	en	Rating
 search for:	bookmarks	en	Search for:
+select the format you would like to export to	bookmarks	en	Select the format you would like to export to
 send bookmark	bookmarks	en	Send bookmark
 sub category	bookmarks	en	Sub Category
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	en	To address %1 invalid. Format must be <strong>user@domain</strong> and domain must exist!

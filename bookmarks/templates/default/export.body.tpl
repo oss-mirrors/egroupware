@@ -1,8 +1,7 @@
 <form method="post" action="{FORM_ACTION}">
- <table border=0 bgcolor="#EEEEEE" align="center" width=60%>
+ <table border="0" bgcolor="#EEEEEE" align="center" width=60%>
  <tr>
-  <td colspan=2>Choisissez les catégories que voulez exporter<br>&nbsp;
-  </td>
+  <td colspan="2">{lang_categories}<br>&nbsp;</td>
  </tr>
  <tr>
    <td>
@@ -10,7 +9,8 @@
    </td>
  </tr>
  <tr>
-  <td colspan=2>Choisissez le type de fichier vers lequel vous voulez exporter les signets<br>&nbsp;
+  <td colspan="2">{lang_format}<br>&nbsp;
+
   </td>
  </tr>
  <tr>
@@ -19,7 +19,7 @@
    </td>
  </tr>
  <tr>
-  <td colspan=2 align=right>
+  <td colspan="2" align="right">
    <input type="submit" name="export" value="Exporter Signets">
   </td>
  </tr>

@@ -1,5 +1,5 @@
 <!-- $Id$ -->
-<table width="100%" border=0>
+<table width="100%" border="0">
 <tr><td>
 
 <!--

@@ -1163,7 +1163,10 @@ function toggle(image, catid)
 				$this->t->set_file('body','export.body.tpl');
 				$this->t->set_var(Array(
 					'FORM_ACTION' => $GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.export'),
-					'input_categories' => $this->bo->categories_list(0,True)
+					'input_categories' => $this->bo->categories_list(0,True),
+					'lang_categories' => lang('Please select the categories to export'),
+					'lang_format' => lang('Select the format you would like to export to')
+
 				));
 				$this->t->pfp('out','body');
 				$GLOBALS['phpgw']->common->phpgw_footer();

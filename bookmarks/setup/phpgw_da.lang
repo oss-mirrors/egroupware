@@ -1,2 +1,67 @@
+%1 bookmarks have been deleted	bookmarks	da	%1 bogmæer er slettet
+%1 bookmarks imported from %2 successfully.	bookmarks	da	%1 bogmæer er importeret fra %2 succesfuldt
+(comma separate multiple addresses)	bookmarks	da	
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	da	<b>Note:</b> Dette virker i øikket kun med Netscape kompatible bogmæer
+all bookmarks	bookmarks	da	Alle bogmæer
+and	bookmarks	da	Og
+append this message to mailed bookmarks	bookmarks	da	Vedhæ denne besked til den sendte bogmæe
+ascending	bookmarks	da	Stigende
 book marks	common	da	Bogmærke
+bookmark changed sucessfully	bookmarks	da	Bogmæe opdateret succesfuldt
+bookmark created successfully.	bookmarks	da	Bogmæe oprettet succesfuldt
+bookmark not editable	bookmarks	da	Bogmæet kan ikke redigeres
+bookmark not readable	bookmarks	da	Bogmæe kan ikke læs
 bookmarks	common	da	Bogmærke
+bookmarks settings	bookmarks	da	Bogmæe indstillinger
+change bookmark	bookmarks	da	Ædre bogmæe
+close this window to return	bookmarks	da	luk dette vindue for at vende tilbage
+create bookmark	bookmarks	da	Opret bogmæe
+create new bookmark	bookmarks	da	Opret nyt bogmæe
+date added	bookmarks	da	Dato tilfø+date changed	bookmarks	da	Dato opdateret
+date last updated	bookmarks	da	Sidste opdatering
+date last visited	bookmarks	da	Sidste besøto
+descending	bookmarks	da	Faldne
+edit bookmark	bookmarks	da	Redigébogmæe
+edit this bookmark	bookmarks	da	Redigédette bogmæe
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	da	Indtast navnet påetscape bogmæe filen<br>som du vil importere ind i bogmæerne nedenunder
+export bookmarks	preferences	da	Eksportere bogmæer
+fewer	bookmarks	da	Fæe
+filter by	bookmarks	da	Sorter efter
+found a link you might like	bookmarks	da	Har fundet et hyperlink som du må kan li'
+from	bookmarks	da	Fra
+from category %1	bookmarks	da	fra kategori %1
+highest	bookmarks	da	Hø
+i thought you would be interested in the following link(s):	bookmarks	da	Jeg tæte du måe var interesseret i føde hyperlink(s):
+import bookmarks	preferences	da	Importer bogmæer
+like	bookmarks	da	som
+list	bookmarks	da	Vis
+lowest	bookmarks	da	Laveste
+mail this bookmark	bookmarks	da	E-mail denne bogmæe
+mail-this-link message sent to %1.	bookmarks	da	E-mail-dette-link besked er sendt til %1.
+mass update:	bookmarks	da	Masse opdatering:
+message from	bookmarks	da	Besked fra
+more	bookmarks	da	Mere
+name	bookmarks	da	Navn
+name is required	bookmarks	da	Navn er kræt
+netscape bookmark file	bookmarks	da	Netscape bogmæe fil
+netscape bookmark filename is required!	bookmarks	da	Netscape bogmæe fil er kræt!
+new	bookmarks	da	Ny
+or	bookmarks	da	eller
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	da	Indtast venligst <b>Modtager E-mail adresse</b>, <b>Emne</b>, og <b>Besked</b>!
+please select the categories to export	bookmarks	da	Væ venligst kategorierne du vil eksportere
+query condition	bookmarks	da	
+rating	bookmarks	da	Vudering
+search for:	bookmarks	da	Søter:
+select the format you would like to export to	bookmarks	da	Væ hvilket format du til eksportere til
+send bookmark	bookmarks	da	Send bogmæe
+sub category	bookmarks	da	Underkategori
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	da	E-mail adressen %1 er ugyldig. Formatet skal væ <strong>bruger@domæ</strong> og domæt skal eksistere
+to e-mail addresses	bookmarks	da	Modtager e-mail adresse
+to which category should the imported folder hierarchy be attached	bookmarks	da	Til hvilken kategori skal det importerede mappehierarki vedhæes
+total visits	bookmarks	da	antal besøree view	bookmarks	da	Træunable to open temp file %1 for import.	bookmarks	da	Kan ikke åe midlertidig fil %1 til importerng
+url is required.	bookmarks	da	URL skal indtastes
+view bookmark	bookmarks	da	Se bogmæe
+view this bookmark	bookmarks	da	Se dette bogmæe
+warning	bookmarks	da	Advarsel
+you are viewing this site outside of phpgroupware	bookmarks	da	Du ser denne side udenfor eGroupWare
+you must select a category	bookmarks	da	Du skal væe en kategori
