@@ -529,19 +529,38 @@
 				break;
 			}
 		}
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) locate acctnum in feed args $found_acctnum result ['.serialize($found_acctnum).'] <br>'; }
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) locate acctnum in feed args $found_acctnum boolean result: ['.serialize($found_acctnum).'] <br>'; }
 		
 		// grab GPC values, only pass an acctnumm to that function if we already found it
 		if ($found_acctnum == True)
 		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc is being called WITH already found acctnum: ('.serialize($acctnum).')<br>'; }
-			$this->grab_class_args_gpc($acctnum);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc, if called, will be called WITH already found acctnum: ('.serialize($acctnum).')<br>'; }
+			$feed_acctnum = $acctnum;
+			//$this->grab_class_args_gpc($acctnum);
 		}
 		else
 		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc is being called with NO acctnum yet having been found<br>'; }
-			$this->grab_class_args_gpc();
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc, if called,  will be called with NO acctnum yet having been found<br>'; }
+			$feed_acctnum = '';
+			//$this->grab_class_args_gpc();
 		}
+		
+		// Grab GPC vars, they'll go into the "args" data
+		// feed the $feed_acctnum to the function
+		// Note: which acctnum arg array would this be talking to?
+		if ( ($this->get_isset_arg('already_grab_class_args_gpc', $feed_acctnum))
+		&& ((string)$this->get_arg_value('already_grab_class_args_gpc', $feed_acctnum) != '') )
+		{
+			// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'; }
+			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+		}
+		else
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'; }
+			$this->grab_class_args_gpc($feed_acctnum);
+		}
+		
 		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_all_args() dump <pre>';  print_r($this->get_all_args()); echo '</pre>'; }
 		// grab_class_args_gpc will look for an acctnum in GPC values if one is not yet found
 		// grab_class_args_gpc will ASSIGN A DEFAULT acctnum if NONE is foud anywhere
@@ -650,20 +669,6 @@
 		if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: NOT reusing an established logged-in stream-object, will create new'.'<br>'; }
 		
 		// ----  Things To Be Done Whether You Login Or Not  -----
-		// Grab GPC vars, they'll go into the "args" data
-		// already did this above
-		//if ( ($this->get_isset_arg('already_grab_class_args_gpc'))
-		//&& ((string)$this->get_arg_value('already_grab_class_args_gpc') != '') )
-		//{
-		//	// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
-		//	if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'; }
-		//	if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
-		//}
-		//else
-		//{
-		//	if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'; }
-		//	$this->grab_class_args_gpc();
-		//}
 		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: PRE create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
 		// ----  Obtain Preferences Data  ----
@@ -1111,7 +1116,7 @@
 	@access PRIVATE  (public access is object->get_arg_value('mailsvr_namespace')
 	PRIVATE
 	*/
-	function get_mailsvr_callstr()
+	function get_mailsvr_callstr($acctnum='')
 	{
 		if (stristr($this->skip_args_special_handlers, 'get_mailsvr_callstr'))
 		{
@@ -1120,9 +1125,17 @@
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_callstr: ENTERING <br>'; }
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_callstr: ENTERING , feed $acctnum: ['.$acctnum.']<br>'; }
+		
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_callstr: after testing feed arg, using $acctnum: ['.$acctnum.']<br>'; }
+		
 		// do we have "level one cache" class var data that we can use?
-		$class_cached_mailsvr_callstr = $this->_direct_access_arg_value('mailsvr_callstr');
+		$class_cached_mailsvr_callstr = $this->_direct_access_arg_value('mailsvr_callstr', $acctnum);
 		if ($class_cached_mailsvr_callstr != '')
 		{
 			// return the "level one cache" class var data
@@ -1131,11 +1144,11 @@
 		}
 		
 		// what's the name or IP of the mail server
-		$mail_server = $this->get_pref_value('mail_server');
-				
+		$mail_server = $this->get_pref_value('mail_server', $acctnum);
+		
 		// determine the Mail Server Call String
 		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
-		switch($this->get_pref_value('mail_server_type'))
+		switch($this->get_pref_value('mail_server_type', $acctnum))
 		{
 			case 'imaps':	// IMAP over SSL
 				$extra = '/imap/ssl/novalidate-cert';
@@ -1153,11 +1166,11 @@
 				$extra = '';
 				break;
 		}
-		$server_call = '{' .$mail_server .':' .$this->get_pref_value('mail_port') . $extra . '}';
+		$server_call = '{' .$mail_server .':' .$this->get_pref_value('mail_port', $acctnum) . $extra . '}';
 			
 		// cache the result
-		$this->set_arg_value('mailsvr_callstr', $server_call);
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_callstr: LEAVING, returning $server_call: '.serialize($server_call).'<br>'; }
+		$this->set_arg_value('mailsvr_callstr', $server_call, $acctnum);
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_callstr: LEAVING, returning $server_call: '.serialize($server_call).' for $acctnum ['.$acctnum.']<br>'; }
 		return $server_call;
 	}
 
@@ -1169,7 +1182,7 @@
 	@access PRIVATE  (public access is object->get_arg_value('mailsvr_namespace')
 	PRIVATE
 	*/
-	function get_mailsvr_namespace()
+	function get_mailsvr_namespace($acctnum='')
 	{
 		if (stristr($this->skip_args_special_handlers, 'get_mailsvr_namespace'))
 		{
@@ -1178,13 +1191,21 @@
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_namespace: ENTERING <br>'; }
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_namespace: ENTERING , feed $acctnum: ['.$acctnum.']<br>'; }
+		
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: after testing feed arg, using $acctnum: ['.$acctnum.']<br>'; }
+		
 		// UWash patched for Maildir style: $Maildir.Junque ?????
 		// Cyrus and Courier style =" INBOX"
 		// UWash style: "mail"
 
 		// do we have cached data that we can use?
-		$class_cached_mailsvr_namespace = $this->_direct_access_arg_value('mailsvr_namespace');
+		$class_cached_mailsvr_namespace = $this->_direct_access_arg_value('mailsvr_namespace', $acctnum);
 		if ($class_cached_mailsvr_namespace != '')
 		{
 			// return the cached data
@@ -1192,7 +1213,7 @@
 			return $class_cached_mailsvr_namespace;
 		}
 		
-		
+		/*
 		// -----------
 		// TRY CACHED DATA FROM PREFS DB
 		// -----------
@@ -1206,24 +1227,25 @@
 			$this->set_arg_value('mailsvr_namespace', $cached_data);
 			return $cached_data;
 		}
-
+		*/
 		// no cached data of any kind we can use ...
 		
 		// we *may* need this data later
-		$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
-		$server_str = $this->get_arg_value('mailsvr_callstr');
+		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+		$server_str = $this->get_arg_value('mailsvr_callstr', $acctnum);
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: got these for later use: $mailsvr_stream: ['.$mailsvr_stream.'] ; $server_str: ['.$server_str.']<br>'; }
 		
-		if (($this->get_pref_value('imap_server_type') == 'UW-Maildir')
-		|| ($this->get_pref_value('imap_server_type') == 'UWash'))
+		if (($this->get_pref_value('imap_server_type', $acctnum) == 'UW-Maildir')
+		|| ($this->get_pref_value('imap_server_type', $acctnum) == 'UWash'))
 		{
-			if (($this->get_isset_pref('mail_folder'))
-			&& (trim($this->get_pref_value('mail_folder')) != ''))
+			if (($this->get_isset_pref('mail_folder', $acctnum))
+			&& (trim($this->get_pref_value('mail_folder', $acctnum)) != ''))
 			{
 				// if the user fills this option correctly, this should yield an unqualified foldername which
 				// UWash should qualify (juat like any unix command line "cd" command) with the
 				// appropriate $HOME variable (I THINK) ...
 				// DO I NEED to add the "~" here too?
-				$name_space = trim($this->get_pref_value('mail_folder'));
+				$name_space = trim($this->get_pref_value('mail_folder', $acctnum));
 			}
 			else
 			{
@@ -1254,12 +1276,9 @@
 			// in addition to the users private mailboxes
 			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
 			// FIXME: abstract this class dcom call in mail_msg_wrappers
-			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $this->a['.$this->acctnum.'][dcom]->listmailbox('.$mailsvr_stream.', '.$server_str.', %)'.'<br>'; }
+			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->listmailbox('.$mailsvr_stream.', '.$server_str.', %)'.'<br>'; }
 			
-			//$tmp_a = $this->a[$this->acctnum];
-			//$name_space = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, '%');
-			$this_acctnum = $this->acctnum;
-			$name_space = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, '%');
+			$name_space = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, '%');
 			
 			if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_mailsvr_namespace: raw $name_space dump<pre>'; print_r($name_space); echo '</pre>'; }
 			
@@ -1313,14 +1332,17 @@
 		}
 		
 		// cache the result in "level one cache" class var holder
-		$this->set_arg_value('mailsvr_namespace', $name_space);
-		//$this->a[$this->acctnum] = $tmp_a;
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: set "level 1 cache, class var" arg $this->set_arg_value(mailsvr_namespace, '.$name_space.', '.$acctnum.']) <br>'; }
+		$this->set_arg_value('mailsvr_namespace', $name_space, $acctnum);
 		
+		/*
 		// -----------
 		// SAVE DATA TO PREFS DB CACHE
 		// -----------
 		$my_function_name = 'get_mailsvr_namespace';
 		$this->set_cached_data($my_function_name,'string',$name_space);
+		*/
+		
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_namespace: LEAVING, returning $name_space: '.serialize($name_space).'<br>'; }
 		return $name_space;
 	}
@@ -1333,7 +1355,7 @@
 	@access PRIVATE  (public access is object->get_arg_value('mailsvr_delimiter')
 	PRIVATE
 	*/
-	function get_mailsvr_delimiter()
+	function get_mailsvr_delimiter($acctnum='')
 	{
 		if (stristr($this->skip_args_special_handlers, 'get_mailsvr_delimiter'))
 		{
@@ -1342,12 +1364,20 @@
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: ENTERING <br>'; }
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: ENTERING , feed $acctnum: ['.$acctnum.']<br>'; }
+		
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_delimiter: after testing feed arg, using $acctnum: ['.$acctnum.']<br>'; }
+		
 		// UWash style: "/"
 		// all other imap servers *should* be "."
 
 		// do we have cached data that we can use?
-		$class_cached_mailsvr_delimiter = $this->_direct_access_arg_value('mailsvr_delimiter');
+		$class_cached_mailsvr_delimiter = $this->_direct_access_arg_value('mailsvr_delimiter', $acctnum);
 		if ($class_cached_mailsvr_delimiter != '')
 		{
 			// return the cached data
@@ -1355,9 +1385,8 @@
 			return $class_cached_mailsvr_delimiter;
 		}
 		
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: $this->get_pref_value(imap_server_type) returns: ['.$this->get_pref_value('imap_server_type').'] ; api var SEP: ['.serialize(SEP).']<br>'; }
-		
-		if ($this->get_pref_value('imap_server_type') == 'UWash')
+		//if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: $this->get_pref_value(imap_server_type, '.$acctnum.') returns: ['.$this->get_pref_value('imap_server_type', $acctnum).'] ; api var SEP: ['.serialize(SEP).']<br>'; }
+		if ($this->get_pref_value('imap_server_type', $acctnum) == 'UWash')
 		{
 			//$delimiter = '/';
 			//$delimiter = SEP;
@@ -1365,6 +1394,7 @@
 			// UWASH is a filesystem based thing, so the delimiter is whatever the system SEP is
 			// unix = /  and win = \ (win maybe even "\\" because the backslash needs escaping???
 			// currently the filesystem seterator is provided by phpgw api as constant "SEP"
+			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_delimiter: imap_server_type is UWash<br>'; }
 			if (!SEP)
 			{
 				$delimiter = '/';
@@ -1381,20 +1411,32 @@
 			// this is supposed to be discoverable with the NAMESPACE command
 			// see http://www.rfc-editor.org/rfc/rfc2342.txt
 			// however as of PHP 4.0 this is not implemented
+			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_delimiter: imap_server_type is OTHER than UWash<br>'; }
 			$delimiter = '.';
 		}
 		// cache the result to "level 1 cache" class arg holder var
-		$this->set_arg_value('mailsvr_delimiter', $delimiter);
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: LEAVING, returning: '.serialize($delimiter).'<br>'; }
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_delimiter: set "level 1 cache, class var" arg $this->set_arg_value(mailsvr_delimiter, '.$delimiter.', '.$acctnum.']) <br>'; }
+		$this->set_arg_value('mailsvr_delimiter', $delimiter, $acctnum);
+		
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_delimiter: LEAVING, returning: '.serialize($delimiter).' for $acctnum ['.$acctnum.']<br>'; }
 		return $delimiter;
 	}
 
-	function get_mailsvr_supports_folders()
+	function get_mailsvr_supports_folders($acctnum='')
 	{
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		
 		// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-		if (($this->get_pref_value('mail_server_type') == 'imap')
-		|| ($this->get_pref_value('mail_server_type') == 'imaps')
-		|| ($this->newsmode))
+		
+		//if (($this->get_pref_value('mail_server_type',$acctnum ) == 'imap')
+		//|| ($this->get_pref_value('mail_server_type', $acctnum) == 'imaps')
+		//|| ($this->newsmode))
+		$mail_server_type = $this->get_pref_value('mail_server_type', $acctnum);
+		if (stristr($mail_server_type, 'imap'))
 		{
 			return True;
 		}

@@ -1754,6 +1754,12 @@
 		* * * * * * * * * * * * * * * * * */
 		function _get_arg_is_known($arg_name='', $calling_function_name='')
 		{
+			// skip this unless debug level 4
+			if ($this->debug_args_oop_access < 4)
+			{
+				return False;
+			}
+			
 			if ($arg_name == '')
 			{
 				return False;
@@ -1803,20 +1809,6 @@
 				$acctnum = $this->get_acctnum();
 				if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_isset_arg: obtained $acctnum from $this->get_acctnum(): ['.$acctnum.']'.'<br>'; }
 			}
-			/*
-			// OBSOLETED
-			if ((isset($arg_name))
-			&& ((string)$arg_name != '')
-			&& (isset($this->a[$acctnum]['args'][$arg_name])))
-			{
-				return True;
-			}
-			else
-			{
-				// arg not set, or invalid input $arg_name
-				return False;
-			}
-			*/
 			
 			/*
 			// OOP VERSION if PROBLEMATIC
@@ -1830,8 +1822,8 @@
 			}
 			*/
 			
-			// Best Version at this time, if something is not set, no handoff support function will fill it
-			// before we can return false
+			// Best Version at this time, if something is not set, DO NOT handoff to a support function to fill it
+			// that way we can return false if something is indeed NOT set
 			
 			// $arg_name has sub-levels
 			if ((isset($arg_name))
@@ -1859,6 +1851,7 @@
 				return True;
 			}
 			// if we get here, it was not set
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_isset_arg: LEAVING returning False<br>'; }
 			return False;
 		}
 		
@@ -1904,18 +1897,18 @@
 				// ----  SPECIAL HANDLERS  ----
 				if ($arg_name == 'mailsvr_callstr')
 				{
-					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_callstr()<br>'; }
-					return $this->get_mailsvr_callstr();
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_callstr('.$acctnum.')<br>'; }
+					return $this->get_mailsvr_callstr($acctnum);
 				}
 				elseif ($arg_name == 'mailsvr_namespace')
 				{
-					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_namespace()<br>'; }
-					return $this->get_mailsvr_namespace();
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_namespace('.$acctnum.')<br>'; }
+					return $this->get_mailsvr_namespace($acctnum);
 				}
 				elseif ($arg_name == 'mailsvr_delimiter')
 				{
-					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_delimiter()<br>'; }
-					return $this->get_mailsvr_delimiter();
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_delimiter('.$acctnum.')<br>'; }
+					return $this->get_mailsvr_delimiter($acctnum);
 				}
 				elseif ($arg_name == 'folder_list')
 				{
