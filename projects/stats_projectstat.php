@@ -12,15 +12,24 @@
 	\**************************************************************************/
 	/* $Id$ */
 
+	if (! $id)
+	{
+		Header('Location: ' . $phpgw->link('/projects/stats_projectlist.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
+										. '&start=' . $start . '&filter=' . $filter));
+	}
+
 	$phpgw_info['flags'] = array('currentapp' => 'projects',
 					'enable_nextmatchs_class' => True);
 
 	include('../header.inc.php');
 
-	if (! $id)
+	if ($phpgw_info['server']['db_type']=='pgsql')
 	{
-		Header('Location: ' . $phpgw->link('/projects/stats_projectlist.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
-										. '&start=' . $start . '&filter=' . $filter));
+		$join = " JOIN ";
+	}
+	else
+	{
+		$join = " LEFT JOIN ";
 	}
 
 	$hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
@@ -136,7 +145,7 @@
 
 	if($billed)
 	{
-		$t->set_var('billed','checked');                                 
+		$t->set_var('billed','checked');
 	}
 
 	$t->set_var('billedonly',lang('Billed only'));
@@ -161,8 +170,8 @@
 		$filter .= " AND end_date <= '$edate' ";
 	}
 
-	$phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM phpgw_p_hours,phpgw_accounts "
-					. "WHERE project_id='$id' AND phpgw_p_hours.employee=account_id $filter GROUP BY employee,account_firstname,account_lastname");
+	$phpgw->db->query("SELECT account_id,account_firstname,account_lastname,COUNT(employee) FROM phpgw_accounts $join phpgw_p_hours ON "
+					. "phpgw_p_hours.employee=account_id WHERE project_id='$id' $filter GROUP BY account_id,account_firstname,account_lastname");
 
 	$t->set_var('hd_account',lang('Account'));
 	$t->set_var('hd_activity',lang('Activity'));
@@ -170,6 +179,7 @@
 
 	while ($phpgw->db->next_record())
 	{
+		$account_id = $phpgw->db->f('account_id'); 
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 		$t->set_var('tr_color',$tr_color);
 		$summin = 0;
@@ -178,9 +188,8 @@
 		$t->set_var('e_hours','');
 		$t->parse('list','stat_list',True);
 
-		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id='$id' AND employee='"
-					. $phpgw->db->f('employee') . "' AND "
-					. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
+		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id='$id' AND employee='$account_id' "
+					. "AND phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_activities.descr");
 
 		while ($db2->next_record())
 		{
@@ -204,7 +213,7 @@
 	}
 
 	$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE project_id='$id' AND "
-				. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
+				. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_activities.descr");
 
 	$summin=0;
 	$t->set_var('e_account',lang('Overall'));

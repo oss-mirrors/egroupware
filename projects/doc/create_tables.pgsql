@@ -34,7 +34,7 @@ CREATE TABLE phpgw_p_projectactivities (
    id          serial,
    project_id  int,
    activity_id int,
-   billable    boolean DEFAULT 'n' NOT NULL
+   billable    char(1) DEFAULT 'N' NOT NULL
 );
 
     CREATE TABLE phpgw_p_hours (

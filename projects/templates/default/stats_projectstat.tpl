@@ -39,7 +39,7 @@
 	</tr>
 	<tr>
 		<td>{billedonly}:</td>
-		<td><input type=checkbox name="billed" value="billed" {billed}></td>
+		<td><input type="checkbox" name="billed" value="billed" {billed}></td>
 	</tr>
 </table>
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
@@ -50,7 +50,7 @@
 	</tr>
 </table>
 </form>
-<table width=85% border=0 cellspacing=1 cellpadding=3>
+<table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
 		<td width="10%" bgcolor="{th_bg}">{hd_account}</td>
 		<td width="10%" bgcolor="{th_bg}">{hd_activity}</td>

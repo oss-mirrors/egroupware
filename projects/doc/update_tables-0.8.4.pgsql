@@ -165,17 +165,37 @@ CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
     drop sequence p_deliverypos_id_seq;
     drop table p_deliverypos;
 
-CREATE TABLE phpgw_p_deliverypos (
-   id          serial,
-   delivery_id int,
-   hours_id    int
-);
+	CREATE TABLE phpgw_p_deliverypos
+	(
+		id          serial,
+		delivery_id int,
+		hours_id    int
+	);
 
-insert into phpgw_p_deliverypos select * from temp;
-drop table temp;
+	insert into phpgw_p_deliverypos select * from temp;
+	drop table temp;
 
 ----------------------------
---      0.8.4pre5	  --
+--      0.8.4pre5         --
 ----------------------------
 
-alter table phpgw_p_projectmembers add column type char(2);
+	alter table phpgw_p_projectmembers add column type char(2);
+
+----------------------------
+--      0.8.4.006         --
+----------------------------
+
+    create table temp as select * from phpgw_p_projectactivities;
+    drop sequence phpgw_p_projectactivitie_id_seq;
+    drop table phpgw_p_projectactivities;
+
+	CREATE TABLE phpgw_p_projectactivities
+	(
+		id          serial,
+		project_id  int,
+		activity_id int,
+		billable    char(1) DEFAULT 'N' NOT NULL
+	);
+
+    insert into phpgw_p_projectactivities select * from temp;
+    drop table temp;

@@ -12,5 +12,5 @@
 
 	$setup_info['projects'] = array('name' => 'Projects',
 								'app_order' => 14,
-									'version' => '0.8.4pre5');
+									'version' => '0.8.4.006');
 ?>

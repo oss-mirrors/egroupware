@@ -12,29 +12,38 @@
 	\**************************************************************************/
 	/* $Id$ */
 
+	if (! $account_id)
+	{
+		Header('Location: ' . $phpgw->link('/projects/stats_userlist.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
+										. '&start=' . $start . '&filter=' . $filter));
+	}
+
 	$phpgw_info['flags'] = array('currentapp' => 'projects',
 					'enable_nextmatchs_class' => True);
 	include('../header.inc.php');
 
 	$db2 = $phpgw->db;
 
-	if (! $account_id)
+	if ($phpgw_info['server']['db_type']=='pgsql')
 	{
-		Header('Location: ' . $phpgw->link('/projects/stats_userlist.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
-											. '&start=' . $start . '&filter=' . $filter));
+		$join = " JOIN ";
+	}
+	else
+	{
+		$join = " LEFT JOIN ";
 	}
 
 	$hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
 				. '<input type="hidden" name="order" value="' . $order . '">' . "\n"
 				. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
-				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
-				. '<input type="hidden" name="id" value="' . $id . '">' . "\n";
+				. '<input type="hidden" name="account_id" value="' . $account_id . '">' . "\n"
+				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
 	$phpgw->db->query("select * from phpgw_accounts where account_id = '$account_id'");
 	$phpgw->db->next_record();
 
-	$t = new Template(PHPGW_APP_TPL);
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array('projects_stat' => 'stats_userstat.tpl'));
 	$t->set_block('projects_stat','stat_list','list');
 
@@ -110,23 +119,25 @@
 		$filter .= " AND phpgw_p_hours.end_date<='$edate' ";
 	}
 
-	$phpgw->db->query("SELECT title,phpgw_p_projects.id FROM phpgw_p_hours,phpgw_p_projects WHERE project_id=phpgw_p_projects.id "                                                  
-					."AND phpgw_p_hours.employee='$account_id' $filter GROUP BY project_id");
+	$phpgw->db->query("SELECT title,phpgw_p_projects.id AS id,COUNT(phpgw_p_hours.project_id) FROM phpgw_p_projects $join phpgw_p_hours ON "
+					."phpgw_p_hours.employee='$account_id' $filter GROUP BY title,phpgw_p_projects.id");
 
 	$t->set_var('hd_project',lang('Project'));
 	$t->set_var('hd_activity',lang('Activity'));
 	$t->set_var('hd_hours',lang('Hours'));
 
+
 	while ($phpgw->db->next_record())
 	{
 		$summin = 0;
+		$id = $phpgw->db->f('id');
 		$t->set_var('e_project',$phpgw->db->f('title'));
 		$t->set_var('e_activity','');
 		$t->set_var('e_hours','');
 		$t->parse('list','stat_list',True);
 
-		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='$account_id' AND project_id='"
-					. $phpgw->db->f('id') . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
+		$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='$account_id' AND project_id='$id' "
+					. "AND phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_activities.descr");
 
 		while ($db2->next_record())
 		{
@@ -148,7 +159,7 @@
 	}
 
 	$db2->query("SELECT SUM(minutes) as min,descr FROM phpgw_p_hours,phpgw_p_activities WHERE employee='$account_id' AND "
-			. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_hours.activity_id,phpgw_p_activities.descr");
+			. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_activities.descr");
 
 	$t->set_var('lang_calcb',lang('Calculate'));
 

@@ -7,7 +7,7 @@ drop table phpgw_p_activities;
 drop sequence phpgw_p_activities_id_seq;
 
 drop table phpgw_p_projectactivities;
-drop sequence phpgw_p_projectactivities_id_seq;
+drop sequence phpgw_p_projectactivitie_id_seq;
 
 drop table phpgw_p_hours;
 drop sequence phpgw_p_hours_id_seq;

@@ -79,7 +79,7 @@
 		{
 			if ($smonth && $sday && $syear)
 			{
-				$error[$errorcount++] = lang('You have entered an invalid start date !') . ' : ' . "$smonth - $sday - $syear";
+				$error[$errorcount++] = lang('You have entered an invalid start date !') . '<br>' . $smonth . '/' . $sday . '/' . $syear;
 			}
 		}
 
@@ -91,7 +91,7 @@
 		{
 			if ($emonth && $eday && $eyear)
 			{
-				$error[$errorcount++] = lang('You have entered an invalid end date') . ' : ' . "$emonth - $eday - $eyear";
+				$error[$errorcount++] = lang('You have entered an invalid end date') . '<br>' . $emonth . '/' . $eday . '/' . $eyear;
 			}
 		}
 
@@ -114,6 +114,11 @@
 			else
 			{
 				$access = 'public';
+			}
+
+			if (!$budget)
+			{
+				$budget = 0;
 			}
 
 			$phpgw->db->query("update phpgw_p_projects set access='$access', category='$cat_id', entry_date='" . time() . "', start_date='"
@@ -259,7 +264,7 @@
 		if($account['account_id']==$phpgw->db->f('coordinator'))
 			$coordinator_list .= ' selected';
 			$coordinator_list .= '>'
-			. $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
+			. $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>' . "\n";
 	}
 
 	$t->set_var('coordinator_list',$coordinator_list);  
@@ -298,8 +303,8 @@
 
 	$t->set_var('lang_bookable_activities',lang('Bookable activities'));
 	$db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable "
-			. "FROM phpgw_p_activities $join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND " 
-			. "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
+				. "FROM phpgw_p_activities $join phpgw_p_projectactivities ON phpgw_p_activities.id=phpgw_p_projectactivities.activity_id AND " 
+				. "(project_id='$id' OR project_id IS NULL) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
 	while ($db2->next_record())
 	{
 		$ba_activities_list .= '<option value="' . $db2->f('id') . '"';
@@ -307,7 +312,7 @@
 			$ba_activities_list .= ' selected';
 			$ba_activities_list .= '>'
 								. $phpgw->strip_html($db2->f('descr'))
-								. '</option>';
+								. '</option>' . "\n";
 	}
 
 	$t->set_var('lang_descr',lang('Description'));
@@ -318,8 +323,8 @@
 	$t->set_var('lang_billable_activities',lang('Billable activities'));
 	$db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_activities.billperae,phpgw_p_projectactivities.project_id,"
 				. "phpgw_p_projectactivities.billable FROM phpgw_p_activities $join phpgw_p_projectactivities ON "
-				. "(phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
-				. "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='Y' OR billable='N' ORDER BY descr asc");
+				. "phpgw_p_activities.id=phpgw_p_projectactivities.activity_id AND "
+				. "(project_id='$id' OR project_id IS NULL) WHERE billable IS NULL OR billable='Y' OR billable='N' ORDER BY descr asc");
 
 	while ($db2->next_record())
 	{
@@ -328,10 +333,10 @@
 			$bill_activities_list .= ' selected';
 			$bill_activities_list .= '>'
 					. $phpgw->strip_html($db2->f('descr')) . ' ' . $currency . ' ' . $db2->f('billperae')
-					. ' ' . lang('per workunit') . ' ' . '</option>';
+					. ' ' . lang('per workunit') . ' ' . '</option>' . "\n";
 	}
 
-	$t->set_var('bill_activities_list',$bill_activities_list);  
+	$t->set_var('bill_activities_list',$bill_activities_list);
 
 /*    $t->set_var("lang_access_type",lang("Access type"));   
     $access_list = "<option value=\"private\"";
@@ -370,7 +375,8 @@
 
 	if ($projects->check_perms($grants[$phpgw->db->f('coordinator')],PHPGW_ACL_DELETE) || $phpgw->db->f('coordinator') == $phpgw_info['user']['account_id'])
 	{
-		$t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php',"id=$id&cat_id=$cat_id&start=$start&sort=$sort&order=$order&query=$query&filter=$filter") . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+		$t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php','id=' . $id . '&cat_id=' . $cat_id . '&start=' . $start
+								. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" value="' . lang('Delete') .'"></form>');
 	}
 	else
 	{
