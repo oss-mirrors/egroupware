@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - administration                                            *
+	* phpGroupWare - Headlines Administration                                  *
 	* http://www.phpgroupware.org                                              *
 	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
 	* --------------------------------------------                             *

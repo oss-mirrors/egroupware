@@ -54,9 +54,6 @@
 	$phpgw->template->set_block('form','channel');
 	$phpgw->template->set_block('form','row');
 
-//		'channel'    => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl',
-//		'row'        => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '_row.tpl'
-
 	$j = 0;
 	$i = count($sites);
 	while (list(,$site) = each($sites))
