@@ -13,8 +13,8 @@
 	/* $Id$ */
 
 	$values = array(
-		'Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'),
-		'Categories'  => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=tts')
+		'Preferences'		=> $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'),
+		'Edit Categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=tts&cats_level=True&global_cats=True')
 	);
 	display_section('tts','Trouble Ticket System',$values);
 
