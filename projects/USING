@@ -16,6 +16,10 @@ You can choose the type of activity: bookable(no invoice) or billable.
 The projecthours app manages your daily jobs. You can only submit a job to a
 project, if there are activities avaiable.  
 
+The project-,activity-,delivery- and invoice-numbers are editable if you 
+want different numbers. If you want autocreated numbers set the firstone to 
+'1', then all others will created automatically. 
+
 If you want to create invoices or deliveries you have to select a customer
 before. 
 Change the logo.gif in p*billing dir with yours or remove it if you don't
