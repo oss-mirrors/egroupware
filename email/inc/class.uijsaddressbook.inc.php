@@ -223,7 +223,7 @@
 						
 			$this->template=CreateObject('phpgwapi.Template');
 			//We set its root (we need to be called from other apps as well)
-			$this->template->set_root(PHPGW_SERVER_ROOT."/email/templates/".$GLOBALS['phpgw_info']['user']['preferences']['common']['template_set']);
+			$this->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('email'));
 			$this->template->set_file(array(
 						'mainframe_t' => 'addressbook-js-frameset.tpl'
 						));
