@@ -13,18 +13,48 @@
 	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
-		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$phpgw->common->phpgw_exit();
+		echo 'Failed attempt to break in via an old Security Hole!<br>'."\n";
+		$GLOBLAS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw->common->get_inc_dir('stocks');
+	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('stocks');
 
-	if ($phpgw_info['user']['apps']['stocks'] && $phpgw_info['user']['preferences']['stocks']['enabled'])
+	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
 	{
-		echo "\n" . '<!-- Stock Quotes -->' . "\n";
+
+		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
+		
+		$portalbox = CreateObject('phpgwapi.listbox',
+			Array(
+				'title'	=> $title,
+				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'width'	=> '100%',
+				'outerborderwidth'	=> '0',
+				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+			)
+		);
+
+		$app_id = $GLOBALS['phpgw']->applications->name2id('stocks');
+		$GLOBALS['portal_order'][] = $app_id;
+		$var = Array(
+			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+		);
+
+		while(list($key,$value) = each($var))
+		{
+			$portalbox->set_controls($key,$value);
+		}
+
 		include($tmp_app_inc . '/functions.inc.php');
-		echo '<tr><td align="center">' . return_quotes($quotes) . '</td></tr>';
-		echo "\n" . '<!-- Stock Quotes -->' . "\n";
+		$portalbox->data = Array();
+
+		echo "\n".'<!-- BEGIN Stock Quotes info -->'."\n".$portalbox->draw('<td>'."\n".return_quotes()."\n".'</td>')."\n".'<!-- END Stock Quotes info -->'."\n";
 	}
 ?>
