@@ -127,7 +127,7 @@
 
 			$this->t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
 			$this->t->set_var('lang_billing',lang('Billing'));
-			$this->t->set_var('link_jobs',$phpgw->link('/projects/sub_projects.php'));
+			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_sub_projects'));
 			$this->t->set_var('link_hours',$phpgw->link('/projects/hours_listhours.php'));
 			$this->t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
@@ -738,7 +738,7 @@
 				$parent = $this->boprojects->read_single_project($pro_parent);
 			}
 
-			if ($this->boprojects->check_perms($this->grants[$parent['coordinator']],PHPGW_ACL_ADD) || $parent['coordinator'] == $this->account_id)
+			if ($this->boprojects->check_perms($this->grants[$parent['coordinator']],PHPGW_ACL_ADD) || $parent['coordinator'] == $this->account)
 			{
 				$this->t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add_sub.php','pro_parent=' . $pro_parent)
 															. '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
