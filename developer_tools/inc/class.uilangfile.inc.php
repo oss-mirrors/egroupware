@@ -511,6 +511,10 @@
 
 		function recode_id($id)
 		{
+			if (get_magic_quotes_gpc())
+			{
+				$id = stripslashes($id);
+			}
 			return str_replace(array('%5B','%5D'),array('[',']'),$id);	// &amp; + &quot; are recode by php
 		}
 
