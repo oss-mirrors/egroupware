@@ -20,6 +20,7 @@
  
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
+	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 	include('../header.inc.php');
 
@@ -27,7 +28,7 @@
 
 	$GLOBALS['phpgw']->template->set_file('index','index.tpl');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_title', 'tts_title');
-	$GLOBALS['phpgw']->template->set_block('index', 'tts_links', 'tts_links');
+//	$GLOBALS['phpgw']->template->set_block('index', 'tts_links', 'tts_links');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_search', 'tts_search');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_list', 'tts_list');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_row', 'tts_row');
@@ -36,7 +37,7 @@
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_read', 'tts_ticket_id_read');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_ticket_id_unread', 'tts_ticket_id_unread');
 
-	$GLOBALS['phpgw']->template->set_var('tts_appname', lang('Trouble Ticket System'));
+	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
 	$GLOBALS['phpgw']->template->set_var('tts_search_link', $GLOBALS['phpgw']->link('/tts/index.php'));
 	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/tts/preferences.php'));
@@ -45,6 +46,7 @@
 	$GLOBALS['phpgw']->template->set_var('tts_newticket', lang('New ticket'));
 	$GLOBALS['phpgw']->template->set_var('tts_head_status','');
 	$GLOBALS['phpgw']->template->set_var('tts_notickets','');
+	$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 
 	// select what tickets to view
 	$filter = $HTTP_GET_VARS['filter'];
@@ -206,11 +208,11 @@
 			while ($priority > 0) { $priostr=$priostr . "||"; $priority--; }
 			$GLOBALS['phpgw']->template->set_var('tts_t_priostr',$priostr );
 
-			$catstr = $GLOBALS['phpgw']->db->f('t_category')?$GLOBALS['phpgw']->db->f('ticket_category'):lang('none');
-			$GLOBALS['phpgw']->template->set_var('tts_t_catstr', $catstr );
+			$cat_name = $phpgw->categories->id2name($GLOBALS['phpgw']->db->f('ticket_category'));
+			$GLOBALS['phpgw']->template->set_var('row_category',$cat_name);
 
 			$GLOBALS['phpgw']->template->set_var('tts_t_assignedto', $GLOBALS['phpgw']->db->f('ticket_assignedto')?$phpgw->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')):lang('None'));
-			$GLOBALS['phpgw']->template->set_var('tts_t_user', $GLOBALS['phpgw']->db->f('ticket_owner'));
+			$GLOBALS['phpgw']->template->set_var('tts_t_user',$phpgw->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
 
 			$history_values = $phpgw->historylog->return_array(array(),array('O'),'','',$phpgw->db->f('ticket_id'));
 			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$phpgw->common->show_date($history_values[0]['datetime']));
