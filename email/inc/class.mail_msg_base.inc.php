@@ -55,6 +55,8 @@
 	// if an existing mail_dcom object exists from a prev request, attempt to adopt and re-use it
 	//var $reuse_existing_obj = True;
 	var $reuse_existing_obj = False;
+	// raw prefs, before we process them to extract extra acct and/or filters data, not of much use
+	var $unprocessed_prefs=array();
 	
 	// ---- Data Caching  ----
 	// (A) session data caching in appsession, for data that is temporary in nature
@@ -483,9 +485,11 @@
 		}
 		
 		// FIND THE "BEST ACCTNUM" and set it
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call:  get_best_acctnum_and_set_it($args_array, $got_args) <br>'; }
-		$acctnum = $this->get_best_acctnum_and_set_it($args_array, $got_args);
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "get_best_acctnum_and_set_it" returns $acctnum ['.$acctnum.']<br>'; }
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call:  get_best_acctnum($args_array, $got_args) <br>'; }
+		$acctnum = $this->get_best_acctnum($args_array, $got_args);
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "get_best_acctnum" returns $acctnum ['.$acctnum.']<br>'; }
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+		$this->set_acctnum($acctnum);
 		
 		// SET GOT_ARGS TO THAT ACCTNUM
 		// use that acctnum to set "got_args" to the appropiate acctnum
@@ -497,7 +501,7 @@
 		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call: "init_internal_args_and_set_them('.$acctnum.')"<br>'; }
 		$this->init_internal_args_and_set_them($acctnum);
 		
-		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc", "get_best_acctnum_and_set_it", and "init_internal_args_and_set_them" : this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc", "get_best_acctnum", and "init_internal_args_and_set_them" : this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
 		
 		
 		/*
@@ -605,27 +609,28 @@
 		
 		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to create_email_preferences and setup extra accounts<br>';}
 		// ----  Obtain Preferences Data  ----
-		$tmp_prefs = array();
-		// obtain the preferences from the database
-		$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
+		$this->unprocessed_prefs = array();
+		// obtain the preferences from the database, put them in $this->unprocessed_prefs
+		$this->unprocessed_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
 		// fill $GLOBALS['phpgw_info']['user']['preferences'] with the data for backwards compatibility (we don't use that)
-		$GLOBALS['phpgw_info']['user']['preferences'] = $tmp_prefs;
+		$GLOBALS['phpgw_info']['user']['preferences'] = $this->unprocessed_prefs;
+		// after we process pres
 		// for our use, put prefs in a class var to be accessed thru OOP-style access calls in mail_msg_wrapper
 		// since we know these prefs to be the  top level prefs, for the default email account, force them into acctnum 0
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: putting top level, default account, pref data in acct 0 with $this->set_pref_array($tmp_prefs[email], 0); <br>';}
-		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request:  $tmp_prefs[email] dump:<pre>'; print_r($tmp_prefs['email']) ; echo '</pre>';}
-		$this->set_pref_array($tmp_prefs['email'], 0);
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: putting top level, default account, pref data in acct 0 with $this->set_pref_array($this->unprocessed_prefs[email], 0); <br>';}
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request:  $this->unprocessed_prefs[email] dump:<pre>'; print_r($this->unprocessed_prefs['email']) ; echo '</pre>';}
+		$this->set_pref_array($this->unprocessed_prefs['email'], 0);
 		
 		// ===  EXTRA ACCOUNTS  ===
-		// they are located in an array based at $tmp_prefs['email']['ex_accounts'][]
+		// they are located in an array based at $this->unprocessed_prefs['email']['ex_accounts'][]
 		// determine what extra accounts have been defined
 		// note: php3 DOES have is_array(), ok to use it here
-		if ((isset($tmp_prefs['email']['ex_accounts']))
-		&& (is_array($tmp_prefs['email']['ex_accounts'])))
+		if ((isset($this->unprocessed_prefs['email']['ex_accounts']))
+		&& (is_array($this->unprocessed_prefs['email']['ex_accounts'])))
 		{
-			$this->ex_accounts_count = count($tmp_prefs['email']['ex_accounts']);
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] is set and is_array, its count: $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'; }
-			if ($this->debug_logins > 2) { echo '$tmp_prefs[email][ex_accounts] DUMP<pre>'; print_r($tmp_prefs[email][ex_accounts]); echo '</pre>'; }
+			$this->ex_accounts_count = count($this->unprocessed_prefs['email']['ex_accounts']);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->unprocessed_prefs[email][ex_accounts] is set and is_array, its count: $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'; }
+			if ($this->debug_logins > 2) { echo '$this->unprocessed_prefs[email][ex_accounts] DUMP<pre>'; print_r($this->unprocessed_prefs[email][ex_accounts]); echo '</pre>'; }
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to process extra account data ; $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>'; }
 			// note: extra accounts lowest possible value = 1, NOT 0
 			// also, $key, although numbered integers, may not be conticuous lowest to highest (may be empty or missing elements inbetween)
@@ -633,36 +638,36 @@
 			// ---- what accounts have some data defined
 			// array_extra_accounts[X]['acctnum'] : integer
 			// array_extra_accounts[X]['status'] string = "enabled" | "disabled" | "empty"
-			//while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
-			while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
+			//while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
+			while(list($key,$value) = each($this->unprocessed_prefs['email']['ex_accounts']))
 			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: for each $tmp_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value: ['.serialize($value).']<br>';}
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: for each $this->unprocessed_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value DUMP:<pre>'; print_r($value); echo '</pre>';}
 				// if we are here at all then this array item must have some data defined
 				$next_pos = count($this->extra_accounts);
 				$this->extra_accounts[$next_pos] = array();
 				$this->extra_accounts[$next_pos]['acctnum'] = (int)$key;
 				// ----  is this account "enabled", "disabled" or is this array item "empty"
 				// first, see if it has essential data, if not, it's an empty array item
-				if ( (!isset($tmp_prefs['email']['ex_accounts'][$key]['fullname']))
-				|| (!isset($tmp_prefs['email']['ex_accounts'][$key]['email_sig']))
-				|| (!isset($tmp_prefs['email']['ex_accounts'][$key]['layout'])) )
+				if ( (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['fullname']))
+				|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['email_sig']))
+				|| (!isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['layout'])) )
 				{
 					// this account lacks essential data needed to describe an account, it must be an "empty" element
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *empty*: $tmp_prefs[email][ex_accounts]['.$key.']: ['.serialize($tmp_prefs['email']['ex_accounts'][$key]).']<br>';}
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *empty*: $this->unprocessed_prefs[email][ex_accounts]['.$key.']: ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]).']<br>';}
 					$this->extra_accounts[$next_pos]['status'] = 'empty';
 				}
 				// ... so the account is not empty ...
-				elseif ( (isset($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
-				&& ((string)$tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
+				elseif ( (isset($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
+				&& ((string)$this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
 				{
 					// this account is defined AND enabled, 
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *enabled*: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *enabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
 					$this->extra_accounts[$next_pos]['status'] = 'enabled';
 				}
 				else
 				{
 					// this account is defined BUT not enabled
-					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *disabled*: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account ['.$key.'] is *disabled*: $this->unprocessed_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($this->unprocessed_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
 					$this->extra_accounts[$next_pos]['status'] = 'disabled';
 				}
 				
@@ -700,11 +705,8 @@
 		else
 		{
 			$this->ex_accounts_count = 0;
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>';}
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->unprocessed_prefs[email][ex_accounts] NOT set or NOT is_array, $this->ex_accounts_count: ['.$this->ex_accounts_count.']<br>';}
 		}
-		
-		// clear the temp var
-		$tmp_prefs = array();
 		// -end- extra account init handling
 		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}

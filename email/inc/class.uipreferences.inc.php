@@ -310,7 +310,7 @@
 			
 			// ---  Standars Prefs  ---
 			// section title for standars prefs
-			$GLOBALS['phpgw']->template->set_var('section_title', lang('Standard').' '.lang('E-Mail preferences'));
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Standard E-Mail preferences'));
 			// parse the block,
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable
@@ -327,7 +327,7 @@
 			$prefs_ui_rows .= $done_widget;
 			
 			// ---  Custom Prefs  ---
-			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom').' '.lang('E-Mail preferences'));
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail preferences'));
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
@@ -391,7 +391,7 @@
 			
 			$var = Array(
 				'pref_errors'		=> '',
-				'page_title'		=> lang('E-Mail'.' : '.lang('Extra Accounts')),
+				'page_title'		=> lang('E-Mail Extra Accounts'),
 				'form_action'		=> $GLOBALS['phpgw']->link('/index.php',
 					Array(
 						'menuaction'	=> 'email.bopreferences.ex_accounts_edit'
@@ -431,7 +431,7 @@
 			
 			// ---  Extra Account Pref Items  ---
 			// section title
-			$GLOBALS['phpgw']->template->set_var('section_title', '*** '.lang('Extra E-Mail Account').' *** '.lang('Number').' '.$this->bo->acctnum);
+			$GLOBALS['phpgw']->template->set_var('section_title', '*** '.lang('E-Mail Extra Account').' *** '.lang('Number').' '.$this->bo->acctnum);
 			// parse the block,
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable
@@ -452,7 +452,7 @@
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->std_prefs);
 			
 			// ---  Custom Prefs  ---
-			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom').' '.lang('E-Mail preferences'));
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom E-Mail preferences'));
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
@@ -496,9 +496,14 @@
 			
 			$var = Array(
 				'pref_errors'		=> '',
-				'page_title'		=> lang('E-Mail Extra Accounts').' '.lang('List'),
 				'font'				=> $this->theme['font'],
-				'tr_titles_color'	=> $this->theme['th_bg']
+				'tr_titles_color'	=> $this->theme['th_bg'],
+				'page_title'		=> lang('E-Mail Extra Accounts List'),
+				'account_name_header' => lang('Account User Name'),
+				'lang_status'		=> lang('Status'),
+				'lang_go_there'		=> lang('Read Mail'),
+				'lang_edit'			=> lang('Edit'),
+				'lang_delete'		=> lang('Delete')
 			);
 			$GLOBALS['phpgw']->template->set_var($var);
 			
@@ -509,6 +514,8 @@
 			//$acctount_list[$X]['acctnum']
 			//$acctount_list[$X]['status']
 			//$acctount_list[$X]['display_string']
+			//$acctount_list[$X]['go_there_url']
+			//$acctount_list[$X]['go_there_href']
 			//$acctount_list[$X]['edit_url']
 			//$acctount_list[$X]['edit_href']
 			//$acctount_list[$X]['delete_url']
@@ -525,6 +532,7 @@
 				$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 				$GLOBALS['phpgw']->template->set_var('indentity',$nothing);
 				$GLOBALS['phpgw']->template->set_var('status',$nothing);
+				$GLOBALS['phpgw']->template->set_var('go_there_href',$nothing);
 				$GLOBALS['phpgw']->template->set_var('edit_href',$nothing);
 				$GLOBALS['phpgw']->template->set_var('delete_href',$nothing);
 				$GLOBALS['phpgw']->template->parse('V_accts_list','B_accts_list');
@@ -537,6 +545,7 @@
 					$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 					$GLOBALS['phpgw']->template->set_var('indentity',$acctount_list[$i]['display_string']);
 					$GLOBALS['phpgw']->template->set_var('status',$acctount_list[$i]['status']);
+					$GLOBALS['phpgw']->template->set_var('go_there_href',$acctount_list[$i]['go_there_href']);
 					$GLOBALS['phpgw']->template->set_var('edit_href',$acctount_list[$i]['edit_href']);
 					$GLOBALS['phpgw']->template->set_var('delete_href',$acctount_list[$i]['delete_href']);
 					$GLOBALS['phpgw']->template->parse('V_accts_list','B_accts_list', True);

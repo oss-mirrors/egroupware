@@ -968,60 +968,60 @@
 		
 		
 		/*!
-		@function get_best_acctnum_and_set_it
+		@function get_best_acctnum
 		@abstract search a variety of vars to find a legitimate account number, fallsback to $this->get_acctnum
 		@param $args_array ARRAY that was passed to ->begin_request, pass that into here if possible, it is a primary source
 		@param $got_args ARRAY of the *External* params / args fed to this script via GPC or other methods
 		Note: these are NOT the "internal args"
 		@param $force_feed_acctnum INTEGER if for some reason you want to force an account number (DEPRECIATED)
-		@result integer, mostt legitimate account number that was obtained
+		@result integer, most legitimate account number that was obtained
 		@discussion ?
 		@author	Angles
 		@access	Private
 		*/
-		function get_best_acctnum_and_set_it($args_array='', $got_args='', $force_feed_acctnum='')
+		function get_best_acctnum($args_array='', $got_args='', $force_feed_acctnum='')
 		{
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: ENTERING, param $force_feed_acctnum ['.$force_feed_acctnum.'] ; parm DUMP $args_array[] then $got_args[] dumps:<pre>'; print_r($args_array);  print_r($got_args); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: ENTERING, param $force_feed_acctnum ['.$force_feed_acctnum.'] ; parm DUMP $args_array[] then $got_args[] dumps:<pre>'; print_r($args_array);  print_r($got_args); echo '</pre>'; }
 			
 			// ---  which email account do are these args intended to apply to  ----
 			// ORDER OF PREFERENCE for determining account num: just look at the code, it has comments
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": searching...: <br>'; }
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": searching...: <br>'; }
 			// initialize
 			$acctnum = '';
 			
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: get acctnum from feed args if possible<br>'; }
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: get acctnum from feed args if possible<br>'; }
 			$found_acctnum = False;
 			while(list($key,$value) = each($args_array))
 			{
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) this loop feed arg : ['.$key.'] => ['.serialize($args_array[$key]).'] <br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) this loop feed arg : ['.$key.'] => ['.serialize($args_array[$key]).'] <br>'; }
 				// try to find feed acctnum value
 				if ($key == 'fldball')
 				{
 					$fldball = $args_array[$key];
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in $fldball[] : '.serialize($fldball).'<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) $args_array passed in $fldball[] : '.serialize($fldball).'<br>'; }
 					$acctnum = (int)$fldball['acctnum'];
 					
 					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array fldball : ['.$acctnum.']<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) ACCTNUM from $args_array fldball : ['.$acctnum.']<br>'; }
 					$found_acctnum = True;
 					break;
 				}
 				elseif ($key == 'msgball')
 				{
 					$msgball = $args_array[$key];
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in $msgball[] : '.serialize($msgball).'<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) $args_array passed in $msgball[] : '.serialize($msgball).'<br>'; }
 					$acctnum = (int)$msgball['acctnum'];
 					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array msgball : ['.$acctnum.']<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) ACCTNUM from $args_array msgball : ['.$acctnum.']<br>'; }
 					$found_acctnum = True;
 					break;
 				}
 				elseif ($key == 'acctnum')
 				{
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) $args_array passed in "acctnum" : '.serialize($args_array[$key]).'<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) $args_array passed in "acctnum" : '.serialize($args_array[$key]).'<br>'; }
 					$acctnum = (int)$args_array[$key];
 					// SET OUR ACCTNUM ACCORDING TO FEED ARGS
-					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: (acctnum search) ACCTNUM from $args_array "acctnum" feed args : ['.$acctnum.']<br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: (acctnum search) ACCTNUM from $args_array "acctnum" feed args : ['.$acctnum.']<br>'; }
 					$found_acctnum = True;
 					break;
 				}
@@ -1030,19 +1030,19 @@
 			if ($found_acctnum == True)
 			{
 				// SET THE ACCTNUM AND RETURN IT
-				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: (from $args_array) * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: (from $args_array) * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
 				$this->set_acctnum($acctnum);
-				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: LEAVING early, $args_array had the data, returning $acctnum ['.serialize($acctnum).']<br>'; }
+				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: LEAVING early, $args_array had the data, returning $acctnum ['.serialize($acctnum).']<br>'; }
 				return $acctnum;
 			}
 			
-			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": continue searching...: <br>'; }
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": continue searching...: <br>'; }
 			
 			// ok, now we need to broaden the search for a legit account number
 			if ((isset($force_feed_acctnum))
 			&& ((string)$force_feed_acctnum != ''))
 			{
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use function param $force_feed_acctnum=['.serialize($force_feed_acctnum).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use function param $force_feed_acctnum=['.serialize($force_feed_acctnum).']<br>'; }
 				$acctnum = (int)$force_feed_acctnum;
 			}
 			elseif ((isset($got_args['msgball']['acctnum']))
@@ -1052,7 +1052,7 @@
 				$acctnum = (int)$got_args['msgball']['acctnum'];
 				// make sure this is an integer
 				$got_args['msgball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[msgball][acctnum] : ['.serialize($got_args['msgball']['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use GPC aquired $got_args[msgball][acctnum] : ['.serialize($got_args['msgball']['acctnum']).']<br>'; }
 			}
 			elseif ((isset($got_args['fldball']['acctnum']))
 			&& ((string)$got_args['fldball']['acctnum'] != ''))
@@ -1061,7 +1061,7 @@
 				$acctnum = (int)$got_args['fldball']['acctnum'];
 				// make sure this is an integer
 				$got_args['fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[fldball][acctnum] : ['.serialize($got_args['fldball']['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use GPC aquired $got_args[fldball][acctnum] : ['.serialize($got_args['fldball']['acctnum']).']<br>'; }
 			}
 			elseif ((isset($got_args['source_fldball']['acctnum']))
 			&& ((string)$got_args['source_fldball']['acctnum'] != ''))
@@ -1070,7 +1070,7 @@
 				$acctnum = (int)$got_args['source_fldball']['acctnum'];
 				// make sure this is an integer
 				$got_args['source_fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[source_fldball][acctnum] : ['.serialize($got_args['source_fldball']['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use GPC aquired $got_args[source_fldball][acctnum] : ['.serialize($got_args['source_fldball']['acctnum']).']<br>'; }
 			}
 			elseif ((isset($got_args['delmov_list'][0]['acctnum']))
 			&& ((string)$got_args['delmov_list'][0]['acctnum'] != ''))
@@ -1078,7 +1078,7 @@
 				// at the very least we know that we'll need to login to this account to delete or move this particular msgball
 				// also, we will need to open the particular folder where the msg is localted
 				$acctnum = (int)$got_args['delmov_list'][0]['acctnum'];
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[delmov_list][0][acctnum] : ['.serialize($got_args['delmov_list'][0]['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use GPC aquired $got_args[delmov_list][0][acctnum] : ['.serialize($got_args['delmov_list'][0]['acctnum']).']<br>'; }
 			}
 			elseif ((isset($got_args['target_fldball']['acctnum']))
 			&& ((string)$got_args['target_fldball']['acctnum'] != ''))
@@ -1090,7 +1090,7 @@
 				$acctnum = (int)$got_args['target_fldball']['acctnum'];
 				// make sure this is an integer
 				$got_args['target_fldball']['acctnum'] = $acctnum;
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>'; }
 			}
 			else
 			{
@@ -1101,14 +1101,15 @@
 				// note, this is identical to $this->get_acctnum(True) because True is the default arg there if one is not passed
 				// True means "return a default value, NOT boolean false, if $this->acctnum is not set
 				$acctnum = $this->get_acctnum(True);
-				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: searching_for_acctnum: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
 			}
 			
 			// SET THE ACCTNUM WITH THE "BEST VALUE" WE COULD FIND
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
-			$this->set_acctnum($acctnum);
+			// DEPRECIATED - we no longer set it here
+			//if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+			//$this->set_acctnum($acctnum);
 			
-			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: searching_for_acctnum: LEAVING, returning $acctnum ['.serialize($acctnum).']<br>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: LEAVING, returning $acctnum ['.serialize($acctnum).']<br>'; }
 			return $acctnum;
 		}
 		

@@ -6,26 +6,32 @@
 </p>
 <table border="0" cellspacing="2" cellpadding="2" width="95%" align="center">
 <tr bgcolor="{tr_titles_color}">
-	<td width="70%" align="left">
-		<font face="{font}">Account Indentity</font>
+	<td width="60%" align="left">
+		<font face="{font}">{account_name_header}</font>
 	</td>
 	<td width="10%" align="center">
-		<font face="{font}">status</font>
+		<font face="{font}">{lang_status}</font>
 	</td>
 	<td width="10%" align="center">
-		<font face="{font}">action1</font>
+		<font face="{font}">{lang_go_there}</font>
 	</td>
 	<td width="10%" align="center">
-		<font face="{font}">action2</font>
+		<font face="{font}">{lang_edit}</font>
+	</td>
+	<td width="10%" align="center">
+		<font face="{font}">{lang_delete}</font>
 	</td>
 </tr>
 <!-- BEGIN B_accts_list -->
 <tr bgcolor="{tr_color}">
-	<td width="70%" align="left">
+	<td width="60%" align="left">
 		<font face="{font}">{indentity}</font>
 	</td>
 	<td width="10%" align="center">
 		<font face="{font}">{status}</font>
+	</td>
+	<td width="10%" align="center">
+		<font face="{font}">{go_there_href}</font>
 	</td>
 	<td width="10%" align="center">
 		<font face="{font}">{edit_href}</font>

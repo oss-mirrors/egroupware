@@ -1419,13 +1419,26 @@
 					//$next_pos = $this_acctnum - 1;
 					$return_list[$next_pos]['acctnum'] = $this_acctnum;
 					$return_list[$next_pos]['status'] = $this_status;
-					$fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
-					// "disabled" accounts will not return a fullname because they were not initialized during "begin_request"
-					if (trim($fullname) == '')
+					if ($this_status == 'disabled')
 					{
+						// "disabled" accounts will not return a fullname because they were not initialized during "begin_request"
 						// try to directly obtain it from RAW prefs data
-						$fullname = '(direct) '.$GLOBALS['phpgw']->msg->get_pref_value('["ex_accounts"]["'.$this_acctnum.'"]["fullname"]', 0);
+						$fullname = '(disabled) '.$GLOBALS['phpgw']->msg->unprocessed_prefs['email']['ex_accounts'][$this_acctnum]['fullname'];
+						// we can not read mail of a disabled account
+						$return_list[$next_pos]['go_there_url'] = '';
+						$return_list[$next_pos]['go_there_href'] = '&nbsp;';
 					}
+					else
+					{
+						$fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
+						$return_list[$next_pos]['go_there_url'] = $GLOBALS['phpgw']->link(
+														'/index.php',
+														 'menuaction=email.uiindex.index'
+														.'&fldball[folder]=INBOX'
+														.'&fldball[acctnum]='.$this_acctnum);
+						$return_list[$next_pos]['go_there_href'] = '<a href="'.$return_list[$next_pos]['go_there_url'].'">'.lang('go').'</a>';
+					}
+					// html encode entities on the fullname so it's safe to display in the browser, and prefix with the acctnum
 					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
 					// control action links
 					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(
