@@ -31,7 +31,7 @@
 \*************************************************************************/
 
 $this->plugins['sfp']['nl2br']['name']			= 'nl2br';
-$this->plugins['sfp']['nl2br']['title']			= 'Newline 2 <BR> htmlarea Filter';
+$this->plugins['sfp']['nl2br']['title']			= 'Newline2Break Filter';
 $this->plugins['sfp']['nl2br']['version']		= '0.1';
 $this->plugins['sfp']['nl2br']['enable']		= 1;
 $this->plugins['sfp']['nl2br']['db_field_hooks']	= array
