@@ -12,9 +12,9 @@
 
 if ($GLOBALS['fudh_uopt'] & 524288 || $GLOBALS['fudh_uopt'] & 1048576) {
 	if ($GLOBALS['fudh_uopt'] & 1048576) {
-		$GLOBALS['adm_file'][] = array('text' => '{TEMPLATE: admin_control_panel}', 'link' => 'adm/admglobal.php?'._rsid, 'no_lang' => true);
+		$GLOBALS['adm_file'][] = array('text' => '{TEMPLATE: admin_control_panel}', 'link' => $GLOBALS['WWW_ROOT'].'adm/admglobal.php?'._rsid, 'no_lang' => true);
 		if ($GLOBALS['FUD_OPT_1'] & 32 && ($avatar_count = q_singleval("SELECT count(*) FROM {SQL_TABLE_PREFIX}users WHERE users_opt>=16777216 AND (users_opt & 16777216) > 0"))) {
-			$GLOBALS['adm_file'][] = array('text' => '{TEMPLATE: custom_avatar_queue}', 'link' => 'adm/admapprove_avatar.php?'._rsid, 'no_lang' => true);
+			$GLOBALS['adm_file'][] = array('text' => '{TEMPLATE: custom_avatar_queue}', 'link' => $GLOBALS['WWW_ROOT'].'adm/admapprove_avatar.php?'._rsid, 'no_lang' => true);
 		}
 		if ($report_count = q_singleval('SELECT count(*) FROM {SQL_TABLE_PREFIX}msg_report')) {
 			$GLOBALS['adm_file'][] = array('text' => '{TEMPLATE: reported_msgs}', 'link' => '{TEMPLATE: reported_msgs_lnk}', 'no_lang' => true);
