@@ -58,6 +58,14 @@ function export_msg_data($m, &$msg_subject, &$msg_body, &$msg_icon, &$msg_smiley
 
 	$attach_count = 0; $file_array = '';
 
+	/* this is a hack, it essentially disables file attachment code when file_uploads are off */
+	if (ini_get("file_uploads") != 1 || $PRIVATE_ATTACHMENTS < 1) {
+		$ppost_enctype = '';
+		$PRIVATE_ATTACHMENTS = 0;
+	} else {
+		$ppost_enctype = '{TEMPLATE: ppost_enctype}';
+	}
+
 	if (!isset($_POST['prev_loaded'])) {
 		/* setup some default values */
 		$msg_subject = $msg_body = $msg_icon = $old_subject = $msg_ref_msg_id = '';

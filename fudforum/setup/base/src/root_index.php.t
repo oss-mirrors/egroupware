@@ -14,6 +14,7 @@
 	
 	/* before we go on, we need to do some very basic activation checks */
 	if (!($FUD_OPT_1 & 1)) {
+		fud_egw();
 		fud_use('errmsg.inc');
 		exit($DISABLED_REASON . __fud_ecore_adm_login_msg);
 	}

@@ -68,7 +68,7 @@ function init_user()
 			$o = db_sab("SELECT * FROM {SQL_TABLE_PREFIX}themes WHERE lang='{$langl[$lang]}'");
 		}
 		$u->lang = $o->lang;
-		$u->theme_name = $o->lang;
+		$u->theme_name = $o->name;
 		$u->locale = $o->locale;
 		$u->theme_id = $o->id;
 		$u->theme = $o->theme;

@@ -88,11 +88,15 @@
 </table>
 {SECTION: END}
 
+{SECTION: ppost_enctype}
+enctype="multipart/form-data"
+{SECTION: END}
+
 {PAGE: PPOST_PAGE  form for writing private messages}
 {TEMPLATE: header}
 {TEMPLATE-DATA: cur_ppage}
 {TEMPLATE-DATA: tabs}
-<form action="{TEMPLATE: PPOST_PAGE_lnk3}" method="post" name="post_form" enctype="multipart/form-data" onSubmit="javascript: document.post_form.btn_submit.disabled = true; document.post_form.btn_draft.disabled = true;">
+<form action="{TEMPLATE: PPOST_PAGE_lnk3}" method="post" name="post_form" {TEMPLATE-DATA: ppost_enctype} onSubmit="javascript: document.post_form.btn_submit.disabled = true; document.post_form.btn_draft.disabled = true;">
 {TEMPLATE-DATA: post_error}
 {TEMPLATE-DATA: preview_message}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">

@@ -78,6 +78,14 @@ function flood_check()
 	$MOD = (int) ($usr->users_opt & 1048576 || ($usr->users_opt & 524288 && is_moderator($frm->id, _uid)));
 	$perms = perms_from_obj(db_sab('SELECT group_cache_opt, '.$MOD.' as md FROM {SQL_TABLE_PREFIX}group_cache WHERE user_id IN('._uid.',2147483647) AND resource_id='.$frm->id.' ORDER BY user_id ASC LIMIT 1'), ($usr->users_opt & 1048576));
 
+	/* this is a hack, it essentially disables file attachment code when file_uploads are off */
+	if (ini_get("file_uploads") != 1 || !($perms & 256)) {
+		$post_enctype = '';
+		$perms = $perms &~ 256;
+	} else {
+		$post_enctype = '{TEMPLATE: post_enctype}';
+	}
+
 	/* More Security */
 	if (isset($thr) && !($perms & 4096) && $thr->thread_opt & 1) {
 		error_dialog('{TEMPLATE: post_err_lockedthread_title}', '{TEMPLATE: post_err_lockedthread_msg}');

@@ -129,9 +129,13 @@
 {TEMPLATE: footer}
 {PAGE: END}
 
+{SECTION: post_enctype}
+enctype="multipart/form-data"
+{SECTION: END}
+
 {PAGE: POST_PAGE message posting form}
 {TEMPLATE: header}
-<form action="{TEMPLATE: POST_PAGE_lnk3}" method="post" name="post_form" enctype="multipart/form-data" onSubmit="javascript: document.post_form.btn_submit.disabled = true;">
+<form action="{TEMPLATE: POST_PAGE_lnk3}" method="post" name="post_form" {TEMPLATE-DATA: post_enctype} onSubmit="javascript: document.post_form.btn_submit.disabled = true;">
 {TEMPLATE-DATA: post_error}
 {TEMPLATE-DATA: preview_message}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">

@@ -183,6 +183,14 @@ function decode_uent(&$uent)
 		decode_uent($uent);
 	}
 
+	/* this is a hack, it essentially disables uploading of avatars when file_uploads are off */
+	if (ini_get("file_uploads") != 1 || !($FUD_OPT_1 & 8)) {
+		$register_enctype = '';
+		$FUD_OPT_1 = $FUD_OPT_1 &~ 8;
+	} else {
+		$register_enctype = '{TEMPLATE: register_enctype}';
+	}
+
 	$avatar_tmp = $avatar_arr = null;
 	/* deal with avatars, only done for regged users */
 	if (!empty($_POST['avatar_tmp'])) {
