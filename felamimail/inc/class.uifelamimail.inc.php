@@ -20,7 +20,6 @@
 			'addVcard'		=> True,
 			'changeFilter'		=> True,
 			'changeSorting'		=> True,
-			'css'			=> True,
 			'compressFolder'	=> True,
 			'deleteMessage'		=> True,
 			'handleButtons'		=> True,
@@ -191,126 +190,6 @@
 			}
 			
 			$this->viewMainScreen();
-		}
-
-		function css()
-		{
-			$appCSS = 
-			'th.activetab
-			{
-				color:#000000;
-				background-color:#D3DCE3;
-				border-top-width : 1px;
-				border-top-style : solid;
-				border-top-color : Black;
-				border-left-width : 1px;
-				border-left-style : solid;
-				border-left-color : Black;
-				border-right-width : 1px;
-				border-right-style : solid;
-				border-right-color : Black;
-			}
-			
-			th.inactivetab
-			{
-				color:#000000;
-				background-color:#E8F0F0;
-				border-bottom-width : 1px;
-				border-bottom-style : solid;
-				border-bottom-color : Black;
-			}
-			
-			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
-			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
-			
-			.text_small { font-size: 10px; }
-			.text_small_bold { font-size: 10px; font-weight : bold; }
-			
-			div.activetab{ display:inline; }
-			div.inactivetab{ display:none; }
-
-	.header_row_, A.header_row_
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		font-weight : bold;
-	}
-	
-	.header_row_D, A.header_row_D
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		color: silver;
-		text-decoration : line-through;
-		font-weight : bold;
-	}
-	
-	.header_row_DS, A.header_row_DS, .header_row_ADS, A.header_row_ADS
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		color: silver;
-		text-decoration : line-through;
-	}
-	
-	.header_row_S, A.header_row_S
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		vvertical-align : middle;
-	}
-	
-	.header_row_RS, A.header_row_RS
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		vvertical-align : middle;
-	}
-	
-	.header_row_AS, A.header_row_AS, .header_row_RAS, A.header_row_RAS
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		vvertical-align : middle;
-	}
-
-	.header_row_FAS, A.header_row_FAS, .header_row_FS, A.header_row_FS
-	{
-		color: red;
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		vvertical-align : middle;
-	}
-
-	.header_row_F, A.header_row_F
-	{
-		color: red;
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		font-weight : bold;
-		vvertical-align : middle;
-	}
-
-	.header_row_R, A.header_row_R
-	{
-		FONT-SIZE: 11px;
-		height : 14px;
-		padding: 0;
-		font-weight : bold;
-		vvertical-align : middle;
-	}
-			
-			';
-			
-			return $appCSS;
 		}
 
 		function compressFolder()

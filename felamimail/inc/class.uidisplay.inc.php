@@ -33,7 +33,6 @@
 
 		var $public_functions = array
 		(
-			'css'		=> 'True',
 			'display'	=> 'True',
 			'showHeader'	=> 'True',
 			'getAttachment'	=> 'True'
@@ -89,49 +88,6 @@
 		{
 			
 		}
-		
-		function css()
-		{
-			$appCSS = 
-			'th.activetab
-			{
-				color:#000000;
-				background-color:#D3DCE3;
-				border-top-width : 1px;
-				border-top-style : solid;
-				border-top-color : Black;
-				border-left-width : 1px;
-				border-left-style : solid;
-				border-left-color : Black;
-				border-right-width : 1px;
-				border-right-style : solid;
-				border-right-color : Black;
-			}
-			
-			th.inactivetab
-			{
-				color:#000000;
-				background-color:#E8F0F0;
-				border-bottom-width : 1px;
-				border-bottom-style : solid;
-				border-bottom-color : Black;
-			}
-			
-			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
-			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
-			
-			.quoted1 { color:#660066; }
-			.quoted2 { color:#007777; }
-			.quoted3 { color:#990000; }
-			.quoted4 { color:#000099; }
-			.quoted5 { color:#bb6600; }
-			
-			div.activetab{ display:inline; }
-			div.inactivetab{ display:none; }';
-			
-			return $appCSS;
-		}
-
 		
 		function highlightQuotes($text, $level = 5)
 		{
