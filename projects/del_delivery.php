@@ -130,8 +130,7 @@
 		$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname")." ]");
     }  
     else {
-    $t->set_var(project,lang("no customer selected"));
-    $t->set_var(customer,lang("no customer selected"));
+    $t->set_var(customer,lang("No customer selected !"));
       }
      }
    else {
@@ -153,8 +152,7 @@
      }
     } 
     else {
-    $t->set_var(project,lang("no customer selected"));
-    $t->set_var(customer,lang("no customer selected"));
+    $t->set_var(customer,lang("No customer selected !"));
       }
      }
     $t->set_var(title_project,lang("Title"));                                                                                                                                                               
@@ -328,7 +326,6 @@
 
     $t->parse("out", "projecthours_list_t", true);
     $t->p("out");
-    // -------------- end Add form declaration ------------------------
 
 $phpgw->common->phpgw_footer();
 ?>

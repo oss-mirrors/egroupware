@@ -125,6 +125,7 @@
 
 // ------------------------ end header declaration ------------------------------------
 
+  $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
     $phpgw->db->query("select title,ab_company_id,ab_lastname,ab_firstname,company_name from "
@@ -136,8 +137,7 @@
                                                                 $phpgw->db->f("ab_lastname")." ]");
       }
       else {
-      $t->set_var(project,lang("no customer selected"));
-      $t->set_var(customer,lang("no customer selected"));
+      $t->set_var(customer,lang("No customer selected !"));
            }
       }
       else {
@@ -145,7 +145,11 @@
                   . "WHERE id='$project_id' AND p_projects.customer=ab_id");
   
   if($phpgw->db->next_record()) {
-    $t->set_var(project,$phpgw->db->f("title"));
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                     
+    if (! $title)  $title  = "&nbsp;";
+
+    $t->set_var(project,$title);
+
         if (!$phpgw->db->f("ab_company")) {                                                                                                                                            
         $t->set_var("customer",$phpgw->db->f("ab_firstname")." ".$phpgw->db->f("ab_lastname"));                                                                                                 
          }                                                                                                                                                                              
@@ -155,8 +159,7 @@
         } 
        }
     else {
-    $t->set_var(project,lang("no customer selected"));
-    $t->set_var(customer,lang("no customer selected"));
+    $t->set_var(customer,lang("No customer selected !"));
    }
   }
   $t->set_var(title_project,lang("title"));
@@ -175,7 +178,7 @@
       $t->set_var(invoice_num,$phpgw->strip_html($invoice_num));
   }
 
-  if(!$invoice_id) {
+  if(!$invoice_id) { 
     $date=0;
     $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
                   . "end_date,minutes,p_hours.minperae,p_hours.billperae FROM "
@@ -183,7 +186,7 @@
                   . "p_hours.activity_id=p_activities.id AND p_projectactivities.project_id='$project_id' "
                   . "AND p_projectactivities.billable='Y' AND "
                   . "p_projectactivities.activity_id=p_hours.activity_id $ordermethod");
-  } else {
+    } else {
     $phpgw->db->query("SELECT date FROM p_invoice WHERE id=$invoice_id");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
@@ -193,7 +196,7 @@
                   . "p_hours.activity_id=p_activities.id AND p_projectactivities.project_id='$project_id' "
                   . "AND p_projectactivities.billable='Y' AND p_invoicepos.hours_id=p_hours.id AND "
                   . "p_projectactivities.activity_id=p_hours.activity_id AND p_invoicepos.invoice_id=$invoice_id $ordermethod");
-  }
+     }
 
   if ($date != 0) {
     	$n_month[$phpgw->common->show_date($date,"n")] = " selected";
@@ -250,23 +253,6 @@
       $dateout =  $phpgw->common->show_date($phpgw->db->f("date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
     }
 
-/*    if ($phpgw->db->f("end_date") == 0)
-             $end_dateout = "&nbsp;";
-    else {
-      $month = $phpgw->common->show_date(time(),"n");
-      $day   = $phpgw->common->show_date(time(),"d");
-      $year  = $phpgw->common->show_date(time(),"Y");
-
-      $end_date = (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-        	$end_dateout =  "<font color=\"CC0000\">";
-
-        $end_dateout =  $phpgw->common->show_date($phpgw->db->f("end_date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-                $end_dateout .= "</font>";
-    }
-*/    
-    
     $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
     $sumaes += $aes;
     $summe += (float)($phpgw->db->f("billperae")*$aes);
@@ -329,23 +315,6 @@
         $dateout =  $phpgw->common->show_date($phpgw->db->f("date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
       }
   
-/*      if ($phpgw->db->f("end_date") == 0)
-               $end_dateout = "&nbsp;";
-      else {
-        $month = $phpgw->common->show_date(time(),"n");
-        $day   = $phpgw->common->show_date(time(),"d");
-        $year  = $phpgw->common->show_date(time(),"Y");
-  
-        $end_date = (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-          if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-          	$end_dateout =  "<font color=\"CC0000\">";
-  
-          $end_dateout =  $phpgw->common->show_date($phpgw->db->f("end_date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-          if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-                  $end_dateout .= "</font>";
-           }
-*/      
-
       $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
       $sumaes += $aes;
       $summe += (float)($phpgw->db->f("billperae")*$aes);
@@ -374,10 +343,8 @@
 // na_list_end
 
 
-
     $t->parse("out", "projecthours_list_t", true);
     $t->p("out");
-    // -------------- end Add form declaration ------------------------
 
 $phpgw->common->phpgw_footer();
 ?>
