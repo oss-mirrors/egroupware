@@ -168,7 +168,7 @@
 	{
 		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'">'
 			. '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.urlencode($from->mailbox.'@'.$from->host)).'">'.decode_header_string($personal).'</a>'.$display_address->from.'</font>';
-		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'"> <a href="'.$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)).'">'
+		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'"> <a href="'.$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)).'">'
 			. '<img src="'.$phpgw_info['server']['app_images'].'/sm_envelope.gif" width="10" height="8" alt="Add to address book" border="0" align="absmiddle"></a></font>';
 	}
 	else
