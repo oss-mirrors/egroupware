@@ -25,6 +25,7 @@
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array
 			(
+				'app_name'					=> 'stocks',
 				'title'						=> $title,
 				'width'						=> '100%',
 				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')

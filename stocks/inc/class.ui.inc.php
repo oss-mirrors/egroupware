@@ -92,42 +92,37 @@
 
 		function return_html($quotes)
 		{
-			$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
-			. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
-			. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
-			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>&nbsp;%' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
-					. '<b>' . lang('Time') . '</b></td></tr>';
-
 			for ($i=0;$i<count($quotes);$i++)
 			{
-				$q = $quotes[$i];
-				$symbol = $q['symbol'];
-				$name = $q['name'];
-				$price0 = $q['price0']; // todays price
-				$price1 = $q['price1'];
-				$price2 = $q['price2'];
-				$dollarchange = $q['dchange'];
-				$percentchange = $q['pchange'];
-				$date = $q['date'];
-				$time = $q['time'];
-				$volume = $q['volume'];
-
-				if ($dollarchange < 0)
-				{
-					$color = 'red';
-				}
-				else
-				{
-					$color = 'green';
-				}
-
-				$return_html .= '<tr><td>' . $name . '</td><td>' . $symbol . '</td><td align="right">' . $price0 . '</td><td align="right"><font color="'
-					. $color . '">' . $dollarchange . '</font></td><td align="right"><font color="' . $color . '">' . $percentchange
-					. '</font></td><td align="center">' . $date . '</td><td align="center">' . $time . '</td></tr>';
+				$data[] = array
+				(
+					'symbol'	=> $quotes[$i]['symbol'],
+					'name'		=> $quotes[$i]['name'],
+					'price0'	=> $quotes[$i]['price0'],
+					'price1'	=> $quotes[$i]['price1'],
+					'price2'	=> $quotes[$i]['price2'],
+					'dollarchange'	=> $quotes[$i]['dchange'],
+					'percentchange'	=> $quotes[$i]['pchange'],
+					'date'			=> $quotes[$i]['date'],
+					'time'			=> $quotes[$i]['time'],
+					'volume'		=> $quotes[$i]['volume'],
+					'color'			=> ($quotes[$i]['dchange'] < 0?'red':'green')
+				);
 			}
 
-			$return_html .= '</table></td></tr></table>';
-			return $return_html;
+			//_debug_array($data);
+
+			$values['extrabox'] = array
+			(
+				'lang_name'		=> lang('Name'),
+				'lang_symbol'	=> lang('Symbol'),
+				'lang_price'	=> lang('Price'),
+				'lang_change'	=> lang('Change'),
+				'lang_date'		=> lang('Date'),
+				'lang_time'		=> lang('Time'),
+				'values'		=> $data
+			);
+			return $values;
 		}
 
 		function return_quotes()
