@@ -129,7 +129,7 @@
     $pos = 0;
     $sum = 0;
     $phpgw->db->query("SELECT ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae) as aes,"
-		. "phpgw_p_hours.remark,phpgw_p_hours.billperae,phpgw_p_hours.billperae*"
+		. "phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,phpgw_p_hours.billperae*"
 		. "(ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae)) as sumpos,"
 		. "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_invoicepos "
 		. "WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='$invoice_id' "
@@ -158,9 +158,9 @@
     $t->set_var('billperae',$phpgw->db->f("billperae"));
     $t->set_var('sumperpos',$phpgw->db->f("sumpos"));
     $sum += $phpgw->db->f("sumpos");
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
-    if (! $remark) { $remark  = '&nbsp;'; }
-    $t->set_var('hours_remark',$remark);
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));                                                                                                                               
+    if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
+    $t->set_var('hours_descr',$hours_descr);
     
     $t->parse('list','invoicepos_list',True);
     }

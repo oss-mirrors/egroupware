@@ -31,7 +31,7 @@
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
     <tr bgcolor="{th_bg}">
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
-      <td width="20%" bgcolor="{th_bg}" align=center>{sort_remark}</td>
+      <td width="20%" bgcolor="{th_bg}" align=center>{sort_hours_descr}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_start_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
@@ -44,7 +44,7 @@
 
       <tr bgcolor="{tr_color}">
         <td>{activity}</td>
-        <td>{remark}</td>
+        <td>{hours_descr}</td>
         <td align=center>{status}</td>
         <td align=center>{start_date}</td>
         <td align=center>{end_date}</td>

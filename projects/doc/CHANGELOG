@@ -29,3 +29,4 @@
 --- version 0.8.4preX ---
 
 03/01/2001: start update to use the phpgw_prefix, acl, new functions ...
+03/20/2001: update hours, added new field hours_descr to phpgw_p_hours

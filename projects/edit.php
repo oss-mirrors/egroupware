@@ -131,8 +131,8 @@
                   . "<option value=\"archiv\"".$stat_sel[2].">" . lang('Archiv') . "</option>\n";
      $t->set_var("status_list",$status_list);
 
-    $t->set_var("lang_budget",lang("Budget"));
-    $t->set_var("budget",$phpgw->db->f("budget"));
+    $t->set_var('lang_budget',lang('Budget'));
+    $t->set_var('budget',$phpgw->db->f("budget"));
     $t->set_var('lang_start_date',lang('Start date'));
     $t->set_var('lang_end_date',lang('Date due'));
 
@@ -166,9 +166,9 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
 
-     $t->set_var("lang_coordinator",lang("Coordinator"));
+     $t->set_var('lang_coordinator',lang('Coordinator'));
      
-     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
+/*     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
         $coordinator_list .= "<option value=\"" . $db2->f("account_id") . "\"";
@@ -178,12 +178,24 @@
                     . $phpgw->common->display_fullname($db2->f("account_id"),
                       $db2->f("account_firstname"),
                       $db2->f("account_lastname")) . "</option>";
-     }
-     $t->set_var("coordinator_list",$coordinator_list);  
+     }  */
+
+    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+        while (list($null,$account) = each($employees)) {
+            $coordinator_list .= "<option value=\"" . $account['account_id'] . "\"";
+            if($account['account_id']==$phpgw->db->f("coordinator"))
+            $coordinator_list .= " selected";
+            $coordinator_list .= ">"
+                    . $phpgw->common->display_fullname($account['account_id'],
+                      $account['account_firstname'],
+                      $account['account_lastname']) . "</option>";
+    }
+
+    $t->set_var('coordinator_list',$coordinator_list);  
 
 // customer 
-    $t->set_var("lang_select",lang("Select per button !"));
-    $t->set_var("lang_customer",lang("Customer"));
+    $t->set_var('lang_select',lang('Select per button !'));
+    $t->set_var('lang_customer',lang('Customer'));
 
     $d = CreateObject('phpgwapi.contacts');
     $abid = $phpgw->db->f("customer");
@@ -219,8 +231,8 @@
                     . "</option>";
     }
     
-    $t->set_var("lang_descr",lang("Description"));
-    $t->set_var("ba_activities_list",$ba_activities_list);  
+    $t->set_var('lang_descr',lang('Description'));
+    $t->set_var('ba_activities_list',$ba_activities_list);  
 
 // activities billable
      $t->set_var("lang_billable_activities",lang("Billable activities"));
@@ -238,7 +250,7 @@
                     . $phpgw->strip_html($db2->f("descr")) . " " . $currency . " " . $db2->f("billperae")
                     . " " . lang("per workunit") . " " . "</option>";
      }
-     $t->set_var("bill_activities_list",$bill_activities_list);  
+     $t->set_var('bill_activities_list',$bill_activities_list);  
 
 /*    $t->set_var("lang_access_type",lang("Access type"));   
     $access_list = "<option value=\"private\"";
@@ -273,13 +285,13 @@
     
     $t->set_var("group_list",$group_list); */
 
-    $t->set_var("lang_edit",lang("Edit"));
-    $t->set_var("lang_delete",lang("Delete"));
+    $t->set_var('lang_edit',lang('Edit'));
+    $t->set_var('lang_delete',lang('Delete'));
     
-    $t->set_var("edithandle","");
-    $t->set_var("addhandle","");
-    $t->pparse("out","projects_edit");
-    $t->pparse("edithandle","edit");
+    $t->set_var('edithandle','');
+    $t->set_var('addhandle','');
+    $t->pparse('out','projects_edit');
+    $t->pparse('edithandle','edit');
 
     $phpgw->common->phpgw_footer();
 ?>

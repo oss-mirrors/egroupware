@@ -104,7 +104,7 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td><font face="{font}">{hours_remark}</font></td>
+        <td><font face="{font}">{hours_descr}</font></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>

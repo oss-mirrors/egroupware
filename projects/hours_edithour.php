@@ -38,12 +38,13 @@
     $errorcount = 0;
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); }
     else {
-       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !') . " : " . "$smonth - $sday - $syear"; }
+       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid work date !') . " : " . "$smonth - $sday - $syear"; }
     }
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); }
     else {
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang('You have entered an invalid end date !') . " : " . "$emonth - $eday - $eyear"; }
     }
+
 
     $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
     $phpgw->db->next_record();
@@ -57,8 +58,10 @@
     if (! $error) {
     $ae_minutes=$hours*60+$minutes;
     $remark = addslashes($remark);
+    $hours_descr = addslashes($hours_descr);
 
-    $phpgw->db->query("update phpgw_p_hours set project_id='$project',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',remark='$remark',"
+    $phpgw->db->query("update phpgw_p_hours set project_id='$project',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',"
+		    . "hours_descr='$hours_descr',remark='$remark',"
 		    . "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
       }
     }
@@ -83,9 +86,14 @@
     $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var('lang_project',lang('Project'));
     $t->set_var('lang_activity',lang('Activity'));
+    $t->set_var('lang_work_date',lang('Work date'));
     $t->set_var('lang_start_date',lang('Start date'));
-    $t->set_var('lang_end_date',lang('Date due'));
+    $t->set_var('lang_end_date',lang('End date'));
+    $t->set_var('lang_work_time',lang('Work time'));
+    $t->set_var('lang_start_time',lang('Start time'));
+    $t->set_var('lang_end_time',lang('End time'));
     $t->set_var('lang_remark',lang('Remark'));
+    $t->set_var('lang_descr',lang('Short description'));
     $t->set_var('lang_time',lang('Time')); 
     $t->set_var('lang_employee',lang('Employee'));
     $t->set_var('lang_minperae',lang('Minutes per workunit'));
@@ -100,20 +108,6 @@
 
     $project = $phpgw->db->f("project_id");
 
-    $t->set_var('project_list',select_project_list($project));
-
-    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$project' "
-		. "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id");
-	while ($db2->next_record()) {
-        $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\"";
-        if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
-            $activity_list .= " selected";
-        $activity_list .= ">"
-          . $phpgw->strip_html($db2->f("descr")) . "</option>";
-	}
-    
-    $t->set_var('activity_list',$activity_list);
-
     if ($phpgw->db->f("status")=="open"): 
          $stat_sel[0]=" selected";
     elseif ($phpgw->db->f("status")=="done"):
@@ -127,7 +121,6 @@
 
     $sm = CreateObject('phpgwapi.sbox');
     $sdate = $phpgw->db->f("start_date");
-    $edate = $phpgw->db->f("end_date");
 
     if (!$sdate) {
         $smonth = date('m',time());
@@ -144,7 +137,7 @@
 
     if (!$edate) {
         $emonth = 0;
-        $eday = 0; 
+        $eday = 0;
         $eyear = 0;
         }
     else {
@@ -155,14 +148,22 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
 
-    $remark  = $phpgw->strip_html($phpgw->db->f("remark"));
-    if (! $remark)  $remark  = "&nbsp;";
-    $t->set_var('remark',$remark);
+    $t->set_var('st_hours','');
+    $t->set_var('st_minutes','');
+
+    $t->set_var('et_hours','');
+    $t->set_var('et_minutes','');
+
+    $t->set_var('remark',$phpgw->strip_html($phpgw->db->f("remark")));
+    $t->set_var('hours_descr',$phpgw->strip_html($phpgw->db->f("hours_descr")));
 
     $t->set_var('hours',floor($phpgw->db->f("minutes")/60));
     $t->set_var('minutes',($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
 
-    $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
+    $t->set_var('minperae',$phpgw->db->f("minperae"));
+    $t->set_var('billperae',$phpgw->db->f("billperae"));
+
+/*    $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
         $employee_list .= "<option value=\"" . $db2->f("account_id") . "\"";
@@ -172,11 +173,34 @@
                     . $phpgw->common->display_fullname($db2->f("account_id"),
                       $db2->f("account_firstname"),
                       $db2->f("account_lastname")) . "</option>";
-     }
-    $t->set_var('employee_list',$employee_list);  
+     } */
 
-    $t->set_var('minperae',$phpgw->db->f("minperae"));
-    $t->set_var('billperae',$phpgw->db->f("billperae"));
+    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+	while (list($null,$account) = each($employees)) {
+	    $employee_list .= "<option value=\"" . $account['account_id'] . "\"";
+    	    if($account['account_id']==$phpgw->db->f("employee"))
+            $employee_list .= " selected";
+	    $employee_list .= ">"
+                    . $phpgw->common->display_fullname($account['account_id'],
+                      $account['account_firstname'],
+                      $account['account_lastname']) . "</option>";
+    }
+
+    $t->set_var('employee_list',$employee_list);
+
+    $t->set_var('project_list',select_project_list($project));
+
+    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$project' "
+                . "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id");
+        while ($db2->next_record()) {
+        $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\"";
+        if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
+            $activity_list .= " selected";
+        $activity_list .= ">"
+          . $phpgw->strip_html($db2->f("descr")) . "</option>";
+        }
+
+    $t->set_var('activity_list',$activity_list);
 
 /*    print "Referrer".$HTTP_REFERER."<br>";
     $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . 'project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"

@@ -81,7 +81,7 @@
 
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
     $t->set_var('sort_activity',lang('Activity'));
-    $t->set_var('sort_remark',lang('Remark'));
+    $t->set_var('sort_hours_descr',lang('Job'));
     $t->set_var('sort_status',lang('Status'));
     $t->set_var('sort_end_date',lang('Date due'));
     $t->set_var('sort_aes',lang('Workunits'));
@@ -123,7 +123,7 @@
     $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
@@ -151,11 +151,11 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
-    if (! $activity)  $activity  = "&nbsp;";    
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));
+    if (! $activity)  $activity  = "&nbsp;";
     
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
-    if (! $remark)  $remark  = "&nbsp;";
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
     $status = $phpgw->db->f("status");
     $statusout = lang($status);
@@ -181,12 +181,12 @@
 
 // ------------------- template declaration for list records ----------------------------------
 
-    $t->set_var(array("select" => $select,
-		      "activity" => $activity,
-                      "remark" => $remark,
-                      "status" => $statusout,
-    		      "end_date" => $end_dateout,
-      		      "aes" => $aes));
+    $t->set_var(array('select' => $select,
+		      'activity' => $activity,
+                      'hours_descr' => $hours_descr,
+                      'status' => $statusout,
+    		      'end_date' => $end_dateout,
+      		      'aes' => $aes));
 
     if ($phpgw->db->f("status") == 'billed') {
     $t->set_var('edithour','');
@@ -205,7 +205,7 @@
     $t->set_var('lang_aes',lang('Sum workunits'));
 // ----------------------------------- na_list -------------------------------------------------
     if($delivery_id) {
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
@@ -219,8 +219,8 @@
     $activity = $phpgw->strip_html($phpgw->db->f("descr"));
     if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));
-    if (! $remark)  $remark  = "&nbsp;";
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
   
     $status = $phpgw->db->f("status");
     $statusout = lang($status);
@@ -246,12 +246,12 @@
 
 // ---------------- template declaration for list records -------------------------
   
-    $t->set_var(array("select" => $select,
-  		        "activity" => $activity,
-                        "remark" => $remark,
-                        "status" => $statusout,
-      		        "end_date" => $end_dateout,
-        		"aes" => $aes));
+    $t->set_var(array('select' => $select,
+  		        'activity' => $activity,
+                        'hours_descr' => $hours_descr,
+                        'status' => $statusout,
+      		        'end_date' => $end_dateout,
+        		'aes' => $aes));
     if ($phpgw->db->f("status") == 'billed') {
     $t->set_var('edithour','');
     $t->set_var('lang_edit_entry','&nbsp;');

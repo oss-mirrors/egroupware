@@ -55,55 +55,77 @@
     $ae_minutes = $hours*60+$minutes;
 //    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
 
-    $phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,"
-               . "remark,minutes,status,minperae,billperae,employee) VALUES "
-               . "('$project','$activity','" . time() ."','$sdate','$edate','$remark',"
-               . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
+    $phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,status,minperae,billperae,employee) VALUES "
+               . "('$filter','$activity','" . time() . "','$sdate','$edate','$hours_descr','$remark','$ae_minutes','$status','$minperae','$billperae','$employee')");
 
       } 
     }
 
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
     if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Hours has been added !')); }
-    if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
+    if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
     $t->set_var('error','');
-    $t->set_var('currency',$currency);
     }
     else {
     $t->set_var('error',lang('Please select your currency in preferences !'));
     }
 
     $t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));
-    $t->set_var('lang_action',lang('Add project hours'));
-	
-    $hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
-        		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
-        		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
-        		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
-        		. "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
-        		. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n"
-        		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
-        		
+    $t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php',"filter=$filter&sort=$sort&order=$order&query=$query&start=$start"));
+//    $t->set_var('project_action',$phpgw->link('/projects/hours_addhour.php'));
     $t->set_var('hidden_vars',$hidden_vars);
-
-    if ($filter) { $t->set_var('project_list',select_project_list($filter)); }
-    else { $t->set_var('project_list',select_project_list($project)); }
-    $t->set_var('lang_project',lang('Project'));
-
+    $t->set_var('lang_action',lang('Add project hours'));
     $t->set_var('lang_activity',lang('Activity'));
+    $t->set_var('lang_project',lang('Project'));
+    $t->set_var('lang_descr',lang('Short description'));
+    $t->set_var('lang_remark',lang('Remark'));
+    $t->set_var('lang_time',lang('Time'));
+    $t->set_var('lang_status',lang('Status'));
+    $t->set_var('lang_employee',lang('Employee'));
+    $t->set_var('lang_work_date',lang('Work date'));
+    $t->set_var('lang_start_date',lang('Start date'));
+    $t->set_var('lang_end_date',lang('End date'));
+    $t->set_var('lang_work_time',lang('Work time'));
+    $t->set_var('lang_start_time',lang('Start time'));
+    $t->set_var('lang_end_time',lang('End time'));
 
-    $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities"
-                        . " WHERE project_id ='$project_id' AND phpgw_p_projectactivities.activity_id="
-                        . "phpgw_p_activities.id order by descr asc");
+    if ($submit) {
+    $t->set_var('lang_minperae',lang('Minutes per workunit'));
+    $t->set_var('lang_billperae',lang('Bill per workunit'));
+    $t->set_var('minperae',$minperae);
+    $t->set_var('billperae',$billperae);
+    $t->set_var('currency',$currency);
+    }
+    else {
+    $t->set_var('lang_minperae','');
+    $t->set_var('lang_billperae','');
+    $t->set_var('minperae','');
+    $t->set_var('billperae','');
+    $t->set_var('currency','');
+    }
+
+    $t->set_var('lang_done',lang('Done'));
+    $t->set_var('lang_add',lang('Add'));
+    $t->set_var('lang_reset',lang('Clear Form'));
+//    $t->set_var('lang_submit',lang('Submit'));
+    $t->set_var('lang_select_project',lang('Select project'));
+
+    if ($filter) {
+    $project_select[$filter] = " selected";
+    $t->set_var('project_list',select_project_list($filter));
+
+    $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
+		    . "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc");
         while ($phpgw->db->next_record()) {
            $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
                     . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
         }
 
     $t->set_var('activity_list',$activity_list);
+    }
 
     $sm = CreateObject('phpgwapi.sbox');
 
@@ -119,7 +141,6 @@
         }
 
     $t->set_var('start_date_select',$phpgw->common->dateformatorder($sm->getYears('syear',$syear),$sm->getMonthText('smonth',$smonth),$sm->getDays('sday',$sday)));
-    $t->set_var('lang_start_date',lang('Start_date'));
 
     if (!$edate) {
         $emonth = 0;
@@ -133,25 +154,25 @@
         }
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
-    $t->set_var('lang_end_date',lang('Date due'));
 
-    $t->set_var('lang_remark',lang('Remark'));
+    $t->set_var('st_hours','');
+    $t->set_var('st_minutes','');
+
+    $t->set_var('et_hours','');
+    $t->set_var('et_minutes','');
+
     $t->set_var('remark',$remark);
+    $t->set_var('hours_descr',$hours_descr);
 
-    $t->set_var('lang_time',lang("Time"));
     $t->set_var('hours',$hours);
     $t->set_var('minutes',$minutes);
 
-    $t->set_var('lang_status',lang('Status'));
-    
     $status_list = "<option value=\"done\" selected>" . lang('Done') . "</option>\n"
            		. "<option value=\"open\">" . lang('Open') . "</option>\n";
 
-    $t->set_var("status_list",$status_list);
-
-    $t->set_var('lang_employee',lang('Employee'));
+    $t->set_var('status_list',$status_list);
     
-    $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
+/*    $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
         while ($phpgw->db->next_record()) {
            $employee_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
@@ -161,21 +182,24 @@
                     . $phpgw->common->display_fullname($phpgw->db->f("account_id"),                                                                                                          
                       $phpgw->db->f("account_firstname"),                                                                                                                                    
                       $phpgw->db->f("account_lastname")) . "</option>";
-        }
+        } */
         
+    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+        while (list($null,$account) = each($employees)) {
+            $employee_list .= "<option value=\"" . $account['account_id'] . "\"";
+            if($account['account_id']==$phpgw_info["user"]["account_id"])
+            $employee_list .= " selected";
+            $employee_list .= ">"
+                    . $phpgw->common->display_fullname($account['account_id'],
+                      $account['account_firstname'],
+                      $account['account_lastname']) . "</option>";
+    }
+
     $t->set_var('employee_list',$employee_list);
 
-    $t->set_var('lang_minperae',lang('Minutes per workunit'));
     $t->set_var('minperae',$minperae);
-    $t->set_var('lang_billperae',lang("Bill per workunit"));
     $t->set_var('billperae',$billperae);
 
-    $t->set_var('lang_done',lang('Done'));    
-    $t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php',"filter=$filter&sort=$sort&order=$order&query=$query&start=$start"));
-
-    $t->set_var('lang_add',lang('Add'));
-    $t->set_var('lang_reset',lang('Clear Form'));
-        
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');
     $t->pparse('out','hours_add');

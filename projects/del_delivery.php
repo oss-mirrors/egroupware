@@ -83,16 +83,16 @@
 // --------------------------- list header variable template-declarations ----------------------
   
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-    $t->set_var('sort_activity',lang("Activity"));
-    $t->set_var('sort_remark',lang("Remark"));
-    $t->set_var('sort_status',lang("Status"));
-    $t->set_var('sort_end_date',lang("Date due"));
-    $t->set_var('sort_aes',lang("Workunits"));
-    $t->set_var('h_lang_select',lang("Select"));
-    $t->set_var('h_lang_edithour',lang("Edit hours"));
-    $t->set_var('lang_delivery',lang("Create delivery"));
+    $t->set_var('sort_activity',lang('Activity'));
+    $t->set_var('sort_hours_descr',lang('Job'));
+    $t->set_var('sort_status',lang('Status'));
+    $t->set_var('sort_start_date',lang('Date'));
+    $t->set_var('sort_aes',lang('Workunits'));
+    $t->set_var('h_lang_select',lang('Select'));
+    $t->set_var('h_lang_edithour',lang('Edit hours'));
+    $t->set_var('lang_delivery',lang('Create delivery'));
     $t->set_var('actionurl',$phpgw->link('/projects/del_delivery.php'));
-    $t->set_var('lang_print_delivery',lang("Print delivery"));
+    $t->set_var('lang_print_delivery',lang('Print delivery'));
 
     if (!$delivery_id) { $t->set_var('print_delivery',$phpgw->link('/projects/fail.php')); }
     else { $t->set_var(print_delivery,$phpgw->link('/projects/del_deliveryshow.php',"delivery_id=$delivery_id")); }
@@ -133,8 +133,8 @@
 
     if(!$delivery_id) {
     $date=0;
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
-		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
+		    . "phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
 		    . "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
@@ -144,8 +144,8 @@
     $phpgw->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
-		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
+		    . "phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
 		    . "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
 		    . "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
@@ -173,27 +173,25 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
-    if (! $activity)  $activity  = "&nbsp;";    
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));
+    if (! $activity)  $activity  = "&nbsp;";
     
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
-    if (! $remark)  $remark  = "&nbsp;";
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
     $status = $phpgw->db->f("status");
     $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
-    $end_date = $phpgw->db->f("end_date");
-    if ($end_date == 0) { $end_dateout = "&nbsp;"; }
+    $start_date = $phpgw->db->f("start_date");
+    if ($start_date == 0) { $start_dateout = "&nbsp;"; }
     else {
 	$month = $phpgw->common->show_date(time(),"n");
 	$day   = $phpgw->common->show_date(time(),"d");
 	$year  = $phpgw->common->show_date(time(),"Y");
 
-	$end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-	if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
-        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
+	$start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
     }
     
     if ($phpgw->db->f("minperae") != 0) {
@@ -205,9 +203,9 @@
 
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
-                      "remark" => $remark,
+                      "hours_descr" => $hours_descr,
                       "status" => $statusout,
-    		      "end_date" => $end_dateout,
+    		      "start_date" => $start_dateout,
       		      "aes" => $aes));
 
     if ($phpgw->db->f("status") == 'billed') {

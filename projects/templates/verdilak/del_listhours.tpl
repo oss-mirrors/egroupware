@@ -35,9 +35,9 @@
     <tr bgcolor="{th_bg}">
       <td width="3%" bgcolor="{th_bg}" align=center>{h_lang_select}</td>
       <td width="25%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
-      <td width="25%" bgcolor="{th_bg}" align=center>{sort_remark}</td>
+      <td width="25%" bgcolor="{th_bg}" align=center>{sort_hours_descr}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
-      <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{sort_start_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{h_lang_edithour}</td>
     </tr>
@@ -47,9 +47,9 @@
       <tr bgcolor="{tr_color}">
         <td align=center>{select}</td>
         <td>{activity}</td>
-        <td>{remark}</td>
+        <td>{hours_descr}</td>
         <td align=center>{status}</td>
-        <td align=center>{end_date}</td>
+        <td align=center>{start_date}</td>
         <td align=right>{aes}</td>
         <td align=center><a href="{edithour}">{lang_edit_entry}</a></td>
       </tr>

@@ -23,6 +23,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please enter a De
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('You have entered an invalid delivery date !','projects','en','You have entered an invalid delivery date !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery has been created !','projects','en','Delivery has been created !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Activities','projects','en','Activities');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job','projects','en','Job');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Jobs','projects','en','Jobs');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job date','projects','en','Job date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job description','projects','en','Job description');
@@ -53,8 +54,9 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Title','projects'
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('net','projects','en','net');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice','projects','en','Invoice');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('User statistics','projects','en','User statistics');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Date due','projects','en','Date due');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('End date','projects','en','End date');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Date due','projects','en','Date due');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Work date','projects','en','Work date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Statistics','projects','en','Statistics');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Position','projects','en','Position');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project statistic','projects','en','Project statistic');
@@ -81,12 +83,15 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project list','pr
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit project','projects','en','Edit project');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Add project hours','projects','en','Add project hours');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Status','projects','en','Status');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Short description','projects','en','Short description');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Nonactive','projects','en','Nonactive');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Description','projects','en','Description');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Template','projects','en','Template');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark','projects','en','Job [ Remark ]');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark','projects','en','Remark');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark required','projects','en','Remark required');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Time','projects','en','Time');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Start time','projects','en','Start time');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('End time','projects','en','End time');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Archiv','projects','en','Archiv');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Done','projects','en','Done');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Open','projects','en','Open');

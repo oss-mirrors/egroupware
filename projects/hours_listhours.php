@@ -73,7 +73,7 @@
 
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
     $t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_activities.descr',$order,'/projects/hours_listhours.php',lang('Activity')));
-    $t->set_var('sort_remark',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_hours.remark',$order,'/projects/hours_listhours.php',lang('Remark')));
+    $t->set_var('sort_hours_descr',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_hours.hours_descr',$order,'/projects/hours_listhours.php',lang('Job')));
     $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/hours_listhours.php',lang("Status")));
     $t->set_var('sort_start_date',$phpgw->nextmatchs->show_sort_order($sort,'start_date',$order,'/projects/hours_listhours.php',lang('Start date')));
     $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/hours_listhours.php',lang('Date due')));
@@ -88,30 +88,31 @@
     $project_select[$filter] = " selected";
     $t->set_var('project_list',select_project_list($filter));
     $t->set_var('lang_select_project',lang('Select project'));
-    $t->set_var('add_action',$phpgw->link('/projects/hours_addhour.php',"project_id=$filter"));
+    $t->set_var('add_action',$phpgw->link('/projects/hours_addhour.php',"filter=$filter"));
 
   // -------------- end header declaration -----------------
 
     if ($query) {
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 		    . "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes FROM phpgw_p_hours "
-		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.project_id='$filter' AND $filtermethod AND "
-		    . "$querymethod $ordermethod limit $limit");
+		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.project_id='$filter' "
+		    . "AND $filtermethod AND $querymethod $ordermethod limit $limit");
     } 
     else {
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 		    . "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes FROM phpgw_p_hours "
-		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.project_id='$filter' AND $filtermethod $ordermethod limit $limit");
+		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.project_id='$filter' "
+		    . "AND $filtermethod $ordermethod limit $limit");
     }
 
     while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     
     $activity  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                             
-    if (! $activity)  $activity  = "&nbsp;";                                                                                                                                                
+    if (! $activity)  $activity  = '&nbsp;';                                                                                                                                                
 
-    $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
-    if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
+    $hours_descr  = $phpgw->strip_html($phpgw->db->f("hours_descr"));                                                                                                                             
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';                                                                                                                                                
 
     $status = $phpgw->db->f("status");
     $statusout = lang($status);
@@ -151,7 +152,7 @@
 // ---------------- template declaration for list records ------------------------------
 
     $t->set_var(array('activity' =>$activity,
-                      'remark' => $remark,
+                      'hours_descr' => $hours_descr,
                       'status' => $statusout,
       		      'start_date' => $start_dateout,
 			'end_date' => $end_dateout,

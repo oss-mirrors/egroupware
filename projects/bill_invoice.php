@@ -96,9 +96,9 @@
 
     $t->set_var(currency,$currency);
     $t->set_var(sort_activity,lang("Activity"));
-    $t->set_var(sort_remark,lang("Remark"));
-    $t->set_var(sort_status,lang("Status"));
-    $t->set_var(sort_end_date,lang("Date due"));
+    $t->set_var(sort_hours_descr,lang('Job'));
+    $t->set_var(sort_status,lang('Status'));
+    $t->set_var(sort_start_date,lang('Work date'));
     $t->set_var(sort_aes,lang("Workunits"));
     $t->set_var(sort_billperae,lang("Bill per workunit"));
     $t->set_var(sort_sum,lang("Sum"));
@@ -154,8 +154,8 @@
 
   if(!$invoice_id) {
     $date=0; 
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status, "
-		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
+		    . "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_projectactivities " 
 		    . "ON phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE phpgw_p_hours.status='done' AND "
 		    . "phpgw_p_hours.project_id='$project_id' AND phpgw_p_projectactivities.project_id='$project_id' "
@@ -165,7 +165,7 @@
     $phpgw->db->query("SELECT date FROM phpgw_p_invoice WHERE id=$invoice_id");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status, "
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
 		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_invoicepos "
 		    . "ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id "
@@ -193,11 +193,11 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
-    if (! $activity)  $activity  = "&nbsp;";    
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));
+    if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
-    if (! $remark)  $remark  = "&nbsp;";    
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
     $status = $phpgw->db->f("status");
     $statusout = lang($status);
@@ -225,14 +225,14 @@
 
 // -------------------- declaration for list records ---------------------------
 
-    $t->set_var(array("select" => $select,
-		      "activity" => $activity,
-                      "remark" => $remark,
-                      "status" => $statusout,
-    		      "end_date" => $end_dateout,
-      		      "aes" => $aes,
-      		      "billperae" => $phpgw->db->f("billperae"),
-      		      "sum" => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
+    $t->set_var(array('select' => $select,
+		      'activity' => $activity,
+                      'hours_descr' => $hours_descr,
+                      'status' => $statusout,
+    		      'end_date' => $end_dateout,
+      		      'aes' => $aes,
+      		      'billperae' => $phpgw->db->f("billperae"),
+      		      'sum' => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
 
     if ($phpgw->db->f("status") == 'billed') {
     $t->set_var('edithour','');

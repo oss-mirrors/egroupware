@@ -109,7 +109,7 @@
 
     $pos = 0;
 
-    $phpgw->db->query("SELECT phpgw_p_hours.remark,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"                                                                                                        
+    $phpgw->db->query("SELECT phpgw_p_hours.hours_descr,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"                                                                                                        
 		    . "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_deliverypos "                                                                                          
 		    . "WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='$delivery_id' "                                                                               
 		    . "AND phpgw_p_hours.activity_id=phpgw_p_activities.id");
@@ -139,9 +139,9 @@
     if (! $act_descr) { $act_descr  = '&nbsp;'; }                                                                                                                                       
     $t->set_var('act_descr',$act_descr);
     $t->set_var('billperae',$phpgw->db->f("billperae"));
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
-    if (! $remark) { $remark  = '&nbsp;'; }                                                                                                                                             
-    $t->set_var('hours_remark',$remark);
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));                                                                                                                           
+    if (! $hours_descr) { $hours_descr  = '&nbsp;'; }                                                                                                                                             
+    $t->set_var('hours_descr',$hours_descr);
     $t->parse('list','deliverypos_list',True);
     }
    

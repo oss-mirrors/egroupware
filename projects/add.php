@@ -153,8 +153,8 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
     
-    $t->set_var("lang_coordinator",lang("Coordinator"));
-    $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
+    $t->set_var('lang_coordinator',lang('Coordinator'));
+/*    $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname,account_id asc");
 	while ($phpgw->db->next_record()) {
 	    $coordinator_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
@@ -164,7 +164,18 @@
 		    . $phpgw->common->display_fullname($phpgw->db->f("account_id"),
 		    $phpgw->db->f("account_firstname"),
 		    $phpgw->db->f("account_lastname")) . "</option>";
-	}
+	} */
+
+    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+        while (list($null,$account) = each($employees)) {
+            $coordinator_list .= "<option value=\"" . $account['account_id'] . "\"";
+            if($account['account_id']==$phpgw_info["user"]["account_id"])
+            $coordinator_list .= " selected";
+            $coordinator_list .= ">"
+                    . $phpgw->common->display_fullname($account['account_id'],
+                      $account['account_firstname'],
+                      $account['account_lastname']) . "</option>";
+    }
 
     $t->set_var('coordinator_list',$coordinator_list);
 

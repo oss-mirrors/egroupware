@@ -89,18 +89,18 @@
     $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
 
     $t->set_var(currency,$currency);
-    $t->set_var(sort_activity,lang("Activity"));
-    $t->set_var(sort_remark,lang("Remark"));
-    $t->set_var(sort_status,lang("Status"));
-    $t->set_var(sort_end_date,lang("Date due"));
-    $t->set_var(sort_aes,lang("Workunits"));
-    $t->set_var(sort_billperae,lang("Bill per workunit"));
-    $t->set_var(sort_sum,lang("Sum"));
-    $t->set_var(h_lang_select,lang("Select"));
+    $t->set_var(sort_activity,lang('Activity'));
+    $t->set_var(sort_hours_descr,lang('Job'));
+    $t->set_var(sort_status,lang('Status'));
+    $t->set_var(sort_end_date,lang('Date due'));
+    $t->set_var(sort_aes,lang('Workunits'));
+    $t->set_var(sort_billperae,lang('Bill per workunit'));
+    $t->set_var(sort_sum,lang('Sum'));
+    $t->set_var(h_lang_select,lang('Select'));
     $t->set_var(h_lang_edithour,lang('Edit hours'));
-    $t->set_var(lang_invoice,lang("Update invoice"));
-    $t->set_var(actionurl,$phpgw->link("/projects/invoice_update.php"));
-    $t->set_var(lang_print_invoice,lang("Print invoice"));
+    $t->set_var(lang_invoice,lang('Update invoice'));
+    $t->set_var(actionurl,$phpgw->link('/projects/invoice_update.php'));
+    $t->set_var(lang_print_invoice,lang('Print invoice'));
   
     if (!$invoice_id) { $t->set_var(print_invoice,$phpgw->link("/projects/fail.php")); }
     else { $t->set_var(print_invoice,$phpgw->link("/projects/bill_invoiceshow.php","invoice_id=$invoice_id")); }
@@ -136,7 +136,7 @@
     $phpgw->db->query("SELECT date FROM phpgw_p_invoice WHERE id=$invoice_id");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
-    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 		    . "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_invoicepos "
 		    . "ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE phpgw_p_hours.status='billed' AND "
@@ -164,11 +164,11 @@
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
-    if (! $activity)  $activity  = "&nbsp;";    
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));
+    if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
-    if (! $remark)  $remark  = "&nbsp;";    
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
@@ -194,14 +194,14 @@
 
 // -------------------- declaration for list records ---------------------------
 
-    $t->set_var(array("select" => $select,
-		      "activity" => $activity,
-                      "remark" => $remark,
-                      "status" => $status,
-    		      "end_date" => $end_dateout,
-      		      "aes" => $aes,
-      		      "billperae" => $phpgw->db->f("billperae"),
-      		      "sum" => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
+    $t->set_var(array('select' => $select,
+		      'activity' => $activity,
+                      'hours_descr' => $hours_descr,
+                      'status' => $status,
+    		      'end_date' => $end_dateout,
+      		      'aes' => $aes,
+      		      'billperae' => $phpgw->db->f("billperae"),
+      		      'sum' => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
 
     $t->set_var('edithour','');
     $t->set_var('lang_edit_entry','&nbsp;');
@@ -217,7 +217,7 @@
 // ----------------------------- na_list ------------------------------------
 
     if($invoice_id) {
-	$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+	$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 			. "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 			. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_projectactivities "
 			. "ON phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE phpgw_p_hours.status='done' AND "
@@ -231,8 +231,8 @@
     $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
     if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
-    if (! $remark)  $remark  = "&nbsp;";      
+    $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
+    if (! $hours_descr)  $hours_descr  = '&nbsp;';
   
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
@@ -259,14 +259,14 @@
 
 // ------------------------- template declaration for list records ----------------------------
   
-      $t->set_var(array("select" => $select,
-  		        "activity" => $activity,
-                        "remark" => $remark,
-                        "status" => $status,
-      		        "end_date" => $end_dateout,
-        		"aes" => $aes,
-        		"billperae" => $phpgw->db->f("billperae"),
-        		"sum" => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
+      $t->set_var(array('select' => $select,
+  		        'activity' => $activity,
+                        'hours_descr' => $hours_descr,
+                        'status' => $status,
+      		        'end_date' => $end_dateout,
+        		'aes' => $aes,
+        		'billperae' => $phpgw->db->f("billperae"),
+        		'sum' => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
 
     $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
                                          . "&invoice_id=$invoice_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
