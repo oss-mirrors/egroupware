@@ -3,8 +3,8 @@
   * eGroupWare - File Center                                                  *
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>                *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
+  *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   * Description: BO Class for file center                                     *
   * ------------------------------------------------------------------------- *

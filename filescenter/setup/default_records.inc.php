@@ -3,8 +3,8 @@
   * eGroupWare - File manager 2                                               *
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>                *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  - Vinicius Cubas Brand <viniciuscb@think-e.com.br>                       *
+  *  sponsored by Think-e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   * Image data files extracted from Intermesh Group-Office,                   *
   * all rights reserved.                                                      *

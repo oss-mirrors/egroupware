@@ -3,8 +3,7 @@
   * eGroupWare - File Manager                                                 *
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>                *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   * Description: SO Class for file manager                                    *
   * ------------------------------------------------------------------------- *

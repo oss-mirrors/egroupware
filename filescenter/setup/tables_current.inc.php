@@ -4,8 +4,8 @@
   * eGroupWare - File Manager 2                                               *
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>                *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
+  *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   * Description: Tables description for vfs (sql implementation v.2)          *
   * ------------------------------------------------------------------------- *

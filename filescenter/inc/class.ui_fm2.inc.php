@@ -3,8 +3,8 @@
   * eGroupWare - FileCenter                                                   *
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
-  *  - Vinicius Cubas Brand <viniciuscb@users.sourceforge.net>                *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  - Vinicius Cubas Brand <vinicius@think-e.com.br>                         *
+  *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   * Description: UI Class for file center                                     *
   * ------------------------------------------------------------------------- *
