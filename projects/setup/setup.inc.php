@@ -90,4 +90,16 @@
 		 'appname' => 'email',
 		 'versions' => Array('0.9.13','0.9.13')
 	);
+
+	$setup_info['projects']['depends'][] = array
+	(
+		 'appname' => 'emailadmin',
+		 'versions' => Array('0.0.008')
+	);
+
+	$setup_info['projects']['depends'][] = array
+	(
+		 'appname' => 'felamimail',
+		 'versions' => Array('0.9.4')
+	);
 ?>

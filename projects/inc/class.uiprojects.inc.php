@@ -28,7 +28,8 @@
 	// $Source$
 
 	class uiprojects
-	{
+	{           
+	
 		var $action;
 		var $grants;
 		var $start;
@@ -41,6 +42,7 @@
 		var $public_functions = array
 		(
 			'edit_resources'	=> True,
+			'export_project'	=> True,
 			'list_projects'		=> True,
 			'list_projects_home'	=> True,
 			'edit_project'		=> True,
@@ -77,6 +79,88 @@
 				}
 //ndee
 
+		}
+
+		function export_project()
+		{
+			$pro_main	= get_var('pro_main',array('POST','GET'));
+			$export		= get_var('export',array('GET'));
+			
+			if(!preg_match('/^email|pdf$/',$export) || !$pro_main)
+			{
+				$this->list_projects();
+				
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+#			if ($_GET['cat_id'])
+#			{
+#				$this->cat_id = $_GET['cat_id'];
+#			}
+			
+			switch($export)
+			{
+				case 'email':
+			if(get_var('send_email',array('POST')))
+			{
+				$emailTo = get_var('email_to',array('POST'));
+				
+				$this->boprojects->exportProjectEMail($pro_main,$emailTo);
+				
+				$this->list_projects('subs',$pro_main);
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
+															. $this->admin_header_info();
+
+			$this->display_app_header();
+
+			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'export_email.tpl'));
+			$GLOBALS['phpgw']->template->set_block('projects_list_t','project_main_mail');
+
+			$this->set_app_langs();
+
+			if($pro_main)
+			{
+				$main = $this->boprojects->read_single_project($pro_main);
+				$GLOBALS['phpgw']->template->set_var('title_main',$main['title']);
+				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php',
+					'menuaction=projects.uiprojects.view_project&action=mains&project_id='. 
+					$pro_main));
+
+				$GLOBALS['phpgw']->template->set_var('coordinator_main',$main['coordinatorout']);
+				$GLOBALS['phpgw']->template->set_var('number_main',$main['number']);
+				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
+				$GLOBALS['phpgw']->template->set_var('url_main',$main['url']);
+
+				$linkData = array
+				(
+					'menuaction'	=> 'projects.uiprojects.export_project',
+					'pro_main'	=> $pro_main,
+					'export'	=> 'email'
+				);
+				$GLOBALS['phpgw']->template->set_var('url_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			}
+			
+			$GLOBALS['phpgw']->template->pfp('out','project_main_mail');
+					break;
+				case 'pdf':
+					if($pdfData = $this->boprojects->exportProjectPDF($pro_main))
+					{
+						header("Content-Disposition: filename=projectoverview.pdf");
+						#header("Content-Disposition: attachment; filename=example.pdf");
+						header("Content-Type: application/pdf");
+						header('Content-Length: ' . strlen($pdfData['pdfFile']));
+						
+						print $pdfData['pdfFile'];
+					}
+					break;
+				default:
+					$this->list_projects();
+					break;
+			} 
+			
 		}
 
 		function save_sessiondata($action)
@@ -203,6 +287,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_extra_budget',lang('extra budget'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_billable',lang('billable'));
+			$GLOBALS['phpgw']->template->set_var('lang_send',lang('send'));
 		}
 
 		function display_app_header()
@@ -295,12 +380,25 @@
 			return $list;
 		}
 
-		function list_projects()
+		function list_projects($_action=false, $_pro_main=false)
 		{
-			$action		= get_var('action',array('POST','GET'));
-			$pro_main	= get_var('pro_main',array('POST','GET'));
-
-			//echo 'START: ' . $this->start;
+			if($_action)
+			{
+				$action		= $_action;
+			}
+			else
+			{
+				$action		= get_var('action',array('POST','GET'));
+			}
+			
+			if($_pro_main)
+			{
+				$pro_main	= $_pro_main;
+			}
+			else
+			{
+				$pro_main	= get_var('pro_main',array('POST','GET'));
+			}
 
 			if ($_GET['cat_id'])
 			{
@@ -334,8 +432,26 @@
 			{
 				$main = $this->boprojects->read_single_project($pro_main);
 				$GLOBALS['phpgw']->template->set_var('title_main',$main['title']);
-				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action=mains&project_id='
-																						. $pro_main));
+				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php',
+					'menuaction=projects.uiprojects.view_project&action=mains&project_id='. 
+					$pro_main));
+
+				$linkData = array
+				(
+					'menuaction'	=> 'projects.uiprojects.export_project',
+					'pro_main'	=> $pro_main,
+					'export'	=> 'email'
+				);
+				$GLOBALS['phpgw']->template->set_var('url_export_email',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				
+				$linkData = array
+				(
+					'menuaction'	=> 'projects.uiprojects.export_project',
+					'pro_main'	=> $pro_main,
+					'export'	=> 'pdf'
+				);
+				$GLOBALS['phpgw']->template->set_var('url_export_pdf',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				
 				$GLOBALS['phpgw']->template->set_var('coordinator_main',$main['coordinatorout']);
 				$GLOBALS['phpgw']->template->set_var('number_main',$main['number']);
 				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
@@ -471,6 +587,13 @@
 								break;
 							default:			
 								$col_align = 'left';
+								break;
+						}
+						
+						switch($col)
+						{
+							case 'priority':
+								$p[$col] = $this->boprojects->formatted_priority($p[$col]);
 								break;
 						}
 
@@ -1768,16 +1891,18 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_budget',
-				'pro_main'		=> $pro_main,
-				'action'		=> $action
+				'pro_main'	=> $pro_main,
+				'action'	=> $action
 			);
 
 			if($pro_main)
 			{
 				$main = $this->boprojects->read_single_project($pro_main,'budget','mains');
 				$GLOBALS['phpgw']->template->set_var('title_main',$main['title']);
-				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.view_project&action=mains&project_id='
-																						. $pro_main));
+				$GLOBALS['phpgw']->template->set_var('main_url',$GLOBALS['phpgw']->link('/index.php',
+					'menuaction=projects.uiprojects.view_project&action=mains&project_id='.
+					$pro_main));
+					
 				$GLOBALS['phpgw']->template->set_var('coordinator_main',$main['coordinatorout']);
 				$GLOBALS['phpgw']->template->set_var('number_main',$main['number']);
 				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
