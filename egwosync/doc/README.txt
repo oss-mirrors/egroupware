@@ -1,9 +1,9 @@
-|-----------------------------------------------------------------------------|
-|This is the official readme for eGWOSync, a module for synchronizing         |
-|eGroupWare with Microsoft Outlook.                                           |
-|                                                                             |
-|This readme created on July 13th, 2004 by Ian Smith-Heisters                 |
-|-----------------------------------------------------------------------------|
+###############################################################################
+# This is the official readme for eGWOSync, a module for synchronizing
+# eGroupWare with Microsoft Outlook.
+#
+# This readme created on July 16th, 2004 by Ian Smith-Heisters
+###############################################################################
 
 The current eGWOSync version is just functional and not by any means meant to
 be complete or bug free. Email the egroupware-developers list if you are having
@@ -37,13 +37,16 @@ INSTALLATION:
        BasDebugUtils.bas
        BasEGWOSync.bas
        BasUtilities.bas
+       CAutoExporter.bas
        CContactTranslator.cls
        CeGW.cls
        CeGWContacts.cls
+       CFormHelper
        COutlookContacts.cls
        CRegistry.cls
-       frmMain.frm
-       frmMain.frx
+       FrmLogin.frm
+       FrmMain.frm
+       ThisOutlookSession.cls
 
 6. Save the project.
 
@@ -57,8 +60,17 @@ INSTALLATION:
    the XMLRPC server, and possibly other clients as well, but will make
    Outlook able. There will be a more satisfactory fix soon.
 
-8. Go back to Outlook and go to Tools->Macro->Macros, select eGWSynchronize,
-   and click run.
+8. Restart Outlook.
+
+9. Click "Enable Macro" if Outlook gives any cautionary messages about allowing
+   macros.
+
+10. Go back to Outlook and go to Tools->Macro->Macros, select eGWSynchronize,
+    and click run.
+
+11. To use the automatic exporter, just add a contact to your default contacts
+    directory in Outlook. If Outlook warns you that a macro is trying to access
+    your contacts allow the macro to do so for at least a minute.
 
 USING EGWOSYNC:
 

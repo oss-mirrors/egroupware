@@ -10,11 +10,9 @@ Attribute VB_Name = "BasEGWOSync"
 '#################################################################################################
 
 '***********************************************************************************************
-' This is the bad boy that gets the ball rolling.
+' Starts the upload download control for mass exporting and importing
 '***********************************************************************************************
 Sub eGWSynchronize()
-    'load previous settings
-    frmMain.LoadSettings
     'open the GUI
     frmMain.Show
 End Sub

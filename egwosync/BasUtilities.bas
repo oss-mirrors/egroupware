@@ -8,7 +8,8 @@ Attribute VB_Name = "BasUtilities"
 '# for its usage or losses of any kind that may ensue thereof or otherwise. Feedback is nice:
 '# heisters[at]0x09.com
 '#################################################################################################
-Dim arrResponses() As XMLRPCValue
+Dim egwContacts As New CeGWContacts
+
 '***********************************************************************************************
 ' Gets information on the remote contacts and lists all the remote contacts and local contacts
 ' in listboxes.
@@ -31,9 +32,6 @@ Public Sub GetContacts()
     ORDER = "fn"
     SORT = "ASC"
     
-    'Save connection details to registry
-    frmMain.SaveSettings
-
     '[ > Get the contacts from the eGW server.
     '[ When I tried to grab all the contacts from the server at once I got an Overflow
     '[ XML Parse Error, so now I grab them 50 at a time.
@@ -57,12 +55,10 @@ Public Sub GetContacts()
         End If
         
         For Each tempValue In xmlResponse.params(1).ArrayValue
-            'Resize the response params array
-            ReDim Preserve arrResponses(GetUpper(arrResponses))
-            'Add each contact to the response array
-            Set arrResponses(GetUpper(arrResponses) - 1) = tempValue
+            'Add each contact to the response collection
+            egwContacts.CursoryInfo.Add tempValue
             'list the contacts in the listbox
-            frmMain.listRemote.AddItem arrResponses(GetUpper(arrResponses) - 1).StructValue.GetValueByName("fn").StringValue
+            frmMain.listRemote.AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
         Next tempValue
         
         'update our place in the remote list of contacts
@@ -72,10 +68,10 @@ Public Sub GetContacts()
     Debug.Print "Got all contacts from the server."
     
     'List the contacts from the local Outlook folders
-    Dim gnspNameSpace As NameSpace
+    Dim gnspNamespace As NameSpace
     Dim fldContacts As Outlook.MAPIFolder
-    Set gnspNameSpace = GetNamespace("MAPI")
-    Set fldContacts = gnspNameSpace.GetDefaultFolder(olFolderContacts)
+    Set gnspNamespace = GetNamespace("MAPI")
+    Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
     oContacts.List fldContacts
 End Sub
 
@@ -92,20 +88,19 @@ Public Sub SynchronizeContacts()
     Dim strListItem         As Variant
     Dim ciContact           As ContactItem
     Dim tempResponse        As Variant
-    Dim gnspNameSpace       As NameSpace
+    Dim gnspNamespace       As NameSpace
     Dim fldContacts         As Outlook.MAPIFolder
     Dim xmlResponse         As New XMLRPCResponse
     Dim tempValue           As XMLRPCValue
     Dim oContacts           As New COutlookContacts
-    Dim egwContacts         As New CeGWContacts
     
-    Set gnspNameSpace = GetNamespace("MAPI")
-    Set fldContacts = gnspNameSpace.GetDefaultFolder(olFolderContacts)
+    Set gnspNamespace = GetNamespace("MAPI")
+    Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
     'Get the full names of the selected contacts from each listbox
     '   and put them in XMLRPC arrays
     With frmMain
-        arrSelLocal = .GetSelectedListItems(.listLocal)
-        arrSelRemote = .GetSelectedListItems(.listRemote)
+        arrSelLocal = .Helper.GetSelectedListItems(.listLocal)
+        arrSelRemote = .Helper.GetSelectedListItems(.listRemote)
     End With
     
     '[ > Start synchronizing remote contacts
@@ -119,7 +114,7 @@ Public Sub SynchronizeContacts()
             ReDim Preserve arrFullInformation(GetUpper(arrFullInformation))
             '[ Pass an XMLRPCValue that holds the fullname of the contact to get the full
             '[ information on that contact from the remote server.
-            Set arrFullInformation(GetUpper(arrFullInformation) - 1) = egwContacts.GetFullInfoFromServer(CStr(strListItem), arrResponses)
+            Set arrFullInformation(GetUpper(arrFullInformation) - 1) = egwContacts.GetFullInfoFromServer(CStr(strListItem))
         Next strListItem
     
         'Add the selected remote contacts to the local directory
@@ -129,7 +124,15 @@ Public Sub SynchronizeContacts()
                 Debug.Print "Successfully imported " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
                                 " to the Outlook Contact List."
                 'Update the local list to show the new contact
-                frmMain.listLocal.AddItem (ciContact.FullName)
+                With frmMain.listLocal
+                    For i = 0 To (.ListCount - 1) Step 1
+                        If .List(i) = ciContact.FullName Then
+                            .RemoveItem (i)
+                            Exit For
+                        End If
+                    Next i
+                    .AddItem (ciContact.FullName)
+                End With
             Else
                 Debug.Print "Failed to import " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
                                 " to the Outlook Contact List."
@@ -149,17 +152,24 @@ Public Sub SynchronizeContacts()
         For Each strListItem In arrSelLocal
             'Find the contact in the local directory by their fullname, which was in the listbox
             Set ciContact = fldContacts.Items.Find("[FullName] = " & strListItem)
-            Set tempResponse = egwContacts.Create(ciContact, arrResponses)
+            Set tempResponse = egwContacts.Create(ciContact)
             
             'If creating the remote contact was successful...
             If Not (tempResponse Is Nothing) Then
                 Debug.Print "Successfully exported " & ciContact.FullName & " to the eGroupWare server"
-                'Resize the response params array
-                ReDim Preserve arrResponses(GetUpper(arrResponses))
-                'Add each contact to the response array
-                Set arrResponses(GetUpper(arrResponses) - 1) = tempResponse.params(1).ArrayValue(1)
+
+                'Add each contact to the response collection
+                egwContacts.CursoryInfo.Add tempResponse.params(1).ArrayValue(1)
                 'list the contacts in the listbox
-                frmMain.listRemote.AddItem arrResponses(GetUpper(arrResponses) - 1).StructValue.GetValueByName("fn").StringValue
+                With frmMain.listRemote
+                    For i = 0 To (.ListCount - 1) Step 1
+                        If .List(i) = egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue Then
+                            .RemoveItem (i)
+                            Exit For
+                        End If
+                    Next i
+                    .AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
+                End With
             'If creation of the remote contact failed...
             Else
                 Debug.Print "Failed to export " & ciContact.FullName & " to the eGroupWare server"
@@ -175,38 +185,32 @@ End Sub
 Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XMLRPCResponse
     Dim linsUtility As New XMLRPCUtility
     Dim bLogin As Boolean
-    Dim eGW As New CeGW
-    
-    'grab the login information from the form GUI
-    eGW.Hostname = frmMain.txtHostname
-    eGW.Port = frmMain.txtPort
-    eGW.URI = frmMain.txtURI
-    eGW.Username = frmMain.txtUsername
-    eGW.Password = frmMain.txtPassword
-    
+    '[ grab the login information from the form GUI. eGW is defined in ThisOutlookSession
+    '[ so it's always accessible to everyone.
+    If ThisOutlookSession.eGW.Hostname = "" Then
+        FrmLogin.Show
+    End If
     'login and put the result in a variable for testing
-    bLogin = eGW.Login
+    bLogin = ThisOutlookSession.eGW.Login
     
     'If we logged in successfully...
     If bLogin Then
-        eGW.Reset
-        eGW.Exec methodName, xmlParms
-        
+        ThisOutlookSession.eGW.Reset
+        ThisOutlookSession.eGW.Exec methodName, xmlParms
         'Error handling bonanza
-        If eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
+        If ThisOutlookSession.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
-            If eGW.Response.Status = 4 Then
+            If ThisOutlookSession.eGW.Response.Status = 4 Then
                 Debug.Print "XML Parse Error: " & eGW.Response.XMLParseError
                 'Debug.Print eGW.Response.XMLResponse
             End If
-        ElseIf eGW.Response.params.Count <> 1 Then
+        ElseIf ThisOutlookSession.eGW.Response.params.Count <> 1 Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.params.Count & " return parameters, expecting 1"
         End If
-        
         'return the response from the XMLRPC server
-        Set SimpleExec = eGW.Response
+        Set SimpleExec = ThisOutlookSession.eGW.Response
         'it's always polite to close the door when you leave
-        eGW.Logout
+        ThisOutlookSession.eGW.Logout
     'If login failed...
     Else
         Dim x As VbMsgBoxResult

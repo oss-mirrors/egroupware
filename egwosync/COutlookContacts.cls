@@ -7,7 +7,19 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'Put all the local contacts' fullnames from a folder into the listbox
+'#################################################################################################
+'# COutlookContacts.cls
+'# Functions specific to dealing with Outlook Contact Items in relation to eGroupWare Contacts
+'#
+'# Please visit egroupware.org for more information
+'# This software is distributed under the GPL and is provided as-is. I assume no responsibility
+'# for its usage or losses of any kind that may ensue thereof or otherwise. Feedback is nice:
+'# heisters[at]0x09.com
+'#################################################################################################
+
+'***********************************************************************************************
+' Put all the local contacts' fullnames from a folder into the listbox
+'***********************************************************************************************
 Public Sub List(fldFolder As Outlook.MAPIFolder)
     Dim objItem As Object
     
@@ -22,18 +34,22 @@ Public Sub List(fldFolder As Outlook.MAPIFolder)
     Next objItem
 End Sub
 
+'***********************************************************************************************
+' Create an Outlook contact given an eGroupWare Response that holds the full information on an
+' eGW contact
+'***********************************************************************************************
 Public Function Create(ByVal rContact As XMLRPCResponse) As ContactItem
     Dim objContact      As ContactItem
     Dim egwContact      As New XMLRPCStruct
-    Dim gnspNameSpace   As NameSpace
+    Dim gnspNamespace   As NameSpace
     Dim fldContacts     As Outlook.MAPIFolder
     Dim ciFindContact   As ContactItem
     Dim bWriteContact   As Boolean
     Dim objTranslator   As New CContactTranslator
     
     bWriteContact = True    'we assume that we will write a new contact, unless we hear otherwise
-    Set gnspNameSpace = GetNamespace("MAPI")
-    Set fldContacts = gnspNameSpace.GetDefaultFolder(olFolderContacts)
+    Set gnspNamespace = GetNamespace("MAPI")
+    Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
     Set objContact = fldContacts.Items.Add
     Set egwContact = rContact.params(1).ArrayValue(1).StructValue
     

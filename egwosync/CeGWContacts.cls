@@ -7,15 +7,31 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Public Function Create(ByVal ciContact As ContactItem, aResponses() As XMLRPCValue) As XMLRPCResponse
+'#################################################################################################
+'# CeGWContacts.cls
+'# Functions specific to dealing with eGroupWare Contacts in relation to Outlook Contact Items
+'#
+'# Please visit egroupware.org for more information
+'# This software is distributed under the GPL and is provided as-is. I assume no responsibility
+'# for its usage or losses of any kind that may ensue thereof or otherwise. Feedback is nice:
+'# heisters[at]0x09.com
+'#################################################################################################
+
+Public CursoryInfo As New Collection
+
+'***********************************************************************************************
+' Create a contact on the eGroupWare server given a corresponding outlook contact and an array
+' that holds cursory information on all the eGW contacts.
+'***********************************************************************************************
+Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
     Dim xmlParms        As New XMLRPCStruct
     Dim xmlArray        As New XMLRPCArray
     Dim xmlResponse     As New XMLRPCResponse
-    Dim varTemp         As Variant
+    Dim varTemp         As XMLRPCValue
     Dim dblDuplicateID  As Double
     Dim DONT_WRITE      As Integer
     Dim objTranslator   As New CContactTranslator
-    
+
     'A macro to indicate that now writing to the server should be done.
     DONT_WRITE = -1
     
@@ -23,16 +39,19 @@ Public Function Create(ByVal ciContact As ContactItem, aResponses() As XMLRPCVal
     dblDuplicateID = 0
     
     'Look for the local contact in the downloaded list of remote contacts
-    For Each varTemp In aResponses
-        'If a contact that was downloaded from the server has the same fullname
-        If ciContact.FullName = varTemp.StructValue.GetValueByName("fn").StringValue Then
-                'record the contact's id number
-                dblDuplicateID = Val(varTemp.StructValue.GetValueByName("id").StringValue)
-                'and exit the loop
-                Exit For
-        End If
-    Next varTemp
-
+    If CursoryInfo.Count > 0 Then
+        For Each varTemp In CursoryInfo
+            'If a contact that was downloaded from the server has the same fullname
+            If ciContact.FullName = varTemp.StructValue.GetValueByName("fn").StringValue Then
+                    'record the contact's id number
+                    dblDuplicateID = Val(varTemp.StructValue.GetValueByName("id").StringValue)
+                    'and exit the loop
+                    Exit For
+            End If
+        Next varTemp
+    End If
+    
+    'Do something if a duplicate was found
     If dblDuplicateID <> 0 Then
         Dim x As VbMsgBoxResult
         x = MsgBox("Trying to export " & (Chr(10)) & (ciContact.FullName) & (Chr(10)) & _
@@ -49,45 +68,48 @@ Public Function Create(ByVal ciContact As ContactItem, aResponses() As XMLRPCVal
             dblDuplicateID = DONT_WRITE
         End If
     End If
-    
-    If Not (dblDuplicateID = DONT_WRITE) Then
-        'Create a new entry
-        '   If there wasn't a duplicate found, dblDuplicateID will be 0, which indicates to eGW
-        '   that it should create a new contact. If a duplicate was found, it will be overwritten.
+
+    If dblDuplicateID <> DONT_WRITE Then
+        '[ > Create a new entry
+        '[ If there wasn't a duplicate found, dblDuplicateID will be 0, which indicates to eGW
+        '[ that it should create a new contact. If a duplicate was found, it will be overwritten.
         objTranslator.Outlook2eGW ciContact, xmlParms
         xmlParms.AddString "id", dblDuplicateID
 
         Set xmlResponse = SimpleExec("addressbook.boaddressbook.write", xmlParms)
 
-        'If the write was succesfull, return the basic information on the contact
-        '   The server returns a boolean if an entry was overwritten, or an integer if a new entry
-        '   was made.
-        If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Then
+        '[ > If the write was succesful, get and return the cursory information on the contact
+        '[ The server returns a boolean if an entry was overwritten, or an integer if a new entry
+        '[ was made.
+        If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Or _
+           xmlResponse.params(1).ValueType = XMLRPC_BOOLEAN Then
             Set xmlParms = New XMLRPCStruct
-            xmlParms.AddInteger "id", xmlResponse.params(1).IntegerValue
-            xmlArray.AddString "fn"
-            xmlParms.AddArray "fields", xmlArray
-            Set Create = SimpleExec("addressbook.boaddressbook.read", xmlParms)
-        ElseIf xmlResponse.params(1).BooleanValue Then
-            Set xmlParms = New XMLRPCStruct
-            xmlParms.AddInteger "id", dblDuplicateID
+            If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Then
+                xmlParms.AddInteger "id", xmlResponse.params(1).IntegerValue
+            ElseIf xmlResponse.params(1).ValueType = XMLRPC_BOOLEAN And _
+                xmlResponse.params(1).BooleanValue Then
+                    xmlParms.AddInteger "id", dblDuplicateID
+            End If
             xmlArray.AddString "fn"
             xmlParms.AddArray "fields", xmlArray
             Set Create = SimpleExec("addressbook.boaddressbook.read", xmlParms)
         End If
-        
     End If
 End Function
 
-Public Function GetFullInfoFromServer(strSelectedName As String, aResponses() As XMLRPCValue) As XMLRPCResponse
+'***********************************************************************************************
+' Retrieve all the fields of an eGW contact from the server given a string that is the full name
+' of the contact and an array that holds cursory information on all the eGW contacts
+'***********************************************************************************************
+Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCResponse
     Dim xmlParms    As New XMLRPCStruct
-    Dim varTemp     As Variant
+    Dim varTemp     As XMLRPCValue
     'Now we need to go back and get the full information on the selected contacts.
-    '   aResponses holds the id of each contact which we can use in a
-    '   boaddressbook.read call, we just need to get the id out of aResponses.
+    '   arrResponses holds the id of each contact which we can use in a
+    '   boaddressbook.read call, we just need to get the id out of arrResponses.
     '   I can't think of any other way to do this than to do a loop search. It
     '   seems inefficient though.
-    For Each varTemp In aResponses
+    For Each varTemp In CursoryInfo
     
         'For every selected item from the listbox, cycle through the responses from the
         '   server. If a fullname property is the same as the selected item...

@@ -8,8 +8,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '#################################################################################################
-'# BasUtilities.bas
-'# Various multipurpose functions for the egwosync module of eGroupWare
+'# CContactTranslator.cls
+'# Maps Outlook Contact fields to eGroupWare Contact fields and vice versa
 '#
 '# Please visit egroupware.org for more information
 '# This software is distributed under the GPL and is provided as-is. I assume no responsibility
