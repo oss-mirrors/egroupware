@@ -798,7 +798,10 @@
 				// *update* now in fldball
 				//'acctnum',
 				// all preference handling of extra accounts passes this as the account number "ex" = "extra"
-				'ex_acctnum'
+				'ex_acctnum',
+				
+				// this is filled by javascript on the user browser and passed here during send as the TZ offset
+				'utz'
 				);
 			
 			$this->known_internal_args = array(

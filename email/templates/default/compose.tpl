@@ -24,6 +24,26 @@
 			document.doit.submit();
 		}
 	}
+	function get_utz()
+	{
+		var time=new Date();
+		var dateutc = new Date(Date.UTC(time.getUTCFullYear(),time.getUTCMonth(),time.getUTCDay(),time.getUTCHours(),time.getUTCMinutes(),time.getUTCSeconds(),time.getUTCMilliseconds()));
+		var raw_offset = ((dateutc.valueOf())-(time.valueOf()));
+		var tz_sign;
+		if (raw_offset >= 0) {
+			tz_sign="plus";
+		} else {
+			tz_sign="minus";
+		}
+		var tz_4mail = ((time.getTimezoneOffset() * 100) / 60);
+		var tz_4mail_final;
+		if (tz_4mail.toString().length == 3) {
+			tz_4mail_final = tz_sign+"0"+tz_4mail;
+		} else {
+			tz_4mail_final = tz_sign+tz_4mail;
+		}
+		return tz_4mail_final;
+	}
 -->
 </script>
 
@@ -39,6 +59,11 @@
 <table border="0" cellpadding="1" cellspacing="1" width="100%" align="center">
 <!--  <form enctype="multipart/form-data" name="_ form1_name _" action="_form1_action_" method="_ form1_method _"> -->
 <form enctype="application/x-www-form-urlencoded" name="{form1_name}" action="{form1_action}" method="{form1_method}">
+<script type="text/javascript">
+<!--
+document.write("<input type=\"hidden\" name=\"utz\" value=\""+get_utz()+"\">");
+-->
+</script>
 <tr bgcolor="{buttons_bgcolor}" class="{buttons_bgcolor_class}">
 	<td colspan="2">
 		<table border="0" cellpadding="1" cellspacing="1" width="100%">

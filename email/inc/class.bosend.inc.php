@@ -426,7 +426,27 @@
 			but not preferred.
 			FUTURE: figure out a host independant way of getting the correct rfc time and TZ offset
 			*/
-			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
+			//$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
+			// NOW: "user timezone" is fed as arg "utz" from the users browser
+			$my_tz = $GLOBALS['phpgw']->msg->get_arg_value('utz');
+			if ((stristr($my_tz,'minus'))
+			&& (strlen($my_tz) == 9))
+			{
+				// ex: "minus0500"
+				$my_tz = str_replace('minus', '-', $my_tz);
+			}
+			elseif ((stristr($my_tz,'plus'))
+			&& (strlen($my_tz) == 8))
+			{
+				// ex: "plus0500"
+				$my_tz = str_replace('plus', '+', $my_tz);
+			}
+			else
+			{
+				// invalid input, use fallback
+				$my_tz = '+0000';
+			}
+			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$my_tz;
 			
 			// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
 			/*!
