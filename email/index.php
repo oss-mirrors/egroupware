@@ -209,8 +209,8 @@
 	if ($uses_folders)
 	{
 		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
-		$listbox_show_unseen = True;
-		//$listbox_show_unseen = False;
+		//$listbox_show_unseen = True;
+		$listbox_show_unseen = False;
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
 				//. all_folders_listbox($mailbox,'')
