@@ -1194,7 +1194,8 @@
 			$account_id = intval($account_id);
 			if ($account_id > 0)
 			{
-				$this->db->query('delete from phpgw_categories where owner=' . $account_id . " AND cat_appname='projects'",__LINE__,__FILE__);
+				/* TODO - this shouldn't be touching api tables */
+				$this->db->query('delete from phpgw_categories where cat_owner=' . $account_id . " AND cat_appname='projects'",__LINE__,__FILE__);
 				$this->db->query('delete from phpgw_p_hours where employee=' . $account_id,__LINE__,__FILE__);
 				$this->db->query('select id from phpgw_p_projects where coordinator=' . $account_id,__LINE__,__FILE__);
 
