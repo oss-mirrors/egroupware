@@ -40,7 +40,7 @@
 
 	foreach($GLOBALS['phpgw_info']['user']['preferences']['headlines'] as $n => $name)
 	{
-		if ($n != 'headlines_layout')
+		if(is_int($n))
 		{
 			$sites[] = $n;
 		}
