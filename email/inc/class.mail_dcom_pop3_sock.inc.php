@@ -425,7 +425,6 @@
 					echo '</pre><br><br>';
 				}
 			}
-	
 			if ($this->debug_dcom_extra)
 			{
 				echo 'pop3: fetchstructure iteration:<br>';
@@ -439,11 +438,14 @@
 				if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure with error<br>'; }
 				return False;
 			}
-			// ---  get TOP-LEVEL header fetchstructure ---
-			$extra_args = Array();
-			$extra_args['top_level'] = True;
-			$extra_args['parent_cookie'] = ''; // no parent at top level
-			$info = $this->sub_get_structure($header_array,$extra_args);
+			// ---  Create base fetchstructure object  ---
+			$info = new msg_structure;
+			$info->custom['top_level'] = True;
+			$info->custom['parent_cookie'] = ''; // no parent at top level
+			$info->custom['detect_state'] = 'out'; // not doing multi part detection on this yet
+			// ---  Fill  Top Level Fetchstructure  ---
+			//$info = $this->sub_get_structure(&$info,$header_array);
+			$this->sub_get_structure(&$info,$header_array);
 			// make sure some necessary information is present, use RFC defaults if necessary
 			if ((string)$info->type == '')
 			{
@@ -476,19 +478,27 @@
 			}
 			// --- Detect Boundary Paramaters  ---
 			// if we have a boundary paramater, then we have a multi-part message
-			// did we get a boundry param?
+			// initialize boundary holder
+			$info->custom['my_cookie'] = '';
+			// do we have a boundry param?
 			for ($x=0; $x < count($info->parameters) ;$x++)
 			{
 				$these_params = $info->parameters[$x];
 				if (strtolower($these_params->attribute) == 'boundary')
 				{
-					// store it in custom["cookie"] for easy access
+					// store it in custom["my_cookie"] for easy access
 					$info->custom['my_cookie'] = $these_params->value;
+					break;
 				}
 			}
 			// --- Handle Multi-Part MIME ---
-			if ($info->custom['my_cookie'] != '')
+			if ($info->custom['my_cookie'] == '')
 			{
+				// do NOTHING - this is NOT multipart
+			}
+			else
+			{
+				// Handle Multi-Part MIME
 				if ($this->debug_dcom) { echo 'pop3: fetchstructure: found boundary : '.$info->custom['my_cookie'].'<br>'; }
 				// keep state info about what we are looking for
 				$crtl_info['state'] = 'out';
@@ -504,30 +514,34 @@
 					&& (!strstr($body_line,'--'.$info->custom['my_cookie'].'--')))
 					{
 						// we found a body part
-						if ($crtl_info['state'] == 'in')
+						
+						// BEGINNING of a new part is ALSO the ENDING of a prevoius part
+						// if we were in the state of "IN" on that prevoius part (if any previous part exists)
+						$cur_part_idx = count($info->parts) - 1;
+						if ((isset($info->parts[$cur_part_idx]))
+						&& ($info->parts[$cur_part_idx]->custom['detect_state'] == 'in'))
 						{
 							// we were already "in" so we found ENDING data
-							// for the previous part, and BEGINING data for the next part
-							$parts_idx = count($info->parts) - 1;
-							$info->parts[$parts_idx]->custom['part_end'] = $x-1;
-							if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: current part end at '.(string)($x-1).'<br>'; }
+							// for the previous part, (as well as BEGINING data for the next part)
+							$info->parts[$cur_part_idx]->custom['part_end'] = $x-1;
+							if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: current part end at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.']<br>'; }
+							// this individual part has completed discovery, it os now "OUT"
+							$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
 						}
-						else
-						{
-							// we are not "in" looking for part data, but we are now
-							$crtl_info['state'] = 'in';
-							if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: begin part discovery<br>'; }
-						}
-						
-						// prepare the args for sub function
-						$extra_args = Array();
-						$extra_args['top_level'] = False;
-						$extra_args['parent_cookie'] = $info->custom['my_cookie'];
-						
+						// so now deal with this NEW part we just discovered
+						if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: begin part discovery<br>'; }
+						// Create New Sub Part Object
+						$new_part_idx = count($info->parts);
+						$info->parts[$new_part_idx] = new msg_structure;
+						$info->parts[$new_part_idx]->bytes = 0;
+						$info->parts[$new_part_idx]->custom['top_level'] = False;
+						$info->parts[$new_part_idx]->custom['parent_cookie'] = $info->custom['my_cookie'];
+						// state info: we are now "IN" doing multi part detection on this part
+						$info->parts[$new_part_idx]->custom['detect_state'] = 'in';
 						// get this part's headers
 						// start 1 line after the cookie, and end with the first blank line
 						// part header starts next line after the boundary/cookie
-						$extra_args['header_start'] = $x+1;
+						$info->parts[$new_part_idx]->custom['header_start'] = $x+1;
 						$part_header_blob = '';
 						for ($y=$x+1; $y < count($body_array) ;$y++)
 						{
@@ -541,7 +555,7 @@
 							{
 								// reached end of this part's headers
 								// headers actually ended 1 line above this blank line
-								$extra_args['header_end'] = (int)($y-1);
+								$info->parts[$new_part_idx]->custom['header_end'] = (int)($y-1);
 								// break out of this sub loop
 								break;
 							}
@@ -559,9 +573,10 @@
 						if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: part_header_array:'.serialize($part_header_array).'<br>'; }
 						// since we just passed the headers, and this is NOT a final boundary
 						// this MUST be a start point for the next part
-						$extra_args['part_start'] = (int)($y+1);
-						// add this fetchstructure as a sub-part to parent part
-						$info->parts[count($info->parts)] = $this->sub_get_structure($part_header_array,$extra_args);
+						$info->parts[$new_part_idx]->custom['part_start'] = (int)($y+1);
+						// fill the conventional info on this fetchstructure sub-part
+						//$info->parts[$new_part_idx] = $this->sub_get_structure(&$info->parts[$new_part_idx],$part_header_array);
+						$this->sub_get_structure(&$info->parts[$new_part_idx],$part_header_array);
 						// ADVANCE INDEX $x TO AFTER WHAT WE'VE ALREADY LOOKED AT
 						if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: advance x from ['.$x.'] to ['.$y.']<br>'; }
 						$x = $y;
@@ -570,9 +585,24 @@
 					&& (strpos($body_line,'--'.$info->custom['my_cookie'].'--') == 0))
 					{
 						// we found the CLOSING BOUNDARY
-						$info->parts[count($info->parts)-1]->custom['part_end'] = $x-1;
-						$crtl_info['state'] == 'out';
-						if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: final boundary at '.(string)($x-1).'<br>'; }
+						$cur_part_idx = count($info->parts) - 1;
+						$info->parts[$cur_part_idx]->custom['part_end'] = $x-1;
+						$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
+						if ($this->debug_dcom_extra) { echo 'pop3: fetchstructure: mime loop: final boundary at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.']<br>'; }
+					}
+					else
+					{
+						// running byte size of this part (if any)
+						$cur_part_idx = count($info->parts) - 1;
+						if ((isset($info->parts[$cur_part_idx]))
+						&& ($info->parts[$cur_part_idx]->custom['detect_state'] == 'in'))
+						{
+							// prevoius count
+							$prev_bytes = $info->parts[$cur_part_idx]->bytes;
+							// add new count, +2 for the \r\n that will end the line when we feed it to the client
+							$add_bytes = strlen($body_line) + 2;
+							$info->parts[$cur_part_idx]->bytes = $prev_bytes + $add_bytes;
+						}
 					}
 				}
 			}
@@ -591,15 +621,16 @@
 			return $info;
 		}
 		
-		function sub_get_structure($header_array,$extra_args='')
+		function sub_get_structure($info,$header_array)
 		{
 			$debug_mime = $this->debug_dcom_extra;
 			//$debug_mime = True;
 			//$debug_mime = False;
 			
 			if ($this->debug_dcom) { echo 'pop3: Entering sub_get_structure<br>'; }
+			/*
 			// initialize the structure
-			$info = new msg_structure;
+			//$info = new msg_structure;
 			$info->type = '';
 			$info->encoding = '';
 			$info->ifsubtype = False;
@@ -618,13 +649,16 @@
 			$info->parameters = array();
 			$info->parts = array();
 			$info->custom['top_level'] = $extra_args['top_level'];
-			// initialize these but they will be used in outside function
+			$info->custom['detect_state'] = 'in'; // = 'out';
 			$info->custom['parent_cookie'] = '';
 			$info->custom['my_cookie'] = ''; // for recursive sub-parts
+			$info->custom['my_header_array'] = '';
 			$info->custom['header_start'] = ''; // this parts MIME headers start index in body array
 			$info->custom['header_end'] = ''; // this parts MIME headers ending index in body array
 			$info->custom['part_start'] = $extra_args['part_start'];
 			$info->custom['part_end'] = ''; // unknown ending point at this stage, we just got past it's headers
+			*/
+			
 			/*
 			// FILL THE DATA
 			if ($extra_args['is_multi'])
@@ -633,6 +667,7 @@
 				$info->encoding = 0;
 			}
 			*/
+			
 			for ($i=0; $i < count($header_array) ;$i++)
 			{
 				$pos = strpos($header_array[$i]," ");
@@ -646,8 +681,7 @@
 				if ($debug_mime)
 				{
 					//echo 'pos: '.$pos.'<br>';
-					echo 'pop3: sub_get_structure: keyword: ['.$keyword.']<br>';
-					echo 'pop3: sub_get_structure: content: ['.$content.']<br>';
+					echo 'pop3: sub_get_structure: keyword: ['.$keyword.'] content: ['.$content.']<br>';
 				}
 				switch ($keyword)
 				{
@@ -661,17 +695,6 @@
 						// feed the whole param line into this function
 						$content = substr($content,$pos_param+1);
 						$this->parse_msg_params(&$info,$content);
-						/*
-						// did we get a boundry param?
-						for ($x=0; $x < count($info->parameters) ;$x++)
-						{
-							$these_params = $info->parameters[$x];
-							if (strtolower($these_params->attribute) == 'boundary')
-							{
-								$info->custom['cookie'] = $these_params->value;
-							}
-						}
-						*/
 					}
 					break;
 				  case "content-transfer-encoding:" :
@@ -731,6 +754,11 @@
 				  default : break;
 				}
 			}
+
+			if ($this->debug_dcom_extra)
+			{
+				echo 'pop3: sub_get_structure: info->encoding ['.$info->encoding.'] aka "'.$this->encoding_int_to_str($info->encoding).'"<br>';
+			}
 			if ($this->debug_dcom) { echo 'pop3: Leaving sub_get_structure<br>'; }
 			return $info;
 		}
@@ -758,6 +786,7 @@
 			{
 				$prim_type = strtolower($content);
 			}
+			if ($this->debug_dcom_extra) { echo 'pop3: parse_type_subtype: prim_type: '.$prim_type.'<br>'; }
 			$info->type = $this->type_str_to_int($prim_type);
 			if ($info->ifsubtype == False)
 			{
@@ -767,11 +796,10 @@
 			}
 			if ($this->debug_dcom_extra)
 			{
-				echo 'pop3: info->type '.$info->type.'<br>';
-				echo 'pop3: info->ifsubtype '.$info->ifsubtype.'<br>';
-				echo 'pop3: info->subtype '.$info->subtype.'<br>';
+				echo 'pop3: parse_type_subtype: info->type ['.$info->type.'] aka "'.$this->type_int_to_str($info->type).'"<br>';
+				echo 'pop3: parse_type_subtype: info->ifsubtype ['.$info->ifsubtype.']<br>';
+				echo 'pop3: parse_type_subtype: info->subtype "'.$info->subtype.'"<br>';
 			}
-			
 			if ($this->debug_dcom) { echo 'pop3: Leaving parse_type_subtype<br>'; }
 		}
 		
@@ -823,7 +851,7 @@
 		
 		function type_str_to_int($type_str)
 		{
-			switch ($prim_type)
+			switch ($type_str)
 			{
 				case "text"	: $type_int = TYPETEXT; break;
 				case "multipart"	: $type_int = TYPEMULTIPART; break;
