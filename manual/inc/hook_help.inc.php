@@ -14,7 +14,7 @@
 
 	$GLOBALS['phpgw']->help->set_params(array('app_name'		=> 'manual',
 												'title'			=> phpGroupWare,
-												'app_version'	=> 'API ' . $setup_info['phpgwapi']['version']));
+												'app_version'	=> $setup_info['phpgwapi']['version']));
 
 	$GLOBALS['phpgw']->help->data[] = array
 	(

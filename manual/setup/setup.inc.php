@@ -8,14 +8,13 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-
 	/* $Id$ */
 
 	/* Basic information about this app */
 	$setup_info['manual']['name']      = 'manual';
 	$setup_info['manual']['version']   = '0.9.13.002';
 	$setup_info['manual']['app_order'] = 5;
-	$setup_info['manual']['enable']    = 1;
+	$setup_info['manual']['enable']    = 3;
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['manual']['hooks'][] = 'help';
