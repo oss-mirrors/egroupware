@@ -34,11 +34,13 @@
 			'fd' => array(
 				'site_id' => array('type' => 'auto','nullable' => False),
 				'site_name' => array('type' => 'varchar', 'precision' => 100,'nullable' => True),
-				'site_db_name' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'site_db_host' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'site_db_user' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
-				'site_db_password' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
-				'site_db_type' => array('type' => 'varchar', 'precision' => 10,'nullable' => False)
+				'site_db_name' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
+				'site_db_host' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
+				'site_db_user' => array('type' => 'varchar', 'precision' => 30,'nullable' => False),
+				'site_db_password' => array('type' => 'varchar', 'precision' => 30,'nullable' => False),
+				'site_db_type' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
+				'upload_path' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
+				'upload_url' => array('type' => 'varchar', 'precision' => 250,'nullable' => False)
 			),
 			'pk' => array('site_id'),
 			'fk' => array(),
@@ -52,16 +54,9 @@
 				'name' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
 				'table_name' => array('type' => 'varchar', 'precision' => 30,'nullable' => True),
 				'upload_path' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
-				'multiple_images' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => '0'),
-				'multiple_attachments' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => '0'),
-				'image_width' => array('type' => 'varchar', 'precision' => 5,'nullable' => False),
-				'thumb_width' => array('type' => 'varchar', 'precision' => 5,'nullable' => False),
-				'image_type' => array('type' => 'char', 'precision' => 3,'nullable' => False),
-				'image_dir_url' => array('type' => 'varchar', 'precision' => 100,'nullable' => True),
+				'upload_url' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
 				'relations' => array('type' => 'text','nullable' => True),
-				'preview_images_in_form' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => '0'),
-				'plugins' => array('type' => 'text','nullable' => True),
-				'extra_field_info' => array('type' => 'text','nullable' => True)
+				'plugins' => array('type' => 'text','nullable' => True)
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
