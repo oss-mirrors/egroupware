@@ -72,12 +72,12 @@
 				$this->svr_response .= trim($rmsg);
 			}
 			
-			if ($followme = " ")
+			if ($followme == " ")
 			{
 				break;
 			}
 		}
-		while ($followme = "-");
+		while ($followme == "-");
 		// debug stuff
 		if ($this->get_svr_response)
 		{
