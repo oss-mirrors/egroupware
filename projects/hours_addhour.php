@@ -15,8 +15,6 @@
     $phpgw_info["flags"]["currentapp"] = "projects";
     include("../header.inc.php");
 
-    if (!$id) { Header('Location: ' . $phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
-
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('hours_add' => 'hours_formhours.tpl'));
     $t->set_block('hours_add','add','addhandle');
@@ -36,15 +34,13 @@
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
     }
 
-    if (! $activity) { $error[$errorcount++] = lang('Please choose an activity for the project first !'); }
-
-    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '" . $activity . "'");
+/*    if (! $activity) { $error[$errorcount++] = lang('Please choose an activity for the project first !'); } */
+ 
+    if ($activity) {
+    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id ='$activity'");
     $phpgw->db->next_record();
-    if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
-    else { 
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
-
     if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
     }
 
@@ -55,7 +51,7 @@
 
     $phpgw->db->query("insert into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,"
                . "remark,minutes,status,minperae,billperae,employee) values "
-               . " ('$id','$activity','" . time() ."','$sdate','$date','$remark',"
+               . " ('$project','$activity','" . time() ."','$sdate','$date','$remark',"
                . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
 
       } 
@@ -86,26 +82,20 @@
         		
     $t->set_var('hidden_vars',$hidden_vars);
 
-    $phpgw->db->query("SELECT num,title FROM phpgw_p_projects WHERE id = '" . $id . "'");
-    if ($phpgw->db->next_record()) {
-    $t->set_var('num',$phpgw->strip_html($phpgw->db->f("num")));
-    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
-    if (! $title)  $title  = "&nbsp;";
-    $t->set_var('title',$title);
-    $t->set_var('lang_num',lang('Project ID'));
-    $t->set_var('lang_title',lang('Title'));
-    }
+    if ($project_id) { $t->set_var('project_list',select_project_list($project_id)); }
+    else { $t->set_var('project_list',select_project_list($project)); }
+    $t->set_var('lang_project',lang('Project'));
 
     $t->set_var('lang_activity',lang('Activity'));
 
     $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities"
-                        . " WHERE project_id = '".$id."' AND phpgw_p_projectactivities.activity_id="
-                        . "phpgw_p_activities.id");
+                        . " WHERE project_id ='$project_id' AND phpgw_p_projectactivities.activity_id="
+                        . "phpgw_p_activities.id order by descr asc");
         while ($phpgw->db->next_record()) {
            $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
-	            . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
+                    . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
         }
-        
+
     $t->set_var('activity_list',$activity_list);
 
     $sm = CreateObject('phpgwapi.sbox');
@@ -164,12 +154,6 @@
                     . $phpgw->common->display_fullname($phpgw->db->f("account_id"),                                                                                                          
                       $phpgw->db->f("account_firstname"),                                                                                                                                    
                       $phpgw->db->f("account_lastname")) . "</option>";
-
-
-/*                    . $selected_users[$phpgw->db->f("account_id")] . ">"
-	            . $phpgw->common->display_fullname($phpgw->db->f("account_id"),
-                      $phpgw->db->f("account_firstname"),
-                      $phpgw->db->f("account_lastname")) . "</option>"; */
         }
         
     $t->set_var('employee_list',$employee_list);
@@ -180,7 +164,7 @@
     $t->set_var('billperae',$billperae);
 
     $t->set_var('lang_done',lang('Done'));    
-    $t->set_var('doneurl',$phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php',"project=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 
     $t->set_var('lang_add',lang('Add'));
     $t->set_var('lang_reset',lang('Clear Form'));

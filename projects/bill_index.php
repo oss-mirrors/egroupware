@@ -45,8 +45,8 @@
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('index.php',$start,$total_records);
-    $right = $phpgw->nextmatchs->right('index.php',$start,$total_records);
+    $left = $phpgw->nextmatchs->left('/projects/bill_index.php',$start,$total_records);
+    $right = $phpgw->nextmatchs->right('/projects_bill_index.php',$start,$total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
@@ -62,12 +62,12 @@
 // ------------------- list header variable template-declarations -----------------------
 
   $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-  $t->set_var('sort_num',$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_index.php",lang("Project ID")));
-  $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"bill_index.php",lang("Status")));
-  $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_index.php",lang("Customer")));
-  $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_index.php",lang("Title")));
-  $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"bill_index.php",lang("Date due")));
-  $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"bill_index.php",lang("Coordinator")));
+  $t->set_var('sort_num',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/bill_index.php',lang('Project ID')));
+  $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/bill_index.php',lang('Status')));
+  $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/bill_index.php',lang('Customer')));
+  $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/bill_index.php',lang('Title')));
+  $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/bill_index.php',lang('Date due')));
+  $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/bill_index.php',lang('Coordinator')));
   $t->set_var('h_lang_part',lang('Invoice'));             
   $t->set_var('h_lang_partlist',lang('Invoice list'));
 

@@ -69,8 +69,8 @@
 			. "<input type=\"hidden\" name=\"delivery_id\" value=\"$delivery_id\">\n"
 			. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
-    $t->set_var(hidden_vars,$hidden_vars);   
-    $t->set_var("lang_action",lang("Delivery"));
+    $t->set_var('hidden_vars',$hidden_vars);   
+    $t->set_var('lang_action',lang('Delivery'));
 
     if (! $start) { $start = 0; }
     $ordermethod = "order by end_date asc";

@@ -62,6 +62,7 @@
     $charset = $phpgw->translation->translate("charset");
     $t->set_var('charset',$charset);
     $t->set_var('site_title',$phpgw_info["site_title"]);
+    $t->set_var('font',$phpgw_info["theme"]["font"]);
     $t->set_var('lang_invoice',lang('Invoice ID'));
     $t->set_var('lang_project',lang('Project'));
     $t->set_var('lang_pos',lang('Position'));
@@ -70,6 +71,8 @@
     $t->set_var('lang_hours_date',lang('Job date'));
     $t->set_var('lang_descr',lang('Job description'));
     $t->set_var('currency',$currency);
+    $t->set_var('lang_sum',lang('Sum'));
+    $t->set_var('lang_per',lang('per'));
     $t->set_var('lang_mwst',lang('tax'));
     $t->set_var('lang_netto',lang('net'));
   

@@ -2,33 +2,35 @@
 <p>
 <table border="0" width=100%>
 <tr>
-
-{admin_info}
-</b></td>
+<td align="left" bgcolor="{bg_color}"><b>{admin_info}</b></td>
 </tr>
 <tr>
 <td>
-
-{link_activities}
+<a href="{link_projects}">{lang_projects}</a>
 &nbsp;
 &nbsp;
 
-{link_hours}
+<a href="{link_activities}">{lang_activities}</a>
 &nbsp;
 &nbsp;
 
-{link_statistics}
+<a href="{link_hours}">{lang_hours}</a>
 &nbsp;
 &nbsp;
 
-{link_billing}
+<a href="{link_delivery}">{lang_delivery}</a>
 &nbsp;
 &nbsp;
 
-{link_delivery}
+<a href="{link_billing}">{lang_billing}</a>
 &nbsp;
 &nbsp;
 
-{link_return_projects}
-</td></tr>
+<a href="{link_statistics}">{lang_statistics}</a>
+&nbsp;
+&nbsp;
+
+<a href="{link_archiv}">{lang_archiv}</a>
+</td>
+</tr>
 </table>

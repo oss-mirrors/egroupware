@@ -12,19 +12,28 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $t = CreateObject('phpgwapi.Template',$phpgw_info["server"]["app_tpl"]);
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('projects_header' => 'header.tpl'));
 
     $admin_info = lang('Projects');
-    $t->set_var('admin_info', "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
-                        . "\" align=\"left\"><b>" . $admin_info);
+    $t->set_var('admin_info',$admin_info);
+    $t->set_var('bg_color',$phpgw_info["theme"]["th_bg"]);
 
-    $t->set_var("link_activities","<a href=\"" . $phpgw->link("/projects/activities.php") . "\">" . lang("Activities") ."</a>");
-    $t->set_var("link_billing","<a href=\"" . $phpgw->link("/projects/bill_index.php") . "\">" . lang("Project billing") ."</a>");
-    $t->set_var("link_hours","<a href=\"" . $phpgw->link("/projects/hours_index.php") . "\">" . lang("Project hours") ."</a>");
-    $t->set_var("link_statistics","<a href=\"" . $phpgw->link("/projects/stats_projectlist.php") . "\">" . lang("Project statistics") ."</a>");
-    $t->set_var("link_delivery","<a href=\"" . $phpgw->link("/projects/del_index.php") . "\">" . lang("Project delivery") ."</a>");
-    $t->set_var("link_return_projects","<a href=\"" . $phpgw->link("/projects/index.php") . "\">" . lang("Return to projects") ."</a>");
-    $t->pparse("out","projects_header");
+    $t->set_var('link_activities',$phpgw->link('/projects/activities.php'));
+    $t->set_var('lang_activities',lang('Activities'));
+    $t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
+    $t->set_var('lang_billing',lang('Billing'));
+    $t->set_var('link_hours',$phpgw->link('/projects/hours_listhours.php'));
+    $t->set_var('lang_hours',lang('Jobs'));
+    $t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
+    $t->set_var('lang_statistics',lang("Statistics"));
+    $t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
+    $t->set_var('lang_delivery',lang('Delivery'));
+    $t->set_var('link_projects',$phpgw->link('/projects/index.php'));
+    $t->set_var('lang_projects',lang('Projects'));
+    $t->set_var('link_archiv',$phpgw->link('/projects/archiv.php'));
+    $t->set_var('lang_archiv',lang('Archiv'));
+
+    $t->pparse('out','projects_header');
  
 ?>

@@ -45,19 +45,20 @@
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
     }
 
+    if ($activity) {
     $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
     $phpgw->db->next_record();
-    if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
-    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
-
-    if (! $error) {
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
+    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
+    }
+
+    if (! $error) {
     $ae_minutes=$hours*60+$minutes;
     $remark = addslashes($remark);
 
-    $phpgw->db->query("update phpgw_p_hours set activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',remark='$remark',"
-                . "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
+    $phpgw->db->query("update phpgw_p_hours set project_id='$project',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',remark='$remark',"
+		    . "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
       }
     }
 
@@ -82,7 +83,7 @@
     $t->set_var('lang_action',lang('Edit project hours'));
     $t->set_var('hidden_vars',$hidden_vars);
      
-    $db2->query("SELECT num,title FROM phpgw_p_projects WHERE id = '".$phpgw->db->f("project_id")."'");
+/*    $db2->query("SELECT num,title FROM phpgw_p_projects WHERE id = '".$phpgw->db->f("project_id")."'");
      if ($db2->next_record()) {
 	$t->set_var('num',$phpgw->strip_html($db2->f("num")));
         $title  = $phpgw->strip_html($db2->f("title"));                                                                                                                                
@@ -91,13 +92,17 @@
      }
 
     $t->set_var('lang_num',lang('Project ID'));
-    $t->set_var('lang_title',lang('Title'));
+    $t->set_var('lang_title',lang('Title'));  */
+ 
+    if ($project_id) { $t->set_var('project_list',select_project_list($project_id)); }
+    else { $t->set_var('project_list',select_project_list($project)); }
+    $t->set_var('lang_project',lang('Project'));
 
     $t->set_var('lang_activity',lang('Activity'));
     
-    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities"
-                     . " WHERE project_id = '".$phpgw->db->f("project_id")."' AND phpgw_p_projectactivities.activity_id="
-                     . "phpgw_p_activities.id");
+    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities "
+		. "WHERE project_id ='" . $phpgw->db->f("project_id") . "' AND phpgw_p_projectactivities.activity_id="
+		. "phpgw_p_activities.id");
 	while ($db2->next_record()) {
         $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\"";
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))

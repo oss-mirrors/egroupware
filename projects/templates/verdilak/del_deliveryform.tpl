@@ -1,100 +1,121 @@
 <!-- $Id$ -->
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML LANG="en">
 <head>
 <title>{site_title}</title>
 <meta http-equiv="content-type" content="text/html; charset={charset}">
-<link rel="stylesheet" href="css/style.css">
+<STYLE type="text/css">
+   A {text-decoration:none;}
+   <!--
+   A:link {text-decoration:none;}
+   A:visted {text-decoration:none;}
+   A:active {text-decoration:none;}
+   body {margin-top: 0px; margin-right: 0px; margin-left: 0px;}
+   td {text-decoration:none;}
+   tr {text-decoration:none;}
+   table {text-decoration:none;}
+   center {text-decoration:none;}
+   -->                                                                                                                                                                                       
+</STYLE>
 </head>
 <body bgcolor="#FFFFFF">
 <table width=70% border=0 cellpadding=3 cellspacing=3>
 <tr>
-<td valign=bottom>{ad_company}</td>
+<td valign=bottom><font face="{font}">{ad_company}</font></td>
 <td><img src="doc/logo.jpg"></td>
 </tr>
 <tr>
-<td>{ad_firstname}&nbsp;{ad_lastname}</td>
+<td><font face="{font}">{ad_firstname}&nbsp;{ad_lastname}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{ad_street}</td>
+<td><font face="{font}">{ad_street}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{ad_zip}&nbsp;{ad_city}</td>
+<td><font face="{font}">{ad_zip}&nbsp;{ad_city}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{ad_state}</td>
+<td><font face="{font}">{ad_state}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{ad_country}<br><br><br></td>
+<td><font face="{font}">{ad_country}<br><br><br></font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{company}</td>
+<td><font face="{font}">{company}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{firstname}&nbsp;{lastname}</td>
+<td><font face="{font}">{firstname}&nbsp;{lastname}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{street}</td>
+<td><font face="{font}">{street}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{zip}&nbsp;{city}</td>
+<td><font face="{font}">{zip}&nbsp;{city}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{state}</td>
+<td><font face="{font}">{state}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{country}<br><br><br></td>
+<td><font face="{font}">{country}<br><br><br></font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{lang_delivery}:&nbsp;{delivery_num}</td>
+<td><font face="{font}">{lang_delivery}:&nbsp;{delivery_num}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{lang_delivery_date}:&nbsp;{delivery_date}</td>
+<td><font face="{font}">{lang_delivery_date}:&nbsp;{delivery_date}</font></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{lang_project}:&nbsp;{title}</td>
+<td><font face="{font}">{lang_project}:&nbsp;{title}</font></td>
 <td>&nbsp;</td>
 </tr>
 </table><br><br><br>
 <table width=70% border=0 cellspacing=3 cellpadding=3>
     <tr>
-      <td width="8%" align=right>{lang_pos}</td>
-      <td width="10%" align=right>{lang_workunits}</td>
-      <td width="10%" align=center>{lang_hours_date}</td>
-      <td width="30%">{lang_descr}</td>
+      <td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
+      <td width="30%"><font face="{font}">{lang_descr}</font></td>
+      <td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
+      <td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
     </tr>
 
 <!-- BEGIN deliverypos_list -->
       <tr>
-        <td align=right>{pos}</td>
-        <td align=right>{aes}</td>
-        <td align=center>{hours_date}</td>
-        <td><b>{act_descr}</b></td>
+        <td align="right"><font face="{font}">{pos}</font></td>
+        <td><font face="{font}">{act_descr}</font></td>
+        <td align="center"><font face="{font}">{hours_date}</font></td>
+        <td align="right"><font face="{font}">{aes}</font></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
+        <td><font face="{font}">{hours_remark}</font></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>{hours_remark}</td>
       </tr>
 <!-- END deliverypos_list -->
+</table><br><br>
+<table width=70% border=0 cellspacing=3 cellpadding=3>
+      <tr>
+        <td width="8%">&nbsp;</td>
+        <td width="30%"><font face="{font}" size="4"><b>{lang_sumaes}</b></font></td>
+        <td width="10%">&nbsp;</td>
+        <td width="10%" align="right"><font face="{font}" size="4"><b>{sumaes}</b></font></td>
+      </tr>
       <tr>
         <td>&nbsp;</td>
+        <td><font face="{font}">{error}</font></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>{error}</td>
       </tr>
   <hr noshade width="70%" align="left" size="1">
     </table>

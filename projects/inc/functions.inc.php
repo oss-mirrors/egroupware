@@ -142,4 +142,24 @@
 
     return $prefix.$max;
     }
+
+    function select_project_list($filter) {
+    global $phpgw,$phpgw_info;
+
+    if (gettype($filter) == "integer") {
+       $phpgw->db->query("select num,title from phpgw_p_projects where id='$project'");
+       $phpgw->db->next_record();
+
+       $filter = $phpgw->db->f("num") . " [ " . $phpgw->db->f("title") . " ] ";
+     }
+    $project_select[$filter] = " selected";
+
+    $phpgw->db->query("SELECT id,num,title from phpgw_p_projects order by title asc");
+    while ($phpgw->db->next_record()) {
+      $html_project_list .= "<option value=\"" . $phpgw->db->f("id") . "\""
+                      . $project_select[$phpgw->db->f("id")] . ">" . $phpgw->db->f("num") . " [ " . $phpgw->db->f("title") . " ] "
+                         . "</option>";
+        }
+    return $html_project_list;
+   }
 ?>

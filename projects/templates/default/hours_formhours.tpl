@@ -8,12 +8,8 @@
 	{error}{message}
         <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr>
-          <td>{lang_num}:<br><br></td>
-          <td>{num}<br><br></td>
-         </tr>
-         <tr>
-          <td>{lang_title}:<br><br></td>
-          <td>{title}<br><br></td>
+          <td>{lang_project}:</td>
+          <td><select name="project">{project_list}</select></td>
          </tr>
          <tr>
           <td>{lang_activity}:</td>

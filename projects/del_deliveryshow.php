@@ -55,6 +55,7 @@
     $t->set_var('site_title',$phpgw_info["site_title"]);
     $charset = $phpgw->translation->translate("charset");
     $t->set_var('charset',$charset);
+    $t->set_var('font',$phpgw_info["theme"]["font"]);
     $t->set_var('lang_delivery',lang('Delivery ID'));
     $t->set_var('lang_project',lang('Project'));
     $t->set_var('lang_pos',lang('Position'));
@@ -108,7 +109,7 @@
 
     $pos = 0;
 
-    $phpgw->db->query("SELECT ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae) as aes,phpgw_p_hours.remark, "                                                                                                        
+    $phpgw->db->query("SELECT phpgw_p_hours.remark,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"                                                                                                        
 		    . "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_deliverypos "                                                                                          
 		    . "WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='$delivery_id' "                                                                               
 		    . "AND phpgw_p_hours.activity_id=phpgw_p_activities.id");
@@ -127,7 +128,13 @@
     }
 	
     $t->set_var('hours_date',$hours_dateout);
-    $t->set_var('aes',$phpgw->db->f("aes"));
+
+    if ($phpgw->db->f("minperae") != 0) {
+    $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
+    }
+    $sumaes += $aes;
+
+    $t->set_var('aes',$aes);
     $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
     if (! $act_descr) { $act_descr  = '&nbsp;'; }                                                                                                                                       
     $t->set_var('act_descr',$act_descr);
@@ -138,6 +145,9 @@
     $t->parse('list','deliverypos_list',True);
     }
    
+    $t->set_var('lang_sumaes',lang('Sum workunits'));
+    $t->set_var('sumaes',$sumaes);
+
     $t->parse('out','delivery_list_t',True);
     $t->p('out');
 ?>

@@ -48,8 +48,8 @@
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('index.php',$start,$total_records);
-    $right = $phpgw->nextmatchs->right('index.php',$start,$total_records);
+    $left = $phpgw->nextmatchs->left('/projects/index.php',$start,$total_records);
+    $right = $phpgw->nextmatchs->right('/projects/index.php',$start,$total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
@@ -64,12 +64,13 @@
 // ------------------list header variable template-declarations -------------------------------
 
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-    $t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'index.php',lang('Project ID')));
-    $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'index.php',lang('Customer')));
-    $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'index.php',lang('Status')));
-    $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'index.php',lang('Title')));
-    $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'index.php',lang('Date due')));
-    $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'index.php',lang('Coordinator')));
+    $t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/index.php',lang('Project ID')));
+    $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/index.php',lang('Customer')));
+    $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/index.php',lang('Status')));
+    $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/index.php',lang('Title')));
+    $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/index.php',lang('Date due')));
+    $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/index.php',lang('Coordinator')));
+    $t->set_var('lang_jobs',lang('Jobs'));
     $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_view',lang('View'));
     $t->set_var('lang_search',lang('Search'));             
@@ -124,6 +125,8 @@
 		 'coordinator' => $coordinatorout));
        
 // ------------------------- end record declaration -------------------------------------------
+
+    $t->set_var('jobs',$phpgw->link('/projects/hours_listhours.php',"filter=$id")); 
 
     $t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id"));  
     $t->set_var('lang_edit_entry',lang('Edit'));
