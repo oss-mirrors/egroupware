@@ -1,25 +1,58 @@
+add document to category	wiki	es-es	Añadir documento a la categoría
 allow anonymous access	admin	es-es	permitir acceso anónimo
 anonymous password	admin	es-es	Contraseña anónimo
 anonymous session type	admin	es-es	Tipo de sesión anónimo
 anonymous username	admin	es-es	usuario anónimo
 block and unblock hosts	admin	es-es	Bloquear y desbloquear máquinas
 block/unblock hostes	wiki	es-es	Bloquear/Desbloquear máquinas
+block/unblock hosts	wiki	es-es	bloquear/desbloquear máquinas
+but display at least this many entries in recentchanges and other subscription lists	wiki	es-es	Pero mostrar al menos este número de entradas en CambiosRecientes y otras listas de suscripción
+changes by last author	wiki	es-es	Cambios por el último autor
+choose your current time here, so the server may figure out what time zone you are in	wiki	es-es	Elija aquí su hora actual, para que el servidor pueda saber en qué zona horaria está usted.
+columns	wiki	es-es	Columnas
+compute difference	wiki	es-es	Calcular diferencia
+current version		es-es	es
+difference between versions	wiki	es-es	Diferencia entre versiones
+differences in	wiki	es-es	Diferencias en
+document last modified	wiki	es-es	Ultima modificación del documento
+edit box	wiki	es-es	Recuadro de edición
+edit this document	wiki	es-es	Editar este documento
 edit with preview	admin	es-es	Editar con vista previa
 editable	admin	es-es	editable
+editing	wiki	es-es	Edición
 emailaddress administrator	admin	es-es	Correo del administrador
 enable free links	admin	es-es	Activar enlaces libres
 enable wiki links	admin	es-es	Activar enlaces wiki
-interwikiprefix	admin	es-es	
+enter here the maximum number of entries to display in a documents history list	wiki	es-es	Introduzca aquí el número máximo de entradas a mostrar en la lista del historial de un documento
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited	wiki	es-es	Introduzca aquí el número de días de ediciones a mostrar en los cambios recientes o cualquier otra lista de suscripción. Ponga esto a cero si desea ver todoas las páginas en cambios recientes, sin tener en cuenta si la edición ha sido reciente
+find	wiki	es-es	Buscar
+history display should show all changes made by the latest author.  otherwise, show only the last change made	wiki	es-es	El historial debe mostrar todos los cambios hecho por el último autor. De lo contrario, muestra sólo el último cambio realizado
+history lists	wiki	es-es	Listas de historial
+history of	wiki	es-es	Historia de
+interwikiprefix	admin	es-es	Prefijo InterWiki
 lock and unlock pages	admin	es-es	Cerrar y abrir páginas
 lock/unlock pages	wiki	es-es	Cerrar/Abrir páginas
 metadescription	admin	es-es	Descripción Meta
 metakeywords	admin	es-es	Palabras clave Meta
 name wiki home link	admin	es-es	nombrar el enlace de la página de inicio del wiki
+newer	wiki	es-es	Más reciente
+older	wiki	es-es	Anterior
 please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	es-es	Por favor, póngase en contacto con el <a href="mailto:%1">administrator</a> para obtener asistencia.
+preferences		es-es	in
+preview	wiki	es-es	Vista previa
+previewing	wiki	es-es	Previsualización
 readonly	admin	es-es	sólo lectura
+rows	wiki	es-es	Filas
+save & continue	wiki	es-es	Guardar y seguir
+search		es-es	wiki
 site configuration	wiki	es-es	Configuración del sitio
+summary of change	wiki	es-es	Resumen de cambios
+this document cannot be edited	wiki	es-es	Este documento no se puede editar
+view document history	wiki	es-es	Ver el historial del documento
+warning since you started editing this document has been changed by someone else	wiki	es-es	Aviso: desde que empezó a editar este documento, alguién lo ha modificado. Por favor, incluya su edición en la versión actual de este documento.
 wiki	common	es-es	Wiki
 wiki administration	wiki	es-es	Administración del wiki
 wiki menu	wiki	es-es	Menú wiki
 you have been denied access to this site.	wiki	es-es	Le ha sido denegado el acceso a este sitio
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	es-es	Ha excedido el número de páginas que le está permitido visitar en un período de tiempo determinado. Por favor, vuelva más tarde.
+your user name is %1	wiki	es-es	Su nombre de usuario es %1
