@@ -31,7 +31,7 @@
       </tr>
 <!-- END projects_list -->
 
-  </table>
+  </table><br><br>
   <table cellpadding=3 cellspacing=1>
   <tr>
      <td><a href={all_open_hours}>{lang_all_open_hours}</a></td>

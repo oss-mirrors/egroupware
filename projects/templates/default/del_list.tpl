@@ -31,7 +31,7 @@
       </tr>
 <!-- END projects_list -->
 
-  </table>
+  </table><br><br>
 
 <!-- link for all delivery notes -->
    <table cellpadding=3 cellspacing=1>

@@ -33,7 +33,7 @@
       </tr>
 <!-- END projects_list -->
 
-  </table>
+  </table><br><br>
 
 <!-- link fuer alle invoices -->
       <table cellpadding=3 cellspacing=1>     
