@@ -156,7 +156,7 @@
 			//}        
 			reset ($this->missing_langarray);
 			@ksort($this->missing_langarray);
-			$this->save_sessiondata($this->bo->source_langarray,$this->bo->target_langarray);
+			$this->save_sessiondata($this->source_langarray,$this->target_langarray);
 			return $this->missing_langarray;
 		}
 
