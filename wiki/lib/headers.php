@@ -14,8 +14,8 @@ function gen_headers($timestamp)
 //  $mod = gmdate("D, d M Y H:i:s", $time);
   $now = gmdate("D, d M Y H:i:s");
 
-  header("Expires: $now GMT");
-  header("Last-Modified: $now GMT");
+  #header("Expires: $now GMT");
+  #header("Last-Modified: $now GMT");
 //  header("Cache-Control: no-cache, must-revalidate");
 //  header("Pragma: no-cache");
 }

@@ -9,14 +9,16 @@ require('parse/save.php');
 function action_save()
 {
   global $pagestore, $comment, $categories, $archive;
-  global $Save, $page, $document, $nextver, $REMOTE_ADDR;
+  global $Save, $Preview, $SaveAndContinue, $page, $document, $nextver, $REMOTE_ADDR;
   global $MaxPostLen, $UserName, $SaveMacroEngine, $ErrorPageLocked;
 
   if(empty($Save))                      // Didn't click the save button.
   {
-    include('action/preview.php');
-    action_preview();
-    return;
+  	if(!empty($Preview)) {
+	    include('action/preview.php');
+    	action_preview();
+	    return;
+	}
   }
 
   $pagestore->lock();                   // Ensure atomicity.
@@ -65,8 +67,12 @@ function action_save()
     add_to_category($page, $categories);
   }
 
-  template_save(array('page' => $page,
+  if ((empty($Save)) and (!empty($SaveAndContinue))) {
+	  header('Location: ' . editURL($page));
+  } else {
+	template_save(array('page' => $page,
                       'text' => $document));
+  }
 
   // Process save macros (e.g., to define interwiki entries).
   parseText($document, $SaveMacroEngine, $page);

@@ -78,7 +78,7 @@ function template_common_prologue($args)
   if($args['toolbar'])
     { print html_toolbar_top(); }
 ?>
-<hr />
+<!--<hr align=left width=99% /> -->
 </div>
 <?php
 }
@@ -109,12 +109,12 @@ function template_common_epilogue($args)
 
 ?>
 <div id="footer">
-<hr />
+<hr align=left width=99% />
 <?php
   if(!$args['nosearch'])
   {
 ?>
-<form method="get" action="<?php print $FindScript; ?>">
+<form method="get" action="<?php print $FindScript; ?>" name="thesearch">
 <div class="form">
 <?php
   }
@@ -142,8 +142,12 @@ function template_common_epilogue($args)
   if($args['history'])
   {
 ?>
-    <a href="<?php print historyURL($args['history']); ?>">View document history</a><br />
-<?php
+    <a href="<?php print historyURL($args['history']); ?>">View document history</a>
+	<input type="hidden" name="action" value="find" />
+<?  if(!$args['nosearch']) { ?>	
+  		| Search: <input type="text" name="find" size="20" /> 
+ <? } 
+	echo "<br />";
   }
   if($args['timestamp'])
   {
@@ -164,8 +168,7 @@ function template_common_epilogue($args)
   if(!$args['nosearch'])
   {
 ?>
-  <input type="hidden" name="action" value="find" />
-  Search: <input type="text" name="find" size="20" />
+<hr align=left width=99% />
 </div>
 </form>
 <?php
@@ -177,7 +180,7 @@ function template_common_epilogue($args)
 <?php
 
   $size = ob_get_length();
-  header("Content-Length: $size");
+  ##header("Content-Length: $size");
   ob_end_flush();
 }
 ?>

@@ -84,7 +84,11 @@ $EditRows = 20;
 $EditCols = 65;
 
 // Initialize the default user name to empty.
-$UserName = '';
+$accountid = get_account_id();
+$result = mysql_query("SELECT account_lid FROM phpgw_accounts WHERE account_id='$accountid'");
+$row = mysql_fetch_array($result);
+$UserName = $row["account_lid"];
+#$UserName = '';
 
 // Default time zone offset (in minutes) for visitors who haven't yet set their
 //   preferences.
@@ -150,7 +154,7 @@ $MaxHeading = 6;
 //   security hole.
 $ParseEngine = array(
                  'parse_elem_flag',
-//                 'parse_raw_html',
+                 'parse_raw_html',
                  'parse_htmlisms',
                  'parse_code',
                  'parse_nowiki',

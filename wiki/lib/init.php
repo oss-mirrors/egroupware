@@ -59,7 +59,7 @@ if(!empty($prefstr))
     { $TimeZoneOff = $result[1]; }
 }
 
-if($Charset != '')
-  { header("Content-Type: text/html; charset=$Charset"); }
+#if($Charset != '')
+#  { header("Content-Type: text/html; charset=$Charset"); }
 
 ?>

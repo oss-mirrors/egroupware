@@ -24,12 +24,6 @@ function template_view($args)
                                                  ' (' . html_timestamp($args['timestamp']) . ')'
                                                  : '',
                                  'toolbar'  => 1));
-
-?>
-<div id="body">
-<?php print $args['html']; ?>
-</div>
-<?php
   template_common_epilogue(array('twin'      => $args['page'],
                                  'edit'      => $args['page'],
                                  'editver'   => !$args['editable'] ? -1
@@ -38,5 +32,19 @@ function template_view($args)
                                  'history'   => $args['page'],
                                  'timestamp' => $args['timestamp'],
                                  'nosearch'  => 0));
+
+?>
+<div id="body">
+<?php print $args['html']; ?>
+</div>
+<?php
+template_common_epilogue(array('twin'      => $args['page'],
+                                 'edit'      => $args['page'],
+                                 'editver'   => !$args['editable'] ? -1
+                                                : ($args['archive']
+                                                   ? $args['version'] : 0),
+                                 'history'   => $args['page'],
+                                 'timestamp' => $args['timestamp'],
+                                 'nosearch'  => 1));
 }
 ?>

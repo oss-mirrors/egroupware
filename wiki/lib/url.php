@@ -10,15 +10,15 @@
 if(!isset($ViewBase))
   { $ViewBase    = $ScriptBase . '?page='; }
 if(!isset($EditBase))
-  { $EditBase    = $ScriptBase . '?action=edit&amp;page='; }
+  { $EditBase    = $ScriptBase . '?action=edit&page='; }
 if(!isset($HistoryBase))
-  { $HistoryBase = $ScriptBase . '?action=history&amp;page='; }
+  { $HistoryBase = $ScriptBase . '?action=history&page='; }
 if(!isset($FindScript))
   { $FindScript  = $ScriptBase . '?action=find'; }
 if(!isset($FindBase))
-  { $FindBase    = $FindScript . '&amp;find='; }
+  { $FindBase    = $FindScript . '&find='; }
 if(!isset($SaveBase))
-  { $SaveBase    = $ScriptBase . '?action=save&amp;page='; }
+  { $SaveBase    = $ScriptBase . '?action=save&page='; }
 if(!isset($DiffScript))
   { $DiffScript  = $ScriptBase . '?action=diff'; }
 if(!isset($PrefsScript))
@@ -33,8 +33,8 @@ function viewURL($page, $version = '', $full = '')
   global $ViewBase;
 
   return $ViewBase . urlencode($page) .
-         ($version == '' ? '' : "&amp;version=$version") .
-         ($full == '' ? '' : '&amp;full=1');
+         ($version == '' ? '' : "&version=$version") .
+         ($full == '' ? '' : '&full=1');
 }
 }
 
@@ -45,7 +45,7 @@ function editURL($page, $version = '')
   global $EditBase;
 
   return $EditBase . urlencode($page) .
-         ($version == '' ? '' : "&amp;version=$version");
+         ($version == '' ? '' : "&version=$version");
 }
 }
 
@@ -56,7 +56,7 @@ function historyURL($page, $full = '')
   global $HistoryBase;
 
   return $HistoryBase . urlencode($page) .
-         ($full == '' ? '' : '&amp;full=1');
+         ($full == '' ? '' : '&full=1');
 }
 }
 

@@ -43,7 +43,7 @@ function html_dt_start()
 function html_dt_end()
   { return '</dt>'; }
 function html_hr()
-  { return "<hr />\n"; }
+  { return "<hr align=left width=99% />\n"; }
 function html_newline()
   { return "<br />\n"; }
 function html_head_start($level)
@@ -196,9 +196,16 @@ function html_fullhistory($page, $count)
 function html_toolbar_top()
 {
   global $HomePage, $PrefsScript;
-  return html_ref($HomePage, $HomePage) . ' | ' .
+  if ($GLOBALS['phpgw_info']['user']['apps']['admin']) {
+    return html_ref($HomePage, $HomePage) . ' | ' .
          html_ref('RecentChanges', 'RecentChanges') . ' | ' .
-         '<a href="' . $PrefsScript . '">Preferences</a>';
+         '<a href="' . $PrefsScript . '">Preferences</a> | '.
+         '<a href="'.$GLOBALS['phpgw']->link("/axiswiki/admin/index.php").'">Administration</a><br>';
+  } else {
+    return html_ref($HomePage, $HomePage) . ' | ' .
+         html_ref('RecentChanges', 'RecentChanges') . ' | ' .
+         '<a href="' . $PrefsScript . '">Preferences</a><br>';
+  }     
 }
 function html_history_entry($page, $version, $time, $host, $user, $c1, $c2,
                             $comment)

@@ -21,19 +21,21 @@ function template_prefs()
 <div class="form">
   <input type="hidden" name="referrer" value="<?php print $HTTP_REFERER; ?>" />
 
-  <strong>User name</strong><br /><br />
+<!--  <strong>User name</strong><br /><br />
 
   This feature displays your name on RecentChanges to the right
   of pages you edit.  If left blank, your IP address will be
   displayed instead.<br /><br />
-  <input type="text" name="user" value="<?php print $UserName; ?>" /><br />
-  <hr />
+  <input type="text" name="user" value="-->
+Your username is "<?php print $UserName; ?>".<br><br> 
+<!--" /><br />
+<hr align=left width=99% />-->
 
   <strong>Edit box</strong><br /><br />
   Rows: <input type="text" name="rows" value="<?php print $EditRows; ?>" /><br />
   Columns: <input type="text" name="cols" value="<?php
     print $EditCols; ?>" /><br />
-  <hr />
+  <hr align=left width=99% />
 
   <strong>History lists</strong><br /><br />
   Enter here the maximum number of entries to display in a document's history
@@ -67,7 +69,7 @@ function template_prefs()
   History display should show <em>all</em> changes made by the latest
   author.  Otherwise, show only the last change made.<br />
 
-  <hr /><br />
+  <hr align=left width=99% /><br />
   <input type="submit" name="Save" value="Save" />
 </div>
 </form>

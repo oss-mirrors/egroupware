@@ -23,12 +23,20 @@ function template_edit($args)
                                  'headlink' => $args['page'],
                                  'headsufx' => '',
                                  'toolbar'  => 1));
+  template_common_epilogue(array('twin'      => $args['page'],
+                                 'edit'      => '',
+                                 'editver'   => '',
+                                 'history'   => $args['page'],
+                                 'timestamp' => $args['timestamp'],
+                                 'nosearch'  => 0));
+								 
 ?>
 <div id="body">
-<form method="post" action="<?php print saveURL($args['page']); ?>">
+<form method="post" name="editform" action="<?php print saveURL($args['page']); ?>">
 <div class="form">
   <input type="submit" name="Save" value="Save" />
   <input type="submit" name="Preview" value="Preview" />
+  <input type="submit" name="SaveAndContinue" value="Save & Continue" />
 <?php
   if($UserName != '')
     { print 'Your user name is ' . html_ref($UserName, $UserName); }
@@ -56,11 +64,12 @@ user name<?php
 </form>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => $args['page'],
+/*  template_common_epilogue(array('twin'      => $args['page'],
                                  'edit'      => '',
                                  'editver'   => '',
                                  'history'   => $args['page'],
                                  'timestamp' => $args['timestamp'],
                                  'nosearch'  => 0));
+								 */
 }
 ?>
