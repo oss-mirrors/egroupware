@@ -19,7 +19,7 @@ CREATE TABLE phpgw_polls_user (
 );
 
 insert into phpgw_polls_desc (poll_title,poll_timestamp) values ('What came first ?',date_part('epoch',now()));
-insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('1','The chicken','1');
-insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('1','The egg','2');
+insert into phpgw_polls_data (poll_id,option_text) values ('1','The chicken');
+insert into phpgw_polls_data (poll_id,option_text) values ('1','The egg');
 insert into applications (app_name,app_title,app_enabled,app_order,app_tables,app_version) values ('polls','Vooting Booth','1','','phpgw_polls_user:user_id','0.8.1pre1');
 

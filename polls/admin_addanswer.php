@@ -24,6 +24,9 @@
      $phpgw->template->set_var("message","");
   }
 
+  $phpgw->template->set_var("header_message",lang("Add answer to poll"));
+  $phpgw->template->set_var("td_message","&nbsp;");
+  $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
   $phpgw->template->set_var("form_action",$phpgw->link("admin_addanswer.php"));
   $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Add") . '">');
 

@@ -1,4 +1,7 @@
 <!-- BEGIN form -->
+ <b>{header_message}</b>
+ <hr><p>
+
  <form method="POST" action="{form_action}">
   <table border="0" align="center">
    <tr bgcolor="{th_bg}">
@@ -7,6 +10,9 @@
 
    {rows}
 
+   <tr>
+    <td align="center">{form_button}</td>
+   </tr>
   </table>
  </form>
 <!-- END form -->
