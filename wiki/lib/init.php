@@ -47,7 +47,7 @@ else
 $UserName = ExecMethod('phpgwapi.accounts.id2name',get_account_id());
 $anonymous = $UserName == AnonymousUser;
 // echo "<p>user='$UserName', AnonymousUser='$AnonymousUser', anonymous=".($anonymous?'True':'False').", action='$action', Preview='$Preview'</p>\n";
-if (!($action == 'save' && !$Preview) && $action != 'admin')
+if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save))
 {
 	$GLOBALS['phpgw_info']['flags']['nonavbar'] = $anonymous;
 	$GLOBALS['phpgw']->common->phpgw_header();
