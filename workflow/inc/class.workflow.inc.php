@@ -2,6 +2,9 @@
 
 	class workflow
 	{
+		var $public_functions = array(
+			'export'	=> true,
+		);
 		var $t;
 
 		var $wf_p_id;
@@ -84,7 +87,7 @@
 				'img_change'			=> $GLOBALS['phpgw']->common->image('workflow', 'change'),
 				'link_admin_shared_source'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $proc_info['wf_p_id']),
 				'img_code'				=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-				'link_admin_export'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminexport.form&p_id='. $proc_info['wf_p_id']),
+				'link_admin_export'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.workflow.export&p_id='. $proc_info['wf_p_id']),
 				'link_admin_roles'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $proc_info['wf_p_id']),
 				'img_roles'				=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
 				'link_graph'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.show_graph&p_id=' . $proc_info['wf_p_id']),
@@ -233,6 +236,26 @@
 			$fp = fopen($complete_path, 'w');
 			fwrite($fp, $source);
 			fclose($fp);
+		}
+
+		function export()
+		{
+			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
+
+			// retrieve process info
+			$proc_info = $this->process_manager->get_process($this->wf_p_id);
+
+			$filename = $proc_info['wf_normalized_name'].'.xml';
+			$out = $this->process_manager->serialize_process($this->wf_p_id);
+			$mimetype = 'application/xml';
+			// MSIE5 and Opera show allways the document if they recognise. But we want to oblige them do download it, so we use the mimetype x-download:
+			if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 5') || strpos($_SERVER['HTTP_USER_AGENT'], 'Opera 7'))
+				$mimetype = 'application/x-download';
+			// Show appropiate header for a file to be downloaded:
+			header("content-disposition: attachment; filename=$filename");
+			header("content-type: $mimetype");
+			header('content-length: ' . strlen($out));
+			echo $out;
 		}
 	}
 ?>
