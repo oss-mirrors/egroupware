@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin {AC0714F6-3D04-11D1-AE7D-00A0C90F26F4} Connect 
-   ClientHeight    =   10320
+   ClientHeight    =   10005
    ClientLeft      =   1740
    ClientTop       =   1545
-   ClientWidth     =   12810
-   _ExtentX        =   22595
-   _ExtentY        =   18203
+   ClientWidth     =   12300
+   _ExtentX        =   21696
+   _ExtentY        =   17648
    _Version        =   393216
    Description     =   "Add-In Project Template"
    DisplayName     =   "eGWOSync"

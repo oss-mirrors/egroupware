@@ -22,7 +22,7 @@ Public Sub GetContacts()
         Dim tempValue   As XMLRPCValue
         Dim INT_START   As Integer
         Dim INT_LIMIT   As Integer
-        Dim QUERY       As String
+        Dim query       As String
         Dim ORDER       As String
         Dim SORT        As String
         Dim oContacts   As New COutlookContacts
@@ -30,10 +30,11 @@ Public Sub GetContacts()
         'Clears the local and remote listbox, so that we dont get double contacts.
         FrmMain.listLocal.Clear
         FrmMain.listRemote.Clear
+        query = FrmMain.txtSearch
+        
         
         INT_START = 1
         INT_LIMIT = 50
-        QUERY = ""
         ORDER = "fn"
         SORT = "ASC"
         
@@ -47,7 +48,7 @@ Public Sub GetContacts()
             xmlParms.AddInteger "limit", INT_LIMIT
             xmlArray.AddString "fn"
             xmlParms.AddArray "fields", xmlArray
-            xmlParms.AddString "query", QUERY
+            xmlParms.AddString "query", query
             xmlParms.AddString "order", ORDER
             xmlParms.AddString "sort", SORT
             
@@ -108,8 +109,8 @@ Public Sub SynchronizeContacts()
         
         'Get the full names of the selected contacts from each listbox
         With FrmMain
-            Set colSelLocal = .GetSelectedListItems("local")
-            Set colSelRemote = .GetSelectedListItems("remote")
+            Set colSelLocal = .GetSelectedListItems(.listLocal)
+            Set colSelRemote = .GetSelectedListItems(.listRemote)
         End With
         
         '[ > Start synchronizing remote contacts
@@ -196,7 +197,7 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
     Dim bLogin As Boolean
     Dim bEnabled As Boolean
     
-    '[ grab the login information from the form GUI. eGW is defined in ThisOutlookSession
+    '[ grab the login information from the form GUI. eGW is defined in CeGWOSyncMaster
     '[ so it's always accessible to everyone.
     bEnabled = Master.Ready
     
@@ -208,17 +209,19 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
         If bLogin Then
             Master.eGW.Reset
             Master.eGW.Exec methodName, xmlParms
+            
             'Error handling bonanza
             If Master.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
-                Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
+                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Status
                 If Master.eGW.Response.Status = 4 Then
                     Debug.Print "XML Parse Error: " & Master.eGW.Response.XMLParseError
                     'This line will show the full response string from the server in all its glory
-                    'Debug.Print eGW.Response.XMLResponse
+                    Debug.Print Master.eGW.Response.xmlResponse
                 End If
             ElseIf Master.eGW.Response.Params.Count <> 1 Then
                 Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
             End If
+            
             'return the response from the XMLRPC server
             Set SimpleExec = Master.eGW.Response
             'it's always polite to close the door when you leave
