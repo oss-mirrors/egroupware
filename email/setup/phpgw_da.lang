@@ -15,7 +15,7 @@ forward	email	da	Videresend e-mail
 from	email	da	Fra
 if applicable	email	da	Hvis passende
 image	email	da	Billede
-imap server type	email	da	IMAP server type
+imap server type	common	da	IMAP server type
 mail server	email	da	Post server
 mail server type	email	da	Post server type
 message	email	da	Besked

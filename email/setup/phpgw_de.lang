@@ -30,7 +30,7 @@ from	email	de	Von
 get size	email	de	Größe ermitteln
 if applicable	email	de	falls zutreffend
 image	email	de	Grafik
-imap server type	email	de	Typ des IMAP Servers
+imap server type	common	de	Typ des IMAP Servers
 long names	email	de	lange Namen
 Layout 1	email	de	Layout 1
 Layout 2	email	de	Layout 2

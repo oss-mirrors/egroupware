@@ -20,7 +20,7 @@ from	email	en	From
 if applicable	email	en	If Applicable
 image	email	en	Image
 imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
-imap server type	email	en	IMAP Server Type
+imap server type	common	en	IMAP Server Type
 mail folder(uw-maildir)	email	en	Mail Folder(uw-maildir)
 mail server	email	en	Mail Server
 mail server login type	admin	en	Mail server login type

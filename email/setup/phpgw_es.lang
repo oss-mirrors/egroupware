@@ -15,7 +15,7 @@ forward	email	es	Reenviar
 from	email	es	De
 if applicable	email	es	Si es aplicable
 image	email	es	Imagen
-imap server type	email	es	Tipo de servidor IMAP
+imap server type	common	es	Tipo de servidor IMAP
 mail server	email	es	Servidor de Mail
 mail server type	email	es	Tipo de servidor de Mail
 message	email	es	Mensaje
