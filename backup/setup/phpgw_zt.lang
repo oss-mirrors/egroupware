@@ -1,4 +1,6 @@
 absolute path of the backup directory	backup	zt	備份資料存放位置的絕對路徑 (例如： /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	zt	備份資料夾的絕對路徑，例如： /usr/local/www/egroupware/backup/archive
+absolute path of the directory of egw backup application	backup	zt	EGW備份程式的絕對路徑
 absolute path of the directory to store the backup script	backup	zt	EGW備份程式的絕對位置
 archive type	backup	zt	檔案格式
 backup	common	zt	備份
@@ -12,14 +14,17 @@ data	backup	zt	資料
 directory locations	admin	zt	資料夾位置
 directory names	admin	zt	資料夾名稱
 e-mail	backup	zt	透過E-MAIL提醒？
+e-mail notification?	backup	zt	透過E-MAIL提醒？
 homedirs	admin	zt	根目錄
 interval	backup	zt	間隔
 ip or hostname	backup	zt	IP 或主機名稱
 ldap	common	zt	LDAP
 ldap database	admin	zt	LDAP資料庫
+list backup archives	backup	zt	列出備份的檔案
 maildir	admin	zt	郵件資料夾
 monthly	backup	zt	每月
 mysql	admin	zt	MySQL
+nfs	backup	zt	網路檔案系統
 no backup archives available !	backup	zt	沒有備份資料！
 number of stored backup versions	backup	zt	備份資料的版本編號
 operating system	backup	zt	作業系統
@@ -38,6 +43,7 @@ please specify the ip of the remote host !	backup	zt	請指定遠端主機的IP�
 please specify the name of the maildir in *site configuration* !	backup	zt	請在"網站設定"中指定郵件資料夾的名稱！
 please specify the path to the backup directory !	backup	zt	請指定備份資料夾的路徑！
 please specify the path to the user-homedirectories in *site configuration* !	backup	zt	請在"網站設定"中指定使用者根目錄的路徑！
+please write down you e-mail for beeing notified	backup	zt	請填入您的e-mail來收取系統的通知
 program locations	admin	zt	程式位置
 save backup locally ?	backup	zt	儲存本地備份？
 select archive type	backup	zt	選擇檔案格式

@@ -90,6 +90,7 @@ delete factor	projects	zt	刪除要素
 delete hours	projects	zt	移除時數
 delete job	projects	zt	刪除工作
 delete project	projects	zt	刪除專案
+delete selected files	projects	zt	刪除選取的檔案
 delete work hours	projects	zt	刪除工作時數
 deliveries	projects	zt	遞送
 delivery	projects	zt	遞送
@@ -240,6 +241,7 @@ please choose activities for the project	projects	zt	請選擇這個專案的活
 please choose the accounting system for the project	projects	zt	請選擇這個專案的會計系統
 please choose the columns to list in the projects preferences section	projects	zt	請選擇專案設定區要顯示的欄位。
 please choose the discount type	projects	zt	請選擇折扣種類。
+please enable html view of emails.	projects	zt	請啟用郵件的HTML瀏覽功能
 please enter a remark	projects	zt	請輸入一個代稱
 please enter a remark !	projects	zt	Please enter a remark !
 please enter an id	projects	zt	請輸入代碼。
@@ -310,7 +312,10 @@ sequencing project	projects	zt	排序專案
 settings	admin	zt	設定
 short description	projects	zt	簡短說明
 show gantt chart	projects	zt	顯示甘特圖
+show milestones	projects	zt	顯示里程碑
+show planned resources	projects	zt	顯示
 site configuration	projects	zt	網站設定
+size	projects	zt	大小
 start	projects	zt	開始
 start date can not be before parent projects start date	projects	zt	開始日期不能夠在主要專案的開始日期之前
 start date planned	projects	zt	預定開始日期

@@ -68,6 +68,7 @@ write	developer_tools	zt	寫入
 write the lang-file to the apps setup-dir	developer_tools	zt	將翻譯的資料寫入應用程式的資料夾中
 write to lang table	developer_tools	zt	寫入語言表
 writing langfile for '%1' ...	developer_tools	zt	正在寫入語言檔案'%1' ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	zt	在繼續下一步前您必須[儲存]任何在上面欄位的異動
 you must a version	developer_tools	zt	您必須是一個版本
 you must enter a change	developer_tools	zt	您必須輸入改變後的文字
 you must select a project	developer_tools	zt	您必須選擇一個專案
