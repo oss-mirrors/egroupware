@@ -279,7 +279,7 @@
 			$dot_or_slash = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter');
 			
 			// ----  Get a List Of All Folders  AND Display them ----
-			$folder_list = $GLOBALS['phpgw']->msg->get_folder_list('');
+			$folder_list = $GLOBALS['phpgw']->msg->get_folder_list();
 			if ($this->debug) { echo 'email.bofolder.folder_data: $folder_list[] dump:<pre>'; print_r($folder_list); echo '</pre>'; }
 			
 			$this->xi['folder_list_display'] = array();

@@ -144,7 +144,7 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			// get the actual list of folders we are going to put into the combobox
-			$folder_list = $this->get_folder_list('');
+			$folder_list = $this->get_folder_list();
 			
 			// iterate thru the folder list, building the HTML tags using that data
 			for ($i=0; $i<count($folder_list);$i++)

@@ -65,6 +65,7 @@
 	//var $session_cache_debug_nosave = True;
 	var $session_cache_debug_nosave = False;
 	
+	// DEPRECIATED: folder_list now cached to appsession / temporary cache
 	// (B) "folder list" caching (default value here, will be overridden by preferences item "cache_data")
 	// currently caches "mailsvr_namespace" and "get_folder_list" responses to the prefs DB
 	var $cache_mailsvr_data_disabled = True;
@@ -1206,6 +1207,7 @@
 
 		// do we have cached data that we can use?
 		$class_cached_mailsvr_namespace = $this->_direct_access_arg_value('mailsvr_namespace', $acctnum);
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: check for L1 class var cached data: $this->_direct_access_arg_value(mailsvr_namespace, '.$acctnum.'); returns: '.serialize($class_cached_mailsvr_namespace).'<br>'; }
 		if ($class_cached_mailsvr_namespace != '')
 		{
 			// return the cached data
@@ -1228,6 +1230,22 @@
 			return $cached_data;
 		}
 		*/
+		// -----------
+		// TRY CACHED DATA FROM APPSESSION
+		// -----------
+		// try to restore "mailsvr_namespace" from saved appsession data store
+		$appsession_cached_mailsvr_namespace = $this->read_session_cache_item('mailsvr_namespace', $acctnum);
+		if ($appsession_cached_mailsvr_namespace)
+		{
+			// cache the result in "level one cache" class var holder
+			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: put appsession retored data into "level 1 cache, class var" arg $this->set_arg_value(mailsvr_namespace, '.$appsession_cached_mailsvr_namespace['mailsvr_namespace'].', '.$acctnum.']) <br>'; }
+			$this->set_arg_value('mailsvr_namespace', $appsession_cached_mailsvr_namespace['mailsvr_namespace'], $acctnum);
+			
+			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_namespace: LEAVING, returned appsession cached data: '.serialize($appsession_cached_mailsvr_namespace['mailsvr_namespace']).'<br>'; }
+			return $appsession_cached_mailsvr_namespace['mailsvr_namespace'];
+		}
+		
+		
 		// no cached data of any kind we can use ...
 		
 		// we *may* need this data later
@@ -1342,7 +1360,13 @@
 		$my_function_name = 'get_mailsvr_namespace';
 		$this->set_cached_data($my_function_name,'string',$name_space);
 		*/
-		
+		// -----------
+		// SAVE DATA TO APPSESSION CACHE
+		// -----------
+		// save "mailsvr_namespace" to appsession data store
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: set appsession cache $this->save_session_cache_item(mailsvr_namespace, '.$name_space.', '.$acctnum.']) <br>'; }
+		$this->save_session_cache_item('mailsvr_namespace', $name_space, $acctnum);
+
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_mailsvr_namespace: LEAVING, returning $name_space: '.serialize($name_space).'<br>'; }
 		return $name_space;
 	}
@@ -1558,13 +1582,16 @@
 	PRIVATE
 	may call directly if you can't to manually force_refresh any cached data 
 	*/
-	function get_folder_list($mailsvr_stream='', $force_refresh=False)
+	function get_folder_list($acctnum='', $force_refresh=False)
 	{
 		// what acctnum is operative here, we can only get a folder list for one account at a time (obviously)
-		$this_acctnum = $this->get_acctnum();
-		
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: ENTERING<br>'; }
-		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: for the rest of this function we will use $this_acctnum: ['.$this_acctnum.'] <br>'; }
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: for the rest of this function we will use $acctnum: ['.$acctnum.'] <br>'; }
 		
 		if (stristr($this->skip_args_special_handlers, 'get_folder_list'))
 		{
@@ -1572,32 +1599,23 @@
 			$fake_return[0] = array();
 			$fake_return[0]['folder_long'] = 'INBOX';
 			$fake_return[0]['folder_short'] = 'INBOX';
-			$fake_return[0]['acctnum'] = $this_acctnum;
+			$fake_return[0]['acctnum'] = $acctnum;
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, debug SKIP, $fake_return: '.serialize($fake_return).' <br>'; }
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $$this->_direct_access_arg_value(folder_list) dump:<pre>'; print_r($this->_direct_access_arg_value('folder_list')); echo '</pre>'; }
+		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $$this->_direct_access_arg_value(folder_list, '.$acctnum.') dump:<pre>'; print_r($this->_direct_access_arg_value('folder_list', $acctnum)); echo '</pre>'; }
 		
-		if ((!$mailsvr_stream)
-		|| ($mailsvr_stream == ''))
-		{
-			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
-		}
+		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
-		// check if class dcom reports that the folder list has changed
-		//$tmp_a = $this->a[$this->acctnum];
-		
-		//if ((isset($tmp_a['dcom']))
-		//&& ($tmp_a['dcom']->folder_list_changed == True))
-		if ((is_object($GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom))
-		&& ($GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->folder_list_changed == True))
+		// check if class dcom reports that the folder list has changed		
+		if ((is_object($GLOBALS['phpgw_dcom_'.$acctnum]->dcom))
+		&& ($GLOBALS['phpgw_dcom_'.$acctnum]->dcom->folder_list_changed == True))
 		{
 			// class dcom recorded a change in the folder list
 			// supposed to happen when create or delete mailbox is called
 			// reset the changed flag
-			// $tmp_a['dcom']->folder_list_changed = False;
-			$GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->folder_list_changed = False;
+			$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->folder_list_changed = False;
 			// set up for a force_refresh
 			$force_refresh = True;
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: class dcom report folder list changed<br>'; }
@@ -1605,15 +1623,19 @@
 			// set_arg_value to empty array not necessary, it will be replaced later anyway
 			//$blank_list = array();
 			//$this->set_arg_value('folder_list', $blank_list);
+			/*
 			$my_function_name = 'get_folder_list';
 			//$this->remove_cached_data($my_function_name);
 			// if we do not provide $my_function_name, then we expire all "cachable_server_items"
 			// which is probably a good idea, we do not want mismatched cached items
 			$this->remove_cached_data('');
+			*/
+			// expire appsession cache
+			$this->expire_session_cache_item('folder_list', $acctnum);
 		}
 
 		// see if we have object class var cached data that we can use
-		$class_cached_folder_list = $this->_direct_access_arg_value('folder_list');
+		$class_cached_folder_list = $this->_direct_access_arg_value('folder_list', $acctnum);
 		if ((count($class_cached_folder_list) > 0)
 		&& ($force_refresh == False))
 		{
@@ -1622,8 +1644,8 @@
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING,  using object cached folder list data<br>'; }
 			return $class_cached_folder_list;
 		}
-		elseif (($this->get_pref_value('mail_server_type') == 'pop3')
-		|| ($this->get_pref_value('mail_server_type') == 'pop3s'))
+		elseif (($this->get_pref_value('mail_server_type', $acctnum) == 'pop3')
+		|| ($this->get_pref_value('mail_server_type', $acctnum) == 'pop3s'))
 		{
 			// normalize the folder_list property
 			$my_folder_list = array();
@@ -1631,37 +1653,59 @@
 			$my_folder_list[0] = array();
 			$my_folder_list[0]['folder_long'] = 'INBOX';
 			$my_folder_list[0]['folder_short'] = 'INBOX';
-			$my_folder_list[0]['acctnum'] = $this_acctnum;
+			$my_folder_list[0]['acctnum'] = $acctnum;
 			// save result to "Level 1 cache" class arg holder var
-			$this->set_arg_value('folder_list', $my_folder_list);
+			$this->set_arg_value('folder_list', $my_folder_list, $acctnum);
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING,  pop3 servers only have one folder: INBOX<br>'; }
 			return $my_folder_list;
 		}
 		elseif ($force_refresh == False)
 		{
+			/*
 			// -----------
 			// TRY CACHED DATA FROM PREFS DB
 			// -----------
 			// whether or not caching is enabled is handled in the "get_cached_data" function itself
 			$my_function_name = 'get_folder_list';
 			$cached_data = $this->get_cached_data($my_function_name,'array');
+			*/
+			// -----------
+			// TRY CACHED DATA FROM APPSESSION
+			// -----------
+			// try to restore "folder_list" from saved appsession data store
+			$appsession_cached_folder_list = $this->read_session_cache_item('folder_list', $acctnum);
+			if ($appsession_cached_folder_list)
+			{
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: got appsession cached data<br>'; }
+				$cached_data = $appsession_cached_folder_list['folder_list'];
+				if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: appsession cached data dump<pre>'; print_r($cached_data); echo '</pre>'; }
+				// we no longer need this var
+				$appsession_cached_folder_list['folder_list'] = '';
+			}
+			else
+			{
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: NO appsession cached data was available<br>'; }
+				$cached_data = False;
+			}
+			
 			// if there's no data we'll get back a FALSE
 			if ($cached_data)
 			{
-				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: using *Prefs DB* cached folder list data<br>';}
-				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: setting object var $this->a['.$this_acctnum.'][folder_list] to hold list data<br>';}
+				//if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: using *Prefs DB* cached folder list data<br>';}
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: using appsession cached folder list data<br>';}
 				// cached folder list does NOT contain "folder_short" data
 				// that cuts cached data in 1/2, no need to cache something this easy to deduce
 				// therefor... add FOLDER SHORT element to cached_data array structure
-				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: adding [folder_short] element to $this->a['.$this_acctnum.'][folder_list] array<br>';}
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: adding [folder_short] element to $this->a['.$acctnum.'][folder_list] array<br>';}
 				for ($i=0; $i<count($cached_data);$i++)
 				{
 					$cached_data[$i]['folder_short'] = $this->get_folder_short($cached_data[$i]['folder_long']);
-					if ($this->debug_args_special_handlers > 2) { echo ' * * $cached_data['.$i.'][folder_long]='.$cached_folder_list[$i]['folder_long'].' ; $cached_folder_list['.$i.'][folder_short]='.$cached_folder_list[$i]['folder_short'].'<br>';}
+					if ($this->debug_args_special_handlers > 2) { echo ' * * $cached_data['.$i.'][folder_long]='.htmlspecialchars($cached_data[$i]['folder_long']).' ; $cached_data['.$i.'][folder_short]='.htmlspecialchars($cached_data[$i]['folder_short']).'<br>';}
 				}
-				// cache the result in "Level 1 cache" class object var
-				$this->set_arg_value('folder_list', $cached_data);
 				if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $cached_data *after* adding "folder_short" data<pre>'; print_r($cached_data); echo '</pre>'; }
+				// cache the result in "Level 1 cache" class object var
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: put folder_list into Level 1 class var "cache" $this->set_arg_value(folder_list, $cached_data, '.$acctnum.');<br>';}
+				$this->set_arg_value('folder_list', $cached_data, $acctnum);
 				if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, got data from cache<br>'; }
 				return $cached_data;
 			}
@@ -1678,12 +1722,12 @@
 		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: need to get data from mailserver<br>'; }
 		
 		// Establish Email Server Connectivity Information
-		$server_str = $this->get_arg_value('mailsvr_callstr');
-		$name_space = $this->get_arg_value('mailsvr_namespace');
-		$delimiter = $this->get_arg_value('mailsvr_delimiter');
+		$server_str = $this->get_arg_value('mailsvr_callstr', $acctnum);
+		$name_space = $this->get_arg_value('mailsvr_namespace', $acctnum);
+		$delimiter = $this->get_arg_value('mailsvr_delimiter', $acctnum);
 		
 		// get a list of available folders from the server
-		if ($this->get_pref_value('imap_server_type') == 'UWash')
+		if ($this->get_pref_value('imap_server_type', $acctnum) == 'UWash')
 		{
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: mailserver is of type UWash<br>';}
 			// uwash is file system based, so it requires a filesystem slash after the namespace
@@ -1697,8 +1741,7 @@
 			// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
 			// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
 			// BUT we use <tilde><slash> "~/" if no namespace is given
-			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
-			$mailboxes = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
 			// UWASH IMAP returns information in this format:
 			// {SERVER_NAME:PORT}FOLDERNAME
 			// example:
@@ -1713,11 +1756,11 @@
 			// wheres adding the delimiter "INBOX.*" (has dot) will NOT include the INBOX in the list of folders
 			// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 			// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-			//$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
+			//$mailboxes = $this->a[$acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
 			// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
 			// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
 			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
-			$mailboxes = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "*");
 			// returns information in this format:
 			// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 			// example:
@@ -1737,9 +1780,9 @@
 			$my_folder_list[0] = array();
 			$my_folder_list[0]['folder_long'] = 'INBOX';
 			$my_folder_list[0]['folder_short'] = 'INBOX';
-			$my_folder_list[0]['acctnum'] = $this_acctnum;
+			$my_folder_list[0]['acctnum'] = $acctnum;
 			// save result to "Level 1 cache" class arg holder var
-			$this->set_arg_value('folder_list', $my_folder_list);
+			$this->set_arg_value('folder_list', $my_folder_list, $acctnum);
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: error, no mailboxes returned from server, fallback to "INBOX" as only folder, $this->set_arg_value(folder_list, $my_folder_list) to hold that value<br>'; }
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, with error, no mailboxes returned from server, return list with only INBOX<br>'; }
 			return $my_folder_list;
@@ -1783,13 +1826,13 @@
 		
 		// make a $my_folder_list array structure with ONLY FOLDER LONG data
 		// save that to cache, that cuts cached data in 1/2
-		// (LATER - we will add the "folder_short" data
+		// (LATER - we will add the "folder_short" data)
 		for ($i=0; $i<count($mailboxes);$i++)
 		{
 			// "is_imap_folder" really just a check on what UWASH imap returns, may be files that are not MBOX's
 			if ($this->is_imap_folder($mailboxes[$i]))
 			{
-				//$this->a[$this_acctnum]['folder_list'][$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
+				//$this->a[$acctnum]['folder_list'][$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
 				// what we (well, me, Angles) calls a "folder long" is the raw data returned from the server (fully qualified name)
 				// MINUS the bracketed server, so we are calling "folder long" a NAMESPACE_DELIMITER_FOLDER string
 				// WITHOUT the {serverName:port} part, if that part is included we (Angles) call this "fully qualified"
@@ -1797,15 +1840,23 @@
 				$my_folder_list[$next_idx]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
 				// AS SOON as possible, add data indicating WHICH ACCOUNT this folder list came from
 				// while it is still somewhat easy to determine this
-				$my_folder_list[$next_idx]['acctnum'] = $this_acctnum;
+				$my_folder_list[$next_idx]['acctnum'] = $acctnum;
 			}
 		}
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: my_folder_list with only "folder_long" dump<pre>'; print_r($my_folder_list); echo '</pre>'; }
+		/*
 		// -----------
 		// SAVE DATA TO PREFS DB CACHE (without the [folder_short] data)
 		// -----------
 		$my_function_name = 'get_folder_list';
 		$this->set_cached_data($my_function_name,'array',$my_folder_list);
+		*/
+		// -----------
+		// SAVE DATA TO APPSESSION DB CACHE (without the [folder_short] data)
+		// -----------
+		// save "folder_list" (without folder short data) to appsession data store
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: set appsession cache $this->save_session_cache_item(folder_list, $my_folder_list, '.$acctnum.']) <br>'; }
+		$this->save_session_cache_item('folder_list', $my_folder_list, $acctnum);
 		
 		// add FOLDER SHORT element to folder_list array structure
 		// that cuts cached data in 1/2, no need to cache something this easy to deduce
@@ -1814,12 +1865,12 @@
 			$my_folder_list[$i]['folder_short'] = $this->get_folder_short($my_folder_list[$i]['folder_long']);
 		}
 		// cache the result to "level 1 cache" class arg holder var
-		$this->set_arg_value('folder_list', $my_folder_list);
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: set Level 1 class var "cache" $this->set_arg_value(folder_list, $my_folder_list, '.$acctnum.') <br>'; }
+		$this->set_arg_value('folder_list', $my_folder_list, $acctnum);
 		
 		// finished, return the folder_list array atructure
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: finished, $my_folder_list dump:<pre>'; print_r($my_folder_list); echo '</pre>'; }
 		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, got folder data from server<br>'; }
-		//$this->a[$this->acctnum] = $tmp_a;
 		return $my_folder_list;
 	}
 
@@ -1840,9 +1891,10 @@
 		{
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
 		}
-
-		$folder_list = $this->get_folder_list($mailsvr_stream);
-
+		
+		//$folder_list = $this->get_folder_list($mailsvr_stream);
+		$folder_list = $this->get_folder_list();
+		
 		//$debug_folder_lookup = True;
 		$debug_folder_lookup = False;
 		
