@@ -12,7 +12,7 @@
 
   /* $Id$ */
 
-  $phpgw_flags = array("noheader" => True, "nonavbar" => True);
+  $phpgw_flags = array("noheader" => True, "nonavbar" => True, "currentapp" => "email");
   include("../header.inc.php");
    if (! $phpgw_info["user"]["permissions"]["addressbook"] || ! $phpgw_info["user"]["permissions"]["email"])
       badsession();
