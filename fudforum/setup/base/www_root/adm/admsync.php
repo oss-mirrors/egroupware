@@ -49,7 +49,7 @@ function copy_dir($base, $dest, $dir_ar)
 		compile_all($r->theme, $r->lang, $r->name);
 	}
 
-	echo "FUDforum sources & now syncronized!<br />\n";
+	echo "FUDforum sources are now syncronized!<br />\n";
 
 	require($WWW_ROOT_DISK . 'adm/admclose.php'); 
 ?>
