@@ -90,7 +90,6 @@
     
 			$p->parse('rows','tts_row',true);
 		
-		  }
 		}
 
 		echo "\n<!-- End TTS New/Updated -->\n";
