@@ -567,10 +567,10 @@
 
 			$GLOBALS['phpgw']->template->set_var('billperae',$values['billperae']);
 
-			$link_data['menuaction']	= 'projects.uiconfig.delete_pa';
-			$link_data['pa_id']	= $values[$i]['activity_id'];
-			$GLOBALS['phpgw']->template->set_var('deleteurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
+			#$link_data['menuaction']	= 'projects.uiconfig.delete_pa';
+			#$link_data['pa_id']	= $values[$i]['activity_id'];
+			#$GLOBALS['phpgw']->template->set_var('deleteurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			#$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
 
 			$this->save_sessiondata('act');
 			$GLOBALS['phpgw']->template->pfp('out','edit_activity');
