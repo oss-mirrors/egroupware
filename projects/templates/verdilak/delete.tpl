@@ -1,13 +1,19 @@
 <!-- $Id$ -->
 <br><br><br>     
      <center>
-      <table border=0 with=50% cellpadding=2 cellspacing=2>
-       <tr colspan=2>
-        <td align=center>{deleteheader}</td>
+      <table border="0" with="50%" cellpadding="2" cellspacing="2">
+       <tr>
+        <td align="center">{deleteheader}</td>
        </tr>
        <tr>
-         <td>{nolink}</td>
-         <td>{yeslink}</td>
+        <td>                                                                                                                                                                         
+        <table border="0" width="30%" align="center">                                                                                                                                
+         <tr>
+         <td align="center">{nolink}</td>
+         <td align="center">{yeslink}</td>
+        </tr>                                                                                                                                                                        
+        </table>                                                                                                                                                                     
+        </td>
        </tr>
       </table>
      </center>
