@@ -99,6 +99,7 @@
 	{
 		$args_array['newsmode'] = True;
 		$this->newsmode = True;
+		$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
 	}
 	else
 	{
@@ -128,6 +129,12 @@
 		$phpgw->dcom = CreateObject("email.mail_dcom");
 		// initialize the dcom class variables
 		$phpgw->dcom->mail_dcom_base();
+		// ----  Do We Use UTF7 encoding/decoding of folder names  -----
+		if (isset($phpgw_info['user']['preferences']['email']['enable_utf7'])
+		&& ($phpgw_info['user']['preferences']['email']['enable_utf7']))
+		{
+			$phpgw->dcom->enable_utf7 = True;
+		}
 
 		set_time_limit(90);
 		// login to INBOX because we know that always(?) should exist on an imap server
@@ -670,6 +677,10 @@
 			// "INBOX" as namespace is NOT supposed to be case sensitive
 			if (stristr($folder,"$name_space" ."$delimiter") == False)
 			{
+				// the [namespace][delimiter] string was not present
+				// CONTROVERSIAL: add the [namespace][delimiter] string
+				// this will incorrectly change a shared folder name, whose name may not
+				// supposed to have the [namespace][delimiter] string
 				$folder_long = "$name_space" ."$delimiter" ."$folder";
 			}
 			else
@@ -710,7 +721,6 @@
 			//if (strstr($folder,"$name_space" ."$delimiter") == False)
 			// "INBOX" as namespace is NOT supposed to be case sensitive
 			if (stristr($folder,"$name_space" ."$delimiter") == False)
-
 			{
 				$folder_short = $folder;
 			}
@@ -718,6 +728,7 @@
 			{
 				//$folder_short = strstr($folder,$delimiter);
 				$folder_short = stristr($folder,$delimiter);
+				// get rid of that delimiter (it's included from the stristr above)
 				$folder_short = substr($folder_short, 1);
 			}
 		}
@@ -785,9 +796,12 @@
 			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 			{
 				// uwash is file system based, so it requires a filesystem slash after the namespace
-				// note with uwash the delimited is infact the file system slash
+				// note with uwash the delimiter is in fact the file system slash
 				// example: "mail/*"( which will NOT list the INBOX with the folder list, however)
 				// however, we have no choice since w/o the delimiter "email*" we get NOTHING
+				// example querey: "~/"
+				// OR if the user specifies specific mbox folder,
+				// then: "~/emails/*"  OR  "emails/*" give the same result, much like a unix "ls" command
 				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
 				// UWASH IMAP returns information in this format:
 				// {SERVER_NAME:PORT}FOLDERNAME
@@ -802,7 +816,7 @@
 				// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 				// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
 				//$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
-				// problem: Cyrus does not like anything but a "*" after the server string
+				// problem: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
 				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "*");
 				// returns information in this format:
 				// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
@@ -905,17 +919,17 @@
 		{
 			// folder_haystack is the official folder long name returned from the server during "get_folder_list"
 			$folder_haystack = $folder_list[$i]['folder_long'];
-			if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
-			
+			  if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
+
 			// first try to match the whole name, i.e. needle is already a folder long type name
 			//if ($folder_needle == $folder_haystack)
 			// the NAMESPACE should NOT be case sensitive
 			if ( (stristr($folder_needle, $folder_haystack))
-			&& (strlen($folder_needle) == strlen($folder_haystack)) )
+			&& (strlen($folder_haystack) == strlen($folder_needle)) )
 			{
 				// exact match - needle is already a fully legit folder_long name
 				$needle_official_long = $folder_haystack;
-				if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
+				  if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
 				break;
 			}
 			// look for pattern [delimiter][folder_needle]
@@ -923,13 +937,35 @@
 			//elseif (preg_match('/.*'.$folder_needle.'$/', $folder_haystack))
 			// known delimiters pregstyle ( . = [.])  ( \ = [\])  ( / = [\\/])
 			// the NAMESPACE should NOT be case sensitive
-			elseif (preg_match('/.*([\]|[.]|[\\\]){1}'.$folder_needle.'$/i', $folder_haystack))
+			//elseif (preg_match('/.*([\]|[.]|[\\\]){1}'.$folder_needle.'$/i', $folder_haystack))
+			// problem: unescaped forward slashes will be in UWASH folder names
+			// and unescaped dots will be in other folder names
+			// so use non-regex comparing
+			// haystack must be larger then needle+1 (needle + a delimiter) for this to work
+			elseif ( (stristr($folder_needle, $folder_haystack))
+			&& (strlen($folder_haystack) > strlen($folder_needle)) )
 			{
+				// at least the needle is somewhere in the haystack
+				// 1) get the length of the needle
+				$needle_len = strlen($folder_needle);
+				// get a negative value for use in substr
+				$needle_len_negative = ($needle_len * (-1));
+				// go back one more char in haystack to get the delimiter
+				$needle_len_negative = $needle_len_negative - 1;
+				  if ($debug_folder_lookup) { echo 'needle_len: '.$needle_len.' and needle_len_negative-1: '.$needle_len_negative.'<br>' ;}
+				// get the last part of haystack that is that length
+				$haystack_end = substr($folder_haystack, $needle_len_negative);
 				// look for pattern [delimiter][folder_needle]
 				// because we do NOT want to match a partial word, folder_needle should be a whole folder name
-				$needle_official_long = $folder_haystack;
-				if ($debug_folder_lookup) { echo 'folder exists, official long name: '.$needle_official_long.'<br>'; }
-				break;
+				  if ($debug_folder_lookup) { echo 'haystack_end: '.$haystack_end.'<br>' ;}
+				if ((stristr('/'.$folder_needle, $haystack_end))
+				|| (stristr('.'.$folder_needle, $haystack_end))
+				|| (stristr('\\'.$folder_needle, $haystack_end)))
+				{
+					$needle_official_long = $folder_haystack;
+					  if ($debug_folder_lookup) { echo 'folder exists, lookup found partial match, official long name: '.$needle_official_long.'<br>'; }
+					break;
+				}
 			}
 		}
 		return $needle_official_long;

@@ -37,6 +37,7 @@
 
     function createmailbox($stream,$mailbox) 
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	$this->folder_list_changed = True;
 	return imap_createmailbox($stream,$mailbox);
     }
@@ -44,6 +45,7 @@
     function deletemailbox($stream,$mailbox)
     {
 	$this->folder_list_changed = True;
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_deletemailbox($stream,$mailbox);
     } 
 
@@ -97,6 +99,7 @@
 			// if we have the name, do the move to the trash folder
 			if ($havefolder)
 			{
+				$official_trash_folder_long = $this->utf7_encode($official_trash_folder_long);
 				return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
 			}
 			else
@@ -157,7 +160,10 @@
 
     function listmailbox($stream,$ref,$pattern)
     {
-	return imap_listmailbox($stream,$ref,$pattern);
+    	//return imap_listmailbox($stream,$ref,$pattern);
+	$pattern = $this->utf7_encode($pattern);
+	$return_list = imap_listmailbox($stream,$ref,$pattern);
+    	return $this->utf7_decode($return_list);
     }
 
     function num_msg($stream) // returns number of messages in the mailbox
@@ -172,16 +178,19 @@
 
     function mailcopy($stream,$msg_list,$mailbox,$flags)
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_mailcopy($stream,$msg_list,$mailbox,$flags);
     }
 
     function mail_move($stream,$msg_list,$mailbox)
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_mail_move($stream,$msg_list,$mailbox);
     }
 
     function open($mailbox,$username,$password,$flags="")
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_open($mailbox,$username,$password,$flags);
     }
 
@@ -194,6 +203,7 @@
 
     function reopen($stream,$mailbox,$flags = "")
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_reopen($stream,$mailbox,$flags);
     }
 
@@ -204,6 +214,7 @@
 
     function status($stream,$mailbox,$options)
     {
+    	$mailbox = $this->utf7_encode($mailbox);
 	return imap_status($stream,$mailbox,$options);
     }
 
@@ -244,6 +255,7 @@
 	// if we have the name, append the message to that folder
 	if ($havefolder)
 	{
+		$official_folder_long = $this->utf7_encode($official_folder_long);
 		return imap_append($stream, "$server_str" ."$official_folder_long", $message, $flags);
 	}
 	else
