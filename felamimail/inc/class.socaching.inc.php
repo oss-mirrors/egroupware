@@ -113,14 +113,17 @@
 				
 			while($this->db->next_record())
 			{
+				//(regis) add subject and size
 				$retValue[] = array(
-					'uid'			=> $this->db->f('fmail_uid'),
+					'uid'		=> $this->db->f('fmail_uid'),
 					'sender_name'	=> $this->db->f('fmail_sender_name'), 
+					'subject'	=> $this->db->f('fmail_subject'), 
+					'size'		=> $this->db->f('fmail_size'), 
 					'sender_address'=> $this->db->f('fmail_sender_address'), 
-					'to_name'		=> $this->db->f('fmail_to_name'), 
+					'to_name'	=> $this->db->f('fmail_to_name'), 
 					'to_address'	=> $this->db->f('fmail_to_address'),
 					'attachments'	=> $this->db->f('fmail_attachments'),
-					'date'			=> $this->db->f('fmail_date')
+					'date'		=> $this->db->f('fmail_date')
 				);
 			}
 			return $retValue;
