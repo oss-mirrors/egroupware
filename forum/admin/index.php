@@ -21,25 +21,24 @@
 	$phpgw->template->set_block('INDEX','ForumBlock','ForumB');
 	$phpgw->template->set_block('INDEX','CatBlock','CatB');
 
-
 	$phpgw->template->set_var(array(
-	'FORUM_ADMIN'	=> lang("Forums") . " "	. lang("Admin"),
-	'TB_BG'	=> $phpgw_info["theme"]["table_bg"],
-	//TRY TO FIND A	PERFECT	CHOICE
-	// $phpgw_info["theme"]["bg_color"]
-
-	'TR_BG'		=> $phpgw_info["theme"]["bg_color"],
-	IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
-	'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
-	'FOR_LINK'	=> $phpgw->link("/forum/admin/forum.php"),
-	'MAIN_LINK'	=> $phpgw->link("/forum/index.php"),
-	'LANG_CAT'	=> lang("New Category"),
-	'LANG_FOR'	=> lang("New Forum"),
-	'LANG_MAIN'	=> lang("Return to Forums"),
-	'LANG_CURRENT_SUBFORUM'	=> lang("Current Categories and Sub Forums"),
-	'LANG_CATEGORY'	=> lang("Category"),
-	'LANG_SUBCAT'	=> lang("Sub Category"),
-	'LANG_ACTION'	=> lang("Action")
+		'FORUM_ADMIN'	=> lang("Forums") . " "	. lang("Admin"),
+		'TB_BG'	=> $phpgw_info["theme"]["table_bg"],
+		//TRY TO FIND A	PERFECT	CHOICE
+		// $phpgw_info["theme"]["bg_color"]
+	
+		'TR_BG'		=> $phpgw_info["theme"]["bg_color"],
+		IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
+		'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
+		'FOR_LINK'	=> $phpgw->link("/forum/admin/forum.php"),
+		'MAIN_LINK'	=> $phpgw->link("/forum/index.php"),
+		'LANG_CAT'	=> lang("New Category"),
+		'LANG_FOR'	=> lang("New Forum"),
+		'LANG_MAIN'	=> lang("Return to Forums"),
+		'LANG_CURRENT_SUBFORUM'	=> lang("Current Categories and Sub Forums"),
+		'LANG_CATEGORY'	=> lang("Category"),
+		'LANG_SUBCAT'	=> lang("Sub Category"),
+		'LANG_ACTION'	=> lang("Action")
 	));
 
 	$f_tree = array();
@@ -118,4 +117,3 @@
 	$phpgw->template->pfp('Out','INDEX');
 	$phpgw->common->phpgw_footer();
 ?>
-

@@ -168,9 +168,7 @@
 	$phpgw->db->query("select * from phpgw_forum_body where id = $msgid");
 	$phpgw->db->next_record();
 
-	$phpgw->template->set_var(array(
-	MESSAGE			=> $phpgw->db->f("message")
-	));
+	$phpgw->template->set_var('MESSAGE',$phpgw->strip_html($phpgw->db->f('message')));
 
 	$name = $phpgw_info["user"]["firstname"] . " "	. $phpgw_info["user"]["lastname"];
 	$email	= $phpgw_info["user"]["email_address"];

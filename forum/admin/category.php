@@ -37,7 +37,7 @@
 	'LANG_ADM_MAIN'	=> lang("Return to Admin"),
 	'LANG_CAT'	=> lang("New Category"),
 	'LANG_FOR'	=> lang("New Forum"),
-	'LANG_MAIN' 	=> lang("Return to Forums"),
+	'LANG_MAIN'       => lang("Return to Forums"),
 	'LANG_FORUM'	=> lang("Forum Name"),
 	'LANG_FORUM_DESC'	=> lang("Forum Description"),
 	'LANG_CAT_NAME'	=> lang("Category Name"),

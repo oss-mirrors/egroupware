@@ -41,7 +41,9 @@
             </tr>
             <tr bgcolor="#CCCCFF"> 
               <td colspan=2><br>
+               <pre>
                 {MESSAGE}</td>
+               </pre>
             </tr>
           </table>
           <p>&nbsp;</p>

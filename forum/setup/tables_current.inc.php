@@ -32,8 +32,8 @@
 		'phpgw_forum_categories' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'descr' => array('type' => 'varchar', 'precision' => 8,'nullable' => False)
+				'name' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
+				'descr' => array('type' => 'varchar', 'precision' => 255,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -43,10 +43,10 @@
 		'phpgw_forum_forums' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
+				'name' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
 				'perm' => array('type' => 'int', 'precision' => 2,'nullable' => False),
-				'groups' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'descr' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
+				'groups' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
+				'descr' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
 				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array('id'),
@@ -62,10 +62,10 @@
 				'parent' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'for_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'author' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'subject' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'email' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'host' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
+				'author' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
+				'subject' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
+				'email' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
+				'host' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
 				'stat' => array('type' => 'int', 'precision' => 2,'nullable' => False),
 				'thread' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'depth' => array('type' => 'int', 'precision' => 8,'nullable' => False),
