@@ -179,10 +179,9 @@
 			function testdbfield()
 			{
 				dbvals=document.frm.FLDsite_db_name.value+\':\'+document.frm.FLDsite_db_host.value+\':\'+document.frm.FLDsite_db_user.value+\':\'+document.frm.FLDsite_db_password.value+\':\'+document.frm.FLDsite_db_type.value;
-
-				sessionlink=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access').'\';
+                sessionlink=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access').'\';
 				link=sessionlink+\'&dbvals=\'+dbvals;
-				parent.window.open(link, \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')
+				window.open(link,\'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\');
 			}
 			</script>
 
