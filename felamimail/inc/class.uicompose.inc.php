@@ -30,7 +30,7 @@
 			if (!isset($GLOBALS['HTTP_POST_VARS']['composeid']) && !isset($GLOBALS['HTTP_GET_VARS']['composeid']))
 			{
 				// create new compose session
-				$this->bocompose   = CreateObject('felamimail.bocompose');
+				$this->bocompose   = CreateObject('felamimail.bocompose','',lang('charset'));
 				$this->composeID = $this->bocompose->getComposeID();
 			}
 			else
@@ -40,11 +40,10 @@
 					$this->composeID = $GLOBALS['HTTP_POST_VARS']['composeid'];
 				else
 					$this->composeID = $GLOBALS['HTTP_GET_VARS']['composeid'];
-				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID);
+				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,lang('charset'));
 			}			
-			
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
 
 			$this->t->set_unknowns('remove');
 			
@@ -128,7 +127,6 @@
 			// all values are empty for a new compose window
 			$sessionData = $this->bocompose->getSessionData();
 			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
-			
 			#_debug_array($preferences);
 			
 			// is the to address set already?
@@ -176,13 +174,13 @@
 			}
 			
 			// header
-			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES);
+			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,lang('charset'));
 			$this->t->set_var("from",$displayFrom);
-			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES));
-			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES));
-			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES));
-			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES));
-			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES));
+			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES,lang('charset')));
+			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES,lang('charset')));
+			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES,lang('charset')));
+			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES,lang('charset')));
+			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES,lang('charset')));
 			$this->t->pparse("out","header");
 
 			// body
@@ -246,7 +244,7 @@
 				// this fill the session data with the values from the original email
 				$this->bocompose->getReplyData('single', $replyID, $partID);
 			}
-			$this->compose('body');
+			$this->compose(htmlentities('body'));
 		}
 		
 		function replyAll()

@@ -46,12 +46,12 @@
 					 ."','".addslashes($_data['sender_name'])
 					 ."','".$_data['sender_address']
 					 ."','".addslashes($_data['to_name'])
-					 ."','".addslashes($_data['to_address'])
+					 ."','".$_data['to_address']
 					 ."','".$_data['size']
 					 ."','".$_data['attachments']
 					 ."')";
 		
-			$this->db->query($query,__LINE__,__FILE__);
+			$this->db->query($query);
 			
 			#print "$query<br>";
 		}

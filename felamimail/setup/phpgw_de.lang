@@ -1,12 +1,12 @@
 Compose	felamimail	de	EMail schreiben
 Previous	felamimail	de	vorherige
-Next	felamimail	de	nächste
+Next	felamimail	de	nÃ¤chste
 follow	felamimail	de	folgen
 THIS FOLDER IS EMPTY	felamimail	de	DIESER ORDNER IST LEER
-Select all	felamimail	de	alle auswählen
-Unselect All	felamimail	de	keine auswählen
+Select all	felamimail	de	alle auswÃ¤hlen
+Unselect All	felamimail	de	keine auswÃ¤hlen
 From	felamimail	de	Von
--- select action --	felamimail	de	-- Aktion auswählen --
+-- select action --	felamimail	de	-- Aktion auswÃ¤hlen --
 move selected to	felamimail	de	verschieben nach
 Viewing message	felamimail	de	zeige Nachricht
 Message List	felamimail	de	Nachrichtenliste
@@ -15,7 +15,7 @@ cc	felamimail	de	Kopie
 BCC	felamimail	de	Bcc
 Send	felamimail	de	Senden
 Attach	felamimail	de	Anlagen
-Delete selected attachments	felamimail	de	ausgewählte Anlagen löschen
+Delete selected attachments	felamimail	de	ausgewÃ¤hlte Anlagen lÃ¶schen
 wrote	felamimail	de	schrieb
 Original Message	felamimail	de	Originalnachricht
 Download this as a file	felamimail	de	als Datei downloaden
@@ -25,15 +25,15 @@ Reply All	felamimail	de	allen Antworten
 Forward	felamimail	de	Weiterleiten
 Viewing full header	felamimail	de	zeige alle Kopfzeilen
 View message	felamimail	de	zeige Nachricht
-Size	felamimail	de	Größe
-delete selected	felamimail	de	ausgewählte Nachrichten löschen
-mark selected as read	felamimail	de	ausgewählte Nachrichten als gelesen markieren
-mark selected as unread	felamimail	de	ausgewählte Nachrichten als ungelesen markieren
-mark selected as flagged	felamimail	de	ausgewählte Nachrichten markieren
-mark selected as unflagged	felamimail	de	ausgewählte Nachrichten nicht markieren
+Size	felamimail	de	GrÃ¶ÃŸe
+delete selected	felamimail	de	ausgewÃ¤hlte Nachrichten lÃ¶schen
+mark selected as read	felamimail	de	ausgewÃ¤hlte Nachrichten als gelesen markieren
+mark selected as unread	felamimail	de	ausgewÃ¤hlte Nachrichten als ungelesen markieren
+mark selected as flagged	felamimail	de	ausgewÃ¤hlte Nachrichten markieren
+mark selected as unflagged	felamimail	de	ausgewÃ¤hlte Nachrichten nicht markieren
 FeLaMiMail	preferences	de	FeLaMiMail
-Personal Information	preferences	de	persönliche Informationen
-Personal Information	felamimail	de	persönliche Informationen
+Personal Information	preferences	de	persÃ¶nliche Informationen
+Personal Information	felamimail	de	persÃ¶nliche Informationen
 Message Highlighting	preferences	de	Nachrichten Hervorhebung
 Index Order	preferences	de	Spaltenanordnung
 Display Preferences	preferences	de	Anzeigeneinstellungen
@@ -57,19 +57,19 @@ down	felamimail	de	runter
 remove	felamimail	de	entfernen
 Flags	felamimail	de	Markierungen
 Checkbox	felamimail	de	Auswahlbox
-Return to options page	felamimail	de	zurück zu Einstellungen
+Return to options page	felamimail	de	zurÃ¼ck zu Einstellungen
 index_what_is	felamimail	de	Konfigurieren Sie hier die Anordnung der Spalten
 Display Preferences	felamimail	de	Anzeige Einstellungen
 Wrap incoming text at	felamimail	de	Text umbrechen nach
 chars	felamimail	de	Zeichen
-Size of editor window	felamimail	de	Größe des Editorfensters
-Location of buttons when composing	felamimail	de	Ort der Knöpfe beim EMail schreiben
+Size of editor window	felamimail	de	GrÃ¶ÃŸe des Editorfensters
+Location of buttons when composing	felamimail	de	Ort der KnÃ¶pfe beim EMail schreiben
 Before headers	felamimail	de	vor den Kopfzeilen
 Between headers and message body	felamimail	de	zwischen Kopfzeilen und Editorfenster
 After message body	felamimail	de	nach dem Editorfenster
 Folder Preferences	felamimail	de	Ordnereinstellungen
 Folders	felamimail	de	Ordner
-Delete Folder	felamimail	de	Ordner löschen
+Delete Folder	felamimail	de	Ordner lÃ¶schen
 Create Folder	felamimail	de	Ordner anlegen
 as a subfolder of	felamimail	de	als Unterordner von
 Create	felamimail	de	Erzeugen
@@ -77,16 +77,16 @@ Rename a Folder	felamimail	de	Ordner umbenennen
 Rename	felamimail	de	Umbenennen
 Unsubscribe	felamimail	de	Abbestellen
 Subscribe	felamimail	de	Bestellen
-No folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden können!
-Don't use Trash	felamimail	de	Keinen Mülleimer verwenden
+No folders were found to subscribe to!	felamimail	de	Keine Order gefunden, die bestellt werden kÃ¶nnen!
+Don't use Trash	felamimail	de	Keinen MÃ¼lleimer verwenden
 Don't use Sent	felamimail	de	Keinen gesendenten EMail speichern
-back to folder	felamimail	de	zurück zu Ordner
+back to folder	felamimail	de	zurÃ¼ck zu Ordner
 reply to	felamimail	de	Antwort an
 Mail Settings	preferences	de	EMail Einstellungen
-Translation Preferences	preferences	de	Übersetzungseinstellungen
+Translation Preferences	preferences	de	Ãœbersetzungseinstellungen
 Default sorting order	felamimail	de	Standard Sortierreihenfolge
-Custom Email settings	felamimail	de	angepaßte EMail-Einstellungen
-Use custom settings	felamimail	de	benutze angepaßte Einstellungen
+Custom Email settings	felamimail	de	angepaÃŸte EMail-Einstellungen
+Use custom settings	felamimail	de	benutze angepaÃŸte Einstellungen
 Non-Standard	felamimail	de	nicht Standard
 Email Account Name	felamimail	de	EMailkonto Benutzername
 Email Password	felamimail	de	EMailkonto Passwort
@@ -96,7 +96,7 @@ Mail Server type	felamimail	de	EMailservertyp
 IMAP Server Type	felamimail	de	IMAP-Servertyp
 If Applicable	felamimail	de	wenn bekannt
 Mail Folder(UW-Maildir)	felamimail	de	EMailaordner(UW-Maildir)
-Translation server	felamimail	de	Übersetzungsserver
+Translation server	felamimail	de	Ãœbersetzungsserver
 signature	felamimail	de	Signatur
 normal	common	de	normal
 high	common	de	hoch
@@ -106,21 +106,21 @@ felamimail	common	de	FeLaMiMail
 change folder	felamimail	de	Ordner wechseln
 move messages	felamimail	de	Nachrichten verschieben
 move to trash	felamimail	de	in den Trash-Ordner verschieben
-mark as deleted	felamimail	de	als gelöscht markieren
-remove immediately	felamimail	de	sofort löschen
-when deleting messages	felamimail	de	wenn Nachrichten gelöscht werden
+mark as deleted	felamimail	de	als gelÃ¶scht markieren
+remove immediately	felamimail	de	sofort lÃ¶schen
+when deleting messages	felamimail	de	wenn Nachrichten gelÃ¶scht werden
 unread	felamimail	de	ungelesen
 read	felamimail	de	gelesen
-deleted	felamimail	de	gelöscht
+deleted	felamimail	de	gelÃ¶scht
 replied	felamimail	de	beantwortet
 flagged	felamimail	de	wichtig
 recent	felamimail	de	neu
 compress folder	felamimail	de	Ordner komprimieren
-add to addressbook	felamimail	de	zum Adressbuch hinzufügen
+add to addressbook	felamimail	de	zum Adressbuch hinzufÃ¼gen
 edit filter	felamimail	de	Filter bearbeiten
 unflagged	felamimail	de	unwichtig
-delete selected messages	felamimail	de	ausgewählte Nachrichten löschen
-mark messages as	felamimail	de	ausgewählte Nachrichten markieren als
+delete selected messages	felamimail	de	ausgewÃ¤hlte Nachrichten lÃ¶schen
+mark messages as	felamimail	de	ausgewÃ¤hlte Nachrichten markieren als
 filter active	felamimail	de	Filter aktiv
 activate filter	felamimail	de	Filter aktivieren
 deactivate filter	felamimail	de	Filter deaktivieren
@@ -137,7 +137,7 @@ show header	felamimail	de	Kopfzeilen anzeigen
 hide header	felamimail	de	Kopfzeilen verbergen
 print it	felamimail	de	EMail drucken
 print this page	felamimail	de	Diese Seite drucken
-close this page	felamimail	de	Diese Seite schließen
+close this page	felamimail	de	Diese Seite schlieÃŸen
 folder status	felamimail	de	Ordner Status
 folder name	felamimail	de	Ordner Name
 folderlist	felamimail	de	Ordnerliste
@@ -149,7 +149,7 @@ IMAP Server	felamimail	de	IMAP Server
 folder settings	felamimail	de	Ordner Einstellungen
 on behalf of	felamimail	de	im Auftrag von
 wrote	felamimail	de	schrieb
-delete all	felamimail	de	alle löschen
+delete all	felamimail	de	alle lÃ¶schen
 Quicksearch	felamimail	de	Schnellsuche
 Mon	felamimail	de	Mo
 Tue	felamimail	de	Di
@@ -165,20 +165,20 @@ Enter your SIEVE server hostname or IP address	admin	de	Sieve-Server Hostname od
 Enter your SIEVE server port	admin	de	Port Adresse des Sieve Servers
 Enter your IMAP mail server hostname or IP address	admin	de	IMAP-Server Hostname oder IP-Adresse
 no Quota set	felamimail	de	keine Quota aktiviert
-next message	felamimail	de	nächste Nachricht
+next message	felamimail	de	nÃ¤chste Nachricht
 previous message	felamimail	de	vorherige Nachricht
-trash folder	felamimail	de	Ordner für gelöschte Nachrichten
-sent folder	felamimail	de	Ordner für gesendete Nachrichten
+trash folder	felamimail	de	Ordner fÃ¼r gelÃ¶schte Nachrichten
+sent folder	felamimail	de	Ordner fÃ¼r gesendete Nachrichten
 Configuration	felamimail	de	Konfiguration
-Users can define their own emailaccounts	admin	de	Anwender können ihre eigenen Konten definieren
+Users can define their own emailaccounts	admin	de	Anwender kÃ¶nnen ihre eigenen Konten definieren
 display of html emails	preferences	de	HTML EMails anzeigen
 IMAP Server Address	preferences	de	IMAP Server Adresse
 always show html emails	preferences	de	immer anzeigen
 never display html emails	preferences	de	niemals anzeigen
 display only when no plain text is available	preferences	de	nur anzeigen wenn kein Plain Text vorhanden ist
-IMAP emailclient for EGroupware	common	de	IMAP-EMailclient für EGroupware
+IMAP emailclient for EGroupware	common	de	IMAP-EMailclient fÃ¼r EGroupware
 site configuration	felamimail	de	Konfiguration der Anwendung
-select emailprofile	felamimail	de	EMailprofil auswählen
+select emailprofile	felamimail	de	EMailprofil auswÃ¤hlen
 Undelivered Message	felamimail	de	Unzustellbare Nachricht
 type	felamimail	de	Typ
 organisation	felamimail	de	Organisation
@@ -186,7 +186,7 @@ from(A->Z)	felamimail	de	Von(A->Z)
 from(Z->A)	felamimail	de	Von(Z->A)
 subject(A->Z)	felamimail	de	Betreff(A->Z)
 subject(Z->A)	felamimail	de	Betreff(Z->A)
-size(0->...)	felamimail	de	Größe(0->...)
-size(...->0)	felamimail	de	Größe(...->0)
+size(0->...)	felamimail	de	GrÃ¶ÃŸe(0->...)
+size(...->0)	felamimail	de	GrÃ¶ÃŸe(...->0)
 show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen
-do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich den '%1' Ordner löschen?
+do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich den '%1' Ordner lÃ¶schen?

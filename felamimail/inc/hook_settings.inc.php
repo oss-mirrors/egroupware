@@ -21,7 +21,7 @@
 	$config = CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
 	$felamimailConfig = $config->config_data;
-	//_debug_array($felamimailConfig);
+	#_debug_array($felamimailConfig);
 	unset($config);
 	
 	#$boemailadmin = CreateObject('emailadmin.bo');
@@ -48,7 +48,7 @@
 	);
 	create_select_box('Refresh time in minutes','refreshTime',$refreshTime);
 
-	create_notify('email signature','email_sig',3,50);
+	create_text_area('email signature','email_sig',3,50);
 
 	$sortOrder = array(
 		'0' => lang('date(newest first)'),

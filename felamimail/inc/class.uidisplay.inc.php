@@ -28,7 +28,7 @@
 		{
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
@@ -318,22 +318,6 @@
 				$this->t->parse('print_navbar','message_navbar_print',True);
 			}*/
 			
-			
-			// rawheader
-/*			if($this->bofelamimail->sessionData['showHeader'] == 'True')
-			{
-				$this->t->set_var("raw_header_data",htmlentities($rawheaders));
-				$this->t->parse("rawheader",'message_raw_header',True);
-				$this->t->set_var("view_header",lang('hide header'));
-			}
-			else
-			{
-				$this->t->set_var("rawheader",'');
-				$this->t->set_var("view_header",lang('show header'));
-			}
-*/
-			
-
 			// header
 			// sent by a mailinglist??
 			// parse the from header
@@ -391,12 +375,16 @@
 				$tmpdate = $date = array("","","","","","");
 			}
                                                                                                                                                                                                                                                                                                                 
-			$this->t->set_var("date_data",htmlentities($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate))));
-			$this->t->set_var("subject_data",htmlentities($this->bofelamimail->decode_header($headers->subject)));
+			$this->t->set_var("date_data",
+				htmlentities($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
+				ENT_QUOTES,lang('charset')));
+			$this->t->set_var("subject_data",
+				htmlentities($this->bofelamimail->decode_header($headers->subject),
+				ENT_QUOTES,lang('charset')));
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			$this->t->set_var("rawheader",htmlentities($rawheaders));
+			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,lang('charset')));
 
 #$tag_list = Array(
 #                  false,
@@ -549,7 +537,7 @@ $add_attr_to_tag = Array(
 			
 			// create links for websites
 			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,lang('charset')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -591,7 +579,7 @@ $add_attr_to_tag = Array(
 				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name'])));
+					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,lang('charset')));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
@@ -698,8 +686,8 @@ $add_attr_to_tag = Array(
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
 									$link,
-									htmlentities($newSenderAddress),
-									htmlentities($val->personal));
+									htmlentities($newSenderAddress,ENT_QUOTES,lang('charset')),
+									htmlentities($val->personal,ENT_QUOTES,lang('charset')));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -728,7 +716,7 @@ $add_attr_to_tag = Array(
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
-									$link,htmlentities($tempSenderAddress));
+									$link,htmlentities($tempSenderAddress,ENT_QUOTES,lang('charset')));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',

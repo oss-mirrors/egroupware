@@ -35,11 +35,10 @@
 		// what type of mimeTypes do we want from the body(text/html, text/plain)
 		var $htmlOptions;
 
-		function bofelamimail()
+		function bofelamimail($_displayCharset='iso-8859-1')
 		{
 			$this->restoreSessionData();
 			
-
 			$this->foldername	= $this->sessionData['mailbox'];
 			$this->accountid	= $GLOBALS['phpgw_info']['user']['account_id'];
 			
@@ -48,6 +47,8 @@
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
+			
+			$this->displayCharset		= $_displayCharset;
 			
 			// set some defaults
 			if(count($this->sessionData) == 0)
@@ -166,54 +167,39 @@
 
 		function decode_header($string)
 		{
-			#print "decode header<br><br>";
-			/* Decode from base64 form */
-			if (preg_match_all("/\=\?(.*?)\?b\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
+			#print "decode header: $string<br><br>";
+			$newString = '';
+			$elements=imap_mime_header_decode($string);
+			for($i=0;$i<count($elements);$i++) 
 			{
-				$newString = $string;
-				$newString = str_replace('?= =?','?==?',$newString);
-				for($i=0; $i < count($matches); $i++)
+				#echo "Charset: {$elements[$i]->charset}<br>";
+				#echo "Text: {$elements[$i]->text}<BR><BR>";
+				$tempString = $elements[$i]->text;
+				if((strtolower($this->displayCharset) != strtolower($elements[$i]->charset))
+					&& $elements[$i]->charset != 'default')
 				{
-					#print "Match 0:".$matches[$i][0]."<br>";
-					#print "Match 1:".$matches[$i][1]."<br>";
-					#print "Match 2:".$matches[$i][2]."<br>";
-					switch(strtolower($matches[$i][1]))
+					if($this->mbAvailable)
 					{
-						case 'utf-8':
-							$newString = str_replace($matches[$i][0],utf8_decode(base64_decode($matches[$i][2])),$newString);
-							break;
-						default:
-							$newString = str_replace($matches[$i][0],base64_decode($matches[$i][2]),$newString);
-							break;
+						$tempString =  mb_convert_encoding($tempString, 
+									$this->displayCharset, 
+									$elements[$i]->charset);
+					}
+					elseif((strtolower($this->displayCharset) == 'iso-8859-1' ||
+						strtolower($this->displayCharset) == 'iso-8859-15')&&
+						strtolower($elements[$i]->charset) == 'utf-8')
+					{
+						$tempString = utf8_decode($tempString);
+					}
+					elseif(strtolower($this->displayCharset) == 'utf-8' &&
+						(strtolower($elements[$i]->charset) == 'iso-8859-1' ||
+						strtolower($elements[$i]->charset) == 'iso-8859-15'))
+					{
+						$tempString = utf8_encode($tempString);
 					}
 				}
-				return $newString;
+				$newString .= $tempString;
 			}
-			/* Decode from qouted printable */
-			elseif (preg_match_all("/\=\?(.*?)\?q\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
-			{
-				$newString = $string;
-				$newString = str_replace('?= =?','?==?',$newString);
-				for($i=0; $i < count($matches); $i++)
-				{
-					#print "Match 0:".$matches[$i][0]."<br>";
-					#print "Match 1:".$matches[$i][1]."<br>";
-					#print "Match 2:".$matches[$i][2].".<br>";
-					// replace any _ with " ". You define " " as " " or "_" in qouted printable
-					$matches[$i][2] = str_replace("_"," ",$matches[$i][2]);
-					switch($matches[$i][1])
-					{
-						case 'utf-8':
-							$newString = str_replace($matches[$i][0],utf8_decode(imap_qprint($matches[$i][2])),$newString);
-							break;
-						default:
-							$newString = str_replace($matches[$i][0],imap_qprint($matches[$i][2]),$newString);
-							break;
-					}
-				}
-				return $newString;
-			}
-			return $string;
+			return $newString;
 		}
 		
 		function deleteAccount($_hookValues)
@@ -296,16 +282,16 @@
 			return imap_utf7_encode($_folderName);
 		}
 
-		function encodeHeader($_string, $_encoding="q")
+		function encodeHeader($_string, $_encoding='q')
 		{
 			switch($_encoding)
 			{
 				case "q":
-					if(!preg_match("/[\x80-\xFF]/",$_string))
-					{
-						// nothing to quote, only 7 bit ascii
-						return $_string;
-					}
+					#if(!preg_match("/[\x80-\xFF]/",$_string))
+					#{
+					#	// nothing to quote, only 7 bit ascii
+					#	return $_string;
+					#}
 					
 					$string = imap_8bit($_string);
 					$stringParts = explode("=\r\n",$string);
@@ -316,7 +302,7 @@
 						// imap_8bit does not convert "?"
 						// it does not need, but it should
 						$value = str_replace("?","=3F",$value);
-						$retString .= "=?ISO-8859-1?Q?".$value."?=";
+						$retString .= "=?".strtoupper($this->displayCharset)."?Q?".$value."?=";
 					}
 					#exit;
 					return $retString;
@@ -642,7 +628,7 @@
 				#$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
 				#$headers = $this->sofelamimail->fetchheader($rawHeader);
 				
-				$retValue['header'][$count]['subject'] = $this->decode_header($header[0]->subject);
+				$retValue['header'][$count]['subject'] 		= $this->decode_header($header[0]->subject);
 				$retValue['header'][$count]['sender_name'] 	= $this->decode_header($displayHeaders[$i]['sender_name']);
 				$retValue['header'][$count]['sender_address'] 	= $this->decode_header($displayHeaders[$i]['sender_address']);
 				$retValue['header'][$count]['to_name'] 		= $this->decode_header($displayHeaders[$i]['to_name']);
@@ -827,6 +813,7 @@
 						$charSet	= $value['charset'];
 					}
 
+					// decode the file ...
 					switch ($encoding) 
 					{
 						case ENCBASE64:
@@ -835,30 +822,39 @@
 							break;
 						case ENCQUOTEDPRINTABLE:
 							// use imap_qprint to decode
-							switch(strtolower($charSet))
-							{
-								case 'utf-8':
-									$newPart = utf8_decode(imap_qprint($newPart));
-									break;
-								default:
-									$newPart = imap_qprint($newPart);
-									break;
-							}
+							$newPart = imap_qprint($newPart);
 							break;
 						case ENCOTHER:
 							// not sure if this needs decoding at all
 							break;
 						default:
 							// it is either not encoded or we don't know about it
-							switch(strtolower($charSet))
-							{
-								case 'utf-8':
-									$newPart = utf8_decode($newPart);
-									break;
-								default:
-									break;
-							}
 							break;
+					}
+					
+					// ... and convert to the right charset
+					// utf8_en/decode can en/code from/to iso-8859-1
+					// iso-8859-1 and iso-8859-15 are mostly identical
+					if(strtolower($this->displayCharset) != strtolower($charSet))
+					{
+						if($this->mbAvailable)
+						{
+							$newPart = mb_convert_encoding($newPart,
+									$this->displayCharset,
+									$charset);
+						}
+						elseif(strtolower($charSet) == 'utf-8' &&
+							(strtolower($this->displayCharset) == 'iso-8859-1' ||
+							strtolower($this->displayCharset) == 'iso-8859-15'))
+						{
+							$newPart = utf8_decode($newPart);
+						}
+						elseif((strtolower($charSet) == 'iso-8859-1' ||
+							strtolower($charSet) == 'iso-8859-15')&&
+							strtolower($this->displayCharset) == 'utf-8')
+						{
+							$newPart = utf8_encode($newPart);
+						}
 					}
 					
 					$bodyPart[] = array('body' => $newPart,
@@ -876,6 +872,7 @@
 			$msgno = imap_msgno($this->mbox, $_uid);
 			if($_partID == '')
 			{
+			
 				$retValue = imap_header($this->mbox, $msgno);
 			}
 			else

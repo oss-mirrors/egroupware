@@ -47,7 +47,7 @@
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_deleted_x"])) 
 				$GLOBALS['HTTP_POST_VARS']["mark_deleted"] = "true";
 
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
 			$this->bofilter		= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
@@ -791,7 +791,7 @@
 						{
 							$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
 						}
-						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject']);
+						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject'],ENT_QUOTES,lang('charset'));
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
@@ -802,7 +802,7 @@
 					}
 					else
 					{
-						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")"));
+						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,lang('charset')));
 					}
 				
 					if ($mailPreferences['sent_folder'] == $this->mailbox)
@@ -828,11 +828,11 @@
 						if (!empty($headers['header'][$i]['sender_name']))
 						{
 							$sender_name	= $headers['header'][$i]['sender_name'];
-							$full_address	= 
+							$full_address	= htmlentities(
 								$headers['header'][$i]['sender_name'].
 								" <".
 								$headers['header'][$i]['sender_address'].
-								">";
+								">",ENT_QUOTES,lang('charset'));
 						}
 						else
 						{
@@ -846,6 +846,7 @@
 						$sender_name = substr($sender_name,0,$maxAddressLength)."...";
 					}
 					$this->t->set_var('sender_name',$sender_name);
+					# $this->t->set_var('sender_name', htmlentities($sender_name,ENT_QUOTES,lang('charset')));
 					$this->t->set_var('full_address',$full_address);
 				
 					if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")

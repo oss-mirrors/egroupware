@@ -24,10 +24,11 @@
 		var $attachments;	// Array of attachments
 		var $preferences;	// the prefenrences(emailserver, username, ...)
 
-		function bocompose($_composeID = '')
+		function bocompose($_composeID = '', $_charSet = 'iso-8859-1')
 		{
+			$this->displayCharset	= strtolower($_charSet);
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
-			$this->preferences = $this->bopreferences->getPreferences();
+			$this->preferences	= $this->bopreferences->getPreferences();
 			
 			if (!empty($_composeID))
 			{
@@ -147,7 +148,7 @@
 		
 		function getForwardData($_uid, $_partID, $_folder)
 		{
-			$bofelamimail    = CreateObject('felamimail.bofelamimail');
+			$bofelamimail    = CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 
 			// get message headers for specified message
@@ -174,7 +175,7 @@
 		// all: for a reply to all
 		function getReplyData($_mode, $_uid, $_partID)
 		{
-			$bofelamimail    = CreateObject('felamimail.bofelamimail');
+			$bofelamimail    = CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$bofelamimail->openConnection();
 			
 			// get message headers for specified message
@@ -256,7 +257,11 @@
 			
 			
 			// check for Re: in subject header
-			if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
+			#if(!strncmp())
+			#{
+			#	print "don't match";
+			#}
+			if(strtolower(substr(trim($bofelamimail->decode_header($headers->Subject)), 0, 3)) == "re:")
 			{
 				$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
 			}
@@ -281,9 +286,9 @@
 				while(list($key,$value) = @each($newBody))
 				{
 					$value .= "\n";
-					$bodyAppend = wordwrap($value,70,"\n",1);
+					$bodyAppend = wordwrap($value,75,"\n",1);
 					$bodyAppend = str_replace("\n", "\n>", $bodyAppend);
-					$this->sessionData['body'] .= htmlentities($bodyAppend);
+					$this->sessionData['body'] .= $bodyAppend;
 				}
 			}
 																
@@ -346,14 +351,14 @@
 
 		function send($_formData)
 		{
-			$bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$mail 		= CreateObject('phpgwapi.phpmailer');
 			
-			$this->sessionData['to']	= $_formData['to'];
-			$this->sessionData['cc']	= $_formData['cc'];
-			$this->sessionData['bcc']	= $_formData['bcc'];
-			$this->sessionData['reply_to']	= $_formData['reply_to'];
-			$this->sessionData['subject']	= $_formData['subject'];
+			$this->sessionData['to']	= trim($_formData['to']);
+			$this->sessionData['cc']	= trim($_formData['cc']);
+			$this->sessionData['bcc']	= trim($_formData['bcc']);
+			$this->sessionData['reply_to']	= trim($_formData['reply_to']);
+			$this->sessionData['subject']	= trim($_formData['subject']);
 			$this->sessionData['body']	= $_formData['body'];
 			$this->sessionData['priority']	= $_formData['priority'];
 			$this->sessionData['signature']	= $_formData['signature'];
@@ -381,13 +386,14 @@
 				
 			$mail->IsSMTP();
 			$mail->From 	= $this->preferences['emailAddress'][0]['address'];
-			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['emailAddress'][0]['name']);
+			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['emailAddress'][0]['name'],'q');
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = 'quoted-printable';
+			$mail->CharSet	= $this->displayCharset;
 			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.5");
 			if(isset($this->preferences['organizationName']))
-				$mail->AddCustomHeader("Organization: ".$this->preferences['organizationName']);
+				$mail->AddCustomHeader("Organization: ".$bofelamimail->encodeHeader($this->preferences['organizationName'],'q'));
 
 			if (!empty($this->sessionData['to']))
 			{
@@ -397,7 +403,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
 						$mail->AddAddress($emailAddress,$emailName);
 					}
 				}
@@ -411,7 +417,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
 						$mail->AddCC($emailAddress,$emailName);
 					}
 				}
@@ -425,7 +431,7 @@
 					for($i=0;$i<count($address_array);$i++)
 					{
 						$emailAddress = $address_array[$i]->mailbox."@".$address_array[$i]->host;
-						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal);
+						$emailName = $bofelamimail->encodeHeader($address_array[$i]->personal,'q');
 						$mail->AddBCC($emailAddress,$emailName);
 					}
 				}
@@ -437,7 +443,7 @@
 				if(count($address_array)>0)
 				{
 					$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
-					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal);
+					$emailName = $bofelamimail->encodeHeader($address_array[0]->personal,'q');
 					$mail->AddReplyTo($emailAddress,$emailName);
 				}
 			}
