@@ -434,30 +434,15 @@
 
 		function list_projects($_action=false, $_pro_main=false)
 		{
-			if($_action)
-			{
-				$action		= $_action;
-			}
-			else
-			{
-				$action		= get_var('action',array('POST','GET'));
-			}
-			
-			if($_pro_main)
-			{
-				$pro_main	= $_pro_main;
-			}
-			else
-			{
-				$pro_main	= get_var('pro_main',array('POST','GET'));
-			}
+			$action		= get_var('action',array('POST','GET'));
+			$pro_main	= get_var('pro_main',array('POST','GET'));
 
 			if ($_GET['cat_id'])
 			{
 				$this->cat_id = $_GET['cat_id'];
 			}
 
-			if (!$action || !$pro_main)
+			if (!$action)
 			{
 				$action = 'mains';
 			}

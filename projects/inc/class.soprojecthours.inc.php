@@ -593,18 +593,18 @@
 				case 'apply':
 					$this->db->insert($this->ttracker_table,array(
 							'project_id'	=> $project_id,
-							'activity_id'	=> $values['activity_id'],
-							'cost_id'		=> $values['cost_id'],
-							'employee'		=> $this->account,
+							'activity_id'	=> (int)$values['activity_id'],
+							'cost_id'	=> $values['cost_id'],
+							'employee'	=> $this->account,
 							'start_date'	=> $values['sdate'],
-							'end_date'		=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
-							'minutes'		=> $values['w_minutes'],
+							'end_date'	=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
+							'minutes'	=> $values['w_minutes'],
 							'hours_descr'	=> $values['hours_descr'],
-							'status'		=> $values['action'],
-							'remark'		=> $values['remark'],
-							't_journey'		=> 0.0 + $values['t_journey'],
+							'status'	=> $values['action'],
+							'remark'	=> $values['remark'],
+							't_journey'	=> 0.0 + $values['t_journey'],
 							'km_distance'	=> 0.0 + $values['km_distance'],
-							'stopped'		=> 'Y',
+							'stopped'	=> 'Y',
 						),false,__LINE__,__FILE__);
 
 					//return $this->db->get_last_insert_id('phpgw_p_ttracker','track_id');
