@@ -3,7 +3,7 @@
   * eGroupWare - Contacts Center                                              *
   * http://www.egroupware.org                                                 *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
+  *  - Vinicius Cubas Brand <vinicius@think-e.com.br>                         *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
@@ -733,12 +733,16 @@
 					case '<':
 					case '>':
 					case '>=':
-					case 'NULL':
 					case 'LIKE':
-					case 'NOT NULL':
 					case 'NOT LIKE':
 						$return_t[] = $associative_tree[$restrict_data['field']]['table'].'.'.
 						              $associative_tree[$restrict_data['field']]['field'].' '.$restrict_data['type'].' \''.$restrict_data['value'].'\'';
+						break;
+						
+					case 'NULL':
+					case 'NOT NULL':
+						$return_t[] = $associative_tree[$restrict_data['field']]['table'].'.'.
+						              $associative_tree[$restrict_data['field']]['field'].' IS '.$restrict_data['type'];
 						break;
 					
 					case 'IN':
@@ -894,11 +898,31 @@
 			{
 				$id_cities = $this->find(array('city.id_city', 'city.city_name'), 
 										 array(
-											0 => array(
+										 	0 => array(
+												'type'       => 'branch',
+												'value'      => 'OR',
+												'sub_branch' => array(
+													0 => array(
+														'field' => 'city.city_owner',
+														'type'  => '=',
+														'value' => $GLOBALS['phpgw_info']['user']['account_id']
+													),
+													1 => array(
+														'field' => 'city.city_owner',
+														'type'  => 'NULL'
+													)
+												)
+											),
+											1 => array(
 												'field' => 'city.id_state',
 												'type'  => '=',
 												'value' => $id_state
-											)
+											),
+											2 => array(
+												'field' => 'city.id_country',
+												'type'  => '=',
+												'value' => $id_country
+											),
 										 ),
 										 array(
 											'order' => 'city.city_name',
@@ -909,7 +933,22 @@
 			{
 				$id_cities = $this->find(array('city.id_city', 'city.city_name'), 
 										 array(
-											0 => array(
+										 	0 => array(
+												'type'       => 'branch',
+												'value'      => 'OR',
+												'sub_branch' => array(
+													0 => array(
+														'field' => 'city.city_owner',
+														'type'  => '=',
+														'value' => $GLOBALS['phpgw_info']['user']['account_id']
+													),
+													1 => array(
+														'field' => 'city.city_owner',
+														'type'  => 'NULL'
+													)
+												)
+											),
+											1 => array(
 												'field' => 'city.id_country',
 												'type'  => '=',
 												'value' => $id_country
@@ -931,12 +970,14 @@
 			{
 				$city =& CreateObject('contactcenter.so_city', $id_city['id_city']);
 				
-				$result[$id_city['id_city']]['id_city']      = $city->get_id();
-				$result[$id_city['id_city']]['id_country']   = $city->get_id_country();
-				$result[$id_city['id_city']]['id_state']     = $city->get_id_state();
-				$result[$id_city['id_city']]['name']         = $city->get_city_name();
-				$result[$id_city['id_city']]['timezone']     = $city->get_city_timezone();
-				$result[$id_city['id_city']]['geo_location'] = $city->get_city_geo_location();
+				$result[$id_city['id_city']]['id_city']       = $city->get_id();
+				$result[$id_city['id_city']]['id_country']    = $city->get_id_country();
+				$result[$id_city['id_city']]['id_state']      = $city->get_id_state();
+				$result[$id_city['id_city']]['name']          = $city->get_city_name();
+				$result[$id_city['id_city']]['timezone']      = $city->get_city_timezone();
+				$result[$id_city['id_city']]['geo_latitude']  = $city->get_city_geo_latitude();
+				$result[$id_city['id_city']]['geo_longitude'] = $city->get_city_geo_longitude();
+				$result[$id_city['id_city']]['geo_altitude']  = $city->get_city_geo_altitude();
 			}
 
 			return $result;
@@ -957,8 +998,10 @@
 					'id_state'  => (int),
 					'id_country' => (int),     MANDATORY
 					'city_name' => (str),      MANDATORY
-					'city_time_zone' => (int),
-					'city_geo_location' => (str),
+					'city_timezone' => (string),
+					'city_geo_latitude' => (str),
+					'city_geo_longitude' => (str),
+					'city_geo_altitude' => (str),
 				);
 
 			@return int City ID
@@ -1016,6 +1059,36 @@
 
 			if (is_array($result) and count($result))
 			{
+				$city =& CreateObject('contactcenter.so_city', $result[0]['id_city']);
+
+				/* Checks if this City is owned by this user or if it is admin */
+				if ($city->get_city_owner() != $GLOBALS['phpgw_info']['user']['account_id'] and !$GLOBALS['phpgw_info']['user']['apps']['admin'])
+				{
+					return $result[0]['id_city'];
+				}
+				
+				if ($city_info['city_timezone'] and !$city->get_city_timezone())
+				{
+					$city->set_city_timezone($city_info['city_timezone']);
+				}
+				
+				if ($city_info['city_geo_latitidue'] and !$city->get_city_geo_latitude())
+				{
+					$city->set_city_geo_latitude($city_info['city_geo_latitude']);
+				}
+				
+				if ($city_info['city_geo_longitidue'] and !$city->get_city_geo_longitude())
+				{
+					$city->set_city_geo_longitude($city_info['city_geo_longitude']);
+				}
+				
+				if ($city_info['city_geo_altitidue'] and !$city->get_city_geo_altitude())
+				{
+					$city->set_city_geo_altitude($city_info['city_geo_altitude']);
+				}
+
+				$city->commit();
+				
 				return $result[0]['id_city'];
 			}
 
@@ -1023,9 +1096,13 @@
 
 			$city->set_id_country($city_info['id_country']);
 			$city->set_city_name($city_info['city_name']);
+			
+			!$GLOBALS['phpgw_info']['user']['apps']['admin'] ? $city->set_city_owner($GLOBALS['phpgw_info']['user']['account_id']) : null;
 			isset($city_info['id_state']) ? $city->set_id_state($city_info['id_state']) : null;
 			isset($city_info['city_timezone']) ? $city->set_city_timezone($city_info['city_timezone']) : null;
-			isset($city_info['city_geo_location']) ? $city->set_city_geo_location($city_info['city_geo_location']) : null;
+			isset($city_info['city_geo_latitude']) ? $city->set_city_geo_latitude($city_info['city_geo_latitude']) : null;
+			isset($city_info['city_geo_longitude']) ? $city->set_city_geo_latitude($city_info['city_geo_longitude']) : null;
+			isset($city_info['city_geo_altitude']) ? $city->set_city_geo_latitude($city_info['city_geo_altitude']) : null;
 
 			$city->commit();
 			$id = $city->get_id();

@@ -4,7 +4,6 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
@@ -379,8 +378,7 @@
 
 				$template->set_var('cc_addr_types_opts', $addr_opts);
 			}
-			
-			
+						
 			$country_opts = '';
 			foreach ($countries as $id => $country)
 			{
@@ -413,7 +411,7 @@
 
 			$template->parse('out_full', 'full_add');
 
-			return $template->get_var('out_full');
+			return $template->get_var('out_full').$this->get_city_plugin();
 		}
 
 		/*!
@@ -481,6 +479,101 @@
 			$template->parse('out_QA', 'quickAdd');
 
 			return $template->get_var('out_QA');
+		}
+
+		/*!
+
+			@function get_city_plugin
+			@abstract Returns the code to insert the New City window anywhere
+			@author Raphael Derosso Pereira
+
+		*/
+		function get_city_plugin()
+		{
+			$template_dir = PHPGW_SERVER_ROOT . '/contactcenter/templates/default/';
+			$template = CreateObject('phpgwapi.Template',$template_dir);
+
+			$template->set_file(array('city' => 'city.tpl'));
+			
+			if (!$this->commons_loaded)
+			{
+				$template->set_var('cc_api', $this->commons);
+				$this->commons_loaded = true;
+			}
+			else
+			{
+				$template->set_var('cc_api', '');
+			}
+			
+			$t = CreateObject('phpgwapi.datetime');
+
+			$timezones_opts = '';
+			foreach ($t->zone_offset_list as $zone => $offset)
+			{
+				$timezones_opts .= '<option value="'.$zone.'">'.$zone.' - GMT '.$offset."</option>\n";
+			}
+			
+			$template->set_var('ccCity-jsFile', $GLOBALS['phpgw_info']['server']['webserver_url'] . '/contactcenter/js/ccCity-plugin.js');
+
+			$template->set_var('ccCity-title', lang('Contact Center').' - '.lang('City Creation/Edition'));
+			
+			$template->set_var('cc_available',lang('Available'));
+
+			/* Error Messages */
+	    	$template->set_var('ccCity-errNoCountry', lang('You must select a Country!'));
+			$template->set_var('ccCity-errNoState', lang('You must select a State!'));
+			$template->set_var('ccCity-errNoName', lang('You must specify a City name!'));
+			$template->set_var('ccCity-errLat', lang('A Latitude is composed of a +/- sign (north/south) and a decimal value with up to 6 decimal places.'));
+			$template->set_var('ccCity-errLon', lang('A Longitude is composed of a +/- sign (east/west) and a decimal value with up to 6 decimal places.'));
+			$template->set_var('ccCity-errAlt', lang('A Altitude is composed of a +/- sign (above ocean/below ocean) and a decimal value with up to 6 decimal places.'));
+			/* End Error Messages */
+
+			$template->set_var('ccCity-country', lang('Country'));
+			$template->set_var('ccCity-selectCountry', lang('Choose Country').'...');
+			
+			$template->set_var('ccCity-state', lang('State'));
+			$template->set_var('ccCity-selectState', lang('Choose State').'...');
+			$template->set_var('ccCity-noState', lang('No State'));
+			$template->set_var('ccCity-newState', lang('New State'));
+			$template->set_var('ccCity-newStateIcon', $GLOBALS['phpgw']->common->find_image('contactcenter','new_state'));
+			
+			$template->set_var('ccCity-name', lang('City Name'));
+			
+			$template->set_var('ccCity-timezone', lang('City Timezone'));
+			$template->set_var('ccCity-selectTimezone', lang('Choose Timezone').'...');
+			$template->set_var('ccCity-timezones', $timezones_opts);
+			
+			$template->set_var('ccCity-geoLat', lang('Latitude'));
+			$template->set_var('ccCity-geoLon', lang('Longitude'));
+			$template->set_var('ccCity-geoAlt', lang('Altitude'));
+			$template->set_var('ccCity-geoExpLat', lang("In this field you can specify the Geographic Latitude of this city.\nThe number format is composed of a decimal degree, with its sign (+ for north, - for south) and 6 decimal places.\nEx.: -37.386013"));
+			$template->set_var('ccCity-geoExpLon', lang("In this field you can specify the Geographic Longitude of this city.\nThe number format is composed of a decimal degree, with its sign (+ for east, - for west) and 6 decimal places.\nEx.: 122.082932"));
+			$template->set_var('ccCity-geoExpAlt', lang("In this field you can specify the Geographic Altitude of this city.\nThe number format is composed of a decimal meter, with its sign (+ for above ocean, - for below ocean) and up to 6 decimal places.\nEx.: 850.366742"));
+			
+			$template->set_var('ccCity-save', lang('Save'));
+			$template->set_var('ccCity-clear', lang('Clear'));
+			$template->set_var('ccCity-cancel',lang('Cancel'));
+
+			/* Loads the Constant Fields */
+			$bo_cc = CreateObject('contactcenter.bo_contactcenter');
+			$last_level = $bo_cc->get_actual_level();
+			$bo_cc->set_catalog('0.0');
+			
+			$countries = $bo_cc->catalog->get_all_countries();
+
+			$bo_cc->set_catalog($last_level);
+
+			$country_opts = '';
+			foreach ($countries as $id => $country)
+			{
+				$country_opts .= '<option value="'.$id.'">'.$country."</option>\n";
+			}
+
+			$template->set_var('ccCity-countryList', $country_opts);
+			
+			$template->parse('out_City', 'city');
+
+			return $template->get_var('out_City');
 		}
 	}
 ?>

@@ -110,11 +110,12 @@
 			<td align="left">
 				<select id="cc_addr_states" name="{cc_addr_states}" style="width: 200px;" onchange="updateAddrCities();">
 					<option value="_NONE_">{cc_addr_choose_states}</option>
-					<option value="_NEW_">{cc_addr_states_new}</option>
+					<!-- <option value="_NEW_">{cc_addr_states_new}</option> -->
 					<option value="_NOSTATE_">{cc_addr_states_nostate}</option>
 					<option style="text-align: center" value="_SEP_">-----------{cc_available}----------</option>
 				</select>
-				<input id="cc_addr_states_new" style="width: 150px;" type="text" onmouseover="updateAddrNewStateOnMouseOver();" onmouseout="updateAddrNewStateOnMouseOut();">
+				<!-- <input id="cc_addr_states_new" style="width: 150px;" type="text" onmouseover="updateAddrNewStateOnMouseOver();" onmouseout="updateAddrNewStateOnMouseOut();"> -->
+				<input type="button" value="{cc_addr_states_new}" onclick="ccState.open()" />
 			</td>
 		</tr>
 		<tr class="row_on">
@@ -122,10 +123,11 @@
 			<td align="left">
 				<select id="cc_addr_cities" style="width: 200px;" onchange="updateAddrFillingFields();">
 					<option value="_NONE_">{cc_addr_choose_cities}</option>
-					<option value="_NEW_">{cc_addr_cities_new}</option>
+					<!-- <option value="_NEW_">{cc_addr_cities_new}</option> -->
 					<option style="text-align: center" value="_SEP_">-----------{cc_available}----------</option>
 				</select>
-				<input id="cc_addr_cities_new" style="width: 150px;" type="text" onmouseover="updateAddrNewCityOnMouseOver();" onmouseout="updateAddrNewCityOnMouseOut();">
+				<!-- <input id="cc_addr_cities_new" style="width: 150px;" type="text" onmouseover="updateAddrNewCityOnMouseOver();" onmouseout="updateAddrNewCityOnMouseOut();"> -->
+				<input type="button" value="{cc_addr_cities_new}" onclick="ccCity.open()" />
 			</td>
 		</tr>
 		<tr class="row_off">
@@ -238,15 +240,15 @@
 
 		fullAddWin = new dJSWin({'id': 'cc_full_add',
 		                         'content_id': 'cc_contact_tab',
-					 'win_class': 'row_off',
-					 'width': '500px',
-					 'height': '413px',
-					 'title_color': '#3978d6',
-					 'title': Element('cc_contact_title').value,
-					 'title_text_color': 'white',
-					 'button_x_img': Element('cc_phpgw_img_dir').value+'/winclose.gif',
-					 'include_contents': new Array('cc_contact_tab_0', 'cc_contact_tab_1', 'cc_contact_tab_2','cc_contact_tab_buttons'),
-					 'border': true});
+								 'win_class': 'row_off',
+								 'width': '500px',
+								 'height': '413px',
+								 'title_color': '#3978d6',
+								 'title': Element('cc_contact_title').value,
+								 'title_text_color': 'white',
+								 'button_x_img': Element('cc_phpgw_img_dir').value+'/winclose.gif',
+								 'include_contents': new Array('cc_contact_tab_0', 'cc_contact_tab_1', 'cc_contact_tab_2','cc_contact_tab_buttons'),
+								 'border': true});
 
 		fullAddWin.draw();
 		if (is_ie)

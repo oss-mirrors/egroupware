@@ -2,6 +2,7 @@
   /***************************************************************************\
   * eGroupWare - Contacts Center                                              *
   * http://www.egroupware.org                                                 *
+  *                                                                           *
   * Storage Object Classes                                                    *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *

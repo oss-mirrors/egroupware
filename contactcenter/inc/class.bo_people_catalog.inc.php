@@ -389,7 +389,9 @@
 				 		'id_city'            => '<city>',
 						'city_name'          => (string),
 						'city_timezone'      => (int),
-						'city_geo_location'  => (string),
+						'city_geo_latitude'  => (float),
+						'city_geo_longitude' => (float),
+						'city_geo_altitude'  => (float),
 						'id_state'           => (int),
 						'state_name'         => (string),
 						'state_symbol'       => (string),
@@ -433,7 +435,9 @@
 						$city = CreateObject('contactcenter.so_city',$id_city);
 						$return['address'.$type]['city_name'] = $city->get_city_name();
 						$return['address'.$type]['city_timezone'] = $city->get_city_timezone();
-						$return['address'.$type]['city_geo_location'] = $city->get_city_geo_location();
+						$return['address'.$type]['city_geo_latitude'] = $city->get_city_geo_latitude();
+						$return['address'.$type]['city_geo_longitude'] = $city->get_city_geo_longitude();
+						$return['address'.$type]['city_geo_altitude'] = $city->get_city_geo_altitude();
 					}
 					
 					if ($id_state)
@@ -468,7 +472,9 @@
 						$city = CreateObject('contactcenter.so_city',$id_city);
 						$return['address'.$type]['city_name'] = $city->get_city_name();
 						$return['address'.$type]['city_timezone'] = $city->get_city_timezone();
-						$return['address'.$type]['city_geo_location'] = $city->get_city_geo_location();
+						$return['address'.$type]['city_geo_latitude'] = $city->get_city_geo_latitude();
+						$return['address'.$type]['city_geo_longitude'] = $city->get_city_geo_longitude();
+						$return['address'.$type]['city_geo_altitude'] = $city->get_city_geo_altitude();
 					}
 					
 					if ($id_state)

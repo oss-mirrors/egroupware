@@ -3,7 +3,7 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
+  *  - Jonas Goes <jqhcb@users.sourceforge.net>                               *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
@@ -145,16 +145,6 @@ function selectRadio (id, index)
 	for (var i = 0; i < max; i++)
 	{
 		i == index ? obj.options[i].checked = true : obj.options[i].checked = false;
-	}
-}
-
-function clearSelectBox(obj, startIndex)
-{
-	var nOptions = obj.options.length;
-
-	for (var i = nOptions - 1; i >= startIndex; i--)
-	{
-		obj.removeChild(obj.options[i]);
 	}
 }
 
@@ -584,15 +574,9 @@ function resetAddressFields()
 	
 	Element('cc_addr_states').selectedIndex = 0;
 	Element('cc_addr_states').disabled = true;
-	Element('cc_addr_states_new').disabled = true;
-	Element('cc_addr_states_new').readonly = true;
-	Element('cc_addr_states_new').value = '';
 
 	Element('cc_addr_cities').selectedIndex = 0;
 	Element('cc_addr_cities').disabled = true;
-	Element('cc_addr_cities_new').disabled = true;
-	Element('cc_addr_cities_new').readonly = true;
-	Element('cc_addr_cities_new').value = '';
 
 	Element('cc_addr_id').value = '';
 
@@ -697,7 +681,7 @@ function populateStates()
 	{
 		var data = unserialize(responseText);
 		
-		clearSelectBox(states, 4);
+		clearSelectBox(states, 3);
 			
 		if (typeof(data) != 'object')
 		{
@@ -725,7 +709,7 @@ function populateStates()
 			return;
 		}
 
-		var i = 4;
+		var i = 3;
 		for (var j in data['data'])
 		{
 			states.options[i] = new Option(data['data'][j], j);
@@ -740,14 +724,6 @@ function populateStates()
 		if (data && data[addrIndex])
 		{
 			states.value = data[addrIndex]['id_state'];
-			if (states.value == '_NEW_')
-			{
-				if (CC_contact_full_info['addresses']['new_states'][addrIndex])
-				{
-					Element('cc_addr_states_new').value = CC_contact_full_info['addresses']['new_states'][addrIndex];
-				}
-				updateAddrNewStateOnMouseOut();
-			}
 			updateAddrCities();
 		}
 	};
@@ -759,30 +735,13 @@ function updateAddrCities()
 {
 	var states = Element('cc_addr_states');
 	var cities = Element('cc_addr_cities');
-	var newState = Element('cc_addr_states_new');
 	var requestStr;
 
 	switch (states.value)
 	{
 		case '_NONE_':
-			newState.readonly = true;
-			newState.disabled = true;
-			newState.value = '';
-
 			cities.disabled = true;
 			cities.selectedIndex = 0;
-			updateAddrFillingFields();
-			return;
-
-		case '_NEW_':
-
-			newState.readonly = false;
-			newState.disabled = false;
-			updateAddrNewStateOnMouseOut();
-			
-			cities.disabled = false;
-			clearSelectBox(cities, 3);
-			cities.selectedIndex = 1;
 			updateAddrFillingFields();
 			return;
 
@@ -801,10 +760,6 @@ function updateAddrCities()
 			requestStr = 'country='+Element('cc_addr_countries').value+'&state='+states.value;
 	}
 
-	newState.readonly = true;
-	newState.disabled = true;
-	newState.value = '';
-
 	populateCities(requestStr);
 }
 
@@ -816,7 +771,7 @@ function populateCities(requestStr)
 	{
 		var data = unserialize(responseText);
 		
-		clearSelectBox(cities, 3);
+		clearSelectBox(cities, 2);
 		
 		if (typeof(data) != 'object')
 		{
@@ -844,7 +799,7 @@ function populateCities(requestStr)
 			return;
 		}
 
-		var i = 3;
+		var i = 2;
 		for (var j in data['data'])
 		{
 			cities.options[i] = new Option(data['data'][j], j);
@@ -859,48 +814,20 @@ function populateCities(requestStr)
 		if (data && data[addrIndex])
 		{
 			cities.value = data[addrIndex]['id_city'];
-
-			if (cities.value == '_NEW_')
-			{
-				if (CC_contact_full_info['addresses']['new_cities'][addrIndex])
-				{
-					Element('cc_addr_cities_new').value = CC_contact_full_info['addresses']['new_cities'][addrIndex];
-				}
-				updateAddrNewCityOnMouseOut();
-			}
 		}
 	};
 	
 	Connector.newRequest('populateCities', '../index.php?menuaction=contactcenter.ui_data.data_manager&method=get_cities&'+requestStr, 'GET', handler);
 }
 
-function updateAddrNewStateOnMouseOver ()
-{
-	if (Element('cc_addr_states_new').value == Element('cc_msg_type_state').value && Element('cc_addr_states').selectedIndex == 1) 
-	{
-		Element('cc_addr_states_new').value = '';
-	}
-}
-
-function updateAddrNewStateOnMouseOut ()
-{
-	if (Element('cc_addr_states_new').value.length == 0 && Element('cc_addr_states').selectedIndex == 1) 
-	{
-		Element('cc_addr_states_new').value = Element('cc_msg_type_state').value;
-	}
-}
 
 function updateAddrFillingFields()
 {
 	var countries = Element('cc_addr_countries');
 	var cities = Element('cc_addr_cities');
-	var newCity = Element('cc_addr_cities_new');
 
 	if (countries.value == '_NONE_')
 	{
-		newCity.readonly = true;
-		newCity.disabled = true;
-		newCity.value = '';
 		disableAddrFillingFields();
 		return;
 	}
@@ -925,49 +852,6 @@ function updateAddrFillingFields()
 
 	Element('cc_addr_is_default').readonly = false;
 	Element('cc_addr_is_default').disabled = false;
-
-	switch (cities.value)
-	{
-		case '_NONE_':
-			newCity.readonly = true;
-			newCity.disabled = true;
-			newCity.value = '';
-
-			//resetAddrFillingFields();
-			
-			return;
-
-		case '_NEW_':
-
-			newCity.readonly = false;
-			newCity.disabled = false;
-			updateAddrNewCityOnMouseOut();
-			
-			break;
-
-		case '_SEP_': return;
-
-		default:
-			newCity.readonly = true;
-			newCity.disabled = true;
-			newCity.value = '';
-	}
-}
-
-function updateAddrNewCityOnMouseOver ()
-{
-	if (Element('cc_addr_cities_new').value == Element('cc_msg_type_city').value && Element('cc_addr_cities').selectedIndex == 1) 
-	{
-		Element('cc_addr_cities_new').value = '';
-	}
-}
-
-function updateAddrNewCityOnMouseOut ()
-{
-	if (Element('cc_addr_cities_new').value.length == 0 && Element('cc_addr_cities').selectedIndex == 1) 
-	{
-		Element('cc_addr_cities_new').value = Element('cc_msg_type_city').value;
-	}
 }
 
 function saveAddressFields ()
@@ -1068,43 +952,6 @@ function saveAddressFields ()
 	addrInfo['address_is_default'] = Element('cc_addr_is_default').checked ? '1' : '0';
 
 	CC_contact_full_info['addresses']['address'+Element('cc_addr_types').options[lastIndex].value] = addrInfo;
-
-	if (Element('cc_addr_cities').value == '_NEW_' && 
-	    Element('cc_msg_type_city').value !=  Element('cc_addr_cities_new').value &&
-		Element('cc_addr_cities_new').value != '')
-	{
-		var addrRootInfo = CC_contact_full_info['addresses']['new_cities'];
-		
-		if (!addrRootInfo)
-		{
-			addrRootInfo = new Array();
-		}
-		
-		var i = addrRootInfo.length;
-		addrRootInfo[addrInfo['id_typeof_address']] = new Array();
-		addrRootInfo[addrInfo['id_typeof_address']]['id_country'] = Element('cc_addr_countries').value;
-		addrRootInfo[addrInfo['id_typeof_address']]['id_state']   = Element('cc_addr_states').value.charAt(0) != '_' ? Element('cc_addr_states').value : null;
-		addrRootInfo[addrInfo['id_typeof_address']]['city_name']  = Element('cc_addr_cities_new').value;
-		CC_contact_full_info['addresses']['new_cities'] = addrRootInfo;
-	}
-
-	if (Element('cc_addr_states').value == '_NEW_' && 
-	    Element('cc_msg_type_state').value !=  Element('cc_addr_states_new').value && 
-		Element('cc_addr_states_new').value != '')
-	{
-		var addrRootInfo = CC_contact_full_info['addresses']['new_states'];
-		
-		if (!addrRootInfo)
-		{
-			addrRootInfo = new Array();
-		}
-		
-		var i = addrRootInfo.length;
-		addrRootInfo[addrInfo['id_typeof_address']] = new Array();
-		addrRootInfo[addrInfo['id_typeof_address']]['id_country'] = Element('cc_addr_countries').value;
-		addrRootInfo[addrInfo['id_typeof_address']]['state_name'] = Element('cc_addr_states_new').value;
-		CC_contact_full_info['addresses']['new_states'] = addrRootInfo;
-	}
 
 	return true;
 }
@@ -1959,50 +1806,4 @@ function ccSearchHide()
 	Element('cc_panel_search').style.display  = 'none';
 	Element('cc_panel_letters').style.display = 'inline';
 	showCards(CC_last_letter, '1');
-}
-
-/***********************************************\
-*               QUICK ADD FUNCTIONS             *
-\***********************************************/
-
-function resetQuickAdd ()
-{
-	Element('cc_qa_alias').value = '';
-	Element('cc_qa_given_names').value = '';
-	Element('cc_qa_family_names').value = '';
-	Element('cc_qa_phone').value = '';
-	Element('cc_qa_email').value = '';
-}
-
-function getQuickAdd ()
-{
-	var data = new Array();
-	data[0] = Element('cc_qa_alias').value;
-	data[1] = Element('cc_qa_given_names').value;
-	data[2] = Element('cc_qa_family_names').value;
-	data[3] = Element('cc_qa_phone').value;
-	data[4] = Element('cc_qa_email').value;
-	
-	return data;
-}
-
-function sendQuickAdd ()
-{
-	var data = getQuickAdd();
-	
-	var str = serialize(data);
-
-	if (!str)
-	{
-		return false;
-	}
-
-	var handler = function (responseText)
-	{
-		setTimeout('updateCards()',100);;
-	}
-
-	resetQuickAdd();
-
-	Connector.newRequest('quickAdd', '../index.php?menuaction=contactcenter.ui_data.data_manager&method=quick_add', 'POST', handler, 'add='+escape(str));
 }

@@ -3,7 +3,7 @@
 	Copyright (C) 2004 - Raphael Derosso Pereira 
 	(raphaelpereira@users.sourceforge.net)
 	
-	This file is licensed under the terms of th GNU GPL
+	This file is licensed under the terms of the GNU GPL
 	version 2 or above
 -->
 

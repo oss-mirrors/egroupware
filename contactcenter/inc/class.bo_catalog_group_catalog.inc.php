@@ -3,7 +3,6 @@
   * eGroupWare - Contacts Center                                              *
   * http://www.egroupware.org                                                 *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *

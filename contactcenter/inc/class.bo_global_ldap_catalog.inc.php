@@ -630,7 +630,9 @@
 				 		$l_fields['id_city'] = $this->trans_table['contact.address.city.id_city'];
 						$l_fields['city_name'] = $this->trans_table['contact.address.city.city_name'];
 						$l_fields['city_timezone'] = $this->trans_table['contact.address.city.city_timezone'];
-						$l_fields['city_geo_location'] = $this->trans_table['contact.address.city.city_geo_location'];
+						$l_fields['city_geo_latitude'] = $this->trans_table['contact.address.city.city_geo_latitude'];
+						$l_fields['city_geo_longitude'] = $this->trans_table['contact.address.city.city_geo_longitude'];
+						$l_fields['city_geo_altitude'] = $this->trans_table['contact.address.city.city_geo_altitude'];
 						$l_fields['id_state'] = $this->trans_table['contact.address.city.state.id_state'];
 						$l_fields['state_name'] = $this->trans_table['contact.address.city.state.state_name'];
 						$l_fields['state_symbol'] = $this->trans_table['contact.address.city.state.state_symbol'];

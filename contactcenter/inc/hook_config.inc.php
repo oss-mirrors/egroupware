@@ -2,8 +2,8 @@
   /****************************************************************************\
    * eGroupWare - Contact Center Config Functions                             *
    * http://www.egroupware.org                                                *
-   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-   *  sponsored by Think.e - http://www.think-e.com.br                         *
+   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                      *
+   *  sponsored by Think.e - http://www.think-e.com.br                        *
    * ------------------------------------------------------------------------ *
    *  This program is free software; you can redistribute it and/or modify it *
    *  under the terms of the GNU General Public License as published by the   *
@@ -18,7 +18,7 @@
 			$pCatalog = CreateObject('contactcenter.bo_people_catalog');
 			$types = $pCatalog->get_all_connections_types();
 		
-			if (count($types))
+			if (is_array($types) and count($types))
 			{
 				$options_email = '';
 				foreach($types as $id => $name)
@@ -47,7 +47,7 @@
 			$pCatalog = CreateObject('contactcenter.bo_people_catalog');
 			$types = $pCatalog->get_all_connections_types();
 		
-			if (count($types))
+			if (is_array($types) and count($types))
 			{
 				$options_phone = '';
 				foreach($types as $id => $name)

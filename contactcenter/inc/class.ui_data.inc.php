@@ -4,7 +4,6 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
@@ -92,18 +91,8 @@
 			$GLOBALS['phpgw']->template->set_file(array('index' => 'index.tpl'));
 			$GLOBALS['phpgw']->template->set_var('cc_root_dir', $GLOBALS['phpgw_info']['server']['webserver_url'].'/contactcenter/');
 			
-			/* Quick Add */
-			$GLOBALS['phpgw']->template->set_var('cc_qa_alias',lang('Alias').':');
-			$GLOBALS['phpgw']->template->set_var('cc_qa_given_names',lang('Given Names').':');
-			$GLOBALS['phpgw']->template->set_var('cc_qa_family_names',lang('Family Names').':');
-			$GLOBALS['phpgw']->template->set_var('cc_qa_phone',lang('Phone').':');
-			$GLOBALS['phpgw']->template->set_var('cc_qa_email',lang('Email').':');
-			$GLOBALS['phpgw']->template->set_var('cc_qa_save',lang('Save'));
-			$GLOBALS['phpgw']->template->set_var('cc_qa_clear',lang('Clear'));
-			/* End Quick Add */
-			
 			$cc_css_file = $GLOBALS['phpgw_info']['server']['webserver_url'].'/contactcenter/styles/cc.css';
-			$cc_card_image_file = $GLOBALS['phpgw_info']['server']['webserver_url'].'/contactcenter/templates/default/images/card.png';
+			$cc_card_image_file = $GLOBALS['phpgw']->common->find_image('contactcenter','card');
 			$GLOBALS['phpgw']->template->set_var('cc_css',$cc_css_file);
 			$GLOBALS['phpgw']->template->set_var('cc_dtree_css', $cc_dtree_file);
 			$GLOBALS['phpgw']->template->set_var('cc_card_image',$cc_card_image_file);
@@ -235,6 +224,10 @@
 				case 'search':
 					return $this->search(str_replace('\\"', '"', $_GET['data']));
 
+				case 'add_city':
+					return $this->add_city(unserialize(str_replace('\\"', '"', $_POST['data'])));
+				
+				/* Debug Pourpose Only */
 				case 'email_win':
 					$GLOBALS['phpgw']->common->phpgw_header();
 					$api = CreateObject('contactcenter.ui_api');
@@ -1727,6 +1720,59 @@
 			));
 		}
 
+
+		/*!
+
+			@function add_city
+			@abstract Inserts a new city into the DB or update it
+			@author Raphael Derosso Pereira
+
+			@param $data array The City information
+			
+		*/
+		function add_city($data)
+		{
+			if (!$data or !is_array($data))
+			{
+				echo serialize(array(
+					'msg'    => lang('Invalid City Information. Inform site Admin.'),
+					'status' => 'fail'
+				));
+
+				return false;
+			}
+			
+			if (!$data['id_country'] or !$data['city_name'])
+			{
+				echo serialize(array(
+					'msg'    => lang('The City must have a country and a name, at least. Please try again...'),
+					'status' => 'fail'
+				));
+
+				return false;
+			}
+
+			$result = $this->bo->catalog->add_city($data);
+
+			if (!$result)
+			{
+				echo serialize(array(
+					'msg'    => lang('Couldn\'t insert/update City. Please inform site Admin.'),
+					'status' => 'fail'
+				));
+
+				return false;
+			}
+			
+			echo serialize(array(
+				'msg'    => lang('Success!'),
+				'status' => 'ok',
+				'data'   => $result
+			));
+
+			return true;
+		}
+		
 		/*!
 
 			@function get_multiple_entries
@@ -1767,7 +1813,7 @@
 			}
 
 			return array(
-				'msg'    => lang('Found %1 Entries!', count($entries)),
+				'msg'    => lang('Found %1 entry(s)!', count($entries)),
 				'status' => 'ok',
 				'data'   => $entries
 			);
@@ -1878,7 +1924,7 @@
 			}
 
 			return array(
-				'msg'      => lang('Found %1 Entries!', $nEntries),
+				'msg'      => lang('Found %1 entry(s)!', $nEntries),
 				'status'   => 'ok',
 				'final'    => $nEntries + $data['offset'] < count($this->all_entries) ? false : true,
 				'offset'   => $data['offset'] + $nEntries,

@@ -3,7 +3,7 @@
   * http://www.egroupware.org                                                 *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
-  *  - Vinicius Cubas <vinicius@think-e.com.br>                               *
+  *  - Jonas Goes <jqhcb@users.sourceforge.net>                               *
   *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
@@ -378,6 +378,16 @@ function showMessage(msg, type)
 		default:
 			alert(msg);
 			return;
+	}
+}
+
+function clearSelectBox(obj, startIndex)
+{
+	var nOptions = obj.options.length;
+
+	for (var i = nOptions - 1; i >= startIndex; i--)
+	{
+		obj.removeChild(obj.options[i]);
 	}
 }
 

@@ -43,7 +43,7 @@
 		
 		 
 		/*********************************************************************\
-		 *                Methods to Get Companies Ingo                      *
+		 *                Methods to Get Companies Info                      *
 		\*********************************************************************/
 
 		/*!
@@ -230,25 +230,27 @@
 			@return The following array:
 				 $return = array(
 				 	'address1' => array(
-				 		'id_address'         => <id_address>,
-				 		'id_type'            => <id_type>,
-				 		'type'               => '<type_name>',
-				 		'address1'           => '<address1>',
-				 		'address2'           => '<address2>',
-				 		'complement'         => '<complement>',
-				 		'address_other'      => '<address_other>',
-				 		'postal_code'        => '<postal_code>',
-				 		'po_box'		     => '<po_box>',
-				 		'id_city'            => '<city>',
-				 		'city_name'          => '<city_name>',
-				 		'city_timezone'      => '<city_timezone>',
-				 		'city_geo_location'  => '<city_geo_location>',
-				 		'id_state'           => '<id_state>',
-				 		'state_name'         => '<state_name>',
-				 		'state_symbol'       => '<state_symbol>',
-				 		'id_country'         => '<id_country>',
-				 		'country_name'       => '<country_name>',
-				 		'address_is_default' => <trueness>
+				 		'id_address'          => <id_address>,
+				 		'id_type'             => <id_type>,
+				 		'type'                => '<type_name>',
+				 		'address1'            => '<address1>',
+				 		'address2'            => '<address2>',
+				 		'complement'          => '<complement>',
+				 		'address_other'       => '<address_other>',
+				 		'postal_code'         => '<postal_code>',
+				 		'po_box'		      => '<po_box>',
+				 		'id_city'             => '<city>',
+				 		'city_name'           => '<city_name>',
+				 		'city_timezone'       => '<city_timezone>',
+				 		'city_geo_latitude'   => '<city_geo_latitude>',
+				 		'city_geo_longitude'  => '<city_geo_longitude>',
+				 		'city_geo_altitude'   => '<city_geo_altitude>',
+				 		'id_state'            => '<id_state>',
+				 		'state_name'          => '<state_name>',
+				 		'state_symbol'        => '<state_symbol>',
+				 		'id_country'          => '<id_country>',
+				 		'country_name'        => '<country_name>',
+				 		'address_is_default'  => <trueness>
 				 	),
 				 	'address2' => array(...),
 				 	...

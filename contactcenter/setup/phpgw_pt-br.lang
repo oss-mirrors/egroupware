@@ -1,71 +1,70 @@
-Addresses	contactcenter	pt-br	Endereços
-Address 1	contactcenter	pt-br	Endereço 1
-Address 2	contactcenter	pt-br	Endereço 2
-Address Other	contactcenter	pt-br	Outro Endereço
-Alias	contactcenter	pt-br	Apelido
-Available	contactcenter	pt-br	Disponível
-Birthdate	contactcenter	pt-br	Nascimento
-Browse	common	pt-br	Procurar
-Catalogues	contactcenter	pt-br	Catálogos
-Complement	contactcenter	pt-br	Complemento
-Confirm Removal of this Contact?	contactcenter	pt-br	Confirmar a exclusão deste Contato?
-Connection Name	contactcenter	pt-br	Nome da Conexão
-Connection Value	contactcenter	pt-br	Valor da Conexão
-Connections	contactcenter	pt-br	Conexões
-Contact Center	common	pt-br	Contact Center
+address 1	contactcenter	pt-br	Endereço 1
+address 2	contactcenter	pt-br	Endereço 2
+address other	contactcenter	pt-br	Outro Endereço
+addresses	contactcenter	pt-br	Endereços
+alias	contactcenter	pt-br	Apelido
+available	contactcenter	pt-br	Disponível
+birthdate	contactcenter	pt-br	Nascimento
+browse	common	pt-br	Procurar
+catalogues	contactcenter	pt-br	Catálogos
+choose city	contactcenter	pt-br	Escolher Cidade...
+choose country	contactcenter	pt-br	Escolher País...
+choose prefix...	contactcenter	pt-br	Escolher Prefixo...
+choose sex ...	contactcenter	pt-br	Escolher Sexo ...
+choose state	contactcenter	pt-br	Escolher Estado...
+choose suffix...	contactcenter	pt-br	Escolher Sufixo...
+choose type of address	contactcenter	pt-br	Escolher Tipo de Endereço
+choose type of connection	contactcenter	pt-br	Escolher Tipo de Conexão
+complement	contactcenter	pt-br	Complemento
+confirm removal of this contact?	contactcenter	pt-br	Confirmar a exclusão deste Contato?
+connection name	contactcenter	pt-br	Nome da Conexão
+connection value	contactcenter	pt-br	Valor da Conexão
+connections	contactcenter	pt-br	Conexões
+contact center	common	pt-br	Contact Center
 contactcenter	common	pt-br	Contact Center
-Contacting Server...	contactcenter	pt-br	Contactando Servidor...
-Contacts	common	pt-br	Contatos
-Choose City	contactcenter	pt-br	Escolher Cidade...
-Choose Country	contactcenter	pt-br	Escolher País...
-Choose Prefix...	contactcenter	pt-br	Escolher Prefixo...
-Choose Sex ...	contactcenter	pt-br	Escolher Sexo ...
-Choose State	contactcenter	pt-br	Escolher Estado...
-Choose Suffix...	contactcenter	pt-br	Escolher Sufixo...
-Choose Type of Address	contactcenter	pt-br	Escolher Tipo de Endereço
-Choose Type of Connection	contactcenter	pt-br	Escolher Tipo de Conexão
-Couldn't contact server or server response is invalid. Contact Admin.	contactcenter	pt-br	Não foi possível estabelecer conexão com o servidor. Contacte o Administrador do sistema.
-Edit Contact	contactcenter	pt-br	Editar Contato
-Entry added with success!	contactcenter	pt-br	Contato adicionado com sucesso!
-Family Names	contactcenter	pt-br	Sobrenome
-Female	contactcenter	pt-br	Feminino
-Found %1 Entries	common	pt-br	Encontrado %1 Resultado(s)
-Full Name	contactcenter	pt-br	Nome Completo
-Given Names	contactcenter	pt-br	Nome
-GPG Finger Print	contactcenter	pt-br	Assinatura GPG
-Go	common	pt-br	Ir
-Is Default?	contactcenter	pt-br	É Padrão?
-Main	contactcenter	pt-br	Principal
-Male	contactcenter	pt-br	Masculino
-New	contactcenter	pt-br	Novo
-New City	contactcenter	pt-br	Nova Cidade
-New from the same Type	contactcenter	pt-br	Novo do mesmo tipo
-New State	contactcenter	pt-br	Novo Estado
-No Cards	contactcenter	pt-br	Nenhum
-No City	contactcenter	pt-br	Nenhuma Cidade
-No Entries Found!	contactcenter	pt-br	Nenhum resultado encontrado!
-No State	contactcenter	pt-br	Nenhum Estado
-No Cities found for this State.	contactcenter	pt-br	Nenhuma Cidade encontrada para este Estado.
-No States found for this Country.	contactcenter	pt-br	Nenhum Estado encontrado para este País.
-People	contactcenter	pt-br	Pessoas
-Phone	contactcenter	pt-br	Telefone
-Postal Code	contactcenter	pt-br	CEP
-PO Box	contactcenter	pt-br	Caixa Postal
-Prefix	contactcenter	pt-br	Prefixo
-Processing Information...	contactcenter pt-br	Processando Informações...
-Quick Add	contactcenter	pt-br	Adicionar Rápido
-Reset	contactcenter	pt-br	Limpar
-Remove Entry ID %1!	contactcenter	pt-br	Contato removido com sucesso (ID = %1)!
-Remove Contact	contactcenter	pt-br	Remover Contato
-Search for...	common	pt-br	Pesquisar por ...
-Search for Catalog Entries	contactcenter	pt-br	Pesquisar por Resultados no Catálogo
-Select Photo	contactcenter	pt-br	Selecionar Foto
-Sex	contactcenter	pt-br	Sexo
-Showing found entries	common	pt-br	Mostrando itens encontrados
-Suffix	contactcenter	pt-br	Sufixo
-Type new city here	contactcenter	pt-br	Digite o nome aqui
-Type new state here	contactcenter	pt-br	Digite o nome aqui
-Type of Connection	contactcenter	pt-br	Tipo de Conexão
-Type of Address	contactcenter	pt-br	Tipo de Endereço
-Unavailable or empty Catalog	contactcenter	pt-br	Catálogo vazio ou indisponível
-Updated Successfully!	contactcenter	pt-br	Atualizado com Sucesso!
+contacting server...	contactcenter	pt-br	Contactando Servidor...
+contacts	common	pt-br	Contatos
+couldn't contact server or server response is invalid. contact admin.	contactcenter	pt-br	Não foi possível estabelecer conexão com o servidor. Contacte o Administrador do sistema.
+edit contact	contactcenter	pt-br	Editar Contato
+entry added with success!	contactcenter	pt-br	Contato adicionado com sucesso!
+family names	contactcenter	pt-br	Sobrenome
+female	contactcenter	pt-br	Feminino
+full name	contactcenter	pt-br	Nome Completo
+given names	contactcenter	pt-br	Nome
+go	common	pt-br	Ir
+gpg finger print	contactcenter	pt-br	Assinatura GPG
+is default?	contactcenter	pt-br	É Padrão?
+main	contactcenter	pt-br	Principal
+male	contactcenter	pt-br	Masculino
+new	contactcenter	pt-br	Novo
+new city	contactcenter	pt-br	Nova Cidade
+new from the same type	contactcenter	pt-br	Novo do mesmo tipo
+new state	contactcenter	pt-br	Novo Estado
+no cards	contactcenter	pt-br	Nenhum
+no cities found for this state.	contactcenter	pt-br	Nenhuma Cidade encontrada para este Estado.
+no city	contactcenter	pt-br	Nenhuma Cidade
+no entries found!	contactcenter	pt-br	Nenhum resultado encontrado!
+no state	contactcenter	pt-br	Nenhum Estado
+no states found for this country.	contactcenter	pt-br	Nenhum Estado encontrado para este País.
+people	contactcenter	pt-br	Pessoas
+phone	contactcenter	pt-br	Telefone
+po box	contactcenter	pt-br	Caixa Postal
+postal code	contactcenter	pt-br	CEP
+prefix	contactcenter	pt-br	Prefixo
+processing information...	contactcenter	pt-br	Processando Informação...
+quick add	contactcenter	pt-br	Adicionar Rápido
+remove contact	contactcenter	pt-br	Remover Contato
+remove entry id %1!	contactcenter	pt-br	Contato removido com sucesso (ID = %1)!
+reset	contactcenter	pt-br	Limpar
+search for catalog entries	contactcenter	pt-br	Pesquisar por Resultados no Catálogo
+search for...	common	pt-br	Pesquisar por ...
+select photo	contactcenter	pt-br	Selecionar Foto
+sex	contactcenter	pt-br	Sexo
+showing found entries	common	pt-br	Mostrando itens encontrados
+suffix	contactcenter	pt-br	Sufixo
+type new city here	contactcenter	pt-br	Digite o nome aqui
+type new state here	contactcenter	pt-br	Digite o nome aqui
+type of address	contactcenter	pt-br	Tipo de Endereço
+type of connection	contactcenter	pt-br	Tipo de Conexão
+unavailable or empty catalog	contactcenter	pt-br	Catálogo vazio ou indisponível
+updated successfully!	contactcenter	pt-br	Atualizado com Sucesso!

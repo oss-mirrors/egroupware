@@ -2,6 +2,7 @@
   /***************************************************************************\
   * eGroupWare - Contacts Center                                              *
   * http://www.egroupware.org                                                 *
+  *                                                                           *
   * Storage Object Classes                                                    *
   * Written by:                                                               *
   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
@@ -49,6 +50,12 @@
 					'state' => 'empty',
 					'value' => false
 				),
+				'city_owner' => array(
+					'name'  => 'city_owner',
+					'type'  => false,
+					'state' => 'empty',
+					'value' => false
+				),
 				'city_name' => array(
 					'name'  => 'city_name',
 					'type'  => false,
@@ -61,8 +68,20 @@
 					'state' => 'empty',
 					'value' => false
 				),
-				'city_geo_location' => array(
-					'name'  => 'city_geo_location',
+				'city_geo_latitude' => array(
+					'name'  => 'city_geo_latitude',
+					'type'  => false,
+					'state' => 'empty',
+					'value' => false
+				),
+				'city_geo_longitude' => array(
+					'name'  => 'city_geo_longitude',
+					'type'  => false,
+					'state' => 'empty',
+					'value' => false
+				),
+				'city_geo_altitude' => array(
+					'name'  => 'city_geo_altitude',
 					'type'  => false,
 					'state' => 'empty',
 					'value' => false
@@ -139,6 +158,18 @@
 
 		/*!
 		
+			@function get_city_owner
+			@abstract Returns the City Owner (Creator)
+			@author Raphael Derosso Pereira
+		
+		*/
+		function get_city_owner (  )
+		{
+			return $this->main_fields['city_owner']['value'];
+		}
+
+		/*!
+		
 			@function get_city_timezone
 			@abstract Returns the City Timezone
 			@author Raphael Derosso Pereira
@@ -151,15 +182,38 @@
 
 		/*!
 		
-			@function get_city_geo_location
-			@abstract Returns the City Geographic Location as stablished
-				by ISO 6709 standard
+			@function get_city_geo_latitude
+			@abstract Returns the City Geographic Latitude
 			@author Raphael Derosso Pereira
 		
 		*/
-		function get_city_geo_location (  )
+		function get_city_geo_latitude (  )
 		{
-			return $this->main_fields['city_geo_location']['value'];
+			return $this->main_fields['city_geo_latitude']['value'];
+		}
+
+		/*!
+		
+			@function get_city_geo_longitude
+			@abstract Returns the City Geographic Longitude
+			@author Raphael Derosso Pereira
+		
+		*/
+		function get_city_geo_longitude (  )
+		{
+			return $this->main_fields['city_geo_longitude']['value'];
+		}
+
+		/*!
+		
+			@function get_city_geo_altitude
+			@abstract Returns the City Geographic Altitude
+			@author Raphael Derosso Pereira
+		
+		*/
+		function get_city_geo_altitude (  )
+		{
+			return $this->main_fields['city_geo_altitude']['value'];
 		}
 
 
@@ -197,6 +251,20 @@
 		
 		/*!
 		
+			@function set_city_owner
+			@abstract Sets the City's Owner ID
+			@author Raphael Derosso Pereira
+		
+			@param string $name The City Owner ID
+		*/
+		function set_city_owner ( $id )
+		{
+			$this->main_fields['city_owner']['value'] = $id;
+			$this->manage_fields($this->main_fields['city_owner'], 'changed');
+		}
+		
+		/*!
+		
 			@function set_city_name
 			@abstract Sets the City's Name
 			@author Raphael Derosso Pereira
@@ -225,17 +293,44 @@
 		
 		/*!
 		
-			@function set_city_geo_location
-			@abstract Sets the City's Geographic Location as defined
-				by ISO 6709 standard
+			@function set_city_geo_latitude
+			@abstract Sets the City's Geographic Latitude as defined
 			@author Raphael Derosso Pereira
 		
-			@param string $geo The City Geographic Location
+			@param string $geo The City Geographic Latitude
 		*/
-		function set_city_geo_location ( $geo )
+		function set_city_geo_latitude ( $geo )
 		{
-			$this->main_fields['city_geo_location']['value'] = $geo;
-			$this->manage_fields($this->main_fields['city_geo_location'], 'changed');
+			$this->main_fields['city_geo_latitude']['value'] = $geo;
+			$this->manage_fields($this->main_fields['city_geo_latitude'], 'changed');
+		}
+		
+		/*!
+		
+			@function set_city_geo_longitude
+			@abstract Sets the City's Geographic Longitude as defined
+			@author Raphael Derosso Pereira
+		
+			@param string $geo The City Geographic Longitude
+		*/
+		function set_city_geo_longitude ( $geo )
+		{
+			$this->main_fields['city_geo_longitude']['value'] = $geo;
+			$this->manage_fields($this->main_fields['city_geo_longitude'], 'changed');
+		}
+		
+		/*!
+		
+			@function set_city_geo_altitude
+			@abstract Sets the City's Geographic Altitude as defined
+			@author Raphael Derosso Pereira
+		
+			@param string $geo The City Geographic Altitude
+		*/
+		function set_city_geo_altitude ( $geo )
+		{
+			$this->main_fields['city_geo_altitude']['value'] = $geo;
+			$this->manage_fields($this->main_fields['city_geo_altitude'], 'changed');
 		}
 	}
 	

@@ -139,13 +139,15 @@
 		),
 		'phpgw_cc_city' => array(
 			'fd' => array(
-				'id_city'           => array( 'type' => 'int', 'precision' => 8, 'nullable' => false ),
-				'id_state'          => array( 'type' => 'int', 'precision' => 8 ),
-				'id_country'        => array( 'type' => 'char', 'nullable' => false, 'precision' => 2 ),
-				'city_gas'          => array( 'type' => 'int', 'precision' => 4, 'nullable' => true ),
-				'city_name'         => array( 'type'  => 'varchar', 'precision' => 60, 'nullable' => 'false' ),
-				'city_timezone'     => array( 'type' => 'int', 'precision' => 2 ),
-				'city_geo_location' => array( 'type'  => 'varchar', 'precision' => 27 ),
+				'id_city'            => array( 'type' => 'int', 'precision' => 8, 'nullable' => false ),
+				'id_state'           => array( 'type' => 'int', 'precision' => 8 ),
+				'id_country'         => array( 'type' => 'char', 'nullable' => false, 'precision' => 2 ),
+				'city_owner'         => array( 'type' => 'int', 'precision' => 8, 'nullable' => true ),
+				'city_name'          => array( 'type' => 'varchar', 'precision' => 60, 'nullable' => 'false' ),
+				'city_timezone'      => array( 'type' => 'varchar', 'precision' => 25 ),
+				'city_geo_latitude'  => array( 'type' => 'float', 'precision' => 4 ),
+				'city_geo_longitude' => array( 'type' => 'float', 'precision' => 4 ),
+				'city_geo_altitude'  => array( 'type' => 'float', 'precision' => 4 ),
 			),
 			'pk' => array('id_city'),
 			'fk' => array(
