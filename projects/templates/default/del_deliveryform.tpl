@@ -20,34 +20,40 @@
 </head>
 <body bgcolor="#FFFFFF">
 <center>
-<table width="70%" border="0" cellpadding="3" cellspacing="3">
+<table width="73%" border="0" cellpadding="3" cellspacing="3">
 	<tr>
-		<td valign="bottom">{myaddress}</td>
-		<td align="right"><img src="{img_src}"></td>
-	</tr>
-	<tr>
-		<td height="2">&nbsp;</td>
+		<td valign="bottom" width="53%">{myaddress}</td>
+		<td align="right" width="37%"><img src="{img_src}"></td>
 	</tr>
 	<tr>
 		<td>{customer}</td>
+		<td align="right">
+			<table border="0" align="right" cellpadding="2" cellspacing="2">
+				<tr>
+					<td><font face="{font}">{lang_delivery_num}:&nbsp;{delivery_num}</font></td>
+				</tr>
+				<tr>
+					<td><font face="{font}">{lang_delivery_date}:&nbsp;{delivery_date}</font></td>					
+				</tr>
+				<tr>
+					<td><font face="{font}">{lang_project_num}:&nbsp;{project_num}</font></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td height="2">&nbsp;</td>
-	</tr>
-	<tr>
-		<td><font face="{font}">{lang_delivery_num}:&nbsp;{delivery_num}</font></td>
+		<td><b><font face="{font}">{lang_delivery_note_for_project}:&nbsp;{title}</font></b></td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
-		<td><font face="{font}">{lang_delivery_date}:&nbsp;{delivery_date}</font></td>
+		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
-	<tr>
-		<td><font face="{font}">{lang_project}:&nbsp;{title}</font></td>
-		<td>&nbsp;</td>
-	</tr>
-</table><br><br><br>
+</table>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
 	<tr>
 		<td width="5%" align="right"><font face="{font}">{lang_position}</font></td>
@@ -73,7 +79,7 @@
 
 <!-- END del_list -->
 
-</table><br><br>
+</table>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
 	<tr>
 		<td width="5%">&nbsp;</td>
@@ -88,6 +94,12 @@
 		<td>&nbsp;</td>
 	</tr>
 	<hr noshade width="70%" size="1">
+</table>
+<table width="70%" border="0" cellspacing="3" cellpadding="3" valign="bottom">
+	<hr noshade width="70%" size="1">
+	<tr>
+		<td align="left" valign="bottom">{fulladdress}</td>
+	</tr>
 </table>
 </center>
 </body>

@@ -101,7 +101,7 @@
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
-			$this->t->set_var('lang_project',lang('Project'));
+			$this->t->set_var('lang_project_num',lang('Project ID'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_delivery_num',lang('Delivery ID'));
 			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
@@ -766,7 +766,8 @@
 			else
 			{
 				$prefs = $this->boprojects->read_prefs();
-        		$this->t->set_var('myaddress',$this->bodeliveries->get_address_data($prefs['abid']));
+        		$this->t->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid']));
+        		$this->t->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid']));
 			}
 
 			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
@@ -774,16 +775,18 @@
 			$this->t->set_var('charset',$charset);
 			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 			$this->t->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
+			$this->t->set_var('lang_delivery_note_for_project',lang('Delivery note for project'));
 
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
-			$this->t->set_var('customer',$this->bodeliveries->get_address_data($del['customer']));
+			$this->t->set_var('customer',$this->bodeliveries->get_address_data('address',$del['customer']));
 
 			$del['date'] = $del['date'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			$delivery_dateout = $GLOBALS['phpgw']->common->show_date($del['date'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 			$this->t->set_var('delivery_date',$delivery_dateout);
 
 			$this->t->set_var('delivery_num',$GLOBALS['phpgw']->strip_html($del['delivery_num']));
+			$this->t->set_var('project_num',$GLOBALS['phpgw']->strip_html($del['project_num']));
 			$title = $GLOBALS['phpgw']->strip_html($del['title']);
 			if (! $title) { $title  = '&nbsp;'; }
 			$this->t->set_var('title',$title);

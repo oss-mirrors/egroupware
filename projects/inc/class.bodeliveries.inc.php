@@ -77,20 +77,20 @@
 			return $del;
 		}
 
-		function get_address_data($abid)
+		function get_address_data($format, $abid)
 		{
-			$cols = array('n_given' => 'n_given',
-						'n_family' => 'n_family',
-						'org_name' => 'org_name',
-						'org_unit' => 'org_unit',
-					'adr_one_street' => 'adr_one_street',
-					'adr_one_locality' => 'adr_one_locality',
-					'adr_one_postalcode' => 'adr_one_postalcode',
-					'adr_one_region' => 'adr_one_region',
-					'adr_one_countryname' => 'adr_one_countryname',
-								'title'	=> 'title');
-
-			$address = $this->contacts->formatted_address($abid,$cols,True);
+			if ($format == 'address')
+			{
+				$address = $this->contacts->formatted_address($abid,True);
+			}
+			elseif ($format == 'line')
+			{
+				$address = $this->contacts->formatted_address_line($abid,True,'1');
+			}
+			else
+			{
+				$address = $this->contacts->formatted_address_full($abid,True,'1');
+			}
 			return $address;
 		}
 

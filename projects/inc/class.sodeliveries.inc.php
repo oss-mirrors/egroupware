@@ -207,7 +207,7 @@
 		function read_single_delivery($delivery_id)
 		{
 			$this->db->query("SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date, "
-					. "phpgw_p_projects.title FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_delivery,phpgw_p_projects WHERE "
 					. "phpgw_p_delivery.id='$delivery_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
 
 			if ($this->db->next_record())
@@ -217,6 +217,7 @@
 				$del['title']			= $this->db->f('title');
 				$del['customer']		= $this->db->f('customer');
 				$del['project_id']		= $this->db->f('project_id');
+				$del['project_num']		= $this->db->f('pnum');
 			}
 			return $del;
 		}
