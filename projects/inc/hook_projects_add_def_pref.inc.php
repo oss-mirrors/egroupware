@@ -2,5 +2,5 @@
 /* $Id$ */
   
   global $pref;
-  $phpgw->preferences->add_newuser("projects","tax","16");
+  $pref->change("projects","tax","16");
 ?>
