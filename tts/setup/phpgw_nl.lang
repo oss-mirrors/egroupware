@@ -146,9 +146,9 @@ tovalidate	tts	nl
 toverified	tts	nl	
 transition	tts	nl	
 transition name	tts	nl	
-trouble ticket system	common	nl	Probleem Registratie
-tts	common	nl	Probleem Registratie
-tts preferences	tts	nl	Probleem Registratie - Voorkeuren
+trouble ticket system	common	nl	Probleemregistratie
+tts	common	nl	Probleemregistratie
+tts preferences	tts	nl	Probleemregistratie - Voorkeuren
 undefined	tts	nl	
 update	tts	nl	bijwerken
 update ticket state	tts	nl	
