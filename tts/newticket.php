@@ -42,6 +42,9 @@
     }
     $_POST['ticket_details'] = html_activate_urls($_POST['ticket_details']);
 
+    $ticket_billable_hours = str_replace(',','.',$_POST['ticket_billable_hours']);
+    $ticket_billable_rate = str_replace(',','.',$_POST['ticket_billable_rate']);
+
     $GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_state,ticket_group,ticket_priority,ticket_owner,"
       . "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
       . "ticket_billable_rate,ticket_status,ticket_details) values ('"
@@ -50,11 +53,11 @@
       . intval($_POST['ticket_priority']) . "','"
       . $GLOBALS['phpgw_info']['user']['account_id'] . "','"
       . intval($_POST['ticket_assignedto']) . "','"
-      . addslashes($_POST['ticket_subject']) . "','"
+      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_subject']) . "','"
       . intval($_POST['ticket_category']) . "','"
-      . addslashes($_POST['ticket_billable_hours']) . "','"
-      . addslashes($_POST['ticket_billable_rate']) . "','O','"
-      . addslashes($_POST['ticket_details']) . "')",__LINE__,__FILE__);
+      . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_hours) . "','"
+      . $GLOBALS['phpgw']->db->db_addslashes($ticket_billable_rate) . "','O','"
+      . $GLOBALS['phpgw']->db->db_addslashes($_POST['ticket_details']) . "')",__LINE__,__FILE__);
 
     $ticket_id = $GLOBALS['phpgw']->db->get_last_insert_id('phpgw_tts_tickets','ticket_id');
 
