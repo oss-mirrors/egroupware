@@ -286,7 +286,7 @@
 				}
 				else
 				{
-					$folder_name = $value;
+					$folder_name = $value." ".$messageCount;
 				}
 
 				$folder_title = $value;
