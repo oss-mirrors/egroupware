@@ -342,7 +342,7 @@
 
 		function list_langs()
 		{
-			$this->db->query("SELECT DISTINCT lang FROM phpgw_lang");
+			$this->db->query("SELECT DISTINCT lang FROM phpgw_lang",__LINE__,__FILE__);
 			while($this->db->next_record())
 			{
 				$lang = $this->db->f('lang');
@@ -360,7 +360,7 @@
 			$availible = "('".implode("','",$availible)."')";
 			
 			// this shows first the installed, then the available and then the rest
-			$this->db->query("SELECT lang_id,lang_name,lang_id IN $installed AS installed,lang_id IN $availible AS availible FROM phpgw_languages ORDER BY installed DESC,availible DESC,lang_name");
+			$this->db->query("SELECT lang_id,lang_name,CASE WHEN lang_id IN $installed THEN 1 ELSE 0 END AS installed,CASE WHEN lang_id IN $availible THEN 1 ELSE 0 END AS availible FROM phpgw_languages ORDER BY installed DESC,availible DESC,lang_name",__LINE__,__FILE__);
 			$i = 0;
 			while ($this->db->next_record())
 			{
