@@ -263,12 +263,20 @@
 			{
 				$this->t->set_var('attachment_rows','');
 			}
-			
+
 			#$this->t->pparse("out","message_attachment_rows");
 
 			// print it out
 			$this->t->pparse("out","message_main");
 
+			global $calendar_id;
+			list(,$app,,,,$calendar_id) = explode('"',strstr($rawheaders,'X-phpGW-Type:'));
+			if(!isset($GLOBALS['HTTP_GET_VARS']['printable']) && !empty($app))
+			{
+				echo '<table align="center" width="100%"><tr><td align="center">';
+				$GLOBALS['phpgw']->hooks->single('email',$app);
+				echo '</td></tr></table>';
+			}
 		}
 
 		function display_app_header()
