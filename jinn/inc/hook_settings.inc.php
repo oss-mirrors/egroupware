@@ -15,7 +15,7 @@
 	$prev_img = Array(
 		'no' => lang('Never'),
 		'only_tn' => lang('Only if thumnails exits'),
-		'tn_add_img' => lang('Yes')
+		'yes' => lang('Yes')
 	);
 
 	create_select_box('Preview thumbs or images in form','prev_img',$prev_img,"When you choose 'Never', only links to the images are displayed; when you choose 'Only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'Yes' all images are shown");
