@@ -1,0 +1,57 @@
+enter your default mail domain ( From: user@domain )	admin	pt	Digite seu domínio padrão de correio eletrônico
+enter your pop	admin	pt	Digite o endereço de seu servidor POP
+enter your smtp server hostname or ip address	admin	pt	Digite o endereço de seu servidor SMTP
+enter your smtp server port	admin	pt	Digite a porta de seu servidor SMTP
+imap mail server hostname or ip address	admin	pt	endereço do servidor IMAP
+mail server login type	admin	pt	Tipo de servidor de correio para login
+mail settings	admin	pt	Configurações de correio
+select your mail server type	admin	pt	Selecione o tipo de servidor de correio
+e-mail preferences	common	pt	Preferências de E-Mail
+email type	common	pt	Tipo de e-mail
+imap server type	common	pt	Tipo de servidor IMAP
+you have 1 new message!	common	pt	Você tem 1 nova mensagem !
+you have messages!	common	pt	Você tem mensagens !
+you have no new messages	common	pt	Você não tem nenhuma nova mensagem !
+you have x new messages!	common	pt	Você tem %1 novas mensagens!
+your message has been sent	common	pt	Sua mesagem foi enviada
+1 message has been deleted	email	pt	1 mensagem foi eliminada
+add to addressbook	email	pt	Adicionar ao Catálogo de Endereços
+cc	email	pt	CC
+compose	email	pt	Compor
+custom email settings	email	pt	Configurações da conta de E-mail
+default sorting order	email	pt	Ordenação padrão
+email account name	email	pt	Nome da conta de e-mail
+email address	email	pt	Endereço eletrônico
+email password	email	pt	Senha de email
+email signature	email	pt	Assinatura do E-mail
+folder	email	pt	Caixa postal
+forward	email	pt	Reenvio
+from	email	pt	De
+if applicable	email	pt	Aplicável
+image	email	pt	Imagem
+mail folder(uw-maildir)	email	pt	Caixa de Entrada(uw-maildir)
+mail server	email	pt	Servidor de E-mail
+mail server type	email	pt	Tipo de servidor de e-mail
+messages	email	pt	Mensagens
+move selected messages into	email	pt	Mover mensagens para
+new message	email	pt	Nova Mensagem
+non-standard	email	pt	Fora do padrão
+please select a message first	email	pt	Selecione a mensagem primeiro
+previous	email	pt	Anterior
+reply	email	pt	Responder
+reply all	email	pt	Responder a todos
+replyto	email	pt	Responder para
+section	email	pt	Seção do E-mail
+send	email	pt	Enviar
+send deleted messages to the trash	email	pt	Enviar mensagens excluídas para a lixeira
+show new messages on main screen	email	pt	Exibir novas mensagens
+show sender's email address with name	email	pt	Exibir email do remetente com o nome
+size	email	pt	Tamanho
+switch current folder to	email	pt	Alterar a pasta corrente para
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	pt	Houve um erro ao tentar conectar no servidor de e-mail.<br>Por favor verifique seu usuário e sua senha ou entre em contato com o administrador do sistema.
+this folder is empty	email	pt	Esta pasta está vazia
+to	email	pt	Para
+undisclosed recipients	email	pt	Destinatários não exibidos
+undisclosed sender	email	pt	Remetende não exibido
+use custom settings	email	pt	Usar configurações personalizadas
+x messages have been deleted	email	pt	%1 mensagens foram removidas
