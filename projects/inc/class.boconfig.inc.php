@@ -322,7 +322,7 @@
 
 					if ($values['minperae'])
 					{
-						$this->boprojects->sohours->update_hours_act($values['activity_id'],$values['minperae']);
+						// $this->boprojects->sohours->update_hours_act($values['activity_id'],$values['minperae']); This function doesn't exist anymore, seems the script does the cost calculation at runtime. Am I right, maintainer of this app?
 					}
 				}
 			}
