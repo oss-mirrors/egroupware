@@ -32,6 +32,7 @@ sample	headlines	de	Beispiel
 select headline news sites	headlines	de	Welche Schlagzeilen sollen angezeigt werden?
 select headlines to display	common	de	Schlagzeilen auswählen
 select layout	common	de	Layout auswählen
+show headlines on homepage	headlines	de	Schlagzeilen auf der Startseite anzeigen
 site	headlines	de	Quelle
 that site has already been entered	headlines	de	Diese Quelle wurde bereits eingegeben
 unable to retrieve links	headlines	de	Kann keine Verweise laden
