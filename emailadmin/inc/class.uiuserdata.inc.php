@@ -102,6 +102,9 @@
 				$this->t->set_var("mailAlternateAddress",'');
 				$this->t->set_var("options_mailAlternateAddress",$options_mailAlternateAddress);
 				$this->t->set_var("mailRoutingAddress",$userData["mailRoutingAddress"]);
+				$this->t->set_var("selected_".$userData["qmailDotMode"],'selected');
+				$this->t->set_var("deliveryProgramPath",$userData["deliveryProgramPath"]);
+				
 				$this->t->set_var("uid",rawurlencode($_accountData["dn"]));
 				if ($userData["accountStatus"] == "active")
 					$this->t->set_var("account_checked","checked");
@@ -140,6 +143,8 @@
 				'mailRoutingAddress'		=> $HTTP_POST_VARS["mailRoutingAddress"],
 				'add_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddressInput"],
 				'remove_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddress"],
+				'qmailDotMode'			=> $HTTP_POST_VARS["qmailDotMode"],
+				'deliveryProgramPath'		=> $HTTP_POST_VARS["deliveryProgramPath"],
 				'accountStatus'			=> $accountStatus
 			);
 			
@@ -171,6 +176,10 @@
 			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_remove',lang('remove'));
 			$this->t->set_var('lang_remove',lang('remove'));
+			$this->t->set_var('lang_advanced_options',lang('advanced options'));
+			$this->t->set_var('lang_qmaildotmode',lang('qmaildotmode'));
+			$this->t->set_var('lang_default',lang('default'));
+			$this->t->set_var('lang_deliveryProgramPath',lang('deliveryProgramPath'));
 		}
 	}
 ?>

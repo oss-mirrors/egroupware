@@ -2,21 +2,6 @@
 <center>
 <table border="0" cellspacing="1" cellpading="0" width="95%">
 <tr>
-	<td width="10%" valign="top">
-		<table border="0" cellspacing="1" cellpading="0" width="100%">
-		{menu_rows}
-		<tr>
-			<td>
-				&nbsp;
-			</td>
-		</tr>
-		<tr bgcolor="{done_row_color}">
-			<td>
-				<a href="{done_link}">{lang_done}</a>
-			</td>
-		</tr>
-		</table>
-	</td>
 	<td width="90%" valign="top">
 		<form action="{form_action}" method="post">
 		<table border="0" cellspacing="1" cellpading="0" width="100%">
@@ -69,7 +54,10 @@
 			</td>
 		</tr>
 		<tr bgcolor="{bg_01}">
-			<td colspan="2" align="right">
+			<td align="left">
+				<a href="{done_link}">{lang_back}</a>
+			</td>
+			<td align="right">
 				<input type="submit" name="save_ldap" value="{lang_save}">
 				<input type="hidden" name="bo_action" value="save_ldap">
 			</td>

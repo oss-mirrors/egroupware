@@ -36,6 +36,11 @@
 
 		}
 		
+		function deleteServer($_serverid)
+		{
+			$this->soqmailldap->deleteServer($_serverid);
+		}
+		
 		function getLDAPData($_serverid, $_nocache=0)
 		{
 			global $phpgw, $HTTP_GET_VARS;
@@ -212,7 +217,15 @@
 						"ldap_basedn"		=> $_postVars["ldap_basedn"],
 						"id"			=> $_getVars["serverid"]
 					);
-					$this->soqmailldap->update("save_ldap",$data);
+					if (!isset($_getVars["serverid"]))
+					{
+						$this->soqmailldap->update("add_server",$data);
+					}
+					else
+					{
+						$this->soqmailldap->update("update_server",$data);
+					}
+
 					$this->getLDAPData($_getVars["serverid"], '1');
 					
 					break;
@@ -242,6 +255,8 @@
 			$this->userSessionData[$_accountID]['mailLocalAddress'] 	= $_formData["mailLocalAddress"];
 			$this->userSessionData[$_accountID]['accountStatus'] 		= $_formData["accountStatus"];
 			$this->userSessionData[$_accountID]['mailRoutingAddress'] 	= $_formData["mailRoutingAddress"];
+			$this->userSessionData[$_accountID]['qmailDotMode'] 		= $_formData["qmailDotMode"];
+			$this->userSessionData[$_accountID]['deliveryProgramPath'] 	= $_formData["deliveryProgramPath"];
 			
 			switch ($_boAction)
 			{

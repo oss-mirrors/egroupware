@@ -19,6 +19,12 @@
 
 			$this->db		= $phpgw->db;
 		}
+		
+		function deleteServer($_serverid)
+		{
+			$query = "delete from phpgw_qmailldap where id='$_serverid'";
+			$this->db->query($query);
+		}
 
 		function getLDAPStorageData($_serverid)
 		{
@@ -121,7 +127,7 @@
 			global $phpgw, $phpgw_info;
 
 			$ldap = $phpgw->common->ldapConnect();
-			$filter = "(&(objectclass=qmailUser)(uidnumber=$_accountID))";
+			$filter = "(&(uidnumber=$_accountID))";
 			
 			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
 			if ($sri)
@@ -134,6 +140,8 @@
 					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
 					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
 					$userData["mailRoutingAddress"]		= $allValues[0]["mailroutingaddress"][0];
+					$userData["qmailDotMode"]		= $allValues[0]["qmaildotmode"][0];
+					$userData["deliveryProgramPath"]	= $allValues[0]["deliveryprogrampath"][0];
 					if ($userData["mailAlternateAddress"]["count"] == 0)
 					{
 						$userData["mailAlternateAddress"]='';
@@ -183,6 +191,8 @@
 				'homedirectory'		=> $homedirectory,
 				'mailMessageStore'	=> $homedirectory."/Maildir/",
 				'gidnumber'		=> '1000',
+				'qmailDotMode'		=> $_accountData["qmailDotMode"],
+				'deliveryProgramPath'	=> $_accountData["deliveryProgramPath"],
 				'accountStatus'		=> $_accountData["accountStatus"]
 			);
 			ldap_mod_replace ($ldap, $accountDN, $newData);
@@ -199,7 +209,16 @@
 		{
 			switch ($_action)
 			{
-				case "save_ldap":
+				case "add_server":
+					$query = sprintf("insert into phpgw_qmailldap (description, ldap_basedn, qmail_servername)
+							values ('%s','%s','%s')",
+							$_data['description'],
+							$_data['ldap_basedn'],
+							$_data["qmail_servername"]);
+					$this->db->query($query);
+					break;
+					
+				case "update_server":
 					$query = sprintf("update phpgw_qmailldap set 
 							  description='%s',
 							  ldap_basedn='%s',

@@ -22,3 +22,4 @@ email account active	qmailldap	de	EMailkonto aktiv
 back	common	de	zurück
 options	common	de	Optionen
 no alternate email address	qmailldap	de	keine zusätzlichen EMailadressen
+add server	qmailldap	de	Server hinzufügen
