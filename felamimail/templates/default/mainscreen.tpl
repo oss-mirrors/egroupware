@@ -135,7 +135,7 @@ doLoad();
 </table>
 
 
-<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0">
 	<TR>
 		<TD BGCOLOR="{row_off}">
 			<TABLE BBGCOLOR="#ffffcc" COLS=2 BORDER='0' cellpadding="2" cellspacing=0 width="100%" sstyle="table-layout:fixed">
@@ -181,7 +181,6 @@ doLoad();
 					</TD>
 				</TR>
 			</TABLE>
-			<br>
 		</TD>
 	</TR>
 	{status_row}
@@ -219,8 +218,8 @@ doLoad();
 <!-- BEGIN status_row_tpl -->
 	<tr>
 		<TD>
-			<table WIDTH="100%" BORDER="0" CELLPADDING="1" CELLSPACING="0">
-				<tr BGCOLOR="{row_off}">
+			<table WIDTH="100%" BORDER="0" CELLPADDING="1" CELLSPACING="2">
+				<tr BGCOLOR="{row_off}" class="text_small">
 					<td width="18%">
 						{link_previous}
 					</td>
