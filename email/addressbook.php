@@ -11,10 +11,12 @@
   \**************************************************************************/
   /* $Id$ */
 
-    $phpgw_info["flags"] = array('noheader' => True,
-				 'nonavbar' => True,
-				'currentapp' => 'email',
-		    'enable_nextmatchs_class' => True);
+    $phpgw_info["flags"] = array(
+		'noheader' => True,
+		'nonavbar' => True,
+		'currentapp' => 'email',
+		'enable_nextmatchs_class' => True
+	);
 
     include('../header.inc.php');
 
@@ -35,7 +37,7 @@
     $t->set_var('font',$phpgw_info["theme"]["font"]);  
 
     $t->set_var('lang_search',lang('Search'));
-    $t->set_var('searchurl',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php'));
+    $t->set_var('search_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php'));
     $t->set_var('lang_select_cats',lang('Select category'));
 
     if (! $start) { $start = 0; }
