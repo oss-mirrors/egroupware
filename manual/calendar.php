@@ -25,7 +25,7 @@ A searchable daily,weekly,monthly calendar/scheduling application with alerts fo
 icons at the top left hand corner.
 <br>
 <ul>
-<li><b>Viewing:</b><img src="images/today.gif">Day <img src="images/week.gif">Week <img src="images/month.gif">Month
+<li><b>Viewing:</b><img src="images/today.gif">Day <img src="images/week.gif">Week <img src="images/month.gif">Month <img src="images/year.gif">Year
 <br><i>Day:</i>
 <br>Current day is displayed, broken down in hour slots. Start and end time of the day
 can be set in the preferences.
@@ -34,6 +34,9 @@ can be set in the preferences.
 <br><i>Month:</i>
 <br>Default entry is to the current month, viewed in monthly option, with both prior and future
 months easily accessible with one click.
+<br><i>Year:</i>
+<br>Current year is displayed. This displays the current year using the small calendar month
+views.
 <p>
 <li><b>Adding an entry:</b> <img src="images/addevent.gif"> 
 <br>To add a new entry for yourself other members of your group click on the small icon as shown above.
