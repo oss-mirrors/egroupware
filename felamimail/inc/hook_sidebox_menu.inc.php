@@ -24,11 +24,25 @@
  */
 
 	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
-	$file = Array(
-		'Compose'   => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uicompose.compose')
-		#'_NewLine_'=>'', // give a newline
-		#'INBOX'=>$GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
+	$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+	$linkData = array
+	(
+		'menuaction'    => 'felamimail.uicompose.compose'
 	);
+	if($preferences['messageNewWindow'] == 1)
+	{
+		$file = Array(
+			'Compose'   => "javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');"
+		);
+	}
+	else
+	{
+		$file = Array(
+			'Compose'   => $GLOBALS['phpgw']->link('/index.php',$linkData)
+			#'_NewLine_'=>'', // give a newline
+			#'INBOX'=>$GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.viewMainScreen')
+		);
+	}
 	display_sidebox($appname,$menu_title,$file);
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['preferences'])
