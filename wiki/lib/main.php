@@ -113,7 +113,7 @@ if($ActionList[$action][2] != '')
 // Dispatch the appropriate action.
 if(!empty($ActionList[$action]))
 {
-	if ($ActionList[$action][0] && !$ActionList[$action][1])
+	if (count(explode('.',$ActionList[$action][0])) == 3)
 	{
 		ExecMethod($ActionList[$action][0]);
 	}

@@ -165,9 +165,7 @@ function template_common_epilogue($args)
   if($args['history'])
   {
     echo '<a href="'.historyURL($args['history']).'">'.lang('View document history').'</a>';
-    echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>' .
-          ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
-            ' | <a href="'.$AdminScript.'">'.lang('Administration').'</a>' : '');
+    echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>';
   
     if(!$args['nosearch']) {
       echo '| '.lang('Search').': <input type="text" name="find" size="20" />';

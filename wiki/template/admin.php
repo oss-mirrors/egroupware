@@ -22,11 +22,11 @@ function template_admin($args)
 <?php print $args['html']; ?>
 </div>
 <?php
-  template_common_epilogue(array('twin'      => '',
+  /*template_common_epilogue(array('twin'      => '',
                                  'edit'      => '',
                                  'editver'   => 0,
                                  'history'   => '',
                                  'timestamp' => '',
-                                 'nosearch'  => 1));
+                                 'nosearch'  => 1));*/
 }
 ?>
