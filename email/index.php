@@ -24,8 +24,9 @@
   $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
-//  if ($newsmode == "on")
-    set_time_limit(0);
+  if ($newsmode == "on")
+    $phpgw->common->read_preferences($phpgw_info["user"]["account_id"],"nntp",True);
+  set_time_limit(0);
 ?>
 
 <script>
