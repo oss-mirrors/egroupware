@@ -190,7 +190,7 @@
 				$flags |= CP_UID;
 			}
 			$mailbox = $this->utf7_encode($mailbox);
-			return imap_mail_move($stream,$msg_list,$mailbox);
+			return imap_mail_move($stream,$msg_list,$mailbox,$flags);
 		}
 
 		function num_msg($stream) // returns number of messages in the mailbox

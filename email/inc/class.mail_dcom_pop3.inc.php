@@ -160,7 +160,7 @@
 			return False;
 		}
 
-		function mail_move($stream,$msg_list,$mailbox)
+		function mail_move($stream,$msg_list,$mailbox,$flags)
 		{
 			// N/A for pop3
 			return False;
