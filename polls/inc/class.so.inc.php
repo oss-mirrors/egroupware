@@ -20,7 +20,7 @@
 
 		var $total = 0;
 
-		function so($args)
+		function so($args='')
 		{
 			$this->db = $GLOBALS['phpgw']->db;
 		}
