@@ -52,7 +52,6 @@
 
 	function plg_fi_htmlAreaV3($field_name, $value, $config)
 	{
-
 		$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
 
 		if($config[enable_image_button]!='No') $bar_image = '"insertimage",';
@@ -78,25 +77,43 @@
 		@import url(jinn/plugins/htmlareaV3/htmlarea.css);
 		textarea { background-color: #fff; border: 1px solid 00f; }
 		</style>
-		<textarea id="ta" name="'.$field_name.'" style="width:100%" rows="20">'.$value.'</textarea>
+		<br><textarea id="'.$field_name.'" name="'.$field_name.'" style="width:100%" rows="20">'.$value.'</textarea><br>
+		
 		<script language="javascript1.2" type="text/javascript">
-		var editor = null;
-		function initEditor() 
+		<!--
+		/*
+		 INTERNET EXPLORER BUG (tell something news)
+		 right now the plugin is only able to create one (the last) 
+		 rich textbox in IE. Mozilla doesn\'t encounter problems.
+
+		 possible solution is to create a array of field that have to 
+		 be generated and when onLoad starts all elements of the array
+		 are generated.
+		*/
+		
+		function initEditor()
 		{
+			var editor = null;
 			var cfg = new HTMLArea.Config(); 
 			cfg.editorURL = "'.$editor_url.'"; 
 			cfg.toolbar = [ '.$bar_font.' '.$bar_align.' '.$bar_list.' '.$bar_colors.'
 			[ '.$bar_ruler.' '.$bar_link.' '.$bar_image.' '.$bar_table.' '.$bar_html.' "separator" ],
 			[ '.$bar_fullscreen.' "about" ] ];
-			
-			editor = new HTMLArea("ta", cfg); 
+
+			editor = new HTMLArea("'.$field_name.'", cfg); 
 			editor.generate();
 		}
-		initEditor();
-
+		
+		if (HTMLArea.is_ie) 
+		{
+			document.body.onload=initEditor;
+		}
+		else
+		{
+			initEditor();
+		}
+		//-->
 		</script>
-
-
 		';
 
 		return $input;
