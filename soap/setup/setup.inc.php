@@ -13,7 +13,7 @@
 
 	/* Basic information about this app */
 	$setup_info['soap']['name']      = 'soap';
-	$setup_info['soap']['title']     = 'Soap Server';
+	$setup_info['soap']['title']     = 'Soap Test';
 	$setup_info['soap']['version']   = '0.0.1';
 	$setup_info['soap']['app_order'] = 4;
 	$setup_info['soap']['enable']    = 2;
