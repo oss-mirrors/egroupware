@@ -190,7 +190,7 @@
 
 			$rip = '//' . $rip;
 
-			system("mount.smbfs " . $rip . $rpath . ' ' . $smbdir . ' -o username=' . $ruser . ',password=' . $rpwd . ',rw');
+			system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
 
 			chdir($smbdir);
 			for ($i=0;$i<count($output);$i++)
