@@ -218,7 +218,21 @@
 				$pro_parent = 0;
 			}
 
-			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'active',$this->cat_id,$action,$pro_parent);
+			$params = array
+			(
+				'start'		=> $this->start,
+				'limit'		=> True,
+				'query'		=> $this->query,
+				'filter'	=> $this->filter,
+				'sort'		=> $this->sort,
+				'order'		=> $this->order,
+				'status'	=> 'active',
+				'cat_id'	=> $this->cat_id,
+				'type'		=> $action,
+				'parent'	=> $pro_parent
+			);
+
+			$pro = $this->boprojects->list_projects($params);
 
 // --------------------- nextmatch variable template-declarations ------------------------
 

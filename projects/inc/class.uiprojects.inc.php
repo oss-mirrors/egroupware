@@ -1898,7 +1898,7 @@
 			}
 
 			$this->boprojects->status = 'archive';
-			$pro = $this->boprojects->list_projects($action,$pro_main);
+			$pro = $this->boprojects->list_projects(array('action' => $action, 'main' => $pro_main));
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
@@ -2085,7 +2085,7 @@
 				$pro_main = 0;
 			}
 
-			$pro = $this->boprojects->list_projects($action,$pro_main);
+			$pro = $this->boprojects->list_projects(array('action' => $action, 'main' => $pro_main));
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
