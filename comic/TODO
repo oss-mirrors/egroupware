@@ -8,3 +8,4 @@ TODO:
     snarfed (or a by image basis) - king may make this required
 06) get the pgsql table built
 07) investigate using libcurl with php
+08) ucomics should be resolved static

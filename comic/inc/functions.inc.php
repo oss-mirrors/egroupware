@@ -251,6 +251,18 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
             ."-a.gif";
         comic_resolver(&$parse_expr, $comic_time);
         break;
+      case "Ucomics":
+        $baseurl    = "http://images.ucomics.com";
+        $parseurl   = "/comics/"
+            .$phpgw->db->f("data_prefix")
+            ."/{Y}/"
+            .$phpgw->db->f("data_prefix")
+            ."{ymd}.gif";
+        comic_resolver(&$parseurl, $comic_time);
+        $fetch_url  = $phpgw->db->f("data_linkurl");
+        $comic_url  = $baseurl.$parseurl;
+        $unresolved = False;
+        break;
       default:
         $baseurl      = $phpgw->db->f("data_baseurl");
         $parseurl     = $phpgw->db->f("data_parseurl");

@@ -60,7 +60,7 @@ CREATE TABLE phpgw_comic_data (
   data_parsexpr varchar(255) DEFAULT '' NOT NULL,
   data_imageurl varchar(255) DEFAULT '' NOT NULL,
   data_pubdays varchar(25) DEFAULT 'Su:Mo:Tu:We:Th:Fr:Sa' NOT NULL,
-  data_parser enum('United','King','Comics','Comiczone7','Comiczone10','Creators','ComicsPage','None') DEFAULT 'None' NOT NULL,
+  data_parser enum('United','King','Comics','Comiczone7','Comiczone10','Creators','ComicsPage','Ucomics','None') DEFAULT 'None' NOT NULL,
   data_class enum('Geek','Political','General') DEFAULT 'General' NOT NULL,
   data_censorlvl tinyint(4) DEFAULT '0' NOT NULL,
   data_resolve enum('Remote','Static') DEFAULT 'Remote' NOT NULL,
