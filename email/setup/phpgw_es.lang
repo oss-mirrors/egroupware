@@ -8,11 +8,12 @@ attach file	email	es	Adjuntar Archivo
 attachment	email	es	Archivo Adjunto
 attachments	email	es	Archivos Adjuntos
 attach signature	email	es	Adjuntar firma
+bcc	email	es	CCO
 cache server data whenever possible	email	es	Almacenar datos del servidor en memoria cuando sea posible
 cc	email	es	CC
 choose for rename	email	es	Seleccione para renombrar
 compose	email	es	Componer
-compose new	email	es	Componer
+compose new	common	es	Componer
 could not open this mailbox	email	es	No se pudo abrir esta casilla
 create a folder email	es	Crear Carpeta
 create (expert)	email	es	Crear (experto)
@@ -84,6 +85,7 @@ messages	email	es	Mensajes
 messages have been moved to	email	es	mensajes fueron movidos a
 monitor	email	es	Monitor
 move selected messages into	email	es	Mover los mensajes seleccionados a
+move this message into	email	es	Mover este mensaje a
 newest	email	es	Mas Nuevo
 new	email	es	Nuevo
 new message	email	es	Nuevo mensaje
@@ -102,6 +104,7 @@ please select a folder to rename	email	es	Por favor seleccione una carpeta a ren
 please select a message first	email	es	Por favor seleccione un mensaje primero
 please type a folder name in the text box	email	es	Por favor ingrese el nombre de una carpeta en el campo de texto
 previous	email	es	Previo
+raw message	email	es	texto plano
 rename a folder	email	es	Renombrar carpeta
 rename (expert)	email	es	Renombrar (experto)
 reply all	email	es	Responder a Todos
