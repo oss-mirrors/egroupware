@@ -65,9 +65,11 @@
 	{
 	   if(strlen($value)>20)
 	   {
-		  $value = strip_tags($value);
+		  $value = strip_tags(htmlentities($value));
 
-		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+		  $title = substr($value,0,200);
+		
+		  $value = '<span title="'.$title.'">' . substr($value,0,20). ' ...' . '</span>';
 	   }
 	   return $value;   		
 	}
@@ -114,9 +116,11 @@
 	{
 	   if(strlen($value)>20)
 	   {
-		  $value = strip_tags($value);
+		  $value = strip_tags(htmlentities($value));
 
-		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+		  $title = substr($value,0,200);
+		  
+		  $value = '<span title="'.$title.'">' . substr($value,0,20). ' ...' . '</span>';
 	   }
 	   return $value;   		
 	}
