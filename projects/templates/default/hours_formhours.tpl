@@ -17,14 +17,6 @@
 		<td><select name="values[activity_id]">{activity_list}</select></td>
 	</tr>
 	<tr>
-		<td height="35">{lang_minperae}</td>
-		<td height="35">{minperae}</td>
-	</tr>
-	<tr>
-		<td height="35">{lang_billperae}&nbsp;{currency}</td>
-		<td height="35">{billperae}</td>
-	</tr>
-	<tr>
 		<td>{lang_descr}:</td>
 		<td><input type="text" name="values[hours_descr]" size="50" value="{hours_descr}"></td>
 	</tr>

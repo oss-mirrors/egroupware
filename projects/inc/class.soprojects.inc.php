@@ -322,7 +322,7 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query("SELECT id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
+			$this->db->query("SELECT id,num,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
 			while ($this->db->next_record())
 			{
 				$activities_list .= '<option value="' . $this->db->f('id') . '"';
@@ -333,8 +333,8 @@
 						$activities_list .= ' selected';
 					}
 				}
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
-
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
+										. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 				if($billable)
 				{
 					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
@@ -362,7 +362,7 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query("SELECT a.id, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa"
+			$this->db->query("SELECT a.id, a.num, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa"
 							. " WHERE pa.project_id='$pro_parent' $bill_filter AND pa.activity_id=a.id ORDER BY a.descr asc");
 			while ($this->db->next_record())
 			{
@@ -380,7 +380,8 @@
 					$activities_list .= ' selected';
 				}
 
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
+										. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 
 				if($billable)
 				{
@@ -394,7 +395,7 @@
 
 		function select_hours_activities($project_id, $activity = '')
 		{
-			$this->db->query("SELECT activity_id,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='"
+			$this->db->query("SELECT activity_id,num, descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='"
 							. $project_id . "' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
@@ -404,7 +405,8 @@
 				{
 					$hours_act .= ' selected';
 				}
-				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
+				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
+									. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 
 				if($this->db->f('billable') == 'Y')
 				{
@@ -415,12 +417,23 @@
 			return $hours_act;
 		}
 
-		function return_value($item)
+		function return_value($action,$item)
 		{
-			$this->db->query("select num from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
-			if ($this->db->next_record())
+			if ($action == 'pro')
 			{
-				$thing = $this->db->f('num');
+				$this->db->query("select num, title from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
+				if ($this->db->next_record())
+				{
+					$thing = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+				}
+			}
+			if ($action == 'act')
+			{			
+				$this->db->query("select num, descr from phpgw_p_activities where id='$item'",__LINE__,__FILE__);
+				if ($this->db->next_record())
+				{
+					$thing = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+				}
 			}
 			return $thing;
 		}

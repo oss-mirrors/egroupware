@@ -161,9 +161,9 @@
 			return $entry;
 		}
 
-		function return_value($item)
+		function return_value($action,$item)
 		{
-			$thing = $this->soprojects->return_value($item);
+			$thing = $this->soprojects->return_value($action,$item);
 			return $thing;
 		}
 

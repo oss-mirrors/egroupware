@@ -118,6 +118,8 @@
 			$this->t->set_var('lang_end_time',lang('End time'));
 			$this->t->set_var('lang_select_project',lang('Select project'));
 			$this->t->set_var('lang_reset',lang('Clear Form'));
+			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 		}
 
 		function display_app_header()
@@ -170,9 +172,6 @@
 			}
 			else
 			{
-			//	$month = $GLOBALS['phpgw']->common->show_date(time(),'n');
-			//	$day = $GLOBALS['phpgw']->common->show_date(time(),'d');
-			//	$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
 				$hour = date('H',$hdate);
 				$min = date('i',$hdate);
 
@@ -436,7 +435,7 @@
 			$this->t->set_var('lang_action',lang('Add work hours'));
 
 			$values['project_id'] = $project_id;
-			$this->t->set_var('project_name',$this->boprojects->return_value($values['project_id']));
+			$this->t->set_var('project_name',$this->boprojects->return_value('pro',$values['project_id']));
 
 			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'], $values['activity_id']));
 
@@ -522,12 +521,6 @@
 			$this->t->set_var('status_list',$this->status_format($values['status']));
 
 			$this->t->set_var('employee_list',$this->employee_format($values['employee']));
-
-			$this->t->set_var('lang_minperae','');
-			$this->t->set_var('lang_billperae','');
-			$this->t->set_var('minperae','');
-			$this->t->set_var('billperae','');
-			$this->t->set_var('currency','');
 
 			$this->t->set_var('edithandle','');
 			$this->t->set_var('addhandle','');
@@ -679,13 +672,7 @@
 			$this->t->set_var('hours',floor($values['ae_minutes']/60));
 			$this->t->set_var('minutes',($values['ae_minutes']-((floor($values['ae_minutes']/60)*60))));
 
-			$this->t->set_var('minperae',$values['minperae']);
-			$this->t->set_var('billperae',$values['billperae']);
-			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
-			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
-			$this->t->set_var('currency',$currency);
-
-			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['project_id'])));
 
 			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id']));
 
@@ -752,8 +739,6 @@
 			$this->t->set_var('hours',floor($values['ae_minutes']/60));
 			$this->t->set_var('minutes',($values['ae_minutes']-(floor($values['ae_minutes']/60)*60)));
 
-			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
-			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('currency',$currency);
 			$this->t->set_var('minperae',$values['minperae']);
 			$this->t->set_var('billperae',$values['billperae']);
@@ -764,9 +749,9 @@
                                         			. $cached_data[$values['employee']]['lastname'] . ' ]');
 			$this->t->set_var('employee',$employeeout);
 
-			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+			$this->t->set_var('project_name',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('pro',$values['project_id'])));
 
-			$this->t->set_var('activity',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value($values['project_id'])));
+			$this->t->set_var('activity',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('act',$values['activity_id'])));
 
 			$this->t->pfp('out','hours_view');
 		}
