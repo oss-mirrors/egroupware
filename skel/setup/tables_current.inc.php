@@ -19,7 +19,7 @@
 				'skel_access' => array('type' => 'varchar', 'precision' => 10),
 				'skel_cat' => array('type' => 'int', 'precision' => 4),
 				'skel_des' => array('type' => 'text'),
-				'skel_pri' => array('type' => 'int', 'precision' => 4),
+				'skel_pri' => array('type' => 'int', 'precision' => 4)
 			),
 			'pk' => array('skel_id'),
 			'fk' => array(),
