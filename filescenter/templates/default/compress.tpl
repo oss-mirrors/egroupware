@@ -4,6 +4,7 @@
 <br>
 <input type="hidden" name="return_to_path" value="{return_to_path}" />
 <input type="hidden" name="formvar[files_list]" value="{files_list}" />
+<input type="hidden" name="formvar[type]" value="zip" />
 
 
 <div style="border: 1px solid rgb(153, 153, 153); position: relative; width: 500px; height: 100%; z-index: 0; height: 400px;">
@@ -36,21 +37,21 @@
 						</td>
 					</tr>
 					<tr class="row_off">
-						<td width="10" style="text-align: right;">
+						<!-- td width="10" style="text-align: right;">
 							<input type="radio" name="formvar[type]" value="zip" CHECKED>
-						</td>
-						<td style="text-align: left;">
+						</td -->
+						<td colspan="2" style="text-align: left;">
 							zip
 						</td>
 					</tr>
-					<tr class="row_on">
+					<!-- tr class="row_on">
 						<td style="text-align: right;">
 							<input type="radio" name="formvar[type]" value="gz">
 						</td>
 						<td style="text-align: left;">
 							gzip
 						</td>
-					</tr>
+					</tr -->
 					<tr class="th">
 						<td colspan="2" class="td_left">
 							<b>{lang_select_prefix}:<b>
