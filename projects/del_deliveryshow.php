@@ -74,12 +74,12 @@
    $charset = $phpgw->translation->translate("charset");                                                                                                                                         
    $t->set_var("charset",$charset);   
    $t->set_var("to","");        
-   $t->set_var(lang_delivery,lang("delivery"));      
-   $t->set_var(lang_project,lang("project"));      
-   $t->set_var(lang_pos,lang("pos"));       
-   $t->set_var(lang_workunits,lang("workunits"));     
-   $t->set_var(lang_date,lang("date"));      
-   $t->set_var(lang_descr,lang("description"));
+   $t->set_var(lang_delivery,lang("Delivery ID"));      
+   $t->set_var(lang_project,lang("Project"));      
+   $t->set_var(lang_pos,lang("Position"));       
+   $t->set_var(lang_workunits,lang("Workunits"));     
+   $t->set_var(lang_date,lang("Date"));      
+   $t->set_var(lang_descr,lang("Description"));
   
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
    $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "

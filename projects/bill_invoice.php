@@ -90,9 +90,7 @@
   if (! $start)
      $start = 0;
   $ordermethod = "order by date asc";
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -106,26 +104,24 @@
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
 
-  $t->set_var(sort_activity,lang("activity"));
-  $t->set_var(sort_remark,lang("remark"));
-  $t->set_var(sort_status,lang("status"));
-  $t->set_var(sort_date,lang("date"));
-  $t->set_var(sort_aes,lang("aes"));
-  $t->set_var(sort_billperae,lang("billperae"));
-  $t->set_var(sort_sum,lang("sum"));
-  $t->set_var(h_lang_select,lang("select"));
-  $t->set_var(h_lang_edithour,lang("edithour"));
-  $t->set_var(lang_update,lang("update"));
-  $t->set_var(lang_createinvoice,lang("createinvoice"));
+  $t->set_var(sort_activity,lang("Activity"));
+  $t->set_var(sort_remark,lang("Remark"));
+  $t->set_var(sort_status,lang("Status"));
+  $t->set_var(sort_date,lang("Date"));
+  $t->set_var(sort_aes,lang("Workunits"));
+  $t->set_var(sort_billperae,lang("Bill per workunit"));
+  $t->set_var(sort_sum,lang("Sum"));
+  $t->set_var(h_lang_select,lang("Select"));
+  $t->set_var(h_lang_edithour,lang("Edit hours"));
+  $t->set_var(lang_update,lang("Update"));
+  $t->set_var(lang_createinvoice,lang("Create invoice"));
   $t->set_var(actionurl,$phpgw->link("bill_invoice.php"));
-  $t->set_var(lang_print_invoice,lang("print invoice"));
+  $t->set_var(lang_print_invoice,lang("Print invoice"));
   $t->set_var(print_invoice,$phpgw->link("bill_invoiceshow.php","invoice_id=$invoice_id"));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
@@ -158,7 +154,7 @@
   $t->set_var(title_project,lang("title"));
   $t->set_var(title_customer,lang("customer"));
   
-  $t->set_var(title_invoice_num,lang("invoice_num"));
+  $t->set_var(title_invoice_num,lang("Invoice ID"));
   if(!$invoice_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_invoice");
     $t->set_var(title_invoice_num,lang("invoice_num"));
@@ -288,14 +284,14 @@
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter&status=$status") 
-					 . "\">" . lang("edithour") . "</a>"));
+					 . "\">" . lang("Edit hours") . "</a>"));
     $t->parse("list", "projecthours_list", true);
 
     // -------------- end record declaration ------------------------
   }
     $t->set_var(sum_sum,sprintf("%01.2f",$summe));
     $t->set_var(sum_aes,$sumaes);
-    $t->set_var(title_netto,lang("netto"));
+    $t->set_var(title_netto,lang("Netto"));
 
 // na_list
   if($invoice_id) {
@@ -373,7 +369,7 @@
                                        . "&sort=$sort&order=$order&"
                                        . "query=$query&start=$start&filter="
                                        . "$filter&status=$status")
-                                       . "\">". lang("edithour") . "</a>"));
+                                       . "\">". lang("Edit hours") . "</a>"));
       $t->parse("list", "projecthours_list", true);
   
       // -------------- end record declaration ------------------------

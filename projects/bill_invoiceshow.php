@@ -88,14 +88,14 @@
    $charset = $phpgw->translation->translate("charset");                                                                                                                                         
    $t->set_var("charset",$charset);   
    $t->set_var("site_title",$phpgw_info["site_title"]);
-   $t->set_var(lang_invoice,lang("invoice"));                                                                                                                                                   
-   $t->set_var(lang_project,lang("project"));                                                                                                                                                   
-   $t->set_var(lang_pos,lang("pos"));                                                                                                                                                           
-   $t->set_var(lang_workunits,lang("workunits"));                                                                                                                                               
-   $t->set_var(lang_date,lang("date"));                                                                                                                                                         
-   $t->set_var(lang_descr,lang("description"));                                                                                                                                                 
+   $t->set_var(lang_invoice,lang("Invoice ID"));                                                                                                                                                   
+   $t->set_var(lang_project,lang("Project"));                                                                                                                                                   
+   $t->set_var(lang_pos,lang("Position"));                                                                                                                                                           
+   $t->set_var(lang_workunits,lang("Workunits"));                                                                                                                                               
+   $t->set_var(lang_date,lang("Date"));                                                                                                                                                         
+   $t->set_var(lang_descr,lang("Description"));                                                                                                                                                 
    $t->set_var("currency",$currency);                                                                                                                                                         
-   $t->set_var(lang_mwst,lang("mwst"));                                                                                                                                                         
+   $t->set_var(lang_mwst,lang("tax"));                                                                                                                                                         
    
   
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {

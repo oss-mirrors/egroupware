@@ -67,7 +67,6 @@
      $t->set_var("yeslink",$yeslink);
      
      $t->pparse("out", "activity_delete");
- ?>
-     
-   <?php
   }
+  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+?>

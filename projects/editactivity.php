@@ -51,25 +51,25 @@
      
      $t->set_var("actionurl",$phpgw->link("editactivity.php"));
      $t->set_var("deleteurl",$phpgw->link("deleteactivity.php"));
-     $t->set_var("lang_action",lang("activity list - edit"));
+     $t->set_var("lang_action",lang("Edit activity"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
-     $t->set_var("lang_num",lang("num"));
+     $t->set_var("lang_num",lang("Activity ID"));
      $t->set_var("num", stripslashes($phpgw->db->f("num")));
-     $t->set_var("lang_descr",lang("description"));
+     $t->set_var("lang_descr",lang("Description"));
      $t->set_var("descr", stripslashes($phpgw->db->f("descr")));
-     $t->set_var("lang_remarkreq",lang("remarkreq"));
+     $t->set_var("lang_remarkreq",lang("Remark required"));
      if ($phpgw->db->f("remarkreq")=="N"):
          $stat_sel[0]=" selected";
      elseif ($phpgw->db->f("remarkreq")=="Y"):
          $stat_sel[1]=" selected";
      endif;
 
-     $remarkreq_list = "<option value=\"N\"".$stat_sel[0].">" . lang("no") . "</option>\n"
-                  . "<option value=\"Y\"".$stat_sel[1].">" . lang("yes") . "</option>\n";
+     $remarkreq_list = "<option value=\"N\"".$stat_sel[0].">" . lang("No") . "</option>\n"
+                  . "<option value=\"Y\"".$stat_sel[1].">" . lang("Yes") . "</option>\n";
      $t->set_var("remarkreq_list",$remarkreq_list);
-     $t->set_var("lang_billperae",lang("billperae"));
+     $t->set_var("lang_billperae",lang("Bill per workunit"));
      $t->set_var("billperae", stripslashes($phpgw->db->f("billperae")));
-     $t->set_var("lang_minperae",lang("minperae"));
+     $t->set_var("lang_minperae",lang("Minutes per workunit"));
      $t->set_var("minperae", stripslashes($phpgw->db->f("minperae")));
 
     $t->set_var("lang_editsubmitb",lang("Edit"));
@@ -80,9 +80,7 @@
     $t->set_var("addhandle","");
     $t->pparse("out","activity_edit");
     $t->pparse("edithandle","edit");
-   ?>
 
-   <?
   } else {
     // Create function to take care of this
 

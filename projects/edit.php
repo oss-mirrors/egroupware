@@ -64,14 +64,14 @@
      $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
      $t->set_var("actionurl",$phpgw->link("edit.php"));
      $t->set_var("deleteurl",$phpgw->link("delete.php"));
-     $t->set_var("lang_action",lang("edit project"));
+     $t->set_var("lang_action",lang("Edit project"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
-     $t->set_var("lang_num",lang("num"));
+     $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("num", stripslashes($phpgw->db->f("num")));
-     $t->set_var("lang_title",lang("title"));
+     $t->set_var("lang_title",lang("Title"));
      $t->set_var("title", stripslashes($phpgw->db->f("title")));
      $t->set_var("descrval", stripslashes($phpgw->db->f("descr")));
-     $t->set_var("lang_status",lang("status"));
+     $t->set_var("lang_status",lang("Status"));
      if ($phpgw->db->f("status")=="active"):
          $stat_sel[0]=" selected";
      elseif ($phpgw->db->f("status")=="nonactive"):
@@ -88,14 +88,14 @@
                   . "<option value=\"template\"".$stat_sel[3].">" . lang("template") . "</option>\n";       
      $t->set_var("status_list",$status_list);
      if($phpgw->db->f("status")=="template") {
-        $t->set_var("lang_cptemplateb",lang("copy template"));
+        $t->set_var("lang_cptemplateb",lang("Copy template"));
      } else {
         $t->set_var("lang_cptemplateb","");
      }
-     $t->set_var("lang_budget",lang("budget"));
+     $t->set_var("lang_budget",lang("Budget"));
      $t->set_var("budget",stripslashes($phpgw->db->f("budget")));
 
-     $t->set_var("lang_date",lang("date"));
+     $t->set_var("lang_date",lang("Date"));
      if ($phpgw->db->f("date") != 0) {
         $n_month[$phpgw->common->show_date($phpgw->db->f("date"),"n")] = " selected";
 	$n_day			 = $phpgw->common->show_date($phpgw->db->f("date"),"d");
@@ -124,7 +124,7 @@
      $date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
      $t->set_var("date_formatorder",$date_formatorder);
 
-     $t->set_var("lang_end_date",lang("end_date"));
+     $t->set_var("lang_end_date",lang("Date due"));
      if ($phpgw->db->f("end_date") != 0) {
         $e_month[$phpgw->common->show_date($phpgw->db->f("end_date"),"n")] = " selected";
 	$e_day			 = $phpgw->common->show_date($phpgw->db->f("end_date"),"d");
@@ -153,7 +153,7 @@
      $end_date_formatorder .= "<input maxlength=4 name=end_year value=\"$e_year\" size=4>";
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-     $t->set_var("lang_coordinator",lang("coordinator"));
+     $t->set_var("lang_coordinator",lang("Coordinator"));
      
      $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
@@ -169,7 +169,7 @@
      $t->set_var("coordinator_list",$coordinator_list);  
 
 // customer 
-    $t->set_var("lang_customer",lang("customer"));
+    $t->set_var("lang_customer",lang("Customer"));
     $t->set_var("customer_con",$phpgw->db->f("customer"));
 
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
@@ -194,7 +194,7 @@
       }
 
 // address
-    $t->set_var("lang_address",lang("my address"));                                                                                                                                            
+    $t->set_var("lang_address",lang("My address"));                                                                                                                                            
     $t->set_var("address_con",$phpgw->db->f("address"));                                                                                                                                    
                                                                                                                                                                                               
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                        
@@ -219,7 +219,7 @@
       }  
 
 // activites bookable
-     $t->set_var("lang_bookable_activities",lang("bookable activities"));
+     $t->set_var("lang_bookable_activities",lang("Bookable activities"));
      $db2->query("SELECT p_activities.id as id,p_activities.descr,"
 		     . "p_projectactivities.project_id FROM p_activities "
 		     . "LEFT JOIN p_projectactivities ON "
@@ -234,11 +234,11 @@
                     . $db2->f("descr")
                     . "</option>";
      }
-     $t->set_var("lang_descr",lang("description"));
+     $t->set_var("lang_descr",lang("Description"));
      $t->set_var("ba_activities_list",$ba_activities_list);  
 
 // activities billable
-     $t->set_var("lang_billable_activities",lang("billable activities"));
+     $t->set_var("lang_billable_activities",lang("Billable activities"));
      $db2->query("SELECT p_activities.id as id,p_activities.descr,"
 		     . "p_projectactivities.project_id,p_projectactivities.billable"
 		     . " FROM p_activities LEFT JOIN p_projectactivities ON "
@@ -252,7 +252,7 @@
             $bill_activities_list .= " selected";
         $bill_activities_list .= ">"        
                     . $db2->f("descr")
-                    . " " . lang("billperae") . " "
+                    . " " . lang("Bill per workunit") . " "
                     . $db2->f("billperae") . "</option>";
      }
      $t->set_var("bill_activities_list",$bill_activities_list);  
@@ -271,7 +271,7 @@
     $access_list .= "<option value=\"group\"";
        		if ($phpgw->db->f("access") != "public" && $phpgw->db->f("access") != "private")
 	               $access_list .= " selected";
-    $access_list .= ">" . lang("Group Public") . "</option>\n";
+    $access_list .= ">" . lang("Group public") . "</option>\n";
 
     $_access = $phpgw->db->f("access");     
 

@@ -57,8 +57,8 @@
       <td width="10%" align=right>{lang_workunits}</td>
       <td width="10%" align=center>{lang_date}</td>
       <td width="30%">{lang_descr}</td>
-      <td width="10%" align=right>a&nbsp;{currency}</td>
-      <td width="10%" align=right>Sum&nbsp;{currency}</td>
+      <td width="10%" align=right>{currency}&nbsp;a</td>
+      <td width="10%" align=right>{currency}&nbsp;Sum</td>
     </tr>
 
 <!-- BEGIN invoicepos_list -->
@@ -87,24 +87,24 @@
         <td width=10%>&nbsp;</td>
         <td width=10%>&nbsp;</td>
         <td width=30%>&nbsp;</td>
-        <td width=10%><font size="4"><b>Netto&nbsp;{currency}:</b></font></td>
-        <td width=10% align=right><font size="4"><b>{sum_netto}</b></font></td>
+        <td width=10%>{currency}&nbsp;Netto:</td>
+        <td width=10% align=right>{sum_netto}</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td><font size=4><b>{lang_mwst}&nbsp;{tax_percent}&nbsp;{currency}:</b></font></td>
-        <td align=right><font size="4"><b>{sum_tax}</b></font></td>
+        <td>{currency}&nbsp;{lang_mwst}&nbsp;{tax_percent}:</td>
+        <td align=right>{sum_tax}</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td><font size=4><b>Sum&nbsp;{currency}:</b></font></td>
-        <td align=right><font size="4"><b>{sum_sum}</b></font></td>
+        <td><font size=4><p><b>{currency}&nbsp;Sum:</b></font></td>
+        <td align=right><font size="4"><p><b>{sum_sum}</b></font></td>
       </tr>
           <tr>                                                                                                                                                      
         <td>&nbsp;</td>                                                                                                                                         

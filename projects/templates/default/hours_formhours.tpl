@@ -6,12 +6,12 @@
         {common_hidden_vars}
         <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr>
-          <td>{lang_num}:</td>
-          <td>{num}</td>
+          <td>{lang_num}:<br><br></td>
+          <td>{num}<br><br></td>
          </tr>
          <tr>
-          <td>{lang_title}:</td>
-          <td>{title}</td>
+          <td>{lang_title}:<br><br></td>
+          <td>{title}<br><br></td>
          </tr>
          <tr>
           <td>{lang_activity}:</td>

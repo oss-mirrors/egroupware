@@ -9,4 +9,5 @@
 11/30/2000: included address field in p_projects table
             removed p_projectaddress table
             included address in print invoice & delivery
-12/01/2000: update activities listing in editproject 
+12/01/2000: update activities listing in editproject
+12/02/2000: update lang -> Project ID, Activity ID, Invoice ID, Delivery ID 

@@ -42,19 +42,19 @@
      // ====================================================================
      
      $t->set_var("actionurl",$phpgw->link("stats_projectstat.php"));
-     $t->set_var("lang_action",lang("projectstatistic"));
+     $t->set_var("lang_action",lang("Project statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
-     $t->set_var("lang_num",lang("num"));
+     $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("num", stripslashes($phpgw->db->f("num")));
-     $t->set_var("lang_title",lang("title"));
+     $t->set_var("lang_title",lang("Title"));
      $t->set_var("title", stripslashes($phpgw->db->f("title")));
 
-     $t->set_var("lang_status",lang("status"));
+     $t->set_var("lang_status",lang("Status"));
      $t->set_var("status",lang($phpgw->db->f("status")));
-     $t->set_var("lang_budget",lang("budget"));
+     $t->set_var("lang_budget",lang("Budget"));
      $t->set_var("budget",stripslashes($phpgw->db->f("budget")));
 
-     $t->set_var("lang_start_date",lang("start_date"));
+     $t->set_var("lang_start_date",lang("Start date"));
      $start_date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
                . "<option value=\"1\"$n_month[1]>" . lang("January") . "</option>\n" 
@@ -74,7 +74,7 @@
      $start_date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
      $t->set_var("start_date_formatorder",$start_date_formatorder);
 
-     $t->set_var("lang_end_date",lang("end_date"));
+     $t->set_var("lang_end_date",lang("End date"));
      $end_date_formatorder ="<select name=end_month>\n"
                . "<option value=\"\"$e_month[0]> </option>\n"
                . "<option value=\"1\"$e_month[1]>" . lang("January") . "</option>\n" 
@@ -94,7 +94,7 @@
      $end_date_formatorder .= "<input maxlength=4 name=end_year value=\"$e_year\" size=4>";
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-     $t->set_var("lang_coordinator",lang("coordinator"));
+     $t->set_var("lang_coordinator",lang("Coordinator"));
      
      $db2 = $phpgw->db;
      
@@ -114,7 +114,7 @@
 
 // customer 
     
-    $t->set_var("lang_customer",lang("customer"));
+    $t->set_var("lang_customer",lang("Customer"));
     
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
     $db2->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name from "
@@ -134,9 +134,9 @@
     
     if($billed)                     
        $t->set_var("billed","checked");                                 
-       $t->set_var("billedonly",lang("billedonly"));
+       $t->set_var("billedonly",lang("Billedonly"));
     
-    $t->set_var("lang_calcb",lang("calc"));
+    $t->set_var("lang_calcb",lang("Calculate"));
 
 // calculate statistics                                                                                                                                         
   
@@ -154,9 +154,9 @@
   $phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM p_hours"                                                                           
                 .",accounts WHERE project_id=$id AND p_hours.employee=account_id $filter GROUP BY employee");                                                  
                                                                                                                                                                 
-  $t->set_var("hd_account",lang("account"));                                                                                                                    
-  $t->set_var("hd_activity",lang("activity"));                                                                                                                 
-  $t->set_var("hd_hours",lang("hours"));                                                                                                                        
+  $t->set_var("hd_account",lang("Account"));                                                                                                                    
+  $t->set_var("hd_activity",lang("Activity"));                                                                                                                 
+  $t->set_var("hd_hours",lang("Hours"));                                                                                                                        
   while ($phpgw->db->next_record()) {                                                                                                                           
     $summin = 0;                                                                                                                                                
     $t->set_var("e_account",$phpgw->db->f("account_firstname")." ".$phpgw->db->f("account_lastname"));                                                          
@@ -186,7 +186,7 @@
                         ." project_id=$id AND "                                                                                                                 
                         ." p_hours.activity_id=p_activities.id $filter GROUP BY p_hours.activity_id");    
    $summin=0;                                                                                                                                                    
-   $t->set_var("e_account",lang("overall"));                                                                                                                     
+   $t->set_var("e_account",lang("Overall"));                                                                                                                     
    $t->set_var("e_activity","");                                                                                                                                 
    $t->set_var("e_hours","");                                                                                                                                    
    $t->parse("list","stat_list",true);                                                                                                                           

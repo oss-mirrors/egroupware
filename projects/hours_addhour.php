@@ -50,10 +50,10 @@
            $t->set_var("num",$phpgw->db->f("num"));
 	   $t->set_var("title",$phpgw->db->f("title"));
         }
-        $t->set_var("lang_num",lang("num"));
-        $t->set_var("lang_title",lang("title"));
+        $t->set_var("lang_num",lang("Project ID"));
+        $t->set_var("lang_title",lang("Title"));
 
-        $t->set_var("lang_activity",lang("activity"));
+        $t->set_var("lang_activity",lang("Activity"));
         $phpgw->db->query("SELECT activity_id,descr FROM p_projectactivities,p_activities"
                         . " WHERE project_id = '".$id."' AND p_projectactivities.activity_id="
                         . "p_activities.id");
@@ -66,7 +66,7 @@
 	$cur_month=date("n",time());
         $cur_day=date("j",time());
         $cur_year=date("Y",time());
-        $t->set_var("lang_date",lang("date"));
+        $t->set_var("lang_date",lang("Date"));
         $n_month[$cur_month]=" selected ";
         $date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
@@ -87,7 +87,7 @@
   	$date_formatorder .= "<input maxlength=4 name=\"year\" value=\"$cur_year\" size=4> (e.g. 2000)\n";
         $t->set_var("date_formatorder",$date_formatorder);
 
-        $t->set_var("lang_end_date",lang("end_date"));
+        $t->set_var("lang_end_date",lang("Date due"));
 	$end_date_formatorder = "<select name=\"end_month\">\n"
               . "<option value=\"\" SELECTED> </option>\n"
               . "<option value=\"1\">" . lang("january") . "</option>\n"
@@ -107,20 +107,20 @@
   	$end_date_formatorder .= "<input maxlength=4 name=\"end_year\" size=4> (e.g. 2000)\n";
         $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-        $t->set_var("lang_remark",lang("remark"));
+        $t->set_var("lang_remark",lang("Remark"));
         $t->set_var("remark","");
 
-        $t->set_var("lang_time",lang("time"));
+        $t->set_var("lang_time",lang("Time"));
         $t->set_var("hours","");
         $t->set_var("minutes","");
 
-        $t->set_var("lang_status",lang("status"));
-	$status_list = "<option value=\"done\" selected>" . lang("done") . "</option>\n"
-           		. "<option value=\"open\">" . lang("open") . "</option>\n"
-           		. "<option value=\"billed\">" . lang("billed") . "</option>\n";	
+        $t->set_var("lang_status",lang("Status"));
+	$status_list = "<option value=\"done\" selected>" . lang("Done") . "</option>\n"
+           		. "<option value=\"open\">" . lang("Open") . "</option>\n"
+           		. "<option value=\"billed\">" . lang("Billed") . "</option>\n";	
         $t->set_var("status_list",$status_list);
 
-        $t->set_var("lang_employee",lang("employee"));
+        $t->set_var("lang_employee",lang("Employee"));
         $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
         while ($phpgw->db->next_record()) {
@@ -141,9 +141,7 @@
     	$t->pparse("out","projects_add");
     	$t->pparse("addhandle","add");
         
-?>
 
-   <?php
   } else {
 
     if (checkdate($month,$day,$year)) {

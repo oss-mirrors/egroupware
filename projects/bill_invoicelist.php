@@ -59,9 +59,8 @@
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
      $phpgw->db->next_record();
-?>
 
-<?php
+
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -78,18 +77,16 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_invoicelist.php",lang("num")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_invoicelist.php",lang("customer")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_invoicelist.php",lang("title")));
-  $t->set_var(sort_date,$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"bill_invoicelist.php",lang("date")));
-  $t->set_var(sort_sum,$phpgw->nextmatchs->show_sort_order($sort,"sum",$order,"bill_invoicelist.php",lang("sum")));
-  $t->set_var(h_lang_invoice,lang("invoice"));
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_invoicelist.php",lang("Invoice ID")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_invoicelist.php",lang("Customer")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_invoicelist.php",lang("Title")));
+  $t->set_var(sort_date,$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"bill_invoicelist.php",lang("Date")));
+  $t->set_var(sort_sum,$phpgw->nextmatchs->show_sort_order($sort,"sum",$order,"bill_invoicelist.php",lang("Sum")));
+  $t->set_var(h_lang_invoice,lang("Invoice"));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
@@ -174,7 +171,7 @@
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter&project_id=". $phpgw->db->f("pid")."&invoice_num=".$phpgw->db->f("num") )
-                                 . "\">". lang("invoice") . "</a>"));
+                                 . "\">". lang("Invoice") . "</a>"));
        $t->parse("list", "projects_list", true);
 
        // -------------- end record declaration ------------------------

@@ -118,16 +118,13 @@
 
 
    $t->set_var(th_bg,$phpgw_info["theme"]["th_bg"]);
-   $t->set_var(sort_company,$phpgw->nextmatchs->show_sort_order($sort,"ab_company",$order,"addressbook.php",lang("company")));
-   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addressbook.php",lang("firstname")));
-   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addressbook.php",lang("lastname")));
-   $t->set_var(lang_customer,lang("select customer"));
+   $t->set_var(sort_company,$phpgw->nextmatchs->show_sort_order($sort,"ab_company",$order,"addressbook.php",lang("Company")));
+   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addressbook.php",lang("Firstname")));
+   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addressbook.php",lang("Lastname")));
+   $t->set_var(lang_customer,lang("Select customer"));
    
 // ---------------- end header declaration ---------
 
-?>
-
-<?php
  
   $limit = $phpgw->nextmatchs->sql_limit($start);  
   
@@ -188,7 +185,7 @@ if ($query) {
                     "firstname" => $firstname,
 		    "lastname" => $lastname));
  
-  $t->set_var(lang_select_customer,lang("select customer"));
+  $t->set_var(lang_select_customer,lang("Select customer"));
   $t->set_var("id",$id);
   $t->set_var("company",$company);
   $t->set_var("firstname",$firstname);

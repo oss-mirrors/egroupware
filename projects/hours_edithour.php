@@ -56,7 +56,7 @@
      $t->set_block("projects_edit", "edit", "edithandle");
      
      $t->set_var("actionurl",$phpgw->link("hours_edithour.php"));
-     $t->set_var("lang_action",lang("project hours - edit"));
+     $t->set_var("lang_action",lang("edit project hours"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      
      $db2->query("SELECT num,title FROM p_projects "
@@ -65,10 +65,10 @@
         $t->set_var("num",$db2->f("num"));
         $t->set_var("title",$db2->f("title"));
      }
-     $t->set_var("lang_num",lang("number"));
-     $t->set_var("lang_title",lang("title"));
+     $t->set_var("lang_num",lang("Project ID"));
+     $t->set_var("lang_title",lang("Title"));
 
-     $t->set_var("lang_activity",lang("activity"));
+     $t->set_var("lang_activity",lang("Activity"));
      $db2->query("SELECT activity_id,descr FROM p_projectactivities,p_activities"
                      . " WHERE project_id = '".$phpgw->db->f("project_id")."' AND p_projectactivities.activity_id="
                      . "p_activities.id");
@@ -82,7 +82,7 @@
      $t->set_var("activity_list",$activity_list);
 
 
-     $t->set_var("lang_status",lang("status"));
+     $t->set_var("lang_status",lang("Status"));
      if ($phpgw->db->f("status")=="open"): 
          $stat_sel[0]=" selected";
      elseif ($phpgw->db->f("status")=="done"):
@@ -91,12 +91,12 @@
          $stat_sel[2]=" selected";
      endif;
 
-     $status_list = "<option value=\"open\"".$stat_sel[0].">" . lang("open") . "</option>\n"
-                  . "<option value=\"done\"".$stat_sel[1].">" . lang("done") . "</option>\n"
-                  . "<option value=\"billed\"".$stat_sel[2].">" . lang("billed") . "</option>\n";
+     $status_list = "<option value=\"open\"".$stat_sel[0].">" . lang("Open") . "</option>\n"
+                  . "<option value=\"done\"".$stat_sel[1].">" . lang("Done") . "</option>\n"
+                  . "<option value=\"billed\"".$stat_sel[2].">" . lang("Billed") . "</option>\n";
      $t->set_var("status_list",$status_list);
 
-     $t->set_var("lang_date",lang("date"));
+     $t->set_var("lang_date",lang("Date"));
      if ($phpgw->db->f("date") != 0) {
         $n_month[$phpgw->common->show_date($phpgw->db->f("date"),"n")] = " selected";
 	$n_day			 = $phpgw->common->show_date($phpgw->db->f("date"),"d");
@@ -125,7 +125,7 @@
      $date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
      $t->set_var("date_formatorder",$date_formatorder);
 
-     $t->set_var("lang_end_date",lang("end_date"));
+     $t->set_var("lang_end_date",lang("Date due"));
      if ($phpgw->db->f("end_date") != 0) {
         $e_month[$phpgw->common->show_date($phpgw->db->f("end_date"),"n")] = " selected";
 	$e_day			 = $phpgw->common->show_date($phpgw->db->f("end_date"),"d");
@@ -154,14 +154,14 @@
      $end_date_formatorder .= "<input maxlength=4 name=end_year value=\"$e_year\" size=4>";
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-     $t->set_var("lang_remark",lang("remark"));
+     $t->set_var("lang_remark",lang("Remark"));
      $t->set_var("remark",stripslashes($phpgw->db->f("remark")));
 
-     $t->set_var("lang_time",lang("time"));
+     $t->set_var("lang_time",lang("Time"));
      $t->set_var("hours",floor($phpgw->db->f("minutes")/60));
      $t->set_var("minutes",($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
 
-     $t->set_var("lang_employee",lang("employee"));
+     $t->set_var("lang_employee",lang("Employee"));
      $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
@@ -175,9 +175,9 @@
      }
      $t->set_var("employee_list",$employee_list);  
 
-     $t->set_var("lang_minperae",lang("minperae"));
+     $t->set_var("lang_minperae",lang("Minutes per workunit"));
      $t->set_var("minperae",stripslashes($phpgw->db->f("minperae")));
-     $t->set_var("lang_billperae",lang("billperae"));
+     $t->set_var("lang_billperae",lang("Bill per workunit"));
      $t->set_var("billperae",stripslashes($phpgw->db->f("billperae")));
 
 
@@ -188,9 +188,7 @@
     $t->set_var("addhandle","");
     $t->pparse("out","projects_edit");
     $t->pparse("edithandle","edit");
-   ?>
 
-   <?
   } else {
     if (checkdate($month,$day,$year)) {
        $date = mktime(2,0,0,$month,$day,$year);

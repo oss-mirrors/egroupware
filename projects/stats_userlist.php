@@ -28,7 +28,7 @@
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
 
-  $t->set_var(lang_action,lang("userstatistics"));
+  $t->set_var(lang_action,lang("User statistics"));
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
   if (! $start)
@@ -63,9 +63,8 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-?>
 
-<?php
+
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -82,16 +81,14 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_lid,$phpgw->nextmatchs->show_sort_order($sort,"account_lid",$order,"stats_userlist.php",lang("lid")));
-  $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"account_firstname",$order,"stats_userlist.php",lang("firstname")));
-  $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"account_lastname",$order,"stats_userlist.php",lang("lastname")));
-  $t->set_var(h_lang_stat,lang("stat"));
+  $t->set_var(sort_lid,$phpgw->nextmatchs->show_sort_order($sort,"account_lid",$order,"stats_userlist.php",lang("Username")));
+  $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"account_firstname",$order,"stats_userlist.php",lang("Firstname")));
+  $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"account_lastname",$order,"stats_userlist.php",lang("Lastname")));
+  $t->set_var(h_lang_stat,lang("Statistic"));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
 
      $phpgw->db->query("SELECT account_id,account_lid,accounts.account_firstname,accounts.account_lastname FROM "

@@ -41,7 +41,7 @@
         $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
         $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
 
-  	$t->set_var("lang_action",lang("add project"));
+  	$t->set_var("lang_action",lang("Add project"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -51,7 +51,7 @@
         		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         		
         $t->set_var("common_hidden_vars",$common_hidden_vars);
-        $t->set_var("lang_num",lang("num"));
+        $t->set_var("lang_num",lang("Project ID"));
         $db2->query("SELECT max(num) AS max FROM p_projects");
         if($db2->next_record()) {
            $t->set_var("num",(int)($db2->f("max"))+1);
@@ -59,26 +59,26 @@
            $t->set_var("num","1");
         }
         
-        $t->set_var("lang_title",lang("title"));
+        $t->set_var("lang_title",lang("Title"));
         $t->set_var("title","");
-        $t->set_var("lang_descr",lang("description"));
+        $t->set_var("lang_descr",lang("Description"));
 	$t->set_var("descrval","");
 
-        $t->set_var("lang_status",lang("status"));
-	$status_list = "<option value=\"active\" selected>" . lang("active") . "</option>\n"
-           		. "<option value=\"nonactive\">" . lang("nonactive") . "</option>\n"
-           		. "<option value=\"archiv\">" . lang("archiv") . "</option>\n"
-           		. "<option value=\"template\">" . lang("template") . "</option>\n";
+        $t->set_var("lang_status",lang("Status"));
+	$status_list = "<option value=\"active\" selected>" . lang("Active") . "</option>\n"
+           		. "<option value=\"nonactive\">" . lang("Nonactive") . "</option>\n"
+           		. "<option value=\"archiv\">" . lang("Archiv") . "</option>\n"
+           		. "<option value=\"template\">" . lang("Template") . "</option>\n";
 
 	
         $t->set_var("status_list",$status_list);
-        $t->set_var("lang_budget",lang("budget"));
+        $t->set_var("lang_budget",lang("Budget"));
         $t->set_var("budget","");
 
 	$cur_month=date("n",time());
         $cur_day=date("j",time());
         $cur_year=date("Y",time());
-        $t->set_var("lang_date",lang("date"));
+        $t->set_var("lang_date",lang("Date"));
         $n_month[$cur_month]=" selected ";
         $date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
@@ -99,7 +99,7 @@
   	$date_formatorder .= "<input maxlength=4 name=\"year\" value=\"$cur_year\" size=4> (e.g. 2000)\n";
         $t->set_var("date_formatorder",$date_formatorder);
 
-        $t->set_var("lang_end_date",lang("end_date"));
+        $t->set_var("lang_end_date",lang("Date due"));
 	$end_date_formatorder = "<select name=\"end_month\">\n"
               . "<option value=\"\" SELECTED> </option>\n"
               . "<option value=\"1\">" . lang("january") . "</option>\n"
@@ -119,7 +119,7 @@
   	$end_date_formatorder .= "<input maxlength=4 name=\"end_year\" size=4> (e.g. 2000)\n";
         $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-        $t->set_var("lang_coordinator",lang("coordinator"));
+        $t->set_var("lang_coordinator",lang("Coordinator"));
         $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname,account_id asc");
         while ($phpgw->db->next_record()) {
@@ -131,16 +131,16 @@
         }
         $t->set_var("coordinator_list",$coordinator_list);
 
-        $t->set_var("lang_customer",lang("customer"));
+        $t->set_var("lang_customer",lang("Customer"));
         $t->set_var("customer_con","");
         $t->set_var("customer_name","");
 
-        $t->set_var("lang_address",lang("my address"));                                                                                                                                        
+        $t->set_var("lang_address",lang("My address"));                                                                                                                                        
         $t->set_var("address_con","");                                                                                                                                                       
         $t->set_var("address_name","");        
 
 // activities bookable     
-       $t->set_var("lang_bookable_activities",lang("bookable activities"));
+       $t->set_var("lang_bookable_activities",lang("Bookable activities"));
         $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
                      . "FROM p_activities "                                                                                                               
                      . "ORDER BY descr asc");                                                                                                    
@@ -154,7 +154,7 @@
        $t->set_var("ba_activities_list",$ba_activities_list);  
 
 // activities billable        
-        $t->set_var("lang_billable_activities",lang("billable activities"));
+        $t->set_var("lang_billable_activities",lang("Billable activities"));
      $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
                      . " FROM p_activities "                                                                                                                   
                      . " ORDER BY descr asc");                                                                                                  
@@ -162,7 +162,7 @@
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                              
         $bill_activities_list .= ">"                                                                                                                                                     
                     . $db2->f("descr")                                                                                                                                                   
-                    . " " . lang("billperae") . " "                                                                                                                                      
+                    . " " . lang("Bill per workunit") . " "                                                                                                                                      
                     . $db2->f("billperae") . "</option>";                                                                                                                                
      }        
 
@@ -177,7 +177,7 @@
 
 	$t->set_var("access_list",$access_list);
 	
-	$t->set_var("lang_which_groups",lang("which groups"));
+	$t->set_var("lang_which_groups",lang("Which groups"));
 
         $user_groups = $phpgw->accounts->read_group_names($phpgw_info["user"]["userid"]);
         for ($i=0;$i<count($user_groups);$i++) {

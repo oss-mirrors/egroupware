@@ -6,7 +6,7 @@
 	
   <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
-      <td width="3%" bgcolor="{th_bg}" align=center>{sort_num}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{sort_num}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_customer}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_title}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
@@ -19,7 +19,7 @@
   
 <!-- BEGIN projects_list -->
       <tr bgcolor="{tr_color}">
-        <td align=right>{num}</td>
+        <td>{num}</td>
 	<td>{customer}</td>
         <td>{title}</td>
         <td>{coordinator}</td>

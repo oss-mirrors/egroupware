@@ -51,19 +51,19 @@
      
      $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
      $t->set_var("actionurl",$phpgw->link("stats_projectstat.php"));
-     $t->set_var("lang_action",lang("projectstatistic"));
+     $t->set_var("lang_action",lang("Project statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
-     $t->set_var("lang_num",lang("num"));
+     $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("num", stripslashes($phpgw->db->f("num")));
-     $t->set_var("lang_title",lang("title"));
+     $t->set_var("lang_title",lang("Title"));
      $t->set_var("title", stripslashes($phpgw->db->f("title")));
 
-     $t->set_var("lang_status",lang("status"));
+     $t->set_var("lang_status",lang("Status"));
      $t->set_var("status",lang($phpgw->db->f("status")));
-     $t->set_var("lang_budget",lang("budget"));
+     $t->set_var("lang_budget",lang("Budget"));
      $t->set_var("budget",stripslashes($phpgw->db->f("budget")));
 
-     $t->set_var("lang_start_date",lang("start_date"));
+     $t->set_var("lang_start_date",lang("Start date"));
      $start_date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
                . "<option value=\"1\"$n_month[1]>" . lang("January") . "</option>\n" 
@@ -83,7 +83,7 @@
      $start_date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
      $t->set_var("start_date_formatorder",$start_date_formatorder);
 
-     $t->set_var("lang_end_date",lang("end_date"));
+     $t->set_var("lang_end_date",lang("End date"));
      $end_date_formatorder ="<select name=end_month>\n"
                . "<option value=\"\"$e_month[0]> </option>\n"
                . "<option value=\"1\"$e_month[1]>" . lang("January") . "</option>\n" 
@@ -103,7 +103,7 @@
      $end_date_formatorder .= "<input maxlength=4 name=end_year value=\"$e_year\" size=4>";
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
-     $t->set_var("lang_coordinator",lang("coordinator"));
+     $t->set_var("lang_coordinator",lang("Coordinator"));
      $db2->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
@@ -116,7 +116,7 @@
 
 // customer 
     
-    $t->set_var("lang_customer",lang("customer"));
+    $t->set_var("lang_customer",lang("Customer"));
     
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                          
     $db2->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name from "                                                                   
@@ -134,12 +134,10 @@
     
     $t->set_var("customer",$customerout);
     
-    $t->set_var("lang_calcb",lang("calc"));
+    $t->set_var("lang_calcb",lang("Calculate"));
 
     $t->pparse("out","project_stat");
-   ?>
 
-   <?
   } else {
 
     if (checkdate($month,$day,$year)) {

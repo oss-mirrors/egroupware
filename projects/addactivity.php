@@ -24,9 +24,7 @@
   
   
   if (! $submit) {
-     ?>
       
-   <?PHP
   	$t = new Template($phpgw_info["server"]["app_tpl"]);
   	
   	$t->set_var("actionurl",$phpgw->link("addactivity.php"));
@@ -39,7 +37,7 @@
      	$t->set_block("activity_add", "add", "addhandle");
      	$t->set_block("activity_add", "edit", "edithandle");
   	
-  	$t->set_var("lang_action",lang("activity list - add"));
+  	$t->set_var("lang_action",lang("Add activity"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -49,7 +47,7 @@
         		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         		
         $t->set_var("common_hidden_vars",$common_hidden_vars);
-        $t->set_var("lang_num",lang("num"));
+        $t->set_var("lang_num",lang("Activity ID"));
         
         $db2->query("select max(num) as max from p_activities");
         if($db2->next_record()) { 
@@ -57,16 +55,16 @@
         } else {                                                                                                                                              
            $t->set_var("num","1");	 
         }
-        $t->set_var("lang_descr",lang("description"));
+        $t->set_var("lang_descr",lang("Description"));
         $t->set_var("descr","");
-        $t->set_var("lang_minperae",lang("minperae"));
+        $t->set_var("lang_minperae",lang("Minutes per workunit"));
         $t->set_var("minperae","");
-        $t->set_var("lang_billperae",lang("billperae"));
+        $t->set_var("lang_billperae",lang("Bill per workunit"));
         $t->set_var("billperae","");
 
-        $t->set_var("lang_remarkreq",lang("remarkreq"));
-	$remarkreq_list = "<option value=\"N\">" . lang("no") . "</option>\n"
-           		. "<option value=\"Y\" selected>" . lang("yes") . "</option>\n";
+        $t->set_var("lang_remarkreq",lang("Remark required"));
+	$remarkreq_list = "<option value=\"N\">" . lang("No") . "</option>\n"
+           		. "<option value=\"Y\" selected>" . lang("Yes") . "</option>\n";
         $t->set_var("remarkreq_list",$remarkreq_list);
 
         $t->set_var("lang_addsubmitb",lang("Add"));
@@ -77,9 +75,7 @@
     	$t->set_var("acthandle","");
     	$t->pparse("out","activity_add");
     	$t->pparse("addhandle","add");
-?>
 
-   <?php
   } else {
 
     $phpgw->db->query("insert into p_activities (num,descr,remarkreq," 
@@ -92,3 +88,4 @@
          . "$start&filter=$filter"));
   }
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+?>

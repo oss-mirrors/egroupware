@@ -45,16 +45,16 @@
      // ====================================================================
      
      $t->set_var("actionurl",$phpgw->link("stats_userstat.php","account_id=" . $phpgw->db->f("account_id")));
-     $t->set_var("lang_action",lang("userstatistic"));
+     $t->set_var("lang_action",lang("User statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
-     $t->set_var("lang_lid",lang("lid"));
+     $t->set_var("lang_lid",lang("Username"));
      $t->set_var("lid", stripslashes($phpgw->db->f("account_lid")));
-     $t->set_var("lang_firstname",lang("firstname"));
+     $t->set_var("lang_firstname",lang("Firstname"));
      $t->set_var("firstname", stripslashes($phpgw->db->f("account_firstname")));
-     $t->set_var("lang_lastname",lang("lastname"));                                                                                                                
+     $t->set_var("lang_lastname",lang("Lastname"));                                                                                                                
      $t->set_var("lastname", stripslashes($phpgw->db->f("account_lastname")));
 
-     $t->set_var("lang_start_date",lang("start_date"));
+     $t->set_var("lang_start_date",lang("Start date"));
      $n_month[$s_month]=" selected ";
      $start_date_formatorder ="<select name=month>\n"
                . "<option value=\"\"$n_month[0]> </option>\n"
@@ -75,7 +75,7 @@
      $start_date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
      $t->set_var("start_date_formatorder",$start_date_formatorder);
 
-     $t->set_var("lang_end_date",lang("end_date"));
+     $t->set_var("lang_end_date",lang("End date"));
      $n_month[$s_month]=" selected ";
      $end_date_formatorder ="<select name=end_month>\n"
                . "<option value=\"\"$e_month[0]> </option>\n"
@@ -117,9 +117,9 @@
      $phpgw->db->query("SELECT title,p_projects.id FROM p_hours,p_projects WHERE project_id=p_projects.id "                                                  
                 ."AND p_hours.employee='$account_id' $filter GROUP BY project_id");                                                                      
                                                                                                                                                           
-     $t->set_var("hd_project",lang("project"));                                                                                                              
-     $t->set_var("hd_activity",lang("activity"));                                                                                                           
-     $t->set_var("hd_hours",lang("hours"));                                                                                                                  
+     $t->set_var("hd_project",lang("Project"));                                                                                                              
+     $t->set_var("hd_activity",lang("Activity"));                                                                                                           
+     $t->set_var("hd_hours",lang("Hours"));                                                                                                                  
      while ($phpgw->db->next_record()) {                                                                                                                     
      $summin = 0;                                                                                                                                          
      $t->set_var("e_project",$phpgw->db->f("title"));                                                                                                      
@@ -152,7 +152,7 @@
 
 
      $summin=0;                                                                                                                                              
-     $t->set_var("e_project",lang("overall"));                                                                                                               
+     $t->set_var("e_project",lang("Overall"));                                                                                                               
      $t->set_var("e_activity","");                                                                                                                           
      $t->set_var("e_hours","");                                                                                                                              
      $t->parse("list","stat_list",true);                                                                                                                     

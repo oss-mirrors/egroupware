@@ -32,7 +32,7 @@
    section_start("projects",$img);
 
    $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/projects/preferences.php");
-   printf("<A href=\"%s\">%s</A><br>", $pg, lang("Project Preferences"));
+   printf("<A href=\"%s\">%s</A><br>", $pg, lang("Project preferences"));
 
    section_end(); 
 }

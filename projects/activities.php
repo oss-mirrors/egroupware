@@ -28,9 +28,9 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("activities list"));
+  $t->set_var(lang_action,lang("Activities list"));
   $t->set_var(actionurl,$phpgw->link("addactivity.php"));
-  $t->set_var(lang_projects,lang("project list"));
+  $t->set_var(lang_projects,lang("Project list"));
   $t->set_var(projectsurl,$phpgw->link("index.php"));
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
@@ -65,9 +65,8 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-?>
 
-<?php
+
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -84,18 +83,16 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"activities.php",lang("num")));
-  $t->set_var(sort_descr,$phpgw->nextmatchs->show_sort_order($sort,"descr",$order,"activities.php",lang("description")));
-  $t->set_var(sort_billperae,$phpgw->nextmatchs->show_sort_order($sort,"billperae",$order,"activities.php",lang("billperae")));
-  $t->set_var(sort_minperae,$phpgw->nextmatchs->show_sort_order($sort,"minperae",$order,"activities.php",lang("minperae")));
-  $t->set_var(h_lang_edit,lang("edit"));
-  $t->set_var(h_lang_delete,lang("delete"));             
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"activities.php",lang("Activity ID")));
+  $t->set_var(sort_descr,$phpgw->nextmatchs->show_sort_order($sort,"descr",$order,"activities.php",lang("Description")));
+  $t->set_var(sort_billperae,$phpgw->nextmatchs->show_sort_order($sort,"billperae",$order,"activities.php",lang("Bill per workunit")));
+  $t->set_var(sort_minperae,$phpgw->nextmatchs->show_sort_order($sort,"minperae",$order,"activities.php",lang("Minutes per workunit")));
+  $t->set_var(h_lang_edit,lang("Edit"));
+  $t->set_var(h_lang_delete,lang("Delete"));             
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($query) {
@@ -139,9 +136,9 @@
     		      "billperae" => $billperae,
       		      "minperae" => $minperae,
 		      "edit" =>  "<a href=\"". $el
-                                 . "\">". lang("edit") . "</a>",
+                                 . "\">". lang("Edit") . "</a>",
       		      "delete" =>  "<a href=\"". $dl
-                                 . "\">". lang("delete") . "</a>"));
+                                 . "\">". lang("Delete") . "</a>"));
        $t->parse("list", "activities_list", true);
 
        // -------------- end record declaration ------------------------
@@ -151,7 +148,7 @@
       // template declaration for Add Form
       // ============================================
 
-       $t->set_var(lang_add,lang("add"));
+       $t->set_var(lang_add,lang("Add"));
        $t->parse("out", "activities_list_t", true);
        $t->p("out");
        // -------------- end Add form declaration ------------------------

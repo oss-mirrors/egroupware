@@ -27,7 +27,7 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("projectdelivery"));   
+  $t->set_var(lang_action,lang("Project delivery"));   
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
   
   
@@ -77,9 +77,7 @@
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
 //     $phpgw->db->next_record();                                                                      
 
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -96,22 +94,19 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"del_index.php",lang("num")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"del_index.php",lang("status")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"del_index.php",lang("customer")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"del_index.php",lang("title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"del_index.php",lang("date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"del_index.php",lang("coordinator")));
-  $t->set_var(h_lang_delivery,lang("delivery note"));
-  $t->set_var(h_lang_deliverylist,lang("deliverylist"));
-  $t->set_var(lang_all_deliverylist,lang("all delivery notes"));
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"del_index.php",lang("Project ID")));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"del_index.php",lang("Status")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"del_index.php",lang("Customer")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"del_index.php",lang("Title")));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"del_index.php",lang("Date due")));
+  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"del_index.php",lang("Coordinator")));
+  $t->set_var(h_lang_delivery,lang("Delivery note"));
+  $t->set_var(h_lang_deliverylist,lang("Delivery list"));
+  $t->set_var(lang_all_deliverylist,lang("All delivery notes"));
   $t->set_var(all_deliverylist,$phpgw->link("del_deliverylist.php","project_id="));
 
   // -------------- end header declaration -----------------
 
-?>
-
-<?php
 
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
@@ -186,9 +181,9 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout,
                       "delivery" => "<a href=\"". $phpgw->link("del_delivery.php","project_id=" . $phpgw->db->f("id") )
-                                 . "\">". lang("delivery") . "</a>",
+                                 . "\">". lang("Delivery") . "</a>",
                       "deliverylist" => "<a href=\"". $phpgw->link("del_deliverylist.php","project_id=" . $phpgw->db->f("id") )
-                                 . "\">". lang("deliverylist") . "</a>"));
+                                 . "\">". lang("Delivery list") . "</a>"));
        $t->parse("list", "projects_list", true);
 
        // -------------- end record declaration ------------------------

@@ -77,9 +77,7 @@
   
   //$phpgw->db->next_record();                                                                      
 
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -96,23 +94,21 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_index.php",lang("num")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"bill_index.php",lang("status")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_index.php",lang("customer")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_index.php",lang("title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"bill_index.php",lang("date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"bill_index.php",lang("coordinator")));
-  $t->set_var(h_lang_delivery_note,lang("delivery note"));
-  $t->set_var(h_lang_invoice,lang("invoice"));             
-  $t->set_var(h_lang_invoicelist,lang("invoicelist"));
-  $t->set_var(lang_all_invoicelist,lang("all invoices"));
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_index.php",lang("Project ID")));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"bill_index.php",lang("Status")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_index.php",lang("Customer")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"bill_index.php",lang("Title")));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"bill_index.php",lang("Date due")));
+  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"bill_index.php",lang("Coordinator")));
+  $t->set_var(h_lang_delivery_note,lang("Delivery note"));
+  $t->set_var(h_lang_invoice,lang("Invoice"));             
+  $t->set_var(h_lang_invoicelist,lang("Invoice list"));
+  $t->set_var(lang_all_invoicelist,lang("All invoices"));
   $t->set_var(all_invoicelist,$phpgw->link("bill_invoicelist.php","project_id="));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
     $limit = $phpgw->nextmatchs->sql_limit($start);  
     
     $db2 = $phpgw->db;
@@ -187,9 +183,9 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout,
                       "invoice" => "<a href=\"". $phpgw->link("bill_invoice.php","project_id=" . $phpgw->db->f("id") )
-                                 . "\">". lang("invoice") . "</a>",
+                                 . "\">". lang("Invoice") . "</a>",
                       "invoicelist" => "<a href=\"". $phpgw->link("bill_invoicelist.php","project_id=" . $phpgw->db->f("id"))
-                                                   . "\">". lang("invoicelist") . "</a>"));
+                                                   . "\">". lang("Invoice list") . "</a>"));
        $t->parse("list", "projects_list", true);
 
        // -------------- end record declaration ------------------------

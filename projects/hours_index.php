@@ -27,10 +27,10 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_all_open_hours,lang("all open hours"));
-  $t->set_var(lang_action,lang("projecthours"));
+  $t->set_var(lang_all_open_hours,lang("All open hours"));
+  $t->set_var(lang_action,lang("Project hours"));
   $t->set_var(all_open_hours,$phpgw->link("hours_listhours.php","status=open"));
-  $t->set_var(lang_all_done_hours,lang("all done hours"));
+  $t->set_var(lang_all_done_hours,lang("All done hours"));
   $t->set_var(all_done_hours,$phpgw->link("hours_listhours.php","status=done"));
 
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
@@ -80,9 +80,7 @@
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
 //     $phpgw->db->next_record();
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -99,20 +97,18 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"hours_index.php",lang("num")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_index.php",lang("status")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"hours_index.php",lang("customer")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"hours_index.php",lang("title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_index.php",lang("date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"hours_index.php",lang("coordinator")));
-  $t->set_var(h_lang_addhour,lang("addhour"));
-  $t->set_var(h_lang_viewhour,lang("viewhour"));             
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"hours_index.php",lang("Project ID")));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_index.php",lang("Status")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"hours_index.php",lang("Customer")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"hours_index.php",lang("Title")));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_index.php",lang("Date due")));
+  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"hours_index.php",lang("Coordinator")));
+  $t->set_var(h_lang_addhour,lang("Add hours"));
+  $t->set_var(h_lang_viewhour,lang("View hours"));             
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
   $db2 = $phpgw->db;
@@ -196,9 +192,9 @@
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . $filter)
-                                 . "\">". lang("addhour") . "</a>",
+                                 . "\">". lang("Add hours") . "</a>",
                       "viewhour" => "<a href=\"". $phpgw->link("hours_listhours.php","project_id=" . $phpgw->db->f("id") )
-                                 . "\">". lang("viewhour") . "</a>"));
+                                 . "\">". lang("View hours") . "</a>"));
        $t->parse("list", "projects_list", true);
 
        // -------------- end record declaration ------------------------

@@ -6,18 +6,18 @@
 	
   <table width=85% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
-      <td width="5%" bgcolor="{th_bg}" align=center>{sort_num}</td>
-      <td width="30%" align=center>{sort_descr}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{sort_num}</td>
+      <td width="30%" bgcolor="{th_bg}" align=center>{sort_descr}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_billperae}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_minperae}</td>
-      <td width="5%" align=center>{h_lang_edit}</td>
-      <td width="5%" align=center>{h_lang_delete}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_edit}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_delete}</td>
     </tr>
   </form>
   
 <!-- BEGIN activities_list -->
       <tr bgcolor="{tr_color}">
-        <td align=right>{num}</td>
+        <td>{num}</td>
         <td>{descr}</td>
         <td align=right>{billperae}</td>
         <td align=right>{minperae}</td>

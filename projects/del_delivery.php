@@ -93,24 +93,22 @@
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
 
-  $t->set_var(sort_activity,lang("activity"));
-  $t->set_var(sort_remark,lang("remark"));
-  $t->set_var(sort_status,lang("status"));
-  $t->set_var(sort_date,lang("date"));
-  $t->set_var(sort_aes,lang("aes"));
-  $t->set_var(h_lang_select,lang("select"));
-  $t->set_var(h_lang_edithour,lang("edithour"));
-  $t->set_var(lang_update,lang("update"));
-  $t->set_var(lang_createdelivery,lang("createdelivery"));
+  $t->set_var(sort_activity,lang("Activity"));
+  $t->set_var(sort_remark,lang("Remark"));
+  $t->set_var(sort_status,lang("Status"));
+  $t->set_var(sort_date,lang("Date"));
+  $t->set_var(sort_aes,lang("Workunits"));
+  $t->set_var(h_lang_select,lang("Select"));
+  $t->set_var(h_lang_edithour,lang("Edit hours"));
+  $t->set_var(lang_update,lang("Update"));
+  $t->set_var(lang_createdelivery,lang("Create delivery"));
   $t->set_var(actionurl,$phpgw->link("del_delivery.php"));
-  $t->set_var(lang_print_delivery,lang("print delivery"));
+  $t->set_var(lang_print_delivery,lang("Print delivery"));
   $t->set_var(print_delivery,$phpgw->link("del_deliveryshow.php","delivery_id=$delivery_id"));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
@@ -143,9 +141,9 @@
     $t->set_var(customer,lang("no customer selected"));
       }
      }
-    $t->set_var(title_project,lang("title"));                                                                                                                                                               
-    $t->set_var(title_customer,lang("customer"));  
-    $t->set_var(title_delivery_num,lang("delivery_num"));
+    $t->set_var(title_project,lang("Title"));                                                                                                                                                               
+    $t->set_var(title_customer,lang("Customer"));  
+    $t->set_var(title_delivery_num,lang("Delivery ID"));
   
   if(!$delivery_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_delivery");
@@ -204,7 +202,7 @@
   $date_formatorder  .= "<input maxlength=2 name=day value=\"$n_day\" size=2>\n";
   $date_formatorder .= "<input maxlength=4 name=year value=\"$n_year\" size=4>";
   $t->set_var("date_formatorder",$date_formatorder);
-  $t->set_var("lang_delivery_date",lang("delivery date"));
+  $t->set_var("lang_delivery_date",lang("Delivery date"));
 
   $summe=0;
   $sumaes=0;
@@ -254,7 +252,7 @@
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter&status=$status")
-                                 . "\">" . lang("edithour") . "</a>"));
+                                 . "\">" . lang("Edit hours") . "</a>"));
     $t->parse("list", "projecthours_list", true);
 
     // -------------- end record declaration ------------------------
@@ -315,7 +313,7 @@
                                        . "&sort=$sort&order=$order&"
                                        . "query=$query&start=$start&filter="
                                        . "$filter&status=$status")
-                                       . "\">". lang("edithour") . "</a>"));
+                                       . "\">". lang("Edit hours") . "</a>"));
       $t->parse("list", "projecthours_list", true);
   
       // -------------- end record declaration ------------------------

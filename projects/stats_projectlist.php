@@ -29,8 +29,8 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("projectstatistics"));  
-  $t->set_var(lang_userlist,lang("userstatistics"));
+  $t->set_var(lang_action,lang("Project statistics"));  
+  $t->set_var(lang_userlist,lang("User statistics"));
   $t->set_var(userlisturl,$phpgw->link("stats_userlist.php"));  
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
   
@@ -81,9 +81,7 @@
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
 
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -100,19 +98,17 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("num")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("customer")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"stats_projectlist.php",lang("status")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"stats_projectlist.php",lang("title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"stats_projectlist.php",lang("date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"stats_projectlist.php",lang("coordinator")));
-  $t->set_var(h_lang_stat,lang("stat"));
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("Project ID")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("Customer")));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"stats_projectlist.php",lang("Status")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"stats_projectlist.php",lang("Title")));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"stats_projectlist.php",lang("Date due")));
+  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"stats_projectlist.php",lang("Coordinator")));
+  $t->set_var(h_lang_stat,lang("Statistic"));
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
   $db2 = $phpgw->db;
@@ -200,7 +196,7 @@
       		      "end_date" => $end_dateout,
       		      "coordinator" => $coordinatorout,
       		      "stat" =>  "<a href=\"". $el
-                                 . "\">". lang("stat") . "</a>"));
+                                 . "\">". lang("Statistic") . "</a>"));
        $t->parse("list", "project_list", true);
 
        // -------------- end record declaration ------------------------

@@ -75,9 +75,8 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-?>
 
-<?php
+
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -93,23 +92,20 @@
   // ===========================================
   // list header variable template-declarations
   // ===========================================
+
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-
-
-  $t->set_var(sort_activity,$phpgw->nextmatchs->show_sort_order($sort,"p_activities.descr",$order,"hours_listhours.php",lang("activity"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_remark,$phpgw->nextmatchs->show_sort_order($sort,"p_hours.remark",$order,"hours_listhours.php",lang("remark"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_listhours.php",lang("status"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_date,$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"hours_listhours.php",lang("date"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_listhours.php",lang("end_date"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_minutes,$phpgw->nextmatchs->show_sort_order($sort,"minutes",$order,"hours_listhours.php",lang("time"),"&project_id=$project_id&status=$status"));
-  $t->set_var(h_lang_edithour,lang("edithour"));
-  $t->set_var(h_lang_deletehour,lang("deletehour"));             
+  $t->set_var(sort_activity,$phpgw->nextmatchs->show_sort_order($sort,"p_activities.descr",$order,"hours_listhours.php",lang("Activity"),"&project_id=$project_id&status=$status"));
+  $t->set_var(sort_remark,$phpgw->nextmatchs->show_sort_order($sort,"p_hours.remark",$order,"hours_listhours.php",lang("Remark"),"&project_id=$project_id&status=$status"));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_listhours.php",lang("Status"),"&project_id=$project_id&status=$status"));
+  $t->set_var(sort_date,$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"hours_listhours.php",lang("Date"),"&project_id=$project_id&status=$status"));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_listhours.php",lang("Date due"),"&project_id=$project_id&status=$status"));
+  $t->set_var(sort_minutes,$phpgw->nextmatchs->show_sort_order($sort,"minutes",$order,"hours_listhours.php",lang("Time"),"&project_id=$project_id&status=$status"));
+  $t->set_var(h_lang_edithour,lang("Edit hours"));
+  $t->set_var(h_lang_deletehour,lang("Delete hours"));             
 
   // -------------- end header declaration -----------------
 
-?>
 
-<?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
 
   if ($query) {
@@ -178,7 +174,7 @@
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter&status=$status")
-                                 . "\">". lang("deletehour") . "</a>";
+                                 . "\">". lang("Delete hours") . "</a>";
     else 
 	$deleteurl = "";
     if(($phpgw->db->f("status")=="open") or ($phpgw->db->f("status")=="done") or ($isadmin==1))
@@ -186,7 +182,7 @@
 	                                . "&sort=$sort&order=$order&"
 					. "query=$query&start=$start&filter="
 					. "$filter&status=$status")
-			 	. "\">". lang("edithour") . "</a>";		
+			 	. "\">". lang("Edit hours") . "</a>";		
     else
        $editurl = "";
     

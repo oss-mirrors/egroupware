@@ -27,9 +27,9 @@
   . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
   . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("projects"));
+  $t->set_var(lang_action,lang("Projects"));
   $t->set_var(actionurl,$phpgw->link("add.php"));
-  $t->set_var(lang_activities,lang("activities list"));
+  $t->set_var(lang_activities,lang("Activities list"));
   $t->set_var(activitiesurl,$phpgw->link("activities.php"));
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
@@ -85,9 +85,7 @@
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
      $phpgw->db->next_record();
-?>
 
-<?php
     // ===========================================
     // nextmatch variable template-declarations
     // ===========================================
@@ -104,20 +102,17 @@
   // list header variable template-declarations
   // ===========================================
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"index.php",lang("num")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"index.php",lang("customer")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"index.php",lang("status")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"index.php",lang("title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"index.php",lang("date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"index.php",lang("coordinator")));
-  $t->set_var(h_lang_edit,lang("edit"));
-  $t->set_var(h_lang_delete,lang("delete"));             
+  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"index.php",lang("Project ID")));
+  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"index.php",lang("Customer")));
+  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"index.php",lang("Status")));
+  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"index.php",lang("Title")));
+  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"index.php",lang("Date due")));
+  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"index.php",lang("Coordinator")));
+  $t->set_var(h_lang_edit,lang("Edit"));
+  $t->set_var(h_lang_delete,lang("Delete"));             
 
   // -------------- end header declaration -----------------
 
-?>
-
-<?php
   
   $limit = $phpgw->nextmatchs->sql_limit($start);
   
@@ -192,23 +187,23 @@
       
     if($isadmin==1) {
         $edit = $phpgw->common->check_owner($phpgw_info["user"]["account_id"],"edit.php",
-                                         lang("edit"),"id=" . $phpgw->db->f("id")
+                                         lang("Edit"),"id=" . $phpgw->db->f("id")
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter");
        $delete = $phpgw->common->check_owner($phpgw_info["user"]["account_id"],"delete.php",
-                                           lang("delete"),"id=" . $phpgw->db->f("id")
+                                           lang("Delete"),"id=" . $phpgw->db->f("id")
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter");
     } else { 
        $edit = $phpgw->common->check_owner($phpgw->db->f("coordinator"),"edit.php",
-                                         lang("edit"),"id=" . $phpgw->db->f("id")
+                                         lang("Edit"),"id=" . $phpgw->db->f("id")
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter");
        $delete = $phpgw->common->check_owner($phpgw->db->f("coordinator"),"delete.php",
-                                           lang("delete"),"id=" . $phpgw->db->f("id")
+                                           lang("Delete"),"id=" . $phpgw->db->f("id")
                                          . "&sort=$sort&order=$order&"
                                          . "query=$query&start=$start&filter="
                                          . "$filter");

@@ -95,9 +95,7 @@
 			   $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0)); 
-?>
 
-<?php
  
 // =================================================
 // nextmatch variable template-declaration
@@ -118,10 +116,10 @@
 
 
    $t->set_var(th_bg,$phpgw_info["theme"]["th_bg"]);
-   $t->set_var(sort_company,$phpgw->nextmatchs->show_sort_order($sort,"ab_company",$order,"addresses.php",lang("company")));
-   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addresses.php",lang("firstname")));
-   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addresses.php",lang("lastname")));
-   $t->set_var(lang_address,lang("select your address"));
+   $t->set_var(sort_company,$phpgw->nextmatchs->show_sort_order($sort,"ab_company",$order,"addresses.php",lang("Company")));
+   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addresses.php",lang("Firstname")));
+   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addresses.php",lang("Lastname")));
+   $t->set_var(lang_address,lang("Select your address"));
    
 // ---------------- end header declaration ---------
 
@@ -188,7 +186,7 @@ if ($query) {
                     "firstname" => $firstname,
 		    "lastname" => $lastname));
  
-  $t->set_var(lang_select_address,lang("select your address"));
+  $t->set_var(lang_select_address,lang("Select your address"));
   $t->set_var("id",$id);
   $t->set_var("company",$company);
   $t->set_var("firstname",$firstname);

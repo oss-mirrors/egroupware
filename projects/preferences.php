@@ -23,7 +23,6 @@
 if ($submit) {
      $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"projects");
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"tax","projects");
-//     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"account_id","projectbilling");
      
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
     }
@@ -39,10 +38,8 @@ if ($submit) {
      $t->set_var("actionurl",$phpgw->link("preferences.php"));
      
 
-     $t->set_var("lang_action",lang("project preferences"));
-     $t->set_var("lang_select_tax",lang("enter your tax"));
-     
-//     $t->set_var("lang_user",lang("address"));
+     $t->set_var("lang_action",lang("Project preferences"));
+     $t->set_var("lang_select_tax",lang("Select tax for work hours"));
      
      $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];
      $t->set_var("tax",$tax);
