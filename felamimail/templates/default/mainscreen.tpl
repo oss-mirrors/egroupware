@@ -113,35 +113,32 @@ doLoad();
 //-->
 </script>
 
-<form name=searchForm method=post action="{url_search_settings}">
+<!--
+<form name=searchFormOld method=post action="{url_search_settings}">
 <TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
 	<TR bgcolor="{row_off}">
 		<TD ALIGN="left" WIDTH="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
+-->
 			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
+<!--
 			{lang_quicksearch}
-			<input class="input_text" type="text" size="50" name="quickSearch" value="{quicksearch}"
-			onChange="javascript:document.searchForm.submit()" style="font-size:11px;">
+			<input class="input_text" type="text" size="50" name="quickSearchOld" value="{quicksearch}"
+			onChange="javascript:document.searchFormOld.submit()" style="font-size:11px;">
 		</td>
 		<td align='right' width="30%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; ">
 			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>
 			<input type=hidden name="changeFilter">
-			<select name="filter" onchange="javascript:document.searchForm.submit()" style="border : 1px solid silver; font-size:11px;">
+			<select name="filterOld" onchange="javascript:document.searchFormOld.submit()" style="border : 1px solid silver; font-size:11px;">
 				{filter_options}
 			</select>
 		</td>
 	</tr>
 </form>
 </table>
-
+-->
 
 <TABLE WIDTH="100%" CELLPADDING="2" CELLSPACING="0" BORDER="0">
-		<FORM name="messageList" method="post" action="{url_change_folder}">
-		<input type="hidden" name="folderAction" value="changeFolder">
-		<noscript>
-			<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
-		</noscript>
-		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
-		<INPUT TYPE=hidden NAME="mailbox">
+
 <!--		
 			<td align="LEFT" valign="center" width="5%">
 				<TT><SMALL>
@@ -156,20 +153,35 @@ doLoad();
 			</td>
 -->
 	<TR>
-		<TD BGCOLOR="{th_bg}" width="20%">
-			<a href="{url_compose_empty}" style="font-weight:bold;">{lang_compose}</a>
+		<form name="searchForm" method="post" action="{url_search_settings}">
+		<TD BGCOLOR="{th_bg}" align="left"><nobr>
+			<img src="{mail_find}" border="0" name="{lang_quicksearch}" alt="{lang_quicksearch}" title="{lang_quicksearch}" width="16" onClick="javascript:document.searchForm.submit()">
+			<input class="input_text" type="text" size="25" name="quickSearch" value="{quicksearch}" onChange="javascript:document.searchForm.submit()" style="font-size:11px;">
 		</td>
+		<TD BGCOLOR="{th_bg}" align="left"><nobr>
+			<input type=hidden name="changeFilter">
+			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;<select name="filter" onchange="javascript:document.searchForm.submit()" style="border : 1px solid silver; font-size:11px;">{filter_options}
+			</select>
+		</TD>
+		</form>
 		<TD BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
 			<b>{current_folder}</b>
 		</td>
 		<td BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
 			{quota_display}
 		</td>
+		<FORM name="messageList" method="post" action="{url_change_folder}">
 		<TD BGCOLOR="{th_bg}" align="right" width="20%">
 			<TABLE BORDER="0" cellpadding="2" cellspacing=0>
 				<TR valign="middle" bgcolor="{th_bg}">
+					<td width="12px" align="left" valign="center">
+						<a href="{url_compose_empty}">
+						<img src="{write_mail}" border="0" name="{lang_compose}" alt="title="{lang_compose}" title="{lang_compose}" width="16">
+						</a>
+                                        </td>
+                                        <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>				
 					<td width="12px" align="right" valign="center">
-						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16">
+						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16" onClick="document.messageList.submit()">
                                         </td>
                                         <td width="12px" align="left" valign="center">
 						<input type="image" src="{unread_small}" name="mark_unread" alt="title="{desc_unread}" title="{desc_unread}" width="16">
@@ -189,11 +201,19 @@ doLoad();
 					</TD>
 				</TR>
 			</TABLE>
-		</TD>
+			
+		</td>
 	</TR>
 </table>
 
-<TABLE width="100%" cellpadding="0" cellspacing="0" border="0">
+<TABLE  width="100%" cellpadding="0" cellspacing="0" border="0">
+		<input type="hidden" name="folderAction" value="changeFolder">
+		<noscript>
+			<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
+		</noscript>
+		<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
+		<INPUT TYPE=hidden NAME="mailbox">
+
 	<tr>
 		<td>
 			<span id="folderFunction" align="left" style="font-size:10px;">&nbsp;</span>	
@@ -210,12 +230,16 @@ doLoad();
 	
 			<!-- StartFolderTree -->
 
-			<div id="divFolderTree" style="overflow:auto; width:180px; height:472px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
+			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">			<div id="divFolderTree" style="overflow:auto; width:180px; height:474px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 			
 				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
-					<tr>
-						<td width="100%" nowrap style="font-size:10px">
+					<tr height="420">
+						<td width="100%" valign="top" nowrap style="font-size:10px">
 							{folder_tree}
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" valign="bottom" nowrap style="font-size:10px">
 							<br>
 							<p align="center">
 							<small><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></small>
@@ -234,7 +258,7 @@ doLoad();
 		
 <!-- ToDo: ResizeVerticalRule -->		
 		
-		<TD>
+		<TD valign="top">
 
 			<!-- Start Header MessageList -->
 
@@ -244,9 +268,9 @@ doLoad();
 						&nbsp;
 					</td>
 					<td width="20px" bgcolor="{th_bg}" align="center">
-					&nbsp;<input style="width:9px; height:9px" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
+					&nbsp;<input style="width:10px; height:10px; border:none" type="checkbox" id="messageCheckBox" onclick="selectAll(this)">
 					</td>
-					<td width="120px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
+					<td width="120px" bgcolor="{th_bg}" align="left" class="{css_class_from}">
 						&nbsp;<a href="{url_sort_from}">{lang_from}</a>
 					</td>
 					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
@@ -258,7 +282,7 @@ doLoad();
 					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>
-					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
+					<td bgcolor="{th_bg}" align="left" class="{css_class_subject}">
 						&nbsp;&nbsp;&nbsp;<a href="{url_sort_subject}">{lang_subject}</a>
 					</td>
 					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
@@ -320,7 +344,7 @@ doLoad();
 			<img src="{msg_icon_sm}" border="0" title="">
 		</td>
 		<td width="20px" align="center" valign="top">
-			<input  style="width:9px; height:9px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
+			<input  style="width:10px; height:10px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 
 			onclick="toggleFolderRadio(this)" {row_selected}>
 		</td>
 		<td width="120px" style="overflow:hidden; white-space:nowrap;">
