@@ -30,8 +30,8 @@
 		<td>{lang_Invoicing_of_work_time}:</td>
 		<td>
 			<select name="newsettings[activity_bill]">
-				<option value="h"{selected_bill_h}>{lang_Exact_accounting_[hh.mm]}</option>
-				<option value="wu"{selected_bill_wu}>{lang_per_workunit}</option>
+				<option value="h"{selected_activity_bill_h}>{lang_Exact_accounting_[hh.mm]}</option>
+				<option value="wu"{selected_activity_bill_wu}>{lang_per_workunit}</option>
 			</select>
 		</td>
 	</tr>
