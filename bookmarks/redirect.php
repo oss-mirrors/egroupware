@@ -11,8 +11,8 @@
 
   /* $Id$ */
   
-  // NOTE: This will handle updating the database with the last vist in the future.
-  //       I will also make a preference for the frames part of things
+  // NOTE: I will also make a preference for the frames part of things
+
   $phpgw_info["flags"]= array("currentapp" => "bookmarks", "nonavbar" => True, "noheader" => True);
   include("../header.inc.php");
 

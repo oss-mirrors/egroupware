@@ -62,9 +62,9 @@
      $rating_id = $phpgw->db->f("id");
 
      $phpgw->db->query("INSERT INTO bookmarks (url,name,ldesc,keywords,category_id,"
-                     . "subcategory_id,rating_id,username,public_f) VALUES ('"
+                     . "subcategory_id,rating_id,username,public_f,bm_timestamps) VALUES ('"
                      . "http://www.phpgroupware.org/','phpGroupWare','PHP','php','$maincat_id','"
-                     . $subcat_id . "','$rating_id','$account_id','N')",__LINE__,__FILE__);
+                     . $subcat_id . "','$rating_id','$account_id','N','" . time() . ",,')",__LINE__,__FILE__);
      unset($subcat_id);
      unset($rating_id);
      unset($main_catid);
