@@ -504,14 +504,19 @@
 				// return performs an implicit break, so we are outta here
 			}
 		
-			$data = str_replace(", ", " ", $data);
+			//$data = str_replace(", ", " ", $data);
+			// turn commas into spaces
+			$data = str_replace(",", " ", $data);
+			// now reduce all spaces to just one space
 			$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			// explode into an array of email addys
 			$data = explode(" ", $data);
+			// trim each one
 			for ($i=0;$i<count($data);$i++)
 			{
 				$data[$i] = trim($data[$i]);
 			}
-		
+			// reconstruct data in the correct email address format
 			if (count($data) == 0)
 			{
 				$data = '';
@@ -522,7 +527,9 @@
 			}
 			else
 			{
-				$data = implode(", ", $data);
+				// addresses should be seperated by one comma with NO SPACES AT ALL
+				// *some* MTA's can not handle the space, while others can
+				$data = implode(",", $data);
 			}
 
 			return $data;
