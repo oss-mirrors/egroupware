@@ -77,13 +77,12 @@
       $num = create_projectid($year);                                                                                                                                                
     else                                                                                                                                                                              
       $num = addslashes($num);                                                                                                                                                       
+      $descr = addslashes($descr); 
+      $title = addslashes($title);                                                                                                                                                                                     
                                                                                                                                                                                      
-                                                                                                                                                                                     
-   $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date,"                                                                                                
-                   . "coordinator,customer,status,descr,title,budget,num) "                                                                                                          
+   $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date,coordinator,customer,status,descr,title,budget,num) "                                                                                                          
                    . "values ('$owner','$access','" . time() ."','$date','$end_date',"                                                                                               
-                   . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"                                                                                            
-                   . "'" . addslashes($title) . "','$budget','$num')");                                                                                                              
+                   . "'$coordinator','$customer','$status','$descr','$title','$budget','$num')");                                                                                                              
                                                                                                                                                                                      
         $db2->query("SELECT max(id) AS max FROM p_projects");                                                                                                                        
         if($db2->next_record()) {                                                                                                                                                    
@@ -229,7 +228,7 @@
         while ($db2->next_record()) {                                                                                                                                                       
         $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                                
         $ba_activities_list .= ">"                                                                                                                                                       
-                    . $db2->f("descr")                                                                                                                                                   
+                    . $phpgw->strip_html($db2->f("descr"))                                                                                                                                                   
                     . "</option>";                                                                                                                                                       
         }
         
@@ -237,13 +236,12 @@
 
 // activities billable        
         $t->set_var("lang_billable_activities",lang("Billable activities"));
-     $db2->query("SELECT p_activities.id as id,p_activities.descr,p_activities.billperae "                                                                                                                      
-                     . " FROM p_activities "                                                                                                                   
+     $db2->query("SELECT p_activities.id as id,p_activities.descr,p_activities.billperae FROM p_activities " 
                      . " ORDER BY descr asc");                                                                                                  
      while ($db2->next_record()) {                                                                                                                                                       
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                              
         $bill_activities_list .= ">"                                                                                                                                                     
-                    . $db2->f("descr") . " " . $currency . " "                                                                                                                                      
+                    . $phpgw->strip_html($db2->f("descr")) . " " . $currency . " "                                                                                                                                      
                     . $db2->f("billperae") . " " . lang("per workunit") . "</option>";                                                                                                                                
      }        
 

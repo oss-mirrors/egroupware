@@ -53,11 +53,10 @@
      $t->set_var("lang_action",lang("Edit project hours"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      
-     $db2->query("SELECT num,title FROM p_projects "
-                     . " WHERE id = '".$phpgw->db->f("project_id")."'");
+     $db2->query("SELECT num,title FROM p_projects WHERE id = '".$phpgw->db->f("project_id")."'");
      if ($db2->next_record()) {
-     $t->set_var("num",stripslashes($db2->f("num")));
-     $title = stripslashes($db2->f("title"));                                                                                                                                         
+     $t->set_var("num",$phpgw->strip_html($db2->f("num")));
+     $title = $phpgw->strip_html($db2->f("title"));                                                                                                                                         
      if (! $title)  $title  = "&nbsp;";
      $t->set_var("title",$title);
      }
@@ -152,7 +151,7 @@
 
      $t->set_var("lang_remark",lang("Remark"));
      
-     $remark  = stripslashes($phpgw->db->f("remark"));                                                                                                                                    
+     $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                    
      if (! $remark)  $remark  = "&nbsp;"; 
      $t->set_var("remark",$remark);     
      
@@ -175,9 +174,9 @@
      $t->set_var("employee_list",$employee_list);  
 
      $t->set_var("lang_minperae",lang("Minutes per workunit"));
-     $t->set_var("minperae",stripslashes($phpgw->db->f("minperae")));
+     $t->set_var("minperae",$phpgw->db->f("minperae"));
      $t->set_var("lang_billperae",lang("Bill per workunit"));
-     $t->set_var("billperae",stripslashes($phpgw->db->f("billperae")));
+     $t->set_var("billperae",$phpgw->db->f("billperae"));
 
 
     $t->set_var("lang_editsubmitb",lang("Edit"));
@@ -210,8 +209,9 @@
        }
     }
     $ae_minutes=$hours*60+$minutes;
+    $remark = addslashes($remark);
     $phpgw->db->query("update p_hours set activity_id='$activity',entry_date='" . time()
-		. "',date='$date',end_date='$end_date',remark='".addslashes($remark)."',"
+		. "',date='$date',end_date='$end_date',remark='$remark',"
 		. "minutes='$ae_minutes',status='$status',minperae='$minperae',"
 		. "billperae='$billperae',employee='$employee' where id='$id'");
 

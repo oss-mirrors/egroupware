@@ -82,11 +82,10 @@
 
     } 
     else {
-
-    $phpgw->db->query("insert into p_activities (num,descr,remarkreq," 
-                . "billperae,minperae) "
-                . "values ('$num','".addslashes($descr)."','$remarkreq',"
-                . "'$billperae','$minperae')"); 
+    $num = addslashes($num);
+    $descr = addslashes($descr);
+    $phpgw->db->query("insert into p_activities (num,descr,remarkreq,billperae,minperae) "
+                . "values ('$num','$descr','$remarkreq','$billperae','$minperae')"); 
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/activities.php",
            "cd=14&sort=$sort&order=$order&query=$query&start="

@@ -129,11 +129,11 @@
 		$t->set_var("year",date("Y",$phpgw->db->f("date")));
 	}
 	$t->set_var("aes",$phpgw->db->f("aes"));
-        $act_descr = stripslashes($phpgw->db->f("descr"));                                                                                                                         
+        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
         if (! $act_descr)  $act_descr  = "&nbsp;";                                                                                                                                       
         $t->set_var("act_descr",$act_descr);
 	$t->set_var("billperae",$phpgw->db->f("billperae"));
-        $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                           
+        $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
         if (! $remark)  $remark  = "&nbsp;";                                                                                                                                             
         $t->set_var("remark",$remark);
         $t->parse("list", "deliverypos_list", true);

@@ -40,15 +40,15 @@
      $t->set_var("lang_action",lang("Project statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num",stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_title",lang("Title"));
-     $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
+     $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
      if (! $title)  $title  = "&nbsp;";
      $t->set_var("title",$title);
      $t->set_var("lang_status",lang("Status"));
-     $t->set_var("status",lang($phpgw->db->f("status")));
+     $t->set_var("status",$phpgw->db->f("status"));
      $t->set_var("lang_budget",lang("Budget"));
-     $t->set_var("budget",stripslashes($phpgw->db->f("budget")));
+     $t->set_var("budget",$phpgw->db->f("budget"));
 
      $t->set_var("lang_start_date",lang("Start date"));
      $start_date_formatorder ="<select name=month>\n"
@@ -98,7 +98,7 @@
                      . "account_status != 'L' ORDER BY account_lid,account_lastname,account_firstname asc");
           while ($db2->next_record()) {
             if($db2->f("account_id")==$phpgw->db->f("coordinator")){    
-            $coordinator = htmlentities($db2->f("account_lid") ." [ ".$db2->f("account_firstname") . " "                                                                                        
+            $coordinator = $phpgw->strip_html($db2->f("account_lid") ." [ ".$db2->f("account_firstname") . " "                                                                                        
                . $db2->f("account_lastname"). " ]");
 
 //            $coordinator  = $phpgw->common->display_fullname($db2->f("account_id"),
@@ -191,9 +191,10 @@
    $t->set_var("e_activity","");                                                                                                                                 
    $t->set_var("e_hours","");                                                                                                                                    
    $t->parse("list","stat_list",true);                                                                                                                           
+
    while ($db2->next_record()) {                                                                                                                       
     $t->set_var("e_account","");                                                                                                                                
-    $t->set_var("e_activity",$db2->f("descr"));                                                                                                       
+    $t->set_var("e_activity",$phpgw->strip_html$db2->f("descr"));                                                                                                       
     $summin += $db2->f("min");                                                                                                                        
     $hrs = floor($db2->f("min")/60).":"                                                                                                               
         . sprintf ("%02d",(int)($db2->f("min")-floor($db2->f("min")/60)*60));                                                               

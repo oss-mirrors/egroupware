@@ -158,7 +158,7 @@
                   . "WHERE id='$project_id' AND p_projects.customer=ab_id");
   
   if($phpgw->db->next_record()) {
-    $title = stripslashes($phpgw->db->f("title"));                                                                                                                                     
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                     
     if (! $title)  $title  = "&nbsp;";
 
     $t->set_var(project,$title);
@@ -187,7 +187,7 @@
     } else {  */
       $t->set_var(invoice_num,$invoice_num);
     else 
-      $t->set_var(invoice_num,stripslashes($invoice_num));
+      $t->set_var(invoice_num,$phpgw->strip_html($invoice_num));
 
 if (!$Invoice) {     
      $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
@@ -250,10 +250,10 @@ if (!$Invoice) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
-    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                                   
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
     if (! $activity)  $activity  = "&nbsp;";    
 
-    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                                   
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
     if (! $remark)  $remark  = "&nbsp;";    
 
     $status = lang($phpgw->db->f("status"));
@@ -312,10 +312,10 @@ if (!$Invoice) {
       $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\">";
 
 
-    $activity = stripslashes($phpgw->db->f("descr"));                                                                                                                                   
+    $activity = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                   
     if (! $activity)  $activity  = "&nbsp;";
 
-    $remark = stripslashes($phpgw->db->f("remark"));                                                                                                                                   
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
     if (! $remark)  $remark  = "&nbsp;";      
   
     $status = lang($phpgw->db->f("status"));

@@ -106,14 +106,12 @@
 
   if ($query) {
      $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark as remark,p_activities.descr as descr,status,"
-                 . "date,end_date,minutes FROM "
-                 . "p_activities,p_hours WHERE $filtermethod AND "
+                 . "date,end_date,minutes FROM p_activities,p_hours WHERE $filtermethod AND "
                  . "p_hours.activity_id=p_activities.id AND "
                  . "descr like '%$query%' OR remark like '%$query%' $ordermethod limit $limit");
   } else {
      $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
-                 . "end_date,minutes FROM "
-                 . "p_activities,p_hours WHERE $filtermethod AND "
+                 . "end_date,minutes FROM p_activities,p_hours WHERE $filtermethod AND "
                  . "p_hours.activity_id=p_activities.id "
                  . " $ordermethod limit $limit");
   }
@@ -176,9 +174,7 @@
     else
        $editurl = "";
     
-    // ============================================
-    // template declaration for list records
-    // ============================================
+// ---------------- template declaration for list records ------------------------------
 
     $t->set_var(array("activity" =>$activity,
                       "remark" => $remark,
@@ -190,12 +186,11 @@
                       "deletehour" => $deleteurl));
     $t->parse("list", "projecthours_list", true);
 
-    // -------------- end record declaration ------------------------
+// --------------------------- end record declaration -----------------------------------
   }
 
     $t->parse("out", "projecthours_list_t", true);
     $t->p("out");
-    // -------------- end Add form declaration ------------------------
 
 $phpgw->common->phpgw_footer();
 ?>

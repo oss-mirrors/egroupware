@@ -58,9 +58,9 @@
      $t->set_var("lang_action",lang("Edit activity"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Activity ID"));
-     $t->set_var("num",stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_descr",lang("Description"));
-     $descr  = stripslashes($phpgw->db->f("descr"));                                                                                                                                
+     $descr  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                
      if (! $descr)  $descr  = "&nbsp;";
      $t->set_var("descr",$descr);
      $t->set_var("lang_remarkreq",lang("Remark required"));
@@ -74,9 +74,9 @@
                   . "<option value=\"Y\"".$stat_sel[1].">" . lang("Yes") . "</option>\n";
      $t->set_var("remarkreq_list",$remarkreq_list);
      $t->set_var("lang_billperae",lang("Bill per workunit"));
-     $t->set_var("billperae", stripslashes($phpgw->db->f("billperae")));
+     $t->set_var("billperae",$phpgw->db->f("billperae"));
      $t->set_var("lang_minperae",lang("Minutes per workunit"));
-     $t->set_var("minperae", stripslashes($phpgw->db->f("minperae")));
+     $t->set_var("minperae",$phpgw->db->f("minperae"));
 
     $t->set_var("lang_editsubmitb",lang("Edit"));
     $t->set_var("lang_editdeleteb",lang("Delete"));
@@ -88,12 +88,10 @@
     $t->pparse("edithandle","edit");
     } 
   else {
-    // Create function to take care of this
-
-    $phpgw->db->query("update p_activities set num='$num'," 
-                   . "remarkreq='$remarkreq',descr='"
-                   . addslashes($descr) . "',billperae='$billperae',minperae='$minperae' "
-                   . " where id='$id'");
+    $num = addslashes($num);
+    $descr = addslashes($descr);
+    $phpgw->db->query("update p_activities set num='$num',remarkreq='$remarkreq',descr='$descr',billperae='$billperae', "
+                    . "minperae='$minperae' where id='$id'");
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/activities.php",
 	   "cd=15&sort=$sort&order=$order&query=$query&start="

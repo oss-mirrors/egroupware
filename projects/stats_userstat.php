@@ -48,11 +48,11 @@
      $t->set_var("lang_action",lang("User statistic"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_lid",lang("Username"));
-     $t->set_var("lid", stripslashes($phpgw->db->f("account_lid")));
+     $t->set_var("lid",$phpgw->strip_html($phpgw->db->f("account_lid")));
      $t->set_var("lang_firstname",lang("Firstname"));
-     $t->set_var("firstname", stripslashes($phpgw->db->f("account_firstname")));
+     $t->set_var("firstname",$phpgw->strip_html($phpgw->db->f("account_firstname")));
      $t->set_var("lang_lastname",lang("Lastname"));                                                                                                                
-     $t->set_var("lastname", stripslashes($phpgw->db->f("account_lastname")));
+     $t->set_var("lastname",$phpgw->strip_html($phpgw->db->f("account_lastname")));
 
      $t->set_var("lang_start_date",lang("Start date"));
      $n_month[$s_month]=" selected ";

@@ -42,8 +42,8 @@
         $phpgw->db->query("SELECT num,title FROM p_projects "
                         . " WHERE id = '".$id."'");
         if ($phpgw->db->next_record()) {
-           $t->set_var("num",stripslashes($phpgw->db->f("num")));
-           $title  = stripslashes($phpgw->db->f("title"));                                                                                                                                
+           $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+           $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
            if (! $title)  $title  = "&nbsp;";
            $t->set_var("title",$title);
         }
@@ -56,7 +56,7 @@
                         . "p_activities.id");
         while ($phpgw->db->next_record()) {
            $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
-	            . $phpgw->db->f("descr") . "</option>";
+	            . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
         }
         $t->set_var("activity_list",$activity_list);
 
@@ -187,11 +187,11 @@
     }
     $billperae = $phpgw->db->f("billperae");
     $minperae = $phpgw->db->f("minperae");
+    $remark = addslashes($remark);
 //    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
-
     $phpgw->db->query("insert into p_hours (project_id,activity_id,entry_date,date,end_date,"
                . "remark,minutes,status,minperae,billperae,employee) values "
-               . " ('$id','$activity','" . time() ."','$date','$end_date','".addslashes($remark)."',"
+               . " ('$id','$activity','" . time() ."','$date','$end_date','$remark',"
                . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/hours_index.php",
            "cd=14&sort=$sort&order=$order&query=$query&start="

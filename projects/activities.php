@@ -112,10 +112,10 @@
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     
-    $num  = stripslashes($phpgw->db->f("num"));                                                                                                                                    
+    $num  = $phpgw->strip_html($phpgw->db->f("num"));                                                                                                                                    
     if (! $num)  $num  = "&nbsp;";
 
-    $descr = stripslashes($phpgw->db->f("descr"));                                                                                                                                    
+    $descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                                    
     if (! $descr)  $descr  = "&nbsp;";
 
     $billperae = $phpgw->db->f("billperae");

@@ -125,9 +125,9 @@
 
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = stripslashes($phpgw->db->f("title"));                                                                                                                                   
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
     if (! $title)  $title  = "&nbsp;";                                                                                                                                               
-    $num = stripslashes($phpgw->db->f("num"));
+    $num = $phpgw->strip_html($phpgw->db->f("num"));
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 

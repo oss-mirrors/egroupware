@@ -117,8 +117,8 @@
    $t->set_var("invoice_day",date("j",$phpgw->db->f("date")));                                                                                                                                  
    $t->set_var("invoice_month",date("n",$phpgw->db->f("date")));                                                                                                                                
    $t->set_var("invoice_year",date("Y",$phpgw->db->f("date"))); 
-   $t->set_var("invoice_num",stripslashes($phpgw->db->f("num")));                                                                                                                    
-   $title = stripslashes($phpgw->db->f("title"));                                                                                                                                    
+   $t->set_var("invoice_num",$phpgw->strip_html($phpgw->db->f("num")));                                                                                                                    
+   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                    
     if (! $title)  $title  = "&nbsp;";                                                                                                                                                     
    $t->set_var("title",$title); 
    $t->set_var("sum_netto",$phpgw->db->f("sum_netto"));    
@@ -151,13 +151,13 @@
 		$t->set_var("year",date("Y",$phpgw->db->f("date")));
 	}
 	$t->set_var("aes",$phpgw->db->f("aes"));
-        $act_descr = stripslashes($phpgw->db->f("descr"));                                                                                                                               
+        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
         if (! $act_descr)  $act_descr  = "&nbsp;";
 	$t->set_var("act_descr",$act_descr);
 	$t->set_var("billperae",$phpgw->db->f("billperae"));
 	$t->set_var("sumperpos",$phpgw->db->f("sumpos"));
 	$sum += $phpgw->db->f("sumpos");
-	$remark = stripslashes($phpgw->db->f("remark"));                                                                                                                               
+	$remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
         if (! $remark)  $remark  = "&nbsp;";
         $t->set_var("remark",$remark);
         $t->parse("list", "invoicepos_list", true);

@@ -175,9 +175,9 @@
      $t->set_var("employee_list",$employee_list);  
 
      $t->set_var("lang_minperae",lang("Minutes per workunit"));
-     $t->set_var("minperae",stripslashes($phpgw->db->f("minperae")));
+     $t->set_var("minperae",$phpgw->db->f("minperae"));
      $t->set_var("lang_billperae",lang("Bill per workunit"));
-     $t->set_var("billperae",stripslashes($phpgw->db->f("billperae")));
+     $t->set_var("billperae",$phpgw->db->f("billperae"));
 
 
     $t->set_var("lang_editsubmitb",lang("Edit"));
@@ -210,8 +210,9 @@
        }
     }
     $ae_minutes=$hours*60+$minutes;
+    $remark = addslashes($remark);
     $phpgw->db->query("update p_hours set activity_id='$activity',entry_date='" . time()
-		. "',date='$date',end_date='$end_date',remark='".addslashes($remark)."',"
+		. "',date='$date',end_date='$end_date',remark='$remark',"
 		. "minutes='$ae_minutes',status='$status',minperae='$minperae',"
 		. "billperae='$billperae',employee='$employee' where id='$id'");
 

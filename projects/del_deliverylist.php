@@ -123,7 +123,7 @@
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-    $title = stripslashes($phpgw->db->f("title"));                                                                                                                               
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
     if (! $title)  $title  = "&nbsp;";
     $t->set_var(tr_color,$tr_color);
 
@@ -158,7 +158,7 @@
 
 // ---------------- template declaration for list records ---------------------
 
-    $t->set_var(array("num" => stripslashes($phpgw->db->f("num")),
+    $t->set_var(array("num" => $phpgw->strip_html($phpgw->db->f("num")),
                       "customer" => $customerout,
     		      "title" => $title,
       		      "date" => $dateout,
