@@ -167,7 +167,7 @@
 					</td>
 					<td align="center">
 						<form action="{form_action}" method="post" name="deleteFolder">
-						<input type="submit" value="{lang_delete}" name="deleteFolder">
+						<input type="submit" value="{lang_delete}" name="deleteFolder" onClick="return confirm('{lang_confirm_delete}')">
 						</form>
 					</td>
 				</tr>

@@ -25,7 +25,8 @@
 
 		function uipreferences()
 		{
-			$this->t 		= $GLOBALS['phpgw']->template;
+			$this->t = $GLOBALS['phpgw']->template;
+			$this->t->egroupware_hack = False;
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
 			$this->bofelamimail->openConnection('',OP_HALFOPEN);
 			
@@ -93,7 +94,7 @@
 			}
 			
 			// delete a Folder
-			if(isset($GLOBALS['HTTP_POST_VARS']['deleteFolder']))
+			if(isset($GLOBALS['HTTP_POST_VARS']['deleteFolder']) && $this->bofelamimail->sessionData['preferences']['mailbox'] != 'INBOX')
 			{
 				if($this->bofelamimail->imap_deletemailbox($this->bofelamimail->sessionData['preferences']['mailbox']))
 				{
@@ -247,6 +248,7 @@
 			$this->t->set_var("lang_rename_folder",lang('rename folder'));
 			$this->t->set_var("lang_create_subfolder",lang('create subfolder'));
 			$this->t->set_var("lang_delete_folder",lang('delete folder'));
+			$this->t->set_var("lang_confirm_delete",addslashes(lang("Do you really want to delete the '%1' folder?",$this->bofelamimail->sessionData['preferences']['mailbox'])));
 			$this->t->set_var("lang_delete",lang('delete'));
 			$this->t->set_var("lang_imap_server",lang('IMAP Server'));
 			$this->t->set_var("lang_folder_settings",lang('folder settings'));

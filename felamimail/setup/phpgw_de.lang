@@ -189,3 +189,4 @@ subject(Z->A)	felamimail	de	Betreff(Z->A)
 size(0->...)	felamimail	de	Größe(0->...)
 size(...->0)	felamimail	de	Größe(...->0)
 show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen
+do you really want to delete the '%1' folder?	felamimail	de	Wollen Sie wirklich den '%1' Ordner löschen?
