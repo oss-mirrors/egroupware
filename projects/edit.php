@@ -15,7 +15,7 @@
     $phpgw_info["flags"]["currentapp"] = "projects";
     include("../header.inc.php");
   
-    if (!$id) { Header("Location: " . $phpgw->link('/projects/index.php' . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
+    if (!$id) { Header('Location: ' . $phpgw->link('/projects/index.php' . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter")); }
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array( "projects_edit" => "form.tpl"));
@@ -185,6 +185,8 @@
 
     $d = CreateObject('phpgwapi.contacts');
     $abid = $phpgw->db->f("customer");
+
+//    if ($abid) {
     $cols = array('n_given' => 'n_given',
                  'n_family' => 'n_family',
                  'org_name' => 'org_name');
@@ -193,13 +195,19 @@
     
     $t->set_var('name',$customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]");
     $t->set_var('abid',$abid);
+/*    }
+    else {
+    $t->set_var('name',$name);
+    $t->set_var('abid',$abid);
+    } */
 
 // activites bookable
     $t->set_var("lang_bookable_activities",lang("Bookable activities"));
 
-    $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable FROM phpgw_p_activities "
-		     . "$join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
-                     . "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
+    $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable "
+		. "FROM phpgw_p_activities "
+		. "$join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
+		. "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
     while ($db2->next_record()) {
         $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
         if($db2->f("billable")=="N")

@@ -6,11 +6,11 @@
 </tr>
 <tr>
 <td>
-<a href="{link_projects}">{lang_projects}</a>
+<a href="{link_activities}">{lang_activities}</a>
 &nbsp;
 &nbsp;
 
-<a href="{link_activities}">{lang_activities}</a>
+<a href="{link_projects}">{lang_projects}</a>
 &nbsp;
 &nbsp;
 
