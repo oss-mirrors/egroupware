@@ -230,8 +230,13 @@ function check_all()
 
 <?php
         if ($nummsg == 0) {
+          if (!$mailbox) {
+	   echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
+	      . lang("Could not open this mailbox")."</td></tr>";
+	  } else {
            echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
               . lang("this folder is empty")."</td></tr>";
+	  }
         }
 
         if ($nummsg < $phpgw_info["user"]["preferences"]["maxmatchs"]) {
