@@ -41,7 +41,7 @@
 			{
 				$html_select .= ' selected';
 			}
-			$html_select .= '>' . $phpgw->db->f('display') . '</option>\n';
+			$html_select .= '>' . $phpgw->db->f('display') . "</option>\n";
 		}
 		$phpgw->template->set_var('select_options',$html_select);
 
