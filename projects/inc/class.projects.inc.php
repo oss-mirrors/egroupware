@@ -14,19 +14,14 @@
 	class projects
 	{
 		var $db;
-		var $projects;
 		var $grants;
-		var $total_records;
 
 		function projects()
 		{
 			global $phpgw;
 			$this->db				= $phpgw->db;
 			$this->db2				= $this->db;
-			$this->total_records	= $this->db->num_rows();
 			$this->grants			= $phpgw->acl->get_grants('projects');
-			$this->projects			= $this->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id);
-
 		}
 
 		function check_perms($has, $needed)
