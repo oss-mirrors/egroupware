@@ -18,7 +18,7 @@
 	}
 	unset($d1);
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen']['enabled'])
+	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen'] == 'enabled')
 	{
 		$app_id	= $GLOBALS['phpgw']->applications->name2id('stocks');
 		$GLOBALS['portal_order'][] = $app_id;
