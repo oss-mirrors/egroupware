@@ -71,10 +71,10 @@
 					   	'name'		=> lang('virtual domains'),
 					   	'template'	=> 'defaultpage.tpl'
 					   ),
-				'20'	=> array
+				'99'	=> array
 					   (
 					   	'name'		=> lang('LDAP settings'),
-					   	'template'	=> 'defaultpage.tpl'
+					   	'template'	=> 'ldapsettings.tpl'
 					   )
 			);
 			
@@ -193,6 +193,9 @@
 			$this->t->set_var('lang_add',lang('add'));
 			$this->t->set_var('lang_remove',lang('remove'));
 			$this->t->set_var('lang_add_to_local',lang('add also to local domains '));
+			$this->t->set_var('lang_ldap_server',lang('LDAP server'));
+			$this->t->set_var('lang_ldap_server_admin',lang('admin dn'));
+			$this->t->set_var('lang_ldap_server_password',lang('admin password'));
 		}
 	}
 ?>

@@ -18,10 +18,45 @@
 		</table>
 	</td>
 	<td width="90%" valign="top">
-		<table>
-		<tr>
+		<table border="0" cellspacing="1" cellpading="0" width="100%">
+		<tr bgcolor="{bg_01}">
 			<td>
-				Data
+				{lang_server_name}
+			</td>
+			<td>
+				<input type="text" size="50">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_02}">
+			<td>
+				{lang_server_description}
+			</td>
+			<td>
+				<input type="text" size="50">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_01}">
+			<td>
+				{lang_ldap_server}
+			</td>
+			<td>
+				<input type="text" size="50">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_02}">
+			<td>
+				{lang_ldap_server_admin}
+			</td>
+			<td>
+				<input type="text" size="50">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_01}">
+			<td>
+				{lang_ldap_server_password}
+			</td>
+			<td>
+				<input type="text" size="50">
 			</td>
 		</tr>
 		</table>

@@ -4,7 +4,7 @@
 <table border="0" cellspacing="1" cellpading="0" width="95%">
 <tr>
 	<td width="10%" valign="top">
-		<table>
+		<table border="0" cellspacing="1" cellpading="0" width="100%">
 		{menu_rows}
 		<tr>
 			<td>
