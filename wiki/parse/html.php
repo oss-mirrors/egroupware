@@ -137,6 +137,14 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
     return '<a href="' . viewURL($page) . $anchor . '"' . $hover . ' class="wiki">'
            . $appearance . $anchor_appearance . '</a>';
   }
+  elseif(!isEditable($p->mutable))
+  {
+    if(validate_page($page) == 1        // Normal WikiName
+       && $appearance == $page)         // ... and is what it appears
+      { return $page; }
+    else                                // Free link.
+      { return $appearance; }
+  }
   else
   {
     if(validate_page($page) == 1        // Normal WikiName
