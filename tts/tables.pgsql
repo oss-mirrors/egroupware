@@ -7,6 +7,7 @@ create table ticket (
   t_assignedto	varchar(10) not null,
   t_timestamp_opened	int,
   t_timestamp_closed	int,
+  t_subject	varchar(255),
   t_department	varchar(25)
 );
 
