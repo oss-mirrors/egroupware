@@ -1,11 +1,20 @@
 <!-- BEGIN form -->
- <p>
- <table border="0" align="center">
+ <table width="500" border="0" align="center">
+  <tr>
+   <td colspan="3">
+    <table border="0" width="100%">
+     <tr>
+        {match_left}
+        <td align="center">{lang_showing}</td>
+        {match_right}
+     </tr>
+    </table>
+   </td>
+  </tr>
   <tr bgcolor="{th_bg}">
-   <td>{sort_answer}</td>
-   <td>{sort_title}</td>
-   <td>{lang_edit}</td>
-   <td>{lang_delete}</td>
+   <td width="50%">{sort_title}</td>
+   <td width="50%">{sort_answer}</td>
+   <td width="50">{lang_actions}</td>
   </tr>
   
   {rows}
@@ -19,9 +28,8 @@
 
 <!-- BEGIN row -->
   <tr bgcolor="{tr_color}">
-   <td>{row_answer}</td>
    <td>{row_title}</td>
-   <td>{row_edit}</td>
-   <td>{row_delete}</td>
+   <td>{row_answer}</td>
+   <td>{row_actions}</td>
   </tr>
 <!-- END row -->

@@ -11,19 +11,13 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-	/* $Id$ */
+  /* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
+	$hp_display = (int)$GLOBALS['phpgw_info']['user']['preferences']['polls']['homepage_display'];
+	if($hp_display > 0)
+	{
+		$obj = CreateObject('polls.ui');
+		$obj->view();
+	}
 
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' 				=> 'polls',
-		'noheader'   				=> True,
-		'nonavbar'   				=> True,
-		'enable_nextmatchs_class' 	=> True
-	);
-	include('../header.inc.php');
-
-	ExecMethod('polls.ui.index');
-
-	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
