@@ -1,6 +1,6 @@
 	</tr>
 </table>
-<table width="80%" align="center">
+<table width="100%" align="center">
 	<tr>
         <td colspan=2><input type="submit" name="add" value="{add_edit_button}"></td>
 		<td><input type="reset" value="{reset_form}"></td>

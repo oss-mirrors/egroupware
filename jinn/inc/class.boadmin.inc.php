@@ -25,12 +25,12 @@
 	class boadmin 
 	{
 		var $public_functions = Array(
-		'index' => True,
-		'import_phpgw_jinn_site' => True,
-		'add_edit_phpgw_jinn_sites' => True,
-		'add_edit_phpgw_jinn_site_objects' => True,
-		'browse_phpgw_jinn_sites' => True,
-		'browse_phpgw_jinn_site_objects' => True,
+//		'index' => True,
+//		'import_phpgw_jinn_site' => True,
+//		'add_     edit_    phpgw_    jinn_    sites' => True,
+//		'add_edit_phpgw_jinn_site_objects' => True,
+//		'browse_phpgw_jinn_sites' => True,
+//		'browse_phpgw_jinn_site_objects' => True,
 		'del_phpgw_jinn_sites'=> True,
 		'del_phpgw_jinn_site_objects' => True,
 		'insert_phpgw_jinn_sites'=> True,
@@ -38,13 +38,13 @@
 		'update_phpgw_jinn_sites'=> True,
 		'update_phpgw_jinn_site_objects' => True,
 		'access_rights'=> True,
-		'set_access_rights_site_objects'=> True,
-		'set_access_rights_sites'=> True,
+//		'set_access_rights_site_objects'=> True,
+//		'set_access_rights_sites'=> True,
 		'save_access_rights_object'=> True,
 		'save_access_rights_site'=> True,
 		'export_site'=> True,
-		'plug_config'=> True,
-		'test_db_access'=> True
+//		'plug_config'=> True,
+//		'test_db_access'=> True
 		);
 
 		var $so;
@@ -281,21 +281,30 @@
 			}
 
 			$this->save_sessiondata();
-
-			$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
+			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][site_id]);
+		
 		}
 
 		function insert_phpgw_jinn_site_objects()
 		{
 			$where_key = $GLOBALS[where_value];
 			$table='phpgw_jinn_site_objects';
-
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
 			if ($status>0)	$this->message[info]=lang('Site Object succesfully added');
 			else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			if($GLOBALS[HTTP_POST_VARS]['continue'])
+			{
+				//FIXME 
+				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key=object_id&where_value='.$where_value);
+			}
+			else
+			{
+				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			}
+
+			
 
 		}
 
@@ -306,13 +315,11 @@
 			$table='phpgw_jinn_sites';
 
 			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$where_key,$where_value);
-
 			if ($status==1)	$this->message[info]=lang('Site succesfully saved');
 			else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
 
 			$this->save_sessiondata();
-
-			$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
+			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$where_value);
 		}
 
 		function update_phpgw_jinn_site_objects()
@@ -326,10 +333,16 @@
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully saved');
 			else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
 
-			//var_dump($this->message);
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
-
+			if($GLOBALS[HTTP_POST_VARS]['continue'])
+			{
+				//FIXME 
+				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key='.$where_key.'&where_value='.$where_value);
+			}
+			else
+			{
+				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			}
 		}
 
 		function del_phpgw_jinn_sites()
@@ -354,7 +367,7 @@
 
 			$this->save_sessiondata();
 			
-$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$records['0']["parent_site_id"]);
+$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$records['0']["parent_site_id"]);
 		
 		}
 

@@ -22,9 +22,11 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-	class uiadminbrowse extends uiadmin
+	// FIXME do we need to extend uiadmin?	
+	class uia_list_objects extends uiadmin
 	{
-		function uiadminbrowse($bo)
+		//FIXME do we need to have the bo
+		function uia_list_objects($bo)
 		{
 
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
@@ -38,7 +40,7 @@
 
 		}
 
-		function render_list($table,$where_key,$where_value)
+		function render_list($where_key,$where_value)
 		{
 			$this->template->set_file(array(
 
@@ -66,9 +68,7 @@
 			else $search_string=$GLOBALS['search'];
 
 
-			$fieldnames = $this->bo->so->get_phpgw_fieldnames($table);//get_phpgw_fieldnames($table);
-
-			// which/how many column to show, all, the prefered, or the default thirst 4
+			$fieldnames = $this->bo->so->get_phpgw_fieldnames('phpgw_jinn_site_objects');
 			if ($show_all_cols)
 			{
 				$col_list=$columns;
@@ -88,7 +88,7 @@
 				$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 			}
 
-			$records=$this->bo->get_phpgw_records($table,$where_key,$where_value,$limit[start],$limit[stop],'num');
+			$records=$this->bo->get_phpgw_records('phpgw_jinn_site_objects',$where_key,$where_value,$limit[start],$limit[stop],'num');
 
 			if (count($records)>0)
 			{
@@ -111,12 +111,9 @@
 
 					$table_row.=
 					"<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_$table&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_object&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_$table&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
-<!--					<td bgcolor=$bgclr align=\"left\">
-
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>-->
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
 					";
 
 					if(count($recordvalues)>0)
@@ -156,26 +153,9 @@
 				}
 			}
 
+			$table_title=lang('Site-objects');
 
-			if ($table=='phpgw_jinn_site_objects')
-			{                 
-				$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.$GLOBALS[where_value].'></form></td>';
-				$table_title=lang('Site-objects');
-
-			}
-			elseif($table=='phpgw_jinn_sites')
-			{
-				$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_val='.
-				$this->bo->site_id.'"><input type=submit value="'.
-				lang('browse').'"></form></td>';
-
-
-				$button_add='<td><form method=post action="index.php?menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites'.
-				$parent_site_id.'"><input type=submit value="'.
-				lang('add site').'"></form></td>';
-				$table_title=lang('Sites');
-
-			}
+			$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_object').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.$GLOBALS[where_value].'></form></td>';
 
 			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$this->template->set_var('fieldnames',$column_header);
@@ -190,11 +170,6 @@
 			$this->template->set_var('delete',lang('delete'));
 			$this->template->set_var('copy',lang('copy'));
 			$this->template->pparse('out','browse');
-
-
 		}
-
 	}
-
-
 ?>

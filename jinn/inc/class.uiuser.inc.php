@@ -305,7 +305,6 @@
 
 				}
 
-
 				
 				//FIXME SEARCH
 				if (count($columns)>0)

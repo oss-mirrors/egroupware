@@ -30,7 +30,7 @@
 
 	$this->plugins['htmlAreaV3']['name']			= 'htmlAreaV3';
 	$this->plugins['htmlAreaV3']['title']			= 'htmlArea v3';
-	$this->plugins['htmlAreaV3']['version']			= '0.8.3';
+	$this->plugins['htmlAreaV3']['version']			= '0.8.4';
 	$this->plugins['htmlAreaV3']['enable']			= 1;
 	$this->plugins['htmlAreaV3']['description']		= $description;
 	$this->plugins['htmlAreaV3']['db_field_hooks']	= array
@@ -51,7 +51,8 @@
 		'enable_horizontal_ruler_button'=>array(array('Yes','No'),'select',''),
 		'enable_fullscreen_editor_button'=>array(array('Yes','No'),'select',''),
 		'enable_link_button'=>array(array('Yes','No'),'select',''),
-		'use_new_api_class'=>array(array('Yes','No'),'select','')
+		'use_new_api_class'=>array(array('Yes','No'),'select',''),
+		'custom_css'=>array('','area','')
 	);
 
 	function plg_fi_htmlAreaV3($field_name, $value, $config)

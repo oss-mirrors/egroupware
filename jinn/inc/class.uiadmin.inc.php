@@ -23,20 +23,14 @@
 
 	/* this file is startpoint for all admin functions */
 
-	// todo:
-	// extend from uijinn
-
-
 	class uiadmin
 	{
 		var $public_functions = Array(
 			'index' => True,
 			'import_phpgw_jinn_site' => True,
-			'edit_phpgw_jinn_sites' => True, //after site_object insert/update
-			'add_edit_phpgw_jinn_sites' => True,
-			'add_edit_phpgw_jinn_site_objects' => True,
+			'add_edit_site' => True,
+			'add_edit_object' => True,
 			'browse_phpgw_jinn_sites' => True,
-			'browse_phpgw_jinn_site_objects' => True,
 			'del_phpgw_jinn_sites'=> True,
 			'del_phpgw_jinn_site_objects' => True,
 			'insert_phpgw_jinn_sites'=> True,
@@ -81,26 +75,6 @@
 			$this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
 		}
 
-		function admin_menu()
-		{
-			$this->template->set_file(array
-			(
-				'admin_menu' => 'admin_menu.tpl'
-			));
-			$this->template->set_var('global_settings_link',
-			$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=jinn'));
-			$this->template->set_var('global_configuration',lang('Global Configuration'));
-			$this->template->set_var('add_site',lang('add site'));
-			$this->template->set_var('import_site',lang('import site'));
-			$this->template->set_var('browse_sites',lang('browse sites'));
-			$this->template->set_var('access_rights',lang('access_rights'));
-			$this->template->set_var('add_site_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites'));
-			$this->template->set_var('import_site_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'));
-			$this->template->set_var('browse_sites_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites'));
-			$this->template->set_var('access_rights_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.access_rights'));
-			$this->template->pparse('out','admin_menu');
-		}
-
 		function index()
 		{
 			$this->ui->header(lang('index'));
@@ -113,7 +87,7 @@
 			$GLOBALS[where_key]='site_id';
 			$GLOBALS[where_value]=$this->bo->site_id;
 
-			$this->edit_phpgw_jinn_sites();
+			$this->add_edit_site();
 		}
 
 		function edit_this_jinn_site_object()
@@ -121,32 +95,83 @@
 			$GLOBALS[where_key]='object_id';
 			$GLOBALS[where_value]=$this->bo->site_object_id;
 
-			$this->add_edit_phpgw_jinn_site_objects();
+			$this->add_edit_object();
 		}
 
-		function add_edit_phpgw_jinn_site_objects()
+		function add_edit_object()
 		{
-			if ($GLOBALS[where_key] && $GLOBALS[where_value])
+			$where_key=stripslashes($GLOBALS[where_key]);
+			$where_value=stripslashes($GLOBALS[where_value]);
+									
+			if ($where_key && $where_value)
 			{
-				$this->bo->message[help]=lang('Edit JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
+				$this->ui->header(lang('Edit Object'));
+
+				$this->bo->message[help]=lang('Edit Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
 			}
 			else
 			{
-				$this->bo->message[help]=lang('Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
+				$this->ui->header(lang('Add Object'));
+
+				$this->bo->message[help]=lang('Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
 
 			}
+		//	unset($this->bo->message[info]);
+	//		unset($this->bo->message[error]);
 
-			unset($this->bo->message[info]);
-			unset($this->bo->message[error]);
+			$this->ui->msg_box($this->bo->message);
 
-			$this->add_edit_record('phpgw_jinn_site_objects');
+			$add_edit = CreateObject('jinn.uia_edit_object',$this->bo);
+			
+			$add_edit->render_form($where_key,$where_value);
+
+			unset($this->bo->message[help]);
+
+			$this->bo->save_sessiondata();
+		}
+
+		function add_edit_site()
+		{
+			$where_key=stripslashes($GLOBALS[where_key]);
+			$where_value=stripslashes($GLOBALS[where_value]);
+
+			if($GLOBALS[cancel]=='true')
+			{
+			 	unset($this->bo->message[info]);
+				unset($this->bo->message[error]);
+			}
+			
+			if ($where_key && $where_value)
+			{
+				$this->ui->header(lang('Edit Site'));
+			}
+			else
+			{
+				$this->ui->header(lang('Add Site'));
+				$this->bo->message[help]=lang('Insert new Site configuration: <li>Insert a Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
+			}
+
+
+			$this->ui->msg_box($this->bo->message);
+
+			$add_edit = CreateObject('jinn.uia_edit_site',$this->bo);
+			$add_edit->render_form($where_key,$where_value);
+
+			/* list objects for this site */
+			if ($where_key && $where_value)
+			{
+				$new_where_key='parent_'.$where_key;
+
+				$list_objects = CreateObject('jinn.uia_list_objects',$this->bo);
+				$list_objects->render_list($new_where_key, $where_value);
+			}
+
 			unset($this->bo->message[help]);
 
 			$this->bo->save_sessiondata();
 		}
 
 		function test_db_access()
-
 		{
 			$GLOBALS['phpgw_info']['flags']['noheader']=True;
 			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
@@ -172,49 +197,6 @@
 			echo '<P><input type=button value="'.lang('close this window').'" onClick="self.close();"></div>';
 
 			//		$this->bo->save_sessiondata();
-
-
-		}
-
-
-		function add_edit_phpgw_jinn_sites()
-		{
-			$this->bo->message[help]=lang('Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
-			unset($this->bo->message[info]);
-			unset($this->bo->message[error]);
-
-			$this->add_edit_record('phpgw_jinn_sites');
-
-			if ($GLOBALS[where_key] && $GLOBALS[where_value])
-			{
-				$new_where_key='parent_'.$GLOBALS[where_key];
-
-				$this->browse_record('phpgw_jinn_site_objects',$new_where_key,$GLOBALS[where_value]);
-			}
-
-			unset($this->bo->message[help]);
-
-			$this->bo->save_sessiondata();
-		}
-
-		function edit_phpgw_jinn_sites()
-		{
-			$this->bo->message[help]=lang('Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
-			//			unset($this->bo->message[info]);
-			unset($this->bo->message[error]);
-
-			$this->add_edit_record('phpgw_jinn_sites');
-
-			if ($GLOBALS[where_key] && $GLOBALS[where_value])
-			{
-				$new_where_key='parent_'.$GLOBALS[where_key];
-
-				$this->browse_record('phpgw_jinn_site_objects',$new_where_key, $GLOBALS[where_value]);
-			}
-
-			unset($this->bo->message[help]);
-
-			$this->bo->save_sessiondata();
 		}
 
 		function import_phpgw_jinn_site()
@@ -245,8 +227,8 @@
 						);
 
 					}
-					
-				    $new_site_name=$data[0][value];	
+
+					$new_site_name=$data[0][value];	
 					$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
 
 					if($GLOBALS[HTTP_POST_VARS][replace_existing] && count($thissitename)>=1)
@@ -256,14 +238,14 @@
 
 						// remove all existing objects
 						$this->bo->so->delete_phpgw_data('','phpgw_jinn_site_objects',parent_site_id,$new_site_id);
-						
+
 						$msg= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
 						$proceed=true;
 					}
 					/* insert as new site */
 					elseif ($new_site_id=$this->bo->so->insert_phpgw_data('phpgw_jinn_sites',$data))
 					{
-						
+
 						if(count($thissitename)>=1)
 						{
 							$new_name=$new_site_name.' ('.lang('another').')';
@@ -280,7 +262,7 @@
 						}
 						$proceed=true;
 						$msg= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
-				
+
 					}
 
 					if($proceed)
@@ -308,7 +290,7 @@
 							}
 
 						}
-						
+
 						$msg.='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
 						echo $msg;
 
@@ -335,49 +317,20 @@
 
 		function browse_phpgw_jinn_sites()
 		{
-
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-
-			$this->ui->header(lang('Browse '.$table));
+			$this->ui->header(lang('List Sites'));
 			$this->ui->msg_box($this->bo->message);
-			//			$this->admin_menu();
 
-			$this->browse_record('phpgw_jinn_sites','','');
+			$browse = CreateObject('jinn.uia_list_sites',$this->bo);
+			$browse->render_list();
+
 			$this->bo->save_sessiondata();
 
 		}
-
-
-
-		function browse_phpgw_jinn_site_objects()
-		{
-
-			unset($GLOBALS['phpgw_info']['flags']['noheader']);
-			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-
-			$GLOBALS['phpgw']->common->phpgw_header();
-
-
-			$this->ui->header(lang('Browse '.$table));
-
-			$this->ui->msg_box($this->bo->message);
-			//			$this->admin_menu();
-
-			$this->browse_record('phpgw_jinn_site_objects','','');
-			$this->bo->save_sessiondata();
-		}
-
 
 		function access_rights()
 		{
 			$this->ui->header(lang('Set Access Rights'));
 			$this->ui->msg_box($this->bo->message);
-			//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 			$access_rights->main_screen();
 
@@ -405,32 +358,57 @@
 			$this->bo->save_sessiondata();
 		}
 
+		// FIXME new remove also ;)
 		/****************************************************************************\
 		* create form for new record                                                 *
 		\****************************************************************************/
-		function add_edit_record($table)
+/*		function edit_record($table)
 		{
 			$this->ui->header(lang('Add Edit'));
 			$this->ui->msg_box($this->bo->message);
-			$add_edit = CreateObject('jinn.uiadminaddedit',$this->bo);
-			$add_edit->render_form($table);
+
+			if($table=='phpgw_jinn_site_objects')
+			{
+				$add_edit = CreateObject('jinn.uia_edit_object',$this->bo);
+				$add_edit->render_form($table);
+			}
+			elseif($table=='phpgw_jinn_site_objects')
+			{
+				$add_edit = CreateObject('jinn.uia_edit_site',$this->bo);
+				$add_edit->render_form($table);
+			}
+
 			$this->bo->save_sessiondata();
 		}
+*/
+		// FIXME old
+		/****************************************************************************\
+		* create form for new record                                                 *
+		\****************************************************************************/
+		/*		function add_edit_record($table)
+		{
+			$this->ui->header(lang('Add Edit'));
+			$this->ui->msg_box($this->bo->message);
 
+			$add_edit = CreateObject('jinn.uia_edit_object',$this->bo);
+			$add_edit->render_form($table);
+
+			$this->bo->save_sessiondata();
+		}
+		*/
 
 		/****************************************************************************\
 		*                                                                            *
 		\****************************************************************************/
 
-		function browse_record($table,$where_key,$where_value)
+		/*		function browse_record($table,$where_key,$where_value)
 		{
 			$browse = CreateObject('jinn.uiadminbrowse',$this->bo);
 			$browse->render_list($table,$where_key, $where_value);
 
 			$this->bo->save_sessiondata();
 		}
-
-
+		*/
 
 		function plug_config()
 		{
@@ -441,18 +419,7 @@
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
 			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
-			
-			/*
-			$bodyheader = ' bgcolor="' . $GLOBALS['phpgw_info']['theme']['bg_color'] . '" alink="'
-			. $GLOBALS['phpgw_info']['theme']['alink'] . '" link="' . $GLOBALS['phpgw_info']['theme']['link'] . '" vlink="'
-			. $GLOBALS['phpgw_info']['theme']['vlink'] . '"';
 
-			if(!$GLOBALS['phpgw_info']['server']['htmlcompliant'])
-			{
-				$bodyheader .= '';
-			}
-			*/
-			#_debug_array($GLOBALS['phpgw_info']['user']['preferences']['common']);
 			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 			if(!file_exists($theme_css))
 			{
@@ -468,7 +435,6 @@
 				'charset'       => $GLOBALS['phpgw']->translation->charset(),
 				'font_family'   => $GLOBALS['phpgw_info']['theme']['font'],
 				'website_title' => $GLOBALS['phpgw_info']['server']['site_title'].$app,
-				//		  'body_tags'     => $bodyheader .' '. $GLOBALS['phpgw']->common->get_body_attribs(),
 				'theme_css'     => $theme_css,
 				'css'           => $GLOBALS['phpgw']->common->get_css(),
 				'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
@@ -553,10 +519,10 @@
 							}
 							$output.='</select>';
 							break;
-                       	case 'none'  :
-                            unset($output);
+						case 'none'  :
+							unset($output);
 							break;
-						default      :
+							default      :
 							$output.= '<input name="'.$cfg_key.'" type=text value="'.$val[0].'">';
 						}
 
