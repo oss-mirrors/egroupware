@@ -255,8 +255,10 @@
 				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
-			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $view_link.$db->f('ticket_subject').'</a>');
-			$GLOBALS['phpgw']->template->set_var('tts_t_state', 
+			// cope with old, wrongly saved entries, stripslashes would remove single backslashes too
+			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),$db->f('ticket_subject'));
+			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $view_link.$subject.'</a>');
+			$GLOBALS['phpgw']->template->set_var('tts_t_state',
 				id2field('phpgw_tts_states','state_name','state_id',$db->f('ticket_state')));
 
 			$GLOBALS['phpgw']->template->parse('rows','tts_row',True);

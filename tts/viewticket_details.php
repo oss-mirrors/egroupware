@@ -426,9 +426,15 @@
 		$GLOBALS['phpgw']->template->set_var('lang_subject', lang('Subject'));
 
 		$GLOBALS['phpgw']->template->set_var('lang_details', lang('Details'));
-		$GLOBALS['phpgw']->template->set_var('value_details', nl2br(stripslashes($ticket['details'])));
 
-		$GLOBALS['phpgw']->template->set_var('value_subject', stripslashes($ticket['subject']));
+		// cope with old, wrongly saved entries, stripslashes would remove single backslashes too
+		foreach(array('subject','details') as $name)
+		{
+			$ticket[$name] = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),$ticket[$name]);
+		}
+		$GLOBALS['phpgw']->template->set_var('value_details', nl2br($ticket['details']));
+
+		$GLOBALS['phpgw']->template->set_var('value_subject', $ticket['subject']);
 
 		$GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
  		$GLOBALS['phpgw']->template->set_var('lang_save', lang('Save'));
