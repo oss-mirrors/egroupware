@@ -22,6 +22,7 @@ close the invalid ticket.	tts	en	Close the invalid ticket.
 closed	tts	en	Closed
 completed	tts	en	COMPLETED
 configure the states	tts	en	Configure the states
+configure the states	common	en	Configure the states
 configure the transitions	tts	en	Configure the transitions
 create new state	tts	en	Create new state
 create new ticket	tts	en	Create new ticket
