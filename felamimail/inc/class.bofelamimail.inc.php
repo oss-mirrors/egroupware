@@ -167,39 +167,52 @@
 
 		function decode_header($string)
 		{
+			#print "decode header<br><br>";
 			/* Decode from base64 form */
 			if (preg_match_all("/\=\?(.*?)\?b\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
 			{
+				$newString = $string;
+				$newString = str_replace('?= =?','?==?',$newString);
 				for($i=0; $i < count($matches); $i++)
 				{
 					#print "Match 0:".$matches[$i][0]."<br>";
 					#print "Match 1:".$matches[$i][1]."<br>";
 					#print "Match 2:".$matches[$i][2]."<br>";
-					$string = str_replace($matches[$i][0],base64_decode($matches[$i][2]),$string);
+					switch(strtolower($matches[$i][1]))
+					{
+						case 'utf-8':
+							$newString = str_replace($matches[$i][0],utf8_decode(base64_decode($matches[$i][2])),$newString);
+							break;
+						default:
+							$newString = str_replace($matches[$i][0],base64_decode($matches[$i][2],$newString));
+							break;
+					}
 				}
-				return $string;
+				return $newString;
 			}
 			/* Decode from qouted printable */
 			elseif (preg_match_all("/\=\?(.*?)\?q\?(.*?)\?\=/i", $string, $matches, PREG_SET_ORDER))
 			{
+				$newString = $string;
+				$newString = str_replace('?= =?','?==?',$newString);
 				for($i=0; $i < count($matches); $i++)
 				{
 					#print "Match 0:".$matches[$i][0]."<br>";
 					#print "Match 1:".$matches[$i][1]."<br>";
-					#print "Match 2:".$matches[$i][2]."<br>";
+					#print "Match 2:".$matches[$i][2].".<br>";
 					// replace any _ with " ". You define " " as " " or "_" in qouted printable
 					$matches[$i][2] = str_replace("_"," ",$matches[$i][2]);
 					switch($matches[$i][1])
 					{
 						case 'utf-8':
-							$string = str_replace($matches[$i][0],utf8_decode(imap_qprint($matches[$i][2])),$string);
+							$newString = str_replace($matches[$i][0],utf8_decode(imap_qprint($matches[$i][2])),$newString);
 							break;
 						default:
-							$string = str_replace($matches[$i][0],imap_qprint($matches[$i][2]),$string);
+							$newString = str_replace($matches[$i][0],imap_qprint($matches[$i][2]),$newString);
 							break;
 					}
 				}
-				return $string;
+				return $newString;
 			}
 			return $string;
 		}
@@ -377,6 +390,24 @@
 				'attachment'	=> $attachment
 				);
 		}
+		
+		function getEMailProfile()
+		{
+			$config = CreateObject('phpgwapi.config','felamimail');
+			$config->read_repository();
+			$felamimailConfig = $config->config_data;
+			
+			#_debug_array($felamimailConfig);
+			
+			if(!isset($felamimailConfig['profileID']))
+			{
+				return 1;
+			}
+			else
+			{
+				return intval($felamimailConfig['profileID']);
+			}
+		}
 
 		function getFolderStatus($_folderName)
 		{
@@ -455,7 +486,7 @@
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
 
-#			printf ("this->bofelamimail->getHeaders start: %s<br>",date("H:i:s",mktime()));
+			#printf ("this->bofelamimail->getHeaders start: %s<br>",date("H:i:s",mktime()));
 
 			$caching = CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
@@ -507,6 +538,7 @@
 					
 					unset($messageData);
 				}
+
 				$caching->updateImapStatus($status);
 			}
 			// update cache, but only add new emails
@@ -517,7 +549,8 @@
 				$uidRange = $cachedStatus['uidnext'].":".$status->uidnext;
 				#print "$uidRange<br>";
 				$newHeaders = imap_fetch_overview($this->mbox,$uidRange,FT_UID);
-				for($i=0; $i<count($newHeaders); $i++)
+				$countNewHeaders = count($newHeaders);
+				for($i=0; $i<$countNewHeaders; $i++)
 				{
 					$messageData['uid'] = $newHeaders[$i]->uid;
 					$header = imap_headerinfo($this->mbox, $newHeaders[$i]->msgno);
@@ -578,7 +611,8 @@
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort, $filter);
 
 			$count=0;
-			for ($i=0;$i<count($displayHeaders);$i++)
+			$countDisplayHeaders = count($displayHeaders);
+			for ($i=0;$i<$countDisplayHeaders;$i++)
 			{
 				$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
 				#print $header[0]->date;print "<br>";
@@ -634,7 +668,7 @@
 				$count++;
 			}
 
-#			printf ("this->bofelamimail->getHeaders done: %s<br>",date("H:i:s",mktime()));
+			#printf ("this->bofelamimail->getHeaders done: %s<br>",date("H:i:s",mktime()));
 
 			if(is_array($retValue['header']))
 			{
@@ -672,7 +706,6 @@
 		{
 			if($_htmlOptions != '')
 				$this->htmlOptions = $_htmlOptions; 
-			#'only_if_no_text';
 				
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
 			$sections = $this->parseMessage($structure);
@@ -744,6 +777,23 @@
 						$newPart = imap_body($this->mbox, $_uid, FT_UID);
 						// it is either not encoded or we don't know about it
 				}
+				
+				// find charset and decode if needed
+				if($structure->ifparameters)
+				{
+					foreach($structure->parameters as $value)
+					{
+						$parameter[strtolower($value->attribute)] = 
+							strtolower($value->value);
+					}
+					switch($parameter['charset'])
+					{
+						case 'utf-8':
+							$newPart = utf8_decode($newPart);
+							break;
+					}
+				}
+				
 				if(strtolower($structure->subtype) == 'html')
 				{
 					$mimeType = 'text/html';
@@ -947,6 +997,12 @@
 						$storage = $this->storageQuota = $quota['STORAGE'];
 					}
 				}
+				#$_folderName = "user.lars.Asterisk";
+				#print "$_folderName<br>";
+				#imap_setacl($this->mbox, $_folderName, 'support', 'lrswipcda');
+				#print "<pre>";
+				#print_r(imap_getacl($this->mbox, $_folderName));
+				#print "</pre>";
 				return True;
 			}
 			
@@ -1091,6 +1147,7 @@
 					{
 						$retData['attachment'][$_partID]["name"] = lang($_structure->description);
 					}
+
 					break;
 					
 				case TYPEAPPLICATION:
@@ -1110,6 +1167,18 @@
 								break;
 						}
 					}
+					
+					for ($lcv = 0; $lcv < count($_structure->parameters); $lcv++)
+					{
+						$param = $_structure->parameters[$lcv];
+						switch(strtolower($param->attribute))
+						{
+							case 'name':
+								$retData['attachment'][$_partID]["name"] = $param->value;
+								break;
+						}
+					}
+					
 					break;
 					
 				case TYPEAUDIO:
@@ -1223,6 +1292,14 @@
 		function saveSessionData()
 		{
 			$GLOBALS['phpgw']->session->appsession('session_data','',$this->sessionData);
+		}
+		
+		function setEMailProfile($_profileID)
+		{
+			$config = CreateObject('phpgwapi.config','felamimail');
+			$config->read_repository();
+			$config->value('profileID',$_profileID);
+			$config->save_repository();
 		}
 		
 		function subscribe($_folderName, $_status)

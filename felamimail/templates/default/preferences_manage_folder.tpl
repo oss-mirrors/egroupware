@@ -21,10 +21,88 @@
 			</form>
 		</td>
 		<td valign="top">
-			<table border="1" width="100%" cellpadding=2 cellspacing=0>
-				<caption>{lang_folder_settings}</caption>
+			{settings_view}
+		</td>
+	</tr>
+<!-- 	<tr>
+		<td>
+			<table border="1" width="100%">
 				<tr>
-					<td width="150"align="left">
+					<td width="100"align="left">
+						{lang_quota_status}
+					</td>
+					<td align="center">
+						<table width="100%" border="1">
+							<tr>
+								<td colspan="2">
+									Storage Limit<br>
+								</td>
+							</tr>
+							<tr>
+								<td width="50%">
+									STORAGE usage level is: 
+								</td>
+								<td width="50%">
+									{storage_usage}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									STORAGE limit level is: 
+								</td>
+								<td>
+									{storage_limit}
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									Message Limit<br>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									MESSAGE usage level is: 
+								</td>
+								<td>
+									{message_usage}
+								</td>
+							</tr>
+							<tr>
+								<td>
+									MESSAGE limit level is: 
+								</td>
+								<td>
+									{message_limit}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr> -->
+</table>
+
+<!-- END main -->
+
+<!-- BEGIN select_row -->
+				<option value="{folder_value}" {selected}>({subscribed}) {folder_name}</option>
+<!-- END select_row -->
+
+<!-- BEGIN folder_settings -->
+			<table width="100%" cellpadding=2 cellspacing=0>
+				<tr>
+					<td width="50%" align="center">
+						{lang_folder_settings}
+					</td>
+					<td width="50%" align="center">
+						<a href="{acl_url}">{lang_folder_acl}</a>
+					</td>
+				</tr>
+			</table>
+			<table border="1" width="100%" cellpadding=2 cellspacing=0>
+				<tr>
+					<td width="150" align="left">
 						{lang_imap_server}
 					</td>
 					<td align="center">
@@ -94,70 +172,54 @@
 					</td>
 				</tr>
 			</table>
-		</td>
-	</tr>
-<!-- 	<tr>
-		<td>
-			<table border="1" width="100%">
+<!-- END folder_settings -->
+
+<!-- BEGIN folder_acl -->
+			<table width="100%" cellpadding=2 cellspacing=0>
 				<tr>
-					<td width="100"align="left">
-						{lang_quota_status}
+					<td width="50%" align="center">
+						<a href="{settings_url}">{lang_folder_settings}</a>
 					</td>
-					<td align="center">
-						<table width="100%" border="1">
-							<tr>
-								<td colspan="2">
-									Storage Limit<br>
-								</td>
-							</tr>
-							<tr>
-								<td width="50%">
-									STORAGE usage level is: 
-								</td>
-								<td width="50%">
-									{storage_usage}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									STORAGE limit level is: 
-								</td>
-								<td>
-									{storage_limit}
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Message Limit<br>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									MESSAGE usage level is: 
-								</td>
-								<td>
-									{message_usage}
-								</td>
-							</tr>
-							<tr>
-								<td>
-									MESSAGE limit level is: 
-								</td>
-								<td>
-									{message_limit}
-								</td>
-							</tr>
-						</table>
+					<td width="50%" align="center">
+						{lang_folder_acl}
 					</td>
 				</tr>
 			</table>
-		</td>
-	</tr> -->
-</table>
-
-<!-- END main -->
-
-<!-- BEGIN select_row -->
-				<option value="{folder_value}" {selected}>({subscribed}) {folder_name}</option>
-<!-- END select_row -->
-
+			<table border="1" width="100%" cellpadding=2 cellspacing=0>
+				<tr>
+					<td width="150" align="left">
+						{lang_username}
+					</td>
+					<td align="center">
+						<b>{lang_acl}</b>
+					</td>
+					<td align="center">
+						<b>{lang_shortcut}</b>
+					</td>
+				</tr>
+				<tr>
+					<td width="150" align="left">
+						{lang_anyone}
+					</td>
+					<td align="center">
+						A<input type="checkbox" name="acl_a">
+						C<input type="checkbox" name="acl_c"> 
+						D<input type="checkbox" name="acl_d"> 
+						I<input type="checkbox" name="acl_i"> 
+						L<input type="checkbox" name="acl_l"> 
+						P<input type="checkbox" name="acl_p"> 
+						R<input type="checkbox" name="acl_r"> 
+						S<input type="checkbox" name="acl_s"> 
+						W<input type="checkbox" name="acl_w">
+					</td>
+					<td align="center">
+						<select>
+						<option>{lang_reading}</option>
+						<option>{lang_writing}</option>
+						<option>{lang_posting}</option>
+						<option>{lang_none}</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+<!-- END folder_acl -->

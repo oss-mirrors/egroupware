@@ -257,4 +257,5 @@
 			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
 			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
 		}
-}
+	}
+?>

@@ -413,6 +413,17 @@
 
 
 			$mail = CreateObject('felamimail.phpmailer');
+			$userLang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
+			$langFile = PHPGW_SERVER_ROOT."/felamimail/setup/phpmailer.lang-$userLang.php";
+			if(file_exists($langFile))
+			{
+				$mail->SetLanguage($userLang, PHPGW_SERVER_ROOT."/felamimail/setup/");
+			}
+			else
+			{
+				$mail->SetLanguage("en", PHPGW_SERVER_ROOT."/felamimail/setup/");
+			}
+			$mail->PluginDir = PHPGW_SERVER_ROOT."/felamimail/inc/";
 			
 			#print $this->sessionData['uid']."<bR>";
 			#print $this->sessionData['folder']."<bR>";
@@ -428,7 +439,6 @@
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = '8bit';
-			$mail->PluginDir = PHPGW_SERVER_ROOT."/felamimail/inc/";
 			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.4");
 			if(isset($this->preferences['organizationName']))
 				$mail->AddCustomHeader("Organization: ".$this->preferences['organizationName']);

@@ -1,5 +1,8 @@
 Version 0.9.5
 
+- added support for emailadmin
+- updated PHPMailer to version 0.7.1
+- added support for localized smtp error messages
 - improved mime type handling
 - also forward attachments
 - support üצה... in folder names

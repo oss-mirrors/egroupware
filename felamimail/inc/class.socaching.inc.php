@@ -33,15 +33,33 @@
 		
 		function addToCache($_data)
 		{
-			$query = sprintf("insert into phpgw_felamimail_cache ".
-					 "(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) ".
-					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-					 $this->accountid, addslashes($this->hostname), 
-					 addslashes($this->foldername), addslashes($this->accountname), 
-					 $_data['uid'], $_data['date'], addslashes($_data['subject']),
-					 addslashes($_data['sender_name']), addslashes($_data['sender_address']),
-					 addslashes($_data['to_name']), addslashes($_data['to_address']),
-					 $_data['size'],$_data['attachments']);
+		
+#			$query = sprintf("insert into phpgw_felamimail_cache ".
+#					 "(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) ".
+#					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+#					 $this->accountid, addslashes($this->hostname), 
+#					 addslashes($this->foldername), addslashes($this->accountname), 
+#					 $_data['uid'], $_data['date'], addslashes($_data['subject']),
+#					 addslashes($_data['sender_name']), addslashes($_data['sender_address']),
+#					 addslashes($_data['to_name']), addslashes($_data['to_address']),
+#					 $_data['size'],$_data['attachments']);
+			$query = 'insert into phpgw_felamimail_cache '.
+					 '(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) '.
+					 "values('".$this->accountid
+					 ."','".addslashes($this->hostname)
+					 ."','".addslashes($this->foldername)
+					 ."','".addslashes($this->accountname)
+					 ."','".$_data['uid']
+					 ."','".$_data['date']
+					 ."','".addslashes($_data['subject'])
+					 ."','".addslashes($_data['sender_name'])
+					 ."','".$_data['sender_address']
+					 ."','".addslashes($_data['to_name'])
+					 ."','".$_data['to_address']
+					 ."','".$_data['size']
+					 ."','".$_data['attachments']
+					 ."')";
+		
 			$this->db->query($query);
 			
 			#print "$query<br>";

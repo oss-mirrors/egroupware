@@ -118,6 +118,8 @@
 			$this->t->set_file(array("body" => "preferences_manage_folder.tpl"));
 			$this->t->set_block('body','main');
 			$this->t->set_block('body','select_row');
+			$this->t->set_block('body','folder_settings');
+			$this->t->set_block('body','folder_acl');
 
 			$this->translate();
 			
@@ -128,6 +130,22 @@
 				'menuaction'    => 'felamimail.uipreferences.listFolder'
 			);
 			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			// create the link to show folder settings
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.listFolder',
+				'display'	=> 'settings'
+			);
+			$this->t->set_var('settings_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			// create the link to show folder acl
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uipreferences.listFolder',
+				'display'	=> 'acl'
+			);
+			$this->t->set_var('acl_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			// folder select box
 			while(list($key,$value) = @each($folderList))
@@ -154,31 +172,47 @@
 				$this->t->parse('select_rows','select_row',True);
 			}
 			
-			// selected folder data
-			if($folderStatus['subscribed'])
-			{
-				$this->t->set_var('subscribed_checked','checked');
-				$this->t->set_var('unsubscribed_checked','');
-			}
-			else
-			{
-				$this->t->set_var('subscribed_checked','');
-				$this->t->set_var('unsubscribed_checked','checked');
-			}
 			
-			if(is_array($quota))
+			switch($_GET['display'])
 			{
-				$this->t->set_var('storage_usage',$quota['STORAGE']['usage']);
-				$this->t->set_var('storage_limit',$quota['STORAGE']['limit']);
-				$this->t->set_var('message_usage',$quota['MESSAGE']['usage']);
-				$this->t->set_var('message_limit',$quota['MESSAGE']['limit']);
-			}
-			else
-			{
-				$this->t->set_var('storage_usage',lang('unknown'));
-				$this->t->set_var('storage_limit',lang('unknown'));
-				$this->t->set_var('message_usage',lang('unknown'));
-				$this->t->set_var('message_limit',lang('unknown'));
+				case 'acl':
+					$uiBaseClass = CreateObject('felamimail.uibaseclass');
+					#$uiBaseClass->accounts_popup('calendar');
+					$this->t->parse('settings_view','folder_acl',True);
+					break;
+					
+				case 'settings':
+				default:
+					// selected folder data
+					if($folderStatus['subscribed'])
+					{
+						$this->t->set_var('subscribed_checked','checked');
+						$this->t->set_var('unsubscribed_checked','');
+					}
+					else
+					{
+						$this->t->set_var('subscribed_checked','');
+						$this->t->set_var('unsubscribed_checked','checked');
+					}
+			
+					if(is_array($quota))
+					{
+						$this->t->set_var('storage_usage',$quota['STORAGE']['usage']);
+						$this->t->set_var('storage_limit',$quota['STORAGE']['limit']);
+						$this->t->set_var('message_usage',$quota['MESSAGE']['usage']);
+						$this->t->set_var('message_limit',$quota['MESSAGE']['limit']);
+					}
+					else
+					{
+						$this->t->set_var('storage_usage',lang('unknown'));
+						$this->t->set_var('storage_limit',lang('unknown'));
+						$this->t->set_var('message_usage',lang('unknown'));
+						$this->t->set_var('message_limit',lang('unknown'));
+					}
+			
+					$this->t->parse('settings_view','folder_settings',True);
+					
+					break;
 			}
 			
 			$mailBoxTreeName 	= '';
@@ -216,6 +250,12 @@
 			$this->t->set_var("lang_delete",lang('delete'));
 			$this->t->set_var("lang_imap_server",lang('IMAP Server'));
 			$this->t->set_var("lang_folder_settings",lang('folder settings'));
+			$this->t->set_var("lang_folder_acl",lang('folder acl'));
+			$this->t->set_var("lang_anyone",lang('anyone'));
+			$this->t->set_var("lang_reading",lang('reading'));
+			$this->t->set_var("lang_writing",lang('writing'));
+			$this->t->set_var("lang_posting",lang('posting'));
+			$this->t->set_var("lang_none",lang('none'));
 			
 			$this->t->set_var("th_bg",$GLOBALS['phpgw_info']["theme"]["th_bg"]);
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);

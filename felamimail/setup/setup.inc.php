@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - FeLaMiMail                                                *
-	* http://www.phpgroupware.org                                              *
+	* EGroupWare - FeLaMiMail                                                  *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -20,10 +20,10 @@
 	$setup_info['felamimail']['author']		= 'Lars Kneschke';
 	$setup_info['felamimail']['license']		= 'GPL';
 	$setup_info['felamimail']['description']	=
-		'Email reader originally based on Squirrelmail, ported to phpGroupWare by Lars Kneschke.';
-	$setup_info['felamimail']['based_on']		=
-		'This port is based on Squirrelmail, which is a standalone IMAP client.';
-	$setup_info['felamimail']['based_on_url']	= 'http://www.squirrelmail.org';
+		'IMAP emailclient for EGroupware';
+	#$setup_info['felamimail']['based_on']		=
+	#	'This port is based on Squirrelmail, which is a standalone IMAP client.';
+	#$setup_info['felamimail']['based_on_url']	= 'http://www.squirrelmail.org';
 	$setup_info['felamimail']['maintainer'] 	= 'Lars Kneschke';
 	$setup_info['felamimail']['maintainer_email'] 	= 'lkneschke@linux-at-work.de';
 
@@ -45,5 +45,9 @@
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14','0.9.15')
+	);
+	$setup_info['felamimail']['depends'][] = array(
+		'appname'  => 'emailadmin',
+		'versions' => Array('0.0.6',)
 	);
 ?>

@@ -13,7 +13,6 @@ address book search	felamimail	en	Address Book Search
 after message body	felamimail	en	After message body
 all address books	felamimail	en	All address books
 all folders	felamimail	en	All Folders
-always show html emails	felamimail	en	always show html emails
 as a subfolder of	felamimail	en	as a subfolder of
 attachments	felamimail	en	Attachments
 auto refresh folder list	felamimail	en	Auto refresh folder list
@@ -23,7 +22,6 @@ based upon given criteria, incoming messages can have different background color
 bcc	felamimail	en	bcc
 before headers	felamimail	en	Before headers
 between headers and message body	felamimail	en	Between headers and message body
-body part	felamimail	en	body part
 cc	felamimail	en	cc
 change folder	felamimail	en	change folder
 checkbox	felamimail	en	Checkbox
@@ -57,7 +55,6 @@ delete selected	felamimail	en	Delete selected
 delete selected messages	felamimail	en	delete selected messages
 deleted	felamimail	en	deleted
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
-display only when no plain text is available	felamimail	en	display only when no plain text is available
 display preferences	felamimail	en	Display Preferences
 do it!	felamimail	en	do it!
 do not use sent	felamimail	en	Do not use Sent
@@ -114,10 +111,7 @@ Icons and text	felamimail	en	Icons and text
 Icons only	felamimail	en	Icons only
 identifying name	felamimail	en	Identifying name
 illegal folder name.  please select a different name.	felamimail	en	Illegal folder name.  Please select a different name.
-imap	felamimail	en	IMAP
 IMAP Server	felamimail	en	IMAP Server
-imaps authentication	felamimail	en	IMAPS Authentication
-imaps encryption only	felamimail	en	IMAPS Encryption only
 in	felamimail	en	in
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	en	In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.
 in the center	felamimail	en	in the center
@@ -162,7 +156,6 @@ move selected to	felamimail	en	move selected to
 move to trash	felamimail	en	move to trash
 Must be unique	felamimail	en	Must be unique
 Name	felamimail	en	Name
-never display html emails	felamimail	en	never display html emails
 New	felamimail	en	New
 new filter	felamimail	en	New filter
 Next	felamimail	en	Next

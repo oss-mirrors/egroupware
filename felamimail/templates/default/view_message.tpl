@@ -1,4 +1,5 @@
 <!-- BEGIN message_main -->
+{print_navbar}
 <STYLE type="text/css">
         .subjectBold
         {
@@ -104,16 +105,8 @@
 <!-- END message_navbar -->
 
 <!-- BEGIN message_navbar_print -->
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr bgcolor="{th_bg}">
-		<td align="center">
-			<a href="javascript:window.print()">{lang_print_this_page}</a>
-		</td>
-		<td align="center">
-			<a href="javascript:window.close()">{lang_close_this_page}</a>
-		</td>
-	</tr>
-</table>
+<html>
+<body onload="javascript:window.print()">
 <!-- END message_navbar_print -->
 
 <!-- BEGIN message_attachement_row -->

@@ -19,9 +19,11 @@
 		(
 			'addVcard'		=> True,
 			'changeFilter'		=> True,
+			'css'			=> True,
 			'compressFolder'	=> True,
 			'deleteMessage'		=> True,
 			'handleButtons'		=> True,
+			'hookAdmin'		=> True,
 			'toggleFilter'		=> True,
 			'viewMainScreen'	=> True
 		);
@@ -177,6 +179,42 @@
 			$this->viewMainScreen();
 		}
 
+		function css()
+		{
+			$appCSS = 
+			'th.activetab
+			{
+				color:#000000;
+				background-color:#D3DCE3;
+				border-top-width : 1px;
+				border-top-style : solid;
+				border-top-color : Black;
+				border-left-width : 1px;
+				border-left-style : solid;
+				border-left-color : Black;
+				border-right-width : 1px;
+				border-right-style : solid;
+				border-right-color : Black;
+			}
+			
+			th.inactivetab
+			{
+				color:#000000;
+				background-color:#E8F0F0;
+				border-bottom-width : 1px;
+				border-bottom-style : solid;
+				border-bottom-color : Black;
+			}
+			
+			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
+			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
+			
+			div.activetab{ display:inline; }
+			div.inactivetab{ display:none; }';
+			
+			return $appCSS;
+		}
+
 		function compressFolder()
 		{
 			$this->bofelamimail->compressFolder();
@@ -243,8 +281,74 @@
 			$this->viewMainScreen();
 		}
 
+		function hookAdmin()
+		{
+			if(!$GLOBALS['phpgw']->acl->check('run',1,'admin'))
+			{
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+				echo lang('access not permitted');
+				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to felamimail.uifelamimail.hookAdmin');
+				$GLOBALS['phpgw']->log->commit();
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			
+			
+			if(!empty($_POST['profileID']) && is_int(intval($_POST['profileID'])))
+			{
+				$profileID = intval($_POST['profileID']);
+				$this->bofelamimail->setEMailProfile($profileID);
+			}
+			
+			$boemailadmin = CreateObject('emailadmin.bo');
+			
+			$profileList = $boemailadmin->getProfileList();
+			$profileID = $this->bofelamimail->getEMailProfile();
+			
+			$this->display_app_header();
+			
+			$this->t->set_file(array("body" => "selectprofile.tpl"));
+			$this->t->set_block('body','main');
+			$this->t->set_block('body','select_option');
+			
+			$this->t->set_var('lang_select_email_profile',lang('select emailprofile'));
+			$this->t->set_var('lang_site_configuration',lang('site configuration'));
+			$this->t->set_var('lang_save',lang('save'));
+			$this->t->set_var('lang_back',lang('back'));
+
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uifelamimail.hookAdmin'
+			);
+			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/admin/index.php'));
+			
+			foreach($profileList as $key => $value)
+			{
+				#print "$key => $value<br>";
+				#_debug_array($value);
+				$this->t->set_var('profileID',$value['profileID']);
+				$this->t->set_var('description',$value['description']);
+				if(is_int($profileID) && $profileID == $value['profileID'])
+				{
+					$this->t->set_var('selected','selected');
+				}
+				else
+				{
+					$this->t->set_var('selected','');
+				}
+				$this->t->parse('select_options','select_option',True);
+			}
+			
+			$this->t->parse("out","main");
+			print $this->t->get('out','main');
+			
+		}
+
 		function viewMainScreen()
 		{
+			#printf ("this->uifelamimail->viewMainScreen() start: %s<br>",date("H:i:s",mktime()));
 			$bopreferences		= CreateObject('felamimail.bopreferences');
 			$preferences		= $bopreferences->getPreferences();
 			$bofilter		= CreateObject('felamimail.bofilter');
@@ -268,7 +372,7 @@
 			
 			$this->t->set_var('oldMailbox',$urlMailbox);
 			$this->t->set_var('image_path',PHPGW_IMAGES);
-			
+			#printf ("this->uifelamimail->viewMainScreen() Line 272: %s<br>",date("H:i:s",mktime()));
 			// ui for the quotas
 			if($quota = $this->bofelamimail->getQuotaRoot())
 			{
@@ -427,7 +531,8 @@
 					
 					break;
 			}
-
+			
+			
 			if($this->connectionStatus != 'True')
 			{
 				$this->t->set_var('message',$this->connectionStatus);
@@ -442,7 +547,10 @@
 				// create the listing of subjects
 				$maxSubjectLength = 75;
 				$maxAddressLength = 30;
-				for($i=0; $i<count($headers['header']); $i++)
+				
+				$headerCount = count($headers['header']);
+				
+				for($i=0; $i<$headerCount; $i++)
 				{
 					if (!empty($headers['header'][$i]['subject']))
 					{
@@ -553,7 +661,7 @@
 						'menuaction'    => 'addressbook.uiaddressbook.add_email',
 						'add_email'	=> urlencode($headers['header'][$i]['sender_address']),
 						'name'		=> urlencode($headers['header'][$i]['sender_name']),
-						'referer'	=> urlencode($GLOBALS['PHP_SELF'].'?'.$GLOBALS['QUERY_STRING'])
+						'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 					);
 					$this->t->set_var('url_add_to_addressbook',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					
@@ -608,7 +716,7 @@
 				$totalMessage = $headers['info']['total'];
 				$langTotal = lang("total");		
 			}
-
+			
 			$this->t->set_var('maxMessages',$i);
 			if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
 			{
@@ -761,7 +869,7 @@
 				$this->bofelamimail->closeConnection();
 			}
 			$GLOBALS['phpgw']->common->phpgw_footer();
-		
+			
 		}
 
 		/* Returns a string showing the size of the message/attachment */

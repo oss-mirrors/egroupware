@@ -53,7 +53,7 @@
 	{
 		$menu_title = lang('Administration');
 		$file = Array(
-			'Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=felamimail')
+			'Configuration' => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uifelamimail.hookAdmin')
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}

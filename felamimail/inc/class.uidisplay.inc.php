@@ -38,6 +38,16 @@
 			$this->sort		= $this->bofelamimail->sessionData['sort'];
 			
 			$this->uid		= $GLOBALS['HTTP_GET_VARS']['uid'];
+			
+			if(isset($GLOBALS['HTTP_GET_VARS']['part']) &&
+				is_numeric($GLOBALS['HTTP_GET_VARS']['part']))
+			{
+				$this->partID = $GLOBALS['HTTP_GET_VARS']['part'];
+			}
+			else
+			{
+				$this->partID = 0;
+			}
 
 			$this->bocaching	= CreateObject('felamimail.bocaching',
 							$this->mailPreferences['imapServerAddress'],
@@ -231,6 +241,7 @@
 					'lang_reply'            => lang('Reply'),
 					'lang_reply_all'        => lang('Reply All'),
 					'lang_back_to_folder'   => lang('back to folder'),
+					'print_navbar'		=> '',
 					'app_image_path'        => PHPGW_IMAGES
 				);
 				$this->t->set_var($langArray);
@@ -246,10 +257,11 @@
 					'lang_reply'            => lang('Reply'),
 					'lang_reply_all'        => lang('Reply All'),
 					'lang_back_to_folder'   => lang('back to folder'),
+					'navbar'		=> '',
 					'app_image_path'        => PHPGW_IMAGES
 				);
 				$this->t->set_var($langArray);
-				$this->t->parse('navbar','message_navbar_print',True);
+				$this->t->parse('print_navbar','message_navbar_print',True);
 			}
 			
 			
@@ -530,19 +542,33 @@ $add_attr_to_tag = Array(
 				$this->t->set_var('type',lang('type'));
 				$this->t->set_var('size',lang('size'));
 				#$this->t->parse('attachment_rows','attachment_row_bold',True);
-				while (list($key,$value) = each($attachments))
+				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
 					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name'])));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uidisplay.getAttachment',
-						'uid'		=> $this->uid,
-						'part'		=> $value['partID']
-					);
+
+					switch($value['mimeType'])
+					{
+						case 'message/rfc822':
+							$linkData = array
+							(
+								'menuaction'	=> 'felamimail.uidisplay.display',
+								'uid'		=> $this->uid,
+								'part'		=> $value['partID']
+							);
+							break;
+						default:
+							$linkData = array
+							(
+								'menuaction'	=> 'felamimail.uidisplay.getAttachment',
+								'uid'		=> $this->uid,
+								'part'		=> $value['partID']
+							);
+							break;
+					}
 					$this->t->set_var("link_view",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 					$linkData = array

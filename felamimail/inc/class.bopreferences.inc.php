@@ -23,66 +23,43 @@
 		
 		function bopreferences()
 		{
+			$this->config = CreateObject('phpgwapi.config','felamimail');
+			$this->config->read_repository();
+			$this->profileID = $this->config->config_data['profileID'];
+			
+			$this->boemailadmin = CreateObject('emailadmin.bo');
 		}
 		
 		function getPreferences()
 		{
-/*			while(list($key,$value) = each($GLOBALS['phpgw_info']['server']) )
-			{
-				print ". $key: $value<br>";
-				if (is_array($value))
-				{
-					while(list($key1,$value1) = each($value) )
-					{
-						print ".. &nbsp;$mbsp;-$key1: $value1<br>";
-					}
-				}
-			}
-*/			
-
-			$config = CreateObject('phpgwapi.config','felamimail');
-			$config->read_repository();
-			$felamimailConfig = $config->config_data;
-			#_debug_array($felamimailConfig);
-			unset($config);
+			$imapServerTypes = $this->boemailadmin->getIMAPServerTypes();
+			$profileData = $this->boemailadmin->getProfile($this->profileID);
+			
+			$imapServerTypes[$profileData['imapType']]['protocol'];
+			
+			#_debug_array($profileData);
 			
 			$felamimailUserPrefs = $GLOBALS['phpgw_info']['user']['preferences']['felamimail'];
 			
-			#_debug_array($GLOBALS['phpgw_info']['user']);
-			#print "<hr>";
-			
 			// set values to the global values
-			$data['imapServerAddress']	= $GLOBALS['phpgw_info']['server']['mail_server'];
+			$data['imapServerAddress']	= $profileData['imapServer'];
 			$data['key']			= $GLOBALS['phpgw_info']['user']['passwd'];
-			if ($felamimailConfig["mailLoginType"] == 'vmailmgr')
-				$data['username']		= $GLOBALS['phpgw_info']['user']['userid']."@".$felamimailConfig["mailSuffix"];
+			if ($profileData['imapLoginType'] == 'vmailmgr')
+				$data['username']		= $GLOBALS['phpgw_info']['user']['userid']."@".$profileData['defaultDomain'];
 			else
 				$data['username']		= $GLOBALS['phpgw_info']['user']['userid'];
-			$data['imap_server_type']	= strtolower($felamimailConfig["imapServerMode"]);
+			$data['imap_server_type']	= $imapServerTypes[$profileData['imapType']]['protocol'];
 			$data['realname']		= $GLOBALS['phpgw_info']['user']['fullname'];
-			$data['defaultDomainname']	= $GLOBALS['phpgw_info']["server"]["mail_suffix"];
+			$data['defaultDomainname']	= $profileData['defaultDomain'];
 
-			$data['smtpServerAddress']	= $GLOBALS['phpgw_info']["server"]["smtp_server"];
-			$data['smtpPort']		= $GLOBALS['phpgw_info']["server"]["smtp_port"];
+			$data['smtpServerAddress']	= $profileData['smtpServer'];
+			$data['smtpPort']		= $profileData['smtpPort'];
 
-			// check for felamimail specific settings
-			if(!empty($felamimailConfig['imapServer']))
-				$data['imapServerAddress']	= $felamimailConfig['imapServer'];
+			if(!empty($profileData['organisationName']))
+				$data['organizationName']	= $profileData['organisationName'];
 
-			if(!empty($felamimailConfig['smtpServer']))
-				$data['smtpServerAddress']	= $felamimailConfig['smtpServer'];
-			
-			if(!empty($felamimailConfig['smtpServer']))
-				$data['smtpPort']		= $felamimailConfig['smtpPort'];
-
-			if(!empty($felamimailConfig['mailSuffix']))
-				$data['defaultDomainname']	= $felamimailConfig['mailSuffix'];
-
-			if(!empty($felamimailConfig['organizationName']))
-				$data['organizationName']	= $felamimailConfig['organizationName'];
-
-			$data['emailAddress']		= $data['username']."@".$data['defaultDomainname'];
-			$data['smtpAuth']		= $felamimailConfig['smtpAuth'];
+			$data['emailAddress']		= $data['username']."@".$profileData['defaultDomain'];
+			$data['smtpAuth']		= $profileData['smtpAuth'];
 
 			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
 			{
@@ -113,7 +90,7 @@
 			
 			// check for user specific settings
 			#_debug_array($felamimailUserPrefs);
-			if ($felamimailConfig['userDefinedAccounts'] == 'yes' &&
+			if ($profileData['userDefinedAccounts'] == 'yes' &&
 				$felamimailUserPrefs['use_custom_settings'] == 'yes')
 			{
 				if(!empty($felamimailUserPrefs['username']))
@@ -132,15 +109,15 @@
 					$data['imap_server_type']	= strtolower($felamimailUserPrefs['imap_server_type']);
 			}
 			
-			switch($data['imap_server_type'])
+			if(($profileData['imapTLSEncryption'] == 'yes' ||
+				$profileData['imapTLSEncryption'] == 'yes') &&
+				empty($profileData['imapPort']))
 			{
-				case "imaps-encr-only":
-				case "imaps-encr-auth":
-					$data['imapPort']	= 993;
-					break;
-				default:
-					$data['imapPort']	= 143;
-					break;
+				$data['imapPort']	= 993;
+			}
+			else
+			{
+				$data['imapPort']	= 143;
 			}
 			
 			#_debug_array($data);

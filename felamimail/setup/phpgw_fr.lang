@@ -13,7 +13,6 @@ address book search	felamimail	fr	Recherche dans le carnet d'adresses
 after message body	felamimail	fr	Après le corps du message
 all address books	felamimail	fr	Tous les carnets d'adresses
 all folders	felamimail	fr	Tous les dossiers
-always show html emails	felamimail	fr	Toujours montrer les EMails HTML
 as a subfolder of	felamimail	fr	Comme un sous-dossier de
 attachments	felamimail	fr	Attachements
 auto refresh folder list	felamimail	fr	Auto-rafraîchir la liste des dossiers
@@ -23,7 +22,6 @@ based upon given criteria, incoming messages can have different background color
 bcc	felamimail	fr	bcc
 before headers	felamimail	fr	Avant les entêtes
 between headers and message body	felamimail	fr	Entre les entêtes et le corps du message
-body part	felamimail	fr	Corps du message
 cc	felamimail	fr	cc
 change folder	felamimail	fr	Changer de dossier
 checkbox	felamimail	fr	Boite à cocher
@@ -57,7 +55,6 @@ delete selected	felamimail	fr	Effacer sélectionnés
 delete selected messages	felamimail	fr	Effacer les messages sélectionnés
 deleted	felamimail	fr	Effacés
 deleted folder successfully!	felamimail	fr	Dossier effacé avec succès!
-display only when no plain text is available	felamimail	fr	Afficher seulement quand aucun texte standard n'est disponible
 display preferences	felamimail	fr	Afficher les préférences
 do it!	felamimail	fr	Fais-le!
 do not use sent	felamimail	fr	Ne pas utiliser Sent (envoyés)
@@ -114,10 +111,7 @@ Icons and text	felamimail	fr	Icônes et texte
 Icons only	felamimail	fr	Icônes seulement
 identifying name	felamimail	fr	Identifie le nom
 illegal folder name.  please select a different name.	felamimail	fr	Nom de dossier illégal. SVP choisissez-en un autre.
-imap	felamimail	fr	IMAP
 IMAP Server	felamimail	fr	Serveur IMAP
-imaps authentication	felamimail	fr	Authentification IMAPS
-imaps encryption only	felamimail	fr	Cryptage IMAPS seulement
 in	felamimail	fr	Dans
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	fr	Afin que Felamimail puisse vous proposer l'ensemble des options vous devez créer les dossiers spéciaux listés ci-dessous. Cliquez simplement sur les boites de sélection et cliquez sur le bouton Créer.
 in the center	felamimail	fr	Au centre
@@ -162,7 +156,6 @@ move selected to	felamimail	fr	Déplacer le choix vers
 move to trash	felamimail	fr	Déplacer vers la poubelle (Trash)
 Must be unique	felamimail	fr	Doit être unique
 Name	felamimail	fr	Nom
-never display html emails	felamimail	fr	Ne jamais afficher les EMails HTML
 New	felamimail	fr	Nouveau
 new filter	felamimail	fr	Nouveau filtre
 Next	felamimail	fr	Suivant

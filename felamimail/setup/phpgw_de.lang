@@ -159,7 +159,6 @@ Fri	felamimail	de	Fr
 Sat	felamimail	de	Sa
 Sun	felamimail	de	So
 SMTP settings	admin	de	SMTP Einstellungen
-Use SMTP auth	admin	de	SMTP Auth benutzen
 Organization name	admin	de	Name der Organisation
 Sieve settings	admin	de	Sieve Einstellungen
 Enter your SIEVE server hostname or IP address	admin	de	Sieve-Server Hostname oder IP-Adresse
@@ -177,3 +176,5 @@ IMAP Server Address	preferences	de	IMAP Server Adresse
 always show html emails	preferences	de	immer anzeigen
 never display html emails	preferences	de	niemals anzeigen
 display only when no plain text is available	preferences	de	nur anzeigen wenn kein Plain Text vorhanden ist
+IMAP emailclient for EGroupware	common	de	IMAP-EMailclient für EGroupware
+:site configuration	felamimail	de	Konfiguration der Anwendung
