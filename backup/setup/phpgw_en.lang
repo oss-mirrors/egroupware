@@ -55,7 +55,7 @@ sql	backup	en	SQL
 tar	admin	en	tar
 tar.bz2	backup	en	tar.bz2
 tar.gz	backup	en	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	en	The backup application is not configured for showing the archives in phpGroupWare yet !
+the backup application is not configured for showing the archives in egroupware yet !	backup	en	The backup application is not configured for showing the archives in eGroupWare yet !
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	en	The directory to store the backup script must be inside of the webservers *DocumentRoot* !
 versions can only be a number !	backup	en	Versions can only be a number !
 weekly	backup	en	weekly

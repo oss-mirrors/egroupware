@@ -55,7 +55,7 @@ sql	backup	it	SQL
 tar	admin	it	tar
 tar.bz2	backup	it	tar.bz2
 tar.gz	backup	it	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	it	L'applicazione di backup non è ancora stata configurata per visualizzare gli archivi in eGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	it	L'applicazione di backup non è ancora stata configurata per visualizzare gli archivi in eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	it	La directory dove memorizzare lo script d backup deve essere all'interno di *DocumentRoot* del webserver !
 versions can only be a number !	backup	it	Le versioni possono solo essere un numero !
 weekly	backup	it	settimanale

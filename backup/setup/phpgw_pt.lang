@@ -48,7 +48,7 @@ sql	backup	pt	SQL
 tar	admin	pt	tar
 tar.bz2	backup	pt	tar.bz2
 tar.gz	backup	pt	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	pt	The backup application is not configured for showing the archives in phpGroupWare yet !
+the backup application is not configured for showing the archives in egroupware yet !	backup	pt	The backup application is not configured for showing the archives in eGroupWare yet !
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	pt	The directory to store the backup script must be inside of the webservers *DocumentRoot* !
 versions can only be a number !	backup	pt	Versions can only be a number !
 weekly	backup	pt	semanal

@@ -54,7 +54,7 @@ sql	backup	zh	SQL
 tar	admin	zh	tar
 tar.bz2	backup	zh	tar.bz2
 tar.gz	backup	zh	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	zh	备份程序尚未配置，无法显示档案!
+the backup application is not configured for showing the archives in egroupware yet !	backup	zh	备份程序尚未配置，无法显示档案!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zh	备份脚本目录必须在服务器的DocumentRoot目录下!
 versions can only be a number !	backup	zh	版本号只能是数字!
 weekly	backup	zh	每周

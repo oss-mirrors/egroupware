@@ -54,7 +54,7 @@ sql	backup	zt	SQL
 tar	admin	zt	tar
 tar.bz2	backup	zt	tar.bz2
 tar.gz	backup	zt	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	zt	備份程式還沒設定在EGROUPWARE顯示備份檔案！
+the backup application is not configured for showing the archives in egroupware yet !	backup	zt	備份程式還沒設定在EGROUPWARE顯示備份檔案！
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zt	備份指令檔存放的位置必須在網站根目錄之中！
 versions can only be a number !	backup	zt	版本只能是數字！
 weekly	backup	zt	每週

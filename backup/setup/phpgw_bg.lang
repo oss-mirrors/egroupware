@@ -59,7 +59,7 @@ sql	backup	bg	SQL
 tar	admin	bg	tar
 tar.bz2	backup	bg	tar.bz2
 tar.gz	backup	bg	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	bg	Приложението за архивиране още не е настроено да показва архивите в phpGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	bg	Приложението за архивиране още не е настроено да показва архивите в eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	bg	Директорията за архивиращия скрипт трябва да бъде извън зоната за документи на уеб-сървъра!
 the ftp connection failed ! please check your configuration !	backup	bg	FTP връзката се провали! Моля, проверете настройките си!
 transport application	backup	bg	Приложение за прехвърляне на данните

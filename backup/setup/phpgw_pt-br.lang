@@ -48,7 +48,7 @@ sql	backup	pt-br	SQL
 tar	admin	pt-br	tar
 tar.bz2	backup	pt-br	tar.bz2
 tar.gz	backup	pt-br	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	pt-br	O aplicativo de Cópia de Segurança ainda não foi configurado para mostrar arquivos no eGroupWare!
+the backup application is not configured for showing the archives in egroupware yet !	backup	pt-br	O aplicativo de Cópia de Segurança ainda não foi configurado para mostrar arquivos no eGroupWare!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	pt-br	O diretório que armazena o script de backup deve estar dentro do *Diretórios de Documentos* do servidor web
 versions can only be a number !	backup	pt-br	versões devem ser apenas numéricas!
 weekly	backup	pt-br	semanalmente

@@ -61,7 +61,7 @@ sql	backup	es-es	SQL
 tar	admin	es-es	tar
 tar.bz2	backup	es-es	tar.bz2
 tar.gz	backup	es-es	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	es-es	La aplicación de copia de seguridad todavía no está configurada para mostrar los archivos
+the backup application is not configured for showing the archives in egroupware yet !	backup	es-es	La aplicación de copia de seguridad todavía no está configurada para mostrar los archivos
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	es-es	¡El directorio que almacena el script de copias de seguridad debe estar fuera de los directorios del servidor web¡
 the ftp connection failed ! please check your configuration !	backup	es-es	¡La conexión por ftp falló! Por favor, compruebe su configuración
 transport application	backup	es-es	Aplicación de transporte

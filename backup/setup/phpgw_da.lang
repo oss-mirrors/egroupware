@@ -55,7 +55,7 @@ sql	backup	da	tar.gz
 tar	admin	da	tar
 tar.bz2	backup	da	tar.bz2
 tar.gz	backup	da	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	da	Backup applikationen er ikke konfigureret til at vise arkiver i eGroupWare endnu!
+the backup application is not configured for showing the archives in egroupware yet !	backup	da	Backup applikationen er ikke konfigureret til at vise arkiver i eGroupWare endnu!
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	da	Biblioteket hvor backup scriptet gemmes, skal være i webserverens *DocumentRoot*!
 versions can only be a number !	backup	da	Versioner kan kun være et nummer!
 weekly	backup	da	ugentligt

@@ -48,7 +48,7 @@ sql	backup	el	SQL
 tar	admin	el	tar
 tar.bz2	backup	el	tar.bz2
 tar.gz	backup	el	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	el	H εφαρμογή αντίγραφων ασφαλείας δεν είναι ακόμα διαμορφωμένη για εμφάνιση των αρχείων στο phpGroupWare !
+the backup application is not configured for showing the archives in egroupware yet !	backup	el	H εφαρμογή αντίγραφων ασφαλείας δεν είναι ακόμα διαμορφωμένη για εμφάνιση των αρχείων στο eGroupWare !
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	el	Ο κατάλογος αποθήκευσης της δέσμης εντολών των αντίγραφων ασφαλείας πρέπει να περιέχεται στο *DocumentRoot* των webservers !
 versions can only be a number !	backup	el	Η έκδοση μπορεί να είναι μόνο αριθμός !
 weekly	backup	el	Εβδομαδιαία
