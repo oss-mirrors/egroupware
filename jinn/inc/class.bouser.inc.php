@@ -280,16 +280,13 @@
 		 {
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 		 }
+		 elseif($_POST['add_new'])
+		 {
+			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
+		 }
 		 else
 		 {
-			if($_POST[repeat_input]=='true')
-			{
-			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&repeat_input=true');
-			}
-			else
-			{
-			   $this->common->exit_and_open_screen('jinn.uiuser.index');
-			}
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 	  }
 
@@ -421,6 +418,12 @@
 
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
 		 }
+		 elseif($_POST['add_new'])
+		 {
+			unset($this->mult_where_array);
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
+		 }
 		 else
 		 {
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
@@ -478,6 +481,12 @@
 		 {
 
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
+		 }
+		 elseif($_POST['add_new'])
+		 {
+			unset($this->mult_where_array);
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 		 }
 		 else
 		 {
@@ -547,6 +556,10 @@
 		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
+		 }
+		 elseif($_POST['add_new'])
+		 {
+			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form');
 		 }
 		 else
 		 {

@@ -58,6 +58,7 @@
 			'smallint'		=>		'int',
 			'int'			=>		'int',
 			'tinyint'		=>		'int',
+			'float'			=>		'float',
 			'date'			=>		'date',
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',

@@ -801,7 +801,7 @@
 	  }
 
 
-	  function get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference)
+	  function get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by=false)
 	  {
 		 if ($where_key && $where_value)
 		 {
@@ -813,7 +813,7 @@
 
 		 $fieldproperties = $this->phpgw_table_metadata($table);
 
-		 $SQL="SELECT * FROM  $table $WHERE";
+		 $SQL="SELECT * FROM  $table $WHERE $order_by";
 		 if (!$limit) $limit=1000000;
 
 		 $this->phpgw_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit

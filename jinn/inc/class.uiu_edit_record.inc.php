@@ -91,15 +91,18 @@
 		 ));
 
 		 $this->template->set_block('frm_edit_record','form_header','');
+		 $this->template->set_block('frm_edit_record','table_header','');
 		 $this->template->set_block('frm_edit_record','rows','rows');
 		 $this->template->set_block('frm_edit_record','js','js');
 		 $this->template->set_block('frm_edit_record','many_to_many','many_to_many');
 
 
 		 $this->render_header();
+		 $this->render_table_header();
 		 $this->render_fields();
 		 $this->render_one_to_one_input();
 		 $this->render_many_to_many_input();
+		 $this->render_buttons();
 		 $this->render_footer();
 
 		 //		 unset($this->bo->message);
@@ -133,11 +136,14 @@
 		 $this->template->set_var('popuplink',$popuplink);
 
 		 $this->template->pparse('out','form_header');
+		 $this->template->pparse('out','form_buttons');
+		 $this->template->pparse('out','table_header');
 		 $this->template->set_var('jstips',$this->jstips);
 		 $this->template->set_var('submit_script',$this->submit_javascript);
 		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
 		 $this->template->pparse('out','row');
+		 $this->template->pparse('out','form_buttons');
 		 $this->template->pparse('out','form_footer');
 		 $this->bo->save_sessiondata();
 
@@ -207,6 +213,7 @@
 
 
 		 $this->render_header();
+		 $this->render_buttons();
 
 		 $this->ui->msg_box($this->bo->message);
 
@@ -222,7 +229,7 @@
 		 }
 
 		 $this->template->pparse('out','form_header');
-
+		 $this->template->pparse('out','form_buttons');
 
 		 unset($this->bo->message);
 
@@ -268,7 +275,6 @@
 			}
 		 }
 
-
 		 $this->render_footer();
 
 		 $this->template->set_var('submit_script',$this->submit_javascript);
@@ -277,6 +283,7 @@
 		 $this->template->pparse('out','js');
 		 $this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
 
+		 $this->template->pparse('out','form_buttons');
 		 $this->template->pparse('out','form_footer');
 
 		 $this->bo->save_sessiondata();
@@ -333,6 +340,12 @@
 		 $this->template->parse('form_header','form_header');
 	  }
 
+	  function render_table_header()
+	  {
+		 $this->template->parse('table_header','table_header');
+	  }
+
+	  
 	  function render_fields($alt_values_object=false,$alt_object_arr=false)
 	  {
 
@@ -514,30 +527,42 @@
 		 }
 	  }
 
-	  function render_footer()
+	  function render_buttons()
 	  {
-		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
+		 $this->template->set_block('frm_edit_record','form_buttons','form_buttons');
 
-		 //		_debug_array($this->bo->site_object);
-		 if(!$this->bo->where_string && $this->bo->site_object[max_records]!=1)
+		 if($this->bo->site_object[max_records]==1)
 		 {
-			if($this->repeat_input=='true') $REPEAT_INPUT_CHECKED='CHECKED';
-
-			$repeat_buttons='<input type="checkbox" '.$REPEAT_INPUT_CHECKED.' name="repeat_input" value="true" /> '.lang('insert another record after saving');
-
+			$this->template->set_var('save_and_add_new_button_submit','button');
+			$this->template->set_var('save_and_add_new_button_onclick','onclick="alert(\''.lang("This object can only have one record.").'\')"');
+		 }
+		 else
+		 {
+			$this->template->set_var('save_and_add_new_button_submit','submit');
 		 }
 
-		 $add_edit_button_continue=lang('save and continue');
-		 $add_edit_button=lang('save and finish');
+		 $save_button=lang('save');
+		 $save_and_return_button=lang('save and return to list');
 
 		 $cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display').'\'" value="'.lang('cancel').'">';
 
-		 $this->template->set_var('add_edit_button_continue',$add_edit_button_continue);
-		 $this->template->set_var('add_edit_button',$add_edit_button);
-		 $this->template->set_var('reset_form',lang('reset form'));
+		 $save_and_add_new_button=lang('save and add new record');
+		 $save_and_add_new_multi_button=lang('save and add new records');
+
+		 $this->template->set_var('save_and_add_new_button',$save_and_add_new_button);
+		 $this->template->set_var('save_and_add_new_multi_button',$save_and_add_new_multi_button);
+		 $this->template->set_var('save_button',$save_button);
+		 $this->template->set_var('save_and_return_button',$save_and_return_button);
 		 $this->template->set_var('delete',lang('delete'));
 		 $this->template->set_var('cancel',$cancel_button);
 		 $this->template->set_var('repeat_buttons',$repeat_buttons);
+		 $this->template->parse('form_buttons','form_buttons');
+	  }
+
+
+	  function render_footer()
+	  {
+		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
 		 $this->template->parse('form_footer','form_footer');
 	  }
 

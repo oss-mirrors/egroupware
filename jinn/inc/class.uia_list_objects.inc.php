@@ -76,7 +76,7 @@
 			$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 		 }
 
-		 $records=$this->bo->get_phpgw_records('egw_jinn_objects',$where_key,$where_value,$limit[start],$limit[stop],'num');
+		 $records=$this->bo->get_phpgw_records('egw_jinn_objects',$where_key,$where_value,$limit[start],$limit[stop],'num',"ORDER BY name ASC");
 
 		 $this->template->set_var('bgclr',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		 $this->template->set_var('fieldnames',$column_header);

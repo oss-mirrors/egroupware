@@ -9,7 +9,6 @@ function img_popup(img,pop_width,pop_height,attr)
 <div id="dhtmltooltip"></div>
 <form method="post" name="frm" action="{form_action}" enctype="multipart/form-data" {form_attributes}>
 {where_string_form}
-<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px;">
 <!-- END form_header -->
 
 <!-- BEGIN js -->
@@ -95,6 +94,9 @@ document.onmousemove=positiontip
 </script>
 <!-- END js -->
 
+<!-- BEGIN table_header -->
+<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px;">
+<!-- END table_header -->
 
 <!-- BEGIN rows -->
 <tr><td bgcolor="{row_color}" valign="top" nowrap="nowrap">{fieldname}&nbsp;{tipmouseover}</td>
@@ -137,22 +139,23 @@ document.onmousemove=positiontip
 <!-- END many_to_many -->
 
 
-<!-- BEGIN form_footer -->
-	</tr>
-	<tr><td colspan="2" bgcolor="{row_color}" align="center">{repeat_buttons}&nbsp;</td></tr>
-	<tr><td colspan="2" >
-	<table align="right" style="background-color:#ffffff">
-	<tr>
-	<td><input type="submit" name="continue" value="{add_edit_button_continue}"></td>
-	<td><input type="submit" name="save" value="{add_edit_button}"></td>
-<!--	<td><input type="reset" value="{reset_form}"></td>-->
-	<td><input type="submit" name="delete" value="{delete}"></td>
-	<td>{cancel}</td>
-	</tr>
-	</table>
-	</td></tr>
-</table>
-</form>
 
+<!-- BEGIN form_buttons -->
+	<table style="background-color:#ffffff">
+		<tr>
+		<td><input type="submit" name="continue" value="{save_button}"></td>
+<td><input type="{save_and_add_new_button_submit}" {save_and_add_new_button_onclick} name="add_new" value="{save_and_add_new_button}"></td>
+		<td><input type="submit" name="save" value="{save_and_return_button}"></td>
+		<td><input type="hidden" name="delete"> <input type="submit"  name="delete" value="{delete}"></td>
+		<td>{cancel}</td>
+		</tr>
+	</table>
+<!-- END form_buttons -->
+
+<!-- BEGIN form_footer -->
+</form>
 <!-- END form_footer -->
+
+
+
 

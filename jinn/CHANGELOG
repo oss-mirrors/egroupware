@@ -3,6 +3,16 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.206
+Thu Jan  6 17:15:14 CET 2005
+=============================
+- Better button layout for add/edit screens
+- (Re)implement "add new record button" after editing or add the last one
+- Add dbfieldtype float
+- Add extra where sql field to objects table
+- Implement extra object filter on record_list
+- ORDER objects in edit_site default by name
+
 Version 0.8.205c
 Thu Dec 30 22:24:12 CET 2004
 =============================

@@ -159,19 +159,23 @@ function onSubmitForm()
 <!-- END many_to_many -->
 
 
-<!-- BEGIN form_footer -->
+<!-- BEGIN form_buttons -->
 	<table>
 	<tr><td colspan="2" >
 		<table align="right" style="background-color:#ffffff">
 			<tr>
-			<td><input type="submit" name="continue" value="{add_edit_button_continue}"></td>
-			<td><input type="submit" name="save" value="{add_edit_button}"></td>
+			<td><input type="submit" name="continue" value="{save_button}"></td>
+	<td><input type="{save_and_add_new_button_submit}" {save_and_add_new_button_onclick} name="add_new" value="{save_and_add_new_multi_button}"></td>
+			<td><input type="submit" name="save" value="{save_and_return_button}"></td>
 			<td><input type="hidden" name="delete"> <input type="submit"  name="delete" value="{delete}"></td>
 			<td>{cancel}</td>
 			</tr>
 		</table>
 	</td></tr>
 	</table>
+<!-- END form_buttons -->
+
+<!-- BEGIN form_footer -->
 </form>
 <!-- END form_footer -->
 

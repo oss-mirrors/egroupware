@@ -194,6 +194,35 @@
 	}
 
 
+	/**
+	* DEFAULT/FALLBACK FLOAT PLUGIN 
+	*/
+	$this->plugins['def_float']['name'] 			= 'def_float';
+	$this->plugins['def_float']['title']			= 'default float plugin';
+	$this->plugins['def_float']['version']		= '1.0';
+	$this->plugins['def_float']['author']			= 'Pim Snel';
+	$this->plugins['def_float']['enable']			= 1;
+	$this->plugins['def_float']['default']		= 1;
+	$this->plugins['def_float']['description']	= 'Default field plugin for handeling floateger fields';
+	$this->plugins['def_float']['db_field_hooks']	= array
+	(
+	   'float'
+	);
+
+	function plg_fi_def_float($field_name,$value, $config,$attr_arr)
+	{
+		$input='<input type="text" name="'.$field_name.'" size="10" value="'.$value.'">';
+
+		return $input;
+	}
+
+	function plg_bv_def_float($value, $config,$attr_arr)
+	{
+	   return $value;   		
+	}
+	
+
+	
 	
 	/**
 	* DEFAULT/FALLBACK INTEGER PLUGIN 

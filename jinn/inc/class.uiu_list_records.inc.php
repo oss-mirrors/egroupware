@@ -371,6 +371,8 @@
 			   $akey_arr[]=$onecol[name];
 			}
 
+
+			
 			/* format quick_filter condition 
 			fixme make general function in so
 			*/
@@ -395,6 +397,22 @@
 
 		 }
 
+		 //fixme start of object filters
+		 if($this->bo->site_object[extra_where_sql_filter])
+		 {
+			if ($where_condition) 
+			{
+			   $where_condition.= " AND ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			}
+			else
+			{
+			   $where_condition= " ({$this->bo->site_object[extra_where_sql_filter]})"; 	
+			}
+		 }
+
+
+
+		 
 		 //fixme start of advanced filters
 		 if($adv_filter_str)
 		 {
@@ -407,6 +425,8 @@
 			   $where_condition= " ($adv_filter_str)"; 	
 			}
 		 }
+
+		
 
 		 /* which/how many column to show, all, the prefered, or the default thirst 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')

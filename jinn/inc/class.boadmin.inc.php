@@ -490,14 +490,14 @@
 
 	  }
 
-	  function get_phpgw_records($table,$where_key,$where_value,$offset,$limit,$value_reference)
+	  function get_phpgw_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by=false)
 	  {
 		 if (!$value_reference)
 		 {
 			$value_reference='num';
 		 }
 
-		 $records = $this->so->get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference);
+		 $records = $this->so->get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by);
 
 		 return $records;
 	  }
