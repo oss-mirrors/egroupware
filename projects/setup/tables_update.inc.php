@@ -152,7 +152,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array('id','num'),
 			'uc' => array()
 		);
 
@@ -222,7 +222,7 @@
 
 		$phpgw_setup->oProc->AddColumn('phpgw_p_projects','access',array('type' => 'varchar','precision' => 7,'nullable' => True));
 		$phpgw_setup->oProc->AddColumn('phpgw_p_projects','category',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
-		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','status',array('type' => 'varchar','precision' => 5,'default' => 'active','nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_projects','status',array('type' => 'varchar','precision' => 9,'default' => 'active','nullable' => False));
 
 		$setup_info['projects']['currentver'] = '0.8.4.003';
 		return $setup_info['projects']['currentver'];
@@ -245,6 +245,9 @@
 	function projects_upgrade0_8_4_004()
 	{
 		global $setup_info,$phpgw_setup;
+
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_activities','remarkreq',array('type' => 'char','precision' => 1,'default' => 'N','nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_projectactivities','billable',array('type' => 'char','precision' => 1,'default' => 'N','nullable' => False));
 
 		$setup_info['projects']['currentver'] = '0.8.4.005';
 		return $setup_info['projects']['currentver'];
