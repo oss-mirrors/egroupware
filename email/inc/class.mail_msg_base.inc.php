@@ -49,8 +49,8 @@
 	// use message UIDs instead of "message sequence numbers" in requests to the mail server
 	var $force_msg_uids = True;
 	// if an existing mail_dcom object exists from a prev request, attempt to adopt and re-use it
-	var $reuse_existing_obj = True;
-	//var $reuse_existing_obj = False;
+	//var $reuse_existing_obj = True;
+	var $reuse_existing_obj = False;
 	
 	// ---- Data Caching  ----
 	// (A) session data caching in appsession, for data that is temporary in nature
@@ -75,10 +75,11 @@
 	
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
 	var $debug_logins = 0;
-	var $debug_caching = 0;
 	var $debug_session_caching = 0;
+	var $debug_longterm_caching = 0;
 	var $debug_accts = 0;
-	var $debug_args_flow = 0;
+	var $debug_args_input_flow = 0;
+	var $debug_args_oop_access = 0;
 	var $debug_args_special_handlers = 0;
 	//var $skip_args_special_handlers = 'get_mailsvr_callstr, get_mailsvr_namespace, get_mailsvr_delimiter, get_folder_list';
 	//var $skip_args_special_handlers = 'get_folder_list';
@@ -149,13 +150,46 @@
 		if ($this->debug_logins > 1) { echo 'mail_msg: *constructor*: $this->acctnum = ['.$this->acctnum.'] ; $this->a  Dump<pre>'; print_r($this->a); echo '</pre>'; }
 		
 		$this->known_external_args = array(
+			// === NEW GPC "OBJECTS" or Associative Arrays === 
+			// msgball "object" is a message-descriptive "object" or associative arrays that has all
+			// important message reference data as array data, passed via URI (real or embedded)
+			'msgball',
+			// fldball "object" is an assiciative array of folder data passed via URI (real or embedded)
+			'fldball',
+			
+			// === NEW HTTP POST VARS Embedded Associative Arrays === 
+			// "fldball_fake_uri" HTTP_POST_VARS varsion of a URI GET "fldball"
+			// usually sourced from a folder combobox where HTML only allows a single value to be passed
+			// thus we make a string in the syntax of a URI to contain multiple data values in that single HTML element
+			// in this way we embed extra data in an otherwise very limiting HTML element
+			// note: even php's POST vars array handling can not do anything with a HTML combobox option value.
+			// example: POST data
+			// folder_fake_uri="fldball['folder']=INBOX&fldball['acctnum']=0"
+			// Will be processed into this (using php function "parse_str()" to emulate URI GET behavior)
+			// fldball[folder] => INBOX
+			// fldball[acctnum] => 0
+			'fldball_fake_uri',
+			
+			// "delmov_list_fake_uri"
+			// comes from the checkbox form data in uiindex.index page, where multiple 
+			// boxes may be checked but the POST data is limited to a simple string per checkbox,
+			// so additional information is embedded in delmov_list_fake_uri and converted to an 
+			// associative array via php function "parse_str"
+			//'delmov_list_fake_uri',
+			'delmov_list',
+			// if moving msgs, this is where they should go
+			'to_fldball_fake_uri',
+			'to_fldball',
+			
 			// === SORT/ORDER/START === 
 			// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
 			'sort',
 			'order',
 			'start',
+			
 			// newsmode is NOT yet implemented
-			'newsmode',
+			//'newsmode',
+			
 			// === REPORT ON MOVES/DELETES ===
 			// ----  td, tm: integer  ----
 			// ----  tf: string  ----
@@ -167,17 +201,32 @@
 			'td',
 			'tm',
 			'tf',
+			
 			// === MOVE/DELETE MESSAGE INSTRUCTIONS ===
 			// ----  what: string ----
 			// USAGE: 
 			// (outgoing) class.uiindex "move", "delall"
 			//	used with msglist (see below) an array (1 or more) of message numbers to move or delete
+			//	AND with "toacctnum" which is the acctnum associated with the "tofolder"
 			// (outgoing) message.php: "delete" used with msgnum (see below) what individual message to delete
 			// (in) class.boaction: instruction on what action to preform on 1 or more message(s) (move or delete)
 			'what',
-			'tofolder',
+				//'tofolder',
+				//'toacctnum',
+			// *update*
+			// both "tofolder" and "toacctnum" are incorporated into "delmov_list" which is a msgball list of
+			// msgball's which are message-descriptive "objects" or associative arrays that have all
+			// the necessary data on each message that is to be deleted or moved.
+			// the iuindex.index page uses the same form with different submit buttons (what)
+			// so the "delmov_list" is applicable to either deleting or moving messages depending
+			// on which submit button was clicked
+			// 'delmov_list', (see above)
+			
 			// (passed from class.uiindex) this may be an array of numbers if many boxes checked and a move or delete is called
-			'msglist',
+			//'msglist',
+			
+			// *update* "msglist" is being depreciated!
+			
 			// === INSTRUCTIONS FOR ACTION ON A MESSAGE OR FOLDER ===
 			// ----  action: string  ----
 			// USAGE:
@@ -189,23 +238,31 @@
 			// (c) send_message.php: when set to "forward" and used with "fwd_proc" instructs on how to construct
 			//	the SMTP mail
 			'action',
+			
 			// === MESSAGE NUMBER AND MIME PART REFERENCES ===
-			// msgnum: integer 
+			// *update* now in msgball
+			// msgnum: integer			
 			// USAGE:
 			// (a) class.boaction, called from from message.php: used with "what=delete" to indicate a single message for deletion
 			// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
 			// (c) boaction.get_attach: the msgnum of the email that contains the desired body part to get
-			'msgnum',
+			// *update* now in msgball
+			//'msgnum',
+			
 			// ----  part_no: string  ----
 			// representing a specific MIME part number (example "2.1.2") within a multipart message
 			// (a) compose.php: used in combination with msgnum
 			// (b) boaction.get_attach: used in combination with msgnum
-			'part_no',
+			
+			// *update* now in msgball
+			//'part_no',
+			
 			// ----  encoding: string  ----
 			// USAGE: "base64" "qprint"
 			// (a) compose.php: if replying to, we get the body part to reply to, it may need to be un-qprint'ed
 			// (b) boaction.get_attach: appropriate decoding of the part to feed to the browser 
 			'encoding',
+			
 			// ----  fwd_proc: string  ----
 			// USAGE: "encapsulation", "pushdown (not yet supported 9/01)"
 			// (outgoing) message.php much detail is known about the messge, there the forward proc method is determined
@@ -217,19 +274,27 @@
 			// this info is passed to the browser to help the browser know what to do with the part
 			// (outgoing) message.php: "name" is set in the link to the addressbook,  it's the actual "personal" name part of the email address
 			// boaction.get_attach: the name of the attachment
+			
+			// NOT in msgball, with the other data already in msgball, it should be obvious 
+			// what these items are ment to apply to
 			'name',
 			'type',
 			'subtype',
+			
 			// === FOLDER ADD/DELETE/RENAME & DISPLAY ===
 			// ----  "target_folder" , "source_folder" (source used in renaming only)  ----
 			// (outgoing) and (in) folder.php: used with "action" to add/delete/rename a mailbox folder
 			// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
-			'target_folder',			
-			'source_folder',
+			//'target_folder',
+			'target_fldball',
+			//'source_folder',
+			'source_fldball',
+			'source_fldball_fake_uri',
 			// ----  show_long: unset / true  ----
 			// folder.php: set there and sent back to itself
 			// if set - indicates to show 'long' folder names with namespace and delimiter NOT stripped off
-			'show_long',			
+			'show_long',
+			
 			// === COMPOSE VARS ===
 			// as most commonly NOT used with "mailto" then the following applies
 			//	(if used with "mailto", less common, then see "mailto" below)
@@ -268,6 +333,7 @@
 			// (a) send_message.php: will add the flag, if present, to the header of outgoing mail
 			// (b) message.php: identify the flag and call a custom proc
 			'msgtype',
+			
 			// === MAILTO URI SUPPORT ===
 			// ----  mailto: unset / ?set?  ----
 			// USAGE:
@@ -276,29 +342,42 @@
 			//	indicates that to, cc, and subject should be treated as simple MAILTO args
 			'mailto',
 			'personal',
+			
 			// === MESSAGE VIEWING MODS ===
 			// ----  no_fmt: set-True/unset  ----
 			// USAGE:
 			// (in and outgoing) message.php: will display plain body parts without any html formatting added
 			'no_fmt',
+			
 			// === VIEW HTML INSTRUCTIONS ===
+			// html_part: string : actually a pre-processed HTML/RELATED MIME part with
+			// the image ID's swapped with msgball data for each "related" image, so the 
+			// MUA may obtain the images from the email server using these msgball details
 			'html_part',
+			
 			// === FOLDER STATISTICS - CALCULATE TOTAL FOLDER SIZE
 			// as a speed up measure, and to reduce load on the IMAP server
 			// there is an option to skip the calculating of the total folder size
 			// user may request an override of this for 1 page view
 			'force_showsize',
+			
 			// === SEARCH RESULT MESSAGE SET ===
 			'mlist_set',
+			// *update* DEPRECIATED - not yet fixed
+			
 			// === THE FOLDER ARG ===
 			// used in almost every procedure, IMAP can be logged into only one folder at a time
 			// and POP3 has only one folder anyway (INBOX)
 			// this *may* be overrided elsewhere in the class initialization and/or login
 			// if not supplied anywhere, then INBOX is the assumed default value for "folder"
+			
+			// *update* "folder" obtains it's value from (1) args_array, (2) fldball, (3) msgball, (4) default "INBOX"
 			'folder',
+			
 			// which email account is the object of this operation
-			'acctnum'
-		);
+			// *update* now in fldball
+			//'acctnum',
+			);
 		
 		$this->known_internal_args = array(
 			// === OTHER ARGS THAT ARE USED INTERNALLY  ===
@@ -309,6 +388,9 @@
 			'mailsvr_delimiter',
 			'mailsvr_stream',
 			'mailsvr_account_username',
+			
+			/*
+			// DEPRECIATED
 			// these are the supported menuaction strings
 			'index_menuaction',
 			'mlist_menuaction',
@@ -318,6 +400,7 @@
 			'send_menuaction',
 			'get_attach_menuaction',
 			'view_html_menuaction',
+			*/
 			// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 			'index_refresh_uri',
 			// experimental: Set Flag indicative we've run thru this function
@@ -400,7 +483,68 @@
 		
 		// ====  Already Logged In / Reuse Existing ?  =====
 		// IF RE-USING YOU BETTER FEED THE DESIRED FOLDER IN "$args_array['folder']"
+		// or better yet: IF RE-USING YOU BETTER FEED THE DESIRED FOLDER IN "$args_array['fldball']['folder'] " or ['msgball']['folder']
 		// IF RE-USING YOU BETTER MAKE SURE THE CORRECT ACCTNUM IS SET via "get_acctnum"/"set_acctnum"
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: get acctnum from feed args if possible<br>'; }
+		$found_acctnum = False;
+		while(list($key,$value) = each($args_array))
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) this loop feed arg : ['.$key.'] => ['.serialize($args_array[$key]).'] <br>'; }
+			// try to find feed acctnum value
+			if ($key == 'fldball')
+			{
+				$fldball = $args_array[$key];
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in $fldball[] : '.serialize($fldball).'<br>'; }
+				$acctnum = (int)$fldball['acctnum'];
+				
+				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from fldball : ['.$acctnum.']<br>'; }
+				$this->set_acctnum($acctnum);
+				$found_acctnum = True;
+				break;
+			}
+			elseif ($key == 'msgball')
+			{
+				$msgball = $args_array[$key];
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in $msgball[] : '.serialize($msgball).'<br>'; }
+				$acctnum = (int)$msgball['acctnum'];
+				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from msgball : ['.$acctnum.']<br>'; }
+				$this->set_acctnum($acctnum);
+				$found_acctnum = True;
+				break;
+			}
+			elseif ($key == 'acctnum')
+			{
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) feed args passed in "acctnum" : '.serialize($args_array[$key]).'<br>'; }
+				$acctnum = (int)$args_array[$key];
+				// SET OUR ACCTNUM ACCORDING TO FEED ARGS
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) SETTING ACCTNUM from "acctnum" feed args : ['.$acctnum.']<br>'; }
+				$this->set_acctnum($acctnum);
+				$found_acctnum = True;
+				break;
+			}
+		}
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: (acctnum search) locate acctnum in feed args $found_acctnum result ['.serialize($found_acctnum).'] <br>'; }
+		
+		// grab GPC values, only pass an acctnumm to that function if we already found it
+		if ($found_acctnum == True)
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc is being called WITH already found acctnum: ('.serialize($acctnum).')<br>'; }
+			$this->grab_class_args_gpc($acctnum);
+		}
+		else
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: grab_class_args_gpc is being called with NO acctnum yet having been found<br>'; }
+			$this->grab_class_args_gpc();
+		}
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_all_args() dump <pre>';  print_r($this->get_all_args()); echo '</pre>'; }
+		// grab_class_args_gpc will look for an acctnum in GPC values if one is not yet found
+		// grab_class_args_gpc will ASSIGN A DEFAULT acctnum if NONE is foud anywhere
+		// so by now, WE HAVE AN ACCT NUM
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_acctnum() returns: '.serialize($this->get_acctnum()).'<br>'; }
+		
+		// attempt to reuse an existing stream
 		if (($this->reuse_existing_obj == True)
 		&& ($this->is_logged_in() == True))
 		{
@@ -417,16 +561,35 @@
 					// put the raw data (value) for this particular arg into a local var
 					$new_arg_value = $args_array[$key];
 					// replace the previously existing class arg with this
-					if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: $this->set_arg_value('.$key.', '.$new_arg_value.');<br>'; }
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: feed_args loading into class args ('.$key.', '.$new_arg_value.');<br>'; }
 					// ONLY BECAUSE we are already logged in, we can call prep_folder_in, which calls "folder_lookup" which needs an active login
 					// AND since the folder arg is *always* prep'd out for transit over the ether
 					// it must be pred'd in here, if we were not re-using existing, this would happen below anyway, after the login occured
-					if ($key == 'folder')
+					if ($key == 'fldball')
 					{
-						$preped_folder = $this->prep_folder_in($new_arg_value);
-						if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: the folder arg passed in $args_array[] must be prep-ed in, b4=['.$new_arg_value.'], after=['.$preped_folder.']<br>'; }
-						$new_arg_value = $preped_folder;
+						$fldball = $args_array[$key];
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: feed args passed in $fldball[] : '.serialize($fldball).'<br>'; }
+						$preped_folder = $this->prep_folder_in($fldball['folder']);
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: fldball folder prep-ed in, b4=['.$fldball['folder'].'], after=['.$preped_folder.']<br>'; }
+						$fldball['folder'] = $preped_folder;
+						// SET GENERIC FOLDER VALUE FOR BACKWARDS COMPAT
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: set generic "folder" arg from the $fldball[folder] prep value ['.$preped_folder.']<br>'; }
+						$this->set_arg_value('folder', $preped_folder);
+						$new_arg_value = $fldball;
 					}
+					elseif ($key == 'msgball')
+					{
+						$msgball = $args_array[$key];
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: feed args passed in $msgball[] : '.serialize($msgball).'<br>'; }
+						$preped_folder = $this->prep_folder_in($msgball['folder']);
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: msgball folder prep-ed in, b4=['.$msgball['folder'].'], after=['.$preped_folder.']<br>'; }
+						$msgball['folder'] = $preped_folder;
+						// SET GENERIC FOLDER VALUE FOR BACKWARDS COMPAT
+						if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: set generic "folder" arg from the $msgball[folder] prep value ['.$preped_folder.']<br>'; }
+						$this->set_arg_value('folder', $preped_folder);
+						$new_arg_value = $msgball;
+					}
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->set_arg_value('.$key.', '.$new_arg_value.');<br>'; }
 					$this->set_arg_value($key, $new_arg_value);
 				}
 			}
@@ -481,18 +644,20 @@
 		
 		// ----  Things To Be Done Whether You Login Or Not  -----
 		// Grab GPC vars, they'll go into the "args" data
-		if ( ($this->get_isset_arg('already_grab_class_args_gpc'))
-		&& ((string)$this->get_arg_value('already_grab_class_args_gpc') != '') )
-		{
-			// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'; }
-			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
-		}
-		else
-		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'; }
-			$this->grab_class_args_gpc();
-		}
+		// already did this above
+		//if ( ($this->get_isset_arg('already_grab_class_args_gpc'))
+		//&& ((string)$this->get_arg_value('already_grab_class_args_gpc') != '') )
+		//{
+		//	// somewhere, there's already been a call to grab_class_args_gpc(), do NOT re-run
+		//	if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is set, do not re-grab<br>'; }
+		//	if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" pre-existing $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()) ; echo '</pre>';}
+		//}
+		//else
+		//{
+		//	if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: "already_grab_class_args_gpc" is NOT set, call grab_class_args_gpc() now<br>'; }
+		//	$this->grab_class_args_gpc();
+		//}
+		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: PRE create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
 		// ----  Obtain Preferences Data  ----
 		$tmp_prefs = array();
@@ -674,8 +839,15 @@
 			
 			//  ----  Get Folder Value  ----
 			// ORDER OF PREFERENCE for pre-processed "folder" input arg
-			// (1) $args_array['folder'] , IF FILLED, overrides any previous data or any other data source
-			// (2) if it is already set, (probably in the POST/GET folder arg) then use that
+			// (1) $args_array, IF FILLED, overrides any previous data or any other data source, look for these:
+			//	$args_array['msgball']['folder']
+			//	$args_array['fldball']['folder']
+			//	$args_array['folder']
+			// (2) GPC ['msgball']['folder']
+			// (3) GPC ['fldball']['folder']
+			// (4) if "folder" arg it is already set, (probably during the reuse attempt, probably obtained from $args_array alreadt) then use that
+			// (5) default to blank string, which "prep_folder_in()" changes to defaultg value INBOX
+			
 			// note: it's OK to send blank string to "prep_folder_in", because it will return a default value of "INBOX"
 			if ((isset($args_array['folder']))
 			&& ($args_array['folder'] != ''))
@@ -683,15 +855,42 @@
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $args_array[folder] ('.$args_array['folder'].') over any existing "folder" arg<br>'; }
 				$input_folder_arg = $args_array['folder'];
 			}
-			elseif ($this->get_isset_arg('folder'))
+			elseif ($this->get_isset_arg('["msgball"]["folder"]'))
 			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $args_array[folder] not set, so $input_folder_arg chooses $this->get_arg_value(folder): ['.$this->get_arg_value('folder').']<br>'; }
-				$input_folder_arg = $this->get_arg_value('folder');
+				$input_folder_arg = $this->get_arg_value('["msgball"]["folder"]');
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this->get_arg_value(["msgball"]["folder"]): ['.$input_folder_arg.']<br>'; }
+			}
+			elseif ($this->get_isset_arg('["fldball"]["folder"]'))
+			{
+				$input_folder_arg = $this->get_arg_value('["fldball"]["folder"]');
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this->get_arg_value(["fldball"]["folder"]): ['.$input_folder_arg.']<br>'; }
+			}
+			elseif ($this->get_isset_arg('delmov_list'))
+			{
+				$this_delmov_list = $this->get_arg_value('delmov_list');
+				$input_folder_arg = $this_delmov_list[0]['folder'];
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg chooses $this_delmov_list[0][folder]: ['.$input_folder_arg.']<br>'; }
 			}
 			else
 			{
-				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: neither $args_array[folder] nor $this->get_arg_value(folder) has a value, so $input_folder_arg takes an empty string<br>'; }
-				$input_folder_arg = '';
+				if (($this->get_isset_arg('folder'))
+				&& ((string)trim($this->get_arg_value('folder')) != ''))
+				{
+					$input_folder_arg = $this->get_arg_value('folder');
+				}
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $input_folder_arg *might* chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
+				
+				$input_folder_arg = (string)$input_folder_arg;
+				$input_folder_arg = trim($input_folder_arg);
+				if ($input_folder_arg != '')
+				{
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->get_arg_value(folder) passes test, so $input_folder_arg chooses $this->get_arg_value(folder): ['.serialize($input_folder_arg).']<br>'; }
+				}
+				else
+				{
+					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: no folder value found, so $input_folder_arg takes an empty string<br>'; }
+					$input_folder_arg = '';
+				}
 			}
 			// ---- Prep the Folder Name (remove encodings, verify it's long name (with namespace)
 			// folder prepping does a lookup which requires a folder list which *usually* (unless caching) requires a login
@@ -1268,17 +1467,23 @@
 	*/
 	function get_folder_list($mailsvr_stream='', $force_refresh=False)
 	{
+		// what acctnum is operative here, we can only get a folder list for one account at a time (obviously)
+		$this_acctnum = $this->get_acctnum();
+		
+		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: ENTERING<br>'; }
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: for the rest of this function we will use $this_acctnum: ['.$this_acctnum.'] <br>'; }
+		
 		if (stristr($this->skip_args_special_handlers, 'get_folder_list'))
 		{
 			$fake_return = array();
 			$fake_return[0] = array();
 			$fake_return[0]['folder_long'] = 'INBOX';
 			$fake_return[0]['folder_short'] = 'INBOX';
-			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: debug SKIP, $fake_return: '.serialize($fake_return).' <br>'; }
+			$fake_return[0]['acctnum'] = $this_acctnum;
+			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING, debug SKIP, $fake_return: '.serialize($fake_return).' <br>'; }
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: ENTERING <br>'; }
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $$this->_direct_access_arg_value(folder_list) dump:<pre>'; print_r($this->_direct_access_arg_value('folder_list')); echo '</pre>'; }
 		
 		if ((!$mailsvr_stream)
@@ -1286,15 +1491,15 @@
 		{
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
 		}
-
+		
 		// check if class dcom reports that the folder list has changed
-		if ((isset($this->a[$this->acctnum]['dcom']))
-		&& ($this->a[$this->acctnum]['dcom']->folder_list_changed == True))
+		if ((isset($this->a[$this_acctnum]['dcom']))
+		&& ($this->a[$this_acctnum]['dcom']->folder_list_changed == True))
 		{
 			// class dcom recorded a change in the folder list
 			// supposed to happen when create or delete mailbox is called
 			// reset the changed flag
-			$this->a[$this->acctnum]['dcom']->folder_list_changed = False;
+			$this->a[$this_acctnum]['dcom']->folder_list_changed = False;
 			// set up for a force_refresh
 			$force_refresh = True;
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: class dcom report folder list changed<br>'; }
@@ -1328,6 +1533,7 @@
 			$my_folder_list[0] = array();
 			$my_folder_list[0]['folder_long'] = 'INBOX';
 			$my_folder_list[0]['folder_short'] = 'INBOX';
+			$my_folder_list[0]['acctnum'] = $this_acctnum;
 			// save result to "Level 1 cache" class arg holder var
 			$this->set_arg_value('folder_list', $my_folder_list);
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_folder_list: LEAVING,  pop3 servers only have one folder: INBOX<br>'; }
@@ -1345,11 +1551,11 @@
 			if ($cached_data)
 			{
 				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: using *Prefs DB* cached folder list data<br>';}
-				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: setting object var $this->a['.$this->acctnum.'][folder_list] to hold list data<br>';}
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: setting object var $this->a['.$this_acctnum.'][folder_list] to hold list data<br>';}
 				// cached folder list does NOT contain "folder_short" data
 				// that cuts cached data in 1/2, no need to cache something this easy to deduce
 				// therefor... add FOLDER SHORT element to cached_data array structure
-				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: adding [folder_short] element to $this->a['.$this->acctnum.'][folder_list] array<br>';}
+				if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: adding [folder_short] element to $this->a['.$this_acctnum.'][folder_list] array<br>';}
 				for ($i=0; $i<count($cached_data);$i++)
 				{
 					$cached_data[$i]['folder_short'] = $this->get_folder_short($cached_data[$i]['folder_long']);
@@ -1367,7 +1573,7 @@
 			}
 		}
 		
-		// if we get here we must actually get the data
+		// if we get here we must actually get the data from the mailsvr
 		// otherwise we would have return/broke out of this function
 		// only IF statement above that allows code to reach here is if we are allowed to use
 		// cached data, BUT none exists
@@ -1393,7 +1599,7 @@
 			// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
 			// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
 			// BUT we use <tilde><slash> "~/" if no namespace is given
-			$mailboxes = $this->a[$this->acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
 			// UWASH IMAP returns information in this format:
 			// {SERVER_NAME:PORT}FOLDERNAME
 			// example:
@@ -1408,10 +1614,10 @@
 			// wheres adding the delimiter "INBOX.*" (has dot) will NOT include the INBOX in the list of folders
 			// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 			// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-			//$mailboxes = $this->a[$this->acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
+			//$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
 			// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
 			// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
-			$mailboxes = $this->a[$this->acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
+			$mailboxes = $this->a[$this_acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
 			// returns information in this format:
 			// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 			// example:
@@ -1431,6 +1637,7 @@
 			$my_folder_list[0] = array();
 			$my_folder_list[0]['folder_long'] = 'INBOX';
 			$my_folder_list[0]['folder_short'] = 'INBOX';
+			$my_folder_list[0]['acctnum'] = $this_acctnum;
 			// save result to "Level 1 cache" class arg holder var
 			$this->set_arg_value('folder_list', $my_folder_list);
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: error, no mailboxes returned from server, fallback to "INBOX" as only folder, $this->set_arg_value(folder_list, $my_folder_list) to hold that value<br>'; }
@@ -1482,12 +1689,15 @@
 			// "is_imap_folder" really just a check on what UWASH imap returns, may be files that are not MBOX's
 			if ($this->is_imap_folder($mailboxes[$i]))
 			{
-				//$this->a[$this->acctnum]['folder_list'][$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
+				//$this->a[$this_acctnum]['folder_list'][$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
 				// what we (well, me, Angles) calls a "folder long" is the raw data returned from the server (fully qualified name)
 				// MINUS the bracketed server, so we are calling "folder long" a NAMESPACE_DELIMITER_FOLDER string
 				// WITHOUT the {serverName:port} part, if that part is included we (Angles) call this "fully qualified"
 				$next_idx = count($my_folder_list);
 				$my_folder_list[$next_idx]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
+				// AS SOON as possible, add data indicating WHICH ACCOUNT this folder list came from
+				// while it is still somewhat easy to determine this
+				$my_folder_list[$next_idx]['acctnum'] = $this_acctnum;
 			}
 		}
 		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: my_folder_list with only "folder_long" dump<pre>'; print_r($my_folder_list); echo '</pre>'; }

@@ -108,7 +108,7 @@
 
 
 			$not_set = $GLOBALS['phpgw']->msg->not_set;
-						
+			$msgball = $GLOBALS['phpgw']->msg->get_pref_value('msgball');
 			/*
 			// -- debug ----
 			$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($to);
@@ -511,7 +511,7 @@
 				$this->mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 				
 				// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-				$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader(''));
+				$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader());
 				$fwd_this['sub_header'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_header']);
 				
 				// CLENSE headers of offensive artifacts that can confuse dumb MUAs

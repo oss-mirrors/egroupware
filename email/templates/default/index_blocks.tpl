@@ -24,7 +24,7 @@ function do_navigate(act)
 <tr bgcolor="{arrows_backcolor}">
 	<td width="2%" align="left" valign="top">
 		<form method="POST" action="{arrows_form_action}" name="{arrows_form_name}">
-		<input type="hidden" name="folder" value="{current_folder}">
+		<input type="hidden" name="fldball_fake_uri" value="{current_fldball_fake_uri}">
 		<input type="hidden" name="sort" value="{current_sort}">
 		<input type="hidden" name="order" value="{current_order}">
 		<!-- bogus initial start value, will be changed by on click call -->
@@ -77,7 +77,7 @@ function do_navigate(act)
 <tr>
 	<td bgcolor="{mlist_backcolor}" align="center">
 	<!-- INIT FORM ONCE -->{V_mlist_form_init}
-		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
+		<input type="checkbox" name="delmov_list[]" value="{mlist_msg_num}">
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
 		{mlist_attach}

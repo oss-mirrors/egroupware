@@ -28,12 +28,12 @@
 	$GLOBALS['phpgw']->template->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 
 // ----  Handle Replying and Forwarding  -----
-	if ($GLOBALS['phpgw']->msg->get_arg_value('msgnum'))
+	//if ($GLOBALS['phpgw']->msg->get_arg_value('msgnum'))
+	if ($GLOBALS['phpgw']->msg->get_arg_value('msgball'))
 	{
-		//$msg = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
-		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
-		//$struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
-		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
+		$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
+		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure($msgball);
 
 		if ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'reply')
 		{
@@ -128,13 +128,15 @@
 		// ----  Quoted Bodystring of Fw: or Re: Message is "First Presentable" from message.php  -----
 		// passed in the uri as "part_no"
 		// FUTURE: Forward needs entirely different handling
-		if (($GLOBALS['phpgw']->msg->get_isset_arg('part_no'))
-		&& ($GLOBALS['phpgw']->msg->get_arg_value('part_no') != '')
+		//if (($GLOBALS['phpgw']->msg->get_isset_arg('part_no'))
+		//&& ($GLOBALS['phpgw']->msg->get_arg_value('part_no') != '')
+		if (($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["part_no"]'))
+		&& ($GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["part_no"]') != '')
 		&& (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'reply')
 		  || ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'replyall')))
 		{
 			//$bodystring = $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream'), $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $GLOBALS['phpgw']->msg->get_arg_value('part_no'));
-			$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->get_arg_value('part_no'));
+			$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 			// see if we have to un-do qprint encoding
 			if ((($GLOBALS['phpgw']->msg->get_isset_arg('encoding')))
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint'))
@@ -301,7 +303,7 @@
 	}
 	else
 	{
-		// no var $phpgw->msg->msgnum  means we were not called by the reply, replyall, or forward
+		// no var $phpgw->msg-> msgball  means we were not called by the reply, replyall, or forward
 		// this typically is only called when the user clicks on a mailto: link in an html document
 		// this behavior defines what your "default mail app" is, i.e. what mail app is called when
 		// the user clicks a "mailto:" link
@@ -336,11 +338,11 @@
 	if ((($GLOBALS['phpgw']->msg->get_isset_arg('action')))
 	&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward'))
 	{
-		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php',
-		//	'action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
-		$send_btn_action = $GLOBALS['phpgw']->link('/index.php',
-				 $GLOBALS['phpgw']->msg->get_arg_value('send_menuaction')
+		$send_btn_action = $GLOBALS['phpgw']->link(
+				'/index.php',
+				'menuaction=email.bosend.send'
 				.'&action=forward'
+				.'&'.$msgball['uri']
 				.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 				.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		if (($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
@@ -354,7 +356,7 @@
 		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
 		$send_btn_action = $GLOBALS['phpgw']->link(
 					'/index.php',
-					$GLOBALS['phpgw']->msg->get_arg_value('send_menuaction'));
+					'menuaction=email.bosend.send');
 	}
 	
 	$tpl_vars = Array(

@@ -72,8 +72,9 @@ class mail_msg extends mail_msg_wrappers
 			'pre_select_folder'	=> '',
 			'skip_folder'		=> '',
 			'show_num_new'		=> False,
-			'widget_name'		=> 'folder',
-			'embeded_extra_data'	=> '',
+			'widget_name'		=> 'folder_fake_uri',
+			'folder_key_name'	=> 'folder',
+			'acctnum_key_name'	=> 'acctnum',
 			'on_change'		=> 'document.switchbox.submit()',
 			'first_line_txt'	=> lang('switch current folder to')
 		);		
@@ -116,19 +117,6 @@ class mail_msg extends mail_msg_wrappers
 		// at this point, local_args[] has anything that was passed in the feed_args[]
 		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
 		
-		// if "embeded_extra_data" make the value='' imitate URI type data,
-		// and append the "widget_name" with the special token "_fake_uri" and give the first data item
-		// the original name of the "widget_name
-		if ((isset($local_args['embeded_extra_data']))
-		&& ((string)$local_args['embeded_extra_data'] != ''))
-		{
-			$make_fake_uri = True;
-		}
-		else
-		{
-			$make_fake_uri = False;
-		}
-		
 		// init some important variables
 		$item_tags = '';
 		//$unseen_prefix = ' &lt;';  $unseen_suffix = ' new&gt;';	
@@ -157,11 +145,13 @@ class mail_msg extends mail_msg_wrappers
 		{
 			// get the actual list of folders we are going to put into the combobox
 			$folder_list = $this->get_folder_list('');
+			
 			// iterate thru the folder list, building the HTML tags using that data
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				$folder_long = $folder_list[$i]['folder_long'];
 				$folder_short = $folder_list[$i]['folder_short'];
+				$folder_acctnum = $folder_list[$i]['acctnum'];
 				// this logic determines if the combobox should be initialized with certain folder already selected
 				if ($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
 				{
@@ -174,32 +164,26 @@ class mail_msg extends mail_msg_wrappers
 				// this logic determines we should not include a certain folder in the combobox list
 				if ($folder_short != $this->get_folder_short($local_args['skip_folder']))
 				{
-					// if using "fake URI" type data, make that URI type data
-					if ($make_fake_uri == True)
-					{
-						// assemble the "fake_uri" style data, the first item takes on the original "widget_name"
-						$option_value = '&'.$local_args['widget_name'].'='.$this->prep_folder_out($folder_long)
-								//.'&acctnum='.$this->get_acctnum();
-								// YOU BETTER feed URI type syntax in here!
-								.$local_args['embeded_extra_data'];
-					}
-					else
-					{
-						// simple, plain value=data , no special tricks
-						$option_value = $this->prep_folder_out($folder_long);
-					}
+					// we need to make value="X" imitate URI type data, so we can embed the acctnum data 
+					// for the folder in there with folder name, whereas normally option value="X" can only 
+					// hold no nore than one data item as limited by BOTH html and php 's treatment of a combobox					
+					
+					$option_value =  '&'.$local_args['folder_key_name'].'='.$this->prep_folder_out($folder_long)
+							.'&'.$local_args['acctnum_key_name'].'='.$folder_acctnum;
 					
 					$item_tags = $item_tags .'<option value="'.$option_value.'"'.$sel.'>' .$folder_short;
+					
+					// "show_num_new" is currently BROKEN
 					// do we show the number of new (unseen) messages for this folder
-					if (($local_args['show_num_new'])
-					&& ($this->care_about_unseen($folder_short)))
-					{
-						$mailbox_status = $this->a[$this->acctnum]['dcom']->status($mailsvr_stream,$this->get_arg_value('mailsvr_callstr').$folder_long,SA_ALL);
-						if ($mailbox_status->unseen > 0)
-						{
-							$item_tags = $item_tags . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-						}
-					}
+					//if (($local_args['show_num_new'])
+					//&& ($this->care_about_unseen($folder_short)))
+					//{
+					//	$mailbox_status = $this->a[$this->acctnum]['dcom']->status($mailsvr_stream,$this->get_arg_value('mailsvr_callstr').$folder_long,SA_ALL);
+					//	if ($mailbox_status->unseen > 0)
+					//	{
+					//		$item_tags = $item_tags . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+					//	}
+					//}
 					$item_tags = $item_tags . "</option>\r\n";
 				}
 			}
@@ -216,12 +200,8 @@ class mail_msg extends mail_msg_wrappers
 		{
 			$on_change_tag = '';
 		}
-		// give our form a name, append with "_fake_uri" if we are using that kind of data
-		if ($make_fake_uri == True)
-		{
-			// appending the widget_name with "_fake_uri" tells the script what to do with this data
-			$local_args['widget_name'] = $local_args['widget_name'].'_fake_uri';
-		}
+		
+		// the widget_name with "_fake_uri" tells the script what to do with this data
 		$listbox_widget =
 			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
 				.'<option value="">'.$local_args['first_line_txt'].' '
@@ -319,7 +299,7 @@ class mail_msg extends mail_msg_wrappers
 		// == MSGNUM ==
 		// the current message number for the message we are concerned with here
 		if (($this->get_isset_arg('msgnum'))
-		&& ($this->get_arg_value('msgnum') != ''))
+		&& ($this->get_arg_value('["msgball"]["msgnum"]') != ''))
 		{
 			// we got a good value fed into the script externally
 		}
@@ -327,10 +307,10 @@ class mail_msg extends mail_msg_wrappers
 
 		if ($debug_sort)
 		{
-			echo 'sort: '.$this->get_arg_value('sort').'<br>';
-			echo 'order: '.$this->get_arg_value('order').'<br>';
-			echo 'start: '.$this->get_arg_value('start').'<br>';
-			echo 'msgnum: '.$this->get_arg_value('msgnum').'<br>';
+			echo 'sort: ['.$this->get_arg_value('sort').']<br>';
+			echo 'order: ['.$this->get_arg_value('order').']<br>';
+			echo 'start: ['.$this->get_arg_value('start').']<br>';
+			echo 'msgnum: ['.$this->get_arg_value('["msgball"]["msgnum"]').']<br>';
 		}
 	}
 	
@@ -342,23 +322,54 @@ class mail_msg extends mail_msg_wrappers
 		$debug_nav = False;
 		
 		$nav_data = array();
-		$nav_data['msg_array'] = $this->get_message_list();
-		$nav_data['msgnum_idx'] = $this->array_search_ex($this->get_arg_value('msgnum'), $nav_data['msg_array']);
+		$nav_data['msgball_list'] = $this->get_msgball_list();
+		//$nav_data['msgnum_idx'] = $this->array_search_ex($this->get_arg_value('["msgball"]["msgnum"]'), $nav_data['msgball_list']);
+		
+		// what is the array index number where the message in question is located in the $nav_data['msgball_list'] array
+		$nav_data['msgnum_idx'] = False;
+		$needle = $this->get_arg_value('["msgball"]["msgnum"]');
+		for($i=0;$i<$nav_data['msgball_list'];$i++)
+		{
+			if ((string)$nav_data['msgball_list'][$i]['msgnum'] == (string)$needle)
+			{
+				$nav_data['msgnum_idx'] = $i;
+				break;
+			}
+		}		
+		
 		// NOTE: msgnum_idx int 0 is NOT to be confused with "empty" nor "boolean False"
 		if ((isset($nav_data['msgnum_idx']))
 		&& ((string)$nav_data['msgnum_idx'] != ''))
 		{
 			$nav_data['active_msgnum_idx'] = $nav_data['msgnum_idx'];
 			$nav_data['lowest_left'] = 0;
-			$nav_data['highest_right'] = (count($nav_data['msg_array']) - 1);
-			$nav_data['next_msg'] = $nav_data['msg_array'][$nav_data['msgnum_idx'] + 1];
-			$nav_data['prev_msg'] = $nav_data['msg_array'][$nav_data['msgnum_idx'] - 1];
+			$nav_data['highest_right'] = (count($nav_data['msgball_list']) - 1);
+			// get msgball data for prev message in the msgball_list array
+			$prev_msg_idx = (int)($nav_data['msgnum_idx'] - 1);
+			if (isset($nav_data['msgball_list'][$prev_msg_idx]))
+			{
+				$nav_data['prev_msg']['msgball']['uri'] = $nav_data['msgball_list'][$prev_msg_idx]['uri'];
+			}
+			else
+			{
+				$nav_data['prev_msg'] = $this->not_set;
+			}
+			// get msgball data for next message in the msgball_list array
+			$next_msg_idx = (int)($nav_data['msgnum_idx'] + 1);
+			if (isset($nav_data['msgball_list'][$next_msg_idx]))
+			{
+				$nav_data['next_msg']['msgball']['uri'] = $nav_data['msgball_list'][$next_msg_idx]['uri'];
+			}
+			else
+			{
+				$nav_data['next_msg'] = $this->not_set;
+			}
 			$nav_data['method'] = 'new';
 		}
 		else
 		{
 			// fall back to old broken way
-			$nav_data['active_msgnum_idx'] = $this->get_arg_value('msgnum');
+			$nav_data['active_msgnum_idx'] = $this->get_arg_value('["msgball"]["msgnum"]');
 			$nav_data['lowest_left'] = 1;
 			$nav_data['highest_right'] = $old_method_totalmessages;
 			$nav_data['next_msg'] = $nav_data['active_msgnum_idx'] + 1;
@@ -945,7 +956,8 @@ class mail_msg extends mail_msg_wrappers
 			// ------  MAKE CLICKABLE HREF TO THIS PART  -------
 			
 			// make an URL and a Clickable Link to directly acces this part
-			$click_info = $this->make_part_clickable($part_nice[$i], $this->get_arg_value('folder'), $this->get_arg_value('msgnum'));
+			//$click_info = $this->make_part_clickable($part_nice[$i], $this->get_arg_value('folder'), $this->get_arg_value('["msgball"]["msgnum"]'));
+			$click_info = $this->make_part_clickable($part_nice[$i], $this->get_arg_value('msgball'));
 			$part_nice[$i]['ex_part_href'] = $click_info['part_href'];
 			$part_nice[$i]['ex_part_clickable'] = $click_info['part_clickable'];
 		}		
@@ -1271,7 +1283,7 @@ class mail_msg extends mail_msg_wrappers
 		return $smart_mime_number;
 	}
 
-	function make_part_clickable($part_nice, $folder, $msgnum)
+	function make_part_clickable($part_nice, $msgball)
 	{
 		$not_set = $this->not_set;
 		
@@ -1309,11 +1321,9 @@ class mail_msg extends mail_msg_wrappers
 		$url_part_name = urlencode($part_name);
 		// ex_part_href
 		$ex_part_href = $GLOBALS['phpgw']->link(
-			 '/index.php',
-			 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
-			.'&folder='.$this->prep_folder_out($folder)
-			.'&msgnum=' .$msgnum
-			.'&part_no=' .$m_part_num_mime
+			'/index.php',
+			'menuaction=email.boaction.get_attach'
+			.'&'.$msgball['uri'].'&msgball[part_no]='.$m_part_num_mime
 			.'&type=' .$url_part_type
 			.'&subtype=' .$url_part_subtype
 			.'&name=' .$url_part_name
@@ -1578,7 +1588,7 @@ class mail_msg extends mail_msg_wrappers
 		back_color	used in html UI's to alternate the color or each row of data
 		has_attachment	attachment dection code has determined that this message has attachment(s)
 				which tells the UI to show the user something, like a paperclip image.
-		msg_num	the number the mail server has assigned this message, used for fetching 
+		$msgnum	the number the mail server has assigned this message, used for fetching 
 		subject		message subject text suitable for display, text only
 		subject_link	URL that will request this message from the server, use with "subject" to make an HREF
 		size		message size suitable for display
@@ -1615,15 +1625,17 @@ class mail_msg extends mail_msg_wrappers
 	@discussion ?
 	@access : private
 	*/
-	function get_msg_list_display($folder_info='', $msg_nums_array='')
+	function get_msg_list_display($folder_info='', $msgball_list='')
 	{
+		$debug_msg_list_display	= 0;
+		
 		if(!$folder_info)
 		{
 			$folder_info=array();
 		}
-		if(!$msg_nums_array)
+		if(!$msgball_list)
 		{
-			$msg_nums_array = array();
+			$msgball_list = array();
 		}
 		// obtain required data that is not passed into this function
 		// if no $folder_info was passed as an arg, then $folder_info will be an array with 0 elements
@@ -1638,23 +1650,24 @@ class mail_msg extends mail_msg_wrappers
 			folder_info['alert_string'] string - lang'd string to show the user about status of new messages in this folder
 			folder_info['number_new'] integer - for IMAP: the number "recent" and/or "unseen"messages; for POP3: the total number of messages
 			folder_info['number_all'] integer - for IMAP and POP3: the total number messages in the folder
+			and some validity data used for caching.
 			*/
 		}
 		
 		// initialize return structure
-		$msg_list = Array();
+		$msg_list_display = Array();
 		// if no message are available to show, return an empty aray
 		if ($folder_info['number_all'] == 0)
 		{
-			return $msg_list;
+			return $msg_list_display;
 		}
 		
 		// we have messages to list, continue...
 		// if we were passed an array of message numbers to show, use that, if not then
 		// get a numbered array list of all message numbers in that folder, sorted and ordered
-		if (count($msg_nums_array) == 0)
+		if (count($msgball_list) == 0)
 		{
-			$msg_nums_array = $this->get_message_list();
+			$msgball_list = $this->get_msgball_list();
 		}
 
 		if ($folder_info['number_all'] < $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
@@ -1674,14 +1687,14 @@ class mail_msg extends mail_msg_wrappers
 		$x = -1;
 		for ($i=$this->get_arg_value('start'); $i < $totaltodisplay; $i++)
 		{
-			// we use $x to sequentially fill the $msg_list array
+			// we use $x to sequentially fill the $msg_list_display array
 			$x++;
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
-			$msg_list[$x]['first_item'] = ($i == $this->get_arg_value('start'));
+			$msg_list_display[$x]['first_item'] = ($i == $this->get_arg_value('start'));
 
 			// ROW BACK COLOR
-			$msg_list[$x]['back_color'] = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
-			//$msg_list[$x]['back_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($msg_list[$x-1]['back_color']);
+			$msg_list_display[$x]['back_color'] = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
+			//$msg_list_display[$x]['back_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($msg_list_display[$x-1]['back_color']);
 
 			// SHOW ATTACHMENT CLIP ?
 			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
@@ -1691,54 +1704,59 @@ class mail_msg extends mail_msg_wrappers
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// do Nothing - socket class pop3 not ready for this stress yet
-				$msg_list[$x]['has_attachment'] = False;
+				$msg_list_display[$x]['has_attachment'] = False;
 			}
 			else
 			{
 				// need Message Information: STRUCTURAL for this
-				$msg_structure = $this->phpgw_fetchstructure($msg_nums_array[$i]);
+				//$msg_structure = $this->phpgw_fetchstructure($msgball_list[$i]['msgnum']);
+				$msg_structure = $this->phpgw_fetchstructure($msgball_list[$i]);
 				// now examine that msg_struct for signs of an attachment
-				$msg_list[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
+				$msg_list_display[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
 			}
 
 			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
-			$hdr_envelope = $this->phpgw_header($msg_nums_array[$i]);
+			//$hdr_envelope = $this->phpgw_header($msgball_list[$i]['msgnum']);
+			$hdr_envelope = $this->phpgw_header($msgball_list[$i]);
 			
-			// MESSAGE REFERENCE NUMBER
-			$msg_list[$x]['msg_num'] = $msg_nums_array[$i];
-
+			// MESSAGE REFERENCE (a) NUMBER (b) FOLDER (c) ACCTNUM and (d) FAKE_URL EMBEDDED MULTI DATA
+			$msg_list_display[$x]['msgnum'] = $msgball_list[$i]['msgnum'];
+			$msg_list_display[$x]['folder'] = $msgball_list[$i]['folder'];
+			$msg_list_display[$x]['acctnum'] = $msgball_list[$i]['acctnum'];
+			$msg_list_display[$x]['uri'] = $msgball_list[$i]['uri'];
+			
 			// SUBJECT
-			// NOTE: the acctnum in the Future MUST be matched to this individual message and folder
-			$msg_list[$x]['subject'] = $this->get_subject($hdr_envelope,'');
-			$msg_list[$x]['subject_link'] = $GLOBALS['phpgw']->link(
-				'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				 'folder='.$this->prep_folder_out('')
-				.'&acctnum='.$this->get_acctnum()
-				.'&msgnum='.$msg_list[$x]['msg_num']
+			// NOTE: the acctnum MUST be matched to this individual message and folder
+			$msg_list_display[$x]['subject'] = $this->get_subject($hdr_envelope,'');
+			$msg_list_display[$x]['subject_link'] = $GLOBALS['phpgw']->link(
+				//'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+				'/index.php',
+				 'menuaction=email.uimessage.message'
+				.'&'.$msgball_list[$i]['uri']
 				.'&sort='.$this->get_arg_value('sort')
 				.'&order='.$this->get_arg_value('order')
 				.'&start='.$this->get_arg_value('start'));
-
+			
 			// SIZE
 			if ($this->newsmode)
 			{
 				// nntp apparently gives size in number of lines ?
-				//$msg_list[$x]['size'] = $hdr_envelope->Size;
-				$msg_list[$x]['size'] = $hdr_envelope->Lines;
+				//$msg_list_display[$x]['size'] = $hdr_envelope->Size;
+				$msg_list_display[$x]['size'] = $hdr_envelope->Lines;
 			}
 			else
 			{
-				$msg_list[$x]['size'] = $this->format_byte_size($hdr_envelope->Size);
+				$msg_list_display[$x]['size'] = $this->format_byte_size($hdr_envelope->Size);
 			}
 
 			// SEEN OR UNSEEN/NEW
 			if (($hdr_envelope->Unseen == 'U') || ($hdr_envelope->Recent == 'N'))
 			{
-				$msg_list[$x]['is_unseen'] = True;
+				$msg_list_display[$x]['is_unseen'] = True;
 			}
 			else
 			{
-				$msg_list[$x]['is_unseen'] = False;
+				$msg_list_display[$x]['is_unseen'] = False;
 			}
 
 			// FROM and REPLY TO  HANDLING
@@ -1807,8 +1825,8 @@ class mail_msg extends mail_msg_wrappers
 				as the "From String" that is displated to the user.
 				Additionally, we checked and made sure both those pieces of data are available.
 				*/
-				$msg_list[$x]['display_address_from'] = '('.$from->mailbox.'@'.$from->host.')';
-				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+				$msg_list_display[$x]['display_address_from'] = '('.$from->mailbox.'@'.$from->host.')';
+				$msg_list_display[$x]['who_to'] = $from->mailbox.'@'.$from->host;
 			}
 			elseif (($this->get_pref_value('show_addresses') == 'replyto')
 			&& ($personal != $from->mailbox.'@'.$from->host))
@@ -1823,8 +1841,8 @@ class mail_msg extends mail_msg_wrappers
 				with it the plain address from the ReplyTo header. This is how this preference works :)
 				Of course, if no ReplyTo address is present, we can not fulfill this user perference
 				*/
-				$msg_list[$x]['display_address_from'] = '&lt;'.$replyto.'&gt;';
-				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+				$msg_list_display[$x]['display_address_from'] = '&lt;'.$replyto.'&gt;';
+				$msg_list_display[$x]['who_to'] = $from->mailbox.'@'.$from->host;
 			}
 			else
 			{
@@ -1836,14 +1854,14 @@ class mail_msg extends mail_msg_wrappers
 				"personal" data is unable to be fulfilled because that "personal" data for the
 				From person was not available in the email headers.
 				*/
-				$msg_list[$x]['display_address_from'] = '';
-				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+				$msg_list_display[$x]['display_address_from'] = '';
+				$msg_list_display[$x]['who_to'] = $from->mailbox.'@'.$from->host;
 			}
 			
 			// ----  From Name ----
 			// Part 1 of 2 of the From string (see above)
 			// NOTE: wasn't this decode_header_string proc already done above?
-			$msg_list[$x]['from_name'] = $this->decode_header_string($personal);
+			$msg_list_display[$x]['from_name'] = $this->decode_header_string($personal);
 
 			// ----  From Link  ----
 			// this is a URL that can be used to turn the "From String" into a clickable link
@@ -1852,19 +1870,25 @@ class mail_msg extends mail_msg_wrappers
 			// the original email is included in this Compose page. Also note that the email app's
 			// message list page, email/index.php, does not have a "reply to" button anywhere on it,
 			// said button is in the "show the message contents" page, email/message.php
-			$msg_list[$x]['from_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-				'folder='.$this->prep_folder_out('').'&to='.urlencode($msg_list[$x]['who_to']));
+			$msg_list_display[$x]['from_link'] = $GLOBALS['phpgw']->link(
+								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+								// 'folder='.$this->prep_folder_out('')
+								 $msgball_list[$i]['uri']
+								.'&sort='.$this->get_arg_value('sort')
+								.'&order='.$this->get_arg_value('order')
+								.'&start='.$this->get_arg_value('start')
+								.'&to='.urlencode($msg_list_display[$x]['who_to']));
 			if ($personal != $from->mailbox.'@'.$from->host)
 			{
-				$msg_list[$x]['from_link'] = $msg_list[$x]['from_link'] .'&personal='.urlencode($personal);
+				$msg_list_display[$x]['from_link'] = $msg_list_display[$x]['from_link'] .'&personal='.urlencode($personal);
 			}
 			
 			// if it's a long plain address with no spaces, then add a space to the TD can wrap the text
-			if ((!strstr($msg_list[$x]['from_name'], " "))
-			&& (strlen($msg_list[$x]['from_name']) > 15)
-			&& (strstr($msg_list[$x]['from_name'], "@")))
+			if ((!strstr($msg_list_display[$x]['from_name'], " "))
+			&& (strlen($msg_list_display[$x]['from_name']) > 15)
+			&& (strstr($msg_list_display[$x]['from_name'], "@")))
 			{
-				$msg_list[$x]['from_name'] = str_replace('@',' @',$msg_list[$x]['from_name']);
+				$msg_list_display[$x]['from_name'] = str_replace('@',' @',$msg_list_display[$x]['from_name']);
 			}
 
 			// DATE
@@ -1873,15 +1897,16 @@ class mail_msg extends mail_msg_wrappers
 			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
 			{
 				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_list[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);
+				$msg_list_display[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);
 			}
 			else
 			{
 				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_list[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
+				$msg_list_display[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
 			}
 		}
-		return $msg_list;
+		if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: exiting $msg_list_display[] dump:<pre>'; print_r($msg_list_display); echo '</pre>'; }
+		return $msg_list_display;
 	}
 
 } // end class mail_msg

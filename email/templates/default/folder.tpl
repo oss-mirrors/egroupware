@@ -54,7 +54,8 @@
 			<option value="delete_expert">{form_delete_expert_txt}</option>
 			<option value="rename_expert">{form_rename_expert_txt}</option>
 		</select> 
-		<input type="text" name="target_folder">
+		<input type="text" name="{target_fldball_boxname}">
+		<input type="hidden" name="{hiddenvar_target_acctnum_name}" value="{hiddenvar_target_acctnum_value}">
 		<input type="submit" value="{form_submit_txt}">
 	</td>
 </tr>

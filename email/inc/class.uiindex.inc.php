@@ -1,13 +1,13 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email UI Class for Message Lists                          *
-	* http://www.phpgroupware.org                                              *
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>             *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
+	* phpGroupWare - email UI Class for Message Lists				*
+	* http://www.phpgroupware.org							*
+	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
+	* --------------------------------------------							*
+	*  This program is free software; you can redistribute it and/or modify it 		*
+	*  under the terms of the GNU General Public License as published by the	*
+	*  Free Software Foundation; either version 2 of the License, or (at your  		*
+	*  option) any later version.								*
 	\**************************************************************************/
 
 	/* $Id$ */
@@ -37,14 +37,12 @@
 		
 		function set_is_modular($feed_bool=False)
 		{
-			/* This also does not work on php3 - milosch */
-			if ((bool)$feed_bool == False)
+			// is_bool() is in the php3 compat library
+			if ((isset($feed_bool))
+			&& (is_bool($feed_bool)))
 			{
-				$this->is_modular = False;
-			}
-			else
-			{
-				$this->is_modular = True;
+				// only change this if the arg is boolean
+				$this->is_modular = $feed_bool;
 			}
 			return $this->is_modular;
 		}
@@ -160,6 +158,7 @@
 				'mlist_newmsg_char'	=> $this->bo->xi['mlist_newmsg_char'],
 				'mlist_newmsg_color'	=> $this->bo->xi['mlist_newmsg_color'],
 				'mlist_newmsg_txt'	=> $this->bo->xi['mlist_newmsg_txt'],
+				'mlist_checkbox_name'	=> $this->bo->xi['mlist_checkbox_name'],
 				'images_dir'		=> $this->bo->xi['svr_image_dir']
 			);
 			$GLOBALS['phpgw']->template->set_var($tpl_vars);
@@ -213,7 +212,8 @@
 						$GLOBALS['phpgw']->template->set_var('mlist_attach','&nbsp;');
 					}
 					$tpl_vars = Array(
-						'mlist_msg_num'		=> $this->bo->xi['msg_list_dsp'][$i]['msg_num'],
+						// new checkbox value, new fake_uri method of embedding coumpound data in a single HTML element
+						'mlist_embedded_uri' => $this->bo->xi['msg_list_dsp'][$i]['uri'],
 						'mlist_backcolor'	=> $this->bo->xi['msg_list_dsp'][$i]['back_color'],
 						'mlist_subject'		=> $this->bo->xi['msg_list_dsp'][$i]['subject'],
 						'mlist_subject_link'	=> $this->bo->xi['msg_list_dsp'][$i]['subject_link'],
@@ -243,7 +243,8 @@
 				'current_sort'	=> $this->bo->xi['current_sort'],
 				'current_order'	=> $this->bo->xi['current_order'],
 				'current_start'	=> $this->bo->xi['current_start'],
-				'current_folder'	=> $this->bo->xi['current_folder'],
+				//'current_folder'	=> $this->bo->xi['current_folder'],
+				'current_fldball_fake_uri'	=> $this->bo->xi['current_fldball_fake_uri'],
 				'ctrl_bar_back2'	=> $this->bo->xi['ctrl_bar_back2'],
 				'compose_txt'	=> $this->bo->xi['compose_txt'],
 				'compose_link'	=> $this->bo->xi['compose_link'],
@@ -392,7 +393,7 @@
 				// even though we had to output the header and navbar, (go figure... :)
 			}
 
-			// MUCH of this data may not be necessary nor used for mlists
+			// MUCH of this data may not be necessary nor used for mlists 
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			

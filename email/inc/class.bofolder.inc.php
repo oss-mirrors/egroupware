@@ -44,60 +44,11 @@
 			
 		}
 		
-		function DONTlist_methods($_type='xmlrpc')
-		{
-			/*
-			  This handles introspection or discovery by the logged in client,
-			  in which case the input might be an array.  The server always calls
-			  this function to fill the server dispatch map using a string.
-			*/
-			if (is_array($_type))
-			{
-				$_type = $_type['type'] ? $_type['type'] : $_type[0];
-			}
-			switch($_type)
-			{
-				case 'xmlrpc':
-					$xml_functions = array(
-						'get_langed_labels' => array(
-							'function'  => 'get_langed_labels',
-							'signature' => array(array(xmlrpcInt,xmlrpcStruct)),
-							'docstring' => lang('Translated Label Text for use in an Folder List page')
-						),
-						'folder'	=> array(
-							'function'  => 'folder',
-							'signature' =>  array(array(xmlrpcInt,xmlrpcStruct)),
-							'docstring' => lang('All data needed to produce a complete Folder List page.')
-						)
-					);
-					return $xml_functions;
-					break;
-				case 'soap':
-					return $this->soap_functions;
-					break;
-				default:
-					return array();
-					break;
-			}
-		}
-		
 		function get_langed_labels()
 		{
 			// ----  Langs  ----			
-			$lang_strings = array(
-			
-			
-			);
-			// put these into $this->xi[] array
-			while(list($key,$value) = each($lang_strings))
-			{
-				$this->xi[$key] = $lang_strings[$key];
-			}
-			// optional return value, primarily for external clients, we need only fill $this->xi[]
-			return $lang_strings;
 		}
-
-
+		
 		function folder($reuse_feed_args=array())
 		{
 			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
@@ -177,31 +128,36 @@
 			{
 				// we have been requested to do a folder action
 				
-				//  ----  Establish Email Server Connectivity Conventions  ----
-				$server_str = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr');
-				$name_space = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_namespace');
-				$dot_or_slash = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter');
 				// basic sanity check
-				if ( ($GLOBALS['phpgw']->msg->get_isset_arg('target_folder') == False)
-				|| ($GLOBALS['phpgw']->msg->get_arg_value('target_folder') == '') )
+				if ( ($GLOBALS['phpgw']->msg->get_isset_arg('["target_fldball"]["folder"]') == False)
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('["target_fldball"]["folder"]') == '') )
 				{
 					// Error Result Message
 					$action_report = lang('Please type a folder name in the text box');
 				}
 				elseif ( (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename')
 				  || ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename_expert'))
-				&& (($GLOBALS['phpgw']->msg->get_isset_arg('source_folder') == False)
-				  || ($GLOBALS['phpgw']->msg->get_arg_value('source_folder') == '')) )
+				&& (($GLOBALS['phpgw']->msg->get_isset_arg('["source_fldball"]["folder"]') == False)
+				  || ($GLOBALS['phpgw']->msg->get_arg_value('["source_fldball"]["folder"]') == '')) )
 				{
 					// Error Result Message
 					$action_report = lang('Please select a folder to rename');
 				}
 				else
 				{
+					$source_fldball = $GLOBALS['phpgw']->msg->get_arg_value('source_fldball');
+					$target_fldball = $GLOBALS['phpgw']->msg->get_arg_value('target_fldball');
+					
+					//  ----  Establish Email Server Connectivity Conventions  ----
+					$server_str = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr');
+					$name_space = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_namespace');
+					$dot_or_slash = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter');
+					
+					// ---- Prep Target Folder
 					// get rid of the escape \ that magic_quotes HTTP POST will add
 					// " becomes \" and  '  becomes  \'  and  \  becomes \\
-					$tmp_data = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
-					$GLOBALS['phpgw']->msg->set_arg_value('target_folder', $tmp_data);
+					$target_stripped = $GLOBALS['phpgw']->msg->stripslashes_gpc($target_fldball['folder']);
+					$target_fldball['folder'] = $target_stripped;
 					// == is that necessary ? == are folder names allowed with '  "  \  in them ? ===
 					// rfc2060 does NOT prohibit them
 					
@@ -222,40 +178,45 @@
 						// since the user is not an "expert", we properly prepare the folder name
 						// see if the folder already exists in the folder lookup list
 						// this would be the case if the user is deleting a folder
-						$target_lookup = $GLOBALS['phpgw']->msg->folder_lookup('', $GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
+						$target_lookup = $GLOBALS['phpgw']->msg->folder_lookup('', $target_fldball['folder']);
 						if ($target_lookup != '')
 						{
 							// phpgw->msg->get_arg_value('target_folder') returned an official long name from the lookup
-							$GLOBALS['phpgw']->msg->set_arg_value('target_folder', $target_lookup);
+							$target_fldball['folder'] = $target_lookup;
 						}
 						else
 						{
 							// the lookup failed, so this is not an existing folder
 							// we have to add the namespace for the user
-							$tmp_data = $GLOBALS['phpgw']->msg->get_folder_long($GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
-							$GLOBALS['phpgw']->msg->set_arg_value('target_folder', $tmp_data);
+							$target_long = $GLOBALS['phpgw']->msg->get_folder_long($target_fldball['folder']);
+							$target_fldball['folder'] = $target_long;
 						}
 					}
-				
+					
+					// add server string to target folder
+					$target_fldball['folder'] = $server_str.$target_fldball['folder'];
+					
 					// =====  NOTE:  maybe some "are you sure" code ????  =====
 					if (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'create_expert'))
 					{
-						$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox($server_str.$GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
+						$success = $GLOBALS['phpgw']->msg->phpgw_createmailbox($target_fldball);
 					}
 					elseif (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'delete')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'delete_expert'))
 					{
-						$success = $GLOBALS['phpgw']->msg->phpgw_deletemailbox($server_str.$GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
+						$success = $GLOBALS['phpgw']->msg->phpgw_deletemailbox($target_fldball);
 					}
 					elseif (($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename')
 					|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'rename_expert'))
 					{
 						// phpgw->msg->get_arg_value('source_folder') is taken directly from the listbox, so it *should* be official long name already
 						// but it does need to be prep'd in because we prep out the foldernames put in that listbox
-						$tmp_data = $GLOBALS['phpgw']->msg->prep_folder_in($GLOBALS['phpgw']->msg->get_arg_value('source_folder'));
-						$GLOBALS['phpgw']->msg->set_arg_value('source_folder', $tmp_data);
-						$success = $GLOBALS['phpgw']->msg->phpgw_renamemailbox($server_str.$GLOBALS['phpgw']->msg->get_arg_value('source_folder'), $server_str.$GLOBALS['phpgw']->msg->get_arg_value('target_folder'));
+						$source_preped = $GLOBALS['phpgw']->msg->prep_folder_in($source_fldball['folder']);
+						$source_fldball['folder'] = $source_preped;
+						// add server string to source folder
+						$source_fldball['folder'] = $server_str.$source_fldball['folder'];
+						$success = $GLOBALS['phpgw']->msg->phpgw_renamemailbox($source_fldball, $target_fldball);
 					}
 					
 					// Result Message
@@ -342,7 +303,11 @@
 				
 				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
 				$this->xi['folder_list_display'][$i]['list_backcolor'] = $tr_color;
-				$this->xi['folder_list_display'][$i]['folder_link'] = $GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder=' .$GLOBALS['phpgw']->msg->prep_folder_out($folder_long));
+				$this->xi['folder_list_display'][$i]['folder_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.uiindex.index'
+								.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)
+								.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 				
 				//if ((isset($GLOBALS['phpgw']->msg->get_arg_value('show_long')))
 				if (($GLOBALS['phpgw']->msg->get_isset_arg('show_long') == True)
@@ -365,6 +330,12 @@
 			}
 			if ($this->debug) { echo 'email.bofolder.folder_data: $this->xi[folder_list_display] dump:<pre>'; print_r($this->xi['folder_list_display']); echo '</pre>'; }
 			
+			// information for target folder for create and delete, where no "source_fldball" is present
+			// because you are NOT manipulating an *existing* folder
+			$this->xi['hiddenvar_target_acctnum_name'] = 'target_fldball[acctnum]';
+			$this->xi['hiddenvar_target_acctnum_value'] = (string)$GLOBALS['phpgw']->msg->get_acctnum();
+			$this->xi['target_fldball_boxname'] = 'target_fldball[folder]';
+			
 			// make your HTML listbox of all folders
 			// FUTURE: $show_num_new value should be picked up from the users preferences (need to add this pref)
 			//$show_num_new = True;
@@ -376,7 +347,9 @@
 				'pre_select_folder'	=> '',
 				'skip_folder'		=> '',
 				'show_num_new'		=> $show_num_new,
-				'widget_name'		=> 'source_folder',
+				'widget_name'		=> 'source_fldball_fake_uri',
+				'folder_key_name'	=> 'folder',
+				'acctnum_key_name'	=> 'acctnum',
 				'on_change'		=> '',
 				'first_line_txt'	=> lang('choose for rename')
 			);
@@ -386,7 +359,7 @@
 			// ----  Set Up Form Variables  ---
 			$this->xi['form_action'] = $GLOBALS['phpgw']->link(
 					'/index.php',
-					$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
+					'menuaction=email.uifolder.folder');
 			//$GLOBALS['phpgw']->template->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
 			//$GLOBALS['phpgw']->template->set_var('select_name_rename','source_folder');
 			
@@ -409,12 +382,20 @@
 			
 			$this->xi['view_long_txt'] = lang('long names');
 			//$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php?show_long=1');
-			$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link('/index.php',
-							 $GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction')
+			$this->xi['view_long_lnk'] = $GLOBALS['phpgw']->link(
+							'/index.php',
+							'menuaction=email.uifolder.folder'
+							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+							.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
 							.'&show_long=1');
+							
 			$this->xi['view_short_txt'] = lang('short names');
 			//$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
-			$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
+			$this->xi['view_short_lnk'] = $GLOBALS['phpgw']->link(
+							'/index.php',
+							'menuaction=email.uifolder.folder'
+							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+							.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
 			
 			$this->xi['the_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['th_backcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];

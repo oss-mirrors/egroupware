@@ -59,6 +59,7 @@ function check_all()
 	</td>
 	</form>
 	<form name="sortbox" action="{sortbox_action}" method="post">
+	<input type="hidden" name="fldball_fake_uri" value="{current_fldball_fake_uri}">
 	<td bgcolor="{ctrl_bar_back1}" width="50%" align="left">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;{sortbox_sort_by_txt}:&nbsp;</font>
 		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
@@ -107,8 +108,7 @@ function check_all()
 	<!-- &nbsp; Lame Seperator &nbsp; -->
 	<!-- BEGIN B_get_size -->
 	<form name="{frm_get_size_name}" action="{frm_get_size_action}" method="post">
-	<input type="hidden" name="what" value="delete">
-	<input type="hidden" name="folder" value="{current_folder}">
+	<input type="hidden" name="fldball_fake_uri" value="{current_fldball_fake_uri}">
 	<input type="hidden" name="sort" value="{current_sort}">
 	<input type="hidden" name="order" value="{current_order}">
 	<input type="hidden" name="start" value="{current_start}">
@@ -173,7 +173,7 @@ function check_all()
 <tr>
 	<td bgcolor="{mlist_backcolor}" align="center">
 	<!-- INIT FORM ONCE -->{V_mlist_form_init}
-		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
+		<input type="checkbox" name="{mlist_checkbox_name}" value="{mlist_embedded_uri}">
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
 		{mlist_attach}

@@ -71,12 +71,12 @@
 
 			if ($inbox_data['number_all'] > 0)
 			{
-				$msg_nums_array = array();
-				$msg_nums_array = $GLOBALS['phpgw']->msg->get_message_list();
+				$msgball_list = array();
+				$msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list();
 			}
 			for($i=0; $i<$check_msgs; $i++)
 			{
-				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msg_nums_array[$i]);
+				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball_list[$i]);
 				$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 				if (strlen($subject) > 65)
 				{
@@ -84,7 +84,7 @@
 				}
 				$data[] = array(
 					'text'	=> $subject,
-					'link'	=> $GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i])
+					'link'	=> $GLOBALS['phpgw']->link('/email/message.php',$msgball_list[$i]['uri'])
 				);
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
@@ -113,7 +113,9 @@
 				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 				// make it another TR we can insert into the home page portal object
 				// and surround it in FORM tage so the submit will work
-				$switchbox_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
+				$switchbox_action = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.uiindex.index');
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"

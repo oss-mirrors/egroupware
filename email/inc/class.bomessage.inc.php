@@ -1,0 +1,1253 @@
+<?php
+	/**************************************************************************\
+	* phpGroupWare - E-Mail	BO for displaying email message content		*
+	* http://www.phpgroupware.org							*
+	* Based on Aeromail by Mark Cushman <mark@cushman.net>			*
+	*          http://the.cushman.net/							*
+	* --------------------------------------------							*
+	*  This program is free software; you can redistribute it and/or modify it		*
+	*  under the terms of the GNU General Public License as published by the	*
+	*  Free Software Foundation; either version 2 of the License, or (at your		*
+	*  option) any later version.								*
+	\**************************************************************************/
+	
+	/* $Id$ */
+	
+	class bomessage
+	{
+		var $public_functions = array(
+			'get_langed_labels'	=> True,
+			'message_data'		=> True
+		);
+		var $nextmatchs;
+		var $debug = 0;
+		var $xi;
+		var $part_nice = '';
+		var $xml_functions = array();
+		
+		function bomessage()
+		{
+			
+		}
+		
+		function get_langed_labels()
+		{
+			// ----  Langs  ----
+		
+		}
+		
+		function message_data($reuse_feed_args='')
+		{
+			if ( (!isset($reuse_feed_args))
+			|| ($reuse_feed_args == '') )
+			{
+				$reuse_feed_args=array();
+			}
+			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
+			// this function. As of Dec 14, 2001 only class.boaction can pass a useful, existing object for us to use here
+			$attempt_reuse = True;
+			//$attempt_reuse = False;
+			
+			if ($this->debug > 0) { echo 'ENTERING: email.bomessage.message_data'.'<br>'; }
+			if ($this->debug > 0) { echo 'email.bomessage.message_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
+			// create class objects
+			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				if ($this->debug > 0) { echo 'email.bomessage.message_data: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			}
+			else
+			{
+				if ($this->debug > 0) { echo 'email.bomessage.message_data: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
+			// do we attempt to reuse the existing msg object?
+			if ( (is_object($GLOBALS['phpgw']->msg))
+			&& ($attempt_reuse == True) )
+			{
+				// no not create, we will reuse existing
+				if ($this->debug > 0) { echo 'email.bomessage.message_data: reusing existing mail_msg object'.'<br>'; }
+				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
+				$args_array = Array();
+				// any args passed in $args_array will override or replace any pre-existing arg value
+				$args_array = $reuse_feed_args;
+				// add this to keep the error checking code (below) happy
+				$args_array['do_login'] = True;
+			}
+			else
+			{
+				if ($this->debug > 0) { echo 'email.bomessage.message_data: cannot or not trying to reusing existing'.'<br>'; }
+				$args_array = Array();
+				// should we log in or not
+				$args_array['do_login'] = True;
+			}
+			
+			// "start your engines"
+			if ($this->debug > 0) { echo 'email.bomessage.message_data: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
+			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
+			// error if login failed
+			if (($args_array['do_login'] == True)
+			&& (!$some_stream))
+			{
+				$GLOBALS['phpgw']->msg->login_error($GLOBALS['PHP_SELF'].', message_data()');
+			}
+			
+			// ---- BEGIN BOMESSAGE ----
+			
+			// ----  Fill Some Important Variables  -----
+			$svr_image_dir = PHPGW_IMAGES_DIR;
+			$image_dir = PHPGW_IMAGES;
+			$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_envelope.gif','Add to address book','8','10','0');
+			//$default_sorting = $GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'];
+			$not_set = $GLOBALS['phpgw']->msg->not_set;
+			
+			// ----  General Information about The Message  -----
+			$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+			if ($this->debug > 2) { echo 'email.bomessage.message_data:  get_arg_value("msgball") dump: <pre>'; print_r($msgball); echo '</pre>'; }
+			$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
+			$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure($msgball);
+			$folder_info = array();
+			$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
+			$totalmessages = $folder_info['number_all'];
+			
+			$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
+			$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
+			
+			#set_time_limit(0);
+			
+			// ----  Special X-phpGW-Type Message Flag  -----
+			// is this still a planned feature?
+			$this->xi['application'] = '';
+			$msgtype = $GLOBALS['phpgw']->msg->phpgw_get_flag('X-phpGW-Type');
+			$this->xi['msgtype'] = $msgtype;
+			
+			if (!empty($msgtype))
+			{
+				$msg_type = explode(';',$msgtype);
+				$application = substr($msg_type[0],1,strlen($msg_type[0])-2);
+				$this->xi['application'] = $application;
+				//$GLOBALS['phpgw']->template->parse('V_x-phpgw-type','B_x-phpgw-type');
+			}
+			else
+			{
+				//$GLOBALS['phpgw']->template->set_var('V_x-phpgw-type','');
+				$this->xi['application'] = '';
+			}
+			
+			// ----  What Folder To Return To  -----
+			$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
+				$GLOBALS['phpgw']->link(
+					 '/index.php',
+					'menuaction=email.uiindex.index'	
+					.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($msgball['folder'])
+					.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum($msgball['acctnum'])
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
+				$GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']));
+			
+			// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
+			
+			// get the data for goto previous / goto next message handling
+			// NOTE: the one arg for this function is only there to support the old, broken method
+			// in the event that the "get_msgball_list()" returns bogus data or is not available
+			$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation($folder_info['number_all']);
+			if ($this->debug > 2) { echo 'email.bomessage.message_data: $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
+			
+			// ----  "Go To Previous Message" Handling  -----
+			if ($nav_data['prev_msg'] != $not_set)
+			{
+				$prev_msg_link = $GLOBALS['phpgw']->link(
+					// '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+					'/index.php',
+					 'menuaction=email.uimessage.message'
+					.'&'.$nav_data['prev_msg']['msgball']['uri']
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left.gif',lang('Previous Message'),'','','0');
+				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
+			}
+			else
+			{
+				//if ($this->debug > 0) { echo 'messages.php '.lang('No Previous Message').'<br>'; }
+				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',lang('No Previous Message'),'','','0');
+			}
+			
+			//if ($this->debug > 0) { echo 'messages.php step3 $nav_data[] $ilnk_prev_msg: '.$ilnk_prev_msg.'<br>'; }
+			
+			// ----  "Go To Next Message" Handling  -----
+			if ($nav_data['next_msg'] != $not_set)
+			{
+				$next_msg_link = $GLOBALS['phpgw']->link(
+//					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+					'/index.php',
+					 'menuaction=email.uimessage.message'
+					.'&'.$nav_data['next_msg']['msgball']['uri']
+					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right.gif',lang('Next Message'),'','','0');
+				$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
+			}
+			else
+			{
+				//if ($this->debug > 0) { echo 'messages.php '.lang('No Next Message').'<br>'; }
+				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
+			}
+			
+			//if ($this->debug > 0) { echo 'messages.php step4 $nav_data[] $ilnk_next_msg: '.$ilnk_next_msg.'<br>'; }
+			
+			$this->xi['ilnk_prev_msg'] = $ilnk_prev_msg;
+			$this->xi['ilnk_next_msg'] = $ilnk_next_msg;
+
+			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
+			$this->xi['tofrom_labels_bkcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
+			$this->xi['tofrom_data_bkcolor'] = $GLOBALS['phpgw_info']['theme']['row_on'];
+			
+			$this->xi['lang_from'] = lang('from');
+			$this->xi['lang_to'] = lang('to');
+			$this->xi['lang_cc'] = lang('cc');
+			$this->xi['lang_date'] = lang('date');
+			$this->xi['lang_files'] = lang('files');
+			$this->xi['lang_subject'] = lang('subject');
+			
+			// ----  From: Message Data  -----
+			if (!$msg_headers->from)
+			{
+				// no header info about this sender is available
+				$from_data_final = lang('Undisclosed Sender');
+			}
+			else
+			{
+				$from = $msg_headers->from[0];
+				//a typical email address have 2 properties: (1) rfc2822 addr_spec  (user@some.com)  and (2) maybe a descriptive string
+				// get (1) - the from rfc2822 addr_spec
+				$from_plain = $from->mailbox.'@'.$from->host;
+				// get (2) the associated descriptive string. if supplied, the header usually looks like this: "personal name" <some@where.com>
+				// that associasted string, called "personal" here, usally has the persons full name
+				if (!isset($from->personal) || (!$from->personal))
+				{
+					// there is no "personal" info available, just fill this with the standard email addr
+					$from_personal = $from_plain;
+				}
+				else
+				{
+					$from_personal = $GLOBALS['phpgw']->msg->decode_header_string($from->personal);
+				}
+				// display "From" according to user preferences
+				if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'])
+				&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+				&& ($from_personal != $from_plain))
+				{
+					// user wants to see "personal" info AND the plain address, and we have both available to us
+					$from_extra_info = ' ('.$from_plain.') ';
+				}
+				else
+				{
+					//user  want to see the "personal" ONLY (no plain address) OR we do not have any "personal" info to show
+					$from_extra_info = ' ';
+				}
+				
+				// first text in the "from" table data, AND click on it to compose a new, blank email to this email address
+				$from_and_compose_link = 
+					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
+						 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+						$msgball['uri']
+						.'&to='.urlencode($from_plain)
+						.'&personal='.urlencode($from_personal)),
+					$from_personal);
+				// click on the little envelope image to add this person/address to your address book
+				$from_addybook_add = 
+					$GLOBALS['phpgw']->msg->href_maketag(
+						 $GLOBALS['phpgw']->link(
+							 '/index.php',
+							 'menuaction=addressbook.uiaddressbook.add_email'
+							.'&add_email='.urlencode($from_plain)
+							.'&name='.urlencode($from_personal)
+							.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
+					$sm_envelope_img);
+				
+				// assemble the "From" data string  (note to_extra_info also handles the spacing)
+				$from_data_final = $from_and_compose_link .$from_extra_info .$from_addybook_add;
+			}
+			
+			$this->xi['from_data_final'] = $from_data_final;
+			
+			
+			// ----  To:  Message Data  -----
+			if (!$msg_headers->to)
+			{
+				$to_data_final = lang('Undisclosed Recipients');
+			}
+			else
+			{
+				for ($i = 0; $i < count($msg_headers->to); $i++)
+				{
+					$topeople = $msg_headers->to[$i];
+					$to_plain = $topeople->mailbox.'@'.$topeople->host;
+					if ((!isset($topeople->personal)) || (!$topeople->personal))
+					{
+						$to_personal = $to_plain;
+					}
+					else
+					{
+						$to_personal = $GLOBALS['phpgw']->msg->decode_header_string($topeople->personal);
+					}
+					if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					&& ($to_personal != $to_plain))
+					{
+						$to_extra_info = ' ('.$to_plain.') ';
+					}
+					else
+					{
+						$to_extra_info = ' ';
+					}
+
+					$to_real_name = $GLOBALS['phpgw']->msg->href_maketag(
+						$GLOBALS['phpgw']->link(
+							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+							// 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out($msgball['folder'])
+							$msgball['uri']
+							.'&to='.urlencode($to_plain)
+							.'&personal='.urlencode($to_personal)),
+						$to_personal);
+					
+					// I honestly think this needs some attention here.. I feel this isn't used anymore like this..
+					// new call should be performed..
+					// Skeeter
+					
+					$to_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
+						$GLOBALS['phpgw']->link(
+							 '/index.php',
+							 'menuaction=addressbook.uiaddressbook.add_email'
+							.'&add_email='.urlencode($to_plain)
+							.'&name='.urlencode($to_personal)
+							.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
+						$sm_envelope_img);
+					// assemble the string and store for later use (note to_extra_info also handles the spacing)
+					$to_data_array[$i] = $to_real_name .$to_extra_info .$to_addybook_add;
+				}
+				// throw a spacer comma in between addresses, if more than one
+				$to_data_final = implode(', ',$to_data_array);
+			}
+			
+			$this->xi['to_data_final'] = $to_data_final;
+			
+			// ----  Cc:  Message Data  -----
+			$this->xi['cc_data_final'] = '';
+			if (isset($msg_headers->cc) && count($msg_headers->cc) > 0)
+			{
+				for ($i = 0; $i < count($msg_headers->cc); $i++)
+				{
+					$ccpeople = $msg_headers->cc[$i];
+					$cc_plain = $ccpeople->mailbox.'@'.$ccpeople->host;
+					if ((!isset($ccpeople->personal)) || (!$ccpeople->personal))
+					{
+						$cc_personal = $cc_plain;
+					}
+					else
+					{
+						$cc_personal = $GLOBALS['phpgw']->msg->decode_header_string($ccpeople->personal);
+					}
+					if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] != 'none')
+					&& ($cc_personal != $cc_plain))
+					{
+						$cc_extra_info = ' ('.$cc_plain.') ';
+					}
+					else
+					{
+						$cc_extra_info = ' ';
+					}
+					$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
+							 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+							$msgball['uri']
+							.'&to='.urlencode($cc_plain)
+							.'&personal='.urlencode($cc_personal)),
+						$cc_personal);
+					
+					$cc_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
+						$GLOBALS['phpgw']->link(
+							 '/index.php',
+							 'menuaction=addressbook.uiaddressbook.add_email'
+							.'&add_email='.urlencode($cc_plain)
+							.'&name='.urlencode($cc_personal)
+							.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
+						$sm_envelope_img);
+					
+					// assemble the string and store for later use
+					$cc_data_array[$i] = $cc_real_name .$cc_extra_info .$cc_addybook_add;
+				}
+				// throw a spacer comma in between addresses, if more than one
+				$cc_data_final = implode(', ',$cc_data_array);
+				// add this string to the cumulative CC string
+				$this->xi['cc_data_final'] .= $cc_data_final;
+				//$GLOBALS['phpgw']->template->parse('V_cc_data','B_cc_data');
+			}
+			else
+			{
+				$this->xi['cc_data_final'] = '';
+				//$GLOBALS['phpgw']->template->set_var('V_cc_data','');
+			}
+			
+			// ---- Message Date  (set above)  -----
+			$this->xi['message_date'] = $message_date;
+			// ---- Message Subject  (set above)  -----
+			$this->xi['message_subject'] = $subject;
+			
+			// ---- Generate phpgw CUSTOM FLATTENED FETCHSTRUCTURE ARRAY  -----
+			$this->part_nice = Array();
+			$this->part_nice = $GLOBALS['phpgw']->msg->get_flat_pgw_struct($msg_struct);
+			
+			
+			// ---- Attachments List Creation  -----
+			$list_of_files = '';
+			for ($j = 0; $j < count($this->part_nice); $j++)
+			{
+				// ---- list_of_files is diaplayed in the summary at the top of the message page
+				if ($this->part_nice[$j]['ex_attachment'])
+				{
+					$list_of_files .= $this->part_nice[$j]['ex_part_clickable']
+						.' ('. $GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$j]['bytes']).')' .', ';
+				}
+			}
+			// set up for use in the template
+			if ($list_of_files != '')
+			{
+				// get rid of the last ", "
+				$list_of_files = ereg_replace(",.$", "", $list_of_files);
+				$this->xi['list_of_files'] = $list_of_files;
+				//$GLOBALS['phpgw']->template->parse('V_attach_list','B_attach_list');
+			}
+			else
+			{
+				//$GLOBALS['phpgw']->template->set_var('V_attach_list','');
+				$this->xi['list_of_files'] = '';
+			}
+			
+			// ----  Reply to First Presentable Part  (needed for Reply, ReplyAll, and Forward below)  -----
+			$first_presentable = '';
+			// what's the first presentable part?
+			for ($i = 0; $i < count($this->part_nice); $i++)
+			{
+				if (($this->part_nice[$i]['m_description'] == 'presentable')
+				&& ($first_presentable == '')
+				&& ($this->part_nice[$i]['bytes'] > 5))
+				{
+					//$first_presentable = '&part_no='.$this->part_nice[$i]['m_part_num_mime'];
+					$first_presentable = '&msgball[part_no]='.$this->part_nice[$i]['m_part_num_mime'];
+					// and if it is qprint then we must decode in the reply process
+					if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
+					{
+						$first_presentable = $first_presentable .'&encoding=qprint';
+					}
+					break;
+				}
+			}
+			/*
+			// FUTURE: Forward needs entirely different handling
+			// ADD: adopt
+			if ($deepest_level == 1)
+			{
+				$fwd_proc = 'pushdown';
+			}
+			else
+			{
+				$fwd_proc = 'encapsulate';
+			}
+			*/
+			$fwd_proc = 'encapsulate';
+			
+			// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
+			$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
+			$reply_url = $GLOBALS['phpgw']->link(
+					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+					 'action=reply'
+					.'&'.$msgball['uri']
+					.$first_presentable);
+			$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
+			
+			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
+			$replyall_url = $GLOBALS['phpgw']->link(
+					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+					 'action=replyall'
+					.'&'.$msgball['uri']
+					.$first_presentable);
+			$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
+			
+			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
+			$forward_url =  $GLOBALS['phpgw']->link(
+					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+					 'action=forward'
+					.'&'.$msgball['uri']
+					.'&fwd_proc='.$fwd_proc
+					.$first_presentable);
+			$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
+			
+			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
+			$delete_url = $GLOBALS['phpgw']->link(
+					 '/index.php',
+					'menuaction=email.boaction.delmov'
+					.'&what=delete_single_msg'
+					.'&'.$msgball['uri']);
+			$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
+			
+			$this->xi['theme_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->xi['reply_btns_bkcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
+			$this->xi['reply_btns_text'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
+			$this->xi['lnk_goback_folder'] = $lnk_goback_folder;
+			$this->xi['ilnk_reply'] = $ilnk_reply;
+			$this->xi['ilnk_replyall'] = $ilnk_replyall;
+			$this->xi['ilnk_forward'] = $ilnk_forward;
+			$this->xi['ilnk_delete'] = $ilnk_delete;
+			
+			// ---- DEBUG: Show Information About Each Part  -----
+			//$show_debug_parts = False;
+			//$show_debug_parts = True;
+			
+			if ($this->debug > 3)
+			{
+				// what's the count in the array?
+				$max_parts = count($this->part_nice);
+				
+				$all_keys = Array();
+				$all_keys = array_keys($this->part_nice);
+				$str_keys = implode(', ',$all_keys);
+				
+				//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+				$msg_raw_headers = $GLOBALS['phpgw']->msg->phpgw_fetchheader('');
+				$msg_raw_headers = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($msg_raw_headers);
+				
+				$crlf = "\r\n";
+				$msg_body_info = '<pre>' .$crlf;
+				$msg_body_info .= 'Top Level Headers:' .$crlf;
+				$msg_body_info .= $msg_raw_headers .$crlf;
+				$msg_body_info .= $crlf;
+				
+				$msg_body_info .= 'This message has '.$max_parts.' part(s)' .$crlf;
+				$msg_body_info .= 'deepest_level: '.$deepest_level .$crlf;
+				$msg_body_info .= 'Array Keys: '.$GLOBALS['phpgw']->msg->array_keys_str($this->part_nice) .$crlf;
+				$msg_body_info .= $crlf;
+				for ($i = 0; $i < count($this->part_nice); $i++)
+				{
+					//$msg_body_info .= 'Information for primary part number '.$i .$crlf;
+					$msg_body_info .= 'Part Number '. $this->part_nice[$i]['m_part_num_mime'] .$crlf;
+					$msg_body_info .= 'Mime Number Dumb '. $this->part_nice[$i]['ex_mime_number_dumb'] .$crlf;
+					$msg_body_info .= 'Mime Number Smart '. $this->part_nice[$i]['ex_mime_number_smart'] .$crlf;
+					$msg_body_info .= 'Level iteration '. $this->part_nice[$i]['ex_level_iteration'] .'/'. $this->part_nice[$i]['ex_level_max_loops'] .$crlf;
+					$msg_body_info .= 'Level Debth '. $this->part_nice[$i]['ex_level_debth'] .$crlf;
+					$msg_body_info .= 'Flat Idx ['. $i .']' .$crlf;
+					$msg_body_info .= 'ex_parent_flat_idx ['. $this->part_nice[$i]['ex_parent_flat_idx'] .']' .$crlf;
+					$msg_body_info .= 'm_description: '. $this->part_nice[$i]['m_description'] .$crlf;
+					$msg_body_info .= 'm_keywords: '. $this->part_nice[$i]['m_keywords'] .$crlf;
+					
+					//$keystr = $phpgw->msg->array_keys_str($this->part_nice[$i]);
+					//$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
+					
+					if ((isset($this->part_nice[$i]['m_level_total_parts']))
+					&& ($this->part_nice[$i]['m_level_total_parts'] != $not_set))
+					{
+						$msg_body_info .= 'm_level_total_parts: '. $this->part_nice[$i]['m_level_total_parts'] .$crlf;
+					}
+					if ($this->part_nice[$i]['type'] != $not_set)
+					{
+						$msg_body_info .= 'type: '. $this->part_nice[$i]['type'] .$crlf;
+					}
+					if ($this->part_nice[$i]['subtype'] != $not_set)
+					{
+						$msg_body_info .= 'subtype: '. $this->part_nice[$i]['subtype'] .$crlf;
+					}
+					if ($this->part_nice[$i]['m_html_related_kids'])
+					{
+						$msg_body_info .= '*m_html_related_kids: True*' .$crlf;
+					}
+					if ($this->part_nice[$i]['encoding'] != $not_set)
+					{
+						$msg_body_info .= 'encoding: '. $this->part_nice[$i]['encoding'] .$crlf;
+					}
+					if ($this->part_nice[$i]['description'] != $not_set)
+					{
+						$msg_body_info .= 'description: '. $this->part_nice[$i]['description']  .$crlf;
+					}
+					if ($this->part_nice[$i]['id'] != $not_set)
+					{
+						$msg_body_info .= 'id: '. $this->part_nice[$i]['id'] .$crlf;
+					}
+					if ($this->part_nice[$i]['lines'] != $not_set)
+					{
+						$msg_body_info .= 'lines: '. $this->part_nice[$i]['lines'] .$crlf;
+					}
+					if ($this->part_nice[$i]['bytes'] != $not_set)
+					{
+						$msg_body_info .= 'bytes: '. $this->part_nice[$i]['bytes'] .$crlf;
+					}
+					if ($this->part_nice[$i]['disposition'] != $not_set)
+					{
+						$msg_body_info .= 'disposition: '. $this->part_nice[$i]['disposition'] .$crlf;
+					}
+					if ($this->part_nice[$i]['ex_num_param_pairs'] > 0)
+					{
+						for ($p = 0; $p < $this->part_nice[$i]['ex_num_param_pairs']; $p++)
+						{
+							$msg_body_info .= 'params['.$p.']: '.$this->part_nice[$i]['params'][$p]['attribute'].'='.$this->part_nice[$i]['params'][$p]['value'] .$crlf;
+						}
+					}
+					if ($this->part_nice[$i]['ex_num_subparts'] != $not_set)
+					{
+						$msg_body_info .= 'ex_num_subparts: '. $this->part_nice[$i]['ex_num_subparts'] .$crlf;
+						if (strlen($this->part_nice[$i]['m_part_num_mime']) > 2)
+						{
+							$msg_body_info .= 'subpart: '. serialize($this->part_nice[$i]['subpart']) .$crlf;
+						}
+					}
+					if ($this->part_nice[$i]['ex_attachment'])
+					{
+						$msg_body_info .= '**ex_attachment**' .$crlf;
+						$msg_body_info .= 'ex_part_name: '. $this->part_nice[$i]['ex_part_name'] .$crlf;
+						//$msg_body_info .= 'ex_attachment: '. $this->part_nice[$i]['ex_attachment'] .$crlf;
+					}
+					$msg_body_info .= 'ex_part_href: '. $this->part_nice[$i]['ex_part_href'] .$crlf;
+					$msg_body_info .= 'ex_part_clickable: '. $this->part_nice[$i]['ex_part_clickable'] .$crlf;
+					$msg_body_info .= $crlf;
+				}
+				
+				$msg_body_info .= '</pre>' .$crlf;
+				$this->xi['msg_body_info'] = $msg_body_info;
+				//$GLOBALS['phpgw']->template->parse('V_debug_parts','B_debug_parts');
+			}
+			else
+			{
+				//$GLOBALS['phpgw']->template->set_var('V_debug_parts','');
+				$this->xi['msg_body_info'] = '';
+			}
+			
+			// -----  Message_Display Template Handles it from here  -------
+			$this->xi['theme_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->xi['theme_th_bg'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
+			$this->xi['theme_row_on'] = $GLOBALS['phpgw_info']['theme']['row_on'];
+			
+			// ----  so called "TOOLBAR" between the msg header data and the message siaplay
+			// (1) "view formatted/unformatted" link being moved to the "toolbar"
+			// this tamplate var will be filled with something below if appropriate, else it stays empty
+			$this->xi['view_option'] = '&nbsp';
+			// base URLs for the "view unformatted" or "view formatted" option
+			// if "vew_unformatted" if the url, then "&no_fmt=1" will be added below
+			// other wise, this URL will be used unchanged
+			$view_option_url = $GLOBALS['phpgw']->link(
+				'/index.php',
+				 'menuaction=email.uimessage.message'
+				.'&'.$msgball['uri']
+				.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+				.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+				.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+			);
+			
+			// (2) view headers option
+			$this_msgball = $msgball;
+			$this_msgball['part_no'] = 0;
+			$view_headers_url = $GLOBALS['phpgw']->link(
+				 '/index.php',
+				'menuaction=email.boaction.get_attach'
+				.'&'.$msgball['uri'].'&msgball[part_no]='.$this_msgball['part_no']
+				.'&type=text'
+				.'&subtype=plain'
+				.'&name=headers.txt'
+				.'&encoding=7bit'
+				);
+			//$view_headers_href = $GLOBALS['phpgw']->msg->href_maketag($view_headers_url, lang('view headers'));
+			$view_headers_href = '<a href="'.$view_headers_url.'" target="new">'.lang('view headers').'</a>';
+			$this->xi['view_headers_href'] = $view_headers_href;
+			
+			// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system report from cron
+			// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
+			$force_echo_size = 20000;
+			
+			
+			
+			
+			// -----  GET BODY AND SHOW MESSAGE  -------
+			
+			set_time_limit(120);
+			
+			// $this->part_nice[X]['d_instructions']
+			// possible values for "d_instructions" (d_ means "display")
+			// 	show
+			// 	skip
+			// 	echo_out
+			
+			// $this->part_nice[X]['d_processed_as']
+			// possible values for "d_instructions" (d_ means "display")
+			//	mime_ignorant_server
+			//	php_bug_needs_echo
+			//	html_button_unrelated
+			// 	html_button_related
+			//	html_normal
+			//	empty_part
+			// 	plain
+			//	image_href
+			// 	attach_link
+			//	unknown_handler
+			
+			// $done_processing
+			// possible values for "d_done_processing" (d_ means "display")
+			// 	false
+			// 	true
+			// Fallback Value
+			$done_processing = False;
+			
+			
+			
+			
+			
+			$count_part_nice = count($this->part_nice);
+			for ($i = 0; $i < $count_part_nice; $i++)
+			{
+				// Do We Break out of this Loop Block
+				if ($done_processing)
+				{
+					break;
+				}
+				
+				// Fallback values
+				$this->part_nice[$i]['d_instructions'] = $not_set;
+				$this->part_nice[$i]['d_processed_as'] = $not_set;
+				$this->part_nice[$i]['title_text'] = '';
+				$this->part_nice[$i]['display_str'] = '';
+				$this->part_nice[$i]['message_body'] = '';
+				
+				// ----  DISPLAY ANALYSIS AND FILL LOOP  ----
+				// some lame servers do not give any mime data out
+				if ((count($this->part_nice) == 1) 
+				&&  (($this->part_nice[$i]['m_description'] == 'container') 
+				|| ($this->part_nice[$i]['m_description'] == 'packagelist')) )
+				{
+					// ====  MIME IGNORANT SERVER  ====
+					$title_text = '&nbsp;Mime-Ignorant Email Server: ';
+					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$this->part_nice[$i]['title_text'] = $title_text;
+					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
+					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$this->part_nice[$i]['display_str'] = $display_str;
+					
+					//$msg_raw_headers = $GLOBALS['phpgw']->dcom->fetchheader($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+					//$msg_headers = $GLOBALS['phpgw']->dcom->header($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum')); // returns a structure w/o boundry info
+					//$struct_pop3 = $GLOBALS['phpgw']->dcom->get_structure($msg_headers, 1);
+					//$msg_boundry = $GLOBALS['phpgw']->dcom->get_boundary($msg_headers);
+					//$msg_body = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), '1');
+					//$msg_body = $GLOBALS['phpgw']->dcom->get_body($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+					//$msg_body = $GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+					$msg_body = $GLOBALS['phpgw']->msg->phpgw_body();
+					
+					// GET THE BOUNDRY
+					for ($bs=0;$bs<count($msg_struct->parameters);$bs++)
+					{
+						$pop3_temp = $msg_struct->parameters[$bs];
+						if ($pop3_temp->attribute == "boundary")
+						{
+							$boundary = $pop3_temp->value;
+						}
+					}
+					$boundary = trim($boundary);
+					/*
+					$dsp = '<br><br> === API STRUCT ==== <br><br>'
+						.'<pre>'.serialize($msg_struct).'</pre>'
+						//.'<br><br> === HEADERS ==== <br><br>'
+						//.'<pre>'.$msg_raw_headers.'</pre>'
+						.'<br><br> === struct->parameters ==== <br><br>'
+						.'<pre>'.serialize($msg_struct->parameters).'</pre>'
+						.'<br><br> === BOUNDRY ==== <br><br>'
+						.'<pre>'.serialize($boundary).'</pre>'
+						.'<br><br> === BODY ==== <br><br>';
+						.'<pre>'.serialize($msg_body).'</pre>';
+					*/
+					$dsp = '<br> === BOUNDRY ==== <br>'
+						.'<pre>'.$boundary.'</pre> <br>'
+						.'<br> === BODY ==== <br><br>';
+					$this_msgball = $msgball;
+					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
+					$dsp .= $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
+					
+					//$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
+					$this->part_nice[$i]['message_body'] = $dsp;
+					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part');
+					
+					
+					// ----  DISPLAY INSTRUCTIONS  ----
+					$this->part_nice[$i]['d_instructions'] = 'show';
+					$this->part_nice[$i]['d_processed_as'] = 'mime_ignorant_server';
+					// LOOP CONTROL
+					$done_processing = True;
+				}
+				// do we Force Echo Out Unformatted Text ?
+				elseif (($this->part_nice[$i]['m_description'] == 'presentable')
+				&& (stristr($this->part_nice[$i]['m_keywords'], 'PLAIN'))
+				&& ($d1_num_parts <= 2)
+				&& (($this->part_nice[$i]['m_part_num_mime'] == 1) || ((string)$this->part_nice[$i]['m_part_num_mime'] == '1.1'))
+				&& ((int)$this->part_nice[$i]['bytes'] > $force_echo_size))
+				{
+					
+					// ----  DISPLAY INSTRUCTIONS  ----
+					$this->part_nice[$i]['d_instructions'] = 'echo_out';
+					$this->part_nice[$i]['d_processed_as'] = 'php_bug_needs_echo';
+					// LOOP CONTROL
+					$done_processing = True;
+					
+					
+					/*
+					// output a blank message body, we'll use an alternate method below
+					$GLOBALS['phpgw']->template->set_var('V_display_part','');
+					// -----  Finished With Message_Mail Template, Output It
+					$GLOBALS['phpgw']->template->pparse('out','T_message_main');
+					
+					// -----  Prepare a Table for this Echo Dump
+					$title_text = '&nbsp;'.lang('message').': ';
+					$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
+						.'; meets force_echo ('.$GLOBALS['phpgw']->msg->format_byte_size($force_echo_size).') criteria';
+					$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$GLOBALS['phpgw']->template->parse('V_setup_echo_dump','B_setup_echo_dump');
+					$GLOBALS['phpgw']->template->set_var('V_done_echo_dump','');
+					$GLOBALS['phpgw']->template->pparse('out','T_message_echo_dump');
+					// -----  Echo This Data Directly to the Client
+					echo '<pre>';
+					echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($this->part_nice[$i]['m_part_num_mime']);
+					echo '</pre>';
+					// -----  Close Table
+					$GLOBALS['phpgw']->template->set_var('V_setup_echo_dump','');
+					$GLOBALS['phpgw']->template->parse('V_done_echo_dump','B_done_echo_dump');
+					$GLOBALS['phpgw']->template->pparse('out','T_message_echo_dump');
+					
+					//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
+					$this->part_nice = '';
+					$GLOBALS['phpgw']->msg->end_request();
+					$GLOBALS['phpgw']->common->phpgw_footer();
+					exit;
+					*/
+				}
+				elseif (($this->part_nice[$i]['m_description'] == 'presentable')
+				&& (stristr($this->part_nice[$i]['m_keywords'], 'HTML')))
+				{
+					
+					// get the body
+					$this_msgball = $msgball;
+					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
+					$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
+					// is a blank part test necessary for html ???
+					
+					// ----  prepare the message part seperator(s)  ----
+					//if showing more than 1 part, then show the part number, else just say "message"
+					// NEEDS FIXING - is this simple test accurate enough?
+					if ($count_part_nice > 2)
+					{
+						$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+					}
+					else
+					{
+						$title_text = '&nbsp;'.lang('message').': ';
+					}
+					
+					//$display_str = $this->part_nice[$i]['type'].'/'.strtolower($this->part_nice[$i]['subtype']);
+					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords']
+						.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
+					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$this->part_nice[$i]['title_text'] = $title_text;
+					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$this->part_nice[$i]['display_str'] = $display_str;
+					
+					if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
+					{
+						$dsp = $GLOBALS['phpgw']->msg->qprint($dsp);
+					}
+					
+					// ---- HTML Related Parts Handling  ----
+					$parent_idx = $this->part_nice[$i]['ex_parent_flat_idx'];
+					$msg_raw_headers = $GLOBALS['phpgw']->msg->phpgw_fetchheader($msgball);
+					$ms_related_str = 'X-MimeOLE: Produced By Microsoft MimeOLE';
+					
+					// ---- Replace "Related" part's ID with a mime reference link
+					// this for the less-standard multipart/RELATED subtype ex. Outl00k's Stationary email
+					// update: now common in Ximian 
+					if (($this->part_nice[$parent_idx]['m_html_related_kids'])
+					|| (stristr($msg_raw_headers, $ms_related_str)))
+					{
+						// typically it's the NEXT mime part that should be inserted into this one
+						for ($rel = $i+1; $rel < count($this->part_nice)+1; $rel++)
+						{
+							if ((isset($this->part_nice[$rel]))
+							&& ($this->part_nice[$rel]['id'] != $not_set))
+							{
+								// Set this Flag for Later Use
+								$probable_replace = True;
+								// prepare the reference ID for search and replace
+								$replace_id = $this->part_nice[$rel]['id'];
+								// prepare the replacement href, add the quotes that the html expects
+								$part_href = $this->part_nice[$rel]['ex_part_href'];
+								//$part_href = '"'.$this->part_nice[$rel]['ex_part_href'].'"';
+								
+								//echo '<br> **replace_id (pre-processing): ' .$replace_id .'<br>';
+								//echo 'part_href (processed): ' .$part_href .'<br>';
+								
+								// strip <  and  >  from this ID
+								$replace_id = ereg_replace( '^<','',$replace_id);
+								$replace_id = ereg_replace( '>$','',$replace_id);
+								// id references are typically preceeded with "cid:"
+								$replace_id = 'cid:' .$replace_id;
+								
+								//echo '**replace_id (post-processing): ' .$replace_id .'<br>';
+								
+								// Attempt the Search and Replace
+								$dsp = str_replace($replace_id, $part_href, $dsp);
+							}
+						}
+						// ELSE - Forget About It - Unsupported
+					}
+					
+					// Viewing HTML part is Optional (NOT automatic) if:
+					// (1) if there are CSS Body formattings, or
+					// (2) any <script> in the html body
+					if ((preg_match("/<style.*body.*[{].*[}]/ismx", $dsp))
+					|| (preg_match("/<script.*>.*<\/script>/ismx", $dsp)))
+					{
+						$view_html_folm_action = $GLOBALS['phpgw']->link(
+							'/index.php',
+							$GLOBALS['phpgw']->msg->get_arg_value('view_html_menuaction')
+							.'&'.$msgball['uri']
+						);
+						
+						// if we replaced id(s) with href'(s) above (RELATED) then
+						// stuff the modified html in a hidden var, submit it then echo it back
+						if (($this->part_nice[$parent_idx]['m_html_related_kids'])
+						|| (stristr($msg_raw_headers, $ms_related_str)))
+						{
+							// -- View As HTML Button With Special HTML RELATED handling
+							
+							// this means we *may* have replaced, a guess, but better security 
+							// than setting a variable that could be fed to the server from a URI
+							// replacement is done, and hard to reproduce easily, do just use the work
+							// we already did above
+							// make a submit button with this html part as a hidden var
+							$dsp =
+							'<p>'
+							.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+								.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
+								.'&nbsp;&nbsp;'
+								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
+							.'</p>'
+							.'<br>';
+							
+							
+							// ----  DISPLAY INSTRUCTIONS  ----
+							$this->part_nice[$i]['d_instructions'] = 'show';
+							$this->part_nice[$i]['d_processed_as'] = 'html_button_related';
+							// LOOP CONTROL
+							$done_processing = False;
+						}
+						else
+						{
+							// -- View As HTML Button (part does not containing html related)
+							
+							// in this case, we need only refer to the part number in an href, then redirect
+							// make a submit button with this html part as a hidden var
+							if ($this->part_nice[$i]['encoding'] != $not_set)
+							{
+								$part_encoding = $this->part_nice[$i]['encoding'];
+							}
+							else
+							{
+								$part_encoding = '';
+							}
+							$part_href = $GLOBALS['phpgw']->link(
+									 '/index.php',
+									 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
+									.'&'.$msgball['uri']
+									.'&part_no=' .$this->part_nice[$i]['m_part_num_mime']
+									.'&encoding=' .$part_encoding);
+							
+							$dsp =
+							'<p>'
+								.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+								.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
+								.'&nbsp;&nbsp;'
+								.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
+							.'</p>'
+							.'<br>';
+							
+							
+							// ----  DISPLAY INSTRUCTIONS  ----
+							$this->part_nice[$i]['d_instructions'] = 'show';
+							$this->part_nice[$i]['d_processed_as'] = 'html_button_unrelated';
+							// LOOP CONTROL
+							$done_processing = False;
+						}
+					}
+					else
+					{
+						// -- "Normal" show html part - no special button, no html/related id replacement
+						// it can't be that bad, just show it
+							
+							
+						// ----  DISPLAY INSTRUCTIONS  ----
+						$this->part_nice[$i]['d_instructions'] = 'show';
+						$this->part_nice[$i]['d_processed_as'] = 'html_normal';
+						// LOOP CONTROL
+						$done_processing = False;
+					}
+					
+					//$GLOBALS['phpgw']->template->set_var('message_body',"$dsp");
+					$this->part_nice[$i]['message_body'] = "$dsp";
+					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
+				}
+				elseif ($this->part_nice[$i]['m_description'] == 'presentable')
+				{
+					// ----- get the part from the server
+					$this_msgball = $msgball;
+					$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
+					$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
+					$dsp = trim($dsp);
+					
+					/*
+					$dsp = str_replace("{", " BLA ", $dsp);
+					$dsp = str_replace("}", " ALB ", $dsp);
+					
+					$b_slash = chr(92);
+					$f_slash = chr(47);
+					$dsp = str_replace($b_slash, " B_SLASH ", $dsp);
+					$dsp = str_replace($f_slash, " F_SLASH ", $dsp);
+					
+					$dbl_quo = chr(34);
+					$single_quo = chr(39);
+					$dsp = str_replace($dbl_quo, " dbl_quo ", $dsp);
+					$dsp = str_replace($single_quo, " single_quo ", $dsp);
+					
+					$colon = chr(58);
+					$dsp = str_replace($colon, " colon ", $dsp);
+					
+					echo '<br>'.$this->part_nice[$i]['m_part_num_mime'].'<br>';
+					var_dump($dsp);
+					*/
+					
+					// ----- when to skip showing a part (i.e. blank part - no alpha chars)
+					$skip_this_part = False;
+					if (strlen($dsp) < 3)
+					{
+						$skip_this_part = True;
+						//$GLOBALS['phpgw']->template->set_var('V_display_part','');
+						$this->part_nice[$i]['title_text'] = '';
+						$this->part_nice[$i]['display_str'] = '';
+						$this->part_nice[$i]['message_body'] = '';
+						
+						
+						// ----  DISPLAY INSTRUCTIONS  ----
+						$this->part_nice[$i]['d_instructions'] = 'skip';
+						$this->part_nice[$i]['d_processed_as'] = 'empty_part';
+						// LOOP CONTROL
+						$done_processing = False;
+					}
+					
+					// ===DEBUG===
+					//$skip_this_part = True;
+					
+					// ----- show the part 
+					if ($skip_this_part == False)
+					{
+						if (stristr($this->part_nice[$i]['m_keywords'], 'qprint'))
+						{
+							$dsp = $GLOBALS['phpgw']->msg->qprint($dsp);
+							$tag = 'tt';
+						}
+						elseif (stristr($this->part_nice[$i]['m_keywords'], 'base64'))
+						{
+							// some idiots encode text/plain parts in base64
+							$dsp = $GLOBALS['phpgw']->msg->de_base64($dsp);
+						}
+						
+						//    normalize line breaks to rfc2822 CRLF
+						$dsp = $GLOBALS['phpgw']->msg->normalize_crlf($dsp);
+						
+						if (($GLOBALS['phpgw']->msg->get_isset_arg('no_fmt'))
+						&& ($GLOBALS['phpgw']->msg->get_arg_value('no_fmt') != ''))
+						{
+							$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($dsp);
+							// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
+							// enforce HARD WRAP - X chars per line
+							// how many chars to allow on any single line, if more then we ADD a CRLF and split the line
+							$wrap_text_at = 85;
+							$dsp = $GLOBALS['phpgw']->msg->body_hard_wrap($dsp, $wrap_text_at);
+							$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dsp);
+							$dsp = '<pre>'.$dsp.'</pre>';
+							// alternate (toggle) to view formatted
+							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url, lang('view formatted'));
+						}
+						else
+						{
+							if (strtoupper(lang('charset')) <> 'BIG5')
+							{
+								// before we can encode some chars into html entities (ex. change > to &gt;)
+								// we need to make sure there are no html entities already there
+								// else we'll end up encoding the & (ampersand) when it should not be
+								// ex. &gt; becoming &amp;gt; is NOT what we want
+								$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($dsp);
+								// now we can make browser friendly html entities out of $ < > ' " chars
+								$dsp = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dsp);
+								// now lets preserve the spaces, else html squashes multiple spaces into 1 space
+								// NOT WORTH IT: give view unformatted option instead
+								//$dsp = $GLOBALS['phpgw']->msg->space_to_nbsp($dsp);
+							}
+							$dsp = $GLOBALS['phpgw']->msg->make_clickable($dsp, $GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["folder"]'));
+							// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
+							$dsp = ereg_replace("\r\n","<br>",$dsp);
+							// add a line after the last line of the message
+							$dsp = $dsp .'<br><br>';
+							// alternate (toggle) to view unformatted, for this we add "&no_fmt=1" to the URL
+							$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', lang('view unformatted'));
+						}
+						
+						// "view formatted/unformatted" link being moved to the "toolbar"
+						$this->xi['view_option'] = $view_option;
+						
+						// ----  prepare the message part seperator(s)  ----
+						//if showing more than 1 part, then show the part number, else just say "message"
+						// NEEDS FIXING - is this simple test accurate enough?
+						if ($count_part_nice > 2)
+						{
+							$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+						}
+						else
+						{
+							$title_text = '&nbsp;'.lang('message').': ';
+						}
+						//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+						$this->part_nice[$i]['title_text'] = $title_text;
+						$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords']
+							.' - '.$GLOBALS['phpgw']->msg->format_byte_size(strlen($dsp));
+						// View formatted / unformatted moved to toolbar, do not show it here
+						// however, template var "display_str" was set to empty above
+						// if it deserves to be filled, this code just above here will fill it
+						// but it should not be shown in this mesage seperator bar
+						//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+						$this->part_nice[$i]['display_str'] = $display_str;
+						//$GLOBALS['phpgw']->template->set_var('message_body',$dsp);
+						$this->part_nice[$i]['message_body'] = $dsp;
+						//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
+						
+						
+						// ----  DISPLAY INSTRUCTIONS  ----
+						$this->part_nice[$i]['d_instructions'] = 'show';
+						$this->part_nice[$i]['d_processed_as'] = 'plain';
+						// LOOP CONTROL
+						$done_processing = False;
+					}
+				}
+				elseif ($this->part_nice[$i]['m_description'] == 'presentable/image')
+				{
+					$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+					$display_str = $GLOBALS['phpgw']->msg->decode_header_string($this->part_nice[$i]['ex_part_name'])
+						.' - ' .$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes']) 
+						.' - '.lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$this->part_nice[$i]['title_text'] = $title_text;
+					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$this->part_nice[$i]['display_str'] = $display_str;
+					// we add an href that points to the exact msg_number/mime_part number that is the image
+					// view_image will then handle this request as the browser requests this "img src" for inline display
+					$img_inline = '<img src="'.$this->part_nice[$i]['ex_part_href'].'">';
+					//$GLOBALS['phpgw']->template->set_var('message_body',$img_inline);
+					$this->part_nice[$i]['message_body'] = $img_inline;
+					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
+					
+					
+					// ----  DISPLAY INSTRUCTIONS  ----
+					$this->part_nice[$i]['d_instructions'] = 'show';
+					$this->part_nice[$i]['d_processed_as'] = 'image_href';
+					// LOOP CONTROL
+					$done_processing = False;
+				}
+				elseif ($this->part_nice[$i]['m_description'] == 'attachment')
+				{
+					$title_text = lang('section').': '.$this->part_nice[$i]['m_part_num_mime'];
+					$display_str = lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$this->part_nice[$i]['title_text'] = $title_text;
+					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$this->part_nice[$i]['display_str'] = $display_str;
+					
+					$msg_text = '&nbsp;&nbsp; <strong>'.lang('Attachment').':</strong>'
+						.'&nbsp;&nbsp; '.$this->part_nice[$i]['ex_part_clickable']
+						.'&nbsp;&nbsp; '.lang('size').': '.$GLOBALS['phpgw']->msg->format_byte_size((int)$this->part_nice[$i]['bytes'])
+						.'<br><br>';
+					
+					//$GLOBALS['phpgw']->template->set_var('message_body',$msg_text);
+					$this->part_nice[$i]['message_body'] = $msg_text;
+					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
+					
+					
+					// ----  DISPLAY INSTRUCTIONS  ----
+					$this->part_nice[$i]['d_instructions'] = 'show';
+					$this->part_nice[$i]['d_processed_as'] = 'attach_link';
+					// LOOP CONTROL
+					$done_processing = False;
+				}
+				elseif (($this->part_nice[$i]['m_description'] != 'container')
+				&& ($this->part_nice[$i]['m_description'] != 'packagelist'))
+				{
+					// if we get here then we've got some kind of error, all things we know about are handle above
+					$title_text = lang("section").': '.$this->part_nice[$i]['m_part_num_mime'];
+					$display_str = $GLOBALS['phpgw']->msg->decode_header_string($this->part_nice[$i]['ex_part_name'])
+						.' - '.lang('keywords').': ' .$this->part_nice[$i]['m_keywords'];
+					//$GLOBALS['phpgw']->template->set_var('title_text',$title_text);
+					$this->part_nice[$i]['title_text'] = $title_text;
+					//$GLOBALS['phpgw']->template->set_var('display_str',$display_str);
+					$this->part_nice[$i]['display_str'] = $display_str;
+					
+					$msg_text = '';
+					// UNKNOWN DATA
+					$msg_text = $msg_text .'<br><strong>'.lang('ERROR: Unknown Message Data').'</strong><br>';
+					if ($this->part_nice[$i]['encoding'] == 'base64')
+					{
+							$this_msgball = $msgball;
+							$this_msgball['part_no'] = $this->part_nice[$i]['m_part_num_mime'];
+							$dsp = $GLOBALS['phpgw']->msg->phpgw_fetchbody($this_msgball);
+							//$dsp = $GLOBALS['phpgw']->dcom->fetchbody($mailbox, $GLOBALS['phpgw']->msg->get_arg_value('msgnum'), $this->part_nice[$i]['m_part_num_mime']);
+							//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
+						$msg_text = $msg_text . 'actual part size: ' .strlen($dsp);
+					}
+					//$GLOBALS['phpgw']->template->set_var('message_body',$msg_text);
+					$this->part_nice[$i]['message_body'] = $msg_text;
+					//$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
+					
+					
+					// ----  DISPLAY INSTRUCTIONS  ----
+					$this->part_nice[$i]['d_instructions'] = 'show';
+					$this->part_nice[$i]['d_processed_as'] = 'unknown_handler';
+					// LOOP CONTROL
+					$done_processing = False;
+				}
+			}
+			set_time_limit(0);
+			
+			/* // IS THIS STILL USED ???????
+			if($application)
+			{
+				if(strstr($msgtype,'"; Id="'))
+				{
+					$msg_type = explode(';',$msgtype);
+					$id_array = explode('=',$msg_type[2]);
+					$calendar_id = intval(substr($id_array[1],1,strlen($id_array[1])-2));
+					
+					echo '<tr><td align="center">';
+\					$GLOBALS['phpgw']->hooks->single('email',$application)
+					echo '</td></tr>';
+				}
+			} */
+			
+			//$GLOBALS['phpgw']->template->pparse('out','T_message_main');
+			
+			// DO NOT end request yet because the "echo_out" part (if exists) will require this connection
+			//$GLOBALS['phpgw']->msg->end_request();
+			if ($this->debug > 2) { echo 'email.bomessage.message_data:  $this->part_nice dump: <pre>'; print_r($this->part_nice); echo '</pre>'; }
+			
+		}
+	}
+?>

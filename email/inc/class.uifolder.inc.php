@@ -36,14 +36,12 @@
 		
 		function set_is_modular($feed_bool=False)
 		{
-			/* This also does not work on php3 - milosch */
-			if ((bool)$feed_bool == False)
+			// is_bool() is in the php3 compat library
+			if ((isset($feed_bool))
+			&& (is_bool($feed_bool)))
 			{
-				$this->is_modular = False;
-			}
-			else
-			{
-				$this->is_modular = True;
+				// only change this if the arg is boolean
+				$this->is_modular = $feed_bool;
 			}
 			return $this->is_modular;
 		}
@@ -124,6 +122,10 @@
 			$GLOBALS['phpgw']->template->set_var('form_rename_expert_txt',$this->bo->xi['form_rename_expert_txt']);
 			$GLOBALS['phpgw']->template->set_var('form_submit_txt',$this->bo->xi['form_submit_txt']);
 			
+			$GLOBALS['phpgw']->template->set_var('hiddenvar_target_acctnum_name',$this->bo->xi['hiddenvar_target_acctnum_name']);
+			$GLOBALS['phpgw']->template->set_var('hiddenvar_target_acctnum_value',$this->bo->xi['hiddenvar_target_acctnum_value']);
+			$GLOBALS['phpgw']->template->set_var('target_fldball_boxname',$this->bo->xi['target_fldball_boxname']);
+			
 			// ----  Set Up Other Variables  ---	
 			$GLOBALS['phpgw']->template->set_var('title_backcolor',$this->bo->xi['title_backcolor']);
 			$GLOBALS['phpgw']->template->set_var('title_textcolor',$this->bo->xi['title_textcolor']);
@@ -155,7 +157,7 @@
 				// "keep" them;  "remove"  then;  or  "comment" them
 				// Template->fp  defaults to "remove" unknowns, although you may set Template->unknowns as you wish
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$GLOBALS['phpgw']->template->set_unknowns("comment");
+				//$GLOBALS['phpgw']->template->set_unknowns("comment");
 				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
 				return $GLOBALS['phpgw']->template->fp('out','T_folder_out');
 			}
@@ -167,7 +169,7 @@
 				//$GLOBALS['phpgw']->template->pparse('out','T_folder_out');
 				
 				// COMMENT NEXT LINE OUT for producvtion use, (unknowns should be "remove"d in production use)
-				$GLOBALS['phpgw']->template->set_unknowns("comment");
+				//$GLOBALS['phpgw']->template->set_unknowns("comment");
 				// production use, use this:	$GLOBALS['phpgw']->template->set_unknowns("remove");
 				// Template->pfp will (1) parse and substitute, (2) "finish" - handle unknowns, (3) echo the output
 				$GLOBALS['phpgw']->template->pfp('out','T_folder_out');

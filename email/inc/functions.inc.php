@@ -73,6 +73,7 @@
 		"preferences\.php",
 		"addressbook\.php",
 		"folder\.php",
+		"message\.php",
 		//"filters\.php",
 		"index\.php",
 		"indexx\.php"

@@ -13,7 +13,7 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
+	
 	Header('Cache-Control: no-cache');
 	Header('Pragma: no-cache');
 	Header('Expires: Sat, Jan 01 2000 01:01:01 GMT');
@@ -21,7 +21,10 @@
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'email',
 		'noheader'   => True,
-		'nonavbar'   => True
+		'nofooter'   => True,
+		'nonavbar'   => True,
+		'noappheader'   => True,
+		'noappfooter'   => True
 	);
 	include('../header.inc.php');
 	// time limit should be controlled elsewhere
@@ -30,9 +33,14 @@
 	// this index page is acting like a calling app which wants the HTML produced by mail.uiindex.index
 	// but DOES NOT want mail.uiindex.index to actually echo or print out any HTML
 	// we, the calling app, will handle the outputting of the HTML
-	$is_modular = True;
-	//$is_modular = False
+	//$is_modular = True;
+	$is_modular = False;
 	
+	header('Location: '.$GLOBALS['phpgw']->link(
+				 '/index.php',
+				 'menuaction=email.uiindex.index'));
+	return;
+	/*
 	if ($is_modular == True)
 	{
 		// pretend we are a calling app outputting some HTML, including the header and navbar
@@ -57,5 +65,5 @@
 		// output the header and navbar, but it may not output common->phpgw_footer() else page gets 2 footers
 		$GLOBALS['phpgw']->common->phpgw_footer();
 	}
-
+	*/
 ?>

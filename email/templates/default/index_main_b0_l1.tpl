@@ -140,7 +140,7 @@ function check_all()
 <tr>
 	<td bgcolor="{mlist_backcolor}" align="center">
 	<!-- INIT FORM ONCE -->{V_mlist_form_init}
-		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
+		<input type="checkbox" name="delmov_list[]" value="{mlist_embedded_uri}">
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="center">
 		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_new_msg}{mlist_attach}</font>

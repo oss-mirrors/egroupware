@@ -49,53 +49,73 @@
 		/*!
 		@function phpgw_fetchstructure
 		@abstract wrapper for IMAP_FETSCSTRUCTURE, phpgw supplies the nedessary stream arg
-		@param $msg_number : integer
+		@param $msgnum : integer
 		@result returns the IMAP_FETSCSTRUCTURE data
 		@discussion Wrapper supplies the needed mailsvr_stream arg to IMAP_FETSCSTRUCTURE
 		The data communications object (class mail_dcom) is supplied by the class
 		*/
-		function phpgw_fetchstructure($msg_number='')
+		function phpgw_fetchstructure($msgball='')
 		{
-			//if ((string)$msg_number == '')
-			//if ($msg_number == '')
-			if (empty($msg_number))
+			if (!(isset($msgball))
+			|| ((string)$msgball == ''))
 			{
-				$msg_number = $this->get_arg_value('msgnum');
+				$msgball = $this->get_arg_value('msgball');
 			}
+			$acctnum = $msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
-			return $this->a[$this->acctnum]['dcom']->fetchstructure($this->get_arg_value('mailsvr_stream'), $msg_number);
+			return $this->a[$acctnum]['dcom']->fetchstructure($stream, $msgball['msgnum']);
 		}
 	
 		/*!
 		@function phpgw_header
 		@abstract wrapper for IMAP_HEADER, phpgw supplies the nedessary stream arg and mail_dcom reference
-		@param $msg_number : integer
+		@param $msgnum : integer
 		@result returns the php IMAP_HEADER data
 		@discussion Wrapper supplies the needed mailsvr_stream arg to IMAP_HEADER
 		The data communications object (class mail_dcom) is supplied by the class
 		*/
-		function phpgw_header($msg_number='')
+		function phpgw_header($msgball='')
 		{
-			//if ($msg_number == '')
-			if (empty($msg_number))
+			if (!(isset($msgball))
+			|| ((string)$msgball == ''))
 			{
-				$msg_number = $this->get_arg_value('msgnum');
-			}	
+				$msgball = $this->get_arg_value('msgball');
+			}
+			$acctnum = $msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
-			return $this->a[$this->acctnum]['dcom']->header($this->get_arg_value('mailsvr_stream'), $msg_number);
+			return $this->a[$acctnum]['dcom']->header($stream, $msgball['msgnum']);
 		}
 		
-		function phpgw_fetchheader($msg_number='')
+		function phpgw_fetchheader($msgball='')
 		{
-			//if ($msg_number == '')
-			if (empty($msg_number))
+			if (!(isset($msgball))
+			|| ((string)$msgball == ''))
 			{
-				$msg_number = $this->get_arg_value('msgnum');
+				$msgball = $this->get_arg_value('msgball');
 			}
+			$acctnum = $msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
-			return $this->a[$this->acctnum]['dcom']->fetchheader($this->get_arg_value('mailsvr_stream'), $msg_number);
+			return $this->a[$acctnum]['dcom']->fetchheader($stream, $msgball['msgnum']);
 		}
 	
 		function phpgw_get_flag($flag='')
@@ -107,28 +127,92 @@
 			}
 			else
 			{
-				return $this->a[$this->acctnum]['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('msgnum'),$flag);
+				return $this->a[$this->acctnum]['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
 			}
 		}
 		
-		
+		//FIXME: msgball
 	// ====  Functions For Getting A Message Or A Part (MIME Part) Of A Message  ====
-		function phpgw_body()
+		function phpgw_body($msgball='')
 		{
-			return $this->a[$this->acctnum]['dcom']->get_body($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'));
+			if (!(isset($msgball))
+			|| ((string)$msgball == ''))
+			{
+				$msgball = $this->get_arg_value('msgball');
+			}
+			$acctnum = $msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			return $this->a[$acctnum]['dcom']->get_body($stream, $msgball['msgnum']);
 		}
 		
-		function phpgw_fetchbody($part_num_mime='', $flags='')
+		//FIXME: msgball
+		//function phpgw_fetchbody($part_num_mime='', $flags='')
+		//{
+		//	return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
+		//}
+		function phpgw_fetchbody($msgball='', $flags='')
 		{
-			return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
+			//echo 'mail_msg(_wrappers): phpgw_fetchbody: ENTERING, $msgball dump<pre>'; print_r($msgball); echo '</pre>';
+			if ( (!isset($msgball))
+			|| ($msgball == '') )
+			{
+				$msgball = $this->get_arg_value('msgball');
+			}
+			$acctnum = $msgball['acctnum'];
+			if ((!isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$msgnum = $msgball['msgnum'];
+			$part_no = $msgball['part_no'];
+			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $stream: '.serialize($stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
+			return $this->a[$acctnum]['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
 		}
+		/*
+		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
+		{
+			$stream = $this->get_arg_value('mailsvr_stream');
+			$msgnum = $msgball['msgnum'];
+			$part_no = $msgball['part_no'];
+			return $this->a[$this->acctnum]['dcom']->fetchbody($stream, $msgnum, $part_no, $flags);
+		}
+		*/
+		/*
+		function phpgw_fetchbody($msgball='', $part_num_mime='', $flags='')
+		{
+			if (!(isset($msgball))
+			|| ((string)$msgball == ''))
+			{
+				$msgball = $this->get_arg_value('msgball');
+			}
+			$acctnum = $msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			
+			//return $this->a[$acctnum]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
+			//return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
+			//return $this->a[$acctnum      ]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
+			return $this->a[$this->acctnum]['dcom']->fetchbody($stream, $msgball['msgnum'], $part_num_mime, $flags);
+		}
+		*/
 		
 		
 	// =====  Functions For Getting Information About A Folder  =====
 		// returns an array of integers which are refer to all the messages in a folder ("INBOX") sorted and ordered
 		// any integer in this array can be used to request that specific message from the server
 		/*!
-		@function get_message_list
+		@function get_msgball_list
 		@abstract wrapper for IMAP_SORT, sorts a folder in the desired way, then get a list of all message, as integer message numbers
 		@param none
 		@result returns an array of integers which are message numbers referring to messages in the corrent folder
@@ -136,21 +220,44 @@
 		Sort and Order is applied by the class, so the calling process does not need to specify sorting here
 		The data communications object (class mail_dcom) is supplied by the class
 		*/
-		function get_message_list()
+		function get_msgball_list()
 		{
-			// try to restore "msg_array" from saved session data store
-			$cached_msg_array = $this->read_session_cache_item('msg_array');
-			if ($cached_msg_array)
+			// try to restore "msgball_list" from saved session data store
+			$cached_msgball_list = $this->read_session_cache_item('msgball_list');
+			if ($cached_msgball_list)
 			{
-				return $cached_msg_array['msg_array'];
+				return $cached_msgball_list['msgball_list'];
 			}
 			else
 			{
-				$msg_array = array();
-				$msg_array = $this->a[$this->acctnum]['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
-				// save "msg_array" to session data store
-				$this->save_session_cache_item('msg_array', $msg_array);
-				return $msg_array;
+				$server_msgnum_list = array();
+				$server_msgnum_list = $this->a[$this->acctnum]['dcom']->sort($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('sort'), $this->get_arg_value('order'));
+				// put more information about these particular messages into the msgball_list[] structure
+				$msgball_list = array();
+				$loops = count($server_msgnum_list);
+				// folder empty (or an error?), msg_nums_list[] count will be 0, so msgball_list[] will be empty as well
+				// because we'll never fill it with anything
+				if ($loops > 0)
+				{
+					$msg_folder = $this->prep_folder_out($this->get_arg_value('folder'));
+					$msg_acctnum = $this->get_acctnum();
+					for($i=0;$i<$loops;$i++)
+					{
+						$msgball_list[$i]['msgnum'] = $server_msgnum_list[$i];
+						$msgball_list[$i]['folder'] = $msg_folder;
+						$msgball_list[$i]['acctnum'] = $msg_acctnum;
+						// see php manual page "function.parse-str.html" for explanation of the array'ing of the URI data
+						// NOTE: this uri NEVER begins with a "&" here
+						// YOU must add the prefix "&" if it's needed
+						$msgball_list[$i]['uri'] = 
+							 'msgball[msgnum]='.$msgball_list[$i]['msgnum']
+							.'&msgball[folder]='.$msgball_list[$i]['folder']
+							.'&msgball[acctnum]='.$msgball_list[$i]['acctnum'];
+					}
+				}
+				// save "msgball_list" to session data store
+				$this->save_session_cache_item('msgball_list', $msgball_list);
+				return $msgball_list;
 			}
 		}
 		
@@ -289,19 +396,29 @@
 			return $this->a[$this->acctnum]['dcom']->i_search($this->get_arg_value('mailsvr_stream'),$criteria,$flags);
 		}
 		
-		function phpgw_createmailbox($folder)
+		function phpgw_createmailbox($target_fldball)
 		{
-			return $this->a[$this->acctnum]['dcom']->createmailbox($this->get_arg_value('mailsvr_stream'), $folder);
+			$acctnum = (int)$target_fldball['acctnum'];
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$folder = $target_fldball['folder'];
+			return $this->a[$acctnum]['dcom']->createmailbox($stream, $folder);
 		}
 		
-		function phpgw_deletemailbox($folder)
+		function phpgw_deletemailbox($target_fldball)
 		{
-			return $this->a[$this->acctnum]['dcom']->deletemailbox($this->get_arg_value('mailsvr_stream'), $folder);
+			$acctnum = (int)$target_fldball['acctnum'];
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$folder = $target_fldball['folder'];
+			return $this->a[$acctnum]['dcom']->deletemailbox($stream, $folder);
 		}
 		
-		function phpgw_renamemailbox($folder_old,$folder_new)
+		function phpgw_renamemailbox($source_fldball,$target_fldball)
 		{
-			return $this->a[$this->acctnum]['dcom']->renamemailbox($this->get_arg_value('mailsvr_stream'), $folder_old, $folder_new);
+			$acctnum = (int)$source_fldball['acctnum'];
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			$folder_old = $source_fldball['folder'];
+			$folder_new = $target_fldball['folder'];
+			return $this->a[$acctnum]['dcom']->renamemailbox($stream, $folder_old, $folder_new);
 		}
 		
 		function phpgw_append($folder = "Sent", $message, $flags=0)
@@ -352,7 +469,7 @@
 			&& ($official_folder_long != ''))
 			{
 				// delete session msg array data thAt is now stale
-				$this->expire_session_cache_item('msg_array');
+				$this->expire_session_cache_item('msgball_list');
 				// do the append
 				return $this->a[$this->acctnum]['dcom']->append($this->get_arg_value('mailsvr_stream'), "$server_str"."$official_folder_long", $message, $flags);
 			}
@@ -369,25 +486,64 @@
 		function phpgw_mail_move($msg_list,$mailbox)
 		{
 			// delete session msg array data thAt is now stale
-			$this->expire_session_cache_item('msg_array');
+			$this->expire_session_cache_item('msgball_list');
 			
-			return $this->a[$this->acctnum]['dcom']->mail_move($this->get_arg_value('mailsvr_stream'),$msg_list,$mailbox);
+			return $this->a[$this->acctnum]['dcom']->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
 		}
 		
-		function phpgw_expunge()
+		function interacct_mail_move($mov_msgball='', $to_fldball='')
 		{
-			$this->a[$this->acctnum]['dcom']->expunge($this->get_arg_value('mailsvr_stream'));
-		}
-		
-		function phpgw_delete($msg_num,$flags=0, $currentfolder="") 
-		{
-			//$this->a[$this->acctnum]['dcom']->delete($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msglist'][$i],"",$this->get_arg_value('folder'));
+			// this needs A LOT of work!!! do not rely on this yet
 			
-			if (($this->get_isset_pref('use_trash_folder'))
-			&& ($this->get_pref_value('use_trash_folder')))
+			// delete session msg array data thAt is now stale
+			$this->expire_session_cache_item('msgball_list');
+			
+			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
+			$acctnum = (int)$mov_msgball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
 			{
-				$trash_folder_long = $this->get_folder_long($this->get_pref_value('trash_folder_name'));
-				$trash_folder_short = $this->get_folder_short($this->get_pref_value('trash_folder_name'));
+				$acctnum = $this->get_acctnum();
+			}
+			//$stream = (int)$this->get_arg_value('mailsvr_stream', $acctnum);
+			$stream = $this->get_arg_value('mailsvr_stream');
+			$msgnum = (string)$mov_msgball['msgnum'];
+			$mailbox = $to_fldball['folder'];
+			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $stream: '.$stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
+			// the acctnum we are moving FROM *may* be different from the acctnum we are moving TO
+			// that requires a fetch then an append - FIXME!!!
+			return $this->a[$acctnum]['dcom']->mail_move($stream ,$msgnum, $mailbox);
+		}
+		
+		function phpgw_expunge($acctnum='')
+		{
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			return $this->a[$acctnum]['dcom']->expunge($stream);
+		}
+		
+		//function phpgw_delete($msg_num,$flags=0, $currentfolder="") 
+		function phpgw_delete($msg_num,$flags=0, $currentfolder="", $acctnum='') 
+		{
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			// everything from now on MUST specify this $acctnum
+			
+			// now get the stream that applies to that acctnum
+			$stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			
+			if (($this->get_isset_pref('use_trash_folder', $acctnum))
+			&& ($this->get_pref_value('use_trash_folder', $acctnum)))
+			{
+				$trash_folder_long = $this->get_folder_long($this->get_pref_value('trash_folder_name', $acctnum));
+				$trash_folder_short = $this->get_folder_short($this->get_pref_value('trash_folder_name', $acctnum));
 				if ($currentfolder != '')
 				{
 					$currentfolder_short = $this->get_folder_short($currentfolder);
@@ -396,15 +552,16 @@
 				if ($currentfolder_short == $trash_folder_short)
 				{
 					// delete session msg array data thAt is now stale
-					$this->expire_session_cache_item('msg_array');
+					$this->expire_session_cache_item('msgball_list');
 					
 					//return imap_delete($stream,$msg_num);
-					return $this->a[$this->acctnum]['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
+					return $this->a[$this->acctnum]['dcom']->delete($stream, $msg_num);
 				}
+				// FIXME: from here on needs that $acctnum and.or $stream NEEDS TO BE SPECIFIED!
 				else
 				{
 					// does the trash folder actually exist ?
-					$official_trash_folder_long = $this->folder_lookup('', $this->get_pref_value('trash_folder_name'));
+					$official_trash_folder_long = $this->folder_lookup('', $this->get_pref_value('trash_folder_name', $acctnum));
 					if ($official_trash_folder_long != '')
 					{
 						$havefolder = True;
@@ -435,7 +592,7 @@
 					if ($havefolder)
 					{
 						// delete session msg array data thAt is now stale
-						$this->expire_session_cache_item('msg_array');
+						$this->expire_session_cache_item('msgball_list');
 						
 						//return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
 						return $this->phpgw_mail_move($msg_num,$official_trash_folder_long);
@@ -443,7 +600,7 @@
 					else
 					{
 						// delete session msg array data thAt is now stale
-						$this->expire_session_cache_item('msg_array');
+						$this->expire_session_cache_item('msgball_list');
 						
 						// we do not have the trash official folder name, but we have to do something
 						// can't just leave the mail sitting there
@@ -456,7 +613,7 @@
 			else
 			{
 				// delete session msg array data thAt is now stale
-				$this->expire_session_cache_item('msg_array');
+				$this->expire_session_cache_item('msgball_list');
 				
 				//return imap_delete($stream,$msg_num);
 				return $this->a[$this->acctnum]['dcom']->delete($this->get_arg_value('mailsvr_stream'), $msg_num);
@@ -464,7 +621,7 @@
 		}
 		
 		/*!
-		@function explode_fake_uri
+		@function decode_fake_uri
 		@abstract decodes a URI type "query string" into an associative array
 		@param $uri_type_string string in the style of a URI such as "&item=phone&action=dial"
 		@result associative array where the $key and $value are exploded from the uri like [item] => "phone"
@@ -483,10 +640,11 @@
 		@author	Angles
 		@access	Public
 		*/
-		function explode_fake_uri($uri_type_string='')
+		function decode_fake_uri($uri_type_string='', $raise_up=False)
 		{
+			/*
 			$fake_url_b = explode('&', $uri_type_string);
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: explode_fake_uri: $fake_url_b = explode("&", '.$uri_type_string.') dump:<pre>'; print_r($fake_url_b); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: $fake_url_b = explode("&", '.$uri_type_string.') dump:<pre>'; print_r($fake_url_b); echo '</pre>'; }
 			
 			$fake_url_b_2 = array();
 			while(list($key,$value) = each($fake_url_b))
@@ -498,8 +656,60 @@
 					$fake_url_b_2[$exploded_parts[0]] = $exploded_parts[1];
 				}
 			}
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: explode_fake_uri: $fake_url_b_2 (sub parts exploded and made into an associative array) dump:<pre>'; print_r($fake_url_b_2); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: $fake_url_b_2 (sub parts exploded and made into an associative array) dump:<pre>'; print_r($fake_url_b_2); echo '</pre>'; }
 			return $fake_url_b_2;
+			*/
+			
+			$embeded_data = array();
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: ENTERED $uri_type_string ['.$uri_type_string.'] <br>'; }
+			parse_str($uri_type_string, $embeded_data);
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: parse_str('.$uri_type_string.', into $embeded_data dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
+			
+			// parse_str will "urldecode" the folder string, we need to re-urlencode it, 
+			// because "prep_folder_in" is supposed to be where it gets urldecoded
+			while(list($key,$value) = each($embeded_data))
+			{
+				if ((strstr($key, 'folder'))
+				&& ((string)$embeded_data[$key] != ''))
+				{
+					$re_urlencoded_folder = urlencode($embeded_data[$key]);
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: re-urlencode (hopefully) folder element $embeded_data['.$key.'] from ['.$embeded_data[$key].'] into ['.$re_urlencoded_folder.'] <br>'; }
+					$embeded_data[$key] = $re_urlencoded_folder;
+				}
+				elseif ((strstr($key, 'acctnum'))
+				&& ((string)$embeded_data[$key] != ''))
+				{
+					$make_int_acctnum = (int)$embeded_data[$key];
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: $make_int_acctnum (hopefully) acctnum element $embeded_data['.$key.'] from ['.serialize($embeded_data[$key]).'] into ['.serialize($make_int_acctnum).'] <br>'; }
+					$embeded_data[$key] = $make_int_acctnum;
+				}
+			}
+			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
+			if ($raise_up)
+			{
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: attempt to raise up data one level in the array <br>'; }
+				$count_embeded = count($embeded_data);
+				if ($count_embeded == 1)
+				{
+					@reset($embeded_data);
+					$new_top_level = array();
+					while(list($key,$value) = each($embeded_data))
+					{
+						$new_top_level = $embeded_data[$key];
+						//break;
+					}
+					// replace result with $new_top_level
+					$embeded_data = $new_top_level;
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: raise embeded up to $new_top_level: <pre>'; print_r($new_top_level); echo '</pre>'; }
+				}
+				else
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri: original result had more than one element, can not raise <br>'; }
+				}
+			}
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: final $embeded_data (sub parts made into an associative array) dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: LEAVING <br>'; }
+			return $embeded_data;
 		}
 		
 		/*!
@@ -518,57 +728,96 @@
 		*/
 		function grab_class_args_gpc($acctnum='')
 		{
-			if ($this->debug_args_flow > 0) { echo 'mail_msg: grab_class_args_gpc: ENTERING, (parm $acctnum=['.serialize($acctnum).'])<br>'; }
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_POST_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_GET_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: ENTERING, (parm $acctnum=['.serialize($acctnum).'])<br>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_POST_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_GET_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
 			
-			$embedded_data = array();
 			// ----  extract any "fake_uri" embedded data from HTTP_POST_VARS  ----
+			// note: this happens automatically for HTTP_GET_VARS 
 			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
 			{
-				if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$GLOBALS['HTTP_POST_VARS'][$key].'<br>'; }
-				if (strstr($key, '_fake_uri'))
+				if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$GLOBALS['HTTP_POST_VARS'][$key].'<br>'; }
+				if ($key == 'delmov_list')
 				{
-					$embedded_data = $this->explode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key]);
-					if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS ['.$GLOBALS['HTTP_POST_VARS'][$key].'] , $embedded_data dump:<pre>'; print_r($embedded_data); echo '</pre>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+					$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
+					for($i=0;$i<$sub_loops;$i++)
+					{
+						$sub_embedded_data = array();
+						// True = attempt to "raise up" embedded data to top level
+						$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i], True);
+						// this array needs to be taken up one level
+						$top_of_sub = Array();
+						$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+					}
+					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
 				}
-			}
-			
-			// put any "_fake_uri" embedded data BACK into HTTP_POST_VARS as if they were values 
-			// posted like any other form data
-			if (count($embedded_data) > 0)
-			{
-				while(list($key,$value) = each($embedded_data))
+				elseif (strstr($key, '_fake_uri'))
 				{
-					$GLOBALS['HTTP_POST_VARS'][$key] = $embedded_data[$key];
-					if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: inserted $embedded_data ['.$key.']=['.$value.'] into $GLOBALS[HTTP_POST_VARS] <br>'; }
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+					$embedded_data = array();
+					$embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key]);
+					// Strip "_fake_uri" from $key and insert the associative array into HTTP_POST_VARS
+					$new_key = str_replace('_fake_uri', '', $key);
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: embedded "_fake_uri" data will be inserted into POST VARS with key name: ['.$new_key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+					$GLOBALS['HTTP_POST_VARS'][$new_key] = array();
+					$GLOBALS['HTTP_POST_VARS'][$new_key] = $embedded_data;
+					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$new_key]); echo '</pre>'; }
 				}
+				/*
+				elseif ($key == 'delmov_list')
+				{
+					if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
+					$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
+					for($i=0;$i<$sub_loops;$i++)
+					{
+						$sub_embedded_data = array();
+						$sub_embedded_data = $this->decode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key][$i]);
+						$GLOBALS['HTTP_POST_VARS'][$key][$i] = $sub_embedded_data;
+					}
+					if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($GLOBALS['HTTP_POST_VARS'][$key]); echo '</pre>'; }
+				}
+				*/
 			}
 			
 			$got_args = array();
 			
-			if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_external_args<br>'; }
-			$loops = count($this->known_external_args);				
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_external_args<br>'; }
+			$loops = count($this->known_external_args);
 			for($i=0;$i<$loops;$i++)
 			{
 				$this_arg_name = $this->known_external_args[$i];
-				//if ($this->debug_args_flow > 2) { echo ' * * (grab pref - external) $this_arg_name: ['.$this_arg_name.']<br>'; }
+				//if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - external) $this_arg_name: ['.$this_arg_name.']<br>'; }
 				if (isset($GLOBALS['HTTP_POST_VARS'][$this_arg_name]))
 				{
-					if ($this->debug_args_flow> 2) { echo ' * * (grab pref - external) $GLOBALS[HTTP_POST_VARS]['.$this_arg_name.'] IS set to ['.$GLOBALS['HTTP_POST_VARS'][$this_arg_name].']<br>'; }
+					if ($this->debug_args_input_flow> 2) { echo ' * * (grab pref - external) $GLOBALS[HTTP_POST_VARS]['.$this_arg_name.'] IS set to ['.$GLOBALS['HTTP_POST_VARS'][$this_arg_name].']<br>'; }
 					$got_args[$this_arg_name] = $GLOBALS['HTTP_POST_VARS'][$this_arg_name];
 				}
 				elseif (isset($GLOBALS['HTTP_GET_VARS'][$this_arg_name]))
 				{
-					if ($this->debug_args_flow > 2) { echo ' * * (grab pref - external) $GLOBALS[HTTP_GET_VARS]['.$this_arg_name.'] IS set to ['.$GLOBALS['HTTP_GET_VARS'][$this_arg_name].']<br>'; }
+					if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - external) $GLOBALS[HTTP_GET_VARS]['.$this_arg_name.'] IS set to ['.$GLOBALS['HTTP_GET_VARS'][$this_arg_name].']<br>'; }
 					$got_args[$this_arg_name] = $GLOBALS['HTTP_GET_VARS'][$this_arg_name];
+					
+					// ADD "uri" element to incoming "msgball" arg
+					// so forms may pass this "msgball" on to the next page view
+					if ($this_arg_name == 'msgball')
+					{
+						// php will automayically urldecode the folder, we don't like this
+						$re_urlencoded_folder = $this->prep_folder_out($got_args[$this_arg_name]['folder']);
+						$got_args[$this_arg_name]['folder'] = $re_urlencoded_folder;
+						$got_args[$this_arg_name]['uri'] = 
+							'msgball[msgnum]='.$got_args[$this_arg_name]['msgnum']
+							.'&msgball[folder]='.$got_args[$this_arg_name]['folder']
+							.'&msgball[acctnum]='.$got_args[$this_arg_name]['acctnum'];
+						if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - external) made msgball URI, added it to msgball[]: <pre>'; print_r($got_args[$this_arg_name]); echo '</pre>'; }
+					}
 				}
 				else
 				{
-					if ($this->debug_args_flow > 2) { echo ' * (grab pref - external) neither POST nor GET vars have this item set ['.$this_arg_name.'] <br>'; }
+					if ($this->debug_args_input_flow > 2) { echo ' * (grab pref - external) neither POST nor GET vars have this item set ['.$this_arg_name.'] <br>'; }
 				}
 			}
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (external args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (external args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
 			
 			
 			// in order to handle internal args, we need to determine what account we are dealing with
@@ -577,23 +826,55 @@
 			// ---  which email account do are these args intended to apply to  ----
 			// ORDER OF PREFERENCE for determining account num
 			// 1) force fed acct num
-			// 2) gpc acctnum (first POST, then GET)
-			// 3) current class value for acct num
+			// 2) gpc fldball['acctnum']
+			// 3) gpc msgball['acctnum']
+			// 4-) current class value for acct num
 			// 4a) use class value $this->acctnum if it exists
 			// 4b) get a default value to use (usually = 0)
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will look here: <br>'
+								.' * (1) function arg $acctnum ['.serialize($acctnum).']<br>'
+								.' * (2) $got_args[msgball][acctnum] ['.serialize($got_args['msgball']['acctnum']).']<br>'
+								.' * (3) $got_args[fldball][acctnum] ['.serialize($got_args['fldball']['acctnum']).']<br>'
+								.' * (4) last resort, calls $this->get_acctnum()<br>'
+								; }
+			
 			if ((isset($acctnum))
 			&& ((string)$acctnum != ''))
 			{
 				// do nothing, we'll use this value below
-				if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use function param $acctnum=['.serialize($acctnum).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use function param $acctnum=['.serialize($acctnum).']<br>'; }
 			}
-			elseif ((isset($got_args['acctnum']))
-			&& ((string)$got_args['acctnum'] != ''))
+			elseif ((isset($got_args['msgball']['acctnum']))
+			&& ((string)$got_args['msgball']['acctnum'] != ''))
 			{
-				$acctnum = (int)$got_args['acctnum'];
+				$acctnum = (int)$got_args['msgball']['acctnum'];
 				// make sure this is an integer
-				$got_args['acctnum'] = $acctnum;
-				if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[acctnum] : ['.serialize($got_args['acctnum']).']<br>'; }
+				$got_args['msgball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[msgball][acctnum] : ['.serialize($got_args['msgball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['fldball']['acctnum']))
+			&& ((string)$got_args['fldball']['acctnum'] != ''))
+			{
+				$acctnum = (int)$got_args['fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[fldball][acctnum] : ['.serialize($got_args['fldball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['source_fldball']['acctnum']))
+			&& ((string)$got_args['source_fldball']['acctnum'] != ''))
+			{
+				$acctnum = (int)$got_args['source_fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['source_fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[source_fldball][acctnum] : ['.serialize($got_args['source_fldball']['acctnum']).']<br>'; }
+			}
+			elseif ((isset($got_args['target_fldball']['acctnum']))
+			&& ((string)$got_args['target_fldball']['acctnum'] != ''))
+			{
+				$acctnum = (int)$got_args['target_fldball']['acctnum'];
+				// make sure this is an integer
+				$got_args['target_fldball']['acctnum'] = $acctnum;
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": will use GPC aquired $got_args[target_fldball][acctnum] : ['.serialize($got_args['target_fldball']['acctnum']).']<br>'; }
 			}
 			else
 			{
@@ -602,31 +883,31 @@
 				// $this->get_acctnum(True) will return a default value for us to use if $this->acctnum is not set
 				// True means "return a default value, NOT boolean false, if $this->acctnum is not set
 				$acctnum = $this->get_acctnum(True);
-				if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
+				if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: "what acctnum to use": NO *incoming* acctnum specified, called $this->get_acctnum(True), got: ['.serialize($acctnum).']<br>'; }
 			}
-			if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: setting class acctnum by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: * * * *SETTING CLASS ACCTNUM* * * * by calling $this->set_acctnum('.serialize($acctnum).')<br>'; }
 			$this->set_acctnum($acctnum);
 			
 			
 			// INTERNALLY CONTROLLED ARGS
 			// preserve pre-existing value, for which "acctnum" must be already obtained, so we
 			// know what account to check for existing arg values when we use "get_isset_arg" or "get_arg_value"
-			if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_internal_args<br>'; }
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_internal_args<br>'; }
 			$loops = count($this->known_internal_args);
 			for($i=0;$i<$loops;$i++)
 			{
 				$this_arg_name = $this->known_internal_args[$i];
-				//if ($this->debug_args_flow > 2) { echo ' * * (grab pref - internal) $this_arg_name: '.$this_arg_name.'<br>'; }
+				//if ($this->debug_args_input_flow > 2) { echo ' * * (grab pref - internal) $this_arg_name: '.$this_arg_name.'<br>'; }
 				// see if there is a value we can preserve for this arg
 				if ($this->get_isset_arg($this_arg_name))
 				{
 					$preserve_this = $this->get_arg_value($this_arg_name);
-					if ($this->debug_args_flow> 2) { echo ' * * (grab pref - internal) preserving internal pre-existing arg: ['.$this_arg_name.'] = ['.$preserve_this.']<br>'; }
+					if ($this->debug_args_input_flow> 2) { echo ' * * (grab pref - internal) preserving internal pre-existing arg: ['.$this_arg_name.'] = ['.$preserve_this.']<br>'; }
 					$got_args[$this_arg_name] = $preserve_this;
 				}
 				else
 				{
-					if ($this->debug_args_flow > 2) { echo ' * (grab pref - internal) no pre-existing value for ['.$this_arg_name.'], using initialization default: <br>'; }
+					if ($this->debug_args_input_flow > 2) { echo ' * (grab pref - internal) no pre-existing value for ['.$this_arg_name.'], using initialization default: <br>'; }
 					if ($this_arg_name == 'folder_status_info')
 					{
 						$got_args['folder_status_info'] = array();
@@ -655,6 +936,8 @@
 					{
 						$got_args['mailsvr_account_username'] = '';
 					}
+					/*
+					// THESE menuaction args are being DEPRECIATED
 					// these are the supported menuaction strings
 					elseif ($this_arg_name == 'index_menuaction')
 					{
@@ -696,6 +979,7 @@
 					{
 						$got_args['index_refresh_uri'] ='';
 					}
+					*/
 					// experimental: Set Flag indicative we've run thru this function
 					elseif ($this_arg_name == 'already_grab_class_args_gpc')
 					{
@@ -703,7 +987,8 @@
 					}
 				}
 			}
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (internal args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: post-loop (internal args) $got_args[] dump:<pre>'; print_r($got_args); echo '</pre>'; }
+			
 			
 			// clear old args (if any) and set the args we just obtained (or preserved)
 			//$this->unset_all_args();
@@ -715,8 +1000,8 @@
 			
 			// use this one call to do it all
 			$this->set_arg_array($got_args);
-			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: finished, $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()); echo '</pre>'; }
-			if ($this->debug_args_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING<br>'; }
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: finished, $this->get_all_args() dump:<pre>'; print_r($this->get_all_args()); echo '</pre>'; }
+			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING<br>'; }
 		}
 		
 		/*!
@@ -820,7 +1105,7 @@
 				$meta_data = Array();
 				$meta_data[$data_name] = $data;
 				$meta_data['validity'] = Array();
-				if ($data_name == 'msg_array')
+				if ($data_name == 'msgball_list')
 				{
 					$meta_data['validity']['folder_long'] = $this->get_arg_value('folder');
 					$meta_data['validity']['sort'] = $this->get_arg_value('sort');
@@ -837,7 +1122,7 @@
 				$accounts[$acctnum]['data'] = array();
 				$accounts[$acctnum]['data'][$data_name] = $data;
 				$accounts[$acctnum]['data']['validity'] = Array();
-				if ($data_name == 'msg_array')
+				if ($data_name == 'msgball_list')
 				{
 					$accounts[$acctnum]['data']['validity']['folder_long'] = $this->get_arg_value('folder');
 					$accounts[$acctnum]['data']['validity']['sort'] = $this->get_arg_value('sort');
@@ -890,7 +1175,7 @@
 				
 				// VERIFY this cached data is still valid
 				if (($got_data)
-				&& ($data_name == 'msg_array'))
+				&& ($data_name == 'msgball_list'))
 				{
 					if ($this->debug_session_caching > 1) { echo 'mail_msg: read_session_cache_item: handling $data_name='.$data_name.' session validity and/or relevance<br>'; }
 					if (($got_data['validity']['folder_long'] == $this->get_arg_value('folder'))
@@ -948,7 +1233,7 @@
 		*/
 		function get_cached_data($calling_function_name='',$data_type='string')
 		{
-			if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
+			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
 			
 			$got_data = False;
 			
@@ -958,20 +1243,20 @@
 			if (($calling_function_name == '')
 			|| ($this->cache_mailsvr_data == False))
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled, or $calling_function_name was blank<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled, or $calling_function_name was blank<br>';}
 				// we may not use cached data
 				// if data IS cached, it should be considered STALE and deleted
 				if (($this->get_isset_pref($calling_function_name))
 				&& ($this->get_pref_value($calling_function_name) != ''))
 				{
-					if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled AND removing whatever data was previously cached<br>';}
+					if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled AND removing whatever data was previously cached<br>';}
 					//$this->remove_cached_data($calling_function_name);
 					// if we do not provide $my_function_name, then we expire all "cachable_server_items"
 					// which is probably a good idea, we do not want mismatched cached items
 					$this->remove_cached_data('');
 				}
 				// return a boolean False
-				if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False<br>';}
+				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False<br>';}
 				return False;
 			}
 			
@@ -980,22 +1265,22 @@
 			&& ($this->get_pref_value($calling_function_name) != ''))
 			{
 				$server = $this->get_arg_value('mailsvr_callstr');
-				if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: data IS cached, need to compare owner: $this->a['.$this->acctnum.'][mailsvr_account_username].$server: '.$this->get_arg_value('mailsvr_account_username').$server.' to value in $this->a[$this->acctnum][prefs][$calling_function_name."_owner"]<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: data IS cached, need to compare owner: $this->a['.$this->acctnum.'][mailsvr_account_username].$server: '.$this->get_arg_value('mailsvr_account_username').$server.' to value in $this->a[$this->acctnum][prefs][$calling_function_name."_owner"]<br>';}
 				if (($this->get_isset_pref($calling_function_name.'_owner'))
 				&& ($this->get_pref_value($calling_function_name.'_owner') != '')
 				&& ($this->get_pref_value($calling_function_name.'_owner') == $this->get_arg_value('mailsvr_account_username').$server) )
 				{
-					if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: *match* on compare owner: '.$this->get_pref_value($calling_function_name.'_owner').'=='.$this->get_arg_value('mailsvr_account_username').$server.'<br>'; }
+					if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: *match* on compare owner: '.$this->get_pref_value($calling_function_name.'_owner').'=='.$this->get_arg_value('mailsvr_account_username').$server.'<br>'; }
 					$got_data = $this->get_pref_value($calling_function_name);
 				}
 				else
 				{
-					if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: owner not ser OR failed match on cached owner: '.$this->get_pref_value($calling_function_name.'_owner').' to user '.$this->get_arg_value('mailsvr_account_username').$server.'<br>'; }
+					if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: owner not ser OR failed match on cached owner: '.$this->get_pref_value($calling_function_name.'_owner').' to user '.$this->get_arg_value('mailsvr_account_username').$server.'<br>'; }
 				}
 			}
 			else
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: cached data NOT SET for $this->a[$this->acctnum][prefs]['.$calling_function_name.'] <br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: get_cached_data: cached data NOT SET for $this->a[$this->acctnum][prefs]['.$calling_function_name.'] <br>';}
 				// this boolean False tells the code below that no data was retrieved
 				$got_data = False;
 			}
@@ -1003,40 +1288,40 @@
 			if ((isset($got_data))
 			&& ($got_data))
 			{
-				if ($this->debug_caching > 2) { echo 'mail_msg: get_cached_data: $got_data dump:<pre>'; print_r($got_data); echo '</pre>'; }
-				if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, $got_data is set, returning whatever was in the cache<br>';}
+				if ($this->debug_longterm_caching > 2) { echo 'mail_msg: get_cached_data: $got_data dump:<pre>'; print_r($got_data); echo '</pre>'; }
+				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, $got_data is set, returning whatever was in the cache<br>';}
 				return $got_data;
 			}
 			else
 			{
-				if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False, cached data was not set, or was empty, or failed owner match<br>';}
+				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False, cached data was not set, or was empty, or failed owner match<br>';}
 				return False;
 			}
 		}
 		
 		function set_cached_data($calling_function_name='',$data_type='string',$data='')
 		{
-			if ($this->debug_caching > 0) { echo 'mail_msg: set_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
+			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
 			
 			if (($this->cache_mailsvr_data == False)
 			|| ($calling_function_name == '')
 			|| (!isset($data))
 			|| (!$data))
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: caching not enabled, or $calling_function_name was blank, or $data was blank<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: caching not enabled, or $calling_function_name was blank, or $data was blank<br>';}
 				// we may not use cached data
 				// if data IS cached, it should be considered STALE and deleted
 				if (($this->get_isset_pref($calling_function_name))
 				&& ($this->get_pref_value($calling_function_name) != ''))
 				{
-					if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: caching not available AND removing whatever data was previously cached<br>';}
+					if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: caching not available AND removing whatever data was previously cached<br>';}
 					//$this->remove_cached_data($calling_function_name);
 					// if we do not provide $my_function_name, then we expire all "cachable_server_items"
 					// which is probably a good idea, we do not want mismatched cached items
 					$this->remove_cached_data('');
 				}
 				// return a boolean False
-				if ($this->debug_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning False<br>';}
+				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning False<br>';}
 				return False;
 			}
 			elseif (($this->cache_mailsvr_data == True)
@@ -1044,42 +1329,42 @@
 			&& (isset($data))
 			&& ($data))
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: caching IS enabled, AND $calling_function_name AND $data contain data<br>';}
-				if ($this->debug_caching > 2) { echo 'mail_msg: set_cached_data: about to write this to prefs/cache: $data dump:<pre>'; print_r($data); echo '</pre>'; }
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: caching IS enabled, AND $calling_function_name AND $data contain data<br>';}
+				if ($this->debug_longterm_caching > 2) { echo 'mail_msg: set_cached_data: about to write this to prefs/cache: $data dump:<pre>'; print_r($data); echo '</pre>'; }
 				$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name);
 				$GLOBALS['phpgw']->preferences->add('email',$calling_function_name,$data);
 				// also write comparative data so we can later match this cached data to the correct mailserver account
 				$server = $this->get_arg_value('mailsvr_callstr');
 				$data_owner = $this->get_arg_value('mailsvr_account_username') .$server;
-				if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: writting owner data $data_owner: ['.$data_owner.'] in $calling_function_name."_owner"<br>'; }
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: writting owner data $data_owner: ['.$data_owner.'] in $calling_function_name."_owner"<br>'; }
 				$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name.'_owner');
 				$GLOBALS['phpgw']->preferences->add('email',$calling_function_name.'_owner',$data_owner);
 				// write do DB
 				$GLOBALS['phpgw']->preferences->save_repository();
 				// save repository *should* not alter our carefully constructed prefs array in $this->a[$this->acctnum]['prefs'][]
 				// so we need to put the data there, next session start, when the prefs are initially read, then this data will automatically end up there
-				if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: until next prefs read (on next session start), we need to manually put the data in our prefs array that is already in memory<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: until next prefs read (on next session start), we need to manually put the data in our prefs array that is already in memory<br>';}
 				$this->set_pref_value($calling_function_name, $data);
 				$this->set_pref_value($calling_function_name.'_owner', $data_owner);
 				
-				if ($this->debug_caching > 2) { echo 'mail_msg: set_cached_data: POST data write to $this->a[$this->acctnum][prefs]['.$calling_function_name.']  data dump:<pre>'; print_r($this->get_pref_value($calling_function_name)); echo '</pre>'; }
-				if ($this->debug_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning True<br>';}
+				if ($this->debug_longterm_caching > 2) { echo 'mail_msg: set_cached_data: POST data write to $this->a[$this->acctnum][prefs]['.$calling_function_name.']  data dump:<pre>'; print_r($this->get_pref_value($calling_function_name)); echo '</pre>'; }
+				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning True<br>';}
 				return True;
 			}
 			
-			if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: unexpectedly got past caching logic, nothing saved<br>';}
-			if ($this->debug_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning False, unexpected, no action taken<br>'; }
+			if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: unexpectedly got past caching logic, nothing saved<br>';}
+			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning False, unexpected, no action taken<br>'; }
 			return False;
 		}
 		
 		function remove_cached_data($calling_function_name='')
 		{
-			if ($this->debug_caching > 0) { echo 'mail_msg: remove_cached_data: ENTERING, data set: ['.$calling_function_name.'], if blank will remove all cachable_server_items and *_owner items<br>';}
-			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: about to remove .... <br>'; }
+			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: remove_cached_data: ENTERING, data set: ['.$calling_function_name.'], if blank will remove all cachable_server_items and *_owner items<br>';}
+			if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: about to remove .... <br>'; }
 			if ($calling_function_name == '')
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: no calling_function_name was provided, deleting ALL cachable_server_items<br>';}
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: add *_owner to each item in $this->cachable_server_items array<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: no calling_function_name was provided, deleting ALL cachable_server_items<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: add *_owner to each item in $this->cachable_server_items array<br>';}
 				$cachables_with_owner = Array();
 				for ($i=0; $i<count($this->cachable_server_items);$i++)
 				{
@@ -1088,56 +1373,56 @@
 					$next_idx = count($cachables_with_owner);
 					$cachables_with_owner[$next_idx] = $this->cachable_server_items[$i].'_owner';
 				}
-				if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: $cachables_with_owner data dump:<pre>'; print_r($cachables_with_owner); echo '</pre>'; }
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: remove any existing cache elements in the $cachables_with_owner array<br>'; }
+				if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: $cachables_with_owner data dump:<pre>'; print_r($cachables_with_owner); echo '</pre>'; }
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: remove any existing cache elements in the $cachables_with_owner array<br>'; }
 				for ($i=0; $i<count($cachables_with_owner);$i++)
 				{
 					$this_cachable_item_name = $cachables_with_owner[$i];
 					$deleting_needed = isset($GLOBALS['phpgw']->preferences->data['email'][$this_cachable_item_name]);
 					if ($deleting_needed)
 					{
-						if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: preferences object does have data for [email]['.$this_cachable_item_name.'], so deleting...<br>';}
+						if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: preferences object does have data for [email]['.$this_cachable_item_name.'], so deleting...<br>';}
 						$GLOBALS['phpgw']->preferences->delete('email',$this_cachable_item_name);
 					}
 					else
 					{
-						if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: preferences object has NO data for [email]['.$this_cachable_item_name.'], no need to selete<br>';}
+						if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: preferences object has NO data for [email]['.$this_cachable_item_name.'], no need to selete<br>';}
 					}
 					$clearing_needed = $this->get_isset_pref($this_cachable_item_name);
 					if ($clearing_needed)
 					{
-						if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: ['.$this_cachable_item_name.'] until next prefs read (on next session start), we need to manually remove the data in our prefs array that is already in memory<br>';}
+						if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: ['.$this_cachable_item_name.'] until next prefs read (on next session start), we need to manually remove the data in our prefs array that is already in memory<br>';}
 						$this->unset_pref($this_cachable_item_name);
 					}
 					else
 					{
-						if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: ['.$this_cachable_item_name.'] prefs array that is already in memory did not have any data to remove<br>';}
+						if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: ['.$this_cachable_item_name.'] prefs array that is already in memory did not have any data to remove<br>';}
 					}
 				}
 				$GLOBALS['phpgw']->preferences->save_repository();
 			}
 			else
 			{
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name" arg<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name" arg<br>';}
 				$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name);
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name"+"_owner" arg<br>'; }
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name"+"_owner" arg<br>'; }
 				$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name.'_owner');
 				$GLOBALS['phpgw']->preferences->save_repository();
-				if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: until next prefs read (on next session start), we need to manually remove the data in our prefs array that is already in memory<br>';}
+				if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: until next prefs read (on next session start), we need to manually remove the data in our prefs array that is already in memory<br>';}
 				$clearing_needed = ( $this->get_isset_pref($calling_function_name) || $this->get_isset_pref($calling_function_name.'_owner') );
 				if ($clearing_needed)
 				{
-					if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->a[$this->acctnum][prefs]['.$calling_function_name.'] from memory<br>';}
+					if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->a[$this->acctnum][prefs]['.$calling_function_name.'] from memory<br>';}
 					$this->unset_pref($calling_function_name);
-					if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->a[$this->acctnum][prefs]['.$calling_function_name.'_owner'.'] from memory<br>';}
+					if ($this->debug_longterm_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->a[$this->acctnum][prefs]['.$calling_function_name.'_owner'.'] from memory<br>';}
 					$this->unset_pref($calling_function_name.'_owner');
 				}
 				else
 				{
-					if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: prefs array that is already in memory did not have any data to remove<br>';}
+					if ($this->debug_longterm_caching > 1) { echo 'mail_msg: remove_cached_data: prefs array that is already in memory did not have any data to remove<br>';}
 				}
 			}
-			if ($this->debug_caching > 0) { echo 'mail_msg: remove_cached_data: LEAVING, returning true<br>';}
+			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: remove_cached_data: LEAVING, returning true<br>';}
 			return True;
 		}
 		
@@ -1367,14 +1652,59 @@
 		/* * * * * * * * * * * * * * * * * *
 		* OOP-Style Access Methods for Class Params/Args Values
 		* * * * * * * * * * * * * * * * * */
+		function _get_arg_is_known($arg_name='', $calling_function_name='')
+		{
+			if ($arg_name == '')
+			{
+				return False;
+			}
+			if ($calling_function_name == '')
+			{
+				$calling_function_name == 'UNSPECIFIED';
+			}
+			// loop thru known externally controlled args
+			$finding = False;
+			$report = '';
+			for($i=0; $i < count($this->known_external_args); $i++)
+			{
+				if ($arg_name == $this->known_external_args[$i])
+				{
+					$finding = True;
+					$report = '*is* known (external)';
+					break;
+				}
+			}
+			// check internal args
+			for($i=0; $i < count($this->known_internal_args); $i++)
+			{
+				if ($arg_name == $this->known_internal_args[$i])
+				{
+					$finding = True;
+					$report = '*is* known (internal)';
+					break;
+				}
+			}
+			if (!$finding)
+			{
+				$report = '*NOT* KNOWN *NOT* KNOWN *NOT* KNOWN *NOT* KNOWN';
+			}
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): _arg_is_known: TEST: '.$report.' ; $arg_name: ['.$arg_name.'] called by $calling_function_name: ['.$calling_function_name.'] '.'<br>'; }
+			return $finding;
+		}
+		
 		function get_isset_arg($arg_name='',$acctnum='')
 		{
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_isset_arg: ENTERING, $arg_name: ['.$arg_name.'] $acctnum: ['.$acctnum.']'.'<br>'; }
+			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'get_isset_arg'); }
+			
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
+				if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_isset_arg: obtained $acctnum from $this->get_acctnum(): ['.$acctnum.']'.'<br>'; }
 			}
-			// error check
+			/*
+			// OBSOLETED
 			if ((isset($arg_name))
 			&& ((string)$arg_name != '')
 			&& (isset($this->a[$acctnum]['args'][$arg_name])))
@@ -1386,10 +1716,56 @@
 				// arg not set, or invalid input $arg_name
 				return False;
 			}
+			*/
+			
+			/*
+			// OOP VERSION if PROBLEMATIC
+			// but it may not give intended answer because
+			// "get_arg_value" will handoff processing to specialized functions that WILL fill the value
+			// sometimes simply with default values, which would cause this function to return unexpected results
+			$test_this = $this->get_arg_value($arg_name, $acctnum);
+			if (isset($test_this))
+			{
+				return True;
+			}
+			*/
+			
+			// Best Version at this time, if something is not set, no handoff support function will fill it
+			// before we can return false
+			
+			// $arg_name has sub-levels
+			if ((isset($arg_name))
+			&& ((string)$arg_name != '')
+			&& (strstr($arg_name, '][')))
+			{
+				// request for $arg_name['sub-element']
+				if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_isset_arg: $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'; }
+				$evaled = '';
+				//$code = '$evaled = $this->a[$acctnum][\'args\']'.$arg_name.';';
+				$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.';';
+				if ($this->debug_args_oop_access > 1) { echo ' * $code: '.$code.'<br>'; }
+				eval($code);
+				if ($this->debug_args_oop_access > 1) { echo ' * $evaled: '.$evaled.'<br>'; }
+				if (isset($evaled))
+				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_isset_arg: LEAVING returning $evaled: ['.$evaled.'] produced by $code: '.$code.'<br>'; }
+					return True;
+				}
+			}
+			// $arg_name has NO sub-levels
+			elseif (isset($this->a[$acctnum]['args'][$arg_name]))
+			{
+				if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_isset_arg: LEAVING returning $this->a[$acctnum('.$acctnum.')][args][$arg_name]: '.$this->a[$acctnum]['args'][$arg_name].'<br>'; }
+				return True;
+			}
+			// if we get here, it was not set
+			return False;
 		}
 		
 		function unset_arg($arg_name='', $acctnum='')
 		{
+			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'unset_arg'); }
+			
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
@@ -1413,6 +1789,9 @@
 		
 		function get_arg_value($arg_name='',$acctnum='')
 		{
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: ENTERING ($arg_name: ['.$arg_name.'], $acctnum: ['.$acctnum.'] )<br>'; }
+			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'get_arg_value'); }
+			
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
@@ -1425,40 +1804,87 @@
 				// ----  SPECIAL HANDLERS  ----
 				if ($arg_name == 'mailsvr_callstr')
 				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_callstr()<br>'; }
 					return $this->get_mailsvr_callstr();
 				}
 				elseif ($arg_name == 'mailsvr_namespace')
 				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_namespace()<br>'; }
 					return $this->get_mailsvr_namespace();
 				}
 				elseif ($arg_name == 'mailsvr_delimiter')
 				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_mailsvr_delimiter()<br>'; }
 					return $this->get_mailsvr_delimiter();
 				}
 				elseif ($arg_name == 'folder_list')
 				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING with HANDOFF to get_folder_list()<br>'; }
 					return $this->get_folder_list();
 				}
-				// ----  STANDARD HANDLER  ----
+				/*
+				elseif ($arg_name == 'folder')
+				{
+					if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for backwards compat arg "folder"<br>'; }
+					// look for foder in (1) msgball , then (2) fldball , then (3) return default value INBOX
+					if ( (isset($this->a[$acctnum]['args']['msgball']['folder']))
+					&& ($this->a[$acctnum]['args']['msgball']['folder'] != '') )
+					{
+						$folder_arg_decision = $this->a[$acctnum]['args']['msgball']['folder'];
+						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" will use value in $this->a['.$acctnum.'][args][msgball][folder] = ['.$folder_arg_decision.']<br>'; }
+					}
+					elseif ( (isset($this->a[$acctnum]['args']['fldball']['folder']))
+					&& ($this->a[$acctnum]['args']['fldball']['folder'] != '') )
+					{
+						$folder_arg_decision = $this->a[$acctnum]['args']['fldball']['folder'];
+						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" will use value in $this->a['.$acctnum.'][args][fldball][folder] = ['.$folder_arg_decision.']<br>'; }
+					}
+					else
+					{
+						if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: request for "folder" using "INBOX", found nothing in [args][msgball][folder] nor [args][fldball][folder]<br>'; }
+						$folder_arg_decision = 'INBOX';
+					}
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING, returning (backward compat) $folder_arg_decision ['.$folder_arg_decision.']<br>'; }
+					return $folder_arg_decision;
+				}
+				*/
+				// ----  STANDARD HANDLER (arg_name has sub-levels) ----
+				elseif (strstr($arg_name, ']['))
+				{
+					// request for $arg_name['sub-element']
+					// represents code which typically is an array referencing a system/api property
+					if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_arg_value: $arg_name is requesting sub-level array element(s),  use EVAL, $arg_name: '.serialize($arg_name).'<br>'; }
+					$evaled = '';
+					//$code = '$evaled = $this->a[$acctnum][\'args\']'.$arg_name.';';
+					$code = '$evaled = $this->a[$acctnum]["args"]'.$arg_name.';';
+					if ($this->debug_args_oop_access > 1) { echo ' * $code: '.$code.'<br>'; }
+					eval($code);
+					if ($this->debug_args_oop_access > 1) { echo ' * $evaled: '.$evaled.'<br>'; }
+					if (isset($evaled))
+					{
+						if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING returning $evaled: ['.$evaled.'] produced by $code: '.$code.'<br>'; }
+						return $evaled;
+					}
+				}
+				// ----  STANDARD HANDLER (arg_name has sub-levels) ----
 				elseif (isset($this->a[$acctnum]['args'][$arg_name]))
 				{
+					if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING returning $this->a[$acctnum('.$acctnum.')][args][$arg_name]: '.$this->a[$acctnum]['args'][$arg_name].'<br>'; }
 					return $this->a[$acctnum]['args'][$arg_name];
 				}
-				else
-				{
-					// arg not set
-					return;
-				}
 			}
-			else
-			{
-				// arg not set, or invalid input $arg_name
-				return;
-			}
+			
+			// we ONLY get here if there's no data to return,
+			// arg not set, or invalid input $arg_name
+			// otherwise, anything that is sucessful returns and exist at that point, never gets to here
+			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING, returning *nothing*, arg not set of input arg invalid, using naked "return" call<br>'; }
+			return;
 		}
 		
 		function _direct_access_arg_value($arg_name='',$acctnum='')
 		{
+			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, '_direct_access_arg_value'); }
+			
 			// PRIVATE - for use by internal functions
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
@@ -1479,6 +1905,8 @@
 		
 		function set_arg_value($arg_name='', $this_value='', $acctnum='')
 		{
+			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'set_arg_value'); }
+			
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
@@ -1579,7 +2007,7 @@
 		// depreciated
 		//function get_msgnum($acctnum='')
 		//{
-		//	return $this->get_arg_value('msgnum');
+		//	return $this->get_arg_value('["msgball"]["msgnum"]');
 		//}
 		
 		//function get_pref_layout($acctnum='')
