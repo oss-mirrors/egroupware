@@ -7,7 +7,7 @@ INSERT INTO phpgw_comic_data VALUES (6,'T','dilbert','Scott Adams','Dilbert - Su
 INSERT INTO phpgw_comic_data VALUES (7,'T','jerkcity','','JerkCity',0,0,'http://www.jerkcity.com/','http://www.jerkcity.com/today.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','Geek',0,'Static','C');
 INSERT INTO phpgw_comic_data VALUES (8,'T','garfield','Jim Davis','Garfield',0,0,'http://www.garfield.com/','http://images.ucomics.com/comics/ga/{Y}/ga{ymd}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static','C');
 INSERT INTO phpgw_comic_data VALUES (9,'T','foxtrot','Bill Amend','FoxTrot',0,0,'http://www.foxtrot.com/','{-14d}http://www.foxtrot.com/comics/strips/ft{ymd}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static','C');
-INSERT INTO phpgw_comic_data VALUES (10,'T','slagoon','Jim Toomey','Shermans Lagoon',0,0,'http://www.slagoon.com/','http://www.slagoon.com/dailies/SL{ymd}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static','C');
+INSERT INTO phpgw_comic_data VALUES (10,'T','slagoon','Jim Toomey','Shermans Lagoon',0,0,'http://www.slagoon.com/','http://www.slagoon.com/dailies/SL{y}.{m}.{d}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static','C');
 INSERT INTO phpgw_comic_data VALUES (11,'T','robotman','Jim Meddick','Robotman',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','Geek',0,'Remote','C');
 INSERT INTO phpgw_comic_data VALUES (12,'T','ripleys','Don Wimmer and Karen Kemlo','Ripleys Believe It Or Not',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','United','General',0,'Remote','C');
 INSERT INTO phpgw_comic_data VALUES (13,'T','spidermn','Stan Lee','The Amazing Spider-Man',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','King','General',0,'Remote','C');

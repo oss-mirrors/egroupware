@@ -133,7 +133,6 @@ function comic_resolve_remote($remote_enabled, &$comic_url, &$comic_day)
         {
             $fetch_url    = $baseurl . $parseurl;
         }
-        printf("URL: %s<br>PARSE: %s<br>", $fetch_url, $parse_expr);
         break;
     }
     
@@ -181,6 +180,12 @@ function comic_resolver(&$myurl, &$comic_time)
                ***************************************************************/
               case "{y}":
                 $repl_str  = date("y", $comic_time);
+                break;
+              case "{m}":
+                $repl_str  = date("m", $comic_time);
+                break;
+              case "{d}":
+                $repl_str  = date("d", $comic_time);
                 break;
               case "{Ml}":
                 $repl_str = date("M", $comic_time);
