@@ -24,6 +24,7 @@
 
 	$DEBUG = 0;
 	$LOCALSERVER = $_SERVER['HTTP_HOST'];
+	$HTTPSSERVER = $LOCALSERVER;
 	echo 'Testing: ' . $LOCALSERVER;
 	$suite = new TestSuite;
 
@@ -262,6 +263,8 @@ And turned it into nylon";
 	}
 	$testRunner = new TestRunner;
 	$testRunner->run($suite);
+
+	error_reporting(E_ALL & ~E_NOTICE);	// TestSuite (phpunit.php) switches it on
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
