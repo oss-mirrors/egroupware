@@ -83,9 +83,9 @@ class exportbo
 		while ($db2->next_record())
 		{
 			$t->set_var(array(
-				'url' => htmlspecialchars($db2->f('bm_url')),
-				'name' => iconv("ISO-8859-1","UTF-8",htmlspecialchars($db2->f('bm_name'))),
-				'desc' => iconv("ISO-8859-1","UTF-8",htmlspecialchars($db2->f('bm_desc')))
+				'url' => $GLOBALS['phpgw']->strip_html($db2->f('bm_url')),
+				'name' => iconv("ISO-8859-1","UTF-8",$GLOBALS['phpgw']->strip_html($db2->f('bm_name'))),
+				'desc' => iconv("ISO-8859-1","UTF-8",$GLOBALS['phpgw']->strip_html($db2->f('bm_desc')))
 			));
 			$t->fp('urls','urllist',True);
 		}
