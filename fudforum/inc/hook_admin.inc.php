@@ -13,7 +13,7 @@
 	{
 		$file = Array
 		(
-			'Site configuration' => $GLOBALS['phpgw']->link('/'.sprintf("%u", crc32($GLOBALS['phpgw_info']['user']['domain'])).'/fudforum/adm/admglobal.php'),
+			'Site configuration' => $GLOBALS['phpgw']->link('/fudforum/'.sprintf("%u", crc32($GLOBALS['phpgw_info']['user']['domain'])).'/adm/admglobal.php'),
 		);
 
 //Do not modify below this line
