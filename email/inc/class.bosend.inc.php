@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email send non-SMTP functions					*
-	* http://www.phpgroupware.org									*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
+	* eGroupWare - email send non-SMTP functions					*
+	* http://www.egroupware.org									*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -1315,7 +1315,7 @@
 				$this->mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$this->mail_out['msgtype'];
 				$hdr_line++;
 			}
-			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: AngleMail for phpGroupWare (http://www.phpgroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
+			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: AngleMail for eGroupWare (http://www.egroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 			$hdr_line++;
 			
 			/*

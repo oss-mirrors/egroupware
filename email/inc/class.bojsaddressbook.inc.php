@@ -1,7 +1,7 @@
 <?php
 /**************************************************************************\
- * phpGroupWare - Todo list                                                 *
- * http://www.phpgroupware.org                                              *
+ * eGroupWare - Todo list                                                 *
+ * http://www.egroupware.org                                              *
  * Written by Alex Borges <alex@sogrp.com>                          *
  * Low Level Design also by    Dave Hall [dave.hall@mbox.com.au]                          *
  * UI Design and market research by Gerardo Ramirez [gramirez@grupogonher.com]

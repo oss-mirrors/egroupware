@@ -1,26 +1,26 @@
 <?php
 	/**************************************************************************\
-	* AngleMail - E-Mail Module for phpGroupWare					*
-	* http://www.anglemail.org									*
-	* http://www.phpgroupware.org									* 
+	* AngleMail - E-Mail Module for eGroupWare			           *
+	* http://www.anglemail.org						   *
+	* http://www.egroupware.org						   *
 	*/
 	/**************************************************************************\
-	* AngleMail - HTML Widgets									*
-	* This file written by "Angles" Angelo Puglisi <angles@aminvestments.com>	*
-	* Email related HTML Widgets and Utility Functions					*
-	* Copyright (C) 2002 Angelo Tony Puglisi (Angles)					*
-	* -------------------------------------------------------------------------		*
-	* This library is free software; you can redistribute it and/or modify it		*
-	* under the terms of the GNU Lesser General Public License as published by	*
-	* the Free Software Foundation; either version 2.1 of the License,			*
-	* or any later version.											*
-	* This library is distributed in the hope that it will be useful, but			*
-	* WITHOUT ANY WARRANTY; without even the implied warranty of	*
-	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
-	* See the GNU Lesser General Public License for more details.			*
-	* You should have received a copy of the GNU Lesser General Public License	*
-	* along with this library; if not, write to the Free Software Foundation,		*
-	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
+	* AngleMail - HTML Widgets						   *
+	* This file written by "Angles" Angelo Puglisi <angles@aminvestments.com>  *
+	* Email related HTML Widgets and Utility Functions			   *
+	* Copyright (C) 2002 Angelo Tony Puglisi (Angles)			   *
+	* -------------------------------------------------------------------------*
+	* This library is free software; you can redistribute it and/or modify it  *
+	* under the terms of the GNU Lesser General Public License as published by *
+	* the Free Software Foundation; either version 2.1 of the License,	   *
+	* or any later version.							   *
+	* This library is distributed in the hope that it will be useful, but	   *
+	* WITHOUT ANY WARRANTY; without even the implied warranty of	           *
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	                   *
+	* See the GNU Lesser General Public License for more details.		   *
+	* You should have received a copy of the GNU Lesser General Public License *
+	* along with this library; if not, write to the Free Software Foundation,  *
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA		   *
 	\**************************************************************************/
 	
 	/* $Id$ */

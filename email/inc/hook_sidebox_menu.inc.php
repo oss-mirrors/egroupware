@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Email's Sidebox-Menu for idots-template                   *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - Email's Sidebox-Menu for idots-template                   *
+  * http://www.egroupware.org                                              *
   * Written by edave <bigmudcake@hotmail.com>                                *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *

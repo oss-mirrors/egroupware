@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* AngleMail - E-Mail Module for phpGroupWare					*
+	* AngleMail - E-Mail Module for eGroupWare					*
 	* http://www.anglemail.org									*
-	* http://www.phpgroupware.org									* 
+	* http://www.egroupware.org									* 
 	*/
 	/**************************************************************************\
 	* AngleMail - E-Mail Debug Page								*

@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email/search                                         	   *
+	* wGroupWare - email/search                                         	   *
 	* Written by Rohan Almeida (arc_of_descent@rediffmail.com)                 *
 	* -----------------------------------------------                          *
 	*  This program is free software; you can redistribute it and/or modify it *

@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare -  Addressbook Chooser                                                *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare -  Addressbook Chooser                                                *
+	* http://www.egroupware.org                                              *
         * Written by Alex Borges <alex@sogrp.com>                          *
 	* Inherited some code from the addressbook.php file
 	* Low Level Design also by    Dave Hall [dave.hall@mbox.com.au]                          *

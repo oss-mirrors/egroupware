@@ -2,8 +2,8 @@
 	/**************************************************************************\
 	* Anglemail - setup files for phpGroupWare                                 *
 	* http://www.anglemail.org                                                 *
-	* phpGroupWare - Email                                                     *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Email                                                       *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -24,7 +24,7 @@
 	$setup_info['email']['author'] = '&quot;Angles&quot; Angelo Tony Puglisi';
 	$setup_info['email']['license']  = 'GPL';
 	$setup_info['email']['description'] =
-		'AngleMail for phpGroupWare at www.anglemail.org is an Email reader with multiple accounts and mailbox filtering.';
+		'AngleMail for eGroupWare at www.anglemail.org is an Email reader with multiple accounts and mailbox filtering.';
 	$setup_info['email']['maintainer'] = '&quot;Angles&quot; Angelo Tony Puglisi';
 	$setup_info['email']['maintainer_email'] = 'angles@aminvestments.com';
 

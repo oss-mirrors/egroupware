@@ -3,7 +3,7 @@
 	* AngleMail - email BO Class for Attaching Files						*
 	* http://www.anglemail.org									*
 	* File adapted directly from phpGroupWare file email/attach_file.php		*
-	* http://www.phpgroupware.org									*
+	* http://www.egroupware.org									*
 	* That file was authored by Joseph Engo <jengo@phpgroupware.org>		*
 	* Previous Maintainer notes that server side file handling was borrowed 	*
 	* from Squirrelmail circa 2000-2001								*

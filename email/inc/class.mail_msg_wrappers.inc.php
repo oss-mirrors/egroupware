@@ -2,7 +2,7 @@
 	/**************************************************************************\
 	* AngleMail - E-Mail Message Processing Functions				*
 	* http://www.anglemail.org									*
-	* http://www.phpgroupware.org									*
+	* http://www.egroupware.org									*
 	*/
 	/**************************************************************************\
 	* AngleMail - E-Mail Message Processing Functions					*

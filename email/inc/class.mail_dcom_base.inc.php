@@ -12,7 +12,7 @@
 	* AngleMail appreciates the hard work of previous authors and maintainers. 	*
 	* -------------------------------------------------------------------------				*
 	* This file designed to work as part of a drop in email module for 		*
-	* phpGroupWare  http://www.phpgroupware.org					*
+	* eGroupWare  http://www.egroupware.org					*
 	* -------------------------------------------------------------------------				*
 	* This library is free software; you can redistribute it and/or modify it		*
 	* under the terms of the GNU Lesser General Public License as published by	*

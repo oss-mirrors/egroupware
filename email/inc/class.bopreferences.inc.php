@@ -1,7 +1,7 @@
 <?php
 	/***********************************************************************\
-	* phpGroupWare - E-Mail	Preferences Handlers					*
-	* http://www.phpgroupware.org									*
+	* eGroupWare - E-Mail	Preferences Handlers					*
+	* http://www.egroupware.org									*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -46,7 +46,7 @@
 		var $account_group = 'default';
 		var $acctnum = '';
 		
-		// were we called from phpgroupware ("phpgw")or externally via xml-rpc ("xmlrpc")
+		// were we called from egroupware ("egw")or externally via xml-rpc ("xmlrpc")
 		var $caller='phpgw';
 		var $pref_errors='';
 		var $args=array();

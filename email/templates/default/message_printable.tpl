@@ -3,9 +3,9 @@
 <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html"; charset="{charset}">
-  <meta name="author" content="AngleMail for phpGroupWare http://www.anglemail.org">
-  <meta name="description" content="AngleMail for phpGroupWare http://www.phpgroupware.org">
-  <meta name="keywords" content="AngleMail for phpGroupWare">
+  <meta name="author" content="AngleMail for eGroupWare http://www.anglemail.org">
+  <meta name="description" content="AngleMail for eGroupWare http://www.egroupware.org">
+  <meta name="keywords" content="AngleMail for eGroupWare">
   <style type="text/css">
    <!--
    A:link {text-decoration:none;}

@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare API - nextmatchs								*
+	* eGroupWare API - nextmatchs						 		*
 	* This file written by Joseph Engo <jengo@phpgroupware.org>			*
 	* with email only additions by Angles <angles@aminvestments.com>		*
 	* Handles limiting number of rows displayed						*
@@ -9,8 +9,8 @@
 	* Copyright (C) 2000, 2001 Joseph Engo							*
 	* Email only additions Copyright (C) 2002 Angelo "Angles" Puglisi			*
 	* -------------------------------------------------------------------------		*
-	* This library is part of the phpGroupWare API						*
-	* http://www.phpgroupware.org/api								* 
+	* This library is part of the eGroupWare API						*
+	* http://www.egroupware.org/api								* 
 	* ------------------------------------------------------------------------ 		*
 	* This library is free software; you can redistribute it and/or modify it		*
 	* under the terms of the GNU Lesser General Public License as published by 	*

@@ -1,7 +1,7 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - QMailLDAP                                                  *
-	* http://www.phpgroupware.org                                               *
+	* eGroupWare                                                                *
+	* http://www.egroupware.org                                                 *
 	* http://www.linux-at-work.de                                               *
 	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *

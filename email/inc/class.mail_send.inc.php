@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare API - smtp mailer							*
+	* eGroupWare API - smtp mailer							*
 	* This file written by Itzchak Rehberg <izzysoft@qumran.org>			*
 	* and Joseph Engo <jengo@phpgroupware.org>					*
 	* and Angelo "Angles" Puglisi <angles@aminvestments.com>			*
@@ -11,8 +11,8 @@
 	* Copyright (C) 2000, 2001 Itzchak Rehberg, and					*
 	* Copyright (C) 2001, 2002 Angelo Puglisi (Angles)					*
 	* -------------------------------------------------------------------------			*
-	* This library is part of the phpGroupWare API					*
-	* http://www.phpgroupware.org/api							* 
+	* This library is part of the eGroupWare API					*
+	* http://www.egroupware.org/api							* 
 	* ------------------------------------------------------------------------ 			*
 	* This library is free software; you can redistribute it and/or modify it		*
 	* under the terms of the GNU Lesser General Public License as published by 	*
@@ -35,7 +35,7 @@
 	@result returns True on success (mail was sent), returns False on error (no mail sent)
 	@discussion class provides for complex SMTP transactions, bypassing need for php's
 	builtin mail sending functions. Currently part of the email class group, when mature will
-	be moved to standard phpgroupware api.
+	be moved to standard egroupware api.
 	@author (a) Itzchak Rehberg - initial implementation, SMTP communication and control flow, excellent work! 
 	and (b) Angelo Puglisi (Angles) - convert to multi-dimentional array driven architecture, expanded debugging,
 	RFC2822 and 2821 compliance, retain a copy for archiving option, fake send debug, handshake retention, other stuff...

@@ -13,8 +13,8 @@
 	* from Cushman. The phpGroupWare email module was maintained by Angles	*
 	* prior to developing into what is today known as AngleMail				*
 	* -------------------------------------------------------------------------			*
-	* This file designed to work as part of a drop in module for phpGroupWare		*
-	* http://www.phpgroupware.org							*
+	* This file designed to work as part of a drop in module for eGroupWare		*
+	* http://www.egroupware.org							*
 	* -------------------------------------------------------------------------			*
 	* This library is free software; you can redistribute it and/or modify it		*
 	* under the terms of the GNU Lesser General Public License as published by	*

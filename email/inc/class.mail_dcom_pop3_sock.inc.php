@@ -1,13 +1,13 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare API - POP3                                                  *
+	* eroupWare API - POP3                                                  *
 	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com  *
 	* and Mark Peters <skeeter@phpgroupware.org>              *
 	* Handles specific operations in dealing with POP3                       *
 	* Copyright (C) 2001, 2002 Mark Peters and Angelo "Angles" Puglisi                       *
 	* -------------------------------------------------------------------------*
-	* This library is part of the phpGroupWare API                             *
-	* http://www.phpgroupware.org/api                                          * 
+	* This library is part of the eGroupWare API                             *
+	* http://www.egroupware.org/api                                          * 
 	* ------------------------------------------------------------------------ *
 	* This library is free software; you can redistribute it and/or modify it  *
 	* under the terms of the GNU Lesser General Public License as published by *

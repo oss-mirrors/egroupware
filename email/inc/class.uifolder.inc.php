@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email UI Class for Message Lists				*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
+	* eGroupWare - email UI Class for Message Lists				*
+	* http://www.egroupware.org							*
+	* Written by Angelo (Angles) Puglisi <angles@aminvestments.com>		*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it 		*
 	*  under the terms of the GNU General Public License as published by the	*

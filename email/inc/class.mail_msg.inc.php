@@ -7,8 +7,8 @@
 * This file written by Angelo "Angles" Puglisi <angles@aminvestments.com>	*
 * Copyright (C) 2001-2003 Angelo "Angles" Puglisi						*
 * -------------------------------------------------------------------------						*
-* This file designed to work as part of a drop in module for phpGroupWare		*
-* http://www.phpgroupware.org									* 
+* This file designed to work as part of a drop in module for eGroupWare		*
+* http://www.egroupware.org									* 
 * ------------------------------------------------------------------------ 						*
 * This library is free software; you can redistribute it and/or modify it  		*
 * under the terms of the GNU Lesser General Public License as published by 	*

@@ -1,14 +1,14 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare API - MAIL										*
+  * eGroupWare API - MAIL										*
   * This file written by Mark Peters <skeeter@phpgroupware.org>			*
   * and Angelo "Angles" Puglisi <angles@aminvestments.com>				*
   * Handles general functionality for mail/mail structures					*
   * Copyright (C) 2001 Mark Peters									*
   * Copyright (C) 2001, 2002 Angelo "Angles" Puglisi						*
   * -------------------------------------------------------------------------			*
-  * This library is part of the phpGroupWare API                             *
-  * http://www.phpgroupware.org/api                                          * 
+  * This library is part of the eGroupWare API                             *
+  * http://www.egroupware.org/api                                          * 
   * ------------------------------------------------------------------------ *
   * This library is free software; you can redistribute it and/or modify it  *
   * under the terms of the GNU Lesser General Public License as published by *
