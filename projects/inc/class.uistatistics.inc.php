@@ -40,9 +40,10 @@
 		(
 			'list_projects'	=> True,
 			'list_users'	=> True,
-			'user_stat'		=> True,
+			'user_stat'	=> True,
 			'project_gantt'	=> True,
-			'show_stat'		=> True
+			'show_graph'	=> True,
+			'show_stat'	=> True
 		);
 
 		function uistatistics()
@@ -52,8 +53,8 @@
 			$this->bostatistics				= CreateObject('projects.bostatistics');
 			$this->boprojects				= $this->bostatistics->boprojects;
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
-			$this->sbox						= CreateObject('phpgwapi.sbox');
-			$this->cats						= CreateObject('phpgwapi.categories');
+			$this->sbox					= CreateObject('phpgwapi.sbox');
+			$this->cats					= CreateObject('phpgwapi.categories');
 			$this->account					= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->grants					= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
@@ -62,10 +63,9 @@
 			$this->query					= $this->bostatistics->query;
 			$this->filter					= $this->bostatistics->filter;
 			$this->order					= $this->bostatistics->order;
-			$this->sort						= $this->bostatistics->sort;
+			$this->sort					= $this->bostatistics->sort;
 			$this->cat_id					= $this->bostatistics->cat_id;
 			$this->status					= $this->bostatistics->status;
-
 			$this->siteconfig				= $this->bostatistics->boprojects->siteconfig;
 		}
 
@@ -120,7 +120,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_billedonly',lang('Billed only'));
 			$GLOBALS['phpgw']->template->set_var('lang_hours',lang('Work hours'));
 			$GLOBALS['phpgw']->template->set_var('lang_minperae',lang('Minutes per workunit'));
-    		$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per workunit'));
+	    		$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per workunit'));
 			$GLOBALS['phpgw']->template->set_var('lang_stat',lang('Statistic'));
 			$GLOBALS['phpgw']->template->set_var('lang_userstats',lang('User statistics'));
 			$GLOBALS['phpgw']->template->set_var('lang_view',lang('view'));
@@ -691,11 +691,6 @@
 			$GLOBALS['phpgw']->template->pfp('out','user_stat_t',True);
 		}
 
-		function show_stat($project_id)
-		{
-			$this->bostatistics->show_graph($project_id);
-		}
-
 		function project_gantt()
 		{
 			$project_id	= get_var('project_id',array('GET','POST'));
@@ -714,7 +709,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uistatistics.project_gantt',
-				'action'		=> $action,
+				'action'	=> $action,
 				'project_id'	=> $project_id
 			);
 
@@ -728,7 +723,7 @@
 			if(is_array($sdate))
 			{
 				$start_array	= $jscal->input2date($sdate['str']);
-				$start_val		= $start_array['raw'];
+				$start_val	= $start_array['raw'];
 			}
 
 			if(is_array($edate))
@@ -748,218 +743,44 @@
 
 			//_debug_array($project_array);
 
-			$this->bostatistics->show_graph(array('project_array' => $project_array,'sdate' => $start, 'edate' => $end));
+			#$this->bostatistics->show_graph(array('project_array' => $project_array,'sdate' => $start, 'edate' => $end));
 
 			//$GLOBALS['phpgw']->template->set_var('pix_src',$this->show_pix());
-			$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
-			$GLOBALS['phpgw']->template->pfp('out','project_stat');
-		}
-
-		/*function project_stat()
-		{
-			$submit		= get_var('submit',array('POST'));
-			$values		= get_var('values',array('POST','GET'));
-			$project_id	= get_var('project_id',array('POST','GET'));
-			$action		= get_var('action',array('POST','GET'));
-
+			//$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
 			$link_data = array
 			(
-				'menuaction'	=> 'projects.uistatistics.project_stat',
-				'action'		=> $action,
-				'project_id'	=> $project_id
+				'menuaction'	=> 'projects.uistatistics.show_graph',
+				'project_id'	=> $project_id,
+				'start'		=> $start,
+				'end'		=> $end
 			);
-
-			if (! $project_id)
-			{
-				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains');
-			}
-
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('project statistic');
-			$this->display_app_header();
-
-			$GLOBALS['phpgw']->template->set_file(array('project_stat' => 'stats_projectstat.tpl'));
-			$GLOBALS['phpgw']->template->set_block('project_stat','stat_list','list');
-
-			$nopref = $this->boprojects->check_prefs();
-			if (is_array($nopref))
-			{
-				$GLOBALS['phpgw']->template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
-			}
-			else
-			{
-				$prefs = $this->boprojects->get_prefs();
-			}
-
-			$pro = $this->boprojects->read_single_project($project_id);
-
-			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$title = $GLOBALS['phpgw']->strip_html($pro['title']);
-			if (! $title) $title = '&nbsp;';
-			$GLOBALS['phpgw']->template->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
-			$GLOBALS['phpgw']->template->set_var('status',lang($pro['status']));
-			$GLOBALS['phpgw']->template->set_var('budget',$pro['budget']);
-			$GLOBALS['phpgw']->template->set_var('currency',$prefs['currency']);
-
-			$GLOBALS['phpgw']->template->set_var('lang_account',lang('Account'));
-			$GLOBALS['phpgw']->template->set_var('lang_activity',lang('Activity'));
-			$GLOBALS['phpgw']->template->set_var('lang_hours',lang('Hours'));
-
-			if (!$values['sdate'])
-			{
-				if (! $pro['sdate'] || $pro['sdate'] == 0)
-				{
-					$values['smonth']	= 0;
-					$values['sday']		= 0; 
-					$values['syear']	= 0;
-				}
-				else
-				{
-					$values['smonth']	= date('m',$pro['sdate']);
-					$values['sday']		= date('d',$pro['sdate']); 
-					$values['syear']	= date('Y',$pro['sdate']);
-				}
-			}
-			else
-			{
-				$values['smonth']	= date('m',$values['sdate']);
-				$values['sday']		= date('d',$values['sdate']); 
-				$values['syear']	= date('Y',$values['sdate']);
-			}
-
-			if (!$values['edate'])
-			{
-				if (! $pro['edate'] || $pro['edate'] == 0)
-				{
-					$values['emonth']	= 0;
-					$values['eday']		= 0; 
-					$values['eyear']	= 0;
-				}
-				else
-				{
-					$values['emonth']	= date('m',$pro['edate']);
-					$values['eday']		= date('d',$pro['edate']); 
-					$values['eyear']	= date('Y',$pro['edate']);
-				}
-			}
-			else
-			{
-				$values['emonth']	= date('m',$values['edate']);
-				$values['eday']		= date('d',$values['edate']); 
-				$values['eyear']	= date('Y',$values['edate']);
-			}
-
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-																							$this->sbox->getDays('values[sday]',$values['sday'])));
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-																							$this->sbox->getDays('values[eday]',$values['eday'])));
-
-			$cached_data = $this->boprojects->cached_accounts($pro['coordinator']);
-			$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro['coordinator']]['account_lid']
-                                        . ' [' . $cached_data[$pro['coordinator']]['firstname'] . ' '
-                                        . $cached_data[$pro['coordinator']]['lastname'] . ' ]');
-			$GLOBALS['phpgw']->template->set_var('coordinator',$coordinatorout);
-
-			if ($pro['customer'] != 0) 
-			{
-				$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
-            	if ($customer[0]['org_name'] == '')
-				{
-					$GLOBALS['phpgw']->template->set_var('customer',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']);
-				}
-            	else
-				{
-					$GLOBALS['phpgw']->template->set_var('customer',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]');
-				}
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var('customer','&nbsp;');
-			}
-
-			$GLOBALS['phpgw']->template->set_var('billed','<input type="checkbox" name="values[billed]" value="True"'
-										. ($values['billed'] == 'private'?' checked':'') . '>');
-
-// -------------------------------- calculate statistics -----------------------------------------
-
-			$employees = $this->bostatistics->get_employees($project_id, $values);
-
-			if (is_array($employees))
-			{
-				while (list($null,$employee) = each($employees))
-				{
-					$account_data = $this->boprojects->cached_accounts($employee['employee']);
-					$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
-
-					$account_id = $account_data[$employee['employee']]['account_id']; 
-
-					$summin = 0;
-					$GLOBALS['phpgw']->template->set_var('e_account',$GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['firstname']) . ' '
-											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['lastname']) . ' ['
-											. $GLOBALS['phpgw']->strip_html($account_data[$employee['employee']]['account_lid']) . ']');
-
-					$GLOBALS['phpgw']->template->set_var('e_activity','&nbsp;');
-					$GLOBALS['phpgw']->template->set_var('e_hours','&nbsp;');
-					$GLOBALS['phpgw']->template->fp('list','stat_list',True);
-
-					$hours = $this->bostatistics->get_stat_hours('both', $account_id, $project_id, $values);
-
-					for ($i=0;$i<=count($hours);$i++)
-					{
-						if ($hours[$i]['num'] != '')
-						{
-							$GLOBALS['phpgw']->template->set_var('e_account','&nbsp;');
-							$GLOBALS['phpgw']->template->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']) . ' ['
-														. $GLOBALS['phpgw']->strip_html($hours[$i]['num']) . ']');
-							$hrs = floor($hours[$i]['min']/60). ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
-							$GLOBALS['phpgw']->template->set_var('e_hours',$hrs);
-							$summin += $hours[$i]['min'];
-							$GLOBALS['phpgw']->template->fp('list','stat_list',True);
-						}
-					}
-
-					$GLOBALS['phpgw']->template->set_var('e_account','&nbsp;');
-					$GLOBALS['phpgw']->template->set_var('e_activity','&nbsp;');
-					$sumhours = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
-					$GLOBALS['phpgw']->template->set_var('e_hours',$sumhours); 
-					$GLOBALS['phpgw']->template->fp('list','stat_list',True);
-				}
-			}
-
-			$prohours = $this->bostatistics->get_stat_hours('project', $account_id = '', $project_id, $values);
-
-			$summin=0;
-			$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
-			$GLOBALS['phpgw']->template->set_var('e_account','<b>' . lang('Overall') . '</b>');
-			$GLOBALS['phpgw']->template->set_var('e_activity','&nbsp;');
-			$GLOBALS['phpgw']->template->set_var('e_hours','&nbsp;');
-
-			$GLOBALS['phpgw']->template->fp('list','stat_list',True);
-
-			if (is_array($prohours))
-			{
-				while (list($null,$proall) = each($prohours))
-				{
-					$GLOBALS['phpgw']->template->set_var('e_account','&nbsp;');
-					$GLOBALS['phpgw']->template->set_var('e_activity',$GLOBALS['phpgw']->strip_html($proall['descr']) . ' ['
-												. $GLOBALS['phpgw']->strip_html($proall['num']) . ']');
-					$summin += $proall['min'];
-					$hrs = floor($proall['min']/60). ':' . sprintf ("%02d",(int)($proall['min']-floor($proall['min']/60)*60));
-					$GLOBALS['phpgw']->template->set_var('e_hours',$hrs);
-
-					$GLOBALS['phpgw']->template->fp('list','stat_list',True);
-				}
-			}
-			$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
-			$GLOBALS['phpgw']->template->set_var('e_account','<b>' . lang('sum') . '</b>');
-			$GLOBALS['phpgw']->template->set_var('e_activity','&nbsp;');
-			$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
-			$GLOBALS['phpgw']->template->set_var('e_hours',$hrs);
-
-			$GLOBALS['phpgw']->template->fp('list','stat_list',True);
+			$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->pfp('out','project_stat');
-		}*/
+		}
+		
+		function show_graph()
+		{
+			$project_id	= get_var('project_id',array('GET'));
+			$start		= get_var('start',array('GET'));
+			$end		= get_var('end',array('GET'));
+
+			if (!$project_id)
+			{
+				return false;
+			}
+			else
+			{
+				$project_array = explode(',',$project_id);
+			}
+			$this->bostatistics->show_graph(array('project_array' => $project_array,'sdate' => $start, 'edate' => $end));
+			
+			return true;
+		}
+
+		function show_stat($project_id)
+		{
+			$this->bostatistics->show_graph($project_id);
+		}
+
 	}
 ?>

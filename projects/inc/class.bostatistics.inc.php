@@ -1,13 +1,15 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/	*
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
+	* This program is part of the GNU project, see http://www.gnu.org/  *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc               *
+	* Copyright 2004 - 2004 Lars Kneschke                               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -46,7 +48,7 @@
 
 		function bostatistics()
 		{
-			$action				= get_var('action',array('GET'));
+			$action			= get_var('action',array('GET'));
 			$this->debug		= False;
 			$this->sostatistics	= CreateObject('projects.sostatistics');
 			$this->boprojects	= CreateObject('projects.boprojects',True,$action);
@@ -57,7 +59,7 @@
 			$this->query		= $this->boprojects->query;
 			$this->filter		= $this->boprojects->filter;
 			$this->order		= $this->boprojects->order;
-			$this->sort			= $this->boprojects->sort;
+			$this->sort		= $this->boprojects->sort;
 			$this->cat_id		= $this->boprojects->cat_id;
 
 			$this->date_diff	= 0;
@@ -420,6 +422,7 @@
 				#$this->graph->render();
 
 				$graph->Stroke(PHPGW_SERVER_ROOT . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
+				$graph->Stroke();
 			}
 		}
 	}

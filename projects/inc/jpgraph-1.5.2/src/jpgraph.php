@@ -19,7 +19,7 @@ include ( "jpgraph_dir.php" );
 // Please note that the Apache user must be a member of the
 // specified group since otherwise it is impossible for Apache
 // to set the specified group.
-DEFINE("CACHE_FILE_GROUP","wwwadmin");
+DEFINE("CACHE_FILE_GROUP","");
 
 // What permissions should the cached file have
 // (Set to "" will give the default persmissions for the "PHP-user")
@@ -30,7 +30,7 @@ DEFINE("CACHE_FILE_MOD",0664);
 // regenerate the image. Note that even if reading the cache is 
 // disabled the cached will still be updated with the newly generated
 // image. Set also "USE_CACHE" below.
-DEFINE("READ_CACHE",true);
+DEFINE("READ_CACHE",false);
 
 // Should the cache be used at all? By setting this to false no
 // files will be generated in the cache directory.  
@@ -38,7 +38,7 @@ DEFINE("READ_CACHE",true);
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-DEFINE("USE_CACHE",true);
+DEFINE("USE_CACHE",false);
 
 // If the color palette is full should JpGraph try to allocate
 // the closest match? If you plan on using background image or
