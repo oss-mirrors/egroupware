@@ -657,7 +657,7 @@
 						}
 						$onehour = $aes*$inv['billperae'];
 						$sumaes += $aes;
-						$summe += $inv['billperae']*$aes;
+						// $summe += $inv['billperae']*$aes;
 					}
 					else
 					{
@@ -670,8 +670,10 @@
 						$sumaes = floor($sumhours/60) . ':'
 								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
 
-						$summe = ($sumhours/60)*$inv['billperae'];
+						// $summe = ($sumhours/60)*$inv['billperae'];
 					}
+
+					$summe += $onehour;
 
 // --------------------- template declaration for list records ---------------------------
 
@@ -887,7 +889,7 @@
 							$aes = ceil($inv['minutes']/$inv['minperae']);
 						}
 						$onehour = $inv['billperae']*$aes;
-        				$sum_netto += $onehour;
+        				// $sum_netto += $onehour;
 					}
 					else
 					{
@@ -895,11 +897,12 @@
 
 						$aes = floor($inv['minutes']/60) . ':'
 								. sprintf ("%02d",(int)($inv['minutes']-floor($inv['minutes']/60)*60));
-						$sum_netto += $onehour;
 
-						$sumhours += $inv['minutes'];
-						$sum_netto = ($sumhours/60)*$inv['billperae'];
+						// $sumhours += $inv['minutes'];
+						// $sum_netto = ($sumhours/60)*$inv['billperae'];
 					}
+
+					$sum_netto += $onehour;
 
 					$this->t->set_var('billperae',$inv['billperae']);
 					$this->t->set_var('sumpos',sprintf("%01.2f",round($onehour,2)));
