@@ -158,7 +158,7 @@
 
 	if ($appname == 'phpgw' || !$cat_id)
 	{
-        $t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','start=' . $start . '&sort=' . $sort                                                                
+        $t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort                                                                
                         . '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
 	}
 	else
