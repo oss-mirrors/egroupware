@@ -249,6 +249,17 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
+		),
+		'phpgw_p_resources' => array(
+			'fd' => array(
+				'employee' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'resource' => array('type' => 'varchar','precision' => 255,'nullable' => False)
+			),
+			'pk' => array('project_id'),
+			'fk' => array('project_id','employee'),
+			'ix' => array('project_id','employee'),
+			'uc' => array()
 		)
 	);
 ?>

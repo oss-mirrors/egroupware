@@ -44,6 +44,9 @@
 		<td>{datedue}</td>
 		<td align="center"><a href="{delete_url}">{delete_img}</a></td>
 	</tr>
+	<tr bgcolor="{tr_color}">
+		<td colspan="3">{description}</td>
+	<tr>
 
 <!-- END mstone_list -->
 
@@ -59,6 +62,11 @@
 			<input type="submit" name="save" value="{lang_save_mstone}">
 		</td>
 		<td><input type="checkbox" name="values[new]" value="True" {new_checked}>{lang_new}</td>
+	</tr>
+	<tr>
+		<td colspan="4">
+			<textarea name="values[description]" cols="50" rows="5">{description}</textarea>
+		</td>
 	</tr>
 	<tr valign="bottom" height="50">
 		<td align="right" colspan="4"><input type="submit" name="done" value="{lang_done}"></td>

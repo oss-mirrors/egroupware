@@ -911,4 +911,28 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.036';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.7.036';
+	function projects_upgrade0_8_7_036()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable
+		(
+			'phpgw_p_resources',array
+			(
+				'fd' => array
+				(
+					'employee' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+					'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+					'resource' => array('type' => 'varchar','precision' => 255,'nullable' => False)
+				),
+				'pk' => array('project_id'),
+				'fk' => array('project_id','employee'),
+				'ix' => array('project_id','employee'),
+				'uc' => array()
+			)
+		);
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.037';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

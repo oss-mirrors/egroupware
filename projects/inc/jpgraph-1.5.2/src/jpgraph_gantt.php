@@ -798,7 +798,7 @@ class GanttScale {
     function TranslateDate($aDate) {
 	$aDate = $this->NormalizeDate($aDate);
 	$img=$this->iImg;		
-#	print date('d-m-Y H:i:s',$aDate).'--'.date('d-m-Y H:i:s',$this->iEndDate)."<br>";
+	//print date('d-m-Y H:i:s',$aDate).'--'.date('d-m-Y H:i:s',$this->iEndDate)."<br>";
 	if( $aDate < $this->iStartDate || $aDate > $this->iEndDate )
 	    JpGraphError::Raise("<b>JpGraph Error:</b> Date is outside specified scale range.");
 	return ($aDate-$this->iStartDate)/SECPERDAY*$this->GetDayWidth()+$img->left_margin+$this->iLabelWidth;;
@@ -1227,6 +1227,9 @@ class GanttBar extends GanttPlotObject {
 	// Is the end date given as a date or as number of days added to start date?
 	if( is_string($aEnd) )
 	    $this->iEnd = strtotime($aEnd)+SECPERDAY;
+	// check for unix timestamp
+	elseif($aEnd > 1000000)
+	    $this->iEnd = $aEnd;
 	elseif(is_int($aEnd) || is_float($aEnd) ) 
 	    $this->iEnd = strtotime($aStart)+round($aEnd*SECPERDAY);
 	$this->iVPos = $aPos;
