@@ -14,16 +14,53 @@
 
 /* $Id$ */
 
+class bofunctions
 {
-// Only Modify the $file and $title variables.....
-	$title = 'Daily Comics';
-	$file = Array(
-		'Global Options'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.global_options'),
-		'Global Comics'         => $phpgw->link('/index.php','menuaction=comic.uiadmin.global_comics'),
-		'Reset Comic Data'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.reset_comic_data')
-	);
-//Do not modify below this line
-	display_section($appname,$title,$file);
+	var $so;
+
+	function bofunctions()
+	{
+		$this->so = CreateObject('comic.sofunctions');
+	}
+
+	function select_box($var) 
+	{
+		switch ($var)
+		{
+			case g_censor_level:
+				$array = array(
+					0 => 'G',
+					1 => 'PG',
+					2 => 'R'
+				);
+				break;
+			case g_image_source:
+				$array = array(
+					0 => 'Remote',
+					1 => 'Local'
+				);
+				break;
+			default:
+				$array[0] = lang('no_entries');
+		}
+		return ($array);
+	}
+
+	function row_color()
+	{
+		global $phpgw_info;
+		static $color;
+
+		if ($color == $phpgw_info['theme']['row_off'])
+		{
+			$color = $phpgw_info['theme']['row_on'];
+		}
+		else
+		{
+			$color = $phpgw_info['theme']['row_off'];
+		}
+		return ($color);
+	}
 }
 
 ?>

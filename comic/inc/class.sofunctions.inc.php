@@ -14,16 +14,8 @@
 
 /* $Id$ */
 
+class sofunctions
 {
-// Only Modify the $file and $title variables.....
-	$title = 'Daily Comics';
-	$file = Array(
-		'Global Options'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.global_options'),
-		'Global Comics'         => $phpgw->link('/index.php','menuaction=comic.uiadmin.global_comics'),
-		'Reset Comic Data'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.reset_comic_data')
-	);
-//Do not modify below this line
-	display_section($appname,$title,$file);
 }
 
 ?>

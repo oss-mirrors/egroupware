@@ -14,16 +14,28 @@
 
 /* $Id$ */
 
+class boadmin
 {
-// Only Modify the $file and $title variables.....
-	$title = 'Daily Comics';
-	$file = Array(
-		'Global Options'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.global_options'),
-		'Global Comics'         => $phpgw->link('/index.php','menuaction=comic.uiadmin.global_comics'),
-		'Reset Comic Data'	=> $phpgw->link('/index.php','menuaction=comic.uiadmin.reset_comic_data')
-	);
-//Do not modify below this line
-	display_section($appname,$title,$file);
+	var $so;
+
+	function boadmin()
+	{
+		$this->so = CreateObject('comic.soadmin');
+	}
+
+	function admin_global_options_data()
+	{
+		$field = $this->so->admin_global_options_data();
+
+		return ($field);
+	}
+
+	function update_global_options($field)
+	{
+		$this->so->update_global_options($field);
+
+		return (lang("Global Options Updated"));
+	}
 }
 
 ?>
