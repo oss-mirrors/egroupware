@@ -19,10 +19,10 @@
 	$phpgw_baseline = array(
 		'phpgw_polls_data' => array(
 			'fd' => array(
-				'poll_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'option_text' => array('type' => 'char', 'precision' => 8,'nullable' => False),
-				'option_count' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'vote_id' => array('type' => 'int', 'precision' => 8,'nullable' => False)
+				'poll_id' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'option_text' => array('type' => 'char', 'precision' => 50,'nullable' => False),
+				'option_count' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'vote_id' => array('type' => 'int', 'precision' => 4,'nullable' => False)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -32,8 +32,8 @@
 		'phpgw_polls_desc' => array(
 			'fd' => array(
 				'poll_id' => array('type' => 'auto','nullable' => False),
-				'poll_title' => array('type' => 'char', 'precision' => 8,'nullable' => False),
-				'poll_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => False)
+				'poll_title' => array('type' => 'char', 'precision' => 100,'nullable' => False),
+				'poll_timestamp' => array('type' => 'int', 'precision' => 4,'nullable' => False)
 			),
 			'pk' => array('poll_id'),
 			'fk' => array(),
@@ -42,10 +42,10 @@
 		),
 		'phpgw_polls_user' => array(
 			'fd' => array(
-				'poll_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'vote_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'user_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'vote_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => True)
+				'poll_id' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'vote_id' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'user_id' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'vote_timestamp' => array('type' => 'int', 'precision' => 4,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -54,8 +54,8 @@
 		),
 		'phpgw_polls_settings' => array(
 			'fd' => array(
-				'setting_name' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'setting_value' => array('type' => 'varchar', 'precision' => 8,'nullable' => True)
+				'setting_name' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
+				'setting_value' => array('type' => 'varchar', 'precision' => 255,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
