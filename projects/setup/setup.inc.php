@@ -12,7 +12,7 @@
 
 	$setup_info['projects']['name']      = 'projects';
 	$setup_info['projects']['version']   = '0.8.7.035';
-	$setup_info['projects']['app_order'] = 13;
+	$setup_info['projects']['app_order'] = 8;
 	$setup_info['projects']['enable']    = 1;
 
 	$setup_info['projects']['author'] = array
@@ -24,7 +24,7 @@
 	$setup_info['projects']['license']  = 'GPL';
 	$setup_info['projects']['description'] = 'Advanced project management';
 
-	$setup_info['projects']['maintainer'] = $setup_info['projects']['author'];
+	$setup_info['projects']['maintainer'] = 'lkneschke@users.sourceforge.net';
 
 	$setup_info['projects']['tables'] = array
 	(
