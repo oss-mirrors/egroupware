@@ -138,12 +138,14 @@ for mail to be send - not functional yet	felamimail	es-es	Para el correo pendien
 for received mail	felamimail	es-es	Para el correo recibido
 forward	felamimail	es-es	Reenviar
 found	felamimail	es-es	Encontrado
+fri	felamimail	es-es	Vie
 from	felamimail	es-es	De
 from(a->z)	felamimail	es-es	De (A-> Z)
 from(z->a)	felamimail	es-es	De (Z-> A)
 full name	felamimail	es-es	Nombre completo
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
 have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
+header lines	felamimail	es-es	Líneas de encabezado
 help	felamimail	es-es	Ayuda
 hide header	felamimail	es-es	Ocultar cabecera
 html	felamimail	es-es	HTML
@@ -182,8 +184,8 @@ location of folder list	felamimail	es-es	Ubicación de la lista de carpetas
 mail server login type	admin	es-es	Tipo de sesión del servidor de correo
 mail settings	felamimail	es-es	Configuración del correo
 mainmessage	felamimail	es-es	mensaje principal
-manage folders	felamimail	es-es	Administrar carpetas
-manage sieve	felamimail	es-es	Administrar scripts Sieve
+manage folders	common	es-es	Administrar carpetas
+manage sieve	common	es-es	Administrar scripts Sieve
 mark as deleted	felamimail	es-es	Marcar como borrado
 mark messages as	felamimail	es-es	Marcar mensajes seleccionados como
 mark selected as flagged	felamimail	es-es	Marcar la selección como para descargar
@@ -194,11 +196,13 @@ match	felamimail	es-es	Coincidencia
 matches	felamimail	es-es	coincide
 matches regexp	felamimail	es-es	coincide con la expresión
 medium gray	felamimail	es-es	Gris medio
+message	felamimail	es-es	Mensaje
 message highlighting	felamimail	es-es	Resaltado del mensaje
 message list	felamimail	es-es	Lista de mensajes
 messages	felamimail	es-es	mensajes
 minute	felamimail	es-es	Minuto
 minutes	felamimail	es-es	Minutos
+mon	felamimail	es-es	Lun
 more	felamimail	es-es	más
 move	felamimail	es-es	mover
 move messages	felamimail	es-es	mover mensajes
@@ -207,7 +211,7 @@ move to trash	felamimail	es-es	Mover a la papelera
 must be unique	felamimail	es-es	Debe ser único
 name	felamimail	es-es	Nombre
 never display html emails	felamimail	es-es	Nunca mostar los correos en HTML
-new	felamimail	es-es	Nuevo
+new	common	es-es	Nuevo
 new filter	felamimail	es-es	Nuevo filtro
 next	felamimail	es-es	Siguiente
 next message	felamimail	es-es	Mensaje siguiente
@@ -277,6 +281,7 @@ right	felamimail	es-es	Derecha
 rule	felamimail	es-es	Regla
 running squirrelmail version %1 (c) 1999-2000.	felamimail	es-es	Ejecutando SquirrelMail versión %1 (c) 1999-2000
 same window - not functional yet	felamimail	es-es	En la misma ventana - no funciona todavía
+sat	felamimail	es-es	Sab
 save	felamimail	es-es	Guardar
 save changes	felamimail	es-es	guardar cambios
 script name	felamimail	es-es	nombre del script
@@ -320,6 +325,7 @@ subscribed successfully!	felamimail	es-es	Suscripción correcta
 successfully saved display preferences!	felamimail	es-es	Las preferencias de visualización se han guardado correctamente
 successfully saved folder preferences!	felamimail	es-es	Las preferencias de las carpetas se han guardado correctamente
 successfully saved personal information!	felamimail	es-es	La información personal se ha guardado correctamente
+sun	felamimail	es-es	Dom
 switch current folder to	felamimail	es-es	cambiar la carpeta actual a
 table of contents	felamimail	es-es	Tabla de contenidos
 text only	felamimail	es-es	Sólo texto
@@ -334,6 +340,7 @@ this contains personal information about yourself such as your name, your email 
 this folder is empty	felamimail	es-es	ESTA CARPETA ESTA VACIA
 this php has no imap support compiled in!!	felamimail	es-es	¡Esta instalación de PHP no tiene soporte IMAP!
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	es-es	El puerto en el que está basado Squirrelmail, que es un cliente IMAP.<br>
+thu	felamimail	es-es	Jue
 to	felamimail	es-es	Para
 to mail sent to	felamimail	es-es	al correo enviado a
 to the left	felamimail	es-es	a la izquierda
@@ -344,6 +351,7 @@ translation preferences	felamimail	es-es	Preferencias de la traducción
 translation server	felamimail	es-es	Servidor de traducciones
 trash fold	felamimail	es-es	Carpeta Papelera
 trash folder	felamimail	es-es	Carpeta Papelera
+tue	felamimail	es-es	Mar
 type	felamimail	es-es	tipo
 unable to list addresses from %1	felamimail	es-es	No se pudieron listar las direcciones desde %1
 unflagged	felamimail	es-es	Sin marcar
@@ -351,7 +359,7 @@ unknown err	felamimail	es-es	Error desconocido
 unknown error	felamimail	es-es	Error desconocido
 unknown sender	felamimail	es-es	Remitente desconocido
 unknown user or password incorrect.	felamimail	es-es	Usuario desconocido o contraseña incorrecta
-unread	felamimail	es-es	No leído
+unread	common	es-es	No leído
 unseen	felamimail	es-es	No vistos
 unseen and total	felamimail	es-es	No vistos y total
 unseen message notification	felamimail	es-es	Notificación de mensaje desconocida
@@ -362,6 +370,7 @@ unsubscribed	felamimail	es-es	No suscrito
 unsubscribed successfully!	felamimail	es-es	Desuscripción correcta
 up	felamimail	es-es	arriba
 update address	felamimail	es-es	Actualizar dirección
+use <a href="%1">emailadmin</a> to create profiles	felamimail	es-es	use <a href="%1">EmailAdmin</a> para crear perfiles
 use a signature	felamimail	es-es	Usar una firma
 use a signature?	felamimail	es-es	¿Usar una firma?
 use addresses	felamimail	es-es	Usar direcciones
@@ -375,6 +384,7 @@ view message	felamimail	es-es	Ver mensaje
 viewing full header	felamimail	es-es	Viendo la cabecera completa
 viewing message	felamimail	es-es	Viendo mensaje
 viewing messages	felamimail	es-es	Viendo mensajes
+wed	felamimail	es-es	Mie
 welcome to %1's webmail system	felamimail	es-es	Bienvenido al sistema de WebMail %1
 welcome to %1\'s webmail system	felamimail	es-es	Bienvenido al sistema de WebMail %1
 when deleting messages	felamimail	es-es	Al borrar mensajes

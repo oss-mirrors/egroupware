@@ -8,6 +8,7 @@ active	workflow	es-es	Activa
 activities	workflow	es-es	Actividades
 activities updated	workflow	es-es	Actividades actualizadas
 activity	workflow	es-es	actividad
+activity  status	workflow	es-es	Estado de la actividad
 activity %1 is interactive but has no role assigned	workflow	es-es	La actividad %1 es interactiva pero no tiene papel asignado
 activity %1 is interactive so it must use the $instance->complete() method	workflow	es-es	La actividad %1, asi que debe usar el método $instance->complete()
 activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	es-es	La actividad %1 no es interactiva ni autoenrutada, pero no tiene papel asignado
@@ -40,7 +41,9 @@ automatic	workflow	es-es	Automático
 base directory does not exist, please ask adminstrator to check the global configuration	workflow	es-es	El directorio base no existe, por favor, pida al administrador que compruebe la configuración global
 being run	workflow	es-es	siendo ejecutado
 cannot add transition only split activities can have more than one outbound transition	workflow	es-es	No se puede la transición. Sólo las actividades separadas pueden tener más de una transición saliente
+cannot add transition. only split activities can have more than one outbound transition	workflow	es-es	No se puede añadir la transición. Sólo las actividades divididas pueden tener más una transición saliente
 circular reference found some activity has a transition leading to itself	workflow	es-es	La referencia circular encontró alguna actividad que tiene una transición que vuelve a ella misma
+circular reference found. some activity has a transition leading to itself	workflow	es-es	Se encontró una referencia circular. Alguna actividad tiene una transición apuntando a sí misma
 code	workflow	es-es	código
 completed	workflow	es-es	completado
 couldn't add transition	workflow	es-es	No se pudo añadir la transición
@@ -93,6 +96,7 @@ monitor instances	workflow	es-es	Monitorizar instancias
 monitor processes	workflow	es-es	Monitorizar procesos
 monitor work items	workflow	es-es	Monitorizar elementos de trabajo
 name	workflow	es-es	Nombre
+new major	workflow	es-es	Nuevo mayor
 new mapping added	workflow	es-es	Se ha añadido un nuevo mapeo
 new mayor	workflow	es-es	Nuevo mayor
 new minor	workflow	es-es	Nuevo menor
@@ -150,6 +154,7 @@ status	workflow	es-es	Estado
 stop	workflow	es-es	parar
 switch	workflow	es-es	interruptor
 template	workflow	es-es	plantilla
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	es-es	El directorio /workflow no existe y no se pudo crear. Por favor, pida a su administrador que compruebe la configuración global
 the following items must be corrected to be able to activate this process	workflow	es-es	Deben corregirse los siguientes elementos para poder activar este proceso
 there are no activities available	workflow	es-es	No hay actividades disponibles
 there are no instances available	workflow	es-es	No hay instancias disponibles
