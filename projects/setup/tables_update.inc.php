@@ -601,7 +601,7 @@
 	$test[] = '0.8.7.018';
 	function projects_upgrade0_8_7_018()
 	{
-		$new_def = array(
+		$newdef = array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'employee' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -612,11 +612,13 @@
 				'end_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'remark' => array('type' => 'text','nullable' => True),
 				'minutes' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'minperae' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'status' => array('type' => 'varchar','precision' => 6,'default' => 'done','nullable' => False),
 				'hours_descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'dstatus' => array('type' => 'char','precision' => 1,'default' => 'o','nullable' => True),
 				'pro_parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'pro_main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+				'pro_main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'pro_level' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -625,7 +627,9 @@
 		);
 
 		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_p_hours',$newdef,'billperae');
+		unset($newdef['fd']['minperae']);
 		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_p_hours',$newdef,'minperae');
+		unset($newdef['fd']['pro_level']);
 		$GLOBALS['phpgw_setup']->oProc->DropColumn('phpgw_p_hours',$newdef,'pro_level');
 
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.019';
