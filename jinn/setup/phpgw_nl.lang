@@ -50,6 +50,7 @@ add phpgw_jinn_sites	jinn	nl	Sites toevoegen
 add site	jinn	nl	Site toevoegen
 add site object	jinn	nl	Site-object toevoegen
 add site-object	jinn	nl	Site-object toevoegen
+add slot	jinn	nl	Slot toevoegen
 add your zip-file with images here	jinn	nl	Voeg uw zip-bestand met beelden toe
 admin:: edit site	jinn	nl	Beheer - Wijzig Site
 administrator mode	jinn	nl	Beheermodus
@@ -57,6 +58,8 @@ administrators for site $site_name	jinn	nl	Beheerders voor site $site_name
 administrators for site %1	jinn	nl	Beheerder voor site %1
 advanced configuration	jinn	nl	geavanceerde configuratie
 all from	jinn	nl	alle opties uit
+all records (unfiltered)	jinn	nl	Alle records (ongefilterd)
+all tests were successful. you can go on with the site-objects	jinn	nl	Alle testen zijn met succes uitgevoerd. U kunt doorgaan met de site-objects.
 alternative fieldname for display	jinn	nl	Altenatieve veldnaam om weer te geven
 amount of fieldvariables	jinn	nl	Aantal veldvariabelen
 an error occured.	jinn	nl	Er is een fout opgetreden
@@ -125,6 +128,7 @@ criterium	jinn	nl	criterium
 current color:	jinn	nl	huidige kleur
 current session filter	jinn	nl	filter voor huidige sessie
 database connection failed! <p>please recheck your settings.	jinn	nl	Het is misluk een databaseconnectie te maken! <p>Controleer a.u.b. uw instellingen.</p>
+database connection was succesful.	jinn	nl	De databaseconnectie was succesvol
 database connection was succesfull. <p>you can go on with the site-objects	jinn	nl	Het is gelukt een databaseconnectie te maken! <p>U kunt verder gaan met het toevoegen van Site-objecten</p>
 days	jinn	nl	dagen
 debug	jinn	nl	debug
@@ -177,7 +181,12 @@ error path_open %1	jinn	nl	Kon het pad %1 niet openen
 error: the file %1 doesn't exists, please contact the webmaster	jinn	nl	FOUT: het bestand %1 bestaat niet, neem a.u.b. contact op met uw webmaster
 existing plugin configuration	jinn	nl	Bestaande plugins configuratie
 export	jinn	nl	exporteren
+export all columns	jinn	nl	exporteer alle kolommen
+export all selected records	jinn	nl	exporteer alle geselecteerde records
+export selection below	jinn	nl	exporteer de selectie hieronder
+export source	jinn	nl	exportbron
 export this site	jinn	nl	exporteer deze site
+exporteer object	jinn	nl	Exporteer object
 extra help information for this field	jinn	nl	Extra helpinformatie voor dit veld
 extra info	jinn	nl	extra informatie
 extra information	jinn	nl	Extra informatie
@@ -196,9 +205,14 @@ field to display	jinn	nl	Velden die worden weergegeven
 field variable	jinn	nl	Veldvariabele
 fieldname	jinn	nl	Veldnaam
 fields	jinn	nl	velden
+fields enclosed by	jinn	nl	Velden ingesloten door
+fields escaped by	jinn	nl	Velden ontsnapt door
+fields terminated by	jinn	nl	Velden beëindigd door
 filename	jinn	nl	bestandsnaam
 filesize	jinn	nl	bestandsgrootte
 filter operator	jinn	nl	filter operator
+filtered list	jinn	nl	Gefilterde lijst
+first row has field names	jinn	nl	Eerste rij heeft veldnamen
 form input plugin	jinn	nl	Formulier invoer insteekmodule
 general preferences	jinn	nl	Algemene Voorkeuren
 general settings	admin	nl	Algemene Instellingen
@@ -246,8 +260,10 @@ keep current timestamp	jinn	nl	Behoudt huidige tijdstempel
 keep this empty to let is auto increment	jinn	nl	Laat deze leeg om het automatisch op te laten slaan
 last edited record	jinn	nl	Laatst gewijzigde record
 license	common	nl	Licentie
+lines terminated by	jinn	nl	Regels beëindigd door
 list record(s) in current object	jinn	nl	Recordlijst in huidig object
 list sites	jinn	nl	Sites weergeven
+load export profile	jinn	nl	Laad exportprofiel
 load site conf from file	jinn	nl	Laad siteconfiguratie uit bestand
 mailing not succesfully added, unknown error	jinn	nl	Mailing NIET met succes toegevoegd. Onbekende fout.
 mailing not succesfully deleted, unknown error	jinn	nl	Mailing NIET met succes verwijderd. Onbekende fout.
@@ -323,6 +339,8 @@ plugin configuration	jinn	nl	Pluginconfiguratie
 plugin configuration successfully saved	jinn	nl	Pluginconfiguratie is met succes opgeslagen.
 plugin name	jinn	nl	Pluginnaam
 postgresql support is not stable. wanna help?	common	nl	PostgreSQL ondersteuning is niet stabiel. Wilt u meehelpen?
+preset: ms excel	jinn	nl	Vooraf ingesteld: MS EXCEL
+preset: open office spreadsheet	jinn	nl	Vooraf ingesteld: Open Office Spreadsheet
 preview thumbs or images in form	jinn	nl	Voorbeelden van thumbnails of afbeeldingen weergeven in "wijzigen formulier"
 preview website	jinn	nl	Open Website
 process mailing	jinn	nl	Mailing verwerken.
@@ -367,7 +385,9 @@ save and contiue	jinn	nl	Opslaan en doorgaan met bewerken
 save and finish	jinn	nl	Opslaan en bewerking beëindigen
 save and return to list	jinn	nl	opslaan en terug naar lijst
 save as	jinn	nl	opslaan als
+save export profile	jinn	nl	Exportprofiel opslaan
 save mailinglist	jinn	nl	Mailinglijsty opslaan
+save profile	jinn	nl	Profiel opslaan
 save site conf to file	jinn	nl	Siteconfiguratie in bestand opslaan
 screenshot	jinn	nl	Schermafbeelding
 search	jinn	nl	Zoek
@@ -383,6 +403,7 @@ select site to moderate	jinn	nl	Selecteer site om te bewerken
 select site-object to moderate	jinn	nl	Selecteer site-object om te bewerken
 select which graphic library jinn must use	admin	nl	Selecteer welke grafische bibliotheek JiNN moet gebruiken
 select_object	jinn	nl	Selecteer site-object
+selected records	jinn	nl	Geselecteerde records
 send test email	jinn	nl	Verzend test email
 serialnumber	jinn	nl	Object serienummer
 server type?	admin	nl	Servertype?
@@ -442,6 +463,7 @@ t/m	jinn	nl	t/m
 table name	jinn	nl	Naam tabel
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	nl	Naam van tabel <i>%1</i> is niet correct. Waarschijnlijk is de naam veranderd of is de tabel verwijderd uit de database. Selecteer a.u.b. een nieuwe tabel of verwijder dit object.
 test database access	jinn	nl	Test database toegang
+test database and paths	jinn	nl	Test databasetoegang, uploadpaden en -URL's
 test message succesfully sent	jinn	nl	Testbericht met succes verzonden
 the administrator set an invalid max. file upload size. for safety reasons we now use a max. filesize of 1mb. please contact your jinn administrator.	jinn	nl	De beheerder heeft een ongeldige waarde ingevuld als maximale uploadgrootte. Voor veilighgeidsredenen. gebruiken we nu een maximale grootte van 1Mb. Neem a.u.b. contact op met uw JiNN beheerder.
 the attachments subdirectory does not exist and cannot be created ...	jinn	nl	De documenten subdirectorie bestaat niet en kan niet worden aangemaakt ...
@@ -498,6 +520,8 @@ when you choose \\\\\\\'never\\\\\\\', only links to the images are displayed; w
 width:	jinn	nl	Breedte:
 with_checked_files	jinn	nl	met aangevinkte bestanden
 yes, hide from menu	jinn	nl	Ja, verberg uit het menu.
+you are on a <b>development</b> server	jinn	nl	Het ontwikkelaarsprofiel is geactiveerd.
+you are on a <b>production</b> server	jinn	nl	Het productiesprofiel is geactiveerd.
 you cannot delete the session filter	jinn	nl	U kunt niet het filter van de huidige sessie verwijderen, wel wijzigen of uitschakelen.
 you don't have access to this page.	jinn	nl	U heeft geen toegang tot deze pagina.
 you have no access to this file.	jinn	nl	U heeft toegnag tot dit bestand.

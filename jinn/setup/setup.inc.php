@@ -21,11 +21,11 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   $setup_info['jinn']['name']			= 'jinn';
-   $setup_info['jinn']['title']		= 'JiNN CMS/Database Manager';
-   $setup_info['jinn']['version']		= '0.8.212';
+   $setup_info['jinn']['name']		= 'jinn';
+   $setup_info['jinn']['title']		= 'JiNN CMS / Database Manager';
+   $setup_info['jinn']['version']	= '0.8.212';
    $setup_info['jinn']['app_order']	= 15;
-   $setup_info['jinn']['author'] 		= 'Pim Snel';
+   $setup_info['jinn']['author'] 	= 'Pim Snel';
    $setup_info['jinn']['license']  	= 'GPL';
    $setup_info['jinn']['note'] 		= 'PostgreSQL support is not stable. Wanna help?';
 
