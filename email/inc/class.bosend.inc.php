@@ -1146,7 +1146,24 @@
 							if ($this->debug_struct > 2) { echo 'FILE INFO: '.htmlspecialchars(serialize($file_info)).'<br>'; } 
 							$content_type = trim($file_info[0]);
 							$content_name = trim($file_info[1]);
-
+							
+							// testing i18n handling of filenames
+							$max_ord = 0;
+							$needs_rfc_encode = False;
+							for( $i = 0 ; $i < strlen($content_name) ; $i++ )
+							{
+								if (ord($content_name[$i]) > $max_ord)
+								{
+									$max_ord = ord($content_name[$i]);
+								}
+							}
+							$hdr_ready_content_name = $content_name;
+							if ($max_ord > 123)
+							{
+								$needs_rfc_encode = True;
+								$hdr_ready_content_name = $GLOBALS['phpgw']->msg->encode_header($content_name);
+							}
+							
 							$body_part_num++;
 							$this->mail_out['body'][$body_part_num]['mime_headers'] = Array();
 							$this->mail_out['body'][$body_part_num]['mime_body'] = Array();
@@ -1158,7 +1175,8 @@
 							$m_line++;
 							$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Transfer-Encoding: base64';
 							$m_line++;
-							$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$content_name.'"';
+							//$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$content_name.'"';
+							$this->mail_out['body'][$body_part_num]['mime_headers'][$m_line] = 'Content-Disposition: attachment; filename="'.$hdr_ready_content_name.'"';
 							
 							/*
 							// BASE64 ENCODE method 1 - entire file loaded into memory

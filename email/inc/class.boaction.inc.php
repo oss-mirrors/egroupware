@@ -1070,6 +1070,60 @@
 		}
 		
 		/*!
+		@function content_header2
+		@abstract similar to API browser class function but add Content-description to the headers
+		@example
+			Content-Disposition: attachment; filename=something
+			Content-Description: something
+		??	Connection: close
+		??	Transfer-Encoding: chunked
+			Content-Type: application/octet-stream
+		*/
+		function content_header2($fn='',$mime='',$length='',$nocache=True)
+		{
+			if (!is_object($this->browser))
+			{
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.content_header2: creating $this->browser <br>'); }
+				$this->browser = CreateObject('phpgwapi.browser');
+			}
+			// if no mime-type is given or it's the default binary-type, guess it from the extension
+			if(empty($mime) || $mime == 'application/octet-stream')
+			{
+				$mime_magic = createObject('phpgwapi.mime_magic');
+				$mime = $mime_magic->filename2mime($fn);
+			}
+			if($fn)
+			{
+				if($this->browser->get_agent() == 'IE') // && browser_get_version() == "5.5")
+				{
+					$attachment = '';
+				}
+				else
+				{
+					$attachment = ' attachment;';
+				}
+				// Show this for all
+				header('Content-Disposition: '.$attachment.' filename='.$fn);
+				header('Content-Description: '.$fn);
+				//header('Connection: close');
+				//header('Transfer-Encoding: chunked');
+				if($length)
+				{
+					header('Content-Length: '.$length);
+				}
+				//header('Content-Type: '.$mime.'; filename="foo.bar"');
+				header('Content-Type: '.$mime.'; name="'.$fn.'"');
+				if($nocache)
+				{
+					header('Pragma: no-cache');
+					header('Pragma: public');
+					header('Expires: 0');
+					header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+				}
+			}
+		}
+		
+		/*!
 		@function get_attach
 		@abstract browser requests a specific MIME part number, this function will get it from the mail server 
 		and send it to the browser.
@@ -1090,10 +1144,11 @@
 			
 			$this->msg_bootstrap = CreateObject('email.msg_bootstrap');
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.get_attach', $this->debug);
-			
-			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.get_attach: creating $this->browser <br>'); }
-			$this->browser = CreateObject('phpgwapi.browser');
-			
+			if (!is_object($this->browser))
+			{
+				if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.get_attach: creating $this->browser <br>'); }
+				$this->browser = CreateObject('phpgwapi.browser');
+			}
 			$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
 			if (!isset($msgball['part_no']))
 			{
@@ -1112,29 +1167,109 @@
 			{
 				$GLOBALS['phpgw']->msg->set_arg_value('name', $att_name);
 			}
-			*/
-			$defanged_name = '';
-			$att_name = '';
 			// altered as per PATCH 2770 from lex "fix-filename-encoding.diff"
- 			$defanged_name=urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'));
- 			$att_name = $GLOBALS['phpgw']->msg->decode_header_string($defanged_name);
  			//Check if the name changed thru the header decoding im not shure
- 			if (($att_name != urldecode($GLOBALS['phpgw']->msg->get_arg_value('name')))
-  			&& (trim($att_name) != '')
- 			&& (trim(urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'))) != ''))
+			//if (($header_decoded_name != urldecode($GLOBALS['phpgw']->msg->get_arg_value('name')))
+  			//&& (trim($header_decoded_name) != '')
+ 			//&& (trim(urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'))) != ''))
+			//{
+			//	$GLOBALS['phpgw']->msg->set_arg_value('name', $header_decoded_name);
+			//}
+			*/
+			$urlencoded_name = '';
+			$urldecoded_name = '';
+			$header_decoded_name = '';
+			$final_att_name = '';
+ 			$urlencoded_name = $GLOBALS['phpgw']->msg->get_arg_value('name');
+			$urldecoded_name = urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'));
+			// it is possible we have this now: "=?ISO-8859-1?Q?instala=E7=E3o_padr=E3o_esta=E7=F5es_windows=2Edoc?="
+			// therefor we my also need to header decode
+ 			$header_decoded_name = $GLOBALS['phpgw']->msg->decode_header_string($urldecoded_name);
+			$max_ord = 0;
+			$max_char = '';
+			for( $i = 0 ; $i < strlen($header_decoded_name) ; $i++ )
 			{
-				$GLOBALS['phpgw']->msg->set_arg_value('name', $att_name);
+				$val = ord($header_decoded_name[$i]);
+				//if ($this->debug > 1) { echo '$header_decoded_name['.$i.'] ['.$header_decoded_name[$i].'], $val ['.$val.'] <br>'."\r\n"; }
+				if ($val > $max_ord)
+				{
+					$max_ord = $val;
+					$max_char = $header_decoded_name[$i];
+				}
 			}
+			if ($this->debug > 1) { echo '$header_decoded_name: $max_ord ['.$max_ord.'], $max_char ['.$max_char.']  <br>'."\r\n"; }
+			// now we have header decoded we can again urlencode and this time is is directly from the actual string, not an RFC2047 header encoding of it
+			// fallback value
+			$final_att_name = urlencode($header_decoded_name);
+			// handle non us-ascii filenames
+			if ($max_ord > 123)
+			{
+				// out us US-ASCII common chars range, this is NOT en_US name
+				//$final_att_name = urlencode($header_decoded_name);
+				// MORE RESEARCH NEEDED, i18n ENCODING NEEDS TO GO HERE
+				//if ((ini_get('output_buffering'))
+				//&& (ini_get('output_handler') == 'mb_output_handler'))
+				//default_charset
+				$has_mbstring = False;
+				$has_mbstring = extension_loaded('mbstring') || @dl(PHP_SHLIB_PREFIX.'mbstring.'.PHP_SHLIB_SUFFIX);
+				//if (($has_mbstring)
+				//&& (ini_get('mbstring.internal_encoding'))
+				//&& (ini_get('mbstring.func_overload') > 2))
+				// just hope for the best :)
+				if ($has_mbstring)
+				{
+					// WE CAN HANDLE THIS CHARSET, SEND OUT WITH NO ENCODING
+					$final_att_name = $header_decoded_name;
+				}
+				else
+				{
+					// if not then we need to do something here may be to make it look more human readable than straight urlencoding
+					// there is NOTHING we can do here, there are too many charsets in the world to make substitutions
+				}
+			}
+			
+			// FOR TESTING
+			//$final_att_name = $urlencoded_name;
+			//$final_att_name = $urldecoded_name;
+			//$final_att_name = rawurlencode($header_decoded_name);
+			//$final_att_name = $header_decoded_name;
+			//$final_att_name = urlencode($header_decoded_name);
+			//$final_att_name = htmlspecialchars($header_decoded_name);
+			//$final_att_name = htmlentities($header_decoded_name);
+			
+			// set the new name param
+			$GLOBALS['phpgw']->msg->set_arg_value('name', $final_att_name);
 			
 			$mime = strtolower($GLOBALS['phpgw']->msg->get_arg_value('type')) .'/' .strtolower($GLOBALS['phpgw']->msg->get_arg_value('subtype'));
 			// do not do this until we get a length
 			//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
-			
-			//echo 'get all args dump<pre> '; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo ' </pre>'."\r\n";
-			//echo '$defanged_name ['.$defanged_name.']  <br>'."\r\n";
-			//echo '$att_name ['.$att_name.']  <br>'."\r\n";
-			//echo '$mime ['.$mime.']  <br>'."\r\n";
-			//echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').'] <br>'."\r\n";
+			if ($this->debug > 1)
+			{
+				echo 'get all args dump<pre> '; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo ' </pre>'."\r\n";
+				echo '$urlencoded_name: ['.$urlencoded_name.'] <br>'."\r\n";
+				echo '$urldecoded_name ['.$urldecoded_name.']  <br>'."\r\n";
+				echo '$header_decoded_name ['.$header_decoded_name.']  <br>'."\r\n";
+				echo '$mime ['.$mime.']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').'] <br>'."\r\n";
+				echo '$final_att_name ['.$final_att_name.']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw]->msg->get_arg_value(name): ['.$GLOBALS['phpgw']->msg->get_arg_value('name').'] <br>'."\r\n";
+				echo 'get_cfg_var(output_buffering) ['.serialize(get_cfg_var('output_buffering')).']  <br>'."\r\n";
+				echo 'ini_get(output_buffering) ['.serialize(ini_get('output_buffering')).']  <br>'."\r\n";
+				echo 'get_cfg_var(cfg_file_path) ['.serialize(get_cfg_var('cfg_file_path')).']  <br>'."\r\n";
+				set_time_limit(40);
+				echo 'get_cfg_var(max_execution_time) ['.serialize(get_cfg_var('max_execution_time')).']  <br>'."\r\n";
+				echo 'ini_get(max_execution_time) ['.serialize(ini_get('max_execution_time')).']  <br>'."\r\n";
+				echo 'get_cfg_var(default_charset) ['.serialize(get_cfg_var('default_charset')).']  <br>'."\r\n";
+				echo 'ini_get(default_charset) ['.serialize(ini_get('default_charset')).']  <br>'."\r\n";
+				//$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
+				echo 'is_object($GLOBALS[phpgw]->translation) ['.serialize(is_object($GLOBALS['phpgw']->translation)).']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw]->translation->system_charset ['.serialize($GLOBALS['phpgw']->translation->system_charset).']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw]->translation->charset() ['.serialize($GLOBALS['phpgw']->translation->charset()).']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw_info][server][system_charset] ['.serialize($GLOBALS['phpgw_info']['server']['system_charset']).']  <br>'."\r\n";
+				echo '$GLOBALS[phpgw]->translation->mbstring ['.serialize($GLOBALS['phpgw']->translation->mbstring).']  <br>'."\r\n";
+				$we_have_mbstring = extension_loaded('mbstring') || @dl(PHP_SHLIB_PREFIX.'mbstring.'.PHP_SHLIB_SUFFIX);
+				echo '$we_have_mbstring ['.serialize($we_have_mbstring).']  <br>'."\r\n";
+			}
 			
 			// is this only a header PEEK?
 			if ((string)$msgball['part_no'] == '0')
@@ -1167,7 +1302,8 @@
 				//echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 				$this->output_data = $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 				$size = strlen($this->output_data);
-				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				$this->content_header2($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
 				echo $this->output_data;
 				$this->output_data = '';
 			}
@@ -1176,7 +1312,8 @@
 				//echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 				$this->output_data = $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball));
 				$size = strlen($this->output_data);
-				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				$this->content_header2($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
 				echo $this->output_data;
 				$this->output_data = '';
 			}
@@ -1185,7 +1322,8 @@
 				//echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 				$this->output_data = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 				$size = strlen($this->output_data);
-				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				$this->content_header2($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
 				echo $this->output_data;
 				$this->output_data = '';
 			}
