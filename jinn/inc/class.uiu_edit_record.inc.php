@@ -100,7 +100,7 @@
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
 
- /*		 echo($this->bo->where_string);*/
+//		 echo $this->bo->where_string;
 		 if ($this->bo->where_string)
 		 {
 			$this->ui->header('edit record');
@@ -350,6 +350,7 @@
 
 		 /* get one with many relations */
 		 $relation1_array=$this->bo->extract_O2M_relations($object_arr[relations]);
+//		 _debug_array($relation1_array);
 
 		 if (count($relation1_array)>0)
 		 {
@@ -385,6 +386,8 @@
 			/* ---------------------- start fields -------------------------------- */
 
 			
+//			echo $this->db_ftypes->get_db_f_type($fprops[type]);
+//			_debug_array($fprops[type]);
 			// auto
 			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
 			{
@@ -399,6 +402,8 @@
 			/* string */
 			elseif($this->db_ftypes->get_db_f_type($fprops[type])=='string')
 			{
+//				_debug_array($fields_with_relation1);
+			   
 			   /* If this field has a relation, get that options */
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {

@@ -275,6 +275,7 @@
 
 			$pref_columns_str=$this->bo->read_preferences('show_fields'); 
 			$default_order=$this->bo->read_preferences('default_order');
+			$default_col_num=$this->bo->read_preferences('default_col_num');
 
 			list($offset,$asc,$orderby,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','orderby','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
 
@@ -401,13 +402,17 @@
 			}
 
 			/* which/how many column to show, all, the prefered, or the default thirst 4 */
-			if ($show_all_cols=='True')
+			if ($show_all_cols=='True' || $default_col_num=='-1')
 			{
 			   $col_list=$columns;
 			}
 			elseif($pref_columns)
 			{
 			   $col_list=$valid_pref_columns;
+			}
+			elseif($default_col_num)
+			{
+			   $col_list=array_slice($columns,0,$default_col_num);
 			}
 			else
 			{
@@ -496,7 +501,7 @@
 					 foreach($pkey_arr as $pkey)
 					 {
 						if($where_string) $where_string.=' AND ';
-						$where_string.= '('.$pkey.' = \''. $recordvalues[$pkey].'\')';
+						$where_string.= '('.$pkey.' = \''. addslashes($recordvalues[$pkey]).'\')';
 					 }
 
 					 $where_string=base64_encode($where_string);
@@ -557,6 +562,8 @@
 						   }
 						   else
 						   {
+//							  echo $onecolname;
+//							  _debug_array($field_conf_arr);
 							  $recordvalue=$this->bo->plug->call_plugin_bv($onecolname,$recordvalue,$where_string,$field_conf_arr);
 						   }
 						}

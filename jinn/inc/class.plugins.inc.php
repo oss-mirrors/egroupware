@@ -32,10 +32,12 @@
 	  var $test;
 	  /*!
 	  @function plugins
-	  @abstract standard contructure and unused atm
+	  @abstract standard contructure that includes all plugins
 	  */
 	  function plugins()
-	  {}
+	  {
+		 $this->include_plugins();
+	  }
 
 
 	  /*!
@@ -99,7 +101,6 @@
 
 			if(is_array($plug_conf_arr))
 			{
-			
 			   $new_value=@call_user_func('plg_bv_'.$plug_conf_arr[name],$value,$plug_conf_arr[conf],$where_val_encoded,$field_name);
 			   if($plug_conf_arr[name])
 			   {
@@ -112,7 +113,8 @@
 		 if(strlen($new_value)>20)
 		 {
 			$new_value = strip_tags($new_value);
-			$new_value = substr($new_value,0,20). ' ...';
+
+			$new_value = '<span title="'.substr($new_value,0,200).'">' . substr($new_value,0,20). ' ...' . '</span>';
 		 }
 
 		 return $new_value;
@@ -132,9 +134,6 @@
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
 
-//		 echo $form_field_name;
-//		 _debug_array($field_values);
-		 
 		 if($field_values[field_plugins] && substr($form_field_name,6)==$field_values[field_name])
 		 {
 			$plug_conf_arr=unserialize(base64_decode($field_values[field_plugins]));
@@ -144,7 +143,7 @@
 			   $data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
 			}
 		 }
-		 
+
 		 return $data;
 	  }
 
@@ -159,7 +158,7 @@
 	  {
 		 global $local_bo;
 		 $local_bo=$this->local_bo;
-		
+
 		 $plug_arr=unserialize(base64_decode($field_values[field_plugins]));
 
 		 if(is_array($plug_arr))
@@ -167,7 +166,7 @@
 
 			$new_value=@call_user_func('plg_ro_'.$plug_arr[name],$value,$plug_arr[conf]);
 		 }
-		 
+
 		 if (!$new_value)
 		 {
 			return $value;
@@ -208,6 +207,99 @@
 
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+	  }
+
+	  /**
+	  @function include_plugins
+	  @abstract include ALL plugins
+	  */
+	  function include_plugins()
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
+		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
+
+			/* This is the correct way to loop over the directory. */
+
+			while (false !== ($file = readdir($handle))) 
+			{ 
+			   if (substr($file,0,7)=='plugin.')
+			   {
+
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
+			   }
+			}
+			closedir($handle); 
+		 }
+	  }
+	  
+	  /**
+	  @function plugin_hooks
+	  @abstract get plugins that hook with the given fieldtype
+	  @return array with plugins
+	  @param string $fieldtype is a jinn field type which is greatly generalized
+	  */
+	  function plugin_hooks($fieldtype)
+	  {
+		 if ($fieldtype=='blob') $fieldtype='text';
+
+		 if (count($this->plugins>0))
+		 {	
+
+			foreach($this->plugins as $plugin)
+			{
+			   foreach($plugin['db_field_hooks'] as $hook)
+			   {
+				  if ($hook==$fieldtype) 
+				  {
+					 $plugin_hooks[]=array(
+						'value'=>$plugin['name'],
+						'name'=>$plugin['title']
+					 );
+				  }
+			   }
+
+			}
+			return $plugin_hooks;
+		 }
+	  }
+
+
+
+	  
+	  /**
+	  @function plugin_hooks
+	  @abstract get plugins that hook with the given fieldtype
+	  @return array with plugins
+	  @param string $fieldtype 
+	  */
+	  function get_default_plugin($fieldtype)
+	  {
+		 if ($fieldtype=='blob') $fieldtype='text';
+
+		 $i=1;
+		 if (count($this->plugins>0))
+		 {	
+
+			foreach($this->plugins as $plugin)
+			{
+			   foreach($plugin['db_field_hooks'] as $hook)
+			   {
+				  if ($hook==$fieldtype) 
+				  {
+					if ($plugin['default']==1)
+					 {
+						$plugin_hooks[]=array(
+						   'value'=>$plugin['name'],
+						   'name'=>$plugin['title']
+						);
+					 }
+				  }
+			   }
+
+			}
+			return $plugin_hooks;
 		 }
 	  }
 

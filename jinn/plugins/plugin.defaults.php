@@ -23,20 +23,20 @@
 	*/
 
 
-	/* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN */
+	/**
+	* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN 
+	* @abstract default field plugin for text/blob fields
+	*/
 	$this->plugins['def_blob']['name'] 				= 'def_blob';
-	$this->plugins['def_blob']['title']				= 'Default Textarea';
-	$this->plugins['def_blob']['version']			= '1.1';
+	$this->plugins['def_blob']['title']				= 'default textarea';
+	$this->plugins['def_blob']['version']			= '1.2';
 	$this->plugins['def_blob']['author']			= 'Pim Snel';
 	$this->plugins['def_blob']['enable']			= 1;
+	$this->plugins['def_blob']['default']			= 1;
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
-		'longtext',
 		'text',
 		'blob',
-		'varchar',
-		'char',
-		'string'
 	 );
 
 	 $this->plugins['def_blob']['config']		= array
@@ -54,12 +54,26 @@
 		return $input;
 	}
 
-	/* DEFAULT/FALLBACK AUTO INCREMENTING PLUGIN */
-	$this->plugins['def_auto']['name'] 			= 'def_auto';
-	$this->plugins['def_auto']['title']			= 'default auto incrementing';
+	function plg_bv_def_blob($value, $config,$attr_arr)
+	{
+	   if(strlen($value)>20)
+	   {
+		  $value = strip_tags($value);
+
+		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+	   }
+	   return $value;   		
+	}
+	
+	/**
+	* DEFAULT/FALLBACK AUTO INCREMENTING PLUGIN 
+	*/
+	$this->plugins['def_auto']['name'] 				= 'def_auto';
+	$this->plugins['def_auto']['title']				= 'default auto incr.';
 	$this->plugins['def_auto']['author']			= 'Pim Snel';
 	$this->plugins['def_auto']['version']			= '1.0';
 	$this->plugins['def_auto']['enable']			= 1;
+	$this->plugins['def_auto']['default']			= 1;
 	$this->plugins['def_auto']['db_field_hooks']	= array
 	(
 	   'int'
@@ -74,35 +88,50 @@
 	   return $input;
 	}
 
-	/* DEFAULT/FALLBACK BINARY PLUGIN */
-	$this->plugins['def_binary']['name'] 			= 'def_string';
+	/**
+	* DEFAULT/FALLBACK BINARY PLUGIN
+	*/
+	$this->plugins['def_binary']['name'] 			= 'def_binary';
 	$this->plugins['def_binary']['title']			= 'default binary';
 	$this->plugins['def_binary']['author']			= 'Pim Snel';
 	$this->plugins['def_binary']['version']			= '1.0';
 	$this->plugins['def_binary']['enable']			= 1;
+	$this->plugins['def_binary']['default']			= 1;
 	$this->plugins['def_binary']['db_field_hooks']	= array
 	(
 	   'blob',
 	   'text',
 	);
 	
-	
 	function plg_fi_def_binary($field_name,$value, $config,$attr_arr)
 	{
-	   return lang('binary');
+	   if($value) $text=lang('binary, contains data');
+	   else $text =lang('binary, empty');
+	   
+	   return '<span style="font-style:italic;">'.$text.'</span>';
 	}
 	
-	/* DEFAULT/FALLBACK VARCHAR PLUGIN */
+	function plg_bv_def_binary($value, $config,$attr_arr)
+	{
+	   if($value) $text=lang('binary, contains data');
+	   else $text =lang('binary, empty');
+	   
+	   return '<span style="font-style:italic;">'.$text.'</span>';
+	}
+
+
+	/**
+	* DEFAULT/FALLBACK VARCHAR PLUGIN 
+	*/
 	$this->plugins['def_string']['name'] 			= 'def_string';
 	$this->plugins['def_string']['title']			= 'default varchar';
-	$this->plugins['def_string']['author']		= 'Pim Snel';
-	$this->plugins['def_string']['version']		= '1.1';
+	$this->plugins['def_string']['author']			= 'Pim Snel';
+	$this->plugins['def_string']['version']			= '1.1';
 	$this->plugins['def_string']['enable']			= 1;
+	$this->plugins['def_string']['default']			= 1;
 	$this->plugins['def_string']['db_field_hooks']	= array
 	(
-		'string',
-		'varchar',
-		'char'
+		'string'
 	);
 
 	function plg_fi_def_string($field_name, $value, $config,$attr_arr)
@@ -120,16 +149,29 @@
 		return $input;
 	}	
 
-	/* DEFAULT/FALLBACK INTEGER PLUGIN */
+	function plg_bv_def_string($value, $config,$attr_arr)
+	{
+	   if(strlen($value)>20)
+	   {
+		  $value = strip_tags($value);
+
+		  $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+	   }
+	   return $value;   		
+	}
+	
+	/**
+	* DEFAULT/FALLBACK INTEGER PLUGIN 
+	*/
 	$this->plugins['def_int']['name'] 			= 'def_int';
 	$this->plugins['def_int']['title']			= 'default int plugin';
 	$this->plugins['def_int']['version']		= '1.0';
-	$this->plugins['def_int']['author']		= 'Pim Snel';
+	$this->plugins['def_int']['author']			= 'Pim Snel';
 	$this->plugins['def_int']['enable']			= 1;
+	$this->plugins['def_int']['default']		= 1;
 	$this->plugins['def_int']['db_field_hooks']	= array
 	(
-	   'int',
-	   'tinyint'
+	   'int'
 	);
 
 	function plg_fi_def_int($field_name,$value, $config,$attr_arr)
@@ -139,9 +181,16 @@
 		return $input;
 	}
 
-	/* DEFAULT/FALLBACK TIMESPAMP/DATE PLUGIN */
+	function plg_bv_def_int($value, $config,$attr_arr)
+	{
+	   return $value;   		
+	}
+	
+	/**
+	* DEFAULT/FALLBACK TIMESPAMP/DATE PLUGIN 
+	*/
 	$this->plugins['def_timestamp']['name'] 			= 'def_timestamp';
-	$this->plugins['def_timestamp']['title']			= 'default timestamp plugin';
+	$this->plugins['def_timestamp']['title']			= 'default timestamp';
 	$this->plugins['def_timestamp']['version']		= '1.1';
 	$this->plugins['def_timestamp']['author']		= 'Pim Snel';
 	$this->plugins['def_timestamp']['enable']			= 1;
@@ -165,5 +214,9 @@
 		return $input;
 	}
 
+	function plg_bv_def_timestamp($value, $config,$attr_arr)
+	{
+	   return $value;   		
+	}
 
 ?>

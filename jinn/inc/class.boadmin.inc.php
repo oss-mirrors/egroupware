@@ -57,6 +57,9 @@
 	  var $where_key;
 	  var $where_value;
 
+	  var $plugins;
+
+	  var $db_ftypes;
 	  function boadmin()
 	  {
 		 $this->common = CreateObject('jinn.bocommon');
@@ -108,7 +111,10 @@
 			$this->site_object = $this->so->get_object_values($this->site_object_id);
 		 }
 
-		 $this->include_plugins();
+		 $this->plug = CreateObject('jinn.plugins'); //$this->include_plugins();
+		 $this->plug->local_bo = $this;
+		 $this->plugins = $this->plug->plugins;
+		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
 	  }
 
@@ -558,64 +564,6 @@
 		 //		 if(!$quite) 
 		 if($quite) return $status;
 	  }
-
-
-	  /**
-	  * include ALL plugins
-	  */
-	  function include_plugins()
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 //die('hallo');
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
-
-			/* This is the correct way to loop over the directory. */
-
-			while (false !== ($file = readdir($handle))) 
-			{ 
-			   if (substr($file,0,7)=='plugin.')
-			   {
-
-				  include(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
-			   }
-			}
-			closedir($handle); 
-		 }
-	  }
-
-	  /**
-	  * het plugins that hook with the given fieldtype
-	  *
-	  * @return array with plugins
-	  * @param string $fieldtype 
-	  */
-	  function plugin_hooks($fieldtype)
-	  {
-		 if ($fieldtype=='blob') $fieldtype='text';
-
-		 if (count($this->plugins>0))
-		 {	
-				
-			foreach($this->plugins as $plugin)
-			{
-			   foreach($plugin['db_field_hooks'] as $hook)
-			   {
-				  if ($hook==$fieldtype) 
-				  {
-					 $plugin_hooks[]=array(
-						'value'=>$plugin['name'],
-						'name'=>$plugin['title']
-					 );
-				  }
-			   }
-
-			}
-
-			return $plugin_hooks;
-		 }
-	  }
-
 
    }
 

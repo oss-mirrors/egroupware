@@ -74,7 +74,7 @@
 		 $this->so = CreateObject('jinn.sojinn');
 
 		 
-		 $this->include_plugins();
+//		 $this->include_plugins();
 
 		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 

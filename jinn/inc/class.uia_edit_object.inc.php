@@ -34,7 +34,11 @@
 	  var $table_array;
 	  var $available_tables;
 
-	  // FIXME Can't we get the bo from somewhere else?
+	  /**
+	  * function uia_edit_object
+	  * @abstract class constructor
+	  * @note FIXME Can't we get the bo from somewhere else?
+	  */
 	  function uia_edit_object($bo)
 	  {
 		 $this->bo = $bo;
@@ -252,6 +256,14 @@
 			   $input='<select name="'.$input_name.'"><option value="">'.lang('unlimited').'</option><option '.$selected.' value="1">'.lang('only one').'</option></select>';
 
 			}
+			elseif ($fieldproperties[name]=='hide_from_menu')
+			{
+			   unset($selected);
+			   if($value==1) $selected='selected';
+			   $input='<select name="'.$input_name.'"><option value="">'.lang('No').'</option><option '.$selected.' value="1">'.lang('Yes, hide from menu').'</option></select>';
+			}
+
+
 			elseif ($fieldproperties[name]=='serialnumber')
 			{
 			   $input='<input type="hidden" name="'.$input_name.'" value="'.time().'">'.$value;
@@ -327,7 +339,7 @@
 				  unset($sets);
 				  unset($plg_name);
 				  unset($plg_conf);
-			   if(is_array($plugin_settings_old))
+				  if(is_array($plugin_settings_old))
 				  {
 					 foreach($plugin_settings_old as $setting)
 					 {
@@ -358,8 +370,12 @@
 
 				  $this->template->set_var('field_name',$field['name']);
 
-				  $plugin_hooks=$this->bo->plugin_hooks($field['type']);
-				  $options=$this->ui->select_options($plugin_hooks,$plg_name,true);
+				  $jinn_fieldtype=$this->bo->db_ftypes->complete_resolve($field);
+				  $plugin_default=$this->bo->plug->get_default_plugin($jinn_fieldtype);
+				  $plugin_hooks=$this->bo->plug->plugin_hooks($jinn_fieldtype);
+
+				  $plugin_hooks=array_merge($plugin_default,$plugin_hooks);
+				  $options=$this->ui->select_options($plugin_hooks,$plg_name,false);
 
 				  if ($field['name']!='id' && $options) // FIXME the name id is now allowed isn't it?
 				  {

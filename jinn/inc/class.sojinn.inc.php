@@ -29,6 +29,8 @@
 	  var $common;
 	  var $config;
 
+	  var $db_ftypes;
+
 	  function sojinn()
 	  {
 		 $c = CreateObject('phpgwapi.config',$config_appname);
@@ -40,6 +42,10 @@
 
 		 $this->phpgw_db    	= $GLOBALS['phpgw']->db;
 		 $this->phpgw_db->Debug	= False;
+
+		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
+
+	  
 	  }
 
 	  /****************************************************************************\
@@ -591,7 +597,7 @@
 		 /* yes it's an admin so we can get all objects for this site */
 		 if ($admin)
 		 {
-			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id' ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE `parent_site_id` = '$site_id' and `hide_from_menu` != 1 ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -602,7 +608,7 @@
 		 // he's no admin so get all the objects which are assigned to the user
 		 else
 		 {
-			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id' ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id'  and `hide_from_menu` != 1 ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -741,7 +747,8 @@
 
 		 if($where_condition)
 		 {
-			$where_condition = $this->strip_magic_quotes_gpc($where_condition);
+//			$where_condition = $this->strip_magic_quotes_gpc($where_condition);
+			$where_condition = $where_condition;
 			if($WHERE)
 			{
 			   $WHERE.=' AND ('.$where_condition.')';
@@ -889,6 +896,7 @@
 	  
 	  function insert_object_data($site_id,$site_object,$data)
 	  {
+	
 		 $this->site_db_connection($site_id);
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 
@@ -968,21 +976,61 @@
 
 	  }
 
-
+	  /*!
+	  @function update_object_data  
+	  @abstract update object record data depreciated, use update_object_record
+	  @param $site_id id of site for resolving db connection data
+	  @param $site_object
+	  @param $data array of data
+	  @param where_key which field to use as id-key (depreciated?)
+	  @param where_value which value to use as value for id-key (depreciated?)
+	  @param where_string complete string which comes after "... WHERE " in the sql-string
+	  */
 	  function update_object_data($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
+	  {
+		 return  $this->update_object_record($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string);
+	  }
+
+	  /*!
+	  @function update_object_record  
+	  @abstract update record data
+	  @param $site_id id of site for resolving db connection data
+	  @param $site_object
+	  @param $data array of data
+	  @param where_key which field to use as id-key (depreciated?)
+	  @param where_value which value to use as value for id-key (depreciated?)
+	  @param where_string complete string which comes after "... WHERE " in the sql-string
+	  @note FIXME for all fieldtype a default_value mechanisme must be implemented, atm int is finished
+	  */
+	  function update_object_record($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
 	  {
 		 $this->site_db_connection($site_id);
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
-
+		 
 		 foreach($data as $field)
 		 {
-			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "`$field[name]`='".$this->strip_magic_quotes_gpc($field[value])."'";
-
 			/* check for primaries and create array */
 			if (eregi("auto_increment", $metadata[$field[name]][flags]))
 			{
 			   $autokey=$field[name].'=\''.$field[value].'\'';
+			}
+			elseif($this->db_ftypes->complete_resolve($metadata[$field[name]])=='int')
+			{
+			   if(strval($field[value]!='0'))
+			   {
+				  if(empty($field[value]))
+				  {
+					 /* if there is a default value set it to this value */
+					 if($this->db_ftypes->has_default($metadata[$field[name]]))
+					 {
+						$field[value]=$this->db_ftypes->get_default($metadata[$field[name]]);
+					 }
+					 else
+					 {
+						continue;
+					 }
+				  }
+			   }
 			}
 			elseif (!$autokey && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
 			{						
@@ -995,6 +1043,8 @@
 
 			$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
 
+			if ($SQL_SUB) $SQL_SUB .= ', ';
+			$SQL_SUB .= "`$field[name]`='".$this->strip_magic_quotes_gpc($field[value])."'";
 		 }
 
 		 if(!is_array($pkey_arr))
@@ -1015,7 +1065,6 @@
 
 		 }
 
-//		die($SQL);
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$value[status]=1;

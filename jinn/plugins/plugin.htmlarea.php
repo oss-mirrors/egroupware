@@ -28,7 +28,7 @@
 
    $this->plugins['htmlArea']['name']			= 'htmlArea';
    $this->plugins['htmlArea']['title']			= 'htmlArea';
-   $this->plugins['htmlArea']['version']		= '0.9.0unstable';
+   $this->plugins['htmlArea']['version']		= '0.9.0.1';
    $this->plugins['htmlArea']['enable']			= 1;
    $this->plugins['htmlArea']['author']			= 'Pim Snel';
    $this->plugins['htmlArea']['description']	= $description;
@@ -108,9 +108,20 @@
    }
 
    function plg_ro_htmlArea($value, $config)
-   {}
+   {
+		return $value;   		
+   }
 
    function plg_bv_htmlArea($value, $config,$attr_arr)
-   {}
+   {
+	  if(strlen($value)>20)
+	  {
+		 $value = strip_tags($value);
+
+		 $value = '<span title="'.substr($value,0,200).'">' . substr($value,0,20). ' ...' . '</span>';
+
+	  }
+	  return $value;   		
+   }
 
 ?>

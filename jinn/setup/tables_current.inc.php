@@ -67,7 +67,7 @@
 				'dev_upload_path' => array('type' => 'varchar','precision' => '255'),
 				'max_records' => array('type' => 'int','precision' => '4'),
 				'serialnumber' => array('type' => 'int','precision' => '4'),
-				'hide_from_menu' => array('type' => 'int','precision' => '4')
+				'hide_from_menu' => array('type' => 'int','precision' => '4','nullable' => False)
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
@@ -82,7 +82,8 @@
 				'field_type' => array('type' => 'varchar','precision' => '20'),
 				'field_alt_name' => array('type' => 'varchar','precision' => '50'),
 				'field_help_info' => array('type' => 'text'),
-				'field_plugins' => array('type' => 'text')
+				'field_plugins' => array('type' => 'text'),
+				'field_mandatory' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('field_id'),
 			'fk' => array(),
