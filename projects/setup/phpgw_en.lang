@@ -12,11 +12,11 @@ activity %1 has been added	projects	en	Activity %1 has been added.
 activity %1 has been updated	projects	en	Activity %1 has been updated.
 activity id	projects	en	Activity ID
 add activity	projects	en	Add activity
-add file projects	en	add file 
+add file	projects	en	Add file
 add job	projects	en	Add job
-add milestone	projects	en	add milestone
+add milestone	projects	en	Add milestone
 add project	projects	en	Add project
-add role	projects	en	add role
+add role	projects	en	Add role
 add work hours	projects	en	Add work hours
 address book	projects	en	Address book
 administrator	projects	en	Administrator
@@ -68,6 +68,9 @@ columns to show in the projects list	projects	en	Columns to show in the projects
 comment	projects	en	comment
 continue	projects	en	Continue
 coordinator	common	en	Coordinator
+costs	admin	en	Costs
+costs list	projects	en	Costs list
+costtype	projects	en	Cost Type
 create delivery	projects	en	Create delivery
 creator	projects	en	Creator
 customer	common	en	Customer
@@ -82,8 +85,8 @@ delete activity	projects	en	delete activity
 delete factor	projects	en	delete factor
 delete hours	projects	en	Delete hours
 delete job	projects	en	delete job
-delete selected files	projects	en	delete selected files 
 delete project	projects	en	delete project
+delete selected files	projects	en	delete selected files
 delete work hours	projects	en	delete work hours
 deliveries	projects	en	Deliveries
 delivery	projects	en	Delivery
@@ -123,6 +126,7 @@ event %1 has been saved	projects	en	event %1 has been saved
 event %1 has been updated	projects	en	event %1 has been updated
 events	projects	en	Events
 exact accounting [hh.mm]	admin	en	Exact accounting [hh.mm]
+export as	projects	en	export as
 external reference	projects	en	External reference
 extra budget	projects	en	Extra budget
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	en	Extra budget sum of all sub projects is bigger than the extra budget of the main project.
@@ -173,7 +177,7 @@ main project	projects	en	Main project
 main project:	projects	en	Main project:
 manager	projects	en	Manager
 manager list	projects	en	Manager list
-managing committee	admin	en	Managing committee
+managing committee	projects	en	Managing Committee
 manuell entries	projects	en	Manuel entries
 milestone	projects	en	Milestone
 milestone date due	projects	en	Milestone date due
@@ -195,6 +199,7 @@ number	projects	en	Number
 old end date	projects	en	Old end date
 old start date	projects	en	Old start date
 open	projects	en	Open
+open popup	projects	en	open popup
 open popup window	projects	en	open popup window
 overall	projects	en	Overall
 parent project	projects	en	Parent project
@@ -233,8 +238,9 @@ project	projects	en	Project
 project %1 has been saved	projects	en	Project %1 has been saved.
 project %1 has been updated	projects	en	Project %1 has been updated.
 project accounting	admin	en	Project accounting
-project administrators	admin	en	Project administrators
+project administrators	projects	en	Project Administrators
 project data due	projects	en	Project date due
+project date due	projects	en	Project date due
 project dependencies	common	en	Project dependencies
 project id	common	en	Project ID
 project list	projects	en	Project list
@@ -251,12 +257,12 @@ remark can not exceed 8000 characters in length !	projects	en	Remark can not exc
 remark required	projects	en	Remark required
 result	projects	en	Result
 role	projects	en	Role
-role %1 has been saved	projects	en	role %1 has been saved
-role %1 has been updated	projects	en	role %1 has been updated
-role has been deleted	projects	en	role has been deleted
+role %1 has been saved	projects	en	Role %1 has been saved
+role %1 has been updated	projects	en	Role %1 has been updated
+role has been deleted	projects	en	Role has been deleted
 roles	projects	en	Roles
-roles list	projects	en	roles list
-sales department	admin	en	Sales department
+roles list	projects	en	Roles list
+sales department	projects	en	Sales Department
 save factor	projects	en	Save factor
 save milestone	projects	en	save milestone
 select factor	projects	en	Select factor
@@ -281,6 +287,7 @@ statistic	projects	en	Statistic
 statistics	projects	en	Statistics
 stop	projects	en	Stop
 sub project level %1	projects	en	Sub project level %1
+subproject	projects	en	subproject
 sum	projects	en	sum
 sum budget	projects	en	Sum budget
 sum hours	projects	en	Sum hours
@@ -322,6 +329,7 @@ view work hours	projects	en	View work hours
 work date	common	en	Work date
 work hours	common	en	Work hours
 work time	projects	en	Work time
+workload warning for project	projects	en	workload warning for project
 workunit	projects	en	Workunit
 workunits	projects	en	Workunits
 you have entered an invalid date !	projects	en	You have entered an invalid date !
