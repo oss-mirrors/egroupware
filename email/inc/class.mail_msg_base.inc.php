@@ -43,8 +43,11 @@
 	var $action_menuaction = 'menuaction=email.boaction.action';
 	// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 	var $index_refresh_uri ='';
-	// pointer to the primary mailbox stream (you may open others) returned by the first login 
+	// mailsvr_stream and mailsvr_account_username are also used to determine if we are logged in already
+	// pointer (well, actually a data holder) to the primary mailbox stream (you may open others) returned by the first login 
 	var $mailsvr_stream = '';
+	// user name the we logged in as on the mailserver
+	var $mailsvr_account_username = '';
 	var $folder = '';
 	var $newsmode = False;
 	var $sort = '';
@@ -82,12 +85,109 @@
 	}
 	*/
 
+	function is_logged_in($compare_account_username='')
+	{
+		// fallback value
+		$finding = False;
+		if ((isset($this->mailsvr_stream))
+		&& ($this->mailsvr_stream != '')
+		&& ($this->phpgw_ping() == True))
+		{
+			// at lease we have an existing stream open
+			if ((isset($compare_account_username))
+			&& ($compare_account_username != ''))
+			{
+				// ALSO verify the username we are logged in as, IF a compare_account_username was passed as an arg
+				if ($compare_account_username == $this->mailsvr_account_username)
+				{
+					$finding = True;
+				}
+				else
+				{
+					// stream is open but username does not match
+					$finding = False;
+				}
+			}
+			else
+			{
+				// we are asked only to check the existance of the stream, since no user name data was fed into here
+				$finding = True;
+			}
+		}
+		else
+		{
+			// no stream, no chance
+			$finding = False;
+		}
+		return $finding;
+	}
+	
 	// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
 	function begin_request($args_array)
 	{
 		//$debug_logins = True;
 		$debug_logins = False;
-	
+		
+		// whether or not to attempt to reuse an existing mail_msg object's existing login/mailsvr_stream
+		$attempt_reuse = True;	
+		//$attempt_reuse = False;
+		
+		if ($debug_logins) { echo 'ENTERING mail_msg: begin_request ; local var attempt_reuse=['.serialize($attempt_reuse).']<br>'; }
+		if ($debug_logins) { echo ' mail_msg: begin_request feed var args_array[] dump:<pre>'; print_r($args_array); echo '</pre>'; }
+		
+		// ====  Already Logged In / Reuse Existing ?  =====
+		if (($attempt_reuse == True)
+		&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
+		&& ($this->is_logged_in($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']) == True))
+		{
+			if ($debug_logins) { echo 'mail_msg: begin_request: attempt to reuse existing login'.'<br>'; }
+			// we're already logged in, now...
+			if ($debug_logins) { echo 'mail_msg: begin_request: class->args[] (dump BEFORE coming into this function)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+			// clear what is leftr over in the class->args[] array from last request
+			$this->args = array();
+			// can not re-grab because original GPC values are still in POST and GET GLOBALS
+			//$this->grab_class_args_gpc();
+			if ($debug_logins) { echo 'mail_msg: begin_request: CLEARED (can not re-grab because original GPC values are still in GLOBALS)'.'<br>'; }
+			// (2) we need to will fill class->args[] with data from feed var args_array
+			// SECURITY CHECK ???? is it needed here, "bad" args_array could be passed ?
+			if ($debug_logins) { echo 'mail_msg: begin_request: re-fill class->args with feed var args_array'.'<br>'; }
+			while(list($key,$value) = each($args_array))
+			{
+				// "do_login" is never included as a class arg, it should only be specified here
+				// and since we're already logged in, it's irrelevant here
+				if (stristr($key, 'do_login') == False)
+				{
+					// put the raw data (value) for this particular arg into a local var
+					$new_arg_value = $args_array[$key];
+					// replace the previously existing class arg with this
+					if ($debug_logins) { echo 'mail_msg: begin_request: fill class->rgs['.$key.'] with feed value ['.$new_arg_value.']'.'<br>'; }
+					$this->args[$key] = $new_arg_value;
+				}
+			}
+			if ($debug_logins) { echo 'mail_msg: begin_request: class->args[] dump (AFTER re-filling with feed data)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+			// do we need to switch to a different folder ?
+			if ($this->folder != $this->prep_folder_in($args_array['folder']))
+			{
+				if ($debug_logins) { echo 'mail_msg: begin_request: already loggedin but need to change (reopen) folder from ['.$this->folder.'] to this ['.$args_array['folder'].'] (name will be preped in)<br>';}
+				$this->folder = $this->prep_folder_in($args_array['folder']);
+				// switch to the desired folder now that we are sure we have it's official name
+				$did_reopen = $this->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
+				  if ($debug_logins) { echo 'mail_msg: begin_request: already loggedin bvut reopening, reopen returns: '.serialize($did_reopen).'<br>';}
+				// error check
+				if ($did_reopen == False)
+				{
+					if ($debug_logins) { echo 'mail_msg: begin_request: reusing: reopen FAILED for mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+					return False;
+				}
+			}
+			// if we get to here, we are going OK
+			return $this->mailsvr_stream;
+		}
+		
+		// we are here ONLY if creating a new mail_msg object
+		if ($debug_logins) { echo 'mail_msg: begin_request: NOT reusing an established stream-object'.'<br>'; }
+		
+		// ===== Not Already Logged In  =====
 		// ----  Things To Be Done Whether You Login Or Not  -----
 		// obtain the preferences from the database
 		$GLOBALS['phpgw_info']['user']['preferences'] = $GLOBALS['phpgw']->preferences->create_email_preferences();
@@ -103,7 +203,7 @@
 		// initalize some important class variables
 		$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 		$this->get_mailsvr_callstr();
-
+		
 		// make sure all the necessary args_array items are present, else set missing ones to a default value
 		// ----  What "folder" arg was passed to the script  -----
 		if (!isset($args_array['folder']))
@@ -129,13 +229,13 @@
 			$args_array['newsmode'] = False;
 			$this->newsmode = False;
 		}
-
+		
 		// Browser Detection =FUTURE=
 		// 0 = NO css ; 1 = CSS supported ; 2 = text only
 		// currently not implemented, use default 0 (NO CSS support in browser)
 		$this->browser = 0;
 		//$this->browser = 1;
-
+		
 		// ----  Things Specific To Loging In, and Actually Logging In  -----
 		// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->folder
 		if ($args_array['do_login'] == True)
@@ -155,7 +255,7 @@
 				  if ($debug_logins) { echo 'ERROR: userid or passwd empty <br>';}
 				return False;
 			}
-
+		
 			// Create email server Data Communication Class
 			$this->dcom = CreateObject("email.mail_dcom");
 			// initialize the dcom class variables
@@ -166,29 +266,35 @@
 			{
 				$this->dcom->enable_utf7 = True;
 			}
-
+			
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
 			$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
 			$this->mailsvr_stream = $this->dcom->open($server_str."INBOX", $user, $pass, '');
-			  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
+			if ($debug_logins)
+			{
+				echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';
+				//echo 'user = ' . $user . '; pass = ' . $pass . '<br>';
+			}
 			set_time_limit(0);
-
+			
 			// error check
 			if (!$this->mailsvr_stream)
 			{
 				if ($debug_logins) { echo 'ERROR: this->mailsvr_stream failed <br>';}
 				return False;
 			}
-
+			
+			// SUCCESS - we are logged in
+			$this->mailsvr_account_username = $user;
+			
 			// get some more info now that we are logged in
 			// namespace is often obtained by directly querying the mailsvr
 			$this->get_mailsvr_namespace();
 			  if ($debug_logins) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
 			$this->get_mailsvr_delimiter();
 			  if ($debug_logins) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
-
 			// make sure we have a useful folder name to log into
 			  if ($debug_logins) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
 			$this->folder = $this->prep_folder_in($args_array['folder']);
@@ -227,6 +333,7 @@
 		{
 			// returning this is vestigal, not really necessary, but do it anyway
 			// it's importance is that it returns something other then "False" on success
+			  if ($debug_logins) { echo 'LEAVING: begin_request'.'<br>';}
 			return $this->mailsvr_stream;
 		}
 	}
@@ -1049,14 +1156,18 @@
 	@function encrypt_email_passwd
 	@abstract encrypt data passed to the function
 	@param $data data string to be encrypted
+	@discussion: if mcrypt is not enabled, then the password data should be unmolested thru the 
+	crypto functions, i.e. do not alter the string if mcrypt will not be preformed on that string.
 	*/
 	function encrypt_email_passwd($data)
 	{
-		$encrypted_passwd = $data;
 		if ($GLOBALS['phpgw_info']['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
 		{
-			// this will return a string that has (1) been serialized (2) had addslashes applied
-			// and (3) been encrypted with mcrypt (assuming mcrypt is enabled and working)
+			$encrypted_passwd = $data;
+			// this will return a string that has
+			// (1) been serialized
+			// (2) had addslashes applied, and
+			// (3) been encrypted with mcrypt (assuming mcrypt is enabled and working)
 			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
 			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
 			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
@@ -1064,8 +1175,9 @@
 		}
 		else
 		{
-			// ***** STRIP SLASHES BEFORE CALLING THIS FUNCTION !!!!!!! ******
+			// ***** STRIP SLASHES BEFORE CALLING THIS FUNCTION !!!!!!! ????? ******
 			// we have no way of knowing if it's necessary, but you do, you who call this function
+			// well, it appears stripslashes_gpc being called before this function, so comment out
 			//$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
 			$encrypted_passwd = $data;
 			//if ($this->is_serialized($encrypted_passwd))
@@ -1073,6 +1185,9 @@
 			{
 				$encrypted_passwd = unserialize($encrypted_passwd);
 			}
+			// html_quotes_encode is used here ONLY as a lame way do make this string friendly to the 
+			// preferences database. Slashes and quotes can wipe out much data in the prefs DB if
+			// they are not "de-fanged" by changing them into something else.
 			$encrypted_passwd = $this->html_quotes_encode($encrypted_passwd);
 		}
 		return $encrypted_passwd;
@@ -1081,15 +1196,19 @@
 	@function decrypt_email_pass
 	@abstract decrypt $data
 	@param $data data to be decrypted
+	@discussion: if mcrypt is not enabled, then the password data should be unmolested thru the 
+	crypto functions, i.e. do not alter the string if mcrypt will not be preformed on that string.
 	*/
 	function decrypt_email_passwd($data)
 	{
-		$passwd = $data;
 		if ($GLOBALS['phpgw_info']['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
 		{
+			$passwd = $data;
 			// this will return a string that has:
 			// (1) been decrypted with mcrypt (assuming mcrypt is enabled and working)
-			// (2) had stripslashes applied and (3) *MAY HAVE* been unserialized
+			// (2) had stripslashes applied and
+			// (3) *MAY HAVE* been unserialized (ambiguous... see next comment)
+			// correction Dec 14, 2001, (3) and definately was unserialized
 			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
 			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
 			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
@@ -1097,7 +1216,8 @@
 		}
 		else
 		{
-			// ASSUMING set_magic_quotes_runtime(0) is in functions.inc.php (it is) then
+			$passwd = $data;
+			// ASSUMING set_magic_quotes_runtime(0) has been specified, then
 			// there should be NO escape slashes coming from the database
 			//if ($this->is_serialized($passwd))
 			if ($this->is_serialized_str($passwd))
@@ -1107,8 +1227,15 @@
 
 
 			// #### (begin) Upgrade Routine for 0.9.12 and earlier versions ####
-			/* // these version *may* have double ot tripple serialized passwd stored in their preferences table
-			// (1) check for this (2) unserialize to the real string (3) feed the unserialized / fixed passwd in the prefs class */
+			/*
+			@capability: Upgrade Routine for 0.9.12 and earlier Custom Passwords
+			@discussion: 
+			the phpgw versions prior to and including 0.9.12 *may* have double or even tripple serialized
+			passwd strings stored in their preferences table. SO:
+			(1) check for this
+			(2) unserialize to the real string
+			(3) feed the unserialized / fixed passwd in the prefs class and save the "upgraded" passwd
+			*/
 			// (1) check for this 
 			//$multi_serialized = $this->is_serialized($passwd);
 			$multi_serialized = $this->is_serialized_str($passwd);
@@ -1134,6 +1261,7 @@
 				if ($loop_num == $failure)
 				{
 					// screw it and continue as normal, user will need to reenter password
+					echo 'ERROR: decrypt_email_passwd: custom pass upgrade procedure failed to restore passwd to useable state<br>';
 					$passwd = $pre_upgrade_passwd;
 				}
 				else

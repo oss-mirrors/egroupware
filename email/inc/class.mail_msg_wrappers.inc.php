@@ -228,6 +228,10 @@ class mail_msg_wrappers extends mail_msg_base
 		return $return_data;
 	}
 
+	function phpgw_ping()
+	{
+		return $this->dcom->noop_ping_test($this->mailsvr_stream);
+	}
 
 	function phpgw_createmailbox($folder)
 	{

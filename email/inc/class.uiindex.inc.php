@@ -48,10 +48,10 @@
 			return $this->is_modular;
 		}
 		
-		function index()
+		function index($reuse_feed_args=array())
 		{
 			$this->bo = CreateObject("email.boindex");
-			$this->bo->index_data();
+			$this->bo->index_data($reuse_feed_args);
 			
 			if ($this->is_modular == True)
 			{

@@ -94,6 +94,12 @@
 			if ($this->debug_dcom >= 1) { echo 'pop3: call to not-yet-implemented function in POP3: fetch_overview<br>'; }
 			return False;
 		}
+		function noop_ping_test($stream)
+		{
+			// not yet implemented
+			if ($this->debug_dcom >= 1) { echo 'pop3: call to unimplemented socket function: noop_ping_test<br>'; }
+			return False;
+		}
 		function server_last_error()
 		{
 			// not yet implemented

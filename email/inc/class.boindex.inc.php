@@ -21,7 +21,8 @@
 			'mlist_data'		=> True
 		);
 		var $index_base_link='';
-		var $debug = False;
+		//var $debug_index_data = True;
+		var $debug_index_data = False;
 		var $xi;
 		var $xml_functions = array();
 		
@@ -207,28 +208,58 @@
 		}
 
 
-		function index_data()
+		function index_data($reuse_feed_args=array())
 		{
+			// attempt (or not) to reuse an existing mail_msg object, i.e. if one ALREADY exists before entering
+			// this function. As of Dec 14, 2001 only class.boaction can pass a useful, existing object for us to use here
+			$attempt_reuse = True;
+			//$attempt_reuse = False;
+			
+			if ($this->debug_index_data == True) { echo 'ENTERING: email.boindex: index_data'.'<br>'; }
+			if ($this->debug_index_data == True) { echo 'email.boindex: index_data: local var attempt_reuse=['.serialize($attempt_reuse).'] ; reuse_feed_args[] dump<pre>'; print_r($reuse_feed_args); echo '</pre>'; }
 			// create class objects
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			$GLOBALS['phpgw']->msg->grab_class_args_gpc();
-			// 2 args needed for "begin_request()"  (another 1 arg not yet used)
-			$args_array = Array();
-			// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
-			if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
+			// do we attempt to reuse the existing msg object?
+			if ((is_object($GLOBALS['phpgw']->msg))
+			&& ($attempt_reuse == True))
 			{
-				$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
+				// no not create, we will reuse existing
+				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: reusing existing mail_msg object'.'<br>'; }
+				//DO NOT call msg->grab_class_args_gpc() when REUSING existing, the begin_request function does it in this case
+				// // // $GLOBALS['phpgw']->msg->grab_class_args_gpc();
+				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
+				$args_array = Array();
+				$args_array = $reuse_feed_args;
+				// add this to keep the error checking code (below) happy
+				$args_array['do_login'] = True;
+				// add this for NO reason at all, just maybe use in the future
+				$args_array['newsmode'] = False;
 			}
-			elseif (isset($GLOBALS['HTTP_GET_VARS']['folder']))
+			else
 			{
-				$args_array['folder'] = $GLOBALS['HTTP_GET_VARS']['folder'];
+				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: creating object email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+				// only do grab_class_args_gpc() when creating a new object, AND call it BEFORE begin_request
+				$GLOBALS['phpgw']->msg->grab_class_args_gpc();
+				if ($this->debug_index_data == True) { echo 'email.boindex: index_data: grab_class_args_gpc makes ->args[] dump:<pre>'; print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+				// new login 
+				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
+				$args_array = Array();
+				if (isset($GLOBALS['HTTP_POST_VARS']['folder']))
+				{
+					$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
+				}
+				elseif (isset($GLOBALS['HTTP_GET_VARS']['folder']))
+				{
+					$args_array['folder'] = $GLOBALS['HTTP_GET_VARS']['folder'];
+				}
+				// (2) should we log in
+				$args_array['do_login'] = True;
+				// (3) NOT IMPLEMENTED YET  -- newsmode
+				$args_array['newsmode'] = False;
 			}
-			// (2) should we log in
-			$args_array['do_login'] = True;
-			// (3) NOT IMPLEMENTED YET  -- newsmode
-			$args_array['newsmode'] = False;
 			// "start your engines"
+			if ($this->debug_index_data == True) { echo 'email.boindex: index_data: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
 			$GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
 			if (($args_array['do_login'] == True)

@@ -264,8 +264,11 @@
 
 
 
+	
+	// GENERAL INFO
+	//echo 'get_loaded_extensions returns:<br><pre>'; print_r(get_loaded_extensions()); echo '</pre>';
+	//echo 'phpinfo returns:<br><pre>'; print_r(phpinfo()); echo '</pre>';
 	/*
-	// GENERAL INFO	
 	echo 'SA_MESSAGES: ['.(string)SA_MESSAGES.']<br>'."\r\n";
 	echo 'SA_RECENT: ['.(string)SA_RECENT.']<br>'."\r\n";
 	echo 'SA_UNSEEN: ['.(string)SA_UNSEEN.']<br>'."\r\n";

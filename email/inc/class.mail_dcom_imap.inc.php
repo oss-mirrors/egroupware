@@ -138,6 +138,11 @@
 		{ 
 			return imap_num_msg($stream);
 		}
+		
+		function noop_ping_test($stream)
+		{ 
+			return imap_ping($stream);
+		}
 
 		function open($mailbox,$username,$password,$flags='')
 		{

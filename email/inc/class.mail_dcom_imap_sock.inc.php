@@ -281,6 +281,12 @@
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
 			return False;
 		}
+		function noop_ping_test($stream)
+		{
+			// not yet implemented
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: noop_ping_test<br>'; }
+			return False;
+		}
 		function reopen($stream,$mailbox,$flags = "")
 		{
 			// not yet implemented
