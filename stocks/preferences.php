@@ -27,7 +27,7 @@
 	if ($action == 'add')
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
-		$GLOBALS['phpgw']->preferences->change('stocks',urlencode($symbol),urlencode($name));
+		$GLOBALS['phpgw']->preferences->change('stocks',urlencode(strtoupper($symbol)),urlencode($name));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
 
 		// For some odd reason, if I forward it back to stocks/preferences.php after an add

@@ -28,7 +28,7 @@
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
 		$GLOBALS['phpgw']->preferences->delete('stocks',$sym);
-		$GLOBALS['phpgw']->preferences->change('stocks',urlencode($symbol),urlencode($name));
+		$GLOBALS['phpgw']->preferences->change('stocks',urlencode(strtoupper($symbol)),urlencode($name));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
 		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
 		$GLOBALS['phpgw']->common->phpgw_exit();
