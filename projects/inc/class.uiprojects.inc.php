@@ -149,7 +149,7 @@
 				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
 				$this->t->set_var('lang_billing',lang('Billing'));
 				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-				$this->t->set_var('lang_deliveries',lang('Deliveries'));
+				$this->t->set_var('lang_delivery',lang('Deliveries'));
 			}
 
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
@@ -1696,8 +1696,13 @@
 					$this->t->set_var('lang_invoice_entry',lang('Invoices'));
 					$this->t->set_var('lang_delivery_entry',lang('Deliveries'));
 				}
+				else
+				{
+					$this->t->set_var('lang_invoice_entry','&nbsp;');
+					$this->t->set_var('lang_delivery_entry','&nbsp;');
+				}
 
-				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/index.php','menuaction=projects.uistatistics.project_stat&project_id='
+				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.project_stat&project_id='
 																	. $pro[$i]['project_id']));
 				$this->t->set_var('lang_stats_entry',lang('Statistics'));
 

@@ -57,7 +57,7 @@
 		<td align="right">{minutes}</td>
 		<td>{employee}</td>
 		<td align="center"><a href="{view}">{lang_view}</a></td>
-		<td align="center"><a href="{edit}">{lang_edit}</a></td>
+		<td align="center"><a href="{edit}">{lang_edit_entry}</a></td>
 	</tr>
 
 <!-- END hours_list -->

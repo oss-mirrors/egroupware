@@ -1,5 +1,4 @@
 projects	common	de	Projekte
-project administration	admin	de	Projekt Administration
 Account	projects	de	Account
 Active	projects	de	Activ
 Activities	projects	de	Aktivit&auml;ten
@@ -20,6 +19,7 @@ billed	projects	de	Bezahlt
 Billed only	projects	de	nur bezahlte
 Billing	projects	de	Abrechnung
 Bookable activities	projects	de	Buchbare Aktivit&auml;ten
+bookkeeper	projects	de	Buchhalter
 Billable activities	projects	de	Abrechenbare Aktivit&auml;ten
 Bill per workunit	projects	de	Preis der Arbeitseinheit
 Budget	projects	de	Budget
@@ -29,7 +29,7 @@ Coordinator	projects	de	Koordinator
 Create delivery	projects	de	Lieferung erstellen
 Create invoice	projects	de	Rechnung erstellen
 Customer	projects	de	Kunde
-Delete hours	projects	de	Stunden l&ouml;schen
+Delete hours	projects	de	Stunden löschen
 Deliveries	projects	de	Lieferungen
 Delivery	projects	de	Lieferung
 Delivery date	projects	de	Lieferungs Datum
@@ -38,12 +38,13 @@ Delivery ID	projects	de	Lieferungs ID
 Delivery list	projects	de	Lieferungs Liste
 Delivery notes	projects	de	Lieferscheine
 Delivery x has been created !	projects	de	Lieferung %1 wurde erstellt !
-Delivery x has been updated !	projects	de	Lieferung %1 wurde &uuml;berarbeitet !
+Delivery x has been updated !	projects	de	Lieferung %1 wurde überarbeitet !
 Edit Activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
 Edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
-Edit project administrator list	projects	de	Projekt Administrator Liste &uuml;berarbeiten
-Edit project	projects	de	Projekt &uuml;berarbeiten
-Edit project hours	projects	de	Projektstunden &uuml;berarbeiten
+Edit project administrator list	projects	de	Projekt Administrator Liste überarbeiten
+edit project bookkeeper list	projects	de	Projekt Buchhalter Liste überarbeiten
+Edit project	projects	de	Projekt überarbeiten
+Edit project hours	projects	de	Projektstunden überarbeiten
 Employee	projects	de	Mitarbeiter
 Generate Activity ID ?	projects	de	Activit&auml;s ID generieren ?
 Generate Delivery ID ?	projects	de	Lieferungs ID generieren ?
@@ -85,9 +86,10 @@ Position	projects	de	Position
 Print delivery	projects	de	Lieferung drucken
 Print invoice	projects	de	Rechnung drucken
 Project	projects	de	Projekt
-Project administration	projects	de	Projekt Administration
+Project administration	common	de	Projekt Administration
 Project archive	projects	de	Projekt Archiv
 Project billing	projects	de	Projekt Abrechnung
+project bookkeeping	common	de	Projekt Buchhaltung
 Project delivery	projects	de	Projekt Lieferung
 Project ID	projects	de	Projekt ID
 Project list	projects	de	Projekt Liste
@@ -98,7 +100,7 @@ project statistics	projects	de	Projekt Statistiken
 Remark	projects	de	Betreff
 Remark required	projects	de	Betreff notwendig
 select	projects	de	Ausw&auml;hlen
-Select main project	projects	de	Hauptprojekt ausw&aumlhlen
+Select main project	projects	de	Hauptprojekt auswählen
 Select per button !	projects	de	Ausw&auml;hlen per Button !
 Select project	projects	de	Projekt ausw&auml;hlen
 Select tax for workhours	projects	de	Mehrwertsteuer f&uuml;r Arbeitsstunden

@@ -21,7 +21,7 @@
 			&nbsp;|&nbsp;
 			<a href="{link_archiv}"><b>{lang_archiv}</b></a>
 			&nbsp;|&nbsp;
-			<a href="{link_delivery}"><b>{lang_deliveries}</b></a>
+			<a href="{link_delivery}"><b>{lang_delivery}</b></a>
 			{break}
 			<a href="{link_billing}"><b>{lang_billing}</b></a>
 		</td>
