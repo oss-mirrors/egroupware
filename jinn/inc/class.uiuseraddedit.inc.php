@@ -44,13 +44,18 @@
 				'form_footer' => 'form_footer.tpl'
 			));
 
-			$where_condition=$GLOBALS[where_condition];
-			if ($where_condition)
+			$where_key=$GLOBALS[where_key];
+			$where_value=$GLOBALS[where_value];
+			
+			if ($where_key && $where_value)
 			{
 				/* set vars for edit form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_update');
-				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
-				$values_object= $this->bo->get_records($this->bo->site_object[table_name],$where_condition,'','','name');
+				$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"$where_key\">";
+				$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"$where_value\">";
+
+				$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],$where_key,$where_value,'','','name');
+				
 				$add_edit_button=lang('edit');
 			}
 			else
@@ -65,7 +70,8 @@
 
 			$this->template->set_var('form_attributes',$form_attributes);
 			$this->template->set_var('form_action',$form_action);
-			$this->template->set_var('where_condition_form',$where_condition_form);
+			$this->template->set_var('where_key_form',$where_key_form);
+			$this->template->set_var('where_value_form',$where_value_form);
 			$this->template->pparse('out','form_header');
 
 
@@ -127,7 +133,7 @@
 					}
 					else
 					{	
-						$input=$this->bo->get_plugin_fi($input_name,$value,'int');						
+						$input=$this->bo->get_plugin_fi($input_name,$value,'int');
 					}
 				}
 
@@ -217,7 +223,7 @@
 					$input.= '<select onDblClick="DeSelectPlace(\'M2M'.$rel_i.'\')"  multiple size=5 name="M2M'.$rel_i.'"><br>';
 					$submit_javascript.='saveOptions(\'M2M'.$rel_i.'\',\'MANY_OPT_STR_'.$rel_i.'\');';
 
-					if($where_condition) $record_id=$record_identifier;
+					if($where_key && $where_value) $record_id=$record_identifier;
 					
 					$options_arr= $this->bo->so->get_1wX_record_values($this->bo->site_id,$record_id,$relation2,'stored');
 					
@@ -240,7 +246,7 @@
 
 			}
 
-			if(!$where_condition)
+			if(!$where_key && !$where_value)
 			{
 				if($GLOBALS[repeat_input]=='true') $REPEAT_INPUT_CHECKED='CHECKED';
 				$extra_buttons='<input type=checkbox '.$REPEAT_INPUT_CHECKED.' name=repeat_input value=true> '.lang('insert another record after saving');

@@ -480,17 +480,21 @@
 		}
 
 
-		function get_phpgw_record_values($table,$where_condition,$offset,$limit,$value_reference)
+		function get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference)
 		{
 
-			if ($where_condition)
+			if ($where_key && $where_value)
 			{
-				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
+				$SQL_WHERE_KEY = $this->strip_magic_quotes_gpc($where_key);
+				$SQL_WHERE_VALUE = $this->strip_magic_quotes_gpc($where_value);
+				$WHERE="WHERE $SQL_WHERE_KEY='$SQL_WHERE_VALUE'";
 			}
 
+			
 			$fieldproperties = $this->phpgw_table_metadata($table);
 
-			$SQL='SELECT * FROM '. $table . $WHERE;
+			$SQL="SELECT * FROM  $table $WHERE";
+//			die($SQL);
 			if (!$limit) $limit=1000000;
 
 			$this->phpgw_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit
@@ -561,65 +565,27 @@
 			return $records;
 		}
 
-/*
-
-		function get_record_values($site_id,$table,$where_condition,$offset,$limit,$value_reference)
+		function get_record_values($site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*')
 		{
-
+/*			
+			echo "site_id 1 $site_id <br>";
+			echo "table 2 $table<br>";
+			echo "where_key 3$where_key<br>";
+			echo "where_value 4 $where_value<br>";
+			echo "offset 5 $offset <br>";
+			echo "limit 6 $limit <br>";
+			echo "value_ref 7 $value_reference<br>";
+			echo "order by 8 $order_by<br>";
+			echo "field_list 9 $field_list<br>";
+//		die();	
+*/			
 			$this->site_db_connection($site_id);
 
-			if ($where_condition)
+			if ($where_key && $where_value)
 			{
-				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
-			}
-
-			$fieldproperties = $this->site_table_metadata($site_id,$table);
-
-			$SQL='SELECT * FROM '. $table . $WHERE;
-			if (!$limit) $limit=1000000;
-
-			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit
-
-			while ($this->site_db->next_record())
-			{
-
-				unset($row);
-				foreach($fieldproperties as $field)
-				{
-					if ($field[type]=='blob' && ereg('binary',$field[flags]))
-					{
-						$value=lang('binary');
-					}
-					else
-					{
-						$value=$this->strip_magic_quotes_gpc($this->site_db->f($field[name]));
-					}
-
-
-					if ($value_reference=='name')
-					{
-						$row[$field[name]] = $value;
-					}
-					else
-					{
-						$row[] = $value;
-					}
-				}
-				$rows[]=$row;
-
-			}
-
-			return $rows;
-		}
-*/
-
-		function get_record_values($site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by='',$field_list='*')
-		{
-			$this->site_db_connection($site_id);
-
-			if ($where_condition)
-			{
-				$WHERE = ' WHERE '.$this->strip_magic_quotes_gpc($where_condition);
+				$SQL_WHERE_KEY = $this->strip_magic_quotes_gpc($where_key);
+				$SQL_WHERE_VALUE = $this->strip_magic_quotes_gpc($where_value);
+				$WHERE="WHERE $SQL_WHERE_KEY='$SQL_WHERE_VALUE'";
 			}
 
 			if ($order_by)
@@ -628,9 +594,9 @@
 			}
 
 			$fieldproperties = $this->site_table_metadata($site_id,$table);
-//die($field_list);
-$field_list_arr=(explode(',',$field_list));
-			$SQL='SELECT '.$field_list.' FROM '. $table . $WHERE . $ORDER_BY;
+			$field_list_arr=(explode(',',$field_list));
+			$SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
+		//	echo($SQL);
 			if (!$limit) $limit=1000000;
 
 			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
@@ -672,11 +638,11 @@ $field_list_arr=(explode(',',$field_list));
 		}
 
 
-		function delete_object_data($site_id,$table,$where_condition)
+		function delete_object_data($site_id,$table,$where_key,$where_value)
 		{
 			$this->site_db_connection($site_id);
 
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
+			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key) ."='".$this->strip_magic_quotes_gpc($where_value)."'";
 
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -687,13 +653,13 @@ $field_list_arr=(explode(',',$field_list));
 
 		}
 
-		function copy_object_data($site_id,$table,$where_condition)
+		function copy_object_data($site_id,$table,$where_key,$where_value)
 		{
 
 			$this->site_db_connection($site_id);
 
 			$record=$this->site_table_metadata($site_id,$table);
-			$values=$this->get_record_values_2($site_id,$table,$this->strip_magic_quotes_gpc($where_condition),'0','1','name','');
+			$values=$this->get_record_values_2($site_id,$table,$this->strip_magic_quotes_gpc($where_key),$this->strip_magic_quotes_gpc($where_value),'0','1','name','');
 
 			foreach($record as $field)
 			{
@@ -793,20 +759,18 @@ $field_list_arr=(explode(',',$field_list));
 
 
 
-		function update_object_data($site_id,$site_object,$data,$where_condition)
+		function update_object_data($site_id,$site_object,$data,$where_key,$where_value)
 		{
 			$this->site_db_connection($site_id);
 
-//			die(var_dump($data));
 			foreach($data as $field)
 			{
 				if ($SQL_SUB) $SQL_SUB .= ', ';
 				$SQL_SUB .= "$field[name]='".$this->strip_magic_quotes_gpc($field[value])."'";
 			}
 
-			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_condition));
+			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
 
-//		die($SQL);
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;
@@ -815,10 +779,10 @@ $field_list_arr=(explode(',',$field_list));
 			return $status;
 		}
 
-		function delete_phpgw_data($site_id,$table,$where_condition)
+		function delete_phpgw_data($site_id,$table,$where_key,$where_value)
 		{
 
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
+			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
 
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
@@ -851,7 +815,7 @@ $field_list_arr=(explode(',',$field_list));
 		}
 
 
-		function update_phpgw_data($table,$data,$where_condition)
+		function update_phpgw_data($table,$data,$where_key,$where_value)
 		{
 
 			foreach($data as $field)
@@ -860,7 +824,7 @@ $field_list_arr=(explode(',',$field_list));
 				$SQL_SUB .= "$field[name]='$field[value]'";
 			}
 
-			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_condition);
+			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;

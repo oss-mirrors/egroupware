@@ -148,32 +148,17 @@
 
 
 		//remove this one
-		function get_records($table,$where_condition,$offset,$limit,$value_reference,$order_by='',$field_list='*')
+		function get_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*')
 		{
 			if (!$value_reference)
 			{
 				$value_reference='num';
 			}
 
-			$records = $this->so->get_record_values($this->site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by,$field_list);
+			$records = $this->so->get_record_values($this->site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by,$field_list);
 
 			return $records;
 		}
-
-		// remove this one
-/*		function get_records_2($table,$where_condition,$offset,$limit,$value_reference,$order_by)
-		{
-			if (!$value_reference)
-			{
-				$value_reference='num';
-			}
-
-			$records = $this->so->get_record_values_2($this->site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by);
-
-			return $records;
-		}
-
-*/
 
 		function object_insert()
 		{
@@ -184,7 +169,6 @@
 			
 			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 			$many_data['FLD'.$status['idfield']]=$status['id'];
-//			die(var_dump($many_data));
 			$status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
 			
 			if ($status[status]==1)	$this->message['info']='Record met succes toegevoegd';
@@ -211,7 +195,8 @@
 				$this->del_object();
 			}
 
-			$where_condition = $GLOBALS[where_condition];
+			$where_key = $GLOBALS[where_key];
+			$where_value = $GLOBALS[where_value];
 			$table=$this->site_object[table_name];
 
 			$many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
@@ -220,7 +205,7 @@
 
 //		die(var_dump($GLOBALS[HTTP_POST_VARS]));
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
-			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_condition);
+			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value);
 
 			if ($status==1)	$this->message[info]='Record succesfully saved';
 			else $this->message[error]='Record NOT succesfully saved';
@@ -232,9 +217,10 @@
 		function del_object()
 		{
 			$table=$this->site_object[table_name];
-			$where_condition=stripslashes($GLOBALS[where_condition]);
+			$where_key=stripslashes($GLOBALS[where_key]);
+			$where_value=stripslashes($GLOBALS[where_value]);
 
-			$status=$this->so->delete_object_data($this->site_id, $table, $where_condition);
+			$status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value);
 
 			if ($status==1)	$this->message[info]=lang('Record succesfully deleted');
 			else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
@@ -246,9 +232,10 @@
 		function copy_object()
 		{
 			$table=$this->site_object[table_name];
-			$where_condition=$GLOBALS[where_condition];
+			$where_key=$GLOBALS[where_key];
+			$where_value=$GLOBALS[where_value];
 
-			$status=$this->so->copy_object_data($this->site_id,$table,$where_condition);
+			$status=$this->so->copy_object_data($this->site_id,$table,$where_key,$where_value);
 			if ($status==1)	$this->message[info]=lang('Record succesfully copied');
 			else $this->message[error]=lang('Record NOT succesfully copied. Unknown error');
 
@@ -318,7 +305,7 @@
 			$table_display=$table_info2[0];
 			$display_field=$table_info2[1];
 
-			$allrecords=$this->get_records($table,'','','','name',$display_field);
+			$allrecords=$this->get_records($table,'','','','','name',$display_field);
 
 
 			if(is_array($allrecords))
@@ -336,7 +323,6 @@
 		function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
 		{
 
-			////////////////die('halo');
 			while(list($key, $val) = each($HTTP_POST_VARS)) 
 			{
 				if(substr($key,0,3)=='FLD')
@@ -356,6 +342,7 @@
 						$data[] = array
 						(
 							'name' => substr($key,3),
+			
 							'value' => addslashes($val) 
 						);
 					}
@@ -388,10 +375,9 @@
 		*/
 		function get_plugin_bv($fieldname,$value)
 		{
-//die($value);
 			global $local_bo;
 			$local_bo=$this;
-			$plugins=explode('|',$this->site_object['plugins']);
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
 			foreach($plugins as $plugin)
 			{	
 				$sets=explode(':',$plugin);
@@ -434,7 +420,8 @@
 		{
 			global $local_bo;
 			$local_bo=$this;
-			$plugins=explode('|',$this->site_object['plugins']);
+			
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
 			foreach($plugins as $plugin)
 			{	
 				$sets=explode(':',$plugin);

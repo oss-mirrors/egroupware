@@ -130,7 +130,7 @@
 		* delete record from external table                                          *
 		\****************************************************************************/
 
-		function delete_phpgw_data($table,$where_condition)
+		function delete_phpgw_data($table,$where_key,$where_value)
 		{
 
 			return $status;
@@ -153,7 +153,7 @@
 		* update data in phpgw table                                                 *
 		\****************************************************************************/
 
-		function update_phpgw_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES,$where_condition)
+		function update_phpgw_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES,$where_key,$where_value)
 		{
 
 			/*************************************
@@ -212,7 +212,7 @@
 
 
 			$data=$this->http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
-			$status=$this->so->update_phpgw_data($table,$data, $where_condition);
+			$status=$this->so->update_phpgw_data($table,$data, $where_key,$where_value);
 
 			return $status;
 
@@ -262,7 +262,8 @@
 
 		function insert_phpgw_jinn_sites()
 		{
-			$where_condition = $GLOBALS[where_condition];
+			$where_key = $GLOBALS[where_key];
+			$where_value = $GLOBALS[where_value];
 			$table='phpgw_jinn_sites';
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
@@ -286,7 +287,7 @@
 
 		function insert_phpgw_jinn_site_objects()
 		{
-			$where_condition = $GLOBALS[where_condition];
+			$where_key = $GLOBALS[where_value];
 			$table='phpgw_jinn_site_objects';
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
@@ -294,16 +295,17 @@
 			else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
 
 		}
 
 		function update_phpgw_jinn_sites()
 		{
-			$where_condition = $GLOBALS[where_condition];
+			$where_key = $GLOBALS[where_key];
+			$where_value = $GLOBALS[where_value];
 			$table='phpgw_jinn_sites';
 
-			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$where_condition);
+			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$where_key,$where_value);
 
 			if ($status==1)	$this->message[info]=lang('Site succesfully saved');
 			else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
@@ -315,23 +317,24 @@
 
 		function update_phpgw_jinn_site_objects()
 		{
-			$where_condition = $GLOBALS[where_condition];
+			$where_key = $GLOBALS[where_key];
+			$where_value = $GLOBALS[where_value];
 			$table='phpgw_jinn_site_objects';
 
-			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$where_condition);
+			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$where_key,$where_value);
 
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully saved');
 			else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
 
 			//var_dump($this->message);
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
 
 		}
 
 		function del_phpgw_jinn_sites()
 		{
-			$status=$this->so->delete_phpgw_data($this->site_id,'phpgw_jinn_sites',$GLOBALS[where_condition]);
+			$status=$this->so->delete_phpgw_data($this->site_id,'phpgw_jinn_sites',$GLOBALS[where_key],$GLOBALS[where_value]);
 
 			if ($status==1)	$this->message[info]=lang('site succesfully deleted');
 			else $this->message[error]=lang('Site NOT succesfully deleted, Unknown error');
@@ -342,27 +345,27 @@
 
 		function del_phpgw_jinn_site_objects()
 		{
-			$records = $this->so->get_phpgw_record_values('phpgw_jinn_site_objects',$GLOBALS[where_condition],'','','name');	
+			$records = $this->so->get_phpgw_record_values('phpgw_jinn_site_objects',$GLOBALS[where_key],$GLOBALS[where_value],'','','name');	
 			
-			$status=$this->so->delete_phpgw_data($this->site_id,'phpgw_jinn_site_objects',$GLOBALS[where_condition]);
+			$status=$this->so->delete_phpgw_data($this->site_id,'phpgw_jinn_site_objects',$GLOBALS[where_key],$GLOBALS[where_value]);
 
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully deleted');
 			else $this->message[error]=lang('Site Object NOT succesfully deleted, Unknown error');
 
 			$this->save_sessiondata();
 			
-$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$records['0']["parent_site_id"]);
+$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_key=site_id&where_value='.$records['0']["parent_site_id"]);
 		
 		}
 
-		function get_phpgw_records($table,$where_condition,$offset,$limit,$value_reference)
+		function get_phpgw_records($table,$where_key,$where_value,$offset,$limit,$value_reference)
 		{
 			if (!$value_reference)
 			{
 				$value_reference='num';
 			}
 
-			$records = $this->so->get_phpgw_record_values($table,$where_condition,$offset,$limit,$value_reference);
+			$records = $this->so->get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference);
 
 			return $records;
 		}

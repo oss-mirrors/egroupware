@@ -38,7 +38,7 @@
 
 		}
 
-		function render_list($table,$where_condition)
+		function render_list($table,$where_key,$where_value)
 		{
 			$this->template->set_file(array(
 
@@ -88,7 +88,7 @@
 				$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 			}
 
-			$records=$this->bo->get_phpgw_records($table,$where_condition,$limit[start],$limit[stop],'num');
+			$records=$this->bo->get_phpgw_records($table,$where_key,$where_value,$limit[start],$limit[stop],'num');
 
 
 
@@ -101,7 +101,9 @@
 
 					$table_row.='<tr valign="top">';
 
-					$where_condition=$fieldnames[0]."=$recordvalues[0]";
+					$where_key=$fieldnames[0];
+					$where_value=$recordvalues[0];
+					
 					if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 					{
 						$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
@@ -113,12 +115,12 @@
 
 					$table_row.=
 					"<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_$table&where_condition=$where_condition")."\">".lang('edit')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_$table&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_$table&where_condition=$where_condition")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_$table&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
 
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_condition=$where_condition")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>
 					";
 
 					if(count($recordvalues)>0)
@@ -161,13 +163,13 @@
 
 			if ($table=='phpgw_jinn_site_objects')
 			{                 
-				$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.substr($GLOBALS[where_condition],8).'></form></td>';
+				$button_add='<td><form method=post action="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_site_objects').'"><input type=submit value="'.lang('add site-object').'"><input type=hidden name=parent_site_id value='.$GLOBALS[where_value].'></form></td>';
 				$table_title=lang('Site-objects');
 
 			}
 			elseif($table=='phpgw_jinn_sites')
 			{
-				$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.
+				$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_val='.
 				$this->bo->site_id.'"><input type=submit value="'.
 				lang('browse').'"></form></td>';
 

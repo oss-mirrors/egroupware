@@ -145,7 +145,7 @@
 				$this->template->set_var('site_objects',$object_options);
 				$this->template->set_var('site_options',$site_options);
 
-				$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index" name="jinn'));
+				$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.index'));
 				$this->template->set_var('select_site',lang('select site'));
 				$this->template->set_var('select_object',lang('select_object'));
 				$this->template->set_var('go',lang('go'));
@@ -295,6 +295,9 @@
 
 				}
 
+
+				
+				//FIXME SEARCH
 				if (count($columns)>0)
 				{
 					foreach ($columns as $col)
@@ -302,7 +305,7 @@
 
 						if ($search_string)
 						{
-							if ($where_condition)
+							if ($where_key && $where_value)
 							{
 								$where_condition.= " OR $col[name] LIKE '%$search_string%'";
 								$limit="";
@@ -402,7 +405,7 @@
 						}
 					}
 
-					$records=$this->bo->get_records($this->bo->site_object[table_name],$where_condition,$limit[start],$limit[stop],'name',$order,implode(',',$col_names_list));
+					$records=$this->bo->get_records($this->bo->site_object[table_name],$where_key,$where_value,$limit[start],$limit[stop],'name',$order,implode(',',$col_names_list));
 
 					if (count($records)>0)
 					{
@@ -410,8 +413,9 @@
 						foreach($records as $recordvalues)
 						{
 							// THIS WHERE_CONDITION HAS TO CONTAIN ALL FIELDS TO BE 'ID' independant
-							$where_condition=$columns[0][name]."='$recordvalues[0]'";
-							$where_condition=$columns[0][name].'=\''.$recordvalues[$columns[0][name]]."'";
+//							$where_condition=$columns[0][name]."='$recordvalues[0]'";
+							$where_key=$columns[0][name];
+							$where_value=$recordvalues[$columns[0][name]];
 
 
 							if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
@@ -428,12 +432,12 @@
 							{
 								$table_rows.='<tr valign="top">';
 								$table_rows.="<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.add_edit_object&where_condition=$where_condition")."\">".lang('edit')."</a>
+								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.add_edit_object&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a>
 								</td>
-								<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_condition=$where_condition")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
+								<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
 								</td>
 								<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_condition=$where_condition")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>
+								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>
 								</td>
 								";
 //								var_dump($recordvalues[0]);

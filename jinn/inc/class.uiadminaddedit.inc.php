@@ -44,14 +44,16 @@
 			));
 
 			$phpgw_table=$table;
-			$where_condition=stripslashes($GLOBALS[where_condition]);
+			$where_key=stripslashes($GLOBALS[where_key]);
+			$where_value=stripslashes($GLOBALS[where_value]);
 
-			if ($where_condition)
+			if ($where_key && $where_value)
 			{
 	
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
-				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
-				$values_object= $this->bo->get_phpgw_records($table,$where_condition,'','','name');
+				$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"$where_key\">";
+				$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"$where_value\">";
+				$values_object= $this->bo->get_phpgw_records($table,$where_key,$where_value,'','','name');
 				$add_edit_button=lang('save');
 				$action=lang('edit '. $table);
 			}
@@ -64,12 +66,14 @@
 			}
 
 			$this->template->set_var('form_action',$form_action);
-			$this->template->set_var('where_condition_form',$where_condition_form);
+			$this->template->set_var('where_key_form',$where_key_form);
+			$this->template->set_var('where_value_form',$where_value_form);
 			$this->template->pparse('out','form_header');
 
 
 			$fields=$this->bo->so->phpgw_table_metadata($table);
 
+			
 			foreach ($fields as $fieldproperties)
 			{
 
@@ -111,6 +115,9 @@
 
 				elseif ($fieldproperties[name]=='parent_site_id')
 				{
+
+//					var_dump($parent_site_id);
+//					die();
 					if($value) // when we are editing
 					{
 						$parent_site_name=$this->bo->so->get_site_name($value);
@@ -145,7 +152,7 @@
 						);
 					}
 
-					if($where_condition && in_array($table_name,$tables_check_arr))
+					if($where_key && $where_value && in_array($table_name,$tables_check_arr))
 					{							
 						$valid_table_name=true;
 						
@@ -196,7 +203,7 @@
 				{
 
 					unset($input);
-					if ($where_condition && $valid_table_name)
+					if ($where_key && $where_value && $valid_table_name)
 					{
 						$i=1;
 						if ($value)
@@ -365,7 +372,7 @@
 						}
 
 					}
-					elseif(!$where_condition)
+					elseif(!$where_key && !$where_value)
 					{
 						$input.='come back in edit-mode to add relations';
 					}
@@ -385,7 +392,7 @@
 				elseif($fieldproperties[name]=='plugins')
 				{
 					unset($input);
-					if ($where_condition && $valid_table_name)
+					if ($where_key && $where_value && $valid_table_name)
 					{
 
 						if(!$value) $value='TRUE';
@@ -436,11 +443,26 @@
 										$input.=$options;
 										$input.='</select></td>';
 
+/*
+$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&
+plug_orig='.$plg_name.'&
+plug_name=document.frm.PLG'.$field['name'].'.value\'&
+hidden_name=CFG_PLG'.$field['name'].'&
+hidden_val='.$plg_conf)
+*/
+										
 										/************************************
 										* here comes the plugin conf button *
 										************************************/
 										$input.='<td>
-										<input type="hidden" name="CFG_PLG'.$field['name'].'" value="'.$plg_conf.'"><input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'"></td>';
+										<input type="hidden" name="CFG_PLG'.$field['name'].'" value="'.$plg_conf.'">
+										
+										<input type="button" onClick="parent.window.open(\'jinn/plgconfwrapper.php?plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf.'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=yes,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
+
+<!--										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
+
+										<input type="button" onClick="alert(document.frm.PLG'.$field['name'].'.value);" value="'.lang('configure').'">-->
+										</td>';
 									}
 								}
 								else
@@ -455,7 +477,7 @@
 
 						}
 					}
-					elseif(!$where_condition) 
+					elseif(!$where_key && !$where_value) 
 					{
 						$input.=lang('come back in edit mode to configure plugins');
 					}
@@ -481,12 +503,12 @@
 			if ($phpgw_table=='phpgw_jinn_site_objects')
 			{                
 
-				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id='.$parent_site_id).'\'" value="'.lang('cancel').'">';
+				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 
 			}
 			elseif($phpgw_table=='phpgw_jinn_sites')
 			{
-				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.$this->bo->site_id).'\'" value="'.lang('cancel').'">';
+				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_value='.$this->bo->site_id).'\'" value="'.lang('cancel').'">';
 
 				$extra_buttons='<td>
 				<script>
@@ -505,7 +527,7 @@
 
 				</td>
 
-				<td><input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_condition=site_id='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'"></td>';
+				<td><input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'"></td>';
 
 			}
 			$this->template->set_var('add_edit_button',$add_edit_button);

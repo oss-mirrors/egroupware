@@ -107,13 +107,15 @@
 
 		function edit_this_jinn_site()
 		{
-			$GLOBALS[where_condition]='site_id='.$this->bo->site_id;
+			$GLOBALS[where_key]='site_id';//='.$this->bo->site_id;
+			$GLOBALS[where_value]=$this->bo->site_id;
+			
 			$this->edit_phpgw_jinn_sites();
 		}
 		
 		function add_edit_phpgw_jinn_site_objects()
 		{
-			if ($GLOBALS[where_condition])
+			if ($GLOBALS[where_key] && $GLOBALS[where_value])
 			{
 				$this->bo->message[help]=lang('Edit JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
 			}
@@ -121,7 +123,7 @@
 			{
 				$this->bo->message[help]=lang('Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
 
-				}
+			}
 
 			
 			unset($this->bo->message[info]);
@@ -173,11 +175,11 @@
 
 			$this->add_edit_record('phpgw_jinn_sites');
 
-			if ($GLOBALS[where_condition])
+			if ($GLOBALS[where_key] && $GLOBALS[where_value])
 			{
-				$new_where='parent_'.$GLOBALS[where_condition];
+				$new_where_key='parent_'.$GLOBALS[where_key];
 
-				$this->browse_record('phpgw_jinn_site_objects',$new_where);
+				$this->browse_record('phpgw_jinn_site_objects',$new_where_key,$GLOBALS[where_value]);
 			}
 
 			unset($this->bo->message[help]);
@@ -193,11 +195,11 @@
 
 			$this->add_edit_record('phpgw_jinn_sites');
 
-			if ($GLOBALS[where_condition])
+			if ($GLOBALS[where_key] && $GLOBALS[where_value])
 			{
-				$new_where='parent_'.$GLOBALS[where_condition];
+				$new_where_key='parent_'.$GLOBALS[where_key];
 
-				$this->browse_record('phpgw_jinn_site_objects',$new_where);
+				$this->browse_record('phpgw_jinn_site_objects',$new_where_key, $GLOBALS[where_value]);
 			}
 
 			unset($this->bo->message[help]);
@@ -298,7 +300,7 @@
 			$this->ui->msg_box($this->bo->message);
 //			$this->admin_menu();
 
-			$this->browse_record('phpgw_jinn_sites','');
+			$this->browse_record('phpgw_jinn_sites','','');
 			$this->bo->save_sessiondata();
 
 		}
@@ -321,7 +323,7 @@
 			$this->ui->msg_box($this->bo->message);
 //			$this->admin_menu();
 
-			$this->browse_record('phpgw_jinn_site_objects','');
+			$this->browse_record('phpgw_jinn_site_objects','','');
 			$this->bo->save_sessiondata();
 		}
 
@@ -378,10 +380,10 @@
 		*                                                                            *
 		\****************************************************************************/
 
-		function browse_record($table,$where_condition)
+		function browse_record($table,$where_key,$where_value)
 		{
 			$browse = CreateObject('jinn.uiadminbrowse',$this->bo);
-			$browse->render_list($table,$where_condition);
+			$browse->render_list($table,$where_key, $where_value);
 
 			$this->bo->save_sessiondata();
 		}
@@ -396,7 +398,7 @@
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
 			$use_records_cfg=False;
-
+			
 			$plugin_name=$this->bo->plugins[$GLOBALS['plug_name']]['title'];
 			$plugin_version=$this->bo->plugins[$GLOBALS['plug_name']]['version'];
 
@@ -405,10 +407,15 @@
 
 			if ($GLOBALS[hidden_val]) 
 			{
+				$GLOBALS[hidden_val]=str_replace('~','=',$GLOBALS[hidden_val]);
 				$orig_conf=explode(";",$GLOBALS[hidden_val]);
+				var_dump($GLOBALS[hidden_val]);
 				if ($GLOBALS[plug_name]==$GLOBALS[plug_orig]) $use_records_cfg=True;
 			}
 
+
+
+			
 			if (is_array($orig_conf))
 			{
 				foreach($orig_conf as $orig_conf_entry)
@@ -482,7 +489,7 @@
 					$output.= '</tr>';
 
 					if($newconfig) $newconfig.='+";"+';
-					$newconfig.='"'.$cfg_key.'="+document.popfrm.'.$cfg_key.'.value';
+					$newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
 
 
 				}
@@ -513,7 +520,7 @@
 
 		function export_site()
 		{
-			global $where_condition;
+			global $where_key, $where_value;
 
 			$GLOBALS['phpgw_info']['flags']['noheader']=True;
 			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
@@ -521,7 +528,7 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-			$site_data=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_condition,'','','name');
+			$site_data=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_key,$where_value,'','','name');
 
 			$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
 			$date=date("d-m-Y",time());
@@ -571,7 +578,7 @@
 			}
 			$out.=");\n\n";
 
-			$site_object_data=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_'.$where_condition,'','','name');
+			$site_object_data=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_'.$where_key,$Where_value,'','','name');
 
 			$out.= "\n/* SITE_OBJECT ARRAY */\n";
 
