@@ -43,7 +43,7 @@
 
 	require_once(PHPGW_INCLUDE_ROOT.'/wiki/lib/category.php');
 
-	require_once('class.sowiki.inc.php');
+	require_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.sowiki.inc.php');
 
 	class bowiki extends sowiki
 	{

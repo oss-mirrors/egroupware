@@ -13,7 +13,7 @@
 
 	/* $Id$ */
 
-	require_once('class.bowiki.inc.php');
+	require_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
 
 	class uiwiki extends bowiki
 	{
