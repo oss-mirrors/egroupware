@@ -23,21 +23,13 @@
 
 		function uiuserdata()
 		{
-			global $phpgw, $phpgw_info;
-
-			$this->t			= CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('qmailldap'));
-			$this->boqmailldap		= CreateObject('qmailldap.boqmailldap');
-			
-			$this->rowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->rowColor[1] = $phpgw_info["theme"]["bg02"];
-			                 
+			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->boemailadmin		= CreateObject('emailadmin.bo');
 		}
 	
 		function display_app_header()
 		{
-			global $phpgw, $phpgw_info;
-			
-			$phpgw->common->phpgw_header();
+			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			
 		}
@@ -75,13 +67,13 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.uiuserdata.saveUserData',
+				'menuaction'	=> 'emailadmin.uiuserdata.saveUserData',
 				'account_id'	=> $accountID
 			);
 			$this->t->set_var("form_action", $phpgw->link('/index.php',$linkData));
 			
 			// only when we show a existing user
-			if($userData = $this->boqmailldap->getUserData($accountID, $_useCache))
+			if($userData = $this->boemailadmin->getUserData($accountID, $_useCache))
 			{
 				if ($userData['mailAlternateAddress'] != '')
 				{
@@ -187,7 +179,7 @@
 			if($HTTP_POST_VARS["remove_mailRoutingAddress"]) $bo_action='remove_mailRoutingAddress';
 			if($HTTP_POST_VARS["save"]) $bo_action='save';
 			
-			$this->boqmailldap->saveUserData($HTTP_GET_VARS['account_id'], $formData, $bo_action);
+			$this->boemailadmin->saveUserData($HTTP_GET_VARS['account_id'], $formData, $bo_action);
 
 			if ($bo_action == 'save')
 			{

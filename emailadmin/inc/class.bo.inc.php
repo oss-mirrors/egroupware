@@ -18,6 +18,8 @@
 		var $LDAPData;
 		
 		var $SMTPServerType = array();		// holds a list of config options
+		
+		var $imapClass;				// holds the imap/pop3 class
 
 		var $public_functions = array
 		(
@@ -124,6 +126,17 @@
 					return $this->SMTPServerType[$_serverTypeID]['fieldNames'];
 					break;
 			}
+		}
+		
+		function getIMAPClass($_profileID)
+		{
+			if(!is_object($this->imapClass))
+			{
+				$profileData		= $this->getProfile($_profileID);
+				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
+			}
+			
+			return $this->imapClass;
 		}
 		
 		function getIMAPServerTypes()

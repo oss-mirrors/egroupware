@@ -36,6 +36,7 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['emailadmin']['hooks'][] = 'preferences';
 	$setup_info['emailadmin']['hooks'][] = 'manual';
+	$setup_info['emailadmin']['hooks'][] = 'edit_user';
 	$setup_info['emailadmin']['hooks'][] = 'editaccount';
 	$setup_info['emailadmin']['hooks'][] = 'addaccount';
 	$setup_info['emailadmin']['hooks'][] = 'deleteaccount';

@@ -22,35 +22,12 @@
 	// get the config from felamimail
 	$config = CreateObject('phpgwapi.config','felamimail');
 	$config->read_repository();
-	$felamimailConfig = $config->config_data;
+	$profileID = $config->config_data['profileID'];
 
-	$config = CreateObject('phpgwapi.config','qmailldap');
-	$config->read_repository();
-	$qmailldapConfig = $config->config_data;
-
-	unset($config);
-	
-	$userName	= $GLOBALS['hook_values']['account_lid'];
-	$userPassword	= $GLOBALS['hook_values']['new_passwd'];
-	
-	// create a qmailldap object and set the emailaddress in ldap
-	#$boQmailLDAP = CreateObject('qmailldap.boqmailldap');
-        #$data["mailLocalAddress"]	= $GLOBALS['hook_values']['account_lid']."@".$felamimailConfig['mailSuffix'];
-        #$boQmailLDAP->saveUserData($GLOBALS['hook_values']['account_id'], $data, 'save');
-        
-	if($mbox = imap_open ("{127.0.0.1:143}", $qmailldapConfig['imapAdminUser'], $qmailldapConfig['imapAdminPassword']))
-	{
-		$accountName = $GLOBALS['hook_values']['account_lid'];
-		// delete the mailbox
-		$mailBoxName = "user.".$GLOBALS['hook_values']['account_lid'];
-		if(imap_setacl($mbox, $mailBoxName, $qmailldapConfig['imapAdminUser'], "lrswipcda"))
-		{
-		}
-		if(imap_deletemailbox($mbox,imap_utf7_encode("{127.0.0.1}$mailBoxName"))) 
-		{
-		}
-		imap_close($mbox);
-	}
+	// create the imap/pop3 account
+	$boemailadmin = CreateObject('emailadmin.bo');
+	$imapClass = $boemailadmin->getIMAPClass($profileID);
+	$imapClass->deleteAccount($GLOBALS['hook_values']['account_lid']);
         
 }
 ?>

@@ -145,6 +145,7 @@
 
 		function editProfile($_profileID='')
 		{
+			
 			if($_profileID != '')
 			{
 				$profileID = $_profileID;
@@ -157,7 +158,7 @@
 			{
 				return false;
 			}
-			
+
 			$profileList = $this->boemailadmin->getProfileList($profileID);
 			$profileData = $this->boemailadmin->getProfile($profileID);
 			$this->display_app_header();

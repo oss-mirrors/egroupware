@@ -22,64 +22,18 @@
 	a	Administer (SETACL)
 
 */	
-	$config = CreateObject('phpgwapi.config','qmailldap');
-	$config->read_repository();
-	$qmailldapConfig = $config->config_data;
-
-	unset($config);
-	
 	$userName	= $GLOBALS['hook_values']['account_lid'];
 	// we don't know the password, when only edit the account
 	//$userPassword	= $GLOBALS['hook_values']['new_passwd'];
+	// get the config from felamimail
+	$config = CreateObject('phpgwapi.config','felamimail');
+	$config->read_repository();
+	$profileID = $config->config_data['profileID'];
+
+	// create the imap/pop3 account
+	$boemailadmin = CreateObject('emailadmin.bo');
+	$imapClass = $boemailadmin->getIMAPClass($profileID);
+	$imapClass->updateAccount($userName);
 	
-        // login using the admin account, to create the account
-	if($mbox = imap_open ("{127.0.0.1:143}", $qmailldapConfig['imapAdminUser'], $qmailldapConfig['imapAdminPassword']))
-	{
-		$accountName = $GLOBALS['hook_values']['account_lid'];
-		#if(!imap_set_quota($mbox, "user.kalowsky", 3000)) 
-		#{
-		#	print "Error in setting quota\n";
-		#	return;
-		#}
-		// create the inbox
-		$mailBoxName = "user.".$GLOBALS['hook_values']['account_lid'];
-		$folder = imap_list($mbox,"{127.0.0.1:143}",$mailBoxName);
-		if(!is_array($folder))
-		{
-			if(@imap_createmailbox($mbox,imap_utf7_encode("{127.0.0.1:143}$mailBoxName"))) 
-			{
-				if(@imap_setacl($mbox, $mailBoxName, $accountName, "lrswipcd"))
-				{
-				}
-			}
-		}
-		// create the trash folder
-		$mailBoxName = "user.".$GLOBALS['hook_values']['account_lid'].".Trash";
-		$folder = imap_list($mbox,"{127.0.0.1:143}",$mailBoxName);
-		if(!is_array($folder))
-		{
-			if(@imap_createmailbox($mbox,imap_utf7_encode("{127.0.0.1:143}$mailBoxName"))) 
-			{
-				if(@imap_setacl($mbox, $mailBoxName, $accountName, "lrswipcd"))
-				{
-				}
-			}
-		}
-		// create the Sent folder
-		$mailBoxName = "user.".$GLOBALS['hook_values']['account_lid'].".Sent";
-		$folder = imap_list($mbox,"{127.0.0.1:143}",$mailBoxName);
-		if(!is_array($folder))
-		{
-			if(@imap_createmailbox($mbox,imap_utf7_encode("{127.0.0.1:143}$mailBoxName"))) 
-			{
-				if(@imap_setacl($mbox, $mailBoxName, $accountName, "lrswipcd"))
-				{
-				}
-			}
-		}
-
-
-		imap_close($mbox);
-	}        
 }
 ?>
