@@ -1,4 +1,6 @@
 absolute path of the backup directory	backup	en	Absolute path of the backup directory (e.g.: /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	en	Absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive
+absolute path of the directory of egw backup application	backup	en	Absolute path of the directory of EGW Backup application
 absolute path of the directory to store the backup script	backup	en	Absolute path of the EGW Backup Application directory
 archive type	backup	en	Select your archive type
 backup	common	en	Backup
@@ -12,14 +14,17 @@ data	backup	en	Data
 directory locations	admin	en	Directory locations
 directory names	admin	en	Directory names
 e-mail	backup	en	Check to receive E-MAIL Notifications:
+e-mail notification?	backup	en	E-MAIL Notification?
 homedirs	admin	en	Home directories
 interval	backup	en	Interval
 ip or hostname	backup	en	IP or hostname
 ldap	common	en	LDAP
 ldap database	admin	en	LDAP database
+list backup archives	backup	en	list backup archives
 maildir	admin	en	Notification goes to E-Mail:
 monthly	backup	en	monthly
 mysql	admin	en	MySQL
+nfs	backup	en	nfs
 no backup archives available !	backup	en	No backup archives available !
 number of stored backup versions	backup	en	Number of stored backups to keep beefore deleting old ones:
 operating system	backup	en	Operating system
@@ -38,12 +43,14 @@ please specify the ip of the remote host !	backup	en	Please specify the ip of th
 please specify the name of the maildir in *site configuration* !	backup	en	Please specify the name of the Maildir in *Site configuration* !
 please specify the path to the backup directory !	backup	en	Please specify the path to the backup directory !
 please specify the path to the user-homedirectories in *site configuration* !	backup	en	Please specify the path to the user-homedirectories in *Site configuration* !
+please write down you e-mail for beeing notified	backup	en	Please write down you e-mail for beeing notified
 program locations	admin	en	Program locations
 save backup locally ?	backup	en	Check to save backup locally:
 select archive type	backup	en	Select archive type
 select interval	backup	en	Select interval
 settings	admin	en	settings
 show backup archives in phpgroupware ?	backup	en	Check to show backup archives in phpGroupWare:
+smbmount	backup	en	smbmount
 sql	backup	en	SQL
 tar	admin	en	tar
 tar.bz2	backup	en	tar.bz2
