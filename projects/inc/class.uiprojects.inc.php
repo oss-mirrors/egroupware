@@ -1322,11 +1322,21 @@
 				$values['billable']		= isset($values['billable'])?$values['billable']:$parent['billable'];
 				$values['inv_method']		= isset($values['inv_method'])?$values['inv_method']:$parent['inv_method'];
 
-				$GLOBALS['phpgw']->template->set_var('parent_select','<select name="values[parent]">' . $this->boprojects->select_project_list(array('action' => 'mainandsubs',
-																																				'status' => $values['status'],
-																																				'self' => $project_id,
-																																				'selected' => $values['parent'],
-																																				'main' => $pro_main)) . '</select>');
+				$GLOBALS['phpgw']->template->set_var
+				(
+					'parent_select',
+					'<select name="values[parent]">' . $this->boprojects->select_project_list
+					(
+						array
+						(
+							'action' => 'mainandsubs',
+							#'status' => $values['status'],
+							'self' => $project_id,
+							'selected' => $values['parent'],
+							'main' => $pro_main
+						)
+					) . '</select>'
+				);
 
 				$GLOBALS['phpgw']->template->set_var('lang_choose',($project_id?'':lang('generate job id')));
 				$GLOBALS['phpgw']->template->set_var('cat',$this->boprojects->cats->id2name($main['cat']));
