@@ -55,27 +55,24 @@
 	}
 	else
 	{
-		if (isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) &&
-		$phpgw_info["user"]["preferences"]["email"]["use_trash_folder"])
+		if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
+		&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
 		{
 			$filter = $phpgw->msg->construct_folder_str("");
-			if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+
+			$server_str = get_mailsvr_callstr();
+			$name_space = get_mailsvr_namespace();
+			$dot_or_slash = get_mailsvr_delimiter();
+			//$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$filter*");
+
+			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 			{
-				/* HvG20010502: Secure IMAP, extra parameters, other port: */
-				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
-			}
-			elseif  ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-			{
-				/* HvG20010502: Secure POP3S support: */
-				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995" . "}";
+				$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$name_space" ."$dot_or_slash" ."*");
 			}
 			else
 			{
-				/* Normal imap, no special stuff: */
-				$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+				$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$name_space" ."*");
 			}
-
-			$mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
 
 			if (count($mailboxes) != 0)
 			{
@@ -91,7 +88,7 @@
 
 			if (! $havetrashfolder)
 			{
-				$phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str("Trash"));
+				$phpgw->msg->createmailbox($stream,$server_str .$phpgw->msg->construct_folder_str("Trash"));
 			}
 			$tofolder =  $this->construct_folder_str("Trash");
 			return imap_mail_move($stream,$msg_num,$tofolder);
@@ -196,23 +193,20 @@
 
 	$filter = $phpgw->msg->construct_folder_str("");
 
-	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps' )
+	$server_str = get_mailsvr_callstr();
+	$name_space = get_mailsvr_namespace();
+	$dot_or_slash = get_mailsvr_delimiter();
+	//$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$filter*");
+
+	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 	{
-		/* HvG20010502:	Use IMAPS (other port, other parameters): */
-		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}";
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s' )
-	{
-		/* HvG20010502: Use POP3S: */
-		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/pop3/ssl/novalidate-cert:995}";
+		$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$name_space" ."$dot_or_slash" ."*");
 	}
 	else
 	{
-		/* Normal imap, nothing special: */
-		$imap_str = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
+		$mailboxes = $phpgw->msg->listmailbox($stream, $server_str, "$name_space" ."*");
 	}
-
-	$mailboxes = $phpgw->msg->listmailbox($stream, $imap_str, "$filter*");
+	
 	if (count($mailboxes) != 0)
 	{
 		$havefolder = False;
@@ -226,31 +220,21 @@
 	}
 	if (! $havefolder)
 	{
-		$phpgw->msg->createmailbox($stream,$imap_str . $phpgw->msg->construct_folder_str($folder));
+		$phpgw->msg->createmailbox($stream,$server_str .$phpgw->msg->construct_folder_str($folder));
 	}
 
 	$folder = $this->construct_folder_str($folder);
-	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-	{
-		/* IMAP over SSL: */	
-		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/ssl/novalidate-cert:993}".$folder, $header ."\n". $body, $flags);
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-	{
-		/* POP3 over SSL: */
-		/* HvG20010502: Actually POP3 doesn't support folders, so the following could
-		actually not be done. */
-		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]."/pop3/ssl/novalidate-cert:995}".$folder, $header ."\n". $body, $flags); 
-	}
-	else
-	{
-		return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":143}".$folder, $header ."\n". $body, $flags);
-	}
+	return imap_append($stream, $server_str.$folder, $header ."\n". $body, $flags);
     }
 
     function login( $folder = "INBOX")
     {
 	global $phpgw, $phpgw_info;
+	
+	//$debug_logins = True;
+	$debug_logins = False;
+	if ($debug_logins) {  echo 'CALL TO LOGIN IN CLASS MSG IMAP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
+	
 	error_reporting(error_reporting() - 2);
 	if ($folder != "INBOX")
 	{
@@ -259,27 +243,23 @@
 
 	// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS (PHASED OUT 7/2/01)
 	// $pass = $this->get_email_passwd();
-	$pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
-	$user = $phpgw_info["user"]["preferences"]["email"]["userid"];
-	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+	// === ISSET CHECK ==
+	if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
+	&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
+	&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
+	&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
 	{
-		/* SSL enabled IMAP: */
-		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/ssl/novalidate-cert:993}".$folder, 
-			$user , $pass);
-	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type']=='pop3s')
-	{
-		/* SSL enabled POP3: */
-		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"] ."/pop3/ssl/novalidate-cert:995}".$folder,
-			$user , $pass);
+		$user = $phpgw_info['user']['preferences']['email']['userid'];
+		$pass = $phpgw_info['user']['preferences']['email']['passwd'];
 	}
 	else
 	{
-		/* Normal IMAP, nothing special: */
-		$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]
-			."}".$folder, $user, $pass);
+		// problem - invalid or nonexistant info for userid and/or passwd
+		return False;
 	}
+
+	$server_str = get_mailsvr_callstr();
+	$mbox = $this->open($server_str.$folder, $user, $pass);
 
 	error_reporting(error_reporting() + 2);
 	return $mbox;
@@ -287,54 +267,87 @@
 
     function construct_folder_str( $folder )
     { 
-      /* This is only used by the login() function */
-      // Cyrus style: INBOX.Junque
-      // UWash style: ./aeromail/Junque
-      global $phpgw_info;
+	/* This is only used by the login() function */
+	// Cyrus style: INBOX.Junque
+	// UWash style: ./aeromail/Junque
+	global $phpgw_info;
 
-      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir") {
-        if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-          if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-            $folder_str = $folder;
-          } else {
-            $folder_str = $phpgw_info["user"]["preferences"]["email"]["mail_folder"]. $folder;
-          }
-        } else {
-          $folder_str = $folder;
-        }
-      } elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
-        $folder_str = "INBOX.".$folder;
-      } else {
-        $folder_str = "mail/".$folder;
-      }
-      return $folder_str;
+	/*
+	// TEST replacement with get_folder_long
+	if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir")
+	{
+		if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+		{
+			if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+			{
+				$folder_str = $folder;
+			}
+			else
+			{
+				$folder_str = $phpgw_info["user"]["preferences"]["email"]["mail_folder"]. $folder;
+			}
+		}
+		else
+		{
+			$folder_str = $folder;
+		}
+	}
+	elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus")
+	{
+		$folder_str = "INBOX.".$folder;
+	}
+	else
+	{
+		$folder_str = "mail/".$folder;
+	}
+	return $folder_str;
+	*/
+	
+	$folder_str = get_folder_long($folder);
+	return $folder_str;
     }
 
     function deconstruct_folder_str( $folder )
     {
-      /* This is only used by the login() function */
-      // Cyrus style: INBOX.Junque
-      // UWash style: ./aeromail/Junque
-      global $phpgw_info;
+	//  This is only used by the login() function
+	// Cyrus style: INBOX.Junque
+	// UWash style: ./aeromail/Junque
+	global $phpgw_info;
 
-      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir") {
-        if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-          if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-            $srch_str = $folder;
-          } else {
-            $srch_str = $phpgw_info["user"]["preferences"]["email"]["mail_folder"]. $folder;
-          }
-        } else {
-          $folder_str = $folder;
-        }
-      } elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
-        $srch_str = "INBOX.";
-      } else {
-        $srch_str = "mail/";
-      }
-      $folder_str = substr($folder, strlen($srch_str), strlen($folder));
-
-      return $folder_str;
+	/*
+	// TEST replacement with get_folder_short
+	if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir")
+	{
+		if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+		{
+			if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+			{
+				$srch_str = $folder;
+			}
+			else
+			{
+				$srch_str = $phpgw_info["user"]["preferences"]["email"]["mail_folder"]. $folder;
+			}
+		}
+		else
+		{
+			$folder_str = $folder;
+		}
+	}
+	elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus")
+	{
+		$srch_str = "INBOX.";
+	}
+	else
+	{
+		$srch_str = "mail/";
+	}
+	$folder_str = substr($folder, strlen($srch_str), strlen($folder));
+	return $folder_str;
+	*/
+	
+	$folder_str = get_folder_short($folder);
+	return $folder_str;
     }
 
     /* rfc_get_flag() is more "rfc safe", as RFC822 allows
@@ -354,68 +367,67 @@
     */
     function rfc_get_flag ($stream, $msg_num, $flag, $field_no = 1) 
     {
-      $fieldCount = 0;
+	$fieldCount = 0;
      
-      $header = imap_fetchheader ($stream, $msg_num);
-      $header = explode("\n", $header);
-      $flag = strtolower($flag);
+	$header = imap_fetchheader ($stream, $msg_num);
+	$header = explode("\n", $header);
+	$flag = strtolower($flag);
 
+	for ($i=0; $i < count($header); $i++)
+	{
+		// The next check for the $flag _requires_ the field to
+		// start at the first character (unless some person
+		// adds a space in the beginning of $flag.
+		// I believe this is correct according to the RFC.
 
-      for ($i=0; $i < count($header); $i++)
-      {
-        // The next check for the $flag _requires_ the field to
-	// start at the first character (unless some person
-	// adds a space in the beginning of $flag.
-	// I believe this is correct according to the RFC.
-
-	if (strcmp (substr(strtolower($header[$i]), 
+		if (strcmp (substr(strtolower($header[$i]), 
 			0, strlen($flag) + 1), $flag . ":") == 0)
-        {
-	  $fieldFound = true;
-	  $fieldCount++;
-	} else {
-	  $fieldFound = false;
+		{
+			$fieldFound = true;
+			$fieldCount++;
+		}
+		else
+		{
+			$fieldFound = false;
+		}
+		
+		if ($fieldFound && $fieldCount == $field_no)
+		{
+			// We now need to see if the next lines belong to this  message. 
+			$header_begin = $i;
+			// make sure we don't go too far:)
+			// and if the line begins with a space then
+			// we'll increment the counter with one.
+			$i++;
+			
+			while ($i < count($header) 
+			&& strcmp(substr($header[$i],0,1), " ") == 0)
+			{
+				$i++;
+			}
+
+			// Remove the "field:" from this string.
+			$return_tmp = explode (":", $header[$header_begin]);
+			$tmp_flag = $return_tmp[0];
+			$return_string = trim ($return_tmp[1]);
+			
+			if (strcasecmp ($flag, $tmp_flag) != 0)
+			{
+				return false;
+			}
+			// Houston, we have a _problem_
+			// add the rest of the content
+
+			for ($j=$header_begin+1; $j < $i; $j++)
+			{
+				$return_string .= $header[$j];
+			}
+			
+			return $return_string;
+		}
 	}
-
-	if ($fieldFound && $fieldCount == $field_no) {
-
-	  // We now need to see if the next lines belong to this
-	  // message. 
-
-	  $header_begin = $i;
-
-	  // make sure we don't go too far:)
-	  // and if the line begins with a space then
-          // we'll increment the counter with one.
-
-	  $i++;
-
-	  while ($i < count($header) 
-		&& strcmp(substr($header[$i],0,1), " ") == 0) 
-          {
-	    $i++;
-	  } 
-
-	  // Remove the "field:" from this string.
-	  $return_tmp    = explode (":", $header[$header_begin]);
-	  $tmp_flag      = $return_tmp[0];
-	  $return_string = trim ($return_tmp[1]);
-
-	  if (strcasecmp ($flag, $tmp_flag) != 0)
-	     return false;
-  	     // Houston, we have a _problem_
-
-	     // add the rest of the content
-
-	  for ($j=$header_begin+1; $j < $i; $j++) 
-          {
-	    $return_string .= $header[$j];
-	  }
-
-	  return $return_string;
-	}
-     }
-     return false;	// failed to find $flag
+	// failed to find $flag
+	return false;
     }
 
 

@@ -720,7 +720,8 @@
 		
 		if (($skip_this == False)
 		&& ($returnccode == True)
-		&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		&& ( ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		    || ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps') )
 		&& ($phpgw_info['user']['apps']['email'])
 		&& (is_object($phpgw->msg)) )
 		{

@@ -94,15 +94,16 @@
     var $tempfile, $att_files_dir, $force_check;
     var $boundary, $got_structure;
 
-    function msg_common_() {
-      global $phpgw_info;
-      $this->err["code"] = " ";
-      $this->err["msg"]  = " ";
-      $this->err["desc"] = " ";
-      $this->tempfile = $phpgw_info["server"]["temp_dir"].$phpgw_info["server"]["dir_separator"].$phpgw_info["user"]["userid"].".mhd";
-      $this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
-      $this->force_check = false;
-      $this->got_structure = false;
+    function msg_common_()
+    {
+	global $phpgw_info;
+	$this->err["code"] = " ";
+	$this->err["msg"]  = " ";
+	$this->err["desc"] = " ";
+	$this->tempfile = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'].'.mhd';
+	$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+	$this->force_check = false;
+	$this->got_structure = false;
     }
 
     /**************************************************************************\

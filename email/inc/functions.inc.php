@@ -39,21 +39,33 @@
 	
 	// NOTE: WORKAROUND FOR CUST EMAIL PASSWD BUG REQ'D msg->get_email_passwd() during LOGIN
 	// NO MORE - "common->create_emailpreferences" now uses the msg class to get the correct password 
+	//var_dump($phpgw_info["user"]["preferences"]["email"]);
 
 // ----  Create the base email Msg Class    -----
 	$phpgw->msg = CreateObject("email.msg");
 	$phpgw->msg->msg_common_();
 
 // ----  Ensure certasin Defaults are Set, and some bug workarounds    -----
-	if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
-	$phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" && @!$folder)
+	if ( ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash")
+	&& ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
+	&& (!isset($folder)) )
 	{
 		// Changed by skeeter 04 Jan 01
 		// This was changed to give me access back to my folders.
 		// Not sure what it would break if the user has a default folder preference set,
 		// but will allow access to other folders now.
 		//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
-		$phpgw_info["user"]["preferences"]["email"]["folder"] = (@!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
+		//$phpgw_info["user"]["preferences"]["email"]["folder"] = (@!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
+		
+		if ((isset($phpgw_info["user"]["preferences"]["email"]["folder"]))
+		&& ($phpgw_info["user"]["preferences"]["email"]["folder"] != ''))
+		{
+			// DO NOTHING -this is OK
+		}
+		else
+		{
+			$phpgw_info["user"]["preferences"]["email"]["folder"] = "INBOX";
+		}
 		//backward compatibility
 		$folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
 	}
@@ -61,36 +73,83 @@
 // ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
 	if(!$folder) $folder="INBOX";
 
-// ----  What Process Called Us (many processes use this functions file)  -----
 	// Its better then them using a ton of PHP errors.
 	// Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
 	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
 	// -- (obviously, PHP_SELF is the built-in php variable = "filename on the currently executing script") --
-	if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me.
-	// were we called from the "main screen" a.k.a. "front page"
-	$in_mainscreen = eregi($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
-	// were we called from the preferences page
-	$in_preferences = eregi("preferences",$PHP_SELF);
+	if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me (author unknown).
 
-// ----  Connect To Mail Server ( only if NOT called from the Preferences Page)  -----
-	if (!$in_preferences)
+// ----  CONNECT TO MAILSERVER == IS IT NECESSARY ==  -----
+	//$debug_logins = True;
+	$debug_logins = False;
+	
+	// OK TO LOGIN pre-conditions
+	// were we called from the main screen (user's home page)
+	$in_mainscreen = eregi("^.*\/home\.php.*$",$PHP_SELF);
+	// were we in a typical email session
+	$in_email = eregi("^.*\/email\/.*$",$PHP_SELF);
+	
+	// DO NOT LOGIN for these conditions  --------
+	$do_not_login = False; // initialize
+	$no_login_check = Array();
+	// these files do not require login to email server
+	$no_login_check[0] = "preferences\.php";
+	$no_login_check[1] = "attach_file\.php";
+	$no_login_check[2] = "addressbook\.php";
+	for ($i=0; $i<count($no_login_check); $i++)
 	{
+		$match_this = $no_login_check[$i];
+		if (eregi("^.*\/email\/$match_this.*$",$PHP_SELF))
+		{
+			$do_not_login = True;
+			break;
+		}
+	}
+	// AND ALSO  Do Not Login - if sent message will NOT be put in the "Sent" folder
+	if ( (eregi("^.*\/email\/send_message\.php.*$",$PHP_SELF))
+	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
+	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
+	{
+		$do_not_login = True;
+	}
+	/* // FINE TUNE THIS - TOO BROAD
+	// AND ALSO  Do Not Login - if composing message when server is not IMAP/IMAPS
+	if ( (eregi("^.*\/email\/compose\.php.*$",$PHP_SELF))
+	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
+	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
+	{
+		$do_not_login = True;
+	}
+	*/
+
+	if ($debug_logins) {  echo '<br>'; }
+	if ($debug_logins) {  echo 'PHP_SELF='.$PHP_SELF.'<br>'; }
+	if ($debug_logins) {  echo 'phpgw_info[server][webserver_url]='.$phpgw_info['server']['webserver_url'].'<br>'; }
+	if ($debug_logins) {  echo 'in_mainscreen='.serialize($in_mainscreen).'<br>'; }
+	if ($debug_logins) {  echo 'in_email='.serialize($in_email).'<br>'; }
+	if ($debug_logins) {  echo 'do_not_login='.serialize($do_not_login).'<br>'; }
+
+// ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
+	if ( (($in_email) || ($in_mainscreen)) && ($do_not_login == False) )
+	{
+		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
 		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
+
+		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
+		if (!$mailbox)
+		{
+			echo "<p><center><b>"
+			  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
+			  ."<br>source: email functions.inc.php"
+			  . "</b></center></p>";
+			$phpgw->common->phpgw_exit(True);
+		}
 	}
 
 	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
 	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';
 	//var_dump($phpgw_info['user']['preferences']['email']);
 	//var_dump($phpgw_info['user']);
-
-// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
-	if (!$mailbox && !($in_mainscreen || $in_preferences))
-	{
-		echo "<p><center><b>"
-		  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
-		  . "</b></center></p>";
-		$phpgw->common->phpgw_exit(True);
-	}
 
 // ----  Various Functions Used To Support Email   -----
 
@@ -169,7 +228,62 @@
 	}
 	return $no_brackets;
   }
-  
+
+/* * * * * * * * * * *
+  *  get_mailsvr_port
+  * will generate the appropriate port number to access a mail server of type
+  * pop3, pop3s, imap, imaps
+  * users value from $phpgw_info['user']['preferences']['email']['mail_port']
+  * if that value is not set, it generates a default port for the given $server_type
+  * * * * * * *  * * * */
+  function get_mailsvr_port()
+  {
+	global $phpgw, $phpgw_info;
+
+	/*// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
+	// first we try the port number supplied in preferences
+	if ( (isset($phpgw_info['user']['preferences']['email']['mail_port']))
+	&& ($phpgw_info['user']['preferences']['email']['mail_port'] != '') )
+	{
+		$port_number = $phpgw_info['user']['preferences']['email']['mail_port'];
+	}
+	// preferences does not have a port number, generate a default value
+	else
+	{
+	*/
+		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		{
+			/* IMAP normal connection, No SSL */
+			$port_number = 143;
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
+		{
+			/* IMAP over SSL */
+			$port_number = 993;
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
+		{
+			/* POP3 over SSL: */
+			$port_number = 995;
+		}
+		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
+		{
+			/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
+			$port_number = 110;
+		}
+		else
+		{
+			//UNKNOWN SERVER in Preferences, return a default value that is likely to work
+			// probably should raise some kind of error here
+			$port_number = 143;
+		}
+		// set the preference string, since it was not set and that's why we are here
+		$phpgw_info['user']['preferences']['email']['mail_port'] = $port_number;
+	// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
+	//}
+	return $port_number;
+  }
+
 /* * * * * * * * * * *
   *  get_mailsvr_callstr
   * will generate the appropriate string to access a mail server of type
@@ -186,28 +300,28 @@
 	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 	{
 		/* IMAP normal connection, No SSL */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .get_mailsvr_port().'}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
 	{
  		/* IMAP over SSL */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/ssl/novalidate-cert:993}';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/ssl/novalidate-cert:'.get_mailsvr_port().'}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
 	{
 		/* POP3 over SSL: */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/pop3/ssl/novalidate-cert:995}';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/pop3/ssl/novalidate-cert:'.get_mailsvr_port().'}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
 	{
 		/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':'.get_mailsvr_port().'}';
 	}
 	else
 	{
 		//UNKNOWN SERVER in Preferences, return a default value that is likely to work
 		// probably should raise some kind of error here
-		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'].':'.get_mailsvr_port().'}';
 	}
 	return $server_call;
   }
