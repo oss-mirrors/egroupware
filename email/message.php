@@ -66,6 +66,16 @@
 	{
 		$folder = 'INBOX';
 	}
+	if ($phpgw_info['user']['preferences']['common']['template_set'] == 'idsociety')
+	{
+		$img_border_tag = ' border="0"';
+	}
+	else
+	{
+		$img_border_tag = '';
+	}
+
+	$image_dir = $phpgw->common->get_image_path($phpgw_info['flags']['currentapp']);
 ?>
 <table cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr><td colspan="2" bgcolor="<?php echo $phpgw_info['theme']['em_folder']; ?>">
@@ -80,13 +90,13 @@
 
         <td align=right><font size="3" face="<?php echo $phpgw_info['theme']['font'].'" color="'.$phpgw_info['theme']['em_folder_text']; ?>">
          <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_reply.gif" height="19" width="26" alt="<?php echo lang('reply'); ?>"></a>
+          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_reply.gif" height="19" width="26" alt="<?php echo lang('reply'); ?>"></a>
          <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_reply_all.gif" height="19" width="26" alt="<?php echo lang('reply all'); ?>"></a>
+          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_reply_all.gif" height="19" width="26" alt="<?php echo lang('reply all'); ?>"></a>
          <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-         <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_forward.gif" height="19" width="26" alt="<?php echo lang('forward'); ?>"></a>
+         <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_forward.gif" height="19" width="26" alt="<?php echo lang('forward'); ?>"></a>
          <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img src="<?php echo $phpgw_info['server']['app_images']; ?>/sm_delete.gif" height="19" width="26" alt="<?php echo lang('delete'); ?>"></a></font>
+          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_delete.gif" height="19" width="26" alt="<?php echo lang('delete'); ?>"></a></font>
 	</td>
         <td align="right">
 <?php
