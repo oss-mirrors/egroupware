@@ -53,7 +53,7 @@
 	*/
 
 //  -------  Init Array Structure For Outgoing Mail  -----------
-	$mail_out'] = Array();
+	$mail_out = Array();
 	$mail_out['to'] = Array();
 	$mail_out['cc'] = Array();
 	$mail_out['bcc'] = Array();

@@ -221,7 +221,7 @@
 	}
 	// go directly to email prefs page
 	$t->set_var('email_prefs_txt',lang('Email Preferences'));
-	$t->set_var('email_prefs_link',$GLOBALS['phpgw']->link('/index.php'.'menuaction=email.uipreferences.preferences'));
+	$t->set_var('email_prefs_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'));
 	// "accounts" preferences FUTURE
 	$t->set_var('accounts_txt',lang('Manage Accounts'));
 	$t->set_var('accounts_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));

@@ -17,7 +17,7 @@
 	Header('Pragma: no-cache');
 	Header('Expires: Sat, Jan 01 2000 01:01:01 GMT');
   
-	$GLOBALS['phpgw_info]'['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'email', 
 		'enable_network_class' => True, 
 		'enable_nextmatchs_class' => True);
