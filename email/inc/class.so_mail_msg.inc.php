@@ -612,6 +612,7 @@
 				{
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): we need to unserialize this <br>'); }
 					$my_content_preped = unserialize($my_content);
+					//if ($GLOBALS['phpgw']->msg->debug_so_class > 2) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): after unsreialize $my_content_preped DUMP:', $my_content_preped); }
 					// DID IT WORK
 					//$try_recover = True;
 					$try_recover = False;

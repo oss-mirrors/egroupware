@@ -295,6 +295,11 @@
 		var $expect_good_body_crlf = True;
 		//var $expect_good_body_crlf = False;
 		
+		// ----  session cache runthru without actuall saving data to appsession (for debugging only, rarely useful anyway)
+		//var $session_cache_debug_nosave = True;
+		// OBSOLETED
+		var $session_cache_debug_nosave = False;
+		
 		// ---- Data Caching  ----
 		var $use_cached_prefs = True;
 		//var $use_cached_prefs = False;
@@ -304,10 +309,6 @@
 		// also tries to appsession cache the "processed prefs" during begin_request (NOTE: expire this on pref subit so new prefs actually take effect)
 		var $session_cache_enabled=True;
 		//var $session_cache_enabled=False;
-		
-		// ----  session cache runthru without actuall saving data to appsession (for debugging only, rarely useful anyway)
-		//var $session_cache_debug_nosave = True;
-		var $session_cache_debug_nosave = False;
 		
 		// ----  session cache uses "events" to directly "freshen" the cache without the mailserver
 		// NOTE msgball_list is ALWAYS appsession cached in "session_cache_enabled" even if "session_cache_extreme" is false, 
@@ -320,6 +321,11 @@
 		// value will be double checked to make sure the table is present, if not present, it does to False
 		var $use_private_table = True;
 		//var $use_private_table = False;
+		
+		// ---- Force Sockets Class  ---- default is False
+		// set to True is you have php-imap installed but want to force using pure php sockets mail code
+		//var $force_sockets = True;
+		var $force_sockets = False;
 		
 		// ---- how long to assume appsession cached "folder_status_info" is deemed VALID in seconds
 		// ---- only applies if "session_cache_extreme" is true
@@ -477,16 +483,19 @@
 			if ($ses_cache_exteme == True)
 			{
 				// check conditions  to change to false
-				if (
-				  ($this->use_private_table == False)
-				  || ($this->so->so_am_table_exists() == False)
-				  // fix the misalignment bug for pop3 sockets then remove this test
-				  || (function_exists('imap_open') == False)
-				)
+				if (($this->use_private_table == False)
+				|| ($this->so->so_am_table_exists() == False))
 				{
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
 					$this->session_cache_extreme = False;
 				}
+				// NEW : SOCKETS should be able to hangle caching now ...
+				// PLUS we do not have prefs available yet, so we do not know of imap or pop yet
+				//elseif (function_exists('imap_open') == False)
+				//{
+				//	  // fix the misalignment bug for pop3 sockets then remove this test
+				//	if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
+				//}
 			}
 			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: post-check $this->session_cache_extreme is set to ['.serialize($this->session_cache_extreme).'] <br>'); }
 			
@@ -5376,6 +5385,13 @@
 				if (stristr($string_data, ':"stdClass":'))
 				{
 					// unserialize failed but the source str appears to look like a serialized thing
+					return True;
+				}
+				elseif (stristr($string_data, 'O:17:"hdr_info_envelope":'))
+				{
+					// unserialize failed but we know this is an object 
+					// because it is one of the ones we made for the sockets class
+					// so this is defionately serialized
 					return True;
 				}
 				else

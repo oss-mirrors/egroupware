@@ -1195,33 +1195,39 @@ class mail_msg extends mail_msg_wrappers
 	function has_real_attachment($struct)
 	{
 		$haystack = serialize($struct);
+		if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: serialize($struct) ['.serialize($struct).'] <br>'); }
 
 		if (stristr($haystack, 's:9:"attribute";s:4:"name"'))
 		{
 			// param attribute "name"
 			// s:9:"attribute";s:4:"name"
+			if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: YES attachment test line ['.__LINE__.'] will return true <br>'); }
 			return True;
 		}
 		elseif (stristr($haystack, 's:8:"encoding";i:3'))
 		{
 			// encoding is base 64
 			// s:8:"encoding";i:3
+			if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: YES attachment test line ['.__LINE__.'] will return true <br>'); }
 			return True;
 		}
 		elseif (stristr($haystack, 's:11:"disposition";s:10:"attachment"'))
 		{
 			// header disposition calls itself "attachment"
 			// s:11:"disposition";s:10:"attachment"
+			if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: YES attachment test line ['.__LINE__.'] will return true <br>'); }
 			return True;
 		}
 		elseif (stristr($haystack, 's:9:"attribute";s:8:"filename"'))
 		{
 			// another mime filename indicator
 			// s:9:"attribute";s:8:"filename"
+			if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: YES attachment test line ['.__LINE__.'] will return true <br>'); }
 			return True;
 		}
 		else
 		{
+			if ($this->debug_message_display > 2) { $this->dbug->out('mail_msg_display: has_real_attachment: attachment test  will return false <br>'); }
 			return False;
 		}
 	}
@@ -2855,6 +2861,7 @@ class mail_msg extends mail_msg_wrappers
 			{
 				// need Message Information: STRUCTURAL for this
 				$msg_structure = $this->phpgw_fetchstructure($this_loop_msgball);
+				if ($debug_msg_list_display > 2) { $this->dbug->out('mail_msg_display: get_msg_list_display: $msg_structure DUMP', $msg_structure); }				
 				// now examine that msg_struct for signs of an attachment
 				$msg_list_display[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
 			}

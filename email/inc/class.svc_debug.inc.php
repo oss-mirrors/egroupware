@@ -46,8 +46,8 @@
 		var $available_debug_outputs=array('echo_out','fill_array','fill_array__another_window','FUTURE');
 		
 		// this is your dedired debug output type
-		//var $debugoutput_to='echo_out';
-		var $debugoutput_to='fill_array__another_window';
+		var $debugoutput_to='echo_out';
+		//var $debugoutput_to='fill_array__another_window';
 		
 		
 		/*!

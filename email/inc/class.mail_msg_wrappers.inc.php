@@ -70,6 +70,7 @@
 		*/
 		function phpgw_fetchstructure($msgball='')
 		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchstructure: ('.__LINE__.') ENTERING<br>'); }
 			if (!(isset($msgball))
 			|| ((string)$msgball == ''))
 			{
@@ -121,6 +122,8 @@
 			&& ($this->session_cache_extreme == True))
 			{
 				//echo '** phpgw_fetchstructure: $specific_key ['.$specific_key.'] :: $cache_msg_structure DUMP<pre>'; print_r($cache_msg_structure); echo '</pre>';
+				if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchstructure: ('.__LINE__.') about to return $cache_msg_structure DUMP:', $cache_msg_structure); }
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchstructure: ('.__LINE__.') LEAVING returning $cache_msg_structure<br>'); }
 				return $cache_msg_structure;
 			}
 			else
@@ -155,6 +158,8 @@
 					//echo 'saving msg_structure to cache<br>';
 					$this->save_session_cache_item('msg_structure', $meta_data, $acctnum);
 				}
+				if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchstructure: ('.__LINE__.') about to return $data DUMP:', $data); }
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchstructure: ('.__LINE__.') LEAVING returning $data from server<br>'); }
 				return $data;
 			}
 		}
@@ -186,6 +191,7 @@
 		*/
 		function phpgw_header($msgball='')
 		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') ENTERING<br>'); }
 			if (!(isset($msgball))
 			|| ((string)$msgball == ''))
 			{
@@ -247,6 +253,8 @@
 			&& ($this->session_cache_extreme == True))
 			{
 				//echo '** phpgw_header: $specific_key ['.$specific_key.'] :: $cache_phpgw_header DUMP<pre>'; print_r($cache_phpgw_header); echo '</pre>';
+				if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') about to return $cache_phpgw_header DUMP:', $cache_phpgw_header); }
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') LEAVING returning $cache_phpgw_header<br>'); }
 				return $cache_phpgw_header;
 			}
 			else
@@ -292,10 +300,13 @@
 				}
 				if (!$data)
 				{
+					if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') LEAVING on semi-error, no $data available to return<br>'); }
 					return False;
 				}
 				else
 				{
+					if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') about to return $data DUMP:', $data); }
+					if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') LEAVING returning $data from server<br>'); }
 					return $data;
 				}
 			}
@@ -433,13 +444,14 @@
 	
 		/*!
 		@function all_headers_in_folder
-		@abstract wrapper for IMAP_HEADERS, phpgw supplies the nedessary stream arg and mail_dcom reference
+		@abstract wrapper for IMAP_HEADERS, phpgw supplies the nedessary stream arg and mail_dcom reference DEPRECIATED
 		@param $fldball   array[folder]   string ; array[acctnum]   int
 		@result returns the php IMAP_HEADERS data, php manual says 
 		function.imap-headers.php
 		Returns headers for all messages in a mailbox 
 		Returns an array of string formatted with header info. One element per mail message
 		@discussion = = = = USELESS FUNCTION = = = = 
+		DEPRECIATED DEPRECIATED DEPRECIATED
 		returns array of strings, each string is extremely truncated
 		partial contents of date, from, and subject, also includes the msg size in chars
 		*/
@@ -520,6 +532,7 @@
 		*/
 		function phpgw_fetchbody($msgball='', $flags='')
 		{
+			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchbody: ('.__LINE__.') ENTERING<br>'); }
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: ENTERING, $msgball dump<pre>'; print_r($msgball); echo '</pre>';
 			if ( (!isset($msgball))
 			|| ($msgball == '') )
@@ -540,6 +553,8 @@
 			{
 				// notice of event
 				$this->event_msg_seen($msgball, 'phpgw_fetchbody');
+				if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchbody: ('.__LINE__.') about to return $cached_phpgw_fetchbody DUMP:', $cached_phpgw_fetchbody); }
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchbody: ('.__LINE__.') LEAVING cached_phpgw_fetchbody <br>'); }
 				return $cached_phpgw_fetchbody;
 			}
 			// if we get here we need to contact mailserver
@@ -562,10 +577,13 @@
 				$meta_data['phpgw_fetchbody'] = $data;
 				$this->save_session_cache_item('phpgw_fetchbody', $meta_data, $acctnum);
 				$meta_data = array();
+				if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchbody: ('.__LINE__.') about to return $data DUMP:', $data); }
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_fetchbody: ('.__LINE__.') LEAVING returning $data from server<br>'); }
 				return $data;
 			}
 			else
 			{
+				if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(wrappers).phpgw_header: ('.__LINE__.') LEAVING on semi-error, no $data available to return<br>'); }
 				return False;
 			}
 		}

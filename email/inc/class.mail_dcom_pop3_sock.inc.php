@@ -1488,10 +1488,10 @@
 			}
 		}
 
-		/*!
+		/*
 		@function type_str_to_int
 		@abstract ?
-		*/
+		// MOVED TO BASE SOCK CLASS
 		function type_str_to_int($type_str)
 		{
 			// fallback value
@@ -1510,7 +1510,8 @@
 			}
 			return $type_int;
 		}
-
+		*/
+		
 		/*!
 		@function default_type
 		@abstract ?
@@ -1575,10 +1576,10 @@
 			return $i;
 		}
 	
-		/*!
+		/*
 		@function encoding_str_to_int
 		@abstract ?
-		*/
+		// MOBED TO BASE SOCK CLASS
 		function encoding_str_to_int($encoding_str)
 		{
 			switch (strtolower($encoding_str))
@@ -1594,7 +1595,8 @@
 			}
 			return $encoding_int;
 		}
-	
+		*/
+		
 		/*!
 		@function size_msg
 		@abstract ?

@@ -1830,13 +1830,24 @@
 			$row_on = $GLOBALS['phpgw_info']['theme']['row_on'];
 			$row_off = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this_server_type = $GLOBALS['phpgw']->msg->get_pref_value('mail_server_type');
-			if (extension_loaded('imap') && function_exists('imap_open'))
+			if ((extension_loaded('imap'))
+			&& (function_exists('imap_open'))
+			&& ($GLOBALS['phpgw']->msg->force_sockets == False))
 			{
 				$library_usage = 'builtin';
 			}
 			else
 			{
 				$library_usage = 'sockets';
+				// ALSO - SOCKETS HAS NO SSL
+				if ($this_server_type == 'imaps')
+				{
+					$this_server_type == 'imap';
+				}
+				elseif ($this_server_type == 'pop3s')
+				{
+					$this_server_type == 'pop3';
+				}
 			}
 			$anglemail_table_exists = 'yes';
 			if ($GLOBALS['phpgw']->msg->so->so_am_table_exists() == False)

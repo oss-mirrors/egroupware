@@ -23,6 +23,19 @@
 	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA		*
 	\**************************************************************************/
 
+	
+	// Debugging or force_sockets 
+	// force_sockets True make use of sockets data communication code eventhough php-imap is available
+	if ((is_object($GLOBALS['phpgw']->msg))
+	&& ($GLOBALS['phpgw']->msg->force_sockets == True))
+	{
+		$force_sockets = True;
+	}
+	else
+	{
+		//$force_sockets = True;
+		$force_sockets = False;
+	}
 	//$debug_dcom = True;
 	$debug_dcom = False;
 
@@ -61,10 +74,12 @@
 	//&& ((stristr($mail_server_type, 'pop'))
 	//	|| (stristr($mail_server_type, 'imap')))
 	//)
-	if (($debug_dcom == True)
-	&& ((strtolower($mail_server_type) == 'pop3')
-		|| (strtolower($mail_server_type) == 'imap'))
-	)
+	
+	//if (($force_sockets == True)
+	//&& ((strtolower($mail_server_type) == 'pop3')
+	//	|| (strtolower($mail_server_type) == 'imap'))
+	//)
+	if ($force_sockets == True)
 	{
 		$imap_builtin = False;
 		$sock_fname = '_sock';
@@ -86,42 +101,44 @@
 	/* -----  include SOCKET or PHP-BUILTIN classes as necessary */
 	if ($imap_builtin == False)
 	{
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_sock_defs.inc.php');
+		if ($debug_dcom) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_sock_defs.inc.php<br>'; }
 		CreateObject('phpgwapi.network');
 		if ($debug_dcom) { echo 'created phpgwapi network class used with sockets<br>'; }
 	}
 
 	//CreateObject('email.mail_dcom_base'.$sock_fname);
-	include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php');
-	if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php<br>'; }
+	include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php');
+	if ($debug_dcom) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php<br>'; }
 
 	if (($mail_server_type == 'imap')
 	|| ($mail_server_type == 'imaps'))
         {
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php');
-		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php<br>'; }
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php<br>'; }
 	}
 	elseif (($mail_server_type == 'pop3')
 	|| ($mail_server_type == 'pop3s'))
 	{
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php');
-		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php<br>'; }
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php<br>'; }
 	}
 	elseif ($mail_server_type == 'nntp')
 	{
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php');
-		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php<br>'; }
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php<br>'; }
 	}
 	elseif ((isset($mail_server_type))
 	&& ($mail_server_type != ''))
 	{
 		/* educated guess based on info being available: */
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
-		if ($debug_dcom) { echo 'Educated Guess: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'Educated Guess: include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
   	}
 	else
 	{
 		/* DEFAULT FALL BACK: */
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php');
-		if ($debug_dcom) { echo 'NO INFO DEFAULT: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php<br>'; }
+		include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php');
+		if ($debug_dcom) { echo 'NO INFO DEFAULT: include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php<br>'; }
 	}
 ?>

@@ -36,7 +36,35 @@
 	may be just one line, skeeter is listed as an author for that function.
 	*/
 	class mail_dcom extends mail_dcom_base
-	{		
+	{
+		// we put the fetchstructure thing here so all functions can add to it
+		// IS THIS USED?
+		var $my_fetchstruct = '##NOTHING##';
+		// IS THIS USED?
+		var $fs_rawstr = '';
+		
+		// CLASS VARS
+		// bodystructure string goes here
+		var $bs_rawstr = '##NOTHING##';
+		
+		// next 2 are not important
+		// what debth level are we working on of bodystructure
+		var $bs_cur_debth = 0;
+		// what is the maximum debth we have been to in bodystructure
+		var $bs_max_debth = 0;
+			
+		// stub for base structure part
+		var $msg_struct_stub = '##NOTHING##';
+		
+		// envelope string goes here
+		var $env_rawstr = '##NOTHING##';
+		
+		// finished envelope structure goes here
+		var $envelope_struct = '##NOTHING##';
+		
+		// last 5 structure requests are kept here because we process 2 different ones at one time usually
+		var $last_five=array();
+
 		/**************************************************************************\
 		*	data analysis specific to IMAP data communications
 		\**************************************************************************/
@@ -258,7 +286,7 @@
 		*/
 		function server_last_error()
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: call to server_last_error<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to server_last_error<br>'; }
 			return $this->server_last_error_str;
 		}
 		
@@ -267,13 +295,25 @@
 		*	Functions NOT YET IMPLEMENTED
 		\**************************************************************************/
 		/*!
+		@function append
+		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_append
+		*/
+		function append($stream, $folder, $message, $flags=0)
+		{
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: append<br>'; }
+			return true;
+		}
+		// base64  is DEPRECIATED - NOT USED
+		// SEE BELOW for:  close *=DONE=*
+		/*!
 		@function createmailbox
 		@abstract not yet implemented in IMAP sockets module
 		*/
 		function createmailbox($stream,$mailbox) 
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
 			// eventually this will use this function to call for expiration of stale cached data, if any
 			//$this->folder_list_did_change();
 			return true;
@@ -285,7 +325,7 @@
 		function deletemailbox($stream,$mailbox)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
 			// eventually this will use this function to call for expiration of stale cached data, if any
 			//$this->folder_list_did_change();
 			return true;
@@ -297,12 +337,24 @@
 		function renamemailbox($stream,$mailbox_old,$mailbox_new)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: renamemailbox<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: renamemailbox<br>'; }
 			// eventually this will use this function to call for expiration of stale cached data, if any
 			//$this->folder_list_did_change();
 			return true;
 		}
-		
+		/**************************************************************************\
+		*	DELETE a Message From the Server
+		\**************************************************************************/
+		/*!
+		@function delete
+		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_delete
+		*/
+		function delete($stream_notused,$msg_num,$flags="")
+		{
+			if ($this->debug_dcom > 0) { echo 'imap: delete NOT YET IMPLEMENTED imap sockets function<br>'; }
+			return False;
+		}
 		/*!
 		@function expunge
 		@abstract not yet implemented in IMAP sockets module
@@ -310,61 +362,59 @@
 		function expunge($stream)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
 			return true;
 		}
+		// SEE BELOW for:  fetchbody
+		// SEE BELOW for:  header
+		//  headers  is DEPRECIATED - NOT USED
+		//  fetch_raw_mail  is DEPRECIATED - NOT USED
+		// SEE BELOW for:  fetchheader
+		// SEE BELOW for:  fetchstructure
+		//  get_body is DEPRECIATED - NOT USED
+		//  get_header is DEPRECIATED - NOT USED
+		// SEE BELOW for:  listmailbox  *=DONE=*
+		// SEE BELOW for:  mailboxmsginfo
 		/*!
 		@function mailcopy
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_mail_copy
 		*/
 		function mailcopy($stream,$msg_list,$mailbox,$flags)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
 			return False;
 		}
 		/*!
 		@function mail_move
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_mail_move
 		*/
 		function mail_move($stream,$msg_list,$mailbox)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
 			return False;
 		}
+		//  num_msg  is DEPRECIATED - NOT USED
 		/*!
 		@function noop_ping_test
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_ping
 		*/
 		function noop_ping_test($stream)
 		{
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: noop_ping_test<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: noop_ping_test<br>'; }
 			return False;
 		}
-		/*!
-		@function append
-		@abstract not yet implemented in IMAP sockets module
-		*/
-		function append($stream, $folder = "Sent", $header, $body, $flags = "")
-		{
-			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: append NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
-		}
-		/*!
-		@function fetch_overview
-		@abstract not yet implemented in IMAP sockets module
-		*/
-		function fetch_overview($stream_notused,$criteria,$flags)
-		{
-			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: fetch_overview NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
-		}
+		// SEE BELOW for:  open  *=DONE=*
+		// function qprint moved to main msg class
+		// SEE BELOW for:  reopen  *=DONE=*
+		// SEE *ABOVE* for:  server_last_error
 		/*
-		@function search
+		@function i_search
 		@abstract  implements IMAP_SEARCH, search the mailbox currently opened for param $criteria args
 		@param $stream_notused Stream is automatically handled by the underlying code in this socket class. 
 		@param $criteria is a string, delimited by spaces, in which the following keywords are allowed. 
@@ -400,14 +450,29 @@
 		UNKEYWORD "string" - match messages that do not have the keyword "string"
 		UNSEEN - match messages which have not been read yet
 		*/
-		function search($stream_notused,$sequence,$flags)
+		function i_search($stream_notused,$criteria,$flags=0)
 		{
 			$empty_return=array();
 			// not yet implemented
-			if ($this->debug_dcom >= 1) { echo 'imap: search NOT YET IMPLEMENTED imap sockets function<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: i_search<br>'; }
 			return $empty_return;
 		}
-	
+		// SEE BELOW for:  sort
+		// SEE BELOW for:  status  *=DONE=*
+		// construct_folder_str  is DEPRECIATED - NOT USED
+		// deconstruct_folder_str  is DEPRECIATED - NOT USED
+		// rfc_get_flag  is DEPRECIATED - NOT USED
+		/*!
+		@function fetch_overview
+		@abstract not yet implemented in IMAP sockets module
+		*/
+		function fetch_overview($stream_notused,$criteria,$flags)
+		{
+			// not yet implemented
+			if ($this->debug_dcom > 0) { echo 'imap: fetch_overview NOT YET IMPLEMENTED imap sockets function<br>'; }
+			return False;
+		}
+
 		
 		/**************************************************************************\
 		*	OPEN and CLOSE Server Connection
@@ -434,7 +499,7 @@
 		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING open<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING open<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -442,7 +507,7 @@
 			$folder = $svr_data['folder'];
 			$server = $svr_data['server'];
 			$port = $svr_data['port'];
-			if ($this->debug_dcom >= 1) { echo 'imap: open: svr_data:<br>'.serialize($svr_data).'<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: open: svr_data:<br>'.serialize($svr_data).'<br>'; }
 			
 			if (!$this->open_port($server,$port,15))
 			{
@@ -453,23 +518,23 @@
 			else
 			{
 				$junk = $this->read_port();
-				if ($this->debug_dcom >= 2) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
+				if ($this->debug_dcom > 1) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
 			}
 
 
-			if ($this->debug_dcom >= 2) { echo 'imap: open: user and pass NO quotemeta: user ['. htmlspecialchars($user).'] pass ['.htmlspecialchars($pass).']<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: open: user and pass WITH quotemeta: user ['. htmlspecialchars(quotemeta($user)).'] pass ['.htmlspecialchars(quotemeta($pass)).']<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: open: user and pass NO quotemeta: user ['. htmlspecialchars($user).'] pass ['.htmlspecialchars($pass).']<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: open: user and pass WITH quotemeta: user ['. htmlspecialchars(quotemeta($user)).'] pass ['.htmlspecialchars(quotemeta($pass)).']<br>'; }
 			
 			$cmd_tag = 'L001';
 			$full_command = $cmd_tag.' LOGIN "'.$user.'" "'.$pass.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom >= 2) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: open: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: open: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: open: LEAVING with error: could not write_port<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: open: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 				// does $this->error() ever continue onto next line?
 				return False;
@@ -481,29 +546,29 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: open: error in Open<br>';
 					echo 'imap: open: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING Open with error<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING Open with error<br>'; }
 				return False;
 			}
 			else
 			{
-				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'open', True); }
-				if ($this->debug_dcom >= 1) { echo 'imap: open: Successful IMAP Login<br>'; }
+				if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'open', True); }
+				if ($this->debug_dcom > 0) { echo 'imap: open: Successful IMAP Login<br>'; }
 			}
 			
 			// now that we have logged in, php's IMAP_OPEN would now select the desired folder
-			if ($this->debug_dcom >= 2) { echo 'imap: open: php IMAP_OPEN would now select desired folder: "'. htmlspecialchars($folder) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: open: php IMAP_OPEN would now select desired folder: "'. htmlspecialchars($folder) .'"<br>'; }
 			// php's IMAP_OPEN also selects the desired folder (mailbox) after the connection is established
 			if($folder != '')
 			{
 				$this->reopen('',$fq_folder);
 			}
-			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING open<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: LEAVING open<br>'; }
 			return $this->socket;
 		}
 
@@ -514,18 +579,18 @@
 		*/
 		function close($flags="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING Close<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING Close<br>'; }
 			
 			$cmd_tag = 'c001';
 			$full_command = $cmd_tag.' LOGOUT';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom >= 2) { echo 'imap: close: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: close: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: close: LEAVING with error: could not write_port<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: close: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -536,19 +601,19 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: close: error in Close<br>';
 					echo 'imap: close: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Close with error<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: Leaving Close with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'close', True); }
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING Close<br>'; }
+				if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'close', True); }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING Close<br>'; }
 				return True;
 			}
 		}
@@ -566,24 +631,24 @@
 		*/
 		function reopen($stream_notused, $fq_folder, $flags='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING reopen<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING reopen<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
 			$svr_data = $this->distill_fq_folder($fq_folder);
 			$folder = $svr_data['folder'];
-			if ($this->debug_dcom >= 1) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
 			
 			$cmd_tag = 'r001';
 			$full_command = $cmd_tag.' SELECT "'.$folder.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom >= 2) { echo 'imap: reopen: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: reopen: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: reopen: could not write_port<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: reopen: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -593,19 +658,19 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: reopen: error in reopen<br>';
 					echo 'imap: reopen: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING reopen with error<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING reopen with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'reopen', True); }
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING reopen<br>'; }
+				if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'reopen', True); }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING reopen<br>'; }
 				return True;
 			}
 		}
@@ -642,7 +707,7 @@
 		*/
 		function listmailbox($stream_notused,$server_str,$pattern)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING listmailbox<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING listmailbox<br>'; }
 			$mailboxes_array = Array();
 			
 			// prepare params, seperate wildcards "*" or "%" from param $pattern
@@ -681,12 +746,12 @@
 			$full_command = $cmd_tag.' LIST '.$list_params;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom >= 2) { echo 'imap: listmailbox: write_port: ['. htmlspecialchars($full_command) .']<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: listmailbox: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: listmailbox: write_port: ['. htmlspecialchars($full_command) .']<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: listmailbox: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: listmailbox: could not write_port<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: listmailbox: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -696,18 +761,18 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: listmailbox: error in listmailbox<br>';
 					echo 'imap: listmailbox: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: Leaving listmailbox with error<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: Leaving listmailbox with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'reopen', True); }
+				if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'reopen', True); }
 			}
 			
 			// delete all text except the folder name
@@ -741,8 +806,8 @@
 				}
 			}
 			
-			if ($this->debug_dcom >= 2) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
-			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING listmailbox<br>'; }
+			if ($this->debug_dcom > 1) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
+			if ($this->debug_dcom > 0) { echo 'imap: LEAVING listmailbox<br>'; }
 			//return '';
 			return $mailboxes_array;
 		}
@@ -755,10 +820,11 @@
 		/*!
 		@function mailboxmsginfo
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_mailboxmsginfo
 		*/
 		function mailboxmsginfo($stream_notused='')
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: mailboxmsginfo NOT YET IMPLEMENTED imap sockets function<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: mailboxmsginfo NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		
@@ -828,7 +894,7 @@
 		*/
 		function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING status<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING status<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -858,12 +924,12 @@
 			$full_command = $cmd_tag.' STATUS "'.$svr_data['folder'].'" ('.$query_str.')';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom >= 2) { echo 'imap: status: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom >= 2) { echo 'imap: status: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: status: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: status: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom >= 1) { echo 'imap: status: LEAVING with error: could not write_port<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: status: LEAVING with error: could not write_port<br>'; }
 				$this->error();
 				return False;				
 			}
@@ -875,13 +941,13 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: status: error in status<br>';
 					echo 'imap: status: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status with error<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING status with error<br>'; }
 				return False;				
 			}
 			
@@ -890,18 +956,18 @@
 			// BUGGY UWASH IMAP SERVERS RETURN 2 LINES HERE, so increase to > 2
 			//if (count($response_array) > 2)
 			//{
-			//	if ($this->debug_dcom >= 2)
+			//	if ($this->debug_dcom > 1)
 			//	{
 			//		echo 'imap: status: error in status, more than (one) TWO lines (for buggy uwash servers) line server response, not normal<br>';
 			//		echo 'imap: status: last recorded error:<br>';
 			//		echo  $this->server_last_error().'<br>';
 			//	}
-			//	if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
+			//	if ($this->debug_dcom > 0) { echo 'imap: Leaving status with error<br>'; }
 			//	return False;				
 			//}
 			
 			// if we get here we have valid server data
-			if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'status', True); }
+			if ($this->debug_dcom > 1) { $this->report_svr_data($response_array, 'status', True); }
 			
 			
 			// initialize structure
@@ -921,13 +987,13 @@
 			// ERROR CHECK
 			if (stristr($response_line_of_data, '* STATUS') == False)
 			{
-				if ($this->debug_dcom >= 2)
+				if ($this->debug_dcom > 1)
 				{
 					echo 'imap: status: error in status, $response_line_of_data does not have "* STATUS" so it is not valid data<br>';
 					echo 'imap: status: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status with error at '.__LINE__.'<br>'; }
+				if ($this->debug_dcom > 0) { echo 'imap: LEAVING status with error at '.__LINE__.'<br>'; }
 				return False;				
 			}
 			
@@ -992,8 +1058,8 @@
 			// function "sort" needs to know "->messages" the total num msgs in (hopefully) this folder
 			// so L1 class var cache it so "sort" does not have to call this function if it has ALREADY been run
 			$this->mailbox_status = $info;
-			if ($this->debug_dcom >= 2) { echo 'imap: status: L1 class var caching: $this->mailbox_status DUMP:<pre>'; print_r($this->mailbox_status); echo '</pre>'; }
-			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING status<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: status: L1 class var caching: $this->mailbox_status DUMP:<pre>'; print_r($this->mailbox_status); echo '</pre>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: LEAVING status<br>'; }
 			return $info;
 		}
 		
@@ -1044,7 +1110,7 @@
 				// snarf the data
 				$data_mini_str = trim(substr($data_mini_str, 0, $data_end));
 				$return_data = (int)$data_mini_str;
-				if ($this->debug_dcom >= 2) { echo 'imap: snarf_status_data: '.$snarf_this.' = '.$return_data.'<br>'; }
+				if ($this->debug_dcom > 1) { echo 'imap: snarf_status_data: '.$snarf_this.' = '.$return_data.'<br>'; }
 			}
 			return $return_data;
 		}
@@ -1078,114 +1144,224 @@
 			}
 			return $total;
 		}
-					
+		
+		/**************************************************************************\
+		*	Message Number Stuff
+		\**************************************************************************/
+		/*!
+		@function msgno_to_uid
+		@abstract returns the UID for the given message sequence number **NOT CURRENTLY USED**
+		@param $stream_notused Stream is automatically handled by the underlying code in this socket class.
+		@param $msg_num (int) is the message sequence number, i.e. not its UID which is what we want to get.
+		@author Angles
+		@discussion not yet implemented in IMAP sockets module. 
+		implements imap_uid
+		*/
+		function msgno_to_uid($stream_notused,$msg_num)
+		{
+			// not yet implemented
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: msgno_to_uid<br>'; }
+			return False;
+		}
+		/*!
+		@function uid_to_msgno
+		@abstract returns the message sequence number for the given UID
+		@param $stream_notused Stream is automatically handled by the underlying code in this socket class.
+		@param $msg_num_uid (int) is the message UID, i.e. not its sequence number which is what we want to get.
+		@author Angles
+		@discussion not yet implemented in IMAP sockets module 
+		Implements imap_msgno. 
+		Change UID number into msg sequence number because functions like "imap_header" aka "imap_headerinfo" do not take UIDs, 
+		in this class "imap_header" is wrapped by class function "header"
+		RFC2060 6.4.8. UID Command
+		Yes do not be confused, we use IMAP "UID Command" in a php command 
+		called "imap_msgno" BUT NOT IN php command "imap_uid" HAHA. 
+		Often we need the simple sequence number for other IMAP commands 
+		so we use this function with a UID as the arg and get back the sequence number. 
+		Since we use the FETCH command as the carrier here, we can ask for and get other  
+		data at the same time just added to the data we get back, such as flags. But the
+		php-imap function only wants the sequence number.
+		EXAMPLE: 
+			C: 00000007 UID FETCH 131 UID
+			S: * 97 FETCH (UID 131)
+			S: 00000007 OK Completed
+		*/
+		function uid_to_msgno($stream_notused,$msg_num_uid)
+		{
+			// not yet implemented
+			if ($this->debug_dcom > 0) { echo 'imap: call to unimplemented socket function: uid_to_msgno<br>'; }
+			return False;
+		}
+		
 		/**************************************************************************\
 		*	Message Sorting
 		\**************************************************************************/
 		/*!
 		@function sort
 		@abstract not yet implemented in IMAP sockets module
+		@param $stream_notused 
+		@param $criteria (defined int) 0=SORTDATE , 1=SORTARRIVAL, 2=SORTFROM, 3=SORTSUBJECT, 4=SORTTO, 5=SORTCC, 6=SORTSIZE 
+		@param $reverse 1=reverse-sorting, 0=regular sort is low to high by default
+		@param $flags (bitmask) SE_UID return UIDs instead of sequence numbers, SE_NOPREFETCH dont prefetch searched messages.
+		@returns array of message numbers for a folder.
+		@author Angles
+		@discussion implements imap_sort
+		@example
+			00000006 UID SORT (REVERSE ARRIVAL)  US-ASCII ALL
 		*/
-		// options/flags are:
-			//SE_UID	Return UIDs instead of sequence numbers
-			//SE_NOPREFETCH	Don't prefetch searched messages.
-		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
+		function sort($stream_notused,$criteria=SORTARRIVAL,$reverse=False,$flags=0)
 		{
-			//if ($this->debug_dcom >= 1) { echo 'imap: sort NOT YET IMPLEMENTED imap sockets function<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap_sock.sort('.__LINE__.'): ENTERING sort <br>'; }
+			//if ($this->debug_dcom > 0) { echo 'imap: sort NOT YET IMPLEMENTED imap sockets function<br>'; }
 			//return False;
-		//}
-		
-		//function sort($folder='',$criteria=SORTDATE,$reverse=False,$options='')
-		//{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING sort<br>'; }
 			
-			// we need total num message in this folder, is it cached?
-			if ($this->mailbox_status != '')
+			// criteria
+			$str_criteria = '';
+			if ($criteria == SORTDATE)
 			{
-				$num_msgs = $this->mailbox_status->messages;
-				if ($this->debug_dcom >= 2) { echo 'imap: sort: using L1 class var cached $this->mailbox_status->messages ['.$this->mailbox_status->messages.']<br>'; }
+				$str_criteria = 'ARRIVAL';
+			}
+			elseif ($criteria == SORTARRIVAL)
+			{
+				$str_criteria = 'ARRIVAL';
+			}
+			elseif ($criteria == SORTFROM)
+			{
+				$str_criteria = 'FROM';
+			}
+			elseif ($criteria == SORTSUBJECT)
+			{
+				$str_criteria = 'SUBJECT';
+			}
+			elseif ($criteria == SORTTO)
+			{
+				$str_criteria = 'TO';
+			}
+			elseif ($criteria == SORTCC)
+			{
+				$str_criteria = 'CC';
+			}
+			elseif ($criteria == SORTSIZE)
+			{
+				$str_criteria = 'SIZE';
 			}
 			else
 			{
-				// we need an "fq_folder" to call this function
-				$fq_folder =	 $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_callstr')
-							.$GLOBALS['phpgw']->msg->get_arg_value('folder');
-				if ($this->debug_dcom >= 2) { echo 'imap: sort: NO L1 class var cached num msgs data, calling this->status with $fq_folder ['.htmlspecialchars($fq_folder).']<br>'; }
-				$status_data = $this->status($stream_notused, $fq_folder,SA_ALL);
-				$num_msgs = $status_data->messages;
+				$str_criteria = 'ARRIVAL';
 			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): param $criteria ['.htmlspecialchars(serialize($criteria)).'], $str_criteria ['.$str_criteria.'] <br>'; }
 			
-			
-			// DEBUG
-			//if ($this->debug_dcom >= 1) { echo 'imap: debug QUICK EXIT sort<br>'; }
-			//return False;
-			
-			
-			switch($criteria)
+			// order
+			$str_reverse = '';
+			if ($reverse)
 			{
-				case SORTDATE:
-					$old_list = $this->fetch_header(1,$num_msgs,'Date:');
-					$field_list = $this->convert_date_array($old_list);
-					break;
-				case SORTARRIVAL:
-					break;
-				case SORTFROM:
-					$field_list = $this->fetch_header(1,$num_msgs,'From:');
-					break;
-				case SORTSUBJECT:
-					$field_list = $this->fetch_header(1,$num_msgs,'Subject:');
-					break;
-				case SORTTO:
-					$field_list = $this->fetch_header(1,$num_msgs,'To:');
-					break;
-				case SORTCC:
-					$field_list = $this->fetch_header(1,$num_msgs,'cc:');
-					break;
-				case SORTSIZE:
-					$field_list = $this->fetch_field(1,$num_msgs,'RFC822.SIZE');
-					break;
-			}
-			@reset($field_list);
-			if($criteria == SORTSUBJECT)
-			{
-				if(!$reverse)
-				{
-					uasort($field_list,array($this,"ssort_ascending"));
-				}
-				else
-				{
-					uasort($field_list,array($this,"ssort_decending"));
-				}
-			}
-			elseif(!$reverse)
-			{
-				asort($field_list);
+				$str_reverse = 'REVERSE';
 			}
 			else
 			{
-				arsort($field_list);
+				$str_reverse = '';
 			}
-			$return_array = Array();
-			@reset($field_list);
-			$i = 1;
-			while(list($key,$value) = each($field_list))
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): param $reverse ['.htmlspecialchars(serialize($reverse)).'], $str_reverse ['.$str_reverse.'] <br>'; }
+			
+			// format the space for final querey
+			$reverse_and_criteria = '';
+			if ($str_reverse != '')
 			{
-				$return_array[] = $key;
-				if ($this->debug_dcom >= 2) { echo 'imap: sort: ('.$i++.') Field: <b>'.$value."</b>\t\tMsg Num: <b>".$key."</b><br>\r\n"; } 
+				$reverse_and_criteria = $str_reverse.' '.$str_criteria;
 			}
-			@reset($return_array);
-			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING sort<br>'; }
-			return $return_array;
+			else
+			{
+				// no space needed, only one param
+				$reverse_and_criteria = $str_criteria;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): final $reverse_and_criteria ['.$reverse_and_criteria.'] <br>'; }
+			
+			// CHARSET` (taken from RFC2060 Section  6.4.4.  SEARCH Command)
+			// US-ASCII MUST be supported; other [CHARSET]s MAY be supported.
+			$str_charset = 'US-ASCII';
+			// search key "ALL"` (taken from RFC2060 Section  6.4.4.  SEARCH Command)
+			// All messages in the mailbox; the default initial key for ANDing.
+			$str_search_key = 'ALL';
+			
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			// flags blank or  SE_UID andor SE_NOPREFETCH
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
+			{
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.sort('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.sort('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			
+			
+			// assemble the server querey, looks like this:  00000006 UID SORT (REVERSE ARRIVAL)  US-ASCII ALL
+			$cmd_tag = 's006';
+			$full_command = $cmd_tag.' UID SORT ('.$reverse_and_criteria.') '.$str_charset.' '.$str_search_key;
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.sort('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.sort('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			
+			// read the server data
+			$raw_response = array();
+			$prepped_response = '';
+			$response_array = array();
+			// for some reason I get back an array with a single element, item $raw_response[0] which is the string I want to work with
+			$raw_response = $this->imap_read_port($expecting);
+			if ($this->debug_dcom > 2) { echo 'imap_sock.sort('.__LINE__.'): $raw_response DUMP: <pre>'; print_r($raw_response); echo '</pre>';  }
+			if (!$raw_response)
+			{
+				$response_array = array();
+			}
+			else
+			{
+				// it is probably only 1 element, but just to be sure, do this
+				$loops = count($raw_response);
+				for($i=0;$i<=$loops;$i++)
+				{
+					// combine and also get rid of any CRLF at the end of the elements
+					$prepped_response .= rtrim($raw_response[$i]);
+				}
+				// get rid or string "* SORT " at beginning of response, then make an array
+				//$raw_response[0] = str_replace('* SORT ', '', $raw_response[0]);
+				$prepped_response= str_replace('* SORT ', '', $prepped_response);
+				//$raw_response[0] = rtrim($raw_response[0]);
+				// MAKE THE ARRAY
+				$response_array = explode(' ', $prepped_response);
+			}
+			
+			if ($this->debug_dcom > 2) { echo 'imap_sock.sort('.__LINE__.'): about to return $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			if ($this->debug_dcom > 0) { echo 'imap_sock.sort('.__LINE__.'): LEAVING returning $response_array<br>'; }
+			return $response_array;
 		}
 		
 		
 		/*!
 		@function fetch_header
-		@abstract Under Construction - Used by sort
+		@abstract Under Construction - Used by sort 
+		@description OBSOLETED
 		*/
 		function fetch_header($start,$stop,$element)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: ENTERING fetch_header<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: ENTERING fetch_header<br>'; }
 			
 			if(!$this->write_port('a001 FETCH '.$start.':'.$stop.' RFC822.HEADER'))
 			{
@@ -1199,7 +1375,7 @@
 				//while(!ereg('FETCH completed',$response))
 				while(chop($response)!='')
 				{
-					if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: Response = '.$response."<br>\r\n"; } 
+					if ($this->debug_dcom > 1) { echo 'imap: fetch_header: Response = '.$response."<br>\r\n"; } 
 					if(ereg('^\*',$response))
 					{
 						$field = explode(' ',$response);
@@ -1208,20 +1384,20 @@
 					if(ereg('^'.$element,$response))
 					{
 						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen($element)+1));
-						if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
+						if ($this->debug_dcom > 1) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
 					}
 					elseif(ereg('^'.strtoupper($element),$response))
 					{
 						$field_element[$msg_num] = $this->phpGW_quoted_printable_decode2(substr($response,strlen(strtoupper($element))+1));
-						if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
+						if ($this->debug_dcom > 1) { echo 'imap: fetch_header: <b>Field:</b> '.$field_element[$msg_num]."\t = <b>Msg Num</b> ".$msg_num."<br>\r\n"; } 
 					}
 					$response = $this->read_port();
 				}
 				$response = $this->read_port();
 			}
 			$response = $this->read_port();
-			if ($this->debug_dcom >= 2) { echo 'imap: fetch_header: returning $field_element ['.$field_element.'] <br>'; } 
-			if ($this->debug_dcom >= 1) { echo 'imap: LEAVING fetch_header<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap: fetch_header: returning $field_element ['.$field_element.'] <br>'; } 
+			if ($this->debug_dcom > 0) { echo 'imap: LEAVING fetch_header<br>'; }
 			return $field_element;
 		}
 		
@@ -1229,6 +1405,7 @@
 		/*!
 		@function fetch_field
 		@abstract Under Construction
+		@discussion OBSOLETED
 		*/
 		function fetch_field($start,$stop,$element)
 		{
@@ -1249,71 +1426,2225 @@
 			return $field_element;
 		}		
 		
-		
+
 		/**************************************************************************\
 		*
-		*	Message Structural Information
+		*	Message Structural Information - FETCHSTRUCTURE
 		*
 		\**************************************************************************/
+
+		/*!
+		@function make_param
+		@abstract 
+		@param $parameters_str (string) space seperated attrib value items NO PARENS
+		@discussion strip open and close parens before feeding into here. You get back an 
+		array of parameter objects as nevessary
+		@author Angles
+		*/
+		function make_param($parameters_str)
+		{
+			$tmp_data = array();
+			$tmp_data['parameters_str'] = $parameters_str;
+			if ($this->debug_dcom > 0) { echo '<pre>'.'make_param('.__LINE__.'): ENTERING param $parameters_str BETTER already have open and close parens stripped! '."\n"; }
+			if ($this->debug_dcom > 1) { echo 'make_param('.__LINE__.'): $tmp_data[parameters_str] is: ['.$tmp_data['parameters_str'] ."]\n"; }
+			// what we have now looks somethign like one of these
+			// "CHARSET" "utf-8"
+			// "TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0"
+			$tmp_data['params_exploded'] = array();
+			$tmp_data['parameters'] = array();				
+			$tmp_data['params_exploded'] = explode(' ', $tmp_data['parameters_str']);
+			// loop to clean of leading and trailing quotes
+			$loops = count($tmp_data['params_exploded']);
+			for ($i=0; $i < $loops ;$i++)
+			{
+				$this_str = $tmp_data['params_exploded'][$i];
+				if ($this_str{0} == '"')
+				{
+					$this_str = substr($this_str, 1);
+				}
+				$last_pos = (strlen($this_str) - 1);
+				if ($this_str{$last_pos} == '"')
+				{
+					$this_str = substr($this_str, 0, $last_pos);
+				}
+				$tmp_data['params_exploded'][$i] = $this_str;
+			}
+			//echo 'make_param('.__LINE__.'): post-cleaning $tmp_data[params_exploded] is: ['.serialize($tmp_data['params_exploded'])."]\n";
+			if ($this->debug_dcom > 2) { echo 'make_param('.__LINE__.'): post-cleaning $tmp_data[params_exploded] DUMP: '.""; print_r($tmp_data['params_exploded']); echo ""; }
+			// loop to make param objects
+			$loops = count($tmp_data['params_exploded']);
+			for ($i=0; $i < $loops ;$i=($i+2))
+			{
+				$attribute = 'UNKNOWN_PARAM_ATTRIBUTE';
+				if ((isset($tmp_data['params_exploded'][$i]))
+				&& (trim($tmp_data['params_exploded'][$i]) != ''))
+				{
+					$attribute = $tmp_data['params_exploded'][$i];
+				}
+				$value = 'UNKNOWN_PARAM_VALUE';
+				$val_pos = $i+1;
+				if ((isset($tmp_data['params_exploded'][$val_pos]))
+				&& (trim($tmp_data['params_exploded'][$val_pos]) != ''))
+				{
+					$value = $tmp_data['params_exploded'][$val_pos];
+				}
+				// make this param pair object
+				$tmp_data['parameters'][] = new msg_params($attribute,$value);
+			}
+			if ($this->debug_dcom > 2) { echo 'make_param('.__LINE__.'): post-looping $tmp_data[parameters] DUMP: '.""; print_r($tmp_data['parameters']); echo ""; }
+			//echo 'make_param('.__LINE__.'): $tmp_data[parameters] is: ['.serialize($tmp_data['parameters'])."]\n";
+			if ($this->debug_dcom > 0) { echo 'make_param('.__LINE__.'): LEAVING returning $tmp_data[parameters]'.'</pre>'."\n"; }
+			return $tmp_data['parameters'];
+		}
+
+		/*!
+		@function make_msg_struct
+		@abstract build php-imap style fetstructure body object
+		@param $called_from (string) used for debugging
+		@param $ref_parent REFERENCE of type either "msg_structure" or "parts_parent_stub"
+		either object has element VAR->parts[] which is what is important.
+		@author Angles
+		@discussion under construction. Uses recursive calls. 
+		Each call lasts only for one part.
+		@example
+			// this is the order of the stuff
+			// "both" = both simple and multipart contain this data
+			// otherwise only the simple struct contains that data
+			/*
+			1a		type			"TEXT"
+			1b		() paren struct implied by multitype
+		both	2		subtype		"PLAIN"
+		both	3		parameters		("CHARSET" "utf-8")
+			4		id				NIL
+			5		description	string or NIL
+			6		encoding		"QUOTED-PRINTABLE"
+			7		bytes			484
+			8a		lines
+					// THEN IT DEPENDS
+					if type TEXT (and some other types) then  "lines" goes here
+			8b		or IF MESSAGE RFC822 encap the a paren (bodystruct) structure goes here
+			
+			// 		THIS BEGINS OPTIONAL "EXTENSION DATA" ALWAYS IN ORDER FROM HERE, MAY END AT ANY TIME THOUGH
+			9		MD5
+		both	10		disposition	("INLINE" NIL)
+		both	11		language		NIL
+			// plus some other stuff
+		@access private
+		*/
+		function make_msg_struct($called_from='', &$ref_parent)
+		{
+	
+			if ($this->debug_dcom > 0) { echo '<pre>'.'bs('.__LINE__.'): ENTERING make_msg_struct, called from ['.$called_from."]\n\n"; }
+			$this_level_debth = 0;
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+			if ($this->debug_dcom > 2) { echo 'bs: CURRENT $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			$tmp_data=array();
+			
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ** looking for standard open paren'."\n\n"; }
+			
+			// LEVEL ANALYSIS
+			if ($this->bs_rawstr{0} == '(')
+			{
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): found standard open paren, increasing debths'."\n"; }
+				// increase debth items
+				$this->bs_cur_debth++;
+				$this_level_debth++;
+				if ($this->bs_cur_debth > $this->bs_max_debth)
+				{
+					$this->bs_max_debth = $this->bs_cur_debth;
+				}
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+				// eat this paren and move on 
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): eat this paren and move on'."\n"; }
+				// substr(str, 1) will remove only the first char (at pos [0])
+				$this->bs_rawstr = substr($this->bs_rawstr, 1);
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			}
+			else
+			{
+				echo "\n".'bs('.__LINE__.'): *** FREAK OUT we wanted an open paren, did not get it'."\n";
+			}
+			
+			// FILL_ITEM: STRUCTURE
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): *** MAKE OBJECT no matter what, we are going to need a new part and fill it'."\n"; }
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): create new msg_structure object, attach to $ref_parent->parts[]'."\n"; }
+			// parent-?parts is an array zero based, so the next item number is the count of that array
+			$my_partnum = count($ref_parent->parts);
+			$ref_parent->parts[$my_partnum] = '';
+			$ref_parent->parts[$my_partnum] = new msg_structure;
+			// we do not use the "custom" item for imap
+			unset($ref_parent->parts[$my_partnum]->custom);
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $my_partnum is ['.$my_partnum.'], $ref_parent->parts['.$my_partnum.'] is this level part'."\n"; }
+			//if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): status: current $ref_parent DUMP'."\n"; print_r($ref_parent); echo "\n"; }
+			
+			// continue on...
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ... continue, either collect simple type, or find a kick-up open paren'."\n\n"; }
+			
+			// tells us what data to collect later
+			$was_kicked_up = False;
+			// the next char better be an open paren (for a kick-up) or type data
+			if ($this->bs_rawstr{0} == '(')
+			{
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): found kick-up open paren, this implies type MULTIPART'."\n"; }
+				$tmp_data['type_str'] = 'MULTIPART';
+				$tmp_data['type_int'] = $this->type_str_to_int($tmp_data['type_str']);
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $tmp_data[type_str] is ['.$tmp_data['type_str'].'] $tmp_data[type_int] is ['.$tmp_data['type_int'].']'."\n"; }
+				
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->type = $tmp_data['type_int'];
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->type is ['.serialize($ref_parent->parts[$my_partnum]->type).']'."\n"; }
+				
+				// NOW RECURSE, when the recurse upper level dies and returns, we continue on
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): pre-recurse status: $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+				
+				//echo "\n".'bs('.__LINE__.'): *** FREAK OUT we NEED TO recurse here, not coded yet!!!'."\n";
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** CALLING FOR KICK-UP RECURSE NOW!!!!!, $ref_parent->parts[$my_partnum] is parent'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum] will be passed as parent, this will deepen the debth level'."\n"; }
+				// a. eat no parens, make recurse call
+				$this->make_msg_struct('kick-up recurse line('.__LINE__.')', $ref_parent->parts[$my_partnum]);
+				
+				// b. when we return, collect data typical of multipart data
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** RETURNING FROM KICK-UP RECURSE CALL!!!!!'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): post-recurse status: $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-recurse $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+				if ($this->bs_rawstr{0} == ' ')
+				{
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): now eat the leading space of $this->bs_rawstr'."\n"; }
+					$this->bs_rawstr = substr($this->bs_rawstr, 1);
+				}
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-eat-space $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+				// after recurse upper level is done, we fallback to here and continue
+				$was_kicked_up = True;
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): setting $was_kicked_up to ['.serialize($was_kicked_up)."]\n"; }
+				// eat this paren and move on ????
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ...continue on to collect data typical of multipart data'."\n\n"; }
+			}
+			elseif ($this->bs_rawstr{0} == '"')
+			{
+				// not multipart - STANDARD, BASIC LEVEL INFO, starts with TYPE
+				$was_kicked_up = False;
+				// ** TYPE **  main string is now
+				// "TEXT" "PLAIN"   .....
+				// cause we just ate any open parens above
+				//$start = strpos($this->bs_rawstr, '"');
+				$start = 1;
+				
+				// we know " " is next, so ...
+				$end = strpos($this->bs_rawstr, '" "' );
+				$slen = ($end-0) - $start;
+				$tmp_data['type_str'] = substr($this->bs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[type_str] is: ['.$tmp_data['type_str'] ."]\n"; }
+				$tmp_data['type_int'] = $this->type_str_to_int($tmp_data['type_str']);
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[type_int] is: ['.$tmp_data['type_int']."]\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $tmp_data[type_str] is ['.$tmp_data['type_str'].'] $tmp_data[type_int] is ['.$tmp_data['type_int'].']'."\n"; }
+				
+				// FILL ITEM
+				$ref_parent->parts[$my_partnum]->type = $tmp_data['type_int'];
+				if ($this->debug_dcom > 3) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->type is ['.serialize($ref_parent->parts[$my_partnum]->type).']'."\n"; }
+				
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			
+			}
+			else
+			{
+				echo "\n".'bs('.__LINE__.'): *** FREAK OUT unhandled situation, not open paren, not open quote'."\n\n\n";
+			}
+			
+			// CONTINUE COMMECTING DATA
+			// some is common to simple and multipart, some is just simple
+				
+			if (($was_kicked_up == True)
+			|| ($was_kicked_up == False))
+			{
+				// ** SUBTYPE **  main string is now
+				// "PLAIN" ("CHARSET" "utf-8") NIL NI
+				// (this is common to both)
+				//$start = strpos($this->bs_rawstr, '"');
+				$start = 0;
+				$start = $start + 1;
+				$end = strpos($this->bs_rawstr, '" ' );
+				$slen = ($end-0) - $start;
+				$tmp_data['subtype_str'] = substr($this->bs_rawstr, $start, $slen);
+				if (trim($tmp_data['subtype_str']) == '')
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: no subtype, SOULD WE put a default here?'."\n"; }
+					$tmp_data['ifsubtype'] = False;
+					$tmp_data['subtype'] = '';
+				}
+				else
+				{
+					$tmp_data['ifsubtype'] = True;
+					$tmp_data['subtype'] = $tmp_data['subtype_str'];
+				}
+				if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[subtype_str] is: ['.$tmp_data['subtype_str'].'], $tmp_data[subtype] is: ['.$tmp_data['subtype']."]\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[ifsubtype] is: ['.serialize($tmp_data['ifsubtype'])."]\n"; }
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->ifsubtype = $tmp_data['ifsubtype'];
+				if ($tmp_data['ifsubtype'] == True)
+				{
+					$ref_parent->parts[$my_partnum]->subtype = $tmp_data['subtype'];
+				}
+				else
+				{
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifsubtype = 0;
+					unset($ref_parent->parts[$my_partnum]->subtype);
+				}
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				
+				
+				// ** PARAMETERS **  main string is now
+				// ("CHARSET" "utf-8") NIL NIL "QUOT
+				// OR multiple params look like this
+				// ("TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0") NIL ....
+				// OR COULD it BE BLANK  ()  ???
+				// OR could be nested params  ???
+				// OR could it be NIL ???
+				// (this is common to both)
+				if (($this->bs_rawstr{0} == '(')
+				&& ($this->bs_rawstr{1} == ')'))
+				{
+					$tmp_data['parameters_whatup'] = 'blank_parens';
+					$end = 2;
+				}
+				elseif (($this->bs_rawstr{0} == 'N')
+				&& ($this->bs_rawstr{1} == 'I')
+				&& ($this->bs_rawstr{2} == 'L'))
+				{
+					$tmp_data['parameters_whatup'] = 'nil';
+					$end = 3;
+				}
+				else
+				{
+					$tmp_data['parameters_whatup'] = 'ok';
+				}
+				// so what do we do now...
+				if ($tmp_data['parameters_whatup'] != 'ok')
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: no parameters'."\n"; }
+					$tmp_data['ifparameters'] = False;
+					$tmp_data['parameters'] = '';
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				else
+				{
+					$start = 0;
+					$start = $start + 1;
+					// this is safe in both cases of contimue with simple or skip below to multipart
+					$end = strpos($this->bs_rawstr, ') ' );
+					$slen = ($end-0) - $start;
+					$tmp_data['parameters_str'] = substr($this->bs_rawstr, $start, $slen);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $tmp_data[parameters_str] is: ['.$tmp_data['parameters_str'] ."]\n"; }
+					// this better be true if we are here!
+					$tmp_data['ifparameters'] = True;
+					// call sub-function to make the params for us
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): calling $this->make_param($tmp_data[parameters_str]) '."\n"; }
+					$tmp_data['parameters'] = array();
+					$tmp_data['parameters'] = $this->make_param($tmp_data['parameters_str']);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-make_param $tmp_data[parameters] DUMP: '.""; print_r($tmp_data['parameters']); echo ""; }
+					
+					/*
+					// what we have now looks somethign like one of these
+					// "CHARSET" "utf-8"
+					// "TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0"
+					$tmp_data['ifparameters'] = True;
+					$tmp_data['params_exploded'] = array();
+					$tmp_data['parameters'] = array();				
+					$tmp_data['params_exploded'] = explode(' ', $tmp_data['parameters_str']);
+					
+					// loop to clean of leading and trailing quotes
+					$loops = count($tmp_data['params_exploded']);
+					for ($i=0; $i < $loops ;$i++)
+					{
+						$this_str = $tmp_data['params_exploded'][$i];
+						if ($this_str{0} == '"')
+						{
+							$this_str = substr($this_str, 1);
+						}
+						$last_pos = (strlen($this_str) - 1);
+						if ($this_str{$last_pos} == '"')
+						{
+							$this_str = substr($this_str, 0, $last_pos);
+						}
+						$tmp_data['params_exploded'][$i] = $this_str;
+					}
+					//echo 'bs('.__LINE__.'): post-cleaning $tmp_data[params_exploded] is: ['.serialize($tmp_data['params_exploded'])."]\n";
+					echo 'bs('.__LINE__.'): post-cleaning $tmp_data[params_exploded] DUMP: '.""; print_r($tmp_data['params_exploded']); echo "";
+					// loop to make param objects
+					$loops = count($tmp_data['params_exploded']);
+					for ($i=0; $i < $loops ;$i=($i+2))
+					{
+						$attribute = 'UNKNOWN_PARAM_ATTRIBUTE';
+						if ((isset($tmp_data['params_exploded'][$i]))
+						&& (trim($tmp_data['params_exploded'][$i]) != ''))
+						{
+							$attribute = $tmp_data['params_exploded'][$i];
+						}
+						$value = 'UNKNOWN_PARAM_VALUE';
+						$val_pos = $i+1;
+						if ((isset($tmp_data['params_exploded'][$val_pos]))
+						&& (trim($tmp_data['params_exploded'][$val_pos]) != ''))
+						{
+							$value = $tmp_data['params_exploded'][$val_pos];
+						}
+						// make this param pair object
+						$tmp_data['parameters'][] = new msg_params($attribute,$value);
+					}
+					echo 'bs: post-looping $tmp_data[parameters] DUMP: '.""; print_r($tmp_data['parameters']); echo "";
+					//echo 'bs: $tmp_data[parameters] is: ['.serialize($tmp_data['parameters'])."]\n";
+					*/
+					
+					
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				// ok we have finished handling param data, so...
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->ifparameters = $tmp_data['ifparameters'];
+				if (($tmp_data['ifparameters'])
+				&& (count($tmp_data['parameters']) > 0))
+				{
+					$ref_parent->parts[$my_partnum]->parameters = $tmp_data['parameters'];
+				}
+				else
+				{
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifparameters = 0;
+					unset($ref_parent->parts[$my_partnum]->parameters);
+				}
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->ifparameters is ['.serialize($ref_parent->parts[$my_partnum]->ifparameters).']'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->parameters is ['.serialize($ref_parent->parts[$my_partnum]->parameters).']'."\n"; }
+				// done parameters
+			}	
+			
+			// this begins a bloc of data ONLY present for simple, not multipart, data
+			if ($was_kicked_up == False)
+			{
+				// ** ID **  main string is now
+				// NIL NIL "QUOTED-PRINTABLE" 48
+				//  --OR--
+				// "<image003.jpg@01C2454F.51BF0000>" NIL "BASE64" 1092
+				$start = 0;
+				$end = strpos($this->bs_rawstr, ' ' );
+				$slen = ($end-0) - $start;
+				$tmp_data['id_str'] = substr($this->bs_rawstr, $start, $slen);
+				if (trim($tmp_data['id_str']) == 'NIL')
+				{
+					$tmp_data['ifid'] = False;
+					$tmp_data['id'] = '';
+				}
+				else
+				{
+					$tmp_data['ifid'] = True;
+					$tmp_data['id'] = $tmp_data['id_str'];
+					if ($this->debug_dcom > 1) { echo 'bs: strip open and close quotes from $tmp_data[id_str], ['.$tmp_data['id_str'] ."]\n"; }
+					if ($tmp_data['id']{0} == '"')
+					{
+						$tmp_data['id'] = substr($tmp_data['id'], 1);
+					}
+					$last_pos = (strlen($tmp_data['id']) - 1);
+					if ($tmp_data['id']{$last_pos} == '"')
+					{
+						$tmp_data['id'] = substr($tmp_data['id'], 0, $last_pos);
+					}
+					if ($this->debug_dcom > 1) { echo 'bs: prepped quote-stripped $tmp_data[id], ['.$tmp_data['id'] ."]\n"; }
+				}
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[id_str] is: ['.$tmp_data['id_str'] ."]\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[ifid] is: ['.serialize($tmp_data['ifid'])."]\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[id] is: ['.$tmp_data['id'] ."]\n"; }
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->ifid = $tmp_data['ifid'];
+				if (($tmp_data['ifid'])
+				&& (trim($tmp_data['id']) != ''))
+				{
+					$ref_parent->parts[$my_partnum]->id = $tmp_data['id'];
+				}
+				else
+				{
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifid = 0;
+					unset($ref_parent->parts[$my_partnum]->id);
+				}
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->ifid is ['.serialize($ref_parent->parts[$my_partnum]->ifid).']'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->id is ['.serialize($ref_parent->parts[$my_partnum]->id).']'."\n"; }
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				
+				
+				// ** DESCRIPTION **  main string is now
+				// NIL "QUOTED-PRINTABLE" 48
+				// OR an actual description looks like this
+				// "This is a digitally signed message part" "7BIT" 196 ...
+				if (($this->bs_rawstr{0} == 'N')
+				&& ($this->bs_rawstr{1} == 'I')
+				&& ($this->bs_rawstr{2} == 'L'))
+				{			
+					$start = 0;
+					$end = strpos($this->bs_rawstr, ' ' );
+					$slen = ($end-0) - $start;
+					$tmp_data['description_str'] = substr($this->bs_rawstr, $start, $slen);
+					$tmp_data['ifdescription'] = False;
+					$tmp_data['description'] = '';
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+					// show this later for better clarity of debugging
+					//if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				else
+				{
+					// there BETTER be a quote as first char, so start = 1
+					$start = 1;
+					$end = strpos($this->bs_rawstr, '" ' );
+					$slen = ($end-0) - $start;
+					$tmp_data['description_str'] = substr($this->bs_rawstr, $start, $slen);
+					$tmp_data['ifdescription'] = True;
+					$tmp_data['description'] = $tmp_data['description_str'];
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+					// show this later for better clarity of debugging
+					//echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n";
+				}
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[description_str] is: ['.$tmp_data['description_str'] ."]\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[ifdescription] is: ['.serialize($tmp_data['ifdescription'])."]\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[description] is: ['.$tmp_data['description'] ."]\n"; }
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->ifdescription = $tmp_data['ifdescription'];
+				if (($tmp_data['ifdescription'])
+				&& (trim($tmp_data['description']) != ''))
+				{
+					$ref_parent->parts[$my_partnum]->description = $tmp_data['description'];
+				}
+				else
+				{
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifdescription = 0;
+					unset($ref_parent->parts[$my_partnum]->description);
+				}
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->ifdescription is ['.serialize($ref_parent->parts[$my_partnum]->ifdescription).']'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->description is ['.serialize($ref_parent->parts[$my_partnum]->description).']'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				
+				// ** ENCODING **  main string is now
+				// "QUOTED-PRINTABLE" 484 20 NIL (
+				//$start = strpos($this->bs_rawstr, '"');
+				$start = 1;
+				$end = strpos($this->bs_rawstr, '" ' );
+				$slen = ($end-0) - $start;
+				$tmp_data['encoding_str'] = substr($this->bs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[encoding_str] is: ['.$tmp_data['encoding_str']."]\n"; }
+				$tmp_data['encoding_int'] = $this->encoding_str_to_int($tmp_data['encoding_str']);
+				if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[encoding_int] is: ['.$tmp_data['encoding_int']."]\n"; }
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->encoding = $tmp_data['encoding_int'];
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->encoding is ['.serialize($ref_parent->parts[$my_partnum]->encoding).']'."\n"; }
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				
+				// ** BYTES **  main string is now
+				// 484 20 NIL (
+				$start = 0;
+				$end = strpos($this->bs_rawstr, ' ');
+				$slen = ($end-0) - $start;
+				$tmp_data['bytes'] = substr($this->bs_rawstr, $start, $slen);
+				$tmp_data['bytes'] = (int)$tmp_data['bytes'];
+				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[bytes] is: ['.$tmp_data['bytes']."]\n"; }
+				// FILL_ITEM
+				$ref_parent->parts[$my_partnum]->bytes = $tmp_data['bytes'];
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->bytes is ['.serialize($ref_parent->parts[$my_partnum]->bytes).']'."\n"; }
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+				if ($this->debug_dcom > 3) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+
+
+				// *** END BASIC DATA ***
+				// now we might find:
+				// a. ENCAPSULATION *** if message/rfc822
+				// 			that is 1. (envelope) 2. (bodystructure) 3. THEN (b) LINES
+				// b. ** LINES **  if type is text and it is a number
+				// c. Extension Data, in this order:
+				// 		MD5, disposition, language, location
+				
+				// so what do we have ...
+				// message/rfc822 encap ?
+				if ($this->bs_rawstr{0} == '(')
+				{
+					// ** ENCAPSULATION *** if message/rfc822
+					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): found open paren, so we have *** ENCAPSULATED message/rfc822'."\n"; }
+					
+					// 1. (envelope)
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ENCAP 1. is (envelope) - get its length, eat it, and move on... '."\n"; }
+					$loopz = strlen($this->bs_rawstr);
+					$tmp_data['encap_paren_count'] = 0;
+					$tmp_data['encap_env_end'] = 0;
+					for ($x=0; $x < $loopz ; $x++)
+					{
+						// when paren count gets back to 0, we get to the end of enbeded envelope
+						if ($this->bs_rawstr{$x} == '(')
+						{
+							$tmp_data['encap_paren_count']++;
+							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found open paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+						}
+						elseif ($this->bs_rawstr{$x} == ')')
+						{
+							$tmp_data['encap_paren_count']--;
+							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found close paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+						}
+						// are we back to zero?
+						
+						// do we continue to loop
+						if ($tmp_data['encap_paren_count'] == 0)
+						{
+							// BREAK
+							$tmp_data['encap_env_end'] = $x;
+							if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): break from this loop - got end of encap envelope at $tmp_data[encap_env_end] is ['.$tmp_data['encap_env_end'].']'."\n"; }
+							break;
+						}
+					}
+					
+					// eat the envelope
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat the envelope..., eliminate up to $tmp_data[encap_env_end]+2 ['.$tmp_data['encap_env_end'].']+2'."\n"; }
+					// encap_env_end +2 eats the env close paren and the space that follows it
+					$this->bs_rawstr = substr($this->bs_rawstr, $tmp_data['encap_env_end']+2);
+					if ($this->debug_dcom > 2) { echo 'bs: post-envelope-eat NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+					
+					// 2. (bodystructure)
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ... now should be at ENCAP 2. bodystructure, look for open paren '."\n"; }
+					if ($this->bs_rawstr{0} != '(')
+					{
+						echo "\n".'bs('.__LINE__.'): *** FREAK OUT we wanted open paren of, did not get it'."\n";
+					}
+					else
+					{
+						if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** CALLING FOR ENCAP KICK-UP RECURSE NOW!!!!!, $ref_parent->parts[$my_partnum] is parent'."\n"; }
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum] will be passed as parent, this will deepen the debth level'."\n"; }
+						// a. eat NO parens, make recurse call
+						$this->make_msg_struct('encap kick-up recurse line('.__LINE__.')', $ref_parent->parts[$my_partnum]);
+					}
+	
+					// 3. return and contuinue on...
+					// b. when we return, collect data typical of multipart data
+					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** RETURNING FROM ENCAP KICK-UP RECURSE CALL!!!!!'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-recurse status: $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-recurse $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): now returned, continue collect data as if nothing happened, i.e. as for single part struct'."\n"; }
+					if ($this->bs_rawstr{0} == ' ')
+					{
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): left-trim $this->bs_rawstr, we do not want space at the first position'."\n"; }
+						$this->bs_rawstr = ltrim($this->bs_rawstr);
+						if ($this->debug_dcom > 2) { echo 'bs: status: post-ltrim NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+					}
+				}
+				
+				// b. ** LINES **  if type is text and it is a number and on return from encap, or
+				// c. ** MD5 if not a number (usually NIL but may be number in pos1 anyway?)
+				// main string is now
+				// 20 		NIL (
+				// OR 		NIL ("INLINE
+				// do we have a number? (btw, is 0 a good lines value anyway?)
+				$tmp_data['lines_test'] = $this->bs_rawstr{0};
+				if ((
+					((string)$tmp_data['lines_test'] == '0')
+					)
+				|| (((int)$tmp_data['lines_test'] >= 1)
+					&& ((int)$tmp_data['lines_test'] <= 9)
+					)
+				)
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: we DO have LINES value YES'."\n"; }
+					$start = 0;
+					$end = strpos($this->bs_rawstr, ' ');
+					$slen = ($end-0) - $start;
+					$tmp_data['lines'] = substr($this->bs_rawstr, $start, $slen);
+					$tmp_data['lines'] = (int)$tmp_data['lines'];
+					if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[lines] is: ['.$tmp_data['lines']."]\n"; }
+					// FILL_ITEM
+					$ref_parent->parts[$my_partnum]->lines = $tmp_data['lines'];
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->lines is ['.serialize($ref_parent->parts[$my_partnum]->lines).']'."\n"; }
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				else
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: we have NO LINES value Skipping LINES'."\n"; }
+					$tmp_data['lines'] = '';
+					// FILL_ITEM
+					unset($ref_parent->parts[$my_partnum]->lines);
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $ref_parent->parts[$my_partnum]->lines is ['.serialize($ref_parent->parts[$my_partnum]->lines).']'."\n"; }
+				}
+				
+				if ($this->debug_dcom > 2) { echo "\n".'bs('.__LINE__.'): note this is the end of rfc3501 Basic Data'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): what follows is rfc3501 Extended Data: any of these in this order: '."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): a. MD5, b. disposition, c. language, d. location ; and stopping at any one of them'."\n\n"; }
+				
+				// ** MD5 **  main string is now
+				// NIL ("INLINE
+				// right now php-imap does not handle this item, it is almost always NIL
+				$start = 0;
+				$end = strpos($this->bs_rawstr, ' ');
+				$slen = ($end-0) - $start;
+				$tmp_data['md5'] = substr($this->bs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo 'bs: This is probably MD5 but we do not handle it now, usualy NIL, so eat it and move on'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[md5] is: ['.$tmp_data['md5']."]\n"; }
+				// FILL_ITEM
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): php doe NOT handle MD5 right now, nothing to set or unset, skipping...'."]\n"; }
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				// str_replace WAS GREEDY, use another way
+				$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+				if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			}
+			else
+			{
+				// UNSET AND/OR NORMALIZE items that get skipped for kicked-up parts
+				// instead of FALSE, make obvious int 0 instead of bool
+				// ID
+				$ref_parent->parts[$my_partnum]->ifid = 0;
+				unset($ref_parent->parts[$my_partnum]->id);
+				// DESCRIPTION
+				$ref_parent->parts[$my_partnum]->ifdescription = 0;
+				unset($ref_parent->parts[$my_partnum]->description);
+				// ENCODING
+				// PROBLEM: mutipart does not really provide encoding explicitly
+				// it *may* give info about it in dparams or params maybe
+				// BUT example multipart parent items seem to always have 0 for encoding
+				// encoding 0 = "7bit", perhaps RFC require this outer element to be 7bit???
+				$ref_parent->parts[$my_partnum]->encoding = ENC7BIT;
+				// BYTES 
+				unset($ref_parent->parts[$my_partnum]->bytes);
+				// LINES
+				unset($ref_parent->parts[$my_partnum]->lines);
+				// MD5
+				// php doe NOT handle MD5 right now, nothing to set or unset here
+			}
+			
+			// this data exists for both simple and multipart data
+			if (($was_kicked_up == True)
+			|| ($was_kicked_up == False))
+			{
+				
+				// ** DISPOSITION **  main string is now
+				// 			("INLINE" NIL) NIL)
+				// or		("ATTACHMENT" ("FILENAME" "hook_sidebox_menu.inc.php")) NIL)
+				// or		NIL NIL)("APPLICATION" "OCTE
+				if (($this->bs_rawstr{0} == 'N')
+				&& ($this->bs_rawstr{1} == 'I')
+				&& ($this->bs_rawstr{2} == 'L'))
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: we have NO disposition, and thus we have no dparameters'."\n"; }
+					$tmp_data['ifdisposition'] = 0;
+					$tmp_data['ifdparameters'] = False;
+					if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[ifdisposition] is: ['.$tmp_data['ifdisposition']."]\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[ifdparameters] is: ['.$tmp_data['ifdparameters']."]\n"; }
+					// FILL_ITEM
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifdisposition = 0;
+					unset($ref_parent->parts[$my_partnum]->disposition);
+					// make obvious int 0 instead of bool
+					$ref_parent->parts[$my_partnum]->ifdparameters = 0;
+					unset($ref_parent->parts[$my_partnum]->dparameters);
+					//// type3 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, 4);
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				else
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: we do have some kind of disposition data'."\n"; }
+					$start = 0;
+					$end = strpos($this->bs_rawstr, ') ');
+					// end+1 so we incluse all parens including the first and last
+					$slen = ($end+1) - $start;
+					$tmp_data['disposition_total'] = substr($this->bs_rawstr, $start, $slen);
+					//echo 'bs: $tmp_data[disposition_total] is: ['.$tmp_data['disposition_total']."]\n";
+					
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					// DO THIS NOW - disposition_total has coumpound data, we use it alone for this whole section
+					if ($this->debug_dcom > 2) { echo "\n".'bs: before we process disposition, clean $this->bs_rawstr of it '."\n"; }
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+	
+					//echo 'bs: ok ... continue handling disposition and  dparameters ...'."\n";
+					
+					// We now have a disposition_total that looks like one of these
+					// 	("INLINE" NIL)
+					//	("ATTACHMENT" ("FILENAME" "hook_sidebox_menu.inc.php"))
+					//	("ATTACHMENT" ("FILENAME" "hook_sidebox_menu.inc.php" "another_value" "another_attrib"))
+					// a. the first "string" is the disposition
+					// b. then we see NIL or (list) as dparams
+					// this is hypothetical, not seen but is this possible (NIL ("value" "attrib"))
+					
+					// do we have disposition or not
+					if (($tmp_data['disposition_total']{0} == '(')
+					&& ($tmp_data['disposition_total']{1} == '"'))
+					{
+						// grab this item
+						if ($this->debug_dcom > 1) { echo 'bs: we confirmed to have disposition data'."\n"; }
+						$start = 2;
+						$end = strpos($tmp_data['disposition_total'], '" ');
+						$slen = ($end+0) - $start;
+						$tmp_data['ifdisposition'] = True;
+						$tmp_data['disposition'] = substr($tmp_data['disposition_total'], $start, $slen);
+						//echo 'bs: post-grab $tmp_data[disposition] is: ['.$tmp_data['disposition']."]\n";
+						// FILL_ITEM
+						$ref_parent->parts[$my_partnum]->ifdisposition = $tmp_data['ifdisposition'];
+						$ref_parent->parts[$my_partnum]->disposition = $tmp_data['disposition'];
+						
+						// remove the  disposition_str from the disposition_total
+						$tmp_data['disposition_total'] = substr($tmp_data['disposition_total'], ($end+2));
+						if ($this->debug_dcom > 2) { echo 'bs: post-chop $tmp_data[disposition_total] is: ['.$tmp_data['disposition_total']."]\n"; }
+						
+						// *** disposition params ***
+						// this is what $tmp_data[disposition_total] might be right now
+						// 	NIL)
+						//	("FILENAME" "hook_sidebox_menu.inc.php"))
+						//	("FILENAME" "hook_sidebox_menu.inc.php" "another_value" "another_attrib"))
+						if (($tmp_data['disposition_total']{0} == 'N')
+						&& ($tmp_data['disposition_total']{1} == 'I')
+						&& ($tmp_data['disposition_total']{2} == 'L'))
+						{
+							//we are DONE there are NO dparams
+							if ($this->debug_dcom > 1) { echo 'bs: we have NO dparameters'."]\n"; }
+							$tmp_data['ifdparameters'] = 0;
+							$tmp_data['dparameters'] = '';
+							// FILL_ITEM
+							$ref_parent->parts[$my_partnum]->ifdparameters = $tmp_data['ifdparameters'];
+							unset($ref_parent->parts[$my_partnum]->dparameters);
+						}
+						else
+						{
+							// we have dparams
+							if ($this->debug_dcom > 1) { echo 'bs: we have dparameters, first strip open and close parens'."]\n"; }
+							// strip leading and trailing parans
+							if ($tmp_data['disposition_total']{0} == '(')
+							{
+								$tmp_data['disposition_total'] = substr($tmp_data['disposition_total'], 1);
+							}
+							// there SHOULD be double closing parens (1 for whole disposition, 1 for just the dparams)
+							$end = strpos($tmp_data['disposition_total'], '))');
+							if ($end != 0)
+							{
+								$tmp_data['disposition_total'] = substr($tmp_data['disposition_total'], 0, $end);
+							}
+							if ($this->debug_dcom > 2) { echo 'bs: post-strip $tmp_data[disposition_total] is: ['.$tmp_data['disposition_total']."]\n"; }
+							
+							// call sub-function to make the params for us
+							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): calling $this->make_param($tmp_data[disposition_total]) '."\n"; }
+							$tmp_data['ifdparameters'] = True;
+							$tmp_data['dparameters'] = array();
+							$tmp_data['dparameters'] = $this->make_param($tmp_data['disposition_total']);
+							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-make_param $tmp_data[dparameters] DUMP: '.""; print_r($tmp_data['dparameters']); echo ""; }
+	
+							
+							// FILL_ITEM (HACK HACK)
+							//echo 'bs: now seting ifdparameters and dparameters '."\n";
+							$ref_parent->parts[$my_partnum]->ifdparameters = $tmp_data['ifdparameters'] ;
+							$ref_parent->parts[$my_partnum]->dparameters = $tmp_data['dparameters'];
+						}
+						//echo 'bs:final $tmp_data[disposition_total] is: ['.$tmp_data['disposition_total']."]\n";
+						if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): note: by this point we should have totally handled disposition and dparams '."\n\n"; }
+					}
+					else
+					{
+						echo "\n".'bs('.__LINE__.'): *** FREAK OUT we wanted disposition data, did not get it'."\n";
+					}
+					
+					/*
+					//echo 'bs: FIXME we need to code for disposition, right now make False, eat it, and move on'."\n";
+					echo 'bs: FIXME we need to code for disposition, right fake it, eat it, and move on'."\n";
+					$tmp_data['ifdisposition'] = True;
+					echo 'bs: $tmp_data[ifdisposition] is: ['.$tmp_data['ifdisposition']."]\n";
+					// FILL_ITEM (HACK HACK)
+					$ref_parent->parts[$my_partnum]->ifdisposition = $tmp_data['ifdisposition'];
+					$ref_parent->parts[$my_partnum]->disposition = $tmp_data['disposition_str'];
+					echo 'bs: FIXME we need to code for dparameters!!!'."\n";
+					echo 'bs: ... for now, set ifdparameters to false and unset dparameters '."\n";
+					$ref_parent->parts[$my_partnum]->ifdparameters = 0;
+					unset($ref_parent->parts[$my_partnum]->dparameters);
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+2));
+					echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n";
+					*/
+				}
+				
+				// ** LANGUAGE **  main string is now
+				// NIL)
+				//  -- OR --
+				// ("EN")
+				if ($this->debug_dcom > 1) { echo 'bs: now looking LANGUAGE but we do not handle it now, but we still need to eat it exactly and move on, or maybe at end of str now'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: it is quite likely the end paren of this part is next... '."\n"; }
+				if (($this->bs_rawstr{0} == 'N')
+				&& ($this->bs_rawstr{1} == 'I')
+				&& ($this->bs_rawstr{2} == 'L'))
+				{			
+					if ($this->debug_dcom > 1) { echo 'bs: LANGUAGE is NIL, so eat it and move on, it is quite likely the end paren of this part is next'."\n"; }
+					$start = 0;
+					//$end = strpos($this->bs_rawstr, ')');
+					// we know the length of "NIL"
+					$end = 3;
+					$slen = ($end+0) - $start;
+					$tmp_data['language'] = substr($this->bs_rawstr, $start, $slen);
+					if ($this->debug_dcom > 2) { echo 'bs: This is probably LANGUAGE but we do not handle it now, if not set it is NIL, so eat it and move on, or maybe at end of str now'."\n"; }
+					if ($this->debug_dcom > 1) { echo 'bs: $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					// leave any closing parens
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+0));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				else
+				{
+					if ($this->debug_dcom > 1) { echo 'bs: we found LANGUAGE element ... grab it for future compat even though php-imap does not handle it'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: apparently it should be a paren list item'."\n"; }
+					$start = 0;
+					$end = strpos($this->bs_rawstr, ')');
+					$slen = ($end+1) - $start;
+					$tmp_data['language'] = substr($this->bs_rawstr, $start, $slen);
+					//echo 'bs: This is probably LANGUAGE but we do not handle it now, usualy NIL, so eat it and move on, or maybe at end of str now'."\n";
+					if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: prep language by removing any open and close paren since it is supposed to be a list'."\n"; }
+					if ($tmp_data['language']{0} == '(')
+					{
+						$tmp_data['language'] = substr($tmp_data['language'], 1);
+					}
+					$lang_end = strlen($tmp_data['language'])-1;
+					if ($tmp_data['language']{$lang_end} == ')')
+					{
+						$tmp_data['language'] = substr($tmp_data['language'], 0, $lang_end);
+					}
+					if ($this->debug_dcom > 1) { echo 'bs: final $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					// leave any closing parens
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+					if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				
+			}
+			
+			// END OF ALL DATA WE HOPE
+			if ($this->debug_dcom > 1) { echo "\n".'bs: status: now we expect the close paren of the outer part, that will close this function call, and we found ['.$this->bs_rawstr{0}.']'."\n\n"; }
+			if ($this->bs_rawstr{0} != ')')
+			{
+				if ($this->debug_dcom > 1) { echo 'bs: oops, we have extension data we are not coded to handle, so we should eat it'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: next char is NOT  ) so we have more extension data we are not coded to handle'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: ATTEMPTING to eat this extra unhandlable data up to right before the final ) '."\n"; }
+				$end = strpos($this->bs_rawstr, ')');
+				$this->bs_rawstr = substr($this->bs_rawstr, $end);
+				if ($this->debug_dcom > 1) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			}
+			
+			// *** parts need unseting? ***
+			// parts only gets filled withTYPEMULTIPART 
+			// and *some* type TYPEMESSAGE such as message/rfc822 encapsulation
+			// otherwise we can UNSET ->parts[] because no other types can have child parts
+			if (($ref_parent->parts[$my_partnum]->type != TYPEMULTIPART)
+			&& ($ref_parent->parts[$my_partnum]->type != TYPEMESSAGE))
+			{
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): this is NOT type TYPEMULTIPART and NOT type TYPEMESSAGE'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): so we now UNSET the ->parts element it is not used in this case'."\n"; }
+				unset($ref_parent->parts[$my_partnum]->parts);
+			}
+			else
+			{
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): leave ->parts element unmolested, this is TYPEMULTIPART or type TYPEMESSAGE'."\n"; }
+			}
+	
+			// END DATA COLLECTION
+			if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): DONE collecting data for this level'."\n"; }
+			if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): status: $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+			if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): we either a. die and return or b. have a continuation of current level (non kick-up recurse)'."\n"; }
+			if ($this->debug_dcom > 2) { echo 'bs: going into these checks, current $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+			
+			// freak out check
+			if ($this->bs_rawstr{0} != ')')
+			{
+				echo "\n".'bs('.__LINE__.'): *** FREAK OUT we wanted an close paren, did not get it'."\n";
+				echo "\n".'bs('.__LINE__.'): FIXME what would we do if this happens?'."\n";
+			}	
+			
+			
+			// LEVEL ANALYSIS
+			// do we DIE or...
+			// continuation of level recurse occurrs if a consecutive level part is immediately next
+			// freak out if we do not see what should be here
 		
+			// first, see if we anticipate a contiguous level
+			//$contiguous_level_recall = False;
+			if ((strlen($this->bs_rawstr) > 1)
+			&& ($this->bs_rawstr{0} == ')')
+			&& ($this->bs_rawstr{1} == '('))
+			{
+				// anticipating CONTINUATION recurse,
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): we anticipate a CONTINUATION recurse, but lets make sure ... '."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): RUN AGAIN )( calls for CONTINUATION recurse'."\n"; }
+				
+				
+				//echo 'bs('.__LINE__.'): FIXME CODE FOR THIS RECUSRION'."\n\n\n";
+				// a. decrease level counters
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): a. standard close paren, decrease debths'."\n"; }
+				// decrease debth items
+				$this->bs_cur_debth--;
+				$this_level_debth--;
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+				
+				// b. eat this paren 
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat this close paren before we call for contiguous run'."\n"; }
+				// substr(str, 1) will remove only the first char (at pos [0])
+				$this->bs_rawstr = substr($this->bs_rawstr, 1);
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				
+				// c. call us again
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** CALLING CONTINUATION NEXT PART CALL AGAIN RECURSE NOW!!!!!'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): "$ref_parent" will be passed AGAIN as parent, this will keep us on the SAME debth level'."\n"; }
+				// a. eat no parens, make recurse call
+				$this->make_msg_struct('continuation nect part call again recurse line('.__LINE__.')', $ref_parent);
+				
+				// b. when we return, collect data typical of multipart data
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): *** RETURNING FROM CONTINUATION RECURSE CALL!!!!!'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-recurse status: $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): post-recurse $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+	
+				// d. we returned, DIE
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): when we return from this recursion, this call should die because ... '."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... a. because next call will continue any contiguous parts if necessary, or'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... b. a previous call will continue to collect multipart data for its level'."\n"; }
+				
+				// return here?????
+				// DIE
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): *** EXITING THIS CALL we processsed 1 part THEN called for next part recurse, now we have nothing left to do in our little universe'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): alas, we must EXIT, returning $this->bs_cur_debth ['.$this->bs_cur_debth.']'."\n"; }
+				if ($this->debug_dcom > 0) { echo 'bs('.__LINE__.'): LEAVING, returning $this->bs_cur_debth ['.$this->bs_cur_debth.']'.'</pre>'."\n\n\n"; }
+				return $this->bs_cur_debth;
+			}
+			else
+			{
+				// ... more checks...
+				if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): we have NO continuation part to worry about, this call should DIE now'."\n"; }
+				
+				// check for some DIE conditions
+				if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): lets check for some DIE conditions DO WE NEED TO????'."\n"; }
+				if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): status: currently $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				// I'd say we die under these conditions
+				
+				// initialize this var
+				$die_test_said = False;
+				if ((strlen($this->bs_rawstr) < 2)
+				&& ($this->bs_rawstr{0} == ')'))
+				{
+					$die_test_said = True;
+					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): DONE, string is 1 char and it is close paren, set $die_test_said to ['.serialize($die_test_said).']'."\n"; }
+				}
+				if ((strlen($this->bs_rawstr) > 2)
+				&& ($this->bs_rawstr{0} == ')')
+				&& ($this->bs_rawstr{1} == ' '))
+				{
+					$die_test_said = True;
+					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): DONE, 1st char is ) and next is space, just like end of kick-up looks like, DIE back to previous call, set $die_test_said to ['.serialize($die_test_said).']'."\n"; }
+				}
+				
+				if ($die_test_said == True)
+				{
+					// DONE !!!!!
+					if ($this->debug_dcom > 2) { echo "\n".'bs('.__LINE__.'): DONE, string is 1 char and it is close paren'."\n"; }
+					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): DONE, $die_test_said set to ['.serialize($die_test_said).']'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): standard close paren, decrease debths'."\n"; }
+					
+					// decrease debth items
+					$this->bs_cur_debth--;
+					$this_level_debth--;
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $this->bs_cur_debth ['.$this->bs_cur_debth.'], $this->bs_max_debth ['.$this->bs_max_debth.'], $this_level_debth ['.$this_level_debth.']'."\n"; }
+					
+					// eat this paren and move on 
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat this close paren before we leave'."\n"; }
+					// substr(str, 1) will remove only the first char (at pos [0])
+					$this->bs_rawstr = substr($this->bs_rawstr, 1);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+					
+					// DIE
+					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): *** EXITING THIS CALL we processsed ONE part and there is no contiguous part, we must EXIT'."\n"; }
+					if ($this->debug_dcom > 0) { echo 'bs('.__LINE__.'): LEAVING, returning $this->bs_cur_debth ['.$this->bs_cur_debth.']'.'</pre>'."\n\n\n"; }
+					return $this->bs_cur_debth;
+				}
+				/*
+				elseif ((strlen($this->bs_rawstr) > 3)
+				&& ($this->bs_rawstr{0} == ')')
+				&& ($this->bs_rawstr{1} == ' '))
+				{
+					// for function more_data_test expects param to start with possible next items
+					$inspect_str = substr($this->bs_rawstr, 2);
+					echo 'bs('.__LINE__.'): ... continue analysis, $inspect_str is ['.$inspect_str.']'."\n";
+					// circumstances NOT consistent with next data element, i.e. more of this data
+					if ($this->more_data_test($inspect_str) == True)
+					{
+						echo "\n".'bs('.__LINE__.'): *** FREAK OUT I think we have more bodystruct left, UNEXPECTED'."\n";
+						echo 'bs('.__LINE__.'): $this->more_data_test($inspect_str) test returned TRUE'."\n";
+						echo 'bs('.__LINE__.'): FIXME what would we do if this happens?'."\n\n\n";
+					}
+					else
+					{
+						echo "\n".'bs('.__LINE__.'): $this->more_data_test($inspect_str) returns FALSE'."\n";
+						echo "\n".'bs('.__LINE__.'): DONE, test says no bodystructure data follows'."\n";
+						echo 'bs('.__LINE__.'): FIXME do I return here?'."\n\n\n";
+					}
+				}
+				*/
+				else
+				{
+					echo "\n".'bs('.__LINE__.'): *** FREAK OUT unhandled situation!!!!, $die_test_said is ['.serialize($die_test_said).']'."\n";
+				}
+				echo 'bs('.__LINE__.'): finished DIE double check block, what now??? DIE now???'."\n";
+			}
+			
+			
+			echo "\n".'bs('.__LINE__.'): *** FREAK OUT what are we doing down here, we should return by now!!!!'."\n";
+			// ** WE ARE DONE, I HOPE, WITH THIS LEVEL
+			echo 'bs('.__LINE__.'): for whatever reason we reach the end of function, LEAVING NOW'.'</pre>'."\n";
+			return;
+		}
+
+
+
 		/*!
 		@function fetchstructure
 		@abstract not yet implemented in IMAP sockets module
+		@param $stream_notused
+		@param $msg_num Sockets CAN use UID directly, feed here the UID
+		@param $flags FT_UID is the only valid flag
+		@author Angles
+		@discussion implements imap_fetchstructure
+		@example php-imap source code has this
+		a. codes for standard bodystruct items
+		b. check for TYPEMULTIPART ; recurse loop on each part ; add the object
+		c. check for TYPEMESSAGE rfc822; recursel add the object
+			if (body->type == TYPEMULTIPART) {
+				MAKE_STD_ZVAL(parametres);
+				array_init(parametres);
+				for (part = body->CONTENT_PART; part; part = part->next) {
+					MAKE_STD_ZVAL(param);
+					object_init(param);
+					_php_imap_add_body(param, &part->body TSRMLS_CC);
+					add_next_index_object(parametres, param);
+				}
+				add_assoc_object(arg, "parts", parametres);
+			}
+			//  encapsulated message ?
+			if ((body->type == TYPEMESSAGE) && (!strcasecmp(body->subtype, "rfc822"))) {
+				body = body->CONTENT_MSG_BODY;
+				MAKE_STD_ZVAL(parametres);
+				array_init(parametres);
+				MAKE_STD_ZVAL(param);
+				object_init(param);
+				_php_imap_add_body(param, body TSRMLS_CC);
+				add_next_index_object(parametres, param);
+				add_assoc_object(arg, "parts", parametres);
+			}
 		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
+			
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetchstructure('.__LINE__.'): ENTERING $msg_num ['.$msg_num.'] <br>'; }
 			// outer control structure for the multi-pass functions
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchstructure NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			//if ($this->debug_dcom > 0) { echo 'imap: fetchstructure NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+			
+			// SHELL FUNCTION
+			// calls sub function
+			$this->fetch_request_common($stream_notused,$msg_num,$flags);
+
+			
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetchstructure('.__LINE__.'): LEAVING returning object<br>'; }
+			// FOR DEBUGGING
+			//return array();
+			return $this->msg_struct_stub->parts[0];
 		}
-		
-		/*
-		function fetchstructure($msgnum)
+
+		/*!
+		@function fetch_request_common
+		@abstract first function called by imap_fetchstructure AND imap_header
+		@param $stream_notused
+		@param $msg_num Sockets CAN use UID directly, feed here the UID
+		@param $flags FT_UID is the only valid flag
+		@author Angles
+		@discussion implements imap_fetchstructure
+		*/
+		function fetch_request_common($stream_notused,$msg_num,$flags="")
 		{
 			
-			if(!$this->write_port('a001 FETCH '.$msgnum.' BODY[HEADER]'))
-			//if(!$this->write_port('a001 FETCH '.$msgnum.' BODY.PEEK[HEADER.FIELDS (Date To From Cc Subject Message-Id X-Priority Content-Type)]'))
+			if ($this->debug_dcom > 0) { echo '<pre>'.'imap_sock.fetch_request_common('.__LINE__.'): ENTERING fetchstructure, $msg_num ['.$msg_num.'] <br>'; }
+			// outer control structure for the multi-pass functions
+			//if ($this->debug_dcom > 0) { echo 'imap: fetchstructure NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+			
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
 			{
-				$this->error();
+				$flags |= SE_UID;
 			}
-			$this->header = Null;
-			$response = $this->read_port();
-			while(!ereg('^a001 OK FETCH completed',$response))
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
 			{
-				if(!ereg('^\* '.$msgnum.' FETCH \(BODY\[HEADER',$response) && chop($response) != '' && chop($response) != ')')
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.fetch_request_common('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.fetch_request_common('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'.'</pre>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			
+			// assemble the server querey, looks like this:  
+			// 00000008 UID FETCH 131 (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODY)
+			$cmd_tag = 's007';
+			//$full_command = $cmd_tag.' UID FETCH '.$msg_num.' (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODY)';
+			$full_command = $cmd_tag.' UID FETCH '.$msg_num.' (FLAGS INTERNALDATE RFC822.SIZE ENVELOPE BODYSTRUCTURE)';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.fetch_request_common('.__LINE__.'): LEAVING with error: could not write_port<br>'.'</pre>'; }
+				$this->error();
+				return False;
+			}
+			
+			// read the server data
+			$response_array = array();
+			// for some reason I get back an array with a single element, item $raw_response[0] which is the string I want to work with
+			$response_array = $this->imap_read_port($expecting);
+			//if ($this->debug_dcom > 2) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array[0] DUMP: <pre>'; print_r($response_array[0]); echo '</pre>';  }
+			if ($this->debug_dcom > 2) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			
+			$do_impode = False;
+			if (count($response_array) > 1)
+			{
+				$do_impode = True;
+			}
+			if ($do_impode)
+			{
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array has more tham 1 element, this is element [0]: <br>'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>'."\n";  }
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): assemble $return_str, checking if it has that _{NUMBER}_ chunk data thing pops up <br>'."\n"; }
+				/*
+				$test_str = rtrim($response_array[0]);
+				$last_char = strlen($test_str)-1;
+				if ($test_str{$last_char} == '}')
 				{
-					echo 'Response = '.$response."<br>\n";
-					$this->create_header($response,&$this->header,"True");
-				}
-				$response = $this->read_port();
+					if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): FOUND THAT  _{NUMBER}_ thing , first rtrim each element<br>'."\n";  }
+					$loops = count($response_array);
+					for ($i=0; $i < $loops ; $i++)
+					{
+						$response_array[$i] = rtrim($response_array[$i]);
+					}
+					if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): FOUND THAT  _{NUMBER}_ thing at the end, elimiate that now <br>';  }
+					// now eliminate {NUMBER}
+					$loops = strlen($response_array[0])-1;
+					// fallback
+					$end = $loops;
+					// search backwars
+					for ($x=$loops; $x > 0; $x--)
+					{
+						// we know last char is } so find the {
+						$this_char = $response_array[0]{$x};
+						if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): at poss $x ['.$x.'], $this_char is ['.$this_char.'] <br>';  }
+						if ($this_char == '{')
+						{
+							$end = $x;
+							if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): FOUND open brach at $end ['.$end.'] <br>';  }
+							break;
+						}
+					}
+					// chop it
+					$response_array[0] = substr($response_array[0], 0, $end);
+					if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): NEW $response_array DUMP: <pre>'; print_r(implode('', $response_array)); echo '</pre>'."\n";  }
+					*/
+				$return_str = '';
+				$loops = count($response_array);
+				$seen_chunky_brace = False;
+				for ($i=0; $i < $loops ; $i++)
+				{
+					//if ($seen_chunky_brace == False)
+					//{
+						$test_str = rtrim($response_array[$i]);
+						$last_char = strlen($test_str)-1;
+						if ($test_str{$last_char} == '}')
+						{
+							if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): FOUND THAT  _{NUMBER}_ thing , here starts chunked data<br>'."\n";  }
+							$seen_chunky_brace = True;
+							if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): we need to eliminate that  _{NUMBER}_ thing at the end of this element <br>';  }
+							// now eliminate {NUMBER}
+							$loopz = strlen($response_array[$i])-1;
+							// fallback
+							$end = $loopz;
+							// search backwars
+							for ($x=$loopz; $x > 0; $x--)
+							{
+								// we know last char is } so find the {
+								$this_char = $response_array[$i]{$x};
+								if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): at poss $x ['.$x.'], $this_char is ['.$this_char.'] <br>';  }
+								if ($this_char == '{')
+								{
+									$end = $x;
+									if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): FOUND open brach at $end ['.$end.'] <br>';  }
+									break;
+								}
+							}
+							// chop it
+							$response_array[$i] = substr($response_array[$i], 0, $end);
+							// add back that CRLF because we are going to chop that below now that we found chunky brases
+							$response_array[$i] .= "\r\n";
+							if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): post-chop NEW $response_array['.$i.'] DUMP: <pre>'; print_r($response_array[$i]); echo '</pre>'."\n";  }
+						}
+					//}
+					
+					// assemble return string
+					if ($seen_chunky_brace == False)
+					{
+						$return_str .= $response_array[$i];
+					}
+					else
+					{
+						// chop crlf, we do not want in FETCHSTRUCTURE data
+						$this_end = strlen($response_array[$i])-2;
+						$return_str .= substr($response_array[$i], 0 , $this_end);
+					}
+				}				
+				//if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array needs imploding AND rtrim-ing, then call function fetch_head_and_struct <br>'; }
+				// CALL PROCESSING FUNCTION
+				//$this->fetch_head_and_struct(implode('', $response_array));
+				//$this->fetch_head_and_struct(rtrim(implode('', $response_array)));
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): assembles $return_str DUMP: <pre>'; print_r($return_str); echo '</pre>'."\n";  }
+				// sometimes we still need to rtrim the final product, because we do not want a CRLF at the end of FETCHSTRUCTURE data
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): we also rtrim the assembled $return_str because we NEVER want a CRLF at the end of FETCHSTRUCTURE data<br>';  }
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): now call function fetch_head_and_struct(rtrim($return_str)) <br>'; }
+				$this->fetch_head_and_struct(rtrim($return_str));
 			}
-			echo '<b>'.$msgnum.'</b> Completed!'."<br>\n";
-			if(!$this->write_port('a001 FETCH '.$msgnum.' BODY[TEXT]'))
+			else
 			{
-				$this->error();
+				// CALL PROCESSING FUNCTION
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): call function fetch_head_and_struct with rtrim($response_array[0]) as feed param<br>'; }
+				$this->fetch_head_and_struct(rtrim($response_array[0]));
 			}
-			$response = $this->read_port();
-			while(!ereg('^a001 OK FETCH completed',$response))
-			{
-				echo 'Response = '.$response."<br>\n";
-				$response = $this->read_port();
-			}
-			return $this->header;
+			
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetch_request_common('.__LINE__.'): LEAVING <br>'.'</pre>'; }
+			// FOR DEBUGGING
+			//return array();
 		}
+
+
+
+
+		/*!
+		@function fetch_head_and_struct
+		@abstract MAIN FUNCTION unsed by both imap_header AND imap_fetchstructure
+		@param $this__fs_rawstr (string) the return of the compound FETCH request
+		@author Angles
 		*/
-		
-		
+		function fetch_head_and_struct($this__fs_rawstr='')
+		{
+			if ($this->debug_dcom > 0) { echo '<pre>'.'imap_sock.fetch_head_and_struct('.__LINE__.'): ENTRING fetch_head_and_struct <br>'; }
+			$tmp_data = array();
+			//$this__fs_rawstr = $response_array[0];
+			
+			if ($this->debug_dcom > 3) { echo '$this__fs_rawstr is: '.$this__fs_rawstr ."\n\n\n"; }
+			
+			// the data always comes in this order
+			// except if we do not use UID FETCH then UID will not appear, so we check to be safe
+			
+			// ** FLAGS **
+			$start = strpos($this__fs_rawstr, 'FLAGS (');
+			$start = $start + 6;
+			// we know flags are (), so first ") " is end of data
+			$end = strpos($this__fs_rawstr, ') ' );
+			$slen = ($end+1) - $start;
+			$tmp_data['flags'] = substr($this__fs_rawstr, $start, $slen);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[flags] is: ['.$tmp_data['flags'] ."]\n"; }
+			// DELETE MAIN STRING OF DONE DATA
+			$done_data = substr($this__fs_rawstr, 0, ($end+2));
+			//echo '$done_data is: ['.$done_data."]\n\n\n";
+			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			
+			
+			if (($this__fs_rawstr{0} == 'U')
+			&& ($this__fs_rawstr{1} == 'I')
+			&& ($this__fs_rawstr{2} == 'D'))
+			{
+				// ** UID **  main string is now
+				// UID 129 INTERNALDATE "12-Feb-2004 ....
+				$start = strpos($this__fs_rawstr, 'UID ');
+				$start = $start + 4;
+				// we know INTERNALDATE is next, so ...
+				$end = strpos($this__fs_rawstr, 'INTERNALDATE' );
+				$slen = ($end-1) - $start;
+				$tmp_data['uid'] = substr($this__fs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo '$tmp_data[uid] is: ['.$tmp_data['uid'] ."]\n"; }
+				// DELETE MAIN STRING OF DONE DATA
+				$done_data = substr($this__fs_rawstr, 0, ($end-0));
+				//echo '$done_data is: ['.$done_data."]\n\n\n";
+				$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+				//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			}
+
+			// ** INTERNALDATE **  main string is now
+			// INTERNALDATE "12-Feb-2004 23:16:40 -0500" RFC822.SIZE 2.....
+			$start = strpos($this__fs_rawstr, ' "');
+			$start = $start + 2;
+			// we know RFC822.SIZE is next, so ...
+			$end = strpos($this__fs_rawstr, 'RFC822.SIZE' );
+			$slen = ($end-2) - $start;
+			$tmp_data['internaldate'] = substr($this__fs_rawstr, $start, $slen);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[internaldate] is: ['.$tmp_data['internaldate'] ."]\n"; }
+			// DELETE MAIN STRING OF DONE DATA
+			$done_data = substr($this__fs_rawstr, 0, ($end-0));
+			//echo '$done_data is: ['.$done_data."]\n\n\n";
+			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			
+			// ** RFC822.SIZE **  main string is now
+			// RFC822.SIZE 2694 ENVELOPE ("Tue, 10 Feb 2004 06:....
+			$start = strpos($this__fs_rawstr, ' ');
+			$start = $start + 1;
+			// we know ENVELOPE is next, so ...
+			$end = strpos($this__fs_rawstr, 'ENVELOPE' );
+			$slen = ($end-1) - $start;
+			$tmp_data['rfc822.size'] = substr($this__fs_rawstr, $start, $slen);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[rfc822.size] is: ['.$tmp_data['rfc822.size'] ."]\n"; }
+			// DELETE MAIN STRING OF DONE DATA
+			$done_data = substr($this__fs_rawstr, 0, ($end-0));
+			//echo '$done_data is: ['.$done_data."]\n\n\n";
+			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			
+			
+			// ** ENVELOPE **  main string is now
+			// ENVELOPE ("Tue, 10 Feb 2004 06:48:53 -0200" "Re: sig -
+			$start = strpos($this__fs_rawstr, ' (');
+			$start = $start + 2;
+			// we know ) BODYSTRUCTURE ( is next, so ...
+			$end = strpos($this__fs_rawstr, ') BODYSTRUCTURE (' );
+			$slen = ($end-0) - $start;
+			$tmp_data['envelope'] = substr($this__fs_rawstr, $start, $slen);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[envelope] is: ['.$tmp_data['envelope'] ."]\n"; }
+			// DELETE MAIN STRING OF DONE DATA
+			$done_data = substr($this__fs_rawstr, 0, ($end+2));
+			//echo '$done_data is: ['.$done_data."]\n\n\n";
+			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			
+			// ** BODYSTRUCTURE **  main string is now
+			// BODYSTRUCTURE (("TEXT" "PLAIN" ("F...
+			// we are going to leave all parens including outer most, for the subfunction needs them
+			$start = strpos($this__fs_rawstr, ' (');
+			$start = $start + 1;
+			// we know last char in string is extra ) paren from the outer fetch response as a whole
+			$end = strlen($this__fs_rawstr)-1;
+			$slen = ($end-0) - $start;
+			$tmp_data['bodystructure'] = substr($this__fs_rawstr, $start, $slen);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[bodystructure] is: ['.$tmp_data['bodystructure'] ."]\n\n"; }
+			// string is DONE, nothing left to parse
+			
+			// final report
+			if ($this->debug_dcom > 3) { echo '$tmp_data DUMP'."\n"; print_r($tmp_data); echo "\nend final report \n\n"; }
+			
+			
+			// HANDLE BODYSTRUCTURE
+			if ($this->debug_dcom > 1) { echo "\n".' *** about to handle bodystructure ***'."\n"; }
+			if ($this->debug_dcom > 1) { echo ' putting $tmp_data[bodystructure] into class var [$this->bs_rawstr]'."\n"; }
+			//$this->make_msg_struct($tmp_data['bodystructure']);
+			// put bodystructure in a class var so all recursions can operate on it
+			$this->bs_rawstr = $tmp_data['bodystructure'];
+			// prepare stuff for the function
+			// are we in the bodystruct main parens or not
+			// OBSOLETE $this->bs_inside = False;
+			// initialize the base stub
+			//if ($this->msg_struct_stub == '##NOTHING##')
+			//{
+				$this->msg_struct_stub = '';
+				$this->msg_struct_stub = new parts_parent_stub;
+				if ($this->debug_dcom > 1) { echo ' initialized [$this->msg_struct_stub] struct as new parts_parent_stub'."\n"; }
+				//echo ' $this->msg_struct_stub DUMP'."\n"; print_r($this->msg_struct_stub); echo "\n";
+			//}
+			// what debth level are we working on of bodystructure
+			$this->bs_cur_debth = 0;
+			// what is the maximum debth we have been to in bodystructure
+			$this->bs_max_debth = 0;
+			// keep data about each level such as how many parts on on level X
+			if ($this->debug_dcom > 1) { echo ' *** CALLING $this->make_msg_struct, using $this->msg_struct_stub as param ref_parent *** '."\n\n\n"; }
+			$this->make_msg_struct('main loop thing line ('.__LINE__.')', $this->msg_struct_stub);
+
+			if ($this->debug_dcom > 1) { echo ' RETURNING from "make_msg_struct" function'."\n"; }
+			if ($this->debug_dcom > 2) { echo 'FINAL REPORT for msg_struct $this->msg_struct_stub DUMP'."\n"; print_r($this->msg_struct_stub); echo "\n\n"; }
+			
+			// GET ENVELOPE DATA
+			if ($this->debug_dcom > 1) { echo ' *** ENVELOPE - calling $this->imap_parse_header($tmp_data) '."\n\n\n"; }
+			$this->envelope_struct = $this->imap_parse_header($tmp_data);
+			
+			
+			if ($this->debug_dcom > 2) { echo 'FINAL REPORT for envelope_struct $this->envelope_struct DUMP'."\n"; print_r($this->envelope_struct); echo "\n\n"; }
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetch_head_and_struct('.__LINE__.'): LEAVING <br>'.'</pre>'; }
+		} 
+		// main_loop_thing
+
+
 		/**************************************************************************\
+		*
 		*	Message Envelope (Header Info) Data
+		*
 		\**************************************************************************/
+		
+		/*!
+		@function make_address
+		@abstract 
+		@param $address_str (string) space seperated address string items NO PARENS
+		@discussion strip open and close parens before feeding into here. You get back an 
+		array of object of type address, the param is of type from the ENVELOPE data.
+		@author Angles
+		*/
+		function make_address($address_str)
+		{
+			$tmp_data = array();
+			$tmp_data['address_str'] = $address_str;
+			if ($this->debug_dcom > 0) { echo '<pre>'.'make_address('.__LINE__.'): ENTERING param $address_str BETTER already have open and close parens stripped! '."\n"; }
+			if ($this->debug_dcom > 1) { echo 'make_address('.__LINE__.'): $tmp_data[address_str] is: ['.$tmp_data['address_str'] ."]\n"; }
+			// what we have now looks somethign like one of these
+			// "CHARSET" "utf-8"
+			// "TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0"
+			$tmp_data['params_exploded'] = array();
+			$tmp_data['parameters'] = array();				
+			$tmp_data['params_exploded'] = explode(' ', $tmp_data['address_str']);
+			// loop to clean of leading and trailing quotes
+			$loops = count($tmp_data['params_exploded']);
+			for ($i=0; $i < $loops ;$i++)
+			{
+				$this_str = $tmp_data['params_exploded'][$i];
+				if ($this_str{0} == '"')
+				{
+					$this_str = substr($this_str, 1);
+				}
+				$last_pos = (strlen($this_str) - 1);
+				if ($this_str{$last_pos} == '"')
+				{
+					$this_str = substr($this_str, 0, $last_pos);
+				}
+				$tmp_data['params_exploded'][$i] = $this_str;
+			}
+			//echo 'make_address('.__LINE__.'): post-cleaning $tmp_data[params_exploded] is: ['.serialize($tmp_data['params_exploded'])."]\n";
+			if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): post-cleaning $tmp_data[params_exploded] DUMP: '.""; print_r($tmp_data['params_exploded']); echo ""; }
+			// loop to make param objects
+			$loops = count($tmp_data['params_exploded']);
+			for ($i=0; $i < $loops ;$i=($i+2))
+			{
+				$attribute = 'UNKNOWN_PARAM_ATTRIBUTE';
+				if ((isset($tmp_data['params_exploded'][$i]))
+				&& (trim($tmp_data['params_exploded'][$i]) != ''))
+				{
+					$attribute = $tmp_data['params_exploded'][$i];
+				}
+				$value = 'UNKNOWN_PARAM_VALUE';
+				$val_pos = $i+1;
+				if ((isset($tmp_data['params_exploded'][$val_pos]))
+				&& (trim($tmp_data['params_exploded'][$val_pos]) != ''))
+				{
+					$value = $tmp_data['params_exploded'][$val_pos];
+				}
+				// make this param pair object
+				$tmp_data['parameters'][] = new msg_params($attribute,$value);
+			}
+			if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): post-looping $tmp_data[parameters] DUMP: '.""; print_r($tmp_data['parameters']); echo ""; }
+			//echo 'make_param('.__LINE__.'): $tmp_data[parameters] is: ['.serialize($tmp_data['parameters'])."]\n";
+			if ($this->debug_dcom > 0) { echo 'make_address('.__LINE__.'): LEAVING returning $tmp_data[parameters]'.'</pre>'."\n"; }
+			return $tmp_data['parameters'];
+		}
+		
+		
+		/*!
+		@function extract_header_item
+		@abstract 
+		@result 
+		@discussion 
+		@author Angles
+		@access private
+		*/
+		function extract_header_item($data_type,$next_item_type,$if_nothing)
+		{
+			// $data_type - is either "string" or "paren_list"
+			// $next_item_type - "string" or "paren_list" or "eol", used to tell us what to expect as end to this data
+			// $if_nothing - tells us what an absence of data looks like, either NIL, (), or ""
+			if ($this->debug_dcom > 0) { echo '<pre>'.'extract_header_item('.__LINE__.'): ENTERING'."\n"; }
+			// is it empty
+			$nothing_test = substr($this->env_rawstr, 0, strlen($if_nothing));
+			if ($nothing_test == $if_nothing)
+			{
+				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): this item is empty, clean $this->env_rawstr, param $if_nothing ['.$if_nothing.']'."\n"; }
+				// eat this empty item
+				$this->env_rawstr = substr($this->env_rawstr, strlen($if_nothing)+1);
+				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+				// return empty item
+				if ($this->debug_dcom > 0) { echo 'extract_header_item('.__LINE__.'): LEAVING returning empty item'.'</pre>'."\n"; }
+				return;
+			}
+			// continue
+			if ($data_type == 'string')
+			{
+				$got_str = '';
+				// sanity check
+				if ($this->env_rawstr{0} != '"')
+				{
+					//echo 'extract_header_item('.__LINE__.'): FIXME: FREAK OUT first char is supposed to be " but it is not'."\n";
+					//$got_str = '';
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): semi-FREAK OUT first char is supposed to be " but it is not'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '."\n"; print_r($this->env_rawstr); echo "\n"; }
+					/*
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): attempt to recover by finding the next available " and assume it is open quote'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): sometimes malformed subject can cause imap server to screw up the open quote for the subject element'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): in which case anything before the open " is not RFC3501 compiant so dicsard it'."\n"; }
+					$found_at = strpos($this->env_rawstr, '"');
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): found first open quote at $found_at ['.$found_at.'], eat all before it'."\n"; }
+					if ($found_at > 0)
+					{
+						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): eat all before that paren as invalid data'."\n"; }
+						$this->env_rawstr = substr($this->env_rawstr, $found_at);
+						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo ""; }
+					}
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): DONE attempt to recover, contuinue on ... '."\n"; }
+					*/
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): attempt to recover by simply adding a " to the beginning of the string'."\n"; }
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): yea I know it is crazy, but server should not send us unconforming strings anyway, and set var $manually_added_quote'."\n"; }
+					$manually_added_quote = True;
+					$this->env_rawstr = '"'.$this->env_rawstr;
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr DUMP: '."\n"; print_r($this->env_rawstr); echo "\n"; }
+				}
+				else
+				{
+					// all is good
+					$manually_added_quote = False;
+				}
+				
+				// continue ...
+				if ($next_item_type == 'string')
+				{
+					//$end = strpos($this->env_rawstr, '" "');
+					$end_1 = strpos($this->env_rawstr, '" "');
+					$end_2 = strpos($this->env_rawstr, '" ');
+					if ($end_1 == $end_2)
+					{
+						// good, this is what we expect
+						$end = $end_1;
+					}
+					else
+					{
+						if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): STRANGE THINGS: $end_1 != $end_2 ; $end_1 = pos [" "] = ['.$end_1.']; $end_2 = pos [" ] ['.$end_2.']'."\n"; }
+						if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): probably next item is a malfomed string then use $end_2 as $end'."\n"; }
+						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo ""; }
+						$end = $end_2;
+					}
+				}
+				elseif ($next_item_type == 'paren_list')
+				{
+					$end = strpos($this->env_rawstr, '" (');
+				}
+				elseif ($next_item_type == 'eol')
+				{
+					$end = strlen($this->env_rawstr)-1;
+				}
+				else
+				{
+					echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
+				}
+				$start = 1;
+				// end
+				$slen = ($end-0) - $start;
+				$got_str = substr($this->env_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $got_str is ['.$got_str.']'."\n"; }
+				
+				// sanity check if $manually_added_quote = True
+				if ($manually_added_quote == True)
+				{
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): since we added a " to the beginning of the string above ... '."\n"; }
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): we will do the equally crazy thing of adding ANOTHER " to the end of the $got_str '."\n"; }
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): why? because if server messed that up, it probably needs this to '."\n"; }
+					$got_str .= '"';
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $got_str is ['.$got_str.']'."\n"; }
+				}
+				
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				if ($this->debug_dcom > 1) { echo 'extract_header_item: we can now clean $this->bs_rawstr of it '."\n"; }
+				$this->env_rawstr = substr($this->env_rawstr, ($end+2));
+				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+				
+				if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $got_str ['.$got_str.']'.'</pre>'."\n\n"; }
+				return $got_str;
+			}
+			elseif ($data_type == 'paren_list')
+			{
+				$got_list = array();
+				$tmp_data = array();
+				// sanity check
+				if ($this->env_rawstr{0} != '(')
+				{
+					echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
+					$got_list = array();
+				}
+				
+				// continue ...
+				if ($next_item_type == 'string')
+				{
+					$end = strpos($this->env_rawstr, ') "');
+				}
+				elseif ($next_item_type == 'paren_list')
+				{
+					$end = strpos($this->env_rawstr, ') (');
+				}
+				elseif ($next_item_type == 'eol')
+				{
+					$end = strlen($this->env_rawstr)-1;
+				}
+				else
+				{
+					echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
+				}
+				// sanity check #1
+				if ($end < 1)
+				{
+					// fallback, maybe next item is itself empty
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): fallback, assuming next item is NIL '."\n"; }
+					$end = strpos($this->env_rawstr, ') NIL');
+				}
+				//echo 'extract_header_item('.__LINE__.'): $end is ['.serialize($end).']'."\n";
+				$start = 1;
+				// end
+				$slen = ($end-0) - $start;
+				$tmp_data['raw_str'] = substr($this->env_rawstr, $start, $slen);
+				//echo 'extract_header_item('.__LINE__.'): $tmp_data[raw_str] is ['.$tmp_data['raw_str'].']'."\n";
+				
+				//// type2 DELETE MAIN STRING OF DONE DATA
+				if ($this->debug_dcom > 1) { echo 'extract_header_item: before we process paren_list, clean $this->bs_rawstr of it '."\n"; }
+				$this->env_rawstr = substr($this->env_rawstr, ($end+2));
+				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+				//
+				$tmp_data['addys_exploded'] = explode(')(', $tmp_data['raw_str']);
+				//echo 'make_address('.__LINE__.'): $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				// loop to clean of leading and trailing quotes
+				$loops = count($tmp_data['addys_exploded']);
+				for ($i=0; $i < $loops ;$i++)
+				{
+					$this_str = $tmp_data['addys_exploded'][$i];
+					if ($this_str{0} == '(')
+					{
+						$this_str = substr($this_str, 1);
+					}
+					$last_pos = (strlen($this_str) - 1);
+					if ($this_str{$last_pos} == ')')
+					{
+						$this_str = substr($this_str, 0, $last_pos);
+					}
+					$tmp_data['addys_exploded'][$i] = $this_str;
+				}
+				//echo 'make_address('.__LINE__.'): post-paren-strip $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				
+				// loop to make address object(s)
+				$loops = count($tmp_data['addys_exploded']);
+				$tmp_data['addy_item'] = array();
+				$tmp_data['return_array'] = array();
+				for ($i=0; $i < $loops ;$i++)
+				{
+					
+					// looking for 4 items, all either string or nil
+					// personal adl mailbox host
+					// "Lars Kneschke" NIL "lars" "example.de"
+					// 1st - personal
+					$this_str = $tmp_data['addys_exploded'][$i];
+					
+					// we know there are 4 items, so do 4 loops
+					for ($x=0; $x < 4 ;$x++)
+					{
+						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): -begin- inner loop $i ['.$i.'], $x ['.$x.'], $this_str is ['.$this_str.']'."\n"; }
+						if (($this_str{0} == 'N')
+						&& ($this_str{1} == 'I')
+						&& ($this_str{2} == 'L'))
+						{
+							$tmp_data['addy_item'][$i][$x] = False;
+							//echo 'extract_header_item('.__LINE__.'): empty DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n";
+							// chop this item from $this_str
+							$this_str = substr($this_str, 4);
+							//echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n";
+						}
+
+
+						elseif ($x == 0)
+						{
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): in real life we know item 2 is always NIL'."\n"; }
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): so this item 1 is everything before NIL, if all goes well, that is the personal part'."\n"; }
+							$start = 0;
+							// in real like we have 1. personal, 2. spaceNILspace then the reat
+							$end = strpos($this_str, ' NIL ');
+							$slen = ($end-0) - $start;
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $start ['.$start.'], $end ['.$end.'],  $slen ['.$slen.']'."\n"; }
+							// grab the data
+							$my_personal = substr($this_str, $start, $slen);
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): initial ITEM: $my_personal is ['.$my_personal.']'."\n"; }
+							// if this personal has is open AND closing paren, strip them
+							$last_pos = strlen($my_personal)-1;
+							if ($my_personal{0} == '"')
+							if ($my_personal{$last_pos} == '"')
+							{
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $my_personal glob has both open and close paren, so strip them'."\n"; }
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): i.e. this is normal, it seems strange but sometimes this is not the case'."\n"; }
+								// strip closing paren
+								$my_personal = substr($my_personal, 0, $last_pos);
+								// strip open paren
+								$my_personal = substr($my_personal, 1);
+							}
+							else
+							{
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $my_personal glob missing either open or close paren, so leave as is'."\n"; }
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): in these cases server gave is strange data, leave unmolested'."\n"; }
+							}
+							// put the personal into out item holder
+							$tmp_data['addy_item'][$i][$x] = $my_personal;
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): FINAL DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n"; }
+							
+							// strip the main string of the done data
+							$this_str = substr($this_str, $end+1);
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n"; }
+						}
+						elseif ($this_str{0} != '"')
+						{
+							// freak out, we should have an open quote
+							echo 'extract_header_item('.__LINE__.'): FREAK OUT, we should have an open quote'."\n";
+							$tmp_data['addy_item'][$i][$x] = False;
+						}
+						else
+						{
+							// grab this string
+							// we knpw the open quote is first char
+							$start = 1;
+							// what is the end of this data?
+							if ($x == 3)
+							{
+								// this is the end of the string
+								$end = strlen($this_str)-1;
+							}
+							else
+							{
+								// pick the smallest number above zero
+								$end_1 = strpos($this_str, '" "');
+								$end_2 = strpos($this_str, '" NIL');
+								if (($end_1 < 1)
+								&& ($end_2 < 1))
+								{
+									// FREAKED OUT! fallback to the end of the string
+									$end = strlen($this_str)-1;
+								}
+								else
+								{
+									$end = $end_1;
+									if (($end_2 < $end)
+									&& ($end_2 > 0))
+									{
+										$end = $end_2;
+									}
+									if ($end < 1)
+									{
+										// FREAKED OUT! fallback to the end of the string
+										$end = strlen($this_str)-1;
+									}
+								}
+							}
+							$slen = ($end-0) - $start;
+							//echo 'extract_header_item('.__LINE__.'): $start ['.$start.'], $end ['.$end.'],  $slen ['.$slen.']'."\n";
+							// grab the data
+							$tmp_data['addy_item'][$i][$x] = substr($this_str, $start, $slen);
+							//echo 'extract_header_item('.__LINE__.'): DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n";
+							// strip the main string of the done data
+							$this_str = substr($this_str, $end+2);
+							//echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n";
+						}
+						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): loop check $i is ['.$i.'], $x is is ['.$x.']'."\n"; }
+					}
+					// done with this individual address item
+					// prepare new object
+					$this_addy = new address;
+					// fill object from data we just collected
+					// personal
+					if ($tmp_data['addy_item'][$i][0])
+					{
+						$this_addy->personal = $tmp_data['addy_item'][$i][0];
+					}
+					else
+					{
+						unset($this_addy->personal);
+					}
+					// adl - in real life this is not used
+					unset($this_addy->adl);
+					// mailbox - php says something like SYNTAX_ERROR on error
+					// because we better have a mailbox or we do not have an email addy
+					if ($tmp_data['addy_item'][$i][2])
+					{
+						$this_addy->mailbox = $tmp_data['addy_item'][$i][2];
+					}
+					else
+					{
+						//unset($this_addy->mailbox);
+						// php says something like SYNTAX_ERROR on error
+						// because we better have a mailbox or we do not have an email addy
+						$this_addy->mailbox = 'SYNTAX_ERROR';
+					}
+					// mailbox
+					if ($tmp_data['addy_item'][$i][3])
+					{
+						$this_addy->host = $tmp_data['addy_item'][$i][3];
+					}
+					else
+					{
+						//unset($this_addy->host);
+						// php says something like INVALID_HOST on error
+						$this_addy->host = 'INVALID_HOST';
+					}
+					// put into the return structure
+					$next_pos = count($tmp_data['return_array']);
+					$tmp_data['return_array'][$next_pos] = $this_addy;
+				}
+				//if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): post-process $tmp_data[addy_item] DUMP: '.""; print_r($tmp_data['addy_item']); echo ""; }
+				if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): final $tmp_data[return_array] DUMP: '.""; print_r($tmp_data['return_array']); echo ""; }
+				
+
+
+				//echo 'extract_header_item: FREAK OUT this not coded yet, line '.__LINE__."\n";
+				if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $tmp_data[return_array] ['.serialize($tmp_data['return_array']).']'.'</pre>'."\n\n"; }
+				return $tmp_data['return_array'];
+			}
+			
+			echo 'extract_header_item: FREAK OUTwhat are we doing here? line '.__LINE__."\n";
+		}
+		
+		/*!
+		@function make_xxaddress_str
+		@abstract makes the non-array part of the address struct for envelope
+		@param $array_of_address (array) each item is var of type address
+		@result string
+		@discussion sub-function, returns either personal or mailbox@host
+		@author Angles
+		@access private
+		*/
+		function make_xxaddress_str($array_of_address)
+		{
+			$loops = count($array_of_address);
+			$return_str = '';
+			for ($i=0; $i < $loops ;$i++)
+			{
+				$this_name = '';
+				$address_obj = $array_of_address[$i];
+				if (isset($address_obj->personal))
+				{
+					$this_name = $address_obj->personal;
+					// from what I can tell, this is what php-imap does
+					// averything normal, leave unchanged
+					// exceptions:
+					// a. apply "addslashes" to it, if it changed, put quotes around it
+					// b. if there is a comma, put quotes around it
+					if (($this_name != addslashes($this_name))
+					|| (strpos($this_name, ',') > 0))
+					{
+						$this_name = '"'.addslashes($this_name).'"';
+					}
+					// finally, I kid u not, this is how php-imap does it, it adds a space to personal here
+					$this_name .= ' ';					
+				}
+				else
+				{
+					$this_name = $address_obj->mailbox .'@'. $address_obj->host;
+				}
+				// assemble this part into the bigger return string
+				if ($i == 0)
+				{
+					$return_str = $this_name;
+				}
+				else
+				{
+					$return_str .= ','.$this_name;
+				}
+			}
+			return $return_str;
+		}
+		
+		/*!
+		@function imap_parse_header
+		@abstract implements IMAP_HEADER (alias to IMAP_HEADERINFO)
+		@result returns an instance of Class "hdr_info_envelope", or returns False on error
+		@discussion sub-function, some data is passed into here, other data is made here. 
+		imap FETCH ENVELOPE response this has 10 peices if information in this order 
+		1. date - string
+		2. subject - string
+		3. from
+		4. sender
+		5. reply-to
+		6. to
+		7. cc
+		8. bcc
+		9. in-reply-to - string
+		10. message-id - string
+		NOTE items 3 thru 8 are data type paren list, which can contain paren lists in them, 
+		the others are type string which are deliniated by quotes
+		@author Angles
+		@access public
+		*/
+		function imap_parse_header($tmp_data=array())
+		{			
+			// make new structure
+			if ($this->debug_dcom > 0) { echo '<pre>'.'imap_parse_header('.__LINE__.'): ENTERING <br>'."\n"; }
+			$info = new hdr_info_envelope;
+			
+			// initialize and/or fill with data already gathered by another function
+			unset($info->remail);
+			// (this chunk moved below)
+			// these next two never seen in the wild with imap usage
+			unset($info->return_pathaddress);
+			unset($info->return_path);
+			// --- Message Flags --- 
+			$info->Recent = ' ';
+			$info->Unseen = ' ';
+			$info->Answered = ' ';
+			$info->Deleted = ' ';	
+			$info->Draft = ' ';
+			$info->Flagged = ' ';
+			if ((stristr($tmp_data['flags'],'\Recent'))
+			&& (stristr($tmp_data['flags'],'\Seen') == False))
+			{
+				//  'R' if recent and seen, 'N' if recent and not seen, ' ' if not recent
+				$info->Recent = 'N';
+			}
+			if ((stristr($tmp_data['flags'],'\Seen') == False)
+			&& (stristr($tmp_data['flags'],'\Recent') == False))
+			{
+				//  'U' if not seen AND not recent, ' ' if seen OR not seen and recent
+				$info->Unseen = 'U';
+			}
+			if (stristr($tmp_data['flags'],'\Flagged'))
+			{
+				//  'F' if flagged, ' ' if not flagged
+				$info->Flagged = 'F';
+			}
+			if (stristr($tmp_data['flags'],'\Answered'))
+			{
+				//  'A' if answered, ' ' if unanswered
+				$info->Answered = 'A';
+			}
+			if (stristr($tmp_data['flags'],'\Deleted'))
+			{
+				//  'D' if deleted, ' ' if not deleted
+				$info->Deleted = 'D';
+			}
+			if (stristr($tmp_data['flags'],'\Draft'))
+			{
+				//  'X' if draft, ' ' if not draft
+				$info->Draft = 'X';
+			}
+			// --- Additional Stuff  ---
+			// "Msgno" message sequence number, NOT the UID
+			// php-imap provides this by forcing you to use msgnum for this function
+			// thus you need to do extra query to go from UID to msgnum before calling this function in php-imap
+			// HOWEVER in this sockets mode we ONLY use UID and it is wasteful that php-imap does the above simply for this data
+			// so, we will put uid here, this MIGHT break php-imap rules but anglemail cares not about this item
+			$info->Msgno = $tmp_data['uid'];
+			// imap INTERNALDATE it looks like this: 17-Sep-2003 01:41:43 -0400
+			$info->MailDate = $tmp_data['internaldate'];
+			// IMAP "rfc822.size" data
+			$info->Size = $tmp_data['rfc822.size'];
+			
+			// udate moved below
+			
+			// ALWAYS present even if not filled, and not filled for imap
+			$info->fetchfrom = '';
+			// ALWAYS present even if not filled, and not filled for imap
+			$info->fetchsubject = '';
+			// unset for imap
+			unset($info->lines);
+		
+			// THIS is what we are here to collect if we can...
+			// put envelope into class var for manipulation
+			$this->env_rawstr = $tmp_data['envelope'];
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): $this->env_rawstr is: ['.$this->env_rawstr ."]\n"; }
+			
+			// ENVELOPE has 10 peices if information in this order
+			// date, subject, from, sender, reply-to, to, cc, bcc, in-reply-to, message-id
+			
+			// 1. date - string
+			// message Date header, should be like this: Tue, 16 Sep 2003 15:28:37 -0400
+			// function extract_header_item($data_type,$next_item_type,$if_nothing)
+			$info->date = $this->extract_header_item('string', 'string', '""');
+			$info->Date = $info->date;
+			// UDATE mail message date in unix time, example 1076645800
+			$info->udate = $this->make_udate($info->Date);
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->date is: ['.$info->date."]\n\n"; }
+			
+			// 2. subject - string
+			$info->subject = $this->extract_header_item('string', 'paren_list', '""');
+			$info->Subject = $info->subject;
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->subject is: ['.$info->subject."]\n\n"; }
+			
+			// 3. from
+			// $from, $to, etc. arrays are numbered arrays of object O->personal  O->mailbox  O->host
+			$info->from = $this->extract_header_item('paren_list', 'paren_list', 'NIL');
+			if ($info->from)
+			{
+				// fromaddress string is either A. personal if available, or B. mailbox@host
+				$info->fromaddress = $this->make_xxaddress_str($info->from);
+			}
+			else
+			{
+				unset($info->from);
+				unset($info->fromaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->from is: ['.serialize($info->from)."]\n\n"; }
+			
+			// 4. sender
+			$info->sender = $this->extract_header_item('paren_list', 'paren_list', 'NIL');
+			if ($info->sender)
+			{
+				$info->senderaddress = $this->make_xxaddress_str($info->sender);
+			}
+			else
+			{
+				unset($info->sender);
+				unset($info->senderaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->sender is: ['.serialize($info->sender)."]\n\n"; }
+			
+			// 5. reply-to
+			$info->reply_to = $this->extract_header_item('paren_list', 'paren_list', 'NIL');
+			if ($info->reply_to)
+			{
+				$info->reply_toaddress = $this->make_xxaddress_str($info->reply_to);
+			}
+			else
+			{
+				unset($info->reply_to);
+				unset($info->reply_toaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->reply_to is: ['.serialize($info->reply_to)."]\n\n"; }
+
+			// 6. to
+			$info->to = $this->extract_header_item('paren_list', 'paren_list', 'NIL');
+			if ($info->to)
+			{
+				$info->toaddress = $this->make_xxaddress_str($info->to);
+			}
+			else
+			{
+				unset($info->to);
+				unset($info->toaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->to is: ['.serialize($info->to)."]\n\n"; }
+			
+			// 7. cc
+			$info->cc = $this->extract_header_item('paren_list', 'paren_list', 'NIL');
+			if ($info->cc)
+			{
+				$info->ccaddress = $this->make_xxaddress_str($info->cc);
+			}
+			else
+			{
+				unset($info->cc);
+				unset($info->ccaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->cc is: ['.serialize($info->cc)."]\n\n"; }
+			
+			// 8. bcc
+			$info->bcc = $this->extract_header_item('paren_list', 'string', 'NIL');
+			if ($info->bcc)
+			{
+				$info->bccaddress = $this->make_xxaddress_str($info->bcc);
+			}
+			else
+			{
+				unset($info->bcc);
+				unset($info->bccaddress);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->bcc is: ['.serialize($info->bcc)."]\n\n"; }
+			
+			// 9. in-reply-to - string or NIL
+			// unset if not available in imap ENVELOPE
+			$info->in_reply_to = $this->extract_header_item('string', 'string', 'NIL');
+			if (!$info->in_reply_to)
+			{
+				unset($info->in_reply_to);
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->in_reply_to is: ['.$info->in_reply_to."]\n\n"; }
+			
+			// 10. message-id - string or ""
+			// because in real life it is ALWAYS set even if not filled (aka "")
+			$info->message_id = $this->extract_header_item('string', 'eol', '""');
+			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->message_id is: ['.$info->message_id."]\n\n"; }
+
+			// *** EXTRA DATA *** php-imap might return
+			// unset for imap
+			unset($info->newsgroups);
+			// unset if not filled - NOT available in imap ENVELOPE data
+			unset($info->followup_to);
+			// unset if not filled - NOT available in imap ENVELOPE data
+			unset($info->references);
+			
+			if ($this->debug_dcom > 0) { echo 'imap_parse_header('.__LINE__.'): LEAVING returning $info <br>'.'</pre>'."\n"; }
+			return $info;
+
+		}
+
+
+		
+		
 		/*!
 		@function header
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_header AND USES imap_msgno
 		*/
 		function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: header NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			//if ($this->debug_dcom > 0) { echo 'imap: header NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+			if ($this->debug_dcom > 0) { echo 'imap: header('.__LINE__.'): ENTERING <br>'; }
+			
+			if ((isset($this->envelope_struct->Msgno))
+			&& ((int)$this->envelope_struct->Msgno == (int)$msg_num))
+			{
+				// return assembled data
+				if ($this->debug_dcom > 0) { echo 'imap: header('.__LINE__.'): LEAVING - data ALREADY collected, returning requested data <br>'; }
+				return $this->envelope_struct;
+			}
+			
+			// SHELL FUNCTION
+			// calls sub function
+			$this->fetch_request_common($stream_notused,$msg_num,$flags);
+			
+			// return assembled data
+			if ($this->debug_dcom > 0) { echo 'imap: header('.__LINE__.'): LEAVING returning requested data <br>'; }
+			return $this->envelope_struct;
 		}
 		
 		
@@ -1321,19 +3652,6 @@
 		*	More Data Communications (dcom) With IMAP Server
 		\**************************************************************************/
 	
-		/**************************************************************************\
-		*	DELETE a Message From the Server
-		\**************************************************************************/
-		/*!
-		@function delete
-		@abstract not yet implemented in IMAP sockets module
-		*/
-		function delete($stream_notused,$msg_num,$flags="")
-		{
-			if ($this->debug_dcom >= 1) { echo 'imap: delete NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
-		}
-		
 		
 		/**************************************************************************\
 		*	Get Message Headers From Server
@@ -1341,12 +3659,15 @@
 		/*!
 		@function fetchheader
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_fetchheader
 		*/
 		function fetchheader($stream_notused,$msg_num,$flags='')
 		{
 			// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchheader NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			//if ($this->debug_dcom > 0) { echo 'imap: fetchheader NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+			if ($this->debug_dcom > 0) { echo 'imap: fetchheader('.__LINE__.'): ENTERING+LEAVING by returning $this->fetchbody() just for headers <br>'; }
+			return $this->fetchbody($stream_notused,$msg_num,'HEADER',$flags);
 		}
 		
 		
@@ -1356,11 +3677,74 @@
 		/*!
 		@function fetchbody
 		@abstract not yet implemented in IMAP sockets module
+		@discussion implements imap_fetchbody
 		*/
-		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
+		function fetchbody($stream_notused,$msg_num,$part_num="",$flags=0)
 		{
-			if ($this->debug_dcom >= 1) { echo 'imap: fetchbody  NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			//if ($this->debug_dcom > 0) { echo 'imap: fetchbody  NOT YET IMPLEMENTED imap sockets function<br>'; }
+			//return False;
+			// c->s:	00000006 FETCH 97 BODY[1]
+			// s->c:	* 97 FETCH (BODY[1] {1230}..(snip)
+			
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): ENTERING fetchbody, $msg_num ['.$msg_num.'] , $part_num ['.$part_num.']<br>'; }
+			
+			// do we force use of msg UID's 
+			if ( ($this->force_msg_uids == True)
+			&& (!($flags & SE_UID)) )
+			{
+				$flags |= SE_UID;
+			}
+			// only SE_UID is supported right now, no flag is not supported because we only use the "UID" command right now
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): param $flags ['.htmlspecialchars(serialize($flags)).'], ($flags & SE_UID) is ['.htmlspecialchars(serialize(($flags & SE_UID))).'] <br>'; }
+			if ($flags & SE_UID)
+			{
+				$using_uid = True;
+			}
+			else
+			{
+				echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>';
+				if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING on ERROR, flag SE_UID is not present, nothing else coded for yet <br>'; }
+				return False;
+			}
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
+			
+			// assemble the server querey, looks like this:  
+			// 00000006 UID FETCH 131 BODY[1]
+			$cmd_tag = 's008';
+			$full_command = $cmd_tag.' UID FETCH '.$msg_num.' BODY['.$part_num.']';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING with error: could not write_port<br>'; }
+				$this->error();
+				return False;
+			}
+			
+			// read the server data
+			$response_array = array();
+			// for some reason I get back an array with a single element, item $raw_response[0] which is the string I want to work with
+			$response_array = $this->imap_read_port($expecting);
+			//if ($this->debug_dcom > 2) { echo 'imap_sock.fetchbody('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			
+			// prepare the return data
+			// 1. pop off the element [0] because it looks like this:
+			// * 97 FETCH (UID 131 BODY[1] {1230}
+			array_shift($response_array);
+			// 2. pop off the last element which is only the close paren to the open paren we just eliminated above
+			array_pop($response_array);
+			
+			// 3. each element is one line, implode them, they already have CRLF
+			// AND RETURN IT
+			if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING fetchbody, imploding then returning a string<br>'; }
+			return implode("", $response_array);
+			
+			//if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING fetchbody <br>'; }
+			// FOR DEBUGGING
+			//return array();
 		}
 		
 		/*!
@@ -1370,7 +3754,7 @@
 		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 		{
 			// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
-			if ($this->debug_dcom >= 1) { echo 'imap: get_body  NOT YET IMPLEMENTED imap sockets function<br>'; }
+			if ($this->debug_dcom > 0) { echo 'imap: get_body  NOT YET IMPLEMENTED imap sockets function<br>'; }
 			return False;
 		}
 		

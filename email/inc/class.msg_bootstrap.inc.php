@@ -270,6 +270,22 @@
 				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_wrappers.inc.php');
 				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_display.inc.php');
 				//$GLOBALS['phpgw']->msg =& new mail_msg;
+				
+				//hdr_info_envelope
+				if
+				(
+					($GLOBALS['phpgw']->msg->force_sockets == True)
+				|| 	(
+					(extension_loaded('imap') == False)
+					&& (defined("TYPETEXT") == False)
+					)
+				)
+				{
+					if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): imap is NOT builtin, or $force_sockets is True, and basic mail defines are not yet in namespace<br>'; }
+					if ($this->debug_level > 1) { echo 'include_once :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_sock_defs.inc.php<br>'; }
+					include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_sock_defs.inc.php');
+				}
+				
 				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): fyi, $GLOBALS[phpgw]->msg->been_constructed ['.serialize($GLOBALS['phpgw']->msg->been_constructed).']  <br>'; } 
 				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): $GLOBALS[phpgw]->msg created mail_msg object, now calling needed initialization function aka manual constructor function, "initialize_mail_msg"<br>'; } 
 				$GLOBALS['phpgw']->msg->initialize_mail_msg();
