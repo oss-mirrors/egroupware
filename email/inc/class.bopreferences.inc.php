@@ -191,16 +191,6 @@
 				)
 			);
 			*/
-			$i++;
-			$this->std_prefs[$i] = Array(
-				'id' 		=> 'enable_utf7',
-				'type'		=> 'exists',
-				'widget'	=> 'checkbox',
-				'write_props'	=> '',
-				'lang_blurb'	=> lang('enable UTF-7 encoded folder names'),
-				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array()
-			);
 			/*
 			$i++;
 			$this->std_prefs[$i] = Array(
@@ -213,6 +203,26 @@
 				'values'	=> array()
 			);
 			*/
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'cache_data',
+				'type'		=> 'exists',
+				'widget'	=> 'checkbox',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('cache server data whenever possible'),
+				'init_default'	=> 'set_or_not,not_set',
+				'values'	=> array()
+			);
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'enable_utf7',
+				'type'		=> 'exists',
+				'widget'	=> 'checkbox',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('enable UTF-7 encoded folder names'),
+				'init_default'	=> 'set_or_not,not_set',
+				'values'	=> array()
+			);
 			
 			// Custom Settings
 			$this->cust_prefs = Array();
