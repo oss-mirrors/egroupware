@@ -17,12 +17,14 @@
 	$setup_info['email']['enable']    = 1;
 	$setup_info['email']['tables']    = '';
 
-	$setup_info['email']['author'] = 'Angelo Tony Puglisi';
+	$setup_info['email']['author'] =
+	$setup_info['email']['maintainer'] = array(
+		'name'  => 'Angelo Tony Puglisi',
+		'email' => 'devel@aminvestments.com'
+	);
 	$setup_info['email']['license']  = 'GPL';
 	$setup_info['email']['description'] =
 		'Email reader with multiple accounts and mailbox filtering.';
-	$setup_info['email']['maintainer'] = 'Angelo Tony Puglisi';
-	$setup_info['email']['maintainer_email'] = 'devel@aminvestments.com';
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['email']['hooks'][] = 'admin';
