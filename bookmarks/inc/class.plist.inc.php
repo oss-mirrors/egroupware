@@ -67,8 +67,8 @@
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		$bm_cat            = $GLOBALS['HTTP_GET_VARS']['bm_cat'];
-		$bm_subcat         = $GLOBALS['HTTP_GET_VARS']['bm_subcat'];
+		$bm_cat            = get_var('bm_cat',Array('GET'));
+		$bm_subcat         = get_var('bm_subcat',Array('GET'));
 		$page_header_shown = $GLOBALS['page_header_shown'];
 
 		$list_tpl = $GLOBALS['phpgw']->template;

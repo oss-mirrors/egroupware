@@ -5,7 +5,7 @@
 	{
 		function showmenu($treeinfo)
 		{
-			$p = $GLOBALS['HTTP_GET_VARS']['p'];
+			$p = get_var('p',Array('GET'));
 
 			$img_expand   = $GLOBALS['phpgw']->common->image('bookmarks','plus');
 			$img_collapse = $GLOBALS['phpgw']->common->image('phpgwapi','tree_collapse');

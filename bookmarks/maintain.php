@@ -23,13 +23,13 @@
 
 	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
 
-	$edit_category_x = $GLOBALS['HTTP_POST_VARS']['edit_category_x'];
-	$edit_category_y = $GLOBALS['HTTP_POST_VARS']['edit_category_y'];
-	$delete_x        = $GLOBALS['HTTP_POST_VARS']['delete_x'];
-	$delete_y        = $GLOBALS['HTTP_POST_VARS']['delete_y'];
-	$cancel_x        = $GLOBALS['HTTP_POST_VARS']['cancel_x'];
-	$cancel_y        = $GLOBALS['HTTP_POST_VARS']['cancel_y'];
-	$bm_id           = $GLOBALS['HTTP_GET_VARS']['bm_id'] ? $GLOBALS['HTTP_GET_VARS']['bm_id'] : $GLOBALS['HTTP_POST_VARS']['bm_id'];
+	$edit_category_x = get_var('edit_category_x',Array('POST'));
+	$edit_category_y = get_var('edit_category_y',Array('POST'));
+	$delete_x        = get_var('delete_x',Array('POST'));
+	$delete_y        = get_var('delete_y',Array('POST'));
+	$cancel_x        = get_var('cancel_x',Array('POST'));
+	$cancel_y        = get_var('cancel_y',Array('POST'));
+	$bm_id           = get_var('bm_id',Array('POST','GET'));
 
 	if ($edit_category_x || $edit_category_y)
 	{
