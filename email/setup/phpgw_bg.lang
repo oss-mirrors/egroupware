@@ -2,71 +2,108 @@
 (required)	email	bg	(задължително)
 1 message has been deleted	email	bg	1 писмо беше изтрито
 1 message has been moved to	email	bg	1 писмо беше преместено в
-add to address book	email	bg	Добавяне към адресника
-add to addressbook	email	bg	Добавяне към адресника
+add to address book	email	bg	Добави в адресника
+add to addressbook	email	bg	Добави в адресника
 address book	email	bg	Адресник
 after	email	bg	След
 all messages	email	bg	Всички писма
-and	email	bg	и
-answered	email	bg	отговорено
-apply	email	bg	прилагане
 apr	email	bg	Април
 arrival date	email	bg	Дата на пристигане
-attach file	email	bg	Прикрепяне на файл
+as	email	bg	като
+attach file	email	bg	Прикрепи файл
+attach signature	email	bg	Добави подпис
 attachment	email	bg	Прикрепен файл
 aug	email	bg	Август
 before	email	bg	Преди
-click here to continue	email	bg	Натиснете тук за продължаване
+big	email	bg	Голям
+bigger	email	bg	По-голям
+biggest	email	bg	Най-голям
+body	email	bg	Тяло
+both	email	bg	Двете
+button type	email	bg	Тип бутон
+change font size in your e-mail pages	email	bg	Променя шрифта в страниците на ЕПоща
+choose for rename	email	bg	Преименовай
+choose to rename	email	bg	преименовай
+click here for more info in a new window	email	bg	Натисни за повече информация в нов прозорец
+click here to continue	email	bg	Дай нататък
+click here to return to your home page.	email	bg	натисни за да преминеш към началната страница
 company	email	bg	Фирма
-compose	common	bg	Съчиняване
-compose message	email	bg	съчиняване на писмо
-compose new	common	bg	Съчиняване на ново писмо
-contains	email	bg	Съдържа
-create a folder	email	bg	Създаване на папка
+compose	common	bg	Писане
+compose message	email	bg	на ново писмо
+compose new	common	bg	Напиши ново
+contains	email	bg	Съдържание
+could not open this mailbox	email	bg	Не мога да отворя тази кутия
+create a folder	email	bg	Създай папка
+current attachments (%1)	email	bg	Приложени (%1)
+custom e-mail preferences	email	bg	Предпочитания за ЕПоща
+custom e-mail settings	email	bg	Е-поща настройки
+debugging page	email	bg	Страница за диагностика
 dec	email	bg	Декември
 default sorting order	email	bg	Сортиране по подразбиране
-default:	common	bg	по подразбиране:
-delete a folder	email	bg	Изтриване на папка
-deleted	email	bg	изтрито
+delete a folder	email	bg	Премахни папка
+deleted	email	bg	премахнат(и)
+deleted messages (trash) folder	email	bg	Папка за изтрити писма (Trash)
+deleted messages folder name	email	bg	Име на папката за изтрити писма
+deleted messages go to trash	email	bg	Изтритите премести в папка Trash
+deleted messages saved to folder:	email	bg	Записах изтритите писма в папка:
+discard	email	bg	Откажи
 does not contain	email	bg	Не съдържа
 draft	email	bg	чернова
+e-mail preferences	common	bg	ЕПоща предпочитания
+edit filters	email	bg	Редактиране на филтрите
 feb	email	bg	Февруари
 file	email	bg	Файл
+filters	email	bg	Филтри
+filters list	email	bg	Списък на филтрите
+flag as important	email	bg	Флаг за важност
+flagged	email	bg	с флаг
 folder	common	bg	Папка
-folder maintenance	email	bg	Управление на папка
-folder name	email	bg	Име на папка
-folder size	email	bg	Големина на папка
+folder name	email	bg	Име на папката
+folder size	email	bg	Обем на папката
 folders	email	bg	Папки
+for these items, fill only what is different from you default e-mail preferences	common	bg	Променете само тези настройки за ЕПоща, които се различават от предпочитаното
 forward	email	bg	Препращане
 from	email	bg	От
-from address	email	bg	Адрес на изпращача
-go back	email	bg	Назад
-go back to	email	bg	Назад към
-hidden	email	bg	скрито
+from address	email	bg	Подател
+hidden	email	bg	скрит(о)
+hide help	email	bg	Скрий описанията
+icon size	email	bg	Големина на иконите
 image	email	bg	Изображение
-inbox	email	bg	Входящи
+imap mail server hostname or ip address	admin	bg	IP или име на IMAP сървъра
+imap server type	common	bg	Тип на IMAP сървъра
+important	email	bg	важно
+inbox	email	bg	Входяща
 jan	email	bg	Януари
-javascript	email	bg	Javascript
 jul	email	bg	Юли
 jun	email	bg	Юни
+keep	email	bg	Запази
 keyword	email	bg	ключова дума
 keywords	email	bg	Ключови думи
 mail server	email	bg	Пощенски сървър
 mar	email	bg	Март
 messages	email	bg	Писма
-move down	email	bg	Преместване надолу
-move up	email	bg	Преместване нагоре
+messages have been moved to	email	bg	писмата бяха преместени в
+move down	email	bg	Премести надолу
+move selected messages into	email	bg	Премести маркираните в
+move this message into	email	bg	Премести писмото в
+move up	email	bg	Премести нагоре
+new	email	bg	Нови
 new message	email	bg	Ново писмо
 new messages	email	bg	Нови писма
+newest	common	bg	най-ново
 next message	email	bg	Следващо писмо
+no next message	email	bg	Няма следващо
+no previous message	email	bg	Няма предишно
 nov	email	bg	Ноември
 oct	email	bg	Октомври
+old	email	bg	Стар
+oldest	common	bg	най-стар
 or	common	bg	или
 organization	email	bg	Организация
 phone	email	bg	Телефон
 previous	email	bg	Предишно
 previous message	email	bg	Предишно писмо
-printable	email	bg	изглед за печат
+raw message	email	bg	необработено
 recipient	email	bg	Получател
 rename a folder	email	bg	Преименуване на папка
 reply	email	bg	Отговор
@@ -76,17 +113,48 @@ send	email	bg	Изпращане
 sender	email	bg	Подател
 sent	common	bg	изпратени
 sent folder	email	bg	папка за изпратени
+sent messages folder	common	bg	Папка за изпратени писма
+sent messages folder name	email	bg	Име на папка "Изпратени"
+sent messages saved in &quot;sent&quot; folder	common	bg	Записах изпратените съобщения в папка &quot;sent&quot
+sent messages saved to folder:	email	bg	Записах изпратените в папка:
 sep	email	bg	Септември
 settings	common	bg	Настройки
-size	email	bg	Големина
-sort by	email	bg	Подреждане по
+short names	email	bg	кратки имена
+show help	email	bg	Покажи обясненията
+show long names	email	bg	Покажи с дълги имена
+show message	email	bg	покажи писмото
+show new messages in combobox	email	bg	Покажи новите в падащ списък
+show new messages on main screen	email	bg	Покажи новите на главния екран
+show sender's email address with name	email	bg	Покажи адреса на подателя с име
+show short names	email	bg	Покажи с кратки имена
+show total folder size by default	email	bg	Показвай винаги пълния обем на папката
+size	email	bg	Обем
+size larger than	email	bg	Обемът е по-голям от
+size smaller than	email	bg	Обемът е по-малък от
+small	email	bg	Малък
+smaller	email	bg	По-малък
+smallest	email	bg	Най-малък
+somebody	email	bg	някой
+sort by	email	bg	Сортирай по
 spell check	email	bg	Проверка на правописа
+there is no text or other part of the email to display to the user, all part(s) are attachments.	email	bg	Няма текст или друго за изобразяване. Има само приложения.
+there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	bg	Възникна грешка при опита за връзка с IMAP сървъра.<br>Моля, свържете се с администратора за проверка името на сървъра, името на потребителя и паролата му.
+there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	bg	Възникна грешка при опита за връзка с пощенския сървър.<br>Моля, проверете името и паролата си или се свържете с администратора.
+there was an error trying to connect to your pop3 server.<br>please contact your admin to check the servername, username or password.	email	bg	Възникна грешка при опита за връзка с POP3 сървъра.<br>Моля, свържете се с администратора за проверка името на сървъра, името на потребителя и паролата му.
+this folder is empty	email	bg	Тази папка е празна
 to	email	bg	До
-to address	email	bg	Адрес на получателя
 total messages	email	bg	Общо писма
 trash	email	bg	кошче
 trash folder	email	bg	папка за кошче
 unanswered	email	bg	Неотговорени
-unknown action	email	bg	Неизвестно действие
 unknown error	email	bg	Неизвестна грешка
-wrote	email	bg	написа
+view formatted	email	bg	Форматиран вид
+view unformatted	email	bg	Неформатиран вид
+you have %1 new messages!	common	bg	Имате %1 нови писма!
+you have 1 new message!	common	bg	Имате 1 ново писмо!
+you have messages!	common	bg	Имате съобщения!
+you have no new messages	common	bg	За Вас няма нови съобщения.
+you must click %1 for the file to actually upload	email	bg	Трябва да натиснете %1 за да заредите файла
+your full name	common	bg	Пълното Ви име
+your message has been sent	common	bg	Писмото Ви е изпратено!
+your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	bg	Следващите настройки са направени от администратора на Вашия сървър. Вероятно няма да се наложи да ги променяте, но ако все пак искате да го направите, маркирайте тази клетка. По подразбиране тя не е маркирана. Ако някога решите да се върнете към настройките, направени от администратора, можете да демаркирате клетката. При това, настройките направени от Вас ще бъдат изтрити и заменени с първоначалните настройки. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.
