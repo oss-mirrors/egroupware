@@ -212,6 +212,27 @@
 		}
 		
 		/*!
+		@function report_svr_data
+		@abstract reports server data array for debugging purposes
+		@result  echos multiline data
+		@author Angles
+		@access	private
+		*/
+		function report_svr_data($data_array, $calling_func_name='', $show_ok_msg=True)
+		{
+			echo 'imap: '.$calling_func_name.': response_array line by line:<br>';
+			for ($i=0; $i<count($data_array); $i++)
+			{
+				echo ' -- ArrayPos['.$i.'] data: ' .htmlspecialchars($data_array[$i]) .'<br>';
+			}
+			echo 'imap: '.$calling_func_name.': =ENDS= response_array line by line:<br>';
+			if ($show_ok_msg == True)
+			{
+				echo 'imap: '.$calling_func_name.': last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
+			}
+		}
+		
+		/*!
 		@function server_last_error
 		@abstract implements IMAP_LAST_ERROR
 		@result  string
@@ -352,16 +373,7 @@
 			}
 			else
 			{
-				if ($this->debug_dcom_extra)
-				{
-					echo 'imap: open: response_array line by line:<br>';
-					for ($i=0; $i<count($response_array); $i++)
-					{
-						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
-					}
-					echo 'imap: open: =ENDS= response_array line by line:<br>';
-					echo 'imap: open: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
-				}
+				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'open', True); }
 				if ($this->debug_dcom) { echo 'imap: open: Successful IMAP Login<br>'; }
 			}
 			
@@ -411,16 +423,7 @@
 			}
 			else
 			{
-				if ($this->debug_dcom_extra)
-				{
-					echo 'imap: close: response_array line by line:<br>';
-					for ($i=0; $i<count($response_array); $i++)
-					{
-						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
-					}
-					echo 'imap: close: =ENDS= response_array line by line:<br>';
-					echo 'imap: close: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
-				}
+				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'close', True); }
 				if ($this->debug_dcom) { echo 'imap: Leaving Close<br>'; }
 				return True;
 			}
@@ -477,16 +480,7 @@
 			}
 			else
 			{
-				if ($this->debug_dcom_extra)
-				{
-					echo 'imap: reopen: response_array line by line:<br>';
-					for ($i=0; $i<count($response_array); $i++)
-					{
-						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
-					}
-					echo 'imap: reopen: =ENDS= response_array line by line:<br>';
-					echo 'imap: reopen: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
-				}
+				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'reopen', True); }
 				if ($this->debug_dcom) { echo 'imap: Leaving reopen<br>'; }
 				return True;
 			}
@@ -588,29 +582,20 @@
 			}
 			else
 			{
-				if ($this->debug_dcom_extra)
-				{
-					echo 'imap: listmailbox: response_array line by line:<br>';
-					for ($i=0; $i<count($response_array); $i++)
-					{
-						echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($response_array[$i]) .'<br>';
-					}
-					echo 'imap: listmailbox: =ENDS= response_array line by line:<br>';
-					echo 'imap: listmailbox: last server completion line: "'.htmlspecialchars($this->server_last_ok_response).'"<br>';
-				}
+				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'reopen', True); }
 			}
 			
 			// delete all text except the folder name
 			for ($i=0; $i<count($response_array); $i++)
 			{
 				// don't include "noselect" folders
-				if (strstr($response_array[$i], '\NoSelect'))
+				if (stristr($response_array[$i], '\NoSelect'))
 				{
 					// do nothing
 				}
 				else
 				{
-					// get everything to the right of the quote_space [" ], INCLUDES the quote_space itself
+					// get everything to the right of the quote_space " , INCLUDES the quote_space itself
 					$folder_name = strstr($response_array[$i],'" ');
 					// delete that quote_space and trim
 					$folder_name = trim(substr($folder_name, 2));
@@ -631,44 +616,10 @@
 				}
 			}
 			
-			if ($this->debug_dcom_extra)
-			{
-				echo 'imap: listmailbox: mailboxes_array line by line:<br>';
-				for ($i=0; $i<count($mailboxes_array); $i++)
-				{
-					echo '-ArrayPos['.$i.'] data: ' .htmlspecialchars($mailboxes_array[$i]) .'<br>';
-				}
-				echo 'imap: listmailbox: =ENDS= mailboxes_array line by line:<br>';
-			}
-			
+			if ($this->debug_dcom_extra) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
 			if ($this->debug_dcom) { echo 'imap: Leaving listmailbox<br>'; }
 			//return '';
 			return $mailboxes_array;
-		}
-
-
-		function status_query($folder,$field)
-		{
-			if(!$this->write_port('a001 STATUS '.$folder.' ('.$field.')'))
-			{
-				$this->error();
-			}
-			$response = $this->read_port();
-			//echo 'Response = '.$response."<br>\n";
-			while(!ereg('OK STATUS completed',$response))
-			{
-				if(ereg("\($field ([0-9]+)\)",$response,$regs))
-				{
-					while(!ereg('OK STATUS completed',$response))
-					{
-						$response = $this->read_port();
-					}
-					return $regs[1];
-				}
-				$response = $this->read_port();
-				//echo 'Response = '.$response."<br>\n";
-			}
-			return False;
 		}
 		
 		// OBSOLETED
@@ -745,39 +696,210 @@
 		}
 		*/
 		
+		/*!
+		@function status
+		@abstract implements php function IMAP_STATUS
+		@param $stream_notused : socket class handles stream reference internally
+		@param $fq_folder : string : {SERVER_NAME:PORT/OPTIONS}FOLDERNAME
+		@param $flags :  available options are:
+		SA_MESSAGES - set status->messages to the number of messages in the mailbox
+		SA_RECENT - set status->recent to the number of recent messages in the mailbox
+		SA_UNSEEN - set status->unseen to the number of unseen (new) messages in the mailbox
+		SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
+		SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
+		SA_ALL - set all of the above
+		@discussion implements the functionality of php function IMAP_STATUS
+		@syntax ?
+		@author Angles, skeeter
+		@access	public
+		*/
 		function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 		{
-			if ($this->debug_dcom) { echo 'imap: status<br>'; }
-			return False;
-		}
-		
-		/*
-		function status($folder='',$options=SA_ALL)
-		{
-			if($folder == '')
-			{
-				$folder = $this->mailbox;
-			}
-			$info = new mailbox_status;
-			$loop = Array(
-				SA_MESSAGES	=> 'messages',
-				SA_RECENT	=> 'recent',
-				SA_UNSEEN	=> 'unseen',
-				SA_UIDNEXT	=> 'uidnext',
-				SA_UIDVALIDITY	=> 'uidvalidity'
+			if ($this->debug_dcom) { echo 'imap: Entering status<br>'; }
+			
+			// fq_folder is a "fully qualified folder", seperate the parts:
+			$svr_data = array();
+			$svr_data = $this->distill_fq_folder($fq_folder);
+			$folder = $svr_data['folder'];
+			// build the query string
+			$query_str = '';
+			$available_options = Array(
+				SA_MESSAGES	=> 'MESSAGES',
+				SA_RECENT	=> 'RECENT',
+				SA_UNSEEN	=> 'UNSEEN',
+				SA_UIDNEXT	=> 'UIDNEXT',
+				SA_UIDVALIDITY	=> 'UIDVALIDITY'
 			);
-			@reset($loop);
-			while(list($key,$value) = each($loop))
+			@reset($available_options);
+			while(list($key,$value) = each($available_options))
 			{
 				if($options & $key)
 				{
-					$info->$value = $this->status_query($folder,strtoupper($value));
+					$query_str .= $value.' ';
 				}
 			}
+			$query_str = trim($query_str);
+			
+			$cmd_tag = 's001';
+			//$full_command = $cmd_tag.' STATUS '.$svr_data['folder'].' (MESSAGES RECENT UIDNEXT UIDVALIDITY UNSEEN)';
+			$full_command = $cmd_tag.' STATUS "'.$svr_data['folder'].'" ('.$query_str.')';
+			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
+			
+			if ($this->debug_dcom_extra) { echo 'imap: status: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom_extra) { echo 'imap: status: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			
+			if(!$this->write_port($full_command))
+			{
+				if ($this->debug_dcom) { echo 'imap: status: could not write_port<br>'; }
+				$this->error();
+				return False;				
+			}
+			
+			// read the server data
+			$response_array = $this->imap_read_port($expecting);
+			
+			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
+			if (count($response_array) == 0)
+			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: status: error in status<br>';
+					echo 'imap: status: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
+				if ($this->debug_dcom) { echo 'imap: Leaving status with error<br>'; }
+				return False;				
+			}
+			// STATUS should only return 1 line of data
+			if (count($response_array) > 1)
+			{
+				if ($this->debug_dcom_extra)
+				{
+					echo 'imap: status: error in status, more than one line server response, not normal<br>';
+					echo 'imap: status: last recorded error:<br>';
+					echo  $this->server_last_error().'<br>';
+				}
+				if ($this->debug_dcom) { echo 'imap: Leaving status with error<br>'; }
+				return False;				
+			}
+			
+			// if we get here we have valid server data
+			if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'status', True); }
+			
+			// initialize structure
+			$info = new mailbox_status;
+			$info->messages = '';
+			$info->recent = '';
+			$info->unseen = '';
+			$info->uidnext = '';
+			$info->uidvalidity = '';
+			
+			//typical server data:
+			// * STATUS INBOX (MESSAGES 15 RECENT 1 UNSEEN 2 UIDNEXT 17 UIDVALIDITY 1005967489)
+			// data starts after the mailbox name, which could actually have similar strings as the status querey
+			// get data the includes and follows the opening paren
+			$status_data_raw = strstr($response_array[0], '(');
+			
+			// snarf any of the 5 possible pieces of data if they are present
+			$status_data['messages'] = $this->snarf_status_data($status_data_raw, 'MESSAGES');
+			$status_data['recent'] = $this->snarf_status_data($status_data_raw, 'RECENT');
+			$status_data['unseen'] = $this->snarf_status_data($status_data_raw, 'UNSEEN');
+			$status_data['uidnext'] = $this->snarf_status_data($status_data_raw, 'UIDNEXT');
+			$status_data['uidvalidity'] = $this->snarf_status_data($status_data_raw, 'UIDVALIDITY');
+			
+			// fill structure and unset any unfilled data elements
+			if ($status_data['messages'] != '')
+			{
+				$info->messages = $status_data['messages'];
+			}
+			else
+			{
+				unset($info->messages);
+			}
+			if ($status_data['recent'] != '')
+			{
+				$info->recent = $status_data['recent'];
+			}
+			else
+			{
+				unset($info->recent);
+			}
+			if ($status_data['unseen'] != '')
+			{
+				$info->unseen = $status_data['unseen'];
+			}
+			else
+			{
+				unset($info->unseen);
+			}
+			if ($status_data['uidnext'] != '')
+			{
+				$info->uidnext = $status_data['uidnext'];
+			}
+			else
+			{
+				unset($info->uidnext);
+			}
+			if ($status_data['uidvalidity'] != '')
+			{
+				$info->uidvalidity = $status_data['uidvalidity'];
+			}
+			else
+			{
+				unset($info->uidvalidity);
+			}
+			
+			if ($this->debug_dcom) { echo 'imap: Leaving status<br>'; }
 			return $info;
 		}
-		*/
 		
+		function snarf_status_data($status_raw_str='',$snarf_this='')
+		{
+			// bogus data detection
+			if (($status_raw_str == '')
+			|| ($snarf_this == ''))
+			{
+				return '';
+			}
+			// fallback value
+			$return_data = '';
+			
+			//typical server data:
+			// * STATUS INBOX (MESSAGES 15 RECENT 1 UNSEEN 2 UIDNEXT 17 UIDVALIDITY 1005967489)
+			
+			// see if $snarf_this is in the raw data
+			$data_mini_str = stristr($status_raw_str, $snarf_this);
+			if ($data_mini_str != False)
+			{
+				// $data_mini_str has everything including and to the right of $snarf_this
+				// integer follows $snarf_this+space
+				$delete_len = strlen($snarf_this.' ');
+				// delete up to integer
+				$data_mini_str = substr($data_mini_str, $delete_len);
+				// integer will be followed by (A) a space ' ' or (B) a closing paren ')', or (C) any non-integer char
+				for ($i=0; $i< strlen($data_mini_str); $i++)
+				{
+					if ((ord($data_mini_str[$i]) >= chr(0))
+					&& (ord($data_mini_str[$i]) <= chr(9)))
+					{
+						// continue looking, this is integer data
+					}
+					else
+					{
+						// we reached a non-integer, so the position just prior to this ends the integer data
+						$data_end = $i - 1;
+						break;
+					}
+				}
+				// snarf the data
+				$data_mini_str = trim(substr($data_mini_str, 0, $data_end));
+				$return_data = (int)$data_mini_str;
+				if ($this->debug_dcom_extra) { echo 'imap: snarf_status_data: '.$snarf_this.' = '.$return_data.'<br>'; }
+			}
+			return $return_data;
+		}
+		
+		// OBSOLETED
 		function num_msg($folder='')
 		{
 			if($folder == '' || $folder == $this->folder)
@@ -786,7 +908,8 @@
 			}
 			return $this->status_query($folder,'MESSAGES');
 		}
-	
+		
+		// OBSOLETED
 		function total($field)
 		{
 			$total = 0;

@@ -21,45 +21,45 @@
   * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA            *
   \**************************************************************************/
 
-  define('SA_MESSAGES',1);
-  define('SA_RECENT',2);
-  define('SA_UNSEEN',4);
-  define('SA_UIDNEXT',8);
-  define('SA_UIDVALIDITY',16);
-  define('SA_ALL',31);
-
-  define('SORTDATE',0);
-  define('SORTARRIVAL',1);
-  define('SORTFROM',2);
-  define('SORTSUBJECT',3);
-  define('SORTTO',4);
-  define('SORTCC',5);
-  define('SORTSIZE',6);
-
-  define ('TYPETEXT',0);
-  define ('TYPEMULTIPART',1);
-  define ('TYPEMESSAGE',2);
-  define ('TYPEAPPLICATION',3);
-  define ('TYPEAUDIO',4);
-  define ('TYPEIMAGE',5);
-  define ('TYPEVIDEO',6);
-  define ('TYPEOTHER',7);
-  //  define ('TYPEMODEL',
-  define ('ENC7BIT',0);
-  define ('ENC8BIT',1);
-  define ('ENCBINARY',2);
-  define ('ENCBASE64',3);
-  define ('ENCQUOTEDPRINTABLE',4);
-  define ('ENCOTHER',5);
-  define ('ENCUU',6);
+	define('SA_MESSAGES',1);
+	define('SA_RECENT',2);
+	define('SA_UNSEEN',4);
+	define('SA_UIDNEXT',8);
+	define('SA_UIDVALIDITY',16);
+	define('SA_ALL',31);
+	
+	define('SORTDATE',0);
+	define('SORTARRIVAL',1);
+	define('SORTFROM',2);
+	define('SORTSUBJECT',3);
+	define('SORTTO',4);
+	define('SORTCC',5);
+	define('SORTSIZE',6);
+	
+	define ('TYPETEXT',0);
+	define ('TYPEMULTIPART',1);
+	define ('TYPEMESSAGE',2);
+	define ('TYPEAPPLICATION',3);
+	define ('TYPEAUDIO',4);
+	define ('TYPEIMAGE',5);
+	define ('TYPEVIDEO',6);
+	define ('TYPEOTHER',7);
+	//  define ('TYPEMODEL',
+	define ('ENC7BIT',0);
+	define ('ENC8BIT',1);
+	define ('ENCBINARY',2);
+	define ('ENCBASE64',3);
+	define ('ENCQUOTEDPRINTABLE',4);
+	define ('ENCOTHER',5);
+	define ('ENCUU',6);
+	
+	define ('FT_UID',0);	// the msgnum is a UID
+	define ('FT_PEEK',1);	// do not set the \Seen flag if not already set
+	define ('FT_INTERNAL',2); // server will not attempt to standardize CRLFs
+	define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
+	define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
   
-  define ('FT_UID',0);	// the msgnum is a UID
-  define ('FT_PEEK',1);	// do not set the \Seen flag if not already set
-  define ('FT_INTERNAL',2); // server will not attempt to standardize CRLFs
-  define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
-  define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
-  
-  define ('SE_NOPREFETCH',1); // used with IMAP_SORT , don't really understand it though
+	define ('SE_NOPREFETCH',1); // used with IMAP_SORT , don't really understand it though
 
 	// This may need to be a reference to the different months in native tongue....
 	$GLOBALS['month_array'] = Array(
