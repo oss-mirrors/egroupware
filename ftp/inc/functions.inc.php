@@ -31,7 +31,7 @@
          "<input type=\"hidden\" name=\"filename\" value=\"$filename\">\n";
       $rename_form_end = "</form>\n";
       $rename_form_from=  $filename;
-      $rename_form_to="<input type=text name=\"newfilename\" size=20" .
+      $rename_form_to="<input type=text name=\"newfilename\" size=20 " .
          "value=\"\">";
       $rename_form_submit="<input type=\"submit\" name=\"confirm\" " .
          "value=\"" . lang("rename") . "\">\n";
@@ -49,13 +49,16 @@
          "lang_rename_to" => lang("rename to")
          ));
 
+		$template->set_var('lang_message',lang('Rename file'));
+
+
       $template->parse("out","rename",true);
       // $template->p("renameform");
       $template->set_var("return",$template->get("out"));
       return $template->get("return");
    }
 
-   function confirmDeleteForm($template,$session,$filename,$directory,$type) {
+   function confirmDeleteForm($template,$session,$filename,$directory,$type ='') {
       global $bgcolor, $em_bg, $target;
       $delete_form_begin= "<form action=\"" . createLink($target) . 
          "\" method=\"post\">\n" .
@@ -64,8 +67,7 @@
          "<input type=\"hidden\" name=\"newdir\" value=\"$directory\">\n" .
          "<input type=\"hidden\" name=\"file\" value=\"$filename\">\n";
       $delete_form_end = "</form>\n";
-      $delete_form_question = lang("confirm delete",$directory . "/" . 
-         $filename);
+      $delete_form_question = 'Are you sure you want to delete ' . $filename . ' ?';
       $delete_form_from= $directory . "/" . $filename;
       $delete_form_to="<input type=text name=\"newname\" size=20" .
          "value=\"\">";
@@ -93,11 +95,11 @@
          "\" method=\"post\">\n" .
          "<input type=\"hidden\" name=\"action\" value=\"login\">\n";
       $login_form_end="</form>\n";
-      $login_form_username="<input type=text size=20 name=\"username\" " .
+      $login_form_username="<input type=text name=\"username\" " .
          "value=\"$dfuser\">";
-      $login_form_password="<input type=password name=\"password\" size=20 " .
+      $login_form_password="<input type=password name=\"password\" " .
          "value=\"$dfpass\">";
-      $login_form_ftpserver="<input type=text name=\"ftpserver\" size=20 " .
+      $login_form_ftpserver="<input type=text name=\"ftpserver\" " .
          "value=\"$dfhost\">";
       $login_form_submit="<input type=\"submit\" name=\"submit\" value=\"" .
          lang("connect") . "\">\n";
@@ -114,6 +116,8 @@
          "lang_password" => lang("password"),
          "langserver" => lang("ftpserver")
          ));
+		$template->set_var('lang_login',lang('Log into FTP server'));
+		$template->set_var('lang_ftpserver',lang('FTP hostname'));
 
       $template->parse("loginform","login",false);
       $template->p("loginform");
@@ -195,48 +199,74 @@
       return;
    }
 
-   function phpftp_getList($ftp,$dir) {
-      // this function should return a list of the files (including
-      // directories in the directory given
-      // since the ftp_nlist command cant be relied on, we do an nlist,
-      // if there are no directories listed (with a size -1) then we
-      // have to do a rawlist and get the directories by the values
-      // with a : after their name
-      $list=ftp_nlist($ftp,$dir);
-//		echo '<pre>'; print_r($list); echo '</pre>';
-      $dirsfound=0;
-      for($i=0;$i<sizeof($list);$i++) {
-         if (ftp_size($ftp,$list[$i]) == -1) {
-            // this was a directory
-            $dirsfound=1;
-            // echo "Found a dir in $list[$i]<BR>\n";
-            continue;
-         }
-      }
 
-      if (!$dirsfound) {
-         // echo "Had to do a rawlist\n";
-         $rawlist=ftp_rawlist($ftp,$dir);
-         for($i=0;$i<sizeof($rawlist);$i++) {
-            if (ereg(":$",$rawlist[$i])) {
-               // print "found directory \"$rawlist[$i]\"<BR>\n";
-               array_push($list,substr($rawlist[$i],0,-1));
-            }
-         }
-      }
 
-      sort($list);
-      // for($i=0;$i<sizeof($list);$i++) {
-      //    echo $list[$i] . "<BR>\n";
-      // }
-      for ($i=count($list);$i>0;$i--) {
-        $list[$i] = $list[$i-1];
-      }
-      $list[0] = "..";
-//      array_unshift($list,".."); // this would be php4 only
-      return $list;
+	function analysedir($dirline)
+	{
+		if (ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
+		{
+			$systyp = "UNIX";
+		}
+
+		if (substr($dirline,0,5) == "total")
+		{
+			$dirinfo[0] = -1;
+		}
+		elseif($systyp=="Windows_NT")
+		{
+			if (ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
+			{
+				$dirinfo[0] = 1;
+				$dirinfo[1] = 0;
+				$dirinfo[2] = $regs[1];
+			} elseif(ereg("[-0-9]+ *[0-9:]+[PA]?M? +([0-9]+) (.*)",$dirline,$regs)) {
+				$dirinfo[0] = 0;
+				$dirinfo[1] = $regs[1];
+				$dirinfo[2] = $regs[2];
+			}
+		} elseif($systyp=="UNIX") {
+			if (ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
+			{
+				$ta = explode(' ',$dirline);
+				while (list(,$p) = each($ta))
+				{
+					if ($p)
+					{
+						$a[] = $p;
+					}
+				
+				}
+				$fileinfo['permissions'] = $a[0];
+				$fileinfo['owner']       = $a[2];
+				$fileinfo['group']       = $a[3];
+				$fileinfo['size']        = $a[4];
+				$fileinfo['date']        = $regs[3];
+				$fileinfo['name']        = $regs[4];
+				//echo '<pre>'; print_r($regs); echo '</pre>';
+			}
+		}
+    
+		if (($dirinfo[2]==".") || ($dirinfo[2]==".."))
+		{
+			$dirinfo[0] = 0;
+		}
+        
+		return $fileinfo;
+	}
+
+	function phpftp_getList($ftp,$dir)
+	{
+		global $real_systyp;
+		$real_systyp = ftp_systype($ftp);
+
+		ftp_chdir($ftp,$dir);
+		$dirlist = ftp_rawlist($ftp,'');
+		while (list(,$line) = each($dirlist))
+		{
+			$dirinfo[] = analysedir($line);
+		}
+		return $dirinfo;
    }
-
 
    function macro_get_Link($action,$string) {
       // globals everything it needs but the string to link

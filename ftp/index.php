@@ -1,8 +1,8 @@
 <?php
    /**************************************************************************\
-   * phpGroupWare - Ftp Module
+   * phpGroupWare - Ftp Module                                                *
    * http://www.phpgroupware.org                                              *
-   * Written by Scott Moser <smoser@brickies.net>
+   * Written by Scott Moser <smoser@brickies.net>                             *
    * --------------------------------------------                             *
    *  This program is free software; you can redistribute it and/or modify it *
    *  under the terms of the GNU General Public License as published by the   *
@@ -10,17 +10,22 @@
    *  option) any later version.                                              *
    \**************************************************************************/
 
-   $phpgw_info["flags"]["currentapp"] = "ftp";
-   if ($action == "get" || $action == "view") {
-      $phpgw_info["flags"]["nonavbar"] = True;
-      $phpgw_info["flags"]["noheader"] = True;
-   }
+	/* $Id$ */
 
-   include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'ftp'
+	);
 
-   $default_login=$phpgw_info["user"]["userid"];
-   $default_pass=$phpgw->common->decrypt($phpgw_info["user"]["session_passwd"]);
-   $default_server=$phpgw_info["server"]["default_ftp_server"];
+	if ($action == 'get' || $action == 'view')
+	{
+		$phpgw_info['flags']['nonavbar'] = True;
+		$phpgw_info['flags']['noheader'] = True;
+	}
+	include('../header.inc.php');
+
+   $default_login  = $phpgw_info['user']['account_lid'];
+   $default_pass   = $phpgw->session->appsession('password','phpgwapi');
+   $default_server = $phpgw_info['server']['default_ftp_server'];
 
    $sessionUpdated=false;
 
@@ -34,20 +39,22 @@
 
    $t = $phpgw->template;
    $t->set_file(array(
-      "main" => "main.tpl",
+      "main_" => "main.tpl",
       "login" => "login.tpl",
       "rename" => "rename.tpl",
       "confirm_delete" => "confirm_delete.tpl",
-      "bad_connect" => "bad_connection.tpl",
-      "dir_row" => "dir_row.tpl",
-      "file_row" => "file_row.tpl"
+      "bad_connect" => "bad_connection.tpl"
       ));
    $t->set_var(array(
       "em_bgcolor" => $em_bg, "em_text_color" => $em_bg_text,
       "bgcolor" => $bgcolor[0]
       ));
 
-   $t->set_var("misc_data","");
+	$t->set_block('main_','main');
+	$t->set_block('main_','row');
+	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$t->set_var('row_on',$phpgw_info['theme']['row_on']);
+	$t->set_var('row_off',$phpgw_info['theme']['row_off']);
 
    $t->set_var("module_name",lang("module name"));
 
@@ -96,8 +103,7 @@
                      "$olddir/$file"), true);
                }
             } elseif (!$cancel) {
-               $t->set_var("misc_data", 
-                  confirmDeleteForm($t,$session,$file,$olddir),true);
+               $t->set_var("misc_data",confirmDeleteForm($t,$session,$file,$olddir),true);
             }
          }
 
@@ -148,21 +154,37 @@
                $t->set_var("misc_data",lang("empty dirname"),true);
             }
          }
-         // heres where most of the work takes place
-         if ($action=="cwd") {
-            ftp_chdir($ftp,$olddir . "/" . $newdir);
-         } elseif ($action=="" && $connInfo["cwd"]!="") {
-            // this must have come back from another module, try to 
-            // get into the old directory
-            ftp_chdir($ftp,$connInfo["cwd"]);
-         } elseif ($olddir!="") {
-            ftp_chdir($ftp,$olddir);
-         }
-         // if ($olddir == "") {
-            $olddir = ftp_pwd($ftp);
-         // }
-         $cwd=ftp_pwd($ftp);
-         $connInfo["cwd"]=$cwd;
+
+			// heres where most of the work takes place
+			if ($action == 'cwd')
+			{
+				if ($olddir == $newdir)
+				{
+					ftp_chdir($ftp,$newdir);
+				}
+				else
+				{
+					ftp_chdir($ftp,$olddir . '/' . $newdir);
+					$olddir = $olddir . '/' . $newdir;
+				}
+			}
+			else if ($action == '' && $connInfo['cwd'] != '')
+			{
+				// this must have come back from another module, try to 
+				// get into the old directory
+				ftp_chdir($ftp,$connInfo['cwd']);
+			}
+			elseif ($olddir)
+			{
+				ftp_chdir($ftp,$olddir);
+			}
+
+			if (! $olddir)
+			{
+				$olddir = ftp_pwd($ftp);
+			}
+         $cwd = ftp_pwd($ftp);
+         $connInfo['cwd'] = $cwd;
 
          // set up the upload form
          $ul_form_open="<form name=\"upload\" action=\"" . 
@@ -186,7 +208,7 @@
             "name=\"newdirname\" value=\"\">\n";
          $crdir_submit="\t<input type=\"submit\" name=\"submit\"" .
             "value=\"Create New Dir\">\n";
-         $ftp_location="ftp://" . $connInfo["username"] . ":password@" .
+         $ftp_location="ftp://" . $connInfo["username"] . "@" .
                $connInfo["ftpserver"] . $cwd;
 
          $newdir=""; $temp=$olddir; $olddir=$homedir; 
@@ -208,61 +230,72 @@
             "crdir_submit" => $crdir_submit
             ));
 
-         if ($contents = phpftp_getList($ftp,".")) {
-            // start building the "rowlist" data
-            $numfiles=sizeof($contents);
-            for ($i=0;$i<$numfiles; $i++) {
-               $file=$contents[$i];
-               $val=($i % 2);
-               $size=ftp_size($ftp,$file);
-               $directory="";
-               if ($size == -1) {
-                  $newdir=$file;
-                  $cd_link=macro_get_Link("cwd",
-                     "<img border=0 src=\"images/directory.gif\" " .
-                     "alt=\"" . lang("cd") . " $newdir\">");
-                  if ($file!="..") {
-                     $rename_link=macro_get_Link("rename",
-                        "<img border=0 src=\"images/rename.gif\" " .
-                        "alt=\"" . lang("rename",$newdir) . "\">");
-                     $del_link=macro_get_Link("rmdir",
-                        "<img border=0 src=\"images/trash.gif\" " .
-                        "alt=\"" . lang("delete", $newdir) . " \">");
-                  } else { $del_link=""; }
-                  $directory=$file;
-                  $size="&nbsp;";
-               } else {
-                  $newdir="";
-                  $save_link=macro_get_Link("get",
-                     "<img border=0 src=\"images/save.gif\" " .
-                     "alt=\"" . lang("save") . " $file\">");
-                  $del_link=macro_get_Link("delete",
-                     "<img border=0 src=\"images/trash.gif\" " . 
-                     "alt=\"" . lang("delete") . " $file\">");
-                  $rename_link=macro_get_Link("rename",
-                     "<img border=0 src=\"images/rename.gif\" " .
-                     "alt=\"" . lang("rename") . " $file\">");
-                  $view_link=macro_get_Link("view",
-                     "<img border=0 src=\"images/view.gif\" " . 
-                     "alt=\"" . lang("view") . " $file\">");
-               }
-               $t->set_var(array(
-                  "save_link" => $save_link, "fmsave_link" => $fmsave_link,
-                  "view_link" => $view_link, "del_link" => $del_link,
-                  "size" => $size, "file" => $file, 
-                  "bgcolor" => $bgcolor[$val], "cd_link" => $cd_link,
-                  "directory" => $directory, "rename_link" => $rename_link
-                  ));
-               if ($directory) {
-                  $t->parse("rowlist_" . (round($i/$numfiles)+1) ,"dir_row",true);
-               } else {
-                  $t->parse("rowlist_" . (round($i/$numfiles)+1) ,"file_row",true);
-               }
-            }
+			$contents = phpftp_getList($ftp,'.');
+
+			$t->set_var('lang_name',lang('Name'));
+			$t->set_var('lang_owner',lang('Owner'));
+			$t->set_var('lang_group',lang('Group'));
+			$t->set_var('lang_permissions',lang('Permissions'));
+			$t->set_var('lang_size',lang('Size'));
+			$t->set_var('lang_delete',lang('Delete'));
+			$t->set_var('lang_rename',lang('Rename'));
+
+
+			$newdir = $olddir;
+			$t->set_var('name',macro_get_link('cwd','..'));
+			$t->set_var('del_link','&nbsp;');
+			$t->set_var('rename_link','&nbsp;');
+			$t->set_var('owner','');
+			$t->set_var('group','');
+			$t->set_var('permissions','');
+			$t->fp('rowlist_dir','row',True);
+
+			while (list(,$fileinfo) = each($contents))
+			{
+//				echo '<pre>'; print_r($fileinfo); echo '</pre>';
+				$newdir = $fileinfo['name'];
+				$t->set_var('owner',$fileinfo['owner']);
+				$t->set_var('group',$fileinfo['group']);
+				$t->set_var('permissions',$fileinfo['permissions']);
+
+/*				if ($fileinfo['size'] < 1024)
+				{
+					$fileinfo['size'] = $fileinfo['size'] . ' b';
+				}
+				else */
+				if ($fileinfo['size'] < 999999)
+				{
+					$fileinfo['size'] = round(10*($fileinfo['size']/1024))/10 .' k';
+				}
+				else
+				{
+					//  round to W.XYZ megs by rounding WX.YZ
+					$fileinfo['size'] = round($fileinfo['size']/(1024*100));
+					// then bring it back one digit and add the MB string
+					$fileinfo['size'] = ($fileinfo['size']/10) .' MB';
+				}
+
+				if (substr($fileinfo['permissions'],0,1) == 'd')
+				{
+					$file = $fileinfo['name'];
+					$t->set_var('name',macro_get_link('cwd',$fileinfo['name']));
+					$t->set_var('del_link',macro_get_link('rmdir',lang('Delete')));
+					$t->set_var('size','');
+				}
+				else
+				{
+					$file = $fileinfo['name'];
+					$t->set_var('del_link',macro_get_link('delete',lang('Delete')));
+					$t->set_var('name',macro_get_link('get',$fileinfo['name']));
+					$t->set_var('size',$fileinfo['size']);
+				}
+				$t->set_var('rename_link',macro_get_link('rename',lang('Rename')));
+
+				$t->fp('rowlist_dir','row',True);
+
          }
          ftp_quit($ftp);
-         $t->parse("out","main",false);
-         $t->p("out");
+         $t->pfp('out','main');
       } else {
          updateSession();
          $sessionUpdated=true;
