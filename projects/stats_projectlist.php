@@ -33,8 +33,8 @@
 				. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
-	$t->set_var('lang_action',lang('Project statistics'));
-	$t->set_var('lang_userlist',lang('User statistics'));
+	$t->set_var('lang_action',lang('Project statistic'));
+	$t->set_var('lang_userlist',lang('User statistic'));
 	$t->set_var('cat_url',$phpgw->link('/projects/stats_projectlist.php'));
 	$t->set_var('userlisturl',$phpgw->link('/projects/stats_userlist.php'));  
 	$t->set_var('hidden_vars',$hidden_vars);

@@ -17,7 +17,6 @@ All invoices	projects	en	All invoices
 All	projects	en	All
 All delivery notes	projects	en	ALL delivery notes
 archive	projects	en	Archive
-Are you sure you want to delete this entry ?	projects	en	Are you sure you want to delete this entry ?
 billed	projects	en	Billed
 Billed only	projects	en	Billed only
 Billing	projects	en	Billing
@@ -50,6 +49,7 @@ Edit project hours	projects	en	Edit project hours
 Employee	projects	en	Employee
 End date	projects	en	End date
 End time	projects	en	End time
+Firstname	projects	en	Firstname
 Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Project ID ?	projects	en	Generate Project ID ?
@@ -69,6 +69,7 @@ Job has been added !	projects	en	Job has been added !
 Job has been updated !	projects	en	Job has been updated !
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs
+Lastname	projects	en	Lastname
 List hours	projects	en	List hours
 Minutes per workunit	projects	en	Minutes per workunit
 net	projects	en	net
@@ -90,9 +91,12 @@ Print invoice	projects	en	Print invoice
 Project	projects	en	Project
 Project administration	projects	en	Project administration
 Project archive	projects	en	Project archive
+Project billing	projects	en	Project billing
+Project delivery	projects	en	Project delivery
 Project ID	projects	en	Project ID
 Project list	projects	en	Project list
 Project name	projects	en	Project name
+Project preferences	projects	en	Project preferences
 Project statistic	projects	en	Project statistic
 Project x x has been updated !	projects	en	Project %1 %2 has been updated !
 Project x x has been added !	projects	en	Project %1 %2 has been added !
@@ -118,9 +122,9 @@ Title	projects	en	Title
 Time	projects	en	Time
 Update invoice	projects	en	Update invoice
 Update delivery	projects	en	Update delivery
+Username	projects	en	Username
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
-User statistics	projects	en	User statistics
 View job	projects	en	View job
 View project	projects	en	View project
 Work date	projects	en	Work date

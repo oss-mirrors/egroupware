@@ -44,7 +44,7 @@
 	$t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
 
 	$t->set_var('lang_action',lang('Project preferences'));
-	$t->set_var('lang_select_tax',lang('Select tax for work hours'));
+	$t->set_var('lang_select_tax',lang('Select tax for workhours'));
 	$t->set_var('lang_select',lang('Select per button !'));
 
 	$tax = $phpgw_info['user']['preferences']['projects']['tax'];
