@@ -123,8 +123,8 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$default_order_selected[$phpgw_info["user"]["preferences"]["email"]["default_sorting"]] = " selected";
 	$sorting_select_options =
-		 '<option value="old_new"' .$default_order_selected["old_new"] .'>oldest -> newest</option>' ."/n"
-		.'<option value="new_old"' .$default_order_selected["new_old"] .'>newest -> oldest</option>' ."/n";
+		 '<option value="old_new"' .$default_order_selected["old_new"] .'>oldest -> newest</option>' ."\n"
+		.'<option value="new_old"' .$default_order_selected["new_old"] .'>newest -> oldest</option>' ."\n";
 	$t->set_var('bg_row2',$tr_color);
 	$t->set_var('sorting_blurb',lang("Default sorting order"));
 	$t->set_var('sorting_select_name','default_sorting');
@@ -134,9 +134,9 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$show_addresses_selected[$phpgw_info["user"]["preferences"]["email"]["show_addresses"]] = " selected";
 	$show_addresses_select_options =
-		 '<option value="none"' .$show_addresses_selected["none"] .'>' .lang('none') .'</option>' ."/n"
-		.'<option value="from"' .$show_addresses_selected["from"] .'>' .lang('From') .'</option>' ."/n"
-		.'<option value="replyto"' .$show_addresses_selected["replyto"] .'>' .lang('ReplyTo') .'</option>' ."/n";
+		 '<option value="none"' .$show_addresses_selected["none"] .'>' .lang('none') .'</option>' ."\n"
+		.'<option value="from"' .$show_addresses_selected["from"] .'>' .lang('From') .'</option>' ."\n"
+		.'<option value="replyto"' .$show_addresses_selected["replyto"] .'>' .lang('ReplyTo') .'</option>' ."\n";
 	$t->set_var('bg_row3',$tr_color);
 	$t->set_var('show_addresses_blurb',lang("Show sender's email address with name"));
 	$t->set_var('show_addresses_select_name','show_addresses');
@@ -226,10 +226,10 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$mail_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected";
 	$mail_server_type_select_options =
-		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."/n"
-		.'<option value="pop3"' .$mail_server_type_selected["pop3"] .'>POP-3</option>' ."/n"
-		.'<option value="imaps"' .$mail_server_type_selected["imaps"] .'>IMAPS</option>' ."/n"
-		.'<option value="pop3s"' .$mail_server_type_selected["pop3s"] .'>POP-3S</option>' ."/n";
+		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."\n"
+		.'<option value="pop3"' .$mail_server_type_selected["pop3"] .'>POP-3</option>' ."\n"
+		.'<option value="imaps"' .$mail_server_type_selected["imaps"] .'>IMAPS</option>' ."\n"
+		.'<option value="pop3s"' .$mail_server_type_selected["pop3s"] .'>POP-3S</option>' ."\n";
 	$t->set_var('bg_row11',$tr_color);
 	$t->set_var('mail_server_type_blurb',lang("Mail Server type"));
 	$t->set_var('mail_server_type_select_name','mail_server_type');
@@ -239,9 +239,9 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$imap_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected";
 	$imap_server_type_select_options =
-		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."/n"
-		.'<option value="UWash"' .$imap_server_type_selected["UWash"] .'>UWash</option>' ."/n"
-		.'<option value="UW-Maildir"' .$imap_server_type_selected["UW-Maildir"] .'>UW-Maildir</option>' ."/n";
+		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."\n"
+		.'<option value="UWash"' .$imap_server_type_selected["UWash"] .'>UWash</option>' ."\n"
+		.'<option value="UW-Maildir"' .$imap_server_type_selected["UW-Maildir"] .'>UW-Maildir</option>' ."\n";
 	$t->set_var('bg_row12',$tr_color);
 	$t->set_var('imap_server_type_blurb',lang("IMAP Server Type") .' - ' .lang("If Applicable"));
 	$t->set_var('imap_server_type_select_name','imap_server_type');
