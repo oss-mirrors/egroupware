@@ -22,7 +22,7 @@
 
 		if ($phpgw_info['flags']['preferences_header'])
 		{
-			$tpl->parse('preference_header_','preference_header');
+//			$tpl->parse('preference_header_','preference_header');
 		}
 
 		$tabs[1]['label'] = 'Tree view';
@@ -57,5 +57,6 @@
 		}
 
 		$tpl->set_var('app_navbar',$phpgw->common->create_tabs($tabs,$selected));
+
 		set_standard('',&$tpl);
 	}
