@@ -48,12 +48,10 @@
 
 
 <?php
+
   $PROG_DIR = "mail";
+  $FILTER = $phpgw_info["server"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
   $IMAP_STR = "{" . $phpgw_info["server"]["mail_server"] . ":" . "143" . "}";
-
-  $fold_str = $phpgw->msg->construct_folder_str($name);
-
-  //$fold_str = $phpgw_info["server"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
 
   if ($action == "create") {
      $phpgw->msg->createmailbox($mailbox,"$IMAP_STR$fold_str$name");
@@ -64,53 +62,47 @@
 
   $mailboxes = $phpgw->msg->listmailbox($mailbox, $IMAP_STR, "$FILTER*");
 
-//exit;
-	//sort($mailboxes); // added sort for folder names 
-	if ($mailboxes)	{
-           $first  = $phpgw_info["theme"]["row_on"];
-           $second = $phpgw_info["theme"]["row_off"];
-	   if ($FILTER != "INBOX") {
-	      echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face="
-		 . $phpgw_info["theme"]["font"] . ">";
-	      echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
-		 . "\">INBOX</a></font></td>";
-	      echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face="
-		 . $phpgw_info["theme"]["font"];
-	      echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-	      $first = $COLOR_ROW_ON; 
-              $second = $COLOR_ROW_OFF;
-	   }
-echo "test: " . count($mailboxes);
-exit;
+  sort($mailboxes); // added sort for folder names 
+  if ($mailboxes) {
+     if ($FILTER != "INBOX") {
+        $tr_color = $phpgw_info["theme"]["row_on"];
+	echo "<tr bgcolor=$tr_color><td><font size=2 face="
+	   . $phpgw_info["theme"]["font"] . ">";
+	echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
+	   . "\">INBOX</a></font></td>";
+	echo "<td width=20%><font size=2 face="
+	   . $phpgw_info["theme"]["font"];
+	echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+     }
 
-	   for ($i = 0; $i < count($mailboxes); $i++) {
-	       $bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $first : $second;
-	       $phpgw->msg->reopen($mailbox, $mailboxes[$i]);
-	       $nm = substr($mailboxes[$i], strrpos($mailboxes[$i], "}") + 1, strlen($mailboxes[$i]));
-	       echo "<tr><td bgcolor=$bg><font size=2 face="
-		  . $phpgw_info["theme"]["font"] . ">";
+     for ($i = 0; $i < count($mailboxes); $i++) {
+        $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$phpgw->msg->reopen($mailbox, $mailboxes[$i]);
+	$nm = substr($mailboxes[$i], strrpos($mailboxes[$i], "}") + 1, strlen($mailboxes[$i]));
+	echo "<tr bgcolor=$tr_color><td><font size=2 face="
+	   . $phpgw_info["theme"]["font"] . ">";
 
-               if ($nm != "INBOX") {
-		  $nm = $phpgw->msg->deconstruct_folder_str($nm);
-	       } else {
-		  $nm = "INBOX";
-	       }
-
-	       $url_nm = urlencode($nm);
-
-	       echo "<a href=\"" . $phpgw->link("index.php","folder=$url_nm")
-		  . "\">$nm</a></font></td>";
-	       echo "<td bgcolor=$bg width=20%><font size=2 face=$theme[font]>";
-	       echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-	   }
+        if ($nm != "INBOX") {
+           $nm = $phpgw->msg->deconstruct_folder_str($nm);
 	} else {
-	   echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face=$theme[font]>";
-	   echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
-	      . "\">INBOX</a></font></td>";
-	   echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
-	   echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+	   $nm = "INBOX";
 	}
-	$phpgw->msg->close($mailbox);
+
+	$url_nm = urlencode($nm);
+
+	echo "<a href=\"" . $phpgw->link("index.php","folder=$url_nm")
+	   . "\">$nm</a></font></td>";
+	echo "<td width=20%><font size=2 face=$theme[font]>";
+	echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+     }
+  } else {
+     echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face=$theme[font]>";
+     echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
+        . "\">INBOX</a></font></td>";
+     echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
+     echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+  }
+  $phpgw->msg->close($mailbox);
 
 ?>
 
@@ -124,4 +116,3 @@ exit;
 </table>
 
 <p>
-
