@@ -88,17 +88,17 @@ include("config/html.conf.php3");
     $priority=$phpgw->db->f("t_priority");
     switch ($priority)
     {
-       case 1:		$tr_color = "dadada";	break;
-       case 2:		$tr_color = "dad0d0";	break;
-       case 3:		$tr_color = "dacaca";	break;
-       case 4:		$tr_color = "dac0c0";	break;
-       case 5:		$tr_color = "dababa";	break;
-       case 6:		$tr_color = "dab0b0";	break;
-       case 7:		$tr_color = "daaaaa";	break;
-       case 8:		$tr_color = "da9090";	break;
-       case 9:		$tr_color = "da8a8a";	break;
-       case 10:		$tr_color = "da7a7a";	break;
-       default:		$tr_color = "ffffff";
+       case 1:		$tr_color = $phpgw_info["theme"]["bg01"];	break;
+       case 2:		$tr_color = $phpgw_info["theme"]["bg02"];	break;
+       case 3:		$tr_color = $phpgw_info["theme"]["bg03"];	break;
+       case 4:		$tr_color = $phpgw_info["theme"]["bg04"];	break;
+       case 5:		$tr_color = $phpgw_info["theme"]["bg05"];	break;
+       case 6:		$tr_color = $phpgw_info["theme"]["bg06"];	break;
+       case 7:		$tr_color = $phpgw_info["theme"]["bg07"];	break;
+       case 8:		$tr_color = $phpgw_info["theme"]["bg08"];	break;
+       case 9:		$tr_color = $phpgw_info["theme"]["bg09"];	break;
+       case 10:		$tr_color = $phpgw_info["theme"]["bg10"];	break;
+       default:		$tr_color = $phpgw_info["theme"]["bg_color"];
     }
     echo "<tr bgcolor=\"$tr_color\"><TD align=center><a href=\""
 	. $phpgw->link("viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
