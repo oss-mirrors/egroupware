@@ -1,7 +1,7 @@
 Version xxx
 
 - improved folder management. You can create now subfolders in the top
-level.
+level. This should also improve support for UW IMAP
 - fixed charset bug in folder management pages
 - added support for javascript based folder tree
 
