@@ -406,3 +406,4 @@ script status	felamimail	de	Skriptstatus
 delete script	felamimail	de	Skript löschen
 Manage Folders	preferences	de	Ordner verwalten
 Manage EMailfilter / Vacation	preferences	de	Verwalten der EMailfilter und Abwesenheitsnotiz
+Header Lines	felamimail	de	Kopfzeilen
