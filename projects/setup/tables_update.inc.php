@@ -1018,19 +1018,6 @@
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','budget','budget_amount');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','year','budget_year');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','month','budget_month');
-		$GLOBALS['phpgw_setup']->oProc->RefreshTable('phpgw_p_budget',array(
-			'fd' => array(
-				'budget_id' => array('type' => 'auto','nullable' => False),
-				'project_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'budget_amount' => array('type' => 'decimal','precision' => '20','scale' => '2','nullable' => False,'default' => '0'),
-				'budget_year' => array('type' => 'int','precision' => '4','default' => '0'),
-				'budget_month' => array('type' => 'int','precision' => '4','default' => '0')
-			),
-			'pk' => array('budget_id'),
-			'fk' => array(),
-			'ix' => array('project_id','budget_year','budget_month'),
-			'uc' => array()
-		));
 
 		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['projects']['currentver'];
