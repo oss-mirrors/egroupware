@@ -14,7 +14,7 @@
 
 	function check_file($file)
 	{
-		if(is_file($file))
+		if(@is_file($file))
 		{
 			$file = str_replace(PHPGW_SERVER_ROOT,'',$file);
 		}
