@@ -195,15 +195,7 @@
 		// SIZE OF FOLDER
 		$stats_size = $mailbox_info->Size;
 		// size is in bytes, format for KB or MB
-		if ($stats_size < 999999)
-		{
-			$stats_size = round(10*($mailbox_info->Size/1024))/10 .' k';
-		} else {
-			//  round to W.XYZ megs by rounding WX.YZ
-			$stats_size = round($mailbox_info->Size/(1024*100));
-			// then bring it back one digit and add the MB string
-			$stats_size = ($stats_size/10) .' MB';
-		}
+		$stats_size = format_byte_size($stats_size);
 	}
 
 // ---- SwitchTo Folder Listbox   -----

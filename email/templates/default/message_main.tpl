@@ -1,4 +1,11 @@
 <!-- begin message_main.tpl -->
+
+<!-- BEGIN B_x-phpgw-type -->
+<center>
+<h1>THIS IS A phpGroupWare-{application} EMAIL</h1>
+In the future, this will process a specially formated email msg.<hr>
+</center>
+<!-- END B_x-phpgw-type -->
 <table cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr>
 	<td colspan="2" bgcolor="{reply_btns_bkcolor}">
@@ -105,7 +112,18 @@
 <!-- here starts actual message content display -->
 <br>
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+
+<!-- BEGIN B_debug_parts -->
 <tr>
-	<td align="center">
+	<td align="left">
+		{msg_body_info}
+	</td>
+</tr>
+<!-- END B_debug_parts -->
+
+{V_msg_body}
+
+
+</table>
 
 <!-- end message_main.tpl -->

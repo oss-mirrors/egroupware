@@ -398,134 +398,6 @@
   }
 
 
- /* * * * * * * * * * *
-  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
-  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
-  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
-  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
-  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
-  *  list_folders: new param:  $echo_out
-  * $echo_out  = True   means the function will echo its output
-  * $echo_out  = False  means the function will return a string instead
-  * defaults to True to avoid breaking any calling code which expects echoed output
-  *  However, returning a string was necessary for templating index.php
-  * * * * * * *  * * * */
-  function list_folders($mailbox,$folder="",$echo_out=True)
-  {
-	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque
-	// Cyrus style: INBOX.Junque
-	// UWash style: ./aeromail/Junque
-
-	$outstr = '';
-	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
-	{
-		while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
-		{
-			$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-			while($phpgw->db->next_record())
-			{
-				$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
-				  . '</option>';
-			}
-		}
-	}
-	else
-	{
-		if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir")
-		{
-			$stdoffset = 1;  // Used below to setup $nm
-			if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
-			{
-				if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
-				{
-					$filter = "";
-				}
-				else
-				{
-					$filter = $phpgw_info["user"]["preferences"]["email"]["mail_folder"];
-				}
-			}
-		}
-		elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus")
-		{
-			$filter = "INBOX";
-			$stdoffset = 1;
-		}
-		else
-		{
-			$filter = "mail/";
-			$stdoffset = 1;
-		}
-
-		if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
-		{  /* Normal IMAP: */
-			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");
-		}
-		elseif ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "pop3s")
-		{  /* POP3 over SSL: */
-			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			."/pop3/ssl/novalidate-cert:995}",$filter."*");
-		}
-		else
-		{  /* IMAP over SSL: */
-			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			."/ssl/novalidate-cert:993}",$filter."*");
-		}
-
-		if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
-		if (gettype($mailboxes) == "array")
-		{
-			sort($mailboxes); // added sort for folder names 
-		}
-		if($mailboxes)
-		{
-			$num_boxes = count($mailboxes);
-			if ($filter != "INBOX")
-			{
-				$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
-	        	}
-			for ($index = 0; $index < $num_boxes; $index++)
-			{
-				$nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
-				$outstr = $outstr .'<option value="';
-				if ($nm != "INBOX")
-				{
-					$foldername = $phpgw->msg->deconstruct_folder_str($nm);
-				}
-				else
-				{
-					$foldername = "INBOX";
-				}
-				if ($foldername == $folder)
-				{
-					$sel = " selected";
-				}
-				else
-				{
-					$sel = "";
-				}
-				$outstr = $outstr .urlencode($foldername) . '"'.$sel.'>' . $foldername . '</option>';
-				$outstr = $outstr ."\n";
-			}
-		}
-		else
-		{
-			$outstr = $outstr .'<option value="INBOX">INBOX</option>';
-		}
-	}
-	// do you echo out or return a string
-	if ($echo_out)
-	{
-		echo $outstr;
-	}
-	else
-	{
-		return $outstr;
-	}
-  }
-
 
   function get_mime_type($de_part)
   {
@@ -578,6 +450,11 @@
 			}
 		}
 	}
+	// added by Angles: used for improperly formatted messages, RARELY needed, if at all
+	if (trim($att_name) == '')
+	{
+		$att_name = "error_blank_name";
+	}
 	return $att_name;
   }
 
@@ -598,6 +475,657 @@
 	}
 	return $finding;
   }
+
+
+  function format_byte_size($feed_size)
+  {
+	if ($feed_size < 999999)
+	{
+		$nice_size = round(10*($feed_size/1024))/10 .' k';
+	} else {
+		//  round to W.XYZ megs by rounding WX.YZ
+		$nice_size = round($feed_size/(1024*100));
+		// then bring it back one digit and add the MB string
+		$nice_size = ($nice_size/10) .' MB';
+	}
+	return $nice_size;
+  }
+
+
+ function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth, $folder, $msgnum)
+  {
+	global $phpgw, $phpgw_info, $struct_not_set;
+
+	//echo 'BEGIN pgw_msg_struct<br>';
+	//echo var_dump($part);
+	//echo '<br>';
+	
+	// TRANSLATE PART STRUCTURE CONSTANTS INTO STRINGS OR TRUE/FALSE
+	// see php manual page function.imap-fetchstructure.php
+
+	// 1: TYPE
+	$part_nice['type'] = $struct_not_set; // Default value if not filled
+	if (isset($part->type) && $part->type)
+	{
+		switch ($part->type)
+		{
+			case TYPETEXT:		$part_type = "text"; break;
+			case 1:			$part_type = "multipart"; break;
+			case TYPEMESSAGE:	$part_type = "message"; break;
+			case TYPEAPPLICATION:	$part_type = "application"; break;
+			case TYPEAUDIO:		$part_type = "audio"; break;
+			case TYPEIMAGE:		$part_type = "image"; break;
+			case TYPEVIDEO:		$part_type = "video"; break;
+			//case TYPEMODEL:		$part_type = "model"; break;
+			// TYPEMODEL is not supported as of php v 4
+			case 7:			$part_type = "other"; break;
+			default:		$part_type = "unknown";
+		}
+		$part_nice['type'] = $part_type;
+	}
+		
+	// 2: ENCODING
+	$part_nice['encoding'] = $struct_not_set; // Default value if not filled
+	if (isset($part->encoding) && $part->encoding)
+	{
+		switch ($part->encoding)
+		{
+			case ENC7BIT:		$part_encoding = "7bit"; break;
+			case ENC8BIT:		$part_encoding = "8bit"; break;
+			case ENCBINARY:		$part_encoding = "binary"; break;
+			case ENCBASE64:		$part_encoding = "base64"; break;
+			case ENCQUOTEDPRINTABLE:	$part_encoding = "qprint"; break;
+			case ENCOTHER:		$part_encoding = "other";  break;
+			default:		$part_encoding = "other";
+		}
+		$part_nice['encoding'] = $part_encoding;
+	}
+	// 3: IFSUBTYPE : true if there is a subtype string (SKIP)
+	// 4: MIME subtype if the above is true, already in string form
+	$part_nice['subtype'] = $struct_not_set; // Default value if not filled
+	if ((isset($part->ifsubtype)) && ($part->ifsubtype)
+	&& (isset($part->subtype)) && ($part->subtype) )
+	{
+		$part_nice['subtype'] = $part->subtype;
+	}
+	//5: IFDESCRIPTION : true if there is a description string (SKIP)
+	// 6: Content Description String, if the above is true
+	$part_nice['description'] = $struct_not_set; // Default value if not filled
+	if ((isset($part->ifdescription)) && ($part->ifdescription)
+	&& (isset($part->description)) && ($part->description) )
+	{
+		$part_nice['description'] = $part->description;
+	}
+	// 7:  ifid : True if there is an identification string (SKIP)
+	// 8: id : Identification string  , if the above is true
+	$part_nice['id'] = $struct_not_set; // Default value if not filled
+	if ( (isset($part->ifid)) && ($part->ifid)
+	&& (isset($part->id)) && ($part->id) )
+	{
+		$part_nice['id'] = $part->id;
+	}
+	// 9: lines : Number of lines
+	$part_nice['lines'] = $struct_not_set; // Default value if not filled
+	if ((isset($part->lines)) && ($part->lines))
+	{
+		$part_nice['lines'] = $part->lines;
+	}
+	// 10:  bytes : Number of bytes
+	$part_nice['bytes'] = $struct_not_set; // Default value if not filled
+	if ((isset($part->bytes)) && ($part->bytes))
+	{
+		$part_nice['bytes'] = $part->bytes;
+	}
+	// 11:  ifdisposition : True if there is a disposition string (SKIP)
+	// 12:  disposition : Disposition string  ,  if the above is true
+	$part_nice['disposition'] = $struct_not_set; // Default value if not filled
+	if ( (isset($part->ifdisposition)) && ($part->ifdisposition)
+	&& (isset($part->disposition)) && ($part->disposition) )
+	{
+		$part_nice['disposition'] = $part->disposition;
+	}
+	//13:  ifdparameters : True if the dparameters array exists SKIPPED -  ifparameters is more useful (I think)
+	//14:  dparameters : Disposition parameter array SKIPPED -  parameters is more useful (I think)
+	// 15:  ifparameters : True if the parameters array exists (SKIP)
+	// 16:  parameters : MIME parameters array  - this *may* have more than a single attribute / value pair  but I'm not sure
+	$part_nice['ex_num_param_pairs'] = $struct_not_set; // CUSTOM/EXTRA: this may be good to know
+	$part_nice['param_attribute'] = $struct_not_set;
+	$part_nice['param_value'] = $struct_not_set;
+	if ( (isset($part->ifparameters)) && ($part->ifparameters)
+	&& (isset($part->parameters)) && ($part->parameters) )
+	{
+		// EXTRA: this is good to know
+		$part_nice['ex_num_param_pairs'] = count($part->parameters); // CUSTOM/EXTRA: this may be good to know
+		$part_params = $part->parameters[0];
+		if ((isset($part_params->attribute) && ($part_params->attribute)))
+		{
+			$part_nice['param_attribute'] = $part_params->attribute;
+		}
+		if ((isset($part_params->value) && ($part_params->value)))
+		{
+			$part_nice['param_value'] = $part_params->value;
+		}
+	}
+	// 17:  parts : Array of objects describing each message part to this part
+	// (i.e. embedded MIME part(s) within a wrapper MIME part)
+	// key 'ex_' = CUSTOM/EXTRA information
+	$part_nice['ex_num_subparts'] = $struct_not_set;
+	$part_nice['subpart'] = Array();
+	if (isset($part->parts) && $part->parts)
+	{
+		$num_subparts = count($part->parts);
+		$part_nice['ex_num_subparts'] = $num_subparts;
+		for ($p = 0; $p < $num_subparts; $p++)
+		{
+			$part_subpart = $part->parts[$p];
+			$part_nice['subpart'][$p] = $part_subpart;
+		}
+	}
+	// Attachment Detection PART1 = Test For Files
+	// non-file stuff like X-VCARD is tested for at a higher level
+	// where the code can be more easily modified
+	if (($part_nice['param_attribute'] == 'name') 
+	  && ($part_nice['param_value'] != $struct_not_set))
+	{
+		$part_nice['ex_part_name'] = $part_nice['param_value'];
+		// ALSO - this is a sign of a "REAL ATTACHMENT" like a file, image, etc...
+		$part_nice['ex_has_attachment'] = True;
+	}
+	else
+	{
+		$part_nice['ex_part_name'] = 'unknown.html';
+		$part_nice['ex_has_attachment'] = False;
+	}
+	// "dumb" mime part number based only on array position, will be made "smart" later
+	$part_nice['ex_mime_number_dumb'] = $feed_dumb_mime;
+	$part_nice['ex_parent_flat_idx'] = $parent_flat_idx;
+	// Iteration Tracking
+	$part_nice['ex_level_iteration'] = $feed_i;
+	$part_nice['ex_level_max_loops'] = $feed_loops;
+	$part_nice['ex_level_debth'] = $feed_debth;
+	
+	//echo 'BEGIN DUMP<br>';
+	//echo var_dump($part_nice);
+	//echo '<br>END DUMP<br>';
+	
+	return $part_nice;
+  }
+
+  /*
+  function mime_number_dumb($part_nice, $flat_idx)
+  {
+	global $phpgw, $phpgw_info, $struct_not_set;
+	
+	$mime_return_struct = Array();
+	
+	// ---- establish a $last_mime_num
+	if ((isset($part_nice[$flat_idx-1]['ex_mime_number_dumb']))
+	&& ($part_nice[$flat_idx-1]['ex_mime_number_dumb'] != $struct_not_set))
+	{
+		$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
+		//echo 'mime_number_dumb a';
+	}
+	else
+	{
+		$last_mime_num = $struct_not_set;
+		//echo 'mime_number_dumb b';
+	}
+
+	// ---- compute the mime_number_dumb
+	
+	// error detection
+	if (($part_nice[$flat_idx]['ex_level_debth'] > 2)
+	&& ($last_mime_num == $struct_not_set))
+	{
+		// last_mime_num should be set for any debth above level 1
+		$new_mime_dumb = 'last_mime_num error 1 in mime_number_dumb';
+	}
+	// is this the first time here?
+	//elseif (($part_nice[$flat_idx]['ex_level_debth'] == 1)
+	//&& ($last_mime_num == $struct_not_set))
+	elseif ($part_nice[$flat_idx]['ex_level_debth'] == 1)
+	{
+		$new_mime_dumb = (string)$part_nice[$flat_idx]['ex_level_iteration'];
+	}
+	// another error detection
+	elseif ((strlen($last_mime_num) > 2)
+	&& (!strstr($last_mime_num, '.')))
+	{
+		$new_mime_dumb = 'last_mime_num error 2 in mime_number_dumb';
+	}
+	else
+	{
+		$debth_idx = $part_nice[$flat_idx]['ex_level_debth'] - 1;
+		// explode string into an array
+		$last_mime_num_array = explode('.', $last_mime_num);
+		// set the new value
+		$last_mime_num_array[$debth_idx] = (string)$part_nice[$flat_idx]['ex_level_iteration'];
+		// reassemble the mime number
+		$new_mime_dumb = implode('.', $last_mime_num_array);
+		
+		// how long *should* this string be
+		$target_len = ($part_nice[$flat_idx]['ex_level_debth'] + $part_nice[$flat_idx]['ex_level_debth']) - 1;
+		// if longer than expected, we dropped back a level, trim the string accordingly
+		if (strlen($new_mime_dumb) > $target_len)
+		{
+			$target_base_zero = $target_len - 1;
+			$new_mime_dumb = substr($new_mime_dumb, 0, $target_base_zero);
+		}
+	}
+	return $new_mime_dumb;
+  }
+
+
+  // CURRENTLY NOT USED
+  function mime_number_dumb($part_nice, $flat_idx)
+  {
+	global $phpgw, $phpgw_info, $struct_not_set;
+
+	//$debug = False;
+	//if (($flat_idx >= 5) && ($flat_idx <= 11))
+	//{
+	//	$debug = True;
+	//}
+	
+	if ($debug) { echo 'ENTER mime_number_dumb<br>'; }
+	if ($debug) { echo 'flat_idx='.$flat_idx.'<br>'; }
+	if ($debug) { echo 'part_nice[flat_idx][ex_level_debth]='.$part_nice[$flat_idx]['ex_level_debth'].'<br>'; }
+	
+	$mime_return_struct = Array();
+	
+	// ---- establish a last_mime_num
+	if ((isset($part_nice[$flat_idx-1]['ex_mime_number_dumb']))
+	&& ($part_nice[$flat_idx-1]['ex_mime_number_dumb'] != $struct_not_set))
+	{
+		//$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
+		$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
+		if ($debug) { echo 'method A ex_mime_number_dumb='.$last_mime_num.'<br>'; }
+		//echo 'mime_number_dumb a';
+	}
+	else
+	{
+		$last_mime_num = $struct_not_set;
+		//echo 'mime_number_dumb b';
+	}
+
+	// ---- compute the mime_number_dumb
+	
+	// error detection
+	if (($part_nice[$flat_idx]['ex_level_debth'] > 2)
+	&& ($last_mime_num == $struct_not_set))
+	{
+		// last_mime_num should be set for any debth above level 1
+		$new_mime_dumb = 'last_mime_num error 1 in mime_number_dumb';
+	}
+	// is this the first time here?
+	//elseif (($part_nice[$flat_idx]['ex_level_debth'] == 1)
+	//&& ($last_mime_num == $struct_not_set))
+	elseif ($part_nice[$flat_idx]['ex_level_debth'] == 1)
+	{
+		$new_mime_dumb = (string)$part_nice[$flat_idx]['ex_level_iteration'];
+	}
+	// another error detection
+	elseif ((strlen($last_mime_num) > 2)
+	&& (!strstr($last_mime_num, '.')))
+	{
+		$new_mime_dumb = 'last_mime_num error 2 in mime_number_dumb';
+	}
+	else
+	{
+		$debth_idx = $part_nice[$flat_idx]['ex_level_debth'] - 1;
+		//$debth_idx = $part_nice[$flat_idx]['ex_level_debth'];
+		if ($debug) { echo 'debth_idx='.$debth_idx.'<br>'; }
+		// explode string into an array
+		$last_mime_num_array = explode('.', $last_mime_num);
+
+		// cast all values in last_mime_num_array as integers
+		for ($z = 0; $z < count($last_mime_num_array); $z++)
+		{
+			$last_mime_num_array[$z] = (int)$last_mime_num_array[$z];
+		}
+
+		if ($debug) { echo 'exploded last_mime_num ('.$last_mime_num.') into last_mime_num_array='.serialize($last_mime_num_array).'<br>'; }
+		if ($debug) { echo 'last_mime_num_array[debth_idx('.$debth_idx.')]='.$last_mime_num_array[$debth_idx].' -this will be replaced below<br>'; }
+		if ($debug) { echo 'part_nice[flat_idx('.$flat_idx.')][ex_level_iteration]='.$part_nice[$flat_idx]['ex_level_iteration'].'<br>'; }
+		// set the new value
+		$last_mime_num_array[$debth_idx] = (int)$part_nice[$flat_idx]['ex_level_iteration'];
+		if ($debug) { echo 'last_mime_num_array[debth_idx('.$debth_idx.')]='.$last_mime_num_array[$debth_idx].' -after being replaced<br>'; }
+		if ($debug) { echo 'new last_mime_num_array='.serialize($last_mime_num_array).'<br>'; }
+		// reassemble the mime number
+		$new_mime_dumb = implode('.', $last_mime_num_array);
+		if ($debug) { echo 'implode last_mime_num_array into new_mime_dumb='.$new_mime_dumb.'<br>'; }
+		
+		// how long *should* this string be
+		//$target_len = ($part_nice[$flat_idx]['ex_level_debth'] + $part_nice[$flat_idx]['ex_level_debth']) - 1;
+		$target_len = (int)$part_nice[$flat_idx]['ex_level_debth'];
+		$target_len = ($target_len * 2) + 1;
+		if ($debug) { echo 'target_len='.$target_len.' and strlen(new_mime_dumb)='.strlen($new_mime_dumb).'<br>'; }
+
+		
+		// if longer than expected, we dropped back a level, trim the string accordingly
+		if (strlen($new_mime_dumb) > $target_len)
+		{
+			//$target_base_zero = $target_len - 1;
+			//$new_mime_dumb = substr($new_mime_dumb, 0, $target_base_zero);
+			$new_mime_dumb = substr($new_mime_dumb, 0, $target_len);
+		}
+	}
+	if ($debug) { echo 'LEAVING mime_number_dumb, new_mime_dumb='.$new_mime_dumb.'<br>'; }
+	return $new_mime_dumb;
+  }
+  */
+
+
+  function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
+  {
+	global $phpgw, $phpgw_info, $struct_not_set;
+
+	// ---- Construct a "Smart" mime number
+	
+	//$debug = True;
+	$debug = False;
+	//if (($flat_idx >= 25) && ($flat_idx <= 100))
+	//{
+	//	$debug = True;
+	//}
+	
+	if ($debug) { echo 'ENTER mime_number_smart<br>'; }
+	if ($debug) { echo 'fed var flat_idx: '. $flat_idx.'<br>'; }
+	if ($debug) { echo 'fed var new_mime_dumb: '. $new_mime_dumb.'<br>'; }
+	//error check
+	if ($new_mime_dumb == $struct_not_set)
+	{
+		$smart_mime_number = 'error 1 in mime_number_smart';
+		break;
+	}
+
+	// explode new_mime_dumb into an array
+	$exploded_mime_dumb = Array();
+	if (strlen($new_mime_dumb) == 1)
+	{
+		if ($debug) { echo 'true: strlen(new_mime_dumb) = 1 ; FIRST debth level<br>'; }
+		$exploded_mime_dumb[0] = (int)$new_mime_dumb;
+	}
+	else
+	{
+		if ($debug) { echo 'false: strlen(new_mime_dumb) = 1<br>'; }
+		$exploded_mime_dumb = explode('.', $new_mime_dumb);
+	}
+
+	// cast all values in exploded_mime_dumb as integers
+	for ($i = 0; $i < count($exploded_mime_dumb); $i++)
+	{
+		$exploded_mime_dumb[$i] = (int)$exploded_mime_dumb[$i];
+	}
+	if ($debug) { echo 'exploded_mime_dumb '.serialize($exploded_mime_dumb).'<br>'; }
+
+	// make an array of all parts of this family tree,  from the current part (the outermost) to innermost (closest to debth level 1)
+	$dumbs_part_nice = Array();
+	//loop BACKWARDS
+	for ($i = count($exploded_mime_dumb) - 1; $i > -1; $i--)
+	{
+		if ($debug) { echo 'exploded_mime_dumb reverse loop i=['.$i.']<br>'; }
+		// is this the outermost (current) part ?
+		if ($i == (count($exploded_mime_dumb) - 1))
+		{
+			$dumbs_part_nice[$i] = $part_nice[$flat_idx];
+			if ($debug) { echo 'dumbs_part_nice[i('.$i.')] = part_nice[flat_idx('.$flat_idx.')]<br>'; }
+			//if ($debug) { echo ' - prev_parent_flat_idx: '.$prev_parent_flat_idx.'<br>'; }
+		}
+		else
+		{
+			$this_dumbs_idx = $dumbs_part_nice[$i+1]['ex_parent_flat_idx'];
+			$dumbs_part_nice[$i] = $part_nice[$this_dumbs_idx];
+			if ($debug) { echo 'dumbs_part_nice[i('.$i.')] = part_nice[this_dumbs_idx('.$this_dumbs_idx.')]<br>'; }
+		}
+	}
+	//if ($debug) { echo 'dumbs_part_nice serialized: '.serialize($dumbs_part_nice) .'<br>'; }
+
+
+
+	//if ($debug) { echo 'serialize exploded_mime_dumb: '.serialize($exploded_mime_dumb).'<br>'; }
+
+	// Reconstruct the Dumb Mime Number string into a "SMART" Mime Number string
+	// RULE:  Dumb Mime parts that have "m_description" = "packagelist" (i.e. it's a header part)
+	//	should be ommitted when constructing the Smart Mime Number
+	// WITH 2 EXCEPTIONS:
+	//	(a) debth 1 parts that are "packagelist" *never* get altered in any way
+	//	(b) outermost debth parts that are "packagelist" get a value of "0", not ommitted
+	//	(c) for 2 "packagelist"s in sucession, the first one gets a "1", not ommitted
+
+	// apply the rules
+	$smart_mime_number_array = Array();
+	for ($i = 0; $i < count($dumbs_part_nice); $i++)
+	{
+		if (((int)$dumbs_part_nice[$i]['ex_level_debth'] == 1)
+		|| ($i == 0))
+		{
+			// debth 1 part numbers are never altered
+			$smart_mime_number_array[$i] = $exploded_mime_dumb[$i];
+		}
+		// is this the outermost level (i.e. the last dumb mime number)
+		elseif ($i == (count($exploded_mime_dumb) - 1))
+		{
+			// see outermost rule above
+			if ($dumbs_part_nice[$i]['m_description'] == 'packagelist')
+			{
+				// it gets a value of zero
+				$smart_mime_number_array[$i] = 0;
+			}
+			else
+			{
+				// no need to change
+				$smart_mime_number_array[$i] = $exploded_mime_dumb[$i];
+			}
+		}
+		// we covered the exceptions, now apply the ommiting rule
+		else
+		{
+			if ($dumbs_part_nice[$i]['m_description'] == 'packagelist')
+			{
+				// mark this for later removal (ommition)
+				$smart_mime_number_array[$i] = $struct_not_set;
+			}
+			else
+			{
+				// no need to change
+				$smart_mime_number_array[$i] = $exploded_mime_dumb[$i];
+			}
+		}
+	}
+	
+	// for 2 "packagelist"s in sucession, the first one gets a "1", not ommitted
+	for ($i = 0; $i < count($dumbs_part_nice); $i++)
+	{
+		if (($i > 0) // not innermost
+		&& ($dumbs_part_nice[$i]['m_description'] == 'packagelist')
+		&& ($dumbs_part_nice[$i-1]['m_description'] == 'packagelist'))
+		{
+			$smart_mime_number_array[$i-1] = 1;
+		}
+	}
+
+	// make the "smart mime number" based on the info gathered and the above rules
+	// as applied to the smart_mime_number_array
+	$smart_mime_number = '';
+	for ($i = 0; $i < count($smart_mime_number_array); $i++)
+	{
+		if ($smart_mime_number_array[$i] != $struct_not_set)
+		{
+			$smart_mime_number = $smart_mime_number . (string)$smart_mime_number_array[$i];
+			// we  add a dot "." if this is not the outermost debth level
+			if ($i != (count($smart_mime_number_array) - 1))
+			{
+				$smart_mime_number = $smart_mime_number . '.';
+			}
+		}
+	}
+	if ($debug) { echo 'FINAL smart_mime_number: '.$smart_mime_number.'<br><br>'; }
+	return $smart_mime_number;
+  }
+
+
+  function mime_go_deeper($prev_mime_num)
+  {
+	return $prev_mime_num .'.0';
+  }
+
+  function mime_advance($prev_mime_num)
+  {
+	$mime_int = (int)substr($prev_mime_num, -1);
+	$mime_int++;
+	$mime_str_len = strlen($prev_mime_num);
+	$base_num =  substr($prev_mime_num, 0, $mime_str_len - 2);
+	$advanced = $base_num .'.'.(string)$mime_int;
+	return $advanced;
+  }
+
+  function mime_back_one_level($prev_mime_num)
+  {
+	$mime_str_len = strlen($prev_mime_num);
+	return substr($prev_mime_num, 0, ($mime_str_len - 2));
+  }
+
+  /*
+  function mime_expected_level_parts($last_m_part_num_mime, $part_nice, $i)
+  {
+	$parent_num_mime = substr($last_m_part_num_mime, 0, ($last_m_part_num_mime - 2));
+	for ($x = $i-1; $x > (0-1); $x--)
+	{
+		if ($part_nice[$x]['m_part_num_mime'] == $parent_num_mime)
+		{
+			$num_kids = $part_nice[$x]['ex_childern_this_level'];
+			break;
+		}
+	}
+	return $num_kids;
+  }
+
+  function mime_is_last_kid($part_nice, $i)
+  {
+	// determine mime_expected_level_parts
+	$this_part_num = $part_nice[$i]['m_part_num_mime'];
+	$this_part_num_len = strlen($this_part_num);
+	$retain_len = $this_part_num_len - 2;
+	$parent_num_mime = substr($this_part_num, 0, $retain_len);
+	// get rid of trailing "." if any
+	//if (substr($parent_num_mime, -1) == '.')
+	
+	//echo'<br>-xxx- entering mime_is_last_kid<br>';
+	//echo'<br>this_part_num='.$this_part_num .'~parent_num_mime='.$parent_num_mime .'<br>';
+	
+	$discovered = False;
+	for ($x = $i-1; $x > (-1); $x--)
+	{
+		//echo '(string)part_nice['.$x.'][m_part_num_mime]='.(string)$part_nice[$x]['m_part_num_mime'].'/(string)parent_num_mime='.(string)$parent_num_mime.'<br>';
+		if ((string)$part_nice[$x]['m_part_num_mime'] == (string)$parent_num_mime)
+		{
+			$childern_this_level = $part_nice[$x]['m_level_total_parts'];
+			//echo '*****childern_this_level='.$childern_this_level .'** part_nice['.$x.'][m_level_total_parts]='.$part_nice[$x]['m_level_total_parts'];
+			$discovered = True;
+			break;
+		}
+		if ($discovered == True)
+		{
+			break;
+		}
+	}
+	// last kid test
+	$mime_int = (int)substr($part_nice[$i]['m_part_num_mime'], -1);
+	//echo '<br>'.$part_nice[$i]['m_part_num_mime'] .'~int='.$mime_int.' - parent/m_part_num_mime=['.$parent_num_mime.'] '. ' - level kids=['.$childern_this_level.'] ';
+	//echo'<br>-xxx- leaving mime_is_last_kid<br>';
+	if ($mime_int == $childern_this_level)
+	{
+		return True;
+	}
+	else
+	{
+		return False;
+	}
+  }
+  */
+
+  function mime_is_packagelist($part_nice)
+  {
+	if ((stristr($part_nice['subtype'], 'MIXED')) 
+	|| (stristr($part_nice['type'], 'multipart'))
+	|| (stristr($part_nice['param_attribute'], 'boundry')))
+	{
+		return True;
+	}
+	else
+	{
+		return False;
+	}
+  }
+
+
+  function make_part_clickable($part_nice, $folder, $msgnum)
+  {
+	global $phpgw, $phpgw_info, $struct_not_set;
+
+	$click_info = Array();
+	// Part Number used to request parts from the server
+	$m_part_num_mime = $part_nice['m_part_num_mime'];
+
+	$part_name = $part_nice['ex_part_name'];
+
+	// make a URL to directly access this part
+	if ($part_nice['type'] != $struct_not_set) {
+		$url_part_type = $part_nice['type'];
+	} else {
+		$url_part_type = 'unknown';
+	}
+	if ($part_nice['subtype'] != $struct_not_set) {
+		$url_part_subtype = $part_nice['subtype'];
+	} else {
+		$url_part_subtype = 'unknown';
+	}
+	if ($part_nice['encoding'] != $struct_not_set) {
+		$url_part_encoding = $part_nice['encoding'];
+	} else {
+		$url_part_encoding = 'other';
+	}
+	// make a URL to directly access this part
+	$url_part_name = urlencode($part_name);
+	// ex_part_href
+	$ex_part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
+		 'folder='.$folder .'&msgnum=' .$msgnum .'&part_no=' .$m_part_num_mime
+		.'&type=' .$url_part_type .'&subtype=' .$url_part_subtype
+		.'&name=' .$url_part_name .'&encoding=' .$url_part_encoding); 
+	// Make CLICKABLE link directly to this attachment or part
+	$href_part_name = decode_header_string($part_name);
+	// ex_part_clickable
+	$ex_part_clickable = '<a href="'.$ex_part_href.'">'.$href_part_name.'</a>';
+	$click_info[0] = $ex_part_href;
+	$click_info[1] = $ex_part_clickable;
+	return serialize($click_info);
+  }
+
+  function array_keys_str($my_array)
+  {
+	$all_keys = Array();
+	$all_keys = array_keys($my_array);
+	return implode(', ',$all_keys);
+  }
+
+  function section_sep($title, $str)
+  {
+	global $phpgw_info;
+	$sep_str = 
+	    '</td>'
+	  . '<td bgcolor"' . $phpgw_info["theme"]["th_bg"] .'">'
+		  . '<font size="2" face="' .$phpgw_info["theme"]["font"] .'">'
+		  . '<b>'.$title.'</b>'.' :: ' .$str
+	  . '</td>' . "\r\n"
+	  //. '<td bgcolor="' .$phpgw_info["theme"]["row_on"] . '" width="570">'
+	//	  . '<font size="2" face="' . $phpgw_info["theme"]["font"] .'">'.$str
+	//  . '</td>'
+	  . '<td>';
+	return $sep_str;
+  }
+
+
 
   function attach_display($de_part, $part_no)
   {
@@ -625,6 +1153,7 @@
 	       ."&encoding=$mime_encoding")."\">$att_name</a>";
 	return $jnk;
   }
+
 
   function inline_display($de_part, $part_no)
   {
@@ -670,6 +1199,7 @@
 		echo "<$tag>$dsp</$tag>\n";
 	}
   }
+
 
   function output_bound($title, $str)
   {
@@ -807,7 +1337,7 @@
 			return false;
 		}
 		// try to open the URL
-		if (fopen($url))
+		if (fopen($url, "r"))
 		{
 			return true;
 		} else
