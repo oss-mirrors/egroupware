@@ -393,21 +393,25 @@
 	$fwd_proc = 'encapsulate';
 	
 // ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-        $reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
+	//$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
+	$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
 	$reply_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 				'action=reply&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 				.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
 	$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 
-        $replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'19','26','0');
+	//$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'19','26','0');
+	$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
 	$replyall_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=replyall&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .$first_presentable);
 	$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 
-	$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'19','26','0');
+	//$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'19','26','0');
+	$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
 	$forward_url =  $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum .'&fwd_proc='.$fwd_proc .$first_presentable);
 	$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 
-	$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'19','26','0');
+	//$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'19','26','0');
+	$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
 	$delete_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php','what=delete&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum);
 	$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 
