@@ -55,6 +55,15 @@
 
 		function view_record()
 		{
+		   #FIXME does this belong here?
+		   if (!is_object($GLOBALS['phpgw']->js))
+		   {
+			  $GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+		   }
+		   if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+		   {
+			  $GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
+		   }
 		   $this->ui->header('View record');
 		   $this->ui->msg_box($this->bo->message);
 
@@ -64,6 +73,9 @@
 			  'view_record' => 'view_record.tpl'
 		   ));
 
+		   $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+
+		   $this->template->set_var('popuplink',$popuplink);
 		   $this->template->set_block('view_record','header','');
 		   $this->template->set_block('view_record','rows','rows');
 		   $this->template->set_block('view_record','back_button','back_button');
@@ -77,30 +89,24 @@
 		   $this->template->set_var('where_string_form',$where_string_form);
 
 		   $values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
-		
-		   /* get all fieldproperties (name, type, etc...) */
 		   $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 
 		   /* The main loop to create all rows with input fields start here */ 
 		   foreach ( $fields as $fieldproperties )
 		   {
-			  $value=$values_object[0][$fieldproperties[name]];	/* get value */
-			  $input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
-			  $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
-			  /* ---------------------- start fields -------------------------------- */
+			  $value=$values_object[0][$fieldproperties[name]];
+			  $input_name=$fieldproperties[name];	
+			  $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name])));
 
 			  /* Its an identifier field */
 			  if (eregi("auto_increment", $fieldproperties[flags]) || eregi("nextval",$fieldproperties['default']))
-			  //				if (eregi("auto_increment", $fieldproperties[flags]))
 			  {
-				 if(!$value) $display_value=lang('automaticly incrementing');
-				 $input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
-				 $record_identifier[name]=$input_name;
-				 $record_identifier[value]=$value;
+				 $input='<b>'.$value.'</b>';
 			  }
 
 			  elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string' ||  $fieldproperties[type]=='char')
 			  {
+				 //FIXME implement relation
 				 /* If this integer has a relation get that options */
 				 if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
 				 {
@@ -113,13 +119,7 @@
 				 }
 				 else
 				 {
-					if($fieldproperties[len] && $fieldproperties[len]!=-1)
-					{
-					   $attr_arr=array(
-						  'max_size'=>$fieldproperties[len],
-					   );
-					}
-					$input=$this->bo->get_plugin_ro($input_name,$value,'string', $attr_arr);
+					$input=$this->bo->get_plugin_ro($input_name,$value,'string','');
 				 }
 			  }
 
@@ -138,7 +138,7 @@
 				 }
 				 else
 				 {	
-					$input=$this->bo->get_plugin_ro($input_name,$value,'int',$attr_arr);
+					$input=$this->bo->get_plugin_ro($input_name,$value,'int','');
 				 }
 			  }
 
@@ -146,11 +146,7 @@
 			  {
 				 if ($value)
 				 {
-					$input=$this->bo->get_plugin_ro($input_name,$value,'timestamp',$attr_arr);
-				 }
-				 else
-				 {
-					$input = lang('automatic');
+					$input=$this->bo->get_plugin_ro($input_name,$value,'timestamp','');
 				 }
 			  }
 
@@ -190,7 +186,7 @@
 			  }
 
 			  /* if there is something to render to this */
-			  if($input!='hide')
+			  if($input!='__hide__')
 			  {
 				 if($this->bo->read_preferences('table_debugging_info')=='yes')
 				 {
@@ -420,7 +416,7 @@
 				}
 
 				/* if there is something to render to this */
-				if($input!='hide')
+				if($input!='__hide__')
 				{
 				   if($this->bo->read_preferences('table_debugging_info')=='yes')
 				   {

@@ -133,6 +133,11 @@
 			{
 			   $input='<input type="password" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
 			}
+			elseif ($fieldproperties[name]=='serialnumber')
+			{
+			   $input='<input type="hidden" name="'.$input_name.'" value="'.time().'">'.$value;
+			}
+
 			elseif ($fieldproperties[name]=='upload_path')
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
@@ -169,35 +174,20 @@
 
 		 }
 
-		// FIXME move this to template
-		 $cancel_button='<input type="button" onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'" value="'.lang('cancel').'" />';
+		 $onclick_export='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$values_object[0][site_id]).'\'';
 
-		 $delete_button='<input type="button" onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'" value="'.lang('delete').'" />';
-
-		 $extra_buttons='
-		 <script>
-			function testdbfield()
-			{
-			   dbvals=document.frm.FLDsite_db_name.value+\':\'+document.frm.FLDsite_db_host.value+\':\'+document.frm.FLDsite_db_user.value+\':\'+document.frm.FLDsite_db_password.value+\':\'+document.frm.FLDsite_db_type.value  +\':\'+   document.frm.FLDdev_site_db_name.value+\':\'+document.frm.FLDdev_site_db_host.value+\':\'+document.frm.FLDdev_site_db_user.value+\':\'+document.frm.FLDdev_site_db_password.value+\':\'+document.frm.FLDdev_site_db_type.value;
-			   sessionlink=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access').'\';
-			   link=sessionlink+\'&dbvals=\'+dbvals;
-			   window.open(link,\'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\');
-			}
-		 </script>
-
-		 <input type=hidden name=testdbvals>
-		 <input type="button" onClick="testdbfield()" value="'.lang('test database access').'">
-
-
-
-		 <input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'">';
-
+		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));
 		 $this->template->set_var('save_and_continue_button',lang('save and continue'));
 		 $this->template->set_var('reset_form',lang('reset form'));
-		 $this->template->set_var('delete',$delete_button);
-		 $this->template->set_var('cancel',$cancel_button);
-		 $this->template->set_var('test_access',$test_access);
+		 $this->template->set_var('lang_delete',lang('delete'));
+		 $this->template->set_var('lang_cancel',lang('cancel'));
+		 $this->template->set_var('onclick_delete','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
+		 $this->template->set_var('onclick_cancel','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
+		 $this->template->set_var('lang_test_access',lang('test database access'));
+		 $this->template->set_var('test_access_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access'));
+		 $this->template->set_var('onclick_export',$onclick_export);
+		 $this->template->set_var('lang_export',lang('export this site'));
 		 $this->template->set_var('extra_buttons',$extra_buttons);
 
 		 $this->template->parse('footer','footer');

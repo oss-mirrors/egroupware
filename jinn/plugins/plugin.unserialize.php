@@ -38,13 +38,11 @@
 
 	  $input=unserialize($value);
 	  if(is_array($input)) $input=var_export($input,true);
-//	  $input='<textarea name="'.$field_name.'">'.unserialize($value).'</textarea>';
 
 	  return $input;
    }
    function plg_sf_unserialize($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
    {
-		// serialize again so we don't break anything
 	  $input=$HTTP_POST_VARS[$field_name];
 	  $output=serialize($input);
 

@@ -53,7 +53,7 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <!-- END column_name -->
 
 <!-- BEGIN column_field -->
-<td bgcolor="{colfield_bg_color}" valign="top">{colfield_value}</td>
+<td bgcolor="{colfield_bg_color}" valign="top" style="padding:0px 2px 0px 2px">{colfield_value}</td>
 <!-- END column_field -->
 
 <!-- BEGIN row -->

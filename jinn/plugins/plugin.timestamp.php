@@ -24,7 +24,7 @@
 
    $this->plugins['timestamp']['name']				= 'timestamp';
    $this->plugins['timestamp']['title']				= 'Timestamp plugin';
-   $this->plugins['timestamp']['version']			= '0.1.1';
+   $this->plugins['timestamp']['version']			= '0.2.1';
    $this->plugins['timestamp']['description']		= 'Make the user choose for a new stamp of saving the exiting stamp';
    $this->plugins['timestamp']['enable']			= 1;
    $this->plugins['timestamp']['db_field_hooks']	= array('timestamp');
@@ -55,4 +55,20 @@
 
 	  return $input;
    }
+
+   function plg_ro_timestamp($value,$config,$attr_arr)
+   {	
+	  return plg_bv_timestamp($value,$config,$attr_arr);
+   }
+
+   function plg_bv_timestamp($value,$config,$attr_arr)
+   {	
+	  global $local_bo;
+
+	  $input=$local_bo->common->format_date($value);
+
+	  return $input;
+   }
+
+
 ?>

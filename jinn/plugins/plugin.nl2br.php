@@ -68,5 +68,7 @@
 		$output=addslashes(nl2br($input));
 
 		return $output;
-	}
+	 }
+	
+
  ?>

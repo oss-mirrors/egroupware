@@ -29,7 +29,7 @@
 
    $this->plugins['attachpath']['name']			= 'attachpath';
    $this->plugins['attachpath']['title']		= 'AttachmentPath plugin';
-   $this->plugins['attachpath']['version']		= '0.8.2';
+   $this->plugins['attachpath']['version']		= '0.8.3';
    $this->plugins['attachpath']['enable']		= 1;
    $this->plugins['attachpath']['db_field_hooks']= array
    (
@@ -109,7 +109,7 @@
 
 		 $value=explode(';',$value);
 
-		 /* there are more images */
+		 /* there are more files */
 		 if (is_array($value))
 		 {
 			$i=0;
@@ -292,5 +292,112 @@
 
 	  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
    }
+
+
+   function plg_ro_attachpath($value,$config,$where_val_enc)
+   {
+
+	  global $local_bo;
+
+	  if($local_bo->common->so->config[server_type]=='dev')
+	  {
+		 $field_prefix='dev_';
+	  }
+	  if($local_bo->site_object[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+	  }
+	  elseif($local_bo->site[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
+	  }
+
+	  if($value)
+	  {
+		 $value=explode(';',$value);
+	  }
+
+	  if (is_array($value))
+	  {
+		 $i=0;
+		 foreach($value as $att_path)
+		 {
+			$i++;
+
+			$input.=$i.'. ';
+
+			$filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$att_path);
+
+			$input.='<b><a href="'.$filelink.'">'.$att_path.'</a></b>';
+		 }
+	  }
+	  /* there's just one image */
+	  else
+	  {
+		 $input=$att_path;
+	  }
+
+	  return $input;
+   } 
+   function plg_bv_attachpath($value,$config,$where_val_enc)
+   {
+
+	  global $local_bo;
+	  $field_name=substr($field_name,3);	
+
+	  if($local_bo->common->so->config[server_type]=='dev')
+	  {
+		 $field_prefix='dev_';
+	  }
+
+	  if($local_bo->site_object[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+	  }
+	  elseif($local_bo->site[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
+	  }
+
+	  /* if value is set, show existing images */	
+	  if($value)
+	  {
+		 $value=explode(';',$value);
+
+		 /* there are more images */
+		 if (is_array($value))
+		 {
+			$i=0;
+			foreach($value as $img_path)
+			{
+			   $i++;
+
+			   unset($imglink); 
+			   unset($popup); 
+
+			   /* check for image and create previewlink */
+			   if(is_file($upload_path . SEP . $img_path))
+			   {
+
+				  $link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+			   }
+
+			   if($link) $display.='<a href="'.$link.'">'.$i.'</a>';
+			   else $display.=' '.$i;
+			   $display.=' ';
+
+			}
+		 }
+	  }
+
+	  return $display;
+
+
+   }
+
+
+
+
+
 
 ?>

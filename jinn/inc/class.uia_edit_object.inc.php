@@ -86,8 +86,6 @@
 
 		 $this->render_header();
 		 $this->render_body();
-		 $this->render_plugins();
-		 $this->render_relations();
 		 $this->render_footer();
 
 		 $this->template->pparse('out','header');
@@ -95,6 +93,9 @@
 
 		 if($this->bool_edit_record && $this->valid_table_name)
 		 {
+			$this->render_plugins();
+			$this->render_relations();
+
 			$this->template->pparse('out','plugins_header');
 			$this->template->pparse('out','plugins_rows');
 			$this->template->pparse('out','plugins_footer');
@@ -106,9 +107,7 @@
 			if($this->type3_num)$this->template->pparse('out','relations_defined3');
 			$this->template->pparse('out','relations3');
 			$this->template->pparse('out','relations_footer');
-
 		 }
-
 		 $this->template->pparse('out','footer');
 	  }
 
@@ -145,7 +144,6 @@
 		 foreach ($fields as $testone => $fieldproperties)
 		 {
 			$edit_value=$values_object[0][$fieldproperties[name]];
-
 
 			$input_name='FLD'.$fieldproperties[name];
 			$display_name = lang(ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))));
@@ -187,13 +185,7 @@
 				  $input='<input type=hidden name="'.$input_name.'" value="'.$this->parent_site_id.'">';
 				  $input.=$parent_site_name;
 			   }
-			   /*			   else 
-			   {
-				  $input.=lang('Something went wrong');
-			   }
-			   */			   
 			}
-
 			elseif ($fieldproperties[name]=='table_name')
 			{
 			   $table_name=$value;
@@ -245,27 +237,22 @@
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';
 			}
+			elseif ($fieldproperties[name]=='max_records')
+			{
+			   unset($selected);
+			   if($value==1) $selected='selected';
+			   $input='<select name="'.$input_name.'"><option value="">'.lang('unlimited').'</option><option '.$selected.' value="1">'.lang('only one').'</option></select>';
+			   
+			}
+			elseif ($fieldproperties[name]=='serialnumber')
+			{
+			   $input='<input type="hidden" name="'.$input_name.'" value="'.time().'">'.$value;
+			}
 			elseif ($fieldproperties[type]=='int')
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="10" value="'.$value.'">';
 			}
-			/*			elseif ($fieldproperties[type]=='timestamp')
-			{
-			   if ($value)
-			   {
-				  $input=$this->bo->format_date($value);
-			   }
-			   else
-			   {
-				  $input = 'automatisch';
-			   }
-			}
-			*/
 			elseif ($fieldproperties[name]=='help_information')
-			{
-			   continue;
-			}
-			elseif ($fieldproperties[name]=='last_edit_date')
 			{
 			   continue;
 			}
@@ -657,11 +644,12 @@
 
 		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=object_id&where_value='.$this->where_value);
 
+		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));
 		 $this->template->set_var('save_and_continue_button',lang('save and contiue'));
 		 $this->template->set_var('reset_form',lang('reset form'));
-		 $this->template->set_var('delete_text',lang('delete'));
-		 $this->template->set_var('delete_link',$delete_link);
+		 $this->template->set_var('lang_delete',lang('delete'));
+		 $this->template->set_var('link_delete',$delete_link);
 		 $this->template->set_var('cancel_link',$cancel_link);
 		 $this->template->set_var('cancel_text',lang('cancel'));
 		 $this->template->parse('out','footer');

@@ -48,7 +48,17 @@
 
 	function plg_fi_hidefield($field_name,$value, $config,$attr_arr)
 	{
-		return 'hide';
+	   return '__hide__';
+	}
+	
+	function plg_ro_hidefield($field_name,$value, $config,$attr_arr)
+	{
+	   return '__hide__';
+	}
+	
+	function plg_bv_hidefield($field_name,$value, $config,$attr_arr)
+	{
+	   return '__hide__';
 	}
 
  ?>

@@ -137,11 +137,10 @@
 </tr>
 
 <td align="center" colspan="2">
-<input type="submit" name="continue" value="{save_and_continue_button}">
-<input type="submit" name="add" value="{save_button}">
-<input type="button" onClick="location='{cancel_link}'" value="{cancel_text}">
-<input type="button" onClick="location='{delete_link}'" value="{delete_text}">
-
+	<input type="submit" name="continue" value="{save_and_continue_button}" />
+	<input type="submit" name="add" value="{save_button}" />
+	<input type="button" onClick="location='{cancel_link}'" value="{cancel_text}" />
+	<input type="button" onClick="if(window.confirm('{confirm_del}'))location='{link_delete}'" value="{lang_delete}" />
 </table>
 </form>
 <!-- END footer -->

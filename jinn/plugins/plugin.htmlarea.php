@@ -63,7 +63,7 @@
 			return;
 	   }
 	   
-	   $editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
+//	   $editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
 
 		if($config[enable_image_button]!='No') $bar_image = '"insertimage",';
 		if($config[enable_html_source_button]!='No') $bar_html = '"htmlmode",';
@@ -96,6 +96,12 @@
 			$input = $GLOBALS['phpgw']->html->htmlarea($field_name, $value,$style,false,$plugins);
 		
 		return $input;
-	}
-	
+	 }
+
+	 function plg_ro_htmlArea($value, $config,$attr_arr)
+	 {}
+
+	 function plg_bv_htmlArea($value, $config,$attr_arr)
+	 {}
+   
 ?>

@@ -26,34 +26,9 @@
    	/*-------------------------------------------------------------------
 	Boolian PLUGIN
 	-------------------------------------------------------------------*/
-/*	$this->plugins['boolian']['name'] 			= 'boolian';
-	$this->plugins['boolian']['title']			= 'Boolian';
-	$this->plugins['boolian']['version']		= '1.0';
-	$this->plugins['boolian']['enable']			= 1;
-	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';
-	$this->plugins['boolian']['db_field_hooks']	= array
-	(
-		'string',
-		'int',
-		'smallint',
-		'tinyint'
-	);
-	$this->plugins['boolian']['config']		= array
-	(
-		'ON_input_display_value'=>array('yes','text','maxlength=20'),
-		'OFF_input_display_value'=>array('no','text','maxlength=20'),
-		'ON_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
-		'OFF_output_value_If_not_the_same_as_input_value'=>array('','text','maxlength=20'),
-		'Default_value'=>array(array('ON','OFF','NOTHING'),'select','')
-	);
-*/
-	
-	/*-------------------------------------------------------------------
-	Boolian PLUGIN                                                                     
-	-------------------------------------------------------------------*/
 	$this->plugins['boolian']['name'] 			= 'boolian';
 	$this->plugins['boolian']['title']			= 'Boolian';
-	$this->plugins['boolian']['version']		= '1.0';
+	$this->plugins['boolian']['version']		= '1.1';
 	$this->plugins['boolian']['enable']			= 1;
 	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';
 	$this->plugins['boolian']['db_field_hooks']	= array
@@ -100,6 +75,11 @@
 		return $input;
 	}
 
+	function plg_ro_boolian($value,$config,$where_val_enc)
+	{
+	   return plg_bv_boolian($value,$config,$where_val_enc);	
+	}
+	
 	function plg_bv_boolian($value,$config,$where_val_enc)
 	{
 
@@ -113,10 +93,10 @@
 
 		if($value)
 		{
-			if($value==$val_on) $display=$config['ON_input_display_value'];
-			elseif($value==$val_off) $display=$config['OFF_input_display_value'];
+		   if($value==$val_on) $display=$config['ON_input_display_value'];
+		   elseif($value==$val_off) $display=$config['OFF_input_display_value'];
 		}
-
+		else $display=$config['OFF_input_display_value'];
 		return $display;
 	}
 	

@@ -363,6 +363,7 @@
 			/* walk through all table columns and fill different array */
 			foreach($columns as $onecol)
 			{
+				
 			   //create more simple col_list with only names //why
 			   $all_col_names_list[]=$onecol[name];
 
@@ -390,20 +391,23 @@
 				  }
 			   }
 
-			   /* which/how many column to show, all, the prefered, or the default thirst 4 */
-			   if ($show_all_cols=='True')
-			   {
-				  $col_list=$columns;
-			   }
-			   elseif($pref_columns)
-			   {
-				  $col_list=$valid_pref_columns;
-			   }
-			   else
-			   {
-				  $col_list=array_slice($columns,0,4);
-			   }
 			}
+
+			/* which/how many column to show, all, the prefered, or the default thirst 4 */
+			if ($show_all_cols=='True')
+			{
+			   $col_list=$columns;
+			}
+			elseif($pref_columns)
+			{
+			   $col_list=$valid_pref_columns;
+			}
+			else
+			{
+			   $col_list=array_slice($columns,0,4);
+			}
+
+
 
 			/*	check if orderbyfield exist else drop orderby it	*/
 			if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
@@ -413,6 +417,14 @@
 			// make columnheaders
 			foreach ($col_list as $col)
 			{
+
+			   //--- this is a special hack for the hide-this-field-plugin ----//
+			   $testvalue=$this->bo->get_plugin_bv($col[name],'x',$where_string,$col[name]);
+			   if($testvalue=='__hide__')
+			   {
+				  continue ;
+			   }
+   
 			   $col_names_list[]=$col[name];
 			   unset($orderby_link);
 			   unset($orderby_image);
@@ -501,25 +513,21 @@
 
 						foreach($col_names_list  as $onecolname)
 						{
-   
 						   $recordvalue=$recordvalues[$onecolname];
+						   if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
+						   {
+							  $related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
+							  $recordvalue= '<i>'.$related_value.'</i> ('.$recordvalue.')';
+						   }
+						   else
+						   {	
+							  $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
+						   }
+
 						   if (empty($recordvalue))
 						   {
 							  $recordvalue="&nbsp;";
 
-						   }
-						   else
-						   {
-							  if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
-							  {
-								 $related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
-								 $recordvalue= '<i>'.$related_value.'</i> ('.$recordvalue.')';
-
-							  }
-							  else
-							  {	
-								 $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
-							  }
 						   }
 
 						   $this->template->set_var('colfield_bg_color',$bgclr);

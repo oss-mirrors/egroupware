@@ -290,4 +290,48 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.011';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.6.011';
+	function jinn_upgrade0_6_011()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_jinn_sites','last_edit_date',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.012';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+	$test[] = '0.6.012';
+	function jinn_upgrade0_6_012()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_jinn_site_objects','last_edit_date',array(
+			'type' => 'int',
+			'precision' => '4'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.6.013';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.6.013';
+	function jinn_upgrade0_6_013()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_jinn_sites','last_edit_date','serialnumber');
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.7.000';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+	$test[] = '0.7.000';
+	function jinn_upgrade0_7_000()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_jinn_site_objects','last_edit_date','serialnumber');
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.7.001';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>

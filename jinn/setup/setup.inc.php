@@ -23,7 +23,7 @@
 
 	$setup_info['jinn']['name']		= 'jinn';
 	$setup_info['jinn']['title']	= 'JiNN Data Manager';
-	$setup_info['jinn']['version']	= '0.6.011';
+	$setup_info['jinn']['version']	= '0.7.001';
 	$setup_info['jinn']['app_order']= 15;
 	$setup_info['jinn']['author'] = 'Pim Snel';
 	$setup_info['jinn']['license']  = 'GPL';
@@ -64,6 +64,12 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14','0.9.15','1.0.0')
 	);
+
+
+
+
+
+
 
 
 

@@ -66,10 +66,12 @@
 
 		 $fieldnames = $this->bo->so->get_phpgw_fieldnames('phpgw_jinn_site_objects');
 
-		 $col_list=array_slice($fieldnames,2,4);
+		 $col_list=array_slice($fieldnames,2,2);
 
 		 foreach ( $col_list as $field ) 
 		 {
+				
+			
 			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $field)));
 			$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 		 }
@@ -108,7 +110,7 @@
 
 			   if(count($recordvalues)>0)
 			   {
-				  $record_list=array_slice($recordvalues,2,4);
+				  $record_list=array_slice($recordvalues,2,2);
 
 				  unset($table_row);
 				  foreach($record_list as $recordvalue)

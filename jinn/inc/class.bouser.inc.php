@@ -462,8 +462,9 @@
 		 /**
 		 * get readonly view function from plugin 
 		 */
-		 function get_plugin_ro($fieldname,$value,$where_val_encoded,$fieldname)
+		 function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
 		 {
+//			die($fieldname);
 			global $local_bo;
 			$local_bo=$this;
 			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
@@ -493,7 +494,7 @@
 			{
 			   $new_value=$value;
 			}
-		
+			
 			return $new_value;
 		 }
 		 

@@ -126,4 +126,15 @@
 
        return $input;
 	}
+
+	function plg_ro_colorlab($value, $config,$attr_arr)
+	{
+	   return plg_bv_colorlab($value, $config,$attr_arr);
+	   }
+	function plg_bv_colorlab($value, $config,$attr_arr)
+	{
+	   return lang('current color:') . ' <span style="width:10px;background-color:'.$value.'">&nbsp;&nbsp;&nbsp;</span>'.' ('.$value.')';	
+	   
+	   }
+
 ?>

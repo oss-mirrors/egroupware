@@ -30,7 +30,7 @@
 
    $this->plugins['imagepath']['name']				= 'imagepath';
    $this->plugins['imagepath']['title']			= 'ImagePath plugin';
-   $this->plugins['imagepath']['version']			= '0.9.2';
+   $this->plugins['imagepath']['version']			= '0.9.3';
    $this->plugins['imagepath']['enable']			= 1;
 
    $this->plugins['imagepath']['description']		= '
@@ -474,6 +474,122 @@
 	  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
    }
 
+
+   function plg_ro_imagepath($value,$config,$where_val_enc)
+   {
+
+	  global $local_bo;
+	  $field_name=substr($field_name,3);	
+
+	  if($local_bo->common->so->config[server_type]=='dev')
+	  {
+		 $field_prefix='dev_';
+	  }
+
+	  if($local_bo->site_object[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
+	  }
+	  elseif($local_bo->site[$field_prefix.'upload_path'])
+	  {
+		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
+	  }
+
+	  $table_style='';
+	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
+	  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
+
+	  $input.='<table '.$table_style.' cellpadding="3" width="100%">';
+	  if(trim($value))// FIXME or rather TESTME
+	  {
+		 $input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
+
+		 $value=explode(';',$value);
+
+		 if (is_array($value) && count($value)>0)
+		 {
+			$i=0;
+
+			$max_prev=$local_bo->read_preferences('max_prev');
+
+			foreach($value as $img_path)
+			{
+			   $i++;
+
+			   unset($imglink); 
+			   unset($thumblink); 
+			   unset($popup); 
+
+			   /* check for image and create previewlink */
+			   if(is_file($upload_path . SEP . $img_path))
+			   {
+				  $imglink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+				  // FIXME move code to class
+				  $image_size=getimagesize($upload_path . SEP. $img_path);
+				  $pop_width = ($image_size[0]+50);
+				  $pop_height = ($image_size[1]+50);
+
+				  $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
+
+			   }
+
+			   /* check for thumb and create previewlink */
+			   if(is_file($upload_path . SEP . str_replace('normal_size','thumb',$img_path)))
+			   {
+				  $tmpthumbpath=$upload_path.SEP.str_replace('normal_size','thumb',$img_path);
+				  $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$tmpthumbpath);
+			   }
+
+			   $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
+
+					 // if URL exists show link or if set show image in form
+					 if($local_bo->read_preferences('prev_img')!='no' &&  ($max_prev>=$i || $max_prev==-1) && $imglink) 
+					 {	
+						if($local_bo->read_preferences('prev_img')=='yes')
+						{
+						   if($thumblink)
+						   {
+							  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+						   }
+						   else
+						   {
+							  $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
+						   }
+						}
+						elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
+						{
+						   $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+						}
+						else
+						{
+						   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+						}
+					 }
+					 else  
+					 {
+						if($imglink)
+						{
+						   $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+						}
+						else
+						{
+						   $input.='<b>'.$img_path.'</b>';
+						}
+					 }
+
+					 $input.='</td></tr>';
+			}
+		 }
+	  }
+
+		 $input.='</table>';
+
+	return $input;
+
+
+   }
+
+   
    function plg_bv_imagepath($value,$config,$where_val_enc)
    {
 

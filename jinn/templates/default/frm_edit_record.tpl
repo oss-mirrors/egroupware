@@ -10,7 +10,7 @@ function img_popup(img,pop_width,pop_height,attr)
 
 <form method="post" name="frm" action="{form_action}" enctype="multipart/form-data" {form_attributes}>
 {where_string_form}
-<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;">
+<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px;">
 <!-- END form_header -->
 
 

@@ -1,12 +1,11 @@
 <!-- BEGIN listheader -->
-<div style="width:100%;background-color:grey;height:1px;"></div><br/>
-<h3 style="text-align:center">{table_title}</h3>
-<input type="button" value="{lang_add_object}" onclick="document.location.href='{link_add_object}'">
-<!--<input type="button" value="{lang_auto_add_object}" onclick="document.location.href='{link_auto_add_object}'">-->
+<table border="0" cellspacing="1" cellpadding="0" style="width:570px;background-color:#ffffff;border:solid 1px #cccccc;margin:3px 0px 3px 0px">
+<tr><td style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left">{table_title}</td></tr>
+</table>
+<table border="0" cellspacing="1" cellpadding="0" style="width:570px;">
 
-<table border="0" cellspacing="1" cellpadding="0" align=center width="100%">
-	<tr style="font-weight:bold;padding:3px;">
-		<td colspan="2" valign="top" style="background-color:{bgclr};font-weight:bold;padding:3px;">&nbsp;</td>
+<tr style="font-weight:bold;padding:3px;">
+		<td colspan="2" valign="top" style="background-color:{bgclr};font-weight:bold;padding:3px;"><input type="button" value="{lang_add_object}" onclick="document.location.href='{link_add_object}'" style="color:white;background-color:#006699"></td>
 		{fieldnames}
 	</tr>
 <!-- END listheader -->

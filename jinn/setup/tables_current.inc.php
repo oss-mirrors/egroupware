@@ -47,7 +47,7 @@
 				'dev_site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
 				'dev_upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'website_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
-				'last_edit_date' => array('type' => 'timestamp')
+				'serialnumber' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('site_id'),
 			'fk' => array(),
@@ -66,7 +66,7 @@
 				'help_information' => array('type' => 'text'),
 				'dev_upload_path' => array('type' => 'varchar','precision' => '255'),
 				'max_records' => array('type' => 'int','precision' => '4'),
-				'last_edit_date' => array('type' => 'timestamp')
+				'serialnumber' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
