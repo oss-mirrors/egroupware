@@ -103,7 +103,7 @@
 			while (list($symbol,$name) = each($stocklist))
 			{
 				$symbollist[] = $symbol;
-				$symbol = rawurldecode($symbol);
+				$symbol = rawurlencode($symbol);
 				$symbolstr .= $symbol;
 
 				if ($i++<count($stocklist)-1)
