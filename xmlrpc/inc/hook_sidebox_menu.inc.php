@@ -1,6 +1,6 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - xmlrpc's Sidebox-Menu for idots-template                  *
+  * eGroupWare - xmlrpc's Sidebox-Menu for idots-template                    *
   * http://www.egroupware.org                                                *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *

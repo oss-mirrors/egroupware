@@ -1,8 +1,8 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Interserver XML-RPC/SOAP Test app                         *
-  * http://www.phpgroupware.org                                              *
-  * This file written by Miles Lott <milosch@phpgroupware.org                *
+  * eGroupWare - Interserver XML-RPC/SOAP Test app                           *
+  * http://www.egroupware.org                                                *
+  * This file written by Miles Lott <milosch@groupwhare.org                  *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *

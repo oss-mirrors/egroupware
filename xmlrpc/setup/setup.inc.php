@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - XMLRPC test-app                                           *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - XMLRPC test-app                                             *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *

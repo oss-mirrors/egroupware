@@ -12,7 +12,7 @@ introspection	xmlrpc	en	Introspection
 meerkat browser	xmlrpc	en	Meerkat Browser
 methods	xmlrpc	en	Methods
 note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	en	NOTE: listapps and listusers are disabled by default in xml_functions.php
-phpgroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	en	phpGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	en	eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)
 select target server	xmlrpc	en	Select target server
 server test	xmlrpc	en	Server test
 server<->server	xmlrpc	en	Server<->Server
