@@ -1,11 +1,13 @@
 %1 bookmarks have been deleted	bookmarks	it	%1 segnalibri sono stati cancellati
 %1 bookmarks imported from %2 successfully.	bookmarks	it	%1 segnalibri importati da %2 con successo.
 (comma separate multiple addresses)	bookmarks	it	(indirizzi multipli separati da virgole)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	it	<b>Nota:</b> Attualmente funziona solo con segnalibri di Netscape
 all bookmarks	bookmarks	it	Tutti i segnalibri
 and	bookmarks	it	E
 append this message to mailed bookmarks	bookmarks	it	Appendi questo messaggio ai segnalibri inviati
 ascending	bookmarks	it	Ascendente
 book marks	common	it	Segnalibri
+bookmark changed sucessfully	bookmarks	it	Segnalibro cambiato con successo
 bookmark created successfully.	bookmarks	it	Segnalibro creato con successo.
 bookmark not editable	bookmarks	it	Segnalibro non modificabile
 bookmark not readable	bookmarks	it	Segnalibro non leggibile
@@ -29,17 +31,20 @@ found a link you might like	bookmarks	it	Trovato un link che ti potrebbe piacere
 from	bookmarks	it	Da
 from category %1	bookmarks	it	Dalla categoria %1
 highest	bookmarks	it	Più alto
+i thought you would be interested in the following link(s):	bookmarks	it	Ho pensato che saresti stato interessato ai seguenti link:
 import bookmarks	common	it	Importa segnalibri
 like	bookmarks	it	come
 list	bookmarks	it	Elenco
 lowest	bookmarks	it	Più basso
 mail this bookmark	bookmarks	it	Invia questo segnalibro
+mail-this-link message sent to %1.	bookmarks	it	messaggio invia-questo-link inviato a %1.
 mass update:	bookmarks	it	Aggiornamento di massa:
 message from	bookmarks	it	Messaggio da
 more	bookmarks	it	Altro
 name	bookmarks	it	Nome
 name is required	bookmarks	it	Il nome è richiesto
 netscape bookmark file	bookmarks	it	File Segnalibri Netscape
+netscape bookmark filename is required!	bookmarks	it	NomeFile dei Segnalibri di Netscape è richiesto !
 new	bookmarks	it	Nuovo
 or	bookmarks	it	o
 please select the categories to export	bookmarks	it	Prego seleziona le categorie da esportare
@@ -49,8 +54,10 @@ search for:	bookmarks	it	Cerca:
 select the format you would like to export to	bookmarks	it	Seleziona il formato per l'esportazione
 send bookmark	bookmarks	it	Invia segnalibro
 sub category	bookmarks	it	SottoCategoria
+to e-mail addresses	bookmarks	it	Indirizzi email A
 total visits	bookmarks	it	visite totali
 tree view	bookmarks	it	Vista ad albero
+unable to open temp file %1 for import.	bookmarks	it	Impossibile aprire il file temporaneo %1 per importazione.
 url is required.	bookmarks	it	URL richiesto
 view bookmark	bookmarks	it	Visualizza segnalibro
 view this bookmark	bookmarks	it	Visualizza questo segnalibro

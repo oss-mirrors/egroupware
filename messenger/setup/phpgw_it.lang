@@ -1,6 +1,8 @@
 compose	messenger	it	Componi
 compose global message	common	it	Componi messaggio globale
 compose message	messenger	it	Componi messaggio
+compose to multi-users	messenger	it	Componi per multi-utenti
+compose to single-user	messenger	it	Componi per singolo utente
 delete a message.	messenger	it	Elimina un messaggio
 delete selected	messenger	it	Elimina selezione
 forward	messenger	it	Inoltra
@@ -29,8 +31,8 @@ sorry, %1's account is not currently active	messenger	it	Spiacente, l'account di
 update a message status	messenger	it	Aggiorna lo stato di un messaggio
 use select box for user list in compose	common	it	In composizione, utilizza la casella di selezione, per la lista utenti
 you didn't enter anything for the message	messenger	it	Non hai inserito niente per il messaggio
-you have %1 new message	common	it	Ci sono %1 nuovi messaggi
-you have %1 new messages	common	it	Ci sono %1 nuovi messaggi
+you have %1 new message	common	it	Hai %1 nuovo messaggio
+you have %1 new messages	common	it	Hai %1 nuovi messaggi
 you have no messages	messenger	it	Non ci sono messaggi
-you must enter a subject	messenger	it	Devi inserire in uggetto
+you must enter a subject	messenger	it	Devi inserire un oggetto
 you must enter the username this message is for	messenger	it	Devi inserire il destinatario del messaggio
