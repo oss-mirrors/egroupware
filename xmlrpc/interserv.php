@@ -19,7 +19,7 @@
 
 	include('../header.inc.php');
 
-	$is = CreateObject('phpgwapi.interserver',$server_id);
+	$is = CreateObject('phpgwapi.interserver',intval($server_id));
 
 //	_debug_array($is->server);
 	if($login)
