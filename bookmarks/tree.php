@@ -119,7 +119,6 @@
 //						$GLOBALS['phpgw']->link('/bookmarks/maillink.php','bm_id='.$db2->f("bm_id")),PHPGW_IMAGES,lang('Mail this bookmark'));
 
 					$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
-
 					$redirect_link = '<a href="' . $GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $GLOBALS['phpgw']->strip_html($db2->f('bm_name')) . '</a>';
 					$_tree        .= $view_link . '&nbsp; &nbsp;' . $redirect_link;// . '</td><td align="right"></td><td>'
 //						. $db2->f('bm_desc') . '</td></tr></table>'; //$mail_link . $rating_link . $redirect_link;
@@ -137,6 +136,7 @@
 			{
 				$maintain_url  = $GLOBALS['phpgw']->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
 				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
+				$_tree        .= $maintain_link . '&nbsp;';
 			}
 			if (($GLOBALS['phpgw']->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_READ) || ($db2->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
@@ -144,9 +144,8 @@
 				$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 
 				$rating_link   = sprintf('<img src="%s/bar-%s.jpg">',PHPGW_IMAGES,$db2->f('bm_rating'));
-
 				$redirect_link = '<a href="' . $GLOBALS['phpgw']->link('/bookmarks/redirect.php','bm_id=' . $db2->f('bm_id')) . '" target="_new">' . $GLOBALS['phpgw']->strip_html($db2->f('bm_name')) . '</a>';
-				$_tree        .= $view_link . '&nbsp; &nbsp;' . $redirect_link;
+				$_tree        .= $view_link . '&nbsp;' . $redirect_link;
 			}
 			$tree[] = $_tree;
 		}
