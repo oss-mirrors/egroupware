@@ -11,8 +11,8 @@
 
 /* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -22,7 +22,7 @@
 	include('../header.inc.php');
 
 	echo '
-<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '" method="post">
+<form action="' . $GLOBALS['egw']->link('/xmlrpc/client.php') . '" method="post">
 <input name="stateno" VALUE="' . $stateno . '">
 <input type="submit" value="go" name="submit">
 </form>
@@ -32,7 +32,7 @@
 	{
 		$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(CreateObject('phpgwapi.xmlrpcval',$_POST['stateno'], 'int')));
 		print '<pre style="text-align: left;">' . htmlentities($f->serialize()) . "</pre>\n";
-		$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+		$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
 		$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $_SERVER['HTTP_HOST'], 80);
 		$c->setDebug(1);
 		$r = $c->send($f);
@@ -56,5 +56,5 @@
 include(PHPGW_API_INC . '/xmlrpc.interop.php');</p>\n";;
 		}
 	}
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();
 ?>

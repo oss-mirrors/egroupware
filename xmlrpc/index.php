@@ -11,8 +11,8 @@
 
 /* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -21,16 +21,16 @@
 
 	include('../header.inc.php');
 
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/introspect.php') . '">' . lang('Introspection') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . lang('Client / Server test') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('Server test') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['phpgw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/introspect.php') . '">' . lang('Introspection') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/interserv.php') . '">' . lang('Client / Server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('Server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
 
-	if ($GLOBALS['phpgw']->acl->check('run',1,'meerkat'))
+	if ($GLOBALS['egw']->acl->check('run',1,'meerkat'))
 	{
-		echo '<br><a href="' . $GLOBALS['phpgw']->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
+		echo '<br><a href="' . $GLOBALS['egw']->link('/meerkat/index.php') . '">' . lang('Meerkat Browser') . '</a>' . "\n";
 	}
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();
 ?>

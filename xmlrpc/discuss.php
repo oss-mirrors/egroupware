@@ -12,24 +12,24 @@
 /* $Id$ */
 
 	exit;
-	$GLOBALS['phpgw_info'] = array();
+	$GLOBALS['egw_info'] = array();
 	/*
 	$login  = 'anonymous';
 	$passwd = 'anonymous1';
 
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info']['flags'] = array(
 		'disable_template_class' => True,
 		'login' => True,
 		'currentapp' => 'login',
 		'noheader'  => True
 	);
 	*/
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp' => 'login',
 		'noheader'   => True
 	);
 	include('../header.inc.php');
-	/* $sessionid = $GLOBALS['phpgw']->session->create($login,$passwd); */
+	/* $sessionid = $GLOBALS['egw']->session->create($login,$passwd); */
 
 	$addcomment_sig = array(array($xmlrpcInt, $xmlrpcString, $xmlrpcString, $xmlrpcString));
 	$addcomment_doc = 'Adds a comment to an item. The first parameter
@@ -47,9 +47,9 @@ ID.';
 	
 		$countID = "${msgID}_count";
 		$sql = 'SELECT COUNT(msg_id) FROM phpgw_discuss';
-		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
-		$GLOBALS['phpgw']->db->next_record();
-		$count = $GLOBALS['phpgw']->db->f(0);
+		$GLOBALS['egw']->db->query($sql,__LINE__,__FILE__);
+		$GLOBALS['egw']->db->next_record();
+		$count = $GLOBALS['egw']->db->f(0);
 		
 		if(!$count)
 		{
@@ -58,7 +58,7 @@ ID.';
 		// add the new comment in
 		$count++;
 		$sql = "INSERT INTO phpgw_discuss (msg_id,comment,name,count) VALUES ($msgID,'$comment','$name',$count)";
-		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
+		$GLOBALS['egw']->db->query($sql,__LINE__,__FILE__);
 
 		// if we generated an error, create an error return response
 		if ($err)
@@ -87,12 +87,12 @@ and comment text.';
 
 		$countID = "${msgID}_count";
 		$sql = 'SELECT * FROM phpgw_discuss WHERE msg_id=' . $msgID;
-		$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
-		$count = $GLOBALS['phpgw']->db->num_rows();
-		while($data = $GLOBALS['phpgw']->db->next_record())
+		$GLOBALS['egw']->db->query($sql,__LINE__,__FILE__);
+		$count = $GLOBALS['egw']->db->num_rows();
+		while($data = $GLOBALS['egw']->db->next_record())
 		{
-			$name    = $GLOBALS['phpgw']->db->f('name');
-			$comment = $GLOBALS['phpgw']->db->f('comment');
+			$name    = $GLOBALS['egw']->db->f('name');
+			$comment = $GLOBALS['egw']->db->f('comment');
 			// push a new struct onto the return array
 			$ra[] = CreateObject('phpgwapi.xmlrpcval',array(
 				'name'    => CreateObject('phpgwapi.xmlrpcval',$name),

@@ -12,8 +12,8 @@
 
   /* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp' => 'xmlrpc'
 	);
 	include('../header.inc.php');
@@ -43,7 +43,7 @@
 	}
 
 	$f = CreateObject('phpgwapi.xmlrpcmsg','system.listMethods');
-	$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+	$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
 	$c = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $_SERVER['HTTP_HOST'], 80);
 	$c->setDebug(0);
 
@@ -107,4 +107,4 @@
 		}
 	}
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();

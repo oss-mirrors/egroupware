@@ -22,26 +22,26 @@
 	display_sidebox can be called as much as you like
  */
 
-	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
+	$menu_title = $GLOBALS['egw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
 	$file = Array(
-		'Test Suite'    => $GLOBALS['phpgw']->link('/xmlrpc/testsuite.php'),
-		'Introspection' => $GLOBALS['phpgw']->link('/xmlrpc/introspect.php'),
-		'client / server test' => $GLOBALS['phpgw']->link('/xmlrpc/interserv.php'),
-		'server test'   => $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php'),
-		'Simple Client' => $GLOBALS['phpgw']->link('/xmlrpc/client.php')
+		'Test Suite'    => $GLOBALS['egw']->link('/xmlrpc/testsuite.php'),
+		'Introspection' => $GLOBALS['egw']->link('/xmlrpc/introspect.php'),
+		'client / server test' => $GLOBALS['egw']->link('/xmlrpc/interserv.php'),
+		'server test'   => $GLOBALS['egw']->link('/xmlrpc/phpgw_test.php'),
+		'Simple Client' => $GLOBALS['egw']->link('/xmlrpc/client.php')
 	);
 
-	if ($GLOBALS['phpgw']->acl->check('run',1,'meerkat'))
+	if ($GLOBALS['egw']->acl->check('run',1,'meerkat'))
 	{
-		$file['Meerkat Browser'] = $GLOBALS['phpgw']->link('/meerkat/index.php');
+		$file['Meerkat Browser'] = $GLOBALS['egw']->link('/meerkat/index.php');
 	}
 	display_sidebox($appname,$menu_title,$file);
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['admin'] && !$GLOBALS['phpgw']->acl->check('peer_server_access',1,'admin'))
+	if ($GLOBALS['egw_info']['user']['apps']['admin'] && !$GLOBALS['egw']->acl->check('peer_server_access',1,'admin'))
 	{
 		$menu_title = lang('Administration');
 		$file = array(
-			'Peer Servers' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiserver.list_servers')
+			'Peer Servers' => $GLOBALS['egw']->link('/index.php','menuaction=admin.uiserver.list_servers')
 		);
 		display_sidebox($appname,$menu_title,$file);
 	}

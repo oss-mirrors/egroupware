@@ -11,8 +11,8 @@
 
 /* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -39,7 +39,7 @@
 
 		function setUp()
 		{
-			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
 			$this->client= CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $GLOBALS['LOCALSERVER'], 80);
 			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
@@ -211,7 +211,7 @@ And turned it into nylon";
 		{
 			global $DEBUG,$HTTPSSERVER;
 
-			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['phpgw_info']['server']['webserver_url']).'/xmlrpc.php';
+			$xmlrpc = eregi_replace('https*://[^/]*/','',$GLOBALS['egw_info']['server']['webserver_url']).'/xmlrpc.php';
 			$this->client = CreateObject('phpgwapi.xmlrpc_client',$xmlrpc, $HTTPSSERVER);
 			//$this->client->setCertificate('/var/www/xmlrpc/rsakey.pem',
 			//			  'test');
@@ -266,5 +266,5 @@ And turned it into nylon";
 
 	error_reporting(E_ALL & ~E_NOTICE);	// TestSuite (phpunit.php) switches it on
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();
 ?>

@@ -12,8 +12,8 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info'] = array();
-	$GLOBALS['phpgw_info']['flags'] = array(
+	$GLOBALS['egw_info'] = array();
+	$GLOBALS['egw_info']['flags'] = array(
 		'currentapp' => 'xmlrpc'
 	);
 
@@ -33,17 +33,17 @@
 			$select .= '<option value="">' . lang('Please Select') . '</option>'."\n";
 		}
 
-		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_applications WHERE app_enabled<3",__LINE__,__FILE__);
-		if($GLOBALS['phpgw']->db->num_rows())
+		$GLOBALS['egw']->db->query("SELECT * FROM phpgw_applications WHERE app_enabled<3",__LINE__,__FILE__);
+		if($GLOBALS['egw']->db->num_rows())
 		{
-			while ($GLOBALS['phpgw']->db->next_record())
+			while ($GLOBALS['egw']->db->next_record())
 			{
-				$select .= '<option value="' . $GLOBALS['phpgw']->db->f('app_name') . '"';
-				if($GLOBALS['phpgw']->db->f('app_name') == $_POST['xappname'])
+				$select .= '<option value="' . $GLOBALS['egw']->db->f('app_name') . '"';
+				if($GLOBALS['egw']->db->f('app_name') == $_POST['xappname'])
 				{
 					$select .= ' selected';
 				}
-				$select .= '>' . $GLOBALS['phpgw']->db->f('app_name') . '</option>'."\n";
+				$select .= '>' . $GLOBALS['egw']->db->f('app_name') . '</option>'."\n";
 			}
 		}
 		$select .= '</select>'."\n";
@@ -193,42 +193,42 @@
 		);
 	}
 
-	$GLOBALS['phpgw']->template->set_file('interserv','interserv.tpl');
+	$GLOBALS['egw']->template->set_file('interserv','interserv.tpl');
 
-	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/xmlrpc/interserv.php'));
-	$GLOBALS['phpgw']->template->set_var('lang_title',lang('eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
-	$GLOBALS['phpgw']->template->set_var('lang_select_target',lang('Select target server'));
-	$GLOBALS['phpgw']->template->set_var('lang_st_note',lang('Configure using admin - Peer servers'));
-	$GLOBALS['phpgw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
-	$GLOBALS['phpgw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
-	$GLOBALS['phpgw']->template->set_var('lang_addressbook',lang('Addressbook test'));
-	$GLOBALS['phpgw']->template->set_var('lang_calendar',lang('Calendar test'));
-	$GLOBALS['phpgw']->template->set_var('lang_infolog',lang('Infolog test'));
-	$GLOBALS['phpgw']->template->set_var('lang_login',lang('Login'));
-	$GLOBALS['phpgw']->template->set_var('lang_logout',lang('Logout'));
-	$GLOBALS['phpgw']->template->set_var('lang_list',lang('List'));
-	$GLOBALS['phpgw']->template->set_var('lang_apps',lang('Apps'));
-	$GLOBALS['phpgw']->template->set_var('lang_bogus',lang('Bogus Request'));
-	$GLOBALS['phpgw']->template->set_var('lang_users',lang('Users'));
-	$GLOBALS['phpgw']->template->set_var('lang_methods',lang('Methods'));
-	$GLOBALS['phpgw']->template->set_var('lang_username',lang('Username'));
-	$GLOBALS['phpgw']->template->set_var('lang_password',lang('Password'));
-	$GLOBALS['phpgw']->template->set_var('lang_session',lang('Assigned sessionid'));
-	$GLOBALS['phpgw']->template->set_var('lang_kp3',lang('Assigned kp3'));
-	$GLOBALS['phpgw']->template->set_var('login_type',lang('Server<->Server'));
-	$GLOBALS['phpgw']->template->set_var('note',lang('NOTE: listapps and listusers are disabled by default in xml_functions.php') . '.');
+	$GLOBALS['egw']->template->set_var('action_url',$GLOBALS['egw']->link('/xmlrpc/interserv.php'));
+	$GLOBALS['egw']->template->set_var('lang_title',lang('eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
+	$GLOBALS['egw']->template->set_var('lang_select_target',lang('Select target server'));
+	$GLOBALS['egw']->template->set_var('lang_st_note',lang('Configure using admin - Peer servers'));
+	$GLOBALS['egw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
+	$GLOBALS['egw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
+	$GLOBALS['egw']->template->set_var('lang_addressbook',lang('Addressbook test'));
+	$GLOBALS['egw']->template->set_var('lang_calendar',lang('Calendar test'));
+	$GLOBALS['egw']->template->set_var('lang_infolog',lang('Infolog test'));
+	$GLOBALS['egw']->template->set_var('lang_login',lang('Login'));
+	$GLOBALS['egw']->template->set_var('lang_logout',lang('Logout'));
+	$GLOBALS['egw']->template->set_var('lang_list',lang('List'));
+	$GLOBALS['egw']->template->set_var('lang_apps',lang('Apps'));
+	$GLOBALS['egw']->template->set_var('lang_bogus',lang('Bogus Request'));
+	$GLOBALS['egw']->template->set_var('lang_users',lang('Users'));
+	$GLOBALS['egw']->template->set_var('lang_methods',lang('Methods'));
+	$GLOBALS['egw']->template->set_var('lang_username',lang('Username'));
+	$GLOBALS['egw']->template->set_var('lang_password',lang('Password'));
+	$GLOBALS['egw']->template->set_var('lang_session',lang('Assigned sessionid'));
+	$GLOBALS['egw']->template->set_var('lang_kp3',lang('Assigned kp3'));
+	$GLOBALS['egw']->template->set_var('login_type',lang('Server<->Server'));
+	$GLOBALS['egw']->template->set_var('note',lang('NOTE: listapps and listusers are disabled by default in xml_functions.php') . '.');
 
-	$GLOBALS['phpgw']->template->set_var('xserver',$_POST['xserver'] ? ' checked' : '');
-	$GLOBALS['phpgw']->template->set_var('xsessionid',$xsessionid ? $xsessionid : lang('none'));
-	$GLOBALS['phpgw']->template->set_var('xkp3',$xkp3 ? $xkp3 : lang('none'));
-	$GLOBALS['phpgw']->template->set_var('xusername',$xusername);
-	$GLOBALS['phpgw']->template->set_var('xpassword',$xpassword);
-	$GLOBALS['phpgw']->template->set_var('xserver_name',$xserver_name);
-	$GLOBALS['phpgw']->template->set_var('server_list',$is->formatted_list($server_id));
-	$GLOBALS['phpgw']->template->set_var('method_type',(($xsessionid == lang('none')) || !$xsessionid) ? lang('System') . ' ' : lang('App') . ' ');
-	$GLOBALS['phpgw']->template->set_var('applist',(($xsessionid == lang('none')) || !$xsessionid) ? '' : 'for&nbsp;' . applist());
+	$GLOBALS['egw']->template->set_var('xserver',$_POST['xserver'] ? ' checked' : '');
+	$GLOBALS['egw']->template->set_var('xsessionid',$xsessionid ? $xsessionid : lang('none'));
+	$GLOBALS['egw']->template->set_var('xkp3',$xkp3 ? $xkp3 : lang('none'));
+	$GLOBALS['egw']->template->set_var('xusername',$xusername);
+	$GLOBALS['egw']->template->set_var('xpassword',$xpassword);
+	$GLOBALS['egw']->template->set_var('xserver_name',$xserver_name);
+	$GLOBALS['egw']->template->set_var('server_list',$is->formatted_list($server_id));
+	$GLOBALS['egw']->template->set_var('method_type',(($xsessionid == lang('none')) || !$xsessionid) ? lang('System') . ' ' : lang('App') . ' ');
+	$GLOBALS['egw']->template->set_var('applist',(($xsessionid == lang('none')) || !$xsessionid) ? '' : 'for&nbsp;' . applist());
 
-	$GLOBALS['phpgw']->template->pfp('out','interserv');
+	$GLOBALS['egw']->template->pfp('out','interserv');
 
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['egw']->common->phpgw_footer();
 ?>
