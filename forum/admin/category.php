@@ -22,21 +22,23 @@
   $extrahidden = "";
 
   if($act == "edit") {
-   if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
-    print "Error in reading database<br>\n";
-     $phpgw->common->phpgw_exit();
-   } else {
-    $phpgw->db->next_record();
-    $catname = $phpgw->db->f("name");
-    $catdescr = $phpgw->db->f("descr");
-    $cat_id = $phpgw->db->f("id"); 
+    $newold = lang("Update Category");
+    if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
+      print "Error in reading database<br>\n";
+      $phpgw->common->phpgw_exit();
+    } else {
+      $phpgw->db->next_record();
+      $catname = $phpgw->db->f("name");
+      $catdescr = $phpgw->db->f("descr");
+      $cat_id = $phpgw->db->f("id"); 
 
-    $extrahidden = "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">"; 
-    $buttontext = lang("Update Category");
-    $actiontype = "updcat";
-   }
-  } 
-
+      $extrahidden = "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">"; 
+      $buttontext = lang("Update Category");
+      $actiontype = "updcat";
+    }
+  } else {
+    $newold = lang("Create New Category");
+  }
   
   if($action) {
    if($action == "addcat") {
@@ -86,7 +88,7 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
   <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
     <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo lang("Create New Category")?></center>
+     <center><?echo $newold?></center>
     </td>
    </tr>
    <tr>
