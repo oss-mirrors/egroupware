@@ -1061,7 +1061,7 @@
 			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
 
 			/* use '' in SQL yes/no */	
-			if($jinn_field_type=='int' || $jinn_field_type=='auto' || $jinn_field_type=='timestamp' || $jinn_field_type=='date')
+			if($jinn_field_type=='int' || $jinn_field_type=='auto')
 			{
 			   $fortick='';
 			}
@@ -1188,7 +1188,7 @@
 			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
 
 			/* use '' in SQL yes/no */	
-			if($jinn_field_type=='int' || $jinn_field_type=='auto' || $jinn_field_type=='timestamp' || $jinn_field_type=='date')
+			if($jinn_field_type=='int' || $jinn_field_type=='auto')
 			{
 			   $fortick='';
 			 }
