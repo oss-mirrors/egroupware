@@ -13,26 +13,46 @@
 
 	/* $Id$ */
 
-// This will eventually be written using templates.
-
 	Header('Cache-Control: no-cache');
 	Header('Pragma: no-cache');
 	Header('Expires: Sat, Jan 01 2000 01:01:01 GMT');
 
-	$phpgw_flags = Array(
-		'currentapp'					=>	'email',
+	$phpgw_info["flags"] = array(
+		'currentapp'			=>	'email',
 		'enable_network_class'		=>	True,
-		'enable_nextmatchs_class'	=>	True,
+		'enable_nextmatchs_class'	=>	True
 	);
 
-	if (isset($newsmode) && $newsmode == 'on')
-	{
-		$phpgw_flags['newsmode'] = True;
-	}
-
-	$phpgw_info["flags"] = $phpgw_flags;
 	include('../header.inc.php');
 
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array(		
+		'T_message_main' => 'message_main.tpl'
+	));
+	$t->set_block('T_message_main','B_to_list','V_to_list');
+	$t->set_block('T_message_main','B_cc_labels','V_cc_labels');
+	$t->set_block('T_message_main','B_cc_list','V_cc_list');
+	$t->set_block('T_message_main','B_cc_closer','V_cc_closer');
+	$t->set_block('T_message_main','B_attach_list','V_attach_list');
+
+
+
+// ----  Are We In Newsmode Or Not  -----
+	if (isset($newsmode) && $newsmode == "on")
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
+	else
+	{
+		$phpgw_info['flags']['newsmode'] = False;
+	}
+
+// ----  Fill Some Important Variables  -----
+	$image_dir = $phpgw->common->get_image_path($phpgw_info['flags']['currentapp']);
+
+
+// ----  Special X-phpGW-Type Message Flag  -----
+	// is this still a planned feature?
 	$application = '';
 	$msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,'X-phpGW-Type');
 	if (!empty($msgtype))
@@ -40,21 +60,22 @@
 		$msg_type = explode(';',$msgtype);
 		$application = substr($msg_type[0],1,strlen($msg_type[0])-2);
 		echo '<center><h1>THIS IS A phpGroupWare-'.strtoupper($application).' EMAIL</h1><hr></center>'."\n";
-//			.'In the future, this will process a specially formated email msg.<hr></center>';
+		//	.'In the future, this will process a specially formated email msg.<hr></center>';
 	}
 
 	#set_time_limit(0);
 
+// ----  General Information about The Message  -----
 	$msg = $phpgw->msg->header($mailbox, $msgnum);
 	$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
 	$totalmessages = $phpgw->msg->num_msg($mailbox);
 
-	$subject = !$msg->Subject ? lang('no subject') : $msg->Subject;
-	$subject = decode_header_string($subject);
+	$subject = $phpgw->msg->get_subject($msg,'');
 	$from = $msg->from[0];
 
 	$message_date = $phpgw->common->show_date($msg->udate);
 
+	// ----  Display "From" According To User Preferences -----
 	$personal = !isset($from->personal) || !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
 
 	if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
@@ -66,6 +87,8 @@
 	{
 		$folder = 'INBOX';
 	}
+
+	// this "if" statement may soon be obsoleted
 	if ($phpgw_info['user']['preferences']['common']['template_set'] == 'idsociety')
 	{
 		$img_border_tag = ' border="0"';
@@ -75,36 +98,42 @@
 		$img_border_tag = '';
 	}
 
-	$image_dir = $phpgw->common->get_image_path($phpgw_info['flags']['currentapp']);
-?>
-<table cellpadding="1" cellspacing="1" width="95%" align="center">
-<tr><td colspan="2" bgcolor="<?php echo $phpgw_info['theme']['em_folder']; ?>">
+// ----  What Folder To Return To  -----
+        $lnk_goback_folder = href_maketag($phpgw->link('/email/index.php','folder='.urlencode($folder)),$folder);
 
-      <table border="0" cellpadding="0" cellspacing="1" width="100%">
-       <tr>
-         <td>
-  	  <font size="3" face="<?php echo $phpgw_info['theme']['font'].'" color="'.$phpgw_info['theme']['em_folder_text']; ?>">
-	   <a href="<?php echo $phpgw->link('/email/index.php','folder='.urlencode($folder)); ?>"><?php echo $folder; ?></a>
-         </font>
-        </td>
+// ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
+        $reply_img = img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
+	$reply_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum);
+	$ilnk_reply = href_maketag($reply_url, $reply_img);
 
-        <td align=right><font size="3" face="<?php echo $phpgw_info['theme']['font'].'" color="'.$phpgw_info['theme']['em_folder_text']; ?>">
-         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=reply&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_reply.gif" height="19" width="26" alt="<?php echo lang('reply'); ?>"></a>
-         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_reply_all.gif" height="19" width="26" alt="<?php echo lang('reply all'); ?>"></a>
-         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-         <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_forward.gif" height="19" width="26" alt="<?php echo lang('forward'); ?>"></a>
-         <a href="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum); ?>">
-          <img<?php echo $img_border_tag; ?> src="<?php echo $image_dir; ?>/sm_delete.gif" height="19" width="26" alt="<?php echo lang('delete'); ?>"></a></font>
-	</td>
-        <td align="right">
-<?php
+        $replyall_img = img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),"19","26",'0');
+	$replyall_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.urlencode($folder).'&msgnum='.$msgnum);
+	$ilnk_replyall = href_maketag($replyall_url, $replyall_img);
+
+	$forward_img = img_maketag($image_dir .'/sm_forward.gif',lang('forward'),"19","26",'0');
+	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum);
+	$ilnk_forward = href_maketag($forward_url, $forward_img);
+
+	$delete_img = img_maketag($image_dir .'/sm_delete.gif',lang('delete'),"19","26",'0');
+	$delete_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.urlencode($folder).'&msgnum='.$msgnum);
+	$ilnk_delete = href_maketag($delete_url, $delete_img);
+
+	$t->set_var('theme_font',$phpgw_info['theme']['font']);
+	$t->set_var('reply_btns_bkcolor',$phpgw_info['theme']['em_folder']);
+	$t->set_var('reply_btns_text',$phpgw_info['theme']['em_folder_text']);
+	$t->set_var('lnk_goback_folder',$lnk_goback_folder);
+	$t->set_var('ilnk_reply',$ilnk_reply);
+	$t->set_var('ilnk_replyall',$ilnk_replyall);
+	$t->set_var('ilnk_forward',$ilnk_forward);
+	$t->set_var('ilnk_delete',$ilnk_delete);
+
+
 	// Move this up top.
 	$session_folder = 'folder='.urlencode($folder).'&msgnum=';
 
 	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
 
+// ----  Go To Previous Message Handling  -----
 	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmeesages))
 	{
 		if ($default_sorting == 'new_old')
@@ -118,19 +147,21 @@
 
 		if ($default_sorting == 'new_old' && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1))
 		{
-			echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left-grey.gif" alt="No Previous Message">';
+			$ilnk_prev_msg = img_maketag($phpgw_info['server']['images_dir'].'/left-grey.gif',"No Previous Message",'','','0');
 		}
 		else
 		{
-			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$pm).'">'
-				. '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left.gif" alt="Previous Message"></a>';
+			$prev_msg_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$pm);
+			$prev_msg_img = img_maketag($phpgw_info['server']['images_dir'].'/left.gif',"Previous Message",'','','0');
+			$ilnk_prev_msg = href_maketag($prev_msg_link,$prev_msg_img);
 		}
 	}
 	else
 	{
-		echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/left-grey.gif" alt="No Previous Message">';
+		$ilnk_prev_msg = img_maketag($phpgw_info['server']['images_dir'].'/left-grey.gif',"No Previous Message",'','','0');
 	}
 
+// ----  Go To Next Message Handling  -----
 	if ($msgnum < $totalmessages || ($default_sorting == 'new_old' && $msgnum != 1))
 	{
 		if ($default_sorting == 'new_old')
@@ -144,61 +175,60 @@
 
 		if ($default_sorting == 'new_old' && $msgnum == 1 && $totalmessages != $msgnum)
 		{
-			echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right-grey.gif" alt="No Next Message">';
+			$ilnk_next_msg = img_maketag($phpgw_info['server']['images_dir'].'/right-grey.gif',"No Next Message",'','','0');
 		}
 		else
 		{
-			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$nm).'">'
-				. '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right.gif" alt="Next Message"></a>';
+			$next_msg_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',$session_folder.$nm);
+			$next_msg_img = img_maketag($phpgw_info['server']['images_dir'].'/right.gif',"Next Message",'','','0');
+			$ilnk_next_msg = href_maketag($next_msg_link,$next_msg_img);
 		}
 	}
 	else
 	{
-		echo '<img border="0" src="'.$phpgw_info['server']['images_dir'].'/right-grey.gif" alt="No Next Message">';
+		$ilnk_next_msg = img_maketag($phpgw_info['server']['images_dir'].'/right-grey.gif',"No Next Message",'','','0');
 	}
-?>
-        </td>
-       </tr>
-      </table>
 
-</td>
-</tr>
+	$t->set_var('ilnk_prev_msg',$ilnk_prev_msg);
+	$t->set_var('ilnk_next_msg',$ilnk_next_msg);
 
-<tr>
- <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
-  <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-   <b><?php echo lang('from'); ?>:</b>
-  </font> 
- </td> 
- <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
-  
-<?php 
+// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
+	$t->set_var('tofrom_labels_bkcolor', $phpgw_info['theme']['th_bg']);
+	$t->set_var('tofrom_data_bkcolor', $phpgw_info['theme']['row_on']);
 
+	$t->set_var('lang_from', lang('from'));
+	$t->set_var('lang_to', lang('to'));
+	$t->set_var('lang_cc', lang('cc'));
+	$t->set_var('lang_date', lang('date'));
+	$t->set_var('lang_files', lang('files'));
+	$t->set_var('lang_subject', lang('subject'));
+
+
+// ----  From Message Data  -----
 	if ($msg->from)
 	{
-		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'">'
-			. '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.urlencode($from->mailbox.'@'.$from->host)).'">'.decode_header_string($personal).'</a>'.$display_address->from.'</font>';
-		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'"> <a href="'.$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)).'">'
-			. '<img src="'.$phpgw_info['server']['app_images'].'/sm_envelope.gif" width="10" height="8" alt="Add to address book" border="0" align="absmiddle"></a></font>';
+
+		$from_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.urlencode($from->mailbox.'@'.$from->host)),
+			decode_header_string($personal) );
+		$from_raw_addy = trim($display_address->from);
+
+		$from_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
+		$from_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
+		$from_addybook_add = href_maketag($from_addybook_link, $from_addybook_img);
 	}
 	else
 	{
-		echo lang('Undisclosed Sender')."\n";
+		$from_real_name = '';
+		$from_raw_addy = lang('Undisclosed Sender');
+		$from_addybook_add = '';
 	}
-?>
-  </font>
- </td>
-</tr>
 
-<tr>
- <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
-  <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-   <b><?php echo lang('to'); ?>:</b>
-  </font> 
- </td> 
- <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
-  <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-<?php
+	$t->set_var('from_real_name',$from_real_name);
+	$t->set_var('from_raw_addy',$from_raw_addy);
+	$t->set_var('from_addybook_add',$from_addybook_add);
+
+
+// ----  To  Message Data  -----
 	if ($msg->to)
 	{
 		for ($i = 0; $i < count($msg->to); $i++)
@@ -210,69 +240,99 @@
 			{
 				$display_address->to = '('.$topeople->mailbox.'@'.$topeople->host.')';
 			}
-       
-			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host).'">'.$personal.'</a> '.$display_address->to;
 
-			echo '&nbsp;<a href="'.$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)).'">'
-				. '<img src="'.$phpgw_info['server']['app_images'].'/sm_envelope.gif" height="8" width="10" alt="Add to address book" border="0" align="absmiddle"></a>';
+			$to_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host), $personal);
+			$to_raw_addy = trim($display_address->to);
+
+			$to_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
+			$to_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
+			$to_addybook_add = href_maketag($to_addybook_link, $to_addybook_img);
+
 			if($i + 1 < count($msg->to))
 			{
-				echo ', '; // throw a spacer comma in between addresses.
+				$to_comma_sep = ', '; // throw a spacer comma in between addresses.
 			}
-//			echo "</td></tr>\n";
+			else
+			{
+				$to_comma_sep = '';
+			}
+
+			$t->set_var('to_real_name',$to_real_name);
+			$t->set_var('to_raw_addy',$to_raw_addy);
+			$t->set_var('to_addybook_add',$to_addybook_add);
+			$t->set_var('to_comma_sep',$to_comma_sep);
+			$t->parse('V_to_list','B_to_list',True);
 		}
 	}
 	else
 	{
-		echo lang('Undisclosed Recipients')."\n";
+		$to_real_name = '';
+		$to_raw_addy = lang('Undisclosed Recipients');
+		$to_addybook_add = '';
+		$to_comma_sep = '';
+
+		$t->set_var('to_real_name',$to_real_name);
+		$t->set_var('to_raw_addy',$to_raw_addy);
+		$t->set_var('to_addybook_add',$to_addybook_add);
+		$t->set_var('to_comma_sep',$to_comma_sep);
+		$t->parse('V_to_list','B_to_list');
 	}
 
-	echo '</td></tr>';
 
+// ----  Cc  Message Data  -----
 	if (isset($msg->cc) && count($msg->cc) > 0)
 	{
-?>
-   <tr>
-    <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
-     <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-      <b><?php echo lang("cc"); ?>:</b>
-    </td>
-    <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
-     <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-<?php
+		$t->parse('V_cc_labels','B_cc_labels');
+
 		for ($i = 0; $i < count($msg->cc); $i++)
 		{
 			$ccpeople = $msg->cc[$i];
 			$personal = !$ccpeople->personal ? $ccpeople->mailbox.'@'.$ccpeople->host : $ccpeople->personal;
 			$personal = decode_header_string($personal);
 
-			echo '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder)
-				. '&to='.urlencode($ccpeople->mailbox.'@'.$ccpeople->host)).'">'.$personal.'</a>';
 
-			echo '&nbsp;<a href="'.$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING))
-				. '"><img src="'.$phpgw_info['server']['app_images'].'/sm_envelope.gif" height="8" width="10" alt="Add to address book" border="0" align="absmiddle"></a>';
+			$cc_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder)
+					.'&to='.urlencode($ccpeople->mailbox.'@'.$ccpeople->host))
+					,$personal
+			);
+			
+			// we never desplay cc_raw_addy
+			$cc_raw_addy = '';
+
+			$cc_addybook_link = $phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING));
+			$cc_addybook_img = img_maketag($phpgw_info['server']['app_images'].'/sm_envelope.gif',"Add to address book","8","10","0");
+			$cc_addybook_add = href_maketag($cc_addybook_link, $cc_addybook_img);
+
 			if($i + 1 < count($msg->cc))
 			{
-				echo ', '; // throw a spacer comma in between addresses.
+				$cc_comma_sep = ', '; // throw a spacer comma in between addresses.
 			}
-		}
-		echo '</td></tr>'."\n";
-	}
-?>
+			else
+			{
+				$cc_comma_sep = '';
+			}
 
-<tr>
-  <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
-    <font size=2 face="<?php echo $phpgw_info['theme']['font']; ?>">
-      <b><?php echo lang('date'); ?>:</b>
-    </font>
-    </td>
-    <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
-     <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-     <?php echo $message_date; ?>
-     </font>
-  </td>
-</tr>
-<?php
+			$t->set_var('cc_real_name',$cc_real_name);
+			$t->set_var('cc_raw_addy',$cc_raw_addy);
+			$t->set_var('cc_addybook_add',$cc_addybook_add);
+			$t->set_var('cc_comma_sep',$cc_comma_sep);
+			$t->parse('V_cc_list','B_cc_list',True);
+		}
+
+		$t->parse('V_cc_closer','B_cc_closer');
+	}
+	else
+	{
+		$t->set_var('V_cc_labels','');
+		$t->set_var('V_cc_list','');
+		$t->set_var('V_cc_closer','');
+	}
+
+// ---- Message Date  (set above)  -----
+	$t->set_var('message_date', $message_date);
+
+
+// ---- Attachments List  -----
 	$flag = 0;
 	$struct_count = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
 	for ($z = 0; $z < $struct_count; $z++)
@@ -282,38 +342,31 @@
 
 		if ($att_name != 'Unknown')
 		{
-	 // if it has a name, it's an attachment
+			// if it has a name, it's an attachment
 			$f_name[$flag] = attach_display($part, $z+1);
 			$flag++;
 		}
 	}
 	if ($flag != 0)
 	{
-		echo '<tr><td bgcolor="'.$phpgw_info['theme']['th_bg'].'" valign="top">';
-		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'"><b>';
-		echo lang('files').':</b></td><td bgcolor="'.$phpgw_info['theme']['row_on'].'" width="570">';
-		echo '<font size="2" face="'.$phpgw_info['theme']['font'].'">';
-		echo implode(', ',$f_name);
-		echo '</td></tr>';
+		$list_of_files = implode(', ',$f_name);
+		$t->set_var('list_of_files',$list_of_files);
+		$t->parse('V_attach_list','B_attach_list');
 	}
-?>
- <tr>
-  <td bgcolor="<?php echo $phpgw_info['theme']['th_bg'] ?>" valign=top>
-   <font size="2" face="<?php echo $phpgw_info['theme']['font'] ?>">
-    <b><?php echo lang('subject') ?>:</b>   </font>
-  </td>  <td bgcolor="<?php echo $phpgw_info['theme']['row_on']; ?>" width="570">
-   <font size="2" face="<?php echo $phpgw_info['theme']['font']; ?>">
-    <?php echo $subject; ?>
-   </font>
-  </td>
- </tr>
-</table>
+	else
+	{
+		$t->set_var('V_attach_list','');
+	}
 
-<br><table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-<tr>
-  <td align="center">
+// ---- Message Subject  (set above)  -----
+	$t->set_var('message_subject',$subject);
 
-<?php
+	$t->pparse('out','T_message_main');
+	
+// ---- STOPPED HERE - PHASE 1  -----
+
+
+// ---- Message Content  -----
 	$numparts = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
 	echo '<!-- This message has '.$numparts.' part(s) -->'."\n";
 
