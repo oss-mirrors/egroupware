@@ -33,7 +33,7 @@
 	{
 		$stat = 0;
 
-		$GLOBALS['phpgw']->db->query("select max(id) from phpgw_forum_body",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query('select max(id) from phpgw_forum_body',__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 		$next_f_body_id = $GLOBALS['phpgw']->db->f('0') + 1;
 
