@@ -39,7 +39,7 @@ goto_prev_msg:			Go to previous message
 home:				Home
 homepage:			Homepage:
 icq_control_panel:		ICQ Online-Message Panel
-icq_message_form:		ICQ Message Message Form:
+icq_message_form:		ICQ Message Form:
 ignore_user:			ignore all posts by this user
 im_aim:				AIM Handle:
 im_msnm:			MSN Messenger:
@@ -251,10 +251,10 @@ month_12:			December
 male:				Male
 female:				Female
 unspecified:			UNSPECIFIED
-register_tree_view:		Tree View message and thread listing 
-register_msg_tree_view:		Flat thread listing/Tree message listing
-register_tree_msg_view:		Tree thread listing/Flat message listing 
-register_flat_view:		Flat View message and thread listing 
+register_tree_view:		Tree View message and topic listing 
+register_msg_tree_view:		Flat topic listing/Tree message listing
+register_tree_msg_view:		Tree topic listing/Flat message listing 
+register_flat_view:		Flat View message and topic listing 
 use_forum_default:		Use forum default
 finduser_user_info:		User Information
 finduser_by_login:		By Login:
@@ -335,8 +335,8 @@ register_show_email_desc:	Choose this option if you want your email address to b
 register_notification:		Select Notification By Default:
 register_notification_desc:	If notification is enabled by default, it can be disabled when posting.
 register_notify_method:		Choose Notification Method:
-register_notify_method_desc:	If you would to receive notifications via ICQ please make sure to enable 'EmailExpress' in your ICQ settings
-register_notify_js_error:	You choose ICQ notification, but did not specify an ICQ #. Defaulting to Email&#46;
+register_notify_method_desc:	If you would like to receive notifications via ICQ please make sure to enable 'EmailExpress' in your ICQ settings
+register_notify_js_error:	You chose ICQ notification, but did not specify an ICQ #. Defaulting to Email&#46;
 register_allow_email_msg:	Allow Email Messages:
 register_allow_email_msg_desc:	Allow other users to send you e-mails via FUDforum.
 buddy_status:			Status
@@ -702,7 +702,7 @@ ERR_user_msg:			There is no such user
 ERR_user_url:			{VAR: _SERVER['HTTP_REFERER']}?{DEF: _rsid}
 ERR_systemerr_ttl:		ERROR: System Error
 ERR_systemerr_msg:		System error has occurred, please report it to the <a href="mailto:{GVAR: ADMIN_EMAIL}">webmaster</a>.
-ERR_systemerr_url:		
+ERR_systemerr_url:		 
 email_title:			Email Form
 finduser_title:			Find User
 help_title:			F.A.Q.
@@ -846,7 +846,7 @@ post_all_ext_allowed:		(unrestricted)
 maximize_category:		Maximize Category
 no_view_perm:			You do not have appropriate permissions needed to see this topic.
 report_empty_report:		You cannot send an empty report, please enter a reason for your report.
-report_already_reported_title:	Already Reported	
+report_already_reported_title:	Already Reported
 report_already_reported_msg:	This message was already reported and the report is currently in moderation staff&#39;s review queue.
 register_err_toomanyimages:	You are trying to use more then the allowed {GVAR: FORUM_IMG_CNT_SIG} images in your signature.
 pmsg_next_msg:			Next message
@@ -876,9 +876,9 @@ poll_edit:			Edit
 register_err_not_valid_img:	The specified url does not contain a valid image
 pmsg_recepient:			Recipient
 register_err_taken_alias:	The alias you are trying to use is already in use by another forum member, please choose another.
-register_alias:			Alias
+register_alias:			Alias:
 register_alias_desc:		If you want a nickname other than your login to be displayed on the forum, enter the nick name you want to be displayed here.
-register_allow_pm_msg:		Allow Private Messages	
+register_allow_pm_msg:		Allow Private Messages
 register_allow_pm_msg_desc:	Allow other users to send you private messages via FUDforum.
 postcheck_pm_disabled:		You cannot send a private message to "{VAR-HTML: v}", because this person is not accepting private messages.
 polllist_vote:			Vote
@@ -893,7 +893,7 @@ userinfo_polls:			Polls:
 show_pollist:			Show Polls
 search_and:			AND
 search_or:			OR
-search_desc_order:		Descending Order		
+search_desc_order:		Descending Order
 search_asc_order:		Ascending Order
 search_logic:			Search Logic:
 search_sorting:			Sort Results By Date In:
@@ -907,8 +907,8 @@ register_show_im_desc:		Whether or not to show IM indicators of the author besid
 unread_message:			Unread Message
 read_message:			Read Message
 threadt_more:			&lt;more&gt;
-threadt_disabled_ttl:		Tree view of the thread listing has been disabled.
-threadt_disabled_desc:		The administrator has disabled the tree view of the thread listing, please use the flat view instead.
+threadt_disabled_ttl:		Tree view of the topic listing has been disabled.
+threadt_disabled_desc:		The administrator has disabled the tree view of the topic listing, please use the flat view instead.
 threadt_update:			Browsing forum (tree view) <a class="GenLink" href="{TEMPLATE: threadt_update_lnk}">{VAR-HTML: frm->name}</a>
 mmod_delete_cofirm_ttl:		Topic/Message Deletion Confirmation
 spell_alts:			no alternatives
@@ -922,7 +922,7 @@ err_mod_acc_msg:		The administrator had chosen to review all accounts manually p
 accounts_pending_approval:	Accounts Pending Approval
 saved:				Saved
 register_err_time_limit:	The registration limit of 1 registration per {GVAR: REG_TIME_LIMIT} seconds has been reached. Please wait {VAR: reg_limit_reached} seconds and then try to register once again.
-login_blocked_account_ttl:	Your account has been banned.	
+login_blocked_account_ttl:	Your account has been banned.
 login_blocked_account_msg:	Your account has been banned from this forum, if do not already know the reason behind this action contact the forum&#39;s administrator(s).
 register_affero:		Affero Username:<br /><font class="SmallText">If you have an <a href="http://www.affero.com/ca/{VAR-URL: affero_domain['host']}" target="_blank">Affero</a> username enter it here.</font>
 im_affero:			Affero Username
@@ -949,7 +949,7 @@ thread_mark_all_read_desc:	All unread messages inside this forum will be marked 
 private_no_messages:		There are no messages inside this folder
 register_email_change_subject:	E-mail change confirmation
 register_email_change_msg:	Please confirm your new e-mail account "{VAR: uent->email}" that replaces your old e-mail account "{VAR: old_email}" by going to the URL below:\n{ROOT}?t=emailconf&conf_key={VAR: conf_key}\n\nOnce you confirm your new e-mail address, your account will be re-activated.
-iemail_thread_unsub:		Unsubscribe from this thread		
+iemail_thread_unsub:		Unsubscribe from this topic
 iemail_forum_unsub:		Unsubscribe from this forum
 primary_group_prefix:		Primary group for forum:
 group_resources:		This group controls permissions of the following forums
@@ -1001,10 +1001,13 @@ merge_next:			Next Topics
 merge_prev:			Previous Topics
 split_cp:			Thread Split Control Panel
 groups_perms_header:		Permissions <font size="-1">(move mouse over the permission to see permission type)</font>
-register_err_sig_too_long:	Your signature exceeds the maximum allowed length of {GVAR: FORUM_SIG_ML} characters.
-register_sig_limit:		{GVAR: FORUM_SIG_ML} <a href="javascript: alert(\'Your Signature is \'+document.fud_register.reg_sig.value.length+\' characters long. The maximum allowed signature length is {GVAR: FORUM_SIG_ML}\');" class="SmallText">Check Signature Length</a>
+register_err_sig_too_long:	Your signature exceeds the maximum allowed length of {GVAR: FORUM_SIG_ML} characters characters.
+register_sig_limit:		{GVAR: FORUM_SIG_ML} characters <a href="javascript: alert(\'Your Signature is \'+document.fud_register.reg_sig.value.length+\' characters long. The maximum allowed signature length is {GVAR: FORUM_SIG_ML} characters.\');" class="SmallText">Check Signature Length</a>
 adm_account_accepted:		Your account \'{VAR: GLOBALS['r']->login}\' was approved by the administrator and is now active. You may now access the {GVAR: FORUM_TITLE}\' forum as a confirmed registered user.
-adm_account_accepted_s:		Your accout request for \'{GVAR: FORUM_TITLE}\' was accepted.
-adm_account_rejected:		Your account \'{VAR: GLOBALS['r']->login}\' was declined by the administrator and is now active. If you would like to know the reason behind this decision feel free to contact the administrator at \'{GVAR: ADMIN_EMAIL}\'.
-adm_account_rejected_s:		Your accout request for \'{GVAR: FORUM_TITLE}\' was declined.
+adm_account_accepted_s:		Your account request for \'{GVAR: FORUM_TITLE}\' was accepted.
+adm_account_rejected:		Your account \'{VAR: GLOBALS['r']->login}\' was declined by the administrator. If you would like to know the reason behind this decision feel free to contact the administrator at \'{GVAR: ADMIN_EMAIL}\'.
+adm_account_rejected_s:		Your account request for \'{GVAR: FORUM_TITLE}\' was declined.
 thread_on:			on
+userinfo_buddy:			Buddy:
+register_email_addr:		E-mail Address:
+reset_suffix:			\n\nIf you received this message in error, please ignore it. If you are receiving multiple copies of this e-mail, which you have not requested, please contact the forum administrator at {GVAR: ADMIN_EMAIL}\n\nThis request was initiated from: {VAR: _SERVER['REMOTE_ADDR']}.\n\n

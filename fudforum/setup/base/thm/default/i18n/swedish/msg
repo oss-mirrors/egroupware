@@ -1000,11 +1000,14 @@ merge_next:			Nästa Ämnen
 merge_prev:			Föregående Ämnen
 split_cp:			Inställningar för Splittade Ämnen
 groups_perms_header:		Rättigheter <font size="-1">(flytta musen över rättigheten för att se rättighetstypen)</font>
-register_err_sig_too_long:	Din signatur överskrider maxlängden på {GVAR: FORUM_SIG_ML} tecken.
-register_sig_limit:		{GVAR: FORUM_SIG_ML} <a href="javascript: alert(\'Din Signatur är \'+document.fud_register.reg_sig.value.length+\' tecken lång. Maxlängden är {GVAR: FORUM_SIG_ML}\');" class="SmallText">Kontrollera Signaturlängd</a>
+register_err_sig_too_long:	Din signatur överskrider maxlängden på {GVAR: FORUM_SIG_ML} characters tecken.
+register_sig_limit:		{GVAR: FORUM_SIG_ML} characters <a href="javascript: alert(\'Din Signatur är \'+document.fud_register.reg_sig.value.length+\' tecken lång. Maxlängden är {GVAR: FORUM_SIG_ML}\');" class="SmallText">Kontrollera Signaturlängd</a>
 p_SEARCH:			Kan Söka
 adm_account_accepted:		Ditt konto \'{VAR: GLOBALS['r']->login}\' godkänndes av administratören och är nu aktivt. Du kan nu komma åt {GVAR: FORUM_TITLE}\' forumet som en verifierad registrerad användare.
 adm_account_accepted_s:		Din kontoförfrågan för \'{GVAR: FORUM_TITLE}\' accepterades.
 adm_account_rejected:		Ditt konto \'{VAR: GLOBALS['r']->login}\' nekades av administratören och är inte aktivt. Om du vill veta varför detta beslut fattades, kontakta administratören på \'{GVAR: ADMIN_EMAIL}\'.
 adm_account_rejected_s:		Din kontoförfrågan på \'{GVAR: FORUM_TITLE}\' nekades.
 thread_on:			på
+userinfo_buddy:			Buddy:
+register_email_addr:		E-mail Address:
+reset_suffix:			\n\nIf you received this message in error, please ignore it. If you are receiving multiple copies of this e-mail, which you have not requested, please contact the forum administrator at {GVAR: ADMIN_EMAIL}\n\nThis request was initiated from: {VAR: _SERVER['REMOTE_ADDR']}.\n\n

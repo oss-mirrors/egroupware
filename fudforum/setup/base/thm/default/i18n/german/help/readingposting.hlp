@@ -42,6 +42,10 @@ w&auml;ren:<br>
          [/u]</b></font> erzeugt <u>unterstrichenen</u> Text</li>
   <li><font color="#ff0000"><b>[i]</b></font>kursiv<font color="#ff0000"><b>
          [/i]</b></font> erzeugt <i>kursiven</i> Text</li>
+   <li><font color="#ff0000"><b>[sub]</b></font>subscript<font color="#ff0000"><b>
+          [/sub]</b></font> produces <sub>subscript</sub> text</li>
+   <li><font color="#ff0000"><b>[sup]</b></font>superscript<font color="#ff0000"><b>
+          [/sup]</b></font> produces <sup>superscript</sup> text</li>
 </ul>
          Es ist ferner m&ouml;glich, Farbe/Gr&ouml;&szlig;e und sogar den Fonttyp festzulegen.<br>
 <ul>
@@ -146,7 +150,57 @@ mehrfache Leerzeichen gewahrt bleiben. <br>
 <br>
 <br>
 <pre>$fp = fopen('somefile', 'w');<br>if ( !$fp ) {<br>	exit('no such file!');<br>}<br>else { <br>	fwrite($fp, 'hello world');<br>	fclose($fp);<br>}<br><br><br></pre>
+<p>
+<b>PHP Code</b><br>
+Der <font color="#ff0000"><b>[php][/php]</b></font> Tag ermöglicht es Dir, PHP Skripte zu posten
+und dabei vom Forum wegen der besseren Lesbarkeit die Syntax hervorheben zu lassen.<br>
+<br>Die Verwendung ist wie folgt: <br>
+<font color="#ff0000"><b>[code]</b></font>
+<pre>
+function hallo()
+{
+	echo "Hallo Welt!";
+}
+
+hallo();
+</pre>
+<font color="#ff0000"><b>[/php]</b></font><br>
+<br>was ergibt:<br><br>
+<code><font color="#000000">
+<font color="#0000BB">&lt;?php<br /></font><font color="#007700">function </font><font color="#0000BB">hallo</font><font color="#007700">()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo </font><font color="#DD0000">"Hallo Welt!"</font><font color="#007700">;<br />}<br /><br /></font><font color="#0000BB">hallo</font><font color="#007700">();<br /></font><font color="#0000BB">?&gt;</font>
+
+</code>
+<p>
+
+<b>No Tag</b><br>
+Der <font color="#ff0000"><b>[notag][/notag]</b></font> Tag erm&ouml;glicht es Dir, den Text innerhalb
+der Tags nicht vom FUDForum eigenem Tag Parser interpretieren zu lassen. Das erm&ouml;glicht Dir, Beispiele f&uuml;r
+FUD Code zu nennen, ohne sie in die jeweiligen HTML Entsprechungen umwandeln zu lassen.
+<p>
+
+<b>Spoiler</b><br>
+Der <font color="#ff0000"><b>[spoiler][/spoiler]</b></font> Tag erm&ouml;glicht es Dir, einen Teil des Beitrages
+nicht anzeigen zu lassen. Um den versteckten Anteil sehen zu k&ouml;nnen, m&uuml;ssen die Benutzer einen Link anklicken, 
+der dann den Rest des Textes anzeigt. Intern wird dies mit Hilfe von Javaskript bewerkstelligt, womit die Seite nicht
+wirklich neu geladen wird, sondern eine versteckte Layer sichtbar gemacht wird.<br>
 <br>
+Hier ein Beispiel f&uuml;r diesen Tag in Aktion: <br>
+
+Sichtbarer Teil des Beitrages
+<font color="#ff0000"><b>[spoiler]</b></font>
+<br>Versteckter Teil des Beitrages</br>
+<font color="#ff0000"><b>[/spoiler]</b></font><br>
+Mehr sichtbarer Text.
+
+<p>und das Ergebnis:<p>
+
+Sichtbarer Teil des Beitrages<br />
+<div class="dashed" style="padding: 3px;" align="center" width="100%"><a href="javascript://" OnClick="javascript: layerVis('1482055279834293165', 1);">Spoiler anzeigen</a><div align="left" id="1482055279834293165" style="visibility: hidden;"><br />
+Versteckter Teil des Beitrages<br />
+</div></div><br />
+Mehr sichtbarer Text.
+
+<p>
 
 Unter Umst&auml;nden stellst Du fest, da&szlig; der Administrator Smileys aktiviert hat, die Dir
 Das &Uuml;bermitteln von Emotionen durch kleine Icons erm&ouml;glichen, oder auch den [img] Code, mit dem
