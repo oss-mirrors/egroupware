@@ -160,6 +160,19 @@ function submit_multi_view()
    }
 }
 
+function submit_multi_export()
+{
+   if(countSelectedCheckbox()==0)
+   {
+	  alert('{lang_select_checkboxes}');
+   }
+   else
+   {
+	  document.frm.action.value='export';
+	  document.frm.submit();
+   }
+}
+
 function img_popup(img,pop_width,pop_height,attr)
 {
 options="width="+pop_width+",height="+pop_height+",location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no";
@@ -246,6 +259,9 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_edit_sel}" href="javascript:submit_multi_edit()"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit_sel}" /></a></td>
 
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_delete_sel}" href="javascript:submit_multi_del()" ><img src="{colfield_delete_img_src}" alt="{colfield_lang_delete_sel}" /></a></td>
+
+<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_export_sel}" href="javascript:submit_multi_export()" ><img src="{colfield_export_img_src}" alt="{colfield_lang_export_sel}" /></a></td>
+
 <td >&nbsp;{lang_actions_to_apply_on_selected}</td>
 
 </tr>

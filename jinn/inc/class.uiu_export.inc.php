@@ -51,8 +51,9 @@
 		 $this->bo = CreateObject('jinn.bouser');
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-		 $this->filter = CreateObject('jinn.uiu_filter',$this->bo);
-		 $this->profilestore = $this->bo->read_preferences('profilestore'.$this->bo->site_object_id);
+		 $this->filter = CreateObject('jinn.uiu_filter');
+		 $this->filter->init_bo(&$this->bo);
+		 $this->profilestore = $this->bo->read_preferences('profilestore'.$this->bo->site_object[unique_id]);
 		 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
@@ -63,28 +64,70 @@
 
 	  function save_profilestore()
 	  {
-		$this->bo->save_preferences('profilestore'.$this->bo->site_object_id, $this->profilestore); 
+		$this->bo->save_preferences('profilestore'.$this->bo->site_object[unique_id], $this->profilestore); 
 	  }
 
+  	  function load_factory_preset($preset)
+	  {
+		switch($preset)
+		{
+			case 'openoffice':
+				$_POST[field_names_row] = 'true';
+				$_POST[field_terminator] = ',';
+				$_POST[field_wrapper] = '"';
+				$_POST[escape_character] = '"';
+				$_POST[row_terminator] = '\r\n';
+				return true;
+			case 'excel':
+				$_POST[field_names_row] = 'true';
+				$_POST[field_terminator] = ',';
+				$_POST[field_wrapper] = '"';
+				$_POST[escape_character] = '"';
+				$_POST[row_terminator] = '\r\n';
+				return true;
+			default:
+				return false;
+		}
+	  }
+	  
 	  function load_profile()
 	  {
+			//some post vars must be kept
+		$source = $_POST[source];
+		
 		if($_POST[load_profile] == '')
 		{
 				//loading nothing means resetting the form
-			foreach($_POST as $key => $value)
+			$_POST[field_names_row] = '';
+			$_POST[field_terminator] = '';
+			$_POST[field_wrapper] = '';
+			$_POST[escape_character] = '';
+			$_POST[row_terminator] = '';
+/*			foreach($_POST as $key => $value)
 			{
 				unset($_POST[$key]);
-			}
+			}*/
 		}
 		else
 		{
-				//load the selected profile by replacing the POST var with the selected one
-			$profilename = $_POST[load_profile];
-			$profile = $this->profilestore[$profilename];
-			$_POST = $profile;
-			$_POST[save_profile] = $profilename;
-			$_POST[load_profile] = $profilename;
+			if($this->load_factory_preset($_POST[load_profile], $columns))
+			{
+				//do nothing. a factory preset is available.
+			}
+			else
+			{
+					//load the selected profile by replacing the POST var with the selected one
+				$profilename = $_POST[load_profile];
+				$profile = $this->profilestore[$profilename];
+				$_POST = $profile;
+				$_POST[save_profile] = $profilename;
+				$_POST[load_profile] = $profilename;
+			}
 		}
+		
+			//restore the kept post vars
+		$_POST[source] = $source;
+		
 			//build the gui
 		$this->export();
 	  }
@@ -97,6 +140,7 @@
 		unset($profile[load_profile]);
 		unset($profile[load]);
 		unset($profile[save_profile]);
+		unset($profile[source]);
 			//add to the store and save
 		$this->profilestore[$_POST[save_profile]] = $profile;
 		$this->save_profilestore(); 
@@ -109,7 +153,6 @@
 	  function get_csv_field($fw, $ft, $rt, $ec, $value)
 	  {
 		$value = str_replace($fw, $ec.$fw, $value);
-		$value = str_replace($ft, $ec.$ft, $value);
 		$value = str_replace($rt, $ec.$rt, $value);
 		return($fw.$value.$fw.$ft);
 	  }
@@ -125,7 +168,20 @@
 				$filter_where = 'all';
 				break;
 			case 'selected':
-				$filter_where = ''; //todo
+				if(is_array($this->bo->mult_where_array))
+				{
+					$filter_where = '(';
+					foreach($this->bo->mult_where_array as $filter)
+					{
+						if($filter_where!='(') $filter_where .= ' OR ';
+						$filter_where .= "$filter";
+					}
+						$filter_where .= ')';
+				}
+				else
+				{
+					$filter_where = 'all';
+				}
 				break;
 			default:
 				$filter_where = 'all';
@@ -137,16 +193,23 @@
 			case 'select':
 				$columns_arr = $this->bo->common->filter_array_with_prefix($_POST,'col_');
 				break;
-			case 'all':
-				$columns_arr = 'all';
-				break;
 			default:
-				$columns_arr = 'all';
+				 $columns = $this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+				 if(is_array($columns))
+				 {
+					$columns_arr = array();
+					foreach($columns as $column)
+					{
+						$columns_arr[] = $column[name];
+					}
+				 }
 				break;
 		}
+
+//_debug_array($columns_arr);
 		
-		//get data
-		$data = $this->bo->so->get_data($this->bo->site_id, $this->bo->site_object['table_name'], $columns_arr, $filter_where);
+			//get data
+		$data = $this->bo->get_data($columns_arr, $filter_where);
 
 		header("Content-type: text");
 		$filename=ereg_replace(' ','_',$this->bo->site_object['name']).'.csv';
@@ -160,9 +223,20 @@
 		$ec = $_POST[escape_character];
 		
 			//todo: special case all other special character strings (\b etc..)
-		if($rt == '\n') 
+		switch($rt)
 		{
-			$rt = "\n";
+			case '\n':
+				$rt = "\n";
+				break;
+			case '\r\n':
+				$rt = "\r\n";
+				break;
+		}
+		switch($ft)
+		{
+			case '\t':
+				$ft = "\t";
+				break;
 		}
 
 		if($_POST[field_names_row] == 'true')
@@ -231,16 +305,28 @@
  		 $this->template->set_block('frm_export','columns','');
  		 $this->template->set_block('frm_export','second_block','');
 
-			//if we are here for the first time, or if we have reset the form, set some default values
-		 if($_POST[source] == '')
+			//if we are here for the first time, or if we have reset the profile form, set some default values
+		 if($_POST[field_names_row] == '')
 		 {
-			$_POST[source] = 'filtered';
-			$_POST[columns] = 'all';
 			$_POST[field_names_row] = 'true';
-			$_POST[field_terminator] = ';';
+			$_POST[field_terminator] = ',';
 			$_POST[field_wrapper] = '"';
 			$_POST[escape_character] = '\\';
 			$_POST[row_terminator] = '\n';
+		 }
+
+			//if we are here for the first time set the source default
+		 if($_POST[source] == '')
+		 {
+			$_POST[columns] = 'all';
+			if(is_array($this->bo->mult_where_array))
+			{
+				$_POST[source] = 'selected';
+			}
+			else
+			{
+				$_POST[source] = 'filtered';
+			}
 		 }
 		 
  		 /////////////////////////
@@ -260,6 +346,18 @@
 		 $this->template->set_var('source_1_checked','');
 		 $this->template->set_var('source_2_checked','');
 		 $this->template->set_var('source_3_checked','');
+		 
+		 $this->template->set_var('source_1_disabled','');
+		 $this->template->set_var('source_2_disabled','');
+		 if(is_array($this->bo->mult_where_array))
+		 {
+			$this->template->set_var('source_3_disabled','');
+		 }
+		 else
+		 {
+			$this->template->set_var('source_3_disabled','disabled');
+		 }
+		 
 		 switch($_POST[source])
 		 {
 			case 'filtered':
@@ -324,19 +422,22 @@
 		 $fields_arr=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
 		 foreach($fields_arr as $field)
 		 {
-			 if($_POST['col_'.$field[name]])
-			 {
-				$this->template->set_var('checked','checked');
-			 }
-			 else
-			 {
-				$this->template->set_var('checked','');
-			 }
-			 $this->template->set_var('column_label',$field[name]);
-			 $this->template->set_var('column',$field[name]);
-			 
-			 $this->template->parse('column','columns');	//parses the right argument block into the left argument variable ('fetch')
-			 $this->template->pparse('out','column'); 			//prints the right argument into the left argument buffer ('parse')
+			if($this->bo->field_is_enabled($this->bo->site_object[object_id], $field[name]))
+			{
+				 if($_POST['col_'.$field[name]])
+				 {
+					$this->template->set_var('checked','checked');
+				 }
+				 else
+				 {
+					$this->template->set_var('checked','');
+				 }
+				 $this->template->set_var('column_label',$field[name]);
+				 $this->template->set_var('column',$field[name]);
+				 
+				 $this->template->parse('column','columns');	//parses the right argument block into the left argument variable ('fetch')
+				 $this->template->pparse('out','column'); 			//prints the right argument into the left argument buffer ('parse')
+			}
 		 }
 		 
 		 
@@ -359,23 +460,30 @@
 		 
 	  }
 	  
+	  function formatOption($value, $display, $profile)
+	  {
+		if($profile == $value)
+		{
+			return '<option value="'.$value.'" selected>'.$display.'</option>';
+		}
+		else
+		{
+			return '<option value="'.$value.'">'.$display.'</option>';
+		}
+	  }
+	  
 	  function getProfiles()
 	  {
 		$result='';
 		$result .= '<option value=""></option>';
+		$result .= $this->formatOption('openoffice', lang('preset: Open Office Spreadsheet'), $_POST[load_profile]);
+		$result .= $this->formatOption('excel', lang('preset: MS Excel'), $_POST[load_profile]);
 		
 		if(is_array($this->profilestore))
 		{
 			foreach($this->profilestore as $name => $profile)
 			{
-				if($_POST[load_profile] == $name)
-				{
-					$result .= '<option value="'.$name.'" selected>'.$name.'</option>';
-				}
-				else
-				{
-					$result .= '<option value="'.$name.'">'.$name.'</option>';
-				}
+				$result .= $this->formatOption($name, $name, $_POST[load_profile]);
 			}
 		}
 		

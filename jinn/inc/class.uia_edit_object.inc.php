@@ -251,6 +251,18 @@
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
 			}
+			elseif($fieldproperties[name]=='unique_id') 				
+			{
+				if($value == '')
+				{
+					$uid = $this->bo->so->generate_unique_object_id();
+				}
+				else
+				{
+					$uid = $value;
+				}
+				$input='<input readonly type="text" name="'.$input_name.'" value="'.$uid.'"/>';
+			}
 			elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string')
 			{
 			   $input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';

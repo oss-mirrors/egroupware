@@ -152,8 +152,36 @@
 		
 			//$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
+
+			//backwards compatibility: check if unique id field is filled. If not: fill it now.
+		 if($this->site_object_id && $this->site_object[unique_id] == '')
+		 {
+			$status = $this->so->set_unique_id($this->site_object_id);
+			$this->site_object[unique_id] = $status[uid];
+		 }
 	  }
 
+	  
+	  /* 
+	  @function field_is_enabled
+	  @abstract this function asserts that the DisableField plugin is not in use on this field
+	  */
+	  function field_is_enabled($objectID, $fieldname)
+	  {
+		$field_conf_arr=$this->so->get_field_values($objectID,$fieldname);
+		if($this->site_object[plugins])
+		{
+		   $testvalue=$this->get_plugin_bv($fieldname,'x','',$fieldname);
+		}
+		else
+		{
+		   $testvalue=$this->plug->call_plugin_bv($fieldname,'x','',$field_conf_arr);
+		}
+
+		return ($testvalue != '__disabled__');
+		
+	  }
+	  
 		//todo: these functions must be moved to sojinn
 	  function cur_upload_path()
 	  {
@@ -195,6 +223,7 @@
 			$this->filter_settings[$obj_id] = $data;
 		}
 
+		
 	  function save_sessiondata()
 	  {
 		 $data = array(
@@ -207,7 +236,6 @@
 			'mult_records_amount'=>$this->mult_records_amount,
 			'last_where_string'=>$this->last_where_string
 		 );
-		 
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
 	  }
 
@@ -409,6 +437,11 @@
 			$this->mult_where_array=$this->set_multiple_where();
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.view_multiple_records');
+			break;
+			case 'export':
+			$this->mult_where_array=$this->set_multiple_where();
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiu_export.export');
 			break;
 			default:
 			$this->message[error]=lang('Operation on multiple records failed.');
@@ -754,6 +787,37 @@
 		 $this->common->exit_and_open_screen('jinn.uiuser.index');
 	  }
 
+	  function get_data($columns_arr, $filter_where)
+	  {
+			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
+			//partly implemented in bouser, partly in sojinn
+			
+		$site_id = $this->site_id;
+		$table_name = $this->site_object['table_name'];
+
+			//get 1-many relations and replace straight columns with relation definitions
+		$relation_array = $this->extract_O2M_relations($this->site_object['relations']);
+		foreach($columns_arr as $key => $column)
+		{
+			if(is_array($relation_array[$column]))
+			{
+				$columns_arr[$key] = $relation_array[$column];
+			}
+		}
+
+		$relation_array = $this->extract_M2M_relations($this->site_object['relations']);
+		if(is_array($relation_array))
+		{
+			foreach(array_values($relation_array) as $key => $relation)
+			{
+				$relation[name] = 'relation_'.($key+1);
+				$columns_arr[] = $relation;
+			}
+		}
+		
+		return $this->so->get_data($site_id, $table_name, $columns_arr, $filter_where);
+
+	  }
 
 	  // one-to-one relations
 	  function extract_O2O_relations($string)
@@ -1095,7 +1159,7 @@
 	  {
 
 		 $prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-		 $prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[object_id]);
+		 $prefs_show_hide_read=$this->read_preferences('show_fields'.$this->site_object[unique_id]);
 
 		 $show_fields_entry=$this->site_object[object_id];
 
@@ -1127,8 +1191,11 @@
 			$prefs_show_hide_new=$show_fields_entry;
 		 }
 
-		 $this->save_preferences('show_fields'.$this->site_object[object_id],$prefs_show_hide_new);
-		 $this->save_preferences('default_order'.$this->site_object[object_id],$prefs_order_new);
+		 $this->save_preferences('show_fields'.$this->site_object[unique_id],$prefs_show_hide_new);
+		 $this->save_preferences('default_order'.$this->site_object[unique_id],$prefs_order_new);
+			//the browse settings overrule the preferences, so kill them. Otherwise we will not see any results until we chamge the Object and return
+		 unset($this->browse_settings['orderby']);
+		 $this->save_sessiondata();
 
 		 $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 	  }

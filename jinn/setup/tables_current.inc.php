@@ -73,7 +73,8 @@
 				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'extra_where_sql_filter' => array('type' => 'text'),
-				'events_config' => array('type' => 'text')
+				'events_config' => array('type' => 'text'),
+				'unique_id' => array('type' => 'varchar','precision' => '13')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),

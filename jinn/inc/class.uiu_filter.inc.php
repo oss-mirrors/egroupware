@@ -42,45 +42,39 @@
 	  var $filterstore;
 	  var $sessionfilter;
 
-	  /**
-	  @function uiu_filter
-	  @abstract class contructor that set header and inits bo
-	  */
-	  function uiu_filter($bo=false)
+	  
+
+  	  function init_bo(&$bo)
 	  {
-		 if(!$bo)
-		 {
-			$this->bo = CreateObject('jinn.bouser');
-		 }
-		 else
-		 {
-			$this->bo = $bo;
-		 }
+		$this->bo = &$bo;
+	  }
+
+	  function uiu_filter()
+	  {
+		 $this->bo = CreateObject('jinn.bouser');
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
-
-		 // get all available filters from preferences and session
-		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
 		 
+		 // get all available filters from preferences and session
+		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object[unique_id]); 
+		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object[unique_id]);
+
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 		 }
 		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
 	  }
-
+	  
 	  function save_filterstore()
 	  {
-		$this->bo->save_preferences('filterstore'.$this->bo->site_object_id, $this->filterstore); 
+		$this->bo->save_preferences('filterstore'.$this->bo->site_object[unique_id], $this->filterstore); 
 	  }
 
 	  function save_sessionfilter()
 	  {
-		 $this->bo->save_session_filter($this->bo->site_object_id, $this->sessionfilter);
+		 $this->bo->save_session_filter($this->bo->site_object[unique_id], $this->sessionfilter);
 		 $this->bo->save_sessiondata();
-//_debug_array('was here');
-//_debug_array($this->sessionfilter);
 	  }
 	  
 	  /**
@@ -118,8 +112,6 @@
 	  
 	  function get_filter_where()
 	  {
-//_debug_array($this->sessionfilter);
-//_debug_array($_POST);
 	  // if not specified, get the current filter from the session, or specify empty
 		 if($_POST[filtername] == '')
 		 {
@@ -160,8 +152,6 @@
 		 $this->sessionfilter[selected] = $_POST[filtername];
 		 $this->save_sessionfilter();
 		 
-//_debug_array($this->sessionfilter);
-//_debug_array($_POST);
 		 return $filter_where;
 	  }
 

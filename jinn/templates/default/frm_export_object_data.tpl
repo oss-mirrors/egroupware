@@ -8,9 +8,9 @@
 		<td valign="top">
 			{export}<br/>
 			<br/>
-			<input type="radio" name="source" value="filtered" {source_1_checked}/>&nbsp;{source_1_label}<br/>
-			<input type="radio" name="source" value="unfiltered" {source_2_checked}/>&nbsp;{source_2_label}<br/>
-			<input type="radio" name="source" value="selected" {source_3_checked}/>&nbsp;{source_3_label}<br/>
+			<input {source_1_disabled} type="radio" name="source" value="filtered" {source_1_checked}/>&nbsp;{source_1_label}<br/>
+			<input {source_2_disabled} type="radio" name="source" value="unfiltered" {source_2_checked}/>&nbsp;{source_2_label}<br/>
+			<input {source_3_disabled} type="radio" name="source" value="selected" {source_3_checked}/>&nbsp;{source_3_label}<br/>
 			<br/>
 			<input type="submit" name="do_csv" value="{submit}"/>
 			<input type="button" value="{cancel}" onClick="history.back();"/>

@@ -218,7 +218,6 @@
 		 $this->phpgw_db->free();	
 
 		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object='$object_id' AND field_name='$field_name'";
-//		die($sql);
 		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
@@ -227,9 +226,7 @@
 			$field_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
 		 }
 
-//			_debug_array($field_values);
 		 return $field_values;
-
 	  }
 
 	  
@@ -882,13 +879,63 @@
 		 return $records;
 	  }
 
+	  function get_O2M_subselect($relation_info)
+	  {
+		$related_arr = explode(".", $relation_info[related_with]);
+		$related_table = $related_arr[0];
+
+		$subselect = '';
+		$subselect .= "(SELECT CONCAT_WS(' ', $relation_info[display_field]";
+		if($relation_info[display_field_2] != '') $subselect .= ", $relation_info[display_field_2]";
+		if($relation_info[display_field_3] != '') $subselect .= ", $relation_info[display_field_3]";
+		$subselect .= ") FROM $related_table";
+		$subselect .= " WHERE $relation_info[related_with] = $relation_info[org_field]";
+		$subselect .= ") AS $relation_info[org_field]";
+		return $subselect;
+	  }
+
+	  function get_M2M_subselect($relation_info, $site_id, $table)
+	  {
+			//first get the identity column
+		 $fields = $this->site_table_metadata($site_id,$table);
+		 foreach ( $fields as $fprops )
+		 {
+			if (eregi("primary_key", $fprops[flags]) || eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
+			{
+				$id_field = $table.'.'.$fprops[name];
+				break;
+			}
+		 }
+
+		if($id_field)
+		{
+			$subselect = '';
+			$subselect .= "(SELECT GROUP_CONCAT(CONCAT_WS(' ', $relation_info[display_field]";
+			if($relation_info[display_field_2] != '') $subselect .= ", $relation_info[display_field_2]";
+			if($relation_info[display_field_3] != '') $subselect .= ", $relation_info[display_field_3]";
+			$subselect .= ") SEPARATOR ';')";
+			$subselect .= " FROM $relation_info[via_table], $relation_info[display_table]";
+			$subselect .= " WHERE $relation_info[via_primary_key] = $id_field";
+			$subselect .= " AND $relation_info[via_foreign_key] = $relation_info[foreign_key]";
+			$subselect .= ") AS $relation_info[name]";
+			return $subselect;
+		}
+		else
+		{
+			return '';
+		}
+	  }
 	  
 		function get_data($site_id, $table, $columns_arr, $filter_where)
 		{
 			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
-			
+			//partly implemented in bouser, partly in sojinn
+//_debug_array($filter_where);	
+//_debug_array($columns_arr);	
+
+
 			//select
-			if($columns_arr=='all')
+			if($columns_arr == 'all' || $columns_arr == '*')
 			{
 				$select = 'SELECT *';
 			}
@@ -898,7 +945,24 @@
 				foreach($columns_arr as $col)
 				{
 					if($select!='SELECT ') $select .= ', ';
-					$select .= "`$col`";
+					if(is_array($col))
+					{
+						switch($col[type])
+						{
+							case 1: //one to many
+								$select .= $this->get_O2M_subselect($col);
+								break;
+							case 2: //many to many
+								$select .= $this->get_M2M_subselect($col, $site_id, $table);
+								break;
+							default:
+								break;
+						}
+					}
+					else
+					{
+						$select .= "`$col`";
+					}
 				}
 			}
 			
@@ -1255,6 +1319,40 @@
 		 return  $this->update_object_record($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string);
 	  }
 
+  	  /**
+	  @function generate_unique_object_id  
+	  @abstract returns a 13 character unique id used as an object identifier for saving preferences
+	  */
+	  function generate_unique_object_id()
+	  {
+		return uniqid('');
+	  }
+
+  	  /**
+	  @function set_unique_id  
+	  @abstract set the unique_id field of the specified Object to a unique value
+	  */
+	  function set_unique_id($object_id)
+	  {
+		$uid = $this->generate_unique_object_id();
+		
+		$SQL = "UPDATE egw_jinn_objects SET unique_id = '$uid' WHERE object_id = $object_id";
+		$result = $this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+		if($result)
+		{
+			$status[ret_code]=0;
+			$status[status]=1;
+		}
+		else
+		{
+			$status[ret_code]=1;
+		}
+		$status[uid]=$uid;
+		$status[sql]=$SQL;
+		return $status;
+	  }
+	  
 	  /*!
 	  @function update_object_record  
 	  @abstract update record data

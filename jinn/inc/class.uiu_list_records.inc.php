@@ -35,7 +35,7 @@
 	  var $bo;
 	  var $ui;
 	  var $template;
-	  var $filter;
+	  var $filtermanager;
 
 	  function uiu_list_records()
 	  {
@@ -45,7 +45,8 @@
 
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
 
-		 $this->filter = CreateObject('jinn.uiu_filter', $this->bo);
+		 $this->filtermanager = CreateObject('jinn.uiu_filter');
+		 $this->filtermanager->init_bo(&$this->bo);
 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
@@ -287,8 +288,8 @@
 		 $this->template->set_block('list_records','emptyfooter','emptyfooter');
 		 $this->template->set_block('list_records','footer','footer');
 
-		 $show_fields_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object_id); 
-		 $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object_id);
+		 $show_fields_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object[unique_id]); 
+		 $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object[unique_id]);
 		 $default_col_num=$this->bo->read_preferences('default_col_num');
 
 		 $current_page = 
@@ -304,8 +305,8 @@
 		 if(!$orderby && $default_order) $orderby=$default_order;
 
 			//the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
-		 $filter_where = $this->filter->get_filter_where();
-		 $this->template->set_var('filter_list',$this->filter->format_filter_options($_POST[filtername]));
+		 $filter_where = $this->filtermanager->get_filter_where();
+		 $this->template->set_var('filter_list',$this->filtermanager->format_filter_options($_POST[filtername]));
 		 
 		 $this->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
 		 $this->template->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
@@ -503,17 +504,7 @@
 			}
 
 
-			//--- this is a special hack for the hide-this-field-plugin ----//
-			if($this->bo->site_object[plugins])
-			{
-			   $testvalue=$this->bo->get_plugin_bv($col[name],'x',$where_string,$col[name]);
-			}
-			else
-			{
-			   $testvalue=$this->bo->plug->call_plugin_bv($col[name],'x',$where_string,$field_conf_arr);
-			}
-
-			if($testvalue=='__disabled__')
+			if(!$this->bo->field_is_enabled($this->bo->site_object[object_id], $col[name]))
 			{
 			   continue ;
 			}
@@ -717,6 +708,8 @@
 		 $this->template->set_var('colfield_edit_link_sel','');
 		 $this->template->set_var('colfield_lang_delete_sel',lang('delete all selected records'));
 		 $this->template->set_var('colfield_delete_link_sel','');
+		 $this->template->set_var('colfield_lang_export_sel',lang('export all selected records'));
+		 $this->template->set_var('colfield_export_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','filesave'));
 
 		 if($record_count>0)
 		 {
@@ -729,10 +722,7 @@
 			$this->template->pparse('out','emptyfooter');
 		 }
 
-		 //			unset($this->message);
-
-		 //			unset($this->bo->message);
-		 $this->bo->save_sessiondata();
+		$this->bo->save_sessiondata();
 	  }
 
 

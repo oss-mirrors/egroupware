@@ -6,6 +6,22 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+
+Version 0.8.212
+===========================
+Wed Mar 02 16:15:00 CET 2005
+- fixed bug in record filter where selected filter was not remembered
+- finished implementation of object data CSV export
+- finished implementation of new, fast and generic data retrieval function
+- added unique_id field to jinn_object table
+- now uses unique_id field to save preferences
+- fixed bug where sortorder change in list configuration seemed to have no effect
+
+Version 0.8.211
+===========================
+Tue Mar 01 13:30:00 CET 2005
+- faulty database change only. no cvs commit done
+
 Version 0.8.210j
 ===========================
 Fri Feb 25 13:15:00 CET 2005
@@ -13,8 +29,7 @@ Fri Feb 25 13:15:00 CET 2005
 - refactored filter code in uiu_list_records
 - refactored uiu_filter class
 - started implementation of object data CSV export
-- started implementation of new, fast and generic data retrieval function in sojinn class
-
+- started implementation of new, fast and generic data retrieval function
 
 Version 0.8.210i
 ===========================
@@ -37,7 +52,6 @@ Thu Feb 17 15:45:00 CET 2005
 - started implementation of Image Browse Server plugin
 - fixed bug: list filter sessionvariables got lost when switching from user to admin and vice versa
 - fixed bug in column filters List Records where selected filter was forgotten
-
 
 Version 0.8.210f
 ===========================
