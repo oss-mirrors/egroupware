@@ -918,9 +918,11 @@
 
 			$counter = 0;
 
+			$folderImageDir = substr($GLOBALS['phpgw']->common->image('phpgwapi','foldertree_line.gif'),0,-19);
+			
 			// careful! "d = new..." MUST be on a new line!!!
 			$folder_tree_new = "<script type='text/javascript'><!--	
-			d = new dTree('d','".PHPGW_IMAGES_DIR."');";
+			d = new dTree('d','".$folderImageDir."');";
 			
 			
 			while(list($key,$value) = @each($folders))
@@ -950,7 +952,7 @@
 				}
 
 				$folder_title = str_replace(".","",$value);
-				$folder_icon = PHPGW_IMAGES_DIR."/foldertree/folder.gif";
+				$folder_icon = $folderImageDir."/foldertree_folder.gif";
 
 				if($counter==0)
 				{
