@@ -38,6 +38,7 @@
 	var $mailsvr_delimiter = '';
 	// these are the supported menuaction strings
 	var $index_menuaction = 'menuaction=email.uiindex.index';
+	var $mlist_menuaction = 'menuaction=email.uiindex.mlist';
 	// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 	var $index_refresh_uri ='';
 	// pointer to the primary mailbox stream (you may open others) returned by the first login 

@@ -43,7 +43,8 @@
 	define ('TYPEAUDIO',4);
 	define ('TYPEIMAGE',5);
 	define ('TYPEVIDEO',6);
-	define ('TYPEOTHER',7);
+	// what is defined as 7 ? , not typemodel
+	define ('TYPEOTHER',8);
 	//  define ('TYPEMODEL',
 	define ('ENC7BIT',0);
 	define ('ENC8BIT',1);
@@ -51,16 +52,18 @@
 	define ('ENCBASE64',3);
 	define ('ENCQUOTEDPRINTABLE',4);
 	define ('ENCOTHER',5);
+	//  ENCUU not defined in php 4, but we may use it
 	define ('ENCUU',6);
 	
-	define ('FT_UID',0);	// the msgnum is a UID
-	define ('FT_PEEK',1);	// do not set the \Seen flag if not already set
-	define ('FT_INTERNAL',2); // server will not attempt to standardize CRLFs
-	define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
-	define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
+	define ('FT_UID',1);	// the msgnum is a UID
+	define ('FT_PEEK',2);	// do not set the \Seen flag if not already set
+	define ('FT_NOT',4);	// do not fetch header lines (with IMAP_BODY)
+	define ('FT_INTERNAL',8); // server will not attempt to standardize CRLFs
+	define ('FT_PREFETCHTEXT',16); // grab the header AND its associated RFC822.TEXT
   
 	define ('SE_UID',1); // used with IMAP_SORT, IMAP_SEARCH,
-	define ('SE_NOPREFETCH',2); // used with IMAP_SORT , don't really understand it though
+	define ('SE_FREE',2); // Return the search program to free storage after finishing NOT used by PHP
+	define ('SE_NOPREFETCH',4); // used with IMAP_SORT , don't really understand it though
 		//SE_UID	Return UIDs instead of sequence numbers
 		//SE_NOPREFETCH	Don't prefetch searched messages.
 	

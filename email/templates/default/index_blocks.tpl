@@ -29,6 +29,8 @@ function do_navigate(act)
 		<input type="hidden" name="order" value="{current_order}">
 		<!-- bogus initial start value, will be changed by on click call -->
 		<input type="hidden" name="start" value="0">
+		<!-- preserve search results here -->
+		{mlist_hidden_vars}
 		<table border="0" bgcolor="{arrows_td_backcolor}" cellspacing="0" cellpadding="0">
 		<tr>
 			<td align="left">
@@ -68,5 +70,46 @@ function do_navigate(act)
 </tr>
 </table>
 <!-- END B_arrows_form_table -->
+
+&nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
+
+<!-- BEGIN B_mlist_block -->
+<tr>
+	<td bgcolor="{mlist_backcolor}" align="center">
+	<!-- INIT FORM ONCE -->{V_mlist_form_init}
+		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		{mlist_attach}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="left">
+		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}">{mlist_from} {mlist_from_extra}</font>{close_newbold}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="left">
+		{open_newbold}<font size="{mlist_font_size}" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>{close_newbold}
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		<font size="{mlist_font_size}" face="{mlist_font}">{mlist_date}</font>
+	</td>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		<font size="{mlist_font_size_sm}" face="{mlist_font}">{mlist_size}</font>
+	</td>
+</tr>
+<!-- END B_mlist_block -->
+
+&nbsp;	<!-- &nbsp; Lame Seperator &nbsp; --> &nbsp;
+
+<!-- BEGIN B_mlist_submit_form -->
+<p>
+<FORM action="{mlist_submit_form_action}" method="post">
+	{mlist_hidden_vars}
+	Pass off to mlist class 
+	<input type="submit" name="submit" value="Submit to mlist">
+	to navigate all results.
+
+</form>
+</p>
+<!-- END B_mlist_submit_form -->
+
 
 <!-- end index_plocks.tpl -->

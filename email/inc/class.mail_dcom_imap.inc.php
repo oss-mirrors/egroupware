@@ -152,7 +152,7 @@
 			return str_replace("=\n",'',$str);
 		}
 
-		function reopen($stream,$mailbox,$flags = '')
+		function reopen($stream,$mailbox,$flags='')
 		{
 			$mailbox = $this->utf7_encode($mailbox);
 			return imap_reopen($stream,$mailbox,$flags);
@@ -164,6 +164,11 @@
 			return imap_last_error();
 		}
 
+		function i_search($stream,$criteria,$flags='')
+		{
+			return imap_search($stream,$criteria,$flags);
+		}
+		
 		function sort($stream,$criteria,$reverse='',$options='')
 		{
 			return imap_sort($stream,$criteria,$reverse,$options);

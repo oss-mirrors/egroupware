@@ -840,6 +840,13 @@ class mail_msg_wrappers extends mail_msg_base
 		{
 			$this->args['force_showsize'] = $GLOBALS['HTTP_GET_VARS']['force_showsize'];
 		}
+		
+		// === SEARCH RESULT MESSAGE SET ===
+		if (isset($GLOBALS['HTTP_POST_VARS']['mlist_set']))
+		{
+			$this->args['mlist_set'] = $GLOBALS['HTTP_POST_VARS']['mlist_set'];
+		}
+		
 
 		// ----  UN-INITIALIZE HTTP_POST_VARS and HTTP_GET_VARS ARRAY  -------
 		// we've stored every *known / Expected* GPC HTTP_POST_VARS and/or HTTP_GET_VARS
