@@ -27,6 +27,25 @@ function submitForm() {
    document.frm.submit();
 }
 
+
+function doCheckAll(chbx)
+{
+   for (i=0; i<document.frm.elements.length; i++)
+   {
+	  if (document.frm.elements[i].type == "checkbox" && document.frm.elements[i].name != chbx.name)
+	  {
+		 if (document.frm.elements[i].checked)
+		 {
+			document.frm.elements[i].checked = false;
+		 }
+		 else
+		 {
+			document.frm.elements[i].checked = true;
+		 }
+	  }
+   }
+}
+
 function saveOptions(obj,hidden_fld) { //v1.0
    //alert('hallo');
    var boxLength = document.frm[obj].length;
@@ -48,8 +67,6 @@ function saveOptions(obj,hidden_fld) { //v1.0
    }
 
    if (strValues)  document.frm[hidden_fld].value=strValues;
-
-   //document.frm[hidden_fld].value=strValues;
 }
 
 function selectAll(cbList,bSelect) {

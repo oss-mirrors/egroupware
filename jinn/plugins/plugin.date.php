@@ -30,7 +30,7 @@
 
 	$this->plugins['date']['name']				= 'date';
 	$this->plugins['date']['title']				= 'Date plugin';
-	$this->plugins['date']['version']			= '0.1.1';
+	$this->plugins['date']['version']			= '0.1.2';
 	$this->plugins['date']['author']			= 'Pim Snel';
 	$this->plugins['date']['description']		= 'create date input box and date storage method, (At this time Dutch only)';
 	$this->plugins['date']['enable']			= 1;
@@ -39,7 +39,7 @@
 	function plg_fi_date($field_name,$value,$config,$attr_arr)
 	{	
 		global $local_bo;
-		$field_name=substr($field_name,3);	
+		$stripped_name=substr($field_name,6);	
 	
 		$months_arr[0]='';
 		$months_arr[1]='januari';
@@ -106,7 +106,7 @@
 		
 		$input.='</select>';
 		
-		$input.='<input type="hidden" name="FLD'.$field_name.'" value="">';
+		$input.='<input type="hidden" name="'.$field_name.'" value="">';
 		//die(var_dump($input));
 		return $input;
 	}
@@ -120,7 +120,7 @@
 
 		$HTTP_POST_VARS[$field_name]==$new_date;
 
-//		die(var_dump($dates));
+		//die(_debug_array($dates));
 		if($new_date) return $new_date;
 		return '-1'; /* return -1 when there no value to give but the function finished succesfully */
 	}

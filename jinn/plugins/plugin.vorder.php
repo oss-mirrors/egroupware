@@ -31,7 +31,7 @@
    $this->plugins['vorder']['name']				= 'vorder';
    $this->plugins['vorder']['title']			= 'Visual Ordering plugin';
    $this->plugins['vorder']['author']			= 'Pim Snel';
-   $this->plugins['vorder']['version']			= '0.1.0';
+   $this->plugins['vorder']['version']			= '0.1.2';
    $this->plugins['vorder']['enable']			= 1;
 
    $this->plugins['vorder']['description']		= '
@@ -58,12 +58,12 @@
 
 	   $table = $local_bo->site_object[table_name];
 
-	   $field_name= substr($field_name,3);
+	   $stripped_name= substr($field_name,6);
 
-	   $SQL="SELECT * FROM `$table` ORDER BY `$field_name` DESC LIMIT 1";
+	   $SQL="SELECT * FROM `$table` ORDER BY `$stripped_name` DESC LIMIT 1";
 	   $local_bo->so->site_db->query($SQL,__LINE__,__FILE__);
 	   $local_bo->so->site_db->next_record();
-	   $newval = $local_bo->so->site_db->f($field_name)+1;
+	   $newval = $local_bo->so->site_db->f($stripped_name)+1;
 
 	   return $newval;
 	}
@@ -112,7 +112,7 @@
 	  
 	  $display.=' <a href="'.$baselink.'&plg=vorder&attributes='.$enc_attributes_last.'&where='.$where_val_enc.'" title="'.lang('move to last position').'">'.$last_image.'</a>';
 
-	  return $display;
+	  return $display . "&nbsp;&nbsp;($value)";
    }
 
    // debut of the AUTONOME FORM ACTION PLUGIN !!! WHOOPIE

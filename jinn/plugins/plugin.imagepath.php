@@ -31,7 +31,7 @@
    $this->plugins['imagepath']['name']				= 'imagepath';
    $this->plugins['imagepath']['title']				= 'ImagePath plugin';
    $this->plugins['imagepath']['author']			= 'Pim Snel';
-   $this->plugins['imagepath']['version']			= '0.9.3';
+   $this->plugins['imagepath']['version']			= '0.9.4';
    $this->plugins['imagepath']['enable']			= 1;
 
    $this->plugins['imagepath']['description']		= '
@@ -67,7 +67,7 @@
    {	
 	  global $local_bo;
 
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
@@ -256,7 +256,7 @@
 				  $input.='</td></tr>';			
 		 }
 		 $input.='</table>';
-	  $input.='<input type="hidden" name="FLD'.$field_name.'" value="">';
+	  $input.='<input type="hidden" name="'.$field_name.'" value="">';
 	  return $input;
    }
 
@@ -304,7 +304,8 @@
 			if (!@unlink($upload_path.'/'.$thumb_to_delete)) $unlink_error++;
 		 }
 
-		 $images_org=explode(';',$HTTP_POST_VARS['IMG_ORG'.substr($field_name,3)]);
+		 $images_org=explode(';',$HTTP_POST_VARS['IMG_ORG'.$field_name]);
+   
 
 		 foreach($images_org as $image_org)
 		 {
@@ -317,7 +318,7 @@
 	  }
 	  else
 	  {
-		 $image_path_new.=$HTTP_POST_VARS['IMG_ORG'.substr($field_name,3)];
+		 $image_path_new.=$HTTP_POST_VARS['IMG_ORG'.$field_name];
 	  }
 
 	  /* make array again of the original images*/
@@ -325,11 +326,12 @@
 	  unset($image_path_new);
 
 	  /* finally adding new image and if neccesary a new thumb */
-	  $images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.substr($field_name,3));
+	  $images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.$field_name);
 
+	  //_debug_array($images_to_add);
 
-	  $images_to_add_hei=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.substr($field_name,3));
-	  $images_to_add_wid=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.substr($field_name,3));
+	  $images_to_add_hei=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.$field_name);
+	  $images_to_add_wid=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.$field_name);
 
 	  // quick check for new images
 	  if(is_array($images_to_add))
@@ -480,7 +482,7 @@
    {
 
 	  global $local_bo;
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
@@ -595,7 +597,7 @@
    {
 
 	  global $local_bo;
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {

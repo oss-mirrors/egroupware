@@ -125,7 +125,7 @@
 			'bg_color' => $GLOBALS['phpgw_info']['theme']['bg_color'],
 			'th_bg'    => $GLOBALS['phpgw_info']['theme']['th_bg'],
 			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
-			'lang_user_accounts' => lang("editors for object $object_name in site $site_name"),
+			'lang_user_accounts' => lang("editors for object %1 in site %2",$object_name,$site_name),
 			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
 			'lang_loginid'       => $this->nextmatchs->show_sort_order($sort,'account_lid',$order,$url,lang('LoginID')),
 			'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),

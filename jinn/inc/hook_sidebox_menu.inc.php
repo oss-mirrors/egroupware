@@ -24,8 +24,14 @@
 				'text'=>'Add new entry',
 				'icon'=>'new',
 				'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form')
-				)
-		     );
+			 ),
+			 
+			 'Add multiple records' => array(
+				'text'=>'Add multiple records',
+				'icon'=>'new',
+				'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.multiple_entries')
+			 )
+		  );
 
 
 	if($GLOBALS[uiuser]->bo->site[website_url])

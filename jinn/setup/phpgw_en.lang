@@ -14,6 +14,7 @@ add attachment %1	jinn	en	add attachment %1
 add edit	jinn	en	Add Edit
 add image	jinn	en	add image
 add image %1	jinn	en	add image %1
+add multiple records	jinn	en	Add multiple records
 add new	jinn	en	Add new
 add new entry	jinn	en	Add new entry
 add new many with many relation	jinn	en	Add new MANY WITH MANY relation
@@ -67,6 +68,12 @@ default order	jinn	en	default order
 default thumb width	admin	en	Default thumb width
 default:	jinn	en	default:
 delete	jinn	en	Delete
+dev site db host	jinn	en	Development (Test) site database hostname
+dev site db name	jinn	en	Development (Test) site database name
+dev site db password	jinn	en	Development (Test) site database password
+dev site db type	jinn	en	Development (Test) site database type
+dev site db user	jinn	en	Development (Test) site database username
+dev upload path	jinn	en	Development (Test) site upload path
 developer links	jinn	en	Developer Links
 development	admin	en	Development
 development server	jinn	en	Development Server
@@ -76,6 +83,7 @@ edit jinn site object parameters: <li>select a jinn object name for display</li>
 edit this site	jinn	en	Edit this Site
 edit this site object	jinn	en	Edit this Site Object
 editors for object $object_name in site $site_name	jinn	en	editors for object $object_name in site $site_name
+editors for object %1 in site %2	jinn	en	editors for object %1 in site %2
 error path_open %1	jinn	en	error path_open %1
 export this site	jinn	en	export this site
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	en	Failed to open table. Please check if table <i>%1</i> still exists in database
@@ -107,6 +115,7 @@ insert/select jinn site object parameters: <li>select a jinn object name for dis
 jinn	common	en	JiNN
 jinn editors menu	jinn	en	JiNN Editors Menu
 jinn preferences	jinn	en	JiNN Preferences
+max records	jinn	en	Max. records
 max. number of previews in form	jinn	en	Max. number of previews in form
 maximum image width isn	jinn	en	maximum image width isn
 maximum image width isn\	jinn	en	maximum image width isn
@@ -117,10 +126,13 @@ new image size limits.	jinn	en	New image size limits.
 no matchs found	jinn	en	No matchs found
 no max. number	jinn	en	No max. number
 normal view	jinn	en	Normal View
+object id	jinn	en	Object id
 only if thumnails exits	jinn	en	Only if thumnails exits
+parent site id	jinn	en	Parent site id
 path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	en	Path to convert from ImageMagick ( e.g. /usr/X11R6/bin )
 please set your preferences for this application	jinn	en	Please set your preferences for this application
 preview thumbs or images in form	jinn	en	Preview thumbs or images in form
+preview website	jinn	en	Preview Website
 production	admin	en	Production
 real value	jinn	en	real value
 record	jinn	en	record
@@ -148,9 +160,10 @@ select site	jinn	en	select site
 select site to moderate	jinn	en	Select site to moderate
 select site-object to moderate	jinn	en	Select site-object to moderate
 select_object	jinn	en	Select object
+serialnumber	jinn	en	Object serialnumber
 server type?	admin	en	Server Type?
 set access right for site objects	jinn	en	Set Access Right for Site Objects
-set access rights	admin	en	Set access rights
+set access rights	jinn	en	Set Access Rights
 set access rights for sites	jinn	en	Set Access Rights for Sites
 set administrators for	jinn	en	Set administrators for
 set object moderator	jinn	en	set object moderator
@@ -160,15 +173,15 @@ show all columns	jinn	en	Show all columns
 show colomn	jinn	en	show colomn
 show upload path	admin	en	Show upload path
 site beheerders	jinn	en	Site Administrators
-site db host	admin	en	Site datebase host
-site db name	admin	en	Site database name
-site db password	admin	en	Site database password
-site db type	admin	en	Site database type
-site db user	admin	en	Site database user
+site db host	jinn	en	Site database hostname
+site db name	jinn	en	Site database name
+site db password	jinn	en	Site database password
+site db type	jinn	en	Site database type
+site db user	jinn	en	Site database username
 site description	admin	en	Site description
-site id	admin	en	Site id
+site id	jinn	en	Site id
 site media and documents	jinn	en	Site Media and Documents
-site name	admin	en	Site name
+site name	jinn	en	Site name
 site not succesfully added, unknown error	jinn	en	Site NOT succesfully added, unknown error
 site not succesfully deleted, unknown error	jinn	en	Site NOT succesfully deleted, Unknown error
 site not succesfully saved, unknown error	jinn	en	Site NOT succesfully saved, unknown error
@@ -189,6 +202,7 @@ start at record	jinn	en	start at record
 stop at record	jinn	en	stop at record
 submit and import	jinn	en	submit and import
 t/m	jinn	en	t/m
+table name	jinn	en	Table name
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	en	Tablename <i>%1</i> is not correct. Probably the tablename has changed or or the table is deleted. Please select a new table or delete this object
 test database access	jinn	en	test database access
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	en	The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN.
@@ -199,10 +213,11 @@ there are no directories in this site you have access to.	jinn	en	There are no d
 thisfile	jinn	en	thisfile
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	thumb directory does not exist or is not correct ...<br>please check object's upload dir
 thumbnail	jinn	en	thumbnail
+upload path	jinn	en	Upload path
 version	jinn	en	version
+website url	jinn	en	Website url for previewing
 when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	en	When a lot of images are attached to a record, the form can load very slow. You can set a maximum number of images that is show in the form.
 when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	en	When you choose 'Never', only links to the images are displayed; when you choose 'Only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'Yes' all images are shown
 width:	jinn	en	Width:
 with_checked_files	jinn	en	with_checked_files
 you're not allowed to administrate media files	jinn	en	You're not allowed to administrate media files
-Preview Website	jinn	en	Preview Website

@@ -25,7 +25,7 @@
    $this->plugins['timestamp']['name']				= 'timestamp';
    $this->plugins['timestamp']['title']				= 'Timestamp plugin';
    $this->plugins['timestamp']['author']			= 'Pim Snel';
-   $this->plugins['timestamp']['version']			= '0.2.1';
+   $this->plugins['timestamp']['version']			= '0.2.2';
    $this->plugins['timestamp']['description']		= 'Make the user choose for a new stamp of saving the exiting stamp';
    $this->plugins['timestamp']['enable']			= 1;
    $this->plugins['timestamp']['db_field_hooks']	= array('timestamp');
@@ -41,11 +41,11 @@
    {	
 
 	  global $local_bo;
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  if($config[Default_action]=='Leave value untouched')
 	  {	   
-		 $input='<input type="hidden" name="FLD'.$field_name.'" value="'.$value.'" />';
+		 $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'" />';
 		 $input.=$local_bo->common->format_date($value);
 	  }
 	  else

@@ -24,9 +24,9 @@
 
    $this->plugins['unserialize']['name']				= 'unserialize';
    $this->plugins['unserialize']['title']				= 'unserialize plugin';
-   $this->plugins['unserialize']['version']			= '0.1.1';
+   $this->plugins['unserialize']['version']			= '0.1.2';
    $this->plugins['unserialize']['author']			= 'Pim Snel';
-	$this->plugins['unserialize']['author']		= 'Pim Snel';
+   $this->plugins['unserialize']['author']		= 'Pim Snel';
    $this->plugins['unserialize']['description']		= 'De-serialize a value';
    $this->plugins['unserialize']['enable']			= 1;
    $this->plugins['unserialize']['db_field_hooks']	= array('longtext','text','blob','varchar','string');
@@ -36,7 +36,7 @@
    // serialize back again?
    function plg_fi_unserialize($field_name,$value,$config,$attr_arr)
    {	
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  $input=unserialize($value);
 	  if(is_array($input)) $input=var_export($input,true);

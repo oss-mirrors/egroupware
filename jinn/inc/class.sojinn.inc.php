@@ -734,8 +734,6 @@
 			   $order_by_new=$order_by;
 			}
 
-
-			
 			$ORDER_BY = ' ORDER BY `'.$table.'`.`'.$order_by_new.'` '.$order_direction;
 		 }
 
@@ -744,7 +742,7 @@
 		 $fieldproperties = $this->site_table_metadata($site_id,$table);
 		 $field_list_arr=(explode(',',$field_list));
 		 $SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
-//		die ($SQL);
+		 //die ($SQL);
 		 if (!$limit) $limit=1000000;
 
 		 $this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 
@@ -805,6 +803,50 @@
 
 		 return $status;
 
+	  }
+	  
+	  function check_auto_incr($site_id,$table)
+	  {
+		 $meta=$this->site_table_metadata($site_id,$table);
+
+		 foreach($meta as $field)
+		 {
+			if($field['auto_increment'] =='1') 
+			{
+			   return $field['name'];
+			}
+		 }
+	  }
+
+	  function copy_record($site_id,$table,$where_string,$autokey)
+	  {
+		 $values_record = $this->get_record_values($site_id,$table,'','','','','name','','*',$where_string);
+
+		 while(list($key, $val) = each($values_record[0])) 
+		 {
+			if($key==$autokey) continue;
+
+			if ($SQLfields) $SQLfields .= ',';
+			if ($SQLvalues) $SQLvalues .= ',';
+
+			$SQLfields .= '`'.$key.'`';
+			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($val)."'"; // FIX THIS magic kut quotes
+
+		 }
+
+		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+//		 die($SQL);
+
+		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
+		 {
+			$value[status]=1;
+			$value[id]=$this->site_db->get_last_insert_id($table, $autokey);
+
+			if($autokey) $where_string= $autokey.'=\''.$value[id].'\'';
+
+			$value[where_string]=$where_string;
+		 }
+		 return $value;
 	  }
 	  
 	  function insert_object_data($site_id,$site_object,$data)
@@ -954,22 +996,22 @@
 		 $status=True;
 		 $i=1;
 
-		 while (isset($data['MANY_REL_STR_'.$i]))
+		 while (isset($data['M2MRXX'.$i]))
 		 {
-			list($via_primary_key,$via_foreign_key) = explode("|",$data['MANY_REL_STR_'.$i]);
+			list($via_primary_key,$via_foreign_key) = explode("|",$data['M2MRXX'.$i]);
 			list($table,) = explode(".",$via_primary_key);
 
-			$SQL="DELETE FROM $table WHERE $via_primary_key='$data[FLDid]'";
+			$SQL="DELETE FROM $table WHERE $via_primary_key='$data[FLDXXXid]'";
 
 			if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 			   $status=-1;
 			}
 
-			$related_data=explode(",",$data['MANY_OPT_STR_'.$i]);
+			$related_data=explode(",",$data['M2MOXX'.$i]);
 			foreach($related_data as $option)
 			{
-			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDid]', '$option')";
+			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDXXXid]', '$option')";
 //			   die($SQL);
 			   if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			   {

@@ -34,6 +34,9 @@
 		'longtext',
 		'text',
 		'blob',
+		'varchar',
+		'char',
+		'string'
 	 );
 
 	 $this->plugins['def_blob']['config']		= array
@@ -56,7 +59,7 @@
 	$this->plugins['def_string']['name'] 			= 'def_string';
 	$this->plugins['def_string']['title']			= 'default varchar';
 	$this->plugins['def_string']['author']		= 'Pim Snel';
-	$this->plugins['def_string']['version']		= '1.0';
+	$this->plugins['def_string']['version']		= '1.1';
 	$this->plugins['def_string']['enable']			= 1;
 	$this->plugins['def_string']['db_field_hooks']	= array
 	(
@@ -75,10 +78,9 @@
 		  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
 	   }
 
-	   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.$value.'">';
+	   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.strip_tags($value).'">';
 
 		return $input;
-
 	}	
 
 	/* DEFAULT/FALLBACK INTEGER PLUGIN */

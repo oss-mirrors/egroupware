@@ -1,5 +1,5 @@
 <!-- javascript file -->
-<SCRIPT language=JavaScript src="jinn/js/jinn/display_func.js" type=text/javascript></script>
+<script language=JavaScript src="jinn/js/jinn/display_func.js" type=text/javascript></script>
 <!-- javascript file -->
 
 <!-- app title -->

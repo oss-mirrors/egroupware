@@ -27,12 +27,12 @@
    plugins for JiNN. 
    */
 
-   $this->plugins['attachpath']['name']			= 'attachpath';
-   $this->plugins['attachpath']['title']		= 'AttachmentPath plugin';
-   $this->plugins['attachpath']['version']		= '0.8.5';
+   $this->plugins['attachpath']['name']				= 'attachpath';
+   $this->plugins['attachpath']['title']			= 'AttachmentPath plugin';
+   $this->plugins['attachpath']['version']			= '0.8.7';
    $this->plugins['attachpath']['author']			= 'Pim Snel';
-   $this->plugins['attachpath']['enable']		= 1;
-   $this->plugins['attachpath']['db_field_hooks']= array
+   $this->plugins['attachpath']['enable']			= 1;
+   $this->plugins['attachpath']['db_field_hooks']	= array
    (
 	  'text',
 	  'longtext',
@@ -48,7 +48,8 @@
    (
 	  'Max_files' => array('3','text','maxlength=2 size=2'), 
 	  'Max_attachment_size_in_megabytes_Leave_empty_to_have_no_limit' => array('','text','maxlength=3 size=3'),
-	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30') 
+	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
+	  'Activate_manual_path_input' => array( array('False','True'),'select','')
    );
 
    function plg_fi_attachpath($field_name,$value,$config,$attr_arr)
@@ -101,7 +102,7 @@
 
 
 
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  /* if value is set, show existing files */	
 	  if($value)
@@ -131,7 +132,7 @@
 		 /* there's just one image */
 		 else
 		 {
-			$input=$att_path.'<input type="checkbox" value="'.$att_path.'" name="ATT_DEL'.$fieldname.'"> '.lang('remove').'<br>';
+			$input=$att_path.'<input type="checkbox" value="'.$att_path.'" name="ATT_DEL'.$field_name.'"> '.lang('remove').'<br>';
 		 }
 	  }
 
@@ -161,21 +162,19 @@
 
 	  for($i=1;$i<=$num_input;$i++)
 	  {
-		 if($num_input==1) 
-		 {
-			$input.='<br>';
-			$input .=lang('add attachment').
-			' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
-		 }
-		 else
-		 {
-			$input.='<br>';
-			$input.=lang('add attachment %1', $i).
-			' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
-		 }
+		 $input .='<br/><hr/>';
+			$input .=($num_input==1?lang('add attachment'):lang('add attachment %1', $i));
+			$input .=' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
+			
+			if($config[Activate_manual_path_input]=='True')
+			{
+			   $input.='<br/><br/>'.lang('Manually enter a new relative file path').'<input type="text" name="ATT_MAN'.$field_name.$i.'" style="width:300px"><br/>';
+			}
+		 
 	  }
 
-	  $input.='<input type="hidden" name="FLD'.$field_name.'" value="TRUE">';
+	  $input.='<hr/><input type="checkbox" value="'.$att_path.'" name="ATT_FLUSH"> '.lang('Remove all').'<br/>';
+	  $input.='<input type="hidden" name="'.$field_name.'" value="TRUE">';
 
 	  return $input;
    }
@@ -188,6 +187,12 @@
    \****************************************************************************/
    {
 	  global $local_bo;
+
+	  /* remove all */
+	  if($_POST[ATT_FLUSH]) 
+	  {
+		 return -1;
+	  }
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
@@ -218,7 +223,7 @@
 			if (!@unlink($upload_path.SEP.$att_to_delete)) $unlink_error++;
 		 }
 
-		 $atts_org=explode(';',$HTTP_POST_VARS['ATT_ORG'.substr($field_name,3)]);
+		 $atts_org=explode(';',$HTTP_POST_VARS['ATT_ORG'.$field_name]);
 		 foreach($atts_org as $att_org)
 		 {
 			if (!in_array($att_org,$atts_to_delete))
@@ -230,7 +235,7 @@
 	  }
 	  else
 	  {
-		 $atts_path_new.=$_POST['ATT_ORG'.substr($field_name,3)];
+		 $atts_path_new.=$_POST['ATT_ORG'.$field_name];
 	  }
 
 	  
@@ -240,8 +245,7 @@
 
 	  /* finally adding new attachments */
 	  $atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
-	
-
+	  
 	  // quick check for new attchments
 	  if(is_array($atts_to_add))
 	  foreach($atts_to_add as $attscheck)
@@ -275,6 +279,22 @@
 		 }
 	  }
 
+	  // FIXME check if a file was not uploaded for this att number
+	  /* manual added files */
+	  $man_atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'ATT_MAN');
+	  if(is_array($man_atts_to_add))
+	  {
+		 foreach($man_atts_to_add as $att_name)
+		 {
+			if($att_name)
+			{
+			   $atts_array[]='attachments'.SEP.$att_name;
+			}
+		 }
+
+	  }
+
+
 	  if(is_array($atts_array))
 	  {
 		 foreach ($atts_array as $atts_string)
@@ -285,11 +305,12 @@
 		 }						
 	  }
 
+	
 	  if($atts_path_new)
 	  {
 		 return $atts_path_new;
 	  }
-	  elseif($atts_path_changed || !$_POST['ATT_ORG'.substr($field_name,3)])
+	  elseif($atts_path_changed || !$_POST['ATT_ORG'.$field_name])
 	  {
 		 return '-1';
 	  }
@@ -347,7 +368,7 @@
    {
 
 	  global $local_bo;
-	  $field_name=substr($field_name,3);	
+	  $stripped_name=substr($field_name,6);	
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {

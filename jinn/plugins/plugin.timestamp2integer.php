@@ -30,7 +30,7 @@
 
 	$this->plugins['timestamp2integer']['name']				= 'timestamp2integer';
 	$this->plugins['timestamp2integer']['title']			= 'Timestamp2integer plugin';
-	$this->plugins['timestamp2integer']['version']			= '0.1.1';
+	$this->plugins['timestamp2integer']['version']			= '0.1.2';
 	$this->plugins['timestamp2integer']['description']		= 'create timestamp2integer input box and timestamp2integer storage method.';
 	$this->plugins['timestamp2integer']['author']			= 'Pim Snel';
 	$this->plugins['timestamp2integer']['enable']			= 1;
@@ -39,18 +39,18 @@
 	function plg_fi_timestamp2integer($field_name,$value,$config,$attr_arr)
 	{	
 		global $local_bo;
-		$field_name=substr($field_name,3);	
+//		$stripped_name=substr($field_name,6);	
 		
 		if($value)
 		{
 		   $input.='<strong>'.$value.'</strong><br/>';
-		   $input.=lang('Give new timestamp').' <input type="checkbox" value="1" name="STAMP2INT2'.$field_name.'">';
-		   $input.='<input type="hidden" value="1" name="FLD'.$field_name.'">';
-		   $input.='<input type="hidden" value="'.$value.'" name="STAMP2INT1'.$field_name.'">';
+		   $input.=lang('Give new timestamp').' <input type="checkbox" value="1" name="ST2IN2'.$field_name.'">';
+		   $input.='<input type="hidden" value="1" name="'.$field_name.'">';
+		   $input.='<input type="hidden" value="'.$value.'" name="ST2IN1'.$field_name.'">';
 		}
 		else
 		{
-		   $input.='<input type="hidden" value="1" name="FLD'.$field_name.'">';
+		   $input.='<input type="hidden" value="1" name="'.$field_name.'">';
 		   $input.=lang('automatic');
 		}
 		
@@ -61,8 +61,8 @@
 	{
 		global $local_bo;
 
-		$field_1=$_POST['STAMP2INT1'.substr($field_name,3)];//real value
-		$field_2=$_POST['STAMP2INT2'.substr($field_name,3)];// boolian for new timestamp
+		$field_1=$_POST['ST2IN1'.$field_name];//real value
+		$field_2=$_POST['ST2IN2'.$field_name];// boolian for new timestamp
 		
 /*		_debug_array($_POST);
 		_debug_array($field_1);

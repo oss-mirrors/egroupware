@@ -27,14 +27,18 @@
 	  var $public_functions = Array
 	  (
 		 'display_form'		=> True,
+		 'multiple_entries'		=> True,
 		 'view_record'		=> True
 	  );
 	  var $bo;
 	  var $template;
 	  var $ui;
+	  var $mult_records;	// get from user input
 
 	  var $record_id_key;
 	  var $record_id_val;
+	  
+	  var $submit_javascript;
 
 	  function uiu_edit_record()
 	  {
@@ -62,6 +66,12 @@
 		 $this->template->set_file(array(
 			'frm_edit_record' => 'frm_edit_record.tpl'
 		 ));
+
+		 $this->template->set_block('frm_edit_record','form_header','');
+		 $this->template->set_block('frm_edit_record','rows','rows');
+		 $this->template->set_block('frm_edit_record','js','js');
+		 $this->template->set_block('frm_edit_record','many_to_many','many_to_many');
+
 
 		 $this->render_header();
 		 $this->render_fields();
@@ -99,6 +109,8 @@
 		 $this->template->set_var('popuplink',$popuplink);
 
 		 $this->template->pparse('out','form_header');
+		 $this->template->set_var('submit_script',$this->submit_javascript);
+		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
 		 $this->template->pparse('out','row');
 		 $this->template->pparse('out','form_footer');
@@ -106,19 +118,188 @@
 
 	  }
 
-	  function render_header()
-	  {		
-		 $this->template->set_block('frm_edit_record','form_header','');
-
-		 if ($this->bo->where_string)
+	  function multiple_entries()// new
+	  {
+		 if (!is_object($GLOBALS['phpgw']->js))
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_update');
-			$where_string_form='<input type="hidden" name="where_string" value="'.base64_encode($this->bo->where_string).'">';
+			$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+		 }
+		 if (!strstr($GLOBALS['phpgw_info']['flags']['java_script'],'jinn'))
+		 {
+			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
+		 }
+		 
+		 //_debug_array($this->bo->mult_where_array);
+		 //die();
+
+		 
+		 if (is_array($this->bo->mult_where_array))
+		 {
+			$this->ui->header('edit records');
+			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
+			$this->bo->where_string=true;
+			$this->mult_records=count($mult_where_array);
 		 }
 		 else
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.object_insert');
+			$this->ui->header('add new records');
+			if(!$this->bo->mult_records_amount || !is_numeric($this->bo->mult_records_amount))
+			{
+			   $this->mult_records=3;// FIXME get from user
+			}
+			elseif(intval($this->mult_records)>99)
+			{
+			   $this->message[error]=lang('Can\'t edit more then 99 record at once (error code 108)');
+			   $this->mult_records=3;// FIXME get from user
+			}
+			else
+			{
+			   $this->mult_records=$this->bo->mult_records_amount;// FIXME get from user
+			}
 		 }
+		 
+		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+		 {
+			unset($this->bo->site_object_id);
+			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+
+			$this->bo->save_sessiondata();
+			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+		 }				
+
+		 $this->template->set_file(array(
+			'frm_edit_record' => 'frm_edit_multiple_records.tpl'
+		 ));
+
+	
+		 // move to function?
+		 $this->template->set_block('frm_edit_record','form_header','');
+		 $this->template->set_block('frm_edit_record','change_num','');
+
+		 $this->template->set_var('mult_records',$this->mult_records);
+		 $this->template->set_block('frm_edit_record','table_header','');
+		 $this->template->set_block('frm_edit_record','rows','rows');
+		 $this->template->set_block('frm_edit_record','table_footer','');
+		 $this->template->set_block('frm_edit_record','js','js');
+		 $this->template->set_block('frm_edit_record','many_to_many','many_to_many');
+
+
+		 $this->render_header();
+		 
+		 $this->ui->msg_box($this->bo->message);
+
+		 $this->main_menu();	
+
+		 if (!is_array($mult_where_array))
+		 {
+			$this->template->set_var('form_action_change_amount',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.mult_change_num_records'));
+			$this->template->set_var('num_records',$this->mult_records);
+			$this->template->set_var('lang_change_num_records',lang('change number of records'));
+			$this->template->parse('change_num','change_num');
+			$this->template->pparse('out','change_num');
+		 }
+
+		 $this->template->pparse('out','form_header');
+
+
+		 unset($this->bo->message);
+
+
+		 if($mult_where_array)
+		 {
+			$i=0;
+			$setwhere=true;
+			foreach($mult_where_array as $where_string)	
+			{
+			   $this->bo->where_string=$where_string;
+			   $this->mult_index=sprintf("%02d",$i);
+			   
+				
+			   $this->render_mult_table_header($setwhere);
+			   $i++;
+
+			   $this->render_fields();
+			   $this->render_many_to_many_input();
+
+			   $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+			   $this->template->set_var('popuplink',$popuplink);
+
+			   $this->template->pparse('out','row');
+			   $this->render_mult_table_footer();
+			}
+		 }
+		 else
+		 {
+			for($i=0;$i<$this->mult_records;$i++)
+			{
+			   $this->mult_index=sprintf("%02d",$i);
+			   $this->render_mult_table_header();
+
+			   $this->render_fields();
+			   $this->render_many_to_many_input();
+
+			   $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+			   $this->template->set_var('popuplink',$popuplink);
+
+			   $this->template->pparse('out','row');
+			   $this->render_mult_table_footer();
+			}
+		 }
+		 
+		 
+		 $this->render_footer();
+		
+		 $this->template->set_var('submit_script',$this->submit_javascript);
+		 $this->template->parse('js','js');
+		 $this->template->pparse('out','js');
+		 
+		 $this->template->pparse('out','form_footer');
+
+		 $this->bo->save_sessiondata();
+
+	  }
+
+	  function render_mult_table_header($setwhere=false) 
+	  {
+		 if($setwhere)
+		 {
+			$where_string_record='<input type="hidden" name="MLTWHR'.$this->mult_index.'" value="'.base64_encode($this->bo->where_string).'">';
+		 }
+		 
+		 $this->template->set_var('where_string_record',$where_string_record);
+
+		 //$this->template->parse('table_header','table_header');
+		 $this->template->parse('row','table_header');
+	  }
+
+	  function render_mult_table_footer() 
+	  {
+		 $this->template->parse('table_footer','table_footer');
+		 $this->template->pparse('row','table_footer');
+	  }
+
+
+	  function render_header()
+	  {		
+
+		 if ($this->bo->where_string && !$this->mult_records)
+		 {
+			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.record_update');
+			$where_string_form='<input type="hidden" name="where_string" value="'.base64_encode($this->bo->where_string).'">';
+		 }
+		 elseif(!$this->bo->where_string && !$this->mult_records)
+		 {
+			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.record_insert');
+		 }
+		 elseif($this->bo->where_string && $this->mult_records)
+		 {
+			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.multiple_records_update');
+		 }
+		 elseif(!$this->bo->where_string && $this->mult_records)
+		 {
+			$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.multiple_records_insert');
+		 }
+
 
 		 $form_attributes='onSubmit="return onSubmitForm()"';
 
@@ -130,15 +311,21 @@
 
 	  function render_fields()
 	  {
-		 $this->template->set_block('frm_edit_record','rows','rows');
 
+		 if($this->mult_records>1 && is_numeric($this->mult_index)) 
+		 {
+			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
+		 }
+		 else
+		 {
+			$input_prefix='FLDXXX';
+		 }
 
 		 if ($this->bo->where_string)
 		 {
 			$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$this->bo->where_string);
 
 		 }
-
 
 		 /* get one with many relations */
 		 $relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object[relations]);
@@ -159,7 +346,7 @@
 		 foreach ( $fields as $fieldproperties )
 		 {
 			$value=$values_object[0][$fieldproperties[name]];	/* get value */
-			$input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
+			$input_name=$input_prefix.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
 			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
 
 
@@ -283,7 +470,6 @@
 				  }
 			   }
 
-
 			   /* set the row colors */
 			   $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
 			   if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
@@ -369,8 +555,22 @@
 
 	  function render_many_to_many_input()
 	  {
-		 $this->template->set_block('frm_edit_record','js','js');
-		 $this->template->set_block('frm_edit_record','many_to_many','many_to_many');
+
+		 if($this->mult_records>1 && is_numeric($this->mult_index)) 
+		 {
+			$prefix1='M2MX'.$this->mult_index; 
+			$prefix2='M2MA'.$this->mult_index;
+			$prefix3='M2MO'.$this->mult_index;
+			$prefix4='M2MR'.$this->mult_index;
+//			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
+		 }
+		 else
+		 {
+			$prefix1='M2MXXX';
+			$prefix2='M2MAXX';
+			$prefix3='M2MOXX';
+			$prefix4='M2MRXX';
+		 }
 
 		 $relation2_array=$this->bo->extract_1wX_relations($this->bo->site_object[relations]);
 		 if (count($relation2_array)>0)
@@ -383,11 +583,11 @@
 
 			   $display_name=lang('relation %1',$rel_i);
 			   $sel1_all_from=lang('all from').' '.$related_table;
-			   $on_dbl_click1='SelectPlace(\'M2M'.$rel_i.'\',\'all_related'.$rel_i.'\')';
-			   $on_dbl_click2='DeSelectPlace(\'M2M'.$rel_i.'\')';
+			   $on_dbl_click1='SelectPlace(\''.$prefix1.$rel_i.'\',\''.$prefix2.$rel_i.'\')';
+			   $on_dbl_click2='DeSelectPlace(\''.$prefix1.$rel_i.'\')';
 
-			   $sel1_name='all_related'.$rel_i;
-			   $sel2_name='M2M'.$rel_i;
+			   $sel1_name=''.$prefix2.$rel_i;
+			   $sel2_name=''.$prefix1.$rel_i;
 
 			   $lang_add_remove=lang('add or remove');
 
@@ -395,7 +595,7 @@
 			   $sel1_options = $this->ui->select_options($options_arr,'',false);
 			   $lang_related=lang('related').' '.$related_table;
 
-			   $submit_javascript.='saveOptions(\'M2M'.$rel_i.'\',\'MANY_OPT_STR_'.$rel_i.'\');';
+			   $this->submit_javascript.='saveOptions(\''.$prefix1.$rel_i.'\',\''.$prefix3.$rel_i.'\');'."\n";
 
 			   if($this->record_id_val)
 			   {
@@ -409,9 +609,9 @@
 				  $sel2_options.= '<option>'.lang('Many 2 Many relations will not work').'</option>';
 			   }
 
-			   $m2m_rel_string_name='MANY_REL_STR_'.$rel_i;
+			   $m2m_rel_string_name=''.$prefix4.$rel_i;
 			   $m2m_rel_string_val=$relation2[via_primary_key].'|'.$relation2[via_foreign_key];
-			   $m2m_opt_string_name='MANY_OPT_STR_'.$rel_i;
+			   $m2m_opt_string_name=''.$prefix3.$rel_i;
 
 			   $this->template->set_var('sel1_all_from',$sel1_all_from);
 			   $this->template->set_var('on_dbl_click1',$on_dbl_click1);
@@ -433,8 +633,7 @@
 			}
 		 }
 
-		 $this->template->set_var('submit_script',$submit_javascript);
-		 $this->template->parse('js','js');
+		 
 	  }
 
 	  function render_one_to_one()

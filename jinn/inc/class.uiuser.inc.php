@@ -31,7 +31,7 @@
 		 'file_download'		=> True,
 		 'config_objects'		=> True,
 		 'img_popup'			=> True,
-		 'save_object_config'	=> True
+		 'save_object_config'	=> True,
 	  );
 
 	  var $bo;
@@ -181,9 +181,10 @@
 
 		 }
 
-
 		 function browse_objects()
 		 {
+			unset($this->bo->mult_where_array);
+
 			if($this->bo->site_object[max_records]==1)
 			{
 			   $columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
@@ -223,10 +224,10 @@
 						$where_string=base64_encode($where_string);
 					 }
 				  }
-			   
+
 				  $this->bo->common->exit_and_open_screen('jinn.uiu_edit_record.view_record&where_string='.$where_string);
 			   }
-	
+
 			   else
 			   {
 				  $this->list_records();
@@ -234,9 +235,9 @@
 			}
 			else
 			{
-   			   $this->list_records();
+			   $this->list_records();
 			}
-			
+
 		 }
 
 		 /*******************************\
@@ -245,6 +246,8 @@
 
 		 function list_records()
 		 {
+			unset($this->bo->mult_where_array);
+
 			if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 			{
 			   unset($this->bo->site_object_id);
@@ -269,7 +272,7 @@
 			$this->template->set_block('list_records','row','row');
 			$this->template->set_block('list_records','empty_row','empty_row');
 			$this->template->set_block('list_records','footer','footer');
-			
+
 			$pref_columns_str=$this->bo->read_preferences('show_fields'); 
 			$default_order=$this->bo->read_preferences('default_order');
 
@@ -294,6 +297,9 @@
 
 			$limit=$this->bo->set_limits($limit_start,$limit_stop,$direction,$num_rows);
 
+			$this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
+
+			$this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
 			$this->template->set_var('limit_start',$limit['start']);
 			$this->template->set_var('limit_stop',$limit['stop']);
 			$this->template->set_var('orderby',$orderby);
@@ -311,7 +317,7 @@
 			$this->template->set_var('lang_Actions',lang('Actions'));
 			$this->template->set_var('edit',lang('edit'));
 			$this->template->set_var('delete',lang('delete'));
-			$this->template->set_var('copy',lang('copy'));
+			$this->template->set_var('copy',lang('copy and edit the new record'));
 			$this->template->set_var('show_all_cols',$show_all_cols);
 
 			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
@@ -361,7 +367,7 @@
 			/* walk through all table columns and fill different array */
 			foreach($columns as $onecol)
 			{
-				
+
 			   //create more simple col_list with only names //why
 			   $all_col_names_list[]=$onecol[name];
 
@@ -422,10 +428,11 @@
 			   {
 				  continue ;
 			   }
-   
+
 			   $col_names_list[]=$col[name];
 			   unset($orderby_link);
 			   unset($orderby_image);
+
 			   if ($col[name] == trim(substr($orderby,0,(strlen($orderby)-4))))
 			   {
 				  if (substr($orderby,-4)== 'DESC')
@@ -492,52 +499,61 @@
 
 				  if(count($recordvalues)>0)
 				  {
-						// action_links
-						$this->template->set_var('colfield_bg_color',$bgclr);
-						$this->template->set_var('colfield_lang_edit',lang('edit'));
-						$this->template->set_var('colfield_edit_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$where_string));
-						$this->template->set_var('colfield_edit_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','edit'));
+					 $this->template->set_var('colfield_check_name','SEL'.$where_string);
+					 $this->template->set_var('colfield_check_val',$where_string);
+					 
+					 // action_links
+					 $this->template->set_var('colfield_bg_color',$bgclr);
+					 $this->template->set_var('colfield_lang_edit',lang('edit'));
+					 $this->template->set_var('colfield_edit_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$where_string));
+					 $this->template->set_var('colfield_edit_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','edit'));
 
-						$this->template->set_var('colfield_lang_view',lang('view'));
-						$this->template->set_var('colfield_view_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.view_record&where_string='.$where_string));
-						$this->template->set_var('colfield_view_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','view'));
-						
-						$this->template->set_var('colfield_lang_delete',lang('delete'));
-						$this->template->set_var('colfield_delete_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_object&where_string='.$where_string));
-						$this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
-						$this->template->set_var('colfield_delete_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','delete'));
+					 $this->template->set_var('colfield_lang_view',lang('view'));
+					 $this->template->set_var('colfield_view_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.view_record&where_string='.$where_string));
+					 $this->template->set_var('colfield_view_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','view'));
 
-						$this->template->set_var('colfields','');
+					 $this->template->set_var('colfield_lang_delete',lang('delete'));
+					 $this->template->set_var('colfield_delete_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_record&where_string='.$where_string));
+					 $this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
+					 $this->template->set_var('colfield_delete_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','delete'));
 
-						foreach($col_names_list  as $onecolname)
+
+					 $this->template->set_var('colfield_lang_copy',lang('copy and edit the new record'));
+					 $this->template->set_var('colfield_copy_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.copy_record&where_string='.$where_string));
+					 $this->template->set_var('colfield_copy_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','copy'));
+ 
+					 
+					 $this->template->set_var('colfields','');
+
+					 foreach($col_names_list  as $onecolname)
+					 {
+						$recordvalue=$recordvalues[$onecolname];
+						if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
 						{
-						   $recordvalue=$recordvalues[$onecolname];
-						   if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
-						   {
-							  $related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
-							  $recordvalue= '<i>'.$related_value.'</i> ('.$recordvalue.')';
-						   }
-						   else
-						   {	
-							  $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
-						   }
-
-						   if (empty($recordvalue))
-						   {
-							  $recordvalue="&nbsp;";
-
-						   }
-
-						   $this->template->set_var('colfield_bg_color',$bgclr);
-						   $this->template->set_var('colfield_value',$recordvalue);
-
-						   $this->template->parse('colfields','column_field',true);
+						   $related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
+						   $recordvalue= '<i>'.$related_value.'</i> ('.$recordvalue.')';
+						}
+						else
+						{	
+						   $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
 						}
 
-						$this->template->parse('rows','row',true);
-						$this->template->pparse('out','row');
+						if (empty($recordvalue))
+						{
+						   $recordvalue="&nbsp;";
 
-			
+						}
+
+						$this->template->set_var('colfield_bg_color',$bgclr);
+						$this->template->set_var('colfield_value',$recordvalue);
+
+						$this->template->parse('colfields','column_field',true);
+					 }
+
+					 $this->template->parse('rows','row',true);
+					 $this->template->pparse('out','row');
+
+
 
 				  }// end if table has fields
 
@@ -551,6 +567,15 @@
 			   $this->template->set_var('colspan',(count($col_names_list)+3));
 			   $this->template->pparse('out','empty_row');
 			}
+
+			$this->template->set_var('colfield_lang_check_all',lang('toggle all above checkboxes'));
+			$this->template->set_var('lang_actions_to_apply_on_selected',lang('Actions to apply on all selected record'));
+			$this->template->set_var('colfield_lang_view_sel',lang('view all selected records'));
+			$this->template->set_var('colfield_view_link_sel','');
+			$this->template->set_var('colfield_lang_edit_sel',lang('edit all selected records'));
+			$this->template->set_var('colfield_edit_link_sel','');
+			$this->template->set_var('colfield_lang_delete_sel',lang('delete all selected records'));
+			$this->template->set_var('colfield_delete_link_sel','');
 
 			$this->template->parse('out','footer');
 			$this->template->pparse('out','footer');

@@ -25,12 +25,16 @@
    {
 	  var $public_functions = Array
 	  (
-		 'object_update'		=> True,
-		 'object_insert'		=> True,
-		 'del_object'			=> True,
-		 'save_object_config'	=> True,
-		 'get_plugin_afa'		=> True,
-		 'copy_object'			=> True
+		 'record_update'			=> True,
+		 'record_insert'			=> True,
+		 'multiple_records_insert'	=> True,
+		 'multiple_records_update'	=> True,
+		 'del_record'				=> True,
+		 'save_object_config'		=> True,
+		 'multiple_actions'			=> True,
+		 'get_plugin_afa'			=> True,
+		 'mult_change_num_records'	=> True,
+		 'copy_record'				=> True
 	  );
 
 	  var $so;
@@ -54,6 +58,9 @@
 	  var $where_key;
 	  var $where_value;
 	  var $where_string;
+
+	  var $mult_where_array;
+	  var $mult_records_amount;
 
 	  function bouser()
 	  {
@@ -96,13 +103,16 @@
 
 
 
+	  
 	  function save_sessiondata()
 	  {
 		 $data = array(
 			'message' => $this->message, 
 			'site_id' => $this->site_id,
 			'site_object_id' => $this->site_object_id,
-			'browse_settings'=>	$this->browse_settings
+			'browse_settings'=>	$this->browse_settings,
+			'mult_where_array'=> $this->mult_where_array,
+			'mult_records_amount'=>$this->mult_records_amount
 		 );
 
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
@@ -117,6 +127,8 @@
 			$this->site_id 		= $data['site_id'];
 			$this->site_object_id	= $data['site_object_id'];
 			$this->browse_settings	= $data['browse_settings'];
+			$this->mult_where_array	= $data['mult_where_array'];
+			$this->mult_records_amount = $data['mult_records_amount'];
 		 }
 	  }
 
@@ -167,6 +179,15 @@
 		 return $returnlimit;
 
 	  }
+	  
+	  function mult_change_num_records()
+	  {
+		 if(is_numeric)	$this->mult_records_amount=intval($_POST['num_records']);
+
+		 $this->save_sessiondata();
+
+		 $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
+	 }
 
 	  //remove this one
 	  function get_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*',$where_condition='')
@@ -182,13 +203,13 @@
 		 return $records;
 	  }
 
-	  function object_insert()
+	  function record_insert()
 	  {
-		 $data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES]);
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
 		 $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 
-		 $many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
-		 $many_data['FLD'.$status['idfield']]=$status['id'];
+		 $many_data=$this->http_vars_pairs_many($_FILES);
+		 $many_data['FLDXXX'.$status['idfield']]=$status['id'];
 		 $status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
 
 		 if ($status[status]==1)	$this->message['info']='Record successfully added';
@@ -212,528 +233,733 @@
 			   $this->common->exit_and_open_screen('jinn.uiuser.index');
 			}
 		 }
-
 	  }
 
-	  function object_update()
+
+	  function mult_to_fld($i,$type='_POST')
 	  {
-		 /* exit and go to del function */
-		 if($GLOBALS[HTTP_POST_VARS][delete])
+		 if($type=='_POST')
 		 {
-			$this->del_object();
-		 }
+			reset($_POST);
+			while (list($key, $val) = each($_POST))
+			{
+				// normal fields
+			   if (substr($key,0,4)=='MLTX' && intval(substr($key,4,2)) == $i) 
+			   {
+				  $post_arr['FLDXXX'.substr($key,6)]=$val;
+			   }
+			   // special plugin fields
+			   elseif (substr($key,7,4)=='MLTX' && intval(substr($key,11,2)) == $i) 
+			   {
+				  $post_arr[substr($key,0,7).'FLDXXX'.substr($key,13)]=$val;
+			   }
+			   // m2m relation fields
+			   elseif(substr($key,0,3)=='M2M' && intval(substr($key,4,2)) == $i)
+			   {
+				  $post_arr['M2M'.substr($key,3,1).'XX'.substr($key,6)]=$val;
+			   }
+			
+			}
 
-		 $where_key = $this->where_key;
-		 $where_value = $this->where_value;
-		 $where_string=$this->where_string;
-		 $table=$this->site_object[table_name];
 
-		 $many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
-
-		 $status=$this->so->update_object_many_data($this->site_id, $many_data);
-
-		 $data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
-
-		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
-
-		 if ($status[status]==1)	$this->message[info]='Record succesfully saved';
-		 else $this->message[error]='Record NOT succesfully saved';
-
-		 $this->save_sessiondata();
-
-		 if($_POST['continue'])
-		 {
-			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 		 }
 		 else
 		 {
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-	  function del_object()
-	  {
-		 $table=$this->site_object[table_name];
-		 $where_key=stripslashes($this->where_key);
-		 $where_value=stripslashes($this->where_value);
-		 $where_string=stripslashes($this->where_string);
-
-		 $status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value,$where_string);
-
-		 if ($status==1)	$this->message[info]=lang('Record succesfully deleted');
-		 else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
-
-		 $this->save_sessiondata();
-		 $this->common->exit_and_open_screen('jinn.uiuser.index');
-	  }
-
-	  function copy_object()
-	  {
-		 $table=$this->site_object[table_name];
-		 $where_key=$this->where_key;
-		 $where_value=$this->where_value;
-
-		 $status=$this->so->copy_object_data($this->site_id,$table,$where_key,$where_value);
-		 if ($status==1)	$this->message[info]=lang('Record succesfully copied');
-		 else $this->message[error]=lang('Record NOT succesfully copied. Unknown error');
-
-		 $this->save_sessiondata();
-		 $this->common->exit_and_open_screen('jinn.uiuser.index');
-	  }
-
-
-	  function extract_1w1_relations($string)
-	  {
-		 $relations_array = explode('|',$string);
-
-		 foreach($relations_array as $relation)
-		 {
-			$relation_part=explode(':',$relation);
-			if ($relation_part[0]=='1')
+			reset($_FILES);
+			while (list($key, $val) = each($_FILES))
 			{
-			   $relation_arr[$relation_part[1]] = array
-			   (
-				  'type'=>$relation_part[0],
-				  'field_org'=>$relation_part[1],
-				  'related_with'=>$relation_part[3],
-				  'display_field'=>$relation_part[4]
-			   );
-			}
-
-		 }
-		 return $relation_arr;
-	  }
-
-	  function extract_1wX_relations($string)
-	  {
-		 $relations_array = explode('|',$string);
-
-		 foreach($relations_array as $relation)
-		 {
-			$relation_part=explode(':',$relation);
-			if ($relation_part[0]=='2')
-			{
-			   $tmp=explode('.',$relation_part[1]);
-			   $via_table=$tmp[0];
-			   $tmp=explode('.',$relation_part[4]);
-			   $display_table=$tmp[0];
-
-			   $relation_arr[] = array
-			   (
-				  'type'=>$relation_part[0],
-				  'via_primary_key'=>$relation_part[1],
-				  'via_foreign_key'=>$relation_part[2],
-				  'via_table'=>$via_table,
-				  'foreign_key'=>$relation_part[3],
-				  'display_field'=>$relation_part[4],
-				  'display_table'=>$display_table
-			   );
-			}
-		 }
-		 return $relation_arr;
-	  }
-	  function get_related_field($relation_array)
-	  {
-		 $table_info=explode('.',$relation_array[related_with]);
-		 $table=$table_info[0];
-		 $related_field=$table_info[1];
-
-		 $table_info2=explode('.',$relation_array[display_field]);
-		 $table_display=$table_info2[0];
-		 $display_field=$table_info2[1];
-
-		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
-
-		 if(is_array($allrecords))
-		 foreach ($allrecords as $record)
-		 {
-			$related_fields[]=array
-			(
-			   'value'=>$record[$related_field],
-			   'name'=>$record[$display_field]
-			);
-		 }
-		 return $related_fields;
-	  }
-
-	  function get_related_value($relation_array,$value)
-	  {
-		 $table_info=explode('.',$relation_array[related_with]);
-		 $table=$table_info[0];
-		 $related_field=$table_info[1];
-
-		 $table_info2=explode('.',$relation_array[display_field]);
-		 $table_display=$table_info2[0];
-		 $display_field=$table_info2[1];
-
-		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
-
-
-		 if(is_array($allrecords))
-		 foreach ($allrecords as $record)
-		 {
-			if($record[$related_field]==$value) return $record[$display_field];
-		 }
-	  }
-
-	  function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
-	  {
-
-		 while(list($key, $val) = each($HTTP_POST_VARS)) 
-		 {
-			if(substr($key,0,3)=='FLD')
-			{
-			   /* Check for plugin need and plugin availability */
-			   if ($filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
+			   if (substr($key,0,4)=='MLTX' && intval(substr($key,4,2)) == $i) 
 			   {
-				  if ($filtered_data==-1) $filtered_data='';
-				  $data[] = array
-				  (
-					 'name' => substr($key,3),
-					 'value' =>  $filtered_data  //addslashes($val)
-				  );
+				  $post_arr['FLDXXX'.substr($key,6)]=$val;
 			   }
-			   else // if there's no plugin, just save the vals
+			   elseif (substr($key,7,4)=='MLTX' && intval(substr($key,11,2)) == $i) 
 			   {
-				  $data[] = array
-				  (
-					 'name' => substr($key,3),
-
-					 'value' => addslashes($val) 
-				  );
-			   }
-			}
-		 }
-
-		 return $data;
-
-	  }
-
-
-	  function http_vars_pairs_many($HTTP_POST_VARS) {
-
-		 while(list($key, $val) = each($HTTP_POST_VARS)) {
-
-
-			if(substr($key,0,3)=='MAN'||substr($key,0,5)=='FLDid')
-			{
-
-			   $data = array_merge($data,array
-			   (
-				  $key=> $val
-			   ));
-			}
-		 }
-		 return $data;
-	  }		
-
-
-
-	  function read_preferences($key)
-	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
-
-		 $prefs = array();
-
-		 if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
-		 {
-			$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
-		 }
-		 return $prefs;
-	  }
-
-	  function save_preferences($key,$prefs)
-	  {
-		 $GLOBALS['phpgw']->preferences->read_repository();
-
-		 $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
-		 $GLOBALS['phpgw']->preferences->save_repository(True);
-	  }
-
-	  /****************************************************************************\
-	  * 	Config site_objects                                              *
-	  \****************************************************************************/
-
-	  function save_object_config()
-	  {
-
-		 $prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-		 $prefs_show_hide_read=$this->read_preferences('show_fields');
-
-		 $show_fields_entry=$this->site_object[object_id];
-
-		 while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
-		 {
-			if(substr($key,0,4)=='SHOW')
-			$show_fields_entry.=','.substr($key,4);
-		 }
-
-		 if($prefs_show_hide_read) 
-		 {
-			$prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
-
-			foreach($prefs_show_hide_arr as $pref_s_h)
-			{
-
-			   $pref_array=explode(',',$pref_s_h);
-			   if($pref_array[0]!=$this->site_object[object_id])
-			   {
-				  $prefs_show_hide_new.=implode(',',$pref_array);
+				  $post_arr[substr($key,0,7).'FLDXXX'.substr($key,13)]=$val;
 			   }
 			}
 
-			if($prefs_show_hide_new) $prefs_show_hide_new.='|';
-			$prefs_show_hide_new.=$show_fields_entry;
 		 }
-		 else
+
+		 return $post_arr;
+	  }
+
+	  function multiple_actions()
+	  {
+		 switch($_POST['action'])
 		 {
-			$prefs_show_hide_new=$show_fields_entry;
-		 }
-
-		 $this->save_preferences('show_fields',$prefs_show_hide_new);
-		 $this->save_preferences('default_order',$prefs_order_new);
-
-		 $this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
-	  }
-
-
-	  /*--------------------------------------------------
-	  FIXME all field related plugins must move to dedicated class
-	  -------------------------------------------*
-	  
-	  /**
-	  * get storage filter from plugin 
-	  */
-	  function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-
-		 foreach($plugins as $plugin)
-		 {
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($conf_key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$conf_key]=$val;
-			   }
-			}
-
-			if (substr($key,3)==$sets[0])
-			{
-			   if(!$data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr)) return;
-			}
-		 }
-		 return $data;
-	  }
-
-
-	  /**
-	  * get readonly view function from plugin 
-	  */
-	  function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
-	  {
-		 //			die($fieldname);
-		 global $local_bo;
-		 $local_bo=$this;
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($fieldname==$sets[0])
-			{
-			   if(!$new_value=@call_user_func('plg_ro_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
-			   {
-			   }
-			}
-		 }
-		 if (!$new_value)
-		 {
-			$new_value=$value;
-		 }
-
-		 return $new_value;
-	  }
-
-
-	  /**
-	  * get browse view function from plugin 
-	  */
-	  function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($fieldname==$sets[0])
-			{
-			   if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
-			   {
-			   }
-			}
-		 }
-		 if (!$new_value)
-		 {
-			$new_value=$value;
-			if(strlen($new_value)>15)
-			{
-			   $new_value=strip_tags($new_value);
-			   $new_value = substr($new_value,0,15). ' ...';
-			}
-		 }
-		 return $new_value;
-
-	  }
-
-	  /**
-	  * get input function from plugin 
-	  */
-	  function get_plugin_fi($input_name,$value,$type,$attr_arr)
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			/* make plug config array for this field */
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if (substr($input_name,3)==$sets[0])
-			{
-			   //FIXME all plugins must get an extra argument in the sf_func
-			   if(!$input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr)) 
-			   {
-			   }
-			}
-		 }
-
-		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
-
-		 return $input;
-
-	  }
-
-	  /**
-	  * get autonome form action function from plugin 
-	  */
-	  function get_plugin_afa()
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-
-		 $action_plugin_name=$_GET[plg];
-
-		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		 foreach($plugins as $plugin)
-		 {	
-			$sets=explode(':',$plugin);
-
-			if($sets[3]) $conf_str = explode(';',$sets[3]);
-			if(is_array($conf_str))
-			{
-			   unset($conf_arr);
-			   foreach($conf_str as $conf_entry)
-			   {
-				  list($key,$val)=explode('=',$conf_entry);	
-				  $conf_arr[$key]=$val;		
-			   }
-			}
-
-			if ($action_plugin_name==$sets[1])
-			{
-			   $call_plugin=$sets[1];
+			case 'del':
+			   $where_arr=$this->set_multiple_where();
+			   $this->multiple_records_delete($where_arr);
 			   break;
+
+			case 'edit':
+			   $this->mult_where_array=$this->set_multiple_where();
+			   $this->save_sessiondata();
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
+
+			   break;
+
+			default:
+			   $this->message[error]=lang('Operation on multiple records failed. (error code 100)');
+			   $this->save_sessiondata();
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
 			}
 		 }
 
-		 if($call_plugin)
+		 function set_multiple_where()
 		 {
-			//FIXME all plugins must get an extra argument in the sf_func
-			$success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
-		 }
-
-		 if ($succes)
-		 {
-			$this->message[info]=lang('Action was succesful.');
-
-			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-		 else
-		 {
-			$this->message[error]=lang('Action was not succesful. Unknown error');
-
-			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-	  }
-
-	  /**
-	  * include ALL plugins
-	  */
-	  function include_plugins()
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
-
-			/* This is the correct way to loop over the directory. */
-
-			while (false !== ($file = readdir($handle))) 
-			{ 
-			   if (substr($file,0,7)=='plugin.')
+			reset($_POST);
+			while (list($key, $val) = each($_POST))
+			{
+			   if(substr($key,0,3)=='SEL')
 			   {
-
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
+				  $where_arr[]=base64_decode($val);
 			   }
 			}
-			closedir($handle); 
+			return $where_arr;
 		 }
-	  }
 
-   }
-?>
+		 function multiple_records_insert()
+		 {
+
+			if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
+			{
+			   for($i=0;$i<$_POST[MLTNUM];$i++)
+			   {
+				  $post_arr=$this->mult_to_fld($i,'_POST');
+				  $files_arr=$this->mult_to_fld($i,'_FILES');
+
+				  $data=$this->http_vars_pairs($post_arr,$files_arr);
+				  $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
+				  $this->mult_where_array[]=$status[where_string];
+				  $many_data=$this->http_vars_pairs_many($post_arr);
+				  $many_data['FLDXXX'.$status['idfield']]=$status['id'];
+				  $status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
+			   }
+			}
+
+			if ($status[status]==1)	$this->message['info']='Records successfully added';
+			else $this->message[error]=lang('One or more records NOT succesfully added. (error code 107)');
+
+			$this->save_sessiondata();
+
+			if($_POST['continue'] && is_array($this->mult_where_array) )
+			{
+
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
+			}
+			/*	 if($_POST['continue'] && $status[where_string])
+			{
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));//mult_where_string
+			}
+			*/
+			else
+			{
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+		 }
+
+
+		 function multiple_records_update()
+		 {
+			
+			unset($this->mult_where_array);
+
+			if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
+			{
+			   for($i=0;$i<$_POST[MLTNUM];$i++)
+			   {
+				  $post_arr=$this->mult_to_fld($i,'_POST');
+				  $files_arr=$this->mult_to_fld($i,'_FILES');
+
+				  $data=$this->http_vars_pairs($post_arr,$files_arr);
+
+				  $where_string=base64_decode($_POST['MLTWHR'.sprintf("%02d",$i)]);
+				  $this->mult_where_array[]=$where_string;
+
+				  $table=$this->site_object[table_name];
+
+				  $many_data=$this->http_vars_pairs_many($post_arr);
+
+				  $status=$this->so->update_object_many_data($this->site_id, $many_data);
+
+				  $data=$this->http_vars_pairs($post_arr, $files_arr);
+
+				  $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
+			   }
+			}
+
+			if ($status[status]==1)	$this->message['info']='Records successfully saved';
+			else $this->message[error]=lang('One or more records NOT succesfully saved. (error code 106)');
+
+			$this->save_sessiondata();
+
+			if($_POST['continue'] && is_array($this->mult_where_array) )
+			{
+
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries'); //mult_where_string
+			}
+			else
+			{
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+		 }
+
+
+		 function multiple_records_delete($where_arr)
+		 {
+			$status=1;
+			foreach ($where_arr as $where_string)
+			{
+			   $where_string =stripslashes($where_string);
+
+			   $stat=$this->so->delete_object_data($this->site_id, $this->site_object['table_name'], false, false,$where_string);
+			   if($stat!=1) $status=0;
+			}
+
+			if ($status==1) $this->message[info]=lang('Records succesfully deleted');
+			else $this->message[error]=lang('Records NOT succesfully deleted. (error code 101)');
+
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+
+		 function record_update()
+		 {
+			/* exit and go to del function */
+			if($_POST['delete'])
+			{
+			   $this->del_record();
+			}
+
+			$where_key = $this->where_key;
+			$where_value = $this->where_value;
+			$where_string=$this->where_string;
+			$table=$this->site_object[table_name];
+
+			$many_data=$this->http_vars_pairs_many($_POST, $_FILES);
+
+			$status=$this->so->update_object_many_data($this->site_id, $many_data);
+
+			$data=$this->http_vars_pairs($_POST, $_FILES);
+
+			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
+
+			if ($status[status]==1)	$this->message[info]='Record succesfully saved';
+			else $this->message[error]='Record NOT succesfully saved (error code 104)';
+
+			$this->save_sessiondata();
+
+			if($_POST['continue'])
+			{
+			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
+			}
+			else
+			{
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+		 }
+
+		 function del_record() 
+		 {
+			$table=$this->site_object[table_name];
+			$where_key=stripslashes($this->where_key);
+			$where_value=stripslashes($this->where_value);
+			$where_string=stripslashes($this->where_string);
+
+			$status=$this->so->delete_object_data($this->site_id, $table, $where_key,$where_value,$where_string);
+
+			if ($status==1)	$this->message[info]=lang('Record succesfully deleted');
+			else $this->message[error]=lang('Record NOT succesfully deleted. (error code 105)');
+
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+
+		 function copy_record()
+		 {
+			// check if id is autoincrementing
+			$autokey= $this->so->check_auto_incr($this->site_id,$this->site_object['table_name']);
+			if($autokey)
+			{
+			   $status=$this->so->copy_record($this->site_id,$this->site_object[table_name],$this->where_string,$autokey);
+			   if ($status[status]==1)	$this->message[info]=lang('Record succesfully copied');
+			   else $this->message[error]=lang('Record NOT succesfully copied. (error code 102)');
+
+			   if($status[where_string])
+			   {
+				  $this->save_sessiondata();
+				  $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
+			   }
+			}
+			else
+			{
+			   // disable copy icon when its not possible
+			   $this->message[error]=lang('Cannot copy a record from this table. (error code 103)');
+			}
+
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+
+		 function extract_1w1_relations($string)
+		 {
+			$relations_array = explode('|',$string);
+
+			foreach($relations_array as $relation)
+			{
+			   $relation_part=explode(':',$relation);
+			   if ($relation_part[0]=='1')
+			   {
+				  $relation_arr[$relation_part[1]] = array
+				  (
+					 'type'=>$relation_part[0],
+					 'field_org'=>$relation_part[1],
+					 'related_with'=>$relation_part[3],
+					 'display_field'=>$relation_part[4]
+				  );
+			   }
+
+			}
+			return $relation_arr;
+		 }
+
+		 function extract_1wX_relations($string)
+		 {
+			$relations_array = explode('|',$string);
+
+			foreach($relations_array as $relation)
+			{
+			   $relation_part=explode(':',$relation);
+			   if ($relation_part[0]=='2')
+			   {
+				  $tmp=explode('.',$relation_part[1]);
+				  $via_table=$tmp[0];
+				  $tmp=explode('.',$relation_part[4]);
+				  $display_table=$tmp[0];
+
+				  $relation_arr[] = array
+				  (
+					 'type'=>$relation_part[0],
+					 'via_primary_key'=>$relation_part[1],
+					 'via_foreign_key'=>$relation_part[2],
+					 'via_table'=>$via_table,
+					 'foreign_key'=>$relation_part[3],
+					 'display_field'=>$relation_part[4],
+					 'display_table'=>$display_table
+				  );
+			   }
+			}
+			return $relation_arr;
+		 }
+		 function get_related_field($relation_array)
+		 {
+			$table_info=explode('.',$relation_array[related_with]);
+			$table=$table_info[0];
+			$related_field=$table_info[1];
+
+			$table_info2=explode('.',$relation_array[display_field]);
+			$table_display=$table_info2[0];
+			$display_field=$table_info2[1];
+
+			$allrecords=$this->get_records($table,'','','','','name',$display_field);
+
+			if(is_array($allrecords))
+			foreach ($allrecords as $record)
+			{
+			   $related_fields[]=array
+			   (
+				  'value'=>$record[$related_field],
+				  'name'=>$record[$display_field]
+			   );
+			}
+			return $related_fields;
+		 }
+
+		 function get_related_value($relation_array,$value)
+		 {
+			$table_info=explode('.',$relation_array[related_with]);
+			$table=$table_info[0];
+			$related_field=$table_info[1];
+
+			$table_info2=explode('.',$relation_array[display_field]);
+			$table_display=$table_info2[0];
+			$display_field=$table_info2[1];
+
+			$allrecords=$this->get_records($table,'','','','','name',$display_field);
+
+
+			if(is_array($allrecords))
+			foreach ($allrecords as $record)
+			{
+			   if($record[$related_field]==$value) return $record[$display_field];
+			}
+		 }
+
+		 function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
+		 {
+
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			{
+			   if(substr($key,0,6)=='FLDXXX')
+			   {
+				  /* Check for plugin need and plugin availability */
+				  if ($filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
+				  {
+					 if ($filtered_data==-1) $filtered_data='';
+					 $data[] = array
+					 (
+						'name' => substr($key,6),
+						'value' =>  $filtered_data  //addslashes($val)
+					 );
+				  }
+				  else // if there's no plugin, just save the vals
+				  {
+					 $data[] = array
+					 (
+						'name' => substr($key,6),
+
+						'value' => addslashes($val) 
+					 );
+				  }
+
+			   }
+			}
+
+			return $data;
+
+		 }
+
+
+		 function http_vars_pairs_many($HTTP_POST_VARS) {
+
+			while(list($key, $val) = each($HTTP_POST_VARS)) {
+
+
+			   if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
+			   {
+
+				  $data = array_merge($data,array
+				  (
+					 $key=> $val
+				  ));
+			   }
+			}
+			return $data;
+		 }		
+
+
+
+		 function read_preferences($key)
+		 {
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			$prefs = array();
+
+			if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
+			{
+			   $prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
+			}
+			return $prefs;
+		 }
+
+		 function save_preferences($key,$prefs)
+		 {
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			$GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
+			$GLOBALS['phpgw']->preferences->save_repository(True);
+		 }
+
+		 /****************************************************************************\
+		 * 	Config site_objects                                              *
+		 \****************************************************************************/
+
+		 function save_object_config()
+		 {
+
+			$prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
+			$prefs_show_hide_read=$this->read_preferences('show_fields');
+
+			$show_fields_entry=$this->site_object[object_id];
+
+			while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+			{
+			   if(substr($key,0,4)=='SHOW')
+			   $show_fields_entry.=','.substr($key,4);
+			}
+
+			if($prefs_show_hide_read) 
+			{
+			   $prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
+
+			   foreach($prefs_show_hide_arr as $pref_s_h)
+			   {
+
+				  $pref_array=explode(',',$pref_s_h);
+				  if($pref_array[0]!=$this->site_object[object_id])
+				  {
+					 $prefs_show_hide_new.=implode(',',$pref_array);
+				  }
+			   }
+
+			   if($prefs_show_hide_new) $prefs_show_hide_new.='|';
+			   $prefs_show_hide_new.=$show_fields_entry;
+			}
+			else
+			{
+			   $prefs_show_hide_new=$show_fields_entry;
+			}
+
+			$this->save_preferences('show_fields',$prefs_show_hide_new);
+			$this->save_preferences('default_order',$prefs_order_new);
+
+			$this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
+		 }
+
+
+		 /*--------------------------------------------------
+		 FIXME all field related plugins must move to dedicated class
+		 -------------------------------------------*
+
+		 /**
+		 * get storage filter from plugin 
+		 */
+		 function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
+		 {
+			global $local_bo;
+			$local_bo=$this;
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+
+			foreach($plugins as $plugin)
+			{
+			   $sets=explode(':',$plugin);
+
+			   /* make plug config array for this field */
+			   if($sets[3]) $conf_str = explode(';',$sets[3]);
+
+			   if(is_array($conf_str))
+			   {
+				  foreach($conf_str as $conf_entry)
+				  {
+					 list($conf_key,$val)=explode('=',$conf_entry);	
+					 $conf_arr[$conf_key]=$val;
+				  }
+			   }
+
+			   //substr($key,6)==$sets[0] ||
+			   if ( substr($key,-strlen($sets[0]))==$sets[0] )
+			   {
+//				  	   echo $sets[1].' '.$key.' '.substr($key,-strlen($sets[0]));
+//				  	   echo '<br/>';
+				  $data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr);
+				  if(!$data) return;
+			   }
+			}
+			return $data;
+
+		 }
+
+
+		 /**
+		 * get readonly view function from plugin 
+		 */
+		 function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
+		 {
+			global $local_bo;
+			$local_bo=$this;
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			foreach($plugins as $plugin)
+			{	
+			   $sets=explode(':',$plugin);
+
+			   /* make plug config array for this field */
+			   if($sets[3]) $conf_str = explode(';',$sets[3]);
+			   if(is_array($conf_str))
+			   {
+				  foreach($conf_str as $conf_entry)
+				  {
+					 list($key,$val)=explode('=',$conf_entry);	
+					 $conf_arr[$key]=$val;		
+				  }
+			   }
+
+			   if ($fieldname==$sets[0])
+			   {
+				  if(!$new_value=@call_user_func('plg_ro_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
+				  {
+					 }
+				  }
+			   }
+			   if (!$new_value)
+			   {
+				  $new_value=$value;
+			   }
+
+			   return $new_value;
+			}
+
+
+			/**
+			* get browse view function from plugin 
+			*/
+			function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
+			{
+			   global $local_bo;
+			   $local_bo=$this;
+			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			   foreach($plugins as $plugin)
+			   {	
+				  $sets=explode(':',$plugin);
+
+				  /* make plug config array for this field */
+				  if($sets[3]) $conf_str = explode(';',$sets[3]);
+				  if(is_array($conf_str))
+				  {
+					 foreach($conf_str as $conf_entry)
+					 {
+						list($key,$val)=explode('=',$conf_entry);	
+						$conf_arr[$key]=$val;		
+					 }
+				  }
+
+				  if ($fieldname==$sets[0])
+				  {
+					 $new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname);
+				  }
+			   }
+
+			   if (!$new_value)
+			   {
+				  $new_value=$value;
+				  if(strlen($new_value)>15)
+				  {
+					 $new_value=strip_tags($new_value);
+					 $new_value = substr($new_value,0,15). ' ...';
+				  }
+			   }
+			   return $new_value;
+
+			}
+
+			/**
+			* get input function from plugin 
+			*/
+			function get_plugin_fi($input_name,$value,$type,$attr_arr)
+			{
+			   global $local_bo;
+			   $local_bo=$this;
+
+			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			   foreach($plugins as $plugin)
+			   {	
+				  $sets=explode(':',$plugin);
+
+				  /* make plug config array for this field */
+				  if($sets[3]) $conf_str = explode(';',$sets[3]);
+				  if(is_array($conf_str))
+				  {
+					 foreach($conf_str as $conf_entry)
+					 {
+						list($key,$val)=explode('=',$conf_entry);	
+						$conf_arr[$key]=$val;		
+					 }
+				  }
+
+
+				  if ( (substr($input_name,0,4)=='MLTX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,6)=='FLDXXX' && substr($input_name,6)==$sets[0]) )
+				  {
+					 //FIXME all plugins must get an extra argument in the sf_func
+					 $input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr);
+				  }
+			   }
+
+			   if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
+
+			   return $input;
+
+			}
+
+			/**
+			* get autonome form action function from plugin 
+			*/
+			function get_plugin_afa()
+			{
+			   global $local_bo;
+			   $local_bo=$this;
+
+			   $action_plugin_name=$_GET[plg];
+
+			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			   foreach($plugins as $plugin)
+			   {	
+				  $sets=explode(':',$plugin);
+
+				  if($sets[3]) $conf_str = explode(';',$sets[3]);
+				  if(is_array($conf_str))
+				  {
+					 unset($conf_arr);
+					 foreach($conf_str as $conf_entry)
+					 {
+						list($key,$val)=explode('=',$conf_entry);	
+						$conf_arr[$key]=$val;		
+					 }
+				  }
+
+				  if ($action_plugin_name==$sets[1])
+				  {
+					 $call_plugin=$sets[1];
+					 break;
+				  }
+			   }
+
+			   if($call_plugin)
+			   {
+				  //FIXME all plugins must get an extra argument in the sf_func
+				  $success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
+			   }
+
+			   if ($succes)
+			   {
+				  $this->message[info]=lang('Action was succesful.');
+
+				  $this->save_sessiondata();
+				  $this->common->exit_and_open_screen('jinn.uiuser.index');
+			   }
+			   else
+			   {
+				  $this->message[error]=lang('Action was not succesful. Unknown error');
+
+				  $this->save_sessiondata();
+				  $this->common->exit_and_open_screen('jinn.uiuser.index');
+			   }
+			}
+
+			/**
+			* include ALL plugins
+			*/
+			function include_plugins()
+			{
+			   global $local_bo;
+			   $local_bo=$this;
+			   if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
+
+				  /* This is the correct way to loop over the directory. */
+
+				  while (false !== ($file = readdir($handle))) 
+				  { 
+					 if (substr($file,0,7)=='plugin.')
+					 {
+
+						include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
+					 }
+				  }
+				  closedir($handle); 
+			   }
+			}
+
+		 }
+	  ?>
