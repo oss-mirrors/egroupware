@@ -31,12 +31,10 @@
 
 		function soprojects()
 		{
-			global $phpgw, $phpgw_info;
-
-			$this->db		= $phpgw->db;
+			$this->db		= $GLOBALS['phpgw']->db;
 			$this->db2		= $this->db;
-			$this->grants	= $phpgw->acl->get_grants('projects');
-			$this->account	= $phpgw_info['user']['account_id'];
+			$this->grants	= $GLOBALS['phpgw']->acl->get_grants('projects');
+			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
 		function project_filter($type)
@@ -52,8 +50,6 @@
 
 		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
-			global $phpgw, $phpgw_info;
-
 			if ($status == 'archive')
 			{
 				$statussort = " AND status = 'archive' ";
@@ -186,8 +182,6 @@
 
 		function select_project_list($type,$selected = '')
 		{
-			global $phpgw;
-
 			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id, $type);
 
 			for ($i=0;$i<count($projects);$i++)
@@ -199,11 +193,11 @@
 				}
 				if ($projects[$i]['title'])
 				{
-					$pro_select .= '>' . $phpgw->strip_html($projects[$i]['title']) . ' [ ' . $phpgw->strip_html($projects[$i]['number']) . ' ]';
+					$pro_select .= '>' . $GLOBALS['phpgw']->strip_html($projects[$i]['title']) . ' [ ' . $GLOBALS['phpgw']->strip_html($projects[$i]['number']) . ' ]';
 				}
 				else
 				{
-					$pro_select .= '>' . $phpgw->strip_html($projects[$i]['number']);
+					$pro_select .= '>' . $GLOBALS['phpgw']->strip_html($projects[$i]['number']);
 				}
 				$pro_select .= '</option>';
 			}
@@ -212,8 +206,6 @@
 
 		function add_project($values, $book_activities, $bill_activities)
 		{
-			global $phpgw;
-
 			if (!$values['budget'])
 			{
 				$values['budget'] = 0;
@@ -269,8 +261,6 @@
 
 		function edit_project($values, $book_activities, $bill_activities)
 		{
-			global $phpgw;
-
 			if (!$values['budget'])
 			{
 				$values['budget'] = 0;
@@ -315,9 +305,7 @@
 
 		function select_activities_list($project_id = '',$billable = False)
 		{
-			global $phpgw, $phpgw_info;
-
-			$currency = $phpgw_info['user']['preferences']['common']['currency'];
+			$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 
 			if ($billable)
 			{
@@ -345,7 +333,7 @@
 						$activities_list .= ' selected';
 					}
 				}
-				$activities_list .= '>' . $phpgw->strip_html($this->db->f('descr'));
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
 
 				if($billable)
 				{
@@ -359,9 +347,7 @@
 
 		function select_pro_activities($project_id = '', $pro_parent, $billable = False)
 		{
-			global $phpgw, $phpgw_info;
-
-			$currency = $phpgw_info['user']['preferences']['common']['currency'];
+			$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 
 			if ($billable)
 			{
@@ -396,7 +382,7 @@
 					$activities_list .= ' selected';
 				}
 
-				$activities_list .= '>' . $phpgw->strip_html($this->db->f('descr'));
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr'));
 
 				if($billable)
 				{
@@ -526,9 +512,7 @@
 
 		function create_projectid()
 		{
-			global $phpgw;
-
-			$year = $phpgw->common->show_date(time(),'Y');
+			$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
 			$prefix = 'P-' . $year . '-';
 
 			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
@@ -540,8 +524,6 @@
 
 		function create_jobid($pro_parent)
 		{
-			global $phpgw;
-
 			$this->db->query("select num from phpgw_p_projects where id='$pro_parent'");
 			$this->db->next_record();
 			$prefix = $this->db->f('num') . '/';
@@ -555,9 +537,7 @@
 
 		function create_activityid()
 		{
-			global $phpgw;
-
-			$year = $phpgw->common->show_date(time(),'Y');
+			$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
 			$prefix = 'A-' . $year . '-';
 
 			$this->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
@@ -569,8 +549,6 @@
 
 		function read_activities($start, $limit = True, $query = '', $sort = '', $order = '', $cat_id = '')
 		{
-			global $phpgw;
-
 			if ($order)
 			{
 				$ordermethod = " order by $order $sort";
