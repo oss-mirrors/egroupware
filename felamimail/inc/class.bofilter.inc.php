@@ -47,6 +47,7 @@
 		{
 			unset($this->sessionData['filter'][$_filterID]);
 			$this->saveSessionData();
+			$this->sofilter->saveFilter($this->sessionData['filter']);
 		}
 		
 		function getActiveFilter()
