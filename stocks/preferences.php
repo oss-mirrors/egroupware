@@ -49,7 +49,7 @@
   }
 
   $phpgw->common->phpgw_header();
-  $phpgw->common->navbar();
+  echo parse_navbar();
 
   // If they don't have any stocks in there, give them something to look at
   if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
@@ -146,5 +146,5 @@
     </tr>
    </table>
 <?php
-  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+$phpgw->common->phpgw_footer();  
 ?>

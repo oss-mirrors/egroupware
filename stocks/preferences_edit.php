@@ -27,7 +27,7 @@ if ($edit) {
     }
   
      $phpgw->common->phpgw_header();                                                                                                                                                               
-     $phpgw->common->navbar();  
+     echo parse_navbar();
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);                                                                                                                                        
      $t->set_file(array( "edit" => "preferences_edit.tpl"));                                                                                                                                   

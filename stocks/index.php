@@ -13,7 +13,6 @@
 
   $phpgw_info["flags"] = array("currentapp" => "stocks", 
                                "enable_network_class" => True);
-//                               "enable_nextmatchs_class" => True);
 
   include("../header.inc.php");
         
@@ -29,5 +28,5 @@
   
    $t->pparse("out", "quotes_list");
   
-   include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+$phpgw->common->phpgw_footer();
 ?>
