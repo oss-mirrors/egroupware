@@ -495,7 +495,7 @@
 				'POST_ACTION'   => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.boforum.post'),
 				'CAT_ID'        => $this->bo->cat_id,
 				'FORUM_ID'      => $this->bo->forum_id,
-				'TYPE'          => $GLOBALS['HTTP_GET_VARS']['type'],
+				'TYPE'          => htmlspecialchars($GLOBALS['HTTP_GET_VARS']['type']),
 				'ACTION'        => 'post',
 				'LANG_DATE'     => lang('Date'),
 				'LANG_SUBJECT'  => lang('Subject'),
