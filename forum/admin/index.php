@@ -11,7 +11,8 @@
 	\*************************************************************************/
 
 
-	$phpgw_info["flags"] = array("currentapp" => "forum",	"enable_nextmatchs_class" => True);
+	$phpgw_info["flags"] = array("currentapp" => "forum",	"enable_nextmatchs_class" => 
+True);
 	include("../../header.inc.php");
 
 
@@ -25,8 +26,8 @@
 	'FORUM_ADMIN'	=> lang("Forums") . " "	. lang("Admin"),
 	'TB_BG'	=> $phpgw_info["theme"]["table_bg"],
 	//TRY TO FIND A	PERFECT	CHOICE
-	//'TR_BG'		=>  $phpgw_info["theme"]["bg_color"],
-	'TD_BG'		=> $phpgw_info["theme"]["bg_color"],
+	// $phpgw_info["theme"]["bg_color"]
+	
 	//'TRBG'		=> $phpgw_info["theme"]["row_off"],
 	'IMG_URL_PREFIX' => $phpgw_info["server"]["app_images"]	 . "/",
 	'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
@@ -45,26 +46,32 @@
 	$phpgw->db->query("select * from f_categories");
 	while($phpgw->db->next_record())
 	{
-		$f_tree[$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"),	"descr"=>$phpgw->db->f("descr"), "forums"=>array());
+		$f_tree[$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"),	
+"descr"=>$phpgw->db->f("descr"), "forums"=>array());
 	}
 	$phpgw->db->query("select * from f_forums");
 	while($phpgw->db->next_record())
 	{
-		$f_tree[$phpgw->db->f("cat_id")]["forums"][$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"), "descr"=>$phpgw->db->f("descr"));
+		$f_tree[$phpgw->db->f("cat_id")]["forums"][$phpgw->db->f("id")] = 
+array("name"=>$phpgw->db->f("name"), "descr"=>$phpgw->db->f("descr"));
 	}
 	ksort($f_tree);
 
 	for(reset($f_tree);$id=key($f_tree);next($f_tree))
 	{
+		
 		if($id > 0)
 		{
 
+		
 			$phpgw->template->set_var(array(
 			'BG6'		=> $phpgw_info["theme"]["bg03"],
 			'CAT_NAME'	=> $f_tree[$id]["name"],
 			'CAT_DESC'	=> $f_tree[$id]["descr"],
-			'EDIT_LINK'	=> $phpgw->link("/forum/admin/category.php","act=edit&cat_id=$id"),
-			'DEL_LINK'	=> $phpgw->link("/forum/admin/deletecategory.php", "cat_id=$id"),
+			'EDIT_LINK'	=> 
+$phpgw->link("/forum/admin/category.php","act=edit&cat_id=$id"),
+			'DEL_LINK'	=> $phpgw->link("/forum/admin/deletecategory.php", 
+"cat_id=$id"),
 			'LANG_EDIT'	=> lang("Edit"),
 			'LANG_DEL'	=> lang("Delete")
 			));
@@ -74,6 +81,7 @@
 		else
 		{
 			// Not sure changing to	what
+			echo "<h1>running this?</h1>";
 			echo "<tr>\n";
 			echo " <td colspan=3 align=right valign=top>\n";
 			echo "<table border=0 width=100%>\n";
@@ -83,16 +91,20 @@
 		//Cleaning the ForumB variable because the blocks use more than	once
 		$phpgw->template->set_var('ForumB','');
 
-		for(reset($f_tree[$id]["forums"]); $fid=key($f_tree[$id]["forums"]); next($f_tree[$id]["forums"]))
+		for(reset($f_tree[$id]["forums"]); $fid=key($f_tree[$id]["forums"]); 
+next($f_tree[$id]["forums"]))
 		{
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
 			$phpgw->template->set_var(array(
-			'TR_BG'		=>  $tr_color,
+			'TD_BG'		=> 'ffffff',
+			'TR_BG'		=> $tr_color,
 			'SUBCAT_NAME'	=> $f_tree[$id]["forums"][$fid]["name"],
 			'SUBCAT_DESC'	=> $f_tree[$id]["forums"][$fid]["descr"],
-			'SUBEDIT_LINK'	=> $phpgw->link("/forum/admin/forum.php","act=edit&for_id=$fid"),
-			'SUBDEL_LINK'	=> $phpgw->link("/forum/admin/deleteforum.php",	"for_id=$fid"),
+			'SUBEDIT_LINK'	=> 
+$phpgw->link("/forum/admin/forum.php","act=edit&for_id=$fid"),
+			'SUBDEL_LINK'	=> $phpgw->link("/forum/admin/deleteforum.php",	
+"for_id=$fid"),
 			'LANG_EDIT'	=> lang("Edit"),
 			'LANG_DEL'	=> lang("Delete"),
 			'LANG_FORUM'	=> lang("Forum")
@@ -102,10 +114,16 @@
 			$phpgw->template->fp('ForumB','ForumBlock',true);
 		}
 		// Parsing the outer block
+		$phpgw->template->set_var(array(
+			'TD_BG'		=> 'ffffff',
+			'TR_BG'		=> $tr_color
+			));
+		
 		$phpgw->template->fp('CatB','CatBlock',true);
 	}
 
 	$phpgw->template->pfp('Out','INDEX');
 	$phpgw->common->phpgw_footer();
 ?>
+
 
