@@ -13,6 +13,16 @@
 
 	/* $Id$ */
 
+	/*
+	** TODO:
+	** - Check to make sure the user isn't searching for something he shouldn't
+	**   and doesn't add a ; then a second query.
+	**	- Add returnto and location info
+	**	- Serious code cleanup
+	**	- Form and template cleanup
+	**	- more and less fields don't work
+	*/
+
 	$phpgw_info['flags'] = array(
 		'currentapp'              => 'bookmarks',
 		'enable_nextmatchs_class' => True,
