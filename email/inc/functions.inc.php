@@ -176,7 +176,7 @@
 	}
 	else
 	{
-		//UNKNOWN SERVER in Preferences
+		//UNKNOWN SERVER in Preferences, return a default value that is likely to work
 		// probably should raise some kind of error here
 		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
 	}
@@ -194,7 +194,7 @@
 	global $phpgw, $phpgw_info;
 	// UWash patched for Maildir style: $Maildir.Junque ?????
 	// Cyrus and Courier style =" INBOX"
-	// UWash style: "email/"
+	// UWash style: "mail"
 
 	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
 	{
@@ -203,34 +203,35 @@
 			if ( empty($phpgw_info['user']['preferences']['email']['mail_folder']) )
 			{
 				// do we need a default value here?
-				$filter = '';
+				$name_space = '';
 			}
 			else
 			{
-				$filter = $phpgw_info['user']['preferences']['email']['mail_folder'];
+				$name_space = $phpgw_info['user']['preferences']['email']['mail_folder'];
 			}
 		}
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
 	// ALSO works for Courier IMAP
 	{
-		$filter = 'INBOX';
+		$name_space = 'INBOX';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 	{
-		//$filter = 'mail/';
+		//$name_space = 'mail/';
 		// delimiter "/" moved to get_mailsvr_delimiter()
-		$filter = 'mail';
+		$name_space = 'mail';
 	}
 	else
 	{
+		// GENERIC IMAP NAMESPACE
 		// imap servers usually use INBOX as their namespace
 		// this is supposed to be discoverablewith the NAMESPACE command
 		// see http://www.rfc-editor.org/rfc/rfc2342.txt
 		// however as of PHP 4.0 this is not implemented
-		$filter = 'INBOX';
+		$name_space = 'INBOX';
 	}
-	return $filter;
+	return $name_space;
   }
 
 /* * * * * * * * * * *
@@ -251,6 +252,7 @@
 	}
 	else
 	{
+		// GENERIC IMAP DELIMITER
 		// imap servers usually use a "." as their delimiter
 		// this is supposed to be discoverable with the NAMESPACE command
 		// see http://www.rfc-editor.org/rfc/rfc2342.txt
@@ -281,10 +283,11 @@
 	}
 	else
 	{
+		$name_space = get_mailsvr_namespace();
 		$delimiter = get_mailsvr_delimiter();
-		if (strstr($folder,$delimiter) == False)
+		if (strstr($folder,"$name_space" ."$delimiter") == False)
 		{
-			$folder_long = get_mailsvr_namespace() ."$delimiter" ."$folder";
+			$folder_long = "$name_space" ."$delimiter" ."$folder";
 		}
 		else
 		{
@@ -303,12 +306,14 @@
 	$folder = ensure_no_brackets($feed_folder);
 	if ($folder == 'INBOX')
 	{
+		// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
 		$folder_short = 'INBOX';
 	}
 	else
 	{
+		$name_space = get_mailsvr_namespace();
 		$delimiter = get_mailsvr_delimiter();
-		if (strstr($folder,$delimiter) == False)
+		if (strstr($folder,"$name_space" ."$delimiter") == False)
 		{
 			$folder_short = $folder;
 		}
