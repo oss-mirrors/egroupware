@@ -13,9 +13,10 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp'              => 'admin',
-		'nonavbar'                => True,
-		'noheader'                => True
+		'admin_only' => True,
+		'currentapp' => 'headlines',
+		'nonavbar'   => True,
+		'noheader'   => True
 	);
 	include('../header.inc.php');
 

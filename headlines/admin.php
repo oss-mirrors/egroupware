@@ -13,7 +13,8 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp'              => 'admin',
+		'admin_only'              => True,
+		'currentapp'              => 'headlines',
 		'enable_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
