@@ -27,9 +27,9 @@
 	);
 	$setup_info['phpldapadmin']['license']  = 'GPL';
 	$setup_info['phpldapadmin']['description'] =
-		'A comprehensiv LDAP administration tool.';
+		'A comprehensive LDAP administration tool.<br>For more info visit <a href="http://phpldapadmin.sourceforge.net/">Homepage</a> of the phpldapadmin project.';
 	$setup_info['phpldapadmin']['note'] =
-		'For more info visit <a href="http://phpldapadmin.sourceforge.net/">Homepage</a> of the phpldapadmin project.';
+		'At the moment you need to configure it by editing or creating a config.php file (from the config.php.example file).';
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['phpldapadmin']['hooks'] = array(
@@ -38,6 +38,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['phpldapadmin']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.16')
+		 'versions' => Array('0.9.14','1.0.0')
 	);
 ?>
