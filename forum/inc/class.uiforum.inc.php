@@ -390,7 +390,7 @@
 			$post_ul = '';
 			$pre_ul = '';
 			$messages = $this->bo->read_msg($this->bo->cat_id,$this->bo->forum_id,$msg);
-			while(list($key,$message) = each($messages))
+			while($messages && list($key,$message) = each($messages))
 			{
 				if($message['id'] == $msg)
 				{

@@ -51,10 +51,8 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-				if(@isset($GLOBALS['HTTP_GET_VARS'][$var_str]))
-				{
-					$this->$var_str = $GLOBALS['HTTP_GET_VARS'][$var_str];
-				}
+				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
@@ -67,7 +65,7 @@
 			if ($this->use_session)
 			{
 				if($this->debug) { echo '<br>Save:'; _debug_array($data); }
-				$GLOBALS['phpgw']->session->appsession('session_data','calendar',$data);
+				$GLOBALS['phpgw']->session->appsession('session_data','forum',$data);
 			}
 		}
 
@@ -78,8 +76,8 @@
 
 			$this->view     = $data['view'];
 			$this->location = $data['location'];
-			$this->cat_id   = intval($data['cat_id']);
-			$this->forum_id = intval($data['forum_id']);
+			$this->cat_id   = $data['cat_id'];
+			$this->forum_id = $data['forum_id'];
 		}
 		
 		function post()

@@ -183,7 +183,7 @@
 			$db2 = $GLOBALS['phpgw']->db;
 			$db2->query('select thread from phpgw_forum_threads where id='.$msg_id,__LINE__,__FILE__);
 			$db2->next_record();
-			$this->db->query('select * from phpgw_forum_threads where id>='.$msg_id.' and cat_id='.$cat_id.' and for_id='.$forum_id.' and thread='.$db2->f('thread').' order by parent,id',__LINE__,__FILE__);
+			$this->db->query('select * from phpgw_forum_threads where id >= '.$msg_id.' and cat_id='.$cat_id.' and for_id='.$forum_id.' and thread='.$db2->f('thread').' order by parent,id',__LINE__,__FILE__);
 			if(!$this->db->num_rows())
 			{
 				return False;
