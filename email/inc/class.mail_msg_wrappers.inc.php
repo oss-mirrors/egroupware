@@ -3182,7 +3182,7 @@
 			// NOTE this WILL ALTER $_POST inserting processed values for later use (could this be avoided?)
 			if (is_array($this->ref_POST))
 			{
-				while(list($key,$value) = each($this->ref_POST))
+				foreach($this->ref_POST as $key => $value)
 				{
 					if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$this->ref_POST[$key].'<br>'); }
 					/*
