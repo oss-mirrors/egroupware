@@ -1119,6 +1119,8 @@
 			$this->t->set_var('lang_no_filter',lang("no filter"));
 			$this->t->set_var('lang_connection_failed',lang("The connection to the IMAP Server failed!!"));
 			$this->t->set_var('lang_select_target_folder',lang("Simply click the target-folder"));
+			$this->t->set_var('lang_open_all',lang("open all"));
+			$this->t->set_var('lang_close_all',lang("close all"));
 		}
 	}
 ?>
