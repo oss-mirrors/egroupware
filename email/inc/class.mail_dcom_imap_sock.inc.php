@@ -2837,6 +2837,10 @@
 				// NIL)
 				//  -- OR --
 				// ("EN")
+				//  -- OR --
+				// "en") 
+				// note: in each case above the last paren is the end of data paren
+				// RFC3501 sect 7.4.2 says this is "A string or parenthesized list giving the body language value as defined in [LANGUAGE-TAGS]"
 				if ($this->debug_dcom > 1) { echo 'bs: now looking LANGUAGE but we do not handle it now, but we still need to eat it exactly and move on, or maybe at end of str now'."\n"; }
 				if ($this->debug_dcom > 1) { echo 'bs: it is quite likely the end paren of this part is next... '."\n"; }
 				if (($this->bs_rawstr{0} == 'N')
@@ -2861,23 +2865,35 @@
 				else
 				{
 					if ($this->debug_dcom > 1) { echo 'bs: we found LANGUAGE element ... grab it for future compat even though php-imap does not handle it'."\n"; }
-					if ($this->debug_dcom > 2) { echo 'bs: apparently it should be a paren list item... '."\n"; }
-					if ($this->debug_dcom > 2) { echo 'bs: I have only seen paren list of string although rfc3501s7.3.2 says it can be a simple string'."\n"; }
-					$start = 0;
-					$end = strpos($this->bs_rawstr, ')');
-					$slen = ($end+1) - $start;
-					$tmp_data['language'] = substr($this->bs_rawstr, $start, $slen);
-					//echo 'bs: This is probably LANGUAGE but we do not handle it now, usualy NIL, so eat it and move on, or maybe at end of str now'."\n";
-					if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
-					if ($this->debug_dcom > 2) { echo 'bs: prep language by removing any open and close paren since it is supposed to be a list'."\n"; }
-					if ($tmp_data['language']{0} == '(')
+					if ($this->debug_dcom > 2) { echo 'bs: rfc3501s7.3.2 says it can be a simple string OR it can be a paren list item, if it exitis '."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: I have seen both, mailer netscape webmail is one of the few that sets this header: Content-language: en'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: server Cyrus will represent that as a paren list, server Courier-imap as a simple quoted string'."\n"; }
+					if ($this->bs_rawstr{0} == '(')
 					{
-						$tmp_data['language'] = substr($tmp_data['language'], 1);
+						if ($this->debug_dcom > 2) { echo 'bs: language exists and is in a paren list of some kind'."\n"; }
+						$start = 0;
+						$end = strpos($this->bs_rawstr, ')');
+						$slen = ($end+1) - $start;
+						$tmp_data['language'] = substr($this->bs_rawstr, $start, $slen);
+						if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
+						if ($this->debug_dcom > 2) { echo 'bs: prep language by removing any open and close paren since it is supposed to be a list'."\n"; }
+						if ($tmp_data['language']{0} == '(')
+						{
+							$tmp_data['language'] = substr($tmp_data['language'], 1);
+						}
+						$lang_end = strlen($tmp_data['language'])-1;
+						if ($tmp_data['language']{$lang_end} == ')')
+						{
+							$tmp_data['language'] = substr($tmp_data['language'], 0, $lang_end);
+						}
 					}
-					$lang_end = strlen($tmp_data['language'])-1;
-					if ($tmp_data['language']{$lang_end} == ')')
+					elseif ($this->bs_rawstr{0} == '"')
 					{
-						$tmp_data['language'] = substr($tmp_data['language'], 0, $lang_end);
+						if ($this->debug_dcom > 2) { echo 'bs: language exists and is a quoted string'."\n"; }
+						$start = 0;
+						$end = strpos($this->bs_rawstr, '"', 1);
+						$slen = ($end+1) - $start;
+						$tmp_data['language'] = substr($this->bs_rawstr, $start, $slen);
 					}
 					if ($this->debug_dcom > 1) { echo 'bs: final $tmp_data[language] is: ['.$tmp_data['language']."]\n"; }
 					//// type2 DELETE MAIN STRING OF DONE DATA
