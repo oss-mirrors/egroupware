@@ -4,8 +4,9 @@
 
   if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
       $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
-     $folder = (!$folder ? "INBOX" : $folder);
+      $folder = (!$folder ? "INBOX" : $folder);
   }
+      //echo "<b>TEST:</b> $folder";
 
   // Its better then them using a ton of PHP errors.
   $mailbox = $phpgw->msg->login($folder);

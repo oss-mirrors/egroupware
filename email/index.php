@@ -132,7 +132,12 @@ function check_all()
 <?php
       $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
-      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+      if ($folder != "INBOX") {
+         $t_folder_s = $phpgw->msg->construct_folder_str($folder);
+      } else {
+         $t_folder_s = "INBOX";
+      }
+      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
 
       if ($nummsg > 0) {
          $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
