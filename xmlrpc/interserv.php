@@ -80,6 +80,7 @@
 	echo '<input type="submit" name="users" value="List Users">' . "\n";
 	echo '<input type="hidden" name="xsessionid" value="' . $xsessionid . '">' . "\n";
 	echo '<input type="hidden" name="xkp3" value="' . $xkp3 . '">' . "\n";
+	echo 'listapps and listusers are disabled by default in xml_functions.php' . "\n";
 	echo '</form>' . "\n";
 	echo '</td></tr></table><td>';
 ?>
