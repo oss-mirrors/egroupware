@@ -47,7 +47,7 @@ include("config/html.conf.php3");
 <CENTER>
 <BR>
   <TABLE CELLSPACING=1 CELLPADDING=1 BORDER=0>
-   <TR bgcolor="<?php echo $phpgw_info["user"]["theme"]["th_bg"]; ?>">
+   <TR bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <td align=center>
      <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_id",$order,"index.php",lang_tts("Ticket")." #"); ?>
     </td>
