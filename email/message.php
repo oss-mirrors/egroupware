@@ -15,7 +15,13 @@
 
 // This will eventually be written using templates.
 
-  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
+  Header("Cache-Control: no-cache");
+  Header("Pragma: no-cache");
+  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+  
+  if (isset($newsmode) && $newsmode == "on") {
+    $phpgw_info["flags"]["newsmode"] = True;
+  }
 
   $phpgw_info["flags"]["noheader"] = True;
   $phpgw_info["flags"]["currentapp"] = "email";
@@ -28,6 +34,11 @@
   } else {
     $phpgw->common->phpgw_header();
   }
+
+  if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+    $phpgw->common->read_preferences("nntp");
+
+  set_time_limit(0);
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);
   $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
@@ -78,14 +89,14 @@
            // Move this up top.
 	   $session_folder = "folder=".urlencode($folder)."&msgnum";
 
-           if ($msgnum != 1 || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != $totalmeesages)) {
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+           if ($msgnum != 1 || ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old" && $msgnum != $totalmeesages)) {
+              if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
                  $pm = $msgnum + 1;
               } else {
                  $pm = $msgnum - 1;
               }
 
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1)) {
+              if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1)) {
                  echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif"
 			. "\" alt=\"No Previous Message\">";
               } else {
@@ -98,14 +109,14 @@
 		 . " alt=\"No Previous Message\">";
            }
 
-           if ($msgnum < $totalmessages || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != 1)) {
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+           if ($msgnum < $totalmessages || ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old" && $msgnum != 1)) {
+              if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
                  $nm = $msgnum - 1;
               } else {
                  $nm = $msgnum + 1;
               }
 
-              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old"
+              if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"
 		 && $msgnum == 1 && $totalmessages != $msgnum) {
                  echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/"
 			. "right-grey.gif\" alt=\"No Next Message\">";
@@ -175,7 +186,7 @@ if ($msg->from) {
 if ($msg->to) {
   for ($i = 0; $i < count($msg->to); $i++) {
     $topeople = $msg->to[$i];
-    $personal = !$topeople->personal ? $topeople->mailbox."@".$topeople->host : $topeople->personal;
+    $personal = !isset($topeople->personal) || !$topeople->personal ? $topeople->mailbox."@".$topeople->host : $topeople->personal;
     $personal = decode_header_string($personal);
       echo "<a href=\""
         . $phpgw->link("compose.php", "folder=".urlencode($folder)
@@ -202,7 +213,7 @@ if ($msg->to) {
 
 echo "</td></tr>";
 
-if ($msg->cc) {
+if (isset($msg->cc) && $msg->cc) {
 ?>
    <tr>
     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
@@ -254,8 +265,9 @@ if ($msg->cc) {
 </tr>
 <?php
   $flag = 0;
-  for ($z = 0; $z < count($struct->parts); $z++) {
-      $part = !$struct->parts[$z] ? $part = $struct : $part = $struct->parts[$z];
+  $struct_count = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
+  for ($z = 0; $z < $struct_count; $z++) {
+      $part = !isset($struct->parts[$z]) || !$struct->parts[$z] ? $struct : $struct->parts[$z];
       $att_name = get_att_name($part);
 
       if ($att_name != "Unknown") {
@@ -292,11 +304,11 @@ if ($msg->cc) {
 
 <?php
 
-  $numparts = !$struct->parts ? "1" : count($struct->parts);
+  $numparts = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
   echo "<!-- This message has " . $numparts . " part(s) -->\n";
 
   for ($i = 0; $i < $numparts; $i++) {
-      $part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
+      $part = (!isset($struct->parts[$i]) || !$struct->parts[$i] ? $struct : $struct->parts[$i]);
 
       $att_name = get_att_name($part);
       if ($att_name == "Unknown") {
