@@ -13,88 +13,105 @@
 
   /* $Id$ */
 
-  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
+	if ($newsmode == 'on'){$phpgw_info['flags']['newsmode'] = True;}
 
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True);
-  include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'email',
+		'enable_network_class' => True
+	);
+	include('../header.inc.php');
 
-  if ($msgnum) {
-    $msg = $phpgw->msg->header($mailbox, $msgnum);
-    $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
-    if ($action == "reply") {
-            if ($msg->reply_to[0]) {
-                $reply = $msg->reply_to[0];
-            }
-            else {
-                $reply = $msg->from[0];
-            }
-            $to = $reply->mailbox."@".$reply->host;
-	    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-	    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
-	    $subject = $begin . $subject;
-    }
-    if ($action == "replyall") {
-	    if ($msg->to) {
-	      for ($i = 0; $i < count($msg->to); $i++) {
-	        $topeople = $msg->to[$i];
-	        $tolist[$i] = "$topeople->mailbox@$topeople->host";
-	      }
-	    $from = $msg->from[0];
-	    $to = "$from->mailbox@$from->host, " . implode(", ", $tolist);
-    }
+	if ($msgnum)
+	{
+		$msg = $phpgw->msg->header($mailbox, $msgnum);
+		$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
+		if ($action == 'reply')
+		{
+			if ($msg->reply_to[0])
+			{
+				$reply = $msg->reply_to[0];
+			}
+			else
+			{
+				$reply = $msg->from[0];
+			}
+			$to = $reply->mailbox.'@'.$reply->host;
+			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
+			$begin = strtoupper(substr($subject, 0, 3)) != 'RE:' ? 'Re: ' : '';
+			$subject = $begin . $subject;
+		}
+		if ($action == 'replyall')
+		{
+			if ($msg->to)
+			{
+				for ($i = 0; $i < count($msg->to); $i++)
+				{
+					$topeople = $msg->to[$i];
+					$tolist[$i] = "$topeople->mailbox@$topeople->host";
+				}
+				$from = $msg->from[0];
+				$to = "$from->mailbox@$from->host, " . implode(", ", $tolist);
+			}
 
-    if ($msg->cc) {
-	    for ($i = 0; $i < count($msg->cc); $i++)	{
-        $ccpeople = $msg->cc[$i];
-        $cclist[$i] = "$ccpeople->mailbox@$ccpeople->host";	
-      }
-	    $cc = implode(", ", $cclist);
-    }
+			if ($msg->cc)
+			{
+				for ($i = 0; $i < count($msg->cc); $i++)
+				{
+					$ccpeople = $msg->cc[$i];
+					$cclist[$i] = "$ccpeople->mailbox@$ccpeople->host";	
+				}
+				$cc = implode(", ", $cclist);
+			}
 
-    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
-    $subject = $begin . $subject;
-  }
+			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
+			$begin = strtoupper(substr($subject, 0, 3)) != 'RE:' ? 'Re: ' : '';
+			$subject = $begin . $subject;
+		}
 
+		if ($action == 'forward')
+		{
+			$subject = !$msg->Subject ? lang('no subject') : decode_header_string($msg->Subject);
+			$begin = strtoupper(substr($subject, 0, 3)) != 'FW:' ? 'Fw: ' : '';
+			$subject = $begin . $subject;
+		}
 
-  if ($action == "forward") {
-    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-    $begin = strtoupper(substr($subject, 0, 3)) != "FW:" ? "Fw: " : "";
-    $subject = $begin . $subject;
-  }
-
-// This may be needed for multi-language support
-//  $body = "\n\n\n$L_ORIG_MSG\n&gt\n";
-  $body = "\n\n\n$to wrote:\n&gt\n";
-  $numparts = !$struct->parts ? "1" : count($struct->parts);
-  for ($i = 0; $i < $numparts; $i++) {
-    $part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
-    if (get_att_name($part) == "Unknown") {
-	    if (strtoupper($part->subtype) == "PLAIN") {
-	      $bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $i+1);
-        $body_array = array();
-	      $body_array = explode("\n", $bodystring);
-        $bodycount = count ($body_array);
-        for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx) {
-          if ($body_array[$bodyidx] != "\r") {
-            $body .= "&gt;" . $body_array[$bodyidx];
-            $body = chop ($body);
-            $body .= "\n";
-          }
-        }    
-        trim ($body);
-      }
-    }
-  }
-}
+		// This may be needed for multi-language support
+		//  $body = "\n\n\n$L_ORIG_MSG\n&gt\n";
+		$body = "\n\n\n$to wrote:\n&gt\n";
+		$numparts = !$struct->parts ? "1" : count($struct->parts);
+		for ($i = 0; $i < $numparts; $i++)
+		{
+			$part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
+			if (get_att_name($part) == "Unknown")
+			{
+				if (strtoupper($part->subtype) == 'PLAIN')
+				{
+					$bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $i+1);
+					$body_array = array();
+					$body_array = explode("\n", $bodystring);
+					$bodycount = count ($body_array);
+					for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx)
+					{
+						if ($body_array[$bodyidx] != "\r")
+						{
+							$body .= "&gt;" . $body_array[$bodyidx];
+							$body = chop ($body);
+							$body .= "\n";
+						}
+					}
+					trim ($body);
+				}
+			}
+		}
+	}
 ?>
 
  <script>
     self.name="first_Window";
     function addybook()
     {
-<!--   Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php","query="); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
-       Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php"); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
+<!--   Window1=window.open('<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
+       Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp'].'/addressbook.php'); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
     }
 
     function attach_window(url)
@@ -195,5 +212,5 @@ if(document.doit.to.value == "") document.doit.to.focus();
 </script>
 
 <?php 
-$phpgw->common->phpgw_footer();
+	$phpgw->common->phpgw_footer();
 ?>
