@@ -70,7 +70,8 @@
 				echo parse_navbar();
 
 				//echo "<br>template: " . GALAXIA_PROCESSES.SEP.$this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl';
-				$GLOBALS['phpgw']->template->set_file('template', GALAXIA_PROCESSES.SEP.$this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
+				$GLOBALS['phpgw']->template->set_root(GALAXIA_PROCESSES.SEP);
+				$GLOBALS['phpgw']->template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			include_once ($source);
