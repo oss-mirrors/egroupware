@@ -297,7 +297,7 @@
   // modified to make mailto: addresses compose in phpGW
   function make_clickable($data)
   {
-    global $phpgw;
+    global $phpgw,$phpgw_info;
 
     if(empty($data))
     {
