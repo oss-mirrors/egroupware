@@ -23,6 +23,11 @@
 	$felamimailConfig = $config->config_data;
 	#_debug_array($felamimailConfig);
 	unset($config);
+	
+	#$boemailadmin = CreateObject('emailadmin.bo');
+	#$methodData = array($felamimailConfig['profileID']);
+	#_debug_array($methodData);
+	$felamimailConfig = ExecMethod('emailadmin.bo.getProfile',$felamimailConfig['profileID']);
 	                                                                                                
 
 	$refreshTime = array(
@@ -47,7 +52,13 @@
 
 	$sortOrder = array(
 		'0' => lang('date(newest first)'),
-		'1' => lang('date(oldest first)')
+		'1' => lang('date(oldest first)'),
+		'3' => lang('from(A->Z)'),
+		'2' => lang('from(Z->A)'),
+		'5' => lang('subject(A->Z)'),
+		'4' => lang('subject(Z->A)'),
+		'7' => lang('size(0->...)'),
+		'6' => lang('size(...->0)')
 	);
 	create_select_box('Default sorting order','sortOrder',$sortOrder);
 
@@ -84,7 +95,7 @@
 		$folderList
 	);
 	create_select_box('sent folder','sentFolder',$sentOptions);
-	
+
 	if ($felamimailConfig['userDefinedAccounts'] == 'yes')
 	{
 		$selectOptions = array(

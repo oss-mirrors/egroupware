@@ -67,7 +67,7 @@
 				{
 					$alert_msg .= 'Error:'.'<br>'
 						.'Server is unable to access phpgw tmp directory'.'<br>'
-						.$phpgw_info['server']['temp_dir'].'<br>'
+						.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
 						.'Please check your configuration'.'<br>'
 						.'<br>';
 				}
@@ -256,22 +256,15 @@
 			
 			
 			// check for Re: in subject header
-			#if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
-			#{
-			#	$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
-			#}
-			#else
-			#{
+			if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
+			{
+				$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
+			}
+			else
+			{
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
-			#}
+			}
 
-			#$structure = $bofelamimail->getMessageStructure($_uid);
-			#if(sizeof($structure->parts) > 1)
-			#{
-			#	$sections = $bofelamimail->parse($structure);
-			#	$attachments = $bofelamimail->get_attachments($sections);
-			#}
-			
 			$this->sessionData['body']	= $bofelamimail->decode_header($headers->fromaddress) . " ".lang("wrote").": \n>";
 			
 			// get the body

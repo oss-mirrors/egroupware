@@ -34,15 +34,6 @@
 		function addToCache($_data)
 		{
 		
-#			$query = sprintf("insert into phpgw_felamimail_cache ".
-#					 "(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) ".
-#					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-#					 $this->accountid, addslashes($this->hostname), 
-#					 addslashes($this->foldername), addslashes($this->accountname), 
-#					 $_data['uid'], $_data['date'], addslashes($_data['subject']),
-#					 addslashes($_data['sender_name']), addslashes($_data['sender_address']),
-#					 addslashes($_data['to_name']), addslashes($_data['to_address']),
-#					 $_data['size'],$_data['attachments']);
 			$query = 'insert into phpgw_felamimail_cache '.
 					 '(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) '.
 					 "values('".$this->accountid
@@ -266,6 +257,12 @@
 					break;
 				case "5":
 					$sort = "order by subject asc";
+					break;
+				case "6":
+					$sort = "order by size desc";
+					break;
+				case "7":
+					$sort = "order by size asc";
 					break;
 				default:
 					$sort = "order by date desc";

@@ -190,20 +190,20 @@ doLoad();
 					<td width="20px" bgcolor="#FFFFCC" align="center">
 						<input type="checkbox" id="messageCheckBox" onClick="selectAll(this)">
 					</td>
-					<td width="145px" bgcolor="#FFFFCC" align="center">
-						<b><a href="{url_sort_from}"><font color="black">{lang_from}</font></a></b>
+					<td width="145px" bgcolor="#FFFFCC" align="center" class="{css_class_from}">
+						<a href="{url_sort_from}">{lang_from}</a>
 					</td>
-					<td width="95px" bgcolor="#FFFFCC" align="center">
-						<b><a href="{url_sort_date}"><font color="black">{lang_date}</font></a></b>
+					<td width="95px" bgcolor="#FFFFCC" align="center" class="{css_class_date}">
+						<a href="{url_sort_date}">{lang_date}</a>
 					</td>
-					<td width="70px" bgcolor="#FFFFCC" align="center">
+					<td width="70px" bgcolor="#FFFFCC" align="center" class="text_small">
 						&nbsp;
 					</td>
-					<td bgcolor="#FFFFCC" align="center">
-						<b><a href="{url_sort_subject}"><font color="black">{lang_subject}</font></a
+					<td bgcolor="#FFFFCC" align="center" class="{css_class_subject}">
+						<a href="{url_sort_subject}">{lang_subject}</a>
 					</td>
-					<td width="40px" bgcolor="#FFFFCC" align="center">
-						<b>{lang_size}</b>
+					<td width="40px" bgcolor="#FFFFCC" align="center" class="{css_class_size}">
+						<a href="{url_sort_size}">{lang_size}</a>
 					</td>
 				</tr>
 				{header_rows}

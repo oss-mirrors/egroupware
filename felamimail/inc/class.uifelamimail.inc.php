@@ -19,6 +19,7 @@
 		(
 			'addVcard'		=> True,
 			'changeFilter'		=> True,
+			'changeSorting'		=> True,
 			'css'			=> True,
 			'compressFolder'	=> True,
 			'deleteMessage'		=> True,
@@ -35,8 +36,6 @@
 
 		function uifelamimail()
 		{
-			global $phpgw, $phpgw_info;
-			
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_unread_x"])) 
 				$GLOBALS['HTTP_POST_VARS']["mark_unread"] = "true";
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_read_x"])) 
@@ -50,8 +49,9 @@
 
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
 			$this->bofilter		= CreateObject('felamimail.bofilter');
-			
-			
+			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->preferences	= $this->bopreferences->getPreferences();
+
 			if(isset($GLOBALS['HTTP_POST_VARS']["mailbox"]) && 
 				$GLOBALS['HTTP_GET_VARS']["menuaction"] == "felamimail.uifelamimail.handleButtons" &&
 				empty($GLOBALS['HTTP_POST_VARS']["mark_unread"]) &&
@@ -65,7 +65,7 @@
 					// change folder
 					$this->bofelamimail->sessionData['mailbox']	= $GLOBALS['HTTP_POST_VARS']["mailbox"];
 					$this->bofelamimail->sessionData['startMessage']= 1;
-					$this->bofelamimail->sessionData['sort']	= 6;
+					$this->bofelamimail->sessionData['sort']	= $this->preferences['sortOrder'];
 					$this->bofelamimail->sessionData['activeFilter']= -1;
 				}
 				elseif($GLOBALS['HTTP_POST_VARS']["folderAction"] == "moveMessage")
@@ -103,10 +103,11 @@
 			{
 				$this->bofelamimail->sessionData['startMessage'] = $GLOBALS['HTTP_GET_VARS']["startMessage"];
 			}
-			// change sorting
-			if(isset($GLOBALS['HTTP_GET_VARS']["sort"]))
+			
+			// if sorting was not set, set it to the user definded default
+			if(!isset($this->bofelamimail->sessionData['sort']))
 			{
-				$this->bofelamimail->sessionData['sort'] = $GLOBALS['HTTP_GET_VARS']["sort"];
+				$this->bofelamimail->sessionData['sort'] = $this->preferences['sortOrder'];
 			}
 			$this->bofelamimail->saveSessionData();
 			
@@ -117,17 +118,15 @@
 
 			#$this->cats			= CreateObject('phpgwapi.categories');
 			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
-			#$this->account			= $phpgw_info['user']['account_id'];
 			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			#$this->grants			= $phpgw->acl->get_grants('notes');
 			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 			$this->connectionStatus = $this->bofelamimail->openConnection();
 
-			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
-			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
+			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["row_on"];
+			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["row_off"];
 
-			$this->dataRowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->dataRowColor[1] = $phpgw_info["theme"]["bg02"];
+			$this->dataRowColor[0] = $GLOBALS['phpgw_info']["theme"]["bg01"];
+			$this->dataRowColor[1] = $GLOBALS['phpgw_info']["theme"]["bg02"];
 			                 
 		}
 
@@ -179,6 +178,20 @@
 			$this->viewMainScreen();
 		}
 
+		function changeSorting()
+		{
+			// change sorting
+			if(isset($_GET["sort"]))
+			{
+				$this->bofelamimail->sessionData['sort']	= $_GET["sort"];
+				$this->sort					= $_GET["sort"];
+	
+				$this->bofelamimail->saveSessionData();
+			}
+			
+			$this->viewMainScreen();
+		}
+
 		function css()
 		{
 			$appCSS = 
@@ -208,6 +221,9 @@
 			
 			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
 			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
+			
+			.text_small { font-size: 10px; }
+			.text_small_bold { font-size: 10px; font-weight : bold; }
 			
 			div.activetab{ display:inline; }
 			div.inactivetab{ display:none; }
@@ -314,11 +330,8 @@
 		
 		function display_app_header()
 		{
-			global $phpgw, $phpgw_info;
-			
-			$phpgw->common->phpgw_header();
+			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
-			
 		}
 	
 		function handleButtons()
@@ -533,33 +546,103 @@
 			);
 			$this->t->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
-			
-			// set the default values for the sort links (sort by url)
+			// define the sort defaults
+			$dateSort	= '0';
+			$dateCSS	= 'text_small';
+			$fromSort	= '3';
+			$fromCSS	= 'text_small';
+			$subjectSort	= '5';
+			$subjectCSS	= 'text_small';
+			$sizeSort	= '6';
+			$sizeCSS	= 'text_small';
+
+			// and no overwrite the defaults
+			switch($this->sort)
+			{
+				// sort by date newest first
+				case '0':
+					$dateSort	= '1';
+					$dateCSS	= 'text_small_bold';
+					break;
+				// sort by date oldest first
+				case '1':
+					$dateSort	= '0';
+					$dateCSS	= 'text_small_bold';
+					break;
+
+				// sort by from z->a
+				case '2':
+					$fromSort	= '3';
+					$fromCSS	= 'text_small_bold';
+					break;
+				// sort by from a->z
+				case '3':
+					$fromSort	= '2';
+					$fromCSS	= 'text_small_bold';
+					break;
+
+				// sort by subject z->a
+				case '4':
+					$subjectSort	= '5';
+					$subjectCSS	= 'text_small_bold';
+					break;
+				// sort by subject a->z
+				case '5':
+					$subjectSort	= '4';
+					$subjectCSS	= 'text_small_bold';
+					break;
+
+				// sort by size z->a
+				case '6':
+					$sizeSort	= '7';
+					$sizeCSS	= 'text_small_bold';
+					break;
+				// sort by subject a->z
+				case '7':
+					$sizeSort	= '6';
+					$sizeCSS	= 'text_small_bold';
+					break;
+			}
+
+			// sort by date
 			$linkData = array
 			(
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
 				'startMessage'	=> 1,
-				'sort'		=> "2"
-			);
-			$this->t->set_var('url_sort_from',$GLOBALS['phpgw']->link('/index.php',$linkData));
-		
-			// set the default values for the sort links (sort by date)
-			$linkData = array
-			(
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-				'startMessage'	=> 1,
-				'sort'		=> "0"
+				'sort'		=> $dateSort
 			);
 			$this->t->set_var('url_sort_date',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('css_class_date',$dateCSS);
 		
-			// set the default values for the sort links (sort by subject)
+			// sort by from
 			$linkData = array
 			(
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
 				'startMessage'	=> 1,
-				'sort'		=> "4"
+				'sort'		=> $fromSort
+			);
+			$this->t->set_var('url_sort_from',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('css_class_from',$fromCSS);
+		
+			// sort by subject
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
+				'startMessage'	=> 1,
+				'sort'		=> $subjectSort
 			);
 			$this->t->set_var('url_sort_subject',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('css_class_subject',$subjectCSS);
+			
+			// sort by size
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
+				'startMessage'	=> 1,
+				'sort'		=> $sizeSort
+			);
+			$this->t->set_var('url_sort_size',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$this->t->set_var('css_class_size',$sizeCSS);
 			
 			// create the filter ui
 			$filterList = $bofilter->getFilterList();
@@ -581,12 +664,12 @@
 				$this->t->set_var('quicksearch',$filterList[0]['subject']);
 			
 			// create the urls for sorting
-			switch($this->sort)
+/*			switch($this->sort)
 			{
 				case "0":
 					$linkData = array
 					(
-						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
 						'startMessage'	=> 1,
 						'sort'		=> "1"
 					);
@@ -596,17 +679,18 @@
 				case "2":
 					$linkData = array
 					(
-						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
 						'startMessage'	=> 1,
 						'sort'		=> "3"
 					);
 					$this->t->set_var('url_sort_from',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('css_class_from','text_small_bold');
 					
 					break;
 				case "4":
 					$linkData = array
 					(
-						'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
+						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
 						'startMessage'	=> 1,
 						'sort'		=> "5"
 					);
@@ -615,7 +699,7 @@
 					break;
 			}
 			
-			
+*/			
 			if($this->connectionStatus != 'True')
 			{
 				$this->t->set_var('message',$this->connectionStatus);
@@ -1014,11 +1098,9 @@
 
 		function translate()
 		{
-			global $phpgw_info;			
-
-			$this->t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
+			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']["theme"]["th_bg"]);
+			$this->t->set_var('bg_01',$GLOBALS['phpgw_info']["theme"]["bg01"]);
+			$this->t->set_var('bg_02',$GLOBALS['phpgw_info']["theme"]["bg02"]);
 
 			$this->t->set_var('lang_compose',lang('compose'));
 			$this->t->set_var('lang_edit_filter',lang('edit filter'));

@@ -1,5 +1,8 @@
 Version 0.9.5
 
+- fixed sorting
+	- added all needed options to preferences
+	- can now be sorted by size too
 - forwarding messages now as message/rfc822
 - improved mainview
 	- javascript selectbutton to select all messages

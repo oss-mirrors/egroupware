@@ -715,7 +715,7 @@
 		{
 			if($_htmlOptions != '')
 				$this->htmlOptions = $_htmlOptions; 
-				
+
 			$structure = imap_fetchstructure($this->mbox, $_uid, FT_UID);
 			#_debug_array($structure);
 			$sections = array();

@@ -182,3 +182,10 @@ select emailprofile	felamimail	de	EMailprofil auswählen
 Undelivered Message	felamimail	de	Unzustellbare Nachricht
 type	felamimail	de	Typ
 organisation	felamimail	de	Organisation
+from(A->Z)	felamimail	de	Von(A->Z)
+from(Z->A)	felamimail	de	Von(Z->A)
+subject(A->Z)	felamimail	de	Betreff(A->Z)
+subject(Z->A)	felamimail	de	Betreff(Z->A)
+size(0->...)	felamimail	de	Größe(0->...)
+size(...->0)	felamimail	de	Größe(...->0)
+show new messages on main screen	felamimail	de	neue Nachrichten auf der Startseite anzeigen

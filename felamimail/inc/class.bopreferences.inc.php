@@ -92,6 +92,7 @@
 			
 			// check for user specific settings
 			#_debug_array($felamimailUserPrefs);
+			#_debug_array($profileData);
 			if ($profileData['userDefinedAccounts'] == 'yes' &&
 				$felamimailUserPrefs['use_custom_settings'] == 'yes')
 			{
@@ -158,7 +159,8 @@
 				$data['deleteOptions'] = 'mark_as_deleted';
 			}
 			
-			$data['htmlOptions'] = $userPrefs['felamimail']['htmlOptions'];
+			$data['htmlOptions']	= $userPrefs['felamimail']['htmlOptions'];
+ 			$data['sortOrder']	= $userPrefs['felamimail']['sortOrder'];
 			
 			// where is the trash folder
 			$data['trash_folder']		= $userPrefs['felamimail']['trashFolder'];
