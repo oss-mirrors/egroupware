@@ -1,4 +1,5 @@
 <?php
+
   /**************************************************************************\
   * phpGroupWare - headlines                                                 *
   * http://www.phpgroupware.org                                              *
@@ -13,6 +14,7 @@
 
   $phpgw_info["flags"]["currentapp"] = "preferences";
   include("../header.inc.php");
+
   if (! $submit) {
     $phpgw->common->phpgw_header();
     $phpgw->common->navbar();
@@ -24,17 +26,18 @@
       echo lang("select headline news sites").":</td></tr><tr>";
       echo "<td><select name=\"headlines[]\" multiple size=5>\n";
       $phpgw->db->query("select * from users_headlines where owner='"
-  	    . $phpgw_info["user"]["userid"] . "'");
-  	  while ($phpgw->db->next_record()){
-  	    $users_headlines[$phpgw->db->f("site")] = " selected";
-  	  }
+  	               .$phpgw_info["user"]["userid"] . "'");
+      while ($phpgw->db->next_record()){
+	$users_headlines[$phpgw->db->f("site")] = " selected";
+      }
   
       $phpgw->db->query("SELECT con,display FROM news_site ORDER BY display asc");
-  	  while ($phpgw->db->next_record()) {
-        echo "<option value=\"" . $phpgw->db->f("con") . "\""
-          . $users_headlines[$phpgw->db->f("con")] . ">"
-  			  . $phpgw->db->f("display") . "</option>";
-  	  }
+      while ($phpgw->db->next_record()) {
+	echo "<option value=\"" . $phpgw->db->f("con") . "\""
+	     .$users_headlines[$phpgw->db->f("con")] . ">"
+	     .$phpgw->db->f("display") . "</option>";
+
+      }
       echo "</select></td>\n";
 ?>
     </tr><tr><td><input type="submit" name="submit" value="<?php echo lang("submit"); ?>"></td></tr></table>
@@ -42,8 +45,9 @@
 <?php
   }else{
     include($phpgw_info["server"]["server_root"] . "/headlines/inc/functions.inc.php");
-	  headlines_update($phpgw_info["user"]["userid"],$headlines);
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]."/preferences/"));
-	}
+    headlines_update($phpgw_info["user"]["userid"],$headlines);
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]."/preferences/index.php"));
+  }
+
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 ?>

@@ -86,8 +86,6 @@
 
      $phpgw->db->unlock();
 
-     //Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]
-//	  . "/admin/headlines.php", "cd=27"));
      Header("Location: " . $phpgw->link("admin.php", "cd=27"));
   }
 ?>

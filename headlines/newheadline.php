@@ -44,7 +44,7 @@
            <tr>
              <td><?php echo lang("News Type"); ?></td>
              <td>
-<?
+<?php
 	 $news_type = array('rdf','fm','lt','sf','rdf-chan');
          for($i=0;$i<count($news_type);$i++) {
            echo "<input type=\"radio\" name=\"n_newstype\" value=\""
