@@ -146,6 +146,11 @@
 
 			$this->t->set_var('r_app_list',$r_app_list);
 
+			if ($values['b_sql'] == 'mysql' || $values['b_sql'] == 'pgsql')
+			{
+				$values['b_sql'] = 'yes';
+			}
+
 			$this->t->set_var('b_sql','<input type="checkbox" name="values[b_sql]" value="True"' . ($values['b_sql'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('b_ldap','<input type="checkbox" name="values[b_ldap]" value="True"' . ($values['b_ldap'] == 'yes'?' checked':'') . '>');
 			$this->t->set_var('b_email','<input type="checkbox" name="values[b_email]" value="True"' . ($values['b_email'] == 'yes'?' checked':'') . '>');
