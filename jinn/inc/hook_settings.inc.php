@@ -62,12 +62,15 @@
 
    create_select_box('Default number of visable columns ','default_col_num',$default_col_num,"How many columns do you want to be visible by default in List View?");
 
-   create_section('JiNN Developer Settings');
+   if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+   {
+	  create_section('JiNN Developer Settings');
 
-   create_select_box('Show extra table debugging information','table_debugging_info',$yes_no,"When this is enables information like field length and field type is shown when editing record");
+	  create_select_box('Show extra table debugging information','table_debugging_info',$yes_no,"When this is enables information like field length and field type is shown when editing record");
 
-   create_select_box('Activate experimental features which are in development','experimental',$yes_no,'Only activate this if you know what your doing. You can destroy your data using experimental features.');
+	  create_select_box('Activate experimental features which are in development','experimental',$yes_no,'Only activate this if you know what your doing. You can destroy your data using experimental features.');
 
-   create_select_box('Show SQL-statements in msgbox','debug_sql',$yes_no,'This is for debugging purposes.');
-   create_select_box('Show site_arr in msgbox','debug_site_arr',$yes_no,'This is for debugging purposes.');  
-   create_select_box('Show object_arr in msgbox','debug_object_arr',$yes_no,'This is for debugging purposes.');
+	  create_select_box('Show SQL-statements in msgbox','debug_sql',$yes_no,'This is for debugging purposes.');
+	  create_select_box('Show site_arr in msgbox','debug_site_arr',$yes_no,'This is for debugging purposes.');  
+	  create_select_box('Show object_arr in msgbox','debug_object_arr',$yes_no,'This is for debugging purposes.');
+   }

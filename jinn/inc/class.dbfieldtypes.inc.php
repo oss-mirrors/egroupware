@@ -45,6 +45,7 @@
 	  /*!
 	  @function set_type_arr
 	  @abstract set_type_arr() sets the main array with al known field types
+	  @fixme array is far from complete
 	  */
 	  function set_type_arr()
 	  {
@@ -57,6 +58,7 @@
 			'smallint'		=>		'int',
 			'int'			=>		'int',
 			'tinyint'		=>		'int',
+			'date'			=>		'date',
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',
 			'text'			=>		'blob',

@@ -21,111 +21,57 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   class uiadminacl extends uiadmin
+   /* $Id$ */
+
+   class uiacl// extends uiadmin
    {
+	  var $public_functions = Array(
+		 'main_screen' => True,
+		 'set_site_objects' => True,
+		 'set_access_rights_site_objects'=> True,
+		 'set_access_rights_sites'=> True,
+	  );
 	  var $nextmatch;
 	  var $common;
 
-	  function uiadminacl($bo)
+	  function uiacl()
 	  {
-
-		 /* check if user is egw-admin or siteadmin of at least one site else redirect */
-		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))==0)
-		 {
-			$this->message[error]=lang('You don\'t have access to this page.');
-			$this->message[error_code]=112;
-
-			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiuser.index');
-
-			/*
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-			*/
-		 }
-		 
-
-		/* if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-		 {
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		 }
-*/
-
-
-		 //$this->bo = CreateObject('jinn.boadmin');
-		 $this->template = $GLOBALS['phpgw']->template;
-
-		 $this->ui = CreateObject('jinn.uicommon');
-
-		 /*if($this->bo->so->config[server_type]=='dev')
-		 {
-			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
-		 }
-
-		 $this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
-		 */
-		 
-		 $this->ui->header(lang('Set Access Rights'));
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
-
-		 //$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
-		 //$access_rights->main_screen();
-		 //unset($this->bo->message);
-
-  //		 $this->bo->save_sessiondata();
-
-	
-		 
-		 
-		 
-/*		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
-		 {
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		 }
-*/
-//		 $this->bo = CreateObject('jinn.boadmin');
-//		 $this->template = $GLOBALS['phpgw']->template;
-
-//		 $this->ui = CreateObject('jinn.uicommon');
-
-		 if($this->bo->so->config[server_type]=='dev')
-		 {
-			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
-		 }
-
-		 $this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
-
-
-		 if($bo)
-		 {
-			$this->bo=$bo;
-		 }
-		 else
-		 {
-			$this->bo = CreateObject('jinn.boacl.inc.php');
-		 }
-
-			
 		 $this->ui = CreateObject('jinn.uicommon');
 		 $this->nextmatchs=CreateObject('phpgwapi.nextmatchs');
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->common = CreateObject('jinn.bocommon');
+
+		 $this->bo = CreateObject('jinn.boacl.inc.php');
+
+		 /* check if user is egw-admin or siteadmin of at least one site else redirect */
+		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && count($this->bo->so->get_sites_for_user2($GLOBALS['phpgw_info']['user']['account_id']))==0)
+		 {
+			$this->bo->message[error]=lang('You don\'t have access to this page.');
+			$this->bo->message[error_code]=112;
+
+			$this->bo->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
 	  }
 
-	  /*************************************************************************\
-	  * accessrights mainscreen                                                 *
-	  \*************************************************************************/
-
+	  /*!
+	  @function main_screen
+	  @abstract accessrights mainscreen
+	  */
 	  function main_screen()
 	  {
+		 $this->ui->header(lang('Set Access Rights'));
+		 $this->ui->msg_box($this->bo->message);
+
+		 unset($this->bo->message);
+		 $this->bo->save_sessiondata();
+
 		 $this->template->set_file(array(
 			'access_rights_main' => 'access_rights.tpl'
 		 ));
-		 // get all sites
-		 $sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
+
+		 $sites=$this->bo->get_sites_to_admin($GLOBALS['phpgw_info']['user']['account_id']);
+
 		 if (count($sites)>0)
 		 {
 			foreach($sites as $site_id)
@@ -147,7 +93,7 @@
 					 }
 
 					 $object_rows.= '<tr bgcolor="'.$row_color.'"><td>'.$this->bo->so->get_object_name($object_id).'</td><td><a href="';
-							  $object_rows.= $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id");
+							  $object_rows.= $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiacl.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id");
 							  $object_rows.= '">'.lang('set object moderator').'</a></td></tr>';
 				  }
 			   }
@@ -155,7 +101,7 @@
 			   $this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			   $this->template->set_var('lang_site_admin',lang('set site admin'));
 			   $this->template->set_var('site_name',$this->bo->so->get_site_name($site_id));
-			   $this->template->set_var('link_site_admin',$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_sites&site_id=$site_id"));
+			   $this->template->set_var('link_site_admin',$GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id"));
 			   $this->template->set_var('object_rows',$object_rows);
 
 			   $this->template->pparse('out','access_rights_main');
@@ -165,22 +111,38 @@
 	  }
 
 
-
-	  /*************************************************************************\
-	  * adding and removing users to an object                                  *
-	  \*************************************************************************/
-
-	  function set_site_objects()
+	  /*!
+	  @function set_access_rights_site_objects
+	  @abstract adding and removing users to an object
+	  @fixme do a site and object exist check
+	  */
+	  function set_access_rights_site_objects()
 	  {
 
+		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
+		 {
+			$this->bo->message[error]=lang('You don\'t have access to this page.');
+			$this->bo->message[error_code]=112;
+
+			$this->bo->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
+		 }
+		 
+		 $this->ui->header(lang('Set Access Right for Site Objects'));
+		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+
+		 $this->bo->save_sessiondata();
+	
 		 $this->template->set_file(array(
 			'accounts' => 'accounts.tpl'
 		 ));
 
+		 //FIXME replace with _GETS
 		 list($site_id,$object_id,$sort, $order,$total,$start,$query)=$this->common->get_global_vars(array('site_id','object_id','sort','order','total','start','query'));
 
-		 $object_name =$this->bo->so->get_object_name($object_id);
-		 $site_name = $this->bo->so->get_site_name($site_id);
+		 $object_name =$this->bo->so->get_object_name($_GET[object_id]);
+		 $site_name = $this->bo->so->get_site_name($_GET[site_id]);
 
 		 $this->template->set_block('accounts','list','list');
 		 $this->template->set_block('accounts','row','row');
@@ -190,20 +152,20 @@
 		 $account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$query,$total); // the accounts in the current screen
 		 $total = $GLOBALS['phpgw']->accounts->total;
 
-		 $url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id");
+		 $url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiacl.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id");
 
 		 //	FIXME clean this up
 		 $var = Array(
 			'bg_color' => $GLOBALS['phpgw_info']['theme']['bg_color'],
 			'th_bg'    => $GLOBALS['phpgw_info']['theme']['th_bg'],
-			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
+			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
 			'lang_user_accounts' => lang("editors for object %1 in site %2",$object_name,$site_name),
-			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
+			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_site_objects&object_id=$object_id&site_id=$site_id"),
 			'lang_loginid'       => $this->nextmatchs->show_sort_order($sort,'account_lid',$order,$url,lang('LoginID')),
 			'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),
 			'lang_firstname'     => $this->nextmatchs->show_sort_order($sort,'account_firstname',$order,$url,lang('first name')),
 			'lang_edit'    => lang('edit'),
-			'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_access_rights_object'),
+			'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boacl.save_access_rights_object'),
 			'accounts_url' => $url,
 			'lang_search'  => lang('search'),
 			'site_id'  => $site_id,
@@ -221,7 +183,6 @@
 		 {
 			$this->template->set_var('input_search',lang('Search') . '&nbsp;<input type="text" name="query">');
 		 }
-
 
 		 if (!count($account_info) || !$total)
 		 {
@@ -282,15 +243,30 @@
 		 }
 
 		 $this->template->pfp('out','list');
-
 	  }
 
-	  /*************************************************************************\
-	  * adding and removing users to an site                                    *
-	  \*************************************************************************/
-
-	  function set_sites()
+	  /*!
+	  @function set_access_rights_sites
+	  @abstract adding and removing users to an site                                    
+	  @fixme do a site exist check
+	  */
+	  function set_access_rights_sites()
 	  {
+		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'] && !$this->bo->user_is_site_admin($_GET[site_id]))
+		 {
+			$this->bo->message[error]=lang('You don\'t have access to this page.');
+			$this->bo->message[error_code]=112;
+
+			$this->bo->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiacl.main_screen');
+		 }
+		 
+		 $this->ui->header(lang('Set Access Rights for Sites'));
+		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+
+		 $this->bo->save_sessiondata();
+
 		 list($site_id,$total,$start,$sort,$order,$query)=$this->common->get_global_vars(array('site_id','total','start','sort','order','query'));
 
 		 $this->template->set_file(array
@@ -311,20 +287,20 @@
 		 $account_info = $GLOBALS['phpgw']->accounts->get_list('accounts',$start,$sort,$order,$query,$total);
 		 $total = $GLOBALS['phpgw']->accounts->total; 
 
-		 $url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiadmin.set_access_rights_sites&site_id=$site_id");
+		 $url = $GLOBALS['phpgw']->link('/index.php',"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id");
 
 		 // FIXME clean this up
 		 $var = Array(
 			'bg_color' => $GLOBALS['phpgw_info']['theme']['bg_color'],
 			'th_bg'    => $GLOBALS['phpgw_info']['theme']['th_bg'],
-			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_sites&site_id=$site_id"),
+			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id"),
 			'lang_user_accounts' => lang("administrators for site $site_name"),
-			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiadmin.set_access_rights_sites&site_id=$site_id"),
+			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id"),
 			'lang_loginid'       => $this->nextmatchs->show_sort_order($sort,'account_lid',$order,$url,lang('LoginID')),
 			'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),
 			'lang_firstname'     => $this->nextmatchs->show_sort_order($sort,'account_firstname',$order,$url,lang('first name')),
 			'lang_edit'    => lang('edit'),
-			'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_access_rights_site'),
+			'actionurl'    => $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boacl.save_access_rights_site'),
 			'accounts_url' => $url,
 			'lang_search'  => lang('search'),
 			'site_id'  => $site_id,
@@ -384,7 +360,7 @@
 			   if ($account_sites){
 				  if (in_array($site_id, $account_sites))
 				  {
-					 $checked='CHECKED';
+					 $checked='checked';
 				  }
 			   }
 

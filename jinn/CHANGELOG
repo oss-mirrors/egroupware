@@ -2,6 +2,22 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Thu Sep 23 16:46:48 CEST 2004
+Version 0.8.107d
+- fixed the use of backtick in SQL for MYSQL at several places
+- more fixes and cpmplete functionality to the adv,. timestamp plugin
+- add date type
+- fixes to date plugin
+- start using the adodb conversion methodes
+- add help info to the selectbox plugin
+- hide developer preferences when user is no admin
+- add access rights access for site administrators (small step, big achievement)
+- move acl functions to own classed
+- code cleanup for acl functions
+- more msg_box improvements
+- add error-code file for registring the error codes
+- add safety check to acl
+
 Version 0.8.107c
 Tue Sep 21 19:07:09 CEST 2004
 =============================

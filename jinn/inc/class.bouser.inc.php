@@ -530,11 +530,19 @@
 
 			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 
-			if ($status[status]==1)	$this->message[info]='Record succesfully saved';
-			else 
+			if ($status[ret_code])
 			{
 			   $this->message[error]=lang('Record NOT succesfully saved');
 			   $this->message[error_code]=104;
+			}
+			else 
+			{
+			   $this->message[info]='Record succesfully saved';
+			}
+			
+			if($this->debug_sql==true)
+			{
+			   $this->message['debug'][]='SQL: '.$status[sql];
 			}
 
 			$this->save_sessiondata();
@@ -768,6 +776,7 @@
 				  else
 				  {
 					 $field_values=$this->so->get_field_values($this->site_object[object_id],substr($key,6));
+					//_debug_array($field_values);
 					 $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
 				  }
 				  if ($filtered_data)				

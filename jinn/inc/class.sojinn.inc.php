@@ -22,6 +22,8 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
+   /* $id$ */
+
    class sojinn
    {
 	  var $phpgw_db;
@@ -46,9 +48,11 @@
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 	  }
 
-	  /****************************************************************************\
-	  * make connection to the site database and set this->site_db                 *
-	  \****************************************************************************/
+	  /*!
+	  @function site_db_connection
+	  @abstract make connection to the site database and set this->site_db
+	  @param int $site_id unique site_id to select the site from the sites-table
+	  */
 
 	  function site_db_connection($site_id)
 	  {
@@ -323,10 +327,100 @@
 		 return $redat;
 	  }
 
+		
 
-	  // new, without group(this has to be done seperately) and without objectsection(this also has to be done seperately)
+	  /*!
+	  @function user_is_site_admin
+	  @abstract checks is user is admin a site
+	  @param int $site_id site_id
+	  @param $uid if empty current user is used
+	  @returns true is user is admin else returns false
+	  @depreciated
+	  */
+	  function user_is_site_admin($site_id,$uid=false)
+	  {
+		 if(!$uid)
+		 {
+			$uid=$GLOBALS['phpgw_info']['user']['account_id'];
+		 }
+
+		 $sites=$this->get_sites_for_user2($uid);
+
+		 if(in_array($site_id,$sites))
+		 {
+			return true;
+		 }
+		 else
+		 {
+			return false;
+		 }
+	  }
+
+	  /*
+	  @function get_sites_to_admin
+	  @abstract get all sites the is user is assign to (site administrator)
+	  @note new, without group(this has to be done seperately) and without object section
+	  (this also has to be done seperately)
+	  @note an administrator has automaticly access to all objects and can change the accessrights for this site
+	  */
+	  function get_sites_to_admin($uid,$gid)
+	  {
+		 $sites=array();
+
+		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			$SQL = "SELECT site_id FROM egw_jinn_sites ORDER BY site_name";
+			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+			while ($this->phpgw_db->next_record())
+			{
+			   $sites[]= $this->phpgw_db->f('site_id');
+			}
+		 }
+		 else
+		 {
+			if (isset($gid))
+			{
+			   foreach ( $gid as $group ) {
+				  $group_sql.=' OR ';
+				  $group_sql .= "uid='$group'";
+			   }
+			}
+
+			$SQL = "SELECT site_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
+			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+			while ($this->phpgw_db->next_record())
+			{
+			   if ($this->phpgw_db->f('site_id')!=null)
+			   {
+				  $sites[]= $this->phpgw_db->f('site_id');
+			   };
+
+			}
+		 }
+		 
+		 //		 if (is_array($sites)) $sites=array_unique($sites);
+		 $sites=array_unique($sites);
+
+		 return $sites;
+	  }
+
+
+	  
+	  /*
+	  @function get_sites_for_user2
+	  @abstract get all sites the is user is assign to (site administrator)
+	  @note new, without group(this has to be done seperately) and without object section
+	  (this also has to be done seperately)
+	  @note an administrator has automaticly access to all objects and can change the accessrights for this site
+	  @fixme where the gid
+	  @depreciated
+	  */
 	  function get_sites_for_user2($uid)
 	  {
+		 $sites=array();
+
 		 $SQL = "SELECT site_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
@@ -339,13 +433,12 @@
 
 		 }
 
-
-		 if (is_array($sites)) $sites=array_unique($sites);
-
+		 //		 if (is_array($sites)) $sites=array_unique($sites);
+		 $sites=array_unique($sites);
+		 
 		 return $sites;
 	  }
-
-
+	  
 	  /**
 	  @function get_sites_for_user
 	  @abstract get all sites_id's which user has access and return array      
@@ -571,7 +664,6 @@
 	  */
 	  function backtick($db='')
 	  {
-
 		 if($db=='egw' | $db=='phpgw')
 		 {
 			if($this->phpgw_db->Type=='mysql') $backtick='`';
@@ -898,7 +990,10 @@
 
 	  function copy_record($site_id,$table,$where_string,$autokey)
 	  {
+		 $this->site_db_connection($site_id);
+
 		 $s_bt=$this->backtick();
+
 		 $values_record = $this->get_record_values($site_id,$table,'','','','','name','','*',$where_string);
 
 		 while(list($key, $val) = each($values_record[0])) 
@@ -932,32 +1027,46 @@
 	  @function insert_object_data
 	  @abstract insert data info site database
 	  @fixme better naming
+	  @fixme code cleanup
 	  */
 	  function insert_object_data($site_id,$site_object,$data)
 	  {
-		 $s_bt=$this->backtick();
-		 
+
 		 $this->site_db_connection($site_id);
+
+		 $s_bt=$this->backtick();
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 		 
 		 foreach($data as $field)
 		 {
-			if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
+			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
+
+			/* use '' in SQL yes/no */	
+			if($jinn_field_type=='int' || $jinn_field_type=='auto' || $jinn_field_type=='timestamp' || $jinn_field_type=='date')
 			{
-			   $autokey=$field['name'];
-			   $value[idfield]=$field['name'];
-			   continue;
+			   $fortick='';
 			}
-			if($field[value]=='' && eregi('int',$metadata[$field['name']]['type']) )
+			else
 			{
-			   continue;
+			   $fortick='\'';
 			}
+
+			 if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
+			 {
+				$autokey=$field['name'];
+				$value[idfield]=$field['name'];
+				continue;
+			 }
+			 if($field[value]=='' && eregi('int',$metadata[$field['name']]['type']) )
+			 {
+				continue;
+			 }
 
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
 			$SQLfields .= $s_bt.$field[name].$s_bt;
-			$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'"; // FIX THIS magic kut quotes
+			$SQLvalues .= "$fortick".$this->strip_magic_quotes_gpc($field[value])."$fortick"; // FIX THIS magic kut quotes
 
 
 			/* check for primaries and create array */
@@ -986,14 +1095,12 @@
 
 
 		 $SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-		 // die($SQL);
 
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[status]=1; // for backwards compatibility
 			$status[ret_code]=0;
 
-			//			$status[idfield]=$thirstfield;
 			$status[id]=$this->site_db->get_last_insert_id($site_object, $autokey);
 
 			if($autokey) $where_string= $autokey.'=\''.$status[id].'\'';
@@ -1007,7 +1114,6 @@
 			}
 
 			$status[where_string]=$where_string;
-//			die('hallo');
 		 }
 		 else
 		 {
@@ -1046,16 +1152,34 @@
 	  @param where_string complete string which comes after "... WHERE " in the sql-string
 	  @fixme for all fieldtype a default_value mechanisme must be implemented, atm int is finished
 	  @fixme better naming
+	  @fixme implement NULL for eg ints
+	  @fixme code cleanup
 	  */
 	  function update_object_record($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
 	  {
-		 $s_bt=$this->backtick;
-		 
 		 $this->site_db_connection($site_id);
+
+		 $s_bt=$this->backtick();
+
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 		 
 		 foreach($data as $field)
 		 {
+			
+			$jinn_field_type=$this->db_ftypes->complete_resolve($metadata[$field[name]]);
+
+			/* use '' in SQL yes/no */	
+			if($jinn_field_type=='int' || $jinn_field_type=='auto' || $jinn_field_type=='timestamp' || $jinn_field_type=='date')
+			{
+			   $fortick='';
+			 }
+			 else
+			 {
+				$fortick='\'';
+			 }
+
+			
+			
 			/* check for primaries and create array */
 			if (eregi("auto_increment", $metadata[$field[name]][flags]))
 			{
@@ -1091,7 +1215,7 @@
 			$aval[$field[name]]=substr($field[value],0,$metadata[$field[name]][len]);
 
 			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "{$s_bt}$field[name]{$s_bt}='".$this->strip_magic_quotes_gpc($field[value])."'";
+			$SQL_SUB .= "{$s_bt}$field[name]{$s_bt}={$fortick}".$this->strip_magic_quotes_gpc($field[value])."{$fortick}";
 		 }
 
 		 if(!is_array($pkey_arr))
@@ -1103,17 +1227,16 @@
 		 if($curr_where_string)
 		 {
 			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $curr_where_string ." LIMIT 1";
-//			die($SQL);
-
 		 }
 		 else
 		 {
 			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_key))."='".$this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_value))."'";
 
 		 }
-
+		
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
+			$value[ret_code]=0;
 			$value[status]=1;
 
 			if($autokey) $where_string= $autokey;
@@ -1128,6 +1251,12 @@
 
 			$value[where_string]=$where_string;
 		 }
+		 else
+		 {
+			$value[ret_code]=1;
+		 }
+		 
+		 $value[sql]=$SQL;
 		 return $value;
 	  }
 
@@ -1155,7 +1284,6 @@
 			foreach($related_data as $option)
 			{
 			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDXXXid]', '$option')";
-		//	  	   echo $SQL;
 			   if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			   {
 				  $status=False;
@@ -1163,18 +1291,18 @@
 
 			}
 
-
 			$i++;
 		 }
-		 // die();
 		 return $status;
 
 	  }
 
-	  // $site_id can be removed here!!!
+	  /*!
+	  @function delete_phpgw_data
+	  @fixme create dedicatet function and delete garbage! DELETE site &> objects &> obj_fields
+	  */
 	  function delete_phpgw_data($table,$where_key,$where_value)
 	  {
-
 		 $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
 
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
@@ -1183,9 +1311,9 @@
 		 }
 
 		 return $status;
-
 	  }
-	  
+
+
 	  function validateAndInsert_phpgw_data($table,$data)
 	  {
 		 $meta=$this->phpgw_table_metadata($table,true);
@@ -1568,8 +1696,10 @@
 
 		 if ($error==0)
 		 {
-			$status=1;
+			$status[ret_code]=0;
 		 }
+
+		 $status[sql]=$SQL;
 
 		 return $status;
 	  }

@@ -220,7 +220,51 @@
 	}
 	
 	/**
-	* DEFAULT/FALLBACK TIMESPAMP/DATE PLUGIN 
+	* DEFAULT/FALLBACK DATE PLUGIN 
+	*/
+	$this->plugins['def_date']['name'] 			= 'def_date';
+	$this->plugins['def_date']['title']			= 'default date';
+	$this->plugins['def_date']['version']		= '1.0';
+	$this->plugins['def_date']['author']		= 'Pim Snel';
+	$this->plugins['def_date']['description']	= 'Default field plugin for handeling date fields';
+	$this->plugins['def_date']['enable']			= 1;
+	$this->plugins['def_date']['db_field_hooks']	= array
+	(
+	   'date',	
+	);
+
+	/*!
+	@function plg_fi_def_date
+	@fixme get userpreferences for formating date 
+	*/
+	function plg_fi_def_date($field_name,$value, $config,$attr_arr)
+	{
+	   global $local_bo;
+	   if ($value)
+	   {
+		  $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$local_bo->so->site_db->Link_ID->UserDate($value);
+	   }
+	   else
+	   {
+		  $input = '<input type="hidden" name="'.$field_name.'" value="">'.lang('automatic');
+	   }
+
+	   return $input;
+	}
+
+	function plg_bv_def_date($value, $config,$attr_arr)
+	{
+	   return $value;   		
+	}
+
+	function plg_sf_def_date($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+	{
+	   return 'Now()';
+	}
+
+	
+	/**
+	* DEFAULT/FALLBACK TIMESTAMP PLUGIN 
 	*/
 	$this->plugins['def_timestamp']['name'] 			= 'def_timestamp';
 	$this->plugins['def_timestamp']['title']			= 'default timestamp';
@@ -233,16 +277,20 @@
 		'timestamp',	
 	);
 
+	/*!
+	@function plg_fi_def_timestamp
+	@fixme get userpreferences for formating date 
+	*/
 	function plg_fi_def_timestamp($field_name,$value, $config,$attr_arr)
 	{
 		global $local_bo;
 		if ($value)
 		{
-		   $input=$local_bo->common->format_date($value);
+		   $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$local_bo->so->site_db->Link_ID->UserTimeStamp($value);
 		}
 		else
 		{
-		   $input = lang('automatic');
+		   $input = '<input type="hidden" name="'.$field_name.'" value="">'.lang('automatic');
 		}
 
 		return $input;
@@ -255,7 +303,7 @@
 	
 	function plg_sf_def_timestamp($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	{
-	   return Null;
+	   return 'Now()';
 	}
 
 ?>

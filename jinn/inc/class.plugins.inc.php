@@ -140,10 +140,11 @@
 
 			if(is_array($plug_conf_arr))
 			{
+				//echo('plg_sf_'.$plug_conf_arr[name]);	
 			   $data=@call_user_func('plg_sf_'.$plug_conf_arr[name],$form_field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$plug_conf_arr[conf]);
 			}
 		 }
-
+		
 		 return $data;
 	  }
 

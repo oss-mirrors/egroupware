@@ -27,7 +27,7 @@
    $this->plugins['selectbox']['name'] 				= 'selectbox';
    $this->plugins['selectbox']['title']				= 'Select Box';
    $this->plugins['selectbox']['author']			= 'Pim Snel';
-   $this->plugins['selectbox']['version']			= '0.6';
+   $this->plugins['selectbox']['version']			= '0.7';
    $this->plugins['selectbox']['enable']			= 1;
    $this->plugins['selectbox']['description']		= 'List a couple of values in a listbox....';
    $this->plugins['selectbox']['db_field_hooks']	= array
@@ -42,6 +42,12 @@
 	  'Value_seperated_by_commas'=>array('one,two,three','area',''),
 	  'Default_value'=>array('one','text',''),
 	  'Empty_option_available'=> array(array('yes','no'),'select','')
+   );
+
+   $this->plugins['selectbox']['config_help']		= array
+   (
+	  'Keys_seperated_by_commas'=>'These keys are displayed to the user',
+	  'Value_seperated_by_commas'=>'These values are stored in the database'
    );
 
    function plg_fi_selectbox($field_name,$value, $config,$attr_arr)

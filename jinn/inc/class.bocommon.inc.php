@@ -60,6 +60,7 @@
 		* format timestamp date to europian format                                   *
 		\****************************************************************************/
 		// gebruik zo snel mogelijk phpgwapi functie
+		// fixme remove
 		function format_date($input)
 		{
 			// Deze functie converteert bv. 200124061216  naar:  24-06-2001 12:16
@@ -155,20 +156,12 @@
 			return $safe_mode;
 		}
 
-
-		// remove this one, so->site_table_metadata replaces this and uiconfig is the only class that uses this one
-/*		function get_object_column_names($site_id,$table)
-		{
-			$fields_props=$this->so->site_table_metadata($site_id,$table);
-
-			foreach ($fields_props as $field_props)
-			{
-				$column_names[]=$field_props[name];
-			}
-
-			return $column_names;
-		}
-*/
+		/*! 
+		@function get_sites_allowed
+		@abstract get sites to which user has access too
+		@fixme	move to boacl
+		@fixme maybe rename
+		*/
 		function get_sites_allowed($uid)
 		{
 			$groups=$GLOBALS['phpgw']->accounts->membership();
@@ -186,6 +179,11 @@
 			return $user_sites;
 		}
 
+		/*! 
+		@function get_objects_allowed 
+		@abstract get objects to which user has access too
+		@fixme move to boacl
+		*/
 		function get_objects_allowed($site_id,$uid)
 		{
 			$groups=$GLOBALS['phpgw']->accounts->membership();

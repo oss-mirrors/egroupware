@@ -47,14 +47,30 @@
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
-	  if($config[Default_action]=='Leave value untouched')
-	  {	   
-		 $input='<input type="hidden" name="'.$field_name.'" value="'.$value.'" />';
-		 $input.=$local_bo->common->format_date($value);
+	  global $local_bo;
+	  if ($value)
+	  {
+		 $input=$local_bo->so->site_db->Link_ID->UserTimeStamp($value);
 	  }
 	  else
 	  {
-		 $input=$local_bo->common->format_date($value);
+		 $input = lang('automatic');
+	  }
+  
+	  $usernewstamp='checked="checked"';
+	  unset($userkeepstamp);
+	  
+	  $input.='<input type="hidden" name="'.$field_name.'" value="'.$value.'" />';
+	  if($config[Default_action]=='Leave value untouched')
+	  {	   
+		 unset($usernewstamp);
+		 $userkeepstamp='checked="checked"';
+	  }
+	 
+	  if($config[Allow_users_to_choose_action]=='True')
+	  {
+		 $input.='<br/><input '.$userkeepstamp.' type="radio" name="NWSTMP'.$field_name.'" value="false" />'.lang('Keep current timestamp').'<br/>';
+		 $input.='<input '.$usernewstamp.' type="radio" name="NWSTMP'.$field_name.'" value="true" />'.lang('Give a new timestamp').'<br/>';
 	  }
 
 	  return $input;
@@ -76,9 +92,13 @@
 
    function plg_sf_timestamp($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
    {
-	  if($config[Default_action]!='Leave value untouched')
+	  if(!$HTTP_POST_VARS[$field_name] || $HTTP_POST_VARS['NWSTMP'.$field_name]=='true')
 	  {	   
-		 return Null;
+		 return 'Now()';
+	  }
+	  elseif($HTTP_POST_VARS['NWSTMP'.$field_name]!='false' && $config[Default_action]!='Leave value untouched') 
+	  {
+		 return 'Now()';
 	  }
    }
 

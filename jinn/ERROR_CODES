@@ -1,0 +1,7 @@
+=============================================================
+Error codes for the applications JiNN
+$Id$
+=============================================================
+
+114: class.boacl.inc.php: access rights for object not saved
+113: class.boacl.inc.php: access rights for site not saved

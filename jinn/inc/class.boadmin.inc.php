@@ -320,7 +320,7 @@
 
 
 
-	  function save_access_rights_site()
+/*	  f unction save_access_rights_site()
 	  {
 		 reset ($GLOBALS[HTTP_POST_VARS]);
 		 $site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
@@ -344,7 +344,7 @@
 	  }
 
 
-	  function save_access_rights_object()
+	  f unction save_access_rights_object()
 	  {
 		 reset ($GLOBALS[HTTP_POST_VARS]);
 		 $site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
@@ -369,7 +369,7 @@
 		 // FIXME keep nextmatch sorting filter etc...
 		 $this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_site_objects&object_id='.$object_id.'&site_id='.$site_id);
 	  }
-
+*/
 	  // FIXME rename
 	  function insert_egw_jinn_sites()
 	  {

@@ -585,19 +585,19 @@
 	  function render_one_to_one_input()
 	  {
 		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object[relations]);
-
-		 if(!$this->bo->where_string && !$this->bo->mult_where_array)
-		 {
-			$this->template->set_var('input',lang('Come back in edit mode to enter one-to-one fields for this record.'));
-			$this->template->set_var('row_color','');
-			$this->template->set_var('fieldname','');
-			$this->template->parse('row','rows',true);
-			return;
-		 }
 		 
 		 if (count($O2O_arr)>0)
 		 {
-	        $i=1;
+			if(!$this->bo->where_string && !$this->bo->mult_where_array)
+			{
+			   $this->template->set_var('input',lang('Come back in edit mode to enter one-to-one fields for this record.'));
+			   $this->template->set_var('row_color','');
+			   $this->template->set_var('fieldname','');
+			   $this->template->parse('row','rows',true);
+			   return;
+			}
+			
+			$i=1;
 			
 			foreach($O2O_arr as $O2O_rule_arr)
 			{

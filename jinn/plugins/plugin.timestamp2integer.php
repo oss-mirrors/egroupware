@@ -64,10 +64,6 @@
 		$field_1=$_POST['ST2IN1'.$field_name];//real value
 		$field_2=$_POST['ST2IN2'.$field_name];// boolian for new timestamp
 		
-/*		_debug_array($_POST);
-		_debug_array($field_1);
-		_debug_array($field_2);
-		die();*/
 		if( !$field_1 || $field_2)
 		{
 		   $time=time();
