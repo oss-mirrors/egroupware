@@ -424,6 +424,7 @@
 			$this->kses->AddHTML("tbody");
 			$this->kses->AddHTML("tt");
 			$this->kses->AddHTML("br");
+			$this->kses->AddHTML("b");
 			$this->kses->AddHTML("strike");
 			$this->kses->AddHTML("center");
 			$this->kses->AddHTML("hr");
