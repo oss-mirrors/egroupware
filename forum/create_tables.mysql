@@ -1,0 +1,135 @@
+# MySQL dump 6.0
+#
+# Host: localhost    Database: phpgroupware
+#--------------------------------------------------------
+# Server version	3.22.26a
+
+#
+# Table structure for table 'f_body'
+#
+CREATE TABLE f_body (
+  id int(11) DEFAULT '0' NOT NULL auto_increment,
+  cat_id int(11) DEFAULT '0' NOT NULL,
+  for_id int(11) DEFAULT '0' NOT NULL,
+  message blob NOT NULL,
+  PRIMARY KEY (id)
+);
+
+#
+# Dumping data for table 'f_body'
+#
+
+INSERT INTO f_body VALUES (1,1,1,'äpijsreagoijdf ag');
+INSERT INTO f_body VALUES (2,1,1,'p¨\'ofzg \'pojg ');
+INSERT INTO f_body VALUES (3,1,1,'soöidjf soöuhöosrg\r\nwergeäpij eg\'poea \r\nåeqjh\r\ne hpietjh e');
+INSERT INTO f_body VALUES (4,1,1,'\'pogj a\'srpgj ear\r\nh ae\r\n e\r\n¨k´k \r\n');
+INSERT INTO f_body VALUES (5,1,1,'zs46ryx mtik tugkj');
+INSERT INTO f_body VALUES (6,1,1,'plaaaaaah');
+INSERT INTO f_body VALUES (7,1,1,'zdy hfgj rjkfxj xj');
+INSERT INTO f_body VALUES (8,1,1,'098ijomk');
+INSERT INTO f_body VALUES (9,1,1,'sgdsgdgh dh');
+INSERT INTO f_body VALUES (10,1,1,'ykhv ');
+INSERT INTO f_body VALUES (11,1,1,'päijoijoihjo');
+INSERT INTO f_body VALUES (12,1,1,'is this working ??? hope so');
+INSERT INTO f_body VALUES (13,1,1,'bkgkjgk,');
+INSERT INTO f_body VALUES (14,1,1,'jip');
+INSERT INTO f_body VALUES (15,1,1,'duy');
+INSERT INTO f_body VALUES (16,1,1,'srt dsh ');
+INSERT INTO f_body VALUES (17,1,1,'srdfhbn ');
+INSERT INTO f_body VALUES (18,1,1,'gul');
+INSERT INTO f_body VALUES (19,1,1,'vgm');
+INSERT INTO f_body VALUES (20,1,1,'gfyutyutcdyuj');
+INSERT INTO f_body VALUES (21,1,1,'7ituyhnjkml,');
+INSERT INTO f_body VALUES (22,1,1,'ed5tfvhk,bm ');
+INSERT INTO f_body VALUES (23,1,1,'this is great');
+INSERT INTO f_body VALUES (24,1,1,'Thanks, still lot to do :)\r\n');
+INSERT INTO f_body VALUES (25,1,2,'jjsjsjs');
+
+#
+# Table structure for table 'f_categories'
+#
+CREATE TABLE f_categories (
+  id int(11) DEFAULT '0' NOT NULL auto_increment,
+  name varchar(50) DEFAULT '' NOT NULL,
+  descr varchar(255) DEFAULT '' NOT NULL,
+  PRIMARY KEY (id)
+);
+
+#
+# Dumping data for table 'f_categories'
+#
+
+INSERT INTO f_categories VALUES (1,'General','General talk forums');
+
+#
+# Table structure for table 'f_forums'
+#
+CREATE TABLE f_forums (
+  id int(11) DEFAULT '0' NOT NULL auto_increment,
+  name varchar(50) DEFAULT '' NOT NULL,
+  perm tinyint(1) DEFAULT '0' NOT NULL,
+  groups varchar(50) DEFAULT '0' NOT NULL,
+  descr varchar(255) DEFAULT '' NOT NULL,
+  cat_id int(11) DEFAULT '0' NOT NULL,
+  PRIMARY KEY (id)
+);
+
+#
+# Dumping data for table 'f_forums'
+#
+
+INSERT INTO f_forums VALUES (1,'Bonk',0,'0','Teststestestestesttes and even more tests',1);
+INSERT INTO f_forums VALUES (2,'Bull',0,'0','Some other stupid forum',1);
+
+#
+# Table structure for table 'f_threads'
+#
+CREATE TABLE f_threads (
+  id int(11) DEFAULT '0' NOT NULL auto_increment,
+  postdate datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+  main int(11) DEFAULT '0' NOT NULL,
+  parent int(11) DEFAULT '0' NOT NULL,
+  cat_id int(11) DEFAULT '0' NOT NULL,
+  for_id int(11) DEFAULT '0' NOT NULL,
+  author varchar(50) DEFAULT '' NOT NULL,
+  subject varchar(50) DEFAULT '' NOT NULL,
+  email varchar(50) DEFAULT '' NOT NULL,
+  host varchar(18) DEFAULT '' NOT NULL,
+  stat tinyint(1) DEFAULT '0' NOT NULL,
+  thread int(11) DEFAULT '0' NOT NULL,
+  depth int(11) DEFAULT '0' NOT NULL,
+  pos int(11) DEFAULT '0' NOT NULL,
+  PRIMARY KEY (id),
+  KEY date (postdate)
+);
+
+#
+# Dumping data for table 'f_threads'
+#
+
+INSERT INTO f_threads VALUES (1,'2000-08-25 13:13:12',1,-1,1,1,'Jani Hirvinen','test1','','195.10.140.35',0,1,0,0);
+INSERT INTO f_threads VALUES (2,'2000-08-25 13:13:22',2,-1,1,1,'Jani Hirvinen','test2','','195.10.140.35',0,2,0,0);
+INSERT INTO f_threads VALUES (3,'2000-08-25 13:13:40',3,-1,1,1,'Tommi Mäkinen','bonk','','195.10.140.35',0,3,0,0);
+INSERT INTO f_threads VALUES (4,'2000-08-25 13:13:55',4,3,1,1,'Jani Hirvinen','Re: bonk','','195.10.140.35',0,3,1,2);
+INSERT INTO f_threads VALUES (5,'2000-08-25 13:16:41',5,1,1,1,'AlGaddaf','Re: test1','','195.10.140.35',0,1,1,2);
+INSERT INTO f_threads VALUES (6,'2000-08-25 13:16:57',6,1,1,1,'God','Re: test1','','195.10.140.35',0,1,1,7);
+INSERT INTO f_threads VALUES (7,'2000-08-25 13:48:23',7,6,1,1,'Jani Hirvinen','Re: Re: test1','','195.10.140.35',0,1,2,9);
+INSERT INTO f_threads VALUES (8,'2000-08-28 13:10:46',8,5,1,1,'Jani Hirvinen','Re: Re: test1','','195.10.140.35',0,1,2,3);
+INSERT INTO f_threads VALUES (9,'2000-08-28 13:21:57',9,-1,1,1,'Jani Hirvinen','bonk1','','195.10.140.35',0,9,0,0);
+INSERT INTO f_threads VALUES (10,'2000-08-28 13:57:28',10,5,1,1,'Jani Hirvinen','Re: Re: test1','','195.10.140.35',0,1,2,4);
+INSERT INTO f_threads VALUES (11,'2000-08-28 14:49:49',11,10,1,1,'Jani Hirvinen','Re: Re: Re: test1','','195.10.140.35',0,1,3,5);
+INSERT INTO f_threads VALUES (21,'2000-08-31 09:26:42',21,1,1,1,'Jani Hirvinen','Re: test1','','195.10.140.35',0,1,1,1);
+INSERT INTO f_threads VALUES (12,'2000-08-29 11:31:11',12,11,1,1,'Jani Hirvinen','Re: Re: Re: Re: test1','','195.10.140.35',0,1,4,6);
+INSERT INTO f_threads VALUES (13,'2000-08-29 11:36:00',13,2,1,1,'Jani Hirvinen','Re: test2','','195.10.140.35',0,2,1,1);
+INSERT INTO f_threads VALUES (14,'2000-08-29 11:37:10',14,3,1,1,'Jani Hirvinen','Re: bonk','','195.10.140.35',0,3,1,1);
+INSERT INTO f_threads VALUES (15,'2000-08-29 11:38:53',15,-1,1,1,'Jani Hirvinen','bonkbonk','','195.10.140.35',0,15,0,0);
+INSERT INTO f_threads VALUES (16,'2000-08-29 11:40:18',16,-1,1,1,'Jani Hirvinen','dingdio','','195.10.140.35',0,16,0,0);
+INSERT INTO f_threads VALUES (17,'2000-08-29 11:41:18',17,-1,1,1,'Jani','rdtfyghbjm','','195.10.140.35',0,17,0,0);
+INSERT INTO f_threads VALUES (18,'2000-08-29 12:58:06',18,16,1,1,'Jani Hirvinen','Re: dingdio','','195.10.140.35',0,16,1,1);
+INSERT INTO f_threads VALUES (19,'2000-08-29 13:03:54',19,17,1,1,'Jani Hirvinen','Re: rdtfyghbjm','','195.10.140.35',0,17,1,1);
+INSERT INTO f_threads VALUES (20,'2000-08-29 13:10:36',20,1,1,1,'Jani Hirvinen','Re: test1','','195.10.140.35',0,1,1,1);
+INSERT INTO f_threads VALUES (22,'2000-08-31 09:27:04',22,15,1,1,'Jani Hirvinen','Re: bonkbonk','','195.10.140.35',0,15,1,1);
+INSERT INTO f_threads VALUES (23,'2000-08-31 09:30:16',23,-1,1,1,'Dan Kuykendall','very cool','dan@kuykendall.org','24.21.46.7',0,23,0,0);
+INSERT INTO f_threads VALUES (24,'2000-08-31 09:37:20',24,23,1,1,'Jani Hirvinen','Re: very cool','','195.10.140.35',0,23,1,1);
+INSERT INTO f_threads VALUES (25,'2000-08-31 10:04:57',25,-1,1,2,'Dan Kuykendall','test','seek3r@teraflops.com','24.21.46.7',0,25,0,0);
+
