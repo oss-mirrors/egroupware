@@ -44,9 +44,9 @@
 					 ."','".$_data['date']
 					 ."','".addslashes($_data['subject'])
 					 ."','".addslashes($_data['sender_name'])
-					 ."','".$_data['sender_address']
+					 ."','".addslashes($_data['sender_address'])
 					 ."','".addslashes($_data['to_name'])
-					 ."','".$_data['to_address']
+					 ."','".addslashes($_data['to_address'])
 					 ."','".$_data['size']
 					 ."','".$_data['attachments']
 					 ."')";
