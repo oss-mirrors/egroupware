@@ -51,10 +51,10 @@
 <?php
 
   $PROG_DIR = "mail";
-  //$FILTER = $phpgw_info["server"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
+  //$FILTER = $phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
   $FILTER = $phpgw->msg->construct_folder_str("");
   $folder = $phpgw->msg->construct_folder_str($name);
-  $IMAP_STR = "{" . $phpgw_info["server"]["mail_server"] . ":" . "143" . "}";
+  $IMAP_STR = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
 
   if ($action == "create") {
      $phpgw->msg->createmailbox($mailbox,"$IMAP_STR$folder");

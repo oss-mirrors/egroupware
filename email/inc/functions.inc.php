@@ -2,8 +2,8 @@
 
   /* $Id$ */
 
-  if ($phpgw_info["server"]["imap_server_type"] == "UWash" &&
-      $phpgw_info["server"]["mail_server_type"] == "imap") {
+  if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
+      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
      $folder = (!$folder ? "INBOX" : $folder);
   }
   $mailbox = $phpgw->msg->login($folder);
@@ -48,14 +48,14 @@
         }
       }
     } else {
-      if ($phpgw_info["server"]["imap_server_type"] == "Cyrus") {
+      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
 	$filter = "INBOX";
       } else {
 	$filter = "mail/";
       }
 
-      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["server"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
-      if ($phpgw_info["server"]["mail_server_type"] != "pop3")
+      $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
+      if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
          if (gettype($mailboxes) == "array") {
  	    sort($mailboxes); // added sort for folder names 
          }

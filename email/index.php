@@ -132,7 +132,7 @@ function check_all()
 <?php
       $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
-      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["server"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
 
       if ($nummsg > 0) {
          $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
@@ -157,7 +157,7 @@ function check_all()
         <tr>
          <td>
            <?php
-             if ($phpgw_info["server"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
                    . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox);
@@ -168,7 +168,7 @@ function check_all()
          <td>
            &nbsp;&nbsp;
            <?php
-             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
 		echo '<input type="button" value="' . lang("folder") . '" onClick="'
 		   . 'window.location=\'' . $phpgw->link("folder.php","folder="
 		   . urlencode($folder)) . '\'">';
@@ -333,7 +333,7 @@ function check_all()
           </td>
           <td align="right">
            <?php
-             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
                 echo '<select name="tofolder" onChange="do_action(\'move\')">'
                    . '<option>' . lang("move selected messages into") . ':';
                 echo list_folders($mailbox);
