@@ -28,6 +28,7 @@ reply all	email	de	Allen antworten
 section	email	de	Sektion
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
+show new messages on main screen	common	de	Neue Nachrichten auf der Startseite anzeigen
 size	email	de	Größe
 switch current folder to	email	de	Wechseln zum Ordner
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	de	Die Verbindung zum Mailserver ist leider fehlgeschlagen.<br>Bitte prüfen sie Ihren Usernamen und Ihr Passwort, oder setzen Sie sich mit Ihrem Administrator in Verbindung.
