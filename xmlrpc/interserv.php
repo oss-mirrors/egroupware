@@ -49,7 +49,7 @@
 
 	echo '<table><tr><td>';
 	echo '<form action="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . "\n";
-	echo $is->formatted_list() . "\n";
+	echo $is->formatted_list($server_id) . "\n";
 	echo '<input type="submit" name="login" value="Login">' . "\n";
 	echo '<input type="submit" name="verify" value="Verify">' . "\n";
 	echo '<input type="hidden" name="xsessionid" value="' . $xsessionid . '">' . "\n";
