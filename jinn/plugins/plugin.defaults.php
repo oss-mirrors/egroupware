@@ -112,6 +112,12 @@
 	   return $input;
 	}
 
+	function plg_bv_def_auto($value, $config,$attr_arr)
+	{
+	   return '<div align="right">'.$value.'</div>';
+	}
+
+	
 	/**
 	* DEFAULT/FALLBACK BINARY PLUGIN
 	*/
@@ -245,6 +251,11 @@
 	function plg_bv_def_timestamp($value, $config,$attr_arr)
 	{
 	   return $value;   		
+	}
+	
+	function plg_sf_def_timestamp($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+	{
+	   return Null;
 	}
 
 ?>

@@ -986,15 +986,17 @@
 
 
 		 $SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-//		 die($SQL);
+		 // die($SQL);
 
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
-			$value[status]=1;
-//			$value[idfield]=$thirstfield;
-			$value[id]=$this->site_db->get_last_insert_id($site_object, $autokey);
+			$status[status]=1; // for backwards compatibility
+			$status[ret_code]=0;
 
-			if($autokey) $where_string= $autokey.'=\''.$value[id].'\'';
+			//			$status[idfield]=$thirstfield;
+			$status[id]=$this->site_db->get_last_insert_id($site_object, $autokey);
+
+			if($autokey) $where_string= $autokey.'=\''.$status[id].'\'';
 			elseif(count($pkey_arr)>0)
 			{
 			   foreach($pkey_arr as $pkey)
@@ -1004,9 +1006,16 @@
 			   }
 			}
 
-			$value[where_string]=$where_string;
+			$status[where_string]=$where_string;
+//			die('hallo');
 		 }
-		 return $value;
+		 else
+		 {
+			$status[ret_code]=1;
+		 }
+
+		 $status[sql]=$SQL;
+		 return $status;
 
 
 	  }

@@ -103,7 +103,6 @@
 		 {
 			if (eregi("auto_increment", $field_meta_arr[flags]) || eregi("nextval",$field_meta_arr['default']))
 			{
-//			   die('hallo');
 			   return $this->field_types_arr['auto'];
 			}
 			

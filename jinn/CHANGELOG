@@ -2,6 +2,16 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Version 0.8.107c
+Tue Sep 21 19:07:09 CEST 2004
+=============================
+- enhanced msg_box with default debug_info and images
+- standarized error codes
+- initial creation of priority plugin
+- add fixes to timestamp-plugin
+- add advanged debugging features
+
+
 Version 0.8.107b
 Tue Sep 21 15:04:07 CEST 2004
 =============================

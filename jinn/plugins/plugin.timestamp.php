@@ -74,5 +74,13 @@
 	  return $input;
    }
 
+   function plg_sf_timestamp($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+   {
+	  if($config[Default_action]!='Leave value untouched')
+	  {	   
+		 return Null;
+	  }
+   }
+
 
 ?>

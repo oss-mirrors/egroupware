@@ -57,21 +57,81 @@
 		}
 
 
-
 		/**
-		* format a standard msg_box with 
-		* 
-		* print errors in a red font and info messages in green
-		*
-		* @param array $msg_arr ['info'] contains the info msg and ['error'] the error msg
+		@function msg_box  
+		@abstract format a standard msg_box print errors in a red font and info messages in green
+		@param array $msg_arr ['info'] contains the info msg and ['error'] the error msg
 		*/
 		function msg_box($msg_arr)
 		{
-			if ($msg_arr['info']) $info='<span style="color:green">'.$msg_arr['info'].'</span><br/>';
-			if ($msg_arr['help']) $help='<span style="color:blue">'.$msg_arr['help'].'</span><br/>';
-			if ($msg_arr['error']) $error='<span style="color:red">'.$msg_arr['error'].'</span><br/>';
+		   
+		   
+		   if ($msg_arr['info'])
+		   {
+			  if(is_array($msg_arr['info']))
+			  {
+				 foreach($msg_arr['info'] as $info_str)
+				 {
+					$info.='<span style="color:green"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_info').'" alt="'.lang('info').'"/> '.$info_str.'</span><br/>';
+				 }
+			  }
+			  else
+			  {
+				 $info='<span style="color:green"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_info').'" alt="'.lang('info').'"/> '.$msg_arr['info'].'</span><br/>';
+			  }
+		   }
+		   
+		   if ($msg_arr['help'])
+		   {
+			  if(is_array($msg_arr['help']))
+			  {
+				 foreach($msg_arr['help'] as $help_str)
+				 {
+				 $help.='<span style="color:blue"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_help').'" alt="'.lang('help').'"/> '.$help_str.'</span><br/>';
+				 }
+			  }
+			  else
+			  {
+				 $help='<span style="color:blue"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_help').'" alt="'.lang('help').'"/> '.$msg_arr['help'].'</span><br/>';
+			  }
+		   }
+		   
+		   if ($msg_arr['error'])
+		   {
+			  if($msg_arr['error_code'])
+			  {
+				 $error_code=' ( '.lang('ERROR CODE %1',$msg_arr['error_code']).')';
+			  }
 
-			if($info || $error || $help)
+			  if(is_array($msg_arr['error']))
+			  {
+				 foreach($msg_arr['error'] as $error_str)
+				 {
+					$error.='<span style="color:red"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_error').'" alt="'.lang('error').'"/> '.$error_str.'</span>'.$error_code.'<br/>';
+				 }
+			  }
+			  else
+			  {
+				 $error='<span style="color:red"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_error').'" alt="'.lang('error').'"/> '.$msg_arr['error'].'</span>'.$error_code.'<br/>';
+			  }
+		   }
+	   
+		   if ($msg_arr['debug'])
+		   {
+
+			  if(is_array($msg_arr['debug']))
+			  {
+				 foreach($msg_arr['debug'] as $error_str)
+				 {
+					$debug.='<span style="color:#561800"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_debug').'" alt="'.lang('debug').'"/> '.$error_str.'</span><br/>';
+				 }
+			  }
+			  else
+			  {
+				 $debug='<span style="color:#561800"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','dialog_debug').'" alt="'.lang('debug').'"/> '.$msg_arr['debug'].'</span><br/>';
+			  }
+		   }
+		   if($info || $error || $help || $debug)
 			{
 				$this->template->set_file(array(
 					'msg_box' => 'msg_box.tpl'
@@ -80,6 +140,7 @@
 				$this->template->set_var('help',$help);
 				$this->template->set_var('error',$error);
 				$this->template->set_var('info',$info);
+				$this->template->set_var('debug',$debug);
 				$this->template->pparse('out','msg_box');
 			 }
 

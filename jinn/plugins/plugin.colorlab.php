@@ -34,7 +34,7 @@
    $this->plugins['colorlab']['author']			= 'Gabriël Ramaker';
    $this->plugins['colorlab']['description']		= $descr;
    $this->plugins['colorlab']['enable']			= 1;
-   $this->plugins['colorlab']['db_field_hooks']	= array('string',   'varchar','longtext',	'text');
+   $this->plugins['colorlab']['db_field_hooks']	= array('string', 'blob');
    $this->plugins['colorlab']['config']		    = array(
 	  'Available_colors' => array(array('Unlimited','User-defined'),'select',''),
 	  'User_defined_colors' => array('#FFFFFF,#000000,#CCCCCC','area','')
