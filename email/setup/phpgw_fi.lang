@@ -142,10 +142,10 @@ view as html	email	fi	Näytä HTML -muodossa
 view formatted	email	fi	Näytä muotoiltuna
 view headers	email	fi	Näytä otsikkotiedot
 view unformatted	email	fi	Näytä muotoilemattomana
-x messages have been deleted	email	fi	%1 viestiä poistettu
+%1 messages have been deleted	email	fi	%1 viestiä poistettu
 you have 1 new message!	common	fi	Sinulle on yksi uusi viesti!
 you have messages!	common	fi	Sinulle on viestejä!
 you have no new messages	common	fi	Ei uusia viestejä
-you have x new messages!	common	fi	Sinulle on %1 uutta viestiä!
+you have %1 new messages!	common	fi	Sinulle on %1 uutta viestiä!
 your full name	common	fi	Koko nimesi
 your message has been sent	common	fi	Viesti lähetetty

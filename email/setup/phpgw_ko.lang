@@ -29,4 +29,4 @@ switch current folder to	email	ko	다음으로 현재 폴더 바꾸기
 this folder is empty	email	ko	비어있는 폴더
 to	email	ko	받을 사람
 undisclosed recipients	email	ko	Undisclosed Recipients
-x messages have been deleted	email	ko	%1개의 메세지가 삭제되었습니다.
+%1 messages have been deleted	email	ko	%1개의 메세지가 삭제되었습니다.

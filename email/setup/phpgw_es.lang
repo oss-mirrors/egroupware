@@ -178,10 +178,10 @@ view formatted	email	es	Ver con formato
 view headers	email	es	Ver Encabezados
 view unformatted	email	es	Ver sin formato
 wrote	email	es	escribio
-x messages have been deleted	email	es	%1 mensajes han sido borrados
+%1 messages have been deleted	email	es	%1 mensajes han sido borrados
 you have 1 new message!	common	es	Usted tiene 1 nuevo mensaje!
 you have messages!	common	es	Usted tiene mensajes!
 you have no new messages	common	es	Usted no tiene nuevos mensajes
-you have x new messages!	common	es	Usted tiene %1 mensajes nuevos!
+you have %1 new messages!	common	es	Usted tiene %1 mensajes nuevos!
 your full name	common	es	Su nombre completo
 your message has been sent	common	es	Su mensaje ha sido enviado!

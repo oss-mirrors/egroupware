@@ -134,5 +134,5 @@ use custom settings	email	ja	カスタム設定を使用
 view formatted	email	ja	フォーマット表示
 view headers	email	ja	ヘッダ情報
 view unformatted	email	ja	未フォーマット表示
-x messages have been deleted	email	ja	%1 件削除しました。
+%1 messages have been deleted	email	ja	%1 件削除しました。
 wrote	email	ja	wrote

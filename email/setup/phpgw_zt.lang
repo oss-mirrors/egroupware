@@ -49,10 +49,10 @@ to	email	zt	收件者
 undisclosed recipients	email	zt	Undisclosed Recipients
 undisclosed sender	email	zt	Undisclosed Sender
 use custom settings	email	zt	使用自訂的設定
-x messages have been deleted	email	zt	已刪除 %1 封信件
+%1 messages have been deleted	email	zt	已刪除 %1 封信件
 you have 1 new message!	common	zt	您有 1 封新信件！
 you have messages!	common	zt	您有信件！
 you have no new messages	common	zt	您沒有新信件！
-you have x new messages!	common	zt	您有 %1 封新信件！
+you have %1 new messages!	common	zt	您有 %1 封新信件！
 your message has been sent	common	zt	您的信件以送出！
 

@@ -157,10 +157,10 @@ view as html	email	pt	Exibir como HTML
 view formatted	email	pt	Exibir formatado
 view headers	email	pt	Exibir cabeçalhos
 view unformatted	email	pt	Exibir não formatado
-x messages have been deleted	email	pt	%1 mensagens foram removidas
+%1 messages have been deleted	email	pt	%1 mensagens foram removidas
 you have 1 new message!	common	pt	Você tem 1 nova mensagem !
 you have messages!	common	pt	Você tem mensagens !
 you have no new messages	common	pt	Você não tem nenhuma nova mensagem !
-you have x new messages!	common	pt	Você tem %1 novas mensagens!
+you have %1 new messages!	common	pt	Você tem %1 novas mensagens!
 your full name	common	pt	Seu nome completo
 your message has been sent	common	pt	Sua mesagem foi enviada

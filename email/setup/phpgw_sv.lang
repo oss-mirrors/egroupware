@@ -44,4 +44,4 @@ to	email	sv	Till
 undisclosed recipients	email	sv	Okänd mottagare
 undisclosed sender	email	sv	Okänd Sändare
 use custom settings	email	sv	Använd egna inställningar
-x messages have been deleted	email	sv	%1 meddelande har raderats
+%1 messages have been deleted	email	sv	%1 meddelande har raderats

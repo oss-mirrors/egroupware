@@ -43,4 +43,4 @@ to	email	hu	Címzett
 undisclosed recipients	email	hu	Címzett nincs kitöltve
 undisclosed sender	email	hu	Feladó nincs kitöltve
 use custom settings	email	hu	Testreszabott beállítások használata
-x messages have been deleted	email	hu	%1 üzenet kitörölve
+%1 messages have been deleted	email	hu	%1 üzenet kitörölve
