@@ -169,7 +169,7 @@
                         . "addressbook,customers where customers.company_id=addressbook.ab_company_id and "
                         . "addressbook.ab_company_id='" .$phpgw->db->f("customer")."'");
       if ($db2->next_record()) {
-        $customerout = $db2->f("company_name")." [ ".$db2->f("ab_lastname")." ]";
+        $customerout = $db2->f("company_name")." [".$db2->f("ab_lastname")."]";
 	}
 	else {
 	$customerout = $t->set_var("customer","");
@@ -180,7 +180,7 @@
                         . "ab_id='" .$phpgw->db->f("customer")."'");
                        
     if ($db2->next_record()) {
-      $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_lastname")." ]";
+      $customerout = $db2->f("ab_company")." [".$db2->f("ab_lastname")."]";
     }
     else {
     $customerout = $t->set_var("customer","");

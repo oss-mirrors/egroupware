@@ -6,17 +6,3 @@ update applications set app_enabled=2 where app_name='projecthours';
 update applications set app_enabled=2 where app_name='projectstatistics';
 update applications set app_enabled=2 where app_name='projectdelivery';
 update applications set app_enabled=2 where app_name='projectbilling';
-
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectbilling','en','Return to Projects');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projecthours','en','Return to Projects');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectstatistics','en','Return to Projects');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectdelivery','en','Return to Projects');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('project hours - edit','projectdelivery','en','EditProject Hours');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('project hours - edit','projectbilling','en','Edit Project Hours');
-
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectbilling','de','Zur&uuml;ck zu Projekte');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projecthours','de','Zur&uuml;ck zu Projekte');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectstatistics','de','Zur&uuml;ck zu Projekte');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('return to projects','projectdelivery','de','Zur&uuml;ck zu Projekte');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('project hours - edit','projectdelivery','de','Projekt Stunden bearbeiten');
-REPLACE INTO lang (message_id,app_name,lang,content) VALUES('project hours - edit','projectbilling','de','Projekt Stunden bearbeiten');
