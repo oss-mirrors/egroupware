@@ -13,8 +13,7 @@
 	/* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'login',
-		'disable_Template_class' => True
+		'currentapp' => 'xmlrpc'
 	);
 
 	include('../header.inc.php');
@@ -25,19 +24,69 @@
 
 	$is = CreateObject('phpgwapi.interserver',intval($server_id));
 
+	function applist()
+	{
+		$select  = "\n" .'<select name="xappname" >' . "\n";
+		if($default)
+		{
+			$select .= '<option value="">' . lang('Please Select') . '</option>'."\n";
+		}
+
+		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_applications WHERE app_enabled<3",__LINE__,__FILE__);
+		if($GLOBALS['phpgw']->db->num_rows())
+		{
+			while ($GLOBALS['phpgw']->db->next_record())
+			{
+				$select .= '<option value="' . $GLOBALS['phpgw']->db->f('app_name') . '"';
+				if($GLOBALS['phpgw']->db->f('app_name') == $GLOBALS['HTTP_POST_VARS']['xappname'])
+				{
+					$select .= ' selected';
+				}
+				$select .= '>' . $GLOBALS['phpgw']->db->f('app_name') . '</option>'."\n";
+			}
+		}
+		$select .= '</select>'."\n";
+		$select .= '<noscript><input type="submit" name="' . $name . '_select" value="True"></noscript>' . "\n";
+
+		return $select;
+	}
+
+	if(!$xsessionid && !$xusername)
+	{
+		$xserver_name = $GLOBALS['HTTP_HOST'];
+	}
+	else
+	{
+		$xserver_name = $HTTP_POST_VARS['xserver_name'];
+	}
+
 	/* _debug_array($is->server); */
 	if($HTTP_POST_VARS['login'])
 	{
-		/* You may need to adjust $HTTP_HOST manually here */
-		$is->send(
-			'system.login', array(
-				'server_name' => $HTTP_HOST,
-				'username'    => $is->server['username'],
-				'password'    => $is->server['password']
-			),
-			$is->server['server_url']
-		);
+		if($HTTP_POST_VARS['xserver'])
+		{
+			$is->send(
+				'system.login', array(
+					'server_name' => $HTTP_POST_VARS['xserver_name'],
+					'username'    => $HTTP_POST_VARS['xusername'],
+					'password'    => $HTTP_POST_VARS['xpassword']
+				),
+				$is->server['server_url']
+			);
+		}
+		else
+		{
+			$is->send(
+				'system.login', array(
+					'domain'      => $HTTP_POST_VARS['xserver_name'],
+					'username'    => $HTTP_POST_VARS['xusername'],
+					'password'    => $HTTP_POST_VARS['xpassword']
+				),
+				$is->server['server_url']
+			);
+		}
 		/* _debug_array($is->result); */
+		$xserver_name = $is->result['domain'];
 		$xsessionid = $is->result['sessionid'];
 		$xkp3       = $is->result['kp3'];
 	}
@@ -50,13 +99,23 @@
 			),
 			$is->server['server_url']
 		);
+		$xsessionid = '';
+		$xkp3       = '';
 	}
 	elseif($HTTP_POST_VARS['methods'])
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listMethods','',$is->server['server_url']);
+		if($xsessionid & $HTTP_POST_VARS['xappname'])
+		{
+			$method_str = $HTTP_POST_VARS['xappname'] . '.bo' . $HTTP_POST_VARS['xappname'] . '.list_methods';
+			$is->send($method_str,'xmlrpc',$is->server['server_url']);
+		}
+		else
+		{
+			$is->send('system.listMethods','',$is->server['server_url']);
+		}
 	}
 	elseif($HTTP_POST_VARS['apps'])
 	{
@@ -76,33 +135,74 @@
 	{
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
-		/* NOTE: Currently acl in the addressbook so class blocks this from working.
-			You will need to replace the first line in read_entry() there to if(1).
-		*/
+		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'addressbook.boaddressbook.read_entry',array(
-				'id' => 24,
+			'addressbook.boaddressbook.read_entries',array(
+				'start' => 1,
+				'limit' => 5,
 				'fields' => array(
 					'n_given'  => 'n_given',
 					'n_family' => 'n_family'
-				)
+				),
+				'query'  => '',
+				'filter' => '',
+				'sort'   => '',
+				'order'  => ''
+			),
+			$is->server['server_url']
+		);
+	}
+	elseif($HTTP_POST_VARS['calendar'])
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		/* TODO - Adjust the values below as desired */
+		$is->send(
+			'calendar.bocalendar.store_to_cache', array(
+				'syear' => '2001', 
+				'smonth' => '08',
+				'sday' => '03',
+				'eyear' => '2001',
+				'emonth' => '08',
+				'eday' => '06'
 			),
 			$is->server['server_url']
 		);
 	}
 
-	echo '<table><tr><td>';
-	echo '<form method="POST" action="' . $GLOBALS['phpgw']->link('/xmlrpc/interserv.php') . '">' . "\n";
-	echo $is->formatted_list($server_id) . "\n";
-	echo '<input type="submit" name="login" value="Login">' . "\n";
-	echo '<input type="submit" name="logout" value="Logout">' . "\n";
-	echo '<input type="submit" name="addressbook" value="Addressbook test">' . "\n";
-	echo '<input type="submit" name="methods" value="List Methods">' . "\n";
-	echo '<input type="submit" name="apps" value="List Apps">' . "\n";
-	echo '<input type="submit" name="users" value="List Users">' . "\n";
-	echo '<input type="hidden" name="xsessionid" value="' . $xsessionid . '">' . "\n";
-	echo '<input type="hidden" name="xkp3" value="' . $xkp3 . '">' . "\n";
-	echo 'listapps and listusers are disabled by default in xml_functions.php' . "\n";
-	echo '</form>' . "\n";
-	echo '</td></tr></table><td>';
+	$GLOBALS['phpgw']->template->set_file('interserv','interserv.tpl');
+
+	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/xmlrpc/interserv.php'));
+	$GLOBALS['phpgw']->template->set_var('lang_title',lang('phpGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
+	$GLOBALS['phpgw']->template->set_var('lang_select_target',lang('Select target server'));
+	$GLOBALS['phpgw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
+	$GLOBALS['phpgw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
+	$GLOBALS['phpgw']->template->set_var('lang_addressbook',lang('Addressbook test'));
+	$GLOBALS['phpgw']->template->set_var('lang_calendar',lang('Calendar test'));
+	$GLOBALS['phpgw']->template->set_var('lang_login',lang('Login'));
+	$GLOBALS['phpgw']->template->set_var('lang_logout',lang('Logout'));
+	$GLOBALS['phpgw']->template->set_var('lang_list',lang('List'));
+	$GLOBALS['phpgw']->template->set_var('lang_apps',lang('Apps'));
+	$GLOBALS['phpgw']->template->set_var('lang_users',lang('Users'));
+	$GLOBALS['phpgw']->template->set_var('lang_methods',lang('Methods'));
+	$GLOBALS['phpgw']->template->set_var('lang_username',lang('Username'));
+	$GLOBALS['phpgw']->template->set_var('lang_password',lang('Password'));
+	$GLOBALS['phpgw']->template->set_var('lang_session',lang('Assigned sessionid'));
+	$GLOBALS['phpgw']->template->set_var('lang_kp3',lang('Assigned kp3'));
+	$GLOBALS['phpgw']->template->set_var('login_type',lang('Server<->Server'));
+	$GLOBALS['phpgw']->template->set_var('note',lang('NOTE: listapps and listusers are disabled by default in xml_functions.php') . '.');
+
+	$GLOBALS['phpgw']->template->set_var('xserver',$HTTP_POST_VARS['xserver'] ? ' checked' : '');
+	$GLOBALS['phpgw']->template->set_var('xsessionid',$xsessionid ? $xsessionid : lang('none'));
+	$GLOBALS['phpgw']->template->set_var('xkp3',$xkp3 ? $xkp3 : lang('none'));
+	$GLOBALS['phpgw']->template->set_var('xusername',$xusername);
+	$GLOBALS['phpgw']->template->set_var('xpassword',$xpassword);
+	$GLOBALS['phpgw']->template->set_var('xserver_name',$xserver_name);
+	$GLOBALS['phpgw']->template->set_var('server_list',$is->formatted_list($server_id));
+	$GLOBALS['phpgw']->template->set_var('method_type',$xsessionid ? 'App ' : 'System ');
+	$GLOBALS['phpgw']->template->set_var('applist',$xsessionid ? 'for&nbsp;' . applist() : '');
+
+	$GLOBALS['phpgw']->template->pfp('out','interserv');
+
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
