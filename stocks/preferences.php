@@ -66,9 +66,10 @@
     <?php
       echo '<tr bgcolor="' . $phpgw_info["theme"]["th_bg"] . '">'
          . '<td>' . lang("Symbol") . '</td>'
-         . '<td>' . lang("Company Name") . '</td>'
+         . '<td>' . lang("Company name") . '</td>'
 // For right now, editing is disabled, feel free to add it :)         
-//         . '<td width="5%" align="center">' . lang("Edit") . '</td>'
+// added it...
+         . '<td width="5%" align="center">' . lang("Edit") . '</td>'
          . '<td width="5%" align="center">' . lang("Delete") . '</td>'
          . '</tr>';
       echo "\n";
@@ -80,7 +81,8 @@
 
             echo '<td>' . rawurldecode($stock[0]) . '</td>';
             echo '<td>' . rawurldecode($stock[1]) . '</td>';
-//            echo '<td width="5%" align="center">Edit</td>';
+            echo '<td width="5%" align="center"><a href="'                                                                                                                                     
+               . $phpgw->link("preferences_edit.php","sym=" . $stock[0]) . '">Edit</a></td>';
             echo '<td width="5%" align="center"><a href="'
                . $phpgw->link("preferences.php","action=delete&value=" . $stock[0]) . '">Delete</a></td>';
 
@@ -90,10 +92,10 @@
 
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
      
-     echo '<tr bgcolor="' . $tr_color . '"><td colspan="3">&nbsp;</td></tr>';
+     echo '<tr bgcolor="' . $tr_color . '"><td colspan="4">&nbsp;</td></tr>';
      
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     echo '<tr bgcolor="' . $tr_color . '"><td colspan="2">';
+     echo '<tr bgcolor="' . $tr_color . '"><td colspan="3">';
      if ($phpgw_info["user"]["preferences"]["stocks"]["enabled"]) {
         echo lang("Display stocks on main screen is enabled");
         $newstatus = "disable";
