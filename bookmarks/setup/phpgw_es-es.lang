@@ -25,7 +25,6 @@ descending	bookmarks	es-es	Descendente
 edit bookmark	bookmarks	es-es	Editar marcador
 edit this bookmark	bookmarks	es-es	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es-es	Introduzca el nombre del fichero de marcadores de Netscaep<br>que quiera ver importado debajo.
-export bookmarks	preferences	es-es	Exportar marcadores
 export bookmarks	bookmarks	es-es	Exportar marcadores
 fewer	bookmarks	es-es	Menos
 filter by	bookmarks	es-es	Filtrar por
@@ -34,7 +33,6 @@ from	bookmarks	es-es	De
 from category %1	bookmarks	es-es	de categoría %º
 highest	bookmarks	es-es	La más alta
 i thought you would be interested in the following link(s):	bookmarks	es-es	Pensé que le interesarían los siguientes enlaces:
-import bookmarks	preferences	es-es	Importar marcadores
 import bookmarks	bookmarks	es-es	Importar marcadores
 like	bookmarks	es-es	como
 list	bookmarks	es-es	Lista
@@ -51,9 +49,11 @@ netscape bookmark filename is required!	bookmarks	es-es	El nombe del fichero de 
 new	bookmarks	es-es	Nuevo
 or	bookmarks	es-es	o
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	es-es	Por favor, rellene <b>Dirección destino</b>, <b>Asunto</b> y <b>Mensaje</b>
+please select the categories to export	bookmarks	es-es	Por favor, seleccione las categorías a exportar
 query condition	bookmarks	es-es	Condición de consulta
 rating	bookmarks	es-es	Estimación
 search for:	bookmarks	es-es	Buscar:
+select the format you would like to export to	bookmarks	es-es	Seleccione el formato al que le gustaría exportar
 send bookmark	bookmarks	es-es	Enviar marcador
 sub category	bookmarks	es-es	Subcategoría
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	es-es	La dirección Para: %1 no es válida. El formato debe ser <strong>usuario@dominio</strong> y el dominio debe existir.

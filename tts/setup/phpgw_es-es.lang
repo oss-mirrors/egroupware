@@ -21,8 +21,8 @@ clear form	tts	es-es	Despejar formulario
 close the invalid ticket.	tts	es-es	Cerrar la incidencia no válida
 closed	tts	es-es	Cerrada
 completed	tts	es-es	COMPLETADA
-configure the states	tts	es-es	Configurar los estados
-configure the transitions	tts	es-es	Configurar las transiciones
+configure the states	common	es-es	Configurar los estados
+configure the transitions	common	es-es	Configurar las transiciones
 create new state	tts	es-es	Crear un nuevo estado
 create new ticket	tts	es-es	Crear una incidencia nueva
 create new transition	tts	es-es	Crear nueva transición
@@ -127,6 +127,7 @@ tickets open %1	tts	es-es	Incidencias abiertas: %1
 tickets total %1	tts	es-es	Total de incidencias: %1
 to go back to the tts index, click <a href= %1?sessionid=69211c0c32aa5581c5d69abdbcac4d64 >here</a>	tts	es-es	Para volver al índice del Sistema, pulse <a href="%1">aquí</a>
 to go back to the tts index, click <a href= %1?sessionid=7fe5595a67d8747e64c2b92411ceaf31 >here</a>	tts	es-es	
+to go back to the tts index, click <a href= %1?sessionid=e8b5fbb098cb6b1e628cc61a5b848229 >here</a>	tts	es-es	Para volver al índice, pulse <a href="%1">aquí</a>
 toaccept	tts	es-es	PARA ACEPTAR
 toclosed	tts	es-es	PARA CERRAR
 toduplicate	tts	es-es	PARA DUPLICAR

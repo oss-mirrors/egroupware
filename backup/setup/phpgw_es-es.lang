@@ -1,4 +1,6 @@
 absolute path of the backup directory	backup	es-es	Ruta absoluta del directorio de la copia de seguridad
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	es-es	Ruta absoluta para el directorio de la copia (p. ej: /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	es-es	Ruta absoluta al directorio de la aplicación de Copia de seguridad de EGW
 absolute path of the directory to store the backup script	backup	es-es	Ruta absoluta del directorio para almacenar el script de la copia de seguridad
 archive type	backup	es-es	Tipo de archivo
 backup	common	es-es	Copia de seguridad
@@ -13,6 +15,7 @@ data	backup	es-es	Datos
 directory locations	admin	es-es	ubicación de los directorios
 directory names	admin	es-es	nombres de los directorios
 e-mail	backup	es-es	Correo electrónico
+e-mail notification?	backup	es-es	¿Notificar por correo electrónico?
 homedirs	admin	es-es	Directorios de inicio
 interval	backup	es-es	Intervalo
 ip or hostname	backup	es-es	IP o nombre del equipo
@@ -44,6 +47,7 @@ please specify the ip of the remote host !	backup	es-es	Especifique la direccion
 please specify the name of the maildir in *site configuration* !	backup	es-es	Por favor, indique el nombre del directorio Maildir en "Configuración del sitio"
 please specify the path to the backup directory !	backup	es-es	Por favor, indique la ruta al directorio de la copia de seguridad
 please specify the path to the user-homedirectories in *site configuration* !	backup	es-es	Por favor, indique la ruta a los directorios de los usuarios en "Configuración del sitio"
+please write down you e-mail for beeing notified	backup	es-es	Por favor, escriba su dirección de correo para notificaciones
 program locations	admin	es-es	Ubicación de los programas
 save backup locally ?	backup	es-es	¿Guardar copia de seguridad localmente?
 save backup to a remote host ?	backup	es-es	¿Guardar copia de seguridad en un servidor remoto?

@@ -28,6 +28,7 @@ bcc	felamimail	es-es	Cco
 before headers	felamimail	es-es	Antes de las cabeceras
 between headers and message body	felamimail	es-es	Entre las cabeceras y el cuerpo del mensaje
 body part	felamimail	es-es	Parte del cuerpo
+can't connect to inbox!!	felamimail	es-es	¡¡No se puede leer la Bandeja de entrada!!
 cc	felamimail	es-es	Cc
 change folder	felamimail	es-es	Cambiar carpeta
 checkbox	felamimail	es-es	Casilla
@@ -122,6 +123,7 @@ folder preferences	felamimail	es-es	Preferencias de la carpeta
 folder settings	felamimail	es-es	Opciones de la carpeta
 folder status	felamimail	es-es	Estado de la carpeta
 folderlist	felamimail	es-es	Lista de carpetas
+foldername	felamimail	es-es	Nombre de carpeta
 folders	felamimail	es-es	Carpetas
 folders created successfully!	felamimail	es-es	Las carpetas se han creado correctamente
 follow	felamimail	es-es	seguir
@@ -278,6 +280,7 @@ show header	felamimail	es-es	mostrar cabecera
 show new messages on main screen	felamimail	es-es	Mostrar mensajes nuevos en la pantalla principal
 sieve settings	admin	es-es	Configuración de Sieve
 signature	felamimail	es-es	Firma
+simply click the target-folder	felamimail	es-es	Simplemente pulse en la carpeta destino
 site configuration	felamimail	es-es	Configuración del sitio
 size	felamimail	es-es	Tamaño
 size of editor window	felamimail	es-es	Tamaño de la ventana del editor
@@ -330,6 +333,7 @@ unknown error	felamimail	es-es	Error desconocido
 unknown sender	felamimail	es-es	Remitente desconocido
 unknown user or password incorrect.	felamimail	es-es	Usuario desconocido o contraseña incorrecta
 unread	felamimail	es-es	No leído
+unseen	felamimail	es-es	No vistos
 unseen and total	felamimail	es-es	No vistos y total
 unseen message notification	felamimail	es-es	Notificación de mensaje desconocida
 unseen message notification type	felamimail	es-es	Tipo de notificación de mensaje no visto
