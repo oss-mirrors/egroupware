@@ -175,7 +175,7 @@
 		 $this->bo->save_sessiondata();
 	  }
 
-	  function test_db_access()
+	  function test_db_access() //fixme: rename to more appropriate name, like 'test_db_and_paths'
 	  {
 		 // FIXME use templates
 		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
@@ -186,26 +186,155 @@
 
 		 $this->ui->header(lang('Test Database Access'),false);
 
+		 
+		 ////////////////////////////////////////////////////////////////
+		 // test database access
+		 ////////////////////////////////////////////////////////////////
+		 
 		 list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'], $data['dev_db_name'],$data['dev_db_host'],$data['dev_db_user'],$data['dev_db_password'],$data['dev_db_type']  )=explode(":",$_GET['dbvals']);
-
-		 //	_debug_array($data);
 
 		 echo '<div align=center>';
 			if ($this->bo->so->test_db_conn($data))
 			{
-			   echo '<span style="color:green">'.lang("Database connection was succesfull. <P>You can go on with the site-objects").'</span>';
+			   echo '<span style="color:green">'.lang("Database connection was succesful.").'</span>';
 			}
 			else 
 			{
-			   echo '<span style="color:red">'.	lang("database connection failed! <P>Please recheck your settings.").'</span>';
+			   echo '<span style="color:red">'.	lang("database connection failed! <p>Please recheck your settings.").'</span>';
 			}
 
-			echo '<P><input type=button value="'.lang('close this window').'" onClick="self.close();"></div>';
+		 echo '<hr/>';			
+		 
+		 ////////////////////////////////////////////////////////////////
+		 // test upload paths
+		 ////////////////////////////////////////////////////////////////
 
-		 //		$this->bo->save_sessiondata();
+		 $filename = 'jinn.txt';
+		 $paths = explode(";",$_GET['pathvals']);
+
+		 if($this->bo->so->config[server_type]=='dev')
+		 {
+			echo ('<span style="color:green">'.lang("you are on a <b>development</b> server").'</span><br/>');
+			$server = '<b>development</b>';
+			$path = $paths[1];
+			$url = $paths[3];
+			$dev = 'dev_';
+		 }
+		 else
+		 {
+			echo ('<span style="color:green">'.lang("you are on a <b>production</b> server").'</span><br/>');
+			$server = '<b>production</b>';
+			$path = $paths[0];
+			$url = $paths[2];
+			$dev='';
+		 }
+
+			//first check the upload path by writing a test file
+		 if(file_exists($path))
+		 {
+			$this->status($dev.'upload_path', 'good', "the $server upload path exists");
+			if(is_writable($path))
+			{
+				$this->status($dev.'upload_path', 'good', "the $server upload path is writable");
+				if(!$file = @fopen($path.'/'.$filename, 'w'))
+				{
+					$this->status($dev.'upload_path', 'bad', "unknown error writing to the $server upload path. Please contact your system administrator");
+				}
+				else
+				{
+					$uid = uniqid('');
+					fwrite($file, $uid);
+					fclose($file);
+					
+					if(!$file = @fopen($url, 'r'))
+					{
+						$this->status($dev.'upload_url', 'bad', "the $server upload url does not exist. <p>Please recheck your settings.");
+					}
+					else
+					{
+						$this->status($dev.'upload_url', 'good', "the $server upload url exists");
+						if(!$file = @fopen($url.'/'.$filename, 'r'))
+						{
+							$this->status($dev.'upload_url', 'bad', "the $server upload url does not point to a known upload path. <p>Please recheck your settings.");
+						}
+						else
+						{
+							$this->status($dev.'upload_url', 'good', "the $server upload url points to a known upload path");
+							
+							$result = fread($file, filesize($path.'/'.$filename));
+							if($result==$uid)
+							{
+								$this->status($dev.'upload_url', 'good', "the $server upload url correctly points to the $server upload path");
+								echo('<hr/>');
+								echo '<span style="color:green">'.lang("All tests were successful. You can go on with the site-objects").'</span>';
+							}
+							else
+							{
+								$this->status($dev.'upload_url', 'bad', "the $server upload url points to an inappropriate upload path. <p>Please recheck your settings.");
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				$this->status($dev.'upload_path', 'bad', "the $server upload path is not writable. <p>Please recheck your settings.");
+			}
+		 }
+		 else
+		 {
+			$this->status($dev.'upload_path', 'bad', "the $server upload path does not exist. <p>Please recheck your settings.");
+		 }
+		 
+		 /*
+		 //$wget = "wget -v -S $url/$filename";
+		 $wget = "wget -v -S http://www.vogelaar.cc";
+
+		 echo $wget;
+		 //$result = shell_exec($wget);
+		 //$result = shell_exec('ls');
+		 $result = shell_exec('wget http://www.vogelaar.cc');
+		 echo '<pre>'.$result.'</pre>';
+		 
+			//then check the url path by reading that file
+		 ini_set('user_agent','MSIE 4\.0b2;'); 
+		 if(!$file = fopen($url.'/'.$filename, 'r'))
+		 {
+			echo ('<span style="color:red">'.lang("the $server upload url does not exist. <p>Please recheck your settings.").'</span><br/>');
+		 }
+		 else
+		 {
+			echo ('<span style="color:green">'.lang("the $server upload url exists").'</span><br/>');
+		 }
+		 */
+		 
+		 
+		 echo '<hr/>';			
+		 echo '<P><input type=button value="'.lang('close this window').'" onClick="self.close();"></div>';
+		 
 	  }
 
+	 function status($field, $type, $message)
+	 {
+		if($type=='good')
+		{
+			echo ('<span style="color:green">'.lang($message).'</span><br/>');
+			$this->set_field_color('FLD'.$field, '#FFFFFF');
+		}
+		else
+		{
+			echo ('<span style="color:red">'.lang($message).'</span><br/>');
+			$this->set_field_color('FLD'.$field, '#FFAAAA');
+		}
+	 }
 
+	  function set_field_color($fieldname, $color)
+	  {
+		echo('<script language="javascript">');
+		echo 'opener.document.frm.'.$fieldname.'.style.backgroundColor="'.$color.'";';
+		echo('</script>');
+	  }
+	  
 	  function browse_egw_jinn_sites()
 	  {
 		 $this->ui->header(lang('List Sites'));

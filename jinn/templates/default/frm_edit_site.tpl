@@ -17,9 +17,11 @@
 function testdbfield()
 {
    dbvals=document.frm.FLDsite_db_name.value+':'+document.frm.FLDsite_db_host.value+':'+document.frm.FLDsite_db_user.value+':'+document.frm.FLDsite_db_password.value+':'+document.frm.FLDsite_db_type.value  +':'+   document.frm.FLDdev_site_db_name.value+':'+document.frm.FLDdev_site_db_host.value+':'+document.frm.FLDdev_site_db_user.value+':'+document.frm.FLDdev_site_db_password.value+':'+document.frm.FLDdev_site_db_type.value;
+   pathvals=document.frm.FLDupload_path.value+';'+document.frm.FLDdev_upload_path.value+';'+document.frm.FLDupload_url.value+';'+document.frm.FLDdev_upload_url.value;
    sessionlink='{test_access_link}';
-   link=sessionlink+'&dbvals='+dbvals;
-   window.open(link,'', 'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no');
+   link=sessionlink+'&dbvals='+dbvals+'&pathvals='+pathvals;
+   childWindow=open(link,'', 'width=500,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no');
+   if (childWindow.opener == null)	childWindow.opener = self;
 }
 </script>
 

@@ -198,7 +198,7 @@
 		 $this->template->set_var('lang_cancel',lang('cancel'));
 		 $this->template->set_var('onclick_delete','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_site&where_key=site_id&where_value='.$where_value).'\'');
 		 $this->template->set_var('onclick_cancel','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
-		 $this->template->set_var('lang_test_access',lang('test database access'));
+		 $this->template->set_var('lang_test_access',lang('test database and paths'));
 		 $this->template->set_var('test_access_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access'));
 		 $this->template->set_var('onclick_import_object',$onclick_import_object);
 		 $this->template->set_var('lang_import_object',lang('Import object from file to this site'));
