@@ -38,6 +38,8 @@
 			$filter					= get_var('filter', 'any', '');
 			$this->filter_active	= get_var('filter_active', 'any', '');
 			$where					= get_var('where', 'any', '');
+			$newminor				= get_var('newminor', 'GET', 0);
+			$newmajor				= get_var('newmajor', 'GET', 0);
 			$this->order			= get_var('order', 'GET', 'lastModif');
 			$this->sort				= get_var('sort', 'GET', 'desc');
 			$this->sort_mode		= $this->order . '_'. $this->sort;
@@ -63,6 +65,18 @@
 			if (isset($_POST['save']))
 			{
 				$this->pId = $this->save_process($name, $version, $description, $isActive);
+			}
+
+			// new minor
+			if ($newminor)
+			{
+				$this->process_manager->new_process_version($newminor);
+			}
+
+			// new mayor
+			if ($newmajor)
+			{
+				$this->process_manager->new_process_version($newmajor, false);
 			}
 
 			// retrieve current process
@@ -160,14 +174,14 @@
 					'item_version'		=> $item['version'],
 					'img_active'		=> ($item['isActive'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />' : '',
 					'img_valid'			=> '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $dot.'_dot') .'" alt="'. $alt .'" title="'. $alt .'" />',
-					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_processmanager.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newminor='. $item['pId']),
+					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newminor='. $item['pId']),
 					'img_new'		=> $GLOBALS['phpgw']->common->image('workflow', 'new'),
-					'href_item_mayor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_processmanager.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['pId']),
+					'href_item_mayor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['pId']),
 					'href_item_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&pid='. $item['pId']),
 					'img_activities'	=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
 					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&pid='. $item['pId']),
 					'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_processmanager.save_process&pid='. $item['pId']),
+					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&pid='. $item['pId']),
 					'img_save'			=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
 					'href_item_roles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&pid='. $item['pId']),
 					'img_roles'			=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
