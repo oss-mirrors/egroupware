@@ -1,6 +1,6 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Address Book                                              *
+  * phpGroupWare - E-Mail                                                    *
   * http://www.phpgroupware.org                                              *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -22,10 +22,10 @@
     $img = "";
     }
   }
-  section_start("Address Book",$img);
+  section_start("E-Mail",$img);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/addressbook/preferences.php");
-  echo "<A href=".$pg.">" . lang("Addressbook preferences") . "</A>";
+  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/email/preferences.php");
+  echo "<A href=".$pg.">" . lang("E-Mail preferences") . "</A>";
 
   section_end(); 
 }

@@ -150,7 +150,7 @@
    </td>
   </tr>
   <?php
-    if ($phpgw_info["user"]["preferences"]["email_sig"]) {
+    if ($phpgw_info["user"]["preferences"]["email"]["email_sig"]) {
 ?>
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">

@@ -17,12 +17,6 @@
   $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
-  if ($phpgw_info["user"]["permissions"]["anonymous"]) {
-       $phpgw->common->navbar();
-     echo "<p><center>Sorry, sending mail is disabled</center>";
-     exit;
-  }
-
   $sep = $phpgw->common->filesystem_separator();
 
   if (file_exists($phpgw_info["server"]["temp_dir"].$sep.$phpgw_info["user"]["sessionid"])) {
