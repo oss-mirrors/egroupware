@@ -315,7 +315,7 @@
 		 }
 		 $this->save_sessiondata();
 
-		 $this->common->exit_and_open_screen('jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_name].'&plug_name='.$_GET[plug_name].'&hidden_name=CFG_PLG'.$_GET[plug_name].'&=&field_name='.$_GET[plug_name].'&object_id='.$_GET[object_id].'&hidden_val=');
+		 $this->common->exit_and_open_screen('jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_name].'&close_me=true&plug_name='.$_GET[plug_name].'&hidden_name=CFG_PLG'.$_GET[plug_name].'&=&field_name='.$_GET[plug_name].'&object_id='.$_GET[object_id].'&hidden_val=');
 	  }
 
 
@@ -425,7 +425,7 @@
 		 $table='egw_jinn_sites';
 
 		 $status = $this->update_phpgw_data($table,$_POST,$_POST,$this->where_key,$this->where_value);
-		 if ($status==1)	$this->message[info]=lang('Site succesfully saved');
+		 if ($status[ret_code]==0)	$this->message[info]=lang('Site succesfully saved');
 		 else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();

@@ -308,7 +308,7 @@ unset($this->bo->message);
 			'theme_css'     => $theme_css,
 			'css'           => $GLOBALS['phpgw']->common->get_css(),
 			'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
-			'cssfile'		=> ''
+			'css_file'		=> ''
 		 );
 		 $this->template->set_var($var);
 
@@ -348,6 +348,7 @@ unset($this->bo->message);
 	  /**
 	  @function plug_config
 	  @abstract make form to set field plugin configuration
+	  @fixme parse config options and help info through lang()
 	  */
 	  function plug_config()
 	  {
@@ -359,6 +360,7 @@ unset($this->bo->message);
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 
+		 /* for backwards compatibility */
 		 if(!empty($object_arr[plugins]))
 		 {
 			$this->bo->upgrade_plugins($object_arr[object_id]);
@@ -390,7 +392,7 @@ unset($this->bo->message);
 			'theme_css'     => $theme_css,
 			'css'           => $GLOBALS['phpgw']->common->get_css(),
 			'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
-			'cssfile'		=> ''
+			'css_file'		=> ''
 		 );
 		 $this->template->set_var($var);
 
@@ -400,7 +402,11 @@ unset($this->bo->message);
 
 		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_plugin_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$_GET[plug_name]);
 
+
+		 if($_GET[close_me]=='true') $body_tags = 'onLoad="self.close()"';
+
 		 $this->template->set_var('action',$action);
+		 $this->template->set_var('body_tags',$body_tags);
 		 $this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
 		 $this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
 		 $this->template->set_var('lang_plugin_name',lang('Plugin name'));
@@ -413,8 +419,6 @@ unset($this->bo->message);
 
 		 $screenshot_file=$GLOBALS['phpgw']->common->get_app_dir('jinn').'/plugins/plugin_images/'.$plugin_name.'.png';
 if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
-		// $screenshot = $GLOBALS['phpgw']->common->image('jinn','plugins/'.$plugin_name);
-
 
 		$this->template->set_var('screenshot',$screenshot);
 
@@ -430,8 +434,8 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 
 		 // get config fields for this plugin
 		 // if hidden value is empty get defaults vals for this plugin
-
 		 $cfg=$this->bo->plugins[$plugin_name]['config'];
+		 $cfg_help=$this->bo->plugins[$plugin_name]['config_help'];
 
 		 if(is_array($cfg))
 		 {
@@ -449,14 +453,15 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 		 unset($this->bo->message);
 
 		 $this->template->pparse('out','bodyhead');
-		 
+
 		 if(is_array($cfg))
 		 {
 			foreach($cfg as $cfg_key => $cfg_val)
 			{
 			   /* replace underscores for spaces */
-			   $render_cfg_key=ereg_replace('_',' ',$cfg_key);
-
+			   $render_cfg_key='<strong>'.ereg_replace('_',' ',$cfg_key).'</strong>';
+			   if($cfg_help[$cfg_key]) $render_cfg_key .= '<br/><i>'.$cfg_help[$cfg_key].'</i>';
+			   
 			   $val=$cfg_val;
 			   $rowval=($rowval=='row_on')? 'row_off' : 'row_on';
 
@@ -481,7 +486,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 					 break;
 				  case 'text'  :
 					 if ($use_records_cfg) $val[0]=$set_val;
-					 $output= '<input name="'.$cfg_key.'" type=text '.$val[2].' value="'.$val[0].'">';
+					 $output= '<input name="'.$cfg_key.'" type="text" size="50" '.$val[2].' value="'.$val[0].'">';
 					 break;
 				  case 'area'  :
 					 if ($use_records_cfg) $val[0]=$set_val;

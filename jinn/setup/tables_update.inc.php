@@ -533,4 +533,42 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.105';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.8.105';
+	function jinn_upgrade0_8_105()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_jinn_sites','upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_jinn_sites','dev_upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.106';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
+
+
+	$test[] = '0.8.106';
+	function jinn_upgrade0_8_106()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_jinn_objects','upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_jinn_objects','dev_upload_url',array(
+			'type' => 'varchar',
+			'precision' => '250',
+			'nullable' => False
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.107';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>

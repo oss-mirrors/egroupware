@@ -152,6 +152,7 @@
 		 $site_values[cur_site_db_password] = $site_values[$pre.'site_db_password'];
 		 $site_values[cur_site_db_type] = $site_values[$pre.'site_db_type'];
 		 $site_values[cur_upload_path] =$site_values[$pre.'upload_path'];
+		 $site_values[cur_upload_url] =$site_values[$pre.'upload_url'];
 
 		 return $site_values;
 	  }

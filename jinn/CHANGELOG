@@ -2,6 +2,21 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Version 0.8.107
+Mon Sep 20 14:33:10 CEST 2004
+============================
+- fix plugin conf and field help templates
+- auto close pluginwindow after saving
+- enhance htmlarea-plugin with enhanced UploadImage feature (it's almost there)
+- implement different sizes for textearea
+- implement help info in plugin conf window
+- fixed some return codes
+- add upload-url columns in site and object table (lets keep them this time :)
+
+Version 0.8.106
+=============================
+not commited to CVS no Changes
+
 version 0.8.105c
 Thu Sep 16 22:11:18 CEST 2004
 =============================
