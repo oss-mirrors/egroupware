@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email BO Class	for Message Lists				*
+	* phpGroupWare - email BO Class	for Message Actions				*
 	* http://www.phpgroupware.org							*
 	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
 	* --------------------------------------------							*

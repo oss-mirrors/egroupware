@@ -74,11 +74,13 @@
 	}
 
 // ----  What Folder To Return To  -----
+	// in the future ACCTNUM must be matched to the individual folder in question
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
 		$GLOBALS['phpgw']->link(
 			 '/index.php',
 			 $GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')		
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 			.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
@@ -97,6 +99,7 @@
 		$prev_msg_link = $GLOBALS['phpgw']->link(
 			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 			 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			//.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$nav_data['prev_msg']
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -118,6 +121,7 @@
 		$next_msg_link = $GLOBALS['phpgw']->link(
 			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 			 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			//.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$nav_data['next_msg']
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -189,6 +193,7 @@
 			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
 				 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 				 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+				//.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 				.'&to='.urlencode($from_plain)
 				.'&personal='.urlencode($from_personal)),
 			$from_personal);
@@ -391,6 +396,7 @@
 			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 			 'action=reply'
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 			.$first_presentable);
 	$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
@@ -400,6 +406,7 @@
 			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 			 'action=replyall'
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 			.$first_presentable);
 	$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
@@ -409,6 +416,7 @@
 			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
 			 'action=forward'
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 			.'&fwd_proc='.$fwd_proc
 			.$first_presentable);
@@ -420,6 +428,7 @@
 			 $GLOBALS['phpgw']->msg->get_arg_value('delmov_menuaction')
 			.'&what=delete'
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 	$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 
@@ -566,6 +575,7 @@
 	$view_option_url = $GLOBALS['phpgw']->link(
 		 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 		 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 		.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 		.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -577,6 +587,7 @@
 		 '/index.php',
 		 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
 		.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 		.'&part_no=0'
 		.'&type=text'
@@ -831,6 +842,7 @@
 				$view_html_folm_action = $GLOBALS['phpgw']->link(
 					'/index.php',
 					$GLOBALS['phpgw']->msg->get_arg_value('view_html_menuaction')
+					.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 				);
 				
 				// if we replaced id(s) with href'(s) above (RELATED) then
@@ -868,6 +880,7 @@
 							 '/index.php',
 							 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
 							.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+							.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum()
 							.'&msgnum=' .$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 							.'&part_no=' .$part_nice[$i]['m_part_num_mime']
 							.'&encoding=' .$part_encoding);

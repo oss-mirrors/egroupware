@@ -44,6 +44,12 @@ class mail_msg extends mail_msg_wrappers
 		['show_num_new'] : boolean : True = show number of unseen (new) message data with each folder
 			in the listbox. There are some folders the code will not examine, such as "Trash" and "Sent"
 		['widget_name'] : string : name of the select widget : important for form post usage. Default "folder"
+		['embeded_extra_data'] : string : OPTIONAL, if this is specified, the value='' becomes "fake_uri_data"
+			in order to contain the extra data. Mostly used to include the acctnum for the folder.
+			In this case, the "widget_name" is appended with "_fake_uri" which tells the script to 
+			use "explode_fake_uri()" to get the data, which it then inserts back into the HTTP_POST_VARS
+			as if the data had never been embeeded. NOTE: such data should be urlencode'd just as if this
+			were a URI, however "prep_folder_out" takes care of this for the folder name automatically.
 		['on_change'] : string : the HTML select widget's "onChange" value. Default: "document.switchbox.submit()'"
 		'[first_line_txt'] : string : the text that initially is displayed in the select widget, used for information only,
 			like a descriptive label, it does not have any important data usage. Default: "lang('switch current folder to')"
@@ -67,6 +73,7 @@ class mail_msg extends mail_msg_wrappers
 			'skip_folder'		=> '',
 			'show_num_new'		=> False,
 			'widget_name'		=> 'folder',
+			'embeded_extra_data'	=> '',
 			'on_change'		=> 'document.switchbox.submit()',
 			'first_line_txt'	=> lang('switch current folder to')
 		);		
@@ -79,6 +86,7 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			reset($local_args);
+			// the feed args may not be an array, the @ will supress warnings
 			@reset($feed_args);		
 			while(list($key,$value) = each($local_args))
 			{
@@ -105,7 +113,21 @@ class mail_msg extends mail_msg_wrappers
 			reset($local_args);
 			@reset($feed_args);
 		}
+		// at this point, local_args[] has anything that was passed in the feed_args[]
 		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		
+		// if "embeded_extra_data" make the value='' imitate URI type data,
+		// and append the "widget_name" with the special token "_fake_uri" and give the first data item
+		// the original name of the "widget_name
+		if ((isset($local_args['embeded_extra_data']))
+		&& ((string)$local_args['embeded_extra_data'] != ''))
+		{
+			$make_fake_uri = True;
+		}
+		else
+		{
+			$make_fake_uri = False;
+		}
 		
 		// init some important variables
 		$item_tags = '';
@@ -119,7 +141,7 @@ class mail_msg extends mail_msg_wrappers
 		$unseen_prefix = '&nbsp;&nbsp;&#060;';
 		$unseen_suffix = ' new&#062;';
 
-		if ($this->newsmode)
+		if ($this->get_arg_value('newsmode'))
 		{
 			while($pref = each($GLOBALS['phpgw_info']['user']['preferences']['nntp']))
 			{
@@ -133,12 +155,14 @@ class mail_msg extends mail_msg_wrappers
 		}
 		else
 		{
+			// get the actual list of folders we are going to put into the combobox
 			$folder_list = $this->get_folder_list('');
-			// iterate thru the folder list, building the HTML tags using hat data
+			// iterate thru the folder list, building the HTML tags using that data
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				$folder_long = $folder_list[$i]['folder_long'];
 				$folder_short = $folder_list[$i]['folder_short'];
+				// this logic determines if the combobox should be initialized with certain folder already selected
 				if ($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
 				{
 					$sel = ' selected';
@@ -147,9 +171,25 @@ class mail_msg extends mail_msg_wrappers
 				{
 					$sel = '';
 				}
+				// this logic determines we should not include a certain folder in the combobox list
 				if ($folder_short != $this->get_folder_short($local_args['skip_folder']))
 				{
-					$item_tags = $item_tags .'<option value="' .$this->prep_folder_out($folder_long) .'"'.$sel.'>' .$folder_short;
+					// if using "fake URI" type data, make that URI type data
+					if ($make_fake_uri == True)
+					{
+						// assemble the "fake_uri" style data, the first item takes on the original "widget_name"
+						$option_value = '&'.$local_args['widget_name'].'='.$this->prep_folder_out($folder_long)
+								//.'&acctnum='.$this->get_acctnum();
+								// YOU BETTER feed URI type syntax in here!
+								.$local_args['embeded_extra_data'];
+					}
+					else
+					{
+						// simple, plain value=data , no special tricks
+						$option_value = $this->prep_folder_out($folder_long);
+					}
+					
+					$item_tags = $item_tags .'<option value="'.$option_value.'"'.$sel.'>' .$folder_short;
 					// do we show the number of new (unseen) messages for this folder
 					if (($local_args['show_num_new'])
 					&& ($this->care_about_unseen($folder_short)))
@@ -175,6 +215,12 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			$on_change_tag = '';
+		}
+		// give our form a name, append with "_fake_uri" if we are using that kind of data
+		if ($make_fake_uri == True)
+		{
+			// appending the widget_name with "_fake_uri" tells the script what to do with this data
+			$local_args['widget_name'] = $local_args['widget_name'].'_fake_uri';
 		}
 		$listbox_widget =
 			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
@@ -1662,9 +1708,12 @@ class mail_msg extends mail_msg_wrappers
 			$msg_list[$x]['msg_num'] = $msg_nums_array[$i];
 
 			// SUBJECT
+			// NOTE: the acctnum in the Future MUST be matched to this individual message and folder
 			$msg_list[$x]['subject'] = $this->get_subject($hdr_envelope,'');
-			$msg_list[$x]['subject_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'folder='.$this->prep_folder_out('')
+			$msg_list[$x]['subject_link'] = $GLOBALS['phpgw']->link(
+				'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+				 'folder='.$this->prep_folder_out('')
+				.'&acctnum='.$this->get_acctnum()
 				.'&msgnum='.$msg_list[$x]['msg_num']
 				.'&sort='.$this->get_arg_value('sort')
 				.'&order='.$this->get_arg_value('order')

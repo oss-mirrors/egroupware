@@ -62,7 +62,7 @@
 			{
 				$msg_number = $this->get_arg_value('msgnum');
 			}
-	
+			
 			return $this->a[$this->acctnum]['dcom']->fetchstructure($this->get_arg_value('mailsvr_stream'), $msg_number);
 		}
 	
@@ -81,7 +81,7 @@
 			{
 				$msg_number = $this->get_arg_value('msgnum');
 			}	
-		
+			
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
 			return $this->a[$this->acctnum]['dcom']->header($this->get_arg_value('mailsvr_stream'), $msg_number);
 		}
@@ -464,6 +464,45 @@
 		}
 		
 		/*!
+		@function explode_fake_uri
+		@abstract decodes a URI type "query string" into an associative array
+		@param $uri_type_string string in the style of a URI such as "&item=phone&action=dial"
+		@result associative array where the $key and $value are exploded from the uri like [item] => "phone"
+		@discussion HTML select "combobox"s can only return 1 "value" per item, to break that limitation you 
+		can use that 1 item like a "fake URI", meaning you make a single string store structured data 
+		by using the standard syntax of a HTTP GET URI, example: 
+		< select name="fake_uri_data" > < option value="&item=phone&action=dial&touchtone=1" > ( ... etc ... )
+		In an HTTP POST event, this would appear as such:
+		$GLOBALS['HTTP_POST_VARS']['fake_uri_data'] => "&item=phone&action=dial&touchtone=1"
+		Then you feed that string into this function and you get back an associave array like this
+		return["item"] => "phone"
+		return["action"] => "dial"
+		return["touchtone"] => "1"
+		NOTE: this differs from PHP's parse_str() because this function  will NOT attempt to decode the urlencoded values.
+		In this way you may store many data elements in a single HTML "option" value=" " tag.
+		@author	Angles
+		@access	Public
+		*/
+		function explode_fake_uri($uri_type_string='')
+		{
+			$fake_url_b = explode('&', $uri_type_string);
+			if ($this->debug_args_flow > 2) { echo 'mail_msg: explode_fake_uri: $fake_url_b = explode("&", '.$uri_type_string.') dump:<pre>'; print_r($fake_url_b); echo '</pre>'; }
+			
+			$fake_url_b_2 = array();
+			while(list($key,$value) = each($fake_url_b))
+			{
+				$explode_me = trim($fake_url_b[$key]);
+				if ((string)$explode_me != '')
+				{
+					$exploded_parts = explode('=', $explode_me);
+					$fake_url_b_2[$exploded_parts[0]] = $exploded_parts[1];
+				}
+			}
+			if ($this->debug_args_flow > 2) { echo 'mail_msg: explode_fake_uri: $fake_url_b_2 (sub parts exploded and made into an associative array) dump:<pre>'; print_r($fake_url_b_2); echo '</pre>'; }
+			return $fake_url_b_2;
+		}
+		
+		/*!
 		@function grab_class_args_gpc
 		@abstract grab data from $GLOBALS['HTTP_POST_VARS'] and $GLOBALS['HTTP_GET_VARS']
 		as necessaey, and fill various class arg variables with the available data
@@ -482,6 +521,29 @@
 			if ($this->debug_args_flow > 0) { echo 'mail_msg: grab_class_args_gpc: ENTERING, (parm $acctnum=['.serialize($acctnum).'])<br>'; }
 			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_POST_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre>'; }
 			if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: $GLOBALS[HTTP_GET_VARS] dump:<pre>'; print_r($GLOBALS['HTTP_GET_VARS']); echo '</pre>'; }
+			
+			$embedded_data = array();
+			// ----  extract any "fake_uri" embedded data from HTTP_POST_VARS  ----
+			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
+			{
+				if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$GLOBALS['HTTP_POST_VARS'][$key].'<br>'; }
+				if (strstr($key, '_fake_uri'))
+				{
+					$embedded_data = $this->explode_fake_uri($GLOBALS['HTTP_POST_VARS'][$key]);
+					if ($this->debug_args_flow > 2) { echo 'mail_msg: grab_class_args_gpc: FOUND "_fake_uri" token in HTTP_POST_VARS ['.$GLOBALS['HTTP_POST_VARS'][$key].'] , $embedded_data dump:<pre>'; print_r($embedded_data); echo '</pre>'; }
+				}
+			}
+			
+			// put any "_fake_uri" embedded data BACK into HTTP_POST_VARS as if they were values 
+			// posted like any other form data
+			if (count($embedded_data) > 0)
+			{
+				while(list($key,$value) = each($embedded_data))
+				{
+					$GLOBALS['HTTP_POST_VARS'][$key] = $embedded_data[$key];
+					if ($this->debug_args_flow > 1) { echo 'mail_msg: grab_class_args_gpc: inserted $embedded_data ['.$key.']=['.$value.'] into $GLOBALS[HTTP_POST_VARS] <br>'; }
+				}
+			}
 			
 			$got_args = array();
 			
@@ -596,31 +658,38 @@
 					// these are the supported menuaction strings
 					elseif ($this_arg_name == 'index_menuaction')
 					{
-						$got_args['index_menuaction'] = 'menuaction=email.uiindex.index&acctnum='.$acctnum;
+						$got_args['index_menuaction'] = 'menuaction=email.uiindex.index';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'mlist_menuaction')
 					{
-						$got_args['mlist_menuaction'] = 'menuaction=email.uiindex.mlist&acctnum='.$acctnum;
+						$got_args['mlist_menuaction'] = 'menuaction=email.uiindex.mlist';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'delmov_menuaction')
 					{
-						$got_args['delmov_menuaction'] = 'menuaction=email.boaction.delmov&acctnum='.$acctnum;
+						$got_args['delmov_menuaction'] = 'menuaction=email.boaction.delmov';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'get_attach_menuaction')
 					{
-						$got_args['get_attach_menuaction'] = 'menuaction=email.boaction.get_attach&acctnum='.$acctnum;
+						$got_args['get_attach_menuaction'] = 'menuaction=email.boaction.get_attach';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'view_html_menuaction')
 					{
-						$got_args['view_html_menuaction'] = 'menuaction=email.boaction.view_html&acctnum='.$acctnum;
+						$got_args['view_html_menuaction'] = 'menuaction=email.boaction.view_html';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'folder_menuaction')
 					{
-						$got_args['folder_menuaction'] = 'menuaction=email.uifolder.folder&acctnum='.$acctnum;
+						$got_args['folder_menuaction'] = 'menuaction=email.uifolder.folder';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'send_menuaction')
 					{
-						$got_args['send_menuaction'] = 'menuaction=email.bosend.send&acctnum='.$acctnum;
+						$got_args['send_menuaction'] = 'menuaction=email.bosend.send';
+						//$got_args['index_menuaction'] .= '&acctnum='.$acctnum;
 					}
 					// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 					elseif ($this_arg_name == 'index_refresh_uri')
