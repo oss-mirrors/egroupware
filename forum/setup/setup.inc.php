@@ -26,7 +26,7 @@
 		'f_threads'
 	);
 
-	$setup_info['forum']['hooks'][]   = array('admin');
+	$setup_info['forum']['hooks'][]   = 'admin';
 	/* Dependencies for this app to work */
 	$setup_info['forum']['depends'][] = array(
 		 'appname' => 'phpgwapi',
