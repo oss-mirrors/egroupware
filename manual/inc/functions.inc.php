@@ -41,7 +41,7 @@
 		$font = $GLOBALS['phpgw_info']['theme']['font'];
 		$navbar = $GLOBALS['phpgw_info']['user']['preferences']['common']['navbar_format'];
 		$lang = strtoupper($GLOBALS['phpgw_info']['user']['preferences']['common']['lang']);
-		$GLOBALS['treemenu'][] = '..'.($navbar != 'text'?'<img src="'.$GLOBALS['phpgw']->common->image($appname,'navbar.gif').'" border="0" alt="'.ucwords($appname).'">':'').($navbar != 'icons'?'<font face="'.$font.'">'.lang($appname).'</font>':'').'|'.$GLOBALS['phpgw']->link('/'.$appname.'/help/index.php');
+		$GLOBALS['treemenu'][] = '..'.($navbar != 'text'?'<img src="'.$GLOBALS['phpgw']->common->image($appname,'navbar').'" border="0" alt="'.ucwords($appname).'">':'').($navbar != 'icons'?'<font face="'.$font.'">'.lang($appname).'</font>':'').'|'.$GLOBALS['phpgw']->link('/'.$appname.'/help/index.php');
 
 		$help_file = check_help_file($appname,$lang,$appname.'.php');
 		if($help_file != '')

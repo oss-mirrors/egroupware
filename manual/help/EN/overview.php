@@ -1,21 +1,25 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - User manual                                               *
-  * http://www.phpgroupware.org                                              *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - User manual                                               *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+	/* $Id$ */
 
-  /* $Id$ */
+	$GLOBALS['phpgw_info']['flags'] = array
+	(
+		'currentapp'				=> 'manual',
+		'enable_utilities_class'	=> True
+	);
+	include('../../../header.inc.php');
+	$font = $phpgw_info['theme']['font'];
 
-  $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
-  include("../../../header.inc.php");
-  $font = $phpgw_info['theme']['font'];
+	echo '<img src="' . $GLOBALS['phpgw']->common->image($GLOBALS['phpgw_info']['flags']['currentapp'],'title_overview') . '" border="0">';
 ?>
-<img src="<?php echo $phpgw->common->image('phpgwapi','logo.gif'); ?>" border="0">
 <font face="<?php echo $font; ?>" size="2"><p/>
 The following pages are an to be used as a guideline/ready reference
 for how to navigate the pages found here, and the functionality of
@@ -26,7 +30,7 @@ people who wrote (or at least put together much of this) , <b>Thank You</b>.
 Without such keen and enthusiastic joint co-operation, many projects on the
 internet as we know it, would not be available, or would at the very least
 be similar to many other well known <b> costly </b> alternatives.<br/>
-For those of you who are not familar with "<a href="http://www.gnu.org/philosophy/free-sw.html" target=_new>free software</a>", please visit 
+For those of you who are not familar with <a href="http://www.gnu.org/philosophy/free-sw.html" target=_new>Free Software</a>, please visit 
 a short philosophy of the <a href="http://www.fsf.org" target=_new>Free Software Foundation</a>.<p/>
 Now on with the overview: (NB: please be aware this is an evolving project, so some
 functionality may not be available to you yet, or perhaps there will be be extra
