@@ -6,15 +6,20 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.216
+===========================
+Tue Mar 29 12:30:00 CET 2005
+- fixed bug where redirection to new record edit page failed after creating new record
+
 Version 0.8.215
 ===========================
-Tue Mar 23 14:00:00 CET 2005
+Wed Mar 23 14:00:00 CET 2005
 - filemanager plugin: added micro thumbnails (20x30 px) to list records view
 - filemanager plugin: regular thumbs now used in (multiple) record view
 
 Version 0.8.214
 ===========================
-Tue Mar 23 13:00:00 CET 2005
+Wed Mar 23 13:00:00 CET 2005
 - new filemanager plugin now also works in multiple records edit view
 - fixed bug where images opened in multiple records edit view by clicking on a thumbnail resulted in error
 

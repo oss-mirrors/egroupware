@@ -336,7 +336,7 @@
 
 	  function record_insert()
 	  {
-		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		 $data = $this->remove_helper_fields($this->http_vars_pairs($_POST, $_FILES));
 		 $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
 		 $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
@@ -359,7 +359,7 @@
 
 		 $this->save_sessiondata();
 
-		 if($_POST['continue'] && $status[where_string])
+		 if($_POST['reopen'] && $status[where_string])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 		 }
@@ -479,7 +479,7 @@
 			   $post_arr=$this->mult_to_fld($i,'_POST');
 			   $files_arr=$this->mult_to_fld($i,'_FILES');
 
-			   $data=$this->http_vars_pairs($post_arr,$files_arr);
+			   $data=$this->remove_helper_fields($this->http_vars_pairs($post_arr,$files_arr));
 			   $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 			   if($this->debug_sql==true)
 			   {
