@@ -74,7 +74,7 @@
 	echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
 	   . "\">INBOX</a></font></td>";
 	echo "<td width=20%><font size=2 face="
-	   . $phpgw_info["theme"]["font"];
+	   . $phpgw_info["theme"]["font"] . ">";
 	echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      }
 
