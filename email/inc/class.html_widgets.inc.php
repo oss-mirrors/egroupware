@@ -113,6 +113,9 @@
 		var $toolbar_row_two='';
 		var $toolbar='';
 		
+		// RELOAD WIDGET
+		var $refresh_js='';
+		
 		
 		/**************************************************************************\
 		*	CONSTRUCTOR
@@ -1237,6 +1240,110 @@
 				}
 			}
 			return $this->get_combobox();
+		}
+
+		/*!
+		@function auto_refresh
+		@example I know of 3 ways to get a page to reload, 2 of those ways are pretty much the same
+		(1) the http header 
+			Refresh: 5;
+		(2) the META http-equiv 
+			<META HTTP-EQUIV="Refresh" CONTENT="5">
+		both 1 and 2 have the same effect as hitting the "reload" button, which in *many* browsers will
+		force a re-download of all the images on the page, i.e. the browser will NOT use the cached images
+		(3) java script combo of "window.setTimeout" with "window.location"
+			window.setTimeout('window.location="http://example.com/phpgw/email/index.php"; ',1800000);
+		method 3 is the only one I know of that will use the images from the cache.
+		also, 3 takes a reload value in miliseconds, so a value of 180000 is really 3 minutes
+		ALSO, use if..then code to only auto-refresh certain pages, such as email/index.php
+		@author Angles
+		*/
+		function auto_refresh($reload_me='', $feed_refresh_ms='')
+		{
+			if ($GLOBALS['phpgw']->msg->get_isset_pref('refresh_ms'))
+			{
+				$pref_refresh_ms = $GLOBALS['phpgw']->msg->get_pref_value('refresh_ms');
+			}
+			else
+			{
+				$pref_refresh_ms = '';
+			}
+			// which do we use 
+			$refresh_ms = '';
+			if ($feed_refresh_ms)
+			{
+				$refresh_ms = $feed_refresh_ms;
+			}
+			elseif ($pref_refresh_ms)
+			{
+				$refresh_ms = $pref_refresh_ms;
+			}
+			else
+			{
+				// user pref is NOT to refresh AND we were not given another value to use
+				// LEAVING
+				return '';
+			}
+			
+			/*
+			// if NOT supplied a "reload_me" URI then we must figure one out
+			if ($reload_me == '')
+			{
+				if ((stristr($GLOBALS['PHP_SELF'], '/email/index.php'))
+				||  (	((isset($GLOBALS['phpgw']->msg->ref_GET['menuaction']))
+					&& (stristr($GLOBALS['phpgw']->msg->ref_GET['menuaction'], 'email.uiindex.index')))
+					)
+				)
+				{
+					if ((isset($GLOBALS['phpgw_info']['flags']['email_refresh_uri']))
+					&& ($GLOBALS['phpgw_info']['flags']['email_refresh_uri'] != ''))
+					{
+						$reload_me = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw_info']['flags']['email_refresh_uri']);
+					}
+					else
+					{
+						$reload_me = $GLOBALS['phpgw']->link('/email/index.php');
+					}
+				}
+				elseif (eregi("^.*\/home\.php.*$",$GLOBALS['PHP_SELF']))
+				{
+					$reload_me = $GLOBALS['phpgw']->link('/home.php');			
+				}
+			}
+			*/
+			
+			// reality check
+			$int_refresh_ms = (int)$refresh_ms;
+			if ($int_refresh_ms < 60000)
+			{
+				// less than 1 minute us BS, use a fallback value of 4 minutes
+				$refresh_ms = 240000;
+			}
+			
+			// make the $refresh_ms into a string
+			$refresh_ms = (string)$refresh_ms;
+			// now if we have a reload_me URI, then
+			// make the JS command string if necessary
+			if (($reload_me != '')
+			&& ($refresh_ms != ''))
+			{
+				$reload_me_full = $GLOBALS['phpgw']->link('/index.php',$reload_me);
+				// set refresh time in miliseconds  (1000 = 1 sec)  (180000 = 180 sec = 3 minutes)
+				//  ( 240000 = 240 sec = 4 min)   (300000 = 5 min)   (600000 = 10 min)
+				//$refresh_ms = '240000';
+				$reload_js = 
+					 '<script language="javascript">'."\r\n"
+					.'window.setTimeout('."'".'window.location="'
+					.$reload_me_full.'"; '."'".','.$refresh_ms.');'."\r\n"
+					.'</script>'."\r\n";
+			}
+			else
+			{
+				// we have no URI to reload
+				$reload_js = '';
+			}
+			// returning  $reload_js which may be '' if we did not have enough info
+			return $reload_js;
 		}
 		
 	}
