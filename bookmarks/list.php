@@ -112,5 +112,5 @@ $total_public = 0;
 
   set_standard("list ($page of $last_page)", &$phpgw->template);
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

@@ -49,3 +49,4 @@
    <frame src="<?php echo $phpgw->link("redirect.php","showheader=True"); ?>" marginheight="0" marginwidth="0">
    <frame src="<?php echo $url; ?>" marginheight="0" marginwidth="0">
   </frameset>
+<?php $phpgw->common->phpgw_footer(); ?>

@@ -189,5 +189,5 @@ load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, F
     DEFAULT_PUBLIC         => $default_public
   ));
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

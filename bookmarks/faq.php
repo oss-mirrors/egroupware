@@ -51,4 +51,5 @@ if (check_browser() == "MSIE") {
 }
 
 include(LIBDIR . "bkend.inc");
+$phpgw->common->phpgw_footer();
 ?>

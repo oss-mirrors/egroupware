@@ -233,4 +233,5 @@ if (!isset($mode) || $mode=="S") {
 
   $phpgw->template->parse("BODY", array($body_tpl_name, "standard"));
   $phpgw->template->p("BODY");
+  $phpgw->common->phpgw_footer();
 ?>

@@ -254,5 +254,5 @@ if ($q->query == $noquery) {
 
 set_standard("search", &$phpgw->template);
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

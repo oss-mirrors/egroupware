@@ -165,5 +165,5 @@ if (empty($error_msg)) {
 }
 
   echo parse_navbar();
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

@@ -66,5 +66,5 @@
   $phpgw->template->set_var("CATEGORY_SELECT",$phpgw->db->f("category_name"));
   $phpgw->template->set_var("RATING_SELECT",'<img src="images/bar-' . $phpgw->db->f("rating_id") . '.jpg">');
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

@@ -258,5 +258,5 @@
 }
 
   $phpgw->template->set_var(array(FORM_ACTION => $phpgw->link()));
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

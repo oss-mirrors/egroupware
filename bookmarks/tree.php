@@ -214,4 +214,5 @@ if ($phpgw->db->Errno == 0) {
 
   $phpgw->template->parse("BODY", "body");
   $phpgw->template->p("BODY");
+  $phpgw->common->phpgw_footer();
 ?>
