@@ -130,7 +130,7 @@
 					}
 				}
 
-				if(isset($_cat_id) && !empty($_cat_id) && is_numeric($_cat_id))
+				if(isset($_cat_id) && !empty($_cat_id) && (is_numeric($_cat_id) || $_cat_id == 'none'))
 				{
 					$this->cat_id = $_cat_id;
 				}
