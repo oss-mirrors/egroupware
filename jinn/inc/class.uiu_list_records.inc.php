@@ -231,6 +231,37 @@
 
 	  }
 
+	  
+	function format_filter_options($filterstore, $selected)
+	{
+		$options  = '<option value="">'.lang('empty filter').'</option>';
+		$options .= '<option value="">------------</option>';
+		if($selected == 'sessionfilter')
+		{
+			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
+		}
+		else
+		{
+			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
+		}
+		$options .= '<option value="">------------</option>';
+		if(is_array($filterstore))
+		{
+			foreach($filterstore as $filter)
+			{
+				if($filter[name] == $selected)
+				{
+					$options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
+				}
+				else
+				{
+					$options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
+				}
+			}
+		}
+		return $options;
+	}
+
 	  /**
 	  @function list_records
 	  @abstract make recordlist for browsing and selecting records
@@ -299,7 +330,53 @@
 		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->browse_settings['orderby']);
 		 if(!$orderby && $default_order) $orderby=$default_order;
 
+		 
+		 
+		 
+		 
+		 /////////////////////////
+		 //insert filter code here
+		 /////////////////////////
+			
+			// get stored filters from preferences and session
+		$filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
+		$sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
 
+			// set the template variables
+		$this->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
+		$this->template->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		$this->template->set_var('filter_text',lang('activate filter'));
+		$this->template->set_var('filter_edit',lang('edit filter'));
+		$this->template->set_var('filter_list',$this->format_filter_options($filterstore, $_POST[filtername]));
+
+			// check if an existing filter is selected
+		if($_POST[filtername] != '')
+		{
+				//check if it is a temporary (session filter) or permanently (preferences) stored filter and load accordingly
+			if($_POST[filtername] == 'sessionfilter')
+			{
+				$filter = $sessionfilter;
+			}
+			else
+			{
+				$filter = $filterstore[$_POST[filtername]];
+			}
+
+				// generate the WHERE clause using the loaded filter
+			$filter_where = '';
+			if(is_array($filter[elements]))
+			{
+				foreach($filter[elements] as $element)
+				{
+					if($filter_where != '') $filter_where .= ' AND ';
+					$filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
+				}
+			}
+		}
+			
+			
+			
+			
 		 if( trim($_POST[quick_filter]) || $_POST[quick_filter_hidden] )
 		 {
 			$quick_filter = trim( $_POST[quick_filter] );
@@ -327,7 +404,7 @@
 		 {
 			foreach($relation1_array as $relation1)
 			{
-			   $fields_with_relation1[]=$relation1[field_org];
+			   $fields_with_relation1[]=$relation1[org_field];
 			}
 		 }
 
@@ -354,10 +431,17 @@
 
 		 $columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
 		 if(!is_array($columns)) $columns=array();
-
 		 /* walk through all table columns and fill different array */
+		 $fields_show_default = array();
 		 foreach($columns as $onecol)
 		 {
+
+			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
+			if($field_conf_arr[field_show_default])
+			{
+				$fields_show_default[] = $onecol;
+			}
+
 			//create more simple col_list with only names //why
 			$all_col_names_list[]=$onecol[name];
 
@@ -426,9 +510,21 @@
 			}
 		 }
 
-		
+			//start of new filtersystem
+		 if($filter_where != '')
+		 {
+			if ($where_condition) 
+			{
+			   $where_condition.= " AND ($filter_where)"; 	
+			}
+			else
+			{
+			   $where_condition= " ($filter_where)"; 	
+			}
+		 }
+//_debug_array($where_condition);
 
-		 /* which/how many column to show, all, the prefered, or the default thirst 4 */
+		 /* which/how many column to show: all, the preferred, the default fields set by the site admin, the default first X, or the default first 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')
 		 {
 			$col_list=$columns;
@@ -436,6 +532,10 @@
 		 elseif($pref_columns)
 		 {
 			$col_list=$valid_pref_columns;
+		 }
+		 elseif($fields_show_default)	//new: the Administrator has defined which fields to show default
+		 {
+			$col_list = $fields_show_default;
 		 }
 		 elseif($default_col_num)
 		 {
@@ -445,7 +545,7 @@
 		 {
 			$col_list=array_slice($columns,0,4);
 		 }
-
+		 
 		 /*	check if orderbyfield exist else drop orderby it	*/
 		 if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
 		 //	unset($all_col_names_list);
@@ -457,6 +557,7 @@
 			unset($testvalue);
 
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col[name]);
+
 			$display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col[name]);
 
 			unset($tipmouseover);
@@ -639,8 +740,6 @@
 						}
 						else
 						{
-						   //							  echo $onecolname;
-						   //							  _debug_array($field_conf_arr);
 						   $recordvalue=$this->bo->plug->call_plugin_bv($onecolname,$recordvalue,$where_string,$field_conf_arr);
 						}
 					 }

@@ -292,6 +292,12 @@
 			   continue;
 			}
 
+			elseif($fieldproperties[name]=='events_config') 				
+			{
+			   $onclick='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=objeventsconf').'&object_id='.$this->object_values['object_id'].'\', \'pop\', \'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
+			   $input='<input type="button" value="'.lang('Object Events Configuration').'" onClick="'.$onclick.'"/>';
+			}
+
 			// when it doesn't fit anywhere
 			else
 			{
@@ -440,11 +446,54 @@
 		 relation type 2 = many to many relation
 		 relation type 3 = one to one relation
 		 */
+		 
+		 $relations_field=$this->object_values[relations];
 
-		 $value=$this->object_values[relations];
+		$relations_arr = unserialize(base64_decode($relations_field));
+			//if relations field contains old format data, now is the time to convert it.
+			/*
+				old format test data:
+			1:i:null:x2.id:x2.v1|2:tussentabel1.t1_id:tussentabel1.t2_id:t2.id:t2.v1|3:t1.id:null:t2.id:84
+			*/
+		if(!is_array($relations_arr))
+		{
+			$old_fmt_relations=explode('|',$relations_field);
+			$relations_arr = array();
+			foreach($old_fmt_relations as $old_fmt_relation)
+			{
+			   $old_fmt_relation_parts=explode(':',$old_fmt_relation);
+				if($old_fmt_relation_parts[0]==1)
+				{
+					unset($new_fmt_relation);
+					$new_fmt_relation[type] = $old_fmt_relation_parts[0];
+					$new_fmt_relation[org_field] = $old_fmt_relation_parts[1];
+					$new_fmt_relation[related_with] = $old_fmt_relation_parts[3];
+					$new_fmt_relation[display_field] = $old_fmt_relation_parts[4];
+				}
+				else if($old_fmt_relation_parts[0]==2)
+				{
+					unset($new_fmt_relation);
+					$new_fmt_relation[type] = $old_fmt_relation_parts[0];
+					$new_fmt_relation[via_primary_key] = $old_fmt_relation_parts[1];
+					$new_fmt_relation[via_foreign_key] = $old_fmt_relation_parts[2];
+					$new_fmt_relation[foreign_key] = $old_fmt_relation_parts[3];
+					$new_fmt_relation[display_field] = $old_fmt_relation_parts[4];
+				}
+				else if($old_fmt_relation_parts[0]==3)
+				{
+					unset($new_fmt_relation);
+					$new_fmt_relation[type] = $old_fmt_relation_parts[0];
+					$new_fmt_relation[org_field] = $old_fmt_relation_parts[1];
+					$new_fmt_relation[related_with] = $old_fmt_relation_parts[3];
+					$new_fmt_relation[object_conf] = $old_fmt_relation_parts[4];
+				}
+				$relations_arr[] = $new_fmt_relation;
+			}
+		}
+		 $hidden_value='<input type="hidden" name="FLDrelations" value="'.base64_encode(serialize($relations_arr)).'">';
+
 		 $table_name=$this->object_values[table_name];
 
-		 $hidden_value='<input type="hidden" name="FLDrelations" value="'.$value.'">';
 
 		 if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on'])
 		 {
@@ -460,61 +509,74 @@
 		 $this->template->parse('out','relations_header');
 
 		 $i=1;
-		 if ($value)
+ 		 if ($relations_arr)
 		 {
-			$relations=explode('|',$value);
 			$this->type1_num=0;
 			$this->type2_num=0;
 			$this->type3_num=0;
 
-			foreach($relations as $relation)
+			foreach($relations_arr as $relation)
 			{
-			   $relation_parts=explode(':',$relation);
-			   if ($relation_parts[0]==1)
+			   if ($relation[type]==1)
 			   {
-				  $r1txt=lang('%1 has a one-to-many with %2 showing %3',$relation_parts[1],$relation_parts[3],$relation_parts[4]);
+						//check if more than one field is displayed:
+					$display_fields=$relation[display_field];
+					if($relation[display_field_2]!='') $display_fields.=', '.$relation[display_field_2];
+					if($relation[display_field_3]!='') $display_fields.=', '.$relation[display_field_3];
+					
+					if($relation[default_value]!='')
+					{
+						$r1txt=lang('%1 has a one-to-many with %2 (default:%4) showing %3',$relation[org_field],$relation[related_with],$display_fields, $relation[default_value]);
+					}
+					else 
+					{
+						$r1txt=lang('%1 has a one-to-many with %2 showing %3',$relation[org_field],$relation[related_with],$display_fields);
+					}
 				  $this->type1_num++;
 				  $this->template->set_var('total_num',$i);
 				  $this->template->set_var('lang_delete',lang('delete'));
 				  $this->template->set_var('type1_num',$this->type1_num);
-				  $this->template->set_var('relation',$relation);
+				  $this->template->set_var('relation',$i-1);
 				  $this->template->set_var('r1txt',$r1txt);
 
 				  $this->template->parse('relations_defined1','relation_defined1',true);
 			   }
-			   elseif ($relation_parts[0]==2)
+			   elseif ($relation[type]==2)
 			   {
-				  $r2txt=lang('The identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5',$table_name,$relation_parts[1],$relation_parts[3],$relation_parts[2],$relation_parts[4]);
+						//check if more than one field is displayed:
+					$display_fields=$relation[display_field];
+					if($relation[display_field_2]!='') $display_fields.=', '.$relation[display_field_2];
+					if($relation[display_field_3]!='') $display_fields.=', '.$relation[display_field_3];
+					
+				  $r2txt=lang('The identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5',$table_name,$relation[via_primary_key],$relation[foreign_key],$relation[via_foreign_key],$display_fields);
 				  $this->type2_num++;
 				  $this->template->set_var('total_num',$i);
 				  $this->template->set_var('lang_delete',lang('delete'));
 				  $this->template->set_var('type2_num',$this->type2_num);
-				  $this->template->set_var('relation',$relation);
+				  $this->template->set_var('relation',$i-1);
 				  $this->template->set_var('r2txt',$r2txt);
 
 				  $this->template->parse('relations_defined2','relation_defined2',true);
 			   }
-			   elseif ($relation_parts[0]==3)
+			   elseif ($relation[type]==3)
 			   {
-				  $r3txt=lang('%1 has a one-to-one relation with %2 using the configuration of object %3',$relation_parts[1],$relation_parts[3],$relation_parts[4]);
+				  $r3txt=lang('%1 has a one-to-one relation with %2 using the configuration of object %3',$relation[org_field],$relation[related_with],$relation[object_conf]);
 				  $this->type3_num++;
 				  $this->template->set_var('total_num',$i);
 				  $this->template->set_var('lang_delete',lang('delete'));
 				  $this->template->set_var('type3_num',$this->type3_num);
-				  $this->template->set_var('relation',$relation);
+				  $this->template->set_var('relation',$i-1);
 				  $this->template->set_var('r3txt',$r3txt);
 
 				  $this->template->parse('relations_defined3','relation_defined3',true);
 			   }
-
-
-			   $i++;
+   			   $i++;
 			}
 		 }
 
 
 		 /*********************************
-		 * ADD NEW ONE WITH MANY RELATION *
+		 * ADD NEW ONE TO MANY RELATION *
 		 *********************************/
 		 if($fields=$this->bo->so->site_table_metadata($this->parent_site_id,$table_name))
 		 {
@@ -536,6 +598,7 @@
 
 			$this->template->set_var('lang_field',lang('field'));
 			$this->template->set_var('lang_has_1rel',lang('has a ONE TO MANY relation with'));
+			$this->template->set_var('lang_default',lang('default value'));
 
 			foreach($this->table_array as $table)
 			{
@@ -573,7 +636,7 @@
 		 }
 
 		 /**********************************
-		 * ADD NEW MANY WITH MANY RELATION *
+		 * ADD NEW MANY TO MANY RELATION *
 		 **********************************/
 
 		 if (is_array($this->table_array))

@@ -55,7 +55,10 @@
 		 if($this->app_title) $extra_title =' ('.$this->app_title.')';
 		 $GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['jinn']['title']. ' - '.$screen_title . $extra_title;
 
-		 if($phpgw_header)$GLOBALS['phpgw']->common->phpgw_header();
+		 if($phpgw_header)
+		 {
+			$GLOBALS['phpgw']->common->phpgw_header();
+		 }
 	  }
 
 
@@ -161,16 +164,13 @@
 	  function select_options($list_array,$selected_value,$allow_empty=false)
 	  {
 		 if($allow_empty) $options.="<option value=\"\">------------------</option>\n";
-
 		 if(is_array($list_array))
 		 {
 			foreach ( $list_array as $array ) 
 			{
-			   unset($SELECTED);
+				unset($SELECTED);
 			   if ($array[value]==$selected_value)
 			   {
-				  //echo $array[value].'='.$selected_value.'<br/>';
-
 				  $SELECTED='selected="selected"';
 			   }				
 			   if ($array[name]) $name = $array[name];

@@ -171,21 +171,24 @@ function SelectPlace (obj,allObj)
 {
    var objectSelectedItems = copyOptionsObject (document.frm[obj].options);
 
-   if (document.frm[allObj].selectedIndex != -1) {
+   if (document.frm[allObj].selectedIndex != -1) 
+   {
 	  // check if 5 places are selected
 
 	  //if (document.frm[obj].length == 5)
 	  //	alert ("U mag maximaal 5 objecten selecteren.");
 
-	  for (var i=0; i < document.frm[allObj].length; i++) {
+		for (var i=0; i < document.frm[allObj].length; i++) 
+		{
 		 if (document.frm[allObj].options[i].selected == true && document.frm[allObj].options[i].text != '')
 			//if (document.frm[obj].length <= 4)
-			if ( !CheckForDoubles (objectSelectedItems, document.frm[allObj].options[i])) {
+			if ( !CheckForDoubles (objectSelectedItems, document.frm[allObj].options[i])) 
+			{
 			   newOption = new Option(document.frm[allObj].options[i].text, document.frm[allObj].options[i].value, false, false);
 			   document.frm[obj].options[document.frm[obj].length] = newOption;
 			}
-	  }
-   }
+		}
+	}
 }
 
 // function to make a hard-copy of an javascript object

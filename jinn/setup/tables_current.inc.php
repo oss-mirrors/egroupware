@@ -72,7 +72,8 @@
 				'hide_from_menu' => array('type' => 'char','precision' => '1'),
 				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
-				'extra_where_sql_filter' => array('type' => 'text')
+				'extra_where_sql_filter' => array('type' => 'text'),
+				'events_config' => array('type' => 'text')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),

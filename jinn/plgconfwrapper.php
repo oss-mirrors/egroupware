@@ -52,6 +52,12 @@
 
 	   $GLOBALS['phpgw']->common->phpgw_exit();
 	}
+	elseif($_GET[screen]=='objeventsconf')
+	{
+	   Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]));
+
+	   $GLOBALS['phpgw']->common->phpgw_exit();
+	}
 	else
 	{
 	   echo "ERROR ... :(";

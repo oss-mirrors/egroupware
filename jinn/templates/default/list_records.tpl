@@ -23,6 +23,15 @@
 		<input type="submit" value="{search}">
 		</form>	
 	</td>
+	<td align="center" style="padding-left:20px;">
+		<form name="filterform" action="{filter_action}" method="post">{filter_text}&nbsp;
+			<select name="filtername" OnChange=" document.filterform.action = document.filterform.refresh_url.value; submit();">
+				{filter_list}
+			</select>
+			<input type="hidden" name="refresh_url" value="{refresh_url}">
+			<input type="submit" value="{filter_edit}">
+		</form>	
+	</td>
 </tr>
 </table>
 

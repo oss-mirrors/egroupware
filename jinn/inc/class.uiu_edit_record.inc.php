@@ -75,7 +75,7 @@
 
 	  function incl_js_validation_script()
 	  {
-		 $this->submit_javascript = '
+		 $this->submit_javascript .= '
 		 
 		 var valid = true;
 /*
@@ -430,14 +430,13 @@
 
 		 }
 
-		 /* get one with many relations */
+		 /* get one to many relations */
 		 $relation1_array=$this->bo->extract_O2M_relations($object_arr[relations]);
-
 		 if (count($relation1_array)>0)
 		 {
 			foreach($relation1_array as $relation1)
 			{
-			   $fields_with_relation1[]=$relation1[field_org];
+			   $fields_with_relation1[]=$relation1[org_field];
 			}
 		 }
 
@@ -505,7 +504,14 @@
 				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
 
 				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  if($value!='')
+				  {
+					$input.= $this->ui->select_options($related_fields,$value,true);
+				  }
+				  else
+				  {
+					$input.= $this->ui->select_options($related_fields,$relation1_array[$fprops[name]][default_value],true);
+				  }
 				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			   else
@@ -525,8 +531,16 @@
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
 				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
+				
 				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  if($value!='')
+				  {
+					$input.= $this->ui->select_options($related_fields,$value,true);
+				  }
+				  else
+				  {
+					$input.= $this->ui->select_options($related_fields,$relation1_array[$fprops[name]][default_value],true);
+				  }
 				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			}
@@ -680,7 +694,6 @@
 	  function render_one_to_one_input()
 	  {
 		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object[relations]);
-
 		 if (count($O2O_arr)>0)
 		 {
 			if(!$this->bo->where_string && !$this->bo->mult_where_array)
@@ -700,7 +713,7 @@
 			   $tmp_arr=explode('.',$O2O_rule_arr[related_with]);
 
 			   $O2O_related_key=$tmp_arr[1];
-			   $O2O_where_value=$this->values_object[0][$O2O_rule_arr[field_org]];
+			   $O2O_where_value=$this->values_object[0][$O2O_rule_arr[org_field]];
 			   $O2O_where_string="($O2O_where_key='$O2O_where_value')";
 
 			   $O2O_object_arr=$this->bo->so->get_object_values($O2O_rule_arr[object_conf]);

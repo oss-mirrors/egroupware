@@ -61,7 +61,8 @@
 	  var $action;
 	  var $common;
 	  var $browse_settings;
-
+	  var $filter_settings;
+	  
 	  var $repeat_input;
 	  var $where_key;
 	  var $where_value;
@@ -145,6 +146,16 @@
 			//$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
 	  }
+	  
+		function read_session_filter($obj_id)
+		{
+			return $this->filter_settings[$obj_id];
+		}
+
+		function save_session_filter($obj_id, $data)
+		{
+			$this->filter_settings[$obj_id] = $data;
+		}
 
 	  function save_sessiondata()
 	  {
@@ -153,6 +164,7 @@
 			'site_id' => $this->site_id,
 			'site_object_id' => $this->site_object_id,
 			'browse_settings'=>	$this->browse_settings,
+			'filter_settings'=>	$this->filter_settings,
 			'mult_where_array'=> $this->mult_where_array,
 			'mult_records_amount'=>$this->mult_records_amount,
 			'last_where_string'=>$this->last_where_string
@@ -175,6 +187,7 @@
 			$this->site_id 		= $data['site_id'];
 			$this->site_object_id	= $data['site_object_id'];
 			$this->browse_settings	= $data['browse_settings'];
+			$this->filter_settings	= $data['filter_settings'];
 			$this->mult_where_array	= $data['mult_where_array'];
 			$this->mult_records_amount = $data['mult_records_amount'];
 			$this->last_where_string = $data['last_where_string'];
@@ -668,78 +681,133 @@
 	  // one-to-one relations
 	  function extract_O2O_relations($string)
 	  {
-		 $relations_array = explode('|',$string);
+		 $relations_arr = unserialize(base64_decode($string));
 
-		 foreach($relations_array as $relation)
-		 {
-			$relation_part=explode(':',$relation);
-			if ($relation_part[0]=='3')
-			{
-			   $relation_arr[$relation_part[1]] = array
-			   (
-				  'type'=>$relation_part[0],
-				  'field_org'=>$relation_part[1],
-				  'related_with'=>$relation_part[3],
-				  'object_conf'=>$relation_part[4]
-			   );
-			}
-
-		 }
-		 return $relation_arr;
+		if(is_array($relations_arr) && $relations_arr)
+		{
+			 foreach($relations_arr as $relation)
+			 {
+				if ($relation[type]=='3')
+				{
+					$O2O_relations[$relation[org_field]]=$relation;
+				}
+			 }
+			 return $O2O_relations;
+		}
+		else //old format compatibility
+		{
+			 $relations_array = explode('|',$string);
+	
+			 foreach($relations_array as $relation)
+			 {
+				$relation_part=explode(':',$relation);
+				if ($relation_part[0]=='3')
+				{
+				   $relation_arr[$relation_part[1]] = array
+				   (
+					  'type'=>$relation_part[0],
+					  'org_field'=>$relation_part[1],
+					  'related_with'=>$relation_part[3],
+					  'object_conf'=>$relation_part[4]
+				   );
+				}
+	
+			 }
+			 return $relation_arr;
+		}
 	  }
-
 
 	  // one-to-many relations
 	  function extract_O2M_relations($string)
 	  {
-		 $relations_array = explode('|',$string);
+		 $relations_arr = unserialize(base64_decode($string));
 
-		 foreach($relations_array as $relation)
-		 {
-			$relation_part=explode(':',$relation);
-			if ($relation_part[0]=='1')
-			{
-			   $relation_arr[$relation_part[1]] = array
-			   (
-				  'type'=>$relation_part[0],
-				  'field_org'=>$relation_part[1],
-				  'related_with'=>$relation_part[3],
-				  'display_field'=>$relation_part[4]
-			   );
-			}
-
-		 }
-		 return $relation_arr;
+		if(is_array($relations_arr) && $relations_arr)
+		{
+			 foreach($relations_arr as $relation)
+			 {
+				if ($relation[type]=='1')
+				{
+					$O2M_relations[$relation[org_field]]=$relation;
+				}
+			 }
+			 return $O2M_relations;
+		}
+		else //old format compatibility
+		{
+			 $relations_array = explode('|',$string);
+	
+			 foreach($relations_array as $relation)
+			 {
+				$relation_part=explode(':',$relation);
+				if ($relation_part[0]=='1')
+				{
+				   $relation_arr[$relation_part[1]] = array
+				   (
+					  'type'=>$relation_part[0],
+					  'org_field'=>$relation_part[1],
+					  'related_with'=>$relation_part[3],
+					  'display_field'=>$relation_part[4]
+				   );
+				}
+	
+			 }
+			 return $relation_arr;
+		}
 	  }
+
 
 	  // many-to-many relations
 	  function extract_M2M_relations($string)
 	  {
-		 $relations_array = explode('|',$string);
+		 $relations_arr = unserialize(base64_decode($string));
 
-		 foreach($relations_array as $relation)
-		 {
-			$relation_part=explode(':',$relation);
-			if ($relation_part[0]=='2')
-			{
-			   $tmp=explode('.',$relation_part[1]);
-			   $via_table=$tmp[0];
-			   $tmp=explode('.',$relation_part[4]);
-			   $display_table=$tmp[0];
-
-			   $relation_arr[] = array
-			   (
-				  'type'=>$relation_part[0],
-				  'via_primary_key'=>$relation_part[1],
-				  'via_foreign_key'=>$relation_part[2],
-				  'via_table'=>$via_table,
-				  'foreign_key'=>$relation_part[3],
-				  'display_field'=>$relation_part[4],
-				  'display_table'=>$display_table
-			   );
-			}
-		 }
-		 return $relation_arr;
+		if(is_array($relations_arr) && $relations_arr)
+		{
+			 $i=0;
+			 foreach($relations_arr as $relation)
+			 {
+				if ($relation[type]=='2')
+				{
+				   $tmp=explode('.',$relation[via_primary_key]);
+				   $relation[via_table]=$tmp[0];
+				   $tmp=explode('.',$relation[display_field]);
+				   $relation[display_table]=$tmp[0];
+				   
+					$M2M_relations[$i]=$relation;
+				}
+				$i++;
+			 }
+			 return $M2M_relations;
+		}
+		else //old format compatibility
+		{
+			 $relations_array = explode('|',$string);
+	
+			 foreach($relations_array as $relation)
+			 {
+				$relation_part=explode(':',$relation);
+				if ($relation_part[0]=='2')
+				{
+				   $tmp=explode('.',$relation_part[1]);
+				   $via_table=$tmp[0];
+				   $tmp=explode('.',$relation_part[4]);
+				   $display_table=$tmp[0];
+	
+				   $relation_arr[] = array
+				   (
+					  'type'=>$relation_part[0],
+					  'via_primary_key'=>$relation_part[1],
+					  'via_foreign_key'=>$relation_part[2],
+					  'via_table'=>$via_table,
+					  'foreign_key'=>$relation_part[3],
+					  'display_field'=>$relation_part[4],
+					  'display_table'=>$display_table
+				   );
+				}
+			 }
+			 return $relation_arr;
+		}
 	  }
 
 
@@ -750,20 +818,32 @@
 		 $table=$table_info[0];
 		 $related_field=$table_info[1];
 
-		 $table_info2=explode('.',$relation_array[display_field]);
-		 $table_display=$table_info2[0];
-		 $display_field=$table_info2[1];
+		 $table_info_DF1=explode('.',$relation_array[display_field]);
+		 $table_display=$table_info_DF1[0];
+		 $display_field=$table_info_DF1[1];
+
+ 		 $table_info_DF2=explode('.',$relation_array[display_field_2]);
+		 $display_field_2=$table_info_DF2[1];
+
+  		 $table_info_DF3=explode('.',$relation_array[display_field_3]);
+		 $display_field_3=$table_info_DF3[1];
 
 		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
 
 		 if(is_array($allrecords))
-		 foreach ($allrecords as $record)
 		 {
-			$related_fields[]=array
-			(
-			   'value'=>$record[$related_field],
-			   'name'=>$record[$display_field]
-			);
+			 foreach ($allrecords as $record)
+			 {
+			   $displaystring = $record[$display_field];
+			   if($display_field_2!='') $displaystring .= ' '.$record[$display_field_2];
+			   if($display_field_3!='') $displaystring .= ' '.$record[$display_field_3];
+
+			   $related_fields[]=array
+				(
+				   'value'=>$record[$related_field],
+				   'name'=>$displaystring
+				);
+			 }
 		 }
 		 return $related_fields;
 	  }
@@ -895,18 +975,13 @@
 
 
 
-	  function http_vars_pairs_m2m($HTTP_POST_VARS) {
-
-		 while(list($key, $val) = each($HTTP_POST_VARS)) {
-
-
+	  function http_vars_pairs_m2m($HTTP_POST_VARS) 
+	  {
+		 while(list($key, $val) = each($HTTP_POST_VARS)) 
+		 {
 			if(substr($key,0,3)=='M2M' || substr($key,0,8)=='FLDXXXid')
 			{
-
-			   $data = array_merge($data,array
-			   (
-				  $key=> $val
-			   ));
+			   $data = array_merge($data,array($key=> $val));
 			}
 		 }
 		 return $data;

@@ -35,7 +35,8 @@
 		 'save_access_rights_object'=> True,
 		 'save_access_rights_site'=> True,
 		 'save_field_plugin_conf' => True,
-		 'save_field_info_conf' => True
+		 'save_field_info_conf' => True,
+		 'save_object_events_conf' => True
 	  );
 
 	  var $so;
@@ -58,8 +59,10 @@
 	  var $where_value;
 
 	  var $plugins;
+	  var $object_events_plugins;
 
 	  var $db_ftypes;
+	  
 	  function boadmin()
 	  {
 		 $this->common = CreateObject('jinn.bocommon');
@@ -114,6 +117,12 @@
 		 $this->plug = CreateObject('jinn.plugins'); //$this->include_plugins();
 		 $this->plug->local_bo = $this;
 		 $this->plugins = $this->plug->plugins;
+		 
+		 
+		 $this->object_events_plugin_manager = CreateObject('jinn.object_events_plugins'); //$this->include_plugins();
+		 $this->object_events_plugin_manager->local_bo = $this;
+		 $this->object_events_plugins = $this->object_events_plugin_manager->plugins;
+
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
 		 global $local_bo;
@@ -180,57 +189,70 @@
 
 		 if ($HTTP_POST_VARS[FLDrelations])
 		 {
+				//unpack the array for add/remove actions
+			$relations_arr = unserialize(base64_decode($HTTP_POST_VARS[FLDrelations]));
+
 			// check if there are relations to delete
 			$relations_to_delete=$this->common->filter_array_with_prefix($HTTP_POST_VARS,'DEL');
 			if (is_array($relations_to_delete))
 			{
-
-			   $relations_org=explode('|',$HTTP_POST_VARS[FLDrelations]);
-			   foreach($relations_org as $relation_org)
+			   foreach($relations_to_delete as $relation_to_delete)
 			   {
-				  if (!in_array($relation_org,$relations_to_delete))
-				  {
-					 if ($new_org_relation) $new_org_relation.='|';
-					 $new_org_relation.=$relation_org;
-				  }
+					unset($relations_arr[$relation_to_delete]);
 			   }
-			   $HTTP_POST_VARS[FLDrelations]=$new_org_relation;
+				$relations_arr = array_values($relations_arr); //reorder the index values
 			}
 		 }
 
-		 // check if new ONE WITH MANY relation parts are complete else drop them
+		 // check if new ONE TO MANY relation parts are complete else ignore them
 		 if($HTTP_POST_VARS['1_relation_org_field'] && $HTTP_POST_VARS['1_relation_table_field'] 
 		 && $HTTP_POST_VARS['1_display_field'])
 		 {
-			$new_relation='1:'.$HTTP_POST_VARS['1_relation_org_field'].':null:'.$HTTP_POST_VARS['1_relation_table_field']
-			.':'.$HTTP_POST_VARS['1_display_field'];
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 1; //one-to-many
+			$new_relation_arr[org_field] = $HTTP_POST_VARS['1_relation_org_field'];
+			$new_relation_arr[related_with] = $HTTP_POST_VARS['1_relation_table_field'];
+			$new_relation_arr[display_field] = $HTTP_POST_VARS['1_display_field'];
+			$new_relation_arr[display_field_2] = $HTTP_POST_VARS['1_display_field_2'];
+			$new_relation_arr[display_field_3] = $HTTP_POST_VARS['1_display_field_3'];
+			$new_relation_arr[default_value] = $HTTP_POST_VARS['1_default'];
 
-			if ($HTTP_POST_VARS['FLDrelations']) $HTTP_POST_VARS['FLDrelations'].='|';
-			$HTTP_POST_VARS['FLDrelations'].=$new_relation;
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
 		 }
 
-		 // check if new MANY WITH MANY relation parts are complete else drop them
+		 // check if new MANY TO MANY relation parts are complete else ignore them
 		 if($HTTP_POST_VARS['2_relation_via_primary_key'] && $HTTP_POST_VARS['2_relation_foreign_key'] 
-		 && $HTTP_POST_VARS['2_relation-via-foreign-key'] && $HTTP_POST_VARS['2_display_field'])
+		 && $HTTP_POST_VARS['2_relation_via_foreign_key'] && $HTTP_POST_VARS['2_display_field'])
 		 {
-			$new_relation='2:'.$HTTP_POST_VARS['2_relation_via_primary_key'].':'.$HTTP_POST_VARS['2_relation-via-foreign-key'].':'
-			.$HTTP_POST_VARS['2_relation_foreign_key'].':'.$HTTP_POST_VARS['2_display_field'];
 
-			if ($HTTP_POST_VARS['FLDrelations']) $HTTP_POST_VARS['FLDrelations'].='|';
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 2; //many-to-many
+			$new_relation_arr[via_primary_key] = $HTTP_POST_VARS['2_relation_via_primary_key'];
+			$new_relation_arr[via_foreign_key] = $HTTP_POST_VARS['2_relation_via_foreign_key'];
+			$new_relation_arr[foreign_key] = $HTTP_POST_VARS['2_relation_foreign_key'];
+			$new_relation_arr[display_field] = $HTTP_POST_VARS['2_display_field'];
+			$new_relation_arr[display_field_2] = $HTTP_POST_VARS['2_display_field_2'];
+			$new_relation_arr[display_field_3] = $HTTP_POST_VARS['2_display_field_3'];
 
-			$HTTP_POST_VARS['FLDrelations'].=$new_relation;
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
 		 }
 
-		 // check if new ONE TO ONE relation parts are complete else drop them
+ 		 // check if new ONE TO ONE relation parts are complete else ignore them
 		 if($HTTP_POST_VARS['3_relation_org_field'] && $HTTP_POST_VARS['3_relation_table_field'] 
 		 && $HTTP_POST_VARS['3_relation_object_conf'])
 		 {
-			$new_relation='3:'.$HTTP_POST_VARS['3_relation_org_field'].':null:'.$HTTP_POST_VARS['3_relation_table_field']
-			.':'.$HTTP_POST_VARS['3_relation_object_conf'];
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 3; //one-to-one
+			$new_relation_arr[org_field] = $HTTP_POST_VARS['3_relation_org_field'];
+			$new_relation_arr[related_with] = $HTTP_POST_VARS['3_relation_table_field'];
+			$new_relation_arr[object_conf] = $HTTP_POST_VARS['3_relation_object_conf'];
 
-			if ($HTTP_POST_VARS['FLDrelations']) $HTTP_POST_VARS['FLDrelations'].='|';
-			$HTTP_POST_VARS['FLDrelations'].=$new_relation;
-		 }
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
+		}
+
+
+			//repack the array for storage
+		$HTTP_POST_VARS['FLDrelations']=base64_encode(serialize($relations_arr));
 
 		 
 			//create an array of field properties from the FIELD_ form section
@@ -320,6 +342,69 @@
 		 $this->common->exit_and_open_screen('jinn.uiadmin.field_help_config&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id]);
 	  }
 
+	  
+  	  /**
+	  @function save_field_plugin_conf
+	  @abstract save changes made to a field plugin configuration in database
+	  @note this function uses new standard method for returning exit codes and status information
+	  */
+	  function save_object_events_conf()
+	  {
+		 if(!$_GET[object_id])
+		 {
+			die('error');
+		 }
+
+
+		 if(is_array($_POST))
+		 {
+			$conf=array
+				(
+					'name'=>$_POST[plugin],
+					'conf'=>$_POST
+				);
+//_debug_array($conf);
+			if($conf[conf][event] != '' && $conf[conf][plugin] != '')
+			{
+//_debug_array('was here');
+				$object_arr=$this->so->get_object_values($_GET[object_id]);
+//_debug_array($object_arr);
+				$stored_config = unserialize(base64_decode($object_arr[events_config]));
+//_debug_array($stored_config);
+				if(!is_array($stored_config)) 
+				{
+					$stored_config = array();
+				}
+				$stored_config[] = $conf;
+//_debug_array($stored_config);
+				$conf_serialed_string=base64_encode(serialize($stored_config));
+				$status=$this->so->save_object_events_plugin_conf($_GET[object_id],$conf_serialed_string);
+			}
+			else
+			{
+				$status[ret_code] = true;
+			}
+		 }
+		 
+	
+		 if($status[ret_code])
+		 {
+			$this->message[error]=lang('An unknown error has occured (error code 109)');
+_debug_array(lang('An unknown error has occured (error code 109)'));
+		 }
+		 else
+		 {
+			$this->message[info]=lang('Plugin configuration successfully saved');
+_debug_array(lang('Plugin configuration successfully saved'));
+		 }
+		 $this->save_sessiondata();
+
+	  
+	  /* fixme: this gives a strange error:
+		 $this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
+		 */
+	  }
+	  
 	  /**
 	  @function save_field_plugin_conf
 	  @abstract save changes made to a field plugin configuration in database

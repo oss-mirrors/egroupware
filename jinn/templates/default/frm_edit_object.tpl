@@ -78,17 +78,26 @@
 		<td colspan="2">{lang_field}:<br/>
 		<select name="1_relation_org_field">
 		{rel1_options1}
-		</select></td></tr>
-
-		<tr><td>{lang_has_1rel}:<br/>
+		</select></td>
+	</tr>
+	<tr>
+		<td>{lang_has_1rel}:<br/>
 		<select name="1_relation_table_field">
 		{rel1_options2}
-		</select></td></tr>
-
-		<tr><td colspan="2">{lang_displaying}:<br/>
+		</select>&nbsp;&nbsp;{lang_default}:<input type="text" name="1_default"/></td>
+	</tr>
+	<tr>
+		<td colspan="2">{lang_displaying}:<br/>
 		<select name="1_display_field">
 		{rel1_options3}
-		</select></td>
+		</select>
+		<select name="1_display_field_2">
+		{rel1_options3}
+		</select>
+		<select name="1_display_field_3">
+		{rel1_options3}
+		</select>
+		</td>
 	</tr>
 </table>
 <br/>
@@ -97,26 +106,38 @@
 <!-- BEGIN relations2 -->
 <b>{lang_new_rel2}</b><br/>
 <table>
-	<tr><td colspan="2">
+	<tr>
+		<td colspan="2">
 		{lang_the_id_of}:<br/>
 		<select name="2_relation_via_primary_key">
 		{rel2_options1}	
-		</select></td></tr>
-
-		<tr><td>{lang_has_rel2_with}:<br/>
+		</select></td>
+	</tr>
+	<tr>
+		<td>{lang_has_rel2_with}:<br/>
 		<select name="2_relation_foreign_key">
 		{rel2_options2}
-		</select></td></tr>
-
-		<tr><td colspan="2">{lang_represented_by}<br/>
-		<select name="2_relation-via-foreign-key">
+		</select></td>
+	</tr>
+	<tr>
+		<td colspan="2">{lang_represented_by}<br/>
+		<select name="2_relation_via_foreign_key">
 		{rel2_options3}
-		</select></td></tr>
-
-		<tr><td>{lang_showing}:<br>
+		</select></td>
+	</tr>
+	<tr>
+		<td>{lang_showing}:<br/>
 		<select name="2_display_field">
 		{rel2_options4}
-		</select></td></tr>
+		</select>
+		<select name="2_display_field_2">
+		{rel2_options4}
+		</select>
+		<select name="2_display_field_3">
+		{rel2_options4}
+		</select>
+		</td>
+	</tr>
 </table>
 <!-- END relations2 -->
 

@@ -841,18 +841,21 @@
 
 	  function get_1wX_record_values($site_id,$object_id,$m2m_relation,$all_or_stored)
 	  {
-
 		 $this->site_db_connection($site_id);
-
+		$displayfields = $m2m_relation[display_field];
+		if($m2m_relation[display_field_2]!='') $displayfields .= ', '.$m2m_relation[display_field_2];
+		if($m2m_relation[display_field_3]!='') $displayfields .= ', '.$m2m_relation[display_field_3];
+		if($m2m_relation[display_field_2]!='' || $m2m_relation[display_field_3]!='' ) $displayfields = "CONCAT_WS(' ', ".$displayfields.")";
+		
+		 
 		 if ($all_or_stored=="all")
 		 {
-			$SQL="SELECT $m2m_relation[foreign_key],$m2m_relation[display_field] FROM $m2m_relation[display_table] ORDER BY $m2m_relation[display_field] ";
+			$SQL="SELECT $m2m_relation[foreign_key],$displayfields AS display FROM $m2m_relation[display_table] ORDER BY $m2m_relation[display_field] ";
 		 }
 		 elseif($object_id)
 		 {
-			$SQL="SELECT $m2m_relation[foreign_key],$m2m_relation[display_field] FROM $m2m_relation[display_table] INNER JOIN $m2m_relation[via_table]
+			$SQL="SELECT $m2m_relation[foreign_key],$displayfields AS display FROM $m2m_relation[display_table] INNER JOIN $m2m_relation[via_table]
 			ON $m2m_relation[via_foreign_key]=$m2m_relation[foreign_key] WHERE $m2m_relation[via_primary_key]=$object_id ORDER BY $m2m_relation[display_field]";
-
 		 }
 		 else
 		 {
@@ -861,8 +864,6 @@
 
 		 $tmp=explode('.',$m2m_relation[foreign_key]);
 		 $foreign_key=$tmp[1];
-		 $tmp=explode('.',$m2m_relation[display_field]);
-		 $display_field=$tmp[1];
 
 		 if($SQL)
 		 {
@@ -872,13 +873,11 @@
 			{
 
 			   $records[]=array(
-				  'name'=>$this->site_db->f($display_field),
+				  'name'=>$this->site_db->f('display'),
 				  'value'=>$this->site_db->f($foreign_key)
 			   );
 			}
 		 }
-
-
 		 return $records;
 	  }
 
@@ -1326,19 +1325,15 @@
 		 $this->site_db_connection($site_id);
 		 $status=True;
 		 $i=1;
-
 		 while (isset($data['M2MRXX'.$i]))
 		 {
 			list($via_primary_key,$via_foreign_key) = explode("|",$data['M2MRXX'.$i]);
 			list($table,) = explode(".",$via_primary_key);
-
 			$SQL="DELETE FROM $table WHERE $via_primary_key='$data[FLDXXXid]'";
-
 			if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 			   $status=-1;
 			}
-
 			$related_data=explode(",",$data['M2MOXX'.$i]);
 			foreach($related_data as $option)
 			{
@@ -1347,13 +1342,10 @@
 			   {
 				  $status=False;
 			   }
-
 			}
-
 			$i++;
 		 }
 		 return $status;
-
 	  }
 
 	  /*!
@@ -1576,7 +1568,6 @@
 
 	  function update_phpgw_data($table,$data,$where_key,$where_value,$where_string='')
 	  {
-
 		 $meta=$this->phpgw_table_metadata($table,true);
 
 		 foreach($data as $field)
@@ -1693,6 +1684,21 @@
 
 
 	  
+	  function save_object_events_plugin_conf($object_id,$conf_serialed)
+	  {
+		 if(!$object_id) $object_id=-1;
+		 $sql="UPDATE egw_jinn_objects SET `events_config`='$conf_serialed' WHERE `object_id`=$object_id";
+		 if($this->phpgw_db->query($sql,__LINE__,__FILE__))
+		 {
+			$status[ret_code]=0;
+		 }
+		 else
+		 {
+			$status[ret_code]=1;
+		 }
+
+		 return $status;
+	  }
 	  
 	  function save_field_plugin_conf($object_id,$fieldname,$conf_serialed)
 	  {

@@ -3,6 +3,27 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+
+Version 0.8.210
+Thu Feb ???? CET 2005
+============================
+- implemented column filters in List Records
+- started object event plugin system
+
+Version 0.8.209
+Thu Feb 04 10:34:32 CET 2005
+============================
+- implemented default columnview implementation
+- one-to-many and many-to-many relations now can have up to 3 display fields
+- fixed bug many-to-many relations were not stored after editing
+- implemented default value in one-to-many relation
+- storage of relations now serialized array (with silent conversion when editing object)
+- fixed bug in listview where fields were not displaying their corresponding value in a one-to-many relation
+- implemented preset plugin
+- refactored mandatory field code
+- refactoring: replaced '_HIDE_' with '_DISABLED_' in plugin system
+- depreciated 'hide this field plugin'. Is now 'disable field' plugin.
+
 Version 0.8.208
 Thu Jan 20 21:18:32 CET 2005
 ============================

@@ -247,6 +247,29 @@
 					 $input.=lang('add image %1', $i).' <input type="file" name="IMG_SRC'.$field_name.$i.'">';
 				  }
 
+
+
+
+
+				  
+				  //lex` prototyping code:
+		$input.='	<script language="JavaScript">
+			<!--  
+			function onBrowseServer() 
+			{
+				_console = window.open("jinn/plugins/UploadImage/popups/insert_image.php","console", "width=580,height=440,resizable");
+				//_console.document.open("text/html");
+				//_console.document.writeln("<html><body>testing</body></html>");
+				//_console.document.load("test.html");
+				_console.document.close();				  
+			}
+			-->
+			</script>';
+		$input.='<input onClick="onBrowseServer();" type="button" value="browse on server" name="IMG_SRC'.$field_name.$i.'">';
+
+		
+		
+		
 				  /* when user is allowed to give own image sizes */
 				  if($config['Allow_other_images_sizes']=='True')
 				  {
