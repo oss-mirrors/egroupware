@@ -87,9 +87,9 @@
 				'message'				=> implode('<br>', $this->message),
 				'errors'				=> $error_str,
 				'form_action_adminroles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form'),
-				'role_info_role_id'		=> $role_info['role_id'],
-				'role_info_name'		=> $role_info['name'],
-				'role_info_description'	=> $role_info['description'],
+				'role_info_role_id'		=> $role_info['wf_role_id'],
+				'role_info_name'		=> $role_info['wf_name'],
+				'role_info_description'	=> $role_info['wf_description'],
 				'p_id'					=> $this->wf_p_id,
 				'start'					=> $this->start,
 			));
@@ -143,18 +143,22 @@
 			$this->t->set_block('admin_roles', 'block_list_mappings', 'list_mappings');
 			$mappings = $this->role_manager->list_mappings($this->wf_p_id, $this->start, -1, $this->sort_mode, '');
 			//echo "mappings: <pre>";print_r($mappings);echo "</pre>";
-			foreach ($mappings['data'] as $mapping)
-			{
-				$GLOBALS['phpgw']->accounts->get_account_name($mapping['wf_user'], $lid, $fname, $lname);
-				$this->t->set_var(array(
-					'map_user_id'	=> $mapping['wf_user'],
-					'map_role_id'	=> $mapping['wf_role_id'],
-					'map_role_name'	=> $mapping['wf_name'],
-					'map_user_name'	=> $fname . ' ' . $lname,
-				));
-				$this->t->parse('list_mappings', 'block_list_mappings', true);
+			if (!count($mappings['data'])) {
+				$this->t->set_var('list_mappings', '<tr><td colspan="3" align="center">'. lang('There are no mappings defined for this process')  .'</td></tr>');
 			}
-			if (!count($mappings['data'])) $this->t->set_var('list_mappings', '<tr><td colspan="3" align="center">'. lang('There are no mappings defined for this process')  .'</td></tr>');
+			else {	
+				foreach ($mappings['data'] as $mapping)
+				{
+					$GLOBALS['phpgw']->accounts->get_account_name($mapping['wf_user'], $lid, $fname, $lname);
+					$this->t->set_var(array(
+						'map_user_id'	=> $mapping['wf_user'],
+						'map_role_id'	=> $mapping['wf_role_id'],
+						'map_role_name'	=> $mapping['wf_name'],
+						'map_user_name'	=> $fname . ' ' . $lname,
+					));
+					$this->t->parse('list_mappings', 'block_list_mappings', true);
+				}
+			}
 		}
 
 		function save_mapping($users, $roles)
