@@ -11,7 +11,7 @@
   *  option) any later version.								*
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
 	Header('Cache-Control: no-cache');
 	Header('Pragma: no-cache');
@@ -48,51 +48,20 @@
 	$t->set_block('T_index_main','B_msg_list','V_msg_list');
 
 // ---- report on number of messages Deleted or Moved (if any)  -----
-	if ($GLOBALS['phpgw']->msg->args['td'])
+	// NEW: use API-like high level function for this:
+	$report_this = $GLOBALS['phpgw']->msg->report_moved_or_deleted();
+	// if no move nor delete occured, then $report_this will be empty
+	if ($report_this != '')
 	{
-		// report on number of messages DELETED (if any)
-		if ($GLOBALS['phpgw']->msg->args['td'] == 1) 
-		{
-			$num_deleted = lang("1 message has been deleted",$GLOBALS['phpgw']->msg->args['td']);
-		}
-		else
-		{
-			$num_deleted = lang("x messages have been deleted",$GLOBALS['phpgw']->msg->args['td']);
-		}
-		// template only outputs if msgs were deleted, otherwise skipped
-		$t->set_var('report_this',$num_deleted);
-		$t->parse('V_action_report','B_action_report');
-	}
-	elseif ($GLOBALS['phpgw']->msg->args['tm'])
-	{
-		if ($GLOBALS['phpgw']->msg->args['tf'])
-		{
-			$_tf = $GLOBALS['phpgw']->msg->prep_folder_in($GLOBALS['phpgw']->msg->args['tf']);
-		}
-		else
-		{
-			$_tf = 'empty';
-		}
-		// report on number of messages MOVED (if any)
-		if ($GLOBALS['phpgw']->msg->args['tm'] == 0) 
-		{
-			$num_moved = lang("Error moving messages to ").' '.$_tf;
-		}
-		elseif ($GLOBALS['phpgw']->msg->args['tm'] == 1)
-		{
-			$num_moved = lang("1 message has been moved to").' '.$_tf;
-		}
-		else
-		{
-			$num_moved = $GLOBALS['phpgw']->msg->args['tm'].' '.lang("messages have been moved to").' '.$_tf;
-		}
-		// template only outputs if msgs were moved, otherwise skipped
-		$t->set_var('report_this',$num_moved);
+		// only parse the "report block" if there's something to report
+		$t->set_var('report_this',$report_this);
 		$t->parse('V_action_report','B_action_report');
 	}
 	else
 	{
-		// nothing deleted or moved, so template gets blank string
+		// nothing deleted or moved, no need to parse the block
+		// instead, give the block's target variable a blank string
+		// so when the main template is filled, this "report block" will simply not show up.
 		$t->set_var('V_action_report','');
 	}
 
@@ -115,6 +84,7 @@
 	$t->set_var('current_folder',$GLOBALS['phpgw']->msg->prep_folder_out(''));
 
 // ---- SwitchTo Folder Listbox   -----
+	// this is used in several places in the index page
 	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
 	{
 		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
@@ -197,14 +167,13 @@
 	$filters_href = '<a href="'.$filters_link.'">'.$filters_txt.'</a>';
 	$t->set_var('filters_href',$filters_href);
 
-	// "accounts" preferences FUTURE
+	// FUTURE: "accounts" preferences
 	$t->set_var('accounts_txt',lang('Manage Accounts'));
 	$t->set_var('accounts_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
 
 // ---- Control Bar =Row 2=   -----
 	$t->set_var('ctrl_bar_back1',$GLOBALS['phpgw_info']['theme']['row_on']);
-	// "accounts" switchbox
-	// FUTURE
+	// FUTURE: "accounts" switchbox
 	// "sorting" switchbox
 	$sort_selected[0] = '';
 	$sort_selected[1] = '';
@@ -245,7 +214,7 @@
 	{
 		// TOTAL MESSAGES IN FOLDER
 		$stats_saved = number_format($folder_info['number_all']);
-
+		
 		// NUM NEW MESSAGES
 		$stats_new = $folder_info['number_new'];
 		if ($stats_new == 0)
@@ -257,70 +226,48 @@
 			// put a comma between the thousands
 			$stats_new = number_format($stats_new);
 		}
-
+		
 		// SHOW SIZE OF FOLDER OPTION
 		// total size of all emails in this folder added up
+		// function "report_total_foldersize($size_report_args)" takes 3 array keys as its args:
+		//	$size_report_args['allow_stats_size_speed_skip']
+		//	$size_report_args['stats_size_threshold']
+		//	$size_report_args['number_all'] 
 		// can take a long time if alot of mail is in the folder, and put unneeded load on the IMAP server
 		// FUTURE:  make it optional, this will pick up that option from the prefs
-		$allow_stats_size_speed_skip = True;
-		//$allow_stats_size_speed_skip = False;
-
-		// if the number of messahes in the folder exceeds this number, then we skip getting the folder size
-		$stats_size_threshold = 100;
-
-		// determine if we should show the folder size
-		if ((isset($GLOBALS['phpgw']->msg->args['force_showsize']))
-		&& ($GLOBALS['phpgw']->msg->args['force_showsize'] != ''))
-		{
-			// user has requested override of this speed skip option
-			$do_show_size = True;
-		}
-		elseif (($allow_stats_size_speed_skip == True)
-		&& ($folder_info['number_all'] > $stats_size_threshold))
-		{
-			// spped skip option is enabled and number messages exceeds skip threshold
-			$do_show_size = False;
-			$stats_size = '';
-		}
-		else
-		{
-			// if either of those are not met, just show the size of the folder
-			$do_show_size = True;
-
-		}
-
-		// if we should show the folder size, get that data now
-		if ($do_show_size)
-		{
-			$do_show_size = True;
-			// FOLDER SIZE info obtained now
-			$stats_size = $GLOBALS['phpgw']->msg->get_folder_size();
-			$stats_size = $GLOBALS['phpgw']->msg->format_byte_size($stats_size);
-		}
+		$size_report_args['allow_stats_size_speed_skip'] = True;
+		//$size_report_args['allow_stats_size_speed_skip'] = False;
+		// if the number of messages in the folder exceeds this number, then we skip getting the folder size
+		$size_report_args['stats_size_threshold'] = 100;
+		// thus the function needs to know how many total messages there are
+		$size_report_args['number_all'] = $folder_info['number_all'];
+		// get the data, if it's filled then it was OK to get the data and we indeed got valid data
+		$stats_size = $GLOBALS['phpgw']->msg->report_total_foldersize($size_report_args);		
 	}
 
 // ---- Folder Statistics Information Row  -----
-	$t->set_var('stats_backcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
-	//$t->set_var('stats_backcolor','#000000');
-	$t->set_var('stats_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('stats_fontsize','+0');
-	$t->set_var('stats_color',$GLOBALS['phpgw_info']['theme']['em_folder_text']);
-	$t->set_var('stats_folder',$folder_short);
-	$t->set_var('stats_saved',$stats_saved);
-	$t->set_var('stats_new',$stats_new);
-	$t->set_var('lang_new',lang('New'));
-	$t->set_var('lang_new2',lang('New Messages'));
-	$t->set_var('lang_total',lang('Total'));
-	$t->set_var('lang_total2',lang('Total Messages'));
-	$t->set_var('lang_size',lang('Size'));
-	$t->set_var('lang_size2',lang('Folder Size'));
+	$tpl_vars = Array(
+		'stats_backcolor'	=> $GLOBALS['phpgw_info']['theme']['em_folder'],
+		'stats_font'	=> $GLOBALS['phpgw_info']['theme']['font'],
+		'stats_color'	=> $GLOBALS['phpgw_info']['theme']['em_folder_text'],
+		'stats_folder'	=> $folder_short,
+		'stats_saved'	=> $stats_saved,
+		'stats_new'	=> $stats_new,
+		'stats_folder'	=> $folder_short,
+		'lang_new'	=> lang('New'),
+		'lang_new2'	=> lang('New Messages'),
+		'lang_total'	=> lang('Total'),
+		'lang_total2'	=> lang('Total Messages'),
+		'lang_size'	=> lang('Size'),
+		'lang_size2'	=> lang('Folder Size'),
+		'stats_to_txt'	=> lang('to')
+	);
+	$t->set_var($tpl_vars);
 	$t->set_var('stats_first',$GLOBALS['phpgw']->msg->start + 1);
-	$t->set_var('stats_to_txt',lang('to'));
 	// "last" can not be know until the calculations below
 
-	//$t->set_var('stats_last',$GLOBALS['phpgw']->msg->start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']);
 	// FOLDER SIZE: either you show it or you are skipping it because of speed skip
-	if ($do_show_size == True)
+	if ($stats_size != '')
 	{
 		// show the size of the folder
 		$t->set_var('stats_size',$stats_size);
@@ -409,12 +356,15 @@
 		$hdr_size = $GLOBALS['phpgw']->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->sort,'6',$default_order,$GLOBALS['phpgw']->msg->order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php',$lang_size,'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 	}
 
-	$t->set_var('hdr_backcolor',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('hdr_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('hdr_subject',$hdr_subject);
-	$t->set_var('hdr_from',$hdr_from);
-	$t->set_var('hdr_date',$hdr_date);
-	$t->set_var('hdr_size',$hdr_size);
+	$tpl_vars = Array(
+		'hdr_backcolor'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+		'hdr_font'	=> $GLOBALS['phpgw_info']['theme']['font'],
+		'hdr_subject'	=> $hdr_subject,
+		'hdr_from'	=> $hdr_from,
+		'hdr_date'	=> $hdr_date,
+		'hdr_size'	=> $hdr_size
+	);
+	$t->set_var($tpl_vars);
 	/*
 	// for those layouts that do not want these clickable headers, here are plain words
 	$t->set_var('lang_subject',$lang_subject);
@@ -684,16 +634,19 @@
 				// put nbsp there so mozilla will at least show the back color for the cell
 				$t->set_var('mlist_attach','&nbsp;');
 			}
-			$t->set_var('mlist_msg_num',$mlist_msg_num);
-			$t->set_var('mlist_backcolor',$bg);
-			$t->set_var('mlist_subject',$subject);
-			$t->set_var('mlist_subject_link',$subject_link);		
-			$t->set_var('mlist_from',$from_name);
-			$t->set_var('mlist_from_extra',$display_address_from);
-			$t->set_var('mlist_reply_link',$from_link);
-			//$t->set_var('mlist_date',$msg_date_time);
-			$t->set_var('mlist_date',$msg_date_only);
-			$t->set_var('mlist_size',$size);
+			$tpl_vars = Array(
+				'mlist_msg_num'		=> $mlist_msg_num,
+				'mlist_backcolor'	=> $bg,
+				'mlist_subject'		=> $subject,
+				'mlist_subject_link'	=> $subject_link,
+				'mlist_from'		=> $from_name,
+				'mlist_from_extra'	=> $display_address_from,
+				'mlist_reply_link'	=> $from_link,
+				'mlist_date'		=> $msg_date_only,
+				'mlist_size'		=> $size
+			);
+			$t->set_var($tpl_vars);
+
 			// fill this template, "true" means it's cumulative
 			$t->parse('V_msg_list','B_msg_list',True);
 			// end iterating through the messages to display
@@ -716,12 +669,21 @@
 	}
 
 // ----  Messages List Table Footer  -----
+	$tpl_vars = Array(
+		'app_images'		=> $image_dir,
+		'ftr_backcolor'		=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+		'ftr_font'		=> $GLOBALS['phpgw_info']['theme']['font'],
+		'delmov_button'		=> lang('delete'),
+		'delmov_listbox'	=> $delmov_listbox
+	);
+	$t->set_var($tpl_vars);
+	/*
 	$t->set_var('app_images',$image_dir);
 	$t->set_var('ftr_backcolor',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$t->set_var('ftr_font',$GLOBALS['phpgw_info']['theme']['font']);
 	$t->set_var('delmov_button',lang('delete'));
 	$t->set_var('delmov_listbox',$delmov_listbox);
-	
+	*/
 // ----  Output the Template   -----
 	$t->pparse('out','T_index_main');
 

@@ -1158,7 +1158,7 @@ class mail_msg extends mail_msg_wrappers
 			$line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-				"<a href=\"".$GLOBALS['phpgw']->link("/".$GLOBALS['phpgw_info']['flags']['currentapp']."/compose.php","folder=".$GLOBALS['phpgw']->msg->prep_folder_out($folder))
+				"<a href=\"".$GLOBALS['phpgw']->link("/".$GLOBALS['phpgw_info']['flags']['currentapp']."/compose.php","folder=".$this->prep_folder_out($folder))
 				."&to=\\1\">\\1</a>", $line);
 
 			$newText .= $line . "\n";
@@ -1210,5 +1210,162 @@ class mail_msg extends mail_msg_wrappers
 		$all_keys = array_keys($my_array);
 		return implode(', ',$all_keys);
 	}
+
+	/*!
+	@function report_moved_or_deleted
+	@abstract if mail was moved or deleted, we should report to the user what happened
+	@param none, it uses the class args described below in "discussion"
+	@result string which has either (a) a langed report to show the user about the move/delete that just occured
+	or (b) an empty string indicating no move or delete actions were taken, so none need to report anything
+	@discussion uses the following class args:
+	->args['td']	"td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
+	->args['tm']	"tm" means "Total Moved", if it's filled it contains the number of messages that were moved
+	->args['tf']	"tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
+	if the user requests a delete, then arg "td" SHOULD/MUST be filled with that information
+	if the user requests a move, then BOTH args "tm" AND "tf" SHOULD/MUST be filled with that information
+	"tm" is the number of messages moved, and it's most useful to know where they were moved to, hence "tf"
+	*/
+	function report_moved_or_deleted()
+	{
+		// initialize return report string
+		$report_this = '';
+		// "td" means "Total Deleted", if it's filled it contains the number of messages that were deleted
+		// when user deleted mail this arg should be filled with that information
+		if (isset($this->args['td'])
+		&& ($this->args['td'] != ''))
+		{
+			// report on number of messages DELETED (if any)
+			if ($this->args['td'] == 1) 
+			{
+				$report_this = lang("1 message has been deleted",$this->args['td']);
+			}
+			else
+			{
+				$report_this = lang("x messages have been deleted",$this->args['td']);
+			}
+		}
+		elseif (isset($this->args['tm'])
+		&& ($this->args['tm'] != ''))
+		{
+			// report on number of messages MOVED (if any)
+			// "tm" means "Total Moved", if it's filled it contains the number of messages that were moved
+			// if the user moves messages this arg should be filled with that information			
+			
+			// "tf" means "To Folder", if it's filled it contains the name of the folder that messages were moved to
+			// if the user moves messages this arg should be filled with that information
+			// if "tm" is filled then "tf" SHOULD/MUST also be filled
+			if (isset($this->args['tf'])
+			&& ($this->args['tf'] != ''))
+			{
+				$_tf = $this->prep_folder_in($this->args['tf']);
+			}
+			else
+			{
+				$_tf = 'empty';
+			}
+			// with the name of the "To Folder" we can build our report string
+			if ($this->args['tm'] == 0) 
+			{
+				// these args are filled, indicating a MOVE was attempted
+				// but since 0 messages were in fact moved, there must have been an error
+				$report_this = lang("Error moving messages to ").' '.$_tf;
+			}
+			elseif ($this->args['tm'] == 1)
+			{
+				$report_this = lang("1 message has been moved to").' '.$_tf;
+			}
+			else
+			{
+				$report_this = $this->args['tm'].' '.lang("messages have been moved to").' '.$_tf;
+			}
+		}
+		else
+		{
+			// nothing deleted or moved, so there's nothing to report (blank string)
+			$report_this = '';
+		}
+		return $report_this;
+	}
+
+	/*!
+	@function report_total_foldersize
+	@abstract get the total of all messges sizes in a folder added up to "folder size"
+	@param array, the single argument $report_args_array is an array with these 3 members
+	$report_args_array['allow_stats_size_speed_skip']  boolean
+		getting folder size *can* take long time if alot of mail is in the folder, and put unneeded load on the IMAP server
+		set to True to skip getting the folder size if there are more messages in the folder than specified 
+		by "stats_size_threshold". 
+		Default: False
+	$report_args_array['stats_size_threshold']  integer
+		test to skip getting the folder size if there are more messages in the folder than this number
+		Default: 100   (i.e. 100 messages is the test threshold)
+	$report_args_array['number_all']  integer  total number of messages in the folder
+		if you know the total number of messages in the folder before calling this function, then fill this
+		otherwise this function will obtain the data by itself if it needs it
+		Default: not applicable
+	@result string, either (a) folder size nicely formatted for human readability, or (b) an empty string
+	if it was not OK to obtain the data according to the speed skip test
+	@discussion  total size of all emails in this folder added up, if its OK to get that data
+	*/
+	function report_total_foldersize($report_args_array=array())
+	{
+		// initialize return value
+		$return_folder_size = '';
+		// if it's ok to obtain size, and size IS obtained, $return_folder_size will be filled
+		
+		// ----  set defaults for the args array  ----
+		// can take a long time if alot of mail is in the folder, and put unneeded load on the IMAP server
+		// should we do this or not?
+		if (!isset($report_args_array['allow_stats_size_speed_skip']))
+		{
+			$report_args_array['allow_stats_size_speed_skip'] = False;
+		}
+		// if "allow_stats_size_speed_skip" is True
+		// then if the number of messages in the folder exceeds this number, then we skip getting the folder size
+		if (!isset($report_args_array['stats_size_threshold']))
+		{
+			$report_args_array['stats_size_threshold'] = 100;
+		}
+		// to test whether to skip or not, we'll need to know the total number og messages in the folder
+		if (($report_args_array['allow_stats_size_speed_skip'] == True)
+		&& (!isset($report_args_array['number_all'])))
+		{
+			// get the data using a "high level" function call for this purpose
+			$folder_info = array();
+			$folder_info = $this->folder_status_info();
+			$report_args_array['number_all'] = $folder_info['number_all'];
+		}
+		
+		// ----  Is It OK To Get The Folder Size?  ----
+		// determine if we should show the folder size
+		if ((isset($this->args['force_showsize']))
+		&& ($this->args['force_showsize'] != ''))
+		{
+			// user has requested override of this speed skip option
+			$do_show_size = True;
+		}
+		elseif (($report_args_array['allow_stats_size_speed_skip'] == True)
+		&& ($report_args_array['number_all'] > $report_args_array['stats_size_threshold']))
+		{
+			// spped skip option is enabled and number messages exceeds skip threshold
+			$do_show_size = False;
+		}
+		else
+		{
+			// if either of those are not met, just show the size of the folder
+			$do_show_size = True;
+
+		}
+		
+		// ----  Get The Folder Size if it's OK  ----
+		if ($do_show_size)
+		{
+			// FOLDER SIZE info obtained now
+			$raw_folder_size = $this->get_folder_size();
+			$return_folder_size = $this->format_byte_size($raw_folder_size);
+		}
+		return $return_folder_size;
+	}
+
 } // end class mail_msg
 ?>
