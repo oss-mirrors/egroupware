@@ -14,7 +14,7 @@
 	
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../../header.inc.php');
-	$appname = 'netsaint';
+	$appname = 'backup';
 	include(PHPGW_SERVER_ROOT.'/'.$appname.'/setup/setup.inc.php');
 ?>
 

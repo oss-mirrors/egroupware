@@ -1,12 +1,10 @@
 <?php
-	/*******************************************************************\
+/*******************************************************************\
 	* eGroupWare - Backup                                             *
 	* http://www.egroupware.org                                       *
 	*                                                                   *
 	* Administration Tool for data backup                               *
-	* -----------------------------------------------                   *
-	* Parts Written by 2001 Bettina Gille				    *
-	* Overworked by João Martins joao@wipmail.com.br   2004-01-14       *
+	* Written by João Martins joao@wipmail.com.br   2004-01-14          *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -23,15 +21,8 @@
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
 
-	$GLOBALS['phpgw_info']['flags'] = array
-	(
-		'currentapp' => 'backup',
-		'noheader'   => True,
-		'nonavbar'   => True
-	);
-	include('../header.inc.php');
 
-	
 
-	$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=backup.uibackup.web_backup');
+		$dbok = mysql_connect( 'localhost' , 'root' , 'greteline')
+  			or die("SQL problem: " . mysql_error());
 ?>

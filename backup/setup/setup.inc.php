@@ -16,12 +16,12 @@
 	$setup_info['backup']['app_order']	= 72;
 	$setup_info['backup']['enable'] = 1;
 
-	$setup_info['backup']['author'] = 'Bettina Gille';
+	$setup_info['backup']['author'] = 'João Martins';
 	$setup_info['backup']['license']  = 'GPL';
 	$setup_info['backup']['description'] =
-		'An online configurable backup app to store data offline.';
+		'An online configurable backup app to store EGW Database.';
 	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
-	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
+	$setup_info['backup']['maintainer_email'] = 'joao@wipmail.com.br';
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['backup']['hooks'][] = 'admin';

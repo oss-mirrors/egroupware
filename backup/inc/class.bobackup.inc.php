@@ -1,12 +1,13 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Backup                                             *
-	* http://www.phpgroupware.org                                       *
+	* eGroupWare - Backup                                             *
+	* http://www.egroupware.org                                       *
 	*                                                                   *
 	* Administration Tool for data backup                               *
-	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Original Written by Bettina Gille [ceb@phpgroupware.org]          *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2001 Bettina Gille                                  *
+	* Written by 2001 Bettina Gille				    *
+	* Overworked by João Martins joao@wipmail.com.br   2004-01-14       *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -22,7 +23,7 @@
 	* along with this program; if not, write to the Free Software       *
 	* Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
 	\*******************************************************************/
-	/* $Id$ */
+
 
 	class bobackup
 	{
@@ -31,9 +32,7 @@
 			'check_values'		=> True,
 			'save_items'		=> True,
 			'get_config'		=> True,
-			'create_config'		=> True,
 			'save_config'		=> True,
-			'phpftp_connect'	=> True,
 			'get_archives'		=> True,
 			'drop_archive'		=> True
 		);
@@ -53,18 +52,6 @@
 			return $items;
 		}
 
-		function phpftp_connect($host,$user,$pass)
-		{
-			$ftp = ftp_connect($host);
-			if ($ftp)
-			{
-				if (ftp_login($ftp,$user,$pass))
-				{
-					return $ftp;
-					ftp_quit($ftp);
-				}
-			}
-		}
 
 		function check_values($values)
 		{
@@ -72,18 +59,7 @@
 			{
 				$doc_root = get_var('DOCUMENT_ROOT',Array('GLOBAL','SERVER'));
 
-				if ($values['script_path'])
-				{
-					if (substr($values['script_path'],0,strlen($doc_root)) == $doc_root)
-					{
-						$error[] = lang('The directory to store the backup script must be outside of the webservers *DocumentRoot* !');
-					}
-				}
-				else
-				{
-					$error[] = lang('Please set the path to a local dir to store the backup script !');
-				}
-
+				
 				if ($values['versions'])
 				{
 					if (intval($values['versions']) == 0)
@@ -96,40 +72,10 @@
 				{
 					if (! $values['l_path'] && ! $values['l_websave'])
 					{
-						$error[] = lang('Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !');					
+						$error[] = lang('Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !');
 					}
 				}
 
-				if ($values['r_save'])
-				{
-					if (! $values['r_app'])
-					{
-						$error[] = lang('Please select an application for transport to the remote host !');					
-					}
-					elseif ($values['r_app'] != 'nfs')
-					{
-						if (! $values['r_user'] || ! $values['r_pwd'])
-						{
-							$error[] = lang('Please enter username and password for remote connection !');					
-						}
-					}
-					elseif (!$values['r_ip'])
-					{
-						$error[] = lang('Please specify the ip of the remote host !');
-					}
-					elseif (!$values['r_path'])
-					{
-						$error[] = lang('Please specify the path to the backup directory !');
-					}
-					elseif ($values['r_app'] == 'ftp')
-					{
-						$ftp = $this->phpftp_connect($values['r_ip'],$values['r_user'],$values['r_pwd']);
-						if (! $ftp)
-						{
-							$error[] = lang('The ftp connection failed ! Please check your configuration !');
-						}
-					}
-				}
 
 				$site_co = $this->get_config();
 				if (is_array($site_co))
@@ -173,7 +119,7 @@
 					{
 						if (!isset($site_co['maildir']))
 						{
-							$error[] = lang('Please specify the name of the Maildir in *Site configuration* !');
+							$error[] = lang('Please write down you e-mail for beeing notified');
 						}
 					}
 
@@ -273,147 +219,10 @@
 				}
 			}
 			$this->config->save_repository(True);
-			$this->create_config();
+
 		}
 
 
-		function save_config($conf_file, $config)
-		{
-			$file = fopen($conf_file,'w');
- //			ftruncate($file,0);
-			fwrite($file,$config);
-			fclose($file);
-		}
-
-		function create_config()
-		{
-			$co = $this->get_config();
-
-			$co['db_type'] = $GLOBALS['phpgw_info']['server']['db_type'];
-			$co['db_name'] = $GLOBALS['phpgw_info']['server']['db_name'];
-			$co['server_root'] = PHPGW_SERVER_ROOT;
-
-			if (!is_dir($co['script_path'] . '/backup'))
-			{
-				mkdir($co['script_path'] . '/backup',0700);
-			}
-
-			$co['basedir'] = $co['server_root'] . '/backup/archives';
-
-			if (!is_dir($co['basedir']))
-			{
-				mkdir($co['basedir'], 0700);
-			}
-
-			$co['script_path'] = $co['script_path'] . '/backup';
-
-			if ($co['b_create'] == 'yes')
-			{
-				
-// ------------------------------------ check -----------------------------------------------
-
-				$check = $GLOBALS['phpgw']->template->set_file(array('check' => 'check_form.tpl'));
-				$check .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-				$check .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
-				$check .= $GLOBALS['phpgw']->template->fp('out','check',True);
-				$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
-				$this->save_config($conf_file,$check);
-
-// -------------------------------- end check -----------------------------------------------
-
-// --------------------------------- backup -------------------------------------------------
-
-				$config = $GLOBALS['phpgw']->template->set_file(array('backup' => 'backup_form.tpl'));
-				$config .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
-				$config .= $GLOBALS['phpgw']->template->set_var('php_path',$co['php_cgi']);
-				$config .= $GLOBALS['phpgw']->template->fp('out','backup',True);
-				$conf_file = $co['server_root'] . '/backup/phpgw_start_backup.' . $co['b_intval'];
-				$this->save_config($conf_file,$config);
-
-// -------------------------------- end backup ----------------------------------------------
-
-// --------------------------------- script --------------------------------------------------
-
-				$config = $GLOBALS['phpgw']->template->set_file(array('script_ba_t' => 'script_form.tpl'));
-				$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
-
-				$config .= $GLOBALS['phpgw']->template->set_var('basedir',$co['basedir']);
-				$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-				$config .= $GLOBALS['phpgw']->template->set_var('versions',$co['versions']);
-				$config .= $GLOBALS['phpgw']->template->set_var('bintval',$co['b_intval']);
-				$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
-
-				$config .= $GLOBALS['phpgw']->template->set_var('php_path',$co['php_cgi']);
-				$config .= $GLOBALS['phpgw']->template->set_var('tar_path',$co['tar']);
-				$config .= $GLOBALS['phpgw']->template->set_var('zip_path',$co['zip']);
-				$config .= $GLOBALS['phpgw']->template->set_var('bzip2_path',$co['bzip2']);
-
-				if ($co['b_sql'])
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('bsql',$co['b_sql']);
-					$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
-					$config .= $GLOBALS['phpgw']->template->set_var('mysql_dir',$co['mysql']);
-					$config .= $GLOBALS['phpgw']->template->set_var('pgsql_dir',$co['pgsql']);
-				}
-
-				if ($co['b_ldap'] == 'yes')
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('bldap','yes');
-					$config .= $GLOBALS['phpgw']->template->set_var('ldap_dir',$co['ldap']);
-					$config .= $GLOBALS['phpgw']->template->set_var('ldap_in',$co['ldap_in']);
-				}
-
-				if ($co['b_email'] == 'yes')
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
-					$config .= $GLOBALS['phpgw']->template->set_var('maildir',$co['maildir']);
-
-					$allaccounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
-
-					while (list($null,$account) = each($allaccounts))
-					{
-						$config .= $GLOBALS['phpgw']->template->set_var(array
-						(
-							'lid'			=> stripslashes($account['account_lid']),
-							'server_root'	=> $co['server_root']
-						));
-						$GLOBALS['phpgw']->template->fp('ba','script_ba',True);
-					}
-				}
-
-				if ($co['r_save'] == 'yes')
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('rsave','yes');
-					$config .= $GLOBALS['phpgw']->template->set_var('rip',$co['r_ip']);
-					$config .= $GLOBALS['phpgw']->template->set_var('rpath',$co['r_path']);
-					$config .= $GLOBALS['phpgw']->template->set_var('ruser',$co['r_user']);
-					$config .= $GLOBALS['phpgw']->template->set_var('rpwd',$co['r_pwd']);
-					$config .= $GLOBALS['phpgw']->template->set_var('rapp',$co['r_app']);
-				}
-
-				if ($co['l_save'] == 'yes')
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
-					$config .= $GLOBALS['phpgw']->template->set_var('lpath',$co['l_path']);		
-				}
-
-				if ($co['l_websave'] == 'yes')
-				{
-					$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
-					$config .= $GLOBALS['phpgw']->template->set_var('lwebsave','yes');
-				}
-
-				$config .= $GLOBALS['phpgw']->template->fp('out','script_ba_t',True);
-
-				$conf_file = $co['script_path'] . '/phpgw_data_backup.php';
-				$this->save_config($conf_file,$config);
-			}
-			else
-			{
-				$conf_file = $co['server_root'] . '/backup/phpgw_delete_backup.all';
-				$this->save_config($conf_file,'delete');
-			}
-		}
 
 		function get_archives()
 		{
@@ -439,9 +248,10 @@
 			}
 		}
 
+		//in order to work you need chmod the files acording in your httpd.conf that the usr can write here
 		function drop_archive($archive)
 		{
-			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';			
+			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';
 
 			if (is_file($basedir . '/' . $archive))
 			{

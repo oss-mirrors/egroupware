@@ -1,34 +1,62 @@
+eGroupware Backup Application v.2004-01-14 joao@wipmail.com.br
 
-	the backup application currently works for local mysql -,
-	pgsql - and ldap - databases plus for the users imap
-	Maildirs.
-	it does not work to create backup archives from remote
-	databases.
-	the archives can be stored either locally or can be moved
-	to a remote host via ftp or smbmount.
-	if your webserver works with mod_php you have to have
-	php installed on your system in addition.
+This backup is complet new but if already installed you only
+backup your complete data in ~/egroupware/backup and empty
+the directory.
 
----------------------------------------------------------------
--                      configuration                          -
----------------------------------------------------------------
+Untar all files into this directory
 
-1.	the backup of the sql/ldap/email data will be done by a
-	php-script, which is called from a cronjob. to store this
-	script you have to create a directory outside of the web-
-	servers *document root*. the httpd has to have write access
-	to this directory.
+Open ~/egroupware/backup/backup/dbset.php and put your correct
+Database connection settings. The user you set HERE can be
+different from the main application and only need READ rights.
 
-2.	the httpd has to have write access to the phpgroupware/backup
-	directory.
+Open ~/egroupware/backup/egw.backup.sh and set the PATH
+according to your eGW installation. Depending on your system
+you perhaps need to adjust the php PATH.
 
-3.	the configuration part of the backup application can be found
-	in the admin part of phpgroupware. after you configured the
-	app for your needs you will find 'phpgw_check_for_backup' in
-	the backup dir.
-	copy this file to the cron.hourly dir,
-	chown root.root
-	chmod u+x
+In eGW administratin enable the Backup Application for your
+account. In ADMIN you find two backup settings:
 
-	this script will copy the backup startscript in the right
-	crondir.
+- Server Configuration
+- Backup Configuration
+
+Configure first the Server Settings and then the Backup.
+
+Now configure with crontab for a user how has READ and WRITE
+access to egroupwares web directory and has READ access to
+the DATABASE directory. Probably will this be root but any
+user with this permissions will go as well.
+
+ATTENTION: You can tie the permissions of the backup/archives
+directory so that ONLY the backup executing user has write
+or even read access. That may cause that you can not see your
+backups in eGW backup application but they are SECURE then.
+You do not need 775 or 777 chmods on the backup or subdirs,
+you can set the backup dir to your normal websettings.
+
+Crontab
+Set something like this with crontab according to your OS,
+most probably you can do
+
+#crontab -u root -e<enter>
+and write this line
+
+4 5 * * * cd /usr/local/htdocs/egroupware/backup && ./egw.backup.sh
+
+Attention.: *** change the path to your egroupware web directory ***
+
+The first COl are the minutes of the hour
+The second COL is the hour of the day
+
+This setting will run the backup each day at 05:04h and you can set
+any time you want.
+
+This application was NOT checked on WINDOWS. But it should work
+with MySQL on Windows you only need to find out how the scheduling
+works. On NT4 it should be go with at command on the prompt.
+
+If any questions our doubths you can contact me joao@wipmail.com.br
+
+JM
+
+
