@@ -26,6 +26,7 @@ edit bookmark	bookmarks	es	Editar marcador
 edit this bookmark	bookmarks	es	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es	Introduzca el nombre del fichero de marcadores de Netscaep<br>que quiera ver importado debajo.
 export bookmarks	preferences	es	Exportar marcadores
+export bookmarks	bookmarks	es	Exportar marcadores
 fewer	bookmarks	es	Menos
 filter by	bookmarks	es	Filtrar por
 found a link you might like	bookmarks	es	Encontré un enlace que le puede gustar
@@ -34,6 +35,7 @@ from category %1	bookmarks	es	de categoría %º
 highest	bookmarks	es	La más alta
 i thought you would be interested in the following link(s):	bookmarks	es	Pensé que le interesarían los siguientes enlaces:
 import bookmarks	preferences	es	Importar marcadores
+import bookmarks	bookmarks	es	Importar marcadores
 like	bookmarks	es	como
 list	bookmarks	es	Lista
 lowest	bookmarks	es	La más baja

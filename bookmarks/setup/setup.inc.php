@@ -35,6 +35,7 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['bookmarks']['hooks'][] = 'admin';
 	$setup_info['bookmarks']['hooks'][] = 'preferences';
+	$setup_info['bookmarks']['hooks'][] = 'sidebox_menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['bookmarks']['depends'][] = array(

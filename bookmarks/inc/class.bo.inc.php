@@ -266,7 +266,7 @@
 		function cat_exists($catname,$parent)
 		{
 			//the exists function in the API's category class does not tell if a category exists with a specific parent
-			$this->db->query("SELECT cat_id FROM phpgw_categories WHERE cat_name='$catname' AND cat_parent=$parent",__LINE__,__FILE__);
+			$this->db->query("SELECT cat_id FROM phpgw_categories WHERE cat_name='$catname' AND cat_parent=".intval($parent),__LINE__,__FILE__);
 			if ($this->db->next_record())
 			{
 				return $this->db->f('cat_id');
@@ -279,7 +279,7 @@
 
 		function get_category($catname,$parent)
 		{
-			$this->_debug('<br>Testing for category: ' . $catname);
+			$this->_debug('<br>Testing for category: ' . $catname . ' with parent: \'' . $parent . '\'');
 
 			$catid = $this->cat_exists($catname,$parent);
 			if ($catid)

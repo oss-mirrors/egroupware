@@ -33,6 +33,7 @@ from category %1	bookmarks	fr	depuis la catégorie %1
 highest	bookmarks	fr	Le plus haut
 i thought you would be interested in the following link(s):	bookmarks	fr	J'ai pensé que vous pourriez être intéressé par le(s) lien(s) suivant(s):
 import bookmarks	preferences	fr	Importer les signets
+import bookmarks	bookmarks	fr	Importer les signets
 like	bookmarks	fr	comme
 list	bookmarks	fr	Liste
 lowest	bookmarks	fr	Le plus bas

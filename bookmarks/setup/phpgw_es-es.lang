@@ -26,6 +26,7 @@ edit bookmark	bookmarks	es-es	Editar marcador
 edit this bookmark	bookmarks	es-es	Editar este marcador
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es-es	Introduzca el nombre del fichero de marcadores de Netscaep<br>que quiera ver importado debajo.
 export bookmarks	preferences	es-es	Exportar marcadores
+export bookmarks	bookmarks	es-es	Exportar marcadores
 fewer	bookmarks	es-es	Menos
 filter by	bookmarks	es-es	Filtrar por
 found a link you might like	bookmarks	es-es	Encontré un enlace que le puede gustar
@@ -34,6 +35,7 @@ from category %1	bookmarks	es-es	de categoría %º
 highest	bookmarks	es-es	La más alta
 i thought you would be interested in the following link(s):	bookmarks	es-es	Pensé que le interesarían los siguientes enlaces:
 import bookmarks	preferences	es-es	Importar marcadores
+import bookmarks	bookmarks	es-es	Importar marcadores
 like	bookmarks	es-es	como
 list	bookmarks	es-es	Lista
 lowest	bookmarks	es-es	La más baja
