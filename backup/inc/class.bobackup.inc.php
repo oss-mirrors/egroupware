@@ -53,7 +53,6 @@
 
 		function phpftp_connect($host,$user,$pass)
 		{
-			// echo "connecting to $host with $user and $pass\n";
 			$ftp = ftp_connect($host);
 			if ($ftp)
 			{
@@ -63,6 +62,7 @@
 				}
 			}
 		}
+
 
 		function check_values($values)
 		{
@@ -240,6 +240,11 @@
 				$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
 			}
 
+			if ($co['b_ldap'] == 'yes')
+			{
+				$config .= $GLOBALS['phpgw']->template->set_var('bldap','yes');
+			}
+
 			if ($co['b_email'] == 'yes')
 			{
 				$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
@@ -255,6 +260,27 @@
 					));
 					$GLOBALS['phpgw']->template->fp('ba','script_ba',True);
 				}
+			}
+
+			if ($co['r_save'] == 'yes')
+			{
+				$config .= $GLOBALS['phpgw']->template->set_var('rsave','yes');
+				$config .= $GLOBALS['phpgw']->template->set_var('rip',$co['r_ip']);
+				$config .= $GLOBALS['phpgw']->template->set_var('rpath',$co['r_path']);
+				$config .= $GLOBALS['phpgw']->template->set_var('ruser',$co['r_user']);
+				$config .= $GLOBALS['phpgw']->template->set_var('rpwd',$co['r_pwd']);
+				$config .= $GLOBALS['phpgw']->template->set_var('rapp',$co['r_app']);
+			}
+
+			if ($co['l_save'] == 'yes')
+			{
+				$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
+				$config .= $GLOBALS['phpgw']->template->set_var('lpath',$co['l_path']);		
+			}
+
+			if ($co['l_websave'] == 'yes')
+			{
+				$config .= $GLOBALS['phpgw']->template->set_var('lwebsave','yes');
 			}
 
 			$config .= $GLOBALS['phpgw']->template->fp('out','script_ba_t',True);

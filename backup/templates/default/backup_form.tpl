@@ -13,4 +13,6 @@ export PATH
 
 php {server_root}/backup/inc/phpgw_data_backup.php
 
+echo -e -n "\nbackup of the phpgroupware done\n" ;
+
 exit 0

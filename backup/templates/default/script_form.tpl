@@ -63,8 +63,30 @@
 
 		if ($bcomp == 'tar.bz2')
 		{
+			$end = '.bz2';
 			system("$bzip2 -z " . $out); 
+			$out = $out . $end;
 		}
+		$output[] = $out;
+		$input[] = $bdateout . '_backup_{db_type}.' . $end;
+	}
+
+	if ($bldap == 'yes')
+	{
+		chdir('/var/lib');
+		$out = '{server_root}/backup/' . $bdateout . '_backup_ldap.' . $end;
+		$in = ' ldap';
+
+		system("$command" . $out . $in);
+
+		if ($bcomp == 'tar.bz2')
+		{
+			$end = '.bz2';
+			system("$bzip2 -z " . $out); 
+			$out = $out . $end;
+		}
+		$output[] = $out;
+		$input[] = $bdateout . '_backup_ldap.' . $end;
 	}
 
 	if ($bemail == 'yes')
@@ -79,9 +101,59 @@
 
 			if ($bcomp == 'tar.bz2')
 			{
+				$end = '.bz2';
 				system("$bzip2 -z " . $out); 
+				$out = $out . $end;
 			}
+			$output[] = $out;
+			$input[] = $bdateout . '_backup_email_{lid}.' . $end;
 		}
 <!-- END script_ba -->
+	}
+
+// ----------------------- move to remote host --------------------------------
+
+	$lsave = '{lsave}';
+	$lpath = '{lpath}';
+	$lwebsave = '{lwebsave}';
+
+	$rsave = '{rsave}';
+	$rapp = '{rapp}';
+	$rip = '{rip}';
+	$rpath = '{rpath}';
+	$ruser = '{ruser}';
+	$rpwd = '{rpwd}';
+
+	if ($rsave == 'yes')
+	{
+		if ($rapp == 'ftp')
+		{
+			$con = ftp_connect("$rip");
+
+			$login_result = ftp_login($con, "$ruser", "$rpwd");
+
+			if (!$con || !$login_result)
+			{
+				echo 'Connection to remote ftp-server failed !';
+				exit;
+			}
+
+			$rem = ftp_chdir($con, "$rpath");
+
+			for ($i=0;$i<count($output);$i++)
+			{
+				$put = ftp_put($con, "$input[$i]", "$output[$i]", FTP_BINARY);
+
+				if ($put)
+				{
+					echo "ftp backuptransfer $input[$i]: success !";
+				}
+				else
+				{
+					echo "ftp backuptransfer $input[$i]: failed !";
+				}
+			}
+			ftp_quit($con);
+		}
 	}
 ?>
