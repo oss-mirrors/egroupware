@@ -1089,7 +1089,7 @@ function template_options($app_template, &$options_c, &$images_c)
 
     $appname = $phpgw_info["flags"]["currentapp"];
     
-    $directory = opendir($phpgw_info["server"]["app_tpl"]);
+    $directory = opendir(PHPGW_APP_TPL);
 
     $index=0;
 
@@ -1153,7 +1153,7 @@ function template_options($app_template, &$options_c, &$images_c)
         $filename_f =
             $phpgw->common->get_image_dir($appname)."/".$imgname;
         $filename_a =
-            $phpgw_info["server"]["app_images"]."/".$imgname;
+            $phpgw->common->get_image_path($appname)."/".$imgname;
 
         if (file_exists($filename_f))
         {
