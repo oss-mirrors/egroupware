@@ -16,6 +16,7 @@ activity %1 has been updated	projects	es-es	Se ha actualizado la actividad %º
 activity %1 has been updated !	projects	es-es	La Actividad %1 ha sido actualizada !
 activity id	projects	es-es	ID de la actividad
 add activity	projects	es-es	Añadir actividad
+add file	projects	es-es	Añadir fichero
 add job	projects	es-es	Añadir trabajo
 add milestone	projects	es-es	añadir previsión fin
 add project	projects	es-es	Añadir proyecto
@@ -76,6 +77,9 @@ columns to show in the projects list	projects	es-es	Columnas a mostrar en la lis
 comment	projects	es-es	comentario
 continue	projects	es-es	Continuar
 coordinator	common	es-es	Coordinador
+costs	projects	es-es	Costes
+costs list	projects	es-es	Lista de costes
+costtype	projects	es-es	Tipo de coste
 courier new	projects	es-es	Courier New
 create delivery	projects	es-es	Crear envóo
 create invoice	projects	es-es	Crear factura
@@ -149,6 +153,7 @@ event %1 has been updated	projects	es-es	se ha actualizado el evento %º
 events	projects	es-es	Eventos
 exact accounting [hh.mm]	admin	es-es	Contabilidad exacta [hh.mm]
 exactly accounting	projects	es-es	Contabilidad exacta
+export as	projects	es-es	exportar como
 external reference	projects	es-es	Referencia externa
 extra budget	projects	es-es	Presupuesto extra
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	es-es	La suma del presupuesto extra de todos los subproyectos es superior al presupuesto extra del proyecto principal
@@ -228,7 +233,7 @@ main project	projects	es-es	Proyecto principal
 main project:	projects	es-es	Proyecto principal:
 manager	projects	es-es	Gestor
 manager list	projects	es-es	Lista de gestores
-managing committee	admin	es-es	Comité de gestión
+managing committee	projects	es-es	Comité de gestión
 manuell entries	projects	es-es	Entradas manuales
 milestone	projects	es-es	Previsión
 milestone date due	projects	es-es	Fecha de fin de la previsión
@@ -251,6 +256,7 @@ number	projects	es-es	Número
 old end date	projects	es-es	Fecha de fin anterior
 old start date	projects	es-es	Fecha de inicio anterior
 open	projects	es-es	Abierto
+open popup	projects	es-es	abrir ventana
 open popup window	projects	es-es	abrir ventana emergente
 overall	projects	es-es	Resumen
 parent project	projects	es-es	Proyecto padre
@@ -303,10 +309,11 @@ project %1 has been saved	projects	es-es	El proyecto %1 ha sido guardado
 project %1 has been updated	projects	es-es	El proyecto %1 ha sido actualizado
 project accounting	admin	es-es	Contabildad del proyecto
 project administration	projects	es-es	Administracion de Proyectos
-project administrators	admin	es-es	Administradores del proyecto
+project administrators	projects	es-es	Administradores del proyecto
 project archive	projects	es-es	Archivo de proyectos
 project billing	projects	es-es	Facturación de proyectos
 project data due	projects	es-es	Fecha de expiración del proyecto
+project date due	projects	es-es	Fecha de expiración del proyecto
 project delivery	projects	es-es	Envío de proyectos
 project dependencies	common	es-es	Dependencias del proyecto
 project id	common	es-es	ID del proyecto
@@ -333,7 +340,7 @@ role %1 has been updated	projects	es-es	se ha actualizado  el rol %1
 role has been deleted	projects	es-es	se ha borrado el rol %1
 roles	projects	es-es	Roles
 roles list	projects	es-es	lista de roles
-sales department	admin	es-es	Departamento de ventas
+sales department	projects	es-es	Departamento de ventas
 save factor	projects	es-es	Guardar factor
 save milestone	projects	es-es	guardar previsión
 select factor	projects	es-es	Seleccione factor
@@ -344,6 +351,7 @@ select groups	projects	es-es	Seleccione grupos
 select main project	common	es-es	Seleccione proyecto principal
 select own address	projects	es-es	Seleccione la dirección propia
 select project	projects	es-es	Seleccione proyecto
+select role	projects	es-es	Seleccionar rol
 select tax for work time	projects	es-es	Seleccione los impuestos por hora de trabajo
 select tax for workhours	projects	es-es	Seleccione impuestos por hora de trabajo
 select users	projects	es-es	Seleccione los usuarios
@@ -369,6 +377,7 @@ statistic	projects	es-es	Estadistica
 statistics	projects	es-es	Estadisticas
 stop	projects	es-es	Parar
 sub project level %1	projects	es-es	Nivel del subproyecto %1
+subproject	projects	es-es	subproyecto
 sum	projects	es-es	Suma
 sum budget	projects	es-es	Sumar presupuesto
 sum hours	projects	es-es	Sumar horas
@@ -425,6 +434,7 @@ work hours	common	es-es	Horas de trabajo
 work hours archive	projects	es-es	Archivo de horas de trabajo
 work hours list	projects	es-es	Listado de horas del trabajo
 work time	projects	es-es	Tiempo de trabajo
+workload warning for project	projects	es-es	aviso de carga de trabajo para el proyecto
 workunit	projects	es-es	Unidad de trabajo
 workunits	projects	es-es	Unidades de trabajo
 would you like to display project info on the main page	projects	es-es	¿Desea mostrar la información del proyecto en la página principal?
