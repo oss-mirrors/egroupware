@@ -51,7 +51,7 @@
  echo "<center>";
  echo ' <table border="0" width="80%">';
 
- $db_handler = mysql_connect($phpgw->db->Host,$phpgw->db->User,$phpgw->db->Pass);
+// $db_handler = mysql_connect($phpgw->db->Host,$phpgw->db->User,$phpgw->db->Pass);
 
 
    // Collapsed view
