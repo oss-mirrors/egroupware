@@ -49,6 +49,14 @@
 	return imap_deletemailbox($stream,$mailbox);
     } 
 
+    function renamemailbox($stream,$mailbox_old,$mailbox_new)
+    {
+	$this->folder_list_changed = True;
+    	$mailbox_old = $this->utf7_encode($mailbox_old);
+    	$mailbox_new = $this->utf7_encode($mailbox_new);
+	return imap_renamemailbox($stream,$mailbox_old,$mailbox_new);
+    }
+
     function delete($stream,$msg_num,$flags="", $currentfolder="") 
     {
 	global $phpgw_info, $phpgw;

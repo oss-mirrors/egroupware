@@ -39,56 +39,99 @@
 
 
 // ----  Create or Delete A Folder  ----
-	if ((isset($target_folder))
-	&& ($target_folder != ''))
-	{
-		//$target_folder = $phpgw->msg->prep_folder_in($target_folder);
-		// if this is a delete, the folder name will already exist
-		$target_folder_long = $phpgw->msg->folder_lookup('', $target_folder);
-		if ($target_folder_long != '')
-		{
-			$target_folder = $target_folder_long;
-		}
-		else
-		{
-			// we have to add the namespace for the user
-			$target_folder = $phpgw->msg->get_folder_long($target_folder);
-		}
-	}
 
-	if (($action == 'create') || ($action == 'delete'))
+	if (($action == 'create') || ($action == 'delete') || ($action == 'rename')
+	|| ($action == 'create_expert') || ($action == 'delete_expert') || ($action == 'rename_expert'))
 	{
+
 		// basic sanity check
-		if ($target_folder == '')
+		if ((!isset($target_folder) || ($target_folder == '')))
 		{
 			// Result Message
 			// FIXME needs lang
 			$action_report = 'Please type a folder name in the text box';		
 		}
+		elseif ( (($action == 'rename') || ($action == 'rename_expert'))
+		&& ((!isset($source_folder)) || ($source_folder == '')) )
+		{
+			// Result Message
+			// FIXME needs lang
+			$action_report = 'Please select a folder to rename';
+		}
 		else
 		{
-			// maybe some "are you sure" code
-		
-			if ($action == 'create')
+			// obtain propper folder names
+			// if this is a delete, the folder name will (should) already exist
+			// although the user had to type in the folder name
+			// for these actions,  the "expert" tag means:
+			// "do not add the name space for me, I'm an expert and I know what I'm doing"
+			if (($action == 'create_expert') || ($action == 'delete_expert') || ($action == 'rename_expert'))
 			{
-				//$phpgw->dcom->createmailbox($mailbox, "$server_str"."$folder_long");
-				 $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+				//$target_folder_long = $target_folder;
+				// do nothing, the user is an expert, do not alter the target_folder name at all
 			}
-			else if ($action == 'delete')
+			else
 			{
-				//$phpgw->dcom->deletemailbox($mailbox, "$server_str"."$folder_long");
-				 $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+				// since the user is not an "expert", we properly prepare the folder name
+				// see if the folder already exists in the folder lookup list
+				$target_lookup = $phpgw->msg->folder_lookup('', $target_folder);
+				if ($target_lookup != '')
+				{
+					// target_folder returned an official long name from the lookup
+					$target_folder = $target_lookup;
+				}
+				else
+				{
+					// the lookup failed, so this is not an existing folder
+					// we have to add the namespace for the user
+					$target_folder = $phpgw->msg->get_folder_long($target_folder);
+				}
+			}
+	
+	
+
+			// =====  NOTE:  maybe some "are you sure" code ????  =====
+		
+			if (($action == 'create') || ($action == 'create_expert'))
+			{
+				$success = $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+			}
+			else if (($action == 'delete') || ($action == 'delete_expert'))
+			{
+				$success = $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+			}
+			else if (($action == 'rename') || ($action == 'rename_expert'))
+			{
+				// source_folder is taken directly from the listbox, so it *should* be official long name already
+				// but it does need to be prep'd in because we prep out the foldernames put in that listbox
+				$source_folder = $phpgw->msg->prep_folder_in($source_folder);
+				$success = $phpgw->dcom->renamemailbox($phpgw->msg->mailsvr_stream, "$server_str"."$source_folder", "$server_str"."$target_folder");
 			}
 
 			// Result Message
-			$action_report = $action .' folder "' .$target_folder .'": ';
-			$imap_err = imap_last_error();
-			if ($imap_err == '')
+			if (($action == 'rename') || ($action == 'rename_expert'))
 			{
+				$action_report = $action .' folder "' .$source_folder .'" to "' .$target_folder .'" <br>';
+			}
+			else
+			{
+				$action_report = $action .' folder "' .$target_folder .'" <br>';
+			}
+			// did it work or not
+			if ($success)
+			{
+				// assemble some feedback to show
 				$action_report = $action_report .'OK';
 			}
 			else
 			{
+				$imap_err = imap_last_error();
+				if ($imap_err == '')
+				{
+					// NEEDS LANG
+					$imap_err = 'unknown error';
+				}
+				// assemble some feedback to show the user about this error
 				$action_report = $action_report .$imap_err;
 			}
 		}
@@ -132,11 +175,23 @@
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
 
+// ----  Set Up Selectbox  ---
+
+
 // ----  Set Up Form Variables  ---
 	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+	$t->set_var('all_folders_listbox',$phpgw->msg->all_folders_listbox('','','',False));
+
+	$t->set_var('select_name_rename','source_folder');
+
 	// FIXME  needs lang
+	$t->set_var('select_txt_rename',lang('choose to rename'));
 	$t->set_var('form_create_txt','Create a folder');
 	$t->set_var('form_delete_txt','Delete a folder');
+	$t->set_var('form_rename_txt','Rename a folder');
+	$t->set_var('form_create_expert_txt','Create (expert)');
+	$t->set_var('form_delete_expert_txt','Delete (expert)');
+	$t->set_var('form_rename_expert_txt','Rename (expert)');
 	$t->set_var('form_submit_txt',lang("submit"));
 
 // ----  Set Up Other Variables  ---	

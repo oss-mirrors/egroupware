@@ -41,9 +41,18 @@
 
 <tr>
 	<td colspan="2" align="right" bgcolor="{th_backcolor}">
+		<select name="source_folder">
+			<option value="">{select_txt_rename}</option>
+			{all_folders_listbox}
+		</select>
+		&nbsp;
 		<select name="action">
 			<option value="create">{form_create_txt}</option>
 			<option value="delete">{form_delete_txt}</option>
+			<option value="rename">{form_rename_txt}</option>
+			<option value="create_expert">{form_create_expert_txt}</option>
+			<option value="delete_expert">{form_delete_expert_txt}</option>
+			<option value="rename_expert">{form_rename_expert_txt}</option>
 		</select> 
 		<input type="text" name="target_folder">
 		<input type="submit" value="{form_submit_txt}">
