@@ -48,11 +48,9 @@ In the future, this will process a specially formated email msg.<hr>
   A.c_backto:link { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
   A.c_backto:visted { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
   A.c_backto:active { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
-  
-  a.c_replybar { text-decoration: none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
-  A.c_replybar:link { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
-  A.c_replybar:visted { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
-  A.c_replybar:active { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+
+  A.c_replybar { color: {reply_btns_text}; }
+  A.c_replybar:link { color: {reply_btns_text}; }
 -->
 </STYLE>
 

@@ -448,6 +448,12 @@
 					// ex: "plus0500"
 					$this->tz_offset = str_replace('plus', '+', $my_tz);
 				}
+				else
+				{
+					// some kind of error
+					//$this->tz_offset = 'error1';
+					$this->tz_offset = '+0000';
+				}
 			}
 			// see if the api has a value
 			elseif ((isset($GLOBALS['phpgw']->datetime->tz_offset))
