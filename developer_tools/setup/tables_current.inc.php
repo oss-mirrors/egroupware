@@ -44,5 +44,19 @@
 			'uc' => array()
 		),
 
+		'phpgw_devtools_changelogs' => array(
+			'fd' => array(
+				'changelog_id' => array('type' => 'auto','nullable' => False),
+				'changelog_cat' => array('type' => 'int','precision' => 8,'nullable' => False),
+				'changelog_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => False),
+				'changelog_version' => array('type' => 'varchar', 'precision' => 20,'nullable' => False),
+				'changelog_content' => array('type' => 'text','nullable' => False)
+			),
+			'pk' => array('changelog_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+
 	);
 ?>

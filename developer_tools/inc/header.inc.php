@@ -1,4 +1,15 @@
 <?php
+	/**************************************************************************\
+	* phpGroupWare - Developer Tools                                           *
+	* http://www.phpgroupware.org                                              *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+
+	/* $Id$ */
 
 	$t = $phpgw->template;
 	$t->set_file(array(
@@ -9,7 +20,7 @@
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$t->set_var('link_diary',lang('Diary'));
 	$t->set_var('link_sourceforge_project','<a href="' . $phpgw->link('/index.php','menuaction=developer_tools.uisf_project_tracker.display_tracker') . '">' . lang('SF Project tracker') . '</a>');
-	$t->set_var('link_changelog',lang('Changelogs'));
+	$t->set_var('link_changelog','<a href="' . $phpgw->link('/index.php','menuaction=developer_tools.uichangelogs.list_changelogs') . '">' . lang('Changelogs') . '</a>');
 	$t->set_var('link_language_management',lang('Language management'));
 	$t->set_var('link_preferences','<a href="' . $phpgw->link('/preferences/index.php#developer_tools') . '">' . lang('Preferences') . '</a>');
 

@@ -21,7 +21,8 @@
 	/* The tables this app creates */
 	$setup_info['developer_tools']['tables']    = array(
 		'phpgw_devtools_diary',
-		'phpgw_devtools_sf_cache'
+		'phpgw_devtools_sf_cache',
+		'phpgw_devtools_changelogs'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
