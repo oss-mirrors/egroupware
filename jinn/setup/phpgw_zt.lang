@@ -1,3 +1,4 @@
+%1 site objects have been imported.	jinn	zt	%1 
 access rights	jinn	zt	
 access rights for site not succesfully editted	jinn	zt	
 access rights for site succesfully editted	jinn	zt	
@@ -5,38 +6,44 @@ access rights for site-object not succesfully editted	jinn	zt
 access rights for site-object succesfully editted	jinn	zt	
 access rights site-objects	jinn	zt	
 access_rights	jinn	zt	
-add	jinn	zt	
-add %1st image	jinn	zt	
-add attachent	jinn	zt	
-add attachment	jinn	zt	
-add attachment %1	jinn	zt	
-add edit	jinn	zt	
-add image	jinn	zt	
-add image %1	jinn	zt	
-add new	jinn	zt	
-add new many with many relation	jinn	zt	
-add new one with many	jinn	zt	
-add object	jinn	zt	
-add or remove	jinn	zt	
-add site	admin	zt	
-add site object	jinn	zt	
-add site-object	jinn	zt	
+add	jinn	zt	¡Ps
+add %1st image	jinn	zt	¡Ps
+add attachent	jinn	zt	¡Ps
+add attachment	jinn	zt	¡Ps
+add attachment %1	jinn	zt	¡Ps
+add edit	jinn	zt	¡Ps
+add image	jinn	zt	¡Ps
+add image %1	jinn	zt	¡Ps
+add new	jinn	zt	¡Ps
+add new entry	jinn	zt	¡Ps
+add new many with many relation	jinn	zt	¡Ps
+add new one with many	jinn	zt	¡Ps
+add object	jinn	zt	¡Ps
+add or remove	jinn	zt	¡Ps
+add site	jinn	zt	¡Ps
+add site object	jinn	zt	¡Ps
+add site-object	jinn	zt	¡Ps
 admin:: edit site	jinn	zt	
 administrator mode	jinn	zt	
-administrators for site $site_name	jinn	zt	
+administrators for site $site_name	jinn	zt	$site_name
 all from	jinn	zt	
-are you sure?	jinn	zt	
+another	jinn	zt	
+are you sure?	jinn	zt	¡Óz
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	zt	
 automatic	jinn	zt	
 binary	jinn	zt	
 browse	jinn	zt	
+browse current object	jinn	zt	
 browse sites	jinn	zt	
 browse through object settings	admin	zt	
-browse through sites	jinn	zt	
-browses through sites	admin	zt	
+browse through sites	jinn	zt	¡Óq
+browses through sites	admin	zt	¡Óq
+c_all	jinn	zt	c_all
+c_none	jinn	zt	c_none
 cancel	jinn	zt	
 category	jinn	zt	
 check:	jinn	zt	
+choose	jinn	zt	
 close this window	jinn	zt	
 column name	jinn	zt	
 come back after new valid tablename is saved to configure plugins	jinn	zt	
@@ -44,75 +51,105 @@ come back in edit mode for configuring plugins	jinn	zt
 come back in edit mode to configure plugins	jinn	zt	
 configure	jinn	zt	
 configure browse view	jinn	zt	
+configure this object list view	jinn	zt	
 configure this tableview	jinn	zt	
 configure this view	jinn	zt	
 configure view of	jinn	zt	
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	zt	
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	zt	¡ÓqImageMagick
 copy	jinn	zt	
+could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	zt	¡±
 database connection failed! <p>please recheck your settings.	jinn	zt	
 database connection was succesfull. <p>you can go on with the site-objects	jinn	zt	
+days	jinn	zt	
 default image type (jpg, gif, png)	admin	zt	
 default image width	admin	zt	
 default order	jinn	zt	
 default thumb width	admin	zt	
 default:	jinn	zt	
-delete	jinn	zt	
+delete	jinn	zt	¡±R¢X
+developer links	jinn	zt	
+development	admin	zt	
+development server	jinn	zt	
+dimensions	jinn	zt	¡Âx¢X}
 edit	jinn	zt	
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	zt	
 edit this site	jinn	zt	
+edit this site object	jinn	zt	
 editors for object $object_name in site $site_name	jinn	zt	
+error path_open %1	jinn	zt	
 export this site	jinn	zt	
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	zt	
 field plugin configuration	jinn	zt	
 fields	jinn	zt	
+filename	jinn	zt	
+filesize	jinn	zt	
 form input plugin	jinn	zt	
+general preferences	jinn	zt	
+general settings	admin	zt	
 global configuration	jinn	zt	
 global site configuration	admin	zt	
 go	jinn	zt	
-height:	jinn	zt	
+height:	jinn	zt	¢X
 hidden	jinn	zt	
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zt	
 image settings	admin	zt	
-imagemagick directory ( e.g. /usr/x11r6/bin )	admin	zt	
+imagemagick directory ( e.g. /usr/x11r6/bin )	admin	zt	ImageMagick 
 import failed	jinn	zt	
 import jinn site	jinn	zt	
 import jinn-site	jinn	zt	
 import site	jinn	zt	
+import was succesfull	jinn	zt	
 import was succesfull<br>imported one site with	jinn	zt	
-index	jinn	zt	
+index	jinn	zt	¡Â
 insert another record after saving	jinn	zt	
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	zt	
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	zt	
-jinn	common	zt	
+jinn	common	zt	JiNN
+jinn editors menu	jinn	zt	JiNN
+jinn preferences	jinn	zt	JiNN¢X
+max. number of previews in form	jinn	zt	
 maximum image width isn	jinn	zt	
 maximum image width isn\	jinn	zt	
 moderator mode	jinn	zt	
-new image size limits.	jinn	zt	
-no matchs found	jinn	zt	
+months	jinn	zt	
+months_abbr	jinn	zt	
+new image size limits.	jinn	zt	¡Ps
+no matchs found	jinn	zt	¡±
+no max. number	jinn	zt	
 normal view	jinn	zt	
+only if thumnails exits	jinn	zt	
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	zt	¡ÓqImageMagick
 please set your preferences for this application	jinn	zt	
-real value	jinn	zt	
-record	jinn	zt	
-record added succesfully	jinn	zt	
-record deleted succesfully	jinn	zt	
-record not succesfully copied. unknown error	jinn	zt	
-record not succesfully deleted. unknown error	jinn	zt	
-record succesfully copied	jinn	zt	
-record succesfully deleted	jinn	zt	
-record succesfully editted	jinn	zt	
+preview thumbs or images in form	jinn	zt	
+preview website	jinn	zt	
+production	admin	zt	
+real value	jinn	zt	¡Âu
+record	jinn	zt	¢XO
+record added succesfully	jinn	zt	¢XO
+record deleted succesfully	jinn	zt	¢XO
+record not succesfully copied. unknown error	jinn	zt	¢XO
+record not succesfully deleted. unknown error	jinn	zt	¢XO
+record succesfully copied	jinn	zt	¢XO
+record succesfully deleted	jinn	zt	¢XO
+record succesfully editted	jinn	zt	¢XO
 related	jinn	zt	
+relation %1	jinn	zt	
 relations for this object	jinn	zt	
+remote	admin	zt	
 remove	jinn	zt	
+replace existing site with the same name?	jinn	zt	
+replaced existing site named <strong>%1</strong>.	jinn	zt	
 reset form	jinn	zt	
 save	jinn	zt	
-search	jinn	zt	
-search for string	jinn	zt	
+search	jinn	zt	¡Pj
+search for string	jinn	zt	¡Pj
 select directory	jinn	zt	
 select jinn site file	jinn	zt	
 select site	jinn	zt	
 select site to moderate	jinn	zt	
 select site-object to moderate	jinn	zt	
 select_object	jinn	zt	
+server type?	admin	zt	
 set access right for site objects	jinn	zt	
 set access rights	admin	zt	
 set access rights for sites	jinn	zt	
@@ -131,6 +168,7 @@ site db type	admin	zt
 site db user	admin	zt	
 site description	admin	zt	
 site id	admin	zt	
+site media and documents	jinn	zt	
 site name	admin	zt	
 site not succesfully added, unknown error	jinn	zt	
 site not succesfully deleted, unknown error	jinn	zt	
@@ -156,7 +194,15 @@ tablename <i>%1</i> is not correct. probably the tablename has changed or or the
 test database access	jinn	zt	
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	zt	
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	zt	
+the name of the new site is <strong>%1</strong>.	jinn	zt	¡Ps
 the resize process failed, please contact the administrator	jinn	zt	
+there are no directories in this site you have access to.	jinn	zt	
+thisfile	jinn	zt	
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	zt	
+thumbnail	jinn	zt	
 version	jinn	zt	
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	zt	
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	zt	
 width:	jinn	zt	
+with_checked_files	jinn	zt	
+you're not allowed to administrate media files	jinn	zt	¡Óz
