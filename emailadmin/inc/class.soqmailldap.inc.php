@@ -130,8 +130,10 @@
 				if ($allValues['count'] > 0)
 				{
 					#print "found something<br>";
-					$userData["emailAddress"]	= $allValues[0]["emailaddress"][0];
+					$userData["mailLocalAddress"]	= $allValues[0]["maillocaladdress"][0];
+					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
 					$userData["accountStatus"]	= $allValues[0]["accountstatus"][0];
+					unset($userData["mailAlternateAddress"]["count"]);
 					return $userData;
 				}
 			}
@@ -167,9 +169,11 @@
 			
 			$newData = array 
 			(
-				'emailAddress'		=> $_accountData["emailAddress"],
-				'mailLocalAddress'	=> $_accountData["emailAddress"],
+				'mailLocalAddress'	=> $_accountData["mailLocalAddress"],
+				'mailAlternateAddress'	=> $_accountData["mailAlternateAddress"],
 				'homedirectory'		=> $homedirectory,
+				'mailMessageStore'	=> $homedirectory."/Maildir/",
+				'gidnumber'		=> '1000',
 				'accountStatus'		=> $_accountData["accountStatus"]
 			);
 			ldap_mod_replace ($ldap, $accountDN, $newData);
@@ -215,14 +219,13 @@
 			@ldap_read($ds,$storageData['ldap_basedn'], $filter);
 			if (ldap_errno($ds) == 32)
 			{
-				$ldapData["objectclass"][0] = "qmailldap";
-				$ldapData["description"]    = "settings for the qmail ldap control";
+				$ldapData["objectclass"][0] 	= "qmailcontrol";
+				$ldapData["cn"]         	= $storageData['qmail_servername'];
 				ldap_add($ds,$storageData['ldap_basedn'],$ldapData);
 			}
 			
-			$ldapData["cn"]		= $storageData['qmail_servername'];
-			$ldapData['rcpthosts']	= $_data['rcpthosts'];
-			$ldapData['locals']	= $_data['locals'];
+			$ldapData['rcpthosts']		= $_data['rcpthosts'];
+			$ldapData['locals']		= $_data['locals'];
 			
 			ldap_modify($ds,$storageData['ldap_basedn'],$ldapData);
 		}

@@ -42,7 +42,7 @@
 			
 		}
 
-		function editUserData()
+		function editUserData($_useCache='0')
 		{
 			global $phpgw, $phpgw_info, $HTTP_GET_VARS;
 			
@@ -62,7 +62,7 @@
 			$this->t->set_var("lang_email_config",lang("edit email settings"));
 			$this->t->set_var("lang_emailAddress",lang("email address"));
 			$this->t->set_var("lang_emailaccount_active",lang("email account active"));
-			$this->t->set_var("lang_alternateEmailAddress",lang("alternate email address"));
+			$this->t->set_var("lang_mailAlternateAddress",lang("alternate email address"));
 			$this->t->set_var("lang_forward_also_to",lang("forward also to"));
 			$this->t->set_var("lang_button",lang("save"));
 			$this->t->set_var("lang_deliver_extern",lang("deliver extern"));
@@ -77,12 +77,29 @@
 				'account_id'	=> $accountID
 			);
 			$this->t->set_var("form_action", $phpgw->link('/index.php',$linkData));
-				
+			
 			// only when we show a existing user
-			if($userData = $this->boqmailldap->getUserData($accountID))
+			if($userData = $this->boqmailldap->getUserData($accountID, $_useCache))
 			{
-				$this->t->set_var("emailAddress",$userData["emailAddress"]);
-				$this->t->set_var("alternateEmailAddress",$userData["alternateEmailAddress"]);
+				if (count($userData['mailAlternateAddress']) > 0)
+				{
+					$options_mailAlternateAddress = "<select size=\"6\" name=\"mailAlternateAddress\">\n";
+					for ($i=0;$i < count($userData['mailAlternateAddress']); $i++)
+					{
+						$options_mailAlternateAddress .= "<option value=\"$i\">".
+							$userData['mailAlternateAddress'][$i].
+							"</option>\n";
+					}
+					$options_mailAlternateAddress .= "</select>\n";
+				}
+				else
+				{
+					$options_mailAlternateAddress = lang('no alternate email address');
+				}
+			
+				$this->t->set_var("mailLocalAddress",$userData["mailLocalAddress"]);
+				$this->t->set_var("mailAlternateAddress",'');
+				$this->t->set_var("options_mailAlternateAddress",$options_mailAlternateAddress);
 				$this->t->set_var("forwardTo",$_accountData["forwardTo"]);
 				$this->t->set_var("uid",rawurlencode($_accountData["dn"]));
 				if ($userData["accountStatus"] == "active")
@@ -92,14 +109,15 @@
 			}
 			else
 			{
-				#$this->t->set_var("emailAddress",'');
-				$this->t->set_var("alternateEmailAddress",'');
+				$this->t->set_var("mailLocalAddress",'');
+				$this->t->set_var("mailAlternateAddress",'');
+				$this->t->set_var("options_mailAlternateAddress",lang('no alternate email address'));
 				$this->t->set_var("account_checked",'');
 			}
 		
 			// create the menu on the left, if needed		
 			$menuClass = CreateObject('admin.uimenuclass');
-			$this->t->set_var('rows',$menuClass->createHTMLCode('edit_account'));
+			$this->t->set_var('rows',$menuClass->createHTMLCode('edit_user'));
 
 			$this->t->pparse("out","form");
 
@@ -114,13 +132,30 @@
 				$accountStatus = "active";
 			}
 
-			$userData = array
+			$formData = array
 			(
-				'emailAddress'	=> $HTTP_POST_VARS["emailAddress"],
-				'accountStatus'	=> $accountStatus
+				'mailLocalAddress'		=> $HTTP_POST_VARS["mailLocalAddress"],
+				'add_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddressInput"],
+				'remove_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddress"],
+				'accountStatus'			=> $accountStatus
 			);
-			$this->boqmailldap->saveUserData($HTTP_GET_VARS['account_id'], $userData);
-			$this->editUserData();
+			
+			if($HTTP_POST_VARS["add_mailAlternateAddress"]) $bo_action='add_mailAlternateAddress';
+			if($HTTP_POST_VARS["remove_mailAlternateAddress"]) $bo_action='remove_mailAlternateAddress';
+			if($HTTP_POST_VARS["save"]) $bo_action='save';
+			
+			$this->boqmailldap->saveUserData($HTTP_GET_VARS['account_id'], $formData, $bo_action);
+
+			if ($bo_action == 'save')
+			{
+				// read date fresh from ldap storage
+				$this->editUserData();
+			}
+			else
+			{
+				// use cached data
+				$this->editUserData('1');
+			}
 		}
 		
 		function translate()

@@ -2,7 +2,7 @@
 	/***************************************************************************\
 	* phpGroupWare - Notes                                                      *
 	* http://www.phpgroupware.org                                               *
-	* Written by : Bettina Gille [ceb@phpgroupware.org]                         *
+	* Written by : Lars Kneschke [lkneschke@phpgroupware.org]                   *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
@@ -38,8 +38,8 @@
 			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 			$this->boqmailldap		= CreateObject('qmailldap.boqmailldap');
 			
-			$this->rowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->rowColor[1] = $phpgw_info["theme"]["bg02"];
+			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
+			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
 			                 
 		}
 	

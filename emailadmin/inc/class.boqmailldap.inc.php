@@ -79,9 +79,18 @@
 			return $serverList;
 		}
 		
-		function getUserData($_accountID)
+		function getUserData($_accountID, $_usecache)
 		{
-			$userData = $this->soqmailldap->getUserData($_accountID);
+			if ($_usecache)
+			{
+				$userData = $this->userSessionData[$_accountID];
+			}
+			else
+			{
+				$userData = $this->soqmailldap->getUserData($_accountID);
+				$this->userSessionData[$_accountID] = $userData;
+				$this->saveSessionData();
+			}
 			return $userData;
 		}
 
@@ -90,6 +99,7 @@
 			global $phpgw;
 		
 			$this->sessionData = $phpgw->session->appsession('session_data');
+			$this->userSessionData = $phpgw->session->appsession('user_session_data');
 			
 			#while(list($key, $value) = each($this->sessionData))
 			#{
@@ -224,11 +234,51 @@
 			global $phpgw;
 			
 			$phpgw->session->appsession('session_data','',$this->sessionData);
+			$phpgw->session->appsession('user_session_data','',$this->userSessionData);
 		}
 		
-		function saveUserData($_accountID, $_accountData)
+		function saveUserData($_accountID, $_formData, $_boAction)
 		{
-			$this->soqmailldap->saveUserData($_accountID, $_accountData);
+			$this->userSessionData[$_accountID]['mailLocalAddress'] = $_formData["mailLocalAddress"];
+			$this->userSessionData[$_accountID]['accountStatus'] = $_formData["accountStatus"];
+			
+			switch ($_boAction)
+			{
+				case 'add_mailAlternateAddress':
+					
+					$count = count($this->userSessionData[$_accountID]['mailAlternateAddress']);
+					
+					$this->userSessionData[$_accountID]['mailAlternateAddress'][$count] = 
+						$_formData['add_mailAlternateAddress'];
+						
+					$this->saveSessionData();
+					
+					break;
+					
+				case 'remove_mailAlternateAddress':
+					$i=0;
+					
+					while(list($key, $value) = each($this->userSessionData[$_accountID]['mailAlternateAddress']))
+					{
+						#print ".. $key: $value<br>";
+						if ($key != $_formData['remove_mailAlternateAddress'])
+						{
+							$newMailAlternateAddress[$i]=$value;
+							#print "!! $i: $value<br>";
+							$i++;
+						}
+					}
+					$this->userSessionData[$_accountID]['mailAlternateAddress'] = $newMailAlternateAddress;
+					
+					$this->saveSessionData();
+
+					break;
+					
+				case 'save':
+					$this->soqmailldap->saveUserData($_accountID, $this->userSessionData[$_accountID]);
+					
+					break;
+			}
 		}
 	}
 ?>
