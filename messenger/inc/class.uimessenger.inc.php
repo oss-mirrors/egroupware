@@ -185,8 +185,10 @@
 			$this->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
 			$this->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
-			$this->template->set_var('button_send','<input type="submit" name="send" value="' . lang('Send') . '">');
-			$this->template->set_var('button_cancel','<input type="submit" name="cancel" value="' . lang('Cancel') . '">');
+			$gdbutton = CreateObject('phpgwapi.gdbutton');
+
+			$this->template->set_var('button_send',$gdbutton->input_button(array('font_text' => lang('send'),'button_name' => 'send')));
+			$this->template->set_var('button_cancel',$gdbutton->input_button(array('font_text' => lang('cancel'),'button_name' => 'cancel')));
 
 			$this->template->fp('to','form_to');
 			$this->template->fp('buttons','form_buttons');
