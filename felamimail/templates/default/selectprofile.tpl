@@ -21,7 +21,7 @@
 			<option value="-1"></option>
 			{select_options}
 		</select>
-		use <a href="{emailadmin_url}">EmailAdmin</a> to create profiles
+		{lang_go_emailadmin}
 	</td>
 </tr>
 </table>
