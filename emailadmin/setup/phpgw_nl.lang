@@ -1,6 +1,5 @@
 add profile	emailadmin	nl	Profiel toevoegen
-admin dn	emailadmin	nl	admin dn  	
-admin dn
+admin dn	emailadmin	nl	admin dn
 admin password	emailadmin	nl	admin wachtwoord
 admin passwort	emailadmin	nl	admin wachtwoord
 admin username	emailadmin	nl	admin gebruikersnaam
