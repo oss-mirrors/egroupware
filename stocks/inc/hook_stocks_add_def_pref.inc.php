@@ -1,8 +1,8 @@
 <?php
 /* $Id$ */
-
-  $phpgw->preferences->add_newuser("stocks","disabled","True");
-  $phpgw->preferences->add_newuser("stocks","LNUX","VA%20Linux");
-  $phpgw->preferences->add_newuser("stocks","RHAT","RedHat");
+  global $pref;
+  $pref->change("stocks","disabled","True");
+  $pref->change("stocks","LNUX","VA%20Linux");
+  $pref->change("stocks","RHAT","RedHat");
 
 ?>
