@@ -4,7 +4,7 @@
 <table border=1 bgcolor="#EEEEEE" align="center">
  <tr>
    <td rowspan="2" valign="TOP">
-	   <a href="codes.php3?mode=C&codetable={CODETABLE}">New {CODETABLE}</a>
+	   <a href="codes.php?mode=C&codetable={CODETABLE}">New {CODETABLE}</a>
 	 </td>
    <td valign="TOP">Update {CODETABLE}<br>
 	  <font size=-1>select {CODETABLE} (ID) to update below</font></td>

@@ -213,7 +213,7 @@ for (var i = 1; i < db.length; i++) {
 	
 	  if (db[i].id > 0) {
 	  // add the link to open this bookmark in the bookmark maintain page
-        Outline += "<A HREF=\"maintain.php3?id=" + db[i].id + "\" onMouseOver=\"window.parent.status=\'Click to maintain\';return true;\" TARGET=\"bk_app\" TITLE=\"Maintain this bookmark\">" + doc_image + "</A>"
+        Outline += "<A HREF=\"maintain.php?id=" + db[i].id + "\" onMouseOver=\"window.parent.status=\'Click to maintain\';return true;\" TARGET=\"bk_app\" TITLE=\"Maintain this bookmark\">" + doc_image + "</A>"
 	  } else {
 	    Outline += doc_image
 	  }

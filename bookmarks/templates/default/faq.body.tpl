@@ -18,8 +18,8 @@
 
 <hr>
 <p class=faq><a name="faq2">2. How do I add new bookmarks?</a>
-<p>Well, obviously the <a href="create.php3">create</a> page lets you create bookmarks, but I <strong>highly</strong> recommend you take a few moments and setup <a href="#faq3">quik-mark</a> in your browser. Quik-mark provides a quick way to add bookmarks while you are surfing.
-<p>Additionally, you can import your Netscape bookmark/Favorites into bookmarker using the &quot;Import Bookmarks&quot; page under <a href="user.php3">User Preferences</a>.
+<p>Well, obviously the <a href="create.php">create</a> page lets you create bookmarks, but I <strong>highly</strong> recommend you take a few moments and setup <a href="#faq3">quik-mark</a> in your browser. Quik-mark provides a quick way to add bookmarks while you are surfing.
+<p>Additionally, you can import your Netscape bookmark/Favorites into bookmarker using the &quot;Import Bookmarks&quot; page under <a href="user.php">User Preferences</a>.
 <br><strong>No</strong>, bookmarker cannot (and will never b/c of the format of this data) import Microsoft Internet Explorer bookmarks. There are however <a href="http://help.netscape.com/kb/consumer/19980914-23.html">tools</a> that can convert MSIE Favorites into Netscape bookmarks which you can then import into bookmarker.
 
 <hr>
@@ -46,8 +46,8 @@
 <p class=faq><a name="faq4">4. How do I update a bookmark?</a>
 <p>There are a number of ways to get to the update page for a specific bookmark:
 <ol>
-  <li>From the <a href="list.php3">plain list</a> page click the number to the left of the bookmark name. The number represents the unique identifier for that bookmark in the database - this is the key to opening the maintain page with the bookmark loaded
-        <li>From the <a href="search.php3">search</a>, after you have searched and found the page, click the number to the left of the bookmark name
+  <li>From the <a href="list.php">plain list</a> page click the number to the left of the bookmark name. The number represents the unique identifier for that bookmark in the database - this is the key to opening the maintain page with the bookmark loaded
+        <li>From the <a href="search.php">search</a>, after you have searched and found the page, click the number to the left of the bookmark name
         <li>From the tree view, click the small document graphic (<IMG SRC="{IMAGE_URL_PREFIX}document.{IMAGE_EXT}" WIDTH=16 HEIGHT=16 BORDER=0>) to the left of the of the bookmark name
 </ol>
 <p>While on the update page, update any information you wish to change about the bookmark and click the &quot;Change Bookmark&quot; button. Click the underlined &quot;URL&quot; to open the URL of the bookmark.
@@ -61,9 +61,9 @@
 <p class=faq><a name="faq6">6. How to I view my bookmarks?</a>
 <p>There are a number of ways to see your bookmarks:
 <ol>
-  <li>Use the <a href="list.php3">plain list</a> page to list your bookmarks in alphabetical order sorted by category and sub-category displaying
+  <li>Use the <a href="list.php">plain list</a> page to list your bookmarks in alphabetical order sorted by category and sub-category displaying
 10 bookmarks per page. Use the &quot;more&quot; link at the bottom of the page to move on to the next set. Click the number to the left of the bookmark name to update that bookmark. Click the bookmark name to open up the URL of the bookmark.
-  <li>Use the <a href="search.php3">search</a> page to locate bookmarks based on criteria. See <a href="#faq7">below</a>.
+  <li>Use the <a href="search.php">search</a> page to locate bookmarks based on criteria. See <a href="#faq7">below</a>.
         <li>Use the tree view page to view your bookmarks in a tree type structure. The tree is organized by category and sub-category. Click the plus 
 (<IMG SRC="{IMAGE_URL_PREFIX}plus.{IMAGE_EXT}" WIDTH=16 HEIGHT=16 BORDER=0>)
 graphic to expand (i.e., open) the (sub)category. Click the minus
@@ -74,15 +74,15 @@ Click the small document graphic (<IMG SRC="{IMAGE_URL_PREFIX}document.{IMAGE_EX
 
 <hr>
 <p class=faq><a name="faq7">7. How do I search my bookmarks?</a>
-<p>Use the <a href="search.php3">search</a> page to locate bookmarks based on criteria. You can search using any of the bookmarker fields as part of conditions. You can add more conditions to the search by using the &quot;More&quot; button - use the &quot;Fewer&quot; button to remove conditions.  Click the number to the left of the bookmark name to update that bookmark. Click the bookmark name to open up the URL of the bookmark.
+<p>Use the <a href="search.php">search</a> page to locate bookmarks based on criteria. You can search using any of the bookmarker fields as part of conditions. You can add more conditions to the search by using the &quot;More&quot; button - use the &quot;Fewer&quot; button to remove conditions.  Click the number to the left of the bookmark name to update that bookmark. Click the bookmark name to open up the URL of the bookmark.
 <p>The fields and buttons at the top of the search page (in the colored background) offer you the ability to save searches by name. This lets you keep a list of commonly used searches so that you don't have to re-type them. Use the &quot;Saved Searches&quot; list and nearby action buttons to use and maintain your saved searches. Use the &quot;New Saved Search&quot; field and the &quot;Create&quot; button to give an name to and save the currently displayed search.
 <p>If you prefer to see/use the results of your search in a tree style view, simply click the &quot;Open Results in Tree View&quot; link after the your seach has been executed.
 <hr>
 <p class=faq><a name="faq8">8. How do I add/update/remove categories/sub-categories/ratings?</a>
 <p>
-Use the <a href="codes.php3?codetable=category">category</a>, 
-<a href="codes.php3?codetable=subcategory">sub-category</a>, and
-<a href="codes.php3?codetable=rating">ratings</a> links from the <a href="useropt.php3">user preferences</a> page to add/update/remove these items.
+Use the <a href="codes.php?codetable=category">category</a>, 
+<a href="codes.php?codetable=subcategory">sub-category</a>, and
+<a href="codes.php?codetable=rating">ratings</a> links from the <a href="useropt.php">user preferences</a> page to add/update/remove these items.
 
 <hr>
 <p class=faq><a name="faq9">9. Where do I send my comments and suggestions on bookmarker?</a>
