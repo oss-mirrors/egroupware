@@ -2,31 +2,40 @@ Absolute path of the directory to store the backup script	backup	en	Absolute pat
 Archive type	backup	en	Archive type
 Backup	common	en	Backup
 Backup administration	common	en	Backup administration
+bzip2	admin	en	bzip2
 Configuration backup	backup	en	Configuration backup
 Configuration localhost	backup	en	Configuration localhost
 Create backups of your data ?	backup	en	Create backups of your data ?
 daily	backup	en	daily
+directory locations	admin	en	directory locations
+directory names	admin	en	directory names
 interval	backup	en	Interval
 Select interval	backup	en	Select interval
 Data	backup	en	Data
 SQL	backup	en	SQL
-LDAP	backup	en	LDAP
+LDAP	common	en	LDAP
+ldap database	admin	en	LDAP database
 E-MAIL	backup	en	E-MAIL
 nfs	backup	en	NFS
 Operating system	backup	en	Operating system
+pgsql	admin	en	PostgreSQL
+php cgi	admin	en	php cgi
 plase enter username and password for remote connection !	backup	en	Plase enter username and password for remote connection !
 please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	en	Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !
 please select an application for transport to the remote host !	backup	en	Plase select an application for transport to the remote host !
 please set the path to a local dir to store the backup script !	backup	en	Please set the path to a local dir to store the backup script !
 please specify the path to the backup directory !	backup	en	Please specify the path to the backup directory !
 please specify the ip of the remote host !	backup	en	Please specify the ip of the remote host !
+program locations	admin	en	program locations
 Configuration remote host	backup	en	Configuration remote host
 Save backup locally ?	backup	en	Save backup locally ?
 Save backup to a remote host ?	backup	en	Save backup to a remote host ?
 Select archive type	backup	en	Select archive type
 Select transport application	backup	en	Select transport application
+settings	admin	en	settings
 Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGroupWare ?
 smbmount	backup	en	SMBMOUNT
+tar	admin	en	tar
 tar.gz	backup	en	tar.gz
 tar.bz2	backup	en	tar.bz2
 The backup application is not configured for showing the archives in phpGroupWare yet !	backup	en	The backup application is not configured for showing the archives in phpGroupWare yet !
@@ -35,10 +44,12 @@ The ftp connection failed ! Please check your configuration !	backup	en	The ftp 
 Transport application	backup	en	Transport application
 Absolute path of the backup directory	backup	en	Absolute path of the backup directory
 ip or hostname	backup	en	IP or hostname
+maildir	admin	en	Mail directory
 monthly	backup	en	monthly
+mysql	admin	en	MySQL	
 No backup archives available !	backup	en	No backup archives available !
 Number of stored backup versions	backup	en	Number of stored backup versions
 User	backup	en	User
 Password	backup	en	Password
 weekly	backup	en	weekly
-zip	backup	en	zip
+zip	common	en	zip

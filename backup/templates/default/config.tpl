@@ -59,7 +59,7 @@
 		<td colspan="2">&nbsp;<b>{lang_backup} {lang_settings} - {lang_directory_names}</b></td>
 	</tr>
 	<tr bgcolor="{row_off}">
-		<td>{lang_ldap_datadir}:</td>
+		<td>{lang_ldap_database}:</td>
 		<td><input name="newsettings[ldap_in]" value="{value_ldap_in}"></td>
 	</tr>
 	<tr bgcolor="{row_on}">
