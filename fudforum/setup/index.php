@@ -168,7 +168,7 @@ if (!function_exists('file_get_contents')) {
 	change_global_settings($fud_set);
 
 	/* create default theme */
-	$langl = array('bg'=>'bulgarian', 'chinese', 'cs'=>'czech', 'nl'=>'dutch', 'fr'=>'french', 'de'=>'german', 'it'=>'italian', 'lv'=>'latvian', 'no'=>'norwegian', 'pl'=>'polish', 'pt'=>'portuguese', 'ro'=>'romanian', 'ru'=>'russian', 'sk'=>'slovak', 'es'=>'spanish', 'sv'=>'swedish', 'tr'=>'turkish');
+	$langl = array('bg'=>'bulgarian', 'zh'=>'chinese_big5', 'cs'=>'czech', 'nl'=>'dutch', 'fr'=>'french', 'de'=>'german', 'it'=>'italian', 'lv'=>'latvian', 'no'=>'norwegian', 'pl'=>'polish', 'pt'=>'portuguese', 'ro'=>'romanian', 'ru'=>'russian', 'sk'=>'slovak', 'es'=>'spanish', 'sv'=>'swedish', 'tr'=>'turkish');
 	if (isset($langl[$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']])) {
 		$lang = $langl[$GLOBALS['phpgw_info']['user']['preferences']['common']['lang']];
 	} else {

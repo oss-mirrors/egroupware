@@ -22,27 +22,58 @@ function init_user()
 		q("DELETE FROM {SQL_TABLE_PREFIX}ses WHERE time_sec+".$GLOBALS['phpgw_info']['server']['sessions_timeout']." < ".__request_timestamp__);
 	}
 
-	$u = db_sab("SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=(CASE WHEN s.user_id>2000000000 THEN 1 ELSE s.user_id END) INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.user_id=".(int)$phpgw['account_id']);
+	$u = db_sab("SELECT 
+			s.id AS sid, s.data, s.returnto, 
+			t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, 
+			u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login 
+			FROM {SQL_TABLE_PREFIX}ses s
+			INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=(CASE WHEN s.user_id>2000000000 THEN 1 ELSE s.user_id END) 
+			INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.ses_id='".s."'");
 	if (!$u) {
 		/* registered user */
 		if ($phpgw['account_lid'] != $GLOBALS['ANON_NICK']) {
 			/* this means we do not have an entry for this user in the sessions table */
-			if (!$u) {
-				$uid = q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}users WHERE egw_id=".(int)$phpgw['account_id']);
-				$id = db_qid("INSERT INTO {SQL_TABLE_PREFIX}ses (user_id, time_sec) VALUES(".$uid.", ".__request_timestamp__.")");
-				$u = db_sab('SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=s.user_id INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
-			}
-			q('UPDATE {SQL_TABLE_PREFIX}users SET last_visit='.__request_timestamp__.' WHERE id='.$u->id);
+			$uid = q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}users WHERE egw_id=".(int)$phpgw['account_id']);
+			$id = db_qid("INSERT INTO {SQL_TABLE_PREFIX}ses (user_id, ses_id, time_sec) VALUES(".$uid.", '".s."', ".__request_timestamp__.")");
+			$u = db_sab('SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=s.user_id INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
 		} else { /* anonymous user */
 			do {
 				$uid = 2000000000 + mt_rand(1, 147483647);
-			} while (!($id = db_li("INSERT INTO {SQL_TABLE_PREFIX}ses (time_sec, user_id) VALUES (".__request_timestamp__.", ".$uid.")", $ef, 1)));
+			} while (!($id = db_li("INSERT INTO {SQL_TABLE_PREFIX}ses (time_sec, ses_id, user_id) VALUES (".__request_timestamp__.", '".s."', ".$uid.")", $ef, 1)));
 			$u = db_sab('SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=1 INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
 		}
 	}
 	/* grant admin access */
-	if (!empty($GLOBALS['phpgw_info']['user']['apps']['admin'])) {
+	if (!empty($phpgw['apps']['admin'])) {
 		$u->users_opt |= 1048576;
+	}
+
+	/* this is ugly, very ugly, but there is no way around it, we need to see if the 
+	 * user's language had changed and we can only do it this way.
+	 */
+	$langl = array('bg'=>'bulgarian', 'zh'=>'chinese_big5', 'cs'=>'czech', 'nl'=>'dutch', 'fr'=>'french', 'de'=>'german', 'it'=>'italian', 'lv'=>'latvian', 'no'=>'norwegian', 'pl'=>'polish', 'pt'=>'portuguese', 'ro'=>'romanian', 'ru'=>'russian', 'sk'=>'slovak', 'es'=>'spanish', 'sv'=>'swedish', 'tr'=>'turkish', 'en'=>'english');
+	$lang =& $phpgw['preferences']['common']['lang'];
+	if (isset($langl[$lang]) && $langl[$lang] != $u->lang) {
+		if (!($o = db_sab("SELECT * FROM {SQL_TABLE_PREFIX}themes WHERE lang='{$langl[$lang]}'"))) {
+			fud_use('compiler.inc', true);
+			fud_use('theme.inc', true);
+			$thm = new fud_theme;
+			$thm->name = $thm->lang = $langl[$lang];
+			$thm->theme = 'default';
+			$thm->pspell_lang = file_get_contents($GLOBALS['DATA_DIR'].'thm/default/i18n/'.$langl[$lang].'/pspell_lang');
+			$thm->locale = file_get_contents($GLOBALS['DATA_DIR'].'thm/default/i18n/'.$langl[$lang].'/locale');
+			$thm->theme_opt = 1;
+			$thm->add();
+			compile_all('default', $langl[$lang]);
+			$o = db_sab("SELECT * FROM {SQL_TABLE_PREFIX}themes WHERE lang='{$langl[$lang]}'");
+		}
+		$u->lang = $o->lang;
+		$u->theme_name = $o->lang;
+		$u->locale = $o->locale;
+		$u->theme_id = $o->id;
+		$u->theme = $o->theme;
+		$u->pspell_lang = $o->pspell_lang;
+		$u->theme_opt = $o->theme_opt;
 	}
 
 	if ($u->data) {
@@ -65,6 +96,10 @@ function init_user()
 	/* define _uid, which, will tell us if this is a 'real' user or not */
 	define('_uid', !($u->users_opt & 2097152) ? $u->id : 0);
 	define('__fud_real_user__', ($u->id != 1 ? $u->id : 0));
+
+	if (__fud_real_user__) {
+		q('UPDATE {SQL_TABLE_PREFIX}users SET last_visit='.__request_timestamp__.' WHERE id='.$u->id);
+	}
 
 	return $u;
 }
