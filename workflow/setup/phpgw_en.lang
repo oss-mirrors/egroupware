@@ -1,0 +1,181 @@
+abort instance	workflow	en	abort instance
+aborted	workflow	en	aborted
+act	workflow	en	act
+activate	workflow	en	activate
+Active	workflow	en	Active
+Activities updated	workflow	en	Activities updated
+activity	workflow	en	activity
+activities	workflow	en	Activities
+Activity %1 is interactive but has no role assigned	workflow	en	Activity %1 is interactive but has no role assigned
+Activity %1 is interactive so it must use the $instance->complete() method	workflow	en	Activity %1 is interactive so it must use the $instance->complete() method
+Activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	en	Activity %1 is non-interactive and non-autorouted but has no role assigned
+Activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	en	Activity %1 is non-interactive so it must not use the $instance->complete() method
+Activity %1 is standalone and is using the $instance object	workflow	en	Activity %1 is standalone and is using the $instance object
+Activity %1 is standalone but has transitions	workflow	en	Activity %1 is standalone but has transitions
+Activity %1 is switch so it must use $instance->setNextActivity($actname) method	workflow	en	Activity %1 is switch so it must use $instance->setNextActivity($actname) method
+Activity completed	workflow	en	Activity completed
+Activity name already exists	workflow	en	Activity name already exists
+Activity role removed	workflow	en	Activity role removed
+Activity saved	workflow	en	Activity saved
+Act. Status	workflow	en	Act. Status
+Add a transition	workflow	en	Add a transition
+add new	workflow	en	add new
+Add or edit a process	workflow	en	Add or edit a process
+Add or edit an activity	workflow	en	Add or edit an activity
+Add property	workflow	en	Add property
+Add role	workflow	en	Add role
+Add role to process	workflow	en	Add role to process
+Add transitions	workflow	en	Add transitions
+Add transitions from	workflow	en	Add transitions from
+Add transitions to	workflow	en	Add transitions to
+Admin Instance	workflow	en	Admin Instance
+Admin Process Activities	workflow	en	Admin Process Activities
+Admin Processes	workflow	en	Admin Processes
+Admin Processes Sources	workflow	en	Admin Processes Sources
+Admin Process Roles	workflow	en	Admin Process Roles
+All	workflow	en	All
+Auto routed	workflow	en	Auto routed
+Automatic	workflow	en	Automatic
+Base directory does not exist, please ask adminstrator to check the global configuration	workflow	en	Base directory does not exist, please ask adminstrator to check the global configuration
+being run	workflow	en	being run
+Cannot add transition only split activities can have more than one outbound transition	workflow	en	Cannot add transition only split activities can have more than one outbound transition
+Circular reference found some activity has a transition leading to itself	workflow	en	Circular reference found some activity has a transition leading to itself
+code	workflow	en	code
+completed	workflow	en	completed
+Couldn't add transition	workflow	en	Couldn't add transition
+create	workflow	en	create
+Created	workflow	en	Created
+Delete selected	workflow	en	Delete selected
+Delition successful	workflow	en	Delition successful
+Description	workflow	en	Description
+Don't move	workflow	en	Don't move
+Duration	workflow	en	Duration
+end	workflow	en	end
+End activity is not reachable from start activity	workflow	en	End activity is not reachable from start activity
+exception instance	workflow	en	exception instance
+exceptions	workflow	en	exceptions
+Export	workflow	en	Export
+Fatal error: nextActivity does not match any candidate in autorouting switch activity	workflow	en	Fatal error: nextActivity does not match any candidate in autorouting switch activity
+Fatal error: non-deterministic decision for autorouting activity	workflow	en	Fatal error: non-deterministic decision for autorouting activity
+Fatal error: setting next activity to an unexisting activity	workflow	en	Fatal error: setting next activity to an unexisting activity
+Fatal error: trying to send an instance to an activity but no transition found	workflow	en	Fatal error: trying to send an instance to an activity but no transition found
+Filter	workflow	en	Filter
+From	workflow	en	From
+grab instance	workflow	en	grab instance
+Graph	workflow	en	Graph
+Group	workflow	en	Group
+Id	workflow	en	Id
+Inactive	workflow	en	Inactive
+Instance	workflow	en	Instance
+Instance properties	workflow	en	Instance properties
+Instance: %1 (Process: %2)	workflow	en	Instance: %1 (Process: %2)
+Instances	workflow	en	Instances
+Inst. Status	workflow	en	Inst. Status
+Interactive	workflow	en	Interactive
+Interactivity	workflow	en	Interactivity
+invalid	workflow	en	invalid
+Invalid Process	workflow	en	Invalid Process
+is active	workflow	en	is active
+join	workflow	en	join
+List of activities	workflow	en	List of activities
+List of processes (%1)	workflow	en	List of processes (%1)
+List of processes 	workflow	en	List of processes
+List of instances	workflow	en	List of instances
+List of mappings	workflow	en	List of mappings
+List of transitions	workflow	en	List of transitions
+List of workitems	workflow	en	List of workitems
+Manual	workflow	en	Manual
+map	workflow	en	map
+Map users/groups to roles	workflow	en	Map users/groups to roles
+Monitor Activities	workflow	en	Monitor Activities
+Monitor Instances	workflow	en	Monitor Instances
+Monitor Processes	workflow	en	Monitor Processes
+Monitor Work Items	workflow	en	Monitor Work Items
+Name	workflow	en	Name
+New mapping added	workflow	en	New mapping added
+New mayor	workflow	en	New mayor
+New minor	workflow	en	New minor
+New transition added	workflow	en	New transition added
+No activity indicated	workflow	en	No activity indicated
+No instance indicated	workflow	en	No instance indicated
+No process indicated	workflow	en	No process indicated
+No properties defined	workflow	en	No properties defined
+no roles	workflow	en	no roles
+No roles asociated with this activity	workflow	en	No roles asociated with this activity
+No work item indicated	workflow	en	No work item indicated
+Or import a process	workflow	en	Or import a process
+Owner	workflow	en	Owner
+Process	workflow	en	Process
+Processes	workflow	en	Processes
+Process activities	workflow	en	Process activities
+Process %d has been activated	workflow	en	Process %d has been activated
+process %d has been deactivated	workflow	en	Process %d has been activated
+Process does not have a start activity	workflow	en	Process does not have a start activity
+Process does not have exactly one end activity	workflow	en	Process does not have exactly one end activity
+Process name already exists	workflow	en	Process name already exists
+Process roles	workflow	en	Process roles
+Process transitions	workflow	en	Process transitions
+Process %s has been created	workflow	en	Process %s has been created
+Process %s has been updated	workflow	en	Process %s has been updated
+Process %s removed	workflow	en	Process %s removed
+Process %s %s imported	workflow	en	Process %s %s imported
+Properties	workflow	en	Properties
+Property	workflow	en	Property
+release instance	workflow	en	release instance
+Role %1 is not mapped	workflow	en	Role %1 is not mapped
+Role added to process	workflow	en	Role added to process
+Role saved	workflow	en	Role saved
+Roles	workflow	en	Roles
+Roles deleted	workflow	en	Roles deleted
+Roles assigned to this activity	workflow	en	Roles assigned to this activity
+Routing	workflow	en	Routing
+run	workflow	en	run
+run activity	workflow	en	run activity
+run instance	workflow	en	run instance
+running	workflow	en	running
+Running Activity	workflow	en	Running Activity
+send instance	workflow	en	send instance
+select source	workflow	en	select source
+Send all to	workflow	en	Send all to
+Shared code	workflow	en	Shared code
+show code	workflow	en	show code
+show template	workflow	en	show template
+Source saved	workflow	en	Source saved
+split	workflow	en	split
+standalone	workflow	en	standalone
+Start	workflow	en	Start
+Started	workflow	en	Started
+Status	workflow	en	Status
+stop	workflow	en	stop
+switch	workflow	en	switch
+template	workflow	en	template
+The following items must be corrected to be able to activate this process	workflow	en	The following items must be corrected to be able to activate this process
+There are no activities available	workflow	en	There are no activities available
+There are no instances available	workflow	en	There are no instances available
+There are no mappings defined for this process	workflow	en	There are no mappings defined for this process
+There are no processes defined	workflow	en	There are no processes defined
+There are no properties available	workflow	en	There are no properties available
+There are no roles defined for this process	workflow	en	There are no roles defined for this process
+There are no transitions defined	workflow	en	There are no transitions defined
+There are no user activites available	workflow	en	There are no user activites available
+There are no workitems available	workflow	en	There are no workitems available
+To	workflow	en	To
+Transitions removed successfully	workflow	en	Transitions removed successfully
+type	workflow	en	type
+update	workflow	en	update
+Upload file	workflow	en	Upload file
+User	workflow	en	User
+User/Group	workflow	en	User/Group
+Users/Groups	workflow	en	Users/Groups
+User Activities	workflow	en	User Activities
+User Instances	workflow	en	User Instances
+User Processes	workflow	en	User Processes
+Valid	workflow	en	Valid
+Valid Process	workflow	en	Valid Process
+Value	workflow	en	Value
+Version	workflow	en	Version
+/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration	workflow	en	/workflow directory does not exist and could not be created, please ask adminstrator to check the global configuration
+workflow	common	en	Work-Flow
+Workitem information	workflow	en	Workitem information
+Workitems	workflow	en	Workitems
+You have not permission to execute this activity	workflow	en	You have not permission to execute this activity
