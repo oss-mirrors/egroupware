@@ -194,7 +194,7 @@
 
 			for ($i=0;$i<count($output);$i++)
 			{
-				system("cp " . $output[$i] . ' ' . $smbdir . '/');
+				system("cp " . $output[$i] . ' ' . $smbdir . '/ 2>&1 > /dev/null');
 				echo 'transfer of ' . $output[$i] . ' through smbmount: success !' . "\n";
 			}
 			system("smbumount " . $smbdir);
@@ -218,7 +218,7 @@
 
 			for ($i=0;$i<count($output);$i++)
 			{
-				system("$command " . $output[$i] . ' ' . $input[$i]); 
+				system("$command " . $output[$i] . ' ' . $input[$i] . ' 2>&1 > /dev/null'); 
 			}
 		}
 	}
@@ -227,7 +227,7 @@
 		$command = 'rm';
 		for ($i=0;$i<count($output);$i++)
 		{
-			system("$command " . $output[$i]);
+			system("$command " . $output[$i] . ' 2>&1 > /dev/null');
 		}
 	}
 
