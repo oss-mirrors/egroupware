@@ -12,6 +12,7 @@
       <center>
        <form method="POST" name="projects_form" action="{actionurl}">
         {common_hidden_vars}
+        {error}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
           <tr>
           <td>{lang_num}:</td>

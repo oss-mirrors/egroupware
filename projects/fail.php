@@ -11,6 +11,7 @@
   /* $Id$ */
   
   $phpgw_info["flags"] = array("currentapp" => projects,
+                               "noheader" => True,
                                "nonavbar"   => True);
 
   include("../header.inc.php");

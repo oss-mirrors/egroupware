@@ -59,6 +59,14 @@
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                        
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                         
+   $t->set_var("error","");                                                                                                                                                                      
+   }                                                                                                                                                                                             
+   else {                                                                                                                                                                                        
+   $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                                                     
+   }
+
      $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
      $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
      $t->set_var("actionurl",$phpgw->link("edit.php"));
@@ -223,7 +231,7 @@
 
 // activities billable
      $t->set_var("lang_billable_activities",lang("Billable activities"));
-     $db2->query("SELECT p_activities.id as id,p_activities.descr,"
+     $db2->query("SELECT p_activities.id as id,p_activities.descr,p_activities.billperae, "
 		     . "p_projectactivities.project_id,p_projectactivities.billable"
 		     . " FROM p_activities LEFT JOIN p_projectactivities ON "
                      . "(p_activities.id=p_projectactivities.activity_id) and  "
@@ -235,9 +243,8 @@
         if($db2->f("billable")=="Y")
             $bill_activities_list .= " selected";
         $bill_activities_list .= ">"        
-                    . $db2->f("descr")
-                    . " " . lang("Bill per workunit") . " "
-                    . $db2->f("billperae") . "</option>";
+                    . $db2->f("descr") . " " . $currency . " " . $db2->f("billperae")
+                    . " " . lang("per workunit") . " " . "</option>";
      }
      $t->set_var("bill_activities_list",$bill_activities_list);  
 

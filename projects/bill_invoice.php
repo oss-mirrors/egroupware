@@ -43,27 +43,34 @@
           $date=0;
           unset($Invoice);
        }
-   }
+    }
    if(!$invoice_id) {
+    $phpgw->db->query("SELECT num FROM p_invoice WHERE num='$invoice_num'");                                                                                                 
+    if($phpgw->db->next_record()) {                                                                                                                                                              
+    $t->set_var(invoice_hint,lang("Duplicate Invoice ID !"));                                                                                                                                    
+    unset($Invoice);
+    } else {
        $phpgw->db->query("INSERT INTO p_invoice (sum,project_id,date) VALUES (0,$project_id,'date')");
        $phpgw->db->query("SELECT LAST_INSERT_ID() AS id");
        $phpgw->db->next_record();
        $invoice_id = $phpgw->db->f("id");
-      } 
+         } 
+        }
      else {
        $phpgw->db->query("UPDATE p_invoice set date='$date' WHERE id=$invoice_id");
-   }
-   $db2->query("SELECT hours_id FROM p_invoicepos WHERE invoice_id=$invoice_id");
-   while ($db2->next_record()) {
-     $phpgw->db->query("UPDATE p_hours SET status='done' WHERE id=".$db2->f("hours_id"));
-   }
-   $phpgw->db->query("DELETE FROM p_invoicepos WHERE invoice_id=$invoice_id");
-   while($select && $entry=each($select)) {
+      }
+    if ($invoice_id) {
+    $db2->query("SELECT hours_id FROM p_invoicepos WHERE invoice_id=$invoice_id");
+    while ($db2->next_record()) {
+    $phpgw->db->query("UPDATE p_hours SET status='done' WHERE id=".$db2->f("hours_id"));
+    }
+    $phpgw->db->query("DELETE FROM p_invoicepos WHERE invoice_id=$invoice_id");
+    while($select && $entry=each($select)) {
         $phpgw->db->query("INSERT INTO p_invoicepos (invoice_id,hours_id) VALUES ($invoice_id,$entry[0])");
         $phpgw->db->query("UPDATE p_hours SET status='billed' WHERE id=$entry[0]");
       }
+     }
     }
-
    if($Invoice) {
     $phpgw->db->query("SELECT num FROM p_invoice WHERE num='$invoice_num' AND id!=$invoice_id");
     if($phpgw->db->next_record()) {
@@ -81,9 +88,9 @@
     $db2->query("UPDATE p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id=$invoice_id");
 
     }
-   } else {
-    $t->set_var(invoice_hint,"");
-}
+   } //else {
+//    $t->set_var(invoice_hint,"");
+//}
 
 
   $common_hidden_vars =

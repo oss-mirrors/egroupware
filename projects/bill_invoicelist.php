@@ -20,7 +20,7 @@
   $t->set_file(array( "projects_list_t" => "bill_listinvoice.tpl"));
   $t->set_block("projects_list_t", "projects_list", "list");
 
-  $t->set_var("lang_action",lang("Invoice list"));
+   $t->set_var("lang_action",lang("Invoice list"));
 
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -78,6 +78,16 @@
   // ===========================================
   // list header variable template-declarations
   // ===========================================
+
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                        
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                         
+   $t->set_var("error","");                                                                                                                                                                      
+   }                                                                                                                                                                                             
+   else {                                                                                                                                                                                        
+   $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                                                     
+   }
+
+  $t->set_var(currency,$currency);
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
   $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"bill_invoicelist.php",lang("Invoice ID")));
   $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"bill_invoicelist.php",lang("Customer")));

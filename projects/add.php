@@ -28,7 +28,7 @@
   	$t = new Template($phpgw_info["server"]["app_tpl"]);
   	
   	$t->set_var("actionurl",$phpgw->link("add.php"));
-  	$t->set_file(array( "projects_add" => "form.tpl"));
+ 	$t->set_file(array( "projects_add" => "form.tpl"));
   	
   	// ====================================================================
      	// create two seperate blocks, editblock will be cut off from template
@@ -41,7 +41,14 @@
         $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
 
   	$t->set_var("lang_action",lang("Add project"));
-	
+
+   if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                       
+   $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                        
+   $t->set_var("error","");                                                                                                                                                                     
+   }                                                                                                                                                                                            
+   else {                                                                                                                                                                                       
+   $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                                                    
+   }
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
         		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
@@ -151,15 +158,14 @@
 
 // activities billable        
         $t->set_var("lang_billable_activities",lang("Billable activities"));
-     $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
+     $db2->query("SELECT p_activities.id as id,p_activities.descr,p_activities.billperae "                                                                                                                      
                      . " FROM p_activities "                                                                                                                   
                      . " ORDER BY descr asc");                                                                                                  
      while ($db2->next_record()) {                                                                                                                                                       
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                              
         $bill_activities_list .= ">"                                                                                                                                                     
-                    . $db2->f("descr")                                                                                                                                                   
-                    . " " . lang("Bill per workunit") . " "                                                                                                                                      
-                    . $db2->f("billperae") . "</option>";                                                                                                                                
+                    . $db2->f("descr") . " " . $currency . " "                                                                                                                                      
+                    . $db2->f("billperae") . " " . lang("per workunit") . "</option>";                                                                                                                                
      }        
 
        $t->set_var("bill_activities_list",$bill_activities_list);

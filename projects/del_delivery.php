@@ -34,6 +34,11 @@
        }
    }
    if(!$delivery_id) {
+    $phpgw->db->query("SELECT num FROM p_delivery WHERE num='$delivery_num'");                                                                                
+    if($phpgw->db->next_record()) {                                                                                                                         
+    $t->set_var(delivery_hint,lang("Duplicate Delivery ID !"));                                                                                               
+    unset($Delivery);                                                                                                                                        
+    } else {
        $phpgw->db->query("SELECT customer FROM p_projects WHERE id='$project_id'");
        $phpgw->db->next_record();
        $customer = $phpgw->db->f("customer");
@@ -41,15 +46,17 @@
        $phpgw->db->query("SELECT LAST_INSERT_ID() AS id");
        $phpgw->db->next_record();
        $delivery_id = $phpgw->db->f("id");
-   } else {
+        }
+      } else {
        $phpgw->db->query("UPDATE p_delivery set date='$date' WHERE id=$delivery_id");
-   }
+      }
+     if ($delivery_id) {
      $phpgw->db->query("DELETE FROM p_deliverypos WHERE delivery_id=$delivery_id");
       while($select && $entry=each($select)) {
         $phpgw->db->query("INSERT INTO p_deliverypos (delivery_id,hours_id) VALUES ($delivery_id,$entry[0])");
+     }
     }
    }
-
   if($Delivery) {
   $phpgw->db->query("SELECT num FROM p_delivery WHERE num='$delivery_num' AND id!=$delivery_id");
   if($phpgw->db->next_record()) {
@@ -62,9 +69,9 @@
     $t->set_var(delivery_hint,"");
     $phpgw->db->query("UPDATE p_delivery SET date='".time()."',num='$delivery_num' WHERE id=$delivery_id");
      }
-    } else {
-    $t->set_var(delivery_hint,"");
-   }
+    } //else {
+//    $t->set_var(delivery_hint,"");
+//   }
 
 
   $common_hidden_vars =

@@ -53,6 +53,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Customer','proj
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Bookable activities','projects','de','Nicht-Abrechenbare Kategorien');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Billable activities','projects','de','Abrechenbare Kategorien');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Bill per workunit','projects','de','Preis der Arbeitseinheit');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'per workunit','projects','de','pro Arbeitseinheit');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Minutes per workunit','projects','de','Minuten pro Arbeitseinheit');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Project list','projects','de','Projektliste');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'Edit project','projects','de','Projekt bearbeiten');

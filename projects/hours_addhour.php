@@ -86,7 +86,7 @@
                . "<option value=\"12\"$n_month[12]>" . lang("December") . "</option>\n"
                . "</select>";
   	$date_formatorder  .= "<input maxlength=2 name=\"day\" value=\"$cur_day\" size=2>\n";
-  	$date_formatorder .= "<input maxlength=4 name=\"year\" value=\"$cur_year\" size=4> (e.g. 2000)\n";
+  	$date_formatorder .= "<input maxlength=4 name=\"year\" value=\"$cur_year\" size=4>\n";
         $t->set_var("date_formatorder",$date_formatorder);
 
         $t->set_var("lang_end_date",lang("Date due"));
@@ -106,7 +106,7 @@
               . "<option value=\"12\">" . lang("December") . "</option>\n"
               . "</select>\n";
   	$end_date_formatorder  .= "<input maxlength=2 name=\"end_day\" size=2>\n";
-  	$end_date_formatorder .= "<input maxlength=4 name=\"end_year\" size=4> (e.g. 2000)\n";
+  	$end_date_formatorder .= "<input maxlength=4 name=\"end_year\" size=4>\n";
         $t->set_var("end_date_formatorder",$end_date_formatorder);
 
         $t->set_var("lang_remark",lang("Remark"));

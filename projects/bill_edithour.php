@@ -65,9 +65,6 @@
      $title = $phpgw->strip_html($db2->f("title"));                                                                                                                                         
      if (! $title)  $title  = "&nbsp;";
      $t->set_var("title",$title);
-        
-//        $t->set_var("num",$db2->f("num"));
-//        $t->set_var("title",$db2->f("title"));
      }
      $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("lang_title",lang("title"));
