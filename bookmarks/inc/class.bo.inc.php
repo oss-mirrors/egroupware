@@ -401,10 +401,13 @@
 			$t = CreateObject('phpgwapi.Template',PHPGW_INCLUDE_ROOT . '/bookmarks/templates/export');
 			$t->set_file('export','export_' . $this->type . '.tpl');
 			$t->set_block('export','catlist','categs');
-			foreach  ($catlist as $catid)
+			if (is_array($catlist))
 			{
-				$t->set_var('categ',$this->gencat($catid));
-				$t->fp('categs','catlist',True);
+				foreach  ($catlist as $catid)
+				{
+					$t->set_var('categ',$this->gencat($catid));
+					$t->fp('categs','catlist',True);
+				}
 			}
 			return $t->fp('out','export');
 		}
