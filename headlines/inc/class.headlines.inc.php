@@ -30,7 +30,7 @@
 		var $error_timeout = False;
 
 		// wired news was messing up, I dunno
-		// "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),	
+		// "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),
 
 		function headlines()
 		{
@@ -100,7 +100,7 @@
 		function getLinksDB()
 		{
 			$GLOBALS['phpgw']->db->query("SELECT title, link FROM phpgw_headlines_cached WHERE site = ".$this->con);
-		
+
 			if (! $GLOBALS['phpgw']->db->num_rows())
 			{
 				$links = $this->getLinksSite();  // try from site again
@@ -127,7 +127,6 @@
 			$startat = '</image>';
 			$linkstr = 'link';
 			$exclude = '';
-
 
 			switch ($this->newstype)
 			{
@@ -279,13 +278,11 @@
 				$title = addslashes($title);
 				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_cached VALUES("
 					.$this->con.",'$title','$link')",__LINE__,__FILE__);
-			}		
-		
+			}
+
 			// save cache time
 			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET lastread = '" . $this->current_time
 				. "' WHERE con='" . $this->con . "'",__LINE__,__FILE__);
 		}
 	}
-
-
 ?>

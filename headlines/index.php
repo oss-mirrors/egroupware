@@ -46,7 +46,8 @@
 		}
 	}
 
-	$headlines = new headlines;
+	$headlines = CreateObject('headlines.headlines');
+
 	$GLOBALS['phpgw']->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
 		'form'       => $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'

@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'           => True,
 		'currentapp'           => 'headlines',
 		'enable_network_class' => True,
@@ -21,9 +21,9 @@
 	);
 	include('../header.inc.php');
 
-	$headlines = new headlines;
+	$headlines = CreateObject('headlines.headlines');
 	$headlines->getList();
 
-	header('Location: ' . $phpgw->link('/headlines/admin.php'));
+	header('Location: ' . $GLOBALS['phpgw']->link('/headlines/admin.php'));
 ?>
 
