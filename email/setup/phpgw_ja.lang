@@ -12,6 +12,8 @@ date	email	ja	送信日付
 default sorting order	email	ja	ソート順（既定）
 delete a folder	email	ja	フォルダ削除
 delete (expert)	email	ja	フォルダ削除（エキスパート）
+deleted messages go to trash	email	ja	削除メッセージをTrashフォルダへ移動
+deleted messages (trash) folder	email	ja	削除メッセージ移動先フォルダ名
 deleted messages saved to folder:	email	ja	削除メッセージをフォルダに保存
 email account name	email	ja	電子メールアカウント名
 email address	email	ja	電子メールアドレス
@@ -34,10 +36,13 @@ folder maintenance	email	ja	フォルダメンテナンス
 folder name	email	ja	フォルダ名
 folder size	email	ja	フォルダサイズ
 get size	email	ja	サイズ
-if applicable	email	ja	適用時
+hidden	email	ja	非表示
+if applicable	email	ja	指定時
 image	email	ja	Image
+imap server type	admin	ja	IMAP サーバタイプ
 imap server type	email	ja	IMAP サーバタイプ
 imap mail server hostname or ip address	admin	ja	IMAP サーバ名または IP アドレス
+keywords	email	ja	keywords
 lastname	email	ja	名
 layout 1	email	ja	レイアウト１
 layout 2	email	ja	レイアウト２
@@ -52,6 +57,7 @@ messages	email	ja	メッセージ
 message list layout	email	ja	メッセージリストレイアウト
 move selected messages into	email	ja	選択メッセージを移動
 oldest	email	ja	旧
+or	email	ja	または
 new	email	ja	新着
 new message	email	ja	新着メッセージ
 new messages	email	ja	新着
@@ -68,10 +74,13 @@ select your mail server type	admin	ja	メールサーバタイプ
 select work email address	email	ja	電子メール（仕事）
 send deleted messages to the trash	email	ja	削除メッセージをゴミ箱へ
 sent messages saved to folder:	email	ja	送信メッセージをフォルダに保存
+sent messages folder	email	ja	送信メッセージ保存先フォルダ名
+sent messages saved in &quot;sent&quot; folder	email	ja	送信メッセージをSentフォルダへ保存
 short names	email	ja	短い名前
 show new messages on main screen	email	ja	新着メッセージをメイン画面に表示
 show sender's email address with name	email	ja	送信者名の表示方法
 size	email	ja	サイズ
+standard	email	ja	標準
 switch current folder to	email	ja	カレントフォルダ変更
 to	email	ja	宛先
 total messages	email	ja	合計
@@ -80,6 +89,7 @@ undisclosed recipients	email	ja	受信者未公開
 undisclosed sender	email	ja	送信者未公開
 use custom settings	email	ja	カスタム設定を使用
 view formatted	email	ja	フォーマット表示
+view headers	email	ja	ヘッダ情報
 view unformatted	email	ja	未フォーマット表示
 x messages have been deleted	email	ja	%1 件削除しました。
 wrote	email	ja	wrote

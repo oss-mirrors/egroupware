@@ -32,7 +32,7 @@
    </tr>
 
    <tr bgcolor="{row_on}">
-    <td>IMAP server type:</td>
+    <td>{lang_IMAP_server_type}:</td>
     <td>
      <select name="newsettings[imap_server_type]">
       <option value="Cyrus" {selected_imap_server_type_Cyrus}>Cyrus or Courier</option>
@@ -76,8 +76,8 @@
   </tr>
   <tr>
     <td colspan="2" align="center">
-      <input type="submit" name="submit" value="Submit">
-      <input type="submit" name="cancel" value="Cancel">
+      <input type="submit" name="submit" value="{lang_submit}">
+      <input type="submit" name="cancel" value="{lang_cancel}">
     </td>
   </tr>
 </table>
