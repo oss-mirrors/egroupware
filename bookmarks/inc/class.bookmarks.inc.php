@@ -203,13 +203,13 @@
 				'name'    => '--'
 			);
 
-			$mains = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
+			$mains = $phpgw->categories->return_array('mains',0,True,'','cat_name','',True);
 
-			$s = '<option value="0">-- :: --</option>';
+			$s = '<option value="0|0">-- :: --</option>';
 
-			while (is_array($_mains) && $main = each($mains))
+			while (is_array($mains) && $main = each($mains))
 			{
-				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and cat_appname='bookmarks' order by cat_name",__LINE__,__FILE__);
+				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' order by cat_name",__LINE__,__FILE__);
 				while ($phpgw->db->next_record())
 				{
 					$id = $main[1]['id'] . '|' . $phpgw->db->f('cat_id');
@@ -219,6 +219,16 @@
 						$s .= ' selected';
 					}
 					$s .= '>' . $main[1]['name'] . ' :: ' . $phpgw->db->f('cat_name') . '</option>';
+				}
+
+				if ($main[1]['parent'] == 0 && $phpgw->db->num_rows() == 0)
+				{
+					$s .= '<option value="' . $main[1]['id'] . '|0"';
+					if ($main[1]['id'] == $selected)
+					{
+						$s .= ' selected';
+					}
+					$s .= '>' . $main[1]['name'] . ' :: --</option>';
 				}
 			}
 			return '<select name="bookmark[category]" size="5">' . $s . '</select>';

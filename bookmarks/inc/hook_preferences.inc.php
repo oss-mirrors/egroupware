@@ -33,13 +33,16 @@
 
 	section_start(ucfirst($appname),$imgpath);
 
+	section_item($phpgw->link('/bookmarks/preferences.php'),
+		lang('Preferences'));
+
 	section_item($phpgw->link('/bookmarks/import.php'),
 		lang('Import bookmarks'));
 
 	section_item($phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
 		lang('Grant access'));
 
-	section_item($phpgw->link('/preferences/categories.php','cats_app=bookmarks'),
+	section_item($phpgw->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True'),
 		lang('Categories'));
 
 	section_end(); 
