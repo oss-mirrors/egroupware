@@ -10,13 +10,58 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
+                                                                                                                                                                                          
+       $lid = $phpgw_info["user"]["userid"];
+
+       $db2 = $phpgw->db;                                                                                                                                                                 
+                                                                                                                                                                                          
+       $db2->query("select app_name from applications where (app_enabled = 2 ) or (app_enabled = 1 and app_name='projects')");                                                          
+       while ($db2->next_record()) {                                                                                                                                                      
+         $invisible_apps[$db2->f("app_name")] = 2;                                                                                                                                          
+         $app_status[$db2->f("app_name")]   = $db2->f("app_status");                                                                                                                      
+       }                                                                                                                                                                                  
+                                                                                                                                                                                          
+       if (gettype($lid) == "integer") {                                                                                                                                                  
+          $db2->query("select account_permissions from accounts where account_id='$lid'");                                                                                
+       } else {                                                                                                                                                                           
+          $db2->query("select account_permissions from accounts where account_lid='$lid'");                                                                             
+       }                                                                                                                                                                                  
+       $db2->next_record();                                                                                                                                                               
+                                                                                                                                                                                          
+       $pl = explode(":",$db2->f("account_permissions"));                                                                                                                                 
+                                                                                                                                                                                          
+       for ($i=0; $i<count($pl); $i++) {                                                                                                                                                  
+          if ($invisible_apps[$pl[$i]]) {                                                                                                                                                   
+             $invisible_apps[$pl[$i]] = True;                                                                                                                                                  
+          }                                                                                                                                                                               
+       }
        
-      $lid = $phpgw_info["user"]["userid"];                                                                                                                                                                                                                                                                                                                            
-      
-      $t = new Template($phpgw_info["server"]["app_tpl"]);
-      $t->set_file(array("projects_header" => "header.tpl"));
-      $phpgw->db->query("select group_id from groups where group_name = 'projectAdmin'");
-      $admin_info = lang("projects");
+       if ($phpgw_info["user"]["userid"] == $lid) {                                                                                                                                           
+          $group_list = $this->groups;                                                                                                                                                        
+        } else { 
+             $group_list = $this->read_groups($lid);                                                                                                                                            
+             }                                                                                                                                                                             
+       
+          while ($group_list && $group = each($group_list)) {                                                                                                                                
+          $db2->query("select group_apps from groups where group_id=".$group[0]);                                                                                       
+          $db2->next_record();                                                                                                                                                            
+                                                                                                                                                                                          
+          $gp = explode(":",$db2->f("group_apps"));                                                                                                                                       
+          for ($i=1,$j=0;$i<count($gp)-1;$i++,$j++) {                                                                                                                                     
+             $invisible_apps[$gp[$i]] = True;                                                                                                                                                  
+          }                                                                                                                                                                               
+        }                                                                                                                                                                                  
+                                                                                                                                                                                          
+       while ($sa = each($invisible_apps)) {                                                                                                                                                
+          if ($sa[1] == 2) {                                                                                                                                                              
+             $return_apps[$sa[0]] = True;                                                                                                                                                 
+          }                                                                                                                                                                               
+        }       
+
+       $t = new Template($phpgw_info["server"]["app_tpl"]);
+       $t->set_file(array("projects_header" => "header.tpl"));
+       $phpgw->db->query("select group_id from groups where group_name = 'projectAdmin'");
+       $admin_info = lang("projects");
       
       if ($phpgw->db->next_record()) {
          $group_id = $phpgw->db->f("group_id");
@@ -30,12 +75,26 @@
 
      
      
-
+     if($invisible_apps["projectbilling"]==True)
      $t->set_var("link_billing","<a href=\"" . $phpgw->link("../projectbilling/") . "\">" . lang("projectbilling") ."</a>");
-     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projecthours/") . "\">" . lang("projecthours") ."</a>");
-     $t->set_var("link_statistics","<a href=\"" . $phpgw->link("../projectstatistics/") . "\">" . lang("projectstatistics") ."</a>");
-     $t->set_var("link_delivery","<a href=\"" . $phpgw->link("../projectdelivery/") . "\">" . lang("projectdelivery") ."</a>");                                                                                 
+     else                                                                                                                                                                                          
+     $t->set_var("link_billing","");     
 
+     if($invisible_apps["projecthours"]==True)
+     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projecthours/") . "\">" . lang("projecthours") ."</a>");
+     else                                                                                                                                                                                          
+     $t->set_var("link_hours","");
+
+     if($invisible_apps["projectstatistics"]==True)
+     $t->set_var("link_statistics","<a href=\"" . $phpgw->link("../projectstatistics/") . "\">" . lang("projectstatistics") ."</a>");
+     else                                                                                                                                                                                          
+     $t->set_var("link_statistics","");
+
+     if($invisible_apps["projectdelivery"]==True)
+     $t->set_var("link_delivery","<a href=\"" . $phpgw->link("../projectdelivery/") . "\">" . lang("projectdelivery") ."</a>");                                                                                 
+     else                                                                                                                                                                                          
+     $t->set_var("link_delivery","");
+     
      $t->pparse("out","projects_header");
  
 ?>

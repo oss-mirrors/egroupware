@@ -1,10 +1,14 @@
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','projects','de','Projekte');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','common','de','Projekte');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectbilling','common','de','Projektabrechnung');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectstatistics','common','de','Projektstatistiken');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projecthours','common','de','Projektstunden');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectbilling','common','de','Projekt Abrechnung');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectstatistics','common','de','Projekt Statistiken');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projecthours','common','de','Projekt Stunden');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectdelivery','common','de','Projekt Lieferung');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'invisible','admin','de','Unsichtbar');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projects','admin','de','Projekte');                                                                
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectbilling','admin','de','Projekt Abrechnung');                                                 
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectstatistics','admin','de','Projekt Statistiken');                                             
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projecthours','admin','de','Projekt Stunden');                                                      
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'projectdelivery','admin','de','Projekt Lieferung');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'activity','projects','de','Abrechnungskategorie');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'active','projects','de','Aktiv');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'new project','projects','de','Neues Projekt');
