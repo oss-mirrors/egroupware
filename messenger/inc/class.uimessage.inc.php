@@ -99,8 +99,6 @@
 
 			$this->set_common_langs();
 
-			$this->template->set_var('header_checkbox','<input type="checkbox">');
-
 			$messages = $bo->read_inbox($start,$order);
 
 			while (is_array($messages) && list(,$message) = each($messages))

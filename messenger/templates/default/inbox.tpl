@@ -5,16 +5,32 @@
  -->
 </STYLE>
 
+<script>
+
+function check_all()
+{
+	for (i=0; i<document.messages.elements.length; i++) {
+		if (document.messages.elements[i].type == "checkbox") {
+			if (document.messages.elements[i].checked) {
+				document.messages.elements[i].checked = false;
+			} else {
+				document.messages.elements[i].checked = true;
+			}
+		} 
+	}
+}
+</script>
+
 {app_header}
 
-<form action="{form_action}" method="POST">
+<form action="{form_action}" method="POST" name="messages">
  <table border="0" width="95%" align="center" bgcolor="#DCDCDC">
   <tr>
    <td>
  
     <table border="0" width="100%" cellpadding="2" cellspacing="1">
      <tr bgcolor="#FFFFCC">
-      <td width="1%" align="center">{header_checkbox}</td>
+      <td width="1%" align="center"><input type="checkbox" onClick="check_all()"></td>
       <td width="1%">&nbsp;</td>
       <td width="8%">{lang_date}</td>
       <td width="27%">{lang_from}</td>
