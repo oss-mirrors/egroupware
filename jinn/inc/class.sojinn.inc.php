@@ -43,16 +43,16 @@
 
 			$this->phpgw_db->free();
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
-
 			$this->phpgw_db->next_record();
 
 			$this->site_db 				= CreateObject('phpgwapi.db');
-			$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+			//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+			// FIXME if db_host is set it gives error messages, but why???
 			$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
 			$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
 			$this->site_db->User		= $this->phpgw_db->f('site_db_user');
 			$this->site_db->Password	= $this->phpgw_db->f('site_db_password');
-
+			//die($this->phpgw_db->f('site_db_host'));
 		}
 
 		function site_close_db_connection()
@@ -110,7 +110,6 @@
 
 		function get_table_names($site_id)
 		{
-
 			$this->site_db_connection($site_id);
 			$tables=$this->site_db->table_names();
 			return $tables;
