@@ -75,15 +75,43 @@
 
 		function del_account($row)
 		{
+			$ac_id = (int) $row['account_id'];
+			if (!$ac_id) {
+				return;
+			}
+
 			define('plain_page', 1);
 			require($GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum/".sprintf("%u", crc32($GLOBALS['phpgw_info']['user']['domain']))."/include/GLOBALS.php");
+
+			if (!empty($GLOBALS['phpgw_info']['server']['use_adodb'])) {
+				// open your own connection, as ADOdb does not export the use Link_ID
+			        switch ($GLOBALS['phpgw_info']['server']['db_type']) {
+			        	case 'mysql':
+			                	$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'mysql_pconnect' : 'mysql_connect';
+						define('fud_sql_lnk',$func($GLOBALS['phpgw']->db->Host, $GLOBALS['phpgw']->db->User, $GLOBALS['phpgw']->db->Password));
+			                        mysql_select_db($GLOBALS['phpgw']->db->Database,fud_sql_lnk);
+						break;
+					case 'pgsql':
+			                	$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'pg_pconnect' : 'pg_connect';
+			                        define('fud_sql_lnk',$func('dbname='.$GLOBALS['phpgw']->db->Database.
+			                        	' host='.$GLOBALS['phpgw']->db->Host.
+			                        	' user='.$GLOBALS['phpgw']->db->User.
+			                                ' password='.$GLOBALS['phpgw']->db->Password));
+						break;
+					default:
+			                	die('FUDforum only supports mysql or pgsql !!!');
+				}
+				unset($func);
+			} else {
+				define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
+			}
 
 			fud_use('db.inc');
 			fud_use('private.inc');
 			fud_use('users_reg.inc');
 			fud_use('users_adm.inc', true);
-
-			$id = q_singleval("SELECT id FROM phpgw_fud_users WHERE egw_id=".$row['account_id']);
+			$GLOBALS['DBHOST_TBL_PREFIX'] = 'phpgw_fud_';
+			$id = q_singleval("SELECT id FROM phpgw_fud_users WHERE egw_id=".$ac_id);
 			if ($id) {
 				usr_delete($id);
 			}
