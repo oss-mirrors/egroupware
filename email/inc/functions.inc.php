@@ -15,31 +15,36 @@
         . "</b></center>";
      exit;
   }
-  
-  function decode_header_string($hed_str)
-  {
+
+  function decode_header_string($string) {
     global $phpgw;
-    $output = "Empty String";
-    if($hed_str)
-    {
-      if(substr($hed_str, 0, 2) == "=?")
-      {
-	      $start_pos = strpos($hed_str, "?", 2);
-	      $type = substr($hed_str, $start_pos + 1, 1);
-	      $newstr = substr($hed_str, $start_pos + 3, strlen($hed_str) - ($start_pos + 5));
-      	if (strtoupper($type) == "Q")
-	      {
-	        $output = str_replace("_", " " , $phpgw->msg->qprint($newstr));
-	      }
-	      if (strtoupper($type) == "B")
-	      {
-	        $output = base64_decode($newstr);
-	      }
-      }	else {
-	      $output = $hed_str;
+
+    if($string) {
+      $pos = strpos($string,"=?");
+      if(!is_int($pos)) { return $string; }
+      $preceding = substr($string,0,$pos); // save any preceding text
+      $end = strlen($string);
+      $search = substr($string,$pos+2,$end - $pos - 2 ); // the mime header spec says this is the longest a single encoded word can be
+      $d1 = strpos($search,"?");
+      if(!is_int($d1)) { return $string; }
+      $charset = strtolower(substr($string,$pos+2,$d1));
+      $search = substr($search,$d1+1);
+      $d2 = strpos($search,"?");
+      if(!is_int($d2)) { return $string; }
+      $encoding = substr($search,0,$d2);
+      $search = substr($search,$d2+1);
+      $end = strpos($search,"?=");
+      if(!is_int($end)) { return $string; }
+      $encoded_text = substr($search,0,$end);
+      $rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
+      if(strtoupper($encoding) == "Q") {
+	$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
       }
-    }
-    return $output;
+      if (strtoupper($encoding) == "B") {
+        $decoded = base64_decode($encoded_text);
+      }
+      return $preceding . $decoded . decode_header_string($rest);
+    } else return $string;
   }
 
   function list_folders($mailbox)
