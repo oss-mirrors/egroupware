@@ -25,7 +25,7 @@
 ?>
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
-<form action="<?php echo $phpgw->link("folder.php")?>" method="post">
+<form action="<?php echo $phpgw->link("/email/folder.php")?>" method="post">
 <tr><td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
 
 	<table border=0 cellpadding=0 cellspacing=1 width=100%>
@@ -72,7 +72,7 @@
         $tr_color = $phpgw_info["theme"]["row_on"];
 	echo "<tr bgcolor=$tr_color><td><font size=2 face="
 	   . $phpgw_info["theme"]["font"] . ">";
-	echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
+	echo "<a href=\"" . $phpgw->link("/email/index.php","folder=INBOX")
 	   . "\">INBOX</a></font></td>";
 	echo "<td width=20%><font size=2 face="
 	   . $phpgw_info["theme"]["font"] . ">";
@@ -96,7 +96,7 @@
 
 	$url_nm = urlencode($nm);
 
-	echo "<a href=\"" . $phpgw->link("index.php","folder=$url_nm")
+	echo "<a href=\"" . $phpgw->link("/email/index.php","folder=$url_nm")
 	   . "\">$nm</a></font></td>";
 	echo "<td width=20%><font size=2 face=$theme[font]>";
 
@@ -107,7 +107,7 @@
      }
   } else {
      echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face=$theme[font]>";
-     echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
+     echo "<a href=\"" . $phpgw->link("/email/index.php","folder=INBOX")
         . "\">INBOX</a></font></td>";
      echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);

@@ -62,14 +62,14 @@
   if ($rc) {
 //    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
     $return = ereg_replace ("^\r\n", "", $return);
-    header("Location: " . $phpgw->link("index.php","folder=" . urlencode($return)) );
+    header("Location: " . $phpgw->link("/email/index.php","folder=" . urlencode($return)) );
   } else {
     echo "Your message could <B>not</B> be sent!<BR>\n";
     echo "The mail server returned:<BR>".
          "err_code: '".$phpgw->send->err["code"]."';<BR>".
          "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n".
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
-    echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
+    echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("/email/index.php","cd=13&folder=" . urlencode($return))."\">here</a>";
   }
   $phpgw->common->phpgw_footer();
 ?>
