@@ -53,7 +53,7 @@ function mail_ticket($ticket_id) {
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if ($rc) {
 //    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
-    header("Location: " . $phpgw->link("index.php","folder=" . urlencode($return)) );
+    header("Location: " . $phpgw->link("index.php"));
   } else {
     echo "Your message could <B>not</B> be sent!<BR>\n";
     echo "The mail server returned:<BR>".
