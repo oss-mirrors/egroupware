@@ -211,7 +211,11 @@
 				'accountStatus'		=> $_accountData["accountStatus"]
 			);
 			
-			$objectClasses[]	= 'qmailUser'; 
+			if(!in_array('qmailUser',$objectClasses) &&
+				!in_array('qmailuser',$objectClasses))
+			{
+				$objectClasses[]	= 'qmailuser'; 
+			}
 			
 			// the new code for postfix+cyrus+ldap
 			$newData = array 

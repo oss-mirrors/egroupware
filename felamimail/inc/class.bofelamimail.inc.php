@@ -1015,7 +1015,7 @@
 		function openConnection($_folderName='', $_options=0, $_adminConnection=false)
 		{
 			
-			if($_folderName == '')
+			if($_folderName == '' && !$_adminConnection)
 			{
 				$_folderName = $this->sessionData['mailbox'];
 			}
@@ -1044,9 +1044,9 @@
 			else
 			{
 				// get the quota for this mailboxbox
-				if (function_exists('imap_get_quotaroot'))
+				if (function_exists('imap_get_quotaroot') && !$_adminConnection)
 				{
-					$quota = imap_get_quotaroot($this->mbox, $_folderName);
+					$quota = imap_get_quotaroot($this->mbox, $folderName);
 					if(is_array($quota['STORAGE'])) 
 					{
 						$storage = $this->storageQuota = $quota['STORAGE'];
