@@ -509,7 +509,7 @@
 			{
 				case 'start':
 				case 'continue':
-					$db2 = $this->db;
+					$db2 = clone($this->db);
 					$this->db->select($this->ttracker_table,'track_id,start_date,project_id',array(
 							'employee'	=> $this->account,
 							'project_id != ' . $project_id,
@@ -599,7 +599,7 @@
 							'start_date'	=> $values['sdate'],
 							'end_date'	=> $values['sdate'],	// RalfBecker: is that correct not $values['edate'] ?
 							'minutes'	=> $values['w_minutes'],
-							'hours_descr'	=> $values['hours_descr'],
+							'hours_descr'	=> $values['hours_descr']?$values['hours_descr']:'',
 							'status'	=> $values['action'],
 							'remark'	=> $values['remark'],
 							't_journey'	=> 0.0 + $values['t_journey'],

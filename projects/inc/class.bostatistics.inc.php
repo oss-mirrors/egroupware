@@ -464,7 +464,7 @@
 								$graphs['ms'][$counter] = $ms;
 							
 								// Create a vertical line to emphasize the milestone
-								$vl = new GanttVLine(date('Y-m-d 12:00:00',$msData[edate]),'',$msColor,2);
+								$vl = new GanttVLine(date('Y-m-d',$msData[edate]),'',$msColor,2);
 								$vl->SetDayOffset(0.5); // Center the line in the day
 								$graphs['vl'][$counter] = $vl;
 							

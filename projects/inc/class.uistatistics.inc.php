@@ -265,8 +265,7 @@
 				}
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'))
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'));
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'stats_projectlist.tpl'));
@@ -375,13 +374,13 @@
 
 				$GLOBALS['phpgw']->template->set_var(array
 				(
-					'number'		=> $pro[$i]['number'],
-					'title'			=> ($pro[$i]['title']?$pro[$i]['title']:lang('browse')),
+					'number'	=> $pro[$i]['number'],
+					'title'		=> ($pro[$i]['title']?$pro[$i]['title']:lang('browse')),
 					'projects_url'	=> $projects_url,
-					'sdate'			=> $pro[$i]['sdateout'],
-					'edate'			=> $pro[$i]['edateout'],
+					'sdate'		=> $pro[$i]['sdateout'],
+					'edate'		=> $pro[$i]['edateout'],
 					'coordinator'	=> $pro[$i]['coordinatorout'],
-					'view_img'		=> $GLOBALS['phpgw']->common->image('phpgwapi','view'),
+					'view_img'	=> $GLOBALS['phpgw']->common->image('phpgwapi','view'),
 					'radio_user_checked'	=> $_POST['viewuser']?(in_array($pro[$i]['project_id'],$pro_user)?' checked':''):'',
 					'project_id'	=> $pro[$i]['project_id']
 				));
@@ -460,8 +459,7 @@
 				}
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('User statistics')
-															. $this->admin_header_info();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('User statistics');
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('user_list_t' => 'stats_userlist.tpl'));

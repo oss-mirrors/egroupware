@@ -34,7 +34,7 @@
 		function soconfig()
 		{
 			$this->db		= $GLOBALS['phpgw']->db;
-			$this->db2		= $this->db;
+			$this->db2		= clone($this->db);
 			$this->currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
@@ -107,22 +107,22 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query('SELECT id,a_number,descr,billperae FROM phpgw_p_activities ORDER BY descr asc');
-			while ($this->db->next_record())
+			$this->db2->query('SELECT id,a_number,descr,billperae FROM phpgw_p_activities ORDER BY descr asc');
+			while ($this->db2->next_record())
 			{
-				$activities_list .= '<option value="' . $this->db->f('id') . '"';
+				$activities_list .= '<option value="' . $this->db2->f('id') . '"';
 				for ($i=0;$i<count($selected);$i++)
 				{
-					if($selected[$i]['activity_id'] == $this->db->f('id'))
+					if($selected[$i]['activity_id'] == $this->db2->f('id'))
 					{
 						$activities_list .= ' selected';
 					}
 				}
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db2->f('descr')) . ' ['
+										. $GLOBALS['phpgw']->strip_html($this->db2->f('a_number')) . ']';
 				if($billable)
 				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db2->f('billperae') . ' ' . $this->bill_lang();
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -147,14 +147,14 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query('SELECT a.id, a.a_number, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa'
+			$this->db2->query('SELECT a.id, a.a_number, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa'
 							. ' WHERE pa.project_id=' . intval($pro_parent) . $bill_filter . ' AND pa.activity_id=a.id ORDER BY a.descr asc');
-			while ($this->db->next_record())
+			while ($this->db2->next_record())
 			{
-				$activities_list .= '<option value="' . $this->db->f('id') . '"';
+				$activities_list .= '<option value="' . $this->db2->f('id') . '"';
 				for ($i=0;$i<count($selected);$i++)
 				{
-					if($selected[$i]['activity_id'] == $this->db->f('id'))
+					if($selected[$i]['activity_id'] == $this->db2->f('id'))
 					{
 						$activities_list .= ' selected';
 					}
@@ -165,12 +165,12 @@
 					$activities_list .= ' selected';
 				}
 
-				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
+				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db2->f('descr')) . ' ['
+										. $GLOBALS['phpgw']->strip_html($this->db2->f('a_number')) . ']';
 
 				if($billable)
 				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db2->f('billperae') . ' ' . $this->bill_lang();
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -180,22 +180,22 @@
 
 		function select_hours_activities($project_id, $activity = '')
 		{
-			$this->db->query('SELECT activity_id,a_number,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
+			$this->db2->query('SELECT activity_id,a_number,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
 							. intval($project_id) . ' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc',__LINE__,__FILE__);
 
-			while ($this->db->next_record())
+			while ($this->db2->next_record())
 			{
-				$hours_act .= '<option value="' . $this->db->f('activity_id') . '"';
-				if($this->db->f('activity_id') == intval($activity))
+				$hours_act .= '<option value="' . $this->db2->f('activity_id') . '"';
+				if($this->db2->f('activity_id') == intval($activity))
 				{
 					$hours_act .= ' selected';
 				}
-				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-									. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
+				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db2->f('descr')) . ' ['
+									. $GLOBALS['phpgw']->strip_html($this->db2->f('a_number')) . ']';
 
-				if($this->db->f('billable') == 'Y')
+				if($this->db2->f('billable') == 'Y')
 				{
-					$hours_act .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
+					$hours_act .= ' ' . $this->currency . ' ' . $this->db2->f('billperae') . ' ' . $this->bill_lang();
 				}
 				$hours_act .= '</option>' . "\n";
 			}

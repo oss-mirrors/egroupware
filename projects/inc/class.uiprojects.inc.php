@@ -516,8 +516,8 @@
 				{
 					case 'number':			$cname = lang('project id'); $db = 'p_number'; break;
 					case 'priority':		$cname = lang('priority');  $col_align= 'right';break;
-					case 'sdateout':		$cname = lang('start date'); $db = 'start_date'; $col_align= 'center'; break;
-					case 'edateout':		$cname = lang('date due'); $db = 'end_date'; $col_align= 'center'; break;
+					case 'sdate_formatted':		$cname = lang('start date'); $db = 'start_date'; $col_align= 'center'; break;
+					case 'edate_formatted':		$cname = lang('date due'); $db = 'end_date'; $col_align= 'center'; break;
 					case 'phours':			$cname = lang('time planned'); $db = 'time_planned';  $col_align= 'right';break;
 					case 'budget':			$cname = $prefs['currency'] . ' ' . lang('budget'); $col_align= 'right'; break;
 					case 'e_budget':		$cname = $prefs['currency'] . ' ' . lang('extra budget'); $col_align= 'right'; break;
@@ -534,8 +534,8 @@
 					case 'project_accounting_factor_d':		$cname = $prefs['currency'] . ' ' . lang('project') . ' ' . lang('accounting factor') . ' '
 															. lang('per day'); $db = 'acc_factor_d'; $col_align = 'right'; break;
 					case 'billableout':		$cname = lang('billable'); $db = 'billable'; $col_align= 'center';break;
-					case 'psdateout':		$cname = lang('start date planned'); $db = 'psdate'; $col_align= 'center'; break;
-					case 'pedateout':		$cname = lang('date due planned'); $db = 'pedate'; $col_align= 'center'; break;
+					case 'psdate_formatted':	$cname = lang('start date planned'); $db = 'psdate'; $col_align= 'center'; break;
+					case 'pedate_formatted':	$cname = lang('date due planned'); $db = 'pedate'; $col_align= 'center'; break;
 					case 'discountout':		$cname = lang('discount'); $db = 'discount'; $col_align= 'right'; break;
 				}
 
@@ -589,10 +589,10 @@
 							case 'phours': 
 								$col_align = 'right'; 
 								break;
-							case 'sdateout':
-							case 'edateout':
-							case 'psdateout':
-							case 'pedateout':
+							case 'sdate_formatted':
+							case 'edate_formatted':
+							case 'psdate_formatted':
+							case 'pedate_formatted':
 							case 'billableout': 
 								$col_align = 'center'; 
 								break;
@@ -1381,19 +1381,17 @@
 			{
 				if($action == 'mains')
 				{
-// ------------ activites bookable ----------------------
-
+					// ------------ activites bookable ----------------------
 					$GLOBALS['phpgw']->template->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
 
-// -------------- activities billable ---------------------- 
-
-	    			$GLOBALS['phpgw']->template->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
+					// -------------- activities billable ----------------------
+					$GLOBALS['phpgw']->template->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
 					$GLOBALS['phpgw']->template->fp('accounting_acthandle','accounting_act',True);
 				}
 				else
 				{
 					$GLOBALS['phpgw']->template->set_var('book_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_main, False));				
-    				$GLOBALS['phpgw']->template->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_main, True));
+    					$GLOBALS['phpgw']->template->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_main, True));
 					$GLOBALS['phpgw']->template->fp('accounting_acthandle','accounting_act',True);
 				}
 			}

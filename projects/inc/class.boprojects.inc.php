@@ -1440,7 +1440,17 @@
 
 		}
 
-
+		# projects stores the time internal in following format
+		# hh.mm
+		# this function transforms it to hh:mm
+		function formatTime($_time)
+		{
+			// just the hour
+			if(!str_replace('.',':',$_time))
+				return $_time.":00";
+				
+			return str_replace('.',':',$_time);
+		}
 		
 		function type($action)
 		{
@@ -2098,17 +2108,20 @@
 		{
 			$event_extra = $this->soconfig->get_event_extra($action=='budget'?'budget limit':'hours limit');
 
-			//echo 'EXTRA: ' . $event_extra . '<br>';
-			//echo 'limit: ' . $limit . '<br>';
 			$used_percent = ($limit*intval($event_extra))/100;
-			//echo 'percent: ' . $used_percent . '<br>';
-			//echo 'used: ' . $used . '<br>';
+
 			if($this->html_output && ($used > $used_percent))
 			{
-			//echo 'used > $used_percent: ' . $used . '>' . $used_percent . '<br><br>';
-				return '<font color="#CC0000"><b>' . sprintf("%01.2f",$value) . '</b></font>';
+				if($action == 'hours')
+					return '<font color="#CC0000"><b>' . $this->formatTime($value) . '</b></font>';
+				else
+					return '<font color="#CC0000"><b>' . sprintf("%01.2f",$value) . '</b></font>';
 			}
-			return sprintf("%01.2f",$value);
+			
+			if($action == 'hours')
+				return $this->formatTime($value);
+			else
+				return sprintf("%01.2f",$value);
 		}
 
 		function formatted_priority($pri = 0)
@@ -2224,7 +2237,7 @@
 						'psdate_formatted'	=> $this->formatted_edate($pro['psdate'],False),
 						'pedate_formatted'	=> $this->formatted_edate($pro['pedate'],False),
 						'previous_formatted'	=> $this->return_value('pro',$pro['previous']),
-						'phours'		=> ($pro['ptime']/60) . '.00',
+						'phours'		=> ($pro['ptime']/60) . ':00',
 						'budgetSum'		=> $pro['budgetSum'],
 						'budget'		=> $pro['budget'],
 						'e_budget'		=> $pro['e_budget'],
@@ -2249,20 +2262,20 @@
 						'inv_method'		=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
 						'discount'		=> $pro['discount'],
 						'discount_type'		=> $pro['discount_type'],
-						'uhours_pro'		=> $uhours_pro,      //$acc['uhours_pro']?$acc['uhours_pro']:'0.00',
-						'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0.00',
-						'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0.00',
-						'uhours_jobs'		=> $uhours_jobs,     //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
-						'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
-						'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0.00',
-						'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
-						'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
+						'uhours_pro'		=> $uhours_pro,      //$acc['uhours_pro']?$acc['uhours_pro']:'0:00',
+						'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0',
+						'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0',
+						'uhours_jobs'		=> $uhours_jobs,     //$acc['uhours_jobs']?$acc['uhours_jobs']:'0',
+						'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0',
+						'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0',
+						'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0',
+						'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0',
 						'u_budget'		=> $ubudget_pro,     //$acc['u_budget']?$acc['u_budget']:'0.00',
 						'u_budget_jobs'		=> $ubudget_jobs,    //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
 						'a_budget'		=> $pro['budgetSum']-$acc['u_budget'],
 						'a_budget_jobs'		=> $pro['budgetSum']-$acc['u_budget_jobs'],
-						'b_budget'		=> $acc['b_budget']?$acc['b_budget']:'0.00',
-						'b_budget_jobs'		=> $acc['b_budget_jobs']?$acc['b_budget_jobs']:'0.00',
+						'b_budget'		=> $acc['b_budget']?$acc['b_budget']:'0',
+						'b_budget_jobs'		=> $acc['b_budget_jobs']?$acc['b_budget_jobs']:'0',
 					);
 				}
 			}

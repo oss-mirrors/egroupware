@@ -38,7 +38,7 @@
 		{
 			$this->db		= $GLOBALS['phpgw']->db;
 			$this->db->set_app('projects');
-			$this->db2		= $this->db;
+			$this->db2		= clone($this->db);
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->currency 	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];

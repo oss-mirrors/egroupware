@@ -51,7 +51,7 @@
 			$this->bohours					= CreateObject('projects.boprojecthours');
 			$this->boprojects				= $this->bohours->boprojects;
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
-			$this->sbox						= CreateObject('phpgwapi.sbox');
+			$this->sbox					= CreateObject('phpgwapi.sbox');
 			$this->account					= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->grants					= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
@@ -262,9 +262,9 @@
 				$GLOBALS['phpgw']->template->set_var('number_main',$main['number']);
 				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
 				$GLOBALS['phpgw']->template->set_var('url_main',$main['url']);
-				$GLOBALS['phpgw']->template->set_var('utime_main',$main['uhours_jobs']);
-				$GLOBALS['phpgw']->template->set_var('ptime_main',$main['ptime']);
-				$GLOBALS['phpgw']->template->set_var('atime_main',$main['ahours_jobs']);
+				$GLOBALS['phpgw']->template->set_var('utime_main',$this->boprojects->formatTime($main['uhours_jobs']));
+				$GLOBALS['phpgw']->template->set_var('ptime_main',$this->boprojects->formatTime($main['ptime']));
+				$GLOBALS['phpgw']->template->set_var('atime_main',$this->boprojects->formatTime($main['ahours_jobs']));
 				$GLOBALS['phpgw']->template->parse('main','project_main',True);
 			}
 
@@ -311,33 +311,33 @@
 
 // --------------- template declaration for list records -------------------------------------
 
-
+				// we call this page only for the main projcts now
 				$link_data['project_id'] = $pro[$i]['project_id'];
-				if ($action == 'mains')
-				{
-					$projects_url = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_projects&pro_main='
-								. $pro[$i]['project_id'] . '&action=subs');
-				}
-				else
-				{
+				#if ($action == 'mains')
+				#{
+				#	$projects_url = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_projects&pro_main='
+				#				. $pro[$i]['project_id'] . '&action=subs');
+				#}
+				#else
+				#{
 					$projects_url = $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours&project_id='
 									. $pro[$i]['project_id'] . '&action=hours' . '&pro_main=' . $pro_main);
-				}
+				#}
 
 				$GLOBALS['phpgw']->template->set_var(array
 				(
 					'number'			=> $pro[$i]['number'],
 					'title'				=> $pro[$i]['title']?$pro[$i]['title']:lang('browse'),
 					'projects_url'			=> $projects_url,
-					'phours'			=> $pro[$i]['phours'],
-					'uhours_pro'			=> $pro[$i]['uhours_pro'],
-					'uhours_jobs'			=> $pro[$i]['uhours_jobs'],
-					'uhours_pro_nobill'		=> $pro[$i]['uhours_pro_nobill'],
-					'uhours_jobs_nobill'		=> $pro[$i]['uhours_jobs_nobill'],
-					'uhours_pro_bill'		=> $pro[$i]['uhours_pro_bill'],
-					'uhours_jobs_bill'		=> $pro[$i]['uhours_jobs_bill'],
-					'ahours_pro'			=> $pro[$i]['ahours_pro'],
-					'ahours_jobs'			=> $pro[$i]['ahours_jobs']
+					'phours'			=> $this->boprojects->formatTime($pro[$i]['phours']),
+					'uhours_pro'			=> $this->boprojects->formatTime($pro[$i]['uhours_pro']),
+					'uhours_jobs'			=> $this->boprojects->formatTime($pro[$i]['uhours_jobs']),
+					'uhours_pro_nobill'		=> $this->boprojects->formatTime($pro[$i]['uhours_pro_nobill']),
+					'uhours_jobs_nobill'		=> $this->boprojects->formatTime($pro[$i]['uhours_jobs_nobill']),
+					'uhours_pro_bill'		=> $this->boprojects->formatTime($pro[$i]['uhours_pro_bill']),
+					'uhours_jobs_bill'		=> $this->boprojects->formatTime($pro[$i]['uhours_jobs_bill']),
+					'ahours_pro'			=> $this->boprojects->formatTime($pro[$i]['ahours_pro']),
+					'ahours_jobs'			=> $this->boprojects->formatTime($pro[$i]['ahours_jobs'])
 				));
 				$GLOBALS['phpgw']->template->parse('list','projects_list',True);
 			}
@@ -385,9 +385,9 @@
 				$GLOBALS['phpgw']->template->set_var('number_main',$main['number']);
 				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
 				$GLOBALS['phpgw']->template->set_var('url_main',$main['url']);
-				$GLOBALS['phpgw']->template->set_var('utime_main',$main['uhours_jobs']);
-				$GLOBALS['phpgw']->template->set_var('ptime_main',$main['ptime']);
-				$GLOBALS['phpgw']->template->set_var('atime_main',$main['ahours_jobs']);
+				$GLOBALS['phpgw']->template->set_var('utime_main',$this->boprojects->formatTime($main['uhours_jobs']));
+				$GLOBALS['phpgw']->template->set_var('ptime_main',$this->boprojects->formatTime($main['ptime']));
+				$GLOBALS['phpgw']->template->set_var('atime_main',$this->boprojects->formatTime($main['ahours_jobs']));
 				$GLOBALS['phpgw']->template->parse('main','project_main',True);
 			}
 
@@ -446,26 +446,41 @@
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
 
 				$hours_desr = $this->siteconfig['accounting']=='own'?$hours[$i]['hours_descr']:$hours[$i]['activity_title'];
-				if ($this->bohours->edit_perms(array('main' => $main['project_id'],'main_co' => $main['coordinator'],'status' => $hours[$i]['status'],
-													'employee' => $hours[$i]['employee'])))
+				if(empty($hours_desr)) $hours_desr=lang('no description');
+				if ($this->bohours->edit_perms
+					(
+						array
+						(
+							'main' => $main['project_id'],
+							'main_co' => $main['coordinator'],
+							'status' => $hours[$i]['status'],
+							'employee' => $hours[$i]['employee']
+						)
+					)
+				)
 				{
 					$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
 					$descr = '<a href="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '">'
-																. $hours_desr . '</a>';
+						. $hours_desr . '</a>';
 				}
 				else
 				{
 					$descr = $hours_desr;
 				}
 
-				$GLOBALS['phpgw']->template->set_var(array(
-													'employee'		=> $hours[$i]['employeeout'],
-													'hours_descr'	=> $descr,
-													'status'		=> $hours[$i]['statusout'],
-													'start_date'	=> $hours[$i]['sdate_formatted']['date'],
-													'start_time'	=> $hours[$i]['sdate_formatted']['time'],
-													'end_time'		=> $hours[$i]['edate_formatted']['time'],
-													'wh'			=> $hours[$i]['wh']['whwm']));
+				$GLOBALS['phpgw']->template->set_var
+				(
+					array
+					(
+						'employee'	=> $hours[$i]['employeeout'],
+						'hours_descr'	=> $descr,
+						'status'	=> $hours[$i]['statusout'],
+						'start_date'	=> $hours[$i]['sdate_formatted']['date'],
+						'start_time'	=> $hours[$i]['sdate_formatted']['time'],
+						'end_time'	=> $hours[$i]['edate_formatted']['time'],
+						'wh'		=> $this->boprojects->formatTime($hours[$i]['wh']['whwm'])
+					)
+				);
 
 				$link_data['menuaction'] = 'projects.uiprojecthours.view_hours';
 				$GLOBALS['phpgw']->template->set_var('view_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -482,7 +497,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('uhours_pro',$this->boprojects->colored($acc['uhours_pro'],$ptime_pro,$acc['uhours_pro_wminutes'],'hours'));
 			$GLOBALS['phpgw']->template->set_var('uhours_jobs',$this->boprojects->colored($acc['uhours_jobs'],$ptime_pro,$acc['uhours_jobs_wminutes'],'hours'));
-			$GLOBALS['phpgw']->template->set_var('ahours_jobs',$acc['ahours_jobs']);
+			$GLOBALS['phpgw']->template->set_var('ahours_jobs',$this->boprojects->formatTime($acc['ahours_jobs']));
 			$GLOBALS['phpgw']->template->set_var('phours',$ptime_pro/60 . '.00');
 
 			if ($this->bohours->add_perms(array('main' => $main['project_id'],'main_co' => $main['coordinator'])))
@@ -630,7 +645,7 @@
 					}
 					else
 					{
-						$wh = $track['hours'][$i]['wh']['whours_formatted'] . '.' . sprintf("%02d",$track['hours'][$i]['wh']['wmin_formatted']);
+						$wh = $track['hours'][$i]['wh']['whours_formatted'] . ':' . sprintf("%02d",$track['hours'][$i]['wh']['wmin_formatted']);
 					}
 
 					switch($track['hours'][$i]['status'])
@@ -878,9 +893,9 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojecthours.edit_hours',
-				'hours_id'		=> $hours_id,
+				'hours_id'	=> $hours_id,
 				'project_id'	=> $this->project_id,
-				'pro_main'		=> $pro_main,
+				'pro_main'	=> $pro_main,
 				'delivery_id'	=> $delivery_id,
 				'invoice_id'	=> $invoice_id,
 				'referer'		=> $referer
@@ -936,9 +951,9 @@
 				$GLOBALS['phpgw']->template->set_var('coordinator_main',$main['coordinatorout']);
 				$GLOBALS['phpgw']->template->set_var('customer_main',$main['customerout']);
 				$GLOBALS['phpgw']->template->set_var('url_main',$main['url']);
-				$GLOBALS['phpgw']->template->set_var('utime_main',$main['uhours_jobs']);
-				$GLOBALS['phpgw']->template->set_var('ptime_main',$main['ptime']);
-				$GLOBALS['phpgw']->template->set_var('atime_main',$main['ahours_jobs']);
+				$GLOBALS['phpgw']->template->set_var('utime_main',$this->boprojects->formatTime($main['uhours_jobs']));
+				$GLOBALS['phpgw']->template->set_var('ptime_main',$this->boprojects->formatTime($main['ptime']));
+				$GLOBALS['phpgw']->template->set_var('atime_main',$this->boprojects->formatTime($main['ahours_jobs']));
 				$GLOBALS['phpgw']->template->fp('mainhandle','main',True);
 			}
 
@@ -1040,7 +1055,7 @@
 
 			$GLOBALS['phpgw']->template->set_var('hours_billable_checked',($values['billable']=='N'?' CHECKED':''));
 			$GLOBALS['phpgw']->template->set_var('km_distance',$values['km_distance']);
-			$GLOBALS['phpgw']->template->set_var('t_journey',$values['t_journey']);
+			$GLOBALS['phpgw']->template->set_var('t_journey',$this->boprojects->formatTime($values['t_journey']));
 
 			if($this->siteconfig['accounting'] == 'activity')
 			{

@@ -1033,10 +1033,10 @@
 				'coordinatorout',
 				'customerout',
 				'customer_nr',
-				'sdateout',
-				'edateout',
-				'psdateout',
-				'pedateout',
+				'sdate_formatted',
+				'edate_formatted',
+				'psdate_formatted',
+				'pedate_formatted',
 				'previousout',
 				'phours',
 				'budget',
@@ -1057,22 +1057,22 @@
 				{
 					case 'number':			$cname = lang('project id'); break;
 					case 'priority':		$cname = lang('priority'); break;
-					case 'sdateout':			$cname = lang('start date'); break;
-					case 'edateout':			$cname = lang('date due'); break;
+					case 'sdate_formatted':		$cname = lang('start date'); break;
+					case 'edate_formatted':		$cname = lang('date due'); break;
 					case 'phours':			$cname = lang('time planned'); break;
 					case 'budget':			$cname = lang('budget'); break;
 					case 'e_budget':		$cname = lang('extra budget'); break;
-					case 'coordinatorout':	$cname = lang('coordinator'); break;
+					case 'coordinatorout':		$cname = lang('coordinator'); break;
 					case 'customerout':		$cname = lang('customer'); break;
-					case 'investment_nr':	$cname = lang('investment nr'); break;
+					case 'investment_nr':		$cname = lang('investment nr'); break;
 					case 'previousout':		$cname = lang('previous'); break;
 					case 'customer_nr':		$cname = lang('customer nr'); break;
-					case 'url':				$cname = lang('url'); break;
+					case 'url':			$cname = lang('url'); break;
 					case 'reference':		$cname = lang('reference'); break;
 					case 'accountingout':		$cname = lang('accounting'); break;
 					case 'billableout':		$cname = lang('billable'); break;
-					case 'psdateout':			$cname = lang('start date planned'); break;
-					case 'pedateout':			$cname = lang('date due planned'); break;
+					case 'psdate_formatted':	$cname = lang('start date planned'); break;
+					case 'pedate_formatted':	$cname = lang('date due planned'); break;
 					case 'discountout':		$cname = lang('discount'); break;
 					case 'mstones':			$cname = lang('milestones'); break;
 					case 'project_accounting_factor':	$cname = lang('accounting factor') . ' ' . lang('per hour'); break;
