@@ -55,7 +55,11 @@
 	$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 
 	// select what tickets to view
-	$filter = reg_var('filter','GET');
+	$filter = reg_var('filter','POST');
+	if (!$filter)
+	{
+	    $filter = reg_var('filter','GET');
+	}
 	$start  = reg_var('start','GET','numeric',0);
 	$sort   = reg_var('sort','GET');
 	$order  = reg_var('order','GET');

@@ -23,7 +23,7 @@
 	<tr>
                <td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;&nbsp;</td>
                <td align="left">
-                       <form action="{tts_search_link}" method="GET" name="search">
+                       <form action="{tts_search_link}" method="POST" name="search">
                                <select name="filter" onChange="this.form.submit();">{options_filter}</select>
                        </form>
                </td>
