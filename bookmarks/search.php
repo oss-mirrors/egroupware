@@ -17,14 +17,6 @@
   $phpgw_info["flags"]["enabled_nextmatchs_class"] = True;
   include("../header.inc.php");
 
-  // I am disabling this for temp, I need to spend more time on it.
-?>
-  <p><center> <b>Not available yet.</b> </center>
-<?php 
-  exit;
-
-  include(LIBDIR . "plist.inc");
-
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",
                                    body       => "search.body.tpl",
                                    results    => "search.results.tpl"
@@ -47,15 +39,15 @@
 
   # if we don't have a query object for this session yet,
   # then create one and save as a session variable.
-  if (!isset($q)) {
-     $q = new bk_Sql_Query;
-     $sess->register("q");
-  }
+//  if (!isset($q)) {
+//     $q = new bk_Sql_Query;
+//     $sess->register("q");
+//  }
 
   # if a WHERE clause was specified in the URL, then use it
-  if (isset($where)) {
-     $q->query = base64_decode($where);
-  }
+//  if (isset($where)) {
+//     $q->query = base64_decode($where);
+//  }
 
   ## Check if there was a submission
   while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
@@ -108,7 +100,7 @@
     }
 
     ## Update bookmark information.
-    $query = sprintf("update search set query='%s' where id=%s and username='%s'", addslashes($q->query), $search, $auth->auth["uname"]);
+    $query = sprintf("update bookmarks_search set query='%s' where id=%s and username='%s'", addslashes($q->query), $search, $phpgw_info["user"]["account_id"]);
     $phpgw->db->query($query,__LINE__,__FILE__);
     if ($phpgw->db->Errno == 0) {
        $msg .= "<br>Saved Search changed sucessfully.";
@@ -131,7 +123,7 @@
     }
 
     ## Delete that bookmark.
-    $query = sprintf("delete from search where id='%s' and username='%s'", $search, $auth->auth["uname"]);
+    $query = sprintf("delete from bookmarks_search where id='%s' and username='%s'", $search, $phpgw_info["user"]["account_id"]);
     $db->query($query);
     if ($db->Errno == 0) {
       $msg .= "<br>Saved Search deleted sucessfully.";
@@ -207,14 +199,14 @@ if (isset($x)) {
 
 # load the list of previously saved searches
 # and prepare the save search form
-load_ddlb("search", $search, &$search_select, FALSE);
-$tpl->set_var(array(
+load_ddlb("bookmarks_search", $search, &$search_select, FALSE);
+$phpgw->template->set_var(array(
   SEARCH_SELECT => $search_select,
-  FORM_ACTION   => $sess->url("search.php")
+  FORM_ACTION   => $phpgw->link("search.php")
 ));
 
 # build the search form
-$tpl->set_var(QUERY_FORM, $q->form("x", $field, "qry", $sess->url("search.php")));
+$phpgw->template->set_var(QUERY_FORM, $q->form("x", $field, "qry", $phpgw->link("search.php")));
 
 if ($q->query == $noquery) {
 } else {
@@ -228,16 +220,16 @@ if ($q->query == $noquery) {
 
   print_list ($q->query, $limit, $offset, "search.php", &$bookmark_list, &$error_msg);
   
-  $tree_search_url = $sess->url( "tree.php?where=" . base64_encode($q->query));
-  $tpl->set_var(array(
+  $tree_search_url = $phpgw->link("tree.php","where=" . base64_encode($q->query));
+  $phpgw->template->set_var(array(
     QUERY_CONDITION => htmlspecialchars($q->query),
     BOOKMARK_LIST   => $bookmark_list,
     TREE_SEARCH_URL => $tree_search_url
   ));
-  $tpl->parse(QUERY_RESULTS, "results");
+  $phpgw->template->parse(QUERY_RESULTS, "results");
 }
 
-set_standard("search", &$tpl);
+set_standard("search", &$phpgw->template);
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>
