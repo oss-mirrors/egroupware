@@ -452,6 +452,9 @@
 		{
 			$subject = decode_header_string($msg->Subject);
 		}
+		// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
+		// $personal = $this->qprint_rfc_header($personal);
+		$personal = decode_header_string($personal);
 		// do we add a prefix like Re: or Fw:
 		if ($desired_prefix != '')
 		{
@@ -487,7 +490,12 @@
 		}
 		else
 		{
-			$personal = $from->personal." ($from->mailbox@$from->host)";
+			//$personal = $from->personal." ($from->mailbox@$from->host)";
+			$personal = trim($from->personal);
+			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
+			$personal = decode_header_string($personal);
+			//$personal = $this->qprint_rfc_header($personal);
+			$personal = $personal ." ($from->mailbox@$from->host)";
 		}
 		return $personal;
 	}
@@ -536,14 +544,41 @@
 		}
 	}
 
-	// ----  HTML - Related Utility Functions   -----
+	// ----  Ensure CR and LF are always together, RFC's prefer the standard CRLF  -----
+	function normalize_crlf($data)
+	{
+		// this is to catch all plain \n instances and replace them with \r\n.  
+		$data = ereg_replace("\r\n", "\n", $data);
+		$data = ereg_replace("\n", "\r\n", $data);
+		return $data;
+	}
+
+  // ----  HTML - Related Utility Functions   -----
 	function qprint($string)
 	{
 		$string = str_replace("_", " ", $string);
 		$string = str_replace("=\r\n","",$string);
 		$string = quoted_printable_decode($string);
 		return $string;
-	} 
+	}
+	
+	/*
+	// ----  RFC Header Decoding  -----
+	function qprint_rfc_header($data)
+	{
+		// SAME FUNCTIONALITY as decode_header_string()  in /inc/functions, (but Faster, hopefully)
+		// non-us-ascii chars in email headers MUST be encoded using the special format:  
+		//  =?charset?Q?word?=
+		// currently only qprint and base64 encoding is specified by RFCs
+		if (ereg("=\?.*\?(Q|q)\?.*\?=", $data))
+		{
+			$data = ereg_replace("=\?.*\?(Q|q)\?", '', $data);
+			$data = ereg_replace("\?=", '', $data);
+			$data = $this->qprint($data);
+		}
+		return $data;
+	}
+	*/
 
 	function htmlspecialchars_encode($str)
 	{

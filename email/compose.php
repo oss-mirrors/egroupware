@@ -76,7 +76,7 @@
 		// ----  Begin The Message Body  (of Fw or Re Body) -----
 		$who_wrote = $phpgw->msg->get_who_wrote($msg);
 		$lang_wrote = 'wrote';
-		$body = "\n\n\n" .$who_wrote .' '. $lang_wrote .": \n>\n";
+		$body = "\r\n"."\r\n"."\r\n" .$who_wrote .' '. $lang_wrote .': '."\r\n".'>'."\r\n";
 
 		
 		// ----  Quoted Bodystring of Fw: or Re: Message is "First Presentable" from message.php  -----
@@ -87,30 +87,49 @@
 		&& (($action == 'reply') || ($action == 'replyall')))
 		{
 			$bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+			// see if we have to un-do qprint encoding
+			if ((isset($encoding))
+			&& ($encoding == 'qprint'))
+			{
+				$bodystring = $phpgw->msg->qprint($bodystring);
+			}
+			$bodystring = $phpgw->msg->normalize_crlf($bodystring);
+
+			// ----- Remove Email "Personal Signature" from Quoted Body  -----
+			// RFC's unofficially suggest you remove the "personal signature" before quoting the body
+			// a standard sig begins with "-- CRFL", that's [dash][dash][space][CRLF]
+			// and *should* be no more than 4 lines in length, followed by a CFLF
+			//$bodystring = preg_replace("/--\s{0,1}\r\n.{1,}\r\n\r\n/smx", "BLAA", $bodystring);
+			//$bodystring = preg_replace("/--\s{0,1}\r\n(.{1,}\r\n){1,5}/smx", "", $bodystring);
+			// sig = "dash dash space CRLF (anything and CRLF) repeated 1 to 5 times"
+			//$bodystring = preg_replace("/--\s{0,1}\r\n.(?!>)(.{1,}\r\n){1,5}/smx", "", $bodystring);
+			$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
+			// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
+
+			//now is a good time to trim the body
+			trim($body);
+
+			// ----- Quote The Body You Are Replying To With >  ------
 			$body_array = array();
-			$body_array = explode("\n", $bodystring);
+			$body_array = explode("\r\n", $bodystring);
 			$bodycount = count ($body_array);
 			for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx)
 			{
-				if ($body_array[$bodyidx] != "\r")
-				{
-					//$body .= "&gt;" . $body_array[$bodyidx];
-					// I think the email needs to be sent out as if it were PLAIN text
-					// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; 
-					// it's up to the endusers MUA to handle any htmlspecialchars
-					$body .= '>' . $body_array[$bodyidx];
-					$body = chop ($body);
-					$body .= "\n";
-				}
+				// I think the email needs to be sent out as if it were PLAIN text
+				// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $gt; 
+				// it's up to the endusers MUA to handle any htmlspecialchars
+				$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+				$body .= $this_line;
 			}
-			trim ($body);
+			
 			// new - testing this
 			// I think the email needs to be sent out as if it were PLAIN text
 			// NO ENCODED HTML ENTITIES should be sent over the wire
 			// it's up to the endusers MUA to handle any htmlspecialchars
+			// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
 			$body = $phpgw->msg->htmlspecialchars_decode($body);
 		}
-		// ----  Process Multiple Body Parts (if necessary)  of Fw or Re Body  "the OLD WAY" -----
+		// ----  "the OLD WAY": Process Multiple Body Parts (if necessary)  of Fw or Re Body   -----
 		elseif (!$struct->parts)
 		{
 			$numparts = "1";

@@ -765,9 +765,15 @@
 	for ($i = 0; $i < count($part_nice); $i++)
 	{
 		if (($part_nice[$i]['m_description'] == 'presentable')
-		&& ($first_presentable == ''))
+		&& ($first_presentable == '')
+		&& ($part_nice[$i]['bytes'] > 5))
 		{
 			$first_presentable = '&part_no='.$part_nice[$i]['m_part_num_mime'];
+			// and if it is qprint then we must decode in the reply process
+			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
+			{
+				$first_presentable = $first_presentable .'&encoding=qprint';
+			}
 			break;
 		}
 	}

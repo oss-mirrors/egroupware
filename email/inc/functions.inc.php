@@ -93,6 +93,10 @@
 	}
 
 // ----  Various Functions Used To Support Email   -----
+
+  // non-us-ascii chars in email headers MUST be encoded using the special format:  
+  //  =?charset?Q?word?=
+  // currently only qprint and base64 encoding is specified by RFCs
   function decode_header_string($string)
   {
 	global $phpgw;
