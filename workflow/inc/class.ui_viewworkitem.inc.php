@@ -38,12 +38,12 @@
 
 			$this->t->set_block('view_workitem', 'block_properties', 'properties');
 			
-			if (!count($wi['properties'])) {
+			if (!count($wi['wf_properties'])) {
 				$this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
 			}
 			else {
 			
-				foreach ($wi['properties'] as $key=>$prop)
+				foreach ($wi['wf_properties'] as $key=>$prop)
 				{
 					$this->t->set_var(array(
 						'key'			=> $key,
