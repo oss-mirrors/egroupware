@@ -34,15 +34,6 @@
      $phpgw->db->query("insert into bookmarks_subcategory (name,username) values ('development','$account_id')",__LINE__,__FILE__);
   }
 
-  $phpgw->db->query("select count(*) from bookmarks_rating where username='$account_id'",__LINE__,__FILE__);
-  $phpgw->db->next_record();
-  if ($phpgw->db->f(0) == 0) {
-     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('--','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('weak','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('good','$account_id')",__LINE__,__FILE__);
-     $phpgw->db->query("insert into bookmarks_rating (name,username) values ('excellent','$account_id')",__LINE__,__FILE__);
-  }
-
   $phpgw->db->query("select count(*) from bookmarks where username='$account_id'",__LINE__,__FILE__);
   $phpgw->db->next_record();
   if ($phpgw->db->f(0) == 0) {

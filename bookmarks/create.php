@@ -145,7 +145,7 @@ if ($rating > 0) {
 
 load_ddlb("bookmarks_category", $default_category, &$category_select, FALSE);
 load_ddlb("bookmarks_subcategory", $default_subcategory, &$subcategory_select, FALSE);
-load_ddlb("bookmarks_rating", $default_rating, &$rating_select, FALSE);
+//load_ddlb("bookmarks_rating", $default_rating, &$rating_select, FALSE);
 
 # only default the public checkbox the first time the
 # page is shown. after that, show the value that the
@@ -160,20 +160,35 @@ load_ddlb("bookmarks_rating", $default_rating, &$rating_select, FALSE);
   }
 } */
 
-$phpgw->template->set_var(array(
-  FORM_ACTION            => $phpgw->link(),
-  DEFAULT_URL            => $default_url,
-  DEFAULT_NAME           => htmlspecialchars(stripslashes($default_name)),
-  DEFAULT_DESC           => htmlspecialchars(stripslashes($default_desc)),
-  DEFAULT_KEYW           => htmlspecialchars(stripslashes($default_keyw)),
-  DEFAULT_CATEGORY       => $default_category,
-  DEFAULT_SUBCATEGORY    => $default_subcategory,
-  DEFAULT_RATING         => $default_rating,
-  CATEGORY_SELECT        => $category_select,
-  SUBCATEGORY_SELECT     => $subcategory_select,
-  RATING_SELECT          => $rating_select,
-  DEFAULT_PUBLIC         => $default_public
-));
+  $rating_select = '<select name="bookmarks_rating">'
+           . ' <option value="0">--</option>'
+           . ' <option value="1">1 - ' . lang("Lowest") . '</option>'
+           . ' <option value="2">2</option>'
+           . ' <option value="3">3</option>'
+           . ' <option value="4">4</option>'
+           . ' <option value="5">5</option>'
+           . ' <option value="6">6</option>'
+           . ' <option value="7">7</option>'
+           . ' <option value="8">8</option>'
+           . ' <option value="9">9</option>'
+           . ' <option value="10">10 - ' . lang("Highest") . '</option>'
+           . '</select>';
+
+  $phpgw->template->set_var(array(
+    FORM_ACTION            => $phpgw->link(),
+    DEFAULT_URL            => $default_url,
+    DEFAULT_NAME           => htmlspecialchars(stripslashes($default_name)),
+    DEFAULT_DESC           => htmlspecialchars(stripslashes($default_desc)),
+    DEFAULT_KEYW           => htmlspecialchars(stripslashes($default_keyw)),
+    DEFAULT_CATEGORY       => $default_category,
+    DEFAULT_SUBCATEGORY    => $default_subcategory,
+    DEFAULT_RATING         => $default_rating,
+    RATING_SELECT          => $rating_select,
+    CATEGORY_SELECT        => $category_select,
+    SUBCATEGORY_SELECT     => $subcategory_select,
+    RATING_SELECT          => $rating_select,
+    DEFAULT_PUBLIC         => $default_public
+  ));
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>
