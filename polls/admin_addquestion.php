@@ -27,7 +27,7 @@
 	{
 		$phpgw->db->query("insert into phpgw_polls_desc (poll_title,poll_timestamp) values ('"
 			. addslashes($question) . "','" . time() . "')",__LINE__,__FILE__);
-		$p->set_var("message",lang("New poll has been added, now you need to add questions for this poll"));
+		$p->set_var("message",lang("New poll has been added.  You should now add some answers for this poll"));
 	}
 	else
 	{
