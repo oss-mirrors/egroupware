@@ -122,7 +122,7 @@
 			return parseText($text,$engine,$name);
 		}
 
-		function write($values)
+		function write($values,$set_host_user=True)
 		{
 			//echo "<p>bowiki::write(".print_r($values,True).")</p>";
 			$page = $this->page($values['name'],$values['lang']);
@@ -135,12 +135,16 @@
 			{
 				$page->version = 1;
 			}
+			$needs_write = False;
 			foreach(array('text','title','comment','readable','writable') as $name)
 			{
+				$needs_write = $needs_write || $page->$name != $values[$name];
 				$page->$name = $values[$name];
 			}
-			$page->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-			$page->username = $GLOBALS['phpgw_info']['user']['account_lid'];
+			if (!$needs_write) return False;	// no change => dont write it back
+
+			$page->hostname = $set_host_user ? gethostbyaddr($_SERVER['REMOTE_ADDR']) : $values['hostname'];
+			$page->username = $set_host_user ? $GLOBALS['phpgw_info']['user']['account_lid'] : $values['username'];
 
 			$page->write();
 			$GLOBALS['page'] = $page->as_array();	// we need this to track lang for new_link, sister_wiki, ...

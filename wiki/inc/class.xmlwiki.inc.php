@@ -24,25 +24,20 @@
 		}
 	}
 
-	class xmlwiki
+	include_once(PHPGW_INCLUDE_ROOT.'/wiki/inc/class.bowiki.inc.php');
+
+	class xmlwiki extends bowiki
 	{
 		var $public_functions = array(
 			'export' => True,
 		);
 
-		function xmlwiki()
+		function xmlwiki($wiki_id=0)
 		{
-			if (!is_object($GLOBALS['pagestore']))
-			{
-				$this->so = CreateObject('wiki.sowiki');
-			}
-			else
-			{
-				$this->so = &$GLOBALS['pagestore'];
-			}
+			$this->bowiki($wiki_id);	// call the constructor of the extended class
 		}
 
-		function export($name='',$lang='')
+		function export($name='',$lang='',$modified=0)
 		{
 			if (!$name) $name = $_GET['page'];
 			if (!$lang) $lang = $_GET['lang'];
@@ -50,22 +45,36 @@
 			{
 				$lang = $lang ? explode(',',$lang) : False;
 			}
+			if (!$modified) $modified = (int) $_GET['modified'];
+
 			header('Content-Type: text/xml; charset=utf-8');
 
 			$xml_doc = new xmldoc();
-			$xml_doc->add_comment('$'.'Id$');
-			$xml_doc->add_comment("eGroupWare wiki-pages matching '$name%', exported ".date('Y-m-d h:m'));
+			$xml_doc->add_comment('$'.'Id$');	// to be able to comit the file
+			$xml_doc->add_comment("eGroupWare wiki-pages matching '$name%'".
+				($lang ? " and lang in(".explode(',',$lang).')':'').
+				($modified ? " modified since ".date('Y-m-d H:m:i',$modified):'').
+				", exported ".date('Y-m-d H:m:i',$exported=time())." from $_SERVER[HTTP_HOST]");
 
 			$xml_wiki = new xmlnode('wiki');
 
-			foreach($this->so->find($name.'%','name') as $page)
+			foreach($this->find($name.'%','name') as $page)
 			{
-				if ($lang && !in_array($page['lang'],$lang)) continue;
-
-				$page = $this->so->page($page);	// read the complete page
+				if ($lang && !in_array($page['lang'],$lang)) 
+				{
+					//echo "continue as page[lang]=$page[lang] not in ".print_r($lang,True)."<br>\n";
+					continue;	// wrong language or not modified since $modified
+				}
+				$page = $this->page($page);	// read the complete page
 				$page->read();
 				$page = $page->as_array();
 				unset($page['wiki_id']);		// we dont export the wiki-id
+
+				if ($modified && $modified > $page['time']) 
+				{
+					//echo "continue as page[time]=$page[time] < $modified<br>\n";
+					continue;	// not modified since $modified
+				}
 
 				$GLOBALS['phpgw']->translation->convert($page,$GLOBALS['phpgw']->translation->charset(),'utf-8');
 
@@ -83,7 +92,7 @@
 				}
 				$xml_wiki->add_node($xml_page);
 			}
-			$xml_wiki->set_attribute('exported',date('Y-m-d h:m:i'));
+			$xml_wiki->set_attribute('exported',$exported);
 			if ($lang)
 			{
 				$xml_wiki->set_attribute('languages',implode(',',$lang));
@@ -91,6 +100,10 @@
 			if ($name)
 			{
 				$xml_wiki->set_attribute('matching',$name.'%');
+			}
+			if ($modified)
+			{
+				$xml_wiki->set_attribute('modified',$modified);
 			}
 			$xml_doc->add_root($xml_wiki);
 			$xml = $xml_doc->export_xml();
@@ -101,5 +114,67 @@
 				echo $xml;
 			}
 			return $xml;
+		}
+
+		function import($url,$debug_messages=False)
+		{
+			if (function_exists('file_get_contents'))
+			{
+				$xmldata = file_get_contents($url);
+			}
+			elseif (($xmldata = file($url)) !== False)
+			{
+				$xmldata = implode('',$xmldata);
+			}
+			//echo '<pre>'.htmlspecialchars($xmldata)."</pre>\n";
+			if (!$xmldata)
+			{
+				return False;
+			}
+			$parser = xml_parser_create();
+			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+			xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE,   0);	// need to be off, else it eats our newlines
+			xml_parse_into_struct($parser, $xmldata, $vals);
+			xml_parser_free($parser);
+
+			$imported = array();
+			foreach($vals as $val)
+			{
+				if ($val['tag'] == 'wiki')	// wiki meta-data: eg. exported=Y-m-d h:m:i or export data
+				{
+					if ($val['type'] == 'open' || $val['type'] == 'complete')
+					{
+						$meta = $val['attributes'];
+					} 
+					continue;
+				}
+				switch ($val['type'])
+				{
+					case 'open':
+						$wiki_page = $val['attributes'];
+						break;
+					case 'complete':
+						$wiki_page = $val['attributes'];
+						// fall through
+					case 'cdata':
+						$wiki_page['text'] = trim($val['value']);
+						$GLOBALS['phpgw']->translation->convert($wiki_page,'utf-8');
+						if ($this->write($wiki_page,False))
+						{
+							if ($debug_messages) 
+							{
+								echo str_pad("<b>$wiki_page[name]:$wiki_page[lang]: $wiki_page[title]</b><pre>$wiki_page[text]</pre>\n",4096);
+							}
+							$imported[] = $wiki_page['name'].':'.$wiki_page['lang'];
+						}
+						break;
+					case 'closed':
+						break;
+				}
+			}
+			return array(
+				'meta' => $meta,
+				'imported' => $imported,
+			);
 		}
 	}

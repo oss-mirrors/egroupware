@@ -1,18 +1,27 @@
 <?php
+	/**************************************************************************\
+	* eGroupWare Wiki - general initialization of the old tavi code            *
+	* http://www.egroupware.org                                                *
+	* -------------------------------------------------                        *
+	* Originaly from tavi, modified by RalfBecker@outdoor-training.de for eGW  *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+
 	// $Id$
 
-	// General initialization code.
-
 	require('lib/defaults.php');
-	//require('config.php');		// this has gone into the admin-page
 
 	$sessionid = isset($_GET['sessionid']) ? $_GET['sessionid'] : (isset($_COOKIE['sessionid']) ? $_COOKIE['sessionid'] : '');
 
 	if (!$sessionid)
 	{
-		// uncomment the next line if sitemgr should use a eGW domain different from the first one defined in your header.inc.php
+		// uncomment the next line if wiki should use a eGW domain different from the first one defined in your header.inc.php
 		// and of cause change the name accordingly ;-)
-		//$GLOBALS['phpgw_info']['server']['default_domain'] = 'other';
+		// $GLOBALS['phpgw_info']['server']['default_domain'] = 'developers';
 
 		$GLOBALS['phpgw_info']['flags'] = array(
 			'disable_Template_class' => True,
@@ -40,15 +49,20 @@
 			$GLOBALS['phpgw']->phpgw_exit();
 		}
 		// we redirect to the same page again, as we cant reset some of the defines in the API
-		$GLOBALS['phpgw']->redirect_link('/wiki/index.php',$_SERVER['QUERY_STRING']);
+		if ($_GET['action'] != 'xml')	// for the xml-export, we cant do that and dont care for these settings
+		{
+			$GLOBALS['phpgw']->redirect_link('/wiki/index.php',$_SERVER['QUERY_STRING']);
+		}
+	}
+	else
+	{
+		include('../header.inc.php');
+
+		$c = CreateObject('phpgwapi.config','wiki');
+		$c->read_repository();
+		$config = $c->config_data;
 	}
 	// if we get here, we have a sessionid
-
-	include('../header.inc.php');
-
-	$c = CreateObject('phpgwapi.config','wiki');
-	$c->read_repository();
-	$config = $c->config_data;
 
 	// anonymous sessions have no navbar !!!
 	$GLOBALS['phpgw_info']['flags']['nonavbar'] = $config['allow_anonymous'] &&
@@ -130,8 +144,3 @@
 		if(ereg("tzoff=([[:digit:]]+)", $prefstr, $result))
 		{ $TimeZoneOff = $result[1]; }
 	}
-
-	#if($Charset != '')
-	#  { header("Content-Type: text/html; charset=$Charset"); }
-
-	?>

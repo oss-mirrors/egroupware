@@ -16,13 +16,16 @@
 
 	class uimanual extends bowiki
 	{
-		var $wiki_id = 0;	// the Id of the help-system wiki
 		var $public_functions = array(
 			'view' => True,
 		);
 
 		function uimanual()
 		{
+			$this->config = CreateObject('phpgwapi.config','manual');
+			$this->config->read_repository();
+			$this->wiki_id = (int) (isset($this->config->config_data['manual_wiki_id']) ? $this->config->config_data['manual_wiki_id'] : 1);
+
 			$this->bowiki($this->wiki_id);
 
 			$GLOBALS['phpgw']->common->phpgw_header();
@@ -49,14 +52,18 @@
 			}
 			return $GLOBALS['phpgw']->link('/index.php',$args);
 		}
+		
+		function editURL()
+		{
+			return False;
+		}
 
 		function view()
 		{
+			// let the (existing) window pop up
+			echo "<script language=\"JavaScript\">\n\twindow.focus();\n</script>\n";
 			if (!isset($_GET['page']))
 			{
-				// let the (existing) window pop up
-				echo "<script language=\"JavaScript\">\n\twindow.focus();\n</script>\n";
-
 				// use the referer
 				list($referer,$query) = explode('?',$_SERVER['HTTP_REFERER']);
 				parse_str($query,$query);

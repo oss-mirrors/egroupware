@@ -26,7 +26,7 @@
 		'The new eGW Online User Manual uses the Wiki app.';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['manual']['hooks'] = array();
+	$setup_info['manual']['hooks']['admin'] = 'manual.uimanualadmin.menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['manual']['depends'][] = array(
