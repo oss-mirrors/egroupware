@@ -2209,6 +2209,17 @@
 			  .'<a href="'.$GLOBALS['phpgw']->link('/index.php').'">Click here to continue.</a>'
 			  .'</center></p>'."<br> \r\n";
 			*/
+			// special message if pref "mail_server" is not filled
+			$extra_mail_server_msg = '';
+			if (!$this->get_pref_value('mail_server', $acctnum))
+			{
+				$extra_mail_server_msg = 
+					 "<br> \r\n "
+					.lang('Mail Server').' '.lang('is not set so your administrator should set email site configuration for mail server hostname or IP address')
+					."<br> \r\n "
+					.lang('or you can use custom settings for this email account')
+					."<br> \r\n ";
+			}
 			// we could just return this text
 			$error_text_plain = 
 			  lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")."\r\n"
@@ -2216,11 +2227,18 @@
 			  ."called from: ".$called_from."\r\n"
 			  ."imap_last_error: [".$error_report."]\r\n"
 			  ."tried RH bug recovery?: [".$this->get_isset_arg('beenthere_loginerr_tryagain_buggy_cert', $acctnum)."]\r\n"
-			  .lang('if there is no obvious error, check your username and password first.')."\r\n";
+			  ."\r\n"
+			  .lang('Email Account Name').': ['.$this->get_pref_value('userid', $acctnum).']'."\r\n"
+			  .lang('Mail Server').': ['.$this->get_pref_value('mail_server', $acctnum).']'." \r\n"
+			  .lang('Mail Server Type').': ['.$this->get_pref_value('mail_server_type', $acctnum).']'." \r\n"
+			  ."\r\n"
+			  //.lang('if there is no obvious error, check your username and password first.')."<br> \r\n"
+			  .lang('if there is no obvious error, check your Email Account Name and password first.')." \r\n"
+			  .lang('then check the').' '.lang('Mail Server').', and '.lang('Mail Server Type')." \r\n"
+			  .$extra_mail_server_msg;
 			// or use this text in an html error report
 			$error_text_formatted = 
 			  lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")."<br> \r\n"
-			  ."<br> \r\n"
 			  ."<br> \r\n"
 			  ."source: email class.mail_msg_base.inc.php"."<br> \r\n"
 			  ."<br> \r\n"
@@ -2229,9 +2247,14 @@
 			  ."imap_last_error: [".$error_report."]<br> \r\n"
 			  ."tried RH bug recovery?: [".$this->get_isset_arg('beenthere_loginerr_tryagain_buggy_cert', $acctnum)."] <br> \r\n"
 			  ."<br> \r\n"
+			  .lang('Email Account Name').': ['.$this->get_pref_value('userid', $acctnum).']'."<br> \r\n"
+			  .lang('Mail Server').': ['.$this->get_pref_value('mail_server', $acctnum).']'."<br> \r\n"
+			  .lang('Mail Server Type').': ['.$this->get_pref_value('mail_server_type', $acctnum).']'."<br> \r\n"
 			  ."<br> \r\n"
-			  .lang('if there is no obvious error, check your username and password first.')."<br> \r\n"
-			  .lang('then check the').' '.lang('Email Account Name').', '.lang('Mail Server').', and '.lang('Mail Server Type')."<br> \r\n";
+			  //.lang('if there is no obvious error, check your username and password first.')."<br> \r\n"
+			  .lang('if there is no obvious error, check your Email Account Name and password first.')."<br> \r\n"
+			  .lang('then check the').' '.lang('Mail Server').', and '.lang('Mail Server Type')."<br> \r\n"
+			  .$extra_mail_server_msg;
 			// HOW we were called determines HOW we display the error 
 			if (stristr($this->ref_SERVER['REQUEST_URI'] ,'index.php?menuaction=email'))
 			{
@@ -2270,6 +2293,7 @@
 				if ($this->debug_logins > 0) { $this->dbug->out('mail_msg: login_error('.__LINE__.'): LEAVING, we were called by another app, the home page perhaps, so simple output the message and common EXIT (return causes a loop).<br>'); }
 				//echo '<center><b>'.$error_text_plain.'</b></center>';
 				echo '<center><b>'.$error_text_formatted.'</b></center>'."<br> \r\n";
+				// if we do not exit this error will loop over and over and never stop
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			// we should not get here
@@ -2574,6 +2598,8 @@
 		"read_session_cache_item", respectively, where this dataname "mailsvr_namespace" has 
 		a special handler for this purpose.
 		because this data has "database unfriendly" chars in it.
+		NEW if api nor email prefs has yet set this value, pref api will return blank string, NOW we 
+		return "localhost" instead, added that code to this function, this avoids errors of non setup.
 		@syntax  {mail.yourserver.com:143}
 		@example &#123;mail.yourserver.com:143&#125;
 		@access PRIVATE - public access is object->get_arg_value("mailsvr_namespace")
@@ -2629,11 +2655,13 @@
 			if ((!isset($mail_server))
 			|| (trim($mail_server) == ''))
 			{
-				// WE NEVER GET HERE
-				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING ON ERROR "mail_server" not set in prefs <br>'); }
-				// FIXME: CAN NOT RAISE ERROR HERE because the pref class returns valid default values so no empty return string
-				$this->login_error('mail_msg: get_mailsvr_callstr('.__LINE__.')', '', False); // if this works, false says do not retry, exit now
-				return '';
+				// WE NEVER GET HERE EXCEPT when there are (a) no custom prefs set AND (b) WHEN ADMIN DOES NOT SET THIS site wide
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): semi-ERROR, set $mail_server to fallback [localost] because prefs "mail_server" not set in prefs means 1. no custom setting and 2. ADMIN DID NOT set mailserver site setting <br>'); }
+				// FIXME: PROBLEM TO RAISE ERROR HERE because if this is blank because of (b) above, then email preferences page will error out always on this line
+				//$this->login_error('mail_msg: get_mailsvr_callstr('.__LINE__.') [admin needs to fill email site settings mailserver value]', '', False); // if this works, false says do not retry, exit now
+				//return '';
+				// NEW - just use a fallback value of "localhost", NOTE we are NOT setting the prefs, just using a fallback value here
+				$mail_server = 'localhost';
 			}
 			
 			// what's the port we should use
