@@ -187,8 +187,11 @@
 		* Display additional notes                                     *
 		\**************************************************************/
 		$history_array = $GLOBALS['phpgw']->historylog->return_array(array(),array('C'),'','',$ticket_id);
+		$i = 0;
 		while(is_array($history_array) && list(,$value) = each($history_array))
 		{
+			$GLOBALS['phpgw']->template->set_var('row_class',++$i & 1 ? 'row_off' : 'row_on');
+
 			$GLOBALS['phpgw']->template->set_var('lang_date',lang('Date'));
 			$GLOBALS['phpgw']->template->set_var('lang_user',lang('User'));
 
@@ -333,10 +336,10 @@
 
 		$GLOBALS['phpgw']->template->set_var('lang_state', lang('State'));
 		$s = id2field('phpgw_tts_states','state_name','state_id',$ticket['state']);
-		$s = ($s ? $s : '--');
-		$t = id2field('phpgw_tts_states','state_description','state_id',$ticket['state']);
-		$t = ($t ? $t : '-- Missing description --');
-		$GLOBALS['phpgw']->template->set_var('value_state',$s. ' ['.$t.'] ');
+		$GLOBALS['phpgw']->template->set_var('value_state',$s ? $s : '--');
+		$t = id2field('phpgw_tts_states','state_description','state_id',$ticket['state'],False);
+		$GLOBALS['phpgw']->template->set_var('value_state_description',
+			$t ? $t : '-- '.lang('Missing description').' --');
 
 		$GLOBALS['phpgw']->template->set_var('lang_billable_hours',lang('Billable hours'));
 		$GLOBALS['phpgw']->template->set_var('value_billable_hours',$ticket['billable_hours']);
@@ -384,7 +387,7 @@
 		while($GLOBALS['phpgw']->db->next_record())
 		{
 			$GLOBALS['phpgw']->template->set_var('update_state_value',$GLOBALS['phpgw']->db->f('transition_target_state'));
-			$GLOBALS['phpgw']->template->set_var('update_state_text',$GLOBALS['phpgw']->db->f('transition_description'));
+			$GLOBALS['phpgw']->template->set_var('update_state_text',try_lang($GLOBALS['phpgw']->db->f('transition_description')));
          $GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
 		}
 

@@ -31,14 +31,14 @@
   /**
 	* Obtain a value of a field for a given row from the database table.
 	*/
-	function id2field($table,$field,$idf,$id)
+	function id2field($table,$field,$idf,$id,$toupper=True)
 	{
 		$db=$GLOBALS['phpgw']->db;
 		$sql  = 'SELECT '.$db->db_addslashes($field).' FROM '.$db->db_addslashes($table). " WHERE ".$db->db_addslashes($idf)."=" . intval($id);
 		$db->query($sql,__FILE__,__LINE__);
 		if($db->next_record())
 		{
-			return try_lang($db->f($field,True),False,True);
+			return try_lang($db->f($field,True),False,$toupper);
 		}
 		else
 		{
