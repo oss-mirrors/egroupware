@@ -12,18 +12,30 @@
 
 	$setup_info['stocks']['name']      = 'stocks';
 	$setup_info['stocks']['title']     = 'Stock Quotes';
-	$setup_info['stocks']['version']   = '0.8.1';
+	$setup_info['stocks']['version']   = '0.8.3.001';
 	$setup_info['stocks']['app_order'] = 24;
 	$setup_info['stocks']['enable']    = 1;
 
-	$setup_info['stocks']['tables'] = '';
+	$setup_info['stocks']['tables'] = array('phpgw_stocks');
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['stocks']['hooks'][] = 'preferences';
-	$setup_info['stocks']['hooks'][] = 'home';
+	$setup_info['stocks']['hooks'] = array
+	(
+		'preferences',
+		'manual',
+		'home',
+		'add_def_pref'
+	);
 
 	/* Dependencies for this app to work */
-	$setup_info['stocks']['depends'][] = array(
+	$setup_info['stocks']['depends'][] = array
+	(
+		 'appname' => 'preferences',
+		 'versions' => Array('0.9.13','0.9.14','0.9.15')
+	);
+
+	$setup_info['stocks']['depends'][] = array
+	(
 		 'appname' => 'phpgwapi',
 		 'versions' => Array('0.9.13', '0.9.14','0.9.15')
 	);

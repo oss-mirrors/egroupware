@@ -20,7 +20,7 @@
 
 	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('stocks');
 
-	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
+	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen']['enabled'])
 	{
 		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
 		
@@ -51,9 +51,10 @@
 			$portalbox->set_controls($key,$value);
 		}
 
-		include($tmp_app_inc . '/functions.inc.php');
 		$portalbox->data = Array();
+		$stocks = CreateObject('stocks.ui');
 
-		echo "\n".'<!-- BEGIN Stock Quotes info -->'."\n".$portalbox->draw('<td>'."\n".return_quotes()."\n".'</td>')."\n".'<!-- END Stock Quotes info -->'."\n";
+		echo "\n" . '<!-- BEGIN Stock Quotes info -->' . "\n" . $portalbox->draw('<td>' . "\n" . $stocks->return_quotes() . "\n" . '</td>') . "\n"
+					. '<!-- END Stock Quotes info -->' . "\n";
 	}
 ?>
