@@ -899,7 +899,7 @@
 				}
 				if ($mailbox_status->unseen > 1) 
 				{
-					$return_data['alert_string'] .= lang('You have x new messages!',$mailbox_status->unseen);
+					$return_data['alert_string'] .= lang('You have %1 new messages!',$mailbox_status->unseen);
 				}
 				if ($mailbox_status->unseen == 0) 
 				{

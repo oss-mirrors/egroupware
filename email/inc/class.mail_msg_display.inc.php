@@ -2189,7 +2189,7 @@ class mail_msg extends mail_msg_wrappers
 			}
 			else
 			{
-				$report_this = lang("x messages have been deleted",$this->get_arg_value('td'));
+				$report_this = lang("%1 messages have been deleted",$this->get_arg_value('td'));
 			}
 		}
 		elseif (($this->get_isset_arg('tm'))
