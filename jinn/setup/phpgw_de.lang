@@ -1,0 +1,106 @@
+access rights for site succesfully editted	jinn	de	Zugriffs Rechte für Seite erfolgreich geändert
+access rights for site-object succesfully editted	jinn	de	Zugriffs Rechte für Seiten Objekte erfolgreich geändert
+access rights site-objects	jinn	de	Zugriffs Rechte zu den Objekten
+access_rights	jinn	de	Zugriffsrechte
+add	jinn	de	hinzufügen
+add %1st image	jinn	de	
+add attachent	jinn	de	Anhang hinzufügen
+add attachment	jinn	de	Anhang hinzufügen
+add attachment %1	jinn	de	Anhang %1 hinzufügen
+add image	jinn	de	Bild hinzufügen
+add image %1	jinn	de	Bild %1 hinzufügen
+add new	jinn	de	
+add new many with many relation	jinn	de	
+add new one with many	jinn	de	
+add object	jinn	de	Object hinzufügen
+add or remove	jinn	de	
+add site	admin	de	
+add site object	jinn	de	
+add site-object	jinn	de	
+all from	jinn	de	
+are you sure?	jinn	de	
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	de	
+automatic	jinn	de	automatisch
+binary	jinn	de	
+browse	jinn	de	
+browse sites	jinn	de	
+browse through object settings	admin	de	
+browses through sites	admin	de	
+cancel	jinn	de	Abbrechen
+category	jinn	de	Kategorie
+check:	jinn	de	überprüfen:
+come back in edit mode for configuring plugins	jinn	de	
+configure	jinn	de	konfigurieren
+configure this view	jinn	de	
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	de	
+copy	jinn	de	kopieren
+database connection failed! <p>please recheck your settings.	jinn	de	Verbindung zur Datenbank fehlgeschlagen.<P>
+Bitte überprüfen Sie Ihre Einstellungen.
+database connection was succesfull. <p>you can go on with the site-objects	jinn	de	
+default image type (jpg, gif, png)	admin	de	
+default image width	admin	de	
+default thumb width	admin	de	
+delete	jinn	de	Löschen.
+edit	jinn	de	Bearbeiten
+export this site	jinn	de	Seite exportieren
+field plugin configuration	jinn	de	
+fields	jinn	de	Felder
+form input plugin	jinn	de	
+global configuration	jinn	de	
+global site configuration	admin	de	
+go	jinn	de	
+hidden	jinn	de	
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
+import failed	jinn	de	Import fehlegeschlagen
+import jinn-site	jinn	de	JiNN Seite importieren
+import site	jinn	de	Seite importieren
+import was succesfull<br>imported one site with	jinn	de	
+jinn	common	de	JiNN
+maximum image width isn\	jinn	de	
+no matchs found	jinn	de	
+please set your preferences for this application	jinn	de	
+real value	jinn	de	
+record	jinn	de	
+record added succesfully	jinn	de	
+record deleted succesfully	jinn	de	
+record succesfully copied	jinn	de	
+record succesfully deleted	jinn	de	
+record succesfully editted	jinn	de	
+related	jinn	de	
+relations for this object	jinn	de	
+remove	jinn	de	
+reset form	jinn	de	
+save	jinn	de	speichern
+search	jinn	de	suchen
+search for string	jinn	de	
+select directory	jinn	de	
+select site	jinn	de	
+select site to moderate	jinn	de	
+select site-object to moderate	jinn	de	
+select_object	jinn	de	
+set access rights	admin	de	
+set administrators for	jinn	de	
+set object moderator	jinn	de	
+show	jinn	de	anzeigen
+show all columns	jinn	de	
+show upload path	admin	de	
+site beheerders	jinn	de	
+site db host	admin	de	
+site db name	admin	de	
+site db password	admin	de	
+site db type	admin	de	
+site db user	admin	de	
+site description	admin	de	
+site id	admin	de	
+site name	admin	de	
+site title	admin	de	Seiten Titel
+site-objects	jinn	de	Seiten Objekte
+sites	jinn	de	Seiten
+start	admin	de	Start
+start at record	jinn	de	
+stop at record	jinn	de	
+t/m	jinn	de	
+test database access	jinn	de	Datenbak Zugriff testen
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	de	
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
+version	jinn	de	
