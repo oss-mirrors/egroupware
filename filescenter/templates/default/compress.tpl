@@ -62,6 +62,16 @@
 							{select_prefix}
 						</td>
 					</tr>
+					<tr class="th">
+						<td colspan="2" class="td_left">
+							<b>{lang_select_type}:<b>
+						</td>
+					</tr>
+					<tr class="row_off">
+						<td colspan="2" class="td_left">
+							{select_ptype}
+						</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>

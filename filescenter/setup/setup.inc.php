@@ -16,7 +16,7 @@
 	/* Basic information about this app */
 	$setup_info['filescenter']['name']      = 'filescenter';
 	$setup_info['filescenter']['title']     = 'FilesCenter';
-	$setup_info['filescenter']['version']   = '0.1.4';
+	$setup_info['filescenter']['version']   = '0.1.6';
 	$setup_info['filescenter']['app_order'] = 5;
 	$setup_info['filescenter']['enable']    = 1;
 

@@ -26,7 +26,7 @@
 				'mime_magic' => array('type' => 'varchar', 'precision' => 255, 'nullable' => true),
 				'friendly' => array('type' => 'varchar', 'precision' => 50, 'nullable' => false),
 				'image' => array('type' => 'blob'),
-				'proper_id' => array('type' => 'varchar', 'precision' => 4, 'nullable' => true)
+				'proper_id' => array('type' => 'varchar', 'precision' => 4)
 			),
 			'pk' => array('mime_id'),
 			'fk' => array(),

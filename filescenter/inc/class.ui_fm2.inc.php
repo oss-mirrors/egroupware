@@ -988,36 +988,8 @@
 		function upload()
 		{
 
-
-			$vfs_prefixes = CreateObject('phpgwapi.vfs_prefixes');
-
-			$prefixes = $vfs_prefixes->get_prefixes();
+			$this->get_prefix_selects($select_prefix0,$select_type0);
 			
-			$select_prefix0 = '<select name="prefix0">';
-
-			$select_prefix0 .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
-
-			foreach($prefixes as $prefix)
-			{
-				$select_prefix0 .= '<option value="'.$prefix['prefix'].'">'.$prefix['prefix'].' ('.$prefix['prefix_description'].")</option>\n";
-			}
-
-			$select_prefix0 .= '</select>';
-
-
-			$ptypes = $vfs_prefixes->get_prefixes('view',false,'t');
-			
-			$select_type0 = '<select name="type0">';
-
-			$select_type0 .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
-
-			foreach($ptypes as $prefix)
-			{
-				$select_type0 .= '<option value="'.$prefix['prefix'].'">'.$prefix['prefix'].' ('.$prefix['prefix_description'].")</option>\n";
-			}
-
-			$select_type0 .= '</select>';
-
 		
 			$this->display_app_header();
 
@@ -1049,6 +1021,61 @@
 
 			$this->display_app_footer();
 		}
+
+		/*!
+		 @function get_prefix_selects
+		 @abstract creates the selects for file id prefix and file id type
+		 @author Vinicius Cubas Brand
+		*/
+		function get_prefix_selects(&$sel_prefixes,&$sel_ptypes)
+		{
+			$vfs_prefixes = CreateObject('phpgwapi.vfs_prefixes');
+
+			$prefixes = $vfs_prefixes->get_prefixes();
+
+			
+			$sel_prefixes = '<select name="prefix0">';
+
+			$sel_prefixes .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
+
+			foreach($prefixes as $prefix)
+			{
+				$sel_prefixes .= '<option value="'.$prefix['prefix'].'">'.$prefix['prefix'].' ('.$prefix['prefix_description'].")</option>\n";
+			}
+
+			//get prefixes from projects
+
+			$boprojects = CreateObject('projects.boprojects',True,'mains');
+			$projs = $boprojects->list_projects(array('action' => 'mains'));
+
+			foreach($projs as $proj)
+			{
+				$sel_prefixes .= '<option value="'.$proj['number'].'">'.$proj['number'].' ('.$proj['title'].")</option>\n";
+			}
+
+
+			$sel_prefixes .= '</select>';
+
+
+
+
+			$ptypes = $vfs_prefixes->get_prefixes('view',false,'t');
+			
+			$sel_ptypes = '<select name="type0">';
+
+			$sel_ptypes .= '<option value="">('.lang('None').")</option>\n";
+
+			$sel_ptypes .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
+
+			foreach($ptypes as $prefix)
+			{
+				$sel_ptypes .= '<option value="'.$prefix['prefix'].'">'.$prefix['prefix'].' ('.$prefix['prefix_description'].")</option>\n";
+			}
+
+			$sel_ptypes .= '</select>';
+
+		}
+
 
 		/*!
 		 @function properties
@@ -1730,22 +1757,9 @@
 		function compress()
 		{
 
-			$vfs_prefixes = CreateObject('phpgwapi.vfs_prefixes');
 
-			$prefixes = $vfs_prefixes->get_prefixes();
-			
-			$select_prefix0 = '<select name="formvar[arch_prefix]">';
-
-			$select_prefix0 .= '<option value="'.$this->user_info['account_lid'].'">'.$this->user_info['account_lid']."</option>\n";
-
-			foreach($prefixes as $prefix)
-			{
-				$select_prefix0 .= '<option value="'.$prefix['prefix'].'">'.$prefix['prefix'].' ('.$prefix['prefix_description'].")</option>\n";
-			}
-
-			$select_prefix0 .= '</select>';
-
-		
+			$this->get_prefix_selects($select_prefix0,$select_ptype0);
+	
 			if (!count($GLOBALS["_POST"]['files']))
 			{
 				header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
@@ -1762,6 +1776,7 @@
 			$this->t->set_var('lang_select_type',lang('Compression type'));
 			$this->t->set_var('lang_select_name',lang('Archive name'));
 			$this->t->set_var('lang_select_prefix',lang('File ID Prefix'));
+			$this->t->set_var('lang_select_type',lang('File Type'));
 			$this->t->set_var('lang_upload_anotherfile',lang('Add another file'));
 			$this->t->set_var('lang_strremove',lang('remove'));
 			$this->t->set_var('lang_operation',lang('Compress'));
@@ -1772,6 +1787,7 @@
 			$this->t->set_var('return_to_path',$GLOBALS['phpgw']->link('/index.php','menuaction=filescenter.ui_fm2.index&'.$this->eprintf('path='.$this->path)));
 			$this->t->set_var('files_list',urlencode(serialize($GLOBALS['_POST']['files'])));
 			$this->t->set_var('select_prefix',$select_prefix0);
+			$this->t->set_var('select_ptype',$select_ptype0);
 
 
 			$this->display_app_header();
@@ -1790,9 +1806,10 @@
 			$files = unserialize(urldecode($this->formvar['files_list']));
 			$compression_type = $this->formvar['type'];
 			$archname = $this->formvar['archname'];
-			$prefix = $this->formvar['arch_prefix'];
+			$prefix = get_var('prefix0',array('GET','POST'));
+			$type = get_var('type0',array('GET','POST')); 
 		
-			$this->bo->fileCompress($files,$archname,$compression_type,$this->path,$prefix);
+			$this->bo->fileCompress($files,$archname,$compression_type,$this->path,$prefix,$type);
 			header('Location: '.$this->return_to_path);
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
