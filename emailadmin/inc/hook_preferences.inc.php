@@ -11,19 +11,16 @@
 	/* $Id$ */
 
 	{
-
 // Only Modify the $file and $title variables.....
 
-	$title = $appname;
+		$title = $appname;
 		$file = Array
 		(
-			'Preferences'	=> $phpgw->link('/index.php','menuaction=notes.uinotes.preferences'),
-			'Grant Access'	=> $phpgw->link('/preferences/acl_preferences.php','acl_app=notes'),
-			'Edit categories'	=> $phpgw->link('/preferences/categories.php','cats_app=notes&cats_level=True&global_cats=True')
+			'Preferences'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=notes.uinotes.preferences'),
+			'Grant Access'	=> $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=notes'),
+			'Edit categories'	=> $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=notes&cats_level=True&global_cats=True')
 		);
-
 //Do not modify below this line
-
 		display_section($appname,$title,$file);
 	}
 ?>

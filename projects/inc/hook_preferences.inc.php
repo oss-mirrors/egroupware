@@ -13,9 +13,9 @@
 	{
 		$title = $appname;
 		$file = Array(
-			'Preferences' => $phpgw->link('/projects/preferences.php'),
-			'Grant Access' => $phpgw->link('/preferences/acl_preferences.php','acl_app=projects'),
-			'Edit categories' => $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True')
+			'Preferences' => $GLOBALS['phpgw']->link('/projects/preferences.php'),
+			'Grant Access' => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=projects'),
+			'Edit categories' => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True')
 		);
 		display_section($appname,$title,$file);
 	}

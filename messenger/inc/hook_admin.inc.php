@@ -16,7 +16,7 @@
 
 	$title = $appname;
 	$file = Array(
-		'Compose global message' => $phpgw->link('/index.php','menuaction=messenger.uimessenger.compose_global')
+		'Compose global message' => $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.compose_global')
 	);
 
 	display_section($appname,$title,$file);

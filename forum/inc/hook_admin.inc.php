@@ -12,15 +12,11 @@
   /* $Id$ */
 {
 // Only Modify the $file and $title variables.....
-$title = 'forum';
-
-        $title = $appname;
-        $file = Array(
-                'Forum Administration'    =>
-$phpgw->link('/forum/admin/index.php','appname=' .
-$appname)
-        );
+	$title = $appname;
+	$file = Array(
+		'Forum Administration' => $GLOBALS['phpgw']->link('/forum/admin/index.php','appname='.$appname)
+	);
 //Do not modify below this line
-        display_section($appname,$title,$file);
+	display_section($appname,$title,$file);
 }
 ?>
