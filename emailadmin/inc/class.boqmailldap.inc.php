@@ -166,6 +166,22 @@
 					
 					break;
 					
+				case "add_smtproute":
+					$count = count($this->sessionData[$serverid]['smtproutes']);
+				
+					$this->sessionData[$serverid]['smtproutes'][$count] =
+						sprintf("%s:%s:%s",
+							$_postVars["domain_name"],
+							$_postVars["remote_server"],
+							$_postVars["remote_port"]
+						);
+				
+					$this->sessionData[$serverid]['needActivation'] = 1;
+					
+					$this->saveSessionData();
+					
+					break;
+					
 				case "remove_locals":
 					$i=0;
 					
@@ -208,6 +224,26 @@
 					
 					break;
 					
+				case "remove_smtproute":
+					$i=0;
+					
+					while(list($key, $value) = each($this->sessionData[$serverid]['smtproutes']))
+					{
+						#print ".. $key: $value : ".$_getVars["smtproute_id"]."<br>";
+						if ($key != $_getVars["smtproute_id"])
+						{
+							$newSmtproutes[$i]=$value;
+							#print "!! $i: $value<br>";
+							$i++;
+						}
+					}
+					$this->sessionData[$serverid]['smtproutes'] = $newSmtproutes;
+				
+					$this->sessionData[$serverid]['needActivation'] = 1;
+					
+					$this->saveSessionData();
+					
+					break;
 				case "save_ldap":
 					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
 					$data = array

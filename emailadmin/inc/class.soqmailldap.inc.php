@@ -61,13 +61,21 @@
 				
 				unset($allValues[0]['rcpthosts']['count']);
 				unset($allValues[0]['locals']['count']);
+				unset($allValues[0]['smtproutes']['count']);
 				
 				$data = array
 				(
 					'rcpthosts'	=> $allValues[0]['rcpthosts'],
 					'locals'	=> $allValues[0]['locals'],
+					'smtproutes'	=> $allValues[0]['smtproutes'],
 					'ldapbasedn'	=> $allValues[0]['ldapbasedn'][0]
 				);
+				
+				#$data['smtproutes'] = array
+				#(
+				#	'0'	=> 't-online.de:smtprelay.t-online.de:25',
+				#	'1'	=> 't-dialin.net:smtprelay.t-online.de:25'
+				#);
 				
 				if (isset($allValues[0]['ldaplocaldelivery'][0]))
 				{
@@ -254,6 +262,7 @@
 			
 			$ldapData['rcpthosts']		= $_data['rcpthosts'];
 			$ldapData['locals']		= $_data['locals'];
+			$ldapData['smtproutes']		= $_data['smtproutes'];
 			
 			ldap_modify($ds,$storageData['ldap_basedn'],$ldapData);
 		}

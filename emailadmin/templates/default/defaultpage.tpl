@@ -1,4 +1,4 @@
-[B<!-- BEGIN main -->
+<!-- BEGIN main -->
 <center>
 <table border="0" cellspacing="1" cellpading="0" width="95%">
 <tr>
