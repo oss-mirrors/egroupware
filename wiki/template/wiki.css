@@ -1,0 +1,50 @@
+/* WikkiTikkiTavi default style sheet. */
+/* $Id$ */
+body
+  { background-color: #f5f5f5;
+    color:            #000000;
+    margin-right:     3%;
+    margin-left:      3%; }
+a:link
+  { color:      #97694f;
+    background: transparent; }
+a:visited
+  { color:      #4e2f2f;
+    background: transparent; }
+a:active
+  { color:      #7f3030;
+    background: transparent; }
+a.title
+  { text-decoration: none; }
+img
+  { border: 0; }
+div.logo
+  { float: right; }
+table.diff
+  { width: 95%; }
+td.diff-added
+  { background-color: #cfffcf;
+    color:            #000000; }
+td.diff-removed
+  { background-color: #ffffaf;
+    color:            #000000; }
+h1
+  { margin-bottom: 0; }
+textarea
+  { width: 100%; }
+dl, ul, ol
+  { margin-top:    0px;
+    margin-bottom: 0px; }
+form
+  { margin-top: 0px; }
+p.warning
+  { color:      #ff3f3f;
+    background: transparent; }
+span.twin
+  { font-size: smaller; }
+tt
+  { background: transparent;
+    color:      #383838; }
+pre
+  { background: transparent;
+    color:      #383838; }
