@@ -193,7 +193,7 @@
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
 				}
-				elseif ($fieldproperties[type]=='string')
+				elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string')
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';
 				}

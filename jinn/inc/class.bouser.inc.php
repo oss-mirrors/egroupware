@@ -521,7 +521,7 @@
 		 /**
 		 * get input function from plugin 
 		 */
-		 function get_plugin_fi($input_name,$value,$type)
+		 function get_plugin_fi($input_name,$value,$type,$attr_arr)
 		 {
 			global $local_bo;
 			$local_bo=$this;
@@ -544,13 +544,14 @@
 
 			   if (substr($input_name,3)==$sets[0])
 			   {
-				  if(!$input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr)) 
+					//FIXME all plugins must get an extra argument in the sf_func
+				  if(!$input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr)) 
 				  {
 				  }
 			   }
 			}
 
-			if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'');
+			if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
 
 			return $input;
 

@@ -1,5 +1,5 @@
 <?php
-/*
+   /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
    Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
@@ -20,20 +20,17 @@
    You should have received a copy of the GNU General Public License 
    along with JiNN; if not, write to the Free Software Foundation, Inc.,
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
- */
+   */
 
-class boacl 
-{
+   class boacl 
+   {
 
-	var $so;
+	  var $so;
 
-	function boacl()
-	{
-		$so = CreateObject('jinn.sojinn');
-//		die('hallo');
-	}
+	  function boacl()
+	  {
+		 $so = CreateObject('jinn.sojinn');
+	  }
 
-	/* get all sites the user has access to */ 
 
-	// this was get_sites
-	}
+   }

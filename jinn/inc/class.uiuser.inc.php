@@ -199,7 +199,7 @@
 			list($offset,$asc,$order,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','order','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
 
 			if(!$offset) $offset= $this->bo->browse_settings['offset'];
-			if(!$asc)    $asc=    $this->bo->browse_settings['asc'];
+			if(!$asc)    $asc=    $this->bo->browse_settings['asc']; // FIXME remove?
 			if(!$filter) $filter= $this->bo->browse_settings['filter'];
 			if(!$order)  $order=  $this->bo->browse_settings['order'];
 			$this->bo->browse_settings = array
@@ -211,6 +211,9 @@
 			   'filter'=>$filter
 			);
 
+			if(!$order && $default_order) $order=$default_order;
+
+			
 			$num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name']);
 
 			$limit=$this->bo->set_limits($limit_start,$limit_stop,$direction,$num_rows);

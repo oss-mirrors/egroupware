@@ -173,7 +173,10 @@
 
 		function test_db_access()
 		{
-			$GLOBALS['phpgw_info']['flags']['noheader']=True;
+		    
+			// FIXME use templates
+		   
+		   $GLOBALS['phpgw_info']['flags']['noheader']=True;
 			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
@@ -182,16 +185,16 @@
 
 			$this->ui->header(lang('Test Database Access'),false);
 
-			list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'])=explode(":",$GLOBALS[HTTP_GET_VARS]['dbvals']);
+			list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'], $data['dev_db_name'],$data['dev_db_host'],$data['dev_db_user'],$data['dev_db_password'],$data['dev_db_type']  )=explode(":",$GLOBALS[HTTP_GET_VARS]['dbvals']);
 
 			echo '<div align=center>';
 			if ($this->bo->so->test_db_conn($data))
 			{
-				echo lang("Database connection was succesfull. <P>You can go on with the site-objects");
+			   echo '<span style="color:green">'.lang("Database connection was succesfull. <P>You can go on with the site-objects").'</span>';
 			}
 			else 
 			{
-				echo lang("database connection failed! <P>Please recheck your settings.");
+			   echo '<span style="color:red">'.	lang("database connection failed! <P>Please recheck your settings.").'</span>';
 			}
 
 			echo '<P><input type=button value="'.lang('close this window').'" onClick="self.close();"></div>';

@@ -92,8 +92,6 @@
 			$this->template->set_var('form_action',$form_action);
 			$this->template->set_var('where_string_form',$where_string_form);
 			$this->template->parse('form_header','form_header');
-//			$this->template->pparse('out','form_header');
-
 
 			/* get one with many relations */
 			$relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object[relations]);
@@ -109,6 +107,7 @@
 
 			/* get all fieldproperties (name, type, etc...) */
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
+//			_debug_array($fields);
 
 			/* The main loop to create all rows with input fields start here */ 
 			foreach ( $fields as $fieldproperties )
@@ -117,10 +116,6 @@
 				$input_name='FLD'.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
 				$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
 
-				/* set max length for inputfield */
-				$input_max_length=' maxlength="'. $fieldproperties[len].'"';
-				$input_length=$fieldproperties[len];
-				if ($input_length>40) $input_length=40;
 
 				/* ---------------------- start fields -------------------------------- */
 
@@ -133,7 +128,7 @@
 					$record_identifier[value]=$value;
 				}
 
-				elseif ($fieldproperties[type]=='string')
+				elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string' ||  $fieldproperties[type]=='char')
 				{
 
 					/* If this integer has a relation get that options */
@@ -146,10 +141,16 @@
 					   $input.= $this->ui->select_options($related_fields,$value,true);
 					   $input.= '</select> ('.lang('real value').': '.$value.')';
 				   }
-				   else  $input=$this->bo->get_plugin_fi($input_name,$value,'string');
+				   else
+				   {
+					  $attr_arr=array(
+						 'max_size'=>$fieldproperties[len],
+					  );
+					  $input=$this->bo->get_plugin_fi($input_name,$value,'string', $attr_arr);
+				   }
 				}
 
-				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real')
+				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' ||  $fieldproperties[type]=='tinyint')
 				{
 					/* If this integer has a relation get that options */
 					if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
@@ -163,7 +164,7 @@
 					}
 					else
 					{	
-						$input=$this->bo->get_plugin_fi($input_name,$value,'int');
+					   $input=$this->bo->get_plugin_fi($input_name,$value,'int',$attr_arr);
 					}
 				}
 
@@ -171,7 +172,7 @@
 				{
 					if ($value)
 					{
-						$input=$this->bo->get_plugin_fi($input_name,$value,'timestamp');
+					   $input=$this->bo->get_plugin_fi($input_name,$value,'timestamp',$attr_arr);
 					}
 					else
 					{
@@ -184,14 +185,18 @@
 					$input = lang('binary');
 				}
 
-				elseif ($fieldproperties[type]=='blob') //then it is a textblob
+				elseif ($fieldproperties[type]=='text' && ereg('binary',$fieldproperties[flags]))
 				{
-					$input=$this->bo->get_plugin_fi($input_name,$value,'blob');
+					$input = lang('binary');
+				}
+				elseif ($fieldproperties[type]=='blob' || $fieldproperties[type]=='text') //then it is a textblob
+				{
+				   $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
 				}
 
 				else
 				{
-					$input=$this->bo->get_plugin_fi($input_name,$value,'string');
+				   $input=$this->bo->get_plugin_fi($input_name,$value,'string',$attr_arr);
 				}
 
 				/* if there is something to render to this */

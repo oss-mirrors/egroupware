@@ -8,7 +8,7 @@
 	<tr>
 		<td bgcolor="{th_bg}" align="left">{lang_column_name}</td>
 		<td bgcolor="{th_bg}" align="left">{lang_show_column}</td>
-		<td bgcolor="{th_bg}" align="left">{lang_default_order}</td>
+		<td bgcolor="{th_bg}" colspan="2" align="left">{lang_default_order}</td>
 	</tr>
 	{rows}
 </table>

@@ -1,9 +1,9 @@
 <?php
 	/*
 	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
-	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+	Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.egroupware.org
 
 	This file is part of JiNN
 
@@ -85,8 +85,10 @@
 				{
 					unset($checked);
 					unset($checked2);
+					unset($checked3);
 
-					if($default_order==$col) $checked2='CHECKED';
+					if($default_order=="$col ASC") $checked2='CHECKED';
+					if($default_order=="$col DESC") $checked3='CHECKED';
 					if(in_array($col,$show_cols)) $checked='CHECKED';
 					if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
 					{
@@ -96,10 +98,13 @@
 					{
 						$bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
 					}
+
+					//FIXME move to template (gabriel help??)
 					$rows.='<tr>';				
 					$rows.='<td bgcolor='.$bgclr.' align="left">'.$col.'</td>';
 					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="SHOW'.$col.'" type=checkbox '.$checked.'></td>';
-					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.'" '.$checked2.'></td>';
+					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.' ASC" '.$checked2.'>'.lang('ascending').'</td>';
+					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.' DESC" '.$checked3.'>'.lang('descending'). '</td>';
 					$rows.='</tr>';
 				}
 

@@ -71,6 +71,8 @@
 
 
 			$fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_sites');
+//			_debug_array($fields);
+//			die();
 
 
 			foreach ($fields as $fieldproperties)
@@ -137,7 +139,7 @@
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
 				}
-				elseif ($fieldproperties[type]=='string')
+				elseif ($fieldproperties[type]=='string' || $fieldproperties[type] == 'varchar')
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';
 				}
@@ -178,7 +180,7 @@
 			<script>
 			function testdbfield()
 			{
-				dbvals=document.frm.FLDsite_db_name.value+\':\'+document.frm.FLDsite_db_host.value+\':\'+document.frm.FLDsite_db_user.value+\':\'+document.frm.FLDsite_db_password.value+\':\'+document.frm.FLDsite_db_type.value;
+			   dbvals=document.frm.FLDsite_db_name.value+\':\'+document.frm.FLDsite_db_host.value+\':\'+document.frm.FLDsite_db_user.value+\':\'+document.frm.FLDsite_db_password.value+\':\'+document.frm.FLDsite_db_type.value  +\':\'+   document.frm.FLDdev_site_db_name.value+\':\'+document.frm.FLDdev_site_db_host.value+\':\'+document.frm.FLDdev_site_db_user.value+\':\'+document.frm.FLDdev_site_db_password.value+\':\'+document.frm.FLDdev_site_db_type.value;
                 sessionlink=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access').'\';
 				link=sessionlink+\'&dbvals=\'+dbvals;
 				window.open(link,\'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\');

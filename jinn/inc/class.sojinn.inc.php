@@ -59,10 +59,8 @@
 			// if servertype is develment use dev site settings else use normal settings
 			if($this->config["server_type"]=='dev' && $this->phpgw_db->f('dev_site_db_name'))
 			{
-				//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
-				// FIXME if db_host is set it gives error messages, but why???
-
-				$this->site_db->Type		= $this->phpgw_db->f('dev_site_db_type');
+				$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+				$this->site_db->type		= $this->phpgw_db->f('dev_site_db_type');
 				$this->site_db->Database	= $this->phpgw_db->f('dev_site_db_name');
 				$this->site_db->User		= $this->phpgw_db->f('dev_site_db_user');
 				$this->site_db->Password	= $this->phpgw_db->f('dev_site_db_password');
@@ -70,15 +68,13 @@
 			}
 			else
 			{
-				//$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
-				// FIXME if db_host is set it gives error messages, but why???
-
-				$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
+				$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
+				$this->site_db->type		= $this->phpgw_db->f('site_db_type');
 				$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
 				$this->site_db->User		= $this->phpgw_db->f('site_db_user');
 				$this->site_db->Password	= $this->phpgw_db->f('site_db_password');
 			}
-		}
+		 }
 
 		function site_close_db_connection()
 		{
@@ -88,27 +84,38 @@
 		function test_db_conn($data)
 		{
 			$this->site_db = CreateObject('phpgwapi.db');
-			$this->site_db->Host		= $data['db_host'];
-			$this->site_db->Type		= $data['db_type'];
-			$this->site_db->Database	= $data['db_name'];
-			$this->site_db->User		= $data['db_user'];
-			$this->site_db->Password	= $data['db_password'];
 
-			if($this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
+			// if servertype is develment use dev site settings else use normal settings
+			if($this->config["server_type"]=='dev')
 			{
-				$x=1;
+			   $this->site_db->Host	    = $data['dev_db_host'];
+			   $this->site_db->type     = $data['dev_db_type'];
+			   $this->site_db->Database = $data['dev_db_name'];
+			   $this->site_db->User     = $data['dev_db_user'];
+			   $this->site_db->Password = $data['dev_db_password'];
+
+			}
+			else
+			{
+			   $this->site_db->Host		= $data['db_host'];
+			   $this->site_db->type		= $data['db_type'];
+			   $this->site_db->Database	= $data['db_name'];
+			   $this->site_db->User		= $data['db_user'];
+			   $this->site_db->Password	= $data['db_password'];
 			}
 
-			if($this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__)) 
+			if(@$this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
+			{
+			   $this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__);
+				$this->site_close_db_connection();
+			   return true;
+			}
+			else
 			{
 				$this->site_close_db_connection();
+			   return false;
 
-				return true;
 			}
-
-			$this->site_close_db_connection();
-
-			return false;
 		}
 
 		/****************************************************************************\
