@@ -23,3 +23,4 @@
 01/27/2001: update search
 01/29/2001: updated access_field in p_projects table
 02/04/2001: added ability to auto create project/invoice/delivery ID
+02/05/2001: updated invoice_id/delivery_id/_fields in p_invoicepos/p_deliverypos tables

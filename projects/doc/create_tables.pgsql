@@ -65,7 +65,7 @@ CREATE TABLE p_invoice (
 
 CREATE TABLE p_invoicepos (
    id          serial,
-   invoice_id  varchar(11) NOT NULL,
+   invoice_id  int,
    hours_id    int
 );
 
@@ -80,7 +80,7 @@ CREATE TABLE p_delivery (
 
 CREATE TABLE p_deliverypos (
    id          serial,
-   delivery_id varchar(11) NOT NULL,
+   delivery_id int,
    hours_id    int
 );
 

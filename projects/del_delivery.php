@@ -79,6 +79,10 @@
     $phpgw->db->query("UPDATE p_delivery SET date='".time()."',num='$delivery_num' WHERE id=$delivery_id");
      }
     } 
+  if($Delivery) {
+     $t->set_var("lang_choose","");                                                                                 
+     $t->set_var("choose","");                                                                                                                  
+           }
 
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -176,10 +180,11 @@
     else
       $t->set_var(delivery_num,$phpgw->strip_html($delivery_num));
 
+  if(!$Delivery) {
      $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
      $t->set_var("lang_choose",lang("Auto generate Delivery ID ?"));                                                                                                                    
      $t->set_var("choose",$choose);
-  
+           } 
   if(!$delivery_id) {
     $date=0;
     $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"

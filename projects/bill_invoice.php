@@ -49,7 +49,8 @@
     if($phpgw->db->next_record()) {                                                                                                                                                              
     $t->set_var(invoice_hint,lang("Duplicate Invoice ID !"));                                                                                                                                    
     unset($Invoice);
-    } else {
+     } 
+      else {
       if ($choose)                                                                                                                                                                    
       $invoice_num = create_invoiceid($year);                                                                                                                                       
       else                                                                                                                                                                            
@@ -91,10 +92,12 @@
                      ."WHERE p_invoicepos.invoice_id=$invoice_id AND p_hours.id=p_invoicepos.hours_id");
     $phpgw->db->next_record();
     $db2->query("UPDATE p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id=$invoice_id");
-
-    }
-   } 
-
+     }
+    } 
+   if($Invoice) {
+     $t->set_var("lang_choose","");                                                                                
+     $t->set_var("choose","");
+      }
 
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
@@ -186,9 +189,11 @@
     else 
       $t->set_var(invoice_num,$phpgw->strip_html($invoice_num));
 
+if (!$Invoice) {     
      $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";                                                                                                            
      $t->set_var("lang_choose",lang("Auto generate Invoice ID ?"));                                                                                                                       
      $t->set_var("choose",$choose);
+     }
 
   if(!$invoice_id) { 
     $date=0;

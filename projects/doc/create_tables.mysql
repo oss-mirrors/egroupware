@@ -71,7 +71,7 @@ CREATE TABLE p_invoice (
 
 CREATE TABLE p_invoicepos (
 	id		int(11) NOT NULL auto_increment,
-	invoice_id	varchar(11) NOT NULL,
+	invoice_id	int(11) NOT NULL,
 	hours_id	int(11),
 	PRIMARY KEY (id)
 );
@@ -88,7 +88,7 @@ CREATE TABLE p_delivery (
 
 CREATE TABLE p_deliverypos (
 	id		int(11) NOT NULL auto_increment,
-	delivery_id	varchar(11) NOT NULL,
+	delivery_id	int(11) NOT NULL,
 	hours_id	int(11),
 	PRIMARY KEY (id)
 );
