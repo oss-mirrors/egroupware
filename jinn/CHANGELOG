@@ -3,6 +3,13 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.207
+Thu Jan 13 00:06:02 CET 2005
+=============================
+1 improved layout of edit object a little
+2 introduced JiNN's own css file in default
+3 started with implementation of 'default field diplay in listview'
+
 Version 0.8.206
 Thu Jan  6 17:15:14 CET 2005
 =============================
