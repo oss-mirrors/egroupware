@@ -7,6 +7,10 @@
 <!-- <center>{tts_appname}</center><p /> -->
 <!-- END tts_title -->
 
+<!-- BEGIN options_select -->
+    <option value="{optionvalue}" {optionselected}>{optionname}</option>
+<!-- END options_select -->
+
 <!-- _BEGIN tts_links -->
 
 <!-- _END tts_links -->
@@ -14,10 +18,16 @@
 <!-- BEGIN tts_search -->
 <table width="98%" cellspacing="0" cellpadding="0" border="0" align="center">
 	<tr bgcolor="{th_bg}">
-		<td colspan="2">{lang_appname}</td>
+		<td colspan="3">{lang_appname}</td>
 	</tr>
 	<tr>
-		<td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;|&nbsp;<a href="{tts_changeview_link}">{tts_changeview}</a>&nbsp;</td>
+               <td align="left"><a href="{tts_newticket_link}">{tts_newticket}</a>&nbsp;|&nbsp;<a href="{tts_prefs_link}">{lang_preferences}</a>&nbsp;&nbsp;</td>
+               <td align="left">
+                       <form action="{tts_search_link}" method="GET" name="search">
+                               <select name="filter" onChange="this.form.submit();">{options_filter}</select>
+                       </form>
+               </td>
+
 		<td align="right">
 			<form action="{tts_search_link}" method="POST" name="search">
 				<input type="hidden" name="filter" value="search">
