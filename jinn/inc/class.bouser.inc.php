@@ -27,6 +27,7 @@
    {
 	  var $public_functions = Array
 	  (
+		 'set_adv_filter'			=> True,
 		 'record_update'			=> True,
 		 'record_insert'			=> True,
 		 'multiple_records_insert'	=> True,
@@ -141,7 +142,7 @@
 			   $this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
 			}
 		
-		//	$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
+			//$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
 	  }
 
@@ -1219,6 +1220,13 @@
 		 }
 	  }
 
+		function set_adv_filter()
+		{
+		   $this->browse_settings[adv_filter_str]=$_POST[adv_filter];  
+		   $this->save_sessiondata();
+		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
+		}
+	  
 	  /**
 	  * include ALL plugins
 	  */

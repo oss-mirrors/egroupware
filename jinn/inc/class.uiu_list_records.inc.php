@@ -29,7 +29,8 @@
 	  var $public_functions = Array
 	  (
 		 'display'		=> True,
-		 'browse_objects'		=> True
+		 'browse_objects'		=> True,
+		 'advanced_filters'	=> True
 	  );
 
 	  var $bo;
@@ -127,7 +128,7 @@
 		 {
 			return lang('There are no pages');
 		 }
-		 
+
 		 if(!$current_page) $current_page=1;
 
 		 $total_pages_tmp=$total_records/$rec_per_page;
@@ -226,8 +227,8 @@
 			$pager.='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($current_page+1)).'" title="'.lang('One page forward').'">&gt;&gt;</a>';
 		 }
 
-		return $pager;
-		 
+		 return $pager;
+
 	  }
 
 	  /**
@@ -290,7 +291,7 @@
 		 ($_GET[current_page]?$_GET[current_page]:$this->bo->browse_settings['current_page']);
 
 		 $rec_per_page = $this->bo->records_per_page();
-		 
+
 		 $offset = $this->bo->get_offset($current_page,$rec_per_page);
 
 		 $filter = ($_GET[filter]?$_GET[filter]:$this->bo->browse_settings['filter']);
@@ -308,13 +309,16 @@
 		 {
 			$quick_filter = trim( $this->bo->browse_settings['quick_filter'] );
 		 }
-
+		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];
+		 
+		 
 		 $this->bo->browse_settings = array
 		 (
 			'orderby'=>$orderby,
 			'quick_filter'=>$quick_filter,
 			'filter_arr'=>$filter_arr,
-			'current_page'=>$current_page
+			'current_page'=>$current_page,
+			'adv_filter_str'=>$adv_filter_str
 		 );
 
 		 /* get one with many relations */
@@ -389,6 +393,19 @@
 			   $where_condition = '('.$where_condition.')';
 			}
 
+		 }
+
+		 //fixme start of advanced filters
+		 if($adv_filter_str)
+		 {
+			if ($where_condition) 
+			{
+			   $where_condition.= " AND ($adv_filter_str)"; 	
+			}
+			else
+			{
+			   $where_condition= " ($adv_filter_str)"; 	
+			}
 		 }
 
 		 /* which/how many column to show, all, the prefered, or the default thirst 4 */
@@ -480,7 +497,7 @@
 
 			// get pager code
 			$pager=$this->pager($current_page,$num_rows,$rec_per_page);
-			
+
 			$this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
 			$this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
 			$this->template->set_var('colfield_lang_confirm_edit_multiple',lang('Are you sure your want to edit these records?'));
@@ -511,7 +528,7 @@
 			$popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
 
 			$this->template->set_var('popuplink',$popuplink);
-			
+
 			$this->template->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_list_records.display&orderby=$orderby_link"));
 			$this->template->set_var('colhead_name',str_replace('_','&nbsp;',$display_colname));
@@ -527,7 +544,7 @@
 			unset($akey_arr);
 		 }
 
-		 
+
 		 $this->template->parse('out','header');
 		 $this->template->pparse('out','header');
 
@@ -664,6 +681,64 @@
 		 $this->bo->save_sessiondata();
 	  }
 
+	  function advanced_filters()
+	  {
+		 unset($this->bo->mult_where_array);
+
+		 // check if table exists
+		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+		 {
+			unset($this->bo->site_object_id);
+			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+			$this->bo->message['error_code']=117;
+
+			$this->bo->save_sessiondata();
+			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+		 }				
+
+		 // check if there's permission to this object
+		 if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
+		 {
+			unset($this->bo->site_object_id);
+			$this->bo->message['error']=lang('You have no access to this object');
+			$this->bo->message['error_code']=116;
+
+			$this->bo->save_sessiondata();
+			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+		 $this->ui->header('set advanced browsing filters');
+		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+
+		 $this->ui->main_menu();	
+
+		 $this->template->set_file(array(
+			'adv_filters' => 'advanced_filters.tpl',
+		 ));
+
+		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];  
+
+
+		 $this->template->set_block('adv_filters','header','header');
+		 $this->template->set_block('adv_filters','row','row');
+		 $this->template->set_block('adv_filters','footer','footer');
+
+		 $this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.set_adv_filter'));
+		 $this->template->set_var('adv_filter',$adv_filter_str);
+		 $this->template->set_var('submit',lang('submit'));
+
+
+		 $this->template->parse('out','header');
+		 $this->template->pparse('out','header');
+
+		 $this->template->parse('out','footer');
+		 $this->template->pparse('out','footer');
+
+		 $this->bo->save_sessiondata();
+
+
+	  }
 
    }
 
