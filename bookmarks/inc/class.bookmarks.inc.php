@@ -251,24 +251,23 @@
 				$values['access'] = 'public';
 			}
 
+			if (! $values['timestamps'])
+			{
+				$values['timestamps'] = time() . ',0,0';
+			}
+
 			list($category,$subcategory) = explode('|',$values['category']);
 
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
-                       . "values ('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,0,0',0)", 
+                       . "values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s','%s',0)", 
                           $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
                           $category, $subcategory, $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
-                          time());
+                          $values['timestamps']);
     
 			$db->query($query,__LINE__,__FILE__);
 
-			//$maintain_url = "maintain.php?id=".$id;
 			$msg .= 'Bookmark created sucessfully.';
-
-			// Update the PHPLIB user variable that keeps track of how
-			// many bookmarks this user has.
-			// NOTE: I need to move this into appsessions
-			$this->update_user_total_bookmarks($phpgw_info['user']['account_id']);
 
 			return true;
 		}

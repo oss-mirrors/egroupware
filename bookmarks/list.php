@@ -39,7 +39,19 @@
 		);
 		$phpgw->bookmarks->save_session_data($location_info);
 	}
-	$start         = $location_info['start'];
+
+	if (! $start && $start != 0)
+	{
+		$start = $location_info['start'];
+	}
+	else
+	{
+		$location_info = array(
+			'start'    => $start,
+			'returnto' => 'list.php'
+		);
+		$phpgw->bookmarks->save_session_data($location_info);
+	}
 
 	$phpgw->template->set_var('filter_action',$phpgw->link('list.php'));
 	$phpgw->template->set_var('lang_filter_by',lang('Filter by'));
@@ -68,8 +80,8 @@
 		'IMAGE_EXT'        => $bookmarker->image_ext
 	));
 
-	$phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left('list.php',$start,$total_bookmarks));
-	$phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right('list.php',$start,$total_bookmarks));
+	$phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left('/bookmarks/list.php',$start,$total_bookmarks));
+	$phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right('/bookmarks/list.php',$start,$total_bookmarks));
 
 	if ($total_bookmarks > $phpgw_info['user']['preferences']['common']['maxmatchs'])
 	{

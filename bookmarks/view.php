@@ -81,7 +81,6 @@
 	$phpgw->template->set_var('lang_keywords',lang('Keywords'));
 
 	$phpgw->template->set_var('lang_category',lang('Category'));
-	$phpgw->template->set_var('lang_subcategory',lang('Sub Category'));
 	$phpgw->template->set_var('lang_rating',lang('Rating'));
 
 	$phpgw->template->set_var('lang_access',lang('Access'));
@@ -94,8 +93,14 @@
 	$phpgw->template->set_var('input_desc',$phpgw->db->f('bm_desc'));
 	$phpgw->template->set_var('input_keywords',$phpgw->db->f('bm_keywords'));
 	$phpgw->template->set_var('input_rating','<img src="' . $phpgw->common->get_image_path('bookmarks') . '/bar-' . $phpgw->db->f('bm_rating') . '.jpg">');
-	$phpgw->template->set_var('input_category',$phpgw->categories->return_name($phpgw->db->f('bm_category')));
-	$phpgw->template->set_var('input_subcategory',$phpgw->categories->return_name($phpgw->db->f('bm_subcategory')));
+
+	$category    = $phpgw->strip_html($phpgw->categories->return_name($phpgw->db->f('bm_category')));
+	$subcategory = $phpgw->strip_html($phpgw->categories->return_name($phpgw->db->f('bm_subcategory')));
+	if ($subcategory)
+	{
+		$category .= ' :: ' . $subcategory;
+	}
+	$phpgw->template->set_var('input_category',$category);
 
 	$phpgw->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
 

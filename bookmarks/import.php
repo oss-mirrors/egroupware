@@ -20,7 +20,11 @@
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
-	$debug = True;
+	// Uncomment the echo line to return debugging info
+	function _debug($s)
+	{
+		//echo $s;
+	}
 
 	// possible enhancements:
 	//  give option, that if url already exists, update existing row
@@ -106,11 +110,13 @@
 
 	if ($import)
 	{
-		print ("<p><b>DEBUG OUTPUT:</b>\n");
-		print ("<br>file: " . $bkfile . "\n");
-		print ("<br>file_name: " . $bkfile_name . "\n");
-		print ("<br>file_size: " . $bkfile_size . "\n");
-		print ("<br>file_type: " . $bkfile_type . "\n<p><b>URLs:</b>\n");
+		_debug('<p><b>DEBUG OUTPUT:</b>');
+		_debug('<br>file: ' . $bkfile);
+		_debug('<br>file_name: ' . $bkfile_name);
+		_debug('<br>file_size: ' . $bkfile_size);
+		_debug('<br>file_type: ' . $bkfile_type . '<p><b>URLs:</b>');
+		_debug('<table border="1" width="100%">');
+		_debug('<tr><td>cat id</td> <td>sub id</td> <td>name</td> <td>url</td> <td>add date</td> <td>change date</td> <td>vist date</td></tr>');
 
 		if (empty($bkfile) || $bkfile == "none")
 		{
@@ -144,15 +150,20 @@
 						$scid = 0;
 						$i    = 0;
 						$keyw = '';
+
+//						echo '<br>test: ' . $folder_index;				
+
 						while ($i <= $folder_index)
 						{
 							if ($i == 0)
 							{
 								$cid = getCategory($folder_name_stack[$i]);
+								$cid = ($cid?$cid:0);
 							}
 							elseif ($i == 1)
 							{
 								$scid = getSubCategory($folder_name_stack[$i]);
+								$scid = ($scid?$scid:0);
 							}
 
 							$keyw .= ' ' . $folder_name_stack[$i];
@@ -160,6 +171,15 @@
 						}
 						$values['category'] = sprintf('%s|%s',$cid,$scid);
    					$values['url']      = $match[1];
+						$values['name']     = $match[2];
+						$values['rating']   = 0;
+
+						eregi('ADD_DATE="([^"]*)"',$line,$add_info);
+						eregi('LAST_VISIT="([^"]*)"',$line,$vist_info);
+						eregi('LAST_MODIFIED="([^"]*)"',$line,$change_info);
+
+						$values['timestamps'] = sprintf('%s,%s,%s',$add_info[1],$vist_info[1],$change_info[1]);
+
 						$bid = -1;
 						if (! $phpgw->bookmarks->add(&$bid, $values))
 						{
@@ -167,7 +187,7 @@
 							$all_errors .= $error_msg;
 						}
 
-						printf("<br>%s,%s,%s,%s,<i>%s</i>\n",$cid,$scid,$match[2],$match[1],$bid);
+						_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
 						if (! $error_msg)
 						{
 							$inserts++;
@@ -207,7 +227,7 @@
 				}
 		}
 		@fclose($fd);
-
+		_debug('</table>');
 	}
 	else
 	{
@@ -216,10 +236,6 @@
 
 	unset($msg);
 	$msg .= sprintf("<br>%s bookmarks imported from %s successfully.", $inserts, $bkfile_name);
-	if (! $debug)
-	{
-		print ("\n-->\n");
-	}
 	$error_msg = $all_errors;
 //	break;
 
