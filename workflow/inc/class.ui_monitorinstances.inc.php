@@ -22,6 +22,7 @@
 			$this->order			= get_var('order', 'any', 'wf_name');
 			$this->sort				= get_var('sort', 'any', 'asc');
 			$this->sort_mode		= $this->order . '__'. $this->sort;
+	        $this->search_str 		= get_var('search_str','any','');
 			
 			$filter_status			= get_var('filter_status', 'any', '');
 			$filter_process 		= (int)get_var('filter_process', 'any', 0);			
