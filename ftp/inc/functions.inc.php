@@ -161,7 +161,7 @@
 	function getMimeType($file)
 	{
 		$file = basename($file);
-		$mimefile = PHPGW_APP_ROOT . SEP . 'mime.types';
+		$mimefile = PHPGW_API_INC . SEP . 'phpgw_mime.types';
 		$fp = fopen($mimefile,'rb');
 		$contents = explode("\n",fread($fp, filesize($mimefile)));
 		fclose($fp);
