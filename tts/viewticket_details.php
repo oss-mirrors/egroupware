@@ -12,11 +12,10 @@
   /* $Id$ */
 
   if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "enable_send_class" => True);
+     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
 
   $phpgw_info["flags"]["currentapp"] = "tts";
-  $phpgw_info["flags"]["enable_send_class"]       = True;
   include("../header.inc.php");
   function group_list($db,$currgroup)
   {
@@ -210,7 +209,7 @@ $lstCategory=$phpgw->db->f("t_category");
       if (! empty($txtAdditional)) { $txtDetail .= $txtAdditional; }
 
       if ( $optUpdateclose == "close" ) {
-        $txtDetail .= "<br><b>".lang("Ticket closed")."</b><br>\n";
+        $txtDetail .= "<br><b>\n\n".lang("Ticket closed")."</b><br>\n";
       }
      
       if (! empty($txtAdditional)) {
