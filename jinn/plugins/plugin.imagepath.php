@@ -106,16 +106,18 @@
 
 		for($i=1;$i<=$num_input;$i++)
 		{
-			if($num_input==1) $input .=lang('add image'); 
+			if($num_input==1) $input .=lang('add image').'<input type="file" name="IMG_SRC'.$field_name.$i.'">';
+			
 			else
 			{
 				$input.='<br>';
 				$input.=lang('add image %1', $i).
 				' <input type="file" name="IMG_SRC'.$field_name.$i.'">';
 			}
+
 		}
 
-		$input.='<input type="hidden" name="FLD'.$field_name.'" value="TRUE">';
+		$input.='<input type="hidden" name="FLD'.$field_name.'" value="">';
 
 		return $input;
 	}
@@ -169,8 +171,7 @@
 		unset($image_path_new);
 
 		/* finally adding new image and if neccesary a new thumb */
-		$images_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC');
-
+		$images_to_add=$local_bo->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.substr($field_name,3));
 		// quick check for new images
 		if(is_array($images_to_add))
 		foreach($images_to_add as $imagecheck)
@@ -323,9 +324,13 @@
 		//die(var_dump($image_path_new));		
 
 		//// make return array for storage
-		if($image_path_new || $image_path_changed)
+		if($image_path_new)
 		{
 			return $image_path_new;
+		}
+		elseif($image_path_changed)
+		{
+			return null;
 		}
 
 		return '-1'; /* return -1 when there no value to give but the function finished succesfully */

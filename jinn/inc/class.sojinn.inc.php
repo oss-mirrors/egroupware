@@ -694,7 +694,9 @@
 				if ($SQLvalues) $SQLvalues .= ',';
 
 				$SQLfields .= $field[name];
-				$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'";
+//				$SQLvalues .= "'".addslashes($this->strip_magic_quotes_gpc($field[value]))."'"; // FIX THIS magic kut quotes
+				$SQLvalues .= "'".$this->strip_magic_quotes_gpc($field[value])."'"; // FIX THIS magic kut quotes
+//				$SQLvalues .= "'$field[value]'";
 			}
 
 			$SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';

@@ -92,33 +92,33 @@
 
 		function index()
 		{
-			if (!empty($this->bo->site_object_id) && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
-			{
-				$this->save_sessiondata();
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.browse_objects'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
-			}
-			else
-			{
-				unset($GLOBALS['phpgw_info']['flags']['noheader']);
-				unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
-				unset($GLOBALS['phpgw_info']['flags']['noappheader']);
-				unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
-	
-				if (!$this->bo->site_id)
-				{
-				  $this->message['info']=lang('Select site to moderate');
-				}
-				else
-				{
-				  $this->message['info']=lang('Select site-object to moderate');
-				}
-				$this->screen_title='start';
-				$this->header();
-				
-				$this->main_menu();
-				$this->save_sessiondata();
-			}
+		  if (!$this->bo->site_id)
+		  {
+			$this->message['info']=lang('Select site to moderate');
+		  }
+		  else
+		  {
+			$this->message['info']=lang('Select site-object to moderate');
+		  }
+		  if (!empty($this->bo->site_object_id) && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
+		  {
+			$this->save_sessiondata();
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.browse_objects'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		  }
+		  else
+		  {
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
+			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
+
+			$this->screen_title='start';
+			$this->header();
+
+			$this->main_menu();
+			$this->save_sessiondata();
+		  }
 		}
 
 		function header()
@@ -282,7 +282,7 @@
 				$status=$this->bo->insert_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES]);
 				if ($status==1)
 				{
-					$this->message='Record met succes toegevoegd';
+					$this->message['info']='Record met succes toegevoegd';
 				}
 
 				$this->save_sessiondata();
@@ -305,7 +305,7 @@
 				$status = $this->bo->update_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES],$where_condition);
 				if ($status==1)
 				{
-					$this->message='Record met succes gewijzigd';
+					$this->message[info]='Record met succes gewijzigd';
 				}
 
 				$this->save_sessiondata();
@@ -335,9 +335,7 @@
 
 			function del_object()
 			{
-
-
-				$status = $this->bo->delete_object_data($this->bo->site_object[table_name],$GLOBALS[where_condition]);
+				$status = $this->bo->delete_object_data($this->bo->site_object[table_name],stripslashes($GLOBALS[where_condition]));
 				if ($status==1)
 				{
 					$this->message=lang('Record succesfully deleted');

@@ -22,6 +22,8 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
+// todo:
+// extend from uijinn
 
 
 	class uiadmin
@@ -369,11 +371,18 @@
 		function del_phpgw_jinn_sites()
 		{
 			$this->del_record('phpgw_jinn_sites');
-		}
+			Header('Location: '.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.browse_phpgw_jinn_sites"));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+			$this->save_sessiondata();
+}
 
 		function del_phpgw_jinn_site_objects()
 		{
 			$this->del_record('phpgw_jinn_site_objects');
+			Header('Location: '.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.browse_phpgw_jinn_site_objects"));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+	  		$this->save_sessiondata();
+		
 		}
 
 		function insert_phpgw_jinn_sites()
@@ -493,9 +502,6 @@
 				$this->bo->message=lang('Record deleted succesfully');
 			}
 
-			Header('Location: '.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.index"));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-			$this->save_sessiondata();
 		}
 
 		function insert_record($table)
