@@ -254,7 +254,6 @@
 	  {
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
 		 $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
-
 		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
 		 $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
 		 $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
@@ -266,7 +265,7 @@
 		 }
 		 else
 		 {
-			$this->message['info'][]='Record successfully added';
+		 $this->message['info'][]='Record successfully added';
 		 }
 
 		 if($this->debug_sql==true)
@@ -532,7 +531,6 @@
 		 $table=$this->site_object[table_name];
 
 		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
-		 //			_debug_array($m2m_data);
 		 $status[o2o]=$this->o2o_update();
 
 		 $status=$this->so->update_object_many_data($this->site_id, $m2m_data);

@@ -1104,7 +1104,8 @@
 			 if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
 			 {
 				$autokey=$field['name'];
-				$value[idfield]=$field['name'];
+				//$value[idfield]=$field['name']; //FIXME: can this line be a mistake, and be deleted?
+				$status[idfield]=$field['name'];
 				continue;
 			 }
 			 if($field[value]=='' && eregi('int',$metadata[$field['name']]['type']) )
