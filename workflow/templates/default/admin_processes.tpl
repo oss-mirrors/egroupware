@@ -11,7 +11,7 @@
 
 <form action="{form_details_action}" method="post">
 <input type="hidden" name="version" value="{version}" />
-<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="wf_p_id" value="{wf_p_id}" />
 <input type="hidden" name="where" value="{where}" />
 <input type="hidden" name="find" value="{find}" />
 <input type="hidden" name="sort_mode" value="{sort_mode}" />

@@ -34,7 +34,7 @@
 			$name					= get_var('name', 'POST', '');
 			$description			= get_var('description', 'POST', '');
 			$version				= get_var('version', 'POST', '');
-			$is_active				= get_var('is_active', 'POST', '');
+			$is_active				= get_var('isActive', 'POST', '');
 			$filter					= get_var('filter', 'any', '');
 			$this->filter_active	= get_var('filter_active', 'any', '');
 			$where					= get_var('where', 'any', '');
@@ -64,6 +64,7 @@
 			// save new process
 			if (isset($_POST['save']))
 			{
+				$this->wf_p_id  = get_var('wf_p_id','POST');
 				$this->wf_p_id = $this->save_process($name, $version, $description, $is_active);
 			}
 
@@ -88,10 +89,10 @@
 			else
 			{
 				$proc_info = array(
-					'name'			=> '',
-					'description'	=> '',
-					'version'		=> '1.0',
-					'is_active'		=> 'n',
+					'wf_name'			=> '',
+					'wf_description'	=> '',
+					'wf_version'		=> '1.0',
+					'wf_is_active'		=> 'n',
 					'wf_p_id'		=> 0
 				);
 				$this->t->set_var('proc_bar', '');
