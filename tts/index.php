@@ -40,7 +40,7 @@
 	$GLOBALS['phpgw']->template->set_var('lang_appname', lang('Trouble Ticket System'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket_link', $GLOBALS['phpgw']->link('/tts/newticket.php'));
 	$GLOBALS['phpgw']->template->set_var('tts_search_link', $GLOBALS['phpgw']->link('/tts/index.php'));
-	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/tts/preferences.php'));
+	$GLOBALS['phpgw']->template->set_var('tts_prefs_link', $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=tts'));
 	$GLOBALS['phpgw']->template->set_var('lang_preferences', lang('Preferences'));
 	$GLOBALS['phpgw']->template->set_var('lang_search', lang('search'));
 	$GLOBALS['phpgw']->template->set_var('tts_newticket', lang('New ticket'));
