@@ -1512,7 +1512,7 @@
 			// BUT there  may be serialization INSIDE in a sub part
 			return False;
 		}
-		elseif (is_bool($data))
+		elseif (is_bool_ex($data))
 		{
 			// a boolean type is of course not serialized
 			return False;
@@ -1562,30 +1562,57 @@
 	*/
 	function substr_count_ex($haystack='', $needle='')
 	{
-		if (($haystack == '') || ($needle == ''))
+		if (floor(phpversion()) == 3)
 		{
-			return 0;
-		}
+			if (($haystack == '') || ($needle == ''))
+			{
+				return 0;
+			}
 
-		$crtl_struct = Array();
-		// how long is needle
-		$crtl_struct['needle_len'] = strlen($needle);
-		// how long is haystack before the replacement
-		$crtl_struct['haystack_orig_len'] = strlen($haystack);
+			$crtl_struct = Array();
+			// how long is needle
+			$crtl_struct['needle_len'] = strlen($needle);
+			// how long is haystack before the replacement
+			$crtl_struct['haystack_orig_len'] = strlen($haystack);
 		
-		// we will replace needle with a BLANK STRING
-		$crtl_struct['haystack_new'] = str_replace("$needle",'',$haystack);
-		// how long is the new haystack string
-		$crtl_struct['haystack_new_len'] = strlen($crtl_struct['haystack_new']);
-		// the diff in length between orig haystack and haystack_new diveded by len of needle = the number of occurances of needle
-		$crtl_struct['substr_count'] = ($crtl_struct['haystack_orig_len'] - $crtl_struct['haystack_new_len']) / $crtl_struct['needle_len'];
+			// we will replace needle with a BLANK STRING
+			$crtl_struct['haystack_new'] = str_replace("$needle",'',$haystack);
+			// how long is the new haystack string
+			$crtl_struct['haystack_new_len'] = strlen($crtl_struct['haystack_new']);
+			// the diff in length between orig haystack and haystack_new diveded by len of needle = the number of occurances of needle
+			$crtl_struct['substr_count'] = ($crtl_struct['haystack_orig_len'] - $crtl_struct['haystack_new_len']) / $crtl_struct['needle_len'];
 		
-		//echo '<br>';
-		//var_dump($crtl_struct);
-		//echo '<br>';
+			//echo '<br>';
+			//var_dump($crtl_struct);
+			//echo '<br>';
 		
-		// return the finding
-		return $crtl_struct['substr_count'];
+			// return the finding
+			return $crtl_struct['substr_count'];
+		}
+		else
+		{
+			return substr_count($haystack, $needle);
+		}
+	}
+
+	// PHP3 SAFE Version of "is_bool"
+	/*!
+	@function is_bool_ex
+	@abstract Find out whether a variable is boolean
+	@param $bool  mixed
+	*/
+	function is_bool_ex($bool)
+	{
+		if (floor(phpversion()) == 3)
+		{
+			// this was suggested in the user notes of the php manual
+			// yes I know there are other ways, but for now this must work in .12 and devel versions
+			return (gettype($bool) == 'boolean');
+		}
+		else
+		{
+			return is_bool($bool);
+		}
 	}
 
 	/**************************************************************************\
