@@ -27,12 +27,10 @@
 	{
 		global $phpgw_info;
 
-		$currency = $phpgw_info['user']['preferences']['common']['currency'];
-
 		$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
 					. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
 					. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
-					. '<b>' . $currency . '&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
+					. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
 					. '<b>' . lang('Time') . '</b></td></tr>';
 
 		for ($i=0;$i<count($quotes);$i++)
@@ -139,7 +137,7 @@
 				}
 				$i++;
 			}
-     		return $quotes;
+			return $quotes;
 		}
 	}
 
