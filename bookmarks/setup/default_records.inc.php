@@ -11,5 +11,5 @@
 
 	/* $Id$ */
 
-	$oProc->query("INSERT INTO phpgw_config (config_app, config_name, config_value) VALUES ('bookmarks','mail_footer','\n\n--\nThis was sent from phpGroupWare\nhttp://www.phpgroupware.org\n')");
+	$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_config (config_app, config_name, config_value) VALUES ('bookmarks','mail_footer','\n\n--\nThis was sent from phpGroupWare\nhttp://www.phpgroupware.org\n')");
 ?>
