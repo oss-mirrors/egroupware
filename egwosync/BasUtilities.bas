@@ -38,9 +38,6 @@ Public Sub GetContacts()
     '[ When I tried to grab all the contacts from the server at once I got an Overflow
     '[ XML Parse Error, so now I grab them 50 at a time.
     Do
-        'update our place in the remote list of contacts
-        INT_START = INT_LIMIT + INT_START
-        
         'It's not sufficient to only add the parameters that need updating, they all need to be
         '   re-added in a specific order
         xmlParms.AddInteger "start", INT_START
@@ -67,6 +64,9 @@ Public Sub GetContacts()
             'list the contacts in the listbox
             frmMain.listRemote.AddItem arrResponses(GetUpper(arrResponses) - 1).StructValue.GetValueByName("fn").StringValue
         Next tempValue
+        
+        'update our place in the remote list of contacts
+        INT_START = INT_LIMIT + INT_START
     Loop While xmlResponse.params(1).ArrayValue.Count = INT_LIMIT
     
     Debug.Print "Got all contacts from the server."
