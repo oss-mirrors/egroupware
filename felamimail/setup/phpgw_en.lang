@@ -108,6 +108,7 @@ flagged	felamimail	en	flagged
 flags	felamimail	en	Flags
 folder acl	felamimail	en	folder acl
 folder name	felamimail	en	Folder name
+foldername	felamimail	en	Folder name
 folder path	felamimail	en	Folder Path
 folder preferences	felamimail	en	Folder Preferences
 folder settings	felamimail	en	Folder settings
@@ -319,6 +320,7 @@ unknown sender	felamimail	en	Unknown Sender
 unknown user or password incorrect.	felamimail	en	Unknown user or password incorrect.
 unread	felamimail	en	unread
 unseen and total	felamimail	en	Unseen and Total
+unseen	felamimail	en	Unseen
 unseen message notification	felamimail	en	Unseen message notification
 unseen message notification type	felamimail	en	Unseen message notification type
 unselect all	felamimail	en	Unselect All
