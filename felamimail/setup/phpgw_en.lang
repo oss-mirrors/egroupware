@@ -73,14 +73,11 @@ do it!	felamimail	en	do it!
 do not use sent	felamimail	en	Do not use Sent
 do not use trash	felamimail	en	Do not use Trash
 do you really want to delete the '%1' folder?	felamimail	en	Do you really want to delete the '%1' folder?
-do you really want to delete the \'%1\' folder?	felamimail	en	Do you really want to delete the '%1' folder?
 does not contain	felamimail	en	does not contain
 does not match	felamimail	en	does not match
 does not match regexp	felamimail	en	does not match regexp
 don't use sent	felamimail	en	Don't use Sent
 don't use trash	felamimail	en	Don't use Trash
-don\'t use sent	felamimail	en	Don't use Sent
-don\'t use trash	felamimail	en	Don't use Trash
 done	felamimail	en	Done
 down	felamimail	en	down
 download	felamimail	en	download
@@ -351,7 +348,6 @@ viewing full header	felamimail	en	Viewing full header
 viewing message	felamimail	en	Viewing message
 viewing messages	felamimail	en	Viewing messages
 welcome to %1's webmail system	felamimail	en	Welcome to %1's WebMail system
-welcome to %1\'s webmail system	felamimail	en	Welcome to %1's WebMail system
 when deleting messages	felamimail	en	When deleting messages
 white	felamimail	en	White
 width of folder list	felamimail	en	Width of folder list
