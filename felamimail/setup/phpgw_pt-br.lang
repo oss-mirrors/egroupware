@@ -1,9 +1,8 @@
 (no subject)	felamimail	pt-br	(sem assunto)
-(only cc/bcc)	felamimail	pt-br	(somente Cc/Bcc)
+(only cc/bcc)	felamimail	pt-br	(somente Cc/Cco)
 (unknown sender)	felamimail	pt-br	(remetente desconhecido)
-activate	felamimail	pt-br	Ativo
+activate	felamimail	pt-br	Ativar
 activate script	felamimail	pt-br	ativar script
-add	felamimail	pt-br	Adicionar
 add address	felamimail	pt-br	Adicionar endereço
 add rule	felamimail	pt-br	Adicionar Regra
 add script	felamimail	pt-br	Adicionar Script
@@ -11,31 +10,30 @@ add to %1	felamimail	pt-br	Adicionar a %1
 add to address book	felamimail	pt-br	Adicionar aos contatos
 add to addressbook	felamimail	pt-br	addicionar ao Catálogo de Endereços
 additional info	felamimail	pt-br	Adicionar informação
-address book	felamimail	pt-br	Contatos
-address book search	felamimail	pt-br	Procurar nos contatos
+address book	felamimail	pt-br	Catálogo de Endereços
+address book search	felamimail	pt-br	Procurar no Catálogo de Endereços
 after message body	felamimail	pt-br	Após o corpo da mensagem
-all address books	felamimail	pt-br	Todos os contatos
+all address books	felamimail	pt-br	Todos os Catálogos de Endereços
 all folders	felamimail	pt-br	Todas as pastas
-always show html emails	felamimail	pt-br	Sempre mostar mensagens HMTL
+always show html emails	felamimail	pt-br	Sempre mostar mensagens em HMTL
 anyone	felamimail	pt-br	qualquer um
 as a subfolder of	felamimail	pt-br	como subpasta de
 attachments	felamimail	pt-br	Anexos
-auto refresh folder list	felamimail	pt-br	Autoatualizar lista de pastas
+auto refresh folder list	felamimail	pt-br	Auto atualizar lista de pastas
 back to folder	felamimail	pt-br	Voltar para a pasta
-bad reque	felamimail	pt-br	Requisição mal formada
-bad request	felamimail	pt-br	Pedido inválido
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pt-br	Baseado em criterias dadas, mensagens de entrada podem ter cores de fundo diferentes na lista de mensagens.  Isso ajuda facilmente distinguir de quem são as mensagens, particularmente no caso de listas de mensagens.
-bcc	felamimail	pt-br	BCC
-before headers	felamimail	pt-br	Antes dos headers
+bad reque	felamimail	pt-br	Erro de requisição
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pt-br	Baseado nos critérios fornecidos, mensagens de entrada podem ter cores de fundo diferentes na lista de mensagens.  Isso ajuda a distinguir de quem são as mensagens, particularmente no caso de listas de mensagens.
+bcc	felamimail	pt-br	CCO
+before headers	felamimail	pt-br	Antes dos cabeçalhos
 between headers and message body	felamimail	pt-br	Entre cabeçalho e corpo da mensagem
 body part	felamimail	pt-br	corpo da mensagem
 cc	felamimail	pt-br	cc
 change folder	felamimail	pt-br	Mudar pasta
 checkbox	felamimail	pt-br	Caixa de seleção
-click here to log back in.	felamimail	pt-br	Clique aqui para (re-)login.
+click here to log back in.	felamimail	pt-br	Clique aqui para conectar
 click here to return to %1	felamimail	pt-br	Clique aqui para voltar a %1
 close this page	felamimail	pt-br	fechar essa página
-close window	felamimail	pt-br	Fecha janela
+close window	felamimail	pt-br	Fechar janela
 color	felamimail	pt-br	Cor
 compose	felamimail	pt-br	Compor
 compress folder	felamimail	pt-br	Compactar pasta
@@ -43,7 +41,7 @@ configuration	felamimail	pt-br	Configuração
 contains	felamimail	pt-br	contém
 create	felamimail	pt-br	Criar
 create folder	felamimail	pt-br	Criar pasta
-create sent	felamimail	pt-br	Criar Sent
+create sent	felamimail	pt-br	Criar Enviadas
 create subfolder	felamimail	pt-br	criar sub-pasta
 create trash	felamimail	pt-br	Criar Lixeira
 created folder successfully!	felamimail	pt-br	Pasta criada com sucesso!
@@ -51,14 +49,12 @@ dark blue	felamimail	pt-br	Azul escuro
 dark cyan	felamimail	pt-br	Cyan escuro
 dark gray	felamimail	pt-br	Cinza escuro
 dark green	felamimail	pt-br	Verde escuro
-dark magenta	felamimail	pt-br	Bordeaux escuro
-dark yellow	felamimail	pt-br	Amarello escuro
-date	felamimail	pt-br	Data
+dark magenta	felamimail	pt-br	Vinho
+dark yellow	felamimail	pt-br	Amarelo escuro
 date(newest first)	felamimail	pt-br	Data (mais novas primeiro)
-date(oldest first)	felamimail	pt-br	Data(mais antigas primeiro)
+date(oldest first)	felamimail	pt-br	Data (mais antigas primeiro)
 deactivate script	felamimail	pt-br	desativar script
-default sorting order	felamimail	pt-br	Ordem padrão de ordenamento
-delete	felamimail	pt-br	Apagar
+default sorting order	felamimail	pt-br	Ordem padrão de Classificação
 delete all	felamimail	pt-br	apagar todas
 delete folder	felamimail	pt-br	Apagar pasta
 delete selected	felamimail	pt-br	Apagar selecionados
@@ -69,66 +65,61 @@ disable	felamimail	pt-br	Desabilitada
 display message in new window	felamimail	pt-br	Mostrar mensagem em uma nova janela
 display of html emails	felamimail	pt-br	Mostrar emails em HTML
 display only when no plain text is available	felamimail	pt-br	Mostar somente quando não possuir versão em texto plano disponível
-display preferences	felamimail	pt-br	Preferências de aparência
+display preferences	felamimail	pt-br	Preferências de Visualização
 do it!	felamimail	pt-br	faça!
-do not use sent	felamimail	pt-br	Não usar Sent
-do not use trash	felamimail	pt-br	Não usar Trash
+do not use sent	felamimail	pt-br	Não usar Enviadas
+do not use trash	felamimail	pt-br	Não usar Lixeira
 do you really want to delete the '%1' folder?	felamimail	pt-br	Você realmente deseja apagar a pasta '%1'?
-do you really want to delete the \'%1\' folder?	felamimail	pt-br	Você realmente deseja apagar a pasta '%1'?
 does not contain	felamimail	pt-br	não contém
-does not match	felamimail	pt-br	não contém
+does not match	felamimail	pt-br	não Coincide
 does not match regexp	felamimail	pt-br	não coincide com a expressão usada
-don't use sent	felamimail	pt-br	Não usar Sent
-don't use trash	felamimail	pt-br	Não usar Trash
-don\'t use sent	felamimail	pt-br	Não usar Sent
-don\'t use trash	felamimail	pt-br	Não usar Trash
-done	felamimail	pt-br	Pronto
+don't use sent	felamimail	pt-br	Não usar Enviadas
+don't use trash	felamimail	pt-br	Não usar Lixeira
 down	felamimail	pt-br	baixo
 download	felamimail	pt-br	baixar
-download this as a file	felamimail	pt-br	Baixar isso como arquivo
+download this as a file	felamimail	pt-br	Baixar como arquivo
 e-mail	felamimail	pt-br	Correio Eletrônico
 e-mail address	felamimail	pt-br	Endereço de Correio Eletrônico
 e-mail folders	felamimail	pt-br	Pastas de Correio Eletrônico
-edit	felamimail	pt-br	Editar
 edit filter	felamimail	pt-br	Editar filtro
 edit rule	felamimail	pt-br	editar regra
 edit selected	felamimail	pt-br	Editar selecionado
 email address	felamimail	pt-br	Endereço de Correio Eletrônico
-email signature	felamimail	pt-br	Assinatura da mensagem
-empty trash	felamimail	pt-br	Lixo (trash) vazio
+email signature	felamimail	pt-br	Assinatura de Correio Eletrônico
+emailfilter	felamimail	pt-br	Filtro
+empty trash	felamimail	pt-br	Lixeira  vazia
 enable	felamimail	pt-br	habilitado
-enter your default mail domain ( from: user@domain )	admin	pt-br	Entre com o seu domínio de correio eletrônico
-enter your imap mail server hostname or ip address	admin	pt-br	Preencha o seu servidor de IMAP ou seu endereço IP
-enter your sieve server hostname or ip address	admin	pt-br	Preencha o seu servidor SIEVE ou seu endereço IP
+enter your default mail domain ( from: user@domain )	admin	pt-br	Digite o seu domínio de correio eletrônico (do modelo usuario@dominio)
+enter your imap mail server hostname or ip address	admin	pt-br	Digite o nome ou o enderço IP do seu servidor IMAP
+enter your sieve server hostname or ip address	admin	pt-br	Digite o nome ou o enderço IP do seu servidor SIEVE
 enter your sieve server port	admin	pt-br	Preencha a porta do seu servidor SIEVE
-enter your smtp server hostname or ip address	admin	pt-br	Preencha o seu servidor de SMTP ou seu endereço IP
+enter your smtp server hostname or ip address	admin	pt-br	Digite o nome ou o enderço IP do seu servidor POP
 enter your smtp server port	admin	pt-br	Preencha a porta do seu servidor SMTP
-erro	felamimail	pt-br	ERRO
 error	felamimail	pt-br	ERRO
 error connecting to imap serv	felamimail	pt-br	Erro ao conectar servidor IMAP
 error connecting to imap server	felamimail	pt-br	Erro na conexão ao servidor IMAP
 error opening	felamimail	pt-br	Erro abrindo
-expunge	felamimail	pt-br	Apagar
+expunge	felamimail	pt-br	Excluir
 felamimail	common	pt-br	FelaMiMail
-file into	felamimail	pt-br	inserir arquivo em
+file into	felamimail	pt-br	Arquivar em
 files	felamimail	pt-br	arquivos
 filter active	felamimail	pt-br	filtro ativo
 filter name	felamimail	pt-br	Nome do filtro
 first name	felamimail	pt-br	Primeiro nome
 flagged	felamimail	pt-br	sinalizado
-flags	felamimail	pt-br	Marcadores (flags)
+flags	felamimail	pt-br	Sinalizadores
 folder acl	felamimail	pt-br	permissão da pasta
 folder name	felamimail	pt-br	Nome da pasta
-folder path	felamimail	pt-br	Folder Path
+folder path	felamimail	pt-br	Caminho da Pasta
 folder preferences	felamimail	pt-br	Preferências de pastas
 folder settings	felamimail	pt-br	Configurações da Pasta
 folder status	felamimail	pt-br	Status da Pasta
-folderlist	felamimail	pt-br	Lsita de Pastas
+folderlist	felamimail	pt-br	Lista de Pastas
 foldername	felamimail	pt-br	Nome da pasta
 folders	felamimail	pt-br	Pastas
 folders created successfully!	felamimail	pt-br	Pastas criadas com sucesso!
 follow	felamimail	pt-br	seguir
-for mail to be send - not functional yet	felamimail	pt-br	Para enviar email - não funcionando ainda
+for mail to be send - not functional yet	felamimail	pt-br	Para mensagem a ser enviada- não funcionando ainda
 for received mail	felamimail	pt-br	Para email recebido
 forward	felamimail	pt-br	Encaminhar
 found	felamimail	pt-br	Encontrado
@@ -136,16 +127,13 @@ from	felamimail	pt-br	De
 from(a->z)	felamimail	pt-br	de (A->Z)
 from(z->a)	felamimail	pt-br	de (Z->A)
 full name	felamimail	pt-br	Nome completo
-have a look at <a href="ht	felamimail	pt-br	Have a look at <a href="ht
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	pt-br	Dê uma olhada em <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para aprender um pouco mais sobre Squirrelmail.<br>
-have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	pt-br	Dê uma olhada em <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para aprender um pouco mais sobre Squirrelmail.<br>
-help	felamimail	pt-br	Ajuda
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	pt-br	Dê uma olhada em <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para aprender um pouco mais sobre o Squirrelmail.<br>
 hide header	felamimail	pt-br	esconder cabeçalho
 html	felamimail	pt-br	HTML
 icons and text	felamimail	pt-br	Ícones e txto
-icons only	felamimail	pt-br	Ícones somente
+icons only	felamimail	pt-br	Somente ícones
 identifying name	felamimail	pt-br	Nome de identificação
-illegal folder name.  please select a different name.	felamimail	pt-br	Nome de pasta inválida.  Por favor escolha um nome diferente.
+illegal folder name.  please select a different name.	felamimail	pt-br	Nome de pasta inválido. Por favor escolha um nome diferente.
 imap	felamimail	pt-br	IMAP
 imap server	felamimail	pt-br	Servidor IMAP
 imap server address	felamimail	pt-br	Endereço do Servidor IMAP
@@ -153,38 +141,36 @@ imap server type	felamimail	pt-br	Tipo do Servidor IMAP
 imaps authentication	felamimail	pt-br	Autenticação IMAP
 imaps encryption only	felamimail	pt-br	Encriptação IMAP Somente
 in	felamimail	pt-br	em
-in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	pt-br	Para que SquirrelMail pode providenciar todas as opções você precisa criar as pastas especiais em seguir.  Apenas clique a caixa de seleção e acionar o butão de criar.
+in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	pt-br	Para que o Felamimail forneça todo o seu conjuto de opções, você precisa criar as pastas especiais listadas a seguir. Apenas clique na caixa de seleção e, em  seguida, clique no botão Criar.
 in the center	felamimail	pt-br	no centro
-index order	felamimail	pt-br	Ordenagem de indices
+index order	felamimail	pt-br	ïndices de classificação
 info	felamimail	pt-br	Info
-invaild user name or password	felamimail	pt-br	Usuário ou senha inválido
 invalid user name or password	felamimail	pt-br	usuário ou senha inválido
 javascript	felamimail	pt-br	JavaScript
-language	felamimail	pt-br	linguagem
+language	felamimail	pt-br	Idioma
 last name	felamimail	pt-br	Último nome
 left	felamimail	pt-br	Esquerda
 less	felamimail	pt-br	menos
-let this folder contain subfolders	felamimail	pt-br	Deixar esta pasta conter subpastas
+let this folder contain subfolders	felamimail	pt-br	Permitir que essa pasta contenha subpastas
 light blue	felamimail	pt-br	Azul claro
 light cyan	felamimail	pt-br	Cyan claro
 light gray	felamimail	pt-br	Cinza claro
 light green	felamimail	pt-br	Verde claro
-light magenta	felamimail	pt-br	Bordeaux claro
+light magenta	felamimail	pt-br	Violeta
 light yellow	felamimail	pt-br	Amarello claro
 list all	felamimail	pt-br	Listar todos
-location of buttons when composing	felamimail	pt-br	Lugar de butões na hora de compor
-location of folder list	felamimail	pt-br	Lugar da lista de pastas
-mail server login type	admin	pt-br	Tipo de login do servidor de correio
-mail settings	felamimail	pt-br	Preferências de Mail
+location of buttons when composing	felamimail	pt-br	localização dos botões na composição
+location of folder list	felamimail	pt-br	Localização da lista de pastas
+mail server login type	admin	pt-br	Tipo de conexão do servidor de correio
+mail settings	felamimail	pt-br	Preferências de Correio
 manage folders	felamimail	pt-br	Gerenciamento de pastas
-manage sieve	felamimail	pt-br	Gerenciar scripts SIEVE
 mark as deleted	felamimail	pt-br	marcar como apagada
 mark messages as	felamimail	pt-br	marcar mensagens selecionadas como
-mark selected as flagged	felamimail	pt-br	colocar selecionado como marcado
-mark selected as read	felamimail	pt-br	colocar selecionado como lido
-mark selected as unflagged	felamimail	pt-br	colocar selecionado como não marcado
-mark selected as unread	felamimail	pt-br	colocar selecionado como não lido
-match	felamimail	pt-br	Encontro
+mark selected as flagged	felamimail	pt-br	marcar selecionado como sinalizado
+mark selected as read	felamimail	pt-br	marcar selecionado como lido
+mark selected as unflagged	felamimail	pt-br	marcar selecionado como não sinalizado
+mark selected as unread	felamimail	pt-br	marcar selecionado como não lido
+match	felamimail	pt-br	Coincidente
 matches	felamimail	pt-br	coincidentes
 matches regexp	felamimail	pt-br	coincidentes com a expressão
 medium gray	felamimail	pt-br	Cinza média
@@ -205,35 +191,34 @@ new	felamimail	pt-br	Novo
 new filter	felamimail	pt-br	Novo Filtro
 next	felamimail	pt-br	Próximo
 next message	felamimail	pt-br	próxima mensagem
-nickname	felamimail	pt-br	Nome de apelo
+nickname	felamimail	pt-br	Apelido
 no filter	felamimail	pt-br	Sem filtro
 no folders found	felamimail	pt-br	Nenhuma pasta encontrada
-no folders were found to subscribe to!	felamimail	pt-br	Nenhuma pasta encontrada para inscrição!
-no folders were found to unsubscribe from!	felamimail	pt-br	Nenhuma pasta encontrada para inscrever!
-no highlighting is defined	felamimail	pt-br	Nenhuma colorização foi definida
+no folders were found to subscribe to!	felamimail	pt-br	Nenhuma pasta encontrada para subinscrição!
+no folders were found to unsubscribe from!	felamimail	pt-br	Nenhuma pasta encontrada para desinscrever!
+no highlighting is defined	felamimail	pt-br	Nenhum  destaque foi definido
 no messages were selected.	felamimail	pt-br	Nenhuma mensagem foi selecionada.
-no next message	felamimail	pt-br	Nenhuma mensagem próxima
+no next message	felamimail	pt-br	Nenhuma mensagem a seguir
 no notification	felamimail	pt-br	Nenhuma notificação
-no personal address book is defined. contact administrator.	felamimail	pt-br	Nenhum livro de endereços persoais é definido. Contatar administrador.
-no persons matching your search was found	felamimail	pt-br	Nenhuma pessoa procurada encontrada
+no personal address book is defined. contact administrator.	felamimail	pt-br	Nenhum Catálogo de Endereços particular está definido. Contate seu administrador
+no persons matching your search was found	felamimail	pt-br	Nenhum registro encontrado para a sua busca
 no previous message	felamimail	pt-br	Nenhuma mensagem anterior
-no valid emailprofile selected!!	felamimail	pt-br	Nenhum perfil de Correio eletrônico válido selecionado
+no valid emailprofile selected!!	felamimail	pt-br	Nenhum perfil de Correio eletrônico válido selecionado!!!
 none	felamimail	pt-br	Nenhum
 number of messages to index	felamimail	pt-br	Número de mensagens para indexar
 on behalf of	felamimail	pt-br	em nome de
-only inbox	felamimail	pt-br	Somente INBOX
+only inbox	felamimail	pt-br	Somente Caixa de Entrada
 only unseen	felamimail	pt-br	Somente não vistas
 options	felamimail	pt-br	Opções
 organisation	felamimail	pt-br	organização
 organization	felamimail	pt-br	organização
 organization name	admin	pt-br	Nome da organização
 oth	felamimail	pt-br	O
-other	felamimail	pt-br	Outro
 participants	felamimail	pt-br	Participantes
 personal information	felamimail	pt-br	Informação pessoal
 posting	felamimail	pt-br	envio
 preference file %1 not found. exiting abnormally	felamimail	pt-br	Arquivo de preferência %1 não encontrado. Terminando emergencialmente
-preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	pt-br	Arquivo de preferência, %1, não existe. Faça logout e alogin para criar um arquivo de preferência padrão.
+preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	pt-br	Arquivo de preferência, %1, não existe. desconete-se e faça uma nova conexão para criar um arquivo de preferência padrão.
 previous	felamimail	pt-br	Anteriores
 previous message	felamimail	pt-br	mensagem anterior
 print it	felamimail	pt-br	imprima
@@ -244,12 +229,11 @@ read	felamimail	pt-br	ler
 read da	felamimail	pt-br	Ler da
 reading	felamimail	pt-br	leitura
 reason giv	felamimail	pt-br	Justificativa
-reason given	felamimail	pt-br	Razões dadas
 recent	felamimail	pt-br	recente
 refresh folder list	felamimail	pt-br	Atualizar lista de pastas
 refresh page	felamimail	pt-br	Atualizar página
-refresh time in minutes	felamimail	pt-br	Atualizar em minutos
-remove	felamimail	pt-br	apagar
+refresh time in minutes	felamimail	pt-br	Tempo de atualização (minutos)
+remove	felamimail	pt-br	Remover
 remove immediately	felamimail	pt-br	Remover imediatamente
 rename	felamimail	pt-br	Renomear
 rename a folder	felamimail	pt-br	Renomear uma pasta
@@ -264,7 +248,7 @@ return	felamimail	pt-br	Voltar
 return to options page	felamimail	pt-br	Voltar à página de opções
 right	felamimail	pt-br	Direita
 rule	felamimail	pt-br	Regra
-running squirrelmail version %1 (c) 1999-2000.	felamimail	pt-br	Usando SquirrelMail versão %1 (c) 1999-2000.
+running squirrelmail version %1 (c) 1999-2000.	felamimail	pt-br	Usando Felamimail versão %1 (c) 1999-2000.
 same window - not functional yet	felamimail	pt-br	Mesma Janela - não funcionando ainda
 save	felamimail	pt-br	salvar
 search	felamimail	pt-br	Procura
@@ -278,7 +262,7 @@ select work email address	felamimail	pt-br	Selecionar endereço comercial de Corr
 select your mail server type	admin	pt-br	Selecionar o tipo do seu servidor de correio
 send	felamimail	pt-br	Enviar
 sent fold	felamimail	pt-br	Pasta Enviadas
-sent folder	felamimail	pt-br	Pasta enviar (Sent)
+sent folder	felamimail	pt-br	Pasta Enviadas
 server respond	felamimail	pt-br	Servidor responde
 show header	felamimail	pt-br	mostrar cabeçalho
 show new messages on main screen	felamimail	pt-br	Mostrar novas mensagens na tela principal
@@ -289,11 +273,11 @@ size	felamimail	pt-br	Tamanho
 size of editor window	felamimail	pt-br	Tamanho da janela para editar
 size(...->0)	felamimail	pt-br	Tamanho (...->0)
 size(0->...)	felamimail	pt-br	Tamanho (0->...)
-small view	felamimail	pt-br	visão pequena
+small view	felamimail	pt-br	visão resumida
 smtp settings	admin	pt-br	Cofigurações SMTP
 some or all of the help documents are not present!	felamimail	pt-br	Alguns ou todos documentos de ajuda não foram encontrados!
 source	felamimail	pt-br	Fonte
-special folder options	felamimail	pt-br	Opções de pastas especiais
+special folder options	felamimail	pt-br	Opções Especiais de pastas
 squirrelmail	felamimail	pt-br	Squirrelmail
 subject	felamimail	pt-br	Assunto
 subject(a->z)	felamimail	pt-br	Assunto (A->Z)
@@ -302,35 +286,35 @@ submit	felamimail	pt-br	Enviar
 subscribe	felamimail	pt-br	Inscrever
 subscribed	felamimail	pt-br	Inscrito
 subscribed successfully!	felamimail	pt-br	Inscrito com sucesso!
-successfully saved display preferences!	felamimail	pt-br	Preferências de exibição salvo com sucesso!
-successfully saved folder preferences!	felamimail	pt-br	Preferências de pastas salvo com sucesso!
-successfully saved personal information!	felamimail	pt-br	Preferências de informações pessoais salvo com sucesso!
+successfully saved display preferences!	felamimail	pt-br	Preferências de exibição salvas com sucesso!
+successfully saved folder preferences!	felamimail	pt-br	Preferências de pastas salvas com sucesso!
+successfully saved personal information!	felamimail	pt-br	Preferências de informações pessoais salvas com sucesso!
 switch current folder to	felamimail	pt-br	mudar pasta corrente para
-table of contents	felamimail	pt-br	Tabela de conteúdo
+table of contents	felamimail	pt-br	Ïndice
 text only	felamimail	pt-br	Somente Texto
 the connection to the imap server failed!!	felamimail	pt-br	A conexão ao servidor IMAP falhou!
-the help has not been translated to %1.  it will be displayed in english instead.	felamimail	pt-br	A ajuda não foi traduzido a %1.  Vai ser mostrado em Inglês.
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	pt-br	A ordem dos indices é a ordem em que as colunas são montados no index das mensagens.  Você pode adicionar, apagar, e mover colunas para customizâ-los conforme suas necessidades.
-the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	pt-br	A ordem do index das mensagens pode ser alterada para conter as cabeçadas em qualquer ordem desejada.
+the help has not been translated to %1.  it will be displayed in english instead.	felamimail	pt-br	A ajuda não foi traduzida para o %1.  Em seu lugar, será mostrado o texto em Inglês.
+the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	pt-br	A ordem dos indices é a ordem em que as colunas são montados no índice das mensagens.  Você pode adicionar, apagar, e mover colunas para personalizá-lo conforme suas necessidades.
+the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	pt-br	A ordem do índice das mensagens pode ser alterada para conter as cabeçalhos em qualquer ordem desejada.
 theme	felamimail	pt-br	Tema
 then	felamimail	pt-br	ENTÂO
-these settings change the way your folders are displayed and manipulated.	felamimail	pt-br	Estas configurações alterão a maneira suas pastas serão mostradas e manipuladas.
-this contains personal information about yourself such as your name, your email address, etc.	felamimail	pt-br	Isso contem informações pessoais sobre você como seu nome, seu endereço de email, etc.
-this folder is empty	felamimail	pt-br	ESTA PASTA É  VAZIL
-this php has no imap support compiled in!!	felamimail	pt-br	O PHP desse servidor não oferece suporte a IMAP
-this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	pt-br	Esta versão é baseado em Squirrelmail, o que é um cliente IMAP independente.<br>
+these settings change the way your folders are displayed and manipulated.	felamimail	pt-br	Estas configurações alterão a maneira como suas pastas serão mostradas e manipuladas.
+this contains personal information about yourself such as your name, your email address, etc.	felamimail	pt-br	Estes campos contém informações pessoais sobre você, como seu nome, seu endereço de correio eletrônico, etc.
+this folder is empty	felamimail	pt-br	ESTA PASTA  ESTÁ  VAZIA
+this php has no imap support compiled in!!	felamimail	pt-br	Esse aplicativo PHP não foi compilado com suporte IMAP
+this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	pt-br	Esta versão é baseado em Squirrelmail, o qual é um cliente IMAP independente.<br>
 to	felamimail	pt-br	Para
-to the left	felamimail	pt-br	na esquerda
-to the right	felamimail	pt-br	na direita
+to the left	felamimail	pt-br	para esquerda
+to the right	felamimail	pt-br	para direita
 top	felamimail	pt-br	Top
-translation location	felamimail	pt-br	Lugar da tradução
+translation location	felamimail	pt-br	Localização da tradução
 translation preferences	felamimail	pt-br	Preferências de tradução
 translation server	felamimail	pt-br	Servidor de tradução
 trash fold	felamimail	pt-br	Pasta Lixeira
-trash folder	felamimail	pt-br	Pasta de lixo (trash)
+trash folder	felamimail	pt-br	Pasta Lixeira
 type	felamimail	pt-br	tipo
 unable to list addresses from %1	felamimail	pt-br	Impossível listar endereços de %1
-unflagged	felamimail	pt-br	desmarcado
+unflagged	felamimail	pt-br	dessinalizado
 unknown err	felamimail	pt-br	Erro desconhecido
 unknown error	felamimail	pt-br	Erro desconhecido
 unknown sender	felamimail	pt-br	Remetente desconhecido
@@ -346,28 +330,28 @@ unsubscribed	felamimail	pt-br	Desinscrito
 unsubscribed successfully!	felamimail	pt-br	Desinscrito com sucesso!
 up	felamimail	pt-br	para cima
 update address	felamimail	pt-br	Atualizar endereço
-use a signature	felamimail	pt-br	Usar a asinatura felamimail
+use a signature	felamimail	pt-br	Usar a asinatura
 use a signature?	felamimail	pt-br	Usar a asinatura?
 use addresses	felamimail	pt-br	Usar endereços
 use custom settings	felamimail	pt-br	Usar configurações personalizadas
-use javascript or html addressbook?	felamimail	pt-br	Usar Javascript or HTML nos contatos?
+use javascript or html addressbook?	felamimail	pt-br	Usar Javascript or HTML no Catálogo de Enderços?
 use smtp auth	admin	pt-br	Usar autenticação SMTP
 users can define their own emailaccounts	admin	pt-br	Usuário pode definir suas próprias contas de correio
-view full header	felamimail	pt-br	Ver cabeçada completa
+vacation	felamimail	pt-br	Férias
+view full header	felamimail	pt-br	Ver cabeçalho completo
 view message	felamimail	pt-br	Ver mensagem
-viewing full header	felamimail	pt-br	Ver cabeçada completa
-viewing message	felamimail	pt-br	Ver mensagem
-viewing messages	felamimail	pt-br	Ver mensagens
-welcome to %1's webmail system	felamimail	pt-br	Bemvindo a sistema de webmail %1
-welcome to %1\'s webmail system	felamimail	pt-br	Benvindo ao Sistema de Webmail de %1
+viewing full header	felamimail	pt-br	Ver cabeçalho completo
+viewing message	felamimail	pt-br	Vendo mensagem
+viewing messages	felamimail	pt-br	Vendo mensagens
+welcome to %1's webmail system	felamimail	pt-br	Bem-Vindo ao sistema de Correio Web %1
 when deleting messages	felamimail	pt-br	Ao apagar mensagens
 white	felamimail	pt-br	Branco
 width of folder list	felamimail	pt-br	Larguara da lista de pastas
 wrap incoming text at	felamimail	pt-br	Quebrar a linha do texto de entrada em
-writing	felamimail	pt-br	escrita
+writing	felamimail	pt-br	escrevendo
 wrote	felamimail	pt-br	esceveu
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	pt-br	Você pode mudar a maneira como SquirrelMail aparece e mostra informações, como cores, a lingua e outras configurações.
+you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	pt-br	Você pode mudar a maneira como FelamiMail aparece e mostra informações, como cores, a lingua e outras configurações.
 you can only edit one address at the time	felamimail	pt-br	Você pode editar somente um endereço a cada vez
-you must login first.	felamimail	pt-br	Você preciar fazer o login primeiro.
-you need a valid user and password to access this page!	felamimail	pt-br	Você precisa um usuário e a senha válida para acessar esta página!
+you must login first.	felamimail	pt-br	Você preciar conectar-se primeiro
+you need a valid user and password to access this page!	felamimail	pt-br	Você precisa um usuário e a senha válidos para acessar esta página!
 your search failed with the following error(s)	felamimail	pt-br	Sua procura falhou com o(s) seguinte(s) erro(s)

@@ -1,56 +1,56 @@
-absolute path of the backup directory		pt-br	Caminho absoluto do diretório de backup (e.g.:usr/local/www/egroupware/backup/archive)
-absolute path of the directory to store the backup script		pt-br	Caminho absoluto do diretório do aplicativo de backup EGW
-archive type		pt-br	Selecione seu tipo de arquivo
-backup		pt-br	Backup
-backup administration		pt-br	Administração do Backup
-bzip2		pt-br	bzip2
-configuration backup		pt-br	Configuração do Backup
-configuration localhost		pt-br	Configuração da máquina local
-create backups of your data ?		pt-br	Selecione para criar backup de seus dados:
-daily		pt-br	diariamente
-data		pt-br	Dados
-directory locations		pt-br	Localização de diretórios
-directory names		pt-br	Nome de diretórios
-e-mail		pt-br	Selecione para receber notificações por Correio Eletrônico
-homedirs		pt-br	Diretórios pessoais
-interval		pt-br	Intervalo
-ip or hostname		pt-br	Endereço IP ou nome do computador
-ldap		pt-br	LDAP
-ldap database		pt-br	Base de dados LDAP
-maildir		pt-br	Endereço eletrônico para notificação
-monthly		pt-br	mensalmente
-mysql		pt-br	MySQL
-no backup archives available !		pt-br	Nenhumarquivo de backup disponível
-number of stored backup versions		pt-br	Numero de backups armazenados a serem mantidos antes de apagar os antigos:
-operating system		pt-br	Sistema operacional
-pgsql		pt-br	PostgreSQL
-php cgi		pt-br	Caminho completo do executável do PHP (eg: /usr/bin/php)
-please enter the path of the needed applications in *site configuration* !		pt-br	Por favor digite o caminho do aplicativo necessário em *Configuração do site*!
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !		pt-br	Digite o caminho do diretório de backup e/ou habilite a exibição de arquivos no eGroupware
-please enter username and password for remote connection !		pt-br	Informe um usuário e senha para a conexão remota
-please select an application for transport to the remote host !		pt-br	Selecione um aplicativo para transporte para o servidor remoto
-please set the path to a local dir to store the backup script !		pt-br	Especifique o caminho do diretório local que armazenará o script de backup !
-please set the path to the ldap database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base LDAP em *Configuração do site*!
-please set the path to the mysql database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base MySQL em *Configuração do site*!
-please set the path to the postgresql database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base PostgreSQL em *Configuração do site*!
-please set the values in *site configuration* !		pt-br	Por favor especifique os valores em *Configuração do site*!
-please specify the ip of the remote host !		pt-br	Por favor especifique o endereço ip do compuitador remoto
-please specify the name of the maildir in *site configuration* !		pt-br	Especifique o nome do Maildir *Configuração do site*!
-please specify the path to the backup directory !		pt-br	Especifique o caminho do diretório de backup !
-please specify the path to the user-homedirectories in *site configuration* !		pt-br	Especifique o caminho dos diretórios pessoais em *Configuração do site*!
-program locations		pt-br	Localiação dos programas
-save backup locally ?		pt-br	Selecione para salvar o backup localmente:
-select archive type		pt-br	Selecione o tipo de arquivo
-select interval		pt-br	Selecione o intervalo
-settings		pt-br	configurações
-show backup archives in phpgroupware ?		pt-br	Selecione para mostrar os arquivos de backup no eGroupware
-sql		pt-br	SQL
-tar		pt-br	tar
-tar.bz2		pt-br	tar.bz2
-tar.gz		pt-br	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !		pt-br	O aplicativo de backup ainda não foi configurado para mostrar arquivos no eGroupware!
-the directory to store the backup script must be outside of the webservers *documentroot* !		pt-br	O diretório que armazena o script de backup deve estar dentro do *DocumentRoot* do servidor web
-versions can only be a number !		pt-br	versões devem ser apenas numéricas
-weekly		pt-br	semanalmente
-your sql database isnt supported by this application !		pt-br	Sua base de dados SQL não é suportada pelo aplicativo!
-zip		pt-br	zip
+absolute path of the backup directory	backup	pt-br	Caminho absoluto do diretório para cópia de segurança(ex.:usr/local/www/aplicacao/backup/archive)
+absolute path of the directory to store the backup script	backup	pt-br	Caminho absoluto do diretório do aplicativo de cópia de segurança do eGroupWare
+archive type	backup	pt-br	Selecione seu tipo de arquivo
+backup	common	pt-br	Cópia de Segurança
+backup administration	common	pt-br	Administração - Cópia de Segurança
+bzip2	admin	pt-br	bzip2
+configuration backup	backup	pt-br	Configuração - Backup
+configuration localhost	backup	pt-br	Configuração - Máquina Local
+create backups of your data ?	backup	pt-br	Selecione para criar Cópia de Segurança dos seus dados:
+daily	backup	pt-br	diariamente
+data	backup	pt-br	Dados
+directory locations	admin	pt-br	Localização dos diretórios
+directory names	admin	pt-br	Nome dos diretórios
+e-mail	backup	pt-br	Selecione para receber notificações por e-mail
+homedirs	admin	pt-br	Diretórios pessoais
+interval	backup	pt-br	Intervalo
+ip or hostname	backup	pt-br	Endereço IP ou nome do computador
+ldap	common	pt-br	LDAP
+ldap database	admin	pt-br	Base de dados LDAP
+maildir	admin	pt-br	Endereço eletrônico para notificação
+monthly	backup	pt-br	mensalmente
+mysql	admin	pt-br	MySQL
+no backup archives available !	backup	pt-br	Nenhum arquivo de Cópia de Segurança disponível
+number of stored backup versions	backup	pt-br	Numero de Cópia de Segurança armazenadas que serâo mantidos:
+operating system	backup	pt-br	Sistema operacional
+pgsql	admin	pt-br	PostgreSQL
+php cgi	admin	pt-br	Caminho completo do executável do PHP (ex.: /usr/local/bin/php)
+please enter the path of the needed applications in *site configuration* !	backup	pt-br	Por favor digite o caminho do aplicativo necessário em *Configuração do Site*!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	pt-br	Digite o caminho do diretório de Cópia de Segurança e/ou habilite a exibição de arquivos no eGroupWare!
+please enter username and password for remote connection !	backup	pt-br	Informe: Usuário e senha para a conexão remota
+please select an application for transport to the remote host !	backup	pt-br	Selecione um aplicativo para transporte para o servidor remoto!
+please set the path to a local dir to store the backup script !	backup	pt-br	Especifique o caminho do diretório local que armazenará o script de Cópia de Segurança!
+please set the path to the ldap database dir in *site configuration* !	backup	pt-br	Especifique o caminho do diretório para a base LDAP em *Configuração do site*!
+please set the path to the mysql database dir in *site configuration* !	backup	pt-br	Especifique o caminho do diretório para a base MySQL em *Configuração do site*!
+please set the path to the postgresql database dir in *site configuration* !	backup	pt-br	Especifique o caminho do diretório para a base PostgreSQL em *Configuração do site*!
+please set the values in *site configuration* !	backup	pt-br	Por favor especifique os valores em *Configuração do site*!
+please specify the ip of the remote host !	backup	pt-br	Por favor especifique o endereço IP do compuitador remoto
+please specify the name of the maildir in *site configuration* !	backup	pt-br	Especifique o nome do Maildir em *Configuração do site*!
+please specify the path to the backup directory !	backup	pt-br	Especifique o caminho do diretório de Cópia de Segurança !
+please specify the path to the user-homedirectories in *site configuration* !	backup	pt-br	Especifique o caminho dos diretórios pessoais em *Configuração do site*!
+program locations	admin	pt-br	Localização dos programas
+save backup locally ?	backup	pt-br	Selecione para salvar a Cópia de Segurança localmente:
+select archive type	backup	pt-br	Selecione o tipo de arquivo
+select interval	backup	pt-br	Selecione o intervalo
+settings	admin	pt-br	configurações
+show backup archives in phpgroupware ?	backup	pt-br	Selecione para mostrar os arquivos de Cópia de Segurança no eGroupware
+sql	backup	pt-br	SQL
+tar	admin	pt-br	tar
+tar.bz2	backup	pt-br	tar.bz2
+tar.gz	backup	pt-br	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	pt-br	O aplicativo de Cópia de Segurança ainda não foi configurado para mostrar arquivos no eGroupWare!
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	pt-br	O diretório que armazena o script de backup deve estar dentro do *Diretórios de Documentos* do servidor web
+versions can only be a number !	backup	pt-br	versões devem ser apenas numéricas!
+weekly	backup	pt-br	semanalmente
+your sql database isnt supported by this application !	backup	pt-br	Sua base de dados SQL não é suportada por este aplicativo!
+zip	common	pt-br	zip
