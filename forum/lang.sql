@@ -3,7 +3,6 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'return to forum
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'return to admin','forum','en','Return to Admin');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'new forum','forum','en','New Forum');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'new category','forum','en','New Category');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'no category','forum','en','No Category');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'edit','forum','en','Edit');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'category name','forum','en','Category Name');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES( 'category description','forum','en','Category Description');

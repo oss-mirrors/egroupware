@@ -1,23 +1,23 @@
 <?php
-	/**************************************************************************\
-	* phpGroupWare                                                             *
-	* http://www.phpgroupware.org                                              *
-	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
+  /**************************************************************************\
+                                          *
+  \**************************************************************************/
+  /* $Id$ */
 
-	/* $Id$ */
-{
-// Only Modify the $file and $title variables.....
-	$title = $appname;
-	$file = Array(
-		'Change Forum Settings'		=> $phpgw->link('/forum/preference_index.php')
-	);
-//Do not modify below this line
-	display_section($appname,$title,$file);
-}
+    {
+    echo "<p>\n";
+
+    $imgfile=$phpgw->common->get_image_dir('forum') . '/navbar.gif';
+    if(file_exists($imgfile)) {
+	$imgpath=$phpgw->common->get_image_path('forum') . '/navbar.gif';
+    }
+    else {
+    $imgpath='';
+    }
+    section_start('Forum',$imgpath);
+    $pg = $phpgw->link('/forum/admin/index.php');
+    echo '<a href=' . $pg . '>' . lang('Forum Administration') . '</a><br>';
+
+    section_end();
+    }
 ?>

@@ -31,7 +31,7 @@ function showthread ($thread,$current) {
       $pos = $row["pos"];
       $cat = $row["cat_id"];
       $for = $row["for_id"];
-      echo "<td>" . $move . "<a href=" . $phpgw->link("/forums/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $row["id"]) .">"
+      echo "<td>" . $move . "<a href=" . $phpgw->link("read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $row["id"]) .">"
        . $row["subject"] . "</a></td>\n";
 
       echo "<td align=left valign=top>" . $row["author"] ."</td>\n";

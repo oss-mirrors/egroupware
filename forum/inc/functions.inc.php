@@ -41,7 +41,7 @@ function showthread ($cat) {
       if (! $subject) {
          $subject = "[ No subject ]";
       }
-      echo "<td>" . $move . "<a href=" . $phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")) .">"
+      echo "<td>" . $move . "<a href=" . $phpgw->link("read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")) .">"
          . $subject . "</a></td>\n";
 
       echo "<td align=left valign=top>" . $phpgw->db->f("author") ."</td>\n";
@@ -66,7 +66,7 @@ function show_topics($cat,$for) {
       if (! $subject) {
          $subject = "[ No subject ]";
       }
-      echo "<td><a href=" . $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")) .">" . $subject . "</a></td>\n";
+      echo "<td><a href=" . $phpgw->link("read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")) .">" . $subject . "</a></td>\n";
       $lastreply = $phpgw->db->f("postdate");
       echo "<td align=left valign=top>" . $phpgw->db->f("author") . "</td>\n";
       $msgid = $phpgw->db->f("id");
