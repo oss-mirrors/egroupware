@@ -12,7 +12,7 @@
 <!-- _END tts_links -->
 
 <!-- BEGIN tts_search -->
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<table width="98%" cellspacing="0" cellpadding="0" border="0" align="center">
 	<tr bgcolor="{th_bg}">
 		<td colspan="2">{lang_appname}</td>
 	</tr>

@@ -201,7 +201,8 @@
 			$GLOBALS['phpgw']->template->set_var('tts_row_color', $tr_color );
 			$GLOBALS['phpgw']->template->set_var('tts_ticketdetails_link', $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')));
 
-			$GLOBALS['phpgw']->template->set_var('row_ticket_id','<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')) . '">' . $GLOBALS['phpgw']->db->f('ticket_id') . '</a>');
+			$view_link = '<a href="' . $GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $GLOBALS['phpgw']->db->f('ticket_id')) . '">';
+			$GLOBALS['phpgw']->template->set_var('row_ticket_id',$view_link . $GLOBALS['phpgw']->db->f('ticket_id') . '</a>');
 
 			if (! $ticket_read)
 			{
@@ -253,7 +254,7 @@
 				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
-			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
+			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $view_link.$GLOBALS['phpgw']->db->f('ticket_subject').'</a>');
 
 			$GLOBALS['phpgw']->template->parse('rows','tts_row',True);
 		}

@@ -28,7 +28,7 @@
 	{
 		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
 	}
-	$ticket_id = get_var('ticket_id',array('POST','GET'));
+	$ticket_id = intval(get_var('ticket_id',array('POST','GET')));
 
 	$GLOBALS['phpgw']->config->read_repository();
 
@@ -47,7 +47,7 @@
 		'G' => 'Group ownership changed'
 	);
 
-	if(!$_POST['submit'])
+	if(!$_POST['save'] && !$_POST['apply'])
 	{
 		$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('View Job Detail');
 		$GLOBALS['phpgw']->common->phpgw_header();
@@ -344,7 +344,8 @@
 		$GLOBALS['phpgw']->template->set_var('value_subject', stripslashes($ticket['subject']));
 
 		$GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
-		$GLOBALS['phpgw']->template->set_var('lang_ok', lang('OK'));
+		$GLOBALS['phpgw']->template->set_var('lang_save', lang('Save'));
+		$GLOBALS['phpgw']->template->set_var('lang_apply', lang('Apply'));
 		$GLOBALS['phpgw']->template->set_var('lang_cancel', lang('Cancel'));
 
 		$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
@@ -355,8 +356,10 @@
 		$GLOBALS['phpgw']->template->pfp('out','form');
 		$GLOBALS['phpgw']->common->phpgw_footer();
 	}
-	else
+	else	// save or apply
 	{
+		$ticket = $_POST['ticket'];
+
 		// DB Content is fresher than http posted value.
 		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_id='$ticket_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
@@ -475,9 +478,16 @@
 			if($GLOBALS['phpgw']->config->config_data['mailnotification'])
 			{
 				mail_ticket($ticket_id);
-			} 
+			}
 		}
 
-		$GLOBALS['phpgw']->redirect_link('/tts/viewticket_details.php','ticket_id=' . $ticket_id);
+		if ($_POST['save'])
+		{
+			$GLOBALS['phpgw']->redirect_link('/tts/index.php');
+		}
+		else	// apply
+		{
+			$GLOBALS['phpgw']->redirect_link('/tts/viewticket_details.php','ticket_id=' . $ticket_id);
+		}
 	}
 ?>
