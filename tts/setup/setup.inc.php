@@ -21,7 +21,7 @@
 	/* The tables this app creates */
 	$setup_info['tts']['tables']    = array(
 		'phpgw_tts_tickets',
-		'phpgw_tts_views',
+		'phpgw_tts_views'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
