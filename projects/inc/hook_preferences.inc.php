@@ -14,8 +14,8 @@
 		$title = $appname;
 		$file = Array
 		(
-			'Preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'),
-			'Grant Access' => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=projects'),
+			'Preferences'     => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'),
+			'Grant Access'    => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
 			'Edit categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=projects&cats_level=True&global_cats=True')
 		);
 		display_section($appname,$title,$file);

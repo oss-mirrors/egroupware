@@ -13,8 +13,8 @@
 
 	$file = array(
 		'Import Bookmarks' => $GLOBALS['phpgw']->link('/bookmarks/import.php'),
-		'Grant access'     => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
-		'Categories'       => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True')
+		'Grant Access'  => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
+		'Edit Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app='.$appname . '&cats_level=True&global_cats=True')
 	);
 	display_section('bookmarks','Bookmarks',$file);
 ?>
