@@ -24,7 +24,7 @@ monitor	common	es-ca	Monitor
 news file	headlines	es-ca	Arxiu de notícies
 news from x	headlines	es-ca	Noticias de x
 news headlines	common	es-ca	Titulars de notícies
-news headlines  common  es  encabezados de noticias		es-ca	
+news headlines  common  es  encabezados de noticias	es-ca
 news type	headlines	es-ca	Tipus de notícies
 no headlines found	headlines	es-ca	No s'han trobat titulars
 other preferences	preferences	es-ca	Altres preferències
