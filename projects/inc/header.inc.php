@@ -11,7 +11,7 @@
   *  option) any later version.                                              *
   \**************************************************************************/
                                                                                                                                                                                           
-       $lid = $phpgw_info["user"]["userid"];
+//       $lid = $phpgw_info["user"]["userid"];
 
        $db2 = $phpgw->db;                                                                                                                                                                 
                                                                                                                                                                                           
@@ -36,13 +36,20 @@
           }                                                                                                                                                                               
        }
        
-       if ($phpgw_info["user"]["userid"] == $lid) {                                                                                                                                           
-          $group_list = $this->groups;                                                                                                                                                        
-        } else { 
-             $group_list = $this->read_groups($lid);                                                                                                                                            
-             }                                                                                                                                                                             
+          if ($phpgw_info["user"]["userid"] != $lid) {                                                                                                           
+          $db2->query("select account_groups from accounts where account_lid='$lid'");                                                      
+          $db2->next_record();                                                                                                                                
+          $gl = explode(",",$db2->f("account_groups"));                                                                                                       
+          } else {                                                                                                                                               
+          $gl = $phpgw_info["user"]["groups"];                                                                                                                
+          }                                                                                                                                                      
+                                                                                                                                                              
+          for ($i=1; $i<(count($gl)-1); $i++) {                                                                                                                  
+          $ga = explode(":",$gl[$i]);                                                                                                                         
+          $groups[$ga[0]] = $ga[1];                                                                                                                           
+           }
        
-          while ($group_list && $group = each($group_list)) {                                                                                                                                
+          while ($gl && $group = each($gl)) {                                                                                                                                
           $db2->query("select group_apps from groups where group_id=".$group[0]);                                                                                       
           $db2->next_record();                                                                                                                                                            
                                                                                                                                                                                           
@@ -70,7 +77,7 @@
 	 if($phpgw->db->f("account_lid") == $lid)
             $admin_info = lang("projects")."&nbsp;&nbsp;&nbsp;".lang("admin");
 	 }
-      $t->set_var("admin_info", "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
+       $t->set_var("admin_info", "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
                         . "\" align=\"left\"><b>" . $admin_info . "</b>");
 
      
