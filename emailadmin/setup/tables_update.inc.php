@@ -2,8 +2,6 @@
 	/**************************************************************************\
 	* phpGroupWare - Setup                                                     *
 	* http://www.phpgroupware.org                                              *
-	* http://www.phpgw.de                                                      *
-	* Author: lkneschke@phpgw.de                                               *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -15,12 +13,10 @@
 	$test[] = '0.0.1';
 	function qmailldap_upgrade0_0_1()
 	{
-		global $setup_info,$phpgw_setup;
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
 
-		$phpgw_setup->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
-
-		$setup_info['qmailldap']['currentver'] = '0.0.2';
-		return $setup_info['qmailldap']['currentver'];
+		$GLOBALS['setup_info']['qmailldap']['currentver'] = '0.0.2';
+		return $GLOBALS['setup_info']['qmailldap']['currentver'];
 	}
 
 	$test[] = '0.0.2';
