@@ -19,13 +19,16 @@
 	$setup_info['email']['tables']    = '';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['email']['hooks'][] = 'admin';
-	$setup_info['email']['hooks'][] = 'preferences';
-	$setup_info['email']['hooks'][] = 'email_add_def_pref';
-	$setup_info['email']['hooks'][] = 'home';
-	$setup_info['email']['hooks'][] = 'manual';
-	$setup_info['email']['hooks'][] = 'notifywindow';
-	$setup_info['email']['hooks'][] = 'notifywindow_simple';
+	$setup_info['email']['hooks'] = array(
+		'admin',
+		'email_add_def_prefs',
+		'home',
+		'manual',
+		'notifywindow',
+		'notifywindow_simple',
+		'add_def_prefs',
+		'preferences'
+	);
 
 	/* Dependacies for this app to work */
 	$setup_info['email']['depends'][] = array(

@@ -22,6 +22,9 @@
 	$setup_info['felamimail']['enable']    = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
+	$setup_info['felamimail']['hooks'][] = 'about';
+	$setup_info['felamimail']['hooks'][] = 'admin';
+	$setup_info['felamimail']['hooks'][] = 'home';
 	$setup_info['felamimail']['hooks'][] = 'preferences';
 
 	/* Dependacies for this app to work */

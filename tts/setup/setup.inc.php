@@ -25,8 +25,11 @@
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['tts']['hooks'][]   = 'preferences';
 	$setup_info['tts']['hooks'][]   = 'admin';
+	$setup_info['tts']['hooks'][]   = 'home';
+	$setup_info['tts']['hooks'][]   = 'manual';
+	$setup_info['tts']['hooks'][]   = 'preferences';
+	$setup_info['tts']['hooks'][]   = 'settings';
 
 	/* Dependencies for this app to work */
 	$setup_info['tts']['depends'][] = array(
