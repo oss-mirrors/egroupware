@@ -60,7 +60,10 @@
 			{
 				$pg->version = $content['version'];
 			}
-			$pg->read();
+			if ($pg->read() === False)	// new entry
+			{
+				$pg->lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
+			}
 
 			// acl checks
 			if (!$pg->acl_check())	// no edit-rights
