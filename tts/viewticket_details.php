@@ -75,7 +75,7 @@
 		}
 
 		// assigned to
-		$accounts = CreateObject('phpgwapi.accounts',$group_id);
+		$accounts = CreateObject('phpgwapi.accounts');
 		$account_list = $accounts->get_list('accounts');
 		$GLOBALS['phpgw']->template->set_var('tts_optionname', lang('none'));
 		$GLOBALS['phpgw']->template->set_var('tts_optionvalue', 'none' );
@@ -95,7 +95,7 @@
 		}
 
 		// group
-		$groups = CreateObject('phpgwapi.accounts');
+		$groups = $accounts;
 		$group_list = $groups->get_list('groups');
 		while (list($key,$entry) = each($group_list))
 		{
