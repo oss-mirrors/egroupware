@@ -28,29 +28,29 @@
 	</tr>
 	<tr class="th">
 		<td align="center">
-			<select name="filter_process">
-			<option {filter_process_selected_all} value="">{lang_All}</option>
-			<!-- BEGIN block_filter_process -->
-				<option {filter_process_selected} value="{filter_process_value}">{filter_process_name} {filter_process_version}</option>
-			<!-- END block_filter_process -->
+			<select onchange='this.form.submit();' name="filter_process">
+				<option {filter_process_selected_all} value="">{lang_All}</option>
+				<!-- BEGIN block_filter_process -->
+					<option {filter_process_selected} value="{filter_process_value}">{filter_process_name} {filter_process_version}</option>
+				<!-- END block_filter_process -->
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_active">
-			<option {selected_active_all} value="">{lang_All}</option>
-			<option value="y" {selected_active_active}>{lang_Active}</option>
-			<option value="n" {selected_active_inactive}>{lang_Inactive}</option>
+			<select onchange='this.form.submit();' name="filter_active">
+				<option {selected_active_all} value="">{lang_All}</option>
+				<option value="y" {selected_active_active}>{lang_Active}</option>
+				<option value="n" {selected_active_inactive}>{lang_Inactive}</option>
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_valid">
-			<option {selected_valid_all} value="">{lang_All}</option>
-			<option {selected_valid_valid} value="y">{lang_Valid}</option>
-			<option {selected_valid_invalid} value="n">{lang_Invalid}</option>
+			<select onchange='this.form.submit();' name="filter_valid">
+				<option {selected_valid_all} value="">{lang_All}</option>
+				<option {selected_valid_valid} value="y">{lang_Valid}</option>
+				<option {selected_valid_invalid} value="n">{lang_Invalid}</option>
 			</select>
 		</td>
 		<td align="center">
-			<input size="18" type="text" name="search_str" value="{lang_Search}" />
+			<input size="18" type="text" name="search_str" />
 		</td>
 		<td align="center">	
 			<input type="submit" name="filter" value="{lang_filter}" />

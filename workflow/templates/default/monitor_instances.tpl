@@ -21,9 +21,6 @@
 			{lang_Status}
 		</td>
 		<td align="center">
-			{lang_Act._Status}
-		</td>
-		<td align="center">
 			{lang_User}
 		</td>
 		<td align="center">
@@ -35,7 +32,7 @@
 	</tr>
 	<tr class="th">
 		<td align="center">
-			<select name="filter_process">
+			<select name="filter_process" onchange='this.form.submit();'>
 			<option {filter_process_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_process -->
 			<option {filter_process_selected} value="{filter_process_value}">{filter_process_name} {filter_process_version}</option>
@@ -43,7 +40,7 @@
 			</select>
 		</td>
 		<td align="center"> 
-			<select name="filter_activity">
+			<select name="filter_activity" onchange='this.form.submit();'>
 			<option {filter_activity_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_activity -->
 			<option {filter_activity_selected} value="{filter_activity_value}">{filter_activity_name}</option>
@@ -51,7 +48,7 @@
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_status">
+			<select name="filter_status" onchange='this.form.submit();'>
 			<option {filter_status_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_status -->
 			<option {filter_status_selected} value="{filter_status_value}">{filter_status_name}</option>
@@ -59,14 +56,7 @@
 			</select>
 		</td>
 		<td align="center">
-			<select name="filter_act_status">
-				<option {filter_act_status_selected_all} value="">{lang_All}</option>
-				<option value="running" {filter_act_running}>{lang_running}</option>
-				<option value="completed" {filter_act_completed}>{lang_completed}</option>
-			</select>
-		</td>
-		<td align="center">
-			<select name="filter_user">
+			<select name="filter_user" onchange='this.form.submit();'>
 			<option {filter_user_selected_all} value="">{lang_All}</option>
 			<!-- BEGIN block_filter_user -->
 			<option {filter_user_selected} value="{filter_user_value}">{filter_user_name}</option>
