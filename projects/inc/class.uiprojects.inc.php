@@ -1302,7 +1302,7 @@
 				$this->nextmatchs->template_alternate_row_color(&$this->t);
 				$lid = $admins[$i]['lid'];
 
-				if ($admins[$i]['type']=='aa')
+				if ($admins[$i]['type']=='u')
 				{
 					$firstname = $admins[$i]['firstname'];
 					if (!$firstname) { $firstname = '&nbsp;'; }

@@ -180,8 +180,9 @@
 		{
 			$admins = $this->read_admins('all');
 
-			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($_type, $start, $sort, $order, $query, $limit);
-
+			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query, $limit);
+			_debug_array($allaccounts);
+			exit;
 			while (list($null,$account) = each($allaccounts))
 			{
 				for ($i=0;$i<count($admins);$i++)
@@ -192,12 +193,12 @@
 						$admin_data['lid']			= $account['account_lid'];
 						$admin_data['firstname']	= $account['account_firstname'];
 						$admin_data['lastname']		= $account['account_lastname'];
-						$admin_data['type']			= $admins[$i]['type'];
+						$admin_data['type']			= $account['account_type'];
 					}
 				}
 			}
-//			_debug_array($admin_data);
-//			exit;
+			_debug_array($admin_data);
+			exit;
 			return $admin_data;
 		}
 
