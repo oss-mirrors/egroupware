@@ -24,9 +24,9 @@
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang("New Forum") ."</a>";
+echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";
 echo " | ";
 echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a>";
 
@@ -61,8 +61,8 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
       echo "<tr bgcolor=\"" . $phpgw_info["theme"]["bg06"] . "\">\n";
       echo " <td valign=top align=left width=20%>" . $f_tree[$id]["name"] . "</td>\n";
       echo " <td valign=top align=left width=70%>" . $f_tree[$id]["descr"] . "</td>\n";
-      echo "   <td nowrap><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$id") ."\">" . lang("Edit") . "</A> | ";
-      echo "<A href=\"" . $phpgw->link("deletecategory.php", "cat_id=$id") . "\">" . lang("Delete") . "</A></td>\n";
+      echo "   <td nowrap><a href=\"" . $phpgw->link("admin/category.php","act=edit&cat_id=$id") ."\">" . lang("Edit") . "</A> | ";
+      echo "<A href=\"" . $phpgw->link("admin/deletecategory.php", "cat_id=$id") . "\">" . lang("Delete") . "</A></td>\n";
       echo "</tr>\n";
       echo "<tr>\n";
       echo " <td colspan=3 align=right valign=top>\n";
@@ -80,8 +80,8 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
       echo "  <tr bgcolor=\"$tr_color\">\n";
       echo "   <td width=20%>" . $f_tree[$id]["forums"][$fid]["name"] . "</td>\n";
       echo " <td valign=top align=left width=70%>". $f_tree[$id]["forums"][$fid]["descr"] . "</td>\n";
-      echo "   <td nowrap><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$fid") ."\">" . lang("Edit") . "</A> | ";
-      echo "<A href=\"" . $phpgw->link("deleteforum.php", "for_id=$fid") . "\">" . lang("Delete") . "</A></td>\n";
+      echo "   <td nowrap><a href=\"" . $phpgw->link("admin/forum.php","act=edit&for_id=$fid") ."\">" . lang("Edit") . "</A> | ";
+      echo "<A href=\"" . $phpgw->link("admin/deleteforum.php", "for_id=$fid") . "\">" . lang("Delete") . "</A></td>\n";
       echo "  </tr>\n";
     }
     echo "  </table>\n";

@@ -78,13 +78,13 @@
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang("New Forum") ."</a>";   
+echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
 echo " | ";
-echo "<a href=\"" . $phpgw->link("./") . "\">" . lang("Return to Admin") ."</a>";  
+echo "<a href=\"" . $phpgw->link("admin/") . "\">" . lang("Return to Admin") ."</a>";  
 echo " | ";
-echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."</a>";
   
 ?>
   </font>
@@ -97,7 +97,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
     </td>
    </tr>
    <tr>
-    <form method="POST" action="<?php echo $phpgw->link("forum.php"); ?>">
+    <form method="POST" action="<?php echo $phpgw->link("admin/forum.php"); ?>">
     <? echo $extrahidden ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
 
