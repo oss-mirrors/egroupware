@@ -11,7 +11,9 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+  $phpgw_info["flags"] = array("noheader" => True, 
+                               "nonavbar" => True,
+                               "enable_nextmatchs_class" => True);
 
   $phpgw_info["flags"]["currentapp"] = "stocks";
   include("../header.inc.php");
