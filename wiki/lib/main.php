@@ -34,6 +34,8 @@ $Preview      = isset($HTTP_POST_VARS['Preview'])
                 ? $HTTP_POST_VARS['Preview'] : '';
 $Save         = isset($HTTP_POST_VARS['Save'])
                 ? $HTTP_POST_VARS['Save'] : '';
+$SaveAndContinue = isset($HTTP_POST_VARS['SaveAndContinue'])
+                ? $HTTP_POST_VARS['SaveAndContinue'] : '';
 $archive      = isset($HTTP_POST_VARS['archive'])
                 ? $HTTP_POST_VARS['archive'] : '';
 $auth         = isset($HTTP_POST_VARS['auth'])
