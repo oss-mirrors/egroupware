@@ -22,7 +22,7 @@
 
   $sep = $phpgw->common->filesystem_separator();
 
-  $uploaddir = $phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id . $sep;
+  $uploaddir = $phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"] . $sep;
 
   if ($action == "Delete") {
      for ($i=0; $i<count($delete); $i++) {
@@ -36,7 +36,7 @@
   if ($action == "Attach File") {
      srand((double)microtime()*1000000);
      $random_number = rand(100000000,999999999);
-     $newfilename = md5("$uploadedfile, $uploadedfile_name, " . $phpgw->session->id
+     $newfilename = md5("$uploadedfile, $uploadedfile_name, " . $phpgw_info["user"]["sessionid"]
 		      . time() . getenv("REMOTE_ADDR") . $random_number );
 
      copy($uploadedfile, $uploaddir . $newfilename);
@@ -45,8 +45,8 @@
      fclose($ftp);
   }
 
-  if (! file_exists($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id))
-     mkdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id,0700);
+  if (! file_exists($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]))
+     mkdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"],0700);
 
   ?>
     <form ENCTYPE="multipart/form-data" method="POST" action="<?php echo $phpgw->link("attach_file.php")?>">
@@ -54,7 +54,7 @@
       <tr> <td>Attach file:</td> </tr>
       <tr> <td>Current attachments:</td> </tr>
       <?php
-        $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw->session->id);
+        $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
         while ($file = readdir($dh)) {
           if ($file != "." && $file != ".." && ereg("\.info",$file)) {
              $file_info = file($uploaddir . $file);

@@ -136,7 +136,7 @@ if($pos != 0) {
 
  echo ' <table border="0" width="80%" bgcolor=' . $phpgw_info["theme"]["table_bg"] . '>';
 
- $name = $phpgw->session->firstname . " " . $phpgw->session->lastname;
+ $name = $phpgw_info["user"]["firstname"] . " " . $phpgw_info["user"]["lastname"];
  $email = $phpgw_info["user"]["email_address"];
 
  echo " <tr><th colspan=3 bgcolor=" . $phpgw_info["theme"]["th_bg"] . ">" . lang_forums("Reply to this message") . "</th></tr>";
