@@ -1,16 +1,16 @@
 <?php
 	/**************************************************************************\
-	* AngleMail - email UI Class for Attaching Files						*
-	* http://www.anglemail.org									*
-	* File adapted directly from phpGroupWare file email/attach_file.php		*
-	* http://www.phpgroupware.org									*
-	* This file deals only with the UI display of the bo class file			*
-	* Copyright 2002 Angles Puglisi							*
-	* --------------------------------------------							*
-	*  This program is free software; you can redistribute it and/or modify it		*
-	*  under the terms of the GNU General Public License as published by the	*
-	*  Free Software Foundation; either version 2 of the License, or (at your		*
-	*  option) any later version.								*
+	* AngleMail - email UI Class for Attaching Files			   *
+	* http://www.anglemail.org						   *
+	* File adapted directly from eGroupWare file email/attach_file.php	   *
+	* http://www.egroupware.org						   *
+	* This file deals only with the UI display of the bo class file	           *
+	* Copyright 2002 Angles Puglisi						   *
+	* --------------------------------------------				   *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.						   *
 	\**************************************************************************/
 
 	/* $Id$ */

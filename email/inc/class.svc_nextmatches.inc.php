@@ -4,7 +4,7 @@
 	* This file written by Joseph Engo <jengo@phpgroupware.org>			*
 	* with email only additions by Angles <angles@aminvestments.com>		*
 	* Handles limiting number of rows displayed						*
-	* Small Email Only changes adapted from phpGroupWare API			*
+	* Small Email Only changes adapted from eGroupWare API			*
 	* file by Joseph Engo <jengo@phpgroupware.org>					*
 	* Copyright (C) 2000, 2001 Joseph Engo							*
 	* Email only additions Copyright (C) 2002 Angelo "Angles" Puglisi			*
