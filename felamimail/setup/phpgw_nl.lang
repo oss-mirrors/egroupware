@@ -20,7 +20,7 @@ as a subfolder of	felamimail	nl	als een submap van
 attachments	felamimail	nl	bijlages
 auto refresh folder list	felamimail	nl	Automatisch mappenlijst verversen
 back to folder	felamimail	nl	Terug naar map
-bad reque	felamimail	nl	
+bad reque	felamimail	nl	Ongeldig vezoek
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	nl	Gebaseerd op opgegeven criteria, kunnen inkomende berichten verschillende achtergrondkleuren  krijgen in de berichtenlijst. Dit maakt het makkelijker te zien van wie de berichten afkomstig zijn, vooral in mailinglijsten.
 bcc	felamimail	nl	Bcc.
 before headers	felamimail	nl	Voor berichtkoppen
@@ -86,7 +86,7 @@ empty trash	felamimail	nl	Prullenmand legen
 enter your imap mail server hostname or ip address	admin	nl	Voer de naam of het IP-adres in van uw IMAP-mailserver
 enter your sieve server hostname or ip address	admin	nl	Voer de naam of het IP-adres in van uw SIEVE-server
 enter your sieve server port	admin	nl	Voer de poort in van uw SIEVE-server
-erro	felamimail	nl	
+erro	felamimail	nl	FOUT
 error	felamimail	nl	FOUT
 error connecting to imap serv	felamimail	nl	Fout met het verbinden met de IMAP-server
 error opening	felamimail	nl	Fout bij het openen
@@ -190,7 +190,7 @@ none	felamimail	nl	geen
 number of messages to index	felamimail	nl	Aantal berichten om te indexeren
 on behalf of	felamimail	nl	
 only inbox	felamimail	nl	Alleen INBOX
-only unseen	felamimail	nl	
+only unseen	felamimail	nl	Alleen ongelezen
 options	felamimail	nl	Opties
 organization	felamimail	nl	Organisatie
 organization name	admin	nl	Naam organisatie
@@ -202,7 +202,7 @@ previous	felamimail	nl	Vorig
 previous message	felamimail	nl	Vorig bericht
 print it	felamimail	nl	Uitprinten
 print this page	felamimail	nl	Deze pagina uitprinten
-purge	felamimail	nl	
+purge	felamimail	nl	verwijderen
 quicksearch	felamimail	nl	Snelzoeken
 read	felamimail	nl	lezen
 read da	felamimail	nl	
@@ -226,7 +226,7 @@ return	felamimail	nl	Terug
 return to options page	felamimail	nl	Terug naar pagina met opties
 right	felamimail	nl	Rechts
 rule	felamimail	nl	Regel
-running squirrelmail version %1 (c) 1999-2000.	felamimail	nl	
+running squirrelmail version %1 (c) 1999-2000.	felamimail	nl	SquirrelMail versie %1 (c) 1999-2000.
 same window - not functional yet	felamimail	nl	Zelfde venster - nog niet functioneel
 save	felamimail	nl	Opslaan
 search	felamimail	nl	Zoeken

@@ -1,4 +1,3 @@
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	en	!!! You have to [Save] every manual change in the above fields, before you can go to the next step !!!
 add	developer_tools	en	add
 add change	developer_tools	en	Add change
 add new phrase	developer_tools	en	Add new phrase
@@ -14,7 +13,7 @@ clears the internal buffer, all changes made sofar are lost	developer_tools	en	C
 create new language file	developer_tools	en	Create New Language File
 create sgml file	developer_tools	en	Create SGML file
 developer tools - preferences	developer_tools	en	Developer tools - preferences
-developer_tools	common	en	TranslationTools
+developer_tools	common	en	Translation Tools
 diary	developer_tools	en	Diary
 done	developer_tools	en	done
 download	developer_tools	en	Download
@@ -68,3 +67,5 @@ you must a version	developer_tools	en	You must a version
 you must enter a change	developer_tools	en	You must enter a change
 you must select a project	developer_tools	en	You must select a project
 you need to set your preferences for this app	developer_tools	en	You need to set your preferences for this app
+!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	en	!!! You have to [Save] every manual change in the above fields, before you can go to the next step !!!
+
