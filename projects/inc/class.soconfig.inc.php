@@ -203,6 +203,25 @@
 			return $hours_act;
 		}
 
+		function select_hours_costs($_projectID, $_costID)
+		{
+			$this->db->query('SELECT cost_id,cost_name FROM phpgw_p_costs order by cost_name asc',__LINE__,__FILE__);
+
+			$hours_act .= '<option value="0"></option>';
+			while ($this->db->next_record())
+			{
+				$hours_act .= '<option value="' . $this->db->f('cost_id') . '"';
+				if($this->db->f('cost_id') == intval($_costID))
+				{
+					$hours_act .= ' selected';
+				}
+				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('cost_name'));
+
+				$hours_act .= '</option>' . "\n";
+			}
+			return $hours_act;
+		}
+
 		function return_value($action,$pro_id)
 		{
 			$pro_id = intval($pro_id);
@@ -509,6 +528,7 @@
 				case 'act':
 				case 'activity':	$p_table = 'phpgw_p_activities'; $p_column = 'id'; break;
 				case 'role':		$p_table = 'phpgw_p_roles'; $p_column = 'role_id'; break;
+				case 'cost':		$p_table = 'phpgw_p_costs'; $p_column = 'cost_id'; break;
 				case 'emp_role':
 				case 'accounting':	$p_table = 'phpgw_p_projectmembers'; $p_column = 'id'; break;
 			}
@@ -584,20 +604,29 @@
 
 		function list_roles($values)
 		{
-			$start	= intval($values['start']);
-			$limit	= (isset($values['limit'])?$values['limit']:True);
-			$sort	= (isset($values['sort'])?$values['sort']:'ASC');
-			$order	= (isset($values['order'])?$values['order']:'role_name');
+			$start		= intval($values['start']);
+			$limit		= (isset($values['limit'])?$values['limit']:True);
+			$sort		= (isset($values['sort'])?$values['sort']:'ASC');
+			$roleType	= (isset($values['roleType'])?$values['roleType']:'role');
+			$order		= (isset($values['order'])?$values['order']:$roleType.'_name');
 			$query	= $this->db->db_addslashes($values['query']);
 
 			$ordermethod = " order by $order $sort";
 
 			if ($query)
 			{
-				$querymethod = " WHERE (role_name like '%$query%') ";
+				$querymethod = " WHERE ($roleType_name like '%$query%') ";
 			}
-
-			$sql = 'SELECT * from phpgw_p_roles' . $querymethod;
+			
+			switch($roleType)
+			{
+				case 'cost':
+					$sql = 'SELECT * from phpgw_p_costs' . $querymethod;
+					break;
+				default:
+					$sql = 'SELECT * from phpgw_p_roles' . $querymethod;
+					break;
+			}
 
 			if ($limit)
 			{
@@ -614,17 +643,25 @@
 			{
 				$roles[] = array
 				(
-					'role_id'	=> $this->db->f('role_id'),
-					'role_name'	=> $this->db->f('role_name')
+					$roleType.'_id'		=> $this->db->f($roleType.'_id'),
+					$roleType.'_name'	=> $this->db->f($roleType.'_name')
 				);
 			}
 			return $roles;
 		}
 
-		function save_role($role_name)
+		function save_role($role_name, $roleType)
 		{
 			$role_name = $this->db->db_addslashes($role_name);
-			$this->db->query("INSERT into phpgw_p_roles (role_name) values ('" . $role_name . "')",__LINE__,__FILE__);
+			switch($roleType)
+			{
+				case 'cost':
+					$this->db->query("INSERT into phpgw_p_costs (cost_name) values ('" . $role_name . "')",__LINE__,__FILE__);
+					break;
+				case 'role':
+					$this->db->query("INSERT into phpgw_p_roles (role_name) values ('" . $role_name . "')",__LINE__,__FILE__);
+					break;
+			}
 		}
 
 		function list_events($type = '')

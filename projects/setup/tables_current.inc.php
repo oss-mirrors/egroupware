@@ -107,11 +107,12 @@
 				'pro_main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'billable' => array('type' => 'char','precision' => 1,'default' => 'Y','nullable' => False),
 				'km_distance' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => True),
-				't_journey' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => True)
+				't_journey' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => True),
+				'cost_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array('project_id','cost_id'),
 			'uc' => array()
 		),
 		'phpgw_p_projectmembers' => array(
@@ -204,6 +205,16 @@
 			'ix' => array(),
 			'uc' => array()
 		),
+		'phpgw_p_costs' => array(
+			'fd' => array(
+				'cost_id' => array('type' => 'auto','nullable' => False),
+				'cost_name' => array('type' => 'varchar','precision' => 255,'nullable' => False)
+			),
+			'pk' => array('cost_id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
 		'phpgw_p_ttracker' => array(
 			'fd' => array(
 				'track_id' => array('type' => 'auto','nullable' => False),
@@ -218,11 +229,12 @@
 				'minutes' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'km_distance' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => True),
 				't_journey' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => True),
-				'stopped' => array('type' => 'char','precision' => 1,'default' => 'N','nullable' => True)
+				'stopped' => array('type' => 'char','precision' => 1,'default' => 'N','nullable' => True),
+				'cost_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 			),
 			'pk' => array('track_id'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array('project_id','track_id'),
 			'uc' => array()
 		),
 		'phpgw_p_events' => array(

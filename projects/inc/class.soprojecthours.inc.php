@@ -2,12 +2,14 @@
 	/*******************************************************************\
 	* phpGroupWare - Projects                                           *
 	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/	*
+	* This program is part of the GNU project, see http://www.gnu.org/  *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc               *
+	* Copyright 2004 Lars Kneschke                                      *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -57,21 +59,22 @@
 				{
 				$hours[] = array
 				(
-					'hours_id'		=> $this->db->f('id'),
+					'hours_id'	=> $this->db->f('id'),
 					'project_id'	=> $this->db->f('project_id'),
+					'cost_id'	=> $this->db->f('cost_id'),
 					'pro_parent'	=> $this->db->f('pro_parent'),
-					'pro_main'		=> $this->db->f('pro_main'),
+					'pro_main'	=> $this->db->f('pro_main'),
 					'hours_descr'	=> $this->db->f('hours_descr'),
-					'status'		=> $this->db->f('status'),
-					'minutes'		=> $this->db->f('minutes'),
-					'sdate'			=> $this->db->f('start_date'),
-					'edate'			=> $this->db->f('end_date'),
-					'employee'		=> $this->db->f('employee'),
+					'status'	=> $this->db->f('status'),
+					'minutes'	=> $this->db->f('minutes'),
+					'sdate'		=> $this->db->f('start_date'),
+					'edate'		=> $this->db->f('end_date'),
+					'employee'	=> $this->db->f('employee'),
 					'activity_id'	=> $this->db->f('activity_id'),
-					'remark'		=> $this->db->f('remark'),
-					'billable'		=> $this->db->f('billable'),
+					'remark'	=> $this->db->f('remark'),
+					'billable'	=> $this->db->f('billable'),
 					'km_distance'	=> $this->db->f('km_distance'),
-					't_journey'		=> $this->db->f('t_journey')
+					't_journey'	=> $this->db->f('t_journey')
 				);
 				}
 			}
@@ -142,12 +145,13 @@
 		function add_hours($values)
 		{
 			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']		= $this->db->db_addslashes($values['remark']);
+			$values['remark']	= $this->db->db_addslashes($values['remark']);
 			$values['km_distance']	= $values['km_distance'] + 0.0;
 			$values['t_journey']	= $values['t_journey'] + 0.0;
 
-			$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,billable,minutes,'
-							. 'status,employee,pro_parent,pro_main,km_distance,t_journey) VALUES (' . intval($values['project_id']) . ',' . intval($values['activity_id']) . ','
+			$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,cost_id,entry_date,start_date,end_date,hours_descr,remark,billable,minutes,'
+							. 'status,employee,pro_parent,pro_main,km_distance,t_journey) VALUES (' . intval($values['project_id']) . ',' 
+							. intval($values['activity_id']) . ',' . (int)$values['cost_id'] . ','
 							. time() . ',' . intval($values['sdate']) . ',' . intval($values['edate']) . ",'" . $values['hours_descr'] . "','"
 							. $values['remark'] . "','" . (isset($values['billable'])?'N':'Y') . "'," . intval($values['w_minutes']) . ",'"
 							. $values['status'] . "'," . intval($values['employee']) . ',' . intval($values['pro_parent']) . ','
@@ -157,11 +161,11 @@
 		function edit_hours($values)
 		{
 			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']		= $this->db->db_addslashes($values['remark']);
+			$values['remark']	= $this->db->db_addslashes($values['remark']);
 			$values['km_distance']	= $values['km_distance'] + 0.0;
 			$values['t_journey']	= $values['t_journey'] + 0.0;
 
-			$this->db->query('UPDATE phpgw_p_hours SET activity_id=' . intval($values['activity_id']) . ',entry_date=' . time() . ',start_date='
+			$this->db->query('UPDATE phpgw_p_hours SET activity_id=' . intval($values['activity_id']) . ',cost_id=' .(int)$values['cost_id'] . ',entry_date=' . time() . ',start_date='
 							. intval($values['sdate']) . ',end_date=' . intval($values['edate']) . ",hours_descr='" . $values['hours_descr'] . "',remark='"
 							. $values['remark'] . "', billable='" . (isset($values['billable'])?'N':'Y') . "', minutes=" . intval($values['w_minutes'])
 							. ",status='" . $values['status'] . "',employee=" . intval($values['employee']) . ', km_distance=' . $values['km_distance']
@@ -472,18 +476,19 @@
 			{
 				$track[] = array
 				(
-					'track_id'		=> $this->db->f('track_id'),
+					'track_id'	=> $this->db->f('track_id'),
 					'project_id'	=> $this->db->f('project_id'),
+					'cost_id'	=> $this->db->f('cost_id'),
 					'hours_descr'	=> $this->db->f('hours_descr'),
-					'status'		=> $this->db->f('status'),
-					'minutes'		=> $this->db->f('minutes'),
-					'sdate'			=> $this->db->f('start_date'),
-					'edate'			=> $this->db->f('end_date'),
-					'employee'		=> $this->db->f('employee'),
+					'status'	=> $this->db->f('status'),
+					'minutes'	=> $this->db->f('minutes'),
+					'sdate'		=> $this->db->f('start_date'),
+					'edate'		=> $this->db->f('end_date'),
+					'employee'	=> $this->db->f('employee'),
 					'activity_id'	=> $this->db->f('activity_id'),
-					'remark'		=> $this->db->f('remark'),
+					'remark'	=> $this->db->f('remark'),
 					'km_distance'	=> $this->db->f('km_distance'),
-					't_journey'		=> $this->db->f('t_journey') 
+					't_journey'	=> $this->db->f('t_journey') 
 				);
 			}
 			return $track;
@@ -558,7 +563,7 @@
 			$values['t_journey']	= $values['t_journey'] + 0.0;
 			$project_id				= intval($values['project_id']);
 
-			//_debug_array($values);
+			#_debug_array($values);
 
 			switch($values['action'])
 			{
@@ -599,8 +604,8 @@
 
 					$this->db->query('UPDATE phpgw_p_ttracker set minutes=' . $work_time . ' where track_id=' . $max,__LINE__,__FILE__);
 
-					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,start_date,end_date,employee,status,hours_descr,remark) '
-										.' values(' . $project_id . ',' . intval($values['activity_id']) . ',' . time() . ',0,' . $this->account . ",'" . $values['action']
+					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,cost_id,start_date,end_date,employee,status,hours_descr,remark) '
+										.' values(' . $project_id . ',' . intval($values['activity_id']) . ',' . (int)$values['cost_id'] . ',' . time() . ',0,' . $this->account . ",'" . $values['action']
 										. "','" . ($values['hours_descr']?$values['hours_descr']:$values['action']) . "','" . $values['remark'] . "')",__LINE__,__FILE__);
 
 					if($values['action'] == 'stop')
@@ -619,8 +624,9 @@
 			{
 				//case 'start':
 				case 'apply':
-					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,employee,start_date,end_date,minutes,hours_descr,status,'
-									.'remark,t_journey,km_distance,stopped) values(' . $project_id . ',' . intval($values['activity_id'])
+					$this->db->query('INSERT into phpgw_p_ttracker (project_id,activity_id,cost_id,employee,start_date,end_date,minutes,hours_descr,status,'
+									. 'remark,t_journey,km_distance,stopped) values(' . $project_id . ',' . intval($values['activity_id'])
+									. ',' . (int)$values['cost_id']
 									. ',' . $this->account . ',' . intval($values['sdate']) . ',' . intval($values['sdate']) . ','
 									. intval($values['w_minutes']) . ",'" . $values['hours_descr'] . "','" . $values['action'] . "','" . $values['remark']
 									. "'," . $values['t_journey'] . ',' . $values['km_distance'] . ",'Y')",__LINE__,__FILE__);
@@ -632,20 +638,21 @@
 
 		function save_ttracker()
 		{
-			$this->db->query("SELECT * from phpgw_p_ttracker where status !='pause' and status != 'stop' and end_date > 0 and minutes > 0 and stopped='Y' and employee="
-							. $this->account,__LINE__,__FILE__);
+			$query = "SELECT * from phpgw_p_ttracker where status !='pause' and status != 'stop' and end_date > 0 and minutes > 0 and stopped='Y' and employee="
+							. $this->account;
+			$this->db->query($query,__LINE__,__FILE__);
 			$hours = $this->db2track();
 
 			while(is_array($hours) && list(,$hour) = each($hours))
 			{
-				$hour['pro_parent']		= $this->return_value('pro_parent',$hour['project_id']);
-				$hour['pro_main']		= $this->return_value('pro_main',$hour['project_id']);
+				$hour['pro_parent']	= $this->return_value('pro_parent',$hour['project_id']);
+				$hour['pro_main']	= $this->return_value('pro_main',$hour['project_id']);
 				$hour['km_distance']	= $hour['km_distance'] + 0.0;
-				$hour['t_journey']		= $hour['t_journey'] + 0.0;
+				$hour['t_journey']	= $hour['t_journey'] + 0.0;
 
-				$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,'
+				$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,cost_id,entry_date,start_date,end_date,hours_descr,remark,minutes,'
 							. 'status,employee,pro_parent,pro_main,billable,t_journey,km_distance) VALUES (' . intval($hour['project_id']) . ','
-							. intval($hour['activity_id']) . ',' . time() . ',' . intval($hour['sdate']) . ',' . intval($hour['edate']) . ",'"
+							. intval($hour['activity_id']) . ',' .(int)$hour['cost_id']. ','. time() . ',' . intval($hour['sdate']) . ',' . intval($hour['edate']) . ",'"
 							. $hour['hours_descr'] . "','" . $hour['remark'] . "'," . intval($hour['minutes']) . ",'done'," . intval($hour['employee'])
 							. ',' . intval($hour['pro_parent']) . ',' . intval($hour['pro_main']) . ",'Y'," . $hour['t_journey'] . ','
 							. $hour['km_distance'] . ')',__LINE__,__FILE__);

@@ -1528,7 +1528,7 @@
 			$this->query		= $data['query'];
 			$this->filter		= $data['filter'];
 			$this->order		= $data['order'];
-			$this->sort			= $data['sort'];
+			$this->sort		= $data['sort'];
 			$this->cat_id		= $data['cat_id'];
 			$this->status		= $data['status'];
 			$this->state		= $data['state'];
@@ -3206,6 +3206,12 @@
 			return $activities_list;
 		}
 
+		function select_hours_costs($_projectID, $_costID)
+		{
+			$costs_list = $this->soprojects->soconfig->select_hours_costs($_projectID, $_costID);
+			return $costs_list;
+		}
+
 		function isprojectadmin($action = 'pad')
 		{
 			return $this->soprojects->soconfig->isprojectadmin($action);
@@ -3352,10 +3358,21 @@
 			}
 		}
 
-		function list_roles()
+		function list_roles($_roleType)
 		{
-			$roles = $this->soprojects->soconfig->list_roles(array('start' => $this->start,'sort' => $this->sort,'order' => $this->order,
-														'query' => $this->query,'limit' => $this->limit));
+			$roles = $this->soprojects->soconfig->list_roles
+			(
+				array
+				(
+					'start' 	=> $this->start,
+					'sort' 		=> $this->sort,
+					'order' 	=> $this->order,
+					'query' 	=> $this->query,
+					'roleType'	=> $_roleType,
+					'limit' 	=> $this->limit
+				)
+			);
+			
 			$this->total_records = $this->soprojects->soconfig->total_records;
 
 			if(is_array($roles))
@@ -3364,8 +3381,8 @@
 				{
 					$emp_roles[] = array
 					(
-						'role_id'	=> $role['role_id'],
-						'role_name'	=> $GLOBALS['phpgw']->strip_html($role['role_name'])
+						$_roleType.'_id'	=> $role[$_roleType.'_id'],
+						$_roleType.'_name'	=> $GLOBALS['phpgw']->strip_html($role[$_roleType.'_name'])
 					);
 				}
 				return $emp_roles;

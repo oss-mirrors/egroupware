@@ -63,8 +63,18 @@
 <!-- END activity_own -->
 
 		</td>
+		<td>{lang_costtype}:</td>
+		<td colspan="2">
+<!-- BEGIN cost -->
+			<select name="values[cost_id]">{cost_list}</select>
+<!-- END cost -->
+		</td>
+	</tr>
+	<tr bgcolor="{row_on}" valign="top">
 		<td>{lang_remark}:</td>
-		<td colspan="2"><textarea name="values[remark]" rows="5" cols="30" wrap="VIRTUAL">{remark}</textarea></td>
+		<td colspan="5" align="center">
+			<textarea style="width:99%;" name="values[remark]" rows="5" cols="60" wrap="VIRTUAL">{remark}</textarea>
+		</td>
 	</tr>
 	<tr bgcolor="{th_bg}">
 		<td colspan="6"><b>{lang_work_date}</b></td>
@@ -81,20 +91,20 @@
 	<tr bgcolor="{row_off}">
 		<td>{lang_start_time}:</td>
 		<td>
-			<input type="text" name="values[shour]" value="{shour}" size="3" maxlength="2">.
-			<input type="text" name="values[smin]" value="{smin}" size="3" maxlength="2">&nbsp;[hh.mm]
+			<input type="text" name="values[shour]" value="{shour}" size="3" maxlength="2">:
+			<input type="text" name="values[smin]" value="{smin}" size="3" maxlength="2">&nbsp;[hh:mm]
 			&nbsp;{sradio}
 		</td>
 		<td>{lang_end_time}:</td>
 		<td>
-			<input type="text" name="values[ehour]" value="{ehour}" size=3 maxlength=2>.
-			<input type="text" name="values[emin]" value="{emin}" size=3 maxlength=2>&nbsp;[hh.mm]
+			<input type="text" name="values[ehour]" value="{ehour}" size=3 maxlength=2>:
+			<input type="text" name="values[emin]" value="{emin}" size=3 maxlength=2>&nbsp;[hh:mm]
 			&nbsp;{eradio}
 		</td>
 		<td>{lang_hours}:</td>
 		<td>
-			<input type="text" name="values[hours]" value="{hours}" size=3 maxlength=2>.
-			<input type="text" name="values[minutes]" value="{minutes}" size=3 maxlength=2>&nbsp;[hh.mm]
+			<input type="text" name="values[hours]" value="{hours}" size=3 maxlength=2>:
+			<input type="text" name="values[minutes]" value="{minutes}" size=3 maxlength=2>&nbsp;[hh:mm]
 		</td>
 	</tr>
 	<tr height="5">

@@ -50,8 +50,12 @@
 	<tr bgcolor="{row_on}" valign="top">
 		<td>{lang_activity}:</td>
 		<td>{activity}</td>
+		<td>{lang_costtype}:</td>
+		<td>{cost}</td>
+	</tr>
+	<tr class="row_off" valign="top">
 		<td>{lang_remark}:</td>
-		<td>{remark}</td>
+		<td colspan="3">{remark}</td>
 	</tr>
 	<tr height="5">
 		<td>&nbsp;</td>
@@ -76,14 +80,14 @@
 	</tr>
 	<tr bgcolor="{row_on}">
 		<td>{lang_hours}:</td>
-		<td>{hours}.{minutes}</td>
+		<td>{hours}:{minutes}</td>
 		<td>{lang_status}:</td>
 		<td>{status}</td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td>{lang_distance}:</td>
 		<td>{km_distance}</td>
-		<td>{lang_time_of_journey}:&nbsp;[hh.mm]</td>
+		<td>{lang_time_of_journey}:&nbsp;[hh:mm]</td>
 		<td>{t_journey}</td>
 	</tr>
 	<tr height="50" valign="bottom">

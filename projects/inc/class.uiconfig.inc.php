@@ -61,7 +61,7 @@
 			$this->query		= $this->boconfig->query;
 			$this->filter		= $this->boconfig->filter;
 			$this->order		= $this->boconfig->order;
-			$this->sort			= $this->boconfig->sort;
+			$this->sort		= $this->boconfig->sort;
 			$this->cat_id		= $this->boconfig->cat_id;
 
 			$this->siteconfig	= $this->boconfig->boprojects->siteconfig;
@@ -722,32 +722,34 @@
 		{
 			$role_id	= get_var('role_id',array('POST','GET'));
 			$role_name	= $_POST['role_name'];
+			$role_type	= preg_match("/^role$|^cost$/",get_var('role_type',array('GET')))?get_var('role_type',array('GET')):'role';
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiconfig.list_roles',
-				'role_id'		=> $role_id,
-				'action'		=> 'role'
+				'role_id'	=> $role_id,
+				'role_type'	=> $role_type,
+				'action'	=> 'role'
 			);
 
 			if ($_POST['save'])
 			{
-				$error = $this->boconfig->check_pa_values(array('role_name' => $role_name),'role');
+				$error = $this->boconfig->check_pa_values(array($role_type.'_name' => $role_name),$role_type);
 				if(is_array($error))
 				{
 					$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
 				}
 				else
 				{
-					$this->boconfig->save_role($role_name);
-					$GLOBALS['phpgw']->template->set_var('message',($role_id?lang('role %1 has been updated',$role_name):lang('role %1 has been saved',$role_name)));
+					$this->boconfig->save_role($role_name,$role_type);
+					$GLOBALS['phpgw']->template->set_var('message',($role_id?lang($role_type.' %1 has been updated',$role_name):lang($role_type.' %1 has been saved',$role_name)));
 				}
 			}
 
 			if ($_GET['delete'])
 			{
-				$this->boconfig->delete_pa('role',$role_id);
-				$GLOBALS['phpgw']->template->set_var('message',lang('role has been deleted'));
+				$this->boconfig->delete_pa($role_type,$role_id);
+				$GLOBALS['phpgw']->template->set_var('message',lang($role_type.' has been deleted'));
 			}
 
 			if ($_POST['done'])
@@ -755,7 +757,17 @@
 				$GLOBALS['phpgw']->redirect_link('/preferences/index.php');
 			}
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('roles list');
+			switch($role_type)
+			{
+				case 'cost':
+					$GLOBALS['phpgw_info']['flags']['app_header'] = 
+						lang('projects') . ': ' . lang('costs list');
+					break;
+				default:
+					$GLOBALS['phpgw_info']['flags']['app_header'] = 
+						lang('projects') . ': ' . lang('roles list');
+					break;
+			}
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			$this->set_app_langs();
@@ -767,7 +779,7 @@
 			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$roles = $this->boconfig->list_roles();
+			$roles = $this->boconfig->list_roles($role_type);
 
 //--------------------------------- nextmatch --------------------------------------------
  
@@ -776,7 +788,7 @@
 			$GLOBALS['phpgw']->template->set_var('left',$left);
 			$GLOBALS['phpgw']->template->set_var('right',$right);
 
-    		$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->boconfig->total_records,$this->start));
+	    		$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->boconfig->total_records,$this->start));
  
 // ------------------------------ end nextmatch ------------------------------------------
  
@@ -788,16 +800,24 @@
 
 			for ($i=0;$i<count($roles);$i++)
 			{
+				$link_data = array
+				(
+					'menuaction'	=> 'projects.uiconfig.list_roles',
+					'role_id'	=> $roles[$i][$role_type.'_id'],
+					'role_type'	=> $role_type,
+					'delete'	=> True
+				);
 				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
-				$GLOBALS['phpgw']->template->set_var('role_name',$roles[$i]['role_name']);
-				$GLOBALS['phpgw']->template->set_var('delete_role',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_roles&role_id='
-																	. $roles[$i]['role_id'] . '&delete=True'));
+				$GLOBALS['phpgw']->template->set_var('role_name',$roles[$i][$role_type.'_name']);
+				$GLOBALS['phpgw']->template->set_var('delete_role',
+					$GLOBALS['phpgw']->link('/index.php',$link_data)
+				);
 
 				$GLOBALS['phpgw']->template->fp('list','roles_list',True);
 			}
-			$GLOBALS['phpgw']->template->set_var('lang_add_role',lang('add role'));
-			$this->save_sessiondata('role');
+			$GLOBALS['phpgw']->template->set_var('lang_add_role',lang('add '.$role_type));
+			$this->save_sessiondata($role_type);
 			$GLOBALS['phpgw']->template->pfp('out','roles_list_t',True);
 		}
 

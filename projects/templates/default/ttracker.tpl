@@ -20,8 +20,16 @@
 <!-- END activity -->
 
 			</td>
+			<td valign="top">{lang_costtype}:</td>
+			<td colspan="2">
+<!-- BEGIN cost -->
+				<select name="values[cost_id]">{cost_list}</select>
+<!-- END cost -->
+			</td>
+		</tr>
+		<tr bgcolor="{row_on}">
 			<td valign="top">{lang_remark}:</td>
-			<td colspan="2"><textarea name="values[remark]" rows="4" cols="30" wrap="VIRTUAL">{remark}</textarea></td>
+			<td colspan="5" align="center"><textarea style="width:99%;" name="values[remark]" rows="4" wrap="VIRTUAL">{remark}</textarea></td>
 		</tr>
 		<tr bgcolor="{row_off}">
 			<td>&nbsp;</td>

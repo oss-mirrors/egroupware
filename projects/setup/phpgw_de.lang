@@ -253,7 +253,7 @@ role %1 has been saved	projects	de	Rolle %1 wurde gespeichert
 role %1 has been updated	projects	de	Rolle %1 wurde upgedated
 role has been deleted	projects	de	Rolle wurde hinzugefügt
 roles	projects	de	Rollen
-roles list	projects	de	Rollen anzeigen
+roles list	projects	de	Rollenliste
 sales department	admin	de	Vertrieb
 save factor	projects	de	Faktor speichern
 save milestone	projects	de	Meilenstein gespeichert
@@ -337,3 +337,6 @@ delete selected files	projects	de	ausgewählte Dateien löschen
 add file	projects	de	Datei hinzufügen
 workload warning for project	calendar	de	Auslastungwarnung für Projekt
 is scheduled for more then %1 hours on %2	calendar	de	ist am %2 für mehr als %1 Stunden eingeplant
+costs list	projects	de	Kostenliste
+add cost	projects	de	Kosten hinzufügen
+costs	projects	de	Kosten

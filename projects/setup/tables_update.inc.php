@@ -960,4 +960,43 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.038';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.7.038';
+	function projects_upgrade0_8_7_038()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable(
+			'phpgw_p_costs', array(
+				'fd' => array(
+					'cost_id' => array('type' => 'auto','nullable' => False),
+					'cost_name' => array('type' => 'varchar','precision' => 255,'nullable' => False)
+				),
+				'pk' => array('cost_id'),
+				'fk' => array(),
+				'ix' => array(),
+				'uc' => array()
+			)
+		);
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.039';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.7.039';
+	function projects_upgrade0_8_7_039()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_hours','cost_id',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.040';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.7.040';
+	function projects_upgrade0_8_7_040()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_ttracker','cost_id',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.041';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
 ?>

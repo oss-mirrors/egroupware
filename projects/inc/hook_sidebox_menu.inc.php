@@ -73,6 +73,8 @@
 				{
 					$pref_file['Roles'] =
 						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_roles&action=role');
+					$pref_file['costs'] =
+						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_roles&action=role&role_type=cost');
 					$pref_file['events'] =
 						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_events');
 				}

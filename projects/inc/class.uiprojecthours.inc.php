@@ -129,6 +129,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_time',lang('time'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_activity',lang('Activity'));
+			$GLOBALS['phpgw']->template->set_var('lang_costtype',lang('Costtype'));
 			$GLOBALS['phpgw']->template->set_var('lang_project',lang('Project'));
 			$GLOBALS['phpgw']->template->set_var('lang_descr',lang('Short description'));
 			$GLOBALS['phpgw']->template->set_var('lang_remark',lang('Remark'));
@@ -578,6 +579,7 @@
 			$GLOBALS['phpgw']->template->set_block('ttracker_t','ttracker_list','listhandle');
 
 			$GLOBALS['phpgw']->template->set_block('ttracker_t','activity','activityhandle');
+			$GLOBALS['phpgw']->template->set_block('ttracker_t','cost','costhandle');
 			$GLOBALS['phpgw']->template->set_block('ttracker_t','act_own','actownhandle');
 
 			$GLOBALS['phpgw']->template->set_var('lang_select_project',lang('select project'));
@@ -621,6 +623,8 @@
 				$GLOBALS['phpgw']->template->set_var('hours_descr',$values['hours_descr']);
 				$GLOBALS['phpgw']->template->fp('actownhandle','act_own',True);
 			}
+			$GLOBALS['phpgw']->template->set_var('cost_list',$this->boprojects->select_hours_costs($this->project_id,$values['cost_id']));
+			$GLOBALS['phpgw']->template->fp('costhandle','cost',True);
 
 			$tracking = $this->bohours->list_ttracker();
 
@@ -930,6 +934,7 @@
 			$GLOBALS['phpgw']->template->set_file(array('hours_form' => 'hours_formhours.tpl'));
 			$GLOBALS['phpgw']->template->set_block('hours_form','activity','activityhandle');
 			$GLOBALS['phpgw']->template->set_block('hours_form','activity_own','actownhandle');
+			$GLOBALS['phpgw']->template->set_block('hours_form','cost','costhandle');
 			$GLOBALS['phpgw']->template->set_block('hours_form','main','mainhandle');
 
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -954,10 +959,9 @@
 			{
 				$values = $this->bohours->read_single_hours($hours_id);
 
-
-
 				$activity_id	= $values['activity_id'];
-				$pro_parent		= $values['pro_parent'];
+				$costID		= $values['cost_id'];
+				$pro_parent	= $values['pro_parent'];
 			}
 			else
 			{
@@ -1060,6 +1064,8 @@
 			{
 				$GLOBALS['phpgw']->template->fp('actownhandle','activity_own',True);
 			}
+			$GLOBALS['phpgw']->template->set_var('cost_list',$this->boprojects->select_hours_costs($this->project_id, $costID));
+			$GLOBALS['phpgw']->template->fp('costhandle','cost',True);
 
 			/*if ($values['pro_parent'] > 0)
 			{
@@ -1168,6 +1174,7 @@
 			{
 				$GLOBALS['phpgw']->template->set_var('activity',$values['hours_descr']);
 			}
+			$GLOBALS['phpgw']->template->set_var('cost',$GLOBALS['phpgw']->strip_html($this->boprojects->return_value('cost',$values['cost_id'])));
 			$GLOBALS['phpgw']->template->pfp('out','hours_view');
 		}
 

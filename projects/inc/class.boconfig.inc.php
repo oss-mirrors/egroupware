@@ -236,12 +236,13 @@
 			switch($action)
 			{
 				case 'role':
-					if (strlen($values['role_name']) > 250)
+				case 'cost':
+					if (strlen($values[$action.'_name']) > 250)
 					{
 						$error[] = lang('name not exceed 250 characters in length');
 					}
 
-					if (!$values['role_name'])
+					if (!$values[$action.'_name'])
 					{
 						$error[] = lang('Please enter a name');
 					}
@@ -336,16 +337,16 @@
 			$this->boprojects->soconfig->delete_pa($action, $pa_id);
 		}
 
-		function list_roles()
+		function list_roles($_roleType)
 		{
-			$roles = $this->boprojects->list_roles();
+			$roles = $this->boprojects->list_roles($_roleType);
 			$this->total_records = $this->boprojects->total_records;
 			return $roles;
 		}
 
-		function save_role($role_name)
+		function save_role($role_name, $_roleType)
 		{
-			$this->boprojects->soconfig->save_role($role_name);
+			$this->boprojects->soconfig->save_role($role_name, $_roleType);
 		}
 
 		function save_event($values)

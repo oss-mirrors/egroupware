@@ -819,6 +819,13 @@
 						$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 					}
 					break;
+				case 'cost':
+					$this->db->query('SELECT cost_id,cost_name from phpgw_p_costs where cost_id=' . $pro_id,__LINE__,__FILE__);
+					if ($this->db->next_record())
+					{
+						$bla = $GLOBALS['phpgw']->strip_html($this->db->f('cost_name'));
+					}
+					break;
 				case 'budget':
 				case 'budgetSum':
 					$budgetData = $this->getBudget($pro_id);

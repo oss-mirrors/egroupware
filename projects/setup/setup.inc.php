@@ -12,7 +12,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '0.8.7.038';
+	$setup_info['projects']['version']   = '0.8.7.041';
 	$setup_info['projects']['app_order'] = 8;
 	$setup_info['projects']['enable']    = 1;
 
@@ -41,6 +41,7 @@
 		'phpgw_p_deliverypos',
 		'phpgw_p_mstones',
 		'phpgw_p_roles',
+		'phpgw_p_costs',
 		'phpgw_p_ttracker',
 		'phpgw_p_events',
 		'phpgw_p_alarm',

@@ -218,29 +218,30 @@
 
 			$hour = array
 			(
-				'hours_id'			=> $hours['hours_id'],
+				'hours_id'		=> $hours['hours_id'],
 				'project_id'		=> $hours['project_id'],
+				'cost_id'		=> $hours['cost_id'],
 				'pro_parent'		=> $hours['pro_parent'],
-				'pro_main'			=> $hours['pro_main'],
+				'pro_main'		=> $hours['pro_main'],
 				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hours['hours_descr']),
-				'status'			=> $hours['status'],
-				'statusout'			=> lang($hours['status']),
-				'minutes'			=> $hours['minutes'],
-				'wh'				=> $this->sohours->format_wh($hours['minutes']),
-				'sdate'				=> $hours['sdate'],
-				'edate'				=> $hours['edate'],
-				'employee'			=> $hours['employee'],
+				'status'		=> $hours['status'],
+				'statusout'		=> lang($hours['status']),
+				'minutes'		=> $hours['minutes'],
+				'wh'			=> $this->sohours->format_wh($hours['minutes']),
+				'sdate'			=> $hours['sdate'],
+				'edate'			=> $hours['edate'],
+				'employee'		=> $hours['employee'],
 				'employeeout'		=> $GLOBALS['phpgw']->common->grab_owner_name($hours['employee']),
 				'activity_id'		=> $hours['activity_id'],
 				'activity_title'	=> $this->siteconfig['accounting']=='activity'?$this->boprojects->return_value('act',$hours['activity_id']):'',
-				'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
+				'remark'		=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
 				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
 				'edate_formatted'	=> $this->hdate_format($hours['edate']),
 				'stime_formatted'	=> $this->format_htime($hours['sdate']),
 				'etime_formatted'	=> $this->format_htime($hours['edate']),
-				'billable'			=> $hours['billable'],
+				'billable'		=> $hours['billable'],
 				'km_distance'		=> $hours['km_distance'],
-				't_journey'			=> $hours['t_journey']
+				't_journey'		=> $hours['t_journey']
 			);
 			return $hour;
 		}
@@ -394,11 +395,11 @@
 			{
 				$values['sdate'] = mktime($values['shour'],$values['smin'],0,$values['smonth'], $values['sday'], $values['syear']);
 			}
-
-            if (!$values['sdate'])
-            {
-                $values['sdate'] = time();
-            }
+			
+			if (!$values['sdate'])
+			{
+				$values['sdate'] = time();
+			}
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
@@ -420,7 +421,7 @@
 
 				$values['project_id']	= $this->project_id;
 				$values['pro_parent']	= $this->boprojects->return_value('parent',$this->project_id);
-				$values['pro_main']		= $values['pro_main']?$values['pro_main']:$this->project_id;
+				$values['pro_main']	= $values['pro_main']?$values['pro_main']:$this->project_id;
 
 				if (intval($values['hours_id']) > 0)
 				{
@@ -469,7 +470,7 @@
 
 				$budget_percent = $this->boprojects->soconfig->get_event_extra('budget limit');
 				$budget_percent = $budget_percent>0?$budget_percent:100;
-				$pro['budget_percent'] = ($pro['budget']*intval($budget_percent))/100;
+				$pro['budget_percent'] = ($pro['budgetSum']*intval($budget_percent))/100;
 
 				if($pro['u_budget_jobs'] >= $pro['budget_percent'])
 				{
