@@ -1,8 +1,5 @@
 
 insert into applications (app_name,app_title,app_enabled,app_tables) values ('projects','Projects',1,'p_activities,p_delivery,p_deliverypos,p_hours,p_invoive,p_invoicepos,p_projectaddress,p_projectmembers,p_projects');
-insert into applications (app_name,app_title,app_enabled,app_tables) values ('projectstatistics','Project Statistics',2,'p_activities,p_delivery,p_deliverypos,p_hours,p_invoive,p_invoicepos,p_projectaddress,p_projectmembers,p_projects');
-insert into applications (app_name,app_title,app_enabled,app_tables) values ('projectbilling','Project Billing',2,'p_activities,p_delivery,p_deliverypos,p_hours,p_invoive,p_invoicepos,p_projectaddress,p_projectmembers,p_projects');
-insert into applications (app_name,app_title,app_enabled,app_tables) values ('projectdelivery','Project Delivery',2,'p_activities,p_delivery,p_deliverypos,p_hours,p_invoive,p_invoicepos,p_projectaddress,p_projectmembers,p_projects');
 
  CREATE TABLE p_projects (
 	id		int(11) NOT NULL auto_increment,

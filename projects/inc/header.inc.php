@@ -13,7 +13,7 @@
                                                                                                                                                                                           
        $lid = $phpgw_info["user"]["userid"];
 
-       $db2 = $phpgw->db;                                                                                                                                                                 
+/*       $db2 = $phpgw->db;                                                                                                                                                                 
                                                                                                                                                                                           
        $db2->query("select app_name from applications where (app_enabled = 2 ) or (app_enabled = 1 and app_name='projects')");                                                          
        while ($db2->next_record()) {                                                                                                                                                      
@@ -63,7 +63,7 @@
           if ($sa[1] == 2) {                                                                                                                                                              
              $return_apps[$sa[0]] = True;                                                                                                                                                 
           }                                                                                                                                                                               
-        }       
+        }  */       
 
        $t = new Template($phpgw_info["server"]["app_tpl"]);
        $t->set_file(array("projects_header" => "header.tpl"));
@@ -82,34 +82,34 @@
 
      
      
-     if($invisible_apps["projectbilling"]==True)
-     $t->set_var("link_billing","<a href=\"" . $phpgw->link("../projectbilling/") . "\">" . lang("projectbilling") ."</a>");
-     else                                                                                                                                                                                          
-     $t->set_var("link_billing","");     
+//     if($invisible_apps["projectbilling"]==True)
+     $t->set_var("link_billing","<a href=\"" . $phpgw->link("../projects/bill_index.php") . "\">" . lang("projectbilling") ."</a>");
+//     else                                                                                                                                                                                          
+//     $t->set_var("link_billing","");     
 
 //     if($invisible_apps["projecthours"]==True)
 //     $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projects/hours_index.php") . "\">" . lang("projecthours") ."</a>");
 //     else                                                                                                                                                                                          
 //     $t->set_var("link_hours","");
 
-     if($invisible_apps["projectstatistics"]==True)
-     $t->set_var("link_statistics","<a href=\"" . $phpgw->link("../projectstatistics/") . "\">" . lang("projectstatistics") ."</a>");
-     else                                                                                                                                                                                          
-     $t->set_var("link_statistics","");
+//     if($invisible_apps["projectstatistics"]==True)
+     $t->set_var("link_statistics","<a href=\"" . $phpgw->link("../projects/stats_index.php") . "\">" . lang("projectstatistics") ."</a>");
+//     else                                                                                                                                                                                          
+//     $t->set_var("link_statistics","");
 
-     if($invisible_apps["projectdelivery"]==True)
-     $t->set_var("link_delivery","<a href=\"" . $phpgw->link("../projectdelivery/") . "\">" . lang("projectdelivery") ."</a>");                                                                                 
-     else                                                                                                                                                                                          
-     $t->set_var("link_delivery","");
+//     if($invisible_apps["projectdelivery"]==True)
+     $t->set_var("link_delivery","<a href=\"" . $phpgw->link("../projects/del_index.php") . "\">" . lang("projectdelivery") ."</a>");                                                                                 
+//     else                                                                                                                                                                                          
+//     $t->set_var("link_delivery","");
      
-    if ($phpgw_info["apps"]["projects"]["enabled"]) {
+//    if ($phpgw_info["apps"]["projects"]["enabled"]) {
      $t->set_var("link_return_projects","<a href=\"" . $phpgw->link("../projects/") . "\">" . lang("return to projects") ."</a>");     
      $t->set_var("link_hours","<a href=\"" . $phpgw->link("../projects/hours_index.php") . "\">" . lang("projecthours") ."</a>");     
-         }
-    else {     
-       $t->set_var("link_hours",""); 
-       $t->set_var("link_return_projects","");
-         }
+//         }
+//    else {     
+//       $t->set_var("link_hours",""); 
+//       $t->set_var("link_return_projects","");
+//         }
     $t->pparse("out","projects_header");
  
 ?>

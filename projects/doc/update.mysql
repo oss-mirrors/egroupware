@@ -1,0 +1,12 @@
+##########################################################################
+# update : 11/26/2000                                                    #
+##########################################################################
+
+delete from applications where app_name='projectstatistics';
+delete from applications where app_name='projectbilling';
+delete from applications where app_name='projectdelivery';
+delete from applications where app_name='projecthours';
+delete from lang where app_name='projecthours';
+delete from lang where app_name='projectstatistics';
+delete from lang where app_name='projectbilling';
+delete from lang where app_name='projectdelivery';

@@ -1,9 +1,0 @@
-##########################################################################
-# update : 11/25/2000                                                    #
-##########################################################################
-
-update applications set app_enabled=2 where app_name='projectstatistics';                                                                                                         
-update applications set app_enabled=2 where app_name='projectdelivery';                                                                                                           
-update applications set app_enabled=2 where app_name='projectbilling';
-delete from applications where app_name='projecthours';
-delete from lang where app_name='projecthours';
