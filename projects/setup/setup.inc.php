@@ -1,7 +1,7 @@
 <?php
   /*************************************************************************\
-  * phpGroupWare Setup - Projects                                           *
-  * http://www.phpgroupware.org                                             *
+  * eGroupWare Setup - Projects                                             *
+  * http://www.egroupware.org                                               *
   * --------------------------------------------                            *
   * This program is free software; you can redistribute it and/or modify it *
   * under the terms of the GNU General Public License as published by the   *
@@ -24,7 +24,8 @@
 	$setup_info['projects']['license']  = 'GPL';
 	$setup_info['projects']['description'] = 'Advanced project management';
 
-	$setup_info['projects']['maintainer'] = $setup_info['projects']['author'];
+        $setup_info['projects']['maintainer'] = 'eGroupWare coreteam';
+        $setup_info['addressbook']['maintainer_email'] = 'lkneschke@users.sourceforge.net';
 
 	$setup_info['projects']['tables'] = array
 	(
