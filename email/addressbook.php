@@ -60,13 +60,10 @@
 
     $account_id = $phpgw_info['user']['account_id'];
 
-    $cols = array (
-		'n_given'         => 'n_given',
-		'n_family'        => 'n_family',
-		'email'           => 'email',
-		'email_type'      => 'email_type',
-		'email_home'      => 'email_home',
-		'email_home_type' => 'email_home_type');
+    $cols = array ('n_given'         => 'n_given',
+		    'n_family'        => 'n_family',
+		    'email'           => 'email',
+		    'email_home'      => 'email_home');
 
     $entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
 
@@ -89,8 +86,6 @@
     $t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
     $t->set_var('sort_firstname',$phpgw->nextmatchs->show_sort_order($sort,'n_given',$order,'/'.$phpgw_info['flags']['currentapp'].'/addressbook.php',lang('Firstname')));
     $t->set_var('sort_lastname',$phpgw->nextmatchs->show_sort_order($sort,'n_family',$order,'/'.$phpgw_info['flags']['currentapp'].'/addressbook.php',lang('Lastname')));
-    $t->set_var('sort_etype',lang('Work Email type'));
-    $t->set_var('sort_hetype',lang('Home Email type'));
     $t->set_var('lang_email',lang('Select work email address'));
     $t->set_var('lang_hemail',lang('Select home email address'));
     $t->set_var('cats_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php',"sort=$sort&order=$order&filter=$filter&start=$start&query=$query&cat_id=$cat_id"));
@@ -103,22 +98,17 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$t->set_var(tr_color,$tr_color);
 	$firstname = $entries[$i]['n_given'];
-	if (!$firstname) { $firstname = "&nbsp;"; }
+	if (!$firstname) { $firstname = '&nbsp;'; }
 	$lastname = $entries[$i]['n_family'];
-	if (!$lastname) { $lastname = "&nbsp;"; }
-	$etype  = $entries[$i]['email_type'];
-	$hetype = $entries[$i]['email_home_type'];
+	if (!$lastname) { $lastname = '&nbsp;'; }
 	$id     = $entries[$i]['id'];
 	$email  = $entries[$i]['email'];
 	$hemail = $entries[$i]['email_home'];
 
 // --------------------- template declaration for list records --------------------------
 
-	$t->set_var(array(
-		'etype'     => $etype,
-		'hetype'    => $hetype,
-		'firstname' => $firstname,
-		'lastname'  => $lastname));
+	$t->set_var(array('firstname' => $firstname,
+			  'lastname'  => $lastname));
 
 	$t->set_var('id',$id);
 	$t->set_var('email',$email);

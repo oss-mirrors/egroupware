@@ -71,9 +71,7 @@ function ExchangeCc(thisform)
       <td width="15%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
       <td width="15%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
       <td width="25%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
-      <td width="10%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_etype}</font></td>
       <td width="25%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_hemail}</font></td>
-      <td width="10%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_hetype}</font></td>
     </tr>
   
 <!-- BEGIN addressbook_list -->
@@ -85,13 +83,11 @@ function ExchangeCc(thisform)
         <input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
         <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
         </form>
-        <td align="center"><font face="{font}">{etype}</font></td>
         <form>
         <td align="center"><font face="{font}"><input type="text" size="25" name="hemail" value="{hemail}">
         <input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
         <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
         </form>
-        <td align="center"><font face="{font}">{hetype}</font></td>
       </tr>
 <!-- END addressbook_list -->
 
