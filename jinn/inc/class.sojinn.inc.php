@@ -191,6 +191,7 @@
 		 {
 			$sql="SELECT * FROM egw_jinn_objects WHERE object_id=$object_id";
 		 }
+		 //echo($sql);
 		 
 		 $object_metadata=$this->phpgw_db->metadata('egw_jinn_objects');
 		 $this->phpgw_db->free();	
@@ -604,8 +605,7 @@
 
 	  function get_sites_by_name($name)
 	  {
-		 $this->phpgw_db->query("SELECT * FROM egw_jinn_sites
-		 WHERE site_name='$name'",__LINE__,__FILE__);
+		 $this->phpgw_db->query("SELECT * FROM egw_jinn_sites WHERE site_name='$name'",__LINE__,__FILE__);
 
 		 while($this->phpgw_db->next_record())
 		 {
@@ -614,6 +614,21 @@
 		 return $ids;
 
 	  }	
+
+	  function get_objects_by_name($name,$parent_site_id)
+	  {
+		 $SQL="SELECT * FROM egw_jinn_objects WHERE name='$name' AND parent_site_id='$parent_site_id'";
+		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
+		 //die($SQL);
+
+		 while($this->phpgw_db->next_record())
+		 {
+			$ids[]=$this->phpgw_db->f('object_id');
+		 }
+		 return $ids;
+
+	  }	
+
 
 	  /* 
 	  strip_magic_quotes_gpc checks if magic_quotes_gpc is set on in 

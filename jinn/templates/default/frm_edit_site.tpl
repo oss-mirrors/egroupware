@@ -32,6 +32,7 @@ function testdbfield()
 		<input type="button" onClick="if(window.confirm('{confirm_del}')){onclick_delete}" value="{lang_delete}" />
 		<input type="hidden" name="testdbvals">
 		<input type="button" onClick="testdbfield()" value="{lang_test_access}">
+		<input type=button onClick="{onclick_import_object}" value="{lang_import_object}">
 		<input type=button onClick="{onclick_export}" value="{lang_export}">
 	</tr>
 </table>

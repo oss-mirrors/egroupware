@@ -108,6 +108,9 @@
 			   $this->template->set_var('lang_del',lang('delete'));
 			   $this->template->set_var('confirm_del',lang('Are you sure?'));
 
+			   $this->template->set_var('link_export',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.export_object&where_key=$where_key&where_value=$where_value"));
+			   $this->template->set_var('lang_export',lang('export'));
+
 			   if(count($recordvalues)>0)
 			   {
 				  $record_list=array_slice($recordvalues,2,2);

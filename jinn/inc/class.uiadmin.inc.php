@@ -30,6 +30,7 @@
 	  var $public_functions = Array(
 		 'index' => True,
 		 'import_egw_jinn_site' => True,
+		 'import_object' => True,
 		 'add_edit_site' => True,
 		 'add_edit_object' => True,
 		 'browse_egw_jinn_sites' => True,
@@ -45,6 +46,7 @@
 		 'save_access_rights_object'=> True,
 		 'save_access_rights_site'=> True,
 		 'export_site'=> True,
+		 'export_object'=> True,
 		 'plug_config'=> True,
 		 'edit_this_jinn_site'=> True,
 		 'edit_this_jinn_site_object'=> True,
@@ -86,7 +88,7 @@
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
 
-		 
+
 		 $this->bo->save_sessiondata();
 	  }	
 
@@ -230,7 +232,7 @@
 		 $this->ui->header(lang('Set Access Rights'));
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
-		 
+
 		 $access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 		 $access_rights->main_screen();
 
@@ -246,7 +248,7 @@
 		 $this->ui->header(lang('Set Access Right for Site Objects'));
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
-		 
+
 		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 		 $access_rights->set_site_objects();
 
@@ -259,7 +261,7 @@
 	  {
 		 $this->ui->header(lang('Set Access Rights for Sites'));
 		 $this->ui->msg_box($this->bo->message);
-unset($this->bo->message);
+		 unset($this->bo->message);
 		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 		 $access_rights->set_sites();
 
@@ -345,7 +347,7 @@ unset($this->bo->message);
 
 		 $this->bo->save_sessiondata();
 	  }
-	  
+
 	  /**
 	  @function plug_config
 	  @abstract make form to set field plugin configuration
@@ -374,7 +376,7 @@ unset($this->bo->message);
 		 $this->template->set_block('config','bodyhead','bodyhead');
 		 $this->template->set_block('config','row','row');
 		 $this->template->set_block('config','footer','footer');
-		 
+
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 		 if(!file_exists($theme_css))
 		 {
@@ -419,9 +421,9 @@ unset($this->bo->message);
 		 $this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
 
 		 $screenshot_file=$GLOBALS['phpgw']->common->get_app_dir('jinn').'/plugins/plugin_images/'.$plugin_name.'.png';
-if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
+		 if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
 
-		$this->template->set_var('screenshot',$screenshot);
+		 $this->template->set_var('screenshot',$screenshot);
 
 		 $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
 
@@ -447,9 +449,9 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 			$this->template->set_var('fld_plug_cnf','');
 			$buttons_visibility='visibility:hidden;';
 		 }
-		 
+
 		 $this->template->pparse('out','head');
-		 
+
 		 $this->ui->msg_box($this->bo->message,$true);
 		 unset($this->bo->message);
 
@@ -462,7 +464,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 			   /* replace underscores for spaces */
 			   $render_cfg_key='<strong>'.ereg_replace('_',' ',$cfg_key).'</strong>';
 			   if($cfg_help[$cfg_key]) $render_cfg_key .= '<br/><i>'.$cfg_help[$cfg_key].'</i>';
-			   
+
 			   $val=$cfg_val;
 			   $rowval=($rowval=='row_on')? 'row_off' : 'row_on';
 
@@ -516,7 +518,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 				  if($newconfig) $newconfig.='+";"+';
 				  $newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
 			   }
-			   
+
 			   $this->template->pparse('out','rows');
 			}
 
@@ -530,7 +532,6 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 			$this->bo->save_sessiondata();
 		 }
 
-			
 		 /**
 		 @function import_egw_jinn_site
 		 @depreciated
@@ -538,6 +539,123 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 		 function import_egw_jinn_site()
 		 {
 			$this->load_site_from_file();
+		 }
+
+		 function import_object()
+		 {
+			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
+			{
+			   $num_objects=0;
+			   $import=$GLOBALS[HTTP_POST_FILES][importfile];
+
+			   @include($import[tmp_name]);
+			   if ($import_object && $checkbit)
+			   {
+				  while(list($key, $val) = each($import_object)) 
+				  {
+					 if ($key=='parent_site_id') $val=$_POST[parent_site_id];
+					 $data[] = array
+					 (
+						'name' => $key,
+						'value' => addslashes($val) 
+					 );
+
+				  }
+
+				  $new_object_name=$data[1][value];	
+				  $thisobjectname=$this->bo->so->get_objects_by_name($new_object_name,$_POST[parent_site_id]);
+
+				  /* insert as new object */
+				  if($status=$this->bo->so->insert_phpgw_data('egw_jinn_objects',$data))
+				  {
+					 $new_object_id=$status[where_value];
+
+					 if(count($thisobjectname)>=1)
+					 {
+						$new_name=$new_object_name.' ('.lang('another').')';
+
+				
+						$datanew[]=array(
+						   'name'=>'name',
+						   'value'=>$new_name
+						);
+						$this->bo->so->upAndValidate_phpgw_data('egw_jinn_objects',$datanew,'object_id',$new_object_id);
+					 }
+					 else
+					 {
+						$new_name=$new_object_name;
+					 }
+					 $proceed=true;
+					 $this->bo->message[info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new object is <strong>%1</strong>.',$new_name);
+
+				  }
+
+				  /* site import has succeeded, go on with objects */
+				  if($proceed)
+				  {
+					 /* objects are imported , go on with obj-fields */
+					 if(is_array($import_obj_fields))
+					 {
+						foreach($import_obj_fields as $obj_field)
+						{
+						   $obj_field[field_parent_object]=$new_object_id;
+
+						   unset($data_fields);
+						   while(list($key2, $val2) = each($obj_field)) 
+						   {
+							  if ($key2=='obj_serial') 
+							  {
+								 continue;  
+							  }
+
+							  $data_fields[] = array
+							  (
+								 'name' => $key2,
+								 'value' => addslashes($val2) 
+							  );
+
+						   }
+						   if ($field_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_obj_fields',$data_fields))
+						   {
+							  $num_fields=count($field_id);
+						   } 
+						}
+					 }
+
+					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',1);
+					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
+					 $this->bo->save_sessiondata();
+					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+				  }
+				  else
+				  {
+					 $this->bo->message[error].= lang('Import failed');
+					 $this->bo->save_sessiondata();
+					 $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+				  }
+			   }
+
+			}
+			else
+			{
+			   $this->template->set_file(array(
+				  'import_form' => 'import_object.tpl',
+			   ));
+
+			   $this->ui->header(lang('Import JiNN-Object'.$table));
+			   $this->ui->msg_box($this->bo->message);
+			   unset($this->bo->message);
+
+			   $this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_object'));
+			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
+			   //			   $this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
+			   $this->template->set_var('parent_site_id',$this->bo->where_value);
+			   $this->template->set_var('lang_submit_and_import',lang('submit and import'));
+			   $this->template->pparse('out','import_form');
+			}
+
+			$this->bo->save_sessiondata();
+
 		 }
 
 		 /**
@@ -631,24 +749,21 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 						}
 
 					 }
-						
+
 					 /* objects are imported , go on with obj-fields */
 					 if(is_array($import_obj_fields))
 					 {
 						foreach($import_obj_fields as $obj_field)
 						{
 						   $tmp_object_arr=$this->bo->so->get_object_values('',$obj_field[obj_serial]);
-						   /*							echo $obj_field[obj_serial];
-						   _debug_array($tmp_object_arr);
-						   die();
-						   */
+						   
 						   if(!$tmp_object_arr[object_id]) 
 						   {
 							  continue;
 						   }
-							   
+
 						   $obj_field[field_parent_object]=$tmp_object_arr[object_id];
-						   
+
 						   unset($data_fields);
 						   while(list($key2, $val2) = each($obj_field)) 
 						   {
@@ -674,7 +789,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 
 					 }
 
-					 
+
 					 $this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
 					 $this->bo->message[info].='<br/>'.lang('%1 Site Obj-fields have been imported.',$num_fields);
 					 $this->bo->save_sessiondata();
@@ -717,6 +832,142 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 		 function export_site()
 		 {
 			$this->save_site_to_file();
+		 }
+
+		 function export_object()
+		 {
+			$GLOBALS['phpgw_info']['flags']['noheader']=True;
+			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+			$object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects',$this->bo->where_key,$this->bo->where_value,'','','name');
+
+			$filename=ereg_replace(' ','_',$object_data[0][name]).'.jobj';
+			$date=date("d-m-Y",time());
+			$version=$GLOBALS[phpgw_info][apps][jinn][version];
+			header("Content-type: text");
+			header("Content-Disposition:attachment; filename=$filename");
+
+			for($s=0;$s<(50-strlen($filename));$s++)
+			{
+			   $spaces1.=' ';
+			}
+			$spaces1.='**'."\n";
+
+			for($s=0;$s<(50-strlen($date));$s++)
+			{
+			   $spaces2.=' ';
+			}
+			$spaces2.='**'."\n";
+
+			for($s=0;$s<(50-strlen($version));$s++)
+			{
+			   $spaces3.=' ';
+			}
+			$spaces3.='**'."\n";
+
+			$out='<'.'?p'.'hp'."\n\n"; 
+			/* strange but for nice vim indent file */
+			$out.='	/***************************************************************************'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.="	** JiNN Object Export : ".$filename.$spaces1;
+			$out.="	** Date               : ".$date.$spaces2;
+			$out.="	** JiNN Version       : ".$version.$spaces3;
+			$out.='	** ---------------------------------------------------------------------- **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare   **'."\n";
+			$out.='	** Copyright (C)2002, 2004 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
+			$out.='	** eGroupWare - http://www.egroupware.org                                 **'."\n";
+			$out.='	** This file is part of JiNN                                              **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
+			$out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
+			$out.='	** Software Foundation; either version 2 of the License.                  **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
+			$out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
+			$out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
+			$out.='	** for more details.                                                      **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	** You should have received a copy of the GNU General Public License      **'."\n";
+			$out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
+			$out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
+			$out.='	**                                                                        **'."\n";
+			$out.='	***************************************************************************/'."\n";
+			$out.="\n";
+
+			//			$out.= "/* OBJECT ARRAY */\n";
+			/*
+			$out.= '$import_object=array('."\n";
+
+			while (list ($key, $val) = each($site_data[0])) 
+			{
+			   if($key!='site_id') $out.= "	'$key '=> '$val',\n";
+			}
+			$out.=");\n\n";
+			*/
+
+			//			$site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
+
+			$out.= "\n/* OBJECT ARRAY */\n";
+
+			if(is_array($object_data))
+			{
+			   foreach($object_data as $object)
+			   {
+				  $object[serialnumber]=time()+$i++;
+
+
+				  $out.= '$import_object=array('."\n";
+
+				  while (list ($key, $val) = each ($object)) 
+				  { 
+					 $field[value]=$serial;
+
+					 if ($key != 'object_id')
+					 {
+						$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
+					 }
+				  }
+				  $out.=");\n\n";
+
+				  /*
+				  get array whith fielddata
+				  store them as array with serialnumber as parent_object_id
+				  */
+				  $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
+				  if(is_array($object_field_data))
+				  {
+					 foreach ($object_field_data as $field)
+					 {
+						$out.= '$import_obj_fields[]=array('."\n";
+
+						while (list ($key, $val) = each ($field)) 
+						{ 
+						   if ($key != 'field_id' && $key !='field_parent_object') 
+						   {
+							  $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
+						   }
+						}
+						$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
+
+						$out.=");\n\n";
+
+					 }
+				  }
+
+			   }
+			}
+
+			$out.='$checkbit=true;'."\n";
+			$out.='?>';
+			echo $out;
+
+
 		 }
 
 		 /**
@@ -791,57 +1042,57 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 			   foreach($site_object_data as $object)
 			   {
 				  /* set serial to be backwards compitable */
-//				  if(!$object[serialnumber])
-//				  {
+				  //				  if(!$object[serialnumber])
+				  //				  {
 					 $object[serialnumber]=time()+$i++;
-//				  }
-			   
-				  
-				  $out.= '$import_site_objects[]=array('."\n";
+					 //				  }
 
-				  while (list ($key, $val) = each ($object)) 
-				  { 
-					 $field[value]=$serial;
-	   
-					 if ($key != 'object_id')
-					 {
-						$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-					 }
-				  }
-				  $out.=");\n\n";
 
-				  /*
-				  get array whith fielddata
-				  store them as array with serialnumber as parent_object_id
-				  */
-				  $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
-				  if(is_array($object_field_data))
-				  {
-					 foreach ($object_field_data as $field)
-					 {
-						$out.= '$import_obj_fields[]=array('."\n";
+					 $out.= '$import_site_objects[]=array('."\n";
 
-						while (list ($key, $val) = each ($field)) 
-						{ 
-						   if ($key != 'field_id' && $key !='field_parent_object') 
-						   {
-							  $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-						   }
+					 while (list ($key, $val) = each ($object)) 
+					 { 
+						$field[value]=$serial;
+
+						if ($key != 'object_id')
+						{
+						   $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
 						}
-						$out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
-
-						$out.=");\n\n";
-
 					 }
-				  }
+					 $out.=");\n\n";
 
+					 /*
+					 get array whith fielddata
+					 store them as array with serialnumber as parent_object_id
+					 */
+					 $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
+					 if(is_array($object_field_data))
+					 {
+						foreach ($object_field_data as $field)
+						{
+						   $out.= '$import_obj_fields[]=array('."\n";
+
+						   while (list ($key, $val) = each ($field)) 
+						   { 
+							  if ($key != 'field_id' && $key !='field_parent_object') 
+							  {
+								 $out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
+							  }
+						   }
+						   $out .= "	'obj_serial' => '".$object[serialnumber]."',\n"; 
+
+						   $out.=");\n\n";
+
+						}
+					 }
+
+				  }
 			   }
+
+			   $out.='$checkbit=true;'."\n";
+			   $out.='?>';
+			   echo $out;
 			}
 
-			$out.='$checkbit=true;'."\n";
-			$out.='?>';
-			echo $out;
 		 }
-
-	  }
-   ?>
+	  ?>

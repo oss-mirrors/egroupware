@@ -2,6 +2,12 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Wed Oct  6 15:38:33 CEST 2004
+Version 0.8.201
+=============================
+- add seperate import and export functionality for site objects
+
+
 Tue Oct  5 22:21:04 CEST 2004
 Version 0.8.200
 =============================

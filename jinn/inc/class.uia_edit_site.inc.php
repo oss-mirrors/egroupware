@@ -201,6 +201,8 @@
 
 		 $onclick_export='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_key=site_id&where_value='.$values_object[0][site_id]).'\'';
 
+		 $onclick_import_object='location=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_object&where_key=site_id&where_value='.$values_object[0][site_id]).'\'';
+
 		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));
 		 $this->template->set_var('save_and_continue_button',lang('save and continue'));
@@ -211,6 +213,8 @@
 		 $this->template->set_var('onclick_cancel','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
 		 $this->template->set_var('lang_test_access',lang('test database access'));
 		 $this->template->set_var('test_access_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access'));
+		 $this->template->set_var('onclick_import_object',$onclick_import_object);
+		 $this->template->set_var('lang_import_object',lang('Import object from file to this site'));
 		 $this->template->set_var('onclick_export',$onclick_export);
 		 $this->template->set_var('lang_export',lang('export this site'));
 		 $this->template->set_var('extra_buttons',$extra_buttons);

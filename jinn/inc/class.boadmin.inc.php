@@ -34,7 +34,6 @@
 		 'access_rights'=> True,
 		 'save_access_rights_object'=> True,
 		 'save_access_rights_site'=> True,
-		 'export_site'=> True,
 		 'save_field_plugin_conf' => True,
 		 'save_field_info_conf' => True
 	  );
