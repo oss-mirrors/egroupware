@@ -64,6 +64,12 @@
 				if (isset($query['menuaction']) && $query['menuaction'])
 				{
 					list($app,$class,$function) = explode('.',$query['menuaction']);
+					// for acl-preferences use the app-name from the query and acl as function
+					if ($app == 'preferences' && $class == 'uiaclprefs')
+					{
+						$app = $query['acl_app'];
+						$function = 'acl';
+					}
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($class).ucfirst($function);
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($class);
