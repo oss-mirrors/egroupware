@@ -100,6 +100,8 @@ function get_ip()
 	return (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0');
 }
 
+/* Common DB functions */
+if (!function_exists('intnull')) {
 function ssn($str)
 {
 	if (is_null($str) || $str === '') {
@@ -109,7 +111,6 @@ function ssn($str)
 	}
 }
 
-/* Common DB functions */
 function in($str)
 {
 	return (!(int)$str) ? 'NULL' : (int)$str;
@@ -138,6 +139,7 @@ function ifnull($val, $alt)
 function strnull($val)
 {
 	return (!is_null($val) ? "'".$val."'" : 'NULL');
+}
 }
 /* END: Common DB Functions */
 
