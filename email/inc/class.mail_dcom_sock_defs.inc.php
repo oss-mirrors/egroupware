@@ -93,9 +93,11 @@
 	SA_UIDNEXT - set status->uidnext to the next uid to be used in the mailbox
 	SA_UIDVALIDITY - set status->uidvalidity to a constant that changes when uids for the mailbox may no longer be valid
 	SA_ALL - set all of the above
+	php-imap puts the int value used for the "flags" member.
 	*/
 	class mailbox_status
 	{
+		var $flags = '';
 		var $messages = '';
 		var $recent = '';
 		var $unseen = '';
