@@ -13,7 +13,8 @@ E-MAIL	backup	es	Correo
 interval	backup	es	Intervalo
 ip or hostname	backup	es	IP o nombre de host
 LDAP	backup	es	LDAP
-monthly	backup	en	mensual
+monthly	backup	es	mensual
+nfs	backup	es	NFS
 No backup archives available !	backup	es	No hay archivos de resguardo disponibles !
 Number of stored backup versions	backup	es	Numero de versiones de resguardo almacenadas
 Operating system	backup	es	Sistema Operativo
@@ -25,7 +26,6 @@ Please set the path to a local dir to store the backup script !	backup	es	Selecc
 Please specify the ip of the remote host !	backup	es	Especifique la direccion IP del sistema remoto !
 Save backup locally ?	backup	es	Grabar copia de resguardo localmente ?
 Save backup to a remote host ?	backup	es	Grabar copia de resguardo en un servidor remoto?
-scp	backup	es	SCP
 Select archive type	backup	es	Seleccione tipo de archivo
 Select interval	backup	es	Seleccione intervalo
 Select transport application	backup	es	Seleccione aplicacion de transporte

@@ -12,16 +12,17 @@ Data	backup	de	Daten
 SQL	backup	de	SQL
 LDAP	backup	de	LDAP
 E-MAIL	backup	de	E-MAIL
+nfs	backup	de	NFS
 operating system	backup	de	Betriebssystem
-Please enter username and password for remote connection !	backup	de	Bitte Benutzername and Paßwort für die Verbindung angeben !
+please enter username and password for remote connection !	backup	de	Bitte Benutzername and Paßwort für die Verbindung angeben !
 please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	de	Bitte den Pfad zum Sicherungsverzeichnis angeben und/oder das anzeigen der Archive in phpGroupWare aktivieren !
-Please select an application for transport to the remote host !	backup	de	bitte ein Programm zum Transport zum entfernten Host auswählen !
+please select an application for transport to the remote host !	backup	de	bitte ein Programm zum Transport zum entfernten Host auswählen !
 please set the path to a local dir to store the backup script !	backup	de	Bitte den Pfad eines lokalen Verzeichnisses zum speichern des Datensicherungs-Skriptes angeben !
+please specify the path to the backup directory !	backup	de	Bitte den Pfad zum Sicherungsverzeichnis angeben ! 
 please specify the ip of the remote host !	backup	de	Bitte den entfernten Host spezifizieren !
 configuration remote host	backup	de	Konfiguration des entfernten Hosts
 save backup locally ?	backup	de	Daten lokal sichern ?
 save backup to a remote host ?	backup	de	Daten auf einen entfernten Host sichern ?
-scp	backup	en	SCP
 select archive type	backup	de	Archiv Typ auswählen
 select transport application	backup	de	Transport Programm auswählen
 show backup archives in phpGroupWare ?	backup	de	Datensicherungs-Archive in phpGroupWare anzeigen ?

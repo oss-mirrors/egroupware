@@ -12,16 +12,17 @@ Data	backup	en	Data
 SQL	backup	en	SQL
 LDAP	backup	en	LDAP
 E-MAIL	backup	en	E-MAIL
+nfs	backup	en	NFS
 Operating system	backup	en	Operating system
-Plase enter username and password for remote connection !	backup	en	Plase enter username and password for remote connection !
-Please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	en	Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !
-Please select an application for transport to the remote host !	backup	en	Plase select an application for transport to the remote host !
-Please set the path to a local dir to store the backup script !	backup	en	Please set the path to a local dir to store the backup script !
-Please specify the ip of the remote host !	backup	en	Please specify the ip of the remote host !
+plase enter username and password for remote connection !	backup	en	Plase enter username and password for remote connection !
+please enter the path of the backup dir and/or enable showing archives in phpGroupWare !	backup	en	Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !
+please select an application for transport to the remote host !	backup	en	Plase select an application for transport to the remote host !
+please set the path to a local dir to store the backup script !	backup	en	Please set the path to a local dir to store the backup script !
+please specify the path to the backup directory !	backup	en	Please specify the path to the backup directory !
+please specify the ip of the remote host !	backup	en	Please specify the ip of the remote host !
 Configuration remote host	backup	en	Configuration remote host
 Save backup locally ?	backup	en	Save backup locally ?
 Save backup to a remote host ?	backup	en	Save backup to a remote host ?
-scp	backup	en	SCP
 Select archive type	backup	en	Select archive type
 Select transport application	backup	en	Select transport application
 Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGroupWare ?

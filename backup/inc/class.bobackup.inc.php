@@ -96,7 +96,7 @@
 				{
 					if (! $values['l_path'] && ! $values['l_websave'])
 					{
-						$error[] = lang('Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !');					
+						$error[] = lang('Plase enter the path to the backup dir and/or enable showing archives in phpGroupWare !');					
 					}
 				}
 
@@ -106,9 +106,20 @@
 					{
 						$error[] = lang('Please select an application for transport to the remote host !');					
 					}
-					elseif (! $values['r_user'] || ! $values['r_pwd'])
+					elseif ($values['r_app'] != 'nfs')
 					{
-						$error[] = lang('Please enter username and password for remote connection !');					
+						if (! $values['r_user'] || ! $values['r_pwd'])
+						{
+							$error[] = lang('Please enter username and password for remote connection !');					
+						}
+					}
+					elseif (!$values['r_ip'])
+					{
+						$error[] = lang('Please specify the ip of the remote host !');
+					}
+					elseif (!$values['r_path'])
+					{
+						$error[] = lang('Please specify the path to the backup directory !');
 					}
 					elseif ($values['r_app'] == 'ftp')
 					{
@@ -117,10 +128,6 @@
 						{
 							$error[] = lang('The ftp connection failed ! Please check your configuration !');
 						}
-					}
-					elseif (!$values['r_ip'])
-					{
-						$error[] = lang('Please specify the ip of the remote host !');
 					}
 				}
 			}
@@ -253,16 +260,13 @@
 				
 // ------------------------------------ check -----------------------------------------------
 
-				$check_exists = $co['server_root'] . '/backup/phpgw_check_for_backup';
-				if (file_exists($check_exists) == False)
-				{
-					$check = $GLOBALS['phpgw']->template->set_file(array('check' => 'check_form.tpl'));
-					$check .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-					$check .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
-					$check .= $GLOBALS['phpgw']->template->fp('out','check',True);
-					$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
-					$this->save_config($conf_file,$check);
-				}
+				$check = $GLOBALS['phpgw']->template->set_file(array('check' => 'check_form.tpl'));
+				$check .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+				$check .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
+				$check .= $GLOBALS['phpgw']->template->fp('out','check',True);
+				$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
+				$this->save_config($conf_file,$check);
+
 // -------------------------------- end check -----------------------------------------------
 
 // --------------------------------- backup -------------------------------------------------

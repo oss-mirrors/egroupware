@@ -136,12 +136,12 @@
 			switch($values['r_app'])
 			{
 				case 'ftp':			$r_type_sel[0]=' selected';break;
-				case 'scp':			$r_type_sel[1]=' selected';break;
+				case 'nfs':			$r_type_sel[1]=' selected';break;
 				case 'smbmount':	$r_type_sel[2]=' selected';break;
 			}
 
 			$r_app_list = '<option value="ftp"' . $r_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
-						. '<option value="scp"' . $r_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
+						. '<option value="nfs"' . $r_type_sel[1] . '>' . lang('nfs') . '</option>' . "\n"
 						. '<option value="smbmount"' . $r_type_sel[2] . '>' . lang('smbmount') . '</option>' . "\n";
 
 			$this->t->set_var('r_app_list',$r_app_list);

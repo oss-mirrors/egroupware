@@ -66,11 +66,11 @@
 	{	
 		switch($bintval)
 		{
-			case 'daily':	$dd = '-' . $versions; break;
-			case 'weekly':	$dd = '-(7*' . $versions . ')'; break;
-			case 'monthly':	$dm = '-' . $versions; break;
+			case 'daily':	$dm = "date('m')"; $dd = "date('d')-$versions"; break;
+			case 'weekly':	$dm = "date('m')"; $dd = "date('d')-(7*$versions)"; break;
+			case 'monthly':	$dm = "date('m')-$versions"; $dd = "date('d')"; break;
 		}
-		$rdate = mktime(0,0,0,date('m') . $dm,date('d') . $dd,date('Y'));
+		$rdate = mktime(0,0,0,$dm,$dd,date('Y'));
 		return $rdate;
 	}
 
@@ -230,29 +230,22 @@
 			ftp_quit($con);
 		}
 
-// might not work yet!
-
-		if ($rapp == 'scp')
+		if ($rapp == 'nfs')
 		{
+			$nfsdir = '/mnt';
+			system("mount -t nfs $rip:$rpath $nfsdir 2>&1 > /dev/null");
+
+			check_datedue($nfsdir);
+
 			for ($i=0;$i<count($output);$i++)
 			{
-				$pipe = popen("$rapp $output[$i] $ruser@$rip:$rpath/$input[$i]",'w');
-				fputs($pipe, "$rpwd");
-
-				if (!$pipe)
-				{
-					echo 'scp backuptransfer ' . $input[$i] . ': failed !' . "\n";
-					exit;
-				}
-				else
-				{
-					echo 'scp backuptransfer ' . $input[$i] . ': success !' . "\n";
-				}
-				pclose($pipe);
+				system("cp " . $output[$i] . ' ' . $nfsdir . '/ 2>&1 > /dev/null');
+				echo 'transfer of ' . $output[$i] . ' through nfs: success !' . "\n";
 			}
+			system("umount " . $nfsdir);
 		}
 
-// not tested yet! but maybe it works now ...
+// this works now too...
 
 		if ($rapp == 'smbmount')
 		{
