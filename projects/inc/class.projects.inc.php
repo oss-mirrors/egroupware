@@ -246,5 +246,48 @@
 			}
 			return $hours;
 		}
+
+		function select_activities_list($project_id = '',$billable = False)
+		{
+			global $phpgw,$phpgw_info;
+			$currency = $phpgw_info['user']['preferences']['common']['currency'];
+
+			if ($billable)
+			{
+				$bill_filter = " AND billable='Y'";
+			}
+			else
+			{
+				$bill_filter = " AND billable='N'";
+			}
+
+			$this->db2->query("SELECT activity_id from phpgw_p_projectactivities WHERE project_id='$project_id' $bill_filter",__LINE__,__FILE__);
+			while ($this->db2->next_record())
+			{
+				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
+			}
+
+			$this->db->query("SELECT id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
+			while ($this->db->next_record())
+			{
+				$activities_list .= '<option value="' . $this->db->f('id') . '"';
+				for ($i=0;$i<count($selected);$i++)
+				{
+					if($selected[$i]['activity_id'] == $this->db->f('id'))
+					{
+						$activities_list .= ' selected';
+					}
+				}
+				$activities_list .= '>' . $phpgw->strip_html($this->db->f('descr'));
+
+				if($billable)
+				{
+					$activities_list .= ' ' . $currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+				}
+
+				$activities_list .= '</option>' . "\n";
+			}
+			return $activities_list;
+		}
 	}
 ?>

@@ -305,82 +305,15 @@
 		$t->set_var('access','<input type="checkbox" name="access" value="True">');
 	}
 
-	if (!$submit)
-	{
-
-//------------------- activities bookable ----------------------     
-
-		$db2->query("SELECT phpgw_p_activities.id as id,descr FROM phpgw_p_activities ORDER BY descr asc");
-		while ($db2->next_record())
-		{
-			$ba_activities_list .= '<option value="' . $db2->f('id') . '"';
-			$ba_activities_list .= '>'
-								. $phpgw->strip_html($db2->f('descr'))
-								. '</option>' . "\n";
-		}
-
-// ------------------- activities billable ---------------------- 
-
-		$db2->query("SELECT phpgw_p_activities.id as id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
-		while ($db2->next_record())
-		{
-			$bill_activities_list .= '<option value="' . $db2->f('id') . '"';
-			$bill_activities_list .= '>'
-								. $phpgw->strip_html($db2->f('descr')) . ' ' . $currency . ' '
-								. $db2->f('billperae') . ' ' . lang('per workunit') . '</option>' . "\n";
-		}
-	}
-	else
-	{
-
 // ------------ activites bookable ----------------------
 
-		$phpgw->db->query("SELECT id,descr FROM phpgw_p_activities ORDER BY descr asc");
+	$projects = CreateObject('projects.projects');
 
-		$db2->query("SELECT activity_id from phpgw_p_projectactivities WHERE project_id='$p_id' AND billable='N'",__LINE__,__FILE__);
-		while ($db2->next_record())
-		{
-			$ba_selected[] = Array('activity_id' => $db2->f('activity_id'));
-		}
+	$t->set_var('ba_activities_list',$projects->select_activities_list($p_id,False));
 
-		while ($phpgw->db->next_record())
-		{
-			for ($i=0;$i<count($ba_selected);$i++)
-			{
-				$ba_activities_list .= '<option value="' . $phpgw->db->f('id') . '"';
-				if($ba_selected[$i]['activity_id']==$phpgw->db->f('id'))
-				$ba_activities_list .= ' selected';
-				$ba_activities_list .= '>'
-									. $phpgw->strip_html($phpgw->db->f('descr'))
-									. '</option>' . "\n";
-			}
-		}
 // -------------- activities billable ---------------------- 
 
-		$phpgw->db->query("SELECT id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
-
-		$db2->query("SELECT activity_id,billable from phpgw_p_projectactivities WHERE project_id='$p_id' AND billable='Y'",__LINE__,__FILE__);
-		while ($db2->next_record())
-		{
-			$bill_selected[] = Array('activity_id' => $db2->f('activity_id'));
-		}
-
-		while ($phpgw->db->next_record())
-		{
-			for ($i=0;$i<count($bill_selected);$i++)
-			{
-				$bill_activities_list .= '<option value="' . $phpgw->db->f('id') . '"';
-				if($bill_selected[$i]['activity_id']==$phpgw->db->f('id'))
-				$bill_activities_list .= ' selected';
-				$bill_activities_list .= '>'
-									. $phpgw->strip_html($phpgw->db->f('descr')) . ' ' . $currency . ' ' . $phpgw->db->f('billperae')
-									. ' ' . lang('per workunit') . ' ' . '</option>' . "\n";
-			}
-		}
-	}
-
-	$t->set_var('ba_activities_list',$ba_activities_list);
-	$t->set_var('bill_activities_list',$bill_activities_list);
+    $t->set_var('bill_activities_list',$projects->select_activities_list($p_id,True));
 
 	$t->set_var('lang_add',lang('Add'));
 	$t->set_var('lang_reset',lang('Clear Form'));
