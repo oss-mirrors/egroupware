@@ -109,10 +109,10 @@ In the future, this will process a specially formated email msg.<hr>
 	</td>
 </tr>
 </table>
-<!-- here starts actual message content display -->
+
+<!-- start message display -->
 <br>
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-
 <!-- BEGIN B_debug_parts -->
 <tr>
 	<td align="left">
@@ -121,8 +121,19 @@ In the future, this will process a specially formated email msg.<hr>
 </tr>
 <!-- END B_debug_parts -->
 
-{V_msg_body}
-
+<!-- BEGIN B_display_part -->
+<tr>
+	<td bgcolor="{theme_row_on}" width="100%">
+		<font size="2" face="{theme_font}">
+		<strong>{title_text}</strong> &nbsp; &nbsp; {display_str}</font>
+	</td>
+</tr>
+<tr>
+	<td align="left">
+		<br>{message_body}
+	</td>
+</tr>
+<!-- END B_display_part -->
 
 </table>
 

@@ -28,15 +28,19 @@
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_message_main' => 'message_main.tpl',
-		'T_message_blocks' => 'message_blocks.tpl'
+		//'T_message_display' => 'message_display.tpl',
+		'T_message_echo_dump' => 'message_echo_dump.tpl'
 	));
 	$t->set_block('T_message_main','B_x-phpgw-type','V_x-phpgw-type');
 	$t->set_block('T_message_main','B_cc_data','V_cc_data');
 	$t->set_block('T_message_main','B_attach_list','V_attach_list');
 	$t->set_block('T_message_main','B_debug_parts','V_debug_parts');
-	$t->set_block('T_message_blocks','B_message_part','V_message_part');
-	$t->set_block('T_message_blocks','B_output_bound','V_output_bound');
-
+	$t->set_block('T_message_main','B_display_part','V_display_part');
+	//$t->set_block('T_message_blocks','B_output_bound','V_output_bound');
+	//$t->set_block('T_message_display','B_message_intro','V_message_intro');
+	//$t->set_block('T_message_display','B_message_part','V_message_part');
+	$t->set_block('T_message_echo_dump','B_setup_echo_dump','V_setup_echo_dump');
+	$t->set_block('T_message_echo_dump','B_done_echo_dump','V_done_echo_dump');
 
 
 // ----  Are We In Newsmode Or Not  -----
@@ -700,7 +704,15 @@
 		// ---- list_of_files is diaplayed in the summary at the top of the message page
 		if ($part_nice[$j]['ex_has_attachment'])
 		{
-			$list_of_files = $list_of_files . $part_nice[$j]['ex_part_clickable'] .', ';
+			if ((int)$part_nice[$j]['bytes'] > 100)
+			{
+				$att_size = ' ('. format_byte_size($part_nice[$j]['bytes']).')';
+			}
+			else
+			{
+				$att_size = '';
+			}
+			$list_of_files = $list_of_files . $part_nice[$j]['ex_part_clickable'] .$att_size .', ';
 		}
 	}
 	// set up for use in the template
@@ -821,13 +833,18 @@
 		$t->set_var('V_debug_parts','');
 	}
 
+// -----  Message_Display Template Handles it from here  -------
 	$t->set_var('theme_font',$phpgw_info['theme']['font']);
 	$t->set_var('theme_th_bg',$phpgw_info['theme']['th_bg']);
 	$t->set_var('theme_row_on',$phpgw_info['theme']['row_on']);
 
+	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system replrt from cron
+	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
+	$force_echo_size = 80000;
+	$too_many_crlf = 18;
+
 // -----  GET BODY AND SHOW MESSAGE  -------
 	set_time_limit(120);
-	$v_msg_body = '';
 	for ($i = 0; $i < count($part_nice); $i++)
 	{
 		if (($part_nice[$i]['m_description'] == 'presentable')
@@ -840,11 +857,10 @@
 
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
-			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size(strlen($dsp));
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
+				.' - '.format_byte_size(strlen($dsp));
 			$t->set_var('title_text',$title_text);
 			$t->set_var('display_str',$display_str);
-			$t->parse('V_output_bound','B_output_bound');
-			$v_msg_body = $v_msg_body . $t->get_var('V_output_bound');
 
 			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 			{
@@ -864,9 +880,7 @@
 
 			//$t->set_var('message_body',"<tt>$dsp</tt>");
 			$t->set_var('message_body',"$dsp");
-			$t->parse('V_message_part','B_message_part');
-			$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
-
+			$t->parse('V_display_part','B_display_part', True);
 
 			/*
 			// get the body
@@ -905,52 +919,60 @@
 			*/
 
 		}
-		//if (($part_nice[$i]['m_description'] == 'presentable')
-		//&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN')))
+		// do we Force Echo Out Unformatted Text ?
+		elseif (($part_nice[$i]['m_description'] == 'presentable')
+		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
+		&& ($d1_num_parts == 1)
+		&& ($part_nice[$i]['m_part_num_mime'] === '1')
+		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
+		{
+			// output a blank message body, we'll use an alternate method below
+			$t->set_var('V_display_part','');
+			// -----  Finished With Message_Mail Template, Output It
+			$t->pparse('out','T_message_main');
+			
+			// -----  Prepare a Table for this Echo Dump
+			$title_text = '&nbsp;message: ';
+			$t->set_var('title_text',$title_text);
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size($part_nice[$i]['bytes'])
+				.'; meets force_echo ('.format_byte_size($force_echo_size).') criteria';
+			$t->set_var('display_str',$display_str);
+			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
+			$t->set_var('V_done_echo_dump','');
+			$t->pparse('out','T_message_echo_dump');
+			// -----  Echo This Data Directly to the Client
+			echo '<pre>';
+			echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			echo '</pre>';
+			// -----  Close Table
+			$t->set_var('V_setup_echo_dump','');
+			$t->parse('V_done_echo_dump','B_done_echo_dump');
+			$t->pparse('out','T_message_echo_dump');
+
+			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
+			unset($part_nice);
+			$phpgw->msg->close($mailbox); 
+			$phpgw->common->phpgw_footer();
+			exit;
+		}
 		elseif ($part_nice[$i]['m_description'] == 'presentable')
 		{
-			// FORCE UNFORMATTED TEXT for large text messages (in bytes) (rendering speed issue)
-			// AND use an alternate method to retrieve the part (see below)
-			$large_part_threshhold = 10000;
+			// ----- get the part from the server
+			$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			$dsp = trim($dsp);
 			
-			// ----- when to skip showing a part
-			// blank part test
+			// ----- when to skip showing a part (i.e. blank part - no alpha chars)
 			$skip_this_part = False;
-			if (((int)$part_nice[$i]['bytes'] == 3)
-			&& ((int)$part_nice[$i]['lines'] == 1))
+			//if (((int)$part_nice[$i]['bytes'] == 3)  && ((int)$part_nice[$i]['lines'] == 1))
+			if (strlen($dsp) < 3)
 			{
 				$skip_this_part = True;
 			}
 			//if (strlen($dsp) < 3)  //if (strlen(trim($dsp)) > 2)  //if (strlen($dsp) > 2)
-			
+
+			// ----- show the part 
 			if ($skip_this_part == False)
-			{
-
-				// ----- get the part from the server  -------
-				$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-				$dsp = trim($dsp);
-
-				// prepare the message sep
-				if ($d1_num_parts > 1)
-				{
-					$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
-				}
-				else
-				{
-					$title_text = '&nbsp;message: ';
-				}
-				//$display_str = 'keywords: '.$part_nice[$i]['m_keywords'];
-				$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size(strlen($dsp));
-				if ((strlen($dsp)) > $large_part_threshhold)
-				{
-					$display_str = $display_str . '; exceeds nofomat ('.format_byte_size($large_part_threshhold).')';
-				}
-
-				$t->set_var('title_text',$title_text);
-				$t->set_var('display_str',$display_str);
-				$t->parse('V_output_bound','B_output_bound');
-				$v_msg_body = $v_msg_body . $t->get_var('V_output_bound');
-			
+			{		
 				if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 				{
 					$dsp = $phpgw->msg->qprint($dsp);
@@ -968,20 +990,45 @@
 				}
 				$dsp = make_clickable($dsp);
 
-				if ((strlen($dsp)) > $large_part_threshhold)
+				/*// THIS NEEDS TO BE SMARTER
+				// how many "\r\n\r\n" do we have? too_many was set above
+				$crlf_report = '';
+				$excessive_crlf = explode("\r\n\r\n", $dsp);
+				if ((is_array($excessive_crlf))
+				&& (count($excessive_crlf) > $too_many_crlf))
 				{
-					// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
-					// enforce HARD WRAP
-					//$max_line_chars = 100;
-					$dsp = '<pre>'.$dsp.'</pre>';
+					$dsp = ereg_replace("\r\n\r\n", "\r\n", $dsp);
+					$crlf_report = '; CRLF > ' .$too_many_crlf. ' so compressed';
+				}
+				*/
+
+				// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
+				// enforce HARD WRAP
+				//$max_line_chars = 100;
+				//$dsp = '<pre>'.$dsp.'</pre>';
+
+				// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
+				$dsp = ereg_replace("\r\n","<br>",$dsp);
+				// add a line after the last line of the message
+				$dsp = $dsp .'<br><br>';
+
+				// prepare the message sep
+				if ($d1_num_parts > 1)
+				{
+					$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 				}
 				else
 				{
-					// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
-					$dsp = ereg_replace("\r\n","<br>",$dsp);
-					// add a line after the last line of the message
-					$dsp = $dsp .'<br><br>';
+					$title_text = '&nbsp;message: ';
 				}
+				$t->set_var('title_text',$title_text);
+				$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
+					.' - '.format_byte_size(strlen($dsp));
+					//.$crlf_report;
+				$t->set_var('display_str',$display_str);
+
+				$t->set_var('message_body',$dsp);
+				$t->parse('V_display_part','B_display_part', True);
 
 				/*
 				// ------- Previous Method
@@ -1001,30 +1048,31 @@
 				$dsp = ereg_replace( "$","</p>", $dsp);
 				$dsp = make_clickable($dsp);
 				*/
-
-				$t->set_var('message_body',$dsp);
-				$t->parse('V_message_part','B_message_part');
-				$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
 			}
 		}
 		elseif ($part_nice[$i]['m_description'] == 'presentable/image')
 		{
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
-			$display_str = decode_header_string($part_nice[$i]['ex_part_name']);
+			$display_str = decode_header_string($part_nice[$i]['ex_part_name'])
+				.' - ' .format_byte_size((int)$part_nice[$i]['bytes']) 
+				.' - keywords: ' .$part_nice[$i]['m_keywords'];
 			$t->set_var('title_text',$title_text);
 			$t->set_var('display_str',$display_str);
-			$t->parse('V_output_bound','B_output_bound');
-			$v_msg_body = $v_msg_body . $t->get_var('V_output_bound');
 			
 			$img_inline = '<img src="'.$part_nice[$i]['ex_part_href'].'">';
 			$t->set_var('message_body',$img_inline);
-			$t->parse('V_message_part','B_message_part');
-			$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
+			$t->parse('V_display_part','B_display_part', True);
 		}
 		elseif ($part_nice[$i]['m_description'] == 'attachment')
 		{
-			$msg_text = '<hr><strong>ATTACHENT:</strong> &nbsp;&nbsp; '.$part_nice[$i]['ex_part_clickable'];
-			if ($part_nice[$i]['encoding'] == 'base64')
+			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
+			$display_str = 'keywords: ' .$part_nice[$i]['m_keywords'];
+			$t->set_var('title_text',$title_text);
+			$t->set_var('display_str',$display_str);
+			
+			/*
+			if (($part_nice[$i]['encoding'] == 'base64')
+			|| ($part_nice[$i]['encoding'] == '8bit'))
 			{
 				$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 					//$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
@@ -1032,34 +1080,40 @@
 				$att_size =  format_byte_size(strlen($dsp));
 				$msg_text = $msg_text .'&nbsp;&nbsp; size: '.$att_size;
 			}
+			*/
+			$msg_text = '&nbsp;&nbsp; <strong>ATTACHENT:</strong>'
+				.'&nbsp;&nbsp; '.$part_nice[$i]['ex_part_clickable']
+				.'&nbsp;&nbsp; size: '.format_byte_size((int)$part_nice[$i]['bytes'])
+				.'<br><br>';
 			
 			$t->set_var('message_body',$msg_text);
-			$t->parse('V_message_part','B_message_part');
-			$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
-
+			$t->parse('V_display_part','B_display_part', True);
 		}
 		elseif (($part_nice[$i]['m_description'] != 'container')
 		&& ($part_nice[$i]['m_description'] != 'packagelist'))
 		{
-			$processed_msg_body = '';
+			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
+			$display_str = decode_header_string($part_nice[$i]['ex_part_name'])
+				.' - keywords: ' .$part_nice[$i]['m_keywords'];
+			$t->set_var('title_text',$title_text);
+			$t->set_var('display_str',$display_str);
+			
+			$msg_text = '';
 			// UNKNOWN DATA
-			$processed_msg_body = $processed_msg_body .'<br><strong>ERROR</strong><br>';
+			$msg_text = $msg_text .'<br><strong>ERROR: Unknown Message Data</strong><br>';
 			if ($part_nice[$i]['encoding'] == 'base64')
 			{
 				$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 					//$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
-				$processed_msg_body = $processed_msg_body . 'actual part size: ' .strlen($dsp);
-				
-				$t->set_var('message_body',$processed_msg_body);
-				$t->parse('V_message_part','B_message_part');
-				$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
+				$msg_text = $msg_text . 'actual part size: ' .strlen($dsp);
 			}
+			$t->set_var('message_body',$msg_text);
+			$t->parse('V_display_part','B_display_part', True);
 		}
 	}
 	set_time_limit(0);
-	
-	$t->set_var('V_msg_body',$v_msg_body);
+
 	/* // IS THIS STILL USED ???????
 	if($application)
 	{
@@ -1075,8 +1129,6 @@
 		}
 	} */
 
-
-	$t->set_var('processed_msg_body',$processed_msg_body);
 	$t->pparse('out','T_message_main');
 
 	// CLEANUP
