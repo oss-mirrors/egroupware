@@ -130,20 +130,20 @@
 			return $this->target_langarray;
 		}
 
-		function write_file($which,$app_name)
+		function write_file($which,$app_name,$lang)
 		{
 			switch ($which)
 			{
 				case 'source':
-					$langarray = $this->bo->source_langarray;
+					$langarray = $this->source_langarray;
 					break;
 				case 'target':
-					$langarray = $this->bo->target_langarray;
+					$langarray = $this->target_langarray;
 					break;
 				default:
 					break;
 			}
-			$this->so->write_file($app_name,$langarray);
+			$this->so->write_file($app_name,$langarray,$lang);
 			return;
 		}
 	}

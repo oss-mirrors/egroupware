@@ -54,16 +54,16 @@
 
 			define('SEP',filesystem_separator());
 
-			$fn = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup' . SEP . 'phpgw_' . $userlang . '.lang';
-			if (!file_exists($fn))
-			{
-				$fn = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup' . SEP . 'phpgw_en.lang';
-			}
+			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
+			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
 			if (is_writeable($fn))
 			{
 				$wr = True;
 			}
-
+			elseif(!file_exists($fn) && is_writeable($fd))
+			{
+				$wr = True;
+			}
 			if (file_exists($fn))
 			{
 				$this->src_file = $fn;
@@ -106,8 +106,13 @@
 
 			define('SEP',filesystem_separator());
 
-			$fn = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup' . SEP . 'phpgw_' . $userlang . '.lang';
+			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
+			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
 			if (is_writeable($fn))
+			{
+				$wr = True;
+			}
+			elseif(!file_exists($fn) && is_writeable($fd))
 			{
 				$wr = True;
 			}
@@ -178,18 +183,15 @@
 			return $languages;
 		}
 
-		function write_file($app_name,$langarray)
+		function write_file($app_name,$langarray,$lang)
 		{
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . 'setup' . SEP . 'phpgw_' . $lang . '.lang';
-			if (!file_exists($fn))
+			$fp = fopen($fn,'wb');
+			while(list($mess_id,$data) = each($langarray))
 			{
-				$fp = fopen($fn,'wb');
-				while(list($mess_id,$data) = each($langarray))
-				{
-					fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n");
-				}
-				fclose($fp);
+				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n");
 			}
+			fclose($fp);
 			return;
 		}
 	}

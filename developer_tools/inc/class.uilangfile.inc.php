@@ -81,7 +81,7 @@
 
 		function edit()
 		{
-			global $phpgw,$phpgw_info,$app_name,$newlang,$sourcelang,$targetlang,$dlsource,$srcwrite,$dltarget,$tgtwrite,$add_phrase,$update,$revert;
+			global $phpgw,$phpgw_info,$app_name,$newlang,$sourcelang,$targetlang,$dlsource,$writesource,$dltarget,$writetarget,$add_phrase,$update,$revert;
 
 			if($add_phrase)
 			{
@@ -101,6 +101,15 @@
 			if($dltarget)
 			{
 				$this->download('target',$targetlang);
+			}
+
+			if($writesource)
+			{
+				$this->save('source',$sourcelang);
+			}
+			if($writetarget)
+			{
+				$this->save('target',$targetlang);
 			}
 
 			$phpgw->common->phpgw_header();
@@ -226,7 +235,7 @@
 						}
 					}
 				}
-				while (list($_mess,$_checked) = each($deleteme))
+				while (list($_mess,$_checked) = @each($deleteme))
 				{
 					if($_checked == 'on')
 					{
@@ -310,12 +319,12 @@
 			global $phpgw,$appname;
 		}
 
-		function save($which)
+		function save($which,$lang)
 		{
-			global $phpgw, $sourcelang, $targetlang, $app_name;
+			global $phpgw, $app_name;
 
-			$this->bo->write_file($which,$app_name);
-			Header('Location: ' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.addphrase&app_name='.$app_name
+			$this->bo->write_file($which,$app_name,$lang);
+			Header('Location: ' . $phpgw->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name='.$app_name
 				. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang));
 		}
 
@@ -336,7 +345,7 @@
 			}
 			$browser = CreateObject('phpgwapi.browser');
 			$browser->content_header('phpgw_' . $lang . '.lang');
-			while(list($mess_id,$data) = each($langarray))
+			while(list($mess_id,$data) = @each($langarray))
 			{
 				echo $mess_id . "\t" . $data['app_name'] . "\t" . $lang . "\t" . $data['content'] . "\n";
 			}
