@@ -78,7 +78,7 @@
 	$no_login_check[0] = "preferences\.php";
 	$no_login_check[1] = "attach_file\.php";
 	$no_login_check[2] = "addressbook\.php";
-	$no_login_check[3] = "filters\.php";
+	//$no_login_check[3] = "filters\.php";
 	for ($i=0; $i<count($no_login_check); $i++)
 	{
 		$match_this = $no_login_check[$i];

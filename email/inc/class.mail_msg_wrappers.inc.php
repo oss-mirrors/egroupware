@@ -848,8 +848,11 @@ class mail_msg_wrappers extends mail_msg_base
 		//$GLOBALS['HTTP_POST_VARS'] = Array();
 		//$GLOBALS['HTTP_GET_VARS'] = Array();
 		// Alternatively, clear vars that might be wasting space and are no longer needed
-		$GLOBALS['HTTP_POST_VARS']['body'] = '';
-		$GLOBALS['HTTP_POST_VARS']['html_part'] = '';
+		// don't do this unless it's needed, add an isset check
+		//$GLOBALS['HTTP_POST_VARS']['body'] = '';
+		// unset($GLOBALS['HTTP_POST_VARS']['body']);
+		//$GLOBALS['HTTP_POST_VARS']['html_part'] = '';
+		// unset($GLOBALS['HTTP_POST_VARS']['html_part']);
 	}
 
 	/*!

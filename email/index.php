@@ -163,6 +163,45 @@
 					.'&order='.$GLOBALS['phpgw']->msg->order);
 
 // ---- Control Bar =Row 1=   -----
+	$t->set_var('ctrl_bar_back2',$GLOBALS['phpgw_info']['theme']['row_off']);
+	// Compose New
+	$t->set_var('compose_txt',lang("Compose New"));
+	$t->set_var('compose_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')));
+	// Manage Folders
+	$folders_txt1 = lang('Folders');
+	$folders_txt2 = lang('Manage Folders');
+	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
+	{
+		// for those templates (layouts) using an A HREF  link to the folders page
+		$folders_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
+		$folders_href = '<a href="'.$folders_link.'">'.$folders_txt2.'</a>';
+		$t->set_var('folders_href',$folders_href);
+		
+		// for those templates using a BUTTON to get to the folders page
+		$folders_btn_js = "window.location='$folders_link'";
+		$folders_btn = '<input type="button" name="folder_link_btn" value="'.$folders_txt1.'" onClick="'.$folders_btn_js.'">';
+		$t->set_var('folders_btn',$folders_btn);
+	}
+	else
+	{
+		// doesn't support folders. NO button, NO href, replace with nbsp
+		$t->set_var('folders_href','&nbsp;');
+		$t->set_var('folders_btn','&nbsp;');
+	}
+	// Email Preferences
+	$t->set_var('email_prefs_txt',lang('Email Preferences'));
+	$t->set_var('email_prefs_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'));
+	// Mail Filters
+	$filters_txt = lang('EMail Filters');
+	$filters_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php');
+	$filters_href = '<a href="'.$filters_link.'">'.$filters_txt.'</a>';
+	$t->set_var('filters_href',$filters_href);
+
+	// "accounts" preferences FUTURE
+	$t->set_var('accounts_txt',lang('Manage Accounts'));
+	$t->set_var('accounts_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
+
+// ---- Control Bar =Row 2=   -----
 	$t->set_var('ctrl_bar_back1',$GLOBALS['phpgw_info']['theme']['row_on']);
 	// "accounts" switchbox
 	// FUTURE
@@ -194,40 +233,6 @@
 	$t->set_var('arrows_backcolor',$GLOBALS['phpgw_info']['theme']['row_off']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
 	$t->set_var('next_arrows',$td_next_arrows);
-
-// ---- Control Bar =Row 2=   -----
-	$t->set_var('ctrl_bar_back2',$GLOBALS['phpgw_info']['theme']['row_off']);
-	$t->set_var('compose_txt',lang("Compose New"));
-	$t->set_var('compose_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')));
-	$folders_txt1 = lang('Folders');
-	$folders_txt2 = lang('Manage Folders');
-	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
-	{
-		// for those templates (layouts) using an A HREF  link to the folders page
-		$folders_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php');
-		$folders_href = '<a href="'.$folders_link.'">'.$folders_txt2.'</a>';
-		$t->set_var('folders_href',$folders_href);
-		
-		// for those templates using a BUTTON to get to the folders page
-		$folders_btn_js = "window.location='$folders_link'";
-		$folders_btn = '<input type="button" name="folder_link_btn" value="'.$folders_txt1.'" onClick="'.$folders_btn_js.'">';
-		$t->set_var('folders_btn',$folders_btn);
-	}
-	else
-	{
-		// doesn't support folders. NO button, NO href, replace with nbsp
-		$t->set_var('folders_href','&nbsp;');
-		$t->set_var('folders_btn','&nbsp;');
-	}
-	// go directly to email prefs page
-	$t->set_var('email_prefs_txt',lang('Email Preferences'));
-	$t->set_var('email_prefs_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'));
-	// "accounts" preferences FUTURE
-	$t->set_var('accounts_txt',lang('Manage Accounts'));
-	$t->set_var('accounts_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
-	// "routing" preferences FUTURE
-	$t->set_var('routing_txt',lang('routing'));
-	$t->set_var('routing_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
 
 // ---- Message Folder Stats Display  -----
 	if ($folder_info['number_all'] == 0)

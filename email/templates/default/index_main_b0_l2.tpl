@@ -36,13 +36,16 @@ function check_all()
 
 <table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
 <tr>
-	<td bgcolor="{ctrl_bar_back2}" width="33%" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
 		<font size="-1"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="34%" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
 		<font size="-1">{folders_href}</font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="33%" align="center">
+	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+		<font size="-1">{filters_href}</font>
+	</td>
+	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
 		<font size="-1"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
 	</td>
 </tr>
