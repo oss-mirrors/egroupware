@@ -232,7 +232,7 @@
 
 					break;
 				case 'acc':
-					$sql = 'SELECT accounting from phpgw_p_projectmembers where account_id=' . $pro_id;
+					$sql = "SELECT accounting from phpgw_p_projectmembers where account_id=$pro_id AND type='accounting'";
 					break;
 			}
 			$this->db->query($sql,__LINE__,__FILE__);
