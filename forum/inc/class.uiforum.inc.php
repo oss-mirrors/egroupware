@@ -396,7 +396,7 @@
 					$var = Array(
 						'THREAD'     => $message['thread'],
 						'DEPTH'      => $message['depth'],
-						'RE_SUBJECT' => (!strpos(' '.$message['subject'],'RE: ')?'RE: ':'').$message['subject']
+						'RE_SUBJECT' => (!strpos(' '.strtoupper($message['subject']),'RE: ')?'RE: ':'').$message['subject']
 					);
 					$this->template->set_var($var);
 				}
@@ -412,7 +412,7 @@
 						)
 					),
 					'SUBJECT' => $message['subject'],
-					'MESSAGE' => $message['message'],
+					'MESSAGE' => nl2br($message['message']),
 					'NAME'    => $message['name'],
 					'EMAIL'   => $message['email']
 				);
