@@ -54,7 +54,7 @@ function template_common_prologue($args)
 <?php
 */
 ?>
-<link rel="STYLESHEET" href="<?php print $StyleScript; ?>" type="text/css" />
+<link rel="STYLESHEET" href="<?php echo $GLOBALS['phpgw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
 <div align="left">
 <div id="header">
   <?php /* removed logo for now: TODO show it on extern site
