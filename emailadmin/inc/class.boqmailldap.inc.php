@@ -2,8 +2,8 @@
 	/***************************************************************************\
 	* phpGroupWare - QMailLDAP                                                  *
 	* http://www.phpgroupware.org                                               *
-	* http://www.phpgw.de                                                       *
-	* Written by : Lars Kneschke                                                *
+	* http://www.linux-at-work.de                                               *
+	* Written by : Lars Kneschke [lkneschke@linux-at-work.de]                   *
 	* -------------------------------------------------                         *
 	* This program is free software; you can redistribute it and/or modify it   *
 	* under the terms of the GNU General Public License as published by the     *
@@ -79,6 +79,12 @@
 			return $serverList;
 		}
 		
+		function getUserData($_accountID)
+		{
+			$userData = $this->soqmailldap->getUserData($_accountID);
+			return $userData;
+		}
+
 		function restoreSessionData()
 		{
 			global $phpgw;
@@ -219,6 +225,10 @@
 			
 			$phpgw->session->appsession('session_data','',$this->sessionData);
 		}
-
+		
+		function saveUserData($_accountID, $_accountData)
+		{
+			$this->soqmailldap->saveUserData($_accountID, $_accountData);
+		}
 	}
 ?>

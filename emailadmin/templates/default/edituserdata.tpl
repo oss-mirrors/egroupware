@@ -3,47 +3,61 @@
   <center>
 	<table border="0" width="95%">
 		<tr>
-			<td valign="top" width="150"> 
-				<table border="0" width="100%">
-					<tr bgcolor="{th_bg}">
-						<td colspan="1">&nbsp;</td>
-					</tr>
 					{rows}
-				</table>
-			</td>
 			<td>
 				<table border=0 width=100%>
 					<tr bgcolor="{th_bg}">
 						<td colspan="4">
 							<b>{lang_email_config}</b>
-							<input type="hidden" name="qmailldap_uid" value="{uid}">
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color1}">
 						<td width="150">{lang_emailAddress}</td>
-						<td>
-							<input name="qmailldap_emailAddress" value="{emailAddress}" size=25>
+						<td colspan="2">
+							<input name="emailAddress" value="{emailAddress}" size=35>
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color2}">
-						<td>{lang_alternateEmailAddress}</td>
+						<td rowspan="4">{lang_alternateEmailAddress}</td>
+						<td rowspan="4" align="center">
+							<select size="6">
+								<option>Test</option>
+							</select>
+						</td>
+						<td width="50%" align="center">
+							<input type="submit" value="{lang_remove} -->">
+							<input type="hidden" name="bo_action" value="remove_rcpthosts">
+						</td>
+					</tr>
+					<tr bgcolor="{tr_color1}">
 						<td>
-							<input name="qmailldap_alternateEmailAddress" value="{alternateEmailAddress}" size=25>
+							&nbsp;
+						</td>
+					</tr>
+					<tr bgcolor="{tr_color2}">
+						<td width="50%" align="center">
+							<input name="alternateEmailAddress" value="{alternateEmailAddress}" size=35>
+						</td>
+					</tr>
+					<tr bgcolor="{tr_color1}">
+						<td width="50%" align="center">
+							<input type="submit" value="<-- {lang_add}">
+							<input type="hidden" name="bo_action" value="add_rcpthosts">
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color1}">
 						<td>
 							{lang_emailaccount_active}
 						</td>
-						<td>
-							<input type="checkbox" name="qmailldap_emailaccount_active" {account_checked}>
+						<td colspan="2">
+							<input type="checkbox" name="accountStatus" {account_checked}>
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color2}">
 						<td align="left">
 							<a href={link_back}>{lang_ready}</a>
 						</td>						
-						<td align="right">
+						<td align="right" colspan="2">
 							<input type="submit" name="save" value="{lang_button}">
 						</td>
 					</tr>

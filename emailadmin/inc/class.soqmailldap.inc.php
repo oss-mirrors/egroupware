@@ -116,6 +116,72 @@
 			}
 		}
 
+		function getUserData($_accountID)
+		{
+			global $phpgw, $phpgw_info;
+
+			$ldap = $phpgw->common->ldapConnect();
+			$filter = "(&(objectclass=qmailUser)(uidnumber=$_accountID))";
+			
+			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
+			if ($sri)
+			{
+				$allValues = ldap_get_entries($ldap, $sri);
+				if ($allValues['count'] > 0)
+				{
+					#print "found something<br>";
+					$userData["emailAddress"]	= $allValues[0]["emailaddress"][0];
+					$userData["accountStatus"]	= $allValues[0]["accountstatus"][0];
+					return $userData;
+				}
+			}
+			
+			// if we did not return before, return false
+			return false;
+		}
+		
+		function saveUserData($_accountID, $_accountData)
+		{
+			global $phpgw, $phpgw_info;
+			
+			$ldap = $phpgw->common->ldapConnect();
+			$filter = "uidnumber=$_accountID";
+			
+			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
+			if ($sri)
+			{
+				$allValues 	= ldap_get_entries($ldap, $sri);
+				$accountDN 	= $allValues[0]['dn'];
+				$uid	   	= $allValues[0]['uid'][0];
+				$homedirectory	= $allValues[0]['homedirectory'][0];
+			}
+			else
+			{
+				return false;
+			}
+			
+			if(empty($homedirectory))
+			{
+				$homedirectory = "/home/".$uid;
+			}
+			
+			$newData = array 
+			(
+				'emailAddress'		=> $_accountData["emailAddress"],
+				'mailLocalAddress'	=> $_accountData["emailAddress"],
+				'homedirectory'		=> $homedirectory,
+				'accountStatus'		=> $_accountData["accountStatus"]
+			);
+			ldap_mod_replace ($ldap, $accountDN, $newData);
+			
+			$newData = array
+			(
+				'objectclass'	=> "qmailUser"
+			);
+			@ldap_mod_add($ldap, $accountDN, $newData);
+			#print ldap_error($ldap);
+		}
+
 		function update($_action, $_data)
 		{
 			switch ($_action)
