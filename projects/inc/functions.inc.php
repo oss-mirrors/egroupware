@@ -14,8 +14,7 @@
 
 // returns wether the current acount is in group projectAdmin or not.
 
-  function isprojectadmin() 
-  {
+  function isprojectadmin() {
   global $phpgw;
   global $phpgw_info;
   $phpgw->db->query("select group_id from groups where group_name = 'projectAdmin'");
@@ -28,5 +27,49 @@
     }
    return 0;
   }
+
+
+  $projectid_type = "hex";
+
+  function add_leading_zero($num)  {                                                                      
+     global $projectid_type;                                             
+                                                                         
+     if ($projectid_type == "hex") {                                     
+        $num = hexdec($num);                                             
+        $num++;                                                          
+        $num = dechex($num);                                             
+     } else {                                                             
+        $num++;                                                          
+     }                                                                   
+                                                                         
+     if (strlen($num) == 4)                                              
+        $return = $num;                                                  
+     if (strlen($num) == 3)                                              
+        $return = "0$num";                                               
+     if (strlen($num) == 2)                                              
+        $return = "00$num";                                              
+     if (strlen($num) == 1)                                              
+        $return = "000$num";                                             
+     if (strlen($num) == 0)                                              
+        $return = "0001";                                                
+                                                                         
+     return strtoupper($return);                                         
+  }
+
+  $year = $phpgw->common->show_date(time(),"Y"); 
+  function create_projectid($year)                                                                  
+  {                                                                                                   
+     global $phpgw;                                                                                    
+     global $year;
+
+//     $year = $phpgw->common->show_date(time(),"Y");
+
+     $phpgw->db->query("select max(num) from p_projects where num like ('$year%')");         
+     $phpgw->db->next_record();                                                                       
+     $max = add_leading_zero(substr($phpgw->db->f(0),4));                                             
+                                                                                                      
+     return $year .$max; 
+      
+    }
 
 ?>

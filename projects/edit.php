@@ -38,7 +38,7 @@
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
  . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
-  if (!(($submit) or ($template))) {
+  if (!$submit) {
 
      if ($isadmin == 1) {
      $phpgw->db->query("select * from p_projects where id='$id'");
@@ -75,6 +75,8 @@
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
      $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
+     $t->set_var("lang_choose","");                                                                                                                    
+     $t->set_var("choose","");
      $t->set_var("lang_title",lang("Title"));
      $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
      if (! $title)  $title  = "&nbsp;";                                                                                                                                                  
@@ -82,6 +84,7 @@
      $descrval  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
      if (! $descrval)  $descrval  = "&nbsp;";                                                                                                                                                  
      $t->set_var("descrval",$descrval);
+
      $t->set_var("lang_status",lang("Status"));
      if ($phpgw->db->f("status")=="active"):
          $stat_sel[0]=" selected";
@@ -89,22 +92,15 @@
          $stat_sel[1]=" selected";
      elseif ($phpgw->db->f("status")=="archiv"):
          $stat_sel[2]=" selected";
-     elseif ($phpgw->db->f("status")=="template"):
-         $stat_sel[3]=" selected"; 
      endif;
 
-     $status_list = "<option value=\"active\"".$stat_sel[0].">" . lang("active") . "</option>\n"
-                  . "<option value=\"nonactive\"".$stat_sel[1].">" . lang("nonactive") . "</option>\n"
-                  . "<option value=\"archiv\"".$stat_sel[2].">" . lang("archiv") . "</option>\n"
-                  . "<option value=\"template\"".$stat_sel[3].">" . lang("template") . "</option>\n";       
+     $status_list = "<option value=\"active\"".$stat_sel[0].">" . lang("Active") . "</option>\n"
+                  . "<option value=\"nonactive\"".$stat_sel[1].">" . lang("Nonactive") . "</option>\n"
+                  . "<option value=\"archiv\"".$stat_sel[2].">" . lang("Archiv") . "</option>\n";
      $t->set_var("status_list",$status_list);
-     if($phpgw->db->f("status")=="template") {
-        $t->set_var("lang_cptemplateb",lang("Copy template"));
-     } else {
-        $t->set_var("lang_cptemplateb","");
-     }
+
      $t->set_var("lang_budget",lang("Budget"));
-     $t->set_var("budget",stripslashes($phpgw->db->f("budget")));
+     $t->set_var("budget",$phpgw->db->f("budget"));
 
      $t->set_var("lang_date",lang("Date"));
      if ($phpgw->db->f("date") != 0) {
@@ -325,7 +321,7 @@
                    . "$date',end_date='$end_date',coordinator='$coordinator',"
                    . "customer='$customer',status='$status',descr='"
                    . addslashes($descr) . "',title='".addslashes($title)."',"
-                   . "budget='".addslashes($budget)."',access='$access' where id='$id'");
+                   . "budget='$budget',access='$access' where id='$id'");
 
 
       $phpgw->db->query("delete from p_projectactivities where project_id='$id' and billable='N'");
@@ -345,7 +341,7 @@
       }
 
     } 
-    if($template) {
+/*    if($template) {
       if ($phpgw_info["user"]["permissions"]["manager"] && $otheruser) {
          $owner = $otheruser;
       } else {
@@ -376,7 +372,7 @@
         }
       }
       
-    }
+    }       */
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
 	   "cd=15&sort=$sort&order=$order&query=$query&start="

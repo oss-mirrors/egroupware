@@ -14,6 +14,10 @@
         {common_hidden_vars}
         {error}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
+          <tr>                                                                                                                                                               
+          <td>{lang_choose}</td>                                                                                                                                            
+          <td>{choose}</td>                                                                                                                                                  
+         </tr>
           <tr>
           <td>{lang_num}:</td>
           <td><input type="text" name="num" value="{num}"></td>

@@ -12,35 +12,103 @@
   \**************************************************************************/
 /* $Id$ */
   
-  if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, 
-                                  "nonavbar" => True);
+  if ($submit) {                                                                                                                                                                      
+     $phpgw_info["flags"] = array("noheader" => True,                                                                                                                                 
+                                  "nonavbar" => True);                                                                                                                                
   }
+
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
 
-  
-  $db2 = $phpgw->db;
-  
-  
-  if (! $submit) {
-      
-  	$t = new Template($phpgw_info["server"]["app_tpl"]);
-  	
-  	$t->set_var("actionurl",$phpgw->link("add.php"));
- 	$t->set_file(array( "projects_add" => "form.tpl"));
-  	
-  	// ====================================================================
-     	// create two seperate blocks, editblock will be cut off from template
-     	// addblock contains the buttons needed
-     	// ====================================================================
-     	$t->set_block("projects_add", "add", "addhandle");
-     	$t->set_block("projects_add", "edit", "edithandle");
-     	$t->set_block("projects_add", "edit_act", "acthandle");
-  	
-        $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+  $t = new Template($phpgw_info["server"]["app_tpl"]);
+  $t->set_file(array( "projects_add" => "form.tpl"));  	
+  $t->set_block("projects_add", "add", "addhandle");                                                                                                                                 
+  $t->set_block("projects_add", "edit", "edithandle");                                                                                                                               
+  $t->set_block("projects_add", "edit_act", "acthandle");
 
-  	$t->set_var("lang_action",lang("Add project"));
+  $db2 = $phpgw->db;
+
+ if ($submit) {
+
+    $phpgw->db->query("select count(*) from p_projects where num='$num'");                                                                                               
+    $phpgw->db->next_record();                                                                                                                                                       
+                                                                                                                                                                                      
+    if ($phpgw->db->f(0) != 0) {                                                                                                                                                       
+    unset($submit);
+    $phpgw->common->phpgw_header();
+    echo parse_navbar();
+    echo "<br><br><center><b>" . lang("That Project ID has been used already !"). "</b></center>";
+    $phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_exit();
+    }
+
+    if (checkdate($month,$day,$year)) {                                                                                                                                              
+    $date = mktime(2,0,0,$month,$day,$year);                                                                                                                                      
+      } 
+    else {                                                                                                                                                                         
+    if ($month && $day && $year) {                                                                                                                                                
+    $phpgw->common->phpgw_header();
+    echo parse_navbar();
+    echo "<br><br><center><b>" . lang("You have entered an invailed date"). "<br>" . "$month - $day - $year" . "</b></center>";                                                                                                                                          
+    $phpgw->common->phpgw_footer();                                                                                                                                               
+    $phpgw->common->phpgw_exit();
+     }                                                                                                                                                                             
+    }                                                                                                                                                                                
+    if (checkdate($end_month,$end_day,$end_year)) {                                                                                                                                  
+       $end_date = mktime(2,0,0,$end_month,$end_day,$end_year);                                                                                                                      
+       } 
+      else {                                                                                                                                                                         
+       if ($end_month && $end_day && $end_year) {                                                                                                                                    
+       $phpgw->common->phpgw_header();                                                                                                                                               
+       echo parse_navbar();                                                                                                                                                          
+       echo "<br><br><center><b>" . lang("You have entered an invailed date"). "<br>" . "$end_month - $end_day - $end_year" . "</b></center>";                                                   
+       $phpgw->common->phpgw_footer();                                                                                                                                               
+       $phpgw->common->phpgw_exit();
+       }                                                                                                                                                                             
+      }                                                                                                                                                                                
+
+     if ($access != "public" && $access != "private" && $access != "") {                                                                                                             
+     $access = $phpgw->accounts->array_to_string($access,$n_groups);                                                                                                                 
+      }                                                                                                                                                                              
+                                                                                                                                                                                     
+    $owner = $phpgw_info["user"]["account_id"];                                                                                                                                   
+                                                                                                                                                                                     
+    if ($choose)                                                                                                                                                                      
+      $num = create_projectid($year);                                                                                                                                                
+    else                                                                                                                                                                              
+      $num = addslashes($num);                                                                                                                                                       
+                                                                                                                                                                                     
+                                                                                                                                                                                     
+   $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date,"                                                                                                
+                   . "coordinator,customer,status,descr,title,budget,num) "                                                                                                          
+                   . "values ('$owner','$access','" . time() ."','$date','$end_date',"                                                                                               
+                   . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"                                                                                            
+                   . "'" . addslashes($title) . "','$budget','$num')");                                                                                                              
+                                                                                                                                                                                     
+        $db2->query("SELECT max(id) AS max FROM p_projects");                                                                                                                        
+        if($db2->next_record()) {                                                                                                                                                    
+        $p_id = $db2->f("max");                                                                                                                                                      
+        if (count($ba_activities) != 0) {                                                                                                                                            
+        while($activ=each($ba_activities)) {                                                                                                                                         
+           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                              
+                       . "billable) values ('$p_id','$activ[1]','N')");                                                                                                              
+         }                                                                                                                                                                           
+        }                                                                                                                                                                            
+        if (count($bill_activities) != 0) {                                                                                                                                          
+        while($activ=each($bill_activities)) {                                                                                                                                       
+           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                              
+                       . "billable) values ('$p_id','$activ[1]','Y')");                                                                                                              
+           }                                                                                                                                                                          
+          }                                                                                                                                                                           
+         }
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",                                                                                         
+           "cd=14&sort=$sort&order=$order&query=$query&start="                                                                                                                        
+         . "$start&filter=$filter"));
+        }
+                                                                                                                                                                                      
+   $t->set_var("actionurl",$phpgw->link("add.php"));
+   $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+   $t->set_var("lang_action",lang("Add project"));
 
    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {                                                                                                                       
    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];                                                                                                                        
@@ -49,37 +117,44 @@
    else {                                                                                                                                                                                       
    $t->set_var("error",lang("Please select your currency in preferences!"));                                                                                                                    
    }
-	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
-        		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
-        		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
-        		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
-        		. "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
-        		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
+	
+   $common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+        	       . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+        	       . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+        	       . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+        	       . "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+        	       . "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         		
-        $t->set_var("common_hidden_vars",$common_hidden_vars);
-        $t->set_var("lang_num",lang("Project ID"));
-        $db2->query("SELECT max(num) AS max FROM p_projects");
+   $t->set_var("common_hidden_vars",$common_hidden_vars);
+   $t->set_var("lang_num",lang("Project ID"));
+
+/*        $db2->query("SELECT max(num) AS max FROM p_projects");
         if($db2->next_record()) {
            $t->set_var("num",(int)($db2->f("max"))+1);
         } else {
            $t->set_var("num","1");
-        }
-        
+        }   */     
+
+     $t->set_var("num",$num);        
+     $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
+     $t->set_var("lang_choose",lang("Generate the Project ID ?"));                                                                                                                   
+     $t->set_var("choose",$choose);
+
+
         $t->set_var("lang_title",lang("Title"));
-        $t->set_var("title","");
+        $t->set_var("title",$title);
         $t->set_var("lang_descr",lang("Description"));
-	$t->set_var("descrval","");
+	$t->set_var("descrval",$descr);
 
         $t->set_var("lang_status",lang("Status"));
 	$status_list = "<option value=\"active\" selected>" . lang("Active") . "</option>\n"
            		. "<option value=\"nonactive\">" . lang("Nonactive") . "</option>\n"
-           		. "<option value=\"archiv\">" . lang("Archiv") . "</option>\n"
-           		. "<option value=\"template\">" . lang("Template") . "</option>\n";
+           		. "<option value=\"archiv\">" . lang("Archiv") . "</option>\n";
 
 	
         $t->set_var("status_list",$status_list);
         $t->set_var("lang_budget",lang("Budget"));
-        $t->set_var("budget","");
+        $t->set_var("budget",$budget);
 
 	$cur_month=date("n",time());
         $cur_day=date("j",time());
@@ -106,7 +181,7 @@
         $t->set_var("date_formatorder",$date_formatorder);
 
         $t->set_var("lang_end_date",lang("Date due"));
-	$end_date_formatorder = "<select name=\"end_month\">\n"
+        $end_date_formatorder = "<select name=\"end_month\">\n"
               . "<option value=\"\" SELECTED> </option>\n"
               . "<option value=\"1\">" . lang("january") . "</option>\n"
               . "<option value=\"2\">" . lang("February"). "</option>\n"
@@ -138,12 +213,7 @@
                     . $phpgw->common->display_fullname($phpgw->db->f("account_id"),                                                                                                               
                       $phpgw->db->f("account_firstname"),                                                                                                                                         
                       $phpgw->db->f("account_lastname")) . "</option>";
-
-/*                    . $selected_users[$phpgw->db->f("account_id")] . ">"
-	            . $phpgw->common->display_fullname($phpgw->db->f("account_lid"),
-                      $phpgw->db->f("account_firstname"),
-                      $phpgw->db->f("account_lastname")) . "</option>"; */
-        }
+                }
         $t->set_var("coordinator_list",$coordinator_list);
 
         $t->set_var("lang_select",lang("Select per button !"));
@@ -152,7 +222,7 @@
         $t->set_var("customer_name","");
 
 // activities bookable     
-       $t->set_var("lang_bookable_activities",lang("Bookable activities"));
+       $t->set_var("lang_bookable_activities",lang("Bookable activities"));       
         $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
                      . "FROM p_activities "                                                                                                               
                      . "ORDER BY descr asc");                                                                                                    
@@ -206,67 +276,6 @@
     	$t->pparse("out","projects_add");
     	$t->pparse("addhandle","add");
         
-  } else {
+    $phpgw->common->phpgw_footer();
 
-    if (checkdate($month,$day,$year)) {
-       $date = mktime(2,0,0,$month,$day,$year);
-    } else {
-       if ($month && $day && $year) {
-          navigation_bar();
-          echo "<p><center>" . lang("You have entered an invailed date"). "</center>";
-          echo "<br>$month - $day - $year";
-          exit;
-       }
-    }
-    if (checkdate($end_month,$end_day,$end_year)) {
-       $end_date = mktime(2,0,0,$end_month,$end_day,$end_year);
-    } else {
-       if ($end_month && $end_day && $end_year) {
-          navigation_bar();
-          echo "<p><center>" . lang("You have entered an invailed date"). "</center>";
-          echo "<br>$end_month - $end_day - $end_year";
-          exit;
-       }
-    }
-    
-
-     if ($access != "public" && $access != "private" && $access != "") {       
-     $access = $phpgw->accounts->array_to_string($access,$n_groups);
-      }
-    
-    if ($phpgw_info["user"]["permissions"]["manager"] && $otheruser) {
-       $owner = $otheruser;
-    } else {
-       $owner = $phpgw_info["user"]["account_id"];
-    }
-
-    $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date," 
-                . "coordinator,customer,status,descr,title,budget,num) "
-                . "values ('$owner','$access','" . time() ."','$date','$end_date',"
-                . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"
-                . "'" . addslashes($title) . "','" . addslashes($budget) . "',"
-		. "'" . $num . "')");
-           
-        $db2->query("SELECT max(id) AS max FROM p_projects");                                                                                                                         
-        if($db2->next_record()) {                                                                                                                                                        
-        $p_id = $db2->f("max");                                                                                                                                     
-        if (count($ba_activities) != 0) {                                                                                                                                                 
-        while($activ=each($ba_activities)) {                                                                                                                                             
-           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                                  
-                       . "billable) values ('$p_id','$activ[1]','N')");                                                                                                                    
-         }                                                                                                                                                                                
-        }        
-        if (count($bill_activities) != 0) {                                                                                                                                               
-        while($activ=each($bill_activities)) {                                                                                                                                           
-           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                                  
-                       . "billable) values ('$p_id','$activ[1]','Y')");                                                                                                                    
-          }                                                                                                                                                                                
-         }
-        }
-
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
-           "cd=14&sort=$sort&order=$order&query=$query&start="
-         . "$start&filter=$filter"));
-  }
-$phpgw->common->phpgw_footer();
 ?>

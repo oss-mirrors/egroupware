@@ -10,7 +10,7 @@ CREATE TABLE p_projects (
    end_date    int,
    coordinator int,
    customer    int,
-   status      text check(status in('active','nonactive','archiv','template')) DEFAULT 'nonactive' NOT NULL,
+   status      text check(status in('active','nonactive','archiv')) DEFAULT 'active' NOT NULL,
    descr       text,
    title       varchar(50),
    budget      decimal(20,2)
