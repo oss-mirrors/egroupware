@@ -242,7 +242,7 @@ project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
 project %1 has been updated	projects	de	Projekt %1 wurde bearbeitet.
 project accounting	admin	de	Projektabrechnung
 project administrators	admin	de	Projektadministratoren
-project data due	projects	de	Projektfälligkeit
+project date due	projects	de	Projektfälligkeit
 project dependencies	common	de	Projektabhängigkeiten
 project id	common	de	Projekt-ID
 project list	projects	de	Projektliste

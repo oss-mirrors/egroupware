@@ -2752,24 +2752,30 @@
 			if($values['edate'] > 0 && $values['old_edate'] != $values['edate'])
 			{
 				$event_extra = $this->soconfig->get_event_extra('project date due');
-				$next = mktime(date('H',time()),date('i',time())+5,0,$values['emonth'],$values['eday']-$event_extra,$values['eyear']);
+				$next = mktime(date('H',time()),date('i',time())+1,0,$values['emonth'],$values['eday']-$event_extra,$values['eyear']);
 
 				$edate = $this->format_date($values['edate']);
-				$async->write(array('id' => 'projects-' . $values['project_id'], 'next' => $next,'times' => array('year' => date('Y',$next),
-									'month' => date('m',$next),'day' => date('d',$next),'hour' => date('H',$next),'min' => date('i',$next))
-									,'account_id' => $values['coordinator'],'method' => 'projects.boprojects.send_alarm',
-									'data' => array('project_id' => $values['project_id'],'event_type' => 'project date due',
-									'edate' => $edate['date_formatted'],'project_name' => $values['project_name'])));
-
-				/*$async->write(array('id' => 'projects-' . $values['project_id'], 'next' => 0,'times' => array('min' => '5')
-									,'account_id' => $values['coordinator'],'method' => 'projects.boprojects.send_alarm',
-									'data' => array('project_id' => $values['project_id'],'action' => 'prodatedue')));*/
+				$async->cancel_timer('projects-' . $values['project_id']);
+				$async->set_timer
+				(
+					$next,
+					'projects-' . $values['project_id'],
+					'projects.boprojects.send_alarm',
+					array
+					(
+						'project_id' => $values['project_id'],
+						'event_type' => 'project date due',
+						'edate' => $edate['date_formatted'],
+						'project_name' => $values['project_name']
+					),
+					$values['coordinator']
+				);
 			}
 
 			if($values['edate'] == 0)
 			{
 				$aid = 'projects-' . $values['project_id'];
-				$async->delete($aid);
+				$async->cancel_timer($aid);
 			}
 			unset($async);
 
