@@ -910,6 +910,11 @@ function toggle(image, catid)
 				$this->edit();
 				return;
 			}
+			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
+			{
+				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True');
+				return;
+			}
 
 			$bookmark = $this->bo->read($bm_id);
 
@@ -960,7 +965,7 @@ function toggle(image, catid)
 					'" target="_new">' . $bookmark['url'] . '</a>'
 				),
 				'input_name' => $bookmark['name'],
-				'input_desc' => $bookmark['desc'],
+				'input_desc' => nl2br($bookmark['desc']),
 				'input_keywords' => $bookmark['keywords'],
 				'input_rating' => ('<img src="' . $GLOBALS['phpgw']->common->get_image_path('bookmarks') .
 					'/bar-' . $bookmark['rating'] . '.jpg">'
