@@ -207,7 +207,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
-							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 				$this->t->set_var(lang_header,lang('Project list'));
 			}
 			else

@@ -242,7 +242,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="none">' . lang('Select category') . '</option>' . "\n"
-							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 				$this->t->set_var(lang_header,lang('Project list'));
 				$this->t->set_var(lang_action,lang('Jobs'));
 			}
@@ -551,7 +551,7 @@
 			{
 				$this->t->set_var('lang_action',lang('Add project'));
 				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$cat_id,True) . '</select>';
+						.	$this->cats->formatted_list('select','all',$cat_id,True) . '</select>';
 
 				$this->t->set_var('cat',$cat);
 				$this->t->set_var('lang_parent','');
@@ -715,7 +715,7 @@
 			{
 				$this->t->set_var('lang_action',lang('Edit project'));
 				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$values['cat'],True) . '</select>';
+						.	$this->cats->formatted_list('select','all',$values['cat'],True) . '</select>';
 
 				$this->t->set_var('cat',$cat);
 				$this->t->set_var('lang_parent','');
@@ -1024,7 +1024,7 @@
 // ------------------------- end nextmatch template --------------------------------------
 
             $this->t->set_var('cat_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('categories_list',$this->cats->formated_list('select','all',$this->cat_id,'True'));
+			$this->t->set_var('categories_list',$this->cats->formatted_list('select','all',$this->cat_id,'True'));
             $this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
             $this->t->set_var('search_list',$this->nextmatchs->search(1));
 
@@ -1138,7 +1138,7 @@
 			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.add_activity'));
 			$this->t->set_var('lang_action',lang('Add activity'));
-			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+			$this->t->set_var('cats_list',$this->cats->formatted_list('select','all',$cat_id,True));
 
 			$nopref = $this->boprojects->check_prefs();
 			if (is_array($nopref))
@@ -1253,7 +1253,7 @@
 
 			$values = $this->boprojects->read_single_activity($activity_id);
 
-			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$values['cat'],True));
+			$this->t->set_var('cats_list',$this->cats->formatted_list('select','all',$values['cat'],True));
 			$this->t->set_var('num',$GLOBALS['phpgw']->strip_html($values['number']));
 			$descr  = $GLOBALS['phpgw']->strip_html($values['descr']);
 			if (! $descr) $descr = '&nbsp;';
@@ -1486,7 +1486,7 @@
 // -------------------------- end nextmatch ------------------------------------
 
 			$this->t->set_var('cats_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+			$this->t->set_var('cats_list',$this->cats->formatted_list('select','all',$cat_id,True));
 			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -1730,7 +1730,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
-							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 				$this->t->set_var(lang_header,lang('Project archive'));
 				$this->t->set_var(lang_action,lang('Jobs'));
 			}
