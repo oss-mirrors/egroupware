@@ -5,9 +5,9 @@
 # Server version	3.22.26a
 
 #
-# Table structure for table 'f_body'
+# Table structure for table 'phpgw_f_body'
 #
-CREATE TABLE f_body (
+CREATE TABLE phpgw_forum_body (
   id int(11) DEFAULT '0' NOT NULL auto_increment,
   cat_id int(11) DEFAULT '0' NOT NULL,
   for_id int(11) DEFAULT '0' NOT NULL,
@@ -16,13 +16,13 @@ CREATE TABLE f_body (
 );
 
 #
-# Dumping data for table 'f_body'
+# Dumping data for table 'phpgw_forum_body'
 #
 
 #
-# Table structure for table 'f_categories'
+# Table structure for table 'phpgw_forum_categories'
 #
-CREATE TABLE f_categories (
+CREATE TABLE phpgw_forum_categories (
   id int(11) DEFAULT '0' NOT NULL auto_increment,
   name varchar(50) DEFAULT '' NOT NULL,
   descr varchar(255) DEFAULT '' NOT NULL,
@@ -30,14 +30,14 @@ CREATE TABLE f_categories (
 );
 
 #
-# Dumping data for table 'f_categories'
+# Dumping data for table 'phpgw_forum_categories'
 #
 
 
 #
-# Table structure for table 'f_forums'
+# Table structure for table 'phpgw_f_forums'
 #
-CREATE TABLE f_forums (
+CREATE TABLE phpgw_forum_forums (
   id int(11) DEFAULT '0' NOT NULL auto_increment,
   name varchar(50) DEFAULT '' NOT NULL,
   perm tinyint(1) DEFAULT '0' NOT NULL,
@@ -48,14 +48,14 @@ CREATE TABLE f_forums (
 );
 
 #
-# Dumping data for table 'f_forums'
+# Dumping data for table 'phpgw_forum_forums'
 #
 
 
 #
-# Table structure for table 'f_threads'
+# Table structure for table 'phpgw_forum_threads'
 #
-CREATE TABLE f_threads (
+CREATE TABLE phpgw_forum_threads (
   id int(11) DEFAULT '0' NOT NULL auto_increment,
   postdate datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   main int(11) DEFAULT '0' NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE f_threads (
 );
 
 #
-# Dumping data for table 'f_threads'
+# Dumping data for table 'phpgw_forum_threads'
 #
 
 
@@ -84,26 +84,25 @@ CREATE TABLE f_threads (
 
 
 
-INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1','Here is an example message.');
-INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1', 'Here is an example of a reply.');
-INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '2', 'Yup, another example');
-INSERT INTO f_body (cat_id, for_id, message) VALUES ('2', '3', 'I ran out of ideas ... so, heres another sample.');
+INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('1', '1','Here is an example message.');
+INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('1', '1', 'Here is an example of a reply.');
+INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('1', '2', 'Yup, another example');
+INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('2', '3', 'I ran out of ideas ... so, heres another sample.');
 
-INSERT INTO f_categories (name,descr) VALUES ('Just a sample', 'This is a sample category');
-INSERT INTO f_categories (name,descr) VALUES ('Another sample category', 'Just another sample');
+INSERT INTO phpgw_forum_categories (name,descr) VALUES ('Just a sample', 'This is a sample category');
+INSERT INTO phpgw_forum_categories (name,descr) VALUES ('Another sample category', 'Just another sample');
 
-INSERT INTO f_forums (name,perm,groups,descr, cat_id) VALUES ('Sample', '0', '0', 'This is a sample', '1');
-INSERT INTO f_forums (name,perm,groups,descr, cat_id) VALUES ('This is another sample', '0', '0', 'sub-category', '1');
-INSERT INTO f_forums (name,perm,groups,descr, cat_id) VALUES ('Sample', '0', '0', 'Wow, what a suprise, another sample :)', '2');
+INSERT INTO phpgw_forum_forums (name,perm,groups,descr, cat_id) VALUES ('Sample', '0', '0', 'This is a sample', '1');
+INSERT INTO phpgw_forum_forums (name,perm,groups,descr, cat_id) VALUES ('This is another sample', '0', '0', 'sub-category', '1');
+INSERT INTO phpgw_forum_forums (name,perm,groups,descr, cat_id) VALUES ('Sample', '0', '0', 'Wow, what a suprise, another sample :)', '2');
 
-INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:19:54', '1', '-1', '1', '1', 'Joseph Engo', 'Example', 'jengo@phpgroupware.org', '', '0', '1', '0', '0', '1');
-INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:20:12', '2', '1', '1', '1', 'Joseph Engo', 'Re: Example', 'jengo@phpgroupware.org', '', '0', '1', '1', '1', '1');
-INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:15', '3', '-1', '1', '2', 'Joseph Engo', 'Example message', 'jengo@phpgroupware.org', '', '0', '3', '0', '0', '0');
-INSERT INTO f_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:58', '4', '-1', '2', '3', 'Joseph Engo', '', 'jengo@phpgroupware.org', '', '0', '4', '0', '0', '0');
+INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:19:54', '1', '-1', '1', '1', 'Joseph Engo', 'Example', 'jengo@phpgroupware.org', '', '0', '1', '0', '0', '1');
+INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:20:12', '2', '1', '1', '1', 'Joseph Engo', 'Re: Example', 'jengo@phpgroupware.org', '', '0', '1', '1', '1', '1');
+INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:15', '3', '-1', '1', '2', 'Joseph Engo', 'Example message', 'jengo@phpgroupware.org', '', '0', '3', '0', '0', '0');
+INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,author,subject,email,host,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:58', '4', '-1', '2', '3', 'Joseph Engo', '', 'jengo@phpgroupware.org', '', '0', '4', '0', '0', '0');
 
 
 #
 # Add forum to applications table too
 #
 
-INSERT INTO phpgw_applications VALUES ('forum','Forum',1,13,'',0.01);
