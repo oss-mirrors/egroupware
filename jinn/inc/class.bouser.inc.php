@@ -179,6 +179,7 @@
 
 		 $records = $this->so->get_record_values($this->site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by,$field_list,$where_condition);
 
+
 		 return $records;
 	  }
 
@@ -354,7 +355,6 @@
 		 $display_field=$table_info2[1];
 
 		 $allrecords=$this->get_records($table,'','','','','name',$display_field);
-
 
 		 if(is_array($allrecords))
 		 foreach ($allrecords as $record)

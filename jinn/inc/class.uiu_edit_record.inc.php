@@ -103,10 +103,11 @@
 				}
 
 			}
-
+			
 			/* get all fieldproperties (name, type, etc...) */
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 			//			_debug_array($fields);
+
 
 
 			
@@ -136,7 +137,8 @@
 					/* If this integer has a relation get that options */
 				   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
 				   {
-					   //get related field vals en displays
+
+					  //get related field vals en displays
 					   $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
 
 					   $input= '<select name="'.$input_name.'">';
@@ -162,6 +164,7 @@
 					{
 						//get related field vals en displays
 						$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
+
 
 						$input= '<select name="'.$input_name.'">';
 						$input.= $this->ui->select_options($related_fields,$value,true);

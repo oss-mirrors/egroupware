@@ -726,8 +726,19 @@
 		 }
 		 if ($order_by)
 		 {
-			$order_by_new=trim(substr($order_by,0,(strlen($order_by)-4)));
-			$order_direction=trim(substr($order_by,-4));
+			
+			if(substr($order_by,-2)=='SC')
+			{
+			   $order_by_new=trim(substr($order_by,0,(strlen($order_by)-4)));
+			   $order_direction=trim(substr($order_by,-4));
+			}
+			else
+			{
+			   $order_by_new=$order_by;
+			}
+
+
+			
 			$ORDER_BY = ' ORDER BY `'.$table.'`.`'.$order_by_new.'` '.$order_direction;
 		 }
 
@@ -736,7 +747,7 @@
 		 $fieldproperties = $this->site_table_metadata($site_id,$table);
 		 $field_list_arr=(explode(',',$field_list));
 		 $SQL="SELECT $field_list FROM $table $WHERE $ORDER_BY";
-//		die($SQL);
+//		die ($SQL);
 		 if (!$limit) $limit=1000000;
 
 		 $this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); 

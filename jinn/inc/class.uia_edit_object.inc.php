@@ -255,7 +255,6 @@
 						// ADD NEW ONE WITH MANY RELATION
 						//die($parent_site_id);
 
-
 						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
