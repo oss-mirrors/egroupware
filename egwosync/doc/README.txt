@@ -2,7 +2,7 @@
 # This is the official readme for eGWOSync, a module for synchronizing
 # eGroupWare with Microsoft Outlook.
 #
-# This readme created on July 16th, 2004 by Ian Smith-Heisters
+# This readme created on July 17th, 2004 by Ian Smith-Heisters
 ###############################################################################
 
 The current eGWOSync version is just functional and not by any means meant to
@@ -43,8 +43,6 @@ INSTALLATION:
        CeGWContacts.cls
        CFormHelper
        COutlookContacts.cls
-       CRegistry.cls
-       FrmLogin.frm
        FrmMain.frm
        ThisOutlookSession.cls
 

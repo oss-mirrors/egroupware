@@ -34,7 +34,7 @@ End Sub
 '***********************************************************************************************
 Private Sub contactItems_ItemAdd(ByVal Item As Object)
     'This will only work if the main egwosync window isn't open!
-    If Not frmMain.Visible Then
+    If Not frmMain.Visible And ThisOutlookSession.eGWOSyncEnabled Then
         Dim egwContacts As New CeGWContacts
         Dim msgResponse As VbMsgBoxResult
         Dim xmlResponse As XMLRPCResponse
@@ -47,7 +47,7 @@ Private Sub contactItems_ItemAdd(ByVal Item As Object)
         
         If msgResponse = vbOK Then
             If ThisOutlookSession.eGW.Hostname = "" Then
-                FrmLogin.Show
+                ThisOutlookSession.Setup
             End If
             Set xmlResponse = egwContacts.Create(Contact)
             If xmlResponse.Status = XMLRPC_PARAMSRETURNED Then

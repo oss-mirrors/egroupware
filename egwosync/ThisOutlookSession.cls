@@ -21,14 +21,67 @@ Attribute VB_Exposed = True
 
 Dim AutoMaker As New CAutoExporter
 Public eGW As New CeGW
+Private beGWOSyncEnabled As Boolean
 
-Private Sub Application_Startup()
-    If GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Hostname") <> "" Then
-        eGW.Hostname = GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Hostname")
-        eGW.Port = GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Port")
-        eGW.URI = GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="URI")
-        eGW.Username = GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Username")
-        eGW.Password = GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Password")
+'***********************************************************************************************
+' Specifies whether egwosync has all the information it needs to run. Functions should not run
+' unless this is true.
+'***********************************************************************************************
+Public Property Get eGWOSyncEnabled() As Boolean
+    eGWOSyncEnabled = beGWOSyncEnabled
+End Property
+
+'***********************************************************************************************
+' Refresh the status of whether egwosync has all the login information it needs
+'***********************************************************************************************
+Public Function RefreshSettingStatus() As Boolean
+    If GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Hostname") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Port") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="URI") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Username") <> "" And _
+        GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Password") <> "" Then
+            beGWOSyncEnabled = True
+            RefreshSettingStatus = True
+    Else
+        beGWOSyncEnabled = False
+        RefreshSettingStatus = False
     End If
-    AutoMaker.Initialize_handler
+End Function
+
+'***********************************************************************************************
+' Runs when Outlook opens
+'***********************************************************************************************
+Private Sub Application_Startup()
+    'Are we ready to contact the server?
+    If Not RefreshSettingStatus Then
+        Setup
+    End If
+    
+    'If so, initialize the process that will allow contacts to be added automatically
+    If beGWOSyncEnabled Then
+        AutoMaker.Initialize_handler
+    End If
 End Sub
+
+'***********************************************************************************************
+' To be run if all login the information is not present. First asks if the user wants to set
+' egwosync up at the moment, then opens setup if the user says yes.
+'***********************************************************************************************
+Public Function Setup() As Boolean
+        Dim x As VbMsgBoxResult
+        
+        x = MsgBox("eGroupWare Synchornization has not been set up to access the eGroupWare " & _
+                    "Server. Would you like to set it up now?", _
+                    vbOKCancel, "eGrwoupWare not set up")
+        If x = vbOK Then
+            If Not frmMain.Visible Then
+                frmMain.Show
+            End If
+            'Set focus to settings page
+            frmMain.MultiPage1.Value = 1
+        ElseIf x = vbCancel Then
+            beGWOSyncEnabled = False
+        End If
+        Setup = beGWOSyncEnabled
+End Function
+
