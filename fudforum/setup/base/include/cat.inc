@@ -16,7 +16,7 @@ class fud_cat
 
 	function fud_cat()
 	{
-		foreach ($this as $k => $v) {
+		foreach (array('id', 'name', 'description', 'view_order', 'cat_opt') as $k) {
 			if (isset($_POST['cat_'.$k])) {
 				$this->{$k} = $_POST['cat_'.$k];
 			}
