@@ -146,7 +146,8 @@
 		<td>{lang_customer}:</td>
 		<td>
 			<input type="hidden" name="abid" value="{abid}">
-			<input type="text" name="name" size="30" value="{name}" onClick="abook();" readonly></td>
+			<input type="text" name="name" size="30" value="{name}" onClick="abook();" readonly>
+			<input type="button" value="{lang_address_book}" onClick="abook();"></td>
 		</td>
 		<td>{lang_customer_nr}:</td>
 		<td><input type="text" name="values[customer_nr]" size="30" value="{customer_nr}"></td>

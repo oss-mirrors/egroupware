@@ -846,7 +846,7 @@
 			$GLOBALS['phpgw']->template->set_var('accounts_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.accounts_popup'));
 			$GLOBALS['phpgw']->template->set_var('e_accounts_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.e_accounts_popup'));
 
-			$GLOBALS['phpgw']->template->set_var('lang_open_popup',lang('open popup window'));
+			$GLOBALS['phpgw']->template->set_var('lang_address_book',lang('address book'));
 			$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
