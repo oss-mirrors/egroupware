@@ -1,4 +1,12 @@
 
+	the backup application currently works for local mysql -,
+	pgsql - and ldap - databases plus for the users imap
+	Maildirs.
+	it does not work to create backup archives from remote
+	databases.
+	the archives can be stored either locally or can be moved
+	to a remote host via ftp or smbmount.
+
 ---------------------------------------------------------------
 -                      configuration                          -
 ---------------------------------------------------------------
