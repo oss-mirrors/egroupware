@@ -109,8 +109,7 @@
 	}
 
 	$t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php','project_id=' . $project_id . '&pro_parent=' . $pro_parent));
-	$t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php','project_id=' . $project_id . '&filter=' . $filter . '&sort=' . $sort . '&order='
-										. $order . '&query=' . $query . '&start=' . $start));
+	$t->set_var('doneurl',$phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours&project_id=' . $project_id));
 
 	$t->set_var('hidden_vars',$hidden_vars);
 	$t->set_var('lang_action',lang('Add project hours'));

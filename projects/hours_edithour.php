@@ -289,7 +289,7 @@
 
 	if ($projects->check_perms($grants[$phpgw->db->f('employee')],PHPGW_ACL_DELETE) || $phpgw->db->f('employee') == $phpgw_info['user']['account_id'])
 	{
-		$t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/hours_deletehour.php','id=' . $id) . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+		$t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/hours_deletehour.php','id=' . $id . '&project_id=' . $project_id) . '"><input type="submit" value="' . lang('Delete') .'"></form>');
 	}
 	else { $t->set_var('delete','&nbsp;'); }
 

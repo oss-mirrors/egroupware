@@ -14,8 +14,7 @@
   
 	if (! $id)
 	{
-		Header('Location: ' . $phpgw->link('/projects/hours_index.php','sort=' . $sort . '&order=' . $order . '&query=' . $query
-											. '&start=' . $start . '&filter=' . $filter));
+		Header('Location: ' . $phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours&project_id=' . $project_id));
 	}
 
 	if ($confirm)
@@ -30,8 +29,9 @@
 	if ($confirm)
 	{
 		$phpgw->db->query("delete from phpgw_p_hours where id='$id'");
-		Header('Location: ' . $phpgw->link('/projects/hours_listhours.php','filter=' . $filter . '&sort=' . $sort . '&order=' . $order
-											. '&query=' . $query . '&start=' . $start));
+
+	$t->set_var('doneurl',
+		Header('Location: ' . $phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours&project_id=' . $project_id));
 	}
 	else
 	{

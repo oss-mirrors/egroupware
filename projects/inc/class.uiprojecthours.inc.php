@@ -135,7 +135,7 @@
 			$this->t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_sub_projects'));
-			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uihours.list_hours'));
+			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
@@ -181,7 +181,7 @@
 			{
 				case 'all': $state_sel[0]=' selected';break;
 				case 'open': $state_sel[1]=' selected';break;
-				case 'closed': $state_sel[2]=' selected';break;
+				case 'done': $state_sel[2]=' selected';break;
 				case 'billed': $state_sel[3]=' selected';break;
 			}
 

@@ -18,7 +18,7 @@
 	$admin_info = lang('Administrator');
 	$t->set_var('admin_info',$admin_info);
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-
+	$this->t->set_var('row_on',$phpgw_info['theme']['row_on']);
 	$isadmin = isprojectadmin();
 
 	if ($isadmin==1) {
