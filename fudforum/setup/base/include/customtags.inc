@@ -13,7 +13,7 @@
 function ctag_rebuild_cache($id)
 {
 	$ct = '';
-	$c = uq('SELECT name FROM '.$GLOBALS['DBHOST_TBL_PREFIX'].'custom_tags WHERE user_id='.$id);
+	$c = uq('SELECT name FROM '.$GLOBALS['DBHOST_TBL_PREFIX'].'custom_tags WHERE user_id='.$id.' ORDER BY name');
 	while ($r = db_rowarr($c)) {
 		$ct .= $r[0] . '<br />';
 	}

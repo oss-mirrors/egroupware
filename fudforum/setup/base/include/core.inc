@@ -20,6 +20,7 @@ function rls_db_lck()
 	if (connection_status() && defined('fud_sql_lnk') && db_locked()) {
 		db_unlock();
 	}
+	return;
 }
 
 register_shutdown_function('rls_db_lck');
@@ -60,7 +61,10 @@ function fud_use($file, $static=false)
 		include_once $GLOBALS['INCLUDE'] . $file;
 		return;
 	}
-	include_once $GLOBALS['INCLUDE'] . (defined('fud_theme') ? fud_theme : 'theme/default/') . $file;
+	if (!defined('fud_theme')) {
+		define('fud_theme', 'theme/default/');
+	}
+	include_once $GLOBALS['INCLUDE'] . fud_theme . $file;
 }
 
 function get_random_value($bitlength=32)
@@ -90,11 +94,52 @@ function get_ip()
 			if (!$lip || (($lip >= 167772160) && ($lip <= 184549375)) || (($lip >= -1408237568) && ($lip <= -1407188993)) || (($lip >= -1062731776) && ($lip <= -1062666241)) || ($lip == 2130706433)) {
 				continue;
 			}
-			return $ip;
+			return long2ip(ip2long($ip));
 		} while (($ip = strtok(',')));
 	}
 	return (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0');
 }
+
+function ssn($str)
+{
+	if (is_null($str) || $str === '') {
+		return 'NULL';
+	} else {
+		return "'" . addslashes($str) . "'";
+	}
+}
+
+/* Common DB functions */
+function in($str)
+{
+	return (!(int)$str) ? 'NULL' : (int)$str;
+}
+
+function iz($str)
+{
+	return (int)$str;
+}
+
+function intnull($val)
+{
+	return (!is_null($val) ? $val : 'NULL');
+}
+
+function intzero($val)
+{
+	return (!empty($val) ? $val : '0');
+}
+
+function ifnull($val, $alt)
+{
+	return (!is_null($val) ? "'".$val."'" : $alt);
+}
+
+function strnull($val)
+{
+	return (!is_null($val) ? "'".$val."'" : 'NULL');
+}
+/* END: Common DB Functions */
 
 function __ffilesize($fp)
 {

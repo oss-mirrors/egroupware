@@ -302,6 +302,7 @@ class fud_nntp
 						$e = strlen($this->body) - 5;
 					} else {
 						$s += 6;
+						continue;
 					}
 				}
 				if ($this->nntp_opt & 8) {
@@ -323,6 +324,7 @@ class fud_nntp
 						$e = strlen($this->body) - 4;
 					} else {
 						$s += 13;
+						continue;
 					}
 				}
 				if ($this->nntp_opt & 8) {
@@ -479,6 +481,10 @@ class fud_nntp
 		if ($this->cmd("POST") != 340) {
 	        	$this->error = "Failed to recieve proper response to POST command, NNTP server replied: ".$this->lrc."\n";
 			$this->exit_handler();
+		}
+
+		if ($GLOBALS['FUD_OPT_3'] & 8) {
+			$from = str_replace(array('.', '@'), array('[dot]','[at]'), $from);
 		}
 
 		fputs($this->fs, "From: $from\r\n");

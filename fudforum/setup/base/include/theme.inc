@@ -21,6 +21,7 @@ class fud_theme
 				$this->{$k} = $_POST['thm_'.$k];
 			}
 		}
+		$this->name = preg_replace('![^A-Za-z0-9_]!', '_', $this->name);
 		$this->theme_opt = !empty($_POST['thm_enabled']) | (!empty($_POST['thm_t_default']) ? 2 : 0);
 	}
 

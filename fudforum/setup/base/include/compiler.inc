@@ -489,6 +489,10 @@ function compile_all($tset='default', $lang='english', $tname='default')
 
 	$u = umask(0);
 	$perms = $GLOBALS['FUD_OPT_2'] & 8388608 ? 0700 : 0777;
+	if (strncmp(PHP_SAPI, 'apache', 6) && $perms == 0700) {
+		$perms = 0711;
+	}
+
 	fud_mkdir($GLOBALS['WWW_ROOT_DISK'].'theme', $perms);
 	fud_mkdir($GLOBALS['WWW_ROOT_DISK'] . 'theme/' . $tname, $perms);
 	fud_mkdir($GLOBALS['DATA_DIR'] . 'include/theme', $perms);
@@ -563,6 +567,11 @@ function fudcopy($src, $dest, $mask='!.*!i', $recur=false)
 	$src = preg_replace('!/*$!', '', $src);
 	$dest = preg_replace('!/*$!', '', $dest);
 
+	$perms = $GLOBALS['FUD_OPT_2'] & 8388608 ? 0600 : 0666;
+	if (strncmp(PHP_SAPI, 'apache', 6) && $perms == 0600) {
+		$perms = 0644;
+	}
+
 	if (!($dp = opendir($src))) {
 		echo 'Cannot open directory "'.$src.'"<br>';
 		return;
@@ -584,7 +593,7 @@ function fudcopy($src, $dest, $mask='!.*!i', $recur=false)
 			if (!@copy($path, $nd) && !@file_exists($nd)) {
 				echo 'cannot copy "'.$path.'" to "'.$nd.'"<br>';
 			} else {
-				@chmod($nd, $GLOBALS['FUD_OPT_2'] & 8388608 ? 0600 : 0666);
+				@chmod($nd, $perms);
 			}
 		}
 	}
@@ -601,11 +610,13 @@ function copyimages($thm)
 	}
 	fudcopy($GLOBALS['DATA_DIR'].'thm/default/images', $path, '!\.(gif|jpeg|png|jpg)$!i');
 	fudcopy($GLOBALS['DATA_DIR'].'thm/default/i18n/'.$thm->lang.'/img', $path, '!\.(gif|jpeg|png|jpg)$!i');
-	if (@file_exists($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/images')) {
-		fudcopy($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/images', $path, '!\.(gif|jpeg|png|jpg)$!i');
-	}
-	if (@file_exists($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/i18n/'.$thm->lang.'/img')) {
-		fudcopy($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/i18n/'.$thm->lang.'/img', $path, '!\.(gif|jpeg|png|jpg)$!i');
+	if ($thm->theme != 'default') {
+		if (@file_exists($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/images')) {
+			fudcopy($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/images', $path, '!\.(gif|jpeg|png|jpg)$!i');
+		}
+		if (@file_exists($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/i18n/'.$thm->lang.'/img')) {
+			fudcopy($GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/i18n/'.$thm->lang.'/img', $path, '!\.(gif|jpeg|png|jpg)$!i');
+		}
 	}
 
 	umask($u);
@@ -615,13 +626,22 @@ function copyhelp($thm)
 {
 	$path = $GLOBALS['WWW_ROOT_DISK'].'theme/'.$thm->name.'/help';
 	$src = $GLOBALS['DATA_DIR'].'thm/'.$thm->theme.'/i18n/'.$thm->lang.'/help';
-	if ($thm->theme != 'default' && !@file_exists($src)) {
+	if (!@file_exists($src)) {
 		$src = $GLOBALS['DATA_DIR'].'thm/default/i18n/'.$thm->lang.'/help';
+		if (!@file_exists($src)) {
+			$src = $GLOBALS['DATA_DIR'].'thm/default/i18n/english/help';
+		}
 	}
 
 	$rp =& $GLOBALS['__COMPILER__']['ROOT'];
 
 	$u = umask(0);
+
+	$perms = $GLOBALS['FUD_OPT_2'] & 8388608 ? 0600 : 0666;
+	if (strncmp(PHP_SAPI, 'apache', 6) && $perms == 0600) {
+		$perms = 0644;
+	}
+
 	if (!@is_dir($path) && !@mkdir($path, 0777)) {
 		exit('Failed Creating: '.$path.'<br>');
 	}
@@ -638,7 +658,7 @@ function copyhelp($thm)
 		}
 		fwrite($fp, str_replace('{ROOT}', $rp, file_get_contents($src . $de)));
 		fclose($fp);
-		@chmod($src . $de, $GLOBALS['FUD_OPT_2'] & 8388608 ? 0600 : 0666);
+		@chmod($src . $de, $perms);
 	}
 	closedir($dp);
 

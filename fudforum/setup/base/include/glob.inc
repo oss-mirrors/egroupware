@@ -44,7 +44,7 @@ function print_bit_field($descr, $field)
 	$h =& $GLOBALS['help_ar'][$field];
 	$o =& $h[1];
 
-	echo '<tr bgcolor="#bff8ff"><td>'.$descr.': <br><font size="-1">'.$h[0].'</font></td><td valign="top">';
+	echo '<tr class="field"><td>'.$descr.': <br><font size="-1">'.$h[0].'</font></td><td valign="top">';
 
 	if (!isset($o[2])) {
 		echo create_select($o[0].'_'.$field, "Yes\nNo", "{$o[1]}\n0", ($GLOBALS[$o[0]] & (int) $o[1]));
@@ -64,7 +64,7 @@ function print_bit_field($descr, $field)
 	echo '</td></tr>';
 }
 
-function print_reg_field($descr, $field, $is_int=0)
+function print_reg_field($descr, $field, $is_int=0, $pass=0)
 {
 	if (!isset($GLOBALS[$field])) {
 		$str = !$is_int ? '' : '0';
@@ -72,7 +72,7 @@ function print_reg_field($descr, $field, $is_int=0)
 		$str = !$is_int ? htmlspecialchars($GLOBALS[$field]) : $GLOBALS[$field];
 	}
 
-	echo '<tr bgcolor="#bff8ff"><td>'.$descr.': <br><font size="-1">'.$GLOBALS['help_ar'][$field][0].'</font></td><td valign="top"><input type="text" name="CF_'.$field.'" value="'.$str.'"></td></tr>';
+	echo '<tr class="field"><td>'.$descr.': <br><font size="-1">'.$GLOBALS['help_ar'][$field][0].'</font></td><td valign="top"><input type="'.(!$pass ? 'text' : 'password').'" name="CF_'.$field.'" value="'.$str.'"></td></tr>';
 }
 
 function change_global_settings($list)
