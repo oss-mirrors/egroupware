@@ -246,7 +246,8 @@
 					'evo' => lang('Evolution Style'),
 					'moz' => lang('Mozilla Modern Style'),
 					'noia' => lang('Noia &#64; Carlitus Style'),
-					'AquaFusion' => lang('Aqua Fusion')
+					'AquaFusion' => lang('Aqua Fusion'),
+					'idots' => lang('iDots Crystal Style')
 				),
 				'long_desc' => lang('The email application offers different icon image themes, groups of images of a similar style which are used in this email application. Currently the available themes are images based on Evolution by Ximian and the Netscape7, Mozilla browser buttons. Additional themes are anticipated and welcome.')
 			);
