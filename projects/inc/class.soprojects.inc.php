@@ -5,6 +5,7 @@
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* DB-Layer partialy reworked by RalfBecker-AT-outdoor-training.de   *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc.              *
 	*                                                                   *
@@ -328,7 +329,16 @@
 
 			if ($query)
 			{
-				$querymethod = " AND (title like '%$query%' OR p_number like '%$query%' OR descr like '%$query%') ";
+				switch($this->db->Type)
+				{
+					case 'sapdb':	// dont search in descr as it's a text/LONG column
+					case 'maxdb':
+						$querymethod = " AND (title like '%$query%' OR p_number like '%$query%') ";
+						break;
+					default:
+						$querymethod = " AND (title like '%$query%' OR p_number like '%$query%' OR descr like '%$query%') ";
+						break;
+				}
 			}
 
 			$column_select = ((is_string($column) && $column != '')?$column:'*');
@@ -969,11 +979,11 @@
 				default:	$add = ''; break;
 			}*/
 
-			$this->db->query('select p_number from phpgw_p_projects where project_id=' . $pro_parent);
+			$this->db->select($this->project_table,'p_number',array('project_id'=>$pro_parent),__LINE__,__FILE__);
 			$this->db->next_record();
 			$prefix = $this->db->f('p_number') . '/';
 
-			$this->db->query("select max(p_number) from phpgw_p_projects where p_number like ('$prefix%')");
+			$this->db->select($this->project_table,'max(p_number)','p_number LIKE '.$this->db->quote('$prefix%'),__LINE__,__FILE__);
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
