@@ -64,35 +64,34 @@
 	include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php');
 	if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_base'.$sock_fname.'.inc.php<br>'; }
 
-	if (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-	|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps'))
+	if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imap')
+	|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imaps'))
         {
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap'.$sock_fname.'.inc.php<br>'; }
 	}
-	elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-	|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s'))
+	elseif (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'pop3')
+	|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'pop3s'))
 	{
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php<br>'; }
 	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'nntp')
+	elseif ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'nntp')
 	{
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php<br>'; }
 	}
-        elseif ((isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != ''))
-        {
+	elseif ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type']))
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != ''))
+	{
 		// educated guess based on info being available:
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$phpgw_info['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'Educated Guess: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$phpgw_info['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
   	}
-        else
-        {
+	else
+	{
 		// DEFAULT FALL BACK:
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php');
 		if ($debug_dcom) { echo 'NO INFO DEFAULT: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_imap.inc.php<br>'; }
 	}
-
 ?>

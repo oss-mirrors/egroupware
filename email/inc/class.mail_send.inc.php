@@ -30,7 +30,11 @@
 
   class mail_send
   {
-	var $err = array("code","msg","desc");
+	var $err = Array(
+		'code',
+		'msg',
+		'desc'
+	);
 	var $to_res = array();
 	var $debug_send = False;
 	var $get_svr_response = False;
@@ -43,9 +47,9 @@
 
 	function send_init()
 	{
-	    $this->err["code"] = " ";
-	    $this->err["msg"]  = " ";
-	    $this->err["desc"] = " ";
+	    $this->err['code'] = ' ';
+	    $this->err['msg']  = ' ';
+	    $this->err['desc'] = ' ';
 	}
     
 // ===  some sub-functions  ===
@@ -57,16 +61,16 @@
 			return True;
 		}
 		
-		$followme = "-";
-		$this->err["msg"] = "";
+		$followme = '-';
+		$this->err["msg"] = '';
 		do
 		{
 			$rmsg = fgets($socket,255);
 			// echo "< $rmsg<BR>\n";
-			$this->err["code"] = substr($rmsg,0,3);
+			$this->err['code'] = substr($rmsg,0,3);
 			$followme = substr($rmsg,3,1);
-			$this->err["msg"] = substr($rmsg,4);
-			if (substr($this->err["code"],0,1) != 2 && substr($this->err["code"],0,1) != 3)
+			$this->err['msg'] = substr($rmsg,4);
+			if (substr($this->err['code'],0,1) != 2 && substr($this->err['code'],0,1) != 3)
 			{
 				$rc  = fclose($socket);
 				return false;
@@ -77,12 +81,12 @@
 				$this->svr_response .= trim($rmsg);
 			}
 			
-			if ($followme == " ")
+			if ($followme == ' ')
 			{
 				break;
 			}
 		}
-		while ($followme == "-");
+		while ($followme == '-');
 		// debug stuff
 		if ($this->get_svr_response)
 		{
@@ -94,17 +98,15 @@
 
 	function msg2socket($socket,$message)
 	{
-		global $phpgw;
-		
 		if ($this->debug_send)
 		{
 			// send single line\n
-			echo 'raw ' .$phpgw->msg->htmlspecialchars_encode($message);
+			echo 'raw ' .$GLOBALS['phpgw']->msg->htmlspecialchars_encode($message);
 			//echo "hex> ".bin2hex($message)."<BR>\r\n";
 			return True;
 		}
 		// if we need a copy of this message for the "sent" folder, assemble it here
-                if (($this->retain_copy)
+		if (($this->retain_copy)
 		&& (!$this->retain_copy_ignore))
 		{
 			$this->assembled_copy .= "$message";
@@ -113,9 +115,9 @@
 		$rc = fputs($socket,"$message");
 		if (!$rc)
 		{
-			$this->err["code"] = "420";
-			$this->err["msg"]  = "lost connection";
-			$this->err["desc"] = "Lost connection to smtp server.";
+			$this->err['code'] = '420';
+			$this->err['msg']  = 'lost connection';
+			$this->err['desc'] = 'Lost connection to smtp server.';
 			$rc  = fclose($socket);
 			return false;
 		}
@@ -126,8 +128,6 @@
 
 	function smail_2822($mail_out)
 	{
-		global $phpgw, $phpgw_info;
-
 		// don't start retaining the email copy until after the MTA handshake
 		$this->retain_copy_ignore = True;
 		
@@ -135,8 +135,8 @@
 		//$this->get_svr_response = True;
 
 		// error code and message of failed connection
-		$errcode = "";
-		$errmsg = "";
+		$errcode = '';
+		$errmsg = '';
 		// timeout in secs
 		$timeout = 5;
 
@@ -147,13 +147,13 @@
 		else
 		{
 			// OPEN SOCKET - now we try to open the socket and check, if any smtp server responds
-			$socket = fsockopen($phpgw_info["server"]["smtp_server"],$phpgw_info["server"]["smtp_port"],$errcode,$errmsg,$timeout);
+			$socket = fsockopen($GLOBALS['phpgw_info']['server']['smtp_server'],$GLOBALS['phpgw_info']['server']['smtp_port'],$errcode,$errmsg,$timeout);
 		}
 		if (!$socket)
 		{
-			$this->err["code"] = "420";
-			$this->err["msg"]  = "$errcode:$errmsg";
-			$this->err["desc"] = "Connection to ".$phpgw_info["server"]["smtp_server"].":".$phpgw_info["server"]["smtp_port"]." failed - could not open socket.";
+			$this->err['code'] = '420';
+			$this->err['msg']  = $errcode.':'.$errmsg;
+			$this->err['desc'] = 'Connection to '.$GLOBALS['phpgw_info']['server']['smtp_server'].':'.$GLOBALS['phpgw_info']['server']['smtp_port'].' failed - could not open socket.';
 			return false;
 		}
 		else
@@ -190,9 +190,9 @@
 			$rrc = $this->socket2msg($socket);
 			// for lateron validation
 			$this->to_res[$i][addr] = $mail_out['mta_to'][$i];
-			$this->to_res[$i][code] = $this->err["code"];
-			$this->to_res[$i][msg]  = $this->err["msg"];
-			$this->to_res[$i][desc] = $this->err["desc"];
+			$this->to_res[$i][code] = $this->err['code'];
+			$this->to_res[$i][msg]  = $this->err['msg'];
+			$this->to_res[$i][desc] = $this->err['desc'];
 		}
 
 		if (!$this->debug_send)
@@ -268,10 +268,10 @@
 				$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
 				// TRANSPARENCY - rfc2821 sect 4.5.2 - any line beginning with a dot, add another dot
 				if ((strlen($this_line) > 0)
-				&& ($this_line[0] == "."))
+				&& ($this_line[0] == '.'))
 				{
 					// rfc2821 add another dot to the begining of this line
-					$this_line = "." .$this_line;
+					$this_line = '.' .$this_line;
 				}
 				if (!$this->msg2socket($socket,$this_line))
 				{

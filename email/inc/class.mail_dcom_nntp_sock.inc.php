@@ -105,26 +105,22 @@
 	
 	function get_first_folder()
 	{
-		global $phpgw_info;
-
-		if(@!$phpgw_info['user']['preferences']['nntp'])
+		if(@!$GLOBALS['phpgw_info']['user']['preferences']['nntp'])
 		{
 			$this->set_error('Configuration','User Preferences','You have not set your user preferences in NNTP.');
 			$this->error();
 		}
 		else
 		{
-			$pref = @each($phpgw_info['user']['preferences']['nntp']);
+			$pref = @each($GLOBALS['phpgw_info']['user']['preferences']['nntp']);
 			return $pref[0];
 		}
 	}
 
 	function get_mailbox_name($folder)
 	{
-		global $phpgw;
-		
 		$active = False;
-		$this->db->query('SELECT name,active FROM newsgroups WHERE con='.$folder);
+		$this->db->query('SELECT name,active FROM newsgroups WHERE con='.$folder,_LINE__,__FILE__);
 		if ($this->db->num_rows() > 0)
 		{
 			$this->db->next_record();
@@ -132,8 +128,8 @@
 		}
 		if ($this->db->f('active') != 'Y')
 		{
-			$phpgw->preferences->delete('nntp',$folder);
-			$phpgw->preferences->save_repository();
+			$GLOBALS['phpgw']->preferences->delete('nntp',$folder);
+			$GLOBALS['phpgw']->preferences->save_repository();
 			
 			$this->set_error('Administration','Automatic Disabling','The newsgroup '.$mailbox.' is not activated by the Administrator.');
 			$this->error();
@@ -324,6 +320,5 @@
 		@reset($return_array);
 		return $return_array;
 	}
-
 }
 ?>

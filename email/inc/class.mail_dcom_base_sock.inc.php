@@ -61,6 +61,22 @@
   
   define ('SE_NOPREFETCH',1); // used with IMAP_SORT , don't really understand it though
 
+	// This may need to be a reference to the different months in native tongue....
+	$GLOBALS['month_array'] = Array(
+		'jan' => 1,
+		'feb' => 2,
+		'mar' => 3,
+		'apr' => 4,
+		'may' => 5,
+		'jun' => 6,
+		'jul' => 7,
+		'aug' => 8,
+		'sep' => 9,
+		'oct' => 10,
+		'nov' => 11,
+		'dec' => 12
+	);
+
 	class mailbox_status
 	{
 		var $messages = '';
@@ -307,29 +323,24 @@
 		
 		function mail_dcom_base()
 		{
-			global $phpgw_info;
-			
 			$this->errorset = 0;
 			$this->network(True);
-			if (isset($phpgw_info))
+			if (isset($GLOBALS['phpgw_info']))
 			{
-				$this->tempfile = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'].'.mhd';
-				$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+				$this->tempfile = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'].'.mhd';
+				$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 			}
 			else
 			{
-				// NEED GENERIC DEFAULT VALUES HERE
-				
+				// NEED GENERIC DEFAULT VALUES HERE				
 			}
 		}
 		
 		function error()
 		{
-			global $phpgw;
-			
 			echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\n";
 			$this->close();
-			$phpgw->common->phpgw_exit();
+			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 		
 		// REDUNDANT FUNCTION FROM NON-SOCK CLASS
@@ -339,7 +350,7 @@
 			$flag = strtolower($flag);
 			for ($i=0;$i<count($header);$i++)
 			{
-				$pos = strpos($header[$i],":");
+				$pos = strpos($header[$i],':');
 				if (is_int($pos) && $pos)
 				{
 					$keyword = trim(substr($header[$i],0,$pos));
@@ -571,12 +582,12 @@
 					if ($line2 == 'True')
 					{
 						$line2 = $this->read_port();
-						echo "Response = ".$line2."<br>\n";
+						echo 'Response = '.$line2.'<br>'."\n";
 					}
 				}
 				$header[$key] .= chop($line2);
 			}
-			//echo "Header[$key] = ".$header[$key]."<br>\n";
+			//echo 'Header[$key] = '.$header[$key].'<br>'."\n";
 		}
 	
 		function build_address_structure($key)
@@ -614,23 +625,6 @@
 		
 		function convert_date($msg_date)
 		{
-			global $phpgw_info;
-			
-			// This may need to be a reference to the different months in native tongue....
-			$month = Array(
-				'Jan' => 1,
-				'Feb' => 2,
-				'Mar' => 3,
-				'Apr' => 4,
-				'May' => 5,
-				'Jun' => 6,
-				'Jul' => 7,
-				'Aug' => 8,
-				'Sep' => 9,
-				'Oct' => 10,
-				'Nov' => 11,
-				'Dec' => 12
-			);
 			$dta = array();
 			$ta = array();
 			
@@ -662,50 +656,35 @@
 				}
 			}
 			
-			$new_time = mktime($ta[0],$ta[1],$ta[2],$month[$dta[1]],$dta[0],$dta[2]) - ((60 * 60) * intval($phpgw_info['user']['preferences']['common']['tzoffset']));
+			$new_time = mktime($ta[0],$ta[1],$ta[2],$GLOBALS['month_array'][strtolower($dta[1])],$dta[0],$dta[2]) - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tzoffset']));
 			//echo 'New Time : '.$new_time."<br>\n";
 			return $new_time;
 		}
 		
 		function make_udate($msg_date)
 		{
-			$pos = strpos($msg_date,",");
+			$pos = strpos($msg_date,',');
 			if ($pos)
 			{
 				$msg_date = trim(substr($msg_date,$pos+1));
 			}
-			$pos = strpos($msg_date," ");
+			$pos = strpos($msg_date,' ');
 			$day = substr($msg_date,0,$pos);
 			$msg_date = trim(substr($msg_date,$pos));
-			$month = substr($msg_date,0,3);
-			switch (strtolower($month))
-			{
-				case "jan" : $month =  1; break;
-				case "feb" : $month =  2; break;
-				case "mar" : $month =  3; break;
-				case "apr" : $month =  4; break;
-				case "may" : $month =  5; break;
-				case "jun" : $month =  6; break;
-				case "jul" : $month =  7; break;
-				case "aug" : $month =  8; break;
-				case "sep" : $month =  9; break;
-				case "oct" : $month = 10; break;
-				case "nov" : $month = 11; break;
-				default    : $month = 12; break;
-			}
+			$month = $GLOBALS['month_array'][strtolower(substr($msg_date,0,3))];
 			$msg_date = trim(substr($msg_date,3));
-			$pos  = strpos($msg_date," ");
+			$pos  = strpos($msg_date,' ');
 			$year = trim(substr($msg_date,0,$pos));
 			$msg_date = trim(substr($msg_date,$pos));
 			$hour = substr($msg_date,0,2);
 			$minute = substr($msg_date,3,2);
 			$second = substr($msg_date,6,2);
-			$pos = strrpos($msg_date," ");
+			$pos = strrpos($msg_date,' ');
 			$tzoff = trim(substr($msg_date,$pos));
 			if (strlen($tzoff)==5)
 			{
 				$diffh = substr($tzoff,1,2); $diffm = substr($tzoff,3);
-				if ((substr($tzoff,0,1)=="+") && is_int($diffh))
+				if ((substr($tzoff,0,1)=='+') && is_int($diffh))
 				{
 					$hour -= $diffh; $minute -= $diffm;
 				}
@@ -1041,7 +1020,6 @@
 		/*
 		function attach_display($de_part,$part_no,$mailbox,$folder,$msgnum)
 		{
-			global $phpgw, $phpgw_info;
 			$mime_type = $this->get_mime_type($de_part);  
 			$mime_encoding = $this->get_mime_encoding($de_part);
 	
@@ -1063,7 +1041,7 @@
 				}
 			}
 	
-			return '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
+			return '<a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
 						 'folder='.$folder.'&msgnum='.$msgnum.'&part_no='.$partno.'&type='.$mime_type
 						.'&subtype='.$de_part->subtype.'&name='.$url_att_name.'&encoding='.$mime_encoding)
 					.'">'.$att_name.'</a>';
@@ -1071,8 +1049,6 @@
 		
 		function inline_display($de_part,$dsp,$mime_section,$folder)
 		{
-			global $phpgw;
-			
 			$mime_type = $this->get_mime_type($de_part);
 			$mime_encoding = $this->get_mime_encoding($de_part);
 			$tag = 'pre';
@@ -1096,7 +1072,7 @@
 			if (isset($de_part->subtype) && strtoupper($de_part->subtype) == 'PLAIN')
 			{
 				// nlbr and htmlentities functions are strip latin5 characters
-				$dsp = $phpgw->strip_html($dsp);
+				$dsp = $GLOBALS['phpgw']->strip_html($dsp);
 				$dsp = ereg_replace( "^","<p>",$dsp);
 				$dsp = ereg_replace( "\r\n","<br>",$dsp);
 				$dsp = ereg_replace( "\n","<br>",$dsp);
@@ -1130,28 +1106,24 @@
 	
 		function output_bound($title, $str)
 		{
-			global $phpgw_info;
-	
 			return '</td></tr></table>'."\n"
 				. '<table border="0" cellpadding="4" cellspacing="3" width="700">'."\n"
-				. '<tr><td bgcolor"'.$phpgw_info['theme']['th_bg'].'" valign="top">'
-				. '<font size="2" face="'.$phpgw_info['theme']['font'].'"><b>'.$title.'</b></td>'."\n"
-				. '<td bgcolor="'.$phpgw_info['theme']['row_on'].'" width="570">'
-				. '<font size="2" face="'.$phpgw_info['theme']['font'].'">'.$str.'</td></tr></table>'."\n"
+				. '<tr><td bgcolor"'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top">'
+				. '<font size="2" face="'.$GLOBALS['phpgw_info']['theme']['font'].'"><b>'.$title.'</b></td>'."\n"
+				. '<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['row_on'].'" width="570">'
+				. '<font size="2" face="'.$GLOBALS['phpgw_info']['theme']['font'].'">'.$str.'</td></tr></table>'."\n"
 				. '<p>'."\n".'<table border="0" cellpadding="2" cellspacing="0" width="100%"><tr><td>';
 		}
 	
 		function image_display($bsub,$att_name)
 		{
-			global $phpgw, $phpgw_info;
-	
 			$bsub = strip_tags($bsub);
-			$unique_filename = tempnam($phpgw_info['user']['private_dir'],'mail');
-			$unique_filename = str_replace($phpgw_info['user']['private_dir'].SEP,'',$unique_filename);
+			$unique_filename = tempnam($GLOBALS['phpgw_info']['user']['private_dir'],'mail');
+			$unique_filename = str_replace($GLOBALS['phpgw_info']['user']['private_dir'].SEP,'',$unique_filename);
 			$phpgw->vfs->write($unique_filename,base64_decode($bsub));
 			// we want to display images here, even though they are attachments.
 			return  '</td></tr><tr align="center"><td align="center">'
-				.'<img src="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/view_attachment.php',
+				.'<img src="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/view_attachment.php',
 				 'file='.urlencode($unique_filename).'&attfile='.$att_name).'"><p>';
 		}
 	
@@ -1160,14 +1132,12 @@
 		// modified to make mailto: addresses compose in AeroMail
 		function make_clickable($text,$folder)
 		{
-			global $phpgw, $phpgw_info;
-	
 			$ret = eregi_replace("([[:alnum:]]+)://([^[:space:]]*)([[:alnum:]#?/&=\:])",
 				"<a href=\"\\1://\\2\\3\" target=\"_new\">\\1://\\2\\3</a>", str_replace("<br>","\n",$text));
 			if($ret == $text)
 			{
 				$ret = eregi_replace("(([a-z0-9_]|\\-|\\.)+@([^[:space:]]*)([[:alnum:]-]))",
-					'a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder))."&to=\\1\">\\1</a>", $ret);
+					'a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.urlencode($folder))."&to=\\1\">\\1</a>", $ret);
 			}
 			return(str_replace("\n","<br>",$ret));
 		}
@@ -1180,7 +1150,7 @@
 			{
 				if ($i==count($str)-1 && $str[$i] == "`")
 				{
-					$phpgw->common->phpgw_exit();
+					$GLOBALS['phpgw']->common->phpgw_exit();
 				}
 				$pos=1;
 				$d=0;

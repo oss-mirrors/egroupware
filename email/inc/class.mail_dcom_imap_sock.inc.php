@@ -248,8 +248,6 @@
 		\**************************************************************************/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
-			global $phpgw;
-			
 			if ($this->debug_dcom) { echo 'imap: Entering open<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
@@ -263,7 +261,7 @@
 			if (!$this->open_port($server,$port,15))
 			{
 				echo '<p><center><b>' .lang('There was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.') .'</b></center>';
-				$phpgw->common->phpgw_exit();
+				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			else
 			{
@@ -271,7 +269,7 @@
 				if ($this->debug_dcom_extra) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
 			}
 			
-			if ($this->debug_dcom_extra) { echo 'imap: open: msg2socket: will issue: '. 'L001 LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"' .'<br>'; }			
+			if ($this->debug_dcom_extra) { echo 'imap: open: msg2socket: will issue: '. 'L001 LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"' .'<br>'; }
 			if ($this->debug_dcom_extra) { echo 'imap: open: msg2socket: will expect: '. '^L001 OK' .'<br>'; }
 			
 			if(!$this->msg2socket('L001 LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"','^L001 OK',&$response))
@@ -456,20 +454,18 @@
 		
 		function fix_folder($folder)
 		{
-			global $phpgw_info;
-			
-			switch($phpgw_info['user']['preferences']['email']['imap_server_type'])
+			switch($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'])
 			{
 				case 'UW-Maildir':
-					if (isset($phpgw_info['user']['preferences']['email']['mail_folder']))
+					if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']))
 					{
-						if (empty($phpgw_info['user']['preferences']['email']['mail_folder']))
+						if (empty($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']))
 						{
 							$folder = $folder;
 						}
 						else
 						{
-							$folder = $phpgw_info['user']['preferences']['email']['mail_folder'].$folder;
+							$folder = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder'].$folder;
 						}
 					}
 					break;

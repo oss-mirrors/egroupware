@@ -55,8 +55,6 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function phpgw_fetchstructure($msg_number='')
 	{
-		global $phpgw;
-
 		if ($msg_number == '')
 		{
 			$msg_number = $this->msgnum;
@@ -75,8 +73,6 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function phpgw_header($msg_number='')
 	{
-		global $phpgw;
-
 		if ($msg_number == '')
 		{
 			$msg_number = $this->msgnum;
@@ -88,8 +84,6 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_fetchheader($msg_number='')
 	{
-		global $phpgw;
-
 		if ($msg_number == '')
 		{
 			$msg_number = $this->msgnum;
@@ -101,8 +95,6 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_get_flag($flag='')
 	{
-		global $phpgw;
-		
 		// sanity check
 		if ($flag == '')
 		{
@@ -118,15 +110,11 @@ class mail_msg_wrappers extends mail_msg_base
 // ====  Functions For Getting A Message Or A Part (MIME Part) Of A Message  ====
 	function phpgw_body()
 	{
-		global $phpgw;
-
 		return $this->dcom->get_body($this->mailsvr_stream, $this->msgnum);
 	}
 
 	function phpgw_fetchbody($part_num_mime='', $flags='')
 	{
-		global $phpgw;
-
 		return $this->dcom->fetchbody($this->mailsvr_stream, $this->msgnum, $part_num_mime, $flags);
 	}
 
@@ -145,8 +133,6 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function get_message_list()
 	{
-		global $phpgw;
-
 		$msg_array = array();
 		$msg_array = $this->dcom->sort($this->mailsvr_stream, $this->sort, $this->order);
 		return $msg_array;
@@ -164,8 +150,6 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function get_folder_size()
 	{
-		global $phpgw;
-	
 		$mailbox_detail = $this->dcom->mailboxmsginfo($this->mailsvr_stream);
 		return $mailbox_detail->Size;
 	}
@@ -192,8 +176,6 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function folder_status_info()
 	{
-		global $phpgw, $phpgw_info;
-
 		// initialize return structure
 		$return_data = Array();
 		$return_data['is_imap'] = False;
@@ -205,8 +187,8 @@ class mail_msg_wrappers extends mail_msg_base
 		$server_str = $this->get_mailsvr_callstr();
 		$mailbox_status = $this->dcom->status($this->mailsvr_stream,$server_str.$this->folder,SA_ALL);
 
-		if (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-		|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps'))
+		if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imap')
+		|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'imaps'))
 		{
 			$return_data['is_imap'] = True;
 			$return_data['number_new'] = $mailbox_status->unseen;
@@ -249,31 +231,21 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_createmailbox($folder)
 	{
-		global $phpgw;
-
 		return $this->dcom->createmailbox($this->mailsvr_stream, $folder);
 	}
 
 	function phpgw_deletemailbox($folder)
 	{
-		global $phpgw;
-
 		return $this->dcom->deletemailbox($this->mailsvr_stream, $folder);
 	}
 
 	function phpgw_renamemailbox($folder_old,$folder_new)
 	{
-		global $phpgw;
-
-		return $this->dcom->renamemailbox($phpgw->msg->mailsvr_stream, $folder_old, $folder_new);
+		return $this->dcom->renamemailbox($GLOBALS['phpgw']->msg->mailsvr_stream, $folder_old, $folder_new);
 	}
-
-
 
 	function phpgw_append($folder = "Sent", $message, $flags = "")
 	{
-		global $phpgw;
-		
 		//$debug_append = True;
 		$debug_append = False;
 
@@ -331,33 +303,26 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 	}
 
-
 	function phpgw_mail_move($msg_list,$mailbox)
 	{
-		global $phpgw;
-
 		return $this->dcom->mail_move($this->mailsvr_stream,$msg_list,$mailbox);
 	}
 
 	function phpgw_expunge()
 	{
-		global $phpgw;
-
-		$this->dcom->expunge($phpgw->msg->mailsvr_stream);
+		$this->dcom->expunge($GLOBALS['phpgw']->msg->mailsvr_stream);
 	}
 
 
 	function phpgw_delete($msg_num,$flags="", $currentfolder="") 
 	{
-		global $phpgw_info, $phpgw;
+		//$this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->args['msglist'][$i],"",$GLOBALS['phpgw']->msg->folder);
 
-		//$this->dcom->delete($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msglist'][$i],"",$phpgw->msg->folder);
-
-		if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
-		&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
+		if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['use_trash_folder']))
 		{
-			$trash_folder_long = $this->get_folder_long($phpgw_info['user']['preferences']['email']['trash_folder_name']);
-			$trash_folder_short = $this->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
+			$trash_folder_long = $this->get_folder_long($GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
+			$trash_folder_short = $this->get_folder_short($GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
 			if ($currentfolder != '')
 			{
 				$currentfolder_short = $this->get_folder_short($currentfolder);
@@ -366,12 +331,12 @@ class mail_msg_wrappers extends mail_msg_base
 			if ($currentfolder_short == $trash_folder_short)
 			{
 				//return imap_delete($stream,$msg_num);
-				return $this->dcom->delete($phpgw->msg->mailsvr_stream, $msg_num);
+				return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
 			}
 			else
 			{
 				// does the trash folder actually exist ?
-				$official_trash_folder_long = $this->folder_lookup('', $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+				$official_trash_folder_long = $this->folder_lookup('', $GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
 				if ($official_trash_folder_long != '')
 				{
 					$havefolder = True;
@@ -388,7 +353,7 @@ class mail_msg_wrappers extends mail_msg_base
 					//$this->createmailbox($stream,$server_str .$trash_folder_long);
 					$this->phpgw_createmailbox("$server_str"."$trash_folder_long");
 					// try again to get the real long folder name of the just created trash folder
-					$official_trash_folder_long = $this->folder_lookup('', $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+					$official_trash_folder_long = $this->folder_lookup('', $GLOBALS['phpgw_info']['user']['preferences']['email']['trash_folder_name']);
 					// did the folder get created and do we now have the official full name of that folder?
 					if ($official_trash_folder_long != '')
 					{
@@ -410,20 +375,15 @@ class mail_msg_wrappers extends mail_msg_base
 					// can't just leave the mail sitting there
 					// so just straight delete the message
 					//return imap_delete($stream,$msg_num);
-					return $this->dcom->delete($phpgw->msg->mailsvr_stream, $msg_num);
+					return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
 				}
 			}
 		}
 		else
 		{
 			//return imap_delete($stream,$msg_num);
-			return $this->dcom->delete($phpgw->msg->mailsvr_stream, $msg_num);
+			return $this->dcom->delete($GLOBALS['phpgw']->msg->mailsvr_stream, $msg_num);
 		}
 	}
-
-
-
-
-
 }  // end class mail_msg_wrappers
 ?>

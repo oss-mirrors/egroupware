@@ -106,8 +106,6 @@
 		\**************************************************************************/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
-			global $phpgw;
-			
 			if ($this->debug_dcom) { echo 'pop3: Entering open<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
@@ -121,8 +119,8 @@
 			//$port = 110;
 			if (!$this->open_port($server,$port,15))
 			{
-				echo "<p><center><b>" . lang("There was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.")."</b></center>";
-				$phpgw->common->phpgw_exit();
+				echo '<p><center><b>' . lang('There was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.').'</b></center>';
+				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 			$this->read_port();
 			if(!$this->msg2socket('USER '.$user,"^\+ok",&$response) || !$this->msg2socket('PASS '.$pass,"^\+ok",&$response))
@@ -140,7 +138,7 @@
 			}
 		}
 		
-		function close($flags="")
+		function close($flags='')
 		{
 			if (!$this->msg2socket('QUIT',"^\+ok",&$response))
 			{
@@ -979,7 +977,7 @@
 			// FILL THE DATA
 			for ($i=0; $i < count($header_array) ;$i++)
 			{
-				$pos = strpos($header_array[$i]," ");
+				$pos = strpos($header_array[$i],' ');
 				//if ($debug_mime) { echo 'header_array['.$i.']: '.$header_array[$i].'<br>'; }
 				if (is_int($pos) && ($pos==0))
 				{
@@ -995,12 +993,12 @@
 				}
 				switch ($keyword)
 				{
-				  case "content-type:" :
+				  case 'content-type:' :
 					// this will fill type and (hopefully) subtype
 					// NOTE: first param to  parse_type_subtype  is a REFERENCE
 					$this->parse_type_subtype(&$info,$content);
 					// ALSO, typically Paramaters are on this line as well
-					$pos_param = strpos($content,";");
+					$pos_param = strpos($content,';');
 					if ($pos_param > 0)
 					{
 						// feed the whole param line into this function
@@ -1009,17 +1007,17 @@
 						$this->parse_msg_params(&$info,$content);
 					}
 					break;
-				  case "content-transfer-encoding:" :
+				  case 'content-transfer-encoding:' :
 					$info->encoding = $this->encoding_str_to_int($content);
 					break;
-				  case "content-description:" :
+				  case 'content-description:' :
 					$info->description   = $content;
 					//$i = $this->more_info($msg_part,$i,&$info,"description");
 					$info->ifdescription = true;
 					break;
-				  case "content-disposition:" :
+				  case 'content-disposition:' :
 					// disposition MAY have Paramaters on this line as well
-					$pos_param = strpos($content,";");
+					$pos_param = strpos($content,';');
 					if ($pos_param > 0)
 					{
 						$content = substr($content,0,$pos_param);
@@ -1035,9 +1033,9 @@
 						$this->parse_msg_params(&$info,$content,False);
 					}
 					break;
-				  case "content-identifier:" :
-				  case "content-id:" :
-				  case "message-id:" :
+				  case 'content-identifier:' :
+				  case 'content-id:' :
+				  case 'message-id:' :
 					if ((strstr($content, '<'))
 					&& (strstr($content, '>')))
 					{
@@ -1048,19 +1046,19 @@
 					$info->id   = $content;
 					$info->ifid = true;
 					break;
-				  case "content-length:" :
+				  case 'content-length:' :
 					$info->bytes = (int)$content;
 					break;
-				  case "content-disposition:" :
+				  case 'content-disposition:' :
 					$info->disposition   = $content;
 					//$i = $this->more_info($msg_part,$i,&$info,"disposition");
 					$info->ifdisposition = true;
 					break;
-				  case "lines:" :
+				  case 'lines:' :
 					$info->lines = (int)$content;
 					break;
 				  /*
-				  case "mime-version:" :
+				  case 'mime-version:' :
 					$new_idx = count($info->parameters);
 					$info->parameters[$new_idx] = new msg_params("Mime-Version",$content);
 					$info->ifparameters = true;
@@ -1170,13 +1168,13 @@
 			if ($this->debug_dcom) { echo 'pop3: Entering parse_type_subtype<br>'; }
 			// used by pop_fetchstructure only
 			// get rid of any other params that might be here
-			$pos = strpos($content,";");
+			$pos = strpos($content,';');
 			if ($pos > 0)
 			{
 				$content = substr($content,0,$pos);
 			}
 			// split type from subtype
-			$pos = strpos($content,"/");
+			$pos = strpos($content,'/');
 			if ($pos > 0)
 			{
 				$prim_type = strtolower(substr($content,0,$pos));
@@ -1224,7 +1222,7 @@
 			$param_list = Array();
 			if (strstr($content, ';'))
 			{
-				$param_list = explode(";",$content);
+				$param_list = explode(';',$content);
 			}
 			else
 			{
@@ -1268,14 +1266,14 @@
 		{
 			switch ($type_str)
 			{
-				case "text"	: $type_int = TYPETEXT; break;
-				case "multipart"	: $type_int = TYPEMULTIPART; break;
-				case "message"	: $type_int = TYPEMESSAGE; break;
-				case "application" : $type_int = TYPEAPPLICATION; break;
-				case "audio"	: $type_int = TYPEAUDIO; break;
-				case "image"	: $type_int = TYPEIMAGE; break;
-				case "video"	: $type_int = TYPEVIDEO; break;
-				default		: $type_int = TYPEOTHER; break;
+				case 'text'	: $type_int = TYPETEXT; break;
+				case 'multipart'	: $type_int = TYPEMULTIPART; break;
+				case 'message'	: $type_int = TYPEMESSAGE; break;
+				case 'application' : $type_int = TYPEAPPLICATION; break;
+				case 'audio'	: $type_int = TYPEAUDIO; break;
+				case 'image'	: $type_int = TYPEIMAGE; break;
+				case 'video'	: $type_int = TYPEVIDEO; break;
+				defaut		: $type_int = TYPEOTHER; break;
 			}
 			return $type_int;
 		}
@@ -1317,7 +1315,7 @@
 			// used by pop_fetchstructure only
 			do
 			{
-				$pos = strpos($header[$i+1]," ");
+				$pos = strpos($header[$i+1],' ');
 				if (is_int($pos) && !$pos)
 				{
 					$i++;
@@ -1332,13 +1330,13 @@
 		{
 			switch (strtolower($encoding_str))
 			{
-				case "7bit"		: $encoding_int = ENC7BIT; break;
-				case "8bit"		: $encoding_int = ENC8BIT; break;
-				case "binary"		: $encoding_int = ENCBINARY; break;
-				case "base64"		: $encoding_int = ENCBASE64; break;
-				case "quoted-printable" : $encoding_int = ENCQUOTEDPRINTABLE; break;
-				case "other"		: $encoding_int = ENCOTHER; break;
-				case "uu"		: $encoding_int = ENCUU; break;
+				case '7bit'		: $encoding_int = ENC7BIT; break;
+				case '8bit'		: $encoding_int = ENC8BIT; break;
+				case 'binary'		: $encoding_int = ENCBINARY; break;
+				case 'base64'		: $encoding_int = ENCBASE64; break;
+				case 'quoted-printable' : $encoding_int = ENCQUOTEDPRINTABLE; break;
+				case 'other'		: $encoding_int = ENCOTHER; break;
+				case 'uu'		: $encoding_int = ENCUU; break;
 				default			: $encoding_int = ENCOTHER; break;
 			}
 			return $encoding_int;
@@ -1377,7 +1375,7 @@
 		@author Angles, Skeeter, Itzchak Rehberg, Joseph Engo
 		@access	public
 		*/
-		function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
+		function header($stream_notused,$msg_num,$fromlength='',$tolength='',$defaulthost='')
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering header<br>'; }
 			$info = new hdr_info_envelope;
@@ -1395,7 +1393,7 @@
 				// because POP3 does not retain such info as seen or unseen
 				// I *may* comment that out because I find this annoying
 				//$info->Unseen = 'U';
-				$pos = strpos($header_array[$i]," ");
+				$pos = strpos($header_array[$i],' ');
 				if (is_int($pos) && !$pos)
 				{
 					continue;
@@ -1404,76 +1402,80 @@
 				$content = trim(substr($header_array[$i],$pos+1));
 				switch ($keyword)
 				{
-					case "date:"	:
+					case 'date:'	:
 					  $info->date  = $content;
 					  $info->udate = $this->make_udate($content);
 					  break;
-					case "subject"	:
-					case "subject:"	:
-					  $pos = strpos($header_array[$i+1]," "); if (is_int($pos) && !$pos)
+					case 'subject'	:
+					case 'subject:'	:
+					  $pos = strpos($header_array[$i+1],' ');
+					  if (is_int($pos) && !$pos)
 					  {
 						$i++; $content .= chop($header_array[$i]);
 					  }
 					  $info->subject = htmlspecialchars($content);
 					  $info->Subject = htmlspecialchars($content);
 					  break;
-					case "in-reply-to:" :
+					case 'in-reply-to:' :
 					  $info->in_reply_to = htmlspecialchars($content);
 					  break;
-					case "message-id"  :
-					case "message-id:" :
+					case 'message-id'  :
+					case 'message-id:' :
 					  $info->message_id = htmlspecialchars($content);
 					  break;
-					case "newsgroups:" :
+					case 'newsgroups:' :
 					  $info->newsgroups = htmlspecialchars($content);
 					  break;
-					case "followup-to:" :
+					case 'followup-to:' :
 					  $info->follow_up_to = htmlspecialchars($content);
 					  break;
-					case "references:" :
+					case 'references:' :
 					  $info->references = htmlspecialchars($content);
 					  break;
-					case "to"	:
-					case "to:"	: 
+					case 'to'	:
+					case 'to:'	: 
 					  // following two lines need to be put into a loop!
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->to   = $this->get_addr_details("to",$content,&$header_array,&$i);
+					  $info->to   = $this->get_addr_details('to',$content,&$header_array,&$i);
 					  break;
-					case "from"	:
-					case "from:"	:
+					case 'from'	:
+					case 'from:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->from = $this->get_addr_details("from",$content,&$header_array,&$i);
+					  $info->from = $this->get_addr_details('from',$content,&$header_array,&$i);
 					  break;
-					case "cc"	:
-					case "cc:"	:
+					case 'cc'	:
+					case 'cc:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->cc   = $this->get_addr_details("cc",$content,&$header_array,&$i);
+					  $info->cc   = $this->get_addr_details('cc',$content,&$header_array,&$i);
 					  break;
-					case "bcc"	:
-					case "bcc:"	:
+					case 'bcc'	:
+					case 'bcc:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->bcc  = $this->get_addr_details("bcc",$content,&$header_array,&$i);
+					  $info->bcc  = $this->get_addr_details('bcc',$content,&$header_array,&$i);
 					  break;
-					case "reply-to"	:
-					case "reply-to:"	:
+					case 'reply-to'	:
+					case 'reply-to:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->reply_to = $this->get_addr_details("reply_to",$content,&$header_array,&$i);
+					  $info->reply_to = $this->get_addr_details('reply_to',$content,&$header_array,&$i);
 					  break;
-					case "sender"	:
-					case "sender:"	:
+					case 'sender'	:
+					case 'sender:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->sender = $this->get_addr_details("sender",$content,&$header_array,&$i);
+					  $info->sender = $this->get_addr_details('sender',$content,&$header_array,&$i);
 					  break;
-					case "return-path"	:
-					case "return-path:"	:
+					case 'return-path'	:
+					case 'return-path:'	:
 					  // NOTE: 3rd and 4th params to  get_addr_details  are REFERENCES
-					  $info->return_path = $this->get_addr_details("return_path",$content,&$header_array,&$i);
+					  $info->return_path = $this->get_addr_details('return_path',$content,&$header_array,&$i);
 					  break;
 					default	:
 					  break;
 				}
 			}
-			if ($this->debug_dcom) { echo 'pop3: Leaving header<br>'; }
+			if ($this->debug_dcom)
+			{
+				echo 'pop3: Leaving header<br>';
+			}
 			return $info;
 		}
 
@@ -1491,8 +1493,6 @@
 		*/
 		function get_addr_details($people,$address,$header,$count)
 		{
-			global $phpgw_info;
-			
 			if ($this->debug_dcom) { echo 'pop3: Entering get_addr_details<br>'; }
 			if (!trim($address))
 			{
@@ -1502,7 +1502,7 @@
 			$done = false;
 			do
 			{
-				$pos = strpos($header[$count+1]," ");
+				$pos = strpos($header[$count+1],' ');
 				if (is_int($pos) && !$pos)
 				{
 					$count++;
@@ -1514,9 +1514,9 @@
 				}
 			}
 			while (!$done);
-			$temp = $people . "address";
+			$temp = $people . 'address';
 			
-			if ($people == "return_path")
+			if ($people == 'return_path')
 			{
 				$this->$people = htmlspecialchars($address);
 			}
@@ -1529,14 +1529,14 @@
 			{
 				//$addr_details = new msg_aka;
 				$addr_details = new address;
-				$pos = strpos($address,"<");
-				$pos3 = strpos($address,"(");
+				$pos = strpos($address,'<');
+				$pos3 = strpos($address,'(');
 				if (is_int($pos))
 				{
-					$pos2 = strpos($address,">");
+					$pos2 = strpos($address,'>');
 					if ($pos2 == $pos+1)
 					{
-						$addr_details->adl = "nobody@nowhere";
+						$addr_details->adl = 'nobody@nowhere';
 					}
 					else
 					{
@@ -1549,10 +1549,10 @@
 				}
 				elseif (is_int($pos3))
 				{
-					$pos2 = strpos($address,")");
+					$pos2 = strpos($address,')');
 					if ($pos2 == $pos3+1)
 					{
-						$addr_details->personal = "nobody";
+						$addr_details->personal = 'nobody';
 					}
 					else
 					{
@@ -1568,14 +1568,14 @@
 					$addr_details->adl = $address;
 					$addr_details->personal = $address;
 				}		
-				$pos3 = strpos($addr_details->adl,"@");
+				$pos3 = strpos($addr_details->adl,'@');
 				if (!$pos3)
 				{
 					if (!$pos)
 					{
 						$addr_details->mailbox = $addr_details->adl;
 					}
-					$addr_details->host = $phpgw_info["server"]["imap_suffix"];
+					$addr_details->host = $GLOBALS['phpgw_info']['server']['imap_suffix'];
 					$details[$i] = $addr_details;
 					return $details;
 				}
@@ -1586,7 +1586,7 @@
 				{
 					$addr_details->personal = substr($addr_details->personal,1,strlen($addr_details->personal)-2);
 				}
-				$pos = strpos($address,",");
+				$pos = strpos($address,',');
 				if ($pos)
 				{
 					$address = trim(substr($address,$pos+1));
@@ -1625,7 +1625,7 @@
 			// b2) and/or a range of messages format [STARTRANGE][COLON][ENDRANGE] "1:5"  "6:*"
 			// make an array of message numbers to delete
 			$tmp_array = Array();
-			$tmp_array = explode(",",(string)$msg_num);
+			$tmp_array = explode(',',(string)$msg_num);
 			// process the array, and clean any empty elements (explode can suck like that sometimes)
 			$msg_num_array = Array();
 			for($i=0;$i < count($tmp_array);$i++)
@@ -1750,9 +1750,9 @@
 			// first get the raw glob header
 			$header_glob = $this->get_header_raw($stream_notused,$msg_num,$flags);
 			// unwrap any wrapped headers - using CR_LF_TAB as rfc822 "whitespace"
-			$header_glob = str_replace("\r\n\t"," ",$header_glob);
+			$header_glob = str_replace("\r\n\t",' ',$header_glob);
 			// unwrap any wrapped headers - using CR_LF_SPACE as rfc822 "whitespace"
-			$header_glob = str_replace("\r\n "," ",$header_glob);
+			$header_glob = str_replace("\r\n ",' ',$header_glob);
 			// make the header blob into an array of strings, one array element per header line, throw away blank lines
 			$header_array = Array();
 			$header_array = $this->glob_to_array($header_glob, False, '', True);
@@ -1834,7 +1834,7 @@
 		@author Angles
 		@access	public
 		*/
-		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
+		function fetchbody($stream_notused,$msg_num,$part_num='',$flags='')
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering fetchbody<br>'; }
 			if ($this->debug_dcom) { echo 'pop3: fetchbody: attempt to return part '.$part_num.'<br>'; }
@@ -1880,7 +1880,7 @@
 			{
 				// explode part number into its component part numbers
 				$the_part_array = Array();
-				$the_part_array = explode(".",$part_num);
+				$the_part_array = explode('.',$part_num);
 				// convert to fetchstructure part number
 				for($i=0;$i < count($the_part_array);$i++)
 				{

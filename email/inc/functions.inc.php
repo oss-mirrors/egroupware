@@ -13,11 +13,11 @@
 
 	/* $Id$ */
 
-	$d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
-	if($d1 == "htt" || $d1 == "ftp" )
+	$d1 = strtolower(substr(APP_INC,0,3));
+	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
 
@@ -50,7 +50,7 @@
 	
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
-	if (strstr($phpgw_info['server']['versions']['phpgwapi'], '0.9.12'))
+	if (strstr($GLOBALS['phpgw_info']['server']['versions']['phpgwapi'], '0.9.12'))
 	{
 		// user's welcome page was called "index.php" in ver 0.9.12
 		$in_mainscreen = eregi("^.*\/index\.php.*$",$PHP_SELF);
@@ -84,8 +84,8 @@
 	// send_message needs to access the mailserver to get parts sometimes, can't limit this here
 	// AND ALSO  Do Not Login - if sent message will NOT be put in the "Sent" folder
 	//if ( (eregi("^.*\/email\/send_message\.php.*$",$PHP_SELF))
-	//&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
-	//&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
+	//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imap')
+	//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imaps') )
 	//{
 	//	$login_allowed = False;
 	//}
@@ -93,8 +93,8 @@
 	/* // FINE TUNE THIS - TOO BROAD
 	// AND ALSO  Do Not Login - if composing message when server is not IMAP/IMAPS
 	if ( (eregi("^.*\/email\/compose\.php.*$",$PHP_SELF))
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imap')
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] != 'imaps') )
 	{
 		$login_allowed = False;
 	}
@@ -105,13 +105,13 @@
 	{
 		echo '<br>';
 		echo 'PHP_SELF='.$PHP_SELF.'<br>';
-		echo 'phpgw_info[server][webserver_url]='.$phpgw_info['server']['webserver_url'].'<br>';
+		echo 'phpgw_info[server][webserver_url]='.$GLOBALS['phpgw_info']['server']['webserver_url'].'<br>';
 		echo 'in_mainscreen='.serialize($in_mainscreen).'<br>';
 		echo 'in_email='.serialize($in_email).'<br>';
 		echo 'login_allowed='.serialize($login_allowed).'<br>';
 		echo 'folder='.$folder.'<br>';
-		echo 'get_mailsvr_callstr='.$phpgw->msg->get_mailsvr_callstr().'<br>';
-		echo 'get_folder_long='.$phpgw->msg->get_folder_long($folder).'<br>';
+		echo 'get_mailsvr_callstr='.$GLOBALS['phpgw']->msg->get_mailsvr_callstr().'<br>';
+		echo 'get_folder_long='.$GLOBALS['phpgw']->msg->get_folder_long($folder).'<br>';
 	}
 	*/
 
@@ -125,132 +125,132 @@
 	"folder" : string (defaults to 'INBOX' if not supplied)
 	"newsmode" : boolean (NOT YET IMPLEMENTED - DOES NOTHING)
  5: call "begin_request" with that args array as such:
- 	$phpgw->msg->begin_request($args_array);
+ 	$GLOBALS['phpgw']->msg->begin_request($args_array);
 
  Simple Example:
-	$phpgw->msg = CreateObject("email.mail_msg");
+	$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 	$args_array = Array();
 	$args_array['folder'] = $folder;
 	$args_array['do_login'] = True;
-	$phpgw->msg->begin_request($args_array);
+	$GLOBALS['phpgw']->msg->begin_request($args_array);
 
  6: when you are done, do this:
- 	$phpgw->msg->end_request('');
+ 	$GLOBALS['phpgw']->msg->end_request('');
 */
 
 // ----  Create the base email Msg Class    -----
-	$phpgw->msg = CreateObject("email.mail_msg");
+	$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 
 // ----  HANDLE SET PREFERENCE GPC ARGS  -------
 	// setting prefs does not require a login, in fact you may not be able to login until you set
 	// some basic prefs, so it makes sence to handle that here
 	if (isset($submit_prefs))
 	{
-		$phpgw->msg->args['submit_prefs'] = $submit_prefs;
+		$GLOBALS['phpgw']->msg->args['submit_prefs'] = $submit_prefs;
 		if (isset($email_sig))
 		{
-			$phpgw->msg->args['email_sig'] = $email_sig;
+			$GLOBALS['phpgw']->msg->args['email_sig'] = $email_sig;
 			$email_sig = '';
 			//unset($email_sig);
 		}
 		if (isset($default_sorting))
 		{
-			$phpgw->msg->args['default_sorting'] = $default_sorting;
+			$GLOBALS['phpgw']->msg->args['default_sorting'] = $default_sorting;
 			$default_sorting = '';
 			//unset($default_sorting);
 		}
 		if (isset($layout))
 		{
-			$phpgw->msg->args['layout'] = $layout;
+			$GLOBALS['phpgw']->msg->args['layout'] = $layout;
 			$layout = '';
 			//unset($layout);
 		}
 		if (isset($show_addresses))
 		{
-			$phpgw->msg->args['show_addresses'] = $show_addresses;
+			$GLOBALS['phpgw']->msg->args['show_addresses'] = $show_addresses;
 			$show_addresses = '';
 			//unset($show_addresses);
 		}
 		if (isset($mainscreen_showmail))
 		{
-			$phpgw->msg->args['mainscreen_showmail'] = $mainscreen_showmail;
+			$GLOBALS['phpgw']->msg->args['mainscreen_showmail'] = $mainscreen_showmail;
 			$mainscreen_showmail = '';
 			//unset($mainscreen_showmail);
 		}
 		if (isset($use_sent_folder))
 		{
-			$phpgw->msg->args['use_sent_folder'] = $use_sent_folder;
+			$GLOBALS['phpgw']->msg->args['use_sent_folder'] = $use_sent_folder;
 			$use_sent_folder = '';
 			//unset($use_sent_folder);
 		}
 		if (isset($use_trash_folder))
 		{
-			$phpgw->msg->args['use_trash_folder'] = $use_trash_folder;
+			$GLOBALS['phpgw']->msg->args['use_trash_folder'] = $use_trash_folder;
 			$use_trash_folder = '';
 			//unset($use_trash_folder);
 		}
 		if (isset($trash_folder_name))
 		{
-			$phpgw->msg->args['trash_folder_name'] = $trash_folder_name;
+			$GLOBALS['phpgw']->msg->args['trash_folder_name'] = $trash_folder_name;
 			$trash_folder_name = '';
 			//unset($trash_folder_name);
 		}
 		if (isset($sent_folder_name))
 		{
-			$phpgw->msg->args['sent_folder_name'] = $sent_folder_name;
+			$GLOBALS['phpgw']->msg->args['sent_folder_name'] = $sent_folder_name;
 			$sent_folder_name = '';
 			//unset($sent_folder_name);
 		}
 		if (isset($enable_utf7)) {
-			$phpgw->msg->args['enable_utf7'] = $enable_utf7;
+			$GLOBALS['phpgw']->msg->args['enable_utf7'] = $enable_utf7;
 			$enable_utf7 = '';
 			//unset($enable_utf7);
 		}
 		if (isset($use_custom_settings))
 		{
-			$phpgw->msg->args['use_custom_settings'] = $use_custom_settings;
+			$GLOBALS['phpgw']->msg->args['use_custom_settings'] = $use_custom_settings;
 			$use_custom_settings = '';
 			//unset($use_custom_settings);
 		}
 		if (isset($userid))
 		{
-			$phpgw->msg->args['userid'] = $userid;
+			$GLOBALS['phpgw']->msg->args['userid'] = $userid;
 			$userid = '';
 			//unset($userid);
 		}
 		if (isset($passwd))
 		{
-			$phpgw->msg->args['passwd'] = $passwd;
+			$GLOBALS['phpgw']->msg->args['passwd'] = $passwd;
 			$passwd = '';
 			//unset($passwd);
 		}
 		if (isset($address))
 		{
-			$phpgw->msg->args['address'] = $address;
+			$GLOBALS['phpgw']->msg->args['address'] = $address;
 			$address = '';
 			//unset($address);
 		}
 		if (isset($mail_server))
 		{
-			$phpgw->msg->args['mail_server'] = $mail_server;
+			$GLOBALS['phpgw']->msg->args['mail_server'] = $mail_server;
 			$mail_server = '';
 			//unset($mail_server);
 		}
 		if (isset($mail_server_type))
 		{
-			$phpgw->msg->args['mail_server_type'] = $mail_server_type;
+			$GLOBALS['phpgw']->msg->args['mail_server_type'] = $mail_server_type;
 			$mail_server_type = '';
 			//unset($mail_server_type);
 		}
 		if (isset($imap_server_type))
 		{
-			$phpgw->msg->args['imap_server_type'] = $imap_server_type;
+			$GLOBALS['phpgw']->msg->args['imap_server_type'] = $imap_server_type;
 			$imap_server_type = '';
 			//unset($imap_server_type);
 		}
 		if (isset($mail_folder))
 		{
-			$phpgw->msg->args['mail_folder'] = $mail_folder;
+			$GLOBALS['phpgw']->msg->args['mail_folder'] = $mail_folder;
 			$mail_folder = '';
 			//unset($mail_folder);
 		}
@@ -259,17 +259,15 @@
 		//unset($submit_prefs);
 	}
 
-
-
 	// UNKNOWN if this is still used
-	$args_array['totalerrors'] = $totalerrors;
-	$args_array['errors'] = $errors;
+//	$args_array['totalerrors'] = $totalerrors;
+//	$args_array['errors'] = $errors;
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
 	if ((($in_email) || ($in_mainscreen))
 	&& ($login_allowed))
 	{
-		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
+		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']; }
 
 
 		// ----  Create the base email Msg Class    -----
@@ -279,19 +277,19 @@
 		// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
 		if (isset($sort))
 		{
-			$phpgw->msg->args['sort'] = $sort;
+			$GLOBALS['phpgw']->msg->args['sort'] = $sort;
 			//$args_array['sort'] = $sort;
 			//unset($sort);
 		}
 		if (isset($order))
 		{
-			$phpgw->msg->args['order'] = $order;
+			$GLOBALS['phpgw']->msg->args['order'] = $order;
 			//$args_array['order'] = $order;
 			//unset($order);
 		}
 		if (isset($start))
 		{
-			$phpgw->msg->args['start'] = $start;
+			$GLOBALS['phpgw']->msg->args['start'] = $start;
 			//$args_array['start'] = $start;
 			//unset($start);
 		}
@@ -299,7 +297,7 @@
 		// this newsmode thing needs to be further worked out
 		if (isset($newsmode))
 		{
-			$phpgw->msg->args['newsmode'] = $newsmode;
+			$GLOBALS['phpgw']->msg->args['newsmode'] = $newsmode;
 			//$args_array['newsmode'] = $newsmode;
 			//unset($newsmode);
 		}
@@ -313,19 +311,19 @@
 		// (in) index.php: here the report is diaplayed above the message list, used to give user feedback
 		if (isset($td))
 		{
-			$phpgw->msg->args['td'] = $td;
+			$GLOBALS['phpgw']->msg->args['td'] = $td;
 			//$args_array['td'] = $td;
 			//unset($td);
 		}
 		if (isset($tm))
 		{
-			$phpgw->msg->args['tm'] = $tm;
+			$GLOBALS['phpgw']->msg->args['tm'] = $tm;
 			//$args_array['tm'] = $tm;
 			//unset($tm);
 		}
 		if (isset($tf))
 		{
-			$phpgw->msg->args['tf'] = $tf;
+			$GLOBALS['phpgw']->msg->args['tf'] = $tf;
 			//$args_array['tf'] = $tf;
 			//unset($tf);
 		}
@@ -339,20 +337,20 @@
 		// (in) action.php: instruction on what action to preform on 1 or more message(s) (move or delete)
 		if (isset($what))
 		{
-			$phpgw->msg->args['what'] = $what;
+			$GLOBALS['phpgw']->msg->args['what'] = $what;
 			//$args_array['what'] = $what;
 			//unset($what);
 		}
 		if (isset($tofolder))
 		{
-			$phpgw->msg->args['tofolder'] = $tofolder;
+			$GLOBALS['phpgw']->msg->args['tofolder'] = $tofolder;
 			//$args_array['tofolder'] = $tofolder;
 			//unset($tofolder);
 		}
 		// (passed from index.php) this may be an array of numbers if many boxes checked and a move or delete is called
 		if (isset($msglist))
 		{
-			$phpgw->msg->args['msglist'] = $msglist;
+			$GLOBALS['phpgw']->msg->args['msglist'] = $msglist;
 			//$args_array['msglist'] = $msglist;
 			//unset($msglist);
 		}
@@ -369,7 +367,7 @@
 		//	the SMTP mail
 		if (isset($action))
 		{
-			$phpgw->msg->args['action'] = $action;
+			$GLOBALS['phpgw']->msg->args['action'] = $action;
 			//$args_array['action'] = $action;
 			//unset($action);
 		}
@@ -382,7 +380,7 @@
 		// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
 		if (isset($msgnum))
 		{
-			$phpgw->msg->args['msgnum'] = $msgnum;
+			$GLOBALS['phpgw']->msg->args['msgnum'] = $msgnum;
 			//$args_array['msgnum'] = $msgnum;
 			//unset($msgnum);
 		}
@@ -392,7 +390,7 @@
 		// (b) get_attach.php: used in combination with msgnum
 		if (isset($part_no))
 		{
-			$phpgw->msg->args['part_no'] = $part_no;
+			$GLOBALS['phpgw']->msg->args['part_no'] = $part_no;
 			//$args_array['part_no'] = $part_no;
 			//unset($part_no);
 		}
@@ -402,7 +400,7 @@
 		// (b) get_attach.php: appropriate decoding of the part to feed to the browser 
 		if (isset($encoding))
 		{
-			$phpgw->msg->args['encoding'] = $encoding;
+			$GLOBALS['phpgw']->msg->args['encoding'] = $encoding;
 			//$args_array['encoding'] = $encoding;
 			//unset($encoding);
 		}
@@ -413,7 +411,7 @@
 		// (b) send_message.php: used with action = forward, instructs on how the SMTP message should be structured
 		if (isset($fwd_proc))
 		{
-			$phpgw->msg->args['fwd_proc'] = $fwd_proc;
+			$GLOBALS['phpgw']->msg->args['fwd_proc'] = $fwd_proc;
 			//$args_array['fwd_proc'] = $fwd_proc;
 			//unset($fwd_proc);
 		}
@@ -424,19 +422,19 @@
 		// get_attach.php: the name of the attachment
 		if (isset($name))
 		{
-			$phpgw->msg->args['name'] = $name;
+			$GLOBALS['phpgw']->msg->args['name'] = $name;
 			//$args_array['name'] = $name;
 			//unset($name);
 		}
 		if (isset($type))
 		{
-			$phpgw->msg->args['type'] = $type;
+			$GLOBALS['phpgw']->msg->args['type'] = $type;
 			//$args_array['type'] = $type;
 			//unset($type);
 		}
 		if (isset($subtype))
 		{
-			$phpgw->msg->args['subtype'] = $subtype;
+			$GLOBALS['phpgw']->msg->args['subtype'] = $subtype;
 			//$args_array['subtype'] = $subtype;
 			//unset($subtype);
 		}
@@ -447,13 +445,13 @@
 		// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
 		if (isset($target_folder))
 		{
-			$phpgw->msg->args['target_folder'] = $target_folder;
+			$GLOBALS['phpgw']->msg->args['target_folder'] = $target_folder;
 			//$args_array['target_folder'] = $target_folder;
 			//unset($target_folder);
 		}
 		if (isset($source_folder))
 		{
-			$phpgw->msg->args['source_folder'] = $source_folder;
+			$GLOBALS['phpgw']->msg->args['source_folder'] = $source_folder;
 			//$args_array['source_folder'] = $source_folder;
 			//unset($source_folder);
 		}
@@ -462,7 +460,7 @@
 		// if set - indicates to show 'long' folder names with namespace and delimiter NOT stripped off
 		if (isset($show_long))
 		{
-			$phpgw->msg->args['show_long'] = $show_long;
+			$GLOBALS['phpgw']->msg->args['show_long'] = $show_long;
 			//$args_array['show_long'] = $show_long;
 			//unset($show_long);
 		}
@@ -485,19 +483,19 @@
 		// (in) (b) send_message.php: (fill me in - I got lazy)
 		if (isset($to))
 		{
-			$phpgw->msg->args['to'] = $to;
+			$GLOBALS['phpgw']->msg->args['to'] = $to;
 			//$args_array['to'] = $to;
 			//unset($to);
 		}
 		if (isset($cc))
 		{
-			$phpgw->msg->args['cc'] = $cc;
+			$GLOBALS['phpgw']->msg->args['cc'] = $cc;
 			//$args_array['cc'] = $cc;
 			//unset($cc);
 		}
 		if (isset($body))
 		{
-			$phpgw->msg->args['body'] = $body;
+			$GLOBALS['phpgw']->msg->args['body'] = $body;
 			//$args_array['body'] = $body;
 			// body GPC var may be huge, so set it to empty for memory management purposes
 			$body = '';
@@ -505,7 +503,7 @@
 		}
 		if (isset($subject))
 		{
-			$phpgw->msg->args['subject'] = $subject;
+			$GLOBALS['phpgw']->msg->args['subject'] = $subject;
 			//$args_array['subject'] = $subject;
 			//unset($subject);
 		}
@@ -515,7 +513,7 @@
 		// (in) send_message.php: indicate if message should have the user's "sig" added to the message
 		if (isset($attach_sig))
 		{
-			$phpgw->msg->args['attach_sig'] = $attach_sig;
+			$GLOBALS['phpgw']->msg->args['attach_sig'] = $attach_sig;
 			//$args_array['attach_sig'] = $attach_sig;
 			//unset($attach_sig);
 		}
@@ -528,7 +526,7 @@
 		// (b) message.php: identify the flag and call a custom proc
 		if (isset($msgtype))
 		{
-			$phpgw->msg->args['msgtype'] = $msgtype;
+			$GLOBALS['phpgw']->msg->args['msgtype'] = $msgtype;
 			//$args_array['msgtype'] = $msgtype;
 			//unset($msgtype);
 		}
@@ -541,13 +539,13 @@
 		//	indicates that to, cc, and subject should be treated as simple MAILTO args
 		if (isset($mailto))
 		{
-			$phpgw->msg->args['mailto'] = $mailto;
+			$GLOBALS['phpgw']->msg->args['mailto'] = $mailto;
 			//$args_array['mailto'] = $mailto;
 			//unset($mailto);
 		}
 		if (isset($personal))
 		{
-			$phpgw->msg->args['personal'] = $personal;
+			$GLOBALS['phpgw']->msg->args['personal'] = $personal;
 			//$args_array['personal'] = $personal;
 			//unset($personal);
 		}
@@ -558,7 +556,7 @@
 		// (in and outgoing) message.php: will display plain body parts without any html formatting added
 		if (isset($no_fmt))
 		{
-			$phpgw->msg->args['no_fmt'] = $no_fmt;
+			$GLOBALS['phpgw']->msg->args['no_fmt'] = $no_fmt;
 			//$args_array['no_fmt'] = $no_fmt;
 			//unset($no_fmt);
 		}
@@ -567,7 +565,7 @@
 		// === VIEW HTML INSTRUCTIONS ===
 		if (isset($html_part))
 		{
-			$phpgw->msg->args['html_part'] = $html_part;
+			$GLOBALS['phpgw']->msg->args['html_part'] = $html_part;
 			//$args_array['html_part'] = $html_part;
 			// this is a pre-processed string passes from a posted form, may be really big
 			// so set to empty for memory management purposes now
@@ -576,7 +574,7 @@
 		}
 		if (isset($html_reference))
 		{
-			$phpgw->msg->args['html_reference'] = $html_reference;
+			$GLOBALS['phpgw']->msg->args['html_reference'] = $html_reference;
 			//$args_array['html_reference'] = $html_reference;
 			//unset($html_reference);
 		}
@@ -587,7 +585,7 @@
 		// user may request an override of this for 1 page view
 		if (isset($force_showsize))
 		{
-			$phpgw->msg->args['force_showsize'] = $force_showsize;
+			$GLOBALS['phpgw']->msg->args['force_showsize'] = $force_showsize;
 			//$args_array['force_showsize'] = $force_showsize;
 			//unset($force_showsize);
 		}
@@ -604,7 +602,7 @@
 		{
 			// folder is not meant to be in class args[] array
 			// instead, it should be fed as an agrument to begin_request, it will be processed there
-			//$phpgw->msg->args['folder'] = $folder;
+			//$GLOBALS['phpgw']->msg->args['folder'] = $folder;
 			$args_array['folder'] = $folder;
 			//unset($folder);
 		}
@@ -617,10 +615,10 @@
 		$args_array['newsmode'] = False; // NOT IMPLEMENTED YET
 		// this will obtain the email preferences from the db (currently "phpgw_preferences")
 		// and prep the folder name, and login if desired, and set msg->mailsvr_stream
-		$phpgw->msg->begin_request($args_array);
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
 
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
-		if (!$phpgw->msg->mailsvr_stream)
+		if (!$GLOBALS['phpgw']->msg->mailsvr_stream)
 		{
 			$imap_err = imap_last_error();
 			if ($imap_err == '')
@@ -636,7 +634,7 @@
 			  ."<br>source: email functions.inc.php"
 			  ."<br>imap_last_error: ".$error_report
 			  . "</b></center></p>";
-			$phpgw->common->phpgw_exit(True);
+			$GLOBALS['phpgw']->common->phpgw_exit(True);
 		}
 	}
 	else
@@ -648,35 +646,35 @@
 		$args_array['folder'] = '';
 		$args_array['do_login'] = False;
 		// this will obtain the email preferences from the db (currently "phpgw_preferences")
-		$phpgw->msg->begin_request($args_array);
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
 	}
 
 // ----  UN-INITIALIZE ARGS ARRAY HOLDER VARIABLE  -------
 	// it's no longer needed
 	$args_array = Array();
 
-	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
-	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';
-	//var_dump($phpgw_info['user']['preferences']['email']);
-	//var_dump($phpgw_info['user']);
+	//echo '<br>user_pass='.$GLOBALS['phpgw_info']['user']['passwd']
+	//   .'<br>email_pass='.$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'].'<br><br>';
+	//var_dump($GLOBALS['phpgw_info']['user']['preferences']['email']);
+	//var_dump($GLOBALS['phpgw_info']['user']);
 
 // ----  Various Functions Used To Support Email   -----
 
 	function get_mime_type($de_part)
 	{
-		$mime_type = "unknown";
+		$mime_type = 'unknown';
 		if (isset($de_part->type) && $de_part->type)
 		{
 			switch ($de_part->type)
 			{
-				case TYPETEXT:		$mime_type = "text"; break;
-				case TYPEMESSAGE:	$mime_type = "message"; break;
-				case TYPEAPPLICATION:	$mime_type = "application"; break;
-				case TYPEAUDIO:		$mime_type = "audio"; break;
-				case TYPEIMAGE:		$mime_type = "image"; break;
-				case TYPEVIDEO:		$mime_type = "video"; break;
-				case TYPEMODEL:		$mime_type = "model"; break;
-				default:		$mime_type = "unknown";
+				case TYPETEXT:		$mime_type = 'text'; break;
+				case TYPEMESSAGE:	$mime_type = 'message'; break;
+				case TYPEAPPLICATION:	$mime_type = 'application'; break;
+				case TYPEAUDIO:		$mime_type = 'audio'; break;
+				case TYPEIMAGE:		$mime_type = 'image'; break;
+				case TYPEVIDEO:		$mime_type = 'video'; break;
+				case TYPEMODEL:		$mime_type = 'model'; break;
+				default:		$mime_type = 'unknown';
 			} 
 		}
 		return $mime_type;
@@ -689,10 +687,10 @@
 		{
 			switch ($de_part->encoding)
 			{
-				case ENCBASE64:		$mime_encoding = "base64"; break;
-				case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
-				case ENCOTHER:		$mime_encoding = "other";  break;
-				default:		$mime_encoding = "other";
+				case ENCBASE64:		$mime_encoding = 'base64'; break;
+				case ENCQUOTEDPRINTABLE:	$mime_encoding = 'qprint'; break;
+				case ENCOTHER:		$mime_encoding = 'other'; break;
+				default:		$mime_encoding = 'other';
 			}
 		}
 		return $mime_encoding;
@@ -701,13 +699,13 @@
 
 	function get_att_name($de_part)
 	{
-		$att_name = "Unknown";
+		$att_name = 'Unknown';
 		if ($de_part->ifparameters)
 		{
 			for ($i = 0; $i < count($de_part->parameters); $i++) 
 			{
 				$param = $de_part->parameters[$i];
-				if (strtoupper($param->attribute) == "NAME")
+				if (strtoupper($param->attribute) == 'NAME')
 				{
 					$att_name = $param->value;
 					break;
@@ -717,7 +715,7 @@
 		// added by Angles: used for improperly formatted messages, RARELY needed, if at all
 		if (trim($att_name) == '')
 		{
-			$att_name = "error_blank_name";
+			$att_name = 'error_blank_name';
 		}
 		return $att_name;
 	}
@@ -739,127 +737,119 @@
 
 	function section_sep($title, $str)
 	{
-		global $phpgw_info;
 		$sep_str = 
 		    '</td>'
-		  . '<td bgcolor"' . $phpgw_info["theme"]["th_bg"] .'">'
-			  . '<font size="2" face="' .$phpgw_info["theme"]["font"] .'">'
+		  . '<td bgcolor"' . $GLOBALS['phpgw_info']['theme']['th_bg'] .'">'
+			  . '<font size="2" face="' .$GLOBALS['phpgw_info']['theme']['font'] .'">'
 			  . '<b>'.$title.'</b>'.' :: ' .$str
 		  . '</td>' . "\r\n"
-		  //. '<td bgcolor="' .$phpgw_info["theme"]["row_on"] . '" width="570">'
-		//	  . '<font size="2" face="' . $phpgw_info["theme"]["font"] .'">'.$str
+		  //. '<td bgcolor="' .$GLOBALS['phpgw_info']['theme']['row_on'] . '" width="570">'
+		//	  . '<font size="2" face="' . $GLOBALS['phpgw_info']['theme']['font'] .'">'.$str
 		//  . '</td>'
 		  . '<td>';
 		return $sep_str;
 	}
 
-
-
 	function attach_display($de_part, $part_no)
 	{
-		global $msgnum, $phpgw, $phpgw_info, $folder;
+		global $msgnum, $folder;
 		$mime_type = get_mime_type($de_part);  
 		$mime_encoding = get_mime_encoding($de_part);
 
-		$att_name = "unknown";
+		$att_name = 'unknown';
 
 		for ($i = 0; $i < count($de_part->parameters); $i++)
 		{
 			$param = $de_part->parameters[$i];
-			if (strtoupper($param->attribute) == "NAME")
+			if (strtoupper($param->attribute) == 'NAME')
 			{
 				$att_name = $param->value;
 				$url_att_name = urlencode($att_name);
-				$att_name = $phpgw->msg->decode_header_string($att_name);
+				$att_name = $GLOBALS['phpgw']->msg->decode_header_string($att_name);
 			}
 		}
 
-		//    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
-		$jnk = "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/get_attach.php","folder=".$folder
-		       ."&msgnum=$msgnum&part_no=$part_no&type=$mime_type"
-		       ."&subtype=".$de_part->subtype."&name=$url_att_name"
-		       ."&encoding=$mime_encoding")."\">$att_name</a>";
+		//    $jnk = "<a href=\"".$GLOBALS['phpgw']->link('get_attach.php','folder='.$GLOBALS['phpgw_info']['user']['preferences']['email']['folder']
+		$jnk = '<a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php','folder='.$folder
+		       .'&msgnum='.$msgnum.'&part_no='.$part_no.'&type='.$mime_type
+		       .'&subtype='.$de_part->subtype.'&name='.$url_att_name
+		       .'&encoding='.$mime_encoding).'">'.$att_name.'</a>';
 		return $jnk;
 	}
 
 
 	function inline_display($de_part, $part_no, $msgnum, $mailbox)
 	{
-		global  $phpgw, $phpgw_info;
-
 		$mime_type = get_mime_type($de_part);
 		$mime_encoding = get_mime_encoding($de_part);
 
 		if (!$mailbox)
 		{
-			$mailbox = $phpgw->msg->mailsvr_stream;
+			$mailbox = $GLOBALS['phpgw']->msg->mailsvr_stream;
 		}
-		$dsp = $phpgw->msg->dcom->fetchbody($mailbox, $msgnum, $part_no);
+		$dsp = $GLOBALS['phpgw']->msg->dcom->fetchbody($mailbox, $msgnum, $part_no);
 
 		$tag = "pre";
-		$jnk = $de_part->ifdisposition ? $de_part->disposition : "unknown";
-		if ($mime_encoding == "qprint")
+		$jnk = $de_part->ifdisposition ? $de_part->disposition : 'unknown';
+		if ($mime_encoding == 'qprint')
 		{
-			$dsp = $phpgw->msg->qprint($dsp);
-			$tag = "tt";
+			$dsp = $GLOBALS['phpgw']->msg->qprint($dsp);
+			$tag = 'tt';
 		}
 
 		// Thanks to Omer Uner Guclu <oquclu@superonline.com> for figuring out
 		// a better way to do message wrapping
 
-		if (strtoupper($de_part->subtype) == "PLAIN")
+		if (strtoupper($de_part->subtype) == 'PLAIN')
 		{
 			// nlbr and htmlentities functions are strip latin5 characters
-			if (strtoupper(lang("charset")) <> "BIG5")
+			if (strtoupper(lang('charset')) <> 'BIG5')
 			{
-				$dsp = $phpgw->strip_html($dsp);
+				$dsp = $GLOBALS['phpgw']->strip_html($dsp);
 			}
 			$dsp = ereg_replace( "^","<p>",$dsp);
 			$dsp = ereg_replace( "\n","<br>",$dsp);
 			$dsp = ereg_replace( "$","</p>", $dsp);
 			$dsp = make_clickable($dsp);
-			echo "<table border=\"0\" align=\"left\" cellpadding=\"10\" width=\"80%\">"
-			  ."<tr><td>$dsp</td></tr></table>";
+			echo '<table border="0" align="left" cellpadding="10" width="80%">'
+			  .'<tr><td>'.$dsp.'</td></tr></table>';
 		}
-		elseif (strtoupper($de_part->subtype) == "HTML")
+		elseif (strtoupper($de_part->subtype) == 'HTML')
 		{
-			output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
+			output_bound(lang('section').':' , $mime_type.'/'.strtolower($de_part->subtype));
 			echo $dsp;
 		}
 		else
 		{
-			output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
-			echo "<$tag>$dsp</$tag>\n";
+			output_bound(lang('section').':' , $mime_type.'/'.strtolower($de_part->subtype));
+			echo '<'.$tag.'>'.$dsp.'</'.$tag.'>'."\n";
 		}
 	}
 
 
 	function output_bound($title, $str)
 	{
-		global $phpgw_info;
-		echo "</td></tr></table>\n"
-		  . "<table border=\"0\" cellpadding=\"4\" cellspacing=\"3\" "
-		  . "width=\"700\">\n<tr><td bgcolor\"" . $phpgw_info["theme"]["th_bg"] . "\" " 
-		  . "valign=\"top\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
-		  . "<b>$title</b></td>\n<td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" "
-		  . "width=\"570\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
-		  . "$str</td></tr></table>\n<p>\n<table border=\"0\" cellpadding=\"2\" "
-		  . "cellspacing=\"0\" width=\"100%\"><tr><td>";
+		echo '</td></tr></table>'."\n"
+		  . '<table border="0" cellpadding="4" cellspacing="3" '
+		  . 'width="700">'."\n".'<tr><td bgcolor"' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" ' 
+		  . 'valign="top"><font size="2" face="' . $GLOBALS['phpgw_info']['theme']['font'] . '">'
+		  . '<b>'.$title.'</b></td>'."\n".'<td bgcolor="' . $GLOBALS['phpgw_info']['theme']['row_on'] . '" '
+		  . 'width="570"><font size="2" face="' . $GLOBALS['phpgw_info']['theme']['font'] . '">'
+		  . $str.'</td></tr></table>'."\n".'<p>'."\n".'<table border="0" cellpadding="2" '
+		  . 'cellspacing="0" width="100%"><tr><td>';
 	}
 
 	function image_display($folder, $msgnum, $de_part, $part_no, $att_name) 
 	{
-		global $phpgw, $phpgw_info;
-
-		output_bound(lang("image").":" , $att_name);
-		$extra_parms = "folder=".urlencode($folder)."&m=".$msgnum
-			. "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
-		if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+		output_bound(lang('image').':' , $att_name);
+		$extra_parms = 'folder='.urlencode($folder).'&m='.$msgnum
+			. '&p='.$part_no.'&s='.strtolower($de_part->subtype).'&n='.$att_name;
+		if (isset($GLOBALS['phpgw_info']['flags']['newsmode']) && $GLOBALS['phpgw_info']['flags']['newsmode'])
 		{
-			$extra_parms .= "&newsmode=on";
+			$extra_parms .= '&newsmode=on';
 		}
-		$view_link = $phpgw->link("/".$phpgw_info['flags']['currentapp']."/view_image.php",$extra_parms);
-		echo "\n<img src=\"".$view_link."\">\n<p>\n";
+		$view_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/view_image.php',$extra_parms);
+		echo "\n".'<img src="'.$view_link.'">'."\n".'<p>'."\n";
 	}
 
 	/*
@@ -868,8 +858,6 @@
 	// modified to make mailto: addresses compose in phpGW
 	function make_clickable($data, $folder)
 	{
-		global $phpgw,$phpgw_info;
-
 		if(empty($data))
 		{
 			return $data;
@@ -885,7 +873,7 @@
 			$line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-				"<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".$phpgw->msg->prep_folder_out($folder))
+				'<a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out($folder))
 				."&to=\\1\">\\1</a>", $line);
 
 			$newText .= $line . "\n";
@@ -910,12 +898,12 @@
 		// this function also works on files, but we are concerned only with URLs here
 		$parts = parse_url( $url );
 		if (isset($parts[scheme])
-		&& ($parts[scheme] == "file"))
+		&& ($parts[scheme] == 'file'))
 		{
 			return false;
 		}
 		// try to open the URL
-		if (fopen($url, "r"))
+		if (fopen($url, 'r'))
 		{
 			return true;
 		} else

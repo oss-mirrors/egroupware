@@ -33,10 +33,8 @@
 class mail_msg extends mail_msg_wrappers
 {
 
-	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=False)
+	function all_folders_listbox($mailbox,$pre_select='',$skip='',$indicate_new=False)
 	{
-		global $phpgw, $phpgw_info;
-
 		if (!$mailbox)
 		{
 			$mailbox = $this->mailsvr_stream;
@@ -66,12 +64,12 @@ class mail_msg extends mail_msg_wrappers
 
 		if ($this->newsmode)
 		{
-			while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
+			while($pref = each($GLOBALS['phpgw_info']['user']['preferences']['nntp']))
 			{
-				$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-				while($phpgw->db->next_record())
+				$GLOBALS['phpgw']->db->query('SELECT name FROM newsgroups WHERE con='.$pref[0]);
+				while($GLOBALS['phpgw']->db->next_record())
 				{
-					$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
+					$outstr = $outstr .'<option value="' . urlencode($GLOBALS['phpgw']->db->f('name')) . '">' . $GLOBALS['phpgw']->db->f('name')
 					  . '</option>';
 				}
 			}
@@ -116,8 +114,6 @@ class mail_msg extends mail_msg_wrappers
 	// ---- Messages Sort Order Start and Msgnum  -----
 	function fill_sort_order_start_msgnum()
 	{
-		global $phpgw, $phpgw_info;
-
 		//$debug_sort = True;
 		$debug_sort = False;
 	
@@ -150,11 +146,11 @@ class mail_msg extends mail_msg_wrappers
 		}
 		elseif ((isset($this->args['sort']))
 		&& ($this->args['sort'] != '')
-		  && ($this->args['sort'] == "ASC") && ($this->newsmode))
+		  && ($this->args['sort'] == 'ASC') && ($this->newsmode))
 		{
 			// I think this is needed for newsmode because it reads message list that has been
 			// stored locally in a database, in this case it is NOT an arg ment for the NNTP server
-			$this->sort = "ASC";
+			$this->sort = 'ASC';
 		}
 		else
 		{
@@ -171,8 +167,8 @@ class mail_msg extends mail_msg_wrappers
 			// this is a valid $this->args['order'] variable passed as an arg
 			$this->order = $this->args['order'];
 		}
-		elseif ((isset($phpgw_info["user"]["preferences"]["email"]["default_sorting"]))
-		  && ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
+		elseif ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting']))
+		  && ($GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'] == "new_old"))
 		{
 			// user has a preference set to see new mail first
 			// this is considered "reverse" order because it is "highest to lowest"
@@ -293,12 +289,12 @@ class mail_msg extends mail_msg_wrappers
 		}
 		else
 		{
-			//$personal = $from->personal." ($from->mailbox@$from->host)";
+			//$personal = $from->personal.' ('.$from->mailbox.'@'.$from->host.')';
 			$personal = trim($from->personal);
 			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
 			$personal = $this->decode_header_string($personal);
 			//$personal = $this->qprint_rfc_header($personal);
-			$personal = $personal ." ($from->mailbox@$from->host)";
+			$personal = $personal .' ('.$from->mailbox.'@'.$from->host.')';
 		}
 		return $personal;
 	}
@@ -353,8 +349,6 @@ class mail_msg extends mail_msg_wrappers
 	// ---- Message Structure Analysis   -----
 	function get_flat_pgw_struct($struct)
 	{
-		global $phpgw_info;
-		
 		if (isset($this->not_set))
 		{
 			$not_set = $this->not_set;
@@ -734,7 +728,7 @@ class mail_msg extends mail_msg_wrappers
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
 			if ((isset($this->dcom->imap_builtin))
 			&& ($this->dcom->imap_builtin == False)
-			&& (stristr($phpgw_info['user']['preferences']['email']['mail_server_type'], 'pop3')))
+			&& (stristr($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'], 'pop3')))
 			{
 				// Make ***DUMB*** Mime Number THE PRIMARY MIME NUMBER we will use
 				$part_nice[$i]['m_part_num_mime'] = $part_nice[$i]['ex_mime_number_dumb'];
@@ -927,8 +921,6 @@ class mail_msg extends mail_msg_wrappers
 
 	function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
 	{
-		global $phpgw, $phpgw_info;
-		
 		if (isset($this->not_set))
 		{
 			$not_set = $this->not_set;
@@ -1085,8 +1077,6 @@ class mail_msg extends mail_msg_wrappers
 
 	function make_part_clickable($part_nice, $folder, $msgnum)
 	{
-		global $phpgw, $phpgw_info;
-		
 		if (isset($this->not_set))
 		{
 			$not_set = $this->not_set;
@@ -1129,7 +1119,7 @@ class mail_msg extends mail_msg_wrappers
 		// make a URL to directly access this part
 		$url_part_name = urlencode($part_name);
 		// ex_part_href
-		$ex_part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
+		$ex_part_href = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
 			 'folder='.$this->prep_folder_out($folder)
 			.'&msgnum=' .$msgnum
 			.'&part_no=' .$m_part_num_mime
@@ -1153,8 +1143,6 @@ class mail_msg extends mail_msg_wrappers
 	// modified to make mailto: addresses compose in phpGW
 	function make_clickable($data, $folder)
 	{
-		global $phpgw, $phpgw_info;
-
 		if(empty($data))
 		{
 			return $data;
@@ -1170,7 +1158,7 @@ class mail_msg extends mail_msg_wrappers
 			$line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 			$line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-				"<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".$phpgw->msg->prep_folder_out($folder))
+				"<a href=\"".$GLOBALS['phpgw']->link("/".$GLOBALS['phpgw_info']['flags']['currentapp']."/compose.php","folder=".$GLOBALS['phpgw']->msg->prep_folder_out($folder))
 				."&to=\\1\">\\1</a>", $line);
 
 			$newText .= $line . "\n";
@@ -1222,10 +1210,5 @@ class mail_msg extends mail_msg_wrappers
 		$all_keys = array_keys($my_array);
 		return implode(', ',$all_keys);
 	}
-
-
-
-
-
 } // end class mail_msg
 ?>

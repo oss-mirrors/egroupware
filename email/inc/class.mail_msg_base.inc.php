@@ -56,9 +56,7 @@
 	/*
 	function mail_msg_init()
 	{
-		global $phpgw, $phpgw_info;
-
-		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+		$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 		$this->create_email_preferences();
 		
 		
@@ -81,16 +79,23 @@
 	// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
 	function begin_request($args_array)
 	{
-		global $phpgw, $phpgw_info;
-
 		//$debug_logins = True;
 		$debug_logins = False;
 	
 		// ----  Things To Be Done Whether You Login Or Not  -----
 		// obtain the preferences from the database
-		$this->create_email_preferences();
+		$GLOBALS['phpgw_info']['user']['preferences'] = $GLOBALS['phpgw']->preferences->create_email_preferences();
+		// Get Email Password
+		if (!isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
+		{
+			$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
+		}
+		else
+		{
+			$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']);
+		}
 		// initalize some important class variables
-		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+		$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 		$this->get_mailsvr_callstr();
 
 		// make sure all the necessary args_array items are present, else set missing ones to a default value
@@ -111,7 +116,7 @@
 		{
 			$args_array['newsmode'] = True;
 			$this->newsmode = True;
-			$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
+			$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] = 'nntp';
 		}
 		else
 		{
@@ -130,13 +135,13 @@
 		if ($args_array['do_login'] == True)
 		{
 			// === ISSET CHECK for userid and passwd to avoid garbage logins ==
-			if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
-			&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
-			&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
-			&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
+			if ( (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
+			&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['userid'] != '')
+			&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
+			&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] != '') )
 			{
-				$user = $phpgw_info['user']['preferences']['email']['userid'];
-				$pass = $phpgw_info['user']['preferences']['email']['passwd'];
+				$user = $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
+				$pass = $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
 			}
 			else
 			{
@@ -150,8 +155,8 @@
 			// initialize the dcom class variables
 			$this->dcom->mail_dcom_base();
 			// ----  Do We Use UTF7 encoding/decoding of folder names  -----
-			if (isset($phpgw_info['user']['preferences']['email']['enable_utf7'])
-			&& ($phpgw_info['user']['preferences']['email']['enable_utf7']))
+			if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['enable_utf7'])
+			&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['enable_utf7']))
 			{
 				$this->dcom->enable_utf7 = True;
 			}
@@ -159,7 +164,7 @@
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			$server_str = $phpgw->msg->get_mailsvr_callstr();
+			$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
 			$this->mailsvr_stream = $this->dcom->open($server_str."INBOX", $user, $pass, '');
 			  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
 			set_time_limit(0);
@@ -214,14 +219,12 @@
 
 	function end_request($args_array='')
 	{
-		global $phpgw, $phpgw_info;
-
 		// args array currently not used
 		if ((isset($this->mailsvr_stream))
 		&& ($this->mailsvr_stream != ''))
 		{
-			$this->dcom->close($phpgw->msg->mailsvr_stream);
-			$phpgw->msg->mailsvr_stream = '';
+			$this->dcom->close($GLOBALS['phpgw']->msg->mailsvr_stream);
+			$GLOBALS['phpgw']->msg->mailsvr_stream = '';
 		}
 	}
 
@@ -229,8 +232,6 @@
   // ----  Various Functions Used To Support Email   -----
 	function prep_folder_in($feed_folder)
 	{
-		global $phpgw, $phpgw_info;
-		
 		// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
 		if (!$feed_folder)
 		{
@@ -247,8 +248,6 @@
 
 	function prep_folder_out($feed_folder='')
 	{
-		global $phpgw, $phpgw_info;
-
 		if ($feed_folder == '')
 		{
 			// this allows us to call this with no args and the current folder is "prep'ed"
@@ -258,162 +257,6 @@
 		}
 		return urlencode($feed_folder);
 	}
-
-
-
-	/*!
-	@function create_email_preferences
-	@abstract create email preferences
-	@discussion This fills the global $phpgw_info array with the required email preferences for this user
-	@param $account_id -optional defaults to : phpgw_info['user']['account_id']
-	*/	
-	function create_email_preferences($accountid='')
-	{
-		global $phpgw, $phpgw_info;
-
-		$account_id = get_account_id($accountid);
-
-		// Add default preferences info
-		if (!isset($phpgw_info['user']['preferences']['email']['userid']))
-		{
-			if ($phpgw_info['server']['mail_login_type'] == 'vmailmgr')
-			{
-				$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id)
-					. '@' . $phpgw_info['server']['mail_suffix'];
-			}
-			else
-			{
-				$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id);
-			}
-		}
-		// Set Server Mail Type if not defined
-		if (empty($phpgw_info['server']['mail_server_type']))
-		{
-			$phpgw_info['server']['mail_server_type'] = 'imap';
-		}
-		// Get Email Password
-		if (!isset($phpgw_info['user']['preferences']['email']['passwd']))
-		{
-			$phpgw_info['user']['preferences']['email']['passwd'] = $phpgw_info['user']['passwd'];
-		}
-		else
-		{
-			$phpgw_info['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($phpgw_info['user']['preferences']['email']['passwd']);
-		}
-		if (!isset($phpgw_info['user']['preferences']['email']['address']))
-		{
-			$phpgw_info['user']['preferences']['email']['address'] = $phpgw->accounts->id2name($account_id)
-				. '@' . $phpgw_info['server']['mail_suffix'];
-		}
-		if (!isset($phpgw_info['user']['preferences']['email']['mail_server']))
-		{
-			$phpgw_info['user']['preferences']['email']['mail_server'] = $phpgw_info['server']['mail_server'];
-		}
-		if (!isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
-		{
-			$phpgw_info['user']['preferences']['email']['mail_server_type'] = $phpgw_info['server']['mail_server_type'];
-		}
-		if (!isset($phpgw_info['user']['preferences']['email']['imap_server_type']))
-		{
-			$phpgw_info['user']['preferences']['email']['imap_server_type'] = $phpgw_info['server']['imap_server_type'];
-		}
-		
-		// ====  UWash Mail Folder Location used to be "mail", now it's changeable, but keep the
-		// ====  default to "mail" so upgrades happen transparently
-		// ---  TEMP MAKE DEFAULT UWASH MAIL FOLDER ~/mail (a.k.a. $HOME/mail)
-		$phpgw_info['server']['mail_folder'] = 'mail';
-		// ---  DELETE THE ABOVE WHEN THIS OPTION GETS INTO THE SYSTEM SETUP
-		// pick up custom "mail_folder" if it exists (used for UWash and UWash Maildor servers)
-		// else use the system default (which we temporarily hard coded to "mail" just above here)
-		
-		// because of the way this option works, an empty string IS ACTUALLY a valid value
-		// which represents the $HOME/* as the UWash mail files location
-		// THERFOR we must check the "Use_custom_setting" option to help us figure out what to do
-		if (!isset($phpgw_info['user']['preferences']['email']['use_custom_settings']))
-		{
-			// we are NOT using custom settings so this MUST be the server default
-			$phpgw_info['user']['preferences']['email']['mail_folder'] = $phpgw_info['server']['mail_folder'];
-		}
-		else
-		{
-			// we ARE using custom settings AND a BLANK STRING is a valid option, so...
-			if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
-			&& ($phpgw_info['user']['preferences']['email']['mail_folder'] != ''))
-			{
-				// using custom AND an string exists, so "mail_folder" is that string stored in the custom prefs by the user
-				// DO NOTING - VALID OPTION VALUE for $phpgw_info['user']['preferences']['email']['mail_folder']
-			}
-			else
-			{
-				// using Custom Prefs BUT this text box was left empty by the user on submit, so no value stored
-				// BUT since we are using custom prefs, "mail_folder" MUST BE AN EMPTY STRING
-				// which is an acceptable, valid preference, overriding any value which may have been set in ["server"]["mail_folder"]
-				$phpgw_info['user']['preferences']['email']['mail_folder'] = '';
-			}
-		}
-
-		// This is going to be used to switch to the nntp class
-		if ((isset($phpgw_info['flags']['newsmode'])
-		&& $phpgw_info['flags']['newsmode']))
-		{
-			$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
-		}
-
-		// These sets the mail_port server variable
-		$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
-
-		// if the option to use the Trash folder is ON, make sure a proper name is specified
-		if (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
-		{
-			if ((!isset($phpgw_info['user']['preferences']['email']['trash_folder_name']))
-			|| ($phpgw_info['user']['preferences']['email']['trash_folder_name'] == ''))
-			{
-				$phpgw_info['user']['preferences']['email']['trash_folder_name'] = $this->default_trash_folder;
-			}
-		}
-
-		// if the option to use the sent folder is ON, make sure a proper name is specified
-		if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
-		{
-			if ((!isset($phpgw_info['user']['preferences']['email']['sent_folder_name']))
-			|| ($phpgw_info['user']['preferences']['email']['sent_folder_name'] == ''))
-			{
-				$phpgw_info['user']['preferences']['email']['sent_folder_name'] = $this->default_sent_folder;
-			}
-		}
-
-		// SANITY CHECK - is it possible to use Trash and Sent folders - i.e. using IMAP server
-		// if not - force settings to false
-		if  (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
-		&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps'))
-		{
-			if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
-			{
-				unset($phpgw_info['user']['preferences']['email']['use_sent_folder']);
-			}
-	
-			if (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
-			{
-				unset($phpgw_info['user']['preferences']['email']['use_trash_folder']);
-			}
-		}
-
-		// Layout Template Preference
-		// layout 1 = default ; others are prefs
-		if (!isset($phpgw_info['user']['preferences']['email']['layout']))
-		{
-			$phpgw_info['user']['preferences']['email']['layout'] = 1;
-		}
-		// force seeting here to test stuff
-		//$phpgw_info['user']['preferences']['email']['layout'] = 1;
-		//$phpgw_info['user']['preferences']['email']['layout'] = 2;
-
-		// DEBUG
-		//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
-		//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';
-	}
-
-
 
 	/* * * * * * * * * * *
 	  *  ensure_no_brackets
@@ -438,66 +281,6 @@
 	}
 
 	/* * * * * * * * * * *
-	  *  get_mailsvr_port
-	  * will generate the appropriate port number to access a mail server of type
-	  * pop3, pop3s, imap, imaps
-	  * users value from $phpgw_info['user']['preferences']['email']['mail_port']
-	  * if that value is not set, it generates a default port for the given $server_type
-	  * * * * * * *  * * * */
-	function get_mailsvr_port()
-	{
-		global $phpgw, $phpgw_info;
-
-		/*// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
-		// first we try the port number supplied in preferences
-		if ( (isset($phpgw_info['user']['preferences']['email']['mail_port']))
-		&& ($phpgw_info['user']['preferences']['email']['mail_port'] != '') )
-		{
-			$port_number = $phpgw_info['user']['preferences']['email']['mail_port'];
-		}
-		// preferences does not have a port number, generate a default value
-		else
-		{
-		*/
-			if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-			{
-				/* IMAP normal connection, No SSL */
-				$port_number = 143;
-			}
-			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
-			{
-				/* IMAP over SSL */
-				$port_number = 993;
-			}
-			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
-			{
-				/* POP3 over SSL: */
-				$port_number = 995;
-			}
-			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-			{
-				/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
-				$port_number = 110;
-			}
-			elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'nntp')
-			{
-				// NNTP news server port
-				$port_number = 119;
-			}
-			else
-			{
-				//UNKNOWN SERVER in Preferences, return a default value that is likely to work
-				// probably should raise some kind of error here
-				$port_number = 143;
-			}
-			// set the preference string, since it was not set and that's why we are here
-			//$phpgw_info['user']['preferences']['email']['mail_port'] = $port_number;
-		// UNCOMMENT WHEN mail_port IS A REAL, USER SET OPTION
-		//}
-		return $port_number;
-	}
-
-	/* * * * * * * * * * *
 	  *  get_mailsvr_callstr
 	  * will generate the appropriate string to access a mail server of type
 	  * pop3, pop3s, imap, imaps
@@ -507,8 +290,6 @@
 	  * * * * * * *  * * * */
 	function get_mailsvr_callstr()
 	{
-		global $phpgw, $phpgw_info;
-		
 		// do we have cached data that we can use?
 		if ($this->mailsvr_callstr != '')
 		{
@@ -517,7 +298,7 @@
 		}
 
 		// what's the name or IP of the mail server
-		$mail_server = $phpgw_info['user']['preferences']['email']['mail_server'];
+		$mail_server = $GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server'];
 		
 		/*
 		// EXPERIMENTAL WORKOUND for the "localhost" php bug
@@ -532,34 +313,26 @@
 		
 		// determine the Mail Server Call String
 		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
-		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		switch($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'])
 		{
-			// IMAP normal connection, No SSL
-			$server_call = '{' .$mail_server .':' .$this->get_mailsvr_port().'}';
+			case 'imaps':	// IMAP over SSL
+				$extra = '/imap/ssl/novalidate-cert';
+				//$extra = '/imap/ssl/novalidate-cert';
+				break;
+			case 'pop3s':	// POP3 over SSL
+				$extra = '/pop3/ssl/novalidate-cert';
+				//$extra = '/pop3/ssl';
+				break;
+			case 'pop3':	// POP3 normal connection, No SSL
+				$extra = '/pop3';
+				break;
+			case 'imap':	// IMAP normal connection, No SSL
+			default:			// UNKNOW SERVER type
+				$extra = '';
+				break;
 		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
-		{
-			// IMAP over SSL
-			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
-			//$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/imap/ssl/novalidate-cert}';
-		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
-		{
-			// POP3 over SSL:
-			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3/ssl/novalidate-cert}';
-			//$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3/ssl}';
-		}
-		elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-		{
-			// POP3 normal connection, No SSL
-			$server_call = '{' .$mail_server .':'.$this->get_mailsvr_port().'/pop3}';
-		}
-		else
-		{
-			//UNKNOWN SERVER in Preferences, return a default value that is likely to work
-			// probably should raise some kind of error here
-			$server_call = '{' .$mail_server.':'.$this->get_mailsvr_port().'}';
-		}
+		$server_call = '{' .$mail_server .':' .$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_port'] . $extra . '}';
+			
 		// cache the result
 		$this->mailsvr_callstr = $server_call;
 		//echo $server_call.'<br>';
@@ -574,7 +347,6 @@
 	  * * * * * * *  * * * */
 	function get_mailsvr_namespace()
 	{
-		global $phpgw, $phpgw_info;
 		// UWash patched for Maildir style: $Maildir.Junque ?????
 		// Cyrus and Courier style =" INBOX"
 		// UWash style: "mail"
@@ -586,17 +358,17 @@
 			return $this->mailsvr_namespace;
 		}
 
-		if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
-		|| ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash'))
+		if (($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+		|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UWash'))
 		{
-			if ((isset($phpgw_info['user']['preferences']['email']['mail_folder']))
-			&& (trim($phpgw_info['user']['preferences']['email']['mail_folder']) != ''))
+			if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']))
+			&& (trim($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']) != ''))
 			{
 				// if the user fills this option correctly, this should yield an unqualified foldername which
 				// UWash should qualify (juat like any unix command line "cd" command) with the
 				// appropriate $HOME variable (I THINK) ...
 				// DO I NEED to add the "~" here too?
-				$name_space = trim($phpgw_info['user']['preferences']['email']['mail_folder']);
+				$name_space = trim($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_folder']);
 			}
 			else
 			{
@@ -609,7 +381,7 @@
 			}
 		}
 		/*
-		elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
+		elseif ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
 		// ALSO works for Courier IMAP
 		{
 			$name_space = 'INBOX';
@@ -637,7 +409,7 @@
 				// note: "INBOX" is NOT case sensitive according to rfc2060
 				$name_space = 'INBOX';
 			}
-			elseif (gettype($name_space) == 'array')
+			elseif (is_array($name_space))
 			{
 				// if the server returns an array of namespaces, the first one is usually the users personal namespace
 				// tyically "INBOX", there can be any number of other, unpredictable, namespaces also
@@ -646,7 +418,7 @@
 				// note: do not use is_array() because php3 does not have it
 				$name_space = $this->ensure_no_brackets($name_space[0]);
 			}
-			elseif (gettype($name_space) == 'string')
+			elseif (is_string($name_space))
 			{
 				// if the server returns a string (not likely) just get rid of the brackets
 				// note: do not use is_string() because php3 does not have it ???
@@ -683,7 +455,6 @@
 	  * * * * * * *  * * * */
 	function get_mailsvr_delimiter()
 	{
-		global $phpgw, $phpgw_info;
 		// UWash style: "/"
 		// all other imap servers *should* be "."
 
@@ -694,7 +465,7 @@
 			return $this->mailsvr_delimiter;
 		}
 
-		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+		if ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UWash')
 		{
 			//$delimiter = '/';
 			//$delimiter = SEP;
@@ -726,11 +497,9 @@
 
 	function get_mailsvr_supports_folders()
 	{
-		global $phpgw, $phpgw_info;
-
 		// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-		if (($phpgw_info['user']['preferences']['email']['mail_server_type']=='imap')
-		  || ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+		if (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type']=='imap')
+		  || ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type']=='imaps')
 		  || ($this->newsmode))
 		{
 			return True;
@@ -751,8 +520,6 @@
 	  * * * * * * *  * * * */
 	function get_folder_long($feed_folder='INBOX')
 	{
-		global $phpgw, $phpgw_info;
-
 		$feed_folder = urldecode($feed_folder);
 		$folder = $this->ensure_no_brackets($feed_folder);
 		if ($folder == 'INBOX')
@@ -794,7 +561,6 @@
 	  * * * * * * *  * * * */
 	function get_folder_short($feed_folder='INBOX')
 	{
-		global $phpgw, $phpgw_info;
 		// Example: "Sent"
 		// Cyrus may support  "Sent.Today"
 
@@ -835,8 +601,6 @@
 	  * * * * * * *  * * * */
 	function get_folder_list($mailbox, $force_refresh=False)
 	{
-		global $phpgw, $phpgw_info;
-		
 		//$debug_get_folder_list = True;
 		$debug_get_folder_list = False;
 
@@ -866,8 +630,8 @@
 			// use the cached data
 			return $this->folder_list;
 		}
-		elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-		|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s'))
+		elseif (($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'pop3')
+		|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'] == 'pop3s'))
 		{
 			// normalize the folder_list property
 			$this->folder_list = Array();
@@ -884,7 +648,7 @@
 			$delimiter = $this->get_mailsvr_delimiter();
 
 			// get a list of available folders from the server
-			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+			if ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UWash')
 			{
 				// uwash is file system based, so it requires a filesystem slash after the namespace
 				// note with uwash the delimiter is in fact the file system slash
@@ -956,7 +720,7 @@
 
 			// sort folder names
 			// note: do not use is_array() because php3 does not have it
-			if (gettype($mailboxes) == 'array')
+			if (is_array($mailboxes))
 			{
 				sort($mailboxes);
 			}
@@ -995,8 +759,6 @@
 	  * * * * * * *  * * * */
 	function folder_lookup($mailbox, $folder_needle='INBOX')
 	{
-		global $phpgw, $phpgw_info;
-
 		if ((!$mailbox)
 		|| ($mailbox == ''))
 		{
@@ -1073,10 +835,8 @@
 
 	function is_imap_folder($folder)
 	{
-		global $phpgw, $phpgw_info;
-
 		// UWash is the only (?) imap server where there is any question whether a folder is legit or not
-		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] != 'UWash')
+		if ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] != 'UWash')
 		{
 			//echo 'is_imap_folder TRUE 1<br>';
 			return True;
@@ -1119,7 +879,7 @@
 		}
 	
 		// DECISION: no more than 4 DIRECTORIES DEEP of recursion
-		$num_slashes = $phpgw->msg->substr_count_ex($folder_long, "/");
+		$num_slashes = $GLOBALS['phpgw']->msg->substr_count_ex($folder_long, "/");
 		if (($home_type_namespace)
 		&& ($num_slashes >= 4))
 		{
@@ -1191,7 +951,7 @@
 		}
 
 		// rfc2045 says to assume "7bit" if this is not specified
-		$mime_encoding = "7bit";
+		$mime_encoding = '7bit';
 		if (isset($this_part->encoding) && $this_part->encoding)
 		{
 			switch ($this_part->encoding)
@@ -1227,14 +987,15 @@
 	*/
 	function encrypt_email_passwd($data)
 	{
-		global $phpgw_info, $phpgw;
-
 		$encrypted_passwd = $data;
-		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		if ($GLOBALS['phpgw_info']['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
 		{
 			// this will return a string that has (1) been serialized (2) had addslashes applied
 			// and (3) been encrypted with mcrypt (assuming mcrypt is enabled and working)
-			$encrypted_passwd = $phpgw->crypto->encrypt($encrypted_passwd);
+			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
+			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
+			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
+			$encrypted_passwd = $crypto->encrypt($encrypted_passwd);
 		}
 		else
 		{
@@ -1258,15 +1019,16 @@
 	*/
 	function decrypt_email_passwd($data)
 	{
-		global $phpgw_info, $phpgw;
-
 		$passwd = $data;
-		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		if ($GLOBALS['phpgw_info']['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
 		{
 			// this will return a string that has:
 			// (1) been decrypted with mcrypt (assuming mcrypt is enabled and working)
 			// (2) had stripslashes applied and (3) *MAY HAVE* been unserialized
-			$passwd = $phpgw->crypto->decrypt($passwd);
+			$cryptovars[0] = md5($GLOBALS['phpgw_info']['server']['encryptkey']);
+			$cryptovars[1] = $GLOBALS['phpgw_info']['server']['mcrypt_iv'];
+			$crypto = CreateObject('phpgwapi.crypto', $cryptovars);
+			$passwd = $crypto->decrypt($passwd);
 		}
 		else
 		{
@@ -1313,14 +1075,14 @@
 				{
 					// (3) SAVE THE FIXED / UPGRADED PASSWD TO PREFS
 					// feed the unserialized / fixed passwd in the prefs class
-					$phpgw->preferences->delete("email","passwd");
+					$GLOBALS['phpgw']->preferences->delete('email','passwd');
 					// make any html quote entities back to real form (i.e. ' or ")
 					$encrypted_passwd = $this->html_quotes_decode($passwd);
 					// encrypt it as it would be as if the user had just submitted the preferences page (no need to strip slashes, no POST occured)
 					$encrypted_passwd = $this->encrypt_email_passwd($passwd);
 					// store in preferences so this does not happen again
-					$phpgw->preferences->add("email","passwd",$encrypted_passwd);
-					$phpgw->preferences->save_repository();
+					$GLOBALS['phpgw']->preferences->add('email','passwd',$encrypted_passwd);
+					$GLOBALS['phpgw']->preferences->save_repository();
 				}
 			}
 			// #### (end) Upgrade Routine for 0.9.12 and earlier versions ####
@@ -1335,13 +1097,11 @@
 	// ---  should not be used, this is taken care of in create_email_preferences  -----
 	function get_email_passwd()
 	{
-		global $phpgw_info, $phpgw;
-		
-		$tmp_prefs = $phpgw->preferences->read();
+		$tmp_prefs = $GLOBALS['phpgw']->preferences->read();
 
 		if (!isset($tmp_prefs['email']['passwd']))
 		{
-			return $phpgw_info['user']['passwd'];
+			return $GLOBALS['phpgw_info']['user']['passwd'];
 		}
 		else
 		{
@@ -1402,8 +1162,6 @@
 	*/
 	function make_rfc_addy_array($data)
 	{
-		global $phpgw;
-
 		// if we are fed a null value, return nothing (i.e. a null value)
 		if (isset($data))
 		{
@@ -1456,7 +1214,7 @@
 			if ($debug_explode) { echo '[known sep] PRE replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
 			//$known_sep_item = "_SEP_COMPLEX_SEP_";
 			// introduce some randomness to make accidental replacements less likely
-			$sep_rand = $phpgw->common->randomstring(3);
+			$sep_rand = $GLOBALS['phpgw']->common->randomstring(3);
 			$known_sep_item = "_SEP_COMPLEX_".$sep_rand."_SEP_";
 			$data = str_replace('" <',$known_sep_item,$data);
 			if ($debug_explode) { echo '[known sep] POST replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
@@ -1468,7 +1226,7 @@
 			if ($debug_explode) { echo 'PRE replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
 			//$comma_replacement = "_C_O_M_M_A_";
 			// introduce some randomness to make accidental replacements less likely
-			$comma_rand = $phpgw->common->randomstring(3);
+			$comma_rand = $GLOBALS['phpgw']->common->randomstring(3);
 			$comma_replacement = "_C_O_M_".$comma_rand."_M_A_";
 			//$data = preg_replace('/(".*?)[,](.*?'.$known_sep_item.')/',"$1"."$comma_replacement "."$2", $data);
 			//$data = preg_replace('/(".*?)(?<!>)[,](.*?'.$known_sep_item.')/',"$1"."$comma_replacement"."$2", $data);
@@ -1713,12 +1471,11 @@
 	// ----  Create a Unique Mime Boundary  -----
 	function make_boundary($part_length=4)
 	{
-		global $phpgw;
 		$part_length = (int)$part_length;
 		
 		$rand_stuff = Array();
 		$rand_stuff[0]['length'] = $part_length;
-		$rand_stuff[0]['string'] = $phpgw->common->randomstring($rand_stuff[0]['length']);
+		$rand_stuff[0]['string'] = $GLOBALS['phpgw']->common->randomstring($rand_stuff[0]['length']);
 		$rand_stuff[0]['rand_numbers'] = '';
 		for ($i = 0; $i < $rand_stuff[0]['length']; $i++)
 		{
@@ -1735,7 +1492,7 @@
 			}
 		}
 		$rand_stuff[1]['length'] = $part_length;
-		$rand_stuff[1]['string'] = $phpgw->common->randomstring($rand_stuff[1]['length']);
+		$rand_stuff[1]['string'] = $GLOBALS['phpgw']->common->randomstring($rand_stuff[1]['length']);
 		$rand_stuff[1]['rand_numbers'] = '';
 		for ($i = 0; $i < $rand_stuff[1]['length']; $i++)
 		{
@@ -1751,8 +1508,8 @@
 				$rand_stuff[1]['rand_numbers'] .= ord($rand_stuff[1]['string'][$i]);
 			}
 		}
-		$unique_boundary = '---=_Next_Part_'.$rand_stuff[0]['rand_numbers'].'_'.$phpgw->common->randomstring($part_length)
-			.'_'.$phpgw->common->randomstring($part_length).'_'.$rand_stuff[1]['rand_numbers'];
+		$unique_boundary = '---=_Next_Part_'.$rand_stuff[0]['rand_numbers'].'_'.$GLOBALS['phpgw']->common->randomstring($part_length)
+			.'_'.$GLOBALS['phpgw']->common->randomstring($part_length).'_'.$rand_stuff[1]['rand_numbers'];
 		
 		return $unique_boundary;
 	}
@@ -1760,15 +1517,13 @@
 	// ----  Create a Unique RFC2822 Message ID  -----
 	function make_message_id()
 	{
-		global $phpgw, $phpgw_info;
-		
-		if ($phpgw_info['server']['hostname'] != '')
+		if ($GLOBALS['phpgw_info']['server']['hostname'] != '')
 		{
-			$id_suffix = $phpgw_info['server']['hostname'];
+			$id_suffix = $GLOBALS['phpgw_info']['server']['hostname'];
 		}
 		else
 		{
-			$id_suffix = $phpgw->common->randomstring(3).'local';
+			$id_suffix = $GLOBALS['phpgw']->common->randomstring(3).'local';
 		}
 		// gives you timezone dot microseconds space datetime
 		$stamp = microtime();
@@ -1779,7 +1534,7 @@
 		// formay the datetime into YYYYMMDD
 		$stamp[1] = date('Ymd', $stamp[1]);
 		// a small random string for the middle
-		$rand_middle = $phpgw->common->randomstring(3);
+		$rand_middle = $GLOBALS['phpgw']->common->randomstring(3);
 		
 		$mess_id = '<'.$stamp[1].'.'.$rand_middle.'.'.$stamp[0].'@'.$id_suffix.'>';
 		return $mess_id;
@@ -1817,8 +1572,6 @@
 	// currently only qprint and base64 encoding is specified by RFCs
 	function decode_header_string($string)
 	{
-		global $phpgw;
-
 		if($string)
 		{
 			$pos = strpos($string,"=?");
@@ -1854,7 +1607,7 @@
 			$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
 			if(strtoupper($encoding) == "Q")
 			{
-				$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
+				$decoded = $GLOBALS['phpgw']->msg->qprint(str_replace("_"," ",$encoded_text));
 			}
 			if (strtoupper($encoding) == "B")
 			{
@@ -2061,7 +1814,7 @@
 		// linesize. Linebrakes (\n\n) are added when neccessary,
 		// but only between words.
 
-		$out="";
+		$out='';
 		$exploded = explode ("\r\n",$in);
 
 		for ($i = 0; $i < count($exploded); $i++)
@@ -2070,14 +1823,14 @@
 			$this_line_len = strlen($this_line); 
 			if ($this_line_len > $size)
 			{
-				$temptext="";
-				$temparray = explode (" ",$this_line);
+				$temptext='';
+				$temparray = explode (' ',$this_line);
 				$z = 0;
 				while ($z <= count($temparray))
 				{
-					while ((strlen($temptext." ".$temparray[$z]) < $size) && ($z <= count($temparray)))
+					while ((strlen($temptext.' '.$temparray[$z]) < $size) && ($z <= count($temparray)))
 					{
-						$temptext = $temptext." ".$temparray[$z];
+						$temptext = $temptext.' '.$temparray[$z];
 						$z++;
 					}
 					$out = $out."\r\n".$temptext;
@@ -2147,8 +1900,6 @@
 	*/
 	function is_serialized($data)
 	{
-		global $phpgw_info, $phpgw;
-		
 		/* not totally complete: currently works with strings, arrays, and booleans (update this if more is added) */
 		
 		 /* FUTURE: detect a serialized data that had addslashes appplied AFTER it was serialized
