@@ -126,28 +126,6 @@ class bojinn
 	}
 
 	/****************************************************************************\
-	 * adminfunction for saving sitedata                                          *
-	 \****************************************************************************/
-/*
-	function save_site_data()
-	{
-		$data = Array(
-				'name'         => $GLOBALS['HTTP_POST_VARS']['new_site']['name'],
-				'title'        => $GLOBALS['HTTP_POST_VARS']['new_site']['title'],
-				'description'  => $GLOBALS['HTTP_POST_VARS']['new_site']['description'],
-				'db_host'      => $GLOBALS['HTTP_POST_VARS']['new_site']['db_host'],
-				'db_name'      => $GLOBALS['HTTP_POST_VARS']['new_site']['db_name'],
-				'db_user'      => $GLOBALS['HTTP_POST_VARS']['new_site']['db_user'],
-				'db_password'  => $GLOBALS['HTTP_POST_VARS']['new_site']['db_password']
-			     );
-
-		$this->so->insert_site_data($data);
-
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/admin/index.php',''));
-		$GLOBALS['phpgw']->common->phpgw_exit();
-	}
-*/
-	/****************************************************************************\
 	 * format timestamp date to europian format                                   *
 	 \****************************************************************************/
 	// gebruik zo snel mogelijk phpgwapi functie
@@ -180,8 +158,6 @@ class bojinn
 
 	function get_sites($uid)
 	{
-
-
 		$groups=$GLOBALS['phpgw']->accounts->membership();
 
 		if (count ($groups)>0)
@@ -224,11 +200,6 @@ class bojinn
 
 	function get_site_tables($site_id)
 	{
-
-		//get databasename
-		//$site_db_name=$this->get_phpgw_records('phpgw_jinn_sites',"site_id='$site_id'",'','','name');
-		//die (var_dump($site_db_name).$site_db_name[0]['site_db_name']);
-		//get tables for database
 		$tables=$this->so->get_table_names($site_id);
 		return $tables;
 	}
@@ -240,7 +211,6 @@ class bojinn
 
 	function make_table_options($tables,$selected_table)
 	{
-		//die(var_dump($tables));
 		$options.="<option value=\"\">------------------</option>\n";
 		foreach ( $tables as $table ) {
 			unset($SELECTED);
@@ -554,7 +524,6 @@ class bojinn
 
 
 		$data=$this->make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
-	//	die(var_dump($data));	
 		$status=$this->so->update_phpgw_data($table,$data, $where_condition);
 
 		return $status;
@@ -592,12 +561,8 @@ class bojinn
 	function insert_object_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES)
 	{
 
-		//		$many_data=$this->make_http_vars_pairs_many($HTTP_POST_VARS,$HTTP_POST_FILES);
-
-		//		$status=$this->so->update_object_many_data($this->site_id,$many_data);
-
 		$data=$this->make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
-		$image_data=$this->add_image_data($HTTP_POST_VARS,$HTTP_POST_FILES);
+		//$image_data=$this->add_image_data($HTTP_POST_VARS,$HTTP_POST_FILES);
 		$attachment_data=$this->add_attachment_data($HTTP_POST_VARS,$HTTP_POST_FILES);
 
 		if (is_array($data) && is_array($image_data))
@@ -611,8 +576,6 @@ class bojinn
 		}
 
 		$status=$this->so->insert_object_data($this->site_id,$table,$data);
-
-
 
 		return $status;
 	}
@@ -631,7 +594,7 @@ class bojinn
 
 		$data=$this->make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
 		$attachment_data=$this->add_attachment_data($HTTP_POST_VARS,$HTTP_POST_FILES);
-		$image_data=$this->add_image_data($HTTP_POST_VARS,$HTTP_POST_FILES);
+//		$image_data=$this->add_image_data($HTTP_POST_VARS,$HTTP_POST_FILES);
 
 		if (is_array($data) && is_array($attachment_data))
 		{
@@ -648,245 +611,6 @@ class bojinn
 		return $status;
 	}
 
-
-	/****************************************************************************\
-	 * main image data function                                                   *
-	 \****************************************************************************/
-	function add_image_data($HTTP_POST_VARS,$HTTP_POST_FILES)
-	{
-
-
-		$upload_path= trim($this->site_object['upload_path']);
-
-
-		//// workaround for use of img_path and image_path as names. 'image_path' will be official
-		if ($GLOBALS['HTTP_POST_FILES']['img_path'])
-		{
-			$image_input_handle=$GLOBALS['HTTP_POST_FILES']['img_path'];
-			$image_path_field_name='img_path';
-		}
-		else
-		{
-			$image_input_handle=$GLOBALS['HTTP_POST_FILES']['image_path'];
-			$image_path_field_name='image_path';
-		}
-
-
-		/// deleting images if neccesary thirst
-		$images_to_delete=$this->filter_array_with_prefix($HTTP_POST_VARS,'IMGDEL');
-		if (count($images_to_delete)>0){
-
-			$image_path_changed=True;
-
-			// delete from harddisk
-			foreach($images_to_delete as $image_to_delete)
-			{
-				if (!@unlink($upload_path.'/'.$image_to_delete)) $unlink_error++;
-			}
-
-			$images_org=explode(';',$HTTP_POST_VARS[image_path_org]);
-			foreach($images_org as $image_org)
-			{
-				if (!in_array($image_org,$images_to_delete))
-				{
-					if ($image_path_new) $image_path_new.=';';
-					$image_path_new.=$image_org;
-				}
-			}
-		}
-		else
-		{
-			$image_path_new.=$HTTP_POST_VARS['image_path_org'];
-		}
-
-		/// deleting thumbs if neccesary thirst
-		$thumbs_to_delete=$this->filter_array_with_prefix($HTTP_POST_VARS,'TMBDEL');
-		if (count($thumbs_to_delete)>0){
-
-			$thumb_path_changed=True;
-
-			// delete from harddisk
-			foreach($thumbs_to_delete as $thumb_to_delete)
-			{
-				if (!@unlink($upload_path.'/'.$thumb_to_delete)) $unlink_error++;
-			}
-
-			// delete from table
-			$thumbs_org=explode(';',$HTTP_POST_VARS['thumb_path_org']);
-			//die ($thumb_org);
-			foreach($thumbs_org as $thumb_org)
-			{
-				if (!in_array($thumb_org,$thumbs_to_delete))
-				{
-					if ($thumb_path_new) $thumb_path_new.=';';
-					$thumb_path_new.=$thumb_org;
-				}
-			}
-		}
-		else
-		{
-			$thumb_path_new.=$HTTP_POST_VARS[thumb_path_org];
-		}
-
-
-		// finally adding new image and if neccesary a new thumb
-		if($GLOBALS['HTTP_POST_FILES']['image_path']['name'] || $GLOBALS['HTTP_POST_FILES']['img_path']['name'])
-		{
-
-			// new better error_messages
-
-			if(!is_dir($upload_path))
-			{
-				die (lang("<i>image upload root-directory</i> does not exist or is not correct ...<br>
-							please contact Administrator with this message"));
-			}
-
-			if(!is_dir($upload_path.'/normal_size') && !mkdir($upload_path.'/normal_size', 0755))
-			{
-				die (lang("<i>image normal_size-directory</i> does not exist and cannot be created ...<br>
-							please contact Administrator with this message"));
-			}
-
-			if(!is_dir($upload_path.'/normal_size') && !mkdir($upload_path.'/normal_size', 0755))
-			{
-				die (lang("<i>image normal_size-directory</i> does not exist and cannot be created ...<br>
-							please contact Administrator with this message"));
-			}
-
-			if($temporary_file = tempnam ($upload_path.'/normal_size', "test_")) // make temporary file name...
-			{
-				unlink($temporary_file);
-			} 
-			else
-			{
-				die (lang("<i>image normal_size-directory</i> is not writable ...<br>
-							please contact Administrator with this message"));
-			}
-
-			// get image configuration for this object and else use defaults and else use defaults defaults
-
-			/*************************
-			 * set image width
-			 *************************/
-
-			if($this->site_object['image_width']) 
-			{
-				$image_width=$this->site_object['image_width'];
-			}
-
-			elseif($this->current_config['default_image_width'])
-			{
-				$image_width=$this->current_config['default_image_width'];
-			}
-			else
-			{
-				die(lang('maximum image width isn\'t set in object-configuration and not in the defaults-settings ...<br>
-							please contact Administrator with this message"'));
-			}
-
-			/*****************
-			 * set image type *
-			 *****************/
-
-			if($this->site_object['image_type'])
-			{
-				$image_type=$this->site_object['image_type'];
-			}
-			elseif($this->current_config['default_image_type'])
-			{
-				$image_type=$this->current_config['default_image_type'];
-			}
-			else
-			{
-				$image_type='png';
-			}
-
-
-			/*************************************
-			 * make unique name base on date/time *
-			 *************************************/
-
-			$img_file_name='img-'.time().'.'.$image_type;
-
-			$imgsize = GetImageSize($image_input_handle['tmp_name']);
-			if ($imgsize[0] > $image_width)
-			{
-				$width=$image_width;
-			}
-			else
-			{
-				$width=$imgsize[0];
-			}
-
-			//if(!$width) die('Maximum image width is not set, please set this globaly or for this object');
-
-			$tmppath=$this->convertImage ($image_input_handle, $width,$image_type);
-
-
-
-			if (copy($tmppath, $upload_path."/normal_size/".$img_file_name))
-			{
-
-				if($image_path_new) $image_path_new .= ';';
-				$image_path_new.="normal_size/".$img_file_name;
-
-			}
-			else
-			{
-				die ("failed to copy $file...<br>\n");
-			}
-			@unlink($tmppath);
-
-			// if thumb_path exists in site-table
-			if($GLOBALS['HTTP_POST_VARS']['thumb_path'])
-			{
-				if($this->site_object['thumb_width']) $thumb_width=$this->site_object['thumb_width'];
-				else $thumb_width=$this->current_config['default_thumb_width'];
-
-				if(!is_dir($upload_path.'/thumb') && !mkdir($upload_path.'/thumb', 0755))
-				{
-					die (lang("thumb directory does not exist or is not correct ...<br>please check object's upload dir"));
-				}
-
-				$tmppath=$this->convertImage ($image_input_handle,$thumb_width,$image_type);
-				if (copy($tmppath, $upload_path."/thumb/".$img_file_name))
-				{
-
-					if($thumb_path_new) $thumb_path_new .= ';';
-					$thumb_path_new.="thumb/".$img_file_name;
-				}
-				else
-				{
-					die ("failed to copy $file...<br>\n");
-				}
-				@unlink($tmppath);
-
-			}
-
-		}
-
-
-		//// make return array for storage
-		if($image_path_new || $image_path_changed)
-		{
-			$data[] = array
-				(
-				 'name' => $image_path_field_name,
-				 'value' => $image_path_new
-				);
-		}
-
-		if($thumb_path_new || $thumb_path_changed)
-		{
-			$data[] = array
-				(
-				 'name' => 'thumb_path',
-				 'value' => $thumb_path_new
-				);
-		}
-
-		return $data;
-	}
 
 
 	/****************************************************************************\
@@ -1071,40 +795,22 @@ class bojinn
 		while(list($key, $val) = each($HTTP_POST_VARS)) 
 		{
 
-			/*
-			   if (substr($key,0,3)=='SEP')
-			   {
-			   $new_var = substr($key,strpos($key, "_"));
-			   if($last_var==$new_var)
-			   {
-			// go on with array
-			$data[count($data)][$last_var]='$val'; 
-
-			}
-			else
-			{
-			// start new array
-
-			}
-
-			$last_var = $new_var;
-
-			}
-
-			 */
 			if(substr($key,0,3)=='FLD')
 			{
-				// get_fsp_plugin met key en val en kom terug met array
-				//$data=$this->plugins->get_fsp_plugin(substr($key,3),$val);			
-
-				//if(!$data)
-				//{
+				if ($filtered_data=$this->plug->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))
+				{
+					$data=array_merge($data,$filtered_data);
+				}
+				else // if there's no plugin, just save the vals
+				{
 					$data[] = array
 						(
 						 'name' => substr($key,3),
 						 'value' => addslashes($val) 
 						);
-				//}
+				}
+
+				
 			}
 		}
 

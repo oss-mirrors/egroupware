@@ -29,44 +29,37 @@
 		* plugin can be used for                                              *
 		\*********************************************************************/
 
-
-
-
+//global $local_bo;
+//var_dump($local_bo);
 
 /* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN */
 $this->plugins['default_area']['name'] 			= 'def_text';
 $this->plugins['default_area']['title']			= 'default area plugin';
 $this->plugins['default_area']['version']		= '1.0';
-$this->plugins['default_area']['enable']			= 1;
+$this->plugins['default_area']['enable']		= 1;
 $this->plugins['default_area']['db_field_hooks']	= array
 (
 	'text',
 );
 
-function plugin_def_text($field_name,$value, $config, $local_bo)
+function plg_fi_def_text($field_name,$value, $config, $local_bo)
 {
-
-	$input='
-	<textarea name="'.$field_name.'" style="width:100%; height:200">'.$value.'</textarea>
-	';
+	$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.$value.'</textarea>';
 
 	return $input;
 }	
 
-
-
-
 /* DEFAULT/FALLBACK VARCHAR PLUGIN */
 $this->plugins['default_varchar']['name'] 			= 'def_varchar';
 $this->plugins['default_varchar']['title']			= 'default varchar plugin';
-$this->plugins['default_varchar']['version']			= '1.0';
+$this->plugins['default_varchar']['version']		= '1.0';
 $this->plugins['default_varchar']['enable']			= 1;
 $this->plugins['default_varchar']['db_field_hooks']	= array
 (
 	'string',
 );
 
-function plugin_def_string($field_name, $value, $config, $local_bo)
+function plg_fi_def_string($field_name, $value, $config, $local_bo)
 {
 	$input='<input type="text" name="'.$field_name.'" input_max_length" value="'.$value.'">';
 
@@ -74,50 +67,41 @@ function plugin_def_string($field_name, $value, $config, $local_bo)
 
 }	
 
-
-
-
-
 /* DEFAULT/FALLBACK INTEGER PLUGIN */
 $this->plugins['default_int']['name'] 			= 'def_int';
 $this->plugins['default_int']['title']			= 'default int plugin';
-$this->plugins['default_int']['version']			= '1.0';
+$this->plugins['default_int']['version']		= '1.0';
 $this->plugins['default_int']['enable']			= 1;
 $this->plugins['default_int']['db_field_hooks']	= array
 (
 	'int',	
 );
 
-function plugin_def_int($field_name,$value, $config, $local_bo)
+function plg_fi_def_int($field_name,$value, $config, $local_bo)
 {
 	$input='<input type="text" name="'.$field_name.'" size="10" value="'.$value.'">';
 
 	return $input;
 
 }
-			
 						
-						
-						
-						
-/* DEFAULT/FALLBACK INTEGER PLUGIN */
+/* DEFAULT/FALLBACK TIMESPAMP/DATE PLUGIN */
 $this->plugins['default_int']['name'] 			= 'def_timestamp';
 $this->plugins['default_int']['title']			= 'default timestamp plugin';
-$this->plugins['default_int']['version']			= '1.0';
+$this->plugins['default_int']['version']		= '1.0';
 $this->plugins['default_int']['enable']			= 1;
 $this->plugins['default_int']['db_field_hooks']	= array
 (
 	'timestamp',	
 );
 
-function plugin_def_timestamp($field_name,$value, $config, $local_bo)
+function plg_fi_def_timestamp($field_name,$value, $config, $xxx)
 {
-	//$input='<input type="text" name="'.$field_name.'" size="10" value="'.$value.'">';
 
-	$input=$this->bo->format_date($value);
+	global $local_bo;
+	$input=$local_bo->format_date($value);
 	
 	return $input;
-
 }
 
 

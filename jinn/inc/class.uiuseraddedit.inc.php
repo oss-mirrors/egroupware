@@ -120,10 +120,10 @@
 				// move to standard plugins
 				elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
 				{
-					$input=$this->bo->plug->get_plugin($input_name,$value,'text');
+					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
 
 				}
-				elseif ($fieldproperties[name]=='thumb_path')
+/*				elseif ($fieldproperties[name]=='thumb_path')
 				{
 					unset($input);
 					if($value)
@@ -150,7 +150,7 @@
 					$input.='<input type="hidden" name="'.$fieldproperties[name].'" value="True">'.lang('automatic');
 
 				}
-
+*/
 				/*************************************
 				* start attachments
 				*************************************/
@@ -195,7 +195,7 @@
 
 				elseif ($fieldproperties[type]=='string')
 				{
-					$input=$this->bo->plug->get_plugin($input_name,$value,'string');
+					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'string');
 				}
 
 				// int int int int int int int int int
@@ -213,7 +213,7 @@
 					}
 					else
 					{	
-						$input=$this->bo->plug->get_plugin($input_name,$value,'int');						
+						$input=$this->bo->plug->get_plugin_fi($input_name,$value,'int');						
 					}
 				}
 
@@ -222,7 +222,7 @@
 				{
 					if ($value)
 					{
-						$input=$this->bo->plug->get_plugin($input_name,$value,'timestamp');
+						$input=$this->bo->plug->get_plugin_fi($input_name,$value,'timestamp');
 					}
 					else
 					{
@@ -237,7 +237,7 @@
 
 				elseif ($fieldproperties[type]=='blob') //then it is a textblob
 				{
-					$input=$this->bo->plug->get_plugin($input_name,$value,'text');
+					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
 				}
 
 				$this->template->set_var('row_color',$row_color);
@@ -252,6 +252,7 @@
 			* MANY WITH MANY RELATION SECTION OF FORM      *
 			***********************************************/
 
+			// this below must move to class.uirelations.inc.php
 			/*	check for many with many relations. 
 			if so make double selectionbox		*/
 

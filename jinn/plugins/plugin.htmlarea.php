@@ -25,8 +25,8 @@
 	//$this->plugins['form']['list'][]='htmlarea';
 	$this->plugins['htmlarea']['name']		= 'htmlarea';
 	$this->plugins['htmlarea']['title']		= 'HTMLarea plugin';
-	$this->plugins['htmlarea']['version']		= '0.9';
-	$this->plugins['htmlarea']['enable']		= 1;
+	$this->plugins['htmlarea']['version']	= '0.9';
+	$this->plugins['htmlarea']['enable']	= 1;
 	$this->plugins['htmlarea']['db_field_hooks']	= array
 	(
 		'text',
@@ -42,7 +42,7 @@
 
 	// funcion must be called like this: 'plugin_[plugin_name]'
 
-	function plugin_htmlarea($field_name,$value, $config, $local_bo)
+	function plg_fi_htmlarea($field_name,$value, $config, $local_bo)
 	{
 
 	$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/';
@@ -95,4 +95,9 @@
 	return $input;
 }
 
+/*function plg_sf_htmlarea()
+{
+
+}
+*/
 ?>

@@ -64,6 +64,10 @@ TODO - Not branched
 	- plugin-uploader (from tarball)
 	- plugin-code validator
 	- Write plugin documentation
+	- plugin: colorpicker, hide_this_field, htmlArea, flashArea, datepicker, yes_no, attachment_upload, image_upload
+
+- Other session vars for admin so that the JiNN remembers the state of the user as the state fo the admin
+- Remember order by http_vars
 
 - Code
         - display_func.js opruimen

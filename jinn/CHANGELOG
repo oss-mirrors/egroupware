@@ -3,6 +3,8 @@
                 CHANGELOG jinn for phpGroupWare
 
 ===================================================================================
+- fixed bug in display_func.js strValues undefined
+
 version 0.4.4pre5
 mo maa 04 01:12:34 UTC 2003
 ===========================

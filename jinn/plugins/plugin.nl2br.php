@@ -44,16 +44,16 @@ $this->plugins['nl2br']['config']		= array
 	'No_configuration_options_actualy'=>'Nop'
 );
 
-// funcion must be called like this: 'plugin_[plugin_name]'
+// funcion must be called like this: 'plg_[plugin_name]'
 
-function fi_nl2br($input)
+function plg_fi_nl2br($input)
 {
 	//$output=nl2br($input);
 	
 	return $input;
 }
 
-function sf_nl2br($input)
+function plg_sf_nl2br($input)
 {
 	$output=nl2br($input);
 	

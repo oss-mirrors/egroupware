@@ -39,15 +39,7 @@
 
 		function site_db_connection($site_id)
 		{
-
-			//echo '<P><P><P>';
-			//var_dump($this->phpgw_db);
 			$SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id'";
-			
-			//echo '<P><P><P>';
-			//echo $SQL;
-			//echo '<P><P><P>';
-
 			
 			$this->phpgw_db->free();
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
@@ -142,7 +134,7 @@
 			        'name'=>$this->phpgw_db->f('name'),
 			        'table_name'=>$this->phpgw_db->f('table_name'),
 			        'upload_path'=>$this->phpgw_db->f('upload_path'),
-                    'upload_url'=>$this->phpgw_db->f('image_dir_url'),
+                    'upload_url'=>$this->phpgw_db->f('upload_url'),
 					'relations'=>$this->phpgw_db->f('relations'),
 					'plugins'=>$this->phpgw_db->f('plugins')
 				);
