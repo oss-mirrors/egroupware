@@ -92,7 +92,7 @@
 				{
 					$error[] = lang('Plase select an application for transport !');					
 				}
-				elseif (! $values['r_user'] || !$values['r_pwd']))
+				elseif (! $values['r_user'] || ! $values['r_pwd'])
 				{
 					$error[] = lang('Plase enter username and password !');					
 				}
