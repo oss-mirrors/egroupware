@@ -115,7 +115,12 @@
 			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
 			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
-			$this->connectionStatus = $this->bofelamimail->openConnection();
+			// this need to fixed
+			// this does not belong to here
+			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin')
+			{
+				$this->connectionStatus = $this->bofelamimail->openConnection();
+			}
 
 			$this->rowColor[0] = $GLOBALS['phpgw_info']["theme"]["row_on"];
 			$this->rowColor[1] = $GLOBALS['phpgw_info']["theme"]["row_off"];
@@ -381,7 +386,6 @@
 				$GLOBALS['phpgw']->log->commit();
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			
 			
 			if(!empty($_POST['profileID']) && is_int(intval($_POST['profileID'])))
 			{

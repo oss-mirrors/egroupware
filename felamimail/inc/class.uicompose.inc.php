@@ -127,6 +127,9 @@
 			// read the data from session
 			// all values are empty for a new compose window
 			$sessionData = $this->bocompose->getSessionData();
+			$preferences = ExecMethod('felamimail.bopreferences.getPreferences');
+			
+			#_debug_array($preferences);
 			
 			// is the to address set already?
 			if (!empty($GLOBALS['HTTP_GET_VARS']['send_to']))
@@ -173,7 +176,8 @@
 			}
 			
 			// header
-			$this->t->set_var("from",htmlentities($this->bocompose->getUserName(),ENT_QUOTES));
+			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES);
+			$this->t->set_var("from",$displayFrom);
 			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES));
 			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES));
 			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES));

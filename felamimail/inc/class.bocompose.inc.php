@@ -380,8 +380,8 @@
 			#include(PHPGW_APP_ROOT . "/config/config.php");
 				
 			$mail->IsSMTP();
-			$mail->From 	= $this->preferences['emailAddress'];
-			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['realname']);
+			$mail->From 	= $this->preferences['emailAddress'][0]['address'];
+			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['emailAddress'][0]['name']);
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
 			$mail->Priority = $this->sessionData['priority'];
 			$mail->Encoding = 'quoted-printable';

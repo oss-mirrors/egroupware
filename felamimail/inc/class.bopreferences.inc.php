@@ -32,12 +32,14 @@
 		
 		function getPreferences()
 		{
-			$imapServerTypes = $this->boemailadmin->getIMAPServerTypes();
-			$profileData = $this->boemailadmin->getProfile($this->profileID);
+			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
+			$profileData		= $this->boemailadmin->getProfile($this->profileID);
+			
+			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
 			
 			#$imapServerTypes[$profileData['imapType']]['protocol'];
 			
-			#_debug_array($profileData);
+			#_debug_array($usersEMailAddresses);
 			
 			$felamimailUserPrefs = $GLOBALS['phpgw_info']['user']['preferences']['felamimail'];
 			
@@ -58,37 +60,37 @@
 			if(!empty($profileData['organisationName']))
 				$data['organizationName']	= $profileData['organisationName'];
 
-			$data['emailAddress']		= $data['username']."@".$profileData['defaultDomain'];
+			$data['emailAddress']		= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
 			$data['smtpAuth']		= $profileData['smtpAuth'];
 			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
 			$data['imapAdminPW']		= $profileData['imapAdminPW'];
 
-			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
-			{
-				// do a ldap lookup to fetch users email address
-				$ldap = $GLOBALS['phpgw']->common->ldapConnect();
-				$filter = sprintf("(&(uid=%s)(objectclass=posixAccount))",$GLOBALS['phpgw_info']['user']['userid']);
-				
-				$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
-				if ($sri)
-				{
-					$allValues = ldap_get_entries($ldap, $sri);
-
-
-					if(isset($allValues[0]['emailaddress'][0]))
-					{
-						$data['emailAddress']		= $allValues[0]['emailaddress'][0];
-					}
-					elseif(isset($allValues[0]['maillocaladdress'][0]))
-					{
-						$data['emailAddress']           = $allValues[0]['maillocaladdress'][0];
-					}
-					elseif(isset($allValues[0]['mail'][0]))
-					{
-						$data['emailAddress']           = $allValues[0]['mail'][0];
-					}
-				}
-			}
+#			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
+#			{
+#				// do a ldap lookup to fetch users email address
+#				$ldap = $GLOBALS['phpgw']->common->ldapConnect();
+#				$filter = sprintf("(&(uid=%s)(objectclass=posixAccount))",$GLOBALS['phpgw_info']['user']['userid']);
+#				
+#				$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+#				if ($sri)
+#				{
+#					$allValues = ldap_get_entries($ldap, $sri);
+#
+#
+#					if(isset($allValues[0]['emailaddress'][0]))
+#					{
+#						$data['emailAddress']		= $allValues[0]['emailaddress'][0];
+#					}
+#					elseif(isset($allValues[0]['maillocaladdress'][0]))
+#					{
+#						$data['emailAddress']           = $allValues[0]['maillocaladdress'][0];
+#					}
+#					elseif(isset($allValues[0]['mail'][0]))
+#					{
+#						$data['emailAddress']           = $allValues[0]['mail'][0];
+#					}
+#				}
+#			}
 			
 			// check for user specific settings
 			#_debug_array($felamimailUserPrefs);
@@ -103,7 +105,12 @@
 					$data['key']			= $felamimailUserPrefs['key'];
 
 				if(!empty($felamimailUserPrefs['emailAddress']))
-					$data['emailAddress']		= $felamimailUserPrefs['emailAddress'];
+					$data['emailAddress']		= array(
+										array(
+											'address'	=> $felamimailUserPrefs['emailAddress'],
+											'type'		=> 'default'
+										)
+									);
 
 				if(!empty($felamimailUserPrefs['imapServerAddress']))
 					$data['imapServerAddress']	= $felamimailUserPrefs['imapServerAddress'];
