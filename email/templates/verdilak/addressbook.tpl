@@ -1,3 +1,4 @@
+<!-- $Id$ -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <HTML LANG="en">
 <head>
@@ -38,26 +39,43 @@ function ExchangeCc(thisform)
 </head>
 <body bgcolor="{bg_color}">   
 <center>
-<p>{lang_addressbook_action}<br>
+<p><font face="{font}"><b>{lang_addressbook_action}</b></font><br>
 <hr noshade width="98%" align="center" size="1">
 
- {total_matchs}
- {next_matchs}
-	
-  <table width=100% border=0 cellspacing=1 cellpadding=3>
-    <tr bgcolor="{th_bg}">
-      <td width="30%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
-      <td width="30%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
-      <td width="35%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
+<table border="0" width="100%" cellspacing="2" cellpadding="2">
+ <tr>
+  <td colspan="4" align="left">
+   <table border="0" width="100%">
+    <tr>
+    {left}
+    <td align="center">{lang_showing}</td>
+    {right}
     </tr>
-  </form>
+   </table>
+   </td>
+  </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="4" align=right>
+  <form method="post" action="{searchurl}">
+  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+  </form></td>
+ </tr>
+
+    <tr bgcolor="{th_bg}">
+      <td width="20%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
+      <td width="20%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
+      <td width="20%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_etype}</font></td>
+      <td width="40%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
+    </tr>
   
 <!-- BEGIN addressbook_list -->
       <tr bgcolor="{tr_color}">
-	<td width=30%><font face="{font}">{firstname}</font></td>
-        <td width=30%><font face="{font}">{lastname}</font></td>
+	<td><font face="{font}">{firstname}</font></td>
+        <td><font face="{font}">{lastname}</font></td>
+        <td align="center"><font face="{font}">{etype}</font></td>
 	<form>
-        <td align=center width="35%"><font face="{font}"><input type="text" size="25" name="email" value="{email}">
+        <td align="center"><font face="{font}"><input type="text" size="25" name="email" value="{email}">
 	<input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
         <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
       </form>    
@@ -65,10 +83,10 @@ function ExchangeCc(thisform)
 <!-- END addressbook_list -->
 
   </table>
-  <table cellpadding=3 cellspacing=1>
+  <table cellpadding="2" cellspacing="2">
       <tr> 
     <form>  
-    <td><font face="{font}"><input type="button" name="Done" value="{lang_done}" onClick="window.close()"></font>
+    <td><font face="{font}"><input type="button" name="done" value="{lang_done}" onClick="window.close()"></font>
       </form>
       </td>
     </tr>
