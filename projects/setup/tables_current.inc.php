@@ -118,7 +118,7 @@
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'invoice_id' => array('type' => 'int', 'precision' => 4,'default' => 0,'nullable' => False),
-				'order_id' => array('type' => 'int', 'precision' => 4,'default' => 0,'nullable' => False)
+				'hours_id' => array('type' => 'int', 'precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
