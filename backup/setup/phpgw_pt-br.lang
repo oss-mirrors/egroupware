@@ -1,0 +1,56 @@
+absolute path of the backup directory		pt-br	Caminho absoluto do diretório de backup (e.g.:usr/local/www/egroupware/backup/archive)
+absolute path of the directory to store the backup script		pt-br	Caminho absoluto do diretório do aplicativo de backup EGW
+archive type		pt-br	Selecione seu tipo de arquivo
+backup		pt-br	Backup
+backup administration		pt-br	Administração do Backup
+bzip2		pt-br	bzip2
+configuration backup		pt-br	Configuração do Backup
+configuration localhost		pt-br	Configuração da máquina local
+create backups of your data ?		pt-br	Selecione para criar backup de seus dados:
+daily		pt-br	diariamente
+data		pt-br	Dados
+directory locations		pt-br	Localização de diretórios
+directory names		pt-br	Nome de diretórios
+e-mail		pt-br	Selecione para receber notificações por Correio Eletrônico
+homedirs		pt-br	Diretórios pessoais
+interval		pt-br	Intervalo
+ip or hostname		pt-br	Endereço IP ou nome do computador
+ldap		pt-br	LDAP
+ldap database		pt-br	Base de dados LDAP
+maildir		pt-br	Endereço eletrônico para notificação
+monthly		pt-br	mensalmente
+mysql		pt-br	MySQL
+no backup archives available !		pt-br	Nenhumarquivo de backup disponível
+number of stored backup versions		pt-br	Numero de backups armazenados a serem mantidos antes de apagar os antigos:
+operating system		pt-br	Sistema operacional
+pgsql		pt-br	PostgreSQL
+php cgi		pt-br	Caminho completo do executável do PHP (eg: /usr/local/bin/php)
+please enter the path of the needed applications in *site configuration* !		pt-br	Por favor digite o caminho do aplicativo necessário em *Configuração do site*!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !		pt-br	Digite o caminho do diretório de backup e/ou habilite a exibição de arquivos no eGroupware
+please enter username and password for remote connection !		pt-br	Informe um usuário e senha para a conexão remota
+please select an application for transport to the remote host !		pt-br	Selecione um aplicativo para transporte para o servidor remoto
+please set the path to a local dir to store the backup script !		pt-br	Especifique o caminho do diretório local que armazenará o script de backup !
+please set the path to the ldap database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base LDAP em *Configuração do site*!
+please set the path to the mysql database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base MySQL em *Configuração do site*!
+please set the path to the postgresql database dir in *site configuration* !		pt-br	Especifique o caminho do diretório para a base PostgreSQL em *Configuração do site*!
+please set the values in *site configuration* !		pt-br	Por favor especifique os valores em *Configuração do site*!
+please specify the ip of the remote host !		pt-br	Por favor especifique o endereço ip do compuitador remoto
+please specify the name of the maildir in *site configuration* !		pt-br	Especifique o nome do Maildir *Configuração do site*!
+please specify the path to the backup directory !		pt-br	Especifique o caminho do diretório de backup !
+please specify the path to the user-homedirectories in *site configuration* !		pt-br	Especifique o caminho dos diretórios pessoais em *Configuração do site*!
+program locations		pt-br	Localiação dos programas
+save backup locally ?		pt-br	Selecione para salvar o backup localmente:
+select archive type		pt-br	Selecione o tipo de arquivo
+select interval		pt-br	Selecione o intervalo
+settings		pt-br	configurações
+show backup archives in phpgroupware ?		pt-br	Selecione para mostrar os arquivos de backup no eGroupware
+sql		pt-br	SQL
+tar		pt-br	tar
+tar.bz2		pt-br	tar.bz2
+tar.gz		pt-br	tar.gz
+the backup application is not configured for showing the archives in phpgroupware yet !		pt-br	O aplicativo de backup ainda não foi configurado para mostrar arquivos no eGroupware!
+the directory to store the backup script must be outside of the webservers *documentroot* !		pt-br	O diretório que armazena o script de backup deve estar dentro do *DocumentRoot* do servidor web
+versions can only be a number !		pt-br	versões devem ser apenas numéricas
+weekly		pt-br	semanalmente
+your sql database isnt supported by this application !		pt-br	Sua base de dados SQL não é suportada pelo aplicativo!
+zip		pt-br	zip

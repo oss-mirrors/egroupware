@@ -1,0 +1,75 @@
+!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	pt-br	!!! Você deve [Salvar} cada alteração manual nos campos acima antes de seguir para a próxima etapa!!!
+add	developer_tools	pt-br	adicionar
+add change	developer_tools	pt-br	Adicionar alteração
+add more	developer_tools	pt-br	Adicionar mais
+add new phrase	developer_tools	pt-br	Adicionar nova frase
+add phrase	developer_tools	pt-br	Adicionar frase
+allows you to add a single phrase	developer_tools	pt-br	Permite que você adicione um única frase
+application	developer_tools	pt-br	Aplicativo
+back	developer_tools	pt-br	Voltar
+cancel	developer_tools	pt-br	Cancelar
+change	developer_tools	pt-br	Alterar
+changelog entry has been added	developer_tools	pt-br	Changelog entry has been added
+changelogs	developer_tools	pt-br	Registros de alterações
+clears the internal buffer, all changes made sofar are lost	developer_tools	pt-br	Limpa o buffer interno, e todas as mudanças feitas até o presente momento serão perdidas
+create new language file	developer_tools	pt-br	Criar novo arquivo de idioma
+create sgml file	developer_tools	pt-br	Criar arquivo SGML
+developer tools	common	pt-br	Ferramentas de desenvolvedores
+developer tools - preferences	developer_tools	pt-br	Ferramentas de desenvolvimento - preferências
+developer_tools	common	pt-br	Ferramentas de tradução
+diary	developer_tools	pt-br	Diário
+done	developer_tools	pt-br	feito
+download	developer_tools	pt-br	Baixar
+download the lang-file to be saved in the apps setup-dir	developer_tools	pt-br	Baixar o arquivo .lang a ser salvo no diretório setup de cada aplicativo
+edit	developer_tools	pt-br	Editar
+installed applications	developer_tools	pt-br	Aplkicativos instalados
+language file management	developer_tools	pt-br	Manutenção de arquivos de linguagem
+list changelogs	developer_tools	pt-br	Exibir registros de alterações
+load	developer_tools	pt-br	Carregar
+loading source langfile	developer_tools	pt-br	Carregando arquivo de idioma fonte
+loading target langfile	developer_tools	pt-br	Carregando arquivo de idioma destino
+loads the selected lang-files, to be modified in the next steps	developer_tools	pt-br	Carrega os arquivos .lang selecionados, a serem modificados nas próximas etapas
+message	developer_tools	pt-br	Mensagem
+message_id in english	developer_tools	pt-br	Mensagem-chave em inglês
+no file	developer_tools	pt-br	Nenhum arquivo
+ok	developer_tools	pt-br	ok
+original	developer_tools	pt-br	Original
+phrase in english	developer_tools	pt-br	Frase em inglês
+phrase in english (or empty if identical)	developer_tools	pt-br	Frase em inglês ( ou vazio para idêntico)
+preferences	developer_tools	pt-br	Preferências
+preferences have been updated	developer_tools	pt-br	Preferências foram atualizadas
+project	developer_tools	pt-br	Projeto
+remove	developer_tools	pt-br	Remover
+returns to the application list, not saved changes get lost !!!	developer_tools	pt-br	Retorna à lista de aplicativos, mudanças não salvas serão perdidas!!!
+revert	developer_tools	pt-br	Reverter
+saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	pt-br	Salva as traduções adicionadas/modificadas ao buffer interno, utilizado nas etapas seguintes
+search changelogs	developer_tools	pt-br	Procurar nos registros de alterações
+search for missing phrase	developer_tools	pt-br	Procurar por frases perdidas
+search new phrases	developer_tools	pt-br	Busca novas frases
+searches the source-code for phrases not in the actual source-lang-file	developer_tools	pt-br	Procura por frases no código-fonte por frases que não estejam originalmente no arquivo .lang
+select project	developer_tools	pt-br	Selecionar projeto
+sf project tracker	developer_tools	pt-br	SF Monitor de Projetos
+sf project tracker preferences	preferences	pt-br	SF Project tracker preferences
+source language	developer_tools	pt-br	Idioma de origem
+sourceforge project id	developer_tools	pt-br	ID do projeto no Sourceforge
+sourceforge project tracker	developer_tools	pt-br	Sourceforge project tracker
+sourceforge project tracker preferences	developer_tools	pt-br	Sourceforge project tracker preferences
+step	developer_tools	pt-br	Etapa
+submit	developer_tools	pt-br	Enviar
+target language	developer_tools	pt-br	Idioma de destino
+title	developer_tools	pt-br	Título
+translate	developer_tools	pt-br	Traduzir
+translation	developer_tools	pt-br	Tradução
+translation of phrase	developer_tools	pt-br	Tradução da frase
+update	developer_tools	pt-br	Atualizar
+update database	developer_tools	pt-br	Atualizar Base de Dados
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	pt-br	Remete as atualizações dos arquivos para a base de dados, mostrando imediatamente assim o resultao do seu trabalho
+version	developer_tools	pt-br	Versão
+write	developer_tools	pt-br	Gravar
+write the lang-file to the apps setup-dir	developer_tools	pt-br	Escreva o arquivo .lang no diretório setup do aplicativo correspondente
+write to lang table	developer_tools	pt-br	Gravar na tabela de linguagem
+writing langfile for '%1' ...	developer_tools	pt-br	Escrevendo arquivo lang para '%1' ...
+you must a version	developer_tools	pt-br	Você deve definir uma versão
+you must enter a change	developer_tools	pt-br	Você deve fazer alguma alteração
+you must select a project	developer_tools	pt-br	Você deve selecionar um projeto
+you need to set your preferences for this app	developer_tools	pt-br	É necessário definir as preferências para este aplicativo

@@ -1,121 +1,165 @@
-projects	common	br	Projetos
-project administration	admin	br	Administração de Projetos
-Account	projects	br	Conta
-Active	projects	br	Ativo
-Activities	projects	br	Ativos
-Activities list	projects	br	Lista ativos
-Activity	projects	br	Ativado
-Activity ID	projects	br	ID da atividade
-Activity %1 has been added !	projects	br	Atividade %1 foi adicionada !
-Add Activity	projects	br	Adicionar ativo
-Add hours	projects	br	Adicionar horas
-Add project	projects	br	Adicionar projeto
-Add project hours	projects	br	Adicionar horas ao projetos
-Administrator	projects	br	Administrador
-All deliveries	projects	br	Todas as notas de entrega
-All invoices	projects	br	Todas as faturas
-All delivery notes	projects	br	Todas as notas de entrega
-archive	projects	br	Arquivo
-billed	projects	br	Devedor
-Billed only	projects	br	Devedor somente
-Billing	projects	br	Cobrança
-Bookable activities	projects	br	Recursos encomendáveis
-Billable activities	projects	br	Recursos cobráveis
-Bill per workunit	projects	br	Fatura por unidade de trabalho
-Budget	projects	br	Orçamento
-Calculate	projects	br	Calcular
-Coordinator	projects	br	Coordenador
-Create delivery	projects	br	Criar entrega
-Create invoice	projects	br	Criar fatura
-Customer	projects	br	Clientes
-Delete hours	projects	br	Apagar horas
-Deliveries	projects	br	Entregas
-Delivery	projects	br	Entrega
-Delivery date	projects	br	Data de entrega
-Delivery note	projects	br	Nota de entrega
-Delivery ID	projects	br	ID da entrega
-Delivery list	projects	br	Lista de entregas
-Delivery notes	projects	br	Notas de entrega
-Delivery %1 has been created !	projects	br	Entrega %1 foi criada !
-Delivery %1 has been updated !	projects	br	Entrega %1 foi atualizada !
-Edit Activity	projects	br	Editar ativo
-Edit hours	projects	br	Editar horas
-Edit project administrator list	projects	br	Editar Lista de administração de projetos
-Edit project	projects	br	Editar Projetos
-Edit project hours	projects	br	Editar horas do projetos
-Employee	projects	br	Funcionário
-Generate Delivery ID ?	projects	br	Gerar ID de entrega ?
-Generate Project ID ?	projects	br	Gerar ID do projeto ?
-Generate Invoice ID ?	projects	br	Gerar ID da fatura ?
-Hours	projects	br	Horas
-Invoice	projects	br	Fatura
-Invoice date	projects	br	Data da fatura
-Invoice ID	projects	br	ID da fatura
-Invoice list	projects	br	Lista de faturas
-Invoices	projects	br	Faturas
-Invoice %1 has been created !	projects	br	Fatura %1 foi criada !
-Invoice %1 has been updated !	projects	br	Fatura %1 foi atualizada !
-Job	projects	br	Trabalho
-Job date	projects	br	Data do Trabalho
-Job description	projects	br	Descrição do Trabalho
-Job has been added !	projects	br	Horas foram adicionadas !
-Job has been updated !	projects	br	Horas foram adicionadas !
-Job list	projects	br	Lista de trabalhos
-List hours	projects	br	Lista de horas
-Main project	projects	en	Main project
-Minutes per workunit	projects	br	Minutos por unidade de trabalho
-net	projects	br	rede
-New project	projects	br	Novo projeto
-Nonactive	projects	br	Não ativo
-Number	projects	br	Número
-open	projects	br	Abrir
-Overall	projects	br	Marcação
-per	projects	br	per
-per workunit	projects	br	por unidade de trabalho
-Please enter an ID !	projects	br	Por favor entre com um identificador !
-Please enter a remark !	projects	br	Por favor entre com uma nota !
-Please enter the bill per workunit !	projects	br	Por favor entre com um valor para uma unidade de trabalho !
-Please enter the minutes per workunit !	projects	br	Por favor entre com os minutos para cada unidade de trabalho !
-Position	projects	br	Posição
-Print delivery	projects	br	Imprimir entrega
-Print invoice	projects	br	Imprimir fatura
-Project	projects	br	Projeto
-Project administration	projects	br	Administração de Projetos
-Project archive	projects	br	Lista de projetos
-Project billing	projects	br	Fatura do projeto
-Project delivery	projects	br	Entrega do projeto
-Project ID	projects	br	ID do projeto
-Project list	projects	br	Lista de projetos
-Project name	projects	br	Nome do projeto
-Project preferences	projects	br	Preferência de Projetos
-Project statistic	projects	br	Estatística do projeto
-project statistics	projects	br	Estatísticas do projeto
-Remark	projects	br	Nortas
-Remark required	projects	br	Notas requeridos
-Select project	projects	br	Selecione um projeto
-Select tax for workhours	projects	br	Selecione uma taxa para horas de trabalho
-Select users	projects	br	Selecione usuários
-Select groups	projects	br	Selecione grupos
-Select your address	projects	br	Selecione seu endereço
-Statistic	projects	br	Estatística
-Statistics	projects	br	Estatísticas
-Short description	projects	br	Descrição rápida
-Sum	projects	br	Som
-Sum workunits	projects	br	Soma de unidades de trabalho
-tax	projects	br	taxa
-That ID has been used already !	projects	br	Esse ID já está sendo usado !
-Update invoice	projects	br	Atualizar fatura
-Update delivery	projects	br	Atualizar entrega
-Username / Group	projects	br	Usuários / Grupo
-User statistic	projects	br	Estatística dos usuários
-user statistics	projects	br	Estatísticas dos usuários
-View job	projects	br	Ver Trabalho
-View project	projects	en	View project
-Work date	projects	br	Data de trabalho
-Work time	projects	br	Tempo de trabalho
-Workunit	projects	br	Unidade de Trabalho
-Workunits	projects	br	Unidades de Trabalho
-You have entered an invalid start date !	projects	br	Você entrou com uma data de ínicio inválida !
-You have entered an invalid end date !	projects	br	Você entrou com uma data de finalização inválida !
-You have no customer selected !	projects	br	Você não tem clientes selecionados !
-You have to CREATE a delivery or invoice first !	projects	br	Você deve criar uma ENTREGA ou uma fatura antes !
+accountancy	common	pt	Accountancy
+Account	projects	pt	Account
+Active	projects	pt	Active
+Activities list	projects	pt	Activities list
+Activities	projects	pt	Activities
+Activity ID	projects	pt	Activity ID
+Activity	projects	pt	Activity
+Activity %1 has been added !	projects	pt	Activity %1 has been added !
+Activity %1 has been updated !	projects	pt	Activity %1 has been updated !
+Add Activity	projects	pt	Add activity
+Add job	projects	pt	Add job
+Add project hours	projects	pt	Add project hours
+Add project	projects	pt	Add project
+Add work hours	projects	pt	Add work hours
+Administrator	projects	pt	Administrator
+All delivery notes	projects	pt	ALL delivery notes
+All invoices	projects	pt	All invoices
+All	projects	pt	All
+archive	projects	pt	Arquivo
+arial	projects	pt	Arial
+Billable activities	projects	pt	Billable activities
+Billed only	projects	pt	Billed only
+billed	projects	pt	cobrado
+Billing	projects	pt	Billing
+bill per hour	projects	pt	Taxa por hora
+Bill per workunit	projects	pt	Bill per workunit
+Bookable activities	projects	pt	Bookable activities
+bookkeeper	projects	pt	Contabilidade
+bookkeeping	common	pt	bookkeeping
+Budget	projects	pt	Budget
+Calculate	projects	pt	Calculate
+closed	projects	pt	Fechado
+Coordinator	projects	pt	Coordinator
+courier new	projects	pt	Courier New
+Create delivery	projects	pt	Create delivery
+Create invoice	projects	pt	Create invoice
+customer	projects	pt	Customer
+Delete hours	projects	pt	Delete hours
+Deliveries	projects	pt	Deliveries
+Delivery date	projects	pt	Delivery date
+Delivery ID	projects	pt	Delivery ID
+Delivery list	projects	pt	Delivery list
+delivery note for project	projects	pt	Delivery note for project
+Delivery note	projects	pt	Delivery note
+Delivery notes	projects	pt	Delivery notes
+Delivery	projects	pt	Delivery
+Delivery %1 has been created !	projects	pt	Delivery %1 has been created !
+Delivery %1 has been updated !	projects	pt	Delivery %1 has been updated !
+Edit Activity	projects	pt	Edit activity
+Edit project administrator list	projects	pt	Edit project administrator list
+edit project bookkeeper list	projects	pt	Editar lista de contabilidades de projetos
+Edit project hours	projects	pt	Edit project hours
+Edit project	projects	pt	Edit project
+Edit work hours	projects	pt	Edit work hours
+Employee	projects	pt	Employee
+Ending date can not be after main projects ending date !	projects	pt	Ending date can not be after main projects ending date !
+Generate Activity ID ?	projects	pt	Generate Activity ID ?
+Generate Delivery ID ?	projects	pt	Generate Delivery ID ?
+Generate Invoice ID ?	projects	pt	Generate Invoice ID ?
+Generate Job ID ?	projects	pt	Generate Job ID ?
+Generate Project ID ?	projects	pt	Generate Project ID ?
+georgia	projects	pt	Georgia
+helvetica	projects	pt	Helvetica
+Hours	projects	pt	Hours
+Invoice date	projects	pt	Invoice date
+invoice for project	projects	pt	Invoice for project
+Invoice ID	projects	pt	Invoice ID
+Invoice layout	projects	pt	Invoice layout
+Invoice list	projects	pt	Invoice list
+Invoice	projects	pt	Invoice
+Invoices	projects	pt	Invoices
+Invoice %1 has been created !	projects	pt	Invoice %1 has been created !
+Invoice %1 has been updated !	projects	pt	Invoice %1 has been updated !
+invoicing	projects	pt	Invoicing
+job archive	projects	pt	Arquivo de tarefas
+Job date	projects	pt	Job date
+Job description	projects	pt	Job description
+Job has been added !	projects	pt	Job has been added !
+Job has been updated !	projects	pt	Job has been updated !
+Job ID	projects	pt	Job ID
+Job list	projects	pt	Job list
+Job	projects	pt	Job
+Jobs	projects	pt	Jobs
+large	projects	pt	Large
+Main project:	projects	pt	Main project:
+Minutes per workunit	projects	pt	Minutes per workunit
+net	projects	pt	rede
+New project	projects	pt	New project
+Nonactive	projects	pt	Nonactive
+Number	projects	pt	Number
+open	projects	pt	Em aberto
+Overall	projects	pt	Overall
+per hour	projects	pt	por hora
+per workunit	projects	pt	por uni. de trabalho
+Please choose activities for that project first !	projects	pt	Please choose activities for that project first !
+Please enter an ID !	projects	pt	Please enter an ID !
+Please enter a remark !	projects	pt	Please enter a remark !
+Please enter the bill !	projects	pt	Please enter the bill !
+Please enter the minutes per workunit !	projects	pt	Please enter the minutes per workunit !
+Please set the minutes per workunit for each activity now !	projects	pt	Please set the minutes per workunit for each activity now !
+Position	projects	pt	Position
+Print delivery	projects	pt	Print delivery
+Print invoice	projects	pt	Print invoice
+Project archive	projects	pt	Project archive
+Project billing	projects	pt	Project billing
+Project delivery	projects	pt	Project delivery
+Project ID	projects	pt	Project ID
+Project list	projects	pt	Project list
+Project name	projects	pt	Project name
+Project preferences	projects	pt	Project preferences
+Project	projects	pt	Project
+projects	common	pt	Projetos
+projects preferences	preferences	pt	Preferências dos Projetos
+Project statistic	projects	pt	Project statistic
+project statistics	projects	pt	Estatísticas do projeto
+Remark	projects	pt	Remark
+Remark required	projects	pt	Remark required
+select font	projects	pt	Select font
+Select font size for customer address	projects	pt	Select font size for customer address
+Select font size for own address	projects	pt	Select font size for own address
+Select groups	projects	pt	Select groups
+Select main project	projects	pt	Select main project
+Select project	projects	pt	Select project
+select	projects	pt	Selecione
+Select tax for workhours	projects	pt	Select tax for workhours
+Select users	projects	pt	Select users
+Select your address	projects	pt	Select your address
+Short description	projects	pt	Short description
+small	projects	pt	Small
+Sorry, no preferences to set for you :)	projects	pt	Desculpe, nenhuma preferência para definir para você :)
+Start date can not be before main projects start date !	projects	pt	Start date can not be before main projects start date !
+Statistic	projects	pt	Statistic
+statistics	projects	pt	Statistics
+sum hours	projects	pt	Sum hours
+sum net	projects	pt	Soma de rede
+Sum	projects	pt	Sum
+Sum workunits	projects	pt	Sum workunits
+tahoma	projects	pt	Tahoma
+tax	projects	pt	Taxa
+That ID has been used already !	projects	pt	That ID has been used already !
+times new roman	projects	pt	Times New Roman
+Update delivery	projects	pt	Update delivery
+Update invoice	projects	pt	Update invoice
+Username / Group	projects	pt	Username / Group
+User statistic	projects	pt	User statistic
+user statistics	projects	pt	Estatísticas de usuários
+verdana	projects	pt	Verdana
+very large	projects	pt	Very Large
+very small	projects	pt	Very Small
+View job	projects	pt	View job
+View project	projects	pt	View project
+View work hours	projects	pt	View work hours
+Work date	projects	pt	Work date
+Work hours archive	projects	pt	Work hours archive
+Work hours list	projects	pt	Work hours list
+Work hours	projects	pt	Work hours
+Work time	projects	pt	Work time
+Workunit	projects	pt	Workunit
+Workunits	projects	pt	Workunits
+written by:	projects	pt	Escrito por:
+You have entered an invalid end date !	projects	pt	You have entered an invalid end date !
+You have entered an invalid start date !	projects	pt	You have entered an invalid start date !
+You have no customer selected !	projects	pt	You have no customer selected !
+You have selected an invalid activity !	projects	pt	You have selected an invalid activity !
+You have to CREATE a delivery or invoice first !	projects	pt	You have to CREATE a delivery or invoice first !
