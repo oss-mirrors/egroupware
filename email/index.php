@@ -60,7 +60,7 @@
      $s = ".Main account\n";
      $ta = list_folders($mbp);
      while (list($null,$folder) = each($ta)) {
-        $s .= "..$folder|index.php?folder=" . urlencode($folder) . "\n";
+     	$s .= "..$folder|index.php?folder=" . urlencode($folder) . "\n";
      }
 //     if ($phpgw_info["user"]["apps"]["nntp"]) {
         $s .= ".NNTP|index.php\n";
