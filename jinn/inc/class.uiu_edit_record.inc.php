@@ -628,7 +628,7 @@
 	  {
 		 $related_fields=$this->bo->get_related_field($this->relation1_array[$fprops[name]]);
 		 
-		 if(is_array($related_fields)
+		 if(is_array($related_fields))
 		 {
 			foreach ($related_fields as $rel_field)
 			{
