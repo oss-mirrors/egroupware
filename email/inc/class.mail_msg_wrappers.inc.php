@@ -115,13 +115,40 @@
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 		
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
-			//$tmp_a = $this->a[$this->acctnum];
-			//$retval = $tmp_a['dcom']->fetchheader($mailsvr_stream, $msgball['msgnum']);
-			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($mailsvr_stream, $msgball['msgnum']);
-			//$this->a[$this->acctnum] = $tmp_a;
-			return $retval;
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($mailsvr_stream, $msgball['msgnum']);
 		}
 	
+		/*!
+		@function all_headers_in_folder
+		@abstract wrapper for IMAP_HEADERS, phpgw supplies the nedessary stream arg and mail_dcom reference
+		@param $fldball : array[folder] : string ; array[acctnum] : int
+		@result returns the php IMAP_HEADERS data, php manual says:
+		function.imap-headers.php
+		Returns headers for all messages in a mailbox 
+		Returns an array of string formatted with header info. One element per mail message
+		@discussion = = = = USELESS FUNCTION = = = = 
+		returns array of strings, each string is extremely truncated
+		partial contents of date, from, and subject, also includes the msg size in chars
+		*/
+		function all_headers_in_folder($fldball='')
+		{
+			if (!(isset($fldball))
+			|| ((string)$fldball == ''))
+			{
+				$msgball = $this->get_arg_value('fldball');
+			}
+			$acctnum = $fldball['acctnum'];
+			if (!(isset($acctnum))
+			|| ((string)$acctnum == ''))
+			{
+				$acctnum = $this->get_acctnum();
+			}
+			$this->ensure_stream_and_folder($fldball, 'all_headers_in_folder');
+			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+			
+			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->headers($mailsvr_stream);
+		}
+		
 		function phpgw_get_flag($flag='')
 		{
 			// sanity check
@@ -131,11 +158,7 @@
 			}
 			else
 			{
-				//$tmp_a = $this->a[$this->acctnum];
-				//$retval = $tmp_a['dcom']->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
-				$retval = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
-				//$this->a[$this->acctnum] = $tmp_a;
-				return $retval;
+				return $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->get_flag($this->get_arg_value('mailsvr_stream'),$this->get_arg_value('["msgball"]["msgnum"]'),$flag);
 			}
 		}
 		
@@ -157,11 +180,6 @@
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($mailsvr_stream, $msgball['msgnum']);
 		}
 		
-		//FIXME: msgball
-		//function phpgw_fetchbody($part_num_mime='', $flags='')
-		//{
-		//	return $this->a[$this->acctnum]['dcom']->fetchbody($this->get_arg_value('mailsvr_stream'), $this->get_arg_value('msgnum'), $part_num_mime, $flags);
-		//}
 		function phpgw_fetchbody($msgball='', $flags='')
 		{
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: ENTERING, $msgball dump<pre>'; print_r($msgball); echo '</pre>';

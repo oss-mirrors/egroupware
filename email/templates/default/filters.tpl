@@ -36,10 +36,11 @@
 				<option value="from" {from_selected}>{lang_from}</option>
 				<option value="to" {to_selected}>{lang_to}</option>
 				<option value="cc" {cc_selected}>{lang_cc}</option>
-				<!-- <option value="bcc">{lang_bcc}</option> -->
-				<!-- <option value="recipient">{lang_recipient}</option> -->
+				<!-- <option value="bcc" {bcc_selected}>{lang_bcc}</option>  -->
+				<option value="recipient" {recipient_selected}>{lang_recipient}</option>
 				<!-- <option value="sender" {sender_selected}>{lang_sender}</option> -->
 				<option value="subject" {subject_selected}>{lang_subject}</option>
+				<option value="received" {received_selected}>{lang_received_headers}</option> 
 				<!-- <option value="header">{lang_header}</option> -->
 				<!-- <option value="size_larger">{lang_size_larger}</option> -->
 				<!-- <option value="size_smaller">{lang_size_smaller}</option> -->

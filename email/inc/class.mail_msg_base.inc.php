@@ -2921,11 +2921,11 @@
 		return $string;
 	}
 	
-	/*
+	
 	// ----  RFC Header Decoding  -----
-	function qprint_rfc_header($data)
+	function decode_rfc_header($data)
 	{
-		// SAME FUNCTIONALITY as decode_header_string()  in /inc/functions, (but Faster, hopefully)
+		// SAME FUNCTIONALITY as decode_header_string()  (but Faster, hopefully)
 		// non-us-ascii chars in email headers MUST be encoded using the special format:  
 		//  =?charset?Q?word?=
 		// currently only qprint and base64 encoding is specified by RFCs
@@ -2933,14 +2933,22 @@
 		{
 			$data = ereg_replace("=\?.*\?(Q|q)\?", '', $data);
 			$data = ereg_replace("\?=", '', $data);
-			$data = $this->qprint($data);
+			$data = $this->qprint(str_replace("_"," ",$data));
+		}
+		if (ereg("=\?.*\?(B|b)\?.*\?=", $data))
+		{
+			$data = ereg_replace("=\?.*\?(B|b)\?", '', $data);
+			$data = ereg_replace("\?=", '', $data);
+			$data = urldecode(base64_decode($data));
 		}
 		return $data;
 	}
-	*/
+	
 
 	// non-us-ascii chars in email headers MUST be encoded using the special format:  
 	//  =?charset?Q?word?=
+	// commonly:
+	// =?iso-8859-1?Q?encoded_word?=
 	// currently only qprint and base64 encoding is specified by RFCs
 	function decode_header_string($string)
 	{
@@ -2979,7 +2987,7 @@
 			$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
 			if(strtoupper($encoding) == "Q")
 			{
-				$decoded = $GLOBALS['phpgw']->msg->qprint(str_replace("_"," ",$encoded_text));
+				$decoded = $this->qprint(str_replace("_"," ",$encoded_text));
 			}
 			if (strtoupper($encoding) == "B")
 			{

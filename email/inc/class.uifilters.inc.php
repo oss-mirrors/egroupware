@@ -64,9 +64,10 @@
 			$GLOBALS['phpgw']->template->set_var('lang_to',lang('To Address'));
 			$GLOBALS['phpgw']->template->set_var('lang_cc',lang('CC Address'));
 			$GLOBALS['phpgw']->template->set_var('lang_bcc',lang('Bcc Address'));
-			$GLOBALS['phpgw']->template->set_var('lang_recipient',lang('Recipient').$not_available_yet);
+			$GLOBALS['phpgw']->template->set_var('lang_recipient',lang('Recipient').' &#040;to,cc,bcc&#041;');
 			$GLOBALS['phpgw']->template->set_var('lang_sender',lang('Sender').$not_available_yet);
 			$GLOBALS['phpgw']->template->set_var('lang_subject',lang('Subject'));
+			$GLOBALS['phpgw']->template->set_var('lang_received_headers',lang('Received Headers'));
 			$GLOBALS['phpgw']->template->set_var('lang_header',lang('Header Field').$not_available_yet);
 			$GLOBALS['phpgw']->template->set_var('lang_size_larger',lang('Size Larger Than'.$not_available_yet));
 			$GLOBALS['phpgw']->template->set_var('lang_size_smaller',lang('Size Smaller Than'.$not_available_yet));
@@ -185,8 +186,8 @@
 			// ---  others offer 1 match options row with the option of more ---
 			// ---  for now we will offer 2 rows ---
 			// because the IMAP search string for 2 items is not as comlicated as for 3 or 4
-			$num_matchrow_pairs = 2;
-			for ($i=0; $i < $num_matchrow_pairs; $i++)
+			$num_match_criteria_rows = 3;
+			for ($i=0; $i < $num_match_criteria_rows; $i++)
 			{
 				if ($i == 0)
 				{
@@ -250,8 +251,11 @@
 				$from_selected = '';
 				$to_selected = '';
 				$cc_selected = '';
+				$bcc_selected = '';
+				$recipient_selected = '';
 				$sender_selected = '';
 				$subject_selected = '';
+				$received_selected = '';
 				// as our numbers of rows go beyond what the user previously set, there will bo no data
 				if ((!isset($this->bo->all_filters[$filter_num]['matches'][$i]['examine']))
 				|| ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'from'))
@@ -266,6 +270,14 @@
 				{
 					$cc_selected = ' selected';
 				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'bcc')
+				{
+					$bcc_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'recipient')
+				{
+					$recipient_selected = ' selected';
+				}
 				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'sender')
 				{
 					$sender_selected = ' selected';
@@ -273,6 +285,10 @@
 				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'subject')
 				{
 					$subject_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'received')
+				{
+					$received_selected = ' selected';
 				}
 				else
 				{
@@ -282,8 +298,11 @@
 				$GLOBALS['phpgw']->template->set_var('from_selected',$from_selected);
 				$GLOBALS['phpgw']->template->set_var('to_selected',$to_selected);
 				$GLOBALS['phpgw']->template->set_var('cc_selected',$cc_selected);
+				$GLOBALS['phpgw']->template->set_var('bcc_selected',$bcc_selected);
+				$GLOBALS['phpgw']->template->set_var('recipient_selected',$recipient_selected);
 				$GLOBALS['phpgw']->template->set_var('sender_selected',$sender_selected);
 				$GLOBALS['phpgw']->template->set_var('subject_selected',$subject_selected);
+				$GLOBALS['phpgw']->template->set_var('received_selected',$received_selected);
 				// COMPARATOR
 				$comparator_selectbox_name = 'match_'.(string)$i.'[comparator]';
 				$contains_selected = '';

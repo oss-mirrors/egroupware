@@ -103,6 +103,11 @@
 				}
 			}
 			return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
+		}
+		
+		function headers($stream)
+		{
+			return imap_headers($stream);
 		} 
 
 		function fetch_raw_mail($stream,$msg_num,$flags=0)
