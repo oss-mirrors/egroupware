@@ -172,7 +172,7 @@
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      <a href="javascript:attach_window('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/attach_file.php"); ?>')">Attach file</a>
+      <a href="javascript:attach_window('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/attach_file.php"); ?>')"><?php echo lang("Attach file"); ?></a>
     </font>
    </td>
   </tr>
