@@ -22,7 +22,11 @@
 	$setup_info['skel']['tables']    = Array('skel');
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['skel']['hooks'][] = 'preferences';
+	$setup_info['skel']['hooks'][] = Array(
+		'preferences',
+		'manual',
+		'add_def_prefs'
+	);
 
 	/* Dependacies for this app to work */
 	$setup_info['skel']['depends'][] = array(
