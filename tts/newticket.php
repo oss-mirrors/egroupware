@@ -157,7 +157,7 @@
   {
     $s .= '<option value="' . $entry['account_id'] . '" ' 
       . ($entry['account_id']==$_POST['ticket_assignedto']?' SELECTED ':'')
-      . '>' . $entry['account_lid'] . '</option>';
+      . '>' . $GLOBALS['phpgw']->common->grab_owner_name($entry['account_id']) . '</option>';
   }
   $GLOBALS['phpgw']->template->set_var('value_assignedto','<select name="ticket_assignedto">' . $s . '</select>');
 

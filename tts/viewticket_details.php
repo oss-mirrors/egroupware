@@ -25,11 +25,11 @@
 
   include('../header.inc.php');
   
-  $filter = reg_var('filter','GET');
-  $start  = reg_var('start','GET','numeric',0);
-  $sort   = reg_var('sort','GET');
-  $order  = reg_var('order','GET');
-  $searchfilter = reg_var('searchfilter','POST');
+	$filter = reg_var('filter','GET');
+	$start  = reg_var('start','GET','numeric',0);
+	$sort   = reg_var('sort','GET');
+	$order  = reg_var('order','GET');
+	$searchfilter = reg_var('searchfilter','POST');
 
   if($_POST['cancel'])
   {
@@ -203,7 +203,7 @@
       {
         $tag = 'selected';
       }
-      $GLOBALS['phpgw']->template->set_var('optionname', $entry['account_lid']);
+      $GLOBALS['phpgw']->template->set_var('optionname', $GLOBALS['phpgw']->common->grab_owner_name($entry['account_id']));
       $GLOBALS['phpgw']->template->set_var('optionvalue', $entry['account_id']);
       $GLOBALS['phpgw']->template->set_var('optionselected', $tag);
       $GLOBALS['phpgw']->template->parse('options_assignedto','options_select',True);
@@ -266,7 +266,7 @@
       $GLOBALS['phpgw']->template->set_var('lang_user',lang('User'));
 
       $GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
-      $GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
+      $GLOBALS['phpgw']->template->set_var('value_user',$GLOBALS['phpgw']->common->grab_owner_name($value['owner']));
 
       $GLOBALS['phpgw']->template->set_var('value_note',nl2br(stripslashes($value['new_value'])));
       $GLOBALS['phpgw']->template->fp('rows_notes','additional_notes_row',True);
@@ -295,7 +295,7 @@
       $GLOBALS['phpgw']->template->set_var('row_class',++$i & 1 ? 'row_off' : 'row_on');
 
       $GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
-      $GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
+      $GLOBALS['phpgw']->template->set_var('value_user',$GLOBALS['phpgw']->common->grab_owner_name($value['owner']));
 
       switch($value['status'])
       {
@@ -324,7 +324,7 @@
         }
         else
         {
-          $GLOBALS['phpgw']->template->set_var('value_new_value',$GLOBALS['phpgw']->accounts->id2name($value['new_value']));
+          $GLOBALS['phpgw']->template->set_var('value_new_value',$GLOBALS['phpgw']->common->grab_owner_name($value['new_value']));
         }
 
         if(!$value['old_value'])
@@ -333,7 +333,7 @@
         }
         else
         {
-          $GLOBALS['phpgw']->template->set_var('value_old_value',$GLOBALS['phpgw']->accounts->id2name($value['old_value']));
+          $GLOBALS['phpgw']->template->set_var('value_old_value',$GLOBALS['phpgw']->common->grab_owner_name($value['old_value']));
         }
       }
       elseif($value['status'] == 'T')
@@ -389,7 +389,7 @@
     $GLOBALS['phpgw']->template->set_var('ticket_id', $ticket_id);
 
     $GLOBALS['phpgw']->template->set_var('lang_assignedfrom', lang('Assigned from'));
-    $GLOBALS['phpgw']->template->set_var('value_owner',$GLOBALS['phpgw']->accounts->id2name($ticket['owner']));
+    $GLOBALS['phpgw']->template->set_var('value_owner', $GLOBALS['phpgw']->common->grab_owner_name($ticket['owner']));
 
     $GLOBALS['phpgw']->template->set_var('lang_opendate', lang('Open Date'));
     $GLOBALS['phpgw']->template->set_var('value_opendate',$ticket['opened']);
@@ -421,7 +421,7 @@
     $GLOBALS['phpgw']->template->set_var('lang_assignedto',lang('Assigned to'));
     if($ticket['assignedto'])
     {
-      $assignedto = $GLOBALS['phpgw']->accounts->id2name($ticket['assignedto']);
+      $assignedto = $GLOBALS['phpgw']->common->grab_owner_name($ticket['assignedto']);
     }
     else
     {
@@ -507,8 +507,7 @@
     ** G - Group
     ** N - Petri Net State change
     */
-  
-    $no_error=True;
+
     if($old_status != $ticket['status'])
     {
       //only allow assigned-to or admin members to close tickets
@@ -525,7 +524,6 @@
       {
         $messages .= '<br>'.lang('You can only close a ticket if it is assigned to you.');
         $GLOBALS['phpgw']->session->appsession('messages','tts',$messages);
-        $no_error=False;
       }
     }
 
@@ -605,7 +603,7 @@
 
     if($fields_updated)
     {
-      $GLOBALS['phpgw']->session->appsession('messages','tts',lang('Ticket has been updated').'<br/>'.$messages);
+      $GLOBALS['phpgw']->session->appsession('messages','tts',lang('Ticket has been updated'));
 
       if($GLOBALS['phpgw']->config->config_data['mailnotification'])
       {
@@ -613,7 +611,7 @@
       }
     }
 
-    if ($_POST['save'] && $no_error)
+    if ($_POST['save'])
     {
       $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort));
     }
