@@ -72,7 +72,7 @@
 			else
 			{
 				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
-				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data');
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			}
 			
 			// ---- BEGIN UIMESSAGE
