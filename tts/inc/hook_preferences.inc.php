@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Preferences'	=> $phpgw->link('/tts/preferences.php'),
+		'Preferences'	=> $phpgw->link('/tts/preferences.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
