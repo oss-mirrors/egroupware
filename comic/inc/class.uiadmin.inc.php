@@ -33,19 +33,18 @@ class uiadmin
 
 	function global_options()
 	{
-		global $phpgw, $phpgw_info, $HTTP_POST_VARS;
-
-		if ($HTTP_POST_VARS['submit']!='')
+		$submit = get_var('submit',Array('POST'));
+		if($submit!='')
 		{
-			if ($HTTP_POST_VARS['submit']==lang("Submit"))
+			if($submit==lang('Submit'))
 			{
 				$field = $this->get_form();
 				// checks can be added here.
 				$field['message'] = $this->bo->update_global_options($field);
 			}
-			if ($HTTP_POST_VARS['submit']==lang("Done"))
+			if($submit==lang('Done'))
 			{
-				header('Location: '.$phpgw->link('/admin/index.php'));
+				header('Location: '.$GLOBALS['phpgw']->link('/admin/index.php'));
 			}
 		}
 		else
@@ -57,24 +56,24 @@ class uiadmin
 		$g_censor_level = $this->functions->select_box('g_censor_level');
 		$g_image_source = $this->functions->select_box('g_image_source');
 
-		$field['title']                  = lang("Daily Comics - Global Options");
-		$field['image_source_label']     = lang("Image Source");
-		$field['remote_enabled_label']   = lang("Remote (Parse/Snarf) Enabled");
-		$field['censor_level_label']     = lang("Censorship Level");
-		$field['filesize_label']         = lang("Max File size");
-		$field['override_enabled_label'] = lang("Censorship Override Enabled");
-		$field['submit']                 = lang("Submit");
-		$field['reset']                  = lang("Reset");
-		$field['done']                   = lang("Done");
-		$field['action_url']             = $phpgw->link('/index.php','menuaction=comic.uiadmin.global_options');
+		$field['title']                  = lang('Daily Comics - Global Options');
+		$field['image_source_label']     = lang('Image Source');
+		$field['remote_enabled_label']   = lang('Remote (Parse/Snarf) Enabled');
+		$field['censor_level_label']     = lang('Censorship Level');
+		$field['filesize_label']         = lang('Max File size');
+		$field['override_enabled_label'] = lang('Censorship Override Enabled');
+		$field['submit']                 = lang('Submit');
+		$field['reset']                  = lang('Reset');
+		$field['done']                   = lang('Done');
+		$field['action_url']             = $GLOBALS['phpgw']->link('/index.php','menuaction=comic.uiadmin.global_options');
 
-		$phpgw->common->phpgw_header();
+		$GLOBALS['phpgw']->common->phpgw_header();
 		// echo parse_navbar();
 		print(parse_navbar());
 
 		if ($field['remote_enabled'] == 1)
 		{
-			$field['remote_enabled'] = "checked";
+			$field['remote_enabled'] = 'checked';
 		}
 		else
 		{
@@ -83,15 +82,15 @@ class uiadmin
 
 		if ($field['override_enabled'] == 1)
 		{
-			$field['override_enabled'] = "checked";
+			$field['override_enabled'] = 'checked';
 		}
 		else
 		{
 			$field['override_enabled'] = '';
 		}
 
-		$options_tpl = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('comic'));
-		$options_tpl->set_unknowns("remove");
+		$options_tpl = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('comic'));
+		$options_tpl->set_unknowns('remove');
 		$options_tpl->set_file(array(coptions  => 'option.common.tpl'));
 
 		for ($loop = 0; $loop < count($g_censor_level); $loop++)
@@ -99,33 +98,33 @@ class uiadmin
 			$selected = '';
 			if ($field['censor_level'] == $loop)
 			{
-				$selected = "selected";
+				$selected = 'selected';
 			}
 			$options_tpl->set_var(array(OPTION_VALUE    => $loop,
 				OPTION_SELECTED => $selected,
 				OPTION_NAME     => $g_censor_level[$loop]));
-			$options_tpl->parse(option_list, "coptions", TRUE);
+			$options_tpl->parse(option_list, 'coptions', TRUE);
 		}
-		$field['censor_level_options'] = $options_tpl->get("option_list");
+		$field['censor_level_options'] = $options_tpl->get('option_list');
 
 		for ($loop = 0; $loop < count($g_image_source); $loop++)
 		{
 			$selected = '';
 			if ($field['image_source'] == $loop)
 			{
-				$selected = "selected";
+				$selected = 'selected';
 			}
 			$options_tpl->set_var(array(OPTION_VALUE    => $loop,
 				OPTION_SELECTED => $selected,
 				OPTION_NAME     => $g_image_source[$loop]));
-			$options_tpl->parse(option_list2, "coptions", TRUE);
+			$options_tpl->parse(option_list2, 'coptions', TRUE);
 		}
-		$field['image_source_options'] = $options_tpl->get("option_list2");
+		$field['image_source_options'] = $options_tpl->get('option_list2');
 
-		$phpgw->template->set_file(array('main'=>'admin_global_options.tpl'));
-		$phpgw->template->set_var(array(
+		$GLOBALS['phpgw']->template->set_file(array('main'=>'admin_global_options.tpl'));
+		$GLOBALS['phpgw']->template->set_var(array(
 			'action_url'			=> $field['action_url'],
-			'title_color'			=> $phpgw_info['theme']['th_bg'],
+			'title_color'			=> $GLOBALS['phpgw_info']['theme']['th_bg'],
 			'title'				=> $field['title'],
 			'row_1_color'			=> $this->functions->row_color(),
 			'message'			=> $field['message'],
@@ -148,20 +147,23 @@ class uiadmin
 			'submit'			=> $field['submit'],
 			'reset'				=> $field['reset'],
 			'done'				=> $field['done']));
-		$phpgw->template->parse('out', 'main', TRUE);
-		$phpgw->template->p('out');
+		$GLOBALS['phpgw']->template->parse('out', 'main', TRUE);
+		$GLOBALS['phpgw']->template->p('out');
 	}
 
 	function get_form()
 	{
-		global $HTTP_POST_VARS;
-
-		$field['censor_level']		= $HTTP_POST_VARS['censor_level'];
-		$field['override_enabled']	= $HTTP_POST_VARS['override_enabled'];
-		$field['image_source']		= $HTTP_POST_VARS['image_source'];
-		$field['remote_enabled']	= $HTTP_POST_VARS['remote_enabled'];
-		$field['filesize']		= $HTTP_POST_VARS['filesize'];
-
+		$flist = Array(
+			'censor_level',
+			'override_enabled',
+			'image_source',
+			'remote_enabled',
+			'filesize'
+		);
+		for($i=0;$i<count($flist);$i++)
+		{
+			$field[$flist[$i]] = get_var($flist[$i],Array('POST'));
+		}
 		return ($field);
 	}
 }

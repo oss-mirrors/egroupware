@@ -27,10 +27,12 @@
 	$doneurl           = $GLOBALS['phpgw']->link('/admin/index.php');
 
 	$message           = '';
-    
-	if ($GLOBALS['HTTP_POS_VARS']['submit'])
+   
+	$submit = get_var('submit',Array('POST'));
+	$act = get_var('act',Array('GET')); 
+	if($submit)
 	{
-		switch($GLOBALS['HTTP_GET_VARS']['act'])
+		switch($act)
 		{
 			case 'edit':
 				$message = 'modification';
@@ -47,10 +49,10 @@
 
 	$other_c           = '';
 
-	switch($GLOBALS['HTTP_GET_VARS']['act'])
+	switch($act)
 	{
 		case 'edit':
-			if ($GLOBALS['HTTP_POST_VARS']['submit'])
+			if($submit)
 			{
 				$GLOBALS['phpgw']->db->lock('phpgw_comic_data');
 				$GLOBALS['phpgw']->db->query('update phpgw_comic_data set '
@@ -69,7 +71,7 @@
 			}
 			break;
 		case 'delete':
-			if ($GLOBALS['HTTP_POST_VARS']['submit'])
+			if($submit)
 			{
 				$GLOBALS['phpgw']->db->lock('phpgw_comic_data');
 				$GLOBALS['phpgw']->db->query('delete from phpgw_comic_data '
@@ -87,7 +89,7 @@
 			}
 			break;
 		case 'add':
-			if ($GLOBALS['HTTP_POST_VARS']['submit'])
+			if($submit)
 			{
 				$GLOBALS['phpgw']->db->lock('phpgw_comic_data');
 				$GLOBALS['phpgw']->db->query('insert into phpgw_comic_data (comic_name)'
