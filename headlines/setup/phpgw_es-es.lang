@@ -24,7 +24,7 @@ monitor	common	es-es	Monitor
 news file	headlines	es-es	Archivo de noticias
 news from x	headlines	es-es	Noticias de x
 news headlines	common	es-es	Encabezados de noticias
-news headlines  common  es	encabezados de noticias	
+news headlines	common	es	encabezados de noticias	
 news type	headlines	es-es	Tipo de noticias
 no headlines found	headlines	es-es	No se encontraron encabezados
 other preferences	preferences	es-es	Otras preferencias
