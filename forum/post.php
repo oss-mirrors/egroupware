@@ -127,5 +127,5 @@ $dattim = date("Y-m-d H:i:s",time());
 
 
 <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>

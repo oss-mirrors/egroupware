@@ -46,27 +46,14 @@ if($pos != 0) {
 } else $pos = 1;
 
 
- $phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
-  '$dattim',
-  $pos,
-  $thread,
-  $depth,
-  $next_f_body_id,
-  $msg,
-  $cat,
-  $for,
-  '$author',
-  '$subject',
-  '$email',
-  '$host',
-  $stat)");
-$phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
+  $phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES ("
+                  . "'$dattim','$pos','$thread','$depth','$next_f_body_id','" . addslashes($msg) . "','"
+                  . "$cat','$for','$author','" . addslashes($subject) . "','$email','$host','$stat')");
+ 
+  $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
 
 
-  $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES (
-  $cat,
-  $for,
-  '$message')");
+  $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
 
 
   Header("Location: ". $phpgw->link("threads.php","cat=".$cat."&for=".$for."&col=".$col));
@@ -117,14 +104,20 @@ $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$t
  $phpgw->db->next_record();
  $thread = $phpgw->db->f("thread");
  $depth = $phpgw->db->f("depth") + 1;
+ $subject = $phpgw->db->f("subject");
+ if (! $subject) {
+    $subject = "[ No subject ]";
+ }
+
  echo "<input type=\"hidden\" name=\"thread\" value=\"$thread\">\n";
  echo "<input type=\"hidden\" name=\"depth\" value=\"$depth\">\n";
 
  echo "<tr><td>" . lang("Author") .": </td><td>" . $phpgw->db->f("author") . "</td></tr>";
  echo "<tr><td>" . lang("Date") .": </td><td>" . $phpgw->db->f("postdate") . "</td></tr>";
- echo "<tr><td>" . lang("Subject") .": </td><td>" . $phpgw->db->f("subject") . "</td></tr>";
+ echo "<tr><td>" . lang("Subject") .": </td><td>" . $subject . "</td></tr>";
  $msgid = $phpgw->db->f("main");
- $subj = "Re: " . $phpgw->db->f("subject");
+
+ $subj = "Re: " . $subject;
 
 
  $phpgw->db->query("select * from f_body where id = $msgid");
@@ -160,5 +153,5 @@ $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$t
 
 
 <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>
