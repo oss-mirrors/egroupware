@@ -6,6 +6,7 @@ choose for rename	email	ja	変更フォルダ選択
 compose new	email	ja	メッセージ作成
 create a folder	email	ja	フォルダ作成
 create (expert)	email	ja	フォルダ作成（エキスパート）
+current attachments	email	ja	現在の添付ファイル
 custom email settings	email	ja	カスタム設定
 date	email	ja	送信日付
 default sorting order	email	ja	ソート順（既定）
@@ -24,6 +25,8 @@ enter your default mail domain ( from: user@domain )	admin	ja	メールドメイン名 (
 enter your pop	admin	ja	POP
 enter your smtp server hostname or ip address	admin	ja	SMTP サーバ名または IP アドレス
 enter your smtp server port	admin	ja	SMTP ポート番号
+file	email	ja	ファイル名
+file attachment	email	ja	添付ファイル
 files	email	ja	ファイル
 firstname	email	ja	姓
 folder	email	ja	フォルダ
@@ -36,6 +39,8 @@ image	email	ja	Image
 imap server type	email	ja	IMAP サーバタイプ
 imap mail server hostname or ip address	admin	ja	IMAP サーバ名または IP アドレス
 lastname	email	ja	名
+layout 1	email	ja	レイアウト１
+layout 2	email	ja	レイアウト２
 long names	email	ja	長い名前
 mail folder(uw-maildir)	email	ja	メールフォルダ（UW-MailDir）
 mail server	email	ja	メールサーバ
