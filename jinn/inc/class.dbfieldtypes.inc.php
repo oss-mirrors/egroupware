@@ -61,6 +61,7 @@
 			'date'			=>		'date',
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',
+			'longtext'		=>		'blob',
 			'text'			=>		'blob',
 			'auto'			=>		'auto',
 		 );
