@@ -17,7 +17,7 @@
 		'enable_nextmatchs_class' => True
 	);
 
-	if($_GET['action'] == 'get' || $_GET['action'] == 'view')
+	if(isset($_GET['action']) && ($_GET['action'] == 'get' || $_GET['action'] == 'view'))
 	{
 		$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
 		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
