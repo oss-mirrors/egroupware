@@ -75,7 +75,6 @@
 				$where_string_form='<input type="hidden" name="where_string" value="'.base64_encode($where_string).'">';
 
 				$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
-				
 			}
 			else
 			{
@@ -107,8 +106,10 @@
 
 			/* get all fieldproperties (name, type, etc...) */
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
-//			_debug_array($fields);
+			//			_debug_array($fields);
 
+
+			
 			/* The main loop to create all rows with input fields start here */ 
 			foreach ( $fields as $fieldproperties )
 			{
@@ -120,7 +121,8 @@
 				/* ---------------------- start fields -------------------------------- */
 
 				/* Its an identifier field */
-				if (eregi("auto_increment", $fieldproperties[flags]))
+				if (eregi("auto_increment", $fieldproperties[flags]) || eregi("nextval",$fieldproperties['default']))
+//				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
 					if(!$value) $display_value=lang('automaticly incrementing');
 				   $input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
@@ -143,14 +145,17 @@
 				   }
 				   else
 				   {
-					  $attr_arr=array(
-						 'max_size'=>$fieldproperties[len],
-					  );
+					  if($fieldproperties[len] && $fieldproperties[len]!=-1)
+					  {
+						 $attr_arr=array(
+							'max_size'=>$fieldproperties[len],
+						 );
+					  }
 					  $input=$this->bo->get_plugin_fi($input_name,$value,'string', $attr_arr);
 				   }
 				}
 
-				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint')
+				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint' || $fieldproperties[type]=='int4' )
 				{
 					/* If this integer has a relation get that options */
 					if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
@@ -202,7 +207,19 @@
 				/* if there is something to render to this */
 				if($input!='hide')
 				{
-					/* set the row colors */
+				   if($this->bo->read_preferences('table_debugging_info')=='yes')
+				   {
+					  $keys=array_keys($fieldproperties);
+					  $input.='<br/>';
+					  foreach($keys as $key)
+					  {
+						 if(!$fieldproperties[$key]) continue;
+						 $input.= $key.'='.$fieldproperties[$key].' ';
+
+					  }
+				   }
+		   
+				   /* set the row colors */
 					if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
 					else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
 

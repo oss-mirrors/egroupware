@@ -71,8 +71,8 @@
 
 
 			$fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_sites');
-//			_debug_array($fields);
-//			die();
+			//_debug_array($fields);
+			//die();
 
 
 			foreach ($fields as $fieldproperties)
@@ -100,7 +100,7 @@
 					$input_length=40;
 				}
 
-				if (eregi("auto_increment", $fieldproperties[flags]))
+				if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_sites'::text)")
 				{
 					if (!$value)
 					{
@@ -143,7 +143,7 @@
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" input_max_length" value="'.$value.'">';
 				}
-				elseif ($fieldproperties[type]=='int')
+				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='int4')
 				{
 					$input='<input type="text" name="'.$input_name.'" size="10" value="'.$value.'">';
 				}

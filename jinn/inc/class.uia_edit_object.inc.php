@@ -71,6 +71,8 @@
 
 
 			$fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_site_objects');
+
+//			_debug_array($fields);
    
             //sort array and remove non-functional elements
             $slice0=array_slice($fields,0,6);
@@ -106,7 +108,8 @@
 					$input_length=40;
 				}
 
-				if (eregi("auto_increment", $fieldproperties[flags]))
+				if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_site_objects'::text)")
+//				if (eregi("auto_increment", $fieldproperties[flags]))
 				{
 					if (!$value)
 					{
@@ -114,7 +117,8 @@
 					}
 					else
 					{
-						$display_value=lang('automatic');
+//					   $display_value=lang('automatic') . ' <strong>'.$value.'</strong>';
+						$display_value=$value;
 					}
 
 					$input='<input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
@@ -409,7 +413,8 @@
 				/*************************************************
 				* FORM PLUGIN SECTION                            *
 				*************************************************/
-				elseif($fieldproperties[name]=='plugins')
+				// this will become general field level configuration
+				elseif($fieldproperties[name]=='plugins') 				
 				{
 					unset($input);
 					if ($where_key && $where_value && $valid_table_name)
@@ -422,8 +427,9 @@
 						if ($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
-							$input.='<table border=1><tr><td>'.lang('fields').'</td>';
-							$input.='<td>'.lang('form input plugin').'</td><td>&nbsp;</td></tr>';
+						    //_debug_array($fields);
+							$input.='<table border="1" ><tr><td>'.lang('fields').'</td>';
+								  $input.='<td>'.lang('form input plugin').'</td><td>&nbsp;</td><td>'.lang('extra info').'</td></tr>';
 
 							$plugin_settings=explode('|',$value);
 

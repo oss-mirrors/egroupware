@@ -199,12 +199,12 @@
 
 	  function get_phpgw_fieldnames($table)
 	  {
-		 $this->phpgw_db->query("SHOW FIELDS FROM $table",__LINE__,__FILE__);
-
-		 while ($this->phpgw_db->next_record())
+		 $meta=$this->phpgw_db->metadata($table);
+		 foreach($meta as $col)
 		 {
-			$fieldnames[] = $this->phpgw_db->f('Field');
+			$fieldnames[] = $col['name'];
 		 }
+
 		 return $fieldnames;
 	  }
 
@@ -225,9 +225,21 @@
 	  }
 
 
-	  function phpgw_table_metadata($table)
+	  function phpgw_table_metadata($table,$associative=false)
 	  {
-		 return $this->phpgw_db->metadata($table);
+		 if($associative)
+		 {
+			$meta=$this->phpgw_db->metadata($table);
+			foreach ($meta as $col)
+			{
+			   $ret_meta[$col[name]]=$col;
+			}
+			return $ret_meta;//$this->phpgw_db->metadata($table);
+		 }
+		 else
+		 {
+			return $this->phpgw_db->metadata($table);
+		 }
 	  }
 
 
@@ -992,8 +1004,19 @@
 
 	  function insert_phpgw_data($table,$data)
 	  {
+
+		 $meta=$this->phpgw_table_metadata($table,true);
+		 //	 _debug_array($meta);
+
+
 		 foreach($data as $field)
 		 {
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_'.$table,$meta[$field['name']]['default'])) 
+			{
+			   $last_insert_id_col=$field['name'];
+			   continue;
+			}
+
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
@@ -1005,9 +1028,7 @@
 		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
-
-			//$status=1;//$this->phpgw_db->get_last_insert_id($table,'x');
-			$status=$this->phpgw_db->get_last_insert_id($table,'x');
+			$status=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
 		 }
 
 		 return $status;

@@ -269,7 +269,6 @@
 
 			$this->save_sessiondata();
 			
-			
 			//			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
 			// FIXME keep nextmatch sorting filter etc...
 			$this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_site_objects&object_id='.$object_id.'&site_id='.$site_id);
