@@ -15,13 +15,12 @@
 
 	class uiforum
 	{
-
 		var $public_functions = array(
 			'index' => True,
 			'forum' => True,
-			'threads'	=> True,
-			'read'	=> True,
-			'post'	=> True			
+			'threads' => True,
+			'read'  => True,
+			'post'  => True
 		);
 
 		var $debug;
@@ -51,10 +50,10 @@
 		function _debug_sqsof()
 		{
 			$data = array(
-				'view'=> $this->bo->view,
-				'location'	=> $this->bo->location,
-				'cat_id'=> $this->bo->cat_id,
-				'forum_id'	=> $this->bo->forum_id
+				'view'     => $this->bo->view,
+				'location' => $this->bo->location,
+				'cat_id'   => $this->bo->cat_id,
+				'forum_id' => $this->bo->forum_id
 			);
 			echo '<br>UI:';
 			_debug_array($data);
@@ -64,10 +63,10 @@
 		function save_sessiondata()
 		{
 			$data = array(
-				'view'=> $this->bo->view,
-				'location'	=> $this->bo->location,
-				'cat_id'=> $this->bo->cat_id,
-				'forum_id'	=> $this->bo->forum_id
+				'view'     => $this->bo->view,
+				'location' => $this->bo->location,
+				'cat_id'   => $this->bo->cat_id,
+				'forum_id' => $this->bo->forum_id
 			);
 			$this->bo->save_sessiondata($data);
 		}
@@ -82,15 +81,15 @@
 
 			$this->template->set_file(
 				Array(
-					'INDEX'	=> 'index.body.tpl'
+					'INDEX' => 'index.body.tpl'
 				)
 			);
 			$this->template->set_block('INDEX','CategoryForum','CatF');
 
 			$var = Array(
-				'CAT_IMG'	=> $GLOBALS['phpgw']->common->image('forum','category'),
-				'BGROUND'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
-				'FORUM'	=> lang('Forum')
+				'CAT_IMG' => $GLOBALS['phpgw']->common->image('forum','category'),
+				'BGROUND' => $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'FORUM'   => lang('Forum')
 			);
 			$this->template->set_var($var);
 
@@ -100,13 +99,13 @@
 			{
 				$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
 				$var = Array(
-					'COLOR'	=> $tr_color,
-					'CAT'	=> $cat['name'],
-					'DESC'	=> $cat['descr'],
-					'CAT_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
+					'COLOR' => $tr_color,
+					'CAT'   => $cat['name'],
+					'DESC'  => $cat['descr'],
+					'CAT_LINK' => $GLOBALS['phpgw']->link('/index.php',
 							Array(
-								'menuaction'	=> 'forum.uiforum.forum',
-								'cat_id'	=> $cat['id']
+								'menuaction' => 'forum.uiforum.forum',
+								'cat_id'     => $cat['id']
 							)
 						),
 					'value_last_post' => $cat['last_post'],
@@ -129,7 +128,7 @@
 
 			$this->template->set_file(
 				Array(
-					'_list'	=> 'forums.body.tpl'
+					'_list' => 'forums.body.tpl'
 				)
 			);
 			$this->template->set_block('_list','row_empty');
@@ -139,11 +138,11 @@
 			$cat = $this->bo->get_cat_info($this->bo->cat_id);
 
 			$var = Array(
-				'BGROUND'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'BGROUND'   => $GLOBALS['phpgw_info']['theme']['th_bg'],
 				'FORUM_IMG' => $GLOBALS['phpgw']->common->image('forum','forum'),
-				'CATEGORY'       => $cat['name'],
-				'LANG_MAIN'      => lang('Forum'),
-				'MAIN_LINK'      => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index')
+				'CATEGORY'  => $cat['name'],
+				'LANG_MAIN' => lang('Forum'),
+				'MAIN_LINK' => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index')
 			);
 			$this->template->set_var($var);
 
@@ -162,14 +161,14 @@
 					$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color(&$this->template);
 					$this->template->set_var(
 						Array(
-							'NAME'              => $forum['name'],
-							'DESC'              => $forum['descr'],
-							'THREADS_LINK'      => $GLOBALS['phpgw']->link('/index.php',
-									Array(
-										'menuaction'	=> 'forum.uiforum.threads',
-										'forum_id'	=> $forum['id']
-									)
-							 ),
+							'NAME'         => $forum['name'],
+							'DESC'         => $forum['descr'],
+							'THREADS_LINK' => $GLOBALS['phpgw']->link('/index.php',
+								Array(
+									'menuaction' => 'forum.uiforum.threads',
+									'forum_id'   => $forum['id']
+								)
+							),
 							'value_last_post' => $forum['last_post'],
 							'value_total'     => $forum['total']
 						)
@@ -191,7 +190,7 @@
 			$category = $this->bo->get_cat_info($this->bo->cat_id);
 			$forum = $this->bo->get_forum_info($this->bo->cat_id,$this->bo->forum_id);
 
-			$pre_var	= array(
+			$pre_var = array(
 				'BGROUND'        => $GLOBALS['phpgw_info']['theme']['th_bg'],
 				'LANG_TOPIC'     => lang('Topic'),
 				'LANG_AUTHOR'    => lang('Author'),
@@ -202,18 +201,18 @@
 				'LANG_CATEGORY'  => $category['name'],
 				'LANG_FORUM'     => $forum['name'],
 				'FORUM_LINK'     => $GLOBALS['phpgw']->link('/index.php',
-						Array(
-							'menuaction'	=> 'forum.uiforum.forum',
-							'cat_id'	=>	$this->bo->cat_id
-						)
-					),
+					Array(
+						'menuaction' => 'forum.uiforum.forum',
+						'cat_id'     => $this->bo->cat_id
+					)
+				),
 				'MAIN_LINK'      => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
 				'POST_LINK'      => $GLOBALS['phpgw']->link('/index.php',
-						Array(
-							'menuaction' => 'forum.uiforum.post',
-							'type'	=> 'new'
-						)
+					Array(
+						'menuaction' => 'forum.uiforum.post',
+						'type'       => 'new'
 					)
+				)
 			);
 
 			$is_collapsed = (strcmp($this->bo->view,'collapsed') == 0);
@@ -222,7 +221,7 @@
 			{
 				$this->template->set_file(
 					Array(
-						'COLLAPSE'	=> 'collapse.threads.tpl'
+						'COLLAPSE' => 'collapse.threads.tpl'
 					)
 				);
 				$this->template->set_block('COLLAPSE','CollapseThreads','CollapseT');
@@ -235,28 +234,28 @@
 					$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($GLOBALS['tr_color']);
 					
 					$var = Array(
-						'COLOR'	=> $GLOBALS['tr_color'],
-						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
-						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
-						'REPLIES'	=> $thread['replies'],
-						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
-								Array(
-									'menuaction'	=> 'forum.uiforum.read',
-									'msg'	=> $thread['id']
-								)
-							),
-						'LATESTREPLY'	=> $thread['last_reply']
+						'COLOR'     => $GLOBALS['tr_color'],
+						'TOPIC'     => ($thread['subject']?$thread['subject']:'[No subject]'),
+						'AUTHOR'    => ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
+						'REPLIES'   => $thread['replies'],
+						'READ_LINK' => $GLOBALS['phpgw']->link('/index.php',
+							Array(
+								'menuaction' => 'forum.uiforum.read',
+								'msg'        => $thread['id']
+							)
+						),
+						'LATESTREPLY' => $thread['last_reply']
 					);
 					$this->template->set_var($var);
 					$this->template->parse('CollapseT','CollapseThreads',true);
 				}
 				$var = Array(
-					'THREADS_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
-							Array(
-								'menuaction'	=> 'forum.uiforum.threads',
-								'view'	=> 'threads'
-							)
-						),
+					'THREADS_LINK' => $GLOBALS['phpgw']->link('/index.php',
+						Array(
+							'menuaction' => 'forum.uiforum.threads',
+							'view'       => 'threads'
+						)
+					),
 					'LANG_THREADS' => lang('View Threads')
 				);
 				$this->template->set_var($var);
@@ -267,7 +266,7 @@
 			{
 				$this->template->set_file(
 					Array(
-						'NORMAL'	=> 'normal.threads.tpl'
+						'NORMAL' => 'normal.threads.tpl'
 					)
 				);
 				$this->template->set_block('NORMAL','NormalThreads','NormalT');
@@ -286,31 +285,31 @@
 					$move .= '&nbsp;&nbsp;';
 
 					$var = Array(
-						'COLOR'	=> $GLOBALS['tr_color'],
-						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
-						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
-						'REPLIES'	=> $thread['replies'],
-						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
-								Array(
-									'menuaction'	=> 'forum.uiforum.read',
-									'msg'	=> $thread['id'],
-									'pos'	=> $thread['pos']
-								)
-							),
-						'LATESTREPLY'	=> $thread['last_reply'],
-						'DEPTH'	=> $move
+						'COLOR'     => $GLOBALS['tr_color'],
+						'TOPIC'     => ($thread['subject']?$thread['subject']:'[No subject]'),
+						'AUTHOR'    => ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
+						'REPLIES'   => $thread['replies'],
+						'READ_LINK' => $GLOBALS['phpgw']->link('/index.php',
+							Array(
+								'menuaction' => 'forum.uiforum.read',
+								'msg'        => $thread['id'],
+								'pos'        => $thread['pos']
+							)
+						),
+						'LATESTREPLY' => $thread['last_reply'],
+						'DEPTH' => $move
 					);
 					$this->template->set_var($var);
 					$this->template->parse('NormalT','NormalThreads',true);
 				} //end while
 
 				$var = Array(
-					'THREADS_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
-							Array(
-								'menuaction'	=> 'forum.uiforum.threads',
-								'view'	=> 'collapsed'
-							)
-						),
+					'THREADS_LINK' => $GLOBALS['phpgw']->link('/index.php',
+						Array(
+							'menuaction' => 'forum.uiforum.threads',
+							'view'       => 'collapsed'
+						)
+					),
 					'LANG_THREADS' => lang('Collapse Threads')
 				);
 				$this->template->set_var($var);
@@ -329,7 +328,7 @@
 
 			$this->template->set_file(
 				Array(
-					'READ'	=> 'read.body.tpl'
+					'READ' => 'read.body.tpl'
 				)
 			);
 
@@ -361,11 +360,11 @@
 				'FORUM_LINK'    => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.forum'),
 				'MAIN_LINK'     => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
 				'POST_LINK'     => $GLOBALS['phpgw']->link('/index.php',
-						Array(
-							'menuaction' => 'forum.uiforum.post',
-							'type'	=> 'new'
-						)
-					),
+					Array(
+						'menuaction' => 'forum.uiforum.post',
+						'type'       => 'new'
+					)
+				),
 				'THREADS_LINK' => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.threads'),
 				'SEARCH_LINK'  => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.search'),
 				'READ_ACTION'  => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.boforum.reply'),
@@ -380,7 +379,7 @@
 				'LANG_REPLY'   => lang('Email replies to this thread, to the address above'),
 				'LANG_SUBMIT'  => lang('Submit'),
 				'LANG_MESSAGE' => lang('Message'),
-				'LANG_THREADS'	=> lang('Return to forums')
+				'LANG_THREADS' => lang('Return to forums')
 /*
 				'THREADS_LINK' => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.threads'),
 */
@@ -395,9 +394,9 @@
 				if($message['id'] == $msg)
 				{
 					$var = Array(
-						'THREAD'       => $message['thread'],
-						'DEPTH'        => $message['depth'],
-						'RE_SUBJECT'	=> (!strpos(' '.$message['subject'],'RE: ')?'RE: ':'').$message['subject']
+						'THREAD'     => $message['thread'],
+						'DEPTH'      => $message['depth'],
+						'RE_SUBJECT' => (!strpos(' '.$message['subject'],'RE: ')?'RE: ':'').$message['subject']
 					);
 					$this->template->set_var($var);
 				}
@@ -406,16 +405,16 @@
 					'AUTHOR'       => ($message['thread_owner']?$GLOBALS['phpgw']->common->grab_owner_name($message['thread_owner']):lang('Unknown')),
 					'POSTDATE'     => $GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->from_timestamp($message['postdate'])),
 					'SUBJECT_LINK' => $GLOBALS['phpgw']->link('/index.php',
-							Array(
-								'menuaction'	=> 'forum.uiforum.read',
-								'msg'	=> $message['id'],
-								'pos'	=> $message['pos']
-							)
-						),
-					'SUBJECT'      => $message['subject'],
-					'MESSAGE'		=> $message['message'],
-					'NAME'         => $message['name'],
-					'EMAIL'        => $message['email']
+						Array(
+							'menuaction' => 'forum.uiforum.read',
+							'msg'        => $message['id'],
+							'pos'        => $message['pos']
+						)
+					),
+					'SUBJECT' => $message['subject'],
+					'MESSAGE' => $message['message'],
+					'NAME'    => $message['name'],
+					'EMAIL'   => $message['email']
 				);
 
 				if($key > 0)
@@ -453,7 +452,7 @@
 
 			$this->template->set_file(
 				Array(
-					'POST'	=> 'post.body.tpl'
+					'POST' => 'post.body.tpl'
 				)
 			);
 

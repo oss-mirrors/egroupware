@@ -18,14 +18,14 @@
 		var $public_functions = array(
 			'reply' => True,
 			'post'  => True,
-			'delete_category'	=> True,
-			'delete_forum'	=> True,
-			'category'	=> True,
-			'forum'	=> True
+			'delete_category' => True,
+			'delete_forum'    => True,
+			'category' => True,
+			'forum' => True
 		);
 
 		var $debug = False;
-		
+
 		var $so;
 
 		var $use_session;
@@ -91,11 +91,11 @@
 			if ($GLOBALS['HTTP_POST_VARS']['action'] == 'post')
 			{
 				$data = Array(
-					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
-					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
+					'cat_id'   => $GLOBALS['HTTP_POST_VARS']['cat_id'],
+					'forum_id' => $GLOBALS['HTTP_POST_VARS']['forum_id'],
+					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
+					'subject'  => $GLOBALS['HTTP_POST_VARS']['subject'],
+					'message'  => $GLOBALS['HTTP_POST_VARS']['message']
 				);
 
 				$this->so->add_post($data);
@@ -125,14 +125,14 @@
 
 				$data = Array(
 					'pos' => $GLOBALS['HTTP_POST_VARS']['pos'],
-					'thread'	=> $GLOBALS['HTTP_POST_VARS']['thread'],
-					'depth'	=> $GLOBALS['HTTP_POST_VARS']['depth'],
-					'postdate'	=> time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
-					'parent'	=> $GLOBALS['HTTP_POST_VARS']['msg'],
-					'cat_id'	=> $GLOBALS['HTTP_POST_VARS']['cat_id'],
-					'forum_id'	=> $GLOBALS['HTTP_POST_VARS']['forum_id'],
-					'subject'	=> $GLOBALS['HTTP_POST_VARS']['subject'],
-					'message'	=> $GLOBALS['HTTP_POST_VARS']['message']
+					'thread'   => $GLOBALS['HTTP_POST_VARS']['thread'],
+					'depth'    => $GLOBALS['HTTP_POST_VARS']['depth'],
+					'postdate' => time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])),
+					'parent'   => $GLOBALS['HTTP_POST_VARS']['msg'],
+					'cat_id'   => $GLOBALS['HTTP_POST_VARS']['cat_id'],
+					'forum_id' => $GLOBALS['HTTP_POST_VARS']['forum_id'],
+					'subject'  => $GLOBALS['HTTP_POST_VARS']['subject'],
+					'message'  => $GLOBALS['HTTP_POST_VARS']['message']
 				);
 
 				$this->so->add_reply($data);
