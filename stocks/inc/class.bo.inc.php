@@ -103,7 +103,7 @@
 			while (list($symbol,$name) = each($stocklist))
 			{
 				$symbollist[] = $symbol;
-				$symbol = rawurlencode($symbol);
+			//	$symbol = rawurlencode($symbol);
 				$symbolstr .= $symbol;
 
 				if ($i++<count($stocklist)-1)
@@ -265,14 +265,14 @@
 			{
 				while (list($null,$stock) = each($stocks))
 				{
-					$symbol	= $GLOBALS['phpgw']->strip_html($stock['symbol']);
+					$symbol	= rawurlencode($GLOBALS['phpgw']->strip_html($stock['symbol']));
 					$name	= $GLOBALS['phpgw']->strip_html($stock['name']);
 
 					if ($symbol)
 					{
 						if (! $name)
 						{
-							$name = $symbol;
+							$name = $GLOBALS['phpgw']->strip_html($stock['symbol']);
 						}
 						$stocklist[$symbol] = $name;
 					}
