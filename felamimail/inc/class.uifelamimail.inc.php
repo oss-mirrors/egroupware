@@ -426,7 +426,7 @@
 				'read_small',
 				'unread_small',
 				'unread_flagged_small',
-				'unread_small',
+				'read_flagged_small',
 				'trash',
 				'sm_envelope',
 				'new'

@@ -176,7 +176,7 @@ doLoad();
                                         </td>
                                         <TD WIDTH="4px" ALIGN="MIDDLE" valign="center">|</td>
                                         <td width="12px" align="left" valign="center">
-						<input type="image" src="{unread_small}" name="mark_unflagged" title="{desc_unimportant}">
+						<input type="image" src="{read_flagged_small}" name="mark_unflagged" title="{desc_unimportant}">
                                         </td>
                                         <TD WIDTH="2px" ALIGN="MIDDLE" valign="center">
                                                 &nbsp;&nbsp;
