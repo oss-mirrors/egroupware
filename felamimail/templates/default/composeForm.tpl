@@ -1,6 +1,21 @@
 <!-- BEGIN header -->
+
+<script>
+<!--
+  self.name="first_Window";
+  function addybook()
+  {
+	Window1=window.open('{link_addressbook}',"{lang_search}","width=800,height=480,toolbar=no,scrollbars=yes,resizable=yes");
+  }
+  function attach_window(url)
+  {
+	awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
+  }
+-->
+</script>
+
 <center>
-<form method="post" action="{link_action}" ENCTYPE="multipart/form-data">
+<form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data">
 <table width="98%" border="0" cellspacing="0" cellpading="1">
 <tr bgcolor="{th_bg}">
 	<td colspan="2">
@@ -17,8 +32,8 @@
 	<td width="60%">
 		<input class="text" type=text size="60" name="to" value='{to}'>
 	</td>
-	<td align="center">
-		&nbsp;<iinput type="submit" value="{lang_addressbook}" name="addressbook">
+	<td align="right">
+		<input class="text" type="button" value="{lang_addressbook}" onclick="addybook();">
 	</td>
 </tr>
 <tr bgcolor="{bg02}">
@@ -151,7 +166,7 @@
 		<b>{size}</b>
 	</td>
 	<td align="center">
-		<input type="submit" name="removefile" value="{lang_remove}">
+		<input class="text" type="submit" name="removefile" value="{lang_remove}">
 	</td>
 </tr>
 <!-- END attachment_row_bold -->

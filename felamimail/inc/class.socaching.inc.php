@@ -34,14 +34,14 @@
 		function addToCache($_data)
 		{
 			$query = sprintf("insert into phpgw_felamimail_cache ".
-					 "(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size) ".
-					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+					 "(accountid, hostname, foldername, accountname, uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments) ".
+					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 					 $this->accountid, addslashes($this->hostname), 
 					 addslashes($this->foldername), addslashes($this->accountname), 
 					 $_data['uid'], $_data['date'], addslashes($_data['subject']),
 					 addslashes($_data['sender_name']), addslashes($_data['sender_address']),
 					 addslashes($_data['to_name']), addslashes($_data['to_address']),
-					 $_data['size']);
+					 $_data['size'],$_data['attachments']);
 			$this->db->query($query);
 			
 			#print "$query<br>";
@@ -73,7 +73,7 @@
 					$sort = "order by date desc";
 			}
 			
-			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address, size from phpgw_felamimail_cache ".
+			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments from phpgw_felamimail_cache ".
 					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' $sort",
 					 $this->accountid, addslashes($this->hostname),
 					 addslashes($this->foldername), addslashes($this->accountname));
@@ -90,7 +90,12 @@
 			while($this->db->next_record())
 			{
 				$retValue[] = array(
-						'uid'		=> $this->db->f('uid'),
+						'uid'			=> $this->db->f('uid'),
+						'sender_name'		=> $this->db->f('sender_name'), 
+						'sender_address'	=> $this->db->f('sender_address'), 
+						'to_name'		=> $this->db->f('to_name'), 
+						'to_address'		=> $this->db->f('to_address'),
+						'attachments'		=> $this->db->f('attachments')
 						);
 			}
 			return $retValue;

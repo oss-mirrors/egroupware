@@ -203,6 +203,7 @@
 			$maxMessages = $GLOBALS['phpgw_info']["user"]["preferences"]["common"]["maxmatchs"];
 			
 			$folders = $this->bofelamimail->getFolderList('true');
+			
 			$headers = $this->bofelamimail->getHeaders($this->startMessage, $maxMessages, $this->sort);
 		
 			$this->display_app_header();
@@ -295,11 +296,24 @@
 			}
 
 			// create the listing of subjects
+			$maxSubjectLength = 80;
+			$maxAddressLength = 30;
 			for($i=0; $i<count($headers['header']); $i++)
 			{
 				if (!empty($headers['header'][$i]['subject']))
 				{
+					if(strlen($headers['header'][$i]['subject']) > $maxSubjectLength)
+					{
+						$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
+					}
+
+					if($headers['header'][$i]['attachments'] == "true")
+					{
+						$image = '<img src="'.PHPGW_IMAGES.'/attach.gif" border="0">';
+						$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
+					}
 					$this->t->set_var('header_subject',$headers['header'][$i]['subject']);
+					
 				}
 				else
 				{
@@ -310,17 +324,17 @@
 				{
 					if (!empty($headers['header'][$i]['to_name']))
 					{
-						$this->t->set_var('sender_name',$headers['header'][$i]['to_name']);
-						$this->t->set_var('full_address',
+						$sender_name	= $headers['header'][$i]['to_name'];
+						$full_address	=
 							$headers['header'][$i]['to_name'].
 							" <".
 							$headers['header'][$i]['to_address'].
-							">");
+							">";
 					}
 					else
 					{
-						$this->t->set_var('sender_name',$headers['header'][$i]['to_address']);
-						$this->t->set_var('full_address',$headers['header'][$i]['to_address']);
+						$sender_name	= $headers['header'][$i]['to_address'];
+						$full_address	= $headers['header'][$i]['to_address'];
 					}
 					$this->t->set_var('lang_from',lang("to"));
 				}
@@ -328,20 +342,26 @@
 				{
 					if (!empty($headers['header'][$i]['sender_name']))
 					{
-						$this->t->set_var('sender_name',$headers['header'][$i]['sender_name']);
-						$this->t->set_var('full_address',
+						$sender_name	= $headers['header'][$i]['sender_name'];
+						$full_address	= 
 							$headers['header'][$i]['sender_name'].
 							" <".
 							$headers['header'][$i]['sender_address'].
-							">");
+							">";
 					}
 					else
 					{
-						$this->t->set_var('sender_name',$headers['header'][$i]['sender_address']);
-						$this->t->set_var('full_address',$headers['header'][$i]['sender_address']);
+						$sender_name	= $headers['header'][$i]['sender_address'];
+						$full_address	= $headers['header'][$i]['sender_address'];
 					}
 					$this->t->set_var('lang_from',lang("from"));
 				}
+				if(strlen($sender_name) > $maxAddressLength)
+				{
+					$sender_name = substr($sender_name,0,$maxAddressLength)."...";
+				}
+				$this->t->set_var('sender_name',$sender_name);
+				$this->t->set_var('full_address',$full_address);
 				
 				if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")
 				{
@@ -523,7 +543,7 @@
 				'menuaction'    => 'felamimail.uicompose.compose',
 				'mailbox'	=> $urlMailbox,
 				'startMessage'	=> $this->startMessage,
-				'sort'		=> $this->sort
+				'sort'		=> $this->sort,
 			);
 			$this->t->set_var('url_compose_empty',$GLOBALS['phpgw']->link('/index.php',$linkData));
 

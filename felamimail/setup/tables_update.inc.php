@@ -21,4 +21,14 @@
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
 
+	$test[] = '0.8.3';
+	function felamimail_upgrade0_8_3()
+	{
+
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_felamimail_cache','attachments',array('type' => 'varchar', 'precision' => 120));
+		
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.8.4';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
 ?>

@@ -22,6 +22,13 @@
 		);
 
 		var $mbox;		// the mailbox identifier any function should use
+		
+		// define some constants
+		// message types
+		var $type = array("text", "multipart", "message", "application", "audio", "image", "video", "other");
+		
+		// message encodings
+		var $encoding = array("7bit", "8bit", "binary", "base64", "quoted-printable", "other");
 
 		function bofelamimail($_foldername)
 		{
@@ -186,6 +193,23 @@
 			#print "Result: $result<br>";
 		}
 		
+		// this function is based on a on "Building A PHP-Based Mail Client"
+		// http://www.devshed.com
+		// iterate through object returned by parse()
+		// create a new array holding information only on message attachments
+		function get_attachments($arr)
+		{
+			for($x=0; $x<sizeof($arr); $x++)
+			{
+				if($arr[$x]["disposition"] == "attachment")
+				{
+					$ret[] = $arr[$x];
+				}
+			}
+			
+			return $ret;
+		}
+		
 		function getFolderList($_subscribedOnly)
 		{
 			$mailboxString = sprintf("{%s:%s}%s",
@@ -222,6 +246,8 @@
 		function getHeaders($_startMessage, $_numberOfMessages, $_sort)
 		{
 
+#			printf ("this->bofelamimail->getHeaders start: %s<br>",date("H:i:s",mktime()));
+
 			$caching = CreateObject('felamimail.bocaching',
 					$this->mailPreferences['imapServerAddress'],
 					$this->mailPreferences['username'],
@@ -247,6 +273,11 @@
 					@set_time_limit();
 					$messageData['uid'] = imap_uid($this->mbox, $i);
 					$header = imap_headerinfo($this->mbox, $i);
+					// parse structure to see if attachments exist
+					// display icon if so
+					$structure = imap_fetchstructure($this->mbox, $i);
+					$sections = $this->parse($structure);
+					$attachments = $this->get_attachments($sections);
 					
 					if (isset($header->date))
 					{
@@ -266,6 +297,16 @@
 					$messageData['sender_address']	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size']		= $header->Size;
 					
+					$messageData['attachments']     = "false";
+					if (is_array($attachments))
+					{
+						$messageData['attachments']	= "true";
+					}
+					
+					// maybe it's already in the database
+					// lets remove it, sometimes the database gets out of sync
+					$caching->removeFromCache($messageData['uid']);
+					
 					$caching->addToCache($messageData);
 					
 					unset($messageData);
@@ -284,6 +325,11 @@
 				{
 					$messageData['uid'] = $newHeaders[$i]->uid;
 					$header = imap_headerinfo($this->mbox, $newHeaders[$i]->msgno);
+					// parse structure to see if attachments exist
+					// display icon if so
+					$structure = imap_fetchstructure($this->mbox, $newHeaders[$i]->msgno);
+					$sections = $this->parse($structure);
+					$attachments = $this->get_attachments($sections);
 				
 					if (isset($header->date)) 
 					{	
@@ -302,6 +348,16 @@
 					$messageData['sender_name'] 	= $header->from[0]->personal;
 					$messageData['sender_address'] 	= $header->from[0]->mailbox."@".$header->from[0]->host;
 					$messageData['size'] 		= $header->Size;
+
+					$messageData['attachments']     = "false";
+					if (is_array($attachments))
+					{
+						$messageData['attachments']	= "true";
+					}
+					
+					// maybe it's already in the database
+					// lets remove it, sometimes the database gets out of sync
+					$caching->removeFromCache($messageData['uid']);
 					
 					$caching->addToCache($messageData);
 					
@@ -331,23 +387,22 @@
 			}
 
 			$displayHeaders = $caching->getHeaders($_startMessage, $_numberOfMessages, $_sort);
-			
+
 			$count=0;
 			for ($i=0;$i<count($displayHeaders);$i++)
 			{
 				$header = imap_fetch_overview($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
 
-				$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
-				$headers = $this->sofelamimail->fetchheader($rawHeader);
+				#$rawHeader = imap_fetchheader($this->mbox,$displayHeaders[$i]['uid'],FT_UID);
+				#$headers = $this->sofelamimail->fetchheader($rawHeader);
 				
 				$retValue['header'][$count]['subject'] = $this->decode_header($header[0]->subject);
-				$from = imap_rfc822_parse_adrlist($headers['from'],"unknown domain");
-				$retValue['header'][$count]['sender_name'] = $this->decode_header($from[0]->personal);
-				$retValue['header'][$count]['sender_address'] = $from[0]->mailbox."@".$from[0]->host;
-				$to = imap_rfc822_parse_adrlist($headers['to'],"unknown domain");
-				$retValue['header'][$count]['to_name'] = $this->decode_header($to[0]->personal);
-				$retValue['header'][$count]['to_address'] = $to[0]->mailbox."@".$to[0]->host;
-				$retValue['header'][$count]['size'] = $header[0]->size;
+				$retValue['header'][$count]['sender_name'] 	= $this->decode_header($displayHeaders[$i]['sender_name']);
+				$retValue['header'][$count]['sender_address'] 	= $this->decode_header($displayHeaders[$i]['sender_address']);
+				$retValue['header'][$count]['to_name'] 		= $this->decode_header($displayHeaders[$i]['to_name']);
+				$retValue['header'][$count]['to_address'] 	= $this->decode_header($displayHeaders[$i]['to_address']);
+				$retValue['header'][$count]['attachments']	= $displayHeaders[$i]['attachments'];
+				$retValue['header'][$count]['size'] 		= $header[0]->size;
 				if (isset($header[0]->date)) 
 				{	
 					$header[0]->date = ereg_replace('  ', ' ', $header[0]->date);
@@ -391,9 +446,11 @@
 				$retValue['header'][$count]['deleted'] = $header[0]->deleted;
 				$retValue['header'][$count]['seen'] = $header[0]->seen;
 				$retValue['header'][$count]['draft'] = $header[0]->draft;
-
+				
 				$count++;
 			}
+
+#			printf ("this->bofelamimail->getHeaders done: %s<br>",date("H:i:s",mktime()));
 
 			if(is_array($retValue['header']))
 			{
@@ -406,6 +463,29 @@
 			{
 				return 0;
 			}
+		}
+
+		function getMessageBody($_replyID, $_partID='')
+		{
+			if(!empty($_partID))
+			{
+				return trim(imap_fetchbody($this->mbox, $_replyID, $_partID));
+			}
+			else
+			{
+				return trim(imap_body($this->mbox,$_replyID));
+			}
+		}
+
+		function getMessageHeaders($_replyID)
+		{
+			return imap_header($this->mbox, $_replyID);
+		}
+
+		function getMessageStructure($_replyID)
+		{
+			#return imap_fetchstructure($this->mbox, $_replyID, FT_UID);
+			return imap_fetchstructure($this->mbox, $_replyID);
 		}
 
 		function moveMessages($_foldername, $_messageUID)
@@ -444,6 +524,53 @@
 				print imap_last_error()."<br>";
 			}
 			
+		}
+		
+		// this function is based on a on "Building A PHP-Based Mail Client"
+		// http://www.devshed.com
+		function parse($structure)
+		{
+			// create an array to hold message sections
+			$ret = array();
+			
+			// split structure into parts
+			$parts = $structure->parts;
+			
+			for($x=0; $x<sizeof($parts); $x++)
+			{
+				$ret[$x]["pid"] = ($x+1);
+				
+				$part = $parts[$x];
+				
+				// default to text
+				if ($part->type == "") { $part->type = 0; }
+				
+				$ret[$x]["type"] = $this->type[$part->type] . "/" . strtolower($part->subtype);
+				
+				// default to 7bit
+				if ($part->encoding == "") { $part->encoding = 0; }
+				$ret[$x]["encoding"] = $this->encoding[$part->encoding];
+				
+				$ret[$x]["size"] = strtolower($part->bytes);
+				
+				$ret[$x]["disposition"] = strtolower($part->disposition);
+				
+				if (strtolower($part->disposition) == "attachment")
+				{
+				
+					$params = $part->dparameters;
+					foreach ($params as $p)
+					{
+						if($p->attribute == "FILENAME")
+						{
+							$ret[$x]["name"] = $p->value;
+							break;
+						}
+					}
+				}
+			}
+			
+			return $ret;
 		}
 
 	}

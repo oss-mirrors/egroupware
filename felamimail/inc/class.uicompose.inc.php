@@ -18,8 +18,10 @@
 
 		var $public_functions = array
 		(
-			'compose'	=> True,
-			'action'	=> True
+			'compose'	=> 'True',
+			'reply'		=> 'True',
+			'forward'	=> 'True',
+			'action'	=> 'True'
 		);
 
 		function uicompose()
@@ -128,6 +130,8 @@
 			
 			$this->translate();
 			
+			$this->t->set_var("link_addressbook",$GLOBALS['phpgw']->link('/felamimail/addressbook.php'));
+
 			$linkData = array
 			(
 				'mailbox'	=> urlencode($GLOBALS['HTTP_GET_VARS']['mailbox']),
@@ -193,13 +197,26 @@
 			echo parse_navbar();
 		}
 		
+		function forward()
+		{
+			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
+			if (!empty($replyID) && !empty($folder))
+			{
+				// this fill the session data with the values from the original email
+				$this->bocompose->getForwardData($folder, $replyID);
+			}
+			$this->compose();
+		}
+
 		function reply()
 		{
-			// is the to address set already?
-			if (!empty($GLOBALS['HTTP_GET_VARS']['reply_id']))
+			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
+			if (!empty($replyID) && !empty($folder))
 			{
-				$formData['to'] 	= urldecode($GLOBALS['HTTP_GET_VARS']['send_to']);
-				$formData['subject']	= '';
+				// this fill the session data with the values from the original email
+				$this->bocompose->getReplyData($folder, $replyID);
 			}
 			$this->compose();
 		}
@@ -213,6 +230,7 @@
 			$this->t->set_var("lang_reply_to",lang('reply to'));
 			$this->t->set_var("lang_subject",lang('subject'));
 			$this->t->set_var("lang_addressbook",lang('addressbook'));
+			$this->t->set_var("lang_search",lang('search'));
 			$this->t->set_var("lang_send",lang('send'));
 			$this->t->set_var("lang_back_to_folder",lang('back to folder'));
 			$this->t->set_var("lang_attachments",lang('attachments'));

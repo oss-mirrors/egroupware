@@ -117,6 +117,116 @@
 			return $this->composeID;
 		}
 		
+		function getForwardData($_folder, $_replyID)
+		{
+			$bofelamimail    = CreateObject('felamimail.bofelamimail',$_folder);
+			
+			// get message headers for specified message
+			$headers	= $bofelamimail->getMessageHeaders($_replyID);
+			
+			// check for Re: in subject header
+			$this->sessionData['subject'] = "[FWD: " . $bofelamimail->decode_header($headers->Subject)."]";
+
+			$structure     = $bofelamimail->getMessageStructure($_replyID);
+			if(sizeof($structure->parts) > 1)
+			{
+				$sections = $bofelamimail->parse($structure);
+				$attachments = $bofelamimail->get_attachments($sections);
+			}
+			
+			$this->sessionData['body']	 = "                  -----------Originalnachricht-----------\n\n";
+			$this->sessionData['body']	.= "Betreff: ".$bofelamimail->decode_header($headers->Subject)."\n";
+			$this->sessionData['body']	.= "Von: ".$bofelamimail->decode_header($headers->toaddress)."\n";
+			$this->sessionData['body']	.= "An: ".$bofelamimail->decode_header($headers->fromaddress)."\n\n";
+			
+			// iterate through message parts
+			if(is_array($sections))
+			{
+				for($x=0; $x<sizeof($sections); $x++)
+				{
+					// if text type, display
+					if($sections[$x]["type"] == "text/plain" && $sections[$x]["disposition"] 
+						!= "attachment")
+					{
+						$bodyPart = $bofelamimail->getMessageBody($_replyID, $sections[$x]["pid"]);
+						$this->sessionData['body'] .= quoted_printable_decode($bodyPart);
+					}
+				}
+			}
+			else
+			{
+				$this->sessionData['body']	.= $bofelamimail->getMessageBody($_replyID);
+			}
+																
+			$this->sessionData['body']	 .= "\n\n                  -----------Originalnachricht-----------\n\n";
+					
+			$bofelamimail->closeConnection();
+			
+			$this->saveSessionData();
+		}
+
+		function getReplyData($_folder, $_replyID)
+		{
+			$bofelamimail    = CreateObject('felamimail.bofelamimail',$_folder);
+			
+			// get message headers for specified message
+			$headers	= $bofelamimail->getMessageHeaders($_replyID);
+			
+			// check for Reply-To: header and use if available
+			if($headers->reply_toaddress)
+			{
+				$this->sessionData['to'] = $bofelamimail->decode_header(trim($headers->reply_toaddress));
+			}
+			else
+			{
+				$this->sessionData['to'] = $bofelamimail->decode_header(trim($headers->fromaddress));
+			}
+			
+			// check for Re: in subject header
+			if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
+			{
+				$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
+			}
+			else
+			{
+				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
+			}
+
+			$structure     = $bofelamimail->getMessageStructure($_replyID);
+			if(sizeof($structure->parts) > 1)
+			{
+				$sections = $bofelamimail->parse($structure);
+				$attachments = $bofelamimail->get_attachments($sections);
+			}
+			
+			$this->sessionData['body']	= "On " . $headers->Date . ", you wrote: \n>";
+			
+			// iterate through message parts
+			if(is_array($sections))
+			{
+				for($x=0; $x<sizeof($sections); $x++)
+				{
+					// if text type, display
+					if($sections[$x]["type"] == "text/plain" && $sections[$x]["disposition"] 
+						!= "attachment")
+					{
+						$bodyPart = $bofelamimail->getMessageBody($_replyID, $sections[$x]["pid"]);
+						$bodyPart = quoted_printable_decode($bodyPart);
+						$this->sessionData['body'] .= str_replace("\n", "\n>", $bodyPart);
+					}
+				}
+			}
+			else
+			{
+				$this->sessionData['body']	.= str_replace("\n", "\n>", $bofelamimail->getMessageBody($_replyID));
+			}
+																
+					
+			$bofelamimail->closeConnection();
+			
+			$this->saveSessionData();
+		}
+		
 		function getSessionData()
 		{
 			return $this->sessionData;
@@ -184,7 +294,7 @@
 
 			if (!empty($this->sessionData['to']))
 			{
-				$address = split(";",$this->sessionData['to']);
+				$address = split(",",$this->sessionData['to']);
 				while (list($key,$value) = each($address))
 				{
 					$mail->AddAddress($value);
@@ -193,7 +303,7 @@
 			
 			if (!empty($this->sessionData['cc']))
 			{
-				$address = split(";",$this->sessionData['cc']);
+				$address = split(",",$this->sessionData['cc']);
 				while (list($key,$value) = each($address))
 				{
 					$mail->AddCC($value);
@@ -202,7 +312,7 @@
 			
 			if (!empty($this->sessionData['bcc']))
 			{
-				$address = split(";",$this->sessionData['bcc']);
+				$address = split(",",$this->sessionData['bcc']);
 				while (list($key,$value) = each($address))
 				{
 					$mail->AddBCC($value);
@@ -211,7 +321,7 @@
 			
 			if (!empty($this->sessionData['reply_to']))
 			{
-				$address = split(";",$this->sessionData['reply_to']);
+				$address = split(",",$this->sessionData['reply_to']);
 				while (list($key,$value) = each($address))
 				{
 					$mail->AddReplyTo($value);

@@ -519,6 +519,27 @@
 			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort']
 		);
 		$t->set_var("link_message_list",$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+		$linkData = array
+		(
+			'menuaction'	=> 'felamimail.uicompose.reply',
+			'mailbox'	=> $urlMailbox,
+			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
+			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
+			'reply_id'	=> $passed_id
+		);
+		$t->set_var("link_reply",$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+		$linkData = array
+		(
+			'menuaction'	=> 'felamimail.uicompose.forward',
+			'mailbox'	=> $urlMailbox,
+			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
+			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
+			'reply_id'	=> $passed_id
+		);
+		$t->set_var("link_forward",$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 		$t->set_var('folder_name',$urlMailbox);
 		$langArray = array
 			(
@@ -530,9 +551,9 @@
 				'lang_reply_all'	=> lang('Reply All'),
 				'lang_back_to_folder'	=> lang('back to folder'),
 				'app_image_path'	=> PHPGW_IMAGES,
-				'link_reply'		=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replyto&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
+				'link_replyy'		=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replyto&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
 				'link_reply_all'	=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replytoall&send_to_cc=$url_replytoallcc&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
-				'link_forward'		=> $phpgw->link('/felamimail/compose.php',"forward_id=$passed_id&forward_subj=$url_subj&mailbox=$urlMailbox&ent_num=$ent_num")
+				'link_forwardd'		=> $phpgw->link('/felamimail/compose.php',"forward_id=$passed_id&forward_subj=$url_subj&mailbox=$urlMailbox&ent_num=$ent_num")
 			);
 			
 		$t->set_var('th_bg', $phpgw_info['theme']['navbar_bg']);
@@ -659,7 +680,7 @@
 		{
 			$calendar_id = intval($header->phpgw_type[id]);
 			echo '<table align="center" width="100%"><tr><td align="center">';
-			$phpgw->hooks->single('email',$header->phpgw_type[type]);
+			$phpgw->common->hook_single('email',$header->phpgw_type[type]);
 			echo '</td></tr></table>';
 		}
 	}
