@@ -137,10 +137,8 @@
 
 					break;
 			}
-			                     
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
-			
 		}
 
 		function editProfile($_profileID='')
@@ -227,7 +225,7 @@
 		function listProfiles()
 		{
 			$this->display_app_header();
-			
+
 			$this->t->set_file(array("body" => "listprofiles.tpl"));
 			$this->t->set_block('body','main');
 			
