@@ -988,7 +988,45 @@
 		 return $status;
 
 	  }
+	  
+	  function validateAndInsert_phpgw_data($table,$data)
+	  {
+		 $meta=$this->phpgw_table_metadata($table,true);
+		 $fieldnames=$this->get_phpgw_fieldnames($table);
 
+		 //	 _debug_array($meta);
+
+
+		 foreach($data as $field)
+		 {
+			if(!in_array($field[name],$fieldnames)) continue;
+			
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_'.$table,$meta[$field['name']]['default'])) 
+			{
+			   $last_insert_id_col=$field['name'];
+			   continue;
+			}
+
+			if ($SQLfields) $SQLfields .= ',';
+			if ($SQLvalues) $SQLvalues .= ',';
+
+			$SQLfields .= $field[name];
+			$SQLvalues .= "'".$field[value]."'";
+		 }
+
+
+		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			$status=$this->phpgw_db->get_last_insert_id($table,$last_insert_id_col);
+		 }
+
+		 return $status;
+	  }
+
+
+	  
+	  
 	  function insert_phpgw_data($table,$data)
 	  {
 
@@ -1021,7 +1059,34 @@
 		 return $status;
 	  }
 
+	  
+	  function upAndValidate_phpgw_data($table,$data,$where_key,$where_value)
+	  {
 
+		 foreach($data as $field)
+		 {
+	
+	//		echo $table;
+//			$meta=$this->get_phpgw_fieldnames($table);	
+//			_debug_array($meta);
+			
+			if ($SQL_SUB) $SQL_SUB .= ', ';
+			$SQL_SUB .= "$field[name]='$field[value]'";
+		 }
+
+		 $SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			$status=1;
+		 }
+
+		 return $status;
+	  }
+
+
+
+
+	  
 	  function update_phpgw_data($table,$data,$where_key,$where_value)
 	  {
 

@@ -239,7 +239,8 @@
 					if($GLOBALS[HTTP_POST_VARS][replace_existing] && count($thissitename)>=1)
 					{
 						$new_site_id=$thissitename[0];
-						$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
+						$this->bo->so->upAndValidate_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
+//						$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
 
 						// remove all existing objects
 						$this->bo->so->delete_phpgw_data('phpgw_jinn_site_objects',parent_site_id,$new_site_id);
@@ -259,7 +260,7 @@
 								'name'=>'site_name',
 								'value'=>$new_name
 							);
-							$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
+							$this->bo->so->upAndValidate_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
 						}
 						else
 						{
@@ -288,7 +289,7 @@
 									);
 
 								}
-								if ($object_id[]=$this->bo->so->insert_phpgw_data('phpgw_jinn_site_objects',$data_objects))
+								if ($object_id[]=$this->bo->so->validateAndInsert_phpgw_data('phpgw_jinn_site_objects',$data_objects))
 								{
 									$num_objects=count($object_id);
 								} 
@@ -405,6 +406,8 @@
 			$plugin_name=$GLOBALS[HTTP_GET_VARS]['plug_name'];
 
 			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
+			
+			$this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
 			$this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
 			$this->template->set_var('plug_version',lang('version').' '.$this->bo->plugins[$plugin_name]['version']);
 			$this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
