@@ -8,7 +8,7 @@ a scrips tag block of code, javascript or otherwise, is in an inline html messag
 account	email	de	Benutzerkonto
 account name	email	de	Name des Benutzerkontos
 account user name	email	de	Benutzername
-accounts	email	de	Benutzerkonten
+accounts	common	de	Benutzerkonten
 accounts:	email	de	Benutzerkonten:
 add to address book	email	de	Zum Addressbuch hinzufügen
 add to addressbook	email	de	Zum Addressbuch hinzufügen
@@ -125,7 +125,7 @@ filters	email	de	Filter
 filters list	email	de	Filter Liste
 flag as important	email	de	Als wichtig gekennzeichnet
 flagged	email	de	Markiert
-folder	email	de	Ordner
+folder	common	de	Ordner
 folder maintenance	email	de	Ordner Verwaltung
 folder name	email	de	Ordner Name
 folder size	email	de	Ordner Größe
