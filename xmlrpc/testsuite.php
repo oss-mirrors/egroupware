@@ -11,7 +11,7 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -21,8 +21,8 @@
 	include('../header.inc.php');
 	require './phpunit.php';
 
-	$DEBUG = 1;
-	$LOCALSERVER = $HTTP_HOST;
+	$DEBUG = 0;
+	$LOCALSERVER = $HTTP_SERVER_VARS['HTTP_HOST'];
 
 	$suite = new TestSuite;
 
@@ -37,9 +37,8 @@
 
 		function setUp()
 		{
-			global $DEBUG, $LOCALSERVER;
-			$this->client= CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $LOCALSERVER, 80);
-			if ($DEBUG) $this->client->setDebug(1);
+			$this->client= CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $GLOBALS['LOCALSERVER'], 80);
+			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
 
 		function stringTest()
@@ -51,6 +50,7 @@
 				" also don't want to miss out on \$item[0]";
 			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.stringecho', array(CreateObject('phpgwapi.xmlrpcval',$sendstring, "string")));
 			$r = $this->client->send($f);
+			/* _debug_array($r); */
 			$v = $r->value();
 			$this->assertEquals($sendstring, $v->scalarval());
 		}
@@ -107,8 +107,14 @@
 			for($i=0; $i<$sz; $i++)
 			{
 				 $b=$v->arraymem($i);
-				 if ($b->scalarval())	$got.="1";
-				 else $got.="0";
+				 if ($b->scalarval())
+				 {
+					 $got.="1";
+				 }
+				 else
+				 {
+					 $got.="0";
+				 }
 			}
 			$this->assertEquals($answer, $got);
 		}
@@ -162,9 +168,8 @@ And turned it into nylon";
 
 		function setUp()
 		{
-			global $DEBUG,$LOCALSERVER;
-			$this->client=CreateObject('phpgwapi.xmlrpc_client','/NOTEXIST.php', $LOCALSERVER, 80);
-			if ($DEBUG) $this->client->setDebug(1);
+			$this->client=CreateObject('phpgwapi.xmlrpc_client','/NOTEXIST.php', $GLOBALS['LOCALSERVER'], 80);
+			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
 	
 		function test404()
@@ -197,5 +202,5 @@ And turned it into nylon";
 	$testRunner = new TestRunner;
 	$testRunner->run($suite);
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,7 +11,7 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'xmlrpc',
 		'noheader'    => False,
 		'noappheader' => False,
@@ -26,7 +26,7 @@
 			CreateObject('phpgwapi.xmlrpcval',$HTTP_POST_VARS['param'], 'string')
 		));
 		print "<pre>" . htmlentities($f->serialize()) . "</pre>\n";
-		$c = CreateObject('phpgwapi.xmlrpc_client',"/phpgroupware/xmlrpc.php", $HTTP_HOST, 80);
+		$c = CreateObject('phpgwapi.xmlrpc_client',"/phpgroupware/xmlrpc.php", $HTTP_SERVER_VARS['HTTP_HOST'], 80);
 		$c->setDebug(1);
 		$r = $c->send($f);
 		if (!$r)
@@ -52,7 +52,7 @@
 		$method = 'system.listMethods';
 	}
 	echo '
-<form action="' . $phpgw->link('/xmlrpc/phpgw_test.php') . '" method="post">
+<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '" method="post">
 <input name="method" VALUE="' . $method . '">
 <input name="param" VALUE="' . $param . '">
 <input type="submit" value="go" name="submit">
@@ -60,5 +60,5 @@
 <p>
 Enter a method to execute and one parameter';
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
