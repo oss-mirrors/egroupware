@@ -23,6 +23,7 @@
 	$menu_title = lang('JiNN Preferences');
 	$file = Array(
 		'General Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=jinn'),
+		'Configure this Object List View'=> $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects')
 	);
 
 	display_sidebox($appname,$menu_title,$file);

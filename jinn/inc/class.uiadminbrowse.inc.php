@@ -118,9 +118,9 @@
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_$table&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_$table&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
-					<td bgcolor=$bgclr align=\"left\">
+<!--					<td bgcolor=$bgclr align=\"left\">
 
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_$table&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>-->
 					";
 
 					if(count($recordvalues)>0)

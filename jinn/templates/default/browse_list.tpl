@@ -4,20 +4,20 @@
 {search_filter}
 <table width="75%" border="0" cellspacing="1" cellpadding="3">
 <tr bgcolor="{th_bg}">
-  <td width="5%" height="21"><font face="Arial, Helvetica, sans-serif" size="-1">{lang_edit}</font></td>
-  <td width="5%" height="21"><font face="Arial, Helvetica, sans-serif" size="-1">{lang_del}</font></td>
+  <td width="5%" height="21" style="font-weight:bold;padding:3px;">{lang_edit}</td>
+  <td width="5%" height="21" style="font-weight:bold;padding:3px;">{lang_del}</td>
   {cols}
 </tr>
 <!-- END list_header -->
 
 <!-- BEGIN column -->
-  <td valign="top"><font face="Arial, Helvetica, san-serif" size="2">{col_data}&nbsp;</font></td>
+  <td valign="top">{col_data}&nbsp;></td>
 <!-- END column -->
 
 <!-- BEGIN row -->
 <tr bgcolor="{row_tr_color}">
-  <td valign="top" width="5%"><font face="{font}" size="2">{row_edit}</font></td>
-  <td valign="top" width="5%"><font face="{font}" size="2">{row_del}</font></td>
+  <td valign="top" width="5%">{row_edit}</td>
+  <td valign="top" width="5%">{row_del}</td>
 {columns}
 </tr>
 <!-- END row -->

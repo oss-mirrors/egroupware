@@ -407,11 +407,7 @@
 								$order_link = $col[name].' ASC';
 							}
 
-							$col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" align=\"center\">
-							<a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&
-							search=$search_string&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols
-							").'">
-							'.$col[name].'&nbsp;'.$order_image.'</a></td>';
+							$col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" style="font-weight:bold;padding:3px;"  align=\"center\"><a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&search=$search_string&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$order_image.'</a></td>';
 						}
 					}
 
@@ -496,9 +492,10 @@
 					}
 
 
-					$button_add='<td><form name=form1 action="'	.
+/*					$button_add='<td><form name=form1 action="'	.
 					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form') .
 					'" method="post"><input type="submit" name="action" value="'.lang('Add new').'"></form></td>';
+*/
 
 					/*					$button_browse='<td><form name=form2 action="'.
 					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects') .
