@@ -15,11 +15,11 @@
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
-	$setup_info['backup']['author'] = 'Bettina Gille';
-	$setup_info['backup']['license']  = 'GPL';
-	$setup_info['backup']['description'] = 'Advanced project management';
-	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
-	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
+	$setup_info['projects']['author'] = 'Bettina Gille';
+	$setup_info['projects']['license']  = 'GPL';
+	$setup_info['projects']['description'] = 'Advanced project management';
+	$setup_info['projects']['maintainer'] = $setup_info['projects']['author'];
+	$setup_info['projects']['maintainer_email'] = 'ceb@phpgroupware.org';
 
 	$setup_info['projects']['tables'] = array
 	(
