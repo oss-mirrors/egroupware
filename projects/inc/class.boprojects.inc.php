@@ -26,6 +26,7 @@
 
 	class boprojects
 	{
+		var $action;
 		var $start;
 		var $query;
 		var $filter;
@@ -47,10 +48,13 @@
 			'read_customer_data'	=> True,
 			'isprojectadmin'		=> True,
 			'select_activity_list'	=> True,
-			'coordinator_list'		=> True	
+			'coordinator_list'		=> True,
+			'check_prefs'			=> True,
+			'get_prefs'				=> True,
+			'list_activities'		=> True
 		);
 
-		function boprojects($session=False)
+		function boprojects($session=False, $action = '')
 		{
 			global $phpgw;
 
@@ -58,7 +62,7 @@
 
 			if ($session)
 			{
-				$this->read_sessiondata();
+				$this->read_sessiondata($action);
 				$this->use_session = True;
 			}
 
@@ -72,21 +76,33 @@
 			if(isset($cat_id)) { $this->cat_id = $cat_id; }
 		}
 
-		function save_sessiondata($data)
+		function type($action)
+		{
+			switch ($action)
+			{
+				case 'mains'	: $column = 'projects_pro'; break;
+				case 'act'		: $column = 'projects_act'; break;
+			}
+			return $column;
+		}
+
+		function save_sessiondata($data, $action)
 		{
 			global $phpgw;
 
 			if ($this->use_session)
 			{
-				$phpgw->session->appsession('session_data','projects',$data);
+				$column = $this->type($action);
+				$phpgw->session->appsession('session_data',$column, $data);
 			}
 		}
 
-		function read_sessiondata()
+		function read_sessiondata($action)
 		{
 			global $phpgw;
 
-			$data = $phpgw->session->appsession('session_data','projects');
+			$column = $this->type($action);
+			$data = $phpgw->session->appsession('session_data',$column);
 
 			$this->start	= $data['start'];
 			$this->query	= $data['query'];
@@ -115,6 +131,33 @@
 
 			return $cached_data;
 		}
+
+		function check_prefs()
+		{
+			global $phpgw_info;
+
+			if (! isset($phpgw_info['user']['preferences']['common']['currency']))
+			{
+				return True;
+			}
+			else
+			{
+				return False;
+			}
+		}
+
+
+		function get_prefs()
+		{
+			global $phpgw_info;
+
+			if (isset($phpgw_info['user']['preferences']['common']['currency']))
+			{
+				$currency = $phpgw_info['user']['preferences']['common']['currency'];
+			}
+			return $currency;
+		}
+
 
 		function read_customer_data($ab_id)
 		{
@@ -194,6 +237,13 @@
 			{
 				return False;
 			}
+		}
+
+		function list_activities($start, $limit, $query, $sort, $order, $cat_id)
+		{
+			$act_list = $this->soprojects->read_activities($start, $limit, $query, $sort, $order, $cat_id);
+			$this->total_records = $this->soprojects->total_records;
+			return $act_list;
 		}
 
 		function select_activities_list($project_id, $billable)

@@ -462,5 +462,63 @@
 
 			return $prefix . $max;
 		}
+
+		function read_activities($start, $limit = True, $query = '', $sort = '', $order = '', $cat_id = '')
+		{
+			global $phpgw;
+
+			if ($order)
+			{
+				$ordermethod = " order by $order $sort";
+			}
+			else
+			{
+				$ordermethod = " order by num asc";
+			}
+
+			if ($query)
+			{
+				$filtermethod = " where (descr like '%$query%' or num like '%$query%' or minperae like '%$query%' or billperae like '%$query%')";
+
+				if ($cat_id)
+				{
+					$filtermethod .= " AND category='$cat_id' ";
+				}
+			}
+			else
+			{
+				if ($cat_id)
+				{
+					$filtermethod = " WHERE category='$cat_id' ";
+				}
+			}
+
+			$sql = "select * from phpgw_p_activities $filtermethod";
+			$this->db2->query($sql,__LINE__,__FILE__);
+			$this->total_records = $this->db2->num_rows();
+
+			if ($limit)
+			{
+				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
+			}
+			else
+			{
+				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
+			}
+
+			$i = 0;
+			while ($this->db->next_record())
+			{
+				$act[$i]['activity_id']	= $this->db->f('id');
+				$act[$i]['cat']			= $this->db->f('category');
+				$act[$i]['number']		= $this->db->f('num');
+				$act[$i]['act_descr']	= $this->db->f('descr');
+				$act[$i]['remarkreq']	= $this->db->f('remarkreq');
+				$act[$i]['billperae']	= $this->db->f('billperae');
+				$act[$i]['minperae']	= $this->db->f('minperae');
+				$i++;
+			}
+			return $act;
+		}
 	}
 ?>

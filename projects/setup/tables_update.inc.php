@@ -331,4 +331,15 @@
 		return $setup_info['projects']['currentver'];
 		//return True;
 	}
+
+	$test[] = '0.8.5.004';
+	function projects_upgrade0_8_5_004()
+	{
+		global $setup_info,$phpgw_setup;
+
+		$phpgw_setup->oProc->AddColumn('phpgw_p_activities','category',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$setup_info['projects']['currentver'] = '0.8.5.005';
+		return $setup_info['projects']['currentver'];
+	}
 ?>

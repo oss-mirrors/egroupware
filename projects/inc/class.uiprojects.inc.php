@@ -26,6 +26,7 @@
 
 	class uiprojects
 	{
+		var $action;
 		var $grants;
 		var $start;
 		var $filter;
@@ -39,14 +40,15 @@
 			'add_project'		=> True,
 			'edit_project'		=> True,
 			'delete_project'	=> True,
-			'view_project'		=> True
+			'view_project'		=> True,
+			'list_activities'	=> True
 		);
 
 		function uiprojects()
 		{
-			global $phpgw, $phpgw_info;
+			global $phpgw, $phpgw_info, $action;
 
-			$this->boprojects				= CreateObject('projects.boprojects',True);
+			$this->boprojects				= CreateObject('projects.boprojects',True, $action);
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
 			$this->sbox						= CreateObject('phpgwapi.sbox');
 			$this->cats						= CreateObject('phpgwapi.categories');
@@ -63,7 +65,7 @@
 			$this->cat_id					= $this->boprojects->cat_id;
 		}
 
-		function save_sessiondata()
+		function save_sessiondata($action)
 		{
 			$data = array
 			(
@@ -74,7 +76,7 @@
 				'sort'		=> $this->sort,
 				'cat_id'	=> $this->cat_id
 			);
-			$this->boprojects->save_sessiondata($data);
+			$this->boprojects->save_sessiondata($data, $action);
 		}
 
 		function set_app_langs()
@@ -126,7 +128,7 @@
 			if ($isadmin)
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
-				$this->t->set_var('link_activities',$phpgw->link('/projects/activities.php'));                                                                                                         
+				$this->t->set_var('link_activities',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
 				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
 			}
 			else
@@ -370,7 +372,7 @@
 // ----------------------- end Add form declaration ----------------------------
 
 			$this->t->pfp('out','projects_list_t',True);
-			$this->save_sessiondata();
+			$this->save_sessiondata($action);
 		}
 
 		function add_project()
@@ -410,15 +412,13 @@
 			$this->t->set_var('lang_action',lang('Add project'));
 			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
 
-			if (isset($phpgw_info['user']['preferences']['common']['currency']))
+			if ($nopref)
 			{
-				$currency = $phpgw_info['user']['preferences']['common']['currency'];
-				$this->t->set_var('error','');
-				$this->t->set_var('currency',$currency);
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
 			}
 			else
-            {
-				$this->t->set_var('error',lang('Please set your preferences for this application'));
+			{
+				$currency = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('lang_choose',lang('Generate Project ID ?'));
@@ -548,15 +548,13 @@
 			$this->t->set_block('projects_edit','add','addhandle');
 			$this->t->set_block('projects_edit','edit','edithandle');
 
-			if (isset($phpgw_info['user']['preferences']['common']['currency']))
+			if ($nopref)
 			{
-				$currency = $phpgw_info['user']['preferences']['common']['currency'];
-				$this->t->set_var('error','');
-				$this->t->set_var('currency',$currency);
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
 			}
 			else
-            {
-				$this->t->set_var('error',lang('Please set your preferences for this application'));
+			{
+				$currency = $this->boprojects->get_prefs();
 			}
 
 			$this->t->set_var('actionurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.edit_project&project_id=' . $project_id));
@@ -733,6 +731,105 @@
 			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
 
 			$this->t->pfp('out','projects_delete');
+		}
+
+		function list_activities()
+		{
+			global $phpgw, $phpgw_info, $action;
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('activities_list_t' => 'listactivities.tpl'));
+			$this->t->set_block('activities_list_t','activities_list','list');
+
+			$nopref = $this->boprojects->check_prefs();
+
+			if ($nopref)
+			{
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+			}
+			else
+			{
+				$currency = $this->boprojects->get_prefs();
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.list_activities',
+				'action'		=> 'act'
+			);
+
+			$this->t->set_var('lang_header',lang('Activities list'));
+			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('projectsurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+
+			if (!$this->start)
+			{
+				$this->start = 0;
+			}
+
+			$act = $this->boprojects->list_activities($this->start, True, $this->query, $this->sort, $this->order, $this->cat_id);
+
+// --------------------- nextmatch variable template-declarations ------------------------
+
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
+
+// ------------------------- end nextmatch template --------------------------------------
+
+            $this->t->set_var('cat_action',$phpgw->link('/index.php',$link_data));
+			$this->t->set_var('categories_list',$this->cats->formated_list('select','all',$this->cat_id,'True'));
+            $this->t->set_var('search_action',$phpgw->link('/index.php',$link_data));
+            $this->t->set_var('search_list',$this->nextmatchs->search(1));
+
+// ----------------- list header variable template-declarations ---------------------------
+  
+			$this->t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+			$this->t->set_var('currency',$currency);
+			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Activity ID')));
+			$this->t->set_var('sort_descr',$this->nextmatchs->show_sort_order($this->sort,'descr',$this->order,'/index.php',lang('Description')));
+			$this->t->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',lang('Bill per workunit')));
+			$this->t->set_var('sort_minperae',$this->nextmatchs->show_sort_order($this->sort,'minperae',$this->order,'/index.php',lang('Minutes per workunit')));
+
+// ---------------------------- end header declaration -------------------------------------
+
+            for ($i=0;$i<count($act);$i++)
+            {
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$descr = $phpgw->strip_html($act[$i]['descr']);
+				if (! $descr)
+				{
+					$descr  = '&nbsp;';
+				}
+
+// ------------------- template declaration for list records -------------------------
+      
+				$this->t->set_var(array('num'	=> $phpgw->strip_html($act[$i]['number']),
+										'descr' => $descr,
+									'billperae' => $act[$i]['billperae'],
+									'minperae'	=> $act[$i]['minperae']));
+
+				$this->t->set_var('edit',$phpgw->link('/projects/editactivity.php','id=' . $act[$i]['activity_id'] . "&sort=$this->sort&order=$this->order&query=$this->query&start=$start&cat_id=$this->cat_id"));
+				$this->t->set_var('delete',$phpgw->link('/projects/deleteactivity.php','id=' . $act[$i]['activity_id'] . "&sort=$this->sort&order=$this->order&query=$this->query&start=$this->start&cat_id=$cat_id"));
+				$this->t->set_var('lang_delete',lang('Delete'));
+				$this->t->fp('list','activities_list',True);
+
+// ------------------------------- end record declaration --------------------------------
+			}
+
+// ------------------------- template declaration for Add Form ---------------------------
+
+			$this->t->set_var('lang_add',lang('Add'));
+			$this->t->pfp('out','activities_list_t',True);
+			$this->save_sessiondata($action);
+
+// -------------------------------- end Add form declaration ------------------------------
+
+//			$phpgw->common->phpgw_footer();
 		}
 	}
 ?>

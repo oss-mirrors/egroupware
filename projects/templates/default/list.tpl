@@ -8,7 +8,7 @@
 <table border="0" width="100%">
 	<tr>
 		<td colspan="9" align="left">
-			<table boder="0" width="100%">
+			<table border="0" width="100%">
 				<tr>
 				{left}
 					<td align="center">{lang_showing}</td>
@@ -25,6 +25,7 @@
 		<td width="33%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
 </table>
+{pref_message}
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_number}</td>

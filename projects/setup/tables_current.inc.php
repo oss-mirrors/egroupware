@@ -45,7 +45,8 @@
 				'descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'remarkreq' => array('type' => 'char','precision' => 1,'default' => 'N','nullable' => False),
 				'minperae' => array('type' => 'decimal','precision' => 4,'scale' => 0,'default' => 0,'nullable' => False),
-				'billperae' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
+				'billperae' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+				'category' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),

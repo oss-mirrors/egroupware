@@ -1,11 +1,13 @@
 <!-- $Id$ -->
-<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                      
+
+{app_header}
+
+<p><b>&nbsp;&nbsp;&nbsp;{lang_header}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{error}
-<table border="0" cellspacing="2" cellpadding="2">
+<table border="0" width="85%" cellpadding="2" cellspacing="2">
 	<tr>
-		<td colspan="6" align="left">
+		<td colspan="3" align="left">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -15,13 +17,22 @@
 			</table>
 		</td>
 	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td colspan="6" align="right">
-			<form method="post" action="{searchurl}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
+	<tr colspan="3">
+		<td width="33%" align="left">
+				<form method="POST" name="cat" action="{cat_action}">
+				{lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();">
+				<option value="">{lang_none}</option>
+				{categories_list}
+				</select>
+				<noscript><input type="submit" name="cats" value="{lang_select}"></noscript>
+				</form>
+		</td>
+		<td width="33%" align="center">&nbsp;</td>
+		<td width="33%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
+</table>
+{pref_message}
+<table border="0" width="85%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_num}</td>
 		<td width="30%" bgcolor="{th_bg}">{sort_descr}</td>
@@ -51,7 +62,7 @@
 			{hidden_vars}
 			<input type="submit" name="Add" value="{lang_add}"></form></td>
 		<td><form method="POST" action="{projectsurl}"> 
-			<input type="submit" name="Add" value="{lang_projects}"></form></td>
+			<input type="submit" name="pro" value="{lang_projects}"></form></td>
 	</tr>
 </table>
 </center>
