@@ -459,18 +459,13 @@
 
 			if ($phpgw_table=='phpgw_jinn_site_objects')
 			{                
-				// hey did we forget session support!!!! please fix this
 
-				$cancel_button='<form method=post action="index.php?menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id='.
-				$parent_site_id.'"><input type=submit value="'.
-				lang('cancel').'"></form>';
+				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 
 			}
 			elseif($phpgw_table=='phpgw_jinn_sites')
 			{
-				$cancel_button='<form method=post action="index.php?menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.
-				$this->bo->site_id.'"><input type=submit value="'.
-				lang('cancel').'"></form>';
+					$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_condition=site_id='.$this->bo->site_id).'\'" value="'.lang('cancel').'">';
 
 				$extra_buttons='<td>
 				<script>
