@@ -119,6 +119,16 @@ function html_url($url, $text)
 		if (count($parts) == 2 && preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url))
 		{
 			$url = $GLOBALS['phpgw']->common->image($parts[0],$parts[1]);
+			// this deals with angles icon-thems
+			if (empty($url) && $parts[0] == 'email')
+			{
+				$icon_theme = $GLOBALS['phpgw_info']['user']['preferences']['email']['icon_theme'];
+				$path = '/email/templates/default/images/'.($icon_theme ? $icon_theme : 'idots').'/'.$parts[1];
+				if (file_exists(PHPGW_SERVER_ROOT.$path))
+				{
+					$url = $GLOBALS['phpgw_info']['server']['webserver_url'].$path;
+				}
+			}
 		}
 		elseif (substr($url,-4) == '.php' || substr($url,-1) == '/')
 		{
