@@ -1,6 +1,206 @@
 phpgroupware-skel for Debian
 ----------------------------
 
-... I'll write something...
+------------------------------------
+HOWTO build the skel Debian package.
+------------------------------------
+
+0) You require task-debian-devel package installed on your Debian system
+1) Simply change directory into skel
+2) run 'debuild binary'.
+
+
+
+---------------------------------------------------------
+HOWTO build your phpGroupWare application debian package.
+---------------------------------------------------------
+-------
+Preface - This file is not intended to by a comprehensive documentation  on
+-------   how to build "a Debian package", nor it will teach you to be a Debian
+developer. This file will only explain HOWTO build the _first_ Debian package
+for your phpGroupWare application.
+
+---------
+The files - To build your phpGroupWare Debian package, you need simply to copy
+---------   the debian directory from the skel module into your application
+base directory. For example, suppose to have both the skel and your application
+base directory on same level and run:
+
+$ cp -a skel/debian your_application_name
+
+The newly created directory will contain the following files:
+
+ - changelog
+ - control
+ - copyright
+ - dirs
+ - postinst
+ - postrm
+ - rules
+ - README.Debian
+
+Almost all these files need to be slightly modified, so I'm going to explain
+how you'll do it.
+
+-------------------------------
+changelog, control and copyright - The changelog file contain the changelog of
+-------------------------------   the Debian package. The control files
+describe the package fields. The copyright file contains information about the
+source location, the authors and the license. The files you copied looks like
+the followings:
+
+<changelog>
+
+phpgroupware-skel (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Luca - De Whiskey's - De Vitis <luca@debian.org>  Mon, 21 May 2001 15:00:56 +0200
+
+Local variables:
+mode: debian-changelog
+End:
+
+</changelog>
+<control>
+
+Source: phpgroupware-skel
+Section: web
+Priority: optional
+Maintainer: Luca - De Whiskey's - De Vitis <luca@debian.org>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: phpgroupware-skel
+Architecture: all
+Depends: phpgroupware-core
+Description: A phpGroupWare skel application
+ This package provides a phpGroupWare compliant example application.
+ It also provides some documentation including:
+ .
+ * HOWTO build a phpGroupWare compliant application
+ * HOWTO build a Debian package for that application
+
+</control>
+<copyright>
+
+This package was debianized by Luca - De Whiskey's - De Vitis <luca@debian.org> on
+Mon, 21 May 2001 15:00:56 +0200.
+
+It was downloaded from 
+http://sourceforge.net/project/showfiles.php?group_id=7305
+
+Upstream Author(s):
+Please, see /usr/share/phpgroupware-skel/credits.txt
+
+Copyright:
+A copy of the GNU General Public License, version 2, can be found in
+/usr/share/common-licenses/GPL .
+
+</copyright>
+
+Now suppose to use a phpGroupWare api template system on these file: they
+should look like the followings:
+
+<changelog>
+
+phpgroupware-{APP} ({VERSION}-1) {DISTRIBUTION}; urgency={URGENCY}
+
+  * {MESSAGE}
+
+ -- {DEBIANDEVELOPER}  {DATE}
+
+Local variables:
+mode: debian-changelog
+End:
+
+</changelog>
+<control>
+
+Source: phpgroupware-{APP}
+Section: web
+Priority: optional
+Maintainer: {MAINTAINER}
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: phpgroupware-{APP}
+Architecture: all
+Depends: phpgroupware-core
+Description: {SHORT}
+{LONG}
+
+</control>
+<copyright>
+
+This package was debianized by {MAINTAINER} on
+{DATE}
+
+It was downloaded from 
+{SOURCE}
+
+Upstream Author(s):
+Please, see /usr/share/phpgroupware-{APP}/credits.txt
+
+Copyright:
+{COPYRIGHT}
+
+</copyright>
+
+And now, you simply need to replace the variables:
+
+ - {APP}: your application name.
+ - {VERSION}: your application version.
+ - {DISTRIBUTION}: the type of Debian distribution for which this package is
+   builded (i.e. stable or unstable).
+ - {URGENCY}: the priority with which the package should be released (if unsure
+   leave low).
+ - {MESSAGE}: your Debian package changelog message.
+ - {MAINTAINER}: The name _AND_ email address of the maintainer.
+ - {DEBIANDEVELOPER}: usually the same as {MAINTAINER}, _but_ this string
+   _must_ be the one which will match the id of the Debian developer gpg key.
+   This is because only a Debian developer may upload a Debian package into
+   official distribution: to ensure this he must sign it. If you are not
+   planning to make your package be a part of the standard Debian distribution,
+   you may change it as you prefer. I'll really appreciate to be the Debian
+   maintainer of your application, obviously as long as your application meet
+   the Debian Free Software Guidelines.
+ - {DATE}: is the date and time in the format described in RFC822, using a
+   numeric  timezone  offset  as recommended in RFC1123 (see the 822-date
+   command man page)
+ - {SHORT}: Is a short description of your package, just a line.
+ - {LONG}: Is a long description of your package: it can be more than one line
+   in length, _BUT_:
+    - each line should begin with a white space: " " .
+	- each blank line should be replaced with a space followed by a dot: " ." .
+ - {SOURCE}: is the URL where the the original source was downloaded.
+ - {COPYRIGHT}: if the copyright is one of GPL, LGPL, BSD, Artistic, you should
+   leave a reference to the license file, installed in all the debian systems
+   under /usr/share/common-licenses/, as for the skel application: else you
+   should include the copyright file (please note that to include the package in
+   the standard debian distribution, the copyright should complain the Debian
+   Free Software Guideline: please see the Debian policy manual, chapter 2)
+
+If you are unsure, do not change them or contact me.
+
+-----------------------------
+dirs, postinst, postrm, rules - These are the file responsible of the package
+-----------------------------   building and installation. dirs list the
+directory the are needed by the package builder: simply replace any occurrence
+of 'skel' with your application name. rules is the Makefile that will build
+your package: simply replace the value of the APP variable with the name of
+your application. The postrm and the postinst are the post removal and post
+installation scripts. You should not need to change them.
+
+-------------
+README.Debian - Is package maintainer added documentation: as this file is.
+-------------
+
+----------------
+Further readings - You may need to read the Debian policy at
+----------------   http://www.debian.org/doc/debian-policy/ or under
+/usr/share/doc/debian-policy/ on your Debian system. Various RFC (FYI) may be
+installed as Debian package (doc-rfc, doc-rfc-fyi-bcp, doc-rfc-misc,
+doc-rfc-old-std, doc-rfc-std, doc-rfc-std-proposed)
 
  -- Luca - De Whiskey's - De Vitis <luca@debian.org>, Mon, 21 May 2001 15:00:56 +0200
