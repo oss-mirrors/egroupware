@@ -131,8 +131,7 @@
 		// drop the index on the page-content, as it limites the content to 2700 chars
 		if ($GLOBALS['phpgw_setup']->oProc->sType == 'pgsql')
 		{
-			// we need to do this in sql, as schemaproc has no function for that atm.
-			$GLOBALS['phpgw_setup']->oProc->query('DROP INDEX phpgw_wiki_pages_body_idx');
+			$GLOBALS['phpgw_setup']->oProc->DropIndex('phpgw_wiki_pages',array('body'));
 		}
 		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0.001';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
