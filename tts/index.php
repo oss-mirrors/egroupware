@@ -63,8 +63,7 @@
 	$start  = reg_var('start','GET','numeric',0);
 	$sort   = reg_var('sort','GET');
 	$order  = reg_var('order','GET');
-	$searchfilter = reg_var('searchfilter','POST');
-	
+	$searchfilter =	reg_var('searchfilter','POST','any');
 	// Append the filter to the search URL, so that the mode carries forward on a search
 	$GLOBALS['phpgw']->template->set_var('tts_search_link',$GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
 
