@@ -9,34 +9,32 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 /* $Id$ */
-   
+
 {
-    echo "<p>\n";                                                                                                                                                                          
+	echo "<p>\n";
 
-    $imgfile = $phpgw->common->get_image_dir("comic")."/" . $appname .".gif";                                                                                                                
-    if (file_exists($imgfile))
-    {                                                                                                                                                           
-        $imgpath = $phpgw->common->get_image_path("comic")."/" . $appname .".gif";                                                                                                             
-    }
-    else
-    {                                                                                                                                                                               
-        $imgfile = $phpgw->common->get_image_dir("comic")."/navbar.gif";                                                                                                                       
-        if (file_exists($imgfile))
-        {                                                                                                                                                         
-            $imgpath = $phpgw->common->get_image_path("comic")."/navbar.gif";                                                                                                                    
-        }
-        else
-        {                                                                                                                                                                             
-            $imgpath = "";
-        }
-    }
+	$imgfile = $phpgw->common->get_image_dir("comic")."/" . $appname .".gif";
+	if (file_exists($imgfile))
+	{
+		$imgpath = $phpgw->common->get_image_path("comic")."/" . $appname .".gif";
+	}
+	else
+	{
+		$imgfile = $phpgw->common->get_image_dir("comic")."/navbar.gif";
+		if (file_exists($imgfile))
+		{
+			$imgpath = $phpgw->common->get_image_path("comic")."/navbar.gif";
+		}
+		else
+		{
+			$imgpath = "";
+		}
+	}
 
-   section_start("Daily Comics",$imgpath);
+	section_start("Daily Comics",$imgpath);
 
-   $pg = $phpgw->link('/comic/preferences.php');
-   printf("<A href=\"%s\">%s</A><br>", $pg,
-          lang("Comic Preferences"));
-   
-   section_end(); 
+	section_item($phpgw->link('/comic/preferences.php'),lang("Preferences"));
+
+	section_end(); 
 }
 ?>
