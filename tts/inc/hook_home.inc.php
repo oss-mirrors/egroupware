@@ -96,13 +96,15 @@
 			$p->set_var('tts_t_user', $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
 			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'history_timestamp','ASC',$GLOBALS['phpgw']->db->f('ticket_id'));
 			$p->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime'] - ((60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'])));
-			$p->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
+
+			$subject = str_replace(array('\\\'','\\"','\\\\'),array("'",'"','\\'),$GLOBALS['phpgw']->db->f('ticket_subject'));
+			$p->set_var('tts_t_subject', $subject);
 
 			$p->fp('rows','tts_row',true);
 		}
-		
+
 		$extra_data = '<td>'."\n".$p->fp('out','tts_list').'</td>'."\n";
-		
+
 		$portalbox = CreateObject('phpgwapi.listbox',
 			array(
 				'title'     => '<font color="#FFFFFF">' . lang('Trouble Ticket System') . '</font>',
