@@ -26,61 +26,9 @@
 		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me (author unknown).
 	}
 
-// ----  Turn Off Magic Quotes Runtime    -----
-	// magic_quotes_runtime (handles slashes when communicating with databases). PHP MANUAL:
-	/*  If magic_quotes_runtime is enabled, most functions that return data from any sort of 
-	  external source including databases and text files will have quotes escaped with a backslash. */
-	set_magic_quotes_runtime(0);
-
-// ----  Create the base email Msg Class    -----
-	// if (isset($phpgw->msg)) { echo 'phpgw_msg ISSET before creation';}
-	$phpgw->msg = CreateObject("email.mail_msg");
-	// initialize the class
-	// *AND* this also obtains the email preferences from the db (currently "phpgw_preferences")
-	$phpgw->msg->mail_msg_init();
-
-	/*
-	// ----  Load "Preferences" from db (currently "phpgw_preferences")    -----
-	// **MOVED INTO THE CLASS**
-	// NOTE: Preferences *MAY* have the "custom email password" which is different than other passwords
-	// because it is stored in the "Preferences" table, and may require special treatment
-	//$phpgw->msg->create_email_preferences();
-	//$phpgw->common->create_emailpreferences();
-	*/
-
-// ----  (LEGACY CODE ?)  Ensure certasin Defaults are Set, and some bug workarounds    -----
-	if ( ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-	&& (!isset($folder)) )
-	{
-		// Changed by skeeter 04 Jan 01
-		// This was changed to give me access back to my folders.
-		// Not sure what it would break if the user has a default folder preference set,
-		// but will allow access to other folders now.
-		//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
-		//$phpgw_info["user"]["preferences"]["email"]["folder"] = (@!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
-		
-		if ((isset($phpgw_info['user']['preferences']['email']['folder']))
-		&& ($phpgw_info['user']['preferences']['email']['folder'] != ''))
-		{
-			// DO NOTHING -this is OK
-		}
-		else
-		{
-			$phpgw_info['user']['preferences']['email']['folder'] = 'INBOX';
-		}
-		//backward compatibility
-		$folder = $phpgw_info['user']['preferences']['email']['folder'];
-	}
-
-// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
-	if (!$folder)
-	{
-		$folder = 'INBOX';
-	}
-
+	// Changed by Milosch on 3-26-2001
 	// Its better then them using a ton of PHP errors.
-	// Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
+	// This check was not working, and the code progressed to giving stream pointer errors
 	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
 	// -- (obviously, PHP_SELF is the built-in php variable = "filename on the currently executing script") --
 	if (!$PHP_SELF)
@@ -89,9 +37,16 @@
 		global $PHP_SELF;
 	}
 
+// ----  Turn Off Magic Quotes Runtime    -----
+	// magic_quotes_runtime (handles slashes when communicating with databases). PHP MANUAL:
+	/*  If magic_quotes_runtime is enabled, most functions that return data from any sort of 
+	  external source including databases and text files will have quotes escaped with a backslash. */
+	set_magic_quotes_runtime(0);
+
+
 // ----  == IS IT OK TO LOGIN To Mailserver ==  -----
 	//$debug_logins = True;
-	$debug_logins = False;
+	//$debug_logins = False;
 	
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
@@ -124,13 +79,16 @@
 			break;
 		}
 	}
+
+	// send_message needs to access the mailserver to get parts sometimes, can't limit this here
 	// AND ALSO  Do Not Login - if sent message will NOT be put in the "Sent" folder
-	if ( (eregi("^.*\/email\/send_message\.php.*$",$PHP_SELF))
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
-	{
-		$login_allowed = False;
-	}
+	//if ( (eregi("^.*\/email\/send_message\.php.*$",$PHP_SELF))
+	//&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
+	//&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps') )
+	//{
+	//	$login_allowed = False;
+	//}
+
 	/* // FINE TUNE THIS - TOO BROAD
 	// AND ALSO  Do Not Login - if composing message when server is not IMAP/IMAPS
 	if ( (eregi("^.*\/email\/compose\.php.*$",$PHP_SELF))
@@ -141,6 +99,7 @@
 	}
 	*/
 
+	/*
 	if ($debug_logins)
 	{
 		echo '<br>';
@@ -153,23 +112,26 @@
 		echo 'get_mailsvr_callstr='.$phpgw->msg->get_mailsvr_callstr().'<br>';
 		echo 'get_folder_long='.$phpgw->msg->get_folder_long($folder).'<br>';
 	}
+	*/
 
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
 	if ((($in_email) || ($in_mainscreen))
 	&& ($login_allowed))
 	{
 		if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$phpgw_info['user']['preferences']['email']['userid']; }
-		
-		// ---- Create email server Data Communication Class
-		$phpgw->dcom = CreateObject("email.mail_dcom");
-		$phpgw->dcom->mail_dcom_base();
-		
-		set_time_limit(90);
-		$mailbox = $phpgw->dcom->login($folder);
-		set_time_limit(0);
-		
+
+
+		// ----  Create the base email Msg Class    -----
+		$phpgw->msg = CreateObject("email.mail_msg");
+		$args_array = Array();
+		$args_array['folder'] = $folder;
+		$args_array['do_login'] = True;
+		// this will obtain the email preferences from the db (currently "phpgw_preferences")
+		// and prep the folder name, and login if desired, and set msg->mailsvr_stream
+		$phpgw->msg->begin_request($args_array);
+
 		// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
-		if (!$mailbox)
+		if (!$phpgw->msg->mailsvr_stream)
 		{
 			$imap_err = imap_last_error();
 			if ($imap_err == '')
@@ -188,6 +150,20 @@
 			$phpgw->common->phpgw_exit(True);
 		}
 	}
+	else
+	{
+		// ----  Create the base email Msg Class    -----
+		// but DO NOT login
+		$phpgw->msg = CreateObject("email.mail_msg");
+		$args_array = Array();
+		$args_array['folder'] = '';
+		$args_array['do_login'] = False;
+		// this will obtain the email preferences from the db (currently "phpgw_preferences")
+		$phpgw->msg->begin_request($args_array);
+	}
+
+	// get rid og the "folder" GPC variable - it is no longer needed
+	unset($folder);
 
 	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
 	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';
@@ -686,7 +662,6 @@
 	global $phpgw, $phpgw_info;
 	$struct_not_set = '-1';
 
-	$click_info = Array();
 	// Part Number used to request parts from the server
 	$m_part_num_mime = $part_nice['m_part_num_mime'];
 
@@ -712,17 +687,18 @@
 	$url_part_name = urlencode($part_name);
 	// ex_part_href
 	$ex_part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
-		 'folder='.$folder .'&msgnum=' .$msgnum .'&part_no=' .$m_part_num_mime
+		 'folder='.$phpgw->msg->prep_folder_out($folder) .'&msgnum=' .$msgnum .'&part_no=' .$m_part_num_mime
 		.'&type=' .$url_part_type .'&subtype=' .$url_part_subtype
 		.'&name=' .$url_part_name .'&encoding=' .$url_part_encoding); 
 	// Make CLICKABLE link directly to this attachment or part
 	$href_part_name = $phpgw->msg->decode_header_string($part_name);
 	// ex_part_clickable
 	$ex_part_clickable = '<a href="'.$ex_part_href.'">'.$href_part_name.'</a>';
-	// put these two vars in an array, serialize it, and pass it back to the calling process
-	$click_info[0] = $ex_part_href;
-	$click_info[1] = $ex_part_clickable;
-	return serialize($click_info);
+	// put these two vars in an array, and pass it back to the calling process
+	$click_info = Array();
+	$click_info['part_href'] = $ex_part_href;
+	$click_info['part_clickable'] = $ex_part_clickable;
+	return $click_info;
   }
 
   function array_keys_str($my_array)
@@ -778,12 +754,17 @@
   }
 
 
-  function inline_display($de_part, $part_no)
+  function inline_display($de_part, $part_no, $msgnum, $mailbox)
   {
-	global $mailbox, $msgnum, $phpgw, $phpgw_info;
+	global  $phpgw, $phpgw_info;
+
 	$mime_type = get_mime_type($de_part);
 	$mime_encoding = get_mime_encoding($de_part);
 
+	if (!$mailbox)
+	{
+		$mailbox = $phpgw->msg->mailsvr_stream;
+	}
 	$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
 
 	$tag = "pre";
@@ -855,7 +836,7 @@
   // function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
   // http://sourceforge.net/snippet/detail.php?type=snippet&id=100004
   // modified to make mailto: addresses compose in phpGW
-  function make_clickable($data)
+  function make_clickable($data, $folder)
   {
 	global $phpgw,$phpgw_info;
 
@@ -874,7 +855,7 @@
 		$line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 		$line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
 		$line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-		    "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
+		    "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".$phpgw->msg->prep_folder_out($folder))
 		    ."&to=\\1\">\\1</a>", $line);
 
 		$newText .= $line . "\n";

@@ -68,7 +68,7 @@
 		else
 		{
 			// does the trash folder actually exist ?
-			$official_trash_folder_long = $phpgw->msg->folder_exists($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+			$official_trash_folder_long = $phpgw->msg->folder_lookup($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
 			if ($official_trash_folder_long != '')
 			{
 				$havefolder = True;
@@ -84,7 +84,7 @@
 				$server_str = $phpgw->msg->get_mailsvr_callstr();
 				$this->createmailbox($stream,$server_str .$trash_folder_long);
 				// try again to get the real long folder name of the just created trash folder
-				$official_trash_folder_long = $phpgw->msg->folder_exists($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+				$official_trash_folder_long = $phpgw->msg->folder_lookup($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
 				// did the folder get created and do we now have the official full name of that folder?
 				if ($official_trash_folder_long != '')
 				{
@@ -197,7 +197,7 @@
 	return imap_reopen($stream,$mailbox,$flags);
     }
 
-    function sort($stream,$criteria,$reverse="",$options="",$msg_info="")
+    function sort($stream,$criteria,$reverse="",$options="")
     {
 	return imap_sort($stream,$criteria,$reverse,$options);
     }
@@ -216,7 +216,7 @@
 	$folder_long = $phpgw->msg->get_folder_long($folder);
 
 	// does the target folder actually exist ?
-	$official_folder_long = $phpgw->msg->folder_exists($stream, $folder_long);
+	$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder_long);
 	if ($official_folder_long != '')
 	{
 		$havefolder = True;
@@ -231,7 +231,7 @@
 		// create the specified target folder so it will exist
 		$this->createmailbox($stream,$server_str .$folder_long);
 		// try again to get the real long folder name of the just created trash folder
-		$official_folder_long = $phpgw->msg->folder_exists($stream, $folder_long);
+		$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder_long);
 		// did the folder get created and do we now have the official full name of that folder?
 		if ($official_folder_long != '')
 		{

@@ -19,6 +19,7 @@
 	);
 	include('../header.inc.php');
 	$struct_not_set = '-1';
+	//$phpgw->msg->mailsvr_stream
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
@@ -29,12 +30,9 @@
 // ----  Handle Replying and Forwarding  -----
 	if ($msgnum)
 	{
+		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
+		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
 
-		// properly grab folder var
-		$folder = urldecode($folder);
-		
-		$msg = $phpgw->dcom->header($mailbox, $msgnum);
-		$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
 		if ($action == 'reply')
 		{
 			// if "Reply-To" is specified, use it, or else use the "from" address as the address to reply to
@@ -132,7 +130,8 @@
 		&& ($part_no != '')
 		&& (($action == 'reply') || ($action == 'replyall')))
 		{
-			$bodystring = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
+			//$bodystring = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
+			$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no);
 			// see if we have to un-do qprint encoding
 			if ((isset($encoding))
 			&& ($encoding == 'qprint'))
@@ -189,7 +188,7 @@
 			$fwd_info_subject = $phpgw->msg->get_subject($msg,'');
 			
 			
-			$body = "\r\n"."\r\n"
+			$body = " \r\n"." \r\n"
 				.'forward - original mail:'."\r\n"
 				.' From ' .$fwd_info_from ."\r\n"
 				.' Date ' .$fwd_info_date ."\r\n"
@@ -199,7 +198,7 @@
 			//$body = "\r\n"."\r\n".'forwarded mail'."\r\n";
 			
 			/*
-			$part_nice = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $folder, $msgnum);
+			$part_nice = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
 			// see if one of the params if the boundry
 			$part_nice['boundary'] = $struct_not_set;  // initialize
 			for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
@@ -219,7 +218,8 @@
 			/*
 			$orig_boundary = '';
 			// we are going to re-use the original message's mime boundry from the main headers
-			$orig_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
+			//$orig_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
+			$orig_headers = $phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $msgnum);
 			$did_match = preg_match('/(boundary=["]?)(.*)(["]?.*(\r|\n))/ix', $orig_headers, $reg_matches);
 			if (($did_match) && (isset($reg_matches[1])) && (isset($reg_matches[2]))
 			&& (stristr($reg_matches[1], 'boundary')) && ($reg_matches[2] != ''))
@@ -262,7 +262,7 @@
 			{
 				if (strtoupper($part->subtype) == 'PLAIN')
 				{
-					$bodystring = $phpgw->dcom->fetchbody($mailbox, $msgnum, $i+1);
+					$bodystring = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $i+1);
 					$body_array = array();
 					$body_array = explode("\n", $bodystring);
 					$bodycount = count ($body_array);
@@ -321,7 +321,7 @@
 	&& ($action == 'forward'))
 	{
 		$send_btn_action = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/send_message.php',
-			'action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum);
+			'action=forward&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msgnum);
 		if (isset($fwd_proc))
 		{
 			$send_btn_action = $send_btn_action .'&fwd_proc='.$fwd_proc;
@@ -337,7 +337,7 @@
 	$t->set_var('form1_action',$send_btn_action);
 	$t->set_var('form1_method','POST');
 	$t->set_var('hidden1_name','return');
-	$t->set_var('hidden1_value',$folder);
+	$t->set_var('hidden1_value',$phpgw->msg->prep_folder_out(""));
 
 	$t->set_var('buttons_bgcolor',$phpgw_info["theme"]["em_folder"]);
 	$t->set_var('btn_addybook_type','button');
@@ -378,7 +378,7 @@
 
 	$t->pparse('out','T_compose_out');
 
-	$phpgw->dcom->close($mailbox);
+	$phpgw->msg->end_request();
  
 	$phpgw->common->phpgw_footer();
 ?>

@@ -30,9 +30,14 @@
   class mail_msg extends mail_msg_base
   {
 
-	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
+	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=False)
 	{
 		global $phpgw, $phpgw_info;
+
+		if (!$mailbox)
+		{
+			$mailbox = $this->mailsvr_stream;
+		}
 
 		// DEBUG: force unseen display
 		//$indicate_new = True;
@@ -56,7 +61,7 @@
 		$unseen_prefix = '&nbsp;&nbsp;&#060;';
 		$unseen_suffix = ' new&#062;';
 
-		if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+		if ($this->newsmode)
 		{
 			while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
 			{
@@ -70,13 +75,13 @@
 		}
 		else
 		{
-			$folder_list = $this->get_folder_list($mailbox);
+			$folder_list = $this->get_folder_list('');
 
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				$folder_long = $folder_list[$i]['folder_long'];
 				$folder_short = $folder_list[$i]['folder_short'];
-				if ($folder_short == $pre_select)
+				if ($folder_short == $this->get_folder_short($pre_select))
 				{
 					$sel = ' selected';
 				}
@@ -84,16 +89,14 @@
 				{
 					$sel = '';
 				}
-				if ($folder_short != $skip)
+				if ($folder_short != $this->get_folder_short($skip))
 				{
-					$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
+					$outstr = $outstr .'<option value="' .$this->prep_folder_out($folder_long) .'"'.$sel.'>' .$folder_short;
 					// do we show the number of new (unseen) messages for this folder
 					if (($indicate_new)
 					&& ($this->care_about_unseen($folder_short)))
 					{
-						$server_str = $this->get_mailsvr_callstr();
-						//$mailbox_status = $phpgw->dcom->status($mailbox, $server_str .$folder_long,SA_UNSEEN);
-						$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_ALL);
+						$mailbox_status = $phpgw->dcom->status($mailbox,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
 						if ($mailbox_status->unseen > 0)
 						{
 							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;

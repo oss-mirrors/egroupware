@@ -26,12 +26,13 @@
 	$struct_not_set = '-1';
 
 //  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
-	function send_message_cleanup($mailbox)
+	//function send_message_cleanup($mailbox)
+	function send_message_cleanup()
 	{
-		global $phpgw;
+		global $phpgw, $mail_out;
 		
 		//echo 'send_message cleanup';
-		$phpgw->dcom->close($mailbox);
+		$phpgw->msg->end_request();
 
 		unset($mail_out);
 		unset($phpgw->mail_send);
@@ -47,7 +48,8 @@
 	//echo '<br> var dump $mail_out[to] <br>';
 	//var_dump($mail_out['to']);
 	
-	send_message_cleanup($mailbox);
+	//send_message_cleanup($mailbox);
+	send_message_cleanup();
 	$phpgw->common->phpgw_footer();
 	exit;
 	// end ----  debug ------
@@ -292,10 +294,13 @@
 	if (($mail_out['is_forward'] == True)
 	&& ($mail_out['fwd_proc'] == 'pushdown'))
 	{
-		$msg = $phpgw->dcom->header($mailbox, $msgnum);
-		$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
+		//$msg = $phpgw->dcom->header($mailbox, $msgnum);
+		//$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
+		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
+		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
 
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, urldecode($folder), $msgnum);
+
+		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -313,10 +318,12 @@
 		$mail_out['body'][$body_part_num]['mime_body'] = Array();
 
 		// ----  General Information about The Original Message  -----
-		$msg = $phpgw->dcom->header($mailbox, $msgnum);
-		$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
+		//$msg = $phpgw->dcom->header($mailbox, $msgnum);
+		//$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
+		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
+		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, urldecode($folder), $msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
 		// add some more info
 		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg->from[0]);
 		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg->udate);
@@ -380,7 +387,8 @@
 		$m_line++;
 
 		// dump the original BODY (with out its headers) here
-		$fwd_this = $phpgw->dcom->get_body($mailbox, $msgnum);
+		//$fwd_this = $phpgw->dcom->get_body($mailbox, $msgnum);
+		$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum);
 		// Explode Body into Array of strings
 		$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($fwd_this));
 		$fwd_this = '';		
@@ -400,7 +408,8 @@
 		$mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 
 		// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-		$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($mailbox, $msgnum));
+		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($mailbox, $msgnum));
+		$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $msgnum));
 		$fwd_this['sub_header'] = $phpgw->msg->normalize_crlf($fwd_this['sub_header']);
 
 		// CLENSE headers of offensive artifacts that can confuse dumb MUAs
@@ -410,7 +419,8 @@
 		$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 
 		// get the body
-		$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($mailbox, $msgnum));
+		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($mailbox, $msgnum));
+		$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum));
 		//$fwd_this['sub_body'] = $phpgw->msg->normalize_crlf($fwd_this['sub_body']);
 
 
@@ -657,7 +667,7 @@
 
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
 		// using a NEW stream *seems* faster, but not sure ???
-		if (!$mailbox)
+		if ($phpgw->msg->mailsvr_stream == '')
 		{
 			$stream = $phpgw->dcom->login('INBOX');
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
@@ -669,7 +679,7 @@
 		{
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
 			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-			$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
+			$phpgw->dcom->append( $phpgw->msg->mailsvr_stream , $sent_folder_name,  $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
 			//echo 'used existing stream for trash folder';
 		}
 	}
@@ -687,14 +697,16 @@
 			echo $phpgw->msg->htmlspecialchars_encode($phpgw->mail_send->svr_response);
 			echo '</pre>';
 			echo 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a><br>';
-			send_message_cleanup($mailbox);
+			//send_message_cleanup($mailbox);
+			send_message_cleanup();
 		}
 		else
 		{
 			//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
 			//$return = ereg_replace ("^\r\n", '', $return);
 			// unset some vars (is this necessary?)
-			send_message_cleanup($mailbox);
+			//send_message_cleanup($mailbox);
+			send_message_cleanup();
 			// what folder to go back to (the one we came from)
 			$return = trim($return);
 			// redirect the browser to the index page for the appropriate folder
@@ -711,7 +723,8 @@
 			. "err_msg: '".htmlspecialchars($phpgw->mail_send->err['msg'])."';<BR>\r\n"
 			. "err_desc: '".$phpgw->err['desc']."'.<P>\r\n"
 			. 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
-		send_message_cleanup($mailbox);	
+		//send_message_cleanup($mailbox);
+		send_message_cleanup();
 	}
 
 	$phpgw->common->phpgw_footer();

@@ -29,12 +29,14 @@
 	//    $phpgw->common->read_preferences("nntp");
 	//  set_time_limit(0);
 
-	//  echo "Mailbox = ".$mailbox."<br>\n";
+	// //  echo "Mailbox = ".$mailbox."<br>\n";
+	//  echo "Mailbox = ".$phpgw->msg->mailsvr_stream."<br>\n";
 	//  echo "Msgnum = ".$m."<br>\n";
 	//  echo "Part Number = ".$p."<br>\n";
 	//  echo "Subtype = ".$s."<br>\n";
 
-	$data = $phpgw->dcom->fetchbody($mailbox, $m, $p);
+	//$data = $phpgw->dcom->fetchbody($mailbox, $m, $p);
+	$data = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $m, $p);
 	$picture = $phpgw->dcom->base64($data);
 
 	//  echo strlen($picture)."<br>\n";
@@ -45,5 +47,6 @@
 	Header("Content-disposition: attachment; filename=\"".urldecode($n)."\"");
 	echo $picture;
 	flush();
-	$phpgw->dcom->close($mailbox);
+
+	$phpgw->msg->end_request();
 ?>

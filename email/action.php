@@ -21,51 +21,39 @@
 	);
 
 	include("../header.inc.php");
-	$folder = urldecode($folder);
 
-	$totalmessages = $phpgw->dcom->num_msg($mailbox);
+	$totalmessages = $phpgw->dcom->num_msg($phpgw->msg->mailsvr_stream);
 
 	if ($what == "move")
 	{
-		$tofolder = ($tofolder == "INBOX" ? 
-			"INBOX" : 
-			$phpgw->dcom->construct_folder_str($tofolder));
+		//$tofolder = ($tofolder == "INBOX" ? 
+		//	"INBOX" : 
+		//	$phpgw->dcom->construct_folder_str($tofolder));
+
+		$tofolder = $phpgw->msg->prep_folder_in($tofolder);
 
 		$msgs = $msglist ? implode($msglist, ",") : $msglist;
-		if (! $phpgw->dcom->mail_move($mailbox, $msgs, $tofolder))
+
+		if (! $phpgw->dcom->mail_move($phpgw->msg->mailsvr_stream, $msgs, $tofolder))
 		{
 			echo "<br>mail_move: summin went rong<br>";
 		}
 	}
-
-	if ($what == "delall")
+	elseif ($what == "delall")
 	{
 		for ($i = 0; $i < count($msglist); $i++)
 		{
-			if ($folder == "Trash")
-			{
-				$phpgw->dcom->delete($mailbox, $msglist[$i],"",$folder);
-			}
-			else
-			{
-				$phpgw->dcom->delete($mailbox, $msglist[$i]);
-			}
+			$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $msglist[$i],"",$phpgw->msg->folder);
 		}
 		$totaldeleted = "&td=$i";
 		$dontforward = False;
 	}
-
-	if ($what == "delete")
+	elseif ($what == "delete")
 	{
-		if ($folder == "Trash")
-		{
-			$phpgw->dcom->delete($mailbox, $msgnum,"",$folder);
-		}
-		else
-		{
-			$phpgw->dcom->delete($mailbox, $msgnum);
-		}
-		if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old")
+		$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $msgnum,"",$phpgw->msg->folder);
+
+		if (($totalmessages != $msgnum)
+		|| ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
 		{
 			if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old")
 			{
@@ -75,18 +63,20 @@
 			{
 				$nm = $msgnum;
 			}
-
-			Header("Location: ".$phpgw->link("/email/message.php","folder=" . urlencode($folder)."&msgnum=".$nm));
-			$dontforward = True;
+			//Header("Location: ".$phpgw->link("/email/message.php","folder=" . $phpgw->msg->prep_folder_out('')."&msgnum=".$nm));
+			//$dontforward = True;
 		}
 	}
-	$phpgw->dcom->expunge($mailbox);
-	$phpgw->dcom->close($mailbox);
+	$phpgw->dcom->expunge($phpgw->msg->mailsvr_stream);
+	$phpgw->msg->end_request();
 
-
-	if (! $dontforward)
+	if ($what == "delete")
 	{
-		Header("Location: ".$phpgw->link("/email/index.php","folder=" . urlencode($folder) . $totaldeleted));
+		Header("Location: ".$phpgw->link("/email/message.php","folder=" . $phpgw->msg->prep_folder_out('')."&msgnum=".$nm));
+	}
+	elseif (! $dontforward)
+	{
+		Header("Location: ".$phpgw->link("/email/index.php","folder=" . $phpgw->msg->prep_folder_out(''). $totaldeleted));
 	}
 	$phpgw->common->phpgw_footer();
 ?>

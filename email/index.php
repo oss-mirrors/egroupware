@@ -13,12 +13,6 @@
 
   /* $Id$ */
 
-	if(empty($folder))
-	{
-		$folder="INBOX";
-	}
-	$folder = urldecode($folder);
-
 	Header("Cache-Control: no-cache");
 	Header("Pragma: no-cache");
 	Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
@@ -47,36 +41,9 @@
 	$svr_image_dir = PHPGW_IMAGES_DIR;
 	$image_dir = PHPGW_IMAGES;
 
-// ----  Are We In Newsmode Or Not  -----
-	if (isset($newsmode) && $newsmode == "on")
-	{
-		$phpgw_info['flags']['newsmode'] = True;
-	}
-	else
-	{
-		$phpgw_info['flags']['newsmode'] = False;
-	}
-
-// ----  Learn About The Email Server  -----
-	// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-	if (($phpgw_info['user']['preferences']['email']['mail_server_type']=='imap')
-	  || ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-	  || ($phpgw_info['flags']['newsmode'] == True))
-	{
-		$uses_folders = True;
-	}
-	else
-	{
-		$uses_folders = False;
-	}
-	// How To Communicate With The Server
-	$server_str = $phpgw->msg->get_mailsvr_callstr();
-	// Fully Qualified Folder Name, Includes Namespace and Delimiter
-	$folder_long = $phpgw->msg->get_folder_long($folder);
+	// ----  Learn About The Email Server  -----
 	// Abreviated Folder Name, NO namespace, NO delimiter
-	$folder_short = $phpgw->msg->get_folder_short($folder);
-	// How Many Messages Are In This Inbox/Folder
-	$nummsg = $phpgw->dcom->num_msg($mailbox);
+	$folder_short = $phpgw->msg->get_folder_short($phpgw->msg->folder);
 
 // ---- Messages Sort Order  (AND ensure $sort and $order and $start have usable values) -----
 	/*
@@ -102,7 +69,7 @@
 		// do nothing,  this is a valid $sort variableset in the URL (for email)
 	}
 	elseif ((isset($sort))
-	  && ($sort == "ASC") && ($phpgw_info['flags']['newsmode']))
+	  && ($sort == "ASC") && ($phpgw->msg->newsmode))
 	{
 		// needed for newsmode ????
 		$sort = 0;
@@ -158,24 +125,24 @@
 		$t->set_var('V_any_deleted','');
 	}
 
-// ----  Previous and Next arrows navigation  -----
+// ---- Folder Status Infomation   -----
+	$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,
+					$phpgw->msg->get_mailsvr_callstr().$phpgw->msg->folder,
+					SA_ALL);
 
+// ----  Previous and Next arrows navigation  -----
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$nummsg,'&folder=' .urlencode($folder_short));
+					$start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$nummsg,'&folder=' .urlencode($folder_short));
+					$start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
 
 	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
 	$t->set_var('next_arrows',$td_next_arrows);
 
-// ---- Message Folder Stats   -----
-	// mailbox_info moved into "speed_skip" test
-	//$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
-	$mailbox_status = $phpgw->dcom->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
-
-	if ($nummsg == 0)
+// ---- Message Folder Stats Display  -----
+	if ($mailbox_status->messages == 0)
 	{
 		$stats_saved = '-';
 		$stats_new = '-';
@@ -184,12 +151,13 @@
 	else
 	{
 		// TOTAL MESSAGES IN FOLDER
-		$stats_saved = number_format($nummsg);
+		$stats_saved = number_format($mailbox_status->messages);
 
 		$msg_array = array();
 			// Note: sorting on email is on address, not displayed name per php imap_sort
 			//echo "<br>SORT GOT: column '$order', '$oursort'.";
-		$msg_array = $phpgw->dcom->sort($mailbox, $sort, $order);
+		//$msg_array = $phpgw->dcom->sort($mailbox, $sort, $order);
+		$msg_array = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $sort, $order);
 
 		// NUM NEW MESSAGES
 		$stats_new = $mailbox_status->unseen;
@@ -207,37 +175,36 @@
 		//$stats_size_speed_skip = True;
 		$stats_size_speed_skip = False;
 		$stats_size_threshold = 1000;
-		if (($nummsg > $stats_size_threshold)
+		if (($mailbox_status->messages > $stats_size_threshold)
 		&& ($stats_size_speed_skip == True))
 		{
 			$stats_size = 'speed skip';
 		}
 		else
 		{
-			$mailbox_info = $phpgw->dcom->mailboxmsginfo($mailbox);
-			$stats_size = $mailbox_info->Size;
+			$mailbox_detail = $phpgw->dcom->mailboxmsginfo($phpgw->msg->mailsvr_stream);
+			$stats_size = $mailbox_detail->Size;
 			// size is in bytes, format for KB or MB
 			$stats_size = format_byte_size($stats_size);
 		}
 	}
 
 // ---- SwitchTo Folder Listbox   -----
-	if ($uses_folders)
+	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
 		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
 		//$listbox_show_unseen = True;
 		$listbox_show_unseen = False;
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
-				//. $phpgw->msg->all_folders_listbox($mailbox,'')
-				. $phpgw->msg->all_folders_listbox($mailbox,'','',$listbox_show_unseen)
+				. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
 				. '</select>';
 	} else {
 		$switchbox_listbox = '&nbsp';
 	}
 
 // ---- Folder Button  -----
-	if ($uses_folders)
+	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
 		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
 				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php').'\'">';
@@ -259,7 +226,7 @@
 
 // ----  Messages List Clickable Column Headers  -----
 	// clickable column headers which change the sorting of the messages
-	if ($phpgw_info['flags']['newsmode'])
+	if ($phpgw->msg->newsmode)
 	{
 		// I think newsmode requires the "old way"
 		$sizesort = lang("lines");
@@ -312,9 +279,10 @@
 	$t->set_var('V_msg_list',' ');
 
 // ----  Zero Messages To List  -----
-	if ($nummsg == 0)
+	if ($mailbox_status->messages == 0)
 	{
-		if (!$mailbox)
+		//if (!$mailbox)
+		if (!$phpgw->msg->mailsvr_stream)
 		{
 			$report_no_msgs = lang("Could not open this mailbox");
 		}
@@ -332,17 +300,17 @@
 // ----  Fill The Messages List  -----
 	else
 	{
-		if ($nummsg < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		if ($mailbox_status->messages < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
-			$totaltodisplay = $nummsg;
+			$totaltodisplay = $mailbox_status->messages;
 		}
-		else if (($nummsg - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		else if (($mailbox_status->messages - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
 			$totaltodisplay = $start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 		}
 		else
 		{
-			$totaltodisplay = $nummsg;
+			$totaltodisplay = $mailbox_status->messages;
 		}
 
 		for ($i=$start; $i < $totaltodisplay; $i++)
@@ -353,12 +321,14 @@
 			// ROW BACK COLOR
 			$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
 
-			$struct = $phpgw->dcom->fetchstructure($mailbox, $msg_array[$i]);
+			//$struct = $phpgw->dcom->fetchstructure($mailbox, $msg_array[$i]);
+			$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msg_array[$i]);
 
 			// SHOW ATTACHMENT CLIP ?
 			$show_attach = has_real_attachment($struct);
 
-			$msg = $phpgw->dcom->header($mailbox, $msg_array[$i]);
+			//$msg = $phpgw->dcom->header($mailbox, $msg_array[$i]);
+			$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msg_array[$i]);
 			
 			// MESSAGE REFERENCE NUMBER
 			$mlist_msg_num = $msg_array[$i];
@@ -366,10 +336,10 @@
 			// SUBJECT
 			$subject = $phpgw->msg->get_subject($msg,'');
 			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',
-				'folder='.urlencode($folder_short).'&msgnum='.$mlist_msg_num);
+				'folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$mlist_msg_num);
 
 			// SIZE
-			if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+			if ($phpgw->msg->newsmode)
 			{
 				$size = $msg->Size;
 			}
@@ -441,7 +411,7 @@
 			}
 
 			$from_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',
-				'folder='.urlencode($folder_short).'&to='.urlencode($who_to));
+				'folder='.$phpgw->msg->prep_folder_out('').'&to='.urlencode($who_to));
 			if ($personal != $from->mailbox.'@'.$from->host)
 			{
 				$from_link = $from_link .'&personal='.urlencode($personal);
@@ -495,11 +465,12 @@
 	}
 
 // ---- Delete/Move Folder Listbox  for Msg Table Footer -----
-	if ($uses_folders)
+	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
 		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
 			. '<option>' . lang("move selected messages into") . ':'
-			. $phpgw->msg->all_folders_listbox($mailbox,'',$folder_short)
+			//. $phpgw->msg->all_folders_listbox($mailbox,'',$folder_short)
+			. $phpgw->msg->all_folders_listbox('','',$folder_short)
 			. '</select>';
             
 	}
@@ -521,7 +492,7 @@
 // ----  Output the Template   -----
 	$t->pparse('out','T_index_out');
 
-	$phpgw->dcom->close($mailbox);
+	$phpgw->msg->end_request();
 
 	$phpgw->common->phpgw_footer();
 ?>

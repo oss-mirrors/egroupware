@@ -23,8 +23,15 @@
 
 	if ($phpgw_info['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
-		include($tmp_app_inc . '/functions.inc.php');
-		if (! $mailbox)
+		//include($tmp_app_inc . '/functions.inc.php');
+		// ----  Create the base email Msg Class    -----
+		$phpgw->msg = CreateObject("email.mail_msg");
+		$args_array = Array();
+		$args_array['folder'] = 'INBOX';
+		$args_array['do_login'] = True;
+		$phpgw->msg->begin_request($args_array);
+
+		if (!$phpgw->msg->mailsvr_stream)
 		{
 			$error_msg = '<b>Mail error:</b> Can not open connection to mail server';
 			echo "\r\n"
@@ -40,7 +47,7 @@
 		else
 		{
 			$server_str = $phpgw->msg->get_mailsvr_callstr();
-			$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .'INBOX',SA_UNSEEN);
+			$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,$server_str .'INBOX',SA_ALL);
 			if ($mailbox_status->unseen == 1)
 			{
 				$num_new_str = ' - ' .lang('You have 1 new message!');
@@ -57,20 +64,19 @@
 			{
 				$num_new_str = '';
 			}
-			$nummsg = $phpgw->dcom->num_msg($mailbox);
 
 			$title = '<font color="FFFFFF">' . lang('EMail') . $num_new_str . '</font>';
 			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
 			$portalbox->setvar('width',600);
 			$portalbox->outerborderwidth = 0;
 			$portalbox->header_background_image = $phpgw_info['server']['webserver_url'] . '/phpgwapi/templates/verdilak/images/bg_filler.gif';
-			if($nummsg >= 5)
+			if($mailbox_status->messages >= 5)
 			{
 				$check_msgs = 5;
 			}
 			else
 			{
-				$check_msgs = $nummsg;
+				$check_msgs = $mailbox_status->messages;
 			}
 
 			// order 1 = order by the time the mail server revieved the mail
@@ -85,25 +91,24 @@
 				$sort_hook = 0;
 			}
 
-			if ($nummsg > 0)
+			if ($mailbox_status->messages > 0)
 			{
 				$msg_array_hook = array();
-				$msg_array_hook = $phpgw->dcom->sort($mailbox, $order_hook, $sort_hook);
+				$msg_array_hook = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $order_hook, $sort_hook);
 			}
 			for($i=0;$i<$check_msgs;$i++,$j++)
 			{
-				$msg = $phpgw->dcom->header($mailbox,$msg_array_hook[$i]);
+				$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_array_hook[$i]);
 				$subject = $phpgw->msg->get_subject($msg,'');
 				if (strlen($subject) > 65)
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array_hook[$i]));
+				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_array_hook[$i]));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-			if (($phpgw_info['user']['preferences']['email']['mail_server_type'] !='imap')
-			&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps'))
+			if ($phpgw->msg->get_mailsvr_supports_folders() == False)
 			{
 				$switchbox_tablerow = '';
 			}
@@ -114,7 +119,7 @@
 				$listbox_show_unseen = False;
 				$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 						. '<option>' . lang('switch current folder to') . ':'
-						. $phpgw->msg->all_folders_listbox($mailbox,'','',$listbox_show_unseen)
+						. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
 						. '</select>';
 				// make it another TR we can insert
 				$switchbox_action = $phpgw->link('/email/index.php');
@@ -127,7 +132,8 @@
 					.'</form>'."\r\n"
 					.'</tr>'."\r\n";
 			}
-			$phpgw->dcom->close($mailbox);
+			//$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
+			$phpgw->msg->end_request();
 			// output the portalbox and (if applicable) the folders listbox below it
 			echo '<!-- start Mailbox info -->'."\r\n"
 			.'<tr>'."\r\n"

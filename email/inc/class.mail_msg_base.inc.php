@@ -1,13 +1,13 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - E-Mail Message Processing Functions                             *
+  * phpGroupWare - E-Mail Message Processing Functions                       *
   * http://www.phpgroupware.org                                              *
   */
   /**************************************************************************\
-  * phpGroupWare API - E-Mail Message Processing Functions                         *
-  * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org>      *
-  * Handles specific operations in manipulating email messages                         *
-  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)                                           *
+  * phpGroupWare API - E-Mail Message Processing Functions                   *
+  * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
+  * Handles specific operations in manipulating email messages               *
+  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)                          *
   * -------------------------------------------------------------------------*
   * This library is part of the phpGroupWare API                             *
   * http://www.phpgroupware.org/api                                          * 
@@ -36,31 +36,201 @@
 	var $mailsvr_callstr = '';
 	var $mailsvr_namespace = '';
 	var $mailsvr_delimiter = '';
-	var $known_subtypes = array();
+	// pointer to the primary mailbox stream (you may open others) returned by the first login 
+	var $mailsvr_stream = '';
+	var $folder = '';
+	var $newsmode = False;
+	
+	//var $known_subtypes = array();
 
+	/*
 	function mail_msg_init()
 	{
 		global $phpgw, $phpgw_info;
 
 		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
 		$this->create_email_preferences();
+		
+		
+		/// ==== EXPERIMENTAL CODE ====
+		/// assemble a list of MIME subtypes that are known to this code
+		/// subytpes not in this list will be treated as rfc default specifies
+		//$this->known_subtypes['text'] = Array();
+		//$this->known_subtypes['message'] = Array();
+		//$this->known_subtypes['multipart'] = Array();
+		/// populate the array for MULTIPART - unknown subtypes default to MIXED
+		//$this->known_subtypes['multipart'] = array(
+		//	0 => 'alternative', 
+		//	1 => 'digest',
+		//	2 => 'mixed',
+		//	3 => 'related'
+		//);
+	}
+	*/
 
-		// ==== EXPERIMENTAL CODE ====
-		// assemble a list of MIME subtypes that are known to this code
-		// subytpes not in this list will be treated as rfc default specifies
-		$this->known_subtypes['text'] = Array();
-		$this->known_subtypes['message'] = Array();
-		$this->known_subtypes['multipart'] = Array();
-		// populate the array for MULTIPART - unknown subtypes default to MIXED
-		$this->known_subtypes['multipart'] = array(
-			0 => 'alternative', 
-			1 => 'digest',
-			2 => 'mixed',
-			3 => 'related'
-		);
+// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
+  function begin_request($args_array)
+  {
+	global $phpgw, $phpgw_info;
+
+	//$debug_logins = True;
+	$debug_logins = False;
+
+	// obtain the preferences from the database
+	$this->create_email_preferences();
+	// initalize some important class variables
+	$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+	$this->get_mailsvr_callstr();
+
+	// make sure all the necessary args_array items are present, else set missing ones to a default value
+	// ----  What "folder" arg was passed to the script  -----
+	if (!isset($args_array['folder']))
+	{
+		$args_array['folder'] = '';
+	}
+	// ----  Should We Login  -----
+	if (!isset($args_array['do_login']))
+	{
+		$args_array['do_login'] = False;
+	}
+	// ----  Are We In Newsmode Or Not  -----
+	if ((isset($args_array['newsmode']))
+	&& (($args_array['newsmode'] == True) || ($args_array['newsmode'] == "on")))
+	{
+		$args_array['newsmode'] = True;
+		$this->newsmode = True;
+	}
+	else
+	{
+		$args_array['newsmode'] = False;
+		$this->newsmode = False;
 	}
 
+	if ($args_array['do_login'] == True)
+	{
+		// === ISSET CHECK for userid and passwd to avoid garbage logins ==
+		if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
+		&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
+		&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
+		&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
+		{
+			$user = $phpgw_info['user']['preferences']['email']['userid'];
+			$pass = $phpgw_info['user']['preferences']['email']['passwd'];
+		}
+		else
+		{
+			// problem - invalid or nonexistant info for userid and/or passwd
+			  if ($debug_logins) { echo 'ERROR: userid or passwd empty <br>';}
+			return False;
+		}
+
+		// Create email server Data Communication Class
+		$phpgw->dcom = CreateObject("email.mail_dcom");
+		// initialize the dcom class variables
+		$phpgw->dcom->mail_dcom_base();
+
+		set_time_limit(90);
+		// login to INBOX because we know that always(?) should exist on an imap server
+		// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
+		$this->mailsvr_stream = $phpgw->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
+		  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
+		set_time_limit(0);
+
+		// error check
+		if (!$this->mailsvr_stream)
+		{
+			if ($debug_logins) { echo 'ERROR: this->mailsvr_stream failed <br>';}
+			return False;
+		}
+
+		// get some more info now that we are logged in
+		// namespace is often obtained by directly querying the mailsvr
+		$this->get_mailsvr_namespace();
+		  if ($debug_logins) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
+		$this->get_mailsvr_delimiter();
+		  if ($debug_logins) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
+
+		// make sure we have a useful folder name to log into
+		  if ($debug_logins) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
+		$this->folder = $this->prep_folder_in($args_array['folder']);
+		  if ($debug_logins) { echo 'this->folder after prep: '.$this->folder.'<br>';}
+		if ($this->folder != 'INBOX')
+		{
+			// switch to the desired folder now that we are sure we have it's official name
+			  if ($debug_logins) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
+			$did_reopen = $phpgw->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
+			  if ($debug_logins) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
+			// error check
+			if ($did_reopen == False)
+			{
+				  if ($debug_logins) { echo 'FAILED: reopen mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+				return False;
+			}
+		}
+
+	}
+
+	if ($args_array['do_login'] == True)
+	{
+		return $this->mailsvr_stream;
+	}
+  }
+ 
+
+  function end_request($args_array='')
+  {
+	global $phpgw, $phpgw_info;
+
+	// args array currently not used
+	if (isset($this->mailsvr_stream))
+	{
+		$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
+		$phpgw->msg->mailsvr_stream = '';
+	}
+  }
+
+
 // ----  Various Functions Used To Support Email   -----
+  function prep_folder_in($feed_folder)
+  {
+	global $phpgw, $phpgw_info;
+		
+	// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
+	if (!$feed_folder)
+	{
+		return 'INBOX';
+	}
+	else
+	{
+		// FUTURE - replace urlencode/decode with utf encode/decode
+		// internationalization UTF7 DECODE
+		// this is a suitable replacement for enlencode/decode
+		// AND utf7 internationalization is ensured
+		$feed_folder = urldecode($feed_folder);
+		return $this->folder_lookup('', $feed_folder);
+	}
+
+		
+  }
+
+  function prep_folder_out($feed_folder='')
+  {
+	global $phpgw, $phpgw_info;
+
+	if ($feed_folder == '')
+	{
+		$feed_folder = $this->folder;
+	}
+	
+	// FUTURE - replace urlencode/decode with utf encode/decode
+	// internationalization UTF7 ENCODE
+	// this is a suitable replacement for urlencode/decode
+	// AND utf7 internationalization is ensured
+	return urlencode($feed_folder);
+  }
+
+
+
   /*!
   @function create_email_preferences
   @abstract create email preferences
@@ -168,6 +338,7 @@
 	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
 	//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';
   }
+
 
 
 	/* * * * * * * * * * *
@@ -343,10 +514,52 @@
 				$name_space = '~';
 			}
 		}
+		/*
 		elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
 		// ALSO works for Courier IMAP
 		{
 			$name_space = 'INBOX';
+		}
+		*/
+		// ------- Dynamically Discover User's Private Namespace ---------
+		elseif (isset($this->mailsvr_stream))
+		{
+			// existing "$this->mailsvr_stream" means we are logged in and can querey the server
+			$server_str = $this->get_mailsvr_callstr();
+
+			// a LIST querey with "%" returns the namespace of the current reference
+			// in format {SERVER_NAME:PORT}NAMESPACE
+			// also, it MAY (needs testing) return all available namespaces
+			// however this is less useful if the IMAP server makes available shared folders and/or usenet groups
+			// in addition to the users private mailboxes
+			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
+			$name_space = $phpgw->dcom->listmailbox($this->mailsvr_stream, $server_str, '%');
+			//echo 'list with percent sign arg returns: '.$this->htmlspecialchars_encode(serialize($name_space)).'<br>';
+
+			if (!$name_space)
+			{
+				// if the server returns nothing, just use the most common namespace, "INBOX"
+				// note: "INBOX" is NOT case sensitive according to rfc2060
+				$name_space = 'INBOX';
+			}
+			elseif (gettype($name_space) == 'array')
+			{
+				// if the server returns an array of namespaces, the first one is usually the users personal namespace
+				// note: do not use is_array() because php3 does not have it
+				$name_space = $this->ensure_no_brackets($name_space[0]);
+			}
+			elseif (gettype($name_space) == 'string')
+			{
+				// if the server returns a string (not likely) just get rid of the brackets
+				// note: do not use is_string() because php3 does not have it ???
+				$name_space = $this->ensure_no_brackets($name_space);
+			}
+			else
+			{
+				// something really screwed up, EDUCATED GUESS
+				// note: "INBOX" is NOT case sensitive according to rfc2060
+				$name_space = 'INBOX';
+			}
 		}
 		else
 		{
@@ -357,6 +570,7 @@
 			// however as of PHP 4.0 this is not implemented
 			$name_space = 'INBOX';
 		}
+
 		//echo 'name_space='.$name_space.'<br>';
 		// cache the result
 		$this->mailsvr_namespace = $name_space;
@@ -384,7 +598,19 @@
 
 		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 		{
-			$delimiter = '/';
+			//$delimiter = '/';
+			//$delimiter = SEP;
+			// UWASH is a filesystem based thing, so the delimiter is whatever the system SEP is
+			// unix = /  and win = \
+			// currently the filesystem seterator is provided by phpgw api as constant "SEP"
+			if (!SEP)
+			{
+				$delimiter = '/';
+			}
+			else
+			{
+				$delimiter = SEP;
+			}
 		}
 		else
 		{
@@ -398,6 +624,23 @@
 		// cache the result
 		$this->mailsvr_delimiter = $delimiter;
 		return $delimiter;
+	}
+
+	function get_mailsvr_supports_folders()
+	{
+		global $phpgw, $phpgw_info;
+
+		// Does This Mailbox Support Folders (i.e. more than just INBOX)?
+		if (($phpgw_info['user']['preferences']['email']['mail_server_type']=='imap')
+		  || ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+		  || ($this->newsmode))
+		{
+			return True;
+		}
+		else
+		{
+			return False;
+		}
 	}
 
 	/* * * * * * * * * * *
@@ -423,7 +666,9 @@
 		{
 			$name_space = $this->get_mailsvr_namespace();
 			$delimiter = $this->get_mailsvr_delimiter();
-			if (strstr($folder,"$name_space" ."$delimiter") == False)
+			//if (strstr($folder,"$name_space" ."$delimiter") == False)
+			// "INBOX" as namespace is NOT supposed to be case sensitive
+			if (stristr($folder,"$name_space" ."$delimiter") == False)
 			{
 				$folder_long = "$name_space" ."$delimiter" ."$folder";
 			}
@@ -462,13 +707,17 @@
 		{
 			$name_space = $this->get_mailsvr_namespace();
 			$delimiter = $this->get_mailsvr_delimiter();
-			if (strstr($folder,"$name_space" ."$delimiter") == False)
+			//if (strstr($folder,"$name_space" ."$delimiter") == False)
+			// "INBOX" as namespace is NOT supposed to be case sensitive
+			if (stristr($folder,"$name_space" ."$delimiter") == False)
+
 			{
 				$folder_short = $folder;
 			}
 			else
 			{
-				$folder_short = strstr($folder,$delimiter);
+				//$folder_short = strstr($folder,$delimiter);
+				$folder_short = stristr($folder,$delimiter);
 				$folder_short = substr($folder_short, 1);
 			}
 		}
@@ -488,6 +737,11 @@
 		
 		//$debug_get_folder_list = True;
 		$debug_get_folder_list = False;
+
+		if (!$mailbox)
+		{
+			$mailbox = $this->mailsvr_stream;
+		}
 
 		// check if class dcom reports that the folder list has changed
 		if ((isset($phpgw->dcom))
@@ -592,7 +846,8 @@
 				$mailboxes[$next_available] = $add_inbox;
 			}
 
-			// sort folder names 
+			// sort folder names
+			// note: do not use is_array() because php3 does not have it
 			if (gettype($mailboxes) == 'array')
 			{
 				sort($mailboxes);
@@ -622,7 +877,7 @@
 
 
 	/* * * * * * * * * * *
-	  *  folder_exists
+	  *  folder_lookup
 	  *  searches thru the list of available folders to determine if a given folder already exists
 	  *  uses "folder_list[folder_long]" as the "haystack" because it is the most unaltered folder
 	  *  information returned from the server that we have
@@ -630,26 +885,50 @@
 	  *  during the get_folder_list routine - "folder_list[folder_long]"
 	  *  if False, an empty string is returned
 	  * * * * * * *  * * * */
-	function folder_exists($mailbox, $folder_needle='INBOX')
+	function folder_lookup($mailbox, $folder_needle='INBOX')
 	{
 		global $phpgw, $phpgw_info;
-	
+
+		if (!$mailbox)
+		{
+			$mailbox = $this->mailsvr_stream;
+		}
+
 		$folder_list = $this->get_folder_list($mailbox);
 
-		//$debug_folder_exists = True;
-		$debug_folder_exists = False;
+		//$debug_folder_lookup = True;
+		$debug_folder_lookup = False;
 		
-		//$found = False;
+		// retuen an empty string if the lookup fails
 		$needle_official_long = '';
 		for ($i=0; $i<count($folder_list);$i++)
 		{
+			// folder_haystack is the official folder long name returned from the server during "get_folder_list"
 			$folder_haystack = $folder_list[$i]['folder_long'];
-			if ($debug_folder_exists) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
-			if (preg_match('/.*'.$folder_needle.'$/', $folder_haystack))
+			if ($debug_folder_lookup) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
+			
+			// first try to match the whole name, i.e. needle is already a folder long type name
+			//if ($folder_needle == $folder_haystack)
+			// the NAMESPACE should NOT be case sensitive
+			if ( (stristr($folder_needle, $folder_haystack))
+			&& (strlen($folder_needle) == strlen($folder_haystack)) )
 			{
-				//$found = True;
-				$needle_official_long = $folder_list[$i]['folder_long'];
-				if ($debug_folder_exists) { echo 'folder exists, official long name: '.$needle_official_long.'<br>'; }
+				// exact match - needle is already a fully legit folder_long name
+				$needle_official_long = $folder_needle;
+				if ($debug_folder_lookup) { echo 'folder exists, exact match, already legit long name: '.$needle_official_long.'<br>'; }
+				break;
+			}
+			// look for pattern [delimiter][folder_needle]
+			// because we do NOT want to match a partial word, folder_needle should be a whole folder name
+			//elseif (preg_match('/.*'.$folder_needle.'$/', $folder_haystack))
+			// known delimiters pregstyle ( . = [.])  ( \ = [\])  ( / = [\\/])
+			// the NAMESPACE should NOT be case sensitive
+			elseif (preg_match('/.*([\]|[.]|[\\\]){1}'.$folder_needle.'$/i', $folder_haystack))
+			{
+				// look for pattern [delimiter][folder_needle]
+				// because we do NOT want to match a partial word, folder_needle should be a whole folder name
+				$needle_official_long = $folder_haystack;
+				if ($debug_folder_lookup) { echo 'folder exists, official long name: '.$needle_official_long.'<br>'; }
 				break;
 			}
 		}
@@ -704,10 +983,10 @@
 			$home_type_namespace = False;
 		}
 	
-		// DECISION: no more than 3 DIRECTORIES DEEP of recursion
+		// DECISION: no more than 4 DIRECTORIES DEEP of recursion
 		$num_slashes = $phpgw->msg->substr_count_ex($folder_long, "/");
 		if (($home_type_namespace)
-		&& ($num_slashes >= 3))
+		&& ($num_slashes >= 4))
 		{
 			//echo 'is_imap_folder FALSE 4<br>';
 			return False;
@@ -717,6 +996,7 @@
 		//echo 'is_imap_folder TRUE 5<br>';
 		return True;
 	}
+
 
 	function care_about_unseen($folder)
 	{
@@ -744,6 +1024,7 @@
 		}
 		return $we_care;
 	}
+
 
 	// =====  OBSOLETED -- To Be Removed  ========
 	function get_mime_info($this_part)

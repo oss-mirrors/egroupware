@@ -30,17 +30,16 @@
 
 	if ($encoding == "base64")
 	{
-		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no));
+		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no));
 	}
 	elseif ($encoding == "qprint")
 	{
-		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no));
+		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no));
 	}
 	else
 	{
-		echo $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_no);
+		echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no);
 	}
 
-	$phpgw->dcom->close($mailbox);
-
+	$phpgw->msg->end_request();
 ?>
