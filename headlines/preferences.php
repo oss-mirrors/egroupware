@@ -21,55 +21,55 @@
 
 	if (! $submit)
 	{
-		$phpgw->common->phpgw_header();
+		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
      
-		$phpgw->template->set_file(array('form' => 'preferences.tpl'));
+		$GLOBALS['phpgw']->template->set_file(array('form' => 'preferences.tpl'));
 	     
-		$phpgw->template->set_var('form_action',$phpgw->link('/headlines/preferences.php'));
-		$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-		$phpgw->template->set_var('lang_header',lang('select headline news sites'));
-		$phpgw->template->set_var('lang_headlines',lang('Headline preferences'));
+		$GLOBALS['phpgw']->template->set_var('form_action',$phpgw->link('/headlines/preferences.php'));
+		$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+		$GLOBALS['phpgw']->template->set_var('lang_header',lang('select headline news sites'));
+		$GLOBALS['phpgw']->template->set_var('lang_headlines',lang('Headline preferences'));
 
-		$phpgw->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
-		while ($phpgw->db->next_record())
+		$GLOBALS['phpgw']->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
+		while ($GLOBALS['phpgw']->db->next_record())
 		{
-			$html_select .= '<option value=\'' . $phpgw->db->f('con') . '\'';
-//           . $users_headlines[$phpgw->db->f('con')];
+			$html_select .= '<option value=\'' . $GLOBALS['phpgw']->db->f('con') . '\'';
+//           . $users_headlines[$GLOBALS['phpgw']->db->f('con')];
 
-			if ($phpgw_info['user']['preferences']['headlines'][$phpgw->db->f('con')])
+			if ($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$GLOBALS['phpgw']->db->f('con')])
 			{
 				$html_select .= ' selected';
 			}
-			$html_select .= '>' . $phpgw->db->f('display') . "</option>\n";
+			$html_select .= '>' . $GLOBALS['phpgw']->db->f('display') . '</option>'."\n";
 		}
-		$phpgw->template->set_var('select_options',$html_select);
+		$GLOBALS['phpgw']->template->set_var('select_options',$html_select);
 
-		$phpgw->template->set_var('tr_color_1',$phpgw->nextmatchs->alternate_row_color());
-		$phpgw->template->set_var('tr_color_2',$phpgw->nextmatchs->alternate_row_color());
+		$GLOBALS['phpgw']->template->set_var('tr_color_1',$GLOBALS['phpgw']->nextmatchs->alternate_row_color());
+		$GLOBALS['phpgw']->template->set_var('tr_color_2',$GLOBALS['phpgw']->nextmatchs->alternate_row_color());
 
-		$phpgw->template->set_var('lang_submit',lang('submit'));
+		$GLOBALS['phpgw']->template->set_var('lang_submit',lang('submit'));
 
-		$phpgw->template->pparse('out','form');
+		$GLOBALS['phpgw']->template->pparse('out','form');
   } else {
 
 		$i = 0;
-		while (is_array($phpgw_info['user']['preferences']['headlines']) && $preference = each($phpgw_info['user']['preferences']['headlines']))
+		while (is_array($GLOBALS['phpgw_info']['user']['preferences']['headlines']) && $preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 		{
-			$phpgw->preferences->delete('headlines',$preference[0]);
+			$GLOBALS['phpgw']->preferences->delete('headlines',$preference[0]);
 		}
 	
-		if (count($headlines))
+		if (count($GLOBALS['HTTP_POST_VARS']['headlines']))
 		{
-			while ($value = each($headlines))
+			while ($value = each($GLOBALS['HTTP_POST_VARS']['headlines']))
 			{
-				$phpgw->preferences->change('headlines',$value[1],'True');
+				$GLOBALS['phpgw']->preferences->add('headlines',$value[1],'True');
 			}
 		}
 
-		$phpgw->preferences->commit(True);
+		$GLOBALS['phpgw']->preferences->save_repository(True);
 
-		Header('Location: ' . $phpgw->link('/preferences/index.php'));
+		Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
 	}
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
