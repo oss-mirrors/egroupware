@@ -32,7 +32,7 @@
 			$basedir = opendir($dir);
 
 			$i = 0;
-			while (false !== ($files = readdir($basedir)))
+			while ($files = readdir($basedir))
 			{
 				if (($files != '.') && ($files != '..'))
 				{
@@ -71,7 +71,7 @@
 				case 'weekly':	$dd = '-(7*' . $versions . ')'; break;
 				case 'monthly':	$dm = '-' . $versions; break;
 			}
-			$rdate = mktime(0,0,0,date('m',$bdate . $dm),date('d',$bdate . $dd),date('Y',$bdate));
+			$rdate = mktime(0,0,0,date('m',$bdate) . $dm,date('d',$bdate) . $dd,date('Y',$bdate));
 			return $rdate;
 		}
 	}
@@ -111,21 +111,14 @@
 
 				$rdate = get_date('rdate',$versions,$bintval);
 
-				chdir($dir);
-
 				for ($i=0;$i<=count($archive);$i++)
 				{
 					if ($archive[$i]['bdate'] <= $rdate)
 					{
-						if (is_file($dir . '/' . $archive[$i]['file']))
-						{
-							unlink($archive[$i]['file']);
-							echo 'removed ' . $archive[$i]['file'] . "\n";
-						}
+						unlink($dir . '/' . $archive[$i]['file']);
+						echo 'removed ' . $dir . '/' . $archive[$i]['file'] . "\n";
 					}
 				}
-
-				chdir('/root');
 			}
 		}
 	}
@@ -322,13 +315,11 @@
 
 		if ($lpath != '')
 		{
-			chdir($lpath);
-
 			check_datedue($lpath);
 
 			for ($i=0;$i<count($output);$i++)
 			{
-				system("$command " . $output[$i] . ' ' . $input[$i] . ' 2>&1 > /dev/null'); 
+				system("$command " . $output[$i] . ' ' . $lpath . '/ 2>&1 > /dev/null'); 
 			}
 		}
 	}
