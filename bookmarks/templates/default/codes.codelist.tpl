@@ -1,2 +1,13 @@
 <!-- $Id$ -->
-<a href="{URL}">{NAME} ({ID})</a><br>
+<tr bgcolor="{TR_COLOR}">
+ <td>
+  {NAME}
+ </td>
+ <td>
+  {EDIT}
+ </td>
+ <td>
+  {DELETE}
+ </td>
+</tr>
+

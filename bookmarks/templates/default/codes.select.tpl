@@ -1,26 +1,17 @@
 <!-- $Id$ -->
 <P><B>Select mode and {CODETABLE} to work with</B>
 
-<table border=1 bgcolor="#EEEEEE" align="center">
- <tr>
-   <td rowspan="2" valign="TOP">
-	   <a href="codes.php?mode=C&codetable={CODETABLE}">New {CODETABLE}</a>
-	 </td>
-   <td valign="TOP">Update {CODETABLE}<br>
-	  <font size=-1>select {CODETABLE} (ID) to update below</font></td>
-   <td valign="TOP">Delete  {CODETABLE}<br>
-	  <font size=-1>select {CODETABLE} (ID) to delete below</font></td>
+<table border="0" align="center">
+ <tr bgcolor="{th_bg}">
+  <td>&nbsp;</td>
  </tr>
+
+ {CODE_LIST}
+
  <tr>
-  <td valign=top>
-
-{UPDATE_CODE_LIST}
-
-  </td>
-  <td valign=top>
-
-{DELETE_CODE_LIST}
-
+  <td colspan="3" valign="top">
+   <a href="{createlink}">New {CODETABLE}</a>
+<!--   <a href="codes.php?mode=C&codetable={CODETABLE}">New {CODETABLE}</a> -->
   </td>
  </tr>
 </table>
