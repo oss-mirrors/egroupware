@@ -11,9 +11,20 @@ PHP is not installed on your web server!!!
 
 $GLOBALS['phpgw_info']['flags'] = array(
 	'currentapp' => 'phpldapadmin',
+	'noheader'   => True,
 );
 
 @require 'common.php';
+
+// as phpldapadmin does not use our link-function, we need to set a cookie to make it work
+if (!$GLOBALS['phpgw']['server']['usecookies'])
+{
+	$GLOBALS['phpgw']->session->phpgw_set_cookiedomain();
+	$GLOBALS['phpgw']->session->phpgw_setcookie('sessionid',$GLOBALS['phpgw']->session->sessionid);
+	$GLOBALS['phpgw']->session->phpgw_setcookie('kp3',$GLOBALS['phpgw']->session->kp3);
+	$GLOBALS['phpgw']->session->phpgw_setcookie('domain',$GLOBALS['phpgw']->session->account_domain);
+}
+$GLOBALS['phpgw']->common->phpgw_header();
 
 ?>
 
