@@ -91,7 +91,7 @@
 			// *************************************   END OF OPERATIONS COMMANDED BY THIS SAME FORM ******************
 
 			// retrieve activity info and its roles
-			if (!$activity_id || isset($_GET['new_activity']))
+			if (!$activity_id || isset($_POST['new_activity']))
 			{
 				$activity_info = array(
 					'wf_name'			=> '',
@@ -157,7 +157,7 @@
 				'sort_mode2'			=> $sort_mode2,
 				'find'					=> $find,
 				'activity_id'			=> $activity_info['wf_activity_id'],
-				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $this->wf_p_id .'&new_activity=1'),
+				'new_act_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form'),
 				'name'					=> $activity_info['wf_name'],
 				'description'			=> $activity_info['wf_description'],
 				'checked_interactive'	=> ($activity_info['wf_is_interactive'] == 'y')? 'checked="checked"' : '',
