@@ -30,11 +30,19 @@
     if ($submit) {
     $errorcount = 0;
 
-    if ($shour && ($shour != 0)) {
+    if ($shour && ($shour != 0) && ($shour != 12)) {
 	if ($sampm=="pm") { $shour = $shour + 12; }
     }
-    if ($ehour && ($ehour != 0)) {
+    if ($shour && ($shour == 12)) {
+	if ($sampm=="am") { $shour = 0; }
+    }
+
+    if ($ehour && ($ehour != 0) && ($ehour != 12)) {
 	if ($eampm=="pm") { $ehour = $ehour + 12; }
+    }
+
+    if ($ehour && ($ehour == 12)) {
+	if ($eampm=="am") { $ehour = 0; }
     }
 
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime($shour,$smin,0,$smonth,$sday,$syear); } 
@@ -159,8 +167,9 @@
     if ($phpgw_info['user']['preferences']['common']['timeformat'] == '12') {
     if ($shour >= 12) { 
     $amsel = ''; $pmsel = ' checked'; 
-    $shour = $shour - 12;
+    if ($shour > 12) { $shour = $shour - 12; }
     }
+    if ($shour == 0) { $shour = 12; }
     $sradio = '<input type="radio" name="sampm" value="am"'.$amsel.'>am';
     $sradio .= '<input type="radio" name="sampm" value="pm"'.$pmsel.'>pm';
     $t->set_var('sradio',$sradio);
@@ -171,11 +180,11 @@
     $t->set_var('smin',$smin);
 
     if (!$edate) {
-        $emonth = 0;
-        $eday = 0;
-        $eyear = 0;
-	$ehour = '';
-	$emin = '';
+        $emonth = date('m',time());
+        $eday = date('d',time());
+        $eyear = date('Y',time());
+        $ehour = date('H',time());
+        $emin = date('i',time());
         }
     else {
         $emonth = date('m',$edate);
@@ -187,10 +196,11 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
     if ($phpgw_info['user']['preferences']['common']['timeformat'] == '12') {
-    if ($ehour >= 12) { 
-    $amsel = ''; $pmsel = ' checked'; 
-    $ehour = $ehour - 12;
+    if ($ehour >= 12) {
+    $amsel = ''; $pmsel = ' checked';
+    if ($ehour > 12) { $ehour = $ehour - 12; }
     }
+    if ($ehour == 0) { $ehour = 12; }
     $eradio = '<input type="radio" name="eampm" value="am"'.$amsel.'>am';
     $eradio .= '<input type="radio" name="eampm" value="pm"'.$pmsel.'>pm';
     $t->set_var('eradio',$eradio);
@@ -229,9 +239,7 @@
             if($account['account_id']==$phpgw_info["user"]["account_id"])
             $employee_list .= " selected";
             $employee_list .= ">"
-                    . $phpgw->common->display_fullname($account['account_id'],
-                      $account['account_firstname'],
-                      $account['account_lastname']) . "</option>";
+	    . $account['account_firstname'] . " " . $account['account_lastname'] . " [ " . $account['account_lid'] . " ]" . "</option>";
     }
 
     $t->set_var('employee_list',$employee_list);

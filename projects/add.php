@@ -172,9 +172,7 @@
             if($account['account_id']==$phpgw_info["user"]["account_id"])
             $coordinator_list .= " selected";
             $coordinator_list .= ">"
-                    . $phpgw->common->display_fullname($account['account_id'],
-                      $account['account_firstname'],
-                      $account['account_lastname']) . "</option>";
+	    . $account['account_firstname'] . " " . $account['account_lastname'] . " [ " . $account['account_lid'] . " ]" . "</option>";
     }
 
     $t->set_var('coordinator_list',$coordinator_list);

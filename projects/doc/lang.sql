@@ -57,6 +57,7 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('User statistics',
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('End date','projects','en','End date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Date due','projects','en','Date due');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Work date','projects','en','Work date');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Work time','projects','en','Work time');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Statistics','projects','en','Statistics');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Position','projects','en','Position');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project statistic','projects','en','Project statistic');
