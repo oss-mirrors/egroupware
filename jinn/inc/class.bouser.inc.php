@@ -212,7 +212,7 @@
 
 		 $this->save_sessiondata();
 
-		 $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
+		 $this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries&insert=yes');
 	 }
 
 	  //remove this one
@@ -343,7 +343,7 @@
 
 		 function multiple_records_insert()
 		 {
-
+			unset($this->mult_where_array);
 			if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)
 			{
 			   for($i=0;$i<$_POST[MLTNUM];$i++)
@@ -353,13 +353,16 @@
 
 				  $data=$this->http_vars_pairs($post_arr,$files_arr);
 				  $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
+				  
+			//	  _debug_array($status);
 				  $this->mult_where_array[]=$status[where_string];
 				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
 				  $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
 			   }
 			}
-
+			
+//die();
 			if ($status[status]==1)	$this->message['info']='Records successfully added';
 			else $this->message[error]=lang('One or more records NOT succesfully added. (error code 107)');
 
@@ -384,7 +387,11 @@
 
 		 function multiple_records_update()
 		 {
-			
+			/* exit and go to del function */
+			if($_POST['delete'])
+			{
+			   $this->multiple_records_delete($this->mult_where_array);
+			}
 			unset($this->mult_where_array);
 
 			if(is_numeric($_POST[MLTNUM]) and intval($_POST[MLTNUM])>0)

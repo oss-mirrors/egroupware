@@ -155,12 +155,13 @@
 		 }
 		 
 		 
-		 if (is_array($this->bo->mult_where_array))
+		 if (!$_GET['insert'] && is_array($this->bo->mult_where_array))
 		 {
 			$this->ui->header('edit records');
 			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
 			$this->bo->where_string=true;
 			$this->mult_records=count($mult_where_array);
+			//_debug_array($mult_where_array);
 		 }
 		 else
 		 {
@@ -275,6 +276,7 @@
 		 $this->template->set_var('jstips',$this->jstips);
 		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
+		 $this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
 		 
 		 $this->template->pparse('out','form_footer');
 
@@ -413,7 +415,7 @@
 			if(trim($field_conf_arr[field_help_info]))
 			{
 			   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
-			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
+			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
 			
@@ -781,7 +783,7 @@
 			if(trim($field_conf_arr[field_help_info]))
 			{
 			   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
-			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
+			   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			}
 
 			// auto

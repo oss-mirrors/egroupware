@@ -438,8 +438,6 @@
 			   $col_list=array_slice($columns,0,4);
 			}
 
-
-
 			/*	check if orderbyfield exist else drop orderby it	*/
 			if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
 			//	unset($all_col_names_list);
@@ -457,7 +455,7 @@
 			   if(trim($field_conf_arr[field_help_info]))
 			   {
 				  $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
-				  $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="'.lang('info').'"/>'; 
+				  $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
 			   }
 
 			   

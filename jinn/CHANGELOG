@@ -1,8 +1,12 @@
-$id$
-
 =============================
 CHANGELOG JiNN for eGroupWare
 =============================
+
+version 0.8.105b
+Thu Sep  9 21:46:07 CEST 2004
+============================
+- fix: clicking on 'add multiple records' while in edit multiple records screen jumps backs to same screen
+- fix: clicking continue in mult-rec-ins return edit screen with incorrect records 
 
 version 0.8.105
 Thu Sep  9 11:53:57 CEST 2004

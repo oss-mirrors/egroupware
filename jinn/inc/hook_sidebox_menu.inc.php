@@ -42,7 +42,7 @@
 		 'Add multiple records' => array(
 			'text'=>'Add multiple records',
 			'icon'=>'new',
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.multiple_entries')
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.multiple_entries&insert=yes')
 		 ),
 		 'Add new entry' => array(
 			'text'=>'Add new entry',

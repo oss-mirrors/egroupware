@@ -105,11 +105,12 @@ document.onmousemove=positiontip
 <script language="JavaScript">
 <!--
 
-function onSubmitForm() {
+function onSubmitForm() 
+{
 
-{submit_script}
+   {submit_script}
 
-return true;
+   return true;
 }
 
 //-->
@@ -160,14 +161,12 @@ return true;
 
 <!-- BEGIN form_footer -->
 	<table>
-<!--	<tr><td colspan="2" bgcolor="{row_color}" align="center">{repeat_buttons}&nbsp;</td></tr>-->
 	<tr><td colspan="2" >
 		<table align="right" style="background-color:#ffffff">
 			<tr>
 			<td><input type="submit" name="continue" value="{add_edit_button_continue}"></td>
 			<td><input type="submit" name="save" value="{add_edit_button}"></td>
-			<!--	<td><input type="reset" value="{reset_form}"></td>-->
-			<td><input type="submit" name="delete" value="{delete}"></td>
+			<td><input type="hidden" name="delete"> <input type="submit"  name="delete" value="{delete}"></td>
 			<td>{cancel}</td>
 			</tr>
 		</table>
