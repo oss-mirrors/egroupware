@@ -2,6 +2,7 @@
 1 message has been deleted	email	en	1 message has been deleted
 1 message has been moved to	email	en	1 message has been moved to
 account	email	en	account
+account user name	email	en	Account User Name
 add to addressbook	email	en	Add to addressbook
 and	email	en	and
 arrival date	email	en	Arrival Date
@@ -18,6 +19,7 @@ contains	email	en	Contains
 could not open this mailbox	email	en	Could not open this mailbox
 create a folder email	en	create a folder
 create (expert)	email	en	create (expert)
+custom e-mail preferences	email	en	Custom E-Mail preferences
 custom email settings	email	en	custom email settings
 default:	common	en	default:
 default sorting order	email	en	Default sorting order
@@ -28,13 +30,14 @@ deleted messages (trash) folder	email	en	Deleted messages (Trash) folder
 delete (expert)	email	en	Delete (expert)
 discard	email	en	Discard
 does not contain	email	en	Does Not Contain
-email account name	email	en	Email Account Name
-email address	email	en	E-Mail address
-email date	email	en	Email Date
+e-mail extra accounts list	email	en	E-Mail Extra Accounts List
 e-mail filters	common	en	E-Mail Filters
 e-mail folders	common	en	E-mail Folders
 e-mail inbox filters List	email	en	E-Mail INBOX Filters List
 e-mail preferences	common	en	E-Mail preferences
+email account name	email	en	Email Account Name
+email address	email	en	E-Mail address
+email date	email	en	Email Date
 email filters	email	en	Email Filters
 email password	email	en	E-Mail password
 email preferences	email	en	Email Preferences
@@ -63,6 +66,7 @@ folder size	email	en	Folder Size
 for these items, fill only what is different from you default e-mail preferences	common	en	For these items, fill only what is different from you default E-Mail preferences
 forward	email	en	Forward
 from	email	en	From
+hidden	email	en	hidden
 if applicable	email	en	If Applicable
 if fileto then select destination folder	email	en	if fileto then select destination folder
 if messages match	email	en	If messages match
@@ -92,6 +96,7 @@ move selected messages into	email	en	Move Selected Messages into
 move this message into	email	en	Move this message into
 move up	email	en	Move Up
 new	email	en	New
+new account	email	en	New Account
 new filter	email	en	New Filter
 new message	email	en	New message
 newest	common	en	newest
@@ -109,6 +114,7 @@ please select a message first	email	en	Please select a message first
 please type a folder name in the text box	email	en	Please type a folder name in the text box
 previous	email	en	Previous
 raw message	email	en	raw message
+read mail	email	en	Read Mail
 redirect	email	en	Redirect
 reject	email	en	Reject
 rename a folder	email	en	Rename a Folder
@@ -131,6 +137,7 @@ show sender's email address with name	email	en	Show sender's email address with 
 size	email	en	Size
 somebody	email	en	somebody
 sort by	email	en	Sort By
+standard e-mail preferences	email	en	Standard E-Mail preferences
 stop if matched	email	en	Stop if Matched
 switch accounts	email	en	Switch Accounts
 switch current folder to	common	en	Switch Current Folder To
@@ -145,6 +152,7 @@ undisclosed sender	email	en	Undisclosed Sender
 unknown action	email	en	Unknown Action
 unknown error	email	en	Unknown error
 use custom settings	email	en	Use custom settings
+u-wash mail folder	email	en	U-Wash Mail Folder
 view as html	email	en	View as HTML
 view formatted	email	en	View formatted
 view headers	email	en	View headers
