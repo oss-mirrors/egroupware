@@ -11,121 +11,151 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 	
-  Header("Cache-Control: no-cache");
-  Header("Pragma: no-cache");
-  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
-
-  if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
-
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True,
-                               "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
-?>
-
-<table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
-<form action="<?php echo $phpgw->link("/email/folder.php")?>" method="post">
-<tr><td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
-
-	<table border=0 cellpadding=0 cellspacing=1 width=100%>
-	 <tr>
-          <td valign="top">
-		&nbsp;<font size=3 face=<?php echo $phpgw_info["theme"]["font"]; ?> color=<?php echo $phpgw_info[theme][em_folder_text]; ?>>Folders</font>
-	  </td>
-	 </tr>
-	</table>
-</td></tr>
-
-  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-   <font size=2 face=<?php echo $phpgw_info["theme"]["font"]; ?>>
-    <b>Folder name</b>
-   </font>
-  </td>
-  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-   <font size=2 face=<?php echo $phpgw_info["theme"]["font"]; ?>>
-    <b>Messages</b>
-   </font>
-  </td>
-
-
-<?php
-
-  $PROG_DIR = "mail";
-  //$FILTER = $phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
-  $FILTER = $phpgw->msg->construct_folder_str("");
-  $folder = $phpgw->msg->construct_folder_str($name);
-  $IMAP_STR = "{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . "143" . "}";
-
-  if ($action == "create") {
-     $phpgw->msg->createmailbox($mailbox,"$IMAP_STR$folder");
-  }
-  if ($action == "delete") {
-     $phpgw->msg->deletemailbox($mailbox,"$IMAP_STR$folder");
-  }
-
-  $mailboxes = $phpgw->msg->listmailbox($mailbox, $IMAP_STR, "$FILTER*");
-
-  sort($mailboxes); // added sort for folder names 
-  if ($mailboxes) {
-     if ($FILTER != "INBOX") {
-        $tr_color = $phpgw_info["theme"]["row_on"];
-	echo "<tr bgcolor=$tr_color><td><font size=2 face="
-	   . $phpgw_info["theme"]["font"] . ">";
-	echo "<a href=\"" . $phpgw->link("/email/index.php","folder=INBOX")
-	   . "\">INBOX</a></font></td>";
-	echo "<td width=20%><font size=2 face="
-	   . $phpgw_info["theme"]["font"] . ">";
-        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
-	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-     }
-
-     for ($i = 0; $i < count($mailboxes); $i++) {
-        $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	$phpgw->msg->reopen($mailbox, $mailboxes[$i]);
-	$nm = substr($mailboxes[$i], strrpos($mailboxes[$i], "}") + 1, strlen($mailboxes[$i]));
-	echo "<tr bgcolor=$tr_color><td><font size=2 face="
-	   . $phpgw_info["theme"]["font"] . ">";
-
-        $t_folder_s = $nm;
-        if ($nm != "INBOX") {
-           $nm = $phpgw->msg->deconstruct_folder_str($nm);
-	} else {
-	   $nm = "INBOX";
+	if(empty($folder))
+	{
+		$folder='INBOX';
 	}
 
-	$url_nm = urlencode($nm);
+	Header("Cache-Control: no-cache");
+	Header("Pragma: no-cache");
+	Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+  
+	$phpgw_info["flags"] = array(
+		'currentapp' => 'email', 
+		'enable_network_class' => True, 
+		'enable_nextmatchs_class' => True);
+	
+	if (isset($newsmode) && $newsmode == "on")
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
+	
+	include("../header.inc.php");
 
-	echo "<a href=\"" . $phpgw->link("/email/index.php","folder=$url_nm")
-	   . "\">$nm</a></font></td>";
-	echo "<td width=20%><font size=2 face=$theme[font]>";
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array(		
+		'T_folder_out' => 'folder.tpl'
+	));
 
-        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+	$t->set_block('T_folder_out','B_folder_list','V_folder_list');
+	$t->set_block('T_folder_out','B_action_report','V_action_report');
+
+//  ----  Establish Email Server Connectivity Conventions  ----
+	$server_str = get_mailsvr_callstr();
+	$namespace_filter = get_mailsvr_namespace();
+	$folder_long = get_folder_long($folder);
+	$folder_short = get_folder_short($folder);
 
 
-	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-     }
-  } else {
-     echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face=$theme[font]>";
-     echo "<a href=\"" . $phpgw->link("/email/index.php","folder=INBOX")
-        . "\">INBOX</a></font></td>";
-     echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
-     $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
-     echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-     echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-     echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
-  }
-  $phpgw->msg->close($mailbox);
+	/*
+	//$full_str = $server_str .$folder_long;
+	//$folder_short = get_folder_short($full_str);
+	$t->set_var('debug_server_str',$server_str .$folder_long);
+	$t->set_var('debug_filter',$namespace_filter);
+	$t->set_var('debug_folder',$folder);
+	$t->set_var('debug_folder_long',$folder_long);
+	$t->set_var('debug_folder_short',$folder_short);
+	*/
 
+// ----  Create or Delete A Folder  ----
+	if (($action == 'create') || ($action == 'delete'))
+	{
+		// maybe some "are you sure" code
+		$folder_long = get_folder_long($target_folder);
+		$folder_short = get_folder_short($target_folder);
+		
+		if ($action == 'create')
+		{
+			$phpgw->msg->createmailbox($mailbox, "$server_str"."$folder_long");
+		}
+		else if ($action == 'delete')
+		{
+			$phpgw->msg->deletemailbox($mailbox, "$server_str"."$folder_long");
+		}
+
+		// Result Message
+		$action_report = $action .' folder "' .$folder_short .'": ';
+		$imap_err = imap_last_error();
+		if ($imap_err == '')
+		{
+			$action_report = $action_report .' OK';
+		}
+		else
+		{
+			$action_report = $action_report .$imap_err;
+		}
+		$t->set_var('action_report',$action_report);
+		$t->parse('V_action_report','B_action_report');
+	}
+	else
+	{
+		$t->set_var('V_action_report','');
+	}
+
+	$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, $namespace_filter .'*');
+
+	// sort folder names 
+	if (gettype($mailboxes) == 'array')
+	{
+		sort($mailboxes);
+	}
+	
+	if ($mailboxes)
+	{
+		for ($i=0; $i<count($mailboxes);$i++)
+		{
+			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+
+			$phpgw->msg->reopen($mailbox, $mailboxes[$i]);
+			$folder_long = get_folder_long($mailboxes[$i]);
+			$folder_short = get_folder_short($mailboxes[$i]);
+
+			$mailbox_status = $phpgw->msg->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
+
+			$t->set_var('list_backcolor',$tr_color);
+			$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .urlencode($folder_short)));
+			$t->set_var('folder_name',$folder_short);
+			$t->set_var('msgs_unseen',$mailbox_status->unseen);
+			$t->set_var('msgs_total',$phpgw->msg->num_msg($mailbox));
+			$t->parse('V_folder_list','B_folder_list',True);
+		}
+	}
+	else
+	{
+		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+
+		$mailbox_status = $phpgw->msg->status($mailbox,$server_str.'INBOX',SA_UNSEEN);
+
+		$t->set_var('list_backcolor',$tr_color);
+		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=INBOX'));
+		$t->set_var('folder_name','INBOX');
+		$t->set_var('msgs_unseen',$mailbox_status->unseen);
+		$t->set_var('msgs_total',$phpgw->msg->num_msg($mailbox));
+		$t->parse('V_folder_list','B_folder_list',True);
+	}
+
+// ----  Set Up Form Variables  ---
+	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+	// FIXME  needs lang
+	$t->set_var('form_create_txt','Create a folder');
+	$t->set_var('form_delete_txt','Delete a folder');
+	$t->set_var('form_submit_txt',lang("submit"));
+
+// ----  Set Up Other Variables  ---	
+	$t->set_var('title_backcolor',$phpgw_info['theme']['em_folder']);
+	$t->set_var('title_textcolor',$phpgw_info['theme']['em_folder_text']);
+	// FIXME  needs lang
+	$t->set_var('title_text','Folder Maintenance');
+	$t->set_var('the_font',$phpgw_info['theme']['font']);
+	$t->set_var('th_backcolor',$phpgw_info['theme']['th_bg']);
+	
+	
+
+	$t->pparse('out','T_folder_out');
+
+	$phpgw->msg->close($mailbox);
+
+	$phpgw->common->phpgw_footer();
 ?>
-
-<tr><td colspan=2 align=right bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-<select name="action">
-<option value="create">Create a folder</option>
-<option value="delete">Delete the folder</option>
-</select> <font size=2 face=<?php echo $phpgw_info["theme"]["font"] ?>><b><?php echo $L_NAMED ?></b></font>
-<input type=text name="name"><input type=hidden name=folder value="<?php echo $folder ?>">
-<input type=submit value="<?php echo lang("submit"); ?>"></td></tr></form>
-</table>
-<p>
-<?php $phpgw->common->phpgw_footer(); ?>

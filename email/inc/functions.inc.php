@@ -11,88 +11,355 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
-  if($d1 == "htt" || $d1 == "ftp" ) {
-    echo "Failed attempt to break in via an old Security Hole!<br>\n";
-    $phpgw->common->phpgw_exit();
-  } unset($d1);
+	$d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
+	if($d1 == "htt" || $d1 == "ftp" )
+	{
+		echo "Failed attempt to break in via an old Security Hole!<br>\n";
+		$phpgw->common->phpgw_exit();
+	}
+	unset($d1);
 
-  if(floor(phpversion()) == 4)
-  {
-  	global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
-  }
+	if(floor(phpversion()) == 4)
+	{
+		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
+	}
 
 	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
 
-  $phpgw->msg = CreateObject("email.msg");
-  $phpgw->msg->msg_common_();
+	$phpgw->msg = CreateObject("email.msg");
+	$phpgw->msg->msg_common_();
 
-  /*Set some defults*/
-  if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
-      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" && !$folder) {
-// Changed by skeeter 04 Jan 01
-// This was changed to give me access back to my folders.
-// Not sure what it would break if the user has a default folder preference set,
-// but will allow access to other folders now.
-//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
-      $phpgw_info["user"]["preferences"]["email"]["folder"] = (!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
-//backward compatibility
-      $folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
-  }
+	/*Set some defults*/
+	if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
+	$phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" && !$folder)
+	{
+		// Changed by skeeter 04 Jan 01
+		// This was changed to give me access back to my folders.
+		// Not sure what it would break if the user has a default folder preference set,
+		// but will allow access to other folders now.
+		//      $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
+		$phpgw_info["user"]["preferences"]["email"]["folder"] = (!$phpgw_info["user"]["preferences"]["email"]["folder"] ? "INBOX" : $phpgw_info["user"]["preferences"]["email"]["folder"]);
+		//backward compatibility
+		$folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
+	}
 
-  if(!$folder) $folder="INBOX";
+	if(!$folder) $folder="INBOX";
   
-      //echo "<b>TEST:</b> ".$phpgw_info["user"]["preferences"]["email"]["folder"];
+	//echo "<b>TEST:</b> ".$phpgw_info["user"]["preferences"]["email"]["folder"];
 
-  // Its better then them using a ton of PHP errors.
-  // Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
-  // From the msg_imap class.  I tried to clean it up here so I could see what was happening.
-  if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me.
-  $attop   = ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
-  $inprefs = ereg("preferences",$PHP_SELF);
+	// Its better then them using a ton of PHP errors.
+	// Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
+	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
+	if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me.
+	$attop = ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
+	$inprefs = ereg("preferences",$PHP_SELF);
 
-  if (!$inprefs) $mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
+	if (!$inprefs)
+	{
+		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
+	}
 
-  if (!$mailbox && !($attop || $inprefs)) {
-     echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
-        . "</b></center>";
-     $phpgw->common->phpgw_exit(True);
+	if (!$mailbox && !($attop || $inprefs))
+	{
+		echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
+		. "</b></center>";
+		$phpgw->common->phpgw_exit(True);
+	}
+
+  function decode_header_string($string)
+  {
+	global $phpgw;
+
+	if($string)
+	{
+		$pos = strpos($string,"=?");
+		if(!is_int($pos))
+		{
+			return $string;
+		}
+		// save any preceding text
+		$preceding = substr($string,0,$pos);
+		$end = strlen($string);
+		// the mime header spec says this is the longest a single encoded word can be
+		$search = substr($string,$pos+2,$end - $pos - 2 );
+		$d1 = strpos($search,"?");
+		if(!is_int($d1))
+		{
+			return $string;
+		}
+		$charset = strtolower(substr($string,$pos+2,$d1));
+		$search = substr($search,$d1+1);
+		$d2 = strpos($search,"?");
+		if(!is_int($d2))
+		{
+			return $string;
+		}
+		$encoding = substr($search,0,$d2);
+		$search = substr($search,$d2+1);
+		$end = strpos($search,"?=");
+		if(!is_int($end)) {
+			return $string;
+		}
+		$encoded_text = substr($search,0,$end);
+		$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
+		if(strtoupper($encoding) == "Q")
+		{
+			$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
+		}
+		if (strtoupper($encoding) == "B")
+		{
+			$decoded = urldecode(base64_decode($encoded_text));
+		}
+		return $preceding . $decoded . decode_header_string($rest);
+	} 
+	else
+	return $string;
+  }
+  
+
+/* * * * * * * * * * *
+  *  ensure_no_brackets
+  * used for removing the bracketed server call string from a full IMAP folder name string
+  *  Example: ensure_no_brackets('{mail.yourserver.com:143}INBOX') = 'INBOX'
+  * * * * * * *  * * * */
+  function ensure_no_brackets($feed_str='')
+  {
+  	if ((strstr($feed_str,'{') == False) && (strstr($feed_str,'}') == False))
+	{
+		// no brackets to remove
+		$no_brackets = $feed_str;
+	}
+	else
+	{
+		// get everything to the right of the bracket "}", INCLUDES the bracket itself
+		$no_brackets = strstr($feed_str,'}');
+		// get rid of that 'needle' "}"
+		$no_brackets = substr($no_brackets, 1);
+	}
+	return $no_brackets;
+  }
+  
+/* * * * * * * * * * *
+  *  get_mailsvr_callstr
+  * will generate the appropriate string to access a mail server of type
+  * pop3, pop3s, imap, imaps
+  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
+  * the returned string is the server call string from beginning bracker "{" to ending bracket "}"
+  *  Example:  {mail.yourserver.com:143}
+  * * * * * * *  * * * */
+  function get_mailsvr_callstr()
+  {
+	global $phpgw, $phpgw_info;
+	// UWash patched for Maildir style: $Maildir.Junque
+	// Cyrus style: INBOX.Junque
+	// UWash style: ./aeromail/Junque
+
+	$server_call = '';
+	// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
+	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+	{
+		/* IMAP normal connection, No SSL */
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps')
+	{
+ 		/* IMAP over SSL */
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/ssl/novalidate-cert:993}';
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
+	{  /* POP3 over SSL: */
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/pop3/ssl/novalidate-cert:995}';
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
+	{  /* POP3 normal connection, No SSL  */
+		// same as normal imap above
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
+	}
+	else
+	{
+		// probably should raise some kind of error here
+		$server_call = '';
+	}
+	return $server_call;
   }
 
-  function decode_header_string($string) {
-    global $phpgw;
+/* * * * * * * * * * *
+  *  get_mailsvr_namespace
+  *  will generate the appropriate filter a.k.a. namespace string to access an imap mail server of type
+  *  imap: UW-Maildir, Cyrus, Courier
+  * * * * * * *  * * * */
+  function get_mailsvr_namespace()
+  {
+	global $phpgw, $phpgw_info;
+	// UWash patched for Maildir style: $Maildir.Junque
+	// Cyrus style: INBOX.Junque
+	// UWash style: ./aeromail/Junque
 
-    if($string) {
-      $pos = strpos($string,"=?");
-      if(!is_int($pos)) { return $string; }
-      $preceding = substr($string,0,$pos); // save any preceding text
-      $end = strlen($string);
-      $search = substr($string,$pos+2,$end - $pos - 2 ); // the mime header spec says this is the longest a single encoded word can be
-      $d1 = strpos($search,"?");
-      if(!is_int($d1)) { return $string; }
-      $charset = strtolower(substr($string,$pos+2,$d1));
-      $search = substr($search,$d1+1);
-      $d2 = strpos($search,"?");
-      if(!is_int($d2)) { return $string; }
-      $encoding = substr($search,0,$d2);
-      $search = substr($search,$d2+1);
-      $end = strpos($search,"?=");
-      if(!is_int($end)) { return $string; }
-      $encoded_text = substr($search,0,$end);
-      $rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
-      if(strtoupper($encoding) == "Q") {
-	      $decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
-      }
-      if (strtoupper($encoding) == "B") {
-        $decoded = urldecode(base64_decode($encoded_text));
-      }
-      return $preceding . $decoded . decode_header_string($rest);
-    } else return $string;
+	$filter = '';
+	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+	{
+		if ( isset($phpgw_info['user']['preferences']['email']['mail_folder']) )
+		{
+			if ( empty($phpgw_info['user']['preferences']['email']['mail_folder']) )
+			{
+				$filter = '';
+			}
+			else
+			{
+				$filter = $phpgw_info['user']['preferences']['email']['mail_folder'];
+			}
+		}
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
+	// ALSO works for Courier IMAP
+	{
+		$filter = 'INBOX';
+	}
+	else
+	{
+		$filter = 'mail/';
+	}
+	return $filter;
+  }  
+
+/* * * * * * * * * * *
+  *  get_folder_long
+  *  will generate the long name of an imap folder name, works for
+  *  imap: UW-Maildir, Cyrus, Courier
+  *  Example (Cyrus or Courier):  INBOX.Templates
+  *  Example (Cyrus only):  INBOX.drafts.rfc
+  *  ????   Example (UW-Maildir only): /home/James.Drafts   ????
+  * * * * * * *  * * * */
+  function get_folder_long($feed_folder='INBOX')
+  {
+	global $phpgw, $phpgw_info;
+	// UWash patched for Maildir style: $Maildir.Junque
+	// Cyrus style: INBOX.Junque
+
+	$folder = ensure_no_brackets($feed_folder);
+	if ($folder == 'INBOX')
+	{
+		$folder_long = 'INBOX';
+	}
+	else
+	{
+		if (strstr($folder,'.') == False)
+		{
+			//$folder_long = $phpgw->msg->construct_folder_str($folder);
+			$folder_long = get_mailsvr_namespace() .'.' .$folder;
+			//$folder_short = $folder;
+		}
+		else
+		{
+			$folder_long = $folder;
+			//$folder_short = $phpgw->msg->deconstruct_folder_str($folder);
+		}
+	}
+	return trim($folder_long);
   }
+
+  function get_folder_short($feed_folder='INBOX')
+  {
+	global $phpgw, $phpgw_info;
+	// UWash patched for Maildir style: $Maildir.Junque
+	// Cyrus style: INBOX.Junque
+
+	$folder = ensure_no_brackets($feed_folder);
+	if ($folder == 'INBOX')
+	{
+		//$folder_long = 'INBOX';
+		$folder_short = 'INBOX';
+	}
+	else
+	{
+		if (strstr($folder,'.') == False)
+		{
+			//$folder_long = $phpgw->msg->construct_folder_str($folder);
+			$folder_short = $folder;
+		}
+		else
+		{
+			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
+			{
+				// cyrus supports multiple levels of subfolders
+				// is this accounted for in deconstruct_folder_str  ????
+				$folder_short = strstr($folder,'.');
+				$folder_short = substr($folder_short, 1);
+			}
+			else {
+				$folder_short = $phpgw->msg->deconstruct_folder_str($folder);
+			}
+		}
+	}
+	return $folder_short;
+  }
+
+
+ function all_folders_listbox($mailbox,$pre_select="")
+  {
+	global $phpgw, $phpgw_info;
+
+	$outstr = '';
+	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+	{
+		while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
+		{
+			$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
+			while($phpgw->db->next_record())
+			{
+				$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
+				  . '</option>';
+			}
+		}
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
+	{
+		// Establish Email Server Connectivity Conventions
+		$server_str = get_mailsvr_callstr();
+		$namespace_filter = get_mailsvr_namespace();
+		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, $namespace_filter .'*');
+
+		// sort folder names 
+		if (gettype($mailboxes) == 'array')
+		{
+			sort($mailboxes);
+		}
+
+		if($mailboxes)
+		{
+			$num_boxes = count($mailboxes);
+			if ($namespace_filter != 'INBOX')
+			{
+				$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
+        		}
+			for ($i=0; $i<$num_boxes;$i++)
+			{
+				$folder_short = get_folder_short($mailboxes[$i]);
+				if ($folder_short == $pre_select)
+				{
+					$sel = ' selected';
+				}
+				else
+				{
+					$sel = '';
+				}
+				$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
+				$outstr = $outstr ."\n";
+			}
+		}
+		else
+		{
+			$outstr = $outstr .'<option value="INBOX">INBOX</option>';
+		}
+	}
+	return $outstr;
+  }
+
 
  /* * * * * * * * * * *
+  *  DEPRECIATED ==== DEPRECIATED === WILL BE REMOVED
   *  list_folders: new param:  $echo_out
   * $echo_out  = True   means the function will echo its output
   * $echo_out  = False  means the function will return a string instead
@@ -215,35 +482,43 @@
 	}
   }
 
-  function get_mime_type($de_part) {
-    $mime_type = "unknown";
-    if (isset($de_part->type) && $de_part->type) {
-      switch ($de_part->type) {
-	      case TYPETEXT:		$mime_type = "text"; break;
-	      case TYPEMESSAGE:	$mime_type = "message"; break;
-      	case TYPEAPPLICATION:	$mime_type = "application"; break;
-      	case TYPEAUDIO:		$mime_type = "audio"; break;
-      	case TYPEIMAGE:		$mime_type = "image"; break;
-      	case TYPEVIDEO:		$mime_type = "video"; break;
-      	case TYPEMODEL:		$mime_type = "model"; break;
-      	default:		$mime_type = "unknown";
-      }
-    }
-    return $mime_type;
+
+  function get_mime_type($de_part)
+  {
+	$mime_type = "unknown";
+	if (isset($de_part->type) && $de_part->type)
+	{
+		switch ($de_part->type)
+		{
+			case TYPETEXT:		$mime_type = "text"; break;
+			case TYPEMESSAGE:	$mime_type = "message"; break;
+			case TYPEAPPLICATION:	$mime_type = "application"; break;
+			case TYPEAUDIO:		$mime_type = "audio"; break;
+			case TYPEIMAGE:		$mime_type = "image"; break;
+			case TYPEVIDEO:		$mime_type = "video"; break;
+			case TYPEMODEL:		$mime_type = "model"; break;
+			default:		$mime_type = "unknown";
+		}
+	}
+	return $mime_type;
   }
 
-  function get_mime_encoding($de_part) {
-    $mime_encoding = "other";
-    if (isset($de_part->encoding) && $de_part->encoding) {
-      switch ($de_part->encoding) {
-      	case ENCBASE64:			$mime_encoding = "base64"; break;
-      	case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
-      	case ENCOTHER:			$mime_encoding = "other";  break;
-      	default:			$mime_encoding = "other";
-      }
-    }
-    return $mime_encoding;
+  function get_mime_encoding($de_part)
+  {
+	$mime_encoding = "other";
+	if (isset($de_part->encoding) && $de_part->encoding)
+	{
+		switch ($de_part->encoding)
+		{
+			case ENCBASE64:		$mime_encoding = "base64"; break;
+			case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
+			case ENCOTHER:		$mime_encoding = "other";  break;
+			default:		$mime_encoding = "other";
+		}
+	}
+	return $mime_encoding;
   }
+
 
   function get_att_name($de_part)
   {

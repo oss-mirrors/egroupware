@@ -13,7 +13,10 @@
 
   /* $Id$ */
 
-	if(empty($folder)){ $folder="INBOX"; }
+	if(empty($folder))
+	{
+		$folder="INBOX";
+	}
 
 	Header("Cache-Control: no-cache");
 	Header("Pragma: no-cache");
@@ -63,7 +66,7 @@
 	else
 	{
 		// nothing deleted, so template gets blank string
-		$t->set_var('V_any_deleted',' ');
+		$t->set_var('V_any_deleted','');
 	}
 	
 // ----  Previous and Next arrows navigation  -----
@@ -168,8 +171,7 @@
 	{
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
-				//. list_folders($mailbox,$folder,False)
-				. list_folders($mailbox,'',False)
+				. all_folders_listbox($mailbox,'')
 				. '</select>';
 	} else {
 		$switchbox_listbox = '&nbsp';
@@ -180,14 +182,16 @@
 	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" )
 	{
 		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
-				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php',
-				'folder=' .urlencode($folder)) . '\'">';
+				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php\'">');
+				//,'folder=' .urlencode($folder)) . '\'">';
+				// NOTE: the folder=X variable is not really used in folder.php when called from this page
 	} else {
 		$folder_maint_button = '&nbsp';
 	}
 
 	$t->set_var('stats_backcolor',$phpgw_info['theme']['em_folder']);
 	$t->set_var('stats_font',$phpgw_info['theme']['font']);
+	$t->set_var('stats_fontsize','+0');
 	$t->set_var('stats_color',$phpgw_info['theme']['em_folder_text']);
 	$t->set_var('stats_folder',$folder);
 	$t->set_var('stats_saved',$stats_saved);
@@ -212,7 +216,7 @@
 		$sizesort = lang("size");
 	}
 	
-	$t->set_var('hdr_backcolor',$phpgw_info["theme"]["th_bg"]);
+	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
 	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder)) );
 	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder)) );
@@ -431,7 +435,7 @@
 	{
 		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
 			. '<option>' . lang("move selected messages into") . ':'
-			. list_folders($mailbox,'',False)
+			. all_folders_listbox($mailbox,'')
 			. '</select>';
             
 	}

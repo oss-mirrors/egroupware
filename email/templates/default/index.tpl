@@ -52,7 +52,7 @@ function check_all()
 		<table border="0" cellpadding="0" cellspacing="1" width="100%">
 		<tr>
 			<td>
-				<font face="{stats_font}" color="{stats_color}">
+				<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
 					<strong> {stats_folder} - </strong> <br>
 					Saved messages: {stats_saved} <br>
 					New messages: {stats_new} <br>
