@@ -146,11 +146,10 @@
 
 			if ($hdate > 0)
 			{
+				$htime['date'] = $GLOBALS['phpgw']->common->show_date($hdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				$hdate = $hdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 				$hour = date('H',$hdate);
 				$min = date('i',$hdate);
-
-				$hdate = $hdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-				$htime['date'] = $GLOBALS['phpgw']->common->show_date($hdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 				$htime['time'] = $GLOBALS['phpgw']->common->formattime($hour,$min);
 			}
 			else
