@@ -168,12 +168,7 @@
       {
         if ($members[$i]['account_name'])
         {
-          $prefs = $GLOBALS['phpgw']->preferences->create_email_preferences($members[$i]['account_id']);
-//          $pref = CreateObject('phpgwapi.preferences',$members[$i]['account_id']);
-//          $prefs = $pref->read_repository();
-//          $prefs = $phpgw->common->create_emailpreferences($prefs,$members[$i]['account_id']);
-          $toarray[$prefs['email']['address']] = $prefs['email']['address'];
-//          unset($pref);
+          $toarray[] = $GLOBALS['phpgw']->accounts->id2name($members[$i]['account_id'], 'account_email');
         }
       }
       if(count($toarray) > 1)
