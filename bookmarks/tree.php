@@ -89,26 +89,30 @@
 
 	$categories = $GLOBALS['phpgw']->categories->return_array('mains',0,$GLOBALS['phpgw']->categories->total(),'','cat_name','',True);
 
+	/* Added to keep track of displayed items, so they do not repeat */
+	$shown = array();
 	$db2 = $GLOBALS['phpgw']->db;
 	while ($cat = @each($categories))
 	{
+		$shown[] = $cat[1]['id'];
 		$tree[] = '.<a href="' . $GLOBALS['phpgw']->link('/bookmarks/list.php','bm_cat=' . $cat[1]['id']) . '">' . $cat[1]['name'] . '</a>' . '|';
 
-		// FIXME: This needs to use the categories class!
-		$GLOBALS['phpgw']->db->query("select * from phpgw_categories where cat_parent='" . $cat[1]['id'] . "' and cat_appname='bookmarks' order by cat_name",__LINE__,__FILE__);
-		while ($GLOBALS['phpgw']->db->next_record())
+		$subs = $GLOBALS['phpgw']->categories->return_array('subs',0,False,'','','',True,$cat[1]['id']);
+		while ($sub = @each($subs))
 		{
+			$shown[] = $sub['value']['id'];
 			$tree[] = '..' . '<a href="' . $GLOBALS['phpgw']->link('/bookmarks/list.php','bm_cat='
-				. $GLOBALS['phpgw']->db->f('bm_cat'))
-				. '">' . $GLOBALS['phpgw']->db->f('cat_name') . '</a>' . '|';
-			$db2->query("select * from phpgw_bookmarks where bm_category='" . $GLOBALS['phpgw']->db->f('cat_id') . "' order by bm_name, bm_url",__LINE__,__FILE__);
+				. $sub['value']['id']) . '">' . $sub['value']['name'] . '</a>' . '|';
+			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $sub['value']['id'] . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())
 			{
+				$shown[] = $db2->f('bm_id');
 				$_tree = '...' . $db2->f('bm_name') . '|'; // . '<input type="checkbox" name="item_cb[]" value="' . $db2->f('bm_id') . '">';
 				if (($GLOBALS['phpgw']->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 				{
 					$maintain_url  = $GLOBALS['phpgw']->link('/bookmarks/maintain.php','bm_id=' . $db2->f('bm_id'));
 					$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
+					$_tree        .= $maintain_link . '&nbsp;';
 				}
 				if (($GLOBALS['phpgw']->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_READ) || ($db2->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 				{
@@ -131,6 +135,10 @@
 		$db2->query("select * from phpgw_bookmarks where bm_category='" . $cat[1]['id'] . "' order by bm_name, bm_url",__LINE__,__FILE__);
 		while ($db2->next_record())
 		{
+			if(in_array($db2->f('bm_id'),$shown))
+			{
+				continue;
+			}
 			$_tree = '..' . $db2->f('bm_name') . '|';
 			if (($GLOBALS['phpgw']->bookmarks->grants[$db2->f('bm_owner')] & PHPGW_ACL_EDIT) || ($db2->f('bm_owner') == $GLOBALS['phpgw_info']['user']['account_id']))
 			{
