@@ -388,7 +388,6 @@
 					if($_mess && $_cont)
 					{
 						$_mess = strtolower(trim($this->recode_id($_mess)));
-						//Known issue: if a message containing a ] is used as index of array, when the array is posted the index gets truncated;
 						$this->bo->target_langarray[$_mess]['message_id'] = $_mess;
 						//POST method adds slashes if magic_quotes_gpc is set !!!
 						if (get_magic_quotes_gpc())
@@ -398,7 +397,6 @@
 						$this->bo->target_langarray[$_mess]['content'] = $_cont;
 						if($sourcelang == $targetlang)
 						{
-							//POST method adds slashes
 							$this->bo->source_langarray[$_mess]['content'] = $_cont;
 						}
 					}
