@@ -1,39 +1,38 @@
 1 message has been deleted	email	es	1 mensaje fue borrado
 1 message has been moved to	email	es	1 mensaje fue movido a
-add to addressbook	email	es	Agregar a la libreta de direcciones
 account	email	es	Cuenta
+add to addressbook	email	es	Agregar a la libreta de direcciones
 arrival date	email	es	Fecha de Llegada
 as	email	es	como
 attach file	email	es	Adjuntar Archivo
-attach signature	email	es	Adjuntar firma
 attachment	email	es	Archivo Adjunto
 attachments	email	es	Archivos Adjuntos
+attach signature	email	es	Adjuntar firma
 cache server data whenever possible	email	es	Almacenar datos del servidor en memoria cuando sea posible
 cc	email	es	CC
 choose for rename	email	es	Seleccione para renombrar
 compose	email	es	Componer
 compose new	email	es	Componer
+could not open this mailbox	email	es	No se pudo abrir esta casilla
 create a folder email	es	Crear Carpeta
 create (expert)	email	es	Crear (experto)
-delete a folder	email	es	Borrar Carpeta
-delete (expert)	email	es	Borrar (experto)
-rename a folder	email	es	Renombrar carpeta
-could not open this mailbox	email	es	No se pudo abrir esta casilla
 current attachments	email	es	Archivos Adjuntos Actuales
 custom	email	es	Personal -
 custom email settings	email	es	Seteos personalizados del Email
 date	email	es	Fecha
 default:	common	es	por defecto:
 default sorting order	email	es	Modo de orden por defecto
+delete account	common	es	Eliminar cuenta
+delete a folder	email	es	Borrar Carpeta
 deleted messages go to trash	email	es	Mensajes borrados van a la Papelera
 deleted messages (trash) folder	email	es	Carpeta de Mensajes borrados (Papelera - Trash)
 delete	email	es	Borrar
-delete account	common	es	Eliminar cuenta
+delete (expert)	email	es	Borrar (experto)
 email account name	email	es	Nombre de cuenta de Email
 email address	email	es	Dirección de Email
+email date	email	es	Fecha del Mensaje
 email	email	es	E-mail
 email - file attachment	email	es	Email - Adjuntar Archivo
-email date	email	es	Fecha del Mensaje
 email filters	email	es	Filtros de Correo
 e-mail folders	common	es	Carpetas
 email password	email	es	Contraseña de Email
@@ -47,8 +46,8 @@ enter your default mail domain ( From: user@domain )	admin	es	Ingrese su dominio
 enter your pop	admin	es	Ingrese su Servidor POP
 enter your smtp server hostname or ip address	admin	es	Ingrese su Servidor SMTP (nombre o IP)
 enter your smtp server port	admin	es	Ingrese el puerto del Servidor SMTP
-error: unknown message data	email	es	Error: Datos del mensaje desconocidos
 error moving messages to	email	es	Error moviendo mensajes a
+error: unknown message data	email	es	Error: Datos del mensaje desconocidos
 extra e-mail account	common	es	Cuenta de Correo adicional
 file attachment	email	es	Adjuntar Archivo
 file	email	es	Archivo
@@ -58,8 +57,8 @@ folder maintenance	email	es	Mantenimiento de Carpetas
 folder name	email	es	Nombre de la Carpeta
 folders	email	es	Carpetas
 folder size	email	es	Tama&ntilde;o de la Carpeta
-forward	email	es	Reenviar
 for these items, fill only what is different from you default e-mail preferences	common	es	Para estos items, complete solo los campos que difieran de su configuracion por defecto
+forward	email	es	Reenviar
 from	email	es	De
 get size	email	es	Obtener tama&ntilde;o
 hidden	email	es	oculta
@@ -72,37 +71,38 @@ layout 2	email	es	Modo 2
 layout	email	es	Modo
 lines	email	es	Lineas
 long names	email	es	nombres largos
-manage accounts	email	es	Administrar cuentas
-manage folders	email	es	Administrar carpetas
 mail folder(uw-maildir)	email	es	Carpeta del Correo
 mail server	email	es	Servidor de Mail
 mail server login type	admin	es	Tipo de login
 mail server type	email	es	Tipo de servidor de Mail
 mail settings	admin	es	Seteos del E-mail
+manage accounts	email	es	Administrar cuentas
+manage folders	email	es	Administrar carpetas
 message	email	es	Mensaje
 message list layout	email	es	Modo de listado de mensajes
-messages have been moved to	email	es	mensajes fueron movidos a
 messages	email	es	Mensajes
+messages have been moved to	email	es	mensajes fueron movidos a
 monitor	email	es	Monitor
 move selected messages into	email	es	Mover los mensajes seleccionados a
 newest	email	es	Mas Nuevo
-new	message	email	es	Nuevo
+new	email	es	Nuevo
 new message	email	es	Nuevo mensaje
 new messages	email	es	Mensajes Nuevos
+next	email	es	Proximo
 no error returned from server	email	es	El servidor no devolvio errores
 no next message	email	es	No hay mas mensajes
-no previous message	email	es	No hay mensaje anterior
-next	email	es	Proximo
 non-standard	email	es	No-Estandar
+no previous message	email	es	No hay mensaje anterior
 no subject	email	es	Sin Asunto
 number	email	es	N&uacute;mero
 oldest	email	es	Mas Antiguo
 or	common	es	o
 please fill in everything you need	email	es	Por favor complete los campos necesarios
-please select a message first	email	es	Por favor seleccione un mensaje primero
 please select a folder to rename	email	es	Por favor seleccione una carpeta a renombrar
+please select a message first	email	es	Por favor seleccione un mensaje primero
 please type a folder name in the text box	email	es	Por favor ingrese el nombre de una carpeta en el campo de texto
 previous	email	es	Previo
+rename a folder	email	es	Renombrar carpeta
 rename (expert)	email	es	Renombrar (experto)
 reply all	email	es	Responder a Todos
 reply	email	es	Responder
