@@ -61,7 +61,9 @@
 
 			$this->so = CreateObject('jinn.sojinn');
 
+
 			$this->include_plugins();
+//			die('hallo'); 
 			$this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
 			$this->read_sessiondata();

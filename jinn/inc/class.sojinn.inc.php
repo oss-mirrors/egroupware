@@ -40,7 +40,7 @@
 			
 			$this->phpgw_db    	= $GLOBALS['phpgw']->db;
 			$this->phpgw_db->Debug	= False;
-		}
+		 }
 
 		/****************************************************************************\
 		* make connection to the site database and set this->site_db                 *

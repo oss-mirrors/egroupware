@@ -43,6 +43,7 @@
 			$this->template = $GLOBALS['phpgw']->template;
 
 			$this->ui = CreateObject('jinn.uicommon');
+
 			if($this->bo->so->config[server_type]=='dev')
 			{
 				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
@@ -170,7 +171,7 @@
 			/**********************************
 			* 	create form to new objectrecord                                          
 			*/ 
-/*			function add_edit_object()
+			/*			function add_edit_object()
 			{
 
 				if(!$this->bo->so->test_JSO_table($this->bo->site_object))
@@ -192,7 +193,7 @@
 				$this->bo->save_sessiondata();
 			}
 
-*/
+			*/
 
 			/****************************************************************************\
 			* 	Browse through site_objects                                              *
@@ -209,7 +210,7 @@
 					$this->bo->save_sessiondata();
 					$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 				}				
-			
+
 				$this->ui->header('browse through objects');
 				$this->ui->msg_box($this->bo->message);
 				$this->main_menu();	
@@ -249,6 +250,7 @@
 					'filter'=>$filter
 				);
 
+				// FIXME user global func
 				if ($GLOBALS['HTTP_POST_VARS']['limit_start']) $limit_start=$GLOBALS['HTTP_POST_VARS']['limit_start'];
 				else $limit_start=$GLOBALS[HTTP_GET_VARS]['limit_start'];
 
@@ -293,6 +295,23 @@
 
 				$columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
 
+				@reset($columns);
+				foreach($columns as $onecol)
+				{
+					if (eregi("primary_key", $onecol[flags]))
+					{						
+						$pkey_arr[]=$onecol[name];
+					}
+					$akey_arr[]=$onecol[name];
+				}
+
+				if(!is_array($pkey_arr))
+				{
+					$pkey_arr=$akey_arr;
+					unset($akey_arr);
+				}
+
+				
 				/* get one with many relations */
 				$relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object['relations']);
 				if (count($relation1_array)>0)
@@ -304,13 +323,18 @@
 
 				}
 
-					
+//				_debug_array($columns);
+
+				// check for primary key
+				// if found make selection query with this key
+				// if no prmary key defined 
+				// create long selection query
+				
 				//FIXME SEARCH
 				if (count($columns)>0)
 				{
 					foreach ($columns as $col)
-					{
-
+					{	
 						if ($search_string)
 						{
 							if ($where_condition)
@@ -338,223 +362,205 @@
 								//is this necessary?	
 								foreach($pref_columns as $pref_col)
 								{
-									//if (in_array($pref_col,$columns))
-									//{
-										$valid_pref_columns[]=array('name'=>$pref_col);
-										//}
-									}
-
+									$valid_pref_columns[]=array('name'=>$pref_col);
 								}
-
 
 							}
 
+
 						}
 
-						//create more simple col_list
-						foreach ($columns as $single_col)
-						{
-							$col_names_list[]=$single_col[name];
-						}						
-
-
-						/*
-						check if orderfield exist else drop it
-						*/
-						if(!in_array(trim(substr($order,0,(strlen($order)-4))),$col_names_list)) unset($order);
-						unset($col_names_list);
-
-						// which/how many column to show, all, the prefered, or the default thirst 4
-						if ($show_all_cols=='True')
-						{
-							$col_list=$columns;
-						}
-						elseif($pref_columns)
-						{
-							$col_list=$valid_pref_columns;
-						}
-						else
-						{
-							$col_list=array_slice($columns,0,4);
-						}
-
-						// make columnheaders
-						foreach ($col_list as $col)
-						{
-							$col_names_list[]=$col[name];
-							unset($order_link);
-							unset($order_image);
-							if ($col[name] == trim(substr($order,0,(strlen($order)-4))))
-							{
-								if (substr($order,-4)== 'DESC')
-								{
-									$order_link = $col[name].' ASC';
-									$order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','desc.png').'" border="0">';
-								}
-								else 
-								{
-									$order_link = $col[name].' DESC';
-									$order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','asc.png').'" border="0">';
-								}
-							}
-							else
-							{
-								$order_link = $col[name].' ASC';
-							}
-
-							$col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" style="font-weight:bold;padding:3px;"  align=\"center\"><a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&search=$search_string&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$order_image.'</a></td>';
-						}
 					}
-					
 
-					$records=$this->bo->get_records($this->bo->site_object[table_name],$where_key,$where_value,$limit[start],$limit[stop],'name',$order,implode(',',$col_names_list),$where_condition);
-
-
-					
-					if (count($records)>0)
+					//create more simple col_list
+					foreach ($columns as $single_col)
 					{
-
-						foreach($records as $recordvalues)
-						{
-							// THIS WHERE_CONDITION HAS TO CONTAIN ALL FIELDS TO BE 'ID' independant
-//							$where_condition=$columns[0][name]."='$recordvalues[0]'";
-							$where_key=$columns[0][name];
-							$where_value=$recordvalues[$columns[0][name]];
+						$col_names_list[]=$single_col[name];
+					}						
 
 
-							if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
-							{
-								$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
-							}
-							else
-							{
-								$bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
-							}
-
-
-							if(count($recordvalues)>0)
-							{
-								$table_rows.='<tr valign="top">';
-								$table_rows.="<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_edit_record.display_form&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a>
-								</td>
-								<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
-								</td>
-<!-- FIXME fix copy record after the new selection method is implemented -->
-<!--								<td bgcolor=$bgclr align=\"left\">
-								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>-->
-								</td>
-								";
-//								var_dump($recordvalues[0]);
-//								die();
- 								$records_keys=array_keys($recordvalues);
-								$records_values=array_values($recordvalues);
-
-								for($i=0;$i<count($recordvalues);$i++)
-								{
-									
-									$recordvalue=$records_values[$i];
-									if (empty($recordvalue))
-									{
-										$table_rows.="<td bgcolor=\"$bgclr\">&nbsp;</td>";
-									}
-									else
-									{
-										
-										//parse one with many relations not functional / FIXME
-										if (false && is_array($fields_with_relation1) 
-											&& in_array($records_keys[$i],$fields_with_relation1))
-										{
-											$related_fields=$this->bo->get_related_field($relation1_array[$records_keys[$i]]);
-											$recordvalue= $related_fields[$recordvalue][name].' ('.$recordvalue.')';
-											
-										}
-										else
-										{	
-											$recordvalue=$this->bo->get_plugin_bv($records_keys[$i],$recordvalue);
-										}
-
-										$display_value=$recordvalue;
-										$table_rows.="<td bgcolor=\"$bgclr\" valign=\"top\">".$display_value."</td>";
-									}
-
-								}
-								
-								$table_rows.='</tr>';
-
-
-							}
-
-
-						}
-					}
-
-
-/*					$button_add='<td><form name=form1 action="'	.
-					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form') .
-					'" method="post"><input type="submit" name="action" value="'.lang('Add new').'"></form></td>';
-*/
-
-					/*					$button_browse='<td><form name=form2 action="'.
-					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects') .
-					'" method="post"><input type="submit" name="action" value="'.lang('Browse').'"></form></td>';
-					*/
 					/*
-					show all fields button
+					check if orderfield exist else drop it
 					*/
-					/*					if($show_all_cols=='False')
+					if(!in_array(trim(substr($order,0,(strlen($order)-4))),$col_names_list)) unset($order);
+					unset($col_names_list);
+
+					// which/how many column to show, all, the prefered, or the default thirst 4
+					if ($show_all_cols=='True')
 					{
-						$button_show_all_cols='<td><form name=form2 action="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects&show_all_cols=True') .'" method="post"><input type="submit" name="action" value="'.lang('Show all columns').'"></form></td>';
+						$col_list=$columns;
+					}
+					elseif($pref_columns)
+					{
+						$col_list=$valid_pref_columns;
 					}
 					else
 					{
-						$button_show_all_cols='<td><form name=form2 action="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.browse_objects&show_all_cols=False') . '" method="post"><input type="submit" name="action" value="'.lang('Normal View').'"></form></td>';
+						$col_list=array_slice($columns,0,4);
+					}
+
+					// make columnheaders
+					foreach ($col_list as $col)
+					{
+						$col_names_list[]=$col[name];
+						unset($order_link);
+						unset($order_image);
+						if ($col[name] == trim(substr($order,0,(strlen($order)-4))))
+						{
+							if (substr($order,-4)== 'DESC')
+							{
+								$order_link = $col[name].' ASC';
+								$order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','desc.png').'" border="0">';
+							}
+							else 
+							{
+								$order_link = $col[name].' DESC';
+								$order_image = '<img src="'. $GLOBALS['phpgw']->common->image('jinn','asc.png').'" border="0">';
+							}
+						}
+						else
+						{
+							$order_link = $col[name].' ASC';
+						}
+
+						$col_headers_t.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" style="font-weight:bold;padding:3px;"  align=\"center\"><a href="'.$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&order=$order_link&search=$search_string&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols").'">'.str_replace('_','&nbsp;',$col[name]).'&nbsp;'.$order_image.'</a></td>';
+					}
+				}
+
+
+
+//				$flist=implode(',',$col_names_list);
+				$flist='*';
+				
+				$records=$this->bo->get_records($this->bo->site_object[table_name],$where_key,$where_value,$limit[start],$limit[stop],'name',$order,$flist,$where_condition);
+
+//				_debug_array($records);
+//				_debug_array($pkey_arr);
+				if (count($records)>0)
+				{
+
+					foreach($records as $recordvalues)
+					{
+						// THIS WHERE_CONDITION HAS TO CONTAIN ALL FIELDS TO BE 'ID' independant
+						//							$where_condition=$columns[0][name]."='$recordvalues[0]'";
+						$where_key=$columns[0][name];
+						$where_value=$recordvalues[$columns[0][name]];
+
+
+						if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
+						{
+							$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
+						}
+						else
+						{
+							$bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
+						}
+
+
+						if(count($recordvalues)>0)
+						{
+							$table_rows.='<tr valign="top">';
+							$table_rows.="<td bgcolor=$bgclr align=\"left\">
+							<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_edit_record.display_form&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a>
+							</td>
+							<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
+							</td>
+							<!-- FIXME fix copy record after the new selection method is implemented -->
+							<!--								<td bgcolor=$bgclr align=\"left\">
+							<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>-->
+							</td>
+							";
+
+							$records_keys=array_keys($recordvalues);
+							$records_values=array_values($recordvalues);
+
+							$i=0;
+//							for($i=0;$i<count($recordvalues);$i++)
+							foreach($col_names_list  as $onecolname)
+{
+
+								//$recordvalue=$records_values[$i];
+								$recordvalue=$recordvalues[$onecolname];
+								if (empty($recordvalue))
+								{
+									$table_rows.="<td bgcolor=\"$bgclr\">&nbsp;</td>";
+								}
+								else
+								{
+
+									//parse one with many relations not functional / FIXME
+									if (false && is_array($fields_with_relation1) 
+									&& in_array($records_keys[$i],$fields_with_relation1))
+									{
+										$related_fields=$this->bo->get_related_field($relation1_array[$records_keys[$i]]);
+										$recordvalue= $related_fields[$recordvalue][name].' ('.$recordvalue.')';
+
+									}
+									else
+									{	
+										$recordvalue=$this->bo->get_plugin_bv($records_keys[$i],$recordvalue);
+									}
+
+									$display_value=$recordvalue;
+									$table_rows.="<td bgcolor=\"$bgclr\" valign=\"top\">".$display_value."</td>";
+								}
+								
+								$i++;
+
+							}
+
+							$table_rows.='</tr>';
+
+
+						}
+
 
 					}
-					*/
-
-					$button_config='<td><form name=form2 action="'.
-					$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects') .
-					'" method="post"><input type="submit" name="action" value="'.lang('Configure this View').'"></form></td>';
-
-					$this->template->set_var('button_add',$button_add);
-					$this->template->set_var('button_browse',$button_browse);
-					$this->template->set_var('button_show_all_cols',$button_show_all_cols);
-					$this->template->set_var('button_config',$button_config);
-					$this->template->set_var('table_title',$this->bo->site_object[name]);
-					$this->template->set_var('record_info',lang('record').' '.$limit[start].' '.lang('t/m').' '.$limit[stop]);
-					$this->template->set_var('fieldnames',$col_headers_t);
-					$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-					$this->template->set_var('fieldnames',$col_headers_t);
-					$this->template->set_var('table_row',$table_rows);
-
-					$this->template->pparse('out','browse');
-
-					unset($this->message);
-
-					unset($this->bo->message);
-					$this->bo->save_sessiondata();
-				}
-
-				/****************************************************************************\
-				* 	Config site_objects                                              *
-				\****************************************************************************/
-
-				function config_objects()
-				{
-					$this->ui->header(lang('configure browse view'));
-					$this->ui->msg_box($this->bo->message);
-					$this->main_menu();	
-
-					$main = CreateObject('jinn.uiconfig',$this->bo);
-					$main->show_fields();
-
-					$this->bo->save_sessiondata();
 				}
 
 
+				$button_config='<td><form name=form2 action="'.
+				$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.config_objects') .
+				'" method="post"><input type="submit" name="action" value="'.lang('Configure this View').'"></form></td>';
 
+				$this->template->set_var('button_add',$button_add);
+				$this->template->set_var('button_browse',$button_browse);
+				$this->template->set_var('button_show_all_cols',$button_show_all_cols);
+				$this->template->set_var('button_config',$button_config);
+				$this->template->set_var('table_title',$this->bo->site_object[name]);
+				$this->template->set_var('record_info',lang('record').' '.$limit[start].' '.lang('t/m').' '.$limit[stop]);
+				$this->template->set_var('fieldnames',$col_headers_t);
+				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->template->set_var('fieldnames',$col_headers_t);
+				$this->template->set_var('table_row',$table_rows);
 
+				$this->template->pparse('out','browse');
 
+				unset($this->message);
+
+				unset($this->bo->message);
+				$this->bo->save_sessiondata();
 			}
-			?>
+
+			/****************************************************************************\
+			* 	Config site_objects                                              *
+			\****************************************************************************/
+
+			function config_objects()
+			{
+				$this->ui->header(lang('configure browse view'));
+				$this->ui->msg_box($this->bo->message);
+				$this->main_menu();	
+
+				$main = CreateObject('jinn.uiconfig',$this->bo);
+				$main->show_fields();
+
+				$this->bo->save_sessiondata();
+			}
+
+
+
+
+
+		}
+		?>
