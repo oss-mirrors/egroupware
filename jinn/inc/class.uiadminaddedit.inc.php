@@ -54,7 +54,7 @@
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_phpgw_records($table,$where_condition,'','','name');
-				$add_edit_button=lang('edit');
+				$add_edit_button=lang('save');
 				$action=lang('edit '. $table);
 			}
 			else

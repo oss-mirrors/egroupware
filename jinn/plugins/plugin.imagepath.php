@@ -30,7 +30,8 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.3';
+	$this->plugins['imagepath']['version']			= '0.8.4';
+	$this->plugins['imagepath']['description']		= 'plugin for uploading/resizing images and storing their imagepaths in to database, using default uploadpath for site or object';
 	$this->plugins['imagepath']['enable']			= 1;
 	$this->plugins['imagepath']['db_field_hooks']	= array
 	(
@@ -121,8 +122,6 @@
 
 		return $input;
 	}
-
-
 
 	function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	/****************************************************************************\
@@ -340,6 +339,42 @@
 		}
 
 		return '-1'; /* return -1 when there no value to give but the function finished succesfully */
+	}
+
+	function plg_bv_imagepath($value,$conf_array)
+	{
+
+		global $local_bo;
+		$field_name=substr($field_name,3);	
+
+		if ($local_bo->site_object['upload_url']) $upload_url=$local_bo->site_object['upload_url'].'/';
+		elseif($local_bo->site['upload_url']) $upload_url=$local_bo->site['upload_url'].'/';
+		else $upload_url=false;
+
+		/* if value is set, show existing images */	
+		if($value)
+		{
+			$value=explode(';',$value);
+
+			/* there are more images */
+			if (is_array($value))
+			{
+				$i=0;
+				foreach($value as $img_path)
+				{
+					$i++;
+
+					if($upload_url) $display.='<a href="'.$upload_url.$img_path.'" target="_blank">'.$i.'</a>';
+					else $display.=' '.$i;
+					$display.=' ';
+					
+				}
+			}
+		}
+
+		return $display;
+
+
 	}
 
 ?>

@@ -284,6 +284,17 @@
 
 				$columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
 
+				/* get one with many relations */
+				$relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object['relations']);
+				if (count($relation1_array)>0)
+				{
+					foreach($relation1_array as $relation1)
+					{
+						$fields_with_relation1[]=$relation1[field_org];
+					}
+
+				}
+
 				if (count($columns)>0)
 				{
 					foreach ($columns as $col)
@@ -398,10 +409,9 @@
 
 						foreach($records as $recordvalues)
 						{
-
 							// THIS WHERE_CONDITION HAS TO CONTAIN ALL FIELDS TO BE 'ID' independant
 							$where_condition=$columns[0][name]."='$recordvalues[0]'";
-							$where_condition=$columns[0][name]."='$recordvalues[id]'";
+							$where_condition=$columns[0][name].'=\''.$recordvalues[$columns[0][name]]."'";
 
 
 							if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
@@ -426,27 +436,41 @@
 								<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.copy_object&where_condition=$where_condition")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('copy')."</a>
 								</td>
 								";
-								foreach($recordvalues as $recordvalue)
-								{
+//								var_dump($recordvalues[0]);
+//								die();
+ 								$records_keys=array_keys($recordvalues);
+								$records_values=array_values($recordvalues);
 
+								for($i=0;$i<count($recordvalues);$i++)
+								{
+									
+									$recordvalue=$records_values[$i];
 									if (empty($recordvalue))
 									{
 										$table_rows.="<td bgcolor=\"$bgclr\">&nbsp;</td>";
 									}
 									else
 									{
-										if(strlen($recordvalue)>15)
+										
+										//parse one with many relations not functional / FIXME
+										if (false && is_array($fields_with_relation1) 
+											&& in_array($records_keys[$i],$fields_with_relation1))
 										{
-											$display_value = substr($recordvalue,0,15). ' ...';
+											$related_fields=$this->bo->get_related_field($relation1_array[$records_keys[$i]]);
+											$recordvalue= $related_fields[$recordvalue][name].' ('.$recordvalue.')';
+											
 										}
 										else
-										{
-											$display_value=$recordvalue;
+										{	
+											$recordvalue=$this->bo->get_plugin_bv($records_keys[$i],$recordvalue);
 										}
-										$table_rows.="<td bgcolor=\"$bgclr\" valign=\"top\">".htmlentities($display_value)."</td>";
+
+										$display_value=$recordvalue;
+										$table_rows.="<td bgcolor=\"$bgclr\" valign=\"top\">".$display_value."</td>";
 									}
 
 								}
+								
 								$table_rows.='</tr>';
 
 

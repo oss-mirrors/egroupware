@@ -377,6 +377,50 @@
 		}		
 
 		/**
+		* get browse view function from plugin 
+		*/
+		function get_plugin_bv($fieldname,$value)
+		{
+//die($value);
+			global $local_bo;
+			$local_bo=$this;
+			$plugins=explode('|',$this->site_object['plugins']);
+			foreach($plugins as $plugin)
+			{	
+				$sets=explode(':',$plugin);
+
+				/* make plug config array for this field */
+				if($sets[3]) $conf_str = explode(';',$sets[3]);
+				if(is_array($conf_str))
+				{
+					foreach($conf_str as $conf_entry)
+					{
+						list($key,$val)=explode('=',$conf_entry);	
+						$conf_arr[$key]=$val;		
+					}
+				}
+
+				if ($fieldname==$sets[0])
+				{
+					if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr)) 
+					{
+						//die('plg_bv_'.$sets[1].$value.$conf_arr);
+						}
+					}
+				}
+				if (!$new_value)
+				{
+					$new_value=$value;
+					if(strlen($new_value)>15)
+					{
+						$new_value=strip_tags($new_value);
+						$new_value = substr($new_value,0,15). ' ...';
+					}
+				}
+				return $new_value;
+
+			}
+		/**
 		* get input function from plugin 
 		*/
 		function get_plugin_fi($input_name,$value,$type)
