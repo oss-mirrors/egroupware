@@ -261,6 +261,7 @@
 				'ctrl_bar_acct_0_link'	=> $this->bo->xi['ctrl_bar_acct_0_link'],
 				'ctrl_bar_acct_1_link'	=> $this->bo->xi['ctrl_bar_acct_1_link'],
 
+				'accounts_label'	=> $this->bo->xi['accounts_label'],
 				'acctbox_frm_name'	=> $this->bo->xi['acctbox_frm_name'],
 				'acctbox_action'	=> $this->bo->xi['acctbox_action'],
 				'acctbox_listbox'	=> $this->bo->xi['acctbox_listbox'],

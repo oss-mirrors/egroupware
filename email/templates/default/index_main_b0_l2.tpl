@@ -52,7 +52,8 @@ function check_all()
 <tr>
 	<form name="{acctbox_frm_name}" action="{acctbox_action}" method="post">
 	<td colspan="2" bgcolor="{ctrl_bar_back2}" width="50%" align="left">
-		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;&nbsp;{acctbox_listbox}</font>
+			&nbsp;&nbsp;&nbsp;{acctbox_listbox}
+			<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;{accounts_label}</font>
 	</td>
 	</form>
 	<td colspan="2" bgcolor="{ctrl_bar_back2}" width="50%" align="center">

@@ -134,6 +134,8 @@
 				'email_prefs_txt'	=> lang('Email Preferences'),
 				'filters_txt'		=> lang('EMail Filters'),
 				'accounts_txt'		=> lang('Manage Accounts'),
+				//'accounts_label'	=> lang('Accounts:'),
+				'accounts_label'	=> lang('Switch Accounts'),
 				// some langs for the sort by box
 				'lang_sort_by'		=> lang('Sort By'),
 				'lang_email_date'	=> lang('Email Date'),
