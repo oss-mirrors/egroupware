@@ -13,12 +13,17 @@
 # This is the debhelper compatability version to use.
 export DH_COMPAT=3
 
-# Architecture independent package.
-export DH_OPTIONS=-i
+APP = skell
+PACKAGE = debian/phpgroupware-$(APP)/usr/share/phpgroupware/$(APP)
+PACKAGEDOC = debian/phpgroupware-$(APP)/usr/share/doc/phpgroupware-$(APP)
 
-APP=skel
-PACKAGE=debian/phpgroupware-$(APP)/usr/share/phpgroupware-$(APP)
-PACKAGEDOC=debian/phpgroupware-$(APP)/usr/share/doc/phpgroupware-$(APP)
+COPYRIGHT = -iname copyright\* -or -iname license
+CHANGELOG = -iname change\*
+INSTALL = -iname install
+FINDOPT = -type f -not \( -path \*CVS\* -or -name .cvsignore \)
+SPECIAL = -size 0 -or $(INSTALL) -or $(CHANGELOG) -or $(COPYRIGHT)
+STAMPS = -name configure-stamp -or -name build-stamp
+APPFILE = -not \( -path \*doc\* -or -path \. -or -name '*.pl' -or -name '*.py' -or $(STAMPS) \)
 
 configure: configure-stamp
 configure-stamp:
@@ -29,74 +34,41 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	# I should place here the commands necessary to build the sgml
-	# documentation...
+	# Here should go the commands necessary to build the sgml documentation...
 	touch build-stamp
 
 clean:
 	dh_testdir
-	dh_testroot
 	rm -f build-stamp configure-stamp
-	# No source cleaning needed
+	rm -f debian/.builded
+	rm -f debian/files
+	# Here should go the commands to clean the builded sgml documents.
 	dh_clean
 
 install: build
 	dh_testdir
-	dh_testroot
-	dh_clean -k build-stamp configure-stamp
-	dh_installdirs
 
 	# Install $(APP) files in $(PACKAGE)
-	find \
-	-maxdepth 1 \
-	-not -name '.' \
-	-not -name CVS \
-	-not -name doc \
-	-not -name debian \
-	-not -name $(APP).spec \
-	-exec cp -a {} $(PACKAGE) \;
-	# Install $(APP)-doc files in $(PACKAGEDOC)
+	find $(FINDOPT) $(APPFILE) \
+		-exec install -D --mode=644 \
+			{} $(PACHAGE)/{} \; ;\
+	
+	# Install $(APP) doc files in $(PACKAGEDOC)
 	cd doc ;\
-	find \
-	-maxdepth 1 \
-	-not -name '.' \
-	-not -name CVS \
-	-not -name changes.txt \
-	-not -name install.txt \
-	-not -name copyright\* \
-	-exec cp -a {} ../$(PACKAGEDOC) \; ;\
-	cd ..
-	cp $(APP).spec $(PACKAGEDOC)
-	touch build-stamp configure-stamp
-
-# Build architecture-independent files here.
-# Pass -i to all debhelper commands in this target to reduce clutter.
-binary-indep: DH_OPTIONS=-i
+		find $(FINDOPT) -not \( $(SPECIAL) \) \
+			-exec install -D --mode=644 \
+				{} ../$(PACKAGEDOC)/{} \; ;\
+	
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installdocs
-	dh_undocumented
 	dh_installchangelogs doc/changes.txt
-	dh_link
 	dh_compress
-	find $(PACKAGE) $(PACKAGEDOC) \
-		-type f \
-		-perm +111 \
-		-not -name '*.pl' \
-		-not -path "*DEBIAN*" \
-		-exec chmod -x {} \;
 	dh_fixperms
 	dh_installdeb
-	dh_perl
 	dh_gencontrol
 	dh_md5sums
-	dh_builddeb
+	dh_builddeb | tee debian/.builded
 
 binary: binary-indep
 .PHONY: build clean binary-indep binary-arch binary install configure
