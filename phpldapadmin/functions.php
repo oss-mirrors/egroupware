@@ -891,25 +891,29 @@ function try_to_get_root_dn( $server_id )
  * Hashes a password and returns the hash based on the enc_type, which can be one of 
  * crypt, md5, sha, or clear.
  */
-function password_hash( $password_clear, $enc_type )
+function password_hash($password_clear, $enc_type)
 {
-	switch( $enc_type )
+	switch($enc_type)
 	{
 		case 'crypt':
-			$new_value = '{crypt}' . crypt( $password_clear, random_salt(2) );
+			$new_value = '{crypt}' . crypt($password_clear, random_salt(2));
 			break;
 		case 'md5':
-			$new_value = '{md5}' . base64_encode( pack( 'H*' , md5( $password_clear) ) );
+			$new_value = '{md5}' . base64_encode(pack('H*' , md5($password_clear)));
 			break;
 		case 'md5crypt':
-			if( ! defined( 'CRYPT_MD5' ) || 0 == CRYPT_MD5 )
-				pla_error( "Your PHP install does not support blowfish encryption." );
-			$new_value = '{crypt}' . crypt( $password_clear , '$1$' . random_salt(9) );
+			if(!defined('CRYPT_MD5') || 0 == CRYPT_MD5)
+			{
+				pla_error("Your PHP install does not support md5crypt.");
+			}
+			$new_value = '{crypt}' . crypt($password_clear , '$1$' . random_salt(9));
 			break;
 		case 'blowfish':
-			if( ! defined( 'CRYPT_BLOWFISH' ) || 0 == CRYPT_BLOWFISH )
-				pla_error( "Your PHP install does not support blowfish encryption." );
-			$new_value = '{crypt}' . crypt( $password_clear , '$2$' . random_salt(13) );
+			if(!defined('CRYPT_BLOWFISH') || 0 == CRYPT_BLOWFISH)
+			{
+				pla_error("Your PHP install does not support blowfish encryption.");
+			}
+			$new_value = '{crypt}' . crypt($password_clear , '$2$' . random_salt(13));
 			break;
 		case 'smd5':
 			if(function_exists('mhash'))
@@ -927,7 +931,7 @@ function password_hash( $password_clear, $enc_type )
 		case 'sha':
 			if(function_exists('mhash'))
 			{
-				$new_value = '{sha}' . base64_encode( mhash( MHASH_SHA1, $password_clear) );
+				$new_value = '{sha}' . base64_encode(mhash(MHASH_SHA1, $password_clear));
 			}
 			else
 			{
