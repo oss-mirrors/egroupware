@@ -44,11 +44,14 @@
        $str .= lang("You have no new messages");
     }
     $nummsg = $phpgw->msg->num_msg($mailbox);
-    include($phpgw_info["server"]["api_inc"].'/class.utilities_portalbox.inc.php');
+
     //$title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail'.($str ? ' - '.$str : '').'</a>';
     $title = '<font color="FFFFFF">EMail' . ($str ? ' - ' . $str : '') . '</font>';
-
-    $portalbox = new linkbox($title,$phpgw_info["theme"]["navbar_bg"],$phpgw_info["theme"]["bg_color"],$phpgw_info["theme"]["bg_color"]);
+    $linkbox_params [0] = $title;
+    $linkbox_params [1] = $phpgw_info["theme"]["navbar_bg"];
+    $linkbox_params [2] = $phpgw_info["theme"]["bg_color"];
+    $linkbox_params [3] = $phpgw_info["theme"]["bg_color"];
+    $portalbox = CreateObject("phpgwapi.linkbox", $linkbox_params);
     $portalbox->setvar('width',600);
     $portalbox->outerborderwidth = 0;
     $portalbox->header_background_image = $phpgw_info["server"]["webserver_url"]
