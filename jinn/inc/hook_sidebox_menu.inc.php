@@ -205,7 +205,7 @@
 
 		 if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')
 		 {
-			$menu_title = lang('Developer Links');
+/*			$menu_title = lang('Developer Links');
 			$file = Array(
 			   'Advanced Filters' => array
 			   (
@@ -221,6 +221,7 @@
 			   ),
 			);
 			display_sidebox($appname,$menu_title,$file);
+			*/
 		 }
 
 

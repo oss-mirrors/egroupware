@@ -1,8 +1,12 @@
 "you don't have access to any sites. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	en	"You don't have access to any sites. Ask your administrator to give you access to your site of site-objects or check if any site exist
+%1 has a one-to-many with %2 (default:%4) showing %3	jinn	en	%1 has a one-to-many with %2 (default:%4) showing %3
 %1 has a one-to-many with %2 showing %3	jinn	en	%1 has a one-to-many with %2 showing %3
 %1 has a one-to-one relation with %2 using the configuration of object %3	jinn	en	%1 has a one-to-one relation with %2 using the configuration of object %3
+%1 records	jinn	en	%1 records
+%1 records per page	jinn	en	%1 records per page
 %1 site obj-fields have been imported.	jinn	en	%1 Site Obj-fields have been imported.
 %1 site objects have been imported.	jinn	en	%1 Site Objects have been imported.
+%3: event <b>%1</b> triggers plugin <b>%2</b>	jinn	en	%3: event <b>%1</b> triggers plugin <b>%2</b>
 4 (default)	jinn	en	4 (default)
 access rights	jinn	en	Access Rights
 access rights for site not succesfully editted	jinn	en	Access rights for Site NOT succesfully editted
@@ -14,19 +18,21 @@ access rights for site-object not succesfully saved	jinn	en	Access rights for si
 access rights for site-object succesfully editted	jinn	en	Access rights for site-object succesfully editted
 access rights for site-object succesfully saved	jinn	en	Access rights for site-object succesfully saved
 access rights site-objects	jinn	en	Access rights site-objects
-access_rights	jinn	en	access_rights
+access_rights	jinn	en	access rights
 action was not succesful. unknown error	jinn	en	Action was not succesful. Unknown error
 action was succesful.	jinn	en	Action was succesful.
 actions	jinn	en	Actions
 actions to apply on all selected record	jinn	en	Actions to apply on all selected record
 activate experimental features which are in development	jinn	en	Activate experimental features which are in development
+activate filter	jinn	en	activate filter
 add	jinn	en	add
 add %1st image	jinn	en	add %1st image
+add a new configuration:	jinn	en	add a new configuration:
 add attachent	jinn	en	add attachment
 add attachment	jinn	en	add attachment
 add attachment %1	jinn	en	add attachment %1
 add edit	jinn	en	Add Edit
-add egw_jinn_sites	jinn	en	add egw_jinn_sites
+add egw_jinn_sites	jinn	en	add sites
 add image	jinn	en	add image
 add image %1	jinn	en	add image %1
 add multiple records	jinn	en	Add multiple records
@@ -42,15 +48,18 @@ add or remove	jinn	en	add or remove
 add site	jinn	en	Add Site
 add site object	jinn	en	add site object
 add site-object	jinn	en	add site-object
+add your zip-file with images here	jinn	en	Add your ZIP-file with images here
 admin:: edit site	jinn	en	admin:: edit site
 administrator mode	jinn	en	Administrator Mode
-administrators for site $site_name	jinn	en	administrators for site $site_name
 advanced configuration	jinn	en	advanced configuration
 all from	jinn	en	all from
 alternative fieldname for display	jinn	en	Alternative Fieldname for display
 an error occured.	jinn	en	An error occured.
+an unknown error has occured (error code 109)	jinn	en	An unknown error has occured (error code 109)
+an unknown error has occured (error code 110)	jinn	en	An unknown error has occured (error code 110)
 another	jinn	en	another
 are you sure you want to delete these multiple records?	jinn	en	Are you sure you want to delete these multiple records?
+are you sure you want to delete this filter?	jinn	en	are you sure you want to delete this filter?
 are you sure you want to delete this record?	jinn	en	Are you sure you want to delete this record?
 are you sure your want to edit these records?	jinn	en	Are you sure your want to edit these records?
 are you sure?	jinn	en	Are you sure?
@@ -70,8 +79,6 @@ browse sites	jinn	en	browse sites
 browse through object settings	admin	en	Browse through object settings
 browse through sites	jinn	en	Browse through sites
 browses through sites	admin	en	Browses through sites
-c_all	jinn	en	c_all
-c_none	jinn	en	c_none
 can't edit more then 99 record at once (error code 108)	jinn	en	Can't edit more then 99 record at once (error code 108)
 cancel	jinn	en	Cancel
 cannot copy a record from this table.	jinn	en	Cannot copy a record from this table.
@@ -80,6 +87,7 @@ change number of records	jinn	en	change number of records
 check:	jinn	en	check:
 choose	jinn	en	choose
 close this window	jinn	en	close this window
+column	jinn	en	column
 column name	jinn	en	column name
 come back after new valid tablename is saved to configure plugins	jinn	en	come back after new valid tablename is saved to configure plugins
 come back in edit mode for configuring plugins	jinn	en	come back in edit mode for configuring plugins
@@ -97,7 +105,9 @@ copy	jinn	en	copy
 copy and edit the new record	jinn	en	copy and edit the new record
 could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	en	Could not find any tables! Check your database name, database username or database password or create one or more  tables in the database.
 create a new site now	jinn	en	Create a new site now
+criterium	jinn	en	criterium
 current color:	jinn	en	current color:
+current session filter	jinn	en	current session filter
 database connection failed! <p>please recheck your settings.	jinn	en	database connection failed! <P>Please recheck your settings.
 database connection was succesfull. <p>you can go on with the site-objects	jinn	en	Database connection was succesfull. <P>You can go on with the site-objects
 days	jinn	en	days
@@ -108,9 +118,11 @@ default image width	admin	en	Default image width
 default number of visable columns	jinn	en	Default number of visable columns
 default order	jinn	en	default order
 default thumb width	admin	en	Default thumb width
+default value	jinn	en	default value
 default:	jinn	en	default:
 delete	jinn	en	Delete
 delete all selected records	jinn	en	delete all selected records
+delete filter	jinn	en	delete filter
 descending	jinn	en	descending
 descrition	common	en	Description
 dev site db host	jinn	en	Development (Test) site database hostname
@@ -128,7 +140,8 @@ disable the wysiwyg/htmlarea plugin	jinn	en	Disable the WYSIWYG/HTMLArea Plugin
 do you want to copy and then edit this record?	jinn	en	Do you want to copy and then edit this record?
 edit	jinn	en	edit
 edit all selected records	jinn	en	edit all selected records
-edit egw_jinn_sites	jinn	en	edit egw_jinn_sites
+edit egw_jinn_sites	jinn	en	edit sites
+edit filter	jinn	en	edit filter
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	en	Edit JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>
 edit object	jinn	en	Edit Object
 edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	en	Edit Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>
@@ -136,11 +149,12 @@ edit site	jinn	en	Edit Site
 edit this record	jinn	en	edit this record
 edit this site	jinn	en	Edit this Site
 edit this site object	jinn	en	Edit this Site Object
-editors for object $object_name in site $site_name	jinn	en	editors for object $object_name in site $site_name
 editors for object %1 in site %2	jinn	en	editors for object %1 in site %2
 error code %1	jinn	en	ERROR CODE %1
-error path_open %1	jinn	en	error path_open %1
+error path_open %1	jinn	en	error opening path %1
 error: the file %1 doesn't exists, please contact the webmaster	jinn	en	ERROR: the file %1 doesn't exists, please contact the webmaster
+existing plugin configuration	jinn	en	Existing Plugin Configuration
+export	jinn	en	export
 export this site	jinn	en	export this site
 extra help information for this field	jinn	en	Extra help information for this field
 failed to copy: %1 to %2 ...	jinn	en	failed to copy: %1 to %2 ...
@@ -153,11 +167,13 @@ field info configuration successfully saved	jinn	en	Field info configuration suc
 field plugin	jinn	en	Field Plugin
 field plugin configuration	jinn	en	field plugin configuration
 field plugins	jinn	en	Field Plugins
+field position	jinn	en	field position
 field to display	jinn	en	field to display
 fieldname	jinn	en	Fieldname
 fields	jinn	en	fields
 filename	jinn	en	filename
 filesize	jinn	en	filesize
+filter operator	jinn	en	filter operator
 form input plugin	jinn	en	form input plugin
 general preferences	jinn	en	General Preferences
 general settings	admin	en	General Settings
@@ -173,17 +189,21 @@ height:	jinn	en	Height:
 hidden	jinn	en	hidden
 hide from menu	jinn	en	Hide from object menu
 how many columns do you want to be visible by default in list view?	jinn	en	How many columns do you want to be visible by default in List View?
+how many records do you want to list per page?	jinn	en	How many records do you want to list per page?
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	en	image directory does not exist or is not correct ...<br>please check object's upload dir
 image settings	admin	en	Image settings
 imagemagick directory ( e.g. /usr/x11r6/bin )	admin	en	ImageMagick directory ( e.g. /usr/X11R6/bin )
 import failed	jinn	en	import failed
 import jinn site	jinn	en	Import JiNN Site
+import jinn-object	jinn	en	Import JiNN-Object
 import jinn-site	jinn	en	Import JiNN-Site
+import object from file to this site	jinn	en	Import object from file to this site
 import site	jinn	en	import site
 import was succesfull	jinn	en	Import was succesfull
 import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with
 index	jinn	en	index
 info	jinn	en	info
+information	jinn	en	information
 insert another record after saving	jinn	en	insert another record after saving
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	en	Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	en	Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>
@@ -210,7 +230,6 @@ maximum image width isn	jinn	en	maximum image width isn
 maximum image width isn\	jinn	en	maximum image width isn
 moderator mode	jinn	en	Moderator Mode
 months	jinn	en	months
-months_abbr	jinn	en	months_abbr
 move down	jinn	en	move down
 move to last position	jinn	en	move to last position
 move up	jinn	en	move up
@@ -219,6 +238,7 @@ moved record one row up.	jinn	en	Moved Record one row up.
 moved record to last row.	jinn	en	Moved Record to last row.
 name and help info	jinn	en	name and help info
 new image size limits.	jinn	en	New image size limits.
+no filter	jinn	en	no filter
 no matchs found	jinn	en	No matchs found
 no max. number	jinn	en	No max. number
 no object selected. no able to configure this view	jinn	en	No object selected. No able to configure this view
@@ -226,13 +246,20 @@ no objects found for this site.	jinn	en	No objects found for this site.
 no records found	jinn	en	No records found
 normal view	jinn	en	Normal View
 not yet implemented	jinn	en	not yet implemented
+nothing to save. please select a plugin to delete or configure a new plugin	jinn	en	nothing to save. Please select a plugin to delete or configure a new plugin
 notice that jinn needs imagemagick 5.4.9 or a later version	admin	en	Notice that JiNN needs ImageMagick 5.4.9 or a later version
 number of objects	jinn	en	Number of objects
+number of records per page	jinn	en	Number of records per page
 object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	en	Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>
+object event configuration	jinn	en	Object event configuration
+object events configuration	jinn	en	Object Events Configuration
 object id	jinn	en	Object id
+on_update	jinn	en	on_update
 one or more records not succesfully added.	jinn	en	One or more records NOT succesfully added.
 one or more records not succesfully saved.	jinn	en	One or more records NOT succesfully saved.
 one or more records not succesfully saved. (error code 106)	jinn	en	One or more records NOT succesfully saved. (error code 106)
+one page backwards	jinn	en	One page backwards
+one page forward	jinn	en	One page forward
 only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	en	Only activate this if you know what your doing. You can destroy your data using experimental features.
 only if thumnails exits	jinn	en	Only if thumnails exits
 only one	jinn	en	only one
@@ -240,10 +267,12 @@ operation on multiple records failed.	jinn	en	Operation on multiple records fail
 operation on multiple records failed. (error code 100)	jinn	en	Operation on multiple records failed. (error code 100)
 optional max. height	jinn	en	Optional max. height
 optional max. width	jinn	en	Optional max. width
+page %1	jinn	en	Page %1
 parent site id	jinn	en	Parent site id
 path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	en	Path to convert from ImageMagick ( e.g. /usr/X11R6/bin )
 please contact administrator with this message	jinn	en	please contact Administrator with this message
 please contact administrator with this message.	jinn	en	Please contact Administrator with this message.
+please fill in all mandatory fields	jinn	en	please fill in all mandatory fields
 please set your preferences for this application	jinn	en	Please set your preferences for this application
 plugin configuration	jinn	en	Plugin Configuration
 plugin configuration successfully saved	jinn	en	Plugin configuration successfully saved
@@ -282,14 +311,21 @@ replaced existing site named <strong>%1</strong>.	jinn	en	Replaced existing site
 represented by:	jinn	en	represented by:
 reset form	jinn	en	reset form
 save	jinn	en	save
+save and add new record	jinn	en	save and add new record
+save and add new records	jinn	en	save and add new records
 save and continue	jinn	en	save and continue
 save and contiue	jinn	en	save and contiue
 save and finish	jinn	en	save and finish
+save and return to list	jinn	en	save and return to list
+save as	jinn	en	save as
 save site conf to file	jinn	en	Save site conf to file
 screenshot	jinn	en	screenshot
 search	jinn	en	Search
 search for string	jinn	en	search for string
+select a plugin	jinn	en	select a plugin
+select an event	jinn	en	select an event
 select directory	jinn	en	select directory
+select jinn object file (*.jobj	jinn	en	Select JiNN object file (*.jobj
 select jinn site file	jinn	en	Select JiNN site file
 select site	jinn	en	select site
 select site to moderate	jinn	en	Select site to moderate
@@ -308,10 +344,11 @@ set site admin	jinn	en	set site admin
 show	jinn	en	show
 show all columns	jinn	en	Show all columns
 show all colums, always	jinn	en	Show all colums, always
+show by default_listview	jinn	en	show by default in listview
 show colomn	jinn	en	show colomn
 show extra table debugging information	jinn	en	Show extra table debugging information
-show object_arr in msgbox	jinn	en	Show object_arr in msgbox
-show site_arr in msgbox	jinn	en	Show site_arr in msgbox
+show object_arr in msgbox	jinn	en	Show object array in msgbox
+show site_arr in msgbox	jinn	en	Show site array in msgbox
 show sql-statements in msgbox	jinn	en	Show SQL-statements in msgbox
 show upload path	admin	en	Show upload path
 showing	jinn	en	showing
@@ -344,6 +381,7 @@ some errors accured while upgrading. we have not touched the old settings so you
 start	admin	en	Start
 start at record	jinn	en	start at record
 stop at record	jinn	en	stop at record
+store filter	jinn	en	store filter
 submit and import	jinn	en	submit and import
 switchboard	jinn	en	Switchboard
 t/m	jinn	en	t/m
@@ -362,6 +400,7 @@ the image normal_size-directory subdirectory does not exist and cannot be create
 the image_path normal_size subdirectory is not writable by the webserver ...	jinn	en	The image_path normal_size subdirectory is not writable by the webserver ...
 the image_path thumb subdirectory is not writable by the webserver ...	jinn	en	The image_path thumb subdirectory is not writable by the webserver ...
 the max. file upload size is %1 mb.	jinn	en	The max. file upload size is %1 Mb.
+the name of the new object is <strong>%1</strong>.	jinn	en	The name of the new object is <strong>%1</strong>.
 the name of the new site is <strong>%1</strong>.	jinn	en	The name of the new site is <strong>%1</strong>.
 the old confguration data is replaced<br/><br/>	jinn	en	The old confguration data is replaced<br/><br/>
 the path to upload files is not correct, please contact your jinn administrator.	jinn	en	The path to upload files is not correct, please contact your JiNN administrator.
@@ -372,9 +411,11 @@ the resize process failed, please contact the administrator	jinn	en	the resize p
 the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	en	The upgrade process has is finished. You can now close this windows and start over again<br/><br/>
 the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	en	The WYSIWYG plugin makes you edit text like you do in a program like OpenOffice Writer or Word. Some people don't like this feature though, so you can force JiNN not to use it.
 there are no directories in this site you have access to.	jinn	en	There are no directories in this site you have access to.
+there are no pages	jinn	en	There are no pages
 there are no records found for this object. you can now at a new record.	jinn	en	There are no records found for this object. You can now at a new record.
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	en	There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist
 this is for debugging purposes.	jinn	en	This is for debugging purposes.
+this object can only have one record.	jinn	en	This object can only have one record.
 this table has not unique identifier field	jinn	en	This table has not unique identifier field
 thisfile	jinn	en	thisfile
 thumb directory does not exist or is not correct ...	jinn	en	thumb directory does not exist or is not correct ...
@@ -394,9 +435,11 @@ when a lot of images are attached to a record, the form can load very slow. you 
 when this is enables information like field length and field type is shown when editing record	jinn	en	When this is enables information like field length and field type is shown when editing record
 when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	en	When you choose 'Never', only links to the images are displayed; when you choose 'Only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'Yes' all images are shown
 width:	jinn	en	Width:
-with_checked_files	jinn	en	with_checked_files
+with_checked_files	jinn	en	with checked files
 yes, hide from menu	jinn	en	Yes, hide from menu
+you cannot delete the session filter	jinn	en	you cannot delete the session filter
 you don't have access to this page.	jinn	en	You don't have access to this page.
+you have no access to this file.	jinn	en	You have no access to this file.
 you have no access to this object	jinn	en	You have no access to this object
 you must select one or more records for this function.	jinn	en	You must select one or more records for this function.
 you're not allowed to administrate media files	jinn	en	You're not allowed to administrate media files
