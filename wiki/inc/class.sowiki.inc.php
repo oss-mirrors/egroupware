@@ -507,7 +507,7 @@ class sowiki	// DB-Layer
 			$version = $this->db->f('version');
 			$db2->query("DELETE FROM $this->PgTbl WHERE title='$title' AND" .
 			            " (version < $version OR body='') AND ".
-			            intval(time()/86400-$this->ExpireLen)."<supercede/86400",__LINE__,__FILE__);
+			            intval(time()/86400-$this->ExpireLen).">supercede/86400",__LINE__,__FILE__);
 			            //was "TO_DAYS(NOW()) - TO_DAYS(supercede) > $ExpireLen";
 		}
 
