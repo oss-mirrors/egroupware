@@ -9,7 +9,7 @@ anonymous session type	admin	de	Typ der anonymen Sitzung
 anonymous username	admin	de	Benutzername des anonymen Benutzers
 automatically convert pages with wiki-syntax to richtext (if edited)?	admin	de	Automatisch Seiten in Wiki Syntax (beim Bearbeiten) in formatierten Text konvertieren?
 block	wiki	de	Blockieren
-block / unblock hosts	common	de	Sperren / freigeben von Rechnern
+block / unblock hosts	common	de	Sperren/Freigeben von Rechnern
 blocked ip address ranges	wiki	de	IP Adressenbereich blockieren
 cancel without saving	wiki	de	Abruch ohne zu Speichern
 changed	wiki	de	Geändert
