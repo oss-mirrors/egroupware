@@ -24,7 +24,7 @@
   $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
-  if ($newsmode == "on")
+//  if ($newsmode == "on")
     set_time_limit(0);
 ?>
 
