@@ -145,6 +145,7 @@ insert new site configuration:<ol><li>insert a site name for display</li><li>ins
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	nl	Voeg JiNN object instellingen toe:
 jinn	common	nl	JiNN
 jinn editors menu	jinn	nl	JiNN Redactiemenu
+jinn main menu	jinn	nl	JiNN Hoofdmenu
 jinn preferences	jinn	nl	JiNN Voorkeuren
 list sites	jinn	nl	Sites weergeven
 mailing not succesfully added, unknown error	jinn	nl	Mailing NIET met succes toegevoegd. Onbekende fout.
