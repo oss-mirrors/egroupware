@@ -30,7 +30,7 @@
 
 		function index()
 		{
-			$this->bo = CreateObject("email.boindex");
+			$this->bo = CreateObject("email.bomail");
 			$this->bo->index_data();
 			// NOW we can out the header, because "index_data()" filled this global
 			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
@@ -60,6 +60,36 @@
 			$this->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
 			$this->template->parse('V_mlist_form_init','B_mlist_form_init');
 			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');	
+
+			// font size options
+			$font_size = Array (
+				0 => '-5',
+				1 => '-4',
+				2 => '-3',
+				3 => '-2',
+				4 => '-1',
+				5 => '0',
+				6 => '1',
+				7 => '2',
+				8 => '3',
+				9 => '4',
+				10 => '5'
+			);
+			// some fonts and font sizes, simply add to bo->xi[] array
+			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['ctrl_bar_font_size'] = $font_size[4];
+			$this->bo->xi['stats_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['stats_font_size'] = $font_size[7];
+			$this->bo->xi['stats_foldername_size'] = $font_size[8];
+			$this->bo->xi['mlist_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['mlist_font_size'] = $font_size[7];
+			$this->bo->xi['mlist_font_size_sm'] = $font_size[6];
+			$this->bo->xi['hdr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['hdr_font_size'] = $font_size[7];
+			$this->bo->xi['hdr_font_size_sm'] = $font_size[6];
+			$this->bo->xi['ftr_font']	= $GLOBALS['phpgw_info']['theme']['font'];
+
+
 			$tpl_vars = Array(
 				// fonts and font sizes
 				'ctrl_bar_font'		=> $this->bo->xi['ctrl_bar_font'],
@@ -69,6 +99,7 @@
 				'mlist_font_size_sm'	=> $this->bo->xi['mlist_font_size_sm'],
 				'stats_font'		=> $this->bo->xi['stats_font'],
 				'stats_font_size'	=> $this->bo->xi['stats_font_size'],
+				'stats_foldername_size'	=> $this->bo->xi['stats_foldername_size'],
 				'hdr_font'		=> $this->bo->xi['hdr_font'],
 				'hdr_font_size'		=> $this->bo->xi['hdr_font_size'],
 				'hdr_font_size_sm'	=> $this->bo->xi['hdr_font_size_sm'],
@@ -242,13 +273,14 @@
 			$GLOBALS['phpgw']->msg->end_request();
 		}
 		
+		
 		// DISPLAY A PRE-DEFINED MESSAGE SET ARRAY
 		function mlist($is_modular=False)
 		{
 			//raw HTTP_POST_VARS dump
 			//echo 'HTTP_POST_VARS print_r dump:<b><pre>'."\r\n"; print_r($GLOBALS['HTTP_POST_VARS']); echo '</pre><br><br>'."\r\n";
 			
-			$this->bo = CreateObject("email.boindex");
+			$this->bo = CreateObject("email.bomail");
 			$this->bo->mlist_data();
 			// NOW we can out the header, because "index_data()" filled this global
 			//	$GLOBALS['phpgw_info']['flags']['email_refresh_uri']
@@ -282,7 +314,38 @@
 			$this->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
 			$this->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
 			$this->template->parse('V_mlist_form_init','B_mlist_form_init');
-			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');	
+			$this->bo->xi['V_mlist_form_init'] = $this->template->get_var('V_mlist_form_init');
+
+			// some of the following may not be necessary
+			
+			// font size options
+			$font_size = Array (
+				0 => '-5',
+				1 => '-4',
+				2 => '-3',
+				3 => '-2',
+				4 => '-1',
+				5 => '0',
+				6 => '1',
+				7 => '2',
+				8 => '3',
+				9 => '4',
+				10 => '5'
+			);
+			// some fonts and font sizes
+			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['ctrl_bar_font_size'] = $font_size[4];
+			$this->bo->xi['stats_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['stats_font_size'] = $font_size[7];
+			$this->bo->xi['stats_foldername_size'] = $font_size[8];
+			$this->bo->xi['mlist_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['mlist_font_size'] = $font_size[7];
+			$this->bo->xi['mlist_font_size_sm'] = $font_size[6];
+			$this->bo->xi['hdr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+			$this->bo->xi['hdr_font_size'] = $font_size[7];
+			$this->bo->xi['hdr_font_size_sm'] = $font_size[6];
+			$this->bo->xi['ftr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
+
 			$tpl_vars = Array(
 				// fonts and font sizes
 				'ctrl_bar_font'		=> $this->bo->xi['ctrl_bar_font'],
@@ -292,6 +355,7 @@
 				'mlist_font_size_sm'	=> $this->bo->xi['mlist_font_size_sm'],
 				'stats_font'		=> $this->bo->xi['stats_font'],
 				'stats_font_size'	=> $this->bo->xi['stats_font_size'],
+				'stats_foldername_size'	=> $this->bo->xi['stats_foldername_size'],
 				'hdr_font'		=> $this->bo->xi['hdr_font'],
 				'hdr_font_size'		=> $this->bo->xi['hdr_font_size'],
 				'hdr_font_size_sm'	=> $this->bo->xi['hdr_font_size_sm'],

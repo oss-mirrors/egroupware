@@ -13,7 +13,7 @@
 
   /* $Id$ */
 
-	class boindex
+	class bomail
 	{
 		var $public_functions = array(
 			'report_moved_or_deleted'	=> True,
@@ -60,7 +60,7 @@
 			)
 		);
 		
-		function boindex()
+		function bomail()
 		{
 			
 		}

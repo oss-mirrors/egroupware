@@ -75,8 +75,8 @@
 	$login_allowed = True; // initialize
 	$no_login_check = Array();
 	// these files do not require login to email server
-	$no_login_check[0] = "preferences\.php";
-	$no_login_check[1] = "attach_file\.php";
+	$no_login_check[0] = "attach_file\.php";
+	$no_login_check[1] = "preferences\.php";
 	$no_login_check[2] = "addressbook\.php";
 	//$no_login_check[3] = "filters\.php";
 	for ($i=0; $i<count($no_login_check); $i++)
@@ -216,6 +216,8 @@
 		{
 			// folder is not meant to be in class args[] array
 			// instead, it should be fed as an agrument to begin_request, it will be processed there
+			// this is a "user friendly" thing because folder is really the only param this class needs
+			// to do something, even then, if not supplied then INBOX is assumed
 			$args_array['folder'] = $GLOBALS['HTTP_POST_VARS']['folder'];
 		}
 		// also may be in the URI

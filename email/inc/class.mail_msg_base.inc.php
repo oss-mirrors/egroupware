@@ -249,14 +249,28 @@
 		if (!$feed_folder)
 		{
 			return 'INBOX';
+			// note: return auto-exits this function
 		}
-		else
+		
+		// FILESYSTEM imap server "dot_slash" CHECK
+		if ((strstr(urldecode($feed_folder), './'))
+		&& 	((($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
+			|| ($GLOBALS['phpgw_info']['user']['preferences']['email']['imap_server_type'] == 'UWash'))) )
 		{
-			// an incoming folder name has generally been urlencoded before it gets here
-			// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
-			$feed_folder = urldecode($feed_folder);
-			return $this->folder_lookup('', $feed_folder);
+			// UWash and UW-Maildir IMAP servers are filesystem based,
+			// so anything like "./" or "../" *might* make the server list files and directories
+			// somewhere in the parent directory of the users mail directory
+			// this could be undesirable a
+			// (a) IMAP servers really should not do this unless specifically enabled and/or told to do so, and
+			// (b) many would consider this a security risk to display filesystem data outside the users directory
+			return 'INBOX';
+			// note: return auto-exits this function
 		}
+		
+		// an incoming folder name has generally been urlencoded before it gets here
+		// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
+		$feed_folder = urldecode($feed_folder);
+		return $this->folder_lookup('', $feed_folder);
 	}
 
 	function prep_folder_out($feed_folder='')

@@ -83,7 +83,7 @@ function check_all()
 <table border="0" cellpadding="5" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{stats_backcolor}" align="center">
-		<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
+		<font face="{stats_font}" size="{stats_foldername_size}" color="{stats_color}">
 			<strong>{stats_folder}</strong>
 		</font>
 	</td>

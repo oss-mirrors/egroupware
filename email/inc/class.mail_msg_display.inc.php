@@ -650,17 +650,51 @@ class mail_msg extends mail_msg_wrappers
 				}
 			}
 			// Attachment Detection PART2 = if a part has encoding=base64 , then treat as an attachment
+			//	eventhough the above code did not find a name for the part
 			if (($part_nice[$i]['encoding'] == 'base64')
-			&& ($part_nice[$i]['ex_attachment'] == False)
-			// some idiots encode text/plain parts in base64 - that's not an attachment
-			&& ($part_nice[$i]['subtype'] != 'plain'))
+			&& ($part_nice[$i]['ex_attachment'] == False))
 			{
 				// NOTE: if a part has a name in the params, the above code would have found it, so to get here means
 				// we MUST have a base64 part with NO NAME - but it still should be treated as an attachment
-				$part_nice[$i]['ex_attachment'] = True;
-				// BUT we have no idea of it's name, and *maybe* no idea of it's content type (eg. name.gif = image/gif)
-				// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
-				//$part_nice['ex_part_name'] = 'no_name.att';
+				// except for text and html PARTS (not specifically attachments) that
+				// some MUAs encode anyway, probably as a brute-force way to ensure 7bit content
+				// even though "quotedprintable" *should* be used to make non-attachments 7bit, not base64
+
+				// some idiots encode text/plain parts in base64 - that's not an attachment
+				if ($part_nice[$i]['subtype'] == 'plain')
+				{
+					// not an attachment, we SHOULD decode this text and sisplay it inline
+					// do nothing, leave ex_attachment as False, as it was coming into this if..then block
+				}
+				// some idiots encode text/html parts in base64 - not *really* a cut-and-dry attachment
+				elseif ($part_nice[$i]['subtype'] == 'html')
+				{
+					// this is not *really* an attachment, however because it was
+					// base64 encoded I'll pretend it IS an attachment
+					$part_nice[$i]['ex_attachment'] = True;
+					// BUT I will change the default (unknown) attachment name to "*.HTML"
+					// so the users browser knows what to do with it
+					// otherwise the browser may try to open it as a text file, not as an HTML file
+					$part_nice[$i]['ex_part_name'] = 'attachment.html';
+				}
+				else
+				{
+					// NOTE: if a part has a name in the params, the it would have been handled
+					// before this if..then block. Thus, to get to this point in the code means
+					// we MUST have a base64 part with NO NAME - 
+					// NOR does it have an OBVIOUS type/subtype (text/plain)
+					// we have NO CHOICE but to treat it as an attachment
+					$part_nice[$i]['ex_attachment'] = True;
+					// Digression: why we can't do any more then this
+					// we have no idea of it's name, and *maybe* no idea of it's content type
+					// (eg. name.gif = image/gif  which is "OBVIOUS" even if the mail headers fon't tell us that)
+					// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
+					// but we can not do much here because we have NO name
+					// even if we have type/subtype data (see above text/plain and text/html)
+					// it would be futile to make a fake name "attachment.SOME_EXTENSION"
+					// trying to make up an extension ".doc" to match what we *think* it should have
+					// is not something we want to have to worry about here
+				}
 			}
 			// Attachment Detection PART3 = if "disposition" header has a value of "attachment" , then treat as an attachment
 			// PROVIDED it is not type "message" - in that case the attachment is *inside* the message, not the message itself

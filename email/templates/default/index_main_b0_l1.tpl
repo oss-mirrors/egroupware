@@ -58,8 +58,11 @@ function check_all()
 		<table border="0" cellpadding="0" cellspacing="1" width="100%">
 		<tr>
 			<td>
+				<font face="{stats_font}" size="{stats_foldername_size}" color="{stats_color}">
+					&nbsp;<strong>{stats_folder}</strong>
+				</font>
+				<br>
 				<font face="{stats_font}" size="{stats_font_size}" color="{stats_color}">
-					&nbsp;<strong>{stats_folder}</strong><br>
 					&nbsp;&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_new2}<br>
 					&nbsp;&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;:&nbsp;&nbsp;{lang_total2}
 					<!-- BEGIN B_show_size -->

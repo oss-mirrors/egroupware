@@ -23,6 +23,25 @@
 		'enable_nextmatchs_class' => True);
 
 	include('../header.inc.php');
+	
+// ----  THIS PAGE DEPRECIATED - ARCHIVAL USE ONLY  ----
+	$skip_this_page = True;
+	//$skip_this_page = False;
+	if ($skip_this_page)
+	{
+		$main_page = $GLOBALS['phpgw']->link('/index.php');
+		echo 	 '<p>&nbsp;</p>'."\r\n"
+			.'<p><strong>This Page is DEPRECIATED</strong></p>'."\r\n"
+			.'<p>Return to <a href="'.$main_page.'">Main Page</a></p>'."\r\n";
+		if (isset($GLOBALS['phpgw']->msg))
+		{
+			$GLOBALS['phpgw']->msg->end_request();
+		}
+		$GLOBALS['phpgw']->common->phpgw_footer();
+		// is this "return" also necessary?
+		return;
+	}
+
 
 	// time limit should be controlled elsewhere
 	@set_time_limit(0);
@@ -378,7 +397,7 @@
 
 
 
-// boindex_page stops at this line, below should be UI index page
+// bomail_page stops at this line, below should be UI index page
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
 	$xi['tpl']->set_var('delmov_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/action.php'));
@@ -430,14 +449,14 @@
 		$xi['tpl']->set_var('V_no_messages','');
 		
 
-// boindex_page holds the next 4 lines
+// bomail_page holds the next 4 lines
 		// generate a list of details about all the messages we are going to show
 		$msg_list_dsp = Array();
 		$msg_list_dsp = $GLOBALS['phpgw']->msg->get_msg_list_display($xi['folder_info']);
 		$totaltodisplay = $GLOBALS['phpgw']->msg->start + count($msg_list_dsp);
 		// this info for the stats row above
 		$xi['stats_last'] = $totaltodisplay;
-// boindex_page 4 lines ends here, back to UI index page
+// bomail_page 4 lines ends here, back to UI index page
 
 
 		$xi['tpl']->set_var('stats_last',$totaltodisplay);
