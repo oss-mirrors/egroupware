@@ -1,12 +1,12 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare API - IMAP                                                  *
-	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com>	*
-	* Pure php code sunstantial replacement for php-imap functionality	*
-	* Copyright (C) 2002-2004 Anglo "Angles" Puglisi 	*
+	* eGroupWare API - IMAP                                                    *
+	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com>  *
+	* Pure php code sunstantial replacement for php-imap functionality	   *
+	* Copyright (C) 2002-2004 Anglo "Angles" Puglisi                           *
 	* -------------------------------------------------------------------------*
-	* This library is part of the phpGroupWare API                             *
-	* http://www.phpgroupware.org/api                                          * 
+	* This library is part of the eGroupWare API                               *
+	* http://www.egroupware.org/                                               * 
 	* ------------------------------------------------------------------------ *
 	* This library is free software; you can redistribute it and/or modify it  *
 	* under the terms of the GNU Lesser General Public License as published by *
