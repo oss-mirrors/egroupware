@@ -85,24 +85,24 @@ function makedeps()
 			$msglist_arr[] = $v;
 		}
 
-		$data = file_get_contents($msgfile);
+		$data = "\n" . file_get_contents($msgfile);
 		foreach ($msglist_arr as $v) {
-			if (($s = strpos($data, $v . ':')) === false) {
+			if (($s = strpos($data, "\n" . $v . ':')) === false) {
 				continue;
 			}
-			$s += 2 + strlen($v);
+			$s += 3 + strlen($v);
 			while ($data[$s] == "\t") {
 				++$s;
 			}
 			if (($e = strpos($data, "\n", $s)) === false) {
 				continue;
 			}
-			$data = substr_replace($data, $_POST[$v], $s, ($e - $s));
+			$data = substr_replace($data, trim($_POST[$v]), $s, ($e - $s));
 		}
 		if (!($fp = fopen($msgfile, 'wb'))) {
 			exit('unable to write to "'.$msgfile.'" message file');
 		}
-		fwrite($fp, $data);
+		fwrite($fp, ltrim($data));
 		fclose($fp);
 		fud_use('compiler.inc', true);
 
@@ -156,7 +156,7 @@ if (isset($warn)) {
 		$list = $msgnamelist = '';
 		foreach($msg as $k => $msgname) {
 			$msgnamelist .= urlencode($msgname).':';
-			$list .='<tr><td><img src="blank.gif" height=1 width=20><a class="deps" href="msglist.php?tname='.$tname.'&tlang='.$tlang.'&'._rsidl.'&msglist='.urlencode($msgname).'&fl='.$file.'">'.$msgname.'</a></td></tr>';
+			$list .='<tr><td><img src="../blank.gif" height=1 width=20><a class="deps" href="msglist.php?tname='.$tname.'&tlang='.$tlang.'&'._rsidl.'&msglist='.urlencode($msgname).'&fl='.$file.'">'.$msgname.'</a></td></tr>';
 		}
 		$msgnamelist = substr($msgnamelist, 0, -1);
 		echo '<tr><td><a class="file_name" href="msglist.php?tname='.$tname.'&tlang='.$tlang.'&'._rsidl.'&msglist='.$msgnamelist.'&fl='.$file.'">'.$file.'</a><a name="'.$file.'"></a></td></tr>' . $list;
@@ -180,14 +180,14 @@ if (isset($warn)) {
 			$msglist_arr[] = trim($v);
 		}
 
-		$data = file_get_contents($msgfile);
+		$data = "\n" . file_get_contents($msgfile);
 
 		foreach ($msglist_arr as $v) {
-			if (($s = strpos($data, $v . ':')) === false) {
+			if (($s = strpos($data, "\n" . $v . ':')) === false) {
 				echo '<tr><td nowrap><font color="red">Unable to find "'.$v.'" inside "'.$msgfile.'"</font></td></tr>';
 				continue;
 			}
-			$s += 2 + strlen($v);
+			$s += 3 + strlen($v);
 			if (($e = strpos($data, "\n", $s)) === false) {
 				$e = strlen($data);
 			}

@@ -82,9 +82,22 @@ function get_max_upload_size()
 				rebuildmodlist();
 			}
 
-			/* Topic tree view disabled */
+			/* Handle disabling of aliases */
+			if (($FUD_OPT_2 ^ $NEW_FUD_OPT_2) & 128 && !($NEW_FUD_OPT_2 & 128)) {
+				q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET alias=login');
+				rebuildmodlist();
+			}
+
+			/* Topic/Message tree view disabling code */
+			$o = 0;
 			if (($FUD_OPT_2 ^ $NEW_FUD_OPT_2) & 512 && !($NEW_FUD_OPT_2 & 512)) {
-				q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=users_opt|128 WHERE (users_opt & 128)=0');
+				$o |= 128;
+			}
+			if (($FUD_OPT_3 ^ $NEW_FUD_OPT_3) & 2 && !($NEW_FUD_OPT_3 & 2)) {
+				$o |= 256;
+			}
+			if ($o) {
+				q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=users_opt|'.$o.' WHERE (users_opt & '.$o.')=0');
 			}
 
 			$q_data = array();
@@ -100,7 +113,7 @@ function get_max_upload_size()
 			if (($FUD_OPT_2 ^ $NEW_FUD_OPT_2) & (4|8)) {
 				/* only allow threaded topic view if it is selected & it's enabled */
 				$opt  = $NEW_FUD_OPT_2 & 4 && $NEW_FUD_OPT_2 & 512 ? 128 : 0;
-				$opt |= $NEW_FUD_OPT_2 & 8 ? 256 : 0;
+				$opt |= $NEW_FUD_OPT_2 & 8 || $NEW_FUD_OPT_3 & 2 ? 256 : 0;
 				$q_data[] = 'users_opt=(users_opt & ~ 384) | '.$opt;
 			}
 			if ($q_data) {
@@ -123,17 +136,17 @@ function get_max_upload_size()
 	print_bit_field('Forum Enabled', 'FORUM_ENABLED');
 	print_reg_field('Reason for Disabling', 'DISABLED_REASON');
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Global (do not change these unless you know what you are doing)</b></td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Global (do not change these unless you know what you are doing)</b></td></tr>
 <?php
 	print_reg_field('WWW Root', 'WWW_ROOT');
 	print_reg_field('WWW Root (disk path)', 'WWW_ROOT_DISK');
 	print_reg_field('Data Root', 'DATA_DIR');
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Private Messaging</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Private Messaging</b> </td></tr>
 <?php
 	print_bit_field('Allow Private Messaging', 'PM_ENABLED');
 	print_reg_field('File Attachments in Private Messages', 'PRIVATE_ATTACHMENTS', 1);
@@ -143,9 +156,9 @@ function get_max_upload_size()
 	print_bit_field('Tag Style', 'PRIVATE_TAGS');
 	print_reg_field('Maximum Private Messages Folder Size', 'MAX_PMSG_FLDR_SIZE', 1);
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Custom Avatar Settings</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Custom Avatar Settings</b> </td></tr>
 <?php
 	print_bit_field('Avatar Approval', 'CUSTOM_AVATAR_APPOVAL');
 	print_bit_field('Allow Flash (swf) avatars', 'CUSTOM_AVATAR_ALLOW_SWF');
@@ -153,9 +166,9 @@ function get_max_upload_size()
 	print_reg_field('Custom Avatar Max Size (bytes)', 'CUSTOM_AVATAR_MAX_SIZE', 1);
 	print_reg_field('Custom Avatar Max Dimentions', 'CUSTOM_AVATAR_MAX_DIM');
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Signature Settings</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Signature Settings</b> </td></tr>
 <?php
 	print_bit_field('Allow Signatures', 'ALLOW_SIGS');
 	print_bit_field('Tag Style', 'FORUM_CODE_SIG');
@@ -164,9 +177,9 @@ function get_max_upload_size()
 	print_reg_field('Maximum number of images', 'FORUM_IMG_CNT_SIG', 1);
 	print_reg_field('Maximum signature length', 'FORUM_SIG_ML', 1);
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Spell Checker</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Spell Checker</b> </td></tr>
 <?php
 	if (function_exists('pspell_new_config')) {
 		$pspell_support = '<font color="red">is enabled.</font>';
@@ -176,9 +189,9 @@ function get_max_upload_size()
 	}
 	print_bit_field('Enable Spell Checker', 'SPELL_CHECK_ENABLED');
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>Email Settings</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>Email Settings</b> </td></tr>
 <?php
 	print_bit_field('Allow Email', 'ALLOW_EMAIL');
 	print_bit_field('Use SMTP To Send Email', 'USE_SMTP');
@@ -191,9 +204,9 @@ function get_max_upload_size()
 	print_reg_field('Notify From', 'NOTIFY_FROM');
 	print_bit_field('Notify W/Body', 'NOTIFY_WITH_BODY');
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 
-<tr bgcolor="#bff8ff"><td colspan=2><br><b>General Settings</b> </td></tr>
+<tr class="fieldtopic"><td colspan=2><br><b>General Settings</b> </td></tr>
 <?php
 	print_reg_field('Anonymous Username', 'ANON_NICK');
 	print_reg_field('Anonymous Password', 'ANON_PASS');
@@ -224,7 +237,7 @@ function get_max_upload_size()
 	print_reg_field('Flood Trigger (seconds)', 'FLOOD_CHECK_TIME', 1);
 	print_reg_field('Moved Topic Pointer Expiry', 'MOVED_THR_PTR_EXPIRY', 1);
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2>Server Time Zone: <font size="-1"> <?php echo $help_ar['SERVER_TZ'][0]; ?></font><br /><select name="CF_SERVER_TZ" style="font-size: xx-small;"><?php echo tmpl_draw_select_opt($tz_values, $tz_names, $SERVER_TZ, '', ''); ?></select></td></tr>
+<tr class="field"><td colspan=2>Server Time Zone: <font size="-1"> <?php echo $help_ar['SERVER_TZ'][0]; ?></font><br /><select name="CF_SERVER_TZ" style="font-size: xx-small;"><?php echo tmpl_draw_select_opt($tz_values, $tz_names, $SERVER_TZ, '', ''); ?></select></td></tr>
 <?php
 	print_bit_field('Forum Search Engine', 'FORUM_SEARCH');
 	print_reg_field('Search results cache', 'SEARCH_CACHE_EXPIRY', 1);
@@ -260,7 +273,7 @@ function get_max_upload_size()
 		print_reg_field('PHP compression level', 'PHP_COMPRESSION_LEVEL', 1);
 	}
 ?>
-<tr bgcolor="#bff8ff"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
+<tr class="fieldaction"><td colspan=2 align=left><input type="submit" name="btn_submit" value="Set"></td></tr>
 </table>
 <input type="hidden" name="form_posted" value="1">
 </form>

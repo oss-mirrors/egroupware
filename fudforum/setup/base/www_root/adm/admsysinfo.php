@@ -34,7 +34,7 @@ function get_server_software()
 	require($WWW_ROOT_DISK . 'adm/admpanel.php');
 ?>
 <h2>System Configuration</h2>
-<table cellspacing=3 cellpadding=1 border=0>
+<table class="datatable">
 <tr>
 	<td><b>PHP built On:</b></td>
 	<td><?php echo php_uname(); ?></td>

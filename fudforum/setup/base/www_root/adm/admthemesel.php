@@ -29,8 +29,8 @@
 <h3>Template Set Selection</h3>
 <form method="post" action="admthemesel.php">
 <input type="hidden" name="ret" value="<?php echo $ret; ?>">
-<table border=0 cellspacing=1 cellpadding=3>
-<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+<tr class="field">
 <?php
 	echo _hs;
 	$path = $GLOBALS['DATA_DIR'].'/thm';
@@ -47,7 +47,7 @@
 	echo '</select></td>';
 ?>
 </tr>
-<tr bgcolor="#bff8ff">
+<tr class="field">
 <?php
 	$path .= '/default/i18n';
 
@@ -64,7 +64,7 @@
 ?>
 </tr>
 <?php
-	echo '<tr bgcolor="#bff8ff" align=right><td colspan=2><input type="submit" name="btn_submit" value="Edit"></td></td>';
+	echo '<tr class="fieldaction" align=right><td colspan=2><input type="submit" name="btn_submit" value="Edit"></td></td>';
 ?>
 </tr>
 </table>

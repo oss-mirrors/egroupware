@@ -44,18 +44,18 @@
 <h2>Email Filter</h2>
 <form method="post" action="admemail.php">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=3>
-	<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+	<tr class="field">
 		<td>Type:</td>
 		<td><?php draw_select("e_email_block_opt", "Simple\nRegexp", "1\n0", $e_email_block_opt); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>String:</td>
 		<td><input type="text" name="e_string" value="<?php echo htmlspecialchars($e_string); ?>"></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="fieldaction">
 		<td colspan=2 align=right>
 		<?php
 			if ($edit) {
@@ -70,7 +70,7 @@
 <input type="hidden" name="edit" value="<?php echo $edit; ?>">
 </form>
 
-<table border=0 cellspacing=3 cellpadding=2>
+<table class="resulttable fulltable">
 <tr bgcolor="#e5ffe7">
 	<td>Address/Regex</td>
 	<td>Type</td>
@@ -81,10 +81,11 @@
 	$i = 1;
 	while ($r = db_rowarr($c)) {
 		if ($edit == $r[0]) {
-			$bgcolor = ' bgcolor="#ffb5b5"';
+			$bgcolor = ' class="resultrow1"';
 		} else {
-			$bgcolor = ($i++%2) ? ' bgcolor="#fffee5"' : '';
+			$bgcolor = ($i++%2) ? ' class="resultrow2"' : ' class="resultrow1"';
 		}
+  
 		echo '<tr '.$bgcolor.'><td>'.htmlspecialchars($r[2]).'</td><td>'.($r[1] ? 'Simple' : 'Regex').'</td><td>[<a href="admemail.php?edit='.$r[0].'&'._rsid.'">Edit</a>] [<a href="admemail.php?del='.$r[0].'&'._rsid.'">Delete</a>]</td></tr>';
 	}
 ?>

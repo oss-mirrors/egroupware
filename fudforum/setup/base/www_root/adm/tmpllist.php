@@ -40,7 +40,17 @@ function fetch_section($data, $file, $section, $type)
 			$end = '{PAGE: END}';
 		}
 	} else {
-		$p = strpos($data, '{SECTION: '.$section);
+		$p = 0;
+		while (1) {
+			$p = strpos($data, '{SECTION: '.$section, $p);
+			if ($p === false) {
+				exit("Cannot find section '{$section}' inside '{$file}'<br />\n");
+			}
+			$p += strlen('{SECTION: '.$section);
+			if ($data[$p] == ' ' || $data[$p] == '}') {
+				break;
+			}
+		}
 		$end = '{SECTION: END}';
 	}
 	if ($p === false) {
@@ -306,7 +316,7 @@ function goto_tmpl($tmpl)
 
 	foreach($file_info_array as $k => $v) {
 		echo $v;
-		if(isset($max_opts[$k]) && ($php_deps[$k] || $deps_on[$k]) ) {
+		if(isset($max_opts[$k]) && (isset($php_deps[$k]) || isset($deps_on[$k])) ) {
 			if( is_array($php_deps[$k]) ) {
 				$deps = '';
 				foreach($php_deps[$k] as $k2 => $v2) {

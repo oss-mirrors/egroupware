@@ -96,10 +96,10 @@
 <h2>Mass Mail System</h2>
 <form method="post" name="a_frm">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=3>
+<table class="datatable solidtable">
 <?php
 	if ($groups) {
-		echo '<tr bgcolor="#bff8ff"><td valign=top>Send E-mails To</td><td><select name="group">';
+		echo '<tr class="field"><td valign=top>Send E-mails To</td><td><select name="group">';
 		echo '<option value="0">All Forum Members</option>';
 		foreach ($groups as $k => $v) {
 			echo '<option value="'.$k.'">'.$v[1].' member(s) of group '.htmlspecialchars($v[0]).'</option>';
@@ -109,17 +109,17 @@
 		echo '<input type="hidden" name="group" value="0">';
 	}
 ?>
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td valign=top>Subject</td>
 		<td><input type="text" name="subject" value=""></td>
 	</tr>
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td colspan=2 valign=top>
 			<b>Body</b><br>
 			<textarea name="body" cols=80 rows=25></textarea>
 		</td>
 	</tr>
-	<tr bgcolor="#bff8ff">
+	<tr class="fieldaction">
 		<td colspan=2 align=right>
 			<input type="checkbox" name="ignore_override" value="1"> Ignore User Override <input type="submit" value="Send" name="btn_submit">
 		</td>

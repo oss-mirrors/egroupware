@@ -41,8 +41,13 @@ function chmoddir($dirn, $dirp, $filep, $rec=false)
 			@unlink($ERROR_PATH.'FILE_LOCK');
 			$FUD_OPT_2 ^= 8388608;
 		} else {
-			$dirperms = 0700;
-			$fileperms = 0600;
+			if (!strncmp(PHP_SAPI, 'apache', 6)) {
+				$dirperms = 0700;
+				$fileperms = 0600;
+			} else {
+				$dirperms = 0711;
+				$fileperms = 0644;
+			}
 		}
 
 		chmoddir(realpath($WWW_ROOT_DISK), $dirperms, $fileperms, true);

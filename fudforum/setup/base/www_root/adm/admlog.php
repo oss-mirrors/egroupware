@@ -47,8 +47,8 @@ function return_forum_name($id)
 ?>
 <h2>Admin Log</h2>
 <a href="admlog.php?clear=1&<?php echo _rsidl; ?>">Clear Log</a>
-<table border=1 cellspacing=1 cellpadding=3>
-<tr bgcolor="#bff8ff"><td>User</td><td>Action</td><td>Object</td><td>Time (<b>GMT</b>)</td></tr>
+<table class="resulttable">
+<tr class="resulttopic"><td>User</td><td>Action</td><td>Object</td><td>Time (<b>GMT</b>)</td></tr>
 <?php
 	$c = q('SELECT u.users_opt, u.alias, al.* FROM '.$DBHOST_TBL_PREFIX.'action_log al LEFT JOIN '.$DBHOST_TBL_PREFIX.'users u ON al.user_id=u.id ORDER BY logtime DESC');
 

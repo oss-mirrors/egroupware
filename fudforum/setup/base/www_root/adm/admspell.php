@@ -46,16 +46,16 @@
 		echo '<div style="text-align: center; color: green; font-size: 125%">'.$status.' word(s) were added successfully.</div>';
 	}
 ?>
-<table border=0 cellspacing=1 cellpadding=3>
-<tr>
-	<td bgcolor="#bff8ff">Enter custom words you want added to your personal dictionary that will<br />
+<table class="datatable solidtable">
+<tr class="tutor">
+	<td>Enter custom words you want added to your personal dictionary that will<br />
 	be used in addition to the native pspell/aspell dictionaries. <font size="-1">(1 word per line.)</font></td>
 </tr>
-<tr>
-	<td bgcolor="#bff8ff"><textarea rows=7 cols=30 name="words"></textarea></td>
+<tr class="field">
+	<td><textarea rows=7 cols=30 name="words"></textarea></td>
 </tr>
-<tr>
-	<td bgcolor="#bff8ff" align="right"><input type="submit" name="submit" value="Add Words"></td>
+<tr class="fieldaction">
+	<td align="right"><input type="submit" name="submit" value="Add Words"></td>
 </tr>
 </table>
 </form>

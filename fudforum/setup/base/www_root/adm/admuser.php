@@ -71,13 +71,12 @@ Are you sure you want to do this?<br>
 <?php
 					exit;
 				} else if (isset($_POST['btn_yes'])) {
-					$u->users_opt |=  524288|1048576;
 					if (q_singleval('SELECT count(*) FROM '.$DBHOST_TBL_PREFIX.'mod WHERE user_id='.$u->id)) {
-						q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=(users_opt|1048576) & ~ 1048576 | 524288 WHERE id='.$usr_id);
+						q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=(users_opt &~ 1048576) |524288 WHERE id='.$usr_id);
 						$u->users_opt ^= 1048576;
 					} else {
-						q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=(users_opt|524288|1048576) & ~ (524288|1048576) WHERE id='.$usr_id);
-						$u->users_opt ^= 1048576|524288;
+						q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=users_opt &~ (524288|1048576) WHERE id='.$usr_id);
+						$u->users_opt = $u->users_opt &~ (1048576|524288);
 					}
 				}
 			} else {
@@ -100,7 +99,8 @@ administration permissions to the forum. This individual will be able to do anyt
 <?php
 					exit;
 				} else if (isset($_POST['btn_yes'])) {
-					q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=(users_opt|524288) & ~ 524288 | 1048576 WHERE id='.$usr_id);
+					q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET users_opt=(users_opt &~ 524288) | 1048576 WHERE id='.$usr_id);
+					$u->users_opt |= 1048576;
 				}
 			}
 			break;
@@ -163,46 +163,46 @@ administration permissions to the forum. This individual will be able to do anyt
 <h2>User Adminstration System</h2>
 <form name="frm_usr" method="post" action="admuser.php">
 <?php echo _hs . $search_error; ?>
-<table border=0 cellspacing=1 cellpadding=3>
-	<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+	<tr class="field">
 		<td colspan=2>Search for User</td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>By <?php echo ($FUD_OPT_2 & 128 ? 'Alias' : 'Login'); ?>:</td>
 		<td><input type="text" name="usr_login"></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>By Email:</td>
 		<td><input type="text" name="usr_email"></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="fieldaction">
 		<td colspan=2 align=right><input type="submit" value="Search" name="usr_search"></td>
 	</tr>
 </table>
 </form>
 <?php if ($usr_id) { ?>
-<table border=0 cellspacing=0 cellpadding=3>
-	<tr bgcolor="#f1f1f1"><td>Loing:</td><td><?php echo $u->alias; ?></td></tr>
-	<tr bgcolor="#f1f1f1"><td>Email:</td><td><?php echo $u->email; ?></td></tr>
-	<tr bgcolor="#f1f1f1"><td>Name:</td><td><?php echo $u->name; ?></td></tr>
+<table class="datatable solidtable">
+	<tr class="field"><td>Loing:</td><td><?php echo $u->alias; ?></td></tr>
+	<tr class="field"><td>Email:</td><td><?php echo $u->email; ?></td></tr>
+	<tr class="field"><td>Name:</td><td><?php echo $u->name; ?></td></tr>
 <?php
 	if ($u->bday) {
-		echo '<tr bgcolor="#f1f1f1"><td>Birthday:</td><td>' . strftime('%B, %d, %Y', strtotime($u->bday)) . '</td></tr>';
+		echo '<tr class="field"><td>Birthday:</td><td>' . strftime('%B, %d, %Y', strtotime($u->bday)) . '</td></tr>';
 	}
 
-	echo '<tr bgcolor="#f1f1f1"><td align=middle colspan=2><font size="+1">&gt;&gt; <a href="../'.__fud_index_name__.'?t=register&mod_id='.$usr_id.'&'._rsidl.'">Change User\'s Profile</a> &lt;&lt;</font></td></tr>';
-	echo '<tr bgcolor="#f1f1f1"><td nowrap><font size="+1"><b>Forum Administrator:</b></td><td>'.($u->users_opt & 1048576 ? '<b><font size="+2" color="red">Y</font>' : 'N').' [<a href="admuser.php?act=admin&usr_id='.$usr_id . '&' . _rsidl.'">Toggle</a>]</td></tr>';
-	echo '<tr bgcolor="#f1f1f1"><td>Blocked (banned):</td><td>'.($u->users_opt & 65536 ? 'Yes' : 'No').' [<a href="admuser.php?act=block&usr_id=' . $usr_id . '&' . _rsidl.'">Toggle</a>]</td></tr>';
-	echo '<tr bgcolor="#f1f1f1"><td>Email Confirmation:</td><td>'.($u->users_opt & 131072 ? 'Yes' : 'No').' [<a href="admuser.php?act=econf&usr_id=' . $usr_id . '&' . _rsidl .'">Toggle</a>]</td></tr>';
+	echo '<tr class="field"><td align=middle colspan=2><font size="+1">&gt;&gt; <a href="../'.__fud_index_name__.'?t=register&mod_id='.$usr_id.'&'._rsidl.'">Change User\'s Profile</a> &lt;&lt;</font></td></tr>';
+	echo '<tr class="field"><td nowrap><font size="+1"><b>Forum Administrator:</b></td><td>'.($u->users_opt & 1048576 ? '<b><font size="+2" color="red">Y</font>' : 'N').' [<a href="admuser.php?act=admin&usr_id='.$usr_id . '&' . _rsidl.'">Toggle</a>]</td></tr>';
+	echo '<tr class="field"><td>Blocked (banned):</td><td>'.($u->users_opt & 65536 ? 'Yes' : 'No').' [<a href="admuser.php?act=block&usr_id=' . $usr_id . '&' . _rsidl.'">Toggle</a>]</td></tr>';
+	echo '<tr class="field"><td>Email Confirmation:</td><td>'.($u->users_opt & 131072 ? 'Yes' : 'No').' [<a href="admuser.php?act=econf&usr_id=' . $usr_id . '&' . _rsidl .'">Toggle</a>]</td></tr>';
 
 	if ($FUD_OPT_1 & 1048576) {
-		echo '<tr bgcolor="#f1f1f1"><td>COPPA:</td><td>'.($u->users_opt & 262144 ? 'Yes' : 'No').' [<a href="admuser.php?act=coppa&usr_id=' . $usr_id . '&' . _rsidl .'">Toggle</a>]</td></tr>';
+		echo '<tr class="field"><td>COPPA:</td><td>'.($u->users_opt & 262144 ? 'Yes' : 'No').' [<a href="admuser.php?act=coppa&usr_id=' . $usr_id . '&' . _rsidl .'">Toggle</a>]</td></tr>';
 	}
 
-	echo '<tr bgcolor="#f1f1f1"><td nowrap valign="top">Moderating Forums:</td><td valign="top">';
+	echo '<tr class="field"><td nowrap valign="top">Moderating Forums:</td><td valign="top">';
 	$c = q('SELECT f.name FROM '.$DBHOST_TBL_PREFIX.'mod mm INNER JOIN '.$DBHOST_TBL_PREFIX.'forum f ON mm.forum_id=f.id WHERE mm.user_id='.$usr_id);
 	if (db_count($c)) {
 		echo '<table border=0 cellspacing=1 cellpadding=3>';
@@ -217,7 +217,7 @@ administration permissions to the forum. This individual will be able to do anyt
 ?>
 	<a name="mod_here"> </a>
 	<a href="#mod_here" onClick="javascript: window.open('admmodfrm.php?usr_id=<?php echo $usr_id . '&' . _rsidl; ?>', 'frm_mod', 'menubar=false,width=200,height=400,screenX=100,screenY=100,scrollbars=yes');">Modify Moderation Permissions</a>
-	<tr bgcolor="#f1f1f1"><td valign=top>Custom Tags:</td><td valign="top">
+	<tr class="field"><td valign=top>Custom Tags:</td><td valign="top">
 <?php
 	$c = uq('SELECT name, id FROM '.$DBHOST_TBL_PREFIX.'custom_tags WHERE user_id='.$usr_id);
 	while ($r = db_rowarr($c)) {
@@ -233,7 +233,7 @@ administration permissions to the forum. This individual will be able to do anyt
 	</form>
 	</td></tr>
 
-	<tr bgcolor="#f1f1f1"><td valign=top>Profile Link Color:</td>
+	<tr class="field"><td valign=top>Profile Link Color:</td>
 		<td valign=top>
 		<form name="extra_tags" method="post" action="admuser.php">
 		<?php echo _hs; ?>
@@ -243,11 +243,11 @@ administration permissions to the forum. This individual will be able to do anyt
 		</form>
 		</td>
 	</tr>
-	<tr bgcolor="#f1f1f1">
+	<tr class="field">
 		<td colspan=2><br><br><b>Actions:</b></td>
 	</tr>
 
-	<tr bgcolor="#f1f1f1">
+	<tr class="field">
 	<td colspan=2>
 <?php
 	if ($FUD_OPT_1 & 1024) {

@@ -24,12 +24,12 @@
 	if (!isset($_POST['conf'])) {
 ?>
 <form method="post" action="indexdb.php">
-<div align="center">
+<div class="alert">
 This script will attempt to rebuild the search indices for the entire forum. This is a VERY CPU-intensive process
-and can take a VERY LONG time, especially on large forums. You should ONLY run this if you absolutely must.<br><br>
+and can take a VERY LONG time, especially on large forums. You should ONLY run this if you absolutely must.
+</div>
 <h2>Do you wish to proceed?</h2>
 <input type="submit" name="btn_cancel" value="No">&nbsp;&nbsp;&nbsp;<input type="submit" name="conf" value="Yes">
-</div>
 <?php echo _hs; ?>
 </form>
 <?php

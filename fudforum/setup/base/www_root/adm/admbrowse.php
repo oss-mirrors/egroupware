@@ -164,6 +164,7 @@ if (!function_exists('posix_getpwuid')) {
 			<input type="hidden" name="cur" value="<?php echo $cur_dir; ?>">
 			<input type="hidden" name="dest" value="<?php echo $dest; ?>">
 			<input type="hidden" name="del" value="1">
+			<?php echo _hs; ?>
 			<div align="center"><input type="submit" name="btn_mini_cancel" value="No"> <input type="submit" name="del_conf" value="Yes"></div>
 			</form>
 			</html>
@@ -249,7 +250,7 @@ if (!function_exists('posix_getpwuid')) {
 	}
 ?>
 <br>
-<table cellspacing=2 cellpadding=2 border=0>
+<table class="datatable">
 	<form method="get" action="admbrowse.php"><input type="hidden" name="cur" value="<?php echo $cur_dir; ?>"><?php echo _hs; ?>
 	<tr style="font-size: x-small;">
 		<td>Directory Name:</td>
@@ -279,7 +280,7 @@ if (!function_exists('posix_getpwuid')) {
 </table>
 <br>
 <table border=0 cellspacing=1 cellpadding=3>
-<tr class="admin_fixed" bgcolor="#bff8ff"><td>Mode</td><td>Owner</td><td>Group</td><td>Size</td><td>Date</td><td>Time</td><td>Name</td><td align="center" colspan=3>Action</td></tr>
+<tr class="admin_fixed resulttopic"><td>Mode</td><td>Owner</td><td>Group</td><td>Size</td><td>Date</td><td>Time</td><td>Name</td><td align="center" colspan=3>Action</td></tr>
 <?php
 	$file_list = array();
 	$dir_list = array();

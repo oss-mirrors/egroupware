@@ -108,6 +108,11 @@ function clean_code($path, $toks)
 	fud_use('theme.inc', true);
 
 	$edit = isset($_GET['edit']) ? (int)$_GET['edit'] : (isset($_POST['edit']) ? (int)$_POST['edit'] : '');
+	
+	/* Limit theme names to sane characters */
+	if (isset($_POST['newname'])) {
+		$_POST['newname'] = preg_replace('![^A-Za-z0-9_]!', '_', $_POST['newname']);
+	}
 
 	if (isset($_POST['newname']) && !q_singleval("SELECT id FROM ".$DBHOST_TBL_PREFIX."themes WHERE name='".addslashes($_POST['newname'])."'")) {
 		$root = $DATA_DIR . 'thm/';
@@ -188,8 +193,8 @@ function clean_code($path, $toks)
 
 <form name="admthm" action="admthemes.php" method="post">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=3>
-<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+<tr class="field">
 	<td>Name:</td>
 	<td>
 <?php
@@ -202,7 +207,7 @@ function clean_code($path, $toks)
 	</td>
 </tr>
 
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td valign=top>Template Set:</td>
 	<td>
 	<select name="thm_theme">
@@ -220,7 +225,7 @@ function clean_code($path, $toks)
 	?></select>
 	</td>
 </tr>
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td>Language</td>
 	<td>
 	<?php
@@ -264,12 +269,12 @@ function update_locale()
 	</td>
 </tr>
 
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td>Locale:</td>
 	<td><input type="text" name="thm_locale" value="<?php echo htmlspecialchars($thm_locale); ?>" size=7></td>
 </tr>
 
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td>pSpell Language:</td>
 	<td>
 		<input type="text" name="thm_pspell_lang" value="<?php echo htmlspecialchars($thm_pspell_lang); ?>" size=4>
@@ -277,12 +282,12 @@ function update_locale()
 	</td>
 </tr>
 
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td colspan=2>
 	<?php draw_checkbox('thm_t_default', '2', $thm_t_default);?> Default <?php draw_checkbox('thm_enabled', '1', $thm_enabled); ?> Enabled
 	</td>
 </tr>
-<tr bgcolor="#bff8ff">
+<tr class="fieldaction">
 <?php if (!$edit) { ?>
 		<td colspan=2 align=right><input type="submit" name="btn_submit" value="Add"></td>
 <?php } else { ?>
@@ -298,9 +303,9 @@ function update_locale()
 </form>
 
 <form method="post">
-<table border=0 cellspacing=1 cellpadding=3>
-<tr bgcolor="#bff8ff"><td colspan=2>Create New Template Set</td></tr>
-<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+<tr class="field"><td colspan=2>Create New Template Set</td></tr>
+<tr class="field">
 	<td>Base Template Set:</td>
 	<td>
 	<select name="base_template_set">
@@ -308,19 +313,19 @@ function update_locale()
 	<option value="path_info">Path Info</option>
 	</select></td>
 </tr>
-<tr bgcolor="#bff8ff">
+<tr class="field">
 	<td>Name</td>
 	<td><input type="text" name="newname"></td>
 </tr>
-<tr bgcolor="#bff8ff">
+<tr class="fieldaction">
 	<td colspan=2 align=right><input type="submit" name="btn_submit" value="Create"></td>
 </tr>
 </table>
 <?php echo _hs; ?>
 </form>
 
-<table border=0 cellspacing=0 cellpadding=3>
-<tr bgcolor="#e5ffe7">
+<table class="resulttable fulltable">
+<tr class="resulttopic">
 	<td>Name</td>
 	<td>Theme</td>
 	<td>Language</td>
@@ -335,9 +340,9 @@ function update_locale()
 	$c = uq('SELECT * FROM '.$DBHOST_TBL_PREFIX.'themes ORDER BY id');
 	while ($r = db_rowobj($c)) {
 		if ($edit == $r->id) {
-			$bgcolor = ' bgcolor="#ffb5b5"';
+			$bgcolor = ' class="resultrow1"';
 		} else {
-			$bgcolor = ($i++%2) ? ' bgcolor="#fffee5"' : '';
+			$bgcolor = ($i++%2) ? ' class="resultrow2"' : ' class="resultrow1"';
 		}
 
 		echo '<tr '.$bgcolor.'>

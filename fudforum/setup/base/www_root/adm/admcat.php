@@ -24,7 +24,7 @@
 		if (!empty($_POST['cat_description'])) {
 			$_POST['cat_description'] = ' - ' . $_POST['cat_description'];
 		}
-		$_POST['cat_cat_opt'] = ($_POST['cat_allow_collapse'] == 'Y' ? 1 : 0) | ($_POST['cat_default_view'] == 'COLLAPSED' ? 2 : 0);
+		$_POST['cat_cat_opt'] = ($_POST['cat_allow_collapse'] == 'Y' ? 1 : 0) | ($_POST['cat_default_view'] == 'COLLAPSED' ? 0 : 2);
 		unset($_POST['cat_allow_collapse'], $_POST['cat_allow_collapse']);
 
 		$cat = new fud_cat;
@@ -45,13 +45,12 @@
 		}
 		$cat_opt = $c['cat_opt'];
 	} else {
-		$tmp = new fud_cat;
-		$c = get_object_vars($tmp);
+		$c = get_class_vars('fud_cat');
 		foreach ($c as $k => $v) {
 			${'cat_'.$k} = '';
 		}
 		$cat_pos = 'LAST';
-		$cat_opt = 1;
+		$cat_opt = 3;
 	}
 
 	if (isset($_GET['del'])) {
@@ -79,37 +78,37 @@
 ?>
 <form method="post" action="admcat.php">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=3>
-	<tr bgcolor="#bff8ff">
+<table class="datatable">
+	<tr class="field">
 		<td>Category Name:</td>
 		<td><input type="text" name="cat_name" value="<?php echo htmlspecialchars($cat_name); ?>" maxLength=50></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Description:</td>
 		<td><input type="text" name="cat_description" value="<?php echo htmlspecialchars($cat_description); ?>" maxLength=255></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Collapsible</td>
 		<td><?php draw_select('cat_allow_collapse', "Yes\nNo", "Y\nN", $cat_opt & 1); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Default view: </td>
 		<td><?php draw_select('cat_default_view', "Open\nCollapsed", "OPEN\nCOLLAPSED", !($cat_opt & 2)); ?></td>
 	</tr>
 
 	<?php if (!$edit) { ?>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Insert position:</td>
 		<td><?php draw_select('cat_pos', "Last\nFirst", "LAST\nFIRST", $cat_pos); ?></td>
 	</tr>
 
 	<?php } ?>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="fieldaction">
 		<td colspan=2 align=right>
 <?php
 	if ($edit) {
@@ -130,8 +129,8 @@
 	}
 ?>
 <br>
-<table border=0 cellspacing=3 cellpadding=2>
-<tr bgcolor="#e5ffe7">
+<table class="resulttable fulltable">
+<tr class="resulttopic">
 	<td>Category Name</td>
 	<td>Description</td>
 	<td>Collapsible</td>
@@ -144,15 +143,15 @@
 	$i = 1;
 	while ($r = db_rowobj($c)) {
 		if ($edit == $r->id) {
-			$bgcolor = ' bgcolor="#ffb5b5"';
+			$bgcolor = ' class="resultrow1"';
 		} else {
-			$bgcolor = ($i++%2) ? ' bgcolor="#fffee5"' : '';
+			$bgcolor = ($i++%2) ? ' class="resultrow2""' : ' class="resultrow1"';
 		}
 		if (isset($_GET['chpos'])) {
 			if ($_GET['chpos'] == $r->view_order) {
-				$bgcolor = ' bgcolor="#ffb5b5"';
+				$bgcolor = ' class="resultrow2"';
 			} else if ($_GET['chpos'] != ($r->view_order - 1)) {
-				echo '<tr bgcolor="#efefef"><td align=center colspan=7><font size=-1><a href="admcat.php?chpos='.$_GET['chpos'].'&newpos='.($r->view_order - ($_GET['chpos'] < $r->view_order ? 1 : 0)).'&'._rsidl.'">Place Here</a></font></td></tr>';
+				echo '<tr class="field"><td align=center colspan=7><font size=-1><a href="admcat.php?chpos='.$_GET['chpos'].'&newpos='.($r->view_order - ($_GET['chpos'] < $r->view_order ? 1 : 0)).'&'._rsidl.'">Place Here</a></font></td></tr>';
 			}
 			$lp = $r->view_order;
 		}
@@ -162,9 +161,9 @@
 
 		echo '<tr '.$bgcolor.'>
 			<td>'.$r->name.'</td>
-			<td>'.substr($r->description, 0, 30).'</td>
+			<td>'.htmlspecialchars(substr($r->description, 0, 30)).'</td>
 			<td>'.($r->cat_opt & 1 ? 'Yes' : 'No').'</td>
-			<td>'.($r->cat_opt & 2 ? 'Collapsed' : 'Open').'</td>
+			<td>'.($r->cat_opt & 2 ? 'Open' : 'Collapsed').'</td>
 			<td nowrap>[<a href="admforum.php?cat_id='.$r->id.'&'._rsidl.'">Edit Forums</a>] [<a href="admcat.php?edit='.$r->id.'&'._rsidl.'">Edit Category</a>] [<a href="admcat.php?del='.$r->id.'&'._rsidl.'">Delete</a>]</td>
 			<td>[<a href="admcat.php?chpos='.$r->view_order.'&'._rsidl.'">Change</a>]</td></tr>';
 
@@ -173,7 +172,7 @@
 		}
 	}
 	if (isset($lp)) {
-		echo '<tr bgcolor="#efefef"><td align=center colspan=7><font size=-1><a href="admcat.php?chpos='.$_GET['chpos'].'&newpos='.($lp + 1).'&'._rsidl.'">Place Here</a></font></td></tr>';
+		echo '<tr class="field"><td align=center colspan=7><font size=-1><a href="admcat.php?chpos='.$_GET['chpos'].'&newpos='.($lp + 1).'&'._rsidl.'">Place Here</a></font></td></tr>';
 	}
 ?>
 </table>

@@ -48,25 +48,26 @@
 		echo '<font color="#ff0000" size="+3">You MUST UNLOCK the forum\'s files before you can run the newsgroup importing script(s).</font><p>';
 	}
 ?>
+<h2>Newsgroup Manager</h2>
 <form method="post" name="frm_forum" action="admnntp.php">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=3>
-	<tr bgcolor="#bff8ff">
+<table class="datatable">
+	<tr class="field">
 		<td>Newsgroup Server:<br><font size="-1">The ip or the hostname of your newsgroup server.</font></td>
 		<td><input type="text" name="nntp_server" value="<?php echo htmlspecialchars($nntp_server); ?>" maxlength=255></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Newsgroup Server Port:</td>
 		<td><input type="text" name="nntp_port" value="<?php echo $nntp_port; ?>" maxlength=10></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Newsgroup Server Timeout:<br><font size="-1">Number of seconds to wait for the nntp server to respond.</font></td>
 		<td><input type="text" name="nntp_timeout" value="<?php echo $nntp_timeout; ?>" maxlength=10></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Newsgroup:<br><font size="-1">The name of the newsgroup to import.</font></td>
 		<td><input type="text" name="nntp_newsgroup" value="<?php echo $nntp_newsgroup; ?>" maxlength=255></td>
 	</tr>
@@ -75,17 +76,17 @@
 		<td colspan=2><br></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Authentication Method:<br><font size="-1">The authentication method to use when connecting to nntp server.</font></td>
 		<td><?php draw_select('nntp_auth', "None\nOriginal\nSimple", "64\n128\n0", ($nntp_nntp_opt & 128 ? 128 : ($nntp_nntp_opt & 64 ? 64 : 0))); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Login:<br><font size="-1">Not needed if authentication is not being used.</font></td>
 		<td><input type="text" name="nntp_login" value="<?php echo htmlspecialchars($nntp_login); ?>" maxlength=255></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Password:<br><font size="-1">Not needed if authentication is not being used.</font></td>
 		<td><input type="text" name="nntp_pass" value="<?php echo htmlspecialchars($nntp_pass); ?>" maxlength=255></td>
 	</tr>
@@ -94,7 +95,7 @@
 		<td colspan=2><br></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Forum:<br>
 			<font size="-1">Messages imported from the newsgroup will be imported into this forum.
@@ -116,7 +117,7 @@
 		</select></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Moderate Newsgroup Posts:<br>
 			<font size="-1">Any posts from the newsgroup would first need to be approved by moderator(s) before
@@ -125,7 +126,7 @@
 		<td><?php draw_select('nntp_nntp_post_apr', "No\nYes", "0\n1", ($nntp_nntp_opt & 1 ? 1 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Syncronize Forum Posts to Newsgroup:<br>
 			<font size="-1">If enabled, posts made by forum members inside the forum will be sent to the
@@ -135,7 +136,7 @@
 		<td><?php draw_select('nntp_allow_frm_post', "No\nYes", "0\n2", ($nntp_nntp_opt & 2 ? 2 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Moderate Forum Posts:<br>
 			<font size="-1">If enabled, any posts made by forum members in the forum would need to be first approved
@@ -144,7 +145,7 @@
 		<td><?php draw_select('nntp_frm_post_apr', "No\nYes", "0\n4", ($nntp_nntp_opt & 4 ? 4 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Allow Newsgroup Attachments:<br>
 			<font size="-1">If enabled, ANY file attachment attached to a message in the newsgroup will be
@@ -153,7 +154,7 @@
 		<td><?php draw_select('nntp_allow_nntp_attch', "No\nYes", "0\n8", ($nntp_nntp_opt & 8 ? 8 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Slow Reply Match:<br>
 			<font size="-1">Certain mail client do sent send necessary headers needed to determine if a message is
@@ -164,7 +165,7 @@
 		<td><?php draw_select('nntp_complex_reply_match', "No\nYes", "0\n16", ($nntp_nntp_opt & 16 ? 16 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>
 			Create New Users:<br>
 			<font size="-1">When importing messages from a newsgroup, should a new user be created for every newsgroup
@@ -175,7 +176,7 @@
 		<td><?php draw_select('nntp_create_users', "No\nYes", "0\n32", ($nntp_nntp_opt & 32 ? 32 : 0)); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="fieldaction">
 		<td colspan=2 align=right>
 			<?php if ($edit) echo '<input type="submit" value="Cancel" name="btn_cancel">&nbsp;'; ?>
 			<input type="submit" value="<?php echo ($edit ? 'Update Newsgroup Rule' : 'Add Newsgroup Rule'); ?>" name="nntp_submit">
@@ -185,8 +186,8 @@
 <input type="hidden" name="edit" value="<?php echo $edit; ?>">
 </form>
 <br><br>
-<table border=0 cellspacing=3 cellpadding=2 width="100%">
-	<tr bgcolor="#e5ffe7">
+<table class="resulttable fulltable">
+	<tr class="resulttopic">
 		<td nowrap>Newsgroup Rule</td>
 		<td>Forum</td>
 		<td>Exec Line</td>
@@ -197,9 +198,9 @@
 	$i = 1;
 	while ($r = db_rowarr($c)) {
 		if ($edit == $r[0]) {
-			$bgcolor = ' bgcolor="#ffb5b5"';
+			$bgcolor = ' class="resultrow1"';
 		} else {
-			$bgcolor = ($i++%2) ? ' bgcolor="#fffee5"' : '';
+			$bgcolor = ($i++%2) ? ' class="resultrow2"' : ' class="resultrow1"';
 		}
 		echo '<tr'.$bgcolor.'><td>'.htmlspecialchars($r[1]).'</td><td>'.$r[2].'</td>
 			<td nowrap><font size="-1">'.$GLOBALS['DATA_DIR'].'scripts/nntp.php '.$r[0].' </font></td>

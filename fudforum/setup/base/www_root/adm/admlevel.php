@@ -38,7 +38,7 @@
 			q('UPDATE '.$DBHOST_TBL_PREFIX.'users SET level_id='.$r[0].' WHERE posted_msg_count<'.$pl.' AND posted_msg_count>='.$r[1]);
 			$pl = $r[1];
 		}
-		unset($r);
+		unset($c);
 	}
 
 	require($WWW_ROOT_DISK . 'adm/admpanel.php');
@@ -48,28 +48,28 @@
 <form method="post" name="lev_form" action="admlevel.php">
 <input type="hidden" name="edit" value="<?php echo $edit; ?>">
 <?php echo _hs; ?>
-<table border=0 cellspacing=1 cellpadding=2>
-	<tr bgcolor="#bff8ff">
+<table class="datatable solidtable">
+	<tr class="field">
 		<td>Rank Name</td>
 		<td><input type="text" name="lev_name" value="<?php echo htmlspecialchars($lev_name); ?>"></td>
 	</tr>
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Rank Image<br><font size="-1">URL to the image<font></td>
 		<td><input type="text" name="lev_img" value="<?php echo htmlspecialchars($lev_img); ?>"><br>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Which Image to Show:</td>
 		<td><?php draw_select("lev_level_opt", "Avatar & Rank Image\nAvatar Only\nRank Image Only", "0\n1\n2", $lev_level_opt); ?></td>
 	</tr>
 
-	<tr bgcolor="#bff8ff">
+	<tr class="field">
 		<td>Post Count</td>
 		<td><input type="text" name="lev_post_count" value="<?php echo $lev_post_count; ?>" size=11 maxLength=10></td>
 	</tr>
 
 	<tr>
-		<td colspan=2 bgcolor="#bff8ff" align=right>
+		<td colspan=2 class="fieldaction" align=right>
 <?php
 			if (!$edit) {
 				echo '<input type="submit" name="lev_submit" value="Add Level">';
@@ -82,8 +82,8 @@
 </table>
 </form>
 
-<table border=0 cellspacing=1 cellpadding=1>
-<tr bgcolor="#e5ffe7">
+<table class="resulttable fulltable">
+<tr class="resulttopic">
 	<td>Name</td>
 	<td>Post Count</td>
 	<td>Action</td>
@@ -93,9 +93,9 @@
 	$i = 1;
 	while ($r = db_rowobj($c)) {
 		if ($edit == $r->id) {
-			$bgcolor = ' bgcolor="#ffb5b5"';
+			$bgcolor = ' class="resultrow1"';
 		} else {
-			$bgcolor = ($i++%2) ? ' bgcolor="#fffee5"' : '';
+			$bgcolor = ($i++%2) ? ' class="resultrow2"' : ' class="resultrow1"';
 		}
 		echo '<tr'.$bgcolor.'><td>'.$r->name.'</td><td align=center>'.$r->post_count.'</td><td><a href="admlevel.php?edit='.$r->id.'&'._rsidl.'">Edit</a> | <a href="admlevel.php?del='.$r->id.'&'._rsidl.'">Delete</a></td></tr>';
 	}

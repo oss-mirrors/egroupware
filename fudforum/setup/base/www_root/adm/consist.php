@@ -68,12 +68,12 @@ function delete_zero($tbl, $q)
 	if (!isset($_POST['conf']) && !isset($_GET['enable_forum']) && !isset($_GET['opt'])) {
 ?>
 <form method="post" action="consist.php">
-<div align="center">
+<div class="alert">
 Consistency check is a complex process which may take several minutes to run, while it is running your
-forum will be disabled.<br><br>
+forum will be disabled.
+</div>
 <h2>Do you wish to proceed?</h2>
 <input type="submit" name="cancel" value="No">&nbsp;&nbsp;&nbsp;<input type="submit" name="conf" value="Yes">
-</div>
 <?php echo _hs; ?>
 </form>
 <?php
@@ -230,11 +230,12 @@ forum will be disabled.<br><br>
 	draw_stat('Checking forum & topic relations');
 	$c = q('SELECT id FROM '.$tbl.'forum');
 	while ($f = db_rowarr($c)) {
-		$r = db_saq('select MAX(last_post_id), SUM(replies), COUNT(*) FROM '.$tbl.'thread t INNER JOIN '.$tbl.'msg m ON t.root_msg_id=m.id AND m.apr=1 WHERE t.forum_id='.$f[0]);
-		if (!$r[2]) {
+		$r = db_saq('select SUM(replies), COUNT(*) FROM '.$tbl.'thread t INNER JOIN '.$tbl.'msg m ON t.root_msg_id=m.id AND m.apr=1 WHERE t.forum_id='.$f[0]);
+		if (!$r[1]) {
 			q('UPDATE '.$tbl.'forum SET thread_count=0, post_count=0, last_post_id=0 WHERE id='.$f[0]);
 		} else {
-			q('UPDATE '.$tbl.'forum SET thread_count='.$r[2].', post_count='.($r[1] + $r[2]).', last_post_id='.(int)$r[0].' WHERE id='.$f[0]);
+			$lpi = q_singleval('SELECT MAX(last_post_id) FROM '.$tbl.'thread WHERE forum_id='.$f[0].' AND moved_to=0');
+			q('UPDATE '.$tbl.'forum SET thread_count='.$r[1].', post_count='.($r[0] + $r[1]).', last_post_id='.(int)$lpi.' WHERE id='.$f[0]);
 		}
 	}
 	unset($c);
@@ -438,12 +439,16 @@ forum will be disabled.<br><br>
 	q('UPDATE '.$tbl.'users SET level_id=0, posted_msg_count=0, u_last_post_id=0, custom_status=NULL');
 	if (__dbtype__ == 'mysql') {
 		q('INSERT INTO '.$tbl.'tmp_consist (ps, p, c) SELECT MAX(post_stamp), poster_id, count(*) FROM '.$tbl.'msg WHERE apr=1 GROUP BY poster_id ORDER BY poster_id');
-		$c = q('SELECT '.$tbl.'tmp_consist.p, '.$tbl.'tmp_consist.c, m.id FROM '.$tbl.'tmp_consist INNER JOIN '.$tbl.'msg m ON m.apr=1 AND m.poster_id='.$tbl.'tmp_consist.p AND m.post_stamp='.$tbl.'tmp_consist.ps');
-		while ($r = db_rowarr($c)) {
-			if (!$r[1]) { continue; }
-			q('UPDATE '.$tbl.'users SET u_last_post_id='.$r[2].', posted_msg_count='.$r[1].' WHERE id='.$r[0]);
+		if (version_compare("4.0.4", q_singleval("SELECT VERSION()")) < 1) {
+			q("UPDATE ".$tbl."users u, ".$tbl."tmp_consist, ".$tbl."msg m SET u.u_last_post_id=m.id, u.posted_msg_count=".$tbl."tmp_consist.c WHERE u.id=m.poster_id AND m.poster_id=".$tbl."tmp_consist.p AND m.post_stamp=".$tbl."tmp_consist.ps AND m.apr=1");
+		} else {
+			$c = q('SELECT '.$tbl.'tmp_consist.p, '.$tbl.'tmp_consist.c, m.id FROM '.$tbl.'tmp_consist INNER JOIN '.$tbl.'msg m ON m.apr=1 AND m.poster_id='.$tbl.'tmp_consist.p AND m.post_stamp='.$tbl.'tmp_consist.ps');
+			while ($r = db_rowarr($c)) {
+				if (!$r[1]) { continue; }
+				q('UPDATE '.$tbl.'users SET u_last_post_id='.$r[2].', posted_msg_count='.$r[1].' WHERE id='.$r[0]);
+			}
+			unset($c);
 		}
-		unset($c);
 	} else {
 		$c = q('SELECT MAX(post_stamp), poster_id, count(*) FROM '.$tbl.'msg WHERE apr=1 GROUP BY poster_id ORDER BY poster_id');
 		while (list($ps, $uid, $cnt) = db_rowarr($c)) {
@@ -544,6 +549,7 @@ forum will be disabled.<br><br>
 	# technically a group cannot exist without being assigned to at least 1 resource
 	# so when we encounter such as group, we do our patriotic duty and remove it.
 	delete_zero($tbl.'groups', 'SELECT g.id FROM '.$tbl.'groups g LEFT JOIN '.$tbl.'group_resources gr ON g.id=gr.group_id WHERE g.id > 2 AND gr.id IS NULL');
+	delete_zero($tbl.'groups', 'SELECT g.id FROM '.$tbl.'groups g LEFT JOIN '.$tbl.'forum f ON g.forum_id=f.id WHERE g.forum_id > 0 AND g.id > 2 AND f.id IS NULL');
 	draw_stat('Done: Validating group validity');
 
 	draw_stat('Validating group members');

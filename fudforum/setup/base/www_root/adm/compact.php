@@ -28,13 +28,13 @@
 	if (!isset($_POST['conf'])) {
 ?>
 <form method="post" action="compact.php">
-<div align="center">
+<div class="alert">
 The compactor will rebuild the storage files were the message bodies are kept. While the compactor is running
 your forum will be temporarily inaccessible. This process may take a while to run, depending on your harddrive speed
-and the amount of messages your forum has.<br><br>
+and the amount of messages your forum has.
+</div>
 <h2>Do you wish to proceed?</h2>
 <input type="submit" name="cancel" value="No">&nbsp;&nbsp;&nbsp;<input type="submit" name="conf" value="Yes">
-</div>
 <?php echo _hs; ?>
 </form>
 <?php

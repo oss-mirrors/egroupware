@@ -47,8 +47,7 @@
 			}
 
 			if (empty($_POST['gr_name']) && $edit > 2) {
-				$error = 1;
-				$error_reason = 'You must provide a name for your new group.';
+				$_POST['gr_name'] = q_singleval("SELECT name FROM ".$DBHOST_TBL_PREFIX."groups WHERE id=".$edit);
 			}
 
 			if ($val < 0) {
@@ -144,7 +143,7 @@
 
 		/* restore form values */
 		if ($error) {
-			$gr_name = $_POST['gr_name'];
+			$gr_name = !empty($_POST['gr_name']) ? $_POST['gr_name'] : '';
 			$gr_resource = array();
 			if (isset($_POST['gr_resource']) && is_array($_POST['gr_resource'])) {
 				foreach ($_POST['gr_resource'] as $v) {
@@ -188,7 +187,7 @@
 ?>
 <h2>Admin Group Manager: Add/Edit groups or group leaders</h2>
 <form method="post" action="admgroups.php">
-<table border=0 cellspacing=0>
+<table class="datatable field">
 <?php echo _hs; ?>
 <input type="hidden" name="edit" value="<?php echo $edit; ?>">
 <tr><td>Group Name: </td><td>
@@ -279,8 +278,8 @@
 </table>
 </form>
 
-<table border=1 cellspacing=1 cellpadding=3>
-<tr style="font-size: x-small;">
+<table class="datatable fulltable">
+<tr class="tiny field">
 <td valign="top"><b>Group Name</b></td>
 <?php
 	$src = array('!\s!', '!([A-Za-z]{1})!\e');
@@ -311,11 +310,11 @@
 		$del_link = !$v['forum_id'] ? '[<a href="admgroups.php?del='.$k.'&'._rsidl.'">Delete</a>]' : '';
 		$user_grp_mgr = ($k > 2) ? ' '.$del_link.'<br>[<a href="admgrouplead.php?group_id='.$k.'&'._rsidl.'">Manage Leaders</a>] [<a href="../'.__fud_index_name__.'?t=groupmgr&group_id='.$k.'&'._rsidl.'" target=_new>Manage Users</a>]' : '';
 
-		echo '<tr style="font-size: x-small;"><td><a name="g'.$k.'">'.$v['gn'].'</a></td>';
+		echo '<tr class="tiny field"><td><a name="g'.$k.'">'.$v['gn'].'</a></td>';
 		foreach ($hdr as $v2) {
 			echo '<td nowrap align="center" title="'.$v2[1].'">';
 			if ($v['inherit_id'] && $v['groups_opti'] & $v2[0]) {
-				echo '<a href="#g'.$v['inherit_id'].'" title="Inheriting permissions from '.$gl[$v['inherit_id']]['gn'].'">(I: '.($v['groups_opt'] & $v2[0] ? '<font color="green">Y</font>' : '<font color="red">N</font>').')</a>';
+				echo '<a href="#g'.$v['inherit_id'].'" title="Inheriting permissions from '.$gl[$v['inherit_id']]['gn'].'">(I: '.($gl[$v['inherit_id']]['groups_opt'] & $v2[0] ? '<font color="green">Y</font>' : '<font color="red">N</font>').')</a>';
 			} else {
 				echo ($v['groups_opt'] & $v2[0] ? '<font color="green">Y</font>' : '<font color="red">N</font>');
 			}
