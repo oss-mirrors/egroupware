@@ -15,44 +15,69 @@
     $phpgw_info['flags']['currentapp'] = 'projects';
     include('../header.inc.php');
 
-    $t = new Template(PHPGW_APP_TPL);
+    $t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
     $t->set_file(array('activity_add' => 'formactivity.tpl'));
     $t->set_block('activity_add','add','addhandle');
     $t->set_block('activity_add','edit','edithandle');
 
-    if ($submit) {
+    if ($submit)
+    {
 
-    if ($choose) { $num = create_activityid($year); }
-    else { $num = addslashes($num); }
+	if ($choose)
+	{
+	    $num = create_activityid($year);
+	}
+	else
+	{
+	    $num = addslashes($num);
+	}
 
-    $errorcount = 0;
-    if (!$num) { $error[$errorcount++] = lang('Please enter an ID for that Activity !'); }
+	$errorcount = 0;
+	if (!$num)
+	{
+	    $error[$errorcount++] = lang('Please enter an ID for that activity !');
+	}
 
-    $phpgw->db->query("select count(*) from phpgw_p_activities where num='$num'");
-    $phpgw->db->next_record();
-    if ($phpgw->db->f(0) != 0) { $error[$errorcount++] = lang('That Activity ID has been used already !'); }
+	$phpgw->db->query("select count(*) from phpgw_p_activities where num='$num'");
+	$phpgw->db->next_record();
+	if ($phpgw->db->f(0) != 0)
+	{
+	    $error[$errorcount++] = lang('That Activity ID has been used already !');
+	}
 
-    if ((!$billperae) || ($billperae==0)) { $error[$errorcount++] = lang('Please enter the bill per workunit !'); }
-    if ((!$minperae) || ($minperae==0)) { $error[$errorcount++] = lang('Please enter the minutes per workunit !'); }
+	if ((!$billperae) || ($billperae==0))
+	{
+	    $error[$errorcount++] = lang('Please enter the bill per workunit !');
+	}
+	if ((!$minperae) || ($minperae==0))
+	{
+	    $error[$errorcount++] = lang('Please enter the minutes per workunit !');
+	}
 
-    if (! $error) {
-    $descr = addslashes($descr);
-    $phpgw->db->query("insert into phpgw_p_activities (num,descr,remarkreq,billperae,minperae) "
+	if (! $error)
+	{
+	    $descr = addslashes($descr);
+	    $phpgw->db->query("insert into phpgw_p_activities (num,descr,remarkreq,billperae,minperae) "
                 . "values ('$num','$descr','$remarkreq','$billperae','$minperae')");
 	}
     }
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang("Activity $num has been added !")); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Activity x has been added !',$num)); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
 
     $t->set_var('actionurl',$phpgw->link('/projects/addactivity.php'));
+    $t->set_var('done_url',$phpgw->link('/projects/activities.php'));
 
-    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
-    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-    $t->set_var('error','');
+    if (isset($phpgw_info['user']['preferences']['common']['currency']))
+    {
+	$currency = $phpgw_info['user']['preferences']['common']['currency'];
+	$t->set_var('error','');
     }
-    else { $t->set_var('error',lang("Please select your currency in preferences!")); }  
+    else
+    {
+	$t->set_var('error',lang('Please select your currency in preferences !'));
+    }  
 
     $t->set_var('lang_action',lang('Add activity'));
     $hidden_vars = "<input type=\"hidden\" name=\"id\" value=\"$id\">";
@@ -61,14 +86,16 @@
     $t->set_var('lang_num',lang('Activity ID'));
     $t->set_var('num',$num);
 
-    if (!$submit) {
-    $choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
-    $t->set_var('lang_choose',lang('Auto generate Activity ID ?'));
-    $t->set_var('choose',$choose);
+    if (!$submit)
+    {
+	$choose = "<input type=\"checkbox\" name=\"choose\" value=\"True\">";
+	$t->set_var('lang_choose',lang('Generate Activity ID ?'));
+	$t->set_var('choose',$choose);
     }
-    else {
-    $t->set_var('lang_choose','');
-    $t->set_var('choose','');
+    else
+    {
+	$t->set_var('lang_choose','');
+	$t->set_var('choose','');
     }
 
     $t->set_var('lang_descr',lang('Description'));
@@ -80,13 +107,21 @@
     $t->set_var('billperae',$billperae);
 
     $t->set_var('lang_remarkreq',lang('Remark required'));
-    $remarkreq_list = "<option value=\"N\">" . lang("No") . "</option>\n"
-           	    . "<option value=\"Y\" selected>" . lang("Yes") . "</option>\n";
+
+    if ($remarkreq=='N'):
+         $stat_sel[0]=' selected';
+    elseif ($remarkreq=='Y'):
+         $stat_sel[1]=' selected';
+    endif;
+
+    $remarkreq_list = '<option value="N"' . $stat_sel[0] . '>' . lang('No') . '</option>' . "\n"
+           	    . '<option value="Y"' . $stat_sel[1] . '>' . lang('Yes') . '</option>' . "\n";
     $t->set_var('remarkreq_list',$remarkreq_list);
 
     $t->set_var('lang_add',lang('Add'));
+    $t->set_var('lang_done',lang('Done'));
     $t->set_var('lang_reset',lang('Clear Form'));
-        
+
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');
     $t->pparse('out','activity_add');

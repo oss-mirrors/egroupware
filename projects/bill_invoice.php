@@ -17,23 +17,34 @@
 
     include('../header.inc.php');
 
-    $t = new Template(PHPGW_APP_TPL);
+    $t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
     $t->set_file(array('projecthours_list_t' => 'bill_listhours.tpl'));
     $t->set_block('projecthours_list_t','projecthours_list','list');
   
-    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
-    else { $join = " LEFT JOIN "; }
+    if ($phpgw_info['server']['db_type']=='pgsql')
+    {
+	$join = " JOIN ";
+    }
+    else
+    {
+	$join = " LEFT JOIN ";
+    }
 
-    if (isset($phpgw_info['user']['preferences']['common']['currency'])) {
+    if (isset($phpgw_info['user']['preferences']['common']['currency']))
+    {
 	$currency = $phpgw_info['user']['preferences']['common']['currency'];
 	$t->set_var('error','');
     }
-    else { $t->set_var('error',lang('Please select your currency in preferences !')); }
+    else
+    {
+	$t->set_var('error',lang('Please select your currency in preferences !'));
+    }
 
     $db2 = $phpgw->db;
   
-    if($Invoice) {
-    $errorcount = 0;
+    if($Invoice)
+    {
+	$errorcount = 0;
 
 	$db2->query("Select customer from phpgw_p_projects where id='$project_id'");
 	$db2->next_record();
@@ -47,17 +58,19 @@
         if (!$invoice_num) { $error[$errorcount++] = lang('Please enter an Invoice ID for that invoice !'); }
         if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
 
-    if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
-    else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date !') . " : " . "$month - $day - $year"; }
-    }
+	if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
+	else
+	{
+    	    if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date !') . ' : ' . "$month - $day - $year"; }
+	}
 
-    if (! $error) {
+	if (! $error)
+	{
 
-	$phpgw->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('$invoice_num',0,'$project_id','$customer','$date')");
-	$phpgw->db->query("SELECT id from phpgw_p_invoice WHERE num='$invoice_num'");
-	$phpgw->db->next_record();
-	$invoice_id = $phpgw->db->f("id");
+	    $phpgw->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('$invoice_num',0,'$project_id','$customer','$date')");
+	    $phpgw->db->query("SELECT id from phpgw_p_invoice WHERE num='$invoice_num'");
+	    $phpgw->db->next_record();
+	    $invoice_id = $phpgw->db->f("id");
 
 /*	$db2->query("SELECT hours_id FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'");
 	while ($db2->next_record()) {
@@ -65,19 +78,20 @@
 	} 
 	$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'"); */
 
-	while($select && $entry=each($select)) {
-        $phpgw->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('$invoice_id','$entry[0]')");
-        $phpgw->db->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
-        }
+	    while($select && $entry=each($select))
+	    {
+    		$phpgw->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('$invoice_id','$entry[0]')");
+    		$phpgw->db->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
+    	    }
 
-	$phpgw->db->query("SELECT sum(billperae*ceiling(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
+	    $phpgw->db->query("SELECT sum(billperae*ceiling(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
                      ."WHERE phpgw_p_invoicepos.invoice_id='$invoice_id' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id");
-	$phpgw->db->next_record();
-	$db2->query("UPDATE phpgw_p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id='$invoice_id'");
+	    $phpgw->db->next_record();
+	    $db2->query("UPDATE phpgw_p_invoice SET sum='".$phpgw->db->f("sum")."' WHERE id='$invoice_id'");
 	}
     }
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Invoice has been created !')); }
+    if (($Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Invoice x has been created !',$invoice_num)); }
     if ((! $Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"
@@ -92,8 +106,7 @@
 
 //-------------- list header variable template-declarations------------------------
 
-    $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-
+    $t->set_var(th_bg,$phpgw_info['theme']['th_bg']);
     $t->set_var('currency',$currency);
     $t->set_var('sort_activity',lang('Activity'));
     $t->set_var('sort_hours_descr',lang('Job'));
@@ -107,11 +120,13 @@
     $t->set_var('actionurl',$phpgw->link('/projects/bill_invoice.php'));
     $t->set_var('lang_print_invoice',lang('Print invoice'));
   
-    if (!$invoice_id) {
-    $t->set_var('print_invoice',$phpgw->link('/projects/fail.php'));
+    if (!$invoice_id)
+    {
+	$t->set_var('print_invoice',$phpgw->link('/projects/fail.php'));
     }
-    else {
-    $t->set_var('print_invoice',$phpgw->link('/projects/bill_invoiceshow.php',"invoice_id=$invoice_id"));
+    else
+    {
+	$t->set_var('print_invoice',$phpgw->link('/projects/bill_invoiceshow.php',"invoice_id=$invoice_id"));
     }
 
 // ------------------------ end header declaration ------------------------------------

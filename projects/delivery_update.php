@@ -12,19 +12,25 @@
   \**************************************************************************/
   /* $Id$ */
 
-    $phpgw_info["flags"] = array('currentapp' => 'projects',
+    $phpgw_info['flags'] = array('currentapp' => 'projects',
                                'enable_nextmatchs_class' => True);
     include('../header.inc.php');
 
-    $t = new Template(PHPGW_APP_TPL);
+    $t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
     $t->set_file(array('projecthours_list_t' => 'del_listhours.tpl'));
     $t->set_block('projecthours_list_t','projecthours_list','list');
 
     $projects = CreateObject('projects.projects');
     $grants = $phpgw->acl->get_grants('projects');
 
-    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
-    else { $join = " LEFT JOIN "; }
+    if ($phpgw_info['server']['db_type']=='pgsql')
+    {
+	$join = " JOIN ";
+    }
+    else
+    {
+	$join = " LEFT JOIN ";
+    }
 
     $db2 = $phpgw->db;
 
@@ -56,7 +62,7 @@
     }
 
     if ($errorcount) { $t->set_var("message",$phpgw->common->error_list($error)); }
-    if (($Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Delivery has been updated !')); }
+    if (($Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Delivery x has been updated !',$delivery_num)); }
     if ((! $Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"

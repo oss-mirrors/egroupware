@@ -81,12 +81,14 @@
     if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Job has been added !')); }
     if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
-    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
-    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-    $t->set_var('error','');
+    if (isset($phpgw_info['user']['preferences']['common']['currency']))
+    {
+	$currency = $phpgw_info['user']['preferences']['common']['currency'];
+	$t->set_var('error','');
     }
-    else {
-    $t->set_var('error',lang('Please select your currency in preferences !'));
+    else
+    {
+	$t->set_var('error',lang('Please select your currency in preferences !'));
     }
 
     $t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));

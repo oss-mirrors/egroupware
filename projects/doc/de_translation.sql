@@ -1,11 +1,18 @@
 DELETE from lang WHERE app_name='projects' and lang='de';
 DELETE from lang WHERE app_name='common' and message_id='Projects' and lang='de';
-DELETE from lang WHERE message_id='Project preferences' and app_name='preferences' and lang='de';
-DELETE from lang WHERE message_id='Project categories' and app_name='preferences' and lang='de';
-DELETE from lang WHERE message_id='Project access' and app_name='preferences' and lang='de';
 DELETE from lang WHERE message_id='Projects' and app_name='admin' and lang='de' and content='Projekte';
 DELETE from lang WHERE message_id='Project administration' and app_name='admin' and lang='de' and content='Projekt Administration';
 
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job has been added !','projects','de','Job wurde erstellt !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Job has been updated !','projects','de','Job wurde &uuml;berarbeitet !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice x has been updated !','projects','de','Rechnung %1 wurde &uuml;berarbeitet !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice x has been created !','projects','de','Rechnung %1 wurde erstellt !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery x has been created !','projects','de','Lieferung %1 wurde erstellt !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery x has been updated !','projects','de','Lieferung %1 wurde &uuml;berarbeitet !');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Generate Activity ID ?','projects','de','Generieren der Activit&auml;ts ID ?');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Generate Delivery ID ?','projects','de','Generieren Lieferungs ID ?');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Generate Project ID ?','projects','de','Generate Projekt ID ?');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Generate Invoice ID ?','projects','de','Generate Rechnungs ID ?');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','de','Mehrwertsteuer f&uuml Arbeitsstunden');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','de','Projekte');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project billing','projects','de','Projektabrechnung');

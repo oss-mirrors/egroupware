@@ -6,7 +6,7 @@
         <form method="POST" name="activity_form" action="{actionurl}">
          {hidden_vars}
 	    {error}{message}
-          <table width="75%" border="0" cellspacing="1" cellpadding="3">
+          <table width="75%" border="0" cellspacing="2" cellpadding="2">
          <tr>
           <td>{lang_choose}</td>
           <td>{choose}</td>
@@ -35,24 +35,32 @@
          
          <!-- BEGIN add -->
          
-         <table width="75%" border="0" cellspacing="1" cellpadding="3">
+         <table width="50%" border="0" cellspacing="2" cellpadding="2">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
-          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
+          <td height="50" align="center"><input type="submit" name="submit" value="{lang_add}"></td>
+          <td height="50" align="center"><input type="reset" name="reset" value="{lang_reset}"></form></td>
+	<td height="50" align="center">
+        <form method="POST" action="{done_url}">
+       <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
-         </form>
          </center>
-         
+
         <!-- END add -->
-        
+
         <!-- BEGIN edit -->
-         
-         <table width="75%" border="0" cellspacing="1" cellpadding="3">
+
+         <table width="50%" border="0" cellspacing="2" cellpadding="2">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_edit}">&nbsp;</form></td>
-          <td height="62"><form method="POST" action="{deleteurl}">{hidden_vars}
+          <td height="50" align="center">
+	    <input type="submit" name="submit" value="{lang_edit}"></form></td>
+          <td height="50" align="center">
+	    <form method="POST" action="{deleteurl}">
+	    {hidden_vars}
             <input type="submit" name="delete" value="{lang_delete}"></form></td>
+	<td height="50" align="center">
+        <form method="POST" action="{done_url}">
+       <input type="submit" name="done" value="{lang_done}"></form></td>
          </tr>
          </table>
 	</center>

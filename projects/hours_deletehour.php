@@ -12,7 +12,13 @@
   \**************************************************************************/
 /* $Id$ */
   
-    if ($confirm) {
+    if (! $id)
+    {
+	Header('Location: ' . $phpgw->link('/projects/hours_index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    }
+
+    if ($confirm)
+    {
 	$phpgw_info["flags"] = array('noheader' => True, 
                                   'nonavbar' => True);
     }
@@ -20,47 +26,31 @@
     $phpgw_info['flags']['currentapp'] = 'projects';
     include('../header.inc.php');
 
-
-    if (! $id) { Header('Location: ' . $phpgw->link('/projects/hours_index.php',
-		    "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
-    }
-
-    if ($confirm) {
-     $phpgw->db->query("delete from phpgw_p_hours where id='$id'");
-     Header('Location: ' . $phpgw->link('/projects/hours_listhours.php',"filter=$filter&sort=$sort&order=$order&query=$query&start=$start"));
+    if ($confirm)
+    {
+	$phpgw->db->query("delete from phpgw_p_hours where id='$id'");
+	Header('Location: ' . $phpgw->link('/projects/hours_listhours.php',"filter=$filter&sort=$sort&order=$order&query=$query&start=$start"));
     } 
-    else {
-    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+    else
+    {
+	$hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n"
 		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
      
-    $t = new Template(PHPGW_APP_TPL);
-    $t->set_file(array('job_delete' => 'delete.tpl'));
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array('job_delete' => 'delete.tpl'));
      
-    $t->set_var('deleteheader',lang('Are you sure you want to delete this job ?'));
-     
-    $nolinkf = $phpgw->link('/projects/hours_listhours.php',"sort=$sort&order=$order&"
-     				. "query=$query&start=$start&filter=$filter");
-    $nolink = "<a href=\"$nolinkf\">" . lang('No') ."</a>";
-    $t->set_var('nolink',$nolink);
-    
-    $yeslinkf = $phpgw->link('hours_deletehour.php',"id=$id&confirm=True&sort=$sort&order=$order&query=$query&start=$start&filter=$filter");
+	$t->set_var('deleteheader',lang('Are you sure you want to delete this job ?'));
+        $t->set_var('hidden_vars',$hidden_vars);
+	$t->set_var('nolink',$phpgw->link('/projects/hours_listhours.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('lang_no',lang('No'));
 
-    $yeslinkf = "<FORM method=\"POST\" name=yesbutton action=\"".$phpgw->link('/projects/hours_deletehour.php')."\">"
-                 . $hidden_vars
-                 . "<input type=hidden name=id value=$id>"
-		 . "<input type=hidden name=confirm value=True>"
-                 . "<input type=submit name=yesbutton value=Yes>"
-                 . "</FORM><SCRIPT>document.yesbutton.yesbutton.focus()</SCRIPT>";
-
-    $yeslink = "<a href=\"$yeslinkf\">" . lang('Yes') ."</a>";
-    $yeslink = $yeslinkf;
-
-    $t->set_var('yeslink',$yeslink);
-     
-    $t->pparse('out','job_delete');
+	$t->set_var('action_url',$phpgw->link('hours_deletehour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('lang_yes',lang('Yes'));
+	$t->pparse('out','job_delete');
     }
     $phpgw->common->phpgw_footer();
 ?>

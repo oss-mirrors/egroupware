@@ -12,25 +12,35 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"] = array('currentapp' => 'projects',
+    $phpgw_info['flags'] = array('currentapp' => 'projects',
                                'enable_nextmatchs_class' => True);
     include('../header.inc.php');
 
-    $t = new Template(PHPGW_APP_TPL);
+    $t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
     $t->set_file(array('projecthours_list_t' => 'bill_listhours.tpl'));
     $t->set_block('projecthours_list_t','projecthours_list','list');
 
     $projects = CreateObject('projects.projects');
     $grants = $phpgw->acl->get_grants('projects');
 
-    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
-    else { $join = " LEFT JOIN "; }
+    if ($phpgw_info['server']['db_type']=='pgsql')
+    {
+	$join = " JOIN ";
+    }
+    else
+    {
+	$join = " LEFT JOIN ";
+    }
 
-    if (isset($phpgw_info['user']['preferences']['common']['currency'])) {
+    if (isset($phpgw_info['user']['preferences']['common']['currency']))
+    {
 	$currency = $phpgw_info['user']['preferences']['common']['currency'];
 	$t->set_var('error','');
     }
-    else { $t->set_var('error',lang('Please select your currency in preferences !')); }
+    else
+    {
+	$t->set_var('error',lang('Please select your currency in preferences !'));
+    }
 
     $db2 = $phpgw->db;
   
@@ -49,7 +59,7 @@
 
     if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
     else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date ! :') . " " . "$month - $day - $year"; }
+        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date ! :') . ' ' . "$month - $day - $year"; }
     }
 
     if (! $error) { 
@@ -73,7 +83,7 @@
 	}
     }
     if ($errorcount) { $t->set_var("message",$phpgw->common->error_list($error)); }
-    if (($Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Invoice has been updated !')); }
+    if (($Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Invoice x has been updated !',$invoice_num)); }
     if ((! $Invoice) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n"

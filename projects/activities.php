@@ -51,9 +51,9 @@
 
     if (! $filter) { $filter = "none"; }
 
-    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0)
+    if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
     {
-	$limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+	$limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
     }
     else { $limit = 15; }
 
@@ -61,8 +61,14 @@
     {
 	$phpgw->db->query("select count(*) from phpgw_p_activities where descr like '%$query%'");
 	$phpgw->db->next_record();
-	if ($phpgw->db->f(0) == 1) { $t->set_var('lang_showing',lang('your search returned 1 match')); }
-	else { $t->set_var('lang_showing',lang("your search returned x matchs",$phpgw->db->f(0))); }
+	if ($phpgw->db->f(0) == 1)
+	{
+	    $t->set_var('lang_showing',lang('Your search has returned 1 match'));
+	}
+	else
+	{
+	    $t->set_var('lang_showing',lang('Your search returned x matchs',$phpgw->db->f(0)));
+	}
     } 
     else
     {
@@ -89,14 +95,14 @@
 
 // ----------------- list header variable template-declarations ---------------------------
   
-  $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-  $t->set_var('currency',$currency);
-  $t->set_var('sort_num',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'activities.php',lang('Activity ID')));
-  $t->set_var('sort_descr',$phpgw->nextmatchs->show_sort_order($sort,'descr',$order,'activities.php',lang('Description')));
-  $t->set_var('sort_billperae',$phpgw->nextmatchs->show_sort_order($sort,'billperae',$order,'activities.php',lang('Bill per workunit')));
-  $t->set_var('sort_minperae',$phpgw->nextmatchs->show_sort_order($sort,'minperae',$order,'activities.php',lang('Minutes per workunit')));
-  $t->set_var('h_lang_edit',lang('Edit'));
-  $t->set_var('h_lang_delete',lang('Delete'));
+    $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+    $t->set_var('currency',$currency);
+    $t->set_var('sort_num',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'activities.php',lang('Activity ID')));
+    $t->set_var('sort_descr',$phpgw->nextmatchs->show_sort_order($sort,'descr',$order,'activities.php',lang('Description')));
+    $t->set_var('sort_billperae',$phpgw->nextmatchs->show_sort_order($sort,'billperae',$order,'activities.php',lang('Bill per workunit')));
+    $t->set_var('sort_minperae',$phpgw->nextmatchs->show_sort_order($sort,'minperae',$order,'activities.php',lang('Minutes per workunit')));
+    $t->set_var('lang_edit',lang('Edit'));
+    $t->set_var('lang_delete',lang('Delete'));
 
 // ---------------------------- end header declaration -------------------------------------
 
@@ -115,42 +121,34 @@
 	$num  = $phpgw->strip_html($phpgw->db->f('num'));                                                                                                                                    
 	if (! $num)  $num  = '&nbsp;';
 
-    $descr = $phpgw->strip_html($phpgw->db->f('descr'));                                                                                                                                    
-    if (! $descr)  $descr  = '&nbsp;';
+	$descr = $phpgw->strip_html($phpgw->db->f('descr'));                                                                                                                                    
+	if (! $descr)  $descr  = '&nbsp;';
 
-    $billperae = $phpgw->db->f('billperae');
-    $minperae = $phpgw->db->f('minperae');
-    $t->set_var('tr_color',$tr_color);
+	$billperae = $phpgw->db->f('billperae');
+	$minperae = $phpgw->db->f('minperae');
+	$t->set_var('tr_color',$tr_color);
 
 // ------------------- template declaration for list records -------------------------
       
-    $el = $phpgw->link('/projects/editactivity.php',"id=" . $phpgw->db->f("id") 
-                                         . "&sort=$sort&order=$order&"
-                                         . "query=$query&start=$start&filter="
-                                         . $filter);
-    $dl = $phpgw->link("/projects/deleteactivity.php","id=" . $phpgw->db->f("id") 
-                                         . "&sort=$sort&order=$order&"
-                                         . "query=$query&start=$start&filter="
-                                         . $filter);
-    $t->set_var(array("num" => $num,
-                      "descr" => $descr,
-    		      "billperae" => $billperae,
-      		      "minperae" => $minperae,
-		      "edit" =>  "<a href=\"". $el
-                                 . "\">". lang("Edit") . "</a>",
-      		      "delete" =>  "<a href=\"". $dl
-                                 . "\">". lang("Delete") . "</a>"));
-       $t->parse("list", "activities_list", true);
+	$t->set_var(array('num' => $num,
+                      'descr' => $descr,
+    		      'billperae' => $billperae,
+      		      'minperae' => $minperae));
+
+	$t->set_var('edit',$phpgw->link('/projects/editactivity.php','id=' . $phpgw->db->f('id') . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+	$t->set_var('delete',$phpgw->link('/projects/deleteactivity.php','id=' . $phpgw->db->f('id') . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+
+	$t->parse('list','activities_list',True);
 
 // ------------------------------- end record declaration --------------------------------
-  }
+    }
 
 // ------------------------- template declaration for Add Form ---------------------------
 
-       $t->set_var(lang_add,lang("Add"));
-       $t->parse("out", "activities_list_t", true);
-       $t->p("out");
+    $t->set_var('lang_add',lang('Add'));
+    $t->parse('out','activities_list_t',True);
+    $t->p('out');
 // -------------------------------- end Add form declaration ------------------------------
 
-$phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_footer();
 ?>
