@@ -101,13 +101,13 @@ include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
   } else {
      //$current_date = date("ymdHi");		//set timestamp
 
-    $txtDetail .= $phpgw->session->loginid . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
+    $txtDetail .= $phpgw_info["user"]["userid"] . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
     $txtDetail .= $txtAdditional;
      $txtDetail = addslashes($txtDetail);
 
      $phpgw->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
 		 . " t_timestamp_opened,t_subject) VALUES ('$lstCategory','$txtDetail',"
-		 . "'$optPriority','" . $phpgw->session->loginid . "','$assignto','"
+		 . "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
 		 . time() . "','$subject');");
 
      Header("Location: " . $phpgw_info["server"]["webserver_url"] . "/tts/?sessionid=" . $sessionid);

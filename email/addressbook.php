@@ -25,7 +25,7 @@
    $filtermethod = " or access='public' " . $phpgw->accounts->sql_search("access");
 
    $sql = "select count(*) from addressbook where ( owner='"
-	. $phpgw->session->loginid . "' $filtermethod ) AND email != ''"; 
+	   . $phpgw_info["user"]["userid"] . "' $filtermethod ) AND email != ''"; 
 
    $phpgw->db->query($sql);
    $phpgw->db->next_record();
@@ -108,8 +108,8 @@
  <?php
 
    $phpgw->db->query("SELECT * FROM addressbook WHERE ( owner='"
-	       . $phpgw->session->loginid . "' $filtermethod ) AND email != '' "
-	       . $ordermethod);
+	              . $phpgw_info["user"]["userid"] . "' $filtermethod ) AND email != '' "
+	              . $ordermethod);
 
    while ($phpgw->db->next_record()) {
      $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);

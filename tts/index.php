@@ -18,7 +18,7 @@ include("config/html.conf.php3");
 
   if (! $filter) { $filter="viewopen"; }
   if ($filter == "viewopen") 
-     $filtermethod = "where ISNULL(t_timestamp_closed)";
+     $filtermethod = "where t_timestamp_closed=NULL";
 
   if (! $sort)
      $sortmethod = "order by t_priority desc";
