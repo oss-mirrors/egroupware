@@ -461,7 +461,7 @@
 
   function attach_display($de_part, $part_no)
   {
-    global $msgnum, $phpgw, $folder;
+    global $msgnum, $phpgw, $phpgw_info, $folder;
     $mime_type = get_mime_type($de_part);  
     $mime_encoding = get_mime_encoding($de_part);
 
@@ -479,7 +479,7 @@
     }
 
 //    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
-    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$folder
+    $jnk = "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/get_attach.php","folder=".$folder
 		       ."&msgnum=$msgnum&part_no=$part_no&type=$mime_type"
 		       ."&subtype=".$de_part->subtype."&name=$url_att_name"
 		       ."&encoding=$mime_encoding")."\">$att_name</a>";
@@ -547,7 +547,7 @@
 		 . "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
     if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) 
       $extra_parms .= "&newsmode=on";
-    $view_link = $phpgw->link("view_image.php",$extra_parms);
+    $view_link = $phpgw->link("/".$phpgw_info['flags']['currentapp']."/view_image.php",$extra_parms);
     echo "\n<img src=\"".$view_link."\">\n<p>\n";
   }
 
@@ -574,7 +574,7 @@
       $line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
       $line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
       $line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-               "<a href=\"".$phpgw->link("compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
+               "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
                ."&to=\\1\">\\1</a>", $line);
 
       $newText .= $line . "\n";
