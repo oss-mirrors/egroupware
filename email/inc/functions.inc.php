@@ -168,7 +168,13 @@
 	}
 
 	// get rid og the "folder" GPC variable - it is no longer needed
-	unset($folder);
+	//unset($folder);
+
+	// backward compatibility with class nextmatches
+	$folder = $this->folder;
+	$sort = $this->sort;
+	$order = $this->order;
+	$start = $this->start;
 
 	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
 	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';

@@ -115,6 +115,9 @@ class mail_msg extends mail_msg_base
   {
 	global $phpgw, $phpgw_info;
 
+	//$debug_sort = True;
+	$debug_sort = False;
+	
 	// AND ensure $this->sort  $this->order  and  $this->start have usable values
 	/*
 	Sorting defs:
@@ -136,12 +139,14 @@ class mail_msg extends mail_msg_base
 	// if not set in the args, then assign some defaults
 	// then store the determination in a class variable $this->sort
 	if ((isset($this->args['sort']))
+	&& ($this->args['sort'] != '')
 	 && (($this->args['sort'] >= 0) && ($this->args['sort'] <= 6)) )
 	{
 		// this is a valid "sort" variable passed as an argument (in a URL, form, or cookie, or external request)
 		$this->sort = $this->args['sort'];
 	}
 	elseif ((isset($this->args['sort']))
+	&& ($this->args['sort'] != '')
 	  && ($this->args['sort'] == "ASC") && ($this->newsmode))
 	{
 		// I think this is needed for newsmode because it reads message list that has been
@@ -157,6 +162,7 @@ class mail_msg extends mail_msg_base
 	// == ORDER ==
 	// (reverse sorting or not)  if specified in the url, then use it, else use defaults
 	if ((isset($this->args['order']))
+	&& ($this->args['order'] != '')
 	  && (($this->args['order'] >= 0) && ($this->args['order'] <= 1)) )
 	{
 		// this is a valid $this->args['order'] variable passed as an arg
@@ -193,7 +199,12 @@ class mail_msg extends mail_msg_base
 		$this->start = 0;
 	}
 
-
+	if ($debug_sort)
+	{
+		echo 'sort: '.$this->sort.'<br>';
+		echo 'order: '.$this->order.'<br>';
+		echo 'start: '.$this->start.'<br>';
+	}
   }
 
   function format_byte_size($feed_size)
