@@ -1,11 +1,16 @@
+%1 bookmarks have been deleted	bookmarks	de	%1 Bookmark wurden gelöscht
 %1 bookmarks imported from %2 successfully.	bookmarks	de	%1 Bookmarks erfolgreich von %2 importiert.
 (comma separate multiple addresses)	bookmarks	de	(mehrere Adressen mit Komma getrennt)
 <b>note:</b> this currently works with netscape bookmarks only	bookmarks	de	<b>Achtung:</b> Geht im Moment nur mit Bookmarks von Netscape.
+all bookmarks	bookmarks	de	Alles Bookmarks
 and	bookmarks	de	Und
 append this message to mailed bookmarks	bookmarks	de	Diese Nachricht an zu verschickende Bookmarks anhängen.
 ascending	bookmarks	de	Absteigend
 book marks	common	de	Book marks
 bookmark changed sucessfully	bookmarks	de	Bookmarks erfolgreich geändert
+bookmark created successfully.	bookmarks	de	Bookmark erfolgreich erzeugt
+bookmark not editable	bookmarks	de	Dieses Bookmark ist nicht editierbar
+bookmark not readable	bookmarks	de	Bookmark ist nicht lesbar
 bookmarks	common	de	Bookmarks
 bookmarks settings	bookmarks	de	Bookmarks Einstellungen
 change bookmark	bookmarks	de	Bookmark ändern
@@ -24,6 +29,7 @@ fewer	bookmarks	de	Weniger
 filter by	bookmarks	de	Filtern nach
 found a link you might like	bookmarks	de	Habe einen interessanten Link gefunden
 from	bookmarks	de	von
+from category %1	bookmarks	de	von Kategorie %1
 highest	bookmarks	de	Höchste
 i thought you would be interested in the following link(s):	bookmarks	de	Ich dachte Du könnest an den folgenden Links interessiert sein:
 import bookmarks	preferences	de	Bookmarks importieren
@@ -54,10 +60,13 @@ showing %1 - %2 of %3	bookmarks	de	zeige %1 - %2 von %3
 sub category	bookmarks	de	Unterkategorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	de	An Adresse %1 ungültig. Das Format muss <strong>benutzer@domain</strong> sein und die Domain muss existieren.
 to e-mail addresses	bookmarks	de	An Email Adressen
+to which category should the imported folder hierarchy be attached	bookmarks	de	Zu welcher Kategorie sollen die importierten Ordern hinzugefügt werden
 total visits	bookmarks	de	Totalbesuche
 tree view	bookmarks	de	Baum Ansicht
 unable to open temp file %1 for import.	bookmarks	de	Kann temp. Datei %1 nicht importieren.
+url is required.	bookmarks	de	Eine URL wird benötigt
 view bookmark	bookmarks	de	Bookmark anzeigen
 view this bookmark	bookmarks	de	Bookmark anzeigen
 warning	bookmarks	de	Warnung
-you are viewing this site outside of phpgroupware	bookmarks	de	Sie besuchen diese Seite von außerhalb der phpGroupWare
+you are viewing this site outside of phpgroupware	bookmarks	de	Sie besuchen diese Seite von außerhalb der eGroupWare
+you must select a category	bookmarks	de	Sie müssen eine Kategorie auswählen
