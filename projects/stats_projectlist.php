@@ -30,13 +30,14 @@
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-    $t->set_var(lang_action,lang('Project statistics'));  
+    $t->set_var(lang_action,lang('Project statistics'));
     $t->set_var(lang_userlist,lang('User statistics'));
     $t->set_var('cat_url',$phpgw->link('/projects/stats_projectlist.php'));
     $t->set_var(userlisturl,$phpgw->link('/projects/stats_userlist.php'));  
-    $t->set_var('hidden_vars',$hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var('searchurl',$phpgw->link('/projects/stats_projectlist.php'));  
     $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
     $t->set_var('lang_all',lang('All'));
@@ -98,8 +99,8 @@
         $day   = $phpgw->common->show_date(time(),'d');
         $year  = $phpgw->common->show_date(time(),'Y');
 
-        $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        $end_date = $end_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info['user']['preferences']['common']['dateformat']);
         if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = '<b>' . $end_dateout . '</b>'; }
         if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = '<font color="CC0000"><b>' . $end_dateout . '</b></font>'; }
     }

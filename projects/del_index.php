@@ -64,7 +64,7 @@
 // ------------------------------ end nextmatch template ------------------------------------
 // ------------------- list header variable template-declarations -----------------------
 
-    $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
+    $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
     $t->set_var('sort_num',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/del_index.php',lang('Project ID')));
     $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/del_index.php',lang('Status')));
     $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/del_index.php',lang('Customer')));
@@ -94,8 +94,8 @@
         $day   = $phpgw->common->show_date(time(),'d');
         $year  = $phpgw->common->show_date(time(),'Y');
 
-        $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        $end_date = $end_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info['user']['preferences']['common']['dateformat']);
         if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = '<b>' . $end_dateout . '</b>'; }
         if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = '<font color="CC0000"><b>' . $end_dateout . '</b></font>'; }
     }

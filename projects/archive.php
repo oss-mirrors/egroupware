@@ -12,7 +12,8 @@
 /* $Id$ */
 
     $phpgw_info['flags'] = array('currentapp' => 'projects',
-		    'enable_nextmatchs_class' => True);
+		    'enable_nextmatchs_class' => True,
+		    'enable_categories_class' => True);
 
     include('../header.inc.php');
 
@@ -28,43 +29,48 @@
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Projects archive'));
-    $t->set_var('searchurl',$phpgw->link('/projects/index.php'));
+    $t->set_var('searchurl',$phpgw->link('/projects/archive.php'));
+    $t->set_var('cat_url',$phpgw->link('/projects/archive.php'));
     $t->set_var('hidden_vars',$hidden_vars);
+    $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
+    $t->set_var('lang_all',lang('All'));
+    $t->set_var('lang_category',lang('Category'));
 
     if (! $start) { $start = 0; }
 
     if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0) {
-                $limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
+        $limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
     }
     else { $limit = 15; }
 
-    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,'archive');
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,'archive',$cat_id);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('/projects/index.php',$start,$projects->total_records);
-    $right = $phpgw->nextmatchs->right('/projects/index.php',$start,$projects->total_records);
+    $left = $phpgw->nextmatchs->left('/projects/archive.php',$start,$projects->total_records);
+    $right = $phpgw->nextmatchs->right('/projects/archive.php',$start,$projects->total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
     if ($projects->total_records > $limit) {
-	$t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$projects->total_records));
+	$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$projects->total_records));
     }
-    else { $t->set_var('lang_showing',lang("showing x",$projects->total_records)); }
+    else { $t->set_var('lang_showing',lang('showing x',$projects->total_records)); }
 
 // ------------------------------ end nextmatch template ------------------------------------
 
 // ------------------list header variable template-declarations -------------------------------
 
-    $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-    $t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/index.php',lang('Project ID')));
-    $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/index.php',lang('Customer')));
-    $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/index.php',lang('Title')));
-    $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/index.php',lang('Date due')));
-    $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/index.php',lang('Coordinator')));
+    $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+    $t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/archive.php',lang('Project ID')));
+    $t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/archive.php',lang('Customer')));
+    $t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/archive.php',lang('Title')));
+    $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/archive.php',lang('Date due')));
+    $t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/archive.php',lang('Coordinator')));
     $t->set_var('lang_jobs',lang('Jobs'));
     $t->set_var('lang_invoice',lang('Invoices'));
     $t->set_var('lang_delivery',lang('Deliveries'));
