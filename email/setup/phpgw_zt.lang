@@ -5,21 +5,21 @@ compose	email	zt	寫信
 custom email settings	email	zt	自訂電子郵件設定
 default sorting order	email	zt	預設排序方式
 email account name	email	zt	電子郵件帳號名稱
-email address	email	zt	電子郵件位址
+email address	email	zt	電子郵件地址
 email password	email	zt	電子郵件信箱密碼
 e-mail preferences	common	zt	電子郵件喜好設定
 email signature	email	zt	電子郵件簽名
 email type	common	zt	電子郵件類型
 enter your default mail domain ( From: user@domain )	admin	zt	輸入您預設的電子郵件網域（From: user@domain）
 enter your pop	admin	zt	輸入您的 POP
-enter your smtp server hostname or ip address	admin	zt	輸入您的 SMTP 主機名稱或網路位元址
+enter your smtp server hostname or ip address	admin	zt	輸入您的 SMTP 主機名稱或網路位址
 enter your smtp server port	admin	zt	輸入您的 SMTP 主機連接埠
 folder	email	zt	資料夾
 forward	email	zt	轉寄
 from	email	zt	來自
 if applicable	email	zt	如果可行
 image	email	zt	影像
-imap mail server hostname or ip address	admin	zt	IMAP 主機名稱或網路位元址
+imap mail server hostname or ip address	admin	zt	IMAP 主機名稱或網路位址
 imap server type	email	zt	IMAP 主機類型
 mail folder(uw-maildir)	email	zt	郵件資料夾型態（uw-maildir）
 mail server	email	zt	電子郵件主機
@@ -55,3 +55,4 @@ you have messages!	common	zt	您有信件！
 you have no new messages	common	zt	您沒有新信件！
 you have %1 new messages!	common	zt	您有 %1 封新信件！
 your message has been sent	common	zt	您的信件以送出！
+

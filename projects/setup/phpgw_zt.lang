@@ -1,133 +1,239 @@
-projects	common	zt	專案管理
-project administration	admin	zt	專案管理
-Account	projects	zt	帳號
-Active	projects	zt	?用
-Activities	projects	zt	動作
-Activities list	projects	zt	動作列表
-Activity	projects	zt	動作
-Activity ID	projects	zt	動作代碼
-Activity %1 has been added !	projects	zt	已經成功新增活動 %1 ！
-Activity %1 has been updated !	projects	zt	已經成功更新活動 %1 ！
-Add Activity	projects	zt	新增活動
-Add hours	projects	zt	新增時數
-Add project	projects	zt	新增專案
-Add project hours	projects	zt	新增專案時數
-Administrator	projects	zt	管理者
-All invoices	projects	zt	所有的發票
-All	projects	zt	所有的
-All delivery notes	projects	zt	ALL delivery notes
+account	projects	zt	帳號
+accountancy	common	zt	會計工作
+active	projects	zt	啟用
+activities	projects	zt	動作
+activities list	projects	zt	動作列表
+activity	projects	zt	動作
+activity %1 has been added !	projects	zt	已經成功新增活動 %1 ！
+activity %1 has been updated !	projects	zt	已經成功更新活動 %1 ！
+activity id	projects	zt	動作代碼
+add activity	projects	zt	新增活動
+add hours	projects	zt	新增時數
+add job	projects	zt	新增工作
+add milestone	projects	zt	新增里程碑
+add project	projects	zt	新增專案
+add project hours	projects	zt	新增專案時數
+add work hours	projects	zt	新增工作時數
+administrator	projects	zt	管理者
+all	projects	zt	所有的
+all delivery notes	projects	zt	所有傳遞訊息
+all invoices	projects	zt	所有的發票
 archive	projects	zt	封存
+are you sure you want to delete this activity	projects	zt	您確定要刪除這個活動？
+are you sure you want to delete this project	projects	zt	您確定要刪除這個專案？
+arial	projects	zt	Arial
+assignment to project %1	projects	zt	%1專案的任務
+bill per hour	projects	zt	時薪
+bill per hour/workunit	projects	zt	時薪/工作單元
+bill per workunit	projects	zt	每一個工作單位的費用
+billable activities	projects	zt	可計費的動作
 billed	projects	zt	已計費
-Billed only	projects	zt	計費專用
-Billing	projects	zt	計費
-Bookable activities	projects	zt	可使用的動作
-Billable activities	projects	zt	可計費的動作
-Bill per workunit	projects	zt	每一個工作單位的費用
-Budget	projects	zt	預算
-Calculate	projects	zt	計算
+billed only	projects	zt	計費專用
+billing	projects	zt	計費
+bookable activities	projects	zt	可使用的動作
+bookkeeper	projects	zt	記帳人
+bookkeeping	common	zt	簿記
+budget	projects	zt	預算
+budget main project	projects	zt	編列主要專案的預算
+budget sum of all sub projects is bigger than the budget of the main project	projects	zt	所有附屬專案的預算總何已經超過了主要專案的預算
+calculate	projects	zt	計算
 closed	projects	zt	關閉
-Coordinator	projects	zt	專案協調人
-Create delivery	projects	zt	Create delivery
-Create invoice	projects	zt	建立發票
-Customer	projects	zt	客戶
-Delete hours	projects	zt	移除時數
-Deliveries	projects	zt	Deliveries
-Delivery	projects	zt	Delivery
-Delivery date	projects	zt	Delivery date
-Delivery note	projects	zt	Delivery note
-Delivery ID	projects	zt	Delivery ID
-Delivery list	projects	zt	Delivery list
-Delivery notes	projects	zt	Delivery notes
-Delivery %1 has been created !	projects	zt	Delivery %1 has been created !
-Delivery %1 has been updated !	projects	zt	Delivery %1 has been updated !
-Edit Activity	projects	zt	編輯動作
-Edit hours	projects	zt	編輯時數
-Edit project administrator list	projects	zt	編輯專案管理人員
-Edit project	projects	zt	編輯專案管理人員
-Edit project hours	projects	zt	編輯專案時數
-Employee	projects	zt	員工
-Generate Activity ID ?	projects	zt	自動?生動作代碼？
-Generate Delivery ID ?	projects	zt	自動?生運送代碼？
-Generate Project ID ?	projects	zt	自動?生專案代碼？
-Generate Invoice ID ?	projects	zt	自動?生發票號碼？
-Hours	projects	zt	時數
-Invoice	projects	zt	發票
-Invoice date	projects	zt	發票日期
-Invoice ID	projects	zt	發票號碼
-Invoice list	projects	zt	發票列表
-Invoices	projects	zt	發票
-Invoice %1 has been created !	projects	zt	已成功建立發票 %1 ！
-Invoice %1 has been updated !	projects	zt	已成功更新發票 %1 ！
-Job	projects	zt	工作
-Job date	projects	zt	工作日期
-Job description	projects	zt	工作?述
-Job has been added !	projects	zt	已成功新增工作！
-Job has been updated !	projects	zt	已成功更新工作！
-Job ID	projects	zt	工作代碼
-Job list	projects	zt	工作列表
-Jobs	projects	zt	工作
-List hours	projects	zt	List hours
-Main project	projects	zt	主要專案
-Minutes per workunit	projects	zt	每一個工作單位的分鐘數
+coordinator	common	zt	專案協調人
+courier new	projects	zt	Courier New
+create delivery	projects	zt	建立遞送
+create invoice	projects	zt	建立發票
+creator	projects	zt	建立者
+customer	projects	zt	客戶
+date created	projects	zt	建立日期
+date due of milestone %1 of project %2 has been updated	projects	zt	在專案%2的里程碑日期%1已經更新了
+delete hours	projects	zt	移除時數
+deliveries	projects	zt	遞送
+delivery	projects	zt	遞送
+delivery %1 has been created !	projects	zt	遞送 %1 已經建立了！
+delivery %1 has been updated !	projects	zt	遞送 %1 已經更新了！
+delivery date	projects	zt	遞送日期
+delivery id	projects	zt	遞送 ID
+delivery list	projects	zt	遞送清單
+delivery note	projects	zt	遞送訊息
+delivery note for project	projects	zt	專案傳送訊息
+delivery notes	projects	zt	傳送訊息
+description can not exceed 255 characters in length !	projects	zt	描述文字長度不能夠超過255字元！
+description can not exceed 8000 characters in length !	projects	zt	描述文字長度不能夠8000字元！
+do you also want to delete all sub projects ?	projects	zt	您也要刪除所有的附屬專案嗎？
+edit activity	projects	zt	編輯動作
+edit administrator list	projects	zt	編輯專案管理者清單
+edit bookkeeper list	projects	zt	編輯專案記帳人清單
+edit hours	projects	zt	編輯時數
+edit job	projects	zt	編輯工作
+edit project	projects	zt	編輯專案管理人員
+edit project administrator list	projects	zt	編輯專案管理人員
+edit project hours	projects	zt	編輯專案時數
+edit work hours	projects	zt	編輯工作時數
+email notifications	projects	zt	電子郵件提醒
+employee	projects	zt	員工
+employees	projects	zt	員工
+ending date can not be after main projects ending date	projects	zt	結束日期不能夠在主要專案結束日期之後！
+ending date can not be before start date	projects	zt	結束日期不應該比開始日期早！
+error in calculation sum does not match !	projects	zt	錯誤：計算總和不一
+exactly accounting	projects	zt	正確的簿記
+generate activity id ?	projects	zt	自動產生動作代碼？
+generate delivery id ?	projects	zt	自動產生運送代碼？
+generate invoice id ?	projects	zt	自動產生發票號碼？
+generate job id ?	projects	zt	自動產生工作代碼？
+generate project id ?	projects	zt	自動產生專案代碼？
+georgia	projects	zt	Georgia
+helvetica	projects	zt	Helvetica
+hours	projects	zt	時數
+id can not exceed 19 characters in length	projects	zt	ID不能夠超過19字元！
+id can not exceed 25 characters in length	projects	zt	ID不能夠超過25字元！
+if you are an administrator, please set the preferences for this application	projects	zt	如果您是管理者，請在偏好設定中設定這個應用程式！
+if you are not an administrator, please inform the administrator to set the preferences for this application	projects	zt	如果您不是管理者，頃通知管理者在偏好設定中設定這個應用程式！
+investment nr	projects	zt	投資數
+invoice	projects	zt	發票
+invoice %1 has been created !	projects	zt	已成功建立發票 %1 ！
+invoice %1 has been updated !	projects	zt	已成功更新發票 %1 ！
+invoice date	projects	zt	發票日期
+invoice for project	projects	zt	專案的發票
+invoice id	projects	zt	發票號碼
+invoice layout	projects	zt	發票配置
+invoice list	projects	zt	發票列表
+invoices	projects	zt	發票
+invoicing of work time	projects	zt	工作時間發票
+job	projects	zt	工作
+job archive	projects	zt	工作檔案
+job date	projects	zt	工作日期
+job description	projects	zt	工作敘述
+job has been added !	projects	zt	已成功新增工作！
+job has been updated !	projects	zt	已成功更新工作！
+job id	projects	zt	工作代碼
+job list	projects	zt	工作列表
+jobs	common	zt	工作
+large	projects	zt	大
+last update	projects	zt	最後更新
+list activities	projects	zt	活動清單
+list budget	projects	zt	預算清單
+list hours	projects	zt	List hours
+list jobs	projects	zt	工作清單
+list pcosts	projects	zt	已規劃成本清單
+list projects	projects	zt	專案清單
+list work hours	projects	zt	工時清單
+main project	projects	zt	主要專案
+milestones	common	zt	里程碑
+minutes per workunit	projects	zt	每一個工作單位的分鐘數
+month	projects	zt	月
 net	projects	zt	淨
-New project	projects	zt	新增專案
-Nonactive	projects	zt	停用
-Number	projects	zt	Number
+new date due of milestone %1: %2	projects	zt	新的日期在上一個里程碑%1之後： %2
+new project	projects	zt	新增專案
+nonactive	common	zt	停用
+number	projects	zt	數字
 open	projects	zt	開放
-Overall	projects	zt	總覽
+open popup window	projects	zt	開啟彈出式視窗
+overall	projects	zt	總覽
+parent project	projects	zt	主要專案
+pcosts can not be higher than the budget	projects	zt	已經規劃的成本不能夠比預算還高！
 per	projects	zt	每一
+per hour	projects	zt	每個小時
+per hour/workunit	projects	zt	每個小時/工作單位
 per workunit	projects	zt	每一工作單位
-Please enter an ID !	projects	zt	請輸入代碼！
-Please choose activities for that project first !	projects	zt	請選擇這個專案可使用的動作選項！
-Please enter a remark !	projects	zt	Please enter a remark !
-Please enter the bill per workunit !	projects	zt	請選擇每一工作單位的費用！
-Please enter the minutes per workunit !	projects	zt	請選擇每一工作單位的分鐘數！
-Position	projects	zt	位置
-Print delivery	projects	zt	Print delivery
-Print invoice	projects	zt	列印發票
-Project	projects	zt	專案
-Project administration	projects	zt	專案管理
-Project archive	projects	zt	專案封存
-Project billing	projects	zt	專案計費
-Project delivery	projects	zt	專案運送
-Project ID	projects	zt	專案代碼
-Project list	projects	zt	專案列表
-Project name	projects	zt	專案名稱
-Project preferences	projects	zt	專案喜好設定
-Project statistic	projects	zt	專案統計
+planned costs	projects	zt	已經規劃的成本
+planned time	projects	zt	已經規劃的時間
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	zt	附屬專案已經規劃的時間超過主要專案了！
+please choose a project coordinator	projects	zt	請選擇一個專案協調人！
+please choose activities for that project first !	projects	zt	請選擇這個專案可使用的動作選項！
+please choose activities for the project	projects	zt	請選擇這個專案的活動！
+please enter a remark !	projects	zt	請輸入一個評論！
+please enter an id !	projects	zt	請輸入代碼！
+please enter the bill	projects	zt	請輸入帳單！
+please enter the bill per workunit !	projects	zt	請選擇每一工作單位的費用！
+please enter the minutes per workunit	projects	zt	請輸入每個工作單位的分鐘數！
+please enter the minutes per workunit !	projects	zt	請選擇每一工作單位的分鐘數！
+please set the minutes per workunit for each activity now !	projects	zt	請現在設定每個活動的工作單位分鐘數！
+please set your preferences for this application !	projects	zt	請在偏好設定中調整這個應用程式的設定！
+please specify country and currency in the global preferences section	projects	zt	請在全域偏好設定中指定國家與貨幣！
+please specify the budget	projects	zt	請指定一個預算！
+position	projects	zt	位置
+preferences for accountancy	projects	zt	簿記的偏好
+previous project	projects	zt	上一個專案
+print delivery	projects	zt	列印遞送
+print invoice	projects	zt	列印發票
+processor	projects	zt	處理者
+project	projects	zt	專案
+project %1 has been saved	projects	zt	專案%1已經儲存了。
+project %1 has been updated	projects	zt	專案%1已經更新了。
+project administration	projects	zt	專案管理
+project archive	projects	zt	專案封存
+project billing	projects	zt	專案計費
+project delivery	projects	zt	專案運送
+project id	common	zt	專案代碼
+project list	projects	zt	專案列表
+project name	projects	zt	專案名稱
+project preferences	projects	zt	專案喜好設定
+project statistic	projects	zt	專案統計
 project statistics	projects	zt	專案統計
-Remark	projects	zt	注記
-Remark required	projects	zt	必須輸入注記
-select	projects	zt	請選擇
-Select main project	projects	zt	選擇主要專案
-Select per button !	projects	zt	使用按鈕選擇！
-Select project	projects	zt	選擇專案
-Select tax for workhours	projects	zt	選擇工作時數的稅率
-Select users	projects	zt	選擇使用者
-Select groups	projects	zt	選擇群組
-Select your address	projects	zt	選擇您的地址
-Statistic	projects	zt	統計
-Statistics	projects	zt	統計
-Short description	projects	zt	簡短說明
-Sum	projects	zt	總計
-Sum workunits	projects	zt	工作單位總計
+projects	common	zt	專案管理
+projects preferences	preferences	zt	專案設定
+remark	projects	zt	註記
+remark can not exceed 8000 characters in length !	projects	zt	註記不能夠超過8000個字元！
+remark required	projects	zt	必須輸入註記
+select font	projects	zt	選擇字型
+select font size for customer address	projects	zt	選擇顧客住址的字體大小
+select font size for own address	projects	zt	選擇我們住址的字體大小
+select groups	projects	zt	選擇群組
+select main project	projects	zt	選擇主要專案
+select own address	projects	zt	選擇我們的住址
+select project	projects	zt	選擇專案
+select tax for work time	projects	zt	請選擇工作時間的稅金
+select tax for workhours	projects	zt	選擇工作時數的稅率
+select users	projects	zt	選擇使用者
+select your address	projects	zt	選擇您的地址
+short description	projects	zt	簡短說明
+small	projects	zt	小
+sorry, no preferences to set for you :)	projects	zt	抱歉，沒有設定您的偏好！
+start date can not be before main projects start date	projects	zt	開始日期不能夠在主要專案開始之前！
+statistic	projects	zt	統計
+statistics	projects	zt	統計
+sum	projects	zt	總計
+sum budget	projects	zt	預算總計
+sum hours	projects	zt	工時總計
+sum net	projects	zt	淨總和
+sum pcosts	projects	zt	已經規劃成本總和
+sum workunits	projects	zt	工作單位總計
+tahoma	projects	zt	Tahoma
 tax	projects	zt	稅率
-That ID has been used already !	projects	zt	這個代碼已經被使用了！
-Update invoice	projects	zt	更新發票
-Update delivery	projects	zt	Update delivery
-Username / Group	projects	zt	使用者／群組
-User statistic	projects	zt	使用者統計
+that id has been used already !	projects	zt	這個代碼已經被使用了！
+the choosen previous project does not have an end date specified	projects	zt	被選取的上一個專案沒有指定的結束日期！
+the delivery note contains no items !	projects	zt	遞送訊息沒有任何項目！
+the invoice contains no items !	projects	zt	沒有任何發票！
+time planned	projects	zt	已經規劃的時間
+time planned main project	projects	zt	主要專案已經規劃的時間
+time used	projects	zt	已經使用的時間
+times new roman	projects	zt	Times New Roman
+title can not exceed 255 characters in length	projects	zt	標題不能夠超過255字元！
+update delivery	projects	zt	更新遞送
+update invoice	projects	zt	更新發票
+user statistic	projects	zt	使用者統計
 user statistics	projects	zt	使用者統計
-View job	projects	zt	檢視工作
-View project	projects	zt	檢視專案
-Work date	projects	zt	工作日期
-Work hours	projects	zt	時數
-Work time	projects	zt	工作時間
-Workunit	projects	zt	工作單位
-Workunits	projects	zt	工作單位
+username / group	projects	zt	使用者／群組
+verdana	projects	zt	Verdana
+very large	projects	zt	很大
+very small	projects	zt	很小
+view job	projects	zt	檢視工作
+view project	projects	zt	檢視專案
+view work hours	projects	zt	瀏覽工作時數
+work date	projects	zt	工作日期
+work hours	projects	zt	時數
+work hours archive	projects	zt	工作時數檔案
+work hours list	projects	zt	工作時數列表
+work time	projects	zt	工作時間
+workunit	projects	zt	工作單位
+workunits	projects	zt	工作單位
+would you like to get notified if milestones date due change	projects	zt	在里程碑日期改變後您希望收到通知嗎？
+would you like to get notified if projects data get updated	projects	zt	在專案日期改變後您希望收到通知嗎？
+would you like to get notified if you get assigned to a project	projects	zt	在您被指派工作後您希望收到通知嗎？
 written by:	projects	zt	作者：
-You have entered an invalid start date !	projects	zt	您輸入了不合法的開始日期！
-You have entered an invalid end date !	projects	zt	您輸入了不合法的結束日期！
-You have selected an invalid activity !	projects	zt	您選擇了不合法的動作！
-You have no customer selected !	projects	zt	您沒有選擇任何的顧客！
-You have to CREATE a delivery or invoice first !	projects	zt	您必須先「建立」送貨單或發票！
+you have entered an invalid date !	projects	zt	您輸入了一個錯誤的日期！
+you have entered an invalid end date !	projects	zt	您輸入了不合法的結束日期！
+you have entered an invalid start date !	projects	zt	您輸入了不合法的開始日期！
+you have no customer selected !	projects	zt	您沒有選擇任何的顧客！
+you have selected an invalid activity !	projects	zt	您選擇了不合法的動作！
+you have to create a delivery or invoice first !	projects	zt	您必須先「建立」送貨單或發票！
