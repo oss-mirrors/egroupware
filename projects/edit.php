@@ -21,7 +21,7 @@
   
   
   $db2 = $phpgw->db;
-  
+  $isadmin = isprojectadmin();
   
   if (!$id)
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/"
@@ -39,8 +39,14 @@
 
   if (!(($submit) or ($template))) {
 
-     $phpgw->db->query("select * from p_projects where (coordinator='" . $phpgw_info["user"]["account_id"]
-		 . "' or owner='".$phpgw_info["user"]["account_id"]."') and id='$id'");
+     if ($isadmin == 1) {
+     $phpgw->db->query("select * from p_projects where id='$id'");
+//   $phpgw->db->next_record();
+        }
+       else {
+     $phpgw->db->query("select * from p_projects where (coordinator='" . $phpgw_info["user"]["account_id"]                                                                                        
+                 . "' or owner='".$phpgw_info["user"]["account_id"]."') and id='$id'");                                                                                                           
+       }
      $phpgw->db->next_record();
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
