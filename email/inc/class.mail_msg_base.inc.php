@@ -479,123 +479,7 @@
 		return $we_care;
 	}
 
-	/*
-	function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
-	{
-		global $phpgw, $phpgw_info;
-
-		// init some important variables
-		$outstr = '';
-		//$unseen_prefix = ' &lt;';
-		//$unseen_suffix = ' new&gt;';	
-		//$unseen_prefix = ' &#091;';
-		//$unseen_suffix = ' new&#093;';
-		//$unseen_prefix = ' &#040;';
-		//$unseen_suffix = ' new&#041;';
-		//$unseen_prefix = ' &#045; ';
-		//$unseen_suffix = ' new';
-		//$unseen_prefix = ' &#045;';
-		//$unseen_suffix = '&#045;';	
-		//$unseen_prefix = '&nbsp;&nbsp;&#040;';
-		//$unseen_suffix = ' new&#041;';
-		//$unseen_prefix = '&nbsp;&nbsp;&#091;';
-		//$unseen_suffix = ' new&#093;';
-		$unseen_prefix = '&nbsp;&nbsp;&#060;';
-		$unseen_suffix = ' new&#062;';
-
-		if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
-		{
-			while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
-			{
-				$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-				while($phpgw->db->next_record())
-				{
-					$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
-					  . '</option>';
-				}
-			}
-		}
-		elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
-		    && ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3s'))
-		{
-			// Establish Email Server Connectivity Conventions
-			$server_str = $this->get_mailsvr_callstr();
-			$name_space = $this->get_mailsvr_namespace();
-			$delimiter = $this->get_mailsvr_delimiter();
-			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-			{
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
-			}
-			else
-			{
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
-			}
-
-			// sort folder names 
-			if (gettype($mailboxes) == 'array')
-			{
-				sort($mailboxes);
-			}
-
-			if($mailboxes)
-			{
-				$num_boxes = count($mailboxes);
-				if ($name_space != 'INBOX')
-				{
-					// UWash for example, we must FORCE it to look at the INBOX 
-					$outstr = $outstr .'<option value="INBOX">INBOX';
-					if ($indicate_new)
-					{
-						$mailbox_status = $phpgw->dcom->status($mailbox,$server_str . 'INBOX',SA_UNSEEN);
-						if ($mailbox_status->unseen > 0)
-						{
-							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-						}
-					}
-					$outstr = $outstr . "</option>\r\n"; 
-				}
-				for ($i=0; $i<$num_boxes;$i++)
-				{
-					if ($this->is_imap_folder($mailboxes[$i]))
-					{
-						$folder_short = $this->get_folder_short($mailboxes[$i]);
-						if ($folder_short == $pre_select)
-						{
-							$sel = ' selected';
-						}
-						else
-						{
-							$sel = '';
-						}
-						if ($folder_short != $skip)
-						{
-							$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
-							// do we show the number of new (unseen) messages for this folder
-							if (($indicate_new)
-							&& ($this->care_about_unseen($folder_short)))
-							{
-								$mailbox_status = $phpgw->dcom->status($mailbox,$mailboxes[$i],SA_UNSEEN);
-								if ($mailbox_status->unseen > 0)
-								{
-									$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-								}
-							}
-							$outstr = $outstr . "</option>\r\n";
-						}
-					}
-				}
-			}
-			else
-			{
-				$outstr = $outstr .'<option value="INBOX">INBOX</option>';
-			}
-		}
-		return $outstr;
-	}
-	*/
-
-
-	// OBSOLETED -- To Be Removed -- 
+	// =====  OBSOLETED -- To Be Removed  ========
 	function get_mime_info($this_part)
 	{
 		// rfc2045 says to assume "text" if this if not specified
@@ -761,6 +645,7 @@
 		return $passwd;
 	}
 
+	// ---  should not be used, this is taken care of in create_email_preferences  -----
 	function get_email_passwd()
 	{
 		global $phpgw_info, $phpgw;
@@ -854,6 +739,7 @@
 		if (isset($addy_data->personal) && ($addy_data->personal))
 		{
 			// why DECODE when we are just going to feed it right back into a header?
+			// answer - it looks crappy to have rfc2047 encoded personal info in the to: box
 			$personal = $this->decode_header_string($addy_data->personal);
 			// need to format according to RFC2822 spec for non-plain email address
 			$rfc_addy = '"'.$personal.'" <'.$rfc_addy.'>';
@@ -867,18 +753,29 @@
 		return $rfc_addy;
 	}
 
-	// ----  Make a To: string of addresses into an array  -----
+
+	// ----  Make a To: string of comma seperated email addresses into an array structure  -----
 	/*
-	// param $data should be the desired header string, with one or more addresses, ex:
-	// john@doe.com,"Php Group" <info@phpgroupware.org>
-	// this will make an array, each numbered item will be this:
-	// array[0]['personal'] = ""
-	// array[0]['plain'] = "john@doe.com"
-	// array[1]['personal'] = "Php Group"
-	// array[1]['plain'] = "info@phpgroupware.org"
+	// param $data should be a comma seperated string of email addresses (or just one email address) such as:
+	// john@doe.com,"Php Group" <info@phpgroupware.org>,jerry@example.com,"joe john" <jj@example.com>
+	// which will be decomposed into an array of individual email addresses
+	// where each numbered item will be like this this:
+	// 	array[x]['personal'] 
+	// 	array[x]['plain'] 
+	// the above example would return this structure:
+	// 	array[0]['personal'] = ""
+	// 	array[0]['plain'] = "john@doe.com"
+	// 	array[1]['personal'] = "Php Group"
+	// 	array[1]['plain'] = "info@phpgroupware.org"
+	// 	array[2]['personal'] = ""
+	// 	array[2]['plain'] = "jerry@example.com"
+	// 	array[3]['personal'] = "joe john"
+	// 	array[3]['plain'] = "jj@example.com"
 	*/
 	function make_rfc_addy_array($data)
 	{
+		global $phpgw;
+
 		// if we are fed a null value, return nothing (i.e. a null value)
 		if (isset($data))
 		{
@@ -896,11 +793,114 @@
 			//$data = ereg_replace("[' ']{2,20}", ' ', $data);
 			$this_space = " ";
 			$data = ereg_replace("$this_space{2,20}", " ", $data);
-			
 			// explode into an array of email addys
-			$data = explode(",", $data);
-			//$data = preg_split("/.*@.*\..*>{0,1},/",$data,-1,PREG_SPLIT_NO_EMPTY);
+			//$data = explode(",", $data);
+
+
+			// WORKAROUND - comma inside the "personal" part will incorrectly explode
+			//$debug_explode = True;
+			$debug_explode = False;
 			
+			/*// === ATTEMPT 1 ====
+			// replace any comma(s) INSIDE the "personal" part with this:  "C-O-M-M-A"
+			echo 'PRE replace: '.$this->htmlspecialchars_encode($data).'<br>';
+			$comma_replacement = "C_O_M_M_A";
+			do
+			{
+				//$data = preg_replace('/(".*?)[,](.*?")/',"$1"."C_O_M_M_A"."$2", $data);
+				//$data = preg_replace('/("[/001-/063,/065-/255]*?)[,]([/001-/063,/065-/255]*?")/',"$1"."$comma_replacement"."$2", $data);
+				$data = preg_replace('/("(.(?!@))*?)[,]((.(?!@))*?")/',"$1"."$comma_replacement"."$3", $data);
+			}
+			while (preg_match('/("(.(?!@))*?)[,]((.(?!@))*?")/',$data));
+			echo 'POST replace: '.$this->htmlspecialchars_encode($data).'<br>';
+			//DEBUG
+			return " ";
+			// explode into an array of email addys
+			//$data = explode(",", $data);
+			*/
+
+			// === Explode Prep: STEP 1 ====
+			// little is known about an email address at this point
+			// what is known is that the following pattern should be present in ALL non-simple addy's
+			// " <  (doublequote_space_lessThan)
+			// so replace that with a known temp string
+			
+			if ($debug_explode) { echo '[known sep] PRE replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
+			//$known_sep_item = "_SEP_COMPLEX_SEP_";
+			// introduce some randomness to make accidental replacements less likely
+			$sep_rand = $phpgw->common->randomstring(3);
+			$known_sep_item = "_SEP_COMPLEX_".$sep_rand."_SEP_";
+			$data = str_replace('" <',$known_sep_item,$data);
+			if ($debug_explode) { echo '[known sep] POST replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
+
+			// === Explode Prep: STEP 2 ====
+			// now we know more
+			// the area BETWEEN a " (doubleQuote) and the $known_sep_item is the "personal" part of the addy
+			// replace any comma(s) in there with another known temp string
+			if ($debug_explode) { echo 'PRE replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
+			//$comma_replacement = "_C_O_M_M_A_";
+			// introduce some randomness to make accidental replacements less likely
+			$comma_rand = $phpgw->common->randomstring(3);
+			$comma_replacement = "_C_O_M_".$comma_rand."_M_A_";
+			//$data = preg_replace('/(".*?)[,](.*?'.$known_sep_item.')/',"$1"."$comma_replacement "."$2", $data);
+			//$data = preg_replace('/(".*?)(?<!>)[,](.*?'.$known_sep_item.')/',"$1"."$comma_replacement"."$2", $data);
+			do
+			{
+				$data = preg_replace('/("(.(?<!'.$known_sep_item.'))*?)[,](.*?'.$known_sep_item.')/',"$1"."$comma_replacement"."$3", $data);
+			}
+			while (preg_match('/("(.(?<!'.$known_sep_item.'))*?)[,](.*?'.$known_sep_item.')/',$data));
+			if ($debug_explode) { echo 'POST replace: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
+
+			// Regex Pattern Explanation:
+			//	openQuote_anythingExcept$known_sep_item_repeated0+times_NOT GREEDY
+			//	_aComma_anything_repeated0+times_NOT GREEDY_$known_sep_item
+			// syntax: "*?" is 0+ repetion symbol with the immediately following '?' being the Not Greedy modifier
+			// NotGreedy: match as little as possible that still makes the pattern match
+			// syntax: "?<!" is a "lookbehind negative assertion"
+			// indicating that the ". *" can not contain anything EXCEPT the $known_sep_item string
+			// lookbehind is necessary because this assertion applies to something BEFORE the thing (comma) we are trying to capture with the regex
+			// Methodology:
+			// (1) We need to specify NO $known_sep_item before the comma or else the regex will match
+			// commas OUTSIDE of the intended "personal" part of the email addy, which are the
+			// special commas that seperate email addresses in a comma seperated string
+			// these special commas MUST NOT be altered
+			// (2) this preg_replace will only replace ONE comma in the designated "personal" part
+			// therefor we need a do ... while loop to keep running the preg_replace until all matches are replaced
+			// the while statement is the SAME regex expression used in a preg_match function
+
+			// === Explode Prep: STEP 3 ====
+			// UNDO the str_replace from STEP 1
+			$data = str_replace($known_sep_item, '" <', $data);
+			if ($debug_explode) { echo 'UNDO Step 1: '.$this->htmlspecialchars_encode($data).'<br>'.'<br>'; }
+
+			// === ACTUAL EXPLODE ====
+			// now the only comma(s) (if any) existing in $data *should* be the
+			// special commas that seperate email addresses in a comma seperated string
+			// with this as a (hopefully) KNOWN FACTOR - we can now EXPLODE by comma
+			// thus: Explode into an array of email addys
+			$data = explode(",", $data);
+			if ($debug_explode) { echo 'EXPLODED: '.$this->htmlspecialchars_encode(serialize($data)).'<br>'.'<br>'; }
+
+			// === POST EXPLODE  CLEANING====
+			// explode occasionally produces empty elements in the resulting array, so
+			// (1) eliminate any empty array elements
+			// (2) UNDO the preg_replace from STEP 2 (add back the actual comma(s) in the "personal" part)
+			$data_clean = Array();
+			for ($i=0;$i<count($data);$i++)
+			{
+				// is there actual data in this array element
+				if ((isset($data[$i])) && ($data[$i] != ''))
+				{
+					// OK, now undo the preg_replace from step 2 above
+					$data[$i] = str_replace($comma_replacement, ',', $data[$i]);
+					// add this to our $data_clean array
+					$next_empty = count($data_clean);
+					$data_clean[$next_empty] = $data[$i];
+				}
+			}
+			if ($debug_explode) { echo 'Cleaned Exploded Data: '.$this->htmlspecialchars_encode(serialize($data_clean)).'<br>'.'<br>'; }
+
+
 			// --- Create Compund Array Structure To Hold Decomposed Addresses -----
 			// addy_array is a simple numbered array, each element is a addr_spec_array
 			$addy_array = Array();
@@ -909,15 +909,15 @@
 			//  addr_spec_array['personal']
 
 			// decompose addy's into that array, and format according to rfc specs
-			for ($i=0;$i<count($data);$i++)
+			for ($i=0;$i<count($data_clean);$i++)
 			{
 				// trim off leading and trailing whitespaces and \r and \n
-				$data[$i] = trim($data[$i]);
+				$data_clean[$i] = trim($data_clean[$i]);
 				// is this a rfc 2822 compound address (not a simple one)
-				if (strstr($data[$i], '" <'))
+				if (strstr($data_clean[$i], '" <'))
 				{
 					// SEPERATE "personal" part from the <x@x.com> part
-					$addr_spec_parts = explode('" <', $data[$i]);
+					$addr_spec_parts = explode('" <', $data_clean[$i]);
 					// that got rid of the closing " in personal, now get rig of the first "
 					$addy_array[$i]['personal'] = substr($addr_spec_parts[0], 1);
 					//  the "<" was already removed, , NOW remove the closing ">"
@@ -944,15 +944,13 @@
 				{
 					// this is an old style simple address
 					$addy_array[$i]['personal'] = '';
-					$addy_array[$i]['plain'] = $data[$i];
+					$addy_array[$i]['plain'] = $data_clean[$i];
 				}
 
 				//echo 'addy_array['.$i.'][personal]: '.$this->htmlspecialchars_encode($addy_array[$i]['personal']).'<br>';
 				//echo 'addy_array['.$i.'][plain]: '.$this->htmlspecialchars_encode($addy_array[$i]['plain']).'<br>';
 			}
-			// NO NEED TO SERIALIZE THIS!!!!!
-			//$addy_array = serialize($addy_array);
-			//echo 'serialized addy_array: '.$addy_array.'<br>';
+			if ($debug_explode) { echo 'FINAL processed addy_array:<br>'.$this->htmlspecialchars_encode(serialize($addy_array)).'<br>'.'<br>'; }
 			return $addy_array;
 		}
 	}

@@ -37,6 +37,22 @@
 		unset($phpgw->mail_send);
 	}
 
+	/*
+	// -- debug ----
+	$to = $phpgw->msg->stripslashes_gpc($to);
+	$mail_out['to'] = $phpgw->msg->make_rfc_addy_array($to);
+	$cc = $phpgw->msg->stripslashes_gpc($cc);
+	$mail_out['cc'] = $phpgw->msg->make_rfc_addy_array($cc);
+	
+	//echo '<br> var dump $mail_out[to] <br>';
+	//var_dump($mail_out['to']);
+	
+	send_message_cleanup($mailbox);
+	$phpgw->common->phpgw_footer();
+	exit;
+	// end ----  debug ------
+	*/
+
 //  -------  Init Array Structure For Outgoing Mail  -----------
 	$mail_out = Array();
 	$mail_out['to'] = Array();
@@ -130,7 +146,6 @@
 	$cc = $phpgw->msg->stripslashes_gpc($cc);
 	$body = $phpgw->msg->stripslashes_gpc(trim($body));
 	$subject = $phpgw->msg->stripslashes_gpc($subject);
-
 
 // ----  DE-code HTML SpecialChars in the body   -----
 	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
