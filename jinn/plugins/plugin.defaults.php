@@ -24,21 +24,30 @@
 
 
 	/* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN */
-	$this->plugins['def_blob']['name'] 			= 'def_blob';
-	$this->plugins['def_blob']['title']			= 'default area';
-	$this->plugins['def_blob']['version']		= '1.0';
-	$this->plugins['def_blob']['author']		= 'Pim Snel';
-	$this->plugins['def_blob']['enable']		= 1;
+	$this->plugins['def_blob']['name'] 				= 'def_blob';
+	$this->plugins['def_blob']['title']				= 'Default Textarea';
+	$this->plugins['def_blob']['version']			= '1.1';
+	$this->plugins['def_blob']['author']			= 'Pim Snel';
+	$this->plugins['def_blob']['enable']			= 1;
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
 		'longtext',
 		'text',
 		'blob',
-	);
+	 );
+
+	 $this->plugins['def_blob']['config']		= array
+	 (
+		'New_height_in_pixels' => array('100','text','maxlength=3 size=3'), 
+	 );
+	   
 
 	function plg_fi_def_blob($field_name,$value, $config,$attr_arr)
 	{
-		$input='<textarea name="'.$field_name.'" style="width:460px; height:80px">'.$value.'</textarea>';
+	   if($config['New_height_in_pixels'] && is_numeric(intval($config['New_height_in_pixels']))) $height=intval($config['New_height_in_pixels']);
+	   else $height = '100';
+	   
+	   $input='<textarea name="'.$field_name.'" style="padding:1px;border:solid 1px #cccccc;width:460px; height:'.$height.'px">'.$value.'</textarea>';
 		return $input;
 	}
 
