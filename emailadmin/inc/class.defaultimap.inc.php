@@ -34,10 +34,11 @@
 		{
 			if($this->mbAvailable)
 			{
-				return mb_convert_encoding( $_folderName, "UTF7-IMAP", "ISO_8859-1" );
+				return mb_convert_encoding( $_folderName, "UTF7-IMAP", $GLOBALS['phpgw']->translation->charset());
 			}
 			
 			// if not
+			// can encode only from ISO 8859-1
 			return imap_utf7_encode($_folderName);
 		}
 
