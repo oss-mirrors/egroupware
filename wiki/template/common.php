@@ -22,7 +22,7 @@
 function template_common_prologue($args)
 {
   global $WikiName, $HomePage, $WikiLogo, $MetaKeywords, $MetaDescription;
-  global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL;
+  global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL, $FindScript;
 
   $keywords = ' ' . html_split_name($args['headlink']);
   $keywords = str_replace('"', '&quot;', $keywords);
