@@ -55,7 +55,7 @@
 		{
 			$poll_select .= ' selected';
 		}
-		$poll_select .= '>' . $GLOBALS['phpgw']->db->f('poll_title') . '</option>';
+		$poll_select .= '>' . stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '</option>';
 	}
 	$poll_select .= '</select>';
 

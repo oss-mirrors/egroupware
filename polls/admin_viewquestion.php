@@ -28,7 +28,7 @@
 
 	$GLOBALS['phpgw']->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'");
 	$GLOBALS['phpgw']->db->next_record();
-	$poll_title = $GLOBALS['phpgw']->db->f('poll_title');
+	$poll_title = stripslashes($GLOBALS['phpgw']->db->f('poll_title'));
 
 	$GLOBALS['phpgw']->template->set_var('message','');
 	$GLOBALS['phpgw']->template->set_var('header_message',lang('View poll'));

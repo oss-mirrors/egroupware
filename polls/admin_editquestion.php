@@ -51,7 +51,7 @@
 		. '"><input type="submit" name="submit" value="' . lang('Cancel') . '">'
 	);
 
-	add_template_row($GLOBALS['phpgw']->template,lang('Poll question'),'<input name="question" value="' . $GLOBALS['phpgw']->db->f('poll_title') . '">');
+	add_template_row($GLOBALS['phpgw']->template,lang('Poll question'),'<input name="question" value="' . stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '">');
 
 	$GLOBALS['phpgw']->template->pparse('out','form');
 	$GLOBALS['phpgw']->common->phpgw_footer();

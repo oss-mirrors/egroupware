@@ -61,13 +61,13 @@
 		$out  = '<p><table border="0" align="center" width="50%">';
 		$out .= ' <tr>' . "\n"
 			. '  <td colspan="3" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">'
-			. $GLOBALS['phpgw']->db->f('poll_title') . '</td>' . "\n"
+			. stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '</td>' . "\n"
 			. '</tr>' . "\n";
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
-			$poll_optionText  = $GLOBALS['phpgw']->db->f('option_text');
+			$poll_optionText  = stripslashes($GLOBALS['phpgw']->db->f('option_text'));
 			$poll_optionCount = $GLOBALS['phpgw']->db->f('option_count');
 
 			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
@@ -130,7 +130,7 @@
 		$GLOBALS['phpgw']->db->query("SELECT poll_title FROM phpgw_polls_desc WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		$poll_title = $GLOBALS['phpgw']->db->f('poll_title');
+		$poll_title = stripslashes($GLOBALS['phpgw']->db->f('poll_title'));
 
 		$ret[0] = array(
 			'title' => $poll_title,
@@ -142,7 +142,7 @@
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
 			$ret[] = array(
-				'text' => $GLOBALS['phpgw']->db->f('option_text'),
+				'text' => stripslashes($GLOBALS['phpgw']->db->f('option_text')),
 				'votes' => $GLOBALS['phpgw']->db->f('option_count')
 			);
 		}
@@ -174,7 +174,7 @@
 		$out .= '<table border="0" align="center" width="50%">' . "\n"
 			. ' <tr>' . "\n"
 			. '  <td colspan="2" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">&nbsp;'
-			. $GLOBALS['phpgw']->db->f('poll_title') . '&nbsp;</td>' . "\n"
+			. stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '&nbsp;</td>' . "\n"
 			. ' </tr>' . "\n";
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);

@@ -51,7 +51,7 @@
 	{
 		echo '<option value="' . $GLOBALS['phpgw']->db->f('poll_id') . '"'
 			. ($settings['currentpoll'] == $GLOBALS['phpgw']->db->f('poll_id')?' selected':'') 
-			. '>' . $GLOBALS['phpgw']->db->f('poll_title') . '</option>';
+			. '>' . stripslashes($GLOBALS['phpgw']->db->f('poll_title')) . '</option>';
 	}
 	echo '</select></td></tr>';
 
