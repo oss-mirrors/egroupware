@@ -139,6 +139,8 @@
 
 	function phpftp_get( $ftp, $tempdir, $dir, $file )
 	{
+		global $phpgw_info;
+
 		srand((double)microtime()*1000000);
 		$randval = rand();
 		$tmpfile="$tempdir/" . $file . "." . $randval;
