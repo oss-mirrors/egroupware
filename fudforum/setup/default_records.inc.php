@@ -108,8 +108,11 @@
 		$oProc->query("ALTER TABLE phpgw_fud_thread_view CHANGE pos pos INT NOT NULL AUTO_INCREMENT");
 	}
 
-	$path = dirname(realpath(__FILE__));
-	if (!copy("{$path}/index.php", "{$path}/../index.php")) {
-		$p = realpath("{$path}/../index.php");
-		echo "<font color='red'>ERROR: Failed to copy '{$path}/index.php' to '{$p}'. Please copy this file manually!</font>";
+	$path = realpath(dirname(realpath(__FILE__)) . '/../');
+	$dom_key = sprintf("%u", crc32($GLOBALS['ConfigDomain']));
+
+	if (!is_dir($path . "/" . $dom_key) && !mkdir($path . "/" . $dom_key)) {
+		echo "<font color='red'>ERROR: Failed to create {$path}/{$dom_key}, please create this directory manually and chmod it 777</font>";
+	} else if (!copy("{$path}/setup/index.php", "{$path}/{$dom_key}/index.php")) {
+		echo "<font color='red'>ERROR: Failed to copy '{$path}/index.php' to '{$path}/{$dom_key}/index.php'. Please copy this file manually!</font>";
 	}

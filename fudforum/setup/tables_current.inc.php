@@ -20,7 +20,7 @@
 	$phpgw_baseline = array(
 		'phpgw_fud_action_log' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'logtime' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'logaction' => array('type' => 'varchar','precision' => '100'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -44,11 +44,11 @@
 		),
 		'phpgw_fud_announce' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'date_started' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'date_ended' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
-				'subject' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'text' => array('type' => 'text','nullable' => False)
+				'subject' => array('type' => 'varchar','precision' => '255'),
+				'text' => array('type' => 'text')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -57,8 +57,8 @@
 		),
 		'phpgw_fud_attach' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'location' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'location' => array('type' => 'varchar','precision' => '255'),
 				'original_name' => array('type' => 'varchar','precision' => '255'),
 				'owner' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'attach_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -74,9 +74,9 @@
 		),
 		'phpgw_fud_avatar' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'img' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'descr' => array('type' => 'varchar','precision' => '255','nullable' => False)
+				'id' => array('type' => 'auto'),
+				'img' => array('type' => 'varchar','precision' => '255'),
+				'descr' => array('type' => 'varchar','precision' => '255')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -85,8 +85,8 @@
 		),
 		'phpgw_fud_blocked_logins' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'login' => array('type' => 'varchar','precision' => '255','nullable' => False)
+				'id' => array('type' => 'auto'),
+				'login' => array('type' => 'varchar','precision' => '255')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -95,7 +95,7 @@
 		),
 		'phpgw_fud_buddy' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'bud_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -106,8 +106,8 @@
 		),
 		'phpgw_fud_cat' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '50'),
 				'description' => array('type' => 'varchar','precision' => '255'),
 				'cat_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'view_order' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '3')
@@ -119,8 +119,8 @@
 		),
 		'phpgw_fud_custom_tags' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
 			'pk' => array('id'),
@@ -130,9 +130,9 @@
 		),
 		'phpgw_fud_email_block' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'email_block_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1'),
-				'string' => array('type' => 'varchar','precision' => '255','nullable' => False)
+				'string' => array('type' => 'varchar','precision' => '255')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -141,8 +141,8 @@
 		),
 		'phpgw_fud_ext_block' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'ext' => array('type' => 'varchar','precision' => '32','nullable' => False)
+				'id' => array('type' => 'auto'),
+				'ext' => array('type' => 'varchar','precision' => '32')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -151,9 +151,9 @@
 		),
 		'phpgw_fud_forum' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'cat_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'name' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'name' => array('type' => 'varchar','precision' => '100'),
 				'descr' => array('type' => 'text'),
 				'post_passwd' => array('type' => 'varchar','precision' => '32'),
 				'forum_icon' => array('type' => 'varchar','precision' => '255'),
@@ -175,7 +175,7 @@
 		),
 		'phpgw_fud_fc_view' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'c' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'f' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -186,7 +186,7 @@
 		),
 		'phpgw_fud_forum_notify' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -197,7 +197,7 @@
 		),
 		'phpgw_fud_forum_read' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'last_view' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0')
@@ -209,7 +209,7 @@
 		),
 		'phpgw_fud_group_cache' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'resource_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'group_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -222,7 +222,7 @@
 		),
 		'phpgw_fud_group_members' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'group_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'group_members_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '65536')
@@ -234,7 +234,7 @@
 		),
 		'phpgw_fud_group_resources' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'group_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'resource_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -245,8 +245,8 @@
 		),
 		'phpgw_fud_groups' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'inherit_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'groups_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -259,7 +259,7 @@
 		),
 		'phpgw_fud_index' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'word_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -270,7 +270,7 @@
 		),
 		'phpgw_fud_ip_block' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'ca' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'cb' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'cc' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -283,8 +283,8 @@
 		),
 		'phpgw_fud_level' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'post_count' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'img' => array('type' => 'varchar','precision' => '255'),
 				'level_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
@@ -296,9 +296,9 @@
 		),
 		'phpgw_fud_mime' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'fl_ext' => array('type' => 'varchar','precision' => '10','nullable' => False),
-				'mime_hdr' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'fl_ext' => array('type' => 'varchar','precision' => '10'),
+				'mime_hdr' => array('type' => 'varchar','precision' => '255'),
 				'descr' => array('type' => 'varchar','precision' => '255'),
 				'icon' => array('type' => 'varchar','precision' => '100','nullable' => False,'default' => 'unknown.gif')
 			),
@@ -309,9 +309,9 @@
 		),
 		'phpgw_fud_mlist' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'subject_regex_haystack' => array('type' => 'text'),
 				'subject_regex_needle' => array('type' => 'text'),
 				'body_regex_haystack' => array('type' => 'text'),
@@ -326,7 +326,7 @@
 		),
 		'phpgw_fud_mod' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -337,7 +337,7 @@
 		),
 		'phpgw_fud_mod_que' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -348,7 +348,7 @@
 		),
 		'phpgw_fud_msg' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'thread_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'poster_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'reply_to' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -358,7 +358,7 @@
 				'update_stamp' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'updated_by' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'icon' => array('type' => 'varchar','precision' => '100'),
-				'subject' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'subject' => array('type' => 'varchar','precision' => '100'),
 				'attach_cnt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'foff' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
@@ -390,7 +390,7 @@
 		),
 		'phpgw_fud_msg_report' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'reason' => array('type' => 'varchar','precision' => '255'),
@@ -403,11 +403,11 @@
 		),
 		'phpgw_fud_nntp' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'nntp_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '44'),
-				'server' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'newsgroup' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'server' => array('type' => 'varchar','precision' => '255'),
+				'newsgroup' => array('type' => 'varchar','precision' => '255'),
 				'port' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'timeout' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'login' => array('type' => 'varchar','precision' => '255'),
@@ -420,7 +420,7 @@
 		),
 		'phpgw_fud_pmsg' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'to_list' => array('type' => 'text'),
 				'ouser_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'duser_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -430,7 +430,7 @@
 				'post_stamp' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'read_stamp' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'icon' => array('type' => 'varchar','precision' => '100'),
-				'subject' => array('type' => 'varchar','precision' => '100','nullable' => False),
+				'subject' => array('type' => 'varchar','precision' => '100'),
 				'attach_cnt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'foff' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'length' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -445,8 +445,8 @@
 		),
 		'phpgw_fud_poll' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'owner' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'creation_date' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
 				'expiry_date' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
@@ -461,9 +461,9 @@
 		),
 		'phpgw_fud_poll_opt' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'name' => array('type' => 'varchar','precision' => '255'),
 				'count' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
 			'pk' => array('id'),
@@ -473,7 +473,7 @@
 		),
 		'phpgw_fud_poll_opt_track' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'poll_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'poll_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
@@ -485,7 +485,7 @@
 		),
 		'phpgw_fud_read' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'thread_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -498,9 +498,9 @@
 		),
 		'phpgw_fud_replace' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'replace_str' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'with_str' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'replace_str' => array('type' => 'varchar','precision' => '255'),
+				'with_str' => array('type' => 'varchar','precision' => '255'),
 				'from_post' => array('type' => 'varchar','precision' => '255'),
 				'to_msg' => array('type' => 'varchar','precision' => '255'),
 				'replace_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1')
@@ -512,8 +512,8 @@
 		),
 		'phpgw_fud_search' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'word' => array('type' => 'varchar','precision' => '50','nullable' => False)
+				'id' => array('type' => 'auto'),
+				'word' => array('type' => 'varchar','precision' => '50')
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -522,7 +522,7 @@
 		),
 		'phpgw_fud_search_cache' => array(
 			'fd' => array(
-				'srch_query' => array('type' => 'varchar','precision' => '32','nullable' => False),
+				'srch_query' => array('type' => 'varchar','precision' => '32'),
 				'query_type' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'expiry' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -535,7 +535,7 @@
 		),
 		'phpgw_fud_ses' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'ses_id' => array('type' => 'varchar','precision' => '32','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'action' => array('type' => 'varchar','precision' => '255'),
@@ -551,10 +551,10 @@
 		),
 		'phpgw_fud_smiley' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'img' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'descr' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'code' => array('type' => 'varchar','precision' => '25','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'img' => array('type' => 'varchar','precision' => '255'),
+				'descr' => array('type' => 'varchar','precision' => '255'),
+				'code' => array('type' => 'varchar','precision' => '25'),
 				'vieworder' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
 			'pk' => array('id'),
@@ -579,7 +579,7 @@
 		),
 		'phpgw_fud_themes' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'name' => array('type' => 'varchar','precision' => '255'),
 				'theme' => array('type' => 'varchar','precision' => '255'),
 				'lang' => array('type' => 'varchar','precision' => '255'),
@@ -594,7 +594,7 @@
 		),
 		'phpgw_fud_thr_exchange' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'th' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'frm' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'req_by' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -607,7 +607,7 @@
 		),
 		'phpgw_fud_thread' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'root_msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'last_post_date' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
@@ -627,7 +627,7 @@
 		),
 		'phpgw_fud_thread_notify' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'thread_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -638,7 +638,7 @@
 		),
 		'phpgw_fud_thread_rate_track' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'thread_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'stamp' => array('type' => 'int','precision' => '8','nullable' => False,'default' => '0'),
@@ -654,7 +654,7 @@
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'page' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'thread_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'pos' => array('type' => 'int','precision' => '4', 'nullable' => False),
+				'pos' => array('type' => 'int','precision' => '4', 'nullable' => False, 'default' => '0'),
 				'tmp' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('forum_id','page','pos'),
@@ -664,7 +664,7 @@
 		),
 		'phpgw_fud_title_index' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'word_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'msg_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -675,7 +675,7 @@
 		),
 		'phpgw_fud_user_ignore' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
+				'id' => array('type' => 'auto'),
 				'ignore_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
@@ -686,12 +686,12 @@
 		),
 		'phpgw_fud_users' => array(
 			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'login' => array('type' => 'varchar','precision' => '50','nullable' => False),
-				'alias' => array('type' => 'varchar','precision' => '50','nullable' => False),
-				'passwd' => array('type' => 'varchar','precision' => '32','nullable' => False),
-				'name' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'email' => array('type' => 'varchar','precision' => '255','nullable' => False),
+				'id' => array('type' => 'auto'),
+				'login' => array('type' => 'varchar','precision' => '50'),
+				'alias' => array('type' => 'varchar','precision' => '50'),
+				'passwd' => array('type' => 'varchar','precision' => '32'),
+				'name' => array('type' => 'varchar','precision' => '255'),
+				'email' => array('type' => 'varchar','precision' => '255'),
 				'location' => array('type' => 'varchar','precision' => '255'),
 				'interests' => array('type' => 'varchar','precision' => '255'),
 				'occupation' => array('type' => 'varchar','precision' => '255'),
@@ -727,7 +727,7 @@
 				'ignore_list' => array('type' => 'text'),
 				'group_leader_list' => array('type' => 'text'),
 				'users_opt' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '4488117'),
-				'egw_id' => array('type' => 'int','precision' => '4','nullable' => False)
+				'egw_id' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('id'),
 			'fk' => array(),

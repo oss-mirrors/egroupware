@@ -80,15 +80,15 @@
 {SECTION: END}
 
 {SECTION: findu_unban}
-<a href="{GVAR: WWW_ROOT}adm/admuser.php?act=block&usr_id={VAR: r->id}&S={DEF: s}">{MSG: findu_unban}</a>
+<a href="{GVAR: WWW_ROOT}adm/admuser.php?act=block&usr_id={VAR: r->id}&{DEF: _rsid}">{MSG: findu_unban}</a>
 {SECTION: END}
 
 {SECTION: findu_ban}
-<a href="{GVAR: WWW_ROOT}adm/admuser.php?act=block&usr_id={VAR: r->id}&S={DEF: s}">{MSG: findu_ban}</a>
+<a href="{GVAR: WWW_ROOT}adm/admuser.php?act=block&usr_id={VAR: r->id}&{DEF: _rsid}">{MSG: findu_ban}</a>
 {SECTION: END}
 
 {SECTION: findu_admin_opts}
-<td class="SmallText" nowrap><a href="{GVAR: WWW_ROOT}adm/admuser.php?usr_id={VAR: r->id}&S={DEF: s}&act=1">{MSG: findu_edit}</a> || {TEMPLATE-DATA: admi}</td>
+<td class="SmallText" nowrap><a href="{GVAR: WWW_ROOT}adm/admuser.php?usr_id={VAR: r->id}&{DEF: _rsid}&act=1">{MSG: findu_edit}</a> || {TEMPLATE-DATA: admi}</td>
 {SECTION: END}
 
 {SECTION: find_user_entry_lnk}

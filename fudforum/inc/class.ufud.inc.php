@@ -72,7 +72,7 @@
 		function del_account($row)
 		{
 			define('plain_page', 1);
-			require($GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum/include/GLOBALS.php");
+			require($GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum/".sprintf("%u", $GLOBALS['phpgw_info']['user']['domain'])."/include/GLOBALS.php");
 
 			fud_use('db.inc');
 			fud_use('private.inc');

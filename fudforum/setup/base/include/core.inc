@@ -120,20 +120,28 @@ if (!function_exists('file_get_contents')) {
 
 function fud_egw($t='index', $plain=0)
 {
-	global $sessionid;
-
 	/* Import session id */
-	$sessionid = null;
-        if (isset($_GET['S'])) {
-		$sessionid = $_GET['S'];
-	} else if (isset($_GET['sessionid'])) {
-		$sessionid = $_GET['sessionid'];
+	$domain = $kp3 = $sessionid = null;
+	if (isset($_GET['sessionid'])) {
+		$sessionid =& $_GET['sessionid'];
+		if (isset($_GET['domain'])) {
+			$domain =& $_GET['domain'];
+		}
+		if (isset($_GET['kp3'])) {
+			$kp3 =& $_GET['kp3'];
+		}
 	}
-	if (isset($_POST['S'])) {
-		$sessionid = $_POST['S'];
+	if (isset($_POST['sessionid'])) {
+		$sessionid =& $_POST['sessionid'];
+		if (isset($_POST['domain'])) {
+			$_GET['domain'] = $domain =& $_POST['domain'];
+		}
+		if (isset($_POST['kp3'])) {
+			$_GET['kp3'] = $kp3 =& $_POST['kp3'];
+		}
 	}
 	if (isset($_COOKIE['sessionid'])) {
-		$sessionid = $_COOKIE['sessionid'];
+		$sessionid =& $_COOKIE['sessionid'];
 	}
 
         /* validate session id */
@@ -146,16 +154,16 @@ function fud_egw($t='index', $plain=0)
 	$GLOBALS['phpgw_info']['flags'] = array('currentapp' => 'fudforum', 'noappheader' => true, 'noappfooter' => true, 'nofooter' => false, 'noheader' => true, 'nonavbar' => true);
 	$GLOBALS['phpgw_info']['flags']['java_script'] = '<script language="javascript" src="'.$GLOBALS['WWW_ROOT'].'lib.js" type="text/javascript"></script>';
 
-	if (!$sessionid && $GLOBALS['ANON_NICK']) {
+	if (!$sessionid) {
 		$GLOBALS['phpgw_info']['flags']['login'] = true;
 		/* In order to create a session, currentapp must be 'login' */
 		$GLOBALS['phpgw_info']['flags']['currentapp'] = 'login';
 	}
 
-	require_once($GLOBALS['WWW_ROOT_DISK'].'../header.inc.php');
+	require_once($GLOBALS['WWW_ROOT_DISK'].'../../header.inc.php');
 
 	/* anon user handling */
-	if (!$GLOBALS['phpgw']->session->verify()) {
+	if ($GLOBALS['ANON_NICK'] && !$GLOBALS['phpgw']->session->verify()) {
 		$sessionid = $GLOBALS['phpgw']->session->create($GLOBALS['ANON_NICK'], $GLOBALS['ANON_PASS'], 'text');
 		/* still no session, failed to create session for anon user */
 		if (!$sessionid) {
@@ -171,34 +179,34 @@ function fud_egw($t='index', $plain=0)
 	}
 
 	/* define constants */
-	define('s', $sessionid); define('_hs', '<input type="hidden" name="S" value="'.$sessionid.'">');
-	define('_rsid', 'S='.$sessionid); define('_rsidl', 'S='.$sessionid);
-	if (@$GLOBALS['phpgw_info']['server']['use_adodb'])
-	{
+	define('s', $sessionid);
+	define('_hs', '<input type="hidden" name="sessionid" value="'.$sessionid.'"><input type="hidden" name="domain" value="'.$domain.'"><input type="hidden" name="kp3" value="'.$kp3.'">');
+	define('_rsid', "sessionid={$sessionid}&amp;kp3={$kp3}&amp;domain={$domain}");
+	define('_rsidl', str_replace('&amp;', '&', _rsid));
+
+	if (!empty($GLOBALS['phpgw_info']['server']['use_adodb'])) {
 		// open your own connection, as ADOdb does not export the use Link_ID
-		switch ($GLOBALS['phpgw_info']['server']['db_type'])
-		{
+		switch ($GLOBALS['phpgw_info']['server']['db_type']) {
 			case 'mysql':
 				$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'mysql_pconnect' : 'mysql_connect';
 				define('fud_sql_lnk',$func($GLOBALS['phpgw']->db->Host, 
 					$GLOBALS['phpgw']->db->User, $GLOBALS['phpgw']->db->Password));
 				mysql_select_db($GLOBALS['phpgw']->db->Database,fud_sql_lnk);
 				break;
+
 			case 'pgsql':
 				$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'pg_pconnect' : 'pg_connect';
 				define('fud_sql_lnk',$func('dbname='.$GLOBALS['phpgw']->db->Database.
 					' host='.$GLOBALS['phpgw']->db->Host.
 					' user='.$GLOBALS['phpgw']->db->User.
 					' password='.$GLOBALS['phpgw']->db->Password));
-				mysql_select_db($GLOBALS['phpgw']->db->Database,fud_sql_lnk);
 				break;
+
 			default:
 				die('FUDforum only supports mysql or pgsql !!!');
 		}
 		unset($func);
-	}
-	else
-	{
+	} else {
 		define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
 	}
 

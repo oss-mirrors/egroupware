@@ -15,8 +15,9 @@
 	ignore_user_abort(true);
 	set_magic_quotes_runtime(0);
 
+
 	/* security check to prevent execution */
-	if (strpos(realpath(__FILE__), 'setup/index.php') !== false) {
+	if (basename(dirname(__FILE__)) == 'setup') {
 		exit;
 	}
 
@@ -29,7 +30,7 @@
 		'nofooter'	=>	true
 	);
 	
-	require_once('../header.inc.php');
+	require_once('./../../header.inc.php');
 
 	/* sanity checks, if any of these are true, notify the user & abort the process */
 	if (empty($GLOBALS['phpgw_info']['server']['files_dir'])) {
@@ -37,9 +38,12 @@
 	} else if (!is_writeable($GLOBALS['phpgw_info']['server']['files_dir'])) {
 		exit("The 'files/' ({$GLOBALS['phpgw_info']['server']['files_dir']}) directory exists, however webserver has no write permissions to that directory.");
 	}
-	if (!is_writeable(PHPGW_SERVER_ROOT."/fudforum")) {
+
+	$path = realpath(dirname(__FILE__));
+
+	if (!is_writeable($path)) {
 		$check_list = array('blank.gif', 'index.php', 'lib.js', 'adm', 'images', 'rdf.php', 'pdf.php', 'theme', 'GLOBALS.php');
-		$path = PHPGW_SERVER_ROOT."/fudforum/";
+		$path .= "/";
 		foreach ($check_list as $f) {
 			if (!is_writeable($path.$check_list)) {
 				echo <<< FUD_ERR
@@ -75,8 +79,10 @@ if (!function_exists('file_get_contents')) {
 	}
 }
 
+	$key = basename(dirname(__FILE__));
+
 	/* Create Directories needed for FUDforum Operation */
-	$fud_write_dir		= $GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum";
+	$fud_write_dir		= $GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum/" . $key;
 	$DATA_DIR		= $fud_write_dir . "/";
 	$INCLUDE		= $fud_write_dir . "/include/";
 	$ERROR_PATH		= $fud_write_dir . "/errors/";
@@ -84,13 +90,16 @@ if (!function_exists('file_get_contents')) {
 	$FILE_STORE		= $fud_write_dir . "/files/";
 	$FORUM_SETTINGS_PATH	= $fud_write_dir . "/cache/";
 	$MSG_STORE_DIR		= $fud_write_dir . "/messages/";
-	$WWW_ROOT_DISK		= PHPGW_SERVER_ROOT."/fudforum/";
-	$WWW_ROOT		= $GLOBALS['phpgw_info']['server']['webserver_url']."/fudforum/";
+	$WWW_ROOT_DISK		= PHPGW_SERVER_ROOT."/fudforum/{$key}/";
+	$WWW_ROOT		= $GLOBALS['phpgw_info']['server']['webserver_url']."/fudforum/{$key}/";
 
 	$u = umask(0);
 
 	/* Create non-web directories needed for FUDforum operation */
 	$dir_ar = array('include', 'src', 'errors', 'messages', 'files', 'thm', 'sql', 'tmp', 'cache', 'errors/.nntp', 'errors/.mlist');
+	if (!is_dir($GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum")) {
+		mkdir($GLOBALS['phpgw_info']['server']['files_dir'] . "/fudforum", 0700);
+	}
 	if (!is_dir($fud_write_dir)) {
 		mkdir($fud_write_dir, 0700);
 	}
@@ -114,8 +123,8 @@ if (!function_exists('file_get_contents')) {
 	}
 
 	/* Create web directories & files needed FUDforum operations */
-	copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/blank.gif", PHPGW_SERVER_ROOT."/fudforum/blank.gif");
-	copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/lib.js", PHPGW_SERVER_ROOT."/fudforum/lib.js");
+	copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/blank.gif", $WWW_ROOT_DISK."blank.gif");
+	copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/lib.js", $WWW_ROOT_DISK."lib.js");
 	$dir_ar = array('adm', 'images');
 	while (list(,$d) = each($dir_ar)) {
 		if (!is_dir("{$WWW_ROOT_DISK}/{$d}")) {

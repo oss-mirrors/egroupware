@@ -52,7 +52,7 @@
 
 	define('__index_page_start__', true);
 	if (isset($GLOBALS['fud_egw_hdr'])) {
-		$GLOBALS['fud_egw_hdr'] = str_replace('fudforum/lib.js" type="text/javascript"></script>', 'fudforum/lib.js" type="text/javascript"></script><link href="'.$GLOBALS['WWW_ROOT'].fud_theme.'/forum.css" type="text/css" rel="StyleSheet" /></HEAD>', $GLOBALS['fud_egw_hdr']);
+		$GLOBALS['fud_egw_hdr'] = str_replace('/lib.js" type="text/javascript"></script>', '/lib.js" type="text/javascript"></script><link href="'.$GLOBALS['WWW_ROOT'].fud_theme.'/forum.css" type="text/css" rel="StyleSheet" /></HEAD>', $GLOBALS['fud_egw_hdr']);
 	}
 	require($WWW_ROOT_DISK . fud_theme . $t . '.php');
 ?>
