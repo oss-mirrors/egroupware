@@ -25,20 +25,20 @@
 	//header("Content-disposition: attachment; filename=\"".$name."\"");
 	//header("Content-type: ".strtolower($application)."/".strtolower($subtype));
 
-	$mime = strtolower($type)."/".strtolower($subtype);
-	$phpgw->browser->content_header($name,$mime);
+	$mime = strtolower($phpgw->msg->args['type'])."/".strtolower($phpgw->msg->args['subtype']);
+	$phpgw->browser->content_header($phpgw->msg->args['name'],$mime);
 
-	if ($encoding == "base64")
+	if ($phpgw->msg->args['encoding'] == "base64")
 	{
-		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no));
+		echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
 	}
-	elseif ($encoding == "qprint")
+	elseif ($phpgw->msg->args['encoding'] == "qprint")
 	{
-		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no));
+		echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
 	}
 	else
 	{
-		echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_no);
+		echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']);
 	}
 
 	$phpgw->msg->end_request();

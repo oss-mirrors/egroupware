@@ -23,17 +23,16 @@
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../header.inc.php');
 
-	$struct_not_set = '-1';
+	$struct_not_set = $phpgw->msg->not_set;
 
 //  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
-	//function send_message_cleanup($mailbox)
 	function send_message_cleanup()
 	{
 		global $phpgw, $mail_out;
 		
 		//echo 'send_message cleanup';
 		$phpgw->msg->end_request();
-
+		// note: the next lines can be removed since php takes care of memory management
 		unset($mail_out);
 		unset($phpgw->mail_send);
 	}
@@ -80,13 +79,16 @@
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['sender'][0]
 	$mail_out['sender'] = Array();
 	$mail_out['charset'] = '';
+	$mail_out['msgtype'] = '';
 
 //  -------  Start Filling Array Structure For Outgoing Mail  -----------
-	// -----  SENDER  -----
-	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
-	if (isset($sender) && ($sender))
+	// -----  x-phpgw custom message type RPC-like flag  ------
+	// RARELY USED, maybe NEVER used, most implementation code for this is commented out
+	if ((isset($phpgw->msg->args['msgtype'])) && ($phpgw->msg->args['msgtype'] != ''))
 	{
-		$mail_out['sender'] = $phpgw->msg->make_rfc_addy_array($sender);
+		// convert script GPC args into useful mail_out structure information
+		$mail_out['msgtype'] = $phpgw->msg->args['msgtype'];
+		// after this, ONLY USE $mail_out structure for this
 	}
 	// -----  CHARSET  -----
 	if (lang('charset') != '')
@@ -96,6 +98,14 @@
 	else
 	{
 		$mail_out['charset'] = 'US-ASCII';
+	}
+	// -----  SENDER  -----
+	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
+	if (isset($phpgw->msg->args['sender']) && ($phpgw->msg->args['sender'] != ''))
+	{
+		// convert script GPC args into useful mail_out structure information
+		$mail_out['sender'] = $phpgw->msg->make_rfc_addy_array($phpgw->msg->args['sender']);
+		// after this, ONLY USE $mail_out structure for this
 	}
 	// -----  DATE  -----
 	// RFC2822: date *should* be local time with the correct offset, but this is problematic on many Linux boxen
@@ -107,15 +117,19 @@
 	$mail_out['mta_elho_mymachine'] = trim($phpgw_info['server']['hostname']);
 
 // ----  Forwarding Detection  -----
-	if ((isset($action))
-	&& ($action == 'forward'))
+	if ((isset($phpgw->msg->args['action']))
+	&& ($phpgw->msg->args['action'] == 'forward'))
 	{
+		// convert script GPC args into useful mail_out structure information
 		$mail_out['is_forward'] = True;
+		// after this, ONLY USE $mail_out structure for this
 	}
-	if ((isset($fwd_proc))
-	&& ($fwd_proc != ''))
+	if ((isset($phpgw->msg->args['fwd_proc']))
+	&& ($phpgw->msg->args['fwd_proc'] != ''))
 	{
-		$mail_out['fwd_proc'] = $fwd_proc;
+		// convert script GPC args into useful mail_out structure information
+		$mail_out['fwd_proc'] = $phpgw->msg->args['fwd_proc'];
+		// after this, ONLY USE $mail_out structure for this
 	}
 
 // ----  Attachment Detection  -----
@@ -143,11 +157,16 @@
 		}
 	}
 
-//  ------  get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \' 
-	$to = $phpgw->msg->stripslashes_gpc($to);
-	$cc = $phpgw->msg->stripslashes_gpc($cc);
-	$body = $phpgw->msg->stripslashes_gpc(trim($body));
-	$subject = $phpgw->msg->stripslashes_gpc($subject);
+//  ------  get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'
+	// convert script GPC args into useful mail_out structure information
+	$to = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['to']);
+	$cc = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['cc']);
+	$body = $phpgw->msg->stripslashes_gpc(trim($phpgw->msg->args['body']));
+	$subject = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['subject']);
+	// after this,  do NOT use the args for these anymore
+
+	// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
+	$phpgw->msg->args['body'] = '';
 
 // ----  DE-code HTML SpecialChars in the body   -----
 	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
@@ -160,7 +179,8 @@
 // ----  Add Email Sig to Body   -----
 	if ((isset($phpgw_info['user']['preferences']['email']['email_sig']))
 	&& ($phpgw_info['user']['preferences']['email']['email_sig'] != '')
-	&& ($attach_sig)
+	&& (isset($phpgw->msg->args['attach_sig']))
+	&& ($phpgw->msg->args['attach_sig'] != '')
 	// ONLY ADD SIG IF USER PUTS TEXT IN THE BODY
 	//&& (strlen(trim($body)) > 3))
 	&& ($mail_out['is_forward'] == False))
@@ -251,10 +271,10 @@
 		$m_line++;
 		$mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Type: text/plain; charset="'.$mail_out['charset'].'"';
 		$m_line++;
-		if ((isset($msgtype)) && ($msgtype))
+		if ($mail_out['msgtype'] != '')
 		{
 			// "folded header" opens with a "whitespace"
-			$mail_out['body'][0]['mime_headers'][$m_line] = '  phpgw-type="'.$msgtype.'"';
+			$mail_out['body'][0]['mime_headers'][$m_line] = '  phpgw-type="'.$mail_out['msgtype'].'"';
 			$m_line++;
 		}
 		// 7 BIT vs. 8 BIT Content-Transfer-Encoding
@@ -294,13 +314,13 @@
 	if (($mail_out['is_forward'] == True)
 	&& ($mail_out['fwd_proc'] == 'pushdown'))
 	{
-		//$msg = $phpgw->dcom->header($mailbox, $msgnum);
-		//$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
-		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
-		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
+		//$msg = $phpgw->dcom->header($mailbox, $phpgw->msg->msgnum);
+		//$struct = $phpgw->dcom->fetchstructure($mailbox, $phpgw->msg->msgnum);
+		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 
 
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -318,12 +338,12 @@
 		$mail_out['body'][$body_part_num]['mime_body'] = Array();
 
 		// ----  General Information about The Original Message  -----
-		//$msg = $phpgw->dcom->header($mailbox, $msgnum);
-		//$struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
-		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
-		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
+		//$msg = $phpgw->dcom->header($mailbox, $phpgw->msg->msgnum);
+		//$struct = $phpgw->dcom->fetchstructure($mailbox, $phpgw->msg->msgnum);
+		$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+		$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		// add some more info
 		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg->from[0]);
 		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg->udate);
@@ -387,8 +407,8 @@
 		$m_line++;
 
 		// dump the original BODY (with out its headers) here
-		//$fwd_this = $phpgw->dcom->get_body($mailbox, $msgnum);
-		$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum);
+		//$fwd_this = $phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum);
+		$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 		// Explode Body into Array of strings
 		$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($fwd_this));
 		$fwd_this = '';		
@@ -408,8 +428,8 @@
 		$mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 
 		// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($mailbox, $msgnum));
-		$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $msgnum));
+		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($mailbox, $phpgw->msg->msgnum));
+		$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
 		$fwd_this['sub_header'] = $phpgw->msg->normalize_crlf($fwd_this['sub_header']);
 
 		// CLENSE headers of offensive artifacts that can confuse dumb MUAs
@@ -419,8 +439,8 @@
 		$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 
 		// get the body
-		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($mailbox, $msgnum));
-		$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum));
+		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum));
+		$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
 		//$fwd_this['sub_body'] = $phpgw->msg->normalize_crlf($fwd_this['sub_body']);
 
 
@@ -559,8 +579,12 @@
 	$hdr_line = 0;
 	$mail_out['main_headers'][$hdr_line] = 		'From: '.$phpgw->msg->addy_array_to_str($mail_out['from']);
 	$hdr_line++;
-	if (isset($sender) && ($sender))
+	if (count($mail_out['sender'] > 0))
 	{
+		// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
+		// $mail_out['sender'] is initialized as an empty array in the begining of this file
+		// after that, it would be filled if the argument "sender" was passed to the script,
+		// then it would have been converted to the appropriate format and put in the $mail_out['sender'] array
 		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$phpgw->msg->addy_array_to_str($mail_out['sender']);
 		$hdr_line++;
 	}
@@ -618,9 +642,9 @@
 	}
 
 	// finish off the main headers
-	if (!empty($msgtype))
+	if ($mail_out['msgtype'] != '')
 	{
-		$mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$msgtype;
+		$mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$mail_out['msgtype'];
 		$hdr_line++;
 	}
 	$mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org)';
@@ -667,7 +691,8 @@
 
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
 		// using a NEW stream *seems* faster, but not sure ???
-		if ($phpgw->msg->mailsvr_stream == '')
+		if ((!isset($phpgw->msg->mailsvr_stream))
+		|| ($phpgw->msg->mailsvr_stream == ''))
 		{
 			$stream = $phpgw->dcom->login('INBOX');
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not

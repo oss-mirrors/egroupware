@@ -32,6 +32,7 @@
 	//global $phpgw, $phpgw_info;
 
 	var $args = Array();
+	var $not_set = '-1';
 	var $att_files_dir;
 	var $folder_list = array();
 	var $mailsvr_callstr = '';
@@ -44,6 +45,7 @@
 	var $sort = '';
 	var $order = '';
 	var $start = '';
+	var $msgnum = '';
 
 	var $default_trash_folder = 'Trash';
 	var $default_sent_folder = 'Sent';
@@ -83,6 +85,7 @@
 	//$debug_logins = True;
 	$debug_logins = False;
 
+  // ----  Things To Be Done Whether You Login Or Not  -----
 	// obtain the preferences from the database
 	$this->create_email_preferences();
 	// initalize some important class variables
@@ -100,27 +103,8 @@
 	{
 		$args_array['do_login'] = False;
 	}
-	/*
-	// ----  What "sort" "order" and "start" args were passed to the script  -----
-	if (!isset($args_array['sort']))
-	{
-		$args_array['sort'] = '';
-	}
-	if (!isset($args_array['order']))
-	{
-		$args_array['order'] = '';
-	}
-	if (!isset($args_array['start']))
-	{
-		$args_array['start'] = '';
-	}
-	// ----  What "td" result message was passed to the script  -----
-	if (!isset($args_array['td']))
-	{
-		$args_array['td'] = '';
-	}
-	*/
 	// ----  Are We In Newsmode Or Not  -----
+	// note: this needs better handling in the future
 	if ((isset($args_array['newsmode']))
 	&& (($args_array['newsmode'] == True) || ($args_array['newsmode'] == "on")))
 	{
@@ -134,6 +118,15 @@
 		$this->newsmode = False;
 	}
 
+	// store the GPC args in a class var
+	$this->args = $args_array;
+	// NOTE: after this, if any args values are changes, 
+	// you MUST store them as such:  $this->args['some_arg'] = new_value
+	// since the $args_array local var is NO LONGER USED after this procedure
+
+  // ----  Things Specific To Loging In, and Actually Logging In  -----
+	// no $args_array (not $this->args) items are changed during this "do_login" code
+	// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->folder
 	if ($args_array['do_login'] == True)
 	{
 		// === ISSET CHECK for userid and passwd to avoid garbage logins ==
@@ -201,15 +194,18 @@
 				return False;
 			}
 		}
-
+		// ----  Process "sort" "order" "start" and "msgnum" GPC args (if any) passed to the script  -----
+		// these args are so fundamental, they get stored in their own class vars
+		// no longer referenced as args after this
+		// requires args saved to $this->args, only relevant if you login
+		$this->fill_sort_order_start_msgnum();
 	}
-	// now that we've processed the args_array, save it in a class var
-	$this->args = $args_array;
-	//  Messages Sort OrderVariables, needed by dcom->sort, which is aliased with $this->get->message_list
-	$this->fill_sort_order_start();
 
+  // ----  Things Again Specific To Loging In  -----
 	if ($args_array['do_login'] == True)
 	{
+		// returning this is vestigal, not really necessary, but do it anyway
+		// it's importance is that it returns something other then "False" on success
 		return $this->mailsvr_stream;
 	}
   }

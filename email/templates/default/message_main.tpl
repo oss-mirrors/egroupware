@@ -18,10 +18,7 @@ In the future, this will process a specially formated email msg.<hr>
 			</td>
 			<td align="right">
 				<font size="3" face="{theme_font}" color="{reply_btns_text}">
-				{ilnk_reply}
-				{ilnk_replyall}
-				{ilnk_forward}
-				{ilnk_delete}
+				{ilnk_reply}&nbsp;{ilnk_replyall}&nbsp;{ilnk_forward}&nbsp;{ilnk_delete}&nbsp;
  				</font>
 			</td>
 			<td align="right">

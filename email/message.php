@@ -47,11 +47,16 @@
 	$image_dir = PHPGW_IMAGES;
 	$sm_envelope_img = $phpgw->msg->img_maketag($image_dir.'/sm_envelope.gif',"Add to address book","8","10","0");
 	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
-	$struct_not_set = '-1';
+	$struct_not_set = $phpgw->msg->not_set;
+
+// ----  Make some local variables from the passed args  -----
+	// temporary - should replace all the local refs below with the class var
+	//$msgnum = $phpgw->msg->msgnum;
+
 
 // ----  General Information about The Message  -----
-	$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $msgnum);
-	$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
+	$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+	$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 	$totalmessages = $phpgw->dcom->num_msg($phpgw->msg->mailsvr_stream);
 
 
@@ -63,8 +68,8 @@
 // ----  Special X-phpGW-Type Message Flag  -----
 	// is this still a planned feature?
 	$application = '';
-	//$msgtype = $phpgw->dcom->get_flag($mailbox,$msgnum,'X-phpGW-Type');
-	$msgtype = $phpgw->dcom->get_flag($phpgw->msg->mailsvr_stream,$msgnum,'X-phpGW-Type');
+	//$msgtype = $phpgw->dcom->get_flag($mailbox,$phpgw->msg->msgnum,'X-phpGW-Type');
+	$msgtype = $phpgw->dcom->get_flag($phpgw->msg->mailsvr_stream,$phpgw->msg->msgnum,'X-phpGW-Type');
 	
 	if (!empty($msgtype))
 	{
@@ -83,18 +88,18 @@
 		$phpgw->msg->get_folder_short($phpgw->msg->folder));
 
 // ----  Go To Previous Message Handling  -----
-	if ($msgnum != 1 || ($default_sorting == 'new_old' && $msgnum != $totalmeesages))
+	if ($phpgw->msg->msgnum != 1 || ($default_sorting == 'new_old' && $phpgw->msg->msgnum != $totalmeesages))
 	{
 		if ($default_sorting == 'new_old')
 		{
-			$pm = $msgnum + 1;
+			$pm = $phpgw->msg->msgnum + 1;
 		}
 		else
 		{
-			$pm = $msgnum - 1;
+			$pm = $phpgw->msg->msgnum - 1;
 		}
 
-		if ($default_sorting == 'new_old' && ($msgnum == $totalmessages && $msgnum != 1 || $totalmessages == 1))
+		if ($default_sorting == 'new_old' && ($phpgw->msg->msgnum == $totalmessages && $phpgw->msg->msgnum != 1 || $totalmessages == 1))
 		{
 			$ilnk_prev_msg = $phpgw->msg->img_maketag($svr_image_dir.'/left-grey.gif',"No Previous Message",'','','0');
 		}
@@ -111,18 +116,18 @@
 	}
 
 // ----  Go To Next Message Handling  -----
-	if ($msgnum < $totalmessages || ($default_sorting == 'new_old' && $msgnum != 1))
+	if ($phpgw->msg->msgnum < $totalmessages || ($default_sorting == 'new_old' && $phpgw->msg->msgnum != 1))
 	{
 		if ($default_sorting == 'new_old')
 		{
-			$nm = $msgnum - 1;
+			$nm = $phpgw->msg->msgnum - 1;
 		}
 		else
 		{
-			$nm = $msgnum + 1;
+			$nm = $phpgw->msg->msgnum + 1;
 		}
 
-		if ($default_sorting == 'new_old' && $msgnum == 1 && $totalmessages != $msgnum)
+		if ($default_sorting == 'new_old' && $phpgw->msg->msgnum == 1 && $totalmessages != $phpgw->msg->msgnum)
 		{
 			$ilnk_next_msg = $phpgw->msg->img_maketag($svr_image_dir.'/right-grey.gif',"No Next Message",'','','0');
 		}
@@ -346,7 +351,7 @@
 			}
 
 			$index_flat_array++;
-			$part_nice[$index_flat_array] = pgw_msg_struct($part[$i], ($i+1), $loops, $debth, $folder, $msgnum);
+			$part_nice[$index_flat_array] = pgw_msg_struct($part[$i], ($i+1), $loops, $debth, $folder, $phpgw->msg->msgnum);
 
 			if ($part_nice[$index_flat_array]['ex_num_subparts'] != $struct_not_set)
 			{
@@ -410,7 +415,7 @@
 	{
 		$array_position++;
 		$d1_mime_num = (string)($d1+1);
-		$part_nice[$array_position] = pgw_msg_struct($part[$d1], $struct_not_set, $d1_mime_num, ($d1+1), $d1_num_parts, 1, $phpgw->msg->folder, $msgnum);
+		$part_nice[$array_position] = pgw_msg_struct($part[$d1], $struct_not_set, $d1_mime_num, ($d1+1), $d1_num_parts, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 		if ($deepest_level < 1) { $deepest_level=1; }
 		
 		// get SECONDARY/EMBEDDED level part information
@@ -423,7 +428,7 @@
 				$d2_part = $part_nice[$d1_array_pos]['subpart'][$d2];
 				$d2_mime_num = (string)($d1+1) .'.' .(string)($d2+1);
 				$array_position++;
-				$part_nice[$array_position] = pgw_msg_struct($d2_part, $d1_array_pos, $d2_mime_num, ($d2+1), $d2_num_parts, 2, $phpgw->msg->folder, $msgnum);
+				$part_nice[$array_position] = pgw_msg_struct($d2_part, $d1_array_pos, $d2_mime_num, ($d2+1), $d2_num_parts, 2, $phpgw->msg->folder, $phpgw->msg->msgnum);
 				if ($deepest_level < 2) { $deepest_level=2; }
 				
 				// get THIRD/EMBEDDED level part information
@@ -436,7 +441,7 @@
 						$d3_part = $part_nice[$d2_array_pos]['subpart'][$d3];
 						$d3_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1);
 						$array_position++;
-						$part_nice[$array_position] = pgw_msg_struct($d3_part, $d2_array_pos, $d3_mime_num, ($d3+1), $d3_num_parts, 3, $phpgw->msg->folder, $msgnum);
+						$part_nice[$array_position] = pgw_msg_struct($d3_part, $d2_array_pos, $d3_mime_num, ($d3+1), $d3_num_parts, 3, $phpgw->msg->folder, $phpgw->msg->msgnum);
 						if ($deepest_level < 3) { $deepest_level=3; }
 
 						// get FOURTH/EMBEDDED level part information
@@ -449,7 +454,7 @@
 								$d4_part = $part_nice[$d3_array_pos]['subpart'][$d4];
 								$d4_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1);
 								$array_position++;
-								$part_nice[$array_position] = pgw_msg_struct($d4_part, $d3_array_pos, $d4_mime_num, ($d4+1), $d4_num_parts, 4, $phpgw->msg->folder, $msgnum);
+								$part_nice[$array_position] = pgw_msg_struct($d4_part, $d3_array_pos, $d4_mime_num, ($d4+1), $d4_num_parts, 4, $phpgw->msg->folder, $phpgw->msg->msgnum);
 								if ($deepest_level < 4) { $deepest_level=4; }
 
 								// get FIFTH LEVEL EMBEDDED level part information
@@ -462,7 +467,7 @@
 										$d5_part = $part_nice[$d4_array_pos]['subpart'][$d5];
 										$d5_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1);
 										$array_position++;
-										$part_nice[$array_position] = pgw_msg_struct($d5_part, $d4_array_pos, $d5_mime_num, ($d5+1), $d5_num_parts, 5, $phpgw->msg->folder, $msgnum);
+										$part_nice[$array_position] = pgw_msg_struct($d5_part, $d4_array_pos, $d5_mime_num, ($d5+1), $d5_num_parts, 5, $phpgw->msg->folder, $phpgw->msg->msgnum);
 										if ($deepest_level < 5) { $deepest_level=5; }
 
 										// get SISTH LEVEL EMBEDDED level part information
@@ -475,7 +480,7 @@
 												$d6_part = $part_nice[$d5_array_pos]['subpart'][$d6];
 												$d6_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1);
 												$array_position++;
-												$part_nice[$array_position] = pgw_msg_struct($d6_part, $d5_array_pos, $d6_mime_num, ($d6+1), $d6_num_parts, 6, $phpgw->msg->folder, $msgnum);
+												$part_nice[$array_position] = pgw_msg_struct($d6_part, $d5_array_pos, $d6_mime_num, ($d6+1), $d6_num_parts, 6, $phpgw->msg->folder, $phpgw->msg->msgnum);
 												if ($deepest_level < 6) { $deepest_level=6; }
 
 												// get SEVENTH LEVEL EMBEDDED level part information
@@ -488,7 +493,7 @@
 														$d7_part = $part_nice[$d6_array_pos]['subpart'][$d7];
 														$d7_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1);
 														$array_position++;
-														$part_nice[$array_position] = pgw_msg_struct($d7_part, $d6_array_pos, $d7_mime_num, ($d7+1), $d7_num_parts, 7, $phpgw->msg->folder, $msgnum);
+														$part_nice[$array_position] = pgw_msg_struct($d7_part, $d6_array_pos, $d7_mime_num, ($d7+1), $d7_num_parts, 7, $phpgw->msg->folder, $phpgw->msg->msgnum);
 														if ($deepest_level < 7) { $deepest_level=7; }
 
 														// get EIGTH LEVEL EMBEDDED level part information
@@ -501,7 +506,7 @@
 																$d8_part = $part_nice[$d7_array_pos]['subpart'][$d8];
 																$d8_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1);
 																$array_position++;
-																$part_nice[$array_position] = pgw_msg_struct($d8_part, $d7_array_pos, $d8_mime_num, ($d8+1), $d8_num_parts, 8, $phpgw->msg->folder, $msgnum);
+																$part_nice[$array_position] = pgw_msg_struct($d8_part, $d7_array_pos, $d8_mime_num, ($d8+1), $d8_num_parts, 8, $phpgw->msg->folder, $phpgw->msg->msgnum);
 																if ($deepest_level < 8) { $deepest_level=8; }
 
 																// get NINTH LEVEL EMBEDDED level part information
@@ -514,7 +519,7 @@
 																		$d9_part = $part_nice[$d8_array_pos]['subpart'][$d9];
 																		$d9_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1);
 																		$array_position++;
-																		$part_nice[$array_position] = pgw_msg_struct($d9_part, $d8_array_pos, $d9_mime_num, ($d9+1), $d9_num_parts, 9, $phpgw->msg->folder, $msgnum);
+																		$part_nice[$array_position] = pgw_msg_struct($d9_part, $d8_array_pos, $d9_mime_num, ($d9+1), $d9_num_parts, 9, $phpgw->msg->folder, $phpgw->msg->msgnum);
 																		if ($deepest_level < 9) { $deepest_level=9; }
 
 																		// get 10th LEVEL EMBEDDED level part information
@@ -527,7 +532,7 @@
 																				$d10_part = $part_nice[$d9_array_pos]['subpart'][$d10];
 																				$d10_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1);
 																				$array_position++;
-																				$part_nice[$array_position] = pgw_msg_struct($d10_part, $d9_array_pos, $d10_mime_num, ($d10+1), $d10_num_parts, 10, $phpgw->msg->folder, $msgnum);
+																				$part_nice[$array_position] = pgw_msg_struct($d10_part, $d9_array_pos, $d10_mime_num, ($d10+1), $d10_num_parts, 10, $phpgw->msg->folder, $phpgw->msg->msgnum);
 																				if ($deepest_level < 10) { $deepest_level=10; }
 
 																				// get 11th LEVEL EMBEDDED level part information
@@ -540,7 +545,7 @@
 																						$d11_part = $part_nice[$d10_array_pos]['subpart'][$d11];
 																						$d11_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1) .'.' .(string)($d11+1);
 																						$array_position++;
-																						$part_nice[$array_position] = pgw_msg_struct($d11_part, $d10_array_pos, $d11_mime_num, ($d11+1), $d11_num_parts, 11, $phpgw->msg->folder, $msgnum);
+																						$part_nice[$array_position] = pgw_msg_struct($d11_part, $d10_array_pos, $d11_mime_num, ($d11+1), $d11_num_parts, 11, $phpgw->msg->folder, $phpgw->msg->msgnum);
 																						if ($deepest_level < 11) { $deepest_level=11; }
 
 
@@ -554,7 +559,7 @@
 																								$d12_part = $part_nice[$d11_array_pos]['subpart'][$d12];
 																								$d12_mime_num = (string)($d1+1) .'.' .(string)($d2+1) .'.' .(string)($d3+1) .'.' .(string)($d4+1) .'.' .(string)($d5+1) .'.' .(string)($d6+1) .'.' .(string)($d7+1) .'.' .(string)($d8+1) .'.' .(string)($d9+1) .'.' .(string)($d10+1) .'.' .(string)($d11+1) .'.' .(string)($d12+1);
 																								$array_position++;
-																								$part_nice[$array_position] = pgw_msg_struct($d12_part, $d11_array_pos, $d12_mime_num, ($d12+1), $d12_num_parts, 12, $phpgw->msg->folder, $msgnum);
+																								$part_nice[$array_position] = pgw_msg_struct($d12_part, $d11_array_pos, $d12_mime_num, ($d12+1), $d12_num_parts, 12, $phpgw->msg->folder, $phpgw->msg->msgnum);
 																								if ($deepest_level < 12) { $deepest_level=12; }
 																							}
 																						}
@@ -732,7 +737,7 @@
 		$part_nice[$j]['m_part_num_mime'] = $part_nice[$j]['ex_mime_number_smart'];
 
 		// ---- make an URL and a Clickable Link to directly acces this part
-		$click_info = make_part_clickable($part_nice[$j], $phpgw->msg->folder, $msgnum);
+		$click_info = make_part_clickable($part_nice[$j], $phpgw->msg->folder, $phpgw->msg->msgnum);
 		$part_nice[$j]['ex_part_href'] = $click_info['part_href'];
 		$part_nice[$j]['ex_part_clickable'] = $click_info['part_clickable'];
 
@@ -798,19 +803,19 @@
         $reply_img = $phpgw->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
 	$reply_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',
 				'action=reply&folder='.$phpgw->msg->prep_folder_out('')
-				.'&msgnum='.$msgnum .$first_presentable);
+				.'&msgnum='.$phpgw->msg->msgnum .$first_presentable);
 	$ilnk_reply = $phpgw->msg->href_maketag($reply_url, $reply_img);
 
         $replyall_img = $phpgw->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),"19","26",'0');
-	$replyall_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msgnum .$first_presentable);
+	$replyall_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=replyall&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$phpgw->msg->msgnum .$first_presentable);
 	$ilnk_replyall = $phpgw->msg->href_maketag($replyall_url, $replyall_img);
 
 	$forward_img = $phpgw->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),"19","26",'0');
-	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msgnum .'&fwd_proc='.$fwd_proc .$first_presentable);
+	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$phpgw->msg->msgnum .'&fwd_proc='.$fwd_proc .$first_presentable);
 	$ilnk_forward = $phpgw->msg->href_maketag($forward_url, $forward_img);
 
 	$delete_img = $phpgw->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),"19","26",'0');
-	$delete_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msgnum);
+	$delete_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php','what=delete&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$phpgw->msg->msgnum);
 	$ilnk_delete = $phpgw->msg->href_maketag($delete_url, $delete_img);
 
 	$t->set_var('theme_font',$phpgw_info['theme']['font']);
@@ -836,8 +841,8 @@
 		$all_keys = array_keys($part_nice);
 		$str_keys = implode(', ',$all_keys);
 		
-		//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
-		$msg_headers = $phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $msgnum);
+		//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $phpgw->msg->msgnum);
+		$msg_headers = $phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 		$msg_headers = $phpgw->msg->htmlspecialchars_encode($msg_headers);
 		
 		$crlf = "\r\n";
@@ -954,7 +959,7 @@
 	/*
 	$phpgw_info["user"]["preferences"]
 	$phpgw_info['flags']['part_nice_serial'] = serialize($part_nice);
-	$phpgw_info['flags']['part_nice_msgnum'] = $msgnum;
+	$phpgw_info['flags']['part_nice_msgnum'] = $phpgw->msg->msgnum;
 	$phpgw_info['flags']['part_nice_folder'] = $folder;
 	*/
 	
@@ -981,9 +986,9 @@
 	$unsupported['finding'] = False;
 	$unsupported['user_info'] = '';
 
-	//$support_test_struct = $phpgw->dcom->fetchstructure($mailbox, $msgnum);
-	$support_test_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msgnum);
-	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $msgnum);
+	//$support_test_struct = $phpgw->dcom->fetchstructure($mailbox, $phpgw->msg->msgnum);
+	$support_test_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
+	$support_test_struct_nice = pgw_msg_struct($support_test_struct, $struct_not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
 
 	if (($support_test_struct_nice['type'] == 'multipart')
 	&& ($support_test_struct_nice['subtype'] == 'report'))
@@ -1010,13 +1015,13 @@
 			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.$phpgw->msg->format_byte_size(strlen($dsp));
 			$t->set_var('display_str',$display_str);
 
-			//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
-			//$msg_headers = $phpgw->dcom->header($mailbox, $msgnum); // returns a structure w/o boundry info
+			//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $phpgw->msg->msgnum);
+			//$msg_headers = $phpgw->dcom->header($mailbox, $phpgw->msg->msgnum); // returns a structure w/o boundry info
 			//$struct_pop3 = $phpgw->dcom->get_structure($msg_headers, 1);
 			//$msg_boundry = $phpgw->dcom->get_boundary($msg_headers);
-			//$msg_body = $phpgw->dcom->fetchbody($mailbox, $msgnum, '1');
-			//$msg_body = $phpgw->dcom->get_body($mailbox, $msgnum);
-			$msg_body = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum);
+			//$msg_body = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, '1');
+			//$msg_body = $phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum);
+			$msg_body = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 
 			// GET THE BOUNDRY
 			for ($bs=0;$bs<count($struct->parameters);$bs++)
@@ -1063,8 +1068,8 @@
 			$dsp = '<br> === BOUNDRY ==== <br>'
 				.'<pre>'.$boundary.'</pre> <br>'
 				.'<br> === BODY ==== <br><br>';
-			//$dsp = $dsp .$phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-			$dsp = $dsp .$phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			//$dsp = $dsp .$phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+			$dsp = $dsp .$phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 			
 			$t->set_var('message_body',$dsp);
 			$t->parse('V_display_part','B_display_part');
@@ -1092,8 +1097,8 @@
 			$t->pparse('out','T_message_echo_dump');
 			// -----  Echo This Data Directly to the Client
 			echo '<pre>';
-			//echo $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-			echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			//echo $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+			echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 			echo '</pre>';
 			// -----  Close Table
 			$t->set_var('V_setup_echo_dump','');
@@ -1126,8 +1131,8 @@
 			echo '<pre>';
 			echo $phpgw->msg->htmlspecialchars_encode(
 				$phpgw->msg->normalize_crlf(
-					//trim($phpgw->dcom->get_body($mailbox, $msgnum))
-					trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $msgnum))
+					//trim($phpgw->dcom->get_body($mailbox, $phpgw->msg->msgnum))
+					trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum))
 				)
 			    );
 			echo '</pre>';
@@ -1147,8 +1152,8 @@
 		{
 
 			// get the body
-			//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 			// is a blank part test necessary for html ???
 
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
@@ -1164,8 +1169,8 @@
 			}
 
 			$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
-			//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
-			$msg_headers = $phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $msgnum);
+			//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $phpgw->msg->msgnum);
+			$msg_headers = $phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
 			$ms_related_str = 'X-MimeOLE: Produced By Microsoft MimeOLE';
 
 			// ---- Replace "Related" part's ID with a mime reference link
@@ -1291,7 +1296,7 @@
 						$part_encoding = '';
 					}
 					$part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
-						 'folder='.$phpgw->msg->prep_folder_out('') .'&msgnum=' .$msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
+						 'folder='.$phpgw->msg->prep_folder_out('') .'&msgnum=' .$phpgw->msg->msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
 					$dsp =
 					//'<pre>'.$msg_headers .'</pre>'
 					'<p>'
@@ -1312,8 +1317,8 @@
 
 			/*
 			// get the body
-			//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 
 			if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 			{
@@ -1350,8 +1355,8 @@
 		elseif ($part_nice[$i]['m_description'] == 'presentable')
 		{
 			// ----- get the part from the server
-			//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+			$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 			$dsp = trim($dsp);
 
 			/*
@@ -1412,9 +1417,10 @@
 				*/
 
 				// the "view unformatted" or "view formatted" option base url
-				$view_option_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msgnum);
+				$view_option_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','&folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$phpgw->msg->msgnum);
 
-				if ((isset($no_fmt)) && ($no_fmt))
+				if ((isset($phpgw->msg->args['no_fmt']))
+				&& ($phpgw->msg->args['no_fmt'] != ''))
 				{
 					$dsp = $phpgw->msg->htmlspecialchars_decode($dsp);
 					// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
@@ -1477,8 +1483,8 @@
 				/*
 				// ------- Previous Method
 				// get the part
-				//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime']);
+				//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
+				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 
 				// prepare the part
 				if (strtoupper(lang("charset")) <> "BIG5")
@@ -1519,9 +1525,9 @@
 			if (($part_nice[$i]['encoding'] == 'base64')
 			|| ($part_nice[$i]['encoding'] == '8bit'))
 			{
-				//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-					//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+				//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+					//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
 				$att_size =  $phpgw->msg->format_byte_size(strlen($dsp));
 				$msg_text = $msg_text .'&nbsp;&nbsp; size: '.$att_size;
@@ -1549,9 +1555,9 @@
 			$msg_text = $msg_text .'<br><strong>ERROR: Unknown Message Data</strong><br>';
 			if ($part_nice[$i]['encoding'] == 'base64')
 			{
-				//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
-					//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+				//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
+					//$dsp = $phpgw->dcom->fetchbody($mailbox, $phpgw->msg->msgnum, $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
 				$msg_text = $msg_text . 'actual part size: ' .strlen($dsp);
 			}

@@ -36,46 +36,79 @@ function check_all()
 
  {V_any_deleted}
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-<tr bgcolor="{arrows_backcolor}" align="center">
-	<td>&nbsp;</td>
+<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
+<tr bgcolor="{arrows_backcolor}"> <!-- this color for the nav arrows -->
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">A:</font>
+		<select name="account">
+		<option value="default">Default</option>
+		<option value="other_1">Other 1</option>
+		</select>
+	</td>
+	<form name="sortbox" action="{sortbox_action}" method="post">
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">S:</font>
+		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
+		{sortbox_select_options}
+		</select>
+	</td>
+	</form>
+	<form name="switchbox" action="{switchbox_action}" method="post">
+	<td bgcolor="{ctrl_bar_back1}" align="center">
+		<font size="-1">F:</font>
+		{switchbox_listbox}
+	</td>
+	</form>
 	{prev_arrows}
-	<td>&nbsp;</td>
 	{next_arrows}
-	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td bgcolor="{ctrl_bar_back2}" align="center">
+		<a href="{accounts_link}">{accounts_txt}</a>
+	</td>
+	<td bgcolor="{ctrl_bar_back2}" align="center">
+		<a href="{compose_link}">{compose_txt}</a>
+	</td>
+	<td bgcolor="{ctrl_bar_back2}" align="center">
+		<a href="{folders_link}">{folders_txt}</a>
+	</td>
+	<td colspan="4" bgcolor="{ctrl_bar_back2}" align="center">
+		<a href="{routing_link}">{routing_txt}</a>
+	</td>
+</tr>
+<tr>
+	<td colspan="7" bgcolor="{hdr_backcolor}" align="center">
+		<!-- spacer -->
+	</td>
 </tr>
 </table>
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
 <tr>
-	<td colspan="6" bgcolor="{stats_backcolor}">
-		<table border="0" cellpadding="0" cellspacing="1" width="100%">
-		<tr>
-			<td>
-				<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
-					<strong> {stats_folder} - </strong> <br>
-					Saved messages: {stats_saved} <br>
-					New messages: {stats_new} <br>
-					Total size of folder: {stats_size}
-				</font>
-			</td>
-			<td align="right">
-				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-				<form name="switchbox" action="{switchbox_action}" method="post">
-					<td>
-						{switchbox_listbox}
-					</td>
-					<td>
-						&nbsp;&nbsp;
-						{folder_maint_button}
-					</td>
-				</form>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		</table>
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			<strong>{stats_folder}</strong>
+		</font>
+	</td>
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_new}&nbsp;&nbsp;{lang_new}
+		</font>
+	</td>
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_saved}&nbsp;&nbsp;{lang_total}
+		</font>
+	</td>
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_size}&nbsp;&nbsp;{lang_size}
+		</font>
+	</td>
+	<td bgcolor="{stats_backcolor}" align="center">
+		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
+			&nbsp;&nbsp;{stats_first}&nbsp;to&nbsp;{stats_last}
+		</font>
 	</td>
 </tr>
 </table>
@@ -123,7 +156,6 @@ function check_all()
 		<tr>
 			<td>
 				<input type="button" value="{delmov_button}" onClick="do_action('delall')">
-				<a href="{ftr_compose_link}">{ftr_compose_txt}</a>
 			</td>
 			<td align="right">
 				{delmov_listbox}

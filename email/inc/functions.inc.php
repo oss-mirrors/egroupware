@@ -114,6 +114,43 @@
 	}
 	*/
 
+
+// ----  INITIALIZE ARGS ARRAY HOLDER VARIABLE  -------
+	// this array will hold ALL the data passed to the "begin_request" function
+	// whether you intend to login or not
+	$args_array = Array();
+
+// ----  HANDLE SET PREFERENCE GPC ARGS  -------
+	// setting prefs does not require a login, in fact you may not be able to login until you set
+	// some basic prefs, so it makes sence to handle that here
+	if (isset($submit_prefs))
+	{
+		$args_array['submit_prefs'] = $submit_prefs;
+		if (isset($email_sig)) { $args_array['email_sig'] = $email_sig; unset($email_sig); }
+		if (isset($default_sorting)) { $args_array['default_sorting'] = $default_sorting; unset($default_sorting); }
+		if (isset($show_addresses)) { $args_array['show_addresses'] = $show_addresses; unset($show_addresses); }
+		if (isset($mainscreen_showmail)) { $args_array['mainscreen_showmail'] = $mainscreen_showmail; unset($mainscreen_showmail); }
+		if (isset($use_sent_folder)) { $args_array['use_sent_folder'] = $use_sent_folder; unset($use_sent_folder); }
+		if (isset($use_trash_folder)) { $args_array['use_trash_folder'] = $use_trash_folder; unset($use_trash_folder); }
+		if (isset($trash_folder_name)) { $args_array['trash_folder_name'] = $trash_folder_name; unset($trash_folder_name); }
+		if (isset($sent_folder_name)) { $args_array['sent_folder_name'] = $sent_folder_name; unset($sent_folder_name); }
+		if (isset($enable_utf7)) { $args_array['enable_utf7'] = $enable_utf7; unset($enable_utf7); }
+		if (isset($use_custom_settings)) { $args_array['use_custom_settings'] = $use_custom_settings; unset($use_custom_settings); }
+		if (isset($userid)) { $args_array['userid'] = $userid; unset($userid); }
+		if (isset($passwd)) { $args_array['passwd'] = $passwd; unset($passwd); }
+		if (isset($address)) { $args_array['address'] = $address; unset($address); }
+		if (isset($mail_server)) { $args_array['mail_server'] = $mail_server; unset($mail_server); }
+		if (isset($mail_server_type)) { $args_array['mail_server_type'] = $mail_server_type; unset($mail_server_type); }
+		if (isset($imap_server_type)) { $args_array['imap_server_type'] = $imap_server_type; unset($imap_server_type); }
+		if (isset($mail_folder)) { $args_array['mail_folder'] = $mail_folder; unset($mail_folder); }
+		// now unset the GPC var
+		unset($submit_prefs);
+	}
+
+	// UNKNOWN if this is still used
+	$args_array['totalerrors'] = $totalerrors;
+	$args_array['errors'] = $errors;
+
 // ----  CONNECT TO MAILSERVER - IF IT'S OK  -------
 	if ((($in_email) || ($in_mainscreen))
 	&& ($login_allowed))
@@ -123,14 +160,291 @@
 
 		// ----  Create the base email Msg Class    -----
 		$phpgw->msg = CreateObject("email.mail_msg");
-		$args_array = Array();
-		$args_array['folder'] = $folder;
+		// === 2 NECESSARY ITEMS ===
+		// these next 2 are really all you need to use this class
+		// ----  folder: string  ----
+		// used in almost every file, IMAP can be logged into only one folder at a time
+		if (isset($folder))
+		{
+			$args_array['folder'] = $folder;
+			unset($folder);
+		}
+		// ----  do_login: true/false  ----
+		// if true: class dcom is created and a login is attaemted, and a reopen to the "foler" var is attempted
+		// if false: used for information only, such as to fill preferences for squirrelmail,
+		//	or for the preferences page, where info necessary for logino may not yet be filled in
 		$args_array['do_login'] = True;
-		$args_array['sort'] = $sort;
-		$args_array['order'] = $order;
-		$args_array['start'] = $start;
-		$args_array['newsmode'] = $newsmode;
-		$args_array['td'] = $td;
+
+		// === SORT/ORDER/START === 
+		// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
+		if (isset($sort))
+		{
+			$args_array['sort'] = $sort;
+			unset($sort);
+		}
+		if (isset($order))
+		{
+			$args_array['order'] = $order;
+			unset($order);
+		}
+		if (isset($start))
+		{
+			$args_array['start'] = $start;
+			unset($start);
+		}
+
+		// this newsmode thing needs to be further worked out
+		if (isset($newsmode))
+		{
+			$args_array['newsmode'] = $newsmode;
+			unset($newsmode);
+		}
+
+		// === REPORT ON MOVES/DELETES ===
+		// ----  td, tm: integer  ----
+		// ----  tf: string  ----
+		// USAGE:
+		//	 td = total deleted ; tm = total moved, tm used with tf, folder messages were moved to
+		// (outgoing) action.php: when action on a message is taken, report info is passed in these
+		// (in) index.php: here the report is diaplayed above the message list, used to give user feedback
+		if (isset($td))
+		{
+			$args_array['td'] = $td;
+			unset($td);
+		}
+		if (isset($tm))
+		{
+			$args_array['tm'] = $tm;
+			unset($tm);
+		}
+		if (isset($tf))
+		{
+			$args_array['tf'] = $tf;
+			unset($tf);
+		}
+
+		// === MOVE/DELETE MESSAGE INSTRUCTIONS ===
+		// ----  what: string ----
+		// USAGE: 
+		// (outgoing) index.php: "move", "delall"
+		//	used with msglist (see below) an array (1 or more) of message numbers to move or delete
+		// (outgoing) message.php: "delete" used with msgnum (see below) what individual message to delete
+		// (in) action.php: instruction on what action to preform on 1 or more message(s) (move or delete)
+		if (isset($what))
+		{
+			$args_array['what'] = $what;
+			unset($what);
+		}
+		if (isset($tofolder))
+		{
+			$args_array['tofolder'] = $tofolder;
+			unset($tofolder);
+		}
+		// (passed from index.php) this may be an array of numbers if many boxes checked and a move or delete is called
+		if (isset($msglist))
+		{
+			$args_array['msglist'] = $msglist;
+			unset($msglist);
+		}
+
+		// === INSTRUCTIONS FOR ACTION ON A MESSAGE OR FOLDER ===
+		// ----  action: string  ----
+		// USAGE:
+		// (a) (out and in) folder.php: used with "target_folder" and (for renaming) "source_folder"
+		//	instructions to add/delete/rename folders: create(_expert), delete(_expert), rename(_expert)
+		//	where "X_expert" indicates do not modify the target_folder, the user know about of namespaces and delimiters
+		// (b) compose.php: can be "reply" "replyall" "forward"
+		//	passed on to send_message.php
+		// (c) send_message.php: when set to "forward" and used with "fwd_proc" instructs on how to construct
+		//	the SMTP mail
+		if (isset($action))
+		{
+			$args_array['action'] = $action;
+			unset($action);
+		}
+
+		// === MESSAGE NUMBER AND MIME PART REFERENCES ===
+		// msgnum: integer 
+		// USAGE:
+		// (a) action.php, called from from message.php: used with "what=delete" to indicate a single message for deletion
+		// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
+		// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
+		if (isset($msgnum))
+		{
+			$args_array['msgnum'] = $msgnum;
+			unset($msgnum);
+		}
+		// ----  part_no: string  ----
+		// representing a specific MIME part number (example "2.1.2") within a multipart message
+		// (a) compose.php: used in combination with msgnum
+		// (b) get_attach.php: used in combination with msgnum
+		if (isset($part_no))
+		{
+			$args_array['part_no'] = $part_no;
+			unset($part_no);
+		}
+		// ----  encoding: string  ----
+		// USAGE: "base64" "qprint"
+		// (a) compose.php: if replying to, we get the body part to reply to, it may need to be un-qprint'ed
+		// (b) get_attach.php: appropriate decoding of the part to feed to the browser 
+		if (isset($encoding))
+		{
+			$args_array['encoding'] = $encoding;
+			unset($encoding);
+		}
+		// ----  fwd_proc: string  ----
+		// USAGE: "encapsulation", "pushdown (not yet supported 9/01)"
+		// (outgoing) message.php much detail is known about the messge, there the forward proc method is determined
+		// (a) compose.php: used with action = forward, (outgoing) passed on to send_message.php
+		// (b) send_message.php: used with action = forward, instructs on how the SMTP message should be structured
+		if (isset($fwd_proc))
+		{
+			$args_array['fwd_proc'] = $fwd_proc;
+			unset($fwd_proc);
+		}
+		// ----  name, type, subtype: string  ----
+		// the name, mime type, mime subtype of the attachment
+		// this info is passed to the browser to help the browser know what to do with the part
+		// (outgoing) message.php: "name" is set in the link to the addressbook,  it's the actual "personal" name part of the email address
+		// get_attach.php: the name of the attachment
+		if (isset($name))
+		{
+			$args_array['name'] = $name;
+			unset($name);
+		}
+		if (isset($type))
+		{
+			$args_array['type'] = $type;
+			unset($type);
+		}
+		if (isset($subtype))
+		{
+			$args_array['subtype'] = $subtype;
+			unset($subtype);
+		}
+
+		// === FOLDER ADD/DELETE/RENAME & DISPLAY ===
+		// ----  "target_folder" , "source_folder" (source used in renaming only)  ----
+		// (outgoing) and (in) folder.php: used with "action" to add/delete/rename a mailbox folder
+		// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
+		if (isset($target_folder))
+		{
+			$args_array['target_folder'] = $target_folder;
+			unset($target_folder);
+		}
+		if (isset($source_folder))
+		{
+			$args_array['source_folder'] = $source_folder;
+			unset($source_folder);
+		}
+		// ----  show_long: unset / true  ----
+		// folder.php: set there and sent back to itself
+		// if set - indicates to show 'long' folder names with namespace and delimiter NOT stripped off
+		if (isset($show_long))
+		{
+			$args_array['show_long'] = $show_long;
+			unset($show_long);
+		}
+
+		// === COMPOSE VARS ===
+		// as most commonly NOT used with "mailto" then the following applies
+		//	(if used with "mailto", less common, then see "mailto" below)
+		// USAGE: 
+		// ----  to, cc, body, subject: string ----
+		// (outgoing) index.php, message.php: any click on a clickable email address in these pages
+		//	will call compose.php passing "to" (possibly in rfc long form address)
+		// (outgoing) message.php: when reading a message and you click reply, replyall, or forward
+		//	calls compose.php with EITHER
+		//		(1) a msgnum ref then compose gets all needed info, (more effecient than passing all those GPC args) OR
+		//		(2) to,cc,subject,body may be passed
+		// (outgoing) compose.php: ALL contents of input items to, cc, subject, body, etc...
+		//	are passed as GPC args to send_message.php
+		// (in) (a) compose.php: text that should go in to and cc (and maybe subject and body) text boxes
+		//	are passed as incoming GPC args
+		// (in) (b) send_message.php: (fill me in - I got lazy)
+		if (isset($to))
+		{
+			$args_array['to'] = $to;
+			unset($to);
+		}
+		if (isset($cc))
+		{
+			$args_array['cc'] = $cc;
+			unset($cc);
+		}
+		if (isset($body))
+		{
+			$args_array['body'] = $body;
+			$body = '';
+			unset($body);
+		}
+		if (isset($subject))
+		{
+			$args_array['subject'] = $subject;
+			unset($subject);
+		}
+		// ----  attach_sig: set-True/unset  ----
+		// USAGE:
+		// (outgoing) compose.php: if checkbox attach sig is checked, this is passed as GPC var to sent_message.php
+		// (in) send_message.php: indicate if message should have the user's "sig" added to the message
+		if (isset($attach_sig))
+		{
+			$args_array['attach_sig'] = $attach_sig;
+			unset($attach_sig);
+		}
+		// ----  msgtype: string  ----
+		// USAGE:
+		// flag to tell phpgw to invoke "special" custom processing of the message
+		// 	extremely rare, may be obsolete (not sure), most implementation code is commented out
+		// (outgoing) currently NO page actually sets this var
+		// (a) send_message.php: will add the flag, if present, to the header of outgoing mail
+		// (b) message.php: identify the flag and call a custom proc
+		if (isset($msgtype))
+		{
+			$args_array['msgtype'] = $msgtype;
+			unset($msgtype);
+		}
+
+		// === MAILTO URI SUPPORT ===
+		// ----  mailto: unset / ?set?  ----
+		// USAGE:
+		// (in and out) compose.php: support for the standard mailto html document mail app call
+		// 	can be used with the typical compose vars (see above)
+		//	indicates that to, cc, and subject should be treated as simple MAILTO args
+		if (isset($mailto))
+		{
+			$args_array['mailto'] = $mailto;
+			unset($mailto);
+		}
+		if (isset($personal))
+		{
+			$args_array['personal'] = $personal;
+			unset($personal);
+		}
+
+		// === MESSAGE VIEWING MODS ===
+		// ----  no_fmt: set-True/unset  ----
+		// USAGE:
+		// (in and outgoing) message.php: will display plain body parts without any html formatting added
+		if (isset($no_fmt))
+		{
+			$args_array['no_fmt'] = $no_fmt;
+			unset($no_fmt);
+		}
+
+
+		// === VIEW HTML INSTRUCTIONS ===
+		if (isset($html_part))
+		{
+			$args_array['html_part'] = $html_part;
+			unset($html_part);
+		}
+		if (isset($html_reference))
+		{
+			$args_array['html_reference'] = $html_reference;
+			unset($html_reference);
+		}
+
 		// this will obtain the email preferences from the db (currently "phpgw_preferences")
 		// and prep the folder name, and login if desired, and set msg->mailsvr_stream
 		$phpgw->msg->begin_request($args_array);
@@ -160,21 +474,49 @@
 		// ----  Create the base email Msg Class    -----
 		// but DO NOT login
 		$phpgw->msg = CreateObject("email.mail_msg");
-		$args_array = Array();
 		$args_array['folder'] = '';
 		$args_array['do_login'] = False;
 		// this will obtain the email preferences from the db (currently "phpgw_preferences")
 		$phpgw->msg->begin_request($args_array);
 	}
 
-	// get rid og the "folder" GPC variable - it is no longer needed
-	//unset($folder);
+	/*
+	// get rid of ALL the GPC variables - they are no longer needed
+	unset($folder);
+	unset($sort);
+	unset($order);
+	unset($start);
+	unset($newsmode);
+	unset($td);
+	unset($tm);
+	unset($tf);
+	unset($what);
+	unset($tofolder);
+	unset($msglist);
+	unset($action);
+	unset($msgnum);
+	unset($part_no);
+	unset($encoding);
+	unset($fwd_proc);
+	unset($name);
+	unset($type);
+	unset($subtype);
+	unset($target_folder);
+	unset($source_folder);
+	unset($show_long);
+	unset($to);
+	unset($cc);
+	unset($body);
+	unset($subject);
+	unset($attach_sig);
+	unset($mailto);
+	unset($personal);
 
-	// backward compatibility with class nextmatches
-	$folder = $this->folder;
-	$sort = $this->sort;
-	$order = $this->order;
-	$start = $this->start;
+	unset($no_fmt);
+	unset($html_part);
+	unset($html_reference);
+	*/
+
 
 	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
 	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';

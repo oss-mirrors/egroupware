@@ -40,29 +40,34 @@
 
 // ----  Create or Delete A Folder  ----
 
-	if (($action == 'create') || ($action == 'delete') || ($action == 'rename')
-	|| ($action == 'create_expert') || ($action == 'delete_expert') || ($action == 'rename_expert'))
+	if (($phpgw->msg->args['action'] == 'create')
+	|| ($phpgw->msg->args['action'] == 'delete')
+	|| ($phpgw->msg->args['action'] == 'rename')
+	|| ($phpgw->msg->args['action'] == 'create_expert')
+	|| ($phpgw->msg->args['action'] == 'delete_expert')
+	|| ($phpgw->msg->args['action'] == 'rename_expert'))
 	{
 
 		// basic sanity check
-		if ((!isset($target_folder) || ($target_folder == '')))
+		if ((!isset($phpgw->msg->args['target_folder'])
+		|| ($phpgw->msg->args['target_folder'] == '')))
 		{
 			// Result Message
-			// FIXME needs lang
-			$action_report = 'Please type a folder name in the text box';		
+			$action_report = lang('Please type a folder name in the text box');
 		}
-		elseif ( (($action == 'rename') || ($action == 'rename_expert'))
-		&& ((!isset($source_folder)) || ($source_folder == '')) )
+		elseif ( (($phpgw->msg->args['action'] == 'rename')
+		  || ($phpgw->msg->args['action'] == 'rename_expert'))
+		&& ((!isset($phpgw->msg->args['source_folder']))
+		  || ($phpgw->msg->args['source_folder'] == '')) )
 		{
 			// Result Message
-			// FIXME needs lang
-			$action_report = 'Please select a folder to rename';
+			$action_report = lang('Please select a folder to rename');
 		}
 		else
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
-			$target_folder = $phpgw->msg->stripslashes_gpc($target_folder);
+			$phpgw->msg->args['target_folder'] = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['target_folder']);
 			// == is that necessary ? == are folder names allowed with '  "  \  in them ? ===
 			// rfc2060 does NOT prohibit them
 
@@ -71,27 +76,29 @@
 			// although the user had to type in the folder name
 			// for these actions,  the "expert" tag means:
 			// "do not add the name space for me, I'm an expert and I know what I'm doing"
-			if (($action == 'create_expert') || ($action == 'delete_expert') || ($action == 'rename_expert'))
+			if (($phpgw->msg->args['action'] == 'create_expert')
+			|| ($phpgw->msg->args['action'] == 'delete_expert')
+			|| ($phpgw->msg->args['action'] == 'rename_expert'))
 			{
 				// other than stripslashes_gpc,  do nothing
-				// the user is an expert, do not alter the target_folder name at all
+				// the user is an expert, do not alter the phpgw->msg->args['target_folder'] name at all
 			}
 			else
 			{
 				// since the user is not an "expert", we properly prepare the folder name
 				// see if the folder already exists in the folder lookup list
 				// this would be the case if the user is deleting a folder
-				$target_lookup = $phpgw->msg->folder_lookup('', $target_folder);
+				$target_lookup = $phpgw->msg->folder_lookup('', $phpgw->msg->args['target_folder']);
 				if ($target_lookup != '')
 				{
-					// target_folder returned an official long name from the lookup
-					$target_folder = $target_lookup;
+					// phpgw->msg->args['target_folder'] returned an official long name from the lookup
+					$phpgw->msg->args['target_folder'] = $target_lookup;
 				}
 				else
 				{
 					// the lookup failed, so this is not an existing folder
 					// we have to add the namespace for the user
-					$target_folder = $phpgw->msg->get_folder_long($target_folder);
+					$phpgw->msg->args['target_folder'] = $phpgw->msg->get_folder_long($phpgw->msg->args['target_folder']);
 				}
 			}
 	
@@ -99,33 +106,37 @@
 
 			// =====  NOTE:  maybe some "are you sure" code ????  =====
 		
-			if (($action == 'create') || ($action == 'create_expert'))
+			if (($phpgw->msg->args['action'] == 'create')
+			|| ($phpgw->msg->args['action'] == 'create_expert'))
 			{
-				$success = $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+				$success = $phpgw->dcom->createmailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
 			}
-			else if (($action == 'delete') || ($action == 'delete_expert'))
+			elseif (($phpgw->msg->args['action'] == 'delete')
+			|| ($phpgw->msg->args['action'] == 'delete_expert'))
 			{
-				$success = $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, "$server_str"."$target_folder");
+				$success = $phpgw->dcom->deletemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['target_folder']);
 			}
-			else if (($action == 'rename') || ($action == 'rename_expert'))
+			elseif (($phpgw->msg->args['action'] == 'rename')
+			|| ($phpgw->msg->args['action'] == 'rename_expert'))
 			{
-				// source_folder is taken directly from the listbox, so it *should* be official long name already
+				// phpgw->msg->args['source_folder'] is taken directly from the listbox, so it *should* be official long name already
 				// but it does need to be prep'd in because we prep out the foldernames put in that listbox
-				$source_folder = $phpgw->msg->prep_folder_in($source_folder);
-				$success = $phpgw->dcom->renamemailbox($phpgw->msg->mailsvr_stream, "$server_str"."$source_folder", "$server_str"."$target_folder");
+				$phpgw->msg->args['source_folder'] = $phpgw->msg->prep_folder_in($phpgw->msg->args['source_folder']);
+				$success = $phpgw->dcom->renamemailbox($phpgw->msg->mailsvr_stream, $server_str.$phpgw->msg->args['source_folder'], $server_str.$phpgw->msg->args['target_folder']);
 			}
 
 			// Result Message
-			if (($action == 'rename') || ($action == 'rename_expert'))
+			if (($phpgw->msg->args['action'] == 'rename')
+			|| ($phpgw->msg->args['action'] == 'rename_expert'))
 			{
 				$action_report =
-					$action .' '.lang('folder').' '.$source_folder
-					.' '.lang('to').' '.$target_folder .' <br>'
+					$phpgw->msg->args['action'] .' '.lang('folder').' '.$phpgw->msg->args['source_folder']
+					.' '.lang('to').' '.$phpgw->msg->args['target_folder'] .' <br>'
 					.lang('result').' : ';
 			}
 			else
 			{
-				$action_report = $action.' '.lang('folder').' '.$target_folder.' <br>'
+				$action_report = $phpgw->msg->args['action'].' '.lang('folder').' '.$phpgw->msg->args['target_folder'].' <br>'
 				.lang('result').' : ';
 			}
 			// did it work or not
@@ -176,7 +187,8 @@
 		$t->set_var('list_backcolor',$tr_color);
 		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .$phpgw->msg->prep_folder_out($folder_long)));
 
-		if ((isset($show_long)) && ($show_long))
+		if ((isset($phpgw->msg->args['show_long']))
+		&& ($phpgw->msg->args['show_long'] != ''))
 		{
 			$t->set_var('folder_name',$folder_long);
 		}

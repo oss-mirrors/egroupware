@@ -12,26 +12,28 @@
 	/* $Id$ */
 
 	$phpgw_info["flags"] = array(
-		'currentapp' => 'email',
-		'noheader'                => True, 
-		'nonavbar'                => True, 
+		'currentapp'		  => 'email',
+		'noheader'		  => True, 
+		'nonavbar'		  => True, 
 		'enable_nextmatchs_class' => True);
 
 	include("../header.inc.php");
 
 	// ----  Save Preferences to Repository  (if this is a submit)  -----
-	if ($submit)
+	//if ($submit_prefs)
+	if (isset($phpgw->msg->args['submit_prefs']))
 	{
 		$phpgw->preferences->read_repository();
 
 		// ----  Typical (Non-Custom) Preferences   -----
 		/* email sig must not have  '  nor  "  in it, as they screw up the preferences in class session
 		    not an sql error, but the core bug lies somewhere in session caching */
-		if ($email_sig != '')
+		if ((isset($phpgw->msg->args['email_sig']))
+		&& ($phpgw->msg->args['email_sig'] != ''))
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
  			// " becomes \" and  '  becomes  \'  and  \  becomes \\
-			$email_sig_clean = $phpgw->msg->stripslashes_gpc($email_sig);
+			$email_sig_clean = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['email_sig']);
 			// replace database offensive ASCII chars  with htmlspecialchars
 			// these chars are replaced:  '  "  /  \
 			$email_sig_clean = $phpgw->msg->html_quotes_encode($email_sig_clean);
@@ -41,43 +43,47 @@
 		{
 			// have it set, but be empty
 			// why have it set? I guess it makes checking for it easier in the code ????
-			$phpgw->preferences->add("email","email_sig");
+			$phpgw->preferences->add("email","email_sig",$phpgw->msg->args['email_sig']);
 		}
 
-		$phpgw->preferences->add("email","default_sorting");
+		$phpgw->preferences->delete("email","default_sorting");
+		if (isset($phpgw->msg->args['default_sorting']))
+		{
+			$phpgw->preferences->add("email","default_sorting",$phpgw->msg->args['default_sorting']);
+		}
 
 		$phpgw->preferences->delete("email","show_addresses");
-		if ($show_addresses)
+		if (isset($phpgw->msg->args['show_addresses']))
 		{
-			$phpgw->preferences->add("email","show_addresses");
+			$phpgw->preferences->add("email","show_addresses",$phpgw->msg->args['show_addresses']);
 		}
 		
 		$phpgw->preferences->delete("email","mainscreen_showmail");
-		if ($mainscreen_showmail)
+		if (isset($phpgw->msg->args['mainscreen_showmail']))
 		{
-			$phpgw->preferences->add("email","mainscreen_showmail");
+			$phpgw->preferences->add("email","mainscreen_showmail",$phpgw->msg->args['mainscreen_showmail']);
 		}
 
 		// save sent mail to the sent folder
 		$phpgw->preferences->delete("email","use_sent_folder");
-		if ($use_sent_folder)
+		if (isset($phpgw->msg->args['use_sent_folder']))
 		{
-			$phpgw->preferences->add("email","use_sent_folder");
+			$phpgw->preferences->add("email","use_sent_folder",$phpgw->msg->args['use_sent_folder']);
 		}
 
 		// use trash folder
 		$phpgw->preferences->delete("email","use_trash_folder");
-		if ($use_trash_folder)
+		if (isset($phpgw->msg->args['use_trash_folder']))
 		{
-			$phpgw->preferences->add("email","use_trash_folder");
+			$phpgw->preferences->add("email","use_trash_folder",$phpgw->msg->args['use_trash_folder']);
 		}
 		// trash folder name
 		$phpgw->preferences->delete("email","trash_folder_name");
-		if ($trash_folder_name)
+		if (isset($phpgw->msg->args['trash_folder_name']))
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
  			// " becomes \" and  '  becomes  \'  and  \  becomes \\
-			$trash_folder_name = trim($phpgw->msg->stripslashes_gpc($trash_folder_name));
+			$trash_folder_name = trim($phpgw->msg->stripslashes_gpc($phpgw->msg->args['trash_folder_name']));
 			if ($trash_folder_name == '')
 			{
 				// for some reason the user did not fill it in properly
@@ -88,11 +94,11 @@
 
 		// sent folder name to use
 		$phpgw->preferences->delete("email","sent_folder_name");
-		if ($sent_folder_name)
+		if (isset($phpgw->msg->args['sent_folder_name']))
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
  			// " becomes \" and  '  becomes  \'  and  \  becomes \\
-			$sent_folder_name = trim($phpgw->msg->stripslashes_gpc($sent_folder_name));
+			$sent_folder_name = trim($phpgw->msg->stripslashes_gpc($phpgw->msg->args['sent_folder_name']));
 			if ($sent_folder_name == '')
 			{
 				// for some reason the user did not fill it in properly
@@ -103,15 +109,15 @@
 
 		// use utf 7 internationalization encoding/decoding of folder names
 		$phpgw->preferences->delete("email","enable_utf7");
-		if ($enable_utf7)
+		if (isset($phpgw->msg->args['enable_utf7']))
 		{
-			$phpgw->preferences->add("email","enable_utf7");
+			$phpgw->preferences->add("email","enable_utf7",$phpgw->msg->args['enable_utf7']);
 		}
 
 		// ----  Custom Preferences   -----
 		// differ from account defaults set by administrator, should be unset if not using custom prefs
 		$phpgw->preferences->delete("email","use_custom_settings");
-		if (! $use_custom_settings)
+		if (!isset($phpgw->msg->args['use_custom_settings']))
 		{
 			$phpgw->preferences->delete("email","userid");
 			$phpgw->preferences->delete("email","passwd");
@@ -123,17 +129,17 @@
 		}
 		else
 		{
-			$phpgw->preferences->add("email","use_custom_settings");
-			if ($userid)
+			$phpgw->preferences->add("email","use_custom_settings",$phpgw->msg->args['use_custom_settings']);
+			if (isset($phpgw->msg->args['userid']))
 			{
-				$phpgw->preferences->add("email","userid");
+				$phpgw->preferences->add("email","userid",$phpgw->msg->args['userid']);
 			}
 			else
 			{
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","userid");
 			}
-			if ($passwd)
+			if (isset($phpgw->msg->args['passwd']))
 			{
 				// there were multiple problems with previous custom email passwd handling
 				// fixed so far:
@@ -142,7 +148,7 @@
 				// - upgrade routine makes double or tripple serialized passwords back to normal
 
 				//echo 'in pref page b4 strip: <pre>'.$passwd.'</pre><br>';
-				$encrypted_passwd = $phpgw->msg->stripslashes_gpc($passwd);
+				$encrypted_passwd = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['passwd']);
 				//echo 'in pref page after strip: <pre>'.$encrypted_passwd.'</pre><br>';
 				$encrypted_passwd = $phpgw->msg->encrypt_email_passwd($encrypted_passwd);
 				//echo 'encrypted_passwd: <pre>'.$encrypted_passwd.'</pre><br>';
@@ -155,36 +161,36 @@
 			{
 				// is not specified, LEAVE PASSWD ALONE, retain previous setting
 			}
-			if ($address)
+			if (isset($phpgw->msg->args['address']))
 			{
-				$phpgw->preferences->add("email","address");
+				$phpgw->preferences->add("email","address",$phpgw->msg->args['address']);
 			}
 			else
 			{
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","address");
 			}
-			if ($mail_server)
+			if (isset($phpgw->msg->args['mail_server']))
 			{
-				$phpgw->preferences->add("email","mail_server");
+				$phpgw->preferences->add("email","mail_server",$phpgw->msg->args['mail_server']);
 			}
 			else
 			{
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","mail_server");
 			}
-			if ($mail_server_type)
+			if (isset($phpgw->msg->args['mail_server_type']))
 			{
-				$phpgw->preferences->add("email","mail_server_type");
+				$phpgw->preferences->add("email","mail_server_type",$phpgw->msg->args['mail_server_type']);
 			}
 			else
 			{
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","mail_server_type");
 			}
-			if ($imap_server_type)
+			if (isset($phpgw->msg->args['imap_server_type']))
 			{
-				$phpgw->preferences->add("email","imap_server_type");
+				$phpgw->preferences->add("email","imap_server_type",$phpgw->msg->args['imap_server_type']);
 			}
 			else
 			{
@@ -192,9 +198,9 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","imap_server_type");
 			}
-			if ($mail_folder) 
+			if (isset($phpgw->msg->args['mail_folder']))
 			{
-				$phpgw->preferences->add("email","mail_folder");
+				$phpgw->preferences->add("email","mail_folder",$phpgw->msg->args['mail_folder']);
 			}
 			else
 			{
@@ -217,10 +223,10 @@
 		'T_preferences_out' => 'preferences.tpl'
 	));
 
-	if ($totalerrors)
+	if ($phpgw->msg->args['totalerrors'])
 	{
 		//echo "<p><center>" . $phpgw->common->error_list($errors) . "</center>";
-		$pref_errors = '<p><center>"' .$phpgw->common->error_list($errors) .'"</center></p>';
+		$pref_errors = '<p><center>"' .$phpgw->common->error_list($phpgw->msg->args['errors']) .'"</center></p>';
 	}
 	else
 	{
@@ -405,10 +411,10 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$mail_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected";
 	$mail_server_type_select_options =
-		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."\n"
-		.'<option value="pop3"' .$mail_server_type_selected["pop3"] .'>POP-3</option>' ."\n"
-		.'<option value="imaps"' .$mail_server_type_selected["imaps"] .'>IMAPS</option>' ."\n"
-		.'<option value="pop3s"' .$mail_server_type_selected["pop3s"] .'>POP-3S</option>' ."\n";
+		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."\r\n"
+		.'<option value="pop3"' .$mail_server_type_selected["pop3"] .'>POP-3</option>' ."\r\n"
+		.'<option value="imaps"' .$mail_server_type_selected["imaps"] .'>IMAPS</option>' ."\r\n"
+		.'<option value="pop3s"' .$mail_server_type_selected["pop3s"] .'>POP-3S</option>' ."\r\n";
 	$t->set_var('bg_row11',$tr_color);
 	$t->set_var('mail_server_type_blurb',lang("Mail Server type"));
 	$t->set_var('mail_server_type_select_name','mail_server_type');
@@ -418,9 +424,9 @@
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$imap_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected";
 	$imap_server_type_select_options =
-		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."\n"
-		.'<option value="UWash"' .$imap_server_type_selected["UWash"] .'>UWash</option>' ."\n"
-		.'<option value="UW-Maildir"' .$imap_server_type_selected["UW-Maildir"] .'>UW-Maildir</option>' ."\n";
+		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."\r\n"
+		.'<option value="UWash"' .$imap_server_type_selected["UWash"] .'>UWash</option>' ."\r\n"
+		.'<option value="UW-Maildir"' .$imap_server_type_selected["UW-Maildir"] .'>UW-Maildir</option>' ."\r\n";
 	$t->set_var('bg_row12',$tr_color);
 	$t->set_var('imap_server_type_blurb',lang("IMAP Server Type") .' - ' .lang("If Applicable"));
 	$t->set_var('imap_server_type_select_name','imap_server_type');
@@ -433,8 +439,8 @@
 	$t->set_var('mail_folder_text_name','mail_folder');
 	$t->set_var('mail_folder_text_value',$phpgw_info["user"]["preferences"]["email"]["mail_folder"]);
 
-	// the submit button for the form 
-	$t->set_var('btn_submit_name','submit');
+	// the submit button for the form
+	$t->set_var('btn_submit_name','submit_prefs');
 	$t->set_var('btn_submit_value',lang("submit"));
 
 	$t->pparse('out','T_preferences_out');

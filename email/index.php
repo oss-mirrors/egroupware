@@ -51,9 +51,10 @@
 // ---- lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
 
-// ---- report on number of messages deleted (if any)  -----
+// ---- report on number of messages Deleted or Moved (if any)  -----
 	if ($phpgw->msg->args['td'])
 	{
+		// report on number of messages DELETED (if any)
 		if ($phpgw->msg->args['td'] == 1) 
 		{
 			$num_deleted = lang("1 message has been deleted",$phpgw->msg->args['td']);
@@ -66,10 +67,53 @@
 		$t->set_var('num_deleted',$num_deleted);
 		$t->parse('V_any_deleted','T_any_deleted',True);
 	}
+	elseif ($phpgw->msg->args['tm'])
+	{
+		if ($phpgw->msg->args['tf'])
+		{
+			$_tf = $phpgw->msg->prep_folder_in($phpgw->msg->args['tf']);
+		}
+		else
+		{
+			$_tf = 'empty';
+		}
+		// report on number of messages MOVED (if any)
+		if ($phpgw->msg->args['tm'] == 0) 
+		{
+			$num_moved = lang("Error moving messages to ").' '.$_tf;
+		}
+		elseif ($phpgw->msg->args['tm'] == 1)
+		{
+			$num_moved = lang("1 message has been moved to").' '.$_tf;
+		}
+		else
+		{
+			$num_moved = $phpgw->msg->args['tm'].' '.lang("messages have been moved to").' '.$_tf;
+		}
+		// template only outputs if msgs were moved, otherwise skipped
+		$t->set_var('num_deleted',$num_moved);
+		$t->parse('V_any_deleted','T_any_deleted',True);
+	}
 	else
 	{
-		// nothing deleted, so template gets blank string
+		// nothing deleted or moved, so template gets blank string
 		$t->set_var('V_any_deleted','');
+	}
+
+// ---- SwitchTo Folder Listbox   -----
+	if ($phpgw->msg->get_mailsvr_supports_folders())
+	{
+		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
+		//$listbox_show_unseen = True;
+		$listbox_show_unseen = False;
+		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
+				. '<option>' . lang('switch current folder to') . ':'
+				. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
+				. '</select>';
+	}
+	else
+	{
+		$switchbox_listbox = '&nbsp';
 	}
 
 // ---- Folder Status Infomation   -----
@@ -79,15 +123,72 @@
 					SA_ALL);
 
 // ----  Previous and Next arrows navigation  -----
+	// nextmatches->left/right  vars:
+	// a) script (filename like index.php)
+	// b) start
+	// c) total
+	// d) extradata - in url format - "&var1=x&var2=y"
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$phpgw->msg->start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
+					$phpgw->msg->start,
+					$mailbox_status->messages,
+					 '&folder='.$phpgw->msg->prep_folder_out('')
+					.'&sort='.$phpgw->msg->sort
+					.'&order='.$phpgw->msg->order);
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$phpgw->msg->start,$mailbox_status->messages,'&folder='.$phpgw->msg->prep_folder_out(''));
+					$phpgw->msg->start,
+					$mailbox_status->messages,
+					'&folder='.$phpgw->msg->prep_folder_out('')
+					.'&sort='.$phpgw->msg->sort
+					.'&order='.$phpgw->msg->order);
 
+// ---- Control Bar =Row 1=   -----
+	$t->set_var('ctrl_bar_back1',$phpgw_info["theme"]["row_on"]);
+	// "accounts" switchbox
+	// FUTURE
+	// "sorting" switchbox
+	$sort_selected[$phpgw->msg->sort] = " selected";
+	$sortbox_select_options =
+		 '<option value="0"' .$sort_selected[0] .'>'.lang("Email Date").'</option>' ."\r\n"
+		.'<option value="1"' .$sort_selected[1] .'>'.lang("Arrival Date").'</option>' ."\r\n"
+		.'<option value="2"' .$sort_selected[2] .'>'.lang("From").'</option>' ."\r\n"
+		.'<option value="3"' .$sort_selected[3] .'>'.lang("Subject").'</option>' ."\r\n"
+		.'<option value="6"' .$sort_selected[6] .'>'.lang("Size").'</option>' ."\r\n";
+	$t->set_var('sortbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+					'folder='.$phpgw->msg->prep_folder_out('')));
+	$t->set_var('sortbox_on_change','document.sortbox.submit()');
+	$t->set_var('sortbox_select_name','sort');
+	$t->set_var('sortbox_select_options',$sortbox_select_options);
+
+	// "switch to" folder switchbox
+	$t->set_var('switchbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
+	$t->set_var('switchbox_listbox',$switchbox_listbox);
+	// navagation arrows
 	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
 	$t->set_var('next_arrows',$td_next_arrows);
+
+// ---- Control Bar =Row 2=   -----
+	$t->set_var('ctrl_bar_back2',$phpgw_info["theme"]["row_off"]);
+	$t->set_var('compose_txt',lang("compose"));
+	$t->set_var('compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".$phpgw->msg->prep_folder_out('')));
+	$t->set_var('folders_txt',lang("folders"));
+	if ($phpgw->msg->get_mailsvr_supports_folders())
+	{
+		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+	}
+	else
+	{
+		// doesn't support folders. just go to index page
+		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
+	}
+	// "accounts" preferences FUTURE
+	$t->set_var('accounts_txt',lang("accounts"));
+	$t->set_var('accounts_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
+	// "routing" preferences FUTURE
+	$t->set_var('routing_txt',lang("routing"));
+	$t->set_var('routing_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
+
 
 // ---- Message Folder Stats Display  -----
 	if ($mailbox_status->messages == 0)
@@ -109,15 +210,17 @@
 		$stats_new = $mailbox_status->unseen;
 		if ($stats_new == 0)
 		{
-			$stats_new = '-';
-		} else {
+			$stats_new = '0';
+		}
+		else
+		{
 			// put a comma between the thousands
 			$stats_new = number_format($stats_new);
 		}
+
 		// SIZE OF FOLDER - total size of all emails added up
 		// can take a long time if alot of mail is in the folder
-		// TEST: make it optional
-		
+		// FUTURE:  make it optional, this will pick up that option from the prefs
 		//$stats_size_speed_skip = True;
 		$stats_size_speed_skip = False;
 		$stats_size_threshold = 1000;
@@ -135,29 +238,7 @@
 		}
 	}
 
-// ---- SwitchTo Folder Listbox   -----
-	if ($phpgw->msg->get_mailsvr_supports_folders())
-	{
-		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
-		//$listbox_show_unseen = True;
-		$listbox_show_unseen = False;
-		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
-				. '<option>' . lang('switch current folder to') . ':'
-				. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
-				. '</select>';
-	} else {
-		$switchbox_listbox = '&nbsp';
-	}
-
-// ---- Folder Button  -----
-	if ($phpgw->msg->get_mailsvr_supports_folders())
-	{
-		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
-				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php').'\'">';
-	} else {
-		$folder_maint_button = '&nbsp';
-	}
-
+// ---- Folder Statistics Information Row  -----
 	$t->set_var('stats_backcolor',$phpgw_info['theme']['em_folder']);
 	$t->set_var('stats_font',$phpgw_info['theme']['font']);
 	$t->set_var('stats_fontsize','+0');
@@ -165,12 +246,16 @@
 	$t->set_var('stats_folder',$folder_short);
 	$t->set_var('stats_saved',$stats_saved);
 	$t->set_var('stats_new',$stats_new);
-	$t->set_var('stats_size',$stats_size);	
-	$t->set_var('switchbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
-	$t->set_var('switchbox_listbox',$switchbox_listbox);
-	$t->set_var('folder_maint_button',$folder_maint_button);
+	$t->set_var('stats_size',$stats_size);
+	$t->set_var('lang_new',lang('New'));
+	$t->set_var('lang_total',lang('Total'));
+	$t->set_var('lang_size',lang('Size'));
+	$t->set_var('stats_first',$phpgw->msg->start + 1);
+	// "last" can not be know until the calculations below
+	//$t->set_var('stats_last',$phpgw->msg->start + $phpgw_info['user']['preferences']['common']['maxmatchs']);
 
 // ----  Messages List Clickable Column Headers  -----
+	/*
 	// clickable column headers which change the sorting of the messages
 	if ($phpgw->msg->newsmode)
 	{
@@ -190,6 +275,12 @@
 		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".$phpgw->msg->prep_folder_out(''));
 		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
 	}
+	*/
+	$hdr_subject = lang("subject");
+	$hdr_from = lang("from");
+	$hdr_date = lang("date");
+	$hdr_size = lang("size");
+
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
 	$t->set_var('hdr_subject',$hdr_subject);
@@ -228,7 +319,8 @@
 	if ($mailbox_status->messages == 0)
 	{
 		//if (!$mailbox)
-		if (!$phpgw->msg->mailsvr_stream)
+		if ((!isset($phpgw->msg->mailsvr_stream))
+		|| ($phpgw->msg->mailsvr_stream == ''))
 		{
 			$report_no_msgs = lang("Could not open this mailbox");
 		}
@@ -236,6 +328,8 @@
 		{
 			$report_no_msgs = lang("this folder is empty");
 		}
+		// this info for the stats row above
+		$t->set_var('stats_last','0');
 		// no messages to display, msgs list is just one row reporting this
 		$t->set_var('report_no_msgs',$report_no_msgs);
 		$t->set_var('mlist_delmov_init',$mlist_delmov_init);
@@ -250,7 +344,7 @@
 		{
 			$totaltodisplay = $mailbox_status->messages;
 		}
-		else if (($mailbox_status->messages - $phpgw->msg->start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		elseif (($mailbox_status->messages - $phpgw->msg->start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
 			$totaltodisplay = $phpgw->msg->start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 		}
@@ -258,6 +352,8 @@
 		{
 			$totaltodisplay = $mailbox_status->messages;
 		}
+		// this info for the stats row above
+		$t->set_var('stats_last',$totaltodisplay);
 
 		for ($i=$phpgw->msg->start; $i < $totaltodisplay; $i++)
 		{
@@ -369,44 +465,43 @@
 			// DATE
 			$msg_date = $phpgw->common->show_date($msg->udate);
 
-		// set up vars for the parsing
-		if ($do_init_form)
-		{
-			$t->set_var('mlist_delmov_init',$mlist_delmov_init);
-		}
-		else
-		{
-			$t->set_var('mlist_delmov_init', '');
-		}
-		if ($show_newmsg)
-		{
-			$t->set_var('mlist_new_msg',$mlist_new_msg);
-		}
-		else
-		{
-			$t->set_var('mlist_new_msg','');
-		}
-		if ($show_attach)
-		{
-			$t->set_var('mlist_attach',$mlist_attach);
-		}
-		else
-		{
-			$t->set_var('mlist_attach','');
-		}
-		$t->set_var('mlist_msg_num',$mlist_msg_num);
-		$t->set_var('mlist_backcolor',$bg);
-		$t->set_var('mlist_subject',$subject);
-		$t->set_var('mlist_subject_link',$subject_link);		
-		$t->set_var('mlist_from',$from_name);
-		$t->set_var('mlist_from_extra',$display_address_from);
-		//$t->set_var('mlist_from',$display_address_from);
-		//$t->set_var('mlist_from_extra',$from_name);
-		$t->set_var('mlist_reply_link',$from_link);
-		$t->set_var('mlist_date',$msg_date);
-		$t->set_var('mlist_size',$size);
-		$t->parse('V_msg_list','T_msg_list',True);
-		// end iterating through the messages to display
+			// set up vars for the parsing
+			if ($do_init_form)
+			{
+				$t->set_var('mlist_delmov_init',$mlist_delmov_init);
+			}
+			else
+			{
+				$t->set_var('mlist_delmov_init', '');
+			}
+			if ($show_newmsg)
+			{
+				$t->set_var('mlist_new_msg',$mlist_new_msg);
+			}
+			else
+			{
+				$t->set_var('mlist_new_msg','');
+			}
+			if ($show_attach)
+			{
+				$t->set_var('mlist_attach',$mlist_attach);
+			}
+			else
+			{
+				$t->set_var('mlist_attach','');
+			}
+			$t->set_var('mlist_msg_num',$mlist_msg_num);
+			$t->set_var('mlist_backcolor',$bg);
+			$t->set_var('mlist_subject',$subject);
+			$t->set_var('mlist_subject_link',$subject_link);		
+			$t->set_var('mlist_from',$from_name);
+			$t->set_var('mlist_from_extra',$display_address_from);
+			$t->set_var('mlist_reply_link',$from_link);
+			$t->set_var('mlist_date',$msg_date);
+			$t->set_var('mlist_size',$size);
+			// fill this template, "true" means it's cumulative
+			$t->parse('V_msg_list','T_msg_list',True);
+			// end iterating through the messages to display
 		}
 	}
 
@@ -423,14 +518,14 @@
 	{
 		$delmov_listbox = '&nbsp;';
 	}
-	
+	// preserving the current sort and order thru the delete process
+	$t->set_var('current_sort',$phpgw->msg->sort);
+	$t->set_var('current_order',$phpgw->msg->order);
+
 // ----  Messages List Table Footer  -----
-	//$t->set_var('app_images',$phpgw_info['server']['app_images']);
 	$t->set_var('app_images',$image_dir);
 	$t->set_var('ftr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('ftr_font',$phpgw_info['theme']['font']);
-	$t->set_var('ftr_compose_txt',lang("compose"));
-	$t->set_var('ftr_compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".$phpgw->msg->prep_folder_out('')));
 	$t->set_var('delmov_button',lang("delete"));
 	$t->set_var('delmov_listbox',$delmov_listbox);
 	

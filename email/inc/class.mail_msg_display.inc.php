@@ -110,8 +110,8 @@ class mail_msg extends mail_msg_base
   }
 
 
-  // ---- Messages Sort Order  -----
-  function fill_sort_order_start()
+  // ---- Messages Sort Order Start and Msgnum  -----
+  function fill_sort_order_start_msgnum()
   {
 	global $phpgw, $phpgw_info;
 
@@ -199,11 +199,22 @@ class mail_msg extends mail_msg_base
 		$this->start = 0;
 	}
 
+	// == MSGNUM ==
+	// the current message number for the message we are concerned with here
+	if ((isset($this->args['msgnum']))
+	&& ($this->args['msgnum'] != ''))
+	{
+		$this->msgnum = $this->args['msgnum'];
+	}
+	// else it stays at default of empty string ('')
+
+
 	if ($debug_sort)
 	{
 		echo 'sort: '.$this->sort.'<br>';
 		echo 'order: '.$this->order.'<br>';
 		echo 'start: '.$this->start.'<br>';
+		echo 'msgnum: '.$this->msgnum.'<br>';
 	}
   }
 

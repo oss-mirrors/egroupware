@@ -22,61 +22,98 @@
 
 	include("../header.inc.php");
 
-	$totalmessages = $phpgw->dcom->num_msg($phpgw->msg->mailsvr_stream);
+// ---- Folder Status Infomation   -----
+	//$totalmessages = $phpgw->dcom->num_msg($phpgw->msg->mailsvr_stream);
+	$mailbox_status = $phpgw->dcom->status(
+					$phpgw->msg->mailsvr_stream,
+					$phpgw->msg->get_mailsvr_callstr().$phpgw->msg->folder,
+					SA_ALL);
+	$totalmessages = $mailbox_status->messages;
 
-	if ($what == "move")
+// ---- MOVE Messages from folder to folder   -----
+	if ($phpgw->msg->args['what'] == "move")
 	{
-		//$tofolder = ($tofolder == "INBOX" ? 
-		//	"INBOX" : 
-		//	$phpgw->dcom->construct_folder_str($tofolder));
-
-		$tofolder = $phpgw->msg->prep_folder_in($tofolder);
-
-		$msgs = $msglist ? implode($msglist, ",") : $msglist;
-
+		// called by the "move selected messages to" listbox onChange action
+		$tofolder = $phpgw->msg->prep_folder_in($phpgw->msg->args['tofolder']);
+		// report number messages moved (will be made = 0 if error below)
+		$tm = count($phpgw->msg->args['msglist']);
+		$msgs = $phpgw->msg->args['msglist'] ? implode($phpgw->msg->args['msglist'], ",") : $phpgw->msg->args['msglist'];
+		// mail_move accepts a single number (5); a comma seperated list of numbers (5,6,7,8); or a range with a colon (5:8)
+		/*
+		if (count($phpgw->msg->args['msglist']) > 1)
+		{
+			$msgs = implode($phpgw->msg->args['msglist'], ",");
+		}
+		else
+		{
+			$msgs = $phpgw->msg->args['msglist'];
+		}
+		*/
 		if (! $phpgw->dcom->mail_move($phpgw->msg->mailsvr_stream, $msgs, $tofolder))
 		{
-			echo "<br>mail_move: summin went rong<br>";
+			// ERROR: report ZERO messages moved
+			$tm = 0;
 		}
-	}
-	elseif ($what == "delall")
-	{
-		for ($i = 0; $i < count($msglist); $i++)
+		else
 		{
-			$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $msglist[$i],"",$phpgw->msg->folder);
+			// expunge moved messages in from folder, they are marked as expungable after the move
+			$phpgw->dcom->expunge($phpgw->msg->mailsvr_stream);
 		}
-		$totaldeleted = "&td=$i";
-		$dontforward = False;
+		// report folder messages were moved to
+		$tf = $phpgw->msg->prep_folder_out($tofolder);
+		$phpgw->msg->end_request();
+		Header("Location: ".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+						 'folder='.$phpgw->msg->prep_folder_out('')
+						.'&tm='.$tm
+						.'&tf='.$tf
+						.'&sort='.$phpgw->msg->sort
+						.'&order='.$phpgw->msg->order));
 	}
-	elseif ($what == "delete")
+	elseif ($phpgw->msg->args['what'] == "delall")
 	{
-		$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $msgnum,"",$phpgw->msg->folder);
-
-		if (($totalmessages != $msgnum)
+		// this is called from the index pge after you check some boxes and click "delete" button
+		for ($i = 0; $i < count($phpgw->msg->args['msglist']); $i++)
+		{
+			$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msglist'][$i],"",$phpgw->msg->folder);
+		}
+		$totaldeleted = $i;
+		$phpgw->dcom->expunge($phpgw->msg->mailsvr_stream);
+		$phpgw->msg->end_request();
+		Header("Location: ".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+						 'folder='.$phpgw->msg->prep_folder_out('')
+						.'&td='.$totaldeleted
+						.'&sort='.$phpgw->msg->sort
+						.'&order='.$phpgw->msg->order));
+	}
+	elseif ($phpgw->msg->args['what'] == "delete")
+	{
+		// called by clicking the "X" dutton while reading an individual message
+		$phpgw->dcom->delete($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum,"",$phpgw->msg->folder);
+		if (($totalmessages != $phpgw->msg->msgnum)
 		|| ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
 		{
 			if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old")
 			{
-				$nm = $msgnum - 1;
+				$nm = $phpgw->msg->msgnum - 1;
 			}
 			else
 			{
-				$nm = $msgnum;
+				$nm = $phpgw->msg->msgnum;
 			}
-			//Header("Location: ".$phpgw->link("/email/message.php","folder=" . $phpgw->msg->prep_folder_out('')."&msgnum=".$nm));
-			//$dontforward = True;
 		}
+		$phpgw->dcom->expunge($phpgw->msg->mailsvr_stream);
+		$phpgw->msg->end_request();
+		Header("Location: ".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',
+						 'folder='.$phpgw->msg->prep_folder_out('')
+						.'&msgnum='.$nm
+						.'&sort='.$phpgw->msg->sort
+						.'&order='.$phpgw->msg->order));
 	}
-	$phpgw->dcom->expunge($phpgw->msg->mailsvr_stream);
-	$phpgw->msg->end_request();
+	else
+	{
+		echo "UNKNOWN ACTION";
+		$phpgw->msg->end_request();
+	}
 
-	if ($what == "delete")
-	{
-		Header("Location: ".$phpgw->link("/email/message.php","folder=" . $phpgw->msg->prep_folder_out('')."&msgnum=".$nm));
-	}
-	elseif (! $dontforward)
-	{
-		Header("Location: ".$phpgw->link("/email/index.php","folder=" . $phpgw->msg->prep_folder_out(''). $totaldeleted));
-	}
 	$phpgw->common->phpgw_footer();
 ?>

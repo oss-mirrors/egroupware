@@ -23,16 +23,18 @@
 	include("../header.inc.php");
 
 	//$phpgw->browser->content_header($name,$mime);
-	if (isset($html_part))
+	if ((isset($phpgw->msg->args['html_part']))
+	&& ($phpgw->msg->args['html_part'] != ''))
 	{
 		$phpgw->browser->content_header('','');
-		$html_part = $phpgw->msg->stripslashes_gpc($html_part);
+		$html_part = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['html_part']);
 		echo $phpgw->dcom->base64($html_part);
 		$phpgw->msg->end_request();
 	}
-	elseif (isset($html_reference))
+	elseif ((isset($phpgw->msg->args['html_reference']))
+	&& ($phpgw->msg->args['html_reference'] != ''))
 	{
-		$html_reference = $phpgw->msg->stripslashes_gpc($html_reference);
+		$html_reference = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['html_reference']);
 		$phpgw->msg->end_request();
 		header("Location: " . $html_reference); 
 	}
