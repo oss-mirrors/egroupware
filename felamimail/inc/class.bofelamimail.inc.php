@@ -49,7 +49,7 @@
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
 			
-			$this->displayCharset		= $_displayCharset;
+			$this->displayCharset	= $_displayCharset;
 			
 			// set some defaults
 			if(count($this->sessionData) == 0)

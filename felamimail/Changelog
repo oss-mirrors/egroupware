@@ -1,5 +1,6 @@
 Version 0.9.5
 
+- ported Smartsieve to FeLaMiMail
 - added highlighting for quotes (copied from horde)
 - fixed sorting
 	- added all needed options to preferences
