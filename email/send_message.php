@@ -20,50 +20,48 @@
 		'nonavbar'		=> True
 	);
 	
-	$phpgw_info['flags'] = $phpgw_flags;
+	$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
 	include('../header.inc.php');
 
-	$not_set = $phpgw->msg->not_set;
+	$not_set = $GLOBALS['phpgw']->msg->not_set;
 
 //  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
-	function send_message_cleanup()
+	function send_message_cleanup($mail_out)
 	{
-		global $phpgw, $mail_out;
-		
 		//echo 'send_message cleanup';
-		$phpgw->msg->end_request();
+		$GLOBALS['phpgw']->msg->end_request();
 		// note: the next lines can be removed since php takes care of memory management
 		unset($mail_out);
-		unset($phpgw->mail_send);
+		unset($GLOBALS['phpgw']->mail_send);
 	}
 
 	/*
 	// -- debug ----
-	$to = $phpgw->msg->stripslashes_gpc($to);
-	$mail_out['to'] = $phpgw->msg->make_rfc_addy_array($to);
-	$cc = $phpgw->msg->stripslashes_gpc($cc);
-	$mail_out['cc'] = $phpgw->msg->make_rfc_addy_array($cc);
+	$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($to);
+	$mail_out['to'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($to);
+	$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($cc);
+	$mail_out['cc'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($cc);
 	
 	//echo '<br> var dump $mail_out[to] <br>';
 	//var_dump($mail_out['to']);
 	
 	//send_message_cleanup($mailbox);
-	send_message_cleanup();
-	$phpgw->common->phpgw_footer();
+	send_message_cleanup($mail_out);
+	$GLOBALS['phpgw']->common->phpgw_footer();
 	exit;
 	// end ----  debug ------
 	*/
 
 //  -------  Init Array Structure For Outgoing Mail  -----------
-	$mail_out = Array();
+	$mail_out'] = Array();
 	$mail_out['to'] = Array();
 	$mail_out['cc'] = Array();
 	$mail_out['bcc'] = Array();
 	$mail_out['mta_to'] = Array();
-	$mail_out['mta_from'] = '<'.trim($phpgw_info['user']['preferences']['email']['address']).'>';
+	$mail_out['mta_from'] = '<'.trim($GLOBALS['phpgw_info']['user']['preferences']['email']['address']).'>';
 	$mail_out['mta_elho_domain'] = '';
-	$mail_out['message_id'] = $phpgw->msg->make_message_id();
-	$mail_out['boundary'] = $phpgw->msg->make_boundary();
+	$mail_out['message_id'] = $GLOBALS['phpgw']->msg->make_message_id();
+	$mail_out['boundary'] = $GLOBALS['phpgw']->msg->make_boundary();
 	$mail_out['date'] = '';
 	$mail_out['main_headers'] = Array();
 	$mail_out['body'] = Array();
@@ -75,7 +73,7 @@
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['from'][0]
 	// note that sending it through make_rfc_addy_array will ensure correct formatting of non us-ascii chars (if any) in the use's fullname
 	$mail_out['from'] = Array();
-	$mail_out['from'] = $phpgw->msg->make_rfc_addy_array('"'.$phpgw_info['user']['fullname'].'" <'.$phpgw_info['user']['preferences']['email']['address'].'>');
+	$mail_out['from'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array('"'.$GLOBALS['phpgw_info']['user']['fullname'].'" <'.$GLOBALS['phpgw_info']['user']['preferences']['email']['address'].'>');
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['sender'][0]
 	$mail_out['sender'] = Array();
 	$mail_out['charset'] = '';
@@ -84,10 +82,10 @@
 //  -------  Start Filling Array Structure For Outgoing Mail  -----------
 	// -----  x-phpgw custom message type RPC-like flag  ------
 	// RARELY USED, maybe NEVER used, most implementation code for this is commented out
-	if ((isset($phpgw->msg->args['msgtype'])) && ($phpgw->msg->args['msgtype'] != ''))
+	if ((isset($GLOBALS['phpgw']->msg->args['msgtype'])) && ($GLOBALS['phpgw']->msg->args['msgtype'] != ''))
 	{
 		// convert script GPC args into useful mail_out structure information
-		$mail_out['msgtype'] = $phpgw->msg->args['msgtype'];
+		$mail_out['msgtype'] = $GLOBALS['phpgw']->msg->args['msgtype'];
 		// after this, ONLY USE $mail_out structure for this
 	}
 	// -----  CHARSET  -----
@@ -101,10 +99,10 @@
 	}
 	// -----  SENDER  -----
 	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
-	if (isset($phpgw->msg->args['sender']) && ($phpgw->msg->args['sender'] != ''))
+	if (isset($GLOBALS['phpgw']->msg->args['sender']) && ($GLOBALS['phpgw']->msg->args['sender'] != ''))
 	{
 		// convert script GPC args into useful mail_out structure information
-		$mail_out['sender'] = $phpgw->msg->make_rfc_addy_array($phpgw->msg->args['sender']);
+		$mail_out['sender'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($GLOBALS['phpgw']->msg->args['sender']);
 		// after this, ONLY USE $mail_out structure for this
 	}
 	// -----  DATE  -----
@@ -114,26 +112,26 @@
 	// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
 	// rfc2821 sect 4.1.1.1 - almost always the Fully Qualified Domain Name of the SMTP client maching
 	// rarely, when the maching has dynamic FQD or no reverse mapping is available, *should* be "address leteral" (see sect 4.1.3)
-	$mail_out['mta_elho_mymachine'] = trim($phpgw_info['server']['hostname']);
+	$mail_out['mta_elho_mymachine'] = trim($GLOBALS['phpgw_info']['server']['hostname']);
 
 // ----  Forwarding Detection  -----
-	if ((isset($phpgw->msg->args['action']))
-	&& ($phpgw->msg->args['action'] == 'forward'))
+	if ((isset($GLOBALS['phpgw']->msg->args['action']))
+	&& ($GLOBALS['phpgw']->msg->args['action'] == 'forward'))
 	{
 		// convert script GPC args into useful mail_out structure information
 		$mail_out['is_forward'] = True;
 		// after this, ONLY USE $mail_out structure for this
 	}
-	if ((isset($phpgw->msg->args['fwd_proc']))
-	&& ($phpgw->msg->args['fwd_proc'] != ''))
+	if ((isset($GLOBALS['phpgw']->msg->args['fwd_proc']))
+	&& ($GLOBALS['phpgw']->msg->args['fwd_proc'] != ''))
 	{
 		// convert script GPC args into useful mail_out structure information
-		$mail_out['fwd_proc'] = $phpgw->msg->args['fwd_proc'];
+		$mail_out['fwd_proc'] = $GLOBALS['phpgw']->msg->args['fwd_proc'];
 		// after this, ONLY USE $mail_out structure for this
 	}
 
 // ----  Attachment Detection  -----
-	$upload_dir = $phpgw->msg->att_files_dir;
+	$upload_dir = $GLOBALS['phpgw']->msg->att_files_dir;
 	if (file_exists($upload_dir))
 	{
 		@set_time_limit(0);
@@ -159,14 +157,14 @@
 
 //  ------  get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'
 	// convert script GPC args into useful mail_out structure information
-	$to = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['to']);
-	$cc = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['cc']);
-	$body = $phpgw->msg->stripslashes_gpc(trim($phpgw->msg->args['body']));
-	$subject = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['subject']);
+	$to = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['to']);
+	$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['cc']);
+	$body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->args['body']));
+	$subject = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['subject']);
 	// after this,  do NOT use the args for these anymore
 
 	// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
-	$phpgw->msg->args['body'] = '';
+	$GLOBALS['phpgw']->msg->args['body'] = '';
 
 // ----  DE-code HTML SpecialChars in the body   -----
 	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
@@ -174,20 +172,20 @@
 	/*  // I think the email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
 	// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
 	// it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide  */
-	$body = $phpgw->msg->htmlspecialchars_decode($body);
+	$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 
 // ----  Add Email Sig to Body   -----
-	if ((isset($phpgw_info['user']['preferences']['email']['email_sig']))
-	&& ($phpgw_info['user']['preferences']['email']['email_sig'] != '')
-	&& (isset($phpgw->msg->args['attach_sig']))
-	&& ($phpgw->msg->args['attach_sig'] != '')
+	if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig']))
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'] != '')
+	&& (isset($GLOBALS['phpgw']->msg->args['attach_sig']))
+	&& ($GLOBALS['phpgw']->msg->args['attach_sig'] != '')
 	// ONLY ADD SIG IF USER PUTS TEXT IN THE BODY
 	//&& (strlen(trim($body)) > 3))
 	&& ($mail_out['is_forward'] == False))
 	{
-		$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
+		$user_sig = $GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'];
 		// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
-		$user_sig = $phpgw->msg->html_quotes_decode($user_sig);
+		$user_sig = $GLOBALS['phpgw']->msg->html_quotes_decode($user_sig);
 		$body = $body ."\r\n" .'-- '."\r\n" .$user_sig ."\r\n";
 	}
 
@@ -195,14 +193,14 @@
 	if ($to)
 	{
 		// mail_out[to] is an array of addresses, each has properties [plain] and [personal]
-		$mail_out['to'] = $phpgw->msg->make_rfc_addy_array($to);
+		$mail_out['to'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($to);
 		// this will make a simple comma seperated string of the plain addresses (False sets the "include_personal" arg)
-		$mta_to = $phpgw->msg->addy_array_to_str($mail_out['to'], False);
+		$mta_to = $GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['to'], False);
 	}
 	if ($cc)
 	{
-		$mail_out['cc'] = $phpgw->msg->make_rfc_addy_array($cc);
-		$mta_to .= ',' .$phpgw->msg->addy_array_to_str($mail_out['cc'], False);
+		$mail_out['cc'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($cc);
+		$mta_to .= ',' .$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['cc'], False);
 	}
 	// now make mta_to an array because we will loop through it in class mail_send
 	$mail_out['mta_to'] = explode(',', $mta_to);
@@ -224,11 +222,11 @@
 	//$dubug_info = ereg_replace("\r\n.", "CRLF_WSP", $dubug_info);
 	//$dubug_info = ereg_replace("\r\n", "CRLF", $dubug_info);
 	//$dubug_info = ereg_replace(" ", "SP", $dubug_info);
-	//$dubug_info = $phpgw->msg->htmlspecialchars_encode($dubug_info);
+	//$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
 	//echo serialize($dubug_info);
 
-	//$to = $phpgw->msg->addy_array_to_str($to, True);
-	//echo 'to including personal: '.$phpgw->msg->htmlspecialchars_encode($to).'<br>';
+	//$to = $GLOBALS['phpgw']->msg->addy_array_to_str($to, True);
+	//echo 'to including personal: '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($to).'<br>';
 
 	echo '<br> var dump mail_out <br>';
 	var_dump($mail_out);
@@ -236,19 +234,19 @@
 	//var_dump($cc);
 	echo '<br>';
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 	exit;
 	// ===== DEBUG ===== 
 	*/
 
 // ----  Send The Email  ==  via CLASS MAIL SEND 2822  == -----
 	// USE CLASS MAIL SEND 2822
-	$phpgw->mail_send = CreateObject("email.mail_send");
-	$phpgw->mail_send->send_init();
+	$GLOBALS['phpgw']->mail_send = CreateObject("email.mail_send");
+	$GLOBALS['phpgw']->mail_send->send_init();
 	// do we need to retain a copy of the sent message for the "Sent" folder?
-	if($phpgw_info['user']['preferences']['email']['use_sent_folder'])
+	if($GLOBALS['phpgw_info']['user']['preferences']['email']['use_sent_folder'])
 	{
-		$phpgw->mail_send->retain_copy = True;
+		$GLOBALS['phpgw']->mail_send->retain_copy = True;
 	}
 
 	// initialize structure for 1st part
@@ -301,9 +299,9 @@
 
 	// -----  MAIN BODY PART (1st Part)  ------
 	// Explode Body into Array of strings
-	$body = $phpgw->msg->normalize_crlf($body);
+	$body = $GLOBALS['phpgw']->msg->normalize_crlf($body);
 	$mail_out['body'][$body_part_num]['mime_body'] = explode ("\r\n",$body);
-	//$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($body));
+	//$mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($body));
 	// for no real reason, I add a CRLF to the end of the body
 	//$mail_out['body'][$body_part_num]['mime_body'][count($mail_out['body'][$body_part_num]['mime_body'])] = " \r\n";
 	// since var $body *may* be huge, lets clear it now
@@ -314,12 +312,12 @@
 	if (($mail_out['is_forward'] == True)
 	&& ($mail_out['fwd_proc'] == 'pushdown'))
 	{
-		//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$msg_headers = $phpgw->msg->phpgw_header('');
-		//$msg_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
+		//$msg_headers = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
+		//$msg_struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->folder, $GLOBALS['phpgw']->msg->msgnum);
 		if (($mail_out['fwd_info']['type'] == 'multipart')
 		|| ($mail_out['fwd_info']['subtype'] == 'mixed'))
 		{
@@ -337,17 +335,17 @@
 		$mail_out['body'][$body_part_num]['mime_body'] = Array();
 
 		// ----  General Information about The Original Message  -----
-		//$msg_headers = $phpgw->dcom->header($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$msg_headers = $phpgw->msg->phpgw_header('');
-		//$msg_struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$msg_struct = $phpgw->msg->phpgw_fetchstructure('');
+		//$msg_headers = $GLOBALS['phpgw']->dcom->header($phpgw->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
+		//$msg_struct = $GLOBALS['phpgw']->dcom->fetchstructure($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 
 		// use the "pgw_msg_struct" function to get the orig message main header info
-		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $phpgw->msg->folder, $phpgw->msg->msgnum);
+		$mail_out['fwd_info'] = pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1, $GLOBALS['phpgw']->msg->folder, $GLOBALS['phpgw']->msg->msgnum);
 		// add some more info
-		$mail_out['fwd_info']['from'] = $phpgw->msg->make_rfc2822_address($msg_headers->from[0]);
-		$mail_out['fwd_info']['date'] = $phpgw->common->show_date($msg_headers->udate);
-		$mail_out['fwd_info']['subject'] = $phpgw->msg->get_subject($msg_headers,'');
+		$mail_out['fwd_info']['from'] = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
+		$mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
+		$mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 
 		// normalize data to rfc2046 defaults, in the event data is not provided
 		if ($mail_out['fwd_info']['type'] == $not_set)
@@ -380,7 +378,7 @@
 			$mail_out['boundary'] = $mail_out['fwd_info']['boundary'];
 		}
 		//echo '<br>part_nice[boundary] ' .$mail_out['fwd_info']['boundary'] .'<br>';
-		//echo '<br>part_nice: <br>' .$phpgw->msg->htmlspecialchars_encode(serialize($mail_out)) .'<br>';
+		//echo '<br>part_nice: <br>' .$GLOBALS['phpgw']->msg->htmlspecialchars_encode(serialize($mail_out)) .'<br>';
 
 		// prepare the mime part headers
 		// original body gets pushed down one part, i.e. was part 1, now is part 2
@@ -407,10 +405,10 @@
 		$m_line++;
 
 		// dump the original BODY (with out its headers) here
-		//$fwd_this = $phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum);
-		$fwd_this = $phpgw->msg->phpgw_body();
+		//$fwd_this = $GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum);
+		$fwd_this = $GLOBALS['phpgw']->msg->phpgw_body();
 		// Explode Body into Array of strings
-		$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($fwd_this));
+		$mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this));
 		$fwd_this = '';		
 	}
 	elseif (($mail_out['is_forward'] == True)
@@ -428,9 +426,9 @@
 		$mail_out['body'][$body_part_num]['mime_headers'][2] = 'Content-Disposition: inline';
 
 		// DUMP the original message verbatim into this part's "body" - i.e. encapsulate the original mail
-		//$fwd_this['sub_header'] = trim($phpgw->dcom->fetchheader($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
-		$fwd_this['sub_header'] = trim($phpgw->msg->phpgw_fetchheader(''));
-		$fwd_this['sub_header'] = $phpgw->msg->normalize_crlf($fwd_this['sub_header']);
+		//$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->dcom->fetchheader($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum));
+		$fwd_this['sub_header'] = trim($GLOBALS['phpgw']->msg->phpgw_fetchheader(''));
+		$fwd_this['sub_header'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_header']);
 
 		// CLENSE headers of offensive artifacts that can confuse dumb MUAs
 		$fwd_this['sub_header'] = preg_replace("/^[>]{0,1}From\s.{1,}\r\n/i", "", $fwd_this['sub_header']);
@@ -439,9 +437,9 @@
 		$fwd_this['sub_header'] = trim($fwd_this['sub_header']);
 
 		// get the body
-		//$fwd_this['sub_body'] = trim($phpgw->dcom->get_body($phpgw->msg->mailsvr_stream, $phpgw->msg->msgnum));
-		$fwd_this['sub_body'] = trim($phpgw->msg->phpgw_body());
-		//$fwd_this['sub_body'] = $phpgw->msg->normalize_crlf($fwd_this['sub_body']);
+		//$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->dcom->get_body($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->msgnum));
+		$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->msg->phpgw_body());
+		//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
 
 
 		// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
@@ -470,22 +468,22 @@
 
 
 		/*
-		//echo 'fwd_this[sub_header]: <br><pre>'.$phpgw->msg->htmlspecialchars_encode($fwd_this['sub_header']).'</pre><br>';
-		//echo 'fwd_this[matches]: <br><pre>'.$phpgw->msg->htmlspecialchars_encode(serialize($fwd_this['matches'])).'</pre><br>';
-		//echo 'fwd_this[boundaries]: <br><pre>'.$phpgw->msg->htmlspecialchars_encode($fwd_this['boundaries']).'</pre><br>';
+		//echo 'fwd_this[sub_header]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['sub_header']).'</pre><br>';
+		//echo 'fwd_this[matches]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode(serialize($fwd_this['matches'])).'</pre><br>';
+		//echo 'fwd_this[boundaries]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['boundaries']).'</pre><br>';
 		//echo '=== var dump    fwd_this <br><pre>';
 		//var_dump($fwd_this);
 		//echo '</pre><br>';			
-		echo 'fwd_this[processed]: <br><pre>'.$phpgw->msg->htmlspecialchars_encode($fwd_this['processed']).'</pre><br>';
+		echo 'fwd_this[processed]: <br><pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fwd_this['processed']).'</pre><br>';
 		unset($fwd_this);
 		exit;
 		*/
 
 
 		// Explode Body into Array of strings
-		//$fwd_this['processed'] = $phpgw->msg->normalize_crlf($fwd_this['processed']);
+		//$fwd_this['processed'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['processed']);
 		//$mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n", $fwd_this['processed']);
-		$mail_out['body'][$body_part_num]['mime_body'] = $phpgw->msg->explode_linebreaks(trim($fwd_this['processed']));
+		$mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this['processed']));
 		unset($fwd_this);
 	}
 
@@ -494,11 +492,11 @@
 	echo '<br>';
 	echo '<br>=== mail_out ===<br>';
 	$dubug_info = serialize($mail_out);
-	$dubug_info = $phpgw->msg->htmlspecialchars_encode($dubug_info);
+	$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
 	echo $dubug_info;
 	echo '<br>';
 		
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 	exit;
 	// ===== DEBUG ===== 
 	*/
@@ -577,7 +575,7 @@
 
 	// --- MAIN HEADERS  -------
 	$hdr_line = 0;
-	$mail_out['main_headers'][$hdr_line] = 		'From: '.$phpgw->msg->addy_array_to_str($mail_out['from']);
+	$mail_out['main_headers'][$hdr_line] = 		'From: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['from']);
 	$hdr_line++;
 	if (count($mail_out['sender'] > 0))
 	{
@@ -585,16 +583,16 @@
 		// $mail_out['sender'] is initialized as an empty array in the begining of this file
 		// after that, it would be filled if the argument "sender" was passed to the script,
 		// then it would have been converted to the appropriate format and put in the $mail_out['sender'] array
-		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$phpgw->msg->addy_array_to_str($mail_out['sender']);
+		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['sender']);
 		$hdr_line++;
 	}
-	//$mail_out['main_headers'][$hdr_line] = 		'Reply-To: '.$phpgw->msg->addy_array_to_str($mail_out['from']);
+	//$mail_out['main_headers'][$hdr_line] = 		'Reply-To: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['from']);
 	//$hdr_line++;
-	$mail_out['main_headers'][$hdr_line] = 		'To: '.$phpgw->msg->addy_array_to_str($mail_out['to']);
+	$mail_out['main_headers'][$hdr_line] = 		'To: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['to']);
 	$hdr_line++;
 	if (count($mail_out['cc']) > 0)
 	{
-		$mail_out['main_headers'][$hdr_line] = 	'Cc: '.$phpgw->msg->addy_array_to_str($mail_out['cc']);
+		$mail_out['main_headers'][$hdr_line] = 	'Cc: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['cc']);
 		$hdr_line++;
 	}
 	$mail_out['main_headers'][$hdr_line] = 		'Subject: '.$subject;
@@ -655,21 +653,21 @@
 	echo '<br>';
 	echo '<br>=== mail_out ===<br>';
 	$dubug_info = serialize($mail_out);
-	$dubug_info = $phpgw->msg->htmlspecialchars_encode($dubug_info);
+	$dubug_info = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($dubug_info);
 	echo $dubug_info;
 	echo '<br>';
 	// ===== DEBUG ===== 
 	*/
 
 	// ----  Send It   -----
-	$returnccode = $phpgw->mail_send->smail_2822($mail_out);
+	$returnccode = $GLOBALS['phpgw']->mail_send->smail_2822($mail_out);
 
 	/*
 	// ===== DEBUG =====	
 	echo '<br>';
-	echo 'retain_copy: '.serialize($phpgw->mail_send->retain_copy);
+	echo 'retain_copy: '.serialize($GLOBALS['phpgw']->mail_send->retain_copy);
 	echo '<br>=== POST SEND ===<br>';
-	echo '<pre>'.$phpgw->msg->htmlspecialchars_encode($phpgw->mail_send->assembled_copy).'</pre>';
+	echo '<pre>'.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($GLOBALS['phpgw']->mail_send->assembled_copy).'</pre>';
 	echo '<br>';
 	// ===== DEBUG ===== 
 	*/
@@ -681,48 +679,48 @@
 
 	if (($skip_this == False)
 	&& ($returnccode)
-	&& ($phpgw_info['user']['preferences']['email']['use_sent_folder']))
+	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['use_sent_folder']))
 	{
 		//echo 'ENTERING SENT FOLDER CODE';
 
 		// note: what format should these folder name options (sent and trash) be held in
 		// i.e. long or short name form, in the prefs database
-		//$sent_folder_name = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['sent_folder_name']);
-		$sent_folder_name = $phpgw_info['user']['preferences']['email']['sent_folder_name'];
+		//$sent_folder_name = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw_info']['user']['preferences']['email']['sent_folder_name']);
+		$sent_folder_name = $GLOBALS['phpgw_info']['user']['preferences']['email']['sent_folder_name'];
 
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
 		// using a NEW stream *seems* faster, but not sure ???
 		/*
-		if ((!isset($phpgw->msg->mailsvr_stream))
-		|| ($phpgw->msg->mailsvr_stream == ''))
+		if ((!isset($GLOBALS['phpgw']->msg->mailsvr_stream))
+		|| ($GLOBALS['phpgw']->msg->mailsvr_stream == ''))
 		{
-			$stream = $phpgw->dcom->login('INBOX');
+			$stream = $GLOBALS['phpgw']->dcom->login('INBOX');
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
 			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-			$phpgw->dcom->append($stream, $sent_folder_name, $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
-			$phpgw->dcom->close($stream);
+			$GLOBALS['phpgw']->dcom->append($stream, $sent_folder_name, $GLOBALS['phpgw']->mail_send->assembled_copy."\r\n", "\\Seen");
+			$GLOBALS['phpgw']->dcom->close($stream);
 		}
 		else
 		{
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
 			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-			//$phpgw->dcom->append($phpgw->msg->mailsvr_stream,
-			$phpgw->msg->phpgw_append($sent_folder_name,
-						$phpgw->mail_send->assembled_copy."\r\n",
+			//$GLOBALS['phpgw']->dcom->append($GLOBALS['phpgw']->msg->mailsvr_stream,
+			$GLOBALS['phpgw']->msg->phpgw_append($sent_folder_name,
+						$GLOBALS['phpgw']->mail_send->assembled_copy."\r\n",
 						"\\Seen");
 			//echo 'used existing stream for trash folder';
 		//}
 		*/
 
-		if ((isset($phpgw->msg->mailsvr_stream))
-		&& ($phpgw->msg->mailsvr_stream != ''))
+		if ((isset($GLOBALS['phpgw']->msg->mailsvr_stream))
+		&& ($GLOBALS['phpgw']->msg->mailsvr_stream != ''))
 		{
 			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
 			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
-			//$phpgw->dcom->append($phpgw->msg->mailsvr_stream,
+			//$GLOBALS['phpgw']->dcom->append($GLOBALS['phpgw']->msg->mailsvr_stream,
 			//echo 'using existing stream for sent folder append<br>';
-			$success = $phpgw->msg->phpgw_append($sent_folder_name,
-							$phpgw->mail_send->assembled_copy."\r\n",
+			$success = $GLOBALS['phpgw']->msg->phpgw_append($sent_folder_name,
+							$GLOBALS['phpgw']->mail_send->assembled_copy."\r\n",
 							"\\Seen");
 			//if ($success) { echo 'append to sent OK<br>'; }
 			//else { echo 'append to sent FAILED<br>'; echo 'imap_last_error: '.imap_last_error().'<br>'; }
@@ -738,29 +736,29 @@
 	if ($returnccode)
 	{
 		// Success
-		if ($phpgw->mail_send->get_svr_response)
+		if ($GLOBALS['phpgw']->mail_send->get_svr_response)
 		{
 			// for debugging
 			$return = trim($return);
 			echo '<strong>Here is the communication from the MTA</strong><br><br>'."\r\n";
 			echo '<pre>';
-			echo $phpgw->msg->htmlspecialchars_encode($phpgw->mail_send->svr_response);
+			echo $GLOBALS['phpgw']->msg->htmlspecialchars_encode($GLOBALS['phpgw']->mail_send->svr_response);
 			echo '</pre>';
-			echo 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a><br>';
+			echo 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a><br>';
 			//send_message_cleanup($mailbox);
-			send_message_cleanup();
+			send_message_cleanup($mail_out);
 		}
 		else
 		{
-			//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
+			//header('Location: '.$GLOBALS['phpgw']->link('index.php','cd=13&folder='.urlencode($return)));
 			//$return = ereg_replace ("^\r\n", '', $return);
 			// unset some vars (is this necessary?)
 			//send_message_cleanup($mailbox);
-			send_message_cleanup();
+			send_message_cleanup($mail_out);
 			// what folder to go back to (the one we came from)
 			$return = trim($return);
 			// redirect the browser to the index page for the appropriate folder
-			header('Location: '.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
+			header('Location: '.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
 		}
 	}
 	else
@@ -769,13 +767,13 @@
 		$return = trim($return);
 		echo 'Your message could <B>not</B> be sent!<BR>'."\r\n"
 		. 'The mail server returned:<BR>'
-			. "err_code: '".$phpgw->mail_send->err['code']."';<BR>"
-			. "err_msg: '".htmlspecialchars($phpgw->mail_send->err['msg'])."';<BR>\r\n"
-			. "err_desc: '".$phpgw->err['desc']."'.<P>\r\n"
-			. 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+			. "err_code: '".$GLOBALS['phpgw']->mail_send->err['code']."';<BR>"
+			. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->mail_send->err['msg'])."';<BR>\r\n"
+			. "err_desc: '".$GLOBALS['phpgw']->mail_send->err['desc']."'.<P>\r\n"
+			. 'To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
 		//send_message_cleanup($mailbox);
-		send_message_cleanup();
+		send_message_cleanup($mail_out);
 	}
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

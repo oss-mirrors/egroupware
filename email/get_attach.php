@@ -13,7 +13,7 @@
 
   /* $Id$ */
 
-	$phpgw_info["flags"] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'email',
 		'enable_network_class' => True,
 		'enable_browser_class' => True,
@@ -22,27 +22,27 @@
 	);
 	include('../header.inc.php');
 
-	//header("Content-disposition: attachment; filename=\"".$name."\"");
-	//header("Content-type: ".strtolower($application)."/".strtolower($subtype));
+	//header('Content-disposition: attachment; filename="'.$name.'"');
+	//header('Content-type: '.strtolower($application).'/'.strtolower($subtype));
 
-	$mime = strtolower($phpgw->msg->args['type'])."/".strtolower($phpgw->msg->args['subtype']);
-	$phpgw->browser->content_header($phpgw->msg->args['name'],$mime);
+	$mime = strtolower($GLOBALS['phpgw']->msg->args['type']).'/'.strtolower($GLOBALS['phpgw']->msg->args['subtype']);
+	$GLOBALS['phpgw']->browser->content_header($GLOBALS['phpgw']->msg->args['name'],$mime);
 
-	if ($phpgw->msg->args['encoding'] == "base64")
+	if ($GLOBALS['phpgw']->msg->args['encoding'] == 'base64')
 	{
-		//echo $phpgw->dcom->base64($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
-		echo $phpgw->msg->de_base64($phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']));
+		//echo $GLOBALS['phpgw']->dcom->base64($GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->args['msgnum'], $GLOBALS['phpgw']->msg->args['part_no']));
+		echo $GLOBALS['phpgw']->msg->de_base64($GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->args['part_no']));
 	}
-	elseif ($phpgw->msg->args['encoding'] == "qprint")
+	elseif ($GLOBALS['phpgw']->msg->args['encoding'] == 'qprint')
 	{
-		//echo $phpgw->msg->qprint($phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']));
-		echo $phpgw->msg->qprint($phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']));
+		//echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->args['msgnum'], $GLOBALS['phpgw']->msg->args['part_no']));
+		echo $GLOBALS['phpgw']->msg->qprint($GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->args['part_no']));
 	}
 	else
 	{
-		//echo $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $phpgw->msg->args['msgnum'], $phpgw->msg->args['part_no']);
-		echo $phpgw->msg->phpgw_fetchbody($phpgw->msg->args['part_no']);
+		//echo $GLOBALS['phpgw']->dcom->fetchbody($GLOBALS['phpgw']->msg->mailsvr_stream, $GLOBALS['phpgw']->msg->args['msgnum'], $GLOBALS['phpgw']->msg->args['part_no']);
+		echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($GLOBALS['phpgw']->msg->args['part_no']);
 	}
 
-	$phpgw->msg->end_request();
+	$GLOBALS['phpgw']->msg->end_request();
 ?>

@@ -17,7 +17,7 @@
 	Header("Pragma: no-cache");
 	Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
-	$phpgw_info["flags"] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'email', 
 		'enable_network_class' => True, 
 		'enable_nextmatchs_class' => True);
@@ -309,7 +309,7 @@
 	$t->set_var('lang_total2',lang('Total Messages'));
 	$t->set_var('lang_size',lang('Size'));
 	$t->set_var('lang_size2',lang('Folder Size'));
-	$t->set_var('stats_first',$phpgw->msg->start + 1);
+	$t->set_var('stats_first',$GLOBALS['phpgw']->msg->start + 1);
 	$t->set_var('stats_to_txt',lang('to'));
 	// "last" can not be know until the calculations below
 
@@ -500,7 +500,7 @@
 		// this info for the stats row above
 		$t->set_var('stats_last',$totaltodisplay);
 
-		for ($i=$phpgw->msg->start; $i < $totaltodisplay; $i++)
+		for ($i=$GLOBALS['phpgw']->msg->start; $i < $totaltodisplay; $i++)
 		{
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
 			$do_init_form = ($i == $GLOBALS['phpgw']->msg->start);
@@ -542,7 +542,7 @@
 				.'&start='.$GLOBALS['phpgw']->msg->start);
 
 			// SIZE
-			if ($phpgw->msg->newsmode)
+			if ($GLOBALS['phpgw']->msg->newsmode)
 			{
 				// nntp apparently gives size in number of lines ?
 				$size = $hdr_envelope->Size;
@@ -696,7 +696,7 @@
 	}
 
 // ---- Delete/Move Folder Listbox  for Msg Table Footer -----
-	if ($phpgw->msg->get_mailsvr_supports_folders())
+	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
 	{
 		$delmov_listbox =
 			 '<select name="tofolder" onChange="do_action(\'move\')">'

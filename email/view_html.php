@@ -13,34 +13,34 @@
 
   /* $Id$ */
 
-	$phpgw_info["flags"] = array(
-		"currentapp" => "email",
-		"enable_network_class" => True,
-		"enable_browser_class" => True,
-		"noheader" => True,
-		"nonavbar" => True
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'email',
+		'enable_network_class' => True,
+		'enable_browser_class' => True,
+		'noheader' => True,
+		'nonavbar' => True
 	);
-	include("../header.inc.php");
+	include('../header.inc.php');
 
-	//$phpgw->browser->content_header($name,$mime);
-	if ((isset($phpgw->msg->args['html_part']))
-	&& ($phpgw->msg->args['html_part'] != ''))
+	//$GLOBALS['phpgw']->browser->content_header($name,$mime);
+	if ((isset($GLOBALS['phpgw']->msg->args['html_part']))
+	&& ($GLOBALS['phpgw']->msg->args['html_part'] != ''))
 	{
-		$phpgw->browser->content_header('','');
-		$html_part = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['html_part']);
-		//echo $phpgw->dcom->base64($html_part);
-		echo $phpgw->msg->de_base64($html_part);
-		$phpgw->msg->end_request();
+		$GLOBALS['phpgw']->browser->content_header('','');
+		$html_part = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['html_part']);
+		//echo $GLOBALS['phpgw']->dcom->base64($html_part);
+		echo $GLOBALS['phpgw']->msg->de_base64($html_part);
+		$GLOBALS['phpgw']->msg->end_request();
 	}
-	elseif ((isset($phpgw->msg->args['html_reference']))
-	&& ($phpgw->msg->args['html_reference'] != ''))
+	elseif ((isset($GLOBALS['phpgw']->msg->args['html_reference']))
+	&& ($GLOBALS['phpgw']->msg->args['html_reference'] != ''))
 	{
-		$html_reference = $phpgw->msg->stripslashes_gpc($phpgw->msg->args['html_reference']);
-		$phpgw->msg->end_request();
-		header("Location: " . $html_reference); 
+		$html_reference = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['html_reference']);
+		$GLOBALS['phpgw']->msg->end_request();
+		header('Location: ' . $html_reference); 
 	}
 	else
 	{
-		$phpgw->msg->end_request();
+		$GLOBALS['phpgw']->msg->end_request();
 	}
 ?>

@@ -19,15 +19,17 @@
 		'nonavbar'   => True
 	);
 	
-	$phpgw_info['flags'] = $phpgw_flags;
+	$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
 
 	include('../header.inc.php');
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(array(		
-		'T_attach_file' => 'attach_file.tpl',
-		'T_attach_file_blocks' => 'attach_file_blocks.tpl'
-	));
+	$t->set_file(
+		Array(		
+			'T_attach_file' => 'attach_file.tpl',
+			'T_attach_file_blocks' => 'attach_file_blocks.tpl'
+		)
+	);
 	$t->set_block('T_attach_file_blocks','B_alert_msg','V_alert_msg');
 	$t->set_block('T_attach_file_blocks','B_attached_list','V_attached_list');
 	$t->set_block('T_attach_file_blocks','B_attached_none','V_attached_none');
@@ -39,28 +41,28 @@
 
 	// ensure existance of PHPGROUPWARE temp dir
 	// note: this is different from apache temp dir, and different from any other temp file location set in php.ini
-	if (!file_exists($phpgw_info['server']['temp_dir']))
+	if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
 	{
-		mkdir($phpgw_info['server']['temp_dir'],0700);
+		mkdir($GLOBALS['phpgw_info']['server']['temp_dir'],0700);
 	}
 
 	// if we were NOT able to create this temp directory, then make an ERROR report
-	if (!file_exists($phpgw_info['server']['temp_dir']))
+	if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
 	{
 		$alert_msg .= 'Error:'.'<br>'
 			.'Server is unable to access phpgw tmp directory'.'<br>'
-			.$phpgw_info['server']['temp_dir'].'<br>'
+			.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
 			.'Please check your configuration'.'<br>'
 			.'<br>';
 	}
 
-	if (!file_exists($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']))
+	if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid']))
 	{
-		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
+		mkdir($GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'],0700);
 	}
 
-	//$uploaddir = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'] . SEP;
-	$uploaddir = $phpgw->msg->att_files_dir;
+	//$uploaddir = $GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'] . SEP;
+	$uploaddir = $GLOBALS['phpgw']->msg->att_files_dir;
 	
 	// if we were NOT able to create this temp directory, then make an ERROR report
 	if (!file_exists($uploaddir))
@@ -90,17 +92,17 @@
 	// clean / prepare PHP provided file info
 	if(floor(phpversion()) >= 4)
 	{
-		$file_tmp_name = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['tmp_name']));
-		$file_name = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['name']));
-		$file_size = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['size']));
-		$file_type = $phpgw->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['type']));
+		$file_tmp_name = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['tmp_name']));
+		$file_name = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['name']));
+		$file_size = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['size']));
+		$file_type = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($HTTP_POST_FILES['uploadedfile']['type']));
 	}
 	else
 	{
-		$file_tmp_name = $phpgw->msg->stripslashes_gpc(trim($uploadedfile));
-		$file_name = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_name));
-		$file_size = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_size));
-		$file_type = $phpgw->msg->stripslashes_gpc(trim($uploadedfile_type));
+		$file_tmp_name = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile));
+		$file_name = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile_name));
+		$file_size = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile_size));
+		$file_type = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile_type));
 	}
 	
 	// sometimes PHP is very clue-less about MIME types, and gives NO file_type
@@ -154,7 +156,7 @@
 	{
 		srand((double)microtime()*1000000);
 		$random_number = rand(100000000,999999999);
-		$newfilename = md5($file_tmp_name.', '.$file_name.', '.$phpgw_info['user']['sessionid'].time().getenv('REMOTE_ADDR').$random_number);
+		$newfilename = md5($file_tmp_name.', '.$file_name.', '.$GLOBALS['phpgw_info']['user']['sessionid'].time().getenv('REMOTE_ADDR').$random_number);
 
 		// Check for uploaded file of 0-length, or no file (patch from Zone added by Milosch)
 		//if ($file_tmp_name == "none" && $file_size == 0) This could work also
@@ -177,7 +179,7 @@
 		$langed_attach_file = lang("Attach File");
 		$alert_msg = lang('Input Error:').'<br>'
 			.lang('Please submit a filename to attach').'<br>'
-			.lang('You must click').' "'.lang("Attach File").'" '.lang('for the file to actually upload').'<br>'
+			.lang('You must click').' "'.lang('Attach File').'" '.lang('for the file to actually upload').'<br>'
 			.'<br>';
 	}
 
@@ -218,8 +220,8 @@
 		$t->parse('V_delete_btn','B_delete_btn');
 	}
 
-	$body_tags = 'bgcolor="'.$phpgw_info['theme']['bg_color'].'" alink="'.$phpgw_info['theme']['alink'].'" link="'.$phpgw_info['theme']['link'].'" vlink="'.$phpgw_info['theme']['vlink'].'"';
-	if (!$phpgw_info['server']['htmlcompliant'])
+	$body_tags = 'bgcolor="'.$GLOBALS['phpgw_info']['theme']['bg_color'].'" alink="'.$GLOBALS['phpgw_info']['theme']['alink'].'" link="'.$GLOBALS['phpgw_info']['theme']['link'].'" vlink="'.$GLOBALS['phpgw_info']['theme']['vlink'].'"';
+	if (!$GLOBALS['phpgw_info']['server']['htmlcompliant'])
 	{
 		$body_tags .= ' topmargin="0" marginheight="0" marginwidth="0" leftmargin="0"';
 	}
@@ -227,8 +229,8 @@
 	/*
 	// begin DEBUG INFO
 	$debuginfo .= '--uploadedfile info: <br>'
-		.'phpgw_info[server][temp_dir]: '.$phpgw_info['server']['temp_dir'].'<br>'
-		.'$phpgw_info[user][sessionid]: '.$phpgw_info['user']['sessionid'].'<br>'
+		.'phpgw_info[server][temp_dir]: '.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
+		.'$phpgw_info[user][sessionid]: '.$GLOBALS['phpgw_info']['user']['sessionid'].'<br>'
 		.'uploaddir: '.$uploaddir.'<br>'
 		.'file_tmp_name: ' .$file_tmp_name .'<br>'
 		.'file_name: ' .$file_name .'<br>'
@@ -249,8 +251,8 @@
 
 	$charset = lang('charset');
 	$t->set_var('charset',$charset);
-	$t->set_var('page_title',$phpgw_flags['currentapp'] . ' - ' .lang('File attachment'));
-	$t->set_var('font_family',$phpgw_info["theme"]["font"]);
+	$t->set_var('page_title',$GLOBALS['phpgw_flags']['currentapp'] . ' - ' .lang('File attachment'));
+	$t->set_var('font_family',$GLOBALS['phpgw_info']['theme']['font']);
 	$t->set_var('body_tags',$body_tags);
 	if ($alert_msg != '')
 	{
@@ -262,7 +264,7 @@
 		$t->set_var('V_alert_msg','');
 	}
 	$t->set_var('form_method','POST');
-	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/attach_file.php'));
+	$t->set_var('form_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'));
 	$t->set_var('text_attachfile',lang('Attach file'));
 	$t->set_var('text_currattached',lang('Current attachments'));
 	$t->set_var('txtbox_upload_desc',lang('File'));
@@ -276,5 +278,5 @@
 
 	$t->pparse('out','T_attach_file');
 
-	$phpgw->common->phpgw_exit();
+	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>
