@@ -30,4 +30,10 @@
 		return $GLOBALS['setup_info']['polls']['currentver'];
 	}
 
+	$test[] = '0.9.1';
+	function polls_upgrade0_9_1()
+	{
+		$GLOBALS['setup_info']['polls']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['polls']['currentver'];
+	}
 ?>

@@ -12,7 +12,7 @@
 
 	$setup_info['stocks']['name']      = 'stocks';
 	$setup_info['stocks']['title']     = 'Stock Quotes';
-	$setup_info['stocks']['version']   = '0.8.1';
+	$setup_info['stocks']['version']   = '1.0.0';
 	$setup_info['stocks']['app_order'] = 18;
 	$setup_info['stocks']['enable']    = 1;
 

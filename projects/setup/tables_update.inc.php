@@ -999,4 +999,10 @@
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
+	$test[] = '0.8.7.041';
+	function projects_upgrade0_8_7_041()
+	{
+		$GLOBALS['setup_info']['projects']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

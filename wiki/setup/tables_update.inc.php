@@ -115,4 +115,12 @@
 		$GLOBALS['setup_info']['wiki']['currentver'] = '0.9.15.005';
 		return $GLOBALS['setup_info']['wiki']['currentver'];
 	}
+	
+
+	$test[] = '0.9.15.005';
+	function wiki_upgrade0_9_15_005()
+	{
+		$GLOBALS['setup_info']['wiki']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['wiki']['currentver'];
+	}
 ?>

@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Addressbook                                               *
+	* phpGroupWare - XMLRPC test-app                                           *
 	* http://www.phpgroupware.org                                              *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['xmlrpc']['name']      = 'xmlrpc';
 	$setup_info['xmlrpc']['title']     = 'XMLRPC Test';
-	$setup_info['xmlrpc']['version']   = '0.0.1';
+	$setup_info['xmlrpc']['version']   = '1.0.0';
 	$setup_info['xmlrpc']['app_order'] = 4;
 	$setup_info['xmlrpc']['enable']    = 1;
 
@@ -26,6 +26,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['xmlrpc']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13', '0.9.14')
+		 'versions' => Array('0.9.13','0.9.14','1.0.0')
 	);
 ?>

@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['tts']['name']      = 'tts';
 	$setup_info['tts']['title']     = 'Trouble Ticket System';
-	$setup_info['tts']['version']   = '0.8.2.000';
+	$setup_info['tts']['version']   = '1.0.0';
 	$setup_info['tts']['app_order'] = 10;
 	$setup_info['tts']['enable']    = 1;
 
@@ -29,7 +29,6 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['tts']['hooks'][]   = 'admin';
 	$setup_info['tts']['hooks'][]   = 'home';
-	$setup_info['tts']['hooks'][]   = 'manual';
 	$setup_info['tts']['hooks'][]   = 'preferences';
 	$setup_info['tts']['hooks'][]   = 'settings';
 	$setup_info['tts']['hooks'][]   = 'sidebox_menu';

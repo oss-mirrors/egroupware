@@ -12,7 +12,7 @@
 	/* $Id$ */
 
 	$setup_info['phpldapadmin']['name']      = 'phpldapadmin';
-	$setup_info['phpldapadmin']['version']   = '0.9.1';
+	$setup_info['phpldapadmin']['version']   = '1.0.0';
 	$setup_info['phpldapadmin']['app_order'] = 42;
 	$setup_info['phpldapadmin']['tables']    = array();
 	$setup_info['phpldapadmin']['enable']    = 1;

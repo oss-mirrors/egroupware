@@ -12,7 +12,7 @@
 
 	$setup_info['wiki']['name']      = 'wiki';
 	$setup_info['wiki']['title']     = 'Wiki';
-	$setup_info['wiki']['version']   = '0.9.15.005';
+	$setup_info['wiki']['version']   = '1.0.0';
 	$setup_info['wiki']['app_order'] = 11;
 	$setup_info['wiki']['enable']    = 1;
 

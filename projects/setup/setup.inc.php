@@ -12,7 +12,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '0.8.7.041';
+	$setup_info['projects']['version']   = '1.0.0';
 	$setup_info['projects']['app_order'] = 8;
 	$setup_info['projects']['enable']    = 1;
 
@@ -53,7 +53,6 @@
 	(
 		'preferences',
 		'admin',
-		'manual',
 		'add_def_pref',
 		'deleteaccount',
 		'home',
@@ -65,42 +64,42 @@
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.16','0.9.17','0.9.14')
+		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'admin',
-		 'versions' => Array('0.9.16','0.9.17','0.9.13')
+		 'versions' => Array('0.9.16','0.9.17','0.9.13','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'preferences',
-		 'versions' => Array('0.9.16','0.9.17','0.9.13')
+		 'versions' => Array('0.9.16','0.9.17','0.9.13','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'addressbook',
-		 'versions' => Array('0.9.16','0.9.13')
+		 'versions' => Array('0.9.16','0.9.13','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'email',
-		 'versions' => Array('0.9.13','0.9.13')
+		 'versions' => Array('0.9.13','0.9.13','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'emailadmin',
-		 'versions' => Array('0.0.008')
+		 'versions' => Array('0.0.008','1.0.0')
 	);
 
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'felamimail',
-		 'versions' => Array('0.9.4','0.9.5')
+		 'versions' => Array('0.9.4','0.9.5','1.0.0')
 	);
 ?>

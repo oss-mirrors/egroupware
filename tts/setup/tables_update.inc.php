@@ -117,4 +117,12 @@
 		$GLOBALS['setup_info']['tts']['currentver'] = '0.8.2.000';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
+	
+	
+	$test[] = '0.8.2.000';
+	function tts_upgrade0_8_2_000()
+	{
+		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['tts']['currentver'];
+	}
 ?>
