@@ -71,7 +71,7 @@ function html_diff_change()
 function html_diff_delete()
   { return html_bold_start() . lang('Deleted').':' . html_bold_end(); }
 function html_table_start()
-  { return '<table border="1">'; }
+  { return '<table style="border: 1px solid black; border-collapse: collapse;">'; }
 function html_table_end()
   { return '</table>'; }
 function html_table_row_start()
@@ -81,9 +81,9 @@ function html_table_row_end()
 function html_table_cell_start($span = 1)
 {
   if($span == 1)
-    { return '<td>'; }
+    { return '<td style="border: 1px solid black; padding: 2px;">'; }
   else
-    { return '<td colspan="' . $span . '">'; }
+    { return '<td style="border: 1px solid black; padding: 2px;" colspan="' . $span . '">'; }
 }
 function html_table_cell_end()
   { return '</td>'; }
