@@ -674,10 +674,9 @@
 						'billable'		=> $track['hours'][$i]['billable']=='Y' ? 'X' : '',
 						'statusout'		=> lang($track['hours'][$i]['status']),
 						'start_date'	=> $track['hours'][$i]['sdate_formatted']['date'],
-						'start_time'	=> ($track['hours'][$i]['status']!='apply')?$track['hours'][$i]['sdate_formatted']['time']:$track['hours'][$i]['sdate_formatted']['date'],
+						'start_time'	=> $track['hours'][$i]['status'] != 'apply' ? $track['hours'][$i]['sdate_formatted']['time'] : $track['hours'][$i]['sdate_formatted']['date'],
 						'apply_time'	=> $at,
-						'end_time'		=> ($track['hours'][$i]['status']!='apply'?($track['hours'][$i]['edate']>0?$track['hours'][$i]['edate_formatted']['time']:
-											''):$track['hours'][$i]['sdate_formatted']['date']),
+						'end_time'		=> $track['hours'][$i]['status'] == 'apply' || !$track['hours'][$i]['edate'] ? '' : $track['hours'][$i]['edate_formatted']['time'],
 						'wh'			=> $wh,
 						'delete_url'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.ttracker&delete=True&track_id=' . $track['hours'][$i]['track_id']),
 						'edit_url'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.edit_ttracker&track_id=' . $track['hours'][$i]['track_id']),
@@ -703,6 +702,10 @@
 
 		function edit_ttracker()
 		{
+			if (!is_object($this->jscal))
+			{
+				$this->jscal = CreateObject('phpgwapi.jscalendar');
+			}
 			$track_id	= get_var('track_id',array('POST','GET'));
 			$values		= $_POST['values'];
 
@@ -720,6 +723,9 @@
 				{
 					$values['track_id']	= $track_id;
 					
+					$values += $this->jscal->input2date($values['sdate'],false,'sday','smonth','syear');
+					$values += $this->jscal->input2date($values['edate'],false,'eday','emonth','eyear');
+
 					$values['billable'] = $this->siteconfig['accounting'] == 'activity' ? substr($values['activity_id'],-1) :
 						($values['billable'] == 'Y' ? 'Y' : 'N');
 					$this->bohours->save_hours($values);
@@ -761,9 +767,7 @@
 				$GLOBALS['phpgw']->template->fp('actownhandle','act_own',True);
 			}
 
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['sdate_formatted']['year']),
-																			$this->sbox->getMonthText('values[smonth]',$values['sdate_formatted']['month']),
-																			$this->sbox->getDays('values[sday]',$values['sdate_formatted']['day'])));
+			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[sdate]',$values['sdate']));
 
 			$amsel = ' checked';
 			$pmsel = '';
@@ -797,9 +801,7 @@
 			$GLOBALS['phpgw']->template->set_var('shour',$values['sdate_formatted']['hour']);
 			$GLOBALS['phpgw']->template->set_var('smin',$values['sdate_formatted']['min']);
 
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['edate_formatted']['year']),
-																		$this->sbox->getMonthText('values[emonth]',$values['edate_formatted']['month']),
-																		$this->sbox->getDays('values[eday]',$values['edate_formatted']['day'])));
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$this->jscal->input('values[edate]',$values['edate']));
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
 			{
@@ -903,6 +905,10 @@
 
 		function edit_hours()
 		{
+			if (!is_object($this->jscal))
+			{
+				$this->jscal = CreateObject('phpgwapi.jscalendar');
+			}
 			$project_id		= get_var('project_id',array('POST','GET'));
 			$pro_main		= get_var('pro_main',array('POST','GET'));
 			$hours_id		= get_var('hours_id',array('POST','GET'));
@@ -913,15 +919,10 @@
 			$delivery_id	= get_var('delivery_id',array('POST','GET'));
 			$invoice_id		= get_var('invoice_id',array('POST','GET'));
 
-			if(!$referer)  //$_POST['back'] && !$_POST['done'] && !$_POST['edit'])
+			if(!$referer)
 			{
 				$referer = $_SERVER['HTTP_REFERER'];
 			}
-
-			/*if (! $_POST['save'])
-			{
-				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
-			}*/
 
 			$link_data = array
 			(
@@ -948,6 +949,8 @@
 				{
 					$values['billable'] = $values['billable'] == 'Y' ? 'Y' : 'N';
 				}
+				$values += $this->jscal->input2date($values['sdate'],false,'sday','smonth','syear');
+				$values += $this->jscal->input2date($values['edate'],false,'eday','emonth','eyear');
 				
 				$error = $this->bohours->check_values($values);
 				if (is_array($error))
@@ -1012,16 +1015,14 @@
 			{
 				if(!is_array($values))
 				{
-					$values['sdate_formatted'] = $this->bohours->hdate_format();
-					$values['edate_formatted'] = $this->bohours->hdate_format();
+					$values['sdate_formatted'] = $values['edate_formatted'] = $this->bohours->hdate_format();
+					$values['sdate'] = $values['edate'] = time();
 				}
 			}
 			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($values['status']));
 
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['sdate_formatted']['year']),
-																			$this->sbox->getMonthText('values[smonth]',$values['sdate_formatted']['month']),
-																			$this->sbox->getDays('values[sday]',$values['sdate_formatted']['day'])));
-
+			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[sdate]',$values['sdate']));
+			
 			$amsel = ' checked';
 			$pmsel = '';
 
@@ -1054,9 +1055,7 @@
 			$GLOBALS['phpgw']->template->set_var('shour',$values['sdate_formatted']['hour']);
 			$GLOBALS['phpgw']->template->set_var('smin',$values['sdate_formatted']['min']);
 
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['edate_formatted']['year']),
-																		$this->sbox->getMonthText('values[emonth]',$values['edate_formatted']['month']),
-																		$this->sbox->getDays('values[eday]',$values['edate_formatted']['day'])));
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$this->jscal->input('values[edate]',$values['edate']));
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
 			{

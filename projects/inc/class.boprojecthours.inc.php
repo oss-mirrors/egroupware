@@ -215,34 +215,18 @@
 		{
 			$hours = $this->sohours->read_single_hours($hours_id);
 
-			$hour = array
-			(
-				'hours_id'		=> $hours['hours_id'],
-				'project_id'		=> $hours['project_id'],
-				'cost_id'		=> $hours['cost_id'],
-				'pro_parent'		=> $hours['pro_parent'],
-				'pro_main'		=> $hours['pro_main'],
+			return array_merge((array) $hours,array(
 				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hours['hours_descr']),
-				'status'		=> $hours['status'],
-				'statusout'		=> lang($hours['status']),
-				'minutes'		=> $hours['minutes'],
-				'wh'			=> $this->sohours->format_wh($hours['minutes']),
-				'sdate'			=> $hours['sdate'],
-				'edate'			=> $hours['edate'],
-				'employee'		=> $hours['employee'],
+				'statusout'			=> lang($hours['status']),
+				'wh'				=> $this->sohours->format_wh($hours['minutes']),
 				'employeeout'		=> $GLOBALS['phpgw']->common->grab_owner_name($hours['employee']),
-				'activity_id'		=> $hours['activity_id'],
 				'activity_title'	=> $this->siteconfig['accounting']=='activity'?$this->boprojects->return_value('act',$hours['activity_id']):'',
-				'remark'		=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
+				'remark'			=> nl2br($GLOBALS['phpgw']->strip_html($hours['remark'])),
 				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
 				'edate_formatted'	=> $this->hdate_format($hours['edate']),
 				'stime_formatted'	=> $this->format_htime($hours['sdate']),
 				'etime_formatted'	=> $this->format_htime($hours['edate']),
-				'billable'		=> $hours['billable'],
-				'km_distance'		=> $hours['km_distance'],
-				't_journey'		=> $hours['t_journey']
-			);
-			return $hour;
+			));
 		}
 
 		function member()
@@ -574,26 +558,18 @@
 
 		function read_single_track($track_id)
 		{
-			$hours = $this->sohours->read_single_track($track_id);
+			$track = $this->sohours->read_single_track($track_id);
 
 			//_debug_array($hours);
-			$hour = array
-			(
-				'track_id'			=> $hours['track_id'],
-				'project_id'		=> $hours['project_id'],
-				'wh'				=> $hours['minutes']>0?$this->sohours->format_wh($hours['minutes']):0,
-				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($hours['hours_descr']),
-				'sdate'				=> $hours['sdate'],
-				'edate'				=> $hours['edate'],
-				'activity_id'		=> $hours['activity_id'],
-				'remark'			=> $GLOBALS['phpgw']->strip_html($hours['remark']),
-				'sdate_formatted'	=> $this->hdate_format($hours['sdate']),
-				'edate_formatted'	=> $hours['edate']>0?$this->hdate_format($hours['edate']):0,
-				'stime_formatted'	=> $this->format_htime($hours['sdate']),
-				'etime_formatted'	=> $this->format_htime($hours['edate']),
-				'billable'			=> $hours['billable'],
-			);
-			return $hour;
+			return array_merge((array)$track,array(
+				'wh'				=> $track['minutes'] > 0 ? $this->sohours->format_wh($track['minutes']) : 0,
+				'hours_descr'		=> $GLOBALS['phpgw']->strip_html($track['hours_descr']),
+				'remark'			=> $GLOBALS['phpgw']->strip_html($track['remark']),
+				'sdate_formatted'	=> $this->hdate_format($track['sdate']),
+				'edate_formatted'	=> $track['edate'] > 0 ? $this->hdate_format($track['edate']) : 0,
+				'stime_formatted'	=> $this->format_htime($track['sdate']),
+				'etime_formatted'	=> $this->format_htime($track['edate']),
+			));
 		}
 	}
 ?>
