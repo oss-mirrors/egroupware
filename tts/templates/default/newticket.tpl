@@ -1,4 +1,7 @@
 <!-- $Id $ -->
+<!-- BEGIN tts_select_options -->
+    <option value="{tts_optionvalue}" {tts_optionselected}>{tts_optionname}</option>
+<!-- END tts_select_options -->
 
 <form method=POST action="{tts_newticket_link}">
 <div align="center">
@@ -41,16 +44,7 @@
               <tr>
                <td width="25%">
                 <select name="optPriority">
-                 <option value="1">1 - {tts_lang_lowest}</option>
-                 <option value="2">2</option>
-                 <option value="3">3</option>
-                 <option value="4">4</option>
-                 <option value="5" selected>5 - {tts_lang_medium}</option>
-                 <option value="6">6</option>
-                 <option value="7">7</option>
-                 <option value="8">8</option>
-                 <option value="9">9</option>
-                 <option value="10">10 - {tts_lang_highest}</option>
+		    {tts_priority_options}
                 </select>
                </td>
               </tr>

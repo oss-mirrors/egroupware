@@ -62,7 +62,7 @@
                 }
 	
 		// Choose the correct priority to display
-		$prority_selected[$phpgw->db->f("t_priority")] = " selected";
+		$priority_selected[$phpgw->db->f("t_priority")] = " selected";
 		$priority_comment[1]=" - ".lang("Lowest"); 
 		$priority_comment[5]=" - ".lang("Medium"); 
 		$priority_comment[10]=" - ".lang("Highest"); 
@@ -70,7 +70,7 @@
         	for ($i=1; $i<=10; $i++) {
 		    $p->set_var('tts_optionname', $i.$priority_comment[$i]);
 		    $p->set_var('tts_optionvalue', $i);
-		    $p->set_var('tts_optionselected', $prority_selected[$i]);
+		    $p->set_var('tts_optionselected', $priority_selected[$i]);
 		    $p->parse('tts_priority_options','tts_select_options',true);
 		}
 		

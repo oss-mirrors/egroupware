@@ -11,7 +11,13 @@
 
 
   /* $Id $ */
+	$account_selected = array();
+	$entry_selected = array();
+	$priority_selected = array();
+	$priority_comment = array();
   
+
+
 	if ($submit)
 	{
 		$phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
@@ -23,6 +29,11 @@
 	if (! $submit)
 	{
 
+	$phpgw->preferences->read_repository();
+	if ($phpgw_info['user']['preferences']['tts']['groupdefault']) { $entry_selected[$phpgw_info['user']['preferences']['tts']['groupdefault']]=" selected"; };
+	if ($phpgw_info['user']['preferences']['tts']['assigntodefault']) { $account_selected[$phpgw_info['user']['preferences']['tts']['assigntodefault']]=" selected"; };
+	if ($phpgw_info['user']['preferences']['tts']['prioritydefault']) { $priority_selected[$phpgw_info['user']['preferences']['tts']['prioritydefault']]=" selected"; };
+
 	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	//  echo PHPGW_APP_TPL;
 	$p->set_file(array(
@@ -31,6 +42,7 @@
 	
 	$p->set_block('newticket', 'tts_new_lstassignto','tts_new_lstassignto');
 	$p->set_block('newticket', 'tts_new_lstcategory','tts_new_lstcategory');
+	$p->set_block('newticket', 'tts_select_options','tts_select_options');
 	
 	$p->set_unknowns('remove');
 	$p->set_var('tts_newticket_link', $phpgw->link("/tts/newticket.php"));
@@ -54,6 +66,7 @@
 		{
     		    $p->set_var('tts_account_lid', $entry['account_lid']);
     		    $p->set_var('tts_account_name', $entry['account_lid']);
+		    $p->set_var('tts_categoryselected', $entry_selected[$entry['account_lid']]);
 		    $p->parse('tts_new_lstcategories','tts_new_lstcategory',true);
 		}
             
@@ -64,7 +77,6 @@
 
 		$p->set_var('tts_account_lid', "none" );
 		$p->set_var('tts_account_name', lang("none"));
-		$p->set_var('tts_assignedtoselected', "selected");
 		$p->parse('tts_new_lstassigntos','tts_new_lstassignto',false);
 		
 		while (list($key,$entry) = each($account_list))
@@ -73,10 +85,27 @@
 			{
     			$p->set_var('tts_account_lid', $entry['account_lid']);
     			$p->set_var('tts_account_name', $entry['account_lid']);
+		        $p->set_var('tts_assignedtoselected', $account_selected[$entry['account_lid']]);
 			}
 			$p->parse('tts_new_lstassigntos','tts_new_lstassignto',true);
 		}
 
+
+	// Choose the correct priority to display
+	// $prority_selected[$phpgw->db->f("t_priority")] = " selected";
+	$priority_comment[1]=" - ".lang("Lowest"); 
+	$priority_comment[5]=" - ".lang("Medium"); 
+	$priority_comment[10]=" - ".lang("Highest"); 
+    	for ($i=1; $i<=10; $i++) {
+	    $p->set_var('tts_optionname', $i.$priority_comment[$i]);
+	    $p->set_var('tts_optionvalue', $i);
+	    $p->set_var('tts_optionselected', $priority_selected[$i]);
+	    $p->parse('tts_priority_options','tts_select_options',true);
+	}
+
+	$p->set_var('tts_select_options','');
+	$p->set_var('tts_new_lstcategory','');
+	$p->set_var('tts_new_lstassignto','');
 	
 	$p->pparse('out', 'newticket');
 	
