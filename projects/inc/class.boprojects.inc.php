@@ -472,12 +472,13 @@
 			// allow all class-params to be overwriten by caller
 			foreach(array('start','limit','query','filter','sort','order','status','cat_id') as $name)
 			{
-				if (!isset($param[$name]))
+				if (!isset($params[$name]))
 				{
-					$param[$name] = $this->$name;
+					$params[$name] = $this->$name;
 				}
 			}
-			$pro_list = $this->so->read_projects($param);
+
+			$pro_list = $this->so->read_projects($params);
 
 			while (is_array($pro_list) && list(,$pro)=each($pro_list))
 			{
