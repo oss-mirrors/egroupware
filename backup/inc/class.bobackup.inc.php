@@ -76,12 +76,12 @@
 				{
 					if (substr($values['script_path'],0,strlen($doc_root)) == $doc_root)
 					{
-						$msg[] = lang('The directory to store the backup script must be outside of the webservers *DocumentRoot* !');
+						$error[] = lang('The directory to store the backup script must be outside of the webservers *DocumentRoot* !');
 					}
 				}
 				else
 				{
-					$msg[] = lang('Please set the path to a local dir to store the backup script !');
+					$error[] = lang('Please set the path to a local dir to store the backup script !');
 				}
 
 				if ($values['l_save'])

@@ -36,6 +36,7 @@ Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzei
 ip or hostname	backup	de	IP oder Rechnername
 monthly	backup	de	monatlich
 No backup archives available !	backup	de	Es sind keine Datensicherungs-Archive vorhanden !
+Number of stored backup versions	backup	de	Anzahl der gespeicherten Datensicherungs Versionen
 User	backup	de	Benutzer
 Password	backup	de	Paßwort
 weekly	backup	de	wöchentlich

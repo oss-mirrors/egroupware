@@ -6,6 +6,8 @@
 	databases.
 	the archives can be stored either locally or can be moved
 	to a remote host via ftp or smbmount.
+	if your webserver works with mod_php you have to have
+	php installed on your system in addition.
 
 ---------------------------------------------------------------
 -                      configuration                          -

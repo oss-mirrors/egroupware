@@ -36,6 +36,7 @@ Absolute path of the backup directory	backup	en	Absolute path of the backup dire
 ip or hostname	backup	en	IP or hostname
 monthly	backup	en	monthly
 No backup archives available !	backup	en	No backup archives available !
+Number of stored backup versions	backup	en	Number of stored backup versions
 User	backup	en	User
 Password	backup	en	Password
 weekly	backup	en	weekly
