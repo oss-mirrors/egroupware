@@ -486,7 +486,7 @@ if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" s
 					 break;
 				  case 'text'  :
 					 if ($use_records_cfg) $val[0]=$set_val;
-					 $output= '<input name="'.$cfg_key.'" type="text" size="50" '.$val[2].' value="'.$val[0].'">';
+					 $output= '<input name="'.$cfg_key.'" type="text" '.$val[2].' value="'.$val[0].'">';
 					 break;
 				  case 'area'  :
 					 if ($use_records_cfg) $val[0]=$set_val;

@@ -20,16 +20,13 @@
    /* $id$ */	
    
    $description = '
-   the htmlArea plugin is based on htmlArea v3beta from interactivetools.com
-   licenced under the BSD licence.<P>
-   htmlArea is a WYSIWYG editor replacement for any textarea field. Instead
-   of teaching your software users how to code basic HTML to format their
-   content.
-   ';
+   The htmlArea plugin is based on htmlArea 3.0rc from interactivetools.com
+   licenced under the BSD licence.<p/>
+   HtmlArea is a rich-textarea replacement for the textarea formwidget.';
 
    $this->plugins['htmlArea']['name']			= 'htmlArea';
    $this->plugins['htmlArea']['title']			= 'htmlArea';
-   $this->plugins['htmlArea']['version']		= '0.9.0.2';
+   $this->plugins['htmlArea']['version']		= '0.9.0.3';
    $this->plugins['htmlArea']['enable']			= 1;
    $this->plugins['htmlArea']['author']			= 'Pim Snel';
    $this->plugins['htmlArea']['description']	= $description;
@@ -42,22 +39,14 @@
 
    $this->plugins['htmlArea']['config']		= array
    (
-	  'UploadImageBaseDir' => array('','text','maxlength=200 size=30'),
-	  'UploadImageBaseURL' => array('','text','maxlength=200 size=30'),
-	  'UploadImageRelativePath' => array('','text','maxlength=200 size=30'),
 	  'enable_font_options'=>array(array('Yes','No'),'select',''),
-	  /*
-	  'enable_alignment_buttons'=>array(array('Yes','No'),'select',''),
-	  'enable_list_buttons'=>array(array('Yes','No'),'select',''),
-	  'enable_html_source_button'=>array(array('Yes','No'),'select',''),
-	  'enable_color_buttons'=>array(array('Yes','No'),'select',''),
-	  'enable_horizontal_ruler_button'=>array(array('Yes','No'),'select',''),
-	  'enable_link_button'=>array(array('Yes','No'),'select',''),*/
 	  'enable_tables_button'=>array(array('Yes','No'),'select',''),
 	  'enable_fullscreen_editor_button'=>array(array('Yes','No'),'select',''),
 	  'enable_image_button'=>array(array('Yes','No'),'select',''),
 	  'enable_context_menu'=>array(array('Yes','No'),'select',''),
 	  'enable_image_upload_button'=>array(array('Yes','No'),'select',''),
+	  'image_upload_max_height' => array('','text','maxlength="4" size="4"'),
+	  'image_upload_max_width' => array('','text','maxlength="4" size="4"'),
 	  'size_of_area'=>array(array('Small','Medium','Large','XXL'),'select',''),
 	  'custom_css'=>array('','area','')
    );
@@ -69,7 +58,6 @@
 	  'custom_css'=> 'Put valid CSS-code here that will replcae the default css used by htmlArea'
    );
    
-
    /**
    @function plg_fi_htmlArea
    @todo add special class selectbox
@@ -79,6 +67,11 @@
    function plg_fi_htmlArea($field_name, $value, $config,$attr_arr)
    {
 	  global $local_bo;
+
+	  if($local_bo->read_preferences('disable_htmlarea')=='yes')
+	  {
+		 return;
+	  }
 
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
@@ -95,28 +88,12 @@
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 		 $upload_url=$local_bo->site[$field_prefix.'upload_url'];
 	  }
-
-		//_debug_array($local_bo->site);
-	  //die();
 	  
-	  if($local_bo->read_preferences('disable_htmlarea')=='yes')
-	  {
-		 return;
-	  }
 
 	  if($config[enable_font_options]=='Yes') $bar_font = '"fontname", "space" , "fontsize", "space" ,';
 	  if($config[enable_image_button]=='Yes') $bar_image = '"insertimage",';
 	  if($config[enable_tables_button]=='Yes') $bar_table = '"inserttable",';
 	  if($config[enable_fullscreen_editor_button]=='Yes') $bar_fullscreen = '"popupeditor",';
-
-/*	  if($config[enable_html_source_button]!='No') $bar_html = '"htmlmode",';
-	  if($config[enable_alignment_buttons]!='No') $bar_align = '[ "justifyleft", "justifycenter", "justifyright", "justifyfull", "separator" ],';
-
-	  if($config[enable_list_buttons]!='No') $bar_list = '[ "orderedlist", "unorderedlist", "outdent", "indent", "separator" ],';
-	  if($config[enable_color_buttons]!='No') $bar_colors = '[ "forecolor", "backcolor", "textindicator", "separator" ],';
-	  if($config[enable_horizontal_ruler_button]!='No') $bar_ruler = '"horizontalrule",';
-	  if($config[enable_link_button]!='No') $bar_link = '"createlink",';
-	  */
 
 	  /* toolbar configuration */
 	  $custom_toolbar = '[
@@ -163,18 +140,11 @@
 	  /* Do stuff to activate uploadImage Plugin in htmlArea */
 	  if($config[enable_image_upload_button]=='Yes')
 	  {
-/*		 $sessdata = array(
-			'UploadImageBaseDir' => $config[UploadImageBaseDir], 
-			'UploadImageBaseURL' => $config[UploadImageBaseURL],
-			//			'UploadImageRelativePath' => $config[UploadImageRelativePath]
-			
-		 );
-		 */
-		 
 		 $sessdata = array(
-			'UploadImageBaseDir' => $upload_path, 
-			'UploadImageBaseURL' => $upload_url,
-//			'UploadImageRelativePath' => $config[UploadImageRelativePath]
+			'UploadImageBaseDir' =>   $upload_path, 
+			'UploadImageBaseURL' =>   $upload_url,
+			'UploadImageMaxWidth' =>  $config[image_upload_max_width],
+			'UploadImageMaxHeight' => $config[image_upload_max_height],
 		 );
 
 		 $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi',$sessdata);
@@ -189,6 +159,7 @@
 
 	  /* Make sure no plugins are loaded by setting a space */
 	  if(!$plugins) $plugins=' ';
+	 
 	  $input = $GLOBALS['phpgw']->html->htmlarea($field_name, $value,$style,false,$plugins,$custom_toolbar);
 
 	  return $input;
