@@ -11,6 +11,7 @@
 
   /* $Id$ */
 
+	$GLOBALS['phpgw_info'] = Array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
@@ -19,21 +20,21 @@
 	);
 	include('../header.inc.php');
 
-	$show  = $HTTP_GET_VARS['show'];
-	$order = $HTTP_GET_VARS['order'];
-	$sort  = $HTTP_GET_VARS['sort'];
+	$show  = get_var('show',Array('GET'));
+	$order = get_var('order',Array('GET'));
+	$sort  = get_var('sort',Array('GET'));
 
-	if (! $show)
+	if(!$show)
 	{
 		$GLOBALS['phpgw']->common->phpgw_exit(True);
 	}
 
-	if ($order)
+	if($order)
 	{
 		$ordermethod = " order by $order $sort";
 	}
 
-	if ($show == 'questions')
+	if($show == 'questions')
 	{
 		$GLOBALS['phpgw']->template->set_file(array('admin' => 'admin_list_questions.tpl'));
 	}
@@ -48,19 +49,19 @@
 
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('sort_title',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'poll_title',$order,'admin.php',lang('Title'),'&show=' . $show));
-	if ($show == 'answers')
+	if($show == 'answers')
 	{
 		$GLOBALS['phpgw']->template->set_var('sort_answer',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'option_text',$order,'admin.php',lang('Answer'),'&show=' . $show));
 	}
 
 	$GLOBALS['phpgw']->template->set_var('lang_edit',lang('edit'));
 	$GLOBALS['phpgw']->template->set_var('lang_delete',lang('delete'));
-	if ($show == 'questions')
+	if($show == 'questions')
 	{
 		$GLOBALS['phpgw']->template->set_var('lang_view',lang('view'));
 	}
 
-	if ($show == 'questions')
+	if($show == 'questions')
 	{
 		$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc $ordermethod",__LINE__,__FILE__);
 	}
@@ -75,7 +76,7 @@
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
 		$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 
-		if ($show == 'questions')
+		if($show == 'questions')
 		{
 			$GLOBALS['phpgw']->template->set_var('row_title',$GLOBALS['phpgw']->db->f('poll_title'));
 			$GLOBALS['phpgw']->template->set_var('row_edit','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_editquestion.php','poll_id=' . $GLOBALS['phpgw']->db->f('poll_id')) . '">' . lang('Edit') . '</a>');
@@ -89,7 +90,6 @@
 			$GLOBALS['phpgw']->template->set_var('row_edit','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_editanswer.php','vote_id=' . $GLOBALS['phpgw']->db->f('vote_id')) . '">' . lang('Edit') . '</a>');
 			$GLOBALS['phpgw']->template->set_var('row_delete','<a href="' . $GLOBALS['phpgw']->link('/polls/admin_deleteanswer.php','vote_id=' . $GLOBALS['phpgw']->db->f('vote_id')) . '">' . lang('Delete') . '</a>');
 		}
-
 		$GLOBALS['phpgw']->template->parse('rows','row',True);
 	}
 

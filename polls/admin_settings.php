@@ -11,7 +11,7 @@
 
   /* $Id$ */
 
-	$phpgw_info = array();
+	$GLOBALS['phpgw_info'] = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
@@ -20,12 +20,12 @@
 	);
 	include('../header.inc.php');
 
-	if ($HTTP_POST_VARS['submit'])
+	if(get_var('submit',Array('POST')))
 	{
-		$settings = $HTTP_POST_VARS['settings'];
-		$GLOBALS['phpgw']->db->query("delete from phpgw_polls_settings",__LINE__,__FILE__);
+		$settings = get_var('settings',Array('POST'));
+		$GLOBALS['phpgw']->db->query('delete from phpgw_polls_settings',__LINE__,__FILE__);
 
-		while (list($name,$value) = each($settings))
+		while(list($name,$value) = each($settings))
 		{
 			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_settings values ('$name','$value')",__LINE__,__FILE__);
 		}
@@ -33,7 +33,7 @@
 	}
 	else
 	{
-		$GLOBALS['phpgw']->db->query("select * from phpgw_polls_settings");
+		$GLOBALS['phpgw']->db->query('select * from phpgw_polls_settings',__LINE__,__FILE__);
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
 			$settings[$GLOBALS['phpgw']->db->f('setting_name')] = $GLOBALS['phpgw']->db->f('setting_value');
@@ -46,7 +46,7 @@
 		. '    <td><input type="checkbox" name="settings[allow_multiable_votes]"' . ($settings['allow_multiable_votes']?' checked':'') . ' value="True"></td></tr>';
 	echo '<tr><td>' . lang('Select current poll') . '</td>'
 		. '    <td><select name="settings[currentpoll]">';
-	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc order by poll_title",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->query('select * from phpgw_polls_desc order by poll_title',__LINE__,__FILE__);
 	while ($GLOBALS['phpgw']->db->next_record())
 	{
 		echo '<option value="' . $GLOBALS['phpgw']->db->f('poll_id') . '"'

@@ -11,7 +11,7 @@
 
   /* $Id$ */
 
-	$phpgw_info = array();
+	$GLOBALS['phpgw_info'] = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
@@ -24,11 +24,11 @@
 	$GLOBALS['phpgw']->template->set_block('admin','form','form');
 	$GLOBALS['phpgw']->template->set_block('admin','row','row');
 
-	$poll_id = $HTTP_GET_VARS['poll_id'] ? $HTTP_GET_VARS['poll_id'] : $HTTP_POST_VARS['poll_id'];
+	$poll_id = get_var('poll_id',Array('POST','GET'));
 
-	if ($HTTP_POST_VARS['edit'])
+	if(get_var('edit',Array('POST')))
 	{
-		$question = $HTTP_POST_VARS['question'];
+		$question = get_var('question',Array('POST'));
 		$GLOBALS['phpgw']->db->query("update phpgw_polls_desc set poll_title='" . addslashes($question)
 			. "' where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->template->set_var('message',lang('Question has been updated'));
@@ -38,7 +38,7 @@
 		$GLOBALS['phpgw']->template->set_var('message','');
 	}
 
-	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc where poll_id='$poll_id'");
+	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
 	$GLOBALS['phpgw']->db->next_record();
 
 	$GLOBALS['phpgw']->template->set_var('header_message',lang('Edit poll question'));
