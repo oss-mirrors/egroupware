@@ -216,7 +216,14 @@
 				(
 					'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 				);
-				$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
+				if($this->mailPreferences['messageNewWindow'])
+				{
+					$this->t->set_var("link_message_list","javascript:window.close();");
+				}
+				else
+				{
+					$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
+				}
 	
 				$linkData = array
 				(
@@ -644,7 +651,10 @@
 			$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
 			
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
+			if(!$this->mailPreferences['messageNewWindow'])
+			{
+				echo parse_navbar();
+			}
 		}
 
 		function emailAddressToHTML($_emailAddress)

@@ -200,12 +200,20 @@
 
 		function deleteMessage()
 		{
+			$preferences		= ExecMethod('felamimail.bopreferences.getPreferences');
+
 			$message[] = $GLOBALS['HTTP_GET_VARS']["message"];
 			
 			$this->bofelamimail->deleteMessages($message);
 
-
-			$this->viewMainScreen();
+			if($preferences['messageNewWindow'])
+			{
+				print "<script type=\"text/javascript\">window.close();</script>";
+			}
+			else
+			{
+				$this->viewMainScreen();
+			}
 		}
 		
 		function display_app_header()
@@ -341,6 +349,8 @@
 			$this->t->set_block('body','header_row');
 			$this->t->set_block('body','error_message');
 			$this->t->set_block('body','quota_block');
+			$this->t->set_block('body','subject_same_window');
+			$this->t->set_block('body','subject_new_window');
 
 			$this->translate();
 			
@@ -542,43 +552,6 @@
 			if($activeFilter == '0')
 				$this->t->set_var('quicksearch',$filterList[0]['subject']);
 			
-			// create the urls for sorting
-/*			switch($this->sort)
-			{
-				case "0":
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-						'startMessage'	=> 1,
-						'sort'		=> "1"
-					);
-					$this->t->set_var('url_sort_date',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					
-					break;
-				case "2":
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-						'startMessage'	=> 1,
-						'sort'		=> "3"
-					);
-					$this->t->set_var('url_sort_from',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					$this->t->set_var('css_class_from','text_small_bold');
-					
-					break;
-				case "4":
-					$linkData = array
-					(
-						'menuaction'	=> 'felamimail.uifelamimail.changeSorting',
-						'startMessage'	=> 1,
-						'sort'		=> "5"
-					);
-					$this->t->set_var('url_sort_subject',$GLOBALS['phpgw']->link('/index.php',$linkData));
-					
-					break;
-			}
-			
-*/			
 			if($this->connectionStatus != 'True')
 			{
 				$this->t->set_var('message',$this->connectionStatus);
@@ -739,23 +712,21 @@
 					$this->t->set_var('message_uid',$headers['header'][$i]['uid']);
 					$this->t->set_var('date',$headers['header'][$i]['date']);
 					$this->t->set_var('size',$this->show_readable_size($headers['header'][$i]['size']));
-					#$this->t->set_var('flags',$flags);	
 
-#					$linkData = array
-#					(
-#						'mailbox'	=> $urlMailbox,
-#						'passed_id'	=> $headers['header'][$i]['id'],
-#						'uid'		=> $headers['header'][$i]['uid'],
-#					);
-#					$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/felamimail/read_body.php',$linkData));
-				
 					$linkData = array
 					(
 						'menuaction'    => 'felamimail.uidisplay.display',
 						'showHeader'	=> 'false',
 						'uid'		=> $headers['header'][$i]['uid']
 					);
-					$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					if($preferences['messageNewWindow'])
+					{
+						$this->t->set_var('url_read_message',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+					}
+					else
+					{
+						$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					}
 				
 					if(!empty($headers['header'][$i]['sender_name']))
 					{
@@ -920,7 +891,15 @@
 			(
 				'menuaction'    => 'felamimail.uicompose.compose'
 			);
-			$this->t->set_var('url_compose_empty',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			if($preferences['messageNewWindow'])
+			{
+				$this->t->set_var('url_compose_empty',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+			}
+			else
+			{
+				$this->t->set_var('url_compose_empty',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			}
+
 
 			$linkData = array
 			(

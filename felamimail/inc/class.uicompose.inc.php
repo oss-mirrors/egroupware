@@ -45,6 +45,7 @@
 			}			
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+			$this->mailPreferences  = ExecMethod('felamimail.bopreferences.getPreferences');
 
 			$this->t->set_unknowns('remove');
 			
@@ -110,14 +111,22 @@
 						return;
 					}
 					
-					$linkData = array
-					(
-						'mailbox'	=> $GLOBALS['HTTP_GET_VARS']['mailbox'],
-						'startMessage'	=> '1'
-					);
-					$link = $GLOBALS['phpgw']->link('/felamimail/index.php',$linkData);
-					$GLOBALS['phpgw']->redirect($link);
-					$GLOBALS['phpgw']->common->phpgw_exit();
+					#$linkData = array
+					#(
+					#	'mailbox'	=> $GLOBALS['HTTP_GET_VARS']['mailbox'],
+					#	'startMessage'	=> '1'
+					#);
+					#$link = $GLOBALS['phpgw']->link('/felamimail/index.php',$linkData);
+					#$GLOBALS['phpgw']->redirect($link);
+					#$GLOBALS['phpgw']->common->phpgw_exit();
+					if($this->mailPreferences['messageNewWindow'])
+					{
+						print "<script type=\"text/javascript\">window.close();</script>";
+					}
+					else
+					{       
+						ExecMethod('felamimail.uifelamimail.viewMainScreen');
+					}
 					break;
 			}
 		}
@@ -154,7 +163,14 @@
 			(
 				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 			);
-			$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
+			if($this->mailPreferences['messageNewWindow'])
+			{
+				$this->t->set_var("link_message_list","javascript:window.close();");
+			}
+			else
+			{    
+				$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
+			}
 
 			$linkData = array
 			(
@@ -219,7 +235,8 @@
 		function display_app_header()
 		{
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
+			if(!$this->mailPreferences['messageNewWindow'])
+				echo parse_navbar();
 		}
 		
 		function forward()

@@ -65,31 +65,6 @@
 			$data['imapAdminUsername']	= $profileData['imapAdminUsername'];
 			$data['imapAdminPW']		= $profileData['imapAdminPW'];
 
-#			if($GLOBALS['phpgw_info']['server']['account_repository'] == 'ldap')
-#			{
-#				// do a ldap lookup to fetch users email address
-#				$ldap = $GLOBALS['phpgw']->common->ldapConnect();
-#				$filter = sprintf("(&(uid=%s)(objectclass=posixAccount))",$GLOBALS['phpgw_info']['user']['userid']);
-#				
-#				$sri = @ldap_search($ldap,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
-#				if ($sri)
-#				{
-#					$allValues = ldap_get_entries($ldap, $sri);
-#
-#
-#					if(isset($allValues[0]['emailaddress'][0]))
-#					{
-#						$data['emailAddress']		= $allValues[0]['emailaddress'][0];
-#					}
-#					elseif(isset($allValues[0]['maillocaladdress'][0]))
-#					{
-#						$data['emailAddress']           = $allValues[0]['maillocaladdress'][0];
-#					}
-#					elseif(isset($allValues[0]['mail'][0]))
-#					{
-#						$data['emailAddress']           = $allValues[0]['mail'][0];
-#					}
-#				}
 #			}
 			
 			// check for user specific settings
@@ -166,8 +141,9 @@
 				$data['deleteOptions'] = 'mark_as_deleted';
 			}
 			
-			$data['htmlOptions']	= $userPrefs['felamimail']['htmlOptions'];
- 			$data['sortOrder']	= $userPrefs['felamimail']['sortOrder'];
+			$data['htmlOptions']		= $userPrefs['felamimail']['htmlOptions'];
+ 			$data['sortOrder']		= $userPrefs['felamimail']['sortOrder'];
+ 			$data['messageNewWindow']	= $userPrefs['felamimail']['message_newwindow'];
 			
 			// where is the trash folder
 			$data['trash_folder']		= $userPrefs['felamimail']['trashFolder'];

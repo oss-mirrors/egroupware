@@ -86,13 +86,6 @@
 </tr>
 </table>
 
-<script language="javascript1.2">
-<!--
-// position cursor in top form field
-document.doit.{focusElement}.focus();
-//-->
-</script>
-
 <!-- END header -->
 
 <!-- BEGIN body_input -->
@@ -130,6 +123,13 @@ document.doit.{focusElement}.focus();
 <!-- END body_input -->
 
 <!-- BEGIN attachment -->
+<script language="javascript1.2">
+<!--
+// position cursor in top form field
+document.doit.{focusElement}.focus();
+//-->
+</script>
+
 <br>
 <table width="98%" border="0" cellspacing="0" cellpading="0">
 <tr bgcolor="{th_bg}">

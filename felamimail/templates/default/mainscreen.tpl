@@ -13,6 +13,11 @@ function refresh()
 {
 	var Ziel = '{refresh_url}'
 	window.location.href = Ziel;
+}     
+
+function displayMessage(url) 
+{
+	window.open(url, "felamimailDisplay", "width=800,height=600,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no");
 }
 
 doLoad();
@@ -287,3 +292,15 @@ doLoad();
 		</tr>
 	</table>
 <!-- END quota_block -->
+
+<!-- BEGIN subject_same_window -->
+	<td bgcolor="#FFFFFF">
+		<a class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
+	</td>
+<!-- END subject_same_window -->
+
+<!-- BEGIN subject_new_window -->
+	<td bgcolor="#FFFFFF">
+		<a class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
+	</td>
+<!-- END subject_new_window -->

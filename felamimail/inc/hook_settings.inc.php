@@ -68,6 +68,12 @@
 	);
 	create_select_box('show new messages on main screen','mainscreen_showmail',$selectOptions);
 
+	$selectOptions = array(
+		'0' => lang('no'),
+		'1' => lang('yes')
+	);
+	create_select_box('display message in new window','message_newwindow',$selectOptions);
+
 	$deleteOptions = array(
 		'move_to_trash'		=> lang('move to trash'),
 		'mark_as_deleted'	=> lang('mark as deleted'),
