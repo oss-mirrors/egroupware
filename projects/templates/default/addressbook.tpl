@@ -1,9 +1,4 @@
 <!-- $Id$ -->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML LANG="en">
-<head>
-<title>{title}</title>
-<meta http-equiv="content-type" content="text/html"; charset="{charset}">
 <STYLE type="text/css">
 	A {text-decoration:none;}
 	<!--
@@ -24,11 +19,8 @@
 		opener.document.app_form.name.value = thisform.name.value;
 	}
 </script>
-</head>
-<body bgcolor="{bg_color}">
+<div id="divMain">
 <center>
-<p><font face="{font}"><b>{lang_action}</b></font><br>
-<hr noshade width="98%" align="center" size="1">
 <table border="0" width="100%">
 	<tr>
 		<td colspan="4">
@@ -86,5 +78,4 @@
 	</tr>
 </table>
 </center>
-</body>
-</html>
+</div>

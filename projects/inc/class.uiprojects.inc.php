@@ -52,8 +52,6 @@
 			'delete_project'	=> True,
 			'view_project'		=> True,
 			'abook'			=> True,
-			'accounts_popup'	=> True,
-			'e_accounts_popup'	=> True,
 			'list_budget'		=> True,
 			'project_mstones'	=> True,
 			'assign_employee_roles'	=> True
@@ -898,16 +896,6 @@
 			return $s;
 		}
 
-		function accounts_popup()
-		{
-			$GLOBALS['phpgw']->accounts->accounts_popup('projects');
-		}
-
-		function e_accounts_popup()
-		{
-			$GLOBALS['phpgw']->accounts->accounts_popup('e_projects');
-		}
-		
 		function editMilestone()
 		{
 
@@ -918,7 +906,7 @@
 				$this->edit_project();
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			$this->set_app_langs();
 			
@@ -1830,9 +1818,7 @@
 
 			$this->set_app_langs();
 
-			$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
 			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Address book'));
-			$GLOBALS['phpgw']->template->set_var('charset',$GLOBALS['phpgw']->translation->charset());
 			$GLOBALS['phpgw']->template->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 
 			$link_data = array
@@ -1924,6 +1910,8 @@
 				$GLOBALS['phpgw']->template->parse('list','abook_list',True);
 			}
 
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ' - ' . lang('addressbook');
+			$GLOBALS['phpgw']->common->phpgw_header();
 			$GLOBALS['phpgw']->template->parse('out','abook_list_t',True);
 			$GLOBALS['phpgw']->template->p('out');
 
