@@ -153,6 +153,37 @@
 			//$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
 	  }
+
+		//todo: these functions must be moved to sojinn
+	  function cur_upload_path()
+	  {
+		return $this->cur_upload('path');
+	  }
+	  
+	  function cur_upload_url()
+	  {
+		return $this->cur_upload('url');
+	  }
+
+	  function cur_upload($path_or_url)
+	  {
+		$path_or_url = 'cur_upload_'.$path_or_url;
+		if($this->site_object[$path_or_url] == '')
+		{
+			if($this->site[$path_or_url] == '')
+			{
+				return '' ; //FIXME
+			}
+			else
+			{
+				return $this->site[$path_or_url];
+			}
+		}
+		else
+		{
+			return $this->site_object[$path_or_url];
+		}
+	  }
 	  
 		function read_session_filter($obj_id)
 		{

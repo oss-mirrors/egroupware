@@ -550,11 +550,11 @@ function refreshDirs()
 									{
 										  var topDoc = window.top.document.forms[0];
 										  topDoc.f_url.value = filename;
-										  topDoc.f_width.value= width;
-										  topDoc.f_height.value = height;
-										  topDoc.f_alt.value = alt;
-										  topDoc.orginal_width.value = width;
-										  topDoc.orginal_height.value = height;
+										  //topDoc.f_width.value= width;
+										  //topDoc.f_height.value = height;
+										  //topDoc.f_alt.value = alt;
+										  //topDoc.orginal_width.value = width;
+										  //topDoc.orginal_height.value = height;
 
 									}
 

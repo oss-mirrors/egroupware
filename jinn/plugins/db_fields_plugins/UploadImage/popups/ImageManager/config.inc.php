@@ -41,18 +41,14 @@
 
    $bo = CreateObject('jinn.bouser');
    $BASE_DIR = $sessdata[UploadImageBaseDir];
-   if($BASE_DIR == '') $BASE_DIR = $bo->site[cur_upload_path];
+   if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();
    $BASE_URL = $sessdata[UploadImageBaseURL];
-   if($BASE_URL == '') $BASE_URL = $bo->site[cur_upload_url];
+   if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url();
    $MAX_HEIGHT = $sessdata[UploadImageMaxHeight];
    $MAX_WIDTH = $sessdata[UploadImageMaxWidth];
    if(!$MAX_HEIGHT) $MAX_HEIGHT = 10000;
    if(!$MAX_WIDTH) $MAX_WIDTH = 10000;
 
-//_debug_array($BASE_DIR);   
-//_debug_array($BASE_URL);   
-
-   //   _debug_array($sessdata);
    //die();
 
 

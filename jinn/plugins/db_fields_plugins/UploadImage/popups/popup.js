@@ -7,6 +7,7 @@ function debug()
 	_console.document.open("text/html");
 	_console.document.writeln("<html><body><pre>");
 
+	
 	_console.document.writeln("#form elements = " + opener.document.frm.length);
 	for(var i = 0; i < opener.document.frm.length; i++)
 	{
@@ -21,6 +22,8 @@ function debug()
 
 function __dlg_init() 
 {
+	//debug();
+
 	if (!document.all) {
 		// init dialogArguments, as IE gets it
 //		window.dialogArguments = opener.Dialog._arguments;
@@ -56,11 +59,13 @@ function __dlg_init()
 	}
 };
 
-// closes the dialog and passes the return info upper.
+// closes the dialog and passes the return info to the parent window.
 function __dlg_close(val) 
 {
-	opener.document.frm.IMG_SRCFLDXXXtt1.type = "text";
-	opener.document.frm.IMG_SRCFLDXXXtt1.value = val;
-	debug();
+	if (val != null)
+	{
+		opener.onSave(val);
+		//	debug();
+	}
 	self.close();
 }

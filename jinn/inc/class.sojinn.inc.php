@@ -207,6 +207,7 @@
 		 if($this->config["server_type"]=='dev') $pre='dev_';
 
 		 $object_values[cur_upload_path] =$object_values[$pre.'upload_path'];
+		 $object_values[cur_upload_url] =$object_values[$pre.'upload_url'];
 
 		 return $object_values;
 	  }

@@ -67,20 +67,9 @@
 
 	  $stripped_name=substr($field_name,6);	
 
-	  if($local_bo->common->so->config[server_type]=='dev')
-	  {
-		 $field_prefix='dev_';
-	  }
-
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
-
+	  
+	  $upload_path=$local_bo->cur_upload_path();
+	  
 	  /* Check if everything is set to upload files */ 
 	  if(!$upload_path)
 	  {
@@ -131,16 +120,77 @@
 	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 	  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
 
+	  	 /**************************************************
+		 *  javascript and hidden param for server browser *
+		 **************************************************/
+		$input.='<input type="hidden" value="" name="CURRENT_SLOT">';
+		$input.='	<script language="JavaScript">
+		<!--  
+		function onBrowseServer(imagenumber) 
+		{
+			//the popup will be aware of this window by the opener property
+			//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
+			childWindow=open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php","console","resizable=no,width=580,height=440");
+			if (childWindow.opener == null)	childWindow.opener = self;
+			document.frm.CURRENT_SLOT.value=imagenumber;
+		}
+		
+		function onSave(val)
+		{
+			//access the CURRENT_SLOT hidden field to find out which image slot to use
+			//set the img src property for preview purposes
+			//fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
+			
+			//todo: set img style?
+			//todo: remove width/height text?
+			//todo: remove delete checkbox?
+			
+			var cmd;
+			
+			cmd = "document.frm.IMG_SERVER_" + document.frm.CURRENT_SLOT.value + ".value = val;"
+			eval(cmd);
+		
+			cmd = "document.IMG_" + document.frm.CURRENT_SLOT.value + ".src = val;"
+			eval(cmd);
+
+		}
+		-->
+		</script>';
+
 	  $input.='<table '.$table_style.' cellpadding="3" width="100%">';
+	  	 /***************************************
+		 * get max images, set max 10 filefields *
+		 ***************************************/
+		 if (is_numeric($config[Max_files])) 
+		 {
+			if ($config[Max_files]>30) $num_input=30;
+			else $num_input =$config[Max_files];
+		 }
+		 else 
+		 {
+			$num_input=10;
+		 }
+//_debug_array($num_input);
+
 		 /****************************************
 		 * if value is set, show existing images *
 		 ****************************************/	
-		 if(trim($value))// FIXME or rather TESTME
+		 if(trim($value))
 		 {
 			$input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
-
 			$value=explode(';',$value);
+		 }
+		 else
+		 {
+			$value = array();
+		 }
+//_debug_array($value);
 
+
+//_debug_array($value);
+//_debug_array(count($value));
+
+			
 			if (is_array($value) && count($value)>0)
 			{
 			   $i=0;
@@ -184,16 +234,16 @@
 						   {
 							  if($thumblink)
 							  {
-								 $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+								 $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
 							  }
 							  else
 							  {
-								 $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
+								 $input.='<img name="IMG_'.$field_name.$i.'" src="'.$imglink.'" alt="preview" '.$img_style.' />';
 							  }
 						   }
 						   elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
 						   {
-							  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+							  $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
 						   }
 						   else
 						   {
@@ -217,23 +267,31 @@
 						$input.=' ';
 						$input.=lang('width'). ': <strong>'.$image_size[0].lang('pixels').'</strong>';
 						
-						$input.='</td><td '.$cell_style.' valign="top"><input type="checkbox" value="'.$img_path.'" name="IMG_DEL'.$field_name.$i.'"> '.lang('remove').'</td></tr>';
+						$input.='</td><td '.$cell_style.' valign="top"><input type="checkbox" value="'.$i.'" name="IMG_DEL'.$field_name.$i.'"> '.lang('remove');
+						$imagenumber = "'".$field_name.$i."'";
+						$input.='<input onClick="onBrowseServer('.$imagenumber.');" type="button" value="'.lang('replace').'" name="button">';
+						$input.='<input type="hidden" value="" name="IMG_SERVER_'.$field_name.$i.'">';
+						$input.='</td></tr>';
 			   }
 			}
-		 }
+			
+			//generate empty slots for the browse server plugin to activate
+			$spacer = "jinn/plugins/db_fields_plugins/plugin_images/spacer.png";
+			$spacer_style='';
+			if(count($value) < $num_input)
+			{
+				for($i = count($value); $i < $num_input; $i++)
+				{
+					$input.='<tr><td '.$cell_style.' valign="top">'.($i+1).'.</td><td '.$cell_style.'>';
+					$input.='<img name="IMG_'.$field_name.($i+1).'" src="'.$spacer.'" '.$spacer_style.' />';
+					$input.='</td><td '.$cell_style.' valign="top">';
+					$imagenumber = "'".$field_name.($i+1)."'";
+					$input.='<input onClick="onBrowseServer('.$imagenumber.');" type="button" value="'.lang('add').'" name="button">';
+					$input.='<input type="hidden" value="" name="IMG_SERVER_'.$field_name.($i+1).'">';
+					$input.='</td></tr>';
+				}
+			}
 
-		 /***************************************
-		 * get max images, set max 5 filefields *
-		 ***************************************/
-		 if (is_numeric($config[Max_files])) 
-		 {
-			if ($config[Max_files]>30) $num_input=30;
-			else $num_input =$config[Max_files];
-		 }
-		 else 
-		 {
-			$num_input=10;
-		 }
 
 		 for($i=1;$i<=$num_input;$i++)
 		 {
@@ -248,45 +306,17 @@
 				  }
 
 
-
-
-
-				  
-				  //lex` prototyping code:
-		$input.='	<script language="JavaScript">
-			<!--  
-			function onBrowseServer() 
-			{
-				//_console = window.open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php","console", "width=580,height=440,resizable");
-				//if (_console.opener == null) _console.opener = self;
-				//_console.document.open("text/html");
-				//_console.document.writeln("<html><body>testing</body></html>");
-				//_console.document.load("test.html");
-				//_console.document.close();		
-				
-				childWindow=open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php","console","resizable=no,width=580,height=440");
-				if (childWindow.opener == null) 
-				{
-					childWindow.opener = self;
-				}
-			}
-			-->
-			</script>';
-		$input.='<input onClick="onBrowseServer();" type="button" value="browse on server" name="IMG_BROWSE'.$field_name.$i.'">';
-
 		
+			  /* when user is allowed to give own image sizes */
+			  if($config['Allow_other_images_sizes']=='True')
+			  {
+				 $input.= '<table>';
+					$input.='<tr><td>'.lang('Optional max. height').'('.lang('default').':'.$config['Max_image_height'].')</td><td><input type="text" size="3" name="IMG_HEI'.$field_name.$i.'"></td></tr>';
+					$input.='<tr><td>'.lang('Optional max. width').'('.lang('default').':'.$config['Max_image_width'].')</td><td><input type="text" size="3" name="IMG_WID'.$field_name.$i.'"></td></tr>';
+					$input.='</table>';
+			  }
 		
-		
-				  /* when user is allowed to give own image sizes */
-				  if($config['Allow_other_images_sizes']=='True')
-				  {
-					 $input.= '<table>';
-						$input.='<tr><td>'.lang('Optional max. height').'('.lang('default').':'.$config['Max_image_height'].')</td><td><input type="text" size="3" name="IMG_HEI'.$field_name.$i.'"></td></tr>';
-						$input.='<tr><td>'.lang('Optional max. width').'('.lang('default').':'.$config['Max_image_width'].')</td><td><input type="text" size="3" name="IMG_WID'.$field_name.$i.'"></td></tr>';
-						$input.='</table>';
-				  }
-
-				  $input.='</td></tr>';			
+			  $input.='</td></tr>';			
 		 }
 		 $input.='</table>';
 
@@ -321,58 +351,43 @@
 		 $graphic=CreateObject('jinn.bogdlib');
 	  }
 
-	  if($local_bo->common->so->config[server_type]=='dev')
-	  {
-		 $field_prefix='dev_';
-	  }
+	  $upload_path=$local_bo->cur_upload_path();
+	  $upload_url =$local_bo->cur_upload_url ();
 
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
-
+	  $images_array=explode(';',$HTTP_POST_VARS['IMG_ORG'.$field_name]);
 	  $images_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
-
-	  if (count($images_to_delete)>0){
-
+	  
+	  if (count($images_to_delete)>0)
+	  {
 		 $image_path_changed=True;
-		 // delete from harddisk
+
 		 foreach($images_to_delete as $image_to_delete)
 		 {
-			if (!@unlink($upload_path.'/'.$image_to_delete)) $unlink_error++;
-			// if generate thumb
-			if (!@unlink($upload_path.'/'.$thumb_to_delete)) $unlink_error++;
+			unset ($images_array[$image_to_delete-1]);
 		 }
-
-		 $images_org=explode(';',$HTTP_POST_VARS['IMG_ORG'.$field_name]);
-   
-
-		 foreach($images_org as $image_org)
-		 {
-			if (!in_array($image_org,$images_to_delete))
-			{
-			   if ($image_path_new) $image_path_new.=';';
-			   $image_path_new.=$image_org;
-			}
-		 }
+		 //$images_array = array_values($images_array);
 	  }
-	  else
+	  
+
+	  // add images selected from server
+  	  $images_on_server=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_SERVER_'.$field_name);
+
+	  if(is_array($images_on_server))
 	  {
-		 $image_path_new.=$HTTP_POST_VARS['IMG_ORG'.$field_name];
+		  foreach($images_on_server as $key => $serverimage)
+		  {
+			if($serverimage != '')
+			{
+				$serverimage = str_replace($upload_url, '', $serverimage);
+				$serverimage = str_replace('//', '', $serverimage);
+				$images_array[$key] = $serverimage;
+			}
+		  }
 	  }
 
-	  /* make array again of the original images*/
-	  $images_array=explode(';',$image_path_new);
-	  unset($image_path_new);
-
+	  
 	  /* finally adding new image and if neccesary a new thumb */
 	  $images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.$field_name);
-
-	  //_debug_array($images_to_add);
 
 	  $images_to_add_hei=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.$field_name);
 	  $images_to_add_wid=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.$field_name);
@@ -540,6 +555,9 @@
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
+	  
+ 	  $upload_path=$local_bo->cur_upload_path();
+/*
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
 		 $field_prefix='dev_';
@@ -553,7 +571,7 @@
 	  {
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
-
+*/
 	  $table_style='';
 	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 	  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
@@ -655,6 +673,10 @@
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
+
+	  $upload_path=$local_bo->cur_upload_path();
+
+/*	  
 	  if($local_bo->common->so->config[server_type]=='dev')
 	  {
 		 $field_prefix='dev_';
@@ -668,7 +690,7 @@
 	  {
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
-
+*/
 	  /* if value is set, show existing images */	
 	  if($value)
 	  {

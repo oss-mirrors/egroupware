@@ -7,6 +7,13 @@ Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
 
+Version 0.8.210h
+===========================
+Fri Feb 18 13:50:00 CET 2005
+- basic implementation of Image Browse Server plugin
+- added current upload path and url functions to bouser
+- imagepath plugin now uses these functions
+
 Version 0.8.210g
 ===========================
 Wed Feb 17 15:45:00 CET 2005

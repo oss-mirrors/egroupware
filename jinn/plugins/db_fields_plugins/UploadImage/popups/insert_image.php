@@ -55,7 +55,7 @@
 ?>
 <html style="width: 580; height: 440;">
    <head>
-	  <title>Insert Image</title>
+	  <title>Browse Image</title>
 	  <script type="text/javascript" src="popup.js"></script>
 	  <script type="text/javascript" src="../../../dialog.js"></script>
 	  <script type="text/javascript">
@@ -72,9 +72,14 @@
 		 };
 
 		 function onOK() {
+		 /*
 			   var required = {
 					 "f_url": "You must enter the URL",
 					 "f_alt": "Please enter the alternate text"
+			   };
+			   */
+			   var required = {
+					 "f_url": "You must enter the URL"
 			   };
 			   for (var i in required) {
 					 var el = MM_findObj(i);
@@ -84,24 +89,9 @@
 						   return false;
 					 }
 			   }
-			   // pass data back to the calling window
-			   var fields = ["f_url", "f_alt", "f_align", "f_border",
-			   "f_horiz", "f_vert", "f_width", "f_height"];
-			   var param = new Object();
-			   for (var i in fields) {
-					 var id = fields[i];
-					 var el = MM_findObj(id);
-					 if(id == "f_url") 
-					 //param[id] = "<?php echo 'http://'.$_SERVER['SERVER_NAME']; ?>" + el.value;
-					 param[id] = "" + el.value;
-					 else
-					 param[id] = el.value;
-			   }
-			   if (preview_window) {
-					 preview_window.close();
-			   }
-			   //alert(param);
-			   __dlg_close(param);
+				
+			   var path = document.form1.f_url.value;
+			   __dlg_close(path);
 			   return false;
 		 };
 
@@ -339,7 +329,7 @@ function toggleConstrains(constrains)
 									   </script>
 									</head>
 									<body onload="Init(); P7_Snap('dirPath','loading',120,70);">
-									   <div class="title">Insert Image</div>
+									   <div class="title">Browse Image</div>
 									   <form action="ImageManager/images.php" name="form1" method="post" target="imgManager" enctype="multipart/form-data">
 										  <div id="loading" style="position:absolute; left:200px; top:130px; width:184px; height:48px; z-index:1" class="statusLayer">
 											 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -371,9 +361,9 @@ function toggleConstrains(constrains)
 																  <td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
 																	 <a href="#" onClick="javascript:goUpDir();"><img src="ImageManager/btnFolderUp.gif" width="15" height="15" border="0" alt="Up"></a></td>
 																  <? if ($SAFE_MODE == false) { ?>
-																  <td><div class="separator"></div></td>
+																  <!--td><div class="separator"></div></td>
 																  <td class="buttonOut" onMouseOver="pviiClassNew(this,'buttonHover')" onMouseOut="pviiClassNew(this,'buttonOut')">
-																	 <a href="#" onClick="javascript:newFolder();"><img src="ImageManager/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td>
+																	 <a href="#" onClick="javascript:newFolder();"><img src="ImageManager/btnFolderNew.gif" width="15" height="15" border="0" alt="New Folder"></a></td-->
 																  <? } ?>
 															   </tr>
 														 </table></td>
@@ -393,14 +383,14 @@ function toggleConstrains(constrains)
 													  <td nowrap><div align="right">Image File </div></td>
 													  <td><input name="url" id="f_url" type="text" style="width:20em" size="30"></td>
 													  <td rowspan="3">&nbsp;</td>
-													  <td><div align="right">Width </div></td>
+													  <!--td><div align="right">Width </div></td>
 													  <td><input name="width" id="f_width" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('width');"></td>
 													  <td rowspan="2"><img src="ImageManager/locked.gif" name="locked_img" width="25" height="32" id="locked_img" alt="Locked"></td>
 													  <td rowspan="3">&nbsp;</td>
 													  <td><div align="right">V Space</div></td>
-													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td>
+													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td-->
 												   </tr>
-												   <tr> 
+												   <!--tr> 
 													  <td nowrap><div align="right">Alt </div></td>
 													  <td><input type="text" style="width:20em" name="alt" id="f_alt"></td>
 													  <td><div align="right">Height </div></td>
@@ -437,7 +427,7 @@ function toggleConstrains(constrains)
 															<input type="checkbox" name="constrain_prop" id="constrain_prop" checked onClick="javascript:toggleConstrains(this);">
 													  </div></td>
 													  <td colspan="5">Constrain Proportions</td>
-												   </tr>
+												   </tr-->
 												</table>
 
 											 </td>
