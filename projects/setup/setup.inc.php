@@ -14,6 +14,7 @@
 	$setup_info['projects']['title']     = 'Projects';
 	$setup_info['projects']['version']   = '0.8.4.006';
 	$setup_info['projects']['app_order'] = 14;
+	$setup_info['projects']['enable']    = 1;
 
 	$setup_info['projects']['tables'] = array(
 		'phpgw_p_projects',
