@@ -35,9 +35,11 @@
 
   if ($mainscreen) {
      if ($mainscreen == "enable") {
+        $phpgw->preferences->delete("stocks","disabled");
         $phpgw->preferences->change("stocks","enabled","True");
      }
      if ($mainscreen == "disable") {
+        $phpgw->preferences->delete("stocks","enabled");
         $phpgw->preferences->change("stocks","disabled","True");
      }
      $phpgw->preferences->commit();
