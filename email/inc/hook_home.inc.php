@@ -20,7 +20,8 @@
   $tmp_app_inc = $phpgw_info["server"]["app_inc"];
   $phpgw_info["server"]["app_inc"] = $phpgw_info["server"]["server_root"]."/email/inc";
 
-  if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"] && $phpgw_info["user"]["apps"]["email"]) {
+  if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"] &&
+     (isset($phpgw_info["user"]["apps"]["email"]) && $phpgw_info["user"]["apps"]["email"])) {
     include($phpgw_info["server"]["app_inc"] . "/functions.inc.php");
     echo "\n".'<tr><td align="left"><!-- Mailbox info -->'."\n";
 //    if (! $mbox) {
