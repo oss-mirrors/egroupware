@@ -6,7 +6,7 @@
 The setup application will create the tables for projects and
 include the translations to the language table.
 
-the Administrator of phpgroupware has to choose project administrators
+the Administrator of egroupware has to choose project administrators
 at first.
 Administration -> Project administration 
 

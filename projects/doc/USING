@@ -4,7 +4,7 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 This file provides you have successfully installed the projects_application
-under phpgroupware and can access the "Projects" menu page including
+under egroupware and can access the "Projects" menu page including
 Jobs-, Workhours-, Statistics- and Archive-links.
 
 Projects is the main application for Jobs, Workhours, Statistics and Archive.
@@ -12,7 +12,7 @@ Projects is the main application for Jobs, Workhours, Statistics and Archive.
 Jobs mean sub-projects, Workhours is the time you worked on a project, Statistics
 creates user- and projectstatistics and Archive shows the closed projects.
 
-The phpGroupWare adminstrator has the ability to choose projects_administrators and
+The eGroupWare adminstrator has the ability to choose projects_administrators and
 projects_bookkeepers.
 This users are able to edit the activities list and set preferences for the
 projects_application.

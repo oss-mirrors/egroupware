@@ -1,7 +1,7 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
