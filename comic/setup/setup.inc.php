@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Comics                                                    *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Comics                                                      *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -23,8 +23,8 @@
 	$setup_info['comic']['license']  = 'GPL';
 	$setup_info['comic']['description'] =
 		'Displays comic strips.';
-	$setup_info['comic']['maintainer'] = 'neotexan';
-	$setup_info['comic']['maintainer_email']    = '?????';
+	$setup_info['comic']['maintainer'] = 'eGroupWare developers';
+	$setup_info['comic']['maintainer_email']    = 'shrykedude@users.sourceforge.net';
 
 	/* The tables this app creates */
 	$setup_info['comic']['tables']    = array(

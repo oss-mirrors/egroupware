@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Comic Functions                                           *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - Comic Functions                                             *
+  * http://www.egroupware.org                                                *
   * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *

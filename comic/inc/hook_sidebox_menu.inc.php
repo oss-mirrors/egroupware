@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpgwtimetrack - phpGroupWare addon application                          *
-  * http://phpgwtimetrack.sourceforge.net                                    *
+  * Comic - eGroupWare addon application                                     *
+  * http://www.egroupware.org                                                *
   * Written by Robert Schader <bobs@product-des.com>                         *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *

@@ -1,8 +1,8 @@
 <?php
 
 /*************************************************************************\
-* Daily Comics (phpGroupWare application)                                 *
-* http://www.phpgroupware.org                                             *
+* Daily Comics (eGroupWare application)                                   *
+* http://www.egroupware.org                                               *
 * This file is written by: Sam Wynn <neotexan@wynnsite.com>               *
 *                          Rick Bakker <r.bakker@linvision.com>           *
 * --------------------------------------------                            *
