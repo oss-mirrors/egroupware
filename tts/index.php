@@ -21,15 +21,13 @@
 
 <?php
 	// select what tickets to view
-	// needs to be fixed.  What is $database for ???
-
-	if (! $filter) { $filter="viewopen"; }
+	if (!$filter) { $filter="viewopen"; }
 	if ($filter == "viewopen") 
 	{
 		$filtermethod = "where t_timestamp_closed='0'";
 	}
 
-	if (! $sort)
+	if (!$sort)
 	{
 		$sortmethod = "order by t_priority desc";
 	}
@@ -38,10 +36,15 @@
 		$sortmethod = "order by $order $sort";
 	}
 
+	$phpgw->db->query("SELECT COUNT(*) FROM ticket");
+	$numtotal = $phpgw->db->num_rows();
+
+	$phpgw->db->query("SELECT t_id FROM ticket where t_timestamp_closed='0'");
+	$numopen = $phpgw->db->num_rows();
+
 	$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject "
 		. "from ticket $filtermethod $sortmethod");
 
-	$zeilen = $phpgw->db->num_rows();
 	if ($filter == "viewall")
 	{
 		echo "<a href=\"" . $phpgw->link("/tts/index.php") . "\">" . lang("View only open tickets")."</a>";
@@ -52,7 +55,7 @@
 	}
 
 	echo " ]<br>\n";
-	echo "<center>( " . lang("Tickets total x",$zeilen) ." )<br>( " . lang("Tickets open x",$zeilen) ." )</center>";
+	echo "<center>( " . lang("Tickets total x",$numtotal) ." )<br>( " . lang("Tickets open x",$numopen) ." )</center>";
 
 	if ($phpgw->db->num_rows() == 0)
 	{
