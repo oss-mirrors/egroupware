@@ -9,210 +9,256 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "email","noheader" => True, "nonavbar" => True,
-																"enable_nextmatchs_class" => True);
+	$phpgw_info["flags"] = array(
+		'currentapp' => 'email',
+		'enable_nextmatchs_class' => True);
 
-  include("../header.inc.php");
+	include("../header.inc.php");
 
-  if ($submit) {
-     $phpgw->preferences->read_repository();
+	if ($submit)
+	{
+		$phpgw->preferences->read_repository();
 
-     $phpgw->preferences->delete("email","show_addresses");
-     if ($show_addresses) {
-        $phpgw->preferences->add("email","show_addresses");
-     }
-    
-     $phpgw->preferences->delete("email","mainscreen_showmail");
-     if ($mainscreen_showmail) {
-        $phpgw->preferences->add("email","mainscreen_showmail");
-     }
+		$phpgw->preferences->delete("email","show_addresses");
+		if ($show_addresses)
+		{
+			$phpgw->preferences->add("email","show_addresses");
+		}
+		
+		$phpgw->preferences->delete("email","mainscreen_showmail");
+		if ($mainscreen_showmail)
+		{
+			$phpgw->preferences->add("email","mainscreen_showmail");
+		}
 
-     $phpgw->preferences->delete("email","use_trash_folder");
-     if ($use_trash_folder) {
-        $phpgw->preferences->add("email","use_trash_folder");
-     }
-     $phpgw->preferences->add("email","default_sorting");
-     $phpgw->preferences->add("email","email_sig"); 
+		$phpgw->preferences->delete("email","use_trash_folder");
+		if ($use_trash_folder)
+		{
+			$phpgw->preferences->add("email","use_trash_folder");
+		}
 
-     $phpgw->preferences->delete("email","use_custom_settings");
-     $phpgw->preferences->delete("email","userid");
-     $phpgw->preferences->delete("email","passwd");
-     $phpgw->preferences->delete("email","address");
-     $phpgw->preferences->delete("email","mail_server");
-     $phpgw->preferences->delete("email","mail_folder");
-     $phpgw->preferences->delete("email","mail_server_type");
-     $phpgw->preferences->delete("email","imap_server_type");
-     
-     if ($use_custom_settings) {
-       $phpgw->preferences->add("email","use_custom_settings");
-       if ($userid) {$phpgw->preferences->add("email","userid");}
-       if ($passwd) {
-          $encrypted_passwd = $phpgw->common->encrypt($passwd);
-          $phpgw->preferences->add("email","passwd",$encrypted_passwd);
-       }
-       if ($address) {$phpgw->preferences->add("email","address");}
-       if ($mail_server) {$phpgw->preferences->add("email","mail_server");}
-       if ($mail_folder) {$phpgw->preferences->add("email","mail_folder");}
-       if ($mail_server_type) {$phpgw->preferences->add("email","mail_server_type");}
-       if ($imap_server_type) {$phpgw->preferences->add("email","imap_server_type");}
-     }
-     $phpgw->preferences->save_repository();
+		$phpgw->preferences->add("email","default_sorting");
+		$phpgw->preferences->add("email","email_sig"); 
+		
+		$phpgw->preferences->delete("email","use_custom_settings");
+		$phpgw->preferences->delete("email","userid");
+		$phpgw->preferences->delete("email","passwd");
+		$phpgw->preferences->delete("email","address");
+		$phpgw->preferences->delete("email","mail_server");
+		$phpgw->preferences->delete("email","mail_folder");
+		$phpgw->preferences->delete("email","mail_server_type");
+		$phpgw->preferences->delete("email","imap_server_type");
 
-     Header("Location: " . $phpgw->link("/preferences/index.php"));
-  }
+		if ($use_custom_settings)
+		{
+			$phpgw->preferences->add("email","use_custom_settings");
+			if ($userid)
+			{
+				$phpgw->preferences->add("email","userid");
+			}
+			if ($passwd)
+			{
+				$encrypted_passwd = $phpgw->common->encrypt($passwd);
+				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
+			}
+			if ($address)
+			{
+				$phpgw->preferences->add("email","address");
+			}
+			if ($mail_server)
+			{
+				$phpgw->preferences->add("email","mail_server");
+			}
+			if ($mail_folder) 
+			{
+				$phpgw->preferences->add("email","mail_folder");
+			}
+			if ($mail_server_type)
+			{
+				$phpgw->preferences->add("email","mail_server_type");
+			}
+			if ($imap_server_type)
+			{
+				$phpgw->preferences->add("email","imap_server_type");
+			}
+		}
+		$phpgw->preferences->save_repository();
+		
+		Header("Location: " . $phpgw->link("/preferences/index.php"));
+	}
+	
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array(		
+		'T_preferences_out' => 'preferences.tpl'
+	));
 
-  $phpgw->common->phpgw_header();
-  echo parse_navbar();
+	if ($totalerrors)
+	{
+		//echo "<p><center>" . $phpgw->common->error_list($errors) . "</center>";
+		$pref_errors = '<p><center>"' .$phpgw->common->error_list($errors) .'"</center></p>';
+	}
+	else
+	{
+		$pref_errors = '';
+	}
 
-  if ($totalerrors) {  
-     echo "<p><center>" . $phpgw->common->error_list($errors) . "</center>";
-  }
+	$t->set_var('pref_errors',$pref_errors);
+	$t->set_var('page_title',lang("E-Mail preferences"));
 
-  echo "<p><b>" . lang("E-Mail preferences") . ":" . "</b><hr><p>";
+	// setup the form
+	$t->set_var('form_action',$phpgw->link('/email/preferences.php'));
+	// the "table header" row color
+	$t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
+
+	// row1 = email sig
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row1',$tr_color);
+	$t->set_var('email_sig_blurb',lang("email signature"));
+	$t->set_var('email_sig_textarea_name','email_sig');
+	$t->set_var('email_sig_textarea_content',$phpgw_info["user"]["preferences"]["email"]["email_sig"]);
+
+	// row2 = sort order
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$default_order_selected[$phpgw_info["user"]["preferences"]["email"]["default_sorting"]] = " selected";
+	$sorting_select_options =
+		 '<option value="old_new"' .$default_order_selected["old_new"] .'>oldest -> newest</option>' ."/n"
+		.'<option value="new_old"' .$default_order_selected["new_old"] .'>newest -> oldest</option>' ."/n";
+	$t->set_var('bg_row2',$tr_color);
+	$t->set_var('sorting_blurb',lang("Default sorting order"));
+	$t->set_var('sorting_select_name','default_sorting');
+	$t->set_var('sorting_select_options',$sorting_select_options);
+
+	// row3 = show sender's email address with name options
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$show_addresses_selected[$phpgw_info["user"]["preferences"]["email"]["show_addresses"]] = " selected";
+	$show_addresses_select_options =
+		 '<option value="none"' .$show_addresses_selected["none"] .'>' .lang('none') .'</option>' ."/n"
+		.'<option value="from"' .$show_addresses_selected["from"] .'>' .lang('From') .'</option>' ."/n"
+		.'<option value="replyto"' .$show_addresses_selected["replyto"] .'>' .lang('ReplyTo') .'</option>' ."/n";
+	$t->set_var('bg_row3',$tr_color);
+	$t->set_var('show_addresses_blurb',lang("Show sender's email address with name"));
+	$t->set_var('show_addresses_select_name','show_addresses');
+	$t->set_var('show_addresses_select_options',$show_addresses_select_options);
+
+	// row4 = show new messages on  main screen
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"])
+	{
+		$mainscreen_showmail_checked = 'checked';
+	}
+	else
+	{
+		$mainscreen_showmail_checked = '';
+	}
+	$t->set_var('bg_row4',$tr_color);
+	$t->set_var('mainscreen_showmail_blurb',lang("show new messages on main screen"));
+	$t->set_var('mainscreen_showmail_checkbox_name','mainscreen_showmail');
+	$t->set_var('mainscreen_showmail_checkbox_value','True');
+	$t->set_var('mainscreen_showmail_checked',$mainscreen_showmail_checked);
+
+	// row5 = Send deleted messages to the trash
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"])
+	{
+		$use_trash_folder_checked = 'checked';
+	}
+	else
+	{
+		$use_trash_folder_checked = '';
+	}
+	$t->set_var('bg_row5',$tr_color);
+	$t->set_var('use_trash_folder_blurb',lang("Send deleted messages to the trash"));
+	$t->set_var('use_trash_folder_checkbox_name','use_trash_folder');
+	$t->set_var('use_trash_folder_checkbox_value','True');
+	$t->set_var('use_trash_folder_checked',$use_trash_folder_checked);
+
+	// next section: Custom Email Settings
+	$t->set_var('section_title',lang("Custom Email settings"));
+
+	// row6 = use custon settings
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	if ($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"])
+	{
+		$use_custom_settings_checked = 'checked';
+	}
+	else
+	{
+		$use_custom_settings_checked = '';
+	}
+	$t->set_var('bg_row6',$tr_color);
+	$t->set_var('use_custom_settings_blurb',lang("Use custom settings") .' - ' .lang("Non-Standard"));
+	$t->set_var('use_custom_settings_checkbox_name','use_custom_settings');
+	$t->set_var('use_custom_settings_checkbox_value','True');
+	$t->set_var('use_custom_settings_checked',$use_custom_settings_checked);
+
+	// row7 = Email Account Name
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row7',$tr_color);
+	$t->set_var('userid_blurb',lang("Email Account Name"));
+	$t->set_var('userid_text_name','userid');
+	$t->set_var('userid_text_value',$phpgw_info["user"]["preferences"]["email"]["userid"]);
+
+	// row8 = Email Password
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row8',$tr_color);
+	$t->set_var('passwd_blurb',lang("Email Password"));
+	$t->set_var('passwd_text_name','passwd');
+	// FIXME: bug
+	$t->set_var('passwd_text_value','');
+
+	// row9 = Email Address
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row9',$tr_color);
+	$t->set_var('address_blurb',lang("Email address"));
+	$t->set_var('address_text_name','address');
+	$t->set_var('address_text_value',$phpgw_info["user"]["preferences"]["email"]["address"]);
+
+	// row10 = Mail Server
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row10',$tr_color);
+	$t->set_var('mail_server_blurb',lang("Mail Server"));
+	$t->set_var('mail_server_text_name','mail_server');
+	$t->set_var('mail_server_text_value',$phpgw_info["user"]["preferences"]["email"]["mail_server"]);
+
+	// row11 = Mail Server type
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$mail_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected";
+	$mail_server_type_select_options =
+		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."/n"
+		.'<option value="pop3"' .$mail_server_type_selected["pop3"] .'>POP-3</option>' ."/n"
+		.'<option value="imaps"' .$mail_server_type_selected["imaps"] .'>IMAPS</option>' ."/n"
+		.'<option value="pop3s"' .$mail_server_type_selected["pop3s"] .'>POP-3S</option>' ."/n";
+	$t->set_var('bg_row11',$tr_color);
+	$t->set_var('mail_server_type_blurb',lang("Mail Server type"));
+	$t->set_var('mail_server_type_select_name','mail_server_type');
+	$t->set_var('mail_server_type_select_options',$mail_server_type_select_options);
+
+	// row12 = IMAP Server Type
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$imap_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected";
+	$imap_server_type_select_options =
+		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."/n"
+		.'<option value="UWash"' .$imap_server_type_selected["UWash"] .'>UWash</option>' ."/n"
+		.'<option value="UW-Maildir"' .$imap_server_type_selected["UW-Maildir"] .'>UW-Maildir</option>' ."/n";
+	$t->set_var('bg_row12',$tr_color);
+	$t->set_var('imap_server_type_blurb',lang("IMAP Server Type") .' - ' .lang("If Applicable"));
+	$t->set_var('imap_server_type_select_name','imap_server_type');
+	$t->set_var('imap_server_type_select_options',$imap_server_type_select_options);
+
+	// row13 = Mail Folder(UW-Maildir)
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('bg_row13',$tr_color);
+	$t->set_var('mail_folder_blurb',lang("Mail Folder(UW-Maildir)"));
+	$t->set_var('mail_folder_text_name','mail_folder');
+	$t->set_var('mail_folder_text_value',$phpgw_info["user"]["preferences"]["email"]["mail_folder"]);
+
+	// the submit button for the form 
+	$t->set_var('btn_submit_name','submit');
+	$t->set_var('btn_submit_value',lang("submit"));
+
+	$t->pparse('out','T_preferences_out');
+
+	$phpgw->common->phpgw_footer();
 ?>
-  <form method="POST" action="<?php echo $phpgw->link('/email/preferences.php'); ?>">
-   <table border="0" align="center" cellspacing="1" cellpadding="1" width="60%">
-    <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-     <td colspan="2">&nbsp;</td>
-    </tr>
-
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("email signature"); ?></td>
-     <td align="center">
-      <textarea name="email_sig" rows="3" cols="30"><?php echo $phpgw_info["user"]["preferences"]["email"]["email_sig"]; ?></textarea>
-     </td>
-    </tr>
-
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Default sorting order"); ?></td>
-     <td align="center"><?php
-           $default_order_display[$phpgw_info["user"]["preferences"]["email"]["default_sorting"]] = " selected"; ?>
-       <select name="default_sorting">
- 	   <option value="old_new"<?php echo $default_order_display["old_new"]; ?>>oldest -> newest</option>   
- 	   <option value="new_old"<?php echo $default_order_display["new_old"]; ?>>newest -> oldest</option>
-       </select>
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Show sender's email address with name"); ?></td>
-     <td align="center">
-     <select name="show_addresses">
-     <option value="none"<?php
-       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'none')
-       {
-          echo " selected";
-       }
-       echo ">". lang('none'); ?></option>
-     <option value="from"<?php
-       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'from')
-       {
-          echo " selected";
-       }
-       echo ">". lang('From'); ?></option>
-     <option value="replyto"<?php
-       if ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == 'replyto')
-       {
-          echo " selected";
-       }
-       echo ">". lang('ReplyTo'); ?></option>
-     </select>
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("show new messages on main screen"); ?></td>
-     <td align="center"><input type="checkbox" name="mainscreen_showmail" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]) echo " checked"; ?>></td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Send deleted messages to the trash"); ?></td>
-     <td align="center"><input type="checkbox" name="use_trash_folder" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) echo " checked"; ?>></td>
-    </tr>
-
-    <tr><td colspan="2">&nbsp;</td></tr>
-
-    <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-     <td colspan="2"><?php echo lang("Custom Email settings"); ?></td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Use custom settings"); ?> - (<?php echo lang("Non-Standard"); ?>)</td>
-     <td align="center"><input type="checkbox" name="use_custom_settings" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"]) echo " checked"; ?>></td>
-    </tr>
-
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Email Account Name"); ?></td>
-     <td align="center">
-      <input type="text" name="userid" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["userid"];?>">
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Email Password"); ?></td>
-     <td align="center">
-      <input type="password" name="passwd" value="">
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Email address"); ?></td>
-     <td align="center">
-      <input type="text" name="address" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["address"]; ?>">
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Mail Server"); ?></td>
-     <td align="center">
-      <input type="text" name="mail_server" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_server"]; ?>">
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Mail Server type"); ?></td>
-     <td align="center">
-      <select name="mail_server_type">
-       <?php $selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected"; ?>
-       <option value="imap" <?php echo $selected["imap"]; ?>>IMAP</option>
-       <option value="pop3" <?php echo $selected["pop3"]; ?>>POP-3</option>
-<?php /* HvG20010502, Added IMAPS and POP3S support here:	*/ ?>
-       <option value="imaps"<?php echo $selected["imaps"]; ?>>IMAPS</option>
-       <option value="pop3s"<?php echo $selected["pop3s"]; ?>>POP-3S</option>
-       <?php $selected = array(); ?>
-      </select>
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("IMAP Server Type"); ?> - (<?php echo lang("If Applicable"); ?>)</td>
-     <td align="center">
-     <select name="imap_server_type">
-      <?php $selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected"; ?>
-      <option value="Cyrus"<?php echo $selected["Cyrus"]; ?>>Cyrus</option>
-      <option value="UWash"<?php echo $selected["UWash"]; ?>>UWash</option>
-      <option value="UW-Maildir"<?php echo $selected["UW-Maildir"]; ?>>UW-Maildir</option>
-      <?php $selected = array(); ?>
-     </select>
-     </td>
-    </tr>
-    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
-    <tr bgcolor="<?php echo $tr_color; ?>">
-     <td align="left"><?php echo lang("Mail Folder(UW-Maildir)"); ?></td>
-     <td align="center">
-      <input type="text" name="mail_folder" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_folder"]; ?>">
-     </td>
-    </tr>
-    <tr>
-     <td colspan="3" align="center">
-      <input type="submit" name="submit" value="<?php echo lang("submit"); ?>">
-     </td>
-    </tr>
-   </table>
-  </form>
-<?php $phpgw->common->phpgw_footer(); ?>
