@@ -33,7 +33,7 @@
 	<td>{firstname}</td>
         <td>{lastname}</td>
 	<form>
-        <input type="hidden" size="25" name="EX1" value="{ab_id}">
+        <input type="hidden" size="25" name="EX1" value="{id}">
 	<input type="hidden" size="25" name="EX2" value="{company}">
 	<td align=center><input type="button" value="{lang_select_customer}" onClick="ExchangeCustomer(this.form);" name="button"></td>
       </form>    

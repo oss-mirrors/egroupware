@@ -25,14 +25,18 @@
   if (! $start)
      $start = 0;
 
-  $limit =$phpgw->nextmatchs->sql_limit($start);
+//  $limit =$phpgw->nextmatchs->sql_limit($start);
 
   if ($order)
      $ordermethod = "order by $order $sort";
   else
-     $ordermethod = "order by ab_company,ab_lastname,ab_firstname asc";
-
-  if (! $filter) {
+    if ($phpgw_info["apps"]["timetrack"]["enabled"]){
+     $ordermethod = "order by company_name,ab_lastname,ab_firstname asc";
+     }
+     else {
+   $ordermethod = "order by ab_company,ab_lastname,ab_firstname asc";
+       }
+   if (! $filter) {
      $filter = "none";
   }
 
@@ -118,12 +122,12 @@
 
 <?php
  
-//  $limit = $phpgw->nextmatchs->sql_limit($start);  
+  $limit = $phpgw->nextmatchs->sql_limit($start);  
 
 
 if ($query) {
    if($phpgw_info["apps"]["timetrack"]["enabled"]){
-     $phpgw->db->query("SELECT a.ab_id,a.ab_owner,a.ab_firstname,a.ab_lastname,"
+     $phpgw->db->query("SELECT a.ab_id,a.ab_owner,a.ab_firstname,a.ab_lastname,a.ab_company_id,"
        . "c.company_name "
        . "from addressbook as a, customers as c where a.ab_company_id = c.company_id "
        . "AND $filtermethod AND (a.ab_lastname like '"
@@ -138,7 +142,7 @@ if ($query) {
    }
   } else {
    if($phpgw_info["apps"]["timetrack"]["enabled"]){
-     $phpgw->db->query("SELECT a.ab_id,a.ab_owner,a.ab_firstname,a.ab_lastname,"
+     $phpgw->db->query("SELECT a.ab_id,a.ab_owner,a.ab_firstname,a.ab_lastname,a.ab_company_id,"
        . "c.company_name "
        . "from addressbook as a, customers as c where a.ab_company_id = c.company_id "
        . "AND $filtermethod $ordermethod limit $limit");
@@ -157,10 +161,11 @@ if ($query) {
     $lastname 	= $phpgw->db->f("ab_lastname");
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
       $company   = $phpgw->db->f("company_name");
+      $id        = $phpgw->db->f("ab_company_id");
     } else {
       $company   = $phpgw->db->f("ab_company");
-    }
-    $ab_id	   = $phpgw->db->f("ab_id");
+      $id        = $phpgw->db->f("ab_id");    
+   }
 
     if ($firstname == "") $firstname = "&nbsp;";
     if ($lastname  == "") $lastname  = "&nbsp;";
@@ -177,7 +182,7 @@ if ($query) {
 		    "lastname" => $lastname));
  
   $t->set_var(lang_select_customer,lang("select customer"));
-  $t->set_var("ab_id",$ab_id);
+  $t->set_var("id",$id);
   $t->set_var("company",$company);
   $t->set_var("firstname",$firstname);
   $t->set_var("lastname",$lastname);

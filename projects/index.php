@@ -158,7 +158,8 @@
 
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
     $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company_id,company_name from "
-                        . "addressbook,customers where ab_id='" .$phpgw->db->f("customer")."'");
+                        . "addressbook,customers where customers.company_id=addressbook.ab_company_id and "
+                        . "addressbook.ab_company_id='" .$phpgw->db->f("customer")."'");
       if ($db2->next_record()) {
         $customerout = $db2->f("company_name")." [ ".$db2->f("ab_lastname")." ]";
 	}

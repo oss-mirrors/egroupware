@@ -164,26 +164,6 @@
     	$t->pparse("out","projects_add");
     	$t->pparse("addhandle","add");
         
-        
-// New code from jengo which must be implemented in
-// template file and in this file someday
-/*
-           if ($phpgw_info["user"]["permissions"]["manager"]) {
-              echo "<tr><td>Add item to another users projects list</td>";
-              echo '<td><select name="otheruser"><option value=""> </option>';
-              $phpgw->db->query("select account_lid,account_firstname,account_lastname from accounts where "
-					 . "account_status !='L' and account_permissions like '%:projects:%' and "
-					 . "account_lid != '" . $phpgw_info["user"]["userid"]
-					 . "' order by account_lastname,account_firstname,account_lid");
-              while ($phpgw->db->next_record()) {
-                // I need to check to see if there first name and last name is in there.
-                echo '<option value="' . $phpgw->db->f("account_lid") . '">'
-		   . $phpgw->db->f("account_lastname") . ', ' . $phpgw->db->f("account_firstname")
-		   . '</option>';
-              }
-              echo "</select><td><tr>";
-           }
-*/
 ?>
 
    <?php

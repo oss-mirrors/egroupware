@@ -166,7 +166,7 @@
     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
     $db2->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name FROM "
                      . "addressbook,customers where "
-                     . "ab_id='" .$phpgw->db->f("customer")."'");
+                     . "ab_company_id='" .$phpgw->db->f("customer")."'");
     if ($db2->next_record()) {
         $t->set_var("customer_name",$db2->f("company_name")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");
     } else {
