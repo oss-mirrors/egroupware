@@ -190,7 +190,7 @@ doLoad();
 	</TR>
 	<tr>
 		<td align="center" colspan="3" style="font-size:10px">
-			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;{message}&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;
+			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;{message}&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;&nbsp;{trash_link}
 		</td>
 	</tr>
 </table>
