@@ -14,14 +14,11 @@
 	$test[] = '0.8.1';
 	function headlines_upgrade0_8_1()
 	{
-		global $phpgw_info, $phpgw_setup;
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('news_site','phpgw_headlines_sites');
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('news_headlines','phpgw_headlines_cached');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('users_headlines');
 
-		$phpgw_setup->oProc->RenameTable('news_site','phpgw_headlines_sites');
-		$phpgw_setup->oProc->RenameTable('news_headlines','phpgw_headlines_cached');
-		$phpgw_setup->oProc->DropTable('users_headlines');
-
-		$setup_info['headlines']['currentver'] = '0.8.1.001';
-		return $setup_info['headlines']['currentver'];
+		$GLOBALS['setup_info']['headlines']['currentver'] = '0.8.1.001';
+		return $GLOBALS['setup_info']['headlines']['currentver'];
 	}
-
 ?>
