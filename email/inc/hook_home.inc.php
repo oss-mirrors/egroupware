@@ -1,4 +1,10 @@
 <?php
+  $d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
+  if($d1 == "htt" || $d1 == "ftp" ) {
+    echo "Failed attempt to break in via an old Security Hole!<br>\n";
+    exit;
+  } unset($d1);
+
   $tmp_app_inc = $phpgw_info["server"]["app_inc"];
   $phpgw_info["server"]["app_inc"] = $phpgw_info["server"]["server_root"]."/email/inc";
 
