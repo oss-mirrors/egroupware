@@ -6,6 +6,7 @@
 
 TODO - BUGS!!!
 ===================================================================================
+- magic quotes_gpc must be set off in PHP.INI. Else jinn wont work. FIX THIS
 - FIP's in admin is broken when using more then one plugin
 - als men in access_rights een userlijst krijgt en daar vervolgens in zoekt kan
   hij de gevonden resultaten wel aan zetten maar niet uit
