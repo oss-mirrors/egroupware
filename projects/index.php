@@ -110,7 +110,7 @@
 		}
 
 		$ab_customer = $pro[$i]['customer'];
-		f (!$ab_customer) { $customerout = '&nbsp;'; }
+		if (!$ab_customer) { $customerout = '&nbsp;'; }
 		else
 		{
 			$cols = array('n_given' => 'n_given',

@@ -58,7 +58,7 @@
 		{
 			if ($shour && $smin && $smonth && $sday && $syear)
 			{
-				$error[$errorcount++] = lang('You have entered an invalid start date !') . '<br>' . $shour . ':' . $smin  . ' ' . $smonth . '/' . $sday '/' . $syear;
+				$error[$errorcount++] = lang('You have entered an invalid start date !') . '<br>' . $shour . ':' . $smin  . ' ' . $smonth . '/' . $sday . '/' . $syear;
 			}
 		}
 
@@ -109,7 +109,7 @@
 	}
 
 	$t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));
-	$t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php','filter=' . $filter . '&sort=' . $sort . '&order=' . $order . '&query=' $query
+	$t->set_var('doneurl',$phpgw->link('/projects/hours_listhours.php','filter=' . $filter . '&sort=' . $sort . '&order=' . $order . '&query=' . $query
 										. '&start=' . $start));
 
 	$t->set_var('hidden_vars',$hidden_vars);

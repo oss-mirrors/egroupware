@@ -23,7 +23,7 @@
 	$grants = $phpgw->acl->get_grants('projects');
 
 	$hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
-				. '<input type="hidden" name="order" value="$order . '">' . "\n"
+				. '<input type="hidden" name="order" value="'. $order . '">' . "\n"
 				. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
@@ -77,7 +77,7 @@
 		{
 			if ($ehour && $emin && $emonth && $eday && $eyear)
 			{
-				$error[$errorcount++] = lang('You have entered an invalid end date !') . '<br>' . $ehour . ':' . $emin . ' ' $emonth . '/' . $eday . '/' . $eyear;
+				$error[$errorcount++] = lang('You have entered an invalid end date !') . '<br>' . $ehour . ':' . $emin . ' ' . $emonth . '/' . $eday . '/' . $eyear;
 			}
 		}
 
