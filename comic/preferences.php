@@ -1,7 +1,7 @@
 <?php
     /**************************************************************************\
-    * phpGroupWare - Weather Request Preferences                               *
-    * http://www.phpgroupware.org                                              *
+    * eGroupWare - Weather Request Preferences                                 *
+    * http://www.egroupware.org                                                *
     * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
     * --------------------------------------------                             *
     *  This program is free software; you can redistribute it and/or modify it *

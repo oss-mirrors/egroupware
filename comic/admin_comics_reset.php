@@ -1,7 +1,7 @@
 <?php
     /**************************************************************************\
-    * phpGroupWare - Daily Comic Admin Link Data                               *
-    * http://www.phpgroupware.org                                              *
+    * eGroupWare - Daily Comic Admin Link Data                                 *
+    * http://www.egroupware.org                                                *
     * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
     * --------------------------------------------                             *
     *  This program is free software; you can redistribute it and/or modify it *
