@@ -44,9 +44,6 @@
        case "x messages have been deleted":
 	$s = "$m1 Nachrichten wurden gel&ouml;scht";		break;
 
-       case "your mail has been sent successfully":
-	$s = "Ihre Nachricht wurde erfolgreich versendet.";	break;
-
        case "monitor":		$s = "Monitor";		break;
        default: 		$s = "* " . $message;
     }

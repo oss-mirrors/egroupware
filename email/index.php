@@ -66,8 +66,6 @@ function check_all()
         echo "<p><center>" . lang_email("x messages have been deleted",$td) . "</center>";
      }
   }
-  if ($cd == 13)
-        echo "<p><center>" . lang_email("your mail has been sent successfully") . "</center>";
 ?>
 
 
