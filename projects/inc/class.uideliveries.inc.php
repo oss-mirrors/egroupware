@@ -36,8 +36,9 @@
 
 		var $public_functions = array
 		(
-			'list_projects'	=> True,
-			'delivery'		=> True
+			'list_projects'		=> True,
+			'delivery'			=> True,
+			'list_deliveries'	=> True
 		);
 
 		function uideliveries()
@@ -101,7 +102,6 @@
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_project',lang('Project'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_delivery_num',lang('Delivery ID'));
 			$this->t->set_var('lang_activity',lang('Activity'));
@@ -137,6 +137,7 @@
 			$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
+			$this->t->set_var('lang_jobs',lang('Jobs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
@@ -271,7 +272,7 @@
 				{
 					if ($pro[$i]['customer'] != 0) 
 					{
-						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+						$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
             			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
@@ -311,16 +312,18 @@
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
 				$link_data['menuaction'] = 'projects.uideliveries.delivery';
+
 				$this->t->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_part',lang('Delivery'));
 
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/projects/del_deliverylist.php','project_id=' . $pro[$i]['project_id']));
+				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&action=del'
+											. '&project_id=' . $pro[$i]['project_id']));
 				$this->t->set_var('lang_partlist',lang('Delivery list'));
 
 				if ($action == 'mains')
 				{
-					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&pro_parent='
-																. $pro[$i]['project_id'] . '&action=subs') . '">' . lang('Jobs')
+					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects'
+																. '&pro_parent=' . $pro[$i]['project_id'] . '&action=subs') . '">' . lang('Jobs')
 																. '</a></td>' . "\n";
 					$this->t->set_var('action_entry',$action_entry);
 				}
@@ -334,8 +337,9 @@
 
 // ------------------------- end record declaration ------------------------
 
-			$this->t->set_var('lang_all_partlist',lang('All delivery notes'));                                                                                                                    
-			$this->t->set_var('all_partlist',$GLOBALS['phpgw']->link('/projects/del_deliverylist.php','project_id='));
+			$this->t->set_var('lang_all_partlist',lang('All delivery notes'));
+			$this->t->set_var('all_partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&action=del'
+											. '&project_id='));
 
 			$this->t->set_var('lang_all_part2list','');
 			$this->t->set_var('all_part2list','');
@@ -557,6 +561,109 @@
 			}
 
 			$this->t->pfp('out','hours_list_t',True);
+		}
+
+		function list_deliveries()
+		{
+			global $action, $project_id;
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('projects_list_t' => 'del_listdelivery.tpl'));
+			$this->t->set_block('projects_list_t','projects_list','list');
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uideliveries.list_deliveries',
+				'action'		=> $action,
+				'project_id'	=> $project_id
+			);
+
+			if (!$this->start)
+			{
+				$this->start = 0;
+			}
+
+			$this->t->set_var('lang_action',lang('Delivery list'));
+			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+
+			if (! $this->start)
+			{
+				$this->start = 0;
+			}
+
+			if (! $project_id)
+			{
+				$project_id = '';
+			}
+
+			$del = $this->bodeliveries->read_deliveries($this->query, $this->sort, $this->order, True, $project_id);
+
+// -------------------- nextmatch variable template-declarations -----------------------------
+
+			$left = $this->nextmatchs->left('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$this->start));
+
+// ------------------------ end nextmatch template -------------------------------------------
+
+// ---------------- list header variable template-declarations -------------------------------
+
+			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Delivery ID'),$link_data));
+			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
+			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
+			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
+			$this->t->set_var('h_lang_delivery',lang('Delivery'));
+
+// -------------- end header declaration -----------------
+
+			for ($i=0;$i<=count($del);$i++)
+			{
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$title = $GLOBALS['phpgw']->strip_html($del[$i]['title']);
+				if (! $title) $title  = '&nbsp;';
+
+				$date = $del[$i]['date'];
+				if ($date == 0)
+					$dateout = '&nbsp;';
+				else
+				{
+					$date = $date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+					$dateout = $GLOBALS['phpgw']->common->show_date($date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				}
+
+				if ($del[$i]['customer'] != 0) 
+				{
+					$customer = $this->boprojects->read_single_contact($del[$i]['customer']);
+            		if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            		else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+				}
+				else { $customerout = '&nbsp;'; }
+
+// ------------------ template declaration for list records ----------------------------------
+
+				$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($del[$i]['number']),
+							'customer' => $customerout,
+								'title' => $title,
+								'date' => $dateout));
+
+				if ($del[$i]['delivery_id'])
+				{
+					$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/projects/delivery_update.php','delivery_id=' . $del[$i]['delivery_id']
+									. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&project_id='
+									. $del[$i]['project_id'] . '&delivery_num=' . $del[$i]['number']));
+					$this->t->set_var('lang_delivery',lang('Delivery'));
+				}
+				$this->t->fp('list','projects_list',True);
+
+// ------------------------ end record declaration --------------------------------------------
+			}
+			$this->t->pfp('out','projects_list_t',True);
+			$this->save_sessiondata($action);
 		}
 	}
 ?>

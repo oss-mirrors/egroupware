@@ -269,7 +269,7 @@
 				{
 					if ($pro[$i]['customer'] != 0) 
 					{
-						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+						$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
             			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
@@ -515,7 +515,7 @@
 				$this->t->set_var('lang_number',lang('Job ID'));
 			}
 
-			$customer = $this->boprojects->read_customer_data($abid);
+			$customer = $this->boprojects->read_single_contact($abid);
             if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 
@@ -675,7 +675,7 @@
 			}
 
 			$abid = $values['customer'];
-			$customer = $this->boprojects->read_customer_data($abid);
+			$customer = $this->boprojects->read_single_contact($abid);
             if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 
@@ -812,7 +812,7 @@
 
 			if ($values['customer'] != 0) 
 			{
-				$customer = $this->boprojects->read_customer_data($values['customer']);
+				$customer = $this->boprojects->read_single_contact($values['customer']);
             	if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             	else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 			}

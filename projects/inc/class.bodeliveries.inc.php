@@ -32,7 +32,8 @@
 			'read_hours'			=> True,
 			'read_delivery_hours'	=> True,
 			'get_date'				=> True,
-			'delivery'				=> True
+			'delivery'				=> True,
+			'read_deliveries'		=> True
 		);
 
 		function bodeliveries()
@@ -50,6 +51,13 @@
 		{
 			$hours = $this->sodeliveries->read_hours($project_id,$delivery_id);
 			return $hours;
+		}
+
+		function read_deliveries($query, $sort, $order, $limit, $project_id)
+		{
+			$del = $this->sodeliveries->read_deliveries($query, $sort, $order, $limit, $project_id);
+			$this->total_records = $this->sodeliveries->total_records;
+			return $del;
 		}
 
 		function get_date($delivery_id)

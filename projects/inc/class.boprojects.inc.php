@@ -46,7 +46,6 @@
 			'read_single_project'		=> True,
 			'delete_pa'					=> True,
 			'exists'					=> True,
-			'read_customer_data'		=> True,
 			'isprojectadmin'			=> True,
 			'select_activity_list'		=> True,
 			'employee_list'				=> True,
@@ -97,6 +96,7 @@
 				case 'amains'	: $column = 'projects_amains'; break;
 				case 'asubs'	: $column = 'projects_asubs'; break;
 				case 'ustat'	: $column = 'projects_ustat'; break;
+				case 'del'		: $column = 'projects_del'; break;
 			}
 			return $column;
 		}
@@ -217,17 +217,6 @@
 				$currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			}
 			return $currency;
-		}
-
-
-		function read_customer_data($ab_id)
-		{
-			$cols = array('n_given'=> 'n_given',
-						'n_family' => 'n_family',
-						'org_name' => 'org_name');
-
-			$customer = $this->contacts->read_single_entry($ab_id,$cols);
-			return $customer;
 		}
 
 		function employee_list()

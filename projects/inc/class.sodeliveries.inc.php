@@ -120,6 +120,62 @@
 			return $hours;
 		}
 
+
+		function read_deliveries($query = '', $sort = '', $order = '', $limit = True, $project_id = '')
+		{
+			if ($order)
+			{
+				$ordermethod = " order by $order $sort";
+			}
+			else
+			{
+				$ordermethod = " order by date asc";
+			}
+
+			if ($query)
+			{
+				$querymethod = " AND (phpgw_p_delivery.num like '%$query%' OR phpgw_p_projects.title like '%$query%')";
+			}
+
+			if ($project_id)
+			{
+				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
+					. "phpgw_p_delivery.project_id as pid,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_delivery.project_id='$project_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id";
+			}
+    		else
+			{
+				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
+					. "phpgw_p_delivery.project_id as pid,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_delivery.project_id=phpgw_p_projects.id";
+			}
+
+			$this->db2->query($sql,__LINE__,__FILE__);
+			$this->total_records = $this->db2->num_rows();
+
+			if ($limit)
+			{
+				$this->db->limit_query($sql . $querymethod,$start,__LINE__,__FILE__);
+			}
+			else
+			{
+				$this->db->query($sql . $querymethod,__LINE__,__FILE__);
+			}
+
+			$i = 0;
+			while ($this->db->next_record())
+			{
+				$del[$i]['delivery_id']	= $this->db->f('id');
+				$del[$i]['project_id']	= $this->db->f('pid');
+				$del[$i]['number']		= $this->db->f('num');
+				$del[$i]['title']		= $this->db->f('title');
+				$del[$i]['date']		= $this->db->f('date');
+				$del[$i]['customer']	= $this->db->f('customer');
+				$i++;
+			}
+			return $del;
+		}
+
 		function get_date($delivery_id)
 		{
 			$this->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'",__LINE__,__FILE__);

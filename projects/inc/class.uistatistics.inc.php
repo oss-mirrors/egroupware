@@ -270,7 +270,7 @@
 				{
 					if ($pro[$i]['customer'] != 0) 
 					{
-						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+						$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
             			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
@@ -694,7 +694,7 @@
 
 			if ($pro['customer'] != 0) 
 			{
-				$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
+				$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
             	if ($customer[0]['org_name'] == '')
 				{
 					$this->t->set_var('customer',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']);

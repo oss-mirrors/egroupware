@@ -1,11 +1,13 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{hidden_vars}
-<table border="0" cellspacing="2" cellpadding="2">
+<table width="79%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
-		<td colspan="5" align="left">
+		<td colspan="4">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -16,12 +18,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td colspan="5" align="right">
-			<form method="post" action="{searchurl}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%" align="right">
+			<form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
+</table>
+<table width="79%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
 		<td width="10%" bgcolor="{th_bg}">{sort_num}</td>
 		<td width="10%" bgcolor="{th_bg}">{sort_customer}</td>
