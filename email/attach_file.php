@@ -80,6 +80,6 @@
       </tr>
       </table>
      </form>
-<?
+<?php
 //$phpgw->common->phpgw_footer();
 ?>
