@@ -841,7 +841,7 @@
 						{
 							$newPart = mb_convert_encoding($newPart,
 									$this->displayCharset,
-									$charset);
+									$charSet);
 						}
 						elseif(strtolower($charSet) == 'utf-8' &&
 							(strtolower($this->displayCharset) == 'iso-8859-1' ||
