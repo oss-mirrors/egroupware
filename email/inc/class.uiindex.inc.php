@@ -37,6 +37,7 @@
 		
 		function set_is_modular($feed_bool=False)
 		{
+			/* This also does not work on php3 - milosch */
 			if ((bool)$feed_bool == False)
 			{
 				$this->is_modular = False;
