@@ -12,7 +12,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = Array("currentapp" => "admin", "enable_nextmatchs_class" => True, "enable_network_class" => True);
+  $phpgw_info["flags"] = Array("currentapp" => "admin", "enable_nextmatchs_class" => True, "enable_network_class" => True, "parent_page" => "../admin/index.php");
 
   include("../header.inc.php");
   echo "<p><center>" . lang("Headline Sites") . "<br><table border=0 width=65%>"

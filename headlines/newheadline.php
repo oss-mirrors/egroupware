@@ -15,6 +15,8 @@
      $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
   $phpgw_info["flags"]["currentapp"] = "admin";
+  $phpgw_info["flags"]["parent_page"] = "admin.php";
+
   include("../header.inc.php");
   if (isset($submit) && $submit) {
     $error = "";

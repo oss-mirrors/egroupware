@@ -9,7 +9,7 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-  /* $ Id $ */
+  /* $Id$ */
 {
   echo "<p>";
   $imgfile = $phpgw->common->get_image_dir($appname)."/".$appname.".gif";
@@ -25,8 +25,8 @@
   }
   section_start(ucfirst($appname),$imgpath);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/".$appname."/preferences.php");
-  echo "<A href=".$pg.">Select Headlines to Display</A>";
+  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/".$appname."/admin.php");
+  echo "<A href=".$pg.">Headline Site Management</A>";
 
   section_end(); 
 }

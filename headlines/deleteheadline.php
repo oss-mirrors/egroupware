@@ -16,6 +16,7 @@
   }
 
   $phpgw_info["flags"]["currentapp"] = "admin";
+  $phpgw_info["flags"]["parent_page"] = "admin.php";
   include("../header.inc.php");
 
   function remove_account_data($query,$t)

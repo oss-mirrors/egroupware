@@ -12,7 +12,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "admin";
+  $phpgw_info["flags"] = array("currentapp" => "admin", "parent_page" => "admin.php");
 
   include("../header.inc.php");
   if (! $con)
