@@ -12,59 +12,56 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'forum',
 		'enable_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
 
-	$phpgw->template->set_file('INDEX' , 'index.body.tpl');
-	$phpgw->template->set_block('INDEX','CategoryForum','CatF');
+	$GLOBALS['phpgw']->template->set_file('INDEX' , 'index.body.tpl');
+	$GLOBALS['phpgw']->template->set_block('INDEX','CategoryForum','CatF');
 
-	$db2 = $phpgw->db;
-	$phpgw->db->query("select * from phpgw_forum_categories",__LINE__,__FILE__);
-	$phpgw->template->set_var(array(
-		IMG_URL_PREFIX => PHPGW_IMAGES . '/',
-		'BGROUND'      => $phpgw_info['theme']['th_bg'],
-		'FORUM'        => lang('Forum')
+	$db2 = $GLOBALS['phpgw']->db;
+	$GLOBALS['phpgw']->db->query("select * from phpgw_forum_categories",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->template->set_var(array(
+		'IMG_URL_PREFIX' => PHPGW_IMAGES . '/',
+		'BGROUND'        => $GLOBALS['phpgw_info']['theme']['th_bg'],
+		'FORUM'          => lang('Forum')
 	));
 
-	while ($phpgw->db->next_record())
+	while ($GLOBALS['phpgw']->db->next_record())
 	{
-		$db2->query("select max(postdate) from phpgw_forum_threads where cat_id='" . $phpgw->db->f('id')
+		$db2->query("select max(postdate) from phpgw_forum_threads where cat_id='" . $GLOBALS['phpgw']->db->f('id')
 			. "'",__LINE__,__FILE__);
 		$db2->next_record();
 		if ($db2->f(0))
 		{
-			$last_post_date = $phpgw->common->show_date($phpgw->db->from_timestamp($db2->f(0)));
+			$last_post_date = $GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->from_timestamp($db2->f(0)));
 		}
 		else
 		{
 			$last_post_date = '&nbsp;';
 		}
 
-		$db2->query("select count(*) from phpgw_forum_threads where cat_id='" . $phpgw->db->f('id')
+		$db2->query("select count(*) from phpgw_forum_threads where cat_id='" . $GLOBALS['phpgw']->db->f('id')
 			. "'",__LINE__,__FILE__);
 		$db2->next_record();
 		$total = $db2->f(0);
 
-		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-		$phpgw->template->set_var(array(
-			COLOR             => $tr_color,
-			CAT               => $phpgw->db->f('name'),
-			DESC              => ($phpgw->db->f('descr')?$phpgw->db->f('descr'):'&nbsp;'),
-			CAT_LINK	         => $phpgw->link('/forum/forums.php','cat_id=' .  $phpgw->db->f('id')),
+		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+		$GLOBALS['phpgw']->template->set_var(array(
+			'COLOR'           => $tr_color,
+			'CAT'             => $GLOBALS['phpgw']->db->f('name'),
+			'DESC'            => ($GLOBALS['phpgw']->db->f('descr')?$GLOBALS['phpgw']->db->f('descr'):'&nbsp;'),
+			'CAT_LINK'        => $GLOBALS['phpgw']->link('/forum/forums.php','cat_id=' .  $GLOBALS['phpgw']->db->f('id')),
 			'value_last_post' => $last_post_date,
 			'value_total'     => $total
 		));
-		$phpgw->template->parse('CatF','CategoryForum',true);
-
+		$GLOBALS['phpgw']->template->parse('CatF','CategoryForum',true);
 	}
 
-	$phpgw->template->parse('Out','INDEX');
-	$phpgw->template->p('Out');
+	$GLOBALS['phpgw']->template->parse('Out','INDEX');
+	$GLOBALS['phpgw']->template->p('Out');
 
-
-	$phpgw->common->phpgw_footer();
-
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
