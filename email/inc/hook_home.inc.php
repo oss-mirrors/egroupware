@@ -70,7 +70,9 @@
 				$check_msgs = $nummsg;
 			}
 
-			$order_hook = 0;
+			// order 1 = order by the time the mail server revieved the mail
+			// NOT the (unreliable) timestamp from the senders MUA ( which would be order = 0 )
+			$order_hook = 1;
 			if ($phpgw_info['user']['preferences']['email']['default_sorting'] == 'new_old')
 			{
 				$sort_hook = 1;
@@ -90,8 +92,12 @@
 			for($i=0;$i<$check_msgs;$i++,$j++)
 			{
 				$msg = $phpgw->msg->header($mailbox,$msg_array_hook[$i]);
-				$subject = !$msg->Subject ? '['.lang('no subject').']' : substr($msg->Subject,0,65).' ...';
-				$portalbox->data[$i] = array(decode_header_string($subject),$phpgw->link('/email/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array_hook[$i]));
+				$subject = $phpgw->msg->get_subject($msg,'');
+				if (strlen($subject) > 65)
+				{
+					$subject = substr($subject,0,65).' ...';
+				}
+				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array_hook[$i]));
 			}
 			echo $portalbox->draw();
 		}
