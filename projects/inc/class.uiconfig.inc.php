@@ -793,7 +793,7 @@
  
 //------------------- list header variable template-declarations -------------------------
 
-			$GLOBALS['phpgw']->template->set_var('sort_name',$this->nextmatchs->show_sort_order($this->sort,'role_name',$this->order,'/index.php',lang('name'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_name',$this->nextmatchs->show_sort_order($this->sort,$role_type.'_name',$this->order,'/index.php',lang('name'),$link_data));
 
 // -------------------------- end header declaration --------------------------------------
 
