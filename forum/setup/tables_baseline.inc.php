@@ -127,7 +127,7 @@ CREATE TABLE f_body (
 );
 
 */
-
+/*
 $phpgw_setup->oProc->CreateTable(
     'categories', array(
         'fd' => array(
@@ -143,5 +143,5 @@ $phpgw_setup->oProc->CreateTable(
         'uc' => array()
     )
 );
-
+*/
 ?>
