@@ -31,7 +31,8 @@
 			'read_invoices'			=> True,
 			'check_values'			=> True,
 			'read_hours'			=> True,
-			'read_invoice_hours'	=> True
+			'read_invoice_hours'	=> True,
+			'read_invoice_pos'		=> True
 		);
 
 		function bobilling()
@@ -109,6 +110,12 @@
 		function read_invoice_hours($project_id,$invoice_id)
 		{
 			$hours = $this->sobilling->read_hours($project_id,$invoice_id);
+			return $hours;
+		}
+
+		function read_invoice_pos($invoice_id)
+		{
+			$hours = $this->sobilling->read_invoice_pos($invoice_id);
 			return $hours;
 		}
 	}

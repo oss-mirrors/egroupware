@@ -58,7 +58,7 @@
 			<td width="10%" align="right"><font face="{font}">{currency}&nbsp;{lang_sum}</font></td>
 		</tr>
 
-<!-- BEGIN invoicepos_list -->
+<!-- BEGIN bill_list -->
 
 		<tr>
 			<td align="right"><font face="{font}">{pos}</font></td>
@@ -66,7 +66,7 @@
 			<td><font face="{font}">{act_descr}</font></td>
 			<td align="right"><font face="{font}">{aes}</font></td>
 			<td align="right"><font face="{font}">{billperae}</font></td>
-			<td align="right"><font face="{font}">{sumperpos}</font></td>
+			<td align="right"><font face="{font}">{sumpos}</font></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
@@ -77,7 +77,7 @@
 			<td>&nbsp;</td>
 		</tr>
 
-<!-- END invoicepos_list -->
+<!-- END bill_list -->
 
 	</table><br><br>
 	<table width="90%" border="0" cellspacing="3" cellpadding="3">
@@ -94,7 +94,7 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><font face="{font}">{currency}&nbsp;{tax_percent}&nbsp;{lang_percent}&nbsp;{lang_mwst}:</font></td>
+			<td><font face="{font}">{currency}&nbsp;{tax}&nbsp;%&nbsp;{lang_mwst}:</font></td>
 			<td align="right"><font face="{font}">{sum_tax}</font></td>
 		</tr>
 		<tr>
@@ -110,7 +110,7 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><font face="{font}">{error}</font></td>
+			<td><font face="{font}">{message}</font></td>
 			<td><font face="{font}">{error_hint}</font></td>
 		</tr>
 		<hr noshade width="90%" align="left" size="1"> 

@@ -39,7 +39,8 @@
 			'list_projects'		=> True,
 			'invoice'			=> True,
 			'list_invoices'		=> True,
-			'fail'				=> True
+			'fail'				=> True,
+			'show_invoice'		=> True
 		);
 
 		function uibilling()
@@ -48,6 +49,7 @@
 
 			$this->boprojects				= CreateObject('projects.boprojects',True, $action);
 			$this->bobilling				= CreateObject('projects.bobilling');
+			$this->bodeliveries				= CreateObject('projects.bodeliveries');
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
 			$this->sbox						= CreateObject('phpgwapi.sbox');
 			$this->cats						= CreateObject('phpgwapi.categories');
@@ -677,6 +679,103 @@
 			echo '<p><center>' . lang('You have to CREATE a delivery or invoice first !');
 			echo '</center>';
 			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function show_invoice()
+		{
+			global $invoice_id;
+
+			$this->set_app_langs();
+
+			$this->t->set_file(array('bill_list_t' => 'bill_invoiceform.tpl'));
+			$this->t->set_block('bill_list_t','bill_list','list');
+
+			$error = $this->boprojects->check_prefs();
+			if (is_array($error))
+			{
+				$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+			}
+			else
+			{
+				$prefs = $this->boprojects->read_prefs();
+				$this->t->set_var('tax_percent',$prefs['tax']);
+				$this->t->set_var('currency',$prefs['currency']);
+				$this->t->set_var('myaddress',$this->bodeliveries->get_address_data($abid));
+			}
+
+			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
+			$charset = $GLOBALS['phpgw']->translation->translate('charset');
+			$this->t->set_var('charset',$charset);
+			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+
+			$bill = $this->bobilling->get_single_invoice($invoice_id);
+
+			$this->t->set_var('customer',$this->bodeliveries->get_address_data($bill['customer']));
+
+			$bill['date'] = $bill['date'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+			$invoice_dateout = $GLOBALS['phpgw']->common->show_date($bill['date'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+			$this->t->set_var('invoice_date',$invoice_dateout);
+
+			$this->t->set_var('invoice_num',$GLOBALS['phpgw']->strip_html($bill['invoice_num']));
+			$title = $GLOBALS['phpgw']->strip_html($bill['title']);
+			if (! $title) { $title  = '&nbsp;'; }
+			$this->t->set_var('title',$title);
+
+			$pos = 0;
+			$sum_netto = 0;
+			$hours = $this->bobilling->read_invoice_pos($invoice_id);
+
+			for ($i=0;$i<=count($hours);$i++)
+			{
+				$pos++;
+				$this->t->set_var('pos',$pos);
+
+				if ($hours[$i]['sdate'] == 0)
+				{
+					$hours_dateout = '&nbsp;';
+				}
+				else
+				{
+					$hours[$i]['sdate'] = $hours[$i]['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+					$hours_dateout = $GLOBALS['phpgw']->common->show_date($hours[$i]['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+				}
+
+				$this->t->set_var('hours_date',$hours_dateout);
+
+				if ($hours[$i]['minperae'] != 0)
+				{
+					$aes = ceil($hours[$i]['minutes']/$hours[$i]['minperae']);
+				}
+				$sumaes += $aes;
+				$sumpos = $hours[$i]['billperae']*$aes;
+
+				$t->set_var('billperae',$hours[$i]['billperae']);
+				$t->set_var('sumpos',$sumpos);
+				$this->t->set_var('aes',$aes);
+				$act_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['descr']);
+				if (! $act_descr) { $act_descr  = '&nbsp;'; }
+				$this->t->set_var('act_descr',$act_descr);
+				$this->t->set_var('billperae',$hours[$i]['billperae']);
+				$hours_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['hours_descr']);
+				if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
+				$this->t->set_var('hours_descr',$hours_descr);
+
+        		$sum_netto += $sumpos;
+				$this->t->fp('list','bill_list',True);
+			}
+			/*	if ($sum == $sum_netto) { $t->set_var('error_hint',''); }
+			else { $t->set_var('error_hint',lang('Error in calculation sum does not match !')); } */
+			$this->t->set_var('error_hint','');
+
+			$sum_tax = round($sum_netto*$prefs['tax'],2);
+			$this->t->set_var('sum_netto',sprintf("%01.2f",$sum_netto));
+			$this->t->set_var('sum_tax',$sum_tax);
+			$sum_sum = $sum_tax + $sum_netto;
+			$this->t->set_var('sum_sum',sprintf("%01.2f",$sum_sum));
+
+			$this->t->set_var('sumaes',$sumaes);
+
+			$this->t->pfp('out','bill_list_t',True);
 		}
 	}
 ?>

@@ -319,5 +319,46 @@
 			}
 			return $hours;
 		}
+
+		function read_single_invoice($invoice_id)
+		{
+			$this->db->query("SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,"
+							. "phpgw_p_invoice.sum,phpgw_p_projects.title FROM phpgw_p_invoice,phpgw_p_projects WHERE "
+							. "phpgw_p_invoice.id='" . $invoice_id . "' AND phpgw_p_invoice.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
+
+			if ($this->db->next_record())
+			{
+				$bill['date']			= $this->db->f('date');
+				$bill['invoice_num']	= $this->db->f('num');
+				$bill['title']			= $this->db->f('title');
+				$bill['customer']		= $this->db->f('customer');
+				$bill['project_id']		= $this->db->f('project_id');
+				$bill['sum']			= $this->db->f('sum');
+			}
+			return $bill;
+		}
+
+		function read_invoice_pos($invoice_id)
+		{
+			$this->db->query("SELECT phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,"
+					. "phpgw_p_activities.descr,phpgw_p_hours.start_date,phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,"
+					. "phpgw_p_invoicepos WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='"
+					. $invoice_id . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id",__LINE__,__FILE__);
+
+			while ($this->db->next_record())
+			{
+				$hours[] = array
+				(
+					'hours_descr'	=> $this->db->f('hours_descr'),
+					'act_descr'		=> $this->db->f('descr'),
+					'sdate'			=> $this->db->f('start_date'),
+					'edate'			=> $this->db->f('end_date'),
+					'minutes'		=> $this->db->f('minutes'),
+					'minperae'		=> $this->db->f('minperae'),
+					'billperae'		=> $this->db->f('billperae')
+				);
+			}
+			return $hours;
+		}
 	}
 ?>

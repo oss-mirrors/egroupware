@@ -198,7 +198,7 @@
 					. "phpgw_p_projects.title FROM phpgw_p_delivery,phpgw_p_projects WHERE "
 					. "phpgw_p_delivery.id='$delivery_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
 
-			if ($phpgw->db->next_record())
+			if ($this->db->next_record())
 			{
 				$del['date']			= $this->db->f('date');
 				$del['delivery_num']	= $this->db->f('num');
@@ -228,7 +228,7 @@
 		function read_delivery_pos($delivery_id)
 		{
 			$this->db->query("SELECT phpgw_p_hours.hours_descr,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"
-							. "phpgw_p_activities.descr,phpgw_p_hours.start_date, phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities, "
+							. "phpgw_p_activities.descr,phpgw_p_hours.start_date, phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,"
 							. "phpgw_p_deliverypos WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='"
 							. $delivery_id .  "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id",__LINE__,__FILE__);
 
