@@ -58,7 +58,7 @@ function mail_ticket($ticket_id) {
   }
 
   for($j=0;$j<=$i;$j++) {
-    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j]),__LINE__,__FILE__;
+    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j],__LINE__,__FILE__);
     $phpgw->db->next_record();
     $user["user"]["preferences"] = $phpgw->db->f("preference_value");
     if($user["user"]["preferences"]["email"]["address"]) {
