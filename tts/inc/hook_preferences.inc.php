@@ -13,7 +13,8 @@
 	/* $Id$ */
 
 	$values = array(
-		'Preferences' => $phpgw->link('/preferences/preferences.php','appname=tts')
+		'Preferences' => $phpgw->link('/preferences/preferences.php','appname=tts'),
+		'Categories'  => $phpgw->link('/preferences/categories.php','cats_app=tts')
 	);
 	display_section('tts','Trouble Ticket System',$values);
 

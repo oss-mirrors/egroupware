@@ -14,15 +14,14 @@
 	/* Basic information about this app */
 	$setup_info['tts']['name']      = 'tts';
 	$setup_info['tts']['title']     = 'Trouble Ticket System';
-	$setup_info['tts']['version']   = '0.8.1';
+	$setup_info['tts']['version']   = '0.8.1.003';
 	$setup_info['tts']['app_order'] = 99;
 	$setup_info['tts']['enable']    = 1;
 
 	/* The tables this app creates */
 	$setup_info['tts']['tables']    = array(
 		'phpgw_tts_tickets',
-		'phpgw_tts_categories',
-		'phpgw_tts_departments'
+		'phpgw_tts_views',
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
@@ -32,6 +31,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['tts']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13')
+		 'versions' => Array('0.9.13')
 	);
 ?>

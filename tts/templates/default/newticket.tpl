@@ -1,10 +1,84 @@
-<!-- $Id$ -->
-<!-- BEGIN tts_select_options -->
-    <option value="{tts_optionvalue}" {tts_optionselected}>{tts_optionname}</option>
-<!-- END tts_select_options -->
+<!-- BEGIN form -->
+<form method="POST" action="{form_action}">
 
-<form method=POST action="{tts_newticket_link}">
-<div align="center">
+<b>{lang_create_new_ticket}</b>
+<hr><p>
+
+{messages}
+
+<form method="POST" action="{form_action}">
+
+<table border="0" width="80%" cellspacing="0" align="center">
+	<tr bgcolor="{th_bg}">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td align="left">{lang_assignedto}:</td>
+		<td align="left">{value_assignedto}</td>
+		<td align="left">{lang_billable_hours}:</td>
+		<td align="left"><input name="ticket[billable_hours]" value="{value_billable_hours}"></td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td align="left">{lang_priority}:</td>
+		<td align="left">{value_priority}</td>
+		<td align="left">{lang_billable_hours_rate}:</td>
+		<td align="left"><input name="ticket[billable_rate]" value="{value_billable_hours_rate}"></td>
+	</tr>
+
+<!--
+	<tr bgcolor="{row_off}">
+		<td align="left">{lang_group}:</td>
+		<td align="left">{value_group}</b></td>
+		<td align="left">&nbsp;</td>
+		<td align="left">&nbsp;</td>
+	</tr>
+-->
+
+	<tr bgcolor="{row_off}">
+		<td align="left">{lang_category}:</td>
+		<td align="left">{value_category}</td>
+		<td align="left">&nbsp;</td>
+		<td align="left">&nbsp;</td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td colspan="4" align="center"><hr></td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td colspan="4">{lang_subject}:</td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td colspan="4"><input name="ticket[subject]" value="{value_subject}"></td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td colspan="4">&nbsp;</td>
+	</tr>
+
+	<tr bgcolor="{row_off}">
+		<td colspan="4">{lang_details}:<br><textarea rows="10" name="ticket[details]" cols="65" wrap="hard">{value_details}</textarea></td>
+	</tr>
+
+	<tr>
+		<td align="left"><input type="submit" name="submit" value="{lang_submit}"></td>
+		<td colspan="2">&nbsp;</td>
+		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
+	</tr>
+</table>
+
+
+
+
+
+
+
+
+
+<!--
 <center>
 <table bgcolor="{tts_bgcolor}" cellpadding="3" border="1" width="600">
  <tr>
@@ -61,12 +135,5 @@
 </center>
 </div>
 </form>
-<!-- END tts_new_form -->
-
-<!-- BEGIN tts_new_lstcategory -->
-            <option value= "{tts_account_lid}" {tts_categoryselected}>{tts_account_name}</option>
-<!-- END tts_new_lstcategory -->
-
-<!-- BEGIN tts_new_lstassignto -->
-          <option value= "{tts_account_lid}" {tts_assignedtoselected}>{tts_account_name}</option>
-<!-- END tts_new_lstassignto -->
+-->
+<!-- END form -->
