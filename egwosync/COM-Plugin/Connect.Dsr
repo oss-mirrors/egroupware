@@ -3,8 +3,8 @@ Begin {AC0714F6-3D04-11D1-AE7D-00A0C90F26F4} Connect
    ClientHeight    =   10320
    ClientLeft      =   1740
    ClientTop       =   1545
-   ClientWidth     =   12840
-   _ExtentX        =   22648
+   ClientWidth     =   12810
+   _ExtentX        =   22595
    _ExtentY        =   18203
    _Version        =   393216
    Description     =   "Add-In Project Template"
@@ -20,9 +20,20 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+'#################################################################################################
+'# Connect.Dsr
+'# The COM Add-In handle for Outlook.
+'#
+'# Please visit egroupware.org for more information
+'# This software is distributed under the GPL and is provided as-is. I assume no responsibility
+'# for its usage or losses of any kind that may ensue thereof or otherwise. Feedback is nice:
+'# hyber[at]hyber.dk
+'#################################################################################################
+
 Option Explicit
 
-Private oXL As Outlook.Application
+Private WithEvents oXL As Outlook.Application
+Attribute oXL.VB_VarHelpID = -1
 Private WithEvents btSync As Office.CommandBarButton
 Attribute btSync.VB_VarHelpID = -1
 
@@ -53,7 +64,7 @@ Private Sub AddinInstance_OnConnection(ByVal Application As Object, _
 End Sub
 
 Private Sub AddinInstance_OnBeginShutdown(custom() As Variant)
-    btSync.Delete
+    'btSync.Delete
     Set btSync = Nothing
     Set oXL = Nothing
 End Sub
@@ -77,13 +88,14 @@ Private Sub btSync_Click(ByVal Ctrl As Office.CommandBarButton, _
     Master.OpenMain
 End Sub
 
-Private Sub oApp_OptionsPagesAdd( _
-    ByVal Pages As Outlook.PropertyPage)
+' Add a new Prop Page to the Tools/Options prop page
+' and set caption to "eGWOSync Settings"
+' it uses the User Control page ctlMainOptions
+Private Sub oXL_OptionsPagesAdd( _
+    ByVal Pages As Outlook.PropertyPages)
 
-    ' Add a new Prop Page to the Tools/Options prop page
-    ' and set caption to "eGWOSync Settings"
-    ' it uses the User Control page ctlMainOptions
+
     Pages.Add "PropertyPage.ctlMainOptions", "eGWOSync Settings"
-    
+        
 End Sub
 
