@@ -52,7 +52,7 @@
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td><b>{lang_bookable_activities}:</b></td>
-		<td>{ba_activities_list}&nbsp;</td>
+		<td>{book_activities_list}&nbsp;</td>
 	</tr>
 	<tr bgcolor="{row_on}">
 		<td><b>{lang_billable_activities}:</b></td>
