@@ -92,6 +92,7 @@ delete factor	projects	pt-br	apagar fator
 delete hours	projects	pt-br	Apagar horas
 delete job	projects	pt-br	Apagar tarefa
 delete project	projects	pt-br	Apagar projeto
+delete selected files	projects	pt-br	Apagar arquivos selecionados
 delete work hours	projects	pt-br	Apagar horas trabalhadas
 deliveries	projects	pt-br	Entregas
 delivery	projects	pt-br	Entrega
@@ -237,6 +238,7 @@ please choose activities for the project	projects	pt-br	Escolha as atividades pa
 please choose the accounting system for the project	projects	pt-br	Escolha um sistema de cobrança para este projeto
 please choose the columns to list in the projects preferences section	projects	pt-br	Escolha as colunas que devem ser listadas na sessão de preferências do projeto
 please choose the discount type	projects	pt-br	Escolha um tipo de desconto
+please enable html view of emails.	projects	pt-br	Por favor habilite a visão HTML dos e-mails.
 please enter a remark	projects	pt-br	Por favor entre com uma nota !
 please enter an id	projects	pt-br	Informe um ID
 please enter an id !	projects	pt-br	Por favor entre com um ID !
@@ -296,7 +298,10 @@ sequencing project	projects	pt-br	Sequência dos projetos
 settings	admin	pt-br	Configurações
 short description	projects	pt-br	Descrição rápida
 show gantt chart	projects	pt-br	Mostrar gráfico de gantt
+show milestones	projects	pt-br	mostrar marcos
+show planned resources	projects	pt-br	mostrar recursos planejados
 site configuration	projects	pt-br	Configuração da página
+size	projects	pt-br	tamanho
 start	projects	pt-br	Iniciar
 start date can not be before parent projects start date	projects	pt-br	Data inicial não pode ser anterior à data do projeto principal!
 start date planned	projects	pt-br	Data de início planejada

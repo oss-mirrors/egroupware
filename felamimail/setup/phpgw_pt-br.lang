@@ -27,11 +27,13 @@ bcc	felamimail	pt-br	CCO
 before headers	felamimail	pt-br	Antes dos cabeçalhos
 between headers and message body	felamimail	pt-br	Entre cabeçalho e corpo da mensagem
 body part	felamimail	pt-br	corpo da mensagem
+can't connect to inbox!!	felamimail	pt-br	não foi possível conectar com CAIXA DE ENTRADA
 cc	felamimail	pt-br	cc
 change folder	felamimail	pt-br	Mudar pasta
 checkbox	felamimail	pt-br	Caixa de seleção
 click here to log back in.	felamimail	pt-br	Clique aqui para conectar
 click here to return to %1	felamimail	pt-br	Clique aqui para voltar a %1
+close all	felamimail	pt-br	fechar todos
 close this page	felamimail	pt-br	fechar essa página
 close window	felamimail	pt-br	Fechar janela
 color	felamimail	pt-br	Cor
@@ -133,6 +135,7 @@ html	felamimail	pt-br	HTML
 icons and text	felamimail	pt-br	Ícones e txto
 icons only	felamimail	pt-br	Somente ícones
 identifying name	felamimail	pt-br	Nome de identificação
+if	felamimail	pt-br	SE
 illegal folder name.  please select a different name.	felamimail	pt-br	Nome de pasta inválido. Por favor escolha um nome diferente.
 imap	felamimail	pt-br	IMAP
 imap server	felamimail	pt-br	Servidor IMAP
@@ -163,7 +166,9 @@ location of buttons when composing	felamimail	pt-br	localização dos botões na co
 location of folder list	felamimail	pt-br	Localização da lista de pastas
 mail server login type	admin	pt-br	Tipo de conexão do servidor de correio
 mail settings	felamimail	pt-br	Preferências de Correio
+mainmessage	felamimail	pt-br	mensagemprincipal
 manage folders	felamimail	pt-br	Gerenciamento de pastas
+manage sieve	felamimail	pt-br	Gerenciar scripts de crivo
 mark as deleted	felamimail	pt-br	marcar como apagada
 mark messages as	felamimail	pt-br	marcar mensagens selecionadas como
 mark selected as flagged	felamimail	pt-br	marcar selecionado como sinalizado
@@ -209,6 +214,7 @@ number of messages to index	felamimail	pt-br	Número de mensagens para indexar
 on behalf of	felamimail	pt-br	em nome de
 only inbox	felamimail	pt-br	Somente Caixa de Entrada
 only unseen	felamimail	pt-br	Somente não vistas
+open all	felamimail	pt-br	abrir tudo
 options	felamimail	pt-br	Opções
 organisation	felamimail	pt-br	organização
 organization	felamimail	pt-br	organização
@@ -268,6 +274,7 @@ show header	felamimail	pt-br	mostrar cabeçalho
 show new messages on main screen	felamimail	pt-br	Mostrar novas mensagens na tela principal
 sieve settings	admin	pt-br	Configurações SIEVE
 signature	felamimail	pt-br	Asinatura
+simply click the target-folder	felamimail	pt-br	Simplismente clique no diretório alvo
 site configuration	felamimail	pt-br	configuração do site
 size	felamimail	pt-br	Tamanho
 size of editor window	felamimail	pt-br	Tamanho da janela para editar
@@ -355,3 +362,4 @@ you can only edit one address at the time	felamimail	pt-br	Você pode editar some
 you must login first.	felamimail	pt-br	Você preciar conectar-se primeiro
 you need a valid user and password to access this page!	felamimail	pt-br	Você precisa um usuário e a senha válidos para acessar esta página!
 your search failed with the following error(s)	felamimail	pt-br	Sua procura falhou com o(s) seguinte(s) erro(s)
+1	felamimail	pt-br	1
