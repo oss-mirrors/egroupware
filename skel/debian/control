@@ -1,4 +1,4 @@
-Source: skel
+Source: phpgroupware-skel
 Section: web
 Priority: optional
 Maintainer: Luca - De Whiskey's - De Vitis <luca@debian.org>
