@@ -26,15 +26,15 @@
 		if ($phpgw->db->f(0))
 		{
 			$hooks_string['messenger'] = '<p><b><font size="-1">Messenger</font></b><ul><font size="-1"><li>' . lang('You have %1 new message' . ($phpgw->db->f(0)>1?'s':'') . ' in your inbox!',$phpgw->db->f(0))
-				. '<br>[<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.inbox')
-				. '">View Messages</a> | <a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.compose')
+				. '<br>[<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessenger.inbox')
+				. '">View Messages</a> | <a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessenger.compose')
 				. '">Send a Message</a>]</font></ul>';	
 		}
 		else
 		{
 			$hooks_string['messenger'] = '<p><b><font size="-1">Messenger</font></b><ul><font size="-1"><li> No new personal messages have been sent to you.<br>'
-				. '[<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.inbox')
-				. '">View Messages</a> | <a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.compose')
+				. '[<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessenger.inbox')
+				. '">View Messages</a> | <a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessenger.compose')
 				. '">Send a Message</a>]</font></ul>';	
 		}
 	}

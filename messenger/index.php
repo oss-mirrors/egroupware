@@ -14,14 +14,14 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'messenger',
 		'noheader'   => True,
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
 
-	$obj = createobject('messenger.uimessage');
+	$obj = createobject('messenger.uimessenger');
 	$obj->inbox();
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();

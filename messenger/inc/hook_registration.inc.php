@@ -11,5 +11,5 @@ Thanks for signing up for your new account, blah blah blah blah
 
 ';
 
-	$so = createobject('messenger.somessage');
+	$so = createobject('messenger.somessenger');
 	$so->send_message($message,True);

@@ -23,7 +23,7 @@
 	
 		if ($GLOBALS['phpgw']->db->f(0))
 		{
-			echo '<center><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessage.inbox')
+			echo '<center><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox')
 				. '">' . lang('You have %1 new message' . ($GLOBALS['phpgw']->db->f(0)>1?'s':''),$GLOBALS['phpgw']->db->f(0)) . '</a>'
 				. '</center>';
 		}
