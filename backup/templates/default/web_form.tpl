@@ -4,6 +4,8 @@
 <table border="0" width="79%" cellpadding="2" cellspacing="2">
 	<tr>
 		<td>{noweb}</td>
+		<td>{teste}</td>
+		
 	</tr>
 <!-- BEGIN archive_list -->
 

@@ -3,7 +3,7 @@
 <!-- BEGIN header -->
 
 <form method="POST" action="{action_url}">
-<table border="0" align="center" cellpadding="2" cellspacing="2">
+<table width="75%" border="0" align="center" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td colspan="2">&nbsp;<b>{title}</b></td>
 	</tr>
@@ -53,7 +53,7 @@
 		<td><input name="newsettings[ldap]" value="{value_ldap}"></td>
 	</tr>
 	<tr bgcolor="{row_off}">
-		<td>{lang_homedirs}:</td>
+		<td>Notification to E-Mail:</td>
 		<td><input name="newsettings[home]" value="{value_home}"></td>
 	</tr>
 	<tr bgcolor="{row_on}">
@@ -66,10 +66,7 @@
 		<td>{lang_ldap_database}:</td>
 		<td><input name="newsettings[ldap_in]" value="{value_ldap_in}"></td>
 	</tr>
-	<tr bgcolor="{row_off}">
-		<td>{lang_maildir}:</td>
-		<td><input name="newsettings[maildir]" value="{value_maildir}"></td>
-	</tr>
+
 	<tr bgcolor="{row_on}">
 		<td colspan="2">&nbsp;</td>
 	</tr>
