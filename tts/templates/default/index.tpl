@@ -1,5 +1,8 @@
 <!-- $Id$ -->
 <!-- BEGIN index.tpl -->
+
+<META HTTP-EQUIV="Refresh" CONTENT="60; URL={tts_search_link}">
+
 <!-- BEGIN tts_title -->
 <center>{tts_appname}</center><p />
 <!-- END tts_title -->
@@ -44,7 +47,9 @@
 
 <!-- BEGIN tts_row -->
    <tr bgcolor="{tts_row_color}">
-     <td align=center>{tts_ticket_id}</td>
+     <td align=center><a href="{tts_ticketdetails_link}">
+     {tts_ticket_id}
+     </a></td>
      <td align=left><font size=-2>{tts_t_priostr}</font></td>
      <td align=center>{tts_t_catstr}</td>
      <td align=center>{tts_t_assignedto}</td>
@@ -56,11 +61,11 @@
 <!-- END tts_row -->
 
 <!-- BEGIN tts_ticket_id_unread -->
-<img src="templates/default/images/updated.gif"><a href="{tts_ticketdetails_link}">{tts_t_id}</a>
+&gt;{tts_t_id}&lt;
 <!-- END tts_ticket_id_unread -->
 
 <!-- BEGIN tts_ticket_id_read -->
-<a href="{tts_ticketdetails_link}">{tts_t_id}</a>
+{tts_t_id}
 <!-- END tts_ticket_id_read -->
 
 <!-- BEGIN tts_col_ifviewall -->
