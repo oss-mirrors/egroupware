@@ -209,7 +209,7 @@
 
 			while (is_array($mains) && $main = each($mains))
 			{
-				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' order by cat_name",__LINE__,__FILE__);
+				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and (cat_appname='bookmarks' or cat_appname='phpgw') order by cat_name",__LINE__,__FILE__);
 				while ($phpgw->db->next_record())
 				{
 					$id = $main[1]['id'] . '|' . $phpgw->db->f('cat_id');
