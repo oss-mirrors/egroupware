@@ -59,7 +59,8 @@ Error connecting to IMAP serv	felamimail	en	Error connecting to IMAP serv
 Error opening 	felamimail	en	Error opening 
 ERROR	felamimail	en	ERROR
 ERRO	felamimail	en	ERRO
-Expunge	felamimail	en	Expunge
+expunge	felamimail	en	Expunge
+felamimail	common	en	FelaMiMail
 files	felamimail	en	files
 First name	felamimail	en	First name
 Flags	felamimail	en	Flags
