@@ -14,17 +14,10 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdTest_Click()
-    Dim eGW As CeGW 'eGW is the object that handles the connection to eGW
-    Dim linsUtility As XMLRPCUtility
-    Dim bLogin As Boolean
-    Dim xmlParms As XMLRPCStruct
-    Dim xmlArray As XMLRPCArray
-   
-    Set eGW = New CeGW
-    Set linsUtility = New XMLRPCUtility
-    Set xmlParms = New XMLRPCStruct
-    Set xmlArray = New XMLRPCArray
-   
+    Dim xmlParms As New XMLRPCStruct
+    Dim xmlArray As New XMLRPCArray
+    Dim response As XMLRPCResponse
+    
     'Save connection details to registry
     SaveSetting AppName:="eGWOSync", Section:="Settings", _
         Key:="Hostname", Setting:=txtHostname
@@ -36,44 +29,17 @@ Private Sub cmdTest_Click()
         Key:="Username", Setting:=txtUsername
     SaveSetting AppName:="eGWOSync", Section:="Settings", _
         Key:="Password", Setting:=txtPassword
+        
+    'Create XMLRPCStruct for the method parameters
+    xmlParms.AddInteger "start", 1
+    xmlParms.AddInteger "limit", 10
+    xmlArray.AddString "n_given"
+    xmlArray.AddString "n_family"
+    xmlParms.AddArray "fields", xmlArray
+    xmlParms.AddString "query", "xkadj"
+    xmlParms.AddString "order", "n_given"
+    xmlParms.AddString "sort", "ASC"
     
-    'Load parameters to login
-    eGW.Hostname = txtHostname
-    eGW.Port = txtPort
-    eGW.URI = txtURI
-    eGW.Username = txtUsername
-    eGW.Password = txtPassword
-    bLogin = eGW.Login
-    If bLogin Then
-        xmlParms.AddInteger "id", 14
-        xmlArray.AddString "n_family"
-        xmlArray.AddString "n_given"
-        xmlArray.AddString "email"
-        xmlParms.AddArray "fields", xmlArray
-        
-        eGW.Reset
-        eGW.Exec "addressbook.boaddressbook.read", xmlParms
-           
-        If eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
-            Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
-            If eGW.Response.Status = 4 Then
-                Debug.Print "XML Parse Error:" & eGW.Response.XMLParseError
-            End If
-        ElseIf eGW.Response.Params.Count <> 1 Then
-            Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Params.Count & " return parameters, expecting 1"
-        ElseIf eGW.Response.Params(1).ValueType <> XMLRPC_ARRAY Then
-            Debug.Print "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(eGW.Response.Params(1).ValueType) & " returned, expecting an array"
-        End If
-        
-        'Extract response items
-        For Each responseItem In eGW.Response.Params(1).ArrayValue(1).StructValue
-            If responseItem.Value.ValueType = 3 Then
-                List1.AddItem responseItem.Name & ": " & responseItem.Value.StringValue
-            ElseIf responseItem.Value.ValueType = 1 Then
-                List1.AddItem responseItem.Name & ": " & responseItem.Value.IntegerValue
-            End If
-        Next
-        'End of List eGW methods
-        eGW.Logout
-    End If
+    Set response = modEGWUtilities.SimpleExec("addressbook.boaddressbook.search", xmlParms)
+    Debug.Print response.params.Count
 End Sub

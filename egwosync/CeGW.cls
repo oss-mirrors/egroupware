@@ -86,8 +86,8 @@ Public Property Get Password() As String
     Password = mPassword
 End Property
 
-Public Property Get Response() As XMLRPCResponse
-    Set Response = linsResponse
+Public Property Get response() As XMLRPCResponse
+    Set response = linsResponse
 End Property
 
 Public Function Login() As Boolean
@@ -104,13 +104,12 @@ Public Function Login() As Boolean
     
     If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
         BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
-    ElseIf linsResponse.Params.Count <> 1 Then
-        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
-    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_STRUCT Then
-        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    ElseIf linsResponse.params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.params(1).ValueType <> XMLRPC_STRUCT Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.params(1).ValueType) & " returned, expecting an array"
     End If
-    
-    For Each linsMember In linsResponse.Params(1).StructValue
+    For Each linsMember In linsResponse.params(1).StructValue
         If linsMember.Name = "sessionid" Then
             mSessid = linsMember.Value.StringValue
             Login = True
@@ -134,13 +133,13 @@ Public Function Logout() As Boolean
     
     If linsResponse.Status <> XMLRPC_PARAMSRETURNED Then
         BugOut "Unexpected response from XML-RPC request " & linsResponse.Status
-    ElseIf linsResponse.Params.Count <> 1 Then
-        BugOut "Unexpected response from XML-RPC request " & linsResponse.Params.Count & " return parameters, expecting 1"
-    ElseIf linsResponse.Params(1).ValueType <> XMLRPC_STRUCT Then
-        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
+    ElseIf linsResponse.params.Count <> 1 Then
+        BugOut "Unexpected response from XML-RPC request " & linsResponse.params.Count & " return parameters, expecting 1"
+    ElseIf linsResponse.params(1).ValueType <> XMLRPC_STRUCT Then
+        BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.params(1).ValueType) & " returned, expecting an array"
     End If
     
-    For Each linsMember In linsResponse.Params(1).StructValue
+    For Each linsMember In linsResponse.params(1).StructValue
         If linsMember.Name = "GOODBYE" Then
             Logout = True
             Debug.Print "Logout successful"
@@ -157,10 +156,10 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
     linsRequest.HostPort = mPort
     linsRequest.HostURI = mURI
     
-    linsRequest.MethodName = szMethod
+    linsRequest.methodName = szMethod
     
     If Not IsMissing(xmlParams) Then
-        linsRequest.Params.AddStruct xmlParams
+        linsRequest.params.AddStruct xmlParams
     End If
     
     Set linsResponse = linsRequest.Submit
@@ -178,3 +177,5 @@ Private Sub BugOut(ByVal vstrError As String)
     MsgBox vstrError, vbOKOnly + vbCritical, App.Title
     End
 End Sub
+
+
