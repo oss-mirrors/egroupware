@@ -1,56 +1,56 @@
-absolute path of the backup directory	backup	zt	³Æ¥÷¸ê®Æ¦s©ñ¦ì¸mªºµ´¹ï¸ô®| (¨Ò¦p¡G /usr/local/www/egroupware/backup/archive)
-absolute path of the directory to store the backup script	backup	zt	EGW³Æ¥÷µ{¦¡ªºµ´¹ï¦ì¸m
-archive type	backup	zt	ÀÉ®×®æ¦¡
-backup	common	zt	³Æ¥÷
-backup administration	common	zt	³Æ¥÷ºŞ²z
+absolute path of the backup directory	backup	zt	å‚™ä»½è³‡æ–™å­˜æ”¾ä½ç½®çš„çµ•å°è·¯å¾‘ (ä¾‹å¦‚ï¼š /usr/local/www/egroupware/backup/archive)
+absolute path of the directory to store the backup script	backup	zt	EGWå‚™ä»½ç¨‹å¼çš„çµ•å°ä½ç½®
+archive type	backup	zt	æª”æ¡ˆæ ¼å¼
+backup	common	zt	å‚™ä»½
+backup administration	common	zt	å‚™ä»½ç®¡ç†
 bzip2	admin	zt	bzip2
-configuration backup	backup	zt	³]©w³Æ¥÷
-configuration localhost	backup	zt	³]©w¥»¦aºİ
-create backups of your data ?	backup	zt	½T©w­n«Ø¥ß¸ê®Æ³Æ¥÷¡H
-daily	backup	zt	¨C¤é
-data	backup	zt	¸ê®Æ
-directory locations	admin	zt	¸ê®Æ§¨¦ì¸m
-directory names	admin	zt	¸ê®Æ§¨¦WºÙ
-e-mail	backup	zt	³z¹LE-MAIL´£¿ô¡H
-homedirs	admin	zt	®Ú¥Ø¿ı
-interval	backup	zt	¶¡¹j
-ip or hostname	backup	zt	IP ©Î¥D¾÷¦WºÙ
+configuration backup	backup	zt	è¨­å®šå‚™ä»½
+configuration localhost	backup	zt	è¨­å®šæœ¬åœ°ç«¯
+create backups of your data ?	backup	zt	ç¢ºå®šè¦å»ºç«‹è³‡æ–™å‚™ä»½ï¼Ÿ
+daily	backup	zt	æ¯æ—¥
+data	backup	zt	è³‡æ–™
+directory locations	admin	zt	è³‡æ–™å¤¾ä½ç½®
+directory names	admin	zt	è³‡æ–™å¤¾åç¨±
+e-mail	backup	zt	é€éE-MAILæé†’ï¼Ÿ
+homedirs	admin	zt	æ ¹ç›®éŒ„
+interval	backup	zt	é–“éš”
+ip or hostname	backup	zt	IP æˆ–ä¸»æ©Ÿåç¨±
 ldap	common	zt	LDAP
-ldap database	admin	zt	LDAP¸ê®Æ®w
-maildir	admin	zt	¶l¥ó¸ê®Æ§¨
-monthly	backup	zt	¨C¤ë
+ldap database	admin	zt	LDAPè³‡æ–™åº«
+maildir	admin	zt	éƒµä»¶è³‡æ–™å¤¾
+monthly	backup	zt	æ¯æœˆ
 mysql	admin	zt	MySQL
-no backup archives available !	backup	zt	¨S¦³³Æ¥÷¸ê®Æ¡I
-number of stored backup versions	backup	zt	³Æ¥÷¸ê®Æªºª©¥»½s¸¹
-operating system	backup	zt	§@·~¨t²Î
+no backup archives available !	backup	zt	æ²’æœ‰å‚™ä»½è³‡æ–™ï¼
+number of stored backup versions	backup	zt	å‚™ä»½è³‡æ–™çš„ç‰ˆæœ¬ç·¨è™Ÿ
+operating system	backup	zt	ä½œæ¥­ç³»çµ±
 pgsql	admin	zt	PostgreSQL
-php cgi	admin	zt	PHP°õ¦æµ{¦¡ªº§¹¾ã¸ô®|
-please enter the path of the needed applications in *site configuration* !	backup	zt	½Ğ¿é¤J"ºô¯¸³]©w"¤¤»İ­nªºµ{¦¡¸ô®|¡I
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zt	½Ğ¿é¤J³Æ¥÷¸ê®Æ¦s©ñªº¸ô®| ¨Ã¥B/©Î¬O ¦bEGROUPWARE¤¤±Ò¥ÎÅã¥Ü³Æ¥÷¸ê®Æ¡I
-please enter username and password for remote connection !	backup	zt	½Ğ¿é¤J»·ºİ³s½uªº±b¸¹»P±K½X¡I
-please select an application for transport to the remote host !	backup	zt	½Ğ¿ï¾Ü¤@­ÓÀ³¥Îµ{¦¡¨Ó¶Ç¿é¨ì»·ºİªº¥D¾÷¡I
-please set the path to a local dir to store the backup script !	backup	zt	½Ğ³]¸m¤@­Ó¥»¦aºİªº¸ê®Æ§¨¨ÓÀx¦s³Æ¥÷ªº«ü¥OÀÉ¡I
-please set the path to the ldap database dir in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤³]¸mLDAP¸ê®Æ®wªº¸ô®|¡I
-please set the path to the mysql database dir in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤³]¸mMySQL¸ê®Æ®wªº¸ô®|¡I
-please set the path to the postgresql database dir in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤³]¸mPostgreSQL¸ê®Æ®wªº¸ô®|¡I
-please set the values in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤¶ñ¤W³]©w­È¡I
-please specify the ip of the remote host !	backup	zt	½Ğ«ü©w»·ºİ¥D¾÷ªºIP¡I
-please specify the name of the maildir in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤«ü©w¶l¥ó¸ê®Æ§¨ªº¦WºÙ¡I
-please specify the path to the backup directory !	backup	zt	½Ğ«ü©w³Æ¥÷¸ê®Æ§¨ªº¸ô®|¡I
-please specify the path to the user-homedirectories in *site configuration* !	backup	zt	½Ğ¦b"ºô¯¸³]©w"¤¤«ü©w¨Ï¥ÎªÌ®Ú¥Ø¿ıªº¸ô®|¡I
-program locations	admin	zt	µ{¦¡¦ì¸m
-save backup locally ?	backup	zt	Àx¦s¥»¦a³Æ¥÷¡H
-select archive type	backup	zt	¿ï¾ÜÀÉ®×®æ¦¡
-select interval	backup	zt	¿ï¾Ü³Æ¥÷ÀW²v
-settings	admin	zt	³]©w
-show backup archives in phpgroupware ?	backup	zt	¦bEGroupWare Åã¥Ü³Æ¥÷ÀÉ®×¡H
+php cgi	admin	zt	PHPåŸ·è¡Œç¨‹å¼çš„å®Œæ•´è·¯å¾‘
+please enter the path of the needed applications in *site configuration* !	backup	zt	è«‹è¼¸å…¥"ç¶²ç«™è¨­å®š"ä¸­éœ€è¦çš„ç¨‹å¼è·¯å¾‘ï¼
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zt	è«‹è¼¸å…¥å‚™ä»½è³‡æ–™å­˜æ”¾çš„è·¯å¾‘ ä¸¦ä¸”/æˆ–æ˜¯ åœ¨EGROUPWAREä¸­å•Ÿç”¨é¡¯ç¤ºå‚™ä»½è³‡æ–™ï¼
+please enter username and password for remote connection !	backup	zt	è«‹è¼¸å…¥é ç«¯é€£ç·šçš„å¸³è™Ÿèˆ‡å¯†ç¢¼ï¼
+please select an application for transport to the remote host !	backup	zt	è«‹é¸æ“‡ä¸€å€‹æ‡‰ç”¨ç¨‹å¼ä¾†å‚³è¼¸åˆ°é ç«¯çš„ä¸»æ©Ÿï¼
+please set the path to a local dir to store the backup script !	backup	zt	è«‹è¨­ç½®ä¸€å€‹æœ¬åœ°ç«¯çš„è³‡æ–™å¤¾ä¾†å„²å­˜å‚™ä»½çš„æŒ‡ä»¤æª”ï¼
+please set the path to the ldap database dir in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­è¨­ç½®LDAPè³‡æ–™åº«çš„è·¯å¾‘ï¼
+please set the path to the mysql database dir in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­è¨­ç½®MySQLè³‡æ–™åº«çš„è·¯å¾‘ï¼
+please set the path to the postgresql database dir in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­è¨­ç½®PostgreSQLè³‡æ–™åº«çš„è·¯å¾‘ï¼
+please set the values in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­å¡«ä¸Šè¨­å®šå€¼ï¼
+please specify the ip of the remote host !	backup	zt	è«‹æŒ‡å®šé ç«¯ä¸»æ©Ÿçš„IPï¼
+please specify the name of the maildir in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­æŒ‡å®šéƒµä»¶è³‡æ–™å¤¾çš„åç¨±ï¼
+please specify the path to the backup directory !	backup	zt	è«‹æŒ‡å®šå‚™ä»½è³‡æ–™å¤¾çš„è·¯å¾‘ï¼
+please specify the path to the user-homedirectories in *site configuration* !	backup	zt	è«‹åœ¨"ç¶²ç«™è¨­å®š"ä¸­æŒ‡å®šä½¿ç”¨è€…æ ¹ç›®éŒ„çš„è·¯å¾‘ï¼
+program locations	admin	zt	ç¨‹å¼ä½ç½®
+save backup locally ?	backup	zt	å„²å­˜æœ¬åœ°å‚™ä»½ï¼Ÿ
+select archive type	backup	zt	é¸æ“‡æª”æ¡ˆæ ¼å¼
+select interval	backup	zt	é¸æ“‡å‚™ä»½é »ç‡
+settings	admin	zt	è¨­å®š
+show backup archives in phpgroupware ?	backup	zt	åœ¨EGroupWare é¡¯ç¤ºå‚™ä»½æª”æ¡ˆï¼Ÿ
 sql	backup	zt	SQL
 tar	admin	zt	tar
 tar.bz2	backup	zt	tar.bz2
 tar.gz	backup	zt	tar.gz
-the backup application is not configured for showing the archives in phpgroupware yet !	backup	zt	³Æ¥÷µ{¦¡ÁÙ¨S³]©w¦bEGROUPWAREÅã¥Ü³Æ¥÷ÀÉ®×¡I
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zt	³Æ¥÷«ü¥OÀÉ¦s©ñªº¦ì¸m¥²¶·¦bºô¯¸®Ú¥Ø¿ı¤§¤¤¡I
-versions can only be a number !	backup	zt	ª©¥»¥u¯à¬O¼Æ¦r¡I
-weekly	backup	zt	¨C¶g
-your sql database isnt supported by this application !	backup	zt	³o­ÓÀ³¥Îµ{¦¡¤£¤ä´©±zªº SQL ¸ê®Æ®w¡I
+the backup application is not configured for showing the archives in phpgroupware yet !	backup	zt	å‚™ä»½ç¨‹å¼é‚„æ²’è¨­å®šåœ¨EGROUPWAREé¡¯ç¤ºå‚™ä»½æª”æ¡ˆï¼
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	zt	å‚™ä»½æŒ‡ä»¤æª”å­˜æ”¾çš„ä½ç½®å¿…é ˆåœ¨ç¶²ç«™æ ¹ç›®éŒ„ä¹‹ä¸­ï¼
+versions can only be a number !	backup	zt	ç‰ˆæœ¬åªèƒ½æ˜¯æ•¸å­—ï¼
+weekly	backup	zt	æ¯é€±
+your sql database isnt supported by this application !	backup	zt	é€™å€‹æ‡‰ç”¨ç¨‹å¼ä¸æ”¯æ´æ‚¨çš„ SQL è³‡æ–™åº«ï¼
 zip	common	zt	zip

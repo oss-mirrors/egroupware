@@ -1,69 +1,69 @@
-add profile		zt	·s¼W°ò¥»¸ê®Æ
-admin dn		zt	ºÞ²z dn
-admin password		zt	ºÞ²z±K½X
-admin passwort		zt	ºÞ²z±K½X
-admin username		zt	ºÞ²z±b¸¹
-advanced options		zt	¶i¶¥¿ï¶µ
-alternate email address		zt	´À¥N¶l¥ó¦ì§}
-cyrus imap server		zt	Cyrus IMAP¦øªA¾¹
-cyrus imap server administration		zt	Cyrus IMAP¦øªA¾¹ºÞ²z
-default		zt	¹w³]
-deliver extern		zt	¶Ç°e¨ì¥~³¡
-do you really want to delete this profile		zt	±z½T©w­n§R°£³o­Ó¸ê®Æ
-domainname		zt	ºô°ì¦WºÙ
-edit email settings		zt	½s¿è¶l¥ó³]©w
-email account active		zt	¶l¥ó±b¸¹±Ò¥Î
-email address		zt	¶l¥ó¦ì§}
-enable cyrus imap server administration		zt	±Ò¥ÎCyrus IMAP¦øªA¾¹ºÞ²z
-enable sieve		zt	±Ò¥ÎSieve
-enter your default mail domain (from: user@domain)		zt	¿é¤J±zªº¹w³]¶l¥óºô°ì(¤p¦Ñ¹««á­±©Ò¦³¦r¡G±b¸¹@ºô°ì)
-forward also to		zt	¦P®ÉÂà±H¨ì
-forward email's to		zt	Âà±H«H¥ó¨ì
-forward only		zt	Âà±H
-imap admin password		zt	IMAPºÞ²zªÌ±K½X
-imap admin user		zt	IMAPºÞ²zªÌ±b¸¹
-imap c-client version < 2001		zt	IMAP C-²×ºÝªºª©¥»¤p©ó2001
-imap server hostname or ip address		zt	IMAP¦øªA¾¹ªº¥D¾÷¦WºÙ©Î¬OIP¦ì§}
-imap server logintyp		zt	IMAP¦øªA¾¹µn¤JÃþ«¬
-imap server port		zt	IMAP¦øªA¾¹³s±µ°ð
-imap/pop3 server name		zt	IMAP/POP3¦øªA¾¹¦WºÙ
-in mbyte		zt	¥HMBÅã¥Ü
+add profile		zt	æ–°å¢žåŸºæœ¬è³‡æ–™
+admin dn		zt	ç®¡ç† dn
+admin password		zt	ç®¡ç†å¯†ç¢¼
+admin passwort		zt	ç®¡ç†å¯†ç¢¼
+admin username		zt	ç®¡ç†å¸³è™Ÿ
+advanced options		zt	é€²éšŽé¸é …
+alternate email address		zt	æ›¿ä»£éƒµä»¶ä½å€
+cyrus imap server		zt	Cyrus IMAPä¼ºæœå™¨
+cyrus imap server administration		zt	Cyrus IMAPä¼ºæœå™¨ç®¡ç†
+default		zt	é è¨­
+deliver extern		zt	å‚³é€åˆ°å¤–éƒ¨
+do you really want to delete this profile		zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹è³‡æ–™
+domainname		zt	ç¶²åŸŸåç¨±
+edit email settings		zt	ç·¨è¼¯éƒµä»¶è¨­å®š
+email account active		zt	éƒµä»¶å¸³è™Ÿå•Ÿç”¨
+email address		zt	éƒµä»¶ä½å€
+enable cyrus imap server administration		zt	å•Ÿç”¨Cyrus IMAPä¼ºæœå™¨ç®¡ç†
+enable sieve		zt	å•Ÿç”¨Sieve
+enter your default mail domain (from: user@domain)		zt	è¼¸å…¥æ‚¨çš„é è¨­éƒµä»¶ç¶²åŸŸ(å°è€é¼ å¾Œé¢æ‰€æœ‰å­—ï¼šå¸³è™Ÿ@ç¶²åŸŸ)
+forward also to		zt	åŒæ™‚è½‰å¯„åˆ°
+forward email's to		zt	è½‰å¯„ä¿¡ä»¶åˆ°
+forward only		zt	è½‰å¯„
+imap admin password		zt	IMAPç®¡ç†è€…å¯†ç¢¼
+imap admin user		zt	IMAPç®¡ç†è€…å¸³è™Ÿ
+imap c-client version < 2001		zt	IMAP C-çµ‚ç«¯çš„ç‰ˆæœ¬å°æ–¼2001
+imap server hostname or ip address		zt	IMAPä¼ºæœå™¨çš„ä¸»æ©Ÿåç¨±æˆ–æ˜¯IPä½å€
+imap server logintyp		zt	IMAPä¼ºæœå™¨ç™»å…¥é¡žåž‹
+imap server port		zt	IMAPä¼ºæœå™¨é€£æŽ¥åŸ 
+imap/pop3 server name		zt	IMAP/POP3ä¼ºæœå™¨åç¨±
+in mbyte		zt	ä»¥MBé¡¯ç¤º
 ldap basedn		zt	LDAP basedn
-ldap server		zt	LDAP ¦øªA¾¹
-ldap server accounts dn		zt	LDAP ¦øªA¾¹±b¸¹ DN
-ldap server admin dn		zt	LDAP ¦øªA¾¹ºÞ²zªÌ DN
-ldap server admin password		zt	LDAP ¦øªA¾¹ºÞ²zªÌ±K½X
-ldap server hostname or ip address		zt	LDAP ¦øªA¾¹¥D¾÷¦WºÙ©Î¬OIP¦ì§}
-ldap settings		zt	LDAP ³]©w
-leave empty for no quota		zt	¤£¶ñ¤J¥ô¦ó¸ê®Æªí¥ÜµL­­¨î
-mail settings		zt	¶l¥ó³]©w
-name of organisation		zt	²ÕÂ´¦WºÙ
-no alternate email address		zt	¨S¦³¥i´À´«ªº¶l¥ó¦ì§}
-no forwarding email address		zt	¨S¦³Âà±H¶l¥ó¦ì§}
-pop3 server hostname or ip address		zt	POP3¦øªA¾¹¥D¾÷¦WºÙ©Î¬OIP¦ì§}
-pop3 server port		zt	POP3¦øªA¾¹³s±µ°ð
-postfix with ldap		zt	¨Ï¥ÎLDAP»P Postfix
-profile list		zt	¸ê®Æ²M³æ
-profile name		zt	¸ê®Æ¦WºÙ
+ldap server		zt	LDAP ä¼ºæœå™¨
+ldap server accounts dn		zt	LDAP ä¼ºæœå™¨å¸³è™Ÿ DN
+ldap server admin dn		zt	LDAP ä¼ºæœå™¨ç®¡ç†è€… DN
+ldap server admin password		zt	LDAP ä¼ºæœå™¨ç®¡ç†è€…å¯†ç¢¼
+ldap server hostname or ip address		zt	LDAP ä¼ºæœå™¨ä¸»æ©Ÿåç¨±æˆ–æ˜¯IPä½å€
+ldap settings		zt	LDAP è¨­å®š
+leave empty for no quota		zt	ä¸å¡«å…¥ä»»ä½•è³‡æ–™è¡¨ç¤ºç„¡é™åˆ¶
+mail settings		zt	éƒµä»¶è¨­å®š
+name of organisation		zt	çµ„ç¹”åç¨±
+no alternate email address		zt	æ²’æœ‰å¯æ›¿æ›çš„éƒµä»¶ä½å€
+no forwarding email address		zt	æ²’æœ‰è½‰å¯„éƒµä»¶ä½å€
+pop3 server hostname or ip address		zt	POP3ä¼ºæœå™¨ä¸»æ©Ÿåç¨±æˆ–æ˜¯IPä½å€
+pop3 server port		zt	POP3ä¼ºæœå™¨é€£æŽ¥åŸ 
+postfix with ldap		zt	ä½¿ç”¨LDAPèˆ‡ Postfix
+profile list		zt	è³‡æ–™æ¸…å–®
+profile name		zt	è³‡æ–™åç¨±
 qmaildotmode		zt	qmaildotmode
-qouta size in mbyte		zt	°tÃB(MB)
-quota settings		zt	°tÃB³]©w
-remove		zt	²¾°£
-select type of imap/pop3 server		zt	¿ï¾ÜIMAP/POP3¦øªA¾¹ªº®æ¦¡
-select type of smtp server		zt	¿ï¾ÜSMTP¦øªA¾¹ªº®æ¦¡
-sieve server hostname or ip address		zt	Sieve¦øªA¾¹¥D¾÷¦WºÙ©Î¬OIP¦ì§}
-sieve server port		zt	Sieve¦øªA¾¹³s±µ°ð
-sieve settings		zt	Sieve³]©w
-smtp server name		zt	SMTP¦øªA¾¹¦WºÙ
-smtp-server hostname or ip address		zt	SMTP¦øªA¾¹¥D¾÷¦WºÙ©Î¬OIP¦ì§}
-smtp-server port		zt	SMTP¦øªA¾¹³s±µ°ð
-standard		zt	¼Ð·Ç
-standard imap server		zt	¼Ð·ÇIMAP¦øªA¾¹
-standard pop3 server		zt	¼Ð·ÇPOP3¦øªA¾¹
-standard smtp-server		zt	¼Ð·ÇSMTP¦øªA¾¹
-use ldap defaults		zt	¨Ï¥ÎLDAP¹w³]­È
-use smtp auth		zt	¨Ï¥ÎSMTP»{ÃÒ
-use tls authentication		zt	¨Ï¥ÎTLS»{ÃÒ
-use tls encryption		zt	¨Ï¥ÎTLS¥[±K
-users can define their own emailaccounts		zt	¨Ï¥ÎªÌ¥i¥H¦Û¦æ©w¸q¶l¥ó±b¸¹
-virtual mail manager		zt	µêÀÀ¶l¥óºÞ²zªÌ
+qouta size in mbyte		zt	é…é¡(MB)
+quota settings		zt	é…é¡è¨­å®š
+remove		zt	ç§»é™¤
+select type of imap/pop3 server		zt	é¸æ“‡IMAP/POP3ä¼ºæœå™¨çš„æ ¼å¼
+select type of smtp server		zt	é¸æ“‡SMTPä¼ºæœå™¨çš„æ ¼å¼
+sieve server hostname or ip address		zt	Sieveä¼ºæœå™¨ä¸»æ©Ÿåç¨±æˆ–æ˜¯IPä½å€
+sieve server port		zt	Sieveä¼ºæœå™¨é€£æŽ¥åŸ 
+sieve settings		zt	Sieveè¨­å®š
+smtp server name		zt	SMTPä¼ºæœå™¨åç¨±
+smtp-server hostname or ip address		zt	SMTPä¼ºæœå™¨ä¸»æ©Ÿåç¨±æˆ–æ˜¯IPä½å€
+smtp-server port		zt	SMTPä¼ºæœå™¨é€£æŽ¥åŸ 
+standard		zt	æ¨™æº–
+standard imap server		zt	æ¨™æº–IMAPä¼ºæœå™¨
+standard pop3 server		zt	æ¨™æº–POP3ä¼ºæœå™¨
+standard smtp-server		zt	æ¨™æº–SMTPä¼ºæœå™¨
+use ldap defaults		zt	ä½¿ç”¨LDAPé è¨­å€¼
+use smtp auth		zt	ä½¿ç”¨SMTPèªè­‰
+use tls authentication		zt	ä½¿ç”¨TLSèªè­‰
+use tls encryption		zt	ä½¿ç”¨TLSåŠ å¯†
+users can define their own emailaccounts		zt	ä½¿ç”¨è€…å¯ä»¥è‡ªè¡Œå®šç¾©éƒµä»¶å¸³è™Ÿ
+virtual mail manager		zt	è™›æ“¬éƒµä»¶ç®¡ç†è€…

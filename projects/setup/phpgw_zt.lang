@@ -1,380 +1,380 @@
-% to	projects	zt	% ¨ì
-+ jobs	projects	zt	+ ¤u§@
-account	projects	zt	±b¸¹
-accounting	common	zt	·|­p
-accounting factor	projects	zt	·|­p­n¯À
-accounting factor for project	projects	zt	±M®×ªº·|­p­n¯À
-accounting system	projects	zt	·|­p¨t²Î
-active	projects	zt	±Ò¥Î
-activities	projects	zt	¬¡°Ê
-activities list	projects	zt	°Ê§@¦Cªí
-activity	common	zt	¬¡°Ê
-activity %1 has been added	projects	zt	·s¼W¤F¬¡°Ê¡G%1
-activity %1 has been added !	projects	zt	¤w¸g¦¨¥\·s¼W¬¡°Ê %1 ¡I
-activity %1 has been updated	projects	zt	§ó·s¤F¬¡°Ê¡G%1
-activity %1 has been updated !	projects	zt	¤w¸g¦¨¥\§ó·s¬¡°Ê %1 ¡I
-activity id	projects	zt	°Ê§@¥N½X
-add activity	projects	zt	·s¼W¬¡°Ê
-add hours	projects	zt	·s¼W®É¼Æ
-add job	projects	zt	·s¼W¤u§@
-add milestone	projects	zt	·s¼W±M®×¶¥¬q
-add project	projects	zt	·s¼W±M®×
-add project hours	projects	zt	·s¼W±M®×®É¼Æ
-add role	projects	zt	·s¼W¨¤¦â
-add work hours	projects	zt	·s¼W¤u§@®É¼Æ
-address book	projects	zt	³q°T¿ı
-administrator	projects	zt	ºŞ²zªÌ
-administrator list	projects	zt	ºŞ²zªÌ²M³æ
-alarm	projects	zt	Äµ§i
-all	projects	zt	©Ò¦³ªº
-all delivery notes	projects	zt	©Ò¦³¶Ç»¼°T®§
-all invoices	projects	zt	©Ò¦³ªºµo²¼
-amount	projects	zt	ª÷ÃB
-anonymous public	projects	zt	¤½¶}ªº
-archive	common	zt	«Ê¦s
-are you sure you want to delete this activity	projects	zt	±z½T©w­n§R°£³o­Ó¬¡°Ê¡H
-are you sure you want to delete this job	projects	zt	±z½T©w­n§R°£³o­Ó¤u§@¡H
-are you sure you want to delete this project	projects	zt	±z½T©w­n§R°£³o­Ó±M®×¡H
-assign	projects	zt	«ü¬£
-assign roles and events	projects	zt	«ü¬£¨¤¦â»P¨Æ¥ó
-assignment has been deleted	projects	zt	«ü¬£°Ê§@¤w¸g³Q§R°£¤F
-assignment has been saved	projects	zt	«ü¬£°Ê§@¤w¸g³QÀx¦s¤F
-assignment to project	projects	zt	«ü¬£¨ì±M®×
-assignment to project %1	projects	zt	«ü¬£¨ì±M®×%1
-assignment to role	projects	zt	«ü¬£µ¹¨¤¦â
-available	projects	zt	¥i¥Î
-before	projects	zt	¤§«e
-bill per hour	projects	zt	ÄÁÂI¶O
-bill per hour/workunit	projects	zt	ÄÁÂI¶O
-bill per workunit	projects	zt	¨C¤@­Ó¤u§@³æ¦ìªº¶O¥Î
-billable	projects	zt	¥i¥I´Ú
-billable activities	projects	zt	¥i­p¶Oªº°Ê§@
-billed	projects	zt	¤w­p¶O
-billed only	projects	zt	­p¶O±M¥Î
-billing	projects	zt	­p¶O
-bookable activities	projects	zt	¥i¨Ï¥Îªº°Ê§@
-bookkeeper	projects	zt	°O±b¤H
-browse	projects	zt	ÂsÄı
-budget	projects	zt	¹wºâ
-budget available	projects	zt	¥i¥Î¹wºâ
-budget limit	projects	zt	¹wºâ¤W­­
-budget main project	projects	zt	½s¦C¥D­n±M®×ªº¹wºâ
-budget planned	projects	zt	­pµe¹wºâ
-budget sum of all sub projects is bigger than the budget of the main project	projects	zt	©Ò¦³ªşÄİ±M®×ªº¹wºâÁ`¦X¶W¹L¥D­n±M®×ªº¹wºâ
-budget used	projects	zt	¤w¨Ï¥Î¹wºâ
-budget used total	projects	zt	¤w¨Ï¥Î¹wºâÁ`¦X
-calculate	projects	zt	­pºâ
-changed start date and end date	projects	zt	­×§ï¶}©l»Pµ²§ô¤é´Á
-changed start date and end date of projects bellow	projects	zt	­×§ï¤U­±±M®×ªº¶}©l»Pµ²§ô¤é´Á
-changes of project data	projects	zt	±M®×¸ê®Æªº²§°Ê
-click %1here%2 to return to projects.	projects	zt	ÂI¿ï %1³o¸Ì%2 ªğ¦^±M®×
-closed	projects	zt	Ãö³¬
-color legend	projects	zt	ÃC¦â°Ï¹j
-columns to show in the projects list	projects	zt	±M®×¦Cªí­nÅã¥ÜªºÄæ¦ì
-comment	projects	zt	³Æµù
-continue	projects	zt	Ä~Äò
-coordinator	common	zt	±M®×¨ó½Õ¤H
-create delivery	projects	zt	«Ø¥ß»¼°e
-create invoice	projects	zt	«Ø¥ßµo²¼
-creator	projects	zt	«Ø¥ßªÌ
-customer	common	zt	«È¤á
-customer nr	projects	zt	«È¤á¼ÊºÙ
-date created	projects	zt	«Ø¥ß¤é´Á
-date due of milestone %1 of project %2 has been updated	projects	zt	±M®×%2ªº¶¥¬q%1¤w¸g§ó·s
-date due planned	projects	zt	¤w³W¹º¤é´Á
-days	projects	zt	¤é
-days before	projects	zt	¤é¤§«e
-definition per project	admin	zt	¨C­Ó±M®×ªº©w¸q
-delete activity	projects	zt	§R°£¬¡°Ê
-delete factor	projects	zt	§R°£­n¯À
-delete hours	projects	zt	²¾°£®É¼Æ
-delete job	projects	zt	§R°£¤u§@
-delete project	projects	zt	§R°£±M®×
-delete work hours	projects	zt	§R°£¤u§@®É¼Æ
-deliveries	projects	zt	»¼°e
-delivery	projects	zt	»¼°e
+% to	projects	zt	% åˆ°
++ jobs	projects	zt	+ å·¥ä½œ
+account	projects	zt	å¸³è™Ÿ
+accounting	common	zt	æœƒè¨ˆ
+accounting factor	projects	zt	æœƒè¨ˆè¦ç´ 
+accounting factor for project	projects	zt	å°ˆæ¡ˆçš„æœƒè¨ˆè¦ç´ 
+accounting system	projects	zt	æœƒè¨ˆç³»çµ±
+active	projects	zt	å•Ÿç”¨
+activities	projects	zt	æ´»å‹•
+activities list	projects	zt	å‹•ä½œåˆ—è¡¨
+activity	common	zt	æ´»å‹•
+activity %1 has been added	projects	zt	æ–°å¢äº†æ´»å‹•ï¼š%1
+activity %1 has been added !	projects	zt	å·²ç¶“æˆåŠŸæ–°å¢æ´»å‹• %1 ï¼
+activity %1 has been updated	projects	zt	æ›´æ–°äº†æ´»å‹•ï¼š%1
+activity %1 has been updated !	projects	zt	å·²ç¶“æˆåŠŸæ›´æ–°æ´»å‹• %1 ï¼
+activity id	projects	zt	å‹•ä½œä»£ç¢¼
+add activity	projects	zt	æ–°å¢æ´»å‹•
+add hours	projects	zt	æ–°å¢æ™‚æ•¸
+add job	projects	zt	æ–°å¢å·¥ä½œ
+add milestone	projects	zt	æ–°å¢å°ˆæ¡ˆéšæ®µ
+add project	projects	zt	æ–°å¢å°ˆæ¡ˆ
+add project hours	projects	zt	æ–°å¢å°ˆæ¡ˆæ™‚æ•¸
+add role	projects	zt	æ–°å¢è§’è‰²
+add work hours	projects	zt	æ–°å¢å·¥ä½œæ™‚æ•¸
+address book	projects	zt	é€šè¨ŠéŒ„
+administrator	projects	zt	ç®¡ç†è€…
+administrator list	projects	zt	ç®¡ç†è€…æ¸…å–®
+alarm	projects	zt	è­¦å‘Š
+all	projects	zt	æ‰€æœ‰çš„
+all delivery notes	projects	zt	æ‰€æœ‰å‚³éè¨Šæ¯
+all invoices	projects	zt	æ‰€æœ‰çš„ç™¼ç¥¨
+amount	projects	zt	é‡‘é¡
+anonymous public	projects	zt	å…¬é–‹çš„
+archive	common	zt	å°å­˜
+are you sure you want to delete this activity	projects	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹æ´»å‹•ï¼Ÿ
+are you sure you want to delete this job	projects	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹å·¥ä½œï¼Ÿ
+are you sure you want to delete this project	projects	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹å°ˆæ¡ˆï¼Ÿ
+assign	projects	zt	æŒ‡æ´¾
+assign roles and events	projects	zt	æŒ‡æ´¾è§’è‰²èˆ‡äº‹ä»¶
+assignment has been deleted	projects	zt	æŒ‡æ´¾å‹•ä½œå·²ç¶“è¢«åˆªé™¤äº†
+assignment has been saved	projects	zt	æŒ‡æ´¾å‹•ä½œå·²ç¶“è¢«å„²å­˜äº†
+assignment to project	projects	zt	æŒ‡æ´¾åˆ°å°ˆæ¡ˆ
+assignment to project %1	projects	zt	æŒ‡æ´¾åˆ°å°ˆæ¡ˆ%1
+assignment to role	projects	zt	æŒ‡æ´¾çµ¦è§’è‰²
+available	projects	zt	å¯ç”¨
+before	projects	zt	ä¹‹å‰
+bill per hour	projects	zt	é˜é»è²»
+bill per hour/workunit	projects	zt	é˜é»è²»
+bill per workunit	projects	zt	æ¯ä¸€å€‹å·¥ä½œå–®ä½çš„è²»ç”¨
+billable	projects	zt	å¯ä»˜æ¬¾
+billable activities	projects	zt	å¯è¨ˆè²»çš„å‹•ä½œ
+billed	projects	zt	å·²è¨ˆè²»
+billed only	projects	zt	è¨ˆè²»å°ˆç”¨
+billing	projects	zt	è¨ˆè²»
+bookable activities	projects	zt	å¯ä½¿ç”¨çš„å‹•ä½œ
+bookkeeper	projects	zt	è¨˜å¸³äºº
+browse	projects	zt	ç€è¦½
+budget	projects	zt	é ç®—
+budget available	projects	zt	å¯ç”¨é ç®—
+budget limit	projects	zt	é ç®—ä¸Šé™
+budget main project	projects	zt	ç·¨åˆ—ä¸»è¦å°ˆæ¡ˆçš„é ç®—
+budget planned	projects	zt	è¨ˆç•«é ç®—
+budget sum of all sub projects is bigger than the budget of the main project	projects	zt	æ‰€æœ‰é™„å±¬å°ˆæ¡ˆçš„é ç®—ç¸½åˆè¶…éä¸»è¦å°ˆæ¡ˆçš„é ç®—
+budget used	projects	zt	å·²ä½¿ç”¨é ç®—
+budget used total	projects	zt	å·²ä½¿ç”¨é ç®—ç¸½åˆ
+calculate	projects	zt	è¨ˆç®—
+changed start date and end date	projects	zt	ä¿®æ”¹é–‹å§‹èˆ‡çµæŸæ—¥æœŸ
+changed start date and end date of projects bellow	projects	zt	ä¿®æ”¹ä¸‹é¢å°ˆæ¡ˆçš„é–‹å§‹èˆ‡çµæŸæ—¥æœŸ
+changes of project data	projects	zt	å°ˆæ¡ˆè³‡æ–™çš„ç•°å‹•
+click %1here%2 to return to projects.	projects	zt	é»é¸ %1é€™è£¡%2 è¿”å›å°ˆæ¡ˆ
+closed	projects	zt	é—œé–‰
+color legend	projects	zt	é¡è‰²å€éš”
+columns to show in the projects list	projects	zt	å°ˆæ¡ˆåˆ—è¡¨è¦é¡¯ç¤ºçš„æ¬„ä½
+comment	projects	zt	å‚™è¨»
+continue	projects	zt	ç¹¼çºŒ
+coordinator	common	zt	å°ˆæ¡ˆå”èª¿äºº
+create delivery	projects	zt	å»ºç«‹éé€
+create invoice	projects	zt	å»ºç«‹ç™¼ç¥¨
+creator	projects	zt	å»ºç«‹è€…
+customer	common	zt	å®¢æˆ¶
+customer nr	projects	zt	å®¢æˆ¶æš±ç¨±
+date created	projects	zt	å»ºç«‹æ—¥æœŸ
+date due of milestone %1 of project %2 has been updated	projects	zt	å°ˆæ¡ˆ%2çš„éšæ®µ%1å·²ç¶“æ›´æ–°
+date due planned	projects	zt	å·²è¦åŠƒæ—¥æœŸ
+days	projects	zt	æ—¥
+days before	projects	zt	æ—¥ä¹‹å‰
+definition per project	admin	zt	æ¯å€‹å°ˆæ¡ˆçš„å®šç¾©
+delete activity	projects	zt	åˆªé™¤æ´»å‹•
+delete factor	projects	zt	åˆªé™¤è¦ç´ 
+delete hours	projects	zt	ç§»é™¤æ™‚æ•¸
+delete job	projects	zt	åˆªé™¤å·¥ä½œ
+delete project	projects	zt	åˆªé™¤å°ˆæ¡ˆ
+delete work hours	projects	zt	åˆªé™¤å·¥ä½œæ™‚æ•¸
+deliveries	projects	zt	éé€
+delivery	projects	zt	éé€
 delivery %1 has been created !	projects	zt	Delivery %1 has been created !
 delivery %1 has been updated !	projects	zt	Delivery %1 has been updated !
-delivery date	projects	zt	»¼°e¤é´Á
-delivery id	projects	zt	»¼°e ID
-delivery list	projects	zt	»¼°e²M³æ
-delivery note	projects	zt	»¼°e°T®§
-delivery note for project	projects	zt	±M®×¶Ç°e°T®§
+delivery date	projects	zt	éé€æ—¥æœŸ
+delivery id	projects	zt	éé€ ID
+delivery list	projects	zt	éé€æ¸…å–®
+delivery note	projects	zt	éé€è¨Šæ¯
+delivery note for project	projects	zt	å°ˆæ¡ˆå‚³é€è¨Šæ¯
 delivery notes	projects	zt	Delivery notes
-description can not exceed 250 characters in length	projects	zt	´y­z¤å¦r¤£¯à°÷¶W¹L250¦r¤¸(¬ù145­Ó¤¤¤å¦r)
-description can not exceed 8000 characters in length	projects	zt	´y­z¤å¦r¤£¯à°÷¶W¹L8000¦r¤¸(¬ù4000­Ó¤¤¤å¦r)
-discount	projects	zt	§é¦©
-distance	projects	zt	¶ZÂ÷
-do you also want to delete all sub projects	projects	zt	±z½T©w­n§R°£©Ò¦³ªşÄİ±M®×¡H
-do you also want to delete all sub projects ?	projects	zt	±z½T©w­n§R°£©Ò¦³ªşÄİ±M®×¡H
-edit activity	projects	zt	½s¿è°Ê§@
-edit administrator list	projects	zt	½s¿è±M®×ºŞ²zªÌ²M³æ
-edit events	projects	zt	½s¿è¨Æ¥ó
-edit hours	projects	zt	½s¿è®É¼Æ
-edit job	projects	zt	½s¿è¤u§@
-edit manager list	projects	zt	½s¿èºŞ²z­û²M³æ
-edit milestone	projects	zt	½s¿è¶¥¬q
-edit milestones	projects	zt	½s¿è¶¥¬q
-edit project	projects	zt	½s¿è±M®×ºŞ²z¤H­û
-edit project administrator list	projects	zt	½s¿è±M®×ºŞ²z¤H­û
-edit project hours	projects	zt	½s¿è±M®×®É¼Æ
-edit roles	projects	zt	½s¿è¨¤¦â
-edit roles and events	projects	zt	½s¿è¨¤¦â»P¨Æ¥ó
-edit seller list	projects	zt	½s¿è¾P°â²M³æ
-edit time tracker entry	projects	zt	½s¿è®É¶¡°lÂÜ°O¿ı
-edit work hours	projects	zt	½s¿è¤u§@®É¼Æ
-employee	projects	zt	­û¤u
-employees	projects	zt	­û¤u
-end date has changed	projects	zt	µ²§ô¤é´Á¤w¸g§ó·s
-ending date can not be after parent projects date due	projects	zt	µ²§ô¤é´Á¤£¯à°÷¦b¥D­n±M®×µ²§ô¤é´Á¤§«á¡C
-ending date can not be after projects date due	projects	zt	µ²§ô¤é´Á¤£¯à°÷¦b¥D­n±M®×´Á¶¡¤§«á¡C
-ending date can not be before start date	projects	zt	µ²§ô¤é´Á¤£¯à°÷¦b¶}©l¤é´Á¤§«e
-entry	projects	zt	¸ê®Æ
-event	projects	zt	¨Æ¥ó
-event %1 has been saved	projects	zt	%1¨Æ¥ó¤w¸gÀx¦s
-event %1 has been updated	projects	zt	%1¨Æ¥ó¤w¸g§ó·s
-events	projects	zt	¨Æ¥ó
-exact accounting [hh.mm]	admin	zt	½T¹êªº·|­p®É¶¡[hh.mm]
-external reference	projects	zt	¥~³¡°Ñ¦Ò
-extra budget	projects	zt	¨ä¥L¹wºâ
-extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	zt	©Ò¦³ªşÄİ±M®×ªºÃB¥~¹wºâÁ`¦X¶W¹L¥D­n±M®×ªºÃB¥~¹wºâª÷ÃB¡C
-factor employee	projects	zt	­û¤u
-factor has been deleted	projects	zt	­n¯À¤w¸g³Q§R°£¤F
-factor has been saved	projects	zt	­n¯À¤w¸g³QÀx¦s¤F
-factor has been updated	projects	zt	­n¯À¤w¸g³Q§ó·s¤F
-factor project	projects	zt	­n¯À±M®×
-failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	zt	¶Ç°e°T®§µ¹'%1'®Éµo¥Í¿ù»~ #%2 ¼ĞÃD='%3', ±H¥ó¤H='%4' ¡I
-from	projects	zt	¨Ó¦Û
-from %1 to %2	projects	zt	±q %1 ¨ì %2
-gantt chart	projects	zt	¥Ì¯S¹Ï
-gantt chart from %1 to %2	projects	zt	±q%1¨ì%2ªº¥Ì¯S¹Ï
-generate activity id	projects	zt	¦Û°Ê²£¥Í¬¡°Ê¥N½X¡H
-generate activity id ?	projects	zt	¦Û°Ê²£¥Í¬¡°Ê¥N½X¡H
-generate delivery id ?	projects	zt	¦Û°Ê²£¥Í¹B°e¥N½X¡H
-generate invoice id ?	projects	zt	¦Û°Ê²£¥Íµo²¼¸¹½X¡H
-generate job id	projects	zt	¦Û°Ê²£¥Í¤u§@¥N½X¡H
-generate project id	projects	zt	¦Û°Ê²£¥Í±M®×¥N½X¡H
-generate project id ?	projects	zt	¦Û°Ê²£¥Í±M®×¥N½X¡H
-global categories	projects	zt	¥ş°ìÃş§O
-has reached	projects	zt	¹F¨ì
-hours	projects	zt	®É¼Æ
-hours limit	projects	zt	®É¼Æ¤W­­
-hours of work day	admin	zt	¨C­Ó¤u§@¤Ñ­pºâ®É¼Æ
-hours used total	projects	zt	¤w¨Ï¥Î®É¼ÆÁ`¦X
-id can not exceed 20 characters in length	projects	zt	¥N½X¤£¯à°÷¶W¹L20­Ó¦r¤¸
-id can not exceed 250 characters in length	projects	zt	¥N½X¤£¯à°÷¶W¹L250­Ó¦r¤¸
-if using activities	admin	zt	¦pªG¨Ï¥Î¬¡°Ê
-if you are an administrator, please edit the site configuration for projects in the admin section	projects	zt	¦pªG±z¬OºŞ²z­û¡A½Ğ¦bºŞ²z°Ï½s¿è±M®×ªººô¯¸³]©w¡C
-if you are not an administrator, please inform the administrator to configure projects	projects	zt	¦pªG±z¤£¬OºŞ²z­û¡A½ĞÁpµ¸ºŞ²z­û³o­Ó°İÃD¡C
-investment nr	projects	zt	§ë¸ê¼Æ
-invoice	projects	zt	µo²¼
-invoice %1 has been created !	projects	zt	¤w¦¨¥\«Ø¥ßµo²¼ %1 ¡I
-invoice %1 has been updated !	projects	zt	¤w¦¨¥\§ó·sµo²¼ %1 ¡I
-invoice date	projects	zt	µo²¼¤é´Á
-invoice id	projects	zt	µo²¼¸¹½X
-invoice list	projects	zt	µo²¼¦Cªí
-invoices	projects	zt	µo²¼
-invoicing method	projects	zt	µo²¼§Î¦¡
-invoicing of work time	admin	zt	¤u§@®É¶¡µo²¼
-job	projects	zt	¤u§@
-job date	projects	zt	¤u§@¤é´Á
-job description	projects	zt	¤u§@±Ô­z
-job has been added	projects	zt	¤u§@¤w¸g·s¼W
-job has been added !	projects	zt	¤w¦¨¥\·s¼W¤u§@¡I
-job has been updated	projects	zt	¤u§@¤w¸g§ó·s
-job has been updated !	projects	zt	¤w¦¨¥\§ó·s¤u§@¡I
-job id	projects	zt	¤u§@¥N½X
-job list	projects	zt	¤u§@¦Cªí
-job manager	projects	zt	¤u§@ºŞ²z­û
-jobs	common	zt	¤u§@
-last update	projects	zt	³Ì«á§ó·s
-list activities	projects	zt	¬¡°Ê²M³æ
-list budget	projects	zt	¹wºâ²M³æ
-list deliveries	projects	zt	»¼°e²M³æ
+description can not exceed 250 characters in length	projects	zt	æè¿°æ–‡å­—ä¸èƒ½å¤ è¶…é250å­—å…ƒ(ç´„145å€‹ä¸­æ–‡å­—)
+description can not exceed 8000 characters in length	projects	zt	æè¿°æ–‡å­—ä¸èƒ½å¤ è¶…é8000å­—å…ƒ(ç´„4000å€‹ä¸­æ–‡å­—)
+discount	projects	zt	æŠ˜æ‰£
+distance	projects	zt	è·é›¢
+do you also want to delete all sub projects	projects	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤æ‰€æœ‰é™„å±¬å°ˆæ¡ˆï¼Ÿ
+do you also want to delete all sub projects ?	projects	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤æ‰€æœ‰é™„å±¬å°ˆæ¡ˆï¼Ÿ
+edit activity	projects	zt	ç·¨è¼¯å‹•ä½œ
+edit administrator list	projects	zt	ç·¨è¼¯å°ˆæ¡ˆç®¡ç†è€…æ¸…å–®
+edit events	projects	zt	ç·¨è¼¯äº‹ä»¶
+edit hours	projects	zt	ç·¨è¼¯æ™‚æ•¸
+edit job	projects	zt	ç·¨è¼¯å·¥ä½œ
+edit manager list	projects	zt	ç·¨è¼¯ç®¡ç†å“¡æ¸…å–®
+edit milestone	projects	zt	ç·¨è¼¯éšæ®µ
+edit milestones	projects	zt	ç·¨è¼¯éšæ®µ
+edit project	projects	zt	ç·¨è¼¯å°ˆæ¡ˆç®¡ç†äººå“¡
+edit project administrator list	projects	zt	ç·¨è¼¯å°ˆæ¡ˆç®¡ç†äººå“¡
+edit project hours	projects	zt	ç·¨è¼¯å°ˆæ¡ˆæ™‚æ•¸
+edit roles	projects	zt	ç·¨è¼¯è§’è‰²
+edit roles and events	projects	zt	ç·¨è¼¯è§’è‰²èˆ‡äº‹ä»¶
+edit seller list	projects	zt	ç·¨è¼¯éŠ·å”®æ¸…å–®
+edit time tracker entry	projects	zt	ç·¨è¼¯æ™‚é–“è¿½è¹¤è¨˜éŒ„
+edit work hours	projects	zt	ç·¨è¼¯å·¥ä½œæ™‚æ•¸
+employee	projects	zt	å“¡å·¥
+employees	projects	zt	å“¡å·¥
+end date has changed	projects	zt	çµæŸæ—¥æœŸå·²ç¶“æ›´æ–°
+ending date can not be after parent projects date due	projects	zt	çµæŸæ—¥æœŸä¸èƒ½å¤ åœ¨ä¸»è¦å°ˆæ¡ˆçµæŸæ—¥æœŸä¹‹å¾Œã€‚
+ending date can not be after projects date due	projects	zt	çµæŸæ—¥æœŸä¸èƒ½å¤ åœ¨ä¸»è¦å°ˆæ¡ˆæœŸé–“ä¹‹å¾Œã€‚
+ending date can not be before start date	projects	zt	çµæŸæ—¥æœŸä¸èƒ½å¤ åœ¨é–‹å§‹æ—¥æœŸä¹‹å‰
+entry	projects	zt	è³‡æ–™
+event	projects	zt	äº‹ä»¶
+event %1 has been saved	projects	zt	%1äº‹ä»¶å·²ç¶“å„²å­˜
+event %1 has been updated	projects	zt	%1äº‹ä»¶å·²ç¶“æ›´æ–°
+events	projects	zt	äº‹ä»¶
+exact accounting [hh.mm]	admin	zt	ç¢ºå¯¦çš„æœƒè¨ˆæ™‚é–“[hh.mm]
+external reference	projects	zt	å¤–éƒ¨åƒè€ƒ
+extra budget	projects	zt	å…¶ä»–é ç®—
+extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	zt	æ‰€æœ‰é™„å±¬å°ˆæ¡ˆçš„é¡å¤–é ç®—ç¸½åˆè¶…éä¸»è¦å°ˆæ¡ˆçš„é¡å¤–é ç®—é‡‘é¡ã€‚
+factor employee	projects	zt	å“¡å·¥
+factor has been deleted	projects	zt	è¦ç´ å·²ç¶“è¢«åˆªé™¤äº†
+factor has been saved	projects	zt	è¦ç´ å·²ç¶“è¢«å„²å­˜äº†
+factor has been updated	projects	zt	è¦ç´ å·²ç¶“è¢«æ›´æ–°äº†
+factor project	projects	zt	è¦ç´ å°ˆæ¡ˆ
+failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	zt	å‚³é€è¨Šæ¯çµ¦'%1'æ™‚ç™¼ç”ŸéŒ¯èª¤ #%2 æ¨™é¡Œ='%3', å¯„ä»¶äºº='%4' ï¼
+from	projects	zt	ä¾†è‡ª
+from %1 to %2	projects	zt	å¾ %1 åˆ° %2
+gantt chart	projects	zt	ç”˜ç‰¹åœ–
+gantt chart from %1 to %2	projects	zt	å¾%1åˆ°%2çš„ç”˜ç‰¹åœ–
+generate activity id	projects	zt	è‡ªå‹•ç”¢ç”Ÿæ´»å‹•ä»£ç¢¼ï¼Ÿ
+generate activity id ?	projects	zt	è‡ªå‹•ç”¢ç”Ÿæ´»å‹•ä»£ç¢¼ï¼Ÿ
+generate delivery id ?	projects	zt	è‡ªå‹•ç”¢ç”Ÿé‹é€ä»£ç¢¼ï¼Ÿ
+generate invoice id ?	projects	zt	è‡ªå‹•ç”¢ç”Ÿç™¼ç¥¨è™Ÿç¢¼ï¼Ÿ
+generate job id	projects	zt	è‡ªå‹•ç”¢ç”Ÿå·¥ä½œä»£ç¢¼ï¼Ÿ
+generate project id	projects	zt	è‡ªå‹•ç”¢ç”Ÿå°ˆæ¡ˆä»£ç¢¼ï¼Ÿ
+generate project id ?	projects	zt	è‡ªå‹•ç”¢ç”Ÿå°ˆæ¡ˆä»£ç¢¼ï¼Ÿ
+global categories	projects	zt	å…¨åŸŸé¡åˆ¥
+has reached	projects	zt	é”åˆ°
+hours	projects	zt	æ™‚æ•¸
+hours limit	projects	zt	æ™‚æ•¸ä¸Šé™
+hours of work day	admin	zt	æ¯å€‹å·¥ä½œå¤©è¨ˆç®—æ™‚æ•¸
+hours used total	projects	zt	å·²ä½¿ç”¨æ™‚æ•¸ç¸½åˆ
+id can not exceed 20 characters in length	projects	zt	ä»£ç¢¼ä¸èƒ½å¤ è¶…é20å€‹å­—å…ƒ
+id can not exceed 250 characters in length	projects	zt	ä»£ç¢¼ä¸èƒ½å¤ è¶…é250å€‹å­—å…ƒ
+if using activities	admin	zt	å¦‚æœä½¿ç”¨æ´»å‹•
+if you are an administrator, please edit the site configuration for projects in the admin section	projects	zt	å¦‚æœæ‚¨æ˜¯ç®¡ç†å“¡ï¼Œè«‹åœ¨ç®¡ç†å€ç·¨è¼¯å°ˆæ¡ˆçš„ç¶²ç«™è¨­å®šã€‚
+if you are not an administrator, please inform the administrator to configure projects	projects	zt	å¦‚æœæ‚¨ä¸æ˜¯ç®¡ç†å“¡ï¼Œè«‹è¯çµ¡ç®¡ç†å“¡é€™å€‹å•é¡Œã€‚
+investment nr	projects	zt	æŠ•è³‡æ•¸
+invoice	projects	zt	ç™¼ç¥¨
+invoice %1 has been created !	projects	zt	å·²æˆåŠŸå»ºç«‹ç™¼ç¥¨ %1 ï¼
+invoice %1 has been updated !	projects	zt	å·²æˆåŠŸæ›´æ–°ç™¼ç¥¨ %1 ï¼
+invoice date	projects	zt	ç™¼ç¥¨æ—¥æœŸ
+invoice id	projects	zt	ç™¼ç¥¨è™Ÿç¢¼
+invoice list	projects	zt	ç™¼ç¥¨åˆ—è¡¨
+invoices	projects	zt	ç™¼ç¥¨
+invoicing method	projects	zt	ç™¼ç¥¨å½¢å¼
+invoicing of work time	admin	zt	å·¥ä½œæ™‚é–“ç™¼ç¥¨
+job	projects	zt	å·¥ä½œ
+job date	projects	zt	å·¥ä½œæ—¥æœŸ
+job description	projects	zt	å·¥ä½œæ•˜è¿°
+job has been added	projects	zt	å·¥ä½œå·²ç¶“æ–°å¢
+job has been added !	projects	zt	å·²æˆåŠŸæ–°å¢å·¥ä½œï¼
+job has been updated	projects	zt	å·¥ä½œå·²ç¶“æ›´æ–°
+job has been updated !	projects	zt	å·²æˆåŠŸæ›´æ–°å·¥ä½œï¼
+job id	projects	zt	å·¥ä½œä»£ç¢¼
+job list	projects	zt	å·¥ä½œåˆ—è¡¨
+job manager	projects	zt	å·¥ä½œç®¡ç†å“¡
+jobs	common	zt	å·¥ä½œ
+last update	projects	zt	æœ€å¾Œæ›´æ–°
+list activities	projects	zt	æ´»å‹•æ¸…å–®
+list budget	projects	zt	é ç®—æ¸…å–®
+list deliveries	projects	zt	éé€æ¸…å–®
 list hours	projects	zt	List hours
-list jobs	common	zt	¤u§@²M³æ
-list projects	common	zt	±M®×²M³æ
-list work hours	projects	zt	¤u®É²M³æ
-main project	projects	zt	¥D­n±M®×
-main project:	projects	zt	¥D­n±M®×¡G
-manager	projects	zt	ºŞ²z
-manager list	projects	zt	ºŞ²z­û²M³æ
-managing committee	admin	zt	ºŞ²z©e­û·|
-manuell entries	projects	zt	¤â¥U¸ê®Æ
-milestone	projects	zt	¶¥¬q
-milestone date due	projects	zt	¹w­q¶¥¬q¤é´Á
-milestone has been deleted	projects	zt	¶¥¬q¤w¸g§R°£¤F
-milestone has been saved	projects	zt	¶¥¬q¤w¸gÀx¦s¤F
-milestones	common	zt	¶¥¬q
-minutes per workunit	projects	zt	¨C¤@­Ó¤u§@³æ¦ìªº¤ÀÄÁ¼Æ
-month	projects	zt	¤ë
-move start date if pervious projects end date changes	admin	zt	¦pªG¤W¤@­Ó±M®×ªºµ²§ô¤é´Á§ïÅÜ´N¦P®É­×§ï³o­Ó±M®×ªº¶}©l¤é´Á
-name not exceed 250 characters in length	projects	zt	¦WºÙ¤£¯à°÷¶W¹L250¦r¤¸
-net	projects	zt	²b
-new date due of milestone %1: %2	projects	zt	¹w­q %1 ¶¥¬qªº¤é´Á¡G%2¡C
-new end date	projects	zt	·sªºµ²§ô¤é´Á
-new milestone	projects	zt	·sªº¶¥¬q
-new project	projects	zt	·s¼W±M®×
-new start date	projects	zt	·sªº¶}©l¤é´Á
-nonactive	common	zt	°±¥Î
-not billable	projects	zt	¥¼¥I´Ú
-number	projects	zt	½s¸¹
-old end date	projects	zt	ÂÂªºµ²§ô¤é´Á
-old start date	projects	zt	ÂÂªº¶}©l¤é´Á
-open	projects	zt	¶}©ñ
-open popup window	projects	zt	¶}±Ò¼u¥X¦¡µøµ¡
-overall	projects	zt	Á`Äı
-parent project	projects	zt	¥D­n±M®×
-pause	projects	zt	¼È°±
-per	projects	zt	¨C¤@
-per day	projects	zt	¨C¤Ñ
-per hour	projects	zt	¨C­Ó¤p®É
-per hour/workunit	projects	zt	¨C­Ó¤p®É/¤u§@³æ¦ì
-per workunit	common	zt	¨C¤@¤u§@³æ¦ì
-percent	projects	zt	¦Ê¤À¤ñ
-planned	projects	zt	¤w³W¹º
-planned time sum of all sub projects is bigger than the planned time of the main project	projects	zt	©Ò¦³ªşÄİ±M®×ªº³W¹º®É¶¡¶W¹L¥D­n±M®×¡C
-please choose a project coordinator	projects	zt	½Ğ¿ï¾Ü¤@­Ó±M®×¨ó½Õ¤H¡I
-please choose activities for that project first !	projects	zt	½Ğ¿ï¾Ü³o­Ó±M®×¥i¨Ï¥Îªº°Ê§@¿ï¶µ¡I
-please choose activities for the project	projects	zt	½Ğ¿ï¾Ü³o­Ó±M®×ªº¬¡°Ê¡I
-please choose the accounting system for the project	projects	zt	½Ğ¿ï¾Ü³o­Ó±M®×ªº·|­p¨t²Î
-please choose the columns to list in the projects preferences section	projects	zt	½Ğ¿ï¾Ü±M®×³]©w°Ï­nÅã¥ÜªºÄæ¦ì¡C
-please choose the discount type	projects	zt	½Ğ¿ï¾Ü§é¦©ºØÃş¡C
-please enter a remark	projects	zt	½Ğ¿é¤J¤@­Ó¥NºÙ
+list jobs	common	zt	å·¥ä½œæ¸…å–®
+list projects	common	zt	å°ˆæ¡ˆæ¸…å–®
+list work hours	projects	zt	å·¥æ™‚æ¸…å–®
+main project	projects	zt	ä¸»è¦å°ˆæ¡ˆ
+main project:	projects	zt	ä¸»è¦å°ˆæ¡ˆï¼š
+manager	projects	zt	ç®¡ç†
+manager list	projects	zt	ç®¡ç†å“¡æ¸…å–®
+managing committee	admin	zt	ç®¡ç†å§”å“¡æœƒ
+manuell entries	projects	zt	æ‰‹å†Šè³‡æ–™
+milestone	projects	zt	éšæ®µ
+milestone date due	projects	zt	é è¨‚éšæ®µæ—¥æœŸ
+milestone has been deleted	projects	zt	éšæ®µå·²ç¶“åˆªé™¤äº†
+milestone has been saved	projects	zt	éšæ®µå·²ç¶“å„²å­˜äº†
+milestones	common	zt	éšæ®µ
+minutes per workunit	projects	zt	æ¯ä¸€å€‹å·¥ä½œå–®ä½çš„åˆ†é˜æ•¸
+month	projects	zt	æœˆ
+move start date if pervious projects end date changes	admin	zt	å¦‚æœä¸Šä¸€å€‹å°ˆæ¡ˆçš„çµæŸæ—¥æœŸæ”¹è®Šå°±åŒæ™‚ä¿®æ”¹é€™å€‹å°ˆæ¡ˆçš„é–‹å§‹æ—¥æœŸ
+name not exceed 250 characters in length	projects	zt	åç¨±ä¸èƒ½å¤ è¶…é250å­—å…ƒ
+net	projects	zt	æ·¨
+new date due of milestone %1: %2	projects	zt	é è¨‚ %1 éšæ®µçš„æ—¥æœŸï¼š%2ã€‚
+new end date	projects	zt	æ–°çš„çµæŸæ—¥æœŸ
+new milestone	projects	zt	æ–°çš„éšæ®µ
+new project	projects	zt	æ–°å¢å°ˆæ¡ˆ
+new start date	projects	zt	æ–°çš„é–‹å§‹æ—¥æœŸ
+nonactive	common	zt	åœç”¨
+not billable	projects	zt	æœªä»˜æ¬¾
+number	projects	zt	ç·¨è™Ÿ
+old end date	projects	zt	èˆŠçš„çµæŸæ—¥æœŸ
+old start date	projects	zt	èˆŠçš„é–‹å§‹æ—¥æœŸ
+open	projects	zt	é–‹æ”¾
+open popup window	projects	zt	é–‹å•Ÿå½ˆå‡ºå¼è¦–çª—
+overall	projects	zt	ç¸½è¦½
+parent project	projects	zt	ä¸»è¦å°ˆæ¡ˆ
+pause	projects	zt	æš«åœ
+per	projects	zt	æ¯ä¸€
+per day	projects	zt	æ¯å¤©
+per hour	projects	zt	æ¯å€‹å°æ™‚
+per hour/workunit	projects	zt	æ¯å€‹å°æ™‚/å·¥ä½œå–®ä½
+per workunit	common	zt	æ¯ä¸€å·¥ä½œå–®ä½
+percent	projects	zt	ç™¾åˆ†æ¯”
+planned	projects	zt	å·²è¦åŠƒ
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	zt	æ‰€æœ‰é™„å±¬å°ˆæ¡ˆçš„è¦åŠƒæ™‚é–“è¶…éä¸»è¦å°ˆæ¡ˆã€‚
+please choose a project coordinator	projects	zt	è«‹é¸æ“‡ä¸€å€‹å°ˆæ¡ˆå”èª¿äººï¼
+please choose activities for that project first !	projects	zt	è«‹é¸æ“‡é€™å€‹å°ˆæ¡ˆå¯ä½¿ç”¨çš„å‹•ä½œé¸é …ï¼
+please choose activities for the project	projects	zt	è«‹é¸æ“‡é€™å€‹å°ˆæ¡ˆçš„æ´»å‹•ï¼
+please choose the accounting system for the project	projects	zt	è«‹é¸æ“‡é€™å€‹å°ˆæ¡ˆçš„æœƒè¨ˆç³»çµ±
+please choose the columns to list in the projects preferences section	projects	zt	è«‹é¸æ“‡å°ˆæ¡ˆè¨­å®šå€è¦é¡¯ç¤ºçš„æ¬„ä½ã€‚
+please choose the discount type	projects	zt	è«‹é¸æ“‡æŠ˜æ‰£ç¨®é¡ã€‚
+please enter a remark	projects	zt	è«‹è¼¸å…¥ä¸€å€‹ä»£ç¨±
 please enter a remark !	projects	zt	Please enter a remark !
-please enter an id	projects	zt	½Ğ¿é¤J¥N½X¡C
-please enter an id !	projects	zt	½Ğ¿é¤J¥N½X¡I
-please enter the bill	projects	zt	½Ğ¿é¤J±b³æ¡I
-please enter the bill per workunit !	projects	zt	½Ğ¿ï¾Ü¨C¤@¤u§@³æ¦ìªº¶O¥Î¡I
-please enter the minutes per workunit	projects	zt	½Ğ¿é¤J¨C­Ó¤u§@³æ¦ìªº¤ÀÄÁ¼Æ¡I
-please enter the minutes per workunit !	projects	zt	½Ğ¿ï¾Ü¨C¤@¤u§@³æ¦ìªº¤ÀÄÁ¼Æ¡I
-please select a project for time tracking	projects	zt	½Ğ¿ï¾Ü­n°lÂÜ®É¶¡ªº±M®×
-please set the accounting factor for the project	projects	zt	½Ğ¬°³o­Ó±M®×³]©w·|­p­n¯À¡C
-please set your preferences for this application !	projects	zt	½Ğ¦b°¾¦n³]©w¤¤½Õ¾ã³o­ÓÀ³¥Îµ{¦¡ªº³]©w¡I
-please specify the budget	projects	zt	½Ğ«ü©w¤@­Ó¹wºâ¡I
-please specify the currency in the global preferences section	common	zt	½Ğ¦b¥ş°ì³]©w¤¤«ü©w³f¹ôºØÃş¡C
-position	projects	zt	¦ì¸m
-previous	projects	zt	¤W¤@­Ó±M®×
-previous project	projects	zt	¤W¤@­Ó±M®×
-previous projects end date has changed	projects	zt	¤W¤@­Ó±M®×µ²§ô¤é´Á¤w¸g§ïÅÜ
-print delivery	projects	zt	¦C¦L»¼°e
-print invoice	projects	zt	¦C¦Lµo²¼
-processor	projects	zt	³B²zªÌ
-project	projects	zt	±M®×
-project %1 has been saved	projects	zt	±M®×%1¤w¸gÀx¦s¤F¡C
-project %1 has been updated	projects	zt	±M®×%1¤w¸g§ó·s¤F¡C
-project accounting	admin	zt	±M®×·|­p±b
-project administration	projects	zt	±M®×ºŞ²z
-project administrators	admin	zt	±M®×ºŞ²zªÌ
-project archive	projects	zt	±M®×«Ê¦s
-project billing	projects	zt	±M®×­p¶O
-project data due	projects	zt	±M®×¹w©w®Éµ{
-project delivery	projects	zt	±M®×¹B°e
-project dependencies	common	zt	±M®×ªş¥[»¡©ú
-project id	common	zt	±M®×¥N½X
-project list	projects	zt	±M®×¦Cªí
-project name	projects	zt	±M®×¦WºÙ
-project overview	projects	zt	±M®×·§­n
-project preferences	projects	zt	±M®×³ß¦n³]©w
-project statistic	projects	zt	±M®×²Î­p
-project statistics	projects	zt	±M®×²Î­p
-project url	projects	zt	±M®×ºô§}
-projects	common	zt	±M®×ºŞ²z
-projects, which are assigned as sequencing	projects	zt	±M®×¡A¨Ì§Ç³Q«ü©w
-quality check	projects	zt	«~½è¬d®Ö
-reference	projects	zt	°Ñ¦Ò
-remark	projects	zt	µù°O
-remark can not exceed 8000 characters in length	projects	zt	µù°O¤£¯à°÷¶W¹L8000­Ó¦r¤¸¡C
-remark can not exceed 8000 characters in length !	projects	zt	µù°O¤£¯à°÷¶W¹L8000­Ó¦r¤¸¡I
-remark required	projects	zt	¥²¶·¿é¤Jµù°O
-result	projects	zt	µ²ªG
-role	projects	zt	¨¤¦â
-role %1 has been saved	projects	zt	¨¤¦â %1 ¤w¸gÀx¦s
-role %1 has been updated	projects	zt	¨¤¦â %1 ¤w¸g§ó·s
-role has been deleted	projects	zt	¨¤¦â¤w¸g§R°£
-roles	projects	zt	¨¤¦â
-roles list	projects	zt	¨¤¦â²M³æ
-sales department	admin	zt	·~°È³¡
-save factor	projects	zt	Àx¦s­n¯À
-save milestone	projects	zt	Àx¦s¶¥¬q
-select factor	projects	zt	¿ï¾Ü­n¯À
-select groups	projects	zt	¿ï¾Ü¸s²Õ
-select main project	common	zt	¿ï¾Ü¥D­n±M®×
-select project	projects	zt	¿ï¾Ü±M®×
-select tax for workhours	projects	zt	¿ï¾Ü¤u§@®É¼Æªºµ|²v
-select users	projects	zt	¿ï¾Ü¨Ï¥ÎªÌ
-select your address	projects	zt	¿ï¾Ü±zªº¦a§}
-seller	projects	zt	¾P°â¤H­û
-seller list	projects	zt	¾P°â¤H­û²M³æ
-sequencing project	projects	zt	±Æ§Ç±M®×
-settings	admin	zt	³]©w
-short description	projects	zt	Â²µu»¡©ú
-show gantt chart	projects	zt	Åã¥Ü¥Ì¯S¹Ï
-site configuration	projects	zt	ºô¯¸³]©w
-start	projects	zt	¶}©l
-start date can not be before parent projects start date	projects	zt	¶}©l¤é´Á¤£¯à°÷¦b¥D­n±M®×ªº¶}©l¤é´Á¤§«e
-start date planned	projects	zt	¹w©w¶}©l¤é´Á
-statistic	projects	zt	²Î­p
-statistics	projects	zt	²Î­p
-stop	projects	zt	µ²§ô
-sub project level %1	projects	zt	ªşÄİ±M®×¼h¯Å %1
-sum	projects	zt	Á`­p
-sum budget	projects	zt	¹wºâÁ`­p
-sum hours	projects	zt	¤u®ÉÁ`­p
-sum jobs	projects	zt	¤u§@Á`­p
-sum workunits	projects	zt	¤u§@³æ¦ìÁ`­p
-tax	projects	zt	µ|²v
-test	projects	zt	´ú¸Õ
-that id has been used already	projects	zt	³o­Ó¥N½X¤w¸g³Q¨Ï¥Î¤F¡C
-that id has been used already !	projects	zt	³o­Ó¥N½X¤w¸g³Q¨Ï¥Î¤F¡I
-the choosen previous project does not have an end date specified	projects	zt	¤W¤@­Ó±M®×¨Ã¥¼«ü©wµ²§ô¤é´Á¡C
-the delivery note contains no items !	projects	zt	»¼°e°T®§¨S¦³¥ô¦ó¶µ¥Ø¡I
-this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	zt	³o³q±`¬O±zªº¶l¥ó¦øªA¾¹³]©w¥X°İÃD¡A½Ğ³qª¾ºô¯¸ºŞ²z­û
-till	projects	zt	ª½¨ì
-time of journey	projects	zt	¦æµ{
-time planned	projects	zt	¤w³W¹º¦æµ{
-time tracker	projects	zt	®É¶¡ªí¬d®Ö­û
-time tracking actions	projects	zt	®É¶¡ªí¬d®Ö°Ê§@
-time tracking for this project has been stopped already	projects	zt	³o­Ó±M®×ªº®É¶¡¬d®Ö¤w¸g³Q²×¤î¤F
-time tracking for this project is already active	projects	zt	³o­Ó±M®×ªº®É¶¡¬d®Ö¤w¸g³Q±Ò¥Î¤F
-time used	projects	zt	¤w¸g¨Ï¥Îªº®É¶¡
-time used billable	projects	zt	¥i½Ğ´Ú¤u®É
-time used total	projects	zt	Á`¨Ï¥Î¤u®É
-title can not exceed 250 characters in length	projects	zt	¼ĞÃD¤£¯à°÷¶W¹L250¦r¤¸
-update delivery	projects	zt	§ó·s»¼°e
-update invoice	projects	zt	§ó·sµo²¼
-use activities	admin	zt	¨Ï¥Î¬¡°Ê
-used	projects	zt	¤w¨Ï¥Î
-used - jobs included	projects	zt	¤w¨Ï¥Î - ¥]§t¤u§@
-used billable	projects	zt	¥i½Ğ´Ú¬¡°Ê
-used not billable	projects	zt	¥¼¯à½Ğ´Ú¬¡°Ê
-used total	projects	zt	¤w¨Ï¥ÎÁ`­p
-user statistic	projects	zt	¨Ï¥ÎªÌ²Î­p
-user statistics	projects	zt	¨Ï¥ÎªÌ²Î­p
-username / group	projects	zt	¨Ï¥ÎªÌ¡ş¸s²Õ
-view employees	projects	zt	ÀËµø­û¤u
-view gantt chart	projects	zt	ÀËµø¥Ì¯S¹Ï
-view hours	projects	zt	ÀËµø¤u®É
-view job	projects	zt	ÀËµø¤u§@
-view project	projects	zt	ÀËµø±M®×
-view users	projects	zt	ÀËµø¨Ï¥ÎªÌ
-view work hours	projects	zt	ÀËµø¤u®É
-work date	common	zt	¤u§@¤é´Á
-work hours	common	zt	®É¼Æ
-work time	projects	zt	¤u§@®É¶¡
-workunit	projects	zt	¤u§@³æ¦ì
-workunits	projects	zt	¤u§@³æ¦ì
-written by:	projects	zt	§@ªÌ¡G
-you have entered an invalid date !	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº¤é´Á¡I
-you have entered an invalid date due	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº¹w©w¤é´Á¡C
-you have entered an invalid end date	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªºµ²§ô¤é´Á¡I
-you have entered an invalid end date !	projects	zt	±z¿é¤J¤F¤£¦Xªkªºµ²§ô¤é´Á¡I
-you have entered an invalid planned end date	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº­pµe¤é´Á¡I
-you have entered an invalid planned start date	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº¤w³W¹º¶}©l¤é´Á¡I
-you have entered an invalid start date	projects	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº¶}©l¤é´Á¡I
-you have entered an invalid start date !	projects	zt	±z¿é¤J¤F¤£¦Xªkªº¶}©l¤é´Á¡I
-you have no customer selected !	projects	zt	±z¨S¦³¿ï¾Ü¥ô¦óªºÅU«È¡I
-you have no projects selected	projects	zt	±z¨S¦³¿ï¾Ü¥ô¦óªº±M®×¡I
-you have selected an invalid activity	projects	zt	±z¿ï¾Ü¤F¤@­Ó¿ù»~ªº¬¡°Ê
-you have selected an invalid activity !	projects	zt	±z¿ï¾Ü¤F¤£¦Xªkªº°Ê§@¡I
-you have to create a delivery or invoice first !	projects	zt	±z¥²¶·¥ı¡u«Ø¥ß¡v°e³f³æ©Îµo²¼¡I
+please enter an id	projects	zt	è«‹è¼¸å…¥ä»£ç¢¼ã€‚
+please enter an id !	projects	zt	è«‹è¼¸å…¥ä»£ç¢¼ï¼
+please enter the bill	projects	zt	è«‹è¼¸å…¥å¸³å–®ï¼
+please enter the bill per workunit !	projects	zt	è«‹é¸æ“‡æ¯ä¸€å·¥ä½œå–®ä½çš„è²»ç”¨ï¼
+please enter the minutes per workunit	projects	zt	è«‹è¼¸å…¥æ¯å€‹å·¥ä½œå–®ä½çš„åˆ†é˜æ•¸ï¼
+please enter the minutes per workunit !	projects	zt	è«‹é¸æ“‡æ¯ä¸€å·¥ä½œå–®ä½çš„åˆ†é˜æ•¸ï¼
+please select a project for time tracking	projects	zt	è«‹é¸æ“‡è¦è¿½è¹¤æ™‚é–“çš„å°ˆæ¡ˆ
+please set the accounting factor for the project	projects	zt	è«‹ç‚ºé€™å€‹å°ˆæ¡ˆè¨­å®šæœƒè¨ˆè¦ç´ ã€‚
+please set your preferences for this application !	projects	zt	è«‹åœ¨åå¥½è¨­å®šä¸­èª¿æ•´é€™å€‹æ‡‰ç”¨ç¨‹å¼çš„è¨­å®šï¼
+please specify the budget	projects	zt	è«‹æŒ‡å®šä¸€å€‹é ç®—ï¼
+please specify the currency in the global preferences section	common	zt	è«‹åœ¨å…¨åŸŸè¨­å®šä¸­æŒ‡å®šè²¨å¹£ç¨®é¡ã€‚
+position	projects	zt	ä½ç½®
+previous	projects	zt	ä¸Šä¸€å€‹å°ˆæ¡ˆ
+previous project	projects	zt	ä¸Šä¸€å€‹å°ˆæ¡ˆ
+previous projects end date has changed	projects	zt	ä¸Šä¸€å€‹å°ˆæ¡ˆçµæŸæ—¥æœŸå·²ç¶“æ”¹è®Š
+print delivery	projects	zt	åˆ—å°éé€
+print invoice	projects	zt	åˆ—å°ç™¼ç¥¨
+processor	projects	zt	è™•ç†è€…
+project	projects	zt	å°ˆæ¡ˆ
+project %1 has been saved	projects	zt	å°ˆæ¡ˆ%1å·²ç¶“å„²å­˜äº†ã€‚
+project %1 has been updated	projects	zt	å°ˆæ¡ˆ%1å·²ç¶“æ›´æ–°äº†ã€‚
+project accounting	admin	zt	å°ˆæ¡ˆæœƒè¨ˆå¸³
+project administration	projects	zt	å°ˆæ¡ˆç®¡ç†
+project administrators	admin	zt	å°ˆæ¡ˆç®¡ç†è€…
+project archive	projects	zt	å°ˆæ¡ˆå°å­˜
+project billing	projects	zt	å°ˆæ¡ˆè¨ˆè²»
+project data due	projects	zt	å°ˆæ¡ˆé å®šæ™‚ç¨‹
+project delivery	projects	zt	å°ˆæ¡ˆé‹é€
+project dependencies	common	zt	å°ˆæ¡ˆé™„åŠ èªªæ˜
+project id	common	zt	å°ˆæ¡ˆä»£ç¢¼
+project list	projects	zt	å°ˆæ¡ˆåˆ—è¡¨
+project name	projects	zt	å°ˆæ¡ˆåç¨±
+project overview	projects	zt	å°ˆæ¡ˆæ¦‚è¦
+project preferences	projects	zt	å°ˆæ¡ˆå–œå¥½è¨­å®š
+project statistic	projects	zt	å°ˆæ¡ˆçµ±è¨ˆ
+project statistics	projects	zt	å°ˆæ¡ˆçµ±è¨ˆ
+project url	projects	zt	å°ˆæ¡ˆç¶²å€
+projects	common	zt	å°ˆæ¡ˆç®¡ç†
+projects, which are assigned as sequencing	projects	zt	å°ˆæ¡ˆï¼Œä¾åºè¢«æŒ‡å®š
+quality check	projects	zt	å“è³ªæŸ¥æ ¸
+reference	projects	zt	åƒè€ƒ
+remark	projects	zt	è¨»è¨˜
+remark can not exceed 8000 characters in length	projects	zt	è¨»è¨˜ä¸èƒ½å¤ è¶…é8000å€‹å­—å…ƒã€‚
+remark can not exceed 8000 characters in length !	projects	zt	è¨»è¨˜ä¸èƒ½å¤ è¶…é8000å€‹å­—å…ƒï¼
+remark required	projects	zt	å¿…é ˆè¼¸å…¥è¨»è¨˜
+result	projects	zt	çµæœ
+role	projects	zt	è§’è‰²
+role %1 has been saved	projects	zt	è§’è‰² %1 å·²ç¶“å„²å­˜
+role %1 has been updated	projects	zt	è§’è‰² %1 å·²ç¶“æ›´æ–°
+role has been deleted	projects	zt	è§’è‰²å·²ç¶“åˆªé™¤
+roles	projects	zt	è§’è‰²
+roles list	projects	zt	è§’è‰²æ¸…å–®
+sales department	admin	zt	æ¥­å‹™éƒ¨
+save factor	projects	zt	å„²å­˜è¦ç´ 
+save milestone	projects	zt	å„²å­˜éšæ®µ
+select factor	projects	zt	é¸æ“‡è¦ç´ 
+select groups	projects	zt	é¸æ“‡ç¾¤çµ„
+select main project	common	zt	é¸æ“‡ä¸»è¦å°ˆæ¡ˆ
+select project	projects	zt	é¸æ“‡å°ˆæ¡ˆ
+select tax for workhours	projects	zt	é¸æ“‡å·¥ä½œæ™‚æ•¸çš„ç¨…ç‡
+select users	projects	zt	é¸æ“‡ä½¿ç”¨è€…
+select your address	projects	zt	é¸æ“‡æ‚¨çš„åœ°å€
+seller	projects	zt	éŠ·å”®äººå“¡
+seller list	projects	zt	éŠ·å”®äººå“¡æ¸…å–®
+sequencing project	projects	zt	æ’åºå°ˆæ¡ˆ
+settings	admin	zt	è¨­å®š
+short description	projects	zt	ç°¡çŸ­èªªæ˜
+show gantt chart	projects	zt	é¡¯ç¤ºç”˜ç‰¹åœ–
+site configuration	projects	zt	ç¶²ç«™è¨­å®š
+start	projects	zt	é–‹å§‹
+start date can not be before parent projects start date	projects	zt	é–‹å§‹æ—¥æœŸä¸èƒ½å¤ åœ¨ä¸»è¦å°ˆæ¡ˆçš„é–‹å§‹æ—¥æœŸä¹‹å‰
+start date planned	projects	zt	é å®šé–‹å§‹æ—¥æœŸ
+statistic	projects	zt	çµ±è¨ˆ
+statistics	projects	zt	çµ±è¨ˆ
+stop	projects	zt	çµæŸ
+sub project level %1	projects	zt	é™„å±¬å°ˆæ¡ˆå±¤ç´š %1
+sum	projects	zt	ç¸½è¨ˆ
+sum budget	projects	zt	é ç®—ç¸½è¨ˆ
+sum hours	projects	zt	å·¥æ™‚ç¸½è¨ˆ
+sum jobs	projects	zt	å·¥ä½œç¸½è¨ˆ
+sum workunits	projects	zt	å·¥ä½œå–®ä½ç¸½è¨ˆ
+tax	projects	zt	ç¨…ç‡
+test	projects	zt	æ¸¬è©¦
+that id has been used already	projects	zt	é€™å€‹ä»£ç¢¼å·²ç¶“è¢«ä½¿ç”¨äº†ã€‚
+that id has been used already !	projects	zt	é€™å€‹ä»£ç¢¼å·²ç¶“è¢«ä½¿ç”¨äº†ï¼
+the choosen previous project does not have an end date specified	projects	zt	ä¸Šä¸€å€‹å°ˆæ¡ˆä¸¦æœªæŒ‡å®šçµæŸæ—¥æœŸã€‚
+the delivery note contains no items !	projects	zt	éé€è¨Šæ¯æ²’æœ‰ä»»ä½•é …ç›®ï¼
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	zt	é€™é€šå¸¸æ˜¯æ‚¨çš„éƒµä»¶ä¼ºæœå™¨è¨­å®šå‡ºå•é¡Œï¼Œè«‹é€šçŸ¥ç¶²ç«™ç®¡ç†å“¡
+till	projects	zt	ç›´åˆ°
+time of journey	projects	zt	è¡Œç¨‹
+time planned	projects	zt	å·²è¦åŠƒè¡Œç¨‹
+time tracker	projects	zt	æ™‚é–“è¡¨æŸ¥æ ¸å“¡
+time tracking actions	projects	zt	æ™‚é–“è¡¨æŸ¥æ ¸å‹•ä½œ
+time tracking for this project has been stopped already	projects	zt	é€™å€‹å°ˆæ¡ˆçš„æ™‚é–“æŸ¥æ ¸å·²ç¶“è¢«çµ‚æ­¢äº†
+time tracking for this project is already active	projects	zt	é€™å€‹å°ˆæ¡ˆçš„æ™‚é–“æŸ¥æ ¸å·²ç¶“è¢«å•Ÿç”¨äº†
+time used	projects	zt	å·²ç¶“ä½¿ç”¨çš„æ™‚é–“
+time used billable	projects	zt	å¯è«‹æ¬¾å·¥æ™‚
+time used total	projects	zt	ç¸½ä½¿ç”¨å·¥æ™‚
+title can not exceed 250 characters in length	projects	zt	æ¨™é¡Œä¸èƒ½å¤ è¶…é250å­—å…ƒ
+update delivery	projects	zt	æ›´æ–°éé€
+update invoice	projects	zt	æ›´æ–°ç™¼ç¥¨
+use activities	admin	zt	ä½¿ç”¨æ´»å‹•
+used	projects	zt	å·²ä½¿ç”¨
+used - jobs included	projects	zt	å·²ä½¿ç”¨ - åŒ…å«å·¥ä½œ
+used billable	projects	zt	å¯è«‹æ¬¾æ´»å‹•
+used not billable	projects	zt	æœªèƒ½è«‹æ¬¾æ´»å‹•
+used total	projects	zt	å·²ä½¿ç”¨ç¸½è¨ˆ
+user statistic	projects	zt	ä½¿ç”¨è€…çµ±è¨ˆ
+user statistics	projects	zt	ä½¿ç”¨è€…çµ±è¨ˆ
+username / group	projects	zt	ä½¿ç”¨è€…ï¼ç¾¤çµ„
+view employees	projects	zt	æª¢è¦–å“¡å·¥
+view gantt chart	projects	zt	æª¢è¦–ç”˜ç‰¹åœ–
+view hours	projects	zt	æª¢è¦–å·¥æ™‚
+view job	projects	zt	æª¢è¦–å·¥ä½œ
+view project	projects	zt	æª¢è¦–å°ˆæ¡ˆ
+view users	projects	zt	æª¢è¦–ä½¿ç”¨è€…
+view work hours	projects	zt	æª¢è¦–å·¥æ™‚
+work date	common	zt	å·¥ä½œæ—¥æœŸ
+work hours	common	zt	æ™‚æ•¸
+work time	projects	zt	å·¥ä½œæ™‚é–“
+workunit	projects	zt	å·¥ä½œå–®ä½
+workunits	projects	zt	å·¥ä½œå–®ä½
+written by:	projects	zt	ä½œè€…ï¼š
+you have entered an invalid date !	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„æ—¥æœŸï¼
+you have entered an invalid date due	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„é å®šæ—¥æœŸã€‚
+you have entered an invalid end date	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„çµæŸæ—¥æœŸï¼
+you have entered an invalid end date !	projects	zt	æ‚¨è¼¸å…¥äº†ä¸åˆæ³•çš„çµæŸæ—¥æœŸï¼
+you have entered an invalid planned end date	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„è¨ˆç•«æ—¥æœŸï¼
+you have entered an invalid planned start date	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„å·²è¦åŠƒé–‹å§‹æ—¥æœŸï¼
+you have entered an invalid start date	projects	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„é–‹å§‹æ—¥æœŸï¼
+you have entered an invalid start date !	projects	zt	æ‚¨è¼¸å…¥äº†ä¸åˆæ³•çš„é–‹å§‹æ—¥æœŸï¼
+you have no customer selected !	projects	zt	æ‚¨æ²’æœ‰é¸æ“‡ä»»ä½•çš„é¡§å®¢ï¼
+you have no projects selected	projects	zt	æ‚¨æ²’æœ‰é¸æ“‡ä»»ä½•çš„å°ˆæ¡ˆï¼
+you have selected an invalid activity	projects	zt	æ‚¨é¸æ“‡äº†ä¸€å€‹éŒ¯èª¤çš„æ´»å‹•
+you have selected an invalid activity !	projects	zt	æ‚¨é¸æ“‡äº†ä¸åˆæ³•çš„å‹•ä½œï¼
+you have to create a delivery or invoice first !	projects	zt	æ‚¨å¿…é ˆå…ˆã€Œå»ºç«‹ã€é€è²¨å–®æˆ–ç™¼ç¥¨ï¼

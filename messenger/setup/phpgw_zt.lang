@@ -1,36 +1,36 @@
-compose	messenger	zt	«Ø¥ß
-compose global message	common	zt	«Ø¥ß¥ş°ì°T®§
-compose message	messenger	zt	«Ø¥ß°T®§
-delete a message.	messenger	zt	§R°£°T®§
-delete selected	messenger	zt	§R°£©Ò¿ï¾Üªº
-forward	messenger	zt	Âà±H
-forward a message	messenger	zt	Âà±H°T®§
-forward a message to another user.	messenger	zt	Âà±H°T®§µ¹¨ä¥L¤H
-forwarded	messenger	zt	¤wÂà±H
-from	messenger	zt	¨Ó¦Û
-global message	messenger	zt	¥ş°ì°T®§
-i can't find the username %1 on the system	messenger	zt	¨t²Î§ä¤£¨ì¨Ï¥ÎªÌ %1
-inbox	messenger	zt	¦¬¥ó§X
-message from	messenger	zt	¨Ó¦Û
-messenger	common	zt	Â²°T
-new	messenger	zt	·s¼W
-read a list of messages.	messenger	zt	Åª¨ú°T®§²M³æ
-read a single message.	messenger	zt	Åª¨ú³æ¤@°T®§
-read message	messenger	zt	Åª¨ú°T®§
-replied	messenger	zt	¤w¦^«H
-reply	messenger	zt	¦^«H
-reply to a message	messenger	zt	¦^ÂĞ¨ì¤@«Ê°T®§
-reply to a received message.	messenger	zt	¦^ÂĞ¨ì¤@«Ê¤w±µ¦¬ªº°T®§
-send	messenger	zt	¶Ç°e
-send a global message.	messenger	zt	¶Ç°e¥ş°ì°T®§
-send a message to a single recipient.	messenger	zt	¶Ç°e°T®§
-send message to	messenger	zt	¶Ç°e°T®§µ¹
-sorry, %1's account is not currently active	messenger	zt	©êºp¡A%1ªº±b¸¹°±¥Î¤¤
-update a message status	messenger	zt	§ó·s°T®§ª¬ºA
-use select box for user list in compose	common	zt	¨Ï¥Î¤U©Ô¦¡¿ï³æ¨Ó¦C¥X¨Ï¥ÎªÌ
-you didn't enter anything for the message	messenger	zt	±z¨S¦³¿é¤J¥ô¦ó°T®§
-you have %1 new message	common	zt	±z¦³ %1 «Ê·s°T®§
-you have %1 new messages	common	zt	±z¦³ %1 «Ê·s°T®§
-you have no messages	messenger	zt	±z¨S¦³·s°T®§
-you must enter a subject	messenger	zt	±z¥²¶·¿é¤J¥DÃD
-you must enter the username this message is for	messenger	zt	±z¥²¶·¿é¤J¦¬¥óªÌ¦WºÙ
+compose	messenger	zt	å»ºç«‹
+compose global message	common	zt	å»ºç«‹å…¨åŸŸè¨Šæ¯
+compose message	messenger	zt	å»ºç«‹è¨Šæ¯
+delete a message.	messenger	zt	åˆªé™¤è¨Šæ¯
+delete selected	messenger	zt	åˆªé™¤æ‰€é¸æ“‡çš„
+forward	messenger	zt	è½‰å¯„
+forward a message	messenger	zt	è½‰å¯„è¨Šæ¯
+forward a message to another user.	messenger	zt	è½‰å¯„è¨Šæ¯çµ¦å…¶ä»–äºº
+forwarded	messenger	zt	å·²è½‰å¯„
+from	messenger	zt	ä¾†è‡ª
+global message	messenger	zt	å…¨åŸŸè¨Šæ¯
+i can't find the username %1 on the system	messenger	zt	ç³»çµ±æ‰¾ä¸åˆ°ä½¿ç”¨è€… %1
+inbox	messenger	zt	æ”¶ä»¶åŒ£
+message from	messenger	zt	ä¾†è‡ª
+messenger	common	zt	ç°¡è¨Š
+new	messenger	zt	æ–°å¢
+read a list of messages.	messenger	zt	è®€å–è¨Šæ¯æ¸…å–®
+read a single message.	messenger	zt	è®€å–å–®ä¸€è¨Šæ¯
+read message	messenger	zt	è®€å–è¨Šæ¯
+replied	messenger	zt	å·²å›ä¿¡
+reply	messenger	zt	å›ä¿¡
+reply to a message	messenger	zt	å›è¦†åˆ°ä¸€å°è¨Šæ¯
+reply to a received message.	messenger	zt	å›è¦†åˆ°ä¸€å°å·²æ¥æ”¶çš„è¨Šæ¯
+send	messenger	zt	å‚³é€
+send a global message.	messenger	zt	å‚³é€å…¨åŸŸè¨Šæ¯
+send a message to a single recipient.	messenger	zt	å‚³é€è¨Šæ¯
+send message to	messenger	zt	å‚³é€è¨Šæ¯çµ¦
+sorry, %1's account is not currently active	messenger	zt	æŠ±æ­‰ï¼Œ%1çš„å¸³è™Ÿåœç”¨ä¸­
+update a message status	messenger	zt	æ›´æ–°è¨Šæ¯ç‹€æ…‹
+use select box for user list in compose	common	zt	ä½¿ç”¨ä¸‹æ‹‰å¼é¸å–®ä¾†åˆ—å‡ºä½¿ç”¨è€…
+you didn't enter anything for the message	messenger	zt	æ‚¨æ²’æœ‰è¼¸å…¥ä»»ä½•è¨Šæ¯
+you have %1 new message	messenger	zt	æ‚¨æœ‰ %1 å°æ–°è¨Šæ¯
+you have %1 new messages	messenger	zt	æ‚¨æœ‰ %1 å°æ–°è¨Šæ¯
+you have no messages	messenger	zt	æ‚¨æ²’æœ‰æ–°è¨Šæ¯
+you must enter a subject	messenger	zt	æ‚¨å¿…é ˆè¼¸å…¥ä¸»é¡Œ
+you must enter the username this message is for	messenger	zt	æ‚¨å¿…é ˆè¼¸å…¥æ”¶ä»¶è€…åç¨±

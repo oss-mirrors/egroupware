@@ -1,17 +1,17 @@
 (no subject)	felamimail	zt	(
 (only cc/bcc)	felamimail	zt	(
 (unknown sender)	felamimail	zt	(
-activate	felamimail	zt	¡Ó
-activate script	felamimail	zt	¡Ó
-add address	felamimail	zt	¡Ps
-add rule	felamimail	zt	¡Ps
-add script	felamimail	zt	¡Ps
-add to %1	felamimail	zt	¡Ps
-add to address book	felamimail	zt	¡Ps
-add to addressbook	felamimail	zt	¡Ps
+activate	felamimail	zt	Â±
+activate script	felamimail	zt	Â±
+add address	felamimail	zt	Â·s
+add rule	felamimail	zt	Â·s
+add script	felamimail	zt	Â·s
+add to %1	felamimail	zt	Â·s
+add to address book	felamimail	zt	Â·s
+add to addressbook	felamimail	zt	Â·s
 additional info	felamimail	zt	
 address book	felamimail	zt	
-address book search	felamimail	zt	¡Pj
+address book search	felamimail	zt	Â·j
 after message body	felamimail	zt	
 all address books	felamimail	zt	
 all folders	felamimail	zt	
@@ -22,13 +22,13 @@ attachments	felamimail	zt
 auto refresh folder list	felamimail	zt	
 back to folder	felamimail	zt	
 bad reque	felamimail	zt	
-based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	zt	¢X
-bcc	felamimail	zt	¡ÓK
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	zt	Â°
+bcc	felamimail	zt	Â±K
 before headers	felamimail	zt	
 between headers and message body	felamimail	zt	
 body part	felamimail	zt	
-cc	felamimail	zt	¢X
-change folder	felamimail	zt	¡±
+cc	felamimail	zt	Â°
+change folder	felamimail	zt	Â§
 checkbox	felamimail	zt	
 click here to log back in.	felamimail	zt	
 click here to return to %1	felamimail	zt	
@@ -53,23 +53,23 @@ dark magenta	felamimail	zt
 dark yellow	felamimail	zt	
 date(newest first)	felamimail	zt	
 date(oldest first)	felamimail	zt	
-deactivate script	felamimail	zt	¢X¡Ó
+deactivate script	felamimail	zt	Â°Â±
 default sorting order	felamimail	zt	
-delete all	felamimail	zt	¡±R¢X
-delete folder	felamimail	zt	¡±R¢X
-delete selected	felamimail	zt	¡±R¢X
-delete selected messages	felamimail	zt	¡±R¢X
+delete all	felamimail	zt	Â§RÂ°
+delete folder	felamimail	zt	Â§RÂ°
+delete selected	felamimail	zt	Â§RÂ°
+delete selected messages	felamimail	zt	Â§RÂ°
 deleted	felamimail	zt	
-deleted folder successfully!	felamimail	zt	¡±R¢X
-disable	felamimail	zt	¢X¡Ó
+deleted folder successfully!	felamimail	zt	Â§RÂ°
+disable	felamimail	zt	Â°Â±
 display message in new window	felamimail	zt	
 display of html emails	felamimail	zt	
 display only when no plain text is available	felamimail	zt	
 display preferences	felamimail	zt	
-do it!	felamimail	zt	¢X
+do it!	felamimail	zt	Â°
 do not use sent	felamimail	zt	
 do not use trash	felamimail	zt	
-do you really want to delete the '%1' folder?	felamimail	zt	¡Óz
+do you really want to delete the '%1' folder?	felamimail	zt	Â±z
 does not contain	felamimail	zt	
 does not match	felamimail	zt	
 does not match regexp	felamimail	zt	
@@ -88,7 +88,7 @@ email address	felamimail	zt
 email signature	felamimail	zt	
 emailfilter	felamimail	zt	
 empty trash	felamimail	zt	
-enable	felamimail	zt	¡Ó
+enable	felamimail	zt	Â±
 enter your default mail domain ( from: user@domain )	admin	zt	
 enter your imap mail server hostname or ip address	admin	zt	
 enter your sieve server hostname or ip address	admin	zt	
@@ -98,7 +98,7 @@ enter your smtp server port	admin	zt
 error	felamimail	zt	
 error connecting to imap serv	felamimail	zt	
 error opening	felamimail	zt	
-expunge	felamimail	zt	¡±R
+expunge	felamimail	zt	Â§R
 felamimail	common	zt	FelaMiMail
 file into	felamimail	zt	
 files	felamimail	zt	
@@ -121,10 +121,10 @@ follow	felamimail	zt
 for mail to be send - not functional yet	felamimail	zt	
 for received mail	felamimail	zt	
 forward	felamimail	zt	
-found	felamimail	zt	¡±
-from	felamimail	zt	¡Óq
-from(a->z)	felamimail	zt	¡Óq (A->Z)
-from(z->a)	felamimail	zt	¡Óq (Z->A)
+found	felamimail	zt	Â§
+from	felamimail	zt	Â±q
+from(a->z)	felamimail	zt	Â±q (A->Z)
+from(z->a)	felamimail	zt	Â±q (Z->A)
 full name	felamimail	zt	
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	zt	
 hide header	felamimail	zt	
@@ -142,7 +142,7 @@ imaps encryption only	felamimail	zt
 in	felamimail	zt	
 in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	zt	
 in the center	felamimail	zt	
-index order	felamimail	zt	¡Ó
+index order	felamimail	zt	Â±
 info	felamimail	zt	
 invalid user name or password	felamimail	zt	
 javascript	felamimail	zt	JavaScript
@@ -173,12 +173,12 @@ match	felamimail	zt
 matches	felamimail	zt	
 matches regexp	felamimail	zt	
 medium gray	felamimail	zt	
-message highlighting	felamimail	zt	¢XT
-message list	felamimail	zt	¢XT
-messages	felamimail	zt	¢XT
+message highlighting	felamimail	zt	Â°T
+message list	felamimail	zt	Â°T
+messages	felamimail	zt	Â°T
 minute	felamimail	zt	
 minutes	felamimail	zt	
-more	felamimail	zt	¡±
+more	felamimail	zt	Â§
 move	felamimail	zt	
 move messages	felamimail	zt	
 move selected to	felamimail	zt	
@@ -186,25 +186,25 @@ move to trash	felamimail	zt
 must be unique	felamimail	zt	
 name	felamimail	zt	
 never display html emails	felamimail	zt	
-new	felamimail	zt	¡Ps
-new filter	felamimail	zt	¡Ps
+new	felamimail	zt	Â·s
+new filter	felamimail	zt	Â·s
 next	felamimail	zt	
 next message	felamimail	zt	
 nickname	felamimail	zt	
 no filter	felamimail	zt	
-no folders found	felamimail	zt	¡±
-no folders were found to subscribe to!	felamimail	zt	¡±
-no folders were found to unsubscribe from!	felamimail	zt	¡±
+no folders found	felamimail	zt	Â§
+no folders were found to subscribe to!	felamimail	zt	Â§
+no folders were found to unsubscribe from!	felamimail	zt	Â§
 no highlighting is defined	felamimail	zt	
 no messages were selected.	felamimail	zt	
 no next message	felamimail	zt	
 no notification	felamimail	zt	
 no personal address book is defined. contact administrator.	felamimail	zt	
-no persons matching your search was found	felamimail	zt	¡±
+no persons matching your search was found	felamimail	zt	Â§
 no previous message	felamimail	zt	
 no valid emailprofile selected!!	felamimail	zt	
 none	felamimail	zt	
-number of messages to index	felamimail	zt	¢XT
+number of messages to index	felamimail	zt	Â°T
 on behalf of	felamimail	zt	
 only inbox	felamimail	zt	
 only unseen	felamimail	zt	
@@ -213,17 +213,17 @@ organisation	felamimail	zt
 organization	felamimail	zt	
 organization name	admin	zt	
 oth	felamimail	zt	
-participants	felamimail	zt	¢X
+participants	felamimail	zt	Â°
 personal information	felamimail	zt	
 posting	felamimail	zt	
-preference file %1 not found. exiting abnormally	felamimail	zt	¡±
-preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	zt	¢X
+preference file %1 not found. exiting abnormally	felamimail	zt	Â§
+preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	zt	Â°
 previous	felamimail	zt	
 previous message	felamimail	zt	
 print it	felamimail	zt	
 print this page	felamimail	zt	
 purge	felamimail	zt	
-quicksearch	felamimail	zt	¡±
+quicksearch	felamimail	zt	Â§
 read	felamimail	zt	
 read da	felamimail	zt	
 reading	felamimail	zt	
@@ -234,7 +234,7 @@ refresh page	felamimail	zt
 refresh time in minutes	felamimail	zt	
 remove	felamimail	zt	
 remove immediately	felamimail	zt	
-rename	felamimail	zt	¡±
+rename	felamimail	zt	Â§
 rename a folder	felamimail	zt	
 rename folder	felamimail	zt	
 renamed successfully!	felamimail	zt	
@@ -247,11 +247,11 @@ return	felamimail	zt
 return to options page	felamimail	zt	
 right	felamimail	zt	
 rule	felamimail	zt	
-running squirrelmail version %1 (c) 1999-2000.	felamimail	zt	¢X
+running squirrelmail version %1 (c) 1999-2000.	felamimail	zt	Â°
 same window - not functional yet	felamimail	zt	
 save	felamimail	zt	
-search	felamimail	zt	¡Pj
-search for	felamimail	zt	¡Pj
+search	felamimail	zt	Â·j
+search for	felamimail	zt	Â·j
 seconds	felamimail	zt	
 select	felamimail	zt	
 select all	felamimail	zt	
@@ -259,9 +259,9 @@ select emailprofile	felamimail	zt
 select home email address	felamimail	zt	
 select work email address	felamimail	zt	
 select your mail server type	admin	zt	
-send	felamimail	zt	¢Xe
-sent fold	felamimail	zt	¡ÓH
-sent folder	felamimail	zt	¡ÓH
+send	felamimail	zt	Â°e
+sent fold	felamimail	zt	Â±H
+sent folder	felamimail	zt	Â±H
 server respond	felamimail	zt	
 show header	felamimail	zt	
 show new messages on main screen	felamimail	zt	
@@ -281,7 +281,7 @@ squirrelmail	felamimail	zt	Squirrelmail
 subject	felamimail	zt	
 subject(a->z)	felamimail	zt	
 subject(z->a)	felamimail	zt	
-submit	felamimail	zt	¢Xe
+submit	felamimail	zt	Â°e
 subscribe	felamimail	zt	
 subscribed	felamimail	zt	
 subscribed successfully!	felamimail	zt	
@@ -290,17 +290,17 @@ successfully saved folder preferences!	felamimail	zt
 successfully saved personal information!	felamimail	zt	
 switch current folder to	felamimail	zt	
 table of contents	felamimail	zt	
-text only	felamimail	zt	¡Â
+text only	felamimail	zt	Â¯
 the connection to the imap server failed!!	felamimail	zt	
 the help has not been translated to %1.  it will be displayed in english instead.	felamimail	zt	
-the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	zt	¡Â
+the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	zt	Â¯
 the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	zt	
-theme	felamimail	zt	¡±G
+theme	felamimail	zt	Â§G
 then	felamimail	zt	
 these settings change the way your folders are displayed and manipulated.	felamimail	zt	
 this contains personal information about yourself such as your name, your email address, etc.	felamimail	zt	
 this folder is empty	felamimail	zt	
-this php has no imap support compiled in!!	felamimail	zt	¡Óz
+this php has no imap support compiled in!!	felamimail	zt	Â±z
 this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	zt	
 to	felamimail	zt	
 to the left	felamimail	zt	
@@ -328,7 +328,7 @@ unsubscribe	felamimail	zt
 unsubscribed	felamimail	zt	
 unsubscribed successfully!	felamimail	zt	
 up	felamimail	zt	
-update address	felamimail	zt	¡±
+update address	felamimail	zt	Â§
 use a signature	felamimail	zt	
 use a signature?	felamimail	zt	
 use addresses	felamimail	zt	
@@ -336,21 +336,21 @@ use custom settings	felamimail	zt
 use javascript or html addressbook?	felamimail	zt	
 use smtp auth	admin	zt	
 users can define their own emailaccounts	admin	zt	
-vacation	felamimail	zt	¢X
+vacation	felamimail	zt	Â°
 view full header	felamimail	zt	
 view message	felamimail	zt	
 viewing full header	felamimail	zt	
 viewing message	felamimail	zt	
 viewing messages	felamimail	zt	
 welcome to %1's webmail system	felamimail	zt	
-when deleting messages	felamimail	zt	¡P
+when deleting messages	felamimail	zt	Â·
 white	felamimail	zt	
 width of folder list	felamimail	zt	
 wrap incoming text at	felamimail	zt	
 writing	felamimail	zt	
 wrote	felamimail	zt	
-you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	zt	¡Óz
-you can only edit one address at the time	felamimail	zt	¡Óz
-you must login first.	felamimail	zt	¡Óz
-you need a valid user and password to access this page!	felamimail	zt	¡Óz
-your search failed with the following error(s)	felamimail	zt	¡Óz
+you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	zt	Â±z
+you can only edit one address at the time	felamimail	zt	Â±z
+you must login first.	felamimail	zt	Â±z
+you need a valid user and password to access this page!	felamimail	zt	Â±z
+your search failed with the following error(s)	felamimail	zt	Â±z

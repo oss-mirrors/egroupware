@@ -1,15 +1,15 @@
 %1 messages have been deleted	email	zt	
 (required)	email	zt	(
 1 message has been deleted	email	zt	
-1 message has been moved to	email	zt	¢XT
-<b>*apply*</b> this filter	email	zt	<b>*¡Ó
-<b>apply all</b> filters	email	zt	<b>*¡Ó
+1 message has been moved to	email	zt	Â°T
+<b>*apply*</b> this filter	email	zt	<b>*Â±
+<b>apply all</b> filters	email	zt	<b>*Â±
 a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zt	
-account	email	zt	¡Ób
-account name	email	zt	¡Ób
-account user name	email	zt	¡Ób
-accounts	common	zt	¡Ób
-accounts:	email	zt	¡Ób
+account	email	zt	Â±b
+account name	email	zt	Â±b
+account user name	email	zt	Â±b
+accounts	common	zt	Â±b
+accounts:	email	zt	Â±b
 add to address book	email	zt	
 add to addressbook	email	zt	
 address book	email	zt	
@@ -19,20 +19,20 @@ and	email	zt
 and stop filtering	email	zt	
 answered	email	zt	
 apply	email	zt	
-apply filters report:	email	zt	¡Ó
+apply filters report:	email	zt	Â±
 apr	email	zt	
 aqua fusion	email	zt	
 arrival date	email	zt	
-as	email	zt	¡P
+as	email	zt	Â·
 attach file	email	zt	
 attach signature	email	zt	
 attachment	email	zt	
 aug	email	zt	
-bcc	email	zt	¡ÓK
-bcc address	email	zt	¡ÓK
+bcc	email	zt	Â±K
+bcc address	email	zt	Â±K
 before	email	zt	
 big	email	zt	
-bigger	email	zt	¡±
+bigger	email	zt	Â§
 biggest	email	zt	
 body	email	zt	
 both	email	zt	
@@ -40,10 +40,10 @@ button type	email	zt
 cache server data whenever possible	email	zt	
 cc	email	zt	
 cc address	email	zt	
-change font size in your e-mail pages	email	zt	¡±
+change font size in your e-mail pages	email	zt	Â§
 check flags for type of mails	email	zt	
-choose for rename	email	zt	¡±
-choose to rename	email	zt	¡±
+choose for rename	email	zt	Â§
+choose to rename	email	zt	Â§
 clear cache	email	zt	
 click here for more info in a new window	email	zt	
 click here to continue	email	zt	
@@ -61,21 +61,21 @@ current attachments (%1)	email	zt
 custom e-mail preferences	email	zt	
 custom e-mail settings	email	zt	
 custom email settings	email	zt	
-debugging page	email	zt	¢X
+debugging page	email	zt	Â°
 dec	email	zt	
 default sorting order	email	zt	
 default:	common	zt	
-delete (expert)	email	zt	¡±R¢X
-delete a folder	email	zt	¡±R¢X
-delete account	common	zt	¡±R¢X
-deleted	email	zt	¡±R¢X
+delete (expert)	email	zt	Â§RÂ°
+delete a folder	email	zt	Â§RÂ°
+delete account	common	zt	Â§RÂ°
+deleted	email	zt	Â§RÂ°
 deleted messages (trash) folder	email	zt	
-deleted messages folder name	email	zt	¡±R¢X
-deleted messages go to trash	email	zt	¡±R¢X
-deleted messages saved to folder:	email	zt	¡±R¢X
+deleted messages folder name	email	zt	Â§RÂ°
+deleted messages go to trash	email	zt	Â§RÂ°
+deleted messages saved to folder:	email	zt	Â§RÂ°
 discard	email	zt	
 does not contain	email	zt	
-draft	email	zt	¡Â
+draft	email	zt	Â¯
 e-mail clear cache	preferences	zt	
 e-mail extra account	email	zt	
 e-mail extra accounts	email	zt	
@@ -92,10 +92,10 @@ email address	email	zt
 email date	email	zt	
 email filters	email	zt	
 email password	email	zt	
-email preferences	email	zt	¢X
+email preferences	email	zt	Â°
 email signature	email	zt	
 email type	common	zt	
-enable this email account	common	zt	¡Ó
+enable this email account	common	zt	Â±
 enable utf-7 encoded folder names	email	zt	
 enter the search string in the text boxes	email	zt	
 enter your default mail domain ( from: user@domain )	admin	zt	
@@ -111,14 +111,14 @@ extra e-mail account	common	zt
 extra e-mail accounts	common	zt	
 extra e-mail preferences number %1	email	zt	
 feb	email	zt	
-fewer actions	email	zt	¡±
-fewer choices	email	zt	¡±
+fewer actions	email	zt	Â§
+fewer choices	email	zt	Â§
 file	email	zt	
 file attachment	email	zt	
 file into	email	zt	
 fill in as much as you can	email	zt	
 filter [number] and name	email	zt	
-filter inbox for accounts	email	zt	¡Ób
+filter inbox for accounts	email	zt	Â±b
 filter name	email	zt	
 filter name:	email	zt	
 filter number	email	zt	
@@ -183,38 +183,38 @@ keywords	email	zt
 layout 1	common	zt	
 layout 2	common	zt	
 lines	email	zt	
-list messages	email	zt	¢XT
-long names	email	zt	¡±
+list messages	email	zt	Â°T
+long names	email	zt	Â§
 mail folder(uw-maildir)	email	zt	
 mail server	email	zt	
 mail server login type	admin	zt	
 mail server type	email	zt	
 mail settings	admin	zt	
-mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	¢Xe
-mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	¢Xe
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	Â°e
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your egroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zt	Â°e
 manage accounts	email	zt	
 manage folders	email	zt	
 mar	email	zt	
-message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zt	¢XT
-message list layout	common	zt	¢XT
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zt	Â°T
+message list layout	common	zt	Â°T
 messages	email	zt	
 messages found in folder	email	zt	
-messages have been moved to	email	zt	¢XT
-more actions	email	zt	¡±
-more choices	email	zt	¡±
+messages have been moved to	email	zt	Â°T
+more actions	email	zt	Â§
+more choices	email	zt	Â§
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them / default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zt	
 most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zt	
 move down	email	zt	
 move selected messages into	email	zt	
-move this message into	email	zt	¡ÓN
+move this message into	email	zt	Â±N
 move up	email	zt	
 mozilla modern style	email	zt	Mozilla
-name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zt	¡Óz¡±
-new	email	zt	¡Ps
-new account	email	zt	¡Ps¡Ób
-new filter	email	zt	¡Ps
-new message	email	zt	¡Ps
-new messages	email	zt	¡Ps
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zt	Â±zÂ§
+new	email	zt	Â·s
+new account	email	zt	Â·sÂ±b
+new filter	email	zt	Â·s
+new message	email	zt	Â·s
+new messages	email	zt	Â·s
 newest	common	zt	
 next message	email	zt	
 no change	email	zt	
@@ -255,7 +255,7 @@ recent	email	zt
 recipient	email	zt	
 redirect	email	zt	
 reject	email	zt	
-rename (expert)	email	zt	¡±
+rename (expert)	email	zt	Â§
 rename a folder	email	zt	
 reply	email	zt	
 reply all	email	zt	
@@ -269,7 +269,7 @@ return mails during this time period	email	zt
 save deleted messages in folder named below	email	zt	
 save sent messages in folder named below	email	zt	
 search for mails in these folders	email	zt	
-search this folder	email	zt	¡Pj
+search this folder	email	zt	Â·j
 section	email	zt	
 seen	email	zt	
 select home email address	email	zt	
@@ -280,14 +280,14 @@ select your mail server type	admin	zt
 select your screensize for proper showing of the javascript addressbook	email	zt	
 select your screensize for propper showing of the javascript addressbook	email	zt	
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zt	
-send	email	zt	¢Xe
-send deleted messages to the trash	email	zt	¡ÓN¡±R¢X
+send	email	zt	Â°e
+send deleted messages to the trash	email	zt	Â±NÂ§RÂ°
 send forwarded mail as quoted attachment	email	zt	
 sender	email	zt	
 sent	common	zt	
-sent folder	email	zt	¡ÓH
-sent messages folder	common	zt	¡ÓH
-sent messages folder name	email	zt	¡ÓH
+sent folder	email	zt	Â±H
+sent messages folder	common	zt	Â±H
+sent messages folder name	email	zt	Â±H
 sent messages saved in &quot;sent&quot; folder	common	zt	
 sent messages saved to folder:	email	zt	
 sep	email	zt	
@@ -307,10 +307,10 @@ size larger than	email	zt
 size smaller than	email	zt	
 small	email	zt	
 small view	email	zt	
-smaller	email	zt	¡±
+smaller	email	zt	Â§
 smallest	email	zt	
-somebody	email	zt	¢X
-sort by	email	zt	¡Ó
+somebody	email	zt	Â°
+sort by	email	zt	Â±
 source accounts	email	zt	
 spell check	email	zt	
 standard e-mail preferences	email	zt	
@@ -329,10 +329,10 @@ the email application offers different icon image themes, these icons can be big
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	zt	
 the login name to use when checking mail for this email account. this may be the same as your egroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zt	
 the password to use when checking mail for this email account. this may be the same as your egroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zt	
-the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	zt	¡Óz¡±
-then check the	email	zt	¡Ó
-then do this	email	zt	¡Ó
-then take this actions	email	zt	¡Ó
+the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your egroupware installation has a &quot;ssl&quot; capabable version of php.	email	zt	Â±zÂ§
+then check the	email	zt	Â±
+then do this	email	zt	Â±
+then take this actions	email	zt	Â±
 there is no text or other part of the email to display to the user, all part(s) are attachments.	email	zt	
 there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	zt	
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	zt	
@@ -384,12 +384,12 @@ we have recently added this new addressbook so that users can choose to have a m
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	zt	
 we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	zt	
 wrote	email	zt	
-you have %1 new messages!	common	zt	¡Óz
-you have 1 new message!	common	zt	¡Óz
-you have messages!	common	zt	¡Óz
-you have no new messages	common	zt	¡Óz
-you must click	email	zt	¡Óz
-you must click %1 for the file to actually upload	email	zt	¡Óz
-your full name	common	zt	¡Óz
-your message has been sent	common	zt	¡Óz
+you have %1 new messages!	common	zt	Â±z
+you have 1 new message!	common	zt	Â±z
+you have messages!	common	zt	Â±z
+you have no new messages	common	zt	Â±z
+you must click	email	zt	Â±z
+you must click %1 for the file to actually upload	email	zt	Â±z
+your full name	common	zt	Â±z
+your message has been sent	common	zt	Â±z
 your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zt	

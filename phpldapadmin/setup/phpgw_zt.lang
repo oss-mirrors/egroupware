@@ -1,17 +1,17 @@
-add	phpldapadmin	zt	s
-add_a_jpeg_photo	phpldapadmin	zt	s
-add_new	phpldapadmin	zt	s
-add_new_attribute	phpldapadmin	zt	s
-add_new_attribute_tooltip	phpldapadmin	zt	s
-add_new_binary_attr	phpldapadmin	zt	s
-add_new_binary_attr_tooltip	phpldapadmin	zt	s
-add_oclass_and_attrs	phpldapadmin	zt	s
-add_value	phpldapadmin	zt	s
-add_value_tooltip	phpldapadmin	zt	s
+add	phpldapadmin	zt	路s
+add_a_jpeg_photo	phpldapadmin	zt	路s
+add_new	phpldapadmin	zt	路s
+add_new_attribute	phpldapadmin	zt	路s
+add_new_attribute_tooltip	phpldapadmin	zt	路s
+add_new_binary_attr	phpldapadmin	zt	路s
+add_new_binary_attr_tooltip	phpldapadmin	zt	路s
+add_oclass_and_attrs	phpldapadmin	zt	路s
+add_value	phpldapadmin	zt	路s
+add_value_tooltip	phpldapadmin	zt	路s
 advanced_search_form_str	phpldapadmin	zt	
 alias_for	phpldapadmin	zt	
 bad_server_id	phpldapadmin	zt	
-base_dn	phpldapadmin	zt	
+base_dn	phpldapadmin	zt	掳
 binary_value	phpldapadmin	zt	
 change_entry_rdn	phpldapadmin	zt	
 chooser_link_tooltip	phpldapadmin	zt	
@@ -28,10 +28,10 @@ create_new	phpldapadmin	zt
 create_new_entry_in	phpldapadmin	zt	
 create_new_entry_on	phpldapadmin	zt	
 current_list_of	phpldapadmin	zt	
-delete_attribute	phpldapadmin	zt	”R
+delete_attribute	phpldapadmin	zt	搂R掳
 delete_hint	phpldapadmin	zt	
-delete_this_entry	phpldapadmin	zt	”R
-delete_this_entry_tooltip	phpldapadmin	zt	∮z∮N
+delete_this_entry	phpldapadmin	zt	搂R掳
+delete_this_entry_tooltip	phpldapadmin	zt	卤z卤N
 desc	phpldapadmin	zt	
 distinguished_name	phpldapadmin	zt	
 download_value	phpldapadmin	zt	
@@ -50,7 +50,7 @@ false	phpldapadmin	zt
 hidden	phpldapadmin	zt	
 hide_internal_attrs	phpldapadmin	zt	
 import	phpldapadmin	zt	
-import_from_ldif	phpldapadmin	zt	∮qLDIF
+import_from_ldif	phpldapadmin	zt	卤qLDIF
 inappropriate_matching_note	phpldapadmin	zt	
 info	phpldapadmin	zt	
 inherits	phpldapadmin	zt	
@@ -65,8 +65,8 @@ logged_in_as	phpldapadmin	zt
 logout	phpldapadmin	zt	
 logout_of_this_server	phpldapadmin	zt	
 matching_rule_oid	phpldapadmin	zt	
-new_attributes	phpldapadmin	zt	s
-new_required_attrs	phpldapadmin	zt	s
+new_attributes	phpldapadmin	zt	路s
+new_required_attrs	phpldapadmin	zt	路s
 new_required_attrs_instructions	phpldapadmin	zt	
 new_required_attrs_note	phpldapadmin	zt	
 no_new_attrs_available	phpldapadmin	zt	
@@ -77,13 +77,13 @@ not_enough_login_info	phpldapadmin	zt
 oid	phpldapadmin	zt	OID
 optional_attrs	phpldapadmin	zt	
 please_specify_in_config	phpldapadmin	zt	
-read_only	phpldapadmin	zt	
+read_only	phpldapadmin	zt	掳
 really_delete_attribute	phpldapadmin	zt	
 refresh	phpldapadmin	zt	
 refresh_expanded_containers	phpldapadmin	zt	
 refresh_this_entry	phpldapadmin	zt	
-rename	phpldapadmin	zt	”
-rename_entry	phpldapadmin	zt	”
+rename	phpldapadmin	zt	搂
+rename_entry	phpldapadmin	zt	搂
 report_bug	phpldapadmin	zt	
 request_new_feature	phpldapadmin	zt	
 required_attrs	phpldapadmin	zt	
@@ -91,10 +91,10 @@ requires_to_add	phpldapadmin	zt
 save_changes	phpldapadmin	zt	
 schema	phpldapadmin	zt	
 schema_for_server	phpldapadmin	zt	
-search	phpldapadmin	zt	j
-search_ filter	phpldapadmin	zt	j
-search_for_entries_whose	phpldapadmin	zt	j
-search_scope	phpldapadmin	zt	j
+search	phpldapadmin	zt	路j
+search_ filter	phpldapadmin	zt	路j
+search_for_entries_whose	phpldapadmin	zt	路j
+search_scope	phpldapadmin	zt	路j
 see_open_bugs	phpldapadmin	zt	
 see_open_requests	phpldapadmin	zt	
 server	phpldapadmin	zt	

@@ -1,41 +1,41 @@
-%1 by %2	comic	zt	%1 ¦Û %2
-%1 by %2 (%3)	comic	zt	%1 ¦Û %2 (%3)
-are you sure you want to reset all comic dates and resolved image urls?	comic	zt	±z½T©w­n­«³]©Ò¦³º©µe¤é´Á¨Ã¥B³B²z¹Ï¤ùºô§}¡H
-censorship level	comic	zt	ÀË¬d¼h¦¸
-censorship override enabled	comic	zt	¶W¸üÀË¬d±Ò¥Î
-comic	common	zt	º©µe
-comic preferences updated	comic	zt	º©µe³]©w§ó·s
-comics	common	zt	º©µe
-comics per page	comic	zt	¨C­¶Åã¥Üº©µe¼Æ
-comics scaled	comic	zt	º©µe¤w´ú¶q
-daily comic	common	zt	¨C¤éº©µe
-daily comic preferences	comic	zt	¨C¤éº©µe³]©w
-daily comics	admin	zt	¨C¤éº©µe
-daily comics - global options	comic	zt	¨C¤éº©µe - ¥ş°ì³]©w
-daily comics data	comic	zt	¨C¤éº©µe¸ê®Æ
-daily comics global options	comic	zt	¨C¤éº©µe¥ş°ì¿ï¶µ
-display layout	comic	zt	Åã¥Ü±Æª©
-display options	comic	zt	Åã¥Ü¿ï¶µ
-egroupware daily comics	comic	zt	eGroupWare¨C¤éº©µe
-front page comic	comic	zt	­º­¶º©µe
-front page comic scaled	comic	zt	­º­¶º©µe´ú¶q
-genre	comic	zt	²£¥Í
-global comics	comic	zt	¥ş°ìº©µe
-global options	comic	zt	¥ş°ì¿ï¶µ
-global options updated	comic	zt	¥ş°ì¿ï¶µ§ó·s
-image source	comic	zt	¹Ï¤ù¨Ó·½
-max file size	comic	zt	³Ì¤jÀÉ®×¤j¤p
-my comics	comic	zt	§Úªºº©µe
-no_entries	comic	zt	¨S¦³¸ê®Æ
-parser	comic	zt	»yªk
-performed %1 of element	comic	zt	°õ¦æ¤¸¯Àªº %1
-phpgroupware daily comics	comic	zt	EGroupWare¨C¤éº©µe
-random	comic	zt	ÀH¾÷
-rated	comic	zt	µû¤À
-remote (parse/snarf) enabled	comic	zt	»·ºİ(parse/snarf)
-reset	comic	zt	­«³]
-reset comic data	admin	zt	­«³]º©µe¸ê®Æ
-resolve	comic	zt	³B²z
-showing %1 (%2 - %3 of %4)	comic	zt	Åã¥Ü %1 (%2 - %3 Á`¼Æ %4)
-template	comic	zt	¼ËªO
-visit %1	comic	zt	ÂsÄı %1
+%1 by %2	comic	zt	%1 è‡ª %2
+%1 by %2 (%3)	comic	zt	%1 è‡ª %2 (%3)
+are you sure you want to reset all comic dates and resolved image urls?	comic	zt	æ‚¨ç¢ºå®šè¦é‡è¨­æ‰€æœ‰æ¼«ç•«æ—¥æœŸä¸¦ä¸”è™•ç†åœ–ç‰‡ç¶²å€ï¼Ÿ
+censorship level	comic	zt	æª¢æŸ¥å±¤æ¬¡
+censorship override enabled	comic	zt	è¶…è¼‰æª¢æŸ¥å•Ÿç”¨
+comic	common	zt	æ¼«ç•«
+comic preferences updated	comic	zt	æ¼«ç•«è¨­å®šæ›´æ–°
+comics	common	zt	æ¼«ç•«
+comics per page	comic	zt	æ¯é é¡¯ç¤ºæ¼«ç•«æ•¸
+comics scaled	comic	zt	æ¼«ç•«å·²æ¸¬é‡
+daily comic	common	zt	æ¯æ—¥æ¼«ç•«
+daily comic preferences	comic	zt	æ¯æ—¥æ¼«ç•«è¨­å®š
+daily comics	admin	zt	æ¯æ—¥æ¼«ç•«
+daily comics - global options	comic	zt	æ¯æ—¥æ¼«ç•« - å…¨åŸŸè¨­å®š
+daily comics data	comic	zt	æ¯æ—¥æ¼«ç•«è³‡æ–™
+daily comics global options	comic	zt	æ¯æ—¥æ¼«ç•«å…¨åŸŸé¸é …
+display layout	comic	zt	é¡¯ç¤ºæ’ç‰ˆ
+display options	comic	zt	é¡¯ç¤ºé¸é …
+egroupware daily comics	comic	zt	eGroupWareæ¯æ—¥æ¼«ç•«
+front page comic	comic	zt	é¦–é æ¼«ç•«
+front page comic scaled	comic	zt	é¦–é æ¼«ç•«æ¸¬é‡
+genre	comic	zt	ç”¢ç”Ÿ
+global comics	comic	zt	å…¨åŸŸæ¼«ç•«
+global options	comic	zt	å…¨åŸŸé¸é …
+global options updated	comic	zt	å…¨åŸŸé¸é …æ›´æ–°
+image source	comic	zt	åœ–ç‰‡ä¾†æº
+max file size	comic	zt	æœ€å¤§æª”æ¡ˆå¤§å°
+my comics	comic	zt	æˆ‘çš„æ¼«ç•«
+no_entries	comic	zt	æ²’æœ‰è³‡æ–™
+parser	comic	zt	èªæ³•
+performed %1 of element	comic	zt	åŸ·è¡Œå…ƒç´ çš„ %1
+phpgroupware daily comics	comic	zt	EGroupWareæ¯æ—¥æ¼«ç•«
+random	comic	zt	éš¨æ©Ÿ
+rated	comic	zt	è©•åˆ†
+remote (parse/snarf) enabled	comic	zt	é ç«¯(parse/snarf)
+reset	comic	zt	é‡è¨­
+reset comic data	admin	zt	é‡è¨­æ¼«ç•«è³‡æ–™
+resolve	comic	zt	è™•ç†
+showing %1 (%2 - %3 of %4)	comic	zt	é¡¯ç¤º %1 (%2 - %3 ç¸½æ•¸ %4)
+template	comic	zt	æ¨£æ¿
+visit %1	comic	zt	ç€è¦½ %1

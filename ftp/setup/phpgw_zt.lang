@@ -1,34 +1,34 @@
-are you sure you want to delete %1 ?	ftp	zt	±z½T©w­n§R°£%1¡H
-attempt to create a directory with empty name	ftp	zt	¹Á¸Õ«Ø¥ß¤@­Ó¨S¦³¦WºÙªº¸ê®Æ§¨
-cancel	ftp	zt	¨ú®ø
-cd	ftp	zt	¸ê®Æ§¨
-connect	ftp	zt	³sµ²
-create new directory	ftp	zt	«Ø¥ß·sªº¸ê®Æ§¨
-delete	ftp	zt	§R°£
-failed to connect to %1 with user %2 and password %3	ftp	zt	±b¸¹ %2 »P±K½X %3 µLªk³sµ² %1
-failed to create directory %1	ftp	zt	µLªk«Ø¥ß¸ê®Æ§¨%1
-failed to delete %1	ftp	zt	µLªk§R°£%1
-failed to rename %1 to %2	ftp	zt	µLªk±N%1§ï¦W¬°%2
-failed to upload %1	ftp	zt	µLªk¤W¶ÇÀÉ®×¨ì%1
-ftp client	ftp	zt	Ftp¨Ï¥ÎªÌºİ
-ftp hostname	ftp	zt	Ftp¥D¾÷¦WºÙ
-ftp server	ftp	zt	Ftp¦øªA¾¹
-home	ftp	zt	­º­¶
-log into ftp server	ftp	zt	µn¤JFtp¦øªA¾¹
-logout/relogin	ftp	zt	µn¥X/­«·sµn¤J
-password	ftp	zt	±K½X
-permissions	ftp	zt	Åv­­
-rename	ftp	zt	§ï¦W
-rename file	ftp	zt	§ï¦W
-rename from	ftp	zt	§ï¦W¦Û
-rename to	ftp	zt	¨ì
-renamed %1 to %2	ftp	zt	§ïÅÜÀÉ®×¦WºÙ%1 ¬° %2
-save	ftp	zt	Àx¦s
-save to filemanager	ftp	zt	Àx¦s¨ìÀÉ®×ºŞ²z­û
-size	ftp	zt	¤j¤p
-successfully created directory %1	ftp	zt	¦¨¥\«Ø¥ß¸ê®Æ§¨%1
-successfully deleted %1	ftp	zt	%1§R°£¦¨¥
-successfully uploaded %1	ftp	zt	%1¤W¶Ç¦¨¥
-upload	ftp	zt	¤W¶Ç
-username	ftp	zt	¨Ï¥ÎªÌ¦WºÙ
-view	ftp	zt	ÂsÄı
+are you sure you want to delete %1 ?	ftp	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤%1ï¼Ÿ
+attempt to create a directory with empty name	ftp	zt	å˜—è©¦å»ºç«‹ä¸€å€‹æ²’æœ‰åç¨±çš„è³‡æ–™å¤¾
+cancel	ftp	zt	å–æ¶ˆ
+cd	ftp	zt	è³‡æ–™å¤¾
+connect	ftp	zt	é€£çµ
+create new directory	ftp	zt	å»ºç«‹æ–°çš„è³‡æ–™å¤¾
+delete	ftp	zt	åˆªé™¤
+failed to connect to %1 with user %2 and password %3	ftp	zt	å¸³è™Ÿ %2 èˆ‡å¯†ç¢¼ %3 ç„¡æ³•é€£çµ %1
+failed to create directory %1	ftp	zt	ç„¡æ³•å»ºç«‹è³‡æ–™å¤¾%1
+failed to delete %1	ftp	zt	ç„¡æ³•åˆªé™¤%1
+failed to rename %1 to %2	ftp	zt	ç„¡æ³•å°‡%1æ”¹åç‚º%2
+failed to upload %1	ftp	zt	ç„¡æ³•ä¸Šå‚³æª”æ¡ˆåˆ°%1
+ftp client	ftp	zt	Ftpä½¿ç”¨è€…ç«¯
+ftp hostname	ftp	zt	Ftpä¸»æ©Ÿåç¨±
+ftp server	ftp	zt	Ftpä¼ºæœå™¨
+home	ftp	zt	é¦–é 
+log into ftp server	ftp	zt	ç™»å…¥Ftpä¼ºæœå™¨
+logout/relogin	ftp	zt	ç™»å‡º/é‡æ–°ç™»å…¥
+password	ftp	zt	å¯†ç¢¼
+permissions	ftp	zt	æ¬Šé™
+rename	ftp	zt	æ”¹å
+rename file	ftp	zt	æ”¹å
+rename from	ftp	zt	æ”¹åè‡ª
+rename to	ftp	zt	åˆ°
+renamed %1 to %2	ftp	zt	æ”¹è®Šæª”æ¡ˆåç¨±%1 ç‚º %2
+save	ftp	zt	å„²å­˜
+save to filemanager	ftp	zt	å„²å­˜åˆ°æª”æ¡ˆç®¡ç†å“¡
+size	ftp	zt	å¤§å°
+successfully created directory %1	ftp	zt	æˆåŠŸå»ºç«‹è³‡æ–™å¤¾%1
+successfully deleted %1	ftp	zt	%1åˆªé™¤æˆåŠŸ
+successfully uploaded %1	ftp	zt	%1ä¸Šå‚³æˆåŠŸ
+upload	ftp	zt	ä¸Šå‚³
+username	ftp	zt	ä½¿ç”¨è€…åç¨±
+view	ftp	zt	ç€è¦½

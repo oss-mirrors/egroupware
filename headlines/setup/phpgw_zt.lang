@@ -1,47 +1,47 @@
-are you sure you want to delete this news site ?	headlines	zt	±z½T©w­n§R°£³o­Ó·s»Dºô¯¸¡H
-base url	headlines	zt	ºô§}
-basic	headlines	zt	°ò¥»
-choose layout	headlines	zt	¿ï¾Üª©­±
-color	headlines	zt	ÃC¦â
-create new headline	headlines	zt	«Ø¥ß·sªº¥L¯¸·s»D
-current headlines in cache	headlines	zt	¥Ø«e¼È¦sªº¥L¯¸·s»D
-display	headlines	zt	Åã¥Ü
-edit headline sites	headlines	zt	½s¿è
-edit headlines shown by default	headlines	zt	¹w³]Åã¥Üªº¥L¯¸·s»D
-grab new news sites	common	zt	¨ú±o·sªº·s»Dºô¯¸
-gray	headlines	zt	¦Ç¦â
-headline preferences	common	zt	¥L¯¸·s»D³]©w
-headline site management	common	zt	¥L¯¸·s»Dºô¯¸ºŞ²z
-headline sites	headlines	zt	¥L¯¸·s»Dºô¯¸
-headlines	common	zt	¥L¯¸·s»D
-headlines administration	headlines	zt	¥L¯¸·s»DºŞ²z
-headlines administration - delete headline	headlines	zt	¥L¯¸·s»DºŞ²z - §R°£¥L¯¸·s»D
-headlines layout	headlines	zt	¥L¯¸·s»Dª©­±
-listings displayed	headlines	zt	¦C¥XÅã¥Üªº
-minutes between refresh	headlines	zt	§ó·sÀW²v(¤ÀÄÁ)
-minutes between reloads	headlines	zt	­«ÅªÀW²v(¤ÀÄÁ)
-monitor	common	zt	ºÊµø
-news file	headlines	zt	·s»DÀÉ®×
-news headlines	common	zt	¥L¯¸·s»D
-news type	headlines	zt	·s»DºØÃş
-no headlines found	headlines	zt	§ä¤£¨ì¥L¯¸·s»D
-other preferences	preferences	zt	¨ä¥L³]©w
-reload news sites	headlines	zt	­«·sÅª¨ú·s»D¯¸
-reset	headlines	zt	­«³]
-sample	headlines	zt	½d¨Ò
-select headline news sites	headlines	zt	¿ï¾Ü¥L¯¸·s»Dºô¯¸
-select headlines to display	common	zt	¿ï¾Ü­nÅã¥Üªº¥L¯¸·s»D
-select layout	common	zt	¿ï¾Üª©­±
-show headlines on homepage	headlines	zt	¦bºô­¶¤WÅã¥Ü¥L¯¸·s»D
-site	headlines	zt	ºô¯¸
-that site has already been entered	headlines	zt	³o­Óºô¯¸¤w¸g¦s¦b
-unable to retrieve links	headlines	zt	µLªk¨ú±o³sµ²
-update headline	headlines	zt	§ó·s¥L¯¸·s»D
-view headline	headlines	zt	ÂsÄı¥L¯¸·s»D
-you can only enter numbers for listings display	headlines	zt	±z¥u¯à°÷¿é¤JÅã¥Ü·s»D¸ê®Æµ§¼Æ
-you can only enter numbers minutes between refresh	headlines	zt	±z¥u¯à°÷¿é¤J§ó·sÀW²v(¤ÀÄÁ)
-you must enter a base url	headlines	zt	±z¥²¶·¿é¤Jºô§}
-you must enter a display	headlines	zt	±z¥²¶·¿é¤JÅã¥Üªº¥L¯¸·s»D
-you must enter a news url	headlines	zt	±z¥²¶·¿é¤J·s»Dºô§}
-you must enter the number of listings display	headlines	zt	±z¥²¶·¿é¤JÅã¥Üªº¸ê®Æµ§¼Æ
-you must enter the number of minutes between reload	headlines	zt	±z¥²¶·¿é¤J­«·sÅª¨úªºÀW²v(¤ÀÄÁ)
+are you sure you want to delete this news site ?	headlines	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹æ–°èç¶²ç«™ï¼Ÿ
+base url	headlines	zt	ç¶²å€
+basic	headlines	zt	åŸºæœ¬
+choose layout	headlines	zt	é¸æ“‡ç‰ˆé¢
+color	headlines	zt	é¡è‰²
+create new headline	headlines	zt	å»ºç«‹æ–°çš„ä»–ç«™æ–°è
+current headlines in cache	headlines	zt	ç›®å‰æš«å­˜çš„ä»–ç«™æ–°è
+display	headlines	zt	é¡¯ç¤º
+edit headline sites	headlines	zt	ç·¨è¼¯
+edit headlines shown by default	headlines	zt	é è¨­é¡¯ç¤ºçš„ä»–ç«™æ–°è
+grab new news sites	common	zt	å–å¾—æ–°çš„æ–°èç¶²ç«™
+gray	headlines	zt	ç°è‰²
+headline preferences	common	zt	ä»–ç«™æ–°èè¨­å®š
+headline site management	common	zt	ä»–ç«™æ–°èç¶²ç«™ç®¡ç†
+headline sites	headlines	zt	ä»–ç«™æ–°èç¶²ç«™
+headlines	common	zt	ä»–ç«™æ–°è
+headlines administration	headlines	zt	ä»–ç«™æ–°èç®¡ç†
+headlines administration - delete headline	headlines	zt	ä»–ç«™æ–°èç®¡ç† - åˆªé™¤ä»–ç«™æ–°è
+headlines layout	headlines	zt	ä»–ç«™æ–°èç‰ˆé¢
+listings displayed	headlines	zt	åˆ—å‡ºé¡¯ç¤ºçš„
+minutes between refresh	headlines	zt	æ›´æ–°é »ç‡(åˆ†é˜)
+minutes between reloads	headlines	zt	é‡è®€é »ç‡(åˆ†é˜)
+monitor	common	zt	ç›£è¦–
+news file	headlines	zt	æ–°èæª”æ¡ˆ
+news headlines	common	zt	ä»–ç«™æ–°è
+news type	headlines	zt	æ–°èç¨®é¡
+no headlines found	headlines	zt	æ‰¾ä¸åˆ°ä»–ç«™æ–°è
+other preferences	preferences	zt	å…¶ä»–è¨­å®š
+reload news sites	headlines	zt	é‡æ–°è®€å–æ–°èç«™
+reset	headlines	zt	é‡è¨­
+sample	headlines	zt	ç¯„ä¾‹
+select headline news sites	headlines	zt	é¸æ“‡ä»–ç«™æ–°èç¶²ç«™
+select headlines to display	common	zt	é¸æ“‡è¦é¡¯ç¤ºçš„ä»–ç«™æ–°è
+select layout	common	zt	é¸æ“‡ç‰ˆé¢
+show headlines on homepage	headlines	zt	åœ¨ç¶²é ä¸Šé¡¯ç¤ºä»–ç«™æ–°è
+site	headlines	zt	ç¶²ç«™
+that site has already been entered	headlines	zt	é€™å€‹ç¶²ç«™å·²ç¶“å­˜åœ¨
+unable to retrieve links	headlines	zt	ç„¡æ³•å–å¾—é€£çµ
+update headline	headlines	zt	æ›´æ–°ä»–ç«™æ–°è
+view headline	headlines	zt	ç€è¦½ä»–ç«™æ–°è
+you can only enter numbers for listings display	headlines	zt	æ‚¨åªèƒ½å¤ è¼¸å…¥é¡¯ç¤ºæ–°èè³‡æ–™ç­†æ•¸
+you can only enter numbers minutes between refresh	headlines	zt	æ‚¨åªèƒ½å¤ è¼¸å…¥æ›´æ–°é »ç‡(åˆ†é˜)
+you must enter a base url	headlines	zt	æ‚¨å¿…é ˆè¼¸å…¥ç¶²å€
+you must enter a display	headlines	zt	æ‚¨å¿…é ˆè¼¸å…¥é¡¯ç¤ºçš„ä»–ç«™æ–°è
+you must enter a news url	headlines	zt	æ‚¨å¿…é ˆè¼¸å…¥æ–°èç¶²å€
+you must enter the number of listings display	headlines	zt	æ‚¨å¿…é ˆè¼¸å…¥é¡¯ç¤ºçš„è³‡æ–™ç­†æ•¸
+you must enter the number of minutes between reload	headlines	zt	æ‚¨å¿…é ˆè¼¸å…¥é‡æ–°è®€å–çš„é »ç‡(åˆ†é˜)

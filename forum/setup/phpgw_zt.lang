@@ -1,45 +1,45 @@
 		zt	
-add forum	forum	zt	·s¼W°Q½×°Ï
-all forums, user posts, and topics in this category will be lost!	forum	zt	³o­Ó¤ÀÃş¤Uªº©Ò¦³°Q½×°Ï¡B¨Ï¥ÎªÌ¤å³¹¤Î¥DÃD±N·|³Q²¾°£¡I
-all user posts and topics will be lost!	forum	zt	Äİ©Ò¦³ªº¨Ï¥ÎªÌ¤å³¹¤Î¥DÃD±N·|³Q²¾°£¡I
-all user posts, and topics in this forum will be lost!	forum	zt	¦b³o­Ó°Q½×°Ï¤¤ªº©Ò¦³¤å³¹³£·|²¾°£¡I
-are you sure you want to delete this category?	forum	zt	±z½T©w­n²¾°£³o­Ó¤ÀÃş¶Ü¡H
-are you sure you want to delete this forum?	forum	zt	±z½T©w­n²¾°£³o­Ó°Q½×°Ï¶Ü¡H
-author	forum	zt	§@ªÌ
-belongs to category	forum	zt	Äİ©ó¤ÀÃş
-category description	forum	zt	¤ÀÃş»¡©ú
-category name	forum	zt	¤ÀÃş¦WºÙ
-change forum settings	admin	zt	§ó°Ê°Q½×°Ï³]©w
-collapse threads	forum	zt	¤@¯ëÀËµø
-collapsed	forum	zt	ºPÅ|
-create new category	forum	zt	«Ø¥ß·sªº¤ÀÃş
-current categories and sub forums	forum	zt	¥Ø«eªº¤ÀÃş¤Î¤l°Q½×°Ï
-edit forum	forum	zt	½s¿è°Q½×°Ï
-email replies to this thread, to the address above	forum	zt	³o­Ó°Q½×¦êªº©Ò¦³¦^ÂĞ¬Ò¨Ï¥Î¹q¤l¶l¥ó°e¦Ü¤W¦C¦a§}
-forum	common	zt	°Q½×°Ï
-forum administration	admin	zt	°Q½×°ÏºŞ²z
-forum description	forum	zt	°Q½×°Ï»¡©ú
-forum name	forum	zt	°Q½×°Ï¦WºÙ
-forums	common	zt	°Q½×°Ï
-latest reply	forum	zt	³Ì«á¦^´_
-new category	forum	zt	·s¼W¤ÀÃş
-new forum	forum	zt	·s¼W°Q½×°Ï
-new topic	forum	zt	·s¼W¥DÃD
-no category	forum	zt	µL¤ÀÃş
-normal view	forum	zt	¥¿±`ÀËµø
-post	forum	zt	µoªí
-post a message to this thread	forum	zt	¦^ÂĞ¤å³¹
-replies	forum	zt	¦^ÂĞ
-reply to this message	forum	zt	¦^ÂĞ¦¹¤å³¹
-return to admin	forum	zt	¦^¨ì¨t²ÎºŞ²z
-return to forums	forum	zt	¦^¨ì°Q½×°Ï
-sub category	forum	zt	¤lÃş§O
-there are no forums in this category	forum	zt	³o­ÓÃş§O¤¤¨S¦³¥ô¦ó°Q½×°Ï
-threaded	forum	zt	¥DÃD°lÂÜ
-topic	forum	zt	¥DÃD
-update category	forum	zt	§ó·s¤ÀÃş
-update forum	forum	zt	§ó·s°Q½×°Ï
-view collapse	forum	zt	§éÅ|ÀËµø
-view threads	forum	zt	¾ğª¬ÀËµø
-your email	forum	zt	±zªº¹q¤l¶l¥ó¦a§}
-your name	forum	zt	±zªº©m¦W
+add forum	forum	zt	æ–°å¢è¨è«–å€
+all forums, user posts, and topics in this category will be lost!	forum	zt	é€™å€‹åˆ†é¡ä¸‹çš„æ‰€æœ‰è¨è«–å€ã€ä½¿ç”¨è€…æ–‡ç« åŠä¸»é¡Œå°‡æœƒè¢«ç§»é™¤ï¼
+all user posts and topics will be lost!	forum	zt	å±¬æ‰€æœ‰çš„ä½¿ç”¨è€…æ–‡ç« åŠä¸»é¡Œå°‡æœƒè¢«ç§»é™¤ï¼
+all user posts, and topics in this forum will be lost!	forum	zt	åœ¨é€™å€‹è¨è«–å€ä¸­çš„æ‰€æœ‰æ–‡ç« éƒ½æœƒç§»é™¤ï¼
+are you sure you want to delete this category?	forum	zt	æ‚¨ç¢ºå®šè¦ç§»é™¤é€™å€‹åˆ†é¡å—ï¼Ÿ
+are you sure you want to delete this forum?	forum	zt	æ‚¨ç¢ºå®šè¦ç§»é™¤é€™å€‹è¨è«–å€å—ï¼Ÿ
+author	forum	zt	ä½œè€…
+belongs to category	forum	zt	å±¬æ–¼åˆ†é¡
+category description	forum	zt	åˆ†é¡èªªæ˜
+category name	forum	zt	åˆ†é¡åç¨±
+change forum settings	admin	zt	æ›´å‹•è¨è«–å€è¨­å®š
+collapse threads	forum	zt	ä¸€èˆ¬æª¢è¦–
+collapsed	forum	zt	æ‘ºç–Š
+create new category	forum	zt	å»ºç«‹æ–°çš„åˆ†é¡
+current categories and sub forums	forum	zt	ç›®å‰çš„åˆ†é¡åŠå­è¨è«–å€
+edit forum	forum	zt	ç·¨è¼¯è¨è«–å€
+email replies to this thread, to the address above	forum	zt	é€™å€‹è¨è«–ä¸²çš„æ‰€æœ‰å›è¦†çš†ä½¿ç”¨é›»å­éƒµä»¶é€è‡³ä¸Šåˆ—åœ°å€
+forum	common	zt	è¨è«–å€
+forum administration	admin	zt	è¨è«–å€ç®¡ç†
+forum description	forum	zt	è¨è«–å€èªªæ˜
+forum name	forum	zt	è¨è«–å€åç¨±
+forums	common	zt	è¨è«–å€
+latest reply	forum	zt	æœ€å¾Œå›å¾©
+new category	forum	zt	æ–°å¢åˆ†é¡
+new forum	forum	zt	æ–°å¢è¨è«–å€
+new topic	forum	zt	æ–°å¢ä¸»é¡Œ
+no category	forum	zt	ç„¡åˆ†é¡
+normal view	forum	zt	æ­£å¸¸æª¢è¦–
+post	forum	zt	ç™¼è¡¨
+post a message to this thread	forum	zt	å›è¦†æ–‡ç« 
+replies	forum	zt	å›è¦†
+reply to this message	forum	zt	å›è¦†æ­¤æ–‡ç« 
+return to admin	forum	zt	å›åˆ°ç³»çµ±ç®¡ç†
+return to forums	forum	zt	å›åˆ°è¨è«–å€
+sub category	forum	zt	å­é¡åˆ¥
+there are no forums in this category	forum	zt	é€™å€‹é¡åˆ¥ä¸­æ²’æœ‰ä»»ä½•è¨è«–å€
+threaded	forum	zt	ä¸»é¡Œè¿½è¹¤
+topic	forum	zt	ä¸»é¡Œ
+update category	forum	zt	æ›´æ–°åˆ†é¡
+update forum	forum	zt	æ›´æ–°è¨è«–å€
+view collapse	forum	zt	æŠ˜ç–Šæª¢è¦–
+view threads	forum	zt	æ¨¹ç‹€æª¢è¦–
+your email	forum	zt	æ‚¨çš„é›»å­éƒµä»¶åœ°å€
+your name	forum	zt	æ‚¨çš„å§“å

@@ -1,31 +1,31 @@
-actions	polls	zt	°Ê§@
-add answer to poll	polls	zt	·s¼W§ë²¼ªºµª®×¶µ¥Ø
-add answers	polls	zt	·s¼Wµª®×¶µ¥Ø
-add new poll question	polls	zt	·s¼W§ë²¼Ä³ÃD
-add questions	polls	zt	·s¼WÄ³ÃD
-allow users to vote more then once	polls	zt	¤¹³\¨Ï¥ÎªÌ½Æ¿ï
-answer	polls	zt	µª®×¶µ¥Ø
-answer has been added to poll	polls	zt	§ë²¼µª®×¶µ¥Ø¤w¸g·s¼W
-answer has been updated	polls	zt	µª®×¶µ¥Ø¤w¸g§ó·s
-answers	polls	zt	µª®×¶µ¥Ø
-are you sure want to delete this answer ?	polls	zt	±z½T©w­n§R°£³o­Óµª®×¶µ¥Ø¡H
-are you sure want to delete this question ?	polls	zt	±z½T©w­n§R°£³o­ÓÄ³ÃD¡H
-edit answer	polls	zt	½s¿èµª®×¶µ¥Ø
-edit poll question	polls	zt	½s¿è§ë²¼Ä³ÃD
-enter poll question	polls	zt	¿é¤J§ë²¼Ä³ÃD
-new poll has been added.  you should now add some answers for this poll	polls	zt	·sªº§ë²¼¤w¸g·s¼W¡A±z¥²¶·¬°³o­Ó§ë²¼Ä³ÃD·s¼W¤@¨Çµª®×¶µ¥Ø
-poll question	polls	zt	§ë²¼Ä³ÃD
-poll settings	common	zt	§ë²¼³]©w
-polls	common	zt	§ë²¼
-question has been updated	polls	zt	Ä³ÃD¤w¸g§ó·s
-select current poll	polls	zt	¿ï¾Ü¥Ø«eªº§ë²¼
-settings	polls	zt	³]©w
-settings updated	polls	zt	³]©w§ó·s
-show answers	polls	zt	Åã¥Üµª®×¶µ¥Ø
-show questions	common	zt	Åã¥ÜÄ³ÃD
-total votes	polls	zt	Á`¼Æ
-view poll	polls	zt	ÂsÄı§ë²¼
-vote	polls	zt	§ë²¼
-voting booth admin	admin	zt	§ë²¼¯¸
-voting booth administration	polls	zt	§ë²¼¯¸ºŞ²z
-which poll	polls	zt	­ş­Ó§ë²¼
+actions	polls	zt	å‹•ä½œ
+add answer to poll	polls	zt	æ–°å¢æŠ•ç¥¨çš„ç­”æ¡ˆé …ç›®
+add answers	polls	zt	æ–°å¢ç­”æ¡ˆé …ç›®
+add new poll question	polls	zt	æ–°å¢æŠ•ç¥¨è­°é¡Œ
+add questions	polls	zt	æ–°å¢è­°é¡Œ
+allow users to vote more then once	polls	zt	å…è¨±ä½¿ç”¨è€…è¤‡é¸
+answer	polls	zt	ç­”æ¡ˆé …ç›®
+answer has been added to poll	polls	zt	æŠ•ç¥¨ç­”æ¡ˆé …ç›®å·²ç¶“æ–°å¢
+answer has been updated	polls	zt	ç­”æ¡ˆé …ç›®å·²ç¶“æ›´æ–°
+answers	polls	zt	ç­”æ¡ˆé …ç›®
+are you sure want to delete this answer ?	polls	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹ç­”æ¡ˆé …ç›®ï¼Ÿ
+are you sure want to delete this question ?	polls	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤é€™å€‹è­°é¡Œï¼Ÿ
+edit answer	polls	zt	ç·¨è¼¯ç­”æ¡ˆé …ç›®
+edit poll question	polls	zt	ç·¨è¼¯æŠ•ç¥¨è­°é¡Œ
+enter poll question	polls	zt	è¼¸å…¥æŠ•ç¥¨è­°é¡Œ
+new poll has been added.  you should now add some answers for this poll	polls	zt	æ–°çš„æŠ•ç¥¨å·²ç¶“æ–°å¢ï¼Œæ‚¨å¿…é ˆç‚ºé€™å€‹æŠ•ç¥¨è­°é¡Œæ–°å¢ä¸€äº›ç­”æ¡ˆé …ç›®
+poll question	polls	zt	æŠ•ç¥¨è­°é¡Œ
+poll settings	common	zt	æŠ•ç¥¨è¨­å®š
+polls	common	zt	æŠ•ç¥¨
+question has been updated	polls	zt	è­°é¡Œå·²ç¶“æ›´æ–°
+select current poll	polls	zt	é¸æ“‡ç›®å‰çš„æŠ•ç¥¨
+settings	polls	zt	è¨­å®š
+settings updated	polls	zt	è¨­å®šæ›´æ–°
+show answers	polls	zt	é¡¯ç¤ºç­”æ¡ˆé …ç›®
+show questions	common	zt	é¡¯ç¤ºè­°é¡Œ
+total votes	polls	zt	ç¸½æ•¸
+view poll	polls	zt	ç€è¦½æŠ•ç¥¨
+vote	polls	zt	æŠ•ç¥¨
+voting booth admin	admin	zt	æŠ•ç¥¨ç«™
+voting booth administration	polls	zt	æŠ•ç¥¨ç«™ç®¡ç†
+which poll	polls	zt	å“ªå€‹æŠ•ç¥¨
