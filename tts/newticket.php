@@ -20,7 +20,7 @@
   include("../header.inc.php");
   if (! $submit) {
      ?>
-      <form method=POST action="<?php echo $phpgw->link("newticket.php"); ?>">
+      <form method=POST action="<?php echo $phpgw->link("/tts/newticket.php"); ?>">
 
        <div align="center">
        <center>
@@ -126,6 +126,6 @@ $phpgw->common->phpgw_footer();
      $phpgw->db->next_record();
      mail_ticket($phpgw->db->f("t_id"));
 
-     Header("Location: " . $phpgw->link("index.php"));
+     Header("Location: " . $phpgw->link("/tts/index.php"));
   }
 ?>

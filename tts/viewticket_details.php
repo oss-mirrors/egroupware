@@ -54,7 +54,7 @@ $lstCategory=$phpgw->db->f("t_category");
 
 // Print the table
 ?>
-<form method="POST" action="<?php echo $phpgw->link("viewticket_details.php"); ?>">
+<form method="POST" action="<?php echo $phpgw->link("/tts/viewticket_details.php"); ?>">
  <input type=hidden value="<?php echo $phpgw->db->f("t_id"); ?>" name="t_id">
  <input type=hidden value="<?php echo $phpgw->db->f("t_user"); ?>" name="lstAssignedfrom">
   <div align=center>
@@ -232,6 +232,6 @@ $lstCategory=$phpgw->db->f("t_category");
 
       mail_ticket($t_id);
     }
-    Header("Location: " . $phpgw->link("index.php"));
+    Header("Location: " . $phpgw->link("/tts/index.php"));
   }
 ?>

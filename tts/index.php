@@ -17,7 +17,7 @@
 ?>
  <center><?php echo lang("Trouble Ticket System"); ?>
  <p>
-   [ <a href="<?php echo $phpgw->link("newticket.php") ; ?>"><?php echo lang("New ticket"); ?></a> |
+   [ <a href="<?php echo $phpgw->link("/tts/newticket.php") ; ?>"><?php echo lang("New ticket"); ?></a> |
 
 <?php
 // ******* 
@@ -41,7 +41,7 @@
   if ($filter == "viewall") {
      echo "<a href=\"" . $phpgw->link() . "\">" . lang("View only open tickets")."</a>";
   } else {
-     echo "<a href=\"" . $phpgw->link("index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>";
+     echo "<a href=\"" . $phpgw->link("/tts/index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>";
   }
 
   echo " ]<br>\n";
@@ -111,7 +111,7 @@
        default:         $tr_color = $phpgw_info["theme"]["bg_color"];
     }
     echo "<tr bgcolor=\"$tr_color\"><TD align=center><a href=\""
-        . $phpgw->link("viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
+        . $phpgw->link("/tts/viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
         . $phpgw->db->f("t_id") . "</a></TD>";
 
 
