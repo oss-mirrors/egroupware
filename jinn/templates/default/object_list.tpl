@@ -21,4 +21,5 @@
 
 <!-- BEGIN listfooter -->
 </table>
+{msg}
 <!-- END listfooter -->

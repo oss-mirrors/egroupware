@@ -81,8 +81,9 @@
 		 $this->template->parse('listheader','listheader');
 		 $this->template->pparse('out','listheader');
 
-		 if (count($records)>0)
+		 if ($records)
 		 {
+
 			foreach($records as $recordvalues)
 			{
 			   $where_key=$fieldnames[0];
@@ -127,9 +128,16 @@
 			   $this->template->set_var('row',$table_row);
 			   $this->template->parse('rowbuffer','rows',true);
 			}
+
+			$this->template->pparse('out','rowbuffer');
+
+			$this->template->set_var('msg','');
+		 }
+		 else
+		 {
+			$this->template->set_var('msg',lang('No objects found for this site.'));
 		 }
 
-		 $this->template->pparse('out','rowbuffer');
 		 $this->template->pparse('out','listfooter');
 	  }
    }
