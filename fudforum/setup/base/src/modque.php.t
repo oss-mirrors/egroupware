@@ -22,7 +22,7 @@
 
 	/* we need to determine wether or not the message exists & if the user has access to approve/delete it */
 	if ($appr || $del) {
-		if (!q_singleval('SELECT CASE WHEN !('.$usr->users_opt.' & 1048576) THEN mm.id ELSE 1 END FROM {SQL_TABLE_PREFIX}msg m INNER JOIN {SQL_TABLE_PREFIX}thread t ON m.thread_id=t.id LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON t.forum_id=mm.forum_id AND mm.user_id='._uid.' WHERE m.id='.($appr ? $appr : $del))) {
+		if (!q_singleval('SELECT CASE WHEN (('.$usr->users_opt.' & 1048576) = 0) THEN mm.id ELSE 1 END FROM {SQL_TABLE_PREFIX}msg m INNER JOIN {SQL_TABLE_PREFIX}thread t ON m.thread_id=t.id LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON t.forum_id=mm.forum_id AND mm.user_id='._uid.' WHERE m.id='.($appr ? $appr : $del))) {
 			if (db_affected()) {
 				std_error('perms');
 			} else {
