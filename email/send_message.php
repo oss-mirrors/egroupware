@@ -20,7 +20,7 @@
   $sep = $phpgw->common->filesystem_separator();
 
   if (file_exists($phpgw_info["server"]["temp_dir"].$sep.$phpgw_info["user"]["sessionid"])) {
-     set_time_limit(0);
+     @set_time_limit(0);
      $dh = opendir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
      while ($file = readdir($dh)) {
         if ($file != "." && $file != "..") {

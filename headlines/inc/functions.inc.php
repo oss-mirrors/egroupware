@@ -169,7 +169,7 @@ class headlines {
   {
     global $phpgw;
 
-    set_time_limit(0);
+    @set_time_limit(0);
 
     // determine the options to properly extract the links
     $startat = "</image>";

@@ -23,7 +23,7 @@
   if (isset($newsmode) && $newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
   include("../header.inc.php");
 
-  set_time_limit(0);
+  @set_time_limit(0);
 ?>
 
 <script>

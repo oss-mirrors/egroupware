@@ -39,7 +39,7 @@
   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
     $phpgw->common->read_preferences("nntp");
 
-  set_time_limit(0);
+  #set_time_limit(0);
 
   $msg = $phpgw->msg->header($mailbox, $msgnum);
   $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
