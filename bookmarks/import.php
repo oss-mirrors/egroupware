@@ -36,7 +36,7 @@
 	// create a new one. return id.
 	function getCategory($name)
 	{
-		global $phpgw, $phpgw_info, $cat, $catNext;
+		global $phpgw, $phpgw_info, $cat_cache, $catNext;
 
 		$db = $phpgw->db;
 
@@ -47,25 +47,26 @@
 			$name = 'No category';
 		}
 
-		if ($cat[$name])
+		if ($cat_cache[$name] && $cat_cache[$name] != 0)
 		{
-			return $cat[$upperName];
+			_debug(' - ' . $name . ' is already cached');
+			return $cat_cache[$name];
 		}
 		else
 		{
 			if ($phpgw->categories->exists('mains',$name))
 			{
-				$cat[$name] = $phpgw->categories->name2id($name);
-				_debug('<br>' . $name . ' already exists - id: ' . $cat[$name]);
+				$cat_cache[$name] = $phpgw->categories->name2id($name);
+				_debug(' - ' . $name . ' already exists - id: ' . $cat_cache[$name]);
 			}
 			else
 			{
 				$phpgw->categories->add($name,0,'','','',0);
-				$cat[$name] = $phpgw->categories->name2id($name);
-				_debug('<br>' . $name . ' does not exist - new id: ' . $cat[$name]);
+				$cat_cache[$name] = $phpgw->categories->name2id($name);
+				_debug(' - ' . $name . ' does not exist - new id: ' . $cat_cache[$name]);
 			}
 
-			return $cat[$name];
+			return $cat_cache[$name];
 		}
 	}
 
@@ -150,7 +151,7 @@
    
 						reset($folder_stack);
 						unset($error_msg);
-						$cid  = $phpgw->categories->name2id('No Category');
+						$cid  = $phpgw->categories->name2id('No category');
 						$scid = 0;
 						$i    = 0;
 						$keyw = '';
@@ -185,17 +186,17 @@
 						$values['timestamps'] = sprintf('%s,%s,%s',$add_info[1],$vist_info[1],$change_info[1]);
 
 						$bid = -1;
-						if (! $phpgw->bookmarks->add(&$bid, $values))
+						if (! $phpgw->bookmarks->add(&$bid, $values, True))
 						{
 							print("<br>" . $error_msg . "\n");
 							$all_errors .= $error_msg;
 						}
+						else
+						{
+							$inserts++;						
+						}
 
 						_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
-						if (! $error_msg)
-						{
-							$inserts++;
-						}
 					}
 				}
 

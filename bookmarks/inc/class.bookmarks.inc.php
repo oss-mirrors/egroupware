@@ -236,7 +236,7 @@
 			return '<select name="bookmark[category]" size="5">' . $s . '</select>';
 		}
 
-		function add(&$id,$values)
+		function add(&$id,$values, $return_no_errors = False)
 		{
 			global $phpgw_info, $error_msg, $msg, $phpgw;
 
@@ -250,12 +250,18 @@
 			// Does the bookmark already exist?
 			$query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$values['url'], $phpgw_info['user']['account_id']);
 			$db->query($query,__LINE__,__FILE__);
+			$db->next_record();
 
-//			if ($db->f(0) != 0)
-//			{
-//				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
-//				return False;
-//			}
+			if (! $return_no_errors && $db->f(0) != 0)
+			{
+				$error_msg .= sprintf('<br>URL <B>%s</B> already exists!', $values['url']);
+				return False;
+			}
+
+			if ($return_no_errors && $db->f(0) != 0)
+			{
+				return True;
+			}
 
 			if (! $values['access'])
 			{
@@ -269,7 +275,7 @@
 
 			list($category,$subcategory) = explode('|',$values['category']);
 
-			if (! $category)
+			if (! $return_no_errors && ! $category)
 			{
 				$error_msg .= 'You must select a category';
 				return False;
@@ -284,7 +290,10 @@
     
 			$db->query($query,__LINE__,__FILE__);
 
-			$msg .= 'Bookmark created sucessfully.';
+			if (! $return_no_errors)
+			{
+				$msg .= 'Bookmark created sucessfully.';
+			}
 
 			return true;
 		}
