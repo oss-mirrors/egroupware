@@ -41,6 +41,8 @@
      	$t->set_block("projects_add", "edit_act", "acthandle");
   	
         $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+        $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
+
   	$t->set_var("lang_action",lang("project list - add"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
@@ -134,6 +136,10 @@
         $t->set_var("lang_customer",lang("customer"));
         $t->set_var("customer_con","");
         $t->set_var("customer_name","");
+
+        $t->set_var("lang_address",lang("my address"));                                                                                                                                        
+        $t->set_var("address_con","");                                                                                                                                                       
+        $t->set_var("address_name","");        
 
 // activities bookable     
        $t->set_var("lang_bookable_activities",lang("bookable activities"));
@@ -229,9 +235,9 @@
     }
 
     $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date," 
-                . "coordinator,customer,status,descr,title,budget,num) "
+                . "coordinator,customer,address,status,descr,title,budget,num) "
                 . "values ('$owner','$access','" . time() ."','$date','$end_date',"
-                . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"
+                . "'$coordinator','$customer','$address','$status','" . addslashes($descr) . "',"
                 . "'" . addslashes($title) . "','" . addslashes($budget) . "',"
 		. "'" . $num . "')");
            

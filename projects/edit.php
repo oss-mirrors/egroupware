@@ -61,6 +61,7 @@
      $t->set_block("projects_edit", "edit", "edithandle");
      
      $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
+     $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
      $t->set_var("actionurl",$phpgw->link("edit.php"));
      $t->set_var("deleteurl",$phpgw->link("delete.php"));
      $t->set_var("lang_action",lang("project list - edit"));
@@ -191,6 +192,32 @@
 	$t->set_var("customer_name","");		
         }
       }
+
+// address
+    $t->set_var("lang_address",lang("my address"));                                                                                                                                            
+    $t->set_var("address_con",$phpgw->db->f("address"));                                                                                                                                    
+                                                                                                                                                                                              
+    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                        
+    $db2->query("SELECT ab_id,ab_firstname,ab_lastname,ab_company_id,company_name FROM "                                                                                                      
+                     . "addressbook,customers where "                                                                                                                                         
+                     . "ab_company_id='" .$phpgw->db->f("address")."'");                                                                                                                     
+    if ($db2->next_record()) {                                                                                                                                                                
+        $t->set_var("address_name",$db2->f("company_name")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");                                                                   
+    } else {                                                                                                                                                                                  
+        $t->set_var("address_name","");                                                                                                                                                      
+    }                                                                                                                                                                                         
+    }                                                                                                                                                                                         
+    else {                                                                                                                                                                                    
+    $db2->query("select ab_id,ab_lastname,ab_firstname,ab_company from addressbook where "                                                                                                    
+                        . "ab_id='" .$phpgw->db->f("address")."'");                                                                                                                          
+        if ($db2->next_record()) {                                                                                                                                                            
+        $t->set_var("address_name",$db2->f("ab_company")." [ ".$db2->f("ab_firstname")." ".$db2->f("ab_lastname")." ]");                                                                     
+        }                                                                                                                                                                                     
+        else {                                                                                                                                                                                
+        $t->set_var("address_name","");                                                                                                                                                      
+        }                                                                                                                                                                                     
+      }  
+
 // activites bookable
      $t->set_var("lang_bookable_activities",lang("bookable activities"));
      $db2->query("SELECT p_activities.id as id,p_activities.descr,"
@@ -308,7 +335,7 @@
     if($submit) {
       $phpgw->db->query("update p_projects set entry_date='" . time() . "', date='" 
                    . "$date',end_date='$end_date',coordinator='$coordinator',"
-                   . "customer='$customer',status='$status',descr='"
+                   . "customer='$customer',address='$address',status='$status',descr='"
                    . addslashes($descr) . "',title='".addslashes($title)."',"
                    . "budget='".addslashes($budget)."',access='$access' where id='$id'");
 
@@ -338,9 +365,9 @@
       }
 
       $phpgw->db->query("insert into p_projects (owner,access,entry_date,date,end_date,"
-                  . "coordinator,customer,status,descr,title,budget,num) " 
+                  . "coordinator,customer,address,status,descr,title,budget,num) " 
                   . "values ('$owner','$access','" . time() ."','$date','$end_date',"
-                  . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"
+                  . "'$coordinator','$customer','$address','$status','" . addslashes($descr) . "',"
                   . "'" . addslashes($title) . "','" . addslashes($budget) . "',"
                   . "'" . addslashes($num) . "')");
 

@@ -1,6 +1,11 @@
-11/23/2000: Initial release on sourceforge
+11/23/2000: Initial release on sourceforge - version 0.8.1
 11/25/2000: included projecthours in projects
 11/26/2000: included pstatistics,pbilling,pdelivery in projects
 11/28/2000: fixed bugs in invoice-print + numbers-counting
             some layout changes
             rework search & projects data access
+11/28/2000: release - version 0.8.2
+11/29/2000: update tax to work with float values
+11/30/2000: included address field in p_projects table
+            removed p_projectaddress table
+            included address in print invoice & delivery

@@ -23,6 +23,53 @@
   $t->set_block("delivery_list_t", "deliverypos_list", "list");
 
 
+  if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                 
+      $phpgw->db->query("SELECT p_projects.address,p_delivery.project_id,ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip, "                                                           
+                 . "ab_city FROM p_projects,addressbook,customers,p_delivery WHERE "                                                                                                                       
+                 . "p_delivery.id=$delivery_id AND p_delivery.project_id=p_projects.id AND "                                                                                            
+                 . "p_projects.address=customers.company_id AND customers.company_id=addressbook.ab_company_id");                                                                    
+      if ($phpgw->db->next_record()) {                                                                                                                                               
+      $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                       
+      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                     
+      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                       
+      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                           
+      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                 
+      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                               
+          }                                                                                                                                                                          
+      else {                                                                                                                                                                         
+      $t->set_var("ad_company","");                                                                                                                                                  
+      $t->set_var("ad_firstname","");                                                                                                                                                
+      $t->set_var("ad_lastname","");                                                                                                                                                 
+      $t->set_var("ad_street","");                                                                                                                                                   
+      $t->set_var("ad_zip","");                                                                                                                                                      
+      $t->set_var("ad_city","");                                                                                                                                                     
+         }                                                                                                                                                                           
+        }
+      else {                                                                                                                                                                         
+         $phpgw->db->query("SELECT p_projects.address,p_delivery.project_id,ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip, "                                             
+                 . "ab_city FROM p_projects,addressbook,p_delivery WHERE "                                                                                                            
+                 . "p_delivery.id=$delivery_id AND p_delivery.project_id=p_projects.id AND "                                                                                            
+                 . "p_projects.address=addressbook.ab_id");                                                                                                                          
+      if ($phpgw->db->next_record()) {                                                                                                                                               
+      $t->set_var("ad_company",$phpgw->db->f("ab_company"));                                                                                                                         
+      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                     
+      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                       
+      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                           
+      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                                 
+      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                               
+            }                                                                                                                                                                        
+                                                                                                                                                                                     
+   else {                                                                                                                                                                            
+      $t->set_var("ad_company","");                                                                                                                                                  
+      $t->set_var("ad_firstname","");                                                                                                                                                
+      $t->set_var("ad_lastname","");                                                                                                                                                 
+      $t->set_var("ad_street","");                                                                                                                                                   
+      $t->set_var("ad_zip","");                                                                                                                                                      
+      $t->set_var("ad_city","");                                                                                                                                                     
+       }                                                                                                                                                                             
+     }   
+
+
    $t->set_var("site_title",$phpgw_info["site_title"]);   
    $charset = $phpgw->translation->translate("charset");                                                                                                                                         
    $t->set_var("charset",$charset);   

@@ -4,8 +4,12 @@
     {
        Window1=window.open('{addressbook_link}+document.projects_form.to.value',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");
     }
-  </script>
-
+  
+    function addresses()
+    {
+       Window2=window.open('{addresses_link}+document.projects_form.to.value',"Search","width=800,height=600","scrolling=yes,toolbar=yes,resizable=yes");
+    }
+   </script>
       <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
       <hr noshade width="98%" align="center" size="1">
 
@@ -25,6 +29,11 @@
          <td>{lang_descr}:</td> 
 	 <td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descrval}</textarea></td>
          </tr>
+         <tr>
+	 <td><input type="button" value="{lang_address}" onClick="addresses();"></td>
+	 <td><input type="hidden" name="address" value="{address_con}">
+	     <input type="text" name="addressname" size="50" value="{address_name}" readonly>&nbsp;&nbsp;&nbsp;Select per Button!</td>
+	 </tr>
          <tr>
 	 <td><input type="button" value="{lang_customer}" onClick="addressbook();"></td>
 	 <td><input type="hidden" name="customer" value="{customer_con}">

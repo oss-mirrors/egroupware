@@ -1,5 +1,5 @@
 
-insert into applications (app_name,app_title,app_enabled,app_tables,app_version) values ('projects','Projects',1,'p_activities,p_delivery,p_deliverypos,p_hours,p_invoive,p_invoicepos,p_projectaddress,p_projectmembers,p_projects','0.8.2');
+insert into applications (app_name,app_title,app_enabled,app_tables,app_version) values ('projects','Projects',1,'p_activities,p_projectactivities,p_delivery,p_deliverypos,p_hours,p_invoice,p_invoicepos,p_projectmembers,p_projects','0.8.2');
 
  CREATE TABLE p_projects (
 	id		serial,
@@ -11,7 +11,8 @@ insert into applications (app_name,app_title,app_enabled,app_tables,app_version)
         end_date        int,
 	coordinator	int,
 	customer	int,
-	status		text check(status in('active','nonactive','archiv','template')) DEFAULT 'nonactive' NOT NULL,
+	address         int,
+        status		text check(status in('active','nonactive','archiv','template')) DEFAULT 'nonactive' NOT NULL,
 	descr		text,
 	title		varchar(50),
 	budget		decimal(20,2),
@@ -49,13 +50,6 @@ CREATE TABLE p_hours (
 	minperae	decimal(4,0),
 	billperae	decimal(20,2),
 	status		text check(status in('open','done','billed')) DEFAULT 'done' NOT NULL,
-	PRIMARY KEY (id)
-);
-
-CREATE TABLE p_projectaddress (
-	id		serial,
-	project_id	int,
-	addressbook_id	int,
 	PRIMARY KEY (id)
 );
 

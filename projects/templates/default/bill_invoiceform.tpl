@@ -7,8 +7,24 @@
 <body bgcolor="#FFFFFF">
 <table width=70% border=0 cellpadding=3 cellspacing=3>
 <tr>
-<td valign=bottom>{company}</td>
-<td align=right><img src="doc/logo.gif"></td>
+<td valign=bottom>{ad_company}</td>
+<td align=right><img src="doc/logo.jpg"></td>
+</tr>
+<tr>                                                                                                                                                                                              
+<td>{ad_firstname}&nbsp;{ad_lastname}</td>                                                                                                                                                              
+<td>&nbsp;</td>                                                                                                                                                                                   
+</tr>                                                                                                                                                                                             
+<tr>                                                                                                                                                                                              
+<td>{ad_street}</td>                                                                                                                                                                                 
+<td>&nbsp;</td>                                                                                                                                                                                   
+</tr>                                                                                                                                                                                             
+<tr>                                                                                                                                                                                              
+<td>{ad_zip}&nbsp;{ad_city}<br><br><br></td>                                                                                                                                                            
+<td>&nbsp;</td>                                                                                                                                                                                   
+</tr>
+<tr>
+<td>{company}</td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{firstname}&nbsp;{lastname}</td>
