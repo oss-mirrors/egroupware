@@ -12,6 +12,7 @@
 				"t_timestamp_closed"	=> array("type" => "int", "precision" => 2, "nullable" => False),
 				"t_timestamp_subject"	=> array("type" => "varchar", "precision" => 255, "nullable" => True),
 				"t_department"	=> array("type" => "varchar", "precision" => 25, "nullable" => True),
+				"t_watchers"	=> array("type" => "text", "nullable" => True),
 			),
 			"pk" => array("t_id"),
 			"ix" => array(),

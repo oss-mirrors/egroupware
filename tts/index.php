@@ -26,6 +26,11 @@
 	{
 		$filtermethod = "where t_timestamp_closed='0'";
 	}
+	if ($filter == "search") 
+	{
+//		$filtermethod = "where t_detail like '%".$searchfilter."%' or t_detail like '%".$searchfilter."%';
+	}
+
 
 	if (!$sort)
 	{
@@ -42,7 +47,7 @@
 	$phpgw->db->query("SELECT t_id FROM ticket where t_timestamp_closed='0'");
 	$numopen = $phpgw->db->num_rows();
 
-	$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject "
+	$phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject,t_watchers "
 		. "from ticket $filtermethod $sortmethod");
 
 	if ($filter == "viewall")
@@ -122,9 +127,26 @@
 			case 10: $tr_color = $phpgw_info["theme"]["bg10"]; break;
 			default: $tr_color = $phpgw_info["theme"]["bg_color"];
 		}
-		echo "<tr bgcolor=\"$tr_color\"><TD align=center><a href=\""
-			. $phpgw->link("/tts/viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">"
-			. $phpgw->db->f("t_id") . "</a></TD>";
+		
+		if ($filter=="viewall" && $phpgw->db->f("t_timestamp_closed")) { $tr_color = $phpgw_info["theme"]["th_bg"]; /*"#CCCCCC";*/}
+		$t_watchers=explode(":",$phpgw->db->f("t_watchers"));
+		if (in_array( $phpgw_info["user"]["userid"], $t_watchers)) {$t_read=1;} else { $t_read=0;}
+				
+
+		echo "<tr bgcolor=\"$tr_color\">";
+
+		echo "<TD align=center>";
+		echo "<a href=\"" . $phpgw->link("/tts/viewticket_details.php","ticketid=" . $phpgw->db->f("t_id")) . "\">";
+
+		if (!$t_read==1) {
+		  echo "&gt";
+		}
+	        echo $phpgw->db->f("t_id") ;
+	        if (!$t_read==1) {
+	          echo "&lt";
+		}
+
+		echo "</a></TD>";
 
 		$priostr="";
 		while ($priority > 0) { $priostr=$priostr . "||"; $priority--; }

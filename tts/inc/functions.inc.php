@@ -57,7 +57,7 @@
 		$i=0;
 		for ($i=0;$i<count($members);$i++)
 		{
-			if ($members[$i]['account_name'])
+			if ($members[$i]['account_id'])
 			{
 				$pref = CreateObject('phpgwapi.preferences',$members[$i]['account_id']);
 				$prefs = $pref->read_repository();
@@ -66,7 +66,6 @@
 				//echo '<br>'.$toarray[$i];
 				unset($pref);
 			}
-			$i++;
 		}
 		if(count($toarray))
 		{
@@ -85,7 +84,7 @@
 				. "err_code: '".$phpgw->send->err["code"]."';<BR>"
 				. "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n"
 				. "err_desc: '".$phpgw->err[desc]."'.<P>\n"
-				. "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13")."\">here</a>";
+				. "To go back to the msg list, click <A HRef=\"".$phpgw->link("/tts/index.php","cd=13")."\">here</a>";
 			$phpgw->common->phpgw_exit();
 		}
 	}

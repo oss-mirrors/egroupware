@@ -9,6 +9,7 @@ create table ticket (
   t_timestamp_closed	int,
   t_subject	varchar(255),
   t_department	varchar(25)
+  t_watchers	text,
 );
 
 create table category (
