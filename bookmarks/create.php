@@ -194,8 +194,13 @@ if ($rating > 0) {
 
   $phpgw->template->set_var("form_info_","");
 
-  $phpgw->template->set_var("input_url",'<input name="url" size="60" maxlength="255" value="http://">');
-  $phpgw->template->set_var("input_name",'<input name="name" size="60" maxlength="255">');
+  if ($phpgw_bm_url) {
+     $phpgw->template->set_var("input_url",'<input name="url" size="60" maxlength="255" value="' . $phpgw_bm_url . '">');
+     $phpgw->template->set_var("input_name",'<input name="name" size="60" maxlength="255" value="' . $phpgw_bm_title . '">');
+  } else {
+     $phpgw->template->set_var("input_url",'<input name="url" size="60" maxlength="255" value="http://">');
+     $phpgw->template->set_var("input_name",'<input name="name" size="60" maxlength="255">');
+  }
   $phpgw->template->set_var("input_desc",'<textarea name="desc" rows="3" cols="60" wrap="virtual"></textarea>');
   $phpgw->template->set_var("input_keywords",'<input type="text" name="keyw" size="60" maxlength="255">');
 

@@ -2,8 +2,6 @@
   /**************************************************************************\
   * phpGroupWare - Bookmarks                                                 *
   * http://www.phpgroupware.org                                              *
-  * Based on Bookmarker Copyright (C) 1998  Padraic Renaghan                 *
-  *                     http://www.renaghan.com/bookmarker                   *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
@@ -12,15 +10,20 @@
   \**************************************************************************/
 
   /* $Id$ */
+{
+  section_start($appname,$phpgw_info["server"]["webserver_url"] . "/bookmarks/templates/"
+              . $phpgw_info["server"]["template_set"] . "/images/navbar.gif");
 
-  include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
-  if (isset ($bk_output_html)) {
-     echo "<b>ERROR:</b>";
-     $phpgw->template->set_var("messages",$bk_output_html);
-  }
+  echo "<a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/preferences.php")
+     . ">" . lang("Bookmark preferences") . "</a>";
 
-  $phpgw->template->parse("body",array("body","common"));
-  $phpgw->template->p("body");
-  
-  //$phpgw->common->phpgw_footer();
+  echo "<br><a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/categories.php","type=category")
+     . ">" . lang("Bookmark categorys") . "</a>";
+
+  echo "<br><a href=" . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/bookmarks/categories.php","type=subcategory")
+     . ">" . lang("Bookmark sub-categorys") . "</a>";
+
+
+  section_end(); 
+}
 ?>

@@ -189,10 +189,10 @@
     {
        global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $phpgw;
 
-       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
+/*       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
                         &$rating, &$public, &$public_db)) {
           return False;
-       }
+       } */
 
        if ($visted == 1) {
           $visted = 0;
