@@ -187,21 +187,21 @@
 
   if(!$invoice_id) { 
     $date=0;
-    $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
+    $phpgw->db->query("SELECT p_hours.id as id,p_hours.project_id,p_hours.remark,p_activities.descr,status,date,"
                   . "end_date,minutes,p_hours.minperae,p_hours.billperae FROM "
                   . "p_activities,p_hours,p_projectactivities WHERE p_hours.status='done' AND "
                   . "p_hours.activity_id=p_activities.id AND p_projectactivities.project_id='$project_id' "
-                  . "AND p_projectactivities.billable='Y' AND "
+                  . "AND p_projectactivities.billable='Y' AND p_hours.project_id='$project_id' AND "
                   . "p_projectactivities.activity_id=p_hours.activity_id $ordermethod");
     } else {
     $phpgw->db->query("SELECT date FROM p_invoice WHERE id=$invoice_id");
     $phpgw->db->next_record();
     $date=$phpgw->db->f("date");    
-    $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
+    $phpgw->db->query("SELECT p_hours.id as id,p_hours.project_id,p_hours.remark,p_activities.descr,status,date,"
                   . "end_date,minutes,p_hours.minperae,p_hours.billperae FROM "
                   . "p_activities,p_hours,p_projectactivities,p_invoicepos WHERE status='billed' AND "
                   . "p_hours.activity_id=p_activities.id AND p_projectactivities.project_id='$project_id' "
-                  . "AND p_projectactivities.billable='Y' AND p_invoicepos.hours_id=p_hours.id AND "
+                  . "AND p_projectactivities.billable='Y' AND p_invoicepos.hours_id=p_hours.id AND p_hours.project_id='$project_id' AND "
                   . "p_projectactivities.activity_id=p_hours.activity_id AND p_invoicepos.invoice_id=$invoice_id $ordermethod");
      }
 
@@ -290,9 +290,9 @@
 
 // na_list
   if($invoice_id) {
-    $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
+    $phpgw->db->query("SELECT p_hours.id as id,p_hours.project_id,p_hours.remark,p_activities.descr,status,date,"
                   . "end_date,minutes,p_hours.minperae,p_hours.billperae FROM "
-                  . "p_activities,p_hours,p_projectactivities WHERE status='done' AND "
+                  . "p_activities,p_hours,p_projectactivities WHERE status='done' AND p_hours.project_id='$project_id' AND "
                   . "p_hours.activity_id=p_activities.id AND p_projectactivities.project_id='$project_id' "
                   . "AND p_projectactivities.billable='Y' AND "
                   . "p_projectactivities.activity_id=p_hours.activity_id $ordermethod");
