@@ -34,10 +34,15 @@
 								. $message_id . "' and message_owner='" . $this->owner ."'",__LINE__,__FILE__);
 		}
 
-		function read_inbox($start,$order)
+		function read_inbox($start,$order,$sort)
 		{
+			if ($sort && $order)
+			{
+				$sortmethod = " order by $order $sort";
+			}
+
 			$this->db->limit_query("select * from phpgw_messenger_messages where message_owner='" . $this->owner
-								. "'",$start,__LINE__,__FILE__);
+								. "' $sortmethod",$start,__LINE__,__FILE__);
 			while ($this->db->next_record())
 			{
 				$messages[] = array(

@@ -78,7 +78,7 @@
 
 		function inbox()
 		{
-			global $phpgw, $start, $order;
+			global $phpgw, $start, $order,$sort;
 			$bo         = createobject('messenger.bomessage');
 			$so         = createobject('messenger.somessage');
 			$nextmatchs = createobject('phpgwapi.nextmatchs');
@@ -98,8 +98,11 @@
 			$this->template->set_block('_inbox','row_empty');
 
 			$this->set_common_langs();
+			$this->template->set_var('sort_date','<a href="' . $nextmatchs->show_sort_order($sort,'message_date',$order,'/index.php','','&menuaction=messenger.uimessage.inbox',False) . '" class="topsort">' . lang('Date') . '</a>');
+			$this->template->set_var('sort_subject','<a href="' . $nextmatchs->show_sort_order($sort,'message_subject',$order,'/index.php','','&menuaction=messenger.uimessage.inbox',False) . '" class="topsort">' . lang('Subject') . '</a>');
+			$this->template->set_var('sort_from','<a href="' . $nextmatchs->show_sort_order($sort,'message_from',$order,'/index.php','','&menuaction=messenger.uimessage.inbox',False) . '" class="topsort">' . lang('From') . '</a>');
 
-			$messages = $bo->read_inbox($start,$order);
+			$messages = $bo->read_inbox($start,$order,$sort);
 
 			while (is_array($messages) && list(,$message) = each($messages))
 			{

@@ -1,7 +1,7 @@
 <!-- BEGIN list -->
 <STYLE type="text/css">
  <!--
-   .topsort { color: #000000; }
+   .topsort { color: #000000; }   
  -->
 </STYLE>
 
@@ -32,9 +32,9 @@ function check_all()
      <tr bgcolor="#FFFFCC">
       <td width="1%" align="center"><input type="checkbox" onClick="check_all()"></td>
       <td width="1%">&nbsp;</td>
-      <td width="8%">{lang_date}</td>
-      <td width="27%">{lang_from}</td>
-      <td width="60%">{lang_subject}</td>
+      <td width="8%">{sort_date}</td>
+      <td width="27%">{sort_from}</td>
+      <td width="60%">{sort_subject}</td>
      </tr>
  
      {rows}

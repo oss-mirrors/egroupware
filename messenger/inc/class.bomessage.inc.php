@@ -136,11 +136,11 @@
 			}
 		}
 
-		function read_inbox($start,$order)
+		function read_inbox($start,$order,$sort)
 		{
 			global $phpgw;
 
-			$messages = $this->so->read_inbox($start,$order);
+			$messages = $this->so->read_inbox($start,$order,$sort);
 
 			while (is_array($messages) && list(,$message) = each($messages))
 			{
