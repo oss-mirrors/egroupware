@@ -472,6 +472,7 @@
 			if (strtoupper($param->attribute) == "NAME")
 			{
 				$att_name = $param->value;
+				break;
 			}
 		}
 	}
@@ -485,29 +486,37 @@
 
   function has_real_attachment($struct)
   {
-	$finding = False;
-	$struct_count = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
-	for ($z = 0; $z < $struct_count; $z++)
+	$haystack = serialize($struct);
+
+	if (stristr($haystack, 's:9:"attribute";s:4:"name"'))
 	{
-		$part = !isset($struct->parts[$z]) || !$struct->parts[$z] ? $struct : $struct->parts[$z];
-		$att_name = get_att_name($part);
-
-		if ($att_name != 'Unknown')
-		{
-			// if it has a name, it's an attachment
-			$finding = True;
-			break;
-		}
-		elseif ((isset($part->encoding)) && ($part->encoding) && ($part->encoding == ENCBASE64))
-		{
-			// some LAME MUA's allow attachments with NO name
-			$finding = True;
-			break;
-		}
+		// param attribute "name"
+		// s:9:"attribute";s:4:"name"
+		return True;
 	}
-	return $finding;
+	elseif (stristr($haystack, 's:8:"encoding";i:3'))
+	{
+		// encoding is base 64
+		// s:8:"encoding";i:3
+		return True;
+	}
+	elseif (stristr($haystack, 's:11:"disposition";s:10:"attachment"'))
+	{
+		// header disposition calls itself "attachment"
+		// s:11:"disposition";s:10:"attachment"
+		return True;
+	}
+	elseif (stristr($haystack, 's:9:"attribute";s:8:"filename"'))
+	{
+		// another mime filename indicator
+		// s:9:"attribute";s:8:"filename"
+		return True;
+	}
+	else
+	{
+		return False;
+	}
   }
-
 
   function format_byte_size($feed_size)
   {
@@ -615,41 +624,36 @@
 	&& (isset($part->disposition)) && ($part->disposition) )
 	{
 		$part_nice['disposition'] = $part->disposition;
+		// this header item is not case sensitive
+		$part_nice['disposition'] = trim(strtolower($part_nice['disposition']));
 	}
 	//13:  ifdparameters : True if the dparameters array exists SKIPPED -  ifparameters is more useful (I think)
 	//14:  dparameters : Disposition parameter array SKIPPED -  parameters is more useful (I think)
 	// 15:  ifparameters : True if the parameters array exists (SKIP)
 	// 16:  parameters : MIME parameters array  - this *may* have more than a single attribute / value pair  but I'm not sure
-	$part_nice['ex_num_param_pairs'] = $struct_not_set; // CUSTOM/EXTRA: this may be good to know
-	$part_nice['param_attribute'] = $struct_not_set;
-	$part_nice['param_value'] = $struct_not_set;
+	// ex_num_param_pairs defaults to 0 (no params)
+	$part_nice['ex_num_param_pairs'] = 0;
 	if ( (isset($part->ifparameters)) && ($part->ifparameters)
 	&& (isset($part->parameters)) && ($part->parameters) )
 	{
-		// EXTRA: this is good to know
-		$part_nice['ex_num_param_pairs'] = count($part->parameters); // CUSTOM/EXTRA: this may be good to know
-		$part_params = $part->parameters[0];
-		if ((isset($part_params->attribute) && ($part_params->attribute)))
+		// Custom/Extra Information (ex_):  ex_num_param_pairs
+		$part_nice['ex_num_param_pairs'] = count($part->parameters);
+		// capture data from all param attribute=value pairs
+		for ($pairs = 0; $pairs < $part_nice['ex_num_param_pairs']; $pairs++)
 		{
-			$part_nice['param_attribute'] = $part_params->attribute;
-		}
-		if ((isset($part_params->value) && ($part_params->value)))
-		{
-			$part_nice['param_value'] = $part_params->value;
-		}
-		// there may be additional params, at least look at the 2nd set
-		$part_nice['param_2_attribute'] = $struct_not_set; // Default value if not filled
-		$part_nice['param_2_value'] = $struct_not_set; // Default value if not filled
-		if ($part_nice['ex_num_param_pairs'] > 1)
-		{
-			$part_params = $part->parameters[1];
+			$part_params = $part->parameters[$pairs];
+			$part_nice['params'][$pairs]['attribute'] = $struct_not_set; // default / fallback
 			if ((isset($part_params->attribute) && ($part_params->attribute)))
 			{
-				$part_nice['param_2_attribute'] = $part_params->attribute;
+				$part_nice['params'][$pairs]['attribute'] = $part_params->attribute;
+				$part_nice['params'][$pairs]['attribute'] = trim(strtolower($part_nice['params'][$pairs]['attribute']));
 			}
+			$part_nice['params'][$pairs]['value'] = $struct_not_set; // default / fallback
 			if ((isset($part_params->value) && ($part_params->value)))
 			{
-				$part_nice['param_2_value'] = $part_params->value;
+				$part_nice['params'][$pairs]['value'] = $part_params->value;
+				// stuff like file names should retain their case
+				//$part_nice['params'][$pairs]['value'] = strtolower($part_nice['params'][$pairs]['value']);
 			}
 		}
 	}
@@ -673,51 +677,49 @@
 	// NOTE: initially I wanted to treat base64 attachments with more "respect", but many other attachments are NOT
 	// base64 encoded and are still attachments - if param_value NAME has a value, pretend it's an attachment
 	// however, a base64 part IS an attachment even if it has no name, just make one up
+	// also, if "disposition" header = "attachment", same thing, it's an attachment, and if no name is in the params, make one up
+
+	// Fallback / Default: assume No Attachment here
+	//$part_nice['ex_part_name'] = 'unknown.html';
+	$part_nice['ex_part_name'] = 'attachment.txt';
+	$part_nice['ex_attachment'] = False;
 	
-	// Attachment Detection PART1 = Test For Files (base64 is a sign of a "REAL ATTACHMENT" like a file, image, etc...)
-	if ($part_nice['encoding'] == 'base64')
+	// Attachment Detection PART1 = if a part has a NAME=FOO in the param pairs, then treat as an attachment
+	if (($part_nice['ex_num_param_pairs'] > 0)
+	&& ($part_nice['ex_attachment'] == False))
 	{
-		if (($part_nice['param_attribute'] == 'name') 
-		  && ($part_nice['param_value'] != $struct_not_set))
+		for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
 		{
-			$part_nice['ex_part_name'] = $part_nice['param_value'];
-			$part_nice['ex_has_attachment'] = True;
-		}
-		elseif (($part_nice['param_2_attribute'] == 'name') 
-		  && ($part_nice['param_2_value'] != $struct_not_set))
-		{
-			// maybe the name is in the 2nd pair of attribute/value pairs...
-			$part_nice['ex_part_name'] = $part_nice['param_2_value'];
-			$part_nice['ex_has_attachment'] = True;
-		}
-		else
-		{
-			// base64 means this IS *some* kind of attachment
-			$part_nice['ex_has_attachment'] = True;
-			// BUT we have no idea of it's name, and *maybe* no idea of it's content type (eg. name.gif = image/gif)
-			// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
-			$part_nice['ex_part_name'] = 'no_name.att';
+			if (($part_nice['params'][$p]['attribute'] == 'name') 
+			  && ($part_nice['params'][$p]['value'] != $struct_not_set))
+			{
+				$part_nice['ex_part_name'] = $part_nice['params'][$p]['value'];
+				$part_nice['ex_attachment'] = True;
+				break;
+			}
 		}
 	}
-	// Attachment Detection PART2 = non base64 encoded stuff, if it has a name, let's pretend it is an attachment
-	elseif (($part_nice['param_attribute'] == 'name') 
-	  && ($part_nice['param_value'] != $struct_not_set))
+	// Attachment Detection PART2 = if a part has encoding=base64 , then treat as an attachment
+	if (($part_nice['encoding'] == 'base64')
+	&& ($part_nice['ex_attachment'] == False))
 	{
-		$part_nice['ex_part_name'] = $part_nice['param_value'];
-		$part_nice['ex_has_attachment'] = True;
+		// NOTE: if a part has a name in the params, the above code would have found it, so to get here means
+		// we MUST have a base64 part with NO NAME - but it still should be treated as an attachment
+		$part_nice['ex_attachment'] = True;
+		// BUT we have no idea of it's name, and *maybe* no idea of it's content type (eg. name.gif = image/gif)
+		// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
+		//$part_nice['ex_part_name'] = 'no_name.att';
 	}
-	// maybe the name is in the 2nd pair of attribute/value pairs...
-	elseif (($part_nice['param_2_attribute'] == 'name') 
-	  && ($part_nice['param_2_value'] != $struct_not_set))
+	// Attachment Detection PART3 = if "disposition" header has a value of "attachment" , then treat as an attachment
+	if (($part_nice['disposition'] == 'attachment')
+	&& ($part_nice['ex_attachment'] == False))
 	{
-		$part_nice['ex_part_name'] = $part_nice['param_2_value'];
-		$part_nice['ex_has_attachment'] = True;
-	}
-	else
-	{
-		// NO attachment here
-		$part_nice['ex_part_name'] = 'unknown.html';
-		$part_nice['ex_has_attachment'] = False;
+		// NOTE: if a part has a name in the params, the above code would have found it, so to get here means
+		// we MUST have a attachment with NO NAME - but it still should be treated as an attachment
+		$part_nice['ex_attachment'] = True;
+		// BUT we have no idea of it's name, and *maybe* no idea of it's content type (eg. name.gif = image/gif)
+		// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
+		//$part_nice['ex_part_name'] = 'no_name.att';
 	}
 
 	// "dumb" mime part number based only on array position, will be made "smart" later

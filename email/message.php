@@ -579,9 +579,9 @@
 // ---- Mime Characteristics Analysis  and more Attachments Detection  -----
 
 	// Make an Array of Non-File Attachments like X-VCARD for use in the following loop
-	$other_attach_types = array(
-		'X-VCARD'
-	);
+	//$other_attach_types = array(
+	//	'X-VCARD'
+	//);
 	
 	// ANALYSIS LOOP Part 1
 	for ($i = 0; $i < count($part_nice); $i++)
@@ -604,25 +604,16 @@
 		//{
 		//	$part_nice[$i]['m_keywords'] .= $part_nice[$i]['description'] .' ';
 		//}
-		if ($part_nice[$i]['param_attribute'] != $struct_not_set)
+		if ($part_nice[$i]['ex_num_param_pairs'] > 0)
 		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_attribute'] .' ';
-			if ($part_nice[$i]['param_attribute'] == 'charset')
+			for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
 			{
-				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_value'] .' ';
+				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'].' ';
 			}
 		}
-		if ($part_nice[$i]['param_2_attribute'] != $struct_not_set)
+		if ($part_nice[$i]['ex_attachment'])
 		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_2_attribute'] .' ';
-			if ($part_nice[$i]['param_2_attribute'] == 'charset')
-			{
-				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_2_value'] .' ';
-			}
-		}
-		if ($part_nice[$i]['ex_has_attachment'])
-		{
-			$part_nice[$i]['m_keywords'] .= 'ex_has_attachment' .' ';
+			$part_nice[$i]['m_keywords'] .= 'ex_attachment' .' ';
 		}
 		//$part_nice[$i]['m_keywords'] = trim($part_nice[$i]['m_keywords']);
 
@@ -633,13 +624,13 @@
 		{
 			if (stristr($part_nice[$i]['m_keywords'], $other_attach_types[$oa]))
 			{
-				$part_nice[$i]['ex_has_attachment'] = True;
+				$part_nice[$i]['ex_attachment'] = True;
 				$part_nice[$i]['ex_part_name'] = $other_attach_types[$oa];
-				// add "ex_has_attachment" to keywords
+				// add "ex_attachment" to keywords
 				$prev_keywords = $part_nice[$i]['m_keywords'];
-				if (!stristr($prev_keywords, 'ex_has_attachment'))
+				if (!stristr($prev_keywords, 'ex_attachment'))
 				{
-					$part_nice[$i]['m_keywords'] .= 'ex_has_attachment' .' ';
+					$part_nice[$i]['m_keywords'] .= 'ex_attachment' .' ';
 				}
 			}
 		}
@@ -671,7 +662,7 @@
 		{
 			$part_nice[$i]['m_description'] = 'presentable/image';
 		}
-		elseif (stristr($part_nice[$i]['m_keywords'], 'ex_has_attachment')) 
+		elseif (stristr($part_nice[$i]['m_keywords'], 'ex_attachment')) 
 		{
 			$part_nice[$i]['m_description'] = 'attachment';
 		}
@@ -706,7 +697,7 @@
 		$part_nice[$j]['ex_part_clickable'] = $click_info[1];
 		
 		// ---- list_of_files is diaplayed in the summary at the top of the message page
-		if ($part_nice[$j]['ex_has_attachment'])
+		if ($part_nice[$j]['ex_attachment'])
 		{
 			if ((int)$part_nice[$j]['bytes'] > 100)
 			{
@@ -805,26 +796,25 @@
 			$msg_body_info .= 'm_description: '. $part_nice[$i]['m_description'] .$crlf;
 			$msg_body_info .= 'm_keywords: '. $part_nice[$i]['m_keywords'] .$crlf;
 			
-			$keystr = array_keys_str($part_nice[$i]);
-			$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
+			//$keystr = array_keys_str($part_nice[$i]);
+			//$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
 			
 			if ((isset($part_nice[$i]['m_level_total_parts']))
 			&& ($part_nice[$i]['m_level_total_parts'] != $struct_not_set))
 			{
 				$msg_body_info .= 'm_level_total_parts: '. $part_nice[$i]['m_level_total_parts'] .$crlf;
 			}
-			//$msg_body_info .= 'm_last_kid: '. $part_nice[$i]['m_last_kid'] .$crlf;
 			if ($part_nice[$i]['type'] != $struct_not_set)
 			{
 				$msg_body_info .= 'type: '. $part_nice[$i]['type'] .$crlf;
 			}
-			if ($part_nice[$i]['encoding'] != $struct_not_set)
-			{
-				$msg_body_info .= 'encoding: '. $part_nice[$i]['encoding'] .$crlf;
-			}
 			if ($part_nice[$i]['subtype'] != $struct_not_set)
 			{
 				$msg_body_info .= 'subtype: '. $part_nice[$i]['subtype'] .$crlf;
+			}
+			if ($part_nice[$i]['encoding'] != $struct_not_set)
+			{
+				$msg_body_info .= 'encoding: '. $part_nice[$i]['encoding'] .$crlf;
 			}
 			if ($part_nice[$i]['description'] != $struct_not_set)
 			{
@@ -846,13 +836,20 @@
 			{
 				$msg_body_info .= 'disposition: '. $part_nice[$i]['disposition'] .$crlf;
 			}
-			if ($part_nice[$i]['ex_num_param_pairs'] != $struct_not_set)
+			if ($part_nice[$i]['ex_num_param_pairs'] > 0)
 			{
+				for ($p = 0; $p < $part_nice[$i]['ex_num_param_pairs']; $p++)
+				{
+					$msg_body_info .= 'params['.$p.']: '.$part_nice[$i]['params'][$p]['attribute'].'='.$part_nice[$i]['params'][$p]['value'] .$crlf;
+				}
+
+				/*
 				//$msg_body_info .= 'ex_num_param_pairs: '. $part_nice[$i]['ex_num_param_pairs'] .$crlf;
 				$msg_body_info .= 'param_attribute: '. $part_nice[$i]['param_attribute'] .$crlf;
 				$msg_body_info .= 'param_value: '. $part_nice[$i]['param_value']  .$crlf;
 				$msg_body_info .= 'param_2_attribute: '. $part_nice[$i]['param_2_attribute'] .$crlf;
 				$msg_body_info .= 'param_2_value: '. $part_nice[$i]['param_2_value']  .$crlf;
+				*/
 			}
 			if ($part_nice[$i]['ex_num_subparts'] != $struct_not_set)
 			{
@@ -862,11 +859,11 @@
 					$msg_body_info .= 'subpart: '. serialize($part_nice[$i]['subpart']) .$crlf;
 				}
 			}
-			if ($part_nice[$i]['ex_has_attachment'])
+			if ($part_nice[$i]['ex_attachment'])
 			{
-				$msg_body_info .= '**ex_has_attachment**' .$crlf;
+				$msg_body_info .= '**ex_attachment**' .$crlf;
 				$msg_body_info .= 'ex_part_name: '. $part_nice[$i]['ex_part_name'] .$crlf;
-				//$msg_body_info .= 'ex_has_attachment: '. $part_nice[$i]['ex_has_attachment'] .$crlf;
+				//$msg_body_info .= 'ex_attachment: '. $part_nice[$i]['ex_attachment'] .$crlf;
 			}
 			$msg_body_info .= 'ex_part_href: '. $part_nice[$i]['ex_part_href'] .$crlf;
 			$msg_body_info .= 'ex_part_clickable: '. $part_nice[$i]['ex_part_clickable'] .$crlf;
@@ -1099,6 +1096,9 @@
 				$skip_this_part = True;
 				$t->set_var('V_display_part','');
 			}
+			
+			// ===DEBUG===
+			//$skip_this_part = True;
 
 			// ----- show the part 
 			if ($skip_this_part == False)
@@ -1211,7 +1211,7 @@
 				$msg_text = $msg_text .'&nbsp;&nbsp; size: '.$att_size;
 			}
 			*/
-			$msg_text = '&nbsp;&nbsp; <strong>ATTACHENT:</strong>'
+			$msg_text = '&nbsp;&nbsp; <strong>Attachment:</strong>'
 				.'&nbsp;&nbsp; '.$part_nice[$i]['ex_part_clickable']
 				.'&nbsp;&nbsp; size: '.format_byte_size((int)$part_nice[$i]['bytes'])
 				.'<br><br>';
