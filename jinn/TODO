@@ -12,6 +12,22 @@ TODO - BUGS!!!
 - phpgwadmin krijgt niet alle objecten te zien in accessrights CHECK THIS
 - browser navigator completly wrong
 - import is broken
+2808 javascript filebrowser in Global configuration doesn't work 
+3033 when browsing keep sort,offset and search filter 
+3038 The imagepath plugin is known not to work with ImageMagick 5.3.8 
+3171 move all admin arguments to sessionstring or POST_VARS 
+3172 all messages must be set (aspecially in admin mode) 
+3549 when moderator isn't member of a group error  
+3690 copy sites and objects not implemented (ADMIN) 
+3714 target can not be set in links in htmlarea V3 
+3715 when a site is selected in usermode but deleted in Admin mode Usermode doens't work anymore 
+3976 access right gives error msg when some site has no objects 
+3977 many to many relations is to heavy with 2000+records 
+4022 max number of row for an object 
+4023 copying record doens't work anymore 
+4025 Rewrite complete relation code / Maybe as plugin 
+4026 help field for database fields 
+4272 Previous and Next buttons in editscreen 
 
 TODO - 0.5.1
 ===================================================================================
@@ -28,7 +44,6 @@ Not branched
 - some documentation, users/adminisators
 1/2 - remove ugly code/functions 
 - optimize default template
-- make official navbar icon
 
 - language
 	- english translation complete (always a point)

@@ -28,7 +28,7 @@ browse through object settings	admin	en	Browse through object settings
 browses through sites	admin	en	Browses through sites
 cancel	jinn	en	Cancel
 category	jinn	en	Category
-check:	jinn	en	check: 
+check:	jinn	en	check:
 come back in edit mode for configuring plugins	jinn	en	come back in edit mode for configuring plugins
 configure	jinn	en	configure
 configure this view	jinn	en	Configure this View
@@ -53,8 +53,8 @@ image directory does not exist or is not correct ...<br>please check object's up
 import failed	jinn	en	import failed
 import jinn-site	jinn	en	Import JiNN-Site
 import site	jinn	en	import site
-import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with 
-jinn	common	en	jinn
+import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with
+jinn	common	en	JiNN	
 maximum image width isn\	jinn	en	maximum image width isn
 no matchs found	jinn	en	No matchs found
 please set your preferences for this application	jinn	en	Please set your preferences for this application
