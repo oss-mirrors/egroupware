@@ -23,7 +23,7 @@
 
 	<tr valign="bottom">
 		<td colspan="2" align="center">
-			<input type="submit" name="edit" value="{lang_save}">
+			<input type="submit" name="submit" value="{lang_save}">
 		</td>
 	</tr>
 </table>

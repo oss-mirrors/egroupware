@@ -83,7 +83,7 @@
 		function edit_stock($values)
 		{
 			$this->db->query("UPDATE phpgw_stocks set stock_name='" . $values['name'] . "', stock_symbol='" . $values['symbol']
-							. " where stock_id='" . $values['id'] . "'",__LINE__,__FILE__);
+							. "' where stock_id='" . $values['id'] . "'",__LINE__,__FILE__);
 		}
 	}
 ?>

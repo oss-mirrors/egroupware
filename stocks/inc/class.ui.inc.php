@@ -223,9 +223,9 @@
 		{
 			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
 			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
-			$stock_id	= $GLOBALS['HTTP_POST_VARS']['stock_id'];
+			$stock_id	= $GLOBALS['HTTP_GET_VARS']['stock_id'];
 
-			if ($stock_id)
+			if (! $stock_id)
 			{
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
@@ -251,7 +251,7 @@
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.edit_stock&stock_id=' . $stock_id));
 			$this->t->set_var('lang_action',lang('Stock Quote preferences'));
 
-			$this->t->set_var('hidden_vars','<input type="hidden" name="stock_is" value="' . $stock_id . '">' . "\n");
+			$this->t->set_var('hidden_vars','<input type="hidden" name="stock_id" value="' . $stock_id . '">' . "\n");
 			$this->t->set_var('h_lang_edit',lang('Edit stock'));
 
 			$stock = $this->bo->read_single($stock_id);
