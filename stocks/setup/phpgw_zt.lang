@@ -1,13 +1,13 @@
 %	stocks	zt	%
-add new stock	stocks	zt	·s¼WªÑ²¼
-disable	stocks	zt	Ãö³¬
-display stocks on main screen is disabled	stocks	zt	Ãö³¬¥D­nµøµ¡Åã¥ÜªÑ²¼ªº¥\¯à
-display stocks on main screen is enabled	stocks	zt	¶}±Ò¥D­nµøµ¡Åã¥ÜªÑ²¼ªº¥\¯à
-edit stock	stocks	zt	½s¿èªÑ²¼
-enable	stocks	zt	±Ò¥Î
-price	stocks	zt	»ù®æ
-select displayed stocks	preferences	zt	¿ï¨ú¤wÅã¥ÜªºªÑ²¼«ü¼Æ
-stock quote preferences	stocks	zt	ªÑ²¼«ü¼Æ³]©w
-stock quotes	common	zt	ªÑ²¼«ü¼Æ
-stocks	common	zt	ªÑ²¼«ü¼Æ
-symbol	stocks	zt	«ü¼Ğ
+add new stock	stocks	zt	æ–°å¢è‚¡ç¥¨
+disable	stocks	zt	é—œé–‰
+display stocks on main screen is disabled	stocks	zt	é—œé–‰ä¸»è¦è¦–çª—é¡¯ç¤ºè‚¡ç¥¨çš„åŠŸèƒ½
+display stocks on main screen is enabled	stocks	zt	é–‹å•Ÿä¸»è¦è¦–çª—é¡¯ç¤ºè‚¡ç¥¨çš„åŠŸèƒ½
+edit stock	stocks	zt	ç·¨è¼¯è‚¡ç¥¨
+enable	stocks	zt	å•Ÿç”¨
+price	stocks	zt	åƒ¹æ ¼
+select displayed stocks	preferences	zt	é¸å–å·²é¡¯ç¤ºçš„è‚¡ç¥¨æŒ‡æ•¸
+stock quote preferences	stocks	zt	è‚¡ç¥¨æŒ‡æ•¸è¨­å®š
+stock quotes	common	zt	è‚¡ç¥¨æŒ‡æ•¸
+stocks	common	zt	è‚¡ç¥¨æŒ‡æ•¸
+symbol	stocks	zt	æŒ‡æ¨™

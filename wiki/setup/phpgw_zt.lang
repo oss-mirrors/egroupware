@@ -1,98 +1,98 @@
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	zt	<em>¦ı¬O</em>¦b³Ì·s²§°Ê¤¤Åã¥Ü¦Ü¤Ö³o¨Ç¸ê®Æ»P¨ä¥L­qÁÊ²M³æ¡G
-add document to category	wiki	zt	·s¼W³o­ÓÃş§Oªº¤å¥ó
-added	wiki	zt	¤w¸g·s¼W
-administration features are disabled for this wiki.	wiki	zt	ºŞ²z¥\¯à¬O³QÃö³¬ªº¡C
-admins	wiki	zt	ºŞ²zªÌ
-allow anonymous access	admin	zt	¤¹³\³X«È¦s¨ú
-anonymous password	admin	zt	³X«È±K½X
-anonymous session type	admin	zt	³X«È³s½uºØÃş
-anonymous username	admin	zt	³X«È¼ÊºÙ
-automatically convert pages with wiki-syntax to richtext (if edited)?	admin	zt	¦Û°ÊÂà´«wiki»Pªk¦¨¬°ºô­¶®æ¦¡(½s¿è«á)¡H
-block	wiki	zt	Âê©w
-block / unblock hosts	common	zt	Âê©w / ¸Ñ°£Âê©w¥D¾÷
-blocked ip address ranges	wiki	zt	Âê©w IP ¦ì§}°Ï¬q
-cancel without saving	wiki	zt	¨ú®ø¤£Àx¦s
-changed	wiki	zt	¤w¸g­×§ï
-changes by last author	wiki	zt	³Ì«á¤@¦ì§@ªÌªº²§°Ê
-choose your current time here, so the server may figure out what time zone you are in.	wiki	zt	¦b³o¸Ì¿ï¾Ü±z¥Ø«eªº®É¶¡¡A¨t²Î·|¦Û°Ê­pºâ±z©Ò¦b¦ì¸mªº®É°Ï¡C
-columns	wiki	zt	Äæ¦ì
-compute difference	wiki	zt	¤ñ¹ï²§°Ê¸ê®Æ
-converts the page to richtext	wiki	zt	Âà´«¦¨ºô­¶
-current version	wiki	zt	¥Ø«eª©¥»
-deleted	wiki	zt	¤w§R°£
-deletes this page	wiki	zt	§R°£³o¤@­¶
-difference between versions	wiki	zt	ª©¥»¤§¶¡ªº®t²§
-differences in	wiki	zt	ª©¥»®t²§
-different languages can have different titles	wiki	zt	¤£¦Pªº»y¨¥¥i¥H¨Ï¥Î¤£¦Pªº¼ĞÃD
-document last modified	wiki	zt	³Ì«á²§°Ê¤é´Á
-edit box	wiki	zt	½s¿è°Ï
-edit this <em>archive version</em> of this document	wiki	zt	½s¿è³o­Ó¤å¥óªº<em>«O¦sª©¥»</em>
-edit this document	wiki	zt	½s¿è³o­Ó¤å¥ó
-edit with preview	admin	zt	½s¿è»P¹wÄı
-editable	admin	zt	¥i½s¿è
-editing	wiki	zt	½s¿è¤¤
-emailaddress administrator	admin	zt	ºŞ²zªÌ«H½c
-enable free links	admin	zt	±Ò¥Î¦Û¥Ñ³sµ²
-enable wiki links	admin	zt	±Ò¥ÎWiki³sµ²
-enter here the maximum number of entries to display in a document's history list.	wiki	zt	¿é¤J¤å¥ó²§°Ê°O¿ı³Ì¦hÅã¥Ü´Xµ§¸ê®Æ¡C
-enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	zt	¿é¤J³Ì·s²§°Ê²M³æ©Î¨ä¥L­q¾\²M³æ­nÅã¥Ü¸ê®Æªº¤Ñ¼Æ¡A¦pªG±z§Æ±æ¬İ¨ì¥ş³¡¥i¥H³]¬°0 ¡C
-enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	zt	¿é¤J IP ¦ì§}°Ï¬q¡A®æ¦¡¬° <tt>12.*</tt>, <tt>34.56.*</tt>, ©Î<tt>78.90.123.*</tt>
-error creating temporary file.	wiki	zt	«Ø¥ß¼È¦sÀÉ®×®Éµo¥Í¿ù»~
-error writing to temporary file.	wiki	zt	¼g¤J¼È¦sÀÉ®×®Éµo¥Í¿ù»~
-everyone	wiki	zt	©Ò¦³¤H
-find	wiki	zt	·j´M
-history	wiki	zt	¾ú¥v
-history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	zt	¾ú¥v·|Åã¥Ü³Ì«á¤@¦ì§@ªÌ<em>©Ò¦³</em>ªº²§°Ê¡C
-history lists	wiki	zt	¾ú¥v²M³æ
-history of	wiki	zt	¾ú¥v
-interwikiprefix	admin	zt	Wiki¤å¤¤«e¸m¦r¤¸
-invalid page name.	wiki	zt	¿ù»~ªº­¶­±¦WºÙ
-load	wiki	zt	Åª¨ú
-loads the named page in the given language, all change so far get lost !!!	wiki	zt	Åª¨ú«ü©w»y¨¥ªº­¶­±¡A©Ò¦³ªº²§°Ê±N·|¿ò¥¢¡I
-lock / unlock pages	common	zt	Âê©w / ¨ú®øÂê©w­¶­±
-locked	wiki	zt	¤wÂê©w
-name wiki home link	admin	zt	wiki ­º­¶³sµ²
-newer	wiki	zt	§ó·s
-no never	admin	zt	±q¥¼
-not set	wiki	zt	¥¼³]©w
-older	wiki	zt	§óÂÂ
-only if browser supports a richtext-editor	admin	zt	½Ğ½T»{±zªºÂsÄı¾¹¤ä´©©Ò¨£§Y©Ò±o½s¿è¾¹
-please contact the %1administrator%2 for assistance.	wiki	zt	½ĞÁpµ¸%1ºŞ²z­û%2¡C
-please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	zt	½ĞÁpµ¸ <a href="mailto:%1">ºŞ²z­û</a>¡C
-preview	wiki	zt	¹wÄı
-preview of current version	wiki	zt	¹wÄı¥Ø«eª©¥»
-rate control / ip blocking disabled	wiki	zt	µû¤À±±¨î / ¨ú®øIPÂê©w
-readable by	wiki	zt	¥iÅª¨ú
-readonly	admin	zt	°ßÅª
-recent changes	wiki	zt	³Ì·s²§°Ê
-renames page to the given name and language	wiki	zt	«ü©w¦WºÙ©M»y¨¥¨Ó­×§ï­¶­±
-richtext	wiki	zt	ºô­¶
-rows	wiki	zt	¦C
-save the changes and exit	wiki	zt	Àx¦s«áÂ÷¶}
-saves and continues editing	wiki	zt	Àx¦s«áÄ~Äò½s¿è
-see complete list (%1 entries)	wiki	zt	Åã¥Ü§¹¾ã¦Cªí(%1 µ§¸ê®Æ)
-site configuration	wiki	zt	ºô¯¸³]©w
-summary	wiki	zt	·§­n
-summary of change	wiki	zt	²§°Ê·§­n
-this page can not be edited.	wiki	zt	³o½g¤å³¹µLªkÃäÀ»
-this page cannot be edited.	wiki	zt	±z¤£¯à½s¿è³o¤@­¶
-twin pages	wiki	zt	­«½Æ­¶
-unblock	wiki	zt	¨ú®øÂê©w
-updates the preview	wiki	zt	§ó·s¹wÄı
-users	wiki	zt	¨Ï¥ÎªÌ
-view document history	wiki	zt	Åã¥Ü¤å¥ó¾ú¥v
-visit %1 to set your user name	wiki	zt	¦b %1 ³]©w±zªº¦WºÙ
-warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	zt	ª`·N¡G·í±z¶}©l½s¿è«á¡A³o¥÷¤å¥ó¤]³Q¨ä¥L¤H½s¿è¹L¤F¡A½Ğ¾ã¦X±z½s¿èªº¸ê®Æ¨ì¥Ø«eªºª©¥»¡C
-who should be able to edit this page	wiki	zt	½Ö¯à°÷½s¿è³o¥÷¤å¥ó
-who should be able to read this page	wiki	zt	½Ö¯à°÷¾\Åª³o¥÷¤å¥ó
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	zt	<em>ä½†æ˜¯</em>åœ¨æœ€æ–°ç•°å‹•ä¸­é¡¯ç¤ºè‡³å°‘é€™äº›è³‡æ–™èˆ‡å…¶ä»–è¨‚è³¼æ¸…å–®ï¼š
+add document to category	wiki	zt	æ–°å¢é€™å€‹é¡åˆ¥çš„æ–‡ä»¶
+added	wiki	zt	å·²ç¶“æ–°å¢
+administration features are disabled for this wiki.	wiki	zt	ç®¡ç†åŠŸèƒ½æ˜¯è¢«é—œé–‰çš„ã€‚
+admins	wiki	zt	ç®¡ç†è€…
+allow anonymous access	admin	zt	å…è¨±è¨ªå®¢å­˜å–
+anonymous password	admin	zt	è¨ªå®¢å¯†ç¢¼
+anonymous session type	admin	zt	è¨ªå®¢é€£ç·šç¨®é¡
+anonymous username	admin	zt	è¨ªå®¢æš±ç¨±
+automatically convert pages with wiki-syntax to richtext (if edited)?	admin	zt	è‡ªå‹•è½‰æ›wikièˆ‡æ³•æˆç‚ºç¶²é æ ¼å¼(ç·¨è¼¯å¾Œ)ï¼Ÿ
+block	wiki	zt	é–å®š
+block / unblock hosts	common	zt	é–å®š / è§£é™¤é–å®šä¸»æ©Ÿ
+blocked ip address ranges	wiki	zt	é–å®š IP ä½å€å€æ®µ
+cancel without saving	wiki	zt	å–æ¶ˆä¸å„²å­˜
+changed	wiki	zt	å·²ç¶“ä¿®æ”¹
+changes by last author	wiki	zt	æœ€å¾Œä¸€ä½ä½œè€…çš„ç•°å‹•
+choose your current time here, so the server may figure out what time zone you are in.	wiki	zt	åœ¨é€™è£¡é¸æ“‡æ‚¨ç›®å‰çš„æ™‚é–“ï¼Œç³»çµ±æœƒè‡ªå‹•è¨ˆç®—æ‚¨æ‰€åœ¨ä½ç½®çš„æ™‚å€ã€‚
+columns	wiki	zt	æ¬„ä½
+compute difference	wiki	zt	æ¯”å°ç•°å‹•è³‡æ–™
+converts the page to richtext	wiki	zt	è½‰æ›æˆç¶²é 
+current version	wiki	zt	ç›®å‰ç‰ˆæœ¬
+deleted	wiki	zt	å·²åˆªé™¤
+deletes this page	wiki	zt	åˆªé™¤é€™ä¸€é 
+difference between versions	wiki	zt	ç‰ˆæœ¬ä¹‹é–“çš„å·®ç•°
+differences in	wiki	zt	ç‰ˆæœ¬å·®ç•°
+different languages can have different titles	wiki	zt	ä¸åŒçš„èªè¨€å¯ä»¥ä½¿ç”¨ä¸åŒçš„æ¨™é¡Œ
+document last modified	wiki	zt	æœ€å¾Œç•°å‹•æ—¥æœŸ
+edit box	wiki	zt	ç·¨è¼¯å€
+edit this <em>archive version</em> of this document	wiki	zt	ç·¨è¼¯é€™å€‹æ–‡ä»¶çš„<em>ä¿å­˜ç‰ˆæœ¬</em>
+edit this document	wiki	zt	ç·¨è¼¯é€™å€‹æ–‡ä»¶
+edit with preview	admin	zt	ç·¨è¼¯èˆ‡é è¦½
+editable	admin	zt	å¯ç·¨è¼¯
+editing	wiki	zt	ç·¨è¼¯ä¸­
+emailaddress administrator	admin	zt	ç®¡ç†è€…ä¿¡ç®±
+enable free links	admin	zt	å•Ÿç”¨è‡ªç”±é€£çµ
+enable wiki links	admin	zt	å•Ÿç”¨Wikié€£çµ
+enter here the maximum number of entries to display in a document's history list.	wiki	zt	è¼¸å…¥æ–‡ä»¶ç•°å‹•è¨˜éŒ„æœ€å¤šé¡¯ç¤ºå¹¾ç­†è³‡æ–™ã€‚
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited.	wiki	zt	è¼¸å…¥æœ€æ–°ç•°å‹•æ¸…å–®æˆ–å…¶ä»–è¨‚é–±æ¸…å–®è¦é¡¯ç¤ºè³‡æ–™çš„å¤©æ•¸ï¼Œå¦‚æœæ‚¨å¸Œæœ›çœ‹åˆ°å…¨éƒ¨å¯ä»¥è¨­ç‚º0 ã€‚
+enter ip address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>	wiki	zt	è¼¸å…¥ IP ä½å€å€æ®µï¼Œæ ¼å¼ç‚º <tt>12.*</tt>, <tt>34.56.*</tt>, æˆ–<tt>78.90.123.*</tt>
+error creating temporary file.	wiki	zt	å»ºç«‹æš«å­˜æª”æ¡ˆæ™‚ç™¼ç”ŸéŒ¯èª¤
+error writing to temporary file.	wiki	zt	å¯«å…¥æš«å­˜æª”æ¡ˆæ™‚ç™¼ç”ŸéŒ¯èª¤
+everyone	wiki	zt	æ‰€æœ‰äºº
+find	wiki	zt	æœå°‹
+history	wiki	zt	æ­·å²
+history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	zt	æ­·å²æœƒé¡¯ç¤ºæœ€å¾Œä¸€ä½ä½œè€…<em>æ‰€æœ‰</em>çš„ç•°å‹•ã€‚
+history lists	wiki	zt	æ­·å²æ¸…å–®
+history of	wiki	zt	æ­·å²
+interwikiprefix	admin	zt	Wikiæ–‡ä¸­å‰ç½®å­—å…ƒ
+invalid page name.	wiki	zt	éŒ¯èª¤çš„é é¢åç¨±
+load	wiki	zt	è®€å–
+loads the named page in the given language, all change so far get lost !!!	wiki	zt	è®€å–æŒ‡å®šèªè¨€çš„é é¢ï¼Œæ‰€æœ‰çš„ç•°å‹•å°‡æœƒéºå¤±ï¼
+lock / unlock pages	common	zt	é–å®š / å–æ¶ˆé–å®šé é¢
+locked	wiki	zt	å·²é–å®š
+name wiki home link	admin	zt	wiki é¦–é é€£çµ
+newer	wiki	zt	æ›´æ–°
+no never	admin	zt	å¾æœª
+not set	wiki	zt	æœªè¨­å®š
+older	wiki	zt	æ›´èˆŠ
+only if browser supports a richtext-editor	admin	zt	è«‹ç¢ºèªæ‚¨çš„ç€è¦½å™¨æ”¯æ´æ‰€è¦‹å³æ‰€å¾—ç·¨è¼¯å™¨
+please contact the %1administrator%2 for assistance.	wiki	zt	è«‹è¯çµ¡%1ç®¡ç†å“¡%2ã€‚
+please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	zt	è«‹è¯çµ¡ <a href="mailto:%1">ç®¡ç†å“¡</a>ã€‚
+preview	wiki	zt	é è¦½
+preview of current version	wiki	zt	é è¦½ç›®å‰ç‰ˆæœ¬
+rate control / ip blocking disabled	wiki	zt	è©•åˆ†æ§åˆ¶ / å–æ¶ˆIPé–å®š
+readable by	wiki	zt	å¯è®€å–
+readonly	admin	zt	å”¯è®€
+recent changes	wiki	zt	æœ€æ–°ç•°å‹•
+renames page to the given name and language	wiki	zt	æŒ‡å®šåç¨±å’Œèªè¨€ä¾†ä¿®æ”¹é é¢
+richtext	wiki	zt	ç¶²é 
+rows	wiki	zt	åˆ—
+save the changes and exit	wiki	zt	å„²å­˜å¾Œé›¢é–‹
+saves and continues editing	wiki	zt	å„²å­˜å¾Œç¹¼çºŒç·¨è¼¯
+see complete list (%1 entries)	wiki	zt	é¡¯ç¤ºå®Œæ•´åˆ—è¡¨(%1 ç­†è³‡æ–™)
+site configuration	wiki	zt	ç¶²ç«™è¨­å®š
+summary	wiki	zt	æ¦‚è¦
+summary of change	wiki	zt	ç•°å‹•æ¦‚è¦
+this page can not be edited.	wiki	zt	é€™ç¯‡æ–‡ç« ç„¡æ³•é‚Šæ“Š
+this page cannot be edited.	wiki	zt	æ‚¨ä¸èƒ½ç·¨è¼¯é€™ä¸€é 
+twin pages	wiki	zt	é‡è¤‡é 
+unblock	wiki	zt	å–æ¶ˆé–å®š
+updates the preview	wiki	zt	æ›´æ–°é è¦½
+users	wiki	zt	ä½¿ç”¨è€…
+view document history	wiki	zt	é¡¯ç¤ºæ–‡ä»¶æ­·å²
+visit %1 to set your user name	wiki	zt	åœ¨ %1 è¨­å®šæ‚¨çš„åç¨±
+warning: since you started editing, this document has been changed by someone else.  please merge your edits into the current version of this document.	wiki	zt	æ³¨æ„ï¼šç•¶æ‚¨é–‹å§‹ç·¨è¼¯å¾Œï¼Œé€™ä»½æ–‡ä»¶ä¹Ÿè¢«å…¶ä»–äººç·¨è¼¯éäº†ï¼Œè«‹æ•´åˆæ‚¨ç·¨è¼¯çš„è³‡æ–™åˆ°ç›®å‰çš„ç‰ˆæœ¬ã€‚
+who should be able to edit this page	wiki	zt	èª°èƒ½å¤ ç·¨è¼¯é€™ä»½æ–‡ä»¶
+who should be able to read this page	wiki	zt	èª°èƒ½å¤ é–±è®€é€™ä»½æ–‡ä»¶
 wiki	common	zt	Wiki
-wiki administration	wiki	zt	WikiºŞ²z
-wiki menu	wiki	zt	Wiki¿ï³æ
-writable by	wiki	zt	¥i­×§ï
-yes always	admin	zt	¥ş³¡¬Ò¬O
-you have been denied access to this site.	wiki	zt	±z¨S¦³Åv­­ÂsÄı³o­Óºô¯¸¡I
-you have entered an invalid user name.	wiki	zt	±z¿é¤J¤F¤@­Ó¿ù»~ªº¦WºÙ
-you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	zt	¦b«ü©wªº´Á¶¡¸Ì±z¤w¸g¶W¹L¤F¤¹³\ÂsÄıªº­¶¼Æ¡A½Ğ¹L¤@·|¨à«á¦AÄ~ÄòÂsÄı¡C
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	zt	±z¦b¦P¤@¬q®É¶¡¸Ì¦s¨ú¤F¶W¹L¨t²Î³]©wªº¸ê®Æ¶q¡A½Ğµy«á¦A¦^¨ÓÄ~Äò¾\Åª¡C
-your changes	wiki	zt	±z°µªº­×¥¿
-your user name is "%1".	wiki	zt	±zªº±b¸¹¬O "%1"
+wiki administration	wiki	zt	Wikiç®¡ç†
+wiki menu	wiki	zt	Wikié¸å–®
+writable by	wiki	zt	å¯ä¿®æ”¹
+yes always	admin	zt	å…¨éƒ¨çš†æ˜¯
+you have been denied access to this site.	wiki	zt	æ‚¨æ²’æœ‰æ¬Šé™ç€è¦½é€™å€‹ç¶²ç«™ï¼
+you have entered an invalid user name.	wiki	zt	æ‚¨è¼¸å…¥äº†ä¸€å€‹éŒ¯èª¤çš„åç¨±
+you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	zt	åœ¨æŒ‡å®šçš„æœŸé–“è£¡æ‚¨å·²ç¶“è¶…éäº†å…è¨±ç€è¦½çš„é æ•¸ï¼Œè«‹éä¸€æœƒå…’å¾Œå†ç¹¼çºŒç€è¦½ã€‚
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	zt	æ‚¨åœ¨åŒä¸€æ®µæ™‚é–“è£¡å­˜å–äº†è¶…éç³»çµ±è¨­å®šçš„è³‡æ–™é‡ï¼Œè«‹ç¨å¾Œå†å›ä¾†ç¹¼çºŒé–±è®€ã€‚
+your changes	wiki	zt	æ‚¨åšçš„ä¿®æ­£
+your user name is "%1".	wiki	zt	æ‚¨çš„å¸³è™Ÿæ˜¯ "%1"

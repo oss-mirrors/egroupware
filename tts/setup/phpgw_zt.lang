@@ -1,172 +1,172 @@
-a new ticket has been reported.	tts	zt	·s¼W¤F¤@µ§°İÃD¶Ç²¼
-accept	tts	zt	¦P·N
-accept the ticket into verification process.	tts	zt	¤¹³\¶Ç²¼¶i¤JÅçÃÒµ{§Ç
-accepted	tts	zt	¤w¦P·N
-action	tts	zt	¦æ°Ê
-add new ticket	tts	zt	·s¼W¶Ç²¼
-add ticket	tts	zt	·s¼W¶Ç²¼
-additional notes	tts	zt	·s¼W³Æµù
-admin options	common	zt	ºŞ²zªÌ¿ï¶µ
-assign to	tts	zt	«ü¬£µ¹
-assigned from	tts	zt	«ü¬£ªÌ
-assigned to	tts	zt	¤w«ü¬£µ¹
-billable hours	tts	zt	¥i³ø±b®É¼Æ
-billable hours changed	tts	zt	¥i³ø±b®É¼Æ§ïÅÜ
-billable hours rate	tts	zt	¥i³ø±b®ÉÁ~
-billable rate	tts	zt	¥i³ø±b®ÉÁ~
-billable rate changed	tts	zt	¥i³ø±b®ÉÁ~§ïÅÜ
-category changed	tts	zt	Ãş§OÅÜ§ó
-check here to generate the state's id automatically or enter a particular id below.	tts	zt	¤Ä¿ï³o¸Ì¨Ó¦Û°Ê²£¥Íª¬ºA¥N½X©Î¬O±z¥i¥H¦b¤U­±«ü©w¡C
-clear form	tts	zt	²M°£ªí³æ
-close	tts	zt	Ãö³¬
-close date	tts	zt	Ãö³¬¤é´Á
-close the invalid ticket.	tts	zt	Ãö³¬µL®Äªº¶Ç²¼
-closed	tts	zt	¤wÃö³¬
-completed	tts	zt	§¹¦¨
-configure the states	common	zt	³]©wª¬ºA
-configure the transitions	common	zt	³]©wÂà´«
-create new state	tts	zt	«Ø¥ß·sª¬ºA
-create new ticket	tts	zt	«Ø¥ß·s¶Ç²¼
-create new transition	tts	zt	«Ø¥ß·sªºÂà´«
-creates a new ticket, returns ticket_id	tts	zt	«Ø¥ß·s¶Ç²¼¡A¶Ç¦^¶Ç²¼¬y¤ô¸¹
-creates a struct of tickets	tts	zt	«Ø¥ß¶Ç²¼ªº¬[ºc
-date opened	tts	zt	¶}±Ò¤é´Á
-default assign to	tts	zt	¹w³]«ü¬£µ¹
-default group	tts	zt	¹w³]¸s²Õ
-default priority	tts	zt	¹w³]Àu¥ıÅv
-delete the listed tickets.	tts	zt	§R°£¦C¥Xªº¶Ç²¼¡C
-deleting the state	tts	zt	§R°£ª¬ºA
-deleting the transition	tts	zt	§R°£Âà´«
-detail	tts	zt	¸Ô²Ó¤º®e
-details	tts	zt	¸Ô²Ó¤º®e
-disabled	tts	zt	°±¥Î
-duplicate	tts	zt	­«½Æ
-edit the state	tts	zt	½s¿èª¬ºA
-edit the transition	tts	zt	½s¿èÂà´«
-force	tts	zt	±j¨î
-global categories	tts	zt	¥ş°ìÃş§O
-group ownership changed	tts	zt	¸s²Õ©Ò¦³Åv§ïÅÜ
-highest	tts	zt	³Ì°ª
-history	tts	zt	¾ú¥v
-i worked on the ticket and the work requires validation.	tts	zt	§Ú±µ¨ì¤F³o­Ó¶Ç²¼¦ı¬O»İ­n¸g¹L®Ö­ã¤~¯à¶i¦æ¡C
-i worked on the ticket, but did not finish.	tts	zt	§Ú±µ¨ì¤F³o­Ó¶Ç²¼¦ı¬O©|¥¼§¹¦¨¡C
-in progress	tts	zt	³B²z¤¤
-initial state	tts	zt	ªì©lª¬ºA
-invalid	tts	zt	µL®Ä
-invalidate	tts	zt	¨ÏµL®Ä
-keep the present state [%1].	tts	zt	ºû«ù¥Ø«eª¬ºA[%1]¡C
-latest note added	tts	zt	³Ì·s°O¨Æ·s¼W
-list of available tickets' states.	tts	zt	¦C¥X¦³®Ä¶Ç²¼ª¬ºA
-list of available tickets' transitions.	tts	zt	¦C¥X¦³®Ä¶Ç²¼Âà´«
-lowest	tts	zt	³Ì§C
-missing description	tts	zt	¨S¦³¿é¤J»¡©ú
-morework	tts	zt	§ó¦h¤u§@
-needswork	tts	zt	»İ­n¤u§@
-new	tts	zt	·s
-new ticket	tts	zt	·s¼W¶Ç²¼
-new tickets can be put into this state.	tts	zt	·s¶Ç²¼¥i¥H©ñ¨ì³o­Óª¬ºA
-new value	tts	zt	·s¼Æ­È
-no additional notes	tts	zt	¨S¦³¨ä¥L³Æµù
-no duplicate	tts	zt	¤£¯à­«½Æ
-no notes for this ticket	tts	zt	³o±i¶Ç²¼¨S¦³³Æµù
-no states found	tts	zt	§ä¤£¨ì¥ô¦óª¬ºA
-no subject	tts	zt	µL¥DÃD
-no tickets found	tts	zt	¨S¦³§ä¨ì¥ô¦ó¶Ç²¼¡C
-no transitions found	tts	zt	§ä¤£¨ì¥ô¦óÂà´«
-not assigned	tts	zt	¥¼«ü¬£
-not completed	tts	zt	©|¥¼§¹¦¨
-notify changes to ticket assignee by e-mail	tts	zt	¥Î¶l¥ó³qª¾¶Ç²¼­t³d¤H²§°Êª¬ªp
-notify changes to ticket group by e-mail	tts	zt	¥Î¶l¥ó³qª¾¶Ç²¼­t³d¸s²Õ²§°Êª¬ªp
-notify changes to ticket owner by e-mail	tts	zt	¥Î¶l¥ó³qª¾¶Ç²¼¾Ö¦³¤H²§°Êª¬ªp
-old value	tts	zt	­ì©l­È
-open	tts	zt	¶}±Ò
-open / closed	tts	zt	¶}±Ò / Ãö³¬
-open date	tts	zt	¶}±Ò¤é´Á
-opened	tts	zt	¶}±Ò
-opened by	tts	zt	¶}±Ò¤H
-original ticket details	tts	zt	­ì©l¶Ç²¼²Ó¸`
-perform irregular transition into the following state	tts	zt	°õ¦æ¤£³W«hÂà´«¨ì¤U¦Cª¬ºA
-prio	tts	zt	Àu¥ıÅv
-priority	tts	zt	Àu¥ıÅv
-priority changed	tts	zt	Àu¥ıÅv§ïÅÜ
-put the preexistent ticket into the state %1.	tts	zt	±N¤w¦s¦bªº¶Ç²¼©ñ¨ì³o­Óª¬ºA
-re-assigned	tts	zt	­«·s«ü¬£
-re-opened	tts	zt	­«·s¶}±Ò
-refresh every (seconds)	tts	zt	­«·s¾ã²z¡]¬í¡^
-reopen	tts	zt	­«·s¶}±Ò
-reopened	tts	zt	¤w­«¶}
-resolve	tts	zt	³B²z
-resolved	tts	zt	¤w³B²z
-returns a struct of a tickets history	tts	zt	¶Ç¦^¶Ç²¼ªº¾ú¥v¬[ºc
-returns a struct of values of a single ticket	tts	zt	¶Ç¦^³æ¤@¶Ç²¼¼Æ­Èªº¬[ºc
-returns the additional notes attached to a ticket	tts	zt	¶Ç¦^¶Ç²¼ªºªş¥[°T®§
-search	tts	zt	·j´M
-selected	tts	zt	¤w³Q¿ï¾Ü
-show new/updated tickets on main screen	tts	zt	Åã¥Ü³Ì·s¤Î§ó·s¹Lªº¶Ç²¼¦b¥Dµe­±
-source state	tts	zt	¨Ó·½ª¬ºA
-state	tts	zt	ª¬ºA
-state changed	tts	zt	ª¬ºA¤w§ïÅÜ
-state id	tts	zt	ª¬ºA¥N½X
-state name	tts	zt	ª¬ºA¦WºÙ
-status/date closed	tts	zt	¥Ø«eª¬ºA¡şÃö³¬¤é´Á
-subject changed	tts	zt	¥DÃD§ïÅÜ
-target state	tts	zt	¥Ø¼Ğª¬ºA
-test	tts	zt	´ú¸Õ
-the closed ticket requires more work. reopen it.	tts	zt	³QÃö³¬ªº¶Ç²¼»İ­n§ó¦hªº§@·~,½Ğ­«·s¶}±Ò
-the owner of the ticket was not able to confirm the issue.	tts	zt	¶Ç²¼ªº¾Ö¦³¤HµLªk½T»{³o­Ó°İÃD
-the ticket has been accepted by the owner, who is about to work on it.	tts	zt	¶Ç²¼¤w¸g³Q¾Ö¦³¤H½T»{¡A¥L¥¿¦b³B²z¤¤¡C
-the ticket has been closed without resolution.	tts	zt	¶Ç²¼¤w¸g³Q¤¤¤î¤F
-the ticket has been reopened for further work.	tts	zt	¶Ç²¼¤w¸g³Q¥¼¨Óªº¤u§@­«·s¶}±Ò
-the ticket has been successfully resolved.	tts	zt	¶Ç²¼¤w¸g¦¨¥\³B²z
-the ticket has been verified and has to be worked on.	tts	zt	¶Ç²¼¤w¸g³Q½T»{¦Ó¥B»İ­n¶}©l¶i¦æ
-the ticket has been worked on and the work requires validation.	tts	zt	¶Ç²¼¤w¸g¶}©l¶i¦æ¦Ó¥B»İ­n®Ö­ã
-the ticket has been worked on, but requires more work.	tts	zt	¶Ç²¼¤w¸g¶}©l¶i¦æ¦ı¬O»İ­n§ó¦h§@·~
-the ticket is a duplicate of another ticket and should be closed.	tts	zt	¶Ç²¼¤w¸g­«½Æ¡A½ĞÃö³¬
-the ticket is essentially not a duplicate of another ticket. reopen it.	tts	zt	¶Ç²¼¨Æ¹ê¤W¨Ã¥¼­«½Æ¡A½Ğ­«·s¶}±Ò
-the ticket is invalid and cannot be worked on.	tts	zt	¶Ç²¼µL®Ä¦Ó¥BµLªk¶i¦æ
-the ticket resolution was successfully validated. close the ticket.	tts	zt	¶Ç²¼¤w¸g®Ö­ã¤F¡A½ĞÃö³¬¡C
-the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	zt	¶Ç²¼»İ­n«ü©w¤@­Óª¬ºA
-the ticket was found a duplicate of another ticket.	tts	zt	¶Ç²¼­«½Æ¤F
-the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	zt	¤U­±¦C¥Xªº¶Ç²¼ª¬ºA¬O %1 ¡A½Ğ¨M©w¸Ó«ç»ò°µ
-the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	zt	¶Ç²¼®Ö­ã»İ¨D³Q°h¦^¡A»İ­n°µ¶i¤@¨BªºÀË¬d¡C
-ticket	tts	zt	¶Ç²¼
-ticket assigned to %1	tts	zt	¶Ç²¼«ü°tµ¹ %1
-ticket closed	tts	zt	¶Ç²¼¤wÃö³¬
-ticket has been updated	tts	zt	¶Ç²¼¤w¸g§ó·s
-ticket reopened	tts	zt	¶Ç²¼­«·s¶}±Ò
-tickets found %1	tts	zt	§ä¨ì %1 ±i¶Ç²¼
-tickets open %1	tts	zt	¥¼³B²zªº¶Ç²¼¦³ %1
-tickets total %1	tts	zt	Á`­p¶Ç²¼¦³ %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	zt	«ö<a href="%1"></a>³o¸Ì¦^¨ì¶Ç²¼¨t²Î­º­¶
-toaccept	tts	zt	¦P·N
-toclosed	tts	zt	Ãö³¬
-toduplicate	tts	zt	­«½Æ
-toinvalid	tts	zt	µL®Ä
-toneedswork	tts	zt	»İ­nÀË¬d
-tonew	tts	zt	·s
-toreopened	tts	zt	­«·s¶}±Ò
-toresolved	tts	zt	¤w³B²z
-total billable	tts	zt	¥i³ø±bÁ`ÃB
-totovalidate	tts	zt	«İ½T»{
-tovalidate	tts	zt	½T»{
-toverified	tts	zt	®Ö­ã
-transition	tts	zt	Âà´«
-transition name	tts	zt	Âà´«¦WºÙ
-trouble ticket system	common	zt	°İÃD¶Ç²¼¨t²Î
-tts	common	zt	°İÃD¶Ç²¼¨t²Î
-tts preferences	tts	zt	°İÃD¶Ç²¼¨t²Î³ß¦n³]©w
-undefined	tts	zt	¥¼©w¸q
-update	tts	zt	§ó·s
-update ticket state	tts	zt	§ó·s¶Ç²¼ª¬ºA
-updates ticket	tts	zt	§ó·s¶Ç²¼
-use email notification	tts	zt	¨Ï¥Î¹q¤l¶l¥ó³qª¾
-users choice	tts	zt	¨Ï¥ÎªÌ¿ï¾Ü
-verified	tts	zt	¤w½T»{
-verify	tts	zt	½T»{
-verify the ticket to work on it.	tts	zt	½T»{¶Ç²¼¨Ó¶i¦æ
-view all tickets	tts	zt	ÀËµø©Ò¦³¶Ç²¼
-view job detail	tts	zt	ÀËµø¸Ô²Ó¤º®e
-view only open tickets	tts	zt	ÀËµø¥¼³B²zªº¶Ç²¼
-you can only close a ticket if it is assigned to you.	tts	zt	¦b¶Ç²¼«ü©wµ¹±z®É±z¥u¯à°÷Ãö³¬¥¦
-you want to delete the state %1. are you sure?	tts	zt	±z½T©w­n§R°£ª¬ºA %1  ¡H
-you want to delete the transition %1. are you sure?	tts	zt	±z½T©w­n§R°£Âà´« %1 ¡H
+a new ticket has been reported.	tts	zt	æ–°å¢äº†ä¸€ç­†å•é¡Œå‚³ç¥¨
+accept	tts	zt	åŒæ„
+accept the ticket into verification process.	tts	zt	å…è¨±å‚³ç¥¨é€²å…¥é©—è­‰ç¨‹åº
+accepted	tts	zt	å·²åŒæ„
+action	tts	zt	è¡Œå‹•
+add new ticket	tts	zt	æ–°å¢å‚³ç¥¨
+add ticket	tts	zt	æ–°å¢å‚³ç¥¨
+additional notes	tts	zt	æ–°å¢å‚™è¨»
+admin options	common	zt	ç®¡ç†è€…é¸é …
+assign to	tts	zt	æŒ‡æ´¾çµ¦
+assigned from	tts	zt	æŒ‡æ´¾è€…
+assigned to	tts	zt	å·²æŒ‡æ´¾çµ¦
+billable hours	tts	zt	å¯å ±å¸³æ™‚æ•¸
+billable hours changed	tts	zt	å¯å ±å¸³æ™‚æ•¸æ”¹è®Š
+billable hours rate	tts	zt	å¯å ±å¸³æ™‚è–ª
+billable rate	tts	zt	å¯å ±å¸³æ™‚è–ª
+billable rate changed	tts	zt	å¯å ±å¸³æ™‚è–ªæ”¹è®Š
+category changed	tts	zt	é¡åˆ¥è®Šæ›´
+check here to generate the state's id automatically or enter a particular id below.	tts	zt	å‹¾é¸é€™è£¡ä¾†è‡ªå‹•ç”¢ç”Ÿç‹€æ…‹ä»£ç¢¼æˆ–æ˜¯æ‚¨å¯ä»¥åœ¨ä¸‹é¢æŒ‡å®šã€‚
+clear form	tts	zt	æ¸…é™¤è¡¨å–®
+close	tts	zt	é—œé–‰
+close date	tts	zt	é—œé–‰æ—¥æœŸ
+close the invalid ticket.	tts	zt	é—œé–‰ç„¡æ•ˆçš„å‚³ç¥¨
+closed	tts	zt	å·²é—œé–‰
+completed	tts	zt	å®Œæˆ
+configure the states	common	zt	è¨­å®šç‹€æ…‹
+configure the transitions	common	zt	è¨­å®šè½‰æ›
+create new state	tts	zt	å»ºç«‹æ–°ç‹€æ…‹
+create new ticket	tts	zt	å»ºç«‹æ–°å‚³ç¥¨
+create new transition	tts	zt	å»ºç«‹æ–°çš„è½‰æ›
+creates a new ticket, returns ticket_id	tts	zt	å»ºç«‹æ–°å‚³ç¥¨ï¼Œå‚³å›å‚³ç¥¨æµæ°´è™Ÿ
+creates a struct of tickets	tts	zt	å»ºç«‹å‚³ç¥¨çš„æ¶æ§‹
+date opened	tts	zt	é–‹å•Ÿæ—¥æœŸ
+default assign to	tts	zt	é è¨­æŒ‡æ´¾çµ¦
+default group	tts	zt	é è¨­ç¾¤çµ„
+default priority	tts	zt	é è¨­å„ªå…ˆæ¬Š
+delete the listed tickets.	tts	zt	åˆªé™¤åˆ—å‡ºçš„å‚³ç¥¨ã€‚
+deleting the state	tts	zt	åˆªé™¤ç‹€æ…‹
+deleting the transition	tts	zt	åˆªé™¤è½‰æ›
+detail	tts	zt	è©³ç´°å…§å®¹
+details	tts	zt	è©³ç´°å…§å®¹
+disabled	tts	zt	åœç”¨
+duplicate	tts	zt	é‡è¤‡
+edit the state	tts	zt	ç·¨è¼¯ç‹€æ…‹
+edit the transition	tts	zt	ç·¨è¼¯è½‰æ›
+force	tts	zt	å¼·åˆ¶
+global categories	tts	zt	å…¨åŸŸé¡åˆ¥
+group ownership changed	tts	zt	ç¾¤çµ„æ‰€æœ‰æ¬Šæ”¹è®Š
+highest	tts	zt	æœ€é«˜
+history	tts	zt	æ­·å²
+i worked on the ticket and the work requires validation.	tts	zt	æˆ‘æ¥åˆ°äº†é€™å€‹å‚³ç¥¨ä½†æ˜¯éœ€è¦ç¶“éæ ¸å‡†æ‰èƒ½é€²è¡Œã€‚
+i worked on the ticket, but did not finish.	tts	zt	æˆ‘æ¥åˆ°äº†é€™å€‹å‚³ç¥¨ä½†æ˜¯å°šæœªå®Œæˆã€‚
+in progress	tts	zt	è™•ç†ä¸­
+initial state	tts	zt	åˆå§‹ç‹€æ…‹
+invalid	tts	zt	ç„¡æ•ˆ
+invalidate	tts	zt	ä½¿ç„¡æ•ˆ
+keep the present state [%1].	tts	zt	ç¶­æŒç›®å‰ç‹€æ…‹[%1]ã€‚
+latest note added	tts	zt	æœ€æ–°è¨˜äº‹æ–°å¢
+list of available tickets' states.	tts	zt	åˆ—å‡ºæœ‰æ•ˆå‚³ç¥¨ç‹€æ…‹
+list of available tickets' transitions.	tts	zt	åˆ—å‡ºæœ‰æ•ˆå‚³ç¥¨è½‰æ›
+lowest	tts	zt	æœ€ä½
+missing description	tts	zt	æ²’æœ‰è¼¸å…¥èªªæ˜
+morework	tts	zt	æ›´å¤šå·¥ä½œ
+needswork	tts	zt	éœ€è¦å·¥ä½œ
+new	tts	zt	æ–°
+new ticket	tts	zt	æ–°å¢å‚³ç¥¨
+new tickets can be put into this state.	tts	zt	æ–°å‚³ç¥¨å¯ä»¥æ”¾åˆ°é€™å€‹ç‹€æ…‹
+new value	tts	zt	æ–°æ•¸å€¼
+no additional notes	tts	zt	æ²’æœ‰å…¶ä»–å‚™è¨»
+no duplicate	tts	zt	ä¸èƒ½é‡è¤‡
+no notes for this ticket	tts	zt	é€™å¼µå‚³ç¥¨æ²’æœ‰å‚™è¨»
+no states found	tts	zt	æ‰¾ä¸åˆ°ä»»ä½•ç‹€æ…‹
+no subject	tts	zt	ç„¡ä¸»é¡Œ
+no tickets found	tts	zt	æ²’æœ‰æ‰¾åˆ°ä»»ä½•å‚³ç¥¨ã€‚
+no transitions found	tts	zt	æ‰¾ä¸åˆ°ä»»ä½•è½‰æ›
+not assigned	tts	zt	æœªæŒ‡æ´¾
+not completed	tts	zt	å°šæœªå®Œæˆ
+notify changes to ticket assignee by e-mail	tts	zt	ç”¨éƒµä»¶é€šçŸ¥å‚³ç¥¨è² è²¬äººç•°å‹•ç‹€æ³
+notify changes to ticket group by e-mail	tts	zt	ç”¨éƒµä»¶é€šçŸ¥å‚³ç¥¨è² è²¬ç¾¤çµ„ç•°å‹•ç‹€æ³
+notify changes to ticket owner by e-mail	tts	zt	ç”¨éƒµä»¶é€šçŸ¥å‚³ç¥¨æ“æœ‰äººç•°å‹•ç‹€æ³
+old value	tts	zt	åŸå§‹å€¼
+open	tts	zt	é–‹å•Ÿ
+open / closed	tts	zt	é–‹å•Ÿ / é—œé–‰
+open date	tts	zt	é–‹å•Ÿæ—¥æœŸ
+opened	tts	zt	é–‹å•Ÿ
+opened by	tts	zt	é–‹å•Ÿäºº
+original ticket details	tts	zt	åŸå§‹å‚³ç¥¨ç´°ç¯€
+perform irregular transition into the following state	tts	zt	åŸ·è¡Œä¸è¦å‰‡è½‰æ›åˆ°ä¸‹åˆ—ç‹€æ…‹
+prio	tts	zt	å„ªå…ˆæ¬Š
+priority	tts	zt	å„ªå…ˆæ¬Š
+priority changed	tts	zt	å„ªå…ˆæ¬Šæ”¹è®Š
+put the preexistent ticket into the state %1.	tts	zt	å°‡å·²å­˜åœ¨çš„å‚³ç¥¨æ”¾åˆ°é€™å€‹ç‹€æ…‹
+re-assigned	tts	zt	é‡æ–°æŒ‡æ´¾
+re-opened	tts	zt	é‡æ–°é–‹å•Ÿ
+refresh every (seconds)	tts	zt	é‡æ–°æ•´ç†ï¼ˆç§’ï¼‰
+reopen	tts	zt	é‡æ–°é–‹å•Ÿ
+reopened	tts	zt	å·²é‡é–‹
+resolve	tts	zt	è™•ç†
+resolved	tts	zt	å·²è™•ç†
+returns a struct of a tickets history	tts	zt	å‚³å›å‚³ç¥¨çš„æ­·å²æ¶æ§‹
+returns a struct of values of a single ticket	tts	zt	å‚³å›å–®ä¸€å‚³ç¥¨æ•¸å€¼çš„æ¶æ§‹
+returns the additional notes attached to a ticket	tts	zt	å‚³å›å‚³ç¥¨çš„é™„åŠ è¨Šæ¯
+search	tts	zt	æœå°‹
+selected	tts	zt	å·²è¢«é¸æ“‡
+show new/updated tickets on main screen	tts	zt	é¡¯ç¤ºæœ€æ–°åŠæ›´æ–°éçš„å‚³ç¥¨åœ¨ä¸»ç•«é¢
+source state	tts	zt	ä¾†æºç‹€æ…‹
+state	tts	zt	ç‹€æ…‹
+state changed	tts	zt	ç‹€æ…‹å·²æ”¹è®Š
+state id	tts	zt	ç‹€æ…‹ä»£ç¢¼
+state name	tts	zt	ç‹€æ…‹åç¨±
+status/date closed	tts	zt	ç›®å‰ç‹€æ…‹ï¼é—œé–‰æ—¥æœŸ
+subject changed	tts	zt	ä¸»é¡Œæ”¹è®Š
+target state	tts	zt	ç›®æ¨™ç‹€æ…‹
+test	tts	zt	æ¸¬è©¦
+the closed ticket requires more work. reopen it.	tts	zt	è¢«é—œé–‰çš„å‚³ç¥¨éœ€è¦æ›´å¤šçš„ä½œæ¥­,è«‹é‡æ–°é–‹å•Ÿ
+the owner of the ticket was not able to confirm the issue.	tts	zt	å‚³ç¥¨çš„æ“æœ‰äººç„¡æ³•ç¢ºèªé€™å€‹å•é¡Œ
+the ticket has been accepted by the owner, who is about to work on it.	tts	zt	å‚³ç¥¨å·²ç¶“è¢«æ“æœ‰äººç¢ºèªï¼Œä»–æ­£åœ¨è™•ç†ä¸­ã€‚
+the ticket has been closed without resolution.	tts	zt	å‚³ç¥¨å·²ç¶“è¢«ä¸­æ­¢äº†
+the ticket has been reopened for further work.	tts	zt	å‚³ç¥¨å·²ç¶“è¢«æœªä¾†çš„å·¥ä½œé‡æ–°é–‹å•Ÿ
+the ticket has been successfully resolved.	tts	zt	å‚³ç¥¨å·²ç¶“æˆåŠŸè™•ç†
+the ticket has been verified and has to be worked on.	tts	zt	å‚³ç¥¨å·²ç¶“è¢«ç¢ºèªè€Œä¸”éœ€è¦é–‹å§‹é€²è¡Œ
+the ticket has been worked on and the work requires validation.	tts	zt	å‚³ç¥¨å·²ç¶“é–‹å§‹é€²è¡Œè€Œä¸”éœ€è¦æ ¸å‡†
+the ticket has been worked on, but requires more work.	tts	zt	å‚³ç¥¨å·²ç¶“é–‹å§‹é€²è¡Œä½†æ˜¯éœ€è¦æ›´å¤šä½œæ¥­
+the ticket is a duplicate of another ticket and should be closed.	tts	zt	å‚³ç¥¨å·²ç¶“é‡è¤‡ï¼Œè«‹é—œé–‰
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	zt	å‚³ç¥¨äº‹å¯¦ä¸Šä¸¦æœªé‡è¤‡ï¼Œè«‹é‡æ–°é–‹å•Ÿ
+the ticket is invalid and cannot be worked on.	tts	zt	å‚³ç¥¨ç„¡æ•ˆè€Œä¸”ç„¡æ³•é€²è¡Œ
+the ticket resolution was successfully validated. close the ticket.	tts	zt	å‚³ç¥¨å·²ç¶“æ ¸å‡†äº†ï¼Œè«‹é—œé–‰ã€‚
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	zt	å‚³ç¥¨éœ€è¦æŒ‡å®šä¸€å€‹ç‹€æ…‹
+the ticket was found a duplicate of another ticket.	tts	zt	å‚³ç¥¨é‡è¤‡äº†
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	zt	ä¸‹é¢åˆ—å‡ºçš„å‚³ç¥¨ç‹€æ…‹æ˜¯ %1 ï¼Œè«‹æ±ºå®šè©²æ€éº¼åš
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	zt	å‚³ç¥¨æ ¸å‡†éœ€æ±‚è¢«é€€å›ï¼Œéœ€è¦åšé€²ä¸€æ­¥çš„æª¢æŸ¥ã€‚
+ticket	tts	zt	å‚³ç¥¨
+ticket assigned to %1	tts	zt	å‚³ç¥¨æŒ‡é…çµ¦ %1
+ticket closed	tts	zt	å‚³ç¥¨å·²é—œé–‰
+ticket has been updated	tts	zt	å‚³ç¥¨å·²ç¶“æ›´æ–°
+ticket reopened	tts	zt	å‚³ç¥¨é‡æ–°é–‹å•Ÿ
+tickets found %1	tts	zt	æ‰¾åˆ° %1 å¼µå‚³ç¥¨
+tickets open %1	tts	zt	æœªè™•ç†çš„å‚³ç¥¨æœ‰ %1
+tickets total %1	tts	zt	ç¸½è¨ˆå‚³ç¥¨æœ‰ %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	zt	æŒ‰<a href="%1"></a>é€™è£¡å›åˆ°å‚³ç¥¨ç³»çµ±é¦–é 
+toaccept	tts	zt	åŒæ„
+toclosed	tts	zt	é—œé–‰
+toduplicate	tts	zt	é‡è¤‡
+toinvalid	tts	zt	ç„¡æ•ˆ
+toneedswork	tts	zt	éœ€è¦æª¢æŸ¥
+tonew	tts	zt	æ–°
+toreopened	tts	zt	é‡æ–°é–‹å•Ÿ
+toresolved	tts	zt	å·²è™•ç†
+total billable	tts	zt	å¯å ±å¸³ç¸½é¡
+totovalidate	tts	zt	å¾…ç¢ºèª
+tovalidate	tts	zt	ç¢ºèª
+toverified	tts	zt	æ ¸å‡†
+transition	tts	zt	è½‰æ›
+transition name	tts	zt	è½‰æ›åç¨±
+trouble ticket system	common	zt	å•é¡Œå‚³ç¥¨ç³»çµ±
+tts	common	zt	å•é¡Œå‚³ç¥¨ç³»çµ±
+tts preferences	tts	zt	å•é¡Œå‚³ç¥¨ç³»çµ±å–œå¥½è¨­å®š
+undefined	tts	zt	æœªå®šç¾©
+update	tts	zt	æ›´æ–°
+update ticket state	tts	zt	æ›´æ–°å‚³ç¥¨ç‹€æ…‹
+updates ticket	tts	zt	æ›´æ–°å‚³ç¥¨
+use email notification	tts	zt	ä½¿ç”¨é›»å­éƒµä»¶é€šçŸ¥
+users choice	tts	zt	ä½¿ç”¨è€…é¸æ“‡
+verified	tts	zt	å·²ç¢ºèª
+verify	tts	zt	ç¢ºèª
+verify the ticket to work on it.	tts	zt	ç¢ºèªå‚³ç¥¨ä¾†é€²è¡Œ
+view all tickets	tts	zt	æª¢è¦–æ‰€æœ‰å‚³ç¥¨
+view job detail	tts	zt	æª¢è¦–è©³ç´°å…§å®¹
+view only open tickets	tts	zt	æª¢è¦–æœªè™•ç†çš„å‚³ç¥¨
+you can only close a ticket if it is assigned to you.	tts	zt	åœ¨å‚³ç¥¨æŒ‡å®šçµ¦æ‚¨æ™‚æ‚¨åªèƒ½å¤ é—œé–‰å®ƒ
+you want to delete the state %1. are you sure?	tts	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤ç‹€æ…‹ %1  ï¼Ÿ
+you want to delete the transition %1. are you sure?	tts	zt	æ‚¨ç¢ºå®šè¦åˆªé™¤è½‰æ› %1 ï¼Ÿ
