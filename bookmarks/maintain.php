@@ -10,7 +10,6 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your  *
 	*  option) any later version.                                              *
 	\**************************************************************************/
-
 	/* $Id$ */
   
 	$GLOBALS['phpgw_info']['flags'] = array(
@@ -177,9 +176,9 @@
 		$GLOBALS['phpgw']->template->set_var('input_rating',$rating_select);
 
 		$GLOBALS['phpgw']->template->set_var('input_category',$GLOBALS['phpgw']->bookmarks->categories_list($bookmark['category']));
-		$GLOBALS['phpgw']->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+		$GLOBALS['phpgw']->template->set_var('category_image','<input type="image" name="edit_category" title="' . lang('Edit category') . '" src="'
+															. $GLOBALS['phpgw']->common->image('bookmarks','edit') . '" border="0">');
     
-  
 		$GLOBALS['phpgw']->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . $bookmark['url'] . '">');
 		$GLOBALS['phpgw']->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');
 		$GLOBALS['phpgw']->template->set_var('input_desc','<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . $bookmark['desc'] . '</textarea>');
@@ -189,12 +188,14 @@
 
 		if ($GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
 		{
-			$GLOBALS['phpgw']->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
+			$GLOBALS['phpgw']->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="'
+																. $GLOBALS['phpgw']->common->image('bookmarks','delete') . '" border="0">');
 		}
 
-		$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
-		$GLOBALS['phpgw']->template->set_var('form_link','<input type="image" name="edit" title="' . lang('Change Bookmark') . '" src="'
-                                         . PHPGW_IMAGES . '/save.gif" border="0">');
+		$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="'
+															. $GLOBALS['phpgw']->common->image('bookmarks','cancel') . '" border="0">');
+		$GLOBALS['phpgw']->template->set_var('form_link','<input type="image" name="edit" title="' . lang('Save') . '" src="'
+															. $GLOBALS['phpgw']->common->image('bookmarks','save') . '" border="0">');
 	}
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -123,7 +123,8 @@
 
 	$GLOBALS['phpgw']->template->set_var('input_category',$GLOBALS['phpgw']->bookmarks->categories_list($bookmark['category']));
 
-	$GLOBALS['phpgw']->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+	$GLOBALS['phpgw']->template->set_var('category_image','<input type="image" name="edit_category" title="' . lang('Edit category') . '" src="'
+														. $GLOBALS['phpgw']->common->image('bookmarks','edit') . '" border="0">');
 
 	$selected[$bookmark['rating']] = ' selected';
 	$GLOBALS['phpgw']->template->set_var('input_rating','<select name="bookmark[rating]">'
@@ -178,8 +179,11 @@
 
 	$GLOBALS['phpgw']->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . $checked . '>');
 
-	$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
-	$GLOBALS['phpgw']->template->set_var('form_link','<input type="image" name="bk_create" alt="'
-                                      . lang('Create bookmark') . '" src="' . PHPGW_IMAGES . '/save.gif" border="0">');
+	$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="'
+                                                        . $GLOBALS['phpgw']->common->image('bookmarks','cancel') . '" border="0">');
+
+	$GLOBALS['phpgw']->template->set_var('form_link','<input type="image" name="bk_create" title="' . lang('Save') . '" src="'
+                                                        . $GLOBALS['phpgw']->common->image('bookmarks','save') . '" border="0">');
+
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
