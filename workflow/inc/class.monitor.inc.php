@@ -60,7 +60,7 @@
 			{
 				$this->t->set_var(array(
 					'filter_activity_selected'	=> ($activity['wf_activity_id'] == $this->filter_activity)? 'selected="selected"' : '',
-					'filter_activity_value'		=> $activity['wf_activitywf_id'],
+					'filter_activity_value'		=> $activity['wf_activity_id'],
 					'filter_activity_name'		=> $activity['wf_name'],
 
 				));
@@ -79,7 +79,7 @@
 				'sort'					=> $this->sort,
 				'order'					=> $this->order,
 				'form_action'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_'. $class_name .'.form'),
-				'monitor_stats'			=> $this->fill_monitor_stats($stats),
+				'monitor_stats'			=> $this->fill_monitor_stats($this->stats),
 			));
 		}
 
