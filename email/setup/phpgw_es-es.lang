@@ -229,16 +229,16 @@ next	email	es-es	Proximo
 next message	email	es-es	Mensaje siguiente
 no change	email	es-es	sin cambio
 no error returned from server	email	es-es	El servidor no devolvió errores
-no message found in folder '%1'	email	es-es	No se encontraron mensajes en la carpte "%1"
-no next message	email	es-es	No hay más mensajes
+no message found in folder '%1'	email	es-es	No se encontraron mensajes en la carpeta '%1'
+no next message	email	es-es	No hay mensaje siguiente
 no previous message	email	es-es	No hay mensaje anterior
 no subject	email	es-es	Sin Asunto
-noia &#64; carlitus style	email	es-es	Noia &#64; Carlitus Style
+noia &#64; carlitus style	email	es-es	Noia @ Carlitus Style
 non-standard	email	es-es	No estándar
 not used	email	es-es	Sin usar
 notify on delivery	email	es-es	Notificar en el envío
 nov	email	es-es	Nov
-number	common	es-es	N&uacute;mero
+number	common	es-es	Número
 number of matches:	email	es-es	número de coincidencias
 oct	email	es-es	Oct
 old	email	es-es	Antiguo
@@ -326,10 +326,10 @@ source accounts	email	es-es	cuentas de origen
 spell check	email	es-es	Ortografía
 standard	email	es-es	Normal -
 standard e-mail preferences	email	es-es	Preferencias estándar del correo electrónico
-stop if matched	email	es-es	Parar si Coincidio
+stop if matched	email	es-es	Parar si coincide
 subject	email	es-es	Asunto
 switch accounts	email	es-es	Cambiar de cuenta
-switch current folder to	common	es-es	Cambiar la presente carpeta a
+switch current folder to	common	es-es	Cambiar la carpeta actual a
 test all filters	email	es-es	Comprobar todos los filtros
 test or apply all filters	email	es-es	Comprobar o aplicar TODOS los filtros
 test run this filter	email	es-es	Comprobar la ejecución de este filtro
@@ -389,11 +389,7 @@ view as html	email	es-es	Ver como HTML
 view formatted	email	es-es	Ver con formato
 view headers	email	es-es	Ver encabezados
 view unformatted	email	es-es	Ver sin formato
-warn_attachment_name_dangerous	email	es-es	
-warn_attachment_only_mail	email	es-es	
 warn_b64_encoded_displayable	email	es-es	avisar visualizable base64
-warn_has_iframe_maybe_klez	email	es-es	
-warn_script_tags	email	es-es	
 warn_style_sheet	email	es-es	avisar hoja de estil
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	es-es	Hemos añadido recientemente esta nueva libreta de direcciones para que los usuarios puedan elegir tener una libreta de direcciones más compleja con características a) Fácil, apuntar y pulsar en buscar, b) Más preparada para organizaciones con grandes libretas de direcciones centralizadas con muchas categorías. Puede elegir aquí qué libreta de direcciones prefiere.
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	es-es	Hemos añadido recientemente esta nueva libreta de direcciones para que los usuarios puedan elegir tener una libreta de direcciones más compleja con características<br>a) Fácil, apuntar y pulsar en buscar,<br>b) Más preparada para organizaciones con grandes libretas de direcciones centralizadas con muchas categorías.<br>Puede elegir aquí qué libreta de direcciones prefiere.
