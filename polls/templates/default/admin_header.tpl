@@ -8,6 +8,7 @@
   <tr>
    <td>
     {link_list_questions}&nbsp;&nbsp;
+    {link_list_answers}&nbsp;&nbsp;
     {link_questions}&nbsp;&nbsp;
     {link_answers}&nbsp;&nbsp;
     {link_settings}&nbsp;&nbsp;
