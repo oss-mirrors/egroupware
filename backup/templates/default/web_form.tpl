@@ -9,7 +9,7 @@
 	</tr>
 <!-- BEGIN archive_list -->
 
-	<tr bgcolor="{tr_color}">
+	<tr class="{tr_color}">
 		<td><a href="{archive}">{aname}</a></td>
 		<td align="center"><a href="{delete}">{lang_delete}<a><td>
 	</tr>
