@@ -111,7 +111,13 @@ function html_url($url, $text)
   {
     return "<img src=\"$url\" alt=\"" . basename($url) . "\" />";
   }
-  return "<a href=\"$url\">$text</a>";
+  if (preg_match('/^mailto:([^@]*)@(.*)$/i',$url,$matchs))	// spamsaver emailaddress
+  {
+     $url = "mailto:$matchs[1] at $matchs[2]";
+     $onClick = " onClick=\"document.location='mailto:$matchs[1]'+'@'+'$matchs[2]'; return false;\"";
+     $text = str_replace('@',' at ',str_replace('mailto:','',$text));
+  }
+  return "<a href=\"$url\"$onClick>$text</a>";
 }
 function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appearance = '')
 {
