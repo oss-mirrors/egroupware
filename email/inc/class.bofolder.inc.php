@@ -114,7 +114,7 @@
 					// == is that necessary ? == are folder names allowed with '  "  \  in them ? ===
 					// rfc2060 does NOT prohibit them
 					
-					// obtain propper folder names
+					// obtain proper folder names
 					// if this is a delete, the folder name will (should) already exist
 					// although the user had to type in the folder name
 					// for these actions,  the "expert" tag means:

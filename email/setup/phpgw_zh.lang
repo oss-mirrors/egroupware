@@ -258,7 +258,7 @@ select home email address	email	zh	指定家庭EMail地址
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	zh	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message
 select work email address	email	zh	Select work email address
 select your mail server type	admin	zh	选择邮件服务器类型
-select your screensize for propper showing of the javascript addressbook	email	zh	Select your screensize for propper showing of the Javascript addressbook
+select your screensize for proper showing of the javascript addressbook	email	zh	Select your screensize for proper showing of the Javascript addressbook
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zh	Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook
 send	email	zh	发送
 send deleted messages to the trash	email	zh	Send deleted messages to the trash

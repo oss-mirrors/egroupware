@@ -112,7 +112,7 @@
 		'800' => '1024x768',
 		'700' => '800x600'
 	);
-	create_select_box('Select your screensize for propper showing of the Javascript addressbook',
+	create_select_box('Select your screensize for proper showing of the Javascript addressbook',
 		'js_addressbook_screensize',$options,'We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).');
 
 	create_check_box('Show New Messages in ComboBox','newmsg_combobox',

@@ -258,7 +258,7 @@ select home email address	email	en	Select home email address
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	en	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message
 select work email address	email	en	Select work email address
 select your mail server type	admin	en	Select your mail server type
-select your screensize for propper showing of the javascript addressbook	email	en	Select your screensize for propper showing of the Javascript addressbook
+select your screensize for proper showing of the javascript addressbook	email	en	Select your screensize for proper showing of the Javascript addressbook
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	en	Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook
 send	email	en	Send
 send deleted messages to the trash	email	en	Send deleted messages to the trash

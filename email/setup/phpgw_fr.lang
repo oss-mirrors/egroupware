@@ -211,7 +211,7 @@ section	email	fr	Section
 select home email address	email	fr	Choisissez l'EMail domicile
 select work email address	email	fr	Choisissez l'EMail bureau
 select your mail server type	admin	fr	Choisissez votre type de serveur mail
-Select your screensize for propper showing of the Javascript addressbook	email	fr	Choisissez votre taille d'écran pour un affichage correct du carnet d'adresses Javascript
+Select your screensize for proper showing of the Javascript addressbook	email	fr	Choisissez votre taille d'écran pour un affichage correct du carnet d'adresses Javascript
 Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook	email	fr	Choisissez votre style pour le carnet d'adresses. Le style traditionnel, simple. Ou le nouveau carnet d'adresses plus complet avec du javascript
 send	email	fr	Envoyer
 send deleted messages to the trash	email	fr	Envoyer les messages effacés dans la corbeille

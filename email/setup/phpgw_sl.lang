@@ -259,7 +259,7 @@ select home email address	email	sl	Izberite doma&#269; enaslov
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	sl	Ozna&#269;ite, &#269;e ¾elite, da se besedilo sporo&#269;ila, ki ga posredujete, pojavi vklju&#269;eno v va¹e poslano sporo&#269;ilo.
 select work email address	email	sl	Izberite delovni enaslov
 select your mail server type	admin	sl	Izberite tip va¹ega estre¾nika
-select your screensize for propper showing of the javascript addressbook	email	sl	Da se bo Javascript imenik pravilno prikazal, izberite velikost va¹ega zaslona
+select your screensize for proper showing of the javascript addressbook	email	sl	Da se bo Javascript imenik pravilno prikazal, izberite velikost va¹ega zaslona
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	sl	Izberite slog va¹ega adresarja. Tradicionalni, preprosti slog ali sodoben, kompleksen adresar s podporo Javascript-a.
 send	email	sl	Po¹lji
 send deleted messages to the trash	email	sl	Prestavi izbrisana sporo&#269;ila v smeti

@@ -818,7 +818,7 @@ function selectToParser(sbox,keys,names,emails,parser)
 //@param comma just the separator between the st, and what we are building
 //@param name should be the name as in "name" <email>
 //@param email should be the email as in "name" <email>
-//@discussion Auxiliary to the previous function. This one builds propper email addreses
+//@discussion Auxiliary to the previous function. This one builds proper email addreses
 //as per "name" <email>
 function appendmailstring(st,comma,name,email)
 {

@@ -264,7 +264,7 @@ select this box if you want the text body of the message you are forwarding to a
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message.	email	de	
 select work email address	email	de	geschäftl. EMail auswählen
 select your mail server type	admin	de	EMail-Servertyp auswählen
-select your screensize for propper showing of the javascript addressbook	email	de	Bildschirmgröße zum ordnungsgemäßen Anzeigen des neuen JavaScript Adressbuches auswählen
+select your screensize for proper showing of the javascript addressbook	email	de	Bildschirmgröße zum ordnungsgemäßen Anzeigen des neuen JavaScript Adressbuches auswählen
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	de	Typ des Adressbuchs auswählen: Traditioneller einfacher Type oder das neue komplexe JavaScript Adressbuch
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern

@@ -453,7 +453,7 @@
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
 				'accts_usage'	=> 'default,extra_accounts',
-				'lang_blurb'	=> lang('Select your screensize for propper showing of the Javascript addressbook'),
+				'lang_blurb'	=> lang('Select your screensize for proper showing of the Javascript addressbook'),
 				'init_default'	=> 'string,700',
 				'values'	=> array('900'=>'1200x1600',
 							'800' => '1024x768',
