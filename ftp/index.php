@@ -10,10 +10,10 @@
    *  option) any later version.                                              *
    \**************************************************************************/
 
-   $phpgw_flags["currentapp"] = "ftp";
+   $phpgw_info["flags"]["currentapp"] = "ftp";
    if ($action == "get" || $action == "view") {
-      $phpgw_flags["nonavbar"] = True;
-      $phpgw_flags["noheader"] = True;
+      $phpgw_info["flags"]["nonavbar"] = True;
+      $phpgw_info["flags"]["noheader"] = True;
    }
 
    include("../header.inc.php");
