@@ -186,7 +186,7 @@
 		{
 			if(isset($this->num_msgs))
 			{
-				$info->Nmsgs = $this->num_msgs;
+				$info->messages = $this->num_msgs;
 			}
 			else
 			{
@@ -194,10 +194,10 @@
 				{
 					$this->mailbox = $this->get_mailbox_name($folder);
 				}
-				$info->Nmsgs = $this->num_msg($this->mailbox);
+				$info->messages = $this->num_msg($this->mailbox);
 			}
-			$info->Size  = 0;
-			if ($info->Nmsgs)
+			$info->size  = 0;
+			if ($info->messages)
 			{
 				return $info;
 			}
@@ -211,12 +211,12 @@
 			$mailbox = $this->fix_folder($folder);
 		}
 
-		$info->Nmsgs = $this->num_msgs($mailbox);
-		$info->Size  = 0;
+		$info->messages = $this->num_msgs($mailbox);
+		$info->size  = 0;
 
 		$this->num_msgs($this->mailbox);
 
-		if ($info->Nmsgs)
+		if ($info->messages)
 		{
 			return $info;
 		}

@@ -90,13 +90,14 @@
 
   class msg_mb_info
   {
-	var $Date = '';
-	var $Driver ='';
-	var $Mailbox = '';
-	var $Nmsgs = '';
-	var $Recent = '';
-	var $Unread = '';
-	var $Size;
+	var $date = '';
+	var $driver ='';
+	var $mailbox = '';
+	//var $Nmsgs = '';
+	var $messages = '';
+	var $recent = '';
+	var $unread = '';
+	var $size;
   }
 
   class address
@@ -107,7 +108,7 @@
 	var $adl;
   }
 
-  class msg
+  class msg_headinfo
   {
 	var $from;
 	var $fromaddress;
@@ -140,6 +141,10 @@
 	var $sparts;
 	var $hsub=array();
 	var $bsub=array();
+
+	var $php_builtin=False;
+	var $debug_dcom=True;
+	//var $debug_dcom=False;
 	
 	function mail_dcom_base()
 	{
@@ -165,6 +170,74 @@
 		
 		echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\n";
 		$phpgw->common->phpgw_exit();
+	}
+
+	function distill_fq_folder($fq_folder)
+	{
+		// initialize return structure array
+		$svr_data = Array();
+		$svr_data['folder'] = '';
+		$svr_data['svr_and_port'] = '';
+		$svr_data['server'] = '';
+		$svr_data['port_with_junk'] = '';
+		$svr_data['port'] = '';
+		
+		// see if we have any data to work with
+		if ((!isset($fq_folder))
+		|| ((trim($fq_folder) == '')))
+		{
+			// no data, return the reliable default of INBOX
+			$svr_data['folder'] = 'INBOX';
+			return $svr_data;
+			// we're out'a here
+		}
+		
+		// see if this is indeed a fully qualified folder name
+		if (strstr($fq_folder,'}') == False)
+		{
+			// all we have is a _simple_ folder name, no server or port info included
+			$svr_data['folder'] = $fq_folder;
+			return $svr_data;
+			// we're out'a here
+		}
+		
+		// -- (1) -- get the folder name stripped of the server string
+		// folder name at this stage is  {SERVER_NAME:PORT}FOLDERNAME
+		// ORsome variation like this:
+		// {SERVER_NAME:PORT/pop3}FOLDERNAME
+		// {SERVER_NAME:PORT/imap/ssl/novalidate-cert}FOLDERNAME
+		// get everything to the right of the bracket "}", INCLUDES the bracket itself
+		$svr_data['folder'] = strstr($fq_folder,'}');
+		// get rid of that 'needle' "}"
+		$svr_data['folder'] = substr($svr_data['folder'], 1);
+		// -- (2) -- get the {SERVER_NAME:PORT} part and strip the brackets
+		$svr_callstr_len = strlen($fq_folder) - strlen($svr_data['folder']);
+		// start copying at position 1 skipping the opening bracket
+		// and stop copying at length of {SERVER_NAME:PORT} - 2 to skip the closing beacket
+		$svr_data['svr_and_port'] = substr($fq_folder, 1, $svr_callstr_len - 2);
+		// -- (3)-- get the port number INCLUDING any junk that may come after it, like "/pop3/ssl/novalidate-cert"
+		// "svr_and_port" at this stage is  SERVER_NAME:PORT , or SERVER_NAME:PORT/pop3  , etc...
+		// get everything to the right of the colon ":", INCLUDES the colon itself
+		$svr_data['port_with_junk'] = strstr($svr_data['svr_and_port'],':');
+		// get rid of that 'needle' ":"
+		$svr_data['port_with_junk'] = substr($svr_data['port_with_junk'], 1);
+		// -- (4)-- get the server name 
+		// port_with_junk + 1 means the port number with the added 1 char length of the colon we got rid of just above
+		$svr_only_len = strlen($svr_data['svr_and_port']) - strlen($svr_data['port_with_junk']);
+		// $svr_only_len - 1 means leave out the 1 char length of the colon we stripped deom "port_with_junk" above
+		$svr_data['server'] = substr($svr_data['svr_and_port'], 0, $svr_only_len - 1);
+		// -- (5)-- get the port number , stripping any junk that _may_ be with it
+		//  get everything to the right of the forst slash "/", INCLUDES the slash itself, else returns FALSE
+		$port_junk = strstr($svr_data['port_with_junk'],'/');
+		// test
+		//$svr_data['port'] = $port_junk;
+		if ($port_junk)
+		{
+			$port_only_len = strlen($svr_data['port_with_junk']) - strlen($port_junk);
+			$svr_data['port'] = substr($svr_data['port_with_junk'], 0, $port_only_len);
+		}
+
+		return $svr_data;
 	}
 
 	function create_header($line,$header,$line2='')
@@ -285,9 +358,62 @@
 					break;
 			}
 		}
+
 		$new_time = mktime($ta[0],$ta[1],$ta[2],$month[$dta[1]],$dta[0],$dta[2]) - ((60 * 60) * intval($phpgw_info['user']['preferences']['common']['tzoffset']));
 //		echo 'New Time : '.$new_time."<br>\n";
 		return $new_time;
+	}
+
+	function make_udate($msg_date)
+	{
+		// used only by pop_header
+		$pos = strpos($msg_date,",");
+		if ($pos)
+		{
+			$msg_date = trim(substr($msg_date,$pos+1));
+		}
+		$pos = strpos($msg_date," ");
+		$day = substr($msg_date,0,$pos);
+		$msg_date = trim(substr($msg_date,$pos));
+		$month = substr($msg_date,0,3);
+		switch (strtolower($month))
+		{
+			case "jan" : $month =  1; break;
+			case "feb" : $month =  2; break;
+			case "mar" : $month =  3; break;
+			case "apr" : $month =  4; break;
+			case "may" : $month =  5; break;
+			case "jun" : $month =  6; break;
+			case "jul" : $month =  7; break;
+			case "aug" : $month =  8; break;
+			case "sep" : $month =  9; break;
+			case "oct" : $month = 10; break;
+			case "nov" : $month = 11; break;
+			default    : $month = 12; break;
+		}
+		$msg_date = trim(substr($msg_date,3));
+		$pos  = strpos($msg_date," ");
+		$year = trim(substr($msg_date,0,$pos));
+		$msg_date = trim(substr($msg_date,$pos));
+		$hour = substr($msg_date,0,2);
+		$minute = substr($msg_date,3,2);
+		$second = substr($msg_date,6,2);
+		$pos = strrpos($msg_date," ");
+		$tzoff = trim(substr($msg_date,$pos));
+		if (strlen($tzoff)==5)
+		{
+			$diffh = substr($tzoff,1,2); $diffm = substr($tzoff,3);
+			if ((substr($tzoff,0,1)=="+") && is_int($diffh))
+			{
+				$hour -= $diffh; $minute -= $diffm;
+			}
+			else
+			{
+				$hour += $diffh; $minute += $diffm;
+			}
+		}
+		$utime = mktime($hour,$minute,$second,$month,$day,$year);
+		return $utime;
 	}
 
 	function ssort_prep($a)
@@ -439,6 +565,52 @@
 		}
 		return 1;
 	}
+
+	function read_port_glob($end)
+	{
+		$glob_response = '';
+		while ($line = $this->read_port())
+		{
+//			echo $line."<br>\n";
+			if (chop($line) == $end) break;
+			$glob_response .= $line;
+		}
+		return $glob_response;
+	}
+
+	function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='')
+	{
+		
+		$data_array = explode("\r\n",$data);
+		$return_array = Array();
+		for($i=0;$i < count($data_array);$i++)
+		{
+			$new_str = $data_array[$i];
+			if ($cut_from_here != '')
+			{
+				$cut_here = strpos($new_str,$cut_from_here);
+				if ($cut_here > 0)
+				{
+					$new_str = substr($new_str,0,$cut_here);
+				}
+				else
+				{
+					$new_str = '';
+				}
+			}
+			if (($keep_blank_lines == False)
+			&& (trim($new_str) == ''))
+			{
+				// do noting
+			}
+			else
+			{
+				$return_array[count($return_array)] = $new_str;
+			}
+		}
+		return $return_array;
+	}
+
 
 	/*
 	 * PHP `quoted_printable_decode` function does not work properly:
@@ -612,7 +784,8 @@
 				.'">'.$att_name.'</a>';
 	}
 
-	Function inline_display($de_part,$dsp,$mime_section,$folder)
+	/*
+	function inline_display($de_part,$dsp,$mime_section,$folder)
 	{
 		global $phpgw;
 		
@@ -714,6 +887,7 @@
 		}
 		return(str_replace("\n","<br>",$ret));
 	}
+	*/
 
 	function uudecode($str)
 	{

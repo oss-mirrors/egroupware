@@ -45,14 +45,14 @@
 	// debug
 	$imap_builtin = False;
 	$sock_fname = '_sock';
-	if ($debug_dcom) { echo 'imap builtin extension NOT available, using socket class<br>'; }
+	if ($debug_dcom) { echo 'FORCE: imap builtin extension NOT available, using socket class<br>'; }
 	*/
 
 // -----  include SOCKET or PHP-BUILTIN classes as nevessary
 	if ($imap_builtin == False)
 	{
 		CreateObject('phpgwapi.network');
-		if ($debug_dcom) { echo 'created phpgwapi network class used with sockets'; }
+		if ($debug_dcom) { echo 'created phpgwapi network class used with sockets<br>'; }
 	}
 
 	//CreateObject('email.mail_dcom_base'.$sock_fname);

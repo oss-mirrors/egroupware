@@ -72,7 +72,8 @@
 						.'&tm='.$tm
 						.'&tf='.$tf
 						.'&sort='.$phpgw->msg->sort
-						.'&order='.$phpgw->msg->order));
+						.'&order='.$phpgw->msg->order
+						.'&start='.$phpgw->msg->start));
 	}
 	elseif ($phpgw->msg->args['what'] == "delall")
 	{
@@ -91,7 +92,8 @@
 						 'folder='.$phpgw->msg->prep_folder_out('')
 						.'&td='.$totaldeleted
 						.'&sort='.$phpgw->msg->sort
-						.'&order='.$phpgw->msg->order));
+						.'&order='.$phpgw->msg->order
+						.'&start='.$phpgw->msg->start));
 	}
 	elseif ($phpgw->msg->args['what'] == "delete")
 	{
@@ -118,7 +120,8 @@
 						 'folder='.$phpgw->msg->prep_folder_out('')
 						.'&msgnum='.$nm
 						.'&sort='.$phpgw->msg->sort
-						.'&order='.$phpgw->msg->order));
+						.'&order='.$phpgw->msg->order
+						.'&start='.$phpgw->msg->start));
 	}
 	else
 	{

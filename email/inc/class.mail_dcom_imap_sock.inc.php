@@ -195,10 +195,10 @@
 		$info = new msg_mb_info;
 		if($folder=='' || $folder==$this->folder)
 		{
-			$info->Nmsgs = $this->num_msgs;
-			if ($info->Nmsgs)
+			$info->messages = $this->num_msgs;
+			if ($info->messages)
 			{
-				$info->Size = $this->total($this->fetch_field(1,$info->Nmsgs,'RFC822.SIZE'));
+				$info->size = $this->total($this->fetch_field(1,$info->messages,'RFC822.SIZE'));
 				return $info;
 			}
 			else
@@ -211,10 +211,10 @@
 			$mailbox = $folder;
 		}
 
-		$info->Nmsgs = $this->num_msgs($mailbox);
-		$info->Size  = $this->total($this->fetch_field(1,$info->Nmsgs,'RFC822.SIZE'));
+		$info->messages = $this->num_msgs($mailbox);
+		$info->size  = $this->total($this->fetch_field(1,$info->messages,'RFC822.SIZE'));
 
-		if ($info->Nmsgs)
+		if ($info->messages)
 		{
 			return $info;
 		}
