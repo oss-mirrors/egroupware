@@ -243,7 +243,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="none">' . lang('Select category') . '</option>' . "\n"
-							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 				$GLOBALS['phpgw']->template->set_var(lang_header,lang('Project list'));
 				$GLOBALS['phpgw']->template->set_var(lang_action,lang('Jobs'));
 			}
@@ -568,7 +568,7 @@
 			{
 				$GLOBALS['phpgw']->template->set_var('lang_action',lang('Add project'));
 				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$cat_id,True) . '</select>';
+						.	$this->cats->formatted_list('select','all',$cat_id,True) . '</select>';
 
 				$GLOBALS['phpgw']->template->set_var('cat',$cat);
 				$GLOBALS['phpgw']->template->set_var('lang_parent','');
@@ -746,7 +746,7 @@
 			{
 				$GLOBALS['phpgw']->template->set_var('lang_action',lang('Edit project'));
 				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$values['cat'],True) . '</select>';
+						.	$this->cats->formatted_list('select','all',$values['cat'],True) . '</select>';
 
 				$GLOBALS['phpgw']->template->set_var('cat',$cat);
 				$GLOBALS['phpgw']->template->set_var('lang_parent','');
@@ -1063,7 +1063,7 @@
 // ------------------------- end nextmatch template --------------------------------------
 
             $GLOBALS['phpgw']->template->set_var('cat_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('categories_list',$this->cats->formated_list('select','all',$this->cat_id,'True'));
+			$GLOBALS['phpgw']->template->set_var('categories_list',$this->cats->formatted_list('select','all',$this->cat_id,'True'));
             $GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
             $GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
 
@@ -1180,7 +1180,7 @@
 			$GLOBALS['phpgw']->template->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.add_activity'));
 			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Add activity'));
-			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formatted_list('select','all',$cat_id,True));
 
 			$nopref = $this->boprojects->check_prefs();
 			if (is_array($nopref))
@@ -1299,7 +1299,7 @@
 
 			$values = $this->boprojects->read_single_activity($activity_id);
 
-			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formated_list('select','all',$values['cat'],True));
+			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formatted_list('select','all',$values['cat'],True));
 			$GLOBALS['phpgw']->template->set_var('num',$GLOBALS['phpgw']->strip_html($values['number']));
 			$descr  = $GLOBALS['phpgw']->strip_html($values['descr']);
 			if (! $descr) $descr = '&nbsp;';
@@ -1540,7 +1540,7 @@
 // -------------------------- end nextmatch ------------------------------------
 
 			$GLOBALS['phpgw']->template->set_var('cats_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+			$GLOBALS['phpgw']->template->set_var('cats_list',$this->cats->formatted_list('select','all',$cat_id,True));
 			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1,1));
 			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -1789,7 +1789,7 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
-							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 				$GLOBALS['phpgw']->template->set_var(lang_header,lang('Project archive'));
 				$GLOBALS['phpgw']->template->set_var(lang_action,lang('Jobs'));
 			}
