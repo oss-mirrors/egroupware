@@ -17,8 +17,8 @@
 
 <!-- BEGIN footer -->
   <tr>
-   <td align="left"><input type="submit" name="cancel" value="Cancel"></td>
-   <td align="right"><input type="submit" name="submit" value="Submit"></td>
+   <td align="left"><input type="submit" name="submit" value="{lang_submit}"></td>
+   <td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
   </tr>
  </table>
 </form>
