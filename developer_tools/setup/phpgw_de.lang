@@ -62,7 +62,7 @@ translation	developer_tools	de	Übersetzung
 translation of phrase	developer_tools	de	Übersetzung des Textes
 update	developer_tools	de	Schreiben
 update database	developer_tools	de	Datenbank aktualisieren
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	de	Aktualisiert die Übersetzugen für beide Sprachen in ihrer Datenbank, damit sie ihre Arbeit sofort überprüfen können
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	de	Aktualisiert die Übersetzugen für beide Sprachen in Ihrer Datenbank, damit Sie Ihre Arbeit sofort überprüfen können
 version	developer_tools	de	Version
 write	developer_tools	de	Schreiben
 write the lang-file to the apps setup-dir	developer_tools	de	Schreibt die Übersetzungsdatei in das setup-Verzeichnis der Anwendung
