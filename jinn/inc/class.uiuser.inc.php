@@ -391,11 +391,7 @@
 				  if(count($recordvalues)>0)
 				  {
 					 $table_rows.='<tr valign="top">';
-						$table_rows.="<td bgcolor=$bgclr align=\"left\">
-						   <a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_edit_record.display_form&where_string=$where_string")."\">".lang('edit')."</a>
-						</td>
-						<td bgcolor=$bgclr align=\"left\"><a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.bouser.del_object&where_string=$where_string")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\">".lang('delete')."</a>
-						</td>";
+						$table_rows.='<td bgcolor="'.$bgclr.'" align="left"><a title="'.lang('edit').'" href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$where_string).'"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','edit').'" alt="'.lang('delete').'" /></a></td><td bgcolor="'.$bgclr.'" align="left"><a title="'.lang('delete').'" href="'.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_object&where_string='.$where_string).'" onClick="return window.confirm(\''.lang('Are you sure?').'\');"><img src="'.$GLOBALS[phpgw]->common->image('phpgwapi','delete').'" alt="'.lang('delete').'" /></a></td>';
 
 						foreach($col_names_list  as $onecolname)
 						{
