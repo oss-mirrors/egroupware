@@ -73,7 +73,7 @@ function check_all()
 ?>
 
 
-<form name="switchbox" action="<?php echo $phpgw->link("index.php")?>" method="GET">
+<form name="switchbox" action="<?php echo $phpgw->link("index.php")?>" method="post">
  <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
   <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
     <td>&nbsp;</td>
@@ -183,7 +183,7 @@ function check_all()
 
   <tr>
   </form>
- <form name="delmov" action="<?php echo $phpgw->link("action.php")?>" method="GET">
+ <form name="delmov" action="<?php echo $phpgw->link("action.php"); ?>" method="post">
   <input type="hidden" name="what" value="">
   <input type="hidden" name="folder" value="<?php echo $folder; ?>">
 
