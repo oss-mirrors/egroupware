@@ -31,16 +31,26 @@
 		echo parse_navbar();
 	}
 
+	if (! $phpgw_info['user']['preferences']['headlines']['headlines_layout'])
+	{
+		$phpgw->preferences->change('headlines','headlines_layout','basic');
+		$phpgw->preferences->commit(True);
+		$phpgw_info['user']['preferences']['headlines']['headlines_layout'] = 'basic';
+	}
+
 	while ($preference = each($phpgw_info['user']['preferences']['headlines']))
 	{
-		$sites[] = $preference[0];
+		if ($preference[0] != 'headlines_layout')
+		{
+			$sites[] = $preference[0];
+		}
 	}
 
 	$headlines = new headlines;
 	$phpgw->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
-		'channel'    => 'basic.tpl',
-		'row'        => 'basic_row.tpl'
+		'channel'    => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl',
+		'row'        => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '_row.tpl'
 	));
 
 	$j = 0;
