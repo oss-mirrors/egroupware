@@ -11,6 +11,7 @@
        case "prio":      $s = "Prioridad";    break;
        case "group":      $s = "Groupo";    break;
        case "assigned to":    $s = "Asignado a";  break;
+       case "assign to":    $s = "Asignar a";  break;
        case "opened by":    $s = "Abierto por";  break;
        case "date opened":    $s = "Fecha apertura";  break;
        case "subject":      $s = "Asunto";    break;
