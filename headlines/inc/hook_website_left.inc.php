@@ -33,7 +33,7 @@
 	$j = 0;
 	$i = count($sites);
 
-	while (list(,$site) = @each($sites))
+	while(list(,$site) = @each($sites))
 	{
 		$j++;
 		$headlines->readtable($site);
@@ -42,6 +42,7 @@
 		$tpl->set_var('channel_title',$headlines->display);
 
 		$links = $headlines->getLinks($site);
+		@reset($links);
 		if($links == False)
 		{
 			$var = Array(
@@ -54,14 +55,18 @@
 		}
 		else
 		{
-			while (list($title,$link) = each($links))
+			while(list($title,$link) = each($links))
 			{
-				$var = Array(
-					'item_link'  => stripslashes($link),
-					'item_label' => stripslashes($title)
-				);
-				$tpl->set_var($var);
-				$s .= $tpl->parse('o_','row');
+				if($link && $title)
+				{
+					$var = Array(
+						'item_link'  => stripslashes($link),
+						'item_label' => stripslashes($title),
+						'error'      => ''
+					);
+					$tpl->set_var($var);
+					$s .= $tpl->parse('o_','row');
+				}
 			}
 		}
 		$tpl->set_var('rows',$s);
@@ -71,7 +76,7 @@
 
 		if ($j == 3 || $i == 1)
 		{
-			$GLOBALS['phpgw_info']['wcm']['right'] .= $tpl->fp('out','layout_row');
+			$GLOBALS['phpgw_info']['wcm']['left'] .= $tpl->fp('out','layout_row');
 			$tpl->set_var('section_1', '');
 			$tpl->set_var('section_2', '');
 			$tpl->set_var('section_3', '');
@@ -79,4 +84,5 @@
 		}
 		$i--;
 	}
+	echo $GLOBALS['phpgw_info']['wcm']['left'];
 ?>

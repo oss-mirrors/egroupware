@@ -64,7 +64,8 @@
 				{
 					$var = Array(
 						'item_link'  => stripslashes($link),
-						'item_label' => stripslashes($title)
+						'item_label' => stripslashes($title),
+						'error'      => ''
 					);
 					$tpl->set_var($var);
 					$s .= $tpl->parse('o_','row');
