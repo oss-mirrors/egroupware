@@ -2,7 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects/projectdelivery                                  *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              * 
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         * 
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              * 
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -12,10 +12,10 @@
   \**************************************************************************/
 /* $Id$ */
   
-  if (($submit) or ($template)) {
+  if ($submit) {
      $phpgw_info["flags"] = array("noheader" => True, 
                                   "nonavbar" => True);
-  }
+    }
 
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
@@ -47,11 +47,6 @@
 
      $t = new Template($phpgw_info["server"]["app_tpl"]);
      $t->set_file(array( "projects_edit" => "hours_formhours.tpl"));
-     
-     // ====================================================================
-     // create two seperate blocks, addblock will be cut off from template
-     // editblock contains the buttons and forms for edit
-     // ====================================================================
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
@@ -156,6 +151,7 @@
      $end_date_formatorder .= "<input maxlength=4 name=end_year value=\"$e_year\" size=4>";
      $t->set_var("end_date_formatorder",$end_date_formatorder);
 
+     $t->set_var("lang_remark",lang("Remark"));
      $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                              
      if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                 
      $t->set_var("remark",$remark);
