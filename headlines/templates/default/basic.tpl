@@ -1,8 +1,8 @@
 <!-- BEGIN channel -->
 <body bgcolor="#FFFFFF">
 <table cellspacing="0" cellpadding="1" border="0" bgcolor="#ffffff" width="92%">
- <tr> 
-  <td> 
+ <tr>
+  <td>
 
    <table cellspacing="0" cellpadding="1" bgcolor="#f5f5f5" border="0" width="100%">
     <tr bgcolor="#ffffff">
@@ -22,6 +22,7 @@
     <tr> 
      <td align="left">
       <font size="-1">
+       <center><b>{error}</b></center>
        <li>
         <a href="{item_link}" target="new">{item_label}</a>
        </li>

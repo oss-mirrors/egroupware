@@ -78,9 +78,9 @@
 			. "lastread=0, newstype='" . $n_newstype . "', "
 			. "cachetime='$n_cachetime', listings='$n_listings' WHERE con='$con'",__LINE__,__FILE__);
 
-		$phpgw->redirect($phpgw->link('/headlines/admin.php'));
-
 		$phpgw->db->unlock();
+
+		$phpgw->redirect($phpgw->link('/headlines/admin.php'));
 	}
 	else
 	{
@@ -92,6 +92,7 @@
 		$n_newsfile  = $phpgw->db->f('newsfile');
 		$n_cachetime = $phpgw->db->f('cachetime');
 		$n_newstype  = $phpgw->db->f('newstype');	
+		$n_listings  = $phpgw->db->f('listings');
 	}
 
 	$phpgw->common->phpgw_header();
@@ -133,7 +134,7 @@
 	$news_type = array('rdf','fm','lt','sf','rdf-chan');
 	while (list(,$item) = each($news_type))
 	{
-		$_select .= '<option value="' . $item . '"' . ($n_newstype == $item?' checked':'')
+		$_select .= '<option value="' . $item . '"' . ($n_newstype == $item?' selected':'')
 					. '>' . $item . '</option>';
 	}
 	$phpgw->template->set_var('input_type','<select name="n_newstype">' . $_select . '</select>');

@@ -108,8 +108,9 @@ class headlines {
       $links = $this->getLinksSite();  // try from site again
       if (!$links) {
         $display = htmlspecialchars($this->display);
-        die("</table><b>error</b>: unable to get links for <br><a href=\""
-	  . "$this->base_url\">$this->display</a>");
+//        die("</table><b>error</b>: unable to get links for <br><a href=\""
+//	  . "$this->base_url\">$this->display</a>");
+	return False;
       }
     }
 		

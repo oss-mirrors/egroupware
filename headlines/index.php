@@ -65,11 +65,28 @@
 		$phpgw->template->set_var('channel_title',$headlines->display);
 
 		$links = $headlines->getLinks($site);
-		while (list($title,$link) = each($links))
+		if($links == False)
 		{
-			$phpgw->template->set_var('item_link',stripslashes($link));
-			$phpgw->template->set_var('item_label',stripslashes($title));
-			$s .= $phpgw->template->parse('o_','row');
+			$var = Array(
+				'item_link'	=> '',
+				'item_label'	=> '',
+				'error'	=> lang('Unable to retrieve links').'.'
+			);
+			$GLOBALS['phpgw']->template->set_var($var);
+			$s .= $GLOBALS['phpgw']->template->parse('o_','row');
+		}
+		else
+		{
+			while (list($title,$link) = each($links))
+			{
+
+				$var = Array(
+					'item_link'	=> stripslashes($link),
+					'item_label'	=> stripslashes($title)
+				);
+				$GLOBALS['phpgw']->template->set_var($var);
+				$s .= $GLOBALS['phpgw']->template->parse('o_','row');
+			}
 		}
 		$phpgw->template->set_var('rows',$s);
 		unset($s);
