@@ -25,7 +25,7 @@ no backup archives available !	backup	zh	无档案可用!!
 number of stored backup versions	backup	zh	删除前保存的旧档案数:
 operating system	backup	zh	操作系统
 pgsql	admin	zh	PostgreSQL
-php cgi	admin	zh	PHP主程序的完整路径 (例如: /usr/bin/php)
+php cgi	admin	zh	PHP主程序的完整路径 (例如: /usr/local/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	zh	请在「全局配置」中输入所需应用程序的路径!
 please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	zh	请输入档案目录的路径或在eGroupWare中显示档案!
 please enter username and password for remote connection !	backup	zh	请输入远程连接的用户名和密码!
