@@ -3,9 +3,9 @@
   <tr> 
     <td> <font size="-1"> </font><br>
       <form method="post" action="{ACTION_LINK}">
-        <table border="0" width="80%" bgcolor="9999FF">
+        <table border="0" width="80%" bgcolor="#9999FF">
           <tr> 
-            <td colspan="2" bgcolor="D3DCE3"> 
+            <td colspan="2" bgcolor="#D3DCE3"> 
               <center>
                 {LANG_ADD_FORUM} 
                 <input type="hidden" name="forum[id]" value="{FORID}">
