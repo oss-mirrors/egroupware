@@ -1,92 +1,196 @@
 1 message has been deleted	email	de	1 Nachricht wurde gelöscht
+1 message has been moved to	email	de	1 Nachricht wurde verschoben nach
+<b>apply all</b> filters	email	de	<b>ALLE</b> Filter anwenden
+account	email	de	Benutzerkonto
+account name	email	de	Name des Benutzerkontos
+account user name	email	de	Benutzername
+accounts	email	de	Benutzerkonten
 add to addressbook	email	de	Zum Addressbuch hinzufügen
-Attach file	email	de	Datei anhängen
-Attach signature	email	de	Signatur anhängen
+and	email	de	und
+arrival date	email	de	Eingangsdatum
+as	email	de	als
+attach file	email	de	Datei anhängen
+attach signature	email	de	Signatur anhängen
+attachment	email	de	Anhang
+bcc	email	de	Blindkopie
+big	email	de	groß
+both	email	de	Beides
+button type	email	de	Schaltflächentyp
 cc	email	de	Kopie
 choose for rename	email	de	Auswählen zum Umbenennen
+choose to rename	email	de	Auswählen zum umbenennen
 compose	email	de	Verfassen
-compose new	email	de	Neu verfassen
-create a Folder	email	de	Ordner anlegen
-Create (expert)	email	de	Anlegen (Experte)
-Custom Email settings	email	de	Benutzerdefinierte Email Einstellungen
-Default sorting order	email	de	Standard Sortierung
-Deleted messages saved to folder:	email	de	Ordner für gelöschte Nachrichten:
-Delete a Folder	email	de	Ordner löschen
-Delete (expert)	email	de	Löschen (Experte)
+compose new	common	de	Neu verfassen
+contains	email	de	Enthält
+could not open this mailbox	email	de	Kann diese Mailbox nicht öffnen
+create (expert)	email	de	Anlegen (Experte)
+create a folder	email	de	Ordner anlegen
+create a folder email	email	de	Folder anlegen
+custom e-mail preferences	email	de	Benutzerdefinierte E-Mail Einstellungen
+custom email settings	email	de	Benutzerdefinierte Email Einstellungen
+default sorting order	email	de	Standard Sortierung
+default:	common	de	Standard:
+delete (expert)	email	de	Löschen (Experte)
+delete a folder	email	de	Ordner löschen
+delete account	common	de	Benutzerkonto löschen
+deleted messages (trash) folder	email	de	Ordner für gelöschte Nachrichten (Papierkorb)
+deleted messages go to trash	email	de	Gelöschte Nachrichten kommen in den Papierkorb
+deleted messages saved to folder:	email	de	Ordner für gelöschte Nachrichten:
+discard	email	de	Verwerfen
+does not contain	email	de	Enthält nicht
+e-mail extra accounts list	email	de	Zusätzliche E-Mail Benutzerkonten
+e-mail filters	common	de	E-Mail Filter
+e-mail folders	common	de	E-Mail Ordner
+e-mail inbox filters list	email	de	E-Mail Eingang (INBOX) Filterliste
+e-mail preferences	common	de	E-Mail Einstellungen
 email account name	email	de	Name des E-Mail Kontos
 email address	email	de	E-Mail Adresse
+email date	email	de	E-Mail Datum
+email filters	email	de	E-Mail Filter
 email password	email	de	E-Mail Passwort
-email signature	common	de	E-Mail Signatur
+email preferences	email	de	E-Mail Einstellungen
+email signature	email	de	E-Mail Signatur
 email type	common	de	E-Mail Typ
-enable UTF-7 encoded folder names	email	de	UTF-7 codierte Ordnername erlauben
-e-mail preferences	common	de	E-Mail Einstellungen
+enable this email account	common	de	Diese E-Mail Konto aktivieren
+enable utf-7 encoded folder names	email	de	UTF-7 codierte Ordnername erlauben
+enter your default mail domain ( from: user@domain )	admin	de	Standard EMail-Domain (Von: benutzer@domain)
+enter your pop	admin	de	Eingaben POP
+enter your smtp server hostname or ip address	admin	de	SMTP-Server Hostname oder IP-Adresse
+enter your smtp server port	admin	de	SMTP-Server Port
+error moving messages to	email	de	Fehler beim verschieben der Nachricht nach
+error: unknown message data	email	de	Fehler: unbekannte Nachrichent-Daten
+evolution style	email	de	Evolution Stil
+extra e-mail account	common	de	Zusätzles E-Mail Benutzerkonto
+extra e-mail accounts	common	de	Zusätzliche E-Mail Benutzerkonten
+fewer actions	email	de	Weniger Befehle
+fewer choices	email	de	Weniger Auswahl
+file	email	de	Datei
+file into	email	de	Ablegen unter
+filter [number] and name	email	de	Filter [Nummer] und Name
+filters	email	de	Filter
 folder	email	de	Ordner
+folder maintenance	email	de	Ordner Verwaltung
+folder name	email	de	Ordner Name
+folder size	email	de	Ordner Größe
 folders	email	de	Ordner
-Folder Maintenance	email	de	Ordner Verwaltung
-Folder name	email	de	Ordner Name
-Folder Size	email	de	Ordner Größe
+for these items, fill only what is different from you default e-mail preferences	common	de	Bei diesen Feldern nur etwas eintragen, wenn es sich vom standard E-Mail Konto unterscheidet
 forward	email	de	Weiterleiten
 from	email	de	Von
 get size	email	de	Größe ermitteln
-if applicable	email	de	falls zutreffend
+hidden	email	de	versteckt
+hide help	email	de	Hilfe ausblenden
+icon size	email	de	Symbolgröße
+icon theme	email	de	Symbol Thema
+if applicable	email	de	Falls zutreffend
+if fileto then select destination folder	email	de	Beim Ablegen bitte Ziel-Ordner auswählen
+if messages match	email	de	Wenn die Nachricht passt
 image	email	de	Grafik
-imap server type	common	de	Typ des IMAP Servers
+imap mail server hostname or ip address	admin	de	IMAP Mail-Server Hostname oder IP Adresse
+imap server type	common	de	IMAP-Servertyp
+keep	email	de	Behalten
+keywords	email	de	Schlüsselworte
+layout 1	common	de	Layout 1
+layout 2	common	de	Layout 2
+lines	email	de	Zeilen
 long names	email	de	lange Namen
-Layout 1	email	de	Layout 1
-Layout 2	email	de	Layout 2
 mail folder(uw-maildir)	email	de	Mail Ordner (UW-Mailverzeichnis)
 mail server	email	de	Mail Server
+mail server login type	admin	de	EMail-Server Logintyp
 mail server type	email	de	Typ des Mailservers
+mail settings	admin	de	EMail Einstellungen
+manage accounts	email	de	Benutzerkonten verwalten
+manage folders	email	de	Ordner verwalten
+message list layout	common	de	Layout der Liste der Nachrichten
 messages	email	de	Nachrichten
-Message List Layout	email	de	Layout der Liste der Nachrichten
-move selected messages into	email	de	Verschiebe ausgewählte Nachrichten in
+messages have been moved to	email	de	Nachrichten wurden verschoben nach
+more actions	email	de	Mehr Befehle
+more choices	email	de	Mehr Auswahlmöglichkeiten
+move down	email	de	Nach unten
+move selected messages into	email	de	Verschiebe ausgewählte Nachrichten nach
+move this message into	email	de	Verschiebe diese Nachricht nach
+move up	email	de	Nach oben
+mozilla modern style	email	de	Mozilla Modern Stil
+new	email	de	Neu
+new account	email	de	Neues Konto
+new filter	email	de	Neuer Filter
 new message	email	de	Neue Nachricht
-New messages	email	de	Neue Nachrichten
-New	email	de	Neu
-newest	email	de	neueste
+new messages	email	de	Neue Nachrichten
+newest	common	de	neueste
+no error returned from server	email	de	Der Server lieferte keine Fehlermeldung
+no next message	email	de	keine weitere Nachricht
+no previous message	email	de	keine vorherige Nachricht
 non-standard	email	de	nicht Standard
-oldest	email	de	älteste
+notify on delivery	email	de	Benachrichtigung bei Auslieferung
+number	common	de	Nummer
+oldest	common	de	älteste
+or	common	de	oder
+or enter text	email	de	oder Text eingeben
+please fill in everything you need	email	de	Bitte alles ausfüllen das benötigt wird
+please select a folder to rename	email	de	Bitte einen Ordner zum umbenennen auswählen
 please select a message first	email	de	Bitte zuerst eine Nachricht wählen
-Please type a folder name in the text box	email	de	Bitte den Ordnername in das Textfeld eingeben
+please type a folder name in the text box	email	de	Bitte den Ordnername in das Textfeld eingeben
 previous	email	de	Vorige
+raw message	email	de	Orginal Nachricht
+read mail	email	de	Nachrichten lesen
+redirect	email	de	Weiterleiten
+reject	email	de	Zurückweisen
+rename (expert)	email	de	Umbennenen (Experte)
+rename a folder	email	de	Ordner umbenennen
 reply	email	de	Antworten
 reply all	email	de	Allen antworten
-ReplyTo	email	de	Antwort an
-Rename a folder	email	de	Ordner umbenennen
-Rename (expert)	email	de	Umbennenen (Experte)
+replyto	email	de	Antwort an
+reset	email	de	Zurücksetzen
 result	email	de	Ergebnis
+search this folder	email	de	diesen Ordner durchsuchen
 section	email	de	Sektion
-Select work email address	email	de	geschäftl. EMail auswählen
-Select home email address	email	de	private EMail auswählen
+select home email address	email	de	private EMail auswählen
+select work email address	email	de	geschäftl. EMail auswählen
+select your mail server type	admin	de	EMail-Servertyp auswählen
+select your screensize for propper showing of the javascript addressbook	email	de	Bildschirmgröße zum ordnungsgemäßen Anzeigen des neuen JavaScript Adressbuches auswählen
+select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	de	Typ des Adressbuchs auswählen: Traditioneller einfacher Type oder das neue komplexe JavaScript Adressbuch
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
-Sent messages saved to folder:	email	de	Ordner für versendete Nachrichten:
+send forwarded mail as quoted attachment	email	de	Nachrichten als Zitierten Anhang (quoted attachment) weiterleiten
+sent messages folder	common	de	Ordner für versandte Nachrichten
+sent messages saved in &quot;sent&quot; folder	common	de	Versandte wurden im &quot;sent&quot; Ordner gespeichert
+sent messages saved to folder:	email	de	Ordner für versendete Nachrichten:
+settings	email	de	Einstellungen
 short names	email	de	kurze Namen
-show new messages on main screen	common	de	Neue Nachrichten auf der Startseite anzeigen
-Show sender's email address with name	email	de	Email-Adresse des Senders mit Namen anzeigen
+show help	email	de	Hilfe anzeigen
+show long names	email	de	Lange Namen anzeigen
+show new messages in combobox	email	de	Neue Nachrichten als einzeiliges Auswahlfeld anzeigen
+show new messages on main screen	email	de	Neue Nachrichten auf der Startseite anzeigen
+show sender's email address with name	email	de	Email-Adresse des Senders mit Namen anzeigen
 size	email	de	Größe
-switch current folder to	email	de	Wechseln zum Ordner
+small	email	de	klein
+somebody	email	de	irgendjemand
+sort by	email	de	Sortieren nach
+standard e-mail preferences	email	de	Standard E-Mail Einstellungen
+stop if matched	email	de	Stop wenn zutreffend
+switch accounts	email	de	Konto wechseln
+switch current folder to	common	de	Wechseln zum Ordner
+text	email	de	Text
+then take this actions	email	de	Danach diesen Befehl ausführen
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	de	Die Verbindung zum Mailserver ist leider fehlgeschlagen.<br>Bitte prüfen sie Ihren Usernamen und Ihr Passwort, oder setzen Sie sich mit Ihrem Administrator in Verbindung.
+this data not supplied.	email	de	Diese Daten wurden nicht eingetragen
 this folder is empty	email	de	Dieser Ordner ist leer
 to	email	de	An
-Total messages	email	de	Nachrichten insgesamt
+total messages	email	de	Nachrichten insgesamt
+u-wash mail folder	email	de	U-Wash Mail Ordner
 undisclosed recipients	email	de	Verborgene Empfänger
 undisclosed sender	email	de	Verborgener Absender
+unknown action	email	de	Unbekannter Befehl
+unknown error	email	de	Unbekannter Fehler
 use custom settings	email	de	Benutzerdefinierte Einstellungen verwenden
-U-Wash Mail Folder	email	de	U-Wash Mail Ordner
+view as html	email	de	Als HTML formatiert anzeigen
 view formatted	email	de	formatiert anzeigen
+view headers	email	de	Kopfzeilen (Header) anzeigen
 view unformatted	email	de	unformatiert anzeigen
 x messages have been deleted	email	de	%1 Nachrichten wurden gelöscht
-you have 1 new message!	common	de	Sie	haben eine neue Nachricht!
-you have messages!  common	de	Sie haben Nachrichten!
+you have 1 new message!	common	de	Sie haben 1 neue Nachricht
+you have messages!	common	de	Sie haben neue Nachrichten
+you have messages!  common	de	de	
 you have no new messages	common	de	Keine neuen Nachrichten
 you have x new messages!	common	de	Sie haben %1 neue Nachrichten!
+your full name	common	de	Ihr vollständiger Name
 your message has been sent	common	de	Ihre Nachricht wurde versandt
-Select your mail server type	admin	de	EMail-Servertyp
-IMAP server type	admin	de	IMAP-Servertyp
-Enter your default mail domain ( From: user@domain )	admin	de	Standard EMail-Domain (Von: benutzer@domain)
-Mail server login type	admin	de	EMail-Server Logintyp
-Enter your SMTP server hostname or IP address	admin	de	SMTP-Server Hostname oder IP-Adresse
-Enter your SMTP server port	admin	de	SMTP-Server Port
-Mail Settings	admin	de	EMail Einstellungen
-
