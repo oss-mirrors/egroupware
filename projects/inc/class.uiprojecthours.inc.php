@@ -93,6 +93,7 @@
 			$this->t->set_var('lang_title',lang('Title'));
 			$this->t->set_var('lang_status',lang('Status'));
 			$this->t->set_var('lang_save',lang('Save'));
+			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_budget',lang('Budget'));
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
@@ -401,7 +402,7 @@
 			$this->t->set_block('hours_add','add','addhandle');
 			$this->t->set_block('hours_add','edit','edithandle');
 
-			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$nopref = $this->boprojects->check_prefs();
 			if ($nopref)
