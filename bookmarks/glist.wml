@@ -43,3 +43,4 @@
 ?>
   </card>
 </wml>
+<?php $phpgw->common->phpgw_footer(); ?>
