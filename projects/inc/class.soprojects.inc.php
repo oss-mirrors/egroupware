@@ -34,12 +34,12 @@
 
 		function soprojects()
 		{
-			$this->db			= $GLOBALS['phpgw']->db;
-			$this->db2			= $this->db;
+			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db2		= $this->db;
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->currency 	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-			$this->year			= $GLOBALS['phpgw']->common->show_date(time(),'Y');
+			$this->year		= $GLOBALS['phpgw']->common->show_date(time(),'Y');
 			$this->member		= $this->get_acl_projects();
 			$this->soconfig		= CreateObject('projects.soconfig');
 			$this->siteconfig	= $this->get_site_config();
@@ -53,7 +53,7 @@
 				case 'subs':			$s = ' and parent != 0'; break;
 				case 'mains':			$s = ' and parent = 0'; break;
 				default: return False;
-            }
+			}
 			return $s;
 		}
 
@@ -75,49 +75,72 @@
 				{
 					$projects[] = array
 					(
-						'project_id'					=> $this->db->f('project_id'),
-						'parent'						=> $this->db->f('parent'),
-						'number'						=> $this->db->f('p_number'),
-						'access'						=> $this->db->f('access'),
-						'cat'							=> $this->db->f('category'),
-						'sdate'							=> $this->db->f('start_date'),
-						'edate'							=> $this->db->f('end_date'),
-						'coordinator'					=> $this->db->f('coordinator'),
-						'customer'						=> $this->db->f('customer'),
-						'status'						=> $this->db->f('status'),
-						'descr'							=> $this->db->f('descr'),
-						'title'							=> $this->db->f('title'),
-						'budget'						=> $this->db->f('budget'),
-						'e_budget'						=> $this->db->f('e_budget'),
-						'ptime'							=> $this->db->f('time_planned'),
-						'owner'							=> $this->db->f('owner'),
-						'cdate'							=> $this->db->f('date_created'),
-						'processor'						=> $this->db->f('processor'),
-						'udate'							=> $this->db->f('entry_date'),
-						'investment_nr'					=> $this->db->f('investment_nr'),
-						'main'							=> $this->db->f('main'),
-						'level'							=> $this->db->f('level'),
-						'previous'						=> $this->db->f('previous'),
-						'customer_nr'					=> $this->db->f('customer_nr'),
-						'url'							=> $this->db->f('url'),
-						'reference'						=> $this->db->f('reference'),
-						'result'						=> $this->db->f('result'),
-						'test'							=> $this->db->f('test'),
-						'quality'						=> $this->db->f('quality'),
-						'accounting'					=> $this->db->f('accounting'),
-						'project_accounting_factor'		=> $this->db->f('acc_factor'),
+						'project_id'			=> $this->db->f('project_id'),
+						'parent'			=> $this->db->f('parent'),
+						'number'			=> $this->db->f('p_number'),
+						'access'			=> $this->db->f('access'),
+						'cat'				=> $this->db->f('category'),
+						'sdate'				=> $this->db->f('start_date'),
+						'edate'				=> $this->db->f('end_date'),
+						'coordinator'			=> $this->db->f('coordinator'),
+						'customer'			=> $this->db->f('customer'),
+						'status'			=> $this->db->f('status'),
+						'descr'				=> $this->db->f('descr'),
+						'title'				=> $this->db->f('title'),
+						'budget'			=> $this->db->f('budget'),
+						'e_budget'			=> $this->db->f('e_budget'),
+						'ptime'				=> $this->db->f('time_planned'),
+						'owner'				=> $this->db->f('owner'),
+						'cdate'				=> $this->db->f('date_created'),
+						'processor'			=> $this->db->f('processor'),
+						'udate'				=> $this->db->f('entry_date'),
+						'investment_nr'			=> $this->db->f('investment_nr'),
+						'main'				=> $this->db->f('main'),
+						'level'				=> $this->db->f('level'),
+						'previous'			=> $this->db->f('previous'),
+						'customer_nr'			=> $this->db->f('customer_nr'),
+						'url'				=> $this->db->f('url'),
+						'reference'			=> $this->db->f('reference'),
+						'result'			=> $this->db->f('result'),
+						'test'				=> $this->db->f('test'),
+						'quality'			=> $this->db->f('quality'),
+						'accounting'			=> $this->db->f('accounting'),
+						'project_accounting_factor'	=> $this->db->f('acc_factor'),
 						'project_accounting_factor_d'	=> $this->db->f('acc_factor_d'),
-						'billable'						=> $this->db->f('billable'),
-						'psdate'						=> $this->db->f('psdate'),
-						'pedate'						=> $this->db->f('pedate'),
-						'priority'						=> $this->db->f('priority'),
-						'discount'						=> $this->db->f('discount'),
-						'discount_type'					=> $this->db->f('discount_type'),
-						'inv_method'					=> $this->db->f('inv_method')
+						'billable'			=> $this->db->f('billable'),
+						'psdate'			=> $this->db->f('psdate'),
+						'pedate'			=> $this->db->f('pedate'),
+						'priority'			=> $this->db->f('priority'),
+						'discount'			=> $this->db->f('discount'),
+						'discount_type'			=> $this->db->f('discount_type'),
+						'inv_method'			=> $this->db->f('inv_method')
 					);
 				}
 			}
 			return $projects;
+		}
+		
+		function getProjectResources($_projectID, $_employees)
+		{
+			$resources = array();
+		
+			if(!is_array($_employees)) return false;
+			
+			$employees = implode(',',$_employees);
+			
+			$query = "select employee,resource from phpgw_p_resources where employee in($employees) and project_id='$_projectID'";
+			
+			$this->db->query($query, __LINE__, __FILE__);
+			
+			while($this->db->next_record())
+			{
+				$resources[$this->db->f('employee')] = array
+				(
+					'resource'	=> $this->db->f('resource'),
+				);
+			}
+			
+			return $resources;
 		}
 
 		function read_projects($values)
@@ -515,23 +538,23 @@
 				}
 			}
 
-			$values['descr']			= $this->db->db_addslashes($values['descr']);
-			$values['title']			= $this->db->db_addslashes($values['title']);
-			$values['number']			= $this->db->db_addslashes($values['number']);
+			$values['descr']		= $this->db->db_addslashes($values['descr']);
+			$values['title']		= $this->db->db_addslashes($values['title']);
+			$values['number']		= $this->db->db_addslashes($values['number']);
 			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
 			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
-			$values['result']			= $this->db->db_addslashes($values['result']);
-			$values['test']				= $this->db->db_addslashes($values['test']);
-			$values['quality']			= $this->db->db_addslashes($values['quality']);
-			$values['url']				= $this->db->db_addslashes($values['url']);
+			$values['result']		= $this->db->db_addslashes($values['result']);
+			$values['test']			= $this->db->db_addslashes($values['test']);
+			$values['quality']		= $this->db->db_addslashes($values['quality']);
+			$values['url']			= $this->db->db_addslashes($values['url']);
 			$values['reference']		= $this->db->db_addslashes($values['reference']);
 			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
-			$values['parent']			= intval($values['parent']);
-			$values['edate']			= intval($values['edate']);
+			$values['parent']		= intval($values['parent']);
+			$values['edate']		= intval($values['edate']);
 
-			$values['budget']			= $values['budget'] + 0.0;
-			$values['e_budget']			= $values['e_budget'] + 0.0;
-			$values['discount']			= $values['discount'] + 0.0;
+			$values['budget']		= $values['budget'] + 0.0;
+			$values['e_budget']		= $values['e_budget'] + 0.0;
+			$values['discount']		= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
 			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
 
@@ -625,15 +648,16 @@
 							$following[$key]['nsdate'] = $nsdate;
 							$following[$key]['nedate'] = $nedate;
 						}
-						$this->db->query('SELECT s_id,edate,title from phpgw_p_mstones WHERE project_id=' . intval($fol['project_id']),__LINE__,__FILE__);
+						$this->db->query('SELECT s_id,edate,title,description from phpgw_p_mstones WHERE project_id=' . intval($fol['project_id']),__LINE__,__FILE__);
 
 						while($this->db->next_record())
 						{
 							$stones[] = array
 							(
-								's_id'	=> $this->db->f('s_id'),
-								'edate'	=> $this->db->f('edate'),
-								'title'	=> $this->db->f('title')
+								's_id'		=> $this->db->f('s_id'),
+								'edate'		=> $this->db->f('edate'),
+								'description'	=> $this->db->f('description'),
+								'title'		=> $this->db->f('title')
 							);
 						};
 						$following[$key]['mstones'] = $stones;
@@ -1097,9 +1121,10 @@
 			{
 				$stones[] = array
 				(
-					's_id'	=> $this->db->f('s_id'),
-					'title'	=> $this->db->f('title'),
-					'edate'	=> $this->db->f('edate')
+					's_id'		=> $this->db->f('s_id'),
+					'title'		=> $this->db->f('title'),
+					'description'	=> $this->db->f('description'),
+					'edate'		=> $this->db->f('edate')
 				);
 			}
 			return $stones;
@@ -1113,9 +1138,10 @@
 			{
 				$stone = array
 				(
-					's_id'	=> $this->db->f('s_id'),
-					'title'	=> $this->db->f('title'),
-					'edate'	=> $this->db->f('edate')
+					's_id'		=> $this->db->f('s_id'),
+					'title'		=> $this->db->f('title'),
+					'description'	=> $this->db->f('description'),
+					'edate'		=> $this->db->f('edate')
 				);
 			}
 			return $stone;
@@ -1123,15 +1149,21 @@
 
 		function add_mstone($values)
 		{
-			$this->db->query('INSERT into phpgw_p_mstones (project_id,title,edate) VALUES (' . intval($values['project_id']) . ",'"
-							. $this->db->db_addslashes($values['title']) . "'," . intval($values['edate']) . ')',__LINE__,__FILE__);
+			$this->db->query('INSERT into phpgw_p_mstones (project_id,title,description,edate) VALUES (' . intval($values['project_id']) . 
+				",'" . $this->db->db_addslashes($values['title']) . "'," . 
+				"'" . $this->db->db_addslashes($values['description']) . "'," .
+				intval($values['edate']) . ')',
+				__LINE__,
+				__FILE__);
 			return $this->db->get_last_insert_id('phpgw_p_mstones','s_id');
 		}
 
 		function edit_mstone($values)
 		{
-			$this->db->query('UPDATE phpgw_p_mstones set edate=' . intval($values['edate']) . ", title='" . $this->db->db_addslashes($values['title']) . "' "
-							. 'WHERE s_id=' . intval($values['s_id']),__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_mstones set edate=' . intval($values['edate']) . 
+				", title='" . $this->db->db_addslashes($values['title']) . "' " . 
+				", description='" . $this->db->db_addslashes($values['description']) . "' " . 
+				'WHERE s_id=' . intval($values['s_id']),__LINE__,__FILE__);
 		}
 
 		function delete_mstone($s_id = '')

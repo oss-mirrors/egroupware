@@ -1,13 +1,14 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/	*
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc.              *
+	* Copyright 2004 - 2004 Lars Kneschke                               *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -693,8 +694,11 @@
 
 		function project_gantt()
 		{
+			$showResources	= get_var('show_resources',array('POST'));
+			$showMilestones	= get_var('show_milestones',array('POST'));
+			
 			$project_id	= get_var('project_id',array('GET','POST'));
-			$sdate		= get_var('sdate',array('GET','POST'));
+ 			$sdate		= get_var('sdate',array('GET','POST'));
 			$edate		= get_var('edate',array('GET','POST'));
 
 			if (! $project_id)
@@ -731,28 +735,49 @@
 				$end_array	= $jscal->input2date($edate['str']);
 				$end_val	= $end_array['raw'];
 			}
-
-			$start	= $start_val?$start_val:mktime(12,0,0,date('m'),date('d'),date('Y'));
-			$end	= $end_val?$end_val:mktime(12,0,0,date('m'),date('d')+30,date('Y'));
-
+			
+			$projectData = $this->boprojects->read_single_project($project_array[0]);
+			
+			if($start_val)
+				$start	= $start_val;
+			else
+				$start	= $projectData['sdate'];
+			#$start	= $start_val?$start_val:mktime(12,0,0,date('m'),date('d'),date('Y'));
+			#$end	= $end_val?$end_val:mktime(12,0,0,date('m'),date('d')+30,date('Y'));
+			if($end_val)
+			{
+				$end	= $end_val;
+			}
+			else
+			{
+				$end	= $projectData['edate'];
+			}
+#print "$start $end<br>";
+#_debug_array($projectData);
 			$GLOBALS['phpgw']->template->set_var('sdate_select',$jscal->input('sdate[str]',$start));
 			$GLOBALS['phpgw']->template->set_var('edate_select',$jscal->input('edate[str]',$end));
 
 			$GLOBALS['phpgw']->template->set_var('project_id',$project_id);
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('lang_show_milestones', lang('show milestones'));
+			$GLOBALS['phpgw']->template->set_var('lang_show_resources', lang('show planned resources'));
+			if($showMilestones == 'true')
+			{
+				$GLOBALS['phpgw']->template->set_var('show_milestones_checked','checked');
+			}
+			if($showResources == 'true')
+			{
+				$GLOBALS['phpgw']->template->set_var('show_resources_checked','checked');
+			}
 
-			//_debug_array($project_array);
-
-			#$this->bostatistics->show_graph(array('project_array' => $project_array,'sdate' => $start, 'edate' => $end));
-
-			//$GLOBALS['phpgw']->template->set_var('pix_src',$this->show_pix());
-			//$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
 			$link_data = array
 			(
-				'menuaction'	=> 'projects.uistatistics.show_graph',
-				'project_id'	=> $project_id,
-				'start'		=> $start,
-				'end'		=> $end
+				'menuaction'		=> 'projects.uistatistics.show_graph',
+				'project_id'		=> $project_id,
+				'start'			=> $start,
+				'end'			=> $end,
+				'show_resources'	=> $showResources,
+				'show_milestones'	=> $showMilestones
 			);
 			$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->pfp('out','project_stat');
@@ -763,6 +788,8 @@
 			$project_id	= get_var('project_id',array('GET'));
 			$start		= get_var('start',array('GET'));
 			$end		= get_var('end',array('GET'));
+			$showMilestones	= get_var('show_milestones',array('GET'));
+			$showResources	= get_var('show_resources',array('GET'));
 
 			if (!$project_id)
 			{
@@ -772,7 +799,17 @@
 			{
 				$project_array = explode(',',$project_id);
 			}
-			$this->bostatistics->show_graph(array('project_array' => $project_array,'sdate' => $start, 'edate' => $end));
+			$this->bostatistics->show_graph
+			(
+				array
+				(
+					'project_array'		=> $project_array,
+					'sdate'			=> $start, 
+					'edate'			=> $end,
+					'showMilestones'	=> $showMilestones,
+					'showResources'		=> $showResources
+				)
+			);
 			
 			return true;
 		}

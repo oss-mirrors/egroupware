@@ -1,13 +1,14 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/	*
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc.              *
+	* Copyright 2004 Lars Kneschke                                      *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -40,21 +41,21 @@
 
 		var $public_functions = array
 		(
-			'save_sessiondata'			=> True,
-			'cached_accounts'			=> True,
-			'list_projects'				=> True,
-			'check_perms'				=> True,
-			'check_values'				=> True,
+			'save_sessiondata'		=> True,
+			'cached_accounts'		=> True,
+			'list_projects'			=> True,
+			'check_perms'			=> True,
+			'check_values'			=> True,
 			'select_project_list'		=> True,
-			'save_project'				=> True,
+			'save_project'			=> True,
 			'read_single_project'		=> True,
-			'delete_pa'					=> True,
-			'exists'					=> True,
-			'employee_list'				=> True,
-			'read_abook'				=> True,
+			'delete_pa'			=> True,
+			'exists'			=> True,
+			'employee_list'			=> True,
+			'read_abook'			=> True,
 			'read_single_contact'		=> True,
-			'return_value'				=> True,
-			'change_owner'				=> True
+			'return_value'			=> True,
+			'change_owner'			=> True
 		);
 
 		function boprojects($is_active=False, $action = '')
@@ -414,7 +415,7 @@
 		}
 
 		function read_projects_acl($useronly = True)
-		{
+		{		
 			$aclusers	= $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'projects');
 			$acl_users	= $GLOBALS['phpgw']->accounts->return_members($aclusers);
 
@@ -439,6 +440,38 @@
 		{
 			return $this->soprojects->get_employee_projects($account_id);
 		}
+		
+		function getProjectResources($_projectID = '')
+		{
+			$resources = array();
+		
+			$projectID = intval($_projectID);
+			if($projectID != $_projectID) return false;
+			
+			$employees = $this->get_acl_for_project($projectID);
+			
+			$resources = $this->soprojects->getProjectResources($projectID, $employees);
+			
+			foreach($employees as $employee)
+			{
+				$accountData = CreateObject('phpgwapi.accounts',$employee);
+				$accountData->read_repository();
+
+				$resources[] = array
+				(
+					'employee'	=> $employee,
+					'resource'	=> $resources[$employee].'.....',
+					'name'		=> $GLOBALS['phpgw']->common->display_fullname
+							   (
+								$accountData->data['account_lid'],
+								$accountData->data['firstname'],
+								$accountData->data['lastname']
+							   ),
+				);
+			}
+			
+			return $resources;
+		}
 
 		function selected_employees($data = 0)
 		{
@@ -453,7 +486,10 @@
 			{
 				$emps = $this->read_projects_acl();
 			}
-
+			// remove duplicates
+			$emps = array_unique($emps);
+			sort($emps);
+			
 			if(isset($data['action']) && $data['action'] == 'subs')
 			{
 				$parent_select = $this->get_acl_for_project($pro_parent);
@@ -488,8 +524,6 @@
 					$emps[$i] = $co;
 				}
 			}
-
-			//_debug_array($emps);
 
 			for($i=0;$i<count($emps);$i++)
 			{
@@ -823,20 +857,20 @@
 		function list_projects($params)
 		{
 			$pro_list = $this->soprojects->read_projects(array
-									(
-										'start'			=> $this->start,
-										'limit'			=> $this->limit,
-										'query'			=> $this->query,
-										'filter'		=> $this->filter,
-										'sort'			=> $this->sort,
-										'order'			=> $this->order,
-										'status'		=> $this->status,
-										'cat_id'		=> ($params['action'] == 'mains'?$this->cat_id:0),
-										'action'		=> $params['action'],
-										'parent'		=> $params['parent'],
-										'main'			=> $params['main'],
-										'project_id'	=> $params['project_id']
-									));
+			(
+				'start'		=> $this->start,
+				'limit'		=> $this->limit,
+				'query'		=> $this->query,
+				'filter'	=> $this->filter,
+				'sort'		=> $this->sort,
+				'order'		=> $this->order,
+				'status'	=> $this->status,
+				'cat_id'	=> ($params['action'] == 'mains'?$this->cat_id:0),
+				'action'	=> $params['action'],
+				'parent'	=> $params['parent'],
+				'main'		=> $params['main'],
+				'project_id'	=> $params['project_id']
+			));
 
 			$this->total_records = $this->soprojects->total_records;
 			if(is_array($pro_list))
@@ -852,8 +886,15 @@
 					if ($pro['customer'])
 					{
 						$customer = $this->read_single_contact($pro['customer']);
-            			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name']; }
-            			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name'] . ' ]'; }
+            					if ($customer[0]['org_name'] == '') 
+            					{ 
+            						$customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; 
+            					}
+            					else
+            					{
+            						$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . 
+            						' ' . $customer[0]['n_family'] . ' ]'; 
+            					}
 					}
 
 					$mstones = $this->get_mstones($pro['project_id']);
@@ -1009,55 +1050,56 @@
 
 			$project = array
 			(
-				'ptime'				=> ($pro['ptime']/60) . '.00',
-				'ptime_min'			=> $pro['ptime'],
+				'ptime'			=> ($pro['ptime']/60) . '.00',
+				'ptime_min'		=> $pro['ptime'],
 				'ptime_jobs'		=> $acc['ptime_jobs'],
-				'atime'				=> $atime['whwm'],
-				'title'				=> $GLOBALS['phpgw']->strip_html($pro['title']),
-				'number'			=> $GLOBALS['phpgw']->strip_html($pro['number']),
+				'atime'			=> $atime['whwm'],
+				'title'			=> $GLOBALS['phpgw']->strip_html($pro['title']),
+				'number'		=> $GLOBALS['phpgw']->strip_html($pro['number']),
 				'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
-				'descr'				=> $GLOBALS['phpgw']->strip_html($pro['descr']),
-				'budget'			=> $pro['budget'],
+				'descr'			=> $GLOBALS['phpgw']->strip_html($pro['descr']),
+				'budget'		=> $pro['budget'],
+				'e_budget'		=> $pro['e_budget'],
 				'pbudget_jobs'		=> $acc['pbudget_jobs']?$acc['pbudget_jobs']:'0.00',
 				'ap_budget_jobs'	=> $pro['budget']-$acc['pbudget_jobs'],
-				'a_budget'			=> $pro['budget']-$acc['u_budget'],
+				'a_budget'		=> $pro['budget']-$acc['u_budget'],
 				'a_budget_jobs'		=> $pro['budget']-$acc['u_budget_jobs'],
-				'u_budget'			=> $ubudget_pro,       //$acc['u_budget']?$acc['u_budget']:'0.00',
+				'u_budget'		=> $ubudget_pro,       //$acc['u_budget']?$acc['u_budget']:'0.00',
 				'u_budget_jobs'		=> $ubudget_jobs,      //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
 				'project_id'		=> $pro['project_id'],
-				'parent'			=> $pro['parent'],
-				'main'				=> $pro['main'],
-				'cat'				=> $pro['cat'],
-				'access'			=> $pro['access'],
+				'parent'		=> $pro['parent'],
+				'main'			=> $pro['main'],
+				'cat'			=> $pro['cat'],
+				'access'		=> $pro['access'],
 				'coordinator'		=> $pro['coordinator'],
 				'coordinatorout'	=> $GLOBALS['phpgw']->common->grab_owner_name($pro['coordinator']),
-				'customer'			=> $pro['customer'],
-				'status'			=> $pro['status'],
-				'owner'				=> $pro['owner'],
-				'processor'			=> $pro['processor'],
-				'previous'			=> $pro['previous'],
-				'url'				=> $GLOBALS['phpgw']->strip_html($pro['url']),
-				'reference'			=> $GLOBALS['phpgw']->strip_html($pro['reference']),
+				'customer'		=> $pro['customer'],
+				'status'		=> $pro['status'],
+				'owner'			=> $pro['owner'],
+				'processor'		=> $pro['processor'],
+				'previous'		=> $pro['previous'],
+				'url'			=> $GLOBALS['phpgw']->strip_html($pro['url']),
+				'reference'		=> $GLOBALS['phpgw']->strip_html($pro['reference']),
 				'customer_nr'		=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
-				'test'				=> $GLOBALS['phpgw']->strip_html($pro['test']),
-				'quality'			=> $GLOBALS['phpgw']->strip_html($pro['quality']),
-				'result'			=> $GLOBALS['phpgw']->strip_html($pro['result']),
+				'test'			=> $GLOBALS['phpgw']->strip_html($pro['test']),
+				'quality'		=> $GLOBALS['phpgw']->strip_html($pro['quality']),
+				'result'		=> $GLOBALS['phpgw']->strip_html($pro['result']),
 				'accounting'		=> $pro['accounting'],
 				'project_accounting_factor'	=> $pro['project_accounting_factor'],
 				'project_accounting_factor_d'	=> $pro['project_accounting_factor_d'],
-				'billable'			=> $pro['billable'],
+				'billable'		=> $pro['billable'],
 				'uhours_pro'		=> $uhours_pro,          //$acc['uhours_pro']?$acc['uhours_pro']:'0.00',
 				'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0.00',
 				'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0.00',
 				'uhours_jobs'		=> $uhours_jobs,          //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
-				'uhours_jobs_nobill'=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
+				'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
 				'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0.00',
 				'uhours_jobs_wminutes'	=> $acc['uhours_jobs_wminutes']?$acc['uhours_jobs_wminutes']:0,
 				'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
 				'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
-				'priority'			=> $pro['priority'],
+				'priority'		=> $pro['priority'],
 				'inv_method'		=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
-				'discount'			=> $pro['discount'],
+				'discount'		=> $pro['discount'],
 				'discount_type'		=> $pro['discount_type']
 			);
 
@@ -1087,8 +1129,16 @@
 			if ($pro['customer'] > 0) 
 			{
 				$customer = $this->read_single_contact($pro['customer']);
-            	if ($customer[0]['org_name'] == '') { $project['customerout'] = $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name']; }
-            	else { $project['customerout'] = $customer[0]['org_name'] . ' [ ' . $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name'] . ' ]'; }
+				if ($customer[0]['org_name'] == '')
+				{
+					$project['customerout'] = $customer[0]['n_given'] .
+					' ' . $customer[0]['n_family'];
+				}
+				else 
+				{
+					$project['customerout'] = $customer[0]['org_name'] . 
+					' [ ' . $customer[0]['n_given'] . ' ' . 
+					$customer[0]['n_family'] . ' ]'; }
 			}
 			else { $project['customerout'] = '&nbsp;'; }
 
@@ -1309,11 +1359,11 @@
 			{
 				$values['sdate'] = mktime(12,0,0,$values['smonth'], $values['sday'], $values['syear']);
 			}
-
-            if (!$values['sdate'])
-            {
-                $values['sdate'] = time();
-            }
+			
+			if (!$values['sdate'])
+			{
+				$values['sdate'] = time();
+			}
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
@@ -1458,6 +1508,7 @@
 					$stones[] = array
 					(
 						'title'		=> $GLOBALS['phpgw']->strip_html($ms['title']),
+						'description'		=> $GLOBALS['phpgw']->strip_html($ms['description']),
 						'edate'		=> $ms['edate'],
 						's_id'		=> $ms['s_id']
 					);
@@ -1477,6 +1528,10 @@
 			if (strlen($values['title']) > 250)
 			{
 				$error[] = lang('title can not exceed 250 characters in length');
+			}
+			if (strlen($values['description']) > 250)
+			{
+				$error[] = lang('description can not exceed 250 characters in length');
 			}
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{

@@ -1,13 +1,14 @@
 <?php
 	/*******************************************************************\
-	* phpGroupWare - Projects                                           *
-	* http://www.phpgroupware.org                                       *
-	* This program is part of the GNU project, see http://www.gnu.org/	*
+	* eGroupWare - Projects                                             *
+	* http://www.egroupware.org                                         *
 	*                                                                   *
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
+	* Written by Lars Kneschke [lkneschke@linux-at-work.de]             *
 	* -----------------------------------------------                   *
 	* Copyright 2000 - 2004 Free Software Foundation, Inc.              *
+	* Copyright 2004 Lars Kneschke                                      *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -39,16 +40,17 @@
 
 		var $public_functions = array
 		(
-			'list_projects'			=> True,
+			'edit_resources'	=> True,
+			'list_projects'		=> True,
 			'list_projects_home'	=> True,
-			'edit_project'			=> True,
-			'delete_project'		=> True,
-			'view_project'			=> True,
-			'abook'					=> True,
-			'accounts_popup'		=> True,
-			'e_accounts_popup'		=> True,
-			'list_budget'			=> True,
-			'project_mstones'		=> True,
+			'edit_project'		=> True,
+			'delete_project'	=> True,
+			'view_project'		=> True,
+			'abook'			=> True,
+			'accounts_popup'	=> True,
+			'e_accounts_popup'	=> True,
+			'list_budget'		=> True,
+			'project_mstones'	=> True,
 			'assign_employee_roles'	=> True
 		);
 
@@ -1101,10 +1103,20 @@
 
 			$GLOBALS['phpgw']->template->set_var('access',$aradio);
 
-			$GLOBALS['phpgw']->template->set_var('previous_select',$this->boprojects->select_project_list(array('action' => 'all',
-																										'status' => $values['status'],
-																										'self' => $project_id,
-																									'selected' => $values['previous'])));
+			$GLOBALS['phpgw']->template->set_var
+			(
+				'previous_select',
+				$this->boprojects->select_project_list
+				(
+					array
+					(
+						'action' => 'all',
+						'status' => $values['status'],
+						'self' => $project_id,
+						'selected' => $values['previous']
+					)
+				)
+			);
 
 			if($this->boprojects->siteconfig['accounting'] == 'own')
 			{
@@ -1186,7 +1198,18 @@
 						$GLOBALS['phpgw']->template->set_var('cfieldhandle','');
 						$GLOBALS['phpgw']->template->fp('clisthandle','clist',True);
 
-					$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format(array('project_id' => ($project_id?$project_id:$parent['project_id']),'action' => $action,'pro_parent' => $parent['project_id'])));
+					$GLOBALS['phpgw']->template->set_var
+					(	
+						'employee_list',
+						$this->employee_format
+						(
+							array
+							(
+								'project_id' => ($project_id?$project_id:$parent['project_id']),
+								'action' => $action,'pro_parent' => $parent['project_id']
+							)
+						)
+					);
 						$GLOBALS['phpgw']->template->set_var('efieldhandle','');
 						$GLOBALS['phpgw']->template->fp('elisthandle','elist',True);
 					break;
@@ -1196,14 +1219,14 @@
 			$customer = $this->boprojects->read_single_contact($abid);
 			if ($customer[0]['org_name'] == '') 
 			{ 
-				$name = $customer[0]['per_first_name'] . ' ' . 
-				$customer[0]['per_last_name']; 
+				$name = $customer[0]['n_given'] . ' ' . 
+				$customer[0]['n_family']; 
 			}
 			else 
 			{
 				$name = $customer[0]['org_name'] . ' [ ' . 
-				$customer[0]['per_first_name'] . ' ' . 
-				$customer[0]['per_last_name'] . ' ]'; 
+				$customer[0]['n_given'] . ' ' . 
+				$customer[0]['n_family'] . ' ]'; 
 			}
 
 			$GLOBALS['phpgw']->template->set_var('name',$name);
@@ -1923,6 +1946,7 @@
 				(
 					'datedue'	=> $this->boprojects->formatted_edate($mstones[$i]['edate']),
 					'edit_url'	=> $GLOBALS['phpgw']->link('/index.php',$link_data),
+					'description'	=> $mstones[$i]['description'],
 					'title'		=> $mstones[$i]['title']
 				));
 				unset($link_data['edit']);
@@ -1946,6 +1970,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_save_mstone',lang('save milestone'));
 			$GLOBALS['phpgw']->template->set_var('new_checked',$values['new']?' checked':'');
 			$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw']->strip_html($values['title']));
+			$GLOBALS['phpgw']->template->set_var('description',$GLOBALS['phpgw']->strip_html($values['description']));
 
 			if (!$values['edate'])
 			{
@@ -2042,10 +2067,10 @@
 			}
 
 			$emps	= $this->boprojects->get_acl_for_project($project_id);
-			$co		= $this->boprojects->return_value('co',$project_id);
+			$co	= $this->boprojects->return_value('co',$project_id);
 
 			for ($i=0;$i<count($roles);$i++)
-            {
+			{
 				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 				$GLOBALS['phpgw']->template->set_var('emp_name',$roles[$i]['emp_name']);

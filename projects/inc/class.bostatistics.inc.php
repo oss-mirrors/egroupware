@@ -119,18 +119,32 @@
 		*/
 		function show_graph($params)
 		{
-			include(PHPGW_SERVER_ROOT . '/projects/inc/jpgraph-1.5.2/src/jpgraph.php');
-			include(PHPGW_SERVER_ROOT . '/projects/inc/jpgraph-1.5.2/src/jpgraph_gantt.php');
-
+			$modernJPGraph = false;
+			
+			DEFINE("TTF_DIR",PHPGW_SERVER_ROOT."/projects/ttf-bitstream-vera-1.10/");
+			if(file_exists(PHPGW_SERVER_ROOT . '/../jpgraph/src/jpgraph.php'))
+			{
+				include('/var/www/www.phpgw.de/htdocs/jpgraph/src/jpgraph.php');
+				include('/var/www/www.phpgw.de/htdocs/jpgraph/src/jpgraph_gantt.php');
+			}
+			else
+			{
+				include(PHPGW_SERVER_ROOT . '/projects/inc/jpgraph-1.5.2/src/jpgraph.php');
+				include(PHPGW_SERVER_ROOT . '/projects/inc/jpgraph-1.5.2/src/jpgraph_gantt.php');
+			}
 			//_debug_array($params);
 			$project_array	= $params['project_array'];
 			$sdate		= $params['sdate'];
 			$edate		= $params['edate'];
+			$showMilestones	= $params['showMilestones'];
+			$showResources	= $params['showResources'];
 
-			$this->graph = CreateObject('phpgwapi.gdgraph',$this->debug);
+			$bocalendar	= CreateObject('calendar.bocalendar');
+			$this->graph	= CreateObject('phpgwapi.gdgraph',$this->debug);
+			$bolink		= CreateObject('infolog.bolink');
 
 			//$this->boprojects->order = 'parent';
-			$this->boprojects->limit		= False;
+			$this->boprojects->limit	= False;
 			$this->boprojects->html_output	= False;
 
 			if(is_array($project_array))
@@ -153,96 +167,8 @@
 
 			if(is_array($projects))
 			{
-#				$num_pro = count($projects) - 1;
-#
-#				$k = 0;
-#				for($i=$num_pro;$i>=0;--$i)
-#				{
-#					$sopro[$k] = $projects[$i];
-#					$k++;
-#				}
-#			_debug_array($sopro);	
-#				foreach($sopro as $pro)
-#				{
-#					if(is_array($pro['mstones']))
-#					{
-#						foreach($pro['mstones'] as $ms)
-#						{
-#							$spro[] = array
-#							(
-#								'title'			=> str_repeat(' ',$spro['level']) . '[MS]' . $ms['title'],
-#								'extracolor'	=> 'yellow',
-#								'sdate'			=> $pro['sdate'],
-#								'edate'			=> $ms['edate'],
-#								'pro_id'		=> $pro['project_id']
-#							);
-#						}
-#
-#						$color_legend['milestone'] = array('title'	=> '[MS]' . lang('milestone'),
-#													'extracolor'	=> 'yellow');
-#					}
-#
-#					$previous = '';
-#					if($pro['previous'] > 0)
-#					{
-#						$previous = $this->boprojects->read_single_project($pro['previous']);
-#						$spro[] = array
-#						(
-#							'title'			=> str_repeat(' ',$spro['level']) . '[!]' . $previous['title'],
-#							'extracolor'	=> 'darkorange',
-#							'sdate'			=> $previous['sdate'],
-#							'edate'			=> $previous['edate'],
-#							'pro_id'		=> $previous['project_id'],
-#							'f_sdate'		=> $pro['sdate']
-#						);
-#
-#						$color_legend['previous'] = array('title'	=> '[!]' . lang('previous project'),
-#													'extracolor'	=> 'darkorange');
-#					}
-#
-#					$spro[] = array
-#					(
-#						'title'		=> $pro['title'],
-#						'sdate'		=> $pro['sdate'],
-#						'edate'		=> $pro['edate']?$pro['edate']:mktime(0,0,0,date('m'),date('d'),date('Y')),
-#						'color'		=> $pro['level'],
-#						'pro_id'	=> $pro['project_id'],
-#						'previous'	=> $pro['previous']
-#					);
-#					//set_y_text
-#					$this->graph->line_captions_y[$i] = $pro['title'];
-#
-#					$color_legend[$pro['level']] = array('title'	=> $pro['level']==0?lang('main project'):lang('sub project level %1',$pro['level']),
-#															'color'	=> $pro['level']);
-#				}
-#
-#				$num_legend = count($color_legend);
-#				$k = 0;
-#				for($i=0;$i<$num_legend;++$i)
-#				{
-#					if(is_array($color_legend[$i]))
-#					{
-#						$color[$k] = $color_legend[$i];
-#						$k++;
-#					}
-#				}
-#				if(is_array($color_legend['previous']))
-#				{
-#					$num = count($color);
-#					$color[$num] = $color_legend['previous'];
-#				}
-#
-#				if(is_array($color_legend['milestone']))
-#				{
-#					$num = count($color);
-#					$color[$num] = $color_legend['milestone'];
-#				}
-#
-#				$this->graph->color_legend = $color;
-#
-#				//set_x_text
-#				$this->graph->date_format($sdate,$edate);
-
+				$modernJPGraph = version_compare('1.13',JPG_VERSION);
+				
 				$sdate = $sdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 				$sdateout = $GLOBALS['phpgw']->common->show_date($sdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 
@@ -251,26 +177,37 @@
 #				$this->graph->title = lang('Gantt chart from %1 to %2',$sdateout,$edateout);
 
 				// Standard calls to create a new graph
-				$graph = new GanttGraph(-1,-1,"auto");
+				if($modernJPGraph)
+					$graph = new GanttGraph(940,-1,"auto");
+				else
+					$graph = new GanttGraph(-1,-1,"auto");
+				
 				$graph->SetShadow();
 				$graph->SetBox();
 				
-				// For illustration we enable all headers.
-				#$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
-				#$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK);
 				$duration = $edate - $sdate;
 				
 				if($duration < 5958000)
+				{
 					$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
+					if($modernJPGraph)
+						$graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAYWNBR);
+					else
+						$graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
+				}
 				elseif($duration < 13820400)
+				{
+					$graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 					$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK);
+				}
 				else
+				{
 					$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
+				}
 				
 				// For the week we choose to show the start date of the week
 				// the default is to show week number (according to ISO 8601)
-				$graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
-				//$graph->scale->SetDateLocale(2);
+				#$graph->scale->SetDateLocale('de_DE');
 				
 				// Change the scale font
 				$graph->scale->week->SetFont(FF_FONT0);
@@ -283,7 +220,7 @@
 				
 				// set the start and end date
 				// add one day to the end is needed internaly by jpgraph
-				$graph->SetDateRange(date('Y-m-d',$sdate), date('Y-m-d',$edate+86400));
+				$graph->SetDateRange(date('Y-m-d 00:00:00',$sdate), date('Y-m-d',$edate+86400));
 				
 				foreach($projects as $pro)
 				{
@@ -351,77 +288,216 @@
 					if($pro['level'] == 0)
 					{
 						$bar->title->SetFont(FF_FONT1,FS_BOLD);
-						$bar->SetPattern(BAND_SOLID,"yellow3");
+						#$bar->title->SetColor("#9999FF");
+						$bar->SetPattern(BAND_SOLID,"#9999FF");
 					}
 					else
 					{
 						// For illustration lets make each bar be red with yellow diagonal stripes
-						$bar->SetPattern(BAND_SOLID,"#cccccc");
+						$bar->SetPattern(BAND_SOLID,"#ccccFF");
+						#$bar->title->SetColor("#ccccFF");
 					}
 						
 					
 					// To indicate progress each bar can have a smaller bar within
 					// For illustrative purpose just set the progress to 50% for each bar
 					$bar->progress->SetHeight(0.2);
+					$bar->SetColor('#777777');
 					if($finnishedPercent > 100)
 					{
 						$bar->progress->Set(1);
-						$bar->progress->SetPattern(GANTT_SOLID,"darkred",98);
-						#$bar->SetFillColor("darkred");
-						#$bar->SetPattern(BAND_SOLID,"#ff6666");
+						#$bar->progress->SetPattern(GANTT_SOLID,"darkred",98);
+						$bar->caption->SetColor("red");
+						$bar->caption->SetFont(FF_FONT1,FS_BOLD);
 					}
 					else
 					{
 						$bar->progress->Set($finnishedPercent/100);
-						$bar->progress->SetPattern(GANTT_SOLID,"darkgreen",98);
-						#$bar->SetFillColor("dimgray");
-						#$bar->SetFillColor("cornflowerblue");
+						#$bar->progress->SetPattern(GANTT_SOLID,"darkgreen",98);
 					}
 					
 					// ... and add the bar to the gantt chart
-					$graph->Add($bar);
+					$graphs['bars'][] = $bar;
+					#$graph->Add($bar);
 					
 					$counter++;
 
-					// check for milstones
-					if(is_array($pro['mstones']))
+					// check for Resources
+					if($showResources == 'true')
 					{
+						$linkedObjects = $bolink->get_links('projects',$pro[project_id]);
+						$projectACL = $this->boprojects->get_acl_for_project($pro[project_id]);
+						if(is_array($projectACL))
+						// if beginn
+						foreach($projectACL as $accountID)
+						{
+							#_debug_array($projectData);
+							$accountData = CreateObject('phpgwapi.accounts',$accountID);
+							$accountData->read_repository();
+							
+							$accountName = $GLOBALS['phpgw']->common->display_fullname
+							(
+								$accountData->data['account_lid'],
+								$accountData->data['firstname'],
+								$accountData->data['lastname']
+							);
+							$calData = Array
+							(
+								'syear'		=> date('Y',$sdate),
+								'smonth'	=> date('m',$sdate),
+								'sday'		=> date('d',$sdate),
+								'eyear'		=> date('Y',$edate),
+								'emonth'	=> date('m',$edate),
+								'eday'		=> date('d',$edate),
+								'owner'		=> array($accountID)
+							);
+							$calEntries = $bocalendar->store_to_cache($calData);
+							$bocalendar->remove_doubles_in_cache
+							(
+								date('Y',$sdate).date('m',$sdate).date('d',$sdate),
+								date('Y',$edate).date('m',$edate).date('d',$edate)
+							);
+							$calEntries = $bocalendar->cached_events;
+							#_debug_array($calEntries);
+							if(is_array($calEntries) && count($calEntries))
+							{
+								#_debug_array($calEntries);
+								foreach($calEntries as $calDayDate => $calDayEntries)
+								{
+									foreach($calDayEntries as $calDayEntry)
+									{
+										if ($calDayEntry['recur_type'])
+										{
+											$bocalendar->set_recur_date($calDayEntry,$calDayDate);
+										}
+									
+										#_debug_array($calDayEntry);
+										if (!$bocalendar->rejected_no_show($calDayEntry))
+										{
+											$startDate = date('Y-m-d H:i:s',mktime
+											(
+												$calDayEntry['start']['hour'],
+												$calDayEntry['start']['min'],
+												$calDayEntry['start']['sec'],
+												$calDayEntry['start']['month'],
+												$calDayEntry['start']['mday'],
+												$calDayEntry['start']['year']
+											));
+											$endDate = date('Y-m-d H:i:s',mktime
+											(
+												$calDayEntry['end']['hour'],
+												$calDayEntry['end']['min'],
+												$calDayEntry['end']['sec'],
+												$calDayEntry['end']['month'],
+												$calDayEntry['end']['mday'],
+												$calDayEntry['end']['year']
+											));
+											#$endDate = $startDate+1000;
+											#_debug_array($startDate);
+											$bar = new GanttBar($counter,
+												str_repeat(' ',$pro['level']+1).$accountName,
+												$startDate,
+												$endDate,
+												'',
+												0.5);
+											$bar->SetPattern(BAND_SOLID,"#DDDDDD");
+											$bar->SetColor('#CCCCCC');
+											#$bar->SetShadow(true,"darkgray");
+											if (count($projectLinks = $bolink->get_links('calendar',$calDayEntry['id'],'projects')))
+											{
+												$projectLinks = array_flip($projectLinks);
+												#_debug_array($projectLinks);
+												if(isset($projectLinks[$pro[project_id]]))
+												{
+													$bar->SetPattern(BAND_SOLID,"#33FF33");
+													$bar->SetColor('#33FF33');
+												}
+											}
+											$graphs['bars'][] = $bar;
+											#$graph->Add($bar);
+										}
+										else
+										{
+											print "rejected<br>";
+										}
+									}
+								}
+								$counter++;
+							}
+						}
+						// if end
+					}
+
+					// check for milstones
+					if(is_array($pro['mstones']) && $showMilestones == 'true')
+					{
+						$msColor = "#999999";
 						foreach($pro['mstones'] as $ms)
 						{
-							$spro = array
-							(
-								'title'			=> str_repeat(' ',$spro['level']) . $ms['title'],
-								'extracolor'	=> 'yellow',
-								'sdate'			=> $pro['sdate'],
-								'edate'			=> $ms['edate'],
-								'pro_id'		=> $pro['project_id']
-							);
+							if($sdate < $ms['edate'] &&  $ms['edate'] < $edate)
+							{
+								$ms[title] = $this->botranslation->convert(
+									$ms[title],
+									$this->displayCharset,
+									'iso-8859-1');
+								
+								$msData = array
+								(
+									'title'		=> $ms['title'],
+									'extracolor'	=> 'yellow',
+									'edate'		=> $ms['edate'],
+									'pro_id'	=> $pro['project_id']
+								);
 							
-							// Create a milestone mark
-							$ms = new MileStone($counter,lang('Milestone'),date('Y-m-d',$spro[edate]),$spro['title']);
-							$ms->title->SetFont(FF_FONT1);
-							$graph->Add($ms);
+								// Create a milestone mark
+								$ms = new MileStone($counter, str_repeat(' ',$pro['level']+1) . lang('Milestone'),date('Y-m-d',$msData['edate']),$msData['title']);
+								$ms->caption->SetFont(FF_FONT1);
+								$ms->title->SetFont(FF_FONT1);
+								$ms->mark->SetColor($msColor);
+								$ms->mark->SetFillColor('#EEEEEE');
+								$graphs['ms'][$counter] = $ms;
 							
-							// Create a vertical line to emphasize the milestone
-							$vl = new GanttVLine(date('Y-m-d',$spro[edate]),'',"darkred");
-							$vl->SetDayOffset(0.5); // Center the line in the day
-							$graph->Add($vl);
+								// Create a vertical line to emphasize the milestone
+								$vl = new GanttVLine(date('Y-m-d 12:00:00',$msData[edate]),'',$msColor,2);
+								$vl->SetDayOffset(0.5); // Center the line in the day
+								$graphs['vl'][$counter] = $vl;
 							
-							$counter++;
+								$counter++;
+							}
 						}
+					}
+					
+				}
+
+				// add the vertical lines
+				if(is_array($graphs['vl']))
+				{
+					foreach($graphs['vl'] as $graphCounter => $graphPointer)
+					{
+						$graph->Add($graphPointer);
+						
 					}
 				}
 
-#				$this->graph->legend_title = lang('color legend'); 
-#				if(is_array($spro))
-#				{
-#					$this->graph->data = $spro;
-#				}
-
-#				$this->graph->num_lines_y = count($spro)+2;
-				#$this->graph->render();
-
-				$graph->Stroke(PHPGW_SERVER_ROOT . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
+				// add the milestones
+				if(is_array($graphs['ms']))
+				{
+					foreach($graphs['ms'] as $graphCounter => $graphPointer)
+					{
+						$graph->Add($graphPointer);
+					}
+				}
+				
+				// add the resources
+				if(is_array($graphs['bars']))
+				{
+					foreach($graphs['bars'] as $graphCounter => $graphPointer)
+					{
+						$graph->Add($graphPointer);
+					}
+				}
+				
+				#$graph->Stroke(PHPGW_SERVER_ROOT . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
 				$graph->Stroke();
 			}
 		}
