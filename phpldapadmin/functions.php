@@ -918,7 +918,7 @@ function password_hash($password_clear, $enc_type)
 		case 'smd5':
 			if(function_exists('mhash'))
 			{
-				$salt = randomsalt(8);
+				$salt = random_salt(8);
 				$hash = mhash(MHASH_MD5, $password_clear . $salt);
 				$new_value = '{SMD5}' . base64_encode($hash . $salt);
 			}
@@ -942,7 +942,7 @@ function password_hash($password_clear, $enc_type)
 		case 'ssha':
 			if(function_exists('mhash'))
 			{
-				$salt = randomsalt(8);
+				$salt = random_salt(8);
 				$hash = mhash(MHASH_SHA1, $password_clear . $salt);
 				$new_value = '{SSHA}' . base64_encode($hash . $salt);
 			}
