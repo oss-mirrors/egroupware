@@ -27,11 +27,13 @@ bcc	felamimail	en	BCC
 before headers	felamimail	en	Before headers
 between headers and message body	felamimail	en	Between headers and message body
 body part	felamimail	en	body part
+can't connect to inbox!!	felamimail	en	can't connect to INBOX!!
 cc	felamimail	en	CC
 change folder	felamimail	en	Change folder
 checkbox	felamimail	en	Checkbox
 click here to log back in.	felamimail	en	Click here to log back in.
 click here to return to %1	felamimail	en	Click here to return to %1
+close all	felamimail	en	close all
 close this page	felamimail	en	close this page
 close window	felamimail	en	Close window
 color	felamimail	en	Color
@@ -108,12 +110,12 @@ flagged	felamimail	en	flagged
 flags	felamimail	en	Flags
 folder acl	felamimail	en	folder acl
 folder name	felamimail	en	Folder name
-foldername	felamimail	en	Folder name
 folder path	felamimail	en	Folder Path
 folder preferences	felamimail	en	Folder Preferences
 folder settings	felamimail	en	Folder settings
 folder status	felamimail	en	Folder status
 folderlist	felamimail	en	Folderlist
+foldername	felamimail	en	Folder name
 folders	felamimail	en	Folders
 folders created successfully!	felamimail	en	Folders created successfully!
 follow	felamimail	en	follow
@@ -131,6 +133,7 @@ html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
 icons only	felamimail	en	Icons only
 identifying name	felamimail	en	Identifying name
+if	felamimail	en	IF
 illegal folder name.  please select a different name.	felamimail	en	Illegal folder name.  Please select a different name.
 imap	felamimail	en	IMAP
 imap server	felamimail	en	IMAP Server
@@ -161,9 +164,9 @@ location of buttons when composing	felamimail	en	Location of buttons when compos
 location of folder list	felamimail	en	Location of folder list
 mail server login type	admin	en	Mail server login type
 mail settings	felamimail	en	Mail Settings
+mainmessage	felamimail	en	mainmessage
 manage folders	felamimail	en	Manage Folders
-EMailfilter	felamimail	en	EMailfilter
-Vacation	felamimail	en	Vacation
+manage sieve	felamimail	en	Manage Sieve scripts
 mark as deleted	felamimail	en	Mark as deleted
 mark messages as	felamimail	en	Mark selected messages as
 mark selected as flagged	felamimail	en	Mark selected as flagged
@@ -209,6 +212,7 @@ number of messages to index	felamimail	en	Number of Messages to Index
 on behalf of	felamimail	en	on behalf of
 only inbox	felamimail	en	Only INBOX
 only unseen	felamimail	en	Only unseen
+open all	felamimail	en	open all
 options	felamimail	en	Options
 organisation	felamimail	en	organisation
 organization	felamimail	en	organization
@@ -268,6 +272,7 @@ show header	felamimail	en	show header
 show new messages on main screen	felamimail	en	Show new messages on main screen
 sieve settings	admin	en	Sieve settings
 signature	felamimail	en	Signature
+simply click the target-folder	felamimail	en	Simply click the target-folder
 site configuration	felamimail	en	site configuration
 size	felamimail	en	Size
 size of editor window	felamimail	en	Size of editor window
@@ -320,8 +325,8 @@ unknown error	felamimail	en	Unknown error
 unknown sender	felamimail	en	Unknown Sender
 unknown user or password incorrect.	felamimail	en	Unknown user or password incorrect.
 unread	felamimail	en	unread
-unseen and total	felamimail	en	Unseen and Total
 unseen	felamimail	en	Unseen
+unseen and total	felamimail	en	Unseen and Total
 unseen message notification	felamimail	en	Unseen message notification
 unseen message notification type	felamimail	en	Unseen message notification type
 unselect all	felamimail	en	Unselect All
@@ -354,3 +359,4 @@ you can only edit one address at the time	felamimail	en	You can only edit one ad
 you must login first.	felamimail	en	You must login first.
 you need a valid user and password to access this page!	felamimail	en	You need a valid user and password to access this page!
 your search failed with the following error(s)	felamimail	en	Your search failed with the following error(s)
+1	felamimail	en	1

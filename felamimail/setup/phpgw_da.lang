@@ -1,6 +1,6 @@
 (no subject)	felamimail	da	(ingen emne)
 (only cc/bcc)	felamimail	da	(kun CC/BCC)
-(unknown sender)	felamimail	da	(Ukendt sender)
+(unknown sender)	felamimail	da	(Ukendt afsender)
 activate	felamimail	da	Aktivere
 activate script	felamimail	da	aktivere script
 add	felamimail	da	tilføj
@@ -28,11 +28,13 @@ bcc	felamimail	da	BCC
 before headers	felamimail	da	Før hoved information
 between headers and message body	felamimail	da	Mellem hoved information og brødtekst
 body part	felamimail	da	brødtekst
+can't connect to inbox!!	felamimail	da	kan ikke forbinde til Indbakke!!!
 cc	felamimail	da	CC
 change folder	felamimail	da	Skift mappe
 checkbox	felamimail	da	Afkrydsningsboks
 click here to log back in.	felamimail	da	Klik her for at logge ind igen.
 click here to return to %1	felamimail	da	Klik her for at vende tilbage til %1
+close all	felamimail	da	Luk alle
 close this page	felamimail	da	luk denne side
 close window	felamimail	da	luk vindue
 color	felamimail	da	Farve
@@ -105,7 +107,7 @@ error connecting to imap serv	felamimail	da	Forbindelsen til IMAP serveren fejle
 error opening	felamimail	da	Kunne ikke åbne
 expunge	felamimail	da	slette
 felamimail	common	da	FelaMiMail
-file into	felamimail	da	
+file into	felamimail	da	akivere til
 files	felamimail	da	filer
 filter active	felamimail	da	filter aktiv
 filter name	felamimail	da	filter navn
@@ -119,6 +121,7 @@ folder preferences	felamimail	da	Mappe Preferencer
 folder settings	felamimail	da	Mappe indstillinger
 folder status	felamimail	da	Mappe status
 folderlist	felamimail	da	Mappe liste
+foldername	felamimail	da	Mappe navn
 folders	felamimail	da	Mapper
 folders created successfully!	felamimail	da	Mappe oprettet sucessfuldt
 follow	felamimail	da	følg
@@ -137,6 +140,7 @@ html	felamimail	da	HTML
 icons and text	felamimail	da	Ikoner og tekst
 icons only	felamimail	da	Kun Ikoner
 identifying name	felamimail	da	Identificerbar navn
+if	felamimail	da	HVIS
 illegal folder name.  please select a different name.	felamimail	da	Ugyldig mappe navn. Vælg venligst et andet navn.
 imap	felamimail	da	IMAP
 imap server	felamimail	da	IMAP Server
@@ -167,6 +171,7 @@ location of buttons when composing	felamimail	da	Placering af knapper ved Ny Med
 location of folder list	felamimail	da	Placering af mappe listen
 mail server login type	admin	da	Post server login type
 mail settings	felamimail	da	Post indstillinger
+mainmessage	felamimail	da	hovedbesked
 manage folders	felamimail	da	Administrere mapper
 manage sieve	felamimail	da	Administrere Sieve scripts
 mark as deleted	felamimail	da	Marker som slettet
@@ -175,9 +180,9 @@ mark selected as flagged	felamimail	da	Sæt flag ved udvalgte
 mark selected as read	felamimail	da	Marker valgte som læst
 mark selected as unflagged	felamimail	da	Fjern flag ved udvalgte
 mark selected as unread	felamimail	da	Marker valgte som ulæst
-match	felamimail	da	
-matches	felamimail	da	
-matches regexp	felamimail	da	
+match	felamimail	da	Resultat
+matches	felamimail	da	resultater
+matches regexp	felamimail	da	resultater regexp
 medium gray	felamimail	da	Mellem Grå
 message highlighting	felamimail	da	Besked makering
 message list	felamimail	da	Besked Liste
@@ -214,6 +219,7 @@ number of messages to index	felamimail	da	Antal beskeder at registere
 on behalf of	felamimail	da	på vegne af
 only inbox	felamimail	da	Kun Indbakke
 only unseen	felamimail	da	Kun ulæste
+open all	felamimail	da	åben alle
 options	felamimail	da	indstillinger
 organisation	felamimail	da	organisation
 organization	felamimail	da	organisation
@@ -221,7 +227,6 @@ organization name	admin	da	Organisation navn
 oth	felamimail	da	Org.
 participants	felamimail	da	Deltager
 personal information	felamimail	da	Deltager Information
-posting	felamimail	da	
 preference file %1 not found. exiting abnormally	felamimail	da	Preferencer fil %1 findes ikke. Afslutter med fejl.
 preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	da	Preference file, %1, findes ikke. Log ud, og log ind igen for at oprette en standart preference fil.
 previous	felamimail	da	Tidligere
@@ -273,6 +278,7 @@ show header	felamimail	da	vis hoved information
 show new messages on main screen	felamimail	da	Vis nye meddelser på startsiden
 sieve settings	admin	da	Sieve indstillinger
 signature	felamimail	da	Signatur
+simply click the target-folder	felamimail	da	Bare klik destinations mappen
 site configuration	felamimail	da	site konfiguration
 size	felamimail	da	Størrelse
 size of editor window	felamimail	da	Størrelse af redigere vindue
@@ -325,9 +331,10 @@ unknown error	felamimail	da	Ukendt fejl
 unknown sender	felamimail	da	Ukendt afsender
 unknown user or password incorrect.	felamimail	da	Ukendt bruger eller adgangskoden er forkert
 unread	felamimail	da	ulæst
+unseen	felamimail	da	uset
 unseen and total	felamimail	da	Uset og total
-unseen message notification	felamimail	da	Usete besked øjentering
-unseen message notification type	felamimail	da	
+unseen message notification	felamimail	da	Uset besked orientering
+unseen message notification type	felamimail	da	Uset besked orientering og type
 unselect all	felamimail	da	Fravælg alle
 unsubscribe	felamimail	da	Fravælg
 unsubscribed	felamimail	da	Fravalgt
@@ -358,3 +365,4 @@ you can only edit one address at the time	felamimail	da	Du kan kun ændre i en ad
 you must login first.	felamimail	da	Du skal logge ind først.
 you need a valid user and password to access this page!	felamimail	da	Du skal bruge et gyldig brugernavn og adgangskode for at kunne se denne side!
 your search failed with the following error(s)	felamimail	da	Din søgning fejlede med følgende fejl (s)
+1	felamimail	da	1
