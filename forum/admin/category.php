@@ -71,9 +71,9 @@
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang("New Forum") ."</a>";   
+echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
 echo " | ";
 echo "<a href=\"" . $phpgw->link("admin") . "\">" . lang("Return to Admin") ."</a>";
 echo " | ";
