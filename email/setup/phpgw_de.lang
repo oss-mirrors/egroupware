@@ -1,42 +1,81 @@
 1 message has been deleted	email	de	1 Nachricht wurde gelöscht
 add to addressbook	email	de	Zum Addressbuch hinzufügen
+Attach file	email	de	Datei anhängen
+Attach signature	email	de	Signatur anhängen
 cc	email	de	Kopie
+choose for rename	email	de	Auswählen zum Umbenennen
 compose	email	de	Verfassen
+compose new	email	de	Neu verfassen
+create a Folder	email	de	Ordner anlegen
+Create (expert)	email	de	Anlegen (Experte)
+Custom Email settings	email	de	Benutzerdefinierte Email Einstellungen
+Default sorting order	email	de	Standard Sortierung
+Deleted messages saved to folder:	email	de	Ordner für gelöschte Nachrichten:
+Delete a Folder	email	de	Ordner löschen
+Delete (expert)	email	de	Löschen (Experte)
 email account name	email	de	Name des E-Mail Kontos
 email address	email	de	E-Mail Adresse
 email password	email	de	E-Mail Passwort
 email signature	common	de	E-Mail Signatur
 email type	common	de	E-Mail Typ
+enable UTF-7 encoded folder names	email	de	UTF-7 codierte Ordnername erlauben
 e-mail preferences	common	de	E-Mail Einstellungen
 folder	email	de	Ordner
+folders	email	de	Ordner
+Folder Maintenance	email	de	Ordner Verwaltung
+Folder name	email	de	Ordner Name
+Folder Size	email	de	Ordner Größe
 forward	email	de	Weiterleiten
 from	email	de	Von
+get size	email	de	Größe ermitteln
 if applicable	email	de	falls zutreffend
 image	email	de	Grafik
 imap server type	email	de	Typ des IMAP Servers
+long names	email	de	lange Namen
+Layout 1	email	de	Layout 1
+Layout 2	email	de	Layout 2
 mail folder(uw-maildir)	email	de	Mail Ordner (UW-Mailverzeichnis)
 mail server	email	de	Mail Server
 mail server type	email	de	Typ des Mailservers
 messages	email	de	Nachrichten
+Message List Layout	email	de	Layout der Liste der Nachrichten
 move selected messages into	email	de	Verschiebe ausgewählte Nachrichten in
 new message	email	de	Neue Nachricht
+New messages	email	de	Neue Nachrichten
+New	email	de	Neu
+newest	email	de	neueste
 non-standard	email	de	nicht Standard
+oldest	email	de	älteste
 please select a message first	email	de	Bitte zuerst eine Nachricht wählen
+Please type a folder name in the text box	email	de	Bitte den Ordnername in das Textfeld eingeben
 previous	email	de	Vorige
 reply	email	de	Antworten
 reply all	email	de	Allen antworten
+ReplyTo	email	de	Antwort an
+Rename a folder	email	de	Ordner umbenennen
+Rename (expert)	email	de	Umbennenen (Experte)
+result	email	de	Ergebnis
 section	email	de	Sektion
+Select work email address	email	de	geschäftl. EMail auswählen
+Select home email address	email	de	private EMail auswählen
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
+Sent messages saved to folder:	email	de	Ordner für versendete Nachrichten:
+short names	email	de	kurze Namen
 show new messages on main screen	common	de	Neue Nachrichten auf der Startseite anzeigen
+Show sender's email address with name	email	de	Email-Adresse des Senders mit Namen anzeigen
 size	email	de	Größe
 switch current folder to	email	de	Wechseln zum Ordner
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	de	Die Verbindung zum Mailserver ist leider fehlgeschlagen.<br>Bitte prüfen sie Ihren Usernamen und Ihr Passwort, oder setzen Sie sich mit Ihrem Administrator in Verbindung.
 this folder is empty	email	de	Dieser Ordner ist leer
 to	email	de	An
+Total messages	email	de	Nachrichten insgesamt
 undisclosed recipients	email	de	Verborgene Empfänger
 undisclosed sender	email	de	Verborgener Absender
 use custom settings	email	de	Benutzerdefinierte Einstellungen verwenden
+U-Wash Mail Folder	email	de	U-Wash Mail Ordner
+view formatted	email	de	formatiert anzeigen
+view unformatted	email	de	unformatiert anzeigen
 x messages have been deleted	email	de	%1 Nachrichten wurden gelöscht
 you have 1 new message!	common	de	Sie	haben eine neue Nachricht!
 you have messages!  common	de	Sie haben Nachrichten!
