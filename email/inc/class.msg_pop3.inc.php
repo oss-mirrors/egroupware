@@ -159,6 +159,14 @@
     function open($mailbox,$username,$password,$flags="") {
       global $phpgw_info;
       $timeout = 5;
+
+/*
+      echo '<br>port: ' . $phpgw_info["user"]["preferences"]["email"]["mail_port"];
+      echo '<br>server: ' . $phpgw_info["user"]["preferences"]["email"]["mail_server"];
+      echo '<br>type: ' . $phpgw_info["user"]["preferences"]["email"]["mail_server_type"];
+      echo '<br>username: ' . $username;
+      echo '<br>password: ' . $password;
+*/
       $socket = fsockopen($phpgw_info["user"]["preferences"]["email"]["mail_server"],$phpgw_info["user"]["preferences"]["email"]["mail_port"],$errcode,$errmsg,$timeout);
       if (!$socket) {
         $this->err[code] = "420";
@@ -263,7 +271,7 @@
         $folder = $this->construct_folder_str($folder);
       }
 
-      $pass = $phpgw->common->decrypt($phpgw_info["user"]["preferences"]["email"]["passwd"]);
+		$pass = $phpgw_info['user']['preferences']['email']['passwd'];
       $user = $phpgw_info["user"]["preferences"]["email"]["userid"];
 
       $mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
