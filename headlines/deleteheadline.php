@@ -45,16 +45,31 @@
       </table>
      </center>
 <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+    $phpgw->common->phpgw_footer();
   } else {
-   $table_locks = array('news_site','news_headlines','users_headlines');
-   $phpgw->db->lock($table_locks);
+    $table_locks = array('news_site','news_headlines');
+    $phpgw->db->lock($table_locks);
 
-   remove_account_data("con=$con","news_site");
-   remove_account_data("site=$con","news_headlines");
-   remove_account_data("site=$con","users_headlines");
-   $phpgw->db->unlock();
+    remove_account_data("con=$con","news_site");
+    remove_account_data("site=$con","news_headlines");
+    $phpgw->db->unlock();
 
-   Header("Location: " . $phpgw->link("admin.php","cd=16"));
+    $phpgw->db->query("SELECT * FROM preferences");
+    while($phpgw->db->next_record()) {
+      if($phpgw->db->f("preference_owner") == $phpgw_info["user"]["account_id"]) {
+	if($phpgw_info["user"]["preferences"]["headlines"]["$con"]) {
+	  $phpgw->preferences->delete("headlines",$con);
+	  $phpgw->preferences->commit();
+	}
+      } else {
+	$phpgw_newuser["user"]["preferences"] = $phpgw->db->f("preference_value");
+	if($phpgw_newuser["user"]["preferences"]["headlines"]["$con"]) {
+	  $phpgw->preferences->delete_newuser("headlines",$con);
+	  $phpgw->preferences->commit_user($phpgw->db->f("preference_owner"));	
+	}
+      }
+    }
+
+    Header("Location: " . $phpgw->link("admin.php","cd=16"));
   }
 ?>

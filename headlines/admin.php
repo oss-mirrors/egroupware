@@ -45,5 +45,5 @@
 
   echo "<a href=\"".$phpgw->link("grabnewssites.php")."\">Grab New News Sites</a>";
 
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  $phpgw->common->phpgw_footer();
 ?>
