@@ -63,9 +63,6 @@
            {end_date_formatorder}
           </td>
          </tr>
-
-        <!-- BEGIN edit_act -->
-
          <tr>
           <td>{lang_bookable_activities}:</td>
           <td>
@@ -82,9 +79,6 @@
            </select>
           </td>
          </tr>
-
-        <!-- END edit_act -->
-
          </table>
          
          <!-- BEGIN add -->

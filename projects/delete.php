@@ -26,13 +26,24 @@
 	  . "&filter=$filter"));
   }
 
+  $isadmin = isprojectadmin();
+
   if ($confirm) {
-     $phpgw->db->query("delete from p_projects where coordinator='" . $phpgw_info["user"]["account_id"]
-		    . "' and id='$id'");
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
+     if($isadmin == 1) {
+     $phpgw->db->query("delete from p_projects where id='$id'");
+     $phpgw->db->query("delete from p_projectactivities where project_id='$id'");
+     }
+     else { 
+     $phpgw->db->query("delete from p_projects where coordinator='" . $phpgw_info["user"]["account_id"]                                                                                      
+                    . "' and id='$id'");                                                                                                                                                     
+     $phpgw->db->query("delete from p_projectactivities where project_id='$id'");     
+     }
+
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
 	    "cd=16&sort=$sort&order=$order&query=$query&start="
 	  . "$start&filter=$filter"));
-  } else {
+    } 
+    else {
 	$common_hidden_vars =
  	  "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
  	. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"

@@ -57,6 +57,7 @@
         } else {
            $t->set_var("num","1");
         }
+        
         $t->set_var("lang_title",lang("title"));
         $t->set_var("title","");
         $t->set_var("lang_descr",lang("description"));
@@ -133,10 +134,34 @@
         $t->set_var("customer_con","");
         $t->set_var("customer_name","");
 
-        $t->set_var("lang_bookable_activities","");
-        $t->set_var("ba_activities_list","");  
-        $t->set_var("lang_billable_activities","");
-        $t->set_var("bill_activities_list","");
+// activities bookable     
+       $t->set_var("lang_bookable_activities",lang("bookable activities"));
+        $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
+                     . "FROM p_activities "                                                                                                               
+                     . "ORDER BY descr asc");                                                                                                    
+        while ($db2->next_record()) {                                                                                                                                                       
+        $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                                
+        $ba_activities_list .= ">"                                                                                                                                                       
+                    . $db2->f("descr")                                                                                                                                                   
+                    . "</option>";                                                                                                                                                       
+        }
+        
+       $t->set_var("ba_activities_list",$ba_activities_list);  
+
+// activities billable        
+        $t->set_var("lang_billable_activities",lang("billable activities"));
+     $db2->query("SELECT p_activities.id as id,p_activities.descr "                                                                                                                      
+                     . " FROM p_activities "                                                                                                                   
+                     . " ORDER BY descr asc");                                                                                                  
+     while ($db2->next_record()) {                                                                                                                                                       
+        $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";                                                                                                              
+        $bill_activities_list .= ">"                                                                                                                                                     
+                    . $db2->f("descr")                                                                                                                                                   
+                    . " " . lang("billperae") . " "                                                                                                                                      
+                    . $db2->f("billperae") . "</option>";                                                                                                                                
+     }        
+
+       $t->set_var("bill_activities_list",$bill_activities_list);
       
         $t->set_var("lang_access_type",lang("Access type"));
         $t->set_var("access_list",lang("Access type"));
@@ -190,9 +215,12 @@
           exit;
        }
     }
+    
 
-    $access = $phpgw->accounts->array_to_string($access,$n_groups);
-
+     if ($access != "public" && $access != "private" && $access != "") {       
+     $access = $phpgw->accounts->array_to_string($access,$n_groups);
+      }
+    
     if ($phpgw_info["user"]["permissions"]["manager"] && $otheruser) {
        $owner = $otheruser;
     } else {
@@ -205,6 +233,24 @@
                 . "'$coordinator','$customer','$status','" . addslashes($descr) . "',"
                 . "'" . addslashes($title) . "','" . addslashes($budget) . "',"
 		. "'" . $num . "')");
+           
+        $db2->query("SELECT max(id) AS max FROM p_projects");                                                                                                                         
+        if($db2->next_record()) {                                                                                                                                                        
+        $p_id = $db2->f("max");                                                                                                                                     
+        if (count($ba_activities) != 0) {                                                                                                                                                 
+        while($activ=each($ba_activities)) {                                                                                                                                             
+           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                                  
+                       . "billable) values ('$p_id','$activ[1]','N')");                                                                                                                    
+         }                                                                                                                                                                                
+        }        
+        if (count($bill_activities) != 0) {                                                                                                                                               
+        while($activ=each($bill_activities)) {                                                                                                                                           
+           $phpgw->db->query("insert into p_projectactivities (project_id,activity_id,"                                                                                                  
+                       . "billable) values ('$p_id','$activ[1]','Y')");                                                                                                                    
+          }                                                                                                                                                                                
+         }
+        }
+
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/",
            "cd=14&sort=$sort&order=$order&query=$query&start="
          . "$start&filter=$filter"));
