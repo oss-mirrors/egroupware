@@ -24,7 +24,7 @@
 	$setup_info['switchuser']['maintainer_email'] = 'pim@lingewoud.nl';
 	
 	/* The tables this app creates */
-	$setup_info['switchuser']['tables']    = array('');
+	//$setup_info['switchuser']['tables']    = false;//array('');
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['switchuser']['hooks'] = array();
