@@ -26,8 +26,8 @@
 	}
 	include('../header.inc.php');
 
-	$phpgw->historylog = createobject('phpgwapi.historylog','tts');
-	$phpgw->historylog->types = array(
+	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
+	$GLOBALS['phpgw']->historylog->types = array(
 		'R' => 'Re-opened',
 		'X' => 'Closed',
 		'O' => 'Opened',
@@ -42,28 +42,28 @@
 	if (! $submit)
 	{
 		// Have they viewed this ticket before ?
-		$phpgw->db->query("select count(*) from phpgw_tts_views where view_id='$ticket_id' "
-				. "and view_account_id='" . $phpgw_info['user']['account_id'] . "'",__LINE__,__FILE__);
-		$phpgw->db->next_record();
+		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_views where view_id='$ticket_id' "
+				. "and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->next_record();
 
-		if (! $phpgw->db->f(0))
+		if (! $GLOBALS['phpgw']->db->f(0))
 		{
-			$phpgw->db->query("insert into phpgw_tts_views values ('$ticket_id','"
-				. $phpgw_info['user']['account_id'] . "','" . time() . "')",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("insert into phpgw_tts_views values ('$ticket_id','"
+				. $GLOBALS['phpgw_info']['user']['account_id'] . "','" . time() . "')",__LINE__,__FILE__);
 		}
 
 		// select the ticket that you selected
 		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_id='$ticket_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		$ticket['billable_hours'] = $phpgw->db->f('ticket_billable_hours');
-		$ticket['billable_rate']  = $phpgw->db->f('ticket_billable_rate');
+		$ticket['billable_hours'] = $GLOBALS['phpgw']->db->f('ticket_billable_hours');
+		$ticket['billable_rate']  = $GLOBALS['phpgw']->db->f('ticket_billable_rate');
 		$ticket['assignedto']     = $GLOBALS['phpgw']->db->f('ticket_assignedto');
 		$ticket['category']       = $GLOBALS['phpgw']->db->f('ticket_category');
-		$ticket['details']        = $phpgw->db->f('ticket_details');
-		$ticket['subject']        = $phpgw->db->f('ticket_subject');
-		$ticket['priority']       = $phpgw->db->f('ticket_priority');
-		$ticket['owner']          = $phpgw->db->f('ticket_owner');
+		$ticket['details']        = $GLOBALS['phpgw']->db->f('ticket_details');
+		$ticket['subject']        = $GLOBALS['phpgw']->db->f('ticket_subject');
+		$ticket['priority']       = $GLOBALS['phpgw']->db->f('ticket_priority');
+		$ticket['owner']          = $GLOBALS['phpgw']->db->f('ticket_owner');
 
 		$GLOBALS['phpgw']->template->set_file('viewticket','viewticket_details.tpl');
 		$GLOBALS['phpgw']->template->set_block('viewticket','options_select');
@@ -73,11 +73,11 @@
 		$GLOBALS['phpgw']->template->set_block('viewticket','row_history_empty');
 		$GLOBALS['phpgw']->template->set_block('viewticket','form');
 
-		$messages = $phpgw->session->appsession('messages','tts');
+		$messages = $GLOBALS['phpgw']->session->appsession('messages','tts');
 		if ($messages)
 		{
-			$phpgw->template->set_var('messages',$messages);
-			$phpgw->session->appsession('messages','tts','');
+			$GLOBALS['phpgw']->template->set_var('messages',$messages);
+			$GLOBALS['phpgw']->session->appsession('messages','tts','');
 		}
 
 		if ($GLOBALS['phpgw']->db->f('ticket_status') == 'C')
@@ -124,17 +124,17 @@
 		}
 
 		// Figure out when it was opened and last closed
-		$history_array = $phpgw->historylog->return_array(array(),array('X','O'),'','',$ticket_id);
+		$history_array = $GLOBALS['phpgw']->historylog->return_array(array(),array('X','O'),'','',$ticket_id);
 		while (is_array($history_array) && list(,$value) = each($history_array))
 		{
 			if ($value['status'] == 'O')
 			{
-				$ticket['opened'] = $phpgw->common->show_date($value['datetime']);
+				$ticket['opened'] = $GLOBALS['phpgw']->common->show_date($value['datetime']);
 			}
 
 			if ($value['status'] == 'X')
 			{
-				$ticket['closed'] = $phpgw->common->show_date($value['datetime']);
+				$ticket['closed'] = $GLOBALS['phpgw']->common->show_date($value['datetime']);
 			}
 		}
 
@@ -155,7 +155,7 @@
 			$GLOBALS['phpgw']->template->parse('options_group','options_select',true);
 		}
 */
-		$GLOBALS['phpgw']->template->set_var('options_category',$phpgw->categories->formated_list('select','',$ticket['category'],True));
+		$GLOBALS['phpgw']->template->set_var('options_category',$GLOBALS['phpgw']->categories->formated_list('select','',$ticket['category'],True));
 
 		$ticket_status[$ticket['status']] = ' selected';
 		$s = '<option value="O"' . $ticket_status['O'] . '>' . lang('Open') . '</option>';
@@ -167,13 +167,13 @@
 		/**************************************************************\
 		* Display additional notes                                     *
 		\**************************************************************/
-		$history_array = $phpgw->historylog->return_array(array(),array('C'),'','',$ticket_id);
+		$history_array = $GLOBALS['phpgw']->historylog->return_array(array(),array('C'),'','',$ticket_id);
 		while (is_array($history_array) && list(,$value) = each($history_array))
 		{
 			$GLOBALS['phpgw']->template->set_var('lang_date',lang('Date'));
 			$GLOBALS['phpgw']->template->set_var('lang_user',lang('User'));
 
-			$GLOBALS['phpgw']->template->set_var('value_date',$phpgw->common->show_date($value['datetime']));
+			$GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime']));
 			$GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
 
 			$GLOBALS['phpgw']->template->set_var('value_note',nl2br(stripslashes($value['new_value'])));
@@ -194,12 +194,12 @@
 		$GLOBALS['phpgw']->template->set_var('lang_action',lang('Action'));
 		$GLOBALS['phpgw']->template->set_var('lang_new_value',lang('New Value'));
 
-		$history_array = $phpgw->historylog->return_array(array('C','O'),array(),'','',$ticket_id);
+		$history_array = $GLOBALS['phpgw']->historylog->return_array(array('C','O'),array(),'','',$ticket_id);
 		while (is_array($history_array) && list(,$value) = each($history_array))
 		{
 			$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
-			$GLOBALS['phpgw']->template->set_var('value_date',$phpgw->common->show_date($value['datetime']));
+			$GLOBALS['phpgw']->template->set_var('value_date',$GLOBALS['phpgw']->common->show_date($value['datetime']));
 			$GLOBALS['phpgw']->template->set_var('value_user',$value['owner']);
 
 			switch ($value['status'])
@@ -227,12 +227,12 @@
 				}
 				else
 				{
-					$GLOBALS['phpgw']->template->set_var('value_new_value',$phpgw->accounts->id2name($value['new_value']));
+					$GLOBALS['phpgw']->template->set_var('value_new_value',$GLOBALS['phpgw']->accounts->id2name($value['new_value']));
 				}
 			}
 			else if ($value['status'] == 'T')
 			{
-				$GLOBALS['phpgw']->template->set_var('value_new_value',$phpgw->categories->id2name($value['new_value']));
+				$GLOBALS['phpgw']->template->set_var('value_new_value',$GLOBALS['phpgw']->categories->id2name($value['new_value']));
 			}
 			else if ($value['status'] != 'O' && $value['new_value'])
 			{
@@ -260,7 +260,7 @@
 		$GLOBALS['phpgw']->template->set_var('ticket_id', $ticket_id);
 
 		$GLOBALS['phpgw']->template->set_var('lang_assignedfrom', lang('Assigned from'));
-		$GLOBALS['phpgw']->template->set_var('value_owner',$phpgw->accounts->id2name($ticket['owner']));
+		$GLOBALS['phpgw']->template->set_var('value_owner',$GLOBALS['phpgw']->accounts->id2name($ticket['owner']));
 
 		$GLOBALS['phpgw']->template->set_var('row_off', $GLOBALS['phpgw_info']['theme']['row_off']);
 		$GLOBALS['phpgw']->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
@@ -275,7 +275,7 @@
 		$GLOBALS['phpgw']->template->set_var('value_priority',$ticket['priority']);
 
 		$GLOBALS['phpgw']->template->set_var('lang_group', lang('Group'));
-		$GLOBALS['phpgw']->template->set_var('value_group',$phpgw->accounts->id2name($phpgw->db->f('ticket_group')));
+		$GLOBALS['phpgw']->template->set_var('value_group',$GLOBALS['phpgw']->accounts->id2name($phpgw->db->f('ticket_group')));
 
 		$GLOBALS['phpgw']->template->set_var('lang_billable_hours',lang('Billable hours'));
 		$GLOBALS['phpgw']->template->set_var('value_billable_hours',$ticket['billable_hours']);
@@ -289,7 +289,7 @@
 		$GLOBALS['phpgw']->template->set_var('lang_assignedto',lang('Assigned to'));
 		if ($ticket['assignedto'])
 		{
-			$assignedto = $phpgw->accounts->id2name($ticket['assignedto']);
+			$assignedto = $GLOBALS['phpgw']->accounts->id2name($ticket['assignedto']);
 		}
 		else
 		{
@@ -326,7 +326,7 @@
 		$oldcategory = $GLOBALS['phpgw']->db->f('ticket_category');
 		$old_status  = $GLOBALS['phpgw']->db->f('ticket_status');
 
-		$phpgw->db->transaction_begin();
+		$GLOBALS['phpgw']->db->transaction_begin();
 
 		/*
 		**	phpgw_tts_append.append_type - Defs
@@ -345,7 +345,7 @@
 		if ($old_status != $ticket['status'])
 		{
 			$fields_updated = True;
-			$phpgw->historylog->add($ticket['status'],$ticket_id,'');
+			$GLOBALS['phpgw']->historylog->add($ticket['status'],$ticket_id,'');
 
 			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_status='"
 				. $ticket['status'] . "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
@@ -354,50 +354,50 @@
 		if ($oldassigned != $ticket['assignedto'])
 		{
 			$fields_updated = True;
-			$phpgw->db->query("update phpgw_tts_tickets set ticket_assignedto='" . $ticket['assignedto']
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_assignedto='" . $ticket['assignedto']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
-			$phpgw->historylog->add('A',$ticket_id,$ticket['assignedto']);
+			$GLOBALS['phpgw']->historylog->add('A',$ticket_id,$ticket['assignedto']);
 		}
 
 		if ($oldpriority != $ticket['priority'])
 		{
 			$fields_updated = True;
-			$phpgw->db->query("update phpgw_tts_tickets set ticket_priority='" . $ticket['priority']
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_priority='" . $ticket['priority']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
-			$phpgw->historylog->add('P',$ticket_id,$ticket['priority']);
+			$GLOBALS['phpgw']->historylog->add('P',$ticket_id,$ticket['priority']);
 		}
 
 		if ($oldcategory != $ticket['category'])
 		{
 			$fields_updated = True;
-			$phpgw->db->query("update phpgw_tts_tickets set ticket_category='" . $ticket['category']
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_category='" . $ticket['category']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
-			$phpgw->historylog->add('T',$ticket_id,$ticket['category']);
+			$GLOBALS['phpgw']->historylog->add('T',$ticket_id,$ticket['category']);
 		}
 
 		if ($old_billable_hours != $ticket['billable_hours'])
 		{
 			$fields_updated = True;
-			$phpgw->db->query("update phpgw_tts_tickets set ticket_billable_hours='" . $ticket['billable_hours']
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_billable_hours='" . $ticket['billable_hours']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
-			$phpgw->historylog->add('H',$ticket_id,$ticket['billable_hours']);
+			$GLOBALS['phpgw']->historylog->add('H',$ticket_id,$ticket['billable_hours']);
 		}
 
 		if ($old_billable_rate != $ticket['billable_rate'])
 		{
 			$fields_updated = True;
-			$phpgw->db->query("update phpgw_tts_tickets set ticket_billable_rate='" . $ticket['billable_rate']
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_billable_rate='" . $ticket['billable_rate']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
-			$phpgw->historylog->add('B',$ticket_id,$ticket['billable_rate']);
+			$GLOBALS['phpgw']->historylog->add('B',$ticket_id,$ticket['billable_rate']);
 		}
 
 		if ($ticket['note'])
 		{
 			$fields_updated = True;
-			$phpgw->historylog->add('C',$ticket_id,$ticket['note']);
+			$GLOBALS['phpgw']->historylog->add('C',$ticket_id,$ticket['note']);
 
 			// Do this before we go into mail_ticket()
-			$phpgw->db->transaction_commit();
+			$GLOBALS['phpgw']->db->transaction_commit();
 
 			if ($GLOBALS['phpgw_info']['server']['tts_mailticket'])
 			{
@@ -407,14 +407,14 @@
 		else
 		{
 			// Only do our commit once
-			$phpgw->db->transaction_commit();
+			$GLOBALS['phpgw']->db->transaction_commit();
 		}
 
 		if ($fields_updated)
 		{
-			$phpgw->session->appsession('messages','tts',lang('Ticket has been updated'));
+			$GLOBALS['phpgw']->session->appsession('messages','tts',lang('Ticket has been updated'));
 		}
 
-		$phpgw->redirect($GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $ticket_id));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $ticket_id));
 	}
 ?>
