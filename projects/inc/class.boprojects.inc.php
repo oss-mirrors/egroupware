@@ -299,7 +299,7 @@
 			$GLOBALS['phpgw_info']['user']['preferences']['common']['account_display'] = 'all';
 
 			// check if one participant works more then 8 hours
-			foreach($userData as $participant => $participantData)
+			foreach((array)$userData as $participant => $participantData)
 			{
 				// participant need to mork more then 8 hours?
 				if(array_sum($participantData['duration']) > 28800)
