@@ -91,7 +91,7 @@ error	felamimail	zh	错误
 error connecting to IMAP serv	felamimail	zh	连接IMAP服务器时出错
 error opening 	felamimail	zh	Error opening 
 expunge	felamimail	zh	擦除
-felamimail	common	zh	电子邮件
+felamimail	common	zh	哆啦咪快邮
 files	felamimail	zh	文件
 filter active	felamimail	zh	启用过滤器
 filter name	felamimail	zh	过滤器名称
