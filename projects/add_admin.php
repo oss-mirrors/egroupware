@@ -57,34 +57,21 @@
 
 	$db2 = $phpgw->db;
 	$db2->query("SELECT account_id from phpgw_p_projectmembers WHERE type='aa'",__LINE__,__FILE__); 
-	$i = 0;
 	while ($db2->next_record())
 	{
-		$is_admin[$i]['account_id'] = $db2->f('account_id'); 
-		$i++;
+		$is_admin[] = array('account_id' => $db2->f('account_id')); 
 	}
 
-	if (is_array($is_admin))
+	$allusers = $phpgw->accounts->get_list('accounts');
+	while (list($null,$account) = each($allusers))
 	{
-		for($i=0;$i<count($is_admin);$i++)
+		$users_list .= '<option value="' . $account['account_id'] . '"';
+		for ($i=0;$i<count($is_admin);$i++)
 		{
-			$allusers = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
-			while (list($null,$account) = each($allusers))
+			if($is_admin[$i]['account_id'] == $account['account_id'])
 			{
-				$users_list .= '<option value="' . $account['account_id'] . '"';
-				if($account['account_id']==$is_admin[$i]['account_id'])
 				$users_list .= ' selected';
-				$users_list .= '>'
-				. $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
 			}
-		}
-	}
-	else 
-	{
-		$allusers = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
-		while (list($null,$account) = each($allusers))
-		{
-			$users_list .= '<option value="' . $account['account_id'] . '"';
 			$users_list .= '>'
 			. $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
 		}
@@ -96,33 +83,21 @@
 	$i = 0;
 	while ($db2->next_record())
 	{
-		$is_admin[$i]['account_id'] = $db2->f('account_id');
-		$i++;
+		$is_group[] = array('account_id' => $db2->f('account_id'));
 	}
 
-	if (is_array($is_admin))
+	$allgroups = $phpgw->accounts->get_list('groups');
+	while (list($null,$account) = each($allgroups))
 	{
-		for($i=0;$i<count($is_admin);$i++)
+		$groups_list .= '<option value="' . $account['account_id'] . '"';
+		for ($i=0;$i<count($is_group);$i++)
 		{
-			$allgroups = $phpgw->accounts->get_list('groups', $start, $sort, $order, $query);
-			while (list($null,$account) = each($allgroups))
+			if($is_group[$i]['account_id'] == $account['account_id'])
 			{
-				$groups_list .= '<option value="' . $account['account_id'] . '"';
-				if($account['account_id']==$is_admin[$i]['account_id'])
 				$groups_list .= ' selected';
-				$groups_list .= '>'
-							. $account['account_lid'] . '</option>';
 			}
-		}
-	}
-	else
-	{
-		$allgroups = $phpgw->accounts->get_list('groups', $start, $sort, $order, $query);
-		while (list($null,$account) = each($allgroups))
-		{
-			$groups_list .= '<option value="' . $account['account_id'] . '"';
 			$groups_list .= '>'
-						. $account['account_lid'] . '</option>';
+			. $account['account_lid'] . '</option>';
 		}
 	}
 
