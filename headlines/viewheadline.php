@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Headlines Administration                                  *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Headlines Administration                                    *
+	* http://www.egroupware.org                                                *
 	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *

@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - news headlines                                            *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - news headlines                                              *
+  * http://www.egroupware.org                                                *
   * Written by Mark Peters <mpeters@satx.rr.com>                             *
   * Based on pheadlines 0.1 19991104 by Dan Steinman <dan@dansteinman.com>   *
   * --------------------------------------------                             *

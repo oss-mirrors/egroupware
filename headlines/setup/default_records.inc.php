@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Setup                                                     *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Setup                                                       *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -22,6 +22,5 @@
 	$oProc->query("insert into phpgw_headlines_sites (display,base_url,newsfile,lastread,newstype,cachetime,listings) values ('Gimp&nbsp;News','http://www.xach.com','/gimp/news/channel.rdf',0,'rdf-chan',60,20)");
 	$oProc->query("insert into phpgw_headlines_sites (display,base_url,newsfile,lastread,newstype,cachetime,listings) values ('Mozilla','http://www.mozilla.org','/news.rdf',0,'rdf-chan',60,20)");
 	$oProc->query("insert into phpgw_headlines_sites (display,base_url,newsfile,lastread,newstype,cachetime,listings) values ('MozillaZine','http://www.mozillazine.org','/contents.rdf',0,'rdf',60,20)");
-	$oProc->query("insert into phpgw_headlines_sites (display,base_url,newsfile,lastread,newstype,cachetime,listings) values ('phpgw.de - deutsche PHPGroupware Seite','http://phpgw.de','/backend.php',0,'rdf',60,20)");
 	$oProc->query("insert into phpgw_headlines_sites (display,base_url,newsfile,lastread,newstype,cachetime,listings) values ('Security Forums','http://www.security-forums.com','/forum/rdf.php',0,'rdf',60,20)");
 ?>
