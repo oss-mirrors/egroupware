@@ -25,12 +25,12 @@
 	\*******************************************************************/
 	/* $Id$ */
 
-	function get_archives()
+	function get_archives($dir)
 	{
-		$basedir = '{server_root}/backup/archives';
-		if (is_dir($basedir))
+//		$basedir = '{server_root}/backup/archives';
+		if (is_dir($dir))
 		{
-			$basedir = opendir($basedir);
+			$basedir = opendir($dir);
 
 			while (false !== ($files = readdir($basedir)))
 			{
@@ -46,6 +46,9 @@
 					}
 				}
 			}
+
+			closedir($basedir);
+
 			return $archives;
 		}
 		else
@@ -54,7 +57,7 @@
 		}
 	}
 
-	function get_date($type)
+	function get_date($type, $versions = '', $bintval = '')
 	{
 		$bdate		= time();
 		$month		= date('m',$bdate);
@@ -66,6 +69,18 @@
 			$bdateout	=  $month . '_' . $day . '_' . $year;
 			return $bdateout;
 		}
+
+		if ($type == 'rdate')
+		{
+			switch($bintval)
+			{
+				case 'daily':	$dd = '-' . $versions; break;
+				case 'weekly':	$dd = '-(7*' . $versions . ')'; break;
+				case 'monthly':	$dm = '-' . $versions; break;
+			}
+			$rdate = mktime(0,0,0,date('m',$bdate . $dm),date('d',$bdate . $dd),date('Y',$bdate));
+			return $rdate;
+		}
 	}
 
 	function check_datedue($dir)
@@ -74,13 +89,13 @@
 
 		if (is_integer($versions) && $versions != 0)
 		{
-			$archives = get_archives();
+			$archives = get_archives($dir);
 
 			if (count($archives) >= $versions)
 			{
 				$bintval	= '{bintval}';
-				$versions	= $versions-1;
 
+/*				$versions	= $versions-1;
 				switch($bintval)
 				{
 					case 'daily':	$datedue = $versions; break;
@@ -89,9 +104,24 @@
 				}
 			//	exec("find " . $dir . '-mtime +' . $datedue . ' -exec rm -- {} ; 2>&1 > /dev/null');
 
-				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives);
+				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives); */
 
-				if ($rarchives)
+				$rdate = get_date('rdate',$versions,$bintval);
+
+				chdir($dir);
+
+				for ($i=0;$i<=count($archives);$i++)
+				{
+					if ($archives[$i]['bdate'] <= $rdate)
+					{
+						unlink($archives[$i]['file']);
+						echo 'removed ' . $archives[$i]['file'];
+					}
+				}
+
+				chdir('/root');
+
+/*				if ($rarchives)
 				{
 					chdir($dir);
 
@@ -99,7 +129,7 @@
 					{
 						system("rm " . substr($rarchives[$i],strlen($dir)+1) . ' 2>&1 > /dev/null');
 					}
-				}
+				} */
 			}
 		}
 	}
