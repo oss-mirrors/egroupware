@@ -136,7 +136,7 @@
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
 						.'<td align="left">'."\r\n"
-							.'&nbsp;<strong>E-Mail Folders:</strong>&nbsp;'.$switchbox_listbox."\r\n"
+							.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
 							.'&nbsp; &nbsp;'.$compose_href."\r\n"
 						.'</td>'."\r\n"
 					.'</form>'."\r\n";
