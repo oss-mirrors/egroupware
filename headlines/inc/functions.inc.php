@@ -134,7 +134,7 @@ class headlines {
     else if ($this->newstype=="sf") $startat = "</textinput>";
 		
     // get the file that contains the links
-    $lines = $this->gethttpsocketfile($this->base_url.$this->newsfile);
+    $lines = $phpgw->network->gethttpsocketfile($this->base_url.$this->newsfile);
     if (!$lines) return false;
 	
     $startnum = 0;
