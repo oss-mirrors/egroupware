@@ -317,7 +317,7 @@
 					$where['activity_id'] = $act;
 				}
 			}
-			$this->db->select($this->hours_table,'SUM(minutes)',__LINE__,__FILE__);
+			$this->db->select($this->hours_table,'SUM(minutes)',$where,__LINE__,__FILE__);
 
 			if($this->db->next_record())
 			{
