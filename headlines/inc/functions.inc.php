@@ -23,12 +23,13 @@
      }
   }
 
+include ($phpgw_info["server"]["api_dir"] . "/phpgw_network.inc.php");
 
-class phpHeadlines {
+class HEADLINES extends network {
   // socket timeout in seconds
-  var $socket_timeout = 20;
-
   var $current_time;
+
+  var $db;
 
   var $con = 0;
   var $display = "";
@@ -41,6 +42,14 @@ class phpHeadlines {
 
   // wired news was messing up, I dunno
   // "wired" => array("Wired&nbsp;News","http://www.wired.com","/news_drop/netcenter/netcenter.rdf/","rdf"),	
+
+  function headlines() {
+    global $phpgw;
+
+    $this->db = $phpgw->db;
+
+    $this->network(False);
+  }
 
   // try to get the links for the site
   function getLinks($site) {
@@ -64,22 +73,20 @@ class phpHeadlines {
 
   // do a quick read of the table
   function readtable($site) {
-    global $phpgw;
-
-    $phpgw->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
+    $this->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
                     . "cachetime,listings FROM news_site WHERE con = $site");
-    if ($phpgw->db->num_rows() == 0)
+    if ($this->db->num_rows() == 0)
        return False;
-    $phpgw->db->next_record();
+    $this->db->next_record();
 
-    $this->con = $phpgw->db->f(0);
-    $this->display = $phpgw->db->f(1);
-    $this->base_url = $phpgw->db->f(2);
-    $this->newsfile = $phpgw->db->f(3);
-    $this->lastread = $phpgw->db->f(4);
-    $this->newstype = $phpgw->db->f(5);
-    $this->cachetime = $phpgw->db->f(6);
-    $this->listings = $phpgw->db->f(7);
+    $this->con = $this->db->f(0);
+    $this->display = $this->db->f(1);
+    $this->base_url = $this->db->f(2);
+    $this->newsfile = $this->db->f(3);
+    $this->lastread = $this->db->f(4);
+    $this->newstype = $this->db->f(5);
+    $this->cachetime = $this->db->f(6);
+    $this->listings = $this->db->f(7);
 
     return True;
   }
@@ -92,12 +99,11 @@ class phpHeadlines {
 
   // get the links from the database
   function getLinksDB() {
-    global $phpgw;
 
     $sql = "SELECT title, link FROM news_headlines WHERE site = " . $this->con;
-    $phpgw->db->query($sql);
+    $this->db->query($sql);
 		
-    if (! $phpgw->db->num_rows()) {
+    if (! $this->db->num_rows()) {
       $links = $this->getLinksSite();  // try from site again
       if (!$links) {
         $display = htmlspecialchars($this->display);
@@ -106,8 +112,8 @@ class phpHeadlines {
       }
     }
 		
-    while($phpgw->db->next_record()) {
-      $links[$phpgw->db->f('title')] = $phpgw->db->f('link');
+    while($this->db->next_record()) {
+      $links[$this->db->f('title')] = $this->db->f('link');
     }
     return $links;
   }
@@ -162,13 +168,12 @@ class phpHeadlines {
     $server = str_replace("http://","",$this->base_url.$this->newsfile);
     $file = strstr($server,"/");
     $server = str_replace("$file","",$server);
-    $fp = fsockopen($server, 80, &$errno, &$errstr);
-    if ($fp) {
-      fputs($fp,"GET $file HTTP/1.0\nHost: $server\n\n");
-      while ($line = fgets($fp, 4096)) {
+    if($this->open_port($server, 80, 15)) {
+      $this->write_port("GET $file HTTP/1.0\nHost: $server\n\n");
+      while ($line = $this->read_port()) {
         $lines[] = $line;
       }
-      fclose($fp);
+      $this->close_port();
       return $lines;
     }
     else {
@@ -188,21 +193,20 @@ class phpHeadlines {
 
   // save the new set of links and update the cache time
   function saveToDB($links) {
-    global $phpgw;
 
     $sql = "DELETE FROM news_headlines WHERE site = " . $this->con;
-    $phpgw->db->query($sql);
+    $this->db->query($sql);
 		
     // save links
     while (list($title,$link) = each($links)) {
       $link = addslashes($link);
       $title = addslashes($title);
-      $phpgw->db->query("INSERT INTO news_headlines VALUES("
+      $this->db->query("INSERT INTO news_headlines VALUES("
                      . $this->con.",'$title','$link')");
     }		
 		
     // save cache time
-    $phpgw->db->query("UPDATE news_site SET lastread = '" 
+    $this->db->query("UPDATE news_site SET lastread = '" 
                    . $this->current_time ."' WHERE con = " . $this->con);
   }
 }

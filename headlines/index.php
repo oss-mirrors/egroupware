@@ -12,6 +12,9 @@
   \**************************************************************************/
 
   $phpgw_flags["currentapp"] = "headlines";
+  $phpgw_flags["disable_network_class"] = True;
+  $phpgw_flags["disable_vfs_class"] = True;
+  $phpgw_flags["disable_msg_class"] = True;
   include("../header.inc.php");
   
   $sql = "SELECT site FROM users_headlines "
@@ -22,7 +25,7 @@
     $sites[]=$phpgw->db->f(0);
   }
 
-  $headlines = new phpHeadlines;
+  $headlines = new HEADLINES;
 ?>
 <table width="99%" border="0" bordercolor="#ffffff" cellspacing="2" cellpadding="2">
 <tr>
