@@ -2,10 +2,10 @@
 <center>
 <table width="80%" border="0" cellpadding="2" cellspacing="2">
 	<tr>
-		<td colspan="3" align="center" bgcolor="{th_bg}"><b>{lang_action}</b></td>
+		<td colspan="4" align="center" bgcolor="{th_bg}"><b>{lang_action}</b></td>
 	</tr>
 	<tr>
-		<td colspan="3" align="left">
+		<td colspan="4" align="left">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -16,13 +16,16 @@
 		</td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td colspan="3" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
+</table>
+<table width="80%" border="0" cellpadding="2" cellspacing="2">	
 	<tr bgcolor="{th_bg}">
-		<td bgcolor="{th_bg}">{sort_lid}</td>
-		<td bgcolor="{th_bg}">{sort_firstname}</td>
-		<td bgcolor="{th_bg}">{sort_lastname}</td>
+		<td width="33%" bgcolor="{th_bg}">{sort_lid}</td>
+		<td width="33%" bgcolor="{th_bg}">{sort_firstname}</td>
+		<td width="33%" bgcolor="{th_bg}">{sort_lastname}</td>
 	</tr>
 
 <!-- BEGIN admin_list -->

@@ -176,29 +176,29 @@
 			return $admins;
 		}
 
-		function list_admins($start, $limit, $query, $sort, $order)
+		function list_admins($start, $query, $sort, $order)
 		{
 			$admins = $this->read_admins('all');
 
-			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query, $limit);
-			_debug_array($allaccounts);
-			exit;
+			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query);
+//			_debug_array($allaccounts);
+//			exit;
 			while (list($null,$account) = each($allaccounts))
 			{
 				for ($i=0;$i<count($admins);$i++)
 				{
 					if ($account['account_id'] == $admins[$i]['account_id'])
 					{
-						$admin_data['account_id']	= $account['account_id'];
-						$admin_data['lid']			= $account['account_lid'];
-						$admin_data['firstname']	= $account['account_firstname'];
-						$admin_data['lastname']		= $account['account_lastname'];
-						$admin_data['type']			= $account['account_type'];
+						$admin_data[$i]['account_id']	= $account['account_id'];
+						$admin_data[$i]['lid']			= $account['account_lid'];
+						$admin_data[$i]['firstname']	= $account['account_firstname'];
+						$admin_data[$i]['lastname']		= $account['account_lastname'];
+						$admin_data[$i]['type']			= $account['account_type'];
 					}
 				}
 			}
-			_debug_array($admin_data);
-			exit;
+//			_debug_array($admin_data);
+//			exit;
 			return $admin_data;
 		}
 

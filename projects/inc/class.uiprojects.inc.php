@@ -1276,7 +1276,7 @@
 				$this->start = 0;
 			}
 
-			$admins = $this->boprojects->list_admins($this->start, True, $this->query, $this->sort, $this->order);
+			$admins = $this->boprojects->list_admins($this->start, $this->query, $this->sort, $this->order);
 
 //--------------------------------- nextmatch --------------------------------------------
  
