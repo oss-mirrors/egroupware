@@ -6,6 +6,7 @@
       $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
      $folder = (!$folder ? "INBOX" : $folder);
   }
+
   $mailbox = $phpgw->msg->login($folder);
   
   function decode_header_string($hed_str)
@@ -40,7 +41,7 @@
     // Cyrus style: INBOX.Junque
     // UWash style: ./aeromail/Junque
 
-    if ($phpgw_info["flags"]["newsmode"]) {
+    if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
       while($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
 	$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
 	while($phpgw->db->next_record()) {
@@ -80,30 +81,32 @@
     }
   }
 
-  function get_mime_type($de_part)
-  {
-    switch ($de_part->type)
-    {
-      case TYPETEXT:		$mime_type = "text"; break;
-      case TYPEMESSAGE:		$mime_type = "message"; break;
-      case TYPEAPPLICATION:	$mime_type = "application"; break;
-      case TYPEAUDIO:		$mime_type = "audio"; break;
-      case TYPEIMAGE:		$mime_type = "image"; break;
-      case TYPEVIDEO:		$mime_type = "video"; break;
-      case TYPEMODEL:		$mime_type = "model"; break;
-      default:			$mime_type = "unknown";
+  function get_mime_type($de_part) {
+    $mime_type = "unknown";
+    if (isset($de_part->type) && $de_part->type) {
+      switch ($de_part->type) {
+	case TYPETEXT:		$mime_type = "text"; break;
+	case TYPEMESSAGE:	$mime_type = "message"; break;
+	case TYPEAPPLICATION:	$mime_type = "application"; break;
+	case TYPEAUDIO:		$mime_type = "audio"; break;
+	case TYPEIMAGE:		$mime_type = "image"; break;
+	case TYPEVIDEO:		$mime_type = "video"; break;
+	case TYPEMODEL:		$mime_type = "model"; break;
+	default:		$mime_type = "unknown";
+      }
     }
     return $mime_type;
   }
 
-  function get_mime_encoding($de_part)
-  {
-    switch ($de_part->encoding)
-    {
-      case ENCBASE64:		$mime_encoding = "base64"; break;
-      case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
-      case ENCOTHER:		$mime_encoding = "other";  break;
-      default:			$mime_encoding = "other";
+  function get_mime_encoding($de_part) {
+    $mime_encoding = "other";
+    if (isset($de_part->encoding) && $de_part->encoding) {
+      switch ($de_part->encoding) {
+	case ENCBASE64:			$mime_encoding = "base64"; break;
+	case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
+	case ENCOTHER:			$mime_encoding = "other";  break;
+	default:			$mime_encoding = "other";
+      }
     }
     return $mime_encoding;
   }
@@ -179,10 +182,10 @@
       echo "<table border=\"0\" align=\"left\" cellpadding=\"10\" width=\"80%\">"
            ."<tr><td>$dsp</td></tr></table>";
     } else if (strtoupper($de_part->subtype) == "HTML") {
-      output_bound(lang("section").":" , "$mime_type/$de_part->subtype");
+      output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
       echo $dsp;
     } else {
-      output_bound(lang("section").":" , "$mime_type/$de_part->subtype");
+      output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
       echo "<$tag>$dsp</$tag>\n";
     }
   }
@@ -205,10 +208,12 @@
     global $phpgw_info;
 
     output_bound(lang("image").":" , $att_name);
-    $extra_parms = "folder=".urlencode($folder)."&msgnum=$msgnum"
-		 . "&part_no=$part_no&type=".$de_part->subtype."&name=$att_name";
-    if ($phpgw_info["flags"]["newsmode"]) $extra_parms .= "&newsmode=on";
-    echo "\n<img src=\"".$phpgw->link("view_image.php",$extra_parms)."\">\n<p>\n";
+    $extra_parms = "folder=".urlencode($folder)."&m=".$msgnum
+		 . "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
+    if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) 
+      $extra_parms .= "&newsmode=on";
+    $view_link = $phpgw->link("viewimage.php",$extra_parms);
+    echo "\n<img src=\"".$view_link."\">\n<p>\n";
   }
 
   // function make_clickable ripped off from PHPWizard.net
