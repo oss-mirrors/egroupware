@@ -19,7 +19,7 @@
 
   // I am disabling this for temp, I need to spend more time on it.
 ?>
-  <p><center> <b>Not avaiable yet.</b> </center>
+  <p><center> <b>Not available yet.</b> </center>
 <?php 
   exit;
 
@@ -211,11 +211,11 @@ if (isset($x)) {
 load_ddlb("search", $search, &$search_select, FALSE);
 $tpl->set_var(array(
   SEARCH_SELECT => $search_select,
-  FORM_ACTION   => $sess->url("search.php3")
+  FORM_ACTION   => $sess->url("search.php")
 ));
 
 # build the search form
-$tpl->set_var(QUERY_FORM, $q->form("x", $field, "qry", $sess->url("search.php3")));
+$tpl->set_var(QUERY_FORM, $q->form("x", $field, "qry", $sess->url("search.php")));
 
 if ($q->query == $noquery) {
 } else {
@@ -227,9 +227,9 @@ if ($q->query == $noquery) {
 # generated query syntax.
   $q->query = $bk_db_callout->fix_search_sql ($q->query);
 
-  print_list ($q->query, $limit, $offset, "search.php3", &$bookmark_list, &$error_msg);
+  print_list ($q->query, $limit, $offset, "search.php", &$bookmark_list, &$error_msg);
   
-  $tree_search_url = $sess->url( "tree.php3?where=" . base64_encode($q->query));
+  $tree_search_url = $sess->url( "tree.php?where=" . base64_encode($q->query));
   $tpl->set_var(array(
     QUERY_CONDITION => htmlspecialchars($q->query),
     BOOKMARK_LIST   => $bookmark_list,

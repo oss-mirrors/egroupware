@@ -80,10 +80,10 @@ class bookmarker_class  {
     $where_am_i = sprintf("http://%s%s/", $SERVER_NAME, dirname($PHP_SELF));
 
 # used for quik-mark bookmark
-    $this->create_url   = $where_am_i . "create.php3";
+    $this->create_url   = $where_am_i . "create.php";
 
 # used for mail-this-link bookmark
-    $this->maillink_url = $where_am_i . "maillink.php3";
+    $this->maillink_url = $where_am_i . "maillink.php";
 
 # the following wording is automatically added to all outgoing
 # mail-this-link email messages

@@ -178,7 +178,7 @@ if (!isset($mode) || $mode=="S") {
   if ($phpgw->db->Errno == 0) {
      while ($phpgw->db->next_record()) {
        $id = $phpgw->db->f("id");
-       $url = $phpgw->link("codes.php3","codetable=$codetable&mode=U&id=$id");
+       $url = $phpgw->link("codes.php","codetable=$codetable&mode=U&id=$id");
 
        $phpgw->template->set_var(URL, $url);
        $phpgw->template->set_var(NAME, htmlspecialchars(stripslashes($phpgw->db->f("name"))));
@@ -187,7 +187,7 @@ if (!isset($mode) || $mode=="S") {
 
        if (($codetable == "category" || $codetable == "subcategory") && ($id == 0)) {
        } else {
-          $url = $phpgw->link("codes.php3","codetable=$codetable&mode=D&id=$id");
+          $url = $phpgw->link("codes.php","codetable=$codetable&mode=D&id=$id");
           $phpgw->template->set_var(URL, $url);
           $phpgw->template->parse(DELETE_CODE_LIST, "code_list", TRUE);
       }

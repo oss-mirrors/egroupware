@@ -128,12 +128,12 @@ if ( $page > 0 ) {
 
 # if page greater than one then set first and prev page stuff
 if ( $page > 1 ) {
-  $first_url = $sess->url(sprintf("%s?page=%s", "list.php3", $first_page));
+  $first_url = $sess->url(sprintf("%s?page=%s", "list.php", $first_page));
   $phpgw->template->set_var(FIRST_URL, $first_url);
   $phpgw->template->parse(FIRST_LINK, "first");
 
   $prev_page = $page - 1;
-  $prev_url = $sess->url(sprintf("%s?page=%s", "list.php3", $prev_page));
+  $prev_url = $sess->url(sprintf("%s?page=%s", "list.php", $prev_page));
   $phpgw->template->set_var(PREV_URL, $prev_url);
   $phpgw->template->parse(PREV_LINK, "prev");
 
@@ -152,12 +152,12 @@ $phpgw->template->set_var(TOTAL_PAGES, $last_page);
 # if we are on the last page, set the limit to
 # the max so that we can be sure we get everything
 if ($page < $last_page ) {
-  $last_url = $phpgw->link("list.php3","page=$last_page");
+  $last_url = $phpgw->link("list.php","page=$last_page");
   $phpgw->template->set_var(LAST_URL, $last_url);
   $phpgw->template->parse(LAST_LINK, "last");
   
   $next_page = $page + 1;
-  $next_url = $phpgw->link("list.php3","page=$last_page");
+  $next_url = $phpgw->link("list.php","page=$last_page");
   $phpgw->template->set_var(NEXT_URL, $next_url);
   $phpgw->template->parse(NEXT_LINK, "next");
 } else {
@@ -169,7 +169,7 @@ if ($page < $last_page ) {
 # a PHPLIB user var.
 $user_last_page = $page;
 
-print_list ($where_clause, $limit, $offset, sprintf("list.php3----page=%s", $page) , &$bookmark_list, &$error_msg);
+print_list ($where_clause, $limit, $offset, sprintf("list.php----page=%s", $page) , &$bookmark_list, &$error_msg);
 
 $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 

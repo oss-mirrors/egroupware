@@ -105,7 +105,7 @@ if (empty($error_msg)) {
         }
 
         $phpgw->template->set_var(array(FORM_ACTION        => $phpgw->link("","id=$id&returnto=" . urlencode($returnto)),
-                                        MAIL_THIS_LINK_URL => $phpgw->link("maillink.php3","id=".$id),
+                                        MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$id),
                                         ID                 => $id,
                                         URL                => $url,
                                         NAME               => htmlspecialchars(stripslashes($name)),

@@ -49,10 +49,10 @@ class bmark  {
     $db->query($query,__LINE__,__FILE__);
     if ($db->Errno != 0) return false;
 
-    $maintain_url = "maintain.php3?id=".$id;
+    $maintain_url = "maintain.php?id=".$id;
     $msg .= sprintf("Bookmark %s created sucessfully.
                      <br>Click <a href=\"%s\">here</a> to modify this bookmark.
-                     <a href=\"maillink.php3?id=%s\">
+                     <a href=\"maillink.php?id=%s\">
                      <img width=24 height=24 align=top border=0 src=\"%smail.png\"></a>", 
                      $id, $phpgw->link($maintain_url), $id, $bookmarker->image_url_prefix);
 

@@ -21,8 +21,8 @@
     // we use base64 coding rather than urlencode and rawencode since
     // it seems to be more reliable.
 
-    $cat_search    = $phpgw->link("search.php3","where=" . urlencode("category.name='$category'"));
-    $subcat_search = $phpgw->link("search.php3","where=" . urlencode("subcategory.name='$subcategory'"));
+    $cat_search    = $phpgw->link("search.php","where=" . urlencode("category.name='$category'"));
+    $subcat_search = $phpgw->link("search.php","where=" . urlencode("subcategory.name='$subcategory'"));
 
     $list_tpl->set_var(array(CATEGORY           => htmlspecialchars(stripslashes($category)),
                              CATEGORY_SEARCH    => $cat_search,
@@ -119,7 +119,7 @@
 
       // Check owner
       if ($phpgw->db->f("username") == $phpgw_info["user"]["account_id"]) {
-         $maintain_url = $phpgw->link("maintain.php3","id=" . $phpgw->db->f("id") . "&returnto=" . urlencode($returnto));
+         $maintain_url = $phpgw->link("maintain.php","id=" . $phpgw->db->f("id") . "&returnto=" . urlencode($returnto));
          $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=24 height=24 align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
 
          $delete_link   = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=17 height=16 align=top border=0 alt=\"Delete this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "delete", $bookmarker->image_ext);
@@ -130,7 +130,7 @@
 
       $list_tpl->set_var(array(MAINTAIN_LINK      => $maintain_link,
                                DELETE_LINK        => $delete_link,
-                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php3","id=".$phpgw->db->f("id")),
+                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
                                BOOKMARK_USERNAME  => $phpgw->db->f("username"),
                                BOOKMARK_ID        => $phpgw->db->f("id"),
                                BOOKMARK_URL       => $phpgw->db->f("url"),

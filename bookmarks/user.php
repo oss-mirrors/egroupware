@@ -307,13 +307,13 @@ if (!isset($mode) || $mode=="S") {
 
       if ( ($perm->have_perm("admin"))
         || (($perm->have_perm("editor") && ($db->f("username") == $auth->auth["uname"]))) ) {
-        $url = $sess->url(sprintf("user.php3?mode=U&username=%s", $db->f("username")));
+        $url = $sess->url(sprintf("user.php?mode=U&username=%s", $db->f("username")));
         $tpl->set_var(URL, $url);
         $tpl->set_var(NAME, $db->f("username"));
         $tpl->parse(UPDATE_USER_LIST, "user_list", TRUE);
       }
       if ($perm->have_perm("admin")) {
-        $url = $sess->url( sprintf("user.php3?mode=D&username=%s", $db->f("username")));
+        $url = $sess->url( sprintf("user.php?mode=D&username=%s", $db->f("username")));
         $tpl->set_var(URL, $url);
         $tpl->parse(DELETE_USER_LIST, "user_list", TRUE);
       }

@@ -19,13 +19,13 @@ function  set_standard($title, &$p_tpl)  {
   && $auth->auth["uid"] != "nobody" ) {
     $name_html = sprintf("as %s", $auth->auth["name"]);
     $logout_html = sprintf("<a class=hdr href=\"%s\"><img width=24 height=24 src=\"%slogout.%s\" border=0 alt=\"Logout\"></a>"
-      ,$sess->url("logout.php3")
+      ,$sess->url("logout.php")
       ,$bookmarker->image_url_prefix
       ,$bookmarker->image_ext);
   } else {
     $name_html = "as Guest";
     $logout_html = sprintf("<a class=hdr href=\"%s\"><img width=24 height=24 src=\"%slogin.%s\" border=0 alt=\"Login\"></a>"
-      ,$sess->url("index.php3?login=YES")
+      ,$sess->url("index.php?login=YES")
       ,$bookmarker->image_url_prefix
       ,$bookmarker->image_ext);
   } */
@@ -47,9 +47,9 @@ function  set_standard($title, &$p_tpl)  {
     USER_SETTINGS_URL=> $phpgw->link("user.php"),
     IMPORT_URL       => $phpgw->link("import.php"),
     LOGOUT_HTML      => $logout_html,
-    DOWNLOAD_URL     => $phpgw->link("download.php3"),
-    BUGS_URL         => $phpgw->link("bugs.php3"),
-    MAILLIST_URL     => $phpgw->link("maillist.php3"),
+    DOWNLOAD_URL     => $phpgw->link("download.php"),
+    BUGS_URL         => $phpgw->link("bugs.php"),
+    MAILLIST_URL     => $phpgw->link("maillist.php"),
     VERSION          => $bookmarker->version,
     IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
     IMAGE_EXT        => $bookmarker->image_ext,

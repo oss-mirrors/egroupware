@@ -28,7 +28,7 @@
 # Note: we should only be here in POST mode if
 # user clicked tree view without already being
 # authenticated, then the login will do a POST back
-# to itself - in this case the tree.php3 page.
+# to itself - in this case the tree.php page.
 if (strtoupper($REQUEST_METHOD) != "GET") {
 
 # use a 303 since http spec states only a 303,
@@ -136,10 +136,10 @@ if ($groupby) {
 
 if ($bookmarker->show_bk_in_tree && ($groupby || !(isset($groupby)))) {
   $output .= sprintf("dbAdd( true , \"bookmarker\" , \"\" , 0 , \"bk_app\" , 0, 0)\n");
-  $output .= sprintf("dbAdd( false , \"start\" , \"index.php3\" , 1 , \"bk_app\" , 0, 0)\n");
-  $output .= sprintf("dbAdd( false , \"plain list\" , \"list.php3\" , 1 , \"bk_app\" , 0, 0)\n");
-  $output .= sprintf("dbAdd( false , \"create\" , \"create.php3\" , 1 , \"bk_app\" , 0, 0)\n");
-  $output .= sprintf("dbAdd( false , \"search\" , \"search.php3\" , 1 , \"bk_app\" , 0, 0)\n");
+  $output .= sprintf("dbAdd( false , \"start\" , \"index.php\" , 1 , \"bk_app\" , 0, 0)\n");
+  $output .= sprintf("dbAdd( false , \"plain list\" , \"list.php\" , 1 , \"bk_app\" , 0, 0)\n");
+  $output .= sprintf("dbAdd( false , \"create\" , \"create.php\" , 1 , \"bk_app\" , 0, 0)\n");
+  $output .= sprintf("dbAdd( false , \"search\" , \"search.php\" , 1 , \"bk_app\" , 0, 0)\n");
 }
 
 $phpgw->db->query($query,__LINE__,__FILE__);
