@@ -1,3 +1,4 @@
+<?php
   /**************************************************************************\
   * phpGroupWare - projects/projectdelivery                                  *
   * (http://www.phpgroupware.org)                                            *

@@ -1,3 +1,4 @@
+<?php
   /**************************************************************************\
   * phpGroupWare - projects/addressbook                                      *
   * http://www.phpgroupware.org                                              *
