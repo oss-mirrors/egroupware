@@ -12,6 +12,7 @@
 
 	/* $Id$ */
 
+	$phpgw_info = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'admin',
 		'enable_nextmatchs_class' => True,
@@ -20,17 +21,17 @@
 	);
 	include('../header.inc.php');
 
-	$con     = $GLOBALS['HTTP_POST_VARS']['con'] ? $GLOBALS['HTTP_POST_VARS']['con'] : $GLOBALS['HTTP_GET_VARS']['con'];
-	$confirm = $GLOBALS['HTTP_POST_VARS']['confirm'] ? $GLOBALS['HTTP_POST_VARS']['confirm'] : $GLOBALS['HTTP_GET_VARS']['confirm'];
+	$con     = get_var('con',array('POST','GET'));
+	$confirm = get_var('confirm',array('POST','GET'));
 
-	if (($con) && (! $confirm))
+	if(($con) && (!$confirm))
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
 
 		// This is done for a reason (jengo)
 		$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
-	
+
 		$GLOBALS['phpgw']->template->set_file(array(
 			'delete_form' => 'admin_delete.tpl'
 		));
@@ -55,11 +56,11 @@
 		$GLOBALS['phpgw']->db->query("delete from phpgw_headlines_cached where site='$con'",__LINE__,__FILE__);
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_preferences",__LINE__,__FILE__);
-		while ($GLOBALS['phpgw']->db->next_record())
+		while($GLOBALS['phpgw']->db->next_record())
 		{
-			if ($GLOBALS['phpgw']->db->f('preference_owner') == $GLOBALS['phpgw_info']['user']['account_id'])
+			if($GLOBALS['phpgw']->db->f('preference_owner') == $GLOBALS['phpgw_info']['user']['account_id'])
 			{
-				if ($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$con])
+				if($GLOBALS['phpgw_info']['user']['preferences']['headlines'][$con])
 				{
 					$GLOBALS['phpgw']->preferences->delete('headlines',$con);
 					$GLOBALS['phpgw']->preferences->commit();
@@ -68,7 +69,7 @@
 			else
 			{
 				$phpgw_newuser['user']['preferences'] = $GLOBALS['phpgw']->db->f('preference_value');
-				if ($phpgw_newuser['user']['preferences']['headlines'][$con])
+				if($phpgw_newuser['user']['preferences']['headlines'][$con])
 				{
 					$GLOBALS['phpgw']->preferences->delete_newuser('headlines',$con);
 					$GLOBALS['phpgw']->preferences->commit_user($GLOBALS['phpgw']->db->f('preference_owner'));
