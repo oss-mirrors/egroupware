@@ -354,11 +354,11 @@
 			/* get sites from site_objects of which user is owner */
 			$objects = $this->get_site_objects_for_user($uid,$gid);
 				
-			_debug_array($objects);
+			//_debug_array($objects);
 			
 			if (count($objects)>0)
 			{
-			   $SUB_SQL='WHERE ';
+//			   $SUB_SQL='WHERE ';
 			   foreach ($objects as $object)
 			   {
 				  if ($SUB_SQL)$SUB_SQL.=' OR ';
