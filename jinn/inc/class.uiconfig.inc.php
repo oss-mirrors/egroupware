@@ -85,6 +85,9 @@
 					unset($checked2);
 					unset($checked3);
 
+					   $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col);
+					$display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col);
+				   
 					if($default_order=="$col ASC") $checked2='CHECKED';
 					if($default_order=="$col DESC") $checked3='CHECKED';
 					if(in_array($col,$show_cols)) $checked='CHECKED';
@@ -99,7 +102,7 @@
 
 					//FIXME move to template (gabriel help??)
 					$rows.='<tr>';				
-					$rows.='<td bgcolor='.$bgclr.' align="left">'.$col.'</td>';
+					$rows.='<td bgcolor='.$bgclr.' align="left">'.$display_colname.'</td>';
 					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="SHOW'.$col.'" type=checkbox '.$checked.'></td>';
 					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.' ASC" '.$checked2.'>'.lang('ascending').'</td>';
 					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.' DESC" '.$checked3.'>'.lang('descending'). '</td>';

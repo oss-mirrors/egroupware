@@ -35,7 +35,7 @@
 	  var $available_tables;
 
 	  /**
-	  * function uia_edit_object
+	  * @function uia_edit_object
 	  * @abstract class constructor
 	  * @note FIXME Can't we get the bo from somewhere else?
 	  */
@@ -379,10 +379,9 @@
 
 				  if ($field['name']!='id' && $options) // FIXME the name id is now allowed isn't it?
 				  {
-					 $popup_onclick='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=500,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
+					 $popup_onclick_plug='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=plugconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
-					 // FIXME experimental
-					 if($this->bo->common->prefs[experimental]=='no') $popup_onclick_afc = 'alert(\''.lang('not yet implemented').'\')';
+					 $popup_onclick_name_and_help='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=helpconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=500,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
 					 $this->template->set_var('plg_options',$options);
 
@@ -390,11 +389,12 @@
 					 $this->template->set_var('lang_field_configuration',lang('Field configuration'));
 					 $this->template->set_var('lang_afc',lang('advanced configuration'));
 					 $this->template->set_var('lang_plugin_conf',lang('configure field plugin'));
-					 $this->template->set_var('popup_onclick',$popup_onclick);
-					 $this->template->set_var('popup_onclick_afc',$popup_onclick_afc);
+					 $this->template->set_var('lang_name_and_help',lang('name and help info'));
+					 $this->template->set_var('lang_mandatory',lang('mandatory'));
+					 $this->template->set_var('popup_onclick_plug',$popup_onclick_plug);
+					 $this->template->set_var('popup_onclick_name_and_help',$popup_onclick_name_and_help);
 
 					 $this->template->parse('plugins_rows','plugins_row',true);
-
 				  }
 			   }
 			}

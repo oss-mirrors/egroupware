@@ -22,6 +22,10 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
+	/**
+	@package plugins
+	@abstract wrapper to popup configuration screens
+	*/
 	$phpgw_flags = Array(
 		'currentapp'	=>	'jinn',
 		'noheader'	=>	True,
@@ -35,11 +39,21 @@
 
 	include('../header.inc.php');
 
-	/*	old call*/
-	//	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&hidden_val='.$_GET[hidden_val]));
+	if($_GET[screen]=='plugconf')
+	{
+	   Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id].'&hidden_val='.$_GET[hidden_val]));
 
-	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id].'&hidden_val='.$_GET[hidden_val]));
-	
-	$GLOBALS['phpgw']->common->phpgw_exit();
+	   $GLOBALS['phpgw']->common->phpgw_exit();
 
+	}
+	elseif($_GET[screen]=='helpconf')
+	{
+	   Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.field_help_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id].'&hidden_val='.$_GET[hidden_val]));
+
+	   $GLOBALS['phpgw']->common->phpgw_exit();
+	}
+	else
+	{
+	   echo "ERROR ... :(";
+	}
 ?>

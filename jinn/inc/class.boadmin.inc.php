@@ -35,7 +35,8 @@
 		 'save_access_rights_object'=> True,
 		 'save_access_rights_site'=> True,
 		 'export_site'=> True,
-		 'save_field_plugin_conf' => True
+		 'save_field_plugin_conf' => True,
+		 'save_field_info_conf' => True
 	  );
 
 	  var $so;
@@ -249,6 +250,41 @@
 	  }
 
 
+	  /**
+	  @function save_field_info_conf
+	  @abstract save changes made to a field info configuration in database
+	  @note this function uses new standard method for returning exit codes and status information
+	  */
+	  function save_field_info_conf()
+	  {
+		 if(!$_GET[object_id] || !$_GET[field_name])
+		 {
+			die('error');
+		 }
+
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		
+		 $where_string="`field_parent_object`={$_GET[object_id]} AND  `field_name`='$_GET[field_name]'";
+		 $status =$this->so->save_field_info_conf($_GET[object_id],$_GET[field_name],$data,$where_string);
+
+		 if($status[ret_code])
+		 {
+			$this->message[error]=lang('An unknown error has occured (error code 110)');
+		 }
+		 else
+		 {
+			$this->message[info]=lang('Field info configuration successfully saved');
+		 }
+		 $this->save_sessiondata();
+
+		 $this->common->exit_and_open_screen('jinn.uiadmin.field_help_config&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id]);
+	  }
+
+	  /**
+	  @function save_field_plugin_conf
+	  @abstract save changes made to a field plugin configuration in database
+	  @note this function uses new standard method for returning exit codes and status information
+	  */
 	  function save_field_plugin_conf()
 	  {
 		 if(!$_GET[object_id] || !$_GET[field_name] || !$_GET[plug_name])
@@ -266,9 +302,18 @@
 		 }
 		 
 		 $status=$this->so->save_field_plugin_conf($_GET[object_id],$_GET[field_name],$conf_serialed_string);
-		 _debug_array($status);
-		 echo 'ok';
-		 die();
+	
+		 if($status[ret_code])
+		 {
+			$this->message[error]=lang('An unknown error has occured (error code 109)');
+		 }
+		 else
+		 {
+			$this->message[info]=lang('Plugin configuration successfully saved');
+		 }
+		 $this->save_sessiondata();
+
+		 $this->common->exit_and_open_screen('jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_name].'&plug_name='.$_GET[plug_name].'&hidden_name=CFG_PLG'.$_GET[plug_name].'&=&field_name='.$_GET[plug_name].'&object_id='.$_GET[object_id].'&hidden_val=');
 	  }
 
 

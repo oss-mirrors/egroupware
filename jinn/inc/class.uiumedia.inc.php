@@ -97,6 +97,8 @@
 
 				$this->ui->header('Index');
 				$this->ui->msg_box($this->bo->message);
+				unset($this->bo->message);
+
 
 				$this->main_menu();
 				$this->bo->save_sessiondata();
@@ -245,6 +247,8 @@
 			{
 				$this->ui->header('Media And Documents Adminstration');
 				$this->ui->msg_box($this->bo->message);
+			unset($this->bo->message);
+
 				$this->main_menu();	
 
 				//  if directory show directory else show sections with all directories

@@ -6,8 +6,6 @@ function img_popup(img,pop_width,pop_height,attr)
    parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 }
 </script>
-
-
 <form method="post" name="frm" action="{form_action}" enctype="multipart/form-data" {form_attributes}>
 {where_string_form}
 <table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px;">
@@ -25,6 +23,7 @@ function onSubmitForm() {
 
 return true;
 }
+
 
 //-->
 </script>
@@ -89,5 +88,6 @@ return true;
 	</td></tr>
 </table>
 </form>
+
 <!-- END form_footer -->
 

@@ -22,10 +22,11 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
+	/* $id$
 
 	/**
 	* DEFAULT/FALLBACK BLOB/TEXT/TEXTAREA PLUGIN 
-	* @abstract default field plugin for text/blob fields
+	@abstract default field plugin for text/blob fields
 	*/
 	$this->plugins['def_blob']['name'] 				= 'def_blob';
 	$this->plugins['def_blob']['title']				= 'default textarea';
@@ -33,6 +34,7 @@
 	$this->plugins['def_blob']['author']			= 'Pim Snel';
 	$this->plugins['def_blob']['enable']			= 1;
 	$this->plugins['def_blob']['default']			= 1;
+	$this->plugins['def_blob']['description']	= 'Default field plugin for handeling blob or text fields, this plugin doesn\'t handle binary blobs';
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
 		'text',
@@ -74,6 +76,7 @@
 	$this->plugins['def_auto']['version']			= '1.0';
 	$this->plugins['def_auto']['enable']			= 1;
 	$this->plugins['def_auto']['default']			= 1;
+	$this->plugins['def_auto']['description'] 	    = 'Default field plugin for handeling auto-incrementing fields';
 	$this->plugins['def_auto']['db_field_hooks']	= array
 	(
 	   'int'
@@ -97,6 +100,7 @@
 	$this->plugins['def_binary']['version']			= '1.0';
 	$this->plugins['def_binary']['enable']			= 1;
 	$this->plugins['def_binary']['default']			= 1;
+	$this->plugins['def_binary']['description']	= 'Default field plugin for handeling binary fields';
 	$this->plugins['def_binary']['db_field_hooks']	= array
 	(
 	   'blob',
@@ -126,6 +130,7 @@
 	$this->plugins['def_string']['name'] 			= 'def_string';
 	$this->plugins['def_string']['title']			= 'default varchar';
 	$this->plugins['def_string']['author']			= 'Pim Snel';
+	$this->plugins['def_string']['description']	= 'Default field plugin for handeling string/varchar fields';
 	$this->plugins['def_string']['version']			= '1.1';
 	$this->plugins['def_string']['enable']			= 1;
 	$this->plugins['def_string']['default']			= 1;
@@ -169,6 +174,7 @@
 	$this->plugins['def_int']['author']			= 'Pim Snel';
 	$this->plugins['def_int']['enable']			= 1;
 	$this->plugins['def_int']['default']		= 1;
+	$this->plugins['def_int']['description']	= 'Default field plugin for handeling integer fields';
 	$this->plugins['def_int']['db_field_hooks']	= array
 	(
 	   'int'
@@ -193,6 +199,7 @@
 	$this->plugins['def_timestamp']['title']			= 'default timestamp';
 	$this->plugins['def_timestamp']['version']		= '1.1';
 	$this->plugins['def_timestamp']['author']		= 'Pim Snel';
+	$this->plugins['def_timestamp']['description']	= 'Default field plugin for handeling timestamp fields';
 	$this->plugins['def_timestamp']['enable']			= 1;
 	$this->plugins['def_timestamp']['db_field_hooks']	= array
 	(

@@ -491,4 +491,18 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.102';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+
+	$test[] = '0.8.102';
+	function jinn_upgrade0_8_102()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('egw_jinn_obj_fields','field_order',array(
+			'type' => 'int',
+			'precision' => '4',
+			'default' => '100'
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.103';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	}
 ?>

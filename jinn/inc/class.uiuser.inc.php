@@ -84,6 +84,7 @@
 
 			$this->ui->header('Index');
 			$this->ui->msg_box($this->bo->message);
+			unset($this->bo->message);
 
 			$this->main_menu();
 			$this->bo->save_sessiondata();
@@ -126,6 +127,7 @@
 				  $this->bo->message[info]='';
 			   }
 			   $this->ui->msg_box($this->bo->message);
+			unset($this->bo->message);
 
 
 			}
@@ -181,6 +183,11 @@
 
 		 }
 
+		 /**
+		 @function browse_objects
+		 @abstract wrapper function for listing one or more record
+		 @note FIXME this function must be removed or at leased renamed
+		 */
 		 function browse_objects()
 		 {
 			unset($this->bo->mult_where_array);
@@ -240,10 +247,13 @@
 
 		 }
 
-		 /*******************************\
-		 * 	Browse through site_objects  *
-		 \*******************************/
-
+		 /**
+		 @function list_records
+		 @abstract make recordlist for browsing and selecting records
+		 @todo implement nextmatch-class, number of record, better navigation, 
+		 @todo advanced filter, filters,positioning and ranges in session
+		 @todo searching with fulltext
+		 */
 		 function list_records()
 		 {
 			unset($this->bo->mult_where_array);
@@ -259,6 +269,8 @@
 
 			$this->ui->header('browse through objects');
 			$this->ui->msg_box($this->bo->message);
+			unset($this->bo->message);
+
 
 			$this->main_menu();	
 
@@ -432,6 +444,7 @@
 			   unset($testvalue);
 
 			   $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col[name]);
+			   $display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col[name]);
 			   
 			   //--- this is a special hack for the hide-this-field-plugin ----//
 			   if($this->bo->site_object[plugins])
@@ -451,6 +464,8 @@
 			   $col_names_list[]=$col[name];
 			   unset($orderby_link);
 			   unset($orderby_image);
+
+			   $display_colname=($field_conf_arr[field_alt_name]?$field_conf_arr[field_alt_name]:$col[name]);
 
 			   if ($col[name] == trim(substr($orderby,0,(strlen($orderby)-4))))
 			   {
@@ -472,7 +487,7 @@
 
 			   $this->template->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			   $this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiuser.browse_objects&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols"));
-			   $this->template->set_var('colhead_name',str_replace('_','&nbsp;',$col[name]));
+			   $this->template->set_var('colhead_name',str_replace('_','&nbsp;',$display_colname));
 			   $this->template->set_var('colhead_order_by_img',$orderby_image);
 
 			   $this->template->parse('colnames','column_name',true);
@@ -628,12 +643,15 @@
 			{
 			   $this->bo->message['error']=lang('No object selected. No able to configure this view');
 			   $this->ui->msg_box($this->bo->message);
+			   unset($this->bo->message);
+
 			   $this->main_menu();	
 
 			}
 			else
 			{
 			   $this->ui->msg_box($this->bo->message);
+			unset($this->bo->message);
 			   $this->main_menu();	
 			   $main = CreateObject('jinn.uiconfig',$this->bo);
 			   $main->show_fields();

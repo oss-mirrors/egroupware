@@ -83,7 +83,8 @@
 				'field_alt_name' => array('type' => 'varchar','precision' => '50'),
 				'field_help_info' => array('type' => 'text'),
 				'field_plugins' => array('type' => 'text'),
-				'field_mandatory' => array('type' => 'int','precision' => '4')
+				'field_mandatory' => array('type' => 'int','precision' => '4'),
+				'field_order' => array('type' => 'int','precision' => '4','default' => '100')
 			),
 			'pk' => array('field_id'),
 			'fk' => array(),

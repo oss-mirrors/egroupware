@@ -23,7 +23,6 @@
 
    /* $Id$ */
 
-
    /* this file is startpoint for all admin functions */
 
    class uiadmin
@@ -51,6 +50,7 @@
 		 'edit_this_jinn_site_object'=> True,
 		 'test_db_access'=> True,
 		 'upgrade_plugins'=>True,
+		 'field_help_config'=>True
 	  );
 
 	  var $bo;
@@ -82,7 +82,11 @@
 	  function index()
 	  {
 		 $this->ui->header(lang('index'));
+
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+
+		 
 		 $this->bo->save_sessiondata();
 	  }	
 
@@ -120,10 +124,9 @@
 			$this->bo->message[help]=lang('Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
 
 		 }
-		 //	unset($this->bo->message[info]);
-		 //		unset($this->bo->message[error]);
 
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
 
 		 $add_edit = CreateObject('jinn.uia_edit_object',$this->bo);
 
@@ -159,6 +162,7 @@
 		 }
 
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
 
 		 $add_edit = CreateObject('jinn.uia_edit_site',$this->bo);
 		 $add_edit->render_form($where_key,$where_value);
@@ -212,6 +216,7 @@
 	  {
 		 $this->ui->header(lang('List Sites'));
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
 
 		 $browse = CreateObject('jinn.uia_list_sites',$this->bo);
 		 $browse->render_list();
@@ -224,6 +229,8 @@
 	  {
 		 $this->ui->header(lang('Set Access Rights'));
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+		 
 		 $access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 		 $access_rights->main_screen();
 
@@ -237,6 +244,8 @@
 	  {
 		 $this->ui->header(lang('Set Access Right for Site Objects'));
 		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+		 
 		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 		 $access_rights->set_site_objects();
 
@@ -249,6 +258,7 @@
 	  {
 		 $this->ui->header(lang('Set Access Rights for Sites'));
 		 $this->ui->msg_box($this->bo->message);
+unset($this->bo->message);
 		 $access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 		 $access_rights->set_sites();
 
@@ -257,7 +267,13 @@
 		 $this->bo->save_sessiondata();
 	  }
 
-	  function plug_config()
+	  
+
+	  /**
+	  @function field_help_config
+	  @abstract make form to set field help information 
+	  */
+	  function field_help_config()
 	  {
 		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
 		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
@@ -267,13 +283,12 @@
 
 		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
 
-		 if(!empty($object_arr[plugins]))
-		 {
-			$this->bo->upgrade_plugins($object_arr[object_id]);
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		 }
+		 $this->template->set_file(array('config' => 'frm_conf_field_help.tpl'));
 
-		 $this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
+		 $this->template->set_block('config','head','head');
+		 $this->template->set_block('config','bodyhead','bodyhead');
+		 $this->template->set_block('config','row','row');
+		 $this->template->set_block('config','footer','footer');
 
 		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
 		 if(!file_exists($theme_css))
@@ -293,6 +308,89 @@
 			'theme_css'     => $theme_css,
 			'css'           => $GLOBALS['phpgw']->common->get_css(),
 			'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
+			'cssfile'		=> ''
+		 );
+		 $this->template->set_var($var);
+
+		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_info_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name]);
+
+		 $this->template->set_var('action',$action);
+		 $this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+		 $this->template->set_var('lang_field_orig_name',lang('Fieldname'));
+		 $this->template->set_var('field_orig_name',$_GET[field_name]);
+		 $this->template->set_var('lang_field_help_information',lang('Field Helpinfo and Alternative Name Configuration'));
+		 $this->template->set_var('fld_info_cnf',lang('Field Info Configuration'));
+		 $this->template->set_var('lang_alt_name',lang('Alternative Fieldname for display'));
+		 $this->template->set_var('lang_help_text',lang('Extra help information for this field'));
+
+		 $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
+
+		 $this->template->set_var('val_field_alt_name',$field_conf_arr[field_alt_name]);
+		 $this->template->set_var('val_field_help_info',$field_conf_arr[field_help_info]);
+
+		 $this->template->pparse('out','head');
+
+		 $this->ui->msg_box($this->bo->message,$true);
+		 unset($this->bo->message);
+
+		 $this->template->pparse('out','bodyhead');
+
+		 $this->template->set_var('fld_name',$_GET[hidden_name]);
+		 $this->template->set_var('buttons_visibility',$buttons_visibility);
+		 $this->template->set_var('newconfig',$newconfig);
+		 $this->template->set_var('save',lang('save'));
+		 $this->template->set_var('cancel',lang('cancel'));
+		 $this->template->pparse('out','footer');
+
+		 $this->bo->save_sessiondata();
+	  }
+	  
+	  /**
+	  @function plug_config
+	  @abstract make form to set field plugin configuration
+	  */
+	  function plug_config()
+	  {
+		 $GLOBALS['phpgw_info']['flags']['noheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappheader']=True;
+		 $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+		 $GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+		 $object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+
+		 if(!empty($object_arr[plugins]))
+		 {
+			$this->bo->upgrade_plugins($object_arr[object_id]);
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		 }
+
+		 $this->template->set_file(array('config' => 'frm_conf_plugins.tpl'));
+
+		 $this->template->set_block('config','head','head');
+		 $this->template->set_block('config','bodyhead','bodyhead');
+		 $this->template->set_block('config','row','row');
+		 $this->template->set_block('config','footer','footer');
+		 
+		 $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+		 if(!file_exists($theme_css))
+		 {
+			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+		 }
+
+		 $app = $GLOBALS['phpgw_info']['flags']['currentapp'];
+		 $app = $app ? ' ['.(isset($GLOBALS['phpgw_info']['apps'][$app]) ? $GLOBALS['phpgw_info']['apps'][$app]['title'] : lang($app)).']':'';
+
+		 $var = Array(
+			'img_icon'      => PHPGW_IMAGES_DIR . '/favicon.ico',
+			'img_shortcut'  => PHPGW_IMAGES_DIR . '/favicon.ico',
+			'charset'       => $GLOBALS['phpgw']->translation->charset(),
+			'font_family'   => $GLOBALS['phpgw_info']['theme']['font'],
+			'website_title' => $GLOBALS['phpgw_info']['server']['site_title'].$app,
+			'theme_css'     => $theme_css,
+			'css'           => $GLOBALS['phpgw']->common->get_css(),
+			'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
+			'cssfile'		=> ''
 		 );
 		 $this->template->set_var($var);
 
@@ -300,16 +398,25 @@
 
 		 $plugin_name=$_GET['plug_name'];
 
-		 $this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
-
-
 		 $action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_plugin_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$_GET[plug_name]);
 
 		 $this->template->set_var('action',$action);
 		 $this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
 		 $this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
-		 $this->template->set_var('plug_version',lang('version').' '.$this->bo->plugins[$plugin_name]['version']);
+		 $this->template->set_var('lang_plugin_name',lang('Plugin name'));
+		 $this->template->set_var('lang_fieldname',lang('Fieldname'));
+		 $this->template->set_var('fieldname',$_GET[field_name]);
+		 $this->template->set_var('lang_version',lang('Version'));
+		 $this->template->set_var('lang_plugin_configuration',lang('Plugin Configuration'));
+		 $this->template->set_var('plug_version',$this->bo->plugins[$plugin_name]['version']);
 		 $this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
+
+		 $screenshot_file=$GLOBALS['phpgw']->common->get_app_dir('jinn').'/plugins/plugin_images/'.$plugin_name.'.png';
+if(is_file($screenshot_file)) $screenshot='<img style="border:solid 1px black" src="jinn/plugins/plugin_images/'.$plugin_name.'.png" alt="'.lang('screenshot').'"  />';
+		// $screenshot = $GLOBALS['phpgw']->common->image('jinn','plugins/'.$plugin_name);
+
+
+		$this->template->set_var('screenshot',$screenshot);
 
 		 $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
 
@@ -321,13 +428,28 @@
 			if ($_GET[plug_name]==$_GET[plug_orig]) $use_records_cfg=True;
 		 }
 
-		 $this->template->set_var('fld_plug_cnf',lang('field plugin configuration'));
-		 $this->template->pfp('out','config_head');
-
 		 // get config fields for this plugin
 		 // if hidden value is empty get defaults vals for this plugin
 
 		 $cfg=$this->bo->plugins[$plugin_name]['config'];
+
+		 if(is_array($cfg))
+		 {
+			$this->template->set_var('fld_plug_cnf',lang('Field plugin configuration'));
+		 }
+		 else
+		 {
+			$this->template->set_var('fld_plug_cnf','');
+			$buttons_visibility='visibility:hidden;';
+		 }
+		 
+		 $this->template->pparse('out','head');
+		 
+		 $this->ui->msg_box($this->bo->message,$true);
+		 unset($this->bo->message);
+
+		 $this->template->pparse('out','bodyhead');
+		 
 		 if(is_array($cfg))
 		 {
 			foreach($cfg as $cfg_key => $cfg_val)
@@ -336,7 +458,7 @@
 			   $render_cfg_key=ereg_replace('_',' ',$cfg_key);
 
 			   $val=$cfg_val;
-			   $row=($row=='row_on')? 'row_off' : 'row_on';
+			   $rowval=($rowval=='row_on')? 'row_off' : 'row_on';
 
 			   /* if configuration is already set use these values */
 			   if ($use_records_cfg)
@@ -344,8 +466,7 @@
 				  $set_val=$plugins_conf_arr[conf][$cfg_key];
 			   }
 
-			   $this->template->set_file(array('config_body' => 'plg_config_body.tpl'));
-			   $this->template->set_var('row',$row);
+			   $this->template->set_var('rowval',$rowval);
 			   $this->template->set_var('descr',$render_cfg_key);
 
 			   switch ($val[1])
@@ -384,19 +505,21 @@
 				  }
 
 				  $this->template->set_var('fld',$output);
-				  $this->template->pparse('out','config_body');
+				  $this->template->parse('rows','row',true);
 
 				  if($newconfig) $newconfig.='+";"+';
 				  $newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
 			   }
+			   
+			   $this->template->pparse('out','rows');
 			}
 
-			$this->template->set_file(array('config_foot' => 'plg_config_footer.tpl'));
 			$this->template->set_var('fld_name',$_GET[hidden_name]);
+			$this->template->set_var('buttons_visibility',$buttons_visibility);
 			$this->template->set_var('newconfig',$newconfig);
 			$this->template->set_var('save',lang('save'));
 			$this->template->set_var('cancel',lang('cancel'));
-			$this->template->pparse('out','config_foot');
+			$this->template->pparse('out','footer');
 
 			$this->bo->save_sessiondata();
 		 }
@@ -526,6 +649,7 @@
 
 			   $this->ui->header(lang('Import JiNN-Site'.$table));
 			   $this->ui->msg_box($this->bo->message);
+			   unset($this->bo->message);
 
 			   $this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'));
 			   $this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
@@ -553,9 +677,6 @@
 		 */
 		 function save_site_to_file()
 		 {
-//			_debug_array($GLOBALS[phpgw]);
-//			die();
-			
 			$GLOBALS['phpgw_info']['flags']['noheader']=True;
 			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
@@ -571,12 +692,12 @@
 			header("Content-Disposition:attachment; filename=$filename");
 
 			$out='<'.'?p'.'hp'."\n\n"; 
-			/* ugly, but for nice indention */
+			/* strange but for nice vim indent file */
 			$out.='	/***************************************************************************'."\n";
 			$out.='	**                                                                        **'."\n";
 			$out.="	** JiNN Site Export : ".$filename."\n";
 			$out.="	** Date             : ".$date."\n";
-			$out.="	** JiNN Version     : ".$date."\n";
+			$out.="	** JiNN Version     : ".$GLOBALS[phpgw_info][apps][jinn][version]."\n";
 			$out.='	** ---------------------------------------------------------------------- **'."\n";
 			$out.='	**                                                                        **'."\n";
 			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare   **'."\n";
@@ -637,8 +758,6 @@
 				  store them as array with serialnumber as parent_object_id
 				  */
 				  $object_field_data=$this->bo->so->get_phpgw_record_values('egw_jinn_obj_fields','field_parent_object', $object['object_id'],'','','name');
-
-
 				  if(is_array($object_field_data))
 				  {
 					 foreach ($object_field_data as $field)

@@ -1108,7 +1108,7 @@
 			foreach($related_data as $option)
 			{
 			   $SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDXXXid]', '$option')";
-//			   die($SQL);
+		//	  	   echo $SQL;
 			   if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 			   {
 				  $status=False;
@@ -1116,8 +1116,10 @@
 
 			}
 
+
 			$i++;
 		 }
+		 // die();
 		 return $status;
 
 	  }
@@ -1338,7 +1340,7 @@
 		 return $status;
 	  }
 
-	  function update_phpgw_data($table,$data,$where_key,$where_value)
+	  function update_phpgw_data($table,$data,$where_key,$where_value,$where_string='')
 	  {
 
 		 $meta=$this->phpgw_table_metadata($table,true);
@@ -1357,16 +1359,67 @@
 			$SQL_SUB .= "$field[name]=$field[value]";
 		 }
 
-		 $SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
-//		 die($SQL);
+		 if($where_string)
+		 {
+			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_string);
+		 }
+		 elseif($where_key && $where_value)
+		 {
+
+			$SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+		 }
+		 //		 die($SQL);
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
-			$status=1;
+			$status[ret_code]=0;
+		 }
+		 else
+		 {
+			$status[ret_code]=1;
 		 }
 
 		 return $status;
 	  }
 
+	  function save_field_info_conf($object_id,$fieldname,$data,$where_string)
+	  {
+		 if(!$object_id) $object_id=-1;
+		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object=$object_id AND field_name='$fieldname'";
+		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
+		 if($this->phpgw_db->num_rows()>0)
+		 {
+			$status = $this->update_phpgw_data('egw_jinn_obj_fields',$data,'','',$where_string);
+			
+			// update
+			//$sql="UPDATE egw_jinn_obj_fields SET field_plugins='$conf_serialed' WHERE (field_parent_object=$object_id) AND (field_name='$fieldname')";
+		 }
+		 else
+		 {
+
+			$data[] = array
+			(
+			   'name' =>  field_parent_object,
+			   'value' => $object_id 
+			);
+
+			$data[] = array
+			(
+			   'name' =>   field_name,
+			   'value' =>  $fieldname
+			);
+			
+			$status	= $this->insert_phpgw_data('egw_jinn_obj_fields',$data);
+			// insert
+//			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,field_plugins) VALUES ($object_id,'$fieldname','$conf_serialed')";
+		 }
+		 //			die($sql);
+
+		 return $status;
+	  }
+
+
+	  
+	  
 	  function save_field_plugin_conf($object_id,$fieldname,$conf_serialed)
 	  {
 		 if(!$object_id) $object_id=-1;

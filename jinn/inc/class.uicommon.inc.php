@@ -22,6 +22,8 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
+	/* $id$ */
+	
 	/* main ui class for user as administrator */
 
 
@@ -79,7 +81,9 @@
 				$this->template->set_var('error',$error);
 				$this->template->set_var('info',$info);
 				$this->template->pparse('out','msg_box');
-			}
+			 }
+
+
 		}
 
 

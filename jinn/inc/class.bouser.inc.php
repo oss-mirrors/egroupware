@@ -446,6 +446,7 @@
 			$table=$this->site_object[table_name];
 
 			$m2m_data=$this->http_vars_pairs_m2m($_POST);
+//			_debug_array($m2m_data);
 			$status[o2o]=$this->o2o_update();
 
 			$status=$this->so->update_object_many_data($this->site_id, $m2m_data);
@@ -1048,7 +1049,10 @@
 			}
 			
 			/**
-			* get autonome form action function from plugin see visual ordering plugin how it works
+			@function get_plugin_afa
+			@abstract get autonome form action function from plugin see visual ordering plugin how it works
+			@note this function is here for backwards compatibility it will be removed someday
+			@depreciated
 			*/
 			function get_plugin_afa()
 			{
@@ -1056,9 +1060,7 @@
 			   $local_bo=$this;
 
 			   $action_plugin_name=$_GET[plg];
-
-
-			   
+  
 			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
 			   foreach($plugins as $plugin)
 			   {	
@@ -1107,13 +1109,11 @@
 			/**
 			* include ALL plugins
 			*/
-			function include_plugins()
+/*			function include_plugins()
 			{
 			   global $local_bo;
 			   $local_bo=$this;
 			   if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
-
-				  /* This is the correct way to loop over the directory. */
 
 				  while (false !== ($file = readdir($handle))) 
 				  { 
@@ -1126,6 +1126,7 @@
 				  closedir($handle); 
 			   }
 			}
+			*/
 
 		 }
 	  ?>

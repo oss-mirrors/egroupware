@@ -22,6 +22,11 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
+   /* $id$ */
+
+   /**
+   @package jinn_users_classes
+   */
    class uiu_edit_record // extends uiuser
    {
 	  var $public_functions = Array
@@ -43,9 +48,14 @@
 	  var $record_id_val;
 	  
 	  var $submit_javascript;
-
+	  var $jstips;
+	  	
 	  var $db_ftypes;
 
+	  /**
+	  @function uiu_edit_record
+	  @abstract class contructor that set header and inits bo
+	  */
 	  function uiu_edit_record()
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
@@ -61,6 +71,10 @@
 	  
 	  }
 
+	  /**
+	  @function display_form 
+	  @abstract main public function to create the complete record editing form for a single record
+	  */
 	  function display_form()
 	  {
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
@@ -100,7 +114,6 @@
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
 
-//		 echo $this->bo->where_string;
 		 if ($this->bo->where_string)
 		 {
 			$this->ui->header('edit record');
@@ -111,6 +124,7 @@
 		 }
 
 		 $this->ui->msg_box($this->bo->message);
+unset($this->bo->message);
 
 		 $this->main_menu();	
 
@@ -119,6 +133,7 @@
 		 $this->template->set_var('popuplink',$popuplink);
 
 		 $this->template->pparse('out','form_header');
+		 $this->template->set_var('jstips',$this->jstips);
 		 $this->template->set_var('submit_script',$this->submit_javascript);
 		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
@@ -257,6 +272,7 @@
 		 $this->render_footer();
 		
 		 $this->template->set_var('submit_script',$this->submit_javascript);
+		 $this->template->set_var('jstips',$this->jstips);
 		 $this->template->parse('js','js');
 		 $this->template->pparse('out','js');
 		 
@@ -350,7 +366,6 @@
 
 		 /* get one with many relations */
 		 $relation1_array=$this->bo->extract_O2M_relations($object_arr[relations]);
-//		 _debug_array($relation1_array);
 
 		 if (count($relation1_array)>0)
 		 {
@@ -358,7 +373,6 @@
 			{
 			   $fields_with_relation1[]=$relation1[field_org];
 			}
-
 		 }
 
 		 /* get all fieldproperties (name, type, etc...) */
@@ -379,15 +393,32 @@
 			   $value=$this->values_object[0][$fprops[name]];	/* get value */
 			}
 
-			$input_name=$input_prefix.$fprops[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
-			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); /* replace _ for a space */
+			/* add FLD so we can identify the real input HTTP_POST_VARS */
+			$input_name=$input_prefix.$fprops[name];	
 
+			unset($field_conf_arr);
+			$field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$fprops[name]);
+			if($field_conf_arr[field_alt_name])
+			{
+			   $display_name=$field_conf_arr[field_alt_name];
+			}
+			else
+			{
+			   $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); 
+			}
 
-			/* ---------------------- start fields -------------------------------- */
+	/*		unset($tipmouseover);
+			if(trim($field_conf_arr[field_help_info]))
+			{
+			   $tipmouseover='&nbsp;<a onMouseOver="tip(\''.$fprops[name].'\')" onMouseOut="untip()">?</a>'; 
+			   $this->jstips.="maketip('{$fprops[name]}','$display_name','{$field_conf_arr[field_help_info]}');\n";
+			}
+
+	*/		
 
 			
-//			echo $this->db_ftypes->get_db_f_type($fprops[type]);
-//			_debug_array($fprops[type]);
+			/* ---------------------- start fields -------------------------------- */
+
 			// auto
 			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
 			{
@@ -400,10 +431,8 @@
 			   $record_identifier[value]=$value;
 			}
 			/* string */
-			elseif($this->db_ftypes->get_db_f_type($fprops[type])=='string')
+			elseif($this->db_ftypes->complete_resolve($fprops)=='string')
 			{
-//				_debug_array($fields_with_relation1);
-			   
 			   /* If this field has a relation, get that options */
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
@@ -424,7 +453,7 @@
 			   }
 			}
 			// int
-			elseif ($this->db_ftypes->get_db_f_type($fprops[type])=='int')
+			elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
 			{
 			   /* If this integer has a relation get that options */
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
@@ -435,21 +464,15 @@
 				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-			// binary
-			elseif (ereg('binary',$fprops[flags]))
-			{
-			   $input = lang('binary');
-			}
 			
+			/* if input is not set above do it the standard way below */
 			if(!$input)
 			{
-			   if(!$ftype) $ftype=$this->db_ftypes->get_db_f_type($fprops[type]);
+			   if(!$ftype) $ftype=$this->db_ftypes->complete_resolve($fprops);
 			   if(!$ftype) $ftype='string';
 
 			   if(!$object_arr[plugins])
 			   {
-				  unset($field_conf_arr);
-				  $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$fprops[name]);
 				  $input = $this->bo->plug->call_plugin_fi($input_name,$value,$ftype,$field_conf_arr, $attr_arr);
 			   }
 			   else
@@ -480,6 +503,7 @@
 
 			   $this->template->set_var('row_color',$row_color);
 			   $this->template->set_var('input',$input);
+			   $this->template->set_var('tipmouseover',$tipmouseover);
 			   $this->template->set_var('fieldname',$display_name);
 
 			   $this->template->parse('row','rows',true);
@@ -726,8 +750,6 @@
 
 		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
-
-
 		 
 		 /* The main loop to create all rows with input fields start here */ 
 		 foreach ( $fields as $fprops )
@@ -737,7 +759,18 @@
 
 			$value=$this->values_object[0][$fprops[name]];
 			$input_name=$fprops[name];	
-			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name])));
+			
+			unset($field_conf_arr);
+			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$fprops[name]);
+
+			if($field_conf_arr[field_alt_name])
+			{
+			   $display_name=$field_conf_arr[field_alt_name];
+			}
+			else
+			{
+			   $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); 
+			}
 
 			// auto
 			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
@@ -746,7 +779,7 @@
 			   $input='<b>'.$value.'</b>';
 			}
 			// string
-			elseif($this->db_ftypes->get_db_f_type($fprops[type])=='string')
+			elseif($this->db_ftypes->complete_resolve($fprops)=='string')
 			{
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
@@ -757,7 +790,7 @@
 			   }
 			}
 			// int
-			elseif ($this->db_ftypes->get_db_f_type($fprops[type])=='int')
+			elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
 			{
 			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
@@ -769,27 +802,19 @@
 				  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-			// binary
-			elseif (ereg('binary',$fprops[flags]))
-			{
-			   $input = lang('binary');
-			}
-
+	
 			if(!$input)
 			{
-			   if(!$ftype) $ftype=$this->db_ftypes->get_db_f_type($fprops[type]);
+			   if(!$ftype) $ftype=$this->db_ftypes->complete_resolve($fprops);
 			   if(!$ftype) $ftype='string';
 			   
 			   if(!$this->bo->site_object[plugins])
 			   {
-				  //unset($field_conf_arr);
-				  $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$fprops[name]);
 				  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
-				  //echo $input;
 			   }
 			   else
 			   {
-				  $input=$this->bo->get_plugin_ro($input_name,$value,$this->db_ftypes->get_db_f_type($fprops[type]),'');
+				  $input=$this->bo->get_plugin_ro($input_name,$value,$this->db_ftypes->complete_resolve($fprops),'');
 			   }
 
 			}

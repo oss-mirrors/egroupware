@@ -15,7 +15,7 @@
 <table style="background-color:#ffffff;border:solid 1px #cccccc;">
 		<tr>
 			<td>{lang_fields}</td><td>			
-			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td>
+			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td><td>{lang_mandatory}</td>
 		</tr>
 <!-- END plugins_header -->
 
@@ -29,12 +29,15 @@
 	</td>
 	<td>
 	<input type="hidden" name="CFG_PLG{field_name}" value="{plg_conf}">
-	<input type="button" onClick="{popup_onclick}" value="{lang_plugin_conf}">
-</td>
-<td>
-		<input type="button" onClick="{popup_onclick_afc}" value="{lang_afc}">
+	<input type="button" onClick="{popup_onclick_plug}" value="{lang_plugin_conf}">
 	</td>
-</tr>
+	<td>
+	<input type="button" onClick="{popup_onclick_name_and_help}" value="{lang_name_and_help}">
+	</td>
+	<td>
+	<input type="checkbox" onClick="alert('Not implemented')" style="color:red" value="{lang_mandatory}">
+	</td>
+	</tr>
 <!-- END plugins_row -->
 
 <!-- BEGIN plugins_footer -->
