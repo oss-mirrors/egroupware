@@ -1,5 +1,4 @@
 <?php
-
   /* $Id$ */
 
 	//open and print each line of a file
