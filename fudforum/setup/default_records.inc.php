@@ -101,7 +101,7 @@
 	$oProc->query("INSERT INTO phpgw_fud_smiley (img, descr, code, vieworder) VALUES ('icon_thumbdown.gif','Thumbs Down',':thumbdown:',29)");
 	$oProc->query("INSERT INTO phpgw_fud_smiley (img, descr, code, vieworder) VALUES ('icon_uhoh.gif','Uh Oh',':uhoh:',30)");
 	$oProc->query("INSERT INTO phpgw_fud_smiley (img, descr, code, vieworder) VALUES ('icon_yawn.gif','Bored',':yawn:',31)");
-	$oProc->query("INSERT INTO phpgw_fud_stats_cache VALUES(0,0,0,0,0,0,0)");
+	$oProc->query("INSERT INTO phpgw_fud_stats_cache VALUES(0,0,0,0,0,'',0)");
 	$oProc->query("INSERT INTO phpgw_fud_users (egw_id, login, alias, time_zone, theme, email, passwd, name, users_opt) VALUES(-1, 'Anonymous Coward', 'Anonymous Coward', 'America/Montreal', 1, 'dev@null', '1', 'Anonymous Coward', 1|4|16|32|128|256|512|2048|4096|8192|16384|262144|2097152|4194304)");
 
 	if ($GLOBALS['phpgw_domain'][$GLOBALS['phpgw_setup']->ConfigDomain]['db_type'] == 'mysql') {

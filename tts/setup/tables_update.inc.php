@@ -114,6 +114,8 @@
 
 		include('default_records.inc.php');	// dont need to dublicate everything here
 
+		$oProc->query('UPDATE phpgw_tts_tickets SET ticket_state='.(int)$states['UNDEFINED'].' WHERE ticket_state = -1');
+
 		$GLOBALS['setup_info']['tts']['currentver'] = '0.8.2.000';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
@@ -123,6 +125,44 @@
 	function tts_upgrade0_8_2_000()
 	{
 		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['tts']['currentver'];
+	}
+
+
+	$test[] = '1.0.0';
+	function tts_upgrade1_0_0()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_tts_states','state_name',array(
+			'type' => 'varchar',
+			'precision' => '64',
+			'nullable' => False
+		));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_tts_states','state_description',array(
+			'type' => 'varchar',
+			'precision' => '255',
+			'nullable' => False
+		));
+
+		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.001';
+		return $GLOBALS['setup_info']['tts']['currentver'];
+	}
+
+
+	$test[] = '1.0.001';
+	function tts_upgrade1_0_001()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_tts_transitions','transition_name',array(
+			'type' => 'varchar',
+			'precision' => '64',
+			'nullable' => False
+		));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_tts_transitions','transition_description',array(
+			'type' => 'varchar',
+			'precision' => '255',
+			'nullable' => False
+		));
+
+		$GLOBALS['setup_info']['tts']['currentver'] = '1.0.002';
 		return $GLOBALS['setup_info']['tts']['currentver'];
 	}
 ?>

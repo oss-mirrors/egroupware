@@ -78,7 +78,7 @@ class soWikiPage
 		// english as fallback, should be configurable or a pref
 		if ($this->user_lang != 'en') $this->use_langs[] = 'en';
 //		$this->lang_priority_sql  = "IF(body='',".(count($this->use_langs)+1).',CASE lang';
-		$this->lang_priority_sql  = "CASE body WHEN '' THEN ".(count($this->use_langs)+1).' ELSE (CASE lang';
+		$this->lang_priority_sql  = "CASE WHEN body LIKE '' THEN ".(count($this->use_langs)+1).' ELSE (CASE lang';
 
 		foreach($this->use_langs as $order => $lang)
 		{
@@ -715,7 +715,7 @@ class sowiki	// DB-Layer
 		                 " FROM $this->PgTbl AS t1,$this->PgTbl AS t2" .
 		                 " WHERE t1.name=t2.name AND t1.lang=t2.lang".
 		                 " GROUP BY t1.name,t1.lang,t1.version,t1.time,t1.hostname,t1.username,t1.comment".
-		                 " HAVING t1.version = MAX(t2.version) AND t1.body=''",__LINE__,__FILE__);
+		                 " HAVING t1.version = MAX(t2.version) AND t1.body LIKE ''",__LINE__,__FILE__);
 		$list = array();
 		while($this->db->next_record())
 		{
@@ -772,7 +772,7 @@ class sowiki	// DB-Layer
 			            //was "TO_DAYS(NOW()) - TO_DAYS(supercede) > $ExpireLen";
 		}
 the new code generates only one query, by using the fact the time == supercede for the up-to-date version */
-		$this->db->query($sql="DELETE FROM $this->PgTbl WHERE (time != supercede OR body='') AND ".
+		$this->db->query($sql="DELETE FROM $this->PgTbl WHERE (time != supercede OR body LIKE '') AND ".
 			"supercede<".(time()-86400*$this->ExpireLen),__LINE__,__FILE__);
 
 		if($this->RatePeriod)

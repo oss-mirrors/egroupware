@@ -46,8 +46,8 @@
 		'phpgw_tts_states' => array(
 			'fd' => array(
 				'state_id' 					=> array('type' => 'auto','nullable' => False),
-				'state_name' 				=> array('type' => 'text','nullable' => False),
-				'state_description' 		=> array('type' => 'text','nullable' => False),
+				'state_name' => array('type' => 'varchar','precision' => '64','nullable' => False),
+				'state_description' => array('type' => 'varchar','precision' => '255','nullable' => False),
 				'state_initial' 			=> array('type' => 'int', 'precision'=>'4', 'nullable' => False, 'default'=>'0')
 			),
 			'pk' => array('state_id'),
@@ -58,8 +58,8 @@
 		'phpgw_tts_transitions' => array(
 			'fd' => array(
 				'transition_id' 				=> array('type' => 'auto','nullable' => False),
-				'transition_name' 			=> array('type' => 'text','precision' => '20','nullable' => False),
-				'transition_description' 	=> array('type' => 'text','nullable' => False),
+				'transition_name' => array('type' => 'varchar','precision' => '64','nullable' => False),
+				'transition_description' => array('type' => 'varchar','precision' => '255','nullable' => False),
 				'transition_source_state' 	=> array('type' => 'int','precision' => '4','nullable' => False),
 				'transition_target_state' 	=> array('type' => 'int','precision' => '4','nullable' => False)
 			),
@@ -69,3 +69,4 @@
 			'uc' => array()
 		)
 	);
+

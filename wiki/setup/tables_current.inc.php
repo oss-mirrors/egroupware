@@ -44,7 +44,7 @@
 			),
 			'pk' => array('wiki_id','name','lang','version'),
 			'fk' => array(),
-			'ix' => array('title',array('body','options' => array('mysql' => 'FULLTEXT'))),
+			'ix' => array('title',array('body','options' => array('mysql' => 'FULLTEXT','mssql' => False))),
 			'uc' => array()
 		),
 		'phpgw_wiki_rate' => array(

@@ -29,8 +29,8 @@ You can learn about Wiki formatting at http://tavi.sourceforge.net/FormattingRul
 	);
 	foreach($pages as $name => $body)
 	{
-		$name = addslashes($name);
-		$body = addslashes($body);
+		$name = $GLOBALS['phpgw_setup']->db->db_addslashes($name);
+		$body = $GLOBALS['phpgw_setup']->db->db_addslashes($body);
 		$oProc->query("INSERT INTO phpgw_wiki_pages (wiki_id,name,lang,version,time,supercede,readable,writable,username,hostname,title,body,comment) VALUES (0,'$name','en',1,$time,$time,0,0,'setup','localhost','$name','$body','added by setup')");
 	}
 

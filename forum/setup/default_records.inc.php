@@ -23,7 +23,7 @@
 	$oProc->query("INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('1', '2', 'Yup, another example')");
 	$oProc->query("INSERT INTO phpgw_forum_body (cat_id, for_id, message) VALUES ('2', '3', 'I ran out of ideas ... so, heres another sample.')");
 
-	$oProc->query("INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:19:54', '1', '-1', '1', '1',0, 'Example','0', '1', '0', '0', '1')");
-	$oProc->query("INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:20:12', '2', '1', '1', '1',0, 'Re: Example','0', '1', '1', '1', '1')");
-	$oProc->query("INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:15', '3', '-1', '1', '2',0, 'Example message','0', '3', '0', '0', '0')");
-	$oProc->query("INSERT INTO phpgw_forum_threads (postdate,main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('2000-12-27 04:21:58', '4', '-1', '2', '3',0, '','0', '4', '0', '0', '0')");
+	$oProc->query("INSERT INTO phpgw_forum_threads (main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('1', '-1', '1', '1',0, 'Example','0', '1', '0', '0', '1')");
+	$oProc->query("INSERT INTO phpgw_forum_threads (main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('2', '1', '1', '1',0, 'Re: Example','0', '1', '1', '1', '1')");
+	$oProc->query("INSERT INTO phpgw_forum_threads (main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('3', '-1', '1', '2',0, 'Example message','0', '3', '0', '0', '0')");
+	$oProc->query("INSERT INTO phpgw_forum_threads (main,parent,cat_id,for_id,thread_owner,subject,stat,thread,depth,pos,n_replies) VALUES ('4', '-1', '2', '3',0, '','0', '4', '0', '0', '0')");
