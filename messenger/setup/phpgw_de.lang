@@ -28,7 +28,7 @@ send message to	messenger	de	Mitteilung senden an
 sorry, %1's account is not currently active	messenger	de	Sorry, das Benutzerkonto von %1 ist zur Zeit nicht aktiviert
 update a message status	messenger	de	Den Status eine Nachricht updaten
 use select box for user list in compose	common	de	Die Auswahlbox benutzen um die Empfänger auszuwählen
-you didn't enter anything for the message	messenger	de	Sie haben in Ihrer Nachrich keinen Inhalt eingegeben
+you didn't enter anything for the message	messenger	de	Sie haben in Ihrer Nachricht keinen Inhalt eingegeben
 you have %1 new message	common	de	Sie haben %1 neue Mitteilungen
 you have %1 new messages	common	de	Sie haben %1 neue Mitteilungen
 you have no messages	messenger	de	Sie haben keine neuen Nachrichten
