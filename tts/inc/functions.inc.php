@@ -1,5 +1,7 @@
 <?php	//open and print each line of a file
 
+/* $Id$ */
+
 function rfile($textFile) {
 
   $myFile = fopen("$textFile", "r");
