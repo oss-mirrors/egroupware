@@ -38,7 +38,7 @@
 			<font size="-1">
 			<ul>
 				<li>only the 1st row of "{lang_if_messages_match}" works</li>
-				<li>when you submit the form, an IMAP search will be done</li>
+				<li>when you submit the form, an IMAP search *might* be done</li>
 				<li>Rule Matches are siaplayed as a message list, like a search result, up to about 20 hits</li>
 				<li>to navigate athe whole result set, click button "submit to mlist class"</li>
 				<li>besides viewing results, NO actions "{lang_take_actions}" are enabled yet</li>
@@ -50,9 +50,9 @@
 
 	<p>&nbsp;</p>
 
-<FORM action="{form1_action}" method="post">
+<FORM action="{form_edit_filter_action}" method="post">
 		
-	<h2><center>Sieve {filters_txt}<br>Dummy UI</center></h2>
+	<h2><center>Sieve {filters_txt}<br>Semi-Dumb UI</center></h2>
 	
 	<table width="90%" border="0" align="center">
 	<tr bgcolor="{row_off}">
@@ -60,7 +60,7 @@
 			<font size="-1">
 				&nbsp;{lang_name}:&nbsp;
 			</font>
-			<input size="30" name="filter_{f_idx}[filtername]" value="{filter_name}">
+			<input size="30" name="{filter_name_box_name}" value="{filter_name}">
 		</td>
 	</tr>
 	<tr bgcolor="{row_on}">
@@ -73,7 +73,7 @@
 	<tr bgcolor="{row_off}">
 		<td align="center">
 			<font size="-1">
-				{source_folder_or_andor}
+				{V_account_and_or_ignore}
 			</font>
 		</td>
 		<td align="center">
@@ -109,29 +109,6 @@
 		</td>
 	</tr>
 	<!-- END B_matches_row -->
-	
-	<tr bgcolor="{row_on}">
-		<td align="center">
-			<font size="-1">
-				<b>[{lang_more_choices}]</b>
-			</font>
-		</td>
-		<td align="center">
-			<font size="-1">
-				<b>[{lang_fewer_choices}]</b>
-			</font>
-		</td>
-		<td align="center">
-			<font size="-1">
-				&nbsp;
-			</font>
-		</td>
-		<td align="center">
-			<font size="-1">
-				<b>[{lang_reset}]</b>
-			</font>
-		</td>
-	</tr>
 	</table>
 	
 	<p>&nbsp;</p>
@@ -146,13 +123,7 @@
 	<tr bgcolor="{row_off}">
 		<td width="20%" align="center">
 			<font size="-1">
-				<select name="filter_{f_idx}[action_{action_rownum}_judgement]">
-					<option value="keep">{lang_keep}</option>
-					<option value="discard">{lang_discard}</option>
-					<option value="reject">{lang_reject}</option>
-					<option value="redirect">{lang_redirect}</option>
-					<option value="fileinto" selected>{lang_fileinto}</option>
-				</select>
+				{V_action_widget}
 			</font>
 		</td>
 		<td width="30%" align="center">
@@ -168,33 +139,11 @@
 		</td>
 		<td width="20%" align="center">
 			<font size="-1">
-				<input type="checkbox" name="filter_{f_idx}[action_{action_rownum}_stop]">&nbsp;{lang_stop_if_matched}
+				<input type="checkbox" name="filter_{f_idx}[action_{action_rownum}_stop_filtering]" value="True">&nbsp;{lang_stop_if_matched}
 			</font>
 		</td>
 	</tr>
 	<!-- END B_actions_row -->
-	<tr bgcolor="{row_on}">
-		<td align="center">
-			<font size="-1">
-				<b>[{lang_more_actions}]</b>
-			</font>
-		</td>
-		<td align="center">
-			<font size="-1">
-				<b>[{lang_fewer_actions}]</b>
-			</font>
-		</td>
-		<td align="center">
-			<font size="-1">
-				&nbsp;
-			</font>
-		</td>
-		<td colspan="2" align="center">
-			<font size="-1">
-				<b>[{lang_reset}]</b>
-			</font>
-		</td>
-	</tr>
 	</table>
 	
 	<p>&nbsp;</p>
@@ -205,17 +154,17 @@
 			&nbsp;
 		</td>
 		<td width="25%">
-			<input type="submit" name="{form1_submit_btn_name}" value="{lang_submit}">
+			<input type="submit" name="{form_edit_filter_btn_name}" value="{lang_submit}">
 			&nbsp; &nbsp;
 			<input type="reset" name="reset" value="{lang_clear}">
 		</td>
 	
 </form>
 	
-<form action="{form2_action}" method="post">
+<form action="{form_cancel_action}" method="post">
 	
 		<td width="25%">
-			<input type="submit" name="{form2_submit_btn_name}" value="{lang_cancel}">
+			<input type="submit" name="{form_cancel_btn_name}" value="{lang_cancel}">
 		</td>
 	
 </form>

@@ -272,8 +272,6 @@
 			$this->xi['show_num_new'] = False;
 			
 			// ---- account switchbox  ----
-
-
 			// make a HTML comobox used to switch accounts
 			$make_acctbox = True;
 			//$make_acctbox = False;
@@ -416,11 +414,11 @@
 			$this->xi['email_prefs_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								 'menuaction=email.uipreferences.preferences'
-								.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
+								.'&ex_acctnum='.$GLOBALS['phpgw']->msg->get_acctnum());
 			
 			$this->xi['filters_link'] = $GLOBALS['phpgw']->link(
-								'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/filters.php'
-								);
+								'/index.php',
+								 'menuaction=email.uifilters.filters_list');
 			
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
 			// FIXME

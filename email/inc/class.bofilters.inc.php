@@ -9,26 +9,57 @@
 	*  Free Software Foundation; either version 2 of the License, or (at your		*
 	*  option) any later version.								*
 	\**************************************************************************/
-
+	
 	/* $Id$ */
-
-	class mail_filters
+	
+	class bofilters
 	{
+		var $public_functions = array(
+			'get_langed_labels'	=> True,
+			'folder'		=> True,
+			'folder_action'		=> True,
+			'folder_data'		=> True
+		);
+		
 		var $filters = Array();
 		var $template = '';
 		var $finished_mlist = '';
 		var $submit_mlist_to_class_form = '';
 		var $submit_flag = '';
-		//var $debug_level = 0;
-		var $debug_level = 1;
-		//var $debug_level = 2;
+		var $debug = 0;
 		var $sieve_to_imap_fields=array();
 		var $result_set = Array();
 		var $result_set_mlist = Array();
 		var $fake_folder_info = array();
 		
-		function mail_filters()
+		function bofilters()
 		{
+			if ($this->debug > 0) { echo 'email.bofilters *constructor*: ENTERING <br>'; }
+			if (is_object($GLOBALS['phpgw']->msg))
+			{
+				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			}
+			else
+			{
+				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
+			if ($GLOBALS['phpgw']->msg->get_isset_arg('already_grab_class_args_gpc'))
+			{
+				if ($this->debug > 0) { echo 'email.bofilters *constructor*: LEAVING , msg object already initialized<br>'; }
+				return True;
+			}
+				
+			if ($this->debug > 1) { echo 'email.bofilters *constructor*: msg object NOT yet initialized<br>'; }
+			$args_array = Array();
+			// should we log in or not
+			$args_array['do_login'] = False;
+			if ($this->debug > 1) { echo 'email.bofilters. *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
+			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			$already_initialized = True;
+			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
+
 			$this->sieve_to_imap_fields = Array(
 				'from'		=> 'FROM',
 				'to'		=> 'TO',
@@ -45,30 +76,42 @@
 			);
 		}
 		
+		function process_submitted_data()
+		{
+			if ($this->debug > 0) { echo 'bofilters.process_submitted_data: ENTERING<br>'."\r\n"; }
+			if ($this->debug > 1) { echo 'bofilters.process_submitted_data: caling $this->distill_filter_args<br>'."\r\n"; }
+			$this->distill_filter_args();
+			
+			if ($this->debug > 2) { echo 'bofilters.process_submitted_data: post distill_filter_args;  this->filters[] dump <strong><pre>'; print_r($this->filters); echo "</pre></strong>\r\n"; }
+			if ($this->debug > 0) { echo 'bofilters: process_submitted_data: LEAVING<br>'."\r\n"; }
+		}
+		
 		function distill_filter_args()
 		{
+			if ($this->debug > 2) { echo 'bofilters: $GLOBALS[HTTP_POST_VARS] count=['.count($GLOBALS['HTTP_POST_VARS']).'] ; dump <strong><pre>'; print_r($GLOBALS['HTTP_POST_VARS']); echo "</pre></strong>\r\n"; }
 			// do we have data
 			if  (!isset($GLOBALS['HTTP_POST_VARS'][$this->submit_flag]))
 			{
-				if ($this->debug_level > 0) { echo 'mail_filters: distill_filter_args: NO data submitted<br>'."\r\n"; }
+				if ($this->debug > 0) { echo 'bofilters: distill_filter_args: NO data submitted<br>'."\r\n"; }
 				return Array();
 			}
-			
+			@reset($GLOBALS['HTTP_POST_VARS']);
 			// look for top level "filter_X" array
 			while(list($key,$value) = each($GLOBALS['HTTP_POST_VARS']))
 			{
+				if ($this->debug > 1) { echo 'bofilters: $GLOBALS[HTTP_POST_VARS] key,value walk thru: $key: ['.$key.'] ; $value DUMP:<pre>'; print_r($value); echo "</pre>\r\n"; }
 				if (strstr($key, 'filter_'))
 				{
 					// put the raw data dor this particular filter into a local var
 					$filter_X = $GLOBALS['HTTP_POST_VARS'][$key];
-					if ($this->debug_level > 0) { echo 'mail_filters: distill_filter_args: filter_X dump <strong><pre>'; print_r($filter_X); echo "</pre></strong>\r\n"; }
+					if ($this->debug > 0) { echo 'bofilters: distill_filter_args: filter_X dump <strong><pre>'; print_r($filter_X); echo "</pre></strong>\r\n"; }
 					
 					// prepare to fill your structured array
 					$this_idx = count($this->filters);
 					// grab the "filter name" associated with this data
 					$this->filters[$this_idx]['filtername'] = $filter_X['filtername'];
 					// what folder so we search
-					$this->filters[$this_idx]['source_folder'] = $filter_X['source_folder'];
+					$this->filters[$this_idx]['source_account'] = $filter_X['source_account'];
 					// init sub arrays
 					$this->filters[$this_idx]['matches'] = Array();
 					$this->filters[$this_idx]['actions'] = Array();
@@ -98,11 +141,11 @@
 						{
 							// now we grab the index value from the key string
 							$match_this_idx = (int)$filter_X_key[6];
-							if ($this->debug_level > 1) { echo 'mail_filters: distill_filter_args: match_this_idx grabbed value: ['.$match_this_idx.']<br>'; }
+							if ($this->debug > 1) { echo 'bofilters: distill_filter_args: match_this_idx grabbed value: ['.$match_this_idx.']<br>'; }
 							// grab "key" that comes after that match_this_idx we just got
 							// remember "substr" uses 1 as the first letter in a string, not 0, AND starts returning the letter AFTER the specified location
 							$match_grabbed_key = substr($filter_X_key, 8);
-							if ($this->debug_level > 1) { echo 'mail_filters: distill_filter_args: match_grabbed_key value: ['.$match_grabbed_key.']<br>'; }
+							if ($this->debug > 1) { echo 'bofilters: distill_filter_args: match_grabbed_key value: ['.$match_grabbed_key.']<br>'; }
 							$this->filters[$this_idx]['matches'][$match_this_idx][$match_grabbed_key] = $filter_X[$filter_X_key];
 						}
 						/*
@@ -123,22 +166,22 @@
 						{
 							// now we grab the index value from the key string
 							$action_this_idx = (int)$filter_X_key[7];
-							if ($this->debug_level > 1) { echo 'mail_filters: distill_filter_args: action_this_idx grabbed value: ['.$action_this_idx.']<br>'; }
+							if ($this->debug > 1) { echo 'bofilters: distill_filter_args: action_this_idx grabbed value: ['.$action_this_idx.']<br>'; }
 							// grab "key" that comes after that match_this_idx we just got
 							// remember "substr" uses 1 as the first letter in a string, not 0, AND starts returning the letter AFTER the specified location
 							$action_grabbed_key = substr($filter_X_key, 9);
-							if ($this->debug_level > 1) { echo 'mail_filters: distill_filter_args: action_grabbed_key value: ['.$action_grabbed_key.']<br>'; }
+							if ($this->debug > 1) { echo 'bofilters: distill_filter_args: action_grabbed_key value: ['.$action_grabbed_key.']<br>'; }
 							$this->filters[$this_idx]['actions'][$action_this_idx][$action_grabbed_key] = $filter_X[$filter_X_key];
 						}
 					}
 				}
 			}
-			if ($this->debug_level > 0) { echo 'mail_filters: distill_filter_args: this->filters[] dump <strong><pre>'; print_r($this->filters); echo "</pre></strong>\r\n"; }
+			if ($this->debug > 0) { echo 'bofilters: distill_filter_args: this->filters[] dump <strong><pre>'; print_r($this->filters); echo "</pre></strong>\r\n"; }
 		}
 
 		function sieve_to_imap_string()
 		{
-			if ($this->debug_level > 2) { echo 'mail_filters: sieve_to_imap_string: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
+			if ($this->debug > 2) { echo 'bofilters: sieve_to_imap_string: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
 			$look_here_sieve = $this->filters[0]['matches'][0]['examine'];
 			$look_here_imap = $this->sieve_to_imap_fields[$look_here_sieve];
 			$for_this = $this->filters[0]['matches'][0]['matchthis'];
@@ -149,19 +192,19 @@
 			|| ($look_here_imap == ''))
 			{
 				$conv_error = 'invalid or no examine data';
-				if ($this->debug_level > 0) { echo '<b> *** error</b>: mail_filters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
+				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
 				return '';
 			}
 			elseif ((!isset($for_this))
 			|| (trim($for_this) == ''))
 			{
 				$conv_error = 'invalid or no search string data';
-				if ($this->debug_level > 0) { echo '<b> *** error</b>: mail_filters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
+				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
 				return '';
 			}
 			
 			$imap_str = $look_here_imap.' "'.$for_this.'"';
-			if ($this->debug_level > 0) { echo 'mail_filters: sieve_to_imap_string: string is: '.$imap_str."<br>\r\n"; }
+			if ($this->debug > 0) { echo 'bofilters: sieve_to_imap_string: string is: '.$imap_str."<br>\r\n"; }
 			return $imap_str;
 		}
 
@@ -171,7 +214,7 @@
 			$imap_search_str = $this->sieve_to_imap_string();
 			if (!$imap_search_str)
 			{
-				if ($this->debug_level > 0) { echo '<b> *** error</b>: mail_filters: do_imap_search: sieve_to_imap_string returned empty<br>'."\r\n"; }
+				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: do_imap_search: sieve_to_imap_string returned empty<br>'."\r\n"; }
 				return array();
 			}
 			
@@ -186,16 +229,16 @@
 			&& ($attempt_reuse == True))
 			{
 				// no not create, we will reuse existing
-				echo 'mail_filters: do_imap_search: reusing existing mail_msg object'.'<br>';
+				echo 'bofilters: do_imap_search: reusing existing mail_msg object'.'<br>';
 				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
 				$reuse_feed_args = $GLOBALS['phpgw']->msg->get_all_args();
 				$args_array = Array();
 				$args_array = $reuse_feed_args;
-				if ((isset($this->filters[0]['source_folder']))
-				&& ($this->filters[0]['source_folder'] != ''))
+				if ((isset($this->filters[0]['source_account']))
+				&& ($this->filters[0]['source_account'] != ''))
 				{
-					if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: this->filters[0][source_folder] = ' .$this->filters[0]['source_folder'].'<br>'."\r\n"; }
-					$args_array['folder'] = $this->filters[0]['source_folder'];
+					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_account'];
 				}
 				else
 				{
@@ -206,15 +249,15 @@
 			}
 			else
 			{
-				if ($this->debug_index_data == True) { echo 'mail_filters: do_imap_search: creating new login email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
+				if ($this->debug_index_data == True) { echo 'bofilters: do_imap_search: creating new login email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
 				// new login 
 				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
 				$args_array = Array();
-				if ((isset($this->filters[0]['source_folder']))
-				&& ($this->filters[0]['source_folder'] != ''))
+				if ((isset($this->filters[0]['source_account']))
+				&& ($this->filters[0]['source_account'] != ''))
 				{
-					if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: this->filters[0][source_folder] = ' .$this->filters[0]['source_folder'].'<br>'."\r\n"; }
-					$args_array['folder'] = $this->filters[0]['source_folder'];
+					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_account'];
 				}
 				else
 				{
@@ -228,11 +271,11 @@
 			/*
 			//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 			$args_array = Array();
-			if ((isset($this->filters[0]['source_folder']))
-			&& ($this->filters[0]['source_folder'] != ''))
+			if ((isset($this->filters[0]['source_account']))
+			&& ($this->filters[0]['source_account'] != ''))
 			{
-				if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: this->filters[0][source_folder] = ' .$this->filters[0]['source_folder'].'<br>'."\r\n"; }
-				$args_array['folder'] = $this->filters[0]['source_folder'];
+				if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+				$args_array['folder'] = $this->filters[0]['source_account'];
 			}
 			else
 			{
@@ -250,14 +293,14 @@
 			if (($initial_result_set == False)
 			|| (count($initial_result_set) == 0))
 			{
-				echo 'mail_filters: do_imap_search: no hits or possible search error<br>'."\r\n";
-				echo 'mail_filters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'"'."\r\n";
+				echo 'bofilters: do_imap_search: no hits or possible search error<br>'."\r\n";
+				echo 'bofilters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'"'."\r\n";
 				// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
 			}
 			else
 			{
 				$this->result_set = $initial_result_set;
-				if ($this->debug_level > 0) { echo 'mail_filters: do_imap_search: number of matches = ' .count($this->result_set).'<br>'."\r\n"; }
+				if ($this->debug > 0) { echo 'bofilters: do_imap_search: number of matches = ' .count($this->result_set).'<br>'."\r\n"; }
 				// make a "fake" folder_info array to make things simple for get_msg_list_display
 				$this->fake_folder_info['is_imap'] = True;
 				$this->fake_folder_info['folder_checked'] = $GLOBALS['phpgw']->msg->get_arg_value('folder');
@@ -268,7 +311,7 @@
 				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$this->result_set);
 			}
 			$GLOBALS['phpgw']->msg->end_request();
-			//echo 'mail_filters: do_imap_search: returned:<br>'; var_dump($this->result_set); echo "<br>\r\n";
+			//echo 'bofilters: do_imap_search: returned:<br>'; var_dump($this->result_set); echo "<br>\r\n";
 		}
 
 		function make_mlist_box()
@@ -334,8 +377,8 @@
 					$this_msg_num = (string)$this->result_set[$i];
 					$mlist_hidden_vars .= '<input type="hidden" name="mlist_set['.(string)$i.']" value="'.$this_msg_num.'">'."\r\n";
 				}
-				// preserve the folder we searched (raw posted source_folder was never preped in here, so it's ok to send out as is)
-				$mlist_hidden_vars .= '<input type="hidden" name="folder" value="'.$this->filters[0]['source_folder'].'">'."\r\n";
+				// preserve the folder we searched (raw posted source_account was never preped in here, so it's ok to send out as is)
+				$mlist_hidden_vars .= '<input type="hidden" name="folder" value="'.$this->filters[0]['source_account'].'">'."\r\n";
 				// make the first prev next last arrows
 				$this->template->set_var('mlist_submit_form_action', $GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.mlist'));
 				$this->template->set_var('mlist_hidden_vars',$mlist_hidden_vars);
