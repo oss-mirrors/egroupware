@@ -111,7 +111,7 @@
 
 
 		// remove this one, so->site_table_metadata replaces this and uiconfig is the only class that uses this one
-		function get_object_column_names($site_id,$table)
+/*		function get_object_column_names($site_id,$table)
 		{
 			$fields_props=$this->so->site_table_metadata($site_id,$table);
 
@@ -122,35 +122,7 @@
 
 			return $column_names;
 		}
-
-
-
-		function read_preferences($key)
-		{
-			$GLOBALS['phpgw']->preferences->read_repository();
-
-			$prefs = array();
-
-			if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
-			{
-				$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
-			}
-			return $prefs;
-		}
-
-		function save_preferences($key,$prefs)
-		{
-			$GLOBALS['phpgw']->preferences->read_repository();
-
-			if ($prefs)
-			{
-				$GLOBALS['phpgw']->preferences->change('jinn','$key',$prefs);
-				$GLOBALS['phpgw']->preferences->save_repository(True);
-			}
-		}
-
-
-
+*/
 		function get_sites_allowed($uid)
 		{
 			$groups=$GLOBALS['phpgw']->accounts->membership();

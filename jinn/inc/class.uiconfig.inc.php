@@ -38,50 +38,72 @@
 				'config' => 'config_browse_view.tpl'
 			));
 
-			$columns = $this->bo->get_object_column_names($this->bo->site_id,$this->bo->site_object[table_name]);
+			$columns_data=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
+
+			if(is_array($columns_data));
+			{
+				foreach($columns_data as $col_data)
+				{
+					$columns[]=$col_data[name];
+
+				}
+
+			}
 
 			if (count($columns)>0)
 			{
 				// get the prefered columns, if they exist
-				$prefs=$this->bo->read_preferences('show_fields'); //False; // function not implemented yet
-				// "1:id,name,place|2:id,name,city" // example
+				$prefs_show_hide=$this->bo->read_preferences('show_fields'); 
 
-				$prefs_objects=explode('|',$prefs);
-				foreach ($prefs_objects as $prefs_obj)
+				$default_order=$this->bo->read_preferences('default_order');
+
+
+				$prefs_show_hide=explode('|',$prefs_show_hide);
+				if(is_array($prefs_show_hide))
 				{
-					list($object,$fields)=explode(':',$prefs_obj);
-
-					// which/how many column to show, all, the prefered, or the default thirst 4
-					if($pref_columns)
+					foreach($prefs_show_hide as $pref_s_h)
 					{
-						$show_cols=$pref_columns;
-					}
-					else
-					{
-						$show_cols=array_slice($columns,0,4);
-					}
-
-					foreach ($columns as $col)
-					{
-						unset($checked);
-						if(in_array($col,$show_cols)) $checked='CHECKED';
-						if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
+						$pref_array=explode(',',$pref_s_h);
+						if($pref_array[0]==$this->bo->site_object_id)
 						{
-							$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
+							$pref_columns=array_slice($pref_array,1);
 						}
-						else
-						{
-							$bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
-						}
-						$rows.='<tr>';				
-						$rows.='<td bgcolor='.$bgclr.' align="left">'.$col.'</td>';
-						$rows.='<td bgcolor='.$bgclr.' align="left"><input name="'.$col.'" type=checkbox '.$checked.'></td>';
-						$rows.='</tr>';
 					}
 				}
 
-				$form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.save_object_config');
+				// which/how many column to show, all, the prefered, or the default thirst 4
+				if($pref_columns)
+				{
+					$show_cols=$pref_columns;
+				}
+				else
+				{
+					$show_cols=array_slice($columns,0,4);
+				}
 
+				foreach ($columns as $col)
+				{
+					unset($checked);
+					unset($checked2);
+
+					if($default_order==$col) $checked2='CHECKED';
+					if(in_array($col,$show_cols)) $checked='CHECKED';
+					if ($bgclr==$GLOBALS['phpgw_info']['theme']['row_off'])
+					{
+						$bgclr=$GLOBALS['phpgw_info']['theme']['row_on'];
+					}
+					else
+					{
+						$bgclr=$GLOBALS['phpgw_info']['theme']['row_off'];
+					}
+					$rows.='<tr>';				
+					$rows.='<td bgcolor='.$bgclr.' align="left">'.$col.'</td>';
+					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="SHOW'.$col.'" type=checkbox '.$checked.'></td>';
+					$rows.='<td bgcolor='.$bgclr.' align="left"><input name="ORDER" type=radio value="'.$col.'" '.$checked2.'></td>';
+					$rows.='</tr>';
+				}
+
+				$form_action=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.save_object_config');
 				$button_save='<td><input type="submit" name="action" value="'.lang('save').'"></td>';
 
 				$button_cancel='<td><input type="button" onClick="location=\''.
@@ -96,15 +118,13 @@
 				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 				$this->template->set_var('lang_column_name',lang('column name'));
 				$this->template->set_var('lang_show_column',lang('show colomn'));
+				$this->template->set_var('lang_default_order',lang('default order'));
 
 				$this->template->pparse('out','config');
 
 				unset($this->message);
 			}
 
-
 		}
-
-
 	}
-?>
+	?>

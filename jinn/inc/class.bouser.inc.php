@@ -65,7 +65,7 @@
 			$_form = $GLOBALS['HTTP_POST_VARS']['form'];
 			$_site_id = $GLOBALS['HTTP_POST_VARS']['site_id'];
 			$_site_object_id = $GLOBALS['HTTP_POST_VARS']['site_object_id'];
-			
+
 			if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
 			if (($_form=='main_menu') || !empty($site_object_id)) $this->site_object_id  = $_site_object_id;
 
@@ -148,20 +148,20 @@
 
 
 		//remove this one
-		function get_records($table,$where_condition,$offset,$limit,$value_reference)
+		function get_records($table,$where_condition,$offset,$limit,$value_reference,$order_by='',$field_list='*')
 		{
 			if (!$value_reference)
 			{
 				$value_reference='num';
 			}
 
-			$records = $this->so->get_record_values($this->site_id,$table,$where_condition,$offset,$limit,$value_reference);
+			$records = $this->so->get_record_values($this->site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by,$field_list);
 
 			return $records;
 		}
 
 		// remove this one
-		function get_records_2($table,$where_condition,$offset,$limit,$value_reference,$order_by)
+/*		function get_records_2($table,$where_condition,$offset,$limit,$value_reference,$order_by)
 		{
 			if (!$value_reference)
 			{
@@ -173,7 +173,7 @@
 			return $records;
 		}
 
-
+*/
 
 		function object_insert()
 		{
@@ -184,7 +184,7 @@
 			else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
 
 			$this->save_sessiondata();
-			
+
 			if($GLOBALS[HTTP_POST_VARS][repeat_input]=='true')
 			{
 				$this->common->exit_and_open_screen('jinn.uiuser.add_edit_object&repeat_input=true');
@@ -193,7 +193,7 @@
 			{
 				$this->common->exit_and_open_screen('jinn.uiuser.index');
 			}
-				
+
 		}
 
 		function object_update()
@@ -310,7 +310,7 @@
 			$table_display=$table_info2[0];
 			$display_field=$table_info2[1];
 
-			$allrecords=$this->get_records_2($table,'','','','name',$display_field);
+			$allrecords=$this->get_records($table,'','','','name',$display_field);
 
 
 			if(is_array($allrecords))
@@ -433,6 +433,84 @@
 					closedir($handle); 
 				}
 			}
+
+			function read_preferences($key)
+			{
+				$GLOBALS['phpgw']->preferences->read_repository();
+
+				$prefs = array();
+
+				if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
+				{
+					$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
+				}
+				return $prefs;
+			}
+
+			function save_preferences($key,$prefs)
+			{
+				$GLOBALS['phpgw']->preferences->read_repository();
+
+				//if ($prefs)
+				//{
+					$GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
+					$GLOBALS['phpgw']->preferences->save_repository(True);
+				//}
+			}
+
+			/****************************************************************************\
+			* 	Config site_objects                                              *
+			\****************************************************************************/
+
+			function save_object_config()
+			{
+				
+				$prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
+				$prefs_show_hide_read=$this->read_preferences('show_fields');
+				
+				$show_fields_entry=$this->site_object[object_id];
+
+				while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+				{
+					if(substr($key,0,4)=='SHOW')
+					$show_fields_entry.=','.substr($key,4);
+				}
+				
+				if($prefs_show_hide_read) 
+				{
+					$prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
+
+					foreach($prefs_show_hide_arr as $pref_s_h)
+					{
+						
+						$pref_array=explode(',',$pref_s_h);
+//echo $this->site_object[object_id];
+						if($pref_array[0]!=$this->site_object[object_id])
+						{
+							$prefs_show_hide_new.=implode(',',$pref_array);
+						}
+					}
+			
+					if($prefs_show_hide_new) $prefs_show_hide_new.='|';
+					$prefs_show_hide_new.=$show_fields_entry;
+				}
+				else
+				{
+					$prefs_show_hide_new=$show_fields_entry;
+				}
+				
+
+				
+				
+				
+				$this->save_preferences('show_fields',$prefs_show_hide_new);
+				$this->save_preferences('default_order',$prefs_order_new);
+			
+				$this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
+			}
+
+
+
 
 			/**
 			* get storage filter from plugin 
