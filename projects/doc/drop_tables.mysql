@@ -1,11 +1,11 @@
 # $Id$
 
-drop table p_projects;
-drop table p_activities;
-drop table p_projectactivities;
-drop table p_hours;
-drop table p_projectmembers;
-drop table p_invoice;
-drop table p_invoicepos;
-drop table p_delivery;
-drop table p_deliverypos;
+drop table phpgw_p_projects;
+drop table phpgw_p_activities;
+drop table phpgw_p_projectactivities;
+drop table phpgw_p_hours;
+drop table phpgw_p_projectmembers;
+drop table phpgw_p_invoice;
+drop table phpgw_p_invoicepos;
+drop table phpgw_p_delivery;
+drop table phpgw_p_deliverypos;

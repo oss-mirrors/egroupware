@@ -1,96 +1,90 @@
 # $Id$
 
- CREATE TABLE p_projects (
-	id		int(11) NOT NULL auto_increment,
+ CREATE TABLE phpgw_p_projects (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
 	num		varchar(20) NOT NULL,
-	owner		int(11),
-	access		varchar(25),
-	entry_date	int(11),
-	date		int(11),
-        end_date        int(11),
-	coordinator	int(11),
-	customer	int(11),
+	owner		int(11) DEFAULT '0' NOT NULL,
+	entry_date	int(11) DEFAULT '0' NOT NULL,
+	start_date	int(11) DEFAULT '0' NOT NULL,
+        end_date        int(11) DEFAULT '0' NOT NULL,
+	coordinator	int(11) DEFAULT '0' NOT NULL,
+	customer	int(11) DEFAULT '0' NOT NULL,
         status		enum('active','nonactive','archiv') NOT NULL,
 	descr		text,
-	title		varchar(50),
-	budget		decimal(20,2),
-	PRIMARY KEY (id)
+	title		varchar(255) NOT NULL,
+	budget		decimal(20,2) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_activities (
-	id		int(11) NOT NULL auto_increment,
-	num		varchar(20),
-	descr		varchar(50),
+CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num);
+
+CREATE TABLE phpgw_p_activities (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	num		varchar(20) NOT NULL,
+	descr		varchar(255) NOT NULL,
 	remarkreq	enum('N','Y') NOT NULL,
-	minperae	decimal(4,0),
-	billperae	decimal(20,2),
-	PRIMARY KEY (id)
+	minperae	decimal(4,0) DEFAULT '0' NOT NULL,
+	billperae	decimal(20,2) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_projectactivities (
-	id		int(11) NOT NULL auto_increment,
-	project_id	int(11),
-	activity_id	int(11),
-	billable	enum('N','Y') NOT NULL,
-	PRIMARY KEY (id)
+CREATE INDEX phpgw_p_activities_key ON phpgw_p_activities(id,num);
+
+CREATE TABLE phpgw_p_projectactivities (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	project_id	int(11) DEFAULT '0' NOT NULL,
+	activity_id	int(11) DEFAULT '0' NOT NULL,
+	billable	enum('N','Y') NOT NULL
 );
 
-CREATE TABLE p_hours (
-	id		int(11) NOT NULL auto_increment,
-	employee	int(11) NOT NULL,
-	project_id	int(11),
-	activity_id	int(11),
-	entry_date	int(11),
-	date		int(11),
-        end_date        int(11),
+CREATE TABLE phpgw_p_hours (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	employee	int(11) DEFAULT '0' NOT NULL,
+	project_id	int(11) DEFAULT '0' NOT NULL,
+	activity_id	int(11) DEFAULT '0' NOT NULL,
+	entry_date	int(11) DEFAULT '0' NOT NULL,
+	date		int(11) DEFAULT '0' NOT NULL,
+        end_date        int(11) DEFAULT '0' NOT NULL,
 	remark		text,
-	minutes		int(10),
-	minperae	decimal(4,0),
-	billperae	decimal(20,2),
-	status		enum('done','open','billed') NOT NULL,
-	PRIMARY KEY (id)
+	minutes		int(10) DEFAULT '0' NOT NULL,
+	minperae	decimal(4,0) DEFAULT '0' NOT NULL,
+	billperae	decimal(20,2) DEFAULT '0' NOT NULL,
+	status		enum('done','open','billed') NOT NULL
 );
 
-CREATE TABLE p_projectmembers (
-	id		int(11) NOT NULL auto_increment,
-	project_id	int(11),
-	account_id	int(11),
-	PRIMARY KEY (id)
+CREATE TABLE phpgw_p_projectmembers (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	project_id	int(11) DEFAULT '0' NOT NULL,
+	account_id	int(11) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_invoice (
-	id		int(11) NOT NULL auto_increment,
-	num		varchar(11) NOT NULL,
-	date		int(11),
-	project_id	int(11),
-	customer	int(11),
-	sum		decimal(20,2),
-	PRIMARY KEY (id),
-	UNIQUE (num)
+CREATE TABLE phpgw_p_invoice (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	num		varchar(20) NOT NULL,
+	date		int(11) DEFAULT '0' NOT NULL,
+	project_id	int(11) DEFAULT '0' NOT NULL,
+	customer	int(11) DEFAULT '0' NOT NULL,
+	sum		decimal(20,2) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_invoicepos (
-	id		int(11) NOT NULL auto_increment,
-	invoice_id	int(11) NOT NULL,
-	hours_id	int(11),
-	PRIMARY KEY (id)
+CREATE INDEX phpgw_p_invoice_key ON phpgw_p_invoice(id,num);
+
+CREATE TABLE phpgw_p_invoicepos (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	invoice_id	int(11) DEFAULT '0' NOT NULL,
+	hours_id	int(11) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_delivery (
-	id		int(11) NOT NULL auto_increment,
-	num		varchar(11) NOT NULL,
-	date		int(11),
-	project_id	int(11),
-	customer	int(11),
-	PRIMARY KEY (id),
-	UNIQUE (num)
+CREATE TABLE phpgw_p_delivery (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	num		varchar(20) NOT NULL,
+	date		int(11) DEFAULT '0' NOT NULL,
+	project_id	int(11) DEFAULT '0' NOT NULL,
+	customer	int(11) DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE p_deliverypos (
-	id		int(11) NOT NULL auto_increment,
-	delivery_id	int(11) NOT NULL,
-	hours_id	int(11),
-	PRIMARY KEY (id)
-);
+CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
 
-create unique index project_num on p_projects (num);
+CREATE TABLE phpgw_p_deliverypos (
+	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
+	delivery_id	int(11) DEFAULT '0' NOT NULL,
+	hours_id	int(11) DEFAULT '0' NOT NULL
+);
