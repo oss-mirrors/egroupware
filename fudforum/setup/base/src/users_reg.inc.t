@@ -40,7 +40,7 @@ class fud_user_reg extends fud_user
 			jabber=".ssn(urlencode($this->jabber)).",
 			affero=".ssn(urlencode($this->affero)).",
 			posts_ppg='".iz($this->posts_ppg)."',
-			time_zone=".ssn($this->time_zone).",
+			time_zone='".addslashes($this->time_zone)."',
 			bday=".iz($this->bday).",
 			user_image=".ssn(htmlspecialchars($this->user_image)).",
 			location=".ssn(htmlspecialchars($this->location)).",

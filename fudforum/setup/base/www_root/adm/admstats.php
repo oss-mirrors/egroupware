@@ -155,6 +155,7 @@ function get_sql_disk_usage()
 		$_POST['e_year'] = $e_year;
 		$_POST['e_month'] = $e_month;
 		$_POST['e_day'] = $e_day;
+		$_POST['type'] = $_POST['sep'] = '';
 
 		$disk_usage_array = array();
 		$total_disk_usage = 0;
@@ -196,11 +197,11 @@ function get_sql_disk_usage()
 </tr>
 <tr>
 	<td valign="top"><b>Level of detail: </b></td>
-	<td colspan=3><select name="sep"><?php echo tmpl_draw_select_opt("hour\nday\nweek\nmonth\nyear", "Hour\nDay\nWeek\nMonth\nYear", $sep, '', ''); ?></select></td>
+	<td colspan=3><select name="sep"><?php echo tmpl_draw_select_opt("hour\nday\nweek\nmonth\nyear", "Hour\nDay\nWeek\nMonth\nYear", $_POST['sep'], '', ''); ?></select></td>
 </tr>
 <tr>
 	<td valign="top"><b>Graph Data: </b></td>
-	<td colspan=3><select name="type"><?php echo tmpl_draw_select_opt("msg\nthr\nusr", "Posted Messages\nCreated Topics\nRegistered users", $type, '', ''); ?></select></td>
+	<td colspan=3><select name="type"><?php echo tmpl_draw_select_opt("msg\nthr\nusr", "Posted Messages\nCreated Topics\nRegistered users", $_POST['type'], '', ''); ?></select></td>
 </tr>
 <tr><td colspan=4 align="right"><input type="submit" name="submit" value="Submit"></td></tr>
 <?php echo _hs; ?>
