@@ -147,7 +147,16 @@
 
 		function cached_accounts($account_id)
 		{
-			return $GLOBALS['phpgw']->accounts->get_account_data($account_id);
+			$this->accounts = CreateObject('phpgwapi.accounts',$account_id);
+
+			$this->accounts->read_repository();
+
+			$cached_data[$this->accounts->data['account_id']]['account_id']		= $this->accounts->data['account_id'];
+			$cached_data[$this->accounts->data['account_id']]['account_lid']	= $this->accounts->data['account_lid'];
+			$cached_data[$this->accounts->data['account_id']]['firstname']   	= $this->accounts->data['firstname'];
+			$cached_data[$this->accounts->data['account_id']]['lastname']    	= $this->accounts->data['lastname'];
+
+			return $cached_data;
 		}
 
 		function read_abook($start, $query, $qfilter, $sort, $order)
@@ -158,7 +167,7 @@
 						'n_family'	=> 'n_family',
 						'org_name'	=> 'org_name');
 
-			$entries = $this->contacts->read($start, $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $qfilter, $sort, $order, $account_id);
+			$entries = $this->contacts->read($start,$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $qfilter, $sort, $order, $account_id);
 			$this->total_records = $this->contacts->total_records;
 			return $entries;
 		}
@@ -251,6 +260,7 @@
 
 			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			$prefs['country']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
+
 
 			if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
 			{
@@ -459,7 +469,7 @@
 			{
 				if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
 				{
-					$error[] = lang('You have entered an starting invalid date');
+					$error[] = lang('You have entered an invalid start date !');
 				}
 			}
 
@@ -467,7 +477,7 @@
 			{
 				if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
 				{
-					$error[] = lang('You have entered an ending invalid date');
+					$error[] = lang('You have entered an invalid end date !');
 				}
 			}
 

@@ -56,11 +56,10 @@
 			{
 				case 'wu':	$l = lang('per workunit'); break;
 				case 'h':	$l = lang('per hour'); break;
-				default	:	$l = lang('per hour/workunit');
-            }
+				default:	$l = lang('per hour/workunit');
+			}
 			return $l;
 		}
-
 
 		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = '', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
@@ -96,7 +95,7 @@
 			{
 				if ($this->isprojectadmin('pad') || $this->isbookkeeper('pbo'))
 				{
-					$filtermethod = " ( access != 'private' OR coordinator ='" . $this->account . "' )";
+					$filtermethod = " ( access != 'private' OR coordinator = '" . $this->account . "' )";
 				}
 				else
 				{
@@ -254,7 +253,7 @@
 
 			if ($p_id && ($p_id != 0))
 			{
-				if (count($book_activities) != 0)
+				if (is_array($book_activities))
 				{
 					while($activ=each($book_activities))
 					{
@@ -263,7 +262,7 @@
 					}
 				}
 
-				if (count($bill_activities) != 0)
+				if (is_array($bill_activities))
 				{
 					while($activ=each($bill_activities))
 					{
@@ -633,7 +632,7 @@
 
 			$this->db->query("DELETE from phpgw_p_projectmembers WHERE type='" . $aa . "' OR type='" . $ag . "'",__LINE__,__FILE__);
 
-			if (count($users) != 0)
+			if (is_array($users))
 			{
 				while($activ=each($users))
 				{
@@ -642,7 +641,7 @@
 				}
 			}
 
-			if (count($groups) != 0)
+			if (is_array($groups))
 			{
 				while($activ=each($groups))
 				{
@@ -913,8 +912,8 @@
 				if (is_array($drop_list))
 				{
 					reset($drop_list);
-				//	_debug_array($drop_list);
-				//	exit;
+//					_debug_array($drop_list);
+//					exit;
 
 					$subdelete = " OR parent in (" . implode(',',$drop_list) . ")";
 

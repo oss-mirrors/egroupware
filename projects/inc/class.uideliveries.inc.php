@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
+	* Copyright (C) 2000 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -45,7 +45,7 @@
 
 		function uideliveries()
 		{
-			global $action;
+			$action = get_var('action',array('POST','GET'));
 
 			$this->boprojects				= CreateObject('projects.boprojects',True, $action);
 			$this->bodeliveries				= CreateObject('projects.bodeliveries');
@@ -53,7 +53,6 @@
 			$this->sbox						= CreateObject('phpgwapi.sbox');
 			$this->cats						= CreateObject('phpgwapi.categories');
 			$this->account					= $GLOBALS['phpgw_info']['user']['account_id'];
-			$this->t						= $GLOBALS['phpgw']->template;
 			$this->grants					= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 
@@ -81,91 +80,93 @@
 
 		function set_app_langs()
 		{
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->t->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$this->t->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+			$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+			$GLOBALS['phpgw']->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+			$GLOBALS['phpgw']->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 
-			$this->t->set_var('lang_category',lang('Category'));
-			$this->t->set_var('lang_select',lang('Select'));
-			$this->t->set_var('lang_descr',lang('Description'));
-			$this->t->set_var('lang_title',lang('Title'));
-			$this->t->set_var('lang_none',lang('None'));
-			$this->t->set_var('lang_start_date',lang('Start Date'));
-			$this->t->set_var('lang_end_date',lang('End Date'));
-			$this->t->set_var('lang_work_date',lang('Work date'));
-			$this->t->set_var('lang_title',lang('Title'));
-			$this->t->set_var('lang_status',lang('Status'));
-			$this->t->set_var('lang_budget',lang('Budget'));
-			$this->t->set_var('lang_customer',lang('Customer'));
-			$this->t->set_var('lang_coordinator',lang('Coordinator'));
-			$this->t->set_var('lang_edit',lang('Edit'));
-			$this->t->set_var('lang_done',lang('Done'));
-			$this->t->set_var('lang_hours',lang('Work hours'));
-			$this->t->set_var('lang_project_num',lang('Project ID'));
-			$this->t->set_var('lang_project',lang('Project'));
-			$this->t->set_var('lang_stats',lang('Statistics'));
-			$this->t->set_var('lang_delivery_num',lang('Delivery ID'));
-			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
-			$this->t->set_var('lang_activity',lang('Activity'));
-			$this->t->set_var('lang_select',lang('Select'));
-			$this->t->set_var('lang_print_delivery',lang('Print delivery'));
-			$this->t->set_var('lang_sumaes',lang('Sum workunits'));
-			$this->t->set_var('lang_position',lang('Position'));
-			$this->t->set_var('lang_workunits',lang('Workunits'));
-			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
-			$this->t->set_var('lang_work_date',lang('Work date'));
-			$this->t->set_var('lang_submit',lang('Submit'));
+			$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
+			$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
+			$GLOBALS['phpgw']->template->set_var('lang_descr',lang('Description'));
+			$GLOBALS['phpgw']->template->set_var('lang_title',lang('Title'));
+			$GLOBALS['phpgw']->template->set_var('lang_none',lang('None'));
+			$GLOBALS['phpgw']->template->set_var('lang_start_date',lang('Start Date'));
+			$GLOBALS['phpgw']->template->set_var('lang_end_date',lang('End Date'));
+			$GLOBALS['phpgw']->template->set_var('lang_work_date',lang('Work date'));
+			$GLOBALS['phpgw']->template->set_var('lang_title',lang('Title'));
+			$GLOBALS['phpgw']->template->set_var('lang_status',lang('Status'));
+			$GLOBALS['phpgw']->template->set_var('lang_budget',lang('Budget'));
+			$GLOBALS['phpgw']->template->set_var('lang_customer',lang('Customer'));
+			$GLOBALS['phpgw']->template->set_var('lang_coordinator',lang('Coordinator'));
+			$GLOBALS['phpgw']->template->set_var('lang_edit',lang('Edit'));
+			$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
+			$GLOBALS['phpgw']->template->set_var('lang_hours',lang('Work hours'));
+			$GLOBALS['phpgw']->template->set_var('lang_project_num',lang('Project ID'));
+			$GLOBALS['phpgw']->template->set_var('lang_project',lang('Project'));
+			$GLOBALS['phpgw']->template->set_var('lang_stats',lang('Statistics'));
+			$GLOBALS['phpgw']->template->set_var('lang_delivery_num',lang('Delivery ID'));
+			$GLOBALS['phpgw']->template->set_var('lang_delivery_date',lang('Delivery date'));
+			$GLOBALS['phpgw']->template->set_var('lang_activity',lang('Activity'));
+			$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
+			$GLOBALS['phpgw']->template->set_var('lang_print_delivery',lang('Print delivery'));
+			$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum workunits'));
+			$GLOBALS['phpgw']->template->set_var('lang_position',lang('Position'));
+			$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Workunits'));
+			$GLOBALS['phpgw']->template->set_var('lang_delivery_date',lang('Delivery date'));
+			$GLOBALS['phpgw']->template->set_var('lang_work_date',lang('Work date'));
+			$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Submit'));
 		}
 
 		function display_app_header()
 		{
-			$this->t->set_file(array('header' => 'header.tpl'));
-			$this->t->set_block('header','projects_header');
+			$GLOBALS['phpgw']->template->set_file(array('header' => 'header.tpl'));
+			$GLOBALS['phpgw']->template->set_block('header','projects_header');
 
 			$this->set_app_langs();
 
 			if ($this->boprojects->isprojectadmin('pad'))
 			{
-				$this->t->set_var('admin_info',lang('Administrator'));
-				$this->t->set_var('space1','&nbsp;&nbsp;&nbsp;');
-				$this->t->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
-				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
+				$GLOBALS['phpgw']->template->set_var('admin_info',lang('Administrator'));
+				$GLOBALS['phpgw']->template->set_var('space1','&nbsp;&nbsp;&nbsp;');
+				$GLOBALS['phpgw']->template->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
+				$GLOBALS['phpgw']->template->set_var('lang_activities',lang('Activities'));                                                                                                                               
 			}
 
 			if ($this->boprojects->isprojectadmin('pbo'))
 			{
-				$this->t->set_var('book_info',lang('Bookkeeper'));
-				$this->t->set_var('break','&nbsp;|&nbsp;');
-				$this->t->set_var('space2','&nbsp;&nbsp;&nbsp;');
-				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-				$this->t->set_var('lang_billing',lang('Billing'));
-				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-				$this->t->set_var('lang_delivery',lang('Deliveries'));
+				$GLOBALS['phpgw']->template->set_var('book_info',lang('Bookkeeper'));
+				$GLOBALS['phpgw']->template->set_var('break','&nbsp;|&nbsp;');
+				$GLOBALS['phpgw']->template->set_var('space2','&nbsp;&nbsp;&nbsp;');
+				$GLOBALS['phpgw']->template->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+				$GLOBALS['phpgw']->template->set_var('lang_billing',lang('Billing'));
+				$GLOBALS['phpgw']->template->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+				$GLOBALS['phpgw']->template->set_var('lang_delivery',lang('Deliveries'));
 			}
 
-			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
-			$this->t->set_var('lang_jobs',lang('Jobs'));
-			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
-			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
-			$this->t->set_var('lang_statistics',lang("Statistics"));
-			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
-			$this->t->set_var('lang_projects',lang('Projects'));
-			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
-			$this->t->set_var('lang_archiv',lang('archive'));
+			$GLOBALS['phpgw']->template->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
+			$GLOBALS['phpgw']->template->set_var('lang_jobs',lang('Jobs'));
+			$GLOBALS['phpgw']->template->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
+			$GLOBALS['phpgw']->template->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
+			$GLOBALS['phpgw']->template->set_var('lang_statistics',lang("Statistics"));
+			$GLOBALS['phpgw']->template->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+			$GLOBALS['phpgw']->template->set_var('lang_projects',lang('Projects'));
+			$GLOBALS['phpgw']->template->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
+			$GLOBALS['phpgw']->template->set_var('lang_archiv',lang('archive'));
 
-			$this->t->fp('app_header','projects_header');
+			$GLOBALS['phpgw']->template->fp('app_header','projects_header');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 		}
 
 		function list_projects()
 		{
-			global $action, $pro_parent;
+			$action		= get_var('action',array('POST','GET'));
+			$pro_parent	= get_var('pro_parent',array('POST','GET'));
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('projects_list_t' => 'bill_list.tpl'));
-			$this->t->set_block('projects_list_t','projects_list','list');
+			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_list.tpl'));
+			$GLOBALS['phpgw']->template->set_block('projects_list_t','projects_list','list');
 
 			if (!$action)
 			{
@@ -196,10 +197,10 @@
 
 			$left = $this->nextmatchs->left('/index.php',$this->start,$this->boprojects->total_records,$link_data);
 			$right = $this->nextmatchs->right('/index.php',$this->start,$this->boprojects->total_records,$link_data);
-			$this->t->set_var('left',$left);
-			$this->t->set_var('right',$right);
+			$GLOBALS['phpgw']->template->set_var('left',$left);
+			$GLOBALS['phpgw']->template->set_var('right',$right);
 
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
+			$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$this->start));
 
 // ------------------------- end nextmatch template --------------------------------------
 
@@ -207,51 +208,54 @@
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
 							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('None') . '</option>' . "\n"
-							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
-				$this->t->set_var(lang_header,lang('Project list'));
+							. $this->cats->formated_list('select','all',$this->cat_id,True) . '</select>';
+				$GLOBALS['phpgw']->template->set_var(lang_header,lang('Project list'));
 			}
 			else
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) .'" name="form">' . "\n"
 							. '<select name="pro_parent" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
 							. $this->boprojects->select_project_list('mains', $status, $pro_parent) . '</select>';
-				$this->t->set_var('lang_header',lang('Job list'));
+				$GLOBALS['phpgw']->template->set_var('lang_header',lang('Job list'));
 			}
 
-			$this->t->set_var('action_list',$action_list);
-			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,array('yours' => 1,'filter' => $this->filter)));
-			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('search_list',$this->nextmatchs->search(array('search_obj' => 1,'query' => $this->query)));
+			$GLOBALS['filter']	= $this->filter;
+			$GLOBALS['query']	= $this->query;
+
+			$GLOBALS['phpgw']->template->set_var('action_list',$action_list);
+			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
 
 // ---------------- list header variable template-declarations --------------------------
 
-			$this->t->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
+			$GLOBALS['phpgw']->template->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
 
 			if ($action == 'mains')
 			{
-				$this->t->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
+				$GLOBALS['phpgw']->template->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
 				$lang_action = '<td width="5%" align="center">' . lang('Jobs') . '</td>' . "\n";
-				$this->t->set_var('lang_action',$lang_action);
+				$GLOBALS['phpgw']->template->set_var('lang_action',$lang_action);
 			}
 			else
 			{
-				$this->t->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
-				$this->t->set_var('lang_action','');
+				$GLOBALS['phpgw']->template->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
+				$GLOBALS['phpgw']->template->set_var('lang_action','');
 			}
 
-			$this->t->set_var('sort_status',$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),$link_data));
-			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
-			$this->t->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
-			$this->t->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
-			$this->t->set_var('h_lang_part',lang('Delivery note'));
-			$this->t->set_var('h_lang_partlist',lang('Delivery list'));
+			$GLOBALS['phpgw']->template->set_var('sort_status',$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('h_lang_part',lang('Delivery note'));
+			$GLOBALS['phpgw']->template->set_var('h_lang_partlist',lang('Delivery list'));
 
 // -------------- end header declaration ---------------------------------------
 
             for ($i=0;$i<count($pro);$i++)
             {
-				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
 				$title = $GLOBALS['phpgw']->strip_html($pro[$i]['title']);
 				if (! $title) $title = '&nbsp;';
 
@@ -304,7 +308,7 @@
 
 // --------------- template declaration for list records -------------------------------------
 
-				$this->t->set_var(array
+				$GLOBALS['phpgw']->template->set_var(array
 				(
 					'number'		=> $GLOBALS['phpgw']->strip_html($pro[$i]['number']),
 					'td_action'		=> $td_action,
@@ -317,44 +321,52 @@
 				$link_data['project_id'] = $pro[$i]['project_id'];
 				$link_data['menuaction'] = 'projects.uideliveries.delivery';
 
-				$this->t->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
-				$this->t->set_var('lang_part',lang('Delivery'));
+				$GLOBALS['phpgw']->template->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
+				$GLOBALS['phpgw']->template->set_var('lang_part',lang('Delivery'));
 
 				$link_data['menuaction'] = 'projects.uideliveries.list_deliveries';
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
-				$this->t->set_var('lang_partlist',lang('Delivery list'));
+				$GLOBALS['phpgw']->template->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
+				$GLOBALS['phpgw']->template->set_var('lang_partlist',lang('Delivery list'));
 
 				if ($action == 'mains')
 				{
 					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects'
 																. '&pro_parent=' . $pro[$i]['project_id'] . '&action=subs') . '">' . lang('Jobs')
 																. '</a></td>' . "\n";
-					$this->t->set_var('action_entry',$action_entry);
+					$GLOBALS['phpgw']->template->set_var('action_entry',$action_entry);
 				}
 				else
 				{
-					$this->t->set_var('action_entry','');
+					$GLOBALS['phpgw']->template->set_var('action_entry','');
 				}
 
-				$this->t->parse('list','projects_list',True);
+				$GLOBALS['phpgw']->template->parse('list','projects_list',True);
 			}
 
 // ------------------------- end record declaration ------------------------
 
-			$this->t->set_var('lang_all_partlist',lang('All delivery notes'));
-			$this->t->set_var('all_partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&action=del'
+			$GLOBALS['phpgw']->template->set_var('lang_all_partlist',lang('All delivery notes'));
+			$GLOBALS['phpgw']->template->set_var('all_partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&action=del'
 											. '&project_id='));
 
-			$this->t->set_var('lang_all_part2list','');
-			$this->t->set_var('all_part2list','');
+			$GLOBALS['phpgw']->template->set_var('lang_all_part2list','');
+			$GLOBALS['phpgw']->template->set_var('all_part2list','');
 
-			$this->t->pfp('out','projects_list_t',True);
+			$GLOBALS['phpgw']->template->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
 		}
 
 		function delivery()
 		{
-			global $action, $Delivery, $project_id, $delivery_id, $values, $select, $referer;
+			$action			= get_var('action',array('POST','GET'));
+			$project_id		= get_var('project_id',array('POST','GET'));
+
+			$Delivery		= get_var('Delivery',array('POST','GET'));
+			$delivery_id	= get_var('delivery_id',array('POST','GET'));
+
+			$values			= get_var('values',array('POST'));
+			$select			= get_var('select',array('POST'));
+			$referer		= get_var('referer',array('POST'));
 
 			if (! $Delivery)
 			{
@@ -369,7 +381,7 @@
 			$nopref = $this->boprojects->check_prefs();
 			if (is_array($nopref))
 			{
-				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+				$GLOBALS['phpgw']->template->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
 			}
 			else
 			{
@@ -390,7 +402,7 @@
 				$error = $this->bodeliveries->check_values($values, $select);
 				if (is_array($error))
 				{
-					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+					$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
 				}
 				else
 				{
@@ -416,49 +428,49 @@
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('hours_list_t' => 'del_listhours.tpl'));
-			$this->t->set_block('hours_list_t','hours_list','list');
+			$GLOBALS['phpgw']->template->set_file(array('hours_list_t' => 'del_listhours.tpl'));
+			$GLOBALS['phpgw']->template->set_block('hours_list_t','hours_list','list');
 
-			$this->t->set_var('lang_action',lang('Delivery'));
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Delivery'));
+			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$this->t->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
-			$this->t->set_var('doneurl',$referer);
+			$GLOBALS['phpgw']->template->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
+			$GLOBALS['phpgw']->template->set_var('doneurl',$referer);
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
 			$title = $GLOBALS['phpgw']->strip_html($pro['title']);
 			if (! $title)  $title  = '&nbsp;';
-			$this->t->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
+			$GLOBALS['phpgw']->template->set_var('project',$title . ' [' . $GLOBALS['phpgw']->strip_html($pro['number']) . ']');
 
 			if (!$pro['customer'])
 			{
-				$this->t->set_var('customer',lang('You have no customer selected !'));
+				$GLOBALS['phpgw']->template->set_var('customer',lang('You have no customer selected !'));
 			}
 			else
 			{
 				$customer = $this->boprojects->read_single_contact($pro['customer']);
 				if (!$customer[0]['org_name']) { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
 				else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-				$this->t->set_var('customer',$customername);
+				$GLOBALS['phpgw']->template->set_var('customer',$customername);
 			}
 
 			if(!$delivery_id)
 			{
-				$this->t->set_var('lang_choose',lang('Generate Delivery ID ?'));
-				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
-				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
-				$this->t->set_var('delivery_num',$values['delivery_num']);
+				$GLOBALS['phpgw']->template->set_var('lang_choose',lang('Generate Delivery ID ?'));
+				$GLOBALS['phpgw']->template->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
+				$GLOBALS['phpgw']->template->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
+				$GLOBALS['phpgw']->template->set_var('delivery_num',$values['delivery_num']);
 				$hours = $this->bodeliveries->read_hours($project_id, $action);
 			}
 			else
 			{
-				$this->t->set_var('lang_choose','');
-				$this->t->set_var('choose','');
-				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.show_delivery'
+				$GLOBALS['phpgw']->template->set_var('lang_choose','');
+				$GLOBALS['phpgw']->template->set_var('choose','');
+				$GLOBALS['phpgw']->template->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.show_delivery'
 																		. '&delivery_id=' . $delivery_id));
 				$del = $this->bodeliveries->read_single_delivery($delivery_id);
-				$this->t->set_var('delivery_num',$del['delivery_num']);
+				$GLOBALS['phpgw']->template->set_var('delivery_num',$del['delivery_num']);
 				$hours = $this->bodeliveries->read_delivery_hours($project_id, $delivery_id, $action);
 			}
 
@@ -475,19 +487,19 @@
 				$values['year'] = date('Y',time());
 			}
 
-			$this->t->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[year]',$values['year']),
+			$GLOBALS['phpgw']->template->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[year]',$values['year']),
 																				$this->sbox->getMonthText('values[month]',$values['month']),
 																				$this->sbox->getDays('values[day]',$values['day'])));
 
 			if ($prefs['bill'] == 'wu')
 			{
-				$this->t->set_var('lang_sumaes',lang('Sum workunits'));
-				$this->t->set_var('lang_workunits',lang('Workunits'));
+				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum workunits'));
+				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Workunits'));
 			}
 			else
 			{
-				$this->t->set_var('lang_sumaes',lang('Sum hours'));
-				$this->t->set_var('lang_workunits',lang('Hours'));
+				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum hours'));
+				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Hours'));
 			}
 
 			$sumaes=0;
@@ -495,7 +507,7 @@
 			{
 				while (list($null,$note) = each($hours))
 				{
-					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
 
 					$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True" checked>';
 
@@ -532,7 +544,7 @@
 					}
 // --------------------- template declaration for list records ---------------------------
 
-					$this->t->set_var(array('select' => $select,
+					$GLOBALS['phpgw']->template->set_var(array('select' => $select,
 										'activity' => $activity,
 									'hours_descr' => $hours_descr,
 										'status' => lang($note['status']),
@@ -543,15 +555,15 @@
 					{
 						$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
 						$link_data['hours_id']		= $note['hours_id'];
-						$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
-						$this->t->set_var('lang_edit_entry',lang('Edit'));
+						$GLOBALS['phpgw']->template->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+						$GLOBALS['phpgw']->template->set_var('lang_edit_entry',lang('Edit'));
 					}
 					else
 					{
-						$this->t->set_var('edithour','');
-						$this->t->set_var('lang_edit_entry','&nbsp;');
+						$GLOBALS['phpgw']->template->set_var('edithour','');
+						$GLOBALS['phpgw']->template->set_var('lang_edit_entry','&nbsp;');
 					}
-					$this->t->fp('list','hours_list',True);
+					$GLOBALS['phpgw']->template->fp('list','hours_list',True);
 
 // -------------------------- end record declaration --------------------------
 				}
@@ -564,7 +576,7 @@
 				{
 					while (list($null,$note) = each($hours))
 					{
-						$this->nextmatchs->template_alternate_row_color(&$this->t);
+						$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
 
 						$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True">';
 
@@ -602,7 +614,7 @@
 
 // --------------------- template declaration for list records ---------------------------
 
-						$this->t->set_var(array('select' => $select,
+						$GLOBALS['phpgw']->template->set_var(array('select' => $select,
 											'activity' => $activity,
 										'hours_descr' => $hours_descr,
 											'status' => lang($note['status']),
@@ -613,48 +625,54 @@
 						{
 							$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
 							$link_data['hours_id']		= $note['hours_id'];
-							$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
-							$this->t->set_var('lang_edit_entry',lang('Edit'));
+							$GLOBALS['phpgw']->template->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+							$GLOBALS['phpgw']->template->set_var('lang_edit_entry',lang('Edit'));
 						}
 						else
 						{
-							$this->t->set_var('edithour','');
-							$this->t->set_var('lang_edit_entry','&nbsp;');
+							$GLOBALS['phpgw']->template->set_var('edithour','');
+							$GLOBALS['phpgw']->template->set_var('lang_edit_entry','&nbsp;');
 						}
-						$this->t->fp('list','hours_list',True);
+						$GLOBALS['phpgw']->template->fp('list','hours_list',True);
 
 // -------------------------- end record declaration --------------------------
 					}
 				}
 			}
 
-			$this->t->set_var(sum_aes,$sumaes);
+			$GLOBALS['phpgw']->template->set_var(sum_aes,$sumaes);
 
 			if (! $delivery_id)
 			{
-				$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
+				$GLOBALS['phpgw']->template->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
 			} 
 			else
 			{
-				$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Update delivery') . '">');
+				$GLOBALS['phpgw']->template->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Update delivery') . '">');
 			}
 
 			if ($action == 'amains' || $action == 'asubs')
 			{
-				$this->t->set_var('delivery','');
+				$GLOBALS['phpgw']->template->set_var('delivery','');
 			}
 
-			$this->t->pfp('out','hours_list_t',True);
+			$GLOBALS['phpgw']->template->pfp('out','hours_list_t',True);
 		}
 
 		function list_deliveries()
 		{
-			global $project_id, $action, $start, $sort, $order, $query;
+			$action		= get_var('action',array('POST','GET'));
+			$project_id	= get_var('project_id',array('POST','GET'));
+
+			$start		= get_var('start',array('POST','GET'));
+			$sort		= get_var('sort',array('POST','GET'));
+			$order		= get_var('order',array('POST','GET'));
+			$query		= get_var('query',array('POST','GET'));
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('projects_list_t' => 'bill_listinvoice.tpl'));
-			$this->t->set_block('projects_list_t','projects_list','list');
+			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'bill_listinvoice.tpl'));
+			$GLOBALS['phpgw']->template->set_block('projects_list_t','projects_list','list');
 
 			$link_data = array
 			(
@@ -667,9 +685,9 @@
 				'order'			=> $order
 			);
 
-			$this->t->set_var('lang_action',lang('Delivery list'));
-			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Delivery list'));
+			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(1));
 
 			if (! $start)
 			{
@@ -687,21 +705,21 @@
 
 			$left = $this->nextmatchs->left('/index.php',$start,$this->bodeliveries->total_records,$link_data);
 			$right = $this->nextmatchs->right('/index.php',$start,$this->bodeliveries->total_records,$link_data);
-			$this->t->set_var('left',$left);
-			$this->t->set_var('right',$right);
+			$GLOBALS['phpgw']->template->set_var('left',$left);
+			$GLOBALS['phpgw']->template->set_var('right',$right);
 
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$start));
+			$GLOBALS['phpgw']->template->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$start));
 
 // ------------------------ end nextmatch template -------------------------------------------
 
 // ---------------- list header variable template-declarations -------------------------------
 
-			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($sort,'num',$order,'/index.php',lang('Delivery ID'),$link_data));
-			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($sort,'customer',$order,'/index.php',lang('Customer'),$link_data));
-			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title',$order,'/index.php',lang('Title'),$link_data));
-			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($sort,'date',$order,'/index.php',lang('Date'),$link_data));
-			$this->t->set_var('sort_sum','');
-			$this->t->set_var('lang_data',lang('Delivery'));
+			$GLOBALS['phpgw']->template->set_var('sort_num',$this->nextmatchs->show_sort_order($sort,'num',$order,'/index.php',lang('Delivery ID'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_customer',$this->nextmatchs->show_sort_order($sort,'customer',$order,'/index.php',lang('Customer'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title',$order,'/index.php',lang('Title'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_date',$this->nextmatchs->show_sort_order($sort,'date',$order,'/index.php',lang('Date'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_sum','');
+			$GLOBALS['phpgw']->template->set_var('lang_data',lang('Delivery'));
 
 // -------------- end header declaration -----------------
 
@@ -709,7 +727,7 @@
 			{
 				while (list($null,$note) = each($del))
 				{
-					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
 					$title = $GLOBALS['phpgw']->strip_html($note['title']);
 					if (! $title) $title  = '&nbsp;';
 
@@ -730,11 +748,11 @@
 					}
 					else { $customerout = '&nbsp;'; }
 
-					$this->t->set_var('sum','');
+					$GLOBALS['phpgw']->template->set_var('sum','');
 
 // ------------------ template declaration for list records ----------------------------------
 
-					$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($note['delivery_num']),
+					$GLOBALS['phpgw']->template->set_var(array('num' => $GLOBALS['phpgw']->strip_html($note['delivery_num']),
 									'customer' => $customerout,
 										'title' => $title,
 										'date' => $dateout));
@@ -742,72 +760,72 @@
 					$link_data['delivery_id']	= $note['delivery_id'];
 					$link_data['project_id']	= $note['project_id'];
 					$link_data['menuaction']	= 'projects.uideliveries.delivery';
-					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
-					$this->t->set_var('lang_td_data',lang('Delivery'));
+					$GLOBALS['phpgw']->template->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$GLOBALS['phpgw']->template->set_var('lang_td_data',lang('Delivery'));
 
-					$this->t->fp('list','projects_list',True);
+					$GLOBALS['phpgw']->template->fp('list','projects_list',True);
 
 // ------------------------ end record declaration --------------------------------------------
 				}
 			}
-			$this->t->pfp('out','projects_list_t',True);
+			$GLOBALS['phpgw']->template->pfp('out','projects_list_t',True);
 		}
 
 		function show_delivery()
 		{
-			global $delivery_id;
+			$delivery_id = get_var('delivery_id',array('GET'));
 
 			$this->set_app_langs();
 
-			$this->t->set_file(array('del_list_t' => 'del_deliveryform.tpl'));
-			$this->t->set_block('del_list_t','del_list','list');
+			$GLOBALS['phpgw']->template->set_file(array('del_list_t' => 'del_deliveryform.tpl'));
+			$GLOBALS['phpgw']->template->set_block('del_list_t','del_list','list');
 
 			$error = $this->boprojects->check_prefs();
 			if (is_array($error))
 			{
-				$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+				$GLOBALS['phpgw']->template->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
 			}
 			else
 			{
 				$prefs = $this->boprojects->read_prefs();
-				$this->t->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
-				$this->t->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
+				$GLOBALS['phpgw']->template->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
+				$GLOBALS['phpgw']->template->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
 			}
 
-			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
+			$GLOBALS['phpgw']->template->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
-			$this->t->set_var('charset',$charset);
-			$this->t->set_var('font',$prefs['ifont']);
-			$this->t->set_var('fontsize',$prefs['allsize']);
-			$this->t->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
-			$this->t->set_var('lang_delivery_note_for_project',lang('Delivery note for project'));
+			$GLOBALS['phpgw']->template->set_var('charset',$charset);
+			$GLOBALS['phpgw']->template->set_var('font',$prefs['ifont']);
+			$GLOBALS['phpgw']->template->set_var('fontsize',$prefs['allsize']);
+			$GLOBALS['phpgw']->template->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
+			$GLOBALS['phpgw']->template->set_var('lang_delivery_note_for_project',lang('Delivery note for project'));
 
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
 			if ($prefs)
 			{
-				$this->t->set_var('customer',$this->bodeliveries->get_address_data('address',$del['customer'],$prefs['ifont'],$prefs['allsize']));
+				$GLOBALS['phpgw']->template->set_var('customer',$this->bodeliveries->get_address_data('address',$del['customer'],$prefs['ifont'],$prefs['allsize']));
 			}
 
 			$del['date'] = $del['date'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			$delivery_dateout = $GLOBALS['phpgw']->common->show_date($del['date'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-			$this->t->set_var('delivery_date',$delivery_dateout);
+			$GLOBALS['phpgw']->template->set_var('delivery_date',$delivery_dateout);
 
-			$this->t->set_var('delivery_num',$GLOBALS['phpgw']->strip_html($del['delivery_num']));
-			$this->t->set_var('project_num',$GLOBALS['phpgw']->strip_html($del['project_num']));
+			$GLOBALS['phpgw']->template->set_var('delivery_num',$GLOBALS['phpgw']->strip_html($del['delivery_num']));
+			$GLOBALS['phpgw']->template->set_var('project_num',$GLOBALS['phpgw']->strip_html($del['project_num']));
 			$title = $GLOBALS['phpgw']->strip_html($del['title']);
 			if (! $title) { $title  = '&nbsp;'; }
-			$this->t->set_var('title',$title);
+			$GLOBALS['phpgw']->template->set_var('title',$title);
 
 			if ($prefs['bill'] == 'wu')
 			{
-				$this->t->set_var('lang_sumaes',lang('Sum workunits'));
-				$this->t->set_var('lang_workunits',lang('Workunits'));
+				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum workunits'));
+				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Workunits'));
 			}
 			else
 			{
-				$this->t->set_var('lang_sumaes',lang('Sum hours'));
-				$this->t->set_var('lang_workunits',lang('Hours'));
+				$GLOBALS['phpgw']->template->set_var('lang_sumaes',lang('Sum hours'));
+				$GLOBALS['phpgw']->template->set_var('lang_workunits',lang('Hours'));
 			}
 
 			$pos = 0;
@@ -818,7 +836,7 @@
 				while (list($null,$note) = each($hours))
 				{
 					$pos++;
-					$this->t->set_var('pos',$pos);
+					$GLOBALS['phpgw']->template->set_var('pos',$pos);
 
 					if ($note['sdate'] == 0)
 					{
@@ -830,7 +848,7 @@
 						$hours_dateout = $GLOBALS['phpgw']->common->show_date($note['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 					}
 
-					$this->t->set_var('hours_date',$hours_dateout);
+					$GLOBALS['phpgw']->template->set_var('hours_date',$hours_dateout);
 
 					if ($prefs['bill'] == 'wu')
 					{
@@ -850,20 +868,20 @@
 								. sprintf("%02d",(int)($sumhours-floor($sumhours/60)*60));
 					}
 
-					$this->t->set_var('aes',$aes);
+					$GLOBALS['phpgw']->template->set_var('aes',$aes);
 					$act_descr = $GLOBALS['phpgw']->strip_html($note['act_descr']);
 					if (! $act_descr) { $act_descr  = '&nbsp;'; }
-					$this->t->set_var('act_descr',$act_descr);
-					$this->t->set_var('billperae',$note['billperae']);
+					$GLOBALS['phpgw']->template->set_var('act_descr',$act_descr);
+					$GLOBALS['phpgw']->template->set_var('billperae',$note['billperae']);
 					$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
 					if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
-					$this->t->set_var('hours_descr',$hours_descr);
-					$this->t->fp('list','del_list',True);
+					$GLOBALS['phpgw']->template->set_var('hours_descr',$hours_descr);
+					$GLOBALS['phpgw']->template->fp('list','del_list',True);
 				}
 			}
-			$this->t->set_var('sumaes',$sumaes);
+			$GLOBALS['phpgw']->template->set_var('sumaes',$sumaes);
 
-			$this->t->pfp('out','del_list_t',True);
+			$GLOBALS['phpgw']->template->pfp('out','del_list_t',True);
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 

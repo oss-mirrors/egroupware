@@ -142,12 +142,12 @@
 
 			if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
 			{
-				$error[] = lang('You have entered a starting invalid date !');
+				$error[] = lang('You have entered an invalid start date !');
 			}
 
 			if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
 			{
-				$error[] = lang('You have entered an ending invalid date !');
+				$error[] = lang('You have entered an invalid end date !');
 			}
 
 			$activity = $this->boprojects->read_single_activity($values['activity_id']);
