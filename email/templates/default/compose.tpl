@@ -27,22 +27,24 @@
 	function get_utz()
 	{
 		var time=new Date();
-		var dateutc = new Date(Date.UTC(time.getUTCFullYear(),time.getUTCMonth(),time.getUTCDay(),time.getUTCHours(),time.getUTCMinutes(),time.getUTCSeconds(),time.getUTCMilliseconds()));
-		var raw_offset = ((dateutc.valueOf())-(time.valueOf()));
-		var tz_sign;
-		if (raw_offset >= 0) {
+		var tz_offset = (((time.getTimezoneOffset() * 100) / 60) * (-1));
+		var tz_offset_abs;
+		var tz_sign, tz_4mail;
+		if (tz_offset >= 0) {
 			tz_sign="plus";
+			tz_offset_abs = tz_offset;
 		} else {
 			tz_sign="minus";
+			tz_offset_abs = (tz_offset * (-1));
 		}
-		var tz_4mail = ((time.getTimezoneOffset() * 100) / 60);
-		var tz_4mail_final;
-		if (tz_4mail.toString().length == 3) {
-			tz_4mail_final = tz_sign+"0"+tz_4mail;
+		if (tz_offset == 0) {
+			tz_4mail = "plus0000";
+		} else if (tz_offset_abs.toString().length == 3) {
+			tz_4mail = tz_sign+"0"+tz_offset_abs;
 		} else {
-			tz_4mail_final = tz_sign+tz_4mail;
+			tz_4mail = tz_sign+tz_offset_abs+"";
 		}
-		return tz_4mail_final;
+		return tz_4mail;
 	}
 -->
 </script>
