@@ -27,7 +27,7 @@
 	);
 	$setup_info['phpldapadmin']['license']  = 'GPL';
 	$setup_info['phpldapadmin']['description'] =
-		'A comprehensive LDAP administration tool.<br>For more info visit <a href="http://phpldapadmin.sourceforge.net/">Homepage</a> of the phpldapadmin project.';
+		'A comprehensive LDAP administration tool.<br>For more info visit the <a href="http://phpldapadmin.sourceforge.net/">Homepage</a> of the phpldapadmin project.';
 	$setup_info['phpldapadmin']['note'] =
 		'At the moment you need to configure it by editing or creating a config.php file (from the config.php.example file).';
 
