@@ -1,0 +1,15 @@
+=============================
+CHANGELOG SwitchIdentity 
+=============================
+
+
+0.0.1.001a
+Thu Sep 16 23:12:49 CEST 2004
+=============================
+- destroy all sessiondata of current user so it doesn't get mixed up with the new user sessiondata
+
+
+0.0.1.001
+Somewhere in august 2004 (Pim)
+=============================
+- initial creation of switchuser

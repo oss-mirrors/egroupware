@@ -48,6 +48,9 @@
 
 		 $this->admincheck();
 
+		 /* remove all session data of the current user who is going to switch */
+		 $GLOBALS['phpgw']->session->destroy($GLOBALS['phpgw']->session->sessionid,'');
+		 
 		 $GLOBALS['sessionid'] = $this->create($_POST[newuser],'u');
 
 		 $this->account_domain	= '';// set to current domain
