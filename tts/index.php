@@ -37,14 +37,15 @@
   $phpgw->db->query("select t_id,t_category,t_priority,t_assignedto,t_timestamp_opened,t_user,t_timestamp_closed,t_subject "
 	      . "from ticket $filtermethod $sortmethod");
 
-
+  $zeilen = $phpgw->db->num_rows();
   if ($filter == "viewall") {
-     echo "<a href=\"" . $phpgw->link() . "\">".lang("View only open tickets")."</a>";
+     echo "<a href=\"" . $phpgw->link() . "\">" . lang("View only open tickets")."</a>";
   } else {
-     echo "<a href=\"" . $phpgw->link("index.php","filter=viewall") . "\">"
-	. lang("View all tickets")."</a>";
+     echo "<a href=\"" . $phpgw->link("index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>            (Tickets open $zeilen) ";
   }
-  echo " ]<p>\n";
+
+  echo " ]<br>\n";
+  echo "<center>( " . lang("Tickets total") . " $zeilen )</center>";
 
   if ($phpgw->db->num_rows() == 0) {
      echo "<p><center>".lang("No tickets found")."</center>";
