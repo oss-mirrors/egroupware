@@ -1152,7 +1152,7 @@
 				$pro[0] = 0;
 			}
 
-			$sql = 'SELECT SUM(' . $bcolumn . ') as sumvalue from phpgw_p_projects where project_id in(' . implode(',',$pro) . ')';
+			$sql = 'SELECT SUM(' . $bcolumn . ') as sumvalue from phpgw_p_budget where project_id in(' . implode(',',$pro) . ')';
 			$this->db->query($sql,__LINE__,__FILE__);
 			if ($this->db->next_record())
 			{
