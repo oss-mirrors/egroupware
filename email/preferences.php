@@ -42,7 +42,24 @@
 		}
 
 		$phpgw->preferences->add("email","default_sorting");
-		$phpgw->preferences->add("email","email_sig"); 
+
+		//email sig must not have single nor double quotes in it, as they screw up the preferences database
+		if ($email_sig != '')
+		{
+			// (1) if magic_quotes_gpc is ON, get rid of the escape \ that HTTP POST will add to quotes, " becomes \"
+			if (get_magic_quotes_gpc()==1)
+			{
+				$email_sig_clean = stripslashes($email_sig);
+			}
+			// (2) turn offensive single and double quotes into harmless html entities like used in URLs
+			$email_sig_clean = htmlspecialchars($email_sig_clean, ENT_QUOTES);
+			//note: ENT_QUOTES adds single quotes ' to the translation, but only in php >3.0.17
+			$phpgw->preferences->add("email","email_sig",$email_sig_clean);
+		}
+		else
+		{
+			$phpgw->preferences->add("email","email_sig");
+		}
 		
 		$phpgw->preferences->delete("email","use_custom_settings");
 		$phpgw->preferences->delete("email","userid");
@@ -122,6 +139,7 @@
 	$t->set_var('bg_row1',$tr_color);
 	$t->set_var('email_sig_blurb',lang("email signature"));
 	$t->set_var('email_sig_textarea_name','email_sig');
+	//$t->set_var('email_sig_textarea_content',rawurldecode($phpgw_info["user"]["preferences"]["email"]["email_sig"]));
 	$t->set_var('email_sig_textarea_content',$phpgw_info["user"]["preferences"]["email"]["email_sig"]);
 
 	// row2 = sort order
