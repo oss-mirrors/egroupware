@@ -21,6 +21,7 @@
 			'send_message'         => True,
 			'send_global_message'  => True,
 			'send_multiple_message'=> True,
+			'send_group_message'  => True,
 			'reply'                => True,
 			'forward'              => True,
 			'list_methods'         => True
@@ -179,6 +180,86 @@
 				return $this->so->send_multiple_message($message);
 			}
 		}
+	  
+	        		function send_group_message($message='')
+		{
+		    
+		    if(!$GLOBALS['phpgw']->acl->check('run',PHPGW_ACL_READ,'messenger'))
+		    {
+			return False;
+		    }
+		    if(count($message['to']) == 0)
+		    {
+			$errors[] = lang('You must enter the username this message is for');
+		    }
+		    else
+		    {
+		        $send_users_ids = array();
+			foreach($message['to'] as $to)
+			{
+			  $users = $GLOBALS['phpgw']->accounts->member($to);
+			  if(is_array($users))
+			  {
+			    foreach($users as $user)
+			    {
+                                if(!in_array($user['account_id'],$send_users_ids))
+				{
+				    $acct = CreateObject('phpgwapi.accounts',$user['account_id']);
+				    $acct->read_repository();
+				    if($acct->is_expired())
+				    {
+				      continue;
+				    }
+				    else
+				    {
+				      $GLOBALS['phpgw']->acl->account_id = $user['account_id'];
+				      $user_acl = $GLOBALS['phpgw']->acl->read_repository();
+				      foreach ($user_acl as $user_app)
+				      {
+					  if ($user_app['appname'] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
+					  {
+					      $send_users_ids[] = $user['account_id'];
+					      continue 2;
+					  }
+				      }
+				    }  
+			       }
+			    }
+			  }
+			}
+		    }	
+		    
+		    $send_user_lids = array();
+		    
+		    foreach($send_users_ids as $id)
+		    {
+		      $name =	$GLOBALS['phpgw']->accounts->id2name($id);
+		      $send_user_lids[] = $name;
+		    }  
+		    
+		    unset($message['to']);
+		    $message['to'] = $send_user_lids;	  
+
+		    if(!$message['subject'])
+		    {
+			$errors[] = lang('You must enter a subject');
+		    }
+
+		    if(!$message['content'])
+		    {
+			$errors[] = lang("You didn't enter anything for the message");
+		    }
+
+		    if(is_array($errors))
+		    {
+			return $errors;
+		    }
+		    else
+		    {
+			return $this->so->send_multiple_message($message);
+		    }
+                }
+
 
 		function read_inbox($values)
 		{
@@ -438,7 +519,7 @@
 				$user_acl = $GLOBALS['phpgw']->acl->read_repository();
 				foreach ($user_acl as $user_app)
 				{
-					if ($user_app[appname] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
+					if ($user_app['appname'] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
 					{
 						$users[] = $account;
 						continue 2;
