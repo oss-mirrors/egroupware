@@ -10,50 +10,57 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array('noheader' => True,
-								'nonavbar' => True,
-				'enable_nextmatchs_class' => True);
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'noheader' => True,
+		'nonavbar' => True,
+		'enable_nextmatchs_class' => True
+	);
 
-	$phpgw_info['flags']['currentapp'] = 'stocks';
+	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'stocks';
 	include('../header.inc.php');
-        
+
+	$edit   = $HTTP_GET_VARS['edit'] ? $HTTP_GET_VARS['edit'] : $HTTP_POST_VARS['edit'];
+	$sym    = $HTTP_GET_VARS['sym'] ? $HTTP_GET_VARS['sym'] : $HTTP_POST_VARS['sym'];
+	$name   = $HTTP_GET_VARS['name'] ? $HTTP_GET_VARS['name'] : $HTTP_POST_VARS['name'];
+	$symbol = $HTTP_GET_VARS['symbol'] ? $HTTP_GET_VARS['symbol'] : $HTTP_POST_VARS['symbol'];
+
 	if ($edit)
 	{
-		$phpgw->preferences->read_repository();		
-		$phpgw->preferences->delete('stocks',$sym);
-		$phpgw->preferences->change('stocks',urlencode($symbol),urlencode($name));
-		$phpgw->preferences->save_repository(True);
-		Header('Location: ' . $phpgw->link('/stocks/preferences.php'));
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->preferences->read_repository();
+		$GLOBALS['phpgw']->preferences->delete('stocks',$sym);
+		$GLOBALS['phpgw']->preferences->change('stocks',urlencode($symbol),urlencode($name));
+		$GLOBALS['phpgw']->preferences->save_repository(True);
+		Header('Location: ' . $GLOBALS['phpgw']->link('/stocks/preferences.php'));
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 
-	$phpgw->common->phpgw_header();
+	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();
 
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(array('edit' => 'preferences_edit.tpl'));
-	$t->set_var('actionurl',$phpgw->link('/stocks/preferences_edit.php'));
-	$t->set_var('lang_action',lang('Stock Quote preferences'));
+	$GLOBALS['phpgw']->template->set_file(array('edit' => 'preferences_edit.tpl'));
+	$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/stocks/preferences_edit.php'));
+	$GLOBALS['phpgw']->template->set_var('lang_action',lang('Stock Quote preferences'));
 
 	$common_hidden_vars = '<input type="hidden" name="sym" value="' . $sym . '">' . "\n";
-	$t->set_var('common_hidden_vars',$common_hidden_vars);
-	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$t->set_var('h_lang_edit',lang('Edit stock'));
-	$t->set_var('lang_symbol',lang('Symbol'));
-	$t->set_var('lang_company',lang('Company name'));
+	$GLOBALS['phpgw']->template->set_var('common_hidden_vars',$common_hidden_vars);
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('h_lang_edit',lang('Edit stock'));
+	$GLOBALS['phpgw']->template->set_var('lang_symbol',lang('Symbol'));
+	$GLOBALS['phpgw']->template->set_var('lang_company',lang('Company name'));
 
-	while ($stock = each($phpgw_info['user']['preferences']['stocks']))
+	@reset($GLOBALS['phpgw_info']['user']['preferences']['stocks']);
+	while ($stock = @each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 	{
 		if (rawurldecode($stock[0]) == $sym)
 		{
-			$t->set_var('tr_color1',$phpgw_info['theme']['row_on']);
-			$t->set_var('tr_color2',$phpgw_info['theme']['row_off']);
-			$t->set_var('symbol',rawurldecode($stock[0]));
-			$t->set_var('name',rawurldecode($stock[1]));
+			$GLOBALS['phpgw']->template->set_var('tr_color1',$GLOBALS['phpgw_info']['theme']['row_on']);
+			$GLOBALS['phpgw']->template->set_var('tr_color2',$GLOBALS['phpgw_info']['theme']['row_off']);
+			$GLOBALS['phpgw']->template->set_var('symbol',rawurldecode($stock[0]));
+			$GLOBALS['phpgw']->template->set_var('name',rawurldecode($stock[1]));
 		}
 	}
 
-	$t->set_var('lang_edit',lang('Edit'));
-	$t->pparse('out','edit');
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->template->set_var('lang_edit',lang('Edit'));
+	$GLOBALS['phpgw']->template->pparse('out','edit');
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

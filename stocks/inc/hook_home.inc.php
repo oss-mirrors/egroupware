@@ -22,7 +22,6 @@
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['enabled'])
 	{
-
 		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
 		
 		$portalbox = CreateObject('phpgwapi.listbox',

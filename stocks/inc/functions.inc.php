@@ -17,20 +17,17 @@
 
 	function http_fetch($url,$post,$port,$proxy)
 	{
-		global $phpgw;
-     	return $phpgw->network->gethttpsocketfile($url);
+	 	return $GLOBALS['phpgw']->network->gethttpsocketfile($url);
 	}
-  
+
 // Rename this is something better
 
 	function return_html($quotes)
 	{
-		global $phpgw_info;
-
 		$return_html = '<table cellspacing="1" cellpadding="0" border="0" bgcolor="black"><tr><td>'
-					. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
-					. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
-					. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
+			. '<table cellspacing="1" cellpadding="2" border="0" bgcolor="white">'
+			. '<tr><td><b>' . lang('Name') . '</b></td><td><b>' . lang('Symbol') . '</b></td><td align="right"><b>' . lang('Price') . '</b></td><td align="right">'
+			. '<b>&nbsp;' . lang('Change') . '</b></td><td align="right"><b>' . lang('%') . '&nbsp;' . lang('Change') . '</b></td><td align="center"><b>' . lang('Date') . '</b></td><td align="center">'
 					. '<b>' . lang('Time') . '</b></td></tr>';
 
 		for ($i=0;$i<count($quotes);$i++)
@@ -46,7 +43,7 @@
 			$date = $q['date'];
 			$time = $q['time'];
 			$volume = $q['volume'];
-        
+
 			if ($dollarchange < 0)
 			{
 				$color = 'red';
@@ -55,12 +52,12 @@
 			{
 				$color = 'green';
 			}
-        
+
 			$return_html .= '<tr><td>' . $name . '</td><td>' . $symbol . '</td><td align="right">' . $price0 . '</td><td align="right"><font color="'
-						. $color . '">' . $dollarchange . '</font></td><td align="right"><font color="' . $color . '">' . $percentchange
-						. '</font></td><td align="center">' . $date . '</td><td align="center">' . $time . '</td></tr>';
+				. $color . '">' . $dollarchange . '</font></td><td align="right"><font color="' . $color . '">' . $percentchange
+				. '</font></td><td align="center">' . $date . '</td><td align="center">' . $time . '</td></tr>';
 		}
-    
+
 		$return_html .= '</table></td></tr></table>';
 
 		return $return_html;
@@ -103,7 +100,7 @@
 				{
 					$line = ereg_replace('"','',$line);
 					list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
-               
+
 					if ($price1>0 && $dchange!=0)
 					{
 						$pchange = round(10000*($dchange)/$price1)/100;
@@ -117,23 +114,25 @@
 					{
 						$pchange = '+' . $pchange;
 					}
-   
+
 					$name = $stocklist[$symbol];
-            
+
 					if (! $name)
 					{
 						$name = $symbol;
 					}
 
-					$quotes[] = array('symbol' => $symbol,
-									'price0' => $price0,
-									'date' => $date,
-									'time' => $time,
-									'dchange' => $dchange,
-									'price1' => $price1,
-									'price2' => $price2,
-									'pchange' => $pchange,
-									'name' => $name);
+					$quotes[] = array(
+						'symbol' => $symbol,
+						'price0' => $price0,
+						'date' => $date,
+						'time' => $time,
+						'dchange' => $dchange,
+						'price1' => $price1,
+						'price2' => $price2,
+						'pchange' => $pchange,
+						'name' => $name
+					);
 				}
 				$i++;
 			}
@@ -143,17 +142,14 @@
 
 	function get_savedstocks()
 	{
-		global $phpgw_info, $phpgw;
-
-// If they don't have any stocks in there, give them something to look at
-     
-		if (! count($phpgw_info['user']['preferences']['stocks']))
+		// If they don't have any stocks in there, give them something to look at
+		if (! count($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 		{
-			$phpgw_info['user']['preferences']['stocks']['LNUX'] = 'VA%20Linux';
-			$phpgw_info['user']['preferences']['stocks']['RHAT'] = 'RedHat';
+			$GLOBALS['phpgw_info']['user']['preferences']['stocks']['LNUX'] = 'VA%20Linux';
+			$GLOBALS['phpgw_info']['user']['preferences']['stocks']['RHAT'] = 'RedHat';
 		}
 
-		while ($stock = each($phpgw_info['user']['preferences']['stocks']))
+		while ($stock = each($GLOBALS['phpgw_info']['user']['preferences']['stocks']))
 		{
 			if ((rawurldecode($stock[0]) != 'enabled') && (rawurldecode($stock[0]) != 'disabled'))
 			{
