@@ -155,7 +155,20 @@
 			return True;
 		}
 
-		function rename($values,$old_name,$old_lang)
+		function rename_links($old_name,$name,$title,$text)
+		{
+			// construct the new link
+			$new_link = $name != $title ? '(('.$name.'|'.$title.'))' :
+				(strstr($name,' ') !== False ? '(('.$name.'))' : $name);
+
+			return preg_replace(array(
+				'/\(\('.preg_quote($old_name).'\ ?\| ?[^)]+\)\)/',
+				'/\(\('.preg_quote($old_name).'\)\)/',
+				'/(?=\b)'.preg_quote($old_name).'(?=\b )/',
+			),$new_link,$text);
+		}
+
+		function rename(&$values,$old_name,$old_lang)
 		{
 			//echo "<p>bowiki::rename '$old_name:$old_lang' to '$values[name]:$values[lang]'</p>";
 			$page = $this->page($old_name,$old_lang);
@@ -165,9 +178,6 @@
 				//echo "<p>\$page->rename('$values[name]','$values[lang]') == False</p>";
 				return False;
 			}
-			// construct the new link
-			$new_link = $values['name'] != $values['title'] ? '(('.$values['name'].'|'.$values['title'].'))' :
-				(strstr($values['name'],' ') !== False ? '(('.$values['name'].'))' : $values['name']);
 			// change all links to old_name with the new link
 			foreach($this->get_links($old_name) as $page => $langs)
 			{
@@ -177,18 +187,18 @@
 					if ($to_replace->read() !== False)
 					{
 						$to_replace = $to_replace->as_array();
-						$to_replace['text'] = preg_replace(array(
-							"/\(\($old_name\ ?| ?[^)]+\)\)/",
-							"/\(\($old_name\)\)/",
-							"/$old_name/",
-						),$new_link,$to_replace['text']);
+						$to_replace['text'] = $this->rename_links($old_name,$values['name'],$values['title'],$was=$to_replace['text']);
 						$to_replace['comment'] = $old_name . ' --> ' . $values['name'];
+						echo "<p><b>$to_replace[name]</b>: $to_replace[comment]<br>\n<b>From:</b><br>\n$was<br>\n<b>To</b><br>\n$to_replace[text]</p>\n";
 						$this->write($to_replace);
 					}
 				}
 			}
 			// delete the links of the old page
 			$this->clear_link(array('name' => $old_name,'lang' => $old_lang));
+
+			// also rename links in our own content
+			$values['text'] = $this->rename_links($old_name,$values['name'],$values['title'],$values['text']);
 
 			foreach(array('text','title','comment','readable','writable') as $name)
 			{
