@@ -9,6 +9,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
+	/* $Id$ */
+
 	$phpgw_baseline = array(
 		'egw_wf_activities' => array(
 			'fd' => array(
@@ -64,14 +66,14 @@
 				'wf_activity'		=> array('type' => 'varchar', 'precision' => '80', 'nullable' => True),
 				'wf_timestamp'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 			),
-			'pk' => array('wf_c_Id'),
+			'pk' => array('wf_c_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
 		'egw_wf_instances' => array(
 			'fd' => array(
-				'wf_instance_Id'	=> array('type' => 'auto', 'precision' => '4', 'nullable' => False),
+				'wf_instance_id'	=> array('type' => 'auto', 'precision' => '4', 'nullable' => False),
 				'wf_p_id'			=> array('type' => 'int', 'precision' => '4', 'nullable' => False),
 				'wf_started'		=> array('type' => 'int', 'precision' => '4', 'nullable' => True),
 				'wf_owner'			=> array('type' => 'varchar', 'precision' => '200', 'nullable' => True),
