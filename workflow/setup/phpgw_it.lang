@@ -1,0 +1,193 @@
+abort instance	workflow	it	annulla istanza
+aborted	workflow	it	annullato
+act	workflow	it	att
+act. status	workflow	it	Stato Att.
+activate	workflow	it	attiva
+active	workflow	it	Attivo
+activities	workflow	it	Attività
+activities updated	workflow	it	Attività aggiornate
+activity	workflow	it	attività
+activity  status	workflow	it	Stato Attività
+activity %1 is interactive but has no role assigned	workflow	it	L'Attività %1 è Interattiva ma non ha ruoli assegnati
+activity %1 is interactive so it must use the $instance->complete() method	workflow	it	L'Attività %1 è Interattiva cosicché deve usare il metodo $instance->complete()
+activity %1 is non-interactive and non-autorouted but has no role assigned	workflow	it	L'Attività %1 è Non-interattiva e non-autoindirizzante ma non ha ruoli assegnati
+activity %1 is non-interactive so it must not use the $instance->complete() method	workflow	it	L'attività %1 è Non-interattiva, quindi non deve usare il metodo $instance->complete()
+activity %1 is standalone and is using the $instance object	workflow	it	L'attività %1 è Standalone e sta usando $instance object
+activity %1 is standalone but has transitions	workflow	it	L'attività %1 è Standalone ma ha transizioni
+activity %1 is switch so it must use $instance->setnextactivity($actname) method	workflow	it	L'attività %1 è Switch, quindi deve usare il metodo $instance->setNextActivity($actname)
+activity completed	workflow	it	Attività completata
+activity name already exists	workflow	it	Il nome Attività esiste già
+activity role removed	workflow	it	Ruolo Attività rimosso
+activity saved	workflow	it	Attività salvata
+add a transition	workflow	it	Aggiungi una transizione
+add new	workflow	it	aggiungi nuovo
+add or edit a process	workflow	it	Aggiungi o modifica un processo
+add or edit an activity	workflow	it	Aggiungi o modifica un'attività
+add property	workflow	it	Aggiungi proprietà
+add role	workflow	it	Aggiungi ruolo
+add role to process	workflow	it	Aggiungi ruolo al processo
+add transitions	workflow	it	Aggiungi transizioni
+add transitions from	workflow	it	Aggiungi transizioni da
+add transitions to	workflow	it	Aggiungi transizioni a
+admin instance	workflow	it	Gestione Istanza
+admin process activities	workflow	it	Gestione Attività Processo
+admin process roles	workflow	it	Gestione Ruoli Processo
+admin processes	workflow	it	Gestione Processi
+admin processes sources	workflow	it	Gestione Sorgenti Processi
+all	workflow	it	tutto
+auto routed	workflow	it	Auto-instradata
+automatic	workflow	it	Automatico
+base directory does not exist, please ask adminstrator to check the global configuration	workflow	it	La directory base non esiste, prego chiedi all'amministratore di controllare la configurazione globale.
+being run	workflow	it	in esecuzione
+cannot add transition. only split activities can have more than one outbound transition	workflow	it	Impossibile aggiungere transizione. Solo le attività divise possono avere più di una transizione in uscita-
+circular reference found. some activity has a transition leading to itself	workflow	it	E' stato trovato un riferimento circolare. Qualche attività ha una transizione che conduce a sé stessa.
+code	workflow	it	codice
+complete	workflow	it	Completa
+completed	workflow	it	completata
+couldn't add transition	workflow	it	Impossibile aggiungere transizione
+create	workflow	it	crea
+created	workflow	it	Creato
+delete selected	workflow	it	Elimina selezione
+deletion successful	workflow	it	Cancellazione effettuata
+delition successful	workflow	it	Cancellazione effettuata
+description	workflow	it	Descrizione
+don't move	workflow	it	Non spostare
+duration	workflow	it	Durata
+end	workflow	it	fine
+end activity is not reachable from start activity	workflow	it	L'attività finale non è raggiungibile dall'attività iniziale
+exception instance	workflow	it	Istanza eccezione
+exceptions	workflow	it	eccezioni
+export	workflow	it	Esporta
+fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	it	Errore Fatale: nextActivity non corrisponde a nessuna candidata nell'instradamento dell'attività Switch
+fatal error: non-deterministic decision for autorouting activity	workflow	it	Errore Fatale: decisione non-deterministica per instradamento attività
+fatal error: setting next activity to an unexisting activity	workflow	it	Errore fatale: impostazione attività successiva verso un'attività inesistente
+fatal error: trying to send an instance to an activity but no transition found	workflow	it	Errore Fatale: cercando di inviare un'istanza ad una attività, ma nessuna transizione trovata
+filter	workflow	it	Filtro
+from	workflow	it	Da
+get property	workflow	it	Ottieni proprietà
+grab instance	workflow	it	afferra istanza
+graph	workflow	it	Grafico
+group	workflow	it	Gruppo
+id	workflow	it	Id
+if:setnextact	workflow	it	If:SetNextact
+inactive	workflow	it	Inattiva
+inst. status	workflow	it	Stato Istanza
+instance	workflow	it	Istanza
+instance properties	workflow	it	Proprietà Istanza
+instance: %1 (process: %2)	workflow	it	Istanza: %1 (processo: %2)
+instances	workflow	it	Istanze
+interactive	workflow	it	Interattiva
+interactivity	workflow	it	Interattività
+invalid	workflow	it	non valido
+invalid process	workflow	it	Processo non valido
+is active	workflow	it	è attiva
+join	workflow	it	unisci
+list of activities	workflow	it	Elenco attività
+list of instances	workflow	it	Elenco istanze
+list of mappings	workflow	it	Elenco mappature
+list of processes	workflow	it	Elenco processi
+list of processes (%1)	workflow	it	Elenco processi (%1)
+list of transitions	workflow	it	Elenco transizioni
+list of workitems	workflow	it	Elenco Entità Lavorative
+manual	workflow	it	Manuale
+map	workflow	it	mappa
+map users/groups to roles	workflow	it	Mappa utenti/gruppi ai ruoli
+mappings deleted	workflow	it	Mappature eliminate
+monitor activities	workflow	it	Monitorizza Attività
+monitor instances	workflow	it	Monitorizza Istanze
+monitor processes	workflow	it	Monitorizza Processi
+monitor work items	workflow	it	Monitorizza Entità Lavorative
+name	workflow	it	Nome
+new major	workflow	it	Nuova Maggiore
+new mapping added	workflow	it	Nuova mappatura aggiunta
+new minor	workflow	it	Nuova Minore
+new transition added	workflow	it	Nuova transizione aggiunta
+no activity indicated	workflow	it	Nessuna attività indicata
+no instance indicated	workflow	it	Nessuna istanza indicata
+no process indicated	workflow	it	Nessun processo indicato
+no properties defined	workflow	it	Nessuna proprietà definita
+no roles	workflow	it	nessun ruolo
+no roles asociated with this activity	workflow	it	Nessun ruolo associato a questa attività
+no work item indicated	workflow	it	Nessuna Entità Lavorativa indicata
+or import a process	workflow	it	O importa un processo
+owner	workflow	it	Proprietario
+process	workflow	it	Processo
+process %d has been activated	workflow	it	Il processo %d è stato attivato
+process %d has been deactivated	workflow	it	Il processo %d è stato disattivato
+process %s %s imported	workflow	it	Processo %s %s importato
+process %s has been created	workflow	it	Il processo %s è stato creato
+process %s has been updated	workflow	it	Il processo %s è stato aggiornato
+process %s removed	workflow	it	Processo %s rimosso
+process activities	workflow	it	Attività Processo
+process does not have a start activity	workflow	it	Il processo non ha un'attività iniziale
+process does not have exactly one end activity	workflow	it	Il processo non ha esattamente una attività finale
+process form	workflow	it	Modulo Processo
+process name already exists	workflow	it	Il nome processo esiste già
+process roles	workflow	it	Ruoli Processo
+process transitions	workflow	it	Transizioni Processo
+processes	workflow	it	Processi
+properties	workflow	it	Proprietà
+property	workflow	it	Proprietà
+release instance	workflow	it	rilascia istanza
+role %1 is not mapped	workflow	it	Il ruolo %1 non è mappato
+role added to process	workflow	it	Ruolo aggiunto al processo
+role saved	workflow	it	Ruolo salvato
+roles	workflow	it	Ruoli
+roles assigned to this activity	workflow	it	Ruoli assegnati a questa attività
+roles deleted	workflow	it	Ruoli cancellati
+routing	workflow	it	Instradamento
+run	workflow	it	esegui
+run activity	workflow	it	esegui attività
+run instance	workflow	it	esegui istanza
+running	workflow	it	in corso
+running activity	workflow	it	Attività in corso
+select source	workflow	it	seleziona sorgente
+send all to	workflow	it	Invia tutto a
+send instance	workflow	it	invia istanza
+set next act	workflow	it	Imposta atto Seguente
+set next user	workflow	it	Imposta utente Seguente
+set property	workflow	it	Imposta proprietà
+shared code	workflow	it	codice Condiviso
+show code	workflow	it	mostra codice
+show template	workflow	it	mostra template
+source saved	workflow	it	Sorgente salvata
+split	workflow	it	dividi
+standalone	workflow	it	solitario
+start	workflow	it	Inizia
+started	workflow	it	Iniziato
+status	workflow	it	Stato
+stop	workflow	it	stop
+switch	workflow	it	scambia
+switch construct	workflow	it	Scambia costrutto
+template	workflow	it	template
+the /workflow directory does not exist and could not be created. please ask your administrator to check the global configuration	workflow	it	La directory /workflow non esiste e non può essere creata. Prego chiedi al tuo amministratore di controllare la configurazione globale
+the following items must be corrected to be able to activate this process	workflow	it	Le seguenti entità devono essere corrette per poter attivare questo processo
+there are no activities available	workflow	it	Non cisono attività disponibili
+there are no instances available	workflow	it	Non ci sono istanze disponibili
+there are no mappings defined for this process	workflow	it	Non ci sono mappature definite per questo processo
+there are no processes available	workflow	it	Non ci sono processi disponibili
+there are no processes defined	workflow	it	Non ci sono processi definiti
+there are no properties available	workflow	it	Non ci sono proprietà disponibili
+there are no roles defined for this process	workflow	it	Non ci sono ruoli definiti per questo processo
+there are no transitions defined	workflow	it	Non ci sono transizioni definite
+there are no user activites available	workflow	it	Non ci sono attività utente disponibili
+there are no workitems available	workflow	it	Non ci sono entità lavorative disponibili
+to	workflow	it	A
+transitions removed successfully	workflow	it	Transizioni rimosse con successo
+type	workflow	it	tipo
+update	workflow	it	aggiorna
+upload file	workflow	it	Carica file
+user	workflow	it	Utente
+user activities	workflow	it	Attività Utente
+user instances	workflow	it	Istanze Utente
+user processes	workflow	it	Processi Utente
+user/group	workflow	it	Utente/Gruppo
+users/groups	workflow	it	Utenti/Gruppi
+valid	workflow	it	Valido
+valid process	workflow	it	Processo Valido
+value	workflow	it	Valore
+version	workflow	it	Versione
+workflow	common	it	Work-Flow
+workitem information	workflow	it	Informazione entità lavoro
+workitems	workflow	it	Entità lavorative
+you have not permission to execute this activity	workflow	it	Non hai il permesso di eseguire questa attività
