@@ -1,2 +1,10 @@
 headlines	common	fr	Headlines
-headline sites	all	fr	Sites d'Headline
+headline sites	common	fr	Sites d'Headline
+news file	common	fr	Fichier de News
+news headlines	common	fr	News headlines
+news type	common	fr	Type de News
+you must enter a news url	common	fr	Vous devez entrer une URL de news
+you must enter a base url	common	fr	Vous devez entrer une URL de base
+you must enter a display	common	fr	Vous devez entrer un affichage
+you must enter the number of listings display	common	fr	Vous devez entrer le nombre d'entit&eacute;s affich&eacute; dans chaque listing
+you must enter the number of minutes between reload	common	fr	Vous devez entrer un le nombre de minutes entre chaque recharge

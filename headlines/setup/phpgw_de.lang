@@ -7,6 +7,7 @@ headline site management	admin	de	Schlagzeilen Management
 listings displayed	admin	de	Zeilen maximal
 minutes between reloads	admin	de	Minuten zwischen Reloads
 news file	admin	de	News File
+news headlines  common  de  News headlines
 news type	admin	de	Nachrichtentyp
 select headlines to display	preferences	de	Anzuzeigende Schlagzeilen ausw&auml;hlen
 that site has already been entered	admin	de	Diese Site wurde bereits eingegeben

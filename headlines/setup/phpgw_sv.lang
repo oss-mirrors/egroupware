@@ -1,2 +1,16 @@
+are you sure you want to delete this news site ?	admin	sv	Är du säker på att du vill ta bort denna nyhets siten?
+base url	admin	sv	Bas URL
 headlines	common	sv	Headlines
 headline sites	admin	sv	Headline Sites
+listings displayed	admin	sv	Visade lister
+minutes between reloads	admin	sv	Minuter mellan uppdatering
+news file	admin	sv	Nyhets Fil
+news headlines	common	sv	Nyhets headlines
+news type	admin	sv	Nyhets Typ
+select headline news sites	preferences	sv	Välj Headline News sites
+that site has already been entered	admin	sv	Den siten har redan blivit inlaggd
+you must enter a base url	admin	sv	Du måste skriva in en bas url
+you must enter a display	admin	sv	Du måste skriva in en display
+you must enter a news url	admin	sv	Du måste skriva in en nyhets url
+you must enter the number of listings display	admin	sv	Du måste skriva in antalet rader att visa
+you must enter the number of minutes between reload	admin	sv	Du måste skriva in antalet minuter mellan uppdatering

@@ -5,6 +5,7 @@ headlines	common	br	Headlines
 headline sites	admin	br	Headlines
 listings displayed	admin	br	listagens mostradas
 minutes between reloads	admin	br	Minutos entre reloads
+news headlines	common	br	titulos novos
 select headline news sites	preferences	br	Selecione os sites de noticias
 that site has already been entered	admin	br	Este site ja foi cadastrado
 you must enter a base url	admin	br	Insira a URL base
