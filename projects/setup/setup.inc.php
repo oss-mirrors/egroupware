@@ -58,6 +58,8 @@
 		'home',
 		'sidebox_menu'
 	);
+	
+	$setup_info['projects']['hooks']['updateevent']	= 'projects.boprojects.checkWorkLoad';
 
 /* Dependencies for this app to work */
 
@@ -89,12 +91,6 @@
 	(
 		 'appname' => 'email',
 		 'versions' => Array('0.9.13','0.9.13','1.0.0')
-	);
-
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'emailadmin',
-		 'versions' => Array('0.0.008','1.0.0')
 	);
 
 ?>

@@ -206,15 +206,8 @@
 		*/
 		function checkWorkLoad($_hookValues)
 		{
-			#_debug_array($_hookValues);
 			$profileID 	= 1;
-			#$prefs = $this->read_prefs();
-			
-			#_debug_array($mainProjectData);
-			#_debug_array($subProjectsData);
 
-			#$bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());			
-			$boemailadmin	= CreateObject('emailadmin.bo');
 			$template	= CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
 			$bocalendar	= CreateObject('calendar.bocalendar');
 			$bolink		= CreateObject('infolog.bolink');
@@ -266,14 +259,8 @@
 			}
 			#_debug_array($userData);
 			
-			$emailSettings	= $boemailadmin->getProfile($profileID);
-			$emailAddresses	= $boemailadmin->getAccountEmailAddress(
-				$GLOBALS['phpgw_info']['user']['userid'], $profileID);
+			$mail		= CreateObject('phpgwapi.send');
 			
-			$mail		= CreateObject('phpgwapi.phpmailer');
-			$mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
-			
-			$mail->IsSMTP();
 			$mail->IsHTML(true);
 			
 			$template->set_file(array('email_project_t' => 'email_workload.tpl'));
@@ -281,16 +268,13 @@
 			$template->set_block('email_project_t','body_html');
 
 			$mail->From	= 'noreply@';
-			$mail->FromName	= $boemailadmin->encodeHeader('eGroupWare System','q');
-			$mail->Host	= $emailSettings['smtpServer'];
-			$mail->Port	= $emailSettings['smtpPort'];
+			$mail->FromName	= 'eGroupWare System';
 			$mail->Priority	= '3';
 			$mail->Encoding = 'quoted-printable';
-			$mail->CharSet  = $GLOBALS['phpgw']->translation->charset();
 			$mail->AddCustomHeader("X-Mailer: Projects for eGroupWare");
 
 			$GLOBALS['phpgw_info']['user']['preferences']['common']['account_display'] = 'all';
-			
+
 			// check if one participant works more then 8 hours
 			foreach($userData as $participant => $participantData)
 			{
@@ -309,15 +293,11 @@
 							$projectData = $this->read_single_project($links[0]);
 							#_debug_array($projectData);
 							$coordinator = $projectData['coordinator'];
-							$toEMailAddress = $boemailadmin->getAccountEmailAddress
-							(
-								$GLOBALS['phpgw']->accounts->id2name($coordinator), $profileID
-							);
-							$toEMailAddress = $toEMailAddress[0]['address'];
+							$toEMailAddress = $GLOBALS['phpgw']->accounts->id2name($coordinator,'account_email');
 							$mail->AddAddress($toEMailAddress);
 
-							$mail->Subject = $boemailadmin->encodeHeader(lang('workload warning for project').': '.
-								$projectData['title'],'q');
+							$mail->Subject = lang('workload warning for project').': '.
+								$projectData['title'];
 							$template->set_var('project_list',
 								'<pre>'.print_r($projectData,true)."</pre>");
 							$template->set_var('lang_workload_warning_for',
@@ -352,13 +332,6 @@
 
 							$mail->Body	= $template->fp('out','body_html');
 							$mail->AltBody	= $template->fp('out','body_text');
-			
-							if($emailSettings['smtpAuth'] == 'yes')
-							{
-								$mail->SMTPAuth = true;
-								$mail->Username = $emailSettings['username'];
-								$mail->Password = $emailSettings['key'];
-							}
 			
 							@set_time_limit(120);
 							if(!$mail->Send())
@@ -745,19 +718,14 @@
 		{
 			if(!$_pro_main || !$_emailTo)
 				return false;
-		
-			$profileID 	= 1;
+
 			$mainProjectData	= $this->read_single_project($_pro_main);
 			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
 			$prefs = $this->read_prefs();
 			$nextmatchs 		= CreateObject('phpgwapi.nextmatchs');
 			
 			$bostatistics	= CreateObject('projects.bostatistics');
-			$boemailadmin	= CreateObject('emailadmin.bo');
 			$template	= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$emailSettings	= $boemailadmin->getProfile($profileID);
-			$emailAddresses	= $boemailadmin->getAccountEmailAddress(
-				$GLOBALS['phpgw_info']['user']['userid'], $profileID);
 			
 			$mail		= CreateObject('phpgwapi.send');
 
@@ -824,16 +792,14 @@
 				}
 			}
 			
-			$mail->From	= $emailAddresses[0]['address'];
-			$mail->FromName	= $emailAddresses[0]['name'];
-			$mail->Host	= $emailSettings['smtpServer'];
-			$mail->Port	= $emailSettings['smtpPort'];
+			$mail->From	= $GLOBALS['phpgw_info']['user']['email'];
+			$mail->FromName	= $GLOBALS['phpgw_info']['user']['fullname'];
 			$mail->Priority	= '3';
 			$mail->Encoding = 'quoted-printable';
 			$mail->CharSet  = $GLOBALS['phpgw']->translation->charset();
 			$mail->AddCustomHeader("X-Mailer: Projects for eGroupWare");
-			if(isset($emailSettings['organizationName']))
-				$mail->AddCustomHeader("Organization: ".$emailSettings['organizationName']);
+			#if(isset($emailSettings['organizationName']))
+			#	$mail->AddCustomHeader("Organization: ".$emailSettings['organizationName']);
 				
 			$mail->AddAddress($_emailTo);
 			
@@ -843,13 +809,6 @@
 			
 			$mail->Body	= $template->fp('out','body_html');
 			$mail->AltBody	= $template->fp('out','body_text');
-			
-			if($emailSettings['smtpAuth'] == 'yes')
-			{
-				$mail->SMTPAuth = true;
-				$mail->Username = $emailSettings['username'];
-				$mail->Password = $emailSettings['key'];
-			}
 			
 			@set_time_limit(120);
 			if(!$mail->Send())
