@@ -473,7 +473,7 @@
 	  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
    }
 
-   function plg_bv_imagepath($value,$config)
+   function plg_bv_imagepath($value,$config,$where_val_enc)
    {
 
 	  global $local_bo;

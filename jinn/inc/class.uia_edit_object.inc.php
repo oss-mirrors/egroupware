@@ -75,13 +75,13 @@
 //			_debug_array($fields);
    
             //sort array and remove non-functional elements
-            $slice0=array_slice($fields,0,6);
+/*            $slice0=array_slice($fields,0,6);
             $slice1=array_slice($fields,9,2);
             $slice2=array_slice($fields,7,1);
             $slice3=array_slice($fields,6,1);
             unset($fields);
             $fields=array_merge($slice0,$slice1,$slice2,$slice3);
-
+*/
 
 
 			foreach ($fields as $testone => $fieldproperties)

@@ -30,6 +30,7 @@
 		 'object_insert'		=> True,
 		 'del_object'			=> True,
 		 'save_object_config'	=> True,
+		 'get_plugin_afa'		=> True,
 		 'copy_object'			=> True
 	  );
 
@@ -483,7 +484,7 @@
 		 /**
 		 * get browse view function from plugin 
 		 */
-		 function get_plugin_bv($fieldname,$value)
+		 function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
 		 {
 			global $local_bo;
 			$local_bo=$this;
@@ -505,7 +506,7 @@
 
 			   if ($fieldname==$sets[0])
 			   {
-				  if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr)) 
+				  if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
 				  {
 					 //die('plg_bv_'.$sets[1].$value.$conf_arr);
 				  }
@@ -523,6 +524,7 @@
 			return $new_value;
 
 		 }
+
 		 /**
 		 * get input function from plugin 
 		 */
@@ -562,6 +564,68 @@
 
 		 }
 
+		 /**
+		 * get autonome form action function from plugin 
+		 */
+		 function get_plugin_afa()
+		 {
+			global $local_bo;
+			$local_bo=$this;
+
+			$action_plugin_name=$_GET[plg];
+
+			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+//			_debug_array($plugins);
+//			die();
+			foreach($plugins as $plugin)
+			{	
+			   $sets=explode(':',$plugin);
+
+			   if($sets[3]) $conf_str = explode(';',$sets[3]);
+			   if(is_array($conf_str))
+			   {
+				  unset($conf_arr);
+				  foreach($conf_str as $conf_entry)
+				  {
+					 list($key,$val)=explode('=',$conf_entry);	
+					 $conf_arr[$key]=$val;		
+				  }
+			   }
+			   
+			   if ($action_plugin_name==$sets[1])
+			   {
+				  $call_plugin=$sets[1];
+				  break;
+			   }
+			}
+
+			if($call_plugin)
+			{
+			   //FIXME all plugins must get an extra argument in the sf_func
+			   $success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
+			}
+	  
+			if ($succes)
+			{
+			   $this->message[info]=lang('Action was succesful.');
+
+			   $this->save_sessiondata();
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+			else
+			{
+			   $this->message[error]=lang('Action was not succesful. Unknown error');
+
+			   $this->save_sessiondata();
+			   $this->common->exit_and_open_screen('jinn.uiuser.index');
+			}
+		 }
+		 
+		 
+		 
+		 
+		 
+		 
 		 /**
 		 * include ALL plugins
 		 */

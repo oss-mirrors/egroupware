@@ -335,7 +335,6 @@
 				  }
 			   }
 
-
 			   /* which/how many column to show, all, the prefered, or the default thirst 4 */
 			   if ($show_all_cols=='True')
 			   {
@@ -444,7 +443,7 @@
 							  }
 							  else
 							  {	
-								 $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue);
+								 $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
 							  }
 
 							  $display_value=$recordvalue;

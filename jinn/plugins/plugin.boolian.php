@@ -100,7 +100,7 @@
 		return $input;
 	}
 
-	function plg_bv_boolian($value,$config)
+	function plg_bv_boolian($value,$config,$where_val_enc)
 	{
 
 		if(!is_null($config['ON_output_value_If_not_the_same_as_input_value'])) $val_on=$config['ON_output_value_If_not_the_same_as_input_value'];
