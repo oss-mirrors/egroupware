@@ -24,29 +24,37 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
         If eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
             If eGW.Response.Status = 4 Then
-                Debug.Print "XML Parse Error:" & eGW.Response.XMLParseError
-                Debug.Print eGW.Response.XMLResponse
+                Debug.Print "XML Parse Error: " & eGW.Response.XMLParseError
+                'Debug.Print eGW.Response.XMLResponse
             End If
         ElseIf eGW.Response.params.Count <> 1 Then
             Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.params.Count & " return parameters, expecting 1"
         ElseIf eGW.Response.params(1).ValueType <> XMLRPC_ARRAY Then
             Debug.Print "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(eGW.Response.params(1).ValueType) & " returned, expecting an array"
+            PrintXMLRPCValue eGW.Response.params(1)
         End If
         
         'return the response from the XMLRPC server
         Set SimpleExec = eGW.Response
         'it's always polite to close the door when you leave
         eGW.Logout
+    Else
+        Debug.Print "Login Failed"
     End If
 End Function
 
-Public Function GetOutlookContacts()
-    Dim fldContacts As Outlook.MAPIFolder
-    Dim gnspNameSpace As NameSpace
-    Set gnspNameSpace = GetNamespace("MAPI")
-    Set fldContacts = gnspNameSpace.GetDefaultFolder(olFolderContacts)
+Public Function GetOutlookContacts(fldFolder As Outlook.MAPIFolder)
+    Dim objItem         As Object
     
-    GetFolderInfo fldContacts
+    If fldFolder.Folders.Count > 0 Then
+        For Each objItem In fldFolder.Folders
+            GetOutlookContacts (objItem)
+        Next objItem
+    End If
+    
+    For Each objItem In fldFolder.Items
+        frmMain.listLocal.AddItem (objItem.FullName)
+    Next objItem
 End Function
 
 Private Sub GetFolderInfo(fldFolder As Outlook.MAPIFolder)
