@@ -20,7 +20,7 @@
 
   if ($action == "add") {
      $phpgw->preferences->change("stocks",urlencode($symbol),urlencode($name));
-     $phpgw->preferences->commit();
+     $phpgw->preferences->commit(True);
      // For some odd reason, if I forward it back to stocks/preferences.php after an add
      // I get no data errors, so for now forward it to the main preferences section.
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
@@ -28,39 +28,40 @@
   } else if ($action == "delete") {
      // This needs to be fixed
      $phpgw->preferences->delete("stocks",$value);
-     $phpgw->preferences->commit();
+     $phpgw->preferences->commit(True);
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      $phpgw->common->phpgw_exit();
   }
 
-  if ($mainscreen) {
-     if ($mainscreen == "enable") {
+    if ($mainscreen) {
+	if ($mainscreen == "enable") {
         $phpgw->preferences->delete("stocks","disabled");
         $phpgw->preferences->change("stocks","enabled","True");
-     }
-     if ($mainscreen == "disable") {
-        $phpgw->preferences->delete("stocks","enabled");
-        $phpgw->preferences->change("stocks","disabled","True");
-     }
-     $phpgw->preferences->commit();
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
-     $phpgw->common->phpgw_exit();
-  }
+    }
 
-  $phpgw->common->phpgw_header();
-  echo parse_navbar();
+    if ($mainscreen == "disable") {
+	$phpgw->preferences->delete("stocks","enabled");
+	$phpgw->preferences->change("stocks","disabled","True");
+    }
+    $phpgw->preferences->commit(True);
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
+    $phpgw->common->phpgw_exit();
+    }
+
+    $phpgw->common->phpgw_header();
+    echo parse_navbar();
 
   // If they don't have any stocks in there, give them something to look at
-  if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
-     $phpgw->preferences->change("stocks","LNUX","VA%20Linux");
-     $phpgw->preferences->change("stocks","RHAT","RedHat");
-     $phpgw->preferences->commit();
-     $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
-     $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
-  }
+    if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
+	$phpgw->preferences->change("stocks","LNUX","VA%20Linux");
+	$phpgw->preferences->change("stocks","RHAT","RedHat");
+	$phpgw->preferences->commit();
+	$phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
+	$phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
+    }
 
 
-  echo "<p><b>" . lang("Stock Quote preferences") . ":" . "</b><hr><p>";
+    echo "<p><b>" . lang("Stock Quote preferences") . ":" . "</b><hr><p>";
 ?>
    <table border="0" align="center" cellspacing="1" cellpadding="1" width="60%">
     <?php
@@ -82,9 +83,9 @@
             echo '<td>' . rawurldecode($stock[0]) . '</td>';
             echo '<td>' . rawurldecode($stock[1]) . '</td>';
             echo '<td width="5%" align="center"><a href="'                                                                                                                                     
-               . $phpgw->link("preferences_edit.php","sym=" . $stock[0]) . '">Edit</a></td>';
+               . $phpgw->link("/stocks/preferences_edit.php","sym=" . $stock[0]) . '">Edit</a></td>';
             echo '<td width="5%" align="center"><a href="'
-               . $phpgw->link("preferences.php","action=delete&value=" . $stock[0]) . '">Delete</a></td>';
+               . $phpgw->link("/stocks/preferences.php","action=delete&value=" . $stock[0]) . '">Delete</a></td>';
 
             echo "</tr>\n";
          }
@@ -103,7 +104,7 @@
         echo lang("Display stocks on main screen is disabled");
         $newstatus = "enable";
      }
-     echo '</td><td><a href="' . $phpgw->link("","mainscreen=$newstatus") . '">' . $newstatus . '</a>'
+     echo '</td><td><a href="' . $phpgw->link("/stocks/preferences.php","mainscreen=$newstatus") . '">' . $newstatus . '</a>'
         . '</td><tr>';
      ?>
 
