@@ -185,7 +185,7 @@ function check_all()
   <tr>
   </form>
  <form name="delmov" action="<?php echo $phpgw->link("action.php"); ?>" method="post">
-  <input type="hidden" name="what" value="">
+  <input type="hidden" name="what" value="delete">
   <input type="hidden" name="folder" value="<?php echo $folder; ?>">
 
  <td align="center" bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="3%">
