@@ -1274,6 +1274,7 @@
 					}
 				}
 				// get rid of the temp dir we used for the above
+				closedir($dh);
 				rmdir($upload_dir);
 			}
 
