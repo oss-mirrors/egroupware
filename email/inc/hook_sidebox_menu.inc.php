@@ -23,9 +23,11 @@
 	display_sidebox can be called as much as you like
  */
 
+
+
+
 // get current mail account used
 $sidebox_mailacct = $GLOBALS['phpgw']->msg->get_acctnum();
-
 
 
 
@@ -88,9 +90,11 @@ function CreateSidebox_EmailMenu($mailacct)
 // ****** end of function CreateSidebox_EmailMenu
 
 
-
-  	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
-	display_sidebox($appname,$menu_title,CreateSidebox_EmailMenu($sidebox_mailacct));
+	if ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('basic') == True)
+	{
+		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Menu');
+		display_sidebox($appname,$menu_title,CreateSidebox_EmailMenu($sidebox_mailacct));
+	}
 
 
 
@@ -98,7 +102,7 @@ function CreateSidebox_EmailMenu($mailacct)
 
 function CreateSidebox_FolderMenu($mailacct)
 {
-    $folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list', $mailacct);
+	$folder_list = $GLOBALS['phpgw']->msg->get_arg_value('folder_list', $mailacct);
     $delimiter = $GLOBALS['phpgw']->msg->get_arg_value('mailsvr_delimiter', $acctnum);
 
     // note: what format should these folder name options (sent and trash) be held in
@@ -190,9 +194,11 @@ function CreateSidebox_FolderMenu($mailacct)
 // ****** end of function CreateSidebox_FolderMenu
 
 
-
-  	$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Folders');
-	display_sidebox($appname,$menu_title,CreateSidebox_FolderMenu($sidebox_mailacct));
+	if ($GLOBALS['phpgw']->msg->ok_toshow_sidemenu('folderlist') == True)
+	{
+		$menu_title = $GLOBALS['phpgw_info']['apps'][$appname]['title'] . ' '. lang('Folders');
+		display_sidebox($appname,$menu_title,CreateSidebox_FolderMenu($sidebox_mailacct));
+	}
 
 
 

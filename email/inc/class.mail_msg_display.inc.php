@@ -233,6 +233,69 @@ class mail_msg extends mail_msg_wrappers
 	}
 	
 	/*!
+	@function ok_toshow_sidemenu
+	@abstract for use by outside processes such as a hookfile to determine if we can show a folderlist
+	@param $menu_type STRING only 2 values are accepted "folderlist" and "basic"
+	@discussion Showing a folder list requires enough information to have logged into the mailserver already, 
+	but pages such as preferences page should NEVER try to login because preferences may not be entered yet 
+	thus no login would be possible thus no folder list is available thus trying to show one produces a login error.
+	If "basic" is the param then ask is it ok to show even the most basic sidemenu at all, even a compose link, 
+	for example. This is for when you are creating a new account, for example, you can not even show a compose 
+	link because said account you are creating does not exist yet.
+	@access public
+	*/
+	function ok_toshow_sidemenu($menu_type='folderlist')
+	{
+		// param $menu_type either "folderlist" OR "basic"
+		if ($this->debug_logins > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): ok_toshow_folderlist: ENTERED, $menu_type ['.$menu_type.'] <br>'); } 
+		if ( (isset($menu_type) == False)
+		|| (trim($menu_type) == ''))
+		{
+			$menu_type = 'folderlist';
+		}
+		if (($menu_type != 'folderlist')
+		&& (trim($menu_type) != 'basic'))
+		{
+			$menu_type = 'folderlist';
+		}
+		$my_menuaction = get_var('menuaction',array('GET','POST'));
+		if ($this->debug_logins > 0) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): ok_toshow_folderlist: after looksee, $menu_type ['.$menu_type.'] $my_menuaction ['.$my_menuaction.']<br>'); } 
+		if ((isset($my_menuaction) == False)
+		|| (trim($my_menuaction) == ''))
+		{
+			// no menuaction, we do not knpw what to do, fallback
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg(_wrappers)('.__LINE__.'): ok_toshow_folderlist: LEAVING, return False, we have no menuaction<br>'); } 
+			return False;
+		}
+		
+		// if no restrictions match, then assume true
+		$show_me = True;
+		// RESTRICTIONS
+		$acctnum = $this->get_acctnum();
+		if ((stristr($my_menuaction, 'email.uipreferences'))
+		&& (get_var('ex_acctnum',array('GET','POST'), '') == 'add_new'))
+		{
+			// we are right now creating a new account, we can not even show the basic sidemenu
+			$show_me = False;
+		}
+		elseif ((stristr($my_menuaction, 'email.uipreferences'))
+		&& ($GLOBALS['phpgw']->msg->extra_and_default_acounts[$acctnum]['status'] != 'enabled'))
+		{
+			// this account exists but is not enabled can not show any menu
+			$show_me = False;
+		}
+		elseif ((stristr($my_menuaction, 'email.uipreferences'))
+		&& ($menu_type == 'folderlist'))
+		{
+			// we never do anything that might need a login when displaying preferences page
+			$show_me = False;
+		}
+		// notice that "email.uipreferences" with "basic" can slip down here to be shown, hence the difference
+		if ($this->debug_logins > 0) { $this->dbug->out('hookfile ('.__LINE__.'): LEAVING: $menu_type was ['.$menu_type.'], returning $show_me ['.serialize($show_me).']<br>'); } 
+		return $show_me;
+	}
+	
+	/*!
 	@function all_folders_listbox
 	@abstract gets a list of all folders available to the user, and makes an HTML listbox widget with that data. 
 	BEING PHASED OUT, REPLACED BY HTML WIDGET CLASS, soon to be DEPRECIATED. 
