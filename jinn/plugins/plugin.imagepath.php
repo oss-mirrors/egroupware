@@ -30,7 +30,7 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.1';
+	$this->plugins['imagepath']['version']			= '0.8.2';
 	$this->plugins['imagepath']['enable']			= 1;
 	$this->plugins['imagepath']['db_field_hooks']	= array
 	(
@@ -64,7 +64,7 @@
 		if ($local_bo->bo->site_object['upload_url']) $upload_url=$local_bo->bo->site_object['upload_url'].'/';
 		elseif($local_bo->bo->site['upload_url']) $upload_url=$local_bo->bo->site['upload_url'].'/';
 		else $upload_url=false;
-		
+
 		/* if value is set, show existing images */	
 		if($value)
 		{
@@ -93,10 +93,6 @@
 			}
 		}
 
-
-
-
-
 		/* get max images, set max 5 filefields */
 		if (is_numeric($config[Max_files])) 
 		{
@@ -105,7 +101,6 @@
 		}
 		else 
 		{
-			//die(is_numeric($config[Max_files]));
 			$num_input=100;
 		}
 
@@ -127,30 +122,12 @@
 
 
 
-
-
-
-
 	function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	/****************************************************************************\
 	* main image data function                                                   *
 	\****************************************************************************/
 	{
 		global $local_bo;
-		/* strange behaviour 
-
-		I copied the object $this to $local_bo and 
-		now the objectmethods are directly accessable like this 
-
-		$local_bo->filter_array_with_prefix
-
-		but the objects variable must be access like this
-
-		$local_bo->bo->site['upload_path']
-
-		thay are stored in subobjects but why???
-
-		*/
 		$magick=CreateObject('jinn.boimagemagick');
 
 		if ($local_bo->bo->site_object['upload_path']) $upload_path=$local_bo->bo->site_object['upload_path'].'/';
@@ -269,7 +246,7 @@
 						$new_img_height=$config['Max_image_height'];
 					}
 
-					// get original type
+					/* get original type */
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{
@@ -280,15 +257,28 @@
 						$filetype='png';
 						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype,'');
 
+						/* if thumb */
+						if($config['Generate_thumbnail']) 
+						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype,'');
+
 					}
 					elseif($new_img_width || $new_img_height)
 					{
 						$target_image_name.='.'.$filetype;
-						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$new_filetype,'');
+						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype,'');
+
+						/* if thumb */
+						if($config['Generate_thumbnail']) 
+						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$new_filetype,'');
 					}
 					else
 					{
 						$new_temp_file=$add_image['tmp_name']; // just copy
+
+						/* if thumb */
+						if($config['Generate_thumbnail']) 
+						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype,'');
+
 					}
 
 					$target_image_name = time().ereg_replace("[^a-zA-Z0-9_.]", '_', $add_image['name']);
@@ -299,21 +289,19 @@
 					}
 					else $target_image_name .='.'.$filetype;	
 
-
-
 					if (copy($new_temp_file, $upload_path."/normal_size/".$target_image_name))
 					{
 						$images_array[$img_position]='normal_size/'.$target_image_name;
-
+						if($config['Generate_thumbnail'])
+						{
+							copy($new_temp_thumb, $upload_path."/thumb/".$target_image_name);
+						}
 					}
 					else
 					{
 						die ("failed to copy $target_image_name...<br>\n");
 					}
-
-
 				}
-
 
 				$img_position++;
 
