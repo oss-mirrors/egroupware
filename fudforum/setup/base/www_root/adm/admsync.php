@@ -42,6 +42,7 @@ function copy_dir($base, $dest, $dir_ar)
 
 	/* web directories */
 	copy_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/", $WWW_ROOT_DISK, array('adm', 'images'));
+	copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/lib.js", $WWW_ROOT_DISK."lib.js");
 
 	$remove_list = array(
 		'thm/default/tmpl/admincp.tmpl',
