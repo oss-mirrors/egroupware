@@ -24,17 +24,17 @@
  </tr>
     <tr bgcolor="{th_bg}">
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_number}</td>
-      <td width="20%" bgcolor="{th_bg}" align=center>{sort_customer}</td>
+      <td width="10%" bgcolor="{th_bg}" align=center>{sort_customer}</td>
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_title}</td>
-      <td width="20%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
+      <td width="15%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{lang_jobs}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{lang_delivery}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{lang_invoice}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{lang_stats}</td>
-      <td width="5%" bgcolor="{th_bg}" align=center>{lang_edit}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_jobs}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_delivery}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_invoice}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_stats}</td>
+      <td width="8%" bgcolor="{th_bg}" align=center>{lang_edit}</td>
     </tr>
-  
+
 <!-- BEGIN projects_list -->
 
       <tr bgcolor="{tr_color}">
