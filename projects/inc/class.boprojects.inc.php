@@ -232,16 +232,16 @@
 			return $employees;
 		}
 
-		function read_admins($type)
+		function read_admins($action, $type)
 		{ 
-			$admins = $this->soprojects->return_admins($type);
+			$admins = $this->soprojects->return_admins($action, $type);
 			$this->total_records = $this->soprojects->total_records;
 			return $admins;
 		}
 
-		function list_admins($start, $query, $sort, $order)
+		function list_admins($action, $start, $query, $sort, $order)
 		{
-			$admins = $this->read_admins('all');
+			$admins = $this->read_admins($action, 'all');
 
 			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query);
 
@@ -265,9 +265,9 @@
 			return $admin_data;
 		}
 
-		function selected_admins($type)
+		function selected_admins($action, $type)
 		{
-			$is_admin = $this->read_admins($type);
+			$is_admin = $this->read_admins($action, $type);
 
 			if ($type == 'aa')
 			{
@@ -294,14 +294,21 @@
 			return $selected_admins;
 		}
 
-		function edit_admins($users, $groups)
+		function edit_admins($action, $users, $groups)
 		{
-			$this->soprojects->edit_admins($users, $groups);
+			$this->soprojects->edit_admins($action, $users, $groups);
 		}
 
-		function isprojectadmin()
+		function isprojectadmin($action)
 		{
-			$admin = $this->soprojects->isprojectadmin();
+			if ($action == 'pad')
+			{
+				$admin = $this->soprojects->isprojectadmin($action);
+			}
+			else
+			{
+				$admin = $this->soprojects->isbookkeeper($action);
+			}
 			return $admin;
 		}
 

@@ -82,7 +82,7 @@
 
 			if ($filter == 'none')
 			{
-				if ($this->isprojectadmin())
+				if ($this->isprojectadmin('pad') || $this->isbookkeeper('pbo'))
 				{
 					$filtermethod = " access != 'private'";
 				}
@@ -488,13 +488,25 @@
 			}
 		}
 
-		function return_admins($type = 'all')
+		function return_admins($action, $type = 'all')
 		{
-			switch ($type)
+			if ($action == 'pad')
 			{
-				case 'all': $filter = " type='aa' or type='ag'"; break;
-				case 'aa': $filter = " type='aa'"; break;
-				case 'ag': $filter = " type='ag'"; break;
+				switch ($type)
+				{
+					case 'all': $filter = " type='aa' or type='ag'"; break;
+					case 'aa': $filter = " type='aa'"; break;
+					case 'ag': $filter = " type='ag'"; break;
+				}
+			}
+			else
+			{
+				switch ($type)
+				{
+					case 'all': $filter = " type='ba' or type='bg'"; break;
+					case 'aa': $filter = " type='ba'"; break;
+					case 'ag': $filter = " type='bg'"; break;
+				}
 			}
 
 			$this->db->query("select account_id,type from phpgw_p_projectmembers WHERE $filter");
@@ -507,10 +519,10 @@
 			return $admins;
 		}
 
-		function isprojectadmin()
+		function isprojectadmin($action)
 		{
 			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
-			$admins = $this->return_admins();
+			$admins = $this->return_admins($action);
 
 			for ($i=0;$i<count($admins);$i++)
 			{
@@ -537,15 +549,57 @@
 			}
 		}
 
-		function edit_admins($users = '', $groups = '')
+		function isbookkeeper($action)
 		{
-			$this->db->query("DELETE from phpgw_p_projectmembers WHERE type='aa' OR type='ag'",__LINE__,__FILE__);
+			$admin_groups = $GLOBALS['phpgw']->accounts->membership($this->account);
+			$admins = $this->return_admins($action);
+
+			for ($i=0;$i<count($admins);$i++)
+			{
+				if ($admins[$i]['type']=='ba')
+				{
+					if ($admins[$i]['account_id'] == $this->account)
+					return True;
+				}
+				elseif ($admins[$i]['type']=='bg')
+				{
+					if (is_array($admin_groups))
+					{
+						for ($j=0;$j<count($admin_groups);$j++)
+						{
+							if ($admin_groups[$j]['account_id'] == $admins[$i]['account_id'])
+							return True;
+						}
+					}
+				}
+				else
+				{
+					return False;
+				}
+			}
+		}
+
+		function edit_admins($action, $users = '', $groups = '')
+		{
+			if ($action == 'pad')
+			{
+				$ag = 'ag';
+				$aa = 'aa';
+			}
+			else
+			{
+				$ag = 'bg';
+				$aa = 'ba';
+			}
+
+			$this->db->query("DELETE from phpgw_p_projectmembers WHERE type='" . $aa . "' OR type='" . $ag . "'",__LINE__,__FILE__);
 
 			if (count($users) != 0)
 			{
 				while($activ=each($users))
 				{
-					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'$activ[1]','aa')",__LINE__,__FILE__);
+					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'" . $activ[1] . "','"
+									. $aa . "')",__LINE__,__FILE__);
 				}
 			}
 
@@ -553,7 +607,8 @@
 			{
 				while($activ=each($groups))
 				{
-					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'$activ[1]','ag')",__LINE__,__FILE__);
+					$this->db->query("insert into phpgw_p_projectmembers (project_id, account_id,type) values (0,'" . $activ[1] . "','"
+									. $ag . "')",__LINE__,__FILE__);
 				}
 			}
 		}

@@ -128,29 +128,29 @@
 
 			$this->set_app_langs();
 
-			$isadmin = $this->boprojects->isprojectadmin();
-
-			if ($isadmin)
+			if ($this->boprojects->isprojectadmin('pad'))
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
+				$this->t->set_var('space1','&nbsp;&nbsp;&nbsp;');
 				$this->t->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
 				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
 			}
-			else
+
+			if ($this->boprojects->isprojectadmin('pbo'))
 			{
-				$this->t->set_var('admin_info','');
-				$this->t->set_var('link_activities','');
-				$this->t->set_var('lang_activities','');
+				$this->t->set_var('book_info',lang('Bookkeeper'));
+				$this->t->set_var('break','&nbsp;|&nbsp;');
+				$this->t->set_var('space2','&nbsp;&nbsp;&nbsp;');
+				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+				$this->t->set_var('lang_billing',lang('Billing'));
+				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+				$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			}
 
-			$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
-			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
@@ -646,13 +646,10 @@
 
 					if (($inv['status'] != 'billed') && ($inv['status'] != 'closed'))
 					{
-						if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
-						{
-							$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
-							$link_data['hours_id']		= $inv['hours_id'];
-							$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
-							$this->t->set_var('lang_edit_entry',lang('Edit'));
-						}
+						$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
+						$link_data['hours_id']		= $inv['hours_id'];
+						$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+						$this->t->set_var('lang_edit_entry',lang('Edit'));
 					}
 					else
 					{
@@ -710,13 +707,10 @@
 
 						if (($inv['status'] != 'billed') && ($inv['status'] != 'closed'))
 						{
-							if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
-							{
-								$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
-								$link_data['hours_id']		= $inv['hours_id'];
-								$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
-								$this->t->set_var('lang_edit_entry',lang('Edit'));
-							}
+							$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
+							$link_data['hours_id']		= $inv['hours_id'];
+							$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+							$this->t->set_var('lang_edit_entry',lang('Edit'));
 						}
 						else
 						{
@@ -735,17 +729,11 @@
 
 			if (! $invoice_id)
 			{
-				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
-				{
-					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
-				}
+				$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
 			}
  			else
 			{
-				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
-				{
-					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
-				}
+				$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
 			}
 
 			if ($action == 'amains' || $action == 'asubs')

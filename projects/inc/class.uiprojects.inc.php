@@ -133,29 +133,29 @@
 
 			$this->set_app_langs();
 
-			$isadmin = $this->boprojects->isprojectadmin();
-
-			if ($isadmin)
+			if ($this->boprojects->isprojectadmin('pad'))
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
+				$this->t->set_var('space1','&nbsp;&nbsp;&nbsp;');
 				$this->t->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
 				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
 			}
-			else
+
+			if ($this->boprojects->isprojectadmin('pbo'))
 			{
-				$this->t->set_var('admin_info','');
-				$this->t->set_var('link_activities','');
-				$this->t->set_var('lang_activities','');
+				$this->t->set_var('book_info',lang('Bookkeeper'));
+				$this->t->set_var('break','&nbsp;|&nbsp;');
+				$this->t->set_var('space2','&nbsp;&nbsp;&nbsp;');
+				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+				$this->t->set_var('lang_billing',lang('Billing'));
+				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+				$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			}
 
-			$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
-			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
@@ -322,19 +322,10 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
-				$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 
-				if ($this->boprojects->isprojectadmin() && $pro[$i]['access'] != 'private')
+				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
 				{
-					$showedit = True;
-				}
-				else if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
-				{
-					$showedit = True;
-				}
-
-				if ($showedit)
-				{
+					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
 				}
@@ -390,7 +381,7 @@
 			{
 				if ($pro_parent && $pro_parent != 0)
 				{
-					$coordinator = $this->boprojects->return_value($pro_parent);
+					$coordinator = $this->boprojects->return_value('co',$pro_parent);
 
 					if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
 					{
@@ -1253,7 +1244,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_admins',
-				'action'		=> 'pad'
+				'action'		=> $action
 			);
 
 			$this->set_app_langs();
@@ -1261,7 +1252,15 @@
 			$this->t->set_file(array('admin_list_t' => 'list_admin.tpl'));
 			$this->t->set_block('admin_list_t','admin_list','list');
 
-			$this->t->set_var('lang_action',lang('Project administration'));
+			if ($action == 'pad')
+			{
+				$this->t->set_var('lang_action',lang('Project administration'));
+			}
+			else
+			{
+				$this->t->set_var('lang_action',lang('Project bookkeeping'));
+			}
+
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
 			$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/admin/index.php'));
@@ -1271,7 +1270,7 @@
 				$this->start = 0;
 			}
 
-			$admins = $this->boprojects->list_admins($this->start, $this->query, $this->sort, $this->order);
+			$admins = $this->boprojects->list_admins($action, $this->start, $this->query, $this->sort, $this->order);
 
 //--------------------------------- nextmatch --------------------------------------------
  
@@ -1330,12 +1329,12 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.edit_admins',
-				'action'		=> 'pad'
+				'action'		=> $action
 			);
 
 			if ($submit)
 			{
-				$this->boprojects->edit_admins( $users, $groups);
+				$this->boprojects->edit_admins($action, $users, $groups);
 				$link_data['menuaction'] = 'projects.uiprojects.list_admins';
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 			}
@@ -1347,11 +1346,19 @@
 
 			$this->t->set_file(array('admin_add' => 'form_admin.tpl'));
 
-			$this->t->set_var('lang_action',lang('Edit project administrator list'));
+			if ($action == 'pad')
+			{
+				$this->t->set_var('lang_action',lang('Edit project administrator list'));
+			}
+			else
+			{
+				$this->t->set_var('lang_action',lang('Edit project bookkeeper list'));
+			}
+
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$this->t->set_var('users_list',$this->boprojects->selected_admins('aa'));
-			$this->t->set_var('groups_list',$this->boprojects->selected_admins('ag'));
+			$this->t->set_var('users_list',$this->boprojects->selected_admins($action,'aa'));
+			$this->t->set_var('groups_list',$this->boprojects->selected_admins($action,'ag'));
 			$this->t->set_var('lang_users_list',lang('Select users'));
 			$this->t->set_var('lang_groups_list',lang('Select groups'));
 
@@ -1653,19 +1660,10 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
-				$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 
-				if ($this->boprojects->isprojectadmin() && $pro[$i]['access'] != 'private')
+				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
 				{
-					$showedit = True;
-				}
-				else if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
-				{
-					$showedit = True;
-				}
-
-				if ($showedit)
-				{
+					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
 				}
@@ -1689,14 +1687,18 @@
 					$this->t->set_var('lang_action_entry',lang('Work hours'));
 				}
 
-				$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&project_id='
+				if ($this->boprojects->isprojectadmin('pbo'))
+				{
+					$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&project_id='
 																	. $pro[$i]['project_id'] . '&action=' . $action));
-				$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&project_id='
+					$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&project_id='
 																	. $pro[$i]['project_id'] . '&action=' . $action));
+					$this->t->set_var('lang_invoice_entry',lang('Invoices'));
+					$this->t->set_var('lang_delivery_entry',lang('Deliveries'));
+				}
+
 				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/index.php','menuaction=projects.uistatistics.project_stat&project_id='
 																	. $pro[$i]['project_id']));
-				$this->t->set_var('lang_invoice_entry',lang('Invoices'));
-				$this->t->set_var('lang_delivery_entry',lang('Deliveries'));
 				$this->t->set_var('lang_stats_entry',lang('Statistics'));
 
 				$this->t->fp('list','projects_list',True);

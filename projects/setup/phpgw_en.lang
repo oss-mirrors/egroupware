@@ -1,5 +1,4 @@
 projects	common	en	Projects
-project administration	admin	en	Project administration
 Account	projects	en	Account
 Active	projects	en	Active
 Activities	projects	en	Activities
@@ -24,6 +23,7 @@ Billing	projects	en	Billing
 Bookable activities	projects	en	Bookable activities
 Billable activities	projects	en	Billable activities
 Bill per workunit	projects	en	Bill per workunit
+bookkeeper	projects	en	Bookkeeper
 Budget	projects	en	Budget
 Calculate	projects	en	Calculate
 closed	projects	en	Closed
@@ -44,6 +44,7 @@ Delivery x has been updated !	projects	en	Delivery %1 has been updated !
 Edit Activity	projects	en	Edit activity
 Edit work hours	projects	en	Edit work hours
 Edit project administrator list	projects	en	Edit project administrator list
+edit project bookkeeper list	projects	en	Edit project bookkeeper list
 Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
 Employee	projects	en	Employee
@@ -88,9 +89,10 @@ Position	projects	en	Position
 Print delivery	projects	en	Print delivery
 Print invoice	projects	en	Print invoice
 Project	projects	en	Project
-Project administration	projects	en	Project administration
+Project administration	common	en	Project administration
 Project archive	projects	en	Project archive
 Project billing	projects	en	Project billing
+project bookkeeping	common	en	Project bookkeeping
 Project delivery	projects	en	Project delivery
 Project ID	projects	en	Project ID
 Project list	projects	en	Project list

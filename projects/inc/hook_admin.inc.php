@@ -15,7 +15,8 @@
 		$title = $appname;
 		$file = Array
 		(
-			'Project Administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pad')
+			'Project administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pad'),
+			'Project bookkeeping' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pbo')
 		);
 //Do not modify below this line
 		display_section($appname,$title,$file);

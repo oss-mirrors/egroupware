@@ -129,29 +129,29 @@
 
 			$this->set_app_langs();
 
-			$isadmin = $this->boprojects->isprojectadmin();
-
-			if ($isadmin)
+			if ($this->boprojects->isprojectadmin('pad'))
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
+				$this->t->set_var('space1','&nbsp;&nbsp;&nbsp;');
 				$this->t->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
 				$this->t->set_var('lang_activities',lang('Activities'));
 			}
-			else
+
+			if ($this->boprojects->isprojectadmin('pbo'))
 			{
-				$this->t->set_var('admin_info','');
-				$this->t->set_var('link_activities','');
-				$this->t->set_var('lang_activities','');
+				$this->t->set_var('book_info',lang('Bookkeeper'));
+				$this->t->set_var('break','&nbsp;|&nbsp;');
+				$this->t->set_var('space2','&nbsp;&nbsp;&nbsp;');
+				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+				$this->t->set_var('lang_billing',lang('Billing'));
+				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+				$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			}
 
-			$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang('Statistics'));
-			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
@@ -301,21 +301,16 @@
 										'minutes' => $minutes));
 
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
-				$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
 
-				$pro = $this->boprojects->read_single_project($project_id);
+				$coordinator = $this->boprojects->return_value('co',$project_id);
 
 				if ($this->state != 'billed')
 				{
-					if ($this->boprojects->isprojectadmin())
+					if ($hours[$i]['employee'] == $this->account)
 					{
 						$edithour = True;
 					}
-					else if ($hours[$i]['employee'] == $this->account)
-					{
-						$edithour = True;
-					}
-					else if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
+					else if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_EDIT) || $coordinator == $this->account)
 					{
 						$edithour = True;
 					}
@@ -323,6 +318,7 @@
 
 				if ($edithour)
 				{
+					$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
 					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit',lang('Edit'));
 				}
@@ -344,7 +340,7 @@
 
 			if ($action != 'asubs')
 			{
-				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+				if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
 				{
 					$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
 					$this->t->set_var('action','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)

@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -120,29 +120,29 @@
 
 			$this->set_app_langs();
 
-			$isadmin = $this->boprojects->isprojectadmin();
-
-			if ($isadmin)
+			if ($this->boprojects->isprojectadmin('pad'))
 			{
 				$this->t->set_var('admin_info',lang('Administrator'));
+				$this->t->set_var('space1','&nbsp;&nbsp;&nbsp;');
 				$this->t->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
 				$this->t->set_var('lang_activities',lang('Activities'));                                                                                                                               
 			}
-			else
+
+			if ($this->boprojects->isprojectadmin('pbo'))
 			{
-				$this->t->set_var('admin_info','');
-				$this->t->set_var('link_activities','');
-				$this->t->set_var('lang_activities','');
+				$this->t->set_var('book_info',lang('Bookkeeper'));
+				$this->t->set_var('break','&nbsp;|&nbsp;');
+				$this->t->set_var('space2','&nbsp;&nbsp;&nbsp;');
+				$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+				$this->t->set_var('lang_billing',lang('Billing'));
+				$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+				$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			}
 
-			$this->t->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
-			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-			$this->t->set_var('lang_deliveries',lang('Deliveries'));
 			$this->t->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
