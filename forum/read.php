@@ -158,6 +158,6 @@ if($pos != 0) {
 
 <?php
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
-
+?>
 
 
