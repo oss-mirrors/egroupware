@@ -21,7 +21,7 @@
 	$phpgw->preferences->delete("stocks",$sym);
 	$phpgw->preferences->change("stocks",urlencode($symbol),urlencode($name));
 	$phpgw->preferences->commit(True);
-	Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
+	Header("Location: " . $phpgw->link('/stocks/preferences.php'));
 	$phpgw->common->phpgw_exit();
     }
  

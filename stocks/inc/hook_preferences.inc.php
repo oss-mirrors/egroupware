@@ -26,7 +26,7 @@
   }
   section_start("Stock Quotes",$imgpath);
 
-  $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]."/stocks/preferences.php");
+  $pg = $phpgw->link('/stocks/preferences.php');
   echo "<A href=".$pg.">" . lang("Select displayed stocks") . "</A>";
 
   section_end(); 

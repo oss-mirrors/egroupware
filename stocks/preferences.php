@@ -23,13 +23,13 @@
      $phpgw->preferences->commit(True);
      // For some odd reason, if I forward it back to stocks/preferences.php after an add
      // I get no data errors, so for now forward it to the main preferences section.
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
+     Header("Location: " . $phpgw->link('/preferences/index.php'));
      $phpgw->common->phpgw_exit();
   } else if ($action == "delete") {
      // This needs to be fixed
      $phpgw->preferences->delete("stocks",$value);
      $phpgw->preferences->commit(True);
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
+     Header("Location: " . $phpgw->link('/stocks/preferences.php'));
      $phpgw->common->phpgw_exit();
   }
 
@@ -44,7 +44,7 @@
 	$phpgw->preferences->change("stocks","disabled","True");
     }
     $phpgw->preferences->commit(True);
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
+    Header("Location: " . $phpgw->link('/stocks/preferences.php'));
     $phpgw->common->phpgw_exit();
     }
 
@@ -55,7 +55,7 @@
     if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
 	$phpgw->preferences->change("stocks","LNUX","VA%20Linux");
 	$phpgw->preferences->change("stocks","RHAT","RedHat");
-	$phpgw->preferences->commit();
+	$phpgw->preferences->commit(True);
 	$phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
 	$phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
     }
@@ -115,7 +115,7 @@
     <tr>
      <td colspan="4">
 
-      <form method="POST" action="<?php echo $phpgw->link(); ?>">
+      <form method="POST" action="<?php echo $phpgw->link("/stocks/preferences.php"); ?>">
       <input type="hidden" name="action" value="add">
       <table border="0" align="center">
        <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
