@@ -32,6 +32,7 @@
 		var $grants;
 		var $column_array;
 		var $budget_table = 'phpgw_p_budget';
+		var $project_table = 'phpgw_p_projects';
 
 		function soprojects()
 		{
@@ -477,19 +478,6 @@
 		*/
 		function add_project($values)
 		{
-			$values['descr']		= $this->db->db_addslashes($values['descr']);
-			$values['title']		= $this->db->db_addslashes($values['title']);
-			$values['number']		= $this->db->db_addslashes($values['number']);
-			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
-			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
-			$values['result']		= $this->db->db_addslashes($values['result']);
-			$values['test']			= $this->db->db_addslashes($values['test']);
-			$values['quality']		= $this->db->db_addslashes($values['quality']);
-			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
-			$values['url']			= $this->db->db_addslashes($values['url']);
-			$values['reference']		= $this->db->db_addslashes($values['reference']);
-
-			//$values['budget']		= $values['budget'] + 0.0;
 			$values['e_budget']		= $values['e_budget'] + 0.0;
 			$values['discount']		= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
@@ -502,25 +490,10 @@
 				$values['level']	= intval($this->id2item(array('item_id' => $values['parent'],'item' => 'level'))+1);
 			}
 
-			$table = 'phpgw_p_projects';
-			$this->db->lock($table);
+			$this->db->lock($this->project_table);
 
-			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
-							. 'descr,title,p_number,parent,time_planned,date_created,processor,investment_nr,main,level,previous,'
-							. 'customer_nr,url,reference,result,test,quality,accounting,acc_factor,acc_factor_d,billable,inv_method,psdate,pedate,priority,e_budget,
-							discount,discount_type) VALUES ('
-							. $this->account . ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ','
-							. intval($values['sdate']) . ',' . intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'"
-							. $values['status'] . "','" . $values['descr'] . "','" . $values['title'] . "','" . $values['number'] . "',"
-							. $values['parent'] . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
-							. "'," . intval($values['main']) . ',' . intval($values['level']) . ',' . intval($values['previous']) . ",'"
-							. $values['customer_nr'] . "','" . $values['url'] . "','" . $values['reference'] . "','" . $values['result'] . "','"
-							. $values['test'] . "','" . $values['quality'] . "','" . $values['accounting'] . "'," . $values['project_accounting_factor']
-							. ',' . $values['project_accounting_factor_d'] . ",'". ($values['billable']?'N':'Y') . "','" . $values['inv_method'] . "',"
-							. intval($values['psdate']) . ',' . intval($values['pedate']) . ',' . intval($values['priority']) . ',' . $values['e_budget'] . ','
-							. $values['discount'] . ",'" . $values['discount_type'] . "')",__LINE__,__FILE__);
+			$p_id = $this->_add_update_project($values);
 
-			$p_id = $this->db->get_last_insert_id($table,'project_id');
 			$this->db->unlock();
 
 			if ($p_id)
@@ -617,6 +590,68 @@
 				$this->edit_project($subs[$n]);
 			}
 		}
+		
+		/**
+		 * Creates or updates a project, shared code from add_project and edit_project
+		 *
+		 * @internal
+		 * @param array &$values
+		 * @param int (new) project-id
+		 */
+		function _add_update_project(&$values)
+		{
+			$data = array(
+					'access'		=> isset($values['access']) ? $values['access'] : 'public',
+					'category'		=> $values['cat'],
+					'entry_date'	=> time(),
+					'start_date'	=> $values['sdate'],
+					'end_date'		=> $values['edate'],
+					'coordinator'	=> $values['coordinator'],
+					'customer'		=> $values['customer'],
+					'status'		=> $values['status'],
+					'descr'			=> $values['descr'],
+					'title'			=> $values['title'],
+					'p_number'		=> $values['number'],
+					'time_planned'	=> $values['ptime'],
+					'processor'		=> $this->account,
+					'investment_nr'	=> $values['investment_nr'],
+					'inv_method'	=> $values['inv_method'],
+					'parent'		=> $values['parent'],
+					'main'			=> $values['main'],
+					'level'			=> $values['level'],
+					'previous'		=> $values['previous'],
+					'customer_nr'	=> $values['customer_nr'],
+					'url'			=> $values['url'],
+					'reference'		=> $values['reference'],
+					'result'		=> $values['result'],
+					'test'			=> $values['test'],
+					'quality'		=> $values['quality'],
+					'accounting'	=> $values['accounting'],
+					'acc_factor'	=> $values['project_accounting_factor'],
+					'acc_factor_d'	=> $values['project_accounting_factor_d'],
+					'billable'		=> $values['billable'] ? 'N' : 'Y',
+					'discount_type'	=> $values['discount_type'],
+					'psdate'		=> $values['psdate'],
+					'pedate'		=> $values['pedate'],
+					'priority'		=> $values['priority'],
+					'e_budget'		=> $values['e_budget'],
+					'discount'		=> $values['discount'],
+				);
+				
+			if (!(int) $values['project_id'])
+			{
+				$this->db->insert($this->project_table,$data,False,__LINE__,__FILE__);
+				
+				$values['project_id'] = $this->db->get_last_insert_id($this->project_table,'project_id');
+			}
+			else
+			{
+				$this->db->update($this->project_table,$data,array(
+						'project_id' => $values['project_id']
+					),__LINE__,__FILE__);
+			}
+			return $values['project_id'];
+		}			
 
 		/**
 		* @return unknown
@@ -654,21 +689,6 @@
 				}
 			}
 
-			$values['descr']			= $this->db->db_addslashes($values['descr']);
-			$values['title']			= $this->db->db_addslashes($values['title']);
-			$values['number']			= $this->db->db_addslashes($values['number']);
-			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
-			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
-			$values['result']			= $this->db->db_addslashes($values['result']);
-			$values['test']				= $this->db->db_addslashes($values['test']);
-			$values['quality']			= $this->db->db_addslashes($values['quality']);
-			$values['url']				= $this->db->db_addslashes($values['url']);
-			$values['reference']		= $this->db->db_addslashes($values['reference']);
-			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
-			$values['parent']			= intval($values['parent']);
-			$values['edate']			= intval($values['edate']);
-
-			//$values['budget']			= $values['budget'] + 0.0;
 			$values['e_budget']			= $values['e_budget'] + 0.0;
 			$values['discount']			= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
@@ -691,28 +711,24 @@
 				}
 			}
 
-			$this->db->query("UPDATE phpgw_p_projects set access='" . (isset($values['access'])?$values['access']:'public') . "', category=" . intval($values['cat']) . ", entry_date="
-							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . $values['edate'] . ", coordinator="
-							. intval($values['coordinator']) . ", customer=" . intval($values['customer']) . ", status='" . $values['status'] . "', descr='"
-							. $values['descr'] . "', title='" . $values['title'] . "', p_number='"
-							. $values['number'] . "', time_planned=" . intval($values['ptime']) . ', processor=' . $this->account . ", investment_nr='"
-							. $values['investment_nr'] . "', inv_method='" . $values['inv_method'] . "', parent=" . $values['parent'] . ', main=' . intval($values['main'])
-							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ", customer_nr='" . $values['customer_nr']
-							. "', url='" . $values['url'] . "', reference='" . $values['reference'] . "', result='" . $values['result'] . "', test='"
-							. $values['test'] . "', quality='" . $values['quality'] . "', accounting='" . $values['accounting'] . "', acc_factor="
-							. $values['project_accounting_factor'] . ', acc_factor_d=' . $values['project_accounting_factor_d'] . ",billable='" . ($values['billable']?'N':'Y')
-							. "', discount_type='" . $values['discount_type'] . "',psdate=" . intval($values['psdate']) . ', pedate=' . intval($values['pedate']) . ', priority='
-							. intval($values['priority']) . ', e_budget=' . $values['e_budget'] . ', discount=' . $values['discount'] . ' where project_id='
-							. $values['project_id'],__LINE__,__FILE__);
+			$this->_add_update_project($values);
 
 			if ($values['status'] == 'archive')
 			{
-				$this->db->query("Update phpgw_p_projects set status='archive' WHERE parent=" . $values['project_id'],__LINE__,__FILE__);
+				$this->db->update($this->project_table,array(
+						'status' => 'archive',
+					),array(
+						'parent' => $values['project_id'],
+					),__LINE__,__FILE__);
 			}
 			
 			if($values['oldstatus'] && $values['oldstatus'] == 'archive' && $values['status'] != 'archive')
 			{
-				$this->db->query("Update phpgw_p_projects set status='" . $values['status'] . "' WHERE parent=" . $values['project_id'],__LINE__,__FILE__);
+				$this->db->update($this->project_table,array(
+						'status' => $values['status'],
+					),array(
+						'parent' => $values['project_id'],
+					),__LINE__,__FILE__);
 			}
 
 			// update budget
@@ -721,12 +737,13 @@
 			$values['old_edate'] = intval($values['old_edate']);
 			if ($values['old_edate'] > 0 && $values['edate'] > 0 && $values['old_edate'] != $values['edate'])
 			{
-				$this->db->query('SELECT project_id,title,p_number,start_date,end_date from phpgw_p_projects where previous=' . $values['project_id'],__LINE__,__FILE__);
+				$this->db->select($this->project_table,'project_id,title,p_number,start_date,end_date',array(
+						'previous' => $values['project_id']
+					),__LINE__,__FILE__);
 
 				while($this->db->next_record())
 				{
-					$following[] = array
-					(
+					$following[] = array(
 						'project_id'	=> $this->db->f('project_id'),
 						'title'			=> $this->db->f('title'),
 						'number'		=> $this->db->f('p_number'),
@@ -761,8 +778,14 @@
 							//$npsdate = intval($fol['psdate'])>0?($op=='add'?$fol['psdate']+$diff:$fol['psdate']-$diff):0;
 							//$npedate = intval($fol['pedate'])>0?($op=='add'?$fol['pedate']+$diff:$fol['pedate']-$diff):0;
 
-							$this->db->query('UPDATE phpgw_p_projects set start_date=' . intval($nsdate) . ', end_date=' . intval($nedate) . ', entry_date=' . time()
-										. ', processor=' . $this->account . ' WHERE project_id=' . $fol['project_id'],__LINE__,__FILE__);
+							$this->db->update($this->project_table,array(
+									'start_date'	=> $nsdate,
+									'end_date'		=> $nedate,
+									'entry_date'	=> time(),
+									'processor'		=> $this->account,
+								),array(
+									'project_id' => $fol['project_id']
+								),__LINE__,__FILE__);
 
 							$following[$key]['nsdate'] = $nsdate;
 							$following[$key]['nedate'] = $nedate;
@@ -1314,7 +1337,7 @@
 
 		function delete_acl($project_id)
 		{
-			$this->db->query("DELETE from phpgw_acl where acl_appname='projects' AND acl_location=" . $project_id
+			$this->db->query("DELETE from phpgw_acl where acl_appname='projects' AND acl_location='$project_id'"
 							. ' AND acl_rights=7',__LINE__,__FILE__);
 		}
 
@@ -1378,8 +1401,8 @@
 
 		function member($project_id)
 		{
-			$this->db->query("SELECT acl_account from phpgw_acl where acl_appname = 'projects' and acl_rights=7 and acl_location="
-								. intval($project_id),__LINE__,__FILE__);
+			$this->db->query("SELECT acl_account from phpgw_acl where acl_appname = 'projects' and acl_rights=7 and acl_location='"
+								. intval($project_id)."'",__LINE__,__FILE__);
 
 			while($this->db->next_record())
 			{
