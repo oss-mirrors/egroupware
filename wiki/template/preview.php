@@ -25,12 +25,7 @@ function template_preview($args)
                                  'heading'  => $title . ' ',
                                  'headlink' => $args['page'],
                                  'headsufx' => '',
-                                 'toolbar'  => 1));
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => '',
-                                 'editver'   => 0,
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
+                                 'toolbar'  => 1,
                                  'nosearch'  => 0));
 ?>
 <div id="body">
@@ -75,12 +70,11 @@ user name<?php
 <?php print $args['html']; ?>
 </div>
 <?php
-/*  template_common_epilogue(array('twin'      => $args['page'],
+  template_common_epilogue(array('twin'      => $args['page'],
                                  'edit'      => '',
                                  'editver'   => 0,
                                  'history'   => $args['page'],
                                  'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 0));
-								 */
+                                 'nosearch'  => 1));
 }
 ?>

@@ -22,14 +22,8 @@ function template_edit($args)
                                  'heading'  => 'Editing ',
                                  'headlink' => $args['page'],
                                  'headsufx' => '',
-                                 'toolbar'  => 1));
-  template_common_epilogue(array('twin'      => $args['page'],
-                                 'edit'      => '',
-                                 'editver'   => '',
-                                 'history'   => $args['page'],
-                                 'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 0));
-								 
+                                 'toolbar'  => 1,
+                                 'nosearch' => 0));
 ?>
 <div id="body">
 <form method="post" name="editform" action="<?php print saveURL($args['page']); ?>">
@@ -64,12 +58,11 @@ user name<?php
 </form>
 </div>
 <?php
-/*  template_common_epilogue(array('twin'      => $args['page'],
+  template_common_epilogue(array('twin'      => $args['page'],
                                  'edit'      => '',
                                  'editver'   => '',
                                  'history'   => $args['page'],
                                  'timestamp' => $args['timestamp'],
-                                 'nosearch'  => 0));
-								 */
+                                 'nosearch'  => 1));
 }
 ?>

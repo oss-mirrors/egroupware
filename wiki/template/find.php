@@ -19,7 +19,6 @@ function template_find($args)
                                  'headsufx' => '',
                                  'toolbar'  => 1));
 ?>
-<hr align="left" width="99%">
 <div id="body">
 <?php print $args['pages']; ?>
 </div>

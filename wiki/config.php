@@ -29,7 +29,7 @@ $Admin = 'webmaster@domain.com';
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
 // a EXISTING (!!!) wiki page name, like 'AcmeProjectWiki'.
-$HomePage = 'PhpGroupWare';
+$HomePage = 'phpGroupWare';
 
 // $InterWikiPrefix determines what interwiki prefix you recommend other
 // wikis use to link to your wiki. Usually it is similar to your WikiName.

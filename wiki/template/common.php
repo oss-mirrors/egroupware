@@ -22,7 +22,7 @@
 function template_common_prologue($args)
 {
   global $WikiName, $HomePage, $WikiLogo, $MetaKeywords, $MetaDescription;
-  global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords;
+  global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL;
 
   $keywords = ' ' . html_split_name($args['headlink']);
   $keywords = str_replace('"', '&quot;', $keywords);
@@ -79,10 +79,27 @@ function template_common_prologue($args)
 ?>
   </h1>
 <?php
-  if($args['toolbar'])
-    { print html_toolbar_top(); }
-?>
-<!--<hr align=left width=99% /> -->
+	if($args['toolbar'])
+	{ 
+		if(!$args['nosearch']) 
+		{ 
+			echo "<form method='get' action='$FindScript' name='thesearch'>
+				<input type='hidden' name='action' value='find'/>
+				<div class='form'>\n";
+		}   
+		print html_toolbar_top();
+		
+		if(!$args['nosearch']) 
+		{
+			echo ' | Search: <input type="text" name="find" size="20" />';
+		}
+		echo "\n<hr align=left width=99% />\n";
+		
+		if(!$args['nosearch']) { 
+			echo "</div>\n</form>\n";
+		} 
+	}
+	?>
 </div>
 <?php
 }
@@ -115,11 +132,10 @@ function template_common_epilogue($args)
 <div id="footer">
 <hr align=left width=99% />
 <?php
-  if(!$args['nosearch'])
-  {
-?>
-<form method="get" action="<?php print $FindScript; ?>" name="thesearch">
-<div class="form">
+  if(!$args['nosearch']) { ?>	
+    <form method="get" action="<?php print $FindScript; ?>" name="thesearch">
+      <div class="form">
+        <input type="hidden" name="action" value="find" />
 <?php
   }
   if($args['edit'])
@@ -147,10 +163,15 @@ function template_common_epilogue($args)
   {
 ?>
     <a href="<?php print historyURL($args['history']); ?>">View document history</a>
-	<input type="hidden" name="action" value="find" />
-<?  if(!$args['nosearch']) { ?>	
-  		| Search: <input type="text" name="find" size="20" /> 
- <? } 
+<?php
+    echo ' | <a href="' . $PrefsScript . '">Preferences</a>' .
+          ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
+            ' | <a href="'.$AdminScript.'">Administration</a>' : '');
+  
+    if(!$args['nosearch']) { ?>	
+      | Search: <input type="text" name="find" size="20" /> 
+<?php 
+    }
 	echo "<br />";
   }
   if($args['timestamp'])
@@ -158,7 +179,10 @@ function template_common_epilogue($args)
 ?>
   Document last modified <?php print html_time($args['timestamp']); ?><br />
 <?php
-  }
+  } ?>
+      </div>
+    </form>
+<?php
   if($args['twin'] != '')
   {
     if(count($twin = $pagestore->twinpages($args['twin'])))
@@ -171,11 +195,7 @@ function template_common_epilogue($args)
   }
   if(!$args['nosearch'] && $args['history'])
   {
-?>
-<hr align=left width=99% />
-</div>
-</form>
-<?php
+    echo "\n<hr align=left width=99% />\n";
   }
 ?>
 </div>
