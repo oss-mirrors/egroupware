@@ -1,0 +1,22 @@
+<!-- BEGIN form -->
+ <p>
+ <b>{header_message}</b>
+ <hr><p>
+
+ <center>{message}</center>
+
+ <form method="POST" action="{form_action}">
+  <table border="0" align="center">
+   <tr bgcolor="{th_bg}">
+    <td colspan="2">&nbsp;{td_message}</td>
+   </tr>
+
+   {rows}
+
+   <tr>
+    <td align="center">{form_button_1}</td>
+    <td align="center">{form_button_2}</td>
+   </tr>
+  </table>
+ </form>
+<!-- END form -->
