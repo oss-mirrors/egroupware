@@ -44,7 +44,7 @@
 		$body .= "Group: ".$group."\n\n";
 		$body .= "Opened By: ".$phpgw->db->f("t_user")."\n";
 		$body .= "Date Opened: ".$phpgw->common->show_date($phpgw->db->f("t_timestamp_opened"))."\n\n";
-		if(!$phpgw->db->f("t_timestamp_closed"))
+		if($phpgw->db->f("t_timestamp_closed"))
 		{
 			$body .= "Date Closed: ".$phpgw->common->show_date($phpgw->db->f("t_timestamp_closed"))."\n\n";
 		}
