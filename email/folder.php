@@ -17,12 +17,13 @@
   Header("Pragma: no-cache");
   Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
 
+  $phpgw_flags["currentapp"] = "email";
   include("../header.inc.php");
 ?>
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
 <form action="folder.php">
- <?php $phpgw->session->hidden_var(); ?>
+ <?php echo $phpgw->session->hidden_var(); ?>
 <tr><td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
 
 	<table border=0 cellpadding=0 cellspacing=1 width=100%>
@@ -52,8 +53,7 @@
 
   $fold_str = $phpgw->msg->construct_folder_str($name);
 
-
-//  $fold_str = $phpgw_info["server"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
+  //$fold_str = $phpgw_info["server"]["imap_server_type"] == "Cyrus" ? "INBOX." : $PROG_DIR;
 
   if ($action == "create") {
      $phpgw->msg->createmailbox($mailbox,"$IMAP_STR$fold_str$name");
@@ -65,7 +65,7 @@
   $mailboxes = $phpgw->msg->listmailbox($mailbox, $IMAP_STR, "$FILTER*");
 
 //exit;
-	sort($mailboxes); // added sort for folder names 
+	//sort($mailboxes); // added sort for folder names 
 	if ($mailboxes)	{
            $first  = $phpgw_info["theme"]["row_on"];
            $second = $phpgw_info["theme"]["row_off"];
@@ -110,7 +110,7 @@ exit;
 	   echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
 	   echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
 	}
-	$phpgw->close($mailbox);
+	$phpgw->msg->close($mailbox);
 
 ?>
 

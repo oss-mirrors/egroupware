@@ -153,13 +153,24 @@ function check_all()
        <table border="0" cellpadding="0" cellspacing="0">
         <tr>
          <td>
-           <select name="folder" onChange="document.switchbox.submit()">
-            <option><?php echo lang_email("switch current folder to"); ?>:
-                <?php list_folders($mailbox); ?></select>
+           <?php
+             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+                echo '<select name="folder" onChange="document.switchbox.submit()">'
+                   . '<option>' . lang_email("switch current folder to") . ':';
+                echo list_folders($mailbox);
+	 	echo "</select>";
+             }
+           ?>
          </td>
          <td>
            &nbsp;&nbsp;
-           <input type=button value="<?php echo lang_email("folder") ?>" onClick="window.location='<?php echo $phpgw->link("folder.php","folder=".urlencode($folder)); ?>'">
+           <?php
+             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+		echo '<input type="button" value="' . lang_email("folder") . '" onClick="'
+		   . 'window.location=\'' . $phpgw->link("folder.php","folder="
+		   . urlencode($folder)) . '\'">';
+             }
+           ?>
          </td>
         </tr>
        </table>
@@ -314,10 +325,16 @@ function check_all()
             <a href="<?php echo $phpgw->link("compose.php","folder=".urlencode($folder)); ?>"><?php echo lang_email("compose"); ?></a>
           </td>
           <td align="right">
-            <select name="tofolder" onChange="do_action('move')">
-                <option><?php echo lang_email("move selected messages into"); ?>:
-                <?php list_folders($mailbox); $phpgw->msg->close($mailbox); ?>
-            </select>
+           <?php
+             if ($phpgw_info["server"]["mail_server_type"] == "imap") {
+                echo '<select name="tofolder" onChange="do_action(\'move\')">'
+                   . '<option>' . lang_email("move selected messages into") . ':';
+                echo list_folders($mailbox);
+		echo "</select>";
+            
+             }
+             $phpgw->msg->close($mailbox);
+             ?>
           </td>
          </tr>
         </table>
