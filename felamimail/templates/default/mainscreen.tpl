@@ -107,7 +107,8 @@ doLoad();
 
 <TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
 <form name=searchForm method=post action="{url_search_settings}">
-	<TR bgcolor="#ffffcc">
+<!--	<TR bgcolor="#ffffcc"> -->
+	<TR bgcolor="{th_bg}">
 		<td align="left" width="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
 			<a href="{url_compose_empty}">{lang_compose}</a>
 		</td>
@@ -115,7 +116,7 @@ doLoad();
 			{quota_display}
 		</td>
 	</tr>
-	<TR bgcolor="#ffffcc">
+	<TR bgcolor="{row_off}">
 		<TD ALIGN="left" WIDTH="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
 			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
 			{lang_quicksearch}
@@ -137,8 +138,8 @@ doLoad();
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 	<TR>
 		<TD BGCOLOR="{row_off}">
-			<TABLE BGCOLOR="#ffffcc" COLS=2 BORDER='0' cellpadding="2" cellspacing=0 width="100%" sstyle="table-layout:fixed">
-				<TR valign="middle" bgcolor="#ffffcc">
+			<TABLE BBGCOLOR="#ffffcc" COLS=2 BORDER='0' cellpadding="2" cellspacing=0 width="100%" sstyle="table-layout:fixed">
+				<TR valign="middle" bgcolor="{th_bg}">
 					<FORM name=messageList method=post action="{url_change_folder}">
 					<td align="LEFT" valign="center" width="5%">
 						<TT><SMALL>
@@ -187,22 +188,22 @@ doLoad();
 		<TD>
 			<table WIDTH=100% BORDER=0 CELLPADDING=1 CELLSPACING=1 style="table-layout:fixed">
 				<tr>
-					<td width="20px" bgcolor="#FFFFCC" align="center">
+					<td width="20px" bgcolor="{th_bg}" align="center">
 						<input type="checkbox" id="messageCheckBox" onClick="selectAll(this)">
 					</td>
-					<td width="145px" bgcolor="#FFFFCC" align="center" class="{css_class_from}">
+					<td width="145px" bgcolor="{th_bg}" align="center" class="{css_class_from}">
 						<a href="{url_sort_from}">{lang_from}</a>
 					</td>
-					<td width="95px" bgcolor="#FFFFCC" align="center" class="{css_class_date}">
+					<td width="95px" bgcolor="{th_bg}" align="center" class="{css_class_date}">
 						<a href="{url_sort_date}">{lang_date}</a>
 					</td>
-					<td width="70px" bgcolor="#FFFFCC" align="center" class="text_small">
+					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
 						&nbsp;
 					</td>
-					<td bgcolor="#FFFFCC" align="center" class="{css_class_subject}">
+					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
 						<a href="{url_sort_subject}">{lang_subject}</a>
 					</td>
-					<td width="40px" bgcolor="#FFFFCC" align="center" class="{css_class_size}">
+					<td width="40px" bgcolor="{th_bg}" align="center" class="{css_class_size}">
 						<a href="{url_sort_size}">{lang_size}</a>
 					</td>
 				</tr>
@@ -218,9 +219,9 @@ doLoad();
 	<tr>
 		<TD>
 			<table WIDTH="100%" BORDER="0" CELLPADDING="1" CELLSPACING="0">
-				<tr BGCOLOR="#FFFFFF">
+				<tr BGCOLOR="{row_off}">
 					<td width="18%">
-						{link_previous} | {link_next}
+						{link_previous}
 					</td>
 					<td width="10%">
 						&nbsp;
@@ -232,7 +233,7 @@ doLoad();
 						{trash_link}
 					</td>
 					<td align="right" width="18%">
-						<noscript>{select_all_link}</noscript>
+						{link_next}
 					</td>
 				</tr>
 			</table>

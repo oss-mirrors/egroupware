@@ -1,5 +1,6 @@
 Version 0.9.5
 
+- added highlighting for quotes (copied from horde)
 - fixed sorting
 	- added all needed options to preferences
 	- can now be sorted by size too
@@ -7,12 +8,13 @@ Version 0.9.5
 - improved mainview
 	- javascript selectbutton to select all messages
 	- fixed layout
+	- support colors from selected layout
 - added support for emailadmin
 - updated PHPMailer to version 0.7.1
 - added support for localized smtp error messages
 - improved mime type handling
 - also forward attachments
-- support üצה... in folder names
+- support for üצה... in folder names
 - support html emails(most evil tags get removed)
 - code cleanup
 - added Sidebox for Idots

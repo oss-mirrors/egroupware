@@ -28,7 +28,9 @@
 		{
 			$this->displayCharset	= strtolower($_charSet);
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$_charSet);
 			$this->preferences	= $this->bopreferences->getPreferences();
+			$this->botranslation	= CreateObject('phpgwapi.translation');
 			
 			if (!empty($_composeID))
 			{
@@ -274,19 +276,21 @@
 			
 			// get the body
 			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text', $_partID);
-
+			#_debug_array($bodyParts);
 			for($i=0; $i<count($bodyParts); $i++)
 			{
 				if(!empty($this->sessionData['body'])) $$this->sessionData['body'] .= "\n\n";
 				// add line breaks to $bodyParts
-				$newBody        = explode("\n",$bodyParts[$i]['body']);
-				
+				$newBody	= $this->botranslation->convert($bodyParts[$i]['body'], $bodyParts[$i]['charSet']);
+				#print "<pre>".$newBody."</pre><hr>";
+				$newBody        = explode("\n",$newBody);
+				#_debug_array($newBody);
 				// create it new, with good line breaks
 				reset($newBody);
 				while(list($key,$value) = @each($newBody))
 				{
 					$value .= "\n";
-					$bodyAppend = wordwrap($value,75,"\n",1);
+					$bodyAppend = $this->bofelamimail->wordwrap($value,75,"\n");
 					$bodyAppend = str_replace("\n", "\n>", $bodyAppend);
 					$this->sessionData['body'] .= $bodyAppend;
 				}

@@ -11,6 +11,21 @@
 	* Free Software Foundation; either version 2 of the License, or (at your    *
 	* option) any later version.                                                *
 	\***************************************************************************/
+	
+	/**
+	* copyright notice for the functions highlightQuotes and _countQuoteChars
+	*
+	* The Text:: class provides common methods for manipulating text.
+	*
+	* $Horde: horde/lib/Text.php,v 1.80 2003/09/16 23:06:15 jan Exp $
+	*
+	* Copyright 1999-2003 Jon Parise <jon@horde.org>
+	*
+	* See the enclosed file COPYING for license information (LGPL). If you
+	* did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
+	*
+	*/
+	
 	/* $Id$ */
 
 	class uidisplay
@@ -28,10 +43,11 @@
 		{
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['system_charset']);
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['server']['system_charset']);
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->kses		= CreateObject('phpgwapi.kses');
+			$this->botranslation	= CreateObject('phpgwapi.translation');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			
@@ -103,10 +119,57 @@
 			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
 			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
 			
+			.quoted1 { color:#660066; }
+			.quoted2 { color:#007777; }
+			.quoted3 { color:#990000; }
+			.quoted4 { color:#000099; }
+			.quoted5 { color:#bb6600; }
+			
 			div.activetab{ display:inline; }
 			div.inactivetab{ display:none; }';
 			
 			return $appCSS;
+		}
+
+		
+		function highlightQuotes($text, $level = 5)
+		{
+			// Use a global var since the class is called statically.
+			$GLOBALS['_tmp_maxQuoteChars'] = 0;
+			
+			// Tack a newline onto the beginning of the string so that we
+			// correctly highlight when the first character in the string
+			// is a quote character.
+			$text = "\n$text";
+			
+			preg_replace_callback("/^\s*((&gt;\s?)+)/m", array(&$this, '_countQuoteChars'), $text);
+			
+			// Go through each level of quote block and put the
+			// appropriate style around it. Important to work downwards so
+			// blocks with fewer quote chars aren't matched until their
+			// turn.
+			for ($i = $GLOBALS['_tmp_maxQuoteChars']; $i > 0; $i--) 
+			{
+				$text = preg_replace(
+				// Finds a quote block across multiple newlines.
+				"/(\n)( *(&gt;\s?)\{$i}(?! ?&gt;).*?)(\n|$)(?! *(&gt; ?)\{$i})/s",
+				'\1<span class="quoted' . ((($i - 1) % $level) + 1) . '">\2</span>\4',$text);
+			}
+			
+			/* Unset the global variable. */
+			unset($GLOBALS['_tmp_maxQuoteChars']);
+			
+			/* Remove the leading newline we added above. */
+			return substr($text, 1);
+		}
+		
+		function _countQuoteChars($matches)
+		{
+			$num = count(preg_split('/&gt;\s?/', $matches[1])) - 1;
+			if ($num > $GLOBALS['_tmp_maxQuoteChars']) 
+			{
+				$GLOBALS['_tmp_maxQuoteChars'] = $num;
+			}
 		}
 		
 		function display()
@@ -378,15 +441,15 @@
 			}
                                                                                                                                                                                                                                                                                                                 
 			$this->t->set_var("date_data",
-				htmlentities($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
-				ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+				htmlspecialchars($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
+				ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 			$this->t->set_var("subject_data",
-				htmlentities($this->bofelamimail->decode_header($headers->subject),
-				ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+				htmlspecialchars($this->bofelamimail->decode_header($headers->subject),
+				ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 
 			#$this->kses->AddProtocol("http");
 			$this->kses->AddHTML(
@@ -395,8 +458,15 @@
 				)
 			);
 			$this->kses->AddHTML("tbody");
+			$this->kses->AddHTML("tt");
 			$this->kses->AddHTML("br");
 			$this->kses->AddHTML("strike");
+			$this->kses->AddHTML("center");
+			$this->kses->AddHTML("hr");
+			$this->kses->AddHTML("ul");
+			$this->kses->AddHTML("li");
+			$this->kses->AddHTML("h1");
+			$this->kses->AddHTML("h2");
 			$this->kses->AddHTML(
 				"a", array(
 					"href" => array('maxlen' => 45, 'minlen' => 10),
@@ -446,6 +516,17 @@
 				)
 			);
 			$this->kses->AddHTML(
+				"th",array(
+					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"width"   => array("maxval" => 100),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					"nowrap"  => array('valueless' => 'y')
+				)
+			);
+			$this->kses->AddHTML(
 				"span",array(
 					"class"   => array("minlen" =>   1, 'maxlen' =>  10)
 				)
@@ -455,13 +536,16 @@
 			for($i=0; $i<count($bodyParts); $i++)
 			{
 				$bodyParts[$i]['body']= 
-					ExecMethod('phpgwapi.translation.convert',$bodyParts[$i]['body']);
+					$this->botranslation->convert($bodyParts[$i]['body'],
+								      strtolower($bodyParts[$i]['charSet']));
+
 				if($bodyParts[$i]['mimeType'] == 'text/plain')
 				{
-					#$newBody	= ereg_replace("\n","<br>",$bodyParts[$i]['body']);
+					$newBody	= $bodyParts[$i]['body'];
 					
-					$newBody	= wordwrap($bodyParts[$i]['body'],90,"\n",1);
-					$newBody	= htmlspecialchars($newBody,ENT_QUOTES);
+					$newBody	= htmlspecialchars($newBody,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
+					$newBody	= $this->bofelamimail->wordwrap($newBody,90,"\n");
+					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= "<pre>".$newBody."</pre>";
 					
 				}
@@ -484,7 +568,7 @@
 			
 			// create links for websites
 #			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-#				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+#				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -526,7 +610,7 @@
 				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
@@ -633,8 +717,8 @@
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
 									$link,
-									htmlentities($newSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']),
-									htmlentities($val->personal,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+									htmlentities($newSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']),
+									htmlentities($val->personal,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -663,7 +747,7 @@
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
-									$link,htmlentities($tempSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+									$link,htmlentities($tempSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',

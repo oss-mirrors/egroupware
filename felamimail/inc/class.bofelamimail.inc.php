@@ -44,6 +44,7 @@
 			
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->sofelamimail	= CreateObject('felamimail.sofelamimail');
+			$this->botranslation	= CreateObject('phpgwapi.translation');
 			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			$this->imapBaseDir	= '';
@@ -177,29 +178,9 @@
 			{
 				#echo "Charset: {$elements[$i]->charset}<br>";
 				#echo "Text: {$elements[$i]->text}<BR><BR>";
-				$tempString = $elements[$i]->text;
-				if((strtolower($this->displayCharset) != strtolower($elements[$i]->charset))
-					&& $elements[$i]->charset != 'default')
-				{
-					if($this->mbAvailable)
-					{
-						$tempString =  mb_convert_encoding($tempString, 
-									$this->displayCharset, 
-									$elements[$i]->charset);
-					}
-					elseif((strtolower($this->displayCharset) == 'iso-8859-1' ||
-						strtolower($this->displayCharset) == 'iso-8859-15')&&
-						strtolower($elements[$i]->charset) == 'utf-8')
-					{
-						$tempString = utf8_decode($tempString);
-					}
-					elseif(strtolower($this->displayCharset) == 'utf-8' &&
-						(strtolower($elements[$i]->charset) == 'iso-8859-1' ||
-						strtolower($elements[$i]->charset) == 'iso-8859-15'))
-					{
-						$tempString = utf8_encode($tempString);
-					}
-				}
+				if ($elements[$i]->charset == 'default')
+					$elements[$i]->charset = 'iso-8859-1';
+				$tempString = $this->botranslation->convert($elements[$i]->text,$elements[$i]->charset);
 				$newString .= $tempString;
 			}
 			return $newString;
@@ -293,11 +274,11 @@
 			switch($_encoding)
 			{
 				case "q":
-					#if(!preg_match("/[\x80-\xFF]/",$_string))
-					#{
-					#	// nothing to quote, only 7 bit ascii
-					#	return $_string;
-					#}
+					if(!preg_match("/[\x80-\xFF]/",$_string))
+					{
+						// nothing to quote, only 7 bit ascii
+						return $_string;
+					}
 					
 					$string = imap_8bit($_string);
 					$stringParts = explode("=\r\n",$string);
@@ -1060,7 +1041,7 @@
 				// get the quota for this mailboxbox
 				if (function_exists('imap_get_quotaroot') && !$_adminConnection)
 				{
-					$quota = imap_get_quotaroot($this->mbox, $folderName);
+					$quota = imap_get_quotaroot($this->mbox, $this->decodeFolderName($folderName));
 					if(is_array($quota['STORAGE'])) 
 					{
 						$storage = $this->storageQuota = $quota['STORAGE'];
@@ -1449,24 +1430,57 @@
 			}
 		}
 		
-#		function validate_email($_emailAddress)
-#		{
-#			if($val != "")
-#			{
-#				$pattern = "/^([a-zA-Z0-9])+([\.a-zA-Z0-9_-])*@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-]+)+/";
-#				if(preg_match($pattern, $val))
-#				{
-#					return true;
-#				}
-#				else
-#				{
-#					return false;
-#				}
-#			}
-#			else
-#			{
-#				return false;
-#			}
-#		}
+		/* inspired by http://de2.php.net/wordwrap
+		   desolate19 at hotmail dot com */
+		function wordwrap($str, $cols, $cut)
+		{
+/*			
+			// todo
+			// think about multibyte charsets
+			// think about links in html mode
+			$len		= strlen($str);
+			$tag		= 0;
+			$lineLenght	= 0;
+			
+			for ($i = 0; $i < $len; $i++) 
+			{
+				$lineLenght++;
+				$chr = substr($str,$i,1);
+				if(ctype_cntrl($chr))
+				{
+					if(ord($chr) == 10)
+						$lineLenght     = 0;
+				}
+				if ($chr == '<') {
+					$tag++;
+				} elseif ($chr == '>') {
+					$tag--;
+				} elseif ((!$tag) && (ctype_space($chr))) {
+					$wordlen = 0;
+				} elseif (!$tag) {
+					$wordlen++;
+				}
+
+				if ((!$tag) && (!$wordlen) && $lineLenght > $cols) {
+				//if ((!$tag) && ($wordlen) && (!($wordlen % $cols))) {
+					#print "add cut<br>";
+					$chr .= $cut;
+					$lineLenght     = 0;
+				}
+				$result .= $chr;
+			}
+			return $result;
+*/
+			$lines = explode('\n', $str);
+			$newStr = '';
+			foreach($lines as $line)
+			{
+				// replace tabs by 8 space chars, or any tab only counts one char
+				$line = str_replace("\t","        ",$line);
+				$newStr .= wordwrap($line, $cols, $cut);
+			}
+			return $newStr;
+		}
+		
 	}
 ?>

@@ -47,7 +47,7 @@
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_deleted_x"])) 
 				$GLOBALS['HTTP_POST_VARS']["mark_deleted"] = "true";
 
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['system_charset']);
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['server']['system_charset']);
 			$this->bofilter		= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
@@ -791,18 +791,18 @@
 						{
 							$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
 						}
-						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']);
+						$headers['header'][$i]['subject'] = htmlspecialchars($headers['header'][$i]['subject'],ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
 							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
 						}
 						$this->t->set_var('header_subject', ExecMethod('phpgwapi.translation.convert',$headers['header'][$i]['subject']));
-						$this->t->set_var('full_subject', ExecMethod('phpgwapi.translation.convert',$fullSubject));
+						$this->t->set_var('full_subject', ExecMethod('phpgwapi.translation.convert',htmlspecialchars($fullSubject,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset'])));
 					}
 					else
 					{
-						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
 					}
 				
 					if ($mailPreferences['sent_folder'] == $this->mailbox)
@@ -832,7 +832,7 @@
 								$headers['header'][$i]['sender_name'].
 								" <".
 								$headers['header'][$i]['sender_address'].
-								">",ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']);
+								">",ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
 						}
 						else
 						{
