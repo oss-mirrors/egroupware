@@ -377,7 +377,7 @@
 				  $plugin_hooks=array_merge($plugin_default,$plugin_hooks);
 				  $options=$this->ui->select_options($plugin_hooks,$plg_name,false);
 
-				  if ($field['name']!='id' && $options) // FIXME the name id is now allowed isn't it?
+				  if ($options) 
 				  {
 					 $popup_onclick_plug='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','screen=plugconf').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=600,height=500,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 

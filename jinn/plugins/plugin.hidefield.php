@@ -34,13 +34,8 @@
 	$this->plugins['hidefield']['description']		= 'This just hides the input field for users';
 	$this->plugins['hidefield']['db_field_hooks']	= array
 	(
-	   'longtext',
-		'text',
 		'string',
-		'varchar',
-		'char',
 		'int',
-		'tinyint',
 		'blob',
 		'date',
 		'timestamp'

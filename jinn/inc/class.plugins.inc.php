@@ -242,11 +242,10 @@
 	  */
 	  function plugin_hooks($fieldtype)
 	  {
-		 if ($fieldtype=='blob') $fieldtype='text';
+//		 if ($fieldtype=='blob') $fieldtype='text';
 
 		 if (count($this->plugins>0))
 		 {	
-
 			foreach($this->plugins as $plugin)
 			{
 			   foreach($plugin['db_field_hooks'] as $hook)
@@ -276,7 +275,7 @@
 	  */
 	  function get_default_plugin($fieldtype)
 	  {
-		 if ($fieldtype=='blob') $fieldtype='text';
+//		 if ($fieldtype=='blob') $fieldtype='text';
 
 		 $i=1;
 		 if (count($this->plugins>0))

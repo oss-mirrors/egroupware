@@ -33,8 +33,7 @@
    $this->plugins['htmlArea']['db_field_hooks']	= array
    (
 	  'blob',
-	  'longtext',
-	  'text'
+	  'string'
    );
 
    $this->plugins['htmlArea']['config']		= array

@@ -31,7 +31,7 @@
    $this->plugins['imagepath']['name']				= 'imagepath';
    $this->plugins['imagepath']['title']				= 'ImagePath plugin';
    $this->plugins['imagepath']['author']			= 'Pim Snel';
-   $this->plugins['imagepath']['version']			= '0.9.4';
+   $this->plugins['imagepath']['version']			= '0.9.5';
    $this->plugins['imagepath']['enable']			= 1;
 
    $this->plugins['imagepath']['description']		= '
@@ -40,10 +40,6 @@
 
    $this->plugins['imagepath']['db_field_hooks']	= array
    (
-	  'text',
-	  'longtext',
-	  'varchar',
-	  'bpchar',
 	  'string',
 	  'blob'
    );
@@ -401,9 +397,22 @@
 			   }
 			   elseif($new_img_width || $new_img_height)
 			   {
+				  if($filetype=='GIF') 
+				  {
+					 if($graphic->FileTypeSupport('GIFRead') && !$graphic->FileTypeSupport('GIFWrite'))
+					 {
+						$filetype='PNG';
+					 }
+					 elseif(!$graphic->FileTypeSupport('GIFRead'))
+					 {
+						die(lang('The GIF-filetype is not supported by this server, please click on back and try a different filetype.'));
+					 }
+				  }
+			
 				  $target_image_name.='.'.$filetype;
 				  $new_temp_file=$graphic->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
 				  if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
+
 			   }
 			   else
 			   {

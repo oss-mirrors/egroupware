@@ -2,6 +2,17 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Version 0.8.107b
+Tue Sep 21 15:04:07 CEST 2004
+=============================
+- check for gif-support in imagepath and give a informative error message when gif is not supported
+- fix wrong error-message after saving object 
+- add user-editable config to default auto-plugin
+- fix showing 'id'-fields
+- remove not used hooking db field types in all plugins
+- fixed wrong handeling of blob fieldtype
+- add some help info's
+
 Version 0.8.107
 Mon Sep 20 14:33:10 CEST 2004
 ============================

@@ -34,7 +34,7 @@
 	$this->plugins['timestamp2integer']['description']		= 'create timestamp2integer input box and timestamp2integer storage method.';
 	$this->plugins['timestamp2integer']['author']			= 'Pim Snel';
 	$this->plugins['timestamp2integer']['enable']			= 1;
-	$this->plugins['timestamp2integer']['db_field_hooks']	= array('int','smallint');
+	$this->plugins['timestamp2integer']['db_field_hooks']	= array('int');
 	
 	function plg_fi_timestamp2integer($field_name,$value,$config,$attr_arr)
 	{	

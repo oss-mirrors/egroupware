@@ -60,6 +60,7 @@
 			'timestamp'		=>		'timestamp',
 			'blob'			=>		'blob',
 			'text'			=>		'blob',
+			'auto'			=>		'auto',
 		 );
 	  }
 	  
@@ -100,6 +101,12 @@
 	  {
 		 if(is_array($field_meta_arr))
 		 {
+			if (eregi("auto_increment", $field_meta_arr[flags]) || eregi("nextval",$field_meta_arr['default']))
+			{
+//			   die('hallo');
+			   return $this->field_types_arr['auto'];
+			}
+			
 			if($this->field_types_arr[$field_meta_arr[type]])
 			{
 			   return $this->field_types_arr[$field_meta_arr[type]];
@@ -109,6 +116,11 @@
 			   return false;
 			}
 		 }
+		 else
+		 {
+			return false;
+		 }
+
 	  }
 	
 	  /*!

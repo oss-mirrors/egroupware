@@ -33,13 +33,8 @@
    $this->plugins['selectbox']['db_field_hooks']	= array
    (
 	  'string',
-	  'char',
 	  'int',
-	  'tinyint',
-	  'smallint',
-	  'varchar',
-	  'longtext',
-	  'text'
+	  'blob'
    );
    $this->plugins['selectbox']['config']		= array
    (

@@ -34,12 +34,8 @@
 	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';
 	$this->plugins['boolian']['db_field_hooks']	= array
 	(
-	   'char',
-	   'varchar',
 		'string',	
 		'int',
-		'smallint',
-		'tinyint'
 	);
 	$this->plugins['boolian']['config']		= array
 	(

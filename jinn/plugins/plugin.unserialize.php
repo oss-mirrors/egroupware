@@ -29,7 +29,7 @@
    $this->plugins['unserialize']['author']		= 'Pim Snel';
    $this->plugins['unserialize']['description']		= 'De-serialize a value';
    $this->plugins['unserialize']['enable']			= 1;
-   $this->plugins['unserialize']['db_field_hooks']	= array('longtext','text','blob','varchar','string');
+   $this->plugins['unserialize']['db_field_hooks']	= array('blob','string');
 
    // FIXME ad config:
    // 1 readonly 

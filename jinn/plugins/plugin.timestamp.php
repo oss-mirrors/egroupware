@@ -25,21 +25,25 @@
    $this->plugins['timestamp']['name']				= 'timestamp';
    $this->plugins['timestamp']['title']				= 'Timestamp plugin';
    $this->plugins['timestamp']['author']			= 'Pim Snel';
-   $this->plugins['timestamp']['version']			= '0.2.2';
+   $this->plugins['timestamp']['version']			= '1.0.0rc';
    $this->plugins['timestamp']['description']		= 'Make the user choose for a new stamp of saving the exiting stamp';
    $this->plugins['timestamp']['enable']			= 1;
    $this->plugins['timestamp']['db_field_hooks']	= array('timestamp');
 
-
    $this->plugins['timestamp']['config']		= array
    (
-	  'Default_action'=> array( array('Leave value untouched','New Time Stamp') /* 1st is default the rest are all possibilities */ ,'select',''),
-	  'Allow_users_to_choose_action'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
+	  'Default_action'=> array( array('Leave value untouched','New Time Stamp')  ,'select',''),
+	  'Allow_users_to_choose_action'=> array( array('False','True')  ,'select',''),
+   );
+
+   $this->plugins['timestamp']['config_help'] = array
+   (
+	  'Default_action'=>'Leave untouched keeps the save timestamp when the record is updated, else always a new stamp is given to the record.',
+	  'Allow_users_to_choose_action' =>'Let users choose the to leave is untouched or not.'
    );
 
    function plg_fi_timestamp($field_name,$value,$config,$attr_arr)
    {	
-
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
@@ -51,7 +55,6 @@
 	  else
 	  {
 		 $input=$local_bo->common->format_date($value);
-
 	  }
 
 	  return $input;

@@ -35,10 +35,6 @@
    $this->plugins['attachpath']['description']		= 'Plugin with can upload files of any type and store the paths in the database seperated by semicolons.';
    $this->plugins['attachpath']['db_field_hooks']	= array
    (
-	  'text',
-	  'longtext',
-	  'varchar',
-	  'bpchar',
 	  'string',
 	  'blob'
    );

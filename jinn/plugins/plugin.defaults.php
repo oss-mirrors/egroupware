@@ -37,15 +37,20 @@
 	$this->plugins['def_blob']['description']	= 'Default field plugin for handeling blob or text fields, this plugin doesn\'t handle binary blobs';
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
-		'text',
-		'blob',
+	   'blob',
+	   'string',
 	 );
 
 	 $this->plugins['def_blob']['config']		= array
 	 (
 		'New_height_in_pixels' => array('100','text','maxlength=3 size=3'), 
 	 );
-	   
+	 
+	 $this->plugins['def_blob']['config_help']		= array
+	 (
+		'New_height_in_pixels' => 'Default height is 100 pixels', 
+	 );
+		 
 
 	function plg_fi_def_blob($field_name,$value, $config,$attr_arr)
 	{
@@ -73,21 +78,37 @@
 	$this->plugins['def_auto']['name'] 				= 'def_auto';
 	$this->plugins['def_auto']['title']				= 'default auto incr.';
 	$this->plugins['def_auto']['author']			= 'Pim Snel';
-	$this->plugins['def_auto']['version']			= '1.0';
+	$this->plugins['def_auto']['version']			= '1.1';
 	$this->plugins['def_auto']['enable']			= 1;
 	$this->plugins['def_auto']['default']			= 1;
 	$this->plugins['def_auto']['description'] 	    = 'Default field plugin for handeling auto-incrementing fields';
 	$this->plugins['def_auto']['db_field_hooks']	= array
 	(
-	   'int'
+	   'auto'
+	);
+
+	$this->plugins['def_auto']['config']		= array
+	(
+	   'readonly'=>array(array('Yes','No'),'select','')
+	);
+
+	$this->plugins['def_auto']['config_help'] = array
+	(
+	   'readonly'=>'Default a autoincrementing field is readonly, set this to \'No\' to make it editable for moderators.'
 	);
 
 	function plg_fi_def_auto($field_name, $value, $config,$attr_arr)
 	{
-
-	   if(!$value) $display_value=lang('automaticly incrementing');
-	   $input='<b>'.$value.'</b><input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$display_value;
-
+	   if($config[readonly]=='No')
+	   {
+		  if(!$value) $display_value='&nbsp;('.lang('keep this empty to let is auto increment').')';
+		  $input='<input type="text" name="'.$field_name.'" value="'.$value.'">'.$display_value;
+	   }
+	   else
+	   {
+		  if(!$value) $display_value=lang('automaticly incrementing');
+		  $input='<b>'.$value.'</b><input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$display_value;
+	   }
 	   return $input;
 	}
 
@@ -104,7 +125,7 @@
 	$this->plugins['def_binary']['db_field_hooks']	= array
 	(
 	   'blob',
-	   'text',
+	   'binary'
 	);
 	
 	function plg_fi_def_binary($field_name,$value, $config,$attr_arr)

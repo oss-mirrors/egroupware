@@ -41,9 +41,6 @@
    $this->plugins['switchboard']['db_field_hooks']	= array
    (
 	  'string',
-	  'varchar',
-	  'longtext',
-	  'text',
 	  'blob'
    );
    $this->plugins['switchboard']['config']		= array

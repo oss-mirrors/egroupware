@@ -40,9 +40,7 @@
 
    $this->plugins['vorder']['db_field_hooks']	= array
    (
-	  'int',
-	  'smallint',
-	  'tinyint'
+	  'int'
    );
 
    function plg_fi_vorder($field_name,$value,$config,$attr_arr)

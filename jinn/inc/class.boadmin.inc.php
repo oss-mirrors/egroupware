@@ -444,12 +444,9 @@
 	  {
 		 $table='egw_jinn_objects';
 
-
-		 //			_debug_array($_POST);
-		 //			die();
 		 $status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$this->where_key,$this->where_value);
 
-		 if ($status==1)	$this->message[info]=lang('Site Object succesfully saved');
+		 if ($status[ret_code]==0)	$this->message[info]=lang('Site Object succesfully saved');
 		 else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();

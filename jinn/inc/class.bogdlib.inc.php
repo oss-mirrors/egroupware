@@ -33,6 +33,56 @@
 		 $this->current_config=$this->common->get_config();
 	  }
 
+	
+	  /**
+	  @function FileTypeSupport
+	  @abstract checks if a filetype is supported by the current gdlib
+	  @param $type string eg GIFRead, GIFwrite, GIF (GIFRead and GIFWrite), PNG, JPG, etc...
+	  @returns boolian
+	  */
+	  function FileTypeSupport($type)
+	  {
+		 $support_arr=gd_info();
+
+		 switch($type)
+		 {
+			case 'GIF':
+			   if($support_arr["GIF Read Support"] && $support_arr["GIF Create Support"])
+			   {
+				  return true;
+			   }	 
+			   break;
+			case 'GIFRead':
+			   if($support_arr["GIF Read Support"])
+			   {
+				  return true;
+			   }	 
+			   break;
+			case 'GIFWrite':
+			   if($support_arr["GIF Create Support"])
+			   {
+				  return true;
+			   }	 
+			   break;
+			case 'JPG':
+			   if($support_arr["JPG Support"])
+			   {
+				  return true;
+			   }	 
+			   break;
+			case 'PNG':
+			   if($support_arr["PNG Support"])
+			   {
+				  return true;
+			   }	 
+			   break;
+
+			default: 
+			   return false;
+
+		 }
+	  }
+
 	  function Resize( $maxwidth=10000, $maxheight,$imagename,$filetype,$how='keep_aspect') 
 	  {
 		 $target_temp_file = tempnam ("jinn/temp", "gdlib_");
@@ -62,10 +112,17 @@
 		 //die('hallo');
 
 
-		 if ($ext == "JPEG") { $src = ImageCreateFromJPEG($filename); }
+		 if ($ext == "JPEG") 
+		 { 
+			$src = ImageCreateFromJPEG($filename); 
+		 }
 		 
 		 // FIXME gif doesn't work
-		 if ($ext == "GIF") { $src = ImageCreateFromGIF($filename); }
+		 if ($ext == "GIF") 
+		 { 
+			$src = ImageCreateFromGIF($filename); 
+			echo 'hallo';
+		 }
 		 
 		 if ($ext == "PNG") { $src = ImageCreateFromPNG($filename); }
 
