@@ -14,6 +14,17 @@
 	$setup_info['stocks']['version']   = '0.8.3.002';
 	$setup_info['stocks']['app_order'] = 24;
 	$setup_info['stocks']['enable']    = 1;
+	$setup_info['stocks']['description'] =
+		'<b>Stock Quotes</b> is phpGroupWare\'s customizable stock quote lookup/retrieval 
+		application.';
+	$setup_info['stocks']['note'] =
+		'It grabs its data from the Yahoo! Finance website.';
+	$setup_info['stocks']['author']    = 'Dan Steinman, Bettina Gille, Joseph Engo';
+	$setup_info['stocks']['maintainer']= 'Bettina Gille';
+	$setup_info['stocks']['maintainer_email']= 'ceb@phpgroupware.org';
+	$setup_info['stocks']['based_on']  =
+		'PStocks v.0.1 / <a href="mailto:dan@dansteinman.com">Dan Steinman</a>';
+	$setup_info['stocks']['based_on_url'] = 'http://www.dansteinman.com/php/pstocks/';
 
 	$setup_info['stocks']['tables'] = array('phpgw_stocks');
 
