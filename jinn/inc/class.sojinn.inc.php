@@ -48,6 +48,9 @@
 
 	  function site_db_connection($site_id)
 	  {
+
+		 if($site_id=='') $site_id=-1;//pgsql hack
+		 
 		 $SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id'";
 
 		 $this->phpgw_db->free();
@@ -60,7 +63,7 @@
 		 if($this->config["server_type"]=='dev' && $this->phpgw_db->f('dev_site_db_name'))
 		 {
 			$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
-			$this->site_db->type		= $this->phpgw_db->f('dev_site_db_type');
+			$this->site_db->Type		= $this->phpgw_db->f('dev_site_db_type');
 			$this->site_db->Database	= $this->phpgw_db->f('dev_site_db_name');
 			$this->site_db->User		= $this->phpgw_db->f('dev_site_db_user');
 			$this->site_db->Password	= $this->phpgw_db->f('dev_site_db_password');
@@ -69,7 +72,7 @@
 		 else
 		 {
 			$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
-			$this->site_db->type		= $this->phpgw_db->f('site_db_type');
+			$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
 			$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
 			$this->site_db->User		= $this->phpgw_db->f('site_db_user');
 			$this->site_db->Password	= $this->phpgw_db->f('site_db_password');
@@ -83,38 +86,42 @@
 
 	  function test_db_conn($data)
 	  {
-		 $this->site_db = CreateObject('phpgwapi.db');
+		 $this->test_db = CreateObject('phpgwapi.db');
 
 		 // if servertype is develment use dev site settings else use normal settings
-		 if($this->config["server_type"]=='dev')
+		 if($this->config["server_type"]=='dev' && $data[dev_site_db_name])
 		 {
-			$this->site_db->Host	    = $data['dev_db_host'];
-			$this->site_db->type     = $data['dev_db_type'];
-			$this->site_db->Database = $data['dev_db_name'];
-			$this->site_db->User     = $data['dev_db_user'];
-			$this->site_db->Password = $data['dev_db_password'];
+			$this->test_db->Host	 = $data['dev_db_host'];
+			$this->test_db->Type     = $data['dev_db_type'];
+			$this->test_db->Database = $data['dev_db_name'];
+			$this->test_db->User     = $data['dev_db_user'];
+			$this->test_db->Password = $data['dev_db_password'];
 
 		 }
 		 else
 		 {
-			$this->site_db->Host		= $data['db_host'];
-			$this->site_db->type		= $data['db_type'];
-			$this->site_db->Database	= $data['db_name'];
-			$this->site_db->User		= $data['db_user'];
-			$this->site_db->Password	= $data['db_password'];
+			$this->test_db->Host		= $data['db_host'];
+			$this->test_db->Type		= $data['db_type'];
+			$this->test_db->Database	= $data['db_name'];
+			$this->test_db->User		= $data['db_user'];
+			$this->test_db->Password	= $data['db_password'];
 		 }
+		 
+		 
 
-		 if(@$this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
+		 //		die(); 
+		 //if(@$this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
+		 if($test=@$this->test_db->table_names())
 		 {
-			$this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__);
-			$this->site_close_db_connection();
+			//			$this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__);
+			$this->test_db->disconnect;
 			return true;
 		 }
 		 else
 		 {
-			$this->site_close_db_connection();
+			$this->test_db->disconnect;
+			//$this->site_close_db_connection();
 			return false;
-
 		 }
 	  }
 
@@ -129,6 +136,8 @@
 
 
 		 //FIXME psql error;
+		if($site_id=='') $site_id=-1;
+		 
 		 $SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id';";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
@@ -528,12 +537,6 @@
 		 return $objects;
 	  }
 
-
-
-	  /****************************************************************************\
-	  * ADMIN insert site data in phpgw_jinn_sites                       *
-	  \****************************************************************************/
-
 	  function get_objects($site_id,$uid,$gid)
 	  {
 
@@ -546,6 +549,12 @@
 			}
 		 }
 
+		 /* check if user is eGW Administrator */
+		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			$admin=true;
+		 }
+
 		 /* check if user or group administers this site */
 		 $SQL="SELECT site_id FROM phpgw_jinn_acl WHERE uid='$uid' $group_sql";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
@@ -554,12 +563,12 @@
 		 {
 			if ($site_id == $this->phpgw_db->f('site_id'))
 			{
-			   $admin='yes';
+			   $admin=true;
 			}
 		 }
 
 		 /* yes it's an admin so we can get all objects for this site */
-		 if ($admin=='yes')
+		 if ($admin)
 		 {
 			$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id' ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
@@ -787,14 +796,22 @@
 	  {
 		 $this->site_db_connection($site_id);
 
+		 
+		 // make pgsql hack because Limit is not allowed in DELETE statements
+		 if(!$this->site_db->Type=='pgsql')
+		 {
+			$limit_statement=' LIMIT 1';	
+		 }
+		 
 		 if($where_string)
 		 {
-			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $where_string . ' LIMIT 1';
+			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $where_string . $limit_statement;
 		 }
 		 else
 		 {
 			$SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key) ."='".$this->strip_magic_quotes_gpc($where_value)."'";
 		 }
+		 //die($SQL);
 
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
@@ -1030,7 +1047,7 @@
 	  function delete_phpgw_data($table,$where_key,$where_value)
 	  {
 
-		 $SQL = 'DELETE FROM ' . $table . ' WHERE `' . $this->strip_magic_quotes_gpc($where_key)."`='".$this->strip_magic_quotes_gpc($where_value)."'";
+		 $SQL = 'DELETE FROM ' . $table . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."=".$this->strip_magic_quotes_gpc($where_value);
 
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
@@ -1045,9 +1062,6 @@
 	  {
 		 $meta=$this->phpgw_table_metadata($table,true);
 		 $fieldnames=$this->get_phpgw_fieldnames($table);
-
-		 //	 _debug_array($meta);
-
 
 		 foreach($data as $field)
 		 {
@@ -1077,14 +1091,122 @@
 	  }
 
 
-	  
-	  
+	  function insert_new_site($data)
+	  {
+		 $meta=$this->phpgw_table_metadata('phpgw_jinn_sites',true);
+
+		 foreach($data as $field)
+		 {
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_phpgw_jinn_sites',$meta[$field['name']]['default'])) 
+			{
+			   $last_insert_id_col=$field['name'];
+			   continue;
+			}
+			
+			$serial=time();
+			if( $field['name'] == 'site_id') 
+			{
+			   continue;
+			}
+
+			if($serial && $field[name]=='serialnumber')
+			{
+			   $field[value]=$serial;
+			}
+
+			if ($SQLfields) $SQLfields .= ',';
+			if ($SQLvalues) $SQLvalues .= ',';
+
+			$SQLfields .= $field[name];
+			$SQLvalues .= "'".$field[value]."'";
+		 }
+
+		 $SQL='INSERT INTO phpgw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			$status[ret_code]=0;
+   
+			$SQL='SELECT * FROM phpgw_jinn_sites WHERE serialnumber='.$serial;
+			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+			$this->phpgw_db->next_record();
+
+			$status[where_value]=$this->phpgw_db->f('site_id');
+
+		 }
+
+		 return $status;
+	  }
+
+	  function insert_new_object($data)
+	  {
+		 $meta=$this->phpgw_table_metadata('phpgw_jinn_site_objects',true);
+
+		 foreach($data as $field)
+		 {
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_phpgw_jinn_site_objects',$meta[$field['name']]['default'])) 
+			{
+			   $last_insert_id_col=$field['name'];
+			   continue;
+			}
+
+			$serial=time();
+			if( $field['name'] == 'object_id') 
+			{
+			   continue;
+			}
+
+			if($serial && $field[name]=='serialnumber')
+			{
+			   $field[value]=$serial;
+			}
+
+			// safety hack for pgsql which doesn't allow '' for integers
+			if($field[value]=='' && eregi('int',$meta[$field['name']]['type']) )
+			{
+			   continue;
+			}
+
+			if ($SQLfields) $SQLfields .= ',';
+			if ($SQLvalues) $SQLvalues .= ',';
+
+			$SQLfields .= $field[name];
+			$SQLvalues .= "'".$field[value]."'";
+		 }
+
+		 $SQL='INSERT INTO phpgw_jinn_site_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
+		 {
+			$SQL='SELECT * FROM phpgw_jinn_site_objects WHERE serialnumber='.$serial;
+			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+			$this->phpgw_db->next_record();
+
+			$status[where_value]=$this->phpgw_db->f('object_id');
+			
+			$status[ret_code]=0;
+		 }
+
+		 return $status;
+	  }
+
+
+
+	  // fixme remove this when the function is replaces everywhere in the code
+	  // now use it as a wrapper
 	  function insert_phpgw_data($table,$data)
 	  {
 
+		 if($table=='phpgw_jinn_sites') 
+		 {
+			return $this->insert_new_site($data);
+		 }
+		 elseif($table=='phpgw_jinn_site_objects')
+		 {
+			return $this->insert_new_object($data);
+		 }
+		 
 		 $meta=$this->phpgw_table_metadata($table,true);
-		 //	 _debug_array($meta);
-
 
 		 foreach($data as $field)
 		 {
@@ -1117,11 +1239,6 @@
 
 		 foreach($data as $field)
 		 {
-	
-	//		echo $table;
-//			$meta=$this->get_phpgw_fieldnames($table);	
-//			_debug_array($meta);
-			
 			if ($SQL_SUB) $SQL_SUB .= ', ';
 			$SQL_SUB .= "$field[name]='$field[value]'";
 		 }
@@ -1135,15 +1252,20 @@
 		 return $status;
 	  }
 
-
-
-
-	  
 	  function update_phpgw_data($table,$data,$where_key,$where_value)
 	  {
 
+		 $meta=$this->phpgw_table_metadata($table,true);
+
 		 foreach($data as $field)
 		 {
+
+			if($field[value]=='' || eregi('int',$meta[$field['name']]['type'])) 
+			{
+			   $field[value]=null;
+			   continue;
+			}
+			
 			if ($SQL_SUB) $SQL_SUB .= ', ';
 			$SQL_SUB .= "$field[name]='$field[value]'";
 		 }

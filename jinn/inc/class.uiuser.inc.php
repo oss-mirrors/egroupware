@@ -299,7 +299,9 @@
 
 			$this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
 
-			$this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
+			$this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
+			$this->template->set_var('colfield_lang_confirm_edit_multiple',lang('Are you sure your want to edit these records?'));
+			
 			$this->template->set_var('limit_start',$limit['start']);
 			$this->template->set_var('limit_stop',$limit['stop']);
 			$this->template->set_var('orderby',$orderby);
@@ -312,6 +314,7 @@
 			$this->template->set_var('search',lang('search'));
 			$this->template->set_var('action_config_table',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.config_table'));
 			$this->template->set_var('lang_config_this_tableview',lang('Configure this tableview'));
+			$this->template->set_var('lang_select_checkboxes',lang('You must select one or more records for this function.'));
 			$this->template->set_var('search_string',$search);
 			//			$this->template->set_var('show_all_cols',$show_all_cols);
 			$this->template->set_var('lang_Actions',lang('Actions'));
@@ -514,7 +517,8 @@
 
 					 $this->template->set_var('colfield_lang_delete',lang('delete'));
 					 $this->template->set_var('colfield_delete_link',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.del_record&where_string='.$where_string));
-					 $this->template->set_var('colfield_lang_confirm',lang('Are you sure?'));
+					 $this->template->set_var('colfield_lang_confirm_delete_one',lang('Are you sure you want to delete this record?'));
+					 $this->template->set_var('colfield_lang_confirm_copy_one',lang('Do you want to copy and then edit this record?'));
 					 $this->template->set_var('colfield_delete_img_src',$GLOBALS[phpgw]->common->image('phpgwapi','delete'));
 
 

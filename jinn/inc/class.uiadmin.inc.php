@@ -175,19 +175,18 @@
 
 		function test_db_access()
 		{
-		    
 			// FIXME use templates
-		   
-		   $GLOBALS['phpgw_info']['flags']['noheader']=True;
+			$GLOBALS['phpgw_info']['flags']['noheader']=True;
 			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
 			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-
 			$this->ui->header(lang('Test Database Access'),false);
 
-			list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'], $data['dev_db_name'],$data['dev_db_host'],$data['dev_db_user'],$data['dev_db_password'],$data['dev_db_type']  )=explode(":",$GLOBALS[HTTP_GET_VARS]['dbvals']);
+			list($data['db_name'],$data['db_host'],$data['db_user'],$data['db_password'],$data['db_type'], $data['dev_db_name'],$data['dev_db_host'],$data['dev_db_user'],$data['dev_db_password'],$data['dev_db_type']  )=explode(":",$_GET['dbvals']);
+			
+		//	_debug_array($data);
 
 			echo '<div align=center>';
 			if ($this->bo->so->test_db_conn($data))

@@ -33,14 +33,14 @@
 	"JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.";
 	
 	
-	$this->fp = CreateObject('jinn.bofieldplugins');
+	$plg = CreateObject('jinn.bofieldplugins');
 
-	if(@count($this->fp->plugins))
+	if(@count($plg->plugins))
 	{
 	   $setup_info['jinn']['extra_untranslated'].= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered field plugins').'</td></tr>';
 		  $setup_info['jinn']['extra_untranslated'].= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for field types').'</td></tr>';
 
-		  foreach($this->fp->plugins as $plugin)
+		  foreach($plg->plugins as $plugin)
 		  {
 
 			 if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin[db_field_hooks]);

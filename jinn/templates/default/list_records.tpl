@@ -33,45 +33,39 @@
 
 <script language="javascript" type="text/javascript">
 
-function submit_del()
+function submit_multi_del()
 {
-   if(window.confirm('{colfield_lang_confirm}'))
+   if(countSelectedCheckbox()==0)
    {
-		document.frm.action.value='del';
-		document.frm.submit();
+	  alert('{lang_select_checkboxes}');
    }
    else
    {
-	  document.frm.action.value='none';
 
+	  if(window.confirm('{colfield_lang_confirm_delete_multiple}'))
+	  {
+		 document.frm.action.value='del';
+		 document.frm.submit();
+	  }
+	  else
+	  {
+		 document.frm.action.value='none';
+
+	  }
    }
-	
+
 }
 
-function submit_view()
+function submit_multi_edit()
 {
-   if(window.confirm('{colfield_lang_confirm}'))
+   if(countSelectedCheckbox()==0)
    {
-		document.frm.action.value='view';
+	  alert('{lang_select_checkboxes}');
    }
    else
    {
-	  document.frm.action.value='none';
-
-   }
-	document.frm.submit();
-}
-
-function submit_edit()
-{
-   if(window.confirm('{colfield_lang_confirm}'))
-   {
-		document.frm.action.value='edit';
-		document.frm.submit();
-   }
-   else
-   {
-	  document.frm.action.value='none';
+	  document.frm.action.value='edit';
+	  document.frm.submit();
    }
 }
 
@@ -112,9 +106,9 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 
 <td bgcolor="{colfield_bg_color}" align="left" width="1%"><a title="{colfield_lang_edit}" href="{colfield_edit_link}"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit}" /></a></td>
 
-<td bgcolor="{colfield_bg_color}" align="left" width="1%"><a title="{colfield_lang_copy}" href="{colfield_copy_link}" onClick="return window.confirm('{colfield_lang_confirm}')"><img src="{colfield_copy_img_src}" alt="{colfield_lang_copy}" /></a></td>
+<td bgcolor="{colfield_bg_color}" align="left" width="1%"><a title="{colfield_lang_copy}" href="{colfield_copy_link}" onClick="return window.confirm('{colfield_lang_confirm_copy_one}')"><img src="{colfield_copy_img_src}" alt="{colfield_lang_copy}" /></a></td>
 
-<td bgcolor="{colfield_bg_color}" align="left" width="1%"><a title="{colfield_lang_delete}" href="{colfield_delete_link}" onClick="return window.confirm('{colfield_lang_confirm}')"><img src="{colfield_delete_img_src}" alt="{colfield_lang_delete}" /></a></td>
+<td bgcolor="{colfield_bg_color}" align="left" width="1%"><a title="{colfield_lang_delete}" href="{colfield_delete_link}" onClick="return window.confirm('{colfield_lang_confirm_delete_one}')"><img src="{colfield_delete_img_src}" alt="{colfield_lang_delete}" /></a></td>
 
 {colfields}
 
@@ -136,9 +130,9 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 
 <!--<td width="1%"  bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_view_sel}" href="#"><img src="{colfield_view_img_src}" alt="{colfield_lang_view_sel}" /></a></td>-->
 
-<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_edit_sel}" href="javascript:submit_edit()"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit_sel}" /></a></td>
+<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_edit_sel}" href="javascript:submit_multi_edit()"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit_sel}" /></a></td>
 
-<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_delete_sel}" href="javascript:submit_del()" ><img src="{colfield_delete_img_src}" alt="{colfield_lang_delete_sel}" /></a></td>
+<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_delete_sel}" href="javascript:submit_multi_del()" ><img src="{colfield_delete_img_src}" alt="{colfield_lang_delete_sel}" /></a></td>
 <td >&nbsp;{lang_actions_to_apply_on_selected}</td>
 
 </tr>

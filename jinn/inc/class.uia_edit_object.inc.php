@@ -53,6 +53,15 @@
 			'form_site' => 'frm_edit_object.tpl',
 		 ));
 
+	/*	 if ($_GET[serial])
+		 {
+			$this->bool_edit_record=true;
+			$tmp_arr=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','serialnumber',$_GET[serial],'','','name');
+			$this->object_values=$tmp_arr[0];
+//			$this->object_values=$this->bo->so->get_object_values($this->where_value);
+			$this->parent_site_id=$this->object_values[parent_site_id];
+		 }
+		 */
 		 if ($this->where_key && $this->where_value)
 		 {
 			$this->bool_edit_record=true;
@@ -156,7 +165,8 @@
 			   $input_length=40;
 			}
 
-			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_site_objects'::text)")
+			if ($fieldproperties[name]=='object_id')
+//			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_site_objects'::text)")
 			{
 			   if (!$value)
 			   {

@@ -46,6 +46,22 @@ function doCheckAll(chbx)
    }
 }
 
+function countSelectedCheckbox()
+{
+   checkednum=0;
+   for (i=0; i<document.frm.elements.length; i++)
+   {
+	  if (document.frm.elements[i].type == "checkbox")// && document.frm.elements[i].name != chbx.name)
+	  {
+		 if (document.frm.elements[i].checked)
+		 {
+			checkednum++;
+		 }
+	  }
+   }
+   return checkednum;
+}
+
 function saveOptions(obj,hidden_fld) { //v1.0
    //alert('hallo');
    var boxLength = document.frm[obj].length;

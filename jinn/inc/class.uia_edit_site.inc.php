@@ -44,6 +44,20 @@
 		 $this->template->set_block('form_site','footer','form_footer');
 		 $this->template->set_block('form_site','object_buttons','object_buttons');
 
+		 // fixme streamline this switch
+		 // fixme check for registered_globals
+/*		 if ($_GET[serial])
+		 {
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_phpgw_jinn_sites");
+			$values_object= $this->bo->get_phpgw_records('phpgw_jinn_sites','serialnumber',$_GET[serial],'','','name');
+			$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"site_id\">";
+			$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"{$values_object[0][site_id]}\">";
+			//_debug_array($values_object);
+			//die();
+			$add_edit_button=lang('save');
+			$action=lang('edit phpgw_jinn_sites');
+		 }
+		 */
 		 if ($where_key && $where_value)
 		 {
 			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_phpgw_jinn_sites");
@@ -94,7 +108,8 @@
 			   $input_length=40;
 			}
 
-			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_sites'::text)")
+			//			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_sites'::text)")
+			if($fieldproperties[name]=='site_id')
 			{
 			   if (!$value)
 			   {
@@ -133,7 +148,17 @@
 			{
 			   $input='<input type="password" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">';
 			}
-			elseif ($fieldproperties[name]=='serialnumber')
+			elseif ($fieldproperties[name]=='site_db_type' || $fieldproperties[name]=='dev_site_db_type')
+			{
+			   if($value=='mysql') $mysql_sel='selected'; 
+			   if($value=='pgsql') $pgsql_sel='selected'; 
+			   
+			   $input='<select name="'.$input_name.'">
+				  <option value="mysql" '.$mysql_sel.'>MySQL</option>
+				  <option value="pgsql" '.$pgsql_sel.'>PostgreSQL</option>
+			   </select>';
+			}
+		elseif ($fieldproperties[name]=='serialnumber')
 			{
 			   $input='<input type="hidden" name="'.$input_name.'" value="'.time().'">'.$value;
 			}

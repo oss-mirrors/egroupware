@@ -67,6 +67,8 @@
 
 
 			$fieldnames = $this->bo->so->get_phpgw_fieldnames('phpgw_jinn_sites');
+			$col_list=$fieldnames;
+
 			// which/how many column to show, all, the prefered, or the default thirst 4
 			if ($show_all_cols)
 			{
@@ -85,7 +87,11 @@
 
 				$display_name = ucfirst(strtolower(ereg_replace("_", " ", $field)));
 				$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
-			}
+			 }
+ 			
+			 // column for number of objects
+			 $column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang('Number of objects').'</font></td>';
+
 
 			$records=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_key,$where_value,$limit[start],$limit[stop],'num');
 
@@ -120,7 +126,6 @@
 
 					if(count($recordvalues)>0)
 					{
-
 						// which/how many column to show, all, the prefered, or the default thirst 4
 						if ($show_all_cols)
 						{
@@ -136,10 +141,16 @@
 						}
 
 
+						// get object amount
+						$objects=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_site_id',$record_list[0],'','','num');
+						$num_objects= @count($objects);
+
 						foreach($record_list as $recordvalue)
 						{
 
-							if (empty($recordvalue))
+						   	 		
+						   
+						    if (empty($recordvalue))
 							{
 								$table_row.="<td bgcolor=\"$bgclr\">&nbsp;</td>";
 							}
@@ -147,7 +158,9 @@
 							{
 								$table_row.="<td bgcolor=\"$bgclr\" valign=\"top\">$recordvalue</td>";
 							}
-						}
+						 }
+						 $table_row.="<td bgcolor=\"$bgclr\" valign=\"top\">$num_objects</td>";
+
 					}
 
 					$table_row.='</tr>';

@@ -295,25 +295,26 @@
 			if ($status>0)	
 			{
 				$this->message[info]=lang('Site succesfully added');
-    		//	$this->message[error]='';
-				
 			}
 			else 
 			{
-			//	$this->message[info]='';
 				$this->message[error]=lang('Site NOT succesfully added, unknown error');
 			}
 
 			$this->save_sessiondata();
 			if($GLOBALS[HTTP_POST_VARS]['continue'])
 			{
-				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$status);
+			   $this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$status[where_value].'&serial='.$status[serial]);
+			   _debug_array($serial);
+			   die();
 			}
 			else
 			{
 				$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
 			}
-		}
+		 }
+
+		
 
 		// FIXME rename
 		function insert_phpgw_jinn_site_objects()
@@ -325,15 +326,12 @@
 			$this->save_sessiondata();
 			if($GLOBALS[HTTP_POST_VARS]['continue'])
 			{
-				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key=object_id&where_value='.$status);
+			   $this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key=object_id&where_value='.$status[where_value].'&serial='.$status[serial]);
 			}
 			else
 			{
 				$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
 			}
-
-			
-
 		}
 
 		// FIXME rename
@@ -341,7 +339,7 @@
 		{
 			$table='phpgw_jinn_sites';
 
-			$status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$this->where_key,$this->where_value);
+			$status = $this->update_phpgw_data($table,$_POST,$_POST,$this->where_key,$this->where_value);
 			if ($status==1)	$this->message[info]=lang('Site succesfully saved');
 			else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
 
