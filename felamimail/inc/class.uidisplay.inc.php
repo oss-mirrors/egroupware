@@ -496,6 +496,14 @@
 					"class"   => array("minlen" =>   1, 'maxlen' =>  10)
 				)
 			);
+			$this->kses->AddHTML(
+				"blockquote",array(
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"style"   => array("minlen" =>   1),
+					"dir"   => array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+
 
 
 			for($i=0; $i<count($bodyParts); $i++)
