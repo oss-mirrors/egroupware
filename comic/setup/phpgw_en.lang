@@ -2,6 +2,7 @@ are you sure you want to reset all comic dates and resolved image urls?	comic	en
 censorship level	comic	en	Censorship level
 censorship override enabled	comic	en	Censorship override enabled
 comics	common	en	Comics
+daily comic	comic	en	Daily Comic
 daily comics data	comic	en	Daily comics data
 daily comics global options	comic	en	Daily comics global options
 genre	comic	en	Genre
