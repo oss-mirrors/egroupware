@@ -62,5 +62,5 @@ url is required.	bookmarks	sl	Zahtevan je spletni naslov.
 view bookmark	bookmarks	sl	Poglej zaznamek
 view this bookmark	bookmarks	sl	Poglej ta zaznamek
 warning	bookmarks	sl	Opozorilo
-you are viewing this site outside of phpgroupware	bookmarks	sl	Ta stran je prikazana izven phpGroupWare
+you are viewing this site outside of egroupware	bookmarks	sl	Ta stran je prikazana izven eGroupWare
 you must select a category	bookmarks	sl	Morate označiti kategorijo
