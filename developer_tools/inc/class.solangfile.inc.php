@@ -232,7 +232,7 @@
 
 		function list_langs()
 		{
-			$this->db->query("SELECT lang_id,lang_name FROM languages ORDER BY lang_name");
+			$this->db->query("SELECT lang_id,lang_name FROM phpgw_languages ORDER BY lang_name");
 			$i = 0;
 			while ($this->db->next_record())
 			{
@@ -268,7 +268,7 @@
 			{
 				$addit = False;
 				/* echo '<pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content']; */
-				$this->db->query("SELECT COUNT(*) FROM lang WHERE message_id='" . $this->db->db_addslashes($data['message_id']) . "' and lang='$userlang'",__LINE__,__FILE__);
+				$this->db->query("SELECT COUNT(*) FROM phpgw_lang WHERE message_id='" . $this->db->db_addslashes($data['message_id']) . "' and lang='$userlang'",__LINE__,__FILE__);
 				$this->db->next_record();
 
 				if ($this->db->f(0) == 0)
@@ -285,8 +285,8 @@
 				{
 					if($data['message_id'] && $data['content'])
 					{
-						/* echo "<br>adding - insert into lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
-						$this->db->query("INSERT into lang VALUES ('"
+						/* echo "<br>adding - insert into phpgw_lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
+						$this->db->query("INSERT into phpgw_lang VALUES ('"
 							. $this->db->db_addslashes($data['message_id']) . "','"
 							. $data['app_name'] . "','$userlang','"
 							. $this->db->db_addslashes($data['content']) . "')",__LINE__,__FILE__);
