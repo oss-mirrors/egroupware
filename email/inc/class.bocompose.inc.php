@@ -618,8 +618,7 @@
 			
 			// grab your value from the prefs
 			// $this->addybook_choice (string) [ "orig" | "lex" ]
-			// FIX ME: this pref only respects account 0, should each acct have a different choice?
-			$this->addybook_choice = $GLOBALS['phpgw']->msg->get_pref_value('addressbook_choice',0);
+			$this->addybook_choice = $GLOBALS['phpgw']->msg->get_pref_value('addressbook_choice',$acctnum);
 			
 			// that is the flag indicating what address book should pop up
 			if ($this->addybook_choice == 'lex')
@@ -634,17 +633,15 @@
 			
 			$this->xi['js_addylink'] = $js_addylink;
 			//we need to set the width of the addybook window according to user prefs
-			//$addywidth=$GLOBALS['phpgw_info']['user']['preferences']['email']['js_addressbook_screensize'];
-			// FIX ME: this pref only respects account 0, should each acct have a different choice?
-			$addywidth = $GLOBALS['phpgw']->msg->get_pref_value('js_addressbook_screensize',0);
+			$addywidth = $GLOBALS['phpgw']->msg->get_pref_value('js_addressbook_screensize',$acctnum);
 						
 			$this->xi['jsaddybook_width']=$addywidth;
 			//this is to determine the addybook's height
 			$this->xi['jsaddybook_height']=$addywidth*3/4;
 			// Set Image Directory and icon size and theme
 			$this->xi['image_dir'] = PHPGW_IMAGES;
-			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme');
-			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size');
+			$this->icon_theme = $GLOBALS['phpgw']->msg->get_pref_value('icon_theme',$acctnum);
+			$this->icon_size = $GLOBALS['phpgw']->msg->get_pref_value('icon_size',$acctnum);
 			$this->xi['toolbar_font'] = 'Arial, Helvetica, san-serif';
 			$this->xi['send_btn_action'] = $send_btn_action;
 			$this->xi['to_box_value'] = $to_box_value;
@@ -655,15 +652,15 @@
 			$this->xi['form1_name'] = 'doit';
 			$this->xi['form1_method'] = 'POST';
 			$this->xi['buttons_bgcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
-			$this->addressbook_text = lang('Address Book');
-			$this->addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-address-conduit-'.$this->icon_size.'.gif',$this->xi['addressbook_text'],'','','0');
-			$this->addressbook_onclick = 'addybook()';
-			$this->send_text = lang('Send');
-			$this->send_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-send-'.$this->icon_size.'.gif',$this->xi['send_text'],'','','0');
-			$this->send_onclick = 'send()';
-			$this->spellcheck_text = lang('Spell Check');
-			$this->spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-spellcheck-'.$this->icon_size.'.gif',$this->xi['spellcheck_text'],'','','0');
-			$this->spellcheck_onclick = 'spellcheck()';
+			$addressbook_text = lang('Address Book');
+			$addressbook_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-address-conduit-'.$this->icon_size.'.gif',$this->xi['addressbook_text'],'','','0');
+			$addressbook_onclick = 'addybook()';
+			$send_text = lang('Send');
+			$send_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-send-'.$this->icon_size.'.gif',$this->xi['send_text'],'','','0');
+			$send_onclick = 'send()';
+			$spellcheck_text = lang('Spell Check');
+			$spellcheck_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-spellcheck-'.$this->icon_size.'.gif',$this->xi['spellcheck_text'],'','','0');
+			$spellcheck_onclick = 'spellcheck()';
 			// Create Spell Object so we can check and see if we need a spell check button
 			$this->mail_spell = CreateObject("email.spell");
 			$this->attachfile_js_link = 
@@ -672,37 +669,37 @@
 						'menuaction' => 'email.uiattach_file.attach'
 					)
 			);
-			$this->attachfile_js_onclick = 'attach_window(\''.$this->attachfile_js_link.'\')';
-			$this->attachfile_js_text = lang('Attach file');
-			$this->attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-add-attachment-'.$this->icon_size.'.gif',$this->xi['attachfile_js_txt'],'','','0');
+			$attachfile_js_onclick = 'attach_window(\''.$this->attachfile_js_link.'\')';
+			$attachfile_js_text = lang('Attach file');
+			$attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($this->xi['image_dir'].'/'.$this->icon_theme.'-add-attachment-'.$this->icon_size.'.gif',$this->xi['attachfile_js_txt'],'','','0');
 			// This code creates the buttons
 			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type')){
 				case 'text':
-					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_text.'</a>';
-					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_text.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_text.'</a>';
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_text.'</a>';
+					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
-						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
 					}
 					
 					break;
 				case 'image':
-					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_image.'</a>';
-					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_image.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_image.'</a>';
+					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_image.'</a>';
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_image.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
-						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_image.'</a><input type=hidden name="btn_spellcheck">';
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'</a><input type=hidden name="btn_spellcheck">';
 					}
 					break;
 				case 'both':
-					$this->xi['send_button'] = '<a href="javascript:'.$this->send_onclick.'">'.$this->send_image.'&nbsp;'.$this->send_text.'</a>';
-					$this->xi['addressbook_button'] = '<a href="javascript:'.$this->addressbook_onclick.'">'.$this->addressbook_image.'&nbsp;'.$this->addressbook_text.'</a>';
-					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->attachfile_js_onclick.'">'.$this->attachfile_js_image.'&nbsp;'.$this->attachfile_js_text.'</a>';
+					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_image.'&nbsp;'.$send_text.'</a>';
+					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'&nbsp;'.$addressbook_text.'</a>';
+					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$attachfile_js_onclick.'">'.$attachfile_js_image.'&nbsp;'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
-						$this->xi['spellcheck_button'] = '<a href="javascript:'.$this->spellcheck_onclick.'">'.$this->spellcheck_image.'&nbsp;'.$this->spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'&nbsp;'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
 					}
 					break;
 			}
