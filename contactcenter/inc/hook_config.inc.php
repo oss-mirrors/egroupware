@@ -2,7 +2,8 @@
   /****************************************************************************\
    * eGroupWare - Contact Center Config Functions                             *
    * http://www.egroupware.org                                                *
-   * Written by Raphael D. Pereira <raphaelpereira@users.sourceforge.net>     *
+   *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
+   *  sponsored by Think.e - http://www.think-e.com.br                         *
    * ------------------------------------------------------------------------ *
    *  This program is free software; you can redistribute it and/or modify it *
    *  under the terms of the GNU General Public License as published by the   *

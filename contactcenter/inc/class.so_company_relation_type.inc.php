@@ -5,8 +5,8 @@
   *                                                                           *
   * Storage Object Classes                                                    *
   * Written by:                                                               *
-  *  - Raphael Derosso Pereira <raphaelpereira@users.sourceforge.net>         *
-  *  sponsored by Thyamad - http://www.thyamad.com                            *
+  *  - Raphael Derosso Pereira <raphael@think-e.com.br>                       *
+  *  sponsored by Think.e - http://www.think-e.com.br                         *
   * ------------------------------------------------------------------------- *
   *  This program is free software; you can redistribute it and/or modify it  *
   *  under the terms of the GNU General Public License as published by the    *
