@@ -71,11 +71,19 @@
 
 
 			$fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_site_objects');
+   
+            //sort array and remove non-functional elements
+            $slice0=array_slice($fields,0,6);
+            $slice1=array_slice($fields,9,2);
+            $slice2=array_slice($fields,7,1);
+            $slice3=array_slice($fields,6,1);
+            unset($fields);
+            $fields=array_merge($slice0,$slice1,$slice2,$slice3);
 
 
-			foreach ($fields as $fieldproperties)
+
+			foreach ($fields as $testone => $fieldproperties)
 			{
-
 				$edit_value=$values_object[0][$fieldproperties[name]];
 
 				if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on'])
@@ -227,14 +235,14 @@
 								$relation_parts=explode(':',$relation);
 								if ($relation_parts[0]==1)
 								{
-									$relation_type='ONE WITH MANY';
+									$relation_type='ONE TO MANY';
 									$input.=$i.'.: <u>'.$relation_parts[1].'</u> has a <u>'.$relation_type.'</u> relation with <u>'.$relation_parts[3].'</u> showing <u>'.$relation_parts[4].'</u><input type=checkbox name="DELrelation'.$i.'" value="'.$relation.'">delete<br><br>';
 
 								}
 								elseif ($relation_parts[0]==2)
 								{
-									$relation_type='MANY WITH MANY';
-									//This table, 'tablename',identifyerfield represented by ..... has a MANY WITH MANY relation with ..... represented by ......... showing ........
+									$relation_type='MANY TO MANY';
+									//This table, 'tablename',identifyerfield represented by ..... has a MANY TO MANY relation with ..... represented by ......... showing ........
 									$input.="$i: The identifierfield of this table, <u>$table_name.id</u>, represented by <u>$relation_parts[1]</u> has a <u>$relation_type</u> relation with <u>$relation_parts[3]</u> represented by <u>$relation_parts[2]</u> showing <u>$relation_parts[4]</u><input type=checkbox name=\"DELrelation$i\" value=\"$relation\">delete<br><br>";
 								}
 
@@ -248,7 +256,7 @@
 						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
-							$input.='<b>'.lang('Add new ONE WITH MANY').'</b> relation<b><br><table><tr><td colspan=2>field:<br>';
+							$input.='<b>'.lang('Add new ONE TO MANY').'</b> relation<b><br><table><tr><td colspan=2>field:<br>';
 							$input.='<select name="1_relation_org_field">';
 
 
@@ -265,7 +273,7 @@
 							$input.='</select></td></tr>';
 
 							// related table and field
-							$input.='<tr><td>has a ONE WITH MANY relation with:<br>';
+							$input.='<tr><td>has a ONE TO MANY relation with:<br>';
 							$input.='<select name="1_relation_table_field">';
 							foreach($table_array as $table)
 							{
@@ -306,7 +314,7 @@
 						if (is_array($table_array))
 						{
 
-							$input.='<b>'.lang('Add new MANY WITH MANY relation')."<b><br><table><tr><td colspan=2>The identifyer from this table ('$table_name.id') represented by:<br>";
+							$input.='<b>'.lang('Add new MANY TO MANY relation')."<b><br><table><tr><td colspan=2>The identifyer from this table ('$table_name.id') represented by:<br>";
 							$input.='<select name="2_relation_via_primary_key">';
 
 							foreach($table_array as $table)
@@ -325,7 +333,7 @@
 							$input.='</select></td></tr>';
 
 							// related table and field
-							$input.='<tr><td>has a MANY WITH MANY relation with:<br>';
+							$input.='<tr><td>has a MANY TO MANY relation with:<br>';
 							$input.='<select name="2_relation_foreign_key">';
 							foreach($table_array as $table)
 							{
