@@ -2,7 +2,6 @@ add address	felamimail	en	Add address
 additional info	felamimail	en	Additional info
 address book search	felamimail	en	Address Book Search
 address book	felamimail	en	Address Book
-add	felamimail	en	add
 add	felamimail	en	Add
 add to address book	felamimail	en	Add to address book
 add to %s	felamimail	en	Add to %s
@@ -34,8 +33,7 @@ dark gray	felamimail	en	Dark Gray
 dark green	felamimail	en	Dark Green
 dark magenta	felamimail	en	Dark Magenta
 dark yellow	felamimail	en	Dark Yellow
-date	felamimail	en	date
-Date	felamimail	en	Date
+date	felamimail	en	Date
 deleted folder successfully!	felamimail	en	Deleted folder successfully!
 delete folder	felamimail	en	Delete Folder
 delete selected	felamimail	en	Delete selected
@@ -52,7 +50,6 @@ down	felamimail	en	down
 edit selected	felamimail	en	Edit selected
 edit	felamimail	en	Edit
 e-mail address	felamimail	en	E-mail address
-E-Mail Address	felamimail	en	E-Mail Address
 e-mail	felamimail	en	E-mail
 empty trash	felamimail	en	empty trash
 error connecting to IMAP serv	felamimail	en	Error connecting to IMAP serv
@@ -73,8 +70,7 @@ for mail to be send - not functional yet	felamimail	en	For mail to be send - not
 for received mail	felamimail	en	For received mail
 forward	felamimail	en	Forward
 found	felamimail	en	Found
-from	felamimail	en	from
-From	felamimail	en	From
+from	felamimail	en	From
 full name	felamimail	en	Full Name
 have a look at <a href="ht	felamimail	en	Have a look at <a href="ht
 help	felamimail	en	Help
@@ -129,7 +125,6 @@ No folders were found to unsubscribe from!	felamimail	en	No folders were found t
 No highlighting is defined	felamimail	en	No highlighting is defined
 No messages were selected.	felamimail	en	No messages were selected.
 none	felamimail	en	none
-None	felamimail	en	None
 no next Message	felamimail	en	no next Message
 No notification	felamimail	en	No notification
 No personal address book is defined. Contact administrator.	felamimail	en	No personal address book is defined. Contact administrator.
@@ -149,8 +144,7 @@ Previous	felamimail	en	Previous
 purge	felamimail	en	purge
 Read da	felamimail	en	Read da
 Reason Giv	felamimail	en	Reason Giv
-refresh folder list	felamimail	en	refresh folder list
-Refresh Folder List	felamimail	en	Refresh Folder List
+refresh folder list	felamimail	en	Refresh folder list
 Refresh Page	felamimail	en	Refresh Page
 remove	felamimail	en	remove
 Rename a Folder	felamimail	en	Rename a Folder
@@ -180,8 +174,7 @@ Some or all of the help documents are not present!	felamimail	en	Some or all of 
 Source	felamimail	en	Source
 Special Folder Options	felamimail	en	Special Folder Options
 Squirrelmail	felamimail	en	Squirrelmail
-subject	felamimail	en	subject
-Subject	felamimail	en	Subject
+subject	felamimail	en	Subject
 Submit	felamimail	en	Submit
 Subscribed successfully!	felamimail	en	Subscribed successfully!
 Subscribe	felamimail	en	Subscribe
@@ -198,8 +191,7 @@ This contains personal information about yourself such as your name, your email 
 THIS FOLDER IS EMPTY	felamimail	en	THIS FOLDER IS EMPTY
 This port is based on Squirrelmail, which is a standalone IMAP client.<br>	felamimail	en	This port is based on Squirrelmail, which is a standalone IMAP client.<br>
 Top	felamimail	en	Top
-to	felamimail	en	to
-To	felamimail	en	To
+to	felamimail	en	To
 to the left	felamimail	en	to the left
 to the right	felamimail	en	to the right
 Translation location	felamimail	en	Translation location
