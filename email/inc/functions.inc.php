@@ -38,8 +38,9 @@
 	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
 	
 	// NOTE: WORKAROUND FOR CUST EMAIL PASSWD BUG REQ'D msg->get_email_passwd() during LOGIN
+	// NO MORE - "common->create_emailpreferences" now uses the msg class to get the correct password 
 
-// ----  Create the base email Class    -----
+// ----  Create the base email Msg Class    -----
 	$phpgw->msg = CreateObject("email.msg");
 	$phpgw->msg->msg_common_();
 

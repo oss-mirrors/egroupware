@@ -273,9 +273,9 @@
 		$folder = $this->construct_folder_str($folder);
 	}
 
-	//$pass = $phpgw_info['user']['preferences']['email']['passwd'];
-	// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS
-	$pass = $this->get_email_passwd();
+	// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS (PHASED OUT 7/2/01)
+	// $pass = $this->get_email_passwd();
+	$pass = $phpgw_info['user']['preferences']['email']['passwd'];
 	$user = $phpgw_info["user"]["preferences"]["email"]["userid"];
 
 	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
