@@ -183,7 +183,7 @@ And turned it into nylon";
 			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
 	
-		function test404()
+		function f_test404()
 		{
 			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.echo', array(
 				CreateObject('phpgwapi.xmlrpcval','hello', 'string')
@@ -193,15 +193,57 @@ And turned it into nylon";
 		}
 	}
 
-	$suite->addTest(new TestLocalhost("stringTest"));
-	$suite->addTest(new TestLocalhost("addingTest"));
-	$suite->addTest(new TestLocalhost("addingDoublesTest"));
-	$suite->addTest(new TestLocalhost("invalidNumber"));
-	$suite->addTest(new TestLocalhost("booleanTest"));
-	$suite->addTest(new TestLocalhost("base64Test"));
-	$suite->addTest(new TestInvalidHost("test404"));
-	$suite->addTest(new TestFileCases("stringBug"));
-	$suite->addTest(new TestFileCases("whiteSpace"));
+	class TestHTTPSConnection extends TestCase
+	{
+		function TestInvalidHost($name)
+		{
+			$this->TestCase($name);
+		}
+
+		function setUp()
+		{
+			global $DEBUG,$HTTPSSERVER;
+
+			$this->client = CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $HTTPSSERVER);
+			//$this->client->setCertificate('/var/www/xmlrpc/rsakey.pem',
+			//			  'test');
+			if ($DEBUG || 1)
+			{
+				$this->client->setDebug(1);
+			}
+		}
+
+		function addingTest()
+		{
+			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(
+				CreateObject('phpgwapi.xmlrpcval',23, 'int')
+			));
+			$r = $this->client->send($f, 180, 'https');
+			if ($r->faultCode() || $r)
+			{
+				// create dummy value so assert fails
+				$v = CreateObject('phpgwapi.xmlrpcval','SSL send failed.');
+				echo "<pre>Fault: " . $r->faultString() . "</pre>";
+			}
+			else
+			{
+				$v = $r->value();
+			}
+			$this->assertEquals('Michigan',$v->scalarval());
+		}
+	}
+
+	$suite->addTest(new TestLocalhost('stringTest'));
+	$suite->addTest(new TestLocalhost('addingTest'));
+	$suite->addTest(new TestLocalhost('addingDoublesTest'));
+	$suite->addTest(new TestLocalhost('invalidNumber'));
+	$suite->addTest(new TestLocalhost('booleanTest'));
+	$suite->addTest(new TestLocalhost('base64Test'));
+	$suite->addTest(new TestInvalidHost('f_test404'));
+	$suite->addTest(new TestFileCases('stringBug'));
+	$suite->addTest(new TestFileCases('whiteSpace'));
+	$suite->addTest(new TestHTTPSConnection('addingTest'));
+
 	$title = 'XML-RPC Unit Tests';
 ?>
 <p>Note, tests beginning with 'f_' <i>should</i> fail.</p>
