@@ -14,7 +14,10 @@
 			'disable_Template_class' => True,
 			'login' => True,
 			'currentapp' => 'login',
-			'noheader'  => True
+			'noheader'  => True,
+			// add your domain here, if you have more then one domain and need anonymous access
+			// to an other domain then the first
+			// 'domain' => 'developers',
 		);
 		include('../header.inc.php');
 		$GLOBALS['phpgw_info']['flags']['currentapp'] = 'wiki';
