@@ -1,0 +1,15 @@
+$ change	common	sv	Förändring
+%	stocks	sv	%
+% change	common	sv	Förändring %
+add new stock	stocks	sv	Lägg till ny symbol
+disable	stocks	sv	inaktivera
+display stocks on main screen is disabled	stocks	sv	Aktiekurser på visas inte huvudsidan
+display stocks on main screen is enabled	stocks	sv	Aktikurser visas på huvudsidan
+edit stock	stocks	sv	ändra symboler
+enable	stocks	sv	aktivera
+price	stocks	sv	Pris
+select displayed stocks	preferences	sv	Välja visade symboler
+stock quote preferences	stocks	sv	Alternativ
+stock quotes	common	sv	Aktiekurs
+stocks	common	sv	Aktiekurser
+symbol	stocks	sv	Symbol

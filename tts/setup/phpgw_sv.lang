@@ -1,11 +1,11 @@
 %1 - %2 of %3 user groups	tts	sv	%1 - %2 av %3 användargrupper
-a new ticket has been reported.	tts	sv	Nytt ärende anmält
+a new ticket has been reported.	tts	sv	Ett nytt ärende har anmälts
 accept	tts	sv	Acceptera
-accept the ticket into verification process.	tts	sv	Acceptera ärende till verifiering
+accept the ticket into verification process.	tts	sv	Acceptera ärende för verifiering
 accepted	tts	sv	Accepterad
 account active	tts	sv	Kontot aktivt
 action	tts	sv	Åtgärd
-add a new account.	tts	sv	Lägg till Nytt konto
+add a new account.	tts	sv	Lägg till nytt konto
 add new account	tts	sv	Lägg till konto
 add new ticket	tts	sv	Skapa ärende
 add ticket	tts	sv	Skapa ärende
@@ -46,7 +46,7 @@ clear form	tts	sv	Töm formulär
 close the invalid ticket.	tts	sv	Stäng ogiltigt ärende
 close with duplicate	tts	sv	Stäng med kopia
 closed	tts	sv	Stängd
-completed	tts	sv	Färdig
+completed	tts	sv	SLUTFÖRD
 configure the cat-groups	tts	sv	Konfigurera kategori-grupp
 configure the escalation	tts	sv	Konfigurera eskalering
 configure the states	common	sv	Konfigurera tillstånd
@@ -61,9 +61,9 @@ creates a struct of tickets	tts	sv	Skapar ärende struktur
 customer satisfaction	tts	sv	Kundnöjdhet
 date closed	tts	sv	Avslutat datum
 date opened	tts	sv	Öppnande datum
-default assign to	tts	sv	Standard tilldelning till
-default group	tts	sv	Standard grupp
-default priority	tts	sv	Standard prioritet
+default assign to	tts	sv	Tilldela som standard till
+default group	tts	sv	Standardgrupp
+default priority	tts	sv	Standardprioritet
 delete all records	tts	sv	Radera alla poster
 delete the listed tickets.	tts	sv	Radera valda ärenden
 deleting the category and group association	tts	sv	Radera kategorin och gruppassociationen
@@ -92,7 +92,7 @@ file space	tts	sv	Lagringsutrymme
 file space must be an integer	tts	sv	Lagringsutrymme måste anges som heltal
 force	tts	sv	Tvinga
 global categories	tts	sv	Globala kategorier
-group ownership changed	tts	sv	Ägande grupp ändrad
+group ownership changed	tts	sv	Gruppägarskap ändrad
 group statistic	tts	sv	Gruppstatistik
 high priority	tts	sv	Hög prioritet
 highly critical categories	tts	sv	Högkritiska kategorier
@@ -151,7 +151,7 @@ notify changes to ticket owner by e-mail	tts	sv	Meddela ärendeändringar till äga
 number of tickets	tts	sv	Antal ärenden
 old value	tts	sv	Gammalt värde
 open	tts	sv	Öppen
-open / closed	tts	sv	Öppen/Stängd
+open / closed	tts	sv	Öppen / Stängd
 open date	tts	sv	Öppnande datum
 opened	tts	sv	Öppen
 opened by	tts	sv	Öppnad av
@@ -181,7 +181,7 @@ returns a struct of values of a single ticket	tts	sv	Returnerar struktur på ären
 returns the additional notes attached to a ticket	tts	sv	Returnerar övriga anteckningar till ärende
 select group managers	tts	sv	Välj gruppchefer
 select users for inclusion	tts	sv	Välj användare
-selected	tts	sv	Valda
+selected	tts	sv	valda
 send escalation to primary email	tts	sv	Skicka eskalering till primär epostadress
 send escalation to secondary email	tts	sv	Skicka eskalering till sekundär epostadress
 show new/updated tickets on main screen	tts	sv	Visa nya/uppdaterade ärenden på Startsidan
@@ -246,8 +246,8 @@ tovalidate	tts	sv	Validering
 toverified	tts	sv	TillVerifiering
 transition	tts	sv	Övergång
 transition name	tts	sv	Övergångsnamn
-trouble ticket system	common	sv	ÄrendeHanteringsSystem
-tts	common	sv	ÄHS
+trouble ticket system	common	sv	Ärendehantering
+tts	common	sv	Ärendehantering
 tts preferences	tts	sv	ÄrendeHanteringsSystem - Alternativ
 type of report	tts	sv	Typ av rapport
 undefined	tts	sv	Odefinierad
