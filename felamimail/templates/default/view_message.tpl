@@ -1,29 +1,6 @@
 <!-- BEGIN message_main -->
 {print_navbar}
 <STYLE type="text/css">
-        .subjectBold
-        {
-        	FONT-SIZE: 12px;
-        	font-weight : bold;
-        	font-family : Arial;
-        }
-
-        .subject
-        {
-        	FONT-SIZE: 12px;
-        	font-family : Arial;
-        }
-
-        .body
-        {
-        	FONT-SIZE: 12px;
-        	font-family : Courier;
-        }
-
-        A.head_link
-        {
-        	color: blue;
-        }
 </STYLE>
 <table border="0" width="100%" cellspacing="0" bgcolor="white">
 <tr>
@@ -121,7 +98,7 @@
 <table border="0" cellpadding="1" cellspacing="0" width="100%">
 	<tr bgcolor="{th_bg}">
 		<td width="50%">
-			{lang_back_to_folder}:&nbsp;<a class="head_link" href="{link_message_list}">{folder_name}</a>
+			{lang_back_to_folder}:&nbsp;<a href="{link_message_list}">{folder_name}</a>
 		</td>
 		<td align="right">
 			{previous_message}
@@ -130,22 +107,22 @@
 	</tr>
 	<tr bgcolor="{th_bg}">
 		<td align="right" colspan="2">
-			<a class="head_link" href="{link_reply}">
+			<a href="{link_reply}">
 			<!-- <img src="{app_image_path}/sm_reply.gif" height="26" width="28" alt="{lang_reply}" border="0"> -->
 			{lang_reply}
 			</a>
 			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_reply_all}">
+			<a href="{link_reply_all}">
 			<!-- <img src="{app_image_path}/sm_reply_all.gif" height="26" width="28" alt="{lang_reply_all}" border="0"> -->
 			{lang_reply_all}
 			</a>
 			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_forward}">
+			<a href="{link_forward}">
 			<!-- <img src="{app_image_path}/sm_forward.gif" height="26" width="28" alt="{lang_forward}" border="0"> -->
 			{lang_forward}
 			</a>
 			&nbsp;|&nbsp;
-			<a class="head_link" href="{link_delete}">
+			<a href="{link_delete}">
 			<!-- <img src="{app_image_path}/sm_delete.gif" height="26" width="28" alt="{lang_delete}" border="0"> -->
 			{lang_delete}
 			</a>
@@ -258,9 +235,9 @@
 <!-- END message_header -->
 
 <!-- BEGIN previous_message_block -->
-<a class="head_link" href="{previous_url}">{lang_previous_message}</a>
+<a href="{previous_url}">{lang_previous_message}</a>
 <!-- END previous_message_block -->
 
 <!-- BEGIN next_message_block -->
-<a class="head_link" href="{next_url}">{lang_next_message}</a>
+<a href="{next_url}">{lang_next_message}</a>
 <!-- END next_message_block -->
