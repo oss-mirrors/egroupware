@@ -88,4 +88,27 @@
 
 &nbsp; <!-- == block sep == --> &nbsp; 
 
+<!-- BEGIN B_submit_btn_only -->
+<tr>
+	<td colspan="2" align="center">
+		<input type="submit" name="{btn_submit_name}" value="{btn_submit_value}">
+	</td>
+</tr>
+<!-- END B_submit_btn_only -->
+
+&nbsp; <!-- == block sep == --> &nbsp; 
+
+<!-- BEGIN B_submit_and_delete_btns -->
+<tr>
+	<td align="center">
+		<input type="submit" name="{btn_submit_name}" value="{btn_submit_value}">
+	</td>
+	<td align="center">
+		<input type="submit" name="{btn_delete_name}" value="{btn_delete_value}">
+	</td>
+</tr>
+<!-- END B_submit_and_delete_btns -->
+
+&nbsp; <!-- == block sep == --> &nbsp; 
+
 <!-- end class_prefs_blocks.tpl -->

@@ -255,6 +255,12 @@
 				'filters_href'	=> $this->bo->xi['filters_href'],
 				'accounts_txt'	=> $this->bo->xi['accounts_txt'],
 				'accounts_link'	=> $this->bo->xi['accounts_link'],
+				'accounts_href'	=> $this->bo->xi['accounts_href'],
+
+				'ctrl_bar_current_acctnum'	=> $this->bo->xi['ctrl_bar_current_acctnum'],
+				'ctrl_bar_acct_0_link'	=> $this->bo->xi['ctrl_bar_acct_0_link'],
+				'ctrl_bar_acct_1_link'	=> $this->bo->xi['ctrl_bar_acct_1_link'],
+
 				'ctrl_bar_back1'	=> $this->bo->xi['ctrl_bar_back1'],
 				'sortbox_action'	=> $this->bo->xi['sortbox_action'],
 				'switchbox_frm_name'	=> $this->bo->xi['switchbox_frm_name'],

@@ -384,7 +384,41 @@
 			// multiple account maintenance - not yet implemented
 			$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
-								 'menuaction=email.uiindex.index');
+								 'menuaction=email.uipreferences.ex_accounts'
+								.'&acctnum=1');
+			$this->xi['accounts_href'] = '<a href="'.$this->xi['accounts_link'].'">'.$this->xi['accounts_txt'].'</a>';
+			
+			// by now we have an acctnum!
+			if ((string)$GLOBALS['phpgw']->msg->get_acctnum() == '0')
+			{
+				$this->xi['ctrl_bar_current_acctnum'] = 'default';
+			}
+			else
+			{
+				$this->xi['ctrl_bar_current_acctnum'] = 'extra '.(string)$GLOBALS['phpgw']->msg->get_acctnum();
+			}
+			
+			$this->xi['ctrl_bar_acct_0_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index'
+								// going to the folder list page, we only need log into the INBOX folder
+								.'&fldball[folder]=INBOX'
+								.'&fldball[acctnum]=0'
+								.'&sort='
+								.'&order='
+								.'&start=');
+			$this->xi['ctrl_bar_acct_0_link'] = '<a href="'.$this->xi['ctrl_bar_acct_0_link'].'">'.'goto default'.'</a>';
+			
+			$this->xi['ctrl_bar_acct_1_link'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index'
+								// going to the folder list page, we only need log into the INBOX folder
+								.'&fldball[folder]=INBOX'
+								.'&fldball[acctnum]=1'
+								.'&sort='
+								.'&order='
+								.'&start=');
+			$this->xi['ctrl_bar_acct_1_link'] = '<a href="'.$this->xi['ctrl_bar_acct_1_link'].'">'.'goto extra 1'.'</a>';
 			
 			$this->xi['ctrl_bar_back1'] = $GLOBALS['phpgw_info']['theme']['row_on'];
 			

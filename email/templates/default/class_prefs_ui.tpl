@@ -10,12 +10,7 @@
 
 {prefs_ui_rows}
 
-<tr>
-	<td colspan="2" align="center">
-		<input type="submit" name="{btn_submit_name}" value="{btn_submit_value}">
-	</td>
-</tr>
-
+{submit_btn_row}
 
 </table>
 </form>

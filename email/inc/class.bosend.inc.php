@@ -107,7 +107,7 @@
 			// ---- BEGIN BO SEND LOGIC
 			
 			$not_set = $GLOBALS['phpgw']->msg->not_set;
-			$msgball = $GLOBALS['phpgw']->msg->get_pref_value('msgball');
+			$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
 			
 			//  -------  Init Array Structure For Outgoing Mail  -----------
 			$this->mail_out = Array();
@@ -207,7 +207,8 @@
 			}
 			else
 			{
-				$from_name = $GLOBALS['phpgw_info']['user']['fullname'];
+				$from_name = $GLOBALS['phpgw']->msg->get_pref_value('fullname');
+				//$from_name = $GLOBALS['phpgw_info']['user']['fullname'];
 				$from_address = $GLOBALS['phpgw']->msg->get_pref_value('address');
 				$from_assembled = '"'.$from_name.'" <'.$from_address.'>';
 			}

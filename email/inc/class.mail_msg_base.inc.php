@@ -679,7 +679,15 @@
 		// fill $GLOBALS['phpgw_info']['user']['preferences'] with the data for backwards compatibility (we don't use that)
 		$GLOBALS['phpgw_info']['user']['preferences'] = $tmp_prefs;
 		// for our use, put prefs in a class var to be accessed thru OOP-style access calls in mail_msg_wrapper
-		$this->set_pref_array($tmp_prefs['email']);
+		// since we know these prefs to be the  top level prefs, force them into acctnum 0
+		$this->set_pref_array($tmp_prefs['email'], 0);
+		
+		// TEMP - STUFF EXTRA ACCT #1 WHERE IT BELONGS
+		// run thru the create prefs function requesting this particular acctnum
+		$tmp_prefs = array();
+		$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', 1);
+		$this->set_pref_array($tmp_prefs['email'], 1);
+		
 		// clear the temp var
 		$tmp_prefs = array();
 		
@@ -1250,8 +1258,8 @@
 		
 		// we *may* need this data later
 		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-		$server_str = $this->get_arg_value('mailsvr_callstr', $acctnum);
-		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: got these for later use: $mailsvr_stream: ['.$mailsvr_stream.'] ; $server_str: ['.$server_str.']<br>'; }
+		$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $acctnum);
+		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: got these for later use: $mailsvr_stream: ['.$mailsvr_stream.'] ; $mailsvr_callstr: ['.$mailsvr_callstr.']<br>'; }
 		
 		if (($this->get_pref_value('imap_server_type', $acctnum) == 'UW-Maildir')
 		|| ($this->get_pref_value('imap_server_type', $acctnum) == 'UWash'))
@@ -1294,9 +1302,9 @@
 			// in addition to the users private mailboxes
 			// see http://www.faqs.org/rfcs/rfc2060.html  section 6.3.8 (which is not entirely clear on this)
 			// FIXME: abstract this class dcom call in mail_msg_wrappers
-			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->listmailbox('.$mailsvr_stream.', '.$server_str.', %)'.'<br>'; }
+			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_mailsvr_namespace: issuing: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->listmailbox('.$mailsvr_stream.', '.$mailsvr_callstr.', %)'.'<br>'; }
 			
-			$name_space = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, '%');
+			$name_space = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $mailsvr_callstr, '%');
 			
 			if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_mailsvr_namespace: raw $name_space dump<pre>'; print_r($name_space); echo '</pre>'; }
 			
@@ -1604,9 +1612,7 @@
 			return $fake_return;
 		}
 		
-		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $$this->_direct_access_arg_value(folder_list, '.$acctnum.') dump:<pre>'; print_r($this->_direct_access_arg_value('folder_list', $acctnum)); echo '</pre>'; }
-		
-		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+		if ($this->debug_args_special_handlers > 2) { echo 'mail_msg: get_folder_list: $$this->_direct_access_arg_value(folder_list, '.$acctnum.') dump:<pre>'; print_r($this->_direct_access_arg_value('folder_list', $acctnum)); echo '</pre>'; }		
 		
 		// check if class dcom reports that the folder list has changed		
 		if ((is_object($GLOBALS['phpgw_dcom_'.$acctnum]->dcom))
@@ -1722,7 +1728,8 @@
 		if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: need to get data from mailserver<br>'; }
 		
 		// Establish Email Server Connectivity Information
-		$server_str = $this->get_arg_value('mailsvr_callstr', $acctnum);
+		$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
+		$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $acctnum);
 		$name_space = $this->get_arg_value('mailsvr_namespace', $acctnum);
 		$delimiter = $this->get_arg_value('mailsvr_delimiter', $acctnum);
 		
@@ -1741,7 +1748,7 @@
 			// At this time we use "unqualified" a.k.a. "relative" directory names if the user provides a namespace
 			// UWash will consider it relative to the mailuser's $HOME property as with "emails/*" (DOES THIS WORK ON ALL PLATFORMS??)
 			// BUT we use <tilde><slash> "~/" if no namespace is given
-			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "$name_space" ."$delimiter" ."*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $mailsvr_callstr, "$name_space" ."$delimiter" ."*");
 			// UWASH IMAP returns information in this format:
 			// {SERVER_NAME:PORT}FOLDERNAME
 			// example:
@@ -1756,11 +1763,11 @@
 			// wheres adding the delimiter "INBOX.*" (has dot) will NOT include the INBOX in the list of folders
 			// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 			// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-			//$mailboxes = $this->a[$acctnum]['dcom']->listmailbox($mailsvr_stream, $server_str, "$name_space" ."*");
+			//$mailboxes = $this->a[$acctnum]['dcom']->listmailbox($mailsvr_stream, $mailsvr_callstr, "$name_space" ."*");
 			// UPDATED information of this issue: to get shared folders included in the return, better NOT include the "." delimiter
 			// example: Cyrus does not like anything but a "*" as the pattern IF you want shared folders returned.
-			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $server_str, "*");
-			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $server_str, "*");
+			//$mailboxes = $tmp_a['dcom']->listmailbox($mailsvr_stream, $mailsvr_callstr, "*");
+			$mailboxes = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream, $mailsvr_callstr, "*");
 			// returns information in this format:
 			// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 			// example:
@@ -1807,7 +1814,7 @@
 		{
 			if ($this->debug_args_special_handlers > 1) { echo 'mail_msg: get_folder_list: adding INBOX to mailboxes data<br>'; }
 			// use the same "fully qualified" folder name format that "listmailbox" returns, includes the {serverName:port}
-			$add_inbox = $server_str.'INBOX';
+			$add_inbox = $mailsvr_callstr.'INBOX';
 			$next_available = count($mailboxes);
 			// add it to the $mailboxes array
 			$mailboxes[$next_available] = $add_inbox;

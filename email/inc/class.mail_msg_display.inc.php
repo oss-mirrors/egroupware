@@ -66,9 +66,11 @@ class mail_msg extends mail_msg_wrappers
 		//$debug_widget = True;
 		$debug_widget = False;
 		
+		$acctnum = $this->get_acctnum();
 		// establish fallback default args
 		$local_args = Array(
-			'mailsvr_stream'	=> $this->get_arg_value('mailsvr_stream'),
+			'acctnum'		=> $acctnum,
+			'mailsvr_stream'	=> $this->get_arg_value('mailsvr_stream', $acctnum),
 			'pre_select_folder'	=> '',
 			'skip_folder'		=> '',
 			'show_num_new'		=> False,
