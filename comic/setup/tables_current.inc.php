@@ -21,7 +21,7 @@
 			'fd' => array(
 				'comic_id' => array('type' => 'auto','nullable' => False),
 				'comic_owner' => array('type' => 'varchar', 'default'=> '', 'precision' => 32,'nullable' => False),
-				'comic_list' => array('type' => 'blob','default'=> '', 'nullable' => False),
+				'comic_list' => array('type' => 'blob','default'=> '', 'nullable' => False,'default' => 0),
 				'comic_scale' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 0),
 				'comic_perpage' => array('type' => 'int', 'precision' => 2,'nullable' => False,'default' => 4),
 				'comic_frontpage' => array('type' => 'int', 'precision' => 4,'nullable' => False,'default' => 0),
