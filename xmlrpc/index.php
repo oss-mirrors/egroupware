@@ -24,7 +24,7 @@
 	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/testsuite.php') . '">' . lang('Test Suite') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/introspect.php') . '">' . lang('Introspection') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/interserv.php') . '">' . lang('Client / Server test') . '</a>' . "\n";
-	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/phpgw_test.php') . '">' . lang('Server test') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/egw_test.php') . '">' . lang('Server test') . '</a>' . "\n";
 	echo '<br><a href="' . $GLOBALS['egw']->link('/xmlrpc/client.php') . '">' . lang('Simple Client') . '</a>' . "\n";
 
 	if ($GLOBALS['egw']->acl->check('run',1,'meerkat'))
