@@ -68,19 +68,19 @@
 			$group_id = $phpgw->accounts->name2id($group);
 			$members  = $phpgw->accounts->members($group_id);
 			}
-			
+
 			if ($phpgw->config->config_data['ownernotification'])
 			{
 			// add owner to recipients
-			// $members[]  = $phpgw->account($phpgw->db->f("t_user"));
+			 $members[] = array("account_id" => $phpgw->accounts->name2id($phpgw->db->f("t_user")), "account_name" => $phpgw->db->f("t_user"));
 			}
-								
+
 			if ($phpgw->config->config_data['assignednotification'])
 			{
 			// add assigned to recipients
-			// $members[]  = $phpgw->account($phpgw->db->f("t_assignedto"));
+			 $members[] = array("account_id" => $phpgw->accounts->name2id($phpgw->db->f("t_assignedto")), "account_name" => $phpgw->db->f("t_assignedto"));
 			}
-								
+
 			$toarray = Array();
 			$i=0;
 			for ($i=0;$i<count($members);$i++)
