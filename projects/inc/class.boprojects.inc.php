@@ -117,7 +117,7 @@
 		{
 			global $phpgw, $phpgw_info;
 
-			$admin_groups = $phpgw->accounts->memberships($phpgw_info['user']['account_id']);
+			$admin_groups = $phpgw->accounts->membership($phpgw_info['user']['account_id']);
 			$admins = $this->soprojects->return_admins();
 
 			for ($i=0;$i<count($admins);$i++)

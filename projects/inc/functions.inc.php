@@ -15,7 +15,7 @@
 	{
 		global $phpgw, $phpgw_info;
 
-		$admin_groups = $phpgw->accounts->memberships($phpgw_info['user']['account_id']);
+		$admin_groups = $phpgw->accounts->membership($phpgw_info['user']['account_id']);
 
 		$phpgw->db->query("select account_id,type from phpgw_p_projectmembers WHERE type='aa' OR type='ag'");
 		while ($phpgw->db->next_record())
