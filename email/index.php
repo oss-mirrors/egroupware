@@ -28,6 +28,16 @@
 	);
 	include('../header.inc.php');
 
+	// redirect to mail-admin-page if mail is not configured
+	//
+	if ((empty($GLOBALS['phpgw_info']['server']['mail_server'])||
+	     empty($GLOBALS['phpgw_info']['server']['smtp_server']) ||
+	     empty($GLOBALS['phpgw_info']['server']['mail_server_type'])) &&
+        $GLOBALS['phpgw_info']['user']['apps']['admin'])
+	{
+		$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=admin.uiconfig.index&appname=email');
+	}
+
 	/*
 	time limit should be controlled elsewhere
 	@set_time_limit(0);
@@ -44,7 +54,7 @@
 	if ($simple_redirect == True)
 	{
 		//header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
+		$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=email.uiindex.index');
 		if (is_object($GLOBALS['phpgw']->msg))
 		{
 			// close down ALL mailserver streams
