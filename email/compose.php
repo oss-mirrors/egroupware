@@ -340,26 +340,30 @@
 		//	'action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		$send_btn_action = $GLOBALS['phpgw']->link('/index.php',
 				 $GLOBALS['phpgw']->msg->get_arg_value('send_menuaction')
-				.'$action=forward'
+				.'&action=forward'
 				.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 				.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 		if (($GLOBALS['phpgw']->msg->get_isset_arg('fwd_proc')))
 		{
-			$send_btn_action = $send_btn_action .'&fwd_proc='.$GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
+			$send_btn_action = $send_btn_action
+				.'&fwd_proc='.$GLOBALS['phpgw']->msg->get_arg_value('fwd_proc');
 		}
 	}
 	else
 	{
 		//$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
-		$send_btn_action = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('send_menuaction'));
+		$send_btn_action = $GLOBALS['phpgw']->link(
+					'/index.php',
+					$GLOBALS['phpgw']->msg->get_arg_value('send_menuaction'));
 	}
 	
 	$tpl_vars = Array(
-		'js_addylink'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'),
+		'js_addylink'	=> $GLOBALS['phpgw']->link(
+			'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'),
 		'form1_name'	=> 'doit',
 		'form1_action'	=> $send_btn_action,
 		'form1_method'	=> 'POST',
-		'hidden1_name'	=> 'return',
+		'hidden1_name'	=> 'depreciated_return',
 		'hidden1_value'	=> $GLOBALS['phpgw']->msg->prep_folder_out(''),
 
 		'buttons_bgcolor'	=> $GLOBALS['phpgw_info']['theme']['em_folder'],

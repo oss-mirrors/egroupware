@@ -1262,8 +1262,10 @@ class mail_msg extends mail_msg_wrappers
 		// make a URL to directly access this part
 		$url_part_name = urlencode($part_name);
 		// ex_part_href
-		$ex_part_href = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
-			 'folder='.$this->prep_folder_out($folder)
+		$ex_part_href = $GLOBALS['phpgw']->link(
+			 '/index.php',
+			 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
+			.'&folder='.$this->prep_folder_out($folder)
 			.'&msgnum=' .$msgnum
 			.'&part_no=' .$m_part_num_mime
 			.'&type=' .$url_part_type

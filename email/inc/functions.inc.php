@@ -20,14 +20,7 @@
 		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
-
 	
-	// (angles) I think this is unnecessary with the new GLOBALS construct
-	//if(floor(phpversion()) == 4)
-	//{
-	//	global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me (author unknown).
-	//}
-
 // ----  Turn Off Magic Quotes Runtime    -----
 	/*
 	@Discussion	Turn Off Magic Quotes Runtime

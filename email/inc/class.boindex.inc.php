@@ -523,7 +523,7 @@
 					$this->xi['stats_last'] = $this->xi['totaltodisplay'];
 			}
 			// user may select individual messages to move, make combobox to select destination folder
-			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('action_menuaction'));
+			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('delmov_menuaction'));
 			$this->xi['frm_delmov_name'] = 'delmov';
 			if ($this->xi['mailsvr_supports_folders'])
 			{

@@ -384,8 +384,9 @@
 			$this->xi['all_folders_listbox'] = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 			
 			// ----  Set Up Form Variables  ---
-			//$this->xi['form_action'] = $GLOBALS['phpgw']->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php');
-			$this->xi['form_action'] = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
+			$this->xi['form_action'] = $GLOBALS['phpgw']->link(
+					'/index.php',
+					$GLOBALS['phpgw']->msg->get_arg_value('folder_menuaction'));
 			//$GLOBALS['phpgw']->template->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
 			//$GLOBALS['phpgw']->template->set_var('select_name_rename','source_folder');
 			

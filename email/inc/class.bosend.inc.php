@@ -3,7 +3,6 @@
 	* phpGroupWare - email BO Class	for Folder Actions and List Display		*
 	* http://www.phpgroupware.org							*
 	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* xml-rpc and soap code template by Milosch and others				*
 	* --------------------------------------------							*
 	*  This program is free software; you can redistribute it and/or modify it		*
 	*  under the terms of the GNU General Public License as published by the	*
@@ -252,7 +251,7 @@
 			$cc = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('cc'));
 			$body = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($GLOBALS['phpgw']->msg->get_arg_value('body')));
 			$subject = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('subject'));
-			// after this,  do NOT use ->msg->args[] for these anymore
+			// after this,  do NOT use ->msg->get_arg_value() for these anymore
 			
 			// since arg "body" *may* be huge (and is now in local var $body), lets clear it now
 			$GLOBALS['phpgw']->msg->set_arg_value('body', '');
@@ -755,7 +754,7 @@
 				$this->mail_out['main_headers'][$hdr_line] = 	'X-phpGW-Type: '.$this->mail_out['msgtype'];
 				$hdr_line++;
 			}
-			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org) v '.$phpgw_info['server']['versions']['phpgwapi'];
+			$this->mail_out['main_headers'][$hdr_line] = 	'X-Mailer: phpGroupWare (http://www.phpgroupware.org) v '.$GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 			$hdr_line++;
 			
 			/*
@@ -843,13 +842,16 @@
 			}
 			
 			// ----  Redirect on Success, else show Error Report   -----
+			// what folder to go back to (the one we came from)
+			//$return_to_folder = $GLOBALS['phpgw']->msg->prep_folder_out('');
+			// Personally, I think people should go back to the INBOX after sending an email
+			$return_to_folder = $GLOBALS['phpgw']->msg->prep_folder_out('INBOX');
 			if ($returnccode)
 			{
 				// Success
 				if ($GLOBALS['phpgw']->mail_send->trace_flag > 0)
 				{
 					// for debugging
-					$return = trim($return);
 					echo '<html><body>'."\r\n";
 					echo '<h2>Here is the communication from the MUA(phpgw) <--> MTA(smtp server) trace data dump</h2>'."\r\n";
 					echo '<h3>trace data flag set to ['.(string)$GLOBALS['phpgw']->mail_send->trace_flag.']</h3>'."\r\n";
@@ -857,27 +859,28 @@
 					print_r($GLOBALS['phpgw']->mail_send->trace_data);
 					echo '</pre>'."\r\n";
 					echo '<p>&nbsp;<br></p>'."\r\n";
-					echo '<p>To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&cd=13&folder='.urlencode($return)).'">here</a></p><br>';
+					echo '<p>To go back to the msg list, click <a href="'.$GLOBALS['phpgw']->link(
+												'/index.php',
+												'menuaction=email.uiindex.index'
+												.'&cd=13'
+												.'&folder='.$return_to_folder).'">here</a></p><br>';
 					echo '</body></html>';
 					$this->send_message_cleanup();
 				}
 				else
 				{
-					//header('Location: '.$GLOBALS['phpgw']->link('index.php','cd=13&folder='.urlencode($return)));
-					//$return = ereg_replace ("^\r\n", '', $return);
 					// unset some vars (is this necessary?)
-					//send_message_cleanup($mailbox);
 					$this->send_message_cleanup();
-					// what folder to go back to (the one we came from)
-					$return = trim($return);
 					// redirect the browser to the index page for the appropriate folder
-					header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder='.urlencode($return)));
+					header('Location: '.$GLOBALS['phpgw']->link(
+							 '/index.php',
+							 'menuaction=email.uiindex.index'
+							.'&folder='.$return_to_folder));
 				}
 			}
 			else
 			{
 				// ERROR - mail NOT sent
-				$return = trim($return);
 				echo '<html><body>'."\r\n";
 				echo '<h2>Your message could <b>not</b> be sent!</h2>'."\r\n";
 				echo '<h3>The mail server returned:</h3>'."\r\n";
@@ -888,11 +891,11 @@
 				//	. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->mail_send->err['msg'])."';<BR>\r\n"
 				//	. "err_desc: '".$GLOBALS['phpgw']->mail_send->err['desc']."'.<P>\r\n"
 				echo '<p>To go back to the msg list, click <a href="';
-				echo $GLOBALS['phpgw']->link('/index.php',
+				echo $GLOBALS['phpgw']->link(
+					 '/index.php',
 					 'menuaction=email.uiindex.index'
 					.'&cd=13'
-					.'&folder='
-					.urlencode($return));
+					.'&folder='.$return_to_folder);
 				echo '">here</a> </p>'."\r\n";
 				echo '</body></html>';
 				$this->send_message_cleanup();

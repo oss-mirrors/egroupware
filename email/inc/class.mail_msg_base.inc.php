@@ -194,17 +194,17 @@
 			// USAGE:
 			// (a) class.boaction, called from from message.php: used with "what=delete" to indicate a single message for deletion
 			// (b) compose.php: indicates the referenced message for reply, replyto, and forward handling
-			// (c) get_attach.php: the msgnum of the email that contains the desired body part to get
+			// (c) boaction.get_attach: the msgnum of the email that contains the desired body part to get
 			'msgnum',
 			// ----  part_no: string  ----
 			// representing a specific MIME part number (example "2.1.2") within a multipart message
 			// (a) compose.php: used in combination with msgnum
-			// (b) get_attach.php: used in combination with msgnum
+			// (b) boaction.get_attach: used in combination with msgnum
 			'part_no',
 			// ----  encoding: string  ----
 			// USAGE: "base64" "qprint"
 			// (a) compose.php: if replying to, we get the body part to reply to, it may need to be un-qprint'ed
-			// (b) get_attach.php: appropriate decoding of the part to feed to the browser 
+			// (b) boaction.get_attach: appropriate decoding of the part to feed to the browser 
 			'encoding',
 			// ----  fwd_proc: string  ----
 			// USAGE: "encapsulation", "pushdown (not yet supported 9/01)"
@@ -216,7 +216,7 @@
 			// the name, mime type, mime subtype of the attachment
 			// this info is passed to the browser to help the browser know what to do with the part
 			// (outgoing) message.php: "name" is set in the link to the addressbook,  it's the actual "personal" name part of the email address
-			// get_attach.php: the name of the attachment
+			// boaction.get_attach: the name of the attachment
 			'name',
 			'type',
 			'subtype',
@@ -312,9 +312,12 @@
 			// these are the supported menuaction strings
 			'index_menuaction',
 			'mlist_menuaction',
-			'action_menuaction',
+			// for message delete or move
+			'delmov_menuaction',
 			'folder_menuaction',
 			'send_menuaction',
+			'get_attach_menuaction',
+			'view_html_menuaction',
 			// use this uri in any auto-refresh request - filled during "fill_sort_order_start_msgnum()"
 			'index_refresh_uri',
 			// experimental: Set Flag indicative we've run thru this function

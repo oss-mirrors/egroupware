@@ -75,7 +75,9 @@
 
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
-		$GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')		
+		$GLOBALS['phpgw']->link(
+			 '/index.php',
+			 $GLOBALS['phpgw']->msg->get_arg_value('index_menuaction')		
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -92,7 +94,8 @@
 // ----  "Go To Previous Message" Handling  -----
 	if ($nav_data['prev_msg'] != $not_set)
 	{
-		$prev_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+		$prev_msg_link = $GLOBALS['phpgw']->link(
+			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
 			 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 			.'&msgnum='.$nav_data['prev_msg']
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
@@ -112,8 +115,9 @@
 // ----  "Go To Next Message" Handling  -----
 	if ($nav_data['next_msg'] != $not_set)
 	{
-		$next_msg_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-			'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+		$next_msg_link = $GLOBALS['phpgw']->link(
+			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+			 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 			.'&msgnum='.$nav_data['next_msg']
 			.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 			.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -182,14 +186,21 @@
 
 		// first text in the "from" table data, AND click on it to compose a new, blank email to this email address
 		$from_and_compose_link = 
-			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&to='.urlencode($from_plain).'&personal='.urlencode($from_personal)),
+			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
+				 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+				 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+				.'&to='.urlencode($from_plain)
+				.'&personal='.urlencode($from_personal)),
 			$from_personal);
 		// click on the little envelope image to add this person/address to your address book
 		$from_addybook_add = 
-			$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/index.php',
-				'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($from_plain).'&name='.urlencode($from_personal)
-				.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+			$GLOBALS['phpgw']->msg->href_maketag(
+				 $GLOBALS['phpgw']->link(
+					 '/index.php',
+					 'menuaction=addressbook.uiaddressbook.add_email'
+					.'&add_email='.urlencode($from_plain)
+					.'&name='.urlencode($from_personal)
+					.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
 			$sm_envelope_img);
 		
 		// assemble the "From" data string  (note to_extra_info also handles the spacing)
@@ -229,16 +240,22 @@
 			}
 
 			$to_real_name = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-					'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&to='.urlencode($to_plain).'&personal='.urlencode($to_personal)),
+				$GLOBALS['phpgw']->link(
+					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+					 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+					.'&to='.urlencode($to_plain)
+					.'&personal='.urlencode($to_personal)),
 				$to_personal);
 // I honestly think this needs some attention here.. I feel this isn't used anymore like this..
 // new call should be performed..
 // Skeeter
 			$to_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link('/index.php',
-					'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($to_plain).'&name='.urlencode($to_personal)
-					. '&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$GLOBALS['phpgw']->link(
+					 '/index.php',
+					 'menuaction=addressbook.uiaddressbook.add_email'
+					.'&add_email='.urlencode($to_plain)
+					.'&name='.urlencode($to_personal)
+					.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
 				$sm_envelope_img);
 			// assemble the string and store for later use (note to_extra_info also handles the spacing)
 			$to_data_array[$i] = $to_real_name .$to_extra_info .$to_addybook_add;
@@ -273,15 +290,20 @@
 			{
 				$cc_extra_info = ' ';
 			}
-			$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-					'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-					.'&to='.urlencode($cc_plain).'&personal='.urlencode($cc_personal)),
+			$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
+					 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+					 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+					.'&to='.urlencode($cc_plain)
+					.'&personal='.urlencode($cc_personal)),
 				$cc_personal);
 
 			$cc_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link('/index.php',
-					'menuaction=addressbook.uiaddressbook.add_email&add_email='.urlencode($cc_plain).'&name='.urlencode($cc_personal)
-					. '&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$GLOBALS['phpgw']->link(
+					 '/index.php',
+					 'menuaction=addressbook.uiaddressbook.add_email'
+					.'&add_email='.urlencode($cc_plain)
+					.'&name='.urlencode($cc_personal)
+					.'&referer='.urlencode($GLOBALS['PHP_SELF'].'?'.$QUERY_STRING)),
 				$sm_envelope_img);
 
 			// assemble the string and store for later use
@@ -364,26 +386,41 @@
 	$fwd_proc = 'encapsulate';
 
 // ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
-	//$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
 	$reply_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'','','0');
-	$reply_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-		'action=reply&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .$first_presentable);
+	$reply_url = $GLOBALS['phpgw']->link(
+			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+			 'action=reply'
+			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
+			.$first_presentable);
 	$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 
-	//$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'19','26','0');
 	$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_reply_all.gif',lang('reply all'),'','','0');
-	$replyall_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=replyall&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .$first_presentable);
+	$replyall_url = $GLOBALS['phpgw']->link(
+			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+			 'action=replyall'
+			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
+			.$first_presentable);
 	$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 
-	//$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'19','26','0');
 	$forward_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_forward.gif',lang('forward'),'','','0');
-	$forward_url =  $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php','action=forward&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .'&fwd_proc='.$fwd_proc .$first_presentable);
+	$forward_url =  $GLOBALS['phpgw']->link(
+			 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+			 'action=forward'
+			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
+			.'&fwd_proc='.$fwd_proc
+			.$first_presentable);
 	$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 
-	//$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'19','26','0');
 	$delete_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir .'/sm_delete.gif',lang('delete'),'','','0');
-	$delete_url = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->action_menuaction.'&what=delete&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
+	$delete_url = $GLOBALS['phpgw']->link(
+			 '/index.php',
+			 $GLOBALS['phpgw']->msg->get_arg_value('delmov_menuaction')
+			.'&what=delete'
+			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+			.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum'));
 	$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 
 	$GLOBALS['phpgw']->template->set_var('theme_font',$GLOBALS['phpgw_info']['theme']['font']);
@@ -526,8 +563,9 @@
 	// base URLs for the "view unformatted" or "view formatted" option
 	// if "vew_unformatted" if the url, then "&no_fmt=1" will be added below
 	// other wise, this URL will be used unchanged
-	$view_option_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-		'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+	$view_option_url = $GLOBALS['phpgw']->link(
+		 '/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+		 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 		.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 		.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
@@ -535,8 +573,10 @@
 	);
 
 	// (2) view headers option
-	$view_headers_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
-		 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+	$view_headers_url = $GLOBALS['phpgw']->link(
+		 '/index.php',
+		 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
+		.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 		.'&msgnum='.$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
 		.'&part_no=0'
 		.'&type=text'
@@ -788,6 +828,11 @@
 			if ((preg_match("/<style.*body.*[{].*[}]/ismx", $dsp))
 			|| (preg_match("/<script.*>.*<\/script>/ismx", $dsp)))
 			{
+				$view_html_folm_action = $GLOBALS['phpgw']->link(
+					'/index.php',
+					$GLOBALS['phpgw']->msg->get_arg_value('view_html_menuaction')
+				);
+				
 				// if we replaced id(s) with href'(s) above (RELATED) then
 				// stuff the modified html in a hidden var, submit it then echo it back
 				if (($part_nice[$parent_idx]['m_html_related_kids'])
@@ -799,11 +844,11 @@
 					// we already did above
 					// make a submit button with this html part as a hidden var
 					$dsp =
-					//'<pre>'.$msg_raw_headers .'</pre>'
 					'<p>'
-					.'<form action="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/view_html.php').'" method="post">'."\r\n"
-					.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
-					.'&nbsp;&nbsp;<input type="submit" value="View as HTML">'."\r\n"
+					.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+						.'<input type="hidden" name="html_part" value="'.base64_encode($dsp).'">'."\r\n"
+						.'&nbsp;&nbsp;'
+						.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
 					.'</p>'
 					.'<br>';
 				}
@@ -819,14 +864,20 @@
 					{
 						$part_encoding = '';
 					}
-					$part_href = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
-						 'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('') .'&msgnum=' .$GLOBALS['phpgw']->msg->get_arg_value('msgnum') .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
+					$part_href = $GLOBALS['phpgw']->link(
+							 '/index.php',
+							 $GLOBALS['phpgw']->msg->get_arg_value('get_attach_menuaction')
+							.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+							.'&msgnum=' .$GLOBALS['phpgw']->msg->get_arg_value('msgnum')
+							.'&part_no=' .$part_nice[$i]['m_part_num_mime']
+							.'&encoding=' .$part_encoding);
+					
 					$dsp =
-					//'<pre>'.$msg_raw_headers .'</pre>'
 					'<p>'
-					.'<form action="'.$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/view_html.php').'" method="post">'."\r\n"
-					.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
-					.'&nbsp;&nbsp;<input type="submit" value="View as HTML">'."\r\n"
+						.'<form action="'.$view_html_folm_action.'" method="post">'."\r\n"
+						.'<input type="hidden" name="html_reference" value="'.$part_href.'">'."\r\n"
+						.'&nbsp;&nbsp;'
+						.'<input type="submit" value="'.lang('View as HTML').'">'."\r\n"
 					.'</p>'
 					.'<br>';
 				}

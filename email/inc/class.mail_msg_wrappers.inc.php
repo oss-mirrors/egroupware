@@ -602,9 +602,17 @@
 					{
 						$got_args['mlist_menuaction'] = 'menuaction=email.uiindex.mlist&acctnum='.$acctnum;
 					}
-					elseif ($this_arg_name == 'action_menuaction')
+					elseif ($this_arg_name == 'delmov_menuaction')
 					{
-						$got_args['action_menuaction'] = 'menuaction=email.boaction.action&acctnum='.$acctnum;
+						$got_args['delmov_menuaction'] = 'menuaction=email.boaction.delmov&acctnum='.$acctnum;
+					}
+					elseif ($this_arg_name == 'get_attach_menuaction')
+					{
+						$got_args['get_attach_menuaction'] = 'menuaction=email.boaction.get_attach&acctnum='.$acctnum;
+					}
+					elseif ($this_arg_name == 'view_html_menuaction')
+					{
+						$got_args['view_html_menuaction'] = 'menuaction=email.boaction.view_html&acctnum='.$acctnum;
 					}
 					elseif ($this_arg_name == 'folder_menuaction')
 					{

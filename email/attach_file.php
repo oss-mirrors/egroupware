@@ -228,8 +228,8 @@
 	/*
 	// begin DEBUG INFO
 	$debuginfo .= '--uploadedfile info: <br>'
-		.'phpgw_info[server][temp_dir]: '.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
-		.'$phpgw_info[user][sessionid]: '.$GLOBALS['phpgw_info']['user']['sessionid'].'<br>'
+		.'$GLOBALS[phpgw_info][server][temp_dir]: '.$GLOBALS['phpgw_info']['server']['temp_dir'].'<br>'
+		.'$GLOBALS[phpgw_info][user][sessionid]: '.$GLOBALS['phpgw_info']['user']['sessionid'].'<br>'
 		.'uploaddir: '.$uploaddir.'<br>'
 		.'file_tmp_name: ' .$file_tmp_name .'<br>'
 		.'file_name: ' .$file_name .'<br>'

@@ -105,8 +105,8 @@
 	&& ($mail_server_type != ''))
 	{
 		// educated guess based on info being available:
-		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$phpgw_info['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
-		if ($debug_dcom) { echo 'Educated Guess: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$phpgw_info['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
+		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'Educated Guess: including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_'.$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'].$sock_fname.'.inc.php<br>'; }
   	}
 	else
 	{
