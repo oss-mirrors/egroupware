@@ -415,7 +415,7 @@ function comic_parser($baseurl, $fetch_url, $parse_expr, &$comic_url)
                 break;
             }
 
-            if (ereg($parse_expr, $file[$index], $elements))
+            if (isset($parse_expr) && isset($file[$index]) && ereg($parse_expr, $file[$index], $elements))
             {
                 $comic_url = $baseurl . $elements[0];
                 break;
