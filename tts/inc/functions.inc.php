@@ -61,24 +61,17 @@ function mail_ticket($ticket_id) {
   }
 
   for($j=0;$j<=$i;$j++) {
-    $phpgw->db->query("SELECT preference_value FROM preferences WHERE preference_owner=".$account_id[$j],__LINE__,__FILE__);
-    $phpgw->db->next_record();
-    $user["user"]["preferences"] = $phpgw->db->f("preference_value");
-    if($user["user"]["preferences"]["email"]["address"]) {
-      $toarray[$j] = $user["user"]["preferences"]["email"]["address"];
-    } else {
-      $toarray[$j] = $account_lid[$j]."@".$phpgw_info["server"]["mail_suffix"];
-    }
+    $pref = CreateObject('phpgwapi.preferences',$account_id[$j]);
+    $prefs = $pref->read_repository();
+    $prefs = $phpgw->common->create_emailpreferences($prefs,$account_id[$j]);
+    $toarray[$j] = $prefs["email"]["address"];
+    unset($pref);
   }
   if(count($toarray)) {
     $to = implode(",",$toarray);
   } else {
     $to = $toarray[0];
   }
-
-//  if($phpgw_info["user"]["apps"]["email"] && !$phpgw_info["user"]["preferences"]["email"]["address"]) {
-//    $phpgw_info["user"]["preferences"]["email"]["address"] = $phpgw_info["user"]["account_lid"]."@".$phpgw_info["server"]["mail_suffix"];
-//  }
 
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if (!$rc) {
