@@ -38,8 +38,8 @@
 
 		$phpgw->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,"
 			. "cat_id,for_id,thread_owner,subject,stat,n_replies) VALUES (0,$next_f_body_id,"
-			. "0,$next_f_body_id,-1,$cat,$for,'" . $phpgw_info['user']['account_id'] . "','$subject',"
-			. "$stat,0)",__LINE__,__FILE__);
+			. "0,$next_f_body_id,-1,'" . $session_info['cat_id'] . "','" . $session_info['forum_id']
+			. "','" . $phpgw_info['user']['account_id'] . "','$subject',$stat,0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES ("
 			. "$cat,$for,'$message')",__LINE__,__FILE__);
