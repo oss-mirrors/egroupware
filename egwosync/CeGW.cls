@@ -170,7 +170,7 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
     linsRequest.HostPort = mPort
     linsRequest.HostURI = mURI
     
-    linsRequest.methodName = szMethod
+    linsRequest.MethodName = szMethod
     
     bEnabled = Master.Ready
     
@@ -200,7 +200,12 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
             'XML Parse Errors get special treatment for more detail
                 BasUtilities.BugOut 704, "CeGW.Exec", _
                     "XML Parse Error: " & linsResponse.XMLParseError
-            Else
+            ElseIf linsResponse.Status = XMLRPC_FAULTRETURNED Then
+            'XMLRPC Faults will get special treatment too.
+                BasUtilities.BugOut 704, "CeGW.Exec", _
+                    "XMLRPC Fault: " & linsResponse.Fault
+            ElseIf linsResponse.Status <> XMLRPC_FAULTRETURNED And _
+            linsResponse.Status <> XMLRPC_PARSERERROR Then
                 BasUtilities.BugOut 700, "CeGW.Exec", _
                     "Unexpected response from XML-RPC request. Status = " & Master.eGW.Response.Status
             End If
