@@ -1335,11 +1335,11 @@
 		{
 			case 'imaps':	// IMAP over SSL
 				$extra = '/imap/ssl/novalidate-cert';
-				//$extra = '/imap/ssl/novalidate-cert';
+ 				$this->set_pref_value('mail_port','993',$acctnum);
 				break;
 			case 'pop3s':	// POP3 over SSL
 				$extra = '/pop3/ssl/novalidate-cert';
-				//$extra = '/pop3/ssl';
+ 				$this->set_pref_value('mail_port','995',$acctnum);
 				break;
 			case 'pop3':	// POP3 normal connection, No SSL
 				$extra = '/pop3';
