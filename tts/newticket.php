@@ -118,7 +118,7 @@
 
 		$txtDetail .= $phpgw_info["user"]["userid"] . " - " . $phpgw->common->show_date($phpgw->db->f(6)) . "<BR>\n";
 		$txtDetail .= $txtAdditional . "<br><hr>";
-		$txtDetail = addslashes($txtDetail);
+		$txtDetail = addslashes(nl2br($txtDetail));
 
 		$phpgw->db->query("INSERT INTO ticket (t_category,t_detail,t_priority,t_user,t_assignedto, "
 			. " t_timestamp_opened,t_timestamp_closed,t_subject) VALUES ('$lstCategory','$txtDetail',"
