@@ -23,8 +23,6 @@
      }
   }
 
-  //include ($phpgw_info["server"]["api_dir"] . "/phpgw_network.inc.php");
-
 class headlines extends network {
   // socket timeout in seconds
   var $current_time;
