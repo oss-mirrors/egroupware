@@ -14,9 +14,8 @@
   /* $Id$ */
 
   if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "messageclass" => True);
-
-  $phpgw_info["flags"]["currentapp"] = "email";
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
+                                "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
   Header("Content-type: image/$subtype");
 

@@ -12,7 +12,8 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "currentapp" => "email");
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
+                                "noheader" => True, "enable_addressbook_class" => True);
   include("../header.inc.php");
 
    if ($order)

@@ -23,8 +23,8 @@
     $phpgw_info["flags"]["newsmode"] = True;
   }
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-  $phpgw_info["flags"]["currentapp"] = "email";
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
+                                "enable_nextmatchs_class" => True, "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
 //  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");

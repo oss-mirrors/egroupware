@@ -13,8 +13,8 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "messageclass" => True);
-  $phpgw_info["flags"]["currentapp"] = "email";
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
+                                "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
   header("Content-type: $type/$subtype");

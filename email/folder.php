@@ -19,7 +19,7 @@
 
   if ($newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
 
-  $phpgw_info["flags"]["currentapp"] = "email";
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True);
   include("../header.inc.php");
 ?>
 
