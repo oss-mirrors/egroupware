@@ -474,13 +474,13 @@ class sowiki	// DB-Layer
 
 		$values = array(
 			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
-			'page'    => is_array($page) ? $page['name'] : $page,
+			'page'    => trim(is_array($page) ? $page['name'] : $page),
 			'lang'    => $page['lang'],
-			'link'    => $link,
+			'link'    => trim($link),
 		);
 		// $links need to be 2-dimensional as rename, can cause new_link to be called for different pages
 		$page_uid = strtolower($values['wiki_id'].':'.$values['page'].':'.$values['lang']);
-		$link = strtolower($link);
+		$link = strtolower(trim($link));
 		$values['count'] = ++$links[$page_uid][$link];
 
 		//echo "<p>sowiki::new_link('$values[wiki_id]:$values[page]:$values[lang]','$link') = $values[count]</p>";
