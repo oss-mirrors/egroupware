@@ -14,13 +14,16 @@
 
 	/* $Id$ */
 
-	$phpgw->db->query("select count(*) from phpgw_messenger_messages where message_owner='"
-			. $phpgw_info['user']['account_id'] . "' and message_status='N'",__LINE__,__FILE__);
-	$phpgw->db->next_record();
-
-	if ($phpgw->db->f(0))
+	if ($phpgw_info['flags']['currentapp'] != 'messenger' && $phpgw_info['flags']['currentapp'] != 'welcome')
 	{
-		echo '<center><a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.inbox')
-			. '">' . lang('You have %1 new message' . ($phpgw->db->f(0)>1?'s':''),$phpgw->db->f(0)) . '</a>'
-			. '</center>';
+		$phpgw->db->query("select count(*) from phpgw_messenger_messages where message_owner='"
+				. $phpgw_info['user']['account_id'] . "' and message_status='N'",__LINE__,__FILE__);
+		$phpgw->db->next_record();
+	
+		if ($phpgw->db->f(0))
+		{
+			echo '<center><a href="' . $phpgw->link('/index.php','menuaction=messenger.uimessage.inbox')
+				. '">' . lang('You have %1 new message' . ($phpgw->db->f(0)>1?'s':''),$phpgw->db->f(0)) . '</a>'
+				. '</center>';
+		}
 	}

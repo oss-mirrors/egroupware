@@ -16,6 +16,8 @@
 
 	class bomessage
 	{
+		var $so;
+		var $ui;
 		var $db;
 		var $template;
 		var $public_functions = array(
@@ -31,16 +33,18 @@
 			global $phpgw;
 			$this->template = $phpgw->template;
 			$this->db       = $phpgw->db;
+
+			$this->so = createobject('messenger.somessage');
+			$this->ui = createobject('messenger.uimessage');
 		}
 
 		function send_global_message()
 		{
 			global $message, $send, $cancel, $phpgw;
 
-			$ui = createobject('messenger.uimessage');
 			if (! $phpgw->acl->check('run',1,'admin') || $cancel)
 			{
-				$ui->inbox();
+				$this->ui->inbox();
 				return False;
 			}
 
@@ -56,22 +60,21 @@
 
 			if (is_array($errors))
 			{
-				$ui->compose($errors);
+				$this->ui->compose($errors);
 			}
 			else
 			{
-				$so = createobject('messenger.somessage');
 				$account_info = $phpgw->accounts->get_list('accounts');
-	
-				$so->db->transaction_begin();
+
+				$this->so->db->transaction_begin();
 				while (list(,$account) = each($account_info))
 				{
 					$message['to'] = $account['account_lid'];
-					$so->send_message($message,True);
+					$this->so->send_message($message,True);
 
 				}
-				$so->db->transaction_commit();
-				$ui->inbox();
+				$this->so->db->transaction_commit();
+				$this->ui->inbox();
 			}
 		}
 
@@ -116,23 +119,20 @@
 
 			if ($cancel)
 			{
-				$ui = createobject('messenger.uimessage');
-				$ui->inbox();
+				$this->ui->inbox();
 				return False;
 			}
 
 			$errors = $this->check_for_missing_fields($message);
 
-			$ui = createobject('messenger.uimessage');
 			if (is_array($errors))
 			{
-				$ui->compose($errors);
+				$this->ui->compose($errors);
 			}
 			else
 			{
-				$so = createobject('messenger.somessage');
-				$so->send_message($message);
-				$ui->inbox();
+				$this->so->send_message($message);
+				$this->ui->inbox();
 			}
 		}
 
@@ -140,8 +140,7 @@
 		{
 			global $phpgw;
 
-			$so = createobject('messenger.somessage');
-			$messages = $so->read_inbox($start,$order);
+			$messages = $this->so->read_inbox($start,$order);
 
 			while (is_array($messages) && list(,$message) = each($messages))
 			{
@@ -199,8 +198,7 @@
 		function read_message($message_id)
 		{
 			global $phpgw;
-			$so      = createobject('messenger.somessage');
-			$message = $so->read_message($message_id);
+			$message = $this->so->read_message($message_id);
 
 			$message['date'] = $phpgw->common->show_date($message['date']);
 
@@ -223,8 +221,7 @@
 		{
 			global $phpgw, $n_message;
 
-			$so      = createobject('messenger.somessage');
-			$message = $so->read_message($message_id);
+			$message = $this->so->read_message($message_id);
 
 			$acct = createobject('phpgwapi.accounts',$message['from']);
 			$acct->read_repository();
@@ -253,40 +250,34 @@
 		{
 			global $messages;
 
-			$ui = createobject('messenger.uimessage');
 			if (! is_array($messages))
 			{
-				$ui->inbox();
+				$this->ui->inbox();
 				return False;
 			}
-			$so = createobject('messenger.somessage');
-			$so->db->transaction_begin();
+			$this->so->db->transaction_begin();
 			while (list(,$message_id) = each($messages))
 			{
-				$so->delete_message($message_id);
+				$this->so->delete_message($message_id);
 			}
-			$so->db->transaction_commit();
-			$ui->inbox();
+			$this->so->db->transaction_commit();
+			$this->ui->inbox();
 		}
 
 		function reply()
 		{
 			global $message_id, $n_message;
 
-			$so = createobject('messenger.somessage');
-			$ui = createobject('messenger.uimessage');
-
 			$errors = $this->check_for_missing_fields($n_message);
-
 			if (is_array($errors))
 			{
-				$ui->reply($errors, $n_message);
+				$this->ui->reply($errors, $n_message);
 			}
 			else
 			{
-				$so->send_message($n_message);
-				$so->update_message_status('R',$message_id);
-				$ui->inbox();
+				$this->so->send_message($n_message);
+				$this->so->update_message_status('R',$message_id);
+				$this->ui->inbox();
 			}
 		}
 
@@ -294,20 +285,20 @@
 		{
 			global $message_id, $n_message;
 
-			$so = createobject('messenger.somessage');
-			$ui = createobject('messenger.uimessage');
+			$this->so = createobject('messenger.somessage');
+			$this->ui = createobject('messenger.uimessage');
 
 			$errors = $this->check_for_missing_fields($n_message);
 
 			if (is_array($errors))
 			{
-				$ui->forward($errors, $n_message);
+				$this->ui->forward($errors, $n_message);
 			}
 			else
 			{
-				$so->send_message($n_message);
-				$so->update_message_status('F',$message_id);
-				$ui->inbox();
+				$this->so->send_message($n_message);
+				$this->so->update_message_status('F',$message_id);
+				$this->ui->inbox();
 			}
 		}
 
