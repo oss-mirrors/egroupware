@@ -72,8 +72,14 @@
 				{
 					$parts = explode('/',$referer);
 					$file = str_replace('.php','',array_pop($parts));
+					if (empty($file)) $file = 'index';
 					$app  = array_pop($parts);
 					if (is_numeric($app)) $app  = array_pop($parts);	// for fudforum
+					// for preferences use the app-name from the query
+					if ($app == 'preferences' && $file == 'preferences')
+					{
+						$app = $query['appname'];
+					}
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($file);
 				}
 				$pages[] = 'Manual'.ucfirst($app);
