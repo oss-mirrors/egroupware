@@ -11,11 +11,13 @@
 
   /* $Id$ */
 
-  if (! $inindex) {
-     if (! $phpgw_info["user"]["preferences"]["polls"]["show_on_mainscreen"]) {
-        return False;
-     }
-  }
+	if (! $inindex)
+	{
+		if (! $phpgw_info['user']['preferences']['polls']['show_on_mainscreen'])
+		{
+			return False;
+		}
+	}
 
-  display_poll();  
+	display_poll();  
 ?>

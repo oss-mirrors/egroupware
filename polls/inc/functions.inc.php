@@ -16,7 +16,7 @@
 	$phpgw->db->query("select * from phpgw_polls_settings");
 	while ($phpgw->db->next_record())
 	{
-		$poll_settings[$phpgw->db->f("setting_name")] = $phpgw->db->f("setting_value");
+		$poll_settings[$phpgw->db->f('setting_name')] = $phpgw->db->f('setting_value');
 	}
 
 	function add_template_row(&$tpl,$label,$value)
@@ -72,8 +72,8 @@
 		$db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		while ($db->next_record())
 		{
-			$poll_optionText  = $db->f("option_text");
-			$poll_optionCount = $db->f("option_count");
+			$poll_optionText  = $db->f('option_text');
+			$poll_optionCount = $db->f('option_count');
 
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 			echo '<tr bgcolor="' . $tr_color . '">';
@@ -165,8 +165,8 @@
 		$db->next_record();
 
 		echo '<table border="0" align="center" width="50%">'
-			. '<tr><td colspan="2" bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="center">&nbsp;'
-			. $db->f("poll_title") . '&nbsp;</td></tr>';
+			. '<tr><td colspan="2" bgcolor="' . $phpgw_info['theme']['th_bg'] . '" align="center">&nbsp;'
+			. $db->f('poll_title') . '&nbsp;</td></tr>';
 		echo '<form action="' . $phpgw->link("/polls/vote.php") . '" method="post">';
 		echo '<input type="hidden" name="poll_id" value="' . $poll_id . '">';
 //		echo '<input type="hidden" name="poll_forwarder" value="' . $poll_forwarder . '">';
@@ -176,11 +176,11 @@
 		{
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 			echo '<tr bgcolor="' . $tr_color . '"><td align="center"><input type="radio" name="poll_voteNr" value="'
-				. $db->f("vote_id") . '"></td><td>&nbsp;' . $db->f("option_text") . '</td></tr>';
+				. $db->f('vote_id') . '"></td><td>&nbsp;' . $db->f('option_text') . '</td></tr>';
 		}
 
-		echo '<tr bgcolor="' . $phpgw_info["theme"]["bgcolor"] . '"><td colspan="2">&nbsp;</td></tr>'
-			. '<tr bgcolor="' . $phpgw_info["theme"]["bgcolor"] . '"><td colspan="2" align="center">'
+		echo '<tr bgcolor="' . $phpgw_info['theme']['bgcolor'] . '"><td colspan="2">&nbsp;</td></tr>'
+			. '<tr bgcolor="' . $phpgw_info['theme']['bgcolor'] . '"><td colspan="2" align="center">'
 			. '<input name="submit" type="submit" value="Vote"></td></tr>'
 			. '</table></form>';
 	}
@@ -189,13 +189,13 @@
 	{
 		global $poll_settings;
 
-		if (! verify_uservote($poll_settings["currentpoll"]))
+		if (! verify_uservote($poll_settings['currentpoll']))
 		{
-			poll_viewResults($poll_settings["currentpoll"]);
+			poll_viewResults($poll_settings['currentpoll']);
 		}
 		else
 		{
-			poll_generateUI($poll_settings["currentpoll"]);
+			poll_generateUI($poll_settings['currentpoll']);
 		}
 	}
 ?>

@@ -18,10 +18,10 @@
 	);
 	include('../header.inc.php');
 
-	$phpgw->template->set_file(array(
-		'form'   => 'admin_form.tpl',
-		'row'    => 'admin_form_row_2.tpl'
-	));
+	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$p->set_file(array('admin' => 'admin_form.tpl'));
+	$p->set_block('admin','form','form');
+	$p->set_block('admin','row','row');
 
 	if ($submit)
 	{
@@ -30,15 +30,15 @@
 		$vote_id = $phpgw->db->f(0);
 
 		$phpgw->db->query("insert into phpgw_polls_data (poll_id,option_text,vote_id) values ('$poll_id','" . addslashes($answer) . "','$vote_id')",__LINE__,__FILE__);
-		$phpgw->template->set_var('message',lang('Answer has been added to poll.'));
+		$p->set_var('message',lang('Answer has been added to poll.'));
 	}
 
-	$phpgw->template->set_var('header_message',lang('Add answer to poll'));
-	$phpgw->template->set_var('td_message','&nbsp;');
-	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$phpgw->template->set_var('form_action',$phpgw->link('/polls/admin_addanswer.php'));
-	$phpgw->template->set_var('form_button_1','<input type="submit" name="submit" value="' . lang('Add') . '">');
-	$phpgw->template->set_var('form_button_2','</form><form method="POST" action="' . $phpgw->link('/polls/admin.php') . '"><input type="submit" name="submit" value="' . lang('Cancel') . '">');
+	$p->set_var('header_message',lang('Add answer to poll'));
+	$p->set_var('td_message','&nbsp;');
+	$p->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$p->set_var('form_action',$phpgw->link('/polls/admin_addanswer.php'));
+	$p->set_var('form_button_1','<input type="submit" name="submit" value="' . lang('Add') . '">');
+	$p->set_var('form_button_2','</form><form method="POST" action="' . $phpgw->link('/polls/admin.php') . '"><input type="submit" name="submit" value="' . lang('Cancel') . '">');
 
 	$poll_select = '<select name="poll_id">';
 	$phpgw->db->query("select * from phpgw_polls_desc",__LINE__,__FILE__);
@@ -53,9 +53,9 @@
 	}
 	$poll_select .= '</select>';
 
-	add_template_row($phpgw->template,lang('Which poll'),$poll_select);
-	add_template_row($phpgw->template,lang('Answer'),'<input name="answer">');
+	add_template_row($p,lang('Which poll'),$poll_select);
+	add_template_row($p,lang('Answer'),'<input name="answer">');
 
-	$phpgw->template->pfp('out','form');
+	$p->pfp('out','form');
 	$phpgw->common->phpgw_footer();
 ?>
