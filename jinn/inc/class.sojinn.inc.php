@@ -1133,17 +1133,22 @@
 			   continue;
 			}
 			
-			$serial=time();
 			if( $field['name'] == 'site_id') 
 			{
 			   continue;
 			}
 
-			if($serial && $field[name]=='serialnumber')
+			if(trim($field[name])=='serialnumber')
 			{
+			   $serial=time();
 			   $field[value]=$serial;
+//			   echo $field[value];
+//			   echo 'hallo';
 			}
-
+			
+//			echo $field[name];
+//			echo $serial;
+			
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
@@ -1157,10 +1162,12 @@
 			$status[ret_code]=0;
    
 			$SQL='SELECT * FROM egw_jinn_sites WHERE serialnumber='.$serial;
+//			echo $SQL;
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
 
+				
 			$status[where_value]=$this->phpgw_db->f('site_id');
 
 		 }

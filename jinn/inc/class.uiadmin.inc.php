@@ -207,16 +207,11 @@
 		function import_egw_jinn_site()
 		{
 
-			$this->template->set_file(array(
-				'import_form' => 'import.tpl',
-			));
-
-			$this->ui->header(lang('Import JiNN-Site'.$table));
-			$this->ui->msg_box($this->bo->message);
 
 			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
 			{
-				$num_objects=0;
+			   unset($this->bo->message);
+			   $num_objects=0;
 				$import=$GLOBALS[HTTP_POST_FILES][importfile];
 
 				@include($import[tmp_name]);
@@ -238,20 +233,23 @@
 
 					if($GLOBALS[HTTP_POST_VARS][replace_existing] && count($thissitename)>=1)
 					{
-						$new_site_id=$thissitename[0];
+					   $new_site_id=$thissitename[0];
 						$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
 //						$this->bo->so->update_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
 
 						// remove all existing objects
 						$this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
+			
 
-						$msg= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
+						$this->bo->message[info].= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
+
 						$proceed=true;
 					}
 					/* insert as new site */
-					elseif ($new_site_id=$this->bo->so->insert_phpgw_data('egw_jinn_sites',$data))
+					elseif($status=$this->bo->so->insert_phpgw_data('egw_jinn_sites',$data))
 					{
-
+					   $new_site_id=$status[where_value];
+					   
 						if(count($thissitename)>=1)
 						{
 							$new_name=$new_site_name.' ('.lang('another').')';
@@ -267,7 +265,7 @@
 							$new_name=$new_site_name;
 						}
 						$proceed=true;
-						$msg= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
+						$this->bo->message[info].= lang('Import was succesfull'). '<br/>' .lang('The name of the new site is <strong>%1</strong>.',$new_name);
 
 					}
 
@@ -297,19 +295,29 @@
 
 						}
 
-						$msg.='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
-						echo $msg;
-
-					}
+						$this->bo->message[info].='<br/>'.lang('%1 Site Objects have been imported.',$num_objects);
+						$this->bo->save_sessiondata();
+						$this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
+			 
+					 }
 					else
 					{
-						echo lang('Import failed');
+					   $this->bo->message[error].= lang('Import failed');
+					   $this->bo->save_sessiondata();
+					   $this->bo->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 					}
 				}
 
 			}
 			else
 			{
+			   $this->template->set_file(array(
+				  'import_form' => 'import.tpl',
+			   ));
+
+			   $this->ui->header(lang('Import JiNN-Site'.$table));
+			   $this->ui->msg_box($this->bo->message);
+
 				$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'));
 				$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
 				$this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
