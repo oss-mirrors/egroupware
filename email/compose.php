@@ -13,16 +13,17 @@
 
   /* $Id$ */
 
-	if ($newsmode == 'on')
-	{
-		$phpgw_info['flags']['newsmode'] = True;
-	}
-
 	$phpgw_info['flags'] = array(
 		'currentapp' => 'email',
 		'enable_network_class' => True
 	);
 	include('../header.inc.php');
+
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array(		
+		'T_compose_out' => 'compose.tpl'
+	));
+	$t->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 
 	if ($msgnum)
 	{
@@ -107,116 +108,58 @@
 			}
 		}
 	}
-//<!--   Window1=window.open('<_?_php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php','query='); ?_>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
 
-?>
+	$t->set_var('js_addylink',$phpgw->link("/".$phpgw_info['flags']['currentapp'].'/addressbook.php'));
+	$t->set_var('form1_name','doit');
+	$t->set_var('form1_action',$phpgw->link("/".$phpgw_info['flags']['currentapp']."/send_message.php"));
+	$t->set_var('form1_method','POST');
+	$t->set_var('hidden1_name','return');
+	$t->set_var('hidden1_value',$folder);
 
- <script>
-<!--
-    self.name="first_Window";
-    function addybook()
-    {
-       Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp'].'/addressbook.php'); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
-    }
+	$t->set_var('buttons_bgcolor',$phpgw_info["theme"]["em_folder"]);
+	$t->set_var('btn_addybook_type','button');
+	$t->set_var('btn_addybook_value',lang("addressbook"));
+	$t->set_var('btn_addybook_onclick','addybook();');
+	$t->set_var('btn_send_type','submit');
+	$t->set_var('btn_send_value',lang("send"));
 
-    function attach_window(url)
-    {
-       awin = window.open(url,"attach","width=500,height=400,toolbar=no,resizable=yes");
-    }
--->
-  </script>
+	$t->set_var('to_boxs_bgcolor',$phpgw_info["theme"]["th_bg"]);
+	$t->set_var('to_boxs_font',$phpgw_info["theme"]["font"]);
+	$t->set_var('to_box_desc',lang("to"));
+	$t->set_var('to_box_name','to');
+	if ($mailto)
+	{
+		$to_box_value = substr($mailto, 7, strlen($mailto));
+	}
+	else
+	{
+		$to_box_value = $to;
+	}
+	$t->set_var('to_box_value',$to_box_value);
+	$t->set_var('cc_box_desc',lang("cc"));
+	$t->set_var('cc_box_name','cc');
+	$t->set_var('cc_box_value',$cc);
+	$t->set_var('subj_box_desc',lang("subject"));
+	$t->set_var('subj_box_name','subject');
+	$t->set_var('subj_box_value',$subject);
+	$t->set_var('checkbox_sig_desc',lang("Attach signature"));
+	$t->set_var('checkbox_sig_name','attach_sig');
+	$t->set_var('checkbox_sig_value','true');
+	if (isset($phpgw_info["user"]["preferences"]["email"]["email_sig"])
+	&& ($phpgw_info["user"]["preferences"]["email"]["email_sig"] != ''))
+	{
+		$t->parse('V_checkbox_sig','B_checkbox_sig');
+	}
+	else
+	{
+		$t->set_var('V_checkbox_sig','');
+	}
+	$t->set_var('attachfile_js_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/attach_file.php'));
+	$t->set_var('attachfile_js_text',lang("Attach file"));
+	$t->set_var('body_box_name','body');
+	$t->set_var('body_box_value',$body);
 
-<table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
-
-<form enctype="multipart/form-data" name="doit" action="<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/send_message.php")?>" method=POST>
-  <input type="hidden" name="return" value="<?php echo $folder ?>">
-
-  <tr>
-   <td colspan=2 bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
-
-     <table border=0 cellpadding=4 cellspacing=1 width=100%>
-      <tr>
-       <td align="left" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
-	<input type="button" value="<?php echo lang("addressbook"); ?>" onclick="addybook();">
-       </td>
-       <td align="right" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
-	<input type="submit" value="<?php echo lang("send"); ?>">
-       </td>
-      </tr>
-     </table>
-   </td>
-
-   <tr><td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>"><b>&nbsp;<?php echo lang("to"); ?>:</b></td>
-     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
-      <input type=text name=to size=80 value="<?php
-
-       if ($mailto) {
-         echo substr($mailto, 7, strlen($mailto));
-       } else {
-         echo $to;
-       }
-
-?>"></td></tr>
-  <tr>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-    <font size="2" face="<?php echo $phpgw_info["theme"]["font"] ?>">
-     <b>&nbsp;<?php echo lang("cc"); ?>:</b>
-    </font>
-   </td>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
-    <input type="text" name="cc" size="80" value="<?php echo $cc ?>">
-   </td>
-  </tr>
-
-  <tr>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-    <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-     <b>&nbsp;<?php echo lang("subject"); ?>:&nbsp;</b>
-    </font>
-   </td>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
-    <input type="text" name="subject" size="80" value="<?php echo $subject; ?>">
-   </td>
-  </tr>
-  <?php
-    if ($phpgw_info["user"]["preferences"]["email"]["email_sig"]) {
-?>
-  <tr>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">
-    <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      <?php echo lang("Attach signature"); ?>
-      <input type="checkbox" name="attach_sig" value="true" checked>
-    </font>
-   </td>
-  </tr>
-<?php
-    }
-?>
-  <tr>
-   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">
-    <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      <a href="javascript:attach_window('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/attach_file.php"); ?>')"><?php echo lang("Attach file"); ?></a>
-    </font>
-   </td>
-  </tr>
- </table>
-
- <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-  <tr align="center">
-   <td>
-    <textarea name="body" cols="84" rows="15" wrap="hard"><?php echo $body; ?></textarea>
-   </td>
-  </tr>
- </table>
-</form>
-<script>
-
-document.doit.body.focus();
-if(document.doit.subject.value == "") document.doit.subject.focus();
-if(document.doit.to.value == "") document.doit.to.focus();
-
-</script>
-
-<?php 
+	$t->pparse('out','T_compose_out');
+ 
 	$phpgw->common->phpgw_footer();
 ?>
