@@ -88,9 +88,13 @@
 			$this->template->set_block('INDEX','CategoryForum','CatF');
 
 			$var = Array(
-				'CAT_IMG'	=> $GLOBALS['phpgw']->common->image('forum','category'),
-				'BGROUND'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
-				'FORUM'	=> lang('Forum')
+				'CAT_IMG'			=> $GLOBALS['phpgw']->common->image('forum','category'),
+				'BGROUND'			=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'FORUM'				=> lang('Forum'),
+				'LANG_CATEGORY'		=> lang('Category'),
+				'LANG_DESCRIPTION'	=> lang('Description'),
+				'LANG_LATREP'		=> lang('Latest Reply'),
+				'LANG_THREADS'		=> lang('Threads'),
 			);
 			$this->template->set_var($var);
 
@@ -142,11 +146,15 @@
 			$cat = $this->bo->get_cat_info($this->bo->cat_id);
 
 			$var = Array(
-				'BGROUND'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
-				'FORUM_IMG' => $GLOBALS['phpgw']->common->image('forum','forum'),
-				'CATEGORY'       => $cat['name'],
-				'LANG_MAIN'      => lang('Forum'),
-				'MAIN_LINK'      => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index')
+				'BGROUND'				=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+				'FORUM_IMG'				=> $GLOBALS['phpgw']->common->image('forum','forum'),
+				'CATEGORY'				=> $cat['name'],
+				'LANG_MAIN'				=> lang('Forum'),
+				'MAIN_LINK'				=> $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'),
+				'LANG_SUBCATEGORY'		=> lang('Sub category'),
+				'LANG_DESCRIPTION'		=> lang('Description'),
+				'LANG_LATREP'			=> lang('Latest Reply'),
+				'LANG_THREADS'			=> lang('Threads'),
 			);
 			$this->template->set_var($var);
 
@@ -239,7 +247,7 @@
 					
 					$var = Array(
 						'COLOR'	=> $GLOBALS['tr_color'],
-						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
+						'TOPIC'	=> ($thread['subject']?$thread['subject']:'['.lang('No subject').']'),
 						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
 						'REPLIES'	=> $thread['replies'],
 						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
@@ -290,7 +298,7 @@
 
 					$var = Array(
 						'COLOR'	=> $GLOBALS['tr_color'],
-						'TOPIC'	=> ($thread['subject']?$thread['subject']:'[No subject]'),
+						'TOPIC'	=> ($thread['subject']?$thread['subject']:'['.lang('No subject').']'),
 						'AUTHOR'	=> ($thread['author']?$GLOBALS['phpgw']->common->grab_owner_name($thread['author']):lang('Unknown')),
 						'REPLIES'	=> $thread['replies'],
 						'READ_LINK'	=> $GLOBALS['phpgw']->link('/index.php',
