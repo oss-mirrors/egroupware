@@ -149,14 +149,14 @@
 			$GLOBALS['phpgw']->template->pfp('out','project_main_mail');
 					break;
 				case 'pdf':
-					if($pdfData = $this->boprojects->exportProjectPDF($pro_main))
+					if($pdfData = $this->boprojects->exportProjectPDF2($pro_main))
 					{
 						header("Content-Disposition: filename=projectoverview.pdf");
 						#header("Content-Disposition: attachment; filename=example.pdf");
 						header("Content-Type: application/pdf");
-						header('Content-Length: ' . strlen($pdfData['pdfFile']));
+						header('Content-Length: ' . strlen($pdfData));
 						
-						print $pdfData['pdfFile'];
+						print $pdfData;
 					}
 					break;
 				default:
@@ -1645,11 +1645,11 @@
 
 		function view_project()
 		{
-			$action			= $_GET['action'];
-			$pro_main		= $_GET['pro_main'];
-			$project_id		= $_GET['project_id'];
+			$action		= $_GET['action'];
+			$pro_main	= $_GET['pro_main'];
+			$project_id	= $_GET['project_id'];
 			$public_view	= $_GET['public_view'];
-			$referer		= $_GET['referer'];
+			$referer	= $_GET['referer'];
 
 			if(!$referer)  //$_POST['back'] && !$_POST['done'] && !$_POST['edit'])
 			{
@@ -1661,10 +1661,10 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.view_project',
-				'pro_main'		=> $pro_main,
-				'action'		=> $action,
+				'pro_main'	=> $pro_main,
+				'action'	=> $action,
 				'project_id'	=> $project_id,
-				'referer'		=> $referer,
+				'referer'	=> $referer,
 				'public_view'	=> $public_view
 			);
 

@@ -34,16 +34,17 @@
 
 		function soprojects()
 		{
-			$this->db			= $GLOBALS['phpgw']->db;
-			$this->db2			= $this->db;
+			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db2		= $this->db;
 			$this->grants		= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->currency 	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
-			$this->year			= $GLOBALS['phpgw']->common->show_date(time(),'Y');
+			$this->year		= $GLOBALS['phpgw']->common->show_date(time(),'Y');
 			$this->member		= $this->get_acl_projects();
 			$this->soconfig		= CreateObject('projects.soconfig');
 			$this->siteconfig	= $this->get_site_config();
-			$this->column_array = array();
+
+			$this->column_array 	= array();
 		}
 
 		function project_filter($type)
@@ -177,8 +178,8 @@
 		function getBudget($_projectID)
 		{
 			$db = $this->db;
-				
-			$query = "select budget,month,year from phpgw_p_budget where project_id='$_projectID'";
+			
+			$query = "select budget,month,year from phpgw_p_budget where project_id='$_projectID' order by year,month";
 			
 			$db->query($query, __LINE__, __FILE__);
 			

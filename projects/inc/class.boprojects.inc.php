@@ -398,6 +398,7 @@
 				return false;
 
 			include(PHPGW_APP_INC . "/phppdflib/phppdflib.class.php");
+			include(PHPGW_SERVER_ROOT."/phpgwapi/inc/fpdf/fpdf.php");
 		
 			$botranslation 	= CreateObject('phpgwapi.translation');
 		
@@ -711,6 +712,905 @@
 				return false;
 			}
 		}
+
+		function exportProjectPDF2($_pro_main)
+		{
+			if(!$_pro_main)
+				return false;
+
+			$botranslation 		= CreateObject('phpgwapi.translation');
+			$pdf			= CreateObject('phpgwapi.pdf');
+			
+			$mainProjectData	= $this->read_single_project($_pro_main);
+			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
+			$prefs 			= $this->read_prefs();
+			
+			//_debug_array($subProjectsData);
+			
+			$pdf->AliasNbPages();
+			$pdf->AddPage();
+			$pdf->SetFont('Arial','',10);
+
+			// main project name row
+			$content = lang('Main project').': '.$mainProjectData['title'];
+			$pdf->Cell(0,7,$content,B);
+			$pdf->Ln();
+			
+			$pdf->SetFont('Arial','',8);
+			
+			// row1
+			$content = lang('Project ID').':';
+			$pdf->Cell(30,5,$content,0);
+
+			$content = $mainProjectData['number'];
+			$pdf->Cell(65,5,$content,0);
+
+			$content = lang('project url').':';
+			$pdf->Cell(30,5,$content,0);
+
+			if($mainProjectData['url'])
+			{
+				$content = 'http://'.$mainProjectData['url'];
+				$pdf->Cell(65,5,$content,0);
+			}
+			$pdf->Ln();
+			
+			// row2
+			$content = lang('Coordinator').':';
+			$pdf->Cell(30,5,$content,0);
+
+			$content = $mainProjectData['coordinatorout'];
+			$pdf->Cell(65,5,$content,0);
+
+			$content = lang('Customer').':';
+			$pdf->Cell(30,5,$content,0);
+			
+			$content = $mainProjectData['customerout'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			// main project data
+			$content = lang('investment nr').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['investment_nr'],False,'iso-8859-1');
+			$pdf->MultiCell(65,5,$content,0);
+			
+			$content = lang('previous project').':';
+			$pdf->Cell(30,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Category').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($this->cats->id2name($mainProjectData['cat']),False,'iso-8859-1');
+			$pdf->MultiCell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Description').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['descr'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Status').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang($mainProjectData['status']),False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$content = lang('access').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang($mainProjectData['access']),False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('priority'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['priority'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('project url'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			if($mainProjectData['url'])
+				$content = 'http://'.$mainProjectData['url'];
+			else
+				$content = '';
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('external reference'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			if($mainProjectData['reference'])
+				$content = 'http://'.$mainProjectData['reference'];
+			else
+				$content = '';
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('start date planned'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['psdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('date due planned'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['pedate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Start Date'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['sdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('Date due'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['edate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('creator'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $GLOBALS['phpgw']->common->grab_owner_name($mainProjectData['owner']);
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('Date created'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['cdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('processor'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $GLOBALS['phpgw']->common->grab_owner_name($mainProjectData['processor']);
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('last update'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['udate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Customer'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['customerout'];
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('customer nr'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['customer_nr'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Coordinator'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['coordinatorout'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+			
+			// employes and roles
+			$emps = $this->get_employee_roles(array('project_id' => $_pro_main,'formatted' => False));
+			
+			$content = $botranslation->convert(lang('Employees'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$pdf->Cell(50,5,'',0);
+			$content = $botranslation->convert(lang('role'),False,'iso-8859-1');
+			$pdf->Cell(50,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('events'),False,'iso-8859-1');
+			$pdf->Cell(60,5,$content,0,0,'C');
+			$pdf->Ln();
+			if(is_array($emps))
+			{
+				foreach($emps as $employee)
+				{
+					if(is_array($employee['eventNames']))
+					{
+						foreach($employee['eventNames'] as $eventName)
+						{
+							$displayEvent .= "$eventName\n";
+						}
+					}
+					$pdf->Cell(30,5,'',0);
+					$content = $botranslation->convert($employee['emp_name'],False,'iso-8859-1');
+					$pdf->MultiCell(50,5,$content,0);
+					$content = $botranslation->convert($employee['role_name'],False,'iso-8859-1');
+					$pdf->MultiCell(50,5,$content,0);
+					$content = $botranslation->convert($displayEvent,False,'iso-8859-1');
+					$pdf->MultiCell(60,5,$content,0);
+					$pdf->Ln();
+				}
+			}
+
+			$content = $botranslation->convert(lang('time planned'),False,'iso-8859-1').':'
+				.$botranslation->convert(lang('Work hours'),False,'iso-8859-1');
+			$pdf->Cell(50,5,$content,0);
+			$content = $mainProjectData['ptime'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Budget'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang('year'),False,'iso-8859-1');
+			$pdf->Cell(20,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('month'),False,'iso-8859-1');
+			$pdf->Cell(20,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('budget'),False,'iso-8859-1');
+			$pdf->Cell(25,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('extra budget'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['e_budget'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+			if(is_array($mainProjectData['budget']))
+			{
+				foreach($mainProjectData['budget'] as $year => $budgetData)
+				{
+					foreach($budgetData as $month => $budget)
+					{
+						if(!$year) $year = "---";
+						if(!$month) $month = "---";
+						$pdf->Cell(30,5,'',0);
+						$pdf->Cell(20,5,$year,0,0,'C');
+						$pdf->Cell(20,5,$month,0,0,'C');
+						$pdf->Cell(25,5,$budget,0,0,'R');
+						$pdf->Ln();
+					}
+				}
+			}
+
+			$content = $botranslation->convert(lang('Bookable activities'),False,'iso-8859-1').':';
+			$pdf->Cell(40,5,$content,0);
+			$boact = $this->activities_list($_pro_main,False);
+			$content = '';
+			if (is_array($boact))
+			{
+				foreach($boact as $activity)
+				{
+					$content .=  $activity['descr'] . ' [' . $activity['num'] . ']'."\n";
+				}
+			} 
+			$pdf->MultiCell(150,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Billable activities'),False,'iso-8859-1').':';
+			$pdf->Cell(40,5,$content,0);
+			$billact = $this->activities_list($_pro_main,True);
+			$content = '';
+			if (is_array($billact))
+			{
+				foreach($billact as $activity)
+				{
+					$content .=  $activity['descr'] . ' [' . $activity['num'] . ']'."\n";
+				}
+			} 
+			$pdf->MultiCell(150,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('invoicing method'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['inv_method'],False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('discount'),False,'iso-8859-1').':';
+			if($mainProjectData['discount_type'] == 'percent')
+				$content .= ' %';
+			elseif($mainProjectData['discount_type'] == 'amount')
+				$content .= ''; // add currency
+			$pdf->Cell(30,5,$content,0);
+			$content = $mainProjectData['discount'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('result'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['result'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('test'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['test'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('quality check'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($mainProjectData['quality'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			if(is_array($subProjectsData))
+			{
+				foreach($subProjectsData as $subProjectData)
+				{
+					$pdf->AddPage();
+########################
+
+
+
+
+			// main project name row
+			$subProjectData['title'] = str_replace('&nbsp;','',$subProjectData['title']);
+			$content = lang('subproject').': '.$botranslation->convert($subProjectData['title'],False,'iso-8859-1');
+			$pdf->Cell(0,7,$content,B);
+			$pdf->Ln();
+			
+			$pdf->SetFont('Arial','',8);
+			
+			// row1
+			$content = lang('Project ID').':';
+			$pdf->Cell(30,5,$content,0);
+
+			$content = $subProjectData['number'];
+			$pdf->Cell(65,5,$content,0);
+
+			$content = lang('project url').':';
+			$pdf->Cell(30,5,$content,0);
+
+			if($subProjectData['url'])
+			{
+				$content = 'http://'.$subProjectData['url'];
+				$pdf->Cell(65,5,$content,0);
+			}
+			$pdf->Ln();
+			
+			// main project data
+			$content = lang('investment nr').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['investment_nr'],False,'iso-8859-1');
+			$pdf->MultiCell(65,5,$content,0);
+			
+			$content = lang('previous project').':';
+			$pdf->Cell(30,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Category').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($this->cats->id2name($subProjectData['cat']),False,'iso-8859-1');
+			$pdf->MultiCell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Description').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['descr'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = lang('Status').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang($subProjectData['status']),False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$content = lang('access').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang($subProjectData['access']),False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('priority'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['priority'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('project url'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			if($subProjectData['url'])
+				$content = 'http://'.$subProjectData['url'];
+			else
+				$content = '';
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('external reference'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			if($subProjectData['reference'])
+				$content = 'http://'.$subProjectData['reference'];
+			else
+				$content = '';
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('start date planned'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['psdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('date due planned'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['pedate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Start Date'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['sdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('Date due'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['edate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('creator'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $GLOBALS['phpgw']->common->grab_owner_name($subProjectData['owner']);
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('Date created'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['cdate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('processor'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $GLOBALS['phpgw']->common->grab_owner_name($subProjectData['processor']);
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('last update'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['udate_formatted'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Customer'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['customerout'],False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('customer nr'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['customer_nr'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Coordinator'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['coordinatorout'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+			
+			// employes and roles
+			$emps = $this->get_employee_roles(array('project_id' => $_pro_main,'formatted' => False));
+			
+			$content = $botranslation->convert(lang('Employees'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$pdf->Cell(50,5,'',0);
+			$content = $botranslation->convert(lang('role'),False,'iso-8859-1');
+			$pdf->Cell(50,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('events'),False,'iso-8859-1');
+			$pdf->Cell(60,5,$content,0,0,'C');
+			$pdf->Ln();
+			if(is_array($emps))
+			{
+				foreach($emps as $employee)
+				{
+					$displayEvent = '';
+					if(is_array($employee['eventNames']))
+					{
+						foreach($employee['eventNames'] as $eventName)
+						{
+							$displayEvent .= "$eventName\n";
+						}
+					}
+					$pdf->Cell(30,5,'',0);
+					$content = $botranslation->convert($employee['emp_name'],False,'iso-8859-1');
+					$pdf->MultiCell(50,5,$content,0);
+					$content = $botranslation->convert($employee['role_name'],False,'iso-8859-1');
+					$pdf->MultiCell(50,5,$content,0);
+					$content = $botranslation->convert($displayEvent,False,'iso-8859-1');
+					$pdf->MultiCell(60,5,$content,0);
+					$pdf->Ln();
+				}
+			}
+
+			$content = $botranslation->convert(lang('time planned'),False,'iso-8859-1').':'
+				.$botranslation->convert(lang('Work hours'),False,'iso-8859-1');
+			$pdf->Cell(50,5,$content,0);
+			$content = $subProjectData['ptime'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Budget'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert(lang('year'),False,'iso-8859-1');
+			$pdf->Cell(20,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('month'),False,'iso-8859-1');
+			$pdf->Cell(20,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('budget'),False,'iso-8859-1');
+			$pdf->Cell(25,5,$content,0,0,'C');
+			$content = $botranslation->convert(lang('extra budget'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['e_budget'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+			if(is_array($subProjectData['budget']))
+			{
+				foreach($subProjectData['budget'] as $year => $budgetData)
+				{
+					foreach($budgetData as $month => $budget)
+					{
+						if(!$year) $year = "---";
+						if(!$month) $month = "---";
+						$pdf->Cell(30,5,'',0);
+						$pdf->Cell(20,5,$year,0,0,'C');
+						$pdf->Cell(20,5,$month,0,0,'C');
+						$pdf->Cell(25,5,$budget,0,0,'R');
+						$pdf->Ln();
+					}
+				}
+			}
+
+			$content = $botranslation->convert(lang('Bookable activities'),False,'iso-8859-1').':';
+			$pdf->Cell(40,5,$content,0);
+			$boact = $this->activities_list($_pro_main,False);
+			$content = '';
+			if (is_array($boact))
+			{
+				foreach($boact as $activity)
+				{
+					$content .=  $activity['descr'] . ' [' . $activity['num'] . ']'."\n";
+				}
+			} 
+			$pdf->MultiCell(150,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('Billable activities'),False,'iso-8859-1').':';
+			$pdf->Cell(40,5,$content,0);
+			$billact = $this->activities_list($_pro_main,True);
+			$content = '';
+			if (is_array($billact))
+			{
+				foreach($billact as $activity)
+				{
+					$content .=  $activity['descr'] . ' [' . $activity['num'] . ']'."\n";
+				}
+			} 
+			$pdf->MultiCell(150,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('invoicing method'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['inv_method'],False,'iso-8859-1');
+			$pdf->Cell(65,5,$content,0);
+			$content = $botranslation->convert(lang('discount'),False,'iso-8859-1').':';
+			if($subProjectData['discount_type'] == 'percent')
+				$content .= ' %';
+			elseif($subProjectData['discount_type'] == 'amount')
+				$content .= ''; // add currency
+			$pdf->Cell(30,5,$content,0);
+			$content = $subProjectData['discount'];
+			$pdf->Cell(65,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('result'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['result'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('test'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['test'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+			$content = $botranslation->convert(lang('quality check'),False,'iso-8859-1').':';
+			$pdf->Cell(30,5,$content,0);
+			$content = $botranslation->convert($subProjectData['quality'],False,'iso-8859-1');
+			$pdf->MultiCell(160,5,$content,0);
+			$pdf->Ln();
+
+
+
+
+
+
+
+
+#########################
+				}
+			}
+
+			$pdfFile = $pdf->Output('','S');
+
+			return $pdfFile;
+
+		
+			$param["height"] = 8;
+			$param["font"] = "Helvetica";
+
+			$font_small["height"] = 7;
+			$font_small["font"] = "Helvetica";
+			
+			$columnData['priority']['width']	= 30;
+			$columnData['number']['width']		= 70;
+			$columnData['coordinatorout']['width']	= 65;
+			$columnData['title']['width']		= 70;
+
+
+
+			// Starts a new pdffile object
+			$pdf = new pdffile;
+			
+			/* Use the defaults system to turn off page
+			 * margins
+			 */
+			$pdf->set_default('margin', 0);
+			
+			$content = 'lksdfjkdsfj';
+			
+			#while(is_string($content))
+			#{
+			#	$page = $pdf->new_page("a4");
+			#	$content = $pdf->draw_paragraph(800, 72, 72, 540, $content, $page, $param);
+			#}
+			
+			$page = $pdf->new_page("a4");
+			
+			// main project name row1
+			$content = lang('Main project').': '.$subProjectData['title'];
+			$nextRow = $pdf->draw_one_paragraph(800, 72, 72, 540, $content, $page, $param);
+			
+			// row2
+			$content = lang('Project ID').':';
+			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
+
+			$content = $mainProjectData['number'];
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+
+			$content = lang('project url').':';
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+			
+			$content = 'http://'.$mainProjectData['url'];
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+			
+			$nextRow = $bottom;
+			
+			// row3
+			$content = lang('Coordinator').':';
+			$bottom = $pdf->draw_one_paragraph($nextRow, 72, 72, 139, $content, $page, $param);
+
+			$content = $mainProjectData['coordinatorout'];
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 140, 72, 279, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+
+			$content = lang('Customer').':';
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 280, 72, 339, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+			
+			$content = $mainProjectData['customerout'];
+			$bottom2 = $pdf->draw_one_paragraph($nextRow, 340, 72, 540, $content, $page, $param);
+			if($bottom2 < $bottom) $bottom = $bottom2;
+
+			$nextRow = $bottom;
+
+			if(is_array($subProjectsData))
+			{
+				$nextRow = $nextRow - 30;
+				$left = 72;
+
+				$content = $botranslation->convert(lang('title'),False,'iso-8859-1');
+				$right = $left+$columnData['title']['width'];
+				$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
+				if($bottom2 < $bottom) $bottom = $bottom2;
+				$left = $right++;
+
+				foreach($prefs['columns'] as $column)
+				{
+					$width=50;
+					switch($column)
+					{
+						case 'number':
+							$cname = lang('project id'); 
+							$width = $columnData[$column]['width'];
+							break;
+						case 'priority':
+							$cname = lang('priority');  
+							$width = $columnData[$column]['width'];
+							break;
+						case 'sdateout':
+							$cname = lang('start date'); 
+							break;
+						case 'edateout':
+							$cname = lang('date due'); 
+							break;
+						case 'phours':
+							$cname = lang('time planned');
+							break;
+						case 'budget':
+							$cname = $prefs['currency'] . ' ' . lang('budget');
+							break;
+						case 'e_budget':
+							$cname = $prefs['currency'] . ' ' . lang('extra budget');
+							break;
+						case 'coordinatorout':
+							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
+							$width = $columnData[$column]['width'];
+							break;
+						case 'customerout':
+							$cname = lang('customer'); 
+							break; 
+						case 'investment_nr':
+							$cname = lang('investment nr'); 
+							break;
+						case 'previousout':
+							$cname = lang('previous');
+							break;
+						case 'customer_nr':
+							$cname = lang('customer nr'); 
+							break;
+						case 'url':
+							$cname = lang('url');
+							break;
+						case 'reference':
+							$cname = lang('reference'); 
+							break;
+						case 'accountingout':
+							$cname = lang('accounting');
+							break;
+						case 'project_accounting_factor':
+							$cname = $prefs['currency'] . ' ' .
+							lang('project') . ' ' . 
+							lang('accounting factor') . ' ' .
+							lang('per hour');
+							break;
+						case 'project_accounting_factor_d':
+							$cname = $prefs['currency'] . ' ' . 
+							lang('project') . ' ' . 
+							lang('accounting factor') . ' ' . 
+							lang('per day'); 
+							break;
+						case 'billableout':
+							$cname = lang('billable'); 
+							break;
+						case 'psdateout':
+							$cname = lang('start date planned'); 
+							break;
+						case 'pedateout':
+							$cname = lang('date due planned'); 
+							break;
+						case 'discountout':
+							$cname = lang('discount'); 
+							break;
+					}
+					$content = $botranslation->convert($cname,False,'iso-8859-1');
+					$right = $left+$width;
+					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
+					if($bottom2 < $bottom) $bottom = $bottom2;
+					$left = $right++;
+				}
+				
+				$nextRow = $bottom;
+				
+				foreach($subProjectsData as $projectData)
+				{
+
+					$left = 72;
+
+					$projectData['title'] = str_replace('&nbsp;','',$projectData['title']);
+					$content = $botranslation->convert($projectData['title'],False,'iso-8859-1');
+					$right = $left+$columnData['title']['width'];
+					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
+					if($bottom2 < $bottom) $bottom = $bottom2;
+					$left = $right++;
+
+				foreach($prefs['columns'] as $column)
+				{
+					$width=50;
+					switch($column)
+					{
+						case 'number':
+							$cname = lang('project id'); 
+							$width = $columnData[$column]['width'];
+							break;
+						case 'priority':
+							$cname = lang('priority');  
+							$width = $columnData[$column]['width'];
+							break;
+						case 'sdateout':
+							$cname = lang('start date'); 
+							if($projectData['sdateout'])
+								$projectData['sdateout'] = 
+									$GLOBALS['phpgw']->common->show_date($projectData['sdate'],'Y-m-d');
+							else
+								$projectData['edateout'] = '';
+							break;
+						case 'edateout':
+							$cname = lang('date due'); 
+							if($projectData['edateout'])
+								$projectData['edateout'] = 
+									$GLOBALS['phpgw']->common->show_date($projectData['edate'],'Y-m-d');
+							else
+								$projectData['edateout'] = '';
+							break;
+						case 'phours':
+							$cname = lang('time planned');
+							break;
+						case 'budget':
+							$cname = $prefs['currency'] . ' ' . lang('budget');
+							break;
+						case 'e_budget':
+							$cname = $prefs['currency'] . ' ' . lang('extra budget');
+							break;
+						case 'coordinatorout':
+							$cname = ($action=='mains'?lang('coordinator'):lang('job manager'));
+							$width = $columnData[$column]['width'];
+							break;
+						case 'customerout':
+							$cname = lang('customer'); 
+							break; 
+						case 'investment_nr':
+							$cname = lang('investment nr'); 
+							break;
+						case 'previousout':
+							$cname = lang('previous');
+							break;
+						case 'customer_nr':
+							$cname = lang('customer nr'); 
+							break;
+						case 'url':
+							$cname = lang('url');
+							break;
+						case 'reference':
+							$cname = lang('reference'); 
+							break;
+						case 'accountingout':
+							$cname = lang('accounting');
+							break;
+						case 'project_accounting_factor':
+							$cname = $prefs['currency'] . ' ' .
+							lang('project') . ' ' . 
+							lang('accounting factor') . ' ' .
+							lang('per hour');
+							break;
+						case 'project_accounting_factor_d':
+							$cname = $prefs['currency'] . ' ' . 
+							lang('project') . ' ' . 
+							lang('accounting factor') . ' ' . 
+							lang('per day'); 
+							break;
+						case 'billableout':
+							$cname = lang('billable'); 
+							break;
+						case 'psdateout':
+							$cname = lang('start date planned');
+							if($projectData['psdateout'])
+								$projectData['psdateout'] = 
+									$GLOBALS['phpgw']->common->show_date($projectData['psdate'],'Y-m-d');
+							else
+								$projectData['psdateout'] = '';
+							break;
+						case 'pedateout':
+							$cname = lang('date due planned'); 
+							if($projectData['pedateout'])
+								$projectData['pedateout'] = 
+									$GLOBALS['phpgw']->common->show_date($projectData['pedate'],'Y-m-d');
+							else
+								$projectData['pedateout'] = '';
+							break;
+						case 'discountout':
+							$cname = lang('discount'); 
+							break;
+					}
+					$content = $botranslation->convert($projectData["$column"],False,'iso-8859-1');
+					$right = $left+$width;
+					$bottom2 = $pdf->draw_one_paragraph($nextRow, $left, 72, $right, $content, $page, $font_small);
+					if($bottom2 < $bottom) $bottom = $bottom2;
+					$left = $right++;
+
+				}
+				
+				$nextRow = $bottom;
+				
+				}
+			}
+			
+			if($pdfFile = $pdf->generate())
+			{
+				#$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
+				#		$mainProjectData['title'],False,'iso-8859-1').'_'.
+				#		$GLOBALS['phpgw']->common->show_date('Y-m-d').'.pdf';
+				$retData['filename'] = $botranslation->convert(lang('Project Overview').'_'.
+						$mainProjectData['title'],False,'iso-8859-1').'.pdf';
+				$retData['pdfFile']	= $pdfFile;
+			
+				return $retData;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+
 		
 		function type($action)
 		{
@@ -2503,15 +3403,24 @@
 						}
 						$eformatted .= '</table>';
 					}
+					elseif(is_array($emp['events']))
+					{
+						for ($i=0;$i<count($emp['events']);$i++)
+						{
+							$e = $this->soprojects->id2item(array('action' => 'event','item_id' => $emp['events'][$i],'item' => 'event_name'));
+							$eventNames[]= $e;
+						}
+					}
 
 					$user[] = array
 					(
-						'r_id'			=> $emp['r_id'],
+						'r_id'		=> $emp['r_id'],
 						'account_id'	=> $emp['account_id'],
-						'emp_name'		=> $GLOBALS['phpgw']->common->grab_owner_name($emp['account_id']),
-						'role_id'		=> $emp['role_id'],
-						'role_name'		=> $GLOBALS['phpgw']->strip_html($this->soprojects->id2item(array('item_id' => $emp['role_id'],'item' => 'role_name','action' => 'role'))),
-						'events'		=> $formatted?$eformatted:$emp['events']
+						'emp_name'	=> $GLOBALS['phpgw']->common->grab_owner_name($emp['account_id']),
+						'role_id'	=> $emp['role_id'],
+						'role_name'	=> $GLOBALS['phpgw']->strip_html($this->soprojects->id2item(array('item_id' => $emp['role_id'],'item' => 'role_name','action' => 'role'))),
+						'events'	=> $formatted?$eformatted:$emp['events'],
+						'eventNames'	=> $eventNames
 					);
 				}
 				return $user;
