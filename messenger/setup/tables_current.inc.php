@@ -29,6 +29,6 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array('message_id')
-		),
+		)
 	);
 ?>
