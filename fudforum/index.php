@@ -11,7 +11,7 @@
 ***************************************************************************/
 
 	if (!empty($_GET['domain'])) {
-		$dom = stripslashes($_GET['domain']);
+		$dom = sprintf("%u", crc32(stripslashes($_GET['domain'])));
 	} else {
 		$d = opendir('.');
 		readdir($d); readdir($d);
@@ -19,6 +19,6 @@
 		closedir($d);
 	}
 
-	$path = dirname($_SERVER["REQUEST_URI"]) . "/" . sprintf("%u", crc32($dom)) . "/index.php?" . $_SERVER["QUERY_STRING"];
+	$path = dirname($_SERVER["REQUEST_URI"]) . "/" . $dom . "/index.php?" . $_SERVER["QUERY_STRING"];
 	header("Location: ".$path);
 ?>
