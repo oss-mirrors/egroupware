@@ -27,14 +27,32 @@
 		var $submit_mlist_to_class_form = '';
 		var $debug = 0;
 		var $debug_set_prefs = 0;
-		var $sieve_to_imap_fields=array();
+		var $examine_imap_search_keys_map=array();
 		var $result_set = Array();
 		var $result_set_mlist = Array();
 		var $fake_folder_info = array();
 		
+		var $inbox_full_msgball_list = array();
+		var $each_row_result_mball_list = array();
+		var $each_acct_final_mball_list = array();
+		
 		function bofilters()
 		{
 			if ($this->debug > 0) { echo 'email.bofilters *constructor*: ENTERING <br>'; }
+			$this->examine_imap_search_keys_map = Array(
+				'from'		=> 'FROM',
+				'to'		=> 'TO',
+				'cc'		=> 'CC',
+				'bcc'		=> 'BCC',
+				'recipient'	=> 'FIX_ME: TO or CC or BCC',
+				'sender'	=> 'HEADER SENDER',
+				'subject'	=> 'SUBJECT',
+				'header'	=> 'FIX_ME SEARCHHEADER FIX_ME',
+				'size_larger'	=> 'LARGER',
+				'size_smaller'	=> 'SMALLER',
+				'allmessages'	=> 'FIX_ME (matches all messages)',
+				'body'		=> 'BODY'
+			);
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
 				if ($this->debug > 1) { echo 'email.bofilters *constructor*: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
@@ -62,20 +80,6 @@
 			$already_initialized = True;
 			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
 			
-			$this->sieve_to_imap_fields = Array(
-				'from'		=> 'FROM',
-				'to'		=> 'TO',
-				'cc'		=> 'CC',
-				'bcc'		=> 'BCC',
-				'recipient'	=> 'FIX_ME: TO or CC or BCC',
-				'sender'	=> 'SEARCHHEADER SENDER',
-				'subject'	=> 'SUBJECT',
-				'header'	=> 'FIX_ME SEARCHHEADER FIX_ME',
-				'size_larger'	=> 'LARGER',
-				'size_smaller'	=> 'SMALLER',
-				'allmessages'	=> 'FIX_ME (matches all messages)',
-				'body'		=> 'BODY'
-			);
 		}
 		
 		function obtain_filer_num()
@@ -421,63 +425,237 @@
 			$this_filter = $this->all_filters[$filter_num];
 			if ($this->debug > 2) { echo 'bofilters.run_single_filter: $filter_num ['.$filter_num.'] ; $this_filter DUMP:<pre>'; print_r($this_filter); echo "</pre>\r\n"; }
 			
-			// make the imap search string
-			$search_str = $this->make_imap_search_str($this_filter);
-			if ($this->debug > 1) { echo 'bofilters.run_single_filter: loop ['.$i.'] ; $this->make_imap_search_str($this_filter) returns ['.$search_str.'] <br>'; }
 			
 			// WE NEED TO DO THIS FOR EVERY SOURCE ACCOUNT
 			$all_accounts_result_set = array();
 			$msgball_list = array();
-			for ($i=0; $i < count($this_filter['source_accounts']); $i++)
+			for ($src_acct_loop_num=0; $src_acct_loop_num < count($this_filter['source_accounts']); $src_acct_loop_num++)
 			{
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$i.']<br>'; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.']<br>'; }
 				
 				// ACCOUNT TO SEARCH (always filter source is INBOX)
 				$fake_fldball = array();
-				$fake_fldball['acctnum'] = $this_filter['source_accounts'][$i]['acctnum'];
-				$fake_fldball['folder'] = $this_filter['source_accounts'][$i]['folder'];
+				$fake_fldball['acctnum'] = $this_filter['source_accounts'][$src_acct_loop_num]['acctnum'];
+				$fake_fldball['folder'] = $this_filter['source_accounts'][$src_acct_loop_num]['folder'];
 				
-				// FINAL DATA
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: will feed phpgw_search this $fake_fldball [<code>'.serialize($fake_fldball).'</code>] <br>'; }
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter:  will feed phpgw_search this $search_str ['.$search_str.'] <br>'; }
-				
-				$initial_result_set = Array();
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: about to call $GLOBALS[phpgw]->msg->phpgw_search($fake_fldball, $search_str)<br>'; }
-				$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($fake_fldball, $search_str);
-				// sanity check on 1 returned hit, is it for real?
-				if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
-			
-				if (($initial_result_set == False)
-				|| (count($initial_result_set) == 0))
+				// WE NEED TO DO THIS FOR EACH SEARCH ROW
+				for ($matches_row=0; $matches_row < count($this_filter['matches']); $matches_row++)
 				{
-					if ($this->debug > 1) { echo 'bofilters.run_single_filter: no hits or possible search error<br>'."\r\n"; }
-					if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
-					// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
-				}
-				else
-				{
-					if ($this->debug > 2) { echo 'bofilters.run_single_filter: $initial_result_set DUMP:<pre>'; print_r($initial_result_set); echo "</pre>\r\n"; }
-					// accumulate the results for all accounts
-					for ($x=0; $x < count($initial_result_set); $x++)
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] l $matches_row ['.$matches_row.']<br>'; }
+					
+					// IMAP SEARCH STRING  for this row only)
+					$search_key_sieve = $this_filter['matches'][$matches_row]['examine'];
+					$search_key_imap = $this->examine_imap_search_keys_map[$search_key_sieve];
+					$search_for = $this_filter['matches'][$matches_row]['matchthis'];
+					$search_str = $search_key_imap.' "'.$search_for.'"';
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: acct loop ['.$src_acct_loop_num.'] ; row loop ['.$matches_row.'] made $search_str ['.$search_str.'] <br>'; }
+					
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: will feed phpgw_search this $fake_fldball [<code>'.serialize($fake_fldball).'</code>] <br>'; }
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter:  will feed phpgw_search this $search_str ['.$search_str.'] <br>'; }
+					
+					// NOT CONTAINS requires a manual "NOT"-ing of a positive result
+					// so we need the full msglist, then search for "does contain", then Swap out those results from the initial full msglist 
+					$comparator = $this_filter['matches'][$matches_row]['comparator'];
+					if ($comparator == 'notcontains')
 					{
-						$next_pos = count($all_accounts_result_set);
-						$all_accounts_result_set[$next_pos] = $initial_result_set[$x];
-						// and this has the essential data we'll need to move msgs around
-						$msgball_list[$next_pos]['acctnum'] = $fake_fldball['acctnum'];
-						$msgball_list[$next_pos]['folder'] = $fake_fldball['folder'];
-						$msgball_list[$next_pos]['msgnum'] = $initial_result_set[$x];
-						$msgball_list[$next_pos]['uri'] = 
-							 'msgball[msgnum]='.$msgball_list[$next_pos]['msgnum']
-							.'&msgball[folder]='.$msgball_list[$next_pos]['folder']
-							.'&msgball[acctnum]='.$msgball_list[$next_pos]['acctnum'];
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter: $comparator : ['.$comparator.']<br>'; }
+						if ((!isset($this->inbox_full_msgball_list[$src_acct_loop_num]))
+						|| (count($this->inbox_full_msgball_list[$src_acct_loop_num] == 0)))
+						{
+							// get FULL msgball list for this INBOX (we always filter INBOXs only)
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: get_msgball_list for later XOR ing for <code>['.serialize($fake_fldball).']</code><br>'; }
+							$this->inbox_full_msgball_list[$src_acct_loop_num] = $GLOBALS['phpgw']->msg->get_msgball_list($fake_fldball['acctnum'], $fake_fldball['folder']);
+							if ($this->debug > 2) { echo 'bofilters.run_single_filter: $this->inbox_full_msgball_list['.$src_acct_loop_num.'] DUMP:<pre>'; print_r($this->inbox_full_msgball_list[$src_acct_loop_num]); echo "</pre>\r\n"; }
+						}
 					}
+					
+					// do the IMAP search
+					$initial_result_set = Array();
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: about to call $GLOBALS[phpgw]->msg->phpgw_search($fake_fldball, $search_str)<br>'; }
+					$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($fake_fldball, $search_str);
+					// sanity check on 1 returned hit, is it for real?
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
+				
+					if (($initial_result_set == False)
+					|| (count($initial_result_set) == 0))
+					{
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter: no hits or possible search error<br>'."\r\n"; }
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
+						// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
+						$this->each_row_result_mball_list[$matches_row] = array();
+						// if comparitor is "contains", we leave that an empty array, BUT...
+						if ($comparator == 'notcontains')
+						{
+							// opposite of this search is EVERY message in the $this->inbox_full_msgball_list[$src_acct_loop_num] is a "search hit"
+							// remember, for "notcontains" we search for what DOES contain, then remove those hits from $this->inbox_full_msgball_list[$src_acct_loop_num]
+							$this->each_row_result_mball_list[$matches_row] = $this->inbox_full_msgball_list[$src_acct_loop_num];
+						}
+					}
+					else
+					{
+						// we got results!!!
+						if ($this->debug > 2) { echo 'bofilters.run_single_filter: $initial_result_set DUMP:<pre>'; print_r($initial_result_set); echo "</pre>\r\n"; }
+						// accumulate the results for all accounts
+						$this->each_row_result_mball_list[$matches_row] = array();
+						if ($comparator == 'contains')
+						{
+							// these are "psitive" results, they represent actual matches
+							// make a msgball list out of the data
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: $comparator ['.$comparator.'] means normal, use these results, make a msgball list out of them <br>'."\r\n"; }
+							for ($x=0; $x < count($initial_result_set); $x++)
+							{
+								$next_pos = count($this->each_row_result_mball_list[$matches_row]);
+								// and this has the essential data we'll need to move msgs around
+								$this->each_row_result_mball_list[$matches_row][$next_pos]['acctnum'] = $fake_fldball['acctnum'];
+								$this->each_row_result_mball_list[$matches_row][$next_pos]['folder'] = $fake_fldball['folder'];
+								$this->each_row_result_mball_list[$matches_row][$next_pos]['msgnum'] = (int)$initial_result_set[$x];
+								$this->each_row_result_mball_list[$matches_row][$next_pos]['uri'] = 
+														  'msgball[acctnum]='.$fake_fldball['acctnum']
+														.'&msgball[folder]='.$fake_fldball['folder']
+														.'&msgball[msgnum]='.$initial_result_set[$x];
+							}
+						}
+						else
+						{
+							// comparator "notcontains" means OPPOSITE results
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: $comparator ['.$comparator.'] means we have negative results, to be subtracted from pre-search total folder msg list <br>'."\r\n"; }
+							// make a string of the result array
+							$remove_me = ' '.implode(' ', $initial_result_set).' ';
+							// loop thru the pre-search msg_ball list of all msgs in this INBOX
+							// keep only what IS NOT IN the "remove_me" string
+							for ($x=0; $x < count($this->inbox_full_msgball_list[$src_acct_loop_num]); $x++)
+							{
+								$this_inbox_msgball = $this->inbox_full_msgball_list[$src_acct_loop_num][$x];
+								if (stristr($remove_me, ' '.$this_inbox_msgball['msgnum'].' ') == False)
+								{
+									// we may keep this in our result set
+									$next_pos = count($this->each_row_result_mball_list[$matches_row]);
+									// and this has the essential data we'll need to move msgs around
+									$this->each_row_result_mball_list[$matches_row][$next_pos] = $this_inbox_msgball;
+								}
+								
+							}
+						}
+						
+					}
+					// code here is the last line in this MATCHES row loop
+					// we'll use this later
+					$highest_row_number = $matches_row;
+					if ($this->debug > 2) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] $this->each_row_result_mball_list[$matches_row] DUMP<pre>'; print_r($this->each_row_result_mball_list[$matches_row]); echo '</pre>'."\r\n"; }
+					// we need to AND / OR this row's results to the previous row, if this is now the 1st row, of course
+					if ($matches_row > 0)
+					{
+						$andor = $this_filter['matches'][$matches_row]['andor'];
+						if ($andor = 'and')
+						{
+							// "AND" - only items in this list AND also in the previous list make it to the next round
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter:  source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $andor ['.$andor.'] means only items in this list AND also in the previous list make it to the next round<br>'."\r\n"; }
+							// serialize the current results, walk thru prev results, prepare a new "common_items_array"
+							// simple string search for common items, if items are not common to both arrays then
+							// they will NOT be added to the "common array"
+							//the "common array" is your new result set for the current row as processed as a pair with it's previous row.
+							$common_items_array = array();
+							$this_row_serialized = serialize($this->each_row_result_mball_list[$matches_row]);
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter:  source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $andor ['.$andor.'] ; $this_row_serialized : <p>'.$this_row_serialized.'</p>'."\r\n"; }
+							// EXAMPLE: look for: 
+							//	s:6:"msgnum";i:19
+							// loop thru previous row results
+							for ($x=0; $x < count($this->each_row_result_mball_list[$matches_row-1]); $x++)
+							{
+								$existing_msgnum = $this->each_row_result_mball_list[$matches_row-1][$x]['msgnum'];
+								if ($this->debug > 1) { echo ' * bofilters.run_single_filter: $existing_msgnum = $this->each_row_result_mball_list[$matches_row-1]['.$x.'][msgnum] = ['.$existing_msgnum.'] <br>'."\r\n"; }
+								if (stristr($this_row_serialized, 's:6:"msgnum";i:'.$existing_msgnum.';'))
+								{
+									// ok, this msgnum is common to both result sets, this is an AND
+									$add_me_msgball = $this->each_row_result_mball_list[$matches_row-1][$x];
+									$next_pos = count($common_items_array);
+									if ($this->debug > 1) { echo ' * bofilters.run_single_filter: adding $add_me_msgball [<code>'.serialize($add_me_msgball).'</code>] to $common_items_array['.$next_pos.']<br>'."\r\n"; }
+									$common_items_array[$next_pos] = $add_me_msgball;
+								}
+								
+							}
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $common_items_array for rows ['.$matches_row.'] and ['.($matches_row-1).'] DUMP <pre>'; print_r($common_items_array); echo '</pre>'."\r\n"; }
+							
+							// $common_items_array[] now holds the processed AND'ed data, make this result set the current row's result set,
+							// so our result set logic thus far is what gets AND or OR 'd to the next row
+							$this->each_row_result_mball_list[$matches_row] = array();
+							$this->each_row_result_mball_list[$matches_row] = $common_items_array;
+							if ($this->debug > 2) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] AND-ed FINAL $this->each_row_result_mball_list[$matches_row] DUMP<pre>'; print_r($this->each_row_result_mball_list[$matches_row]); echo '</pre>'."\r\n"; }
+						}
+						else
+						{
+							// "OR"
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter:  source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $andor ['.$andor.'] means only items in this list AND also in the previous list make it to the next round<br>'."\r\n"; }
+							// serialize the current results, walk thru prev results, str replace common values with empty string in the serialuzed array
+							// then unserialize the array and add whatever still hasa value to the first array.
+							// this means you have merged the two arrays except common items were not added again
+							// this is your new result set for the current row as processed as a pair with it's previous row.
+							$this_row_serialized = serialize($this->each_row_result_mball_list[$matches_row]);
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter:  source_accounts loop ['.$src_acct_loop_num.'] ; $matches_row ['.$matches_row.'] ; $andor ['.$andor.'] ; $this_row_serialized : <p>'.$this_row_serialized.'</p>'."\r\n"; }
+							// EXAMPLE: look for: 
+							//	s:6:"msgnum";i:19;
+							// REPLACE with 
+							//	s:6:"msgnum";s:1:" ";
+							// loop thru previous row results
+							for ($x=0; $x < count($this->each_row_result_mball_list[$matches_row-1]); $x++)
+							{
+								$existing_msgnum = $this->each_row_result_mball_list[$matches_row-1][$x]['msgnum'];
+								if ($this->debug > 1) { echo ' * bofilters.run_single_filter: $existing_msgnum = $this->each_row_result_mball_list[$matches_row-1]['.$x.'][msgnum] = ['.$existing_msgnum.'] <br>'."\r\n"; }
+								$this_row_serialized = str_replace('s:6:"msgnum";i:'.$existing_msgnum.';', 's:6:"msgnum";s:1:" ";', $this_row_serialized);
+							}
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: POST replace $this_row_serialized  <p>'.$this_row_serialized.'</p> <br>'."\r\n"; }
+							$this_row_unserialized = unserialize($this_row_serialized);
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: POST replace $this_row_UNserialized array DUMP <pre>'; print_r($this_row_unserialized); echo '</pre>'."\r\n"; }
+							// loop thru $this_row_unserialized array, anything that still has a "msgnum" gets added to the previous row's results
+							for ($x=0; $x < count($this_row_unserialized); $x++)
+							{
+								// does this msgball still have a msgnum , i.e. we did not blank it out above here
+								if (trim($this_row_unserialized[$x]['msgnum']) != '')
+								{
+									// ok, this gets added to the previous row's results
+									$add_me_msgball = $this_row_unserialized[$x];
+									$next_pos = count($this->each_row_result_mball_list[$matches_row-1]);
+									if ($this->debug > 1) { echo ' * bofilters.run_single_filter: adding $add_me_msgball [<code>'.serialize($add_me_msgball).'</code>] to $this->each_row_result_mball_list[$matches_row-1]['.$next_pos.']<br>'."\r\n"; }
+									$this->each_row_result_mball_list[$matches_row-1][$next_pos] = $add_me_msgball;
+								}
+							}
+							// previous row now holds the processed OR'ed data, make this result set the current row's result set,
+							// so our result set logic thus far is what gets AND or OR 'd to the next row
+							$this->each_row_result_mball_list[$matches_row] = array();
+							$this->each_row_result_mball_list[$matches_row] = $this->each_row_result_mball_list[$matches_row-1];
+							if ($this->debug > 2) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] AND-ed FINAL $this->each_row_result_mball_list[$matches_row] DUMP<pre>'; print_r($this->each_row_result_mball_list[$matches_row]); echo '</pre>'."\r\n"; }
+						}
+					}
+					
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] here <b> -- END THIS MATCHES ROW -- </b><br>'."\r\n"; }
+					// here END THIS MATCHES ROW
+				}
+				// code here is the last line in this SRC ACCT loop iteration
+				// we recoreded the final row in $highest_row_number, this row's array has the sum of all our logic
+				// add the last row's sesult set to "each_acct_final_mball_list"
+				$next_pos = count($this->each_acct_final_mball_list);
+				$this->each_acct_final_mball_list[$next_pos] = $this->each_row_result_mball_list[$highest_row_number];
+				if ($this->debug > 2) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] ; $this->each_acct_final_mball_list['.$next_pos.'] iteration DUMP<pre>'; print_r($this->each_acct_final_mball_list[$next_pos]); echo '</pre>'."\r\n"; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$src_acct_loop_num.'] row loop ['.$matches_row.'] here <b> -- END THIS SOURCE ACCOUNT LOOP -- </b><br>'."\r\n"; }
+				// here END THIS SOURCE ACCOUNT
+			}
+			
+			// ADD ALL ACCOUNTS RESULTS SETS TOGETHER
+			$all_accounts_result_set = array();
+			for ($x=0; $x < count($this->each_acct_final_mball_list); $x++)
+			{
+				for ($y=0; $y < count($this->each_acct_final_mball_list[$x]); $y++)
+				{	
+					$this_msgball = $this->each_acct_final_mball_list[$x][$y];
+					$next_pos = count($all_accounts_result_set);
+					$all_accounts_result_set[$next_pos] = $this_msgball;
 				}
 			}
 			
-			
-			if ((count($all_accounts_result_set > 0))
+			// report
+			if ((count($all_accounts_result_set) > 0)
 			&& (isset($all_accounts_result_set[0]))
-			&& ((string)$all_accounts_result_set[0] != '')
+			&& ((string)$all_accounts_result_set[0]['folder'] != '')
 			&& ($this->just_testing()))
 			{
 				if ($this->debug > 1) { echo 'bofilters.run_single_filter: Filter Test Run<br>'; }
@@ -488,16 +666,16 @@
 				$this->fake_folder_info['alert_string'] = 'you have search results';
 				$this->fake_folder_info['number_new'] = count($all_accounts_result_set);
 				$this->fake_folder_info['number_all'] = count($all_accounts_result_set);
-				if ($this->debug > 2) { echo 'bofilters.run_single_filter:  $msgball_list DUMP:<pre>'; print_r($msgball_list); echo "</pre>\r\n"; }
+				if ($this->debug > 2) { echo 'bofilters.run_single_filter:  $all_accounts_result_set DUMP:<pre>'; print_r($all_accounts_result_set); echo "</pre>\r\n"; }
 				// retrieve user displayable data for each message in the result set
-				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$msgball_list);
+				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$all_accounts_result_set);
 				$html_list = $this->make_mlist_box();
 				echo '<html><table>'.$html_list.'</table></html>';
 			}
 			elseif ((count($all_accounts_result_set > 0))
 			&& (isset($all_accounts_result_set[0]))
 			&& ((string)$all_accounts_result_set[0] != ''))
-			{
+			{				
 				// NOT A TEST - APPLY THE ACTION(S)
 				if ($this->debug > 1) { echo 'bofilters.run_single_filter: NOT a Test, *Apply* the Action(s) ; $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
 				if ($this_filter['actions'][0]['judgement'] == 'fileinto')
@@ -515,7 +693,10 @@
 						if ($this->debug > 2) { echo 'bofilters.run_single_filter: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
 						$mov_msgball = $msgball_list[$i];
 						if ($this->debug > 1) { echo 'bofilters.run_single_filter: pre-move info: $mov_msgball [<code>'.serialize($mov_msgball).'</code>]<br>'; }
-						$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+						
+						echo 'EXIT NOT READY TO APPLY THE FILTER YET';
+						//$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+						
 						if (!$good_to_go)
 						{
 							// ERROR
@@ -577,8 +758,10 @@
 				"(" search-key *(SP search-key) ")"
 			*/
 			/*
-			examples of how to construct IMAPrev4 search strings
-			Prior to IMAPrev4, 
+			Examples of how to construct IMAP4rev1 search strings
+			"PERFECT WORLD EXAMPLES" meaning the following
+			examples apply ONLY to servers implementing IMAP4rev1 Search functionality
+			As of Jan 25, 2002, this is somewhat rare.
 			From a google search in a "turnpike" newsgroup:
 			
 			IMAP's [AND] OR and NOT are all prefix operators, i.e. there is no 
@@ -603,8 +786,8 @@
 			OR NOT k1 k2            means (not k1) or k2
 			NOT k1 NOT k2           means (not k1) and (not k2)
 			*/
-		
-			if ($this->debug > 2) { echo 'bofilters: make_imap_search_str: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
+			
+			if ($this->debug > 2) { echo 'bofilters: make_imap_search_str: mappings are:<pre>'; print_r($this->examine_imap_search_keys_map); echo "</pre>\r\n"; }
 			
 			// do we have one search or two, or more
 			$num_search_criteria = count($feed_filter['matches']);
@@ -612,46 +795,46 @@
 			// 1st search criteria
 			// convert form submitted data into usable IMAP search keys
 			$search_key_sieve = $feed_filter['matches'][0]['examine'];
-			$search_key_imap = $this->sieve_to_imap_fields[$search_key_sieve];
+			$search_key_imap = $this->examine_imap_search_keys_map[$search_key_sieve];
 			// what to learch for
 			$search_for = $feed_filter['matches'][0]['matchthis'];
 			// does or does not contain
 			$comparator = $feed_filter['matches'][0]['comparator'];
-			// DOES NOT CONTAIN - BROKEN - FIXME
 			$search_str_1_criteria = $search_key_imap.' "'.$search_for.'"';
-			if ($comparator == 'notcontains')
-			{
-				$search_str_1_criteria = " NOT $search_str_1_criteria";
-			}
+			// DOES NOT CONTAIN - "NOT" is a IMAP4rev1 only key, UWASH doesn;t support it.
 			
-			// 2nd Line 
-			if ($num_search_criteria == 1)
+			// DO ONE LINE AT A TIME FOR NOW
+			$one_line_only = True;
+			if ($one_line_only)
 			{
-				// no seconnd line, our string is complete
-				$final_search_str = $search_str_1_criteria;
+				// skip this
 			}
 			else
 			{
-				// convert form submitted data into usable IMAP search keys
-				$search_key_sieve = $feed_filter['matches'][1]['examine'];
-				$search_key_imap = $this->sieve_to_imap_fields[$search_key_sieve];
-				// what to learch for
-				$search_for = $feed_filter['matches'][1]['matchthis'];
-				// does or does not contain
-				$comparator = $feed_filter['matches'][1]['comparator'];
-				// DOES NOT CONTAIN - BROKEN - FIXME
-				$search_str_2_criteria = $search_key_imap.' "'.$search_for.'"';
-				//if ($comparator == 'notcontains')
-				//{
-				//	$search_str_2_criteria = "( NOT $search_str_2_criteria)";
-				//}
-				// preliminary  compound search string
-				$final_search_str = $search_str_1_criteria .' '.$search_str_2_criteria;
-				// final syntax of this limited 2 line search
-				$andor = $feed_filter['matches'][1]['andor'];
-				// ANDOR - BROKEN - FIXME
+				// 2nd Line 
+				if ($num_search_criteria == 1)
+				{
+					// no seconnd line, our string is complete
+					$final_search_str = $search_str_1_criteria;
+				}
+				else
+				{
+					// convert form submitted data into usable IMAP search keys
+					$search_key_sieve = $feed_filter['matches'][1]['examine'];
+					$search_key_imap = $this->examine_imap_search_keys_map[$search_key_sieve];
+					// what to learch for
+					$search_for = $feed_filter['matches'][1]['matchthis'];
+					// does or does not contain
+					$comparator = $feed_filter['matches'][1]['comparator'];
+					// DOES NOT CONTAIN - BROKEN - FIXME
+					$search_str_2_criteria = $search_key_imap.' "'.$search_for.'"';
+					// preliminary  compound search string
+					$final_search_str = $search_str_1_criteria .' '.$search_str_2_criteria;
+					// final syntax of this limited 2 line search
+					$andor = $feed_filter['matches'][1]['andor'];
+					// ANDOR - BROKEN - FIXME
+				}
 			}
-			
 			/*
 			$conv_error = '';
 			if ((!isset($look_here_sieve))
@@ -671,115 +854,10 @@
 			}
 			$imap_str = $look_here_imap.' "'.$for_this.'"';
 			*/
-			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: LEAVING, returning search string: <code>'.$final_search_str.'</code><br>'."\r\n"; }
+			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: LEAVING, $one_line_only: ['.serialize($one_line_only).'] returning search string: <code>'.$final_search_str.'</code><br>'."\r\n"; }
 			return $final_search_str;
 		}
 
-		// DEPRECIATED
-		function do_imap_search()
-		{
-			$imap_search_str = $this->make_imap_search_str();
-			if (!$imap_search_str)
-			{
-				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: do_imap_search: make_imap_search_str returned empty<br>'."\r\n"; }
-				return array();
-			}
-			
-			//$attempt_reuse = True;
-			$attempt_reuse = False;
-			if (!is_object($GLOBALS['phpgw']->msg))
-			{
-				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			}
-			
-			if ((is_object($GLOBALS['phpgw']->msg))
-			&& ($attempt_reuse == True))
-			{
-				// no not create, we will reuse existing
-				echo 'bofilters: do_imap_search: reusing existing mail_msg object'.'<br>';
-				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
-				$reuse_feed_args = $GLOBALS['phpgw']->msg->get_all_args();
-				$args_array = Array();
-				$args_array = $reuse_feed_args;
-				if ((isset($this->filters[0]['source_account']))
-				&& ($this->filters[0]['source_account'] != ''))
-				{
-					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
-					$args_array['folder'] = $this->filters[0]['source_account'];
-				}
-				else
-				{
-					$args_array['folder'] = 'INBOX';
-				}
-				// add this to keep the error checking code (below) happy
-				$args_array['do_login'] = True;
-			}
-			else
-			{
-				if ($this->debug_index_data == True) { echo 'bofilters: do_imap_search: creating new login email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
-				// new login 
-				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
-				$args_array = Array();
-				if ((isset($this->filters[0]['source_account']))
-				&& ($this->filters[0]['source_account'] != ''))
-				{
-					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
-					$args_array['folder'] = $this->filters[0]['source_account'];
-				}
-				else
-				{
-					$args_array['folder'] = 'INBOX';
-				}
-				// (2) should we log in
-				$args_array['do_login'] = True;
-			}
-
-
-			/*
-			//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-			$args_array = Array();
-			if ((isset($this->filters[0]['source_account']))
-			&& ($this->filters[0]['source_account'] != ''))
-			{
-				if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
-				$args_array['folder'] = $this->filters[0]['source_account'];
-			}
-			else
-			{
-				$args_array['folder'] = 'INBOX';
-			}
-			
-			$args_array['do_login'] = True;
-			*/
-			
-			$GLOBALS['phpgw']->msg->begin_request($args_array);
-			
-			$initial_result_set = Array();
-			$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($imap_search_str);
-			// sanity check on 1 returned hit, is it for real?
-			if (($initial_result_set == False)
-			|| (count($initial_result_set) == 0))
-			{
-				echo 'bofilters: do_imap_search: no hits or possible search error<br>'."\r\n";
-				echo 'bofilters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'"'."\r\n";
-				// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
-			}
-			else
-			{
-				$this->result_set = $initial_result_set;
-				if ($this->debug > 0) { echo 'bofilters: do_imap_search: number of matches = ' .count($this->result_set).'<br>'."\r\n"; }
-				// make a "fake" folder_info array to make things simple for get_msg_list_display
-				$this->fake_folder_info['is_imap'] = True;
-				$this->fake_folder_info['folder_checked'] = $GLOBALS['phpgw']->msg->get_arg_value('folder');
-				$this->fake_folder_info['alert_string'] = 'you have search results';
-				$this->fake_folder_info['number_new'] = count($this->result_set);
-				$this->fake_folder_info['number_all'] = count($this->result_set);
-				// retrieve user displayable data for each message in the result set
-				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$this->result_set);
-			}
-			$GLOBALS['phpgw']->msg->end_request();
-			//echo 'bofilters: do_imap_search: returned:<br>'; var_dump($this->result_set); echo "<br>\r\n";
-		}
 
 		function make_mlist_box()
 		{
@@ -858,6 +936,107 @@
 			
 		}
 		
+		/* // DEPRECIATED
+		function do_imap_search()
+		{
+			$imap_search_str = $this->make_imap_search_str();
+			if (!$imap_search_str)
+			{
+				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: do_imap_search: make_imap_search_str returned empty<br>'."\r\n"; }
+				return array();
+			}
+			
+			//$attempt_reuse = True;
+			$attempt_reuse = False;
+			if (!is_object($GLOBALS['phpgw']->msg))
+			{
+				$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			}
+			
+			if ((is_object($GLOBALS['phpgw']->msg))
+			&& ($attempt_reuse == True))
+			{
+				// no not create, we will reuse existing
+				echo 'bofilters: do_imap_search: reusing existing mail_msg object'.'<br>';
+				// we need to feed the existing object some params begin_request uses to re-fill the msg->args[] data
+				$reuse_feed_args = $GLOBALS['phpgw']->msg->get_all_args();
+				$args_array = Array();
+				$args_array = $reuse_feed_args;
+				if ((isset($this->filters[0]['source_account']))
+				&& ($this->filters[0]['source_account'] != ''))
+				{
+					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_account'];
+				}
+				else
+				{
+					$args_array['folder'] = 'INBOX';
+				}
+				// add this to keep the error checking code (below) happy
+				$args_array['do_login'] = True;
+			}
+			else
+			{
+				if ($this->debug_index_data == True) { echo 'bofilters: do_imap_search: creating new login email.mail_msg, cannot or not trying to reusing existing'.'<br>'; }
+				// new login 
+				// (1) folder (if specified) - can be left empty or unset, mail_msg will then assume INBOX
+				$args_array = Array();
+				if ((isset($this->filters[0]['source_account']))
+				&& ($this->filters[0]['source_account'] != ''))
+				{
+					if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+					$args_array['folder'] = $this->filters[0]['source_account'];
+				}
+				else
+				{
+					$args_array['folder'] = 'INBOX';
+				}
+				// (2) should we log in
+				$args_array['do_login'] = True;
+			}
+			//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
+			//$args_array = Array();
+			//if ((isset($this->filters[0]['source_account']))
+			//&& ($this->filters[0]['source_account'] != ''))
+			//{
+			//	if ($this->debug > 0) { echo 'bofilters: do_imap_search: this->filters[0][source_account] = ' .$this->filters[0]['source_account'].'<br>'."\r\n"; }
+			//	$args_array['folder'] = $this->filters[0]['source_account'];
+			//}
+			//else
+			//{
+			//	$args_array['folder'] = 'INBOX';
+			//}
+			//$args_array['do_login'] = True;
+			
+			$GLOBALS['phpgw']->msg->begin_request($args_array);
+			
+			$initial_result_set = Array();
+			$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($imap_search_str);
+			// sanity check on 1 returned hit, is it for real?
+			if (($initial_result_set == False)
+			|| (count($initial_result_set) == 0))
+			{
+				echo 'bofilters: do_imap_search: no hits or possible search error<br>'."\r\n";
+				echo 'bofilters: do_imap_search: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error().'"'."\r\n";
+				// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
+			}
+			else
+			{
+				$this->result_set = $initial_result_set;
+				if ($this->debug > 0) { echo 'bofilters: do_imap_search: number of matches = ' .count($this->result_set).'<br>'."\r\n"; }
+				// make a "fake" folder_info array to make things simple for get_msg_list_display
+				$this->fake_folder_info['is_imap'] = True;
+				$this->fake_folder_info['folder_checked'] = $GLOBALS['phpgw']->msg->get_arg_value('folder');
+				$this->fake_folder_info['alert_string'] = 'you have search results';
+				$this->fake_folder_info['number_new'] = count($this->result_set);
+				$this->fake_folder_info['number_all'] = count($this->result_set);
+				// retrieve user displayable data for each message in the result set
+				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$this->result_set);
+			}
+			$GLOBALS['phpgw']->msg->end_request();
+			//echo 'bofilters: do_imap_search: returned:<br>'; var_dump($this->result_set); echo "<br>\r\n";
+		}
+		*/
 		
 	
 	// end of class

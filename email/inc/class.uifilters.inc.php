@@ -255,6 +255,7 @@
 				$from_selected = '';
 				$to_selected = '';
 				$cc_selected = '';
+				$sender_selected = '';
 				$subject_selected = '';
 				// as our numbers of rows go beyond what the user previously set, there will bo no data
 				if ((!isset($this->bo->all_filters[$filter_num]['matches'][$i]['examine']))
@@ -270,6 +271,10 @@
 				{
 					$cc_selected = ' selected';
 				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'sender')
+				{
+					$sender_selected = ' selected';
+				}
 				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'subject')
 				{
 					$subject_selected = ' selected';
@@ -282,6 +287,7 @@
 				$GLOBALS['phpgw']->template->set_var('from_selected',$from_selected);
 				$GLOBALS['phpgw']->template->set_var('to_selected',$to_selected);
 				$GLOBALS['phpgw']->template->set_var('cc_selected',$cc_selected);
+				$GLOBALS['phpgw']->template->set_var('sender_selected',$sender_selected);
 				$GLOBALS['phpgw']->template->set_var('subject_selected',$subject_selected);
 				// COMPARATOR
 				$comparator_selectbox_name = 'match_'.(string)$i.'[comparator]';

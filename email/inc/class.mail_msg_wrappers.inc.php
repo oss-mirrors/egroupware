@@ -228,14 +228,33 @@
 		Sort and Order is applied by the class, so the calling process does not need to specify sorting here
 		The data communications object (class mail_dcom) is supplied by the class
 		*/
-		function get_msgball_list($acctnum='')
+		function get_msgball_list($acctnum='', $folder='')
 		{
-			if ((!isset($acctnum))
+			$debug = 0;
+			if ($debug > 0) { echo 'mail_msg(wrappers).get_msgball_list:  ENTERING $acctnum ['.$acctnum.'] ; $folder ['.$folder.'] <br>'; }
+			// IF specifying a folder, as a filter search may do, we need to ensure stream and folder
+			if ((isset($acctnum))
+			&& ((string)$acctnum != '')
+			&& (isset($folder))
+			&& ((string)$folder != ''))
+			{
+				// SPECIAL HANDLING, typical message viewing would not need to specify folder
+				// DO NOT SPECIFY FOLDER unless you *really* know what you are doing
+				// typically "best" folder and acctnum are obtained during begin request
+				// right now only specialized filter searching requires tp specify a folder
+				$fake_fldball = array();
+				$fake_fldball['acctnum'] = $acctnum;
+				$fake_fldball['folder'] = $folder;
+				$this->ensure_stream_and_folder($fake_fldball, 'get_msgball_list');
+				// ok, so now we KNOW the stream exists and folder value is what we need for this desired account
+			}
+			elseif ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-		
+			// as I said above, rare to specify folder, if it wasn;t handled above, forget about it
+			
 			// try to restore "msgball_list" from saved session data store
 			$cached_msgball_list = $this->read_session_cache_item('msgball_list', $acctnum);
 			if ($cached_msgball_list)
@@ -1488,7 +1507,10 @@
 					
 					// ----  set the data in appsession  ----
 					// we use folder_info for validity testing of data "stale" or not when we retrieve the cached data later
-					$folder_info = $this->get_folder_status_info();
+					$fldball = array();
+					$fldball['acctnum'] = $acctnum;
+					$fldball['folder'] = $this->get_arg_value('folder', $acctnum);
+					$folder_info = $this->get_folder_status_info($fldball);
 					// make the structure for the data
 					$meta_data = Array();
 					$meta_data[$data_name] = $data;
@@ -1569,7 +1591,10 @@
 				{
 					if ($this->debug_session_caching > 1) { echo 'mail_msg: read_session_cache_item: handler exists for $data_name ['.$data_name.']<br>'; }
 					// folder_info used to test validity (stale or not) of the cached msgball_list data
-					$folder_info = $this->get_folder_status_info();
+					$fldball = array();
+					$fldball['acctnum'] = $acctnum;
+					$fldball['folder'] = $this->get_arg_value('folder', $acctnum);
+					$folder_info = $this->get_folder_status_info($fldball);
 					
 					// VERIFY this cached data is still valid
 					if ($got_data)

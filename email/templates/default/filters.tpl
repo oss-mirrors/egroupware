@@ -38,7 +38,7 @@
 				<option value="cc" {cc_selected}>{lang_cc}</option>
 				<!-- <option value="bcc">{lang_bcc}</option> -->
 				<!-- <option value="recipient">{lang_recipient}</option> -->
-				<!-- <option value="sender">{lang_sender}</option> -->
+				<!-- <option value="sender" {sender_selected}>{lang_sender}</option> -->
 				<option value="subject" {subject_selected}>{lang_subject}</option>
 				<!-- <option value="header">{lang_header}</option> -->
 				<!-- <option value="size_larger">{lang_size_larger}</option> -->
@@ -52,7 +52,7 @@
 			<font size="-1">
 			<select name="{comparator_selectbox_name}">
 				<option value="contains" {contains_selected}>{lang_contains}</option>
-				<!-- <option value="notcontains" {notcontains_selected}>{lang_notcontains}</option> -->
+				<option value="notcontains" {notcontains_selected}>{lang_notcontains}</option>
 			</select>
 			</font>
 		</td>
