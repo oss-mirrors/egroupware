@@ -523,8 +523,7 @@ function comic_error($image_location, $status, &$comic_url)
      * compose the error comic url
      *************************************************************************/
     $comic_url = $GLOBALS['phpgw_info']["server"]["webserver_url"]
-        ."/".$GLOBALS['phpgw_info']["flags"]["currentapp"]
-        ."/images/template"
+        ."/comic/images/template"
         .$label
         .$image_size
         .".png";
