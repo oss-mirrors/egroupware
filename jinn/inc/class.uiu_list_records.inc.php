@@ -29,8 +29,7 @@
 	  var $public_functions = Array
 	  (
 		 'display'		=> True,
-		 'browse_objects'		=> True,
-		 'advanced_filters'	=> True
+		 'browse_objects'		=> True
 	  );
 
 	  var $bo;
@@ -231,36 +230,40 @@
 
 	  }
 
-	  
-	function format_filter_options($filterstore, $selected)
-	{
-		$options  = '<option value="">'.lang('empty filter').'</option>';
-		$options .= '<option value="">------------</option>';
-		if($selected == 'sessionfilter')
-		{
+	
+	  /**
+	  @function format_filter_options
+	  @fixme move to uiu_filter
+	  */
+	  function format_filter_options($filterstore, $selected)
+	  {
+		 $options  = '<option value="">'.lang('empty filter').'</option>';
+		 $options .= '<option value="">------------</option>';
+		 if($selected == 'sessionfilter')
+		 {
 			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
-		}
-		else
-		{
+		 }
+		 else
+		 {
 			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
-		}
-		$options .= '<option value="">------------</option>';
-		if(is_array($filterstore))
-		{
+		 }
+		 $options .= '<option value="">------------</option>';
+		 if(is_array($filterstore))
+		 {
 			foreach($filterstore as $filter)
 			{
-				if($filter[name] == $selected)
-				{
-					$options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
-				}
-				else
-				{
-					$options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
-				}
+			   if($filter[name] == $selected)
+			   {
+				  $options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
+			   }
+			   else
+			   {
+				  $options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
+			   }
 			}
-		}
-		return $options;
-	}
+		 }
+		 return $options;
+	  }
 
 	  /**
 	  @function list_records
@@ -330,53 +333,50 @@
 		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->browse_settings['orderby']);
 		 if(!$orderby && $default_order) $orderby=$default_order;
 
-		 
-		 
-		 
-		 
+
+
+
+
 		 /////////////////////////
 		 //insert filter code here
 		 /////////////////////////
-			
-			// get stored filters from preferences and session
-		$filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-		$sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
 
-			// set the template variables
-		$this->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
-		$this->template->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
-		$this->template->set_var('filter_text',lang('activate filter'));
-		$this->template->set_var('filter_edit',lang('edit filter'));
-		$this->template->set_var('filter_list',$this->format_filter_options($filterstore, $_POST[filtername]));
+		 // get stored filters from preferences and session
+		 $filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
+		 $sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
 
-			// check if an existing filter is selected
-		if($_POST[filtername] != '')
-		{
-				//check if it is a temporary (session filter) or permanently (preferences) stored filter and load accordingly
+		 // set the template variables
+		 $this->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
+		 $this->template->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
+		 $this->template->set_var('filter_text',lang('activate filter'));
+		 $this->template->set_var('filter_edit',lang('edit filter'));
+		 $this->template->set_var('filter_list',$this->format_filter_options($filterstore, $_POST[filtername]));
+
+		 // check if an existing filter is selected
+		 if($_POST[filtername] != '')
+		 {
+			//check if it is a temporary (session filter) or permanently (preferences) stored filter and load accordingly
 			if($_POST[filtername] == 'sessionfilter')
 			{
-				$filter = $sessionfilter;
+			   $filter = $sessionfilter;
 			}
 			else
 			{
-				$filter = $filterstore[$_POST[filtername]];
+			   $filter = $filterstore[$_POST[filtername]];
 			}
 
-				// generate the WHERE clause using the loaded filter
+			// generate the WHERE clause using the loaded filter
 			$filter_where = '';
 			if(is_array($filter[elements]))
 			{
-				foreach($filter[elements] as $element)
-				{
-					if($filter_where != '') $filter_where .= ' AND ';
-					$filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
-				}
+			   foreach($filter[elements] as $element)
+			   {
+				  if($filter_where != '') $filter_where .= ' AND ';
+				  $filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
+			   }
 			}
-		}
-			
-			
-			
-			
+		 }
+
 		 if( trim($_POST[quick_filter]) || $_POST[quick_filter_hidden] )
 		 {
 			$quick_filter = trim( $_POST[quick_filter] );
@@ -386,16 +386,17 @@
 		 {
 			$quick_filter = trim( $this->bo->browse_settings['quick_filter'] );
 		 }
-		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];
 		 
-		 
+		 //		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];
+
+
 		 $this->bo->browse_settings = array
 		 (
 			'orderby'=>$orderby,
 			'quick_filter'=>$quick_filter,
 			'filter_arr'=>$filter_arr,
 			'current_page'=>$current_page,
-			'adv_filter_str'=>$adv_filter_str
+		//	'adv_filter_str'=>$adv_filter_str
 		 );
 
 		 /* get one with many relations */
@@ -439,7 +440,7 @@
 			$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecol[name]);
 			if($field_conf_arr[field_show_default])
 			{
-				$fields_show_default[] = $onecol;
+			   $fields_show_default[] = $onecol;
 			}
 
 			//create more simple col_list with only names //why
@@ -456,7 +457,7 @@
 			}
 
 
-			
+
 			/* format quick_filter condition 
 			fixme make general function in so
 			*/
@@ -496,7 +497,7 @@
 
 
 
-		 
+
 		 //fixme start of advanced filters
 		 if($adv_filter_str)
 		 {
@@ -510,7 +511,7 @@
 			}
 		 }
 
-			//start of new filtersystem
+		 //start of new filtersystem
 		 if($filter_where != '')
 		 {
 			if ($where_condition) 
@@ -544,7 +545,7 @@
 		 {
 			$col_list=array_slice($columns,0,4);
 		 }
-		 
+
 		 /*	check if orderbyfield exist else drop orderby it	*/
 		 if(!in_array(trim(substr($orderby,0,(strlen($orderby)-4))),$all_col_names_list)) unset($orderby);
 		 //	unset($all_col_names_list);
@@ -799,64 +800,6 @@
 		 $this->bo->save_sessiondata();
 	  }
 
-	  function advanced_filters()
-	  {
-		 unset($this->bo->mult_where_array);
-
-		 // check if table exists
-		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
-		 {
-			unset($this->bo->site_object_id);
-			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
-			$this->bo->message['error_code']=117;
-
-			$this->bo->save_sessiondata();
-			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
-		 }				
-
-		 // check if there's permission to this object
-		 if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
-		 {
-			unset($this->bo->site_object_id);
-			$this->bo->message['error']=lang('You have no access to this object');
-			$this->bo->message['error_code']=116;
-
-			$this->bo->save_sessiondata();
-			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
-		 }
-
-		 $this->ui->header('set advanced browsing filters');
-		 $this->ui->msg_box($this->bo->message);
-		 unset($this->bo->message);
-
-		 $this->ui->main_menu();	
-
-		 $this->template->set_file(array(
-			'adv_filters' => 'advanced_filters.tpl',
-		 ));
-
-		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];  
-
-
-		 $this->template->set_block('adv_filters','header','header');
-		 $this->template->set_block('adv_filters','row','row');
-		 $this->template->set_block('adv_filters','footer','footer');
-
-		 $this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.set_adv_filter'));
-		 $this->template->set_var('adv_filter',$adv_filter_str);
-		 $this->template->set_var('submit',lang('submit'));
-
-
-		 $this->template->parse('out','header');
-		 $this->template->pparse('out','header');
-
-		 $this->template->parse('out','footer');
-		 $this->template->pparse('out','footer');
-
-		 $this->bo->save_sessiondata();
-
-
-	  }
 
    }
 
