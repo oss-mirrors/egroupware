@@ -27,6 +27,10 @@ Public Sub GetContacts()
         Dim SORT        As String
         Dim oContacts   As New COutlookContacts
         
+        'Clears the local and remote listbox, so that we dont get double contacts.
+        FrmMain.listLocal.Clear
+        FrmMain.listRemote.Clear
+        
         INT_START = 1
         INT_LIMIT = 50
         QUERY = ""
@@ -59,7 +63,7 @@ Public Sub GetContacts()
                 'Add each contact to the response collection
                 egwContacts.CursoryInfo.Add tempValue
                 'list the contacts in the listbox
-                frmMain.listRemote.AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
+                FrmMain.listRemote.AddItem egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue
             Next tempValue
             
             'update our place in the remote list of contacts
@@ -103,7 +107,7 @@ Public Sub SynchronizeContacts()
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
         'Get the full names of the selected contacts from each listbox
         '   and put them in XMLRPC arrays
-        With frmMain
+        With FrmMain
             arrSelLocal = .Helper.GetSelectedListItems(.listLocal)
             arrSelRemote = .Helper.GetSelectedListItems(.listRemote)
         End With
@@ -129,7 +133,7 @@ Public Sub SynchronizeContacts()
                     Debug.Print "Successfully imported " & tempResponse.params(1).ArrayValue(1).StructValue.GetValueByName("fn").StringValue & _
                                     " to the Outlook Contact List."
                     'Update the local list to show the new contact
-                    With frmMain.listLocal
+                    With FrmMain.listLocal
                         For i = 0 To (.ListCount - 1) Step 1
                             If .List(i) = ciContact.FullName Then
                                 .RemoveItem (i)
@@ -166,7 +170,7 @@ Public Sub SynchronizeContacts()
                     'Add each contact to the response collection
                     egwContacts.CursoryInfo.Add tempResponse.params(1).ArrayValue(1)
                     'list the contacts in the listbox
-                    With frmMain.listRemote
+                    With FrmMain.listRemote
                         For i = 0 To (.ListCount - 1) Step 1
                             If .List(i) = egwContacts.CursoryInfo.Item(egwContacts.CursoryInfo.Count).StructValue.GetValueByName("fn").StringValue Then
                                 .RemoveItem (i)
