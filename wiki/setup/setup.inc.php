@@ -33,7 +33,8 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['wiki']['hooks'] = array(
 		'admin',
-		'sidebox_menu'
+		'sidebox_menu',
+		'manual'
 	);
 
 	/* Dependencies for this app to work */
