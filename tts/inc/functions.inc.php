@@ -53,17 +53,14 @@ function mail_ticket($ticket_id) {
   $to = implode($toarray,",");
   
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
-  if ($rc) {
-    header("Location: " . $phpgw->link("index.php","cd=13"));
-  } else {
+  if (!$rc) {
     echo "Your message could <B>not</B> be sent!<BR>\n";
     echo "The mail server returned:<BR>".
          "err_code: '".$phpgw->send->err["code"]."';<BR>".
          "err_msg: '".htmlspecialchars($phpgw->send->err[msg])."';<BR>\n".
          "err_desc: '".$phpgw->err[desc]."'.<P>\n";
     echo "To go back to the msg list, click <A HRef=\"".$phpgw->link("index.php","cd=13")."\">here</a>";
+    exit;
   }
-
-
 }
 ?>
