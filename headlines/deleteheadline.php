@@ -33,14 +33,9 @@
          <?php echo lang("Are you sure you want to delete this news site ?"); ?>
         <td>
        </tr>
-       <tr colspan=2>
-        <td align=center>
-         <?php echo lang("All records and account information will be lost!"); ?>
-        </td>
-       </tr>
        <tr>
          <td>
-           <a href="<?php echo $phpgw->link("headlines.php") . "\">" . lang("No"); ?></a>
+           <a href="<?php echo $phpgw->link("admin.php") . "\">" . lang("No"); ?></a>
          </td>
          <td>
            <a href="<?php echo $phpgw->link("deleteheadline.php","con=$con&confirm=true") . "\">" . lang("Yes"); ?></a>
@@ -59,6 +54,6 @@
    remove_account_data("site=$con","users_headlines");
    $phpgw->db->unlock();
 
-   Header("Location: " . $phpgw->link("admin.php","cd=29"));
+   Header("Location: " . $phpgw->link("admin.php","cd=16"));
   }
 ?>
