@@ -25,13 +25,10 @@
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array
 			(
-				'title'	=> $title,
-				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'width'	=> '100%',
-				'outerborderwidth'	=> '0',
-				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				'title'						=> $title,
+				'width'						=> '100%',
+				'outerborderwidth'			=> '0',
+				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')
 			)
 		);
 
