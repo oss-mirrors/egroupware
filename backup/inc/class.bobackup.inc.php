@@ -28,11 +28,12 @@
 	{
 		var $public_functions = array
 		(
-			'check_values'	=> True,
-			'save_items'	=> True,
-			'read_items'	=> True,
-			'create_config'	=> True,
-			'save_config'	=> True
+			'check_values'		=> True,
+			'save_items'		=> True,
+			'read_items'		=> True,
+			'create_config'		=> True,
+			'save_config'		=> True,
+			'phpftp_connect'	=> True
 		);
 
 		function bobackup()
@@ -50,8 +51,61 @@
 			return $items;
 		}
 
+		function phpftp_connect($host,$user,$pass)
+		{
+			// echo "connecting to $host with $user and $pass\n";
+			$ftp = ftp_connect($host);
+			if ($ftp)
+			{
+				if (ftp_login($ftp,$user,$pass))
+				{
+					return $ftp;
+				}
+			}
+		}
+
 		function check_values($values)
 		{
+			if ($values['l_save'])
+			{
+				if (! $values['l_app'])
+				{
+					$error[] = lang('Plase select an application for transport !');					
+				}
+				elseif ($values['l_user'] != 'httpd' && (! $values['l_user'] || !$values['l_pwd']))
+				{
+					$error[] = lang('Plase enter username and password !');					
+				}
+				elseif ($values['l_app'] == 'ftp')
+				{
+					$ftp = $this->phpftp_connect('localhost',$values['l_user'],$values['l_pwd']);
+					if (! $ftp)
+					{
+						$error[] = lang('The connection through ftp failed ! Please check your config values !');
+					}
+				}
+			}
+
+			if ($values['r_save'])
+			{
+				if (! $values['r_app'])
+				{
+					$error[] = lang('Plase select an application for transport !');					
+				}
+				elseif (! $values['r_user'] || !$values['r_pwd']))
+				{
+					$error[] = lang('Plase enter username and password !');					
+				}
+				elseif ($values['r_app'] == 'ftp')
+				{
+					$ftp = $this->phpftp_connect($values['r_ip'],$values['r_user'],$values['r_pwd']);
+					if (! $ftp)
+					{
+						$error[] = lang('The connection through ftp failed ! Please check your config values !');
+					}
+				}
+			}
+
 			if (is_array($error))
 			{
 				return $error;
