@@ -159,6 +159,5 @@ view only my open tickets	tts	fr	Voir seulement mes tickets ouverts
 view only open tickets	tts	fr	Voir seulement les tickets ouverts
 you can only close a ticket if it is assigned to you.	tts	fr	Vous pouvez fermer un ticket s'il vous est assigné.
 you want to delete the state %1 and associated transitions. are you sure?	tts	fr	Vous voulez effacer l'état %1 et ses transitions associées. Etes-vous sûr?
-Voulez-vous effacer l'état
 you want to delete the state %1. are you sure?	tts	fr	Vous souhaitez supprimer l'état %1. Etes-vous sûr ?
 you want to delete the transition %1. are you sure?	tts	fr	Vous souhaitez supprimer la transition %1. Etes-vous sûr ?
