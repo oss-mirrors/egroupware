@@ -22,12 +22,11 @@
 	$setup_info['skel']['author']    = 'Your Name';
 	$setup_info['skel']['license']   = 'GPL';
 	$setup_info['skel']['description'] =
-		'This App does this or that. Have a look at my 
-		<a href="http://www.phpgroupware.org" target="_blank">Homepage</a>.';
+		'the description here is needed';
 	$setup_info['skel']['note'] =
 		'Some more text shown below the description in italics.';
-	$setup_info['skel']['maintainer'] = 'Your Name';
-	$setup_info['skel']['maintainer_email'] = 'Your.Name@domain.com';
+	$setup_info['skel']['maintainer'] = 'eGroupWare developers';
+	$setup_info['skel']['maintainer_email'] = 'shrykedude at users.sourceforge.net';
 	
 	/* The tables this app creates */
 	$setup_info['skel']['tables']    = array('phpgw_skel');
