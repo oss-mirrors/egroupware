@@ -16,8 +16,8 @@ from	email	es	De
 if applicable	email	es	Si es aplicable
 image	email	es	Imagen
 imap server type	common	es	Tipo de servidor IMAP
-mail server	email	es	Servidor de Mail
-mail server type	email	es	Tipo de servidor de Mail
+mail server	email	es	Servidor de Correo
+mail server type	email	es	Tipo de servidor de Correo
 message	email	es	Mensaje
 messages	email	es	Mensajes
 monitor	email	es	Monitor
@@ -32,13 +32,13 @@ reply	email	es	Responder
 reply all	email	es	Responder a Todos
 section	email	es	Sección
 send	email	es	Enviar
-send deleted messages to the trash	email	es	Enviar mensaje borrados a el Trash
+send deleted messages to the trash	email	es	Enviar mensaje borrados a la Papelera 
 size	email	es	Tamaño
 subject	email	es	Asunto
-switch current folder to	email	es	Cambiar la presente carpeta a
+switch current folder to	email	es	Cambiar a la carpeta
 this folder is empty	email	es	Esta carpeta esta vacia
 to	email	es	Para
 undisclosed recipients	email	es	Destinatarios Ocultos
 undisclosed sender	email	es	Remitente Oculto
-use custom settings	email	es	Usar seteos personalizados
+use custom settings	email	es	Usar preferencias personales
 x messages have been deleted	email	es	%1 mensajes han sido borrados
