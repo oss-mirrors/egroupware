@@ -1,6 +1,6 @@
 /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2003 Pim Snel <pim.jinn@lingewoud.nl>
 
    phpGroupWare - http://www.phpgroupware.org
    
@@ -20,5 +20,3 @@
    along with JiNN; if not, write to the Free Software Foundation, Inc.,
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
-
-
