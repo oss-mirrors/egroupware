@@ -1,177 +1,176 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Email (Addressbook list)                                  *
+  * phpGroupWare - email/addressbook                                         *
   * http://www.phpgroupware.org                                              *
-  * This file written by Brian King <bking@affcu.com>                        *
-  * --------------------------------------------                             *
+  * Written by Bettina Gille [aeb@hansenet.de]                               *
+  * ------------------------------------------------------                   *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  /* $Id$ */
-
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_message_class" => True, 
-                                "noheader" => True, "enable_addressbook_class" => True);
+  $phpgw_info["flags"] = array("noheader" => True, 
+                               "nonavbar" => True, 
+                               "currentapp" => "email", 
+                               "enable_message_class" => True,
+                               "enable_addressbook_class" => True,
+                               "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
-   if ($order)
-      $ordermethod = "order by $order $sort";
-   else
-      $ordermethod = "order by ab_lastname,ab_firstname,ab_email asc";
+  $t = new Template($phpgw_info["server"]["app_tpl"]);
+  $t->set_file(array("addressbook_list_t" => "addressbook.tpl",
+                     "addressbook_list"   => "addressbook.tpl"));
+  $t->set_block("addressbook_list_t","addressbook_list","list");
+  
+  $t->set_var(title,$phpgw_info["site_title"]);
+  $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
+  $t->set_var(lang_addressbook_action,lang("Address book"));
+  
+  if (! $start)
+     $start = 0;
 
-   $filtermethod = " or ab_access='public' " . $phpgw->accounts->sql_search("ab_access");
+  if ($order)
+     $ordermethod = "order by $order $sort";
+  else
+     $ordermethod = "order by ab_email,ab_lastname,ab_firstname asc";
+   
+  if (! $filter) {
+     $filter = "none";
+  }
 
-   $sql = "select count(*) from addressbook where (ab_owner="
-	   . $phpgw_info["user"]["account_id"] . " $filtermethod) AND ab_email != ''"; 
-
-   $phpgw->db->query($sql);
-   $phpgw->db->next_record();
-
-   if ($phpgw->db->f(0) == 0) {
-      echo "<body bgcolor=\"" . $phpgw_info["theme"]["bg_color"] . "\">"
-	 . "<center>" . lang("There are no email address's in your addressbook")
-	 . "</center>";
-      exit;
-   }
-
- ?>
-
-<head>
-<title><?php echo $phpgw_info["site_title"]; ?></title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-  <!--
-   A:link{text-decoration:none}
-   A:visted{text-decoration:none}
-   A:active{text-decoration:none}
-  -->
-</style>
-
-<script>
-   function ExchangeTo(thisform) 
-   { 
-     if (opener.document.doit.to.value=='') {
-        opener.document.doit.to.value=thisform.elements[0].value;
+  if ($filter != "private") {
+     if ($filter != "none") {
+        $filtermethod = " ab_access like '%,$filter,%' ";
      } else {
-        opener.document.doit.to.value+=","+thisform.elements[0].value;
+        $filtermethod = " (ab_owner='" . $phpgw_info["user"]["account_id"] ."' OR ab_access='public' "
+		            . $phpgw->accounts->sql_search("ab_access") . " ) ";
      }
-   } 
+  } else {
+     $filtermethod = " ab_owner='" . $phpgw_info["user"]["account_id"] . "' ";
+  }
 
-   function ExchangeCc(thisform) 
-   {
-     if (opener.document.doit.cc.value=='') {
-        opener.document.doit.cc.value=thisform.elements[0].value;
-     } else {
-        opener.document.doit.cc.value+=","+thisform.elements[0].value;
-     } 
-   }
+  if ($query) {
+     $phpgw->db->query("SELECT count(*) "
+       . "from addressbook "
+       . "WHERE $filtermethod AND (ab_lastname like '"
+       . "%$query%' OR ab_firstname like '%$query%' OR ab_email like '%$query%')");
+    
 
-</script>
-</head>
+    $phpgw->db->next_record();
 
-<body bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" vlink="<?php echo $phpgw_info["theme"]["vlink"]; ?>" link="<?php echo $phpgw_info["theme"]["link"]; ?>" alink="<?php echo $phpgw_info["theme"]["alink"]; ?>">
-   <center>
-   <table width="75%" border="0" cellspacing="1" cellpadding="3">
-     <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
-       <td width="25%" height="21">
-        <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addressbook.php",
-                               "Last Name"); ?>
-        </font>
-       </td>
-       <td width="25%" height="21" bgcolor="<? echo $phpgw_info["theme"]["th_bg"]; ?>">
-        <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-         <?php echo $phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addressbook.php",
-                               "First Name"); ?>
-        </font>
-       </td>
-       <td width="25%" height="21">
-        <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          Email Address:
-        </font>
-       </td>
-       <td width="12%" height="21">
-        <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          To:
-        </font>
-       </td>
-       <td width="12%" height="21">
-        <font size="-1" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          Cc:
-        </font>
-       </td>
-     </tr>
-
- <?php
-
-   $phpgw->db->query("SELECT * FROM addressbook WHERE (ab_owner="
-	              . $phpgw_info["user"]["account_id"] . " $filtermethod) AND ab_email != '' "
-	              . $ordermethod);
-
-   while ($phpgw->db->next_record()) {
-     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-
-     $firstname  = $phpgw->db->f("ab_firstname");
-     $lastname   = $phpgw->db->f("ab_lastname");
-     $email      = $phpgw->db->f("ab_email");
-     $con        = $phpgw->db->f("ab_id");
-
-     /* This for for just showing the company name stored in lastname. */
-     if (($lastname) && (! $firstname))
-        $t_colspan = " colspan=2";
+     if ($phpgw->db->f(0) == 0) 
+       $t->set_var(total_matchs,lang("there are no email addresses in your addressbook"));
+         
+     if ($phpgw->db->f(0) == 1)
+       $t->set_var(total_matchs,lang("your search returned 1 match"));
+     
+      else
+       $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
+      }
      else {
-        $t_colspan = "";
-        if ($firstname == "") $firstname = "&nbsp;";
-        if ($lastname  == "") $lastname  = "&nbsp;";
+     $phpgw->db->query("select count(*) from addressbook where $filtermethod");
+     $phpgw->db->next_record();
      }
 
-     ?>
-       <tr bgcolor="<?php echo $tr_color; ?>">
-        <td valign="top" width="25%"<?php echo $t_colspan; ?>>
-         <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          <?php echo $lastname; ?> 
-         </font> 
-        </td>
-<?php
-         if (! $t_colspan)
-	 {
+  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
+			   ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
+			   $phpgw->db->f(0));
+  else
+     $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0)); 
+
 ?>
-        <td valign="top" width="25%">
-         <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          <?php echo $firstname; ?> 
-         </font> 
-        </td>
+
 <?php
-         }
+ 
+// =================================================
+// nextmatch variable template-declaration
+// =================================================
+
+  $next_matchs = $phpgw->nextmatchs->show_tpl("addressbook.php",$start,$phpgw->db->f(0),
+                "&order=$order&filter=$filter&sort="
+	      . "$sort&query=$query", "85%", $phpgw_info["theme"]["th_bg"]);
+  $t->set_var(next_matchs,$next_matchs);
+  $t->set_var(total_matchs,$total_matchs);
+
+  
+// ----------- end nextmatch template --------------
+  
+// =================================================
+// list header variable template-declaration
+// =================================================    
+
+
+   $t->set_var(th_bg,$phpgw_info["theme"]["th_bg"]);
+   $t->set_var(sort_firstname,$phpgw->nextmatchs->show_sort_order($sort,"ab_firstname",$order,"addressbook.php",lang("firstname")));
+   $t->set_var(sort_lastname,$phpgw->nextmatchs->show_sort_order($sort,"ab_lastname",$order,"addressbook.php",lang("lastname")));
+   $t->set_var(lang_email,lang("select email address"));
+   
+// ---------------- end header declaration ---------
+
 ?>
-       <form>
-        <td valign="top" width="25%">
-         <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          <input type="text" size="25" name="EX1" value="<?php echo $email; ?>">
-         </font>
-        </td>
 
-        <td valign="top" width="12%">
-         <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-         <input type="BUTTON" value="To" onClick="ExchangeTo(this.form);" name="BUTTON">
-         </font>
-        </td>
-        <td valign="top" width="12%">
-         <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-          <input type="BUTTON" value="Cc" onClick="ExchangeCc(this.form);" name="BUTTON">
-         </font>
-        </td>
-       </tr>
-      </form>
-      <?
-   }
+<?php
+ 
+  $limit = $phpgw->nextmatchs->sql_limit($start);  
 
- ?>
-   <form>
-   </table>
-   <br><input type="button" value="done" onClick="window.close()">
-   </form>
- </center>
 
+if ($query) {
+     $phpgw->db->query("SELECT ab_id,ab_owner,ab_firstname,ab_lastname,ab_email "
+       . "from addressbook "
+       . "WHERE $filtermethod AND (ab_lastname like '"
+       . "%$query%' OR ab_firstname like '%$query%' OR ab_email like '%$query%') "
+       . "$ordermethod limit $limit");
+  } else {
+     $phpgw->db->query("SELECT ab_id,ab_owner,ab_firstname,ab_lastname,ab_email "
+       . "from addressbook "
+       . "WHERE $filtermethod $ordermethod limit $limit");
+  }
+
+  while ($phpgw->db->next_record()) {
+    $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+    $t->set_var(tr_color,$tr_color);
+    
+    $firstname	= $phpgw->db->f("ab_firstname");
+    $lastname 	= $phpgw->db->f("ab_lastname");
+    $email      = $phpgw->db->f("ab_email");
+    $con        = $phpgw->db->f("ab_id");    
+  
+
+    if ($firstname == "") $firstname = "&nbsp;";
+    if ($lastname  == "") $lastname  = "&nbsp;";
+
+
+// ==================================================
+// template declaration for list records
+// ==================================================
+
+
+  $t->set_var(array("email" => $email,
+                    "firstname" => $firstname,
+		    "lastname" => $lastname));
+  
+  $t->set_var(lang_select_email,lang("select email address"));
+  $t->set_var("con",$con);
+  $t->set_var("email",$email);
+  $t->set_var("firstname",$firstname);
+  $t->set_var("lastname",$lastname);
+ 
+  $t->parse("list","addressbook_list", true);
+
+}
+
+// --------- end record declaration ----------------
+
+// ==================================================
+// template declaration for Done Form
+// ==================================================
+
+ $t->set_var(lang_done,lang("done"));
+ $t->parse("out","addressbook_list_t", true);
+ $t->p("out");
+
+// ----------- end Done form declaration ------------
+
+?>
