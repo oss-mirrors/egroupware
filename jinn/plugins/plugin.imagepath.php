@@ -30,11 +30,17 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.8';
-	$this->plugins['imagepath']['description']		= 'plugin for uploading/resizing images and storing their imagepaths in to database, using default uploadpath for site or object';
+	$this->plugins['imagepath']['version']			= '0.9.0';
 	$this->plugins['imagepath']['enable']			= 1;
+
+	$this->plugins['imagepath']['description']		= '
+	plugin for uploading/resizing images and storing their imagepaths in
+	to database, using default uploadpath for site or object';
+
 	$this->plugins['imagepath']['changelog']		= 
 	'
+	0.9.0
+	- implement resizing with GDLib (look in general JiNN-configuration)
 	0.8.8
 	- fixed limited images handeling
 	- fixed resizing
@@ -62,11 +68,9 @@
 		'Max_image_height' => array('','text','maxlength=4 size=4'),
 		'Image_filetype' => array(array('png','gif','jpg'),'select','maxlength=3 size=3'),
 		'Generate_thumbnail' => array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-//		'Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility' => array( array('False', 'True') ,'select',''),
 		'Max_thumbnail_width' => array('100','text','maxlength=3 size=3'),
 		'Max_thumbnail_height'=> array('100','text','maxlength=3 size=3'),
 		'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
-//		'Show_image_in_form' => array( array('False','True') ,'select','')
 	);
 
 	function plg_fi_imagepath($field_name,$value,$config)
@@ -209,8 +213,15 @@
 	{
 		global $local_bo;
 
-		// FIXME implement gdlib class
-		$magick=CreateObject('jinn.boimagemagick');
+		/* choose image library to use */
+		if($local_bo->common->so->config[use_magick]=='MAGICK')
+		{
+		   $graphic=CreateObject('jinn.boimagemagick');
+		}
+		else
+		{
+		   $graphic=CreateObject('jinn.bogdlib');
+		}
 
 		if($local_bo->common->so->config[server_type]=='dev')
 		{
@@ -286,6 +297,7 @@
 			/* check for minimal criteria */
 			/* new better error_messages */
 
+			//FIXME messages to standard msgbox
 			if(!is_dir($upload_path))
 			{
 				die (lang("<i>image upload root-directory</i> does not exist or is not correct ...<br>
@@ -331,8 +343,6 @@
 				}
 
 			}
-
-
 			
 			$img_position=0;
 			foreach($images_to_add as $add_image)
@@ -357,7 +367,6 @@
 					}
 					else
 					{
-
 						/* default set size */
 						$img_size = GetImageSize($add_image['tmp_name']);
 						if ($config['Max_image_width'] && $img_size[0] > $config['Max_image_width'])
@@ -369,29 +378,25 @@
 						{
 							$new_img_height=$config['Max_image_height'];
 						}
-
 					}
 
 					/* get original type */
-					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
+					$filetype=$graphic->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{
 						die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick installation.  Older version of ImageMagick are known not work properly with JiNN. Be sure to install at least Version 5.4.9 or higher",$add_image['name']));
 					}
 					elseif($filetype!='JPEG' && $filetype!='GIF' && $filetype!='PNG')
 					{
-						$filetype='png';
-						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
+						$filetype='PNG';
+						$new_temp_file=$graphic->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
 						if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
 
 					}
 					elseif($new_img_width || $new_img_height)
 					{
-/*						echo $new_img_width;
-						echo $new_img_height;
-						die();*/
 						$target_image_name.='.'.$filetype;
-						$new_temp_file=$magick->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
+						$new_temp_file=$graphic->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
 						if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
 					}
 					else
@@ -399,19 +404,13 @@
 						$new_temp_file=$add_image['tmp_name']; // just copy
 					}
 
+
 					/* if thumb */
 					if($config['Generate_thumbnail']=='True')
 					{
 						//generate thumb
-						$new_temp_thumb=$magick->Resize($config['Max_thumbnail_width'],
-						$config['Max_thumbnail_height'],$add_image['tmp_name'],$new_filetype);
-
-						//put thumbpath in db for backwards compatibility
-						if($config['Store_thumbnail_in_thumb_pathfield_for_backwards_compatibility']=='True')
-						{
-							echo '';
-						}
-
+						$new_temp_thumb=$graphic->Resize($config['Max_thumbnail_width'],
+						$config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype);
 					}
 
 					
@@ -442,9 +441,8 @@
 						die ("failed copying $new_temp_file to $upload_path/normal_size/$target_image_name...<br>\n");
 					}
 				}
-
+				
 				$img_position++;
-
 			}
 		}
 

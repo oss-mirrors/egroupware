@@ -26,18 +26,18 @@
 	Known issues: 
 	<li>all configuration options don\'t work anymore. This will be fixed soon.</li>';
 
-	$this->plugins['htmlAreaV3']['name']			= 'htmlAreaV3';
-	$this->plugins['htmlAreaV3']['title']			= 'htmlArea v3';
-	$this->plugins['htmlAreaV3']['version']			= '0.8.5';
-	$this->plugins['htmlAreaV3']['enable']			= 1;
-	$this->plugins['htmlAreaV3']['description']		= $description;
-	$this->plugins['htmlAreaV3']['db_field_hooks']	= array
+	$this->plugins['htmlArea']['name']			= 'htmlArea';
+	$this->plugins['htmlArea']['title']			= 'htmlArea';
+	$this->plugins['htmlArea']['version']			= '0.8.6';
+	$this->plugins['htmlArea']['enable']			= 1;
+	$this->plugins['htmlArea']['description']		= $description;
+	$this->plugins['htmlArea']['db_field_hooks']	= array
 	(
 	   'blob',
 		'text'
 	);
 
-	$this->plugins['htmlAreaV3']['config']		= array
+	$this->plugins['htmlArea']['config']		= array
 	(
 		'enable_font_buttons'=>array(array('Yes','No'),'select',''),
 		'enable_alignment_buttons'=>array(array('Yes','No'),'select',''),
@@ -54,8 +54,15 @@
 
 	function plg_fi_htmlArea($field_name, $value, $config)
 	{
+	   
+	   global $local_bo;
 		
-		$editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
+	   if($local_bo->read_preferences('disable_htmlarea')=='yes')
+	   {
+			return;
+	   }
+	   
+	   $editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
 
 		if($config[enable_image_button]!='No') $bar_image = '"insertimage",';
 		if($config[enable_html_source_button]!='No') $bar_html = '"htmlmode",';

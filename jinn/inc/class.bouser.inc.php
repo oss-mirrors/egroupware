@@ -639,6 +639,7 @@
 					/* make plug config array for this field */
 					if($sets[3]) $conf_str = explode(';',$sets[3]);
 
+					//_debug_array($conf_str);
 					if(is_array($conf_str))
 					{
 						foreach($conf_str as $conf_entry)

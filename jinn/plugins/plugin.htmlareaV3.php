@@ -62,6 +62,13 @@
    function plg_fi_htmlAreaV3($field_name, $value, $config)
    {
 
+	  global $local_bo;
+
+	  if($local_bo->read_preferences('disable_htmlarea')=='yes')
+	  {
+		 return;
+	  }
+	  
 	  $editor_url=$GLOBALS['phpgw_info']['server']['webserver_url'].'/jinn/plugins/htmlareaV3/';
 
 	  if($config[enable_image_button]!='No') $bar_image = '"insertimage",';

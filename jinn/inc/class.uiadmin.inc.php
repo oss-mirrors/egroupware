@@ -237,7 +237,7 @@
 						$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
 
 						// remove all existing objects
-						$this->bo->so->delete_phpgw_data('','phpgw_jinn_site_objects',parent_site_id,$new_site_id);
+						$this->bo->so->delete_phpgw_data('phpgw_jinn_site_objects',parent_site_id,$new_site_id);
 
 						$msg= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
 						$proceed=true;

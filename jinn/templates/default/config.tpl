@@ -27,12 +27,25 @@
    <tr>
    <td colspan="2">&nbsp;</td>
    </tr>
+   
 
    <tr bgcolor="{row_on}">
    <td colspan="2"><b>{lang_Image_settings}</b></td>
    </tr>
-   <tr bgcolor="{row_off}">
-   <td>{lang_Path_to_convert_from_ImageMagick_(_e.g._/usr/X11R6/bin_)}:</td>
+   <tr class="{row_off}">
+   <td>{lang_Select_which_graphic_library_JiNN_must_use}</td>
+   <td>
+   <select name="newsettings[use_magick]">
+   <option value="GDLIB" {selected_use_magick_GDLIB}>GDLib</option>
+   <option value="MAGICK" {selected_use_magick_MAGICK}>ImageMagick</option>
+   </select>
+   </td>
+   </tr>
+
+	<tr bgcolor="{row_on}">
+   <td>
+   {lang_Notice_that_JiNN_needs_ImageMagick_5.4.9_or_a_later_version}
+   <br/>{lang_Path_to_convert_from_ImageMagick_(_e.g._/usr/X11R6/bin_)}:</td>
    <td><input name="newsettings[imagemagickdir]" size="30" value="{value_imagemagickdir}"></td>
    </tr>
    <tr>

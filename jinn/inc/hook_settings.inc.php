@@ -32,4 +32,14 @@
 		"-1"=>lang("No max. number")
 	);
 
-	create_select_box('Max. number of previews in form','max_prev',$max_prev,'When a lot of images are attached to a record, the form can load very slow. You can set a maximum number of images that is show in the form.');	
+	create_select_box('Max. number of previews in form','max_prev',$max_prev,'When a lot of images are attached to a record, the form can load very slow. You can set a maximum number of images that is show in the form.');
+
+	create_section('WYSIWYG plugin');
+
+	$disable_htmlarea = Array(
+	   'no' => lang('No'),
+	   'yes' => lang('Yes')
+	);
+	
+	create_select_box('Disable the WYSIWYG/HTMLArea Plugin','disable_htmlarea',$disable_htmlarea,"The WYSIWYG plugin makes you edit text like you do in a program like OpenOffice Writer or Word. Some people don't like this feature though, so you can force JiNN not to use it.");
+
