@@ -639,7 +639,12 @@
 	$test[] = '0.8.7.019';
 	function projects_upgrade0_8_7_019()
 	{
-		$GLOBALS['phpgw_setup']->oProc->query('alter table phpgw_p_projects drop INDEX p_number');
+		// as the following SQL (which should'nt be here anyway) is mysql only, 
+		// I put an if around it, to fix other db's errors -- RalfBecker 2004/07/07
+		if ($GLOBALS['phpgw_setup']->oProc->sType == 'mysql')
+		{
+			$GLOBALS['phpgw_setup']->oProc->query('alter table phpgw_p_projects drop INDEX p_number');
+		}
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_projects','id','project_id');
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.020';
 		return $GLOBALS['setup_info']['projects']['currentver'];
