@@ -47,9 +47,9 @@ status/date closed	tts	de	Status/Datum geschlossen
 subject changed	tts	de	Bezeichnung geändert
 ticket	tts	de	Ticket
 ticket has been updated	tts	de	Ticket wurde aktualisiert
-tickets open x	tts	de	offene tickets: %1
-tickets total x	tts	de	Tickets insgesamt: %1
-to go back to the tts index, click <a href= x >here</a>	tts	de	Um zum tts-Index zurück zu kommen <a href="%1">hier clicken</a>
+tickets open %1	tts	de	offene tickets: %1
+tickets total %1	tts	de	Tickets insgesamt: %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	de	Um zum tts-Index zurück zu kommen <a href="%1">hier clicken</a>
 total billable	tts	de	Gesammt abrechenbar
 trouble ticket system	common	de	Trouble Ticket System
 tts	common	de	Trouble Ticket System

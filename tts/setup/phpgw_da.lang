@@ -25,7 +25,7 @@ reopen	tts	da	Åben igen
 status/date closed	tts	da	Status/Dato lukket
 subject	tts	da	Emne
 ticket	tts	da	Melding
-Ticket assigned to x	tts	da	Melding tilegnet til %1
+Ticket assigned to %1	tts	da	Melding tilegnet til %1
 trouble ticket system	common	da	Problem registrerings system
 update	tts	da	Opdatér
 view all tickets	tts	da	Se alle meldinger

@@ -95,8 +95,8 @@
 	$GLOBALS['phpgw']->db->next_record();
 	$numopen = $GLOBALS['phpgw']->db->f('0') ;
 
-	$GLOBALS['phpgw']->template->set_var('tts_numtotal',lang('Tickets total x',$numtotal));
-	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open x',$numopen));
+	$GLOBALS['phpgw']->template->set_var('tts_numtotal',lang('Tickets total %1',$numtotal));
+	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
 
 
 	$db2 = $phpgw->db;
@@ -126,8 +126,8 @@
 		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View all tickets'));
 	}
 
-	$GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total x',$numtotal));
-	$GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open x',$numopen));
+	$GLOBALS['phpgw']->template->set_var('tts_ticketstotal', lang('Tickets total %1',$numtotal));
+	$GLOBALS['phpgw']->template->set_var('tts_ticketsopen', lang('Tickets open %1',$numopen));
 	
 	// fill header
 	$GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );

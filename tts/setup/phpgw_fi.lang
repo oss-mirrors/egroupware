@@ -31,8 +31,8 @@ status/date closed	tts	fi	Tärkeys/Sulkemispäivä
 subject changed	tts	fi	Aihe muutettu
 ticket	tts	fi	Tapaus
 ticket has been updated	tts	fi	Tapaus päivitetty
-tickets open x	tts	fi	Avoimia tapauksia %1
-tickets total x	tts	fi	Tapauksia yhteensä %1
+tickets open %1	tts	fi	Avoimia tapauksia %1
+tickets total %1	tts	fi	Tapauksia yhteensä %1
 trouble ticket system	common	fi	Ongelmatapaus -järjestelmä
 tts	common	fi	Ongelmatapaus -järjestelmä
 tts preferences	tts	fi	Ongelmatapaus -järjestelmä - asetukset

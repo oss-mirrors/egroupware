@@ -43,10 +43,10 @@ re-opened	tts	pt	Reaberto
 status/date closed	tts	pt	Status/Data do fechamento
 subject changed	tts	pt	Assunto alterado
 ticket has been updated	tts	pt	Ticket foi atualizado
-tickets open x	tts	pt	Tickets abertos %1
-tickets total x	tts	pt	Total de tickets %1
+tickets open %1	tts	pt	Tickets abertos %1
+tickets total %1	tts	pt	Total de tickets %1
 ticket	tts	pt	Ticket
-to go back to the tts index, click <a href= x >here</a>	tts	pt	Para voltar para a página principal do TTS, clique <a href="%1">aqui</a>
+to go back to the tts index, click <a href= %1 >here</a>	tts	pt	Para voltar para a página principal do TTS, clique <a href="%1">aqui</a>
 total billable	tts	pt	Total a cobrar
 trouble ticket system	common	pt	Sistema de tickets de processos
 tts	common	pt	Sistema de tickets de processos

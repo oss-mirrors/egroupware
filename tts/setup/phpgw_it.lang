@@ -39,8 +39,8 @@ status/date closed	tts	it	Status/Data chiusura
 subject changed	tts	it	Oggetto cambiato
 ticket	tts	it	Ticket
 ticket has been updated	tts	it	Il ticket è stato aggiornato
-tickets open x	tts	it	Ticket aperti %1
-tickets total x	tts	it	Ticket totali %1
+tickets open %1	tts	it	Ticket aperti %1
+tickets total %1	tts	it	Ticket totali %1
 total billable	tts	it	Totale Fatturabile
 trouble ticket system	common	it	Sistema gestione problemi
 tts	common	it	Sistema gestione problemi

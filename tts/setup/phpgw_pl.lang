@@ -54,10 +54,10 @@ status/date closed	tts	pl	Status/Data zamkniêcia
 subject	tts	pl	Temat
 subject changed	tts	pl	Zmieniono temat
 ticket	tts	pl	Problem
-ticket assigned to x	tts	pl	Problem przypisany do %1
+ticket assigned to %1	tts	pl	Problem przypisany do %1
 ticket has been updated	tts	pl	Problem zosta³ zaktualizowany
-tickets open x	tts	pl	Otwartych problemów %1
-tickets total x	tts	pl	Wszystkich problemów %1
+tickets open %1	tts	pl	Otwartych problemów %1
+tickets total %1	tts	pl	Wszystkich problemów %1
 total billable	tts	pl	
 trouble ticket system	common	pl	System monitorowania problemów
 tts	common	pl	System monitorowania problemów

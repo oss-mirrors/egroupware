@@ -17,6 +17,7 @@ closed	tts	fr	Fermé
 create new ticket	tts	fr	Créer un nouveau ticket
 creates a new ticket, returns ticket_id	tts	fr	Crée un nouveau ticket, retourne l'id du ticket
 creates a struct of tickets	tts	fr	Crée une structure de tickets
+date closed	tts	fr	Date de fermeture
 date opened	tts	fr	Date d'ouverture
 detail	tts	fr	Détail
 force	tts	fr	Force
@@ -26,31 +27,35 @@ latest note added	tts	fr	Dernière note ajoutée
 new ticket	tts	fr	Nouveau ticket
 new value	tts	fr	Nouvelle valeur
 no additional notes	tts	fr	Pas de notes additionnelles
-no notes for this ticket	tts	fr	Pas de notes pour ce ticket
 no tickets found	tts	fr	Pas de ticket trouvé
 not assigned	tts	fr	Non assigné
 old value	tts	fr	Ancienne valeur
 open	tts	fr	Ouvrir
-opened	tts	fr	Ouvert
 open date	tts	fr	Date d'ouverture
+opened	tts	fr	Ouvert
 opened by	tts	fr	Ouvert par
-original ticket details	tts	fr	Détails du ticket original
 prio	tts	fr	Prio
 priority	tts	fr	Priorité
 priority changed	tts	fr	Priorité changée
 re-assigned	tts	fr	Réassigné
 re-opened	tts	fr	Rouvert
+returns a struct of a tickets history	tts	fr	Retourne une structure d'historique des tickets
+returns a struct of values of a single ticket	tts	fr	Retourne une structure de valeurs d'un seul ticket
+returns the additional notes attached to a ticket	tts	fr	Retourne les notes additionnelles attachées à un ticket
 status/date closed	tts	fr	Statut/Date de fermeture
 subject changed	tts	fr	Sujet changé
+test	tts	fr	TEST
 ticket	tts	fr	Ticket
 ticket has been updated	tts	fr	Le ticket a été mis à jour
-tickets open x	tts	fr	Tickets ouverts %1
-tickets total x	tts	fr	Tickets total %1
-to go back to the tts index, click <a href= x >here</a>	tts	fr	Pour retourner à l'index de tts, cliquez <a href="%1">ici</a>
+tickets found %1	tts	fr	Tickets trouvés %1
+tickets open %1	tts	fr	Tickets ouverts %1
+tickets total %1	tts	fr	Tickets total %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	fr	Pour retourner à l'index de tts, cliquez <a href="%1">ici</a>
 total billable	tts	fr	Total facturable
 trouble ticket system	common	fr	Système de tickets d'incidents
 tts	common	fr	Système de tickets d'incidents
 tts preferences	tts	fr	Système de tickets d'incidents - préférences
+updates ticket	tts	fr	Met à jour le ticket
 use email notification	tts	fr	Utiliser la notification par EMail
 view all tickets	tts	fr	Voir tous les tickets
 view job detail	tts	fr	Voir le détail du travail

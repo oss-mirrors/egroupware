@@ -129,7 +129,7 @@
 					. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
 					. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
 					. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n"
-					. lang('To go back to the tts index, click <a href= x >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
+					. lang('To go back to the tts index, click <a href= %1 >here</a>',$GLOBALS['phpgw']->link('/tts/index.php','cd=13'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 		}

@@ -32,12 +32,12 @@ search	tts	ja	検索
 show new/updated tickets on main screen	tts	ja	新しいチケットをメイン画面に表示する
 status/date closed	tts	ja	状態/終了日
 ticket	tts	ja	チケット
-ticket assigned to x	tts	ja	%1 にアサイン
+ticket assigned to %1	tts	ja	%1 にアサイン
 ticket closed	tts	ja	作業終了
-tickets found x	tts	ja	%1 件見つかりました
+tickets found %1	tts	ja	%1 件見つかりました
 ticket reopened	tts	ja	作業再開
-tickets open x	tts	ja	オープン %1
-tickets total x	tts	ja	合計 %1
+tickets open %1	tts	ja	オープン %1
+tickets total %1	tts	ja	合計 %1
 trouble ticket system	common	ja	チケットシステム
 tts	common	ja	チケットシステム
 tts preferences	tts	ja	チケットシステムユーザ設定

@@ -25,7 +25,7 @@ reopen	tts	nl	Heropenen
 status/date closed	tts	nl	Status/Datum sluiting
 subject	tts	nl	Onderwerp
 ticket	tts	nl	Melding
-Ticket assigned to x	tts	nl	Melding toegewezen aan %1
+Ticket assigned to %1	tts	nl	Melding toegewezen aan %1
 trouble ticket system	common	nl	Probleem Registratie Systeem
 update	tts	nl	bijwerken
 view all tickets	tts	nl	Alle meldingen bekijken
