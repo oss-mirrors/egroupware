@@ -70,7 +70,7 @@
 		{
 			if ($values['b_create'])
 			{
-				$doc_root = $GLOBALS['HTTP_SERVER_VARS']['DOCUMENT_ROOT'] ? $GLOBALS['HTTP_SERVER_VARS']['DOCUMENT_ROOT'] : $GLOBALS['DOCUMENT_ROOT'];
+				$doc_root = get_var('DOCUMENT_ROOT',Array('GLOBAL','SERVER'));
 
 				if ($values['script_path'])
 				{
