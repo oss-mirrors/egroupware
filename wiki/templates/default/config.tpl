@@ -1,6 +1,4 @@
 <!-- BEGIN header -->
-
-<SCRIPT language=JavaScript src="jinn/js/display_func.js" type=text/javascript></script>
 <form name=frm method="POST" action="{action_url}">
 <table border="0" align="left">
    <tr bgcolor="{th_bg}">
