@@ -132,16 +132,7 @@
 
 		function cached_accounts($account_id)
 		{
-			$this->accounts = CreateObject('phpgwapi.accounts',$account_id);
-
-			$this->accounts->read_repository();
-
-			$cached_data[$this->accounts->data['account_id']]['account_id']		= $this->accounts->data['account_id'];
-			$cached_data[$this->accounts->data['account_id']]['account_lid']	= $this->accounts->data['account_lid'];
-			$cached_data[$this->accounts->data['account_id']]['firstname']   	= $this->accounts->data['firstname'];
-			$cached_data[$this->accounts->data['account_id']]['lastname']    	= $this->accounts->data['lastname'];
-
-			return $cached_data;
+			return $GLOBALS['phpgw']->accounts->get_account_data($account_id);
 		}
 
 		function read_abook($start, $query, $qfilter, $sort, $order)

@@ -303,10 +303,8 @@
 					}
 				}
 
-				$cached_data = $this->boprojects->cached_accounts($pro[$i]['coordinator']);
-				$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
-                                        . ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
-                                        . $cached_data[$pro[$i]['coordinator']]['lastname'] . ' ]');
+				$adata = $this->boprojects->cached_accounts($pro[$i]['coordinator']);
+				$coordinatorout = $GLOBALS['phpgw']->strip_html($adata[$pro[$i]['coordinator']]['fullname'] . ' [' . $adata[$pro[$i]['coordinator']]['lid'] . ']');
 
 // --------------- template declaration for list records -------------------------------------
 
@@ -903,7 +901,7 @@
 			$this->t->set_var('customer',$customerout);
 
 			$this->t->pfp('out','view');
-//			$phpgw->common->hook('projects_view');
+//			$GLOBALS['phpgw']->common->hook('projects_view');
 		}
 
 		function delete_pa()
