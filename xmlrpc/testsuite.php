@@ -142,10 +142,14 @@ And turned it into nylon";
 
 	class TestFileCases extends TestCase
 	{
-		function TestFileCases($name, $base = '/usr/local/apache/htdocs/phpgroupware/xmlrpc')
+		function TestFileCases($name, $base='')
 		{
+			if(!$base)
+			{
+				$base = PHPGW_APP_ROOT;
+			}
 			$this->TestCase($name);
-			$this->root=$base;
+			$this->root = $base;
 		}
 
 		function stringBug ()
