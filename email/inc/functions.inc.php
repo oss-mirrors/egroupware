@@ -1,9 +1,12 @@
 <?php
+
+  /* $Id$ */
+
   if ($phpgw_info["server"]["imap_server_type"] == "UWash" &&
       $phpgw_info["server"]["mail_server_type"] == "imap") {
      $folder = (!$folder ? "INBOX" : $folder);
   }
-    $mailbox = $phpgw->msg->login($folder);
+  $mailbox = $phpgw->msg->login($folder);
   
   function decode_header_string($hed_str)
   {
