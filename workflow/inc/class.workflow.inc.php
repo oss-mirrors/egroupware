@@ -163,7 +163,7 @@
 			if (!$valid)
 			{
 				$errors = $activity_manager->get_error();
-				$error_str = '<b>' . lang('To following items must be corrected to be able to activate this process').':</b><br/><small><ul>';
+				$error_str = '<b>' . lang('The following items must be corrected to be able to activate this process').':</b><br/><small><ul>';
 				foreach ($errors as $error)
 				{
 					$error_str .= '<li>'. $error . '<br/>';
