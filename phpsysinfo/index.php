@@ -18,7 +18,7 @@
 	include('../header.inc.php');
 
 	$lng = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
-	$template = $GLOBALS['phpgw_info']['user']['preferences']['common']['theme'];
+	$template = $GLOBALS['phpgw_info']['user']['preferences']['common']['template_set'];
 
 	// default to english, but this is negotiable.
 	if (!(isset($lng) && file_exists('includes/lang/' . $lng . '.php')))
@@ -31,16 +31,12 @@
 	require('includes/system_functions.php');    // finish defining all of our global functions and variables
 
 	// figure out if we got a template passed in the url
-	if (!(isset($template) && file_exists("templates/$template")))
+	if (!(isset($template) && file_exists("templates/$template/box.tpl")))
 	{
 		// default template we should use if we don't get a argument.
-		define('TEMPLATE_SET', 'default');
-		$template = 'default';
+		$template = 'idsociety';
 	}
-	else
-	{
-		define('TEMPLATE_SET', $template);
-	}
+	define('TEMPLATE_SET', $template);
 
 	// fire up the template engine
 	$tpl = new Template(dirname(__FILE__) . '/templates/' . TEMPLATE_SET);
@@ -66,8 +62,7 @@
 	// let the page begin.
 	#require('includes/system_header.php');
 
-	#$tpl->set_var('title', $text['title'] . ': ' . sys_chostname() . ' (' . sys_ip_addr() . ')');
-
+	$tpl->set_var('title', $text['title'] . ': ' . sys_chostname() . ' (' . sys_ip_addr() . ')');
 	require('includes/table_vitals.php');
 	require('includes/table_network.php');    
 	require('includes/table_hardware.php');
