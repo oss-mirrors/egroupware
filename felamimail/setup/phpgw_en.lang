@@ -3,7 +3,6 @@
 (unknown sender)	felamimail	en	(unknown sender)
 activate	felamimail	en	Activate
 activate script	felamimail	en	activate script
-add	felamimail	en	add
 add address	felamimail	en	Add address
 add rule	felamimail	en	Add Rule
 add script	felamimail	en	Add Script
@@ -52,12 +51,10 @@ dark gray	felamimail	en	Dark Gray
 dark green	felamimail	en	Dark Green
 dark magenta	felamimail	en	Dark Magenta
 dark yellow	felamimail	en	Dark Yellow
-date	felamimail	en	Date
 date(newest first)	felamimail	en	Date (newest first)
 date(oldest first)	felamimail	en	Date (oldest first)
 deactivate script	felamimail	en	deactivate script
 default sorting order	felamimail	en	Default sorting order
-delete	felamimail	en	Delete
 delete all	felamimail	en	delete all
 delete folder	felamimail	en	Delete Folder
 delete selected	felamimail	en	Delete selected
@@ -78,14 +75,12 @@ does not match	felamimail	en	does not match
 does not match regexp	felamimail	en	does not match regexp
 don't use sent	felamimail	en	Don't use Sent
 don't use trash	felamimail	en	Don't use Trash
-done	felamimail	en	Done
 down	felamimail	en	down
 download	felamimail	en	download
 download this as a file	felamimail	en	Download this as a file
 e-mail	felamimail	en	E-Mail
 e-mail address	felamimail	en	E-Mail address
 e-mail folders	felamimail	en	E-Mail Folders
-edit	felamimail	en	Edit
 edit filter	felamimail	en	Edit filter
 edit rule	felamimail	en	edit rule
 edit selected	felamimail	en	Edit selected
@@ -99,7 +94,6 @@ enter your sieve server hostname or ip address	admin	en	Enter your SIEVE server 
 enter your sieve server port	admin	en	Enter your SIEVE server port
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
 enter your smtp server port	admin	en	Enter your SMTP server port
-erro	felamimail	en	ERRO
 error	felamimail	en	ERROR
 error connecting to imap serv	felamimail	en	Error connecting to IMAP serv
 error opening	felamimail	en	Error opening
@@ -131,8 +125,6 @@ from(a->z)	felamimail	en	From (A->Z)
 from(z->a)	felamimail	en	From (Z->A)
 full name	felamimail	en	Full Name
 have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	en	Have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about Squirrelmail.<br>
-have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	en	Have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about Squirrelmail.<br>
-help	felamimail	en	Help
 hide header	felamimail	en	hide header
 html	felamimail	en	HTML
 icons and text	felamimail	en	Icons and text
