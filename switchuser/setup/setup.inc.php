@@ -11,7 +11,7 @@
 	/* Basic information about this app */
 	$setup_info['switchuser']['name']      = 'switchuser';
 	$setup_info['switchuser']['title']     = 'Switch User';
-	$setup_info['switchuser']['version']   = '0.0.1.001';
+	$setup_info['switchuser']['version']   = '0.0.1.002';
 	$setup_info['switchuser']['app_order'] = 62;
 	$setup_info['switchuser']['enable']    = 1;
 	
@@ -24,10 +24,10 @@
 	$setup_info['switchuser']['maintainer_email'] = 'pim@lingewoud.nl';
 	
 	/* The tables this app creates */
-	//$setup_info['switchuser']['tables']    = false;//array('');
+	$setup_info['switchuser']['tables']    = '';
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['switchuser']['hooks'] = array();
+	#$setup_info['switchuser']['hooks'] = array();
 
 	/* Dependacies for this app to work */
 	$setup_info['switchuser']['depends'][] = array(
