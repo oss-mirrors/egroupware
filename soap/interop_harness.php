@@ -12,14 +12,11 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'disable_Template_class' => True,
-		'currentapp' => 'soap',
-		'noheader' => True
+		'currentapp' => 'soap'
 	);
-
 	include('../header.inc.php');
-
 ?>
 <!-- function for quickjump -->
 <script language="JavaScript">
@@ -34,7 +31,9 @@ function quickjump(dropdown) {
 	// get list of all endpoints from xmethods
 	$soapclient = CreateObject('phpgwapi.soapclient','http://www.xmethods.net/perl/soaplite.cgi');
 	$endpointArray = $soapclient->call('getAllEndpoints',array(),'http://soapinterop.org/ilab','http://soapinterop.org/ilab#getAllEndpoints');
-	foreach($endpointArray as $k => $v)
+
+	@reset($endpointArray);
+	while(list($k,$v) = @each($endpointArray))
 	{
 		$servers[str_replace("+","",$v["name"])] = $v;
 	}
@@ -113,104 +112,115 @@ function quickjump(dropdown) {
 		"timeInstant",
 		"2001-04-25T09:31:41-07:00"
 	);
+
+	$servers['phpGroupWare'] = array(
+		'soapaction' => 'urn:soapinterop',
+		'endpoint'   => 'http://www.phpgroupware.org/cvsdemo/soap.php',
+		'methodNamespace' => 'http://soapinterop.org',
+		'soapactionNeedsMethod' => 0,
+		'name'       => 'SOAPx4  - interop test suite (dev)'
+	);
 ?>
 
 <form>
 <select onChange='quickjump(this)'>
 <option>Choose Server...
 	<?php
-	print isset($nserver) ? '<option value="' . $phpgw->link('/soap/interop_harness.php','nserver=' . $nserver) . '">' . $nserver : "";
-	foreach($servers as $k => $v)
+	print isset($nserver) ? '<option value="' . $GLOBALS['phpgw']->link('/soap/interop_harness.php','nserver=' . $nserver) . '">' . $nserver : "";
+	@reset($servers);
+	while(list($k,$v) = @each($servers))
 	{
-		echo '<option value="' . $phpgw->link('/soap/interop_harness.php','nserver=' . $k) . '">' . $k . "\n";
+		echo '<option value="' . $GLOBALS['phpgw']->link('/soap/interop_harness.php','nserver=' . $k) . '">' . $k . "\n";
 	}
 	?>
 </select>
 </form>
 
 <?php
-
-if($nserver)
-{
-	$server = $servers[$nserver];
-	// print server info
-	foreach($server as $k => $v)
+	if($nserver)
 	{
-		print "<strong>$k:</strong> $v<br>";
-	}
-	print "<br><br>";
-	// loop thru test suite
-	foreach(array_keys($method_params) as $method)
-	{
-		// create soap message
-		if(!$soapmsg = CreateObject('phpgwapi.soapmsg',
-			$method,
-			$method_params[$method],
-			$server["methodNamespace"]
-		))
+		$server = $servers[$nserver];
+		// print server info
+		@reset($server);
+		while(list($k,$v) = @each($server))
 		{
-			die("couldn't create soap message for method: $method!");
+			print "<strong>$k:</strong> $v<br>";
 		}
-		else
+		print "<br><br>";
+		// loop thru test suite
+		$method_keys = array_keys($method_params);
+		while(list(,$method) = @each($method_keys))
 		{
-			// invoke the client
-			$client = CreateObject('phpgwapi.soap_client',$server["endpoint"]);
-			//$client->debug_flag = true;
-			// methodname required?
-			if($server["soapactionNeedsMethod"] == 1)
+			// create soap message
+			if(!$soapmsg = CreateObject('phpgwapi.soapmsg',
+				$method,
+				$method_params[$method],
+				$server["methodNamespace"]
+			))
 			{
-				$soapaction = $server["soapaction"].$method;
+				die("couldn't create soap message for method: $method!");
 			}
 			else
 			{
-				$soapaction = $server["soapaction"];
-			}
-			// send message and get response
-			if($return = $client->send($soapmsg,$soapaction))
-			{
-				// check for valid response
-				if(get_class($return) == "soapval")
+				// invoke the client
+				$client = CreateObject('phpgwapi.soap_client',$server["endpoint"]);
+				//$client->debug_flag = true;
+				// methodname required?
+				if($server["soapactionNeedsMethod"] == 1)
 				{
-					// fault?
-					if(eregi("fault",$return->name))
+					$soapaction = $server["soapaction"].$method;
+				}
+				else
+				{
+					$soapaction = $server["soapaction"];
+				}
+				// send message and get response
+				if($return = $client->send($soapmsg,$soapaction))
+				{
+					// check for valid response
+					if(get_class($return) == "soapval")
 					{
-						$status = "failed - got fault";
+						// fault?
+						if(eregi("fault",$return->name))
+						{
+							$status = "failed - got fault";
+						}
+						else
+						{
+							$status = "passed";
+						}
 					}
 					else
 					{
-						$status = "passed";
+						$status = "failed - return was not a soapval object";
 					}
 				}
 				else
 				{
-					$status = "failed - return was not a soapval object";
+					$status = "failed - send/receive failed somewhere, go test in test_methods.php to see dumps";
 				}
-			}
-			else
-			{
-				$status = "failed - send/receive failed somewhere, go test in test_methods.php to see dumps";
-			}
-			// print results
-			print "<b>METHOD: $method... ";
-			print "<font color='";
-			print ($status == "passed") ? "green" : "red";
-			print "'>$status</font>";
-			
-			// log the transaction, and print link to dumps
-			if($harness)
-			{
-				if($status == "failed")
+				// print results
+				print "<b>METHOD: $method... ";
+				print "<font color='";
+				print ($status == "passed") ? "green" : "red";
+				print "'>$status</font>";
+
+				// log the transaction, and print link to dumps
+				if($harness)
 				{
-					$client->incoming_payload .= "\n\n<!-- SOAPx4 CLIENT DEBUG\n$client->debug_str\n\nRETURN VAL DEBUG: $return->debug_str-->";
+					if($status == "failed")
+					{
+						$client->incoming_payload .= "\n\n<!-- SOAPx4 CLIENT DEBUG\n$client->debug_str\n\nRETURN VAL DEBUG: $return->debug_str-->";
+					}
+					$id = harness($nserver,$method,$client->outgoing_payload,$client->incoming_payload,$status);
+					print "&nbsp;&nbsp;<a href='../client_dumps.php?id=$id'>view dumps...</a>";
 				}
-				$id = harness($nserver,$method,$client->outgoing_payload,$client->incoming_payload,$status);
-				print "&nbsp;&nbsp;<a href='../client_dumps.php?id=$id'>view dumps...</a>";
+				print "<br>";
 			}
-			print "<br>";
 		}
 	}
-}
 
-unset($soapmsg);
-unset($client);
+	$GLOBALS['phpgw']->common->phpgw_footer();
+	unset($soapmsg);
+	unset($client);
 ?>

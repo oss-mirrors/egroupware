@@ -12,13 +12,13 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'soap',
 		'noheader'    => True,
 		'noappheader' => True,
 		'nonavbar'    => True
 	);
-
 	include('../header.inc.php');
 ?>
 	<script language='JavaScript'>
@@ -49,7 +49,6 @@
 			{
 				@reset($endpointArray);
 				while(list($k,$v) = @each($endpointArray))
-				/*foreach($endpointArray as $k => $v) */
 				{
 					$servers[str_replace('+','',$v['name'])] = $v;
 				}
@@ -84,7 +83,7 @@
 	$method_params['addressbook.boaddressbook.read_entries']['limit']  = 0;
 	$method_params['addressbook.boaddressbook.read_entries']['qcols']  = $fields;
 	$method_params['addressbook.boaddressbook.read_entries']['filter'] = 'tid=n,access=private';
-	$method_params['addressbook.boaddressbook.read_entries']['userid'] = intval($phpgw_info['user']['account_id']);
+	$method_params['addressbook.boaddressbook.read_entries']['userid'] = intval($GLOBALS['phpgw_info']['user']['account_id']);
 
 	$method_params['addressbook.boaddressbook.read_entry']['id'] = 10;
 	$method_params['addressbook.boaddressbook.read_entry']['fields'] = $fields;
@@ -152,9 +151,9 @@
 	}
 	reset($method_keys);
 
-	$servers['phpgw - Localhost'] = array(
+	$servers['phpGroupWare'] = array(
 		'soapaction' => 'urn:soapinterop',
-		'endpoint'   => 'http://' . $HTTP_HOST . '/phpgroupware/soap.php',
+		'endpoint'   => 'http://www.phpgroupware.org/cvsdemo/soap.php',
 		'methodNamespace' => 'http://soapinterop.org',
 		'soapactionNeedsMethod' => 0,
 		'name'       => 'SOAPx4  - interop test suite (dev)'
@@ -170,7 +169,7 @@
 	);
 ?>
 
-<form action="<?php echo $phpgw->link('/soap/test_methods.php'); ?>" method="post">
+<form action="<?php echo $GLOBALS['phpgw']->link('/soap/test_methods.php'); ?>" method="post">
 <select name="nserver">
 <option>Choose Server...
 	<?php

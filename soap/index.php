@@ -11,17 +11,17 @@
 
 /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'soap',
 		'noheader'    => False,
 		'noappheader' => False,
 		'nonavbar'    => False
 	);
-
 	include('../header.inc.php');
 
-	echo '<br><a href="' . $phpgw->link('/soap/test_methods.php') . '">' . lang('Test Suite') . '</a>' . "\n";
-	echo '<br><a href="' . $phpgw->link('/soap/interop_harness.php') . '">' . lang('Interop Tests') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/soap/test_methods.php') . '">' . lang('Test Suite') . '</a>' . "\n";
+	echo '<br><a href="' . $GLOBALS['phpgw']->link('/soap/interop_harness.php') . '">' . lang('Interop Tests') . '</a>' . "\n";
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
