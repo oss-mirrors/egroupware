@@ -450,7 +450,7 @@ function comic_snarf(&$comic_url, $filesize)
     
     $status = STD_SUCCESS;
     $filename   = "images/" . $phpgw->db->f("data_name") . substr($comic_url,-4);
-    $filename_w = $phpgw_info["server"]["server_root"]."/comic/".$filename;
+    $filename_w = PHPGW_SERVER_ROOT."/comic/".$filename;
     
     /**************************************************************************
      * get our image or fail
