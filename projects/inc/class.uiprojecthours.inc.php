@@ -688,7 +688,7 @@
 		{
 			$hours_id	= get_var('hours_id',array('POST','GET'));
 			$project_id	= get_var('project_id',array('POST','GET'));
-			$confirm	= get_var('confirm',array('POST'));
+			$confirm	= get_var('yes',array('POST'));
 
 			$link_data = array
 			(
@@ -715,7 +715,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_yes',lang('Yes'));
 
 			$link_data['menuaction'] = 'projects.uiprojecthours.delete_hours';
-			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 			$GLOBALS['phpgw']->template->pfp('out','hours_delete');
 		}
