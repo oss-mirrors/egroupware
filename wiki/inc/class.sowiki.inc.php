@@ -396,8 +396,8 @@ class sowiki	// DB-Layer
 			'prefix'  => $name,
 		);
 		$name = $this->db->db_addslashes($name);
-		$this->db->query("SELECT url FROM $this->IwTbl WHERE .".
-			$this->db->column_data_imlode(' AND ',$values,True,False,$this->table_defs[$this->IwTbl]['fd']),
+		$this->db->query("SELECT url FROM $this->IwTbl WHERE ".
+			$this->db->column_data_implode(' AND ',$values,True,False,$this->table_defs[$this->IwTbl]['fd']),
 			__LINE__,__FILE__);
 		
 		return $this->db->next_record() ? $this->db->f('url') : False;
