@@ -246,8 +246,15 @@
 			switch ($_boAction)
 			{
 				case 'add_mailAlternateAddress':
-					
-					$count = count($this->userSessionData[$_accountID]['mailAlternateAddress']);
+					if (is_array($this->userSessionData[$_accountID]['mailAlternateAddress']))
+					{
+						$count = count($this->userSessionData[$_accountID]['mailAlternateAddress']);
+					}
+					else
+					{
+						$count = 0;
+						$this->userSessionData[$_accountID]['mailAlternateAddress'] = array();
+					}
 					
 					$this->userSessionData[$_accountID]['mailAlternateAddress'][$count] = 
 						$_formData['add_mailAlternateAddress'];
