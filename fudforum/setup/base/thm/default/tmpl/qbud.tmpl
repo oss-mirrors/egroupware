@@ -24,14 +24,14 @@
 {SECTION: END}
 
 {SECTION: buddy_list}
-<tr><th width="100%">{MSG: qbud_nick_name}</th><th nowrap>{MSG: qbud_selected} [<a class="thLnk" href="{ROOT}?t=qbud&amp;{DEF: _rsid}&amp;all={VAR: all_v}">{VAR: all_d}</a>]</th></tr>
+<tr><th width="100%">{MSG: qbud_nick_name}</th><th nowrap>{MSG: qbud_selected} [<a class="thLnk" href="{TEMPLATE: buddy_list_lnk}">{VAR: all_d}</a>]</th></tr>
 {TEMPLATE-DATA: buddies}
 <tr class="{ALT-VAR: search_alt RowStyleA RowStyleB}"><td colspan=2 class="GenText" align="right"><input type="submit" class="button" name="submit" value="{MSG: qbud_add_selected}"></td></tr>
 {SECTION: END}
 
 {PAGE: QBUD_PAGE buddy selector popup}
 {TEMPLATE: header_plain}
-<form action="{ROOT}?t=qbud" name="qbud" method="post">{DEF: _hs}
+<form action="{TEMPLATE: QBUD_PAGE_lnk3}" name="qbud" method="post">{DEF: _hs}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 {TEMPLATE-DATA: qbud_data}
 </table>
@@ -44,4 +44,12 @@
 
 {SECTION: pmsg_all}
 {MSG: pmsg_all}
+{SECTION: END}
+
+{SECTION: buddy_list_lnk}
+{ROOT}?t=qbud&amp;{DEF: _rsid}&amp;all={VAR: all_v}
+{SECTION: END}
+
+{SECTION: QBUD_PAGE_lnk3}
+{ROOT}?t=qbud
 {SECTION: END}

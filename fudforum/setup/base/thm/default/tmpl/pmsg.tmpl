@@ -44,11 +44,11 @@
 {SECTION: END}
 
 {SECTION: pmsg_read private message read}
-<img src="{THEME_IMAGE_ROOT}/pmsg_unread.gif" alt="{MSG: pmsg_new_messages}" title="{MSG: pmsg_new_messages}" />
+<img src="{THEME_IMAGE_ROOT}/pmsg_unread.png" width=32 height=32 alt="{MSG: pmsg_new_messages}" title="{MSG: pmsg_new_messages}" />
 {SECTION: END}
 
 {SECTION: pmsg_unread private message unread}
-<img src="{THEME_IMAGE_ROOT}/pmsg_read.gif" alt="{MSG: pmsg_old_messages}" title="{MSG: pmsg_old_messages}" />
+<img src="{THEME_IMAGE_ROOT}/pmsg_read.png" width=32 height=32 alt="{MSG: pmsg_old_messages}" title="{MSG: pmsg_old_messages}" />
 {SECTION: END}
 
 {SECTION: deny_recipt deny recipt link}
@@ -106,8 +106,9 @@
 {TEMPLATE-DATA: private_msg_entry}
 {TEMPLATE-DATA: private_tools}
 </table></form>
-<img src="blank.gif" alt="" width=1 height=2 />
-<div align="right"><a class="GenLink" href="{TEMPLATE: PMSG_PAGE_lnk}"><img src="{THEME_IMAGE_ROOT}/new_pm.gif" alt="" /></a></div>
+{TEMPLATE-DATA: page_pager}
+<div style="padding-top: 2px;" align="right"><a class="GenLink" href="{TEMPLATE: PMSG_PAGE_lnk}"><img src="{THEME_IMAGE_ROOT}/new_pm.gif" alt="" /></a></div>
+{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

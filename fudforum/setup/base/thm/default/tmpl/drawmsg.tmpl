@@ -12,13 +12,14 @@
 {PHP_FILE: input: drawmsg.inc.t; output: drawmsg.inc;}
 {REF: fileio.tmpl}
 {REF: alt_var.tmpl}
+{REF: imsg.tmpl}
 
 {SECTION: dmsg_prev_message_lnk}
 #msg_num_{VAR: msg_num}
 {SECTION: END}
 
 {SECTION: dmsg_prev_message previous page arrow drawn on the message}
-<a href="{TEMPLATE: dmsg_prev_message_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_prev_msg}" src="{THEME_IMAGE_ROOT}/up.gif" /></a>
+<a href="{TEMPLATE: dmsg_prev_message_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_prev_msg}" src="{THEME_IMAGE_ROOT}/up.png" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_prev_message_prev_page_lnk}
@@ -26,7 +27,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_prev_message_prev_page previous page arrrow drawn on the message}
-<a href="{TEMPLATE: dmsg_prev_message_prev_page_lnk}" class="GenLink"><img src="{THEME_IMAGE_ROOT}/up.gif" title="{MSG: goto_prev_msg}" alt="{MSG: goto_prev_msg}" /></a>
+<a href="{TEMPLATE: dmsg_prev_message_prev_page_lnk}" class="GenLink"><img src="{THEME_IMAGE_ROOT}/up.png" title="{MSG: goto_prev_msg}" alt="{MSG: goto_prev_msg}" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_tree_prev_message_prev_page_lnk}
@@ -34,7 +35,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_tree_prev_message_prev_page previous page (tree view) arrrow drawn on the message}
-<a href="{TEMPLATE: dmsg_tree_prev_message_prev_page_lnk}" class="GenLink"><img src="{THEME_IMAGE_ROOT}/up.gif" title="{MSG: goto_prev_msg}" alt="{MSG: goto_prev_msg}" /></a>
+<a href="{TEMPLATE: dmsg_tree_prev_message_prev_page_lnk}" class="GenLink"><img src="{THEME_IMAGE_ROOT}/up.png" title="{MSG: goto_prev_msg}" alt="{MSG: goto_prev_msg}" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_next_message_lnk}
@@ -42,7 +43,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_next_message next message arrow drawn on the message}
-<a href="{TEMPLATE: dmsg_next_message_lnk}" class="GenLink"><img alt="{MSG: goto_next_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.gif" /></a>
+<a href="{TEMPLATE: dmsg_next_message_lnk}" class="GenLink"><img alt="{MSG: goto_next_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.png" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_next_message_next_page_lnk}
@@ -50,7 +51,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_next_message_next_page next page arrow drawn on the message}
-<a href="{TEMPLATE: dmsg_next_message_next_page_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.gif" /></a>
+<a href="{TEMPLATE: dmsg_next_message_next_page_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.png" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_tree_next_message_next_page_lnk}
@@ -58,7 +59,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_tree_next_message_next_page next page (tree view) arrow drawn on the message}
-<a href="{TEMPLATE: dmsg_tree_next_message_next_page_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.gif" /></a>
+<a href="{TEMPLATE: dmsg_tree_next_message_next_page_lnk}" class="GenLink"><img alt="{MSG: goto_prev_msg}" title="{MSG: goto_next_msg}" src="{THEME_IMAGE_ROOT}/down.png" width=16 height=11 /></a>
 {SECTION: END}
 
 {SECTION: dmsg_ignored_user_message_regged}
@@ -115,7 +116,7 @@
 {SECTION: END}
 
 {SECTION: dmsg_avatar}
-<td valign="top" width="1">{VAR: obj->avatar_loc}{TEMPLATE-DATA: level_image}&nbsp;</td>
+<td class="avatarPad" width="1">{VAR: obj->avatar_loc}{TEMPLATE-DATA: level_image}</td>
 {SECTION: END}
 
 {SECTION: dmsg_reg_user_link_lnk}
@@ -217,23 +218,23 @@
 {SECTION: END}
 
 {SECTION: dmsg_im_icq}
-<a href="{TEMPLATE: dmsg_im_icq_lnk}"><img src="http://web.icq.com/whitepages/online?icq={VAR: obj->icq}&amp;img=5" alt="" /></a>
+<a href="{TEMPLATE: dmsg_im_icq_lnk}"><img title="{VAR: obj->icq}" src="{THEME_IMAGE_ROOT}/icq.gif" alt="" /></a>
 {SECTION: END}
 
 {SECTION: dmsg_im_aim}
-<a href="aim:goim?screenname={VAR-URL: obj->aim}&amp;message=Hi.+Are+you+there?"><img alt="" src="{THEME_IMAGE_ROOT}/aim.gif" /></a>
+<a href="aim:goim?screenname={VAR: obj->aim}&amp;message=Hi.+Are+you+there?" target="_blank"><img alt="" src="{THEME_IMAGE_ROOT}/aim.gif" title="{VAR: obj->aim}" /></a>
 {SECTION: END}
 
 {SECTION: dmsg_im_yahoo}
-<a target="_blank" href="http://edit.yahoo.com/config/send_webmesg?.target={VAR-URL: obj->yahoo}&amp;.src=pg"><img alt="" src="{THEME_IMAGE_ROOT}/yahoo.gif" /></a>
+<a target="_blank" href="http://edit.yahoo.com/config/send_webmesg?.target={VAR: obj->yahoo}&amp;.src=pg"><img alt="" src="{THEME_IMAGE_ROOT}/yahoo.gif" title="{VAR: obj->yahoo}" /></a>
 {SECTION: END}
 
 {SECTION: dmsg_im_msnm}
-<a href="mailto:{VAR: obj->msnm}"><img alt="" src="{THEME_IMAGE_ROOT}/msnm.gif" /></a>
+<a href="mailto: {VAR: obj->msnm}"><img alt="" src="{THEME_IMAGE_ROOT}/msnm.gif" title="{VAR: obj->msnm}" /></a>
 {SECTION: END}
 
 {SECTION: dmsg_im_jabber}
-<img src="{THEME_IMAGE_ROOT}/jabber.gif" title="{VAR-UH: obj->jabber}" alt="{VAR-UH: obj->jabber}" />
+<img src="{THEME_IMAGE_ROOT}/jabber.gif" title="{VAR: obj->jabber}" alt="" />
 {SECTION: END}
 
 {SECTION: dmsg_poll_option}
@@ -264,12 +265,12 @@
 {SECTION: END}
 
 {SECTION: dmsg_poll_lnk}
-{ROOT}?{VAR: _SERVER['QUERY_STRING']}
+{ROOT}?{VAR: _SERVER['QUERY_STRING']}#msg_{VAR: obj->id}
 {SECTION: END}
 
 {SECTION: dmsg_poll}
 <p>
-<form action="{TEMPLATE: dmsg_poll_lnk}" method="post">
+<form action="{TEMPLATE: dmsg_poll_lnk}" method="post">{DEF: _hs}
 <table border=0 cellspacing=1 cellpadding=2 class="PollTable">
 <tr><th nowrap colspan=3>{VAR: obj->poll_name}<img src="blank.gif" alt="" height=1 width=10 /><font size="-1">[ {MSG: num_votes} ]</font></th></tr>
 {TEMPLATE-DATA: poll_data}
@@ -436,7 +437,7 @@
 {SECTION: END}
 
 {SECTION: drawmsg_affero_reg}
-<a href="http://svcs.affero.net/rm.php?r={VAR-URL: obj->affero}&amp;ll={VAR: obj->forum_id}.{VAR: GLOBALS['affero_domain']}&amp;lp={VAR: obj->forum_id}.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;ls={VAR-URL: obj->subject}" target=_blank><img alt="" src="{THEME_IMAGE_ROOT}/affero_reg.gif" /></a>
+<a href="http://svcs.affero.net/rm.php?r={VAR: obj->affero}&amp;ll={VAR: obj->forum_id}.{VAR: GLOBALS['affero_domain']}&amp;lp={VAR: obj->forum_id}.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;ls={VAR-URL: obj->subject}" target=_blank><img alt="" src="{THEME_IMAGE_ROOT}/affero_reg.gif" /></a>
 {SECTION: END}
 
 {SECTION: drawmsg_affero_noreg}

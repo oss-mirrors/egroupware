@@ -57,23 +57,23 @@
 {SECTION: END}
 
 {SECTION: dpmsg_im_icq}
-<a href="{TEMPLATE: dpmsg_im_icq_lnk}"><img src="http://web.icq.com/whitepages/online?icq={VAR: obj->icq}&amp;img=5" alt="" alt="" /></a>&nbsp;
+<a href="{TEMPLATE: dpmsg_im_icq_lnk}"><img src="{THEME_IMAGE_ROOT}/icq.gif" alt="" title="{VAR: obj->icq}" /></a>&nbsp;
 {SECTION: END}
 
 {SECTION: dpmsg_im_aim}
-<a href="aim:goim?screenname={VAR: obj->aim}&amp;message=Hi.+Are+you+there?"><img src="{THEME_IMAGE_ROOT}/aim.gif" alt="" /></a>&nbsp;
+<a href="aim:goim?screenname={VAR: obj->aim}&amp;message=Hi.+Are+you+there?" target="_blank"><img src="{THEME_IMAGE_ROOT}/aim.gif" title="{VAR: obj->aim}" alt="" /></a>&nbsp;
 {SECTION: END}
 
 {SECTION: dpmsg_im_yahoo}
-<a target="_blank" href="http://edit.yahoo.com/config/send_webmesg?.target={VAR: obj->yahoo}&amp;.src=pg"><img src="{THEME_IMAGE_ROOT}/yahoo.gif" alt="" /></a>&nbsp;
+<a target="_blank" href="http://edit.yahoo.com/config/send_webmesg?.target={VAR: obj->yahoo}&amp;.src=pg"><img src="{THEME_IMAGE_ROOT}/yahoo.gif" alt="" title="{VAR: obj->yahoo}" /></a>&nbsp;
 {SECTION: END}
 
 {SECTION: dpmsg_im_msnm}
-<a href="mailto:{VAR: obj->msnm}"><img src="{THEME_IMAGE_ROOT}/msnm.gif" alt="" /></a>
+<a href="mailto:{VAR: obj->msnm}"><img src="{THEME_IMAGE_ROOT}/msnm.gif" title="{VAR: obj->msnm}" alt="" /></a>
 {SECTION: END}
 
 {SECTION: dpmsg_im_jabber}
-<img src="{THEME_IMAGE_ROOT}/jabber.gif" title="{VAR-UH: obj->jabber}" alt="{VAR-UH: obj->jabber}" />
+<img src="{THEME_IMAGE_ROOT}/jabber.gif" title="{VAR: obj->jabber}" alt="" />
 {SECTION: END}
 
 {SECTION: dpmsg_file_attachments the file attachments list}
@@ -143,28 +143,27 @@
 {SECTION: END}
 
 {SECTION: dpmsg_quote_link}
-<a class="GenLink" href="{TEMPLATE: dpmsg_quote_link_lnk}"><img src="{THEME_IMAGE_ROOT}/msg_quote.gif" alt="" /></a>
+<a class="GenLink" href="{TEMPLATE: dpmsg_quote_link_lnk}"><img src="{THEME_IMAGE_ROOT}/msg_quote.gif" alt="" /></a>&nbsp;
 {SECTION: END}
 
 {MAIN_SECTION: private_message_entry draws a single private message}
-<tr class="MsgR1">
-<td valign="top" align="left" class="MsgSubText">{TEMPLATE-DATA: msg_icon}{VAR: obj->subject}</td>
-<td valign="top" align=right class="DateText">{DATE: obj->post_stamp %a, %d %B %Y %H:%M}</td>
+<tr><td><table cellspacing=0 cellpadding=0 class="MsgTable">
+<tr>
+<td valign="top" align="left" class="MsgR1"><font class="MsgSubText">{TEMPLATE-DATA: msg_icon}{VAR: obj->subject}</font></td>
+<td valign="top" align="right" class="MsgR1"><font class="DateText">{DATE: obj->post_stamp %a, %d %B %Y %H:%M}</font></td>
 </tr>
-
-<tr class="MsgR2"><td colspan=2 class="MsgR2">
-<table align="left" border="0" cellspacing="0" cellpadding="0">
+<tr class="MsgR2"><td class="MsgR2" colspan=2><table border="0" cellspacing="0" cellpadding="0" class="ContentTable">
 <tr class="MsgR2">
 {TEMPLATE-DATA: avatar}
 <td class="msgud">{TEMPLATE-DATA: online_indicator}{TEMPLATE-DATA: profile_link}{TEMPLATE-DATA: dmsg_user_info}</td>
 <td class="msgud">{TEMPLATE-DATA: dmsg_tags}</td>
 <td class="msgot">{TEMPLATE-DATA: buddy_link}{TEMPLATE-DATA: dmsg_im_row}</td>
-</tr></table>
-</td>
+</tr></table></td>
 </tr>
 <tr><td class="MsgR3" colspan=2>{TEMPLATE-DATA: msg_body}{TEMPLATE-DATA: file_attachments}{TEMPLATE-DATA: signature}</td></tr>
 {TEMPLATE-DATA: msg_toolbar}
-<tr><td class="pmNav" colspan=2>{GVAR: dpmsg_prev_message} {GVAR: dpmsg_next_message}</td></tr>
+<tr><td class="MsgR2" align="center" colspan=2>{GVAR: dpmsg_prev_message} {GVAR: dpmsg_next_message}</td></tr>
+</table></td></tr>
 {MAIN_SECTION: END}
 
 {SECTION: dpmsg_no_msg_body}
@@ -180,14 +179,10 @@
 {SECTION: END}
 
 {SECTION: dpmsg_msg_toolbar buttons for replying,editing,deliting and forwarding the message}
-<tr class="MsgToolBar"><td colspan=2><table border=0 cellspacing=0 cellpadding=0 width="100%"><tr>
-<td align="left" nowrap width="1%">
-{TEMPLATE-DATA: user_profile}&nbsp;{TEMPLATE-DATA: email_link}&nbsp;{TEMPLATE-DATA: private_msg_link}
-</td>
-<td align="right" nowrap width="1%">
-<a class="GenLink" href="{TEMPLATE: dpmsg_msg_toolbar_lnk}"><img src="{THEME_IMAGE_ROOT}/msg_delete.gif" alt="" /></a>&nbsp;{TEMPLATE-DATA: edit_link}{TEMPLATE-DATA: reply_link}{TEMPLATE-DATA: quote_link}
-<a class="GenLink" href="{TEMPLATE: dpmsg_msg_toolbar_lnk2}"><img src="{THEME_IMAGE_ROOT}/msg_forward.gif" alt="" /></a>
-</td></tr></table></td></tr>
+<tr><td colspan="2" class="MsgToolBar"><table border=0 cellspacing=0 cellpadding=0 width="100%"><tr>
+<td nowrap align="left">{TEMPLATE-DATA: user_profile}&nbsp;{TEMPLATE-DATA: email_link}&nbsp;{TEMPLATE-DATA: private_msg_link}</td>
+<td nowrap align="right"><a class="GenLink" href="{TEMPLATE: dpmsg_msg_toolbar_lnk}"><img src="{THEME_IMAGE_ROOT}/msg_delete.gif" alt="" /></a>&nbsp;{TEMPLATE-DATA: edit_link}{TEMPLATE-DATA: reply_link}{TEMPLATE-DATA: quote_link}<a class="GenLink" href="{TEMPLATE: dpmsg_msg_toolbar_lnk2}"><img src="{THEME_IMAGE_ROOT}/msg_forward.gif" alt="" /></a></td>
+</tr></table></td></tr>
 {SECTION: END}
 
 {SECTION: dpmsg_profile_link_lnk}
@@ -219,7 +214,7 @@
 {SECTION: END}
 
 {SECTION: drawpmsg_affero_reg}
-<a href="http://svcs.affero.net/rm.php?r={VAR-URL: obj->affero}&amp;ll=0.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;lp=0.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;ls={VAR-URL: obj->subject}" target=_blank><img alt="" src="{THEME_IMAGE_ROOT}/affero_reg.gif" /></a>
+<a href="http://svcs.affero.net/rm.php?r={VAR: obj->affero}&amp;ll=0.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;lp=0.{VAR-URL: GLOBALS['affero_domain']['host']}&amp;ls={VAR-URL: obj->subject}" target=_blank><img alt="" src="{THEME_IMAGE_ROOT}/affero_reg.gif" /></a>
 {SECTION: END}
 
 {SECTION: drawpmsg_affero_noreg}
