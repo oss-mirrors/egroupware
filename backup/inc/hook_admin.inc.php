@@ -15,7 +15,7 @@
 		$title = $appname;
 		$file = Array
 		(
-//			'Site Configuration'	=> $GLOBALS['phpgw']->link('/admin/config.php','appname=' . $appname)
+			'Site Configuration'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname),
 			'Backup Administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=backup.uibackup.backup_admin')
 		);
 

@@ -130,6 +130,58 @@
 						}
 					}
 				}
+
+				$site_co = $this->get_config();
+				if (is_array($site_co))
+				{
+					if (!isset($site_co['php_cgi']) || !isset($site_co['tar']) || !isset($site_co['zip']) || !isset($site_co['bzip2']))
+					{
+						$error[] = lang('Please enter the path of the needed applications in *Site configuration* !');
+					}
+
+					if ($values['b_sql'])
+					{
+						if ($GLOBALS['phpgw_info']['server']['db_type'] == 'mysql')
+						{
+							if (!isset($site_co['mysql']))
+							{
+								$error[] = lang('Please set the path to the MySQL database dir in *Site configuration* !');
+							}
+						}
+						elseif($GLOBALS['phpgw_info']['server']['db_type'] == 'pgsql')
+						{
+							if (!isset($site_co['pgsql']))
+							{
+								$error[] = lang('Please set the path to the PostgreSQL database dir in *Site configuration* !');
+							}
+						}
+						else
+						{
+							$error[] = lang('Your SQL database isnt supported by this application !');
+						}
+					}
+
+					if ($values['b_ldap'])
+					{
+						if (!isset($site_co['ldap']) || !isset($site_co['ldap_in']))
+						{
+							$error[] = lang('Please set the path to the LDAP database dir in *Site configuration* !');
+						}
+					}
+
+					if ($values['b_email'])
+					{
+						if (!isset($site_co['maildir']))
+						{
+							$error[] = lang('Please specify the name of the Maildir in *Site configuration* !');
+						}
+					}
+
+				}
+				else
+				{
+					$error[] = lang('Please set the values in *Site configuration* !');
+				}
 			}
 
 			if (is_array($error))
@@ -273,6 +325,7 @@
 
 				$config = $GLOBALS['phpgw']->template->set_file(array('backup' => 'backup_form.tpl'));
 				$config .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
+				$config .= $GLOBALS['phpgw']->template->set_var('php_path',$co['php_cgi']);
 				$config .= $GLOBALS['phpgw']->template->fp('out','backup',True);
 				$conf_file = $co['server_root'] . '/backup/phpgw_start_backup.' . $co['b_intval'];
 				$this->save_config($conf_file,$config);
@@ -290,20 +343,30 @@
 				$config .= $GLOBALS['phpgw']->template->set_var('bintval',$co['b_intval']);
 				$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
 
+				$config .= $GLOBALS['phpgw']->template->set_var('php_path',$co['php_cgi']);
+				$config .= $GLOBALS['phpgw']->template->set_var('tar_path',$co['tar']);
+				$config .= $GLOBALS['phpgw']->template->set_var('zip_path',$co['zip']);
+				$config .= $GLOBALS['phpgw']->template->set_var('bzip2_path',$co['bzip2']);
+
 				if ($co['b_sql'])
 				{
 					$config .= $GLOBALS['phpgw']->template->set_var('bsql',$co['b_sql']);
 					$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
+					$config .= $GLOBALS['phpgw']->template->set_var('mysql_dir',$co['mysql']);
+					$config .= $GLOBALS['phpgw']->template->set_var('pgsql_dir',$co['pgsql']);
 				}
 
 				if ($co['b_ldap'] == 'yes')
 				{
 					$config .= $GLOBALS['phpgw']->template->set_var('bldap','yes');
+					$config .= $GLOBALS['phpgw']->template->set_var('ldap_dir',$co['ldap']);
+					$config .= $GLOBALS['phpgw']->template->set_var('ldap_in',$co['ldap_in']);
 				}
 
 				if ($co['b_email'] == 'yes')
 				{
 					$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
+					$config .= $GLOBALS['phpgw']->template->set_var('maildir',$co['maildir']);
 
 					$allaccounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
 

@@ -1,4 +1,4 @@
-#!/usr/bin/php -q
+#!{php_path} -q
 <?php
 	/*******************************************************************\
 	* phpGroupWare - Backup                                             *
@@ -7,7 +7,7 @@
 	* Administration Tool for data backup                               *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2001 Bettina Gille                                  *
+	* Copyright (C) 2001,2002 Bettina Gille                             *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -102,7 +102,7 @@
 	$bldap		= '{bldap}';
 	$bemail		= '{bemail}';
 
-	$bzip2		= '/usr/bin/bzip2';
+	$bzip2		= '{bzip2_path}';
 
 	$bcomp		= '{bcomp}';
 
@@ -115,17 +115,17 @@
 
 	switch ($bcomp)
 	{
-		case 'tgz':		$command = '/bin/tar -czf '; break;
-		case 'tar.bz2':	$command = '/bin/tar -cf '; break;
-		case 'zip':		$command = '/usr/bin/zip -rq9 '; break;
+		case 'tgz':		$command = '{tar_path} -czf '; break;
+		case 'tar.bz2':	$command = '{tar_path} -cf '; break;
+		case 'zip':		$command = '{zip_path} -rq9 '; break;
 	}
 
 	if ($bsql)
 	{
 		switch($bsql)
 		{
-			case 'mysql':	$database = '/var/lib/mysql'; break;
-			case 'pgsql':	$database = '/var/lib/pgsql/data/base'; break;
+			case 'mysql':	$database = '{mysql_dir}'; break;
+			case 'pgsql':	$database = '{pgsql_dir}'; break;
 		}
 
 		chdir($database);
@@ -146,9 +146,9 @@
 
 	if ($bldap == 'yes')
 	{
-		chdir('/var/lib');
+		chdir('{ldap_dir}');
 		$out	= $basedir . '/' . get_date() . '_phpGWBackup_ldap.' . $end;
-		$in		= ' ldap';
+		$in		= ' {ldap_in}';
 
 		system("$command" . $out . $in);
 
@@ -169,7 +169,7 @@
 		{
 			chdir('/home/{lid}');
 			$out	= $basedir . '/' . get_date() . '_phpGWBackup_email_{lid}.' . $end;
-			$in		= ' Maildir';
+			$in		= ' {maildir}';
 			system("$command" . $out . $in . ' 2>&1 > /dev/null');
 
 			if ($bcomp == 'tar.bz2')
