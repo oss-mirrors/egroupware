@@ -27,8 +27,7 @@
 
 		function solangfile()
 		{
-			global $phpgw;
-			$this->db = $phpgw->db;
+			$this->db = $GLOBALS['phpgw']->db;
 		}
 
 		function isin_array($needle,$haystack)
@@ -50,8 +49,6 @@
 		*/
 		function add_app($app,$userlang='en')
 		{
-			global $phpgw_info;
-
 			define('SEP',filesystem_separator());
 
 			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
@@ -102,8 +99,6 @@
 		*/
 		function load_app($app,$userlang='en')
 		{
-			global $phpgw_info;
-
 			define('SEP',filesystem_separator());
 
 			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';

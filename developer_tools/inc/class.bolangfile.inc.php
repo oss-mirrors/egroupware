@@ -36,27 +36,24 @@
 		/* Sessions used to save state and not reread the langfile between adding/deleting phrases */
 		function save_sessiondata($source,$target)
 		{
-			global $phpgw;
 			if($this->debug) { echo '<br>Save:'; _debug_array($source); }
-			$phpgw->session->appsession('developer_source_lang','developer_tools',$source);
+			$GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools',$source);
 			if($this->debug) { echo '<br>Save:'; _debug_array($target); }
-			$phpgw->session->appsession('developer_target_lang','developer_tools',$target);
-			$phpgw->session->appsession('developer_source_file','developer_tools',$this->src_file);
-			$phpgw->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
+			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools',$target);
+			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools',$this->src_file);
+			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
 		}
 
 		function read_sessiondata()
 		{
-			global $phpgw;
-
-			$source = $phpgw->session->appsession('developer_source_lang','developer_tools');
+			$source = $GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($source); }
 
-			$target = $phpgw->session->appsession('developer_target_lang','developer_tools');
+			$target = $GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($target); }
 
-			$src_file = $phpgw->session->appsession('developer_source_file','developer_tools');
-			$tgt_file = $phpgw->session->appsession('developer_target_file','developer_tools');
+			$src_file = $GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools');
+			$tgt_file = $GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools');
 
 			$this->set_sessiondata($source,$target,$src_file,$tgt_file);
 			return;
@@ -72,12 +69,10 @@
 
 		function clear_sessiondata()
 		{
-			global $phpgw;
-
-			$phpgw->session->appsession('developer_source_lang','developer_tools','');
-			$phpgw->session->appsession('developer_target_lang','developer_tools','');
-			$phpgw->session->appsession('developer_source_file','developer_tools','');
-			$phpgw->session->appsession('developer_target_file','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_source_lang','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools','');
 		}
 
 		function list_apps()
