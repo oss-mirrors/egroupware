@@ -35,7 +35,7 @@
         $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"enabled","stocks","True");
      }
      if ($mainscreen == "disable") {
-     $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks","enabled");
+        $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks","enabled");
      }
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      exit;     
@@ -43,6 +43,15 @@
 
   $phpgw->common->phpgw_header();
   $phpgw->common->navbar();
+
+  // If they don't have any stocks in there, give them something to look at
+  if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
+     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"LNUX","stocks","VA%20Linux");
+     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"RHAT","stocks","RedHat");
+     $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
+     $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
+  }
+
 
   echo "<p><b>" . lang("Stock Quote preferences") . ":" . "</b><hr><p>";
 ?>

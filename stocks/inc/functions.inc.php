@@ -15,49 +15,15 @@
   /* $Id$ */
 
   // return content of a url as a string array
+  
+
   function http_fetch($url,$post,$port,$proxy)
   {
-     if ($post) {
-       $type = "POST";
-     } else {
-        $type = "GET";
-     }
-    
-     $server = ereg_replace("http://","",$url); 
-     $file = strstr($server,"/");
-     if ($file) {
-        $server = ereg_replace("$file","",$server);
-     } else {
-        $file = "/";
-    }
-    
-    if ($proxy) {
-        $fp = fsockopen($proxy, $proxy_port, &$errno, &$errstr);
-    } else {
-        $fp = fsockopen($server, $port, &$errno, &$errstr);
-    }
-    
-    if ($fp) {
-        fputs($fp,"$type $file HTTP/1.0\nHost: $server\n\n");
-         $lines = array();
-        while ($line = fgets($fp, 4096)) {
-            $lines[] = $line;
-         }
-        fclose($fp);
-     }
-    if (count($lines)==0 || !$fp) {  // try fopen()
-        $fp = fopen($url, "r");
-         if ($fp) {
-             $lines = array();
-            while ($line = fgets($fp, 4096)) {
-                $lines[] = $line;
-            }
-            fclose($fp);
-         }
-    }
-     return $lines;
-  }  
-
+     global $phpgw;
+     
+     return $phpgw->network->gethttpsocketfile($url);
+  }
+  
   // Rename this is something better
   function return_html($quotes)
   {
@@ -90,7 +56,7 @@
                       . "$color\">$dollarchange</font></td><td><font color=\"$color\">$percentchange"
                       . "</font></td><td>$date</td><td>$time</td></tr>";
     }
-    $return_html .= "</table></td></tr></table>";
+    $return_html .= "</table></td></tr></table></table>";
 
     return $return_html;
   }
@@ -101,47 +67,54 @@
         return array();
      }
      while (list($symbol,$name) = each($stocklist)) {
+        $symbollist[] = $symbol;
         $symbol = rawurldecode($symbol);
-        $symbolstr .= "$symbol";
+        $symbolstr .= $symbol;
         if ($i++<count($stocklist)-1) {
            $symbolstr .= "+";
         }
      }
 
+     $regexp_stocks = "/(" . implode("|",$symbollist) . ")/";
+
      $url = "http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s=$symbolstr";
      $lines = http_fetch($url,false,80,'');
 
      $quotes = array();
-     for ($i=0;$i<count($lines);$i++) {
+     $i = 0;
+     while ($line = each($lines)) {
          $line = $lines[$i];
-         $line = ereg_replace('"','',$line);
-         list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
-            
-         if ($price1>0 && $dchange!=0) {
-            $pchange = round(10000*($dchange)/$price1)/100;
-         } else {
-            $pchange = 0;
-         }
-
-         if ($pchange>0) {
-            $pchange = "+" . $pchange;
-         }
-
-         $name = $stocklist[$symbol];
-         if (! $name) {
-            $name = $symbol;
-         }
-                            
-         $quotes[] = array("symbol"  => $symbol,
-                           "price0"  => $price0,
-                           "date"    => $date,
-                           "time"    => $time,
-                           "dchange" => $dchange,
-                           "price1"  => $price1,
-                           "price2"  => $price2,
-                           "pchange" => $pchange,
-                           "name"    => $name
-                          );
+         if (preg_match($regexp_stocks,$line)) {
+            $line = ereg_replace('"','',$line);
+            list($symbol,$price0,$date,$time,$dchange,$price1,$price2) = split(',',$line);
+               
+            if ($price1>0 && $dchange!=0) {
+               $pchange = round(10000*($dchange)/$price1)/100;
+            } else {
+               $pchange = 0;
+            }
+   
+            if ($pchange>0) {
+               $pchange = "+" . $pchange;
+            }
+   
+            $name = $stocklist[$symbol];
+            if (! $name) {
+               $name = $symbol;
+            }
+                               
+            $quotes[] = array("symbol"  => $symbol,
+                              "price0"  => $price0,
+                              "date"    => $date,
+                              "time"    => $time,
+                              "dchange" => $dchange,
+                              "price1"  => $price1,
+                              "price2"  => $price2,
+                              "pchange" => $pchange,
+                              "name"    => $name
+                             );
+            }
+         $i++;
      }
      return $quotes;
   }
