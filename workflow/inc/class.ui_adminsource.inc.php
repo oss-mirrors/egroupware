@@ -37,10 +37,9 @@
 			$this->t->set_block('admin_source', 'block_select_activity', 'select_activity');
 
 			$activity_id		= (int)get_var('activity_id', 'any', 0);
-			$template			= (int)get_var('template', 'GET', 0);
 			$switch_to_code		= get_var('switch_to_code', 'POST', false);
 			$switch_to_tpl		= get_var('switch_to_tpl', 'POST', false);
-			$source_type		= get_var('source_type', 'POST', false);
+			$source_type		= get_var('source_type', 'POST', 'shared');
 			$save				= get_var('save', 'POST', false);
 			$source				= get_var('source', 'POST', false);
 		
@@ -55,63 +54,44 @@
 			else
 			{
 				$activity_info = array(
-					'wf_is_interactive'	=> 'n',
+					'wf_is_interactive'		=> 'n',
+					'wf_normalized_name'	=> 'shared',
 				);
 			}
 
 			// save template and stay in same view
 			if ($save)
 			{
-				// security check
-				if (!$source_type) die('Error: source_type not defined');
 				$this->save_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type, $source);
 				if ($activity_id) $this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
 				$this->message[] = lang('Source saved');
 			}
-			// show source for template and don't save anything
-			elseif ($template)
-			{
-				$source_type = 'template';
-			}
-			// save template if something was submited and show code
 			elseif($switch_to_code)
 			{
-				if ($source) $this->save_source($proc_info['wf_normalized_name'], $activity_id, $source_type, 'template');
 				$source_type = 'code';
 			}
-			// save code if something was submited and show template
 			elseif($switch_to_tpl)
 			{
-				if ($source)
-				{
-					$this->save_source($proc_info['wf_normalized_name'], $activity_id, $source_type, 'code');
-					if ($activity_id) $this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
-				}
 				$source_type = 'template';
 			}
-			// show code. Nothing to save.
-			else
+			elseif($activity_id)
 			{
 				$source_type = 'code';
+			}
+			else
+			{
+				$source_type = 'shared';
 			}
 
 			// fetch source
-			if ($activity_id)
-			{
-				$data = $this->get_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type);
-				//echo "data: <pre>";print_r($data);echo "</pre>";
-			}
-			else
-			{
-				$data = $this->get_source($proc_info['wf_normalized_name'], '', 'shared');
-			}
+			$data = $this->get_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type);
+			//echo "data: <pre>";print_r($data);echo "</pre>";
 
 			// check process validity and show errors if necessary
 			$proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
 
 			// fill proc_bar
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
-
 
 			// fill the general variables of the template
 			$this->t->set_var(array(
@@ -120,7 +100,6 @@
 				'form_editsource_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
 				'p_id'					=> $this->wf_p_id,
 				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
-				'template'				=> $template,
 				'data'					=> Htmlspecialchars($data),
 				'source_type'			=> $source_type,
 			));

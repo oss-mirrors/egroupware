@@ -16,7 +16,7 @@
   <td>
   		{lang_select_source}:
 		<select name="activity_id" onchange="this.form.submit();">
-		<option value="" {selected_sharedcode}>{lang_Shared_code}</option>
+		<option value="0" {selected_sharedcode}>{lang_Shared_code}</option>
 		<!-- BEGIN block_select_activity -->
 		<option value="{activity_id}" {selected_activity}>{activity_name}</option>
 		<!-- END block_select_activity -->
