@@ -186,6 +186,7 @@
         $to = current($toarray);
       }
 
+      $body=html_deactivate_urls($body);
       $rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
       if (!$rc)
       {
@@ -268,5 +269,13 @@ function html_activate_urls($str)
     $str = str_replace("^^sentinal^^", '', $str);
     $str=str_replace($search, $replace, $str);
     return $str;
+}
+
+function html_deactivate_urls($str)
+{
+	$str=eregi_replace("<a[^>]+>","",$str);
+	$str=eregi_replace("</a>","",$str);
+	
+	return $str;
 }
 ?>
