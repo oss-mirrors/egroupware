@@ -9,8 +9,8 @@
 </div>
 
 <form action="{form_action_adminroles}" method="post">
-<input type="hidden" name="pid" value="{pid}" />
-<input type="hidden" name="roleId" value="{role_info_roleId}" />
+<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="role_id" value="{role_info_role_id}" />
 <input type="hidden" name="sort_mode" value="{sort_mode}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
 <input type="hidden" name="find" value="{find}" />
@@ -38,8 +38,8 @@
 
 <form action="{form_action_adminroles}" method="post">
 <input type="hidden" name="sort_mode" value="{sort_mode}" />
-<input type="hidden" name="pid" value="{pid}" />
-<input type="hidden" name="roleId" value="{info_roleId}" />
+<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="role_id" value="{info_role_id}" />
 <input type="hidden" name="sort_mode" value="{sort_mode}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
 <input type="hidden" name="find" value="{find}" />
@@ -64,7 +64,7 @@
 		  {all_roles_description}
 		</td>
 		<td>
-			<input type="checkbox" name="role[{all_roles_roleId}]" />
+			<input type="checkbox" name="role[{all_roles_role_id}]" />
 		</td>
 	</tr>
 	<!-- END block_process_roles_list -->
@@ -78,7 +78,7 @@
 
 <!-- BEGIN block_map_roles -->
 	<form method="post" action="{form_action_adminroles}">
-	<input type="hidden" name="pid" value="{pid}" />
+	<input type="hidden" name="p_id" value="{p_id}" />
 	<input type="hidden" name="start" value="{start}" />
 	<input type="hidden" name="sort_mode" value="{sort_mode}" />
 	<input type="hidden" name="sort_mode2" value="{sort_mode2}" />
@@ -108,7 +108,7 @@
 		<td align="center">
 			<select name="role[]" multiple="multiple" size="10">
 				<!-- BEGIN block_select_roles -->
-				<option value="{select_roleId}">{select_roleName}</option>
+				<option value="{select_role_id}">{select_role_name}</option>
 				<!-- END block_select_roles -->
 			</select>	  		
 		</td>
@@ -123,7 +123,7 @@
 <!-- END block_map_roles -->
 
 <form action="{form_action_adminroles}" method="post">
-<input type="hidden" name="pid" value="{pid}" />
+<input type="hidden" name="p_id" value="{p_id}" />
 <input type="hidden" name="start" value="{start}" />
 <input type="hidden" name="find" value="{find}" />
 <input type="hidden" name="sort_mode" value="{sort_mode}" />

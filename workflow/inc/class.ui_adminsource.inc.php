@@ -36,7 +36,7 @@
 			$this->t->set_file('admin_source', 'admin_source.tpl');
 			$this->t->set_block('admin_source', 'block_select_activity', 'select_activity');
 
-			$activityId			= (int)get_var('activityId', 'any', 0);
+			$activity_id		= (int)get_var('activity_id', 'any', 0);
 			$template			= (int)get_var('template', 'GET', 0);
 			$switch_to_code		= get_var('switch_to_code', 'POST', false);
 			$switch_to_tpl		= get_var('switch_to_tpl', 'POST', false);
@@ -44,18 +44,18 @@
 			$save				= get_var('save', 'POST', false);
 			$source				= get_var('source', 'POST', false);
 		
-			if (!$this->pId) die(lang('No process indicated'));
-			$proc_info = $this->process_manager->get_process($this->pId);
+			if (!$this->wf_p_id) die(lang('No process indicated'));
+			$proc_info = $this->process_manager->get_process($this->wf_p_id);
 
 			// fetch activity info
-			if ($activityId)
+			if ($activity_id)
 			{
-				$activity_info = $this->activity_manager->get_activity($this->pId, $activityId);
+				$activity_info = $this->activity_manager->get_activity($this->wf_p_id, $activity_id);
 			}
 			else
 			{
 				$activity_info = array(
-					'isInteractive'	=> 'n',
+					'wf_is_interactive'	=> 'n',
 				);
 			}
 
@@ -64,8 +64,8 @@
 			{
 				// security check
 				if (!$source_type) die('Error: source_type not defined');
-				$this->save_source($proc_info['normalized_name'], $activity_info['normalized_name'], $source_type, $source);
-				if ($activityId) $this->activity_manager->compile_activity($this->pId, $activityId);
+				$this->save_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type, $source);
+				if ($activity_id) $this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
 				$this->message[] = lang('Source saved');
 			}
 			// show source for template and don't save anything
@@ -76,7 +76,7 @@
 			// save template if something was submited and show code
 			elseif($switch_to_code)
 			{
-				if ($source) $this->save_source($proc_info['normalized_name'], $activityId, $source_type, 'template');
+				if ($source) $this->save_source($proc_info['wf_normalized_name'], $activity_id, $source_type, 'template');
 				$source_type = 'code';
 			}
 			// save code if something was submited and show template
@@ -84,8 +84,8 @@
 			{
 				if ($source)
 				{
-					$this->save_source($proc_info['normalized_name'], $activityId, $source_type, 'code');
-					if ($activityId) $this->activity_manager->compile_activity($this->pId, $activityId);
+					$this->save_source($proc_info['wf_normalized_name'], $activity_id, $source_type, 'code');
+					if ($activity_id) $this->activity_manager->compile_activity($this->wf_p_id, $activity_id);
 				}
 				$source_type = 'template';
 			}
@@ -96,14 +96,14 @@
 			}
 
 			// fetch source
-			if ($activityId)
+			if ($activity_id)
 			{
-				$data = $this->get_source($proc_info['normalized_name'], $activity_info['normalized_name'], $source_type);
+				$data = $this->get_source($proc_info['wf_normalized_name'], $activity_info['wf_normalized_name'], $source_type);
 				//echo "data: <pre>";print_r($data);echo "</pre>";
 			}
 			else
 			{
-				$data = $this->get_source($proc_info['normalized_name'], '', 'shared');
+				$data = $this->get_source($proc_info['wf_normalized_name'], '', 'shared');
 			}
 
 			// check process validity and show errors if necessary
@@ -118,21 +118,21 @@
 				'message'				=> implode('<br>', $this->message),
 				'errors'				=> $error_str,
 				'form_editsource_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form'),
-				'pid'					=> $this->pId,
-				'selected_sharedcode'	=> ($activityId == 0)? 'selected="selected"' : '',
+				'p_id'					=> $this->wf_p_id,
+				'selected_sharedcode'	=> ($activity_id == 0)? 'selected="selected"' : '',
 				'template'				=> $template,
 				'data'					=> Htmlspecialchars($data),
 				'source_type'			=> $source_type,
 			));
 
 			// fill activities select box
-			$process_activities = $this->activity_manager->list_activities($this->pId, 0, -1, 'name_asc', '');
+			$process_activities = $this->activity_manager->list_activities($this->wf_p_id, 0, -1, 'wf_name__asc', '');
 			foreach ($process_activities['data'] as $process_activity)
 			{
 				$this->t->set_var(array(
-					'activityId'		=> $process_activity['activityId'],
-					'selected_activity'	=> ($process_activity['activityId'] == $activityId)? 'selected="selected"' : '',
-					'activity_name'		=> $process_activity['name'],
+					'activity_id'		=> $process_activity['wf_activity_id'],
+					'selected_activity'	=> ($process_activity['wf_activity_id'] == $activity_id)? 'selected="selected"' : '',
+					'activity_name'		=> $process_activity['wf_name'],
 				));
 				$this->t->parse('select_activity', 'block_select_activity', true);
 			}
@@ -142,7 +142,7 @@
 			{
 				$this->t->set_var('code_or_tpl_btn', '<input type="submit" name="switch_to_code" value="'. lang('show code') .'" />');
 			}
-			elseif ($activity_info['isInteractive'] == 'y')
+			elseif ($activity_info['wf_is_interactive'] == 'y')
 			{
 				$this->t->set_var('code_or_tpl_btn', '<input type="submit" name="switch_to_tpl" value="'. lang('show template') .'" />');
 			}

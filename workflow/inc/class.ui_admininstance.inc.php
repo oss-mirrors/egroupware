@@ -58,8 +58,8 @@
 			}
 			
 			$instance			= $this->instance_manager->get_instance($iid);
-			$process			= $this->process_manager->get_process($instance['pId']);
-			$proc_activities	= $this->activity_manager->list_activities($instance['pId'], 0, -1, 'flowNum_asc', '', '');
+			$process			= $this->process_manager->get_process($instance['wf_p_id']);
+			$proc_activities	= $this->activity_manager->list_activities($instance['wf_p_id'], 0, -1, 'wf_flow_num__asc', '', '');
 			$instance_acts		= $this->instance_manager->get_instance_activities($iid);
 			$properties			= $this->instance_manager->get_instance_properties($iid);
 
@@ -115,8 +115,8 @@
 			foreach ($proc_activities_data as $activity)
 			{
 				$this->t->set_var(array(
-					'sendto_act_value'	=> $activity['activityId'],
-					'sendto_act_name'	=> $activity['name'],
+					'sendto_act_value'	=> $activity['wf_activity_id'],
+					'sendto_act_name'	=> $activity['wf_name'],
 				));
 				$this->t->parse('select_sendto', 'block_select_sendto', true);
 			}
@@ -137,15 +137,15 @@
 				        {
 				                $this->t->set_var(array(
 							'inst_act_usr_value'	=> $user['account_id'],
-							'inst_act_usr_selected'	=> ($user['account_id'] == $activity['user'])? 'selected="selected"' : '',
+							'inst_act_usr_selected'	=> ($user['account_id'] == $activity['wf_user'])? 'selected="selected"' : '',
 							'inst_act_usr_name'		=> $user['account_firstname'] . ' ' . $user['account_lastname'],
 						 ));
 						$this->t->parse('instance_acts_table_users', 'block_instance_acts_table_users', true);
 					}
 
-					if ($activity['isInteractive'] == 'y')
+					if ($activity['wf_is_interactive'] == 'y')
 					{
-						$this->t->set_var('inst_act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activityId='. $activity['activityId']) .'&iid='. $iid. '"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run') .'" title="'. lang('run') .'" /></a>');
+						$this->t->set_var('inst_act_run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&activityId='. $activity['wf_activity_id']) .'&iid='. $iid. '"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run') .'" title="'. lang('run') .'" /></a>');
 					}
 					else
 					{
@@ -153,10 +153,10 @@
 					}
 
 					$this->t->set_var(array(
-						'inst_act_name'				=> $activity['name'],
-						'inst_act_status'			=> $activity['actstatus'],
-						'inst_act_id'				=> $activity['activityId'],
-						'inst_act_star_selected'	=> ($activity['user'] == '*')? 'selected="selected"' : '',
+						'inst_act_name'				=> $activity['wf_name'],
+						'inst_act_status'			=> $activity['wf_actstatus'],
+						'inst_act_id'				=> $activity['wf_activity_id'],
+						'inst_act_star_selected'	=> ($activity['wf_user'] == '*')? 'selected="selected"' : '',
 					));
 
 

@@ -110,10 +110,10 @@
 		</td>
 		
 		<td style="text-align:center;">
-			{act_isInteractive}
+			{act_is_interactive}
 		</td>
 		<td style="text-align:center;">
-			{act_isAutorouted}
+			{act_is_autorouted}
 		</td>
 		
 		<td style="text-align:right;">

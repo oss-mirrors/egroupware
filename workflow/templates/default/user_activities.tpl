@@ -28,7 +28,7 @@
 	<!-- BEGIN block_activities_list -->
 	<tr bgcolor="{color_line}">
 		<td>
-		  {act_procname} {act_proc_version}
+		  {act_wf_procname} {act_proc_version}
 		</td>
 		<td style="text-align:left;">
 			{act_icon} {act_name} {run_act}

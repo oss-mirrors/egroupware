@@ -16,9 +16,9 @@
 
 		function form()
 		{
-			$this->order			= get_var('order', 'GET', 'name');
+			$this->order			= get_var('order', 'GET', 'wf_name');
 			$this->sort				= get_var('sort', 'GET', 'asc');
-			$this->sort_mode		= $this->order . '_'. $this->sort;
+			$this->sort_mode		= $this->order . '__'. $this->sort;
 			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
 			$filter_status			= get_var('filter_status', 'any', '');
 			$filter_act_status		= get_var('filter_act_status', 'any', '');
@@ -41,6 +41,7 @@
 
 		function show_instances_table($instances_data)
 		{
+			//_debug_array($instances_data);
 			$this->t->set_var(array(
 				'header_id'			=> $this->nextmatchs->show_sort_order($this->sort, 'instanceId', $this->order, '', lang('Id')),
 				'header_activity'	=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, '', lang('Activity')),
@@ -53,11 +54,11 @@
 			foreach ($instances_data as $instance)
 			{
 				$this->t->set_var(array(
-					'inst_id_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['instanceId']),
-					'inst_id'		=> $instance['instanceId'],
-					'inst_name'		=> $instance['name'],
-					'inst_status'	=> $instance['status'],
-					'inst_user'		=> $instance['user'],
+					'inst_id_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $instance['wf_instance_id']),
+					'inst_id'		=> $instance['wf_instance_id'],
+					'inst_name'		=> $instance['wf_name'],
+					'inst_status'	=> $instance['wf_status'],
+					'inst_user'		=> $instance['wf_user'],
 					'color_line'	=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('inst_table', 'block_inst_table', true);

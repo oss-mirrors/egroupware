@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['workflow']['name']      = 'workflow';
 	$setup_info['workflow']['title']     = 'Workflow management';
-	$setup_info['workflow']['version']   = '1.0.0';
+	$setup_info['workflow']['version']   = '1.0.1';
 	$setup_info['workflow']['app_order'] = 10;
 	$setup_info['workflow']['enable']    = 1;
 

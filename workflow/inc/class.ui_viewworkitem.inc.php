@@ -27,7 +27,7 @@
 			$this->t->set_var(array(
 				'wi_itemId'		=> $wi['itemId'],
 				'wi_orderId'	=> $wi['orderId'],
-				'wi_procname'	=> $wi['procname'],
+				'wi_wf_procname'	=> $wi['wf_procname'],
 				'wi_version'	=> $wi['version'],
 				'act_icon'		=> $this->act_icon($wi['type']),
 				'wi_name'		=> $wi['name'],

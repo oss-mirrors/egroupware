@@ -91,7 +91,7 @@
 			<a href="{wi_href}">{wi_id}</a>
 		</td>
 		<td style="text-align:left;">  
-			{wi_procname} {wi_version}
+			{wi_wf_procname} {wi_version}
 		</td>
 		<td style="text-align:left;">
 			{act_icon} {wi_actname} 

@@ -16,9 +16,9 @@
 
 		function form()
 		{
-			$this->order			= get_var('order', 'GET', 'orderId');
+			$this->order			= get_var('order', 'GET', 'wf_order_id');
 			$this->sort				= get_var('sort', 'GET', 'asc');
-			$this->sort_mode		= $this->order . '_'. $this->sort;
+			$this->sort_mode		= $this->order . '__'. $this->sort;
 			$filter_instance		= get_var('filter_instance', 'any', '');
 			$filter_user			= get_var('filter_user', 'any', '');
 
@@ -37,12 +37,13 @@
 
 		function show_workitems_table($workitems_data)
 		{
+			//_debug_array($workitems_data);
 			$this->t->set_var(array(
 				'header_id'			=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'itemId', lang('Id')),
-				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'procname', lang('Process')),
+				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'wf_procname', lang('Process')),
 				'header_activity'	=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'actname', lang('Activity')),
 				'header_ins'		=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'instanceId', lang('Instance')),
-				'header_num'		=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'orderId', '#'),
+				'header_num'		=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'wf_order_Id', '#'),
 				'header_start'		=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'started', lang('Start')),
 				'header_duration'	=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'duration', lang('Duration')),
 				'header_user'		=> $this->nextmatchs->show_sort_order($this->sort, '', $this->order, 'user', lang('User')),
@@ -53,18 +54,18 @@
 			foreach ($workitems_data as $workitem)
 			{
 				$this->t->set_var(array(
-					'wi_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['itemId']),
-					'wi_id'				=> $workitem['itemId'],
-					'wi_procname'		=> $workitem['procname'],
-					'wi_version'		=> $workitem['version'],
-					'act_icon'			=> $this->act_icon($workitem['type']),
-					'wi_actname'		=> $workitem['actname'],
-					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['instanceId']),
-					'wi_inst_id'		=> $workitem['instanceId'],
-					'wi_order_id'		=> $workitem['orderId'],
-					'wi_started'		=> $workitem['started'],
-					'wi_duration'		=> $workitem['duration'],
-					'wi_user'			=> $workitem['user'],
+					'wi_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_viewworkitem.form&itemId='. $workitem['wf_item_id']),
+					'wi_id'				=> $workitem['wf_item_id'],
+					'wi_wf_procname'	=> $workitem['wf_procname'],
+					'wi_version'		=> $workitem['wf_version'],
+					'act_icon'			=> $this->act_icon($workitem['wf_type']),
+					'wi_actname'		=> $workitem['wf_act_name'],
+					'wi_adm_inst_href'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form&iid='. $workitem['wf_instance_id']),
+					'wi_inst_id'		=> $workitem['wf_instance_id'],
+					'wi_order_id'		=> $workitem['wf_order_id'],
+					'wi_started'		=> $workitem['wf_started'],
+					'wi_duration'		=> $workitem['wf_duration'],
+					'wi_user'			=> $workitem['wf_user'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('workitems_table', 'block_workitems_table', true);

@@ -89,7 +89,7 @@
 	<!-- BEGIN block_list_instances -->
 	<tr bgcolor="{color_line}">
 		<td>
-		  {instanceId}
+		  {instance_id}
 		</td>
 		<td>
 		  {owner}
@@ -98,7 +98,7 @@
 		  {status}
 		</td>
 		<td>
-		  {procname} {version}
+		  {wf_procname} {version}
 		</td>
 		<td>
 		  {act_icon} {name}
@@ -107,7 +107,7 @@
 		  {user}
 		</td>
 		<td>
-		  {actstatus}
+		  {act_status}
 		</td>
 		<td>
 			  {exception} {send} {run} {abort} {grab_or_release}

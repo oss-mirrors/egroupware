@@ -1,9 +1,9 @@
 {*Smarty template*}
-<a class="pagetitle" href="tiki-g-map_roles.php?pid={$pid}">{tr}Map process roles{/tr}</a><br/><br/>
+<a class="pagetitle" href="tiki-g-map_roles.php?p_id={$p_id}">{tr}Map process roles{/tr}</a><br/><br/>
 <a class="linkbut" href="tiki-g-admin_processes.php">{tr}admin processes{/tr}</a>
-<a class="linkbut" href="tiki-g-admin_activities.php?pid={$pid}">{tr}admin activities{/tr}</a>
-<a class="linkbut" href="tiki-g-admin_roles.php?pid={$pid}">{tr}admin roles{/tr}</a>
-<a class="linkbut" href="tiki-g-admin_processes.php?pid={$pid}">{tr}edit this process{/tr}</a><br/><br/>
+<a class="linkbut" href="tiki-g-admin_activities.php?p_id={$p_id}">{tr}admin activities{/tr}</a>
+<a class="linkbut" href="tiki-g-admin_roles.php?p_id={$p_id}">{tr}admin roles{/tr}</a>
+<a class="linkbut" href="tiki-g-admin_processes.php?p_id={$p_id}">{tr}edit this process{/tr}</a><br/><br/>
 {tr}Process:{/tr} {$proc_info.name} {$proc_info.version}<br/>
 
 process graph<br/>
@@ -20,7 +20,7 @@ Errors:<br/>
 {if count($roles) > 0}
 	<h3>{tr}Map users to roles{/tr}</h3>
 	<form method="post" action="tiki-g-map_roles.php">
-	<input type="hidden" name="pid" value="{$pid|escape}" />
+	<input type="hidden" name="p_id" value="{$p_id|escape}" />
 	<input type="hidden" name="offset" value="{$offset|escape}" />
 	<input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 	<input type="hidden" name="find" value="{$find|escape}" />
@@ -75,22 +75,22 @@ Errors:<br/>
 
 <h3>{tr}List of mappings{/tr}</h3>
 <form action="tiki-g-map_roles.php" method="post">
-<input type="hidden" name="pid" value="{$pid|escape}" />
+<input type="hidden" name="p_id" value="{$p_id|escape}" />
 <input type="hidden" name="offset" value="{$offset|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 {tr}Find{/tr}:<input size="8" type="text" name="find" value="{$find|escape}" />
 <input type="submit" name="filter" value="{tr}find{/tr}" />
 </form>
 <form action="tiki-g-map_roles.php" method="post">
-<input type="hidden" name="pid" value="{$pid|escape}" />
+<input type="hidden" name="p_id" value="{$p_id|escape}" />
 <input type="hidden" name="offset" value="{$offset|escape}" />
 <input type="hidden" name="find" value="{$find|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 <table class="normal">
 <tr>
 <td class="heading"><input type="submit" name="delete" value="{tr}del{/tr}" /></td>
-<td class="heading" ><a class="tableheading" href="tiki-g-map_roles.php?pid={$pid}&amp;find={$find}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}Role{/tr}</a></td>
-<td class="heading" ><a class="tableheading" href="tiki-g-map_roles.php?pid={$pid}&amp;find={$find}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'user_desc'}user_asc{else}user_desc{/if}">{tr}User{/tr}</a></td>
+<td class="heading" ><a class="tableheading" href="tiki-g-map_roles.php?p_id={$p_id}&amp;find={$find}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}Role{/tr}</a></td>
+<td class="heading" ><a class="tableheading" href="tiki-g-map_roles.php?p_id={$p_id}&amp;find={$find}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'user_desc'}user_asc{else}user_desc{/if}">{tr}User{/tr}</a></td>
 </tr>
 {cycle values="odd,even" print=false}
 {section name=ix loop=$items}

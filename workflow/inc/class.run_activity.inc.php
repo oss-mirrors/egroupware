@@ -19,19 +19,19 @@
 			$this->process			= CreateObject('phpgwapi.workflow_process');
 		}
 
-		function go($activityId=0, $iid=0, $auto=0)
+		function go($activity_id=0, $iid=0, $auto=0)
 		{
 			if ($iid) $_REQUEST['iid'] = $iid;
 
-			if (!$activityId)
+			if (!$activity_id)
 			{
-				$activityId	= (int)get_var('activityId', 'GET', 0);
+				$activity_id	= (int)get_var('activity_id', 'GET', 0);
 			}
 
-			if (!$activityId) die(lang('No activity indicated'));
+			if (!$activity_id) die(lang('No activity indicated'));
 
 			// load activity
-			$activity = $this->base_activity->getActivity($activityId);
+			$activity = $this->base_activity->getActivity($activity_id);
 
 			// load process
 			$this->process->getProcess($activity->getProcessId());
@@ -83,7 +83,7 @@
 				$this->t->set_file('activity_completed', 'activity_completed.tpl');
 
 				$this->t->set_var(array(
-					'procname'		=> $this->process->getName(),
+					'wf_procname'		=> $this->process->getName(),
 					'procversion'	=> $this->process->getVersion(),
 					'actname'		=> $activity->getName(),
 				));
@@ -103,4 +103,3 @@
 
 	}
 ?>
-

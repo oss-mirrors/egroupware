@@ -31,8 +31,8 @@
 			$activity_id		= get_var('aid', 'GET', 0);
 			$instance_id		= get_var('iid', 'GET', 0);
 			$this->sort			= get_var('sort', 'any', 'asc');
-			$this->order		= get_var('order', 'any', 'procname');
-			$this->sort_mode	= $this->order . '_' . $this->sort;
+			$this->order		= get_var('order', 'any', 'wf_procname');
+			$this->sort_mode	= $this->order . '__' . $this->sort;
 			$this->search_str	= get_var('search_str', 'any', '');
 
 			// exception instance
@@ -66,10 +66,11 @@
 			}
 
 			// retrieve all user processes info
-			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'procname_asc', '', '');
+			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
 
 			// retrieve user instances
 			$instances = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, $this->sort_mode, $this->search_str, '');
+			//echo "instances: <pre>";print_r($instances);echo "</pre>";
 
 			$this->show_select_status($filter_status);
 			$this->show_select_process($all_processes['data'], $filter_process);
@@ -96,78 +97,78 @@
 			//_debug_array($instances_data);
 			// show table headers
 			$this->t->set_var(array(
-				'header_id'				=> $this->nextmatchs->show_sort_order($this->sort, 'instanceId', $this->order, 'index.php', lang('id')),
+				'header_id'				=> $this->nextmatchs->show_sort_order($this->sort, 'instance_id', $this->order, 'index.php', lang('id')),
 				'header_owner'			=> $this->nextmatchs->show_sort_order($this->sort, 'owner', $this->order, 'index.php', lang('Owner')),
 				'header_inst_status'	=> $this->nextmatchs->show_sort_order($this->sort, 'status', $this->order, 'index.php', lang('Inst. Status')),
-				'header_process'		=> $this->nextmatchs->show_sort_order($this->sort, 'procname', $this->order, 'index.php', lang('Process')),
+				'header_process'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_procname', $this->order, 'index.php', lang('Process')),
 				'header_activity'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, 'index.php', lang('Activity')),
 				'header_user'			=> $this->nextmatchs->show_sort_order($this->sort, 'user', $this->order, 'index.php', lang('User')),
-				'header_act_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'actstatus', $this->order, 'index.php', lang('Act. Status')),
+				'header_act_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'act_status', $this->order, 'index.php', lang('Act. Status')),
 			));
 			$this->t->set_block('user_instances', 'block_list_instances', 'list_instances');
 			foreach ($instances_data as $instance)
 			{
-				if ($instance['status'] != 'aborted' && $instance['status'] != 'exception' && $instance['user'] == $GLOBALS['phpgw_info']['user']['account_id'])
+				if ($instance['wf_status'] != 'aborted' && $instance['wf_status'] != 'exception' && $instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id'])
 				{
-					$this->t->set_var('exception', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&exception=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('exception instance') .'" title="'. lang('exception instance') .'" /></a>');
+					$this->t->set_var('exception', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&exception=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('exception instance') .'" title="'. lang('exception instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('exception', '');
 				}
 
-				if ($instance['isAutoRouted'] == 'n' && $instance['actstatus'] == 'completed')
+				if ($instance['wf_is_autorouted'] == 'n' && $instance['wf_act_status'] == 'completed')
 				{
-					$this->t->set_var('send', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&send=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') .'" alt="'. lang('send instance') .'" title="'. lang('send instance') .'" /></a>');
+					$this->t->set_var('send', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&send=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'linkto') .'" alt="'. lang('send instance') .'" title="'. lang('send instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('send', '');
 				}
 
-				if ($instance['isInteractive'] == 'y' && $instance['status'] == 'active')
+				if ($instance['wf_is_interactive'] == 'y' && $instance['wf_status'] == 'active')
 				{
-					$this->t->set_var('run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&iid='. $instance['instanceId'] .'&activityId='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run instance') .'" title="'. lang('run instance') .'" /></a>');
+					$this->t->set_var('run', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.run_activity.go&iid='. $instance['wf_instance_id'] .'&activity_id='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'next') .'" alt="'. lang('run instance') .'" title="'. lang('run instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('run', '');
 				}
 
-				if ($instance['status'] != 'aborted' && $instance['user'] == $GLOBALS['phpgw_info']['user']['account_id'])
+				if ($instance['wf_status'] != 'aborted' && $instance['wf_user'] == $GLOBALS['phpgw_info']['user']['account_id'])
 				{
-					$this->t->set_var('abort', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&abort=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'trash') .'" alt="'. lang('abort instance') .'" title="'. lang('abort instance') .'" /></a>');
+					$this->t->set_var('abort', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&abort=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'trash') .'" alt="'. lang('abort instance') .'" title="'. lang('abort instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('abort', '');
 				}
 
-				if ($instance['user'] == '*' && $instance['status'] == 'active')
+				if ($instance['wf_user'] == '*' && $instance['wf_status'] == 'active')
 				{
-					$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&grab=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') .'" alt="'. lang('grab instance') .'" title="'. lang('grab instance') .'" /></a>');
+					$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&grab=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'fix') .'" alt="'. lang('grab instance') .'" title="'. lang('grab instance') .'" /></a>');
 				}
-				elseif ($instance['status'] == 'active')
+				elseif ($instance['wf_status'] == 'active')
 				{
-					$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&release=1&iid='. $instance['instanceId'] .'&aid='. $instance['activityId']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') .'" alt="'. lang('release instance') .'" title="'. lang('release instance') .'" /></a>');
+					$this->t->set_var('grab_or_release', '<a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&release=1&iid='. $instance['wf_instance_id'] .'&aid='. $instance['wf_activity_id']) .'"><img src="'. $GLOBALS['phpgw']->common->image('workflow', 'float') .'" alt="'. lang('release instance') .'" title="'. lang('release instance') .'" /></a>');
 				}
 				else
 				{
 					$this->t->set_var('grab_or_release', '');
 				}
 
-				$GLOBALS['phpgw']->accounts->get_account_name($instance['owner'],$lid,$fname_owner,$lname_owner);
-				$GLOBALS['phpgw']->accounts->get_account_name($instance['user'],$lid,$fname_user,$lname_user);
+				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_owner'],$lid,$fname_owner,$lname_owner);
+				$GLOBALS['phpgw']->accounts->get_account_name($instance['wf_user'],$lid,$fname_user,$lname_user);
 				$this->t->set_var(array(
-					'instanceId'		=> $instance['instanceId'],
+					'instance_id'		=> $instance['wf_instance_id'],
 					'owner'				=> $fname_owner . ' ' . $lname_owner,
-					'status'			=> $instance['status'],
-					'procname'			=> $instance['procname'],
-					'version'			=> $instance['version'],
-					'act_icon'			=> $this->act_icon($instance['type']),
-					'name'				=> $instance['name'],
+					'status'			=> $instance['wf_status'],
+					'wf_procname'			=> $instance['wf_procname'],
+					'version'			=> $instance['wf_version'],
+					'act_icon'			=> $this->act_icon($instance['wf_type']),
+					'name'				=> $instance['wf_name'],
 					'user'				=> $fname_user . ' ' . $lname_user,
-					'actstatus'			=> $instance['actstatus'],
+					'act_status'		=> $instance['wf_act_status'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('list_instances', 'block_list_instances', true);
@@ -192,9 +193,9 @@
 			foreach ($all_processes_data as $process_data)
 			{
 				$this->t->set_var(array(
-					'selected_filter_process'	=> ($filter_process == $process_data['pId'])? 'selected="selected"' : '',
-					'filter_process_id'			=> $process_data['pId'],
-					'filter_process_name'		=> $process_data['procname'],
+					'selected_filter_process'	=> ($filter_process == $process_data['wf_p_id'])? 'selected="selected"' : '',
+					'filter_process_id'			=> $process_data['wf_p_id'],
+					'filter_process_name'		=> $process_data['wf_procname'],
 					'filter_process_version'	=> $process_data['version'],
 				));
 				$this->t->parse('select_process', 'block_select_process', true);
@@ -224,4 +225,3 @@
 		}
 	}
 ?>
-

@@ -28,16 +28,16 @@
 
 			$this->t->set_file('admin_roles', 'admin_roles.tpl');
 
-			$this->order		= get_var('order', 'GET', 'name');
+			$this->order		= get_var('order', 'GET', 'wf_name');
 			$this->sort			= get_var('sort', 'GET', 'asc');
-			$this->sort_mode	= $this->order . '_'. $this->sort;
-			$sort_mode2			= get_var('sort_mode2', 'any', 'name_asc');
-			$roleId				= (int)get_var('roleId', 'any', 0);
+			$this->sort_mode	= $this->order . '__'. $this->sort;
+			$sort_mode2			= get_var('sort_mode2', 'any', 'wd_name__asc');
+			$role_id				= (int)get_var('role_id', 'any', 0);
 
-			if (!$this->pId) die(lang('No process indicated'));
+			if (!$this->wf_p_id) die(lang('No process indicated'));
 
 			// save new role
-			if (isset($_POST['save'])) $this->save_role($roleId, $_POST['name'], $_POST['description']);
+			if (isset($_POST['save'])) $this->save_role($role_id, $_POST['name'], $_POST['description']);
 
 			// save new mapping
 			if (isset($_POST['save_map']))
@@ -56,7 +56,7 @@
 			}
 
 			// retrieve process info
-			$proc_info = $this->process_manager->get_process($this->pId);
+			$proc_info = $this->process_manager->get_process($this->wf_p_id);
 
 			// check process validity and show errors if necessary
 			$proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
@@ -65,31 +65,32 @@
 			$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
 			
 			// retrieve role info
-			if ($roleId || isset($_POST['new_role']))
+			if ($role_id || isset($_POST['new_role']))
 			{
-				$role_info = $this->role_manager->get_role($this->pId, $_GET['roleId']);
+				$role_info = $this->role_manager->get_role($this->wf_p_id, $_GET['role_id']);
 			}
 			else
 			{
 				$role_info = array(
 					'name'			=> '',
 					'description'	=> '',
-					'roleId'		=> 0
+					'role_id'		=> 0
 				);
 			}
 
 			// retrieve all roles info
-			$all_roles = $this->role_manager->list_roles($this->pId, 0, -1, 'name_asc', '');
+			$all_roles = $this->role_manager->list_roles($this->wf_p_id, 0, -1, 'wf_name__asc', '');
+			//echo "all_roles: <pre>";print_r($all_roles);echo "</pre>";
 
 			// fill the general varibles of the template
 			$this->t->set_var(array(
 				'message'				=> implode('<br>', $this->message),
 				'errors'				=> $error_str,
 				'form_action_adminroles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form'),
-				'role_info_roleId'		=> $role_info['roleId'],
+				'role_info_role_id'		=> $role_info['role_id'],
 				'role_info_name'		=> $role_info['name'],
 				'role_info_description'	=> $role_info['description'],
-				'pid'					=> $this->pId,
+				'p_id'					=> $this->wf_p_id,
 				'start'					=> $this->start,
 			));
 
@@ -106,13 +107,13 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
-		function save_role($roleId, $name, $description)
+		function save_role($role_id, $name, $description)
 		{
 			$vars = array(
-				'name'			=> $name,
-				'description'	=> $description,
+				'wf_name'			=> $name,
+				'wf_description'	=> $description,
 			);
-			$this->role_manager->replace_role($this->pId, $roleId, $vars);
+			$this->role_manager->replace_role($this->wf_p_id, $role_id, $vars);
 			$this->message[] = lang('Role saved');
 		}
 
@@ -120,7 +121,7 @@
 		{
 			foreach ($roles_ids as $role_id)
 			{
-				$this->role_manager->remove_role($this->pId, $role_id);
+				$this->role_manager->remove_role($this->wf_p_id, $role_id);
 			}
 			$this->message[] = lang('Roles deleted');
 		}
@@ -131,8 +132,8 @@
 		        {
 		               $pos = strpos($map,":::");
 		               $user=substr($map,0,$pos);
-		               $roleId=substr($map,$pos+3);
-		               $this->role_manager->remove_mapping($user,$roleId);
+		               $role_id=substr($map,$pos+3);
+		               $this->role_manager->remove_mapping($user,$role_id);
 		        }
 			$this->message[] = lang('Mappings deleted');
 		}
@@ -140,15 +141,15 @@
 		function show_mappings()
 		{
 			$this->t->set_block('admin_roles', 'block_list_mappings', 'list_mappings');
-			$mappings = $this->role_manager->list_mappings($this->pId, $this->start, -1, $this->sort_mode, '');
+			$mappings = $this->role_manager->list_mappings($this->wf_p_id, $this->start, -1, $this->sort_mode, '');
 			//echo "mappings: <pre>";print_r($mappings);echo "</pre>";
 			foreach ($mappings['data'] as $mapping)
 			{
-				$GLOBALS['phpgw']->accounts->get_account_name($mapping['user'], $lid, $fname, $lname);
+				$GLOBALS['phpgw']->accounts->get_account_name($mapping['wf_user'], $lid, $fname, $lname);
 				$this->t->set_var(array(
-					'map_user_id'	=> $mapping['user'],
-					'map_role_id'	=> $mapping['roleId'],
-					'map_role_name'	=> $mapping['name'],
+					'map_user_id'	=> $mapping['wf_user'],
+					'map_role_id'	=> $mapping['wf_role_id'],
+					'map_role_name'	=> $mapping['wf_name'],
 					'map_user_name'	=> $fname . ' ' . $lname,
 				));
 				$this->t->parse('list_mappings', 'block_list_mappings', true);
@@ -162,7 +163,7 @@
 			{
 				foreach ($roles as $role)
 				{
-					$this->role_manager->map_user_to_role($this->pId, $user, $role);
+					$this->role_manager->map_user_to_role($this->wf_p_id, $user, $role);
 				}
 			}
 		}
@@ -195,8 +196,8 @@
 			foreach ($all_roles_data as $role)
 			{
 				$this->t->set_var(array(
-					'select_roleId'		=> $role['roleId'],
-					'select_roleName'	=> $role['name']
+					'select_role_id'		=> $role['wf_role_id'],
+					'select_role_name'	=> $role['wf_name']
 				));
 				$this->t->parse('select_roles', 'block_select_roles', true);
 			}
@@ -210,10 +211,10 @@
 			foreach ($all_roles_data as $role)
 			{
 				$this->t->set_var(array(
-					'all_roles_roleId'		=> $role['roleId'],
-					'all_roles_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&sort_mode='. $this->sort_mode .'&start='. $this->start .'&find='. $find .'&pid='. $this->pId .'&sort_mode2='. $sort_mode2 .'&roleId='. $role['roleId']),
-					'all_roles_name'		=> $role['name'],
-					'all_roles_description'	=> $role['description'],
+					'all_roles_role_id'		=> $role['wf_role_id'],
+					'all_roles_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&sort_mode='. $this->sort_mode .'&start='. $this->start .'&find='. $find .'&p_id='. $this->wf_p_id .'&sort_mode2='. $sort_mode2 .'&role_id='. $role['wf_role_id']),
+					'all_roles_name'		=> $role['wf_name'],
+					'all_roles_description'	=> $role['wf_description'],
 					'color_line'			=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('process_roles_list', 'block_process_roles_list', true);

@@ -4,7 +4,7 @@
 	{
 		var $t;
 
-		var $pId;
+		var $wf_p_id;
 
 		var $message = array();
 
@@ -26,8 +26,16 @@
 
 		function workflow()
 		{
+			// check version
+			if ($GLOBALS['phpgw_info']['apps']['workflow']['version'] != '1.0.1')
+			{
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+				die("Please upgrade this application to be able to use it");
+			}
+
 			$this->t			= $GLOBALS['phpgw']->template;
-			$this->pId			= (int)get_var('pid', 'any', 0);
+			$this->wf_p_id		= (int)get_var('p_id', 'any', 0);
 			$this->start		= (int)get_var('start', 'GET', 0);
 			$this->search_str	= get_var('find', 'any', '');
 			$this->nextmatchs	= CreateObject('phpgwapi.nextmatchs');
@@ -38,7 +46,7 @@
 			//echo "proc_info: <pre>";print_r($proc_info);echo "</pre>";
 			$this->t->set_file('proc_bar_tpl', 'proc_bar.tpl');
 
-			if ($proc_info['isValid'] == 'y')
+			if ($proc_info['wf_is_valid'] == 'y')
 			{
 				$dot_color = 'green';
 				$alt_validity = lang('valid');
@@ -50,41 +58,41 @@
 			}
 
 			// if process is active show stop button. Else show start button, but only if it is valid. If it's not valid, don't show any activation or stop button.
-			if ($proc_info['isActive'] == 'y')
+			if ($proc_info['wf_is_active'] == 'y')
 			{
-				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&pid='. $proc_info['pId'] .'&deactivate_proc='. $proc_info['pId']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('stop') .'" title="'. lang('stop') .'" /></a></td>';
+				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&deactivate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'stop') .'" alt="'. lang('stop') .'" title="'. lang('stop') .'" /></a></td>';
 			}
-			elseif ($proc_info['isValid'] == 'y')
+			elseif ($proc_info['wf_is_valid'] == 'y')
 			{
-				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&pid='. $proc_info['pId'] .'&activate_proc='. $proc_info['pId']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('activate') .'" title="'. lang('activate') .'" /></a></td>';
+				$start_stop = '<td><a href="'. $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id'] .'&activate_proc='. $proc_info['wf_p_id']) .'"><img border ="0" src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('activate') .'" title="'. lang('activate') .'" /></a></td>';
 			}
 			else
 			{
 				$start_stop = '';
 			}
 			$this->t->set_var(array(
-				'proc_name'				=> $proc_info['name'],
-				'version'				=> $proc_info['version'],
+				'proc_name'				=> $proc_info['wf_name'],
+				'version'				=> $proc_info['wf_version'],
 				'img_validity'			=> $GLOBALS['phpgw']->common->image('workflow', $dot_color.'_dot'),
 				'alt_validity'			=> $alt_validity,
 				'start_stop'			=> $start_stop,
-				'link_admin_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&pid='. $proc_info['pId']),
+				'link_admin_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $proc_info['wf_p_id']),
 				'img_activity'			=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-				'link_admin_processes'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&pid='. $proc_info['pId']),
+				'link_admin_processes'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&p_id='. $proc_info['wf_p_id']),
 				'img_change'			=> $GLOBALS['phpgw']->common->image('workflow', 'change'),
-				'link_admin_shared_source'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&pid='. $proc_info['pId']),
+				'link_admin_shared_source'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $proc_info['wf_p_id']),
 				'img_code'				=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-				'link_admin_roles'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&pid='. $proc_info['pId']),
+				'link_admin_roles'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $proc_info['wf_p_id']),
 				'img_roles'				=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
-				'link_graph'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.show_graph&pid=' . $proc_info['pId']),
+				'link_graph'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.show_graph&p_id=' . $proc_info['wf_p_id']),
 				'img_process'			=> $GLOBALS['phpgw']->common->image('workflow', 'Process'),
-				'link_save_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&id='. $proc_info['pId']),
+				'link_save_process'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&id='. $proc_info['wf_p_id']),
 				'img_save'				=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
-				'link_monitor_process'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&filter_process='. $proc_info['pId']),
+				'link_monitor_process'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorprocesses.form&filter_process='. $proc_info['wf_p_id']),
 				'img_process'			=> $GLOBALS['phpgw']->common->image('workflow', 'Process'),
-				'link_monitor_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $proc_info['pId']),
+				'link_monitor_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $proc_info['wf_p_id']),
 				'img_activity'			=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-				'link_monitor_instances'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['pId']),
+				'link_monitor_instances'=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $proc_info['wf_p_id']),
 				'img_instance'			=> $GLOBALS['phpgw']->common->image('workflow', 'Instance'),
 
 			));
@@ -159,7 +167,7 @@
 
 		function show_errors(&$activity_manager, &$error_str)
 		{
-			$valid = $activity_manager->validate_process_activities($this->pId);
+			$valid = $activity_manager->validate_process_activities($this->wf_p_id);
 			if (!$valid)
 			{
 				$errors = $activity_manager->get_error();

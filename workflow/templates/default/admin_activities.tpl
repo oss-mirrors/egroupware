@@ -9,8 +9,8 @@
 </div>
 
 <form action="{form_details_action}" method="post">
-<input type="hidden" name="pid" value="{pid}" />
-<input type="hidden" name="activityId" value="{activityId}" />
+<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="activity_id" value="{activity_id}" />
 <input type="hidden" name="where2" value="{where2}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
 <input type="hidden" name="find" value="{find}" />
@@ -40,8 +40,8 @@
 		<option value="{type_value}" {type_selected}>{type_name}</option>
 	  <!-- END block_select_type -->
 	  </select>
-	  {lang_Interactive}:<input type="checkbox" name="isInteractive" {checked_interactive} />
-	  {lang_auto_routed}:<input type="checkbox" name="isAutoRouted" {checked_autorouted} />
+	  {lang_Interactive}:<input type="checkbox" name="is_interactive" {checked_interactive} />
+	  {lang_auto_routed}:<input type="checkbox" name="is_autorouted" {checked_autorouted} />
 	  </td>
 	</tr>
 
@@ -94,8 +94,8 @@
 <div style="border: 1px solid black;margin-bottom:10px">
 <form action="{form_process_activities_action}" method="post">
 <div class="th" style="font-weight:bold; font-size:120%; margin-bottom:4px">{lang_Process_activities}</div>
-<input type="hidden" name="pid" value="{pid}" />
-<input type="hidden" name="activityId" value="{activityId}" />
+<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="activity_id" value="{activity_id}" />
 <input type="hidden" name="where2" value="{where2}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
 <table width="100%" cellpadding="0" cellspacing="0">
@@ -139,8 +139,8 @@
 <input type="hidden" name="sort_mode" value="{sort_mode}" />
 <input type="hidden" name="where2" value="{where2}" />
 <input type="hidden" name="sort_mode2" value="{sort_mode2}" />
-<input type="hidden" name="pid" value="{pid}" />
-<input type="hidden" name="activityId" value="{activityId}" />
+<input type="hidden" name="p_id" value="{p_id}" />
+<input type="hidden" name="activity_id" value="{activity_id}" />
 <div style="position:relative">
 <table border="0" width="100%">
 <tr class="th" style="font-weight:bold">
@@ -164,15 +164,15 @@
 		{act_icon}
 	</td>
 	<td style="text-align:center;">
-	  <input type="checkbox" name="activity_inter[{act_activityId}]" {act_inter_checked} />
+	  <input type="checkbox" name="activity_inter[{act_activity_id}]" {act_inter_checked} />
 	</td>
     <td style="text-align:center;">
-	  <input type="checkbox" name="activity_route[{act_activityId}]" {act_route_checked} />
+	  <input type="checkbox" name="activity_route[{act_activity_id}]" {act_route_checked} />
 	</td>
 	<td>
 		<a href="{act_href_code}"><img src="{img_code}" alt="{lang_code}" title="{lang_code}" /></a>
 		{act_template}
-		<input style="position:absolute; right:5px" type="checkbox" name="activities[{act_activityId}]" />
+		<input style="position:absolute; right:5px" type="checkbox" name="activities[{act_activity_id}]" />
 	</td>
 </tr>
 <!-- END block_process_activities -->
@@ -196,8 +196,8 @@
 	<tr>
 		<td width="50%">
 			<form action="{form_list_transitions_action}" method="post">
-			<input type="hidden" name="pid" value="{pid}" />
-			<input type="hidden" name="activityId" value="{activityId}" />
+			<input type="hidden" name="p_id" value="{p_id}" />
+			<input type="hidden" name="activity_id" value="{activity_id}" />
 			<input type="hidden" name="find" value="{find2}" />
 			<input type="hidden" name="where" value="{where2}" />
 			<input type="hidden" name="sort_mode" value="{sort_mode}" />
@@ -231,8 +231,8 @@
 		</td>
 		<td width="50%" valign="top" align="left">
 			<form action="{form_list_transitions_action}" method="post">
-			<input type="hidden" name="pid" value="{pid}" />
-			<input type="hidden" name="activityId" value="{activityId}" />
+			<input type="hidden" name="p_id" value="{p_id}" />
+			<input type="hidden" name="activity_rd" value="{activity_id}" />
 			<input type="hidden" name="find" value="{find2}" />
 			<input type="hidden" name="where" value="{where2}" />
 			<input type="hidden" name="sort_mode" value="{sort_mode}" />

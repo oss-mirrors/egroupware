@@ -9,16 +9,16 @@
 </div>
 
 <form id='editsource' action="{form_editsource_action}" method="post">
-<input type="hidden" name="pid" value="{pid}" />
+<input type="hidden" name="p_id" value="{p_id}" />
 <input type="hidden" name="source_type" value="{source_type}" />
 <table style="border: 1px solid black">
 <tr class="th">
   <td>
   		{lang_select_source}:
-		<select name="activityId" onchange="this.form.submit();">
+		<select name="activity_id" onchange="this.form.submit();">
 		<option value="" {selected_sharedcode}>{lang_Shared_code}</option>
 		<!-- BEGIN block_select_activity -->
-		<option value="{activityId}" {selected_activity}>{activity_name}</option>
+		<option value="{activity_id}" {selected_activity}>{activity_name}</option>
 		<!-- END block_select_activity -->
 		</select>
   		{code_or_tpl_btn}

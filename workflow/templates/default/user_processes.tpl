@@ -12,7 +12,7 @@
 	<!-- BEGIN block_table -->
 	<tr bgcolor="{color_line}">
 		<td>
-		  <a href="{link_procname}">{item_procname} {item_version}</a>
+		  <a href="{link_wf_procname}">{item_wf_procname} {item_version}</a>
 		</td>
 		<td style="text-align:right;">
 			<a  href="{link_activities}">{item_activities}</a>

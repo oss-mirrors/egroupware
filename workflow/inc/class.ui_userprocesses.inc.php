@@ -25,9 +25,9 @@
 			$this->t->set_file('user_processes', 'user_processes.tpl');
 			$this->t->set_block('user_processes', 'block_table', 'table');
 
-			$this->order		= get_var('order', 'GET', 'procname');
+			$this->order		= get_var('order', 'GET', 'wf_procname');
 			$this->sort			= get_var('sort', 'GET', 'asc');
-			$this->sort_mode	= $this->order . '_'. $this->sort;
+			$this->sort_mode	= $this->order . '__'. $this->sort;
 
 			$processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, $this->sort_mode, '', '');
 			//echo "user_id:";echo $GLOBALS['phpgw_info']['user']['account_id'];echo"<br>processes: <pre>";print_r($processes);echo "</pre>";
@@ -36,12 +36,12 @@
 			foreach ($processes['data'] as $process_data)
 			{
 				$this->t->set_var(array(
-					'link_procname'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['pId']),
-					'item_procname'		=> $process_data['procname'],
+					'link_wf_procname'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
+					'item_wf_procname'		=> $process_data['wf_procname'],
 					'item_version'		=> $process_data['verion'],
-					'link_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['pId']),
+					'link_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
 					'item_activities'	=> $process_data['activities'],
-					'link_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $process_data['pId']),
+					'link_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $process_data['wf_p_id']),
 					'item_instances'	=> $process_data['instances'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));

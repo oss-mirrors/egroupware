@@ -19,7 +19,7 @@
 				</tr>
 				<tr class="row_on">
 					<td><b>{lang_Process}</b></td>
-					<td>{wi_procname} {wi_version}</td>
+					<td>{wi_wf_procname} {wi_version}</td>
 				</tr>
 				<tr class="row_off">
 					<td><b>{lang_Activity}</b></td>

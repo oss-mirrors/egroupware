@@ -18,8 +18,8 @@
 		{
 			parent::workflow();
 			$this->process_monitor	= CreateObject('phpgwapi.workflow_processmonitor');
-			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'name_desc', '', '');
-			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'name_desc', '', '');
+			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
+			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');
 			$this->filter_process	= get_var('filter_process', 'any', '');
 			$this->filter_activity	= get_var('filter_activity', 'any', '');
 			$this->template_name = $template_name;
@@ -42,10 +42,10 @@
 			foreach ($this->all_processes['data'] as $process)
 			{
 				$this->t->set_var(array(
-					'filter_process_selected'	=> ($process['pId'] == $this->filter_process)? 'selected="selected"' : '',
-					'filter_process_value'		=> $process['pId'],
-					'filter_process_name'		=> $process['name'],
-					'filter_process_version'	=> $process['version'],
+					'filter_process_selected'	=> ($process['wf_p_id'] == $this->filter_process)? 'selected="selected"' : '',
+					'filter_process_value'		=> $process['wf_p_id'],
+					'filter_process_name'		=> $process['wf_name'],
+					'filter_process_version'	=> $process['wf_version'],
 
 				));
 				$this->t->parse('filter_process', 'block_filter_process', true);
@@ -59,9 +59,9 @@
 			foreach ($this->all_activities['data'] as $activity)
 			{
 				$this->t->set_var(array(
-					'filter_activity_selected'	=> ($activity['activityId'] == $this->filter_activity)? 'selected="selected"' : '',
-					'filter_activity_value'		=> $activity['activityId'],
-					'filter_activity_name'		=> $activity['name'],
+					'filter_activity_selected'	=> ($activity['wf_activity_id'] == $this->filter_activity)? 'selected="selected"' : '',
+					'filter_activity_value'		=> $activity['wf_activitywf_id'],
+					'filter_activity_name'		=> $activity['wf_name'],
 
 				));
 				$this->t->parse('filter_activity', 'block_filter_activity', true);

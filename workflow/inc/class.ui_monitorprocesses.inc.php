@@ -18,11 +18,10 @@
 		{
 			$filter_active		= get_var('filter_active', 'any', '');
 			$filter_valid		= get_var('filter_valid', 'any', '');
-			$this->sort_mode	= get_var('sort_mode', 'any', 'lastModif_desc');
+			$this->sort_mode	= get_var('sort_mode', 'any', 'wf_last_modif__desc');
 
 			$processes_list	= $this->process_monitor->monitor_list_processes($this->start, -1, $this->sort_mode, $this->search_str, '');
 			$stats			= $this->process_monitor->monitor_stats();
-
 
 			$this->show_filter_process();
 			$this->show_filter_active($filter_active);
@@ -64,21 +63,21 @@
 			foreach ($processes_list_data as $process)
 			{
 				$this->t->set_var(array(
-					'process_href'				=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&pid='. $process['pId']),
-					'process_name'				=> $process['name'],
-					'process_version'			=> $process['version'],
-					'process_href_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $process['pId']),
-					'process_activities'		=> $process['activities'],
-					'process_active_img'		=> ($process['isActive'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('Active') .'" title="'. lang('Active') .'" />' : '',
-					'process_valid_img'			=> $GLOBALS['phpgw']->common->image('workflow', ($process['isValid'] == 'y')? 'green_dot' : 'red_dot'),
-					'process_valid_alt'			=> ($process['isValid'] == 'y')? lang('Valid') : lang('Invalid'),
-					'process_href_inst_active'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['pId'] .'&filter_status=active'),
+					'process_href'				=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&p_id='. $process['wf_p_id']),
+					'process_name'				=> $process['wf_name'],
+					'process_version'			=> $process['wf_version'],
+					'process_href_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitoractivities.form&filter_process='. $process['wf_p_id']),
+					'process_activities'		=> $process['wf_activities'],
+					'process_active_img'		=> ($process['wf_is_active'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('Active') .'" title="'. lang('Active') .'" />' : '',
+					'process_valid_img'			=> $GLOBALS['phpgw']->common->image('workflow', ($process['wf_is_valid'] == 'y')? 'green_dot' : 'red_dot'),
+					'process_valid_alt'			=> ($process['wf_is_valid'] == 'y')? lang('Valid') : lang('Invalid'),
+					'process_href_inst_active'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['wf_p_id'] .'&filter_status=active'),
 					'process_inst_active'		=> $process['active_instances'],
-					'process_href_inst_comp'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['pId'] .'&filter_status=completed'),
+					'process_href_inst_comp'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['wf_p_id'] .'&filter_status=completed'),
 					'process_inst_comp'			=> $process['completed_instances'],
-					'process_href_inst_abort'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['pId'] .'&filter_status=aborted'),
+					'process_href_inst_abort'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['wf_p_id'] .'&filter_status=aborted'),
 					'process_inst_abort'		=> $process['aborted_instances'],
-					'process_href_inst_excep'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['pId'] .'&filter_status=exception'),
+					'process_href_inst_excep'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $process['wf_p_id'] .'&filter_status=exception'),
 					'process_inst_excep'		=> $process['exception_instances'],
 					'color_line'				=> $this->nextmatchs->alternate_row_color($tr_color),
 				));

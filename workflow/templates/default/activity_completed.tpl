@@ -6,7 +6,7 @@
 </tr>
 <tr>
 	<td class="th">{lang_Process}:
-	<td>{procname} {procversion}</td>
+	<td>{wf_procname} {procversion}</td>
 </tr>
 <tr>
 	<td class="th">{lang_Activity}:

@@ -34,21 +34,21 @@
 			$name					= get_var('name', 'POST', '');
 			$description			= get_var('description', 'POST', '');
 			$version				= get_var('version', 'POST', '');
-			$isActive				= get_var('isActive', 'POST', '');
+			$is_active				= get_var('is_active', 'POST', '');
 			$filter					= get_var('filter', 'any', '');
 			$this->filter_active	= get_var('filter_active', 'any', '');
 			$where					= get_var('where', 'any', '');
 			$newminor				= get_var('newminor', 'GET', 0);
 			$newmajor				= get_var('newmajor', 'GET', 0);
-			$this->order			= get_var('order', 'GET', 'lastModif');
+			$this->order			= get_var('order', 'GET', 'wf_last_modif');
 			$this->sort				= get_var('sort', 'GET', 'desc');
-			$this->sort_mode		= $this->order . '_'. $this->sort;
+			$this->sort_mode		= $this->order . '__'. $this->sort;
 
 			// filtering options
 			$where_str = '';
 			$wheres = array();
 
-			if ($filter_active)	$wheres[] = " isActive='". $filter_active ."'";
+			if ($filter_active)	$wheres[] = " is_active='". $filter_active ."'";
 			$where_str = implode('and', $wheres);
 
 			if ($wheres) $where_str = $where;
@@ -64,7 +64,7 @@
 			// save new process
 			if (isset($_POST['save']))
 			{
-				$this->pId = $this->save_process($name, $version, $description, $isActive);
+				$this->wf_p_id = $this->save_process($name, $version, $description, $is_active);
 			}
 
 			// new minor
@@ -80,9 +80,9 @@
 			}
 
 			// retrieve current process
-			if ($this->pId)
+			if ($this->wf_p_id)
 			{
-				$proc_info = $this->process_manager->get_process($this->pId);
+				$proc_info = $this->process_manager->get_process($this->wf_p_id);
 				$this->t->set_var('proc_bar', $this->fill_proc_bar($proc_info));
 			}
 			else
@@ -91,8 +91,8 @@
 					'name'			=> '',
 					'description'	=> '',
 					'version'		=> '1.0',
-					'isActive'		=> 'n',
-					'pId'			=> 0
+					'is_active'		=> 'n',
+					'wf_p_id'		=> 0
 				);
 				$this->t->set_var('proc_bar', '');
 			}
@@ -102,26 +102,26 @@
 			//echo "list of processes: <pre>";print_r($items);echo "</pre>";
 			$this->show_list_processes($items['data']);
 
-			if ($this->pId)
+			if ($this->wf_p_id)
 			{
 				// check process validity and show errors if necessary
-				$proc_info['isValid'] = $this->show_errors($this->activity_manager, $error_str);
+				$proc_info['wf_is_valid'] = $this->show_errors($this->activity_manager, $error_str);
 			}
 
 			// show current process
 			$this->t->set_var(array(
 				'message'			=> implode('<br>', $this->message),
 				'errors'			=> $error_str,
-				'link_new'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&pid=0'),
-				'pId'				=> $proc_info['pId'],
-				'name'				=> $proc_info['name'],
-				'version'			=> $proc_info['version'],
-				'description'		=> $proc_info['description'],
-				'is_active'			=> ($proc_info['isActive'] == 'y')? 'checked="checked"' : '',
+				'link_new'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&p_id=0'),
+				'wf_p_id'				=> $proc_info['wf_p_id'],
+				'name'				=> $proc_info['wf_name'],
+				'version'			=> $proc_info['wf_version'],
+				'description'		=> $proc_info['wf_description'],
+				'is_active'			=> ($proc_info['wf_is_active'] == 'y')? 'checked="checked"' : '',
 				'where'				=> $where,
 				'find'				=> $find,
 				'sort_mode'			=> $this->sort_mode,
-				'btn_update_create'=> ($this->pId)? lang('update') : lang('create'),
+				'btn_update_create'=> ($this->wf_p_id)? lang('update') : lang('create'),
 				'list_processes'	=> lang('List of processes (%1)', $items['cant']),
 				'form_details_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form'),
 				'form_upload_action'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form'),
@@ -150,14 +150,14 @@
 			$this->t->set_var(array(
 				'left_arrow'		=> $this->nextmatchs->left('index.php', $this->start, $this->total),
 				'right_arrow'		=> $this->nextmatchs->right('index.php', $this->start, $this->total),
-				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, 'index.php', lang('Name'), $filters),
-				'header_version'	=> $this->nextmatchs->show_sort_order($this->sort, 'version', $this->order, 'index.php', lang('Version'), $filters),
-				'header_active'		=> $this->nextmatchs->show_sort_order($this->sort, 'isActive', $this->order, 'index.php', lang('Active'), $filters),
-				'header_valid'		=> $this->nextmatchs->show_sort_order($this->sort, 'isValid', $this->order, 'index.php', lang('Valid'), $filters),
+				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Name'), $filters),
+				'header_version'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_version', $this->order, 'index.php', lang('Version'), $filters),
+				'header_active'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_active', $this->order, 'index.php', lang('Active'), $filters),
+				'header_valid'		=> $this->nextmatchs->show_sort_order($this->sort, 'is_valid', $this->order, 'index.php', lang('Valid'), $filters),
 			));
 			foreach ($items as $item)
 			{
-				if ($item['isValid'] == 'y')
+				if ($item['wf_is_valid'] == 'y')
 				{
 					$dot = 'green';
 					$alt = lang('Valid Process');
@@ -168,22 +168,22 @@
 					$alt = lang('Invalid Process');
 				}
 				$this->t->set_var(array(
-					'item_pId'			=> $item['pId'],
-					'href_item_name'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start.'&sort_mode='. $this->sort_mode .'&pid='. $item['pId']),
-					'item_name'			=> $item['name'],
-					'item_version'		=> $item['version'],
-					'img_active'		=> ($item['isActive'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />' : '',
+					'item_wf_p_id'			=> $item['wf_p_id'],
+					'href_item_name'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start.'&sort_mode='. $this->sort_mode .'&p_id='. $item['wf_p_id']),
+					'item_name'			=> $item['wf_name'],
+					'item_version'		=> $item['wf_version'],
+					'img_active'		=> ($item['wf_is_active'] == 'y')? '<img src="'. $GLOBALS['phpgw']->common->image('workflow', 'refresh2') .'" alt="'. lang('active') .'" title="'. lang('active') .'" />' : '',
 					'img_valid'			=> '<img src="'. $GLOBALS['phpgw']->common->image('workflow', $dot.'_dot') .'" alt="'. $alt .'" title="'. $alt .'" />',
-					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newminor='. $item['pId']),
+					'href_item_minor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newminor='. $item['wf_p_id']),
 					'img_new'		=> $GLOBALS['phpgw']->common->image('workflow', 'new'),
-					'href_item_mayor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['pId']),
-					'href_item_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&pid='. $item['pId']),
+					'href_item_mayor'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&find='. $find .'&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&newmajor='. $item['wf_p_id']),
+					'href_item_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $item['wf_p_id']),
 					'img_activities'	=> $GLOBALS['phpgw']->common->image('workflow', 'Activity'),
-					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&pid='. $item['pId']),
+					'href_item_code'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $item['wf_p_id']),
 					'img_code'			=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
-					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&pid='. $item['pId']),
+					'href_item_save'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.save_process&p_id='. $item['wf_p_id']),
 					'img_save'			=> $GLOBALS['phpgw']->common->image('workflow', 'save'),
-					'href_item_roles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&pid='. $item['pId']),
+					'href_item_roles'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $item['wf_p_id']),
 					'img_roles'			=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
@@ -193,9 +193,9 @@
 			$this->translate_template('block_items');
 		}
 
-		function save_process($name, $version, $description, $isActive)
+		function save_process($name, $version, $description, $is_active)
 		{
-			if ($this->process_manager->process_name_exists($name, $version) && $this->pId==0)
+			if ($this->process_manager->process_name_exists($name, $version) && $this->wf_p_id==0)
 			{
 				$this->message[] = lang('Process name already exists');
 				return 0;
@@ -203,18 +203,18 @@
 			else
 			{
 				$proc_info = array(
-					'name'			=> $name,
-					'description'	=> $description,
-					'version'		=> $version,
-					'isActive'		=> ($isActive == 'on')? 'y' : 'n'
+					'wf_name'			=> $name,
+					'wf_description'	=> $description,
+					'wf_version'		=> $version,
+					'wf_is_active'		=> ($is_active == 'on')? 'y' : 'n'
 				);
-				$this->pId = $this->process_manager->replace_process($this->pId, $proc_info);
-				$valid = $this->activity_manager->validate_process_activities($this->pId);
+				$this->wf_p_id = $this->process_manager->replace_process($this->wf_p_id, $proc_info);
+				$valid = $this->activity_manager->validate_process_activities($this->wf_p_id);
 				if (!$valid)
 				{
-					$this->process_manager->deactivate_process($this->pId);
+					$this->process_manager->deactivate_process($this->wf_p_id);
 				}
-				return $this->pId;
+				return $this->wf_p_id;
 			}
 		}
 	}
