@@ -10,6 +10,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
+  /* $Id$ */
+
   $phpgw_info["flags"] = array("currentapp" => "preferences", "noheader" => True, "nonavbar" => True, "enable_network_class" => True);
 
   include("../header.inc.php");
@@ -24,14 +26,14 @@
 <?php
       echo lang("select headline news sites").":</td></tr><tr>";
       echo "<td><select name=\"headlines[]\" multiple size=5>\n";
-//      $phpgw->db->query("select * from users_headlines where owner='"
-//  	               .$phpgw_info["user"]["userid"] . "'");
-//      while ($phpgw->db->next_record()){
-//     	$users_headlines[$phpgw->db->f("site")] = " selected";
-//      }
-      while ($preference = @each($phpgw_info["user"]["preferences"]["headlines"])){
-     	$users_headlines[$preference[1]] = " selected";
+      $phpgw->db->query("select * from users_headlines where owner='"
+  	               .$phpgw_info["user"]["userid"] . "'");
+      while ($phpgw->db->next_record()){
+     	$users_headlines[$phpgw->db->f("site")] = " selected";
       }
+//      while ($preference = @each($phpgw_info["user"]["preferences"]["headlines"])){
+//     	$users_headlines[$preference[0]] = " selected";
+//      }
   
       $phpgw->db->query("SELECT con,display FROM news_site ORDER BY display asc");
       while ($phpgw->db->next_record()) {
