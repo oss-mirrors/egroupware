@@ -68,29 +68,3 @@
 		 'appname' => 'phpgwapi',
 		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0','1.0.1')
 	);
-
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'admin',
-		 'versions' => Array('0.9.16','0.9.17','0.9.13','1.0.0')
-	);
-
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'preferences',
-		 'versions' => Array('0.9.16','0.9.17','0.9.13','1.0.0')
-	);
-
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'addressbook',
-		 'versions' => Array('0.9.16','0.9.13','1.0.0')
-	);
-
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'email',
-		 'versions' => Array('0.9.13','0.9.13','1.0.0')
-	);
-
-
