@@ -210,8 +210,9 @@
 					break;
 			}
 			$complete_path = GALAXIA_PROCESSES . SEP . $proc_name . SEP . 'code' . SEP . $path;
+			if (!$file_size = filesize($complete_path)) return '';
 			$fp = fopen($complete_path, 'r');
-			$data = fread($fp, filesize($complete_path));
+			$data = fread($fp, $file_size);
 			fclose($fp);
 			return $data;
 		}
