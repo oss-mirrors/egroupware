@@ -282,6 +282,11 @@
 		// I think crypto var this is no longer used, uses global crypto now I think (which does little anyway, w/o mcrypt)
 		//var $crypto;
 		
+		// reply messages get this "quoting" prefix to each line, see bocompose and bosend
+		//var $reply_prefix = '>';
+		var $reply_prefix = '> ';
+		//var $reply_prefix = '| ';
+		
 		// ---- Data Caching  ----
 		var $use_cached_prefs = True;
 		//var $use_cached_prefs = False;
@@ -624,6 +629,16 @@
 				// (c) send_message.php: when set to "forward" and used with "fwd_proc" instructs on how to construct
 				//	the SMTP mail
 				'action',
+				// ----  orig_action: string  ----
+				// USAGE:
+				// preserves the original "action" of the compose page because new and forward body lines 
+				// need to be shorter then reply to we need to remember the desired "action" and store it here 
+				// also used to preserve this thru the spell check process too
+				// initially we only put this only in the GET part of GPC
+				// why is this different, "orig_action" can have the value "new" meaning new mail
+				// whereas plain old "action" can not tell us of a new mail situation, not right now anyway,
+				// so the "new" value can be preserved to the send code and also thru the spell page and back too
+				'orig_action',
 				
 				// === MESSAGE NUMBER AND MIME PART REFERENCES ===
 				// *update* now in msgball
@@ -1153,7 +1168,7 @@
 					$this->extra_and_default_acounts[0]['acctnum'] = 0;
 					$this->extra_and_default_acounts[0]['status'] = 'enabled';
 					// now add whetever extra accounts we processed above
-					$loops = count($GLOBALS['phpgw']->msg->extra_accounts);
+					$loops = count($this->extra_accounts);
 					for ($i=0; $i < $loops; $i++)
 					{
 						$this->extra_and_default_acounts[$i+1]['acctnum'] = $this->extra_accounts[$i]['acctnum'];
@@ -2439,7 +2454,7 @@
 				$feed_folder = $this->get_arg_value('folder');
 			}
 			//echo 'prep_folder_out: param $feed_folder ['.$feed_folder.'], :: ';
-			$preped_folder = $GLOBALS['phpgw']->msg->ensure_one_urlencoding($feed_folder);
+			$preped_folder = $this->ensure_one_urlencoding($feed_folder);
 			$preped_folder = str_replace('&', '%26', $preped_folder);
 			//echo ' $preped_folder ['.$preped_folder.']<br>';
 			return $preped_folder;
@@ -3586,7 +3601,7 @@
 			}
 		
 			// DECISION: no more than 4 DIRECTORIES DEEP of recursion
-			$num_slashes = $GLOBALS['phpgw']->msg->substr_count_ex($folder_long, "/");
+			$num_slashes = $this->substr_count_ex($folder_long, "/");
 			if (($home_type_namespace)
 			&& ($num_slashes >= 4))
 			{
@@ -4936,9 +4951,24 @@
 			}
 		}
 		
-		// my implementation of a PHP4 only function
 		/*!
 		@function body_hard_wrap
+		@abstract Wrap test calls either the php4 wordwrap OR optionally sucky native code
+		@author Angles
+		@discussion when php3 compat was necessary I made a sucky hand made body wrap, 
+		but now php4 is expected so this function should call the php4 function wordwrap instead.
+		*/
+		function body_hard_wrap($in='', $size=78)
+		{
+			// use sucky hand made function
+			//return $this->body_hard_wrap_ex($in, $size);
+			// use the php4 builting function
+			return wordwrap($in, $size, "\r\n");
+			
+		}
+		// my implementation of a PHP4 only function
+		/*!
+		@function body_hard_wrap_ex
 		@abstract my implementation of a PHP4 only function which keeps lines of text under a certain length.
 		@author Angles
 		@discussion Keeps lines of text under a certain length, adding linebreaks to break up lines if 
@@ -4952,7 +4982,7 @@
 		php4 function which does the same, but at the time of this functions origination it 
 		was necessary to implement all non php3 functions with a compatibility function.
 		*/
-		function body_hard_wrap($in, $size=80)
+		function body_hard_wrap_ex($in, $size=80)
 		{
 			// this function formats lines according to the defined
 			// linesize. Linebrakes (\n\n) are added when neccessary,
@@ -5003,7 +5033,57 @@
 			
 			return $out;
 		}
-	
+		
+		/*!
+		@function recall_desired_action
+		@abstract used to preserve if this originated as a reply, replyall, forward, or new mail
+		@author Angles
+		@discussion Used in both bocompose and bosend so we put it here for general access. 
+		Line lengths will differ for new mail and forwarded orig body, vs. reply mail that has longer 
+		lines. So this preserves this info for later use. Particularly we like to preserve this thru the spelling pass also.
+		We look for GPC args "action" or "orig_action", as keys, and their 
+		values are limited to "reply", "replyall", "forward", and "new", with "new" being deduced on the 
+		initial compose page call and put into "orig_action" for later use, while the others possible "action" 
+		values simply get stored in "orig_action" no deduction is required, it is specified.
+		If new future actions are added, adjust this function accordingly.
+		@access public
+		*/
+		function recall_desired_action()
+		{
+			// what action are we dealing with here, reply(all), forward, or newmail
+			// we care because new and forward get different line length then reply mail that has ">"
+			$orig_action = 'unknown';
+			if (($this->get_isset_arg('action'))
+			&& (
+				($this->get_arg_value('action') == 'forward')
+				|| ($this->get_arg_value('action') == 'reply')
+				|| ($this->get_arg_value('action') == 'replyall')
+				)
+			)
+			{
+				$orig_action = $this->get_arg_value('action');
+			}
+			elseif (($this->get_isset_arg('orig_action'))
+			&& (
+				($this->get_arg_value('orig_action') == 'forward')
+				|| ($this->get_arg_value('orig_action') == 'reply')
+				|| ($this->get_arg_value('orig_action') == 'replyall')
+				|| ($this->get_arg_value('orig_action') == 'new')
+				)
+			)
+			{
+				$orig_action = $this->get_arg_value('orig_action');
+			}
+			else
+			{
+				// if not reply, replyall, nor forward "action", then we have NEW message
+				// if this is set now then the above "orig_action" should preserve it
+				$orig_action = 'new';
+			}
+			return $orig_action;
+		}
+		
+		
 		/**************************************************************************\
 		* 
 		* Functions PHP Should Have OR Functions From PHP4+ Backported to PHP3 *
@@ -5486,7 +5566,7 @@
 				// we only care about doing this is caching is enabled
 				// this should already be cached, if not, it will be after this call
 				// this works OK for both php4 sessions AND sessions_db
-				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
+				$msg_headers = $this->phpgw_header($msgball);
 				if ($this->debug_events > 2) { $this->dbug->out('email_msg_base: event_msg_seen('.__LINE__.'): SEEN-UNSEEN "phpgw_header" examination for $msg_headers DUMP:', $msg_headers); } 
 				//if ($this->debug_events > 2) { $this->dbug->out('email_msg_base: event_msg_seen('.__LINE__.'): (extreme mode) SEEN-UNSEEN "phpgw_header" examination for $msg_headers <br> * '.serialize($msg_headers).'<br>'); } 
 				$did_alter = False;
@@ -6050,6 +6130,23 @@
 			return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
 		}
 	
+		/*!
+		@function href_maketag_class
+		@abstract will generate a typical A HREF html item with optional CLASS value for css specs
+		*/
+		function href_maketag_class($href_link='',$href_text='default text', $css_class_name='')
+		{
+			if ($css_class_name != '')
+			{
+				$class_prop=' class="'.$css_class_name.'" ';
+			}
+			else
+			{
+				$class_prop='';
+			}
+			return '<a '.$class_prop.' href="' .$href_link .'">' .$href_text .'</a>' ."\n";
+		}
+		
 		/*!
 		@function img_maketag
 		@abstract will generate a typical IMG html item

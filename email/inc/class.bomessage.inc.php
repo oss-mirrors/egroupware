@@ -33,6 +33,10 @@
 		//var $preserve_no_fmt = False;
 		var $no_fmt='';
 		
+		// maximum number of TO and CC addresses to show, too many will error message display
+		var $max_to_loops = 15;
+		var $max_cc_loops = 15;
+		
 		// do we show both plain and enhanced (html, apple "enriched") parts of an alternative set
 		// or do we hide the simpler plain part of the pair
 		var $hide_alt_hide = True;
@@ -343,7 +347,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 
 			/*
 # begin GMT handling by "acros"
-#le quitamos el offset a los mensajes de correo electrónico.
+#le quitamos el offset a los mensajes de correo electrnico.
 ######
 $msg_date2=$msg_headers->date;
 $comma = strpos($msg_date2,',');
@@ -452,7 +456,8 @@ $msg_headers->udate = $new_time;
 			}
 			
 			// ----  What Folder To Return To  -----
-			$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
+			//$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
+			$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag_class(
 				$GLOBALS['phpgw']->link('/index.php',array(
 					'menuaction'       => 'email.uiindex.index',
 					'fldball[folder]'  => $msgball['folder'],
@@ -462,7 +467,9 @@ $msg_headers->udate = $new_time;
 					'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start')
 				)),
 				//$GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']));
-				$nice_folder_name);
+				$nice_folder_name,
+				// his class name is reference to a css on the page itself, for the A item
+				'c_backto');
 			
 			// NOTE: msgnum int 0 is NOT to be confused with "empty" nor "boolean False"
 			
@@ -484,11 +491,13 @@ $msg_headers->udate = $new_time;
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.$this->no_fmt);
 				$prev_msg_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-left-24','_on'),$this->xi['lang_previous_message'],'','','0');
-
+				$href_prev_msg = $GLOBALS['phpgw']->msg->href_maketag_class($prev_msg_link,'[&lt; '.$this->xi['lang_previous_message'].']', 'c_replybar');
 				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->href_maketag($prev_msg_link,$prev_msg_img);
 			}
 			else
 			{
+				// not a clickable link, just text saying "no prev message"
+				$href_prev_msg = '['.$this->xi['lang_no_previous_message'].']';
 				$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-left-no-24','_on'),$this->xi['lang_no_previous_message'],'','','0');
 
 			}
@@ -508,15 +517,22 @@ $msg_headers->udate = $new_time;
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.$this->no_fmt);
 				$next_msg_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-right-24','_on'),$this->xi['lang_next_message'],'','','0');
+				$href_next_msg = $GLOBALS['phpgw']->msg->href_maketag_class($next_msg_link,'['.$this->xi['lang_next_message'].' &gt;]', 'c_replybar');
 				$ilnk_next_msg = $GLOBALS['phpgw']->msg->href_maketag($next_msg_link,$next_msg_img);
 			}
 			else
 			{
+				// not a clickable link, just text saying "no next message"
+				$href_next_msg = '['.$this->xi['lang__no_next_message'].']';
 				$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/arrow-right-no-24','_on'),$this->xi['lang__no_next_message'],'','','0');
 			}
 			
 			//if ($this->debug > 0) { echo 'messages.php step4 $nav_data[] $ilnk_next_msg: '.$ilnk_next_msg.'<br>'; }
 			
+			// these are HREF clickable text for prev and next text navigation
+			$this->xi['href_prev_msg'] = $href_prev_msg;
+			$this->xi['href_next_msg'] = $href_next_msg;
+			// these are the clickable images for prev and next message navigation
 			$this->xi['ilnk_prev_msg'] = $ilnk_prev_msg;
 			$this->xi['ilnk_next_msg'] = $ilnk_next_msg;
 			
@@ -646,10 +662,9 @@ $msg_headers->udate = $new_time;
 			{
 				$to_loops = count($msg_headers->to);
 				// begin test of Maz Num of To loop limitation
-				$max_to_loops = 25;
-				if ($to_loops > $max_to_loops)
+				if ($to_loops > $this->max_to_loops)
 				{
-					$to_loops = $max_to_loops;
+					$to_loops = $this->max_to_loops;
 				}
 				for ($i = 0; $i < $to_loops; $i++)
 				{
@@ -718,10 +733,9 @@ $msg_headers->udate = $new_time;
 			{
 				$cc_loops = count($msg_headers->cc);
 				// begin test of Maz Num of CC loop limitation
-				$max_cc_loops = 25;
-				if ($cc_loops > $max_cc_loops)
+				if ($cc_loops > $this->max_cc_loops)
 				{
-					$cc_loops = $max_cc_loops;
+					$cc_loops = $this->max_cc_loops;
 				}
 				for ($i = 0; $i < $cc_loops; $i++)
 				{
@@ -885,6 +899,7 @@ $msg_headers->udate = $new_time;
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			$href_reply = $GLOBALS['phpgw']->msg->href_maketag_class($reply_url, $this->xi['lang_reply'], 'c_replybar');
 			$ilnk_reply = $GLOBALS['phpgw']->msg->href_maketag($reply_url, $reply_img);
 			
 			$replyall_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/reply-all','_on'),$this->xi['lang_reply_all'],'','','0');
@@ -898,6 +913,7 @@ $msg_headers->udate = $new_time;
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			$href_replyall = $GLOBALS['phpgw']->msg->href_maketag_class($replyall_url, $this->xi['lang_reply_all'], 'c_replybar');
 			$ilnk_replyall = $GLOBALS['phpgw']->msg->href_maketag($replyall_url, $replyall_img);
 			
 			$forward_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/forward','_on'),$this->xi['lang_forward'],'','','0');
@@ -912,6 +928,7 @@ $msg_headers->udate = $new_time;
 					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			$href_forward = $GLOBALS['phpgw']->msg->href_maketag_class($forward_url, $this->xi['lang_forward'], 'c_replybar');
 			$ilnk_forward = $GLOBALS['phpgw']->msg->href_maketag($forward_url, $forward_img);
 			
 			$delete_img = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$this->icon_theme.'/delete-message','_on'),$this->xi['lang_delete'],'','','0');
@@ -925,6 +942,7 @@ $msg_headers->udate = $new_time;
 					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
 					.$this->no_fmt);
+			$href_delete= $GLOBALS['phpgw']->msg->href_maketag_class($delete_url, $this->xi['lang_delete'], 'c_replybar');
 			$ilnk_delete = $GLOBALS['phpgw']->msg->href_maketag($delete_url, $delete_img);
 			
 			$this->xi['theme_font'] = $GLOBALS['phpgw_info']['theme']['font'];
@@ -932,6 +950,10 @@ $msg_headers->udate = $new_time;
 			$this->xi['reply_btns_text'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
 			$this->xi['lnk_goback_folder'] = $lnk_goback_folder;
 			$this->xi['go_back_to'] = $this->xi['lang_go_back_to'];
+			$this->xi['href_reply'] = $href_reply;
+			$this->xi['href_replyall'] = $href_replyall;
+			$this->xi['href_forward'] = $href_forward;
+			$this->xi['href_delete'] = $href_delete;
 			$this->xi['ilnk_reply'] = $ilnk_reply;
 			$this->xi['ilnk_replyall'] = $ilnk_replyall;
 			$this->xi['ilnk_forward'] = $ilnk_forward;

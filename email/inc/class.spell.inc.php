@@ -130,16 +130,21 @@
 			// FIXME : what if we want to preserve other stuff ? Get rid of this array and use for each loop to iterate thru whatever the user wants to preserve
 			$this->preserve_tokens = array(
 				0 => 'action',
-				1 => 'from',
-				2 => 'sender',
-				3 => 'to',
-				4 => 'cc',
-				5 => 'bcc',
-				6 => 'msgtype',
-				7 => 'attach_sig',
-				8 => 'req_notify'
+				// why is this different, "orig_action" can have the value "new" meaning new mail
+				// whereas plain old "action" can not tell us of a new mail situation, not right now anyway
+				// darn, I'm not sure this is needed here, is not this value kept in the URI or does that not matter here
+				1 => 'orig_action',
+				2 => 'from',
+				3 => 'sender',
+				4 => 'to',
+				5 => 'cc',
+				6 => 'bcc',
+				7 => 'msgtype',
+				8 => 'attach_sig',
+				9 => 'req_notify'
 			);
 			$this->preserve_vars['action'] = '';
+			$this->preserve_vars['orig_action'] = '';
 			$this->preserve_vars['from'] = '';
 			$this->preserve_vars['sender'] = '';
 			$this->preserve_vars['to'] ='';

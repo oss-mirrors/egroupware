@@ -131,8 +131,9 @@
 				'move_postmove_goto_name'	=> $this->bo->xi['move_postmove_goto_name'],
 				'move_postmove_goto_value'	=> $this->bo->xi['move_postmove_goto_value'],
 				
-				'ilnk_prev_msg'			=> $this->bo->xi['ilnk_prev_msg'],
-				'ilnk_next_msg'			=> $this->bo->xi['ilnk_next_msg'],
+				// moved to case block for text, image, or text and image pref
+				//'ilnk_prev_msg'			=> $this->bo->xi['ilnk_prev_msg'],
+				//'ilnk_next_msg'			=> $this->bo->xi['ilnk_next_msg'],
 				
 				// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
 				'tofrom_labels_bkcolor'	=> $this->bo->xi['tofrom_labels_bkcolor'],
@@ -196,10 +197,11 @@
 				
 				'go_back_to'		=> $this->bo->xi['lang_go_back_to'],
 				'lnk_goback_folder'	=> $this->bo->xi['lnk_goback_folder'],
-				'ilnk_reply'		=> $this->bo->xi['ilnk_reply'],
-				'ilnk_replyall'		=> $this->bo->xi['ilnk_replyall'],
-				'ilnk_forward'		=> $this->bo->xi['ilnk_forward'],
-				'ilnk_delete'		=> $this->bo->xi['ilnk_delete']
+				// moved to case block for text, image, or text and image pref
+				//'ilnk_reply'		=> $this->bo->xi['ilnk_reply'],
+				//'ilnk_replyall'		=> $this->bo->xi['ilnk_replyall'],
+				//'ilnk_forward'		=> $this->bo->xi['ilnk_forward'],
+				//'ilnk_delete'		=> $this->bo->xi['ilnk_delete']
 			);
 			$this->tpl->set_var($tpl_vars);
 			
@@ -233,6 +235,20 @@
 					$this->tpl->set_var('view_raw_message_ilnk','');
 					$this->tpl->set_var('view_printable_href',$this->bo->xi['view_printable_href']);
 					$this->tpl->set_var('view_printable_ilnk','');
+					// reply and navigation toolbar thing
+					$this->tpl->set_var('href_reply',$this->bo->xi['href_reply']);
+					$this->tpl->set_var('href_replyall',$this->bo->xi['href_replyall']);
+					$this->tpl->set_var('href_forward',$this->bo->xi['href_forward']);
+					$this->tpl->set_var('href_delete',$this->bo->xi['href_delete']);
+					$this->tpl->set_var('ilnk_reply','');
+					$this->tpl->set_var('ilnk_replyall','');
+					$this->tpl->set_var('ilnk_forward','');
+					$this->tpl->set_var('ilnk_delete','');
+					$this->tpl->set_var('href_prev_msg',$this->bo->xi['href_prev_msg']);
+					$this->tpl->set_var('href_next_msg',$this->bo->xi['href_next_msg']);
+					//$this->tpl->set_var('text_nbsp','&nbsp;');
+					$this->tpl->set_var('ilnk_prev_msg','');
+					$this->tpl->set_var('ilnk_next_msg','');
 					break;
 				case 'image':
 					$this->tpl->set_var('view_option','');
@@ -243,6 +259,20 @@
 					$this->tpl->set_var('view_raw_message_ilnk',$this->bo->xi['view_raw_message_ilnk']);
 					$this->tpl->set_var('view_printable_href','');
 					$this->tpl->set_var('view_printable_ilnk',$this->bo->xi['view_printable_ilnk']);
+					// reply and navigation toolbar thing
+					$this->tpl->set_var('href_reply','');
+					$this->tpl->set_var('href_replyall','');
+					$this->tpl->set_var('href_forward','');
+					$this->tpl->set_var('href_delete','');
+					$this->tpl->set_var('ilnk_reply',$this->bo->xi['ilnk_reply']);
+					$this->tpl->set_var('ilnk_replyall',$this->bo->xi['ilnk_replyall']);
+					$this->tpl->set_var('ilnk_forward',$this->bo->xi['ilnk_forward']);
+					$this->tpl->set_var('ilnk_delete',$this->bo->xi['ilnk_delete']);
+					$this->tpl->set_var('href_prev_msg','');
+					$this->tpl->set_var('href_next_msg','');
+					//$this->tpl->set_var('text_nbsp','');
+					$this->tpl->set_var('ilnk_prev_msg',$this->bo->xi['ilnk_prev_msg']);
+					$this->tpl->set_var('ilnk_next_msg',$this->bo->xi['ilnk_next_msg']);
 					break;
 				//case 'both':
 				default:
@@ -254,6 +284,22 @@
 					$this->tpl->set_var('view_raw_message_ilnk',$this->bo->xi['view_raw_message_ilnk']);
 					$this->tpl->set_var('view_printable_href',$this->bo->xi['view_printable_href']);
 					$this->tpl->set_var('view_printable_ilnk',$this->bo->xi['view_printable_ilnk']);
+					// reply and navigation toolbar thing
+					$this->tpl->set_var('href_reply',$this->bo->xi['href_reply']);
+					$this->tpl->set_var('href_replyall',$this->bo->xi['href_replyall']);
+					$this->tpl->set_var('href_forward',$this->bo->xi['href_forward']);
+					$this->tpl->set_var('href_delete',$this->bo->xi['href_delete']);
+					$this->tpl->set_var('ilnk_reply',$this->bo->xi['ilnk_reply']);
+					$this->tpl->set_var('ilnk_replyall',$this->bo->xi['ilnk_replyall']);
+					$this->tpl->set_var('ilnk_forward',$this->bo->xi['ilnk_forward']);
+					$this->tpl->set_var('ilnk_delete',$this->bo->xi['ilnk_delete']);
+					$this->tpl->set_var('href_prev_msg','');
+					$this->tpl->set_var('href_next_msg','');
+					//$this->tpl->set_var('href_prev_msg',$this->bo->xi['href_prev_msg']);
+					//$this->tpl->set_var('href_next_msg',$this->bo->xi['href_next_msg']);
+					//$this->tpl->set_var('text_nbsp','&nbsp;');
+					$this->tpl->set_var('ilnk_prev_msg',$this->bo->xi['ilnk_prev_msg']);
+					$this->tpl->set_var('ilnk_next_msg',$this->bo->xi['ilnk_next_msg']);
 					break;
 			}
 			

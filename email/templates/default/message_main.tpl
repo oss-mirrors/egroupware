@@ -41,27 +41,57 @@ In the future, this will process a specially formated email msg.<hr>
 	</form>
 </tr>
 </table>
+<!-- style specially for the return to FOLDER_LINK to get a better color for that link using class in that A element -->
+<STYLE type="text/css">
+<!--
+  a.c_backto { text-decoration: underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_backto:link { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_backto:visted { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_backto:active { text-decoration:underline; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  
+  a.c_replybar { text-decoration: none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_replybar:link { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_replybar:visted { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+  A.c_replybar:active { text-decoration:none; background: {reply_btns_bkcolor}; color: {reply_btns_text}; }
+-->
+</STYLE>
 
 <table cellpadding="1" cellspacing="0" width="100%" align="center">
 <tr style="spacing-bottom: 1pt;">
 	<td colspan="2" bgcolor="{reply_btns_bkcolor}" style="spacing-bottom: 1pt;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr class="email_folder">
-			<td>
+			<td width="30%">
 				<font size="3" face="{theme_font}" color="{reply_btns_text}">
-				<!-- lnk_goback_folder -->
+				<!-- lnk_goback_folder comes here with special class value refering to backto css above -->
 				<b>{go_back_to} {lnk_goback_folder}</b>
 				</font>
 			</td>
-			<td align="right" valign="middle">
-				<font size="3" face="{theme_font}" color="{reply_btns_text}">
-				{ilnk_reply}&nbsp;{ilnk_replyall}&nbsp;{ilnk_forward}&nbsp;{ilnk_delete}&nbsp;
+			<td align="right" width="50%">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" align="right">
+				<tr>
+					<td align="center">
+						{ilnk_reply}<font size="2" face="{theme_font}">{href_reply}</font>
+					</td>
+					<td align="center">
+						{ilnk_replyall}<font size="2" face="{theme_font}">{href_replyall}</font>
+					</td>
+					<td align="center">
+						{ilnk_forward}<font size="2" face="{theme_font}">{href_forward}</font>
+					</td>
+					<td align="center">
+						{ilnk_delete}<font size="2" face="{theme_font}">{href_delete}</font>
+					</td>
+				</tr>
+				</table>
+			</td>
+			<td align="right" valign="middle" width="20%">
+				<font size="2" face="{theme_font}" color="{reply_btns_text}">
+				{ilnk_prev_msg}{href_prev_msg}
+				{ilnk_next_msg}{href_next_msg}
  				</font>
 			</td>
-			<td align="right" valign="middle">
-				{ilnk_prev_msg}
-				{ilnk_next_msg}
-			</td>
+			<!-- meaningless sep line -->
 		</tr>
 		</table>
 	</td>

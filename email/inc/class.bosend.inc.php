@@ -223,6 +223,8 @@
 			$this->mail_spell = CreateObject("email.spell");
 			// preserve these vars
 			$this->mail_spell->set_preserve_var('action', $GLOBALS['phpgw']->msg->get_arg_value('action'));
+			// experimental, should this go here? is not this already in the URI or something?
+			//$this->mail_spell->set_preserve_var('orig_action', $GLOBALS['phpgw']->msg->recall_desired_action());
 			$this->mail_spell->set_preserve_var('from', $GLOBALS['phpgw']->msg->get_arg_value('from'));
 			$this->mail_spell->set_preserve_var('sender', $GLOBALS['phpgw']->msg->get_arg_value('sender'));
 			$this->mail_spell->set_preserve_var('to', $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->get_arg_value('to')));
@@ -516,12 +518,121 @@
 				$user_sig = $GLOBALS['phpgw']->msg->get_pref_value('email_sig');
 				// html_quotes_decode may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
 				$user_sig = $GLOBALS['phpgw']->msg->html_quotes_decode($user_sig);
-				$body = $body ."\r\n"."\r\n".'-- '."\r\n" .$user_sig ."\r\n";
+				$body = $body."\r\n"
+						."\r\n"
+						.'-- '."\r\n" 
+						.$user_sig ."\r\n";
 			}
 			if ($this->company_disclaimer)
 			{
 				$body = $body .$this->company_disclaimer;
 			}
+			
+			// LINE LENGTH for "new" and our text of a forwarded text are 78 chars, 
+			// which is SHORTER than for reply quoted bodies that have ">" chars 
+			// this is only for text WE have written, not any other part of the body
+			// html textbox no longer adds hard wrap on submit, so we handle it here now
+			// NOTE reply bodies have already been handled as to length when we quoted the text
+			//if (($GLOBALS['phpgw']->msg->get_isset_arg('orig_action'))
+			//&& (
+			//	($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'new')
+			//	|| ($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'forward')
+			//	)
+			//)
+			if (($GLOBALS['phpgw']->msg->recall_desired_action()== 'new')
+			|| ($GLOBALS['phpgw']->msg->recall_desired_action() == 'forward'))
+			{
+				// WRAP BODY to lines of 78 chars then CRLF
+				// IS THIS TOO SHORT? what about code snippets and stuff?or long URLs
+				$body = $GLOBALS['phpgw']->msg->body_hard_wrap($body, 78);
+			}
+			elseif (($GLOBALS['phpgw']->msg->recall_desired_action()== 'reply')
+			|| ($GLOBALS['phpgw']->msg->recall_desired_action()== 'replyall'))
+			{
+				//echo 'entering recall_desired_action == reply line length handling'."\r\n";
+				// ok we have already quoted the text of the message we are replying to
+				// BUT we have yet to standardize line length for the text WE just typed
+				// in this message, our own text, 
+				// BUT we really should skip doing linebreaking it _again_ for the quoted text, though
+				$body_array = array();
+				$body_array = explode("\r\n", $body);
+				// we do not use this again till we put $new_body into it, so clear the memory
+				$body = '';
+				// process only our unquoted text
+				$body_array_count = count($body_array);
+				$in_unquoted_block = False;
+				$unquoted_text = '';
+				$new_body = '';
+				for ($bodyidx = 0; $bodyidx < $body_array_count; ++$bodyidx)
+				{
+					// skip text that starts with the ">" so called "quoting" char to the original body text
+					// because it has already been line length normalized in bocompose
+					$this_line = $body_array[$bodyidx];
+					if ((strlen($this_line) > 1)
+					&& ($this_line[0] == $GLOBALS['phpgw']->msg->reply_prefix[0]))
+					{
+						// ... this line starts with the quoting char
+						if ($in_unquoted_block == True)
+						{
+							//echo 'line ength handling: processing MY text block'."\r\n";
+							// TOGGLE - we are exiting block of our text
+							// process the preceeding block of unquoted text, if any
+							$unquoted_text = $GLOBALS['phpgw']->msg->body_hard_wrap($unquoted_text, 78);
+							// now pass it into the new body var
+							$new_body .= $unquoted_text;
+							// clear this var
+							$unquoted_text = '';
+							// toggle this flag
+							$in_unquoted_block = False;
+							// for THIS line, it is the first in a quoted block, so pass straight to new body var
+							//   I _think_ the CRLF is needed before this line because hard_wrap may not 
+							//   put one at the end of the last line of the unquoted text block ?
+							//$new_body .=  "\r\n" . $this_line . "\r\n";	
+							$new_body .= $this_line . "\r\n";
+						}
+						else
+						{
+							// we are in a block of QUOTED text, simply pass it into the new body var
+							$new_body .= $this_line . "\r\n";
+						}
+					}
+					elseif (($body_array_count - $bodyidx) == 1)
+					{
+						// this is the last line, and it is NOT quoted, so if we were in an unquoted block (of our text) process it now
+						// even if this is the only single line of unquoted text in the message, process it now
+						// otherwise we may leave off the end of the message, if it is our text
+						$unquoted_text .= $this_line;
+						$unquoted_text = $GLOBALS['phpgw']->msg->body_hard_wrap($unquoted_text, 78);
+						$new_body .= $unquoted_text;
+						$unquoted_text = '';
+						// this really is not needed, but so it anyway
+						$in_unquoted_block = False;
+					}
+					else
+					{
+						// ... this line does NOT start with the quoting char, i.e. it is text we typed in
+						// make sure flag is correct
+						if ($in_unquoted_block == False)
+						{
+							// toggle this flag
+							$in_unquoted_block = True;
+							// there is just no real special action of a change into this block of our text, 
+							// the real action is when switching out of a block or our (unqouted) text 
+						}
+						// compile this block of unquoted text, our text, in a var for later processing
+						$unquoted_text .= $this_line . "\r\n";
+					}
+				}
+				// cleanup
+				$body_array = array();
+				// ok we have gone through the whole message, put it in the bldy var
+				$body = '';
+				$body = $new_body;
+				$new_body = '';
+				$unquoted_text = '';
+				// end reply body line length landling block
+			}
+			
 			// Step One Addition
 			// ---- Request Delivery Notification in Headers ----
 			if (($GLOBALS['phpgw']->msg->get_isset_arg('req_notify'))

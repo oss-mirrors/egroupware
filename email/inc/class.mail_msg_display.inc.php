@@ -1634,10 +1634,29 @@ class mail_msg extends mail_msg_wrappers
 				// (1) the first is where the mail has only 2 parts 
 				// and AngleMail flatening code has left the top level headers out of the 
 				// flat array, as it does sometimes.
-				// (2) The second is for anything deep enough so that the parent part IS in the 
+				// (2) the first is where the mail has a RELATED subgroup that is at the 1st level debth
+				// i.e. the first thing below the top level headers themselves, thus
+				// and AngleMail flatening code has left the top level headers out of the 
+				// flat array, as it does sometimes, so we need to look back 2 steps to those top level headers
+				// that are only available thru the $struct->type thing because our flattening code
+				// has left the top level headers out of the flat array, as it does sometimes
+				// (3) The second is for anything deep enough so that the parent part IS in the 
 				// flat array, which is more typical.
 				$presentable_parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
 				if (
+				   ($part_nice[$i]['type'] == 'text')
+				&& ($part_nice[$i]['subtype'] == 'plain')
+				&& ($part_nice[$i]['ex_parent_flat_idx'] == $not_set)
+				//&& (stristr($struct->type, 'multipart'))
+				&& ((string)$struct->type == '1')  // "1" = "multipart"
+				&& (stristr($struct->subtype, 'alternative'))
+				)
+				{
+					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
+					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
+				}
+				// scanario (2) as outlined above
+				elseif (
 				   ($part_nice[$i]['type'] == 'text')
 				&& ($part_nice[$i]['subtype'] == 'plain')
 				&& ($part_nice[$presentable_parent_idx]['ex_parent_flat_idx'] == $not_set)
@@ -1651,8 +1670,9 @@ class mail_msg extends mail_msg_wrappers
 					// SET THIS FLAG: then, in presentation loop, we can decide not to show it
 					$part_nice[$i]['m_keywords'] .= 'alt_hide' .' ';
 				}
-				// same as above but we do not need to look all the way back to the top level headers
-				// ie because the parent part is included in the flat parts array
+				// scenario (3) as outlined above
+				// same as (1) above but we do not need to look all the way back to the top level headers
+				// i.e. because the parent part is included in the flat parts array
 				elseif (
 				   ($part_nice[$i]['ex_level_debth'] > 1)
 				&& ($part_nice[$i]['type'] == 'text')

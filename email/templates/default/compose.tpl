@@ -127,11 +127,13 @@
  </table>
 <!-- this textarea should be 78 chars each line to conform with RFC822 old line length standard 78+CR+LF= 80 char line -->
 <!-- when used with enctype multipart/form-data and wrap=hard this will add the hard wrap CRLF to the end of each line -->
+<!-- NEW we no longer wrap=hard here, wordwrap line lengths taken care of in code now -->
  <table border="0" cellpadding="1" cellspacing="1" width="100%" align="center">
 <tr align="center">
 	<td>
-		<textarea name="{body_box_name}" cols="84" rows="15" wrap="hard">{body_box_value}</textarea>
-		<!-- <textarea name="{body_box_name}" cols="78" rows="20" wrap="hard">{body_box_value}</textarea> -->
+		<!-- <textarea name="_body_box_name_" cols="84" rows="15" wrap="hard">_body_box_value_</textarea> -->
+		<textarea name="{body_box_name}" cols="88" rows="15">{body_box_value}</textarea> 
+		<!-- <textarea name="_body_box_name_" cols="78" rows="20" wrap="hard">_body_box_value_</textarea> -->
 	</td>
 </tr>
 </table>

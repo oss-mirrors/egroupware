@@ -27,6 +27,12 @@
 		var $my_validator;
 		var $msg_bootstrap;
 		
+		// reply messages get this "quoting" prefix to each line
+		// NEW we use the global msg->reply_prefix instead of this one here
+		//var $reply_prefix = '>';
+		//var $reply_prefix = '> ';
+		//var $reply_prefix = '| ';
+		
 		// CHOOSE YOUR ADDRESSBOOK
 		var $addybook_choice;
 		
@@ -50,8 +56,57 @@
 		}
 		
 		/*!
+		@function recall_desired_action
+		@abstract used to preserve if this originated as a reply, replyall, forward, or new mail
+		@author Angles
+		@discussion Line lengths will differ for new mail and forwarded orig body, vs. reply mail that has longer 
+		lines. So this preserves this info for later use. Particularly we like to preserve this thru the spelling pass also.
+		We look for GPC args "action" or "orig_action", as keys, and their 
+		values are limited to "reply", "replyall", "forward", and "new", with "new" being deduced on the 
+		initial compose page call and put into "orig_action" for later use, while the others possible "action" 
+		values simply get stored in "orig_action" no deduction is required, it is specified.
+		If new future actions are added, adjust this function accordingly.
+		@access public
+		// MOVED TO MAIL_MSG_BASE BECAUSE WE ALSO NEED THIS IN CLASS BOSEND
+		function recall_desired_action()
+		{
+			// what action are we dealing with here, reply(all), forward, or newmail
+			// we care because new and forward get different line length then reply mail that has ">"
+			$orig_action = 'unknown';
+			if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
+			&& (
+				($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'reply')
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'replyall')
+				)
+			)
+			{
+				$orig_action = $GLOBALS['phpgw']->msg->get_arg_value('action');
+			}
+			elseif (($GLOBALS['phpgw']->msg->get_isset_arg('orig_action'))
+			&& (
+				($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'forward')
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'reply')
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'replyall')
+				|| ($GLOBALS['phpgw']->msg->get_arg_value('orig_action') == 'new')
+				)
+			)
+			{
+				$orig_action = $GLOBALS['phpgw']->msg->get_arg_value('orig_action');
+			}
+			else
+			{
+				// if not reply, replyall, nor forward "action", then we have NEW message
+				// if this is set now then the above "orig_action" should preserve it
+				$orig_action = 'new';
+			}
+			return $orig_action;
+		}
+		*/
+		
+		/*!
 		@function get_compose_form_action_url
-		@abstract ?
+		@abstract makes the html action target for the send button on the compose page
 		@param $menuaction_target (string)
 		@author Angles
 		@discussion Used by this class and also exposes some usefull functionality, mail.spell uses this function, for example.
@@ -86,6 +141,8 @@
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+						// this is somewhat redundant in this particular case
+						.'&orig_action='.$GLOBALS['phpgw']->msg->recall_desired_action()
 				);
 				if (($GLOBALS['phpgw']->msg->get_isset_arg('action'))
 				&& ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
@@ -118,6 +175,8 @@
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+						// when this hits bosend it is useful to know if it is a reply  or not for linebreak purposes
+						.'&orig_action='.$GLOBALS['phpgw']->msg->recall_desired_action()
 				);
 			}
 			else
@@ -136,10 +195,13 @@
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
 						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
 						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+						// when this hits bosend it is useful to know if it is a reply  or not for linebreak purposes
+						.'&orig_action='.$GLOBALS['phpgw']->msg->recall_desired_action()
 				);
 			}
 			return $send_btn_action;
 		}
+		
 		/*!
 		@function quote_inline_message
 		@abstract Handle quoting, cleaning up of replied or inline forwarded messages
@@ -167,6 +229,7 @@
 						$msgball['part_no'] = '1';
 					}
 					
+					$bodystring = '';
 					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 					// see if we have to un-do qprint (or other) encoding of the part we are about to quote
 					if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
@@ -224,6 +287,8 @@
 					}
 					// explode into an array
 					$body_array = explode("\r\n", $bodystring);
+					// cleanup, we do not need $bodystring var anymore				
+					$bodystring = '';
 					// add the ">" quoting char to the beginning of each line
 					// note, this *will* loop at least once assuming the body has one line at least
 					// therefor the var "body" *will* get filled
@@ -231,9 +296,13 @@
 					{
 						// add the ">" so called "quoting" char to the original body text
 						// NOTE: do NOT trim the LEFT part of the string, use RTRIM instead
-						$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
+						//$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
+						//$this_line = $this->reply_prefix . rtrim($body_array[$bodyidx]) ."\r\n";
+						$this_line = $GLOBALS['phpgw']->msg->reply_prefix . rtrim($body_array[$bodyidx]) ."\r\n";
 						$body .= $this_line;
 					}
+					// cleanup
+					$body_array = array();
 					
 					// email needs to be sent with NO ENCODED HTML ENTITIES
 					// it's up to the endusers MUA to handle any htmlspecialchars
@@ -276,6 +345,7 @@
 				$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 				// now we know all (all ?) html specialchars are decoded, so we will not get that erronious encoding of the ampersand that is actually itself part of an html specialchar
 				$body = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($body);
+				// NOTE this goes back into the textbox with out changing the line lengths yet, that happens later
 			
 			// ----  Handle Replying and Forwarding  -----
 			}
@@ -382,11 +452,14 @@
 					// ----  Begin The Message Body  (of the body we are replying to) -----
 					$who_wrote = $GLOBALS['phpgw']->msg->get_who_wrote($msg_headers);
 					$lang_wrote = lang('wrote');
+					// 2 blank lines (humm, why 3 crlf  then)
 					$body =	 "\r\n"
 						."\r\n"
-						."\r\n".$who_wrote .' '.$lang_wrote.': '
-						."\r\n".'>'
-						."\r\n";
+						."\r\n"
+						// the who wrote line
+						.$who_wrote .' '.$lang_wrote.': '."\r\n"
+						// then one blank quoted line b4 the quoted body
+						.$GLOBALS['phpgw']->msg->reply_prefix."\r\n";
 					
 					// ----  Quoted Bodystring of Re: Message is the "First Presentable" part  -----
 					// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
@@ -405,6 +478,7 @@
 						$msgball['part_no'] = '1';
 					}
 					
+					$bodystring = '';
 					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
 					// see if we have to un-do qprint (or other) encoding of the part we are about to quote
 					if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
@@ -444,34 +518,58 @@
 					//$bodystring = preg_replace("/--\s{0,1}\r\n(.{1,}\r\n){1,5}/smx", "", $bodystring);
 					// sig = "dash dash space CRLF (anything and CRLF) repeated 1 to 5 times"
 					//$bodystring = preg_replace("/--\s{0,1}\r\n.(?!>)(.{1,}\r\n){1,5}/smx", "", $bodystring);
+					// THIS ONE DOES IT - USE THIS ONE
 					$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
 					// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
 					
-					//now is a good time to trim the body
+					//now is a good time to trim the retireved bodystring
 					trim($bodystring);
 					
 					// ----- Quote The Body You Are Replying To With ">"  ------
 					$body_array = array();
+					// NOTE compose page html has a textarea with "cols" set to 84
+					// this means on submit the text automatically is hardwrapped to 84 chars
+					// NEW - NOT ANY MORE, no more wrap=hard in the html-textbox tags
+					// I did this so replies to messages already having "> " added will not wrap to early 
+					// because the message lines are lengthened by 1 or 2 chars already due to the 
+					// already existing "> " and there may be many of them already.
+					// HOWEVER a new message should go out with standard 78 char line length (see below)
+					
 					// we need *some* line breaks in the body so we know where to add the ">" quoting char(s)
 					// some relatively short emails may not have any CRLF pairs, but may have a few real long lines
 					//so, add linebreaks to the body if none are already existing
 					if (!ereg("\r\n", $bodystring))
 					{
 						// aim for a 74-80 char line length
-						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
+						//$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
+						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 78);
 					}
-					// explode into an array
+					else
+					{
+						// NEW CHANGE: compose page no longer wraps hard
+						// this bodystring is the text we are about to add reply quotes to
+						// it may already have CRLF but the line lengths could be too darn long
+						// AND so we need to have somewhat sane line lengths fed to the textbox
+						// AND we need to have sane line lengths before we add the quote char
+						// since textbox will happily submit any length line to the send code and look stupid maybe
+						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 88);
+					}
 					$body_array = explode("\r\n", $bodystring);
+					// cleanup, we do not need $bodystring var anymore				
+					$bodystring = '';
 					// add the ">" quoting char to the beginning of each line
 					// note, this *will* loop at least once assuming the body has one line at least
 					// therefor the var "body" *will* get filled
-					for ($bodyidx = 0; $bodyidx < count($body_array); ++$bodyidx)
+					$body_array_count = count($body_array);
+					for ($bodyidx = 0; $bodyidx < $body_array_count; ++$bodyidx)
 					{
 						// add the ">" so called "quoting" char to the original body text
 						// NOTE: do NOT trim the LEFT part of the string, use RTRIM instead
-						$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
+						$this_line = $GLOBALS['phpgw']->msg->reply_prefix . rtrim($body_array[$bodyidx]) ."\r\n";
 						$body .= $this_line;
 					}
+					// cleanup
+					$body_array = array();
 					
 					// email needs to be sent with NO ENCODED HTML ENTITIES
 					// it's up to the endusers MUA to handle any htmlspecialchars
