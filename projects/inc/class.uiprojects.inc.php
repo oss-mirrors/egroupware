@@ -1582,7 +1582,7 @@
 				$this->t->set_var('tax',$prefs['tax']);
 
 				$bill = '<input type="radio" name="prefs[bill]" value="wu"' . ($prefs['bill'] == 'wu'?' checked':'') . '>'
-							. lang('per workunit') . "\n";
+							. lang('per workunit') . '<br>';
 				$bill .= '<input type="radio" name="prefs[bill]" value="h"' . ($prefs['bill'] == 'h'?' checked':'') . '>'
 							. lang('exactly accounting') . '&nbsp;[hh:mm]';
 

@@ -239,7 +239,7 @@
 				{
 					$error[] = lang('Please set your preferences for this application');
 				}
-			]
+			}
 			return $error;
 		}
 
