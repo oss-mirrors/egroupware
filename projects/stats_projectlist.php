@@ -13,7 +13,8 @@
 /* $Id$ */
 
     $phpgw_info['flags'] = array('currentapp' => 'projects', 
-		    'enable_nextmatchs_class' => True);
+		    'enable_nextmatchs_class' => True,
+		    'enable_categories_class' => True);
 
     include('../header.inc.php');
 
@@ -33,18 +34,22 @@
 
     $t->set_var(lang_action,lang('Project statistics'));  
     $t->set_var(lang_userlist,lang('User statistics'));
+    $t->set_var('cat_url',$phpgw->link('/projects/stats_projectlist.php'));
     $t->set_var(userlisturl,$phpgw->link('/projects/stats_userlist.php'));  
     $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var('searchurl',$phpgw->link('/projects/stats_projectlist.php'));  
+    $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
+    $t->set_var('lang_all',lang('All'));
+    $t->set_var('lang_category',lang('Category'));
 
     if (! $start) { $start = 0; }
 
-    if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
-                $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+    if($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0) {
+        $limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
     }
     else { $limit = 15; }
 
-    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order);
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,$status,$cat_id);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
@@ -54,22 +59,22 @@
     $t->set_var('right',$right);
 
     if ($projects->total_records > $limit) {
-        $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$projects->total_records));
+        $t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$projects->total_records));
     }
-    else { $t->set_var('lang_showing',lang("showing x",$projects->total_records)); }
+    else { $t->set_var('lang_showing',lang('showing x',$projects->total_records)); }
 
 // ------------------------------ end nextmatch template ------------------------------------
 
 // ------------------list header variable template-declarations ------------------------------- 
 
-    $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-    $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"/projects/stats_projectlist.php",lang("Project ID")));
-    $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"/projects/stats_projectlist.php",lang("Customer")));
-    $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"/projects/stats_projectlist.php",lang("Status")));
-    $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"/projects/stats_projectlist.php",lang("Title")));
-    $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"/projects/stats_projectlist.php",lang("Date due")));
-    $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"/projects/stats_projectlist.php",lang("Coordinator")));
-    $t->set_var(h_lang_stat,lang("Statistic"));
+    $t->set_var(th_bg,$phpgw_info['theme']['th_bg']);
+    $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/stats_projectlist.php',lang('Project ID')));
+    $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/stats_projectlist.php',lang('Customer')));
+    $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/stats_projectlist.php',lang('Status')));
+    $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/stats_projectlist.php',lang('Title')));
+    $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/stats_projectlist.php',lang('Date due')));
+    $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/stats_projectlist.php',lang('Coordinator')));
+    $t->set_var(h_lang_stat,lang('Statistic'));
     $t->set_var('lang_search',lang('Search'));
 
   // -------------- end header declaration -----------------

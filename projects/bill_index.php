@@ -13,7 +13,8 @@
   /* $Id$ */
 
     $phpgw_info['flags'] = array('currentapp' => 'projects', 
-		    'enable_nextmatchs_class' => True);
+		    'enable_nextmatchs_class' => True,
+		    'enable_categories_class' => True);
 
     include('../header.inc.php');
 
@@ -28,12 +29,17 @@
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Project billing'));
-    $t->set_var('hidden_vars',$hidden_vars);   
+    $t->set_var('hidden_vars',$hidden_vars);
+    $t->set_var('cat_url',$phpgw->link('/projects/bill_index.php'));
     $t->set_var('searchurl',$phpgw->link("/projects/bill_index.php"));
     $t->set_var('lang_search',lang('Search'));
+    $t->set_var('category_list',$phpgw->categories->formated_list('select','all',$cat_id,'True'));
+    $t->set_var('lang_all',lang('All'));
+    $t->set_var('lang_category',lang('Category'));
 
     if (! $start) { $start = 0; }
 
@@ -42,7 +48,7 @@
     }
     else { $limit = 15; }
 
-    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order);
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,$status,$cat_id);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
@@ -52,9 +58,9 @@
     $t->set_var('right',$right);
 
     if ($projects->total_records > $limit) {
-        $t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$projects->total_records));
+        $t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $limit),$projects->total_records));
     }
-    else { $t->set_var('lang_showing',lang("showing x",$projects->total_records)); }
+    else { $t->set_var('lang_showing',lang('showing x',$projects->total_records)); }
 
 // ------------------------------ end nextmatch template ------------------------------------
 

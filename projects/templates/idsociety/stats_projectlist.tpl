@@ -3,25 +3,31 @@
 <hr noshade width="98%" align="center" size="1">
 <center>
 {hidden_vars}
-<table border="0" cellspacing="2" cellpadding="2">
- <tr>
-  <td colspan="7" align="left">
-   <table border="0" width="100%">
+<table border="0" width="100%">
+    <tr>
+    <td width="33%" align="left">
+    <form action="{cat_url}" name="form" method="POST">
+    {lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{category_list}</select>
+    <noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
+    <td width="33%" align="center">{lang_showing}</td>
+    <td width="33%" align="right">
+    <form method="POST" action="{search_url}">
+    <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+    </form></td>
+    </tr>
+    <tr>
+    <td colspan="7">
+    <table border="0" width="100%">
     <tr>
     {left}
-    <td align="center">{lang_showing}</td>
+    <td>&nbsp;</td>
     {right}
     </tr>
-   </table>
-   </td>
-  </tr>
- <tr>
-  <td>&nbsp;</td>
-  <td colspan="7" align=right>
-  <form method="post" action="{searchurl}">
-  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-  </form></td>
- </tr
+    </table>
+    </td>
+    </tr>
+</table>
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
     <tr bgcolor="{th_bg}">
       <td width="8%" align=center bgcolor="{th_bg}" align=center>{sort_num}</td>
       <td width="20%" align=center bgcolor="{th_bg}" align=center>{sort_customer}</td>

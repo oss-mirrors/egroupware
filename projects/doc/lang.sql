@@ -27,6 +27,9 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project categories','preferences','en','Project categories');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been created !','projects','en','Invoice has been created !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('per','projects','en','per');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('All','projects','en','All');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Category','projects','en','Category');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select category','projects','en','Select category');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been updated !','projects','en','Invoice has been updated !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery has been updated !','projects','en','Delivery has been updated !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('That Delivery ID has been used already !','projects','en','That Delivery ID has been used already !');
