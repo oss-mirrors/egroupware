@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2001 Bettina Gille                                  *
+	* Copyright (C) 2000, 2001 Bettina Gille                            *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -183,6 +183,19 @@
 			return $single_pro;
 		}
 
+		function exists($check, $num, $project_id)
+		{
+			$exists = $this->soprojects->exists($check , $num, $project_id);
+			if ($exists)
+			{
+				return True;
+			}
+			else
+			{
+				return False;
+			}
+		}
+
 		function select_activities_list($project_id, $billable)
 		{
 			$activities_list = $this->soprojects->select_activities_list($project_id, $billable);
@@ -206,7 +219,7 @@
 				}
 				else
 				{
-					$exists = $this->soprojects->exists('number', $values['number'], $values['project_id']);
+					$exists = $this->exists('number', $values['number'], $values['project_id']);
 
 					if ($exists)
 					{
