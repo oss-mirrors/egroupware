@@ -14,7 +14,7 @@
 	# lang_extract.pl (c) 2001 Miles Lott
 	# grep the current dir for lang calls, parse into an english lang file
 	# Requires perl and the source files.
-	# May only work in bash also.  Makes system calls to grep.
+	# May only work in bash also.  Makes system calls to grep and sort.
 	# Takes one arg, the appname (default is 'appname')
 	#
 	# NOTE: This does not check for conflicts with common, nor with other
