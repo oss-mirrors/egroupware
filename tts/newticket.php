@@ -137,7 +137,7 @@
 	$s = '<select name="ticket[category]">' . $GLOBALS['phpgw']->categories->formated_list('select','',$group,True) . '</select>';
 	$GLOBALS['phpgw']->template->set_var('value_category',$s);
 
-	unset($s);
+	$s = '<option value="0">' . lang('None') . '</option>';
 	$accounts = $groups;
 	$accounts->account_id = $group_id;
 	$account_list = $accounts->get_list('accounts');
