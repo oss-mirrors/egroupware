@@ -147,7 +147,7 @@
   $GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
 
 
-  $db2 = $GLOBALS['phpgw']->db;
+  $db2 = clone($GLOBALS['phpgw']->db);
   $GLOBALS['phpgw']->db->query("select * from phpgw_tts_tickets where ticket_state=".$state_id." ".$sortmethod,__LINE__,__FILE__);
   $numfound = $GLOBALS['phpgw']->db->num_rows();
 

@@ -456,7 +456,7 @@
     $GLOBALS['phpgw']->template->set_var('lang_keep_present_state',
       lang('Keep the present state [%1].',id2field('phpgw_tts_states','state_name','state_id',$ticket['state'])));
 
-    $db = $GLOBALS['phpgw']->db;
+    $db = clone($GLOBALS['phpgw']->db);
     $db->query("select * from phpgw_tts_transitions where transition_source_state=".$ticket['state'],__LINE__,__FILE__);
 
     while($db->next_record())
