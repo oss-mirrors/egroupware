@@ -1,13 +1,13 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - email UI Class for Message Lists				*
-	* http://www.phpgroupware.org							*
-	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>		*
-	* --------------------------------------------							*
-	*  This program is free software; you can redistribute it and/or modify it 		*
-	*  under the terms of the GNU General Public License as published by the	*
-	*  Free Software Foundation; either version 2 of the License, or (at your  		*
-	*  option) any later version.								*
+	* phpGroupWare - email UI Class for Message Lists                          *
+	* http://www.phpgroupware.org                                              *
+	* Written by Angelo (Angles) Puglisi <angles@phpgroupware.org>             *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
 	\**************************************************************************/
 
 	/* $Id$ */
@@ -263,7 +263,7 @@
 				'sortbox_sort_by_txt'	=> $this->bo->xi['lang_sort_by'],
 				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
 				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
-				// old version of first prev next last arrowsm for "layout 1"
+				// old version of first prev next last arrows for "layout 1"
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],
 				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
@@ -392,7 +392,7 @@
 				// even though we had to output the header and navbar, (go figure... :)
 			}
 
-			// MUCH of this data may not be necessary nor used for mlists 
+			// MUCH of this data may not be necessary nor used for mlists
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->prefs['layout'];
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
 			
@@ -562,7 +562,7 @@
 				'sortbox_sort_by_txt'	=> $this->bo->xi['lang_sort_by'],
 				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
 				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
-				// old version of first prev next last arrowsm for "layout 1"
+				// old version of first prev next last arrows for "layout 1"
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],
 				'arrows_backcolor'	=> $this->bo->xi['arrows_backcolor'],
