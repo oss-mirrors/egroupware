@@ -1,5 +1,0 @@
-<?
-
-show_source($target);
-
-?>
