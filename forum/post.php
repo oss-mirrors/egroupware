@@ -94,7 +94,7 @@ $dattim = date("Y-m-d H:i:s",time());
  if(!$col) echo " | <a href=" . $phpgw->link("/forum/threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>";
  else echo " | <a href=" . $phpgw->link("/forum/threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a>";
  # This file doesn't exist yet
- #echo " | <a href=" . $phpgw->link("search.php","$catfor") . ">" . lang("Search") . "</a>";
+ #echo " | <a href=" . $phpgw->link("/forum/search.php","$catfor") . ">" . lang("Search") . "</a>";
  echo " ]\n</font><br><br>\n";
 
 

@@ -80,9 +80,9 @@ if($pos != 0) {
 
  $catfor = "cat=" . $cat . "&for=" . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") ;
- echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
- echo "<a href=" . $phpgw->link("threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") ;
+ echo '</a> : <a href=' . $phpgw->link("/forum/forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
+ echo "<a href=" . $phpgw->link("/forum/threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
 
  echo "<tr>";
  echo '<td align="left" width="50%" valign="top">';
@@ -90,7 +90,7 @@ if($pos != 0) {
  include("./inc/bar.inc.php");
 
  echo "<center>\n";
- echo "<form method=\"post\" action=\"".$phpgw->link("read.php")."\">\n";
+ echo "<form method=\"post\" action=\"".$phpgw->link("/forum/read.php")."\">\n";
  echo "<input type=\"hidden\" name=\"cat\" value=\"$cat\">\n";
  echo "<input type=\"hidden\" name=\"for\" value=\"$for\">\n";
  echo "<input type=\"hidden\" name=\"type\" value=\"$type\">\n";

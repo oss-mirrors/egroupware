@@ -33,10 +33,10 @@
        </tr>
        <tr>
          <td>
-           <a href="<?php echo $phpgw->link("index.php") . "\">" . lang("No"); ?></a>
+           <a href="<?php echo $phpgw->link("/forum/admin/index.php") . "\">" . lang("No"); ?></a>
          </td>
          <td>
-           <a href="<?php echo $phpgw->link("deleteforum.php","for_id=$for_id&confirm=true") . "\">" . lang("Yes"); ?></a>
+           <a href="<?php echo $phpgw->link("/forum/admin/deleteforum.php","for_id=$for_id&confirm=true") . "\">" . lang("Yes"); ?></a>
          </td>
        </tr>
       </table>
@@ -50,6 +50,6 @@
     $phpgw->db->query("delete from f_body where for_id=$for_id");
     $phpgw->db->query("delete from f_forums where id=$for_id");
 
-    Header("Location: " . $phpgw->link("index.php"));
+    Header("Location: " . $phpgw->link("/forum/admin/index.php"));
   }
 ?>

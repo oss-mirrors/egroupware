@@ -46,7 +46,7 @@
      print "Error in adding forum to database<br>\n";
      $phpgw->common->phpgw_exit();
     } else {
-     Header("Location: " . $phpgw->link("./"));
+     Header("Location: " . $phpgw->link("/forum/admin/index.php"));
      $phpgw->common->phpgw_exit();
     }
    } elseif ($action == "updcat" && $cat_id) {
@@ -54,7 +54,7 @@
      print "Error in adding forum to database<br>\n";
      $phpgw->common->phpgw_exit();
     } else {
-     Header("Location: " . $phpgw->link("./"));  
+     Header("Location: " . $phpgw->link("/forum/admin/index.php"));  
      $phpgw->common->phpgw_exit();
     }
 
@@ -73,13 +73,13 @@
  <td>
   <font size=-1>
 <?php
-echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("/forum/admin/category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
+echo "<a href=\"" . $phpgw->link("/forum/admin/forum.php") . "\">" . lang("New Forum") ."</a>";   
 echo " | ";
-echo "<a href=\"" . $phpgw->link("admin") . "\">" . lang("Return to Admin") ."</a>";
+echo "<a href=\"" . $phpgw->link("/forum/admin/index.php") . "\">" . lang("Return to Admin") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("/forum/index.php") . "\">" . lang("Return to Forums") ."</a>";
   
 ?>
   </font>
@@ -92,7 +92,7 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
     </td>
    </tr>
    <tr>
-    <form method="POST" action="<?php echo $phpgw->link("admin/category.php"); ?>">
+    <form method="POST" action="<?php echo $phpgw->link("/forum/admin/category.php"); ?>">
     <?php echo $extrahidden; ?> 
     <input type="hidden" name="action" value="<?php echo $actiontype?>">
     <td><?php echo lang("Category Name") ?>:</td>
