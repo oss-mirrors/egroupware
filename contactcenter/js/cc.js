@@ -387,13 +387,14 @@ function postFullAddInfo()
 			return;
 		}
 
-		showMessage(data['msg']);
-
-		if (data['status'] == 'ok')
+		if (data['status'] != 'ok')
 		{
-			fullAddWin.close();
-			updateCards();
+			showMessage(data['msg']);
+			return;
 		}
+
+		fullAddWin.close();
+		updateCards();
 	};
 
 	Connector.newRequest('postFullAddInfo', CC_url+'post_full_add', 'POST', handler, getFullAddData());
@@ -1410,7 +1411,20 @@ function removeEntry(id)
 	
 	var handler = function (responseText)
 	{
-		showMessage(responseText);
+		var data = unserialize(responseText);
+
+		if (typeof(data) != 'object')
+		{
+			showMessage(Element('cc_msg_err_contacting_server').value);
+			return;
+		}
+		
+		if (data['status'] != 'ok')
+		{
+			showMessage(data['msg']);
+			return;
+		}
+		
 		setTimeout('updateCards()',80);;
 	};
 	
@@ -1986,7 +2000,6 @@ function sendQuickAdd ()
 
 	var handler = function (responseText)
 	{
-		showMessage(responseText);
 		setTimeout('updateCards()',100);;
 	}
 

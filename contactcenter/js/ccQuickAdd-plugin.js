@@ -149,10 +149,10 @@
 				return;
 			}
 
-			showMessage(data['msg']);
 
 			if (data['status'] != 'ok')
 			{
+				showMessage(data['msg']);
 				return;
 			}
 

@@ -1082,11 +1082,17 @@
 				
 				$this->page_info['actual_entries'] = $temp;
 
-				echo lang('Removed Entry ID '.$id.'!');
+				echo serialize(array(
+					'msg'    => lang('Removed Entry ID '.$id.'!'),
+					'status' => 'ok'
+				));
 			}
 			else
 			{
-				echo lang('Couldn\'t remove this entry. Inform the Site Admin!');
+				echo serialize(array(
+					'msg'    => lang('Couldn\'t remove this entry. Inform the Site Admin!'),
+					'status' => 'fail'
+				));
 			}
 			
 			$this->save_session();
