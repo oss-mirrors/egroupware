@@ -1,4 +1,5 @@
 <?php
+  echo "<br>FOLDER: " . $folder;
   /**************************************************************************\
   * phpGroupWare - E-Mail                                                    *
   * http://www.phpgroupware.org                                              *
@@ -15,15 +16,15 @@
 
   if(empty($folder)){ $folder="INBOX"; }
 
-  Header("Cache-Control: no-cache");
-  Header("Pragma: no-cache");
-  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+  //Header("Cache-Control: no-cache");
+  //Header("Pragma: no-cache");
+  //Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
   $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
   if (isset($newsmode) && $newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
   include("../header.inc.php");
 
-  @set_time_limit(0);
+  @set_time_limit(0);  echo "<br>FOLDER: " . $folder;
 ?>
 
 <script>
@@ -124,8 +125,7 @@ function check_all()
     <table border="0" cellpadding="0" cellspacing="1" width="100%">
      <tr>
       <td>
-        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?> color="
-        <?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
+        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?> color="<?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
 <?php
       $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
@@ -162,12 +162,12 @@ function check_all()
          <td>
            <?php
              if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
-                echo '<select name="folder" onChange="document.switchbox.submit()">'
+                echo '<select name="folder">'
                    . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox);
 	 	echo "</select>";
-             }
-           ?>
+             }         //  onChange="document.switchbox.submit()"
+           ?><input type="submit" value="Switch folder">
          </td>
          <td>
            &nbsp;&nbsp;

@@ -371,7 +371,8 @@
       while($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
 	      $phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
 	      while($phpgw->db->next_record()) {
-	        echo "<option>".$phpgw->db->f("name");
+	        echo '<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
+	           . '</option>';
         }
       }
     } else {
@@ -400,20 +401,21 @@
         if($mailboxes) {
 	        $num_boxes = count($mailboxes);
 	        if ($filter != "INBOX") { 
-	          echo "<option>INBOX"; 
+	          echo '<option value="INBOX">INBOX</option>'; 
 	        }
 	        for ($index = 0; $index < $num_boxes; $index++) {
 	          $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
-	          echo "<option>";
+	          echo '<option value="';
 	          if ($nm != "INBOX") {
-	            echo $phpgw->msg->deconstruct_folder_str($nm);
+	             $foldername = $phpgw->msg->deconstruct_folder_str($nm);
 	          } else {
-	            echo "INBOX";
+	             $foldername = "INBOX";
 	          }
+	          echo urlencode($foldername) . '">' . $foldername . '</option>';
 	          echo "\n";
 	        }
         } else {
-	      echo "<option>INBOX";
+	      echo '<option value="INBOX">INBOX</option>';
       }
     }
   }
