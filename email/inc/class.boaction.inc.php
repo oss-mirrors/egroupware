@@ -30,9 +30,9 @@
 		var $output_data='';
 		// if bomessage wants this preserves, we detect that and store it here
 		var $no_fmt='';
+		// debug level 0 is none, levels  1, 2, 3 is typical
+		// debug level 4 has special side effects
 		var $debug = 0;
-		//var $debug = 3;
-		//var $debug = 4;
 		
 		var $debug_new_env = 0;
 		//var $debug_new_env = 3;
@@ -1258,48 +1258,95 @@
 			$this->msg_bootstrap->set_do_login(BS_LOGIN_NEVER);
 			$this->msg_bootstrap->ensure_mail_msg_exists('email.boaction.clearcache', 0);
 			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('ENTERING email.boaction.clearcache line('.__LINE__.')'.'<br>'); }
-			
+			//if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache line('.__LINE__.') GLOBALS DUMP:', $GLOBALS); }
+			//if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache line('.__LINE__.'): get_defined_constants DUMP:', get_defined_constants()); }
+			//if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache line('.__LINE__.') GLOBALS[phpgw_info] DUMP:', $GLOBALS['phpgw_info']); }
+
 			// make an error report URL
-			$this->redirect_if_error = $GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->get_arg_value('index_menuaction'));
-			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $this->redirect_if_error is ['.$this->redirect_if_error.']<br>'); }
+			$this->redirect_if_error = $GLOBALS['phpgw']->link('/home.php');
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $this->redirect_if_error is ['.htmlspecialchars($this->redirect_if_error).']<br>'); }
 			
 			// where do we goto after done here
-			$goback_fldball = array();
-			if ($GLOBALS['phpgw']->msg->get_isset_arg('fldball'))
+			// if coming from the email app itself, use fldball
+			// function called from preferences or admin page, go back to referer
+			$came_from = '';
+			$came_from = get_var('HTTP_REFERER', 'SERVER');
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $came_from is ['.htmlspecialchars($came_from).']<br>'); }
+			
+			if ((stristr($came_from, '/admin/index.php?'))
+			&& (isset($GLOBALS['phpgw_info']['apps']['admin'])))
 			{
-				$goback_fldball = $GLOBALS['phpgw']->msg->get_arg_value('fldball');
+				$this->redirect_to = $GLOBALS['phpgw']->link('/admin/index.php');
+			}
+			elseif ((stristr($came_from, '/preferences/index.php?'))
+			&& (isset($GLOBALS['phpgw_info']['apps']['preferences'])))
+			{
+				$this->redirect_to = $GLOBALS['phpgw']->link('/preferences/index.php');
+			}
+			elseif (stristr($came_from, 'index.php?menuaction=email.'))
+			{
+				$goback_fldball = array();
+				// we sent param "target_fldball" because that param does not lookup list verify at initialization time
+				// thus no unwanted login attempt is triggered which could happen if we sent param fldball instead
+				if ($GLOBALS['phpgw']->msg->get_isset_arg('target_fldball'))
+				{
+					$goback_fldball = $GLOBALS['phpgw']->msg->get_arg_value('target_fldball');
+					if (isset($goback_fldball['folder']))
+					{
+						// this is the first time we do anything that might require a login, because we are lookup list verifying the folder name
+						$goback_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($goback_fldball['folder']);
+					}
+					else
+					{
+						$goback_fldball['folder'] = 'INBOX';
+					}
+				}
+				else
+				{
+					$goback_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
+					// does this need to be langed?
+					$goback_fldball['folder'] = 'INBOX';
+				}
+				if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): goback_fldball[] DUMP:', $goback_fldball); }
+				// $totaldeleted gets displayed in the report to the user, typically "X messages have been moved", we use a string here though
+				$totaldeleted = 'cachedata';
+				$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',array(
+								'menuaction' => 'email.uiindex.index',
+								'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($goback_fldball['folder']),
+								'fldball[acctnum]' => $goback_fldball['acctnum'],
+								'td' => $totaldeleted,
+								'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+								'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+								'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
+								));
 			}
 			else
 			{
-				$goback_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
-				// does this need to be langed?
-				$goback_fldball['folder'] = 'INBOX';
+				// we have no idea where we came from, just goto home page
+				$this->redirect_to = $this->redirect_if_error;
 			}
-			
-			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): goback_fldball[] DUMP:', $goback_fldball); }
-			
 			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $GLOBALS[phpgw]->msg->session_cache_enabled is ['.serialize($GLOBALS['phpgw']->msg->session_cache_enabled).']  $$GLOBALS[phpgw]->msg->session_cache_extreme is ['.serialize($GLOBALS['phpgw']->msg->session_cache_extreme).'] <br>'); } 
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): decision: $this->redirect_to is ['.htmlspecialchars($this->redirect_to).']<br>'); }
+			
+			
 			// is there any cache to delete
 			//if (($GLOBALS['phpgw']->msg->session_cache_enabled == True)
 			//|| ($GLOBALS['phpgw']->msg->session_cache_extreme == True))
-			//{
 			
-			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): about to call $GLOBALS[phpgw]->msg->clearcache_all("email.boaction.clearcache line(LINENUM)") <br>'); }
+			if ($this->debug > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): about to call $GLOBALS[phpgw]->msg->clearcache_all(email.boaction.clearcache line(LINENUM)) <br>'); }
 			$GLOBALS['phpgw']->msg->clearcache_all('email.boaction.clearcache line('.__LINE__.')');
-			if ($this->debug > 2) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $GLOBALS[] DUMP', $GLOBALS); }
-			$totaldeleted = 'cachedata';
-			$this->redirect_to = $GLOBALS['phpgw']->link('/index.php',array(
-							'menuaction' => 'email.uiindex.index',
-							'fldball[folder]' => $GLOBALS['phpgw']->msg->prep_folder_out($goback_fldball['folder']),
-							'fldball[acctnum]' => $goback_fldball['acctnum'],
-							'td' => $totaldeleted,
-							'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
-							'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),
-							'start' => $GLOBALS['phpgw']->msg->get_arg_value('start')
-							));
+			
 			// we ALWAYS use classic redirect after this function is done, no need for speed here
 			if ($this->debug > 0) { $GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): EXITING ... about redirect to: $this->redirect_to ['.$this->redirect_to.']<br>'); }
-			$GLOBALS['phpgw']->redirect($this->redirect_to);
+			
+			if ($this->debug > 3)
+			{
+				$GLOBALS['phpgw']->msg->dbug->out('email.boaction.clearcache ('.__LINE__.'): $this->debug ['.$this->debug.'] means SKIP redirect <br>');
+			}
+			else
+			{
+				$GLOBALS['phpgw']->redirect($this->redirect_to);
+			}
 			// kill this script, we re outa here...
 			if (is_object($GLOBALS['phpgw']->msg))
 			{

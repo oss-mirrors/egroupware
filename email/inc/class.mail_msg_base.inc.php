@@ -688,6 +688,7 @@
 				// ----  "target_folder" , "source_folder" (source used in renaming only)  ----
 				// (outgoing) and (in) folder.php: used with "action" to add/delete/rename a mailbox folder
 				// 	where "action" can be: create, delete, rename, create_expert, delete_expert, rename_expert
+				//	also used in boaction.clearcache because "target_fldball" does not verify lookup at initialization time, so no early login attempt
 				//'target_folder',
 				'target_fldball',
 				//'source_folder',
@@ -1344,23 +1345,36 @@
 			}
 			
 			// ----  Should We Login  -----
+			$local_bootstrap = '';
+			if (defined("BS_LOGIN_NOT_SPECIFIED") == False)
+			{
+				// this puts the defines in our namespace
+				//$GLOBALS['phpgw']->msg->dbug->out('mail_msg.begin_request('.__LINE__.'): get_defined_constants DUMP:', get_defined_constants());
+				$local_bootstrap = CreateObject('email.msg_bootstrap');
+			}
+			// $args_array[do_login] and $args_array[do_login_ex] are set in bootstrap and fed into here
 			if (!isset($args_array['do_login']))
 			{
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[do_login] was NOT set, so we set it to default value "FALSE"'.'<br>'); }
 				$args_array['do_login'] = False;
 			}
 			// ---- newer 3 way do_login_ex value from the bootstrap class
-			if ( (!defined(BS_LOGIN_NOT_SPECIFIED))
-			|| (!isset($args_array['do_login_ex'])) )
+			if (!isset($args_array['do_login_ex']))
 			{
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[do_login_ex] not set, getting default from a temp local bootstrap object'.'<br>'); }
 				// that means somewhere the bootstrap class has been run
-				$local_bootstrap = CreateObject('email.msg_bootstrap');
-				$local_bootstrap->set_do_login($args_array['do_login'], 'begin_request');
+				if (is_object($local_bootstrap) == False)
+				{
+					$local_bootstrap = CreateObject('email.msg_bootstrap');
+				}
+				$local_bootstrap->set_do_login($args_array['do_login'], 'begin_request line('.__LINE__.')');
 				$args_array['do_login_ex'] = $local_bootstrap->get_do_login_ex();
 				$local_bootstrap = '';
 				unset($local_bootstrap);
 			}
+			// cleanup
+			$local_bootstrap = '';
+			unset($local_bootstrap);
 			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): $args_array[] DUMP ['.serialize($args_array).']'.'<br>'); }
 			
 			/*
@@ -1473,6 +1487,14 @@
 				
 				// get a few more things that we would otherwise get during the login code (which we'll be skiping)
 				// "get_best_folder_arg" should also verify the folder name and fix any fldball or msgball if unverified.
+				// NOTE THIS CAN CAUSE A LOGIN ATTEMPT IF CERTAIN ARGS (like fldball and msgball) REQUIRE LOOKUP VERIFY that pref folder in may do
+				// so BS_LOGIN_NEVER is really never ONLY WHEN folder args that do not ever need a lookup are not passed
+				// a. INBOX will not cause a lookup, for example
+				// b. params like "target_fldball" are not verified in "get_best_folder_arg" so no lookup possibility there
+				// c. maybe other ways to avaoid but I can not think of them right now
+				// but params such as fldball and msgball, whether fed in "_fake_uri" or not, WILL need a lookup in "get_best_folder_arg"
+				// the lookup only needs a login if the folder list is not available in cache
+				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to call $this->get_best_folder_arg , be aware that function sometimes can trigger a login on a folder lookup, see comments there<br>'); }
 				$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);

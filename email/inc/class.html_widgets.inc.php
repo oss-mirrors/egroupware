@@ -1904,11 +1904,14 @@
 				$cur_fldball = array();
 				$cur_fldball['acctnum'] = $GLOBALS['phpgw']->msg->get_acctnum();
 				$cur_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_out($GLOBALS['phpgw']->msg->get_arg_value('folder'));
+				// use "target_fldball" BECAUSE IT DOES NOT LOOKUP VERIFY AT MSG INITIALIATION
+				// thus no unwanted login attempt until we verify it in the calling script.
+				// and if we absolutely do NOT want a login, if we never "prep_folder_out" on the "target_fldball", we can call this clearcache with no unintended login attempt
 				$clearcache_url = $GLOBALS['phpgw']->link('/index.php',array(
 						'menuaction' => 'email.boaction.clearcache',
 						// what folder to retuen to after the cache is cleared
-						'fldball[acctnum]' => $cur_fldball['acctnum'],
-						'fldball[folder]' => $cur_fldball['folder'],
+						'target_fldball[acctnum]' => $cur_fldball['acctnum'],
+						'target_fldball[folder]' => $cur_fldball['folder'],
 						// preserve these things for when we return to the message list after the send
 						'sort' => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
 						'order' => $GLOBALS['phpgw']->msg->get_arg_value('order'),

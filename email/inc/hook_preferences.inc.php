@@ -14,9 +14,10 @@
 {
 	$title = $appname;
 	$file = Array(
-		'E-Mail Preferences'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences'),
-		'Extra E-Mail Accounts'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.ex_accounts_list'),
-		'E-Mail Filters'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uifilters.filters_list')
+		'E-Mail Preferences'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.preferences')),
+		'Extra E-Mail Accounts'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uipreferences.ex_accounts_list')),
+		'E-Mail Filters'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.uifilters.filters_list')),
+		'E-Mail Clear Cache'	=> $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'email.boaction.clearcache'))
 	);
 	// relfbecker recommends NOT using a version test for xslt check
 	if (is_object($GLOBALS['phpgw']->xslttpl))

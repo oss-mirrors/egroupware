@@ -3755,6 +3755,10 @@ Array
 		element needs to stay urlencoded. Currently the ball data verified is fldball and msgball, 
 		the other possible areas of ball data, such as folder naming, message moving, need to be 
 		verified too, but not here, you must do that later.
+		DO NOT FEED A FLDBALL OR A MSGBALL TO A PAGE WHERE YOU DO NOT WANT A 
+		LOGIN BECAUSE THE PRESENCE OF FLDBALL OR MSGBALL FORCE THIS VERIFIFICATION 
+		WHICH FORCES THE USE OF A KNOWN FOLDER LIST WHICH FORCES A LOGIN ATTEMPT 
+		IF SUCH LIST IS NEEDED.
 		@author Angles
 		@access Private
 		*/

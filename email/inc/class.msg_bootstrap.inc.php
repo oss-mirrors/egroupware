@@ -48,12 +48,12 @@
 		//var $do_login = False;
 		var $do_login_ex = 0;
 		
+		// 0 = no debug; 1,2,3 will show increasingly verbose debug info
 		var $debug_level=0;
-		//var $debug_level=3;
 		
 		function msg_bootstrap()
 		{
-			if (defined(BS_LOGIN_NEVER) == False)
+			if (defined("BS_LOGIN_NEVER") == False)
 			{
 				define('BS_LOGIN_NOT_SPECIFIED',0);
 				// never log in no matter what
@@ -270,6 +270,7 @@
 				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_wrappers.inc.php');
 				//include_once(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_msg_display.inc.php');
 				//$GLOBALS['phpgw']->msg =& new mail_msg;
+				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): fyi, $GLOBALS[phpgw]->msg->been_constructed ['.serialize($GLOBALS['phpgw']->msg->been_constructed).']  <br>'; } 
 				if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists('.__LINE__.'): $GLOBALS[phpgw]->msg created mail_msg object, now calling needed initialization function aka manual constructor function, "initialize_mail_msg"<br>'; } 
 				$GLOBALS['phpgw']->msg->initialize_mail_msg();
 			}
@@ -287,6 +288,7 @@
 			$args_array['do_login'] = $this->do_login;
 			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $this->do_login_ex: ['.serialize($this->do_login_ex).']<br>'; }
 			$args_array['do_login_ex'] = $this->do_login_ex;
+			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): $args_array: ['.serialize($args_array).']<br>'; }
 			
 			// "start your engines"
 			if ($this->debug_level > 1) { echo 'msg_bootstrap: ensure_mail_msg_exists: (called_by: '.$called_by.'): call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
