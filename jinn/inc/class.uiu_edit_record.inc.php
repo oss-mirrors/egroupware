@@ -627,9 +627,13 @@
 	  function render_one2many_input($fprops,$input_name,$value)
 	  {
 		 $related_fields=$this->bo->get_related_field($this->relation1_array[$fprops[name]]);
-		 foreach ($related_fields as $rel_field)
+		 
+		 if(is_array($related_fields)
 		 {
-			$related_fields_keyed[$rel_field[value]]=$rel_field[name];
+			foreach ($related_fields as $rel_field)
+			{
+			   $related_fields_keyed[$rel_field[value]]=$rel_field[name];
+			}
 		 }
 
 		 $input.= '<sel'.'ect name="'.$input_name.'" onchange="document.frm.O2MXXX'.$fprops[name].'.value=document.frm.'.$input_name.'.options[document.frm.'.$input_name.'.selectedIndex].text">';
