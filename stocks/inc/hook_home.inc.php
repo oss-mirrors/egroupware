@@ -20,7 +20,7 @@
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen']['enabled'])
 	{
-		$title = '<font color="#FFFFFF">'.lang('Stocks').'</font>';
+		$title = lang('Stocks');
 		
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array
@@ -51,8 +51,10 @@
 		$portalbox->data = Array();
 		$stocks = CreateObject('stocks.ui');
 
-		echo "\n" . '<!-- BEGIN Stock Quotes info -->' . "\n" . $portalbox->draw('<td>' . "\n" . $stocks->return_quotes() . "\n" . '</td>') . "\n"
-					. '<!-- END Stock Quotes info -->' . "\n";
+		$GLOBALS['phpgw']->template->set_var('phpgw_body',$portalbox->draw($stocks->return_quotes()),True);
+
+		/*echo "\n" . '<!-- BEGIN Stock Quotes info -->' . "\n" . $portalbox->draw('<td>' . "\n" . $stocks->return_quotes() . "\n" . '</td>') . "\n"
+					. '<!-- END Stock Quotes info -->' . "\n";*/
 	}
 	flush();
 ?>
