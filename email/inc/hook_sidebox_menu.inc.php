@@ -88,24 +88,16 @@ function CreateSidebox_EmailMenu($mailacct)
 						'menuaction' => 'email.uipreferences.preferences',
 						'ex_acctnum' => $mailacct));					
 
-	// Create Language specific titles for all the menu items
-	$compose_title = lang('Compose');
-	$folders_title = lang('Folders');
-	$search_title = lang('Search');
-	$filters_title = lang('Filters');
-	$accounts_title = lang('Accounts');
-	$email_prefs_title = lang('Settings');
-
 	// Construct the Menu Contents in array $file
 	$file = array();
-	$file[$compose_title] = $compose_link;
+	$file['Compose'] = $compose_link;
 	if($has_folders) { 
-		$file[$folders_title] = $folders_link;
-		$file[$search_title] = $search_link;
+		$file['Folders'] = $folders_link;
+		$file['Search'] = $search_link;
 	}
-	$file[$filters_title] = $filters_link;
-	$file[$accounts_title] = $accounts_link;
-	$file[$email_prefs_title] = $email_prefs_link;
+	$file['Filters'] = $filters_link;
+	$file['Accounts'] = $accounts_link;
+	$file['Settings'] = $email_prefs_link;
 	//	$file[] = '_NewLine_'; // give a newline
 	return $file;
 }
@@ -156,7 +148,7 @@ function CreateSidebox_FolderMenu($mailacct)
 	}
 
 	// Create Language specific titles for the special email folders
-	$inbox_title = $GLOBALS['phpgw']->msg->get_common_langs('lang_inbox');
+	$inbox_title = lang($GLOBALS['phpgw']->msg->get_common_langs('lang_inbox'));
 	$trash_title = $GLOBALS['phpgw']->msg->get_pref_value('trash_folder_name', $mailacct);
 	$sent_title = $GLOBALS['phpgw']->msg->get_pref_value('sent_folder_name', $mailacct);
 
@@ -169,7 +161,8 @@ function CreateSidebox_FolderMenu($mailacct)
 
 	// Construct the special email folders as menu items in array $file
 	$file = array();
-	$file[$inbox_title] = CreateSidebox_MenuLink($mailacct);
+	$file[] = array( 'text' => $inbox_title, 'no_lang' => True, 'link' => CreateSidebox_MenuLink($mailacct) );
+	//$file[$inbox_title] = CreateSidebox_MenuLink($mailacct);
 	if($sent_folder_long != '') { 
 		// add only if sent folder is set
 		$file[$sent_title] = CreateSidebox_MenuLink($mailacct,$sent_folder_long);
@@ -222,7 +215,8 @@ function CreateSidebox_FolderMenu($mailacct)
 						// cut off title if its too long and add suffix         
 						$folder_title = substr($folder_title,0,15).$folder_suffix;
 						$folder_long = $folder_list[$i]['folder_long'];
-						$file[$folder_title] = CreateSidebox_MenuLink($mailacct,$folder_long,$folder_page);
+						$file[] = array( 'text' => $folder_title, 'no_lang' => True, 'link' => CreateSidebox_MenuLink($mailacct,$folder_long,$folder_page) );
+						//$file[$folder_title] = CreateSidebox_MenuLink($mailacct,$folder_long,$folder_page);
 					}
 				}
 			}
