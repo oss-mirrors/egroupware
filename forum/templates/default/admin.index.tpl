@@ -1,26 +1,13 @@
 
 <p>&nbsp;</p>
-<table align=center bgcolor=#{TB_BG} border=0 cellpadding=0 cellspacing=0 width="80%">
+<table align="center" bgcolor="#{TB_BG}" border="0" cellpadding="0" cellspacing="0" width="80%">
   <tbody> 
   <tr> 
     <td> 
-      <table align=center border=0 cellpadding=0 cellspacing=1 width="100%">
-        <tr> 
-          <td colspan="3" bgcolor="{TR_BG}"> 
-            <table border="0" width=100% align="center" cellspacing="1" cellpadding="0">
-              <tr> 
-                <td bgcolor="{BG6}" align="left">{FORUM_ADMIN}</td>
-              </tr>
-              <tr> 
-                <td bgcolor="{TD_BG}" align="left">[<font size=-1><a href="{CAT_LINK}">{LANG_CAT} 
-                  </a> | <a href="{FOR_LINK}">{LANG_FOR}</a> | <a href="{MAIN_LINK}">{LANG_MAIN}</a></font>]</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+      <table align="center" border="0" cellpadding="0" cellspacing="1" width="100%">
         <tr bgcolor="#{TB_BG}"> 
           <td colspan="3"> 
-            <div align="center">{LANG_CURRENT_SUBFORUM} </div>
+            <div align="center">{LANG_CURRENT_SUBFORUM}</div>
           </td>
         </tr>
         <!-- BEGIN CatBlock --> 
@@ -37,13 +24,13 @@
         </tr>
         <tr> 
           <td bgcolor="#{TD_BG}" width="4%">&nbsp;</td>
-          <td bgcolor="#{TD_BG}" width="69%"><font size="2">{CAT_DESC}</font></td>
+          <td bgcolor="#{TD_BG}" width="69%"><font size="-2">({CAT_DESC})</font></td>
         </tr>
 
         <!-- BEGIN ForumBlock --> 
         <tr bgcolor="{TR_BG}"> 
           <td bgcolor="#{TR_BG}" width="4%"><img src="{FORUM_IMG}" width="16" height="16" alt="{LANG_SUBCAT}"></td>
-          <td bgcolor="#{TD_BG}" width="69%">{SUBCAT_NAME} </td>
+          <td bgcolor="#{TD_BG}" width="69%">&nbsp;&nbsp;&nbsp;{SUBCAT_NAME}</td>
           <td bgcolor="#{TD_BG}" width="27%" rowspan="2"> 
             <div align="center"><font size=2>[ <a href="{SUBEDIT_LINK}">{LANG_EDIT}</a> 
               | <a href="{SUBDEL_LINK}">{LANG_DEL}</a> ]</font></div>
@@ -51,9 +38,7 @@
         </tr>
         <tr> 
           <td bgcolor="#{TD_BG}" width="4%">&nbsp;</td>
-          <td bgcolor="#{TD_BG}" width="69%"><font size="2">{SUBCAT_DESC} </font> 
-            <p></p>
-          </td>
+          <td bgcolor="#{TD_BG}" width="69%"><font size="-2">&nbsp;&nbsp;&nbsp;({SUBCAT_DESC})</font></td>
         </tr>
         <!-- END ForumBlock --> 
 <!-- END CatBlock --> 

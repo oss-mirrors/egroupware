@@ -15,11 +15,78 @@
 
 	class soforum
 	{
+		var $debug=False;
+		
 		var $db;
 
 		function soforum()
 		{
 			$this->db = $GLOBALS['phpgw']->db;
+		}
+
+		function delete_category($cat_id)
+		{
+			$query = 'DELETE FROM phpgw_forum_threads WHERE cat_id='.$cat_id;
+			$this->db->query($query,__LINE__,__FILE__);
+			$query = 'DELETE FROM phpgw_forum_body WHERE cat_id='.$cat_id;
+			$this->db->query($query,__LINE__,__FILE__);
+			$query = 'DELETE FROM phpgw_forum_forums WHERE cat_id='.$cat_id;
+			$this->db->query($query,__LINE__,__FILE__);
+			$query = 'DELETE FROM phpgw_forum_categories WHERE id='.$cat_id;
+			$this->db->query($query,__LINE__,__FILE__);
+		}
+
+		function delete_forum($cat_id,$forum_id)
+		{
+			$query = 'DELETE FROM phpgw_forum_threads WHERE cat_id='.$cat_id.' AND for_id='.$forum_id;
+			$this->db->query($query,__LINE__,__FILE__);
+			$query = 'DELETE FROM phpgw_forum_body WHERE cat_id='.$cat_id.' AND for_id='.$forum_id;
+			$this->db->query($query,__LINE__,__FILE__);
+			$query = 'DELETE FROM phpgw_forum_forums WHERE cat_id='.$cat_id.' AND id='.$forum_id;
+			$this->db->query($query,__LINE__,__FILE__);
+		}
+
+		function save_category($cat)
+		{
+			if($cat['id'])
+			{
+				$query = "UPDATE phpgw_forum_categories SET name='".$cat['name']."', descr='".$cat['descr']."' WHERE id=".$cat['id'];
+			}
+			else
+			{
+				$query = "INSERT INTO phpgw_forum_categories(name,descr) VALUES('".$forum['name']."','".$forum['descr']."')";
+			}
+			$this->db->query($query,__LINE__,__FILE__);
+		}
+
+		function save_forum($forum)
+		{
+			if($forum['id'])
+			{
+				if(intval($forum['orig_cat_id']) == intval($forum['cat_id']))
+				{
+					if($this->debug)
+					{
+						echo '<!-- Setting name/descr for CAT_ID: '.$forum['cat_id'].' and ID: '.$forum['id'].' -->'."\n";
+					}
+					$query = "UPDATE phpgw_forum_forums SET name='".$forum['name']."', descr='".$forum['descr']."' WHERE id=".$forum['id'].' AND cat_id='.$forum['cat_id'];
+				}
+				else
+				{
+					$new_forum_id = $this->get_max_forum_id($forum['cat_id']) + 1;
+					$query = 'UPDATE phpgw_forum_forums SET cat_id='.$forum['cat_id'].', id='.$new_forum_id.", name='".$forum['name']."', descr='".$forum['descr']."' WHERE cat_id=".$forum['orig_cat_id'].' and id='.$forum['id'];
+					$this->db->query($query,__LINE__,__FILE__);
+					$query = 'UPDATE phpgw_forum_threads SET cat_id='.$forum['cat_id'].', for_id='.$new_forum_id." WHERE cat_id=".$forum['orig_cat_id'].' and for_id='.$forum['id'];
+					$this->db->query($query,__LINE__,__FILE__);
+					$query = 'UPDATE phpgw_forum_body SET cat_id='.$forum['cat_id'].', for_id='.$new_forum_id." WHERE cat_id=".$forum['orig_cat_id'].' and for_id='.$forum['id'];
+				}
+			}
+			else
+			{
+				$new_forum_id = $this->get_max_forum_id($forum['cat_id']) + 1;
+				$query = 'INSERT INTO phpgw_forum_forums(cat_id,id,name,descr) VALUES('.$forum['cat_id'].','.$new_forum_id.",'".$forum['name']."','".$forum['descr']."')";
+			}
+			$this->db->query($query,__LINE__,__FILE__);
 		}
 
 		function add_reply($data)
@@ -41,6 +108,13 @@
 				.','.$GLOBALS['phpgw_info']['user']['account_id'] . ",'".$this->db->db_addslashes($data['subject'])."',0,0)",__LINE__,__FILE__);
 				
 			$this->db->query('insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('.$data['cat_id'].','.$data['forum_id'].",'".$this->db->db_addslashes($data['message'])."')",__LINE__,__FILE__);
+		}
+
+		function get_max_forum_id($cat_id)
+		{
+			$this->db->query('select max(id) from phpgw_forum_forums where cat_id='.$cat_id,__LINE__,__FILE__);
+			$this->db->next_record();
+			return $this->db->f(0);
 		}
 
 		function get_max_body_id()
@@ -72,7 +146,7 @@
 
 		function get_cat_ids()
 		{
-			$this->db->query('select * from phpgw_forum_categories',__LINE__,__FILE__);
+			$this->db->query('select * from phpgw_forum_categories order by id',__LINE__,__FILE__);
 			while($this->db->next_record())
 			{
 				$cat[] = Array(

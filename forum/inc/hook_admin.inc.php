@@ -14,7 +14,8 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Forum Administration' => $GLOBALS['phpgw']->link('/forum/admin/index.php','appname='.$appname)
+//		'Forum Administration' => $GLOBALS['phpgw']->link('/forum/admin/index.php','appname='.$appname)
+		'Forum Administration' => $GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

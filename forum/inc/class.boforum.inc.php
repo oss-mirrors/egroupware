@@ -17,7 +17,11 @@
 	{
 		var $public_functions = array(
 			'reply' => True,
-			'post'  => True
+			'post'  => True,
+			'delete_category'	=> True,
+			'delete_forum'	=> True,
+			'category'	=> True,
+			'forum'	=> True
 		);
 
 		var $debug = False;
@@ -51,8 +55,8 @@
 			for($i=0;$i<count($var);$i++)
 			{
 				$var_str = $var[$i];
-				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?$GLOBALS['HTTP_GET_VARS'][$var_str]:$this->$var_str);
-				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?$GLOBALS['HTTP_POST_VARS'][$var_str]:$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_GET_VARS'][$var_str])?intval($GLOBALS['HTTP_GET_VARS'][$var_str]):$this->$var_str);
+				$this->$var_str = (@isset($GLOBALS['HTTP_POST_VARS'][$var_str])?intval($GLOBALS['HTTP_POST_VARS'][$var_str]):$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
@@ -132,6 +136,54 @@
 				$this->so->add_reply($data);
 			}
 			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.threads'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function delete_category()
+		{
+			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			{
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			$this->so->delete_category($this->cat_id);
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function delete_forum()
+		{
+			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			{
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			$this->so->delete_forum($this->cat_id,$this->forum_id);
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function category()
+		{
+			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			{
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			$this->so->save_category($GLOBALS['HTTP_POST_VARS']['cat']);
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function forum()
+		{
+			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+			{
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiforum.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			$this->so->save_forum($GLOBALS['HTTP_POST_VARS']['forum']);
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=forum.uiadmin.index'));
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 
