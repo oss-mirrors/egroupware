@@ -1,49 +1,68 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - administration                                            *
-  * http://www.phpgroupware.org                                              *
-  * Written by Joseph Engo <jengo@phpgroupware.org>                          *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - administration                                            *
+	* http://www.phpgroupware.org                                              *
+	* Written by Joseph Engo <jengo@phpgroupware.org>                          *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
-  $phpgw_info["flags"] = Array("currentapp" => "admin", "enable_nextmatchs_class" => True, "enable_network_class" => True, "parent_page" => "../admin/index.php");
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'admin',
+		'enable_nextmatchs_class' => True
+	);
+	include('../header.inc.php');
 
-  include("../header.inc.php");
-  echo "<p><center>" . lang("Headline Sites") . "<br><table border=0 width=65%>"
-     . "<tr bgcolor=" . $theme["th_bg"] . "><td>" . lang("Site") . "</td>"
-     . "<td> " . lang("Edit") . " </td> <td> " . lang("Delete") . " </td> <td> "
-     . lang("View") . " </td></tr>";
-  $phpgw->db->query("select con,display from news_site order by "
-	         . "display");
+	// This is done for a reason (jengo)
+	$phpgw->template->set_root($phpgw->common->get_tpl_dir('headlines'));
+	$phpgw->template->set_file(array(
+		'admin' => 'admin.tpl'
+	));
+	$phpgw->template->set_block('admin','list');
+	$phpgw->template->set_block('admin','row');
+	$phpgw->template->set_block('admin','row_empty');
 
-  while ($phpgw->db->next_record()) {
-    $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$phpgw->template->set_var('title',lang('Headline Sites'));
+	$phpgw->template->set_var('lang_site',lang('Site'));
+	$phpgw->template->set_var('lang_edit',lang('Edit'));
+	$phpgw->template->set_var('lang_delete',lang('Delete'));
+	$phpgw->template->set_var('lang_view',lang('View'));
+	$phpgw->template->set_var('lang_add',lang('Add'));
 
-    $display  = $phpgw->db->f("display");
+	$phpgw->db->query('select count(*) from news_site');
+	$phpgw->db->next_record();
 
-    if (! $display)
-       $display  = '&nbsp;';
+	if (! $phpgw->db->f(0))
+	{
+		$phpgw->template->set_var('lang_row_empty',lang('No headlines found'));
+		$phpgw->nextmatchs->template_alternate_row_color($phpgw->template);
+		$phpgw->template->parse('rows','row_empty');
+	}
 
-    echo "<tr bgcolor=$tr_color><td>$display</td>"
-       . "<td width=5%><a href=\"".$phpgw->link("/headlines/editheadline.php",
-         "con=".$phpgw->db->f("con"))."\"> ".lang("Edit")." </a></td>";
+	$phpgw->db->query('select con,display from news_site order by display');
+	while ($phpgw->db->next_record())
+	{
+		$phpgw->nextmatchs->template_alternate_row_color($phpgw->template);
 
-    echo "<td width=5%><a href=\"".$phpgw->link("/headlines/deleteheadline.php",
-         "con=".$phpgw->db->f("con"))."\"> ".lang("Delete")." </a></td>";
-    echo  "<td width=5%><a href=\"".$phpgw->link("/headlines/viewheadline.php",
-         "con=".$phpgw->db->f("con"))."\"> ".lang("View")." </a> </td></tr>\n";
-  }
-  echo "<form method=POST action=\"".$phpgw->link("/headlines/newheadline.php")."\">"
-     . "<tr><td colspan=\"5\"><input type=\"submit\" value=\"".lang("Add")
-     . "\"></td></tr></form></table></center>";
+		$phpgw->template->set_var('row_display',$phpgw->strip_html($phpgw->db->f('display')));
+		$phpgw->template->set_var('row_edit',$phpgw->link('/headlines/editheadline.php','con='.$phpgw->db->f('con')));
+		$phpgw->template->set_var('row_delete',$phpgw->link('/headlines/deleteheadline.php','con='.$phpgw->db->f('con')));
+		$phpgw->template->set_var('row_view',$phpgw->link('/headlines/viewheadline.php','con='.$phpgw->db->f('con')));
 
-  echo '<a href="' . $phpgw->link('/headlines/grabnewssites.php'). '">' . lang('Grab New News Sites') . '</a>';
+		$phpgw->template->parse('rows','row',True);
+	}
 
-  $phpgw->common->phpgw_footer();
+	$phpgw->template->set_var('add_url',$phpgw->link('/headlines/newheadline.php'));
+	$phpgw->template->set_var('grab_more_url',$phpgw->link('/headlines/grabnewssites.php'));
+	$phpgw->template->set_var('lang_grab_more',lang('Grab New News Sites'));
+
+	$phpgw->template->pfp('out','list');
+
+	$phpgw->common->phpgw_footer();
 ?>
