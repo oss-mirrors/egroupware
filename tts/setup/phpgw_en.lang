@@ -19,6 +19,8 @@ creates a new ticket, returns ticket_id	tts	en	Creates a new ticket, returns tic
 creates a struct of tickets	tts	en	Creates a struct of tickets
 date opened	tts	en	Date opened
 detail	tts	en	Detail
+force	tts	en	Force
+group ownership changed	tts	en	Group ownership changed
 in progress	tts	en	In progress
 new ticket	tts	en	New Ticket
 new value	tts	en	New Value
@@ -33,6 +35,8 @@ opened by	tts	en	Opened by
 prio	tts	en	Prio
 priority	tts	en	Priority
 priority changed	tts	en	Priority changed
+re-assigned	tts	en	Re-assigned
+re-opened	tts	en	Re-opened
 status/date closed	tts	en	Status/Date closed
 subject changed	tts	en	Subject changed
 ticket	tts	en	Ticket
