@@ -11,24 +11,28 @@
 	\***************************************************************************/
 	/* $Id$ */
 	
-	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.imapBaseClass.inc.php");
+	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.defaultimap.inc.php");
 	
-	class cyrusimap extends imapBaseClass
+	class cyrusimap extends defaultimap
 	{
 		#function cyrusimap()
 		#{
 		#}
 		
-		function addAccount($_username, $_password)
+		function addAccount($_hookValues)
 		{
+			#_debug_array($_hookValues);
+			$username 	= $_hookValues['account_lid'];
+			$userPassword	= $_hookValues['new_passwd'];
+			
 			#_debug_array($this->profileData);
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
 			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
 			$folderNames = array(
-				"user.$_username",
-				"user.$_username.Trash",
-				"user.$_username.Sent"
+				"user.$username",
+				"user.$username.Trash",
+				"user.$username.Sent"
 			);
 			
 			// create the mailbox
@@ -39,7 +43,7 @@
 				{
 					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
 					{
-						if(!imap_setacl($mbox, $mailBoxName, $_username, "lrswipcd"))
+						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcd"))
 						{
 							# log error message
 						}
@@ -53,7 +57,7 @@
 			}
 			
 			// subscribe to the folders
-			if($mbox = @imap_open($this->getMailboxString(), $_username, $_password))
+			if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword))
 			{
 				imap_subscribe($mbox,$this->getMailboxString('INBOX'));
 				imap_subscribe($mbox,$this->getMailboxString('INBOX.Sent'));
@@ -66,37 +70,58 @@
 			}
 		}
 		
-		function deleteAccount($_username)
+		function deleteAccount($_hookValues)
 		{
+			$username		= $_hookValues['account_lid'];
+		
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
 			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
 			if($mbox = @imap_open($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
 			{
-				$mailBoxName = "user.$_username";
+				$mailBoxName = "user.$username";
 				// give the admin account the rights to delete this mailbox
 				if(imap_setacl($mbox, $mailBoxName, $imapAdminUsername, "lrswipcda"))
 				{
+					if(imap_deletemailbox($mbox,
+						imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
+					{
+						return true;
+					}
+					else
+					{
+						// not able to delete mailbox
+						return false;
+					}
 				}
-				if(imap_deletemailbox($mbox,imap_utf7_encode("{127.0.0.1}$mailBoxName")))
+				else
 				{
+					// not able to set acl
+					return false;
 				}
 			}
 			else
 			{
+				// imap open failed
 				return false;
 			}
 		}
 
-		function updateAccount($_username)
+		function updateAccount($_hookValues)
 		{
+			#_debug_array($_hookValues);
+			$username 	= $_hookValues['account_lid'];
+			if(isset($_hookValues['new_passwd']))
+				$userPassword	= $_hookValues['new_passwd'];
+			
+			#_debug_array($this->profileData);
 			$imapAdminUsername	= $this->profileData['imapAdminUsername'];
 			$imapAdminPW		= $this->profileData['imapAdminPW'];
 
 			$folderNames = array(
-				"user.$_username",
-				"user.$_username.Trash",
-				"user.$_username.Sent"
+				"user.$username",
+				"user.$username.Trash",
+				"user.$username.Sent"
 			);
 			
 			// create the mailbox
@@ -107,7 +132,7 @@
 				{
 					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
 					{
-						if(!imap_setacl($mbox, $mailBoxName, $_username, "lrswipcd"))
+						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcd"))
 						{
 							# log error message
 						}
@@ -120,6 +145,21 @@
 				return false;
 			}
 			
+			// we can only subscribe to the folders, if we have the users password
+			if(isset($_hookValues['new_passwd']))
+			{
+				if($mbox = @imap_open($this->getMailboxString(), $username, $userPassword))
+				{
+					imap_subscribe($mbox,$this->getMailboxString('INBOX'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX.Sent'));
+					imap_subscribe($mbox,$this->getMailboxString('INBOX.Trash'));
+					imap_close($mbox);
+				}
+				else
+				{
+					# log error message
+				}
+			}
 		}
 	}
 ?>

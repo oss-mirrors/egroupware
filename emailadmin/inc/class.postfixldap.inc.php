@@ -11,16 +11,48 @@
 	\***************************************************************************/
 	/* $Id$ */
 
-	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.smtpBaseClass.inc.php");
+	include_once(PHPGW_SERVER_ROOT."/emailadmin/inc/class.defaultsmtp.inc.php");
 
-	class postfixldap extends smtpBaseClass
+	class postfixldap extends defaultsmtp
 	{
-		function addAccount($_username, $_password)
+		function addAccount($_hookValues)
 		{
-			$boQmailLDAP = CreateObject('emailadmin.bo');
-			$data["mailLocalAddress"]	= $_username."@".$this->profileData['defaultDomain'];
-			$data["accountStatus"]		= 'active';
-			$boQmailLDAP->saveUserData($_username, $data, 'save');
+			$mailLocalAddress	= $_hookValues['account_lid']."@".$this->profileData['defaultDomain'];
+
+			$ds = $GLOBALS['phpgw']->common->ldapConnect();
+			
+			$filter = "uid=".$_hookValues['account_lid'];
+
+			$sri = @ldap_search($ds,$GLOBALS['phpgw_info']['server']['ldap_context'],$filter);
+			if ($sri)
+			{
+				$allValues 	= ldap_get_entries($ds, $sri);
+				$accountDN 	= $allValues[0]['dn'];
+				$objectClasses	= $allValues[0]['objectclass'];
+				
+				unset($objectClasses['count']);
+			}
+			else
+			{
+				return false;
+			}
+			
+			if(!in_array('qmailUser',$objectClasses) &&
+				!in_array('qmailuser',$objectClasses))
+			{
+				$objectClasses[]	= 'qmailuser'; 
+			}
+			
+			// the new code for postfix+cyrus+ldap
+			$newData = array 
+			(
+				'mail'			=> $mailLocalAddress,
+				'accountStatus'		=> 'active',
+				'objectclass'		=> $objectClasses
+			);
+
+			ldap_mod_replace ($ds, $accountDN, $newData);
+			#print ldap_error($ds);
 		}
 	}
 ?>

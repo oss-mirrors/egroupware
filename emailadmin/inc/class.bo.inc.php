@@ -45,7 +45,8 @@
 						'smtpAuth',
 						'smtpType'
 					),
-					'description'	=> lang('standard SMTP-Server')
+					'description'	=> lang('standard SMTP-Server'),
+					'classname'	=> 'defaultsmtp'
 				),
 				'2' 	=> array(
 					'fieldNames'	=> array(
@@ -59,7 +60,8 @@
 						'smtpLDAPBaseDN',
 						'smtpLDAPUseDefault'
 					),
-					'description'	=> lang('Postfix with LDAP')
+					'description'	=> lang('Postfix with LDAP'),
+					'classname'	=> 'postfixldap'
 				)
 			);
 
@@ -74,7 +76,8 @@
 						'imapTLSAuthentication'
 					),
 					'description'	=> lang('standard POP3 server'),
-					'protocol'	=> 'pop3'
+					'protocol'	=> 'pop3',
+					'classname'	=> 'defaultpop'
 				),
 				'2' 	=> array(
 					'fieldNames'	=> array(
@@ -86,7 +89,8 @@
 						'imapTLSAuthentication'
 					),
 					'description'	=> lang('standard IMAP server'),
-					'protocol'	=> 'imap'
+					'protocol'	=> 'imap',
+					'classname'	=> 'defaultimap'
 				),
 				'3' 	=> array(
 					'fieldNames'	=> array(
@@ -104,11 +108,32 @@
 						'imapSievePort'
 					),
 					'description'	=> lang('Cyrus IMAP Server'),
-					'protocol'	=> 'imap'
+					'protocol'	=> 'imap',
+					'classname'	=> 'cyrusimap'
 				)
 			); 
 			
 			$this->restoreSessionData();
+		}
+		
+		function addAccount($_hookData)
+		{
+			$profileData	= $this->getProfile($_hookData['profileID']);
+			
+			$imapClass	= $this->IMAPServerType[$profileData['imapType']]['classname'];
+			$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
+			ExecMethod("emailadmin.$imapClass.addAccount",$_hookData['hookValues'],3,$profileData);
+			ExecMethod("emailadmin.$smtpClass.addAccount",$_hookData['hookValues'],3,$profileData);
+		}
+		
+		function deleteAccount($_hookData)
+		{
+			$profileData	= $this->getProfile($_hookData['profileID']);
+			
+			$imapClass	= $this->IMAPServerType[$profileData['imapType']]['classname'];
+			$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
+			ExecMethod("emailadmin.$imapClass.deleteAccount",$_hookData['hookValues'],3,$profileData);
+			ExecMethod("emailadmin.$smtpClass.deleteAccount",$_hookData['hookValues'],3,$profileData);
 		}
 		
 		function deleteProfile($_profileID)
@@ -129,16 +154,16 @@
 			}
 		}
 		
-		function getIMAPClass($_profileID)
-		{
-			if(!is_object($this->imapClass))
-			{
-				$profileData		= $this->getProfile($_profileID);
-				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
-			}
-			
-			return $this->imapClass;
-		}
+#		function getIMAPClass($_profileID)
+#		{
+#			if(!is_object($this->imapClass))
+#			{
+#				$profileData		= $this->getProfile($_profileID);
+#				$this->imapClass	= CreateObject('emailadmin.cyrusimap',$profileData);
+#			}
+#			
+#			return $this->imapClass;
+#		}
 		
 		function getIMAPServerTypes()
 		{
@@ -177,16 +202,16 @@
 			return $profileList;
 		}
 		
-		function getSMTPClass($_profileID)
-		{
-			if(!is_object($this->smtpClass))
-			{
-				$profileData		= $this->getProfile($_profileID);
-				$this->smtpClass	= CreateObject('emailadmin.postfixldap',$profileData);
-			}
-			
-			return $this->smtpClass;
-		}
+#		function getSMTPClass($_profileID)
+#		{
+#			if(!is_object($this->smtpClass))
+#			{
+#				$profileData		= $this->getProfile($_profileID);
+#				$this->smtpClass	= CreateObject('emailadmin.postfixldap',$profileData);
+#			}
+#			
+#			return $this->smtpClass;
+#		}
 		
 		function getSMTPServerTypes()
 		{
@@ -355,5 +380,16 @@
 					break;
 			}
 		}
+
+		function updateAccount($_hookData)
+		{
+			$profileData	= $this->getProfile($_hookData['profileID']);
+			
+			$imapClass	= $this->IMAPServerType[$profileData['imapType']]['classname'];
+			$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
+			ExecMethod("emailadmin.$imapClass.updateAccount",$_hookData['hookValues'],3,$profileData);
+			ExecMethod("emailadmin.$smtpClass.updateAccount",$_hookData['hookValues'],3,$profileData);
+		}
+		
 	}
 ?>

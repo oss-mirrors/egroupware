@@ -34,12 +34,8 @@
 	$setup_info['emailadmin']['tables'][]	= 'phpgw_emailadmin';
 	
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['emailadmin']['hooks'][] = 'preferences';
-	$setup_info['emailadmin']['hooks'][] = 'manual';
-	$setup_info['emailadmin']['hooks'][] = 'edit_user';
-	$setup_info['emailadmin']['hooks'][] = 'editaccount';
-	$setup_info['emailadmin']['hooks'][] = 'addaccount';
-	$setup_info['emailadmin']['hooks'][] = 'deleteaccount';
+	#$setup_info['emailadmin']['hooks'][] = 'preferences';
+	#$setup_info['emailadmin']['hooks'][] = 'manual';
 	$setup_info['emailadmin']['hooks'][] = 'admin';
 
 	/* Dependacies for this app to work */
