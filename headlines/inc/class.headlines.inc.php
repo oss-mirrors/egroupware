@@ -35,11 +35,13 @@
 		function headlines()
 		{
 			$GLOBALS['phpgw']->network = CreateObject('phpgwapi.network',False);
+			$this->current_time = time();
 		}
 
 		// try to get the links for the site
 		function getLinks($site)
 		{
+			$links = array();
 			if(!$this->readtable($site))
 			{
 				return $links;
@@ -53,7 +55,7 @@
 			{
 				$links = $this->getLinksSite();
 
-				if($links)
+				if(@is_array($links))
 				{
 					$this->saveToDB($links);
 				}
@@ -92,7 +94,6 @@
 		// determines if the headlines were cached less than $cachetime minutes ago
 		function isCached()
 		{
-			$this->current_time = time();
 			return (($this->current_time - $this->lastread) < ($this->cachetime * 60));
 		}
 
@@ -105,7 +106,7 @@
 			if(!$GLOBALS['phpgw']->db->num_rows())
 			{
 				$links = $this->getLinksSite();  // try from site again
-				if(!$links)
+				if(!@is_array($links))
 				{
 					$display = htmlspecialchars($this->display);
 //					die("</table><b>error</b>: unable to get links for <br><a href=\""
@@ -113,10 +114,12 @@
 					return False;
 				}
 			}
-
-			while($GLOBALS['phpgw']->db->next_record())
+			else
 			{
-				$links[$GLOBALS['phpgw']->db->f('title')] = $GLOBALS['phpgw']->db->f('link');
+				while($GLOBALS['phpgw']->db->next_record())
+				{
+					$links[$GLOBALS['phpgw']->db->f('title')] = $GLOBALS['phpgw']->db->f('link');
+				}
 			}
 			return $links;
 		}
