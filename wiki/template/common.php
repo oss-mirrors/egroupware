@@ -55,6 +55,7 @@ function template_common_prologue($args)
 */
 ?>
 <link rel="STYLESHEET" href="<?php print $StyleScript; ?>" type="text/css" />
+<div align="left">
 <div id="header">
   <div class="logo">
   <a href="<?php print viewURL($HomePage); ?>"><img
