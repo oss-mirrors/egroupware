@@ -68,7 +68,7 @@ function isEditable($page_mutable=True)
 	       $page_mutable && (!$anonymous || AnonymousSession == 'editable');
 }
 
-$WikiLogo = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/default/images/logo.gif';
+$WikiLogo = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/default/images/logo.png';
 
 require('lib/url.php');
 require('lib/messages.php');
