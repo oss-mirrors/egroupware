@@ -31,15 +31,15 @@
        $display  = '&nbsp;';
 
     echo "<tr bgcolor=$tr_color><td>$display</td>"
-       . "<td width=5%><a href=\"".$phpgw->link("editheadline.php",
+       . "<td width=5%><a href=\"".$phpgw->link("/headlines/editheadline.php",
          "con=".$phpgw->db->f("con"))."\"> ".lang("Edit")." </a></td>";
 
-    echo "<td width=5%><a href=\"".$phpgw->link("deleteheadline.php",
+    echo "<td width=5%><a href=\"".$phpgw->link("/headlines/deleteheadline.php",
          "con=".$phpgw->db->f("con"))."\"> ".lang("Delete")." </a></td>";
-    echo  "<td width=5%><a href=\"".$phpgw->link("viewheadline.php",
+    echo  "<td width=5%><a href=\"".$phpgw->link("/headlines/viewheadline.php",
          "con=".$phpgw->db->f("con"))."\"> ".lang("View")." </a> </td></tr>\n";
   }
-  echo "<form method=POST action=\"".$phpgw->link("newheadline.php")."\">"
+  echo "<form method=POST action=\"".$phpgw->link("/headlines/newheadline.php")."\">"
      . "<tr><td colspan=\"5\"><input type=\"submit\" value=\"".lang("Add")
      . "\"></td></tr></form></table></center>";
 
