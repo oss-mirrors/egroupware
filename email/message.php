@@ -59,18 +59,45 @@
            // Move this up top.
 	   $session_folder = "folder=".urlencode($folder)."&msgnum";
 
-           if ($msgnum != 1) {
-              $pm = $msgnum - 1;
-              echo "<a href=\"".$phpgw->link("message.php","$session_folder=$pm")."\"><img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left.gif\" alt=\"Previous Message\"></a>";
+           if ($msgnum != 1 || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != $totalmeesages)) {
+              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+                 $pm = $msgnum + 1;
+              } else {
+                 $pm = $msgnum - 1;
+              }
+
+              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && ($msgnum == $totalmessages && $msgnum != 1)) {
+                 echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif"
+			. "\" alt=\"No Previous Message\">";
+              } else {
+                 echo "<a href=\"".$phpgw->link("message.php","$session_folder=$pm")."\"><img "
+		    . "border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left.gif\" alt=\""
+		    . "Previous Message\"></a>";
+              }
            } else {
-              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif\" alt=\"No Previous Message\">";
+              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/left-grey.gif\""
+		 . " alt=\"No Previous Message\">";
            }
 
-           if ($msgnum < $totalmessages) {
-              $nm = $msgnum + 1;
-              echo "<a href=\"".$phpgw->link("message.php","$session_folder=$nm")."\"><img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right.gif\" alt=\"Next Message\"></a>";
+           if ($msgnum < $totalmessages || ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old" && $msgnum != 1)) {
+              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+                 $nm = $msgnum - 1;
+              } else {
+                 $nm = $msgnum + 1;
+              }
+
+              if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old"
+		 && $msgnum == 1 && $totalmessages != $msgnum) {
+                 echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/"
+			. "right-grey.gif\" alt=\"No Next Message\">";
+              } else {
+                 echo "<a href=\"".$phpgw->link("message.php","$session_folder=$nm")."\"><img "
+		    . "border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right.gif\" alt=\""
+		    . "Next Message\"></a>";
+              }
            } else {
-              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right-grey.gif\" alt=\"No Next Message\">";
+              echo "<img border=0 src=\"".$phpgw_info["server"]["images_dir"]."/right-grey.gif\""
+		 . " alt=\"No Next Message\">";
            }
          ?>
         </td>
