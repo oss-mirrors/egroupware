@@ -166,7 +166,7 @@
 		{
 			$groups=$GLOBALS['phpgw']->accounts->membership();
 
-			if (count ($groups)>0)
+			if (is_array($groups))
 			{
 				foreach ( $groups as $groupfields )
 				{
@@ -175,7 +175,6 @@
 			}
 
 			$user_sites=$this->so->get_sites_for_user($uid,$group);
-			//		die(var_dump($user_sites));
 			return $user_sites;
 		}
 
