@@ -103,7 +103,7 @@
 		'phpgw_p_invoice' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'num' => array('type' => 'varchar','precision' => 20,'nullable' => False),
 				'date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'customer' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
