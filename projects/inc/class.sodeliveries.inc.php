@@ -89,8 +89,8 @@
 
 			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
 							. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours " . $this->return_join()
-							. "phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE phpgw_p_hours.dstatus='o' "
-							. "AND phpgw_p_hours.project_id='$project_id' $ordermethod",__LINE__,__FILE__);
+							. "phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE (phpgw_p_hours.dstatus='o' "
+							. "AND phpgw_p_hours.status != 'open') AND phpgw_p_hours.project_id='$project_id' $ordermethod",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

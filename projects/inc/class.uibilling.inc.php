@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -101,6 +101,7 @@
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
 			$this->t->set_var('lang_edit',lang('Edit'));
+			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
 			$this->t->set_var('lang_invoices',lang('Invoices'));
@@ -478,7 +479,17 @@
 
 		function invoice()
 		{
-			global $action, $Invoice, $project_id, $invoice_id, $values, $select;
+			global $action, $Invoice, $project_id, $invoice_id, $values, $select, $referer;
+
+			if (! $Invoice)
+			{
+				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
+			}
+
+			if (!$project_id)
+			{
+				Header('Location: ' . $referer);
+			}
 
 			$this->display_app_header();
 
@@ -532,6 +543,9 @@
 			$this->t->set_var('lang_action',lang('Invoice'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('currency',$prefs['currency']);
+
+			$this->t->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
+			$this->t->set_var('doneurl',$referer);
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
@@ -649,6 +663,72 @@
 // -------------------------- end record declaration --------------------------
 				}
 			}
+
+			if ($invoice_id)
+			{
+				$hours = $this->bobilling->read_hours($project_id);
+				if (is_array($hours))
+				{
+					while (list($null,$inv) = each($hours))
+					{
+						$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+						$select = '<input type="checkbox" name="select[' . $inv['hours_id'] . ']" value="True">';
+
+						$activity = $GLOBALS['phpgw']->strip_html($inv['descr']);
+						if (! $activity)  $activity  = '&nbsp;';
+
+						$hours_descr = $GLOBALS['phpgw']->strip_html($inv['hours_descr']);
+						if (! $hours_descr)  $hours_descr  = '&nbsp;';
+
+						$start_date = $inv['sdate'];
+						if ($start_date == 0) { $start_dateout = '&nbsp;'; }
+						else
+						{
+							$start_date = $start_date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+							$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+						}
+
+						if ($inv['minperae'] != 0)
+						{
+							$aes = ceil($inv['minutes']/$inv['minperae']);
+						}
+					//	$sumaes += $aes;
+					//	$summe += $inv['billperae']*$aes;
+
+// --------------------- template declaration for list records ---------------------------
+
+						$this->t->set_var(array('select' => $select,
+											'activity' => $activity,
+										'hours_descr' => $hours_descr,
+											'status' => lang($inv['status']),
+										'start_date' => $start_dateout,
+												'aes' => $aes,
+										'billperae' => $inv['billperae'],
+											'sum' => sprintf ("%01.2f",$inv['billperae']*$aes)));
+
+						if (($inv['status'] != 'billed') && ($inv['status'] != 'closed'))
+						{
+							if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
+							{
+								$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
+								$link_data['hours_id']		= $inv['hours_id'];
+								$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+								$this->t->set_var('lang_edit_entry',lang('Edit'));
+							}
+						}
+						else
+						{
+							$this->t->set_var('edithour','');
+							$this->t->set_var('lang_edit_entry','&nbsp;');
+						}
+						$this->t->fp('list','hours_list',True);
+
+// -------------------------- end record declaration --------------------------
+					}
+				}
+			}
+
 			$this->t->set_var('sum_aes',$sumaes);
 			$this->t->set_var('sum_sum',sprintf("%01.2f",$summe));
 

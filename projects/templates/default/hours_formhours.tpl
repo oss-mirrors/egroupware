@@ -8,6 +8,7 @@
 {message}{pref_message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 <form method="POST" action="{actionurl}">
+{hidden_vars}
 	<tr>
 		<td>{lang_project}:</td>
 		<td>{project_name}</td>

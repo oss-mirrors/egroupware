@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -1676,9 +1676,12 @@
 					$this->t->set_var('lang_action_entry',lang('Work hours'));
 				}
 
-				$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/projects/del_deliverylist.php','project_id=' . $pro[$i]['project_id']));
-				$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/projects/bill_invoicelist.php','project_id=' . $pro[$i]['project_id']));
-				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/stats_projectstat.php','id=' . $pro[$i]['project_id']));
+				$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&project_id='
+																	. $pro[$i]['project_id']));
+				$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&project_id='
+																	. $pro[$i]['project_id']));
+				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/index.php','menuaction=projects.uistatistics.project_stat&project_id='
+																	. $pro[$i]['project_id']));
 				$this->t->set_var('lang_invoice_entry',lang('Invoices'));
 				$this->t->set_var('lang_delivery_entry',lang('Deliveries'));
 				$this->t->set_var('lang_stats_entry',lang('Statistics'));

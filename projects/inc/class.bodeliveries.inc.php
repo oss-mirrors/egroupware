@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -54,7 +54,7 @@
 
 		function read_delivery_hours($project_id,$delivery_id)
 		{
-			$hours = $this->sodeliveries->read_hours($project_id,$delivery_id);
+			$hours = $this->sodeliveries->read_delivery_hours($project_id,$delivery_id);
 			return $hours;
 		}
 

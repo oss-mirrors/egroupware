@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -99,6 +99,7 @@
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
 			$this->t->set_var('lang_edit',lang('Edit'));
+			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_project',lang('Project'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
@@ -353,12 +354,17 @@
 
 		function delivery()
 		{
-			global $action, $Delivery, $project_id, $delivery_id, $values, $select;
+			global $action, $Delivery, $project_id, $delivery_id, $values, $select, $referer;
 
-			$this->display_app_header();
+			if (! $Delivery)
+			{
+				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
+			}
 
-			$this->t->set_file(array('hours_list_t' => 'del_listhours.tpl'));
-			$this->t->set_block('hours_list_t','hours_list','list');
+			if (!$project_id)
+			{
+				Header('Location: ' . $referer);
+			}
 
 			if ($Delivery)
 			{
@@ -394,8 +400,16 @@
 				'delivery_id'	=> $delivery_id
 			);
 
+			$this->display_app_header();
+
+			$this->t->set_file(array('hours_list_t' => 'del_listhours.tpl'));
+			$this->t->set_block('hours_list_t','hours_list','list');
+
 			$this->t->set_var('lang_action',lang('Delivery'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$this->t->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
+			$this->t->set_var('doneurl',$referer);
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
@@ -509,6 +523,69 @@
 // -------------------------- end record declaration --------------------------
 				}
 			}
+
+			if ($delivery_id)
+			{
+				$hours = $this->bodeliveries->read_hours($project_id);
+				if (is_array($hours))
+				{
+					while (list($null,$note) = each($hours))
+					{
+						$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+						$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True">';
+
+						$activity = $GLOBALS['phpgw']->strip_html($note['descr']);
+						if (! $activity)  $activity  = '&nbsp;';
+	
+						$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
+						if (! $hours_descr)  $hours_descr  = '&nbsp;';
+
+						$start_date = $note['sdate'];
+						if ($start_date == 0) { $start_dateout = '&nbsp;'; }
+						else
+						{
+							$start_date = $start_date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+							$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+						}
+
+						if ($note['minperae'] != 0)
+						{
+							$aes = ceil($note['minutes']/$note['minperae']);
+						}
+					//	$sumaes += $aes;
+
+// --------------------- template declaration for list records ---------------------------
+
+						$this->t->set_var(array('select' => $select,
+											'activity' => $activity,
+										'hours_descr' => $hours_descr,
+											'status' => lang($note['status']),
+										'start_date' => $start_dateout,
+											'	aes' => $aes));
+
+						if (($note['status'] != 'billed') && ($note['status'] != 'closed'))
+						{
+							if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
+							{
+								$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
+								$link_data['hours_id']		= $note['hours_id'];
+								$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
+								$this->t->set_var('lang_edit_entry',lang('Edit'));
+							}
+						}
+						else
+						{
+							$this->t->set_var('edithour','');
+							$this->t->set_var('lang_edit_entry','&nbsp;');
+						}
+						$this->t->fp('list','hours_list',True);
+
+// -------------------------- end record declaration --------------------------
+					}
+				}
+			}
+
 			$this->t->set_var(sum_aes,$sumaes);
 
 			if (! $delivery_id)
@@ -607,7 +684,7 @@
 
 					if ($note['customer'] != 0) 
 					{
-						$customer = $this->boprojects->read_single_contact($del[$i]['customer']);
+						$customer = $this->boprojects->read_single_contact($note['customer']);
             			if (!$customer[0]['org_name']) { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
@@ -654,13 +731,14 @@
 			else
 			{
 				$prefs = $this->boprojects->read_prefs();
-        		$this->t->set_var('myaddress',$this->bodeliveries->get_address_data($abid));
+        		$this->t->set_var('myaddress',$this->bodeliveries->get_address_data($prefs['abid']));
 			}
 
 			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
 			$this->t->set_var('charset',$charset);
 			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+			$this->t->set_var('img_src',PHPGW_SERVER_ROOT . '/projects/doc/logo.jpg');
 
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
@@ -717,6 +795,7 @@
 			$this->t->set_var('sumaes',$sumaes);
 
 			$this->t->pfp('out','del_list_t',True);
+			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
 
 		function fail()

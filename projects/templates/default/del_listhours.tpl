@@ -7,6 +7,7 @@
 <center>
 {message}
 <form method="POST" action="{actionurl}">
+{hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_choose}</td>
@@ -67,7 +68,8 @@
 		<td width="10%">&nbsp;</td>
 	</tr>
 </table>
-<table width="50%" border="0" cellpadding="2" cellspacing="2">
+<br>
+<table width="69%" border="0" cellpadding="2" cellspacing="2">
 	<tr>
 		<td align="center">{delivery}</td>
 		</form>
@@ -75,6 +77,8 @@
 <!-- url zum druck -->
 
 		<td align="center"><a href={print_delivery} target=_blank>{lang_print_delivery}</a></td>
+		<td align="center"><form method="POST" action="{doneurl}"> 
+			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>
 </center>

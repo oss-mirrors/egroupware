@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -350,8 +350,9 @@
 		{
 			switch ($status)
 			{
-				case 'open':	$stat_sel[0]=' selected'; break;
-				case 'done':	$stat_sel[1]=' selected'; break;
+				case 'open'	:	$stat_sel[0]=' selected'; break;
+				case 'done'	:	$stat_sel[1]=' selected'; break;
+				default		:	$stat_sel[1]=' selected'; break;
 			}
 
 			$status_list = '<option value="open"' . $stat_sel[0] . '>' . lang('Open') . '</option>' . "\n"
@@ -546,15 +547,6 @@
 		{
 			global $project_id, $hours_id, $values, $submit, $referer;
 
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojecthours.edit_hours',
-				'hours_id'		=> $hours_id,
-				'project_id'	=> $project_id,
-				'delivery_id'	=> $delivery_id,
-				'invoice_id'	=> $invoice_id
-			);
-
 			if (! $submit)
 			{
 				$referer = $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] ? $GLOBALS['HTTP_SERVER_VARS']['HTTP_REFERER'] : $GLOBALS['HTTP_REFERER'];
@@ -580,11 +572,22 @@
 				}
 			}
 
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojecthours.edit_hours',
+				'hours_id'		=> $hours_id,
+				'project_id'	=> $project_id,
+				'delivery_id'	=> $delivery_id,
+				'invoice_id'	=> $invoice_id
+			);
+
 			$this->display_app_header();
 
 			$this->t->set_file(array('hours_edit' => 'hours_formhours.tpl'));
 			$this->t->set_block('hours_edit','add','addhandle');
 			$this->t->set_block('hours_edit','edit','edithandle');
+
+			$this->t->set_var('hidden_vars','<input type="hidden" name="referer" value="' . $referer . '">');
 
 			$this->t->set_var('doneurl',$referer);
 

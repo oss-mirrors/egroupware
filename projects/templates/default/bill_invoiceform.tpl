@@ -22,7 +22,7 @@
 	<table width=90% border="0" cellpadding="3" cellspacing="3">
 		<tr>
 			<td valign="bottom">{myaddress}</td>
-			<td align="right"><img src="doc/logo.jpg"></td>
+			<td align="right"><img src="{img_src}"></td>
 		</tr>
 		<tr>
 			<td height="2">&nbsp;</td>
