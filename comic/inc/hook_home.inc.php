@@ -1,39 +1,47 @@
 <?php
+  /**************************************************************************\
+  * phpGroupWare - E-Mail                                                    *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
 
+	/* $Id$ */
 {
-    
-    $d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
-    if($d1 == "htt" || $d1 == "ftp" )
-    {
-        echo "Failed attempt to break in via an old Security Hole!<br>\n";
-        $phpgw->common->phpgw_exit();
-    } unset($d1);
 
-    $tmp_app_inc = $phpgw_info["server"]["app_inc"];
+	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
+	if($d1 == 'htt' || $d1 == 'ftp' )
+	{
+		echo "Failed attempt to break in via an old Security Hole!<br>\n";
+		$phpgw->common->phpgw_exit();
+	} unset($d1);
 
-    $phpgw_info["server"]["app_inc"] = $phpgw->common->get_inc_dir('comic');
+	$tmp_app_inc = PHPGW_APP_INC;
 
-    $phpgw->db->query("select * from phpgw_comic "
-                      ."WHERE comic_owner='"
-                      .$phpgw_info["user"]["account_id"]."'");
+	define('PHPGW_APP_INC',$phpgw->common->get_inc_dir('comic'));
 
-    if ($phpgw->db->num_rows())
-    {
-        $phpgw->db->next_record();
+	$phpgw->db->query("select * from phpgw_comic "
+		."WHERE comic_owner='"
+		.$phpgw_info["user"]["account_id"]."'");
 
-        $data_id      = $phpgw->db->f("comic_frontpage");
-        $scale        = $phpgw->db->f("comic_fpscale");
-        $censor_level = $phpgw->db->f("comic_censorlvl");
-        
-        if ($data_id != -1)
-        {
-            include($phpgw_info["server"]["app_inc"].'/functions.inc.php');
+	if ($phpgw->db->num_rows())
+	{
+		$phpgw->db->next_record();
 
-            comic_display_frontpage($data_id, $scale, $censor_level);
-        }
-    }
-    
-    $phpgw_info["server"]["app_inc"] = $tmp_app_inc;
+		$data_id      = $phpgw->db->f('comic_frontpage');
+		$scale        = $phpgw->db->f('comic_fpscale');
+		$censor_level = $phpgw->db->f('comic_censorlvl');
+
+		if ($data_id != -1)
+		{
+			include(PHPGW_APP_INC . '/functions.inc.php');
+			comic_display_frontpage($data_id, $scale, $censor_level);
+		}
+	}
+
+	define('PHPGW_APP_INC',$tmp_app_inc);
 }
-
 ?>
