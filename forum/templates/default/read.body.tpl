@@ -16,11 +16,7 @@
       <form method=post action="{READ_ACTION}" name="">
         <center>
           <input type="hidden" name="msg" value="{MSG}">
-          <input type="hidden" name="cat" value="{CAT}">
-            <input type="hidden" name="for" value="{FORU}">
-            
-          <input type="hidden" name="col" value="{COL}">
-            <input type="hidden" name="action" value="{ACTION}">
+          <input type="hidden" name="action" value="{ACTION}">
             
           <input type="hidden" name="thread" value="{THREAD}">
             <input type="hidden" name="depth" value="{DEPTH}">
@@ -40,7 +36,7 @@
               <td>{SUBJECT}</td>
             </tr>
             <tr bgcolor="{row_off}">
-              <td colspan=2><br>
+              <td colspan="2" align="left"><br>
                <pre>
                 {MESSAGE}</td>
                </pre>

@@ -114,7 +114,7 @@
 				$subject = lang("[ No Subject ]");
 			}
 
-
+			$pos = $phpgw->db->f('pos');
 
 			$phpgw->template->set_var(array(
 				COLOR		=> $tr_color,

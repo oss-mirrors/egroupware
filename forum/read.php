@@ -43,7 +43,7 @@
 			{
 				$oldpos = $phpgw->db->f("pos") + 1;
 				$oldid = $phpgw->db->f("id");
-				print	"$oldid	$oldpos<br>";
+//				print	"$oldid	$oldpos<br>";
 				$phpgw->db->query("update phpgw_forum_threads set pos=$oldpos where thread = $thread and id = $oldid",__LINE__,__FILE__);
 			}
 		}
@@ -54,8 +54,9 @@
 
 		$phpgw->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,cat_id,for_id,"
 			. "thread_owner,subject,stat,n_replies) VALUES ('$pos','$thread','$depth','"
-			. "$next_f_body_id','"	. addslashes($msg) . "','$cat','$for','"
-			. $phpgw_info['user']['account_id']	. "','" . addslashes($subject) .	"','$stat',0)",__LINE__,__FILE__);
+			. "$next_f_body_id','"	. addslashes($msg) . "','" . $session_info['cat_id'] . "','"
+			. $session_info['forum_id'] . "','"	. $phpgw_info['user']['account_id']	. "','"
+			. addslashes($subject) .	"','$stat',0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("update phpgw_forum_threads set n_replies = n_replies+1 where thread='$thread'",__LINE__,__FILE__);
 

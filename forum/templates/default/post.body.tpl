@@ -16,9 +16,6 @@
       <form method=post action="{POST_ACTION}" name="">
         <center>
           <p> 
-            <input type="hidden" name="col" value="{COL}">
-			<input type="hidden" name="cat" value="{CAT}">
-            <input type="hidden" name="for" value="{FORU}">
             <input type="hidden" name="type" value="{TYPE}">
             <input type="hidden" name="action" value="{ACTION}">
            
