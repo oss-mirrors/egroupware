@@ -924,6 +924,8 @@
 		{
 			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			
+			@imap_unsubscribe ($this->mbox, $mailboxString);
+
 			$result = imap_deletemailbox($this->mbox, $mailboxString);
 			
 			#print imap_last_error();
