@@ -231,9 +231,16 @@ function fud_egw($t='index', $plain=0)
 
 	/* define constants */
 	define('s', $sessionid);
-	define('_hs', '<input type="hidden" name="sessionid" value="'.$sessionid.'"><input type="hidden" name="domain" value="'.$domain.'"><input type="hidden" name="kp3" value="'.$kp3.'">');
-	define('_rsid', "sessionid={$sessionid}&amp;kp3={$kp3}&amp;domain={$domain}");
-	define('_rsidl', str_replace('&amp;', '&', _rsid));
+	/* likely cookie only situation */
+	if (!$domain) {
+		define('_hs', '');
+		define('_rsid', '');
+		define('_rsidl', '');
+	} else {
+		define('_hs', '<input type="hidden" name="sessionid" value="'.$sessionid.'"><input type="hidden" name="domain" value="'.$domain.'"><input type="hidden" name="kp3" value="'.$kp3.'">');
+		define('_rsid', "sessionid={$sessionid}&amp;kp3={$kp3}&amp;domain={$domain}");
+		define('_rsidl', str_replace('&amp;', '&', _rsid));
+	}
 
 	if (!empty($GLOBALS['phpgw_info']['server']['use_adodb'])) {
 		// open your own connection, as ADOdb does not export the use Link_ID
