@@ -180,7 +180,7 @@ milestone has been saved	projects	en	milestone has been saved
 milestones	common	en	Milestones
 minutes per workunit	projects	en	Minutes per workunit
 month	projects	en	Month
-move start date if pervious projects end date changes	admin	en	Move start date if pervious projects end date changes
+move start date if pervious projects end date changes	admin	en	Move start date if previous projects end date changes
 name not exceed 250 characters in length	projects	en	name not exceed 250 characters in length
 new date due of milestone %1: %2	projects	en	New date due of milestone %1: %2.
 new end date	projects	en	New end date
