@@ -12,21 +12,15 @@
 
   /* $Id$ */
 
-  $currentapp = "bookmarks";
+  $phpgw_flags["currentapp"] = "bookmarks";
 
-  include("../inc/config.inc.php");
-  include($phpgw_info["server"]["api_dir"] . "/header.inc.php");
-
-  if (! $phpgw_info["user"]["permissions"]["bookmarks"])
-     badsession();
-
-  //include_lang("bookmarks");
+  include("../header.inc.php");
 
   $phpgw->db->query("select * from bookmarks_cats where owner='" . $phpgw->session->loginid
 		 . "' and type='main'");
 
   echo "<center><table border=0 width=50%>\n"
-     . "<tr bgcolor=$theme[th_bg]>Bookmarks<br><td colspan=2>Main categorys"
+     . "<tr bgcolor=\"".$phpgw_info["user"]["theme"]["th_bg"]."\">Bookmarks<br><td colspan=2>Main categorys"
      . "</td></tr>";
   while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
@@ -45,7 +39,7 @@
 
   if ($phpgw->db->f(0)) {
      echo "<p><center><table border=0 width=50%>\n"
-        . "<tr bgcolor=$theme[th_bg]><td colspan=2>Public bookmarks</td></tr>";
+        . "<tr bgcolor=\"".$phpgw_info["user"]["theme"]["th_bg"]."\"><td colspan=2>Public bookmarks</td></tr>";
      $phpgw->db->query("select * from bookmarks where access='public' AND "
 		 . "owner != '" . $phpgw->session->loginid . "'");
      while ($phpgw->db->next_record()) {
@@ -60,4 +54,5 @@
      echo "</table>\n";
   }
 
-  include($phpgw_info["server"]["my_include_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+?>

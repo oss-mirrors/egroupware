@@ -13,16 +13,13 @@
   /* $Id$ */
 
   if ($submit) {
-     $phpgw_flags = array("noheader" => True, "nonavbar" => True);
+    $phpgw_flags["noheader"] = True;
+    $phpgw_flags["nonavbar"] = True;
   }
 
-  include("../inc/config.inc.php");
-  include($phpgw_info["server"]["api_dir"] . "/header.inc.php");
+  $phpgw_flags["currentapp"] = "bookmarks";
 
-  if (! $phpgw_info["user"]["permissions"]["bookmarks"])
-     badsession();
-
-  //include_lang("bookmarks");
+  include("../header.inc.php");
 
   if (! $submit) {
      ?>
@@ -42,7 +39,7 @@
          <td><select name="cat_parent">
        <?php
          $phpgw->db->query("select * from bookmarks_cats where owner='"
-			    . $phpgw->session->loginid . "' and type='main'");
+			    . $phpgw_info["user"]["userid"] . "' and type='main'");
          while ($phpgw->db->next_record())
            echo "<option value=\"" . $phpgw->db->f("con") . "\">"
 	      . $phpgw->db->f("name") . "</option>\n";
@@ -61,10 +58,11 @@
       </form>
 
      <?php
+    include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
   } else {
      if ($cat_type == "sub") {
         $phpgw->db->query("select name from bookmarks_cats where con='$cat_parent'"
-		       . " and owner='" . $phpgw->session->loginid . "'");
+		       . " and owner='" . $phpgw_info["user"]["userid"] . "'");
         $phpgw->db->next_record();
         $pn = $phpgw->db->f("name");
      }
@@ -78,5 +76,4 @@
 
      Header("Location: " . $phpgw->link("add_category.php"));
   }
-
-
+?>
