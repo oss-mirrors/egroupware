@@ -27,8 +27,8 @@ function template_common_prologue($args)
   $keywords = ' ' . html_split_name($args['headlink']);
   $keywords = str_replace('"', '&quot;', $keywords);
 
-  ob_start();                           // Start buffering output.
-
+//ob_start();                           // Start buffering output.
+/*
   if($SeparateTitleWords)
     { $args['title'] = html_split_name($args['title']); }
 ?>
@@ -51,6 +51,10 @@ function template_common_prologue($args)
 <title><?php print $args['title'] . ' - ' . $WikiName; ?></title>
 </head>
 <body>
+<?php
+*/
+?>
+<link rel="STYLESHEET" href="<?php print $StyleScript; ?>" type="text/css" />
 <div id="header">
   <div class="logo">
   <a href="<?php print viewURL($HomePage); ?>"><img
@@ -175,12 +179,13 @@ function template_common_epilogue($args)
   }
 ?>
 </div>
-</body>
-</html>
 <?php
-
+//</body>
+//</html>
+/*
   $size = ob_get_length();
   ##header("Content-Length: $size");
   ob_end_flush();
+*/
 }
 ?>
