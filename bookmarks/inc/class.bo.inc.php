@@ -22,7 +22,6 @@
 		var $grants;
 		var $url_format_check;
 		var $validate;
-		var $nextmatchs;
 		var $categories;
 		//following two are used by the export function
 		var $type;
@@ -33,7 +32,6 @@
 			$this->so = createobject('bookmarks.so');
 			$this->db          = $GLOBALS['phpgw']->db;
 			$this->grants      = $GLOBALS['phpgw']->acl->get_grants('bookmarks');
-			$this->nextmatchs = createobject('phpgwapi.nextmatchs');
 			$this->categories = createobject('phpgwapi.categories','','bookmarks');
 			$GLOBALS['phpgw']->config     = createobject('phpgwapi.config');
 			$GLOBALS['phpgw']->config->read_repository();
@@ -406,6 +404,7 @@
 		{
 			$this->type = $type;
 			$this->expanded = $expanded;
+
 			$t = CreateObject('phpgwapi.Template',PHPGW_INCLUDE_ROOT . '/bookmarks/templates/export');
 			$t->set_file('export','export_' . $this->type . '.tpl');
 			$t->set_block('export','catlist','categs');

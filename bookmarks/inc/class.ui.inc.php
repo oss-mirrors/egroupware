@@ -26,6 +26,7 @@ define('SEARCH',4);
 		var $bo;
 		var $img;
 		var $expandedcats;
+		var $nextmatchs;
 
 		var $public_functions = array
 		(
@@ -56,6 +57,8 @@ define('SEARCH',4);
 			);
 			$this->expandedcats = array();
 			$this->location_info = $this->bo->read_session_data();
+			$this->nextmatchs = createobject('phpgwapi.nextmatchs');
+
 		}
 
 		function init()
@@ -454,8 +457,8 @@ define('SEARCH',4);
 			);
 
 			$this->t->set_var(array(
-				'next_matchs_left' =>  $this->bo->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
-				'next_matchs_right' => $this->bo->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
+				'next_matchs_left' =>  $this->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
+				'next_matchs_right' => $this->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
 				'showing' => $total_matchs
 			));
 
@@ -560,8 +563,8 @@ define('SEARCH',4);
 			);
 
 			$this->t->set_var(array(
-				'next_matchs_left' =>  $GLOBALS['phpgw']->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
-				'next_matchs_right' => $GLOBALS['phpgw']->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
+				'next_matchs_left' =>  $this->nextmatchs->left('/index.php',$start,$total_bookmarks,$link_data),
+				'next_matchs_right' => $this->nextmatchs->right('/index.php',$start,$total_bookmarks,$link_data),
 				'showing' => $total_matchs
 			));
 
