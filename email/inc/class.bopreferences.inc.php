@@ -1198,6 +1198,8 @@
 					// b) now assign that processed data to this pref item in the repository
 					if ($this->debug_set_prefs > 1) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: using preferences->add_struct("email", $pref_struct_str, $processed_pref) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
 					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $processed_pref);
+					// TEST: sort that array, by key, so the integer array heys go from lowest to hightest
+					ksort($GLOBALS['phpgw']->preferences->data['email']['ex_accounts']);
 				}
 			}
 			// since we apparently did process some prefs data, return True
@@ -1342,7 +1344,11 @@
 				$this->process_ex_accounts_submitted_prefs($this->cust_prefs);
 				
 				if ($this->debug_set_prefs > 1) { echo 'email: bopreferences.ex_accounts_edit: $GLOBALS[phpgw]->preferences->data dump<pre>'; print_r($GLOBALS['phpgw']->preferences->data); echo '</pre>'; }
-				@reset($GLOBALS['phpgw']->preferences->prefs['ex_accounts']);
+				// debug
+				//unset($GLOBALS['phpgw']->preferences->data['email']['ex_accounts'][0]);
+				// make the array in ascending order
+				//sort($GLOBALS['phpgw']->preferences->data['email']['ex_accounts']);
+				//reset($GLOBALS['phpgw']->preferences->data['email']['ex_accounts']);
 			}
 				
 			// DONE processing prefs, SAVE to the Repository
@@ -1410,6 +1416,7 @@
 				{
 					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: $GLOBALS[phpgw]->msg->extra_accounts['.$i.'][status] != empty <br>'; }
 					$next_pos = count($return_list);
+					//$next_pos = $this_acctnum - 1;
 					$return_list[$next_pos]['acctnum'] = $this_acctnum;
 					$return_list[$next_pos]['status'] = $this_status;
 					$fullname = $GLOBALS['phpgw']->msg->get_pref_value('fullname', $this_acctnum);
