@@ -97,9 +97,4 @@
 		 'versions' => Array('0.0.008','1.0.0')
 	);
 
-	$setup_info['projects']['depends'][] = array
-	(
-		 'appname' => 'felamimail',
-		 'versions' => Array('0.9.4','0.9.5','1.0.0')
-	);
 ?>

@@ -746,17 +746,12 @@
 			if(!$_pro_main || !$_emailTo)
 				return false;
 		
-			
 			$profileID 	= 1;
 			$mainProjectData	= $this->read_single_project($_pro_main);
 			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
 			$prefs = $this->read_prefs();
 			$nextmatchs 		= CreateObject('phpgwapi.nextmatchs');
 			
-			#_debug_array($mainProjectData);
-			#_debug_array($subProjectsData);
-
-			$bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());			
 			$bostatistics	= CreateObject('projects.bostatistics');
 			$boemailadmin	= CreateObject('emailadmin.bo');
 			$template	= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
@@ -764,10 +759,8 @@
 			$emailAddresses	= $boemailadmin->getAccountEmailAddress(
 				$GLOBALS['phpgw_info']['user']['userid'], $profileID);
 			
-			$mail		= CreateObject('phpgwapi.phpmailer');
-			$mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
-			
-			$mail->IsSMTP();
+			$mail		= CreateObject('phpgwapi.send');
+
 			$mail->IsHTML(true);
 			
 			$template->set_file(array('email_project_t' => 'export_email_body.tpl'));
@@ -832,7 +825,7 @@
 			}
 			
 			$mail->From	= $emailAddresses[0]['address'];
-			$mail->FromName	= $bofelamimail->encodeHeader($emailAddresses[0]['name'],'q');
+			$mail->FromName	= $emailAddresses[0]['name'];
 			$mail->Host	= $emailSettings['smtpServer'];
 			$mail->Port	= $emailSettings['smtpPort'];
 			$mail->Priority	= '3';
@@ -840,12 +833,12 @@
 			$mail->CharSet  = $GLOBALS['phpgw']->translation->charset();
 			$mail->AddCustomHeader("X-Mailer: Projects for eGroupWare");
 			if(isset($emailSettings['organizationName']))
-				$mail->AddCustomHeader("Organization: ".$bofelamimail->encodeHeader($emailSettings['organizationName'],'q'));
+				$mail->AddCustomHeader("Organization: ".$emailSettings['organizationName']);
 				
 			$mail->AddAddress($_emailTo);
 			
-			$mail->Subject = $bofelamimail->encodeHeader(lang('Project Overview').': '.
-						$mainProjectData['title'],'q').' '.
+			$mail->Subject = lang('Project Overview').': '.
+						$mainProjectData['title'].' '.
 						$GLOBALS['phpgw']->common->show_date();
 			
 			$mail->Body	= $template->fp('out','body_html');
