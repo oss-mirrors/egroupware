@@ -1,0 +1,69 @@
+add profile		es	Añadir perfil
+admin dn		es	dn del administrador
+admin password		es	contraseña del administrador
+admin passwort		es	contraseña del administrador
+admin username		es	usuario del administrador
+advanced options		es	opciones avanzadas
+alternate email address		es	dirección de correo alternativa
+cyrus imap server		es	Servidor IMAP Cyrus
+cyrus imap server administration		es	Administración del servidor IMAP Cyrus
+default		es	predeterminada
+deliver extern		es	entrega externa
+do you really want to delete this profile		es	¿Realmente desea borrar este perfil?
+domainname		es	nombre del dominio
+edit email settings		es	editar configuración de la cuenta
+email account active		es	cuenta de correo electrónico activa
+email address		es	dirección de correo electrónico
+enable cyrus imap server administration		es	activar administración del servidor Cyrus IMAP
+enable sieve		es	activar Sieve
+enter your default mail domain (from: user@domain)		es	introduzca el dominio predeterminado (de usuario@dominio)
+forward also to		es	reeenviar también a
+forward email's to		es	reenviar correos a
+forward only		es	sólo reenviar
+imap admin password		es	contraseña del administrador IMAP
+imap admin user		es	usuario administrador IMAP
+imap c-client version < 2001		es	Versión C-Cliente IMAP < 2001
+imap server hostname or ip address		es	Servidor IMAP o dirección IP
+imap server logintyp		es	Tipo de sesión del servidor IMAP
+imap server port		es	Puerto del servidor IMAP
+imap/pop3 server name		es	Nombre del servidor POP/IMAP
+in mbyte		es	en MBytes
+ldap basedn		es	basedn para LDAP
+ldap server		es	servidor LDAP
+ldap server accounts dn		es	DN para cuentas del servidor LDAP
+ldap server admin dn		es	DN del administrador del servidor LDAP
+ldap server admin password		es	contraseña del administrador del servidor LDAP
+ldap server hostname or ip address		es	Nombre del servidor LDAP o dirección IP
+ldap settings		es	Configuración LDAP
+leave empty for no quota		es	Dejar en blanco para no poner cuota
+mail settings		es	Configuración del correo.
+name of organisation		es	Nombre de la organización
+no alternate email address		es	Sin dirección de correo alternativa
+no forwarding email address		es	Sin dirección de correo para reenviar
+pop3 server hostname or ip address		es	Nombre del servidor POP3 o dirección IP
+pop3 server port		es	Puerto del servidor POP3
+postfix with ldap		es	Postfix con LDAP
+profile list		es	Lista de perfiles
+profile name		es	Nombre del perfil
+qmaildotmode		es	Modo de punto de qmail
+qouta size in mbyte		es	Tamaño de la cuota en MBytes
+quota settings		es	Configuración de las cuotas
+remove		es	borrar
+select type of imap/pop3 server		es	Seleccione el tipo de servidor IMAP/POP3
+select type of smtp server		es	Seleccione el tipo de servidor SMTP
+sieve server hostname or ip address		es	Nombre del servidor Sieve o dirección IP
+sieve server port		es	Puerto del servidor Sieve
+sieve settings		es	Configuración de Sieve
+smtp server name		es	Nombre del servidor SMTP
+smtp-server hostname or ip address		es	Nombre del servidor SMTP o dirección IP
+smtp-server port		es	Puerto del servidor SMTP
+standard		es	Estándar
+standard imap server		es	Servidor IMAP estándar
+standard pop3 server		es	Servidor POP3 estándar
+standard smtp-server		es	Servidor SMTP estándar
+use ldap defaults		es	usar las opciones predeterminadas para LDAP
+use smtp auth		es	Usar identificación SMTP
+use tls authentication		es	Usar identificación TLS
+use tls encryption		es	Usar cifrado TLS
+users can define their own emailaccounts		es	Los usuarios pueden definir sus propias cuentas de correo
+virtual mail manager		es	Gestor de correo virtual
