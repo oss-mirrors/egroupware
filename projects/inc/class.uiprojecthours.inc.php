@@ -305,7 +305,7 @@
 
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
 
-				if ($hours[$i]['status'] != 'billed')
+				if (($hours[$i]['status'] != 'billed') && ($hours[$i]['status'] != 'closed'))
 				{
 					if ($hours[$i]['employee'] == $this->account)
 					{
@@ -315,6 +315,10 @@
 					{
 						$edithour = True;
 					}
+				}
+				else
+				{
+					$edithour = False;
 				}
 
 				if ($edithour)
