@@ -52,6 +52,9 @@
 	  var $action;
 	  var $common;
 
+	  var $filter_settings;
+	  var $browse_settings;
+	  
 	  var $where_key;
 	  var $where_value;
 
@@ -134,7 +137,9 @@
 			'message' => $this->message, # this must be recplaced with new message
 			'site_id' => $this->site_id,
 			'site_object_id' => $this->site_object_id,
-			'last_where_string'=>$this->last_where_string
+			'last_where_string'=>$this->last_where_string,
+			'filter_settings'=>$this->filter_settings,
+			'browse_settings'=>$this->browse_settings
 		 );
 
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
@@ -149,6 +154,8 @@
 			$this->site_id 		= $data['site_id'];
 			$this->site_object_id	= $data['site_object_id'];
 			$this->last_where_string = $data['last_where_string'];
+			$this->filter_settings = $data['filter_settings'];
+			$this->browse_settings = $data['browse_settings'];
 		 }
 	  }
 

@@ -6,6 +6,15 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+
+Version 0.8.210g
+===========================
+Wed Feb 17 15:45:00 CET 2005
+- started implementation of Image Browse Server plugin
+- fixed bug: list filter sessionvariables got lost when switching from user to admin and vice versa
+- fixed bug in column filters List Records where selected filter was forgotten
+
+
 Version 0.8.210f
 ===========================
 Wed Feb 16 17:01:53 CET 2005

@@ -257,15 +257,22 @@
 			<!--  
 			function onBrowseServer() 
 			{
-				_console = window.open("jinn/plugins/UploadImage/popups/insert_image.php","console", "width=580,height=440,resizable");
+				//_console = window.open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php","console", "width=580,height=440,resizable");
+				//if (_console.opener == null) _console.opener = self;
 				//_console.document.open("text/html");
 				//_console.document.writeln("<html><body>testing</body></html>");
 				//_console.document.load("test.html");
-				_console.document.close();				  
+				//_console.document.close();		
+				
+				childWindow=open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php","console","resizable=no,width=580,height=440");
+				if (childWindow.opener == null) 
+				{
+					childWindow.opener = self;
+				}
 			}
 			-->
 			</script>';
-		$input.='<input onClick="onBrowseServer();" type="button" value="browse on server" name="IMG_SRC'.$field_name.$i.'">';
+		$input.='<input onClick="onBrowseServer();" type="button" value="browse on server" name="IMG_BROWSE'.$field_name.$i.'">';
 
 		
 		

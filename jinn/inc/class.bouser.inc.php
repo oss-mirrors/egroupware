@@ -176,7 +176,7 @@
 			'mult_records_amount'=>$this->mult_records_amount,
 			'last_where_string'=>$this->last_where_string
 		 );
-
+		 
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
 	  }
 
