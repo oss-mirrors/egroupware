@@ -93,6 +93,8 @@
 	}
 
 	$WikiLogo = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/default/images/logo.png';
+	// use eGW's temp dir
+	$TempDir = $GLOBALS['phpgw_info']['server']['temp_dir'];
 
 	require('lib/url.php');
 	require('lib/messages.php');
