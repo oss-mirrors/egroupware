@@ -179,7 +179,7 @@
 			if($HTTP_POST_VARS["remove_mailRoutingAddress"]) $bo_action='remove_mailRoutingAddress';
 			if($HTTP_POST_VARS["save"]) $bo_action='save';
 			
-			$this->boemailadmin->saveUserData($HTTP_GET_VARS['account_id'], $formData, $bo_action);
+			$this->boemailadmin->saveUserData($_GET['account_id'], $formData, $bo_action);
 
 			if ($bo_action == 'save')
 			{

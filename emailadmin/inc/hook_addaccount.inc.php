@@ -39,8 +39,9 @@
 	$imapClass = $boemailadmin->getIMAPClass($profileID);
 	$imapClass->addAccount($GLOBALS['hook_values']['account_lid'],$GLOBALS['hook_values']['new_passwd']);
 			
-	#$smtpClass = $boemailadmin->getSMTPClass($profileID);
-	#$smtpClass->addAccount($GLOBALS['hook_values']['account_lid'],$GLOBALS['hook_values']['new_passwd']);
+	// create the smtp account
+	$smtpClass = $boemailadmin->getSMTPClass($profileID);
+	$smtpClass->addAccount($GLOBALS['hook_values']['account_lid'],$GLOBALS['hook_values']['new_passwd']);
 			
 
 }

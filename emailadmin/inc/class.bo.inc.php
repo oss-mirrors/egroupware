@@ -20,6 +20,7 @@
 		var $SMTPServerType = array();		// holds a list of config options
 		
 		var $imapClass;				// holds the imap/pop3 class
+		var $smtpClass;				// holds the smtp class
 
 		var $public_functions = array
 		(
@@ -176,6 +177,17 @@
 			return $profileList;
 		}
 		
+		function getSMTPClass($_profileID)
+		{
+			if(!is_object($this->smtpClass))
+			{
+				$profileData		= $this->getProfile($_profileID);
+				$this->smtpClass	= CreateObject('emailadmin.postfixldap',$profileData);
+			}
+			
+			return $this->smtpClass;
+		}
+		
 		function getSMTPServerTypes()
 		{
 			foreach($this->SMTPServerType as $key => $value)
@@ -330,7 +342,9 @@
 					break;
 					
 				case 'save':
-					$this->soemailadmin->saveUserData($_accountID, $this->userSessionData[$_accountID]);
+					$this->soemailadmin->saveUserData(
+						$_accountID, 
+						$this->userSessionData[$_accountID]);
 					$bofelamimail = CreateObject('felamimail.bofelamimail');
 					$bofelamimail->openConnection('','',true);
 					$bofelamimail->imapSetQuota($GLOBALS['phpgw']->accounts->id2name($_accountID),

@@ -166,7 +166,15 @@
 			global $phpgw, $phpgw_info;
 
 			$ldap = $phpgw->common->ldapConnect();
-			$filter = "uidnumber=$_accountID";
+			// need to be fixed
+			if(is_int(intval($_accountID)))
+			{
+				$filter = "uidnumber=$_accountID";
+			}
+			else
+			{
+				$filter = "uid=$_accountID";
+			}
 			
 			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
 			if ($sri)
@@ -242,10 +250,10 @@
 				$delete['mailForwardingAddress'] = array();
 				@ldap_mod_del($ldap, $accountDN, $delete);
 			}
-				
+			
+			#print "DN: $accountDN<br>";
 			ldap_mod_replace ($ldap, $accountDN, $newData);
 			#print ldap_error($ldap);
-			
 		}
 
 		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
