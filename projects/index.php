@@ -22,10 +22,6 @@
                         
   $t->set_block("projects_list_t", "projects_list", "list");
 
-  
-  $db2 = $phpgw->db;
-  
-  
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
   . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -119,6 +115,8 @@
 
 <?php
   $limit = $phpgw->nextmatchs->sql_limit($start);
+  
+  $db2 = $phpgw->db;
   
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname FROM "
