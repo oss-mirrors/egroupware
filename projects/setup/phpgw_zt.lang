@@ -1,7 +1,7 @@
 projects	common	zt	專案管理
 project administration	admin	zt	專案管理
 Account	projects	zt	帳號
-Active	projects	zt	啟用
+Active	projects	zt	?用
 Activities	projects	zt	動作
 Activities list	projects	zt	動作列表
 Activity	projects	zt	動作
@@ -46,10 +46,10 @@ Edit project administrator list	projects	zt	編輯專案管理人員
 Edit project	projects	zt	編輯專案管理人員
 Edit project hours	projects	zt	編輯專案時數
 Employee	projects	zt	員工
-Generate Activity ID ?	projects	zt	自動產生動作代碼？
-Generate Delivery ID ?	projects	zt	自動產生運送代碼？
-Generate Project ID ?	projects	zt	自動產生專案代碼？
-Generate Invoice ID ?	projects	zt	自動產生發票號碼？
+Generate Activity ID ?	projects	zt	自動?生動作代碼？
+Generate Delivery ID ?	projects	zt	自動?生運送代碼？
+Generate Project ID ?	projects	zt	自動?生專案代碼？
+Generate Invoice ID ?	projects	zt	自動?生發票號碼？
 Hours	projects	zt	時數
 Invoice	projects	zt	發票
 Invoice date	projects	zt	發票日期
@@ -60,7 +60,7 @@ Invoice %1 has been created !	projects	zt	已成功建立發票 %1 ！
 Invoice %1 has been updated !	projects	zt	已成功更新發票 %1 ！
 Job	projects	zt	工作
 Job date	projects	zt	工作日期
-Job description	projects	zt	工作敘述
+Job description	projects	zt	工作?述
 Job has been added !	projects	zt	已成功新增工作！
 Job has been updated !	projects	zt	已成功更新工作！
 Job ID	projects	zt	工作代碼
@@ -96,9 +96,11 @@ Project name	projects	zt	專案名稱
 Project preferences	projects	zt	專案喜好設定
 Project statistic	projects	zt	專案統計
 project statistics	projects	zt	專案統計
-Remark	projects	zt	註記
-Remark required	projects	zt	必須輸入註記
+Remark	projects	zt	注記
+Remark required	projects	zt	必須輸入注記
+select	projects	zt	請選擇
 Select main project	projects	zt	選擇主要專案
+Select per button !	projects	zt	使用按鈕選擇！
 Select project	projects	zt	選擇專案
 Select tax for workhours	projects	zt	選擇工作時數的稅率
 Select users	projects	zt	選擇使用者
@@ -129,4 +131,3 @@ You have entered an invalid end date !	projects	zt	您輸入了不合法的結束日期！
 You have selected an invalid activity !	projects	zt	您選擇了不合法的動作！
 You have no customer selected !	projects	zt	您沒有選擇任何的顧客！
 You have to CREATE a delivery or invoice first !	projects	zt	您必須先「建立」送貨單或發票！
-
