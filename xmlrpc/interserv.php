@@ -34,6 +34,11 @@
 		);
 		_debug_array($is->result);
 		list($x,$xsessionid,$y,$xkp3) = $is->result;
+		if($x)
+		{
+			$xkp3 = $xsessionid;
+			$xsessionid = $x;
+		}
 	}
 	elseif($verify)
 	{
