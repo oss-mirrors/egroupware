@@ -20,35 +20,17 @@
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['stocks'] && $GLOBALS['phpgw_info']['user']['preferences']['stocks']['mainscreen']['enabled'])
 	{
-		$title = lang('Stocks');
-		
-		$portalbox = CreateObject('phpgwapi.listbox',
-			Array
-			(
-				'app_name'					=> 'stocks',
-				'title'						=> $title,
-				'width'						=> '100%',
-				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/default','bg_filler')
-			)
-		);
-
-		$app_id = $GLOBALS['phpgw']->applications->name2id('stocks');
+		$app_id	= $GLOBALS['phpgw']->applications->name2id('stocks');
 		$GLOBALS['portal_order'][] = $app_id;
-		$var = Array
+
+		$portalbox = CreateObject('phpgwapi.listbox',array
 		(
-			'up'		=> Array('url' => '/set_box.php','app' => $app_id),
-			'down'		=> Array('url' => '/set_box.php','app' => $app_id),
-			'close'		=> Array('url' => '/set_box.php','app' => $app_id),
-			'question'	=> Array('url' => '/set_box.php','app' => $app_id),
-			'edit'		=> Array('url' => '/set_box.php','app' => $app_id)
-		);
+			'app_name'	=> 'stocks',
+			'app_id'	=> $app_id,
+			'title'		=> lang('Stocks')
+		));
 
-		while(list($key,$value) = each($var))
-		{
-			$portalbox->set_controls($key,$value);
-		}
-
-		$portalbox->data = Array();
+		$portalbox->data = array();
 		$stocks = CreateObject('stocks.ui');
 
 		$GLOBALS['phpgw']->template->set_var('phpgw_body',$portalbox->xdraw($stocks->return_quotes()),True);
