@@ -688,7 +688,7 @@
 		{
 			$prefix = 'P-' . $this->year . '-';
 
-			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
+			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%') and parent=0");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
