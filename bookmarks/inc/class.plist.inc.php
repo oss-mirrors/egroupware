@@ -128,7 +128,7 @@
 			$where_clause_sql = ' ';
 		}
 
-		$query .= $where_clause_sql . $order_by_sql;
+		$query .= $where_clause_sql . ' order by bm_category, bm_name';
 
 		$phpgw->db->limit_query($query,$start,__LINE__,__FILE__);
 
