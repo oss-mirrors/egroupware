@@ -1,4 +1,4 @@
-<!-- $Id$ -->
+<!-- $Id $ -->
 
 <form method=POST action="{tts_newticket_link}">
 <div align="center">
