@@ -4572,7 +4572,15 @@
 			*/
 				////$string = str_replace("_", " ", $string);
 				$string = str_replace("=\r\n","",$string);
-				return quoted_printable_decode($string);
+				$new_string = '';
+				$new_string = quoted_printable_decode($string);
+				// some qprint use _ for space but this is not that common
+				if ((strstr($string, '_'))
+				&& (!strstr($new_string, ' ')))
+				{
+					$new_string = str_replace("_", " ", $new_string);
+				}
+				return $new_string;
 			// }
 		}
 		
@@ -5209,6 +5217,7 @@
 			$str = ereg_replace('&quot;', '"', $str);
 			$str = ereg_replace('&amp;', '&', $str);
 			*/
+			/*
 			// NEW try using this more comprehensive function
 			if (!$charset)
 			{
@@ -5228,10 +5237,14 @@
 			}
 			else
 			{
+			*/
 				$trans_tbl = get_html_translation_table(HTML_ENTITIES);
 				$trans_tbl = array_flip($trans_tbl);
+				// we always assume ENT_QUOTES, this needs to be added to trans table
+				$trans_tbl["&apos;"] = "'";
 				$str = strtr($str, $trans_tbl);
-			}
+			//}
+			
 			// make sure these also get decoded
 			$str = ereg_replace('&#039;', '\'', $str);
 			$str = ereg_replace('&quot;', '"', $str);
