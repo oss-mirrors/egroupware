@@ -28,7 +28,7 @@
           <td colspan="3" height="20">&nbsp;</td>
         </tr>
 		<tr> 
-          <td bgcolor="#{TD_BG}" width="4%"><img src="{IMG_URL_PREFIX}category.gif" width="18" height="18" alt="{LANG_CATEGORY}"></td>
+          <td bgcolor="#{TD_BG}" width="4%"><img src="{CAT_IMG}" width="18" height="18" alt="{LANG_CATEGORY}"></td>
           <td bgcolor="#{TD_BG}" width="69%">{CAT_NAME}</td>
           <td rowspan="2" bgcolor="#{TD_BG}" width="27%"> 
             <div align="center">[ <a href="{EDIT_LINK}"><font size="2">{LANG_EDIT}</font></a><font size="2"> |  
@@ -42,7 +42,7 @@
 
         <!-- BEGIN ForumBlock --> 
         <tr bgcolor="{TR_BG}"> 
-          <td bgcolor="#{TR_BG}" width="4%"><img src="{IMG_URL_PREFIX}forum.gif" width="16" height="16" alt="{LANG_SUBCAT}"></td>
+          <td bgcolor="#{TR_BG}" width="4%"><img src="{FORUM_IMG}" width="16" height="16" alt="{LANG_SUBCAT}"></td>
           <td bgcolor="#{TD_BG}" width="69%">{SUBCAT_NAME} </td>
           <td bgcolor="#{TD_BG}" width="27%" rowspan="2"> 
             <div align="center"><font size=2>[ <a href="{SUBEDIT_LINK}">{LANG_EDIT}</a> 

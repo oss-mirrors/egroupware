@@ -114,3 +114,18 @@
 		$GLOBALS['setup_info']['forum']['currentver'] = '0.9.13.005';
 		return $GLOBALS['setup_info']['forum']['currentver'];
 	}
+
+	$test[] = '0.9.13.005';
+	function forum_upgrade0_9_13_005()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_categories','name',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_categories','descr',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_forums','name',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_forums','groups',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_forums','descr',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_forum_threads','subject',array('type' => 'varchar', 'precision' => 255,'nullable' => False));
+
+		$GLOBALS['setup_info']['forum']['currentver'] = '0.9.13.006';
+		return $GLOBALS['setup_info']['forum']['currentver'];
+	}
+

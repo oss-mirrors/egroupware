@@ -51,8 +51,10 @@
 			$pos = 1;
 		}
 
-		$GLOBALS['phpgw']->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,cat_id,for_id,"
-			. "thread_owner,subject,stat,n_replies) VALUES ('$pos','$thread','$depth','"
+		$postdate = time() - ((60 * 60) * intval($GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset']));
+
+		$GLOBALS['phpgw']->db->query("insert into phpgw_forum_threads (pos,thread,depth,postdate,main,parent,cat_id,for_id,"
+			. "thread_owner,subject,stat,n_replies) VALUES ('$pos','$thread','$depth','".$GLOBALS['phpgw']->db->to_timestamp($postdate)."','"
 			. "$next_f_body_id','" . addslashes($msg) . "','" . $session_info['cat_id'] . "','"
 			. $session_info['forum_id'] . "','" . $GLOBALS['phpgw_info']['user']['account_id'] . "','"
 			. addslashes($subject) . "','$stat',0)",__LINE__,__FILE__);

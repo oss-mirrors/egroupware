@@ -29,7 +29,7 @@
   </tr>
   <!-- BEGIN CollapseThreads --> 
   <tr bgcolor=#{COLOR}> 
-    <td align=left width="3%"><img src="{IMG_URL_PREFIX}thread.gif" width="13" height="13" alt="{LANG_SUBCAT}"></td>
+    <td align=left width="3%"><img src="{THREAD_IMG}" width="13" height="13" alt="{LANG_SUBCAT}"></td>
     <td valign="middle" width="30%"> 
       <div align="center"><a href="{READ_LINK}">{TOPIC}</a></div>
     </td>
@@ -39,6 +39,4 @@
   </tr>
   <!-- END CollapseThreads --> 
 </table>
-<p>&nbsp;</p>
-</body>
-</html>
+

@@ -18,7 +18,8 @@
           <p> 
             <input type="hidden" name="type" value="{TYPE}">
             <input type="hidden" name="action" value="{ACTION}">
-           
+            <input type="hidden" name="cat_id" value="{CAT_ID}">
+            <input type="hidden" name="forum_id" value="{FORUM_ID}">
           </p>
           <table border="0" width="80%" bgcolor=#D8E0E8 cellspacing="1" cellpadding="2">
             <tr> 

@@ -18,11 +18,11 @@
 	);
 	include('../header.inc.php');
 
-	$GLOBALS['phpgw']->db->query("select * from phpgw_forum_categories where id='" . $session_info['cat_id'] . "'");
+	$GLOBALS['phpgw']->db->query("select * from phpgw_forum_categories where id='" . $GLOBALS['session_info']['cat_id'] . "'");
 	$GLOBALS['phpgw']->db->next_record();
 	$category = $GLOBALS['phpgw']->db->f('name');
 
-	$GLOBALS['phpgw']->db->query("select * from phpgw_forum_forums where id='" . $session_info['forum_id'] . "'");
+	$GLOBALS['phpgw']->db->query("select * from phpgw_forum_forums where id='" . $GLOBALS['session_info']['forum_id'] . "'");
 	$GLOBALS['phpgw']->db->next_record();
 	$forums = $GLOBALS['phpgw']->db->f('name');
 
@@ -43,18 +43,18 @@
 		'POST_LINK'      => $GLOBALS['phpgw']->link('/forum/post.php','type=new'),
 	));
 
-	if ($session_info['view'] == 'collapsed')
+	if ($GLOBALS['session_info']['view'] == 'collapsed')
 	{
 		$GLOBALS['phpgw']->template->set_file('COLLAPSE','collapse.threads.tpl');
 		$GLOBALS['phpgw']->template->set_block('COLLAPSE','CollapseThreads','CollapseT');
-		$GLOBALS['phpgw']->db->query("select * from phpgw_forum_threads where cat_id='" . $session_info['cat_id'] . "' and for_id='" . $session_info['forum_id'] . "'"
+		$GLOBALS['phpgw']->db->query("select * from phpgw_forum_threads where cat_id='" . $GLOBALS['session_info']['cat_id'] . "' and for_id='" . $GLOBALS['session_info']['forum_id'] . "'"
 			. ' and parent = -1 order by postdate DESC');
 
 		//for viewing the collapse threads
 
 		while ($GLOBALS['phpgw']->db->next_record())
 		{
-			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+			$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($GLOBALS['tr_color']);
 			$subject = $GLOBALS['phpgw']->db->f('subject');
 			if (! $subject)
 			{
@@ -62,7 +62,7 @@
 			} //end if
 
 			$GLOBALS['phpgw']->template->set_var(array(
-				'COLOR'       => $tr_color,
+				'COLOR'       => $GLOBALS['tr_color'],
 				'TOPIC'       => $subject,
 				'AUTHOR'      => ($GLOBALS['phpgw']->db->f('thread_owner')?$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('thread_owner')):lang('Unknown')),
 				'REPLIES'     => $GLOBALS['phpgw']->db->f('n_replies') ,
@@ -91,18 +91,18 @@
 
 		while($GLOBALS['phpgw']->db->next_record())
 		{
-			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+			$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($GLOBALS['tr_color']);
 			$move = '';
-			//$move = '<img src="'.$GLOBALS['phpgw_info']['server']['app_images'] . '/trans.gif"';
+			//$move = '<img src="'.$GLOBALS['phpgw']->common->image($GLOBALS['phpgw_info']['server']['currentapp'],'trans').'"';
 			for($tmp = 1;$tmp <= $GLOBALS['phpgw']->db->f('depth'); $tmp++)
 			/* if($tmp==1)
 			{
-				$move .= '<img src="'.$GLOBALS['phpgw_info']['server']['app_images'] . '/n.gif"';
+				$move .= '<img src="'.$GLOBALS['phpgw']->common->image($GLOBALS['phpgw_info']['server']['currentapp'],'n').'"';
 			}
 			*/
 			$move .= '&nbsp;&nbsp;';
 			//putting some images point like <li></li>
-			$move .= '<img src="'. PHPGW_IMAGES . '/n.gif">';
+			$move .= '<img src="'.$GLOBALS['phpgw']->common->image($GLOBALS['phpgw_info']['server']['currentapp'],'n').'">';
 			$move .= '&nbsp;&nbsp;';
 			$subject = $GLOBALS['phpgw']->db->f('subject');
 			if (! $subject)
