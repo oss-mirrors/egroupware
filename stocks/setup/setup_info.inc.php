@@ -11,7 +11,7 @@
     /* $Id$ */
 
 	$setup_info['stocks'] = array('name' => 'Stock Quotes',
-							'app_order' => 1,
-							'version' => '0.8.2.001');
+							'app_order' => 24,
+							'version' => '0.8.2');
 
 ?>
