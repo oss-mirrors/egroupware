@@ -1,5 +1,6 @@
 %1 by %2	comic	sl	%1 od %2
 %1 by %2 (%3)	comic	sl	%1 od %2 (%3)
+are you sure you want to reset all	comic	sl	Ste prepričani, da želite ponastaviti vse
 are you sure you want to reset all comic dates and resolved image urls?	comic	sl	Ali ste prepričani, da želite ponastaviti vse datume stripov in internetne naslove slik?
 censorship level	comic	sl	Stopnja cenzure
 censorship override enabled	comic	sl	Izključi cenzuro

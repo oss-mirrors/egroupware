@@ -27,7 +27,7 @@ administrator	projects	sl	Skrbnik
 administrator list	projects	sl	Seznam administratorjev
 alarm	projects	sl	alarm
 all	projects	sl	Vse
-all delivery notes	projects	sl	VSE opombe dostav
+all delivery notes	projects	sl	Vse opombe dostav
 all invoices	projects	sl	Vse fakture
 amount	projects	sl	Znesek
 anonymous public	projects	sl	Anonimna javnost
@@ -182,6 +182,7 @@ id can not exceed 19 characters in length	projects	sl	Šifra ne sme biti daljša
 id can not exceed 20 characters in length	projects	sl	Dolžina šifre ne more preseči 20 znakov.
 id can not exceed 25 characters in length	projects	sl	Šifra ne sme biti daljša od 25 znakov!
 id can not exceed 250 characters in length	projects	sl	Dolžina šifre ne more preseči 250 znakov.
+id is already taken, choose an other one	projects	sl	šifra je že zasedena, izberite drugo
 if using activities	admin	sl	Če se uporabljajo aktivnosti
 if you are an administrator, please edit the site configuration for projects in the admin section	projects	sl	Če ste administrator, uredite nastavitve konfiguracije aplikacije Projekti v sekciji za upravljanje.
 if you are an administrator, please set the preferences for this application	projects	sl	Če si skrbnik, prosim določite nastavitve za to aplikacijo!
@@ -315,6 +316,7 @@ projects	common	sl	Projekti
 projects preferences	preferences	sl	Nastavitve projektov
 projects, which are assigned as sequencing	projects	sl	Projekti, ji so dodeljeni v zaporedju
 quality check	projects	sl	Preverjanje kakovosti
+read a list / search for entries.	projects	sl	Beri seznam / poišči vnose
 reference	projects	sl	Reference
 remark	projects	sl	Opomba
 remark can not exceed 8000 characters in length	projects	sl	Dolžina pripombe ne sme presegati 8000 znakov.

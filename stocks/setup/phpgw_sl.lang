@@ -2,6 +2,7 @@ $ change	common	sl	Sprememba
 %	stocks	sl	%
 % change	common	sl	Sprememba v %
 add new stock	stocks	sl	Dodaj nov vrednostni papir
+company name	stocks	sl	Ime podjetja
 disable	stocks	sl	onemogoči
 display stocks on main screen is disabled	stocks	sl	Prikaz vrednostnih papirjev na glavnem zaslonu je onemogočen
 display stocks on main screen is enabled	stocks	sl	Prikaz vrednostnih papirjev na glavnem zaslonu je omogočen
@@ -11,4 +12,5 @@ price	stocks	sl	Cena
 select displayed stocks	preferences	sl	Izberite vrednostne papirje za prikaz
 stock quote preferences	stocks	sl	Nastavitve vrednostnih papirjev
 stock quotes	common	sl	Vrednostni papirji
+stocks	common	sl	Vrednostni papirji
 symbol	stocks	sl	Simbol

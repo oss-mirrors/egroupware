@@ -11,6 +11,7 @@ collapse threads	forum	sl	Strnjene niti
 collapsed	forum	sl	strnjeno
 create new category	forum	sl	Ustvari novo rubriko
 current categories and sub forums	forum	sl	Trenutne rubrike in podpomenki
+default view	forum	sl	Privzeti pogled
 edit forum	forum	sl	Uredi Pomenke
 email replies to this thread, to the address above	forum	sl	Pošlji odgovore na to temo po E-pošti na zgornji naslov
 forum	common	sl	Pomenki
@@ -31,6 +32,7 @@ return to forums	forum	sl	Nazaj na Pomenke
 sub category	forum	sl	Podrubrika
 there are no forums in this category	forum	sl	V tej rubriki ni nobenih pomenkov
 threaded	forum	sl	Kot niti pogovorov
+threads	forum	sl	Niti
 topic	forum	sl	Tema
 update category	forum	sl	Posodobi kategorijo
 update forum	forum	sl	Posodobi Pomenke

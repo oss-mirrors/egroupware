@@ -81,6 +81,7 @@ opened by	tts	sl	Odprl
 original ticket details	tts	sl	Začetne podrobnosti opravila
 perform irregular transition into the following state	tts	sl	Izvedi nepravilen prehod v to stanje
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	sl	Vnesite spremembo zadeve opravila, sicer opravila ne morem shraniti.
+prio	tts	sl	Prio
 priority	tts	sl	Prioriteta
 priority changed	tts	sl	Sprememba prioritete
 put the preexistent ticket into the state %1.	tts	sl	Obstoječe opravilo postavite v stanje %1.
