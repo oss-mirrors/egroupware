@@ -33,7 +33,7 @@
 
 	section_start(ucfirst($appname),$imgpath);
 
-	echo '<a href="' . $phpgw->link('/email/preferences.php') . '">' . lang('E-Mail preferences') . '</a>';
+	section_item($phpgw->link('/email/preferences.php'),lang('E-Mail preferences'));
 
 	section_end(); 
 }
