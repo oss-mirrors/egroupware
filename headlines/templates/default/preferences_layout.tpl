@@ -1,14 +1,12 @@
 <br>
-<center><h2>{title}</h2></center>
-<p>
 
 <form method="POST" action="{action_url}">
 
- <table border="0" cellpadding="0" cellspacing="0" width="85%" align="center">
+ <table border="0" cellpadding="0" cellspacing="0" width="60%" align="center">
   <tr align="center" bgcolor="{th_bg}">
-   <td colspan="4" align="right">
+   <td colspan="3" align="center">
     {template_label}:    
-    <select name="headlines_layout">
+    <select name="headlines_layout" onChange="this.form.submit();">
      {template_options}
     </select>
    </td>
@@ -19,27 +17,19 @@
   </tr>
 
   <tr>
-   <td>{layout_1}</td>
-   <td>{layout_2}</td>
-   <td>{layout_3}</td>
-   <td>{layout_4}</td>
+   <td align="center">{layout_1}</td>
+   <td align="center">{layout_2}</td>
+   <td align="center">{layout_3}</td>
   </tr>
 
   <tr>
-   <td colspan="4">&nbsp;</td>
+   <td colspan="2">&nbsp;</td>
   </tr>
 
   <tr>
-   <td align="left">
-    <input type="submit" name="submit" value="{action_label}">
-   </td>
-
-   <td colspan="2" align="center">
-    <input type="submit" name="done" value="{done_label}">   
-   </td>
-
-   <td align="right">
-    <input type="reset" name="reset" value="{reset_label}">
+   <td align="center" colspan="3">
+    <input type="submit" name="save" value="{save_label}"> &nbsp;
+    <input type="submit" name="cancel" value="{cancel_label}">
    </td>
   </tr>
  </table>

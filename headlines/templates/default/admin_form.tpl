@@ -1,6 +1,5 @@
 <!-- BEGIN form -->
-<p><b>{title}</b>
-<hr><br>
+<br>
 
   <center>{messages}</center>
 
@@ -10,27 +9,27 @@
      <td colspan="2">&nbsp;{lang_header}</td>
     </tr>
     <tr bgcolor="{row_on}">
-     <td>{lang_display}</td>
+     <td>&nbsp;{lang_display}</td>
      <td>{input_display}</td>
     </tr>
     <tr bgcolor="{row_off}">
-     <td>{lang_base_url}</td>
+     <td>&nbsp;{lang_base_url}</td>
      <td>{input_base_url}</td>
     </tr>
     <tr bgcolor="{row_on}">
-     <td>{lang_news_file}</td>
+     <td>&nbsp;{lang_news_file}</td>
      <td>{input_news_file}</td>
     </tr>
     <tr bgcolor="{row_off}">
-     <td>{lang_minutes}</td>
+     <td>&nbsp;{lang_minutes}</td>
      <td>{input_minutes}</td>
     </tr>
     <tr bgcolor="{row_on}">
-     <td>{lang_listings}</td>
+     <td>&nbsp;{lang_listings}</td>
      <td>{input_listings}</td>
     </tr>
     <tr bgcolor="{row_off}">
-     <td>{lang_type}</td>
+     <td>&nbsp;{lang_type}</td>
      <td>{input_type}</td>
     </tr>
     {buttons}
@@ -41,16 +40,28 @@
      <td colspan="2">&nbsp;{lang_current_cache}</td>
     </tr>
     {listing_rows}
+    {cancel}
    </table>
   </form>
 
 <!-- END form -->
 
 <!-- BEGIN buttons -->
-    <tr bgcolor="{row_on}">
-     <td colspan="2" align="right"><input type="submit" name="submit" value="{lang_button}"></td>
+    <tr>
+     <td colspan="2" align="left" height="40">
+      <input type="submit" name="save" value="{lang_save}"> &nbsp;
+      <input type="submit" name="cancel" value="{lang_cancel}">
+     </td>
     </tr>
 <!-- END buttons -->
+
+<!-- BEGIN cancel -->
+    <tr>
+     <td colspan="2" height="40">
+      <input type="submit" name="cancel" value="{lang_cancel}">
+     </td>
+    </tr>
+<!-- END cancel -->
 
 <!-- BEGIN listing_row -->
  <tr bgcolor="{tr_color}">

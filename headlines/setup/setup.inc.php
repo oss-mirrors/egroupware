@@ -36,10 +36,11 @@
 	$setup_info['headlines']['hooks'][]   = 'manual';
 	$setup_info['headlines']['hooks'][]   = 'settings';
 	$setup_info['headlines']['hooks'][]   = 'preferences';
+	$setup_info['headlines']['hooks'][]   = 'sidebox_menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13', '0.9.14')
+		'versions' => Array('0.9.13','0.9.14','0.9.15','0.9.16')
 	);
 ?>

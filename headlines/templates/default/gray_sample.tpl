@@ -1,10 +1,10 @@
-<table cellspacing="0" cellpadding="1" border="0" bgcolor="#000080" width="120">
+<table cellspacing="0" cellpadding="1" border="0" bgcolor="black" width="120">
  <tr>
   <td> 
    <table cellspacing="0" cellpadding="1" bgcolor="#f5f5f5" border="0" width="118">
-    <tr bgcolor="#000080">
+    <tr bgcolor="gray">
      <td>
-      <font size="-1" color="white"><strong><a href="" target="new" style="text-decoration: none; color: white; text-align: center">{color}</a></strong></font>
+      <font size="-1" color="white"><strong><a href="" target="new" style="text-decoration: none; color: white; text-align: center">{gray}</a></strong></font>
      </td>
     </tr>
     <ul>

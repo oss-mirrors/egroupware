@@ -13,46 +13,27 @@
 	/* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp'              => 'admin',
+		'admin_only' => True,
+		'currentapp' => 'headlines',
 		'enable_nextmatchs_class' => True,
 		'nonavbar'                => True,
 		'noheader'                => True
 	);
 	include('../header.inc.php');
 
-	$con     = $GLOBALS['HTTP_POST_VARS']['con'] ? $GLOBALS['HTTP_POST_VARS']['con'] : $GLOBALS['HTTP_GET_VARS']['con'];
-	$confirm = $GLOBALS['HTTP_POST_VARS']['confirm'] ? $GLOBALS['HTTP_POST_VARS']['confirm'] : $GLOBALS['HTTP_GET_VARS']['confirm'];
+	$con = intval(get_var('con',array('POST','GET')));
 
-	if (($con) && (! $confirm))
+	if ($_POST['no'])
 	{
-		$GLOBALS['phpgw']->common->phpgw_header();
-		echo parse_navbar();
-
-		// This is done for a reason (jengo)
-		$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
-	
-		$GLOBALS['phpgw']->template->set_file(array(
-			'delete_form' => 'admin_delete.tpl'
-		));
-
-		$GLOBALS['phpgw']->template->set_var('title',lang('Headlines Administration - Delete headline'));
-		$GLOBALS['phpgw']->template->set_var('lang_message',lang('Are you sure you want to delete this news site ?'));
-		$GLOBALS['phpgw']->template->set_var('lang_no',lang('No'));
-		$GLOBALS['phpgw']->template->set_var('lang_yes',lang('Yes'));
-
-		$GLOBALS['phpgw']->template->set_var('link_no',$GLOBALS['phpgw']->link('/headlines/admin.php'));
-		$GLOBALS['phpgw']->template->set_var('link_yes',$GLOBALS['phpgw']->link('/headlines/deleteheadline.php',"con=$con&confirm=true"));
-
-		$GLOBALS['phpgw']->template->pfp('out','delete_form');
-
-		$GLOBALS['phpgw']->common->phpgw_footer();
+		$GLOBALS['phpgw']->redirect_link('/headlines/admin.php','cd=16');
 	}
-	else
+
+	if ($con && $_POST['yes'])
 	{
 		$GLOBALS['phpgw']->db->transaction_begin();
 
-		$GLOBALS['phpgw']->db->query("delete from phpgw_headlines_sites where con='$con'",__LINE__,__FILE__);
-		$GLOBALS['phpgw']->db->query("delete from phpgw_headlines_cached where site='$con'",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query("delete from phpgw_headlines_sites where con=$con",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query("delete from phpgw_headlines_cached where site=$con",__LINE__,__FILE__);
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_preferences",__LINE__,__FILE__);
 		while ($GLOBALS['phpgw']->db->next_record())
@@ -77,6 +58,27 @@
 		}
 
 		$GLOBALS['phpgw']->db->transaction_commit();
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/headlines/admin.php','cd=16'));
+		$GLOBALS['phpgw']->redirect_link('/headlines/admin.php','cd=16');
 	}
-?>
+
+	$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Headlines Administration - Delete headline');
+	$GLOBALS['phpgw']->common->phpgw_header();
+	echo parse_navbar();
+
+	// This is done for a reason (jengo)
+	$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
+
+	$GLOBALS['phpgw']->template->set_file(array(
+		'delete_form' => 'admin_delete.tpl'
+	));
+
+	$GLOBALS['phpgw']->template->set_var('lang_message',lang('Are you sure you want to delete this news site ?'));
+	$GLOBALS['phpgw']->template->set_var('lang_no',lang('No'));
+	$GLOBALS['phpgw']->template->set_var('lang_yes',lang('Yes'));
+
+	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/headlines/deleteheadline.php'));
+	$GLOBALS['phpgw']->template->set_var('con',$con);
+
+	$GLOBALS['phpgw']->template->pfp('out','delete_form');
+
+	$GLOBALS['phpgw']->common->phpgw_footer();

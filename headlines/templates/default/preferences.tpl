@@ -1,11 +1,10 @@
 <!-- BEGIN form -->
 
-<b>{lang_headlines}</b><hr><p>
-
+<br>
  <form method="POST" action="{form_action}">
-  <table align="center" width="25%">
+  <table align="center">
    <tr bgcolor="{th_bg}">
-    <td>&nbsp;{lang_header}</td>
+    <td align="center" nobreak>&nbsp;{lang_header}&nbsp;</td>
    </tr>
 
    <tr>
@@ -18,7 +17,8 @@
 
    <tr bgcolor="{tr_color_2}">
     <td align="center">
-     <input type="submit" name="submit" value="{lang_submit}">
+     <input type="submit" name="save" value="{lang_save}"> &nbsp;
+     <input type="submit" name="cancel" value="{lang_cancel}">
     </td>
    </tr>
   </table>

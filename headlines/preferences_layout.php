@@ -1,57 +1,59 @@
 <?php
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'headlines',
 		'noheader'   => True,
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
 
-	if ($done)
+	if ($_POST['cancel'] || $_POST['save'] || $_POST['headlines_layout'])
 	{
-		$phpgw->redirect($phpgw->link('/headlines/index.php'));
+		if (!$_POST['cancel'])
+		{
+			$GLOBALS['phpgw']->preferences->add('headlines','headlines_layout',$_POST['headlines_layout']);
+			$GLOBALS['phpgw']->preferences->save_repository();
+		}
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/headlines/index.php'));
 	}
-	else
-	{
-		$phpgw->common->phpgw_header();
-		echo parse_navbar();
-	}
+	$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Headlines layout');
+	$GLOBALS['phpgw']->common->phpgw_header();
+	echo parse_navbar();
 
-	if ($submit)
-	{
-		$phpgw->preferences->change('headlines','headlines_layout');
-		$phpgw->preferences->commit(True);
-	}
-
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'layout1' => 'basic_sample.tpl',
 		'layout2' => 'color_sample.tpl',
+		'layout3' => 'gray_sample.tpl',
 		'body'    => 'preferences_layout.tpl'
 	));
 
-	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$phpgw->template->set_var('action_url',$phpgw->link('/headlines/preferences_layout.php'));
-	$phpgw->template->set_var('title',lang('Headlines layout'));
-	$phpgw->template->set_var('action_label',lang('Submit'));
-	$phpgw->template->set_var('done_label',lang('Done'));
-	$phpgw->template->set_var('reset_label',lang('Reset'));
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/headlines/preferences_layout.php'));
+	$GLOBALS['phpgw']->template->set_var('save_label',lang('Save'));
+	$GLOBALS['phpgw']->template->set_var('cancel_label',lang('Cancel'));
 
-	$phpgw->template->set_var('template_label',lang('Choose layout'));
+	$GLOBALS['phpgw']->template->set_var('template_label',lang('Choose layout'));
 
-	if ($submit)
+	if ($_POST['save'])
 	{
-		$selected[$headlines_layout] = ' selected';
+		$selected[$_POST['headlines_layout']] = ' selected';
 	}
 	else
 	{
-		$selected[$phpgw_info['user']['preferences']['headlines']['headlines_layout']] = ' selected';	
+		$selected[$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout']] = ' selected';
 	}
 
 	$s  = '<option value="basic"' . $selected['basic'] . '>' . lang('Basic') . '</option>';
 	$s .= '<option value="color"' . $selected['color'] . '>' . lang('Color') . '</option>';
-	$phpgw->template->set_var('template_options',$s);
+	$s .= '<option value="gray"'  . $selected['gray'] . '>' . lang('Gray') . '</option>';
+	$GLOBALS['phpgw']->template->set_var('template_options',$s);
 
-	$phpgw->template->parse('layout_1','layout1');
-	$phpgw->template->parse('layout_2','layout2');
+	$GLOBALS['phpgw']->template->set_var('sample',lang('Sample'));
+	$GLOBALS['phpgw']->template->set_var('basic',lang('Basic'));
+	$GLOBALS['phpgw']->template->parse('layout_1','layout1');
+	$GLOBALS['phpgw']->template->set_var('color',lang('Color'));
+	$GLOBALS['phpgw']->template->parse('layout_2','layout2');
+	$GLOBALS['phpgw']->template->set_var('gray',lang('Gray'));
+	$GLOBALS['phpgw']->template->parse('layout_3','layout3');
 
-	$phpgw->template->pfp('out','body');
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->template->pfp('out','body');
+	$GLOBALS['phpgw']->common->phpgw_footer();

@@ -15,9 +15,15 @@
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'headlines',
-		'enable_nextmatchs_class' => True
+		'enable_nextmatchs_class' => True,
+		'noheader'                => True,
+		'nonavbar'                => True,
 	);
 	include('../header.inc.php');
+
+	$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Headline Sites');
+	$GLOBALS['phpgw']->common->phpgw_header();
+	echo parse_navbar();
 
 	// This is done for a reason (jengo)
 	$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
@@ -29,7 +35,6 @@
 	$GLOBALS['phpgw']->template->set_block('admin','row_empty');
 
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$GLOBALS['phpgw']->template->set_var('title',lang('Headline Sites'));
 	$GLOBALS['phpgw']->template->set_var('lang_site',lang('Site'));
 	$GLOBALS['phpgw']->template->set_var('lang_edit',lang('Edit'));
 	$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));

@@ -23,7 +23,7 @@
 
 	if (! count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
-		Header('Location: ' . $GLOBALS['phpgw']->link('/headlines/preferences.php'));
+		$GLOBALS['phpgw']->redirect_link('/headlines/preferences.php');
 	}
 	else
 	{
@@ -33,16 +33,16 @@
 
 	if (! $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
 	{
-		$GLOBALS['phpgw']->preferences->change('headlines','headlines_layout','basic');
-		$GLOBALS['phpgw']->preferences->commit(True);
+		$GLOBALS['phpgw']->preferences->add('headlines','headlines_layout','basic');
+		$GLOBALS['phpgw']->preferences->save_repository();
 		$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] = 'basic';
 	}
 
-	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	foreach($GLOBALS['phpgw_info']['user']['preferences']['headlines'] as $n => $name)
 	{
-		if ($preference[0] != 'headlines_layout')
+		if ($n != 'headlines_layout')
 		{
-			$sites[] = $preference[0];
+			$sites[] = $n;
 		}
 	}
 
@@ -60,7 +60,7 @@
 	{
 		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
 	}
-	while (list(,$site) = @each($sites))
+	foreach($sites as $site)
 	{
 		$j++;
 		$headlines->readtable($site);

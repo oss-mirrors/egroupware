@@ -1,9 +1,9 @@
 <!-- BEGIN channel -->
-<table cellspacing="0" cellpadding="1" border="0" bgcolor="#000080" width="92%">
+<table cellspacing="0" cellpadding="1" border="0" bgcolor="black" width="92%">
  <tr>
   <td valign="top">
    <table cellspacing="0" cellpadding="2" bgcolor="#f5f5f5" border="0" width="100%">
-    <tr bgcolor="#000080">
+    <tr bgcolor="gray">
      <td>
       <font size="-1" color="white"><strong><a href="{channel_url}" target="new" style="text-decoration: none; color: white; text-align: center">{channel_title}</a></strong></font>
      </td>

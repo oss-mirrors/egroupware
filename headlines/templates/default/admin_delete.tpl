@@ -1,19 +1,12 @@
-<p><b>{title}</b>
-<hr><p>
-
- <table border="0" with="65%" align="center">
-  <tr colspan="2">
-   <td align="center">
-    {lang_message}
-   <td>
-  </tr>
-
-  <tr>
-   <td>
-    <a href="{link_no}">{lang_no}</a>
-   </td>
-   <td>
-    <a href="{link_yes}">{lang_yes}</a>
-   </td>
-  </tr>
- </table>
+<p>&nbsp;<p>
+<form method="POST" action="{action_url}">
+	<input type="hidden" name="con" value="{con}">
+	<p align="center">
+		{lang_message}
+	</p>
+	<p align="center">
+		<input type="submit" name="yes" value=" {lang_yes} "> &nbsp; &nbsp;
+		<input type="submit" name="no" value=" {lang_no} ">
+	</p>
+</form>
+<br>

@@ -1,6 +1,5 @@
 <!-- BEGIN list -->
-<p><b>{title}</b>
-<hr><br>
+<br>
 <table border="0" width="65%" align="center">
  <tr bgcolor="{th_bg}">
   <td>{lang_site}</td>
