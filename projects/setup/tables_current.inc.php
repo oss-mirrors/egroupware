@@ -18,11 +18,9 @@
 		'phpgw_p_projects' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'num' => array('type' => 'varchar','precision' => 25,'nullable' => False),
 				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'access' => array('type' => 'varchar','precision' => 7,'nullable' => True),
-				'category' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'start_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'end_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -31,7 +29,9 @@
 				'status' => array('type' => 'varchar','precision' => 9,'default' => 'active','nullable' => False),
 				'descr' => array('type' => 'text','nullable' => True),
 				'title' => array('type' => 'varchar','precision' => 255,'nullable' => False),
-				'budget' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
+				'budget' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+				'category' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -74,12 +74,13 @@
 				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'start_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'end_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'hours_descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'remark' => array('type' => 'text','nullable' => True),
 				'minutes' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'minperae' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'billperae' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
 				'status' => array('type' => 'varchar','precision' => 6,'default' => 'done','nullable' => False),
+				'hours_descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+				'dstatus' => array('type' => 'char','precision' => 1,'default' => 'o','nullable' => False),
 				'pro_parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),

@@ -33,7 +33,7 @@ Coordinator	projects	en	Coordinator
 Create delivery	projects	en	Create delivery
 Create invoice	projects	en	Create invoice
 courier new	projects	en	Courier New
-Customer	projects	en	Customer
+customer	projects	en	Customer
 Delete hours	projects	en	Delete hours
 Deliveries	projects	en	Deliveries
 Delivery	projects	en	Delivery
@@ -52,6 +52,7 @@ edit project bookkeeper list	projects	en	Edit project bookkeeper list
 Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
 Employee	projects	en	Employee
+Ending date can not be after main projects ending date !	projects	en	Ending date can not be after main projects ending date !
 Generate Activity ID ?	projects	en	Generate Activity ID ?
 Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Project ID ?	projects	en	Generate Project ID ?
@@ -93,7 +94,7 @@ per workunit	projects	en	per workunit
 Please enter an ID !	projects	en	Please enter an ID !
 Please choose activities for that project first !	projects	en	Please choose activities for that project first !
 Please enter a remark !	projects	en	Please enter a remark !
-Please enter the bill per workunit !	projects	en	Please enter the bill per workunit !
+Please enter the bill !	projects	en	Please enter the bill !
 Please enter the minutes per workunit !	projects	en	Please enter the minutes per workunit !
 Position	projects	en	Position
 Print delivery	projects	en	Print delivery
@@ -125,6 +126,7 @@ Select users	projects	en	Select users
 Select groups	projects	en	Select groups
 Select your address	projects	en	Select your address
 small	projects	en	Small
+Start date can not be before main projects start date !	projects	en	Start date can not be before main projects start date !
 Statistic	projects	en	Statistic
 Statistics	projects	en	Statistics
 Short description	projects	en	Short description
