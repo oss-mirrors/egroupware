@@ -21,12 +21,12 @@
   
   
 if ($submit) {
-     $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"projects");
-     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"tax","projects");
-     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"address","projects");
+     $phpgw->preferences->change("projects","tax");
+     $phpgw->preferences->change("projects","address");
+     $phpgw->preferences->commit();     
      
-     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
-    }
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/"));
+     }
   
      if ($totalerrors) {                                                                                                                                                               
      echo "<p><center>" . $phpgw->common->error_list($errors) . "</center>";                                                                                                        

@@ -30,7 +30,7 @@
        if ($month && $day && $year) {
           $t->set_var(date_hint,lang("You have entered an invailed date"));
           $date=0;
-          unset($Invoice);
+          unset($Delivery);
        }
    }
    if(!$delivery_id) {
