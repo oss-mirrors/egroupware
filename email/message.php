@@ -27,7 +27,7 @@
                                 "enable_nextmatchs_class" => True, "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
-//  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
+  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
   if (!empty($msgtype)) {
     Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
     exit;
