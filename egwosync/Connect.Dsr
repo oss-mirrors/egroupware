@@ -35,9 +35,8 @@ Option Explicit
 
 Implements IDTExtensibility2
 Private AddinInstance As COMAddIn
-'Private oXL As Object 'Outlook.Application is not compatible with Outlook 2000
-Private WithEvents oXL As Outlook.Application
-Attribute oXL.VB_VarHelpID = -1
+Private oXL As Object 'Outlook.Application is not compatible with Outlook 2000
+'Private WithEvents oXL As Outlook.Application
 Private WithEvents cbb As Office.CommandBarButton
 Attribute cbb.VB_VarHelpID = -1
 
@@ -77,14 +76,8 @@ Private Sub IDTExtensibility2_OnStartupComplete(custom() As Variant)
     If oCBs Is Nothing Then
         Set oCBs = oXL.ActiveExplorer.CommandBars
     End If
-    If oCBs Is Nothing Then
-        ConnectError "Command Bars collection not found"
-    End If
     
     Set oSB = oCBs.Item("Standard")
-    If oSB Is Nothing Then
-        ConnectError "Standard Command Bar not found"
-    End If
     
     Set cbb = oSB.Controls.Item("eGWOSync")
     If cbb Is Nothing Then

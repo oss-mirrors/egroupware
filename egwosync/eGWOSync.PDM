@@ -1,5 +1,5 @@
 [Root]
-Most Recent Package=eGWOSync Installation Test Package
+Most Recent Package=eGWOSync Installer
 
 
 [Package|eGWOSync Installation Test Package|Root]
@@ -95,5 +95,98 @@ ServerSideCab=
 File1=C:\eGWOSync\Deploy\setup.exe
 File2=C:\eGWOSync\Deploy\Setup.Lst
 File3=C:\eGWOSync\Deploy\eGWOSync.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz
+
+
+[Package|eGWOSync Installer|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\Installer\Packager
+
+[Package|eGWOSync Installer|Configure DAO ISAMs]
+Applicable=No
+
+[Package|eGWOSync Installer|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|eGWOSync Installer|Files Found]
+
+[Package|eGWOSync Installer|Files Released]
+
+[Package|eGWOSync Installer|Missing Dependency Information]
+C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\PropertyPage.ocx=
+C:\WINDOWS\system32\FM20.DLL=
+C:\Program Files\Microsoft Office\Office\MSOUTL9.OLB=
+C:\WINDOWS\system32\vbXMLRPC.dll=
+C:\WINDOWS\system32\vbXML.dll=
+C:\Program Files\Microsoft Office\Office\MSO9.DLL=
+
+[Package|eGWOSync Installer|Out-of-Date Dependency Information]
+
+[Package|eGWOSync Installer|Files Added]
+
+[Package|eGWOSync Installer|Files Removed]
+c:\windows\system32\fm20.dll=
+c:\program files\microsoft office\office\mso9.dll=
+c:\program files\microsoft office\office\msoutl9.olb=
+c:\documents and settings\ian\my documents\projects\merce\egwosync\propertypage.ocx=
+
+[Package|eGWOSync Installer|Files In Project]
+C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\eGWOSync.dll=Yes
+C:\WINDOWS\system32\msvbvm60.dll=Yes
+C:\WINDOWS\system32\oleaut32.dll=Yes
+C:\WINDOWS\system32\olepro32.dll=Yes
+C:\WINDOWS\system32\asycfilt.dll=Yes
+C:\WINDOWS\system32\stdole2.tlb=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\Program Files\Microsoft Office\Office\MSO9.DLL=No
+C:\WINDOWS\system32\vbXML.dll=Yes
+C:\WINDOWS\system32\vbXMLRPC.dll=Yes
+C:\Program Files\Microsoft Office\Office\MSOUTL9.OLB=No
+C:\WINDOWS\system32\FM20.DLL=No
+C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\PropertyPage.ocx=No
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINDOWS\system32\VB6STKIT.DLL=Yes
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+
+[Package|eGWOSync Installer|Configure Registry Files]
+Applicable=No
+
+[Package|eGWOSync Installer|Configure Remote Servers]
+Applicable=No
+
+[Package|eGWOSync Installer|Install Locations]
+C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\eGWOSync.dll=$(AppPath)
+C:\WINDOWS\system32\msvbvm60.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\oleaut32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\olepro32.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\asycfilt.dll=$(WinSysPathSysFile)
+C:\WINDOWS\system32\stdole2.tlb=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\WINDOWS\system32\vbXML.dll=$(WinSysPath)
+C:\WINDOWS\system32\vbXMLRPC.dll=$(WinSysPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINDOWS\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Program Files\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+
+[Package|eGWOSync Installer|Configure Shared Files]
+Applicable=Yes
+C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\eGWOSync.dll=No
+
+[Package|eGWOSync Installer|Distribution]
+Type=single
+Size=
+Title=eGWOSync Installer v 0_0_2
+
+[Package|eGWOSync Installer|Package]
+PackageFolder=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\Installer\Packager
+ProjectFolder=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync
+ServerSideCab=
+File1=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\Installer\Packager\setup.exe
+File2=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\Installer\Packager\Setup.Lst
+File3=C:\Documents and Settings\Ian\My Documents\Projects\merce\egwosync\Installer\Packager\eGWOSync.CAB
 Handler1=PDWizard.FolderDplySubWiz
 Handler2=PDWizard.WebPostDplySubWiz

@@ -50,7 +50,6 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
     Dim objContact      As ContactItem
     Dim gnspNamespace   As NameSpace
     Dim fldContacts     As Outlook.MAPIFolder
-    'Dim ciFindContact   As ContactItem
     Dim bWriteContact   As Boolean
     Dim objTranslator   As New CContactTranslator
     Dim tempItems       As Items
@@ -61,7 +60,6 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
     Set objContact = fldContacts.Items.Add
     
     'If a contact with the same full name doesn't exist, create the new contact.
-    'Set ciFindContact = fldContacts.Items.Find("[FullName] = " & egwContact.GetValueByName("fn").StringValue)
     Set tempItems = Filter(fldContacts, "FullName", egwContact.GetValueByName("fn").StringValue)
     
     'Confirm Overwrite: Only do this if a contact by the same name was found
@@ -72,7 +70,7 @@ Public Function Create(ByVal egwContact As XMLRPCStruct) As ContactItem
         
         OMResponse = OM.Manage(tempItems.GetFirst, egwContact)
         If OMResponse = FrmOverwrite.OVERWRITE Then
-            ciFindContact.Delete
+            tempItems.GetFirst.Delete
         ElseIf OMResponse = FrmOverwrite.SKIP Then
             bWriteContact = False
         ElseIf OMResponse = FrmOverwrite.RENAME Then
