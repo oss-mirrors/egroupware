@@ -109,7 +109,7 @@
 				return false;
 			}
 			
-			print "bo_action: $bo_action<br>";
+			#print "bo_action: $bo_action<br>";
 			
 			switch ($bo_action)
 			{

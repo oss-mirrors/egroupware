@@ -59,8 +59,6 @@
 					'locals'	=> $allValues[0]['locals']
 				);
 
-				print $allValues[0]['rcpthosts'][0];
-
 				return $data;
 			}
 			else
@@ -127,14 +125,14 @@
 			@ldap_read($ds,$storageData['ldap_basedn'], $filter);
 			if (ldap_errno($ds) == 32)
 			{
-				print "nix da<br>";
 				$ldapData["objectclass"][0] = "qmailldap";
 				$ldapData["description"]    = "settings for the qmail ldap control";
-				$ldapData["cn"]             = "internetsettings";
 				ldap_add($ds,$storageData['ldap_basedn'],$ldapData);
 			}
 			
+			$ldapData["cn"]		= $storageData['qmail_servername'];
 			$ldapData['rcpthosts']	= $_data['rcpthosts'];
+			$ldapData['locals']	= $_data['locals'];
 			
 			ldap_modify($ds,$storageData['ldap_basedn'],$ldapData);
 		}
