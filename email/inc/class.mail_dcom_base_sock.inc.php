@@ -263,9 +263,10 @@
 	{
 		// --- Various Header Data ---
 		var $remail = '';
-		var $date = '';
+		var $date = '';  // message Date header, should be like this: Tue, 16 Sep 2003 15:28:37 -0400
+		var $Date = '';
 		var $subject = '';
-		var $Subject = ''; // is this needed?
+		var $Subject = '';
 		var $in_reply_to = '';
 		var $message_id = '';
 		var $newsgroups = '';
@@ -297,6 +298,7 @@
 		var $return_path;
 		var $udate = '';		// mail message date in unix time
 		// --- Specially Formatted Data ---
+		var $MailDate = ''; // formatted like this:  17-Sep-2003 01:41:43 -0400
 		var $fetchfrom = '';	// from line formatted to fit arg "fromlength" characters
 		var $fetchsubject = '';	// subject line formatted to fit arg "subjectlength" characters
 		var $lines = '';

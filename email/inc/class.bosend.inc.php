@@ -28,6 +28,7 @@
 		var $mail_spell;
 		var $msg_bootstrap;
 		var $nextmatchs;
+		var $tz_offset='';
 		var $not_set='-1';
 		var $mail_out = array();
 		var $xi;
@@ -424,29 +425,69 @@
 			in general I have found that reliably extracting this data from the host OS can be tricky, 
 			so instead we use a fallback value which is simply GMT time, which is allowed under RFC2822 
 			but not preferred.
-			FUTURE: figure out a host independant way of getting the correct rfc time and TZ offset
+			UPDATE: NOW "user timezone" is fed as arg "utz" from the users browser as 
+			a POST value of "minus0500" or "plus0500" for example, utz meaning UserTimeZone. 
+			.And if that is not available then the xGW API datetime->tz_offset is used, and none of 
+			those are available nor valid, then +0000 is used.
 			*/
 			//$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
-			// NOW: "user timezone" is fed as arg "utz" from the users browser
-			$my_tz = $GLOBALS['phpgw']->msg->get_arg_value('utz');
-			if ((stristr($my_tz,'minus'))
-			&& (strlen($my_tz) == 9))
+			// debug: use this to test api tz: $GLOBALS['phpgw']->msg->unset_arg('utz');
+			if ($GLOBALS['phpgw']->msg->get_isset_arg('utz'))
 			{
-				// ex: "minus0500"
-				$my_tz = str_replace('minus', '-', $my_tz);
+				$my_tz = $GLOBALS['phpgw']->msg->get_arg_value('utz');
+				// ok, so figure this out
+				if ((stristr($my_tz,'minus'))
+				&& (strlen($my_tz) == 9))
+				{
+					// ex: "minus0500"
+					$this->tz_offset = str_replace('minus', '-', $my_tz);
+				}
+				elseif ((stristr($my_tz,'plus'))
+				&& (strlen($my_tz) == 8))
+				{
+					// ex: "plus0500"
+					$this->tz_offset = str_replace('plus', '+', $my_tz);
+				}
 			}
-			elseif ((stristr($my_tz,'plus'))
-			&& (strlen($my_tz) == 8))
+			// see if the api has a value
+			elseif ((isset($GLOBALS['phpgw']->datetime->tz_offset))
+			&& ((int)$GLOBALS['phpgw']->datetime->tz_offset != 0))
 			{
-				// ex: "plus0500"
-				$my_tz = str_replace('plus', '+', $my_tz);
+				// this num starts as a simple int the api multiplies by 3600, so undo that
+				$my_tz = ((int)$GLOBALS['phpgw']->datetime->tz_offset/3600);
+				if ($my_tz >= 0)
+				{
+					$my_tz_sign = '+';
+				}
+				else
+				{
+					$my_tz_sign = '-';
+				}
+				$my_tz_abs = abs(((int)$my_tz));
+				// format as  "+xxxx" or "-xxxx"
+				if (($my_tz_abs < 24)
+				&& ($my_tz_abs >= 10))
+				{
+					$this->tz_offset = $my_tz_sign.(string)$my_tz_abs.'00';
+				}
+				elseif (($my_tz_abs >= 0)
+				&& ($my_tz_abs <= 9))
+				{
+					$this->tz_offset = $my_tz_sign.'0'.(string)$my_tz_abs.'00';
+				}
+				else
+				{
+					// some kind of error
+					//$this->tz_offset = 'error1';
+					$this->tz_offset = '+0000';
+				}
 			}
 			else
 			{
 				// invalid input, use fallback
-				$my_tz = '+0000';
+				$this->tz_offset = '+0000';
 			}
-			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$my_tz;
+			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$this->tz_offset;
 			
 			// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
 			/*!

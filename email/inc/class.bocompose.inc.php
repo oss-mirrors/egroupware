@@ -267,9 +267,10 @@
 						if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
 						{
 							// class validator has the required function
-							$this->my_validator = CreateObject("phpgwapi.validator");
+							//$this->my_validator = CreateObject("phpgwapi.validator");
 							// you can never account for idiots, there should be a plain version of this IN THE MAIL
-							$bodystring = $this->my_validator->strip_html($bodystring);
+							//$bodystring = $this->my_validator->strip_html($bodystring);
+							$bodystring = strip_tags($bodystring);
 						}
 					}
 					// "normalize" all line breaks into CRLF pairs
@@ -545,9 +546,10 @@
 							if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
 							{
 								// class validator has the required function
-								$this->my_validator = CreateObject("phpgwapi.validator");
+								//$this->my_validator = CreateObject("phpgwapi.validator");
 								// you can never account for idiots, there should be a plain version of this IN THE MAIL
-								$bodystring = $this->my_validator->strip_html($bodystring);
+								//$bodystring = $this->my_validator->strip_html($bodystring);
+								$bodystring = strip_tags($bodystring);
 							}
 						}
 						// "normalize" all line breaks into CRLF pairs

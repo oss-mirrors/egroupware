@@ -34,7 +34,7 @@
 	@param $can_spell (boolean) This is picked up from the spell service module, a dummy module will report False. Read Only, Access with ->get_can_spell()
 	@param $sp_feed_type (defined integer) SP_FEED_UNKNOWN or SP_FEED_WORDS or SP_FEED_LINES, defined in file class.spell_struct
 	@param $pspell_link (int) a pointer kind of thing you get when you create a new pspell dictionary link.
-	@param $my_validator (object of type phpgwapi.validator) used to help decide what words to not bother spellchecking, like URLs.
+	@param $my_validator (object of type phpgwapi.validator) used to help decide what words to not bother spellchecking, like URLs. DEPRECIATED.
 	@param $widgets (object of type html_widgets)
 	@param $user_lang (string) obtained from "phpgw_info", used when creating the pspell disctionary link. Read Only, Access with ->get_user_lang()
 	@param $reject_reason (string) when this class decides a word is not worth checking, it fills this with the reason, ex. "do not check URLs"
@@ -160,7 +160,7 @@
 			$this->body_display = '';
 			
 			
-			$this->my_validator = CreateObject("phpgwapi.validator");
+			//$this->my_validator = CreateObject("phpgwapi.validator");
 			$this->widgets = CreateObject("email.html_widgets");
 			$this->user_lang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
 			if ($this->user_lang == '')
@@ -493,16 +493,18 @@
 				$this->reject_reason = "don't spellcheck email addresses";
 				return False;
 			}
-			elseif ($this->my_validator->is_url($str) == True)
+			//elseif ($this->my_validator->is_url($str) == True)
+			elseif (preg_match('/[a-zA-Z0-9 \-\.]+\.([a-zA-Z]{2,4})/', $str))
 			{
-				$this->reject_reason = "don't spellcheck a URL";
+				//$this->reject_reason = "don't spellcheck a URL";
+				$this->reject_reason = "don't spellcheck a URL or hostname";
 				return False;
 			}
-			elseif ($this->my_validator->is_hostname($str) == True)
-			{
-				$this->reject_reason = "don't spellcheck internet hostnames";
-				return False;
-			}
+			//elseif ($this->my_validator->is_hostname($str) == True)
+			//{
+			//	$this->reject_reason = "don't spellcheck internet hostnames";
+			//	return False;
+			//}
 			elseif (preg_match('/^<.*>$/', $str))
 			{
 				$this->reject_reason = "don't spellcheck bracked markup tags";
