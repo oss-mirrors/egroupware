@@ -787,6 +787,12 @@
 				&& (($this->part_nice[$i]['m_part_num_mime'] == 1) || ((string)$this->part_nice[$i]['m_part_num_mime'] == '1.1'))
 				&& ((int)$this->part_nice[$i]['bytes'] > $force_echo_size))
 				{
+					$title_text = '&nbsp;'.lang('message').': ';
+					$display_str = lang('keywords').': '.$this->part_nice[$i]['m_keywords'].' - '.$GLOBALS['phpgw']->msg->format_byte_size($this->part_nice[$i]['bytes'])
+						.'; meets force_echo ('.$GLOBALS['phpgw']->msg->format_byte_size($force_echo_size).') criteria';
+					
+					$this->part_nice[$i]['title_text'] = $title_text;
+					$this->part_nice[$i]['display_str'] = $display_str;
 					
 					// ----  DISPLAY INSTRUCTIONS  ----
 					$this->part_nice[$i]['d_instructions'] = 'echo_out';

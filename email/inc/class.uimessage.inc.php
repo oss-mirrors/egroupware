@@ -197,15 +197,53 @@
 					$GLOBALS['phpgw']->template->set_var('message_body',$this->bo->part_nice[$i]['message_body']);
 					$GLOBALS['phpgw']->template->parse('V_display_part','B_display_part', True);
 				}
+				elseif ($this->bo->part_nice[$i]['d_instructions'] == 'echo_out')
+				{
+					// output a blank message body, we'll use an alternate method below
+					$GLOBALS['phpgw']->template->set_var('V_display_part','');
+					// -----  Finished With Message_Mail Template, Output It
+					$GLOBALS['phpgw']->template->pfp('out','T_message_main');
+					
+					// -----  Prepare a Table for this Echo Dump
+					$GLOBALS['phpgw']->template->set_var('title_text',$this->bo->part_nice[$i]['title_text']);
+					$GLOBALS['phpgw']->template->set_var('display_str',$this->bo->part_nice[$i]['display_str']);
+					$GLOBALS['phpgw']->template->parse('V_setup_echo_dump','B_setup_echo_dump');
+					$GLOBALS['phpgw']->template->set_var('V_done_echo_dump','');
+					$GLOBALS['phpgw']->template->pfp('out','T_message_echo_dump');
+					
+					// -----  Prepare $msgball data for phpgw_fetchbody()
+					$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
+					$msgball['part_no'] = $this->bo->part_nice[$i]['m_part_num_mime'];
+					
+					// -----  Echo This Data Directly to the Client
+					echo '<pre>';
+					echo $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+					echo '</pre>';
+					// -----  Close Table
+					$GLOBALS['phpgw']->template->set_var('V_setup_echo_dump','');
+					$GLOBALS['phpgw']->template->parse('V_done_echo_dump','B_done_echo_dump');
+					$GLOBALS['phpgw']->template->pfp('out','T_message_echo_dump');
+					
+					//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
+					$did_echo_dump = True;
+					break;
+				}
 			}
 			set_time_limit(0);
-			
-			$GLOBALS['phpgw']->template->pfp('out','T_message_main');
-			
 			// by now it should be OK to close the stream
 			$GLOBALS['phpgw']->msg->end_request();
 			
-			//$GLOBALS['phpgw']->common->phpgw_footer();
+			if ((isset($did_echo_dump))
+			&& ($did_echo_dump == True))
+			{
+				// DO NOTHING!
+				// echo dump already outputted the template
+			}
+			else
+			{
+				$GLOBALS['phpgw']->template->pfp('out','T_message_main');
+				//$GLOBALS['phpgw']->common->phpgw_footer();
+			}
 		}
 	}
 ?>

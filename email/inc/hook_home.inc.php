@@ -39,8 +39,8 @@
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
-		$GLOBALS['phpgw']->msg->begin_request($args_array);
-		if ((string)$GLOBALS['phpgw']->msg->get_arg_value('mailsvr_stream') == '')
+		$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
+		if (!$some_stream)
 		{
 			$title = '<font color="#FFFFFF">'.lang('EMail').'</font>';
 			$extra_data = '<b>Mail error:</b> Can not open connection to mail server';
@@ -84,7 +84,10 @@
 				}
 				$data[] = array(
 					'text'	=> $subject,
-					'link'	=> $GLOBALS['phpgw']->link('/email/message.php',$msgball_list[$i]['uri'])
+					'link'	=> $GLOBALS['phpgw']->link(
+							'/index.php',
+							'menuaction=email.uimessage.message'
+							.'&'.$msgball_list[$i]['uri'])
 				);
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
@@ -105,7 +108,9 @@
 					'pre_select_folder'	=> '',
 					'skip_folder'		=> '',
 					'show_num_new'		=> $listbox_show_unseen,
-					'widget_name'		=> 'folder',
+					'widget_name'		=> 'fldball_fake_uri',
+					'folder_key_name'	=> 'folder',
+					'acctnum_key_name'	=> 'acctnum',
 					'on_change'		=> 'document.switchbox.submit()',
 					'first_line_txt'	=> lang('switch current folder to')
 				);
