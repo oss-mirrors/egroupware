@@ -111,7 +111,7 @@
 	$path = realpath(dirname(realpath(__FILE__)) . '/../');
 	$dom_key = sprintf("%u", crc32($GLOBALS['ConfigDomain']));
 
-	if (!is_dir($path . "/" . $dom_key) && !mkdir($path . "/" . $dom_key)) {
+	if (!is_dir($path . "/" . $dom_key) && !mkdir($path . "/" . $dom_key, 0755)) {
 		echo "<font color='red'>ERROR: Failed to create {$path}/{$dom_key}, please create this directory manually and chmod it 777</font>";
 	} else if (!copy("{$path}/setup/index.php", "{$path}/{$dom_key}/index.php")) {
 		echo "<font color='red'>ERROR: Failed to copy '{$path}/index.php' to '{$path}/{$dom_key}/index.php'. Please copy this file manually!</font>";
