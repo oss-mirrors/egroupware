@@ -47,15 +47,14 @@
     } else {
       $phpgw->msg->delete($mailbox, $msgnum);
     }
-     if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
-        if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+     if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
+        if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
            $nm = $msgnum - 1;
         } else {
            $nm = $msgnum;
         }
 
-        Header("Location: ".$phpgw->link("message.php","folder="
-		.urlencode($folder)."&msgnum=".$nm));
+        Header("Location: ".$phpgw->link("message.php","folder=" . urlencode($folder)."&msgnum=".$nm));
         $dontforward = True;
      }
   }

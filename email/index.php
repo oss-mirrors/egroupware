@@ -88,28 +88,27 @@ function check_all()
       if (! $start)
          $start = 0;
 
-     echo $phpgw->nextmatchs->left("index.php",$start,$nummsg,
-                           "&sort=$sort&order=$order"
-                         . "&folder=" . urlencode($folder));
+     echo $phpgw->nextmatchs->left("index.php",$start,$nummsg,"&sort=$sort&order=$order"
+                                 . "&folder=" . urlencode($folder));
 
      echo "<td>&nbsp;</td>";
 
-     echo $phpgw->nextmatchs->right("index.php",$start,$nummsg,
-                            "&sort=$sort&order=$order"
-                          . "&folder=" . urlencode($folder));
+     echo $phpgw->nextmatchs->right("index.php",$start,$nummsg,"&sort=$sort&order=$order"
+                                  . "&folder=" . urlencode($folder));
 ?>
     <td>&nbsp;</td>
   </tr>
   <tr>
    <?php 
-     if ($sort == "ASC")
+     if ($sort == "ASC") {
         $sort = 1;
-     else
+     } else {
         $sort = 0;
+     }
 
      if (! $order) {
         $order = "0";
-        if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
+        if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
 	   $sort = "1";
         } else {
            $sort = "0";
@@ -239,10 +238,10 @@ function check_all()
 	  }
         }
 
-        if ($nummsg < $phpgw_info["user"]["preferences"]["maxmatchs"]) {
+        if ($nummsg < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
            $totaltodisplay = $nummsg;
-        } else if (($nummsg - $start) > $phpgw_info["user"]["preferences"]["maxmatchs"]) {
-           $totaltodisplay = $start + $phpgw_info["user"]["preferences"]["maxmatchs"];
+        } else if (($nummsg - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
+           $totaltodisplay = $start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
         } else {
            $totaltodisplay = $nummsg;
         }
