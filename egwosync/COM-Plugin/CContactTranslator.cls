@@ -27,64 +27,15 @@ Attribute VB_Exposed = False
 ' needed by phpgwapi's addressbook.boaddressbook.write
 '***********************************************************************************************
 Public Sub Outlook2eGW(oContact As ContactItem, egwContact As XMLRPCStruct)
+    Dim dTemp As Variant
+    Dim Command As String
 
-    egwContact.AddString "fn", oContact.FullName 'full name
-    'egwContact.AddString "sound", oContact 'Sound
-    
-    egwContact.AddString "org_name", oContact.CompanyName 'company name
-    egwContact.AddString "org_unit", oContact.Department 'department
-    
-    egwContact.AddString "Title", oContact.JobTitle 'title
-    egwContact.AddString "n_prefix", oContact.Title 'prefix
-    egwContact.AddString "n_given", oContact.FirstName 'first name
-    egwContact.AddString "n_middle", oContact.MiddleName 'middle name
-    egwContact.AddString "n_family", oContact.LastName 'last name
-    egwContact.AddString "n_suffix", oContact.Suffix 'suffix
-    'egwContact.AddString "label", oContact.FileAs 'label
-    
-    egwContact.AddString "adr_one_street", oContact.BusinessAddressStreet 'business street
-    egwContact.AddString "adr_one_locality", oContact.BusinessAddressCity 'business city
-    egwContact.AddString "adr_one_region", oContact.BusinessAddressState 'business state
-    egwContact.AddString "adr_one_postalcode", oContact.BusinessAddressPostalCode 'business zip code
-    egwContact.AddString "adr_one_countryname", oContact.BusinessAddressCountry 'business country
-    'egwContact.AddString "adr_one_type", oContact 'business address type
-    
-    egwContact.AddString "adr_two_street", oContact.HomeAddressStreet 'home street
-    egwContact.AddString "adr_two_locality", oContact.HomeAddressCity 'home city
-    egwContact.AddString "adr_two_region", oContact.HomeAddressState 'home state
-    egwContact.AddString "adr_two_postalcode", oContact.HomeAddressPostalCode 'home zip code
-    egwContact.AddString "adr_two_countryname", oContact.HomeAddressCountry 'home country
-    'egwContact.AddString "adr_two_type", oContact 'home address type
-    
-    'egwContact.AddString "tz", oContact 'time zone
-    'egwContact.AddString "geo", oContact 'geo
-    
-    egwContact.AddString "tel_work", oContact.BusinessTelephoneNumber 'business phone
-    egwContact.AddString "tel_home", oContact.HomeTelephoneNumber 'home phone
-    'egwContact.AddString "tel_voice", oContact 'voice phone
-    egwContact.AddString "tel_msg", oContact.AssistantTelephoneNumber 'message phone
-    egwContact.AddString "tel_fax", oContact.BusinessFaxNumber 'fax
-    egwContact.AddString "tel_pager", oContact.PagerNumber 'pager
-    egwContact.AddString "tel_cell", oContact.MobileTelephoneNumber 'mobile phone
-    'egwContact.AddString "tel_bbs", oContact 'bbs phone
-    'egwContact.AddString "tel_modem", oContact 'modem phone
-    egwContact.AddString "tel_isdn", oContact.ISDNNumber 'isdn phone
-    egwContact.AddString "tel_car", oContact.CarTelephoneNumber 'car phone
-    'egwContact.AddString "tel_video", oContact 'video phone
-    egwContact.AddString "tel_prefer", oContact.PrimaryTelephoneNumber 'preferred phone
-    
-    egwContact.AddString "Email", oContact.Email1Address 'business email
-    egwContact.AddString "email_type", oContact.Email1AddressType 'business email type
-    egwContact.AddString "email_home", oContact.Email2Address 'home email
-    egwContact.AddString "email_home_type", oContact.Email2AddressType 'home email type
-    
-    'egwContact.AddString "address2", oContact 'address line 2
-    'egwContact.AddString "address3", oContact 'address line 3
-    'egwContact.AddString "ophone", oContact.Business2TelephoneNumber 'Other Phone
-    'egwContact.AddString "bday", oContact 'birthday
-    egwContact.AddString "URL", oContact.WebPage 'url"
-    'egwContact.AddString "pubkey", oContact 'public key
-    'egwContact.AddString "note", oContact 'notes
+    For Each dTemp In Descriptions
+        If DefaultFields(dTemp)("eGWName") <> "" Then
+            egwContact.AddString DefaultFields(dTemp)("eGWName"), _
+                                CallByName(oContact, DefaultFields(dTemp)("oName"), VbGet)
+        End If
+    Next dTemp
 End Sub
 
 '***********************************************************************************************
@@ -92,119 +43,332 @@ End Sub
 ' Outlook fields.
 '***********************************************************************************************
 Public Sub eGW2Outlook(egwContact As XMLRPCStruct, oContact As ContactItem)
-
-    'The following field names for the eGW side of things were gotten from
-    '   http://www.egroupware.org/index.php?page_name=&category_id=38&domain=developers&wikipage=AddressbookXmlRpc
-    '   I've included the full eGW list for sake of completeness
-    oContact.FullName = egwContact.GetValueByName("fn").StringValue 'full name
-    'oContact. = egwContact.GetValueByName("sound").StringValue 'Sound
+    Dim dTemp As Variant
+    Dim Command As String
     
-    oContact.CompanyName = egwContact.GetValueByName("org_name").StringValue 'company name
-    oContact.Department = egwContact.GetValueByName("org_unit").StringValue 'department
-    
-    oContact.JobTitle = egwContact.GetValueByName("title").StringValue 'title
-    oContact.Title = egwContact.GetValueByName("n_prefix").StringValue 'prefix
-    oContact.FirstName = egwContact.GetValueByName("n_given").StringValue 'first name
-    oContact.MiddleName = egwContact.GetValueByName("n_middle").StringValue 'middle name
-    oContact.LastName = egwContact.GetValueByName("n_family").StringValue 'last name
-    oContact.Suffix = egwContact.GetValueByName("n_suffix").StringValue 'suffix
-    'oContact.FileAs = egwContact.GetValueByName("label").StringValue 'label
-    
-    oContact.BusinessAddressStreet = egwContact.GetValueByName("adr_one_street").StringValue 'business street
-    oContact.BusinessAddressCity = egwContact.GetValueByName("adr_one_locality").StringValue 'business city
-    oContact.BusinessAddressState = egwContact.GetValueByName("adr_one_region").StringValue 'business state
-    oContact.BusinessAddressPostalCode = egwContact.GetValueByName("adr_one_postalcode").StringValue 'business zip code
-    oContact.BusinessAddressCountry = egwContact.GetValueByName("adr_one_countryname").StringValue 'business country
-    'oContact. = egwContact.GetValueByName("adr_one_type").StringValue 'business address type
-    
-    oContact.HomeAddressStreet = egwContact.GetValueByName("adr_two_street").StringValue 'home street
-    oContact.HomeAddressCity = egwContact.GetValueByName("adr_two_locality").StringValue 'home city
-    oContact.HomeAddressState = egwContact.GetValueByName("adr_two_region").StringValue 'home state
-    oContact.HomeAddressPostalCode = egwContact.GetValueByName("adr_two_postalcode").StringValue 'home zip code
-    oContact.HomeAddressCountry = egwContact.GetValueByName("adr_two_countryname").StringValue 'home country
-    'oContact. = egwContact.GetValueByName("adr_two_type").StringValue 'home address type
-    
-    'oContact. = egwContact.GetValueByName("tz").StringValue 'time zone
-    'oContact. = egwContact.GetValueByName("geo").StringValue 'geo
-    
-    oContact.BusinessTelephoneNumber = egwContact.GetValueByName("tel_work").StringValue 'business phone
-    oContact.HomeTelephoneNumber = egwContact.GetValueByName("tel_home").StringValue 'home phone
-    'oContact. = egwContact.GetValueByName("tel_voice").StringValue 'voice phone
-    oContact.AssistantTelephoneNumber = egwContact.GetValueByName("tel_msg").StringValue 'message phone
-    oContact.BusinessFaxNumber = egwContact.GetValueByName("tel_fax").StringValue 'fax
-    oContact.PagerNumber = egwContact.GetValueByName("tel_pager").StringValue 'pager
-    oContact.MobileTelephoneNumber = egwContact.GetValueByName("tel_cell").StringValue 'mobile phone
-    'oContact. = egwContact.GetValueByName("tel_bbs").StringValue 'bbs phone
-    'oContact. = egwContact.GetValueByName("tel_modem").StringValue 'modem phone
-    oContact.ISDNNumber = egwContact.GetValueByName("tel_isdn").StringValue 'isdn phone
-    oContact.CarTelephoneNumber = egwContact.GetValueByName("tel_car").StringValue 'car phone
-    'oContact. = egwContact.GetValueByName("tel_video").StringValue 'video phone
-    oContact.PrimaryTelephoneNumber = egwContact.GetValueByName("tel_prefer").StringValue 'preferred phone
-    
-    oContact.Email1Address = egwContact.GetValueByName("email").StringValue 'business email
-    oContact.Email1AddressType = egwContact.GetValueByName("email_type").StringValue 'business email type
-    oContact.Email2Address = egwContact.GetValueByName("email_home").StringValue 'home email
-    oContact.Email2AddressType = egwContact.GetValueByName("email_home_type").StringValue 'home email type
-    
-    'oContact. = egwContact.GetValueByName("address2").StringValue 'address line 2
-    'oContact. = egwContact.GetValueByName("address3").StringValue 'address line 3
-    'oContact.Business2TelephoneNumber = egwContact.GetValueByName("ophone").StringValue 'Other Phone
-    'oContact.Birthday = egwContact.GetValueByName("bday").StringValue 'birthday
-    oContact.WebPage = egwContact.GetValueByName("url").StringValue 'url
-    'oContact. = egwContact.GetValueByName("pubkey").StringValue 'public key
-    'oContact. = egwContact.GetValueByName("note").StringValue 'notes
+    For Each dTemp In Descriptions
+        If DefaultFields(dTemp)("oName") <> "" Then
+            CallByName oContact, DefaultFields(dTemp)("oName"), VbLet, _
+                    egwContact.GetValueByName(DefaultFields(dTemp)("eGWName")).StringValue
+        End If
+    Next dTemp
 End Sub
 
-Property Get eGWFields() As Collection
-    Set eGWFields = New Collection
+Private Function MakeField(ByVal Description As String, _
+                            ByVal eGWName As String, _
+                            ByVal oName As String) As Collection
+    Set MakeField = New Collection
+    
+    MakeField.Add Description, "Description"
+    MakeField.Add eGWName, "eGWName"
+    MakeField.Add oName, "oName"
+End Function
 
-    eGWFields.Add "fn" 'full name"
-    eGWFields.Add "Sound" 'Sound"
-    eGWFields.Add "org_name" 'company name"
-    eGWFields.Add "org_unit" 'Department"
-    eGWFields.Add "Title" ' Title"
-    eGWFields.Add "n_prefix" 'Prefix"
-    eGWFields.Add "n_given" 'first name"
-    eGWFields.Add "n_middle" 'middle name"
-    eGWFields.Add "n_family" 'last name"
-    eGWFields.Add "n_suffix" ' Suffix"
-    eGWFields.Add "Label" ' Label"
-    eGWFields.Add "adr_one_street" 'business street"
-    eGWFields.Add "adr_one_locality" 'business city"
-    eGWFields.Add "adr_one_region" 'business state"
-    eGWFields.Add "adr_one_postalcode" 'business zip code"
-    eGWFields.Add "adr_one_countryname" 'business country"
-    eGWFields.Add "adr_one_type" 'business address type"
-    eGWFields.Add "adr_two_street" 'home street"
-    eGWFields.Add "adr_two_locality" 'home city"
-    eGWFields.Add "adr_two_region" 'home state"
-    eGWFields.Add "adr_two_postalcode" 'home zip code"
-    eGWFields.Add "adr_two_countryname" 'home country"
-    eGWFields.Add "adr_two_type" 'home address type"
-    eGWFields.Add "tz" 'time zone"
-    eGWFields.Add "geo" 'geo"
-    eGWFields.Add "tel_work" 'business phone"
-    eGWFields.Add "tel_home" 'home phone"
-    eGWFields.Add "tel_voice" 'voice phone"
-    eGWFields.Add "tel_msg" 'message phone"
-    eGWFields.Add "tel_fax" 'fax"
-    eGWFields.Add "tel_pager" 'pager"
-    eGWFields.Add "tel_cell" 'mobile phone"
-    eGWFields.Add "tel_bbs" 'bbs phone"
-    eGWFields.Add "tel_modem" 'modem phone"
-    eGWFields.Add "tel_isdn" 'isdn phone"
-    eGWFields.Add "tel_car" 'car phone"
-    eGWFields.Add "tel_video" 'video phone"
-    eGWFields.Add "tel_prefer" 'preferred phone"
-    eGWFields.Add "email" 'business email"
-    eGWFields.Add "email_type" 'business email type"
-    eGWFields.Add "email_home" 'home email"
-    eGWFields.Add "email_home_type" 'home email type"
-    eGWFields.Add "address2" 'address line 2"
-    eGWFields.Add "address3" 'address line 3"
-    eGWFields.Add "ophone" 'Other Phone"
-    eGWFields.Add "bday" ' Birthday"
-    eGWFields.Add "URL" ' URL"
-    eGWFields.Add "pubkey" 'public key"
-    eGWFields.Add "note" ' Notes"
+Property Get DefaultFields() As Collection
+    Set DefaultFields = New Collection
+    
+    With DefaultFields
+        .Add MakeField("full name", "fn", "FullName"), "full name"
+        .Add MakeField("Sound", "sound", ""), "Sound"
+        
+        .Add MakeField("company name", "org_name", "CompanyName"), "company name"
+        .Add MakeField("department", "org_unit", "Department"), "department"
+        
+        .Add MakeField("title", "title", "JobTitle"), "title"
+        .Add MakeField("prefix", "n_prefix", "Title"), "prefix"
+        .Add MakeField("first name", "n_given", "Firstname"), "first name"
+        .Add MakeField("middle name", "n_middle", "MiddleName"), "middle name"
+        .Add MakeField("last name", "n_family", "LastName"), "last name"
+        .Add MakeField("suffix", "n_suffix", "Suffix"), "suffix"
+        .Add MakeField("label", "label", ""), "label"
+        
+        .Add MakeField("business street", "adr_one_street", "BusinessAddressStreet"), "business street"
+        .Add MakeField("business city", "adr_one_locality", "BusinessAddressCity"), "business city"
+        .Add MakeField("business state", "adr_one_region", "BusinessAddressState"), "business state"
+        .Add MakeField("business zip code", "adr_one_postalcode", "BusinessAddressPostalCode"), "business zip code"
+        .Add MakeField("business country", "adr_one_countryname", "BusinessAddressCountry"), "business country"
+        .Add MakeField("business address type", "adr_one_type", ""), "business address type"
+        
+        .Add MakeField("home street", "adr_two_street", "HomeAddressStreet"), "home street"
+        .Add MakeField("home city", "adr_two_locality", "HomeAddressCity"), "home city"
+        .Add MakeField("home state", "adr_two_region", "HomeAddressState"), "home state"
+        .Add MakeField("home zip code", "adr_two_postalcode", "HomeAddressPostalCode"), "home zip code"
+        .Add MakeField("home country", "adr_two_countryname", "HomeAddressCountry"), "home country"
+        .Add MakeField("home address type", "adr_two_type", ""), "home address type"
+        
+        .Add MakeField("time zone", "tz", ""), "time zone"
+        .Add MakeField("geo", "geo", ""), "geo"
+        
+        .Add MakeField("business phone", "tel_work", "BusinessTelephoneNumber"), "business phone"
+        .Add MakeField("home phone", "tel_home", "HomeTelephoneNumber"), "home phone"
+        .Add MakeField("voice phone", "tel_voice", ""), "voice phone"
+        .Add MakeField("message phone", "tel_msg", "AssistantTelephoneNumber"), "message phone"
+        .Add MakeField("fax", "tel_fax", "BusinessFaxNumber"), "fax"
+        .Add MakeField("pager", "tel_pager", "PagerNumber"), "pager"
+        .Add MakeField("mobile phone", "tel_cell", "MobileTelephoneNumber"), "mobile phone"
+        .Add MakeField("bbs phone", "tel_bbs", ""), "bbs phone"
+        .Add MakeField("modem phone", "tel_modem", ""), "modem phone"
+        .Add MakeField("isdn phone", "tel_isdn", "ISDNNumber"), "isdn phone"
+        .Add MakeField("car phone", "tel_car", "CarTelephoneNumber"), "car phone"
+        .Add MakeField("video phone", "tel_video", ""), "video phone"
+        .Add MakeField("preferred phone", "tel_prefer", "PrimaryTelephoneNumber"), "preferred phone"
+        
+        .Add MakeField("business email", "email", "Email1Address"), "business email"
+        .Add MakeField("business email type", "email_type", "Email1AddressType"), "business email type"
+        .Add MakeField("home email", "email_home", "Email2Address"), "home email"
+        .Add MakeField("home email type", "email_home_type", "Email2AddressType"), "home email type"
+        
+        .Add MakeField("address line 2", "address2", ""), "address line 2"
+        .Add MakeField("address line 3", "address3", ""), "address line 3"
+        .Add MakeField("Other Phone", "ophone", ""), "Other Phone"
+        .Add MakeField("birthday", "bday", ""), "birthday"
+        .Add MakeField("url", "url", "WebPage"), "url"
+        .Add MakeField("public key", "pubkey", ""), "public key"
+        .Add MakeField("notes", "note", ""), "notes"
+    End With
+End Property
+
+Property Get eGWFields() As Collection
+    'From http://www.egroupware.org/index.php?page_name=&category_id=38&domain=developers&wikipage=AddressbookXmlRpc
+    Set eGWFields = New Collection
+    
+    With eGWFields
+        .Add "fn"
+        .Add "Sound"
+        .Add "org_name"
+        .Add "org_unit"
+        .Add "title"
+        .Add "n_prefix"
+        .Add "n_given"
+        .Add "n_middle"
+        .Add "n_family"
+        .Add "n_suffix"
+        .Add "Label"
+        .Add "adr_one_street"
+        .Add "adr_one_locality"
+        .Add "adr_one_region"
+        .Add "adr_one_postalcode"
+        .Add "adr_one_countryname"
+        .Add "adr_one_type"
+        .Add "adr_two_street"
+        .Add "adr_two_locality"
+        .Add "adr_two_region"
+        .Add "adr_two_postalcode"
+        .Add "adr_two_countryname"
+        .Add "adr_two_type"
+        .Add "tz"
+        .Add "geo"
+        .Add "tel_work"
+        .Add "tel_home"
+        .Add "tel_voice"
+        .Add "tel_msg"
+        .Add "tel_fax"
+        .Add "tel_pager"
+        .Add "tel_cell"
+        .Add "tel_bbs"
+        .Add "tel_modem"
+        .Add "tel_isdn"
+        .Add "tel_car"
+        .Add "tel_video"
+        .Add "tel_prefer"
+        .Add "email"
+        .Add "email_type"
+        .Add "email_home"
+        .Add "email_home_type"
+        .Add "address2"
+        .Add "address3"
+        .Add "ophone"
+        .Add "bday"
+        .Add "url"
+        .Add "pubkey"
+        .Add "note"
+    End With
+End Property
+
+Property Get oFields() As Collection
+    'Grabbed from http://www.cdolive.com/cdo10.htm
+    Set oFields = New Collection
+
+    With oFields
+        .Add "CreationTime"
+        .Add "Size"
+        .Add "Sensitivity"
+        .Add "MessageClass"
+        .Add "Importance"
+        .Add "EntryID"
+        .Add "Body"
+        .Add "Categories"
+        .Add "FullName"
+        .Add "JobTitle"
+        .Add "CompanyName"
+        .Add "Title"
+        .Add "LastName"
+        .Add "MiddleName"
+        .Add "FirstName"
+        .Add "Suffix"
+        .Add "BusinessHomePage"
+        .Add "PersonalHomePage"
+        .Add "FTPSite"
+        .Add "Initials"
+        .Add "WebPage"
+        .Add "FileAs"
+        .Add "CompanyAndFullName"
+        .Add "CompanyLastFirstNoSpace"
+        .Add "CompanyLastFirstSpaceOnly"
+        .Add "FullNameAndCompany"
+        .Add "LastFirstAndSuffix"
+        .Add "LastFirstNoSpace"
+        .Add "LastFirstNoSpaceCompany"
+        .Add "LastFirstSpaceOnly"
+        .Add "LastFirstSpaceOnlyCompany"
+        .Add "LastNameAndFirstName"
+        .Add "Email1DisplayName"
+        .Add "Email1Address"
+        .Add "Email1AddressType"
+        .Add "Email1EntryID"
+        .Add "Email2DisplayName"
+        .Add "Email2Address"
+        .Add "Email2AddressType"
+        .Add "Email2EntryID"
+        .Add "Email3DisplayName"
+        .Add "Email3Address"
+        .Add "Email3AddressType"
+        .Add "Email3EntryID"
+        .Add "IMAddress"
+        .Add "SelectedMailingAddress"
+        .Add "AssistantTelephoneNumber"
+        .Add "BusinessTelephoneNumber"
+        .Add "Business2TelephoneNumber"
+        .Add "BusinessFaxNumber"
+        .Add "CallbackTelephoneNumber"
+        .Add "CarTelephoneNumber"
+        .Add "CompanyMainTelephoneNumber"
+        .Add "HomeTelephoneNumber"
+        .Add "Home2TelephoneNumber"
+        .Add "HomeFaxNumber"
+        .Add "ISDNNumber"
+        .Add "MobileTelephoneNumber"
+        .Add "OtherTelephoneNumber"
+        .Add "OtherFaxNumber"
+        .Add "PagerNumber"
+        .Add "PrimaryTelephoneNumber"
+        .Add "RadioTelephoneNumber"
+        .Add "TelexNumber"
+        .Add "TTYTDDTelephoneNumber"
+        .Add "MailingAddress"
+        .Add "MailingAddressCity"
+        .Add "MailingAddressCountry"
+        .Add "MailingAddressPostalCode"
+        .Add "MailingAddressPostOfficeBox"
+        .Add "MailingAddressState"
+        .Add "MailingAddressStreet"
+        .Add "HomeAddressCity"
+        .Add "HomeAddressStreet"
+        .Add "HomeAddressState"
+        .Add "HomeAddressCountry"
+        .Add "HomeAddressPostOfficeBox"
+        .Add "HomeAddressPostalCode"
+        .Add "OtherAddressCity"
+        .Add "OtherAddressStreet"
+        .Add "OtherAddressState"
+        .Add "OtherAddressCountry"
+        .Add "OtherAddressPostalCode"
+        .Add "OtherAddressPostOfficeBox"
+        .Add "HomeAddress"
+        .Add "BusinessAddress"
+        .Add "OtherAddress"
+        .Add "BusinessAddressCity"
+        .Add "BusinessAddressStreet"
+        .Add "BusinessAddressState"
+        .Add "BusinessAddressCountry"
+        .Add "BusinessAddressPostalCode"
+        .Add "BusinessAddressPostOfficeBox"
+        .Add "Department"
+        .Add "ManagerName"
+        .Add "Location"
+        .Add "AssistantName"
+        .Add "Profession"
+        .Add "NickName"
+        .Add "Birthday"
+        .Add "SpouseName"
+        .Add "Anniversary"
+        .Add "Account"
+        .Add "ComputerNetworkName"
+        .Add "Children"
+        .Add "CustomerID"
+        .Add "Gender"
+        .Add "GovernmentIDNumber"
+        .Add "Hobby"
+        .Add "Language"
+        .Add "OfficeLocation"
+        .Add "OrganizationalIDNumber"
+        .Add "ReferredBy"
+        .Add "BillingInformation"
+        .Add "InternetFreeBusyAddress"
+        .Add "Mileage"
+        .Add "UserField1"
+        .Add "UserField2"
+        .Add "UserField3"
+        .Add "UserField4"
+        .Add "YomiCompanyName"
+        .Add "YomiFirstName"
+        .Add "YomiLastName"
+    End With
+End Property
+
+Property Get Descriptions() As Collection
+    'From http://www.egroupware.org/index.php?page_name=&category_id=38&domain=developers&wikipage=AddressbookXmlRpc
+    Set Descriptions = New Collection
+    
+    With Descriptions
+        .Add "full name"
+        .Add "Sound"
+        .Add "company name"
+        .Add "department"
+        .Add "title"
+        .Add "prefix"
+        .Add "first name"
+        .Add "middle name"
+        .Add "last name"
+        .Add "suffix"
+        .Add "label"
+        .Add "business street"
+        .Add "business city"
+        .Add "business state"
+        .Add "business zip code"
+        .Add "business country"
+        .Add "business address type"
+        .Add "home street"
+        .Add "home city"
+        .Add "home state"
+        .Add "home zip code"
+        .Add "home country"
+        .Add "home address type"
+        .Add "time zone"
+        .Add "geo"
+        .Add "business phone"
+        .Add "home phone"
+        .Add "voice phone"
+        .Add "message phone"
+        .Add "fax"
+        .Add "pager"
+        .Add "mobile phone"
+        .Add "bbs phone"
+        .Add "modem phone"
+        .Add "isdn phone"
+        .Add "car phone"
+        .Add "video phone"
+        .Add "preferred phone"
+        .Add "business email"
+        .Add "business email type"
+        .Add "home email"
+        .Add "home email type"
+        .Add "address line 2"
+        .Add "address line 3"
+        .Add "Other Phone"
+        .Add "birthday"
+        .Add "url"
+        .Add "public key"
+        .Add "notes"
+    End With
 End Property

@@ -1,11 +1,15 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FrmMain 
+   BorderStyle     =   1  'Fixed Single
    Caption         =   "eGroupWare Synchronization"
-   ClientHeight    =   8535
-   ClientLeft      =   45
-   ClientTop       =   315
+   ClientHeight    =   8520
+   ClientLeft      =   30
+   ClientTop       =   300
    ClientWidth     =   5880
-   OleObjectBlob   =   "FrmMain.dsx":0000
+   Icon            =   "FrmMain.dsx":0000
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   OleObjectBlob   =   "FrmMain.dsx":08CA
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "FrmMain"
@@ -74,7 +78,9 @@ End Sub
 ' Display the names of contacts in the remote and local directories
 '***********************************************************************************************
 Private Sub cmdGet_Click()
+    Me.MousePointer = vbHourglass
     BasUtilities.GetContacts
+    Me.MousePointer = vbDefault
 End Sub
 
 Private Sub cmdOK_Click()
@@ -87,7 +93,9 @@ End Sub
 ' Add selected contacts to the other contact directory
 '***********************************************************************************************
 Private Sub cmdSynchronize_Click()
+    Me.MousePointer = vbHourglass
     BasUtilities.SynchronizeContacts
+    Me.MousePointer = vbDefault
 End Sub
 
 '***********************************************************************************************
