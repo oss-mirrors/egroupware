@@ -47,6 +47,8 @@
 
 	if ($GLOBALS['phpgw_info']['user']['apps']['preferences'])
 	{
+		$mailPreferences = ExecMethod('felamimail.bopreferences.getPreferences');
+		#_debug_array($mailPreferences);
 		$menu_title = lang('Preferences');
 		$sieveLinkData = array
 		(
@@ -56,9 +58,13 @@
                                         
 		$file = array(
 			'Preferences'       	  => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=felamimail'),
-			'Manage Sieve'     	  => $GLOBALS['phpgw']->link('/index.php',$sieveLinkData),
 			'Manage Folders'	  => $GLOBALS['phpgw']->link('/index.php','menuaction=felamimail.uipreferences.listFolder')	
 		);
+		
+		if($mailPreferences['imapEnableSieve'] == true)
+		{
+			$file['Manage Sieve'] = $GLOBALS['phpgw']->link('/index.php',$sieveLinkData);
+		}
 		
 		display_sidebox($appname,$menu_title,$file);
 	}

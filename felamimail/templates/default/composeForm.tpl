@@ -17,7 +17,7 @@
 <form method="post" name="doit" action="{link_action}" ENCTYPE="multipart/form-data">
 <table width="98%" border="0" cellspacing="0" cellpading="1">
 <tr bgcolor="{th_bg}">
-	<td colspan="2">
+	<td align="left" colspan="2">
 		{lang_back_to_folder}:&nbsp;<a class="head_link" href="{link_message_list}">{folder_name}</a>
 	</td>
 	<td align="right">
@@ -25,53 +25,53 @@
 	</td>
 </tr>
 <tr>
-	<td class="body" width="10%">
+	<td align="right" width="10%">
 		<b>{lang_from}:</b>
 	</td>
-	<td class="body" align="left" width="60%">
+	<td align="left" width="60%">
 		{from}
 	</td>
-	<td class="body" align="right">
+	<td align="right">
 		<input class="input_text" type="button" value="{lang_addressbook}" onclick="addybook();">
 	</td>
 </tr>
 <tr>
-	<td width="10%">
+	<td align="right" width="10%">
 		<b>{lang_to}:</b>
 	</td>
-	<td width="60%" colspan="2">
+	<td align="left" width="60%" colspan="2">
 		<input class="input_text" type=text size="76" name="to" value="{to}">
 	</td>
 </tr>
 <tr>
-	<td>
+	<td align="right">
 		{lang_cc}:
 	</td>
-	<td colspan="2">
+	<td align="left" colspan="2">
 		<input class="input_text" type=text size="76" name="cc" value='{cc}'>
 	</td>
 </tr>
 <tr>
-	<td>
+	<td align="right">
 		{lang_bcc}:
 	</td>
-	<td colspan="2">
+	<td align="left" colspan="2">
 		<input class="input_text" type=text size="76" name="bcc" value='{bcc}'>
 	</td>
 </tr>
 <tr>
-	<td>
+	<td align="right">
 		{lang_reply_to}:
 	</td>
-	<td colspan="2">
+	<td align="left" colspan="2">
 		<input class="input_text" type=text size="76" name="reply_to" value='{reply_to}'>
 	</td>
 </tr>
 <tr>
-	<td>
+	<td align="right">
 		<b>{lang_subject}:</b>
 	</td>
-	<td>
+	<td align="left" >
 		<input class="input_text" type=text size="76" name="subject" value='{subject}'>
 	</td>
 	<td align="right">

@@ -19,6 +19,7 @@
 		(
 			'addVcard'		=> True,
 			'changeFilter'		=> True,
+			'changeFolder'		=> True,
 			'changeSorting'		=> True,
 			'compressFolder'	=> True,
 			'deleteMessage'		=> True,
@@ -118,7 +119,8 @@
 			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 			// this need to fixed
 			// this does not belong to here
-			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin')
+			if($_GET['menuaction'] != 'felamimail.uifelamimail.hookAdmin' &&
+			   $_GET['menuaction'] != 'felamimail.uifelamimail.changeFolder')
 			{
 				$this->connectionStatus = $this->bofelamimail->openConnection();
 			}
@@ -147,8 +149,8 @@
 			$entry['access'] = 'private';
 			$entry['tid'] = 'n';
 			
-			_debug_array($entry);
-			print "<br><br>";
+			#_debug_array($entry);
+			#print "<br><br>";
 			
 			print quoted_printable_decode($entry['fn'])."<br>";
 			
@@ -175,6 +177,25 @@
 				$data['filter']		= $GLOBALS['HTTP_GET_VARS']["filter"];
 				$this->bofilter->updateFilter($data);
 			}
+			$this->viewMainScreen();
+		}
+		
+		function changeFolder()
+		{
+			// change folder
+			$this->bofelamimail->sessionData['mailbox']	= urldecode($_GET["mailbox"]);
+			$this->bofelamimail->sessionData['startMessage']= 1;
+			$this->bofelamimail->sessionData['sort']	= $this->preferences['sortOrder'];
+			$this->bofelamimail->sessionData['activeFilter']= -1;
+
+			$this->bofelamimail->saveSessionData();
+			
+			$this->mailbox 		= $this->bofelamimail->sessionData['mailbox'];
+			$this->startMessage 	= $this->bofelamimail->sessionData['startMessage'];
+			$this->sort 		= $this->bofelamimail->sessionData['sort'];
+			
+			$this->connectionStatus = $this->bofelamimail->openConnection();
+			
 			$this->viewMainScreen();
 		}
 

@@ -202,3 +202,7 @@ add script	felamimail	de	Script hinzufügen
 ENABLED	felamimail	de	Aktiviert
 DISABLED	felamimail	de	Deaktiviert
 edit rule	felamimail	de	Regel bearbeiten
+Simply click the target-folder	felamimail	de	Ziel Ordner auswählen
+Status	felamimail	de	Status
+foldername	felamimail	de	Ordnername
+unseen	felamimail	de	Ungelesen

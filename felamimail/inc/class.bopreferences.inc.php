@@ -82,6 +82,7 @@
 			{
 				$data['imapSieveServer']	= $profileData['imapSieveServer'];
 				$data['imapSievePort']		= $profileData['imapSievePort'];
+				$data['imapEnableSieve']	= true;
 			}
 			
 			if ($profileData['userDefinedAccounts'] == 'yes' &&

@@ -33,12 +33,12 @@
 	
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(
-				'title'	=> $title,
-				'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'width'	=> '100%',
-				'outerborderwidth'	=> '0',
+				'title'				=> $title,
+				'primary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'secondary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'tertiary'			=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+				'width'				=> '100%',
+				'outerborderwidth'		=> '0',
 				'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
 			)
 		);
@@ -46,11 +46,11 @@
 		$app_id = $GLOBALS['phpgw']->applications->name2id('felamimail');
 		//$GLOBALS['portal_order'][] = $app_id;
 		$var = Array(
-			'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'up'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'down'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+			'close'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
 			'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
-			'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+			'edit'		=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
 		);
 
 		while(list($key,$value) = each($var))
@@ -65,7 +65,61 @@
 		{
 			$portalbox->data = $data;
 		}
-
+		
+		$this->displayCharset	= $GLOBALS['phpgw']->translation->charset();
+		$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
+		
+		if(!$this->bofelamimail->openConnection('', OP_READONLY))
+		{
+			$extra_data = lang("can't connect to INBOX!!");
+		}	                    
+		else
+		{
+			$folderStatus	= $this->bofelamimail->getFolderStatus('INBOX');
+			$folderList	= $this->bofelamimail->getFolderList(true);
+			#_debug_array($folderList);
+			#_debug_array($folderStatus);
+			$extra_data = '<table border="0" cellspacing="0" cellpading="0" width="100%">
+					<tr class="th">
+						<td>
+							<b>'.lang('foldername').'</b>
+						</td>
+						<td>
+							<b>'.lang('total').'</b>
+						</td>
+						<td>
+							<b>'.lang('unseen').'</b>
+						</td>
+					<tr>';
+			foreach($folderList as $key => $value)
+			{
+				$folderStatus = $this->bofelamimail->getFolderStatus($key);
+				$messages	= $folderStatus[messages];
+				if($messages == 0) $messages = '&nbsp;';
+				$unseen		= $folderStatus[unseen];
+				$recent		= $folderStatus[recent];
+				if($recent > 0)
+				{
+					$newMessages = "$unseen($recent)";
+				}
+				else
+				{
+					if($unseen == 0) $unseen = '&nbsp;';
+					$newMessages = "$unseen";
+				}
+				
+				$linkData = array
+				(
+					'menuaction'    => 'felamimail.uifelamimail.changeFolder',
+					'mailbox'	=> urlencode($key)
+				);
+				$folderLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
+				
+				$extra_data .= "<tr><td><a href='$folderLink'>$value</a></td><td>$messages</td><td>$newMessages</td></tr>";
+			}
+			$extra_data .= '</table>';
+		}    
+		
 		// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
 		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
 			.$portalbox->draw($extra_data)
