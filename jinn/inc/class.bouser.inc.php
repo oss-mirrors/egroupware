@@ -574,7 +574,7 @@
 					{
 						foreach($conf_str as $conf_entry)
 						{
-							list($conf_key,$val)=explode('=',$conf_entry);	
+							list($conf_key,$val)=explode('~',$conf_entry);	
 							$conf_arr[$conf_key]=$val;		
 						}
 					}
