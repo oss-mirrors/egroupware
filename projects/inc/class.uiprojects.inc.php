@@ -551,11 +551,11 @@
 
 // ------------ activites bookable ----------------------
 
-				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($values['p_id'],False));
+				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list('',False));
 
 // -------------- activities billable ---------------------- 
 
-    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($values['p_id'],True));
+    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list('',True));
 			}
 			else
 			{

@@ -597,7 +597,7 @@
 		function add_activity($values)
 		{
 			$values['number']	= addslashes($values['number']);
-			$values['descr'] 	= addslashes($values['act_descr']);
+			$values['descr'] 	= addslashes($values['descr']);
 
 			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
 							. $values['number'] . "','" . $values['cat'] . "','" . $values['descr'] . "','" . $values['remarkreq'] . "','"
@@ -608,7 +608,7 @@
 		function edit_activity($values)
 		{
 			$values['number']	= addslashes($values['number']);
-			$values['descr']	= addslashes($values['act_descr']);
+			$values['descr']	= addslashes($values['descr']);
 
 			$this->db->query("update phpgw_p_activities set num='" . $values['number'] . "', category='" . $values['cat']
 							. "',remarkreq='" . $values['remarkreq'] . "',descr='" . $values['descr'] . "',billperae='"

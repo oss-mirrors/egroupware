@@ -19,7 +19,7 @@
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 20,'nullable' => False),
+				'num' => array('type' => 'varchar','precision' => 25,'nullable' => False),
 				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'access' => array('type' => 'varchar','precision' => 7,'nullable' => True),
 				'category' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
