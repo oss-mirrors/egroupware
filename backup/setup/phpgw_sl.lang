@@ -3,18 +3,18 @@ absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/arc
 absolute path of the directory of egw backup application	backup	sl	Absolutna pot mape z EGW Backup programom
 absolute path of the directory to store the backup script	backup	sl	Absolutna pot EGW Backup programske mape
 archive type	backup	sl	Izberite tip arhiva
-backup	common	sl	Varnostne kopije
+backup	common	sl	Arhiviranje
 backup administration	common	sl	Urejanje varnostnih kopij
 bzip2	admin	sl	bzip2
 configuration backup	backup	sl	Nastavitve urejanja varnostnih kopij
 configuration localhost	backup	sl	Nastavitve lokalnega gostitelja (localhost)
-create backups of your data ?	backup	sl	Preveri za izdelavo varnostnih kopij:
+create backups of your data ?	backup	sl	Označite za izdelavo varnostnih kopij:
 daily	backup	sl	dnevno
 data	backup	sl	Podatki
 directory locations	admin	sl	Mesta map
 directory names	admin	sl	Imena map
-e-mail	backup	sl	Preveri prejem E-poštnih opozoril
-e-mail notification?	backup	sl	E-poštna opozorila?
+e-mail	backup	sl	Označite za sprejem opozoril po E-pošti:
+e-mail notification?	backup	sl	E-poštna opozorila
 homedirs	admin	sl	Domače mape
 interval	backup	sl	Interval
 ip or hostname	backup	sl	IP ali ime strežnika
@@ -29,7 +29,7 @@ no backup archives available !	backup	sl	Na voljo ni nobene varnostne kopije!
 number of stored backup versions	backup	sl	Največje število varnostnih kopij, najstarejše bodo izbrisane:
 operating system	backup	sl	Operacijski sistem
 pgsql	admin	sl	PostgreSQL
-php cgi	admin	sl	Polna pot do PHP programa (npr.: /usr/bin/php)
+php cgi	admin	sl	Polna pot do PHP izvršilne datoteke (npr.: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	sl	Vnesite pot do potrebnih programov v *Konfiguraciji strežnika*!
 please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	sl	Vnesite pot do mape z varnostnimi kopijami in/ali omogočite prikaz le teh v EGW!
 please enter username and password for remote connection !	backup	sl	Vnesite uporabniško ime in geslo za povezavo!
@@ -49,7 +49,7 @@ save backup locally ?	backup	sl	Označite za shranjevanje varnostnih kopij lokal
 select archive type	backup	sl	Izberite tip arhiva
 select interval	backup	sl	Določite interval
 settings	admin	sl	nastavitve
-show backup archives in egroupware ?	backup	sl	Označite za prikaz varnostnih kopij v EGW
+show backup archives in egroupware ?	backup	sl	Označite za prikaz varnostnih kopij v eGroupWare-u:
 smbmount	backup	sl	smbmount
 sql	backup	sl	SQL
 tar	admin	sl	tar
@@ -59,5 +59,5 @@ the backup application is not configured for showing the archives in egroupware 
 the directory to store the backup script must be outside of the webservers *documentroot* !	backup	sl	Mapa za shranjevanje skript mora biti v strežnikovem *DocumentRoot*!
 versions can only be a number !	backup	sl	Različice so lahko samo števila!
 weekly	backup	sl	tedensko
-your sql database isnt supported by this application !	backup	sl	Vaša SQL podatkovna baza ni podprta v tem programu!
+your sql database isnt supported by this application !	backup	sl	Ta program žal ne podpira vaše SQL podatkovne baze!
 zip	common	sl	zip

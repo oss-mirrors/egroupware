@@ -1,4 +1,4 @@
-actions	polls	sl	aktivnost
+actions	polls	sl	dejavnosti
 add answer to poll	polls	sl	Dodaj odgovor na anketo
 add answers	polls	sl	Dodaj odgovore
 add new poll question	polls	sl	Dodaj novo anketno vprašanje
@@ -21,7 +21,7 @@ polls	common	sl	Ankete
 question has been updated	polls	sl	Vprašanja so bila posodobljena
 select current poll	polls	sl	Izberite trenutno anketo
 settings	polls	sl	Nastavitve
-settings updated	polls	sl	Nastavitve so bile spremenjene
+settings updated	polls	sl	Nastavitve so posodobljene
 show answers	polls	sl	Pokaži odgovore
 show questions	common	sl	Pokaži vprašanja
 total votes	polls	sl	Skupaj
