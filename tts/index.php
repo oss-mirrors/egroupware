@@ -122,7 +122,8 @@
 	$GLOBALS['phpgw']->template->set_var('tts_numopen',lang('Tickets open %1',$numopen));
 
 
-	$db2 = $db = $GLOBALS['phpgw']->db;
+	$db = clone($GLOBALS['phpgw']->db);
+	$db2 = clone($GLOBALS['phpgw']->db);
 	$db->query("select * from phpgw_tts_tickets $filtermethod $sortmethod",__LINE__,__FILE__);
 	$numfound = $db->num_rows();
 
