@@ -665,7 +665,7 @@
 				}
 			}
 
-			if ($invoice_id)
+			if ($invoice_id && ($action != 'amains') && ($action != 'asubs'))
 			{
 				$hours = $this->bobilling->read_hours($project_id, $action);
 				if (is_array($hours))
@@ -746,6 +746,11 @@
 				{
 					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
 				}
+			}
+
+			if ($action == 'amains' || $action == 'asubs')
+			{
+				$this->t->set_var('invoice','');
 			}
 
 			$this->t->pfp('out','hours_list_t',True);

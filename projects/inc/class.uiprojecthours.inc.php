@@ -293,23 +293,38 @@
 // ---------------- template declaration for list records ------------------------------
 
 				$this->t->set_var(array('employee' => $employeeout,
-								'hours_descr' => $hours_descr,
-									'status' => $statusout,
-								'start_date' => $sdate['date'],
-								'start_time' => $sdate['time'],
-									'end_time' => $edate['time'],
-									'minutes' => $minutes));
+									'hours_descr' => $hours_descr,
+										'status' => $statusout,
+									'start_date' => $sdate['date'],
+									'start_time' => $sdate['time'],
+										'end_time' => $edate['time'],
+										'minutes' => $minutes));
 
 				$link_data['hours_id'] = $hours[$i]['hours_id'];
+				$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
+
+				$pro = $this->boprojects->read_single_project($project_id);
 
 				if ($this->state != 'billed')
 				{
-					if ($this->boprojects->check_perms($this->grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
+					if ($this->boprojects->isprojectadmin())
 					{
-						$link_data['menuaction'] = 'projects.uiprojecthours.edit_hours';
-						$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
-						$this->t->set_var('lang_edit',lang('Edit'));
+						$edithour = True;
 					}
+					else if ($hours[$i]['employee'] == $this->account)
+					{
+						$edithour = True;
+					}
+					else if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
+					{
+						$edithour = True;
+					}
+				}
+
+				if ($edithour)
+				{
+					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$this->t->set_var('lang_edit',lang('Edit'));
 				}
 				else
 				{
@@ -329,8 +344,6 @@
 
 			if ($action != 'asubs')
 			{
-				$pro = $this->boprojects->read_single_project($project_id);
-
 				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 				{
 					$link_data['menuaction'] = 'projects.uiprojecthours.add_hours';
@@ -688,7 +701,18 @@
 
 			$this->t->set_var('activity_list',$this->boprojects->select_hours_activities($values['project_id'],$values['activity_id']));
 
-			if ($this->boprojects->check_perms($grants[$values['employee']],PHPGW_ACL_DELETE) || $values['employee'] == $this->account)
+			$coordinator = $this->boprojects->return_value('co',$values['project_id']);
+
+			if ($this->boprojects->check_perms($grants[$coordinator],PHPGW_ACL_DELETE) || $coordinator == $this->account)
+			{
+				$deletehour = True;
+			}
+			else if ($values['employee'] == $this->account)
+			{
+				$deletehour = True;
+			}
+
+			if ($deletehour)
 			{
 				$link_data['menuaction'] = 'projects.uiprojecthours.delete_hours';
 				$this->t->set_var('delete','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)

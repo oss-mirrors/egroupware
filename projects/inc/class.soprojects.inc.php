@@ -442,6 +442,14 @@
 					$thing = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 				}
 			}
+			if ($action == 'co')
+			{
+				$this->db->query("select coordinator from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
+				if ($this->db->next_record())
+				{
+					$thing = $this->db->f('coordinator');
+				}
+			}
 			return $thing;
 		}
 

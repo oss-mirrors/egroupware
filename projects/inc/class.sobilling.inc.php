@@ -216,7 +216,7 @@
 		{
 			$ordermethod = " order by end_date asc";
 
-			if ($action == 'mains')
+			if ($action == 'mains' || $action == 'amains')
 			{
 				$parent_search = " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
 			}

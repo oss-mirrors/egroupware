@@ -524,7 +524,7 @@
 				}
 			}
 
-			if ($delivery_id)
+			if ($delivery_id && ($action != 'amains') && ($action != 'asubs'))
 			{
 				$hours = $this->bodeliveries->read_hours($project_id, $action);
 				if (is_array($hours))
@@ -603,6 +603,11 @@
 				}
 			}
 
+			if ($action == 'amains' || $action == 'asubs')
+			{
+				$this->t->set_var('delivery','');
+			}
+
 			$this->t->pfp('out','hours_list_t',True);
 		}
 
@@ -622,11 +627,6 @@
 				'project_id'	=> $project_id
 			);
 
-			if (!$this->start)
-			{
-				$this->start = 0;
-			}
-
 			$this->t->set_var('lang_action',lang('Delivery list'));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
@@ -636,7 +636,7 @@
 				$this->start = 0;
 			}
 
-			if (! $project_id)
+			if (!$project_id)
 			{
 				$project_id = '';
 			}
@@ -711,7 +711,7 @@
 				}
 			}
 			$this->t->pfp('out','projects_list_t',True);
-			$this->save_sessiondata($action);
+			$this->save_sessiondata('del');
 		}
 
 		function show_delivery()

@@ -390,9 +390,9 @@
 			{
 				if ($pro_parent && $pro_parent != 0)
 				{
-					$pro = $this->boprojects->read_single_project($pro_parent);
+					$coordinator = $this->boprojects->return_value($pro_parent);
 
-					if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+					if ($this->boprojects->check_perms($this->grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $this->account)
 					{
 						$showadd = True;
 					}
@@ -1651,10 +1651,19 @@
 				));
 
 				$link_data['project_id'] = $pro[$i]['project_id'];
+				$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 
-				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				if ($this->boprojects->isprojectadmin() && $pro[$i]['access'] != 'private')
 				{
-					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+					$showedit = True;
+				}
+				else if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
+				{
+					$showedit = True;
+				}
+
+				if ($showedit)
+				{
 					$this->t->set_var('edit',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
 				}
@@ -1679,9 +1688,9 @@
 				}
 
 				$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&project_id='
-																	. $pro[$i]['project_id']));
+																	. $pro[$i]['project_id'] . '&action=' . $action));
 				$this->t->set_var('invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&project_id='
-																	. $pro[$i]['project_id']));
+																	. $pro[$i]['project_id'] . '&action=' . $action));
 				$this->t->set_var('stats',$GLOBALS['phpgw']->link('/projects/index.php','menuaction=projects.uistatistics.project_stat&project_id='
 																	. $pro[$i]['project_id']));
 				$this->t->set_var('lang_invoice_entry',lang('Invoices'));
