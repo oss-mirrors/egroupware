@@ -24,7 +24,7 @@ no backup archives available !		pt-br	Nenhumarquivo de backup disponível
 number of stored backup versions		pt-br	Numero de backups armazenados a serem mantidos antes de apagar os antigos:
 operating system		pt-br	Sistema operacional
 pgsql		pt-br	PostgreSQL
-php cgi		pt-br	Caminho completo do executável do PHP (eg: /usr/local/bin/php)
+php cgi		pt-br	Caminho completo do executável do PHP (eg: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !		pt-br	Por favor digite o caminho do aplicativo necessário em *Configuração do site*!
 please enter the path to the backup dir and/or enable showing archives in phpgroupware !		pt-br	Digite o caminho do diretório de backup e/ou habilite a exibição de arquivos no eGroupware
 please enter username and password for remote connection !		pt-br	Informe um usuário e senha para a conexão remota

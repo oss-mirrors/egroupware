@@ -24,7 +24,7 @@ no backup archives available !	backup	pt	No backup archives available !
 number of stored backup versions	backup	pt	Number of stored backup versions
 operating system	backup	pt	Operating system
 pgsql	admin	pt	PostgreSQL
-php cgi	admin	pt	Caminho para seu PHP (/usr/local/bin/php)
+php cgi	admin	pt	Caminho para seu PHP (/usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	pt	Please enter the path of the needed applications in *Site configuration* !
 please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	pt	Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !
 please enter username and password for remote connection !	backup	pt	Please enter username and password for remote connection !

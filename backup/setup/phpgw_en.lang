@@ -24,7 +24,7 @@ no backup archives available !	backup	en	No backup archives available !
 number of stored backup versions	backup	en	Number of stored backups to keep beefore deleting old ones:
 operating system	backup	en	Operating system
 pgsql	admin	en	PostgreSQL
-php cgi	admin	en	Full path to your PHP exec (eg: /usr/local/bin/php)
+php cgi	admin	en	Full path to your PHP exec (eg: /usr/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	en	Please enter the path of the needed applications in *Site configuration* !
 please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	en	Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !
 please enter username and password for remote connection !	backup	en	Please enter username and password for remote connection !
