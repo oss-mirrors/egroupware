@@ -1,0 +1,23 @@
+(optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	sl	(opcija: nastavite domeno za prijavo uporabnikov/klientov, nujno: nastavite ime strežnika za prijavo v strežnik).
+addressbook test	xmlrpc	sl	Test adresarja
+app	xmlrpc	sl	Aplikacija
+apps	xmlrpc	sl	Aplikacije
+assigned kp3	xmlrpc	sl	kp3 prirejen
+assigned sessionid	xmlrpc	sl	ID seje je prirejen
+bogus request	xmlrpc	sl	Bogus prošnja
+calendar test	xmlrpc	sl	Test koledarja
+client / server test	xmlrpc	sl	Test klienta / strežnika
+configure using admin - peer servers	xmlrpc	sl	Konfiguriranje z uporabo aplikacije admin - partnerski strežniki
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	sl	eGroupWare test: XML-RPC/SOAP klient<->strežnik in strežnik<->klient (poteka SOAP...)
+introspection	xmlrpc	sl	Introspekcija
+meerkat browser	xmlrpc	sl	Brskalnik Meerkat
+methods	xmlrpc	sl	Metode
+note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	sl	POZOR: listapps in listusers sta navadno onemogočena v xml_functions.php.
+select target server	xmlrpc	sl	Izberite ciljni strežnik
+server test	xmlrpc	sl	Test strežnika
+server<->server	xmlrpc	sl	Strežnik <-> strežnik
+servername/domain	xmlrpc	sl	Ime strežnika/Domena
+simple client	xmlrpc	sl	Enostaven klient
+system	xmlrpc	sl	Sistem
+test suite	xmlrpc	sl	Testno okolje
+xmlrpc test	common	sl	Test XMLRPC

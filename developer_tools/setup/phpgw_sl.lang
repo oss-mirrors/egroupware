@@ -38,7 +38,7 @@ preferences have been updated	developer_tools	sl	Nastavitve so bile obnovljene
 project	developer_tools	sl	Projekt
 remove	developer_tools	sl	Odstrani
 returns to the application list, not saved changes get lost !!!	developer_tools	sl	Povratek na seznam programov, neshranjene spremembe se izgubijo!
-revert	developer_tools	sl	Obratno
+revert	developer_tools	sl	Povrni
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	sl	Shrani dodane/spremenjene prevode v notranji pomnilnik za nadaljno uporabo
 search changelogs	developer_tools	sl	Shrani dnevnike sprememb
 search for missing phrase	developer_tools	sl	Iskanje manjkajoče fraze

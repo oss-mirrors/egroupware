@@ -28,6 +28,7 @@ return to admin	forum	sl	Nazaj na Admin
 return to forums	forum	sl	Nazaj na Forume
 sub category	forum	sl	Podrubrika
 there are no forums in this category	forum	sl	V tej rubriki ni nobenega foruma
+threaded	forum	sl	Kot niti pogovorov
 topic	forum	sl	Tema
 update category	forum	sl	Posodobi kategorijo
 update forum	forum	sl	Posodobi forum
