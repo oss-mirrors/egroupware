@@ -39,6 +39,7 @@
 	$setup_info['forum']['hooks'][] = 'admin';
 	$setup_info['forum']['hooks'][] = 'settings';
 	$setup_info['forum']['hooks'][] = 'preferences';
+	$setup_info['forum']['hooks'][] = 'sidebox_menu';
 
 	/* the dependencies */
 	$setup_info['forum']['depends'][] = array(
