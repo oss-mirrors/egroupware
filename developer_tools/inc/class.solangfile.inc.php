@@ -369,7 +369,7 @@
 			return $languages;
 		}
 
-		function write_file($app_name,$langarray,$userlang,$which)
+		function write_file($app_name,$langarray,$userlang,$which='target')
 		{
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
 			if (file_exists($fn))
