@@ -18,7 +18,7 @@
   include("../header.inc.php");
   
   $sql = "SELECT site FROM users_headlines "
-       . "WHERE owner='" . $phpgw_info["user"]["loginid"] . "'";
+       . "WHERE owner='" . $phpgw_info["user"]["userid"] . "'";
   
   $phpgw->db->query($sql);
   while ($phpgw->db->next_record()) {
