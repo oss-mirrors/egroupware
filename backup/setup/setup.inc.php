@@ -18,7 +18,8 @@
 	$setup_info['backup']['author'] = 'Bettina Gille';
 	$setup_info['backup']['license']  = 'GPL';
 	$setup_info['backup']['description'] =
-		'An online configurable backup app to store data offline.';
+		'phpGroupWare data backup for sql, ldap and email.<br>
+		An online configurable backup app to store data offline.';
 	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
 	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
 
