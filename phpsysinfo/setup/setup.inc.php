@@ -12,7 +12,6 @@
 	/* $Id$ */
 
 	$setup_info['phpsysinfo']['name']      = 'phpsysinfo';
-	$setup_info['phpsysinfo']['title']     = 'system information';
 	$setup_info['phpsysinfo']['version']   = '1.7';
 	$setup_info['phpsysinfo']['app_order'] = 99;
 	$setup_info['phpsysinfo']['enable']    = 2;

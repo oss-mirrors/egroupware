@@ -13,7 +13,6 @@
 
 	/* Basic information about this app */
 	$setup_info['headlines']['name']      = 'headlines';
-	$setup_info['headlines']['title']     = 'Headlines';
 	$setup_info['headlines']['version']   = '0.8.1.001';
 	$setup_info['headlines']['app_order'] = 19;
 	$setup_info['headlines']['enable']    = 1;

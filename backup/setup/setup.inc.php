@@ -11,7 +11,6 @@
 	/* $Id$ */
 
 	$setup_info['backup']['name']		= 'backup';
-	$setup_info['backup']['title']		= 'Backup';
 	$setup_info['backup']['version']	= '0.0.1.001';
 	$setup_info['backup']['app_order']	= 72;
 	$setup_info['backup']['enable'] = 1;

@@ -13,7 +13,6 @@
 
 	/* Basic information about this app */
 	$setup_info['developer_tools']['name']      = 'developer_tools';
-	$setup_info['developer_tools']['title']     = 'Developer Tools';
 	$setup_info['developer_tools']['version']   = '0.8.1';
 	$setup_info['developer_tools']['app_order'] = 8;
 	$setup_info['developer_tools']['enable']    = 1;

@@ -16,7 +16,6 @@
 
 	/* Basic information about this app */
 	$setup_info['messenger']['name']      = 'messenger';
-	$setup_info['messenger']['title']     = 'Messenger';
 	$setup_info['messenger']['version']   = '0.8.1';
 	$setup_info['messenger']['app_order'] = '10';
 	$setup_info['messenger']['enable']    = 1;

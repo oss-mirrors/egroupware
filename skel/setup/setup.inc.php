@@ -13,7 +13,6 @@
 
 	/* Basic information about this app */
 	$setup_info['skel']['name']      = 'skel';
-	$setup_info['skel']['title']     = 'Skeleton';
 	$setup_info['skel']['version']   = '0.0.1.001';
 	$setup_info['skel']['app_order'] = 8;
 	$setup_info['skel']['enable']    = 1;

@@ -13,7 +13,6 @@
 
 	/* Basic information about this app */
 	$setup_info['polls']['name']      = 'polls';
-	$setup_info['polls']['title']     = 'Polls';
 	$setup_info['polls']['version']   = '0.8.1';
 	$setup_info['polls']['app_order'] = 15;
 	$setup_info['polls']['enable']    = 1;

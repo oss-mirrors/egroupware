@@ -12,7 +12,6 @@
 	/* $Id$ */
 
 	$setup_info['felamimail']['name']      = 'felamimail';
-	$setup_info['felamimail']['title']     = 'FeLaMiMail';
 	$setup_info['felamimail']['version']	= '0.8.4';
 	$setup_info['felamimail']['app_order'] = 2;
 	$setup_info['felamimail']['enable']    = 1;
