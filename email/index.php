@@ -32,8 +32,8 @@
 	include("../header.inc.php");
 
 	@set_time_limit(0);
-	
-	$t = new Template($phpgw->common->get_tpl_dir('email'));
+
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_any_deleted' => 'index_any_deleted.tpl',
 		'T_form_delmov_init' => 'index_form_delmov_init.tpl',
