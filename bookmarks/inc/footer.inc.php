@@ -15,9 +15,11 @@
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/messages.inc.php");
   if (isset ($bk_output_html)) {
-     $phpgw->template->set_var(MESSAGES, $bk_output_html);
+     $phpgw->template->set_var("messages",$bk_output_html);
   }
 
-  $phpgw->template->parse("BODY", array("body", "standard"));
-  $phpgw->template->p("BODY");
+  $phpgw->template->parse("body",array("body","common"));
+  $phpgw->template->p("body");
+  
+  //$phpgw->common->phpgw_footer();
 ?>

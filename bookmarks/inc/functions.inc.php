@@ -50,10 +50,20 @@
      } 
   }
 
+  function date_information(&$tpl, $raw_string)
+  {
+     global $phpgw;
+
+     $ts = explode(",",$phpgw->db->f("bm_info"));
+
+     $tpl->set_var("added_value",$phpgw->common->show_date($ts[0]));
+     $tpl->set_var("visited_value",($ts[1]?$phpgw->common->show_date($ts[1]):lang("Never")));
+     $tpl->set_var("updated_value",($ts[2]?$phpgw->common->show_date($ts[2]):lang("Never")));
+  }
+
   function  set_standard($title, &$p_tpl) 
   {
      global $bookmarker, $SERVER_NAME, $phpgw;
-  
 
      $p_tpl->set_var(array(
        TITLE            => $title,
@@ -71,7 +81,6 @@
        USER_URL         => $phpgw->link("useropt.php"),
        USER_SETTINGS_URL=> $phpgw->link("user.php"),
        IMPORT_URL       => $phpgw->link("import.php"),
-   //    LOGOUT_HTML      => $logout_html,
        DOWNLOAD_URL     => $phpgw->link("download.php"),
        BUGS_URL         => $phpgw->link("bugs.php"),
        MAILLIST_URL     => $phpgw->link("maillist.php"),
@@ -87,63 +96,23 @@
   // of the standard id-name formatted tables. this
   // routine will insert the <option> tags, it does
   // not insert the <select> tags.
-  function load_ddlb($table, $selected_id, &$content, $blank)
+  function load_ddlb($table, $selected = "")
   {
-     global $bookmarker, $phpgw, $phpgw_info;
+     global $phpgw, $phpgw_info;
+     $db = $phpgw->db;
 
-     $db_ddlb = $phpgw->db;
-
-     $option_tpl = $phpgw->template;
-
-     $option_tpl->set_file(array(option_list => "common.option.tpl",
-                                 select      => "common.select.tpl"
-                          ));
-
-     // if the user wants a blank option, add that first
-     // the blank can be selected.
-     if ($blank) {
-        $opt_value =  "NONE";
-        $opt_name  =  "----";
-        if ($selected_id == $opt_value) {
-           $opt_selected = "selected";
-        } else {
-           $opt_selected = "";
-        }
-        $option_tpl->set_var(array(OPTION_SELECTED => $opt_selected,
-                                   OPTION_VALUE    => $opt_value,
-                                   OPTION_NAME     => $opt_name
-                            ));
-        $option_tpl->parse(OPTION_LIST, "option_list", TRUE);
+     $query = sprintf("select id, name from %s where username='%s' order by name", $table,
+                      $phpgw_info["user"]["account_id"]);
+     $db->query($query,__LINE__,__FILE__);
+     while ($db->next_record()) {
+        $s .= '<option value="' . $db->f("id") . '"';
+        if ($selected == $db->f("id")) {
+           $s .= " selected";
+        }        
+        $s .= '>' . $phpgw->strip_html($db->f("name")) . '</option>';
+        $s .= "\n";
      }
-
-     $query = sprintf("select id, name from %s where username='%s' order by name", $table, $phpgw_info["user"]["account_id"]);
-     //echo "<br><b>TEST:</b> $query";
-     $db_ddlb->query($query,__LINE__,__FILE__);
-     while ($db_ddlb->next_record()) {
-        $cnt = $cnt + 1;
-        $opt_value =  $db_ddlb->f("id");
-        $opt_name  =  htmlspecialchars(stripslashes($db_ddlb->f("name")));
-
-        if ($selected_id == $opt_value) {
-           $opt_selected = "selected";
-        } else {
-           $opt_selected = "";
-        }
-
-        $option_tpl->set_var(array(OPTION_SELECTED => $opt_selected,
-                                   OPTION_VALUE    => $opt_value,
-                                   OPTION_NAME     => $opt_name
-                            ));
-        $option_tpl->parse(OPTION_LIST, "option_list", TRUE);
-     }
-
-     if ( $cnt > 0 ) {
-        $option_tpl->set_var(FIELD_NAME, $table);
-        $option_tpl->parse(MAIN, "select");
-        $content = $option_tpl->get("MAIN");
-     } else {
-        $content = " ";
-     }
+     return $s;
   }
 
   // function to determine what type of browser the user has.
@@ -171,41 +140,39 @@
   class bmark
   {
 
-     function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$public)
+     function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
      {
         global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
 
         $db = $phpgw->db;
 
-        if (! $this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
+/*      if (! $this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
                          &$rating, &$public, &$public_db)) {
+           return False;
+        } */
+
+        // Does the bookmark already exist?
+        $query = sprintf("select count(*) from phpgw_bookmarks where bm_url='%s' and bm_owner='%s'",$url, $phpgw_info["user"]["account_id"]);
+        $db->query($query,__LINE__,__FILE__);
+
+        if ($db->f(0)) {
+           $error_msg .= sprintf("<br>URL <B>%s</B> already exists!", $url);
            return False;
         }
 
-        // Does the bookmark already exist?
-        $query = sprintf("select id from bookmarks where url='%s' and username = '%s'",$url, $phpgw_info["user"]["account_id"]);
-        $db->query($query,__LINE__,__FILE__);
-        if ($db->Errno != 0) {
-           return False;
-        }
-    
-        if ($db->nf() > 0) {
-           $error_msg .= sprintf("<br>URL <B>%s</B> already exists!", $url);
-           return false;
+        if ($access != "private" && $access != "public") {
+           $access = $phpgw->accounts->array_to_string($access,$groups);
         }
 
         // Insert the bookmark
-        $query = sprintf("insert into bookmarks (url, name, ldesc, keywords, category_id, 
-                          subcategory_id, rating_id, username, public_f, bm_timestamps) 
-                          values('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,,')", 
+        $query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
+                       . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
+                       . "values ('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,0,0',0)", 
                           $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                          $category, $subcategory, $rating, $phpgw_info["user"]["account_id"], $public_db,
+                          $category, $subcategory, $rating, $phpgw_info["user"]["account_id"], $access,
                           time());
     
         $db->query($query,__LINE__,__FILE__);
-        if ($db->Errno != 0) {
-           return False;
-        }
 
   //    $maintain_url = "maintain.php?id=".$id;
         $msg .= "Bookmark created sucessfully.";
@@ -220,7 +187,7 @@
 
     function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, $rating, $public)
     {
-       global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $db;
+       global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $phpgw;
 
        if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
                         &$rating, &$public, &$public_db)) {
@@ -234,16 +201,13 @@
        $timestamps = sprintf("%s,%s,%s",$added,$visted,time());
    
        // Update bookmark information.
-       $query = sprintf("update bookmarks set url='%s', name='%s', ldesc='%s' , keywords='%s', 
-                         category_id='%s', subcategory_id='%s', rating_id='%s', public_f='%s',
-                         bm_timestamps='%s' where id='%s' and username='%s'", 
+       $query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
+                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
+                      . "bm_info='%s' where bm_id='%s' and bm_owner='%s'", 
                          $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
                          $category, $subcategory, $rating, $public_db, $timestamps, $id, $phpgw_info["user"]["account_id"]);
    
-       $db->query($query,__LINE__,__FILE__);
-       if ($db->Errno != 0) {
-          return False;
-       }
+       $phpgw->db->query($query,__LINE__,__FILE__);
    
        $msg .= "Bookmark changed sucessfully.";
     
@@ -353,7 +317,7 @@
       $db = $phpgw->db;
 
       $db->query("select count(*) as total_bookmarks from bookmarks where username = '"
-               . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
+               . $phpgw_info["user"]["account_id"] . "' or bookmarks.public_f='Y'",__LINE__,__FILE__);
       $db->next_record();
       $phpgw->common->appsession($db->f("total_bookmarks"));
  
@@ -426,7 +390,7 @@ class bookmarker_class  {
 # image URL - string added to the begining of an image file
 # (for example, I set this to "./images/" which makes bookmarker
 # build image URLs like <img src="./images/mailto.png"...)
-  var $image_url_prefix = $phpgw_info["server"]["app_images"] . "/";
+  var $image_url_prefix;
 
 # URL format checking. bookmarker can check the format of
 # URLs entered on the create/maintain pages. This option
@@ -460,13 +424,12 @@ class bookmarker_class  {
 # if 'group by category/subcategory' is also selected.
   var $show_bk_in_tree = 0; # set to 0 for 'off' 1 for 'on'
 
-# class constructor for bookmarker_class
-# setup a few more variables that are based on variables.
-  function bookmarker_class () {
-    global $SERVER_NAME;
-    global $SERVER_ADMIN;
-    global $REMOTE_ADDR;
-    global $PHP_SELF;
+
+  function bookmarker_class()
+  {
+    global $SERVER_NAME, $SERVER_ADMIN, $REMOTE_ADDR, $PHP_SELF, $phpgw_info;
+
+    $this->image_url_prefix = $phpgw_info["server"]["app_images"] . "/";
 
     $where_am_i = sprintf("http://%s%s/", $SERVER_NAME, dirname($PHP_SELF));
 

@@ -29,9 +29,9 @@
     $subcat_search = $phpgw->link("search.php","where=" . urlencode("subcategory.name='$subcategory'"));
 
     $list_tpl->set_var(array(CATEGORY           => htmlspecialchars(stripslashes($category)),
-                             CATEGORY_SEARCH    => $cat_search,
+//                           CATEGORY_SEARCH    => $cat_search,
                              SUBCATEGORY        => htmlspecialchars(stripslashes($subcategory)),
-                             SUBCATEGORY_SEARCH => $subcat_search
+//                           SUBCATEGORY_SEARCH => $subcat_search
                       ));
         
     $list_tpl->parse(LIST_HDR, "header");
@@ -61,6 +61,7 @@
                               item_keyw      => "common.list.item_keyw.tpl"
                        ));
 
+
    // db callout to set big temporary tables option
    // $bk_db_callout->set_big_temp_tables ($bk_c);
 
@@ -70,28 +71,19 @@
    //     $public_sql = " or bookmark.public_f='Y' ";
 
 
-   $query = sprintf("select bookmarks_category.name as category_name, bookmarks.category_id,"
-                  . "bookmarks_subcategory.name as subcategory_name, bookmarks.subcategory_id, bookmarks.id, "
-                  . "bookmarks.url, bookmarks.name as bookmark_name, bookmarks.ldesc, bookmarks.keywords, "
-                  . "bookmarks.rating_id, bookmarks.username "
-                  . "from bookmarks, bookmarks_category, bookmarks_subcategory "
-                  . "where (bookmarks.category_id = bookmarks_category.id "
-                  . "and bookmarks_category.username = bookmarks.username "
-                  . "and bookmarks.subcategory_id = bookmarks_subcategory.id "
-                  . "and bookmarks_subcategory.username = bookmarks.username "
-                  . ") and (bookmarks.username = '%s')", $phpgw_info["user"]["account_id"]);
-  
+   $query = sprintf("select * from phpgw_bookmarks where (bm_owner='%s' or bm_access='public' %s)",
+                    $phpgw_info["user"]["account_id"],
+                    $phpgw->accounts->sql_search("bm_access"));  
+
    if ($where_clause != "") {
       $where_clause_sql = " and " . $where_clause;
    } else {
       $where_clause_sql = " ";
    }
 
-   $order_by_sql = " order by bookmarks_category.name, bookmarks_subcategory.name, bookmarks.name, bookmarks.id";
-
-   $limit_sql = " limit " . $phpgw->nextmatchs->sql_limit($start);
+//   $order_by_sql = " order by bookmarks_category.name, bookmarks_subcategory.name, bookmarks.name, bookmarks.id";
   
-   $query .= $where_clause_sql.$order_by_sql.$limit_sql;
+   $query .= $where_clause_sql . $order_by_sql . $phpgw->db->limit($start);
   
    $phpgw->db->query($query,__LINE__,__FILE__);
 
@@ -100,49 +92,55 @@
    $rows_printed = 0;
 
    while ($phpgw->db->next_record()) {
-      $rows_printed ++;
+      $category_name    = $phpgw->categories->return_name($phpgw->db->f("bm_category"));
+      $subcategory_name = $phpgw->categories->return_name($phpgw->db->f("bm_subcategory"));
 
-      if (($phpgw->db->f("category_name") != $prev_category) or
-         ($phpgw->db->f("subcategory_name") != $prev_subcategory)) {
+      $rows_printed++;
+
+      if (($category_name != $prev_category) or ($subcategory_name != $prev_subcategory)) {
 
          if ($rows_printed > 1) {
             print_list_break(&$list_tpl, $prev_category, $prev_subcategory);
          }
-         $prev_category       = $phpgw->db->f("category_name");
-         $prev_subcategory    = $phpgw->db->f("subcategory_name");
+         $prev_category       = $category_name;
+         $prev_subcategory    = $subcategory_name;
       }
 
-      if ($phpgw->db->f("keywords") > " ") {
-         $list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($phpgw->db->f("keywords"))));
+      if ($phpgw->db->f("bm_keywords")) {
+         $list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($phpgw->db->f("bm_keywords"))));
          $list_tpl->parse(KEYWORDS,"item_keyw");
       } else {
          $list_tpl->set_var(KEYWORDS, "");
       }
 
       // Check owner
-      if ($phpgw->db->f("username") == $phpgw_info["user"]["account_id"]) {
-         $maintain_url  = $phpgw->link("maintain.php","id=" . $phpgw->db->f("id") . "&returnto=" . urlencode($returnto));
+      if ($phpgw->db->f("bm_owner") == $phpgw_info["user"]["account_id"]) {
+         $maintain_url  = $phpgw->link("maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
          $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=24 height=24 align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
 
-         $view_url  = $phpgw->link("view.php","id=" . $phpgw->db->f("id") . "&returnto=" . urlencode($returnto));
+         $view_url  = $phpgw->link("view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
          $view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" width=17 height=16 align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
       } else {
-         $maintain_link = sprintf("<!-- owned by: %s -->", $phpgw->db->f("username"));
-//         $delete_link = "&nbsp;";
+         $maintain_link = sprintf("<!-- owned by: %s -->&nbsp;", $phpgw->db->f("bm_owner"));
+      }
+      if ($phpgw->acl->check("anonymous",1,"bookmarks")) {
+         $list_tpl->set_var("MAIL_THIS_LINK_URL",$phpgw->link("maillink.php","bm_id=".$phpgw->db->f("bm_id")));
+      } else {
+         $list_tpl->set_var("MAIL_THIS_LINK_URL","&nbsp;");
       }
 
       $list_tpl->set_var(array(MAINTAIN_LINK      => $maintain_link,
                                "img_root"         => $phpgw_info["server"]["app_images"],
                                VIEW_LINK          => $view_link,
-                               RATING             => $phpgw->db->f("rating_id"),
-                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
-                               BOOKMARK_USERNAME  => $phpgw->db->f("username"),
-                               BOOKMARK_ID        => $phpgw->db->f("id"),
-                               BOOKMARK_URL       => $phpgw->link("redirect.php","url=" . urlencode($phpgw->db->f("url")) ."&bm_id=" . $phpgw->db->f("id")),
-                               BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("rating_name"))),
-                               BOOKMARK_RATING_ID => $phpgw->db->f("rating_id"),
-                               BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bookmark_name"))),
-                               BOOKMARK_DESC      => nl2br(htmlspecialchars(stripslashes($phpgw->db->f("ldesc")))),
+                               RATING             => $phpgw->db->f("bm_rating"),
+//                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
+                               BOOKMARK_USERNAME  => $phpgw->db->f("bm_owner"),
+                               BOOKMARK_ID        => $phpgw->db->f("bm_id"),
+                               BOOKMARK_URL       => $phpgw->link("redirect.php","url=" . urlencode($phpgw->db->f("bm_url")) ."&bm_id=" . $phpgw->db->f("bm_id")),
+                               BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("bm_rating"))),
+                               BOOKMARK_RATING_ID => $phpgw->db->f("bm_rating"),
+                               BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bm_name"))),
+                               BOOKMARK_DESC      => nl2br(htmlspecialchars(stripslashes($phpgw->db->f("bm_desc")))),
                                IMAGE_URL_PREFIX   => $bookmarker->image_url_prefix,
                                IMAGE_EXT          => $bookmarker->image_ext
                         ));
