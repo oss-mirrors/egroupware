@@ -128,7 +128,7 @@
 		$is->sessionid = $xsessionid;
 		$is->kp3 = $xkp3;
 
-		$is->send('system.listApps','',$is->server['server_url']);
+		$is->send('system.list_apps','',$is->server['server_url']);
 	}
 	elseif($HTTP_POST_VARS['users'])
 	{
