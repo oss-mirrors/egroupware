@@ -62,7 +62,7 @@
 		$accounts = CreateObject('phpgwapi.accounts',$group_id);
 		$account_list = $accounts->get_list('accounts');
 
-		$p->set_var('tts_account_lid', "0" );
+		$p->set_var('tts_account_lid', "none" );
 		$p->set_var('tts_account_name', lang("none"));
 		$p->set_var('tts_assignedtoselected', "selected");
 		$p->parse('tts_new_lstassigntos','tts_new_lstassignto',false);

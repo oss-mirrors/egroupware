@@ -143,10 +143,10 @@
 		while ($priority > 0) { $priostr=$priostr . "||"; $priority--; }
 		$p->set_var('tts_t_priostr',$priostr );
 
-    		$catstr = $phpgw->db->f("t_category")?$phpgw->db->f("t_category"):"none";
+    		$catstr = $phpgw->db->f("t_category")?$phpgw->db->f("t_category"):lang("none");
 		$p->set_var('tts_t_catstr', $catstr );
 
-		$p->set_var('tts_t_assignedto', $phpgw->db->f("t_assignedto"));
+		$p->set_var('tts_t_assignedto', $phpgw->db->f("t_assignedto")!="none"?$phpgw->db->f("t_assignedto"):lang("none"));
 		$p->set_var('tts_t_user', $phpgw->db->f("t_user"));
 		$p->set_var('tts_t_timestampopened', $phpgw->common->show_date($phpgw->db->f("t_timestamp_opened")));
 

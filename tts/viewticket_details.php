@@ -63,12 +63,12 @@
 	
 		// Choose the correct priority to display
 		$prority_selected[$phpgw->db->f("t_priority")] = " selected";
-		$priority_comment[1]=lang("Lowest"); 
-		$priority_comment[5]=lang("Medium"); 
-		$priority_comment[10]=lang("Highest"); 
+		$priority_comment[1]=" - ".lang("Lowest"); 
+		$priority_comment[5]=" - ".lang("Medium"); 
+		$priority_comment[10]=" - ".lang("Highest"); 
 
         	for ($i=1; $i<=10; $i++) {
-		    $p->set_var('tts_optionname', $i." ". $priority_comment[$i]);
+		    $p->set_var('tts_optionname', $i.$priority_comment[$i]);
 		    $p->set_var('tts_optionvalue', $i);
 		    $p->set_var('tts_optionselected', $prority_selected[$i]);
 		    $p->parse('tts_priority_options','tts_select_options',true);
@@ -78,7 +78,7 @@
 		$accounts = CreateObject('phpgwapi.accounts',$group_id);
 		$account_list = $accounts->get_list('accounts');
 		$p->set_var('tts_optionname', lang("none"));
-		$p->set_var('tts_optionvalue', "none");
+		$p->set_var('tts_optionvalue', "none" );
 		$p->set_var('tts_optionselected', "");
 		$p->parse('tts_assignedto_options','tts_select_options',true);
 		while (list($key,$entry) = each($account_list))
