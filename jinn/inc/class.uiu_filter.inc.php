@@ -39,21 +39,130 @@
 	  var $template;
 	  var $ui;
 	  var $filterdata;
+	  var $filterstore;
+	  var $sessionfilter;
 
 	  /**
 	  @function uiu_filter
 	  @abstract class contructor that set header and inits bo
 	  */
-	  function uiu_filter()
+	  function uiu_filter($bo=false)
 	  {
-		 $this->bo = CreateObject('jinn.bouser');
+		 if(!$bo)
+		 {
+			$this->bo = CreateObject('jinn.bouser');
+		 }
+		 else
+		 {
+			$this->bo = $bo;
+		 }
 		 $this->template = $GLOBALS['phpgw']->template;
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
+
+		 // get all available filters from preferences and session
+		 $this->filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
+		 $this->sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
+		 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 		 }
 		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
+	  }
+
+	  function save_filterstore()
+	  {
+		$this->bo->save_preferences('filterstore'.$this->bo->site_object_id, $this->filterstore); 
+	  }
+
+	  function save_sessionfilter()
+	  {
+		 $this->bo->save_session_filter($this->bo->site_object_id, $this->sessionfilter);
+		 $this->bo->save_sessiondata();
+//_debug_array('was here');
+//_debug_array($this->sessionfilter);
+	  }
+	  
+	  /**
+	  @function format_filter_options
+	  */
+	  function format_filter_options($selected)
+	  {
+		 $options  = '<option value="NO_FILTER">'.lang('empty filter').'</option>';
+		 $options .= '<option value="NO_FILTER">------------</option>';
+		 if($selected == 'sessionfilter')
+		 {
+			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
+		 }
+		 else
+		 {
+			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
+		 }
+		 $options .= '<option value="NO_FILTER">------------</option>';
+		 if(is_array($this->filterstore))
+		 {
+			foreach($this->filterstore as $filter)
+			{
+			   if($filter[name] == $selected)
+			   {
+				  $options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
+			   }
+			   else
+			   {
+				  $options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
+			   }
+			}
+		 }
+		 return $options;
+	  }
+	  
+	  function get_filter_where()
+	  {
+//_debug_array($this->sessionfilter);
+//_debug_array($_POST);
+	  // if not specified, get the current filter from the session, or specify empty
+		 if($_POST[filtername] == '')
+		 {
+			$_POST[filtername] = $this->sessionfilter[selected];
+			if($_POST[filtername] == '')
+			{
+				$_POST[filtername] == 'NO_FILTER';
+			}
+
+		 }
+
+		 // check if an existing filter is selected
+		 if($_POST[filtername] != 'NO_FILTER')
+		 {
+			//check if it is a temporary (session) filter or permanently (preferences) stored filter and load accordingly
+			if($_POST[filtername] == 'sessionfilter')
+			{
+			   $filter = $this->sessionfilter;
+			}
+			else
+			{
+			   $filter = $this->filterstore[$_POST[filtername]];
+			}
+
+			// generate the WHERE clause using the loaded filter
+			$filter_where = '';
+			if(is_array($filter[elements]))
+			{
+			   foreach($filter[elements] as $element)
+			   {
+				  if($filter_where != '') $filter_where .= ' AND ';
+				  $filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
+			   }
+			}
+		 }
+		 
+		 // save filtername in session
+		 $this->sessionfilter[selected] = $_POST[filtername];
+		 $this->save_sessionfilter();
+		 
+//_debug_array($this->sessionfilter);
+//_debug_array($_POST);
+		 return $filter_where;
 	  }
 
 
@@ -65,9 +174,8 @@
 	  {
 		if($_POST[filtername])
 		{
-			$filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-			unset($filterstore[$_POST[filtername]]);
-			$this->bo->save_preferences('filterstore'.$this->bo->site_object_id, $filterstore); 
+			unset($this->filterstore[$_POST[filtername]]);
+			$this->save_filterstore();
 		}
 		
 			//redirect to list
@@ -135,20 +243,20 @@
 		if ($this->filterdata['name'] == 'sessionfilter')
 		{
 				//save in session
-			$this->bo->save_session_filter($this->bo->site_object_id, $this->filterdata);
+			$this->sessionfilter = $this->filterdata;
+			$this->save_sessionfilter();
 		}
 		else
 		{
 				//get the already stored filters, add or replace this one, save them all.
-			$filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-			$filterstore[$_POST[filtername]]=$this->filterdata;
-			$this->bo->save_preferences('filterstore'.$this->bo->site_object_id, $filterstore); 
+			$this->filterstore[$_POST[filtername]]=$this->filterdata;
+			$this->save_filterstore();
 		}
 		
 			//redirect to edit form
 		$filtername = $_POST[filtername];
 		unset($_POST);
-		$_POST[filtername] =$filtername;
+		$_POST[filtername] = $filtername;
 		$this->edit();
 	  }	  
 	  
@@ -167,14 +275,7 @@
  		 $this->template->set_block('frm_edit_filter','post_block','');
 
 		  
-		 if ($this->bo->where_string)
-		 {
-			$this->ui->header('edit record');
-		 }
-		 else
-		 {
-			$this->ui->header('add new record');
-		 }
+		 $this->ui->header('edit filter');
 		  
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
@@ -207,12 +308,11 @@
 		 }
 		 else if($_POST[filtername]=='sessionfilter')
 		 {
-			$this->filterdata = $this->bo->read_session_filter($this->bo->site_object_id);
+			$this->filterdata = $this->sessionfilter;
 		 }
 		 else
 		 {
-			$filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-			$this->filterdata = $filterstore[$_POST[filtername]];
+			$this->filterdata = $this->filterstore[$_POST[filtername]];
 		 }
 
 			//loop each filter element

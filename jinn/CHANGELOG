@@ -6,9 +6,19 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.210j
+===========================
+Fri Feb 25 13:15:00 CET 2005
+**UNSTABLE**
+- refactored filter code in uiu_list_records
+- refactored uiu_filter class
+- started implementation of object data CSV export
+- started implementation of new, fast and generic data retrieval function in sojinn class
+
+
 Version 0.8.210i
 ===========================
-Fri Feb 22 16:40:00 CET 2005
+Tue Feb 22 16:40:00 CET 2005
 - added filemanager field plugin to replace ImagePath plugin
 - implementation of Image Browse Server Popup finished, embedded in new filemanager plugin
 - fixed bug button was named 'continue' which is javascript keyword
@@ -23,7 +33,7 @@ Fri Feb 18 13:50:00 CET 2005
 
 Version 0.8.210g
 ===========================
-Wed Feb 17 15:45:00 CET 2005
+Thu Feb 17 15:45:00 CET 2005
 - started implementation of Image Browse Server plugin
 - fixed bug: list filter sessionvariables got lost when switching from user to admin and vice versa
 - fixed bug in column filters List Records where selected filter was forgotten

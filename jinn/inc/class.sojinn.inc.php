@@ -882,6 +882,69 @@
 		 return $records;
 	  }
 
+	  
+		function get_data($site_id, $table, $columns_arr, $filter_where)
+		{
+			//new function for fast and generic retrieval of object data, including 1-1, 1-many and many-many relations
+			
+			//select
+			if($columns_arr=='all')
+			{
+				$select = 'SELECT *';
+			}
+			else
+			{
+				$select = 'SELECT ';
+				foreach($columns_arr as $col)
+				{
+					if($select!='SELECT ') $select .= ', ';
+					$select .= "`$col`";
+				}
+			}
+			
+			//from
+			$from = "FROM `$table`";
+			
+			//where
+			if($filter_where=='all')
+			{
+				$where = '';
+			}
+			elseif(is_array($filter_where))
+			{
+				$where = 'WHERE ';
+				foreach($filter_where as $filter)
+				{
+					if($where!='WHERE ') $where .= 'AND ';
+					$where .= "`$filter`";
+				}
+			}
+			elseif(strlen($filter_where) > 0)
+			{
+				$where = 'WHERE '.$filter_where;
+			}
+			
+			//order
+			$order = "";
+			
+			$sql = "$select $from $where $order";
+//_debug_array($sql);
+			 if($sql)
+			 {
+				$this->site_db_connection($site_id);
+				$this->site_db->query($sql,__LINE__,__FILE__); // returns a result
+				$data = array();
+				while ($this->site_db->next_record())
+				{
+					$row = $this->site_db->row();
+//_debug_array($row);
+					$data[] = $row;
+				}
+			 }
+//_debug_array($data);
+			return $data;
+		}
+		
 	  function get_record_values($site_id,$table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*',$where_condition='')
 	  {
 		 /*			

@@ -30,6 +30,11 @@
 			   'icon'=>'browse',
 			   'text'=>'List record(s) in current object'
 			),
+			'Export current object' => array(
+			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_export.export'),
+			   'icon'=>'filesave',
+			   'text'=>'Export record(s) in current object'
+			),
 		 );
 		 $file=array_merge($file,$object);
 	  }

@@ -35,6 +35,7 @@
 	  var $bo;
 	  var $ui;
 	  var $template;
+	  var $filter;
 
 	  function uiu_list_records()
 	  {
@@ -43,6 +44,8 @@
 		 $this->template = $GLOBALS['phpgw']->template;
 
 		 $this->ui = CreateObject('jinn.uicommon',$this->bo);
+
+		 $this->filter = CreateObject('jinn.uiu_filter', $this->bo);
 
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
@@ -231,39 +234,6 @@
 	  }
 
 	
-	  /**
-	  @function format_filter_options
-	  @fixme move to uiu_filter
-	  */
-	  function format_filter_options($filterstore, $selected)
-	  {
-		 $options  = '<option value="NO_FILTER">'.lang('empty filter').'</option>';
-		 $options .= '<option value="NO_FILTER">------------</option>';
-		 if($selected == 'sessionfilter')
-		 {
-			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
-		 }
-		 else
-		 {
-			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
-		 }
-		 $options .= '<option value="NO_FILTER">------------</option>';
-		 if(is_array($filterstore))
-		 {
-			foreach($filterstore as $filter)
-			{
-			   if($filter[name] == $selected)
-			   {
-				  $options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
-			   }
-			   else
-			   {
-				  $options .= '<option value="'.$filter[name].'">'.$filter[name].'</option>';
-			   }
-			}
-		 }
-		 return $options;
-	  }
 
 	  /**
 	  @function list_records
@@ -333,73 +303,15 @@
 		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->browse_settings['orderby']);
 		 if(!$orderby && $default_order) $orderby=$default_order;
 
-
-
-
-
-		 /////////////////////////
-		 //insert filter code here
-		 /////////////////////////
-
+			//the filter class takes care of detecting the current filter, compiling a where statement and compiling the filter options for the listbox
+		 $filter_where = $this->filter->get_filter_where();
+		 $this->template->set_var('filter_list',$this->filter->format_filter_options($_POST[filtername]));
 		 
-		 // get all available filters from preferences and session
-		 $filterstore = $this->bo->read_preferences('filterstore'.$this->bo->site_object_id); 
-		 $sessionfilter = $this->bo->read_session_filter($this->bo->site_object_id);
-		 
-		 // if not specified, get the current filter from the session, or specify empty
-		 if($_POST[filtername] == '')
-		 {
-			$_POST[filtername] = $sessionfilter[selected];
-			if($_POST[filtername] == '')
-			{
-				$_POST[filtername] == 'NO_FILTER';
-			}
-
-		 }
-
-		 // set the template variables
 		 $this->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_filter.edit'));
 		 $this->template->set_var('refresh_url',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->template->set_var('filter_text',lang('activate filter'));
 		 $this->template->set_var('filter_edit',lang('edit filter'));
-		 $this->template->set_var('filter_list',$this->format_filter_options($filterstore, $_POST[filtername]));
 
-		 // check if an existing filter is selected
-		 if($_POST[filtername] != 'NO_FILTER')
-		 {
-			//check if it is a temporary (session filter) or permanently (preferences) stored filter and load accordingly
-			if($_POST[filtername] == 'sessionfilter')
-			{
-			   $filter = $sessionfilter;
-			}
-			else
-			{
-			   $filter = $filterstore[$_POST[filtername]];
-			}
-
-			// generate the WHERE clause using the loaded filter
-			$filter_where = '';
-			if(is_array($filter[elements]))
-			{
-			   foreach($filter[elements] as $element)
-			   {
-				  if($filter_where != '') $filter_where .= ' AND ';
-				  $filter_where .= "`".$element[field]."`".$element[operator]."'".$element[value]."'";
-			   }
-			}
-		 }
-		 
-		 // save filtername in session
-		 $sessionfilter[selected] = $_POST[filtername];
-		 $this->bo->save_session_filter($this->bo->site_object_id, $sessionfilter);
-
-		 
-		 
-		 
-		 
-		 
-		 
-		 
 		 if( trim($_POST[quick_filter]) || $_POST[quick_filter_hidden] )
 		 {
 			$quick_filter = trim( $_POST[quick_filter] );
