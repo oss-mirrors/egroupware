@@ -288,7 +288,7 @@
 				$this->db2->query("delete from phpgw_p_projectactivities where project_id='" . $values['project_id']
 								. "' and billable='N'",__LINE__,__FILE__);
 
-				while($activ=each($book__activities))
+				while($activ=each($book_activities))
 				{
 					$this->db->query("insert into phpgw_p_projectactivities (project_id, activity_id, billable) values ('" . $values['project_id']
 									. "','$activ[1]','N')",__LINE__,__FILE__);
@@ -363,16 +363,22 @@
 			return $thing;
 		}
 
-		function exists($check = 'number', $num = '', $project_id = '')
+		function exists($action, $check = 'number', $num = '', $pa_id = '')
 		{
+			switch ($action)
+			{
+				case 'pro': $p_table = ' phpgw_p_projects'; break;
+				case 'act': $p_table = ' phpgw_p_activities '; break;
+			}
+
 			if ($check == 'number')
 			{
-				if ($project_id && ($project_id != 0))
+				if ($pa_id && ($pa_id != 0))
 				{
-					$editexists = " and id != '$project_id'";
+					$editexists = " and id != '$pa_id'";
 				}
 
-				$this->db->query("select count(*) from phpgw_p_projects where num = '$num' $editexists",__LINE__,__FILE__);
+				$this->db->query("select count(*) from $p_table where num = '$num' $editexists",__LINE__,__FILE__);
 			}
 			else
 			{
@@ -463,6 +469,20 @@
 			return $prefix . $max;
 		}
 
+		function create_activityid()
+		{
+			global $phpgw;
+
+			$year = $phpgw->common->show_date(time(),'Y');
+			$prefix = 'A-' . $year . '-';
+
+			$this->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
+			$this->db->next_record();
+			$max = $this->add_leading_zero(substr($this->db->f(0),7));
+
+			return $prefix . $max;
+		}
+
 		function read_activities($start, $limit = True, $query = '', $sort = '', $order = '', $cat_id = '')
 		{
 			global $phpgw;
@@ -519,6 +539,15 @@
 				$i++;
 			}
 			return $act;
+		}
+
+		function add_activity($values)
+		{
+			$values['descr'] = addslashes($values['descr']);
+
+			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
+							. $values['number'] . "','" . $values['cat'] . "','" . $values['descr'] . "','" . $values['remarkreq'] . "','"
+							. $values['billperae'] . "','" . $values['minperae'] . "')",__LINE__,__FILE__);
 		}
 	}
 ?>

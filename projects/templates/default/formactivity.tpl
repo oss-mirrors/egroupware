@@ -4,7 +4,6 @@
 <center>
 {error}
 <form method="POST" name="activity_form" action="{actionurl}">
-{hidden_vars}
 {error}{message}
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
@@ -13,23 +12,27 @@
 	</tr>
 	<tr>
 		<td>{lang_num}:</td>
-		<td><input type="text" name="num" value="{num}"></td>
+		<td><input type="text" name="values[number]" value="{num}"></td>
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
+		<td colspan="2"><textarea name="values[descr]" rows=4 cols=50 wrap="VIRTUAL">{descr}</textarea></td>
+	</tr>
+	<tr>
+		<td>{lang_category}:</td>
+		<td><select name="new_cat"><option value="">{lang_none}</option>{cats_list}</select></font></td>
 	</tr>
 	<tr>
 		<td>{lang_remarkreq}:</td>
-		<td><select name="remarkreq">{remarkreq_list}</select></td>
+		<td><select name="values[remarkreq]">{remarkreq_list}</select></td>
 	</tr>
 	<tr>
 		<td>{currency}&nbsp;{lang_billperae}:</td>
-		<td><input type="text" name="billperae" value="{billperae}"></td>
+		<td><input type="text" name="values[billperae]" value="{billperae}"></td>
 	</tr>
 	<tr>
 		<td>{lang_minperae}:</td>
-		<td><input type="text" name="minperae" value="{minperae}"></td>
+		<td><input type="text" name="values[minperae]" value="{minperae}"></td>
 	</tr>
 </table>
          
@@ -37,7 +40,7 @@
          
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
-		<td height="50" align="center"><input type="submit" name="submit" value="{lang_add}"></td>
+		<td height="50" align="center"><input type="submit" name="submit" value="{lang_save}"></td>
 		<td height="50" align="center"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{done_url}">
@@ -53,7 +56,7 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50" align="center">
-			<input type="submit" name="submit" value="{lang_edit}"></form></td>
+			<input type="submit" name="submit" value="{lang_save}"></form></td>
 		<td height="50" align="center">
 			<form method="POST" action="{deleteurl}">
 			{hidden_vars}

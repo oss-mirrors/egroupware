@@ -41,7 +41,8 @@
 			'edit_project'		=> True,
 			'delete_project'	=> True,
 			'view_project'		=> True,
-			'list_activities'	=> True
+			'list_activities'	=> True,
+			'add_activity'		=> True
 		);
 
 		function uiprojects()
@@ -99,9 +100,11 @@
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('lang_jobs',lang('Jobs'));
 			$this->t->set_var('lang_number',lang('Project ID'));
+			$this->t->set_var('lang_act_number',lang('Activity ID'));
 			$this->t->set_var('lang_title',lang('Title'));
 			$this->t->set_var('lang_status',lang('Status'));
 			$this->t->set_var('lang_save',lang('Save'));
+			$this->t->set_var('lang_reset',lang('Clear form'));
 			$this->t->set_var('lang_budget',lang('Budget'));
 			$this->t->set_var('lang_select',lang('Select per button !'));
 			$this->t->set_var('lang_customer',lang('Customer'));
@@ -112,6 +115,9 @@
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_view',lang('View'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
+			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+    		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+			$this->t->set_var('lang_remarkreq',lang('Remark required'));
 		}
 
 		function display_app_header()
@@ -507,7 +513,6 @@
 
 			$this->t->set_var('done_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&cat_id=' . $cat_id));
 
-			$this->t->set_var('lang_reset',lang('Clear form'));
 			$this->t->set_var('edithandle','');
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','projects_add');
@@ -761,7 +766,7 @@
 			);
 
 			$this->t->set_var('lang_header',lang('Activities list'));
-			$this->t->set_var('add_url',$phpgw->link('/projects/addactivity.php'));
+			$this->t->set_var('add_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.add_activity&cat_id=' . $cat_id));
 			$this->t->set_var('project_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 
 			if (!$this->start)
@@ -831,6 +836,84 @@
 // -------------------------------- end Add form declaration ------------------------------
 
 //			$phpgw->common->phpgw_footer();
+		}
+
+
+		function add_activity()
+		{
+			global $phpgw, $phpgw_info, $submit, $cat_id, $new_cat, $values;
+
+			if ($new_cat)
+			{
+				$cat_id = $new_cat;
+			}
+
+			if ($submit)
+			{
+				$values['cat'] = $cat_id;
+
+				$error = $this->boprojects->check_act_values($values);
+				if (is_array($error))
+				{
+					$this->t->set_var('message',$phpgw->common->error_list($error));
+				}
+				else
+				{
+					$this->boprojects->save_activity($values);
+					Header('Location: ' . $phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act&cat_id=' . $cat_id));
+				}
+			}
+
+			$this->display_app_header();
+
+			$this->t->set_file(array('activity_add' => 'formactivity.tpl'));
+			$this->t->set_block('activity_add','add','addhandle');
+			$this->t->set_block('activity_add','edit','edithandle');
+
+			$this->t->set_var('actionurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.add_activity'));
+			$this->t->set_var('lang_action',lang('Add activity'));
+			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+
+			if ($nopref)
+			{
+				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
+			}
+			else
+			{
+				$currency = $this->boprojects->get_prefs();
+			}
+
+			$this->t->set_var('lang_choose',lang('Generate Activity ID ?'));
+			$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
+
+			$this->t->set_var('number',$values['number']);
+			$this->t->set_var('title',$values['title']);
+			$this->t->set_var('descr',$values['descr']);
+
+			$this->t->set_var('lang_num',lang('Activity ID'));
+			$this->t->set_var('num',$values['number']);
+			$this->t->set_var('descr',$values['descr']);
+			$this->t->set_var('minperae',$values['minperae']);
+			$this->t->set_var('currency',$currency);
+    		$this->t->set_var('billperae',$billperae);
+
+			if ($values['remarkreq'] == 'N'):
+				$stat_sel[0]=' selected';
+			elseif ($values['remarkreq'] == 'Y'):
+				$stat_sel[1]=' selected';
+			endif;
+
+			$remarkreq_list = '<option value="N"' . $stat_sel[0] . '>' . lang('No') . '</option>' . "\n"
+							. '<option value="Y"' . $stat_sel[1] . '>' . lang('Yes') . '</option>' . "\n";
+
+			$this->t->set_var('remarkreq_list',$remarkreq_list);
+
+			$this->t->set_var('done_url',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act&cat_id=' . $cat_id));
+
+			$this->t->set_var('edithandle','');
+			$this->t->set_var('addhandle','');
+			$this->t->pfp('out','activity_add');
+			$this->t->pfp('addhandle','add');
 		}
 	}
 ?>

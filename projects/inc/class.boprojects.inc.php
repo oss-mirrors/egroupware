@@ -227,9 +227,9 @@
 			return $single_pro;
 		}
 
-		function exists($check, $num, $project_id)
+		function exists($action, $check, $num, $pa_id)
 		{
-			$exists = $this->soprojects->exists($check , $num, $project_id);
+			$exists = $this->soprojects->exists($action, $check , $num, $pa_id);
 			if ($exists)
 			{
 				return True;
@@ -270,7 +270,7 @@
 				}
 				else
 				{
-					$exists = $this->exists('number', $values['number'], $values['project_id']);
+					$exists = $this->exists('pro', 'number', $values['number'], $values['project_id']);
 
 					if ($exists)
 					{
@@ -286,10 +286,10 @@
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
-					if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
-					{
-						$error[] = lang('You have entered an starting invalid date');
-					}
+				if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
+				{
+					$error[] = lang('You have entered an starting invalid date');
+				}
 			}
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
@@ -304,6 +304,48 @@
 			{
 				$error[] = lang('Ending date can not be before start date');
 			} */
+
+			if (is_array($error))
+			{
+				return $error;
+			}
+		}
+
+		function check_act_values($values)
+		{
+			global $phpgw;
+
+			if (strlen($values['descr']) >= 8000)
+			{
+				$error[] = lang('Description can not exceed 8000 characters in length');
+			}
+
+			if (! $values['choose'])
+			{
+				if (! $values['number'])
+				{
+					$error[] = lang('Please enter an ID !');
+				}
+				else
+				{
+					$exists = $this->exists('act', 'number', $values['number'], $values['activity_id']);
+
+					if ($exists)
+					{
+						$error[] = lang('That ID has been used already !');
+					}
+				}
+			}
+
+			if ((! $values['billperae']) || ($values['billperae'] == 0))
+			{
+				$error[] = lang('Please enter the bill per workunit !');
+			}
+
+			if ((! $values['minperae']) || ($values['minperae'] == 0))
+			{
+				$error[] = lang('Please enter the minutes per workunit !');
+			}
 
 			if (is_array($error))
 			{
@@ -357,7 +399,30 @@
 			}
 		}
 
-		function select_project_list($type,$project_id)
+
+		function save_activity($values)
+		{
+			global $phpgw;
+
+			if ($values['choose'])
+			{
+				$values['number'] = $this->soprojects->create_activityid();
+			}
+
+			if ($values['activity_id'])
+			{
+				if ($values['activity_id'] != 0)
+				{
+					$this->soprojects->edit_activity($values);
+				}
+			}
+			else
+			{
+				$this->soprojects->add_activity($values);
+			}
+		}
+
+		function select_project_list($type, $project_id)
 		{
 			$list = $this->soprojects->select_project_list($type,$project_id);
 			return $list;
