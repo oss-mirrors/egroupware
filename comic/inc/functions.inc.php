@@ -206,6 +206,7 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
             ."[0-9]*.(gif|jpg)";
         break;
       case "King":
+/*
         if ($phpgw->db->f("data_daysold") == 0)
         {
             $comic_time = time() - (14*3600*24);
@@ -221,6 +222,20 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
         $comic_url = $baseurl.$parseurl;
         
         $unresolved = False;
+*/
+        break;
+        
+      case "Toonville":
+        $baseurl    = "http://aolsvc.toonville.aol.com";
+        $parseurl   = "/main.asp?fnum=".$phpgw->db->f("data_comicid");
+        $parse_expr = "/[cC]*ontent1/"
+            .$phpgw->db->f("data_name")
+            ."/"
+            .$phpgw->db->f("data_prefix")
+            ."[0-9]*"
+            ."[g]*.(jpg|gif)";
+
+        comic_resolver(&$parse_expr, $comic_time);
         break;
       case "Creators":
         $baseurl    = "http://www.comics.com";
