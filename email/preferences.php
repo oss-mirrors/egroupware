@@ -28,29 +28,26 @@
      $phpgw->preferences->change("email","email_sig"); 
 
      if ($use_custom_settings) {
-        $phpgw->preferences->change("email","use_custom_settings");
-       if ($userid) {
-          $phpgw->preferences->change("email","userid");
-       }
+       $phpgw->preferences->change("email","use_custom_settings");
+       if ($userid) {$phpgw->preferences->change("email","userid");}
        if ($passwd) {
           $encrypted_passwd = $phpgw->common->encrypt($passwd);
           $phpgw->preferences->change("email","passwd",$encrypted_passwd);
        }
-       if ($address) {
-          $phpgw->preferences->change("email","address");
-       }
-       if ($mail_server) {
-          $phpgw->preferences->change("email","mail_server");
-       }
-       if ($mail_folder) {
-          $phpgw->preferences->change("email","mail_folder");
-       }
-       if ($mail_server_type) {
-          $phpgw->preferences->change("email","mail_server_type");
-       }
-       if ($imap_server_type) {
-          $phpgw->preferences->change("email","imap_server_type");
-       }
+       if ($address) {$phpgw->preferences->change("email","address");}
+       if ($mail_server) {$phpgw->preferences->change("email","mail_server");}
+       if ($mail_folder) {$phpgw->preferences->change("email","mail_folder");}
+       if ($mail_server_type) {$phpgw->preferences->change("email","mail_server_type");}
+       if ($imap_server_type) {$phpgw->preferences->change("email","imap_server_type");}
+     }else{
+       $phpgw->preferences->delete("email","use_custom_settings");
+       $phpgw->preferences->delete("email","userid");
+       $phpgw->preferences->delete("email","passwd");
+       $phpgw->preferences->delete("email","address");
+       $phpgw->preferences->delete("email","mail_server");
+       $phpgw->preferences->delete("email","mail_folder");
+       $phpgw->preferences->delete("email","mail_server_type");
+       $phpgw->preferences->delete("email","imap_server_type");
      }
      $phpgw->preferences->commit();
 
