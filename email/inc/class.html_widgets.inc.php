@@ -1830,9 +1830,10 @@
 			$row_on = $GLOBALS['phpgw_info']['theme']['row_on'];
 			$row_off = $GLOBALS['phpgw_info']['theme']['row_off'];
 			$this_server_type = $GLOBALS['phpgw']->msg->get_pref_value('mail_server_type');
-			if ((extension_loaded('imap'))
-			&& (function_exists('imap_open'))
-			&& ($GLOBALS['phpgw']->msg->force_sockets == False))
+			//if ((extension_loaded('imap'))
+			//&& (function_exists('imap_open'))
+			//&& ($GLOBALS['phpgw']->msg->force_sockets == False))
+			if ($GLOBALS['phpgw']->msg->using_phpimap_builtin())
 			{
 				$library_usage = 'builtin';
 			}

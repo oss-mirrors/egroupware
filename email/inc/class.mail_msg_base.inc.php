@@ -472,13 +472,8 @@
 			
 			// NEW: allow "session_cache_extreme ONLY IF
 			// 1.am table exists and is in use
-			// 2. if php_imap is built in (CHANGE THIS - FIX MISALIGNMENT THEN REMOVE THIS TEST)
-			// 3. if using imap (we can not really check prefs yet though, since we are only in the constructor)
 			// BECAUSE php4_sessions and sessions_db can not handle large data that session_cache_extreme generates
-			// and sockets does not use statdard MIME numbers, can cause header body misalign if using extreme caching
 			// (Note: it does not matter if sessions_db or php4 sessions - if no AM table then no session_cache_extreme)
-			// we do NOT YET have preferences loaded, so can not yet check for server type, however...
-			// sockets supports only POP3 and pop3 sockets can cause body-header misalign
 			$ses_cache_exteme = $this->session_cache_extreme;
 			if ($ses_cache_exteme == True)
 			{
@@ -489,13 +484,6 @@
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
 					$this->session_cache_extreme = False;
 				}
-				// NEW : SOCKETS should be able to hangle caching now ...
-				// PLUS we do not have prefs available yet, so we do not know of imap or pop yet
-				//elseif (function_exists('imap_open') == False)
-				//{
-				//	  // fix the misalignment bug for pop3 sockets then remove this test
-				//	if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
-				//}
 			}
 			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: post-check $this->session_cache_extreme is set to ['.serialize($this->session_cache_extreme).'] <br>'); }
 			
@@ -900,7 +888,7 @@
 			// ----  Obtain Preferences Data  ----
 			
 			/*
-			// UNDER DEVELOPMEMT: caching the prefs data
+			// CAPABILITY: caching the prefs data
 			// data we need to DB save to cache final processed prefs
 			$this->unprocessed_prefs
 			$this->raw_filters
@@ -1300,30 +1288,22 @@
 				$this->so->so_appsession_passthru($my_location, $cached_prefs);
 			}
 			
-			/*
-			// MUST USE IN CONSTRUCTOR because other stuff there depends on a reliable "session_cache_extreme" there, too late to change it here
-			// NEW: allow "session_cache_extreme" ONLY IF
-			// 1.am table exists and is in use
-			// 2. if php_imap is built in 
-			// 3. if using imap  (this we can only check NOW that the prefs have been loaded)
-			// BECAUSE php4_sessions and sessions_db can not handle large data that session_cache_extreme generates
-			// and sockets does not use statdard MIME numbers, can cause header body misalign
-			// (Note: it does not matter if sessions_db or php4 sessions - if no AM table then no session_cache_extreme)
-			$ses_cache_exteme = $this->session_cache_extreme;
-			if ($ses_cache_exteme == True)
+			// EXTREME CACHING ADJUSTMENTS
+			// now we have preferences we know if we have pop3 or not
+			// POP3 does not support UID therefor we must verify msgball list every page view
+			// session_cache_extreme allows for testing msgball list validity only one time per page view
+			// whereas NO session_cache_extreme does not have this code so that is WAY SLOW 
+			// checking like 5 times per page view because builtin php-imap uses a timestamp for "uidvalidity"
+			// note that with pop3 Sockets I use mailbox SIZE as a standin for "uidvalidity" 
+			// what this adds up to is keep session_cache_extreme True but reduce timestamp_age_limit to 10 seconds
+			// but doing this also required this change:
+			// IN WRAPPERS we set "big move" to 0 if pop3 is in use 
+			// this resets cache for ANY move or delete thus hopefully fixing header body misalign problem
+			if (stristr($this->get_pref_value('mail_server_type', $acctnum), 'pop3'))
 			{
-				// check conditions  to change to false
-				if (($this->use_private_table == False)
-				|| ($this->so->so_am_table_exists() == False)
-				|| (function_exists('imap_open') == False)
-				|| (!stristr($this->get_pref_value('mail_server_type', $acctnum), 'imap')) )
-				{
-					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): conditions not good for session_cache_extreme, will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
-					$this->session_cache_extreme = False;
-				}
+				$this->timestamp_age_limit = 10;
+				if ($this->debug_logins > 0 || $this->debug_session_caching > 0) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): pop3 (any) in use, so FORCE change $this->timestamp_age_limit to ['.serialize($this->timestamp_age_limit).'] <br>'); }
 			}
-			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): post-check $this->session_cache_extreme is set to ['.serialize($this->session_cache_extreme).'] <br>'); }
-			*/
 			
 			// ---- SET important class vars  ----
 			$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
@@ -3788,8 +3768,45 @@
 			return $we_care;
 		}
 	
-	
-	
+		/*!
+		@function using_phpimap_builtin
+		@abstract true if php-imap is builtin AND we are not forcing sockets
+		@discussion Lets us know if php-imap is inshalled AND we are actually 
+		using it.
+		@author Angles
+		*/
+		function using_phpimap_builtin()
+		{
+			$finding = False;
+			if (function_exists('imap_open'))
+			{
+				// ok php-imap IS builting but are we using it?
+				if ((isset($this->force_sockets))
+				&& ($this->force_sockets == True))
+				{
+					// we are  forcing sockts so we are NOT using builtin php-imap extension
+					$finding = False;
+				}
+				elseif ((isset($this->force_sockets))
+				&& ($this->force_sockets == False))
+				{
+					// we are not forcing sockts so we ARE using builtin php-imap extension
+					$finding = True;
+				}
+				else
+				{
+					// for some reason "force_sockets" is not set so we must be using builtin
+					$finding = True;
+				}
+			}
+			else
+			{
+				// php-imap is NOT builtin
+				$finding = False;
+			}
+			if ($this->debug_logins > 0) { $this->dbug->out(' * in mail_msg.using_phpimap_builtin: returning: ['.htmlspecialchars(serialize(($finding))).']<br>'); }
+			return $finding;
+		}
 	
 	// ----  Password Crypto Workaround broken common->en/decrypt  -----
 		/*!

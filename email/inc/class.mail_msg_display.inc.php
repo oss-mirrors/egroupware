@@ -1919,8 +1919,9 @@ class mail_msg extends mail_msg_wrappers
 
 			// TEMPORARY HACK FOR SOCKET POP3 CLASS - feed it DUMB mime part numbers
 			
-			if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
-			&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
+			//if ((isset($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin))
+			//&& ($GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->imap_builtin == False)
+			if (($this->using_phpimap_builtin() == False)
 			&& (stristr($this->get_pref_value('mail_server_type'), 'pop3')))
 			{
 				// Make ***DUMB*** Mime Number THE PRIMARY MIME NUMBER we will use

@@ -1795,95 +1795,7 @@
 			return;
 		}
 		
-		/*
-		// DEPRECIATED
-		@function buffer_delete_commands
-		@abstract DEPRECIATED
-		@param $mov_msgball (array of type msgball) the message the will be moved. 
-		@param $to_fldball (array of type fldball) the target of the move. 
-		@author Angles
-		@discussion DEPRECIATED
-		@access public
-		function buffer_delete_commands($mov_msgball='', $to_fldball='')
-		{
-			// DEPRECIATED
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): ENTERING<br>'); } 
-			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $mov_msgball ['.serialize($mov_msgball).'] $to_fldball ['.serialize($to_fldball).']<br>'); } 
-						
-			// assemble the URI like string that will hold the command move request instructions
-			$this_move_data = '';
-			$this_move_data = 
-				 'mov_msgball[acctnum]='.$mov_msgball['acctnum']
-				.'&mov_msgball[folder]='.$mov_msgball['folder']
-				.'&to_fldball[acctnum]='.$to_fldball['acctnum']
-				.'&to_fldball[folder]='.$to_fldball['folder']
-				.'&mov_msgball[msgnum]='.$mov_msgball['msgnum'];
-			
-			if ($this->debug_wrapper_dcom_calls > 1) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $this_move_data ['.htmlspecialchars($this_move_data).']<br>'); } 
-			if ($this->debug_wrapper_dcom_calls > 2)
-			{
-				$this_move_balls = array();
-				parse_str($this_move_data, $this_move_balls);
-				//echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): parse_str($this_move_data, $this_move_balls) $this_move_balls DUMP <pre>'; print_r($this_move_balls); echo '</pre>';
-				$this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): parse_str($this_move_data, $this_move_balls) $this_move_balls DUMP:', $this_move_balls);
-			}
-			
-			// add this to the array
-			$this->buffered_move_commmands[$this->buffered_move_commmands_count] = $this_move_data;
-			// increase the count, avoids calling count() every trip thru this loop
-			$this->buffered_move_commmands_count++;
-			if ($this->debug_wrapper_dcom_calls > 2) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): added new item to array, new $this->buffered_move_commmands DUMP:', $this->buffered_move_commmands); } 
-			
-			if ($this->debug_wrapper_dcom_calls > 0) { $this->dbug->out('mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'); } 
-			return;
-		}
-		*/
 		
-		
-		/*
-Array
-(
-    [0] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=38
-    [1] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=66
-    [2] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=28
-    [3] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=29
-    [4] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=31
-    [5] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=32
-    [6] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=33
-    [7] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=34
-    [8] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=35
-    [9] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=24
-    [10] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=26
-    [11] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=27
-    [12] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=23
-    [13] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=13
-    [14] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=14
-    [15] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=15
-    [16] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=16
-    [17] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=17
-    [18] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=18
-    [19] => mov_msgball[acctnum]=5&mov_msgball[folder]=INBOX&to_fldball[acctnum]=5&to_fldball[folder]=mail%2FPostmaster&mov_msgball[msgnum]=19
-)
-
-Array
-(
-    [mov_msgball] => Array
-        (
-            [acctnum] => 5
-            [folder] => INBOX
-            [msgnum] => 19
-        )
-
-    [to_fldball] => Array
-        (
-            [acctnum] => 5
-            [folder] => mail/Postmaster
-        )
-
-)
-		*/
-
-
 		/*!
 		@function flush_buffered_move_commmands
 		@abstract ?
@@ -1908,8 +1820,17 @@ Array
 			}
 			
 			// is this a "big move"
-			//$big_move_thresh = 2;
-			$big_move_thresh = 10;
+			if (stristr($this->get_pref_value('mail_server_type', $acctnum), 'pop3'))
+			{
+				// pop3 does not support UID therefor message numbers are unpredictable after moves or deletes
+				// therefor ANY move or delete triggers cache reset via "big move" code
+				$big_move_thresh = 0;
+			}
+			else
+			{
+				// using imap with UIDs we can selectively manipulate the cache for increased speed
+				$big_move_thresh = 10;
+			}
 			$is_big_move = False;
 			if ($this->buffered_move_commmands_count > $big_move_thresh)
 			{
