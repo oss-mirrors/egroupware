@@ -1,3 +1,4 @@
+<?php echo $GLOBALS['fud_egw_hdr']; ?>
 <html>
 <head>
 <link rel="StyleSheet" href="adm.css" type="text/css">
