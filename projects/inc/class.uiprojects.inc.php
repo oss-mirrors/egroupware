@@ -151,6 +151,7 @@
 					{
 						header("Content-Disposition: filename=projectoverview.pdf");
 						#header("Content-Disposition: attachment; filename=example.pdf");
+						header('Pragma: public');
 						header("Content-Type: application/pdf");
 						header('Content-Length: ' . strlen($pdfData));
 						
@@ -360,9 +361,17 @@
 			{
 				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 			}
-			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
-			$GLOBALS['phpgw']->js->validate_file('jscode','edit_project','projects');
-			$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+			switch(get_var('menuaction',array('POST','GET')))
+			{
+				case 'projects.uiprojects.list_projects':
+					$GLOBALS['phpgw']->js->validate_file('jscode','list_projects','projects');
+					break;
+				default:
+					$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+					$GLOBALS['phpgw']->js->validate_file('jscode','edit_project','projects');
+					$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+					break;
+			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
 			#if(get_var('menuaction',array('POST','GET')) != 'projects.uiprojects.editMilestone')
