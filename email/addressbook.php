@@ -215,5 +215,6 @@
 	$GLOBALS['phpgw']->template->parse('out','addressbook_list_t',True);
 	$GLOBALS['phpgw']->template->p('out');
 
-	$GLOBALS['phpgw']->common->phpgw_exit();
+	$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
+	exit;
 ?>

@@ -1214,7 +1214,7 @@
 		  ."called from: ".$called_from."<br> \r\n"
 		  ."imap_last_error: ".$error_report."<br> \r\n"
 		  . "</b></center></p>";
-		$GLOBALS['phpgw']->common->phpgw_exit(True);
+		exit;
 	}
 
 

@@ -17,7 +17,8 @@
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$GLOBALS['phpgw']->common->phpgw_exit();
+		$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
+		exit;
 	}
 	unset($d1);
 	
@@ -253,7 +254,7 @@
 		if(!$some_stream)
 		{
 			$GLOBALS['phpgw']->msg->login_error('email_(slash)_functions.inc.php');
-			// this exits the script, calling $GLOBALS['phpgw']->common->phpgw_exit(True);
+			// this exits the script
 		}
 	}
 	else

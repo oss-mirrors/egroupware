@@ -275,5 +275,6 @@
 
 	$GLOBALS['phpgw']->template->pparse('out','T_attach_file');
 
-	$GLOBALS['phpgw']->common->phpgw_exit();
+	$GLOBALS['phpgw_info']['flags']['nodisplay'] = True;
+	exit;
 ?>
