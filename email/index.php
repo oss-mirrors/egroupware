@@ -69,9 +69,6 @@
 	$svr_image_dir = PHPGW_IMAGES_DIR;
 	$image_dir = PHPGW_IMAGES;
 
-	// Abreviated Folder Name, NO namespace, NO delimiter
-	$folder_short = $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder);
-
 	// lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
 
@@ -87,18 +84,30 @@
 	// this is used in several places in the index page
 	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
 	{
-		// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
-		//$listbox_show_unseen = True;
-		$listbox_show_unseen = False;
-		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
-				. '<option>' . lang('switch current folder to') . ':'
-				. $GLOBALS['phpgw']->msg->all_folders_listbox('','','',$listbox_show_unseen)
-				. '</select>';
+		// show num unseen msgs in dropdown list
+		// FUTURE: $show_num_new value should be picked up from the users preferences (need to add this pref)
+		//$show_num_new = True;
+		$show_num_new = False;
+		// build the $feed_args array for the all_folders_listbox function
+		// anything not specified will be replace with a default value if the function has one for that param
+		$feed_args = Array();
+		$feed_args = Array(
+			'mailsvr_stream'	=> '',
+			'pre_select_folder'	=> '',
+			'skip_folder'		=> '',
+			'show_num_new'		=> $show_num_new,
+			'widget_name'		=> 'folder',
+			'on_change'		=> 'document.switchbox.submit()',
+			'first_line_txt'	=> lang('switch current folder to')
+		);
+		// get you custom built HTML listbox (a.k.a. selectbox) widget
+		$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
 	}
 	else
 	{
 		$switchbox_listbox = '&nbsp';
 	}
+
 
 // ---- Folder Status Infomation   -----
 	// NEW: use API-like high level function for this:
@@ -187,21 +196,23 @@
 		.'<option value="2"' .$sort_selected[2] .'>'.lang("From").'</option>' ."\r\n"
 		.'<option value="3"' .$sort_selected[3] .'>'.lang("Subject").'</option>' ."\r\n"
 		.'<option value="6"' .$sort_selected[6] .'>'.lang("Size").'</option>' ."\r\n";
-	$t->set_var('sortbox_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php',
-					'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')));
-	$t->set_var('sortbox_on_change','document.sortbox.submit()');
-	$t->set_var('sortbox_select_name','sort');
-	$t->set_var('sortbox_select_options',$sortbox_select_options);
-	$t->set_var('sortbox_sort_by_txt',lang("Sort By"));
 
-	// "switch to" folder switchbox
-	$t->set_var('switchbox_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'));
-	$t->set_var('switchbox_listbox',$switchbox_listbox);
-	// navagation arrows
-	//$t->set_var('arrows_backcolor',$GLOBALS['phpgw_info']['theme']['bg_color']);
-	$t->set_var('arrows_backcolor',$GLOBALS['phpgw_info']['theme']['row_off']);
-	$t->set_var('prev_arrows',$td_prev_arrows);
-	$t->set_var('next_arrows',$td_next_arrows);
+	$tpl_vars = Array(
+		'sortbox_action'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php',
+						'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')),
+		'sortbox_on_change'	=> 'document.sortbox.submit()',
+		'sortbox_select_name'	=> 'sort',
+		'sortbox_select_options'	=> $sortbox_select_options,
+		'sortbox_sort_by_txt'	=> lang("Sort By"),
+		// "switch to" folder switchbox
+		'switchbox_action'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php'),
+		'switchbox_listbox'	=> $switchbox_listbox,
+		// navagation arrows
+		'arrows_backcolor'	=> $GLOBALS['phpgw_info']['theme']['row_off'],
+		'prev_arrows'		=> $td_prev_arrows,
+		'next_arrows'		=> $td_next_arrows
+	);
+	$t->set_var($tpl_vars);
 
 // ---- Message Folder Stats Display  -----
 	if ($folder_info['number_all'] == 0)
@@ -250,21 +261,20 @@
 		'stats_backcolor'	=> $GLOBALS['phpgw_info']['theme']['em_folder'],
 		'stats_font'	=> $GLOBALS['phpgw_info']['theme']['font'],
 		'stats_color'	=> $GLOBALS['phpgw_info']['theme']['em_folder_text'],
-		'stats_folder'	=> $folder_short,
+		'stats_folder'	=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder),
 		'stats_saved'	=> $stats_saved,
 		'stats_new'	=> $stats_new,
-		'stats_folder'	=> $folder_short,
 		'lang_new'	=> lang('New'),
 		'lang_new2'	=> lang('New Messages'),
 		'lang_total'	=> lang('Total'),
 		'lang_total2'	=> lang('Total Messages'),
 		'lang_size'	=> lang('Size'),
 		'lang_size2'	=> lang('Folder Size'),
-		'stats_to_txt'	=> lang('to')
+		'stats_to_txt'	=> lang('to'),
+		'stats_first'	=> ($GLOBALS['phpgw']->msg->start + 1)
 	);
 	$t->set_var($tpl_vars);
-	$t->set_var('stats_first',$GLOBALS['phpgw']->msg->start + 1);
-	// "last" can not be know until the calculations below
+	// "last" (stats_last) can not be know until the calculations below
 
 	// FOLDER SIZE: either you show it or you are skipping it because of speed skip
 	if ($stats_size != '')
@@ -286,6 +296,7 @@
 					.'&order='.$GLOBALS['phpgw']->msg->order
 					.'&start='.$GLOBALS['phpgw']->msg->start
 					.'&'.$force_showsize_flag.'=1');
+		
 		$t->set_var('get_size_link',$get_size_link);
 		// BUTTON: for templates using a button for this
 		$t->set_var('frm_get_size_name','form_get_size');
@@ -403,9 +414,6 @@
 			.'<img src="'.$svr_image_dir.'/attach.gif" alt="'.$mlist_attach_txt.'">'
 		.'</div>';
 
-// initialize (is this necessary?)
-	$t->set_var('V_msg_list','');
-
 // ----  Zero Messages To List  -----
 	if ($folder_info['number_all'] == 0)
 	{
@@ -435,173 +443,18 @@
 	{
 		// we have messages, so set the "no messages" block to nothing, we don't show it in this case
 		$t->set_var('V_no_messages','');
-
-		// get a numbered array list of all message numbers in that folder, sorted and ordered
-		$msg_nums_array = array();
-		$msg_nums_array = $GLOBALS['phpgw']->msg->get_message_list();
-
-		if ($folder_info['number_all'] < $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
-		{
-			$totaltodisplay = $folder_info['number_all'];
-		}
-		elseif (($folder_info['number_all'] - $GLOBALS['phpgw']->msg->start) > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
-		{
-			$totaltodisplay = $GLOBALS['phpgw']->msg->start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
-		}
-		else
-		{
-			$totaltodisplay = $folder_info['number_all'];
-		}
+		
+		// generate a list of details about all the messages we are going to show
+		$msg_list = Array();
+		$msg_list = $GLOBALS['phpgw']->msg->get_msg_list_display($folder_info);
+		$totaltodisplay = $GLOBALS['phpgw']->msg->start + count($msg_list);
 		// this info for the stats row above
 		$t->set_var('stats_last',$totaltodisplay);
 
-		for ($i=$GLOBALS['phpgw']->msg->start; $i < $totaltodisplay; $i++)
+		for ($i=0; $i < count($msg_list); $i++)
 		{
-			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
-			$do_init_form = ($i == $GLOBALS['phpgw']->msg->start);
-
-			// ROW BACK COLOR
-			//$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
-			$bg = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($bg);
-
-			// SHOW ATTACHMENT CLIP ?
-			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
-			// so PHP can build the fetchstructure data (IMAP server does this internally)
-			if ((isset($GLOBALS['phpgw']->msg->dcom->imap_builtin))
-			&& ($GLOBALS['phpgw']->msg->dcom->imap_builtin == False)
-			&& (stristr($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'], 'pop3')))
-			{
-				// do Nothing - socket class pop3 not ready for this yet
-			}
-			else
-			{
-				// need Message Information: STRUCTURAL for this
-				$msg_structure = $GLOBALS['phpgw']->msg->phpgw_fetchstructure($msg_nums_array[$i]);
-				// now examine that msg_struct for signs of an attachment
-				$show_attach = $GLOBALS['phpgw']->msg->has_real_attachment($msg_structure);
-			}
-
-			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
-			$hdr_envelope = $GLOBALS['phpgw']->msg->phpgw_header($msg_nums_array[$i]);
-			
-			// MESSAGE REFERENCE NUMBER
-			$mlist_msg_num = $msg_nums_array[$i];
-
-			// SUBJECT
-			$subject = $GLOBALS['phpgw']->msg->get_subject($hdr_envelope,'');
-			$subject_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
-				.'&msgnum='.$mlist_msg_num
-				.'&sort='.$GLOBALS['phpgw']->msg->sort
-				.'&order='.$GLOBALS['phpgw']->msg->order
-				.'&start='.$GLOBALS['phpgw']->msg->start);
-
-			// SIZE
-			if ($GLOBALS['phpgw']->msg->newsmode)
-			{
-				// nntp apparently gives size in number of lines ?
-				$size = $hdr_envelope->Size;
-			}
-			else
-			{
-				$size = $GLOBALS['phpgw']->msg->format_byte_size($hdr_envelope->Size);
-			}
-
-			// SEEN OR UNSEEN/NEW
-			if (($hdr_envelope->Unseen == 'U') || ($hdr_envelope->Recent == 'N'))
-			{
-				$show_newmsg = True;
-			}
-			else
-			{
-				$show_newmsg = False;
-			}
-
-			// FROM and REPLY TO  HANDLING
-			if ($hdr_envelope->reply_to[0])
-			{
-				$reply = $hdr_envelope->reply_to[0];
-			}
-			else
-			{
-				$reply = $hdr_envelope->from[0];
-			}
-
-			//$replyto = $GLOBALS['phpgw']->msg->make_rfc2822_address($reply);
-			$replyto = $reply->mailbox.'@'.$reply->host;
-
-			$from = $hdr_envelope->from[0];
-			if (!$from->personal)
-			{
-				// no "personal" info available, only can show plain address
-				$personal = $from->mailbox.'@'.$from->host;
-			}
-			else
-			{
-				$personal = $GLOBALS['phpgw']->msg->decode_header_string($from->personal);
-			}
-			if ($personal == '@')
-			{
-				$personal = $replyto;
-			}
-			// display the "from" data according to user preferences
-			// assumes user always wants "personal" shown, question is when to also show the plain address
-			// and if that plain address should be the "from" or "reply to (if any)" plain address
-			if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'from')
-			&& ($personal != $from->mailbox.'@'.$from->host))
-			{
-				// user wants "personal" AND the plain address of who the email came from, in the "From"  column
-				$display_address_from = '('.$from->mailbox.'@'.$from->host.')';
-				$who_to = $from->mailbox.'@'.$from->host;
-			}
-			elseif (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'replyto')
-			&& ($personal != $from->mailbox.'@'.$from->host))
-			{
-				// user wants "personal" AND the plain address of the "ReplyTo" header, if available, in the "From" column
-				$display_address_from = '&lt;'.$replyto.'&gt;';
-				//$who_to = $replyto;
-				$who_to = $from->mailbox.'@'.$from->host;
-			}
-			else
-			{
-				// user does not want to see any plain address, or "personal" was not available, so we show plain anyway
-				$display_address_from = "";
-				$who_to = $from->mailbox.'@'.$from->host;
-			}
-
-			$from_link = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
-				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&to='.urlencode($who_to));
-			if ($personal != $from->mailbox.'@'.$from->host)
-			{
-				$from_link = $from_link .'&personal='.urlencode($personal);
-			}
-			// this will be the href clickable text in the from column
-			$from_name = $GLOBALS['phpgw']->msg->decode_header_string($personal);
-			// if it's a long plain address with no spaces, then add a space to the TD can wrap the text
-			if ((!strstr($from_name, " "))
-			&& (strlen($from_name) > 15)
-			&& (strstr($from_name, "@")))
-			{
-				$from_name = str_replace('@',' @',$from_name);
-			}
-
-			// DATE
-			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
-			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
-			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
-			{
-				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
-			}
-			else
-			{
-				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_date_only = ereg_replace("^.* -", '', $msg_date_time);
-			}
-				
-
-			// set up vars for the parsing
-			if ($do_init_form)
+			// set up vars for the template parsing
+			if ($msg_list[$i]['first_item'])
 			{
 				$t->set_var('mlist_delmov_init',$mlist_delmov_init);
 			}
@@ -609,7 +462,7 @@
 			{
 				$t->set_var('mlist_delmov_init', '');
 			}
-			if ($show_newmsg)
+			if ($msg_list[$i]['is_unseen'])
 			{
 				// this shows the red astrisk
 				$t->set_var('mlist_new_msg',$mlist_new_msg);
@@ -625,7 +478,7 @@
 				$t->set_var('open_newbold','');
 				$t->set_var('close_newbold','');
 			}
-			if ($show_attach)
+			if ($msg_list[$i]['has_attachment'])
 			{
 				$t->set_var('mlist_attach',$mlist_attach);
 			}
@@ -635,33 +488,45 @@
 				$t->set_var('mlist_attach','&nbsp;');
 			}
 			$tpl_vars = Array(
-				'mlist_msg_num'		=> $mlist_msg_num,
-				'mlist_backcolor'	=> $bg,
-				'mlist_subject'		=> $subject,
-				'mlist_subject_link'	=> $subject_link,
-				'mlist_from'		=> $from_name,
-				'mlist_from_extra'	=> $display_address_from,
-				'mlist_reply_link'	=> $from_link,
-				'mlist_date'		=> $msg_date_only,
-				'mlist_size'		=> $size
+				'msg_num'		=> $msg_list[$i]['msg_num'],
+				'mlist_backcolor'	=> $msg_list[$i]['back_color'],
+				'mlist_subject'		=> $msg_list[$i]['subject'],
+				'mlist_subject_link'	=> $msg_list[$i]['subject_link'],
+				'mlist_from'		=> $msg_list[$i]['from_name'],
+				'mlist_from_extra'	=> $msg_list[$i]['display_address_from'],
+				'mlist_reply_link'	=> $msg_list[$i]['from_link'],
+				'mlist_date'		=> $msg_list[$i]['msg_date'],
+				'mlist_size'		=> $msg_list[$i]['size']
 			);
 			$t->set_var($tpl_vars);
 
 			// fill this template, "true" means it's cumulative
 			$t->parse('V_msg_list','B_msg_list',True);
-			// end iterating through the messages to display
 		}
+		// end iterating through the messages to display
 	}
 
 // ---- Delete/Move Folder Listbox  for Msg Table Footer -----
 	if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders())
 	{
-		$delmov_listbox =
-			 '<select name="tofolder" onChange="do_action(\'move\')">'
-			 	.'<option>' . lang('move selected messages into').':'
-			 	.$GLOBALS['phpgw']->msg->all_folders_listbox('','',$folder_short)
-			.'</select>';
-            
+		// show num unseen msgs in dropdown list
+		// FUTURE: $show_num_new value should be picked up from the users preferences (need to add this pref)
+		//$show_num_new = True;
+		$show_num_new = False;
+		// build the $feed_args array for the all_folders_listbox function
+		// anything not specified will be replace with a default value if the function has one for that param
+		$feed_args = Array();
+		$feed_args = Array(
+			'mailsvr_stream'	=> '',
+			'pre_select_folder'	=> '',
+			'skip_folder'		=> $GLOBALS['phpgw']->msg->get_folder_short($GLOBALS['phpgw']->msg->folder),
+			'show_num_new'		=> $show_num_new,
+			'widget_name'		=> 'tofolder',
+			'on_change'		=> 'do_action(\'move\')',
+			'first_line_txt'	=> lang('move selected messages into')
+		);
+		// get you custom built HTML listbox (a.k.a. selectbox) widget
+		$delmov_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);            
 	}
 	else
 	{

@@ -44,10 +44,7 @@
 
 <tr>
 	<td colspan="3" align="right" bgcolor="{th_backcolor}">
-		<select name="source_folder">
-			<option value="">{select_txt_rename}</option>
-			{all_folders_listbox}
-		</select>
+		{all_folders_listbox}
 		&nbsp;
 		<select name="action">
 			<option value="create">{form_create_txt}</option>

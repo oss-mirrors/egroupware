@@ -215,13 +215,31 @@
 		//$t->set_var('msgs_total',number_format($folder_info['number_all']));
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
+	
+	// make your HTML listbox of all folders
+	// FUTURE: $show_num_new value should be picked up from the users preferences (need to add this pref)
+	//$show_num_new = True;
+	$show_num_new = False;
+	// build the $feed_args array for the all_folders_listbox function
+	// anything not specified will be replace with a default value if the function has one for that param
+	$feed_args = Array(
+		'mailsvr_stream'	=> '',
+		'pre_select_folder'	=> '',
+		'skip_folder'		=> '',
+		'show_num_new'		=> $show_num_new,
+		'widget_name'		=> 'source_folder',
+		'on_change'		=> '',
+		'first_line_txt'	=> lang('choose for rename')
+	);
+	// get you custom built HTML listbox (a.k.a. selectbox) widget
+	$t->set_var('all_folders_listbox', $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args));
+
 
 // ----  Set Up Form Variables  ---
 	$t->set_var('form_action',$GLOBALS['phpgw']->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
-	$t->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
-	$t->set_var('select_name_rename','source_folder');
+	//$t->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
+	//$t->set_var('select_name_rename','source_folder');
 
-	$t->set_var('select_txt_rename',lang('choose for rename'));
 	$t->set_var('form_create_txt',lang('Create a folder'));
 	$t->set_var('form_delete_txt',lang('Delete a folder'));
 	$t->set_var('form_rename_txt',lang('Rename a folder'));

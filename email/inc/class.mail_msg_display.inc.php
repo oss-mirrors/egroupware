@@ -32,33 +32,78 @@
 // then (3) include mail_msg which extends mail_msg_wrappers and, by inheritance, mail_msg_base
 class mail_msg extends mail_msg_wrappers
 {
-
-	function all_folders_listbox($mailbox,$pre_select='',$skip='',$indicate_new=False)
+	/*!
+	@function all_folders_listbox
+	@abstract gets a list of all folders available to the user, and makes an HTML listbox widget with that data
+	@param $feed_args[] array or args that you will "feed" into the function, contains the following members:
+		['mailsvr_stream'] : integer : the stream where the data communications with the mailserver takes place
+		['pre_select_folder'] : string : if you want a particular folder already selected in the listbox, put that foldername
+			here. Note you must know the name of the folder as it will aooear in the kistbox for this to work.
+		['skip_folder'] : string : if you want a particular folder to NOT appear in the listbox, put that foldername
+			here. Note you must know the name of the folder as it will aooear in the kistbox for this to work.
+		['show_num_new'] : boolean : True = show number of unseen (new) message data with each folder
+			in the listbox. There are some folders the code will not examine, such as "Trash" and "Sent"
+		['widget_name'] : string : name of the select widget : important for form post usage. Default "folder"
+		['on_change'] : string : the HTML select widget's "onChange" value. Default: "document.switchbox.submit()'"
+		'[first_line_txt'] : string : the text that initially is displayed in the select widget, used for information only,
+			like a descriptive label, it does not have any important data usage. Default: "lang('switch current folder to')"
+	@result string representing an HTML listbox widget 
+	@discussion ?
+	@access : private
+	*/
+	function all_folders_listbox($feed_args=array())
 	{
-		if (!$mailbox)
+		//$debug_widget = True;
+		$debug_widget = False;
+		
+		// establish fallback default args
+		$local_args = Array(
+			'mailsvr_stream'	=> $this->mailsvr_stream,
+			'pre_select_folder'	=> '',
+			'skip_folder'		=> '',
+			'show_num_new'		=> False,
+			'widget_name'		=> 'folder',
+			'on_change'		=> 'document.switchbox.submit()',
+			'first_line_txt'	=> lang('switch current folder to')
+		);		
+		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
+		reset($local_args);
+		reset($feed_args);		
+		while(list($key,$value) = each($local_args))
 		{
-			$mailbox = $this->mailsvr_stream;
+			// DEBUG
+			if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
+			if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+			if ((isset($feed_args[$key]))
+			&& ($feed_args[$key] != $value))
+			{
+				if (($key == 'mailsvr_stream')
+				&& ($feed_args[$key] == ''))
+				{
+					// do nothing, keep the default value, can not over write a good default stream with an empty value
+					if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
+				}
+				else
+				{
+					// we have a specified arg that should replace the default value
+					if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+					$local_args[$key] = $feed_args[$key];
+				}
+			}
 		}
-
-		// DEBUG: force unseen display
-		//$indicate_new = True;
-
+		reset($local_args);
+		reset($feed_args);		
+		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		
 		// init some important variables
-		$outstr = '';
-		//$unseen_prefix = ' &lt;';
-		//$unseen_suffix = ' new&gt;';	
-		//$unseen_prefix = ' &#091;';
-		//$unseen_suffix = ' new&#093;';
-		//$unseen_prefix = ' &#040;';
-		//$unseen_suffix = ' new&#041;';
-		//$unseen_prefix = ' &#045; ';
-		//$unseen_suffix = ' new';
-		//$unseen_prefix = ' &#045;';
-		//$unseen_suffix = '&#045;';	
-		//$unseen_prefix = '&nbsp;&nbsp;&#040;';
-		//$unseen_suffix = ' new&#041;';
-		//$unseen_prefix = '&nbsp;&nbsp;&#091;';
-		//$unseen_suffix = ' new&#093;';
+		$item_tags = '';
+		//$unseen_prefix = ' &lt;';  $unseen_suffix = ' new&gt;';	
+		//$unseen_prefix = ' &#091;';  $unseen_suffix = ' new&#093;';
+		//$unseen_prefix = ' &#040;';  $unseen_suffix = ' new&#041;';
+		//$unseen_prefix = ' &#045; ';  $unseen_suffix = ' new';
+		//$unseen_prefix = ' &#045;';  $unseen_suffix = '&#045;';	
+		//$unseen_prefix = '&nbsp;&nbsp;&#040;';  $unseen_suffix = ' new&#041;';
+		//$unseen_prefix = '&nbsp;&nbsp;&#091;';  $unseen_suffix = ' new&#093;';
 		$unseen_prefix = '&nbsp;&nbsp;&#060;';
 		$unseen_suffix = ' new&#062;';
 
@@ -69,7 +114,7 @@ class mail_msg extends mail_msg_wrappers
 				$GLOBALS['phpgw']->db->query('SELECT name FROM newsgroups WHERE con='.$pref[0]);
 				while($GLOBALS['phpgw']->db->next_record())
 				{
-					$outstr = $outstr .'<option value="' . urlencode($GLOBALS['phpgw']->db->f('name')) . '">' . $GLOBALS['phpgw']->db->f('name')
+					$item_tags = $item_tags .'<option value="' . urlencode($GLOBALS['phpgw']->db->f('name')) . '">' . $GLOBALS['phpgw']->db->f('name')
 					  . '</option>';
 				}
 			}
@@ -77,12 +122,12 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			$folder_list = $this->get_folder_list('');
-
+			// iterate thru the folder list, building the HTML tags using hat data
 			for ($i=0; $i<count($folder_list);$i++)
 			{
 				$folder_long = $folder_list[$i]['folder_long'];
 				$folder_short = $folder_list[$i]['folder_short'];
-				if ($folder_short == $this->get_folder_short($pre_select))
+				if ($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
 				{
 					$sel = ' selected';
 				}
@@ -90,24 +135,42 @@ class mail_msg extends mail_msg_wrappers
 				{
 					$sel = '';
 				}
-				if ($folder_short != $this->get_folder_short($skip))
+				if ($folder_short != $this->get_folder_short($local_args['skip_folder']))
 				{
-					$outstr = $outstr .'<option value="' .$this->prep_folder_out($folder_long) .'"'.$sel.'>' .$folder_short;
+					$item_tags = $item_tags .'<option value="' .$this->prep_folder_out($folder_long) .'"'.$sel.'>' .$folder_short;
 					// do we show the number of new (unseen) messages for this folder
-					if (($indicate_new)
+					if (($local_args['show_num_new'])
 					&& ($this->care_about_unseen($folder_short)))
 					{
-						$mailbox_status = $this->dcom->status($mailbox,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
+						$mailbox_status = $this->dcom->status($mailsvr_stream,$this->get_mailsvr_callstr().$folder_long,SA_ALL);
 						if ($mailbox_status->unseen > 0)
 						{
-							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
+							$item_tags = $item_tags . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
 						}
 					}
-					$outstr = $outstr . "</option>\r\n";
+					$item_tags = $item_tags . "</option>\r\n";
 				}
 			}
 		}
-		return $outstr;
+		// now $item_tags contains the internal folder list
+		
+		// ----  add the HTML tags that surround this internal list data  ----
+		if ((isset($local_args['on_change']))
+		&& ($local_args['on_change'] != ''))
+		{
+			$on_change_tag = 'onChange="'.$local_args['on_change'].'"';
+		}
+		else
+		{
+			$on_change_tag = '';
+		}
+		$listbox_widget =
+			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
+				.'<option value="">'.$local_args['first_line_txt'].' '
+				. $item_tags
+			.'</select>';
+		// return a pre-built HTML listbox (selectbox) widget
+		return $listbox_widget;
 	}
 
 
@@ -1365,6 +1428,311 @@ class mail_msg extends mail_msg_wrappers
 			$return_folder_size = $this->format_byte_size($raw_folder_size);
 		}
 		return $return_folder_size;
+	}
+
+	/*!
+	@function get_msg_list_display
+	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
+	@param ?
+	@result array 
+		first_item	boolean, flag indicating this is the first item in the array, the first message
+				to display, states the obvious, but the index tpl uses it to show a form tag only once
+		back_color	used in html UI's to alternate the color or each row of data
+		has_attachment	attachment dection code has determined that this message has attachment(s)
+				which tells the UI to show the user something, like a paperclip image.
+		msg_num	the number the mail server has assigned this message, used for fetching 
+		subject		message subject text suitable for display, text only
+		subject_link	URL that will request this message from the server, use with "subject" to make an HREF
+		size		message size suitable for display
+		is_unseen	this message has NOT yet been viewed by the client
+		from_name	Part 1 of 2 of the From String to show the user. This part 1 is the "personal"
+				data of the From person if it's available, if not we have no choice but to show
+				the plain address of the from person.
+		display_address_from	Part 2 of 2 of the From String to show the user. This part 2 contains
+				any additional info the user prefers to see in the From String, which can be either
+				(a) the plain address of the From person, or
+				(b) the plain address of the ReplyTo header address
+				According to user's preferences and considering what data is available
+				to fulfill those user prefs
+		who_to		Target address to send messages to when trying to "reply" to the author.
+				Standard way to handle this is:
+				(1) if ReplyTo is specified in the email header, then use it as the reply target
+				(2) if no ReplyTo is specified, then we use the email address of the From person
+				as the reply target. A seperate ReplyTo header address is optional when authoring
+				a message, but it clearly states the intent of the "From person" that replying to the
+				mail should NOT result in mail being sent to that "From person"'s address, so that
+				intent SHOULD be honored.
+				Another example: Quite often mailing lists use this header to make the
+				"From" the person who sent the message to the list, and when you click "reply"
+				the "ReplyTo" header indicates the mail should be sent to the list, NOT the
+				person in the "From" header.
+				Used to make the From String into a clickable HREF,
+				which will produce a blank Compose Mail page with the To address filled targeted
+				to this "who_to" value. This is different from a "reply to button" because no part
+				of the original mail is included in the resulting Compose Mail page.
+		from_link	URL that will produce an empty Compose New Mail page with the To address
+				already filled in, which address is the determination made in the "who_to" logic
+		msg_date	If the message arrived more than 1 day ago, this will be a date only.
+				If the message arrived within one day, this will be the time of arrival with NO date.
+	@discussion ?
+	@access : private
+	*/
+	function get_msg_list_display($folder_info=array(), $msg_nums_array=array())
+	{		
+		// obtain required data that is not passed into this function
+		// if no $folder_info was passed as an arg, then $folder_info will be an array with 0 elements
+		if (count($folder_info) == 0)
+		{
+			// use API-like high level function for this:
+			$folder_info = array();
+			$folder_info = $this->folder_status_info();
+			/* returns this array:
+			folder_info['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
+			folder_info['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name
+			folder_info['alert_string'] string - lang'd string to show the user about status of new messages in this folder
+			folder_info['number_new'] integer - for IMAP: the number "recent" and/or "unseen"messages; for POP3: the total number of messages
+			folder_info['number_all'] integer - for IMAP and POP3: the total number messages in the folder
+			*/
+		}
+		
+		// initialize return structure
+		$msg_list = Array();
+		// if no message are available to show, return an empty aray
+		if ($folder_info['number_all'] == 0)
+		{
+			return $msg_list;
+		}
+		
+		// we gave messages to list, continue...
+		// if we were passed an array of message numbers to show, use that, if not then
+		// get a numbered array list of all message numbers in that folder, sorted and ordered
+		if (count($msg_nums_array) == 0)
+		{
+			$msg_nums_array = $this->get_message_list();
+		}
+
+		if ($folder_info['number_all'] < $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
+		{
+			$totaltodisplay = $folder_info['number_all'];
+		}
+		elseif (($folder_info['number_all'] - $this->start) > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
+		{
+			$totaltodisplay = $this->start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
+		}
+		else
+		{
+			$totaltodisplay = $folder_info['number_all'];
+		}
+
+		// keep track of how many loops we've done, for the return array, will be advanced to 0 before it's used
+		$x = -1;
+		for ($i=$this->start; $i < $totaltodisplay; $i++)
+		{
+			// we use $x to sequentially fill the $msg_list array
+			$x++;
+			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
+			$msg_list[$x]['first_item'] = ($i == $this->start);
+
+			// ROW BACK COLOR
+			$msg_list[$x]['back_color'] = (($i + 1)/2 == floor(($i + 1)/2)) ? $GLOBALS['phpgw_info']['theme']['row_off'] : $GLOBALS['phpgw_info']['theme']['row_on'];
+			//$msg_list[$x]['back_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($msg_list[$x-1]['back_color']);
+
+			// SHOW ATTACHMENT CLIP ?
+			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
+			// so PHP can build the fetchstructure data (IMAP server does this internally)
+			if ((isset($this->dcom->imap_builtin))
+			&& ($this->dcom->imap_builtin == False)
+			&& (stristr($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server_type'], 'pop3')))
+			{
+				// do Nothing - socket class pop3 not ready for this stress yet
+				$msg_list[$x]['has_attachment'] = False;
+			}
+			else
+			{
+				// need Message Information: STRUCTURAL for this
+				$msg_structure = $this->phpgw_fetchstructure($msg_nums_array[$i]);
+				// now examine that msg_struct for signs of an attachment
+				$msg_list[$x]['has_attachment'] = $this->has_real_attachment($msg_structure);
+			}
+
+			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
+			$hdr_envelope = $this->phpgw_header($msg_nums_array[$i]);
+			
+			// MESSAGE REFERENCE NUMBER
+			$msg_list[$x]['msg_num'] = $msg_nums_array[$i];
+
+			// SUBJECT
+			$msg_list[$x]['subject'] = $this->get_subject($hdr_envelope,'');
+			$msg_list[$x]['subject_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+				'folder='.$this->prep_folder_out('')
+				.'&msgnum='.$msg_list[$x]['msg_num']
+				.'&sort='.$this->sort
+				.'&order='.$this->order
+				.'&start='.$this->start);
+
+			// SIZE
+			if ($this->newsmode)
+			{
+				// nntp apparently gives size in number of lines ?
+				//$msg_list[$x]['size'] = $hdr_envelope->Size;
+				$msg_list[$x]['size'] = $hdr_envelope->Lines;
+			}
+			else
+			{
+				$msg_list[$x]['size'] = $this->format_byte_size($hdr_envelope->Size);
+			}
+
+			// SEEN OR UNSEEN/NEW
+			if (($hdr_envelope->Unseen == 'U') || ($hdr_envelope->Recent == 'N'))
+			{
+				$msg_list[$x]['is_unseen'] = True;
+			}
+			else
+			{
+				$msg_list[$x]['is_unseen'] = False;
+			}
+
+			// FROM and REPLY TO  HANDLING
+			
+			// ---- What to use as From Person's target email address  ----
+			// $reply is used to construct the "from link" below, it determines the target address
+			// to send mail to when the user clicks on a clickable "from string" that is an HREF
+			// Standard way to handle this is:
+			// (1) if ReplyTo is specified in the email header, then use it as the reply target
+			// (2) if no ReplyTo is specified, then we use the email address of the From person
+			// as the reply target. A seperate ReplyTo header address is optional but
+			// clearly states the intent of the "From person" that replying to the mail should
+			// NOT result in mail being sent to that "From person"'s address, so that intent
+			// SHOULD be honored for this clickable From String as HREF capability
+			if ($hdr_envelope->reply_to[0])
+			{
+				$reply = $hdr_envelope->reply_to[0];
+			}
+			else
+			{
+				$reply = $hdr_envelope->from[0];
+			}
+			//$replyto = $this->make_rfc2822_address($reply);
+			$replyto = $reply->mailbox.'@'.$reply->host;
+			
+			/*
+			@capability FROM DISPLAYABLE String
+			@abstract: display the "from" data according to user preferences
+			@result : string which is actually part 2 of 2 of the From String, 
+			with "from_name" being part 1 of 2.
+			@discussion: first some background on the terms used here:
+			* "plain address" means the "user@domain.com" part
+			* "personal" means the name string that may be associated with that address
+				in the headers that would look like this if present: "Joe Dough" <user@domain.com>
+				where "Joe Dough is the "personal" part of the address, but it's not always available
+			ISSUE 1: Assume the user always wants "personal" string shown, if it's available
+			If personal not available, we have no choice but to use the "plain address" as the displayed From string
+			ISSUE 2: question is when to also show the plain address with that personal data as the display string
+			of course, if the personal data is not available, then we show the plain anyway
+			ISSUE 3: and if that plain address should be the "from" or "reply to (if any)" as the plain address part
+			of the display string. There IS actually an option to display the plain address of the specified
+			"ReplyTo" header in the From String the user wants to see,
+			*/
+			$from = $hdr_envelope->from[0];
+			if (!$from->personal)
+			{
+				// no "personal" info available, only can show plain address
+				$personal = $from->mailbox.'@'.$from->host;
+			}
+			else
+			{
+				$personal = $this->decode_header_string($from->personal);
+			}
+			if ($personal == '@')
+			{
+				$personal = $replyto;
+			}
+			
+			if (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'from')
+			&& ($personal != $from->mailbox.'@'.$from->host))
+			{
+				/*
+				@capabability	"From String" is Personal data AND the "plain address" of the From person
+				@discussion:	according to preferences, for the displayed "From" string the user wants to
+				see the "personal" data AND the "plain address" data of the person who the message is from
+				as the "From String" that is displated to the user.
+				Additionally, we checked and made sure both those pieces of data are available.
+				*/
+				$msg_list[$x]['display_address_from'] = '('.$from->mailbox.'@'.$from->host.')';
+				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+			}
+			elseif (($GLOBALS['phpgw_info']['user']['preferences']['email']['show_addresses'] == 'replyto')
+			&& ($personal != $from->mailbox.'@'.$from->host))
+			{
+				/*
+				@capabability	From String includes ReplyTo plain address
+				@discussion:	according to preferences, for the displayed "From" string the user wants to
+				see the "personal" data AND the plain address of the "ReplyTo" header, if available.
+				To visually indicate this is reply to address, we surround in in < > 
+				instead of ( ) which we use to surround the "from" plain address, as used above.
+				Note: even though we use the "personal" name from the From header, we show
+				with it the plain address from the ReplyTo header. This is how this preference works :)
+				Of course, if no ReplyTo address is present, we can not fulfill this user perference
+				*/
+				$msg_list[$x]['display_address_from'] = '&lt;'.$replyto.'&gt;';
+				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+			}
+			else
+			{
+				/*
+				@capabability	user sees ONLY the "plain address" of the From person
+				@discussion:	The displayed "From String" the user will see is 
+				the "plain address" of the From person ONLY, no "personal" data is ahown.
+				This happens as a fallback option when the user's assumed desire to see the
+				"personal" data is unable to be fulfilled because that "personal" data for the
+				From person was not available in the email headers.
+				*/
+				$msg_list[$x]['display_address_from'] = '';
+				$msg_list[$x]['who_to'] = $from->mailbox.'@'.$from->host;
+			}
+			
+			// ----  From Name ----
+			// Part 1 of 2 of the From string (see above)
+			// NOTE: wasn't this decode_header_string proc already done above?
+			$msg_list[$x]['from_name'] = $this->decode_header_string($personal);
+
+			// ----  From Link  ----
+			// this is a URL that can be used to turn the "From String" into a clickable link
+			// that produces a blank Compose Mail page with the corrent Reply target address as the
+			// to address. This is different than a typical "reply to" function in that no part of
+			// the original email is included in this Compose page. Also note that the email app's
+			// message list page, email/index.php, does not have a "reply to" button anywhere on it,
+			// said button is in the "show the message contents" page, email/message.php
+			$msg_list[$x]['from_link'] = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/compose.php',
+				'folder='.$this->prep_folder_out('').'&to='.urlencode($msg_list[$x]['who_to']));
+			if ($personal != $from->mailbox.'@'.$from->host)
+			{
+				$msg_list[$x]['from_link'] = $msg_list[$x]['from_link'] .'&personal='.urlencode($personal);
+			}
+			
+			// if it's a long plain address with no spaces, then add a space to the TD can wrap the text
+			if ((!strstr($msg_list[$x]['from_name'], " "))
+			&& (strlen($msg_list[$x]['from_name']) > 15)
+			&& (strstr($msg_list[$x]['from_name'], "@")))
+			{
+				$msg_list[$x]['from_name'] = str_replace('@',' @',$msg_list[$x]['from_name']);
+			}
+
+			// DATE
+			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
+			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
+			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_list[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);
+			}
+			else
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_list[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
+			}
+		}
+		return $msg_list;
 	}
 
 } // end class mail_msg

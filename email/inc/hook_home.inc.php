@@ -86,11 +86,21 @@
 				// FUTURE: this will pick up the user option to show num unseen msgs in dropdown list
 				//$listbox_show_unseen = True;
 				$listbox_show_unseen = False;
-				$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
-						. '<option>' . lang('switch current folder to') . ':'
-						. $GLOBALS['phpgw']->msg->all_folders_listbox('','','',$listbox_show_unseen)
-						. '</select>';
-				// make it another TR we can insert
+				// build the $feed_args array for the all_folders_listbox function
+				// anything not specified will be replace with a default value if the function has one for that param
+				$feed_args = Array(
+					'mailsvr_stream'	=> '',
+					'pre_select_folder'	=> $listbox_pre_select,
+					'skip_folder'		=> '',
+					'show_num_new'		=> $listbox_show_unseen,
+					'widget_name'		=> 'folder',
+					'on_change'		=> 'document.switchbox.submit()',
+					'first_line_txt'	=> lang('switch current folder to')
+				);
+				// get you custom built HTML listbox (a.k.a. selectbox) widget
+				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
+				// make it another TR we can insert into the home page portal object
+				// and surround it in FORM tage so the submit will work
 				$switchbox_action = $GLOBALS['phpgw']->link('/email/index.php');
 				$extra_data = 
 					'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"

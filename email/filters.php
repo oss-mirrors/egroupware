@@ -157,14 +157,24 @@
 		//	but in html we have to also show a seperate textbox to get the same functionality
 		$folder_listbox_name = 'filter_'.$f_idx.'[action_'.$action_rownum.'_folder]';
 		// do we want to show the number of new (unseen) messages in the listbox?
+		//$listbox_show_unseen = True;
 		$listbox_show_unseen = False;
 		// for existing data, we must specify which folder was selected in the script
 		$listbox_pre_select = '';
-		$folder_listbox = '<select name="'.$folder_listbox_name.'">'
-				. '<option>' . lang('select a fileto folder') . ':'
-				. $GLOBALS['phpgw']->msg->all_folders_listbox('',$listbox_pre_select,'',$listbox_show_unseen)
-				. '</select>';
-		$t->set_var('folder_listbox',$folder_listbox);
+		// build the $feed_args array for the all_folders_listbox function
+		// anything not specified will be replace with a default value if the function has one for that param
+		$feed_args = Array(
+			'mailsvr_stream'	=> '',
+			'pre_select_folder'	=> $listbox_pre_select,
+			'skip_folder'		=> '',
+			'show_num_new'		=> $listbox_show_unseen,
+			'widget_name'		=> $folder_listbox_name,
+			'on_change'		=> '',
+			'first_line_txt'	=> lang('if fileto then select destination folder')
+		);
+		// get you custom built HTML listbox (a.k.a. selectbox) widget
+		$t->set_var('folder_listbox', $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args));
+		
 		// --- Action Textbox ---
 		// if the textbox has existing data, it gets filled here
 		$action_textbox_txt = '';
