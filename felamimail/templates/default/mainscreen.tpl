@@ -381,7 +381,7 @@ doLoad();
 <!-- BEGIN quota_block -->
 	<table cellpadding="0" cellspacing="0" width="200" style="border : 1px solid silver;">
 		<tr valign="middle">
-			<td width="{leftWidth}%" bgcolor="{quotaBG}" align="center" valign="middle">
+			<td bgcolor="{quotaBG}" align="center" valign="middle" style="width : {leftWidth}%;">
 				<small>{quotaUsage_left}</small>
 			</td>
 			<td align="center" valign="middle">
