@@ -499,7 +499,7 @@
 			$GLOBALS['phpgw']->historylog->add('B',$ticket_id,$ticket['billable_rate'],$old_billable_rate);
 		}
 
-		if($old_state != $ticket['state'])
+		if($ticket['state'] && $old_state != $ticket['state'])
 		{
 			$fields_updated = True;
 			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state='" . $ticket['state']
