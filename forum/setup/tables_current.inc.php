@@ -22,7 +22,7 @@
 				'id' => array('type' => 'auto','nullable' => False),
 				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'for_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'message' => array('type' => 'blob','nullable' => False),
+				'message' => array('type' => 'blob','nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -33,7 +33,7 @@
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
 				'name' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'descr' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
+				'descr' => array('type' => 'varchar', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -47,7 +47,7 @@
 				'perm' => array('type' => 'int', 'precision' => 2,'nullable' => False),
 				'groups' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
 				'descr' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
+				'cat_id' => array('type' => 'int', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -70,7 +70,7 @@
 				'thread' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'depth' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'pos' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'n_replies' => array('type' => 'int', 'precision' => 8,'nullable' => False),
+				'n_replies' => array('type' => 'int', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),

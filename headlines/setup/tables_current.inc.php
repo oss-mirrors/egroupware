@@ -26,7 +26,7 @@
 				'lastread' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'newstype' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
 				'cachetime' => array('type' => 'int', 'precision' => 4,'nullable' => True),
-				'listings' => array('type' => 'int', 'precision' => 4,'nullable' => True),
+				'listings' => array('type' => 'int', 'precision' => 4,'nullable' => True)
 			),
 			'pk' => array('con'),
 			'fk' => array(),
@@ -37,7 +37,7 @@
 			'fd' => array(
 				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False),
 				'title' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'link' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
+				'link' => array('type' => 'varchar', 'precision' => 8,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -47,7 +47,7 @@
 		'users_headlines' => array(
 			'fd' => array(
 				'owner' => array('type' => 'varchar', 'precision' => 8,'nullable' => False),
-				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False),
+				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False)
 			),
 			'pk' => array(),
 			'fk' => array(),
