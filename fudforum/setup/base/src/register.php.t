@@ -25,6 +25,18 @@ function create_theme_select($name, $def=null)
 	return '{TEMPLATE: theme_select}';
 }
 
+if (!function_exists('array_fill')) {
+function array_fill($s, $e, $t)
+{
+	++$e;
+	do {
+		$arr[$s] = $t;
+	} while (++$s < $e);
+
+	return $arr;
+}
+}
+
 function fetch_img($url, $user_id)
 {
 	$ext = array(1=>'gif', 2=>'jpg', 3=>'png', 4=>'swf');
