@@ -258,7 +258,7 @@ define('SEARCH',4);
 				$bm_id = $this->location_info['bm_id'];
 			}
 			//if the user cancelled we go back to the view we came from
-			if ($_POST['cancel_x'] || $_POST['cancel_y'])
+			if ($_POST['cancel_x'] || $_POST['cancel_y'] || !isset($bm_id))
 			{
 				unset($this->location_info['returnto2']);
 				$this->init();
