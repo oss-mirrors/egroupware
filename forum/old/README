@@ -1,0 +1,91 @@
+VEGAS FORUM 1.0
+Authored by: John Raab <webmaster@battlereports.com>
+http://www.battlereports.com/links.php
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Agreement:
+This software is being distributed as Freeware. It may be freely used, copied and 
+distributed as long as it is not sold, and all original files are included, including
+this license. By using this software, you agree to these terms and the terms of the
+Disclaimer below:
+
+Disclaimer:
+This software and any support from John Raab or Battlereports.com are provided "as is"
+and without warranty, express or implied.  John Raab specifically disclaim any implied
+warranties of merchantability and fitness for a particular purpose. In no event will 
+John Raab be liable for any damages, including but not limited to any lost profits, 
+lost savings or any incidental or consequential damages, whether resulting from 
+impaired or lost data, software or computer failure or any other cause, or for any 
+other claim by the user or for any third party claim.  Use at your own risk!
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Background
+------------
+Hi, I'm John Raab aka "Johnny_Vegas" of battlereports.com a cool and interactive gaming
+website.  I was getting tired of trying to find a good forum, and knew I could write a decent 
+one myself, so I finally did.  And hey why not release it as freeware.  Besides being
+a good multi threaded forum, it can also teach you a thing of two about PHP and 
+mySQL if you are into that.  Enjoy!
+
+Description and Requirements
+----------------------------
+VEGAS FORUM 1.0 is a forum written PHP that uses mySQL to store all its data.  It's highly
+configurable with a good amount of features.  Your welcome to edit the source code and add
+your own cool features if you wish!  To use it you must have PHP 3.0 or higher installed on 
+your web server.  Also you must have a web ready mySQL database.  Many web hosts provide this 
+software.  The only operating system this has been tested on is the latest version of FreeBSD.  
+It should work on other unix servers without change.  Also it should work on NT servers with 
+little modification.
+
+Features version 1.0
+------------------------
+-Auto NO Text feature, prints "NT" when there is no text in the body of the message
+-uses mySQL to store all data, not text files (faster and more reliable)
+-Admin Panel lets you edit and delete posts, as well view IP's of posters.
+-Admin Panel uses cookies that keeps you logged in for a month before having to relogin.
+-Color, width, error messages, max threads per page are all configurable in forumconfig.php file
+-using this forum helps you get chicks
+
+Config info
+-----------------
+The forum needs to be configured before use.  Here are the files needed to run it.
+
+//////////////
+forum.php
+
+This is page you need to link to let the web surfers use your forum.
+There is one path at the very top of this script that you  need to point to the forumlib.php script.
+
+////////////////
+forumadmin.php
+
+This is the admin page that the forum admins go to.  When the admin logs in a cookie gets set 
+that will keep them logged in for 1 month before having to relogin.  Also if an admin accidentally
+goes to forum.php, they are autoforwarded to forumadmin.php if this cookie is present.  There is a 
+link at the top of the forum.php that will take you here.
+
+There is one path at the very top of this script that you need to point to the forumlib.php script
+
+/////////////////
+forummain.php
+
+Nothing to configure in this script.  This is used by both forum.php and forumadmin.php, therefore
+if you make changes to this script it will affect both the admin and normal user forum views.
+
+/////////////////
+forumlib.php
+
+This is the library of functions that the forum uses.  Most of the functionality of the forum is contained
+in this file.
+
+You need to set the path to the forumconfig.php script at the top of this script!
+
+///////////////////
+forumconfig.php
+
+This very important file is where you set all the configuration parameters for the forum.  You need to 
+go through this file and configure your forum before you can use it!  Also you need to create a list of 
+admin users which you set at the bottom of this script.  In addition there are 2 mySQL commands you need 
+to run, to create database tables that will store your forum data.  These 2 mySQL commands are in forumconfig.php.
+
+///////////////////
