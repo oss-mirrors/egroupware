@@ -13,17 +13,17 @@
   /* $Id$ */
 {
 	echo "<p>\n";
-	$imgfile = $phpgw->common->get_image_dir($appname) . '/' . $appname . '.gif';
+	$imgfile = $GLOBALS['phpgw']->common->get_image_dir($appname) . '/' . $appname . '.gif';
 	if (file_exists($imgfile))
 	{
-		$imgpath = $phpgw->common->get_image_path($appname) . '/' . $appname . '.gif';
+		$imgpath = $GLOBALS['phpgw']->common->get_image_path($appname) . '/' . $appname . '.gif';
 	}
 	else
 	{
-		$imgfile = $phpgw->common->get_image_dir($appname) . '/navbar.gif';
+		$imgfile = $GLOBALS['phpgw']->common->get_image_dir($appname) . '/navbar.gif';
 		if (file_exists($imgfile))
 		{
-			$imgpath = $phpgw->common->get_image_path($appname) . '/navbar.gif';
+			$imgpath = $GLOBALS['phpgw']->common->get_image_path($appname) . '/navbar.gif';
 		}
 		else
 		{
@@ -33,13 +33,13 @@
 
 	section_start(ucfirst($appname),$imgpath);
 
-	section_item($phpgw->link('/felamimail/preferences_email.php'),lang('Mail Settings'));
-	section_item($phpgw->link('/felamimail/preferences_highlight.php'),lang('Message Highlighting'));
-	section_item($phpgw->link('/felamimail/preferences_index_order.php'),lang('Index Order'));
-	section_item($phpgw->link('/felamimail/preferences_translate.php'),lang('Translation Preferences'));
-	section_item($phpgw->link('/felamimail/preferences_display.php'),lang('Display Preferences'));
-	section_item($phpgw->link('/felamimail/preferences_folder.php'),lang('Folder Preferences'));
-	section_item($phpgw->link('/felamimail/folders.php'),lang('Manage Folders'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_email.php'),lang('Mail Settings'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_highlight.php'),lang('Message Highlighting'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_index_order.php'),lang('Index Order'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_translate.php'),lang('Translation Preferences'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_display.php'),lang('Display Preferences'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/preferences_folder.php'),lang('Folder Preferences'));
+	section_item($GLOBALS['phpgw']->link('/felamimail/folders.php'),lang('Manage Folders'));
 
 	section_end(); 
 }
