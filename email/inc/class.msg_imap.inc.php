@@ -118,15 +118,24 @@
 	return imap_header($stream,$msg_nr,$fromlength,$tolength,$defaulthost);
     } 
 
-    function fetchheader($stream,$msg_num) 
+    function fetch_raw_mail($stream,$msg_num)
     {
-	//return $this->get_header($stream,$msg_num);
+	return imap_fetchheader($stream,$msg_num,FT_PREFETCHTEXT);
+    }
+
+    function get_header($stream,$msg_num)
+    {
 	return imap_fetchheader($stream,$msg_num);
     }
 
     function fetchstructure($stream,$msg_num,$flags="") 
     {
 	return imap_fetchstructure($stream,$msg_num);
+    }
+
+    function get_body($stream,$msg_num,$flags="") 
+    {
+	return imap_body($stream,$msg_num,$flags);
     }
 
     function listmailbox($stream,$ref,$pattern)

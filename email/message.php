@@ -823,7 +823,18 @@
 			break;
 		}
 	}
+	/*
 	// FUTURE: Forward needs entirely different handling
+	if ($deepest_level == 1)
+	{
+		$fwd_proc = 'pushdown';
+	}
+	else
+	{
+		$fwd_proc = 'encapsulate';
+	}
+	*/
+	$fwd_proc = 'encapsulate';
 	
 // ----  Images and Hrefs For Reply, ReplyAll, Forward, and Delete  -----
         $reply_img = img_maketag($image_dir.'/sm_reply.gif',lang('reply'),'19','26','0');
@@ -835,7 +846,7 @@
 	$ilnk_replyall = href_maketag($replyall_url, $replyall_img);
 
 	$forward_img = img_maketag($image_dir .'/sm_forward.gif',lang('forward'),"19","26",'0');
-	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum .$first_presentable);
+	$forward_url =  $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum .'&fwd_proc='.$fwd_proc .$first_presentable);
 	$ilnk_forward = href_maketag($forward_url, $forward_img);
 
 	$delete_img = img_maketag($image_dir .'/sm_delete.gif',lang('delete'),"19","26",'0');
@@ -865,8 +876,15 @@
 		$all_keys = array_keys($part_nice);
 		$str_keys = implode(', ',$all_keys);
 		
+		$msg_headers = $phpgw->msg->fetchheader($mailbox, $msgnum);
+		$msg_headers = $phpgw->msg->htmlspecialchars_encode($msg_headers);
+		
 		$crlf = "\r\n";
 		$msg_body_info = '<pre>' .$crlf;
+		$msg_body_info .= 'Top Level Headers:' .$crlf;
+		$msg_body_info .= $msg_headers .$crlf;
+		$msg_body_info .= $crlf;
+		
 		$msg_body_info .= 'This message has '.$max_parts.' part(s)' .$crlf;
 		$msg_body_info .= 'deepest_level: '.$deepest_level .$crlf;
 		$msg_body_info .= 'Array Keys: '.array_keys_str($part_nice) .$crlf;
@@ -987,7 +1005,7 @@
 
 	// Force Echo Out Unformatted Text for email with 1 part which is a large text messages (in bytes) , such as a system replrt from cron
 	// php (4.0.4pl1 last tested) and some imap servers (courier and uw-imap are confirmed) will time out retrieving this type of message
-	$force_echo_size = 60000;
+	$force_echo_size = 20000;
 	$too_many_crlf = 18;
 
 // -----  GET BODY AND SHOW MESSAGE  -------
@@ -1297,6 +1315,27 @@
 			// ----- get the part from the server
 			$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
 			$dsp = trim($dsp);
+
+			/*
+			$dsp = str_replace("{", " BLA ", $dsp);
+			$dsp = str_replace("}", " ALB ", $dsp);
+			
+			$b_slash = chr(92);
+			$f_slash = chr(47);
+			$dsp = str_replace($b_slash, " B_SLASH ", $dsp);
+			$dsp = str_replace($f_slash, " F_SLASH ", $dsp);
+
+			$dbl_quo = chr(34);
+			$single_quo = chr(39);
+			$dsp = str_replace($dbl_quo, " dbl_quo ", $dsp);
+			$dsp = str_replace($single_quo, " single_quo ", $dsp);
+
+			$colon = chr(58);
+			$dsp = str_replace($colon, " colon ", $dsp);
+			
+			echo '<br>'.$part_nice[$i]['m_part_num_mime'].'<br>';
+			var_dump($dsp);
+			*/
 			
 			// ----- when to skip showing a part (i.e. blank part - no alpha chars)
 			$skip_this_part = False;
@@ -1311,7 +1350,7 @@
 
 			// ----- show the part 
 			if ($skip_this_part == False)
-			{		
+			{
 				if (stristr($part_nice[$i]['m_keywords'], 'qprint'))
 				{
 					$dsp = $phpgw->msg->qprint($dsp);
@@ -1393,7 +1432,6 @@
 				$display_str = $display_str 
 					.' &nbsp; '.$view_option;
 				$t->set_var('display_str',$display_str);
-
 				$t->set_var('message_body',$dsp);
 				$t->parse('V_display_part','B_display_part', True);
 

@@ -91,7 +91,7 @@
     var $msg_struct;
     var $err = array("code","msg","desc");
     var $msg_info = Array(Array());
-    var $tempfile, $force_check;
+    var $tempfile, $att_files_dir, $force_check;
     var $boundary, $got_structure;
 
     function msg_common_() {
@@ -100,6 +100,7 @@
       $this->err["msg"]  = " ";
       $this->err["desc"] = " ";
       $this->tempfile = $phpgw_info["server"]["temp_dir"].$phpgw_info["server"]["dir_separator"].$phpgw_info["user"]["userid"].".mhd";
+      $this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
       $this->force_check = false;
       $this->got_structure = false;
     }
@@ -180,7 +181,14 @@
     function fetchheader($stream,$msg_num)
     {
 	$header = $this->get_header($stream,$msg_num);
-	return implode("\n",$header);
+	if (is_array($header))
+	{
+		return implode("\r\n",$header);
+	}
+	else
+	{
+		return $header;
+	}
     }
 
     function fetchstructure($stream,$msg_num,$flags="")
@@ -317,6 +325,64 @@
     {
 	return false;
     }
+
+  // OBSOLETED -- To Be Removed -- 
+  function get_mime_info($this_part)
+  {
+	// rfc2045 says to assume "text" if this if not specified
+	$mime_type = "text";
+	if (isset($this_part->type) && $this_part->type)
+	{
+		switch ($this_part->type)
+		{
+			case TYPETEXT:		$mime_type = "text"; break;
+			case TYPEMESSAGE:	$mime_type = "message"; break;
+			case TYPEAPPLICATION:	$mime_type = "application"; break;
+			case TYPEAUDIO:		$mime_type = "audio"; break;
+			case TYPEIMAGE:		$mime_type = "image"; break;
+			case TYPEVIDEO:		$mime_type = "video"; break;
+			case TYPEMODEL:		$mime_type = "model"; break;
+			default:		$mime_type = "text";
+		} 
+	}
+	$mime_info['mime_type'] = $mime_type;
+
+	// assume no info
+	$mime_info['subtype'] = 'plain';
+	if ((isset($part->ifsubtype)) && ($part->ifsubtype)
+	&& (isset($part->subtype)) && ($part->subtype) )
+	{
+		$mime_info['subtype'] = trim(strtolower($part->subtype));
+	}
+
+	// rfc2045 says to assume "7bit" if this is not specified
+	$mime_encoding = "7bit";
+	if (isset($this_part->encoding) && $this_part->encoding)
+	{
+		switch ($this_part->encoding)
+		{
+			case ENC7BIT:		$mime_encoding = "7bit"; break;
+			case ENC8BIT:		$mime_encoding = "8bit"; break;
+			case ENCBINARY:		$mime_encoding = "binary"; break;
+			case ENCBASE64:		$mime_encoding = "base64"; break;
+			case ENCQUOTEDPRINTABLE:	$mime_encoding = "qprint"; break;
+			case ENCOTHER:		$mime_encoding = "other";  break;
+			default:		$mime_encoding = "7bit";
+		}
+	}
+	$mime_info['mime_encoding'] = $mime_encoding;
+
+	$mime_info['mime_params'] = Array();
+	if ($this_part->ifparameters)
+	{
+		for ($i = 0; $i < count($this_part->parameters); $i++) 
+		{
+			$param = $this_part->parameters[$i];
+			$mime_info['mime_params'][$i]['attribute'] = $param->attribute;
+			$mime_info['mime_params'][$i]['value'] = $param->value;
+		}
+	}
+  }
 
 // ----  Password Crypto Workaround broken common->en/decrypt  -----
 	/*!
@@ -519,9 +585,6 @@
 		{
 			// why DECODE when we are just going to feed it right back into a header?
 			$personal = decode_header_string($addy_data->personal);
-			// add slashes because RFC2822 requires "specials" in header string to be escaped if inside a string
-			// NO - do this somewhere else
-			//$personal = addslashes($addy_data->personal);
 			// need to format according to RFC2822 spec for non-plain email address
 			$rfc_addy = '"'.$personal.'" <'.$rfc_addy.'>';
 			// if using this addy in an html page, we need to encode the ' " < > chars
@@ -534,151 +597,9 @@
 		return $rfc_addy;
 	}
 
-	/*
 	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
-	// param $data should be the desired header string, with one or more addresses 
-	function rfc_comma_sep($data)
-	{
-		// if we are fed a null value, return nothing (i.e. a null value)
-		if (isset($data))
-		{
-			$data = trim($data);
-			// if we are fed a whitespace only string, return a blank string
-			if ($data == '')
-			{
-				return $data;
-				// return performs an implicit break, so we are outta here
-			}
-			// in some cases the data may be in html entity form
-			// i.e. the compose page uses html entities when filling the To: box with a predefined value
-			$data = $this->htmlspecialchars_decode($data);
-			//reduce all multiple spaces to just one space
-			//$data = ereg_replace("[' ']{2,20}", ' ', $data);
-			$this_space = " ";
-			$data = ereg_replace("$this_space{2,20}", " ", $data);
-			// explode into an array of email addys
-			$data = explode(",", $data);
-			// formatting loop
-			for ($i=0;$i<count($data);$i++)
-			{
-				// trim off leading and trailing whitespaces and \r and \n
-				$data[$i] = trim($data[$i]);
-				// the non-simple (i.e. "personal" info is included) need special escaping
-				if (strstr($data[$i], '" <'))
-				{
-					// SEPERATE "personal" part from the <x@x.com> part
-					$addr_spec_parts = explode('" <', $data[$i]);
-					// that got rid of the closing " in personal, now get rig of the first "
-					$addr_spec_parts[0] = substr($addr_spec_parts[0], 1);
-					
-					// QPRINT NON US-ASCII CHARS in "personal" string
-					// header ENCODE non us-ascii chars as per RFC2822
-					// -- future -- not yet implemented
-					
-					// ESCAPE SPECIALS:  rfc2822 requires the "personal" comment string to escape "specials" inside the quotes
-					// escape these:  ' " ( ) 
-					$addr_spec_parts[0] = ereg_replace('\'', "\\'", $addr_spec_parts[0]);
-					$addr_spec_parts[0] = str_replace('"', '\"', $addr_spec_parts[0]);
-					$addr_spec_parts[0] = str_replace("(", "\(", $addr_spec_parts[0]);
-					$addr_spec_parts[0] = str_replace(")", "\)", $addr_spec_parts[0]);
-					//echo 'addr_spec_parts: '.$this->htmlspecialchars_encode($addr_spec_parts[0]).'<br>';
-					
-					// REASSEMBLE the personal and plain address into 1 string (note the final ">" was NEVER stripped, it's still there
-					$data[$i] = '"'.$addr_spec_parts[0].'" <'.$addr_spec_parts[1];
-					//echo 'trimmed and slashes stripped data[i]: '.$this->htmlspecialchars_encode($data[$i]).'<br>';
-				}
-			}
-			
-			// reconstruct data in the correct email address format
-			if (count($data) == 0)
-			{
-				$data = '';
-			}
-			elseif (count($data) == 1)
-			{
-				// add the final CRLF to finish off this header string
-				//$data = (string)$data[0]."\r\n";
-				$data = (string)$data[0];
-			}
-			else
-			{
-				/ * // CLASS SEND CAN NOT HANDLE FOLDED HEADERS YET (7/10/01)
-				// this snippit just assembles the headers
-				for ($i=0;$i<count($data);$i++)
-				{
-					$data[$i] = trim($data[$i]);
-				}
-				// addresses should be seperated by one comma with NO SPACES AT ALL
-				$data = implode(",", $data);
-				// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
-				$data = ereg_replace("[,]{2}", ',', $data);
-				// * /
-
-				
-				// if folding headers - use SEND_2822  instead of class.send
-				// FRC2822 recommended max header line length, excluding the required CRLF
-				$rfc_max_length = 78;
-
-				// establish an arrays in case we need a multiline header string
-				$header_lines = Array();
-				$line_num = 0;
-				$header_lines[$line_num] = '';
-				// loop thru the addresses, construct the header string
-				for ($z=0;$z<count($data);$z++)
-				{
-					// see how long this line would be if this address were added
-					//if ($z == 0)
-					$cur_len = strlen($header_lines[$line_num]);
-					if ($cur_len < 1)
-					{
-						$would_be_str = $data[$z];
-					}
-					else
-					{
-						$would_be_str = $header_lines[$line_num] .','.$data[$z];
-					}
-					//echo 'would_be_str: '.$this->htmlspecialchars_encode($would_be_str).'<br>';
-					//echo 'strlen(would_be_str): '.strlen($would_be_str).'<br>';
-					if ((strlen($would_be_str) > $rfc_max_length)
-					&& ($cur_len > 1))
-					{
-						// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #20)
-						// preferable to "fold" after the comma, and DO NOT TRIM that white space, preserve it
-						$rfc_fold_a = "\r\n";
-						$rfc_fold_b = " ";
-						//$rfc_fold = "\r\n".(chr(9));
-						$header_lines[$line_num] = $header_lines[$line_num].','.$rfc_fold_a;
-						// advance to the next line
-						$line_num++;
-						// now start the new line with this address
-						$header_lines[$line_num] = $rfc_fold_b;
-						$header_lines[$line_num] = $header_lines[$line_num] .$data[$z];
-					}
-					else
-					{
-						// simply comma sep the items
-						$header_lines[$line_num] = $would_be_str;
-					}
-				}
-				// assemble $header_lines array into a single string
-				$new_data = '';
-				for ($x=0;$x<count($header_lines);$x++)
-				{
-					$new_data = $new_data .$header_lines[$x];
-				}
-				$data = trim($new_data);
-				// add the final CRLF to finish off this header string
-				//$data = $data ."\r\n";
-				
-			}
-			// data leaves here with NO FINAL (trailing) CRLF - will add that later
-			return $data;
-		}
-	}
-	*/
-
-	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
-	// param $data should be the desired header string, with one or more addresses 
+	// param $data should be the desired header string, with one or more addresses, ex:
+	// john@doe.com,"Php Group" <info@phpgroupware.org>
 	function make_rfc_addy_array($data)
 	{
 		// if we are fed a null value, return nothing (i.e. a null value)
@@ -750,6 +671,7 @@
 			return $addy_array;
 		}
 	}
+
 	function addy_array_to_str($data, $include_personal=True)
 	{
 		$addy_string = '';
@@ -761,7 +683,7 @@
 		//}
 		if (count($data) == 1)
 		{
-			if ($include_personal == False)
+			if (($include_personal == False) || ($data[0]['personal'] == ''))
 			{
 				$addy_string = $data[0]['plain'];
 			}
@@ -823,17 +745,15 @@
 				if ((strlen($would_be_str) > $rfc_max_length)
 				&& ($cur_len > 1))
 				{
-					// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #20)
+					// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #32)
 					// preferable to "fold" after the comma, and DO NOT TRIM that white space, preserve it
-					$rfc_fold_a = "\r\n";
-					$rfc_fold_b = " ";
-					//$rfc_fold = "\r\n".(chr(9));
-					$header_lines[$line_num] = $header_lines[$line_num].','.$rfc_fold_a;
+					//$whitespace = " ";
+					$whitespace = chr(9);
+					$header_lines[$line_num] = $header_lines[$line_num].','."\r\n";
 					// advance to the next line
 					$line_num++;
-					// now start the new line with the "folding whitespace" this address
-					$header_lines[$line_num] = $rfc_fold_b;
-					$header_lines[$line_num] = $header_lines[$line_num] .$this_address;
+					// now start the new line with the "folding whitespace" then the address
+					$header_lines[$line_num] = $whitespace .$this_address;
 				}
 				else
 				{
@@ -865,6 +785,90 @@
 		return $data;
 	}
 
+	// ----  Explode by Linebreak, ANY kind of line break  -----
+	function explode_linebreaks($data)
+	{
+		$data = preg_split("/\r\n|\r(?!\n)|(?<!\r)\n/m",$data);
+		// match \r\n, OR \r with no \n after it , OR /n with no /r before it
+		// modifier m = multiline
+		return $data;
+	}
+
+	// ----  Create a Unique Mime Boundary  -----
+	function make_boundary($part_length=4)
+	{
+		global $phpgw;
+		$part_length = (int)$part_length;
+		
+		$rand_stuff = Array();
+		$rand_stuff[0]['length'] = $part_length;
+		$rand_stuff[0]['string'] = $phpgw->common->randomstring($rand_stuff[0]['length']);
+		$rand_stuff[0]['rand_numbers'] = '';
+		for ($i = 0; $i < $rand_stuff[0]['length']; $i++)
+		{
+			if ((ord($rand_stuff[0]['string'][$i]) > 47) 
+			&& (ord($rand_stuff[0]['string'][$i]) < 58))
+			{
+				// this char is already a digit
+				$rand_stuff[0]['rand_numbers'] .= $rand_stuff[0]['string'][$i];
+			}
+			else
+			{
+				// turn this into number form, based on this char's ASCII value
+				$rand_stuff[0]['rand_numbers'] .= ord($rand_stuff[0]['string'][$i]);
+			}
+		}
+		$rand_stuff[1]['length'] = $part_length;
+		$rand_stuff[1]['string'] = $phpgw->common->randomstring($rand_stuff[1]['length']);
+		$rand_stuff[1]['rand_numbers'] = '';
+		for ($i = 0; $i < $rand_stuff[1]['length']; $i++)
+		{
+			if ((ord($rand_stuff[1]['string'][$i]) > 47) 
+			&& (ord($rand_stuff[1]['string'][$i]) < 58))
+			{
+				// this char is already a digit
+				$rand_stuff[1]['rand_numbers'] .= $rand_stuff[1]['string'][$i];
+			}
+			else
+			{
+				// turn this into number form, based on this char's ASCII value
+				$rand_stuff[1]['rand_numbers'] .= ord($rand_stuff[1]['string'][$i]);
+			}
+		}
+		$unique_boundary = '---=_Next_Part_'.$rand_stuff[0]['rand_numbers'].'_'.$phpgw->common->randomstring($part_length)
+			.'_'.$phpgw->common->randomstring($part_length).'_'.$rand_stuff[1]['rand_numbers'];
+		
+		return $unique_boundary;
+	}
+
+	// ----  Create a Unique RFC2822 Message ID  -----
+	function make_message_id()
+	{
+		global $phpgw, $phpgw_info;
+		
+		if ($phpgw_info['server']['hostname'] != '')
+		{
+			$id_suffix = $phpgw_info['server']['hostname'];
+		}
+		else
+		{
+			$id_suffix = $phpgw->common->randomstring(3).'local';
+		}
+		// gives you timezone dot microseconds space datetime
+		$stamp = microtime();
+		$stamp = explode(" ",$stamp);
+		// get rid of tomezone info
+		$grab_from = strpos($stamp[0], ".") + 1;
+		$stamp[0] = substr($stamp[0], $grab_from);
+		// formay the datetime into YYYYMMDD
+		$stamp[1] = date('Ymd', $stamp[1]);
+		// a small random string for the middle
+		$rand_middle = $phpgw->common->randomstring(3);
+		
+		$mess_id = '<'.$stamp[1].'.'.$rand_middle.'.'.$stamp[0].'@'.$id_suffix.'>';
+		return $mess_id;
+	}
+
   // ----  HTML - Related Utility Functions   -----
 	function qprint($string)
 	{
@@ -892,6 +896,43 @@
 	}
 	*/
 
+	function encode_iso88591_word($string)
+	{
+		$qprint_prefix = '=?iso-8859-1?Q?';
+		$qprint_suffix = '?=';
+		$new_str = '';
+		$did_encode = False;
+		
+		for( $i = 0 ; $i < strlen($string) ; $i++ )
+		{
+			$val = ord($string[$i]);
+			// my interpetation of what to encode from RFC2045 and RFC2822
+			if (($val <= 36)
+			|| ($val == 61)
+			|| ($val == 62)
+			|| ($val == 64)
+			|| ($val == 61)
+			|| (($val >= 91) && ($val <= 94))
+			|| ($val == 96)
+			|| ($val >= 123))
+			{
+				$did_encode = True;
+				$val = dechex($val);
+				//$text .= '='.$val;
+				$new_str = $new_str .'='.$val;
+			}
+			else
+			{
+				$new_str = $new_str . $string[$i];
+			}
+		}
+		if ($did_encode)
+		{
+			$new_str =  $qprint_prefix .$new_str .$qprint_suffix;
+		}
+		return $new_str;
+	}
+
 	function htmlspecialchars_encode($str)
 	{
 		/*// replace  '  and  "  with htmlspecialchars */
@@ -902,12 +943,18 @@
 		$str = ereg_replace('\'', '&#039;', $str);
 		$str = ereg_replace('<', '&lt;', $str);
 		$str = ereg_replace('>', '&gt;', $str);
+		// these {  and  }  must be html encoded or else they conflict with the template system
+		//$str = str_replace("{", '&#123;', $str);
+		//$str = str_replace("}", '&#125;', $str);
 		return $str;
 	}
 
 	function htmlspecialchars_decode($str)
 	{
 		/*// reverse of htmlspecialchars */
+		//$str = str_replace('&#125;', "}", $str);
+		//$str = str_replace('&#123;', "{", $str);
+		
 		$str = ereg_replace('&gt;', '>', $str);
 		$str = ereg_replace('&lt;', '<', $str);
 		$str = ereg_replace('&#039;', '\'', $str);

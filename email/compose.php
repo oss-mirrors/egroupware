@@ -18,6 +18,7 @@
 		'enable_network_class' => True
 	);
 	include('../header.inc.php');
+	$struct_not_set = '-1';
 
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
@@ -28,6 +29,10 @@
 // ----  Handle Replying and Forwarding  -----
 	if ($msgnum)
 	{
+
+		// properly grab folder var
+		$folder = urldecode($folder);
+		
 		$msg = $phpgw->msg->header($mailbox, $msgnum);
 		$struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
 		if ($action == 'reply')
@@ -114,11 +119,6 @@
 			$subject = $phpgw->msg->get_subject($msg,'Re: ');
 		}
 
-		if ($action == 'forward')
-		{
-			$subject = $phpgw->msg->get_subject($msg,'Fw: ');
-		}
-
 		// ----  Begin The Message Body  (of Fw or Re Body) -----
 		$who_wrote = $phpgw->msg->get_who_wrote($msg);
 		$lang_wrote = 'wrote';
@@ -179,6 +179,65 @@
 			// it's up to the endusers MUA to handle any htmlspecialchars
 			// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
 			$body = $phpgw->msg->htmlspecialchars_decode($body);
+		}
+		elseif ($action == 'forward')
+		{
+			// ----- get information from the orig email  --------
+			$subject = $phpgw->msg->get_subject($msg,'Fw: ');
+			$fwd_info_from = $phpgw->msg->make_rfc2822_address($msg->from[0]);
+			$fwd_info_date = $phpgw->common->show_date($msg->udate);
+			$fwd_info_subject = $phpgw->msg->get_subject($msg,'');
+			
+			
+			$body = "\r\n"."\r\n"
+				.'forward - original mail:'."\r\n"
+				.' From ' .$fwd_info_from ."\r\n"
+				.' Date ' .$fwd_info_date ."\r\n"
+				.' Subject ' .$fwd_info_subject ."\r\n";
+			
+
+			//$body = "\r\n"."\r\n".'forwarded mail'."\r\n";
+			
+			/*
+			$part_nice = pgw_msg_struct($struct, $struct_not_set, '1', 1, 1, 1, $folder, $msgnum);
+			// see if one of the params if the boundry
+			$part_nice['boundary'] = $struct_not_set;  // initialize
+			for ($p = 0; $p < $part_nice['ex_num_param_pairs']; $p++)
+			{
+				//echo '<br>params['.$p.']: '.$part_nice['params'][$p]['attribute'].'='.$part_nice['params'][$p]['value'] .'<br>';
+				if (($part_nice['params'][$p]['attribute'] == 'boundary') 
+				  && ($part_nice['params'][$p]['value'] != $struct_not_set))
+				{
+					$part_nice['boundary'] = $part_nice['params'][$p]['value'];
+					break;
+				}
+			}
+			echo '<br>part_nice[boundary] ' .$part_nice['boundary'] .'<br>';
+			//echo '<br>part_nice: <br>' .$phpgw->msg->htmlspecialchars_encode(serialize($part_nice)) .'<br>';
+			*/
+
+			/*
+			$orig_boundary = '';
+			// we are going to re-use the original message's mime boundry from the main headers
+			$orig_headers = $phpgw->msg->fetchheader($mailbox, $msgnum);
+			$did_match = preg_match('/(boundary=["]?)(.*)(["]?.*(\r|\n))/ix', $orig_headers, $reg_matches);
+			if (($did_match) && (isset($reg_matches[1])) && (isset($reg_matches[2]))
+			&& (stristr($reg_matches[1], 'boundary')) && ($reg_matches[2] != ''))
+			{
+				$orig_boundary = trim($reg_matches[2]);
+				if ($orig_boundary[strlen($orig_boundary)-1] == '"')
+				{
+					$grab_to = strlen($orig_boundary) - 1;
+					$orig_boundary = substr($orig_boundary, 0, $grab_to);
+				}
+			}
+			
+			//echo '<br>orig_headers <br><pre>' .$phpgw->msg->htmlspecialchars_encode($orig_headers) .'</pre><br>';
+			//echo '<br>reg_matches ' .serialize($reg_matches) .'<br>';
+			//echo '<br>orig_boundary ' .$orig_boundary .'<br>';
+			//echo '<br>struct: <br>' .$phpgw->msg->htmlspecialchars_encode(serialize($struct)) .'<br>';
+			*/
+			
 		}
 		// ----  "the OLD WAY": Process Multiple Body Parts (if necessary)  of Fw or Re Body   -----
 		elseif (!$struct->parts)
@@ -258,9 +317,24 @@
 		}
 	}
 
+	if ((isset($action))
+	&& ($action == 'forward'))
+	{
+		$send_btn_action = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/send_message.php',
+			'action=forward&folder='.urlencode($folder).'&msgnum='.$msgnum);
+		if (isset($fwd_proc))
+		{
+			$send_btn_action = $send_btn_action .'&fwd_proc='.$fwd_proc;
+		}
+	}
+	else
+	{
+		$send_btn_action = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/send_message.php');
+	}
+	
 	$t->set_var('js_addylink',$phpgw->link("/".$phpgw_info['flags']['currentapp'].'/addressbook.php'));
 	$t->set_var('form1_name','doit');
-	$t->set_var('form1_action',$phpgw->link("/".$phpgw_info['flags']['currentapp']."/send_message.php"));
+	$t->set_var('form1_action',$send_btn_action);
 	$t->set_var('form1_method','POST');
 	$t->set_var('hidden1_name','return');
 	$t->set_var('hidden1_value',$folder);
