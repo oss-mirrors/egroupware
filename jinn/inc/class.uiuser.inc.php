@@ -21,7 +21,7 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
    */
 
-   /* $id$ */
+   /* $Id$ */
 
    class uiuser 
    {
@@ -40,7 +40,6 @@
 	  var $ui;
 	  var $template;
 
-
 	  function uiuser()
 	  {
 		 $this->bo = CreateObject('jinn.bouser');
@@ -49,20 +48,22 @@
 
 		 $this->ui = CreateObject('jinn.uicommon');
 
+		 
+
 		 if($this->bo->so->config[server_type]=='dev')
 		 {
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 		 }
-		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
+		 $this->ui->app_title=$dev_title_string;
+		 //.lang('Moderator Mode');
 	  }
 
-	  /********************************
-	  *  create the default index page                                                          
+	  /*!
+	  @function index
+	  @abstract create the default index page which is listview                                                         
 	  */
 	  function index()
 	  {
-
-//		_debug_array($this->bo);
 		 if (($this->bo->site_id==0 || $this->bo->site_id) && $this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
 		 {
 			$this->bo->save_sessiondata();
@@ -93,16 +94,14 @@
 		 }
 	  }
 
-	  /****************************************************************************\
-	  * create main menu                                                           *
-	  \****************************************************************************/
-
+	  /*!
+	  @abstract create main site and object menu
+	  */
 	  function main_menu()
 	  {
 		 $this->template->set_file(array(
 			'main_menu' => 'main_menu.tpl'));
 
-			// get sites for user and group and make options
 			$sites=$this->bo->common->get_sites_allowed($GLOBALS['phpgw_info']['user']['account_id']);
 
 			if(is_array($sites))
@@ -121,6 +120,7 @@
 			else
 			{
 			   $this->bo->message[error]=lang('"You don\'t have access to any sites. Ask your administrator to give you access to your site of site-objects or check if any site exist');
+			   $this->bo->message[error_code]=115;
 
 			   if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
 			   {
@@ -128,8 +128,7 @@
 			   }
 			   else
 			   {
-
-				  $this->bo->message[info]='';
+				  unset($this->bo->message[info]);
 			   }
 			   $this->ui->msg_box($this->bo->message);
 			   unset($this->bo->message);
@@ -138,16 +137,20 @@
 			if(@count($site_arr)==1)
 			{
 			   $allow_empty=false;
+			   $this->bo->site_id=$site_arr[0][value];
 			}
-			else $allow_empty=true;
+			else 
+			{
+			   $allow_empty=true;
+			}
 			
 			$site_options=$this->ui->select_options($site_arr,$this->bo->site_id,$allow_empty);
-
-
+		
 			if ($this->bo->site_id)
 			{
 			   $objects=$this->bo->common->get_objects_allowed($this->bo->site_id, $GLOBALS['phpgw_info']['user']['account_id']);
-
+	//				_debug_array($this->bo->site_id);
+				
 			   if (is_array($objects))
 			   {
 				  foreach ( $objects as $object_id) 
@@ -263,6 +266,7 @@
 		 @todo implement nextmatch-class, number of record, better navigation, 
 		 @todo advanced filter, filters,positioning and ranges in session
 		 @todo searching with fulltext
+		 @fixme when not allowed to object give error msg
 		 */
 		 function list_records()
 		 {
@@ -272,10 +276,21 @@
 			{
 			   unset($this->bo->site_object_id);
 			   $this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+			   $this->bo->message['error_code']=117;
 
 			   $this->bo->save_sessiondata();
 			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 			}				
+
+			if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
+			{
+			   unset($this->bo->site_object_id);
+			   $this->bo->message['error']=lang('You have no access to this object');
+			   $this->bo->message['error_code']=116;
+
+			   $this->bo->save_sessiondata();
+			   $this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+			}
 
 			$this->ui->header('browse through objects');
 			$this->ui->msg_box($this->bo->message);
@@ -300,6 +315,7 @@
 			$default_order=$this->bo->read_preferences('default_order');
 			$default_col_num=$this->bo->read_preferences('default_col_num');
 
+			// FIXME replace with GETS
 			list($offset,$asc,$orderby,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','orderby','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
 
 			if(!$offset) $offset= $this->bo->browse_settings['offset'];

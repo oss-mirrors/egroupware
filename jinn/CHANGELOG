@@ -2,8 +2,17 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Sat Sep 25 15:34:12 CEST 2004
+Version 0.8.107e
+=============================
+- fixed main menu when user has access to only one site but is admin of this site
+- check if user has access to object and else give error
+- enhance acl class
+
+
 Thu Sep 23 16:46:48 CEST 2004
 Version 0.8.107d
+=============================
 - fixed the use of backtick in SQL for MYSQL at several places
 - more fixes and cpmplete functionality to the adv,. timestamp plugin
 - add date type

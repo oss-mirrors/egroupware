@@ -628,11 +628,10 @@
 		 else return $value;
 	  }
 
-
-	  /****************************************************************************\
-	  * get objectname for object id                                               *
-	  \****************************************************************************/
-
+	  /*!
+	  @function get_object_name
+	  @abstract get objectname for object id
+	  */
 	  function get_object_name($object_id)
 	  {
 		 $this->phpgw_db->query("SELECT name FROM egw_jinn_objects
@@ -643,9 +642,22 @@
 		 return $name;
 	  }
 
+	  /*!
+	  @abstract get all objects for a user
+	  @fixme enable gid
+	  */
+	  function get_all_objects($uid,$gid)
+	  {
+		 return	$this->get_objects_for_user($uid);		
+	  }
+
+	  /*!
+	  @abstract get all objects for a user
+	  @fixme enable gid
+	  @fixme merge with get_all_objects
+	  */
 	  function get_objects_for_user($uid)
 	  {
-
 		 $SQL="SELECT site_object_id FROM egw_jinn_acl WHERE uid='$uid'";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
@@ -702,7 +714,7 @@
 		 /* check if user is eGW Administrator */
 		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
 		 {
-			$admin=true;
+			$egwadmin=true;
 		 }
 
 		 /* check if user or group administers this site */
@@ -713,12 +725,17 @@
 		 {
 			if ($site_id == $this->phpgw_db->f('site_id'))
 			{
-			   $admin=true;
+			   $egwadmin=true;
 			}
 		 }
 
+//		 echo $egwadmin;
+//		 echo $site_id;
+//		 echo($SQL);
+		 
+
 		 /* yes it's an admin so we can get all objects for this site */
-		 if ($admin)
+		 if ($egwadmin)
 		 {
 			$SQL="SELECT object_id FROM egw_jinn_objects WHERE {$egw_bt}parent_site_id{$egw_bt} = '$site_id' AND ({$egw_bt}hide_from_menu{$egw_bt} != '1' OR {$egw_bt}hide_from_menu{$egw_bt}=NULL) ORDER BY name";
 //			$SQL="SELECT object_id FROM egw_jinn_objects WHERE {$egw_bt}parent_site_id{$egw_bt} = '$site_id' ORDER BY name";

@@ -3,5 +3,8 @@ Error codes for the applications JiNN
 $Id$
 =============================================================
 
+117: class.uiuser.inc.php: table defines in this object does not exist
+116: class.uiuser.inc.php: no access to this object
+115: class.uiuser.inc.php: no access to any sites
 114: class.boacl.inc.php: access rights for object not saved
 113: class.boacl.inc.php: access rights for site not saved

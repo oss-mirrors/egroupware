@@ -249,6 +249,78 @@
 		 }
 	  }
 
-	  
+	 function has_object_access($object_id,$uid=false)
+	 {
+		if(!$uid)
+		{
+		   $uid=$GLOBALS['phpgw_info']['user']['account_id'];
+		}
 
-   }
+		$objects=$this->get_all_objects_allowed($uid);
+
+//		_debug_array($objects);
+//		echo $object_id;
+		if(in_array($object_id,$objects))
+		{
+		   return true;
+		}
+		else
+		{
+		   return false;
+		}
+	 }
+
+	 /*! 
+	 @function get_all_objects_allowed 
+	 @abstract get objects to which user has access too
+	 */
+	 function get_all_objects_allowed($uid)
+	 {
+		$groups=$GLOBALS['phpgw']->accounts->membership();
+
+		if (count ($groups)>0)
+		{
+		   foreach ( $groups as $groupfields )
+		   {
+			  $group[]=$groupfields[account_id];
+		   }
+		}
+
+		$objects=$this->so->get_all_objects($uid,$group);
+
+		$sites=$this->get_sites_to_admin($uid);
+
+		foreach($sites as $site_id)
+		{
+		   $objects_from_sites=$this->get_objects_allowed_in_site($site_id,$uid);
+		   $objects=array_merge($objects,$objects_from_sites);
+		
+		
+		}
+
+		return $objects;
+	 }
+	 
+	 /*! 
+	 @function get_objects_allowed 
+	 @abstract get objects to which user has access too
+	 @fixme move to boacl
+	 */
+	 function get_objects_allowed_in_site($site_id,$uid)
+	 {
+		$groups=$GLOBALS['phpgw']->accounts->membership();
+
+		if (count ($groups)>0)
+		{
+		   foreach ( $groups as $groupfields )
+		   {
+			  $group[]=$groupfields[account_id];
+		   }
+		}
+
+		$objects=$this->so->get_objects($site_id,$uid,$group);
+		return $objects;
+	 }
+
+
+  }

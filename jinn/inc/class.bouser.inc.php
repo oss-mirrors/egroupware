@@ -50,6 +50,8 @@
 	  var $local_bo;
 	  var $magick;
 
+	  var $acl;
+
 	  var $plug;
 
 	  var $current_config;
@@ -79,6 +81,8 @@
 		 $this->current_config=$this->common->get_config();		
 
 		 $this->so = CreateObject('jinn.sojinn');
+
+		 $this->acl = CreateObject('jinn.boacl');
 
 		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
