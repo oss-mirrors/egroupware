@@ -17,7 +17,6 @@
 		'enable_nextmatchs_class' => True
 	);
 
-	$action = $GLOBALS['HTTP_POST_VARS']['post'] ? $GLOBALS['HTTP_POST_VARS']['post'] : $GLOBALS['HTTP_GET_VARS']['post'];
 	if ($action)
 	{
 		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
