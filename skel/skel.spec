@@ -1,4 +1,4 @@
-%define packagename phpGroupWare
+%define packagename skel
 %define phpgwdirname skel
 %define version 0.0.1.000
 
