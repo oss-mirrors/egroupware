@@ -1,14 +1,14 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Forums						     *
-	* http://www.phpgroupware.org						     *
-	* Written by Jani Hirvinen <jpkh@shadownet.com>			     *
-	* -------------------------------------------				     *
-	*  This program is free software; you	can redistribute it and/or modify it *
-	*  under the terms of	the GNU	General	Public License as published by the   *
-	*  Free Software Foundation; either version 2	of the License,	or (at your  *
-	*  option) any later version.						     *
-	\*************************************************************************/
+	* phpGroupWare - Forums						     							*
+	* http://www.phpgroupware.org						     					*
+	* Written by Jani Hirvinen <jpkh@shadownet.com>			     				*
+	* -------------------------------------------				     			*
+	*  This program is free software; you	can redistribute it and/or modify it*
+	*  under the terms of	the GNU	General	Public License as published by the  *
+	*  Free Software Foundation; either version 2	of the License,	or (at your *
+	*  option) any later version.						     					*
+	\**************************************************************************/
 
 
 	$phpgw_info["flags"] = array("currentapp" => "forum",	"enable_nextmatchs_class" => True);
@@ -26,7 +26,7 @@
 	'TB_BG'	=> $phpgw_info["theme"]["table_bg"],
 	//TRY TO FIND A	PERFECT	CHOICE
 	// $phpgw_info["theme"]["bg_color"]
-	
+
 	'TR_BG'		=> $phpgw_info["theme"]["bg_color"],
 	IMG_URL_PREFIX          => PHPGW_IMAGES . "/",
 	'CAT_LINK'	=> $phpgw->link("/forum/admin/category.php"),
@@ -56,11 +56,11 @@
 
 	for(reset($f_tree);$id=key($f_tree);next($f_tree))
 	{
-		
+
 		if($id > 0)
 		{
 
-		
+
 			$phpgw->template->set_var(array(
 			'BG6'		=> $phpgw_info["theme"]["bg03"],
 			'CAT_NAME'	=> $f_tree[$id]["name"],
@@ -107,10 +107,10 @@
 		}
 		// Parsing the outer block
 		$phpgw->template->set_var(array(
-			'TD_BG'		=> 'ffffff',
-			'TR_BG'		=> $tr_color
-			));
-		
+		'TD_BG'		=> 'ffffff',
+		'TR_BG'		=> $tr_color
+		));
+
 		$phpgw->template->fp('CatB','CatBlock',true);
 	}
 
