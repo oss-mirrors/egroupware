@@ -79,11 +79,11 @@
 			// delete activity
 			if (isset($_POST['delete_act']))
 			{
-				if ($this->delete_activities(array_keys($_POST['activities']))) $this->message[] = lang('Delition successful');
+				if ($this->delete_activities(array_keys($_POST['activities']))) $this->message[] = lang('Deletion successful');
 			}
 
 			// add transitions
-			if (isset($_POST['add_trans'])) $this->message[] = $this->add_transition($_POST['act_from_id'], $_POST['act_to_id']);
+			if (isset($_POST['add_trans'])) $this->message[] = $this->add_transition($_POST['wf_act_from_id'], $_POST['wf_act_to_id']);
 
 			// delete transitions
 			if (isset($_POST['delete_tran'])) $this->delete_transitions($_POST['transition']);
@@ -422,7 +422,7 @@
 			{
 				return lang('New transition added');
 			}
-			return lang("Couldn't add transition");
+			return lang("Couldn't add transition"). '; '. $this->activity_manager->get_error();
 		}
 
 		function show_graph()
