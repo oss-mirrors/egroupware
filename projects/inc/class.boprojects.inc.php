@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000, 2001 Bettina Gille                            *
+	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -243,24 +243,24 @@
 			$admins = $this->read_admins('all');
 
 			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query);
-//			_debug_array($allaccounts);
-//			exit;
-			while (list($null,$account) = each($allaccounts))
+
+			if (is_array($allaccounts))
 			{
-				for ($i=0;$i<count($admins);$i++)
+				while (list($null,$account) = each($allaccounts))
 				{
-					if ($account['account_id'] == $admins[$i]['account_id'])
+					for ($i=0;$i<count($admins);$i++)
 					{
-						$admin_data[$i]['account_id']	= $account['account_id'];
-						$admin_data[$i]['lid']			= $account['account_lid'];
-						$admin_data[$i]['firstname']	= $account['account_firstname'];
-						$admin_data[$i]['lastname']		= $account['account_lastname'];
-						$admin_data[$i]['type']			= $account['account_type'];
+						if ($account['account_id'] == $admins[$i]['account_id'])
+						{
+							$admin_data[$i]['account_id']	= $account['account_id'];
+							$admin_data[$i]['lid']			= $account['account_lid'];
+							$admin_data[$i]['firstname']	= $account['account_firstname'];
+							$admin_data[$i]['lastname']		= $account['account_lastname'];
+							$admin_data[$i]['type']			= $account['account_type'];
+						}
 					}
 				}
 			}
-//			_debug_array($admin_data);
-//			exit;
 			return $admin_data;
 		}
 

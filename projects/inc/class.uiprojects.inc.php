@@ -1449,7 +1449,6 @@
 				$this->t->parse('list','abook_list',True);
 			}
 
-			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->parse('out','abook_list_t',True);
 			$this->t->p('out');
 

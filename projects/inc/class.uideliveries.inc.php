@@ -738,7 +738,7 @@
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
 			$this->t->set_var('charset',$charset);
 			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
-			$this->t->set_var('img_src',PHPGW_SERVER_ROOT . '/projects/doc/logo.jpg');
+			$this->t->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
 
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
