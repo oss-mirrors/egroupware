@@ -34,6 +34,7 @@
 	$this->plugins['attachpath']['db_field_hooks']	= array
 	(
 		'text',
+	   'varchar',
 		'string',
 		'blob'
 	);
@@ -46,7 +47,7 @@
 		'Max_attachment_size_in_MB_eg_1_Leave_empty_for_no_limit' => array('','text','maxlength=4 size=4')
 	);
 
-	function plg_fi_attachpath($field_name,$value,$config)
+	function plg_fi_attachpath($field_name,$value,$config,$attr_arr)
 	{	
 		global $local_bo;
 	

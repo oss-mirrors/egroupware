@@ -59,7 +59,7 @@
 	  'custom_css'=>array('','area','')
    );
 
-   function plg_fi_htmlAreaV3($field_name, $value, $config)
+   function plg_fi_htmlAreaV3($field_name, $value, $config,$attr_arr)
    {
 
 	  global $local_bo;

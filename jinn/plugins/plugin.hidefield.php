@@ -35,14 +35,17 @@
 	(
 		'text',
 		'string',
+		'varchar',
+		'char',
 		'int',
+		'tinyint',
 		'blob',
 		'date',
 		'timestamp'
 	);
 
 
-	function plg_fi_hidefield($field_name,$value, $config)
+	function plg_fi_hidefield($field_name,$value, $config,$attr_arr)
 	{
 		return 'hide';
 	}

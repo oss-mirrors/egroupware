@@ -35,7 +35,9 @@
 	$this->plugins['htmlspecialchars']['description']	= $description;
 	$this->plugins['htmlspecialchars']['db_field_hooks']= array
 	(
-		'string',
+		'char',
+		'varchar',
+	   'string',
 		'blob',
 		'text'
 	);

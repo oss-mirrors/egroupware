@@ -50,7 +50,7 @@
 		'Strip_HTML_TAGS'=>array(array('Yes','No'),'select','')
 	);
 
-	function plg_fi_nl2br($field_name, $value, $config)
+	function plg_fi_nl2br($field_name, $value, $config,$attr_arr)
 	{
 		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.str_replace('<br />','',$value).'</textarea>';
 		return $input;

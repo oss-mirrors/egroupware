@@ -33,13 +33,14 @@
 	$this->plugins['colorlab']['version']			= '0.02';
 	$this->plugins['colorlab']['description']		= $descr;
 	$this->plugins['colorlab']['enable']			= 1;
-	$this->plugins['colorlab']['db_field_hooks']	= array('string','text');
+	$this->plugins['colorlab']['db_field_hooks']	= array('string',   'varchar',	'text')
     $this->plugins['colorlab']['config']		    = array(
 		'Available_colors' => array(array('Unlimited','User-defined'),'select',''),
 		'User_defined_colors' => array('#FFFFFF,#000000,#CCCCCC','area','')
 	);
 
- 	function plg_fi_colorlab($field_name,$value, $config){
+	function plg_fi_colorlab($field_name,$value, $config,$attr_arr)
+	{
       $hex_values=explode(',',$config['User_defined_colors']);
       $i=0;
       foreach($hex_values as $val){

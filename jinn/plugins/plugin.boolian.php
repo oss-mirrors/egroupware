@@ -58,8 +58,11 @@
 	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';
 	$this->plugins['boolian']['db_field_hooks']	= array
 	(
+	   'char',
+	   'varchar',
 		'string',	
-		'int',	
+		'int',
+		'tinyint'
 	);
 	$this->plugins['boolian']['config']		= array
 	(
@@ -70,7 +73,7 @@
 		'Default_value'=>array(array('ON','OFF','NOTHING'),'select',''),
 	);
 
-	function plg_fi_boolian($field_name,$value, $config)
+	function plg_fi_boolian($field_name,$value, $config,$attr_arr)
 	{
 
 		//var_dump($config);

@@ -31,7 +31,9 @@
 	$this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
 	$this->plugins['selectbox']['db_field_hooks']	= array
 	(
-		'string',
+	   'string',
+	   'char',
+	   'varchar',
 		'text'
 	);
 	$this->plugins['selectbox']['config']		= array
@@ -42,7 +44,7 @@
 		'Empty_option_available'=> array(array('yes','no'),'select','')
 	);
 
-	function plg_fi_selectbox($field_name,$value, $config)
+	function plg_fi_selectbox($field_name,$value, $config,$attr_arr)
 	{
 		$pos_values=explode(',',$config['Value_seperated_by_commas']);
 

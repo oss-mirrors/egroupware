@@ -34,7 +34,8 @@
 	$this->plugins['date']['description']		= 'create date input box and date storage method, (At this time Dutch only)';
 	$this->plugins['date']['enable']			= 1;
 	$this->plugins['date']['db_field_hooks']	= array('date');
-	function plg_fi_date($field_name,$value,$config)
+	
+	function plg_fi_date($field_name,$value,$config,$attr_arr)
 	{	
 		global $local_bo;
 		$field_name=substr($field_name,3);	

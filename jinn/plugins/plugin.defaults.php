@@ -34,7 +34,7 @@
 		'blob',
 	);
 
-	function plg_fi_def_blob($field_name,$value, $config)
+	function plg_fi_def_blob($field_name,$value, $config,$attr_arr)
 	{
 		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.$value.'</textarea>';
 
@@ -50,11 +50,21 @@
 	$this->plugins['def_string']['db_field_hooks']	= array
 	(
 		'string',
+		'varchar'
+		'char'
 	);
 
-	function plg_fi_def_string($field_name, $value, $config)
+	function plg_fi_def_string($field_name, $value, $config,$attr_arr)
 	{
-		$input='<input type="text" name="'.$field_name.'" input_max_length" value="'.$value.'">';
+	   if($attr_arr['max_size'])
+	   {
+		  if($attr_arr['max_size']>40) $size=40;
+		  else $size=$attr_arr['max_size'];
+
+		  $max='size="'.$size.'" maxlength="'.$attr_arr['max_size'].'"';	
+	   }
+
+	   $input='<input type="text" name="'.$field_name.'" '.$max.' value="'.$value.'">';
 
 		return $input;
 
@@ -67,10 +77,11 @@
 	$this->plugins['def_int']['enable']			= 1;
 	$this->plugins['def_int']['db_field_hooks']	= array
 	(
-		'int',	
+	   'int',
+	   'tinyint'
 	);
 
-	function plg_fi_def_int($field_name,$value, $config)
+	function plg_fi_def_int($field_name,$value, $config,$attr_arr)
 	{
 		$input='<input type="text" name="'.$field_name.'" size="10" value="'.$value.'">';
 
@@ -87,7 +98,7 @@
 		'timestamp',	
 	);
 
-	function plg_fi_def_timestamp($field_name,$value, $config)
+	function plg_fi_def_timestamp($field_name,$value, $config,$attr_arr)
 	{
 
 		global $local_bo;

@@ -30,7 +30,7 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.9.0';
+	$this->plugins['imagepath']['version']			= '0.9.1';
 	$this->plugins['imagepath']['enable']			= 1;
 
 	$this->plugins['imagepath']['description']		= '
@@ -39,6 +39,8 @@
 
 	$this->plugins['imagepath']['changelog']		= 
 	'
+	0.9.1
+	- Add argument attr_arr to plg_fi_imagepath
 	0.9.0
 	- implement resizing with GDLib (look in general JiNN-configuration)
 	0.8.8
@@ -55,6 +57,7 @@
 	$this->plugins['imagepath']['db_field_hooks']	= array
 	(
 		'text',
+		'varchar',
 		'string',
 	);
 
@@ -73,7 +76,7 @@
 		'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
 	);
 
-	function plg_fi_imagepath($field_name,$value,$config)
+	function plg_fi_imagepath($field_name,$value,$config,$attr_arr)
 	{	
 		global $local_bo;
 

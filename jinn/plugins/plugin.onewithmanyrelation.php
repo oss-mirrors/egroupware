@@ -42,8 +42,10 @@
 	$this->plugins['relation']['enable']			= 1;
 	$this->plugins['relation']['db_field_hooks']	= array
 	(
+		'char',
 		'varchar',
-		'int'
+		'int',
+		'tinyint'
 	);
 
 	/* ATTENTION: spaces and special character are not allowed in config array 
@@ -58,7 +60,7 @@
 		'Forein_extra_display_field' => array('get_foreign_display_fields','select','')
 	);
 
-	function plg_fi_relation($field_name,$value,$config)
+	function plg_fi_relation($field_name,$value,$config,$attr_arr)
 	{	
 
 		global $local_bo;
