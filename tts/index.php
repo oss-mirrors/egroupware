@@ -301,9 +301,9 @@
 	$GLOBALS['phpgw']->template->set_var('tts_head_ifviewall','');
 	$GLOBALS['phpgw']->template->set_var('tts_ticket_id_read','');
 	$GLOBALS['phpgw']->template->set_var('tts_ticket_id_unread','');
+	$GLOBALS['phpgw']->template->set_var('options_select','');
 
 	$GLOBALS['phpgw']->template->pfp('out','index');
-	$GLOBALS['phpgw']->template->set_var('options_select','');
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
