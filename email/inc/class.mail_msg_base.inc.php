@@ -790,7 +790,16 @@
 			// we feed from here because when there are multiple mail_msg objects
 			// we need to make sure we load the appropriate type dcom class
 			// which that class may not know which accounts prefs to use, so tell it here
-			$this->a[$this->acctnum]['dcom'] = CreateObject("email.mail_dcom",$this->get_pref_value('mail_server_type'));
+			
+			//$this->a[$this->acctnum]['dcom'] = CreateObject("email.mail_dcom",$this->get_pref_value('mail_server_type'));
+			
+			// ----  php3 compatibility  ----
+			// apparently php3 wants you to create the object first, then put it in the array
+			$this_server_type = $this->get_pref_value('mail_server_type');
+			$this_dcom = CreateObject("email.mail_dcom", $this_server_type);
+			// ok, now put that object into the array
+			$this->a[$this->acctnum]['dcom'] = $this_dcom;
+			
 			// initialize the dcom class variables
 			$this->a[$this->acctnum]['dcom']->mail_dcom_base();
 			
