@@ -41,11 +41,11 @@
   if ($filter == "viewall") {
      echo "<a href=\"" . $phpgw->link() . "\">" . lang("View only open tickets")."</a>";
   } else {
-     echo "<a href=\"" . $phpgw->link("index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>            (Tickets open $zeilen) ";
+     echo "<a href=\"" . $phpgw->link("index.php","filter=viewall") . "\">" . lang("View all tickets")."</a>";
   }
 
   echo " ]<br>\n";
-  echo "<center>( " . lang("Tickets total") . " $zeilen )</center>";
+  echo "<center>( " . lang("Tickets total x",$zeilen) ." )<br>( " . lang("Tickets open x",$zeilen) ." )</center>";
 
   if ($phpgw->db->num_rows() == 0) {
      echo "<p><center>".lang("No tickets found")."</center>";

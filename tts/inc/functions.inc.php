@@ -66,7 +66,7 @@ function mail_ticket($ticket_id) {
       $toarray[$j] = $account_lid[$j]."@".$phpgw_info["server"]["mail_suffix"];
     }
   }
-  if($count($toarray)) {
+  if(count($toarray)) {
     $to = implode(",",$toarray);
   } else {
     $to = $toarray[0];

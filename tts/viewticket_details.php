@@ -16,6 +16,7 @@
   }
 
   $phpgw_info["flags"]["currentapp"] = "tts";
+  $phpgw_info["flags"]["enable_send_class"]       = True;
   include("../header.inc.php");
   function group_list($db,$currgroup)
   {
