@@ -49,7 +49,8 @@
 				'website_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
 				'serialnumber' => array('type' => 'int','precision' => '4'),
 				'upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
-				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False)
+				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'object_scan_prefix' => array('type' => 'varchar','precision' => '100')
 			),
 			'pk' => array('site_id'),
 			'fk' => array(),

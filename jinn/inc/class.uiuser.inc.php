@@ -69,11 +69,11 @@
 		 {
 			if (!$this->bo->site_id)
 			{
-			   $this->bo->message['info']=lang('Select site to moderate');
+			   $this->bo->message['info'].=lang('Select site to moderate');
 			}
 			else 
 			{
-			   $this->bo->message['info']=lang('Select site-object to moderate');
+			   $this->bo->message['info'].=lang('Select site-object to moderate');
 			}
 
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);

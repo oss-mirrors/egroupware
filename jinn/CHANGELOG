@@ -6,6 +6,10 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.213
+===========================
+Tue Mar 10 17:30:00 CET 2005
+- sites can now be configured to automatically (or manually) create objects from non-wrapped tables
 
 Version 0.8.212c
 ===========================

@@ -633,6 +633,20 @@
 
 	  }	
 
+	  function get_objects_by_table($tablename,$parent_site_id)
+	  {
+		 $SQL="SELECT * FROM egw_jinn_objects WHERE table_name='$tablename' AND parent_site_id='$parent_site_id'";
+		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
+		 //die($SQL);
+
+		 while($this->phpgw_db->next_record())
+		 {
+			$ids[]=$this->phpgw_db->f('object_id');
+		 }
+		 return $ids;
+
+	  }	
+
 
 	  /* 
 	  strip_magic_quotes_gpc checks if magic_quotes_gpc is set on in 
@@ -1617,7 +1631,7 @@
 	  function insert_new_object($data)
 	  {
 		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
-
+		 
 		 foreach($data as $field)
 		 {
 			if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_objects',$meta[$field['name']]['default'])) 
@@ -1637,6 +1651,11 @@
 			   $field[value]=$serial;
 			}
 
+			if($field[name]=='unique_id' && $field[value]=='')
+			{
+			   $field[value]=$this->generate_unique_object_id();
+			}
+			
 			// safety hack for pgsql which doesn't allow '' for integers
 			if($field[value]=='' && eregi('int',$meta[$field['name']]['type']) )
 			{

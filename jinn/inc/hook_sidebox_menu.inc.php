@@ -69,6 +69,18 @@
 
 		 $file=array_merge($file,$last_record);
 	  }
+	  
+		if($GLOBALS[local_bo]->site[site_id] && $GLOBALS[local_bo]->site[object_scan_prefix] != '')
+		{
+			$site = Array(
+					   'Scan for new Objects' => array(
+						  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.scan_new_objects&where_key=site_id&where_value='.$GLOBALS[uiuser]->bo->site[site_id]),
+						  'text'=>'Scan for new Objects',
+						  'icon'=>'new'
+					   )
+					);
+			$file=array_merge($file,$site);
+		}
 
 	  
 	  $file['_NewLine_']='_NewLine_'; // give a newline
@@ -130,10 +142,9 @@
 			   'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiacl.main_screen'),
 			   'text'=>'Access Rights',
 			   'icon'=>'groupevent'
-			)
-		 );
-		 display_sidebox($appname,$menu_title,$file);
-
+				)
+			);
+		display_sidebox($appname,$menu_title,$file);
 	  }
 	  elseif($GLOBALS['phpgw_info']['user']['apps']['admin'])
 	  {
@@ -165,7 +176,6 @@
 			   'icon'=>'fileopen'
 			),
 		 );
-
 		 if ($GLOBALS[local_bo]->site[site_id])
 		 {
 			$site = Array(
@@ -174,8 +184,8 @@
 				  'text'=>'Save site conf to file',
 				  'icon'=>'filesave'
 			   )
-
 			);
+			   
 			$file=array_merge($file,$site);
 		 }
 

@@ -38,7 +38,8 @@
 		 'get_plugin_afa'			=> True,
 		 'mult_change_num_records'	=> True,
 		 'submit_to_plugin_afa'		=> True,
-		 'copy_record'				=> True
+		 'copy_record'				=> True,
+		 'scan_new_objects'			=> True
 	  );
 
 	  var $so;
@@ -149,8 +150,6 @@
 			{
 			   $this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->site_object,false);
 			}
-		
-			//$this->message['debug'][]='OBJECT_ARRAY: '._debug_array($this->browse_settings,false);
 		 }
 
 			//backwards compatibility: check if unique id field is filled. If not: fill it now.
@@ -158,6 +157,12 @@
 		 {
 			$status = $this->so->set_unique_id($this->site_object_id);
 			$this->site_object[unique_id] = $status[uid];
+		 }
+		 
+			//if user changes site, check if new objects need to be created for user generated tables
+ 		 if($_POST['site_id'])
+		 {
+			$this->scan_new_objects_silent();
 		 }
 	  }
 
@@ -1457,5 +1462,91 @@
 		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		}
 
+		/*! 
+		@function scan_new_objects_silent
+		@abstract check if users have created new tables that need to become accessible as objects
+		*/
+		function scan_new_objects_silent()
+		{
+			$status = array();
+			if($this->site[object_scan_prefix] != '')
+			{
+				$prefix_arr = explode(',', $this->site[object_scan_prefix]);
+				if(is_array($prefix_arr))
+				{
+					$tables = $this->so->site_tables_names($this->site_id);
+					$status = array();
+					foreach($tables as $table)
+					{
+						//is this table wrapped by an object?
+						$objects = $this->so->get_objects_by_table($table[table_name], $this->site_id);
+						if(count($objects) == 0)
+						{
+							//if no, do we want ALL tables wrapped by an object?
+							if($prefix_arr[0] == '*')
+							{
+								//if yes, create an object from this table
+								$status[] = $this->save_scanned_object($this->site_id, $table[table_name]);
+							}
+							//or does the table name start with one of the prefixes?
+							else
+							{
+								foreach($prefix_arr as $prefix)
+								{
+									if(substr($table[table_name], 0, strlen($prefix)) == $prefix)
+									{
+										$status[] = $this->save_scanned_object($this->site_id, $table[table_name]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return $status;
+		}
+		/*! 
+		@function scan_new_objects 
+		@abstract scan for new objects, create messages and redirect to index
+		*/
+		function scan_new_objects()
+		{
+			$status = $this->scan_new_objects_silent();
+			$endl = "<br>";
+			if(count($status) > 0)
+			{
+				$this->message[info]=lang('%1 new objects where successfully created%2', count($status), $endl);
+				foreach($status as $new)
+				{
+					if($new[ret_code] != 0)
+					{
+						$this->message[error]=lang('Error creating one or more new Objects%1', $endl);
+						$this->message[info]=lang('%1 new objects where successfully created%2', count($status), $endl);
+					}
+				}
+			}
+			else
+			{
+				$this->message[info]=lang('no new objects created%1', $endl);
+			}
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		}
+		
+		/*! 
+		@function save_scanned_object
+		@abstract wraps an (empty) site object around a given table
+		*/
+		function save_scanned_object($site_id, $table_name)
+		{
+			$data = array();
+			$data[] = array('name' => 'name'			, 'value' => $table_name);
+			$data[] = array('name' => 'table_name'		, 'value' => $table_name);
+			$data[] = array('name' => 'parent_site_id'	, 'value' => $site_id	);
+			$data[] = array('name' => 'hide_from_menu'	, 'value' => ''			);
+			$data[] = array('name' => 'serialnumber'	, 'value' => ''			);
+			$data[] = array('name' => 'unique_id'		, 'value' => ''			);
+			return $this->so->insert_new_object($data);
+		}
    }
 ?>
