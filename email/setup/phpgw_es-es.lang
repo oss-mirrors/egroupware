@@ -88,8 +88,6 @@ e-mail folders	common	es-es	Carpetas
 e-mail inbox filters list	email	es-es	Lista de filtros para la bandeja de entrada
 e-mail preferences	common	es-es	Preferencias de correo electrónico
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	es-es	Cada usuario tiene una página de resumen que puede mostrar información variada. Esta opción mostrará una pequeña lista de mensajes de correo en la Bandeja de entrada de la cuenta predeterminada del usuario en el resumen de la página de inicio del usuario.
-each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	es-es	Cada usuario tiene una página de resumen que puede mostrar distinta información. Esta opción mostrará una pequeña lista de mensajes de correo en la Bandeja de entrada de la cuenta predeterminada de los usuarios en el resumen de la página de inicio.
-each user has a summary page which can display a variety of information. this option willshow a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	es-es	Cada usuario tiene una página de resumen que puede mostrar distinta información. Esta opción mostrará una pequeña lista de mensajes de correo en la Bandeja de entrada de la cuenta predeterminada de los usuarios en el resumen de la página de inicio.
 edit filters	email	es-es	Editar filtros
 email	email	es-es	E-mail
 email - file attachment	email	es-es	Email - Adjuntar Archivo
