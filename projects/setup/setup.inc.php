@@ -45,6 +45,7 @@
 
 	$setup_info['projects']['hooks'] = array
 	(
+		'sidebox_menu' => 'projects.uiprojects.hook_sidebox_menu',
 		'preferences',
 		'admin',
 		'manual',
