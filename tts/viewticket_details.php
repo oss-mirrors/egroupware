@@ -19,27 +19,27 @@
   include("../header.inc.php");
   function group_list($db,$currgroup)
   {
-    $db->query("select group_name from groups");
-    while ($db->next_record()) {
+	$groups = CreateObject('phpgwapi.accounts');
+	$group_list = $groups->get_list('groups');
+	while (list($key,$entry) = each($group_list))
+	{
       $tag="";
-      if ($db->f(0) == "$currgroup") { $tag = "selected"; }
-      echo "<option value=\"" . $db->f(0) . "\" $tag>" . $db->f(0) . "</option>\n";
+      if ($entry['account_lid'] == "$currgroup") { $tag = "selected"; }
+      echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
     }
   }
 
   function groupusers_list($db,$curruser)
   {
-    $db->query("select account_lid from accounts");
-    $db->next_record();
-	echo "<option value=none ";
-	if($db->f(0) == "none")
-		echo "SELECTED ";
-	echo ">none</option>";
-    $db->query("select account_lid from accounts"); // no db::rewind function?
-    while ($db->next_record()) {
+	$accounts = CreateObject('phpgwapi.accounts',$group_id);
+	$account_list = $accounts->get_list('accounts');
+	echo "<option value=none>none</option>";
+	while (list($key,$entry) = each($account_list))
+	{
+	
       $tag="";
-      if ($db->f(0) == "$curruser") { $tag = "selected"; }
-      echo "<option value=\"" . $db->f(0) . "\" $tag>" . $db->f(0) . "</option>\n";
+      if ($entry['account_lid'] == "$curruser") { $tag = "selected"; }
+      echo "<option value=\"" . $entry['account_lid'] . "\" $tag>" . $entry['account_lid'] . "</option>\n";
     }
   }
 
@@ -230,7 +230,7 @@ $lstCategory=$phpgw->db->f("t_category");
         $phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
       }
 
-      mail_ticket($t_id);
+      //mail_ticket($t_id);
     }
     Header("Location: " . $phpgw->link("/tts/index.php"));
   }

@@ -45,10 +45,12 @@
             <td width="75%" valign="middle">
               <select size="1" name="lstCategory">
 <?php
-  $phpgw->db->query("select group_name from groups");
-  while ($phpgw->db->next_record()) {
-    echo "<option value= " . $phpgw->db->f(0) . ">" . $phpgw->db->f(0) . "</option>\n";
-  }
+	$groups = CreateObject('phpgwapi.accounts');
+	$group_list = $groups->get_list('groups');
+	while (list($key,$entry) = each($group_list))
+	{
+		echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+	}
 ?>
               </select>
             </td>
@@ -58,11 +60,13 @@
             <td width="75%" valign="middle">
               <select size="1" name="assignto">
 <?php
-  $phpgw->db->query("select account_lid from accounts");
+	$accounts = CreateObject('phpgwapi.accounts',$group_id);
+	$account_list = $accounts->get_list('accounts');
 	echo "<option value=none SELECTED>none</option>\n";
-  while ($phpgw->db->next_record()) {
-    echo "<option value= " . $phpgw->db->f(0) . ">" . $phpgw->db->f(0) . "</option>\n";
-  }
+	while (list($key,$entry) = each($account_list))
+	{
+    	echo "<option value= " . $entry['account_lid'] . ">" . $entry['account_lid'] . "</option>\n";
+	}
 ?>
               </select>
             </td>
@@ -124,7 +128,7 @@ $phpgw->common->phpgw_footer();
 		           . time() . "',0,'$subject');");
      $phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
      $phpgw->db->next_record();
-     mail_ticket($phpgw->db->f("t_id"));
+     //mail_ticket($phpgw->db->f("t_id"));
 
      Header("Location: " . $phpgw->link("/tts/index.php"));
   }
