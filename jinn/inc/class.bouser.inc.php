@@ -56,6 +56,7 @@
 	  var $acl;
 
 	  var $plug;
+	  var $object_events_plugin_manager;
 
 	  var $current_config;
 	  var $action;
@@ -121,8 +122,12 @@
 
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
+		 
 		 $this->plug = CreateObject('jinn.plugins');
 		 $this->plug->local_bo = $this;
+
+ 		 $this->object_events_plugin_manager = CreateObject('jinn.object_events_plugins'); //$this->include_plugins();
+		 $this->object_events_plugin_manager->local_bo = $this;
 
 		 /* this is for the sidebox */
 		 global $local_bo;
@@ -530,6 +535,30 @@
 	  }
 
 
+	  function run_event_plugins($event)
+	  {
+			//get all events plugins configured to this object
+		$object_arr=$this->so->get_object_values($this->site_object[object_id]);
+		$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+//_debug_array($stored_configs);
+		if(is_array($stored_configs))
+		{
+			foreach($stored_configs as $config)
+			{
+				if($event == $config[conf][event])
+				{
+//_debug_array("valid configuration found");
+					/*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
+					met als argumenten de _POST array en de plugin configuratie. 
+					Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
+					De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
+					
+					$status = $this->object_events_plugin_manager->call_event_action($_POST, $config);
+				}
+			}
+		}
+	  }
+	  
 	  function record_update()
 	  {
 		 /* exit and go to del function */
@@ -558,6 +587,8 @@
 		 else 
 		 {
 			$this->message[info]='Record succesfully saved';
+			$eventstatus = $this->run_event_plugins('on_update');
+			if($eventstatus) $this->message[info].=', but error in On Update event plugin';
 		 }
 
 		 $this->addtoDebugArr('SQL: '.$status[sql]);

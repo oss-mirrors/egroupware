@@ -357,13 +357,13 @@
 		//to do: get these from the list of available events
 		
 		$options  = '<option value="">-------------</option>';
-		if($selected == 'on_record_update')
+		if($selected == 'on_update')
 		{
-			$options .= '<option value="on_record_update" selected>'.lang('on_record_update').'</option>';
+			$options .= '<option value="on_update" selected>'.lang('on_update').'</option>';
 		}
 		else
 		{
-			$options .= '<option value="on_record_update">'.lang('on_record_update').'</option>';
+			$options .= '<option value="on_update">'.lang('on_update').'</option>';
 		}
 		return $options;
 	  }
@@ -409,13 +409,14 @@
 
  		 $this->template->set_block('config','pre_block','pre_block');
  		 $this->template->set_block('config','config_block','config_block');
+ 		 $this->template->set_block('config','delete_block','delete_block');
  		 $this->template->set_block('config','row_block','row_block');
  		 $this->template->set_block('config','post_block','post_block');
 
 		 ///////////////////////////////////////////////////////////
-		 // the first block takes care of the event/plugin selectors
+		 // the pre block takes care of the event/plugin selectors
 		 ///////////////////////////////////////////////////////////
-/*
+
 		 if($_GET[close_me]=='true')
 		 {
 			$this->template->set_var('close', ' onLoad="self.close()"');		 
@@ -424,7 +425,7 @@
 		 {
 			$this->template->set_var('close', '');		 
 		 }
-*/		 
+		 
 		 $this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
 		 $this->template->set_var('event_options', $this->getEventOptions($_POST[event]));		 
 		 $this->template->set_var('event_label', lang('select an event'));		 
@@ -436,7 +437,25 @@
 		 $this->template->pparse('out','pre_block');
 
 		 ///////////////////////////////////////////////////////////
-		 // the second block shows the plugin configuration if a plugin was selected
+		 // the delete block shows all active object event plugins
+		 ///////////////////////////////////////////////////////////
+
+
+		$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+		$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+		if(is_array($stored_configs))
+		{
+			$this->template->set_var('delete_label', lang('delete'));		 
+			foreach($stored_configs as $key => $config)
+			{
+				$this->template->set_var('config_id', $key);		 
+				$this->template->set_var('config_description', lang('event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin]));		 
+				$this->template->pparse('out','delete_block');
+			}
+		}
+		 
+		 ///////////////////////////////////////////////////////////
+		 // the config block shows the plugin configuration if a plugin was selected
 		 ///////////////////////////////////////////////////////////
 
 		 if($_POST[plugin] != '')
@@ -452,6 +471,11 @@
 
 			 if(is_array($cfg))
 			 {
+
+				///////////////////////////////////////////////////////////
+				// the row block shows each configuration field the plugin has
+				///////////////////////////////////////////////////////////
+
 				foreach($cfg as $key => $val)
 				{
 				   /* replace underscores for spaces */
@@ -496,7 +520,7 @@
 		 }
 		 
 		 ///////////////////////////////////////////////////////////
-		 // the last block closes stuff
+		 // the post block closes stuff
 		 ///////////////////////////////////////////////////////////
 
 		 $this->template->set_var('submit', lang('submit'));		 

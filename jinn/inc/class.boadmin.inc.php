@@ -344,8 +344,8 @@
 
 	  
   	  /**
-	  @function save_field_plugin_conf
-	  @abstract save changes made to a field plugin configuration in database
+	  @function save_object_events_conf
+	  @abstract save a new object events plugin configuration in the database
 	  @note this function uses new standard method for returning exit codes and status information
 	  */
 	  function save_object_events_conf()
@@ -358,46 +358,63 @@
 
 		 if(is_array($_POST))
 		 {
-			$conf=array
-				(
-					'name'=>$_POST[plugin],
-					'conf'=>$_POST
-				);
-//_debug_array($conf);
-			if($conf[conf][event] != '' && $conf[conf][plugin] != '')
+			$dirty = false;
+			
+				//get the already stored configurations
+			$object_arr=$this->so->get_object_values($_GET[object_id]);
+			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+				
+				//check if configurations need to be deleted
+			if(is_array($stored_configs)) 
 			{
-//_debug_array('was here');
-				$object_arr=$this->so->get_object_values($_GET[object_id]);
-//_debug_array($object_arr);
-				$stored_config = unserialize(base64_decode($object_arr[events_config]));
-//_debug_array($stored_config);
-				if(!is_array($stored_config)) 
+				$numconfigs=count($stored_configs);
+				for($i=0; $i<$numconfigs; $i++)
 				{
-					$stored_config = array();
+					if($_POST['delete_'.$i] == 'true')
+					{
+						unset($stored_configs[$i]);
+						$dirty=true;
+					}
 				}
-				$stored_config[] = $conf;
-//_debug_array($stored_config);
-				$conf_serialed_string=base64_encode(serialize($stored_config));
+				$stored_configs = array_values($stored_configs);
+			}
+				
+				//if a new plugin was configured, add it to the store
+			if($_POST[event] != '' && $_POST[plugin] != '')
+			{
+				if(!is_array($stored_configs)) $stored_configs = array();
+				$conf=array
+					(
+						'name'=>$_POST[plugin],
+						'conf'=>$_POST
+					);
+				$stored_configs[] = $conf;
+				$dirty=true;
+			}
+
+			if($dirty)
+			{
+				$conf_serialed_string=base64_encode(serialize($stored_configs));
 				$status=$this->so->save_object_events_plugin_conf($_GET[object_id],$conf_serialed_string);
+				if($status[ret_code])
+				{
+					$this->message[error]=lang('An unknown error has occured (error code 109)');
+_debug_array(lang('An unknown error has occured (error code 109)'));
+				}
+				else
+				{
+					$this->message[info]=lang('Plugin configuration successfully saved');
+_debug_array(lang('Plugin configuration successfully saved'));
+				}
 			}
 			else
 			{
-				$status[ret_code] = true;
+			$this->message[error]=lang('nothing to save. Please select a plugin to delete or configure a new plugin');
+_debug_array(lang('nothing to save. Please select a plugin to delete or configure a new plugin'));
 			}
-		 }
-		 
-	
-		 if($status[ret_code])
-		 {
-			$this->message[error]=lang('An unknown error has occured (error code 109)');
-_debug_array(lang('An unknown error has occured (error code 109)'));
-		 }
-		 else
-		 {
-			$this->message[info]=lang('Plugin configuration successfully saved');
-_debug_array(lang('Plugin configuration successfully saved'));
-		 }
-		 $this->save_sessiondata();
+		}
+
+		$this->save_sessiondata();
 
 	  
 	  /* fixme: this gives a strange error:

@@ -21,7 +21,8 @@
 <!-- END pre_block -->
 
 <!-- BEGIN delete_block -->
-{config_description}<input type="checkbox" name="{config_id}" value="true"/>{delete_label}
+{config_description}<input type="checkbox" name="delete_{config_id}" value="true"/>{delete_label}
+<br/>
 <!-- END delete_block -->
 
 <!-- BEGIN config_block -->

@@ -32,7 +32,7 @@
    $this->plugins['email']['description']		= 'send an email triggered by an event';
    $this->plugins['email']['event_hooks']		= array
    (
-	  'on_record_update'
+	  'on_update'
    );
    
    $this->plugins['email']['help']			=  'some help here...';
@@ -56,6 +56,36 @@
 	  'messagebody'=>'email contents'
    );
 
+   function event_action_email($post, $config)
+   {
+	$m = array();
+	$m[to] = $post[FLDXXX.$config[conf][fieldname_with_emailaddress]];
+	$m[subject] = $config[conf][subject];
+	$m[message] = $config[conf][messagebody];
+	
+		//replace occurences of '$$fieldname$$' with the value of that field
+	foreach($post as $key => $value)
+	{
+		$prefix = substr($key, 0, 6);
+		if($prefix == 'FLDXXX')
+		{
+			$field = substr($key, 6);
+			$m[message] = str_replace('$$'.$field.'$$', $value, $m[message]);
+		}
+	}
+
+	$m[headers] = '';
+	$m[headers] .= 'From: '.$config[conf][from_address]."\r\n";
+	$m[headers] .= 'Cc: '.$config[conf][CC]."\r\n";
+	$m[headers] .= 'Bcc: '.$config[conf][BCC]."\r\n";
+//_debug_array($m);
+	
+	return mail($m[to], $m[subject], $m[message], $m[headers]);
+	//return false;	//nothing = ok.
+	//return true;	//error.
+
+   }
+   
    function plg_fi_email($field_name,$value, $config,$attr_arr)
    {
    }
