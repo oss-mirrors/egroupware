@@ -115,7 +115,6 @@
 
 	class msg_structure
 	{
-		/*
 		var $type = '';
 		var $encoding = '';
 		var $ifsubtype = False;
@@ -132,27 +131,9 @@
 		var $dparameters = array();
 		var $ifparameters = False;
 		var $parameters = array();
-		var $parts = array();
-		*/
-		var $type;
-		var $encoding;
-		var $ifsubtype;
-		var $subtype;
-		var $ifdescription;
-		var $description;
-		var $ifid;
-		var $id;
-		var $lines;
-		var $bytes;
-		var $ifdisposition;
-		var $disposition;
-		var $ifdparameters;
-		var $dparameters;
-		var $ifparameters;
-		var $parameters;
-		var $parts = array();
 		// custom phpgw data to aid in building this structure
 		var $custom = array();
+		var $parts = array();
 		/*
 		@Discussion
 		see PHP function: imap_fetchstructure --  Read the structure of a particular message

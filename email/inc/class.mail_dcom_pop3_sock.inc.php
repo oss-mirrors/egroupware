@@ -432,7 +432,14 @@
 				}
 			}
 			
-			if ($this->debug_dcom) { echo 'pop3: Entering fetchstructure<br>'; }
+			if ($this->debug_dcom_extra)
+			{
+				echo '<br>dumping fetchstructure FINAL data: <br>';
+				var_dump($this->msg_structure);
+				echo '<br><br><br>';
+			}
+
+			if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
 			return $this->msg_structure;
 		}
 		
@@ -521,6 +528,8 @@
 			{
 				$this->msg_structure->encoding = $this->default_encoding();
 			}
+			// unset any elements that have not been filled
+			$this->unset_unfilled_fetchstructure(&$this->msg_structure);
 			if ($this->debug_dcom_extra)
 			{
 				echo '<br>dumping fill_toplevel_fetchstructure TOP-LEVEL data: <br>';
@@ -534,45 +543,38 @@
 		function create_embeded_fetchstructure($info)
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering create_embeded_fetchstructure<br>'; }
-			// --- Detect Boundary Paramaters  ---
-			// if we have a boundary paramater, then we have a multi-part message
+			// --- Do We Have SubParts To Discover  ---
+			
+			// Test 1: Detect Boundary Paramaters
 			// initialize boundary holder
 			$info->custom['my_cookie'] = '';
-			// do we have a boundry param?
-			for ($x=0; $x < count($info->parameters) ;$x++)
+			if ($info->ifparameters)
 			{
-				$these_params = $info->parameters[$x];
-				if (strtolower($these_params->attribute) == 'boundary')
+				// if we have a boundary paramater, then we have a multi-part message
+				for ($x=0; $x < count($info->parameters) ;$x++)
 				{
-					// store it in custom["my_cookie"] for easy access
-					$info->custom['my_cookie'] = $these_params->value;
-					break;
+					$these_params = $info->parameters[$x];
+					if (strtolower($these_params->attribute) == 'boundary')
+					{
+						// store it in custom["my_cookie"] for easy access
+						$info->custom['my_cookie'] = $these_params->value;
+						break;
+					}
 				}
 			}
 			// --- Handle Multi-Part MIME ---
-			if ($info->custom['my_cookie'] == '')
+			if (($info->custom['my_cookie'] != '')
+			&& (count($info->parts) == 0))
 			{
-				// do NOTHING - this is NOT multipart
-				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info not multipart<br>'; }
-				return False;
-			}
-			elseif (($info->custom['my_cookie'] != '')
-			&& (count($info->parts) > 0))
-			{
-				// do NOTHING - this level has ALREADY been filled
-				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info multipart ALREADY filled<br>'; }
-				return False;
-			}
-			else
-			{
-				// Handle Multi-Part MIME
-				if ($this->debug_dcom) { echo 'pop3: create_embeded_fetchstructure: found boundary : '.$info->custom['my_cookie'].'<br>'; }
+				// Boundry Based Multi-Part MIME In Need Of Discovered
+				if ($this->debug_dcom) { echo 'pop3: create_embeded_fetchstructure: Discovery Needed for boundary param: '.$info->custom['my_cookie'].'<br>'; }
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: begin "mime loop", iterate thru body_array<br>'; }
 				// look for any parts using this boundary/cookie
 				for ($x=0; $x < count($this->body_array) ;$x++)
 				{
 					// search line by line thru the body
 					$body_line = $this->body_array[$x];
-					if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: body_line['.$x.']: '.htmlspecialchars($body_line).'<br>'; }
+					if ($this->debug_dcom_extra) { echo 'pop3: mime loop ['.$x.']: '.htmlspecialchars($body_line).'<br>'; }
 					if ((strstr($body_line,'--'.$info->custom['my_cookie']))
 					&& (strpos($body_line,'--'.$info->custom['my_cookie']) == 0)
 					// but NOT the final boundary
@@ -592,6 +594,9 @@
 							if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: current part end at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.']<br>'; }
 							// this individual part has completed discovery, it os now "OUT"
 							$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
+							// we are DONE with this part for now 
+							// unset any unfilled elements
+							$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
 						}
 						// so now deal with this NEW part we just discovered
 						if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: begin part discovery<br>'; }
@@ -653,7 +658,10 @@
 						$cur_part_idx = count($info->parts) - 1;
 						$info->parts[$cur_part_idx]->custom['part_end'] = $x-1;
 						$info->parts[$cur_part_idx]->custom['detect_state'] = 'out';
+						// we are DONE with this part for now 
 						if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: mime loop: final boundary at ['.(string)($x-1).'] byte cumula: ['.$info->parts[$cur_part_idx]->bytes.']<br>'; }
+						// unset any unfilled elements
+						$this->unset_unfilled_fetchstructure(&$info->parts[$cur_part_idx]);
 					}
 					else
 					{
@@ -671,14 +679,135 @@
 					}
 				}
 			}
-			if ($this->debug_dcom_extra)
+			// do we have an encapsulated (non-boundry based) Embedded Part
+			elseif ( (isset($info->type))
+			&& ($info->type == TYPEMESSAGE)
+			&& (isset($info->subtype))
+			&& (strtolower($info->subtype) == 'rfc822')
+			&& (count($info->parts) == 0))
 			{
-				echo '<br>dumping create_embeded_fetchstructure return info: <br>';
-				var_dump($info);
-				echo '<br><br>';
+				// Encapsulated "message/rfc822" MIME Part In Need Of Discovered
+				if ($this->debug_dcom) { echo 'pop3: create_embeded_fetchstructure: Discovery Needed for Encapsulated "message/rfc822" MIME Part<br>'; }
+				$range_start = $info->custom['part_start'];
+				$range_end = $info->custom['part_end'];
+				// is this range data valid
+				if ( (!isset($info->custom['part_start']))
+				|| (!isset($info->custom['part_end']))
+				|| ($info->custom['part_end'] <= $info->custom['part_start']))
+				{
+					if ($this->debug_dcom) { echo 'pop3: Leaving create_embeded_fetchstructure with Error in "message/rfc2822" range<br>'; }
+					return False;
+				}
+				
+				// note that below we will iterate thru this range
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: "mime loop", will iterate thru parents body_array range ['.$range_start.'] to ['.$range_end.']<br>'; }
+				
+				// encapsulated is not that tricky, we must so this
+				// 1) Create New Sub Part Object
+				$enc_part_idx = count($info->parts);
+				$info->parts[$enc_part_idx] = new msg_structure;
+				$info->parts[$enc_part_idx]->bytes = 0;
+				$info->parts[$enc_part_idx]->custom['top_level'] = False;
+				// ??? encapsulated part's parent does not have a boundary ???
+				$info->parts[$enc_part_idx]->custom['parent_cookie'] = '';
+				
+				// 2) Get This Part's Headers
+				// encapsulated headers begin immediately in the encapsulated part
+				$info->parts[$enc_part_idx]->custom['header_start'] = $range_start;
+				// encapsulated headers end with the 1st blank line
+				$part_header_blob = '';
+				for ($y=$range_start; $y < $range_end+1 ;$y++)
+				{
+					if ($this->body_array[$y] != '')
+					{
+						// grap this part header line
+						$part_header_blob .= $this->body_array[$y]."\r\n";
+						if ($this->debug_dcom_extra) { echo 'pop3: enc mime loop: part part_header_blob line['.$y.']: '.htmlspecialchars($this->body_array[$y]).'<br>'; }
+					}
+					else
+					{
+						// reached end of this part's headers
+						// headers actually ended 1 line above this blank line
+						$info->parts[$enc_part_idx]->custom['header_end'] = (int)($y-1);
+						// break out of this sub loop
+						break;
+					}
+				}
+				// get rid of that last CRLF
+				$part_header_blob = trim($part_header_blob);
+				// RFC2822 "unfold" the grabbed header
+				// unfold any unfolded headers - using CR_LF_TAB as rfc822 "whitespace"
+				$part_header_blob = str_replace("\r\n\t"," ",$part_header_blob);
+				// unfold any unfolded headers - using CR_LF_SPACE as rfc822 "whitespace"
+				$part_header_blob = str_replace("\r\n "," ",$part_header_blob);
+				// make the header blob into an array of strings, one array element per header line, throw away blank lines
+				$part_header_array = Array();
+				$part_header_array = $this->glob_to_array($part_header_blob, False, '', True);
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: enc mime loop: part_header_array:'.serialize($part_header_array).'<br>'; }				
+				
+				// 2) Feed these Headers thru "sub_get_structure"
+				// fill the conventional info on this fetchstructure sub-part
+				$this->sub_get_structure(&$info->parts[$enc_part_idx],$part_header_array);
+				
+				// 3) fill Part Start and Part End
+				// encapsulated body STARTS at the first line after the blank line header sep above
+				$info->parts[$enc_part_idx]->custom['part_start'] = (int)($y+1);
+				// encapsulated body ENDS at the end of the partnts range
+				$info->parts[$enc_part_idx]->custom['part_end'] = $range_end;
+
+				// 4) calculate byte size of the content within this parts start and end
+				$my_start = $info->parts[$enc_part_idx]->custom['part_start'];
+				$my_end = $info->parts[$enc_part_idx]->custom['part_end'];
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: enc mime loop: this body range ['.$my_start.'] to ['.$my_end.']<br>'; }
+				for ($x=$my_start; $x < $my_end+1 ;$x++)
+				{
+					// running byte size of this part
+					$body_line = $this->body_array[$x];
+					if ($this->debug_dcom_extra) { echo 'pop3: encap mime size loop ['.$x.']: '.htmlspecialchars($body_line).'<br>'; }
+					// prevoius count
+					$prev_bytes = $info->parts[$enc_part_idx]->bytes;
+					// add new count, +2 for the \r\n that will end the line when we feed it to the client
+					$add_bytes = strlen($body_line) + 2;
+					$info->parts[$enc_part_idx]->bytes = $prev_bytes + $add_bytes;
+				}
+				// we're done with the loop so the bytes have been calculated in that loop
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: this part range byte size ['.$info->parts[$enc_part_idx]->bytes.']<br>'; }
 			}
+			// no embedded parts, why not?
+			elseif ( (isset($info->type))
+			&& ($info->type == TYPEMESSAGE)
+			&& (isset($info->subtype))
+			&& (strtolower($info->subtype) == 'rfc822')
+			&& (count($info->parts) == 0))
+			{
+				// do NOTHING - this level has ALREADY been filled
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info encapsulated "message/rfc822" ALREADY filled<br>'; }
+				return False;
+			}
+			elseif ($info->custom['my_cookie'] == '')
+			{
+				// do NOTHING - this is NOT multipart
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info not multipart<br>'; }
+				return False;
+			}
+			elseif (($info->custom['my_cookie'] != '')
+			&& (count($info->parts) > 0))
+			{
+				// do NOTHING - this level has ALREADY been filled
+				if ($this->debug_dcom_extra) { echo 'pop3: create_embeded_fetchstructure: feed info multipart ALREADY filled<br>'; }
+				return False;
+			}
+			else
+			{
+				if ($this->debug_dcom) { echo 'pop3: create_embeded_fetchstructure: * * no mans land * *<br>'; }			
+			}
+			//if ($this->debug_dcom_extra)
+			//{
+			//	echo '<br>dumping create_embeded_fetchstructure return info: <br>';
+			//	var_dump($info);
+			//	echo '<br><br>';
+			//}
 			if ($this->debug_dcom) { echo 'pop3: Leaving create_embeded_fetchstructure<br>'; }
-			//return $info;
 			return True;
 		}
 		
@@ -691,24 +820,6 @@
 			if ($this->debug_dcom) { echo 'pop3: Entering sub_get_structure<br>'; }
 			/*
 			// initialize the structure
-			//$info = new msg_structure;
-			$info->type = '';
-			$info->encoding = '';
-			$info->ifsubtype = False;
-			$info->subtype = '';
-			$info->ifdescription = False;
-			$info->description = '';
-			$info->ifid = False;
-			$info->id = '';
-			$info->lines = '';
-			$info->bytes = '';
-			$info->ifdisposition = False;
-			$info->disposition = '';
-			$info->ifdparameters = False;
-			$info->dparameters = array();
-			$info->ifparameters = False;
-			$info->parameters = array();
-			$info->parts = array();
 			$info->custom['top_level'] = $extra_args['top_level'];
 			$info->custom['detect_state'] = 'in'; // = 'out';
 			$info->custom['parent_cookie'] = '';
@@ -718,17 +829,9 @@
 			$info->custom['header_end'] = ''; // this parts MIME headers ending index in body array
 			$info->custom['part_start'] = $extra_args['part_start'];
 			$info->custom['part_end'] = ''; // unknown ending point at this stage, we just got past it's headers
+			$info->parts = array();
 			*/
-			
-			/*
 			// FILL THE DATA
-			if ($extra_args['is_multi'])
-			{
-				$info->type = 0;
-				$info->encoding = 0;
-			}
-			*/
-			
 			for ($i=0; $i < count($header_array) ;$i++)
 			{
 				$pos = strpos($header_array[$i]," ");
@@ -808,21 +911,88 @@
 				  case "lines:" :
 					$info->lines = (int)$content;
 					break;
+				  /*
 				  case "mime-version:" :
 					$new_idx = count($info->parameters);
 					$info->parameters[$new_idx] = new msg_params("Mime-Version",$content);
 					$info->ifparameters = true;
 					break;
+				  */
 				  default : break;
 				}
 			}
 
 			if ($this->debug_dcom_extra)
 			{
-				echo 'pop3: sub_get_structure: info->encoding ['.$info->encoding.'] aka "'.$this->encoding_int_to_str($info->encoding).'"<br>';
+				echo 'pop3: sub_get_structure: info->encoding ['.(string)$info->encoding.'] <br>';
 			}
 			if ($this->debug_dcom) { echo 'pop3: Leaving sub_get_structure<br>'; }
 			return $info;
+		}
+		
+		function unset_unfilled_fetchstructure($info)
+		{
+			if ($this->debug_dcom) { echo 'pop3: Entering unset_unfilled_fetchstructure<br>'; }
+			// unset any unfilled elements, ALWAYS leave parts and custom
+			if ((string)$info->type == '')
+			{
+				$info->type = NIL;
+				unset($info->type);
+			}
+			if ((string)$info->encoding == '')
+			{
+				$info->encoding = NIL;
+				unset($info->encoding);
+			}
+			//$info->ifsubtype = False;
+			if ((string)$info->subtype == '')
+			{
+				$info->subtype = NIL;
+				unset($info->subtype);
+			}
+			//$info->ifdescription = False;
+			if ((string)$info->description == '')
+			{
+				$info->description = NIL;
+				unset($info->description);
+			}
+			//$info->ifid = False;
+			if ((string)$info->id == '')
+			{
+				$info->id = NIL;
+				unset($info->id);
+			}
+			if ((string)$info->lines == '')
+			{
+				$info->lines = NIL;
+				unset($info->lines);
+			}
+			if ((string)$info->bytes == '')
+			{
+				$info->bytes = NIL;
+				unset($info->bytes);
+			}
+			//$info->ifdisposition = False;
+			if ((string)$info->disposition == '')
+			{
+				$info->disposition = NIL;
+				unset($info->disposition);
+			}
+			//$info->ifdparameters = False;
+			if (count($info->dparameters) == 0)
+			{
+				$info->dparameters = NIL;
+				unset($info->dparameters);
+			}
+			//$info->ifparameters = False;
+			if (count($info->parameters) == 0)
+			{
+				$info->parameters = NIL;
+				unset($info->parameters);
+			}
+			//$info->custom = array();
+			//$info->parts = array();
+			if ($this->debug_dcom) { echo 'pop3: Leaving unset_unfilled_fetchstructure<br>'; }
 		}
 		
 		// used to get type and subtype
@@ -1444,65 +1614,6 @@
 		/**************************************************************************\
 		*	Get Message Body (Parts) From Server
 		\**************************************************************************/
-	
-		/*
-		function fetchbody($stream,$msgnr,$partnr="",$flags="")
-		{
-			if ($this->msg2socket($stream,"RETR $msgnr\n")): return false; endif;
-			$message = "";
-			$retr = fgets($stream,100); $i=1;
-			if (strtolower(substr($retr,0,3)) != "+ok") return false;
-			$bodystart = false;
-			if (!$this->got_structure) $struct = $this->fetchstructure($stream,$msgnr);
-			if ($this->boundary)
-			{
-				$thispart  = 0; $partstart = false; $partstop = false;
-				$multipart = true; $boundary = "--".$this->boundary;
-			}
-			do
-			{
-				$retr = fgets($stream,4096);
-				if (trim($retr) == "")
-				{
-					if ($multipart && ($thispart == $partnr))
-					{
-						$partstart = true;
-					} 
-					else
-					{
-						$bodystart = true;
-					}
-				}
-				if ($multipart && is_int(strpos($retr,$boundary)) && !strpos($retr,$boundary))
-				{
-					if ($thispart == $partnr) $partstop = true;
-					$thispart++;
-				}
-				if (chop($retr) == ".")
-				{
-					$retr = "";
-				}
-				else
-				{
-					$pos = strpos($retr,".");
-					if (is_int($pos) && !$pos):
-					$retr = substr($retr,1);
-					endif;
-				}
-				if (!$multipart)
-				{
-					if (is_string($retr) && $retr && $bodystart) $message .= $retr;
-				}
-				else
-				{
-					if (is_string($retr) && $retr && $partstart && !$partstop) $message .= $retr;
-				}
-			}
-			while (is_string($retr) && $retr);
-			return $message;
-		}
-		*/
-	
 		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
 		{
 			if ($this->debug_dcom) { echo 'pop3: Entering fetchbody<br>'; }
@@ -1514,6 +1625,7 @@
 			$bogus_data = $this->fetchstructure($stream_notused,$msg_num,$flags);
 			
 			// EXTREMELY BASIC part handling
+			// handle 1st level parts
 			if (strlen((string)$part_num) == 1)
 			{
 				// convert to fetchstructure part number
@@ -1534,6 +1646,42 @@
 					// attempt to make the part
 					$part_start = (int)$this->msg_structure->parts[$the_part]->custom['part_start'];
 					$part_end = (int)$this->msg_structure->parts[$the_part]->custom['part_end'];
+					if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
+					// assemble the body [art part
+					$body_blob = '';
+					for($i=$part_start;$i < $part_end+1;$i++)
+					{
+						$body_blob .= $this->body_array[$i]."\r\n";
+					}
+				}
+			}
+			// handle 2nd level parts
+			elseif (strlen((string)$part_num) == 3)
+			{
+				// explode part number into its component part numbers
+				$the_part = explode(".",$part_num);
+				// convert to fetchstructure part number
+				for($i=0;$i < count($the_part);$i++)
+				{
+					$the_part[$i] = (int)$the_part[$i];
+					$the_part[$i] = $the_part[$i] - 1;
+				}
+				// return part one
+				if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.', internally ['.serialize($the_part).']<br>'; }
+				if ((count($the_part) > 2)
+				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start']))
+				|| (!isset($this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start'])))
+				{
+					if ($this->debug_dcom) { echo 'pop3: fetchbody: ERROR: required part data not present for '.$part_num.', internally ['.serialize($the_part).']<br>'; }
+					// screw it, just return the whole thing
+					if ($this->debug_dcom) { echo 'pop3: fetchbody - using fallback pass thru<br>'; }
+					$body_blob = $this->get_body($stream_notused,$msg_num,$flags,False);				
+				}
+				else
+				{
+					// attempt to make the part
+					$part_start = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_start'];
+					$part_end = (int)$this->msg_structure->parts[$the_part[0]]->parts[$the_part[1]]->custom['part_end'];
 					if ($this->debug_dcom) { echo 'pop3: fetchbody: returning part '.$part_num.' starts ['.$part_start.'] ends ['.$part_end.']<br>'; }
 					// assemble the body [art part
 					$body_blob = '';
