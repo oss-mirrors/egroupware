@@ -1,4 +1,7 @@
+access rights	jinn	de	
+access rights for site not succesfully editted	jinn	de	
 access rights for site succesfully editted	jinn	de	Zugriffs Rechte für Seite erfolgreich geändert
+access rights for site-object not succesfully editted	jinn	de	
 access rights for site-object succesfully editted	jinn	de	Zugriffs Rechte für Seiten Objekte erfolgreich geändert
 access rights site-objects	jinn	de	Zugriffs Rechte zu den Objekten
 access_rights	jinn	de	Zugriffsrechte
@@ -7,100 +10,153 @@ add %1st image	jinn	de
 add attachent	jinn	de	Anhang hinzufügen
 add attachment	jinn	de	Anhang hinzufügen
 add attachment %1	jinn	de	Anhang %1 hinzufügen
+add edit	jinn	de	
 add image	jinn	de	Bild hinzufügen
 add image %1	jinn	de	Bild %1 hinzufügen
 add new	jinn	de	
 add new many with many relation	jinn	de	
 add new one with many	jinn	de	
 add object	jinn	de	Object hinzufügen
-add or remove	jinn	de	
-add site	admin	de	
-add site object	jinn	de	
-add site-object	jinn	de	
+add or remove	jinn	de	hinzufügen oder löschen
+add site	admin	de	Seite hinzufügen
+add site object	jinn	de	Seiten Objekt hinzufügen
+add site-object	jinn	de	Seiten Objekt hinzufügen
+admin:: edit site	jinn	de	
+administrator mode	jinn	de	
+administrators for site $site_name	jinn	de	
 all from	jinn	de	
-are you sure?	jinn	de	
+are you sure?	jinn	de	Sind Sie sicher ?
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	de	
 automatic	jinn	de	automatisch
 binary	jinn	de	
+bitte überprüfen sie ihre einstellungen.		de	
 browse	jinn	de	
 browse sites	jinn	de	
 browse through object settings	admin	de	
+browse through sites	jinn	de	
 browses through sites	admin	de	
 cancel	jinn	de	Abbrechen
 category	jinn	de	Kategorie
 check:	jinn	de	überprüfen:
+close this window	jinn	de	
+column name	jinn	de	
+come back after new valid tablename is saved to configure plugins	jinn	de	
 come back in edit mode for configuring plugins	jinn	de	
+come back in edit mode to configure plugins	jinn	de	
 configure	jinn	de	konfigurieren
+configure browse view	jinn	de	
+configure this tableview	jinn	de	
 configure this view	jinn	de	
+configure view of	jinn	de	
 convert exec ( e.g. /usr/x11r6/bin/convert )	admin	de	
 copy	jinn	de	kopieren
 database connection failed! <p>please recheck your settings.	jinn	de	Verbindung zur Datenbank fehlgeschlagen.<P>
-Bitte überprüfen Sie Ihre Einstellungen.
 database connection was succesfull. <p>you can go on with the site-objects	jinn	de	
-default image type (jpg, gif, png)	admin	de	
+default image type (jpg, gif, png)	admin	de	Standard Bildformate (jpg,gif,png)
 default image width	admin	de	
+default order	jinn	de	
 default thumb width	admin	de	
+default:	jinn	de	
 delete	jinn	de	Löschen.
 edit	jinn	de	Bearbeiten
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	de	
+edit this site	jinn	de	
+editors for object $object_name in site $site_name	jinn	de	
 export this site	jinn	de	Seite exportieren
+failed to open table. please check if table <i>%1</i> still exists in database	jinn	de	
 field plugin configuration	jinn	de	
 fields	jinn	de	Felder
 form input plugin	jinn	de	
 global configuration	jinn	de	
 global site configuration	admin	de	
-go	jinn	de	
-hidden	jinn	de	
+go	jinn	de	gehe
+height:	jinn	de	
+hidden	jinn	de	versteckt
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
+image settings	admin	de	
+imagemagick directory ( e.g. /usr/x11r6/bin )	admin	de	
 import failed	jinn	de	Import fehlegeschlagen
+import jinn site	jinn	de	
 import jinn-site	jinn	de	JiNN Seite importieren
 import site	jinn	de	Seite importieren
-import was succesfull<br>imported one site with	jinn	de	
+import was succesfull<br>imported one site with	jinn	de	Import war erfolgreich.<br> Eine Seite importiert mit
+index	jinn	de	
+insert another record after saving	jinn	de	
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	de	
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	de	
 jinn	common	de	JiNN
 maximum image width isn\	jinn	de	
-no matchs found	jinn	de	
-please set your preferences for this application	jinn	de	
+moderator mode	jinn	de	
+new image size limits.	jinn	de	
+no matchs found	jinn	de	Keine Treffer gefunden
+normal view	jinn	de	
+please set your preferences for this application	jinn	de	Bitte konfigurieren Sie die Einstellungen für diese Applikation
 real value	jinn	de	
 record	jinn	de	
 record added succesfully	jinn	de	
 record deleted succesfully	jinn	de	
+record not succesfully copied. unknown error	jinn	de	
+record not succesfully deleted. unknown error	jinn	de	
 record succesfully copied	jinn	de	
 record succesfully deleted	jinn	de	
 record succesfully editted	jinn	de	
 related	jinn	de	
 relations for this object	jinn	de	
-remove	jinn	de	
+remove	jinn	de	entfernen
 reset form	jinn	de	
 save	jinn	de	speichern
 search	jinn	de	suchen
 search for string	jinn	de	
-select directory	jinn	de	
-select site	jinn	de	
-select site to moderate	jinn	de	
+select directory	jinn	de	Ordner auswählen
+select jinn site file	jinn	de	
+select site	jinn	de	Seite auswählen
+select site to moderate	jinn	de	Seite zum bearbeiten auswählen
 select site-object to moderate	jinn	de	
-select_object	jinn	de	
-set access rights	admin	de	
+select_object	jinn	de	Objekt auswählen
+set access right for site objects	jinn	de	
+set access rights	admin	de	Zugriffsrechte bearbeiten
+set access rights for sites	jinn	de	
 set administrators for	jinn	de	
 set object moderator	jinn	de	
+set site admin	jinn	de	
 show	jinn	de	anzeigen
 show all columns	jinn	de	
+show colomn	jinn	de	
 show upload path	admin	de	
-site beheerders	jinn	de	
+site beheerders	jinn	de	Seiten Administrator
 site db host	admin	de	
 site db name	admin	de	
-site db password	admin	de	
-site db type	admin	de	
-site db user	admin	de	
-site description	admin	de	
-site id	admin	de	
-site name	admin	de	
+site db password	admin	de	Password der Datenbank
+site db type	admin	de	Datenbank Typ der Seite
+site db user	admin	de	Datenbank Benutzer der Seite
+site description	admin	de	Seiten Beschreibung
+site id	admin	de	Seiten ID
+site name	admin	de	Seiten Name
+site not succesfully added, unknown error	jinn	de	
+site not succesfully deleted, unknown error	jinn	de	
+site not succesfully saved, unknown error	jinn	de	
+site object not succesfully added, unknown error	jinn	de	
+site object not succesfully deleted, unknown error	jinn	de	
+site object not succesfully saved, unknown error	jinn	de	
+site object succesfully added	jinn	de	
+site object succesfully deleted	jinn	de	
+site object succesfully saved	jinn	de	
+site succesfully added	jinn	de	
+site succesfully deleted	jinn	de	
+site succesfully saved	jinn	de	
 site title	admin	de	Seiten Titel
 site-objects	jinn	de	Seiten Objekte
 sites	jinn	de	Seiten
 start	admin	de	Start
 start at record	jinn	de	
 stop at record	jinn	de	
+submit and import	jinn	de	
 t/m	jinn	de	
+tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	de	
 test database access	jinn	de	Datenbak Zugriff testen
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	de	
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	de	
+the resize process failed, please contact the administrator	jinn	de	
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
-version	jinn	de	
+version	jinn	de	Version
+width:	jinn	de	
