@@ -316,7 +316,7 @@ doLoad();
 <!-- BEGIN header_row -->
 	<tr class="{row_css_class}" onMouseOver="style.backgroundColor='#dddddd';" onMouseOut="javascript:style.backgroundColor='#FFFFFF';">
 		<td class="{row_css_class}" width="20px" align="center">
-			<img src="/egroupware/felamimail/templates/idots/images/msg_icon_sm.gif" border="0" title="">
+			<img src="{msg_icon_sm}" border="0" title="">
 		</td>
 		<td width="20px" align="center" valign="top">
 			<input  style="width:9px; height:9px" class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" 

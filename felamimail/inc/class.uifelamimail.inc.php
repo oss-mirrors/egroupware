@@ -597,6 +597,7 @@
 				{
 					$this->t->set_var('lang_from',lang("from"));
 				}
+				$msg_icon_sm = $GLOBALS['phpgw']->common->image('felamimail','msg_icon_sm');
 				for($i=0; $i<$headerCount; $i++)
 				{
 					// create the listing of subjects
@@ -794,6 +795,7 @@
 						'referer'	=> urlencode($_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'])
 					);
 					$this->t->set_var('url_add_to_addressbook',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$this->t->set_var('msg_icon_sm',$msg_icon_sm);
 					
 					$this->t->set_var('phpgw_images',PHPGW_IMAGES);
 					$this->t->set_var('row_css_class','header_row_'.$flags);
