@@ -34,7 +34,7 @@
 	$p->set_var('form_action',$phpgw->link('/polls/admin_editquestion.php'));
 	$p->set_var('form_button_1','<input type="submit" name="submit" value="' . lang('Edit') . '">');
 	$p->set_var('form_button_2','</form><form method="POST" action="'
-		 $phpgw->link("/polls/admin_deletequestion.php","poll_id=$poll_id") . '"><input type="submit" name="submit" value="' . lang('Delete') . '">');
+		. $phpgw->link("/polls/admin_deletequestion.php","poll_id=$poll_id") . '"><input type="submit" name="submit" value="' . lang('Delete') . '">');
 
 	add_template_row($p,lang('Poll question'),$phpgw->strip_html($poll_title));
 
@@ -50,6 +50,6 @@
 		$title = '&nbsp;';
 	}
 
-	$phpgw->template->pparse('out','form');
+	$p->pparse('out','form');
 	$phpgw->common->phpgw_footer();
 ?>
