@@ -1,0 +1,16 @@
+compose	messenger	en	Compose
+compose message	messenger	en	Compose message
+forward	messenger	en	Forward
+forward a message	messenger	en	Forward a message
+forwarded	messenger	en	Forwarded
+global message	messenger	en	Global Message
+inbox	messenger	en	Inbox
+message from	messenger	en	Message from
+messenger	messenger	en	Messenger
+read message	messenger	en	Read message
+reply	messenger	en	Reply
+reply to a message	messenger	en	Reply to a message
+send	messenger	en	Send
+send global message	messenger	en	Send global message
+send message to	messenger	en	Send message to
+you have %1 new messages	messenger	en	You have %1 new messages
