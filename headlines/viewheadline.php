@@ -60,8 +60,8 @@
 	$GLOBALS['phpgw']->template->set_var('input_display',$GLOBALS['phpgw']->db->f('display'));
 	$GLOBALS['phpgw']->template->set_var('input_base_url',$GLOBALS['phpgw']->db->f('base_url'));
 	$GLOBALS['phpgw']->template->set_var('input_news_file',$GLOBALS['phpgw']->db->f('newsfile'));
-	$GLOBALS['phpgw']->template->set_var('input_minutes',$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('lastread')));
-	$GLOBALS['phpgw']->template->set_var('input_listings',$GLOBALS['phpgw']->db->f('cachetime'));
+	$GLOBALS['phpgw']->template->set_var('input_minutes',$GLOBALS['phpgw']->db->f('cachetime').' ('.$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('lastread')).')');
+	$GLOBALS['phpgw']->template->set_var('input_listings',$GLOBALS['phpgw']->db->f('listings'));
 	$GLOBALS['phpgw']->template->set_var('input_type',$GLOBALS['phpgw']->db->f('newstype'));
 
 
