@@ -371,64 +371,105 @@
      if (is_int($pos_para)): $i = $this->get_mime_param($header,&$info,$i); endif;
    }
 
-   function get_structure($msg_part,$line_nr,$is_multi=false) {
-   // called from pop_fetchstructure()
-     $info = new msg_struct;
-     if ($is_multi): $info->type = 0; $info->encoding = 0; endif;
-     for ($i=$line_nr;$i<=$msg_part[0],trim($msg_part[$i]);$i++) {
-       $pos = strpos($msg_part[$i]," ");
-       if (is_int($pos) && ($pos==0)): continue; endif;
-       $keyword = strtolower(substr($msg_part[$i],0,$pos));
-       $content = trim(substr($msg_part[$i],$pos+1));
-       switch ($keyword) {
-         case "content-type:" :
-           $this->get_ctype($msg_part,&$info,&$i,$content);
-           break;
-         case "content-transfer-encoding:" :
-           switch (strtolower($content)) {
-             case "7bit"             : $info->encoding = 0; break;
-             case "8bit"             : $info->encoding = 1; break;
-             case "binary"           : $info->encoding = 2; break;
-             case "base64"           : $info->encoding = 3; break;
-             case "quoted-printable" : $info->encoding = 4; break;
-             default                 : $info->encoding = 5; break;
-           }
-           break;
-         case "content-description:" :
-           $info->description   = $content;
-           $i = $this->more_info($msg_part,$i,&$info,"description");
-           $info->ifdescription = true;
-           break;
-         case "content-identifier:" :
-           $info->id   = $content;
-           $i = $this->more_info($msg_part,$i,&$info,"id");
-           $info->ifid = true;
-           break;
-         case "lines:" : $info->lines = $content; break;
-         case "content-length:" : $info->bytes = $content; break;
-         case "content-disposition:" :
-           $info->disposition   = $content;
-           $i = $this->more_info($msg_part,$i,&$info,"disposition");
-           $info->ifdisposition = true;
-           break;
-         case "mime-version:" :
-           $pos = strpos($content,"=");
-           $info->parameters[] = new msg_params("MIME-Version",substr($content,$pos+1));
-           $info->ifparameters = true;
-           break;
-         default : break;
-       }
-     }
-     return $info;
+   function get_structure($msg_part,$line_nr,$is_multi=false)
+   {
+	// called from pop_fetchstructure()
+	//$debug_mime = True;
+	$info = new msg_struct;
+	if ($is_multi)
+	{
+		$info->type = 0;
+		$info->encoding = 0;
+	}
+	for ($i=$line_nr;$i<=$msg_part[0],trim($msg_part[$i]);$i++)
+	{
+		$pos = strpos($msg_part[$i]," ");
+		if ($debug_mime) { echo 'msg_part['.$i.']: '.$msg_part[$i].'<br>'; }
+		// need to capture "boundry=" keywords too
+		if ((!is_int($pos) || ($pos==0))
+		&& (stristr($msg_part[$i], 'boundary=')))
+		{
+			$msg_part[$i] = trim($msg_part[$i]);
+			$msg_part[$i] = eregi_replace('boundary="', 'boundary ', $msg_part[$i]);
+			$msg_part[$i] = eregi_replace('".*$', '', $msg_part[$i]);
+			$pos = strpos($msg_part[$i]," ");
+			if ($debug_mime) { echo 'msg_part['.$i.']: '.$msg_part[$i].'<br>'; }
+		}
+		if (is_int($pos) && ($pos==0))
+		{
+			continue;
+		}
+		$keyword = strtolower(substr($msg_part[$i],0,$pos));
+		$content = trim(substr($msg_part[$i],$pos+1));
+		if ($debug_mime) { echo 'pos: '.$pos.'<br>'; }
+		if ($debug_mime) { echo 'keyword: ['.$keyword.']<br>'; }
+		if ($debug_mime) { echo 'content: ['.$content.']<br>'.'<br>'; }
+		switch ($keyword)
+		{
+		  case "content-type:" :
+			$this->get_ctype($msg_part,&$info,&$i,$content);
+			break;
+		  case "content-transfer-encoding:" :
+			switch (strtolower($content))
+			{
+			  case "7bit"             : $info->encoding = 0; break;
+			  case "8bit"             : $info->encoding = 1; break;
+			  case "binary"           : $info->encoding = 2; break;
+			  case "base64"           : $info->encoding = 3; break;
+			  case "quoted-printable" : $info->encoding = 4; break;
+			  default                 : $info->encoding = 5; break;
+			}
+			break;
+		  case "content-description:" :
+			$info->description   = $content;
+			$i = $this->more_info($msg_part,$i,&$info,"description");
+			$info->ifdescription = true;
+			break;
+		  case "content-identifier:" :
+			$info->id   = $content;
+			$i = $this->more_info($msg_part,$i,&$info,"id");
+			$info->ifid = true;
+			break;
+		  case "lines:" : $info->lines = $content; break;
+		  case "content-length:" : $info->bytes = $content; break;
+		  case "content-disposition:" :
+			$info->disposition   = $content;
+			$i = $this->more_info($msg_part,$i,&$info,"disposition");
+			$info->ifdisposition = true;
+			break;
+		  case "mime-version:" :
+			//$pos = strpos($content,"=");
+			//$info->parameters[] = new msg_params("MIME-Version",substr($content,$pos+1));
+			$info->parameters[] = new msg_params("MIME-Version",trim($content));
+			$info->ifparameters = true;
+			break;
+		  case "boundary" :
+			if ((isset($info->parameters)) && (count($info->parameters) > 0))
+			{
+				if ($debug_mime) { var_dump($info->parameters); }
+				$new_idx = count($info->parameters);
+				$add_params = new msg_params("boundary",trim($content));
+				$info->parameters[$new_idx] = $add_params;
+				if ($debug_mime) { var_dump($info->parameters); }
+			}
+			break;
+		  default : break;
+		}
+	}
+	return $info;
    }
  
-   function get_boundary($info) {
-     for ($i=0;$i<count($info->parameters);$i++) {
-       $temp = $info->parameters[$i];
-       if ($temp->attribute == "boundary")
-         $boundary = $temp->value;
-     }
-     return trim($boundary);
+   function get_boundary($info)
+   {
+	for ($i=0;$i<count($info->parameters);$i++)
+	{
+		$temp = $info->parameters[$i];
+		if ($temp->attribute == "boundary")
+		{
+			$boundary = $temp->value;
+		}
+		return trim($boundary);
+	}
    }
 
    function get_header($stream,$msg_num) {

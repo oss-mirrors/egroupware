@@ -605,6 +605,18 @@
 		{
 			$part_nice['param_value'] = $part_params->value;
 		}
+		if ($part_nice['ex_num_param_pairs'] > 1)
+		{
+			$part_params = $part->parameters[1];
+			if ((isset($part_params->attribute) && ($part_params->attribute)))
+			{
+				$part_nice['param_2_attribute'] = $part_params->attribute;
+			}
+			if ((isset($part_params->value) && ($part_params->value)))
+			{
+				$part_nice['param_2_value'] = $part_params->value;
+			}
+		}
 	}
 	// 17:  parts : Array of objects describing each message part to this part
 	// (i.e. embedded MIME part(s) within a wrapper MIME part)
@@ -624,15 +636,27 @@
 	// Attachment Detection PART1 = Test For Files
 	// non-file stuff like X-VCARD is tested for at a higher level
 	// where the code can be more easily modified
-	if (($part_nice['param_attribute'] == 'name') 
-	  && ($part_nice['param_value'] != $struct_not_set))
+	if ($part_nice['encoding'] == 'base64')
 	{
-		$part_nice['ex_part_name'] = $part_nice['param_value'];
-		// ALSO - this is a sign of a "REAL ATTACHMENT" like a file, image, etc...
-		$part_nice['ex_has_attachment'] = True;
+		if (($part_nice['param_attribute'] == 'name') 
+		  && ($part_nice['param_value'] != $struct_not_set))
+		{
+			$part_nice['ex_part_name'] = $part_nice['param_value'];
+			// ALSO - this is a sign of a "REAL ATTACHMENT" like a file, image, etc...
+			$part_nice['ex_has_attachment'] = True;
+		}
+		else
+		{
+			// base64 means this IS *some* kind of attachment
+			$part_nice['ex_has_attachment'] = True;
+			// BUT we have no idea of it's name, and *maybe* idea of it's content type (eg. name.gif = image/gif)
+			// sometimes the name's extention is the only info we have, i.e. ".doc" implies a WORD file
+			$part_nice['ex_part_name'] = 'no_name.att';
+		}
 	}
 	else
 	{
+		// NO attachment here
 		$part_nice['ex_part_name'] = 'unknown.html';
 		$part_nice['ex_has_attachment'] = False;
 	}
