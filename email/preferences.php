@@ -44,6 +44,9 @@
        if ($mail_server) {
           $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_server","email");
        }
+       if ($mail_folder) {
+          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_folder","email");
+       }
        if ($mail_server_type) {
           $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_server_type","email");
        }
@@ -160,8 +163,16 @@
       <?php $selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected"; ?>
       <option value="Cyrus"<?php echo $selected["Cyrus"]; ?>>Cyrus</option>
       <option value="UWash"<?php echo $selected["UWash"]; ?>>UWash</option>
+      <option value="UW-Maildir"<?php echo $selected["UW-Maildir"]; ?>>UW-Maildir</option>
       <?php $selected = array(); ?>
      </select>
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Mail Folder(UW-Maildir)"); ?></td>
+     <td align="center">
+      <input type="text" name="mail_folder" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_folder"]; ?>">
      </td>
     </tr>
     <tr>

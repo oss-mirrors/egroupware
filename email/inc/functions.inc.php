@@ -50,6 +50,7 @@
   function list_folders($mailbox)
   {
     global $phpgw, $phpgw_info;
+    // UWash patched for Maildir style: $Maildir.Junque
     // Cyrus style: INBOX.Junque
     // UWash style: ./aeromail/Junque
 
@@ -61,10 +62,21 @@
         }
       }
     } else {
-      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
-	$filter = "INBOX";
+      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir") {
+        $stdoffset = 1;  // Used below to setup $nm
+	if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
+          if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
+            $filter = "";
+          } else {
+	    $filter = $phpgw_info["user"]["preferences"]["email"]["mail_folder"];
+          }
+	}
+      } elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
+	  $filter = "INBOX";
+	  $stdoffset = 2;
       } else {
 	$filter = "mail/";
+        $stdoffset = 2;
       }
 
       $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
@@ -78,7 +90,7 @@
 	  echo "<option>INBOX"; 
 	}
 	for ($index = 0; $index < $num_boxes; $index++) {
-	  $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + 1, strlen($mailboxes[$index]));
+	  $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
 	  echo "<option>";
 	  if ($nm != "INBOX") {
 	    echo $phpgw->msg->deconstruct_folder_str($nm);
