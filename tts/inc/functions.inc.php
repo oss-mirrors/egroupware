@@ -237,7 +237,7 @@ function html_activate_urls($str)
                        "'&(cent|#162);'i",
                        "'&(pound|#163);'i",
                        "'&(copy|#169);'i",
-                       "'&#(\d+);'e");
+                       "'&#(\d+);'i");
 
     $str = preg_replace($sentinals, "^^sentinal^^\\0^^sentinal^^", $str);
 
