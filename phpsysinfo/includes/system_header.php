@@ -21,56 +21,44 @@
 
 header("Cache-Control: no-cache, must-revalidate");
 if (!isset($charset)) { $charset='iso-8859-1'; }
-header('Content-Type: text/html; charset='.$charset);  
+header('Content-Type: text/html; charset=' . $charset);
+
+// our text direction (for hebrew)
+if (!$text_dir) {
+    $text_dir = 'ltr';
+}
+
+// timestamp
+$timestamp = strftime ("%b %d %Y %H:%M:%S", time());
 
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
+<?php
+echo created_by();
+?>
+
 <head>
-    <title><?php echo $text['title']; ?></title>
+    <title><?php echo $text['title']; echo " -- ($timestamp)"; ?></title>
 
 <?php
 if (isset($refresh) && ($refresh = intval($refresh))) {
-    echo "\t<meta http-equiv=\"Refresh\" content=\"$refresh\">\n";
+    echo "    <meta http-equiv=\"Refresh\" content=\"$refresh\">\n";
 }
-?>
-
-<style type="text/css">
-a {text-decoration: none;}
-</style>
-
-<?php
 if (file_exists("templates/$template/$template.css")) {
-    echo '<link rel="STYLESHEET" type="text/css" href="templates/';
-    echo $template.'/'.$template;
-    echo '.css">'."\n";
+    echo '    <link rel="STYLESHEET" type="text/css" href="templates/';
+    echo $template . '/' . $template;
+    echo ".css\">";
 }
 ?>
 
 </head>
 
-<?php 
-echo '<body';
-
-if (isset($bgcolor)) { 
-    echo ' bgcolor="' . $bgcolor . '"'; 
-} else { 
-    echo ' bgcolor="#ffffff"';
-} 
-
-if (isset($fontcolor)) { 
-    echo ' text="' . $fontcolor . '"'; 
-} 
-
-if (isset($linkcolor)) { 
-    echo ' link="' . $linkcolor . '"'; 
-} 
-
-if (isset($vlinkcolor)) { 
-    echo ' vlink="' . $vlinkcolor . '"'; 
-} 
-
-echo ">\n";
+<?php
+if (file_exists("templates/$template/images/$template" . "_background.gif")) {
+  echo '<body background="templates/' . $template . '/images/' . $template . '_background.gif" dir="' . $text_dir . '">';
+} else {
+  echo "<body dir=$text_dir>";
+}
 ?>

@@ -26,16 +26,24 @@ $update_form = "<form method=\"POST\" action=\"$PHP_SELF\">\n"
              . "\t<select name=\"template\">\n";
 
 $dir = opendir('templates/');
-while (($file = readdir($dir))!==false) {
+while (($file = readdir($dir))!=false) {
     if ($file != 'CVS' && $file != '.' && $file != '..') {
-        if ($template == $file) {
-            $update_form .= "\t\t<option value=\"$file\" SELECTED>$file</option>\n";
-        } else {
-            $update_form .= "\t\t<option value=\"$file\">$file</option>\n";
+        $update_form .= "\t\t<option value=\"$file\"";
+        if ($template == $file && !$random) {
+            $update_form .= " SELECTED";
         }
+        $update_form .= ">$file</option>\n";
     }
 }
 closedir($dir);
+
+// auto select the random template, if we're set to random
+$update_form .= "\t\t<option value=\"random\"";
+if ($random) { 
+    $update_form .= " SELECTED";
+}
+$update_form .= ">random</option>\n";
+
 $update_form .= "\t</select>\n";
 
 
@@ -43,7 +51,7 @@ $update_form .= "\t&nbsp;" . $text['language'] . ":&nbsp;\n"
              . "\t<select name=\"lng\">\n";
 
 $dir = opendir('includes/lang/');
-while (($file = readdir($dir))!==false) {
+while (($file = readdir($dir)) != false) {
     if ($file != 'CVS' && $file != '.' && $file != '..') {
         $file = ereg_replace('.php', '', $file);
         if ($lng == $file) {
@@ -57,7 +65,7 @@ closedir($dir);
 
 
 $update_form .= "\t</select>\n"
-              . "\t<input type=\"submit\" value=\"" . $text['submit']."\">\n"
+              . "\t<input type=\"submit\" value=\"" . $text['submit'] . "\">\n"
               . "</form>\n";
 
 print $update_form;
@@ -66,6 +74,6 @@ print $update_form;
 </center>
 
 <hr>
-<?echo $text['created']?> <a href="http://phpsysinfo.sourceforge.net">phpSysInfo 1.7</a>
+<?php echo $text['created']; ?> <a href="http://phpsysinfo.sourceforge.net">phpSysInfo - <?php echo $VERSION ?></a>
 </body>
 </html>
