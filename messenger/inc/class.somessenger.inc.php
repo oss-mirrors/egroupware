@@ -100,6 +100,7 @@
 				. $message['to'] . "','" . $this->owner . "','N','" . time() . "','"
 				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
 				. "')",__LINE__,__FILE__);
+			return True;
 		}
 
 		function total_messages($extra_where_clause = '')
@@ -114,5 +115,6 @@
 		{
 			$this->db->query('DELETE FROM ' . $this->table . " WHERE message_id='$message_id' AND "
 				. "message_owner='" . $this->owner . "'",__LINE__,__FILE__);
+			return True;
 		}
 	}

@@ -319,7 +319,7 @@
 					$xml_functions = array(
 						'delete_message' => array(
 							'function'  => 'delete_message',
-							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'signature' => array(array(xmlrpcBoolean,xmlrpcStruct)),
 							'docstring' => lang('Delete a message.')
 						),
 						'read_message' => array(
@@ -334,7 +334,7 @@
 						),
 						'send_message' => array(
 							'function'  => 'send_message',
-							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'signature' => array(array(xmlrpcBoolean,xmlrpcStruct)),
 							'docstring' => lang('Send a message to a single recipient.')
 						),
 						'update_message_status' => array(
@@ -344,17 +344,17 @@
 						),
 						'send_global_message' => array(
 							'function'  => 'send_global_message',
-							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'signature' => array(array(xmlrpcBoolean,xmlrpcStruct)),
 							'docstring' => lang('Send a global message.')
 						),
 						'reply' => array(
 							'function'  => 'reply',
-							'signature' => array(array(xmlrpcInt,xmlrpcInt)),
+							'signature' => array(array(xmlrpcBoolean,xmlrpcInt,xmlrpcStruct)),
 							'docstring' => lang('Reply to a received message.')
 						),
 						'forward' => array(
 							'function'  => 'forward',
-							'signature' => array(array(xmlrpcStruct,xmlrpcStruct)),
+							'signature' => array(array(xmlrpcBoolean,xmlrpcInt,xmlrpcStruct)),
 							'docstring' => lang('Forward a message to another user.')
 						),
 						'list_methods' => array(
