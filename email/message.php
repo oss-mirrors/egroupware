@@ -27,21 +27,20 @@
 
 	if (isset($newsmode) && $newsmode == 'on')
 	{
-		$phpgw_flags['newsmod'] = True;
+		$phpgw_flags['newsmode'] = True;
 	}
 
 	$phpgw_info["flags"] = $phpgw_flags;
 	include('../header.inc.php');
 
-	$str = '';
+	$application = '';
 	$msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,'X-phpGW-Type');
 	if (!empty($msgtype))
 	{
 		$msg_type = explode(';',$msgtype);
-		$msg_type[0] = substr($msg_type[0],1,strlen($msg_type[0])-2);
-		echo '<h1>THIS IS A SPECIAL '.strtoupper($msg_type[0]).' TYPE EMAIL</h1><br>'."\n"
-			.'In the future, this will process a specially formated email msg.<hr>';
-		$phpgw->common->hook_single('');
+		$application = substr($msg_type[0],1,strlen($msg_type[0])-2);
+		echo '<center><h1>THIS IS A phpGroupWare-'.strtoupper($application).' EMAIL</h1><hr></center>'."\n";
+//			.'In the future, this will process a specially formated email msg.<hr></center>';
 	}
 
 	#set_time_limit(0);
@@ -68,7 +67,7 @@
 		$folder = 'INBOX';
 	}
 ?>
-<table cellpadding="1" cellspacing="1" width="95%" align="center"><form>
+<table cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr><td colspan="2" bgcolor="<?php echo $phpgw_info['theme']['em_folder']; ?>">
 
       <table border="0" cellpadding="0" cellspacing="1" width="100%">
@@ -153,6 +152,7 @@
       </table>
 
 </td>
+</tr>
 
 <tr>
  <td bgcolor="<?php echo $phpgw_info['theme']['th_bg']; ?>" valign="top">
@@ -312,9 +312,9 @@
 		$part = (!isset($struct->parts[$i]) || !$struct->parts[$i] ? $struct : $struct->parts[$i]);
 
 		$att_name = get_att_name($part);
-		if ($att_name == "Unknown")
+		if ($att_name == 'Unknown')
 		{
-			if (strtoupper(get_mime_type($part)) == "MESSAGE")
+			if (strtoupper(get_mime_type($part)) == 'MESSAGE')
 			{
 				inline_display($part, $i+1);
 				echo "\n<p>";
@@ -333,8 +333,15 @@
 			echo '<p>'.image_display($folder, $msgnum, $part, $i+1, $att_name)."<p>\n";
 		}
 	}
+	echo '</td></tr>';
+	if($application)
+	{
+		echo '<tr><td align="center">';
+		$phpgw->common->hook_single('email',$application);
+		echo '</td></tr>';
+	}
 ?>
-</td></form></tr></table></table>
+</table>
 <?php
 	$phpgw->msg->close($mailbox); 
 	$phpgw->common->phpgw_footer();
