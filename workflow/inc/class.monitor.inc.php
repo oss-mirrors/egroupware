@@ -17,6 +17,21 @@
 		function monitor($template_name)
 		{
 			parent::workflow();
+			
+		        //regis: acl check
+			if(!$GLOBALS['phpgw']->acl->check('run',1,'admin'))
+			{
+				if(!$GLOBALS['phpgw']->acl->check('monitor_workflow',1,'workflow'))
+				{
+					$GLOBALS['phpgw']->common->phpgw_header();
+					echo parse_navbar();
+					echo lang('access not permitted');
+					$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.monitor');
+					$GLOBALS['phpgw']->log->commit();
+					$GLOBALS['phpgw']->common->phpgw_exit();
+				}
+			}
+
 			$this->process_monitor	= CreateObject('phpgwapi.workflow_processmonitor');
 			$this->all_processes	= $this->process_monitor->monitor_list_processes(0, -1, 'wf_name__desc', '', '');
 			$this->all_activities	= $this->process_monitor->monitor_list_activities(0, -1, 'wf_name__desc', '', '');

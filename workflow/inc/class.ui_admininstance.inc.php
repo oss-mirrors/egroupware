@@ -19,6 +19,18 @@
 		function ui_admininstance()
 		{
 			parent::workflow();
+		
+		       //regis: acl check
+			if ( !(($GLOBALS['phpgw']->acl->check('run',1,'admin')) || ($GLOBALS['phpgw']->acl->check('admin_workflow',1,'workflow'))) )
+			{
+				$GLOBALS['phpgw']->common->phpgw_header();
+				echo parse_navbar();
+				echo lang('access not permitted');
+				$GLOBALS['phpgw']->log->message('F-Abort, Unauthorized access to workflow.ui_admininstance');
+				$GLOBALS['phpgw']->log->commit();
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
 			$this->instance_manager	= CreateObject('phpgwapi.workflow_instancemanager');
 			$this->process_manager	= CreateObject('phpgwapi.workflow_processmanager');
 			$this->activity_manager	= CreateObject('phpgwapi.workflow_activitymanager');

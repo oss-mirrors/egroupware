@@ -35,6 +35,7 @@
 	$setup_info['workflow']['hooks'][] = 'preferences';
 	$setup_info['workflow']['hooks'][] = 'settings';
 	$setup_info['workflow']['hooks'][] = 'sidebox_menu';
+	$setup_info['workflow']['hooks'][] = 'acl_manager';
 
 	/* Dependencies for this app to work */
 	$setup_info['workflow']['depends'][] = array(
