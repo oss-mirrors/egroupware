@@ -1,6 +1,6 @@
 <?php
 /***************************************************************************
-* copyright            : (C) 2001-2003 Advanced Internet Designs Inc.
+* copyright            : (C) 2001-2004 Advanced Internet Designs Inc.
 * email                : forum@prohost.org
 * $Id$
 *
@@ -80,12 +80,12 @@ function change_global_settings($list)
 	$settings = file_get_contents($GLOBALS['INCLUDE'] . 'GLOBALS.php');
 	foreach ($list as $k => $v) {
 		if (($p = strpos($settings, '$' . $k)) === false) {
-			$pos = strpos($settings, '$ADMIN_EMAIL');
+			$p = strpos($settings, '$ADMIN_EMAIL');
 			if (is_int($v)) {
-				$settings = substr_replace($settings, "\t{$k}\t= {$v};\n", $p, 0);
+				$settings = substr_replace($settings, "\${$k}\t= {$v};\n\t", $p, 0);
 			} else {
 				$v = addcslashes($v, '\\"$');
-				$settings = substr_replace($settings, "\t{$k}\t= \"{$v}\";\n", $p, 0);
+				$settings = substr_replace($settings, "\${$k}\t= \"{$v}\";\n\t", $p, 0);
 			}
 		} else {
 			$p = strpos($settings, '=', $p) + 1;
