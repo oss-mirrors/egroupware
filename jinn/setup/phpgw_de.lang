@@ -26,19 +26,19 @@ add site-object	jinn	de	Seiten Objekt hinzufügen
 admin:: edit site	jinn	de	Administrator:: Seite bearbeiten
 administrator mode	jinn	de	Administrations Modus
 administrators for site $site_name	jinn	de	Administratoren für Seite $site_name
-all from	jinn	de	
+all from	jinn	de	Alle von
 another	jinn	de	andere
 are you sure?	jinn	de	Sind Sie sicher ?
-attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	de	
+attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	de	Anlageverzeichnis existiert nicht und kann nicht erstellt werden...<br>Bitte überprüfen Sie Ihre Eingabe:
 automatic	jinn	de	automatisch
-binary	jinn	de	
+binary	jinn	de	Binärdatei
 bitte überprüfen sie ihre einstellungen.		de	
-browse	jinn	de	
-browse current object	jinn	de	
-browse sites	jinn	de	
-browse through object settings	admin	de	
-browse through sites	jinn	de	
-browses through sites	admin	de	
+browse	jinn	de	Navigieren
+browse current object	jinn	de	Durch aktuelles Objekt navigieren
+browse sites	jinn	de	Durch Site navigieren
+browse through object settings	admin	de	Durch Objekteinstellungen navigieren
+browse through sites	jinn	de	Durch Sites navigieren
+browses through sites	admin	de	Durch Sites navigieren
 c_all	jinn	de	
 c_none	jinn	de	
 cancel	jinn	de	Abbrechen
@@ -47,54 +47,54 @@ check:	jinn	de	überprüfen:
 choose	jinn	de	auswählen
 close this window	jinn	de	Dieses Fenster schliessen
 column name	jinn	de	Spalten Name
-come back after new valid tablename is saved to configure plugins	jinn	de	
-come back in edit mode for configuring plugins	jinn	de	
-come back in edit mode to configure plugins	jinn	de	
+come back after new valid tablename is saved to configure plugins	jinn	de	Speichern Sie zunächst einen Tabellennamen, um Plugins zu konfigurieren
+come back in edit mode for configuring plugins	jinn	de	Sie können Plugins nur im Editor-Modus konfigurieren.
+come back in edit mode to configure plugins	jinn	de	Sie können Plugins nur im Editor-Modus konfigurieren.
 configure	jinn	de	konfigurieren
-configure browse view	jinn	de	
-configure this object list view	jinn	de	
-configure this tableview	jinn	de	
-configure this view	jinn	de	
-configure view of	jinn	de	
-convert exec ( e.g. /usr/x11r6/bin/convert )	admin	de	
+configure browse view	jinn	de	Konfigurieren Sie Ihre Navigationsansicht
+configure this object list view	jinn	de	Konfigurieren Sie diese Objektlistenanzeige
+configure this tableview	jinn	de	Konfigurieren Sie diese Tabellenansicht
+configure this view	jinn	de	Diese Ansicht bearbeiten
+configure view of	jinn	de	Bearbeiten der Ansicht von
+convert exec ( e.g. /usr/x11r6/bin/convert )	admin	de	Pfad zu ImageMagick (z.B.  /usr/X11R6/bin/convert)
 copy	jinn	de	kopieren
 could not find any tables! check your database name, database username or database password or create one or more  tables in the database.	jinn	de	Es konnten keine Tabellen gefunden werden! Bitte überprüfen Sie Ihren Datenbank Namen, Datenbank Benutzernamen und das Datenbank Password oder erzeugen Sie eine oder mehrer Tabellen in der Datenbank
 database connection failed! <p>please recheck your settings.	jinn	de	Verbindung zur Datenbank fehlgeschlagen.<P>
 database connection was succesfull. <p>you can go on with the site-objects	jinn	de	Die Datenbankverbindung konnte erfolgreiche hergestellt werden<p>. Sie können nun mit Ihren Seiten Objekten beginnen.
 days	jinn	de	Tage
-default image type (jpg, gif, png)	admin	de	Standard Bildformate (jpg,gif,png)
-default image width	admin	de	
-default order	jinn	de	Standart sortierung
-default thumb width	admin	de	
+default image type (jpg, gif, png)	admin	de	Standardbildformat (jpg, gif, png)
+default image width	admin	de	Standardbildbreite
+default order	jinn	de	Standartsortierung
+default thumb width	admin	de	Standardvorschaubildbreite
 default:	jinn	de	Standard:
 delete	jinn	de	Löschen.
-developer links	jinn	de	
+developer links	jinn	de	Links für Entwickler
 development	admin	de	Enwicklung
-development server	jinn	de	Entwicklungs Server
-dimensions	jinn	de	
+development server	jinn	de	Entwicklungsserver
+dimensions	jinn	de	Ausmaße
 edit	jinn	de	Bearbeiten
-edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	de	
-edit this site	jinn	de	Diese Seite bearbeiten
-edit this site object	jinn	de	Diese Seiten Object bearbeiten
-editors for object $object_name in site $site_name	jinn	de	
-error path_open %1	jinn	de	
+edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	de	Bearbeiten von JiNN-Site-Objekt-Parametern: <li>Wählen Sie ein JiNN-Objekt für die Anzeige aus</li><li>Verknüpfen Sie eine Datenbanktabelle mit diesem Objekt</li><li>Geben Sie falls erforderlich einen absoluten Upload-Pfad an</li><li>Definieren Sie Feldbeziehungen</li><li>Konfigurieren Sie Feldplugins</li>
+edit this site	jinn	de	Diese Site bearbeiten
+edit this site object	jinn	de	Dieses Site-Objekt bearbeiten
+editors for object $object_name in site $site_name	jinn	de	Editoren für Objekt $object_name auf Site $site_name
+error path_open %1	jinn	de	Konnte Pfad %1 nicht öffnen
 export this site	jinn	de	Seite exportieren
 failed to open table. please check if table <i>%1</i> still exists in database	jinn	de	Das öffnen der Tabelle ist fehlgeschlagen. Bitte überprüfen Sie ob die Tabelle <i>%1</i> in der Datenbank vorhanden ist.
-field plugin configuration	jinn	de	
+field plugin configuration	jinn	de	Feldplugin-Konfiguration
 fields	jinn	de	Felder
 filename	jinn	de	Dateiname
-filesize	jinn	de	Datei Größe
-form input plugin	jinn	de	
-general preferences	jinn	de	
-general settings	admin	de	
+filesize	jinn	de	Dateigröße
+form input plugin	jinn	de	Formulareingabe-Plugin
+general preferences	jinn	de	Allgemeine Voreinstellungen
+general settings	admin	de	Allgemeine Einstellungen
 global configuration	jinn	de	Globale Konfiguration
-global site configuration	admin	de	Globale Seiten Konfiguration
+global site configuration	admin	de	Globale Site-Konfiguration
 go	jinn	de	gehe
 height:	jinn	de	Höhe:
 hidden	jinn	de	versteckt
-image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
+image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	Das Bildverzeichnis existiert nicht oder ist falsch...<br>Bitte überprüfen Sie das Upload-Verzeichnis des Objekts
 image settings	admin	de	Einstellungen für Bilder
-imagemagick directory ( e.g. /usr/x11r6/bin )	admin	de	ImageMagick Verzeichnis (z. B. /usr/X11R6/bin)
+imagemagick directory ( e.g. /usr/x11r6/bin )	admin	de	ImageMagick Verzeichnis (z.B. /usr/X11R6/bin)
 import failed	jinn	de	Import fehlegeschlagen
 import jinn site	jinn	de	JiNN Seite importieren
 import jinn-site	jinn	de	JiNN Seite importieren
@@ -102,107 +102,108 @@ import site	jinn	de	Seite importieren
 import was succesfull	jinn	de	Import erfolgreich
 import was succesfull<br>imported one site with	jinn	de	Import war erfolgreich.<br> Eine Seite importiert mit
 index	jinn	de	Index
-insert another record after saving	jinn	de	
-insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	de	
-insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	de	
+insert another record after saving	jinn	de	Nach dem Speichern neuen Eintrag hinzufügen
+insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	de	Eingabe von JiNN-Site-Parametern:<li>Wählen Sie eine JiNN-Site für die Anzeige</li><li>Stellen Sie die Datenbank korrekt ein</li><li>Übergeben Sie einen korrekten, absoluten Upload-Pfad</li><li>Fügen Sie eine korrespondierende Vorschau-URL für hochgeladene Elemente ein</li>
+insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	de	Eingabe von JiNN-Parametern:<li>Wählen Sie ein JiNN-Objekt für die Anzeige</li><li>Stellen Sie die Datenbank korrekt ein</li><li>Übergeben Sie einen korrekten, absoluten Upload-Pfad</li><li>Fügen Sie eine korrespondierende Vorschau-URL für hochgeladene Elemente ein</li>
 jinn	common	de	JiNN
-jinn editors menu	jinn	de	
-jinn preferences	jinn	de	JiNN Einstellungen
-max. number of previews in form	jinn	de	
-maximum image width isn	jinn	de	
-maximum image width isn\	jinn	de	
-moderator mode	jinn	de	
+jinn editors menu	jinn	de	JiNN-Bearbeitungsmenü
+jinn preferences	jinn	de	JiNN-Einstellungen
+max. number of previews in form	jinn	de	Max. Anzahl an Vorschauen in einem Formular
+maximum image width isn	jinn	de	Maximale Bildbreite isn
+maximum image width isn\	jinn	de	Maximale Bildbreite isn\
+moderator mode	jinn	de	Moderatoren Modus
 months	jinn	de	Monate
-months_abbr	jinn	de	
-new image size limits.	jinn	de	
+months_abbr	jinn	de	Mon.
+new image size limits.	jinn	de	neue Begrenzung für Bildgrößen
 no matchs found	jinn	de	Keine Treffer gefunden
-no max. number	jinn	de	
+no max. number	jinn	de	Keine Begrenzung
 normal view	jinn	de	Normale Ansicht
-only if thumnails exits	jinn	de	
-path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	de	
+only if thumnails exits	jinn	de	nur wenn Vorschaubilder existieren
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	de	Pfad zu ImageMagick (z.B. /usr/X11R6/bin)
 please set your preferences for this application	jinn	de	Bitte konfigurieren Sie die Einstellungen für diese Applikation
 preview thumbs or images in form	jinn	de	
+preview website	jinn	de	Vorschau-Webseite
 production	admin	de	Produktion
 real value	jinn	de	normaler Wert
-record	jinn	de	
-record added succesfully	jinn	de	
-record deleted succesfully	jinn	de	
-record not succesfully copied. unknown error	jinn	de	
-record not succesfully deleted. unknown error	jinn	de	
-record succesfully copied	jinn	de	
-record succesfully deleted	jinn	de	
-record succesfully editted	jinn	de	
-related	jinn	de	
-relation %1	jinn	de	
-relations for this object	jinn	de	
-remote	admin	de	
+record	jinn	de	Eintrag
+record added succesfully	jinn	de	Eintrag erfolgreich hinzugefügt
+record deleted succesfully	jinn	de	Eintrag erfolgreich gelöscht
+record not succesfully copied. unknown error	jinn	de	Unbekannter Fehler: Eintrag NICHT kopiert.
+record not succesfully deleted. unknown error	jinn	de	Unbekannter Fehler: Eintrag NICHT gelöscht.
+record succesfully copied	jinn	de	Eintrag erfolgreich kopiert.
+record succesfully deleted	jinn	de	Eintrag erfolgreich gelöscht.
+record succesfully editted	jinn	de	Eintrag erfolgreich bearbeitet.
+related	jinn	de	verknüpft
+relation %1	jinn	de	Verknüpfung %1
+relations for this object	jinn	de	Verknüpfungen mit diesem Objekt
+remote	admin	de	entfernt
 remove	jinn	de	entfernen
-replace existing site with the same name?	jinn	de	
-replaced existing site named <strong>%1</strong>.	jinn	de	
-reset form	jinn	de	
+replace existing site with the same name?	jinn	de	Existierende Site mit gleichem Namen ersetzen?
+replaced existing site named <strong>%1</strong>.	jinn	de	Existierende Site <strong>%1</strong> ersetzt
+reset form	jinn	de	Formular zurücksetzen
 save	jinn	de	speichern
 search	jinn	de	suchen
-search for string	jinn	de	
+search for string	jinn	de	Nach Zeichenkette suchen
 select directory	jinn	de	Ordner auswählen
-select jinn site file	jinn	de	
+select jinn site file	jinn	de	Wählen Sie eine JiNN-Site-Datei aus
 select site	jinn	de	Seite auswählen
 select site to moderate	jinn	de	Seite zum bearbeiten auswählen
-select site-object to moderate	jinn	de	
+select site-object to moderate	jinn	de	Wählen Sie ein Objekt aus, um dieses zu verwalten
 select_object	jinn	de	Objekt auswählen
-server type?	admin	de	Server Type?
-set access right for site objects	jinn	de	Zugriffsrechte für Seiten Objekt konfigurieren
-set access rights	admin	de	Zugriffsrechte konfigurieren
-set access rights for sites	jinn	de	Zugriffsrechte für Seite konfigurieren
-set administrators for	jinn	de	
-set object moderator	jinn	de	
-set site admin	jinn	de	
+server type?	admin	de	Servertyp?
+set access right for site objects	jinn	de	Zugriffsrechte für Site-Objekt setzen
+set access rights	admin	de	Zugriffsrechte setzen
+set access rights for sites	jinn	de	Zugriffsrechte für Sites setzen
+set administrators for	jinn	de	Administrator setzen für
+set object moderator	jinn	de	Objekt-Moderator setzen
+set site admin	jinn	de	Site-Administrator setzen
 show	jinn	de	anzeigen
 show all columns	jinn	de	Alle Spalten anzeigen
 show colomn	jinn	de	Spalten zeigen
-show upload path	admin	de	
-site beheerders	jinn	de	Seiten Administrator
-site db host	admin	de	
-site db name	admin	de	Datenbank Name für diese Seite
-site db password	admin	de	Password für Datenbank
-site db type	admin	de	Datenbank Typ der Seite
-site db user	admin	de	Datenbank Benutzer der Seite
-site description	admin	de	Seiten Beschreibung
-site id	admin	de	Seiten ID
-site media and documents	jinn	de	
-site name	admin	de	Seiten Name
-site not succesfully added, unknown error	jinn	de	Seiten konnte NICHT hinzugefügt werden, ein nicht bekannter Fehler ist aufgetreten
-site not succesfully deleted, unknown error	jinn	de	Seiten konnte NICHT gelöscht werden, ein nicht bekannter Fehler ist aufgetreten
-site not succesfully saved, unknown error	jinn	de	Seiten konnte NICHT gespeichert werden, ein nicht bekannter Fehler ist aufgetreten
-site object not succesfully added, unknown error	jinn	de	Seiten Objekt konnte NICHT hinzugefügt werden, ein nicht bekannter Fehler ist aufgetreten
-site object not succesfully deleted, unknown error	jinn	de	Seiten Objekt konnte NICHT gelöscht werden, ein nicht bekannter Fehler ist aufgetreten
-site object not succesfully saved, unknown error	jinn	de	Seiten Objekt konnte NICHT gespeichert werden, ein nicht bekannter Fehler ist aufgetreten
-site object succesfully added	jinn	de	Seiten Objekt erfolgreich hinzugefügt
-site object succesfully deleted	jinn	de	Seiten Objekt erfolgreich gelöscht
-site object succesfully saved	jinn	de	Seiten Objekt erfolgreich gespeichert
-site succesfully added	jinn	de	Seite erfolgreich hinzugefügt
-site succesfully deleted	jinn	de	Seite erfolgreich gelöscht
-site succesfully saved	jinn	de	Seite gespeichert
-site title	admin	de	Seiten Titel
-site-objects	jinn	de	Seiten Objekte
-sites	jinn	de	Seiten
+show upload path	admin	de	Zeige Upload-Pfad
+site beheerders	jinn	de	Site-Administrator
+site db host	admin	de	Datenbankhost für diese Site
+site db name	admin	de	Datenbankname für diese Site
+site db password	admin	de	Passwort für Datenbank
+site db type	admin	de	Datenbanktyp für diese Site
+site db user	admin	de	Datenbankbenutzer für diese Site
+site description	admin	de	Site-Beschreibung
+site id	admin	de	Site-ID
+site media and documents	jinn	de	Sitemedien und -dokumente
+site name	admin	de	Site-Name
+site not succesfully added, unknown error	jinn	de	Site konnte NICHT hinzugefügt werden, ein nicht bekannter Fehler ist aufgetreten
+site not succesfully deleted, unknown error	jinn	de	Site konnte NICHT gelöscht werden, ein nicht bekannter Fehler ist aufgetreten
+site not succesfully saved, unknown error	jinn	de	Site konnte NICHT gespeichert werden, ein nicht bekannter Fehler ist aufgetreten
+site object not succesfully added, unknown error	jinn	de	Site-Objekt konnte NICHT hinzugefügt werden, ein nicht bekannter Fehler ist aufgetreten
+site object not succesfully deleted, unknown error	jinn	de	Site-Objekt konnte NICHT gelöscht werden, ein nicht bekannter Fehler ist aufgetreten
+site object not succesfully saved, unknown error	jinn	de	Site-Objekt konnte NICHT gespeichert werden, ein nicht bekannter Fehler ist aufgetreten
+site object succesfully added	jinn	de	Site-Objekt erfolgreich hinzugefügt
+site object succesfully deleted	jinn	de	Site-Objekt erfolgreich gelöscht
+site object succesfully saved	jinn	de	Site-Objekt erfolgreich gespeichert
+site succesfully added	jinn	de	Site erfolgreich hinzugefügt
+site succesfully deleted	jinn	de	Site erfolgreich gelöscht
+site succesfully saved	jinn	de	Site gespeichert
+site title	admin	de	Site-Titel
+site-objects	jinn	de	Site-Objekte
+sites	jinn	de	Sites
 start	admin	de	Start
 start at record	jinn	de	Beginnen bei Eintrag
 stop at record	jinn	de	Beenden bei Eintrag
 submit and import	jinn	de	bestätigen und importieren
-t/m	jinn	de	
+t/m	jinn	de	t/m
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	de	Der Tabellen Name <i>%1</i> ist falsch. Eventuell hat sich der Tabellen Name geändert oder die Tabelle wurde gelöscht. Bitte wählen Sie eine neue Tabelle aus oder löschen Sie dieses Objekt.
 test database access	jinn	de	Datenbak Zugriff testen
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	de	Der von Ihnen hochgeladene File %1 ist kein Bildformat, ist beschädigt oder wird nicht von JiNN unterstützt
-the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	de	
-the name of the new site is <strong>%1</strong>.	jinn	de	
-the resize process failed, please contact the administrator	jinn	de	
-there are no directories in this site you have access to.	jinn	de	
-thisfile	jinn	de	
-thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	
-thumbnail	jinn	de	
+the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	de	Die von Ihnen hochgeladene Datei (%1) ist keine Bilddatei, ist korrupt oder wird nicht von JiNN unterstützt. SOllte dieser Fehler erneut auftreten, überprüfen Sie bitte Ihre ImageMagick-Installation. Versionen <= 5.4.9 können Fehler verursachen. Stellen Sie also sicher, dass Sie eine aktuellere Version als 5.4.9 von ImageMagick einsetzen.
+the name of the new site is <strong>%1</strong>.	jinn	de	Der Name der neuen Site lautet <strong>%1</strong>
+the resize process failed, please contact the administrator	jinn	de	Der Größenänderungsprozess schlug fehl. Wenden Sie sich an Ihren Administrator.
+there are no directories in this site you have access to.	jinn	de	Es gibt innerhalb dieser Site keine Verzeichnisse, auf die Sie zugreifen dürfen.
+thisfile	jinn	de	Diese Datei
+thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	de	Vorschaubildverzeichnis existiert nicht...<br>Bitte überprüfen Sie den Upload-Pfad.
+thumbnail	jinn	de	Vorschaubild
 version	jinn	de	Version
-when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	de	
-when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	de	
-width:	jinn	de	
+when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	de	Wenn viele Bilder zu einem Eintrag hinzugefügt werden, lädt das Formular sehr langsam. Sie können die maximale Anzahl von im Formular angezeigten Bildern einstellen.
+when you choose 'never', only links to the images are displayed; when you choose 'only if thumnails exists' previews are  shown if an thumbnail of the image exists; if you choose 'yes' all images are shown	jinn	de	Wenn Sie 'Nie' auswählen, werden nur die Links zu den Bildern angezeigt. Wenn Sie 'nur wenn Vorschaubilder existieren' auswählen, werden die Vorschauen als Thumbnail angezeigt. Bei 'Ja' werden alle Bilder angezeigt.
+width:	jinn	de	Breite:
 with_checked_files	jinn	de	
 you're not allowed to administrate media files	jinn	de	Sie sind nicht berechtigt Media Dateien zu administrieren
