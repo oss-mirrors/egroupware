@@ -159,7 +159,7 @@
     $GLOBALS['phpgw']->template->set_block('viewticket','form');
     $GLOBALS['phpgw']->template->set_block('form','update_state_items','update_state_group');
 
-    $messages .= $GLOBALS['phpgw']->session->appsession('messages','tts');
+    $messages .= rtrim($GLOBALS['phpgw']->session->appsession('messages','tts'),"\0");
     if($messages)
     {
       $GLOBALS['phpgw']->template->set_var('messages',$messages);
