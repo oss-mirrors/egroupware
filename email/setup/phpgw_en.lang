@@ -1,3 +1,4 @@
+<b>apply all</b> filters	email	en	<b>APPLY ALL</b> Filters
 1 message has been deleted	email	en	1 message has been deleted
 1 message has been moved to	email	en	1 message has been moved to
 account	email	en	account
@@ -30,11 +31,12 @@ does not contain	email	en	Does Not Contain
 email account name	email	en	Email Account Name
 email address	email	en	E-Mail address
 email date	email	en	Email Date
-e-mail filters	email	en	E-Mail Filters
+e-mail filters	common	en	E-Mail Filters
 e-mail folders	common	en	E-mail Folders
+e-mail inbox filters List	email	en	E-Mail INBOX Filters List
+e-mail preferences	common	en	E-Mail preferences
 email filters	email	en	Email Filters
 email password	email	en	E-Mail password
-e-mail preferences	common	en	E-Mail preferences
 email preferences	email	en	Email Preferences
 email signature	email	en	E-Mail signature
 email type	common	en	E-Mail Type
@@ -52,6 +54,7 @@ fewer actions	email	en	Fewer Actions
 fewer choices	email	en	Fewer Choices
 file	email	en	File
 file into	email	en	File Into
+filter [number] and name	email	en	Filter [number] and Name
 folder	email	en	Folder
 folder maintenance	email	en	Folder Maintenance
 folder name	email	en	Folder name
@@ -84,11 +87,14 @@ messages	email	en	Messages
 messages have been moved to	email	en	messages have been moved to
 more actions	email	en	More Actions
 more choices	email	en	More Choices
+move down	email	en	Move Down
 move selected messages into	email	en	Move Selected Messages into
 move this message into	email	en	Move this message into
+move up	email	en	Move Up
 new	email	en	New
-newest	common	en	newest
+new filter	email	en	New Filter
 new message	email	en	New message
+newest	common	en	newest
 no error returned from server	email	en	No error returned from server
 no next message	email	en	no next message
 non-standard	email	en	Non-Standard
