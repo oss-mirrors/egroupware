@@ -24,7 +24,7 @@
 
 	$DEBUG = 0;
 	$LOCALSERVER = $HTTP_SERVER_VARS['HTTP_HOST'];
-
+	echo 'Testing: ' . $LOCALSERVER;
 	$suite = new TestSuite;
 
 	class TestLocalhost extends TestCase
@@ -184,7 +184,7 @@ And turned it into nylon";
 			if ($GLOBALS['DEBUG']) $this->client->setDebug(1);
 		}
 	
-		function f_test404()
+		function test404()
 		{
 			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.echo', array(
 				CreateObject('phpgwapi.xmlrpcval','hello', 'string')
@@ -214,7 +214,7 @@ And turned it into nylon";
 			}
 		}
 
-		function addingTest()
+		function sslTest()
 		{
 			$f = CreateObject('phpgwapi.xmlrpcmsg','examples.getStateName',array(
 				CreateObject('phpgwapi.xmlrpcval',23, 'int')
@@ -240,10 +240,10 @@ And turned it into nylon";
 	$suite->addTest(new TestLocalhost('invalidNumber'));
 	$suite->addTest(new TestLocalhost('booleanTest'));
 	$suite->addTest(new TestLocalhost('base64Test'));
-	$suite->addTest(new TestInvalidHost('f_test404'));
+	$suite->addTest(new TestInvalidHost('test404'));
 	$suite->addTest(new TestFileCases('stringBug'));
 	$suite->addTest(new TestFileCases('whiteSpace'));
-	$suite->addTest(new TestHTTPSConnection('addingTest'));
+	$suite->addTest(new TestHTTPSConnection('sslTest'));
 
 	$title = 'XML-RPC Unit Tests';
 ?>
