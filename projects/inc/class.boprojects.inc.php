@@ -1005,6 +1005,7 @@
 			{
 				foreach($emps as $employee)
 				{
+					$displayEvent = '';
 					if(is_array($employee['eventNames']))
 					{
 						foreach($employee['eventNames'] as $eventName)
@@ -3270,6 +3271,7 @@
 			{
 				foreach($emp_roles as $emp)
 				{
+					$eventNames = array();
 					if (is_array($emp['events']) && $formatted)
 					{
 						$eformatted = '';
