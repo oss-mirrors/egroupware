@@ -90,11 +90,12 @@ $dattim = date("Y-m-d H:i:s",time());
  echo '<td align="left" width="50%" valign="top">';
 
  echo "<font size=-1>";
- echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . lang("New Topic") . "</a> | ";
- if(!$col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a> | ";
- if($col) echo "<a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a> | ";
- echo "<a href=" . $phpgw->link("search.php","$catfor") . ">" . lang("Search") . "</a> ]\n";
- echo "</font><br><br>\n";
+ echo "[ <a href=" . $phpgw->link("post.php","$catfor&type=new") . ">" . lang("New Topic") . "</a>";
+ if(!$col) echo " | <a href=" . $phpgw->link("threads.php","$catfor&col=1") . ">" . lang("View Threads") . "</a>";
+ else echo " | <a href=" . $phpgw->link("threads.php","$catfor&col=0") . ">" . lang("Collapse Threads") . "</a>";
+ # This file doesn't exist yet
+ #echo " | <a href=" . $phpgw->link("search.php","$catfor") . ">" . lang("Search") . "</a>";
+ echo " ]\n</font><br><br>\n";
 
 
  echo "<center>\n";
