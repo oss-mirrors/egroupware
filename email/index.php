@@ -15,158 +15,129 @@
 
   if(empty($folder)){ $folder="INBOX"; }
 
-  Header("Cache-Control: no-cache");
-  Header("Pragma: no-cache");
-  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+//  Header("Cache-Control: no-cache");
+//  Header("Pragma: no-cache");
+//  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True, "enable_menutree_class" => True);
   if (isset($newsmode) && $newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
   include("../header.inc.php");
+  $phpgw->template->set_file(array("main"        => "main.tpl",
+                                   "folders"     => "folders.tpl",
+                                   "content"     => "messages.tpl",
+                                   "row"         => "messages_row.tpl",
+                                   "row_message" => "messages_row_message.tpl"
+                            ));
+  //$phpgw->template->set_unknowns("remove");
+  $phpgw->template->set_var("lang_select_message_first",lang("Please select a "
+                                                           . "message first"));
+  $phpgw->template->set_var("form_action",$phpgw->link("index.php"));
+  $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
+
+
+  // This will be later moved into header.inc.php
+  function top_menu()
+  {
+     global $phpgw;
+     $tpl = $phpgw->template;
+     $tpl->set_file(array("menu" => "menu.tpl"));
+
+     $tpl->set_var("left_arrows",$phpgw->nextmatchs->left("index.php",$start,
+                                 $nummsg,"&sort=$sort&order=$order"
+                               . "&folder=" . urlencode($folder)));
+     $tpl->set_var("right_arrows",$phpgw->nextmatchs->right("index.php",$start,
+                                  $nummsg,"&sort=$sort&order=$order"
+                                . "&folder=" . urlencode($folder)));
+     return $tpl->parse("menu_","menu");
+  }
+
+  function create_folder_list(&$mbp)
+  {
+     global $phpgw_info;
+     $mt = CreateObject("phpgwapi.menutree");
+     $mt->root_level_value = lang("Folders");
+     $mt->read_from_file   = False;
+     $s = ".Main account\n";
+     $ta = list_folders($mbp);
+     while (list($null,$folder) = each($ta)) {
+        $s .= "..$folder|index.php?folder=" . urlencode($folder) . "\n";
+     }
+//     if ($phpgw_info["user"]["apps"]["nntp"]) {
+        $s .= ".NNTP|index.php\n";
+//     }
+     return $mt->showtree($s);
+
+  }
 
   @set_time_limit(0);
-?>
 
-<script>
-
-function do_action(act)
-{
-  flag = 0;
-  for (i=0; i<document.delmov.elements.length; i++) {
-      //alert(document.delmov.elements[i].type);
-      if (document.delmov.elements[i].type == "checkbox") {
-         if (document.delmov.elements[i].checked) {
-            flag = 1;
-         }
-      }
-   }
-   if (flag != 0) {
-      document.delmov.what.value = act;
-      document.delmov.submit();
-   } else {
-      alert("<?php echo lang("Please select a message first")."."; ?>");
-      document.delmov.tofolder.selectedIndex = 0;
-   }
-}
-
-function check_all()
-{
-  for (i=0; i<document.delmov.elements.length; i++) {
-      if (document.delmov.elements[i].type == "checkbox") {
-         if (document.delmov.elements[i].checked) {
-            document.delmov.elements[i].checked = false;
-         } else {
-            document.delmov.elements[i].checked = true;
-         }
-      } 
-  }
-}
-
-</script>
-<?php
   if ($td) {
      if ($td == 1) {
-        echo "<p><center>" . lang("1 message has been deleted",$td) . "</center>";
+        $messages .= lang("1 message has been deleted",$td);
      } else {
-        echo "<p><center>" . lang("x messages have been deleted",$td) . "</center>";
+        $messages .= lang("x messages have been deleted",$td);
      }
   }
-?>
+  $phpgw->template->set_var("menu",top_menu());
+  $phpgw->template->set_var("messages",$messages);
 
+  $nummsg = $phpgw->msg->num_msg($mailbox);
 
-<form name="switchbox" action="<?php echo $phpgw->link("index.php")?>" method="post">
- <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-  <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
-    <td>&nbsp;</td>
-<?php
-#     $out = $nummsg == 1 ? " ".lang("message") : " ".lang("messages");
-#     echo $out;
+  if (! $start) {
+     $start = 0;
+  }
 
-      $nummsg = $phpgw->msg->num_msg($mailbox);
+  if ($sort == "ASC") {
+     $sort = 1;
+  } else {
+     $sort = 0;
+  }
 
-      if (! $start)
-         $start = 0;
-
-     echo $phpgw->nextmatchs->left("index.php",$start,$nummsg,"&sort=$sort&order=$order"
-                                 . "&folder=" . urlencode($folder));
-
-     echo "<td>&nbsp;</td>";
-
-     echo $phpgw->nextmatchs->right("index.php",$start,$nummsg,"&sort=$sort&order=$order"
-                                  . "&folder=" . urlencode($folder));
-?>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-   <?php 
-     if ($sort == "ASC") {
+  if (! $order) {
+     $order = 0;
+     if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
         $sort = 1;
      } else {
         $sort = 0;
      }
+  }
 
-     if (! $order) {
-        $order = 0;
-        if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
-	   $sort = 1;
-        } else {
-           $sort = 0;
-        }
-     }/* else {
+  $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
-     } */
-  ?>
-  </tr>
- </table>
+  if ($folder != "INBOX") {
+     $t_folder_s = $phpgw->msg->construct_folder_str($folder);
+  } else {
+     $t_folder_s = "INBOX";
+  }
 
- <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-  <tr>
-   <td colspan="6" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
-    <table border="0" cellpadding="0" cellspacing="1" width="100%">
-     <tr>
-      <td>
-        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?> color="
-        <?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
-<?php
-      $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
+  $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
 
-      if ($folder != "INBOX") {
-         $t_folder_s = $phpgw->msg->construct_folder_str($folder);
-      } else {
-         $t_folder_s = "INBOX";
-      }
-      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+  if ($nummsg > 0) {
+     $msg_array = array();
+     $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
+     $folder_info .= "<br>Saved messages: " . $nummsg;
+     $folder_info .= "<br>New messages: " . $mailbox_status->unseen;
 
+     $ksize = round(10*($mailbox_info->Size/1024))/10;
+     $size = $mailbox_info->Size > 1024 ? "$ksize k" : $mailbox_info->Size;
+     $folder_info .= "<br>Total size of folder: " . $size;
 
-      if ($nummsg > 0) {
-	 $msg_array = array();
-         $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
-         $folder_info .= "<br>Saved messages: " . $nummsg;
-         $folder_info .= "<br>New messages: " . $mailbox_status->unseen;
+  } else {
+     $folder_info = $nummsg;
+  }
+  //echo "$folder - $folder_info";
 
-         $ksize = round(10*($mailbox_info->Size/1024))/10;
-         $size = $mailbox_info->Size > 1024 ? "$ksize k" : $mailbox_info->Size;
-         $folder_info .= "<br>Total size of folder: " . $size;
+  if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
+     //echo '<select name="folder" onChange="document.switchbox.submit()">'
+     //   . '<option>' . lang("switch current folder to") . ':';
 
-      } else {
-         $folder_info = $nummsg;
-      }
+     // This will become a function later
+     $phpgw->template->set_var("folders",create_folder_list($mailbox));
+//    create_folder_list();
 
-      echo "$folder - $folder_info";
-?>
-
-        </font>
-      </td>
-      <td align="right">
-       <table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-         <td>
-           <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["flags"]["newsmode"]) {
-                echo '<select name="folder" onChange="document.switchbox.submit()">'
-                   . '<option>' . lang("switch current folder to") . ':';
-                echo list_folders($mailbox);
-	 	echo "</select>";
-             }
+     //echo list_folders($mailbox);
+  }
+/*
            ?>
          </td>
          <td>
@@ -200,129 +171,109 @@ function check_all()
    &nbsp;
  </td>
 
-<?php
+<?php */
   /*
-     Sorting defs:
-     SORTDATE:  0
-     SORTFROM:  2
-     SORTSUBJECT: 3
-     SORTSIZE:  6
+  ** Sorting defs:
+  **  SORTDATE:    0
+  **  SORTFROM:    2
+  **  SORTSUBJECT: 3
+  **  SORTSIZE:    6
   */
-?>
 
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="34%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,"index.php",lang("subject"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="23%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,"index.php",lang("from"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="12%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,"index.php",lang("date"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="4%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
-</tr>
+  if ($nummsg == 0) {
+     if (!$mailbox) {
+        $phpgw->set_var("row_message",lang("Could not open this mailbox"));
+        $phpgw->template->parse("rows","row_message");
+     } else {
+        $phpgw->set_var("row_message",lang("This folder is empty"));
+        $phpgw->template->parse("rows","row_message");
+     }
+  }
 
-<?php
-        if ($nummsg == 0) {
-          if (!$mailbox) {
-	   echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
-	      . lang("Could not open this mailbox")."</td></tr>";
-	  } else {
-           echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
-              . lang("this folder is empty")."</td></tr>";
-	  }
-        }
+  if ($nummsg < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
+     $totaltodisplay = $nummsg;
+  } else if (($nummsg - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
+     $totaltodisplay = $start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+  } else {
+     $totaltodisplay = $nummsg;
+  }
 
-        if ($nummsg < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
-           $totaltodisplay = $nummsg;
-        } else if (($nummsg - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
-           $totaltodisplay = $start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+  $phpgw->template->set_var("sort_date",$phpgw->nextmatchs->show_sort_order($sort,"0",$order,"index.php",lang("Date"),"&folder=".urlencode($folder)));
+  $phpgw->template->set_var("sort_subject",$phpgw->nextmatchs->show_sort_order($sort,"3",$order,"index.php",lang("Subject"),"&folder=".urlencode($folder)));
+  $phpgw->template->set_var("sort_sender",$phpgw->nextmatchs->show_sort_order($sort,"2",$order,"index.php",lang("From"),"&folder=".urlencode($folder)));
+  $phpgw->template->set_var("sort_size",$phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)));
+
+  for ($i=$start; $i < $totaltodisplay; $i++) {
+     $phpgw->template->set_var("tr_color",$phpgw->nextmatchs->alternate_row_color());
+
+     $struct = $phpgw->msg->fetchstructure($mailbox, $msg_array[$i]);
+     $attach = "&nbsp;";
+
+     for ($j = 0; $j< (count($struct->parts) - 1); $j++) {
+        if (!$struct->parts[$j]) {
+           $part = $struct;
         } else {
-           $totaltodisplay = $nummsg;
+           $part = $struct->parts[$j];
         }
 
-        for ($i=$start; $i < $totaltodisplay; $i++) {
+        $att_name = get_att_name($part);
+        if ($att_name != "Unknown") {
+           $attach = "&nbsp;<font face=\"".$phpgw_info["theme"]["font"]
+                   . "\" size=\"1\"><div align=\"right\">"
+                   . "<img src=\"" . $phpgw_info["server"]["images_dir"] 
+                   . "/attach.gif\" alt=\"file\"></div></font>";
+        }
+     }
 
-           $struct = $phpgw->msg->fetchstructure($mailbox, $msg_array[$i]);
-           $attach = "&nbsp;";
+     $msg = $phpgw->msg->header($mailbox, $msg_array[$i]);
 
-           for ($j = 0; $j< (count($struct->parts) - 1); $j++) {
-              if (!$struct->parts[$j]) {
-                 $part = $struct;
-              } else {
-                 $part = $struct->parts[$j];          }
+     $subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
 
-              $att_name = get_att_name($part);
-              if ($att_name != "Unknown") {
-                 $attach = "&nbsp;<font face=\"".$phpgw_info["theme"]["font"]
-                         . "\" size=\"1\"><div align=\"right\">"
-                         . "<img src=\"" . $phpgw_info["server"]["images_dir"] 
-                         . "/attach.gif\" alt=\"file\"></div></font>";
-              }
-           }
+     if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
+        $size = $msg->Size;
+     } else {
+        $ksize = round(10*($msg->Size/1024))/10;
+        $size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
+     }
 
-           $msg = $phpgw->msg->header($mailbox, $msg_array[$i]);
-
-           $subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
-
-	   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
-	     $size = $msg->Size;
-	   } else {
-             $ksize = round(10*($msg->Size/1024))/10;
-             $size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
-	  }
-
-           // Whats up with this ??
-           $bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
+     // Whats up with this ??
+     $bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
                         
-           echo "<tr><td bgcolor=\"$bg\" align=\"center\">"
-              . "<input type=\"checkbox\" name=\"msglist[]\" value=\"".$msg_array[$i]."\"></td>\n";
-           if (($msg->Unseen == "U") || ($msg->Recent == "N"))
-              echo "<td bgcolor=\"$bg\" width=\"1%\" align=\"center\"><font color=\"FF0000\">"
-                 . "*</font>&nbsp;$attach</td>";
-           else
-              echo "<td bgcolor=\"$bg\" width=\"1%\">&nbsp;$attach</td>";
+     $phpgw->template->set_var("row_checkbox",'<input type="checkbox" name="msglist[]" value="' . $msg_array[$i] . '">');
 
-           echo "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">"
-              . "<a href=\"".$phpgw->link("message.php","folder="
-              . urlencode($folder)."&msgnum=".$msg_array[$i]) . "\">"
-              . decode_header_string($subject) . "</a></font></td>\n"
-              . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
+     if (($msg->Unseen == "U") || ($msg->Recent == "N")) {
+        $phpgw->template->set_var("row_info",'<font color="FF0000">*</font>&nbsp;' . $attach);
+     } else {
+        $phpgw->template->set_var("row_info","&nbsp;$attach");
+     }
 
-           if ($msg->reply_to[0]) {
-             $reply   = $msg->reply_to[0];
-           } else {
-             $reply   = $msg->from[0];
-           }
-           $replyto = $reply->mailbox . "@" . $reply->host;
-           
-           $from = $msg->from[0];
-           $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
-           if ($personal == "@")
-              $personal = $replyto;
+     $phpgw->template->set_var("row_subject",'<a href="' . $phpgw->link("message.php","folder=" . urlencode($folder) ."&msgnum=".$msg_array[$i]) . '">'
+                . decode_header_string($subject) . '</a>');
 
-           echo "<a href=\"" . $phpgw->link("compose.php","folder="
-              . urlencode($folder) . "&to=" . urlencode($replyto)) . "\">"
-              . decode_header_string($personal) . "</a>";
+     if ($msg->reply_to[0]) {
+        $reply = $msg->reply_to[0];
+     } else {
+        $reply = $msg->from[0];
+     }
+     $replyto = $reply->mailbox . "@" . $reply->host;
 
-           echo "</font></td>\n"
-              . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
+     $from = $msg->from[0];
+     $personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
+     if ($personal == "@") {
+        $personal = $replyto;
+     }
 
-           echo $phpgw->common->show_date($msg->udate);
+     $phpgw->template->set_var("row_sender",'<a href="' . $phpgw->link("compose.php","folder="
+             . urlencode($folder) . "&to=" . urlencode($replyto)) . '">'
+             . decode_header_string($personal) . '</a>');
 
-           echo "</td><td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">$size</font>"
-              . "</td></tr></font></td></tr>\n\n";
-        }
+     $phpgw->template->set_var("row_date",$phpgw->common->show_date($msg->udate));
+     $phpgw->template->set_var("row_size",$size);
+     $phpgw->template->parse("rows","row",True);
+  }
+  $phpgw->template->parse("content_","content");
+
+/*
 ?>
 <tr>
   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" align="center">
@@ -347,21 +298,9 @@ function check_all()
                 echo list_folders($mailbox);
 		echo "</select>";
             
-             }
-             $phpgw->msg->close($mailbox);
-             ?>
-          </td>
-         </tr>
-        </table>
+             } */
 
-  </td>
-</tr>
-</form></table>
-
-<br> 
-<table border="0" align="center" width="95%">
- <tr>
-  <td align="left"><font color="FF0000">*</font>&nbsp;<?php echo lang("New message"); ?></td>
- </tr>
-</table>
-<?php $phpgw->common->phpgw_footer(); ?>
+  $phpgw->template->pparse("out","main");
+  $phpgw->common->phpgw_footer();
+  $phpgw->msg->close($mailbox);
+?>
