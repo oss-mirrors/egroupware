@@ -8,7 +8,7 @@
   }
 
   // Its better then them using a ton of PHP errors.
-  if (! $mailbox = $phpgw->msg->login($folder)) {
+  if (! $mailbox = $phpgw->msg->login($folder) && !ereg("*preferences*",$PHP_SELF)) {
      echo "<p><center><b>" . lang("There was an error tring to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
      exit;
