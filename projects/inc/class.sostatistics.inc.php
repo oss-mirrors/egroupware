@@ -75,7 +75,7 @@
 			}
 
 			$this->db->query("SELECT title,num,phpgw_p_projects.id as id FROM phpgw_p_projects $join phpgw_p_hours ON "
-							. "phpgw_p_hours.employee='" . $account_id . "' GROUP BY title,phpgw_p_projects.id",__LINE__,__FILE__);
+							. "phpgw_p_hours.employee='" . $account_id . "' GROUP BY title,num,phpgw_p_projects.id",__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
