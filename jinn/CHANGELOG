@@ -6,6 +6,12 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.210f
+===========================
+Wed Feb 16 17:01:53 CET 2005
+- code cleanup in boadmin
+- fix Timestamp plugin display
+
 Version 0.8.210e
 ===========================
 Tue Feb 15 17:53:34 CET 2005

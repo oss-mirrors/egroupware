@@ -33,6 +33,7 @@
    $this->plugins['timestamp']['config']		= array
    (
 	  'Default_action'=> array( array('Leave value untouched','New Time Stamp')  ,'select',''),
+	  'Display_format'=> array( array('Y-M-d H:i:s','y-m-d H:i:s','d-M-Y H:i:s','d-m-y H:i:s')  ,'select',''),
 	  'Allow_users_to_choose_action'=> array( array('False','True')  ,'select',''),
    );
 
@@ -85,7 +86,8 @@
    {	
 	  global $local_bo;
 
-	  $input=$local_bo->common->format_date($value);
+	  $fmt=($config[Display_format]?$config[Display_format]:'y-M-d H:i:s');
+	  $input=$local_bo->so->site_db->Link_ID->UserTimeStamp($value,$fmt);
 
 	  return $input;
    }

@@ -104,7 +104,7 @@
 			   $this->template->set_var('link_edit',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_object&where_key=$where_key&where_value=$where_value"));
 			   $this->template->set_var('lang_edit',lang('edit'));
 
-			   $this->template->set_var('link_del',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_objects&where_key=$where_key&where_value=$where_value"));
+			   $this->template->set_var('link_del',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_object&where_key=$where_key&where_value=$where_value"));
 			   $this->template->set_var('lang_del',lang('delete'));
 			   $this->template->set_var('confirm_del',lang('Are you sure?'));
 

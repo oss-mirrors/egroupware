@@ -118,7 +118,7 @@
 					"<td bgcolor=$bgclr align=\"left\">
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_site&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_sites&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_site&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
 <!--					<td bgcolor=$bgclr align=\"left\">
 
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_egw_jinn_sites&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>-->

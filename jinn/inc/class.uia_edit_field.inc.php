@@ -131,14 +131,14 @@
 	  {
 		 if ($this->bool_edit_record)
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_objects");
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_object");
 			$action=lang('edit '. 'egw_jinn_objects');
 			$where_key_form='<input type="hidden" name="where_key" value="'.$this->where_key.'">';
 			$where_value_form='<input type="hidden" name="where_value" value="'.$this->where_value.'">';
 		 }
 		 else
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_objects");
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_object");
 			$action=lang('add '. 'egw_jinn_objects' );
 		 }
 
@@ -664,7 +664,7 @@
 	  {
 		 $cancel_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$this->parent_site_id);
 
-		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_objects&where_key=object_id&where_value='.$this->where_value);
+		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_object&where_key=object_id&where_value='.$this->where_value);
 
 		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));

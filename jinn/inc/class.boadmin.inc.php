@@ -1,7 +1,7 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2005 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 
@@ -25,15 +25,12 @@
    class boadmin 
    {
 	  var $public_functions = Array(
-		 'del_egw_jinn_sites'=> True,
-		 'del_egw_jinn_objects' => True,
-		 'insert_egw_jinn_sites'=> True,
-		 'insert_egw_jinn_objects'=> True,
-		 'update_egw_jinn_sites'=> True,
-		 'update_egw_jinn_objects' => True,
-		 'access_rights'=> True,
-		 'save_access_rights_object'=> True,
-		 'save_access_rights_site'=> True,
+		 'del_egw_jinn_site'=> True,
+		 'del_egw_jinn_object' => True,
+		 'insert_egw_jinn_site'=> True,
+		 'insert_egw_jinn_object'=> True,
+		 'update_egw_jinn_site'=> True,
+		 'update_egw_jinn_object' => True,
 		 'save_field_plugin_conf' => True,
 		 'save_field_info_conf' => True,
 		 'save_object_events_conf' => True
@@ -64,7 +61,7 @@
 	  var $object_events_plugins;
 
 	  var $db_ftypes;
-	  
+
 	  function boadmin()
 	  {
 		 $this->common = CreateObject('jinn.bocommon');
@@ -75,14 +72,14 @@
 		 $this->read_sessiondata();
 		 $this->use_session = True;
 
-		 $_form = $GLOBALS['HTTP_POST_VARS']['form'] ? $GLOBALS['HTTP_POST_VARS']['form']   : $GLOBALS['HTTP_GET_VARS']['form'];
-		 $_action = $GLOBALS['HTTP_POST_VARS']['action'] ? $GLOBALS['HTTP_POST_VARS']['action']   : $GLOBALS['HTTP_GET_VARS']['action'];
-		 $_site_id = $GLOBALS['HTTP_POST_VARS']['site_id'] ? $GLOBALS['HTTP_POST_VARS']['site_id']   : $GLOBALS['HTTP_GET_VARS']['site_id'];
-		 $_site_object_id = $GLOBALS['HTTP_POST_VARS']['site_object_id'] ? $GLOBALS['HTTP_POST_VARS']['site_object_id']    : $GLOBALS['HTTP_GET_VARS']['site_object_id'];
+		 $_form = $_POST['form'] ? $_POST['form']   : $_GET['form'];
+		 $_action = $_POST['action'] ? $_POST['action']   : $_GET['action'];
+		 $_site_id = $_POST['site_id'] ? $_POST['site_id']   : $_GET['site_id'];
+		 $_site_object_id = $_POST['site_object_id'] ? $_POST['site_object_id']    : $_GET['site_object_id'];
 
-		 $_where_key = $GLOBALS['HTTP_POST_VARS']['where_key'] ? $GLOBALS['HTTP_POST_VARS']['where_key']    : $GLOBALS['HTTP_GET_VARS']['where_key'];
+		 $_where_key = $_POST['where_key'] ? $_POST['where_key']    : $_GET['where_key'];
 
-		 $_where_value = $GLOBALS['HTTP_POST_VARS']['where_value'] ? $GLOBALS['HTTP_POST_VARS']['where_value']    : $GLOBALS['HTTP_GET_VARS']['where_value'];
+		 $_where_value = $_POST['where_value'] ? $_POST['where_value']    : $_GET['where_value'];
 
 		 if(!empty($_where_key))
 		 {
@@ -119,8 +116,8 @@
 		 $this->plug = CreateObject('jinn.plugins_db_fields'); //$this->include_plugins();
 		 $this->plug->local_bo = $this;
 		 $this->plugins = $this->plug->plugins;
-		 
-		 
+
+
 		 $this->object_events_plugin_manager = CreateObject('jinn.plugins_object_events'); //$this->include_plugins();
 		 $this->object_events_plugin_manager->local_bo = $this;
 		 $this->object_events_plugins = $this->object_events_plugin_manager->object_events_plugins;
@@ -145,7 +142,7 @@
 
 	  function read_sessiondata()
 	  {
-		 if ($GLOBALS['HTTP_POST_VARS']['form']!='main_menu')
+		 if ($_POST['form']!='main_menu')
 		 {
 			$data = $GLOBALS['phpgw']->session->appsession('session_data','jinn');
 			$this->message 		= $data['message'];
@@ -153,148 +150,6 @@
 			$this->site_object_id	= $data['site_object_id'];
 			$this->last_where_string = $data['last_where_string'];
 		 }
-	  }
-
-	  /****************************************************************************\
-	  * delete record from external table                                          *
-	  \****************************************************************************/
-
-	  function delete_phpgw_data($table,$where_key,$where_value)
-	  {
-
-		 return $status;
-	  }
-
-	  /****************************************************************************\
-	  * insert data into phpgw table                                               *
-	  \****************************************************************************/
-
-	  function insert_phpgw_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES)
-	  {
-
-		 $data=$this->http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
-		 $status=$this->so->insert_phpgw_data($table,$data);
-
-		 return $status;
-	  }
-
-	  /****************************************************************************\
-	  * update data in phpgw table                                                 *
-	  \****************************************************************************/
-
-	  function update_phpgw_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES,$where_key,$where_value)
-	  {
-
-		 /*************************************
-		 * start relation section             *
-		 *************************************/
-
-		 if ($HTTP_POST_VARS[FLDrelations])
-		 {
-				//unpack the array for add/remove actions
-			$relations_arr = unserialize(base64_decode($HTTP_POST_VARS[FLDrelations]));
-
-			// check if there are relations to delete
-			$relations_to_delete=$this->common->filter_array_with_prefix($HTTP_POST_VARS,'DEL');
-			if (is_array($relations_to_delete))
-			{
-			   foreach($relations_to_delete as $relation_to_delete)
-			   {
-					unset($relations_arr[$relation_to_delete]);
-			   }
-				$relations_arr = array_values($relations_arr); //reorder the index values
-			}
-		 }
-
-		 // check if new ONE TO MANY relation parts are complete else ignore them
-		 if($HTTP_POST_VARS['1_relation_org_field'] && $HTTP_POST_VARS['1_relation_table_field'] 
-		 && $HTTP_POST_VARS['1_display_field'])
-		 {
-			unset($new_relation_arr);
-			$new_relation_arr[type] = 1; //one-to-many
-			$new_relation_arr[org_field] = $HTTP_POST_VARS['1_relation_org_field'];
-			$new_relation_arr[related_with] = $HTTP_POST_VARS['1_relation_table_field'];
-			$new_relation_arr[display_field] = $HTTP_POST_VARS['1_display_field'];
-			$new_relation_arr[display_field_2] = $HTTP_POST_VARS['1_display_field_2'];
-			$new_relation_arr[display_field_3] = $HTTP_POST_VARS['1_display_field_3'];
-			$new_relation_arr[default_value] = $HTTP_POST_VARS['1_default'];
-
-			$relations_arr[count($relations_arr)] = $new_relation_arr;
-		 }
-
-		 // check if new MANY TO MANY relation parts are complete else ignore them
-		 if($HTTP_POST_VARS['2_relation_via_primary_key'] && $HTTP_POST_VARS['2_relation_foreign_key'] 
-		 && $HTTP_POST_VARS['2_relation_via_foreign_key'] && $HTTP_POST_VARS['2_display_field'])
-		 {
-
-			unset($new_relation_arr);
-			$new_relation_arr[type] = 2; //many-to-many
-			$new_relation_arr[via_primary_key] = $HTTP_POST_VARS['2_relation_via_primary_key'];
-			$new_relation_arr[via_foreign_key] = $HTTP_POST_VARS['2_relation_via_foreign_key'];
-			$new_relation_arr[foreign_key] = $HTTP_POST_VARS['2_relation_foreign_key'];
-			$new_relation_arr[display_field] = $HTTP_POST_VARS['2_display_field'];
-			$new_relation_arr[display_field_2] = $HTTP_POST_VARS['2_display_field_2'];
-			$new_relation_arr[display_field_3] = $HTTP_POST_VARS['2_display_field_3'];
-
-			$relations_arr[count($relations_arr)] = $new_relation_arr;
-		 }
-
- 		 // check if new ONE TO ONE relation parts are complete else ignore them
-		 if($HTTP_POST_VARS['3_relation_org_field'] && $HTTP_POST_VARS['3_relation_table_field'] 
-		 && $HTTP_POST_VARS['3_relation_object_conf'])
-		 {
-			unset($new_relation_arr);
-			$new_relation_arr[type] = 3; //one-to-one
-			$new_relation_arr[org_field] = $HTTP_POST_VARS['3_relation_org_field'];
-			$new_relation_arr[related_with] = $HTTP_POST_VARS['3_relation_table_field'];
-			$new_relation_arr[object_conf] = $HTTP_POST_VARS['3_relation_object_conf'];
-
-			$relations_arr[count($relations_arr)] = $new_relation_arr;
-		}
-
-
-			//repack the array for storage
-		$HTTP_POST_VARS['FLDrelations']=base64_encode(serialize($relations_arr));
-
-		 
-			//create an array of field properties from the FIELD_ form section
-		 $fields=$this->get_field_array($HTTP_POST_VARS);
-		 
-			//iterate through that array, compile all properties from ONE field and save those properties all at once.
-		 if(is_array($fields))
-		 {
-			foreach($fields as $field)
-			{
-				switch($field[property])
-				{
-					case 'PLG': //plugin type
-						$plugin[name]=$field[value];
-						break;
-					case 'PLC': //plugin configuration
-						$plugin[conf]=$field[value];
-						$conf_serialed_string=base64_encode(serialize($plugin)); 
-						break;
-					case 'MAN': //is this a mandatory field?
-						$mandatory=$field[value];
-						break;
-					case 'DEF': //show in listview by default?
-						$show_default=$field[value];
-						break;
-					case 'POS': //position of field in listview
-						$position=$field[value];
-
-						//BEWARE: if new properties are added, make sure the LAST one ends with saving the record!
-						//POS is the last field, so now update the object field record:
-						$status=$this->so->save_field($where_value,$field[name],$conf_serialed_string,$mandatory,$show_default,$position);
-						break;
-				}
-			}
-		 }
-
-		 $data=$this->http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
-		 $status=$this->so->update_phpgw_data($table,$data, $where_key,$where_value);
-
-		 return $status;
 	  }
 
 	  function get_field_array($HTTP_POST_VARS)
@@ -305,9 +160,9 @@
 			{
 			   $data[] = array
 			   (
-				name      => substr(substr($key, 6), 0, -4),
-				property  => substr(substr($key, 6), -3),
-				value     => addslashes($val)
+				  name      => substr(substr($key, 6), 0, -4),
+				  property  => substr(substr($key, 6), -3),
+				  value     => addslashes($val)
 			   );
 			}
 		 }
@@ -327,7 +182,7 @@
 		 }
 
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
-		
+
 		 $where_string="`field_parent_object`={$_GET[object_id]} AND  `field_name`='$_GET[field_name]'";
 		 $status =$this->so->save_field_info_conf($_GET[object_id],$_GET[field_name],$data,$where_string);
 
@@ -344,8 +199,8 @@
 		 $this->common->exit_and_open_screen('jinn.uiadmin.field_help_config&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id]);
 	  }
 
-	  
-  	  /**
+
+	  /**
 	  @function save_object_events_conf
 	  @abstract save a new object events plugin configuration in the database
 	  @note this function uses new standard method for returning exit codes and status information
@@ -361,94 +216,94 @@
 		 if(is_array($_POST))
 		 {
 			$dirty = false;
-			
-				//get the already stored configurations
+
+			//get the already stored configurations
 			$object_arr=$this->so->get_object_values($_GET[object_id]);
 			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
-				
+
 			if($_GET[edit]=='')
 			{
-					//check if configurations need to be deleted
-				if(is_array($stored_configs)) 
-				{
-					$numconfigs=count($stored_configs);
-					for($i=0; $i<$numconfigs; $i++)
-					{
-						if($_POST['delete_'.$i] == 'true')
-						{
-							unset($stored_configs[$i]);
-							unset($_POST['delete_'.$i]); //or else it gets stored in the plugin config
-							$dirty=true;
-						}
-					}
-					$stored_configs = array_values($stored_configs);
-				}
-					
-					//if a new plugin was configured, add it to the store
-				if($_POST[event] != '' && $_POST[plugin] != '')
-				{
-					if(!is_array($stored_configs)) $stored_configs = array();
-					$conf=array
-						(
-							'name'=>$_POST[plugin],
-							'conf'=>$_POST
-						);
-					$stored_configs[] = $conf;
-					$dirty=true;
-				}
+			   //check if configurations need to be deleted
+			   if(is_array($stored_configs)) 
+			   {
+				  $numconfigs=count($stored_configs);
+				  for($i=0; $i<$numconfigs; $i++)
+				  {
+					 if($_POST['delete_'.$i] == 'true')
+					 {
+						unset($stored_configs[$i]);
+						unset($_POST['delete_'.$i]); //or else it gets stored in the plugin config
+						$dirty=true;
+					 }
+				  }
+				  $stored_configs = array_values($stored_configs);
+			   }
+
+			   //if a new plugin was configured, add it to the store
+			   if($_POST[event] != '' && $_POST[plugin] != '')
+			   {
+				  if(!is_array($stored_configs)) $stored_configs = array();
+				  $conf=array
+				  (
+					 'name'=>$_POST[plugin],
+					 'conf'=>$_POST
+				  );
+				  $stored_configs[] = $conf;
+				  $dirty=true;
+			   }
 			}
 			else
 			{
-				if(is_array($stored_configs)) 
-				{
-					$_POST[event]  = $stored_configs[$_GET[edit]][conf][event];
-					$_POST[plugin] = $stored_configs[$_GET[edit]][conf][plugin];
-	
-						//replace the existing config with this one
-					if(!is_array($stored_configs)) $stored_configs = array();
-					$conf=array
-						(
-							'name'=>$_POST[plugin],
-							'conf'=>$_POST
-						);
-					$stored_configs[$_GET[edit]] = $conf;
-					$dirty=true;
-				}
+			   if(is_array($stored_configs)) 
+			   {
+				  $_POST[event]  = $stored_configs[$_GET[edit]][conf][event];
+				  $_POST[plugin] = $stored_configs[$_GET[edit]][conf][plugin];
+
+				  //replace the existing config with this one
+				  if(!is_array($stored_configs)) $stored_configs = array();
+				  $conf=array
+				  (
+					 'name'=>$_POST[plugin],
+					 'conf'=>$_POST
+				  );
+				  $stored_configs[$_GET[edit]] = $conf;
+				  $dirty=true;
+			   }
 			}
 
 			if($dirty)
 			{
-				$conf_serialed_string=base64_encode(serialize($stored_configs));
-				$status=$this->so->save_object_events_plugin_conf($_GET[object_id],$conf_serialed_string);
-				if($status[ret_code])
-				{
-					$this->message[error]=lang('An unknown error has occured (error code 109)');
-_debug_array(lang('An unknown error has occured (error code 109)'));
-				}
-				else
-				{
-					$this->message[info]=lang('Plugin configuration successfully saved');
-_debug_array(lang('Plugin configuration successfully saved'));
-				}
+			   $conf_serialed_string=base64_encode(serialize($stored_configs));
+			   $status=$this->so->save_object_events_plugin_conf($_GET[object_id],$conf_serialed_string);
+			   if($status[ret_code])
+			   {
+				  $this->message[error]=lang('An unknown error has occured (error code 109)');
+				  _debug_array(lang('An unknown error has occured (error code 109)'));
+			   }
+			   else
+			   {
+				  $this->message[info]=lang('Plugin configuration successfully saved');
+				  _debug_array(lang('Plugin configuration successfully saved'));
+			   }
 			}
 			else
 			{
-			$this->message[error]=lang('nothing to save. Please select a plugin to delete or configure a new plugin');
-_debug_array(lang('nothing to save. Please select a plugin to delete or configure a new plugin'));
+			   $this->message[error]=lang('nothing to save. Please select a plugin to delete or configure a new plugin');
+			   _debug_array(lang('nothing to save. Please select a plugin to delete or configure a new plugin'));
 			}
-		}
+		 }
 
-		$this->save_sessiondata();
+		 $this->save_sessiondata();
 
-//fixme: this gives a strange error:
-		//$this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
-		 
-//VERY dirty hack to solve this problem:		 
-echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
-//obviously this needs to be fixed. Then also the above _debug_arrays can be removed.
-		 
+		 //fixme: this gives a strange error:
+		 //$this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
+
+		 //VERY dirty hack to solve this problem:		 
+		 echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+		 //obviously this needs to be fixed. Then also the above _debug_arrays can be removed.
+
 	  }
-	  
+
 	  /**
 	  @function save_field_plugin_conf
 	  @abstract save changes made to a field plugin configuration in database
@@ -469,9 +324,9 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 			);
 			$conf_serialed_string=base64_encode(serialize($conf));
 		 }
-		 
+
 		 $status=$this->so->save_field_plugin_conf($_GET[object_id],$_GET[field_name],$conf_serialed_string);
-	
+
 		 if($status[ret_code])
 		 {
 			$this->message[error]=lang('An unknown error has occured (error code 109)');
@@ -486,63 +341,14 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 	  }
 
 
-
-/*	  f unction save_access_rights_site()
+	  /*
+	  @function insert_egw_jinn_site
+	  @abstract insert new site with meta data
+	  */
+	  function insert_egw_jinn_site()
 	  {
-		 reset ($GLOBALS[HTTP_POST_VARS]);
-		 $site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
-
-		 while (list ($key, $val) = each ($GLOBALS[HTTP_POST_VARS])) 
-		 {
-			if (substr($key,0,6)=='editor')	$editors[]=$val;
-		 }
-
-		 if (is_array($editors)) $editors=array_unique($editors);
-
-		 $status=$this->so->update_site_access_rights($editors,$site_id);
-
-		 if ($status==1)	$this->message[info]=lang('Access rights for Site succesfully editted');
-		 else $this->message[error]=lang('Access rights for Site NOT succesfully editted');
-
-		 $this->save_sessiondata();
-		 //			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
-		 // FIXME keep nextmatch sorting filter etc...
-		 $this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_sites&site_id='.$site_id);
-	  }
-
-
-	  f unction save_access_rights_object()
-	  {
-		 reset ($GLOBALS[HTTP_POST_VARS]);
-		 $site_id=$GLOBALS[HTTP_POST_VARS]['site_id'];
-		 $object_id=$GLOBALS[HTTP_POST_VARS]['object_id'];
-
-		 while (list ($key, $val) = each ($GLOBALS[HTTP_POST_VARS])) 
-		 {
-			if (substr($key,0,6)=='editor')	$editors[]=$val;
-			//if (substr($key,0,7)=='xeditor')	$existing_editors[]=$val;//existing editors
-		 }
-
-		 if (is_array($editors)) $editors=array_unique($editors);
-
-		 $status=$this->so->update_object_access_rights($editors,$GLOBALS[HTTP_POST_VARS]['object_id']);
-
-		 if ($status==1)	$this->message[info]=lang('Access rights for site-object succesfully editted');
-		 else $this->message[error]=lang('Access rights for site-object NOT succesfully editted');
-
-		 $this->save_sessiondata();
-
-		 //			$this->common->exit_and_open_screen('jinn.uiadmin.access_rights');
-		 // FIXME keep nextmatch sorting filter etc...
-		 $this->common->exit_and_open_screen('jinn.uiadmin.set_access_rights_site_objects&object_id='.$object_id.'&site_id='.$site_id);
-	  }
-*/
-	  // FIXME rename
-	  function insert_egw_jinn_sites()
-	  {
-		 $table='egw_jinn_sites';
-
-		 $status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		 $status=$this->so->insert_phpgw_data('egw_jinn_sites',$data);
 
 		 if ($status>0)	
 		 {
@@ -554,11 +360,9 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 }
 
 		 $this->save_sessiondata();
-		 if($GLOBALS[HTTP_POST_VARS]['continue'])
+		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$status[where_value].'&serial='.$status[serial]);
-			_debug_array($serial);
-			die();
 		 }
 		 else
 		 {
@@ -566,37 +370,46 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 }
 	  }
 
-
-
-	  // FIXME rename
-	  function insert_egw_jinn_objects()
+	  /*
+	  @function insert_egw_jinn_object
+	  @absrtact insert new object
+	  */
+	  function insert_egw_jinn_object()
 	  {
-		 $status=$this->insert_phpgw_data('egw_jinn_objects',$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		 $status=$this->so->insert_phpgw_data('egw_jinn_objects',$data);
+
 		 if ($status>0)	$this->message[info]=lang('Site Object succesfully added');
 		 else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
 
 		 $this->save_sessiondata();
-		 if($GLOBALS[HTTP_POST_VARS]['continue'])
+		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key=object_id&where_value='.$status[where_value].'&serial='.$status[serial]);
 		 }
 		 else
 		 {
-			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[FLDparent_site_id]);
 		 }
 	  }
 
-	  // FIXME rename
-	  function update_egw_jinn_sites()
+	  /**
+	  @function update_egw_jinn_site
+	  @abstract updates site meta data in database and return to form
+	  */
+	  function update_egw_jinn_site()
 	  {
 		 $table='egw_jinn_sites';
 
-		 $status = $this->update_phpgw_data($table,$_POST,$_POST,$this->where_key,$this->where_value);
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
+
+
 		 if ($status[ret_code]==0)	$this->message[info]=lang('Site succesfully saved');
 		 else $this->message[error]=lang('Site NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();
-		 if($GLOBALS[HTTP_POST_VARS]['continue'])
+		 if($_POST['continue'])
 		 {
 			//FIXME 
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$this->where_value);
@@ -607,31 +420,145 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 }
 	  }
 
-	  function update_egw_jinn_objects()
+		
+	  /*
+	  @function update_egw_jinn_object
+	  @absract update object data
+	  */
+	  function update_egw_jinn_object()
 	  {
 		 $table='egw_jinn_objects';
 
-		 $status = $this->update_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES],$this->where_key,$this->where_value);
+
+		 /* start relation section */
+
+		 if ($_POST[FLDrelations])
+		 {
+			//unpack the array for add/remove actions
+			$relations_arr = unserialize(base64_decode($_POST[FLDrelations]));
+
+			// check if there are relations to delete
+			$relations_to_delete=$this->common->filter_array_with_prefix($_POST,'DEL');
+			if (is_array($relations_to_delete))
+			{
+			   foreach($relations_to_delete as $relation_to_delete)
+			   {
+				  unset($relations_arr[$relation_to_delete]);
+			   }
+			   $relations_arr = array_values($relations_arr); //reorder the index values
+			}
+		 }
+
+		 // check if new ONE TO MANY relation parts are complete else ignore them
+		 if($_POST['1_relation_org_field'] && $_POST['1_relation_table_field'] 
+		 && $_POST['1_display_field'])
+		 {
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 1; //one-to-many
+			$new_relation_arr[org_field] = $_POST['1_relation_org_field'];
+			$new_relation_arr[related_with] = $_POST['1_relation_table_field'];
+			$new_relation_arr[display_field] = $_POST['1_display_field'];
+			$new_relation_arr[display_field_2] = $_POST['1_display_field_2'];
+			$new_relation_arr[display_field_3] = $_POST['1_display_field_3'];
+			$new_relation_arr[default_value] = $_POST['1_default'];
+
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
+		 }
+
+		 // check if new MANY TO MANY relation parts are complete else ignore them
+		 if($_POST['2_relation_via_primary_key'] && $_POST['2_relation_foreign_key'] 
+		 && $_POST['2_relation_via_foreign_key'] && $_POST['2_display_field'])
+		 {
+
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 2; //many-to-many
+			$new_relation_arr[via_primary_key] = $_POST['2_relation_via_primary_key'];
+			$new_relation_arr[via_foreign_key] = $_POST['2_relation_via_foreign_key'];
+			$new_relation_arr[foreign_key] = $_POST['2_relation_foreign_key'];
+			$new_relation_arr[display_field] = $_POST['2_display_field'];
+			$new_relation_arr[display_field_2] = $_POST['2_display_field_2'];
+			$new_relation_arr[display_field_3] = $_POST['2_display_field_3'];
+
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
+		 }
+
+		 // check if new ONE TO ONE relation parts are complete else ignore them
+		 if($_POST['3_relation_org_field'] && $_POST['3_relation_table_field'] 
+		 && $_POST['3_relation_object_conf'])
+		 {
+			unset($new_relation_arr);
+			$new_relation_arr[type] = 3; //one-to-one
+			$new_relation_arr[org_field] = $_POST['3_relation_org_field'];
+			$new_relation_arr[related_with] = $_POST['3_relation_table_field'];
+			$new_relation_arr[object_conf] = $_POST['3_relation_object_conf'];
+
+			$relations_arr[count($relations_arr)] = $new_relation_arr;
+		 }
+
+		 //repack the array for storage
+		 $_POST['FLDrelations']=base64_encode(serialize($relations_arr));
+
+
+		 //create an array of field properties from the FIELD_ form section
+		 $fields=$this->get_field_array($_POST);
+
+		 //iterate through that array, compile all properties from ONE field and save those properties all at once.
+		 if(is_array($fields))
+		 {
+			foreach($fields as $field)
+			{
+			   switch($field[property])
+			   {
+				  case 'PLG': //plugin type
+					 $plugin[name]=$field[value];
+					 break;
+				  case 'PLC': //plugin configuration
+					 $plugin[conf]=$field[value];
+					 $conf_serialed_string=base64_encode(serialize($plugin)); 
+					 break;
+				  case 'MAN': //is this a mandatory field?
+					 $mandatory=$field[value];
+					 break;
+				  case 'DEF': //show in listview by default?
+					 $show_default=$field[value];
+					 break;
+				  case 'POS': //position of field in listview
+					 $position=$field[value];
+
+					 //BEWARE: if new properties are added, make sure the LAST one ends with saving the record!
+					 //POS is the last field, so now update the object field record:
+					 $status=$this->so->save_field($this->where_value,$field[name],$conf_serialed_string,$mandatory,$show_default,$position);
+					 break;
+				  default:
+					 break;
+			   }
+			}
+		 }
+
+		 $data=$this->http_vars_pairs($_POST,$_FILES);
+		 $status=$this->so->update_phpgw_data($table,$data, $this->where_key,$this->where_value);
+
 
 		 if ($status[ret_code]==0)	$this->message[info]=lang('Site Object succesfully saved');
 		 else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
 
 		 $this->save_sessiondata();
-		 if($GLOBALS[HTTP_POST_VARS]['continue'])
+		 if($_POST['continue'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_object&where_key='.$this->where_key.'&where_value='.$this->where_value);
 		 }
 		 else
 		 {
-			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_site&where_key=site_id&where_value='.$_POST[FLDparent_site_id]);
 		 }
 	  }
 
-	  // FIXME rename
-	  function del_egw_jinn_sites()
+	  /*
+	  @function del_egw_jinn_site
+	  @abstract delelte site and return to list
+	  */
+	  function del_egw_jinn_site()
 	  {
-		 //			var_dump($this->where_value);
-		 //			die();
 		 $status=$this->so->delete_phpgw_data('egw_jinn_sites',$this->where_key,$this->where_value);
 
 		 if ($status==1)	$this->message[info]=lang('site succesfully deleted');
@@ -641,8 +568,11 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 $this->common->exit_and_open_screen('jinn.uiadmin.browse_egw_jinn_sites');
 	  }
 
-	  //FIXME rename
-	  function del_egw_jinn_objects()
+	  /*
+	  @function  del_egw_jinn_object
+	  @abstract delete table_object and return to parent site
+	  */
+	  function del_egw_jinn_object()
 	  {
 		 $records = $this->so->get_phpgw_record_values('egw_jinn_objects',$this->where_key,$this->where_value,'','','name');	
 
@@ -772,7 +702,6 @@ echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
 		 if(!$quite) echo '<script language=""JavaScript"">window.opener.location.reload();</script>';
 		 if(!$quite) echo lang('The upgrade process has is finished. You can now close this windows and start over again<br/><br/>');
 		 if(!$quite) echo '<input type="button" onclick="self.close()" value="'.lang('close this window').'"/>';
-		 //		 if(!$quite) 
 		 if($quite) return $status;
 	  }
 

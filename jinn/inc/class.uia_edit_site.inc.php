@@ -45,22 +45,9 @@
 		 $this->template->set_block('form_site','object_buttons','object_buttons');
 
 		 // fixme streamline this switch
-		 // fixme check for registered_globals
-/*		 if ($_GET[serial])
-		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_sites");
-			$values_object= $this->bo->get_phpgw_records('egw_jinn_sites','serialnumber',$_GET[serial],'','','name');
-			$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"site_id\">";
-			$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"{$values_object[0][site_id]}\">";
-			//_debug_array($values_object);
-			//die();
-			$add_edit_button=lang('save');
-			$action=lang('edit egw_jinn_sites');
-		 }
-		 */
 		 if ($where_key && $where_value)
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_sites");
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_site");
 			$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"$where_key\">";
 			$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"$where_value\">";
 			$values_object= $this->bo->get_phpgw_records('egw_jinn_sites',$where_key,$where_value,'','','name');
@@ -69,7 +56,7 @@
 		 }
 		 else
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_sites");
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_site");
 			$add_edit_button=lang('add');
 			$action=lang('add egw_jinn_sites' );
 			$parent_site_id=$_POST['parent_site_id'];
@@ -209,7 +196,7 @@
 		 $this->template->set_var('reset_form',lang('reset form'));
 		 $this->template->set_var('lang_delete',lang('delete'));
 		 $this->template->set_var('lang_cancel',lang('cancel'));
-		 $this->template->set_var('onclick_delete','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
+		 $this->template->set_var('onclick_delete','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_site&where_key=site_id&where_value='.$where_value).'\'');
 		 $this->template->set_var('onclick_cancel','location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites&where_key=site_id&where_value='.$where_value).'\'');
 		 $this->template->set_var('lang_test_access',lang('test database access'));
 		 $this->template->set_var('test_access_link',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.test_db_access'));
