@@ -741,7 +741,7 @@
 		{
 			if ((int)$part_nice[$j]['bytes'] > 100)
 			{
-				$att_size = ' ('. format_byte_size($part_nice[$j]['bytes']).')';
+				$att_size = ' ('. $phpgw->msg->format_byte_size($part_nice[$j]['bytes']).')';
 			}
 			else
 			{
@@ -1007,7 +1007,7 @@
 			// ====  POP 3 SERVER -OR- MIME IGNORANT SERVER  ====
 			$title_text = '&nbsp;Mime-Ignorant Email: ';
 			$t->set_var('title_text',$title_text);
-			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size(strlen($dsp));
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.$phpgw->msg->format_byte_size(strlen($dsp));
 			$t->set_var('display_str',$display_str);
 
 			//$msg_headers = $phpgw->dcom->fetchheader($mailbox, $msgnum);
@@ -1084,8 +1084,8 @@
 			// -----  Prepare a Table for this Echo Dump
 			$title_text = '&nbsp;message: ';
 			$t->set_var('title_text',$title_text);
-			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size($part_nice[$i]['bytes'])
-				.'; meets force_echo ('.format_byte_size($force_echo_size).') criteria';
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.$phpgw->msg->format_byte_size($part_nice[$i]['bytes'])
+				.'; meets force_echo ('.$phpgw->msg->format_byte_size($force_echo_size).') criteria';
 			$t->set_var('display_str',$display_str);
 			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
 			$t->set_var('V_done_echo_dump','');
@@ -1154,7 +1154,7 @@
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 			//$display_str = $part_nice[$i]['type'].'/'.strtolower($part_nice[$i]['subtype']);
 			$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
-				.' - '.format_byte_size(strlen($dsp));
+				.' - '.$phpgw->msg->format_byte_size(strlen($dsp));
 			$t->set_var('title_text',$title_text);
 			$t->set_var('display_str',$display_str);
 
@@ -1466,7 +1466,7 @@
 				}
 				$t->set_var('title_text',$title_text);
 				$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
-					.' - '.format_byte_size(strlen($dsp));
+					.' - '.$phpgw->msg->format_byte_size(strlen($dsp));
 				
 				$display_str = $display_str 
 					.' &nbsp; '.$view_option;
@@ -1499,7 +1499,7 @@
 		{
 			$title_text = lang("section").': '.$part_nice[$i]['m_part_num_mime'];
 			$display_str = $phpgw->msg->decode_header_string($part_nice[$i]['ex_part_name'])
-				.' - ' .format_byte_size((int)$part_nice[$i]['bytes']) 
+				.' - ' .$phpgw->msg->format_byte_size((int)$part_nice[$i]['bytes']) 
 				.' - keywords: ' .$part_nice[$i]['m_keywords'];
 			$t->set_var('title_text',$title_text);
 			$t->set_var('display_str',$display_str);
@@ -1523,13 +1523,13 @@
 				$dsp = $phpgw->dcom->fetchbody($phpgw->msg->mailsvr_stream, $msgnum, $part_nice[$i]['m_part_num_mime'], FT_INTERNAL);
 					//$dsp = $phpgw->dcom->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
 					//$processed_msg_body = $processed_msg_body . base64_decode($dsp) .'<br>' ."\r\n";
-				$att_size =  format_byte_size(strlen($dsp));
+				$att_size =  $phpgw->msg->format_byte_size(strlen($dsp));
 				$msg_text = $msg_text .'&nbsp;&nbsp; size: '.$att_size;
 			}
 			*/
 			$msg_text = '&nbsp;&nbsp; <strong>Attachment:</strong>'
 				.'&nbsp;&nbsp; '.$part_nice[$i]['ex_part_clickable']
-				.'&nbsp;&nbsp; size: '.format_byte_size((int)$part_nice[$i]['bytes'])
+				.'&nbsp;&nbsp; size: '.$phpgw->msg->format_byte_size((int)$part_nice[$i]['bytes'])
 				.'<br><br>';
 			
 			$t->set_var('message_body',$msg_text);

@@ -31,6 +31,7 @@
   {
 	//global $phpgw, $phpgw_info;
 
+	var $args = Array();
 	var $att_files_dir;
 	var $folder_list = array();
 	var $mailsvr_callstr = '';
@@ -40,6 +41,9 @@
 	var $mailsvr_stream = '';
 	var $folder = '';
 	var $newsmode = False;
+	var $sort = '';
+	var $order = '';
+	var $start = '';
 
 	var $default_trash_folder = 'Trash';
 	var $default_sent_folder = 'Sent';
@@ -96,6 +100,26 @@
 	{
 		$args_array['do_login'] = False;
 	}
+	/*
+	// ----  What "sort" "order" and "start" args were passed to the script  -----
+	if (!isset($args_array['sort']))
+	{
+		$args_array['sort'] = '';
+	}
+	if (!isset($args_array['order']))
+	{
+		$args_array['order'] = '';
+	}
+	if (!isset($args_array['start']))
+	{
+		$args_array['start'] = '';
+	}
+	// ----  What "td" result message was passed to the script  -----
+	if (!isset($args_array['td']))
+	{
+		$args_array['td'] = '';
+	}
+	*/
 	// ----  Are We In Newsmode Or Not  -----
 	if ((isset($args_array['newsmode']))
 	&& (($args_array['newsmode'] == True) || ($args_array['newsmode'] == "on")))
@@ -179,6 +203,10 @@
 		}
 
 	}
+	// now that we've processed the args_array, save it in a class var
+	$this->args = $args_array;
+	//  Messages Sort OrderVariables, needed by dcom->sort, which is aliased with $this->get->message_list
+	$this->fill_sort_order_start();
 
 	if ($args_array['do_login'] == True)
 	{

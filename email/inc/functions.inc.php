@@ -126,6 +126,11 @@
 		$args_array = Array();
 		$args_array['folder'] = $folder;
 		$args_array['do_login'] = True;
+		$args_array['sort'] = $sort;
+		$args_array['order'] = $order;
+		$args_array['start'] = $start;
+		$args_array['newsmode'] = $newsmode;
+		$args_array['td'] = $td;
 		// this will obtain the email preferences from the db (currently "phpgw_preferences")
 		// and prep the folder name, and login if desired, and set msg->mailsvr_stream
 		$phpgw->msg->begin_request($args_array);
@@ -264,20 +269,6 @@
 	{
 		return False;
 	}
-  }
-
-  function format_byte_size($feed_size)
-  {
-	if ($feed_size < 999999)
-	{
-		$nice_size = round(10*($feed_size/1024))/10 .' k';
-	} else {
-		//  round to W.XYZ megs by rounding WX.YZ
-		$nice_size = round($feed_size/(1024*100));
-		// then bring it back one digit and add the MB string
-		$nice_size = ($nice_size/10) .' MB';
-	}
-	return $nice_size;
   }
 
 

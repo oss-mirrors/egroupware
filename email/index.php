@@ -41,79 +41,26 @@
 	$svr_image_dir = PHPGW_IMAGES_DIR;
 	$image_dir = PHPGW_IMAGES;
 
-	// ----  Learn About The Email Server  -----
 	// Abreviated Folder Name, NO namespace, NO delimiter
 	$folder_short = $phpgw->msg->get_folder_short($phpgw->msg->folder);
 
-// ---- Messages Sort Order  (AND ensure $sort and $order and $start have usable values) -----
-	/*
-	Sorting defs:
-	SORTDATE:  0	//This is the Date that the senders email client stanp the message with
-	SORTARRIVAL: 1	 //This is the date your email server's MTA stamps the message with
-			// using SORTDATE cause some messages to be displayed in the wrong cronologicall order
-	SORTFROM:  2
-	SORTSUBJECT: 3
-	SORTSIZE:  6
-
-	// imap_sort(STREAM,  CRITERIA,  REVERSE,  OPTIONS)
-	// Stream: is $mailbox
-	// Criteria = $sort : is HOW to sort, we prefer SORTARRIVAL, or "1" as default (see note above)
-	// Reverse = $order : 0 = imap default = lowest to highest  ;;  1 = Reverse sorting  =  highest to lowest
-	// Options: we do not use this (yet)
-	*/
-
-	// SORT: if not set in the url, then assign some defaults
-	if ((isset($sort))
-	 && (($sort >= 0) && ($sort <= 6)) )
-	{
-		// do nothing,  this is a valid $sort variableset in the URL (for email)
-	}
-	elseif ((isset($sort))
-	  && ($sort == "ASC") && ($phpgw->msg->newsmode))
-	{
-		// needed for newsmode ????
-		$sort = 0;
-	}
-	else
-	{
-		// SORTARRIVAL as noted above, the preferred default for email
-		$sort = 1;
-	}
-
-	// ORDER (reverse sorting or not)  if specified in the url, then use it, else use defaults
-	if ((isset($order))
-	  && (($order >= 0) && ($order <= 1)) )
-	{
-		// do nothing, this is a valid $order variableset in the URL
-	}
-	elseif ((isset($phpgw_info["user"]["preferences"]["email"]["default_sorting"]))
-	  && ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old"))
-	{
-		$order = 1;
-	}
-	else
-	{
-		// if no pref is set or the pref is old->new, then order should = 0
-		$order = 0;
-	}
-
-	// START value
-	if (! $start)
-	{
-		$start = 0;
-	}
+// ---- Messages Sort Order  (AND ensure $phpgw->msg->sort and $phpgw->msg->order and $start have usable values) -----
+	//$phpgw->msg->fill_sort_order_start();
+	// MOVED to "begin_request" in msg class base
 
 // ---- lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
 
 // ---- report on number of messages deleted (if any)  -----
-	if ($td)
+	if ($phpgw->msg->args['td'])
 	{
-		if ($td == 1) 
+		if ($phpgw->msg->args['td'] == 1) 
 		{
-			$num_deleted = lang("1 message has been deleted",$td);
-		} else {
-			$num_deleted = lang("x messages have been deleted",$td);
+			$num_deleted = lang("1 message has been deleted",$phpgw->msg->args['td']);
+		}
+		else
+		{
+			$num_deleted = lang("x messages have been deleted",$phpgw->msg->args['td']);
 		}
 		// template only outputs if msgs were deleted, otherwise skipped
 		$t->set_var('num_deleted',$num_deleted);
@@ -126,16 +73,17 @@
 	}
 
 // ---- Folder Status Infomation   -----
-	$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,
+	$mailbox_status = $phpgw->dcom->status(
+					$phpgw->msg->mailsvr_stream,
 					$phpgw->msg->get_mailsvr_callstr().$phpgw->msg->folder,
 					SA_ALL);
 
 // ----  Previous and Next arrows navigation  -----
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
+					$phpgw->msg->start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
-					$start,$mailbox_status->messages,'&folder=' .$phpgw->msg->prep_folder_out(''));
+					$phpgw->msg->start,$mailbox_status->messages,'&folder='.$phpgw->msg->prep_folder_out(''));
 
 	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
@@ -154,10 +102,8 @@
 		$stats_saved = number_format($mailbox_status->messages);
 
 		$msg_array = array();
-			// Note: sorting on email is on address, not displayed name per php imap_sort
-			//echo "<br>SORT GOT: column '$order', '$oursort'.";
-		//$msg_array = $phpgw->dcom->sort($mailbox, $sort, $order);
-		$msg_array = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $sort, $order);
+		//$msg_array = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $phpgw->msg->sort, $phpgw->msg->order);
+		$msg_array = $phpgw->msg->get_message_list();
 
 		// NUM NEW MESSAGES
 		$stats_new = $mailbox_status->unseen;
@@ -185,7 +131,7 @@
 			$mailbox_detail = $phpgw->dcom->mailboxmsginfo($phpgw->msg->mailsvr_stream);
 			$stats_size = $mailbox_detail->Size;
 			// size is in bytes, format for KB or MB
-			$stats_size = format_byte_size($stats_size);
+			$stats_size = $phpgw->msg->format_byte_size($stats_size);
 		}
 	}
 
@@ -230,19 +176,19 @@
 	{
 		// I think newsmode requires the "old way"
 		$sizesort = lang("lines");
-		$hdr_subject = $phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short));
-		$hdr_from = $phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short));
-		$hdr_date = $phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short));
-		$hdr_size = $phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"0",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
 	}
 	else
 	{
 		// for email
 		$sizesort = lang("size");
-		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short));
-		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short));
-		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short));
-		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
 	}
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
@@ -304,24 +250,24 @@
 		{
 			$totaltodisplay = $mailbox_status->messages;
 		}
-		else if (($mailbox_status->messages - $start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		else if (($mailbox_status->messages - $phpgw->msg->start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
-			$totaltodisplay = $start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+			$totaltodisplay = $phpgw->msg->start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 		}
 		else
 		{
 			$totaltodisplay = $mailbox_status->messages;
 		}
 
-		for ($i=$start; $i < $totaltodisplay; $i++)
+		for ($i=$phpgw->msg->start; $i < $totaltodisplay; $i++)
 		{
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops
-			$do_init_form = ($i == $start);
+			$do_init_form = ($i == $phpgw->msg->start);
 
 			// ROW BACK COLOR
-			$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
+			//$bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
+			$bg = $phpgw->nextmatchs->alternate_row_color($bg);
 
-			//$struct = $phpgw->dcom->fetchstructure($mailbox, $msg_array[$i]);
 			$struct = $phpgw->dcom->fetchstructure($phpgw->msg->mailsvr_stream, $msg_array[$i]);
 
 			// SHOW ATTACHMENT CLIP ?
@@ -469,7 +415,6 @@
 	{
 		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
 			. '<option>' . lang("move selected messages into") . ':'
-			//. $phpgw->msg->all_folders_listbox($mailbox,'',$folder_short)
 			. $phpgw->msg->all_folders_listbox('','',$folder_short)
 			. '</select>';
             
@@ -485,7 +430,7 @@
 	$t->set_var('ftr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('ftr_font',$phpgw_info['theme']['font']);
 	$t->set_var('ftr_compose_txt',lang("compose"));
-	$t->set_var('ftr_compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".urlencode($folder_short)));
+	$t->set_var('ftr_compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".$phpgw->msg->prep_folder_out('')));
 	$t->set_var('delmov_button',lang("delete"));
 	$t->set_var('delmov_listbox',$delmov_listbox);
 	

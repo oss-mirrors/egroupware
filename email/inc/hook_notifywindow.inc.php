@@ -21,44 +21,33 @@
 
 	$phpgw_info['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
 
-	if ($phpgw_info['user']['preferences']['email']['mainscreen_showmail'] &&
-		 (isset($phpgw_info['user']['apps']['email']) && $phpgw_info['user']['apps']['email']))
+	if (($phpgw_info['user']['preferences']['email']['mainscreen_showmail'])
+	&& (isset($phpgw_info['user']['apps']['email'])
+	&& $phpgw_info['user']['apps']['email']))
 	{
-		include($phpgw_info['server']['app_inc'] . SEP . 'functions.inc.php');
+		// ----  Create the base email Msg Class    -----
+		$phpgw->msg = CreateObject("email.mail_msg");
+		$args_array = Array();
+		$args_array['folder'] = 'INBOX';
+		$args_array['do_login'] = True;
+		$phpgw->msg->begin_request($args_array);
 
-		$mailbox_status = $phpgw->msg->status($mailbox,'{' . $phpgw_info['user']['preferences']['email']['mail_server'] . ':' . $phpgw_info['user']['preferences']['email']['mail_port'] . '}INBOX',SA_UNSEEN);
-		$nummsg = intval($phpgw->msg->num_msg($mailbox));
-		$str = '';
-		
-		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+		/*  // this is the structure you will get
+		  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
+		  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
+		  $inbox_data['alert_string'] string - what to show the user about this inbox check
+		  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
+		  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
+		*/
+		$inbox_data = Array();
+		$inbox_data = $phpgw->msg->new_message_check();
+
+		// end the mailserver request object
+		$phpgw->msg->end_request();
+
+		if ($inbox_data['alert_string'] != '')
 		{
-			if ($mailbox_status->unseen == 1) 
-			{
-				$str .= lang('You have 1 new message!');
-			}
-			if ($mailbox_status->unseen > 1) 
-			{
-				$str .= lang('You have x new messages!',$mailbox_status->unseen);
-			}
-			if ($mailbox_status->unseen == 0) 
-			{
-				$str .= lang('You have no new messages');
-			}
-		}
-		else
-		{
-			if ($nummsg > 0) 
-			{
-				$str .= lang('You have messages!');
-			}
-			elseif ($nummsg == 0) 
-			{
-				$str .= lang('You have no new messages');
-			}
-		}
-		if ($str != '')
-		{
-			echo "\n" . '<tr><td align="left"><!-- Mailbox info -->' . "\n";
+			echo "\r\n" . '<tr><td align="left"><!-- Mailbox info -->' . "\r\n";
 /*			echo '<script language="JavaScript">'.chr(13).chr(10);
 			echo '<!-- Activate Cloaking Device'.chr(13).chr(10);
 			echo '	funtion CheckEmail()'.chr(13).chr(10);
@@ -68,8 +57,9 @@
 			echo '//-->'.chr(13).chr(10);
 			echo '</script>'.chr(13).chr(10); */
 			echo '<font color="FFFFFF">EMail';
-			echo ($str ? ' - <A href="JavaScript:CheckEmail();">' . $str . '</A>' : '') . '</font>';
-			echo "\n".'<!-- Mailox info --></td></tr>'."\n";
+			//echo ($str ? ' - <A href="JavaScript:CheckEmail();">' . $str . '</A>' : '') . '</font>';
+			echo ' - <a href="JavaScript:CheckEmail();">'.$inbox_data['alert_string'].'</a>'.'</font>';
+			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
 	}
 

@@ -23,7 +23,6 @@
 
 	if ($phpgw_info['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
-		//include($tmp_app_inc . '/functions.inc.php');
 		// ----  Create the base email Msg Class    -----
 		$phpgw->msg = CreateObject("email.mail_msg");
 		$args_array = Array();
@@ -46,65 +45,46 @@
 		}
 		else
 		{
-			$server_str = $phpgw->msg->get_mailsvr_callstr();
-			$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,$server_str .'INBOX',SA_ALL);
-			if ($mailbox_status->unseen == 1)
-			{
-				$num_new_str = ' - ' .lang('You have 1 new message!');
-			}
-			elseif ($mailbox_status->unseen > 1)
-			{
-				$num_new_str = ' - ' .lang('You have x new messages!',$mailbox_status->unseen);
-			}
-			elseif ($mailbox_status->unseen == 0)
-			{
-				$num_new_str = ' - ' .lang('You have no new messages');
-			}
-			else
-			{
-				$num_new_str = '';
-			}
+			/*  // this is the structure you will get
+			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
+		  	  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
+			  $inbox_data['alert_string'] string - what to show the user about this inbox check
+			  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
+			  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
+			*/
+			$inbox_data = Array();
+			$inbox_data = $phpgw->msg->new_message_check();
 
-			$title = '<font color="FFFFFF">' . lang('EMail') . $num_new_str . '</font>';
+			$title = '<font color="FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
+
 			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
 			$portalbox->setvar('width',600);
 			$portalbox->outerborderwidth = 0;
 			$portalbox->header_background_image = $phpgw_info['server']['webserver_url'] . '/phpgwapi/templates/verdilak/images/bg_filler.gif';
-			if($mailbox_status->messages >= 5)
+
+			if($inbox_data['number_all'] >= 5)
 			{
 				$check_msgs = 5;
 			}
 			else
 			{
-				$check_msgs = $mailbox_status->messages;
+				$check_msgs = $inbox_data['number_all'];
 			}
 
-			// order 1 = order by the time the mail server revieved the mail
-			// NOT the (unreliable) timestamp from the senders MUA ( which would be order = 0 )
-			$order_hook = 1;
-			if ($phpgw_info['user']['preferences']['email']['default_sorting'] == 'new_old')
+			if ($inbox_data['number_all'] > 0)
 			{
-				$sort_hook = 1;
+				$msg_array = array();
+				$msg_array = $phpgw->msg->get_message_list();
 			}
-			else
+			for($i=0; $i<$check_msgs; $i++)
 			{
-				$sort_hook = 0;
-			}
-
-			if ($mailbox_status->messages > 0)
-			{
-				$msg_array_hook = array();
-				$msg_array_hook = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $order_hook, $sort_hook);
-			}
-			for($i=0;$i<$check_msgs;$i++,$j++)
-			{
-				$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_array_hook[$i]);
+				$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_array[$i]);
 				$subject = $phpgw->msg->get_subject($msg,'');
 				if (strlen($subject) > 65)
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_array_hook[$i]));
+				$portalbox->data[$i] = array($subject,$phpgw->link('/email/message.php','folder='.$phpgw->msg->prep_folder_out('').'&msgnum='.$msg_array[$i]));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
@@ -132,7 +112,6 @@
 					.'</form>'."\r\n"
 					.'</tr>'."\r\n";
 			}
-			//$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
 			$phpgw->msg->end_request();
 			// output the portalbox and (if applicable) the folders listbox below it
 			echo '<!-- start Mailbox info -->'."\r\n"
