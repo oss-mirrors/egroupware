@@ -557,16 +557,11 @@
 
 // ------------ activites bookable ----------------------
 
-				$bo_act = '<select name="book_activities[]" multiple>'
-							. $this->boprojects->select_activities_list($values['p_id'],False) . '</select>';
-				$this->t->set_var('book_activities_list',$bo_act);
+				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($values['p_id'],False));
 
 // -------------- activities billable ---------------------- 
 
-				$bill_act = '<select name="bill_activities[]" multiple>'
-						. $this->boprojects->select_activities_list($values['p_id'],True) . '</select>';
-
-    			$this->t->set_var('bill_activities_list',$bill_act);
+    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($values['p_id'],True));
 			}
 			else
 			{
@@ -576,19 +571,14 @@
 
 					$this->t->set_var('pro_parent',$phpgw->strip_html($parent['number']) . ' ' . $phpgw->strip_html($parent['title']));
 					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
+					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($pro_parent, False));				
+    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($pro_parent, True));
 				}
 
 				$this->t->set_var('lang_parent',lang('Main project'));
 				$this->t->set_var('lang_action',lang('Add job'));
 				$this->t->set_var('lang_choose',lang('Generate Job ID ?'));
 				$this->t->set_var('lang_number',lang('Job ID'));
-				$this->t->set_var('book_activities_list','');				
-    			$this->t->set_var('bill_activities_list','');
-				$this->t->set_var('book_activities_list','');
-    			$this->t->set_var('bill_activities_list','');
-
-				$book_activities = 0;
-				$bill_activities = 0;
 			}
 
 			$this->t->set_var('edithandle','');

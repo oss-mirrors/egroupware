@@ -261,6 +261,12 @@
 			return $activities_list;
 		}
 
+		function select_pro_activities($project_id, $billable)
+		{
+			$activities_list = $this->soprojects->select_pro_activities($project_id, $billable);
+			return $activities_list;
+		}
+
 		function check_values($action, $values, $book_activities, $bill_activities)
 		{
 			global $phpgw;

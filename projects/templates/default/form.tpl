@@ -65,11 +65,11 @@
 	</tr>
 	<tr>
 		<td>{lang_bookable_activities}:</td>
-		<td>{book_activities_list}</td>
+		<td><select name="book_activities[]" multiple>{book_activities_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_billable_activities}:</td>
-		<td>{bill_activities_list}</td>
+		<td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_access}:</td>

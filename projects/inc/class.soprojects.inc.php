@@ -357,6 +357,38 @@
 			return $activities_list;
 		}
 
+		function select_pro_activities($project_id, $billable = False)
+		{
+			global $phpgw, $phpgw_info;
+
+			$currency = $phpgw_info['user']['preferences']['common']['currency'];
+
+			if ($billable)
+			{
+				$bill_filter = " AND billable='Y'";
+			}
+			else
+			{
+				$bill_filter = " AND billable='N'";
+			}
+
+			$this->db->query("SELECT a.id, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa"
+							. " WHERE pa.project_id='$project_id' $bill_filter AND pa.activity_id=a.id ORDER BY a.descr asc");
+			while ($this->db->next_record())
+			{
+				$activities_list = '<option value="' . $this->db->f('id') . '" selected';
+				$activities_list .= '>' . $phpgw->strip_html($this->db->f('descr'));
+
+				if($billable)
+				{
+					$activities_list .= ' ' . $currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+				}
+
+				$activities_list .= '</option>' . "\n";
+			}
+			return $activities_list;
+		}
+
 		function return_value($item)
 		{
 			$this->db->query("select num from phpgw_p_projects where id='$item'",__LINE__,__FILE__);
