@@ -708,6 +708,14 @@
 				
 				$headerCount = count($headers['header']);
 				
+				if ($mailPreferences['sent_folder'] == $this->mailbox)
+				{
+					$this->t->set_var('lang_from',lang("to"));
+				}
+				else
+				{
+					$this->t->set_var('lang_from',lang("from"));
+				}
 				for($i=0; $i<$headerCount; $i++)
 				{
 					// create the listing of subjects
@@ -809,7 +817,7 @@
 							$sender_name	= $headers['header'][$i]['to_address'];
 							$full_address	= $headers['header'][$i]['to_address'];
 						}
-						$this->t->set_var('lang_from',lang("to"));
+						#$this->t->set_var('lang_from',lang("to"));
 					}
 					else
 					{
@@ -827,7 +835,7 @@
 							$sender_name	= $headers['header'][$i]['sender_address'];
 							$full_address	= $headers['header'][$i]['sender_address'];
 						}
-						$this->t->set_var('lang_from',lang("from"));
+						#$this->t->set_var('lang_from',lang("from"));
 					}
 					if(strlen($sender_name) > $maxAddressLength)
 					{
