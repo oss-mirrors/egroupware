@@ -60,15 +60,15 @@
 				'/index.php',
 				'menuaction=email.uicompose.compose'.
 				 $pass_the_ball_uri.
-				'&to='.$to.
-				'&cc='.$cc.
-				'&bcc='.$bcc.
-				'&subject='.$subject.
-				'&body='.$body.
-				'&personal='.$personal.
-				'&sort='.$sort.
-				'&order='.$order.
-				'&start='.$start));
+				'&to='.$_GET['to'].
+				'&cc='.$_GET['cc'].
+				'&bcc='.$_GET['bcc'].
+				'&subject='.$_GET['subject'].
+				'&body='.$_GET['body'].
+				'&personal='.$_GET['personal'].
+				'&sort='.$_GET['sort'].
+				'&order='.$_GET['order'].
+				'&start='.$_GET['start']));
 	
 	if (is_object($GLOBALS['phpgw']->msg))
 	{
