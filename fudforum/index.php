@@ -26,6 +26,17 @@
 		}
 	}
 
+	/* this is needed for installations where REQUEST_URI is not avaliable */
+	if (!isset($_SERVER['REQUEST_URI'])) {
+		if (isset($_SERVER['SCRIPT_NAME'])) {
+			$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
+		} else if (isset($_SERVER['PHP_SELF'])) {
+			$_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'];
+		} else if (isset($_ENV['PATH_INFO'])) {
+			$_SERVER['REQUEST_URI'] = $_SERVER['PATH_INFO'];
+		}
+	}
+
 	$prefix = strpos($_SERVER["REQUEST_URI"], 'index.php') ? dirname($_SERVER["REQUEST_URI"]) : $_SERVER["REQUEST_URI"]; 
 
 	$path = $prefix . "/" . $dom . "/index.php?" . $_SERVER["QUERY_STRING"];
