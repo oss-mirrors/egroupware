@@ -28,26 +28,26 @@
 
 		        if (isset($_REQUEST['filter_is_autorouted']) && $_REQUEST['filter_is_autorouted'])
 		        {
-		          $filter_is_autorouted= get_var('filter_is_autoRouted', 'any', '');
-		          $wheres[] = "is_autorouted='" .$filter_is_autorouted. "'";
+		          $filter_is_autorouted= get_var('filter_is_autorouted', 'any', '');
+		          $wheres[] = "wf_is_autorouted='" .$filter_is_autorouted. "'";
 		        }  
 
 		        if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process'])
 		        {  
 	                  $filter_process= (int)get_var('filter_process','any','');
-		          $wheres[] = "wf_p_id=" .$filter_process. "";
+		          $wheres[] = "ga.wf_p_id=" .$filter_process. "";
 		        }  
 
 		        if (isset($_REQUEST['filter_activity']) && $_REQUEST['filter_activity'])
 		        {  
 		          $filter_activity= (int)get_var('filter_activity', 'any', 0);
-		          $wheres[] = "activity_id=" .$filter_activity. "";
+		          $wheres[] = "wf_activity_id=" .$filter_activity. "";
 		        }
   
 		        if (isset($_REQUEST['filter_type']) && $_REQUEST['filter_type'])
 		        { 
 		          $filter_type= get_var('filter_type', 'any', '');
-		          $wheres[] = "type= '".$filter_type."'";
+		          $wheres[] = "wf_type= '".$filter_type."'";
 		        }  
 		        if (isset($_REQUEST['search_str']))
 		        {  
@@ -68,7 +68,7 @@
 		        $this->stats	= $this->process_monitor->monitor_stats();
 
 		        $this->show_filter_process();
-		        $this->show_filter_activities();
+		        $this->show_filter_unique_activities($where);
 		        $this->show_filter_types($all_types, $filter_type);
 		        $this->show_filter_is_interactive($filter_is_interactive);
 		        $this->show_filter_is_autorouted($filter_is_autorouted);
@@ -82,10 +82,11 @@
 		{
 			//_debug_array($activities_data);
 			$this->t->set_var(array(
-				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, '', lang('Name')),
-				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'type', $this->order, '', lang('Type')),
-				'header_int'		=> $this->nextmatchs->show_sort_order($this->sort, 'is_interactive', $this->order, '', lang('Interactive')),
-				'header_routing'	=> $this->nextmatchs->show_sort_order($this->sort, 'is_autorouted', $this->order, '', lang('Routing')),
+				'header_process'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_p_id', $this->order, '', lang('Process')),
+				'header_name'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, '', lang('Name')),
+				'header_type'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_type', $this->order, '', lang('Type')),
+				'header_int'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_interactive', $this->order, '', lang('Interactive')),
+				'header_routing'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_is_autorouted', $this->order, '', lang('Routing')),
 			));
 
 			$this->t->set_block('monitor_activities', 'block_act_table', 'act_table');
@@ -105,6 +106,8 @@
 				}
 
 				$this->t->set_var(array(
+					'act_process'				=> $activity['wf_procname'],
+					'act_process_version'		=> $activity['wf_version'],
 					'act_icon'					=> $this->act_icon($activity['wf_type']),
 					'act_href'					=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.form&p_id='. $activity['wf_p_id'] .'&activity_id='. $activity['wf_activity_id']),
 					'act_name'					=> $activity['wf_name'],
