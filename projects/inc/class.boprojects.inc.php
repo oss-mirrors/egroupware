@@ -296,9 +296,9 @@
 						$error[] = lang('That ID has been used already !');
 					}
 
-					if (strlen($values['number']) >= 15)
+					if (strlen($values['number']) > 19)
 					{
-						$error[] = lang('ID can not exceed 15 characters in length !');
+						$error[] = lang('ID can not exceed 19 characters in length !');
 					}
 				}
 			}
@@ -364,7 +364,7 @@
 
 					if (strlen($values['number']) >= 20)
 					{
-						$error[] = lang('ID can not exceed 20 characters in length !');
+						$error[] = lang('ID can not exceed 19 characters in length !');
 					}
 				}
 			}
@@ -422,7 +422,7 @@
 
 			if ($values['emonth'] || $values['eday'] || $values['eyear'])
 			{
-				$values['edate'] = mktime(2,0,0,$values['emonth'],$values['eday'],$values['eyear']);
+				$values['edate'] = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
 			if ($values['project_id'])

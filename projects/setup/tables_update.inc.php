@@ -342,4 +342,16 @@
 		$setup_info['projects']['currentver'] = '0.8.5.005';
 		return $setup_info['projects']['currentver'];
 	}
+
+	$test[] = '0.8.5.005';
+	function projects_upgrade0_8_5_005()
+	{
+		global $setup_info,$phpgw_setup;
+
+        $phpgw_setup->oProc->AlterColumn('phpgw_p_projects','num',array('type' => 'varchar','precision' => 25,'nullable' => False));
+
+		$setup_info['projects']['currentver'] = '0.8.5.006';
+		return $setup_info['projects']['currentver'];
+		//return True;
+	}
 ?>

@@ -40,8 +40,7 @@
 		<td>{cat}</td>
 	</tr>
 	<tr>
-		<td><input type="hidden" name="abid" value="{abid}">
-			{customer}</td>
+		<td>{customer}</td>
 	</tr>
 	<tr>
 		<td>{lang_coordinator}:</td>

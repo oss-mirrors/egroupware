@@ -278,13 +278,13 @@
 
 				if ($action == 'mains')
 				{
-					if ($pro[$i]['customer'] == 0) { $td_action = '&nbsp;'; }
-					else
+					if ($pro[$i]['customer'] != 0) 
 					{
 						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
             			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
+					else { $td_action = '&nbsp;'; }
 				}
 				else
 				{
@@ -318,24 +318,12 @@
 					'coordinator'	=> $coordinatorout
 				));
 
-				if ($action == 'mains')
-				{
-					$link_data['pro_parent']	= $pro[$i]['project_id'];
-					$link_data['action']		= 'subs';
-					$this->t->set_var('action_entry',$phpgw->link('/index.php',$link_data));
-					$this->t->set_var('lang_action_entry',lang('Jobs'));
-				}
-				else
-				{
-					$link_data['menuaction'] = 'projects.uiprojecthours.list_hours';
-					$link_data['project_id'] = $pro[$i]['project_id'];
-					$this->t->set_var('action_entry',$phpgw->link('/index.php',$link_data)); 
-					$this->t->set_var('lang_action_entry',lang('Work hours'));
-				}
+				$link_data['project_id'] = $pro[$i]['project_id'];
 
 				if ($this->boprojects->check_perms($this->grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $this->account)
 				{
-					$this->t->set_var('edit',$phpgw->link('/index.php','menuaction=projects.uiprojects.edit_project&project_id=' . $pro[$i]['project_id']));
+					$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+					$this->t->set_var('edit',$phpgw->link('/index.php',$link_data));
 					$this->t->set_var('lang_edit_entry',lang('Edit'));
 				}
 				else
@@ -346,6 +334,19 @@
 
 				$this->t->set_var('view',$phpgw->link('/projects/view.php','id=' . $pro[$i]['project_id']));
 				$this->t->set_var('lang_view_entry',lang('View'));
+
+				if ($action == 'mains')
+				{
+					$this->t->set_var('action_entry',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&pro_parent='
+										. $pro[$i]['project_id'] . '&action=subs'));
+					$this->t->set_var('lang_action_entry',lang('Jobs'));
+				}
+				else
+				{
+					$link_data['menuaction'] = 'projects.uiprojecthours.list_hours';
+					$this->t->set_var('action_entry',$phpgw->link('/index.php',$link_data)); 
+					$this->t->set_var('lang_action_entry',lang('Work hours'));
+				}
 
 				$this->t->parse('list','projects_list',True);
 			}
@@ -527,10 +528,17 @@
 			if ($action == 'mains')
 			{
 				$this->t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
-				$customer = '<input type="button" value="' . lang('Customer') . '" onClick="abook();"></td>' . "\n"
-						. '<td><input type="text" name="name" size="50" value="' . $name . '" readonly>&nbsp;&nbsp;&nbsp;'
-						. lang('Select per button !');
-				$this->t->set_var('customer',$customer);
+
+				$customer = $this->boprojects->read_customer_data($abid);
+            	if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            	else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+
+				$customerout = '<input type="button" value="' . lang('Customer') . '" onClick="abook();"></td>' . "\n"
+							. '<td><input type="hidden" name="abid" value="' . $abid . '">' . "\n"
+							. '<input type="text" name="name" size="50" value="' . $name . '" readonly>&nbsp;&nbsp;&nbsp;'
+							. lang('Select per button !');
+				$this->t->set_var('customer',$customerout);
+
 				$this->t->set_var('lang_action',lang('Add project'));
 				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
 						.	$this->cats->formated_list('select','all',$cat_id,True) . '</select>';
@@ -540,20 +548,6 @@
 				$this->t->set_var('pro_parent','');
 				$this->t->set_var('lang_choose',lang('Generate Project ID ?'));
 				$this->t->set_var('lang_number',lang('Project ID'));
-				$this->t->set_var('abid',$abid);
-
-				if (! $submit)
-				{
-					$this->t->set_var('name',$name);
-				}
-				else
-				{
-					$customer = $this->boprojects->read_customer_data($abid);
-            		if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            		else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-
-					$this->t->set_var('name',$name);
-				}
 
 // ------------ activites bookable ----------------------
 
@@ -565,7 +559,7 @@
 			}
 			else
 			{
-				if ($pro_parent)
+				if ($pro_parent && $action == 'subs')
 				{
 					$parent = $this->boprojects->read_single_project($pro_parent);
 
@@ -603,7 +597,8 @@
 				'menuaction'	=> 'projects.uiprojects.list_projects',
 				'pro_parent'	=> $pro_parent,
 				'action'		=> $action,
-				'cat_id'		=> $this->cat_id
+				'cat_id'		=> $this->cat_id,
+				'project_id'	=> $project_id,
 			);
 
 			if ($submit)
@@ -613,14 +608,14 @@
 				$values['customer'] = $abid;
 				$values['parent']	= $pro_parent;
 
-				$error = $this->boprojects->check_values($values, $book_activities, $bill_activities);
+				$error = $this->boprojects->check_values($action, $values, $book_activities, $bill_activities);
 				if (is_array($error))
 				{
 					$this->t->set_var('message',$phpgw->common->error_list($error));
 				}
 				else
 				{
-					$this->boprojects->save_project($values, $book_activities, $bill_activities);
+					$this->boprojects->save_project($action, $values, $book_activities, $bill_activities);
 					Header('Location: ' . $phpgw->link('/index.php',$link_data));
 				}
 			}
@@ -641,13 +636,11 @@
 			}
 
 			$this->t->set_var('done_url',$phpgw->link('/index.php',$link_data));
-			$this->t->set_var('actionurl',$phpgw->link('/index.php','menuaction=projects.uiprojects.edit_project&project_id=' . $project_id));
-			$this->t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
-			$this->t->set_var('lang_action',lang('Edit project'));
+
+			$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+			$this->t->set_var('actionurl',$phpgw->link('/index.php',$link_data));
 
 			$values = $this->boprojects->read_single_project($project_id);
-
-			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$values['cat'],True));
 
 			$this->t->set_var('lang_choose','');
 			$this->t->set_var('choose','');
@@ -716,39 +709,66 @@
 
 			$this->t->set_var('coordinator_list',$coordinator_list);
 
-			$abid = $values['customer'];
-
-			if (! $abid)
-			{
-				$this->t->set_var('name',$name);
-			}
-			else
-			{
-				$customer = $this->boprojects->read_customer_data($abid);
-            	if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            	else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-
-				$this->t->set_var('name',$name);
-			}
-
-			$this->t->set_var('abid',$abid);
-
 			$this->t->set_var('budget',$values['budget']);
 
 			$this->t->set_var('access','<input type="checkbox" name="values[access]" value="True"' . ($values['access'] == 'private'?' checked':'') . '>');
 
+			if ($action == 'mains')
+			{
+				$this->t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
+
+				$abid = $values['customer'];
+
+				$customer = $this->boprojects->read_customer_data($abid);
+            	if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            	else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+
+				$customerout = '<input type="button" value="' . lang('Customer') . '" onClick="abook();"></td>' . "\n"
+							. '<td><input type="hidden" name="abid" value="' . $abid . '">' . "\n"
+							. '<td><input type="text" name="name" size="50" value="' . $name . '" readonly>&nbsp;&nbsp;&nbsp;'
+							. lang('Select per button !');
+				$this->t->set_var('customer',$customerout);
+
+				$this->t->set_var('lang_action',lang('Edit project'));
+				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
+						.	$this->cats->formated_list('select','all',$values['cat'],True) . '</select>';
+
+				$this->t->set_var('cat',$cat);
+				$this->t->set_var('lang_parent','');
+				$this->t->set_var('pro_parent','');
+				$this->t->set_var('lang_number',lang('Project ID'));
+
 // ------------ activites bookable ----------------------
 
-			$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
+				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
 
 // -------------- activities billable ---------------------- 
 
-    		$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
+    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
+			}
+			else
+			{
+				if ($pro_parent && $action == 'subs')
+				{
+					$parent = $this->boprojects->read_single_project($pro_parent);
 
+					$this->t->set_var('pro_parent',$phpgw->strip_html($parent['number']) . ' ' . $phpgw->strip_html($parent['title']));
+					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
+					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($pro_parent, False));				
+    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($pro_parent, True));
+				}
+
+				$this->t->set_var('lang_parent',lang('Main project'));
+				$this->t->set_var('lang_action',lang('Edit job'));
+				$this->t->set_var('lang_number',lang('Job ID'));
+			}
+
+			$link_data['menuaction'] = 'projects.uiprojects.delete_pa';
+			$link_data['pa_id'] = $project_id;
 			if ($this->boprojects->check_perms($this->grants[$values['coordinator']],PHPGW_ACL_DELETE) || $values['coordinator'] == $this->account)
 			{
-				$this->t->set_var('delete','<form method="POST" action="' . $phpgw->link('/index.php','menuaction=projects.uiprojects.delete_pa&pa_id='
-									. $project_id . '&action=mains') . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+				$this->t->set_var('delete','<form method="POST" action="' . $phpgw->link('/index.php',$link_data)
+											. '"><input type="submit" value="' . lang('Delete') .'"></form>');
 			}
 			else
 			{
