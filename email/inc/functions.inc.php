@@ -507,6 +507,17 @@
 			//$args_array['subject'] = $subject;
 			//unset($subject);
 		}
+		// Less Common Usage:
+		// ----  sender : string : set or unset
+		// RFC says use header "Sender" ONLY WHEN the sender of the email is NOT the author, this is somewhat rare
+		if (isset($sender))
+		{
+			$GLOBALS['phpgw']->msg->args['sender'] = $sender;
+			$sender = nil;
+			unset($sender);
+			//$args_array['sender'] = $sender;
+			//unset($sender);
+		}
 		// ----  attach_sig: set-True/unset  ----
 		// USAGE:
 		// (outgoing) compose.php: if checkbox attach sig is checked, this is passed as GPC var to sent_message.php

@@ -103,6 +103,21 @@ In the future, this will process a specially formated email msg.<hr>
 		</font>
 	</td>
 </tr>
+
+<tr>
+	<td valign="top" colspan="2" width="100%">
+		<table border="0" cellpadding="1" cellspacing="1" width="100%" align="center">
+		<tr>
+			<td bgcolor="{theme_row_on}" align="center" width="50%">
+				<font size="2" face="{theme_font}">{view_option}</font>
+			</td>
+			<td bgcolor="{theme_row_on}" align="center" width="50%">
+				<font size="2" face="{theme_font}">{view_headers_href}</font>
+			</td>
+		</tr>
+		</table>	
+	</td> 
+</tr>
 </table>
 
 <!-- start message display -->

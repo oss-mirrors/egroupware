@@ -318,11 +318,11 @@
 		var $folder = '';
 		
 		var $imap_builtin=False;
-		// DEBUG FLAG
-		//var $debug_dcom=True;
-		var $debug_dcom=False;
-		//var $debug_dcom_extra=True;
-		var $debug_dcom_extra=False;
+		
+		// DEBUG FLAG: Debug Levels are 0=none, 1=basic, 2=detailed, 3=more detailed
+		var $debug_dcom=0;
+		//var $debug_dcom=1;
+		//var $debug_dcom=2;
 		
 		function mail_dcom_base()
 		{
@@ -341,7 +341,7 @@
 		
 		function error()
 		{
-			echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\n";
+			echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\r\n";
 			$this->close();
 			$GLOBALS['phpgw']->common->phpgw_exit();
 		}
@@ -620,7 +620,7 @@
 			{
 				//$new_list[$key] = $this->convert_date($value);
 				$new_list[$key] = $this->make_udate($value);
-				if ($this->debug_dcom_extra) { echo 'base_sock: convert_date_array: field_list: "'.$new_list[$key].'" was "'.$value.'"<br>'; }
+				if ($this->debug_dcom >= 2) { echo 'base_sock: convert_date_array: field_list: "'.$new_list[$key].'" was "'.$value.'"<br>'; }
 	
 			}
 			return $new_list;

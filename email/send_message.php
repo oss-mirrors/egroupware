@@ -31,7 +31,9 @@
 		//echo 'send_message cleanup';
 		$GLOBALS['phpgw']->msg->end_request();
 		// note: the next lines can be removed since php takes care of memory management
+		$mail_out = '';
 		unset($mail_out);
+		$GLOBALS['phpgw']->mail_send = nil;
 		unset($GLOBALS['phpgw']->mail_send);
 	}
 
@@ -75,7 +77,7 @@
 	$mail_out['from'] = Array();
 	$mail_out['from'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array('"'.$GLOBALS['phpgw_info']['user']['fullname'].'" <'.$GLOBALS['phpgw_info']['user']['preferences']['email']['address'].'>');
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['sender'][0]
-	$mail_out['sender'] = Array();
+	$mail_out['sender'] = '';
 	$mail_out['charset'] = '';
 	$mail_out['msgtype'] = '';
 
@@ -101,9 +103,22 @@
 	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
 	if (isset($GLOBALS['phpgw']->msg->args['sender']) && ($GLOBALS['phpgw']->msg->args['sender'] != ''))
 	{
-		// convert script GPC args into useful mail_out structure information
-		$mail_out['sender'] = $GLOBALS['phpgw']->msg->make_rfc_addy_array($GLOBALS['phpgw']->msg->args['sender']);
+		// clean data
+		$GLOBALS['phpgw']->msg->args['sender'] = $GLOBALS['phpgw']->msg->stripslashes_gpc($GLOBALS['phpgw']->msg->args['sender']);
+		// convert script sender arg into useful mail_out structure information
+		$sender_array = $GLOBALS['phpgw']->msg->make_rfc_addy_array($GLOBALS['phpgw']->msg->args['sender']);
+		// realistically sender array should have no more than one member (can there really be more than 1 sender?)
+		if (count($sender_array) > 0)
+		{
+			$mail_out['sender'] = $GLOBALS['phpgw']->msg->addy_array_to_str($sender_array);
+			// bogus data check
+			if (trim($mail_out['sender']) == '')
+			{
+				$mail_out['sender'] = '';
+			}
+		}
 		// after this, ONLY USE $mail_out structure for this
+		// it will wither be blank string OR a string which should be 1 email address
 	}
 	// -----  DATE  -----
 	// RFC2822: date *should* be local time with the correct offset, but this is problematic on many Linux boxen
@@ -577,13 +592,13 @@
 	$hdr_line = 0;
 	$mail_out['main_headers'][$hdr_line] = 		'From: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['from']);
 	$hdr_line++;
-	if (count($mail_out['sender'] > 0))
+	if ($mail_out['sender'] != '')
 	{
 		// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
 		// $mail_out['sender'] is initialized as an empty array in the begining of this file
 		// after that, it would be filled if the argument "sender" was passed to the script,
 		// then it would have been converted to the appropriate format and put in the $mail_out['sender'] array
-		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['sender']);
+		$mail_out['main_headers'][$hdr_line] = 	'Sender: '.$mail_out['sender'];
 		$hdr_line++;
 	}
 	//$mail_out['main_headers'][$hdr_line] = 		'Reply-To: '.$GLOBALS['phpgw']->msg->addy_array_to_str($mail_out['from']);

@@ -243,7 +243,7 @@
 		*/
 		function server_last_error()
 		{
-			if ($this->debug_dcom) { echo 'imap: call to server_last_error<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to server_last_error<br>'; }
 			return $this->server_last_error_str;
 		}
 		
@@ -254,49 +254,49 @@
 		function createmailbox($stream,$mailbox) 
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: createmailbox<br>'; }
 			return true;
 		}
 		function deletemailbox($stream,$mailbox)
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: deletemailbox<br>'; }
 			return true;
 		}
 		function expunge($stream)
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: expunge<br>'; }
 			return true;
 		}
 		function mailcopy($stream,$msg_list,$mailbox,$flags)
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mailcopy<br>'; }
 			return False;
 		}
 		function mail_move($stream,$msg_list,$mailbox)
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: mail_move<br>'; }
 			return False;
 		}
 		function reopen($stream,$mailbox,$flags = "")
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: reopen<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: reopen<br>'; }
 			return False;
 		}
 		function append($stream, $folder = "Sent", $header, $body, $flags = "")
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to unimplemented socket function: append<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: append<br>'; }
 			return False;
 		}
 		function fetch_overview($stream,$sequence,$flags)
 		{
 			// not yet implemented
-			if ($this->debug_dcom) { echo 'imap: call to not-yet-implemented socket function: fetch_overview<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: call to not-yet-implemented socket function: fetch_overview<br>'; }
 			return False;
 		}
 	
@@ -319,7 +319,7 @@
 		*/
 		function open ($fq_folder, $user, $pass, $flags='')
 		{
-			if ($this->debug_dcom) { echo 'imap: Entering open<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Entering open<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -327,7 +327,7 @@
 			$folder = $svr_data['folder'];
 			$server = $svr_data['server'];
 			$port = $svr_data['port'];
-			if ($this->debug_dcom) { echo 'imap: open: svr_data:<br>'.serialize($svr_data).'<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: open: svr_data:<br>'.serialize($svr_data).'<br>'; }
 			
 			if (!$this->open_port($server,$port,15))
 			{
@@ -337,7 +337,7 @@
 			else
 			{
 				$junk = $this->read_port();
-				if ($this->debug_dcom_extra) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
+				if ($this->debug_dcom >= 2) { echo 'imap: open: open port server hello: "' .htmlspecialchars($this->show_crlf($junk)) .'"<br>'; }
 			}
 
 
@@ -345,12 +345,12 @@
 			$full_command = $cmd_tag.' LOGIN "'.quotemeta($user).'" "'.quotemeta($pass).'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: open: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: open: write_port: '. htmlspecialchars($full_command) .'<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: open: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: open: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: open: could not write_port<br>'; }
 				$this->error();
 				// does $this->error() ever continue onto next line?
 				return False;
@@ -362,46 +362,46 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: open: error in Open<br>';
 					echo 'imap: open: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving Open with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Open with error<br>'; }
 				return False;
 			}
 			else
 			{
-				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'open', True); }
-				if ($this->debug_dcom) { echo 'imap: open: Successful IMAP Login<br>'; }
+				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'open', True); }
+				if ($this->debug_dcom >= 1) { echo 'imap: open: Successful IMAP Login<br>'; }
 			}
 			
 			// now that we have logged in, php's IMAP_OPEN would now select the desired folder
-			if ($this->debug_dcom_extra) { echo 'imap: open: php IMAP_OPEN would now select desired folder: "'. htmlspecialchars($folder) .'"<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: open: php IMAP_OPEN would now select desired folder: "'. htmlspecialchars($folder) .'"<br>'; }
 			// php's IMAP_OPEN also selects the desired folder (mailbox) after the connection is established
 			if($folder != '')
 			{
 				$this->reopen('',$fq_folder);
 			}
-			if ($this->debug_dcom) { echo 'imap: Leaving open<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Leaving open<br>'; }
 			return $this->socket;
 		}
 
 		function close($flags="")
 		{
-			if ($this->debug_dcom) { echo 'imap: Entering Close<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Entering Close<br>'; }
 			
 			$cmd_tag = 'c001';
 			$full_command = $cmd_tag.' LOGOUT';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: close: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: close: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: close: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: close: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: close: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -412,19 +412,19 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: close: error in Close<br>';
 					echo 'imap: close: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving Close with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Close with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'close', True); }
-				if ($this->debug_dcom) { echo 'imap: Leaving Close<br>'; }
+				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'close', True); }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving Close<br>'; }
 				return True;
 			}
 		}
@@ -442,24 +442,24 @@
 		*/
 		function reopen($stream_notused, $fq_folder, $flags='')
 		{
-			if ($this->debug_dcom) { echo 'imap: Entering reopen<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Entering reopen<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
 			$svr_data = $this->distill_fq_folder($fq_folder);
 			$folder = $svr_data['folder'];
-			if ($this->debug_dcom) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: reopen: folder value is: ['.$folder.']<br>'; }
 			
 			$cmd_tag = 'r001';
 			$full_command = $cmd_tag.' SELECT "'.$folder.'"';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: reopen: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: reopen: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: reopen: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: reopen: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: reopen: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -469,19 +469,19 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: reopen: error in reopen<br>';
 					echo 'imap: reopen: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving reopen with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving reopen with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'reopen', True); }
-				if ($this->debug_dcom) { echo 'imap: Leaving reopen<br>'; }
+				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'reopen', True); }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving reopen<br>'; }
 				return True;
 			}
 		}
@@ -517,7 +517,7 @@
 		*/
 		function listmailbox($stream_notused,$server_str,$pattern)
 		{
-			if ($this->debug_dcom) { echo 'imap: Entering listmailbox<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Entering listmailbox<br>'; }
 			$mailboxes_array = Array();
 			
 			// prepare params, seperate wildcards "*" or "%" from param $pattern
@@ -556,12 +556,12 @@
 			$full_command = $cmd_tag.' LIST '.$list_params;
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: listmailbox: write_port: ['. htmlspecialchars($full_command) .']<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: listmailbox: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: listmailbox: write_port: ['. htmlspecialchars($full_command) .']<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: listmailbox: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: listmailbox: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: listmailbox: could not write_port<br>'; }
 				$this->error();
 			}
 			
@@ -571,18 +571,18 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: listmailbox: error in listmailbox<br>';
 					echo 'imap: listmailbox: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving listmailbox with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving listmailbox with error<br>'; }
 				return False;				
 			}
 			else
 			{
-				if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'reopen', True); }
+				if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'reopen', True); }
 			}
 			
 			// delete all text except the folder name
@@ -616,8 +616,8 @@
 				}
 			}
 			
-			if ($this->debug_dcom_extra) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
-			if ($this->debug_dcom) { echo 'imap: Leaving listmailbox<br>'; }
+			if ($this->debug_dcom >= 2) { $this->report_svr_data($mailboxes_array, 'listmailbox INTERNAL_mailboxes_array', False); }
+			if ($this->debug_dcom >= 1) { echo 'imap: Leaving listmailbox<br>'; }
 			//return '';
 			return $mailboxes_array;
 		}
@@ -656,7 +656,7 @@
 		
 		function mailboxmsginfo($stream_notused='')
 		{
-			if ($this->debug_dcom) { echo 'imap: mailboxmsginfo<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: mailboxmsginfo<br>'; }
 			return False;
 		}
 		
@@ -715,7 +715,7 @@
 		*/
 		function status($stream_notused='', $fq_folder='',$options=SA_ALL)
 		{
-			if ($this->debug_dcom) { echo 'imap: Entering status<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Entering status<br>'; }
 			
 			// fq_folder is a "fully qualified folder", seperate the parts:
 			$svr_data = array();
@@ -745,12 +745,12 @@
 			$full_command = $cmd_tag.' STATUS "'.$svr_data['folder'].'" ('.$query_str.')';
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
-			if ($this->debug_dcom_extra) { echo 'imap: status: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
-			if ($this->debug_dcom_extra) { echo 'imap: status: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: status: write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
+			if ($this->debug_dcom >= 2) { echo 'imap: status: expecting: "'. htmlspecialchars($expecting) .'" followed by OK, NO, or BAD<br>'; }
 			
 			if(!$this->write_port($full_command))
 			{
-				if ($this->debug_dcom) { echo 'imap: status: could not write_port<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: status: could not write_port<br>'; }
 				$this->error();
 				return False;				
 			}
@@ -761,30 +761,30 @@
 			// TEST THIS ERROR DETECTION - empty array = error (BAD or NO)
 			if (count($response_array) == 0)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: status: error in status<br>';
 					echo 'imap: status: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving status with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
 				return False;				
 			}
 			// STATUS should only return 1 line of data
 			if (count($response_array) > 1)
 			{
-				if ($this->debug_dcom_extra)
+				if ($this->debug_dcom >= 2)
 				{
 					echo 'imap: status: error in status, more than one line server response, not normal<br>';
 					echo 'imap: status: last recorded error:<br>';
 					echo  $this->server_last_error().'<br>';
 				}
-				if ($this->debug_dcom) { echo 'imap: Leaving status with error<br>'; }
+				if ($this->debug_dcom >= 1) { echo 'imap: Leaving status with error<br>'; }
 				return False;				
 			}
 			
 			// if we get here we have valid server data
-			if ($this->debug_dcom_extra) { $this->report_svr_data($response_array, 'status', True); }
+			if ($this->debug_dcom >= 2) { $this->report_svr_data($response_array, 'status', True); }
 			
 			// initialize structure
 			$info = new mailbox_status;
@@ -849,7 +849,7 @@
 				unset($info->uidvalidity);
 			}
 			
-			if ($this->debug_dcom) { echo 'imap: Leaving status<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: Leaving status<br>'; }
 			return $info;
 		}
 		
@@ -894,7 +894,7 @@
 				// snarf the data
 				$data_mini_str = trim(substr($data_mini_str, 0, $data_end));
 				$return_data = (int)$data_mini_str;
-				if ($this->debug_dcom_extra) { echo 'imap: snarf_status_data: '.$snarf_this.' = '.$return_data.'<br>'; }
+				if ($this->debug_dcom >= 2) { echo 'imap: snarf_status_data: '.$snarf_this.' = '.$return_data.'<br>'; }
 			}
 			return $return_data;
 		}
@@ -926,7 +926,7 @@
 		\**************************************************************************/
 		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
 		{
-			if ($this->debug_dcom) { echo 'imap: sort<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: sort<br>'; }
 			return False;
 		}
 		
@@ -1008,7 +1008,7 @@
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
 			// outer control structure for the multi-pass functions
-			if ($this->debug_dcom) { echo 'imap: fetchstructure<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchstructure<br>'; }
 			return False;
 		}
 		
@@ -1053,7 +1053,7 @@
 		\**************************************************************************/
 		function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 		{
-			if ($this->debug_dcom) { echo 'imap: header<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: header<br>'; }
 			return False;
 		}
 		
@@ -1067,7 +1067,7 @@
 		\**************************************************************************/
 		function delete($stream_notused,$msg_num,$flags="")
 		{
-			if ($this->debug_dcom) { echo 'imap: delete<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: delete<br>'; }
 			return False;
 		}
 		
@@ -1078,7 +1078,7 @@
 		function fetchheader($stream_notused,$msg_num,$flags='')
 		{
 			// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
-			if ($this->debug_dcom) { echo 'imap: fetchheader<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchheader<br>'; }
 			return False;
 		}
 		
@@ -1144,7 +1144,7 @@
 		\**************************************************************************/
 		function fetchbody($stream_notused,$msg_num,$part_num="",$flags="")
 		{
-			if ($this->debug_dcom) { echo 'imap: fetchbody<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: fetchbody<br>'; }
 			return False;
 		}
 		
@@ -1155,7 +1155,7 @@
 		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 		{
 			// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
-			if ($this->debug_dcom) { echo 'imap: get_body<br>'; }
+			if ($this->debug_dcom >= 1) { echo 'imap: get_body<br>'; }
 			return False;
 		}
 		
