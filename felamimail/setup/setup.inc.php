@@ -15,11 +15,19 @@
 	$setup_info['felamimail']['title']     = 'FeLaMiMail';
 	$setup_info['felamimail']['version']	= '0.8.4';
 	$setup_info['felamimail']['app_order'] = 2;
+	$setup_info['felamimail']['enable']    = 1;
+
+	$setup_info['felamimail']['author'] = 'Lars Kneschke';
+	$setup_info['felamimail']['license']  = 'GPL';
+	$setup_info['felamimail']['description'] =
+		'Email reader originally based from Squirrelmail.';
+	$setup_info['felamimail']['maintainer'] = 'Lars Kneschke';
+	$setup_info['felamimail']['maintainer_email'] = 'lars@kneschke.de';
+
 	$setup_info['felamimail']['tables']    = array(
 		'phpgw_felamimail_cache',
 		'phpgw_felamimail_folderstatus'
 	);
-	$setup_info['felamimail']['enable']    = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';

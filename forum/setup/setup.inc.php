@@ -18,6 +18,13 @@
 	$setup_info['forum']['app_order'] = 7;
 	$setup_info['forum']['enable'] = 1;
 
+	$setup_info['forum']['author'] = 'Joseph Engo';
+	$setup_info['forum']['license']  = 'GPL';
+	$setup_info['forum']['description'] =
+		'Subject matter message board.';
+	$setup_info['forum']['maintainer'] = 'Mark Peters';
+	$setup_info['forum']['maintainer_email'] = 'skeeter@phpgroupware.org';
+
 	/* the table info */
 	$setup_info['forum']['tables'] = array(
 		'phpgw_forum_body',
