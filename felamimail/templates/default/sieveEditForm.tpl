@@ -98,7 +98,7 @@ function SubmitForm(a)
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input class="input_text" TYPE="radio" NAME="action" VALUE="folder" {checked_action_folder}> File Into:
+						<input TYPE="radio" NAME="action" VALUE="folder" {checked_action_folder}> File Into:
 					</td>
 					<td>
 						<select class="input_text" NAME="folder">
@@ -108,7 +108,7 @@ function SubmitForm(a)
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input class="input_text" TYPE="radio" NAME="action" VALUE="address" {checked_action_address}> Forward to address:
+						<input TYPE="radio" NAME="action" VALUE="address" {checked_action_address}> Forward to address:
 					</td>
 					<td>
 						<input class="input_text" TYPE="text" NAME="address" SIZE="40" value="{value_address}">
@@ -116,7 +116,7 @@ function SubmitForm(a)
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input class="input_text" TYPE="radio" NAME="action" VALUE="reject" {checked_action_reject}> Send a reject message:
+						<input TYPE="radio" NAME="action" VALUE="reject" {checked_action_reject}> Send a reject message:
 					</td>
 					<td>
 						<textarea class="input_text" NAME="reject" ROWS="3" COLS="40" WRAP="hard" TABINDEX="14">{value_reject}</textarea>
@@ -124,7 +124,7 @@ function SubmitForm(a)
 				</tr>
 				<tr CLASS="sieveRowActive">
 					<td>
-						<input class="input_text" TYPE="radio" NAME="action" VALUE="discard" {checked_action_discard}> Discard the message.
+						<input TYPE="radio" NAME="action" VALUE="discard" {checked_action_discard}> Discard the message.
 					</td>
 					<td>&nbsp;</td>
 				</tr>
