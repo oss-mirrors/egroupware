@@ -3,7 +3,8 @@
       $phpgw_info["server"]["mail_server_type"] == "imap") {
      $folder = (!$folder ? "INBOX" : $folder);
   }
-  $mailbox = $phpgw->msg->login($folder);
+   $phpgw_info["user"]["userid"] = $phpgw->db->f("loginid");
+    $mailbox = $phpgw->msg->login($folder);
   
   function decode_header_string($hed_str)
   {
