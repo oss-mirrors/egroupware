@@ -11,9 +11,11 @@
 
 	/* $Id$ */
 
-	// Only Modify the $file variable.....
-	$file = Array();
+	$hp_display = (int)$GLOBALS['phpgw_info']['user']['preferences']['skel']['homepage_display'];
+	if($hp_display > 0)
+	{
+		$obj = CreateObject('skel.ui');
+		$obj->show_data_on_homepage();
+	}
 
-	// Do not modify below this line
-	display_manual_section($appname,$file);
 ?>

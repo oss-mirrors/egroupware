@@ -11,9 +11,17 @@
 
 	/* $Id$ */
 
-	// Only Modify the $file variable.....
-	$file = Array();
+	$GLOBALS['phpgw_info'] = array();
 
-	// Do not modify below this line
-	display_manual_section($appname,$file);
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp'              => 'skel',
+		'noheader'                => True,
+		'nonavbar'                => True,
+		'enable_nextmatchs_class' => True
+	);
+	include('../header.inc.php');
+
+	ExecMethod('skel.ui.index');
+
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,9 +11,21 @@
 
 	/* $Id$ */
 
-	// Only Modify the $file variable.....
-	$file = Array();
+	class so
+	{
+		var $db;
 
-	// Do not modify below this line
-	display_manual_section($appname,$file);
+		var $debug = false;
+
+		function so($args)
+		{
+			$this->db = $GLOBALS['phpgw']->db;
+		}
+
+		function somestoragefunc()
+		{
+			// do some data manipulation here
+		}
+
+	}
 ?>

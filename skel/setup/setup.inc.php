@@ -1,13 +1,13 @@
 <?php
-	/**************************************************************************\
-	* phpGroupWare                                                             *
-	* http://www.phpgroupware.org                                              *
-	* --------------------------------------------                             *
-	*  This program is free software; you can redistribute it and/or modify it *
-	*  under the terms of the GNU General Public License as published by the   *
-	*  Free Software Foundation; either version 2 of the License, or (at your  *
-	*  option) any later version.                                              *
-	\**************************************************************************/
+    /**************************************************************************\
+    * eGroupWare - Skeleton Application                                        *
+    * http://www.egroupware.org                                                *
+    * -----------------------------------------------                          *
+    *  This program is free software; you can redistribute it and/or modify it *
+    *  under the terms of the GNU General Public License as published by the   *
+    *  Free Software Foundation; either version 2 of the License, or (at your  *
+    *  option) any later version.                                              *
+    \**************************************************************************/
 
 	/* $Id$ */
 
@@ -30,10 +30,10 @@
 	$setup_info['skel']['maintainer_email'] = 'Your.Name@domain.com';
 	
 	/* The tables this app creates */
-	$setup_info['skel']['tables']    = Array('phpgw_skel');
+	$setup_info['skel']['tables']    = array('phpgw_skel');
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['skel']['hooks'] = Array(
+	$setup_info['skel']['hooks'] = array(
 		'preferences',
 		'manual',
 		'add_def_prefs'
@@ -42,10 +42,10 @@
 	/* Dependacies for this app to work */
 	$setup_info['skel']['depends'][] = array(
 			 'appname' => 'phpgwapi',
-			 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+			 'versions' => array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
 		);
 	$setup_info['skel']['depends'][] = array(
 			 'appname' => 'email',
-			 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+			 'versions' => array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
 		);
 ?>

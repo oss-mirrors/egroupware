@@ -10,10 +10,33 @@
     \**************************************************************************/
 
 	/* $Id$ */
+{
+	/*
+		This hookfile is for generating an app-specific side menu used in the idots
+		template set.
 
-	// Only Modify the $file variable.....
-	$file = Array();
+		$menu_title speaks for itself
+		$file is the array with link to app functions
 
-	// Do not modify below this line
-	display_manual_section($appname,$file);
+		display_sidebox can be called as much as you like
+	*/
+
+	/*
+		$menu_title = 'Preferences';
+		$file = Array(
+
+		);
+		display_sidebox($appname,$menu_title,$file);
+	*/
+
+	if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
+	{
+        $menu_title = 'Administration';
+        $file = Array(
+
+        );
+
+		display_sidebox($appname,$menu_title,$file);
+	}
+}
 ?>
