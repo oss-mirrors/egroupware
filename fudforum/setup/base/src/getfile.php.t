@@ -74,6 +74,18 @@
 		}
 	}
 
+	/* this is a hack for IE browsers when working on HTTPs,
+	 * the no-cache headers appear to cause problems as indicated by the following
+	 * MS advisories:
+	 *      http://support.microsoft.com/?kbid=812935
+	 *      http://support.microsoft.com/default.aspx?scid=kb;en-us;316431
+	 */
+
+	if ($_SERVER["SERVER_PORT"] == "443" && (strpos($_SERVER["HTTP_USER_AGENT"], 'MSIE') !== false)) {
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0", 1);
+	        header("Pragma: public", 1);
+	}
+
 	header('Content-type: '.$r[0]);
 	header('Content-Disposition: '.$append.'filename="'.$r[1].'"');
 
