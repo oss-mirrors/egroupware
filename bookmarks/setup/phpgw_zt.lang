@@ -9,6 +9,7 @@ ascending	bookmarks	zt	小到大
 book marks	common	zt	書籤
 bookmark changed sucessfully	bookmarks	zt	書籤修改完成
 bookmark created successfully.	bookmarks	zt	書籤建立完成
+bookmark deleted successfully	bookmarks	zt	書籤刪除完成
 bookmark not editable	bookmarks	zt	無法編輯書籤
 bookmark not readable	bookmarks	zt	無法讀取書籤
 bookmarks	common	zt	書籤
@@ -26,7 +27,7 @@ descending	bookmarks	zt	大到小
 edit bookmark	bookmarks	zt	編輯書籤
 edit this bookmark	bookmarks	zt	編輯這個書籤
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zt	請在下面輸入您希望匯入的Netscape書籤檔案名稱
-export bookmarksi	common	zt	匯出書籤
+export bookmarks	common	zt	匯出書籤
 fewer	bookmarks	zt	較少
 filter by	bookmarks	zt	排序
 found a link you might like	bookmarks	zt	找一個您或許喜歡的連結
@@ -67,5 +68,6 @@ url is required.	bookmarks	zt	網址是必填欄位
 view bookmark	bookmarks	zt	瀏覽書籤
 view this bookmark	bookmarks	zt	瀏覽這個書籤
 warning	bookmarks	zt	注意
-you are viewing this site outside of egroupware	bookmarks	zt	您正在瀏覽eGroupWare以外的網站
+you are viewing this site outside of egroupware	bookmarks	zt	您所瀏覽的網站在系統之外
+you are viewing this site outside of phpgroupware	bookmarks	zt	您正在瀏覽phpGroupWare以外的網站
 you must select a category	bookmarks	zt	您必須選取一個類別
