@@ -1,0 +1,14 @@
+
+Minor TODOs:
+
+- Remove the Email/Telephone Card Fields selection from Preferences and put it
+  on Admin Config Page
+
+- populateFullAddConst is in JS but I think it is unnecessary, as changes to this
+  fields should be rare. Replace it with a pre-load from PHP
+
+- Insert a Full Add Constant Fields Configuration/Insertion/Removal Interface
+  for Admin
+
+- Interface to manage Quick Add fields, as the back-end and plugin already 
+  accepts dynamic selected fields
