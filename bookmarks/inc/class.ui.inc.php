@@ -1182,7 +1182,7 @@ function toggle(image, catid)
 				'lang_file' => lang('Netscape Bookmark File'),
 				'lang_import_button' => lang('Import Bookmarks'),
 				'lang_note' => lang('<b>Note:</b> This currently works with netscape bookmarks only'),
-				'lang_catchoose' => lang('To which category should the imported bookmark hierarchy be attached'),
+				'lang_catchoose' => lang('To which category should the imported folder hierarchy be attached'),
 				'input_categories' => $this->bo->categories_list(0),
 			));
 			$this->app_messages();
