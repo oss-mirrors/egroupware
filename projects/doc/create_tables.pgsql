@@ -44,7 +44,7 @@ CREATE TABLE p_hours (
    minutes     int,
    minperae    decimal(4,0),
    billperae   decimal(20,2),
-   status      text check(status in('open','done','billed')) DEFAULT 'done' NOT NULL
+   status      text check(status in('done','open','billed')) DEFAULT 'done' NOT NULL
 );
 
 CREATE TABLE p_projectmembers (

@@ -11,8 +11,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 /* $Id$ */                                                                                                                                                                                          
-       
-   $lid = $phpgw_info["user"]["userid"];
+
+  $isadmin = isprojectadmin();       
 
 /*       $db2 = $phpgw->db;                                                                                                                                                                 
                                                                                                                                                                                           
@@ -68,17 +68,14 @@
 
        $t = new Template($phpgw_info["server"]["app_tpl"]);
        $t->set_file(array("projects_header" => "header.tpl"));
-       $phpgw->db->query("select group_id from groups where group_name = 'projectAdmin'");
+       
        $admin_info = lang("projects");
-      
-      if ($phpgw->db->next_record()) {
-         $group_id = $phpgw->db->f("group_id");
-	 $phpgw->db->query("select account_lid from accounts where account_groups like '%,$group_id%' and account_lid='$lid'");
-         $phpgw->db->next_record();
-	 if($phpgw->db->f("account_lid") == $lid)
-            $admin_info = lang("projects")."&nbsp;&nbsp;&nbsp;".lang("admin");
-	 }
-       $t->set_var("admin_info", "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
+       
+    if($isadmin==1) {            
+       $admin_info = lang("projects")."&nbsp;&nbsp;&nbsp;".lang("admin");
+        }
+       
+      $t->set_var("admin_info", "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
                         . "\" align=\"left\"><b>" . $admin_info);
 
      

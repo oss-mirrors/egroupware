@@ -48,7 +48,7 @@
         $filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"] 
                       . "' OR owner='" . $phpgw_info["user"]["account_id"] 
                       . "' OR access='public' "
-                      . $phpgw->accounts->sql_search("access") . " ) ";
+                      . $phpgw->common->sql_search("access") . " ) ";
      }
   } else {
      $filtermethod = " coordinator='" . $phpgw_info["user"]["account_id"] . "' ";

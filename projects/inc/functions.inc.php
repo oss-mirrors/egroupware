@@ -17,17 +17,20 @@
   function isprojectadmin() {
   global $phpgw;
   global $phpgw_info;
-  $phpgw->db->query("select group_id from groups where group_name = 'projectAdmin'");
-  if ($phpgw->db->next_record()) {
-    $group_id = $phpgw->db->f("group_id");
-    $phpgw->db->query("select account_id from accounts where account_groups like '%,$group_id%' and account_id='".($phpgw_info["user"]["account_id"])."'");
-    $phpgw->db->next_record();
-    if($phpgw->db->f("account_id") == $phpgw_info["user"]["account_id"])
+       if (!$account_id)                                                                                                                                 
+       $account_id = $phpgw_info["user"]["account_id"];       
+       $phpgw->db->query("select acl_account,acl_account_type from phpgw_acl where acl_appname='projects' and acl_location ='admin' and acl_rights=15");                                            
+       $admin = Array();                                                                                                                                 
+       $i = -1;                                                                                                                                          
+       while ($phpgw->db->next_record()) {                                                                                                               
+       $i++;                                                                                                                                             
+       $admin[$i] = $phpgw->db->f("acl_account");                                                                                                        
+       if($admin[$i] == $account_id) {
        return 1;
+      }
+    return 0;
     }
-   return 0;
-  }
-
+   }
 
   $id_type = "hex";
 

@@ -10,7 +10,7 @@
         end_date        int(11),
 	coordinator	int(11),
 	customer	int(11),
-        status		enum('active','nonactive','archiv') DEFAULT 'active' NOT NULL,
+        status		enum('active','nonactive','archiv') NOT NULL,
 	descr		text,
 	title		varchar(50),
 	budget		decimal(20,2),
@@ -21,7 +21,7 @@ CREATE TABLE p_activities (
 	id		int(11) NOT NULL auto_increment,
 	num		varchar(20),
 	descr		varchar(50),
-	remarkreq	enum('Y','N') DEFAULT 'N' NOT NULL,
+	remarkreq	enum('N','Y') NOT NULL,
 	minperae	decimal(4,0),
 	billperae	decimal(20,2),
 	PRIMARY KEY (id)
@@ -31,7 +31,7 @@ CREATE TABLE p_projectactivities (
 	id		int(11) NOT NULL auto_increment,
 	project_id	int(11),
 	activity_id	int(11),
-	billable	enum('Y','N') DEFAULT 'Y' NOT NULL,
+	billable	enum('N','Y') NOT NULL,
 	PRIMARY KEY (id)
 );
 
@@ -47,7 +47,7 @@ CREATE TABLE p_hours (
 	minutes		int(10),
 	minperae	decimal(4,0),
 	billperae	decimal(20,2),
-	status		enum('open','done','billed') DEFAULT 'done' NOT NULL,
+	status		enum('done','open','billed') NOT NULL,
 	PRIMARY KEY (id)
 );
 
