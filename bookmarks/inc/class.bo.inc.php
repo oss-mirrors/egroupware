@@ -183,7 +183,7 @@
 
 		function update($id, $values)
 		{
-echo "bo::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
+			#echo "bo::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 			if ($this->validate($values) && $this->check_perms($id,PHPGW_ACL_EDIT))
 			{
 				if ($this->so->update($id,$values))

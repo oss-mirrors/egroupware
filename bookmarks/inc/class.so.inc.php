@@ -148,7 +148,7 @@
 
 		function update($id, $values)
 		{
-echo "so::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
+			#echo "so::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 			if (! $values['access'])
 			{
 				$values['access'] = 'public';
