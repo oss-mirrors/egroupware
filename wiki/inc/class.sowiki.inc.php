@@ -416,6 +416,7 @@ class sowiki	// DB-Layer
 			'page'    => is_array($page) ? $page['name'] : $page,
 			'lang'    => $page['lang'],
 		);
+		//echo "<p>sowiki::clear_link('$values[wiki_id]:$values[page]:$values[lang]')</p>";
 
 		$this->db->query("DELETE FROM $this->LkTbl WHERE ".
 			$this->db->column_data_implode(' AND ',$values,True,False,$this->table_defs[$this->LkTbl]['fd']),
@@ -469,23 +470,22 @@ class sowiki	// DB-Layer
 	*/
 	function new_link($page, $link)
 	{
-		// Assumption: this will only ever be called with one page per
-		//   script invocation.  If this assumption should change, $links should
-		//   be made a 2-dimensional array.
-
 		static $links = array();
-
-		$links[$link]++;
 
 		$values = array(
 			'wiki_id' => is_array($page) && isset($page['wiki_id']) ? $page['wiki_id'] : $this->wiki_id,
 			'page'    => is_array($page) ? $page['name'] : $page,
 			'lang'    => $page['lang'],
 			'link'    => $link,
-			'count'   => $links[$link],
 		);
+		// $links need to be 2-dimensional as rename, can cause new_link to be called for different pages
+		$page_uid = strtolower($values['wiki_id'].':'.$values['page'].':'.$values['lang']);
+		$link = strtolower($link);
+		$values['count'] = ++$links[$page_uid][$link];
 
-		if ($links[$link] == 1)
+		//echo "<p>sowiki::new_link('$values[wiki_id]:$values[page]:$values[lang]','$link') = $values[count]</p>";
+
+		if ($values['count'] == 1)
 		{
 			$this->db->query($sql="INSERT INTO $this->LkTbl ".
 				$this->db->column_data_implode(',',$values,'VALUES',False,$this->table_defs[$this->LkTbl]['fd'])
@@ -494,7 +494,7 @@ class sowiki	// DB-Layer
 		else
 		{
 			unset($values['count']);
-			$this->db->query($sql="UPDATE $this->LkTbl SET count=".$this->db->quote($links[$link],'int').' WHERE '.
+			$this->db->query($sql="UPDATE $this->LkTbl SET count=".$this->db->quote($links[$page_uid][$link],'int').' WHERE '.
 				$this->db->column_data_implode(' AND ',$values,True,False,$this->table_defs[$this->LkTbl]['fd']),
 				__LINE__,__FILE__);
 		}
