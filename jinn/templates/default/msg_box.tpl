@@ -3,6 +3,7 @@
 		<td>
 			{error}
 			{info}
+			{help}
 		</td>
 	</tr>
 </table>

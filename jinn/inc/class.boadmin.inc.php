@@ -267,10 +267,20 @@
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
 
-			if ($status==1)	$this->message[info]=lang('Site succesfully added');
-			else $this->message[error]=lang('Site NOT succesfully added, unknown error');
+			if ($status==1)	
+			{
+				$this->message[info]=lang('Site succesfully added');
+				 $this->message[error]='';
+				
+			}
+			else 
+			{
+				$this->message[info]='';
+				$this->message[error]=lang('Site NOT succesfully added, unknown error');
+			}
 
 			$this->save_sessiondata();
+
 			$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
 		}
 
@@ -284,7 +294,7 @@
 			else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
 
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
 
 		}
 
@@ -313,8 +323,9 @@
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully saved');
 			else $this->message[error]=lang('Site Object NOT succesfully saved, unknown error');
 
+			//var_dump($this->message);
 			$this->save_sessiondata();
-			$this->common->exit_and_open_screen('jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
+			$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$GLOBALS[HTTP_POST_VARS][FLDparent_site_id]);
 
 		}
 
@@ -325,20 +336,23 @@
 			if ($status==1)	$this->message[info]=lang('site succesfully deleted');
 			else $this->message[error]=lang('Site NOT succesfully deleted, Unknown error');
 
-			//$this->save_sessiondata();
+			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
 		}
 
 		function del_phpgw_jinn_site_objects()
 		{
+			$records = $this->so->get_phpgw_record_values('phpgw_jinn_site_objects',$GLOBALS[where_condition],'','','name');	
+			
 			$status=$this->so->delete_phpgw_data($this->site_id,'phpgw_jinn_site_objects',$GLOBALS[where_condition]);
 
 			if ($status==1)	$this->message[info]=lang('Site Object succesfully deleted');
 			else $this->message[error]=lang('Site Object NOT succesfully deleted, Unknown error');
 
-			//$this->save_sessiondata();
-		//	'jinn.uiadmin.add_edit_phpgw_jinn_sites&where_condition='$
-			$this->common->exit_and_open_screen('jinn.uiadmin.browse_phpgw_jinn_sites');
+			$this->save_sessiondata();
+			
+$this->common->exit_and_open_screen('jinn.uiadmin.edit_phpgw_jinn_sites&where_condition=site_id='.$records['0']["parent_site_id"]);
+		
 		}
 
 		function get_phpgw_records($table,$where_condition,$offset,$limit,$value_reference)

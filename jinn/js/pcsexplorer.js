@@ -115,13 +115,13 @@ function PcjsOpenExplorer(p_url, p_target /*, p_properties, p_properties, ... */
 	}
 
 	// ----- Set & calculate window size
-	var v_width=340;
+	var v_width=400;
 	var v_height=400;
 	var v_left = (screen.width-v_width)/2;
 	var v_top = (screen.height-v_height)/2;
 
 	// ----- Set window properties
-	var v_settings = 'width='+v_width+',height='+v_height+',top='+v_top+',left='+v_left+',scrollbars=no,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes';
+	var v_settings = 'width='+v_width+',height='+v_height+',top='+v_top+',left='+v_left+',scrollbars=yes,location=no,directories=no,status=no,menubar=yes,toolbar=no,resizable=yes';
 
 	// ----- Open window
 	v_win = window.open(v_url,"PhpConceptExplorer",v_settings);

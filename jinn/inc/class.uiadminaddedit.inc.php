@@ -48,6 +48,9 @@
 
 			if ($where_condition)
 			{
+	
+
+							
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_phpgw_records($table,$where_condition,'','','name');
@@ -60,7 +63,6 @@
 				$add_edit_button=lang('add');
 				$action=lang('add '. $table );
 				$parent_site_id=$GLOBALS['HTTP_POST_VARS']['parent_site_id'];
-
 			}
 
 			$this->template->set_var('form_action',$form_action);
@@ -153,7 +155,10 @@
 				}
 				elseif ($fieldproperties[name]=='upload_path')
 				{
-					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'"><input type=button onClick=\'PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">';
+					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">
+
+					<input type=button onClick=\'OpenExplorer("jinn/quixplorer_2_3/index.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">
+<!--					<input type=button onClick=\'PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">-->';
 				}
 				elseif ($fieldproperties[type]=='string')
 				{

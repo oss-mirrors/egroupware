@@ -34,6 +34,7 @@
 		var $public_functions = Array(
 			'index' => True,
 			'import_phpgw_jinn_site' => True,
+			'edit_phpgw_jinn_sites' => True, //after site_object insert/update
 			'add_edit_phpgw_jinn_sites' => True,
 			'add_edit_phpgw_jinn_site_objects' => True,
 			'browse_phpgw_jinn_sites' => True,
@@ -99,13 +100,29 @@
 
 			$this->ui->header(lang('index'));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 			$this->bo->save_sessiondata();
 		}	
 
 		function add_edit_phpgw_jinn_site_objects()
 		{
+			if ($GLOBALS[where_condition])
+			{
+				$this->bo->message[help]=lang('Edit JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>');
+			}
+			else
+			{
+				$this->bo->message[help]=lang('Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>');
+
+				}
+
+			
+			unset($this->bo->message[info]);
+			unset($this->bo->message[error]);
+
 			$this->add_edit_record('phpgw_jinn_site_objects');
+			unset($this->bo->message[help]);
+			
 			$this->bo->save_sessiondata();
 		}
 
@@ -143,6 +160,9 @@
 
 		function add_edit_phpgw_jinn_sites()
 		{
+			$this->bo->message[help]=lang('Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
+			unset($this->bo->message[info]);
+			unset($this->bo->message[error]);
 
 			$this->add_edit_record('phpgw_jinn_sites');
 
@@ -153,8 +173,31 @@
 				$this->browse_record('phpgw_jinn_site_objects',$new_where);
 			}
 
+			unset($this->bo->message[help]);
+			
 			$this->bo->save_sessiondata();
 		}
+
+		function edit_phpgw_jinn_sites()
+		{
+			$this->bo->message[help]=lang('Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
+//			unset($this->bo->message[info]);
+			unset($this->bo->message[error]);
+
+			$this->add_edit_record('phpgw_jinn_sites');
+
+			if ($GLOBALS[where_condition])
+			{
+				$new_where='parent_'.$GLOBALS[where_condition];
+
+				$this->browse_record('phpgw_jinn_site_objects',$new_where);
+			}
+
+			unset($this->bo->message[help]);
+			
+			$this->bo->save_sessiondata();
+		}
+
 		function import_phpgw_jinn_site()
 		{
 
@@ -164,7 +207,7 @@
 
 			$this->ui->header(lang('Import JiNN-Site'.$table));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 
 			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
 			{
@@ -246,7 +289,7 @@
 
 			$this->ui->header(lang('Browse '.$table));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 
 			$this->browse_record('phpgw_jinn_sites','');
 			$this->bo->save_sessiondata();
@@ -269,7 +312,7 @@
 			$this->ui->header(lang('Browse '.$table));
 
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 
 			$this->browse_record('phpgw_jinn_site_objects','');
 			$this->bo->save_sessiondata();
@@ -280,7 +323,7 @@
 		{
 			$this->ui->header(lang('Set Access Rights'));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 			$access_rights->main_screen();
 
@@ -292,7 +335,7 @@
 		{
 			$this->ui->header(lang('Set Access Right for Site Objects'));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_site_objects();
 
@@ -303,7 +346,7 @@
 		{
 			$this->ui->header(lang('Set Access Rights for Sites'));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl',$this->bo);
 			$access_rights->set_sites();
 
@@ -317,7 +360,7 @@
 		{
 			$this->ui->header(lang('Add Edit'));
 			$this->ui->msg_box($this->bo->message);
-			$this->admin_menu();
+//			$this->admin_menu();
 			$add_edit = CreateObject('jinn.uiadminaddedit',$this->bo);
 			$add_edit->render_form($table);
 			$this->bo->save_sessiondata();

@@ -17,7 +17,6 @@ TODO - 0.5.1
 - remove all showstoppers
 - remove sessionless links
 - FIX/CHECK sessionsupport in table. Now only in cookies work
-- finish configure-view-function!!!!!!!!!!!!!!!!!!!!!!!!!
 - site administration working for non-phpgw-administrators
 - default demo-site in phpgw-table (what about the JiNN project website
 - default demo-site as import-file (Oke quit simple)

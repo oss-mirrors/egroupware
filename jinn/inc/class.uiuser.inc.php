@@ -507,7 +507,7 @@
 
 				function config_objects()
 				{
-					$this->ui->header('config_objects??');
+					$this->ui->header(lang('configure browse view'));
 					$this->ui->msg_box($this->bo->message);
 					$this->main_menu();	
 

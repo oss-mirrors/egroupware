@@ -71,15 +71,18 @@
 		*/
 		function msg_box($msg_arr)
 		{
+			//var_dump($msg_arr);
 			if ($msg_arr['info']) $info='<p><font color=green>'.$msg_arr['info'].'</font></p>';
+			if ($msg_arr['help']) $help='<p><font color=blue>'.$msg_arr['help'].'</font></p>';
 			if ($msg_arr['error']) $error='<p><font color=red>'.$msg_arr['error'].'</font></p>';
 
-			if($info || $error)
+			if($info || $error || $help)
 			{
 				$this->template->set_file(array(
 					'msg_box' => 'msg_box.tpl'
 				));
 
+				$this->template->set_var('help',$help);
 				$this->template->set_var('error',$error);
 				$this->template->set_var('info',$info);
 				$this->template->pparse('out','msg_box');

@@ -45,6 +45,43 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
 
+function OpenExplorer(p_url, p_target /*, p_properties, p_properties, ... */)
+{
+	// ----- Check the number of arguments
+	if (arguments.length < 2)
+	{
+		alert("Invalid number of arguments for OpenExplorer()");
+		return false;
+	}
+
+	// ----- Compose the basic called URL
+	var v_url = p_url+"?a_target="+escape(p_target);
+
+	// ----- Look for optional properties
+	for (i=2; i<arguments.length; i++)
+	{
+		// ----- Extract the property name and property value
+		var v_item = arguments[i].split("=", 2);
+
+		// ----- Complete the URL
+		v_url = v_url+"&a_"+escape(v_item[0])+"="+escape(v_item[1]);
+	}
+
+	// ----- Set & calculate window size
+	var v_width=440;
+	var v_height=400;
+	var v_left = (screen.width-v_width)/2;
+	var v_top = (screen.height-v_height)/2;
+
+	// ----- Set window properties
+	var v_settings = 'width='+v_width+',height='+v_height+',top='+v_top+',left='+v_left+',scrollbars=yes,location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=yes';
+
+	// ----- Open window
+	v_win = window.open(v_url,"Explorer",v_settings);
+
+	// ----- Give focus to window
+	v_win.focus();
+}
 
 function submitForm() {
 

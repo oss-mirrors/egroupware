@@ -838,7 +838,7 @@ $field_list_arr=(explode(',',$field_list));
 			$SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
-				$status=$this->phpgw_db->get_last_insert_id($table,'x');
+				$status=1;//$this->phpgw_db->get_last_insert_id($table,'x');
 			}
 
 			return $status;
