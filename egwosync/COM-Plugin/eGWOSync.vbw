@@ -1,4 +1,4 @@
-Connect = 0, 0, 607, 457, Z, 211, 10, 1036, 703, C
+Connect = 0, 0, 607, 457, Z, 211, 10, 1036, 704, C
 basDebugUtils = 0, 0, 0, 0, C
 BasGlobals = 21, 21, 628, 478, 
 BasUtilities = 168, 168, 775, 625, 
@@ -9,6 +9,6 @@ CeGWContacts = 0, 0, 0, 0, C
 CeGWOSyncMaster = 105, 105, 712, 562, 
 COutlookContacts = 0, 0, 0, 0, C
 COverwriteManager = 0, 0, 0, 0, C
-FrmMain = 126, 126, 733, 583, , 42, 42, 445, 687, C
-FrmOverwrite = 0, 0, 0, 0, C, 63, 63, 316, 194, C
-FrmRename = 0, 0, 0, 0, C, 84, 84, 637, 306, C
+FrmMain = 126, 126, 733, 583, , 42, 42, 445, 688, C
+FrmOverwrite = 0, 0, 0, 0, C, 63, 63, 316, 195, C
+FrmRename = 0, 0, 0, 0, C, 84, 84, 637, 307, C

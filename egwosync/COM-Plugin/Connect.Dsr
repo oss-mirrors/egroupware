@@ -1,16 +1,16 @@
 VERSION 5.00
 Begin {AC0714F6-3D04-11D1-AE7D-00A0C90F26F4} Connect 
-   ClientHeight    =   10005
+   ClientHeight    =   10320
    ClientLeft      =   1740
    ClientTop       =   1545
-   ClientWidth     =   12255
-   _ExtentX        =   21616
-   _ExtentY        =   17648
+   ClientWidth     =   12840
+   _ExtentX        =   22648
+   _ExtentY        =   18203
    _Version        =   393216
    Description     =   "Add-In Project Template"
-   DisplayName     =   "My Add-In"
+   DisplayName     =   "eGWOSync"
    AppName         =   "Microsoft Outlook"
-   AppVer          =   "Microsoft Outlook 11.0"
+   AppVer          =   "Microsoft Outlook 10.0"
    LoadName        =   "Startup"
    LoadBehavior    =   3
    RegLocation     =   "HKEY_CURRENT_USER\Software\Microsoft\Office\Outlook"
@@ -76,3 +76,14 @@ Private Sub btSync_Click(ByVal Ctrl As Office.CommandBarButton, _
     CancelDefault As Boolean)
     Master.OpenMain
 End Sub
+
+Private Sub oApp_OptionsPagesAdd( _
+    ByVal Pages As Outlook.PropertyPage)
+
+    ' Add a new Prop Page to the Tools/Options prop page
+    ' and set caption to "eGWOSync Settings"
+    ' it uses the User Control page ctlMainOptions
+    Pages.Add "PropertyPage.ctlMainOptions", "eGWOSync Settings"
+    
+End Sub
+
