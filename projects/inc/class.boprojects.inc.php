@@ -2480,6 +2480,10 @@
 					{
 						$error[] = lang('id can not exceed 250 characters in length');
 					}
+					if ($this->exists('','number',$values['number'],$values['project_id']))
+					{
+						$error[] = lang('id is already taken, choose an other one');
+					}
 				}
 			}
 
