@@ -15,6 +15,7 @@ Dim egwContacts As New CeGWContacts
 ' in listboxes.
 '***********************************************************************************************
 Public Sub GetContacts()
+    On Error GoTo GetContactsError
     If Master.Ready Then
         Dim xmlParms    As New XMLRPCStruct
         Dim xmlArray    As New XMLRPCArray
@@ -42,7 +43,6 @@ Public Sub GetContacts()
         
         'Get Filter and search info
         query = FrmMain.txtSearch
-        'Set colFields = FrmMain.AdditionalFields
         
         'Some Defaults
         INT_START = 1
@@ -111,11 +111,15 @@ Public Sub GetContacts()
                 End If
             End If
         Loop While bContinue
+        
         'load them into the listbox
         egwContacts.List FrmMain.listRemote
         Debug.Print "Got all contacts from the server."
         
-        'List the contacts from the local Outlook folders
+        'Close the door after yourself!
+        Master.eGW.Logout
+        
+        'List the contacts from the local Outlook folders. This part is too easy.
         Dim gnspNamespace As NameSpace
         Dim fldContacts As Outlook.MAPIFolder
         Set gnspNamespace = GetNamespace("MAPI")
@@ -126,6 +130,12 @@ Public Sub GetContacts()
     Else
         Master.Setup
     End If
+GetContactsError:
+    On Error Resume Next
+    BasUtilities.ErrorMessage 630, "BasUtilities.GetContacts", _
+        "Unknown Error. Please report the following information:\n" & _
+        "Master.Ready = " & Master.Ready & "\n" & _
+        "Logged in = " & bLogin
 End Sub
 
 '***********************************************************************************************
@@ -242,6 +252,9 @@ End Sub
 Public Function SimpleExec(methodName As String, _
                             xmlParms As XMLRPCStruct, _
                             Optional bLogin As Boolean = False) As XMLRPCResponse
+    
+    On Error GoTo SimpleExecError
+    
     Dim linsUtility As New XMLRPCUtility
     Dim bEnabled As Boolean
     Dim bLoginPassed As Boolean
@@ -268,14 +281,14 @@ Public Function SimpleExec(methodName As String, _
             
             'Error handling bonanza
             If Master.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
-                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Status
+                MsgBox "Unexpected response from XML-RPC request. Status = " & Master.eGW.Response.Status
                 If Master.eGW.Response.Status = 4 Then
-                    Debug.Print "XML Parse Error: " & Master.eGW.Response.XMLParseError
-                    'This line will show the full response string from the server in all its glory
+                    MsgBox "XML Parse Error: " & Master.eGW.Response.XMLParseError, , "XML Parse Error"
+                    'The following line will show the full response string from the server in all its glory
                     'Debug.Print Master.eGW.Response.xmlResponse
                 End If
             ElseIf Master.eGW.Response.Params.Count <> 1 Then
-                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
+                MsgBox "Unexpected response from XML-RPC request. " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
             End If
             
             'return the response from the XMLRPC server
@@ -288,10 +301,7 @@ Public Function SimpleExec(methodName As String, _
         Else
             Dim x As VbMsgBoxResult
             'Show a message box with a warning icon and an Okay button
-            x = MsgBox("An attempt to log in to the remote server failed.", vbExclamation + vbOKOnly, "Login Failed")
-            If x = vbOkay Then
-                Exit Function
-            End If
+            MsgBox "An attempt to log in to the remote server failed.", vbExclamation + vbOKOnly, "Login Failed"
         End If
     Else
         Dim y As VbMsgBoxResult
@@ -302,6 +312,12 @@ Public Function SimpleExec(methodName As String, _
             Master.Setup
         End If
     End If
+SimpleExecError:
+    BasUtilities.ErrorMessage 631, "BasUtilities.SimpleExec", _
+        "Unknown Error. Please report the following:\n" & _
+        "Logged in = " & bLogin & "\n" & _
+        "Login Passed = " & bLoginPassed & _
+        "Response Status = " & Master.eGW.Response.Status
 End Function
 
 '***********************************************************************************************
@@ -328,3 +344,14 @@ Public Function GetUpper(varArray As Variant) As Integer
     On Error GoTo 0
     GetUpper = Upper
 End Function
+
+Public Sub ErrorMessage(Number As Integer, Source As String, Description As String)
+    On Error Resume Next
+    Err.Clear
+    Err.Raise vbObjectError + Number, Source, _
+                                    Description
+    If Err.Number <> 0 Then
+        MsgBox "Error # " & str(Err.Number) & " was generated by " _
+                & Err.Source & Chr(13) & Err.Description, vbOKOnly, "Error"
+    End If
+End Sub

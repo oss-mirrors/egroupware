@@ -95,6 +95,8 @@ Public Property Get Response() As XMLRPCResponse
 End Property
 
 Public Function Login() As Boolean
+    On Error Resume Next
+    
     Dim linsUtility As New XMLRPCUtility
     Dim linsStruct As XMLRPCStruct
     
@@ -113,17 +115,22 @@ Public Function Login() As Boolean
     ElseIf linsResponse.Params(1).ValueType <> XMLRPC_STRUCT Then
         BugOut "Unexpected response from XML-RPC request " & linsUtility.GetXMLRPCType(linsResponse.Params(1).ValueType) & " returned, expecting an array"
     End If
-    For Each linsMember In linsResponse.Params(1).StructValue
-        If linsMember.Name = "sessionid" Then
-            mSessid = linsMember.Value.StringValue
-            Login = True
-            Debug.Print "Login successful"
-        ElseIf linsMember.Name = "kp3" Then
-            mKp3 = linsMember.Value.StringValue
-        Else
-            Login = False
-        End If
-    Next linsMember
+    
+    If linsResponse.Params.Count <> 0 Then
+        For Each linsMember In linsResponse.Params(1).StructValue
+            If linsMember.Name = "sessionid" Then
+                mSessid = linsMember.Value.StringValue
+                Login = True
+                Debug.Print "Login successful"
+            ElseIf linsMember.Name = "kp3" Then
+                mKp3 = linsMember.Value.StringValue
+            Else
+                Login = False
+            End If
+        Next linsMember
+    Else
+        Login = False
+    End If
 End Function
 
 Public Function Logout() As Boolean

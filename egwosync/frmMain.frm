@@ -110,6 +110,23 @@ Private Sub cmdSynchronize_Click()
 End Sub
 
 
+Private Sub cmdTest_Click()
+    Dim bLogin As Boolean
+    bLogin = False
+    
+    PutSettings
+    On Error GoTo Fail
+    bLogin = Master.eGW.Login
+    If bLogin Then
+        MsgBox "Login to remote server succeeded.", , "Login Succeeded"
+        Master.eGW.Logout
+    Else
+Fail:
+        MsgBox "Login to remote server failed. Please check your settings and try again.", , _
+            "Login failed"
+    End If
+End Sub
+
 '***********************************************************************************************
 ' Set things up for frmMain
 '***********************************************************************************************
