@@ -17,13 +17,12 @@
                                 "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
 
-  header("Content-type: $type/$subtype");
-  header("Content-Disposition: attachment; filename=$name");
+  header("Content-disposition: atachment; filename=\"".$name."\"");
+  header("Content-type: ".strtolower($application)."/".strtolower($subtype));
 
   if ($encoding == "base64") {
-     echo $phpgw->msg->base64( $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no) );
+     echo $phpgw->msg->base64($phpgw->msg->fetchbody($mailbox, $msgnum, $part_no));
   } else {
      echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
   }
-
 ?>

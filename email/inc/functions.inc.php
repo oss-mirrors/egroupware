@@ -487,7 +487,7 @@
 
   function attach_display($de_part, $part_no)
   {
-    global $msgnum, $phpgw;
+    global $msgnum, $phpgw, $folder;
     $mime_type = get_mime_type($de_part);  
     $mime_encoding = get_mime_encoding($de_part);
 
@@ -504,9 +504,10 @@
       }
     }
 
-    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
+//    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
+    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$folder
 		       ."&msgnum=$msgnum&part_no=$part_no&type=$mime_type"
-		       ."&subtype=" . $de_part->subtype . "&name=$url_att_name"
+		       ."&subtype=".$de_part->subtype."&name=$url_att_name"
 		       ."&encoding=$mime_encoding")."\">$att_name</a>";
     return $jnk;
   }
