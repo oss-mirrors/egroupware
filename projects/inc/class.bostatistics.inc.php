@@ -440,7 +440,7 @@
 						$msColor = "#999999";
 						foreach($pro['mstones'] as $ms)
 						{
-							if($sdate < $ms['edate'] &&  $ms['edate'] < $edate)
+							if($sdate < $ms['edate'] &&  $ms['edate'] <= $edate)
 							{
 								$ms[title] = $this->botranslation->convert(
 									$ms[title],
