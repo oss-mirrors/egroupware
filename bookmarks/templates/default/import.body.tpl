@@ -1,4 +1,5 @@
 <!-- $Id$ -->
+<center>{messages}</center>
 <form enctype="multipart/form-data" method="post" action="{FORM_ACTION}">
  <input type="hidden" name="MAX_FILE_SIZE" value="10000000">
  <table border="0" bgcolor="#EEEEEE" align="center" width=60%>
