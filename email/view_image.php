@@ -21,7 +21,7 @@
 	);
 	if ($newsmode == 'on')
 	{
-		$phpgw_info['flags']['newsmode'] = True;
+		$GLOBALS['phpgw_info']['flags']['newsmode'] = True;
 	}
 	include('../header.inc.php');
 

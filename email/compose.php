@@ -20,13 +20,12 @@
 	include('../header.inc.php');
 	$not_set = $GLOBALS['phpgw']->msg->not_set;
 
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(
+	$GLOBALS['phpgw']->template->set_file(
 		Array(
 			'T_compose_out' => 'compose.tpl'
 		)
 	);
-	$t->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
+	$GLOBALS['phpgw']->template->set_block('T_compose_out','B_checkbox_sig','V_checkbox_sig');
 
 // ----  Handle Replying and Forwarding  -----
 	if ($GLOBALS['phpgw']->msg->msgnum)
@@ -381,15 +380,15 @@
 		'checkbox_sig_name'	=> 'attach_sig',
 		'checkbox_sig_value'	=> 'true'
 	);
-	$t->set_var($tpl_vars);
+	$GLOBALS['phpgw']->template->set_var($tpl_vars);
 	if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'])
 	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'] != ''))
 	{
-		$t->parse('V_checkbox_sig','B_checkbox_sig');
+		$GLOBALS['phpgw']->template->parse('V_checkbox_sig','B_checkbox_sig');
 	}
 	else
 	{
-		$t->set_var('V_checkbox_sig','');
+		$GLOBALS['phpgw']->template->set_var('V_checkbox_sig','');
 	}
 	$tpl_vars = Array(
 		'attachfile_js_link'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'),
@@ -397,8 +396,8 @@
 		'body_box_name'		=> 'body',
 		'body_box_value'	=> $body
 	);
-	$t->set_var($tpl_vars);
-	$t->pparse('out','T_compose_out');
+	$GLOBALS['phpgw']->template->set_var($tpl_vars);
+	$GLOBALS['phpgw']->template->pparse('out','T_compose_out');
 
 	$GLOBALS['phpgw']->msg->end_request();
  

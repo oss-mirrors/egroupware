@@ -23,17 +23,16 @@
 
 	include('../header.inc.php');
 
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(
+	$GLOBALS['phpgw']->template->set_file(
 		Array(		
 			'T_attach_file' => 'attach_file.tpl',
 			'T_attach_file_blocks' => 'attach_file_blocks.tpl'
 		)
 	);
-	$t->set_block('T_attach_file_blocks','B_alert_msg','V_alert_msg');
-	$t->set_block('T_attach_file_blocks','B_attached_list','V_attached_list');
-	$t->set_block('T_attach_file_blocks','B_attached_none','V_attached_none');
-	$t->set_block('T_attach_file_blocks','B_delete_btn','V_delete_btn');
+	$GLOBALS['phpgw']->template->set_block('T_attach_file_blocks','B_alert_msg','V_alert_msg');
+	$GLOBALS['phpgw']->template->set_block('T_attach_file_blocks','B_attached_list','V_attached_list');
+	$GLOBALS['phpgw']->template->set_block('T_attach_file_blocks','B_attached_none','V_attached_none');
+	$GLOBALS['phpgw']->template->set_block('T_attach_file_blocks','B_delete_btn','V_delete_btn');
 
 	// initialize some variables
 	$alert_msg = '';
@@ -192,10 +191,10 @@
 		{
 			$file_info = file($uploaddir.SEP.$file);
 			// for every file, fill the file list template with it
-			$t->set_var('ckbox_delete_name','delete[]');
-			$t->set_var('ckbox_delete_value',substr($file,0,-5));
-			$t->set_var('ckbox_delete_filename',$file_info[1]);
-			$t->parse('V_attached_list','B_attached_list',True);
+			$GLOBALS['phpgw']->template->set_var('ckbox_delete_name','delete[]');
+			$GLOBALS['phpgw']->template->set_var('ckbox_delete_value',substr($file,0,-5));
+			$GLOBALS['phpgw']->template->set_var('ckbox_delete_filename',$file_info[1]);
+			$GLOBALS['phpgw']->template->parse('V_attached_list','B_attached_list',True);
 			$totalfiles++;
 		}
 	}
@@ -203,21 +202,21 @@
 	if ($totalfiles == 0)
 	{
 		// there is no list of files, clear that block
-		$t->set_var('V_attached_list','');
+		$GLOBALS['phpgw']->template->set_var('V_attached_list','');
 		// there is no delete button because there are no files to delete, clear that block
-		$t->set_var('V_delete_btn','');
+		$GLOBALS['phpgw']->template->set_var('V_delete_btn','');
 		// show the none block
-		$t->set_var('text_none',lang('None'));
-		$t->parse('V_attached_none','B_attached_none');
+		$GLOBALS['phpgw']->template->set_var('text_none',lang('None'));
+		$GLOBALS['phpgw']->template->parse('V_attached_none','B_attached_none');
 	}
 	else
 	{
 		// we have files, clear the "no files" block
-		$t->set_var('V_attached_none','');
+		$GLOBALS['phpgw']->template->set_var('V_attached_none','');
 		// fill the delete sublit form
-		$t->set_var('btn_delete_name','action');
-		$t->set_var('btn_delete_value',lang('Delete'));
-		$t->parse('V_delete_btn','B_delete_btn');
+		$GLOBALS['phpgw']->template->set_var('btn_delete_name','action');
+		$GLOBALS['phpgw']->template->set_var('btn_delete_value',lang('Delete'));
+		$GLOBALS['phpgw']->template->parse('V_delete_btn','B_delete_btn');
 	}
 
 	$body_tags = 'bgcolor="'.$GLOBALS['phpgw_info']['theme']['bg_color'].'" alink="'.$GLOBALS['phpgw_info']['theme']['alink'].'" link="'.$GLOBALS['phpgw_info']['theme']['link'].'" vlink="'.$GLOBALS['phpgw_info']['theme']['vlink'].'"';
@@ -250,33 +249,32 @@
 	*/
 
 	$charset = lang('charset');
-	$t->set_var('charset',$charset);
-	$t->set_var('page_title',$GLOBALS['phpgw_flags']['currentapp'] . ' - ' .lang('File attachment'));
-	$t->set_var('font_family',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('body_tags',$body_tags);
+	$GLOBALS['phpgw']->template->set_var('charset',$charset);
+	$GLOBALS['phpgw']->template->set_var('page_title',$GLOBALS['phpgw_flags']['currentapp'] . ' - ' .lang('File attachment'));
+	$GLOBALS['phpgw']->template->set_var('font_family',$GLOBALS['phpgw_info']['theme']['font']);
+	$GLOBALS['phpgw']->template->set_var('body_tags',$body_tags);
 	if ($alert_msg != '')
 	{
-		$t->set_var('alert_msg',$alert_msg);
-		$t->parse('V_alert_msg','B_alert_msg');
+		$GLOBALS['phpgw']->template->set_var('alert_msg',$alert_msg);
+		$GLOBALS['phpgw']->template->parse('V_alert_msg','B_alert_msg');
 	}
 	else
 	{
-		$t->set_var('V_alert_msg','');
+		$GLOBALS['phpgw']->template->set_var('V_alert_msg','');
 	}
-	$t->set_var('form_method','POST');
-	$t->set_var('form_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'));
-	$t->set_var('text_attachfile',lang('Attach file'));
-	$t->set_var('text_currattached',lang('Current attachments'));
-	$t->set_var('txtbox_upload_desc',lang('File'));
-	$t->set_var('txtbox_upload_name','uploadedfile');
-	$t->set_var('btn_attach_name','action');
-	$t->set_var('btn_attach_value',lang('Attach File'));
-	$t->set_var('btn_done_name','done');
-	$t->set_var('btn_done_value',lang('Done'));
-	$t->set_var('btn_done_js','window.close()');
+	$GLOBALS['phpgw']->template->set_var('form_method','POST');
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'));
+	$GLOBALS['phpgw']->template->set_var('text_attachfile',lang('Attach file'));
+	$GLOBALS['phpgw']->template->set_var('text_currattached',lang('Current attachments'));
+	$GLOBALS['phpgw']->template->set_var('txtbox_upload_desc',lang('File'));
+	$GLOBALS['phpgw']->template->set_var('txtbox_upload_name','uploadedfile');
+	$GLOBALS['phpgw']->template->set_var('btn_attach_name','action');
+	$GLOBALS['phpgw']->template->set_var('btn_attach_value',lang('Attach File'));
+	$GLOBALS['phpgw']->template->set_var('btn_done_name','done');
+	$GLOBALS['phpgw']->template->set_var('btn_done_value',lang('Done'));
+	$GLOBALS['phpgw']->template->set_var('btn_done_js','window.close()');
 
-
-	$t->pparse('out','T_attach_file');
+	$GLOBALS['phpgw']->template->pparse('out','T_attach_file');
 
 	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>

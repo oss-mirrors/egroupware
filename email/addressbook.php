@@ -20,27 +20,26 @@
 
 	include('../header.inc.php');
 
-	$t = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('email'));
-	$t->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'addressbook_list_t' => 'addressbook.tpl',
 		'addressbook_list' => 'addressbook.tpl'
 	));
-	$t->set_block('addressbook_list_t','addressbook_list','list');
+	$GLOBALS['phpgw']->template->set_block('addressbook_list_t','addressbook_list','list');
 
 	$d = CreateObject('phpgwapi.contacts');
 	$c = CreateObject('phpgwapi.categories');
 	$c->app_name = 'addressbook';
 
 	$charset = $GLOBALS['phpgw']->translation->translate('charset');
-	$t->set_var('charset',$charset);
-	$t->set_var('title',$GLOBALS['phpgw_info']['site_title']);
-	$t->set_var('bg_color',$GLOBALS['phpgw_info']['theme']['bg_color']);
-	$t->set_var('lang_addressbook_action',lang('Address book'));
-	$t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+	$GLOBALS['phpgw']->template->set_var('charset',$charset);
+	$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
+	$GLOBALS['phpgw']->template->set_var('bg_color',$GLOBALS['phpgw_info']['theme']['bg_color']);
+	$GLOBALS['phpgw']->template->set_var('lang_addressbook_action',lang('Address book'));
+	$GLOBALS['phpgw']->template->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 
-	$t->set_var('lang_search',lang('Search'));
-	$t->set_var('search_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'));
-	$t->set_var('lang_select_cats',lang('Select category'));
+	$GLOBALS['phpgw']->template->set_var('lang_search',lang('Search'));
+	$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'));
+	$GLOBALS['phpgw']->template->set_var('lang_select_cats',lang('Select category'));
 
 	if (! $start) { $start = 0; }
 
@@ -82,34 +81,34 @@
 	//------------------------------------------- nextmatch --------------------------------------------
 	$left = $GLOBALS['phpgw']->nextmatchs->left('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
 	$right = $GLOBALS['phpgw']->nextmatchs->right('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',$start,$d->total_records,"&order=$order&filter=$filter&sort=$sort&query=$query");
-	$t->set_var('left',$left);
-	$t->set_var('right',$right);
+	$GLOBALS['phpgw']->template->set_var('left',$left);
+	$GLOBALS['phpgw']->template->set_var('right',$right);
 
 	if ($d->total_records > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 	{
-		$t->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$d->total_records));
+		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$d->total_records));
 	}
 	else
 	{
-		$t->set_var('lang_showing',lang('showing x',$d->total_records));
+		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing x',$d->total_records));
 	}
 	// --------------------------------------- end nextmatch ------------------------------------------
 
 	// ------------------- list header variable template-declaration -----------------------
-	$t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('sort_firstname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_given',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Firstname')));
-	$t->set_var('sort_lastname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_family',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Lastname')));
-	$t->set_var('lang_email',lang('Select work email address'));
-	$t->set_var('lang_hemail',lang('Select home email address'));
-	$t->set_var('cats_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',"sort=$sort&order=$order&filter=$filter&start=$start&query=$query&cat_id=$cat_id"));
-	$t->set_var('cats_list',$c->formated_list('select','all',$cat_id,'True'));
-	$t->set_var('lang_select',lang('Select'));
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('sort_firstname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_given',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Firstname')));
+	$GLOBALS['phpgw']->template->set_var('sort_lastname',$GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'n_family',$order,'/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',lang('Lastname')));
+	$GLOBALS['phpgw']->template->set_var('lang_email',lang('Select work email address'));
+	$GLOBALS['phpgw']->template->set_var('lang_hemail',lang('Select home email address'));
+	$GLOBALS['phpgw']->template->set_var('cats_action',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php',"sort=$sort&order=$order&filter=$filter&start=$start&query=$query&cat_id=$cat_id"));
+	$GLOBALS['phpgw']->template->set_var('cats_list',$c->formated_list('select','all',$cat_id,'True'));
+	$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
 
 	// --------------------------- end header declaration ----------------------------------
 	for ($i=0;$i<count($entries);$i++)
 	{
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-		$t->set_var(tr_color,$tr_color);
+		$GLOBALS['phpgw']->template->set_var(tr_color,$tr_color);
 		$firstname = $entries[$i]['n_given'];
 		if (!$firstname) { $firstname = '&nbsp;'; }
 		$lastname = $entries[$i]['n_family'];
@@ -118,22 +117,22 @@
 		$email  = $entries[$i]['email'];
 		$hemail = $entries[$i]['email_home'];
 		// --------------------- template declaration for list records --------------------------
-		$t->set_var(array(
+		$GLOBALS['phpgw']->template->set_var(array(
 			'firstname' => $firstname,
 			'lastname'  => $lastname
 		));
 
-		$t->set_var('id',$id);
-		$t->set_var('email',$email);
-		$t->set_var('hemail',$hemail);
+		$GLOBALS['phpgw']->template->set_var('id',$id);
+		$GLOBALS['phpgw']->template->set_var('email',$email);
+		$GLOBALS['phpgw']->template->set_var('hemail',$hemail);
 
-		$t->parse('list','addressbook_list',True);
+		$GLOBALS['phpgw']->template->parse('list','addressbook_list',True);
 	}
 	// --------------------------- end record declaration ---------------------------
 
-	$t->set_var('lang_done',lang('Done'));
-	$t->parse('out','addressbook_list_t',True);
-	$t->p('out');
+	$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
+	$GLOBALS['phpgw']->template->parse('out','addressbook_list_t',True);
+	$GLOBALS['phpgw']->template->p('out');
 
 	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>

@@ -20,19 +20,19 @@
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'email', 
 		'enable_network_class' => True, 
-		'enable_nextmatchs_class' => True);
+		'enable_nextmatchs_class' => True
+	);
 
 	include('../header.inc.php');
 
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(
+	$GLOBALS['phpgw']->template->set_file(
 		Array(
 			'T_folder_out' => 'folder.tpl'
 		)
 	);
 
-	$t->set_block('T_folder_out','B_folder_list','V_folder_list');
-	$t->set_block('T_folder_out','B_action_report','V_action_report');
+	$GLOBALS['phpgw']->template->set_block('T_folder_out','B_folder_list','V_folder_list');
+	$GLOBALS['phpgw']->template->set_block('T_folder_out','B_action_report','V_action_report');
 
 //  ----  Establish Email Server Connectivity Conventions  ----
 	$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
@@ -164,12 +164,12 @@
 				$action_report = $action_report .$imap_err;
 			}
 		}
-		$t->set_var('action_report',$action_report);
-		$t->parse('V_action_report','B_action_report');
+		$GLOBALS['phpgw']->template->set_var('action_report',$action_report);
+		$GLOBALS['phpgw']->template->parse('V_action_report','B_action_report');
 	}
 	else
 	{
-		$t->set_var('V_action_report','');
+		$GLOBALS['phpgw']->template->set_var('V_action_report','');
 	}
 
 
@@ -194,27 +194,27 @@
 		//}
 
 		$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-		$t->set_var('list_backcolor',$tr_color);
-		$t->set_var('folder_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder=' .$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)));
+		$GLOBALS['phpgw']->template->set_var('list_backcolor',$tr_color);
+		$GLOBALS['phpgw']->template->set_var('folder_link',$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'.'&folder=' .$GLOBALS['phpgw']->msg->prep_folder_out($folder_long)));
 
 		if ((isset($GLOBALS['phpgw']->msg->args['show_long']))
 		&& ($GLOBALS['phpgw']->msg->args['show_long'] != ''))
 		{
-			$t->set_var('folder_name',$folder_long);
+			$GLOBALS['phpgw']->template->set_var('folder_name',$folder_long);
 		}
 		else
 		{
-			$t->set_var('folder_name',$folder_short);
+			$GLOBALS['phpgw']->template->set_var('folder_name',$folder_short);
 		}
-		//$t->set_var('folder_name',$folder_list[$i]['folder_long']);
-		//$t->set_var('folder_name',$GLOBALS['phpgw']->msg->htmlspecialchars_encode($folder_long));
+		//$GLOBALS['phpgw']->template->set_var('folder_name',$folder_list[$i]['folder_long']);
+		//$GLOBALS['phpgw']->template->set_var('folder_name',$GLOBALS['phpgw']->msg->htmlspecialchars_encode($folder_long));
 
-		$t->set_var('msgs_unseen',number_format($mailbox_status->unseen));
-		//$t->set_var('msgs_unseen',number_format($folder_info['number_new']));
-		//$t->set_var('msgs_total',$total_msgs);
-		$t->set_var('msgs_total',number_format($mailbox_status->messages));
-		//$t->set_var('msgs_total',number_format($folder_info['number_all']));
-		$t->parse('V_folder_list','B_folder_list',True);
+		$GLOBALS['phpgw']->template->set_var('msgs_unseen',number_format($mailbox_status->unseen));
+		//$GLOBALS['phpgw']->template->set_var('msgs_unseen',number_format($folder_info['number_new']));
+		//$GLOBALS['phpgw']->template->set_var('msgs_total',$total_msgs);
+		$GLOBALS['phpgw']->template->set_var('msgs_total',number_format($mailbox_status->messages));
+		//$GLOBALS['phpgw']->template->set_var('msgs_total',number_format($folder_info['number_all']));
+		$GLOBALS['phpgw']->template->parse('V_folder_list','B_folder_list',True);
 	}
 	
 	// make your HTML listbox of all folders
@@ -233,40 +233,40 @@
 		'first_line_txt'	=> lang('choose for rename')
 	);
 	// get you custom built HTML listbox (a.k.a. selectbox) widget
-	$t->set_var('all_folders_listbox', $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args));
+	$GLOBALS['phpgw']->template->set_var('all_folders_listbox', $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args));
 
 
 // ----  Set Up Form Variables  ---
-	$t->set_var('form_action',$GLOBALS['phpgw']->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
-	//$t->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
-	//$t->set_var('select_name_rename','source_folder');
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+	//$GLOBALS['phpgw']->template->set_var('all_folders_listbox',$GLOBALS['phpgw']->msg->all_folders_listbox('','','',False));
+	//$GLOBALS['phpgw']->template->set_var('select_name_rename','source_folder');
 
-	$t->set_var('form_create_txt',lang('Create a folder'));
-	$t->set_var('form_delete_txt',lang('Delete a folder'));
-	$t->set_var('form_rename_txt',lang('Rename a folder'));
-	$t->set_var('form_create_expert_txt',lang('Create (expert)'));
-	$t->set_var('form_delete_expert_txt',lang('Delete (expert)'));
-	$t->set_var('form_rename_expert_txt',lang('Rename (expert)'));
-	$t->set_var('form_submit_txt',lang("submit"));
+	$GLOBALS['phpgw']->template->set_var('form_create_txt',lang('Create a folder'));
+	$GLOBALS['phpgw']->template->set_var('form_delete_txt',lang('Delete a folder'));
+	$GLOBALS['phpgw']->template->set_var('form_rename_txt',lang('Rename a folder'));
+	$GLOBALS['phpgw']->template->set_var('form_create_expert_txt',lang('Create (expert)'));
+	$GLOBALS['phpgw']->template->set_var('form_delete_expert_txt',lang('Delete (expert)'));
+	$GLOBALS['phpgw']->template->set_var('form_rename_expert_txt',lang('Rename (expert)'));
+	$GLOBALS['phpgw']->template->set_var('form_submit_txt',lang("submit"));
 
 // ----  Set Up Other Variables  ---	
-	$t->set_var('title_backcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
-	$t->set_var('title_textcolor',$GLOBALS['phpgw_info']['theme']['em_folder_text']);
-	$t->set_var('title_text',lang('Folder Maintenance'));
-	$t->set_var('label_name_text',lang('Folder name'));
-	//$t->set_var('label_messages_text',lang('Messages'));
-	$t->set_var('label_new_text',lang('New'));
-	$t->set_var('label_total_text',lang('Total'));
+	$GLOBALS['phpgw']->template->set_var('title_backcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
+	$GLOBALS['phpgw']->template->set_var('title_textcolor',$GLOBALS['phpgw_info']['theme']['em_folder_text']);
+	$GLOBALS['phpgw']->template->set_var('title_text',lang('Folder Maintenance'));
+	$GLOBALS['phpgw']->template->set_var('label_name_text',lang('Folder name'));
+	//$GLOBALS['phpgw']->template->set_var('label_messages_text',lang('Messages'));
+	$GLOBALS['phpgw']->template->set_var('label_new_text',lang('New'));
+	$GLOBALS['phpgw']->template->set_var('label_total_text',lang('Total'));
 
-	$t->set_var('view_long_txt',lang('long names'));
-	$t->set_var('view_long_lnk',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php?show_long=1'));
-	$t->set_var('view_short_txt',lang('short names'));
-	$t->set_var('view_short_lnk',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php'));
+	$GLOBALS['phpgw']->template->set_var('view_long_txt',lang('long names'));
+	$GLOBALS['phpgw']->template->set_var('view_long_lnk',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php?show_long=1'));
+	$GLOBALS['phpgw']->template->set_var('view_short_txt',lang('short names'));
+	$GLOBALS['phpgw']->template->set_var('view_short_lnk',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/folder.php'));
 
-	$t->set_var('the_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('th_backcolor',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('the_font',$GLOBALS['phpgw_info']['theme']['font']);
+	$GLOBALS['phpgw']->template->set_var('th_backcolor',$GLOBALS['phpgw_info']['theme']['th_bg']);
 
-	$t->pparse('out','T_folder_out');
+	$GLOBALS['phpgw']->template->pparse('out','T_folder_out');
 
 	$GLOBALS['phpgw']->msg->end_request();
 
