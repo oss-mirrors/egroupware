@@ -36,11 +36,12 @@
 	}
 
 	$phpgw->template->set_file(array(
-		'common_'   => 'common.tpl',
-		'body'     => 'form.tpl',
-		'info'     => 'form_info.tpl',
+		'common_'  => 'common.tpl',
+		'form'     => 'form.tpl',
 		'standard' => 'common.standard.tpl'
 	));
+	$phpgw->template->set_block('form','body');
+	$phpgw->template->set_block('form','form_info');
 
 	if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_READ))
 	{
@@ -72,7 +73,7 @@
 	$phpgw->template->set_var('lang_visited',lang('Date last visited'));
 	$phpgw->template->set_var('lang_visits',lang('Total visits'));
 
-	$phpgw->template->parse('info','info');
+	$phpgw->template->parse('info','form_info');
 
 	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/view.php','bm_id=' . $bm_id));
 	$phpgw->template->set_var('lang_url',lang('URL'));

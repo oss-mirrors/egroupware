@@ -59,8 +59,9 @@
 		'common_'            => 'common.tpl',
 		'possible_dup'       => 'create.possible_dup.tpl',
 		'possible_dup_lines' => 'create.possible_dup.line.tpl',
-		'body'               => 'form.tpl'
+		'form'               => 'form.tpl'
 	));
+	$phpgw->template->set_block('form','body');
 
 	app_header(&$phpgw->template);
 
