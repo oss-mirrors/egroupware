@@ -936,7 +936,7 @@
 
 			if ($confirm)
 			{
-				$del['id'] = $pa_id;
+				$del = $pa_id;
 
 				if ($subs)
 				{

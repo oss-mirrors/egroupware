@@ -862,7 +862,7 @@
 
 				$this->db->query("DELETE from phpgw_p_hours where project_id='" . $pa_id . "'" . $subdelete,__LINE__,__FILE__); 
 
-				$this->db->query("select id from phpgw_delivery where project_id='" . $pa_id . "'",__LINE__,__FILE__);
+				$this->db->query("select id from phpgw_p_delivery where project_id='" . $pa_id . "'",__LINE__,__FILE__);
 
 				while ($this->db->next_record())
 				{
@@ -879,7 +879,7 @@
 
 				$this->db->query("DELETE from phpgw_p_delivery where project_id='" . $pa_id . "'",__LINE__,__FILE__);
 
-				$this->db->query("select id from phpgw_invoice where project_id='" . $pa_id . "'",__LINE__,__FILE__);
+				$this->db->query("select id from phpgw_p_invoice where project_id='" . $pa_id . "'",__LINE__,__FILE__);
 
 				while ($this->db->next_record())
 				{
