@@ -16,4 +16,8 @@
 			 'appname' => 'phpgwapi',
 			 'versions' => Array('0.9.10', '0.9.11' , '0.9.12')
 		);
+	$setup_info['skel']['depends'][] = array(
+			 'appname' => 'email',
+			 'versions' => Array('0.9.10', '0.9.11' , '0.9.12')
+		);
 ?>
