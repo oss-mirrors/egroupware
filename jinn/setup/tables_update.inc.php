@@ -570,5 +570,14 @@
 
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.107';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
-	}
-?>
+	 }
+
+	 $test[] = '0.8.107';
+	 function jinn_upgrade0_8_107()
+	 {
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.8.200';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	 }
+
+
+  ?>

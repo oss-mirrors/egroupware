@@ -29,7 +29,7 @@
 
    $this->plugins['attachpath']['name']				= 'attachpath';
    $this->plugins['attachpath']['title']			= 'AttachmentPath plugin';
-   $this->plugins['attachpath']['version']			= '0.8.7';
+   $this->plugins['attachpath']['version']			= '0.8.8';
    $this->plugins['attachpath']['author']			= 'Pim Snel';
    $this->plugins['attachpath']['enable']			= 1;
    $this->plugins['attachpath']['description']		= 'Plugin with can upload files of any type and store the paths in the database seperated by semicolons.';
@@ -45,10 +45,26 @@
    (
 	  'Max_files' => array('3','text','maxlength=2 size=2'), 
 	  'Max_attachment_size_in_megabytes_Leave_empty_to_have_no_limit' => array('','text','maxlength=3 size=3'),
-	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
-	  'Activate_manual_path_input' => array( array('False','True'),'select','')
+	  //	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
+	  'Activate_manual_path_input' => array( array('False','True'),'select',''),
+	  'Store_full_path' => array( array('True','False'),'select','')
    );
 
+   $this->plugins['attachpath']['config_help']		= array
+   (
+	  'Max_files' => 'Defaults to three files', 
+	  //	  'Max_attachment_size_in_megabytes_Leave_empty_to_have_no_limit' => array('','text','maxlength=3 size=3'),
+	  //	  'Alternative_upload_path_Leave_empty_to_use_normal_path' => array('','text','maxlength=200 size=30'),
+	  'Activate_manual_path_input' => 'With manual path the user can point to an existing file',
+	  'Store_full_path' => 'If you select True, the complete path is stored in the database, else a path relative to the upload path is stored ' 
+   );
+
+   /*!
+   @function plg_fi_attachpath
+   @fixme remove attachments dir
+   @fixme add file selector for remote files
+   @fixme add mimetype icons
+   */
    function plg_fi_attachpath($field_name,$value,$config,$attr_arr)
    {	
 	  global $local_bo;
@@ -69,6 +85,15 @@
 	  elseif($local_bo->site[$field_prefix.'upload_path'])
 	  {
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
+	  }
+
+	  if($config['Store_full_path'])
+	  {
+		 $download_path='';
+	  }
+	  else
+	  {
+		 $download_path=$upload_path.SEP;
 	  }
 
 	  /* Check if everything is set to upload files */ 
@@ -94,10 +119,9 @@
 		 $input.=lang('please contact Administrator with this message');
 		 return $input;
 	  }
+
 	  /* everything ok, remove temporary file */
 	  unlink($upload_path.SEP.'attachments'.SEP.'JiNN_write_test');
-
-
 
 	  $stripped_name=substr($field_name,6);	
 
@@ -118,9 +142,11 @@
 
 			   $input.=$i.'. ';
 
-			   $filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$att_path);
+			   $tmp_arr=explode(SEP,$att_path);
+			   $name=$tmp_arr[count($tmp_arr)-1];
+			   $filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$download_path.$att_path);
 
-			   $input.='<b><a href="'.$filelink.'">'.$att_path.'</a></b>';
+			   $input.='<b><a href="'.$filelink.'">'.$name.'</a></b>';
 
 
 			   $input.=' <input type="checkbox" value="'.$att_path.'" name="ATT_DEL'.$field_name.$i.'"> '.lang('remove').'<br>';
@@ -160,14 +186,14 @@
 	  for($i=1;$i<=$num_input;$i++)
 	  {
 		 $input .='<br/><hr/>';
-			$input .=($num_input==1?lang('add attachment'):lang('add attachment %1', $i));
-			$input .=' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
-			
-			if($config[Activate_manual_path_input]=='True')
-			{
-			   $input.='<br/><br/>'.lang('Manually enter a new relative file path').'<input type="text" name="ATT_MAN'.$field_name.$i.'" style="width:300px"><br/>';
-			}
-		 
+		 $input .=($num_input==1?lang('add attachment'):lang('add attachment %1', $i));
+		 $input .=' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
+
+		 if($config[Activate_manual_path_input]=='True')
+		 {
+			$input.='<br/><br/>'.lang('Manually enter a new relative file path').'<input type="text" name="ATT_MAN'.$field_name.$i.'" style="width:300px"><br/>';
+		 }
+
 	  }
 
 	  $input.='<hr/><input type="checkbox" value="'.$att_path.'" name="ATT_FLUSH"> '.lang('Remove all').'<br/>';
@@ -209,6 +235,16 @@
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
 
+	  if($config['Store_full_path'])
+	  {
+		 $path_in_db=$upload_path.SEP;
+	  }
+	  else
+	  {
+		 $path_in_db='';//$download_path=$upload_path.SEP;
+	  }
+
+
 	  $atts_to_delete=$local_bo->common->filter_array_with_prefix($_POST,'ATT_DEL');
 
 	  if (count($atts_to_delete)>0){
@@ -225,7 +261,7 @@
 		 {
 			if (!in_array($att_org,$atts_to_delete))
 			{
-				 if ($atts_path_new) $atts_path_new.=';';
+			   if ($atts_path_new) $atts_path_new.=';';
 			   $atts_path_new.=$att_org;
 			}
 		 }
@@ -235,14 +271,13 @@
 		 $atts_path_new.=$_POST['ATT_ORG'.$field_name];
 	  }
 
-	  
 	  /* make array again of the original attachment */
 	  $atts_array=explode(';',$atts_path_new);
 	  unset($atts_path_new);
 
 	  /* finally adding new attachments */
 	  $atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
-	  
+
 	  // quick check for new attchments
 	  if(is_array($atts_to_add))
 	  foreach($atts_to_add as $attscheck)
@@ -252,7 +287,7 @@
 
 	  if ($num_atts_to_add)
 	  {
-		$att_position=0;
+		 $att_position=0;
 		 foreach($atts_to_add as $add_att)
 		 {
 			if($add_att['name'])
@@ -263,7 +298,7 @@
 
 			   if (copy($new_temp_file, $upload_path.SEP.'attachments'.SEP.$target_att_name))
 			   {
-				  $atts_array[$att_position]='attachments'.SEP.$target_att_name;
+				  $atts_array[$att_position]=$path_in_db.'attachments'.SEP.$target_att_name;
 			   }
 			   else
 			   {
@@ -285,7 +320,7 @@
 		 {
 			if($att_name)
 			{
-			   $atts_array[]='attachments'.SEP.$att_name;
+			   $atts_array[]=$path_in_db.'attachments'.SEP.$att_name;
 			}
 		 }
 
@@ -302,7 +337,7 @@
 		 }						
 	  }
 
-	
+
 	  if($atts_path_new)
 	  {
 		 return $atts_path_new;
@@ -334,6 +369,15 @@
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
 
+	  if($config['Store_full_path'])
+	  {
+		 $download_path='';
+	  }
+	  else
+	  {
+		 $download_path=$upload_path.SEP;
+	  }
+
 	  if($value)
 	  {
 		 $value=explode(';',$value);
@@ -348,9 +392,11 @@
 
 			$input.=$i.'. ';
 
-			$filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$att_path);
+			$tmp_arr=explode(SEP,$att_path);
+			$name=$tmp_arr[count($tmp_arr)-1];
+			$filelink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$download_path.$att_path);
 
-			$input.='<b><a href="'.$filelink.'">'.$att_path.'</a></b>';
+			$input.='<b><a href="'.$filelink.'">'.$name.'</a></b>';
 		 }
 	  }
 	  /* there's just one image */
@@ -381,6 +427,15 @@
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
 
+	  if($config['Store_full_path'])
+	  {
+		 $download_path='';
+	  }
+	  else
+	  {
+		 $download_path=$upload_path.SEP;
+	  }
+
 	  /* if value is set, show existing images */	
 	  if($value)
 	  {
@@ -390,7 +445,7 @@
 		 if (is_array($value))
 		 {
 			$i=0;
-			foreach($value as $img_path)
+			foreach($value as $file_path)
 			{
 			   $i++;
 
@@ -398,10 +453,11 @@
 			   unset($popup); 
 
 			   /* check for image and create previewlink */
-			   if(is_file($upload_path . SEP . $img_path))
+			   if(is_file($download_path . SEP . $file_path))
 			   {
-
-				  $link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path.SEP.$img_path);
+				  $tmp_arr=explode(SEP,$file_path);
+				  $name=$tmp_arr[count($tmp_arr)-1];
+				  $link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$download_path.$file_path);
 			   }
 
 			   if($link) $display.='<a href="'.$link.'">'.$i.'</a>';

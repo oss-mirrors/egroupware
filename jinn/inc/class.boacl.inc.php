@@ -1,7 +1,7 @@
 <?php
    /*
    JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-   Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+   Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
 
    eGroupWare - http://www.egroupware.org
 

@@ -600,7 +600,7 @@
 					 {
 						$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecolname);
 						$recordvalue=$recordvalues[$onecolname];
-						if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
+						if ($recordvalue && is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
 						{
 						   $related_value=$this->bo->get_related_value($relation1_array[$onecolname],$recordvalue);
 						   $recordvalue= '<i>'.$related_value.'</i> ('.$recordvalue.')';

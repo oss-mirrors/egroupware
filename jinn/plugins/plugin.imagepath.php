@@ -31,7 +31,7 @@
    $this->plugins['imagepath']['name']				= 'imagepath';
    $this->plugins['imagepath']['title']				= 'ImagePath plugin';
    $this->plugins['imagepath']['author']			= 'Pim Snel';
-   $this->plugins['imagepath']['version']			= '0.9.5';
+   $this->plugins['imagepath']['version']			= '0.9.6';
    $this->plugins['imagepath']['enable']			= 1;
 
    $this->plugins['imagepath']['description']		= '
@@ -210,6 +210,11 @@
 						   }
 						}
 
+						$input.='<br/>';
+						$input.=lang('height'). ': <strong>'.$image_size[1].lang('pixels').'</strong>';
+						$input.=' ';
+						$input.=lang('width'). ': <strong>'.$image_size[0].lang('pixels').'</strong>';
+						
 						$input.='</td><td '.$cell_style.' valign="top"><input type="checkbox" value="'.$img_path.'" name="IMG_DEL'.$field_name.$i.'"> '.lang('remove').'</td></tr>';
 			   }
 			}

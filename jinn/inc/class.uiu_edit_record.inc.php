@@ -519,7 +519,8 @@
 	  {
 		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
 
-		 if(!$this->bo->where_string)
+//		_debug_array($this->bo->site_object);
+		if(!$this->bo->where_string && $this->bo->site_object[max_records]!=1)
 		 {
 			if($this->repeat_input=='true') $REPEAT_INPUT_CHECKED='CHECKED';
 

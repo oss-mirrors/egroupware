@@ -6,9 +6,13 @@
 4 (default)	jinn	en	4 (default)
 access rights	jinn	en	Access Rights
 access rights for site not succesfully editted	jinn	en	Access rights for Site NOT succesfully editted
+access rights for site not succesfully saved	jinn	en	Access rights for Site NOT succesfully saved
 access rights for site succesfully editted	jinn	en	Access rights for site succesfully editted
+access rights for site succesfully saved	jinn	en	Access rights for Site succesfully saved
 access rights for site-object not succesfully editted	jinn	en	Access rights for site-object NOT succesfully editted
+access rights for site-object not succesfully saved	jinn	en	Access rights for site-object NOT succesfully saved
 access rights for site-object succesfully editted	jinn	en	Access rights for site-object succesfully editted
+access rights for site-object succesfully saved	jinn	en	Access rights for site-object succesfully saved
 access rights site-objects	jinn	en	Access rights site-objects
 access_rights	jinn	en	access_rights
 action was not succesful. unknown error	jinn	en	Action was not succesful. Unknown error
@@ -45,8 +49,6 @@ advanced configuration	jinn	en	advanced configuration
 all from	jinn	en	all from
 alternative fieldname for display	jinn	en	Alternative Fieldname for display
 an error occured.	jinn	en	An error occured.
-an unknown error has occured (error code 109)	jinn	en	An unknown error has occured (error code 109)
-an unknown error has occured (error code 110)	jinn	en	An unknown error has occured (error code 110)
 another	jinn	en	another
 are you sure you want to delete these multiple records?	jinn	en	Are you sure you want to delete these multiple records?
 are you sure you want to delete this record?	jinn	en	Are you sure you want to delete this record?
@@ -72,7 +74,7 @@ c_all	jinn	en	c_all
 c_none	jinn	en	c_none
 can't edit more then 99 record at once (error code 108)	jinn	en	Can't edit more then 99 record at once (error code 108)
 cancel	jinn	en	Cancel
-cannot copy a record from this table. (error code 103)	jinn	en	Cannot copy a record from this table. (error code 103)
+cannot copy a record from this table.	jinn	en	Cannot copy a record from this table.
 category	jinn	en	Category
 change number of records	jinn	en	change number of records
 check:	jinn	en	check:
@@ -99,6 +101,7 @@ current color:	jinn	en	current color:
 database connection failed! <p>please recheck your settings.	jinn	en	database connection failed! <P>Please recheck your settings.
 database connection was succesfull. <p>you can go on with the site-objects	jinn	en	Database connection was succesfull. <P>You can go on with the site-objects
 days	jinn	en	days
+debug	jinn	en	debug
 default	jinn	en	default
 default image type (jpg, gif, png)	admin	en	Default image type (jpg, gif, png)
 default image width	admin	en	Default image width
@@ -116,6 +119,7 @@ dev site db password	jinn	en	Development (Test) site database password
 dev site db type	jinn	en	Development (Test) site database type
 dev site db user	jinn	en	Development (Test) site database username
 dev upload path	jinn	en	Development (Test) site upload path
+dev upload url	jinn	en	Dev upload url
 developer links	jinn	en	Developer Links
 development	admin	en	Development
 development server	jinn	en	Development Server
@@ -134,6 +138,7 @@ edit this site	jinn	en	Edit this Site
 edit this site object	jinn	en	Edit this Site Object
 editors for object $object_name in site $site_name	jinn	en	editors for object $object_name in site $site_name
 editors for object %1 in site %2	jinn	en	editors for object %1 in site %2
+error code %1	jinn	en	ERROR CODE %1
 error path_open %1	jinn	en	error path_open %1
 error: the file %1 doesn't exists, please contact the webmaster	jinn	en	ERROR: the file %1 doesn't exists, please contact the webmaster
 export this site	jinn	en	export this site
@@ -156,6 +161,7 @@ filesize	jinn	en	filesize
 form input plugin	jinn	en	form input plugin
 general preferences	jinn	en	General Preferences
 general settings	admin	en	General Settings
+give a new timestamp	jinn	en	Give a new timestamp
 give new timestamp	jinn	en	Give new timestamp
 global configuration	jinn	en	Global Configuration
 global site configuration	admin	en	Global site configuration
@@ -177,16 +183,21 @@ import site	jinn	en	import site
 import was succesfull	jinn	en	Import was succesfull
 import was succesfull<br>imported one site with	jinn	en	import was succesfull<br>Imported one site with
 index	jinn	en	index
+info	jinn	en	info
 insert another record after saving	jinn	en	insert another record after saving
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	en	Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	en	Insert/Select JiNN Site Object Parameters: <li>select a JiNN Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>
 jinn	common	en	JiNN
 jinn editors menu	jinn	en	JiNN Editors Menu
+jinn main	jinn	en	JiNN Main
 jinn main menu	jinn	en	JiNN Main Menu
 jinn preferences	jinn	en	JiNN Preferences
 jinn-description	common	en	JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.
+keep current timestamp	jinn	en	Keep current timestamp
+keep this empty to let is auto increment	jinn	en	keep this empty to let is auto increment
 last edited record	jinn	en	Last edited record
 license	common	en	License
+list record(s) in current object	jinn	en	Record list in current object
 list sites	jinn	en	List Sites
 load site conf from file	jinn	en	Load site conf from file
 maintainer	common	en	Maintainer
@@ -219,11 +230,13 @@ notice that jinn needs imagemagick 5.4.9 or a later version	admin	en	Notice that
 number of objects	jinn	en	Number of objects
 object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	en	Object Configuration: <li>select a Object Name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview URL for uploaded elements</li>
 object id	jinn	en	Object id
-one or more records not succesfully added. (error code 107)	jinn	en	One or more records NOT succesfully added. (error code 107)
+one or more records not succesfully added.	jinn	en	One or more records NOT succesfully added.
+one or more records not succesfully saved.	jinn	en	One or more records NOT succesfully saved.
 one or more records not succesfully saved. (error code 106)	jinn	en	One or more records NOT succesfully saved. (error code 106)
 only activate this if you know what your doing. you can destroy your data using experimental features.	jinn	en	Only activate this if you know what your doing. You can destroy your data using experimental features.
 only if thumnails exits	jinn	en	Only if thumnails exits
 only one	jinn	en	only one
+operation on multiple records failed.	jinn	en	Operation on multiple records failed.
 operation on multiple records failed. (error code 100)	jinn	en	Operation on multiple records failed. (error code 100)
 optional max. height	jinn	en	Optional max. height
 optional max. width	jinn	en	Optional max. width
@@ -243,13 +256,16 @@ real value	jinn	en	real value
 record	jinn	en	record
 record added succesfully	jinn	en	Record added succesfully
 record deleted succesfully	jinn	en	Record deleted succesfully
-record not succesfully copied. (error code 102)	jinn	en	Record NOT succesfully copied. (error code 102)
+record not succesfully copied	jinn	en	Record NOT succesfully copied
 record not succesfully copied. unknown error	jinn	en	Record NOT succesfully copied. Unknown error
-record not succesfully deleted. (error code 105)	jinn	en	Record NOT succesfully deleted. (error code 105)
+record not succesfully deleted.	jinn	en	Record NOT succesfully deleted.
 record not succesfully deleted. unknown error	jinn	en	Record NOT succesfully deleted. Unknown error
+record not succesfully saved	jinn	en	Record NOT succesfully saved
+record not succesfully saved. unknown error	jinn	en	Record NOT succesfully saved. Unknown error
 record succesfully copied	jinn	en	Record succesfully copied
 record succesfully deleted	jinn	en	Record succesfully deleted
 record succesfully editted	jinn	en	Record succesfully editted
+records not succesfully deleted.	jinn	en	Records NOT succesfully deleted.
 records not succesfully deleted. (error code 101)	jinn	en	Records NOT succesfully deleted. (error code 101)
 records succesfully deleted	jinn	en	Records succesfully deleted
 registered field plugins	common	en	Registered field plugins
@@ -269,6 +285,7 @@ save	jinn	en	save
 save and continue	jinn	en	save and continue
 save and contiue	jinn	en	save and contiue
 save and finish	jinn	en	save and finish
+save site conf to file	jinn	en	Save site conf to file
 screenshot	jinn	en	screenshot
 search	jinn	en	Search
 search for string	jinn	en	search for string
@@ -293,6 +310,9 @@ show all columns	jinn	en	Show all columns
 show all colums, always	jinn	en	Show all colums, always
 show colomn	jinn	en	show colomn
 show extra table debugging information	jinn	en	Show extra table debugging information
+show object_arr in msgbox	jinn	en	Show object_arr in msgbox
+show site_arr in msgbox	jinn	en	Show site_arr in msgbox
+show sql-statements in msgbox	jinn	en	Show SQL-statements in msgbox
 show upload path	admin	en	Show upload path
 showing	jinn	en	showing
 site beheerders	jinn	en	Site Administrators
@@ -335,6 +355,7 @@ the attachments subdirectory does not exist and cannot be created ...	jinn	en	Th
 the attachments subdirectory is not writable by the webserver ...	jinn	en	The attachments subdirectory is not writable by the webserver ...
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn.	jinn	en	The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN.
 the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by jinn. if this error repeates, please check your imagemagick installation.  older version of imagemagick are known not work properly with jinn. be sure to install at least version 5.4.9 or higher	jinn	en	The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick installation.  Older version of ImageMagick are known not work properly with JiNN. Be sure to install at least Version 5.4.9 or higher
+the gif-filetype is not supported by this server, please click on back and try a different filetype.	jinn	en	The GIF-filetype is not supported by this server, please click on back and try a different filetype.
 the identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5	jinn	en	The identifierfield of this table, %1, represented by %2 has a many-to-many with %3 represented by %4 showing %5
 the identifyer from this table (%1.id) represented by	jinn	en	The identifyer from this table (%1.id) represented by
 the image normal_size-directory subdirectory does not exist and cannot be created ...	jinn	en	The image normal_size-directory subdirectory does not exist and cannot be created ...
@@ -353,6 +374,7 @@ the wysiwyg plugin makes you edit text like you do in a program like openoffice 
 there are no directories in this site you have access to.	jinn	en	There are no directories in this site you have access to.
 there are no records found for this object. you can now at a new record.	jinn	en	There are no records found for this object. You can now at a new record.
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	en	There is not site you have access to. Ask your administrator to give you access to your site of site-objects or check if any site exist
+this is for debugging purposes.	jinn	en	This is for debugging purposes.
 this table has not unique identifier field	jinn	en	This table has not unique identifier field
 thisfile	jinn	en	thisfile
 thumb directory does not exist or is not correct ...	jinn	en	thumb directory does not exist or is not correct ...
@@ -362,6 +384,7 @@ toggle all above checkboxes	jinn	en	toggle all above checkboxes
 unexpected error	jinn	en	unexpected error
 unlimited	jinn	en	unlimited
 upload path	jinn	en	Upload path
+upload url	jinn	en	Upload url
 using object configuration	jinn	en	Using object configuration
 version	jinn	en	version
 view all selected records	jinn	en	view all selected records
@@ -373,5 +396,7 @@ when you choose 'never', only links to the images are displayed; when you choose
 width:	jinn	en	Width:
 with_checked_files	jinn	en	with_checked_files
 yes, hide from menu	jinn	en	Yes, hide from menu
+you don't have access to this page.	jinn	en	You don't have access to this page.
+you have no access to this object	jinn	en	You have no access to this object
 you must select one or more records for this function.	jinn	en	You must select one or more records for this function.
 you're not allowed to administrate media files	jinn	en	You're not allowed to administrate media files

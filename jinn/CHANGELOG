@@ -2,12 +2,25 @@
 CHANGELOG JiNN for eGroupWare
 =============================
 
+Tue Oct  5 22:21:04 CEST 2004
+Version 0.8.200
+=============================
+- display height en width in ImagePath Plugin
+- copy-paste htmlarea firefox
+- updated translations
+- again fix date plugin
+- set version to 0.8.200
+
+Mon Sep 27 17:54:40 CEST 2004
+Version 0.8.107g
+=============================
+- attachment path enhancements to cope with more situations
+
 Sun Sep 26 16:15:31 CEST 2004
 Version 0.8.107f
 =============================
 - fixed copy record when there are quotes
 - more debugging places added
-
 
 Sat Sep 25 15:34:12 CEST 2004
 Version 0.8.107e
@@ -15,7 +28,6 @@ Version 0.8.107e
 - fixed main menu when user has access to only one site but is admin of this site
 - check if user has access to object and else give error
 - enhance acl class
-
 
 Thu Sep 23 16:46:48 CEST 2004
 Version 0.8.107d
