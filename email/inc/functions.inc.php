@@ -94,7 +94,16 @@
 	
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
-	$in_mainscreen = eregi("^.*\/home\.php.*$",$PHP_SELF);
+	if (strstr($phpgw_info['server']['versions']['phpgwapi'], '0.9.12'))
+	{
+		// user's welcome page was called "index.php" in ver 0.9.12
+		$in_mainscreen = eregi("^.*\/index\.php.*$",$PHP_SELF);
+	}
+	else
+	{
+		// in version 0.9.13 (current devel) users welcome page is "home.php"
+		$in_mainscreen = eregi("^.*\/home\.php.*$",$PHP_SELF);
+	}
 	// were we in a typical email session
 	$in_email = eregi("^.*\/email\/.*$",$PHP_SELF);
 	
