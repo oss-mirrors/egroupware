@@ -1145,16 +1145,17 @@
 				$GLOBALS['phpgw']->template->fp('mslisthandle','mslist',True);
 			}
 
+			$GLOBALS['phpgw']->template->pfp('out','view');
+
 			if (!isset($public_view))
 			{
 				$GLOBALS['phpgw']->template->fp('nonanonymhandle','nonanonym',True);
-				/*$GLOBALS['phpgw']->hooks->process(array
+				$GLOBALS['phpgw']->hooks->process(array
 				(
 					'location'   => 'projects_view',
 					'project_id' => $project_id
-				));*/
+				));
 			}
-			$GLOBALS['phpgw']->template->pfp('out','view');
 		}
 
 		function delete_pa()

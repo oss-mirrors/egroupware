@@ -469,20 +469,15 @@
 
 		function list_projects($params)
 		{
-			$pro_list = $this->so->read_projects(array
-									(
-										'start'		=> $this->start,
-										'limit'		=> $this->limit,
-										'query'		=> $this->query,
-										'filter'	=> $this->filter,
-										'sort'		=> $this->sort,
-										'order'		=> $this->order,
-										'status'	=> $this->status,
-										'cat_id'	=> $this->cat_id,
-										'type'		=> $params['type'],
-										'parent'	=> $params['parent'],
-										'main'		=> $params['main']
-									));
+			// allow all class-params to be overwriten by caller
+			foreach(array('start','limit','query','filter','sort','order','status','cat_id') as $name)
+			{
+				if (!isset($param[$name]))
+				{
+					$param[$name] = $this->$name;
+				}
+			}
+			$pro_list = $this->so->read_projects($param);
 
 			while (is_array($pro_list) && list(,$pro)=each($pro_list))
 			{
