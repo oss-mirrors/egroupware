@@ -248,8 +248,7 @@ then do this	email	fr	Alors faire ceci
 then take this actions	email	fr	Alors effectuer ces actions
 there was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.	email	fr	Il y a eu une erreur en essayant de se connecter à votre serveur IMAP.<br>SVP contactez votre administrateur pour vérifier le nom du serveur, le nom d'utilisateur ou le mot de passe.
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	fr	Il y a eu une erreur en essayant de se connecter à votre serveur de mail.<br>SVP, vérifiez votre nom et mot de passe, ou contactez votre administrateur.
-there was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.	email	fr	Il y a eu une erreur en essayant de se connecter à votre serveur POP3.<br>SVP contactez votre administrateur pou
-r vérifier le nom du serveur, le nom d'utilisateur ou le mot de passe.
+there was an error trying to connect to your POP3 server.<br>Please contact your admin to check the servername, username or password.	email	fr	Il y a eu une erreur en essayant de se connecter à votre serveur POP3.<br>SVP contactez votre administrateur pour vérifier le nom du serveur, le nom d'utilisateur ou le mot de passe.
 this data not supplied.	email	fr	Cette donnée non fournie
 this folder is empty	email	fr	Ce dossier est vide
 to	email	fr	A
