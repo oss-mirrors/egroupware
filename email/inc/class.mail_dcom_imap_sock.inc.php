@@ -2532,42 +2532,74 @@
 				{
 					// ** ENCAPSULATION *** if message/rfc822
 					if ($this->debug_dcom > 1) { echo "\n".'bs('.__LINE__.'): found open paren, so we have *** ENCAPSULATED message/rfc822'."\n"; }
-					
 					// 1. (envelope)
-					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ENCAP 1. is (envelope) - get its length, eat it, and move on... '."\n"; }
-					$loopz = strlen($this->bs_rawstr);
-					$tmp_data['encap_paren_count'] = 0;
-					$tmp_data['encap_env_end'] = 0;
-					for ($x=0; $x < $loopz ; $x++)
+					//counting parens can be b0rked by parens in the strings of env data, so
+					// try looking for the few known ways this encap env will end
+					// either [>") (] OR  [ NIL) (]  where that open paren starts again the bodystruct data
+					$end_1 = strpos($this->bs_rawstr, '>") (');
+					$end_2 = strpos($this->bs_rawstr, ' NIL) (');
+					// pick the lowest above zero
+					if (($end_1 > 0)
+					|| ($end_2 > 0))
 					{
-						// when paren count gets back to 0, we get to the end of enbeded envelope
-						if ($this->bs_rawstr{$x} == '(')
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ENCAP 1. preferred method, is look for ending strings of (envelope) to get its length - eat it, and move on... '."\n"; }
+						$tmp_data['encap_env_end'] = 0;
+						$num_array = array();
+						if ((int)$end_1 > 0)
 						{
-							$tmp_data['encap_paren_count']++;
-							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found open paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+							$num_array[] = (int)$end_1;
 						}
-						elseif ($this->bs_rawstr{$x} == ')')
+						if ((int)$end_2 > 0)
 						{
-							$tmp_data['encap_paren_count']--;
-							if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found close paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+							$num_array[] = (int)$end_2;
 						}
-						// are we back to zero?
-						
-						// do we continue to loop
-						if ($tmp_data['encap_paren_count'] == 0)
-						{
-							// BREAK
-							$tmp_data['encap_env_end'] = $x;
-							if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): break from this loop - got end of encap envelope at $tmp_data[encap_env_end] is ['.$tmp_data['encap_env_end'].']'."\n"; }
-							break;
-						}
+						$tmp_data['encap_env_end'] = min($num_array);
+						// find the first space just after the beginning of known end strings we just found
+						$tmp_data['encap_env_firstspace'] = strpos($this->bs_rawstr, ' ', $tmp_data['encap_env_end']+1);
+						// eat the envelope
+						// then encap_env_firstspace+1 eats the space itself I hope
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat the envelope..., eliminate up to $tmp_data[encap_env_firstspace]+1 is ['.$tmp_data['encap_env_firstspace'].']+1'."\n"; }
+						$this->bs_rawstr = substr($this->bs_rawstr, $tmp_data['encap_env_firstspace']+1);
+						if ($this->debug_dcom > 2) { echo 'bs: post-envelope-eat NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
 					}
-					
-					// eat the envelope
-					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat the envelope..., eliminate up to $tmp_data[encap_env_end]+2 ['.$tmp_data['encap_env_end'].']+2'."\n"; }
-					// encap_env_end +2 eats the env close paren and the space that follows it
-					$this->bs_rawstr = substr($this->bs_rawstr, $tmp_data['encap_env_end']+2);
-					if ($this->debug_dcom > 2) { echo 'bs: post-envelope-eat NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+					else
+					{
+						// much less accurate fallback method
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ENCAP 1b. backup method, is count parens in (envelope) to get its length - eat it, and move on... '."\n"; }
+						$loopz = strlen($this->bs_rawstr);
+						$tmp_data['encap_paren_count'] = 0;
+						$tmp_data['encap_env_end'] = 0;
+						for ($x=0; $x < $loopz ; $x++)
+						{
+							// when paren count gets back to 0, we get to the end of enbeded envelope
+							// this ends with either [>") (]  OR  [ NIL) (]
+							if ($this->bs_rawstr{$x} == '(')
+							{
+								$tmp_data['encap_paren_count']++;
+								if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found open paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+							}
+							elseif ($this->bs_rawstr{$x} == ')')
+							{
+								$tmp_data['encap_paren_count']--;
+								if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): ... ENCAP 1. (envelope-eating-loop) found close paren, $tmp_data[encap_paren_count] now ['.$tmp_data['encap_paren_count'].']'."\n"; }
+							}
+							// are we back to zero?
+							
+							// do we continue to loop
+							if ($tmp_data['encap_paren_count'] == 0)
+							{
+								// BREAK
+								$tmp_data['encap_env_end'] = $x;
+								if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): break from this loop - got end of encap envelope at $tmp_data[encap_env_end] is ['.$tmp_data['encap_env_end'].']'."\n"; }
+								break;
+							}
+						}
+						// eat the envelope
+						if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): eat the envelope..., eliminate up to $tmp_data[encap_env_end]+2 ['.$tmp_data['encap_env_end'].']+2'."\n"; }
+						// encap_env_end +2 eats the env close paren and the space that follows it
+						$this->bs_rawstr = substr($this->bs_rawstr, $tmp_data['encap_env_end']+2);
+						if ($this->debug_dcom > 2) { echo 'bs: post-envelope-eat NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+					}
 					
 					// 2. (bodystructure)
 					if ($this->debug_dcom > 1) { echo 'bs('.__LINE__.'): ... now should be at ENCAP 2. bodystructure, look for open paren '."\n"; }
