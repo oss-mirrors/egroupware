@@ -234,7 +234,7 @@
 			{
 			   $ret_meta[$col[name]]=$col;
 			}
-			return $ret_meta;//$this->phpgw_db->metadata($table);
+			return $ret_meta;
 		 }
 		 else
 		 {
@@ -244,15 +244,26 @@
 
 
 	  // FIXME arg has to be site object_id in stead site_id and tablename
-	  function site_table_metadata($site_id,$table)
+	  function site_table_metadata($site_id,$table,$associative=false)
 	  {
 		 $this->site_db_connection($site_id);
-
-		 $metadata = $this->site_db->metadata($table);
-
+		 if($associative)
+		 {
+			$meta=$this->site_db->metadata($table);
+			foreach ($meta as $col)
+			{
+			   $meta_data[$col[name]]=$col;
+			}
+//			return $meta_data;
+		 }
+		 else
+		 {
+			 $meta_data = $this->site_db->metadata($table);
+		 }
+		 
 		 $this->site_close_db_connection();
 
-		 return $metadata;
+		 return $meta_data;
 	  }
 
 	  // FIXME arg has to be site object_id in stead site_id and tablename
@@ -783,50 +794,21 @@
 		 return $status;
 
 	  }
-
-	  /*		function copy_object_data($site_id,$table,$where_key,$where_value)
-	  {
-
-		 $this->site_db_connection($site_id);
-
-		 $record=$this->site_table_metadata($site_id,$table);
-		 $values=$this->get_record_values_2($site_id,$table,$this->strip_magic_quotes_gpc($where_key),$this->strip_magic_quotes_gpc($where_value),'0','1','name','');
-
-		 foreach($record as $field)
-		 {
-			if ($field[name]!='id')
-			{
-			   if ($SQLfields) $SQLfields .= ',';
-			   if ($SQLvalues) $SQLvalues .= ',';
-
-			   $SQLfields .= $field[name];
-			   $SQLvalues .= "'".addslashes($values[0][$field['name']])."'";
-			}
-		 }
-
-		 $SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
-
-
-		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
-		 {
-			$status=1;
-		 }
-
-		 return $status;
-
-	  }
-
-	  */
-
+	  
 	  function insert_object_data($site_id,$site_object,$data)
 	  {
-
 		 $this->site_db_connection($site_id);
-		 $metadata=$this->site_table_metadata2($site_id,$site_object);
+		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 
 		 foreach($data as $field)
 		 {
-			if(!$thirstfield) $thirstfield=$field[name];
+			if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
+			{
+			   $autokey=$field['name'];
+			   continue;
+			}
+			
+//			if(!$thirstfield) $thirstfield=$field[name];
 			if ($SQLfields) $SQLfields .= ',';
 			if ($SQLvalues) $SQLvalues .= ',';
 
@@ -835,11 +817,11 @@
 
 
 			/* check for primaries and create array */
-			if (eregi("auto_increment", $metadata[$field[name]][flags]))
+/*			if (eregi("auto_increment", $metadata[$field[name]][flags]))
 			{
 			   $autokey=$field[name];
-			}
-			elseif (!$autokey && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
+			}*/
+			if (!$autokey && eregi("primary_key", $metadata[$field[name]][flags]) && $metadata[$field[name]][type]!='blob') // FIXME howto select long blobs
 			{						
 			   $pkey_arr[]=$field[name];
 			}
@@ -860,12 +842,13 @@
 
 
 		 $SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+//		 die($SQL);
 
 		 if ($this->site_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$value[status]=1;
-			$value[idfield]=$thirstfield;
-			$value[id]=$this->site_db->get_last_insert_id($site_object, $thirstfield);
+//			$value[idfield]=$thirstfield;
+			$value[id]=$this->site_db->get_last_insert_id($site_object, $autokey);
 
 			if($autokey) $where_string= $autokey.'=\''.$value[id].'\'';
 			elseif(count($pkey_arr)>0)
@@ -888,7 +871,7 @@
 	  function update_object_data($site_id,$site_object,$data,$where_key,$where_value,$curr_where_string='')
 	  {
 		 $this->site_db_connection($site_id);
-		 $metadata=$this->site_table_metadata2($site_id,$site_object);
+		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 
 		 foreach($data as $field)
 		 {
