@@ -1,9 +1,11 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{hidden_vars}
-<table border="0" cellspacing="2" cellpadding="2">
+<table border="0" width="79%" cellspacing="2" cellpadding="2">
 	<tr>
 		<td colspan="4" align="left">
 			<table border="0" width="100%">
@@ -17,10 +19,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td colspan="4" align="right">
-			<form method="post" action="{searchurl}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
+		<td align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
 	<tr bgcolor="{th_bg}">
 		<td width="20%" bgcolor="{th_bg}">{sort_lid}</td>
@@ -35,7 +34,7 @@
 		<td>{lid}</td>
 		<td>{firstname}</td>
 		<td>{lastname}</td>
-		<td align="center"><a href="{stat}">{lang_stat}</a></td>
+		<td align="center"><a href="{stat}">{lang_stat_entry}</a></td>
 	</tr>
 
 <!-- END user_list -->

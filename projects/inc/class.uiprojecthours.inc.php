@@ -148,7 +148,7 @@
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
-			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/projects/stats_projectlist.php'));
+			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang('Statistics'));
 			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
 			$this->t->set_var('lang_deliveries',lang('Deliveries'));

@@ -136,7 +136,7 @@
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
-			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/projects/stats_projectlist.php'));
+			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
 			$this->t->set_var('lang_deliveries',lang('Deliveries'));
@@ -167,7 +167,7 @@
 
 			$link_data = array
 			(
-				'menuaction'	=> 'projects.uideliveries.list_projects',
+				'menuaction'	=> 'projects.uibilling.list_projects',
 				'pro_parent'	=> $pro_parent,
 				'action'		=> $action,
 				'cat_id'		=> $this->cat_id
@@ -223,13 +223,13 @@
 
 			if ($action == 'mains')
 			{
-				$this->t->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
+				$this->t->set_var('sort_action',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
 				$lang_action = '<td width="5%" align="center">' . lang('Jobs') . '</td>' . "\n";
 				$this->t->set_var('lang_action',$lang_action);
 			}
 			else
 			{
-				$this->t->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
+				$this->t->set_var('sort_action',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
 				$this->t->set_var('lang_action','');
 			}
 
@@ -317,7 +317,7 @@
 
 				if ($action == 'mains')
 				{
-					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&pro_parent='
+					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&pro_parent='
 																. $pro[$i]['project_id'] . '&action=subs') . '">' . lang('Jobs')
 																. '</a></td>' . "\n";
 					$this->t->set_var('action_entry',$action_entry);
@@ -340,7 +340,6 @@
 
 			$this->t->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
-			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
 		function coordinator_format($employee = '')
@@ -527,8 +526,6 @@
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','projects_add');
 			$this->t->pfp('addhandle','add');
-
-//			$phpgw->common->phpgw_footer();
 		}
 
 		function edit_project()

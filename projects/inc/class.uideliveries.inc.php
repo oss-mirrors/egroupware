@@ -138,7 +138,7 @@
 			$this->t->set_var('lang_billing',lang('Billing'));
 			$this->t->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
-			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/projects/stats_projectlist.php'));
+			$this->t->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
 			$this->t->set_var('lang_deliveries',lang('Deliveries'));
@@ -342,7 +342,6 @@
 
 			$this->t->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
-			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
 		function coordinator_format($employee = '')
@@ -529,8 +528,6 @@
 			$this->t->set_var('addhandle','');
 			$this->t->pfp('out','projects_add');
 			$this->t->pfp('addhandle','add');
-
-//			$phpgw->common->phpgw_footer();
 		}
 
 		function edit_project()

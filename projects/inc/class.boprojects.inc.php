@@ -96,6 +96,7 @@
 				case 'pad'		: $column = 'projects_pad'; break;
 				case 'amains'	: $column = 'projects_amains'; break;
 				case 'asubs'	: $column = 'projects_asubs'; break;
+				case 'ustat'	: $column = 'projects_ustat'; break;
 			}
 			return $column;
 		}
