@@ -80,7 +80,7 @@ class soWikiPage
 		{
 			$this->lang_priority_sql .= ' WHEN '.$this->db->quote($lang)." THEN $order";
 		}
-		$this->lang_priority_sql  .= ' END AS lang_priority';
+		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END AS lang_priority';
 	}
 
 	/*!
