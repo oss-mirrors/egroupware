@@ -51,7 +51,7 @@
 											. '&start=' . $start . '&filter=' . $filter));
 		$t->set_var('lang_no',lang('No'));
 
-		$t->set_var('action_url',$phpgw->link('hours_deletehour.php','id=' . $id));
+		$t->set_var('action_url',$phpgw->link('/projects/hours_deletehour.php','id=' . $id));
 		$t->set_var('lang_yes',lang('Yes'));
 		$t->pparse('out','job_delete');
 	}
