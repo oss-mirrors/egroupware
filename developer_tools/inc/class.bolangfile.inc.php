@@ -23,6 +23,8 @@
 		var $loaded_apps = array();
 		var $source_langarray = '';
 		var $target_langarray = '';
+		var $src_file;
+		var $tgt_file;
 
 		function bolangfile()
 		{
@@ -39,6 +41,8 @@
 			$phpgw->session->appsession('developer_source_lang','developer_tools',$source);
 			if($this->debug) { echo '<br>Save:'; _debug_array($target); }
 			$phpgw->session->appsession('developer_target_lang','developer_tools',$target);
+			$phpgw->session->appsession('developer_source_file','developer_tools',$this->src_file);
+			$phpgw->session->appsession('developer_target_file','developer_tools',$this->tgt_file);
 		}
 
 		function read_sessiondata()
@@ -51,14 +55,29 @@
 			$target = $phpgw->session->appsession('developer_target_lang','developer_tools');
 			if($this->debug) { echo '<br>Read:'; _debug_array($target); }
 
-			$this->set_sessiondata($source,$target);
+			$src_file = $phpgw->session->appsession('developer_source_file','developer_tools');
+			$tgt_file = $phpgw->session->appsession('developer_target_file','developer_tools');
+
+			$this->set_sessiondata($source,$target,$src_file,$tgt_file);
 			return;
 		}
 
-		function set_sessiondata($source,$target)
+		function set_sessiondata($source,$target,$src_file,$tgt_file)
 		{
 			$this->source_langarray = $source;
 			$this->target_langarray = $target;
+			$this->src_file = $src_file;
+			$this->tgt_file = $tgt_file;
+		}
+
+		function clear_sessiondata()
+		{
+			global $phpgw;
+
+			$phpgw->session->appsession('developer_source_lang','developer_tools','');
+			$phpgw->session->appsession('developer_target_lang','developer_tools','');
+			$phpgw->session->appsession('developer_source_file','developer_tools','');
+			$phpgw->session->appsession('developer_target_file','developer_tools','');
 		}
 
 		function list_apps()
@@ -94,21 +113,38 @@
 				return $this->source_langarray;
 			}
 			$this->source_langarray = $this->so->add_app($app,$userlang);
+			$this->src_file = $this->so->src_file;
 			$this->loaded_apps = $this->so->loaded_apps;
 			return $this->source_langarray;
 		}
 
 		function load_app($app,$userlang='en')
 		{
-			/*
 			if(gettype($this->target_langarray) == 'array')
 			{
-				return $this->target_langarray;
+				/* return $this->target_langarray; */
 			}
-			*/
-			$this->target_langarray = $this->so->add_app($app,$userlang);
+			$this->target_langarray = $this->so->load_app($app,$userlang);
+			$this->tgt_file = $this->so->tgt_file;
 			$this->loaded_apps = $this->so->loaded_apps;
 			return $this->target_langarray;
+		}
+
+		function write_file($which,$app_name)
+		{
+			switch ($which)
+			{
+				case 'source':
+					$langarray = $this->bo->source_langarray;
+					break;
+				case 'target':
+					$langarray = $this->bo->target_langarray;
+					break;
+				default:
+					break;
+			}
+			$this->so->write_file($app_name,$langarray);
+			return;
 		}
 	}
 ?>
