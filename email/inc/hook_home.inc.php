@@ -19,30 +19,24 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('email');
-
 	// does this array item actually exist before we create the mail_msg, where is it created?
 	if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
 		// ----  Create the base email Msg Class    -----
-		//$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-		if (is_object($GLOBALS['phpgw']->msg))
+		if(!is_object(@$GLOBALS['phpgw']->msg))
 		{
-			//echo 'email hook_home: is_object test: $GLOBALS[phpgw]->msg is already set, do not create again<br>'; }
+			$GLOBALS['phpgw']->msg = CreateObject('email.mail_msg');
 		}
-		else
-		{
-			//echo 'email hook_home: is_object test: $GLOBALS[phpgw]->msg is NOT set, creating mail_msg object<br>'; }
-			$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
-		}
+
+		$data = Array();
 
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
 		$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
-		if (!$some_stream)
+		if(!$some_stream)
 		{
-			$title = '<font color="#FFFFFF">' . lang('EMail') . '</font>';
+			$title = '<font color="#FFFFFF">'.lang('EMail').'</font>';
 			$extra_data = '<b>Mail error:</b> Can not open connection to mail server';
 		}
 		else
@@ -58,7 +52,7 @@
 			$inbox_data = Array();
 			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
-			$title = '<font color="#FFFFFF">' . lang('EMail') . ' ' . $inbox_data['alert_string'] . '</font>';
+			$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
 
 			if($inbox_data['number_all'] >= 5)
 			{
@@ -85,22 +79,22 @@
 				$data[] = array(
 					'text' => $subject,
 					'link' => $GLOBALS['phpgw']->link(
-						'/index.php',
-						'menuaction=email.uimessage.message'
-						. '&' . $msgball_list[$i]['uri']
+							'/index.php',
+							'menuaction=email.uimessage.message'
+							.'&'.$msgball_list[$i]['uri']
 					)
 				);
 			}
 
 			// COMPOSE NEW email link
 			$compose_link = $GLOBALS['phpgw']->link(
-				'/index.php',
-				'menuaction=email.uicompose.compose'
-				// this data tells us where to return to after sending a message
-				// since we started from home page, send can not (at this time) take us back there
-				// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
-				. '&fldball[folder]=INBOX'
-				. '&fldball[acctnum]=0'
+						'/index.php',
+						'menuaction=email.uicompose.compose'
+						// this data tells us where to return to after sending a message
+						// since we started from home page, send can not (at this time) take us back there
+						// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
+						.'&fldball[folder]=INBOX'
+						.'&fldball[acctnum]=0'
 			);
 			$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
 
@@ -133,15 +127,15 @@
 				// make it another TR we can insert into the home page portal object
 				// and surround it in FORM tags so the submit will work
 				$switchbox_action = $GLOBALS['phpgw']->link(
-					'/index.php',
-					'menuaction=email.uiindex.index'
+							'/index.php',
+							'menuaction=email.uiindex.index'
 				);
-				$extra_data = '<form name="switchbox" action="' . $switchbox_action . '" method="post">' . "\r\n"
-					. '<td align="left">' . "\r\n"
-					. '&nbsp;<strong>'. lang('E-Mail Folders') . ':</strong>&nbsp;' . $switchbox_listbox . "\r\n"
-					. '&nbsp; &nbsp;'. $compose_href . "\r\n"
-					. '</td>' . "\r\n"
-					. '</form>' . "\r\n";
+				$extra_data = '<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
+					.'<td align="left">'."\r\n"
+					.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
+					.'&nbsp; &nbsp;'.$compose_href."\r\n"
+					.'</td>'."\r\n"
+					.'</form>'."\r\n";
 			}
 			$GLOBALS['phpgw']->msg->end_request();
 		}
@@ -154,17 +148,17 @@
 				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'width'     => '100%',
 				'outerborderwidth' => '0',
-				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler')
 			)
 		);
 		$app_id = $GLOBALS['phpgw']->applications->name2id('email');
 		$GLOBALS['portal_order'][] = $app_id;
 		$var = Array(
-			'up'    => Array('url' => '/set_box.php', 'app' => $app_id),
-			'down'  => Array('url' => '/set_box.php', 'app' => $app_id),
-			'close' => Array('url' => '/set_box.php', 'app' => $app_id),
+			'up'       => Array('url' => '/set_box.php', 'app' => $app_id),
+			'down'     => Array('url' => '/set_box.php', 'app' => $app_id),
+			'close'    => Array('url' => '/set_box.php', 'app' => $app_id),
 			'question' => Array('url' => '/set_box.php', 'app' => $app_id),
-			'edit'  => Array('url' => '/set_box.php', 'app' => $app_id)
+			'edit'     => Array('url' => '/set_box.php', 'app' => $app_id)
 		);
 
 		while(list($key,$value) = each($var))
@@ -172,14 +166,9 @@
 			$portalbox->set_controls($key,$value);
 		}
 
-		if($data)
-		{
-			$portalbox->data = $data;
-		}
+		$portalbox->data = $data;
 
 		// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
-		echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
-			. $portalbox->draw($extra_data)
-			. '<!-- ends Mailox info -->'."\r\n";
+		echo "\n".'<!-- BEGIN Mailbox info -->'."\n".$portalbox->draw($extra_data).'<!-- END Mailbox info -->'."\n";
 	}
 ?>
