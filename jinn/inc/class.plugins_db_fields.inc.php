@@ -218,7 +218,8 @@
 	  function include_plugins()
 	  {
 		 global $local_bo;
-		 $local_bo=$this;
+		 $local_bo = $this;
+		 
 		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/')) {
 
 			/* This is the correct way to loop over the directory. */

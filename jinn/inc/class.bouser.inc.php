@@ -639,7 +639,7 @@
 
 		 $this->save_sessiondata();
 
-		 if($_POST['continue'])
+		 if($_POST['continue'] || $_POST['reopen'])
 		 {
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
 		 }

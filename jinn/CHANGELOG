@@ -6,11 +6,18 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.210i
+===========================
+Fri Feb 22 16:40:00 CET 2005
+- added filemanager field plugin to replace ImagePath plugin
+- implementation of Image Browse Server Popup finished, embedded in new filemanager plugin
+- fixed bug button was named 'continue' which is javascript keyword
+- fixed multiple bugs in Image Browse Server Popup legacy code
 
 Version 0.8.210h
 ===========================
 Fri Feb 18 13:50:00 CET 2005
-- basic implementation of Image Browse Server plugin
+- basic implementation of Image Browse Server Popup
 - added current upload path and url functions to bouser
 - imagepath plugin now uses these functions
 

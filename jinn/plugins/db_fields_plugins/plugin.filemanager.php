@@ -23,22 +23,22 @@
    */
 
    /* 
-   plugin.imagepath.php contains the standard image-upload plugin for 
+   plugin.filemanager.php contains the standard image-upload plugin for 
    JiNN number off standardly available 
    plugins for JiNN. 
    */
 
-   $this->plugins['imagepath']['name']				= 'imagepath';
-   $this->plugins['imagepath']['title']				= 'ImagePath plugin';
-   $this->plugins['imagepath']['author']			= 'Pim Snel';
-   $this->plugins['imagepath']['version']			= '0.9.6';
-   $this->plugins['imagepath']['enable']			= 1;
+   $this->plugins['filemanager']['name']			= 'filemanager';
+   $this->plugins['filemanager']['title']			= 'filemanager plugin';
+   $this->plugins['filemanager']['author']			= 'Pim Snel/Lex Vogelaar';
+   $this->plugins['filemanager']['version']			= '0.1';
+   $this->plugins['filemanager']['enable']			= 1;
 
-   $this->plugins['imagepath']['description']		= '
-   plugin for uploading/resizing images and storing their imagepaths in
+   $this->plugins['filemanager']['description']		= '
+   plugin for uploading/editing files and storing their paths in
    to database, using default uploadpath for site or object';
 
-   $this->plugins['imagepath']['db_field_hooks']	= array
+   $this->plugins['filemanager']['db_field_hooks']	= array
    (
 	  'string',
 	  'blob'
@@ -46,7 +46,7 @@
 
    /* ATTENTION: spaces and special character are not allowed in config array 
    use underscores for spaces */
-   $this->plugins['imagepath']['config']		= array
+   $this->plugins['filemanager']['config']		= array
    (
 	  /* array('default value','input field type', 'extra html properties')*/
 	  'Max_files' => array('3','text','maxlength=2 size=2'),  
@@ -61,27 +61,15 @@
 	  'Allow_other_images_sizes'=> array( array('False','True') /* 1st is default the rest are all possibilities */ ,'select',''),
    );
 
-   function plg_fi_imagepath($field_name,$value,$config,$attr_arr)
+   function plg_fi_filemanager($field_name,$value,$config,$attr_arr)
    {	
 	  global $local_bo;
-
+	  
 	  $stripped_name=substr($field_name,6);	
 
-	  if($local_bo->common->so->config[server_type]=='dev')
-	  {
-		 $field_prefix='dev_';
-	  }
-
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
-
-	  /* Check if everything is set to upload files */ 
+	  $upload_path=$local_bo->cur_upload_path();
+	  
+	  // Check if everything is set to upload files
 	  if(!$upload_path)
 	  {
 		 $input=lang('The path to upload images is not set, please contact your JiNN administrator.');
@@ -105,7 +93,8 @@
 		 return $input;
 	  }
 
-	  /* everything ok, remove temporary file */
+	  
+	  // everything ok, remove temporary file
 	  unlink($upload_path.SEP.'normal_size'.SEP.'JiNN_write_test');
 
 	  if($config['Generate_thumbnail']=='True')
@@ -123,23 +112,107 @@
 			return $input;
 		 }
 
-		 /* everything ok, remove temporary file */
+		 // everything ok, remove temporary file
 		 unlink($upload_path.SEP.'thumb'.SEP.'JiNN_write_test');
 	  }
 
 	  $table_style='';
 	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
 	  $img_style='style="border-style:solid;border-width:1px;border-color:#000000"';
+	  $spacer = "jinn/plugins/db_fields_plugins/plugin_images/spacer.png";
+	  $spacer_style='';
+
+	  	 /**************************************************
+		 *  javascript and hidden param for server browser *
+		 **************************************************/
+		$input.='<input type="hidden" value="" name="CURRENT_FIELD">';
+		$input.='<input type="hidden" value="" name="CURRENT_SLOT">';
+		$true_field_name = substr($field_name, 6); //fixme: this is ugly...
+		$input.='	<script language="JavaScript">
+		<!--  
+		function getLabel(type)
+		{
+			if(type=="add") return "'.lang('add').'";
+			if(type=="replace") return "'.lang('replace').'";
+		}
+		
+		function onBrowseServer(field, slot) 
+		{
+			//the popup will be aware of this window by the opener property
+			//when a server image is chosen, the popup will call the onSave function, passing the chosen image path
+			childWindow=open("jinn/plugins/db_fields_plugins/UploadImage/popups/insert_image.php?field='.$true_field_name.'","console","resizable=no,width=580,height=440");
+			if (childWindow.opener == null)	childWindow.opener = self;
+			document.frm.CURRENT_FIELD.value=field;
+			document.frm.CURRENT_SLOT.value=slot;
+		}
+		
+		function setSlot(field, slot, val1, val2, val3)
+		{
+			//set the img src property for preview purposes
+			//fill a hidden form input to enable processing and saving of the chosen image path on submitting the form
+			
+			//todo: set img style?
+			//todo: remove width/height text?
+			//todo: remove delete checkbox?
+			
+			var cmd;
+			
+			cmd = "document.frm.IMG_EDIT_" + field + slot + ".value = \"" + val1 + "\";";
+			eval(cmd);
+		
+			cmd = "document.IMG_" + field + slot + ".src = \"" + val2 + "\";";
+			eval(cmd);
+
+			cmd = "document.frm.IMG_EDIT_BUTTON_" + field + slot + ".value = \"" + val3 + "\";";
+			eval(cmd);
+
+			cmd = "document.getElementById(\"PATH_" + field + slot + "\").style.display = \"none\";";
+			eval(cmd);
+		}
+		
+		function onSave(val)
+		{
+			//access the CURRENT_... hidden fields to find out which image slot to use
+			setSlot(document.frm.CURRENT_FIELD.value, document.frm.CURRENT_SLOT.value, val, val, getLabel("replace"));
+		}
+		
+		function onDelete(field, slot)
+		{
+			setSlot(field, slot, "delete", "'.$spacer.'", getLabel("add"));
+		}
+		-->
+		</script>';
 
 	  $input.='<table '.$table_style.' cellpadding="3" width="100%">';
+
 		 /****************************************
 		 * if value is set, show existing images *
 		 ****************************************/	
-		 if(trim($value))// FIXME or rather TESTME
+		 if(trim($value))
 		 {
 			$input.='<input type="hidden" name="IMG_ORG'.$field_name.'" value="'.$value.'">';
-
 			$value=explode(';',$value);
+		 }
+		 else
+		 {
+			$value = array();
+		 }
+
+		/***************************************
+		 * get max images, set max 10 filefields *
+		 ***************************************/
+		 if (is_numeric($config[Max_files])) 
+		 {
+			if ($config[Max_files]>30) $num_input=30;
+			else $num_input =$config[Max_files];
+		 }
+		 else 
+		 {
+			$num_input=10;
+		 }
+
+
+			$field_string = "'".$field_name."'";
 
 			if (is_array($value) && count($value)>0)
 			{
@@ -184,80 +257,80 @@
 						   {
 							  if($thumblink)
 							  {
-								 $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+								 $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+								 $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 							  }
 							  else
 							  {
-								 $input.='<img src="'.$imglink.'" alt="preview" '.$img_style.' />';
+								 $input.='<img name="IMG_'.$field_name.$i.'" src="'.$imglink.'" alt="preview" '.$img_style.' />';
+								 $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 							  }
 						   }
 						   elseif($local_bo->read_preferences('prev_img')=='only_tn' && $thumblink)
 						   {
-							  $input.='<a href="javascript:'.$popup.'"><img src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+							  $input.='<a href="javascript:'.$popup.'"><img name="IMG_'.$field_name.$i.'" src="'.$thumblink.'" alt="preview" '.$img_style.' /></a>';
+							  $input.='<span id="PATH_'.$field_name.$i.'"></span>';
 						   }
 						   else
 						   {
-							  $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
+							  $input.='<span id="PATH_'.$field_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
 						   }
 						}
 						else  
 						{
 						   if($imglink)
 						   {
-								 $input.='<b><a href="javascript:'.$popup.'">'.$img_path.'</a></b>';
+		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
+								 $input.='<span id="PATH_'.$field_name.$i.'"><b><a href="javascript:'.$popup.'">'.$img_path.'</a></b></span>';
 						   }
 						   else
 						   {
-							  $input.='<b>'.$img_path.'</b>';
+		   					  $input.='<img name="IMG_'.$field_name.$i.'" src="'.$spacer.'" '.$spacer_style.' />';
+							  $input.='<span id="PATH_'.$field_name.$i.'"><b>'.$img_path.'</b></span>';
 						   }
 						}
 
-						$input.='<br/>';
-						$input.=lang('height'). ': <strong>'.$image_size[1].lang('pixels').'</strong>';
-						$input.=' ';
-						$input.=lang('width'). ': <strong>'.$image_size[0].lang('pixels').'</strong>';
-						
-						$input.='</td><td '.$cell_style.' valign="top"><input type="checkbox" value="'.$img_path.'" name="IMG_DEL'.$field_name.$i.'"> '.lang('remove').'</td></tr>';
+						$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$field_string.', '.$i.');" src="jinn/plugins/db_fields_plugins/UploadImage/popups/ImageManager/edit_trash.gif">';
+						$input.='<input onClick="onBrowseServer('.$field_string.', '.$i.');" type="button" value="'.lang('replace').'" name="IMG_EDIT_BUTTON_'.$field_name.$i.'">';
+						$input.='<input type="hidden" value="" name="IMG_EDIT_'.$field_name.$i.'">';
+						$input.='</td></tr>';
 			   }
 			}
-		 }
+			
+			//generate empty slots for the browse server plugin to activate
+			
+			if(count($value) < $num_input)
+			{
+				for($i = count($value); $i < $num_input; $i++)
+				{
+					$input.='<tr><td '.$cell_style.' valign="top">'.($i+1).'.</td><td '.$cell_style.'>';
+					$input.='<img name="IMG_'.$field_name.($i+1).'" src="'.$spacer.'" '.$spacer_style.' />';
+ 				    $input.='<span id="PATH_'.$field_name.($i+1).'"></span>';
+					$input.='</td><td '.$cell_style.' valign="top"><img onClick="onDelete('.$field_string.', '.($i+1).');" src="jinn/plugins/db_fields_plugins/UploadImage/popups/ImageManager/edit_trash.gif">';
+					$input.='<input onClick="onBrowseServer('.$field_string.', '.($i+1).');" type="button" value="'.lang('add').'" name="IMG_EDIT_BUTTON_'.$field_name.($i+1).'">';
+					$input.='<input type="hidden" value="" name="IMG_EDIT_'.$field_name.($i+1).'">';
+					$input.='</td></tr>';
+				}
+			}
 
-		 /***************************************
-		 * get max images, set max 5 filefields *
-		 ***************************************/
-		 if (is_numeric($config[Max_files])) 
-		 {
-			if ($config[Max_files]>30) $num_input=30;
-			else $num_input =$config[Max_files];
-		 }
-		 else 
-		 {
-			$num_input=10;
-		 }
+			//generate 'add more images' slot if appropriate
+			if($config['Allow_more_then_max_files']=='True')
+			{
+				if(count($value) > $num_input) $num_input = count($value);
+				$js="document.getElementById('extra').style.display='table-row'; document.getElementById('add').style.display='none'";
+				$input.='<tr id="add"><td colspan="3" '.$cell_style.' valign="top"><input onClick="'.$js.'" type="button" name="IMG_ADD_SLOT_'.$field_name.'" value="'.lang('add slot').'"></td></tr>';
 
-		 for($i=1;$i<=$num_input;$i++)
-		 {
-			$input.='<tr><td colspan="3" '.$cell_style.'>';
-				  if($num_input==1) 
-				  {
-					 $input .=lang('add image').'<input type="file" name="IMG_SRC'.$field_name.$i.'">';
-				  }
-				  else
-				  {
-					 $input.=lang('add image %1', $i).' <input type="file" name="IMG_SRC'.$field_name.$i.'">';
-				  }
+				//add a hidden slot which can be unhidden by clicking on the "add slot" button
+				$input.='<tr id="extra" style="display:none;"><td '.$cell_style.' valign="top">'.($num_input+1).'.</td><td '.$cell_style.'>';
+				$input.='<img name="IMG_'.$field_name.($num_input+1).'" src="'.$spacer.'" '.$spacer_style.' />';
+				$input.='<span id="PATH_'.$field_name.($num_input+1).'"></span>';
+				$input.='</td><td '.$cell_style.' valign="top">';
+				$input.='<input onClick="onBrowseServer('.$field_string.', '.($num_input+1).');" type="button" value="'.lang('add').'" name="IMG_EDIT_BUTTON_'.$field_name.($num_input+1).'">';
+				$input.='<input type="hidden" value="" name="IMG_EDIT_'.$field_name.($num_input+1).'">';
+				$input.='</td></tr>';
+			}
 
-				  /* when user is allowed to give own image sizes */
-				  if($config['Allow_other_images_sizes']=='True')
-				  {
-					 $input.= '<table>';
-						$input.='<tr><td>'.lang('Optional max. height').'('.lang('default').':'.$config['Max_image_height'].')</td><td><input type="text" size="3" name="IMG_HEI'.$field_name.$i.'"></td></tr>';
-						$input.='<tr><td>'.lang('Optional max. width').'('.lang('default').':'.$config['Max_image_width'].')</td><td><input type="text" size="3" name="IMG_WID'.$field_name.$i.'"></td></tr>';
-						$input.='</table>';
-				  }
-
-				  $input.='</td></tr>';			
-		 }
 		 $input.='</table>';
 
 	  /* add extra images file container here */
@@ -274,7 +347,7 @@
 	  return $input;
    }
 
-   function plg_sf_imagepath($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
+   function plg_sf_filemanager($field_name,$HTTP_POST_VARS,$HTTP_POST_FILES,$config)
    /****************************************************************************\
    * main image data function                                                   *
    \****************************************************************************/
@@ -291,198 +364,41 @@
 		 $graphic=CreateObject('jinn.bogdlib');
 	  }
 
-	  if($local_bo->common->so->config[server_type]=='dev')
+	  $upload_path=$local_bo->cur_upload_path();
+	  $upload_url =$local_bo->cur_upload_url ();
+
+	  $images_array=explode(';',$HTTP_POST_VARS['IMG_ORG'.$field_name]);
+
+	  // process edited slots
+  	  $images_edited=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_EDIT_'.$field_name);
+
+	  if(is_array($images_edited))
 	  {
-		 $field_prefix='dev_';
-	  }
-
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
-
-	  $images_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_DEL');
-
-	  if (count($images_to_delete)>0){
-
-		 $image_path_changed=True;
-		 // delete from harddisk
-		 foreach($images_to_delete as $image_to_delete)
-		 {
-			if (!@unlink($upload_path.'/'.$image_to_delete)) $unlink_error++;
-			// if generate thumb
-			if (!@unlink($upload_path.'/'.$thumb_to_delete)) $unlink_error++;
-		 }
-
-		 $images_org=explode(';',$HTTP_POST_VARS['IMG_ORG'.$field_name]);
-   
-
-		 foreach($images_org as $image_org)
-		 {
-			if (!in_array($image_org,$images_to_delete))
+		  foreach($images_edited as $key => $value)
+		  {
+			if($value == 'delete')
 			{
-			   if ($image_path_new) $image_path_new.=';';
-			   $image_path_new.=$image_org;
+				unset ($images_array[$key]);
 			}
-		 }
-	  }
-	  else
-	  {
-		 $image_path_new.=$HTTP_POST_VARS['IMG_ORG'.$field_name];
-	  }
-
-	  /* make array again of the original images*/
-	  $images_array=explode(';',$image_path_new);
-	  unset($image_path_new);
-
-	  /* finally adding new image and if neccesary a new thumb */
-	  $images_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'IMG_SRC'.$field_name);
-
-	  //_debug_array($images_to_add);
-
-	  $images_to_add_hei=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_HEI'.$field_name);
-	  $images_to_add_wid=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'IMG_WID'.$field_name);
-
-	  // quick check for new images
-	  if(is_array($images_to_add))
-	  foreach($images_to_add as $imagecheck)
-	  {
-		 if($imagecheck['name']) $num_img_to_add++;
-
-	  }
-
-	  if ($num_img_to_add)
-	  {
-		 if($config['Generate_thumbnail'])
-		 {
-			if(!$config['Max_thumbnail_width'] && $config['Max_thumbnail_height'])
+			else if($value != '') //add new image
 			{
-			   $config['Max_thumbnail_width']='100';
+				$value = str_replace($upload_url, '', $value);
+				$images_array[$key] = $value;
 			}
-		 }
-
-		 $img_position=0;
-		 foreach($images_to_add as $add_image)
-		 {
-			if($add_image['name'])
-			{
-
-			   if($images_to_add_hei[$img_position] || $images_to_add_wid[$img_position])
-			   {
-				  /* set user size */
-				  $img_size = GetImageSize($add_image['tmp_name']);
-				  if ($images_to_add_wid[$img_position] && $img_size[0] > $images_to_add_wid[$img_position])
-				  {
-					 $new_img_width=$images_to_add_wid[$img_position];
-				  }
-
-				  if ($images_to_add_hei[$img_position] && $img_size[1] > $images_to_add_hei[$img_position])
-				  {
-					 $new_img_height=$images_to_add_hei[$img_position];
-				  }
-			   }
-			   else
-			   {
-				  /* default set size */
-				  $img_size = GetImageSize($add_image['tmp_name']);
-				  if ($config['Max_image_width'] && $img_size[0] > $config['Max_image_width'])
-				  {
-					 $new_img_width=$config['Max_image_width'];
-				  }
-
-				  if ($config['Max_image_height'] && $img_size[1] > $config['Max_image_height'])
-				  {
-					 $new_img_height=$config['Max_image_height'];
-				  }
-			   }
-
-			   /* get original type */
-			   $filetype=$graphic->Get_Imagetype($add_image['tmp_name']);	
-			   if(!$filetype)
-			   {
-				  die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick installation.  Older version of ImageMagick are known not work properly with JiNN. Be sure to install at least Version 5.4.9 or higher",$add_image['name']));
-			   }
-			   elseif($filetype!='JPEG' && $filetype!='GIF' && $filetype!='PNG')
-			   {
-				  $filetype='PNG';
-				  $new_temp_file=$graphic->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
-				  if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
-
-			   }
-			   elseif($new_img_width || $new_img_height)
-			   {
-				  if($filetype=='GIF') 
-				  {
-					 if($graphic->FileTypeSupport('GIFRead') && !$graphic->FileTypeSupport('GIFWrite'))
-					 {
-						$filetype='PNG';
-					 }
-					 elseif(!$graphic->FileTypeSupport('GIFRead'))
-					 {
-						die(lang('The GIF-filetype is not supported by this server, please click on back and try a different filetype.'));
-					 }
-				  }
-			
-				  $target_image_name.='.'.$filetype;
-				  $new_temp_file=$graphic->Resize($new_img_width,$new_img_height,$add_image['tmp_name'],$filetype);
-				  if(!$new_temp_file) die(lang('the resize process failed, please contact the administrator'));
-
-			   }
-			   else
-			   {
-				  $new_temp_file=$add_image['tmp_name']; // just copy
-			   }
-
-			   /* if thumb */
-			   if($config['Generate_thumbnail']=='True')
-			   {
-				  //generate thumb
-					$new_temp_thumb=$graphic->Resize($config['Max_thumbnail_width'], $config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype);
-			   }
-
-			   $target_image_name = time() . ereg_replace("[^a-zA-Z0-9_.]", '_', $add_image['name']);
-
-			   if(substr(substr($target_image_name,-4),0,1) =='.') 
-			   {
-				  $target_image_name = substr($target_image_name,0,(strlen($target_image_name)-3)).$filetype;	
-			   }
-			   else $target_image_name .='.'.$filetype;
-
-			   if(is_file($upload_path . SEP . 'normal_size' . SEP .$target_image_name))
-			   {
-				  $target_image_name='another_'.$target_image_name;
-			   }
-
-			   if (copy($new_temp_file, $upload_path.SEP.'normal_size'.SEP.$target_image_name))
-			   {
-				  $images_array[$img_position]='normal_size'.SEP.$target_image_name;
-				  if($config['Generate_thumbnail'])
-				  {
-					 copy($new_temp_thumb, $upload_path.SEP.'thumb'.SEP.$target_image_name);
-				  }
-			   }
-			   else
-			   {
-				  die('failed copying '.$new_temp_file.' to '.$upload_path.SEP.'normal_size'.SEP.$target_image_name.' ...');
-			   }
-			}
-
-			$img_position++;
-		 }
+		  }
 	  }
-
+	  
 	  if(is_array($images_array))
 	  {
+	  
 		 //check max images
-		 if( count($images_array) > $config[Max_files] )
+		 if($config['Allow_more_then_max_files']=='False')
 		 {
-			$images_array=array_slice($images_array, 0, $config[Max_files]);
-		 }	
-
+			 if( count($images_array) > $config[Max_files] )
+			 {
+				$images_array=array_slice($images_array, 0, $config[Max_files]);
+			 }	
+		 }
 		 foreach ($images_array as $image_string)
 		 {
 			if($image_path_new) $image_path_new .= ';';
@@ -500,29 +416,18 @@
 		 return null;
 	  }
 
-	  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
+	  return '-1'; // return -1 when there no value to give but the function finished succesfully
    }
 
 
-   function plg_ro_imagepath($value,$config)
+   function plg_ro_filemanager($value,$config)
    {
 
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
-	  if($local_bo->common->so->config[server_type]=='dev')
-	  {
-		 $field_prefix='dev_';
-	  }
-
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
+	  
+ 	  $upload_path=$local_bo->cur_upload_path();
 
 	  $table_style='';
 	  $cell_style='style="border-width:1px;border-style:solid;border-color:grey"';
@@ -619,25 +524,14 @@
    }
 
    
-   function plg_bv_imagepath($value,$config,$where_val_enc)
+   function plg_bv_filemanager($value,$config,$where_val_enc)
    {
 
 	  global $local_bo;
 	  $stripped_name=substr($field_name,6);	
 
-	  if($local_bo->common->so->config[server_type]=='dev')
-	  {
-		 $field_prefix='dev_';
-	  }
 
-	  if($local_bo->site_object[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site_object[$field_prefix.'upload_path'];
-	  }
-	  elseif($local_bo->site[$field_prefix.'upload_path'])
-	  {
-		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
-	  }
+	  $upload_path=$local_bo->cur_upload_path();
 
 	  /* if value is set, show existing images */	
 	  if($value)

@@ -40,17 +40,22 @@
    $sessdata =	  $GLOBALS['phpgw']->session->appsession('UploadImage','phpgwapi');
 
    $bo = CreateObject('jinn.bouser');
+
+   $field_config = $bo->so->get_field_values($bo->site_object_id,$_GET[field]);
+   $config = unserialize(base64_decode($field_config[field_plugins]));
+   $config = $config[conf];
+//_debug_array($config);
+
    $BASE_DIR = $sessdata[UploadImageBaseDir];
    if($BASE_DIR == '') $BASE_DIR = $bo->cur_upload_path();
    $BASE_URL = $sessdata[UploadImageBaseURL];
    if($BASE_URL == '') $BASE_URL = $bo->cur_upload_url();
    $MAX_HEIGHT = $sessdata[UploadImageMaxHeight];
    $MAX_WIDTH = $sessdata[UploadImageMaxWidth];
-   if(!$MAX_HEIGHT) $MAX_HEIGHT = 10000;
-   if(!$MAX_WIDTH) $MAX_WIDTH = 10000;
-
+   if(!$MAX_HEIGHT) $MAX_HEIGHT = $config['Max_image_height'];
+   if(!$MAX_WIDTH) $MAX_WIDTH = $config['Max_image_width'];
    //die();
-
+   
 
    //After defining which library to use, if it is NetPBM or IM, you need to
    //specify where the binary for the selected library are. And of course
@@ -62,13 +67,13 @@
 
    $BASE_ROOT = '';
    $IMG_ROOT = $BASE_ROOT;
-
    if(strrpos($BASE_DIR, '/')!= strlen($BASE_DIR)-1) 
    $BASE_DIR .= '/';
 
+/*
    if(strrpos($BASE_URL, '/')!= strlen($BASE_URL)-1) 
    $BASE_URL .= '/';
-
+*/
    //Built in function of dirname is faulty
    //It assumes that the directory nane can not contain a . (period)
    function dir_name($dir) 

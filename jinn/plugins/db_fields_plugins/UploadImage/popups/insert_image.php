@@ -69,6 +69,14 @@
 			   if(doc != null) {
 					 doc.focus();
 			   }
+			   
+			   var field = opener.document.frm.CURRENT_FIELD.value;
+			   document.getElementById("f_width").value="<?php echo($config[Max_image_width]); ?>";
+			   document.getElementById("f_height").value="<?php echo($config[Max_image_height]); ?>";
+			   <?php if($config['Allow_other_images_sizes']=="False") : ?>
+					document.getElementById("f_width").readOnly=true;
+					document.getElementById("f_height").readOnly=true;
+				<?php endif ?>
 		 };
 
 		 function onOK() {
@@ -227,6 +235,7 @@ function toggleConstrains(constrains)
 
 											 function checkConstrains(changed) 
 											 {
+											 /*
 												   //alert(document.form1.constrain_prop);
 												   var constrained = document.form1.constrain_prop.checked;
 
@@ -250,6 +259,7 @@ function toggleConstrains(constrains)
 														 }
 
 												   }
+												   */
 
 											 }
 
@@ -378,31 +388,36 @@ function toggleConstrains(constrains)
 											 </fieldset></td>
 										  </tr>
 										  <tr>
-											 <td><table border="0" align="center" cellpadding="2" cellspacing="2">
-												   <tr> 
-													  <td nowrap><div align="right">Image File </div></td>
-													  <td><input name="url" id="f_url" type="text" style="width:20em" size="30"></td>
-													  <td rowspan="3">&nbsp;</td>
-													  <!--td><div align="right">Width </div></td>
+											 <td><table style="width:100%" border="0" align="center" cellpadding="2" cellspacing="2">
+													<tr>
+														<td>&nbsp;</td>
+														<td>&nbsp;</td>
+													  <td><div align="right"> Max Width </div></td>
 													  <td><input name="width" id="f_width" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('width');"></td>
 													  <td rowspan="2"><img src="ImageManager/locked.gif" name="locked_img" width="25" height="32" id="locked_img" alt="Locked"></td>
-													  <td rowspan="3">&nbsp;</td>
-													  <td><div align="right">V Space</div></td>
-													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td-->
-												   </tr>
-												   <!--tr> 
-													  <td nowrap><div align="right">Alt </div></td>
-													  <td><input type="text" style="width:20em" name="alt" id="f_alt"></td>
-													  <td><div align="right">Height </div></td>
-													  <td><input name="height" id="f_height" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('height');"></td>
-													  <td><div align="right">H Space</div></td>
-													  <td><input name="horiz" id="f_horiz" type="text" size="5" style="width:4em"></td>
-												   </tr>
+													</tr>
 												   <tr> 
 													  <td><div align="right">Upload </div></td>
 													  <td><input type="file" name="upload" id="upload"> 
 														 <input type="submit" style="width:5em" value="Upload" onClick="javascript:changeLoadingStatus('upload');" />
 													  </td>
+													  <td><div align="right">Max Height </div></td>
+													  <td><input name="height" id="f_height" type="text" size="5" style="width:4em" onChange="javascript:checkConstrains('height');"></td>
+												   </tr>
+												   <tr> 
+													  <td nowrap><div align="right">Image File </div></td>
+													  <td colspan="4"><input name="url" id="f_url" type="text" style="width:100%" size="30"></td>
+													  <!--td rowspan="3">&nbsp;</td>
+													  <td><div align="right">V Space</div></td>
+													  <td><input name="vert" id="f_vert" type="text" size="5" style="width:4em"></td-->
+												   </tr>
+												   <tr> 
+													  <!--td nowrap><div align="right">Alt </div></td>
+													  <td><input type="text" style="width:20em" name="alt" id="f_alt"></td-->
+													  <!--td><div align="right">H Space</div></td>
+													  <td><input name="horiz" id="f_horiz" type="text" size="5" style="width:4em"></td-->
+												   </tr>
+												   <!--tr> 
 													  <td><div align="right">Align</div></td>
 													  <td colspan="2"><select name="align" ID="f_align" style="width:7em">
 															<OPTION id="optNotSet" value=""> Not set </OPTION>
@@ -418,8 +433,8 @@ function toggleConstrains(constrains)
 													  </select></td>
 													  <td><div align="right">Border</div></td>
 													  <td><input name="border" id="f_border" type="text" size="5" style="width:4em"></td>
-												   </tr>
-												   <tr> 
+												   </tr-->
+												   <!--tr> 
 													  <td colspan="3">&nbsp;</td>
 													  <td><div align="right">
 															<input type="hidden" name="orginal_width" id="orginal_width">

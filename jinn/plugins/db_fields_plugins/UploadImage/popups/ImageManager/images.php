@@ -30,6 +30,7 @@
    require_once 'std_functions.inc.php';
    require_once '../ImageEditor/Transform.php';
 
+//_debug_array($IMG_ROOT);
    if(isset($_GET['dir'])) {
 	  $dirParam = $_GET['dir'];
 
@@ -41,10 +42,12 @@
 		 $IMG_ROOT = $dirParam;			
 	  }	
    }
+//_debug_array($IMG_ROOT);
 
    $refresh_dirs = false;
    $clearUploads = false;
-
+   $select_after_upload = '';
+   
    if(strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
    $IMG_ROOT .= '/';
 
@@ -65,41 +68,46 @@
 
    if(isset($_FILES['upload']) && is_array($_FILES['upload']) && isset($_POST['dirPath'])) 
    {
+
+//_debug_array($IMG_ROOT);
 	  $dirPathPost = $_POST['dirPath'];
 
 	  if(strlen($dirPathPost) > 0) 
 	  {
 		 if(substr($dirPathPost,0,1)=='/') 
-		 $IMG_ROOT .= $dirPathPost;		
+		 $IMG_ROOT = $dirPathPost;		
 		 else
-		 $IMG_ROOT = $dirPathPost;			
+		 $IMG_ROOT .= $dirPathPost;			
 	  }
+//_debug_array($IMG_ROOT);
 
 	  if(strrpos($IMG_ROOT, '/')!= strlen($IMG_ROOT)-1) 
 	  $IMG_ROOT .= '/';
 
 	  //	do_upload($_FILES['upload'], $BASE_DIR.$BASE_ROOT.$dirPathPost.'/');
 	  do_upload($_FILES['upload'], $BASE_DIR.$dirPathPost.'/');
+//_debug_array($BASE_URL.$dirPathPost.'/'.$_FILES['upload']['name']);
+	  $select_after_upload = $BASE_URL.$dirPathPost.'/'.$_FILES['upload']['name'];
+
    }
 
    function do_upload($file, $dest_dir) 
    {
-	  global $clearUploads,$MAX_WIDTH,$MAX_HEIGHT;
-
+	  global $clearUploads;
 	  if(is_file($file['tmp_name'])) 
 	  {
 		 $img_info = getimagesize($file['tmp_name']);
 
-		 //_debug_array($img_info); 
-		 
 		 if(is_array($img_info))
 		 {
 			$w = $img_info[0]; 
 			$h = $img_info[1];
 
-			if( $w > $MAX_WIDTH || $h > $MAX_HEIGHT )
+			if(!$_POST[width]) $_POST[width] = 10000;
+			if(!$_POST[height]) $_POST[height] = 10000;
+			if( $w > $_POST[width] || $h > $_POST[height] )
 			{
-			   adapt_size($file['tmp_name'],$dest_dir.$file['name']);
+				adapt_size($file['tmp_name'],$dest_dir.$file['name']);
 			}
 			else
 			{
@@ -108,14 +116,13 @@
 			chmod($dest_dir.$file['name'], 0666);
 		 }
 	  }
-
 	  $clearUploads = true;
    }
 
    
    function adapt_size($img,$dest_file) 
    {
-	  global $BASE_DIR, $BASE_URL,$MAX_WIDTH,$MAX_HEIGHT;
+	  global $BASE_DIR, $BASE_URL;
 
 	  $path_info = pathinfo($img);
 	  $path = $path_info['dirname']."/";
@@ -124,16 +131,34 @@
 	  $img_info = getimagesize($path.$img_file);
 	  $w = $img_info[0]; $h = $img_info[1];
 
-	  $nw = $MAX_WIDTH; $nh = $MAX_HEIGHT;
+	  $nw = $_POST[width]; $nh = $_POST[height];
 
 	  $img_resize = Image_Transform::factory(IMAGE_CLASS);
 	  $img_resize->load($path.$img_file);
 
+		//start new code
+	  $pw = (real)percent($nw, $w);
+	  $ph = (real)percent($nh, $h);
+
+	  if($pw < $ph)
+	  {
+		  $nh = round(unpercent($pw, $h));
+		  $nw = round(unpercent($pw, $w)); 
+	  }
+	  else
+	  {
+		  $nh = round(unpercent($ph, $h));          
+		  $nw = round(unpercent($ph, $w)); 
+	  }
+	   // end new code
+	   
+	  /* replaced old faulty code
 	  if ($w > $h) 
 	  $nh = unpercent(percent($nw, $w), $h);          
 	  else if ($h > $w) 
 	  $nw = unpercent(percent($nh, $h), $w); 
-
+		*/
+		
 	  $img_resize->resize($nw, $nh);
 
 	  $img_resize->save($dest_file);
@@ -482,15 +507,20 @@ function draw_table_header()
 
 	  function updateDir() 
 	  {
-			var newPath = "<?php echo $newPath; ?>";
-//			alert('<?php echo $newPath; ?>');
+		
+		<?php if($select_after_upload!='') : ?>
+			imageSelected("<?php echo $select_after_upload; ?>",0,0,0);
+		<?php endif ?>
+		
+		var newPath = "<?php echo $newPath; ?>";
+//alert('<?php echo $newPath; ?>');
 			if(window.top.document.forms[0] != null) {
 
 				  var allPaths = window.top.document.forms[0].dirPath.options;
-				  //alert("new:"+newPath);
+//alert("new:"+newPath);
 				  for(i=0; i<allPaths.length; i++) 
 				  {
-						//alert(allPaths.item(i).value);
+//alert(allPaths.item(i).value);
 						allPaths.item(i).selected = false;
 						if((allPaths.item(i).value)==newPath) 
 						{
