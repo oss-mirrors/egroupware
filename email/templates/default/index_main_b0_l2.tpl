@@ -40,7 +40,7 @@ function check_all()
 		<font size="-1"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
-		<font size="-1"><a href="{folders_link}">{folders_txt}</a></font>
+		<font size="-1">{folders_href}</font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
 		<font size="-1"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
@@ -127,7 +127,7 @@ function check_all()
 </tr>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{hdr_backcolor}" width="3%" align="center">
 		&nbsp;
@@ -140,12 +140,12 @@ function check_all()
 		<strong>{hdr_from}</strong>
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="37%">
+	<td bgcolor="{hdr_backcolor}" width="39%">
 		<font size="2" face="{hdr_font}">
  		<strong>{hdr_subject}</strong>
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="12%" align="center">
+	<td bgcolor="{hdr_backcolor}" width="10%" align="center">
 		<font size="1" face="{hdr_font}">
 		<strong>{hdr_date}</strong>
 		</font>

@@ -143,13 +143,8 @@
 
     function status($stream,$mailbox,$options)
     {
-	// N/A for pop3 - it "returns status info on a mailbox other than the current one" - pop3 has 1 "folder": INBOX
-	//return False;
-
-	// pop3 has 1 "folder": INBOX
-	$mailbox = 'INBOX';
+	// don't forget pop3 has 1 "folder": INBOX, any other folder name will not work
 	return imap_status($stream,$mailbox,$options);
-	//return imap_num_recent($stream);
     }
 
     function append($stream, $folder = "Sent", $header, $body, $flags = "")

@@ -76,7 +76,7 @@ function check_all()
 					</td>
 					<td>
 						<font face="{stats_font}" size="{stats_fontsize}">
-						&nbsp;&nbsp;<input type="button" name="folder_link_btn" value="Folders" onClick="{folders_btn_js}">
+						&nbsp;&nbsp;{folders_btn}
 						</font>
 					</td>
 				</form>
@@ -89,7 +89,7 @@ function check_all()
 </tr>
 </table>
 
-<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="3" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{hdr_backcolor}" width="3%" align="center">
 		&nbsp;
@@ -146,11 +146,11 @@ function check_all()
 	<td bgcolor="{mlist_backcolor}">
 		<font size="2" face="{mlist_font}"><a href="{mlist_reply_link}">{mlist_from}</a> {mlist_from_extra}</font>
 	</td>
-	<td bgcolor="{mlist_backcolor}">
+	<td bgcolor="{mlist_backcolor}" align="center">
 		<font size="2" face="{mlist_font}">{mlist_date}</font>
 	</td>
-	<td bgcolor="{mlist_backcolor}">
-		<font size="2" face="{mlist_font}">{mlist_size}</font>
+	<td bgcolor="{mlist_backcolor}" align="center">
+		<font size="1" face="{mlist_font}">{mlist_size}</font>
 	</td>
 </tr>
 <!-- END B_msg_list -->

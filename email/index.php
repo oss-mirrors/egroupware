@@ -131,10 +131,19 @@
 	}
 
 // ---- Folder Status Infomation   -----
-	$mailbox_status = $phpgw->dcom->status(
-					$phpgw->msg->mailsvr_stream,
+	$mailbox_status = $phpgw->dcom->status($phpgw->msg->mailsvr_stream,
 					$phpgw->msg->get_mailsvr_callstr().$phpgw->msg->folder,
 					SA_ALL);
+	// NEW: use API-like high level function for this:
+	$folder_info = array();
+	$folder_info = $phpgw->msg->folder_status_info();
+	/* returns this array:
+	folder_info['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
+	folder_info['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name
+	folder_info['alert_string'] string - lang'd string to show the user about status of new messages in this folder
+	folder_info['number_new'] integer - for IMAP: the number "recent" and/or "unseen"messages; for POP3: the total number of messages
+	folder_info['number_all'] integer - for IMAP and POP3: the total number messages in the folder
+	*/
 
 // ----  Previous and Next arrows navigation  -----
 	// nextmatches->left/right  vars:
@@ -144,14 +153,14 @@
 	// d) extradata - in url format - "&var1=x&var2=y"
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
 					$phpgw->msg->start,
-					$mailbox_status->messages,
+					$folder_info['number_all'],
 					 '&folder='.$phpgw->msg->prep_folder_out('')
 					.'&sort='.$phpgw->msg->sort
 					.'&order='.$phpgw->msg->order);
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
 					$phpgw->msg->start,
-					$mailbox_status->messages,
+					$folder_info['number_all'],
 					'&folder='.$phpgw->msg->prep_folder_out('')
 					.'&sort='.$phpgw->msg->sort
 					.'&order='.$phpgw->msg->order);
@@ -192,17 +201,25 @@
 	$t->set_var('ctrl_bar_back2',$phpgw_info["theme"]["row_off"]);
 	$t->set_var('compose_txt',lang("Compose New"));
 	$t->set_var('compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".$phpgw->msg->prep_folder_out('')));
-	$t->set_var('folders_txt',lang("Manage Folders"));
+	$folders_txt1 = lang("Folders");
+	$folders_txt2 = lang("Manage Folders");
 	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
-		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
-		$t->set_var('folders_btn_js','window.location='."'".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php')."'".'"');
+		// for those templates (layouts) using an A HREF  link to the folders page
+		$folders_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php');
+		$folders_href = '<a href="'.$folders_link.'">'.$folders_txt2.'</a>';
+		$t->set_var('folders_href',$folders_href);
+		
+		// for those templates using a BUTTON to get to the folders page
+		$folders_btn_js = "window.location='$folders_link'";
+		$folders_btn = '<input type="button" name="folder_link_btn" value="'.$folders_txt1.'" onClick="'.$folders_btn_js.'">';
+		$t->set_var('folders_btn',$folders_btn);
 	}
 	else
 	{
-		// doesn't support folders. just go to index page
-		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
-		$t->set_var('folders_btn_js','window.location='."'".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php')."'".'"');
+		// doesn't support folders. NO button, NO href, replace with nbsp
+		$t->set_var('folders_href','&nbsp;');
+		$t->set_var('folders_btn','&nbsp;');
 	}
 	// go directly to email prefs page
 	$t->set_var('email_prefs_txt',lang("Email Preferences"));
@@ -215,7 +232,7 @@
 	$t->set_var('routing_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
 
 // ---- Message Folder Stats Display  -----
-	if ($mailbox_status->messages == 0)
+	if ($folder_info['number_all'] == 0)
 	{
 		$stats_saved = '-';
 		$stats_new = '-';
@@ -224,14 +241,14 @@
 	else
 	{
 		// TOTAL MESSAGES IN FOLDER
-		$stats_saved = number_format($mailbox_status->messages);
+		$stats_saved = number_format($folder_info['number_all']);
 
 		$msg_array = array();
 		//$msg_array = $phpgw->dcom->sort($phpgw->msg->mailsvr_stream, $phpgw->msg->sort, $phpgw->msg->order);
 		$msg_array = $phpgw->msg->get_message_list();
 
 		// NUM NEW MESSAGES
-		$stats_new = $mailbox_status->unseen;
+		$stats_new = $folder_info['number_new'];
 		if ($stats_new == 0)
 		{
 			$stats_new = '0';
@@ -260,7 +277,7 @@
 			$do_show_size = True;
 		}
 		elseif (($allow_stats_size_speed_skip == True)
-		&& ($mailbox_status->messages > $stats_size_threshold))
+		&& ($folder_info['number_all'] > $stats_size_threshold))
 		{
 			// spped skip option is enabled and number messages exceeds skip threshold
 			$do_show_size = False;
@@ -387,11 +404,6 @@
 	else
 	{
 		// for email
-		//$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=3&order='.$phpgw->msg->order);
-		//$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=2&order='.$phpgw->msg->order);
-		//$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=1&order='.$phpgw->msg->order);
-		//$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_size,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=6&order='.$phpgw->msg->order);
-		// for email
 		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"3",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out(''));
 		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"2",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out(''));
 		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap($phpgw->msg->sort,"1",$default_order,$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out(''));
@@ -446,7 +458,7 @@
 	$t->set_var('V_msg_list','');
 
 // ----  Zero Messages To List  -----
-	if ($mailbox_status->messages == 0)
+	if ($folder_info['number_all'] == 0)
 	{
 		if ((!isset($phpgw->msg->mailsvr_stream))
 		|| ($phpgw->msg->mailsvr_stream == ''))
@@ -475,17 +487,17 @@
 		// we have messages, so set the "no messages" block to nothing, we don't show it in this case
 		$t->set_var('V_no_messages','');
 
-		if ($mailbox_status->messages < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		if ($folder_info['number_all'] < $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
-			$totaltodisplay = $mailbox_status->messages;
+			$totaltodisplay = $folder_info['number_all'];
 		}
-		elseif (($mailbox_status->messages - $phpgw->msg->start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+		elseif (($folder_info['number_all'] - $phpgw->msg->start) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 		{
 			$totaltodisplay = $phpgw->msg->start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 		}
 		else
 		{
-			$totaltodisplay = $mailbox_status->messages;
+			$totaltodisplay = $folder_info['number_all'];
 		}
 		// this info for the stats row above
 		$t->set_var('stats_last',$totaltodisplay);
@@ -517,12 +529,12 @@
 			// SIZE
 			if ($phpgw->msg->newsmode)
 			{
+				// nntp apparently gives size in number of lines ?
 				$size = $msg->Size;
 			}
 			else
 			{
-				$ksize = round(10*($msg->Size/1024))/10;
-				$size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
+				$size = $phpgw->msg->format_byte_size($msg->Size);
 			}
 
 			// SEEN OR UNSEEN/NEW
@@ -564,6 +576,7 @@
 			}
 			// display the "from" data according to user preferences
 			// assumes user always wants "personal" shown, question is when to also show the plain address
+			// and if that plain address should be the "from" or "reply to (if any)" plain address
 			if (($phpgw_info['user']['preferences']['email']['show_addresses'] == 'from')
 			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
@@ -594,15 +607,19 @@
 			}
 			// this will be the href clickable text in the from column
 			$from_name = $phpgw->msg->decode_header_string($personal);
-			// if it's a long plain addresswith no spaces, then add a space to the TD can wrap the text
+			// if it's a long plain address with no spaces, then add a space to the TD can wrap the text
 			if ((!strstr($from_name, " "))
+			&& (strlen($from_name) > 15)
 			&& (strstr($from_name, "@")))
 			{
 				$from_name = str_replace('@',' @',$from_name);
 			}
 
 			// DATE
-			$msg_date = $phpgw->common->show_date($msg->udate);
+			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
+			$msg_date_time = $phpgw->common->show_date($msg->udate);
+			// this stripps the time part, leaving only the date, better for single line TD cells
+			$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
 
 			// set up vars for the parsing
 			if ($do_init_form)
@@ -635,7 +652,7 @@
 			}
 			else
 			{
-				//$t->set_var('mlist_attach','');
+				// put nbsp there so mozilla will at least show the back color for the cell
 				$t->set_var('mlist_attach','&nbsp;');
 			}
 			$t->set_var('mlist_msg_num',$mlist_msg_num);
@@ -645,7 +662,8 @@
 			$t->set_var('mlist_from',$from_name);
 			$t->set_var('mlist_from_extra',$display_address_from);
 			$t->set_var('mlist_reply_link',$from_link);
-			$t->set_var('mlist_date',$msg_date);
+			//$t->set_var('mlist_date',$msg_date_time);
+			$t->set_var('mlist_date',$msg_date_only);
 			$t->set_var('mlist_size',$size);
 			// fill this template, "true" means it's cumulative
 			$t->parse('V_msg_list','B_msg_list',True);

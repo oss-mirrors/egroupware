@@ -78,316 +78,304 @@
 	}
 	*/
 
-// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
-  function begin_request($args_array)
-  {
-	global $phpgw, $phpgw_info;
-
-	//$debug_logins = True;
-	$debug_logins = False;
-
-  // ----  Things To Be Done Whether You Login Or Not  -----
-	// obtain the preferences from the database
-	$this->create_email_preferences();
-	// initalize some important class variables
-	$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
-	$this->get_mailsvr_callstr();
-
-	// make sure all the necessary args_array items are present, else set missing ones to a default value
-	// ----  What "folder" arg was passed to the script  -----
-	if (!isset($args_array['folder']))
+	// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
+	function begin_request($args_array)
 	{
-		$args_array['folder'] = '';
-	}
-	// ----  Should We Login  -----
-	if (!isset($args_array['do_login']))
-	{
-		$args_array['do_login'] = False;
-	}
-	// ----  Are We In Newsmode Or Not  -----
-	// note: this needs better handling in the future
-	if ((isset($args_array['newsmode']))
-	&& (($args_array['newsmode'] == True) || ($args_array['newsmode'] == "on")))
-	{
-		$args_array['newsmode'] = True;
-		$this->newsmode = True;
-		$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
-	}
-	else
-	{
-		$args_array['newsmode'] = False;
-		$this->newsmode = False;
-	}
+		global $phpgw, $phpgw_info;
 
-	// Browser Detection =FUTURE=
-	// 0 = NO css ; 1 = CSS supported ; 2 = text only
-	// currently not implemented, use default 0 (NO CSS support in browser)
-	$this->browser = 0;
-	//$this->browser = 1;
+		//$debug_logins = True;
+		$debug_logins = False;
+	
+		// ----  Things To Be Done Whether You Login Or Not  -----
+		// obtain the preferences from the database
+		$this->create_email_preferences();
+		// initalize some important class variables
+		$this->att_files_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
+		$this->get_mailsvr_callstr();
 
-	// store the GPC args in a class var
-	//$this->args = $args_array;
-	// NO this is now assumed you put your typical GPC args directly into
-	// $this->args
-
-	// NOTE: after this, if any args values are changes, 
-	// you MUST store them as such:  $this->args['some_arg'] = new_value
-	// since the $args_array local var is NO LONGER USED after this procedure
-
-  // ----  Things Specific To Loging In, and Actually Logging In  -----
-	// no $args_array (not $this->args) items are changed during this "do_login" code
-	// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->folder
-	if ($args_array['do_login'] == True)
-	{
-		// === ISSET CHECK for userid and passwd to avoid garbage logins ==
-		if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
-		&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
-		&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
-		&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
+		// make sure all the necessary args_array items are present, else set missing ones to a default value
+		// ----  What "folder" arg was passed to the script  -----
+		if (!isset($args_array['folder']))
 		{
-			$user = $phpgw_info['user']['preferences']['email']['userid'];
-			$pass = $phpgw_info['user']['preferences']['email']['passwd'];
+			$args_array['folder'] = '';
+		}
+		// ----  Should We Login  -----
+		if (!isset($args_array['do_login']))
+		{
+			$args_array['do_login'] = False;
+		}
+		// ----  Are We In Newsmode Or Not  -----
+		// note: this needs better handling in the future
+		if ((isset($args_array['newsmode']))
+		&& (($args_array['newsmode'] == True) || ($args_array['newsmode'] == "on")))
+		{
+			$args_array['newsmode'] = True;
+			$this->newsmode = True;
+			$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
 		}
 		else
 		{
-			// problem - invalid or nonexistant info for userid and/or passwd
-			  if ($debug_logins) { echo 'ERROR: userid or passwd empty <br>';}
-			return False;
+			$args_array['newsmode'] = False;
+			$this->newsmode = False;
 		}
 
-		// Create email server Data Communication Class
-		$phpgw->dcom = CreateObject("email.mail_dcom");
-		// initialize the dcom class variables
-		$phpgw->dcom->mail_dcom_base();
-		// ----  Do We Use UTF7 encoding/decoding of folder names  -----
-		if (isset($phpgw_info['user']['preferences']['email']['enable_utf7'])
-		&& ($phpgw_info['user']['preferences']['email']['enable_utf7']))
+		// Browser Detection =FUTURE=
+		// 0 = NO css ; 1 = CSS supported ; 2 = text only
+		// currently not implemented, use default 0 (NO CSS support in browser)
+		$this->browser = 0;
+		//$this->browser = 1;
+
+		// ----  Things Specific To Loging In, and Actually Logging In  -----
+		// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->folder
+		if ($args_array['do_login'] == True)
 		{
-			$phpgw->dcom->enable_utf7 = True;
-		}
-
-		set_time_limit(60);
-		// login to INBOX because we know that always(?) should exist on an imap server
-		// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-		$this->mailsvr_stream = $phpgw->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
-		  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
-		set_time_limit(0);
-
-		// error check
-		if (!$this->mailsvr_stream)
-		{
-			if ($debug_logins) { echo 'ERROR: this->mailsvr_stream failed <br>';}
-			return False;
-		}
-
-		// get some more info now that we are logged in
-		// namespace is often obtained by directly querying the mailsvr
-		$this->get_mailsvr_namespace();
-		  if ($debug_logins) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
-		$this->get_mailsvr_delimiter();
-		  if ($debug_logins) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
-
-		// make sure we have a useful folder name to log into
-		  if ($debug_logins) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
-		$this->folder = $this->prep_folder_in($args_array['folder']);
-		  if ($debug_logins) { echo 'this->folder after prep: '.$this->folder.'<br>';}
-		if ($this->folder != 'INBOX')
-		{
-			// switch to the desired folder now that we are sure we have it's official name
-			  if ($debug_logins) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
-			$did_reopen = $phpgw->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
-			  if ($debug_logins) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
-			// error check
-			if ($did_reopen == False)
+			// === ISSET CHECK for userid and passwd to avoid garbage logins ==
+			if ( (isset($phpgw_info['user']['preferences']['email']['userid']))
+			&& ($phpgw_info['user']['preferences']['email']['userid'] != '')
+			&& (isset($phpgw_info['user']['preferences']['email']['passwd']))
+			&& ($phpgw_info['user']['preferences']['email']['passwd'] != '') )
 			{
-				  if ($debug_logins) { echo 'FAILED: reopen mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+				$user = $phpgw_info['user']['preferences']['email']['userid'];
+				$pass = $phpgw_info['user']['preferences']['email']['passwd'];
+			}
+			else
+			{
+				// problem - invalid or nonexistant info for userid and/or passwd
+				  if ($debug_logins) { echo 'ERROR: userid or passwd empty <br>';}
 				return False;
 			}
-		}
-		// ----  Process "sort" "order" "start" and "msgnum" GPC args (if any) passed to the script  -----
-		// these args are so fundamental, they get stored in their own class vars
-		// no longer referenced as args after this
-		// requires args saved to $this->args, only relevant if you login
-		$this->fill_sort_order_start_msgnum();
-	}
 
-  // ----  Things Again Specific To Loging In  -----
-	if ($args_array['do_login'] == True)
-	{
-		// returning this is vestigal, not really necessary, but do it anyway
-		// it's importance is that it returns something other then "False" on success
-		return $this->mailsvr_stream;
+			// Create email server Data Communication Class
+			$phpgw->dcom = CreateObject("email.mail_dcom");
+			// initialize the dcom class variables
+			$phpgw->dcom->mail_dcom_base();
+			// ----  Do We Use UTF7 encoding/decoding of folder names  -----
+			if (isset($phpgw_info['user']['preferences']['email']['enable_utf7'])
+			&& ($phpgw_info['user']['preferences']['email']['enable_utf7']))
+			{
+				$phpgw->dcom->enable_utf7 = True;
+			}
+
+			set_time_limit(60);
+			// login to INBOX because we know that always(?) should exist on an imap server
+			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
+			$this->mailsvr_stream = $phpgw->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
+			  if ($debug_logins) { echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';}
+			set_time_limit(0);
+
+			// error check
+			if (!$this->mailsvr_stream)
+			{
+				if ($debug_logins) { echo 'ERROR: this->mailsvr_stream failed <br>';}
+				return False;
+			}
+
+			// get some more info now that we are logged in
+			// namespace is often obtained by directly querying the mailsvr
+			$this->get_mailsvr_namespace();
+			  if ($debug_logins) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
+			$this->get_mailsvr_delimiter();
+			  if ($debug_logins) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
+
+			// make sure we have a useful folder name to log into
+			  if ($debug_logins) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
+			$this->folder = $this->prep_folder_in($args_array['folder']);
+			  if ($debug_logins) { echo 'this->folder after prep: '.$this->folder.'<br>';}
+			if ($this->folder != 'INBOX')
+			{
+				// switch to the desired folder now that we are sure we have it's official name
+				  if ($debug_logins) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
+				$did_reopen = $phpgw->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
+				  if ($debug_logins) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
+				// error check
+				if ($did_reopen == False)
+				{
+					  if ($debug_logins) { echo 'FAILED: reopen mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+					return False;
+				}
+			}
+			// ----  Process "sort" "order" "start" and "msgnum" GPC args (if any) passed to the script  -----
+			// these args are so fundamental, they get stored in their own class vars
+			// no longer referenced as args after this
+			// requires args saved to $this->args, only relevant if you login
+			$this->fill_sort_order_start_msgnum();
+		}
+
+		// ----  Things Again Specific To Loging In  -----
+		if ($args_array['do_login'] == True)
+		{
+			// returning this is vestigal, not really necessary, but do it anyway
+			// it's importance is that it returns something other then "False" on success
+			return $this->mailsvr_stream;
+		}
 	}
-  }
  
 
-  function end_request($args_array='')
-  {
-	global $phpgw, $phpgw_info;
-
-	// args array currently not used
-	if ((isset($this->mailsvr_stream))
-	&& ($this->mailsvr_stream != ''))
+	function end_request($args_array='')
 	{
-		$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
-		$phpgw->msg->mailsvr_stream = '';
-	}
-  }
+		global $phpgw, $phpgw_info;
 
-
-// ----  Various Functions Used To Support Email   -----
-  function prep_folder_in($feed_folder)
-  {
-	global $phpgw, $phpgw_info;
-		
-	// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
-	if (!$feed_folder)
-	{
-		return 'INBOX';
-	}
-	else
-	{
-		// an incoming folder name has generally been urlencoded before it gets here
-		// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
-		$feed_folder = urldecode($feed_folder);
-		return $this->folder_lookup('', $feed_folder);
-	}
-
-		
-  }
-
-  function prep_folder_out($feed_folder='')
-  {
-	global $phpgw, $phpgw_info;
-
-	if ($feed_folder == '')
-	{
-		// this allows us to call this with no args and the current folder is "prep'ed"
-		// foldnames with spaces and other URL unfriendly chars are encoded here
-		// must be decoded on the next input (script session) to undo what we do here
-		$feed_folder = $this->folder;
-	}
-	return urlencode($feed_folder);
-  }
-
-
-
-  /*!
-  @function create_email_preferences
-  @abstract create email preferences
-  @discussion This fills the global $phpgw_info array with the required email preferences for this user
-  @param $account_id -optional defaults to : phpgw_info['user']['account_id']
-  */	
-  function create_email_preferences($accountid='')
-  {
-	global $phpgw, $phpgw_info;
-
-	$account_id = get_account_id($accountid);
-
-	// Add default preferences info
-	if (!isset($phpgw_info['user']['preferences']['email']['userid']))
-	{
-		if ($phpgw_info['server']['mail_login_type'] == 'vmailmgr')
+		// args array currently not used
+		if ((isset($this->mailsvr_stream))
+		&& ($this->mailsvr_stream != ''))
 		{
-			$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id)
-				. '@' . $phpgw_info['server']['mail_suffix'];
+			$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
+			$phpgw->msg->mailsvr_stream = '';
+		}
+	}
+
+
+  // ----  Various Functions Used To Support Email   -----
+	function prep_folder_in($feed_folder)
+	{
+		global $phpgw, $phpgw_info;
+		
+		// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
+		if (!$feed_folder)
+		{
+			return 'INBOX';
 		}
 		else
 		{
-			$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id);
+			// an incoming folder name has generally been urlencoded before it gets here
+			// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
+			$feed_folder = urldecode($feed_folder);
+			return $this->folder_lookup('', $feed_folder);
 		}
 	}
-	// Set Server Mail Type if not defined
-	if (empty($phpgw_info['server']['mail_server_type']))
-	{
-		$phpgw_info['server']['mail_server_type'] = 'imap';
-	}
-	// Get Email Password
-	if (!isset($phpgw_info['user']['preferences']['email']['passwd']))
-	{
-		$phpgw_info['user']['preferences']['email']['passwd'] = $phpgw_info['user']['passwd'];
-	}
-	else
-	{
-		$phpgw_info['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($phpgw_info['user']['preferences']['email']['passwd']);
-	}
-	if (!isset($phpgw_info['user']['preferences']['email']['address']))
-	{
-		$phpgw_info['user']['preferences']['email']['address'] = $phpgw->accounts->id2name($account_id)
-			. '@' . $phpgw_info['server']['mail_suffix'];
-	}
-	if (!isset($phpgw_info['user']['preferences']['email']['mail_server']))
-	{
-		$phpgw_info['user']['preferences']['email']['mail_server'] = $phpgw_info['server']['mail_server'];
-	}
-	if (!isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
-	{
-		$phpgw_info['user']['preferences']['email']['mail_server_type'] = $phpgw_info['server']['mail_server_type'];
-	}
-	if (!isset($phpgw_info['user']['preferences']['email']['imap_server_type']))
-	{
-		$phpgw_info['user']['preferences']['email']['imap_server_type'] = $phpgw_info['server']['imap_server_type'];
-	}
-	// This is going to be used to switch to the nntp class
-	if ((isset($phpgw_info['flags']['newsmode'])
-	&& $phpgw_info['flags']['newsmode']))
-	{
-		$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
-	}
 
-	// These sets the mail_port server variable
-	$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
-
-	// if the option to use the Trash folder is ON, make sure a proper name is specified
-	if (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
+	function prep_folder_out($feed_folder='')
 	{
-		if ((!isset($phpgw_info['user']['preferences']['email']['trash_folder_name']))
-		|| ($phpgw_info['user']['preferences']['email']['trash_folder_name'] == ''))
+		global $phpgw, $phpgw_info;
+
+		if ($feed_folder == '')
 		{
-			$phpgw_info['user']['preferences']['email']['trash_folder_name'] = $this->default_trash_folder;
+			// this allows us to call this with no args and the current folder is "prep'ed"
+			// foldnames with spaces and other URL unfriendly chars are encoded here
+			// must be decoded on the next input (script session) to undo what we do here
+			$feed_folder = $this->folder;
 		}
+		return urlencode($feed_folder);
 	}
 
-	// if the option to use the sent folder is ON, make sure a proper name is specified
-	if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
-	{
-		if ((!isset($phpgw_info['user']['preferences']['email']['sent_folder_name']))
-		|| ($phpgw_info['user']['preferences']['email']['sent_folder_name'] == ''))
-		{
-			$phpgw_info['user']['preferences']['email']['sent_folder_name'] = $this->default_sent_folder;
-		}
-	}
 
-	// SANITY CHECK - is it possible to use Trash and Sent folders - i.e. using IMAP server
-	// if not - force settings to false
-	if  (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
-	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps'))
+
+	/*!
+	@function create_email_preferences
+	@abstract create email preferences
+	@discussion This fills the global $phpgw_info array with the required email preferences for this user
+	@param $account_id -optional defaults to : phpgw_info['user']['account_id']
+	*/	
+	function create_email_preferences($accountid='')
 	{
-		if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
+		global $phpgw, $phpgw_info;
+
+		$account_id = get_account_id($accountid);
+
+		// Add default preferences info
+		if (!isset($phpgw_info['user']['preferences']['email']['userid']))
 		{
-			unset($phpgw_info['user']['preferences']['email']['use_sent_folder']);
+			if ($phpgw_info['server']['mail_login_type'] == 'vmailmgr')
+			{
+				$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id)
+					. '@' . $phpgw_info['server']['mail_suffix'];
+			}
+			else
+			{
+				$phpgw_info['user']['preferences']['email']['userid'] = $phpgw->accounts->id2name($account_id);
+			}
+		}
+		// Set Server Mail Type if not defined
+		if (empty($phpgw_info['server']['mail_server_type']))
+		{
+			$phpgw_info['server']['mail_server_type'] = 'imap';
+		}
+		// Get Email Password
+		if (!isset($phpgw_info['user']['preferences']['email']['passwd']))
+		{
+			$phpgw_info['user']['preferences']['email']['passwd'] = $phpgw_info['user']['passwd'];
+		}
+		else
+		{
+			$phpgw_info['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($phpgw_info['user']['preferences']['email']['passwd']);
+		}
+		if (!isset($phpgw_info['user']['preferences']['email']['address']))
+		{
+			$phpgw_info['user']['preferences']['email']['address'] = $phpgw->accounts->id2name($account_id)
+				. '@' . $phpgw_info['server']['mail_suffix'];
+		}
+		if (!isset($phpgw_info['user']['preferences']['email']['mail_server']))
+		{
+			$phpgw_info['user']['preferences']['email']['mail_server'] = $phpgw_info['server']['mail_server'];
+		}
+		if (!isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
+		{
+			$phpgw_info['user']['preferences']['email']['mail_server_type'] = $phpgw_info['server']['mail_server_type'];
+		}
+		if (!isset($phpgw_info['user']['preferences']['email']['imap_server_type']))
+		{
+			$phpgw_info['user']['preferences']['email']['imap_server_type'] = $phpgw_info['server']['imap_server_type'];
+		}
+		// This is going to be used to switch to the nntp class
+		if ((isset($phpgw_info['flags']['newsmode'])
+		&& $phpgw_info['flags']['newsmode']))
+		{
+			$phpgw_info['user']['preferences']['email']['mail_server_type'] = 'nntp';
 		}
 
+		// These sets the mail_port server variable
+		$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
+
+		// if the option to use the Trash folder is ON, make sure a proper name is specified
 		if (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
 		{
-			unset($phpgw_info['user']['preferences']['email']['use_trash_folder']);
+			if ((!isset($phpgw_info['user']['preferences']['email']['trash_folder_name']))
+			|| ($phpgw_info['user']['preferences']['email']['trash_folder_name'] == ''))
+			{
+				$phpgw_info['user']['preferences']['email']['trash_folder_name'] = $this->default_trash_folder;
+			}
 		}
-	}
 
-	// Layout Template Preference
-	// layout 1 = default ; others are prefs
-	if (!isset($phpgw_info['user']['preferences']['email']['layout']))
-	{
-		$phpgw_info['user']['preferences']['email']['layout'] = 1;
-	}
-	// currently working on layout2, so hard code it here
-	//$phpgw_info['user']['preferences']['email']['layout'] = 1;
-	//$phpgw_info['user']['preferences']['email']['layout'] = 2;
+		// if the option to use the sent folder is ON, make sure a proper name is specified
+		if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
+		{
+			if ((!isset($phpgw_info['user']['preferences']['email']['sent_folder_name']))
+			|| ($phpgw_info['user']['preferences']['email']['sent_folder_name'] == ''))
+			{
+				$phpgw_info['user']['preferences']['email']['sent_folder_name'] = $this->default_sent_folder;
+			}
+		}
 
-	// DEBUG
-	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
-	//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';
-  }
+		// SANITY CHECK - is it possible to use Trash and Sent folders - i.e. using IMAP server
+		// if not - force settings to false
+		if  (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imap')
+		&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'imaps'))
+		{
+			if (isset($phpgw_info['user']['preferences']['email']['use_sent_folder']))
+			{
+				unset($phpgw_info['user']['preferences']['email']['use_sent_folder']);
+			}
+	
+			if (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
+			{
+				unset($phpgw_info['user']['preferences']['email']['use_trash_folder']);
+			}
+		}
+
+		// Layout Template Preference
+		// layout 1 = default ; others are prefs
+		if (!isset($phpgw_info['user']['preferences']['email']['layout']))
+		{
+			$phpgw_info['user']['preferences']['email']['layout'] = 1;
+		}
+		// force seeting here to test stuff
+		//$phpgw_info['user']['preferences']['email']['layout'] = 1;
+		//$phpgw_info['user']['preferences']['email']['layout'] = 2;
+
+		// DEBUG
+		//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
+		//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';
+	}
 
 
 
@@ -1285,6 +1273,7 @@
 		return $passwd;
 	}
 
+	// DEPRECIATED -- TO BE  REMOVED
 	// ---  should not be used, this is taken care of in create_email_preferences  -----
 	function get_email_passwd()
 	{
@@ -1300,65 +1289,6 @@
 		{
 			return $this->decrypt_email_passwd($tmp_prefs['email']['passwd']);
 		}
-	}
-
-	// ----  High-Level Function To Get The Subject String  -----
-	function get_subject($msg, $desired_prefix='Re: ')
-	{
-		if ( (! $msg->Subject) || ($msg->Subject == '') )
-		{
-			$subject = lang('no subject');
-		}
-		else
-		{
-			$subject = $this->decode_header_string($msg->Subject);
-		}
-		// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
-		// $personal = $this->qprint_rfc_header($personal);
-		$personal = $this->decode_header_string($personal);
-		// do we add a prefix like Re: or Fw:
-		if ($desired_prefix != '')
-		{
-			if (strtoupper(substr($subject, 0, 3)) != strtoupper(trim($desired_prefix)))
-			{
-				$subject = $desired_prefix . $subject;
-			}
-		}
-		$subject = $this->htmlspecialchars_encode($subject);
-		return $subject;
-	}
-
-	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
-	function get_who_wrote($msg)
-	{
-		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
-		{
-			$lang_somebody = 'somebody';
-			return $lang_somebody;
-		}
-		elseif ($msg->from[0])
-		{
-			$from = $msg->from[0];
-		}
-		else
-		{
-			$from = $msg->reply_to[0];
-		}
-		if ((!isset($from->personal)) || ($from->personal == ''))
-		{
-			$personal = $from->mailbox.'@'.$from->host;
-			//$personal = 'not set or blank';
-		}
-		else
-		{
-			//$personal = $from->personal." ($from->mailbox@$from->host)";
-			$personal = trim($from->personal);
-			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
-			$personal = $this->decode_header_string($personal);
-			//$personal = $this->qprint_rfc_header($personal);
-			$personal = $personal ." ($from->mailbox@$from->host)";
-		}
-		return $personal;
 	}
 
 	// ----  Make Address accoring to RFC2822 Standards  -----
@@ -1595,6 +1525,8 @@
 		}
 	}
 
+	// takes an array generated by "make_rfc_addy_array()" and makes it into a string
+	// ytpically used to make to and from headers, etc...
 	function addy_array_to_str($data, $include_personal=True)
 	{
 		$addy_string = '';
@@ -1878,9 +1810,7 @@
 		}
 	}
 
-
-
-	// SUB-FUNCTION - do not call directly
+	// SUB-FUNCTION - do not call directly, used by "encode_header()"
 	function encode_iso88591_word($string)
 	{
 		$qprint_prefix = '=?iso-8859-1?Q?';
@@ -1922,7 +1852,13 @@
 		return $new_str;
 	}
 	
-	
+	// encode email headers as per rfc2047, non US-ASCII chars in email headers
+	// basic idea is to qprint any word with "header-unfriendly" chars in it
+	// then surround that qprinted word with the stuff specified in rfc2047
+	// Example:
+	//  "my //name\\ {iS} L@@T" <leet@email.com>
+	// that email address has "header-unfriendly" chars in it
+	// this function would encode it suitable for email transport
 	function encode_header($data)
 	{
 		// explode string into an array or words
@@ -1933,6 +1869,7 @@
 			//echo 'words['.$i.'] in loop: '.$words[$i].'<br>';
 			
 			// my interpetation of what to encode from RFC2045, RFC2047, and RFC2822
+			// all these chars seem to cause trouble, so encode them
 			if (preg_match('/'
 				. '['.chr(1).'-'.chr(31).']'
 				. '['.chr(33).'-'.chr(38).']'
@@ -1973,6 +1910,9 @@
 		return $encoded_str;
 	}
 
+	// PHP "htmpspecialchars" is unreliable sometimes, and does not encode single quotes (unless told to)
+	// this is a somewhat more reliable version of that PHP function
+	// with a corresponding 'decode' function below it
 	function htmlspecialchars_encode($str)
 	{
 		/*// replace  '  and  "  with htmlspecialchars */
@@ -1989,6 +1929,7 @@
 		return $str;
 	}
 
+	// reverse of the above encode function
 	function htmlspecialchars_decode($str)
 	{
 		/*// reverse of htmlspecialchars */
@@ -2003,6 +1944,7 @@
 		return $str;
 	}
 
+	// ==  "poor-man's" database compatibility ==
 	function html_quotes_encode($str)
 	{
 		// ==  "poor-man's" database compatibility ==
@@ -2020,6 +1962,7 @@
 		return $str;
 	}
 
+	// ==  "poor-man's" database compatibility ==
 	function html_quotes_decode($str)
 	{
 		// ==  "poor-man's" database compatibility ==
@@ -2037,6 +1980,7 @@
 		return $str;
 	}
 
+	// DEPRECIATED - not used currently (9/25/2001)
 	function space_to_nbsp($data)
 	{
 		// change every other space to a html "non breaking space" so lines can still wrap
@@ -2044,6 +1988,7 @@
 		return $data;
 	}
 
+	// my implementation of a PHP4 only function
 	function body_hard_wrap($in, $size=80)
 	{
 		// this function formats lines according to the defined

@@ -45,7 +45,8 @@
 		}
 		else
 		{
-			/*  // this is the structure you will get
+			/*  class mail_msg "new_message_check()"
+			  // this is the structure you will get
 			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
 		  	  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
 			  $inbox_data['alert_string'] string - what to show the user about this inbox check

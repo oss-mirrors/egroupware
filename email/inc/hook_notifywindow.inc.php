@@ -21,6 +21,7 @@
 
 	$phpgw_info['server']['app_inc'] = PHPGW_SERVER_ROOT . SEP . 'email' . SEP . 'inc';
 
+	// NOTE: notify for email not available if the welcome screen show mail option if off
 	if (($phpgw_info['user']['preferences']['email']['mainscreen_showmail'])
 	&& (isset($phpgw_info['user']['apps']['email'])
 	&& $phpgw_info['user']['apps']['email']))
@@ -47,7 +48,7 @@
 
 		if ($inbox_data['alert_string'] != '')
 		{
-			echo "\r\n" . '<tr><td align="left"><!-- Mailbox info -->' . "\r\n";
+			echo "\r\n" . '<tr><td align="left"><!-- Mailbox info X10 -->' . "\r\n";
 /*			echo '<script language="JavaScript">'.chr(13).chr(10);
 			echo '<!-- Activate Cloaking Device'.chr(13).chr(10);
 			echo '	funtion CheckEmail()'.chr(13).chr(10);
@@ -56,9 +57,10 @@
 			echo '	}'.chr(13).chr(10);
 			echo '//-->'.chr(13).chr(10);
 			echo '</script>'.chr(13).chr(10); */
-			echo '<font color="FFFFFF">EMail';
+			//echo '<font color="FFFFFF">EMail';
 			//echo ($str ? ' - <A href="JavaScript:CheckEmail();">' . $str . '</A>' : '') . '</font>';
-			echo ' - <a href="JavaScript:CheckEmail();">'.$inbox_data['alert_string'].'</a>'.'</font>';
+			echo lang("EMail").' - <a href="JavaScript:CheckEmail();">'.$inbox_data['alert_string'].'</a>';
+			//echo '</font>';
 			echo "\r\n".'<!-- Mailox info --></td></tr>'."\r\n";
 		}
 	}

@@ -58,7 +58,7 @@
 		{
 			if ($inbox_data['number_all'] > 0) 
 			{
-				echo 'action:newmail'.chr(13);
+				echo 'action:newmail'.$inbox_data["number_all"].chr(13);
 			}
 		}
 
