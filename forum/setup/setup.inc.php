@@ -4,9 +4,9 @@
 	* http://www.phpgroupware.org                                                *
 	* Written by Jani Hirvinen <jpkh@shadownet.com>                              *
 	* -------------------------------------------                                *
-	*  This program is free software; you	can redistribute it and/or modify it *
-	*  under the terms of	the GNU	General	Public License as published by the   *
-	*  Free Software Foundation; either version 2	of the License,	or (at your  *
+	*  This program is free software; you	can redistribute it and/or modify it  *
+	*  under the terms of	the GNU	General	Public License as published by the *
+	*  Free Software Foundation; either version 2	of the License, or (at your  *
 	*  option) any later version.                                                *
 	\****************************************************************************/
 
@@ -14,7 +14,7 @@
 
 	$setup_info['forum']['name'] = 'forum';
 	$setup_info['forum']['title'] = 'forum';
-	$setup_info['forum']['version'] = '0.9.13.001';
+	$setup_info['forum']['version'] = '0.9.13.002';
 	$setup_info['forum']['app_order'] = 7;
 	$setup_info['forum']['enable'] = 1;
 

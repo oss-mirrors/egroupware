@@ -37,7 +37,7 @@
 		$phpgw->db->next_record();
 		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
-		$datetime = $phpgw->common->show_date(time(),"Y-m-d H:i:s");
+		//$datetime = $phpgw->common->show_date(time(),"Y-m-d H:i:s");
 
 		if($pos	!= 0)
 		{
@@ -55,10 +55,10 @@
 			$pos = 1;
 		}
 
-		$phpgw->db->query("insert into phpgw_forum_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat,n_replies) VALUES ("
-		. "'$datetime','$pos','$thread','$depth','$next_f_body_id','"	. addslashes($msg) . "','"
-		. "$cat','$for','$author','" . addslashes($subject) .	"','$email','$host','$stat',0)",__LINE__,__FILE__);
-
+		$phpgw->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,cat_id,for_id,"
+			. "author,subject,email,host,stat,n_replies) VALUES ('$pos','$thread','$depth','"
+			. "$next_f_body_id','"	. addslashes($msg) . "','$cat','$for','$author','"
+			. addslashes($subject) .	"','$email','$host','$stat',0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("update phpgw_forum_threads set n_replies = n_replies+1 where thread='$thread'",__LINE__,__FILE__);
 
@@ -147,14 +147,14 @@
 	$subj = "Re: "	. $subject;
 
 	$phpgw->template->set_var(array(
-	THREAD		=> $thread,
-	DEPTH		=> $depth,
-	LANG_AUTHOR	=> lang("Author"),
-	LANG_DATE	=> lang("Date"),
-	LANG_SUBJECT	=> lang("Subject"),
-	AUTHOR		=> $phpgw->db->f("author"),
-	POSTDATE	=> $phpgw->db->f("postdate"),
-	SUBJECT		=> $subj
+		THREAD       => $thread,
+		DEPTH        => $depth,
+		LANG_AUTHOR  => lang('Author'),
+		LANG_DATE    => lang('Date'),
+		LANG_SUBJECT => lang('Subject'),
+		AUTHOR       => $phpgw->db->f('author'),
+		POSTDATE     => $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate'))),
+		SUBJECT      => $subj
 	));
 
 	$phpgw->db->query("select * from phpgw_forum_body where id = $msgid",__LINE__,__FILE__);

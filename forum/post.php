@@ -39,10 +39,10 @@
 		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
 		//print	"$next_f_threads_id <br> $next_f_body_id";
-		$datetime = $phpgw->common->show_date(time(),"Y-m-d h:i:s");
+		//$datetime = $phpgw->common->show_date(time(),"Y-m-d h:i:s");
 
-		$phpgw->db->query("insert into phpgw_forum_threads (postdate,pos,thread,depth,main,parent,"
-			. "cat_id,for_id,author,subject,email,host,stat,n_replies) VALUES ('$datetime',0,$next_f_body_id,"
+		$phpgw->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,"
+			. "cat_id,for_id,author,subject,email,host,stat,n_replies) VALUES (0,$next_f_body_id,"
 			. "0,$next_f_body_id,-1,$cat,$for,'$author','$subject','$email','$host',$stat,0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES (

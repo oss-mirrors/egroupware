@@ -12,34 +12,35 @@
 
 	/* $Id$ */
 
-
-	$phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class"	=> True);
-	include("../header.inc.php");
-
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'forum',
+		'enable_nextmatchs_class' => True
+	);
+	include('../header.inc.php');
 
 	$phpgw->db->query("select * from phpgw_forum_categories where id = $cat");
 	$phpgw->db->next_record();
-	$category = $phpgw->db->f("name");
+	$category = $phpgw->db->f('name');
 
 	$phpgw->db->query("select * from phpgw_forum_forums where	id = $for");
 	$phpgw->db->next_record();
-	$forums	= $phpgw->db->f("name");
+	$forums	= $phpgw->db->f('name');
 
 	$catfor	= "cat=" . $cat	. "&for=" . $for;
 	$phpgw->template->set_var(array(
-	BGROUND			=> $phpgw_info["theme"]["th_bg"],
-	IMG_URL_PREFIX		=> PHPGW_IMAGES . "/",
-	LANG_TOPIC		=> lang("Topic"),
-	LANG_AUTHOR		=> lang("Author"),
-	LANG_REPLIES		=> lang("Replies"),
-	LANG_LATREP		=> lang("Latest Reply"),
-	LANG_MAIN		=> lang("Forums"),
-	LANG_NEWTOPIC		=> lang("New Topic"),
-	LANG_CATEGORY		=> $category,
-	LANG_FORUM		=> $forum,
-	FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
-	MAIN_LINK		=> $phpgw->link("/forum/index.php"),
-	POST_LINK		=> $phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
+		BGROUND			=> $phpgw_info["theme"]["th_bg"],
+		IMG_URL_PREFIX		=> PHPGW_IMAGES . "/",
+		LANG_TOPIC		=> lang("Topic"),
+		LANG_AUTHOR		=> lang("Author"),
+		LANG_REPLIES		=> lang("Replies"),
+		LANG_LATREP		=> lang("Latest Reply"),
+		LANG_MAIN		=> lang("Forums"),
+		LANG_NEWTOPIC		=> lang("New Topic"),
+		LANG_CATEGORY		=> $category,
+		LANG_FORUM		=> $forum,
+		FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
+		MAIN_LINK		=> $phpgw->link("/forum/index.php"),
+		POST_LINK		=> $phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
 	));
 
 
@@ -63,20 +64,20 @@
 
 
 			$phpgw->template->set_var(array(
-			COLOR => $tr_color,
-			TOPIC => $subject,
-			AUTHOR => $phpgw->db->f("author"),
-			REPLIES	=> $phpgw->db->f("n_replies") ,
-			READ_LINK => $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")),
-			LATESTREPLY => $phpgw->db->f("postdate")
+				COLOR => $tr_color,
+				TOPIC => $subject,
+				AUTHOR => $phpgw->db->f("author"),
+				REPLIES	=> $phpgw->db->f("n_replies") ,
+				READ_LINK => $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")),
+				LATESTREPLY => $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate')))
 			));
 
 			$phpgw->template->parse('CollapseT','CollapseThreads',true);
 
 		}		//end	while
 		$phpgw->template->set_var(array(
-		THREADS_LINK =>	$phpgw->link("/forum/threads.php","$catfor&col=1"),
-		LANG_THREADS => lang("View Threads")
+			THREADS_LINK =>	$phpgw->link("/forum/threads.php","$catfor&col=1"),
+			LANG_THREADS => lang("View Threads")
 		));
 		$phpgw->template->parse("Out",'COLLAPSE');
 		$phpgw->template->p("Out");
@@ -114,13 +115,13 @@
 
 
 			$phpgw->template->set_var(array(
-			COLOR		=> $tr_color,
-			TOPIC		=> $subject,
-			AUTHOR		=> $phpgw->db->f("author"),
-			REPLIES		=> $phpgw->db->f("n_replies") ,
-			LATESTREPLY	=> $phpgw->db->f("postdate"),
-			READ_LINK	=> $phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")),
-			DEPTH		=> $move
+				COLOR		=> $tr_color,
+				TOPIC		=> $subject,
+				AUTHOR		=> $phpgw->db->f("author"),
+				REPLIES		=> $phpgw->db->f("n_replies") ,
+				LATESTREPLY	=> $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate'))),
+				READ_LINK	=> $phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")),
+				DEPTH		=> $move
 			));
 
 			$phpgw->template->parse('NormalT','NormalThreads',true);
@@ -129,8 +130,8 @@
 		}		//end	while
 
 		$phpgw->template->set_var(array(
-		THREADS_LINK	=> $phpgw->link("/forum/threads.php","$catfor&col=0"),
-		LANG_THREADS	=> lang("Collapse Threads")
+			THREADS_LINK	=> $phpgw->link("/forum/threads.php","$catfor&col=0"),
+			LANG_THREADS	=> lang("Collapse Threads")
 		));
 
 		$phpgw->template->parse('Out','NORMAL');
