@@ -16,6 +16,12 @@
 	$setup_info['backup']['app_order']	= 72;
 	$setup_info['backup']['enable'] = 1;
 
+	$setup_info['backup']['author'] = 'Bettina Gille';
+	$setup_info['backup']['description'] =
+		'An online configurable backup app to store data offline.';
+	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
+	$setup_info['backup']['maintainer_email'] = 'ceb@phpgroupware.org';
+
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['backup']['hooks'] = array
 	(
