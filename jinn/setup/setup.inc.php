@@ -23,10 +23,10 @@
 */
 
 	$setup_info['jinn']['name']		= 'jinn';
-	$setup_info['jinn']['title']		= 'jinn';
-	$setup_info['jinn']['version']	= '0.4.4';
-	$setup_info['jinn']['app_order']	= 100;
-	$setup_info['jinn']['tables']		= array
+	$setup_info['jinn']['title']	= 'JiNN';
+	$setup_info['jinn']['version']	= '0.5.0';
+	$setup_info['jinn']['app_order']= 100;
+	$setup_info['jinn']['tables']	= array
 	(
 		'phpgw_jinn_acl',
 		'phpgw_jinn_sites',

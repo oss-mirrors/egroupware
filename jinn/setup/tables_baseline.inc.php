@@ -16,7 +16,7 @@
 
   /* $Id$ */
 
-  /* table array for  */
+  /* table array for jinn */
 	$phpgw_baseline = array(
 		'phpgw_jinn_acl' => array(
 			'fd' => array(
@@ -30,12 +30,19 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_jinn_conf' => array(
+		'phpgw_jinn_sites' => array(
 			'fd' => array(
-				'name' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'value' => array('type' => 'varchar', 'precision' => 15,'nullable' => False)
+				'site_id' => array('type' => 'auto','nullable' => False),
+				'site_name' => array('type' => 'varchar', 'precision' => 100,'nullable' => True),
+				'site_db_name' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
+				'site_db_host' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
+				'site_db_user' => array('type' => 'varchar', 'precision' => 30,'nullable' => False),
+				'site_db_password' => array('type' => 'varchar', 'precision' => 30,'nullable' => False),
+				'site_db_type' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
+				'upload_path' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
+				'upload_url' => array('type' => 'varchar', 'precision' => 250,'nullable' => False)
 			),
-			'pk' => array(),
+			'pk' => array('site_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
@@ -46,35 +53,15 @@
 				'parent_site_id' => array('type' => 'int', 'precision' => 4,'nullable' => True),
 				'name' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
 				'table_name' => array('type' => 'varchar', 'precision' => 30,'nullable' => True),
-				'preview_url' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
 				'upload_path' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
-				'image_width' => array('type' => 'varchar', 'precision' => 5,'nullable' => False),
-				'thumb_width' => array('type' => 'varchar', 'precision' => 5,'nullable' => False),
-				'image_type' => array('type' => 'char', 'precision' => 3,'nullable' => False),
-				'image_dir_url' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
-				'relations' => array('type' => 'text','nullable' => True)
+				'upload_url' => array('type' => 'varchar', 'precision' => 250,'nullable' => False),
+				'relations' => array('type' => 'text','nullable' => True),
+				'plugins' => array('type' => 'text','nullable' => True)
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_jinn_sites' => array(
-			'fd' => array(
-				'site_id' => array('type' => 'auto','nullable' => False),
-				'site_name' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'site_title' => array('type' => 'varchar', 'precision' => 50,'nullable' => False),
-				'site_description' => array('type' => 'varchar', 'precision' => 255,'nullable' => False),
-				'site_db_name' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'site_db_host' => array('type' => 'varchar', 'precision' => 15,'nullable' => False),
-				'site_db_user' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
-				'site_db_password' => array('type' => 'varchar', 'precision' => 10,'nullable' => False),
-				'site_db_type' => array('type' => 'varchar', 'precision' => 10,'nullable' => False)
-			),
-			'pk' => array('site_id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		)
 	);
 ?>
