@@ -553,6 +553,17 @@
 	// (1) "view formatted/unformatted" link being moved to the "toolbar"
 	// this tamplate var will be filled with something below if appropriate, else it stays empty
 	$t->set_var('view_option','&nbsp');
+	// base URLs for the "view unformatted" or "view formatted" option
+	// if "vew_unformatted" if the url, then "&no_fmt=1" will be added below
+	// other wise, this URL will be used unchanged
+	$view_option_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php',
+				'folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
+				.'&msgnum='.$GLOBALS['phpgw']->msg->msgnum
+				.'&sort='.$GLOBALS['phpgw']->msg->sort
+				.'&order='.$GLOBALS['phpgw']->msg->order
+				.'&start='.$GLOBALS['phpgw']->msg->start
+		);
+
 	// (2) view headers option
 	$view_headers_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/get_attach.php',
 		 '&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
@@ -948,9 +959,6 @@
 				//    normalize line breaks to rfc2822 CRLF
 				$dsp = $GLOBALS['phpgw']->msg->normalize_crlf($dsp);
 
-				// the "view unformatted" or "view formatted" option base url
-				$view_option_url = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/message.php','&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$GLOBALS['phpgw']->msg->msgnum);
-
 				if ((isset($GLOBALS['phpgw']->msg->args['no_fmt']))
 				&& ($GLOBALS['phpgw']->msg->args['no_fmt'] != ''))
 				{
@@ -985,7 +993,7 @@
 					$dsp = ereg_replace("\r\n","<br>",$dsp);
 					// add a line after the last line of the message
 					$dsp = $dsp .'<br><br>';
-					// choice (toggle) to view unformatted
+					// alternate (toggle) to view unformatted, for this we add "&no_fmt=1" to the URL
 					$view_option = $GLOBALS['phpgw']->msg->href_maketag($view_option_url.'&no_fmt=1', lang('view unformatted'));
 				}
 				

@@ -106,9 +106,13 @@
 
 			// row3 = show sender's email address with name options
 			$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
-			$show_addresses_selected['none'] = '';
-			$show_addresses_selected['from'] = '';
-			$show_addresses_selected['replyto'] = '';
+			// initialize array of all show_addresses_selected options
+			$show_addresses_selected = Array(
+				'none' => '',
+				'from' => '',
+				'replyto' => ''
+			);
+			// now set the users pref $show_addresses_selected[OPTION] = " selected"
 			$show_addresses_selected[$this->prefs['show_addresses']] = ' selected';
 			$var = Array(
 				'bg_row3'	=> $tr_color,

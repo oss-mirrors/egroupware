@@ -187,7 +187,7 @@
 	{
 		$GLOBALS['phpgw']->msg->grab_set_prefs_args_gpc();
 	}
-		
+	
 	// UNKNOWN if $totalerrors and $errors are still used or not
 	// $args_array['totalerrors'] = $totalerrors;
 	// $args_array['errors'] = $errors;
@@ -199,7 +199,7 @@
 		// this will expose sensitive data, beter to comment it out when not debugging
 		//if ($debug_logins) {  echo 'CALL TO LOGIN IN FUNCTIONS.INC.PHP'.'<br>'.'userid='.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']; }
 		
-		// ----  GRAB CLASS VARIABLES FROM PHP POST OR GET GLOBALS  ------
+		// ----  GRAB CLASS VARIABLES FROM HTTP POST OR GET GLOBALS  ------
 		$GLOBALS['phpgw']->msg->grab_class_args_gpc();
 		
 		// ----  INITIALIZE SIMPLE REQUEST ARGS ARRAY HOLDER VARIABLE  -------
