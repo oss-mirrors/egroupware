@@ -27,29 +27,22 @@
 
 	function get_archives($dir)
 	{
-//		$basedir = '{server_root}/backup/archives';
 		if (is_dir($dir))
 		{
 			$basedir = opendir($dir);
 
+			$i = 0;
 			while (false !== ($files = readdir($basedir)))
 			{
 				if (($files != '.') && ($files != '..'))
 				{
-					for ($i=0;$i<=count($files);$i++)
-					{
-						$archives = array
-						(
-							'file'	=> $files[$i],
-							'bdate'	=> filemtime($files[$i])
-						);
-					}
+					$archive[$i]['file'] = $files;
+					$archive[$i]['bdate'] = filemtime($dir . '/' . $files);
+					$i++;
 				}
 			}
-
 			closedir($basedir);
-
-			return $archives;
+			return $archive;
 		}
 		else
 		{
@@ -89,9 +82,9 @@
 
 		if (is_integer($versions) && $versions != 0)
 		{
-			$archives = get_archives($dir);
+			$archive = get_archives($dir);
 
-			if (count($archives) >= $versions)
+			if (count($archive) >= $versions)
 			{
 				$bintval	= '{bintval}';
 
@@ -104,24 +97,9 @@
 				}
 			//	exec("find " . $dir . '-mtime +' . $datedue . ' -exec rm -- {} ; 2>&1 > /dev/null');
 
-				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives); */
+				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives);
 
-				$rdate = get_date('rdate',$versions,$bintval);
-
-				chdir($dir);
-
-				for ($i=0;$i<=count($archives);$i++)
-				{
-					if ($archives[$i]['bdate'] <= $rdate)
-					{
-						unlink($archives[$i]['file']);
-						echo 'removed ' . $archives[$i]['file'];
-					}
-				}
-
-				chdir('/root');
-
-/*				if ($rarchives)
+				if ($rarchives)
 				{
 					chdir($dir);
 
@@ -129,7 +107,25 @@
 					{
 						system("rm " . substr($rarchives[$i],strlen($dir)+1) . ' 2>&1 > /dev/null');
 					}
-				} */
+				}																							*/
+
+				$rdate = get_date('rdate',$versions,$bintval);
+
+				chdir($dir);
+
+				for ($i=0;$i<=count($archive);$i++)
+				{
+					if ($archive[$i]['bdate'] <= $rdate)
+					{
+						if (is_file($dir . '/' . $archive[$i]['file']))
+						{
+							unlink($archive[$i]['file']);
+							echo 'removed ' . $archive[$i]['file'] . "\n";
+						}
+					}
+				}
+
+				chdir('/root');
 			}
 		}
 	}
