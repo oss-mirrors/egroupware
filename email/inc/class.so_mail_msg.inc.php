@@ -56,10 +56,10 @@
 		*/
 		function so_mail_msg()
 		{
-			$table_definitions = $GLOBALS['phpgw']->db->get_table_definitions('email');
-			$GLOBALS['phpgw']->db->set_column_definitions($table_definitions['phpgw_anglemail']['fd']);
+			$this->db = $GLOBALS['phpgw']->db;
+			$this->db->set_app('email');
+
 			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: ('.__LINE__.'): *constructor*<br>'); } 
-			return;
 		}
 		
 		/*!
@@ -404,63 +404,38 @@
 		{
 			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): ENTERING, $data_key ['.$data_key.'], $compression ['.serialize($compression).']<br>'); }
 			$account_id = get_account_id($accountid,$GLOBALS['phpgw']->session->account_id);
-			$data_key = $GLOBALS['phpgw']->db->db_addslashes($data_key);
 			// for compression, first choice is BZ2, second choice is GZ
 			//if (($compression)
 			//&& (function_exists('bzcompress')))
 			//{
-			//	$content_preped = base64_encode(bzcompress(serialize($content)));
-			//	$content = '';
-			//	unset($content);
+			//	$content = base64_encode(bzcompress(serialize($content)));
 			//	if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did BZ2 compress</font>, no addslashes for compressed content<br>'); }
 			//}
 			//else
 			if (($compression)
 			&& (function_exists('gzcompress')))
 			{
-				$content_preped = gzcompress(serialize($content));
+				$content = gzcompress(serialize($content));
 				// BASE64 sometimes gzcompress can contain single quote char which sometimes confuses database, so also use base64 encoding it for DB saftey
 				//$content_preped = base64_encode(gzcompress(serialize($content)));
-				$content = '';
-				unset($content);
 				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did GZ compress</font>, no addslashes for compressed content<br>'); }
 			}
 			else
 			{
 				// serialize only if  NOT a string
-				if (is_string($content))
+				if (!is_string($content))
 				{
-					$content_preped = $content;
+					$content = serialize($content);
 				}
-				else
-				{
-					$content_preped = serialize($content);
-				}
-				$content = '';
-				unset($content);
 				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compress is ['.serialize($compress).'] AND we did serialize with NO compression<br>'); }
 			}
-			
-			$GLOBALS['phpgw']->db->query("SELECT content FROM phpgw_anglemail WHERE "
-				. "account_id = '".$account_id."' AND data_key = '".$data_key."'",__LINE__,__FILE__);
-			
-			if ($GLOBALS['phpgw']->db->num_rows()==0)
-			{
-				$qry_data = array(
+			$this->db->insert('phpgw_anglemail',array(
+					'content' => $content_preped
+				),array(
 					'account_id' => $account_id,
 					'data_key' => $data_key,
-					'content' => $content_preped
-				);
-				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_anglemail (" . implode(',',array_keys($qry_data)) . ") "
-					. "VALUES (" . $GLOBALS['phpgw']->db->column_data_implode(',',$qry_data,False) . ")",__LINE__,__FILE__);
-			}
-			else
-			{
-				$GLOBALS['phpgw']->db->query("UPDATE phpgw_anglemail SET " .
-					$GLOBALS['phpgw']->db->column_data_implode(',',array(
-						'content' => $content_preped
-					)) . " WHERE account_id='" . $account_id . "' AND data_key='" . $data_key . "'",__LINE__,__FILE__);
-			}
+				),__LINE__,__FILE__);
+
 			if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): LEAVING <br>'); }
 		}
 		
