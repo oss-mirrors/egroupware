@@ -1125,6 +1125,8 @@ class mail_msg extends mail_msg_wrappers
 		else
 		{
 			$subject = $this->decode_header_string($msg->Subject);
+			// subject can me MULTI-LINE, so use glob function
+			//$subject = $this->decode_header_glob($msg->Subject);
 		}
 		// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
 		// $personal = $this->qprint_rfc_header($personal);
@@ -1690,6 +1692,11 @@ class mail_msg extends mail_msg_wrappers
 			{
 				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
 			}
+			// charset is so important now I will add it to keywords
+			if ($part_nice[$i]['charset'] != $not_set)
+			{
+				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['charset'] .' ';
+			}
 			
 			// keyword "alt_hide"
 			// Also a keywords we use can be "alt_hide" which means that the 
@@ -2106,6 +2113,8 @@ class mail_msg extends mail_msg_wrappers
 				}
 			}
 		}
+		// * CHARSET * - will be filled below if it is found in the params
+		$part_nice['charset'] = $not_set; // Default value if not filled
 		// 15:  ifparameters : True if the parameters array exists (SKIP)
 		// 16:  parameters : MIME parameters array  - this *may* have more than a single attribute / value pair  but I'm not sure
 		// ex_num_param_pairs defaults to 0 (no params)
@@ -2131,6 +2140,12 @@ class mail_msg extends mail_msg_wrappers
 					$part_nice['params'][$pairs]['value'] = $part_params->value;
 					// stuff like file names should retain their case
 					//$part_nice['params'][$pairs]['value'] = strtolower($part_nice['params'][$pairs]['value']);
+				}
+				// LOOK FOR CHARSET
+				if (($part_nice['params'][$pairs]['attribute'] == 'charset')
+				&& ($part_nice['params'][$pairs]['value'] != $not_set))
+				{
+					$part_nice['charset'] = $part_nice['params'][$pairs]['value'];
 				}
 			}
 		}
@@ -2657,6 +2672,55 @@ class mail_msg extends mail_msg_wrappers
 	}
 	
 	/*!
+	@function show_date2
+	@abstract show current date HACKED for tzoffset changes
+	@param $t time - optional can be pulled from user preferences
+	@param $format - optional can be pulled from user prefernces
+	@discussion Copied from API files with minr changes, Skeeter original author.
+	*/
+	function show_date2($t = '', $format = '')
+	{
+		if(!is_object($GLOBALS['phpgw']->datetime))
+		{
+			$GLOBALS['phpgw']->datetime = createobject('phpgwapi.datetime');
+		}
+
+		if (!$t || (int)$t <= 0)
+		{
+			$t = $GLOBALS['phpgw']->datetime->gmtnow;
+		}
+		
+		// HACK FOLLOWS here
+		// SOCKETS needs this tzoffset, php-imap buildin gets B0RKED by this line of code here
+		// because sockets makes the udate based off of the date header in the message, tzoffset is handled differently there ????
+		if ($this->using_phpimap_builtin() == False)
+		{
+			//  + (date('I') == 1?3600:0)
+			// darn this STILL really is not working right
+			$t += $GLOBALS['phpgw']->datetime->tz_offset;
+		}
+		
+		if (! $format)
+		{
+			$format = $GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat'] . ' - ';
+			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
+			{
+				$format .= 'h:i a';
+			}
+			else
+			{
+				$format .= 'H:i';
+			}
+		}
+		if((PHP_OS == 'Windows' || PHP_OS == 'WINNT') && (int)$t < 21600)
+		/*if(PHP_OS == 'Windows' && (int)$t < 21600)*/
+		{
+			$t = 21600;
+		}
+		return date($format,$t);
+	}
+	
+	/*!
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
 	@param $folder_info (array) OPTIONAL. Array elements as defined in return from 
@@ -3115,9 +3179,23 @@ $hdr_envelope->udate = $new_time;
 
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
+			/*
 			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
 //echo"$msg_date_time";
 			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_list_display[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);
+			}
+			else
+			{
+				// this strips the time part, leaving only the date, better for single line TD cells
+				$msg_list_display[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
+			}
+			*/
+			// testing new hacked show_date2
+			$msg_date_time = $this->show_date2($hdr_envelope->udate);
+			if($this->show_date2($hdr_envelope->udate,'Ymd') != date('Ymd'))
 			{
 				// this strips the time part, leaving only the date, better for single line TD cells
 				$msg_list_display[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);

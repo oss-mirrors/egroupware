@@ -1103,10 +1103,25 @@
 			
 			// decode rfc2047 encoded attachment name MIME part headers
 			// see RFC2047 "Message Header Extensions for Non-ASCII Text"
-			$att_name = $GLOBALS['phpgw']->msg->decode_rfc_header($GLOBALS['phpgw']->msg->get_arg_value('name'));
+			/*
+			//$att_name = $GLOBALS['phpgw']->msg->decode_rfc_header($GLOBALS['phpgw']->msg->get_arg_value('name'));
+			$att_name = $GLOBALS['phpgw']->msg->decode_header_string($GLOBALS['phpgw']->msg->get_arg_value('name'));
 			if (($att_name != $GLOBALS['phpgw']->msg->get_arg_value('name'))
 			&& (trim($att_name) != '')
 			&& (trim($GLOBALS['phpgw']->msg->get_arg_value('name')) != ''))
+			{
+				$GLOBALS['phpgw']->msg->set_arg_value('name', $att_name);
+			}
+			*/
+			$defanged_name = '';
+			$att_name = '';
+			// altered as per PATCH 2770 from lex "fix-filename-encoding.diff"
+ 			$defanged_name=urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'));
+ 			$att_name = $GLOBALS['phpgw']->msg->decode_header_string($defanged_name);
+ 			//Check if the name changed thru the header decoding im not shure
+ 			if (($att_name != urldecode($GLOBALS['phpgw']->msg->get_arg_value('name')))
+  			&& (trim($att_name) != '')
+ 			&& (trim(urldecode($GLOBALS['phpgw']->msg->get_arg_value('name'))) != ''))
 			{
 				$GLOBALS['phpgw']->msg->set_arg_value('name', $att_name);
 			}
@@ -1115,9 +1130,11 @@
 			// do not do this until we get a length
 			//$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
 			
-			////echo 'get all args dump<pre>'; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo '</pre>';
-			////echo '$mime: ['.$mime.']<br>';
-			////echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').']<br>';
+			//echo 'get all args dump<pre> '; print_r($GLOBALS['phpgw']->msg->get_all_args()); echo ' </pre>'."\r\n";
+			//echo '$defanged_name ['.$defanged_name.']  <br>'."\r\n";
+			//echo '$att_name ['.$att_name.']  <br>'."\r\n";
+			//echo '$mime ['.$mime.']  <br>'."\r\n";
+			//echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').'] <br>'."\r\n";
 			
 			// is this only a header PEEK?
 			if ((string)$msgball['part_no'] == '0')

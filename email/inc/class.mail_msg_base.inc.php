@@ -330,7 +330,9 @@
 		// ---- how long to assume appsession cached "folder_status_info" is deemed VALID in seconds
 		// ---- only applies if "session_cache_extreme" is true
 		// ---- please no lower than 10 seconds
-		var $timestamp_age_limit = 240;
+		//var $timestamp_age_limit = 240;
+		// REDUCE to 2 minutes
+		var $timestamp_age_limit = 120;
 		
 		// EXTRA ACCOUNTS
 		// used for looping thru extra account data during begin request
@@ -363,6 +365,8 @@
 		var $debug_index_page_display = 0;
 		// this is just being implemented
 		var $debug_message_display = 0;
+		// functions handling charset conversions or header decodings
+		var $debug_char_decodings = 0;
 		// dormant code, "longterm_caching" currently OBSOLETE
 		var $debug_longterm_caching = 0;
 		//var $skip_args_special_handlers = 'get_mailsvr_callstr, get_mailsvr_namespace, get_mailsvr_delimiter, get_folder_list';
@@ -4540,6 +4544,7 @@
 		*/
 		function qprint($string)
 		{
+			/*
 			if (function_exists('imap_qprint'))
 			{
 				//return imap_qprint($string);
@@ -4558,76 +4563,60 @@
 			}
 			else
 			{
+			*/
 				////$string = str_replace("_", " ", $string);
 				$string = str_replace("=\r\n","",$string);
 				return quoted_printable_decode($string);
-			}
+			// }
 		}
 		
 		
 		// ----  RFC Header Decoding  -----
+		// ------ MIME HEADER DECODING (like subject line) ------
+		// non-us-ascii chars in email headers MUST be encoded using the special format:  
+		//  =?charset?Q?word?=
+		// commonly:
+		// =?iso-8859-1?Q?encoded_word?=
+		// currently only qprint and base64 encoding is specified by RFCs
+		// you may also see things like these:
+		// =?UTF-8?Q?encoded_word?=
+		// =?iso-8859-15?Q?encoded_word?=
+		// =?GB2312?Q?encoded_word?=
+		// =?big5?Q?encoded_word?=
+		
 		/*!
-		@function decode_rfc_header_glob
-		@abstract feed "decode_rfc_header" one line at a time. 
-		@author Angles
-		@discussion split multi line data into single line strings for processing by "decode_rfc_header" one line at a time. 
-		Currently supports array data or a large string with CRLF pairs that can be exploded into an array. 
-		Not handled is an array with glob data as its elements. Feed this function reasonable simple data structures. 
+		@function decode_header_string
+		@abstract USE THIS FUNCTION FOR HEADER DECODING, it aliases the current best decoding function. 
+		@discussion passthru can call either "decode_rfc_header" or "decode_header_string_orig" functions. 
+		Currently calls "decode_header_string_orig" function by original authors, maybe 
+		someday will call "decode_rfc_header" if it proves a good replacement. 
+		Now that mbstring is coming around, there may be another function to try at this later date. 
+		USE FOR SINGLE LINE HEADERS, which most headers are a single line, but if you have 
+		MULTILINE headers then call "decode_header_glob".  An example multiline header 
+		could be a very long subject as a "folded" multiline header.  Must headers are not "folded". 
 		*/
-		function decode_rfc_header_glob($data)
+		function decode_header_string($string)
 		{
-			//$debug_me = 2;
-			$debug_me = 0;
-			
-			if ($debug_me > 0) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: ENTERING <br>'); } 
-			if ($debug_me > 2) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: ENTERING $data DUMP:', $data); } 
-			// multiline glob needs to be an array
-			if (!is_array($data))
+			if (function_exists('mb_decode_mimeheader'))
 			{
-				if ($debug_me > 1) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: $data is NOT an array, strlen = ['.strlen($data).'] <br>'); } 
-				$data_was_array = False;
-				if (stristr($data, "\r\n"))
-				{
-					$array_data = array();
-					$array_data = $this->explode_linebreaks($data);
-				}
-				else
-				{
-					// maybe a single line slipped in here
-					$array_data = array();
-					$array_data[0] = $data;
-				}
+				return $this->decode_header_string_mb($string);
 			}
 			else
 			{
-				if ($debug_me > 1) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: $data is array, count = ['.count($data).'] <br>'); } 
-				$data_was_array = True;
+				//return $this->decode_rfc_header($string);
+				return $this->decode_header_string_orig($string);
 			}
-			
-			// so now we KNOW we have an array, right?
-			// decode its elements
-			$return_data = array();
-			$loops = count($array_data);
-			for ($i = 0; $i < $loops; $i++)
-			{
-				$return_data[$i] = $this->decode_rfc_header($array_data[$i]);
-			}
-			
-			// put data back into its original form and return it
-			if ($data_was_array == True)
-			{
-				if ($debug_me > 2) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: $return_data DUMP:', $return_data); } 
-				if ($debug_me > 0) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: LEAVING, $data_was_array was ['.serialize($data_was_array).'] <br>'); } 
-				return $return_data;
-			}
-			else
-			{
-				$my_glob = '';
-				$my_glob = implode("\r\n", $return_data);
-				if ($debug_me > 2) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: $my_glob DUMP:', $my_glob); } 
-				if ($debug_me > 0) { $this->dbug->out('mail_msg_base: decode_rfc_header_glob: LEAVING, $data_was_array was ['.serialize($data_was_array).'] <br>'); } 
-				return $my_glob;
-			}
+		}
+		
+		/*!
+		@function decode_header_string_mb
+		@abstract this is used if mbstring functions are available
+		*/
+		function decode_header_string_mb($string)
+		{
+			// we have no way to check if this is needed or not 
+			// because right now mb_ereg is unstable, so just call it
+			return mb_decode_mimeheader($string);
 		}
 		
 		/*!
@@ -4647,6 +4636,7 @@
 		*/
 		function decode_rfc_header($data)
 		{
+			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_rfc_header('.__LINE__.'): ENTERING, param $data ['.$data.']  <br>'); } 
 			// SAME FUNCTIONALITY as decode_header_string()  (but Faster, hopefully)
 			// non-us-ascii chars in email headers MUST be encoded using the special format:  
 			//  =?charset?Q?word?=
@@ -4655,7 +4645,8 @@
 			{
 				$data = ereg_replace("=\?.*\?(Q|q)\?", '', $data);
 				$data = ereg_replace("\?=", '', $data);
-				$data = $this->qprint(str_replace("_"," ",$data));
+				//$data = $this->qprint(str_replace("_"," ",$data));
+				$data = $this->qprint($data);
 			}
 			if (ereg("=\?.*\?(B|b)\?.*\?=", $data))
 			{
@@ -4663,20 +4654,15 @@
 				$data = ereg_replace("\?=", '', $data);
 				$data = urldecode(base64_decode($data));
 			}
+			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_rfc_header('.__LINE__.'): LEAVING, returning $data ['.$data.'] <br>'); } 
 			return $data;
 		}
 		
-	
-		// non-us-ascii chars in email headers MUST be encoded using the special format:  
-		//  =?charset?Q?word?=
-		// commonly:
-		// =?iso-8859-1?Q?encoded_word?=
-		// currently only qprint and base64 encoding is specified by RFCs
 		/*!
-		@function decode_header_string
+		@function decode_header_string_orig
 		@abstract Email header must have chars within US-ASCII limits, any other chars must be encoded, this function DECODES said text.
 		@result string
-		@author previous authors
+		@author previous authors plus parches by angles and Wolffc and others. 
 		@discussion same capability as function decode_rfc_header but does not use any regex, but 
 		also needs to be tweaked to not be b0rked by the various charset encoding strings which increasingly 
 		do not follow the predictable pattern this function is used to seeing.
@@ -4689,19 +4675,17 @@
 		=?GB2312?Q?encoded_word?=
 		=?big5?Q?encoded_word?=
 		NOTE that Q and B are both supported, it is the length of the charset descriptor that is an issue.
+		NOTE2: please do not delete this discussion.
 		*/
-		function decode_header_string($string)
-		{
-			//return $this->decode_rfc_header($string);
-			return $this->decode_header_string_orig($string);
-		}
 		function decode_header_string_orig($string)
 		{
+			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): ENTERING, param $string ['.$string.']  <br>'); } 
 			if($string)
 			{
 				$pos = strpos($string,"=?");
 				if(!is_int($pos))
 				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING early, $pos is ['.$pos.'], so no encodings here  <br>'); } 
 					return $string;
 				}
 				// save any preceding text
@@ -4712,38 +4696,131 @@
 				$d1 = strpos($search,"?");
 				if(!is_int($d1))
 				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING early, $d1 ['.$d1.'], return $string ['.$string.'] <br>'); }
 					return $string;
 				}
 				$charset = strtolower(substr($string,$pos+2,$d1));
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $charset ['.$charset.'] <br>'); }
 				$search = substr($search,$d1+1);
 				$d2 = strpos($search,"?");
 				if(!is_int($d2))
 				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING early, $d2 ['.$d2.'], return $string ['.$string.'] <br>'); }
 					return $string;
 				}
 				$encoding = substr($search,0,$d2);
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $encoding ['.$encoding.'] <br>'); }
 				$search = substr($search,$d2+1);
 				$end = strpos($search,"?=");
 				if(!is_int($end))
 				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING early, $end ['.$end.'], return $string ['.$string.'] <br>'); }
 					return $string;
 				}
 				$encoded_text = substr($search,0,$end);
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $encoded_text ['.$encoded_text.'] <br>'); }
 				$rest = substr($string,(strlen($preceding.$charset.$encoding.$encoded_text)+6));
 				if(strtoupper($encoding) == "Q")
 				{
-					$decoded = $this->qprint(str_replace("_"," ",$encoded_text));
+					//$decoded = $this->qprint(str_replace("_"," ",$encoded_text));
+					$decoded = $this->qprint($encoded_text);
+					if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $decoded ['.$decoded.'] <br>'); }
 				}
 				if (strtoupper($encoding) == "B")
 				{
 					$decoded = urldecode(base64_decode($encoded_text));
+					if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $decoded ['.$decoded.'] <br>'); }
 				}
 				$converted = $GLOBALS['phpgw']->translation->convert($decoded,$charset);
-				return $preceding . $converted . $this->decode_header_string($rest);
+				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): $converted ['.$converted.'], $charset ['.$charset.'], $rest ['.$rest.'] <br>'); }
+				// CONVERSION ERROR check
+				if (($decoded)
+				&& (!$converted))
+				{
+					if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): ** CONVERSION ERROR, empty $converted ['.$converted.'] using $charset ['.$charset.'], fill it with something, use $decoded ['.$decoded.'] <br>'); }
+					$converted = $decoded;
+				}
+				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): might recurse on the $rest ['.$rest.'] <br>'); }
+				$final_data = $preceding . $converted . $this->decode_header_string($rest);
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING $final_data ['.$final_data.'] <br>'); }
+				return $final_data;
 			} 
 			else
 			{
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_string_orig('.__LINE__.'): LEAVING, there was no input, returning $string ['.$string.'] <br>'); }
 				return $string;
+			}
+		}
+		
+		/*!
+		@function decode_header_glob
+		@abstract feed "decode_header_string" one line at a time. Use for multiline headers. 
+		@author Angles
+		@discussion split multi line data into single line strings for processing by "decode_header_string" one line at a time. 
+		Currently supports array data or a large string with CRLF pairs that can be exploded into an array. 
+		Not handled is an array with glob data as its elements. Feed this function reasonable simple data structures. 
+		Example headers such as a very long subject as a "folded" multiline header then this function is for that. 
+		*/
+		function decode_header_glob($data)
+		{
+			//$debug_me = 0;
+			$debug_me = 3;
+			
+			if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): ENTERING <br>'); } 
+			if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $data DUMP:', $data); } 
+			// multiline glob needs to be an array
+			if (!is_array($data))
+			{
+				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $data is NOT an array, strlen = ['.strlen($data).'] <br>'); } 
+				$data_was_array = False;
+				if (stristr($data, "\r\n"))
+				{
+					$array_data = array();
+					$array_data = $this->explode_linebreaks($data);
+				}
+				else
+				{
+					// maybe a single line slipped in here
+					$array_data = array();
+					$array_data[0] = $data;
+				}
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $array_data DUMP: ', $array_data); } 
+			}
+			else
+			{
+				if ($this->debug_char_decodings > 1) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $data is array, count = ['.count($data).'] <br>'); } 
+				$data_was_array = True;
+			}
+			
+			// so now we KNOW we have an array, right?
+			// decode its elements
+			$return_data = array();
+			$loops = count($array_data);
+			for ($i = 0; $i < $loops; $i++)
+			{
+				$str_b4 = '';
+				$str_after = '';
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): * ['.$i.'] $array_data[$i] ['.$array_data[$i].'], note this need not be single word, might be a long string with spaces <br>'); } 
+				$str_b4 = $array_data[$i];
+				$str_after = $this->decode_header_string($str_b4);
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): * ['.$i.'] $str_b4 ['.$str_b4.'] $str_after ['.$str_after.'] <br>'); } 
+				$return_data[$i] = $str_after;
+			}
+			
+			// put data back into its original form and return it
+			if ($data_was_array == True)
+			{
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $return_data DUMP:', $return_data); } 
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): LEAVING, $data_was_array was ['.serialize($data_was_array).'] <br>'); } 
+				return $return_data;
+			}
+			else
+			{
+				$my_glob = '';
+				$my_glob = implode("\r\n", $return_data);
+				if ($this->debug_char_decodings > 2) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): $my_glob DUMP:', $my_glob); } 
+				if ($this->debug_char_decodings > 0) { $this->dbug->out('msg_base.decode_header_glob('.__LINE__.'): LEAVING, $data_was_array was ['.serialize($data_was_array).'] <br>'); } 
+				return $my_glob;
 			}
 		}
 		
@@ -4837,6 +4914,9 @@
 		same example for the inline doc parser
 		&quot;my &#047;&#047;name&#092;&#092; &#123;iS&#125; L@@T&quot; &lt;leet@email.com&gt;
 		this function would encode it suitable for email transport
+		NEW NOTE: now multibyte and unicode chars are also going to need this type of encoding.
+		This goes beyong the original scope of this function, this only tests for us-ascii chars that are 
+		"header unfriendly". Perhaps a new function is needed for language header encoding issues. 
 		*/
 		function encode_header($data)
 		{

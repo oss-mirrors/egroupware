@@ -503,7 +503,29 @@
 				// invalid input, use fallback
 				$this->tz_offset = '+0000';
 			}
-			$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$this->tz_offset;
+			// get gmt unix timestamp, change into local timestamp, then make rfc date haeder string
+			$tz_data=array();
+			$tz_data['timestamp_gmt'] = time();
+			$tz_data['time_string_gmt'] = gmdate('D, d M Y H:i:s', $tz_data['timestamp_gmt']);
+			$tz_data['tz_seconds_offset'] = (int)$this->tz_offset;
+			$tz_data['tz_seconds_offset'] = (($tz_data['tz_seconds_offset']/100) * 3600);
+			$tz_data['timestamp_local'] = $tz_data['timestamp_gmt'] + $tz_data['tz_seconds_offset'];
+			$tz_data['time_string_local'] = gmdate('D, d M Y H:i:s', $tz_data['timestamp_local']);
+			if (!$tz_data['time_string_local'])
+			{
+				// there must have been an error, use a fallback value
+				$this->mail_out['date'] = gmdate('D, d M Y H:i:s').' '.$this->tz_offset;
+			}
+			else
+			{
+				// this is RFC spec date, example "Thu, 15 Apr 2004 20:44:30 -0500" 
+				// where the datetime is in local and the offset indicates "add this offest to that datetime to get to GMT"
+				$this->mail_out['date'] = $tz_data['time_string_local'].' '.$this->tz_offset;
+			}
+			if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->tz_offset ['.$this->tz_offset.']  <br>'); }
+			if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $tz_data DUMP:', $tz_data); }
+			if ($this->debug_send > 1) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->mail_out[date] ['.$this->mail_out['date'].']  <br>'); }
+			//if ($this->debug_send > 3) { $GLOBALS['phpgw']->msg->dbug->out('email.bosend.send('.__LINE__.'): $this->debug_send > 3 PREMATURE EXIT, returning...'); return; }
 			
 			// -----  IN-REPLY-TO  -----
 			/*!
@@ -918,7 +940,9 @@
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 				// add some more info
 				$this->mail_out['fwd_info']['from'] = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
-				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
+				//$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
+				// testing new hacked show_date2
+				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
 				$this->mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 				
 				// normalize data to rfc2046 defaults, in the event data is not provided

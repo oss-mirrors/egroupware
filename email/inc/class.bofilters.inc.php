@@ -1096,7 +1096,8 @@
 					$headers_text = trim($headers_text);
 					// decode encoded headers (if any)
 					//$headers_text = $GLOBALS['phpgw']->msg->decode_rfc_header($headers_text);
-					$headers_text = $GLOBALS['phpgw']->msg->decode_rfc_header_glob($headers_text);
+					// these may be multiline headers, so use this function
+					$headers_text = $GLOBALS['phpgw']->msg->decode_header_glob($headers_text);					
 					// make all Received headers stripped of their preceeding CRLF,  preg option i = case insensitive; m = multi line
 					$headers_text = preg_replace('/'."\r\n".'received: /mi', 'CRLF Received: ', $headers_text);
 					// split the string based on the FIRST CRLF and make only the first Received header have a preceeding "\r\n"

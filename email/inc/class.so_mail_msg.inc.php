@@ -419,13 +419,15 @@
 			&& (function_exists('gzcompress')))
 			{
 				$content_preped = gzcompress(serialize($content));
+				// BASE64 sometimes gzcompress can contain single quote char which sometimes confuses database, so also use base64 encoding it for DB saftey
+				//$content_preped = base64_encode(gzcompress(serialize($content)));
 				$content = '';
 				unset($content);
 				if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_set_data('.__LINE__.'): $compression is ['.serialize($compression).'] AND we did serialize and <font color="green">did GZ compress</font>, no addslashes for compressed content<br>'); }
 			}
 			else
 			{
-				// serialize only is NOT a string
+				// serialize only if  NOT a string
 				if (is_string($content))
 				{
 					$content_preped = $content;
@@ -566,6 +568,8 @@
 				if (function_exists('gzuncompress'))
 				{
 					$my_content_preped = unserialize(gzuncompress($my_content));
+					// BASE64 sometimes gzcompress can contain single quote char which sometimes confuses database, so also use base64 encoding it for DB saftey
+					//$my_content_preped = unserialize(gzuncompress(base64_decode($my_content)));
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $comp_desc['after_decomp'] = strlen(serialize($my_content_preped)); $comp_desc['ratio_math'] = (string)(round(($comp_desc['after_decomp']/$comp_desc['before_decomp']), 1) * 1).'X'; $comp_desc['ratio_txt'] = 'pre/post is ['.$comp_desc['before_decomp'].' to '.$comp_desc['after_decomp']; }
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 1) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg: so_get_data('.__LINE__.'): $compression: ['.serialize($compression).'] using <font color="brown">GZ uncompress</font> pre/post is ['.$comp_desc['ratio_txt'].']; ratio: ['.$comp_desc['ratio_math'].'] <br>'); }
 				}
@@ -1045,7 +1049,10 @@
 				&& (function_exists('gzuncompress')))
 				{
 					$content = $GLOBALS['phpgw']->session->appsession($location, 'email');
-					$content_preped = base64_encode(gzuncompress(serialize($content)));
+					// is this really supposed to be base64_ENCODE?
+					//$content_preped = base64_encode(gzuncompress(serialize($content)));
+					// THIS LOOKS like the correct function but I am not sure why the above is here
+					$content_preped = unserialize(gzuncompress(base64_decode($my_content)));
 					$content = '';
 					unset($content);
 					if ($GLOBALS['phpgw']->msg->debug_so_class > 0) { $GLOBALS['phpgw']->msg->dbug->out('so_mail_msg.so_appsession_passthru('.__LINE__.'): LEAVING, returning passthru data hopefully<br>'); }
