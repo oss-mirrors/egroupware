@@ -13,7 +13,7 @@
        <form method="POST" name="projects_form" action="{actionurl}">
         {error}{message}
 	{hidden_vars}
-        <table width="85%" border="0" cellspacing="1" cellpadding="3">
+        <table width="85%" border="0" cellspacing="2" cellpadding="2">
           <tr>
           <td>{lang_choose}</td>
           <td>{choose}</td>

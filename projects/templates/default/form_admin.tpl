@@ -8,11 +8,11 @@
 	<td colspan="2" height="30">&nbsp;</td>
     </tr>
     <tr>
-	<td>{lang_users_list}</td>
+	<td>{lang_users_list}:</td>
 	<td><select name="users[]" multiple>{users_list}</select></td>
     </tr>
     <tr>
-	<td>{lang_groups_list}</td>
+	<td>{lang_groups_list}:</td>
          <td><select name="groups[]" multiple>{groups_list}</select></td>
     </tr>
     <tr>
