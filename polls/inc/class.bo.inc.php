@@ -157,7 +157,7 @@
 
 		function add_vote($poll_id,$vote_id,$user_id)
 		{
-			if(isset($poll_id) && isset($vote_id) 
+			if(isset($poll_id) && isset($vote_id)
 			   && (int)$poll_id >= 0 && (int)$vote_id >= 0)
 			{
 				$this->so->add_vote($poll_id,$vote_id,$user_id);
@@ -166,7 +166,7 @@
 
 		function add_answer($poll_id,$answer)
 		{
-			$this->so->add_answer($poll_id,$answer);		
+			$this->so->add_answer($poll_id,$answer);
 		}
 
 		function add_question()
@@ -227,11 +227,11 @@
 			if ($GLOBALS['poll_settings']['allow_multiple_votes'])
 			{
 				return True;
-			}   
-			
+			}
+
 			$poll_id = (int)($poll_id);
 			$votes = $this->so->get_user_votecount($poll_id);
-			
+
 			return ($votes == 0) ? True : False;
 		}
 
@@ -271,7 +271,7 @@
 			elseif($type == 'answer')
 			{
 				$ret = $this->so->list_answers($options);
-			} 	
+			}
 			$this->total = $this->so->total;
 			return $ret;
 		}

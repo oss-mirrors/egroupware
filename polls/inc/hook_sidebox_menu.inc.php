@@ -15,7 +15,7 @@
 {
 
  /*
-	This hookfile is for generating an app-specific side menu used in the idots 
+	This hookfile is for generating an app-specific side menu used in the idots
 	template set.
 
 	$menu_title speaks for itself
@@ -36,15 +36,15 @@
 	{
         $menu_title = 'Administration';
         $file = Array(
-				'Poll Settings'  
+				'Poll Settings'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'settings')),
-                'Show Questions'  
+                'Show Questions'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'question')),
-                'Show Answers'  
+                'Show Answers'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'show','type'=>'answer')),
-                'Add Questions'  
+                'Add Questions'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'question')),
-                'Add Answers'  
+                'Add Answers'
 					=> $GLOBALS['phpgw']->link('/index.php', array('menuaction'=>'polls.ui.admin','action'=>'add','type'=>'answer')),
 
         );

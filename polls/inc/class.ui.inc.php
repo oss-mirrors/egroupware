@@ -89,7 +89,7 @@
 		{
 			if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
 			{
-				$GLOBALS['phpgw']->redirect_link('/index.php');	
+				$GLOBALS['phpgw']->redirect_link('/index.php');
 			}
 			$action = get_var('action',array('GET','POST'));
 			$type 	= get_var('type',array('GET','POST'));
@@ -101,7 +101,7 @@
 				}
 				else
 				{
-					$GLOBALS['phpgw']->redirect_link('/index.php',array('menuaction'=>'polls.ui.vote'));	
+					$GLOBALS['phpgw']->redirect_link('/index.php',array('menuaction'=>'polls.ui.vote'));
 				}
 				$GLOBALS['phpgw']->common->phpgw_exit();
 				return 0;
@@ -300,7 +300,7 @@
 
 				$poll_data = $this->bo->get_poll_data($poll_id,$vote_id);
 				$poll_info = $poll_data[0]['text'] . ' ('.lang('total votes').' = '.$poll_data[0]['votes'].')';
-	
+
 				$this->t->set_file(array('admin' => 'admin_form.tpl'));
 				$this->t->set_block('admin','form','form');
 				$this->t->set_block('admin','row','row');
@@ -322,7 +322,7 @@
 				$this->t->pparse('out','form');
 			}
 		}
-		
+
 		function deletequestion()
 		{
 			$poll_id = (int)get_var('poll_id',array('GET','POST'));
@@ -333,7 +333,7 @@
 				header('Location: ' . $this->adminlink('show','question'));
 			}
 			else
-			{ 
+			{
 				$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('delete') . ' ' . lang('Poll Question');
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
@@ -465,7 +465,7 @@
 
 			foreach($answers as $answer)
 			{
-				$option_text  = $answer['text']; 
+				$option_text  = $answer['text'];
 				$option_count = $answer['votes'];
 				$vote_id = $answer['vote_id'];
 
@@ -508,16 +508,16 @@
 				$this->bo->save_settings($_POST['settings']);
 				echo '<center>' . lang('Settings updated') . '</center>';
 			}
-			// load after a save, so this page displays correctly 
+			// load after a save, so this page displays correctly
 			$settings = $this->bo->load_settings();
-			
+
 			$var = array(
 				'form_action'	=> $this->adminlink('settings',''),
 				'lang_allowmultiple' => lang('Allow users to vote more then once'),
 				'check_allow_multiple_votes' => $GLOBALS['poll_settings']['allow_multiple_votes']?' checked':'',
 				'lang_selectpoll' => lang('Select current poll'),
-				'lang_submit' => lang('Submit'),	
-				'lang_cancel' => lang('Cancel'),	
+				'lang_submit' => lang('Submit'),
+				'lang_cancel' => lang('Cancel'),
 			);
 			$this->t->set_var($var);
 
@@ -534,7 +534,7 @@
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('View poll');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
-			
+
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
 			$this->t->set_block('admin','form','form');
 			$this->t->set_block('admin','row','row');
@@ -708,7 +708,7 @@
 			$this->t->set_var('server_url',$GLOBALS['phpgw_info']['server']['webserver_url']);
 			foreach($results as $result)
 			{
-				$option_text  = $result['text']; 
+				$option_text  = $result['text'];
 				$option_count = $result['votes'];
 
 				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
@@ -764,15 +764,15 @@
 		}
 
 		function show_ballot($poll_id = '')
-		{   
+		{
 			if(empty($poll_id))
-			{   
+			{
 				$poll_id = $this->bo->get_latest_poll();
 			}
 			$poll_id = (int)$poll_id;
-			
+
 			if(!$this->bo->user_can_vote($poll_id))
-			{   
+			{
 				return False;
 			}
 
@@ -785,7 +785,7 @@
 			$this->t->set_block('ballot','entry','entry');
 
 			$this->t->set_var('form_action',
-							$GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'polls.ui.vote'))); 
+							$GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'polls.ui.vote')));
 			$this->t->set_var('poll_id',$poll_id);
 			$this->t->set_var('poll_title',$poll_title);
 			$this->t->set_var('title_bgcolor', $GLOBALS['phpgw_info']['theme']['th_bg']);
@@ -795,7 +795,7 @@
 			foreach($results as $result)
 			{
 				$vote_id = $result['vote_id'];
-				$option_text  = $result['text']; 
+				$option_text  = $result['text'];
 				$option_count = $result['votes'];
 
 				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);

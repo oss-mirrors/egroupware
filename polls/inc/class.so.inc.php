@@ -26,14 +26,14 @@
 		}
 
         function load_settings()
-        {       
+        {
             $this->db->query("select * from phpgw_polls_settings");
             while($this->db->next_record())
             {
-                $GLOBALS['poll_settings'][$this->db->f('setting_name')] = $this->db->f('setting_value');  
+                $GLOBALS['poll_settings'][$this->db->f('setting_name')] = $this->db->f('setting_value');
             }
 			return $GLOBALS['poll_settings'];
-        }   
+        }
 
 		function save_settings($data)
 		{
@@ -96,7 +96,7 @@
 		{
 			$vote_id = (int)$this->get_value_("select max(vote_id)+1 from phpgw_polls_data "
 											. "where poll_id='$poll_id'",0);
-			$answer = addslashes($answer);	
+			$answer = addslashes($answer);
 			$result = $this->db->query('insert into phpgw_polls_data (poll_id,option_text,option_count,vote_id) '
 										. "values ('$poll_id','$answer',0,'$vote_id')",__LINE__,__FILE__);
 			if($result)
@@ -194,7 +194,7 @@
 				{
 					$info = array();
 					foreach ($this->db->Record as $key => $val)
-					{   
+					{
 						$info[$key] = $val;
 					}
 					$data[] = $info;

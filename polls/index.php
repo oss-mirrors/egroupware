@@ -16,10 +16,10 @@
 	$GLOBALS['phpgw_info'] = array();
 
 	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' 				=> 'polls',
-		'noheader'   				=> True,
-		'nonavbar'   				=> True,
-		'enable_nextmatchs_class' 	=> True
+		'currentapp'              => 'polls',
+		'noheader'                => True,
+		'nonavbar'                => True,
+		'enable_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
 
