@@ -1,10 +1,19 @@
-headlines	common	fr	Headlines
-headline sites	common	fr	Sites d'Headline
+are you sure you want to delete this news site ?	admin	fr	Etes-vous sûr de vouloir effacer ce site de News ?
+base url	admin	fr	URL de base
+grab new news sites	common	fr	Récupérer les nouveaux sites de News
+headlines	common	fr	Titres
+headline preferences	common	fr	Préférences de titres
+headline sites	common	fr	Sites de titres
+listings displayed	admin	fr	Listings affichés
+minutes between reloads	admin	fr	Minutes entre les rechargements
+monitor	common	fr	Moniteur
 news file	common	fr	Fichier de News
-news headlines	common	fr	News headlines
+news headlines	common	fr	Titres de News
 news type	common	fr	Type de News
-you must enter a news url	common	fr	Vous devez entrer une URL de news
+select headline news sites	common	fr	Choisissez les sites de titres de News
+that site has already been entered	admin	fr	Ce site a déjà été entré
 you must enter a base url	common	fr	Vous devez entrer une URL de base
 you must enter a display	common	fr	Vous devez entrer un affichage
-you must enter the number of listings display	common	fr	Vous devez entrer le nombre d'entit&eacute;s affich&eacute; dans chaque listing
-you must enter the number of minutes between reload	common	fr	Vous devez entrer un le nombre de minutes entre chaque recharge
+you must enter a news url	common	fr	Vous devez entrer une URL de News
+you must enter the number of listings display	common	fr	Vous devez entrer le nombre de listings affichés
+you must enter the number of minutes between reload	common	fr	Vous devez entrer le nombre de minutes entre chaque rechargement
