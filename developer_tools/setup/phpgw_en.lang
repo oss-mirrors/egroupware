@@ -1,5 +1,7 @@
+!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	en	!!! You have to [Save] every manual change in the above fields, before you can go to the next step !!!
 add	developer_tools	en	add
 add change	developer_tools	en	Add change
+add more	developer_tools	en	Add more
 add new phrase	developer_tools	en	Add new phrase
 add phrase	developer_tools	en	add phrase
 allows you to add a single phrase	developer_tools	en	Allows you to add a single phrase
@@ -31,7 +33,7 @@ message_id in english	developer_tools	en	message_id in English
 no file	developer_tools	en	no file
 ok	developer_tools	en	ok
 original	developer_tools	en	Original
-phrase in english	developer_tools	en	Phrase in English
+phrase in english (or empty if identical)	developer_tools	en	Phrase in English (or empty if identical)
 preferences	developer_tools	en	Preferences
 preferences have been updated	developer_tools	en	Preferences have been updated
 project	developer_tools	en	Project
@@ -56,6 +58,7 @@ target language	developer_tools	en	Target Language
 title	developer_tools	en	Title
 translate	developer_tools	en	Translate
 translation	developer_tools	en	Translation
+translation of phrase	developer_tools	en	Translation of phrase
 update	developer_tools	en	Update
 update database	developer_tools	en	Update Database
 updates the translations of both lang-files in your database, so you can verify your work imediatly	developer_tools	en	Updates the translations of both lang-files in your database, so you can verify your work imediatly
@@ -63,9 +66,8 @@ version	developer_tools	en	Version
 write	developer_tools	en	Write
 write the lang-file to the apps setup-dir	developer_tools	en	Write the lang-file to the apps setup-dir
 write to lang table	developer_tools	en	Write to lang table
+writing langfile for '%1' ...	developer_tools	en	Writing langfile for '%1' ...
 you must a version	developer_tools	en	You must a version
 you must enter a change	developer_tools	en	You must enter a change
 you must select a project	developer_tools	en	You must select a project
 you need to set your preferences for this app	developer_tools	en	You need to set your preferences for this app
-!!! you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	en	!!! You have to [Save] every manual change in the above fields, before you can go to the next step !!!
-

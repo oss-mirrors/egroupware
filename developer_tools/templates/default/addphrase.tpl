@@ -17,9 +17,14 @@
    <td>{translation_field}</td>
   </tr>
   <tr>
+   <td>{lang_target}</td>
+   <td>{target_field}</td>
+  </tr>
+  <tr>
    <td>&nbsp;</td>
    <td>
     <input type="submit" name="add" value="{lang_add}"> &nbsp;
+    <input type="submit" name="more" value="{lang_more}"> &nbsp;
     <input type="submit" name="cancel" value="{lang_cancel}">
    </td>
   </tr>

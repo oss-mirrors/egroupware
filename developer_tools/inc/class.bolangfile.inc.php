@@ -105,6 +105,8 @@
 		function addphrase($entry)
 		{
 			/* _debug_array($this->source_langarray);exit; */
+			if (empty($entry['content'])) $entry['content'] = $entry['message_id'];
+
 			$mess_id = stripslashes(strtolower(trim($entry['message_id'])));
 			$this->source_langarray[$mess_id] = array(
 				'message_id' => $mess_id,
@@ -113,6 +115,16 @@
 				'lang'       => 'en'
 			);
 			@ksort($this->source_langarray);
+
+			if (!empty($entry['target']))
+			{
+				$this->target_langarray[$mess_id] = array(
+					'message_id' => $mess_id,
+					'content'    => stripslashes($entry['target']),
+					'app_name'   => $entry['app_name'] == 'phpgwapi' ? 'common' : $entry['app_name'],
+					'lang'       => $this->tgt_lang
+				);
+			}
 		}
 
 		function movephrase($mess='')

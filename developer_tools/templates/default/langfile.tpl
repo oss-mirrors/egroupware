@@ -24,19 +24,17 @@
   <td>&nbsp;</td>
   <input name="app_name" type="hidden" value="{app_name}">
    <td width="10%"><input type="submit" name="submitit" value="{lang_submit}" {load_help}></td>
- </form>
    <td width="75%">
-    <form method="post" action="{cancel_link}">
-     <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
-    </form>
+    <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
    </td>
   </tr>
  </table>
+</form>
 <hr>
 <!-- END header -->
 
 <!-- BEGIN postheader -->
- <form method="post" action="{action_url}">
+<form method="post" action="{action_url}">
  <table width="90%" align="center">
   <tr bgcolor="{th_bg}">
    <td colspan="5" align="center">{lang_application}:&nbsp;{app_title}</td>
@@ -74,41 +72,22 @@
 <table width="90%" align="center">
   <tr><td colspan="6" align="center">
     <font color="red" size="-1">{helpmsg}</font>
-  </td></tr>  
+  </td></tr>
   <tr valign="top">
    <td nowrap>
      <h3>{lang_step} #2:</h3>
    </td>
    <td align="center">
-     <input name="app_name"  type="hidden" value="{app_name}">
-     <input name="sourcelang" type="hidden" value="{sourcelang}">
-     <input name="targetlang" type="hidden" value="{targetlang}">
      <input type="submit" name="update" value="{lang_update}" {update_help}>
+     <input type="checkbox" name="update_too" checked value="1" {update_help}>
    </td>
-  </form>
-  <form method="post" action="{missing_link}">
-     <input name="app_name"  type="hidden" value="{app_name}">
-     <input name="sourcelang" type="hidden" value="{sourcelang}">
-     <input name="targetlang" type="hidden" value="{targetlang}">
-   <td align="center"><input type="submit" name="addphrase" value="{lang_missingphrase}" {search_help}></td>
-  </form>
-  <form method="post" action="{phrase_link}">
-     <input name="app_name"  type="hidden" value="{app_name}">
-     <input name="sourcelang" type="hidden" value="{sourcelang}">
-     <input name="targetlang" type="hidden" value="{targetlang}">
+   <td align="center"><input type="submit" name="missingphrase" value="{lang_missingphrase}" {search_help}></td>
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}" {add_help}></td>
-  </form>
-  <form method="post" action="{revert_url}">
-     <input name="app_name"  type="hidden" value="{app_name}">
-   <td align="center"><input name="revert" type="submit" value="{lang_revert}" {revert_help}></td>
-  </form>
-  <form method="post" action="{cancel_link}">
+   <td align="center"><input type="submit" name="revert" value="{lang_revert}" {revert_help}></td>
    <td align="center"><input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}></td>
-  </form>
   </tr>
 </table>
 <hr>
-<form method="post" action="{action_url}">
  <table width="90%" align="center">
   <tr>
    <td rowspan="2" nowrap>
@@ -126,6 +105,7 @@
    <td align="center">
 <!-- BEGIN srcwrite -->
      <input type="submit" name="writesource" value="{lang_write}" {write_help}>
+     <input type="checkbox" name="writesource_too" value="1" {write_help}>
 <!-- END srcwrite -->
    </td>
   </tr>
@@ -142,28 +122,23 @@
    <td align="center">
 <!-- BEGIN tgtwrite -->
      <input type="submit" name="writetarget" value="{lang_write}" {write_help}>
+     <input type="checkbox" name="writetarget_too" value="1" {write_help}>
 <!-- END tgtwrite -->
    </td>
   </tr>
  </table>
-</form>
 <hr>
  <table width="90%" align="center"><tr>
    <td width="10%" nowrap>
      <h3>{lang_step} #4:</h3>
    </td>
    <td width="25%">
-    <form method="post" action="{loaddb_url}">
-     <input name="app_name"   type="hidden" value="{app_name}">
-     <input name="sourcelang" type="hidden" value="{sourcelang}">
-     <input name="targetlang" type="hidden" value="{targetlang}">
      <input type="submit" name="loaddb" value="{lang_loaddb}" {loaddb_help}>
-    </form>
+     <input type="checkbox" name="loaddb_too" value="1" {loaddb_help}>
    </td>
    <td>
-    <form method="post" action="{cancel_link}">
-     <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
-    </form>
+    <input type="submit" name="cancel" value="{lang_cancel}" {cancel_help}>
    </td>
- </tr></table>  
+ </tr></table>
+</form>
 <!-- END footer -->

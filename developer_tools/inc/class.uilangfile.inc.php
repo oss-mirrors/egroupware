@@ -18,8 +18,6 @@
 			'index'     => True,
 			'edit'      => True,
 			'create'    => True,
-			'save'      => True,
-			'load'      => True,
 			'addphrase' => True,
 			'missingphrase'=> True,
 			'missingphrase2'=> True,
@@ -40,38 +38,17 @@
 			//$GLOBALS['phpgw']->translation->add_app('transy');
 		}
 
-		function load()
-		{
-			$app_name   = $_POST['app_name'];
-			$sourcelang = $_POST['sourcelang'];
-			$targetlang = $_POST['targetlang'];
-
-			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
-
-			echo '<br>' . lang('Loading source langfile') . ': ' . $sourcelang . '... ';
-			if ($sourcelang != $targetlang)
-			{
-				echo '<br>' . lang('Loading target langfile') . ': ' . $targetlang . '... ';
-			}
-			$langs[$sourcelang] = $sourcelang;
-			$langs[$targetlang] = $targetlang;
-			echo $this->bo->loaddb($app_name,$langs);
-			echo '<br><form method="post" action="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . $app_name
-				. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang) . '"><input type="submit" name="Ok" value="' . lang('Ok') . '"></from>';
-		}
-
 		function addphrase()
 		{
-			$app_name   = $_POST['app_name'];
-			$sourcelang = $_POST['sourcelang'];
-			$targetlang = $_POST['targetlang'];
+			$app_name   = get_var('app_name',array('POST','GET'));
+			$sourcelang = get_var('sourcelang',array('POST','GET'));
+			$targetlang = get_var('targetlang',array('POST','GET'));
 			$entry      = $_POST['entry'];
 
 			$this->bo->read_sessiondata();
-			if($_POST['add'] || $_POST['cancel'])
+			if($_POST['add'] || $_POST['cancel'] || $_POST['more'])
 			{
-				if($_POST['add'])
+				if($_POST['add'] || $_POST['more'])
 				{
 					$this->bo->addphrase($entry);
 					if ($sourcelang == $targetlang)
@@ -80,22 +57,26 @@
 					}
 					$this->bo->save_sessiondata();
 				}
-				$GLOBALS['phpgw']->redirect_link('/index.php',array(
-					'menuaction' => 'developer_tools.uilangfile.edit',
-					'app_name'   => $app_name,
-					'sourcelang' => $sourcelang,
-					'targetlang' => $targetlang
-				));
+				if (!$_POST['more'])
+				{
+					$GLOBALS['phpgw']->redirect_link('/index.php',array(
+						'menuaction' => 'developer_tools.uilangfile.edit',
+						'app_name'   => $app_name,
+						'sourcelang' => $sourcelang,
+						'targetlang' => $targetlang
+					));
+				}
 			}
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps'][$GLOBALS['phpgw_info']['flags']['currentapp']]['title'].
 				' - '.lang('Add new phrase');
-				
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->template->set_file(array('form' => 'addphrase.tpl'));
 			$this->template->set_var('message_id_field','<input size ="40" name="entry[message_id]">');
 			$this->template->set_var('translation_field','<input size ="40" name="entry[content]">');
+			$this->template->set_var('target_field','<input size ="40" name="entry[target]">');
 			$this->template->set_var('app_name','<input type="hidden" name="entry[app_name]" value="'.$app_name.'">');
 
 			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
@@ -104,8 +85,10 @@
 			$this->template->set_var('app_name',$app_name);
 
 			$this->template->set_var('lang_message_id',lang('message_id in English'));
-			$this->template->set_var('lang_translation',lang('Phrase in English'));
+			$this->template->set_var('lang_translation',lang('Phrase in English (or empty if identical)'));
+			$this->template->set_var('lang_target',lang('Translation of phrase'));
 			$this->template->set_var('lang_add',lang('Add'));
+			$this->template->set_var('lang_more',lang('Add more'));
 			$this->template->set_var('lang_cancel',lang('Cancel'));
 
 			$this->template->pfp('phpgw_body','form');
@@ -233,47 +216,38 @@
 
 		function edit()
 		{
-			$app_name    = $_POST['app_name'] ? $_POST['app_name'] : $_GET['app_name'];
-			$newlang     = $_POST['newlang'];
-			$sourcelang  = $_POST['sourcelang'] ? $_POST['sourcelang'] : $_GET['sourcelang'];
-			$targetlang  = $_POST['targetlang'] ? $_POST['targetlang'] : $_GET['targetlang'];
-			$dlsource    = $_POST['dlsource'];
-			$writesource = $_POST['writesource'];
-			$dltarget    = $_POST['dltarget'];
-			$writetarget = $_POST['writetarget'];
-			$add_phrase  = $_POST['add_phrase'];
-			$update      = $_POST['update'];
-			$revert      = $_POST['revert'];
-			$entry       = $_POST['entry'];
-			$submit      = $_POST['submit'];
-
-			if($add_phrase)
+			if ($_POST['cancel'])
 			{
-				$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase&app_name='.$app_name
-					. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang);
+				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=developer_tools.uilangfile.index');
 			}
-			elseif ($revert)
+
+			$app_name   = get_var('app_name',array('POST','GET'));
+			$sourcelang = get_var('sourcelang',array('POST','GET'));
+			$targetlang = get_var('targetlang',array('POST','GET'));
+			$entry       = $_POST['entry'];
+
+			if($_POST['addphrase'] || $_POST['missingphrase'])
+			{
+				$GLOBALS['phpgw']->redirect_link('/index.php',array(
+					'menuaction' => 'developer_tools.uilangfile.'.($_POST['addphrase']?'addphrase':'missingphrase'),
+					'app_name'   => $app_name,
+					'sourcelang' => $sourcelang,
+					'targetlang' => $targetlang
+				));
+			}
+			if ($_POST['revert'])
 			{
 				$this->bo->clear_sessiondata();
 			}
 			$this->bo->read_sessiondata();
 
-			if($dlsource)
+			if($_POST['dlsource'])
 			{
 				$this->download('source',$sourcelang);
 			}
-			if($dltarget)
+			if($_POST['dltarget'])
 			{
 				$this->download('target',$targetlang);
-			}
-
-			if($writesource)
-			{
-				$this->save('source',$sourcelang);
-			}
-			if($writetarget)
-			{
-				$this->save('target',$targetlang);
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
@@ -287,9 +261,6 @@
 			$this->template->set_block('langfile','footer','footer');
 
 			$this->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
-			$this->template->set_var('revert_url',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit'));
-			$this->template->set_var('cancel_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.index'));
-			$this->template->set_var('loaddb_url',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.load'));
 			$this->template->set_var('lang_remove',lang('Remove'));
 			$this->template->set_var('lang_loaddb',lang('Update Database'));
 			$this->template->set_var('lang_application',lang('Application'));
@@ -383,7 +354,7 @@
 			}
 			$this->template->set_var('userapps',$userapps);
 
-			if ($update)
+			if ($_POST['update'] || $_POST['update_too'])
 			{
 				$transapp     = $_POST['transapp'];
 				$translations = $_POST['translations'];
@@ -437,6 +408,27 @@
 				}
 				unset($deleteme);
 			}
+			if($_POST['writesource'] || $_POST['writesource_too'])
+			{
+				echo '<br>'.lang("Writing langfile for '%1' ...",$sourcelang);
+				$this->bo->write_file('source',$app_name,$sourcelang);
+			}
+			if($_POST['writetarget'] || $_POST['writetarget_too'])
+			{
+				echo '<br>'.lang("Writing langfile for '%1' ...",$targetlang);
+				$this->bo->write_file('target',$app_name,$targetlang);
+			}
+			if ($_POST['loaddb'] || $_POST['loaddb_too'])
+			{
+				echo '<br>' . lang('Loading source langfile') . ': ' . $sourcelang . '... ';
+				if ($sourcelang != $targetlang)
+				{
+					echo '<br>' . lang('Loading target langfile') . ': ' . $targetlang . '... ';
+				}
+				$langs[$sourcelang] = $sourcelang;
+				$langs[$targetlang] = $targetlang;
+				echo $this->bo->loaddb($app_name,$langs);
+			}
 
 			if($sourcelang && $targetlang)
 			{
@@ -449,8 +441,6 @@
 				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 				$this->template->set_var('sourcelang',$sourcelang);
 				$this->template->set_var('targetlang',$targetlang);
-				$this->template->set_var('missing_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.missingphrase'));
-				$this->template->set_var('phrase_link',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.addphrase'));
 				$this->template->pfp('out','postheader');
 
 				$langarray = $this->bo->add_app($app_name,$sourcelang);
@@ -509,21 +499,6 @@
 		function recode_id($id)
 		{
 			return str_replace(array('%5B','%5D'),array('[',']'),$id);	// &amp; + &quot; are recode by php
-		}
-
-		function save($which,$userlang)
-		{
-			$app_name = $_POST['app_name'];
-			$sourcelang = $_POST['sourcelang'];
-			$targetlang = $_POST['targetlang'];
-
-			$this->bo->write_file($which,$app_name,$userlang);
-			$GLOBALS['phpgw']->redirect_link('/index.php',array(
-				'menuaction' => 'developer_tools.uilangfile.edit',
-				'app_name'   => $app_name,
-				'sourcelang' => $sourcelang,
-				'targetlang' => $targetlang
-			));
 		}
 
 		function download($which,$userlang)

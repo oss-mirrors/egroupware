@@ -98,12 +98,20 @@
 					$app = 'common';
 					break;
 			}
+			$GLOBALS['file'] = array();
 			if (!function_exists('display_sidebox'))
 			{
 				function display_sidebox($appname,$menu_title,$file)	// hook_sidebox_menu
 				{
 					unset($file['_NewLine_']);
-					$GLOBALS['file'] += $file;
+					if (is_array($GLOBALS['file']))
+					{
+						$GLOBALS['file'] = $file;
+					}
+					else
+					{
+						$GLOBALS['file'] += $file;
+					}
 				}
 				function display_section($appname,$file,$file2='')		// hook_preferences, hook_admin
 				{
@@ -111,13 +119,19 @@
 					{
 						$file = $file2;
 					}
-					$GLOBALS['file'] += $file;
+					if (is_array($GLOBALS['file']))
+					{
+						$GLOBALS['file'] = $file;
+					}
+					else
+					{
+						$GLOBALS['file'] += $file;
+					}
 				}
 			}
-			$GLOBALS['file'] = array();
 			unset($GLOBALS['acl_manager']);
 			include($fname);
-			
+
 			if (isset($GLOBALS['acl_manager']))	// hook_acl_manager
 			{
 				foreach($GLOBALS['acl_manager'] as $app => $data)
