@@ -187,8 +187,8 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function get_folder_status_info($force_refresh=False)
 	{
-		$debug_folder_status_info = True;
-		//$debug_folder_status_info = False;
+		//$debug_folder_status_info = True;
+		$debug_folder_status_info = False;
 
 		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: ENTERING<br>'; }
 
