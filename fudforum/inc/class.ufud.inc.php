@@ -32,6 +32,7 @@
 		{
 			$GLOBALS['phpgw']->db->query("SELECT id FROM phpgw_fud_themes WHERE (theme_opt & 2) > 0 LIMIT 1");
 			$theme = $GLOBALS['phpgw']->db->row(true);
+			$theme = $theme['id'] ? (int) $theme['id'] : 1;
 			$email = addslashes($this->__get_email($row['account_id']));
 			$name = addslashes($row['account_firstname'] . ' ' . $row['account_lastname']);
 			$egw_id = $row['account_id'];
@@ -41,7 +42,7 @@
 			if ($row['account_status'] != 'A') {
 				$user_opts |= 2097152;
 			}
-			$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_fud_users (last_visit, join_date, theme, alias, login, email, passwd, name, users_opt, egw_id) VALUES(".time().", ".time().", {$theme['id']}, '{$alias}', '{$login}', '{$email}', '{$row['account_pwd']}', '{$name}', {$users_opt}, {$egw_id})");
+			$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_fud_users (last_visit, join_date, theme, alias, login, email, passwd, name, users_opt, egw_id) VALUES(".time().", ".time().", {$theme}, '{$alias}', '{$login}', '{$email}', '{$row['account_pwd']}', '{$name}', {$users_opt}, {$egw_id})");
 		}
 
 		/* array(

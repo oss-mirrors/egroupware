@@ -186,6 +186,14 @@ if (!function_exists('file_get_contents')) {
 	$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_fud_themes(name, theme, lang, locale, theme_opt, pspell_lang) VALUES('default', 'default', '{$lang}', '{$locale}', 3, '{$pspell_lang}')");
 	$theme = $GLOBALS['phpgw']->db->get_last_insert_id('phpgw_fud_themes', 'id');
 
+	/* this is a little tricky, basically it makes sure that any users created before the forum
+	 * was activated with the default theme of 1, have the correct theme, in case the primary theme
+	 * id != 1
+	 */
+	if ($theme != 1) {
+		$GLOBALS['phpgw']->db->query("UPDATE phpgw_fud_users SET theme={$theme}");
+	}
+
 	/* compile default theme */
 	define('__dbtype__', $GLOBALS['phpgw']->db->type);
 	$DBHOST_TBL_PREFIX	= "phpgw_fud_";
