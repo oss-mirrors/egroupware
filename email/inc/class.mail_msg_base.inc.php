@@ -359,11 +359,13 @@
 			// if not supplied anywhere, then INBOX is the assumed default value for "folder"
 			
 			// *update* "folder" obtains it's value from (1) args_array, (2) fldball, (3) msgball, (4) default "INBOX"
-			'folder'
+			'folder',
 			
 			// which email account is the object of this operation
 			// *update* now in fldball
 			//'acctnum',
+			// all preference handling of extra accounts passes this as the account number "ex" = "extra"
+			'ex_acctnum'
 			);
 		
 		$this->known_internal_args = array(
@@ -629,10 +631,8 @@
 			// ---- what accounts have some data defined
 			// array_extra_accounts[X]['acctnum'] : integer
 			// array_extra_accounts[X]['status'] string = "enabled" | "disabled" | "empty"
-			// NOTE: WHY does this cause this error *even* WHEN IT IS AN ARRAY?:
-			//	Warning: Variable passed to each() is not an array or object in /phpgroupware/email/inc/class.mail_msg_base.inc.php on line 661
 			//while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
-			while(list($key,$value) = @each($tmp_prefs['email']['ex_accounts']))
+			while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
 			{
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: for each $tmp_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value: ['.serialize($value).']<br>';}
 				// if we are here at all then this array item must have some data defined
@@ -670,14 +670,14 @@
 					// PROCESS EXTRA ACCOUNT PREFS
 					// run thru the create prefs function requesting this particular acctnum
 					// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
-					$tmp_prefs = array();
+					$sub_tmp_prefs = array();
 					// we "fool" create_email_preferences into processing extra account info as if it were top level data
 					// by specifing the secong function arg as the integer of this particular enabled account
 					$this_ex_acctnum = $this->extra_accounts[$next_pos]['acctnum'];
 					if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call create_email_preferences("", $this_ex_acctnum) where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'; }
-					$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
+					$sub_tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
 					// now put these processed prefs in the correct location  in our prefs array
-					$this->set_pref_array($tmp_prefs['email'], $this_ex_acctnum);
+					$this->set_pref_array($sub_tmp_prefs['email'], $this_ex_acctnum);
 				}
 			}
 			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: $this->extra_accounts dump:<pre>'; print_r($this->extra_accounts); echo '</pre>';}

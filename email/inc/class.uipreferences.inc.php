@@ -17,7 +17,8 @@
 	{
 		var $public_functions = array(
 			'preferences' => True,
-			'ex_accounts' => True
+			'ex_accounts_edit' => True,
+			'ex_accounts_list' => True
 		);
 
 		var $bo;
@@ -140,7 +141,8 @@
 				{
 					// modify the items id in the html form so it contains info about thich acctnum it applies to
 					//$html_pref_id = '1['.$this_item['id'].']';
-					$html_pref_id = '1['.$this_item['id'].']';
+					//$html_pref_id = '1['.$this_item['id'].']';
+					$html_pref_id = $this->bo->acctnum.'['.$this_item['id'].']';
 					$GLOBALS['phpgw']->template->set_var('pref_id', $html_pref_id);
 				}
 				
@@ -352,17 +354,18 @@
 		}
 		
 		/*!
-		@function ex_accounts
+		@function ex_accounts_edit
 		@abstract call this function to display the typical UI html page Extra Email Accounts Preferences
 		@author	Angles, skeeter
 		@access	Public
 		*/
-		function ex_accounts()
+		function ex_accounts_edit()
 		{
 			// this tells "create_prefs_block" that we are dealing with the extra email accounts
 			$this->bo->account_group = 'extra_accounts';
 			// FIXME: need a real way to determine this
-			$this->bo->acctnum = 1;
+			$acctnum = $this->bo->obtain_ex_acctnum();
+			$this->bo->acctnum = $acctnum;
 			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -384,25 +387,32 @@
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_combobox','V_tr_combobox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_tr_checkbox','V_tr_checkbox');
 			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_submit_btn_only','V_submit_btn_only');
-			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_submit_and_delete_btns','V_submit_and_delete_btns');
+			$GLOBALS['phpgw']->template->set_block('T_pref_blocks','B_submit_and_cancel_btns','V_submit_and_cancel_btns');
 			
 			$var = Array(
 				'pref_errors'		=> '',
-				'page_title'		=> lang('E-Mail preferences'),
+				'page_title'		=> lang('E-Mail'.' : '.lang('Extra Accounts')),
 				'form_action'		=> $GLOBALS['phpgw']->link('/index.php',
 					Array(
-						'menuaction'	=> 'email.bopreferences.ex_accounts'
+						'menuaction'	=> 'email.bopreferences.ex_accounts_edit'
 					)
 				),
 				'th_bg'			=> $this->theme['th_bg'],
 				'left_col_width'	=> '50%',
 				'right_col_width'	=> '50%',
 				'checked_flag'		=> 'True',
+				'ex_acctnum_varname'	=> 'ex_acctnum',
+				'ex_acctnum_value'	=> $this->bo->acctnum,
 				// this says we are submitting extra acount pref data
 				'btn_submit_name'	=> $this->bo->submit_token_extra_accounts,
 				'btn_submit_value'	=> lang('submit'),
-				'btn_delete_name'	=> $this->bo->submit_token_delete_ex_account,
-				'btn_delete_value'	=> lang('delete account')
+				'btn_cancel_name'	=> 'cancel',
+				'btn_cancel_value'	=> lang('cancel'),
+				'btn_cancel_url'	=> $GLOBALS['phpgw']->link('/index.php',
+					Array(
+						'menuaction'	=> 'email.uipreferences.ex_accounts_list'
+					)
+				)
 			);
 			$GLOBALS['phpgw']->template->set_var($var);
 			
@@ -441,14 +451,11 @@
 			// generate Std Prefs HTML Block
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->std_prefs);
 			
-			// ---  Custom Prefs are MANDATORY for extra accounts ---
-			/*
-			// instructions: leave anything blank gives the default value
-			$GLOBALS['phpgw']->template->set_var('section_title', lang('For these items, fill only what is different from your default E-Mail preferences'));
+			// ---  Custom Prefs  ---
+			$GLOBALS['phpgw']->template->set_var('section_title', lang('Custom').' '.lang('E-Mail preferences'));
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
-			*/
 			// generate Custom Prefs HTML Block
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->cust_prefs);
 			
@@ -463,13 +470,92 @@
 			$GLOBALS['phpgw']->template->set_var('prefs_ui_rows', $prefs_ui_rows);
 			
 			// Submit Button with Delete Account Data button
-			$GLOBALS['phpgw']->template->parse('V_submit_and_delete_btns','B_submit_and_delete_btns');
-			$submit_btn_row = $GLOBALS['phpgw']->template->get_var('V_submit_and_delete_btns');	
+			$GLOBALS['phpgw']->template->parse('V_submit_and_cancel_btns','B_submit_and_cancel_btns');
+			$submit_btn_row = $GLOBALS['phpgw']->template->get_var('V_submit_and_cancel_btns');	
 			$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
 			
 			// output the template
 			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ui_out');
 		}
 		
+		
+		function ex_accounts_list()
+		{
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			
+			$GLOBALS['phpgw']->template->set_file(
+				Array(
+					'T_prefs_ex_accounts'	=> 'class_prefs_ex_accounts.tpl'
+				)
+			);
+			$GLOBALS['phpgw']->template->set_block('T_prefs_ex_accounts','B_accts_list','V_accts_list');
+			
+			$var = Array(
+				'pref_errors'		=> '',
+				'page_title'		=> lang('E-Mail Extra Accounts').' '.lang('List'),
+				'font'				=> $this->theme['font'],
+				'tr_titles_color'	=> $this->theme['th_bg']
+			);
+			$GLOBALS['phpgw']->template->set_var($var);
+			
+			$acctount_list = array();
+			$acctount_list = $this->bo->ex_accounts_list();
+			
+			// here's what we get back
+			//$acctount_list[$X]['acctnum']
+			//$acctount_list[$X]['status']
+			//$acctount_list[$X]['display_string']
+			//$acctount_list[$X]['edit_url']
+			//$acctount_list[$X]['edit_href']
+			//$acctount_list[$X]['delete_url']
+			//$acctount_list[$X]['delete_href']
+			
+			if ($this->debug) { echo 'email: uipreferences.ex_accounts_list: $acctount_list dump<pre>'; print_r($acctount_list); echo '</pre>'; }
+			
+			$tr_color = $this->theme['row_off'];
+			$loops = count($acctount_list);
+			if ($loops == 0)
+			{
+				$nothing = '&nbsp;';
+				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+				$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+				$GLOBALS['phpgw']->template->set_var('indentity',$nothing);
+				$GLOBALS['phpgw']->template->set_var('status',$nothing);
+				$GLOBALS['phpgw']->template->set_var('edit_href',$nothing);
+				$GLOBALS['phpgw']->template->set_var('delete_href',$nothing);
+				$GLOBALS['phpgw']->template->parse('V_accts_list','B_accts_list');
+			}
+			else
+			{
+				for($i=0; $i < $loops; $i++)
+				{
+					$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+					$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+					$GLOBALS['phpgw']->template->set_var('indentity',$acctount_list[$i]['display_string']);
+					$GLOBALS['phpgw']->template->set_var('status',$acctount_list[$i]['status']);
+					$GLOBALS['phpgw']->template->set_var('edit_href',$acctount_list[$i]['edit_href']);
+					$GLOBALS['phpgw']->template->set_var('delete_href',$acctount_list[$i]['delete_href']);
+					$GLOBALS['phpgw']->template->parse('V_accts_list','B_accts_list', True);
+				}
+			}
+			$add_new_acct_url = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.uipreferences.ex_accounts_edit'
+									.'&ex_acctnum='.$this->bo->add_new_account_token);
+			$add_new_acct_href = '<a href="'.$add_new_acct_url.'">'.lang('New Account').'</a>';
+			$GLOBALS['phpgw']->template->set_var('add_new_acct_href',$add_new_acct_href);
+			
+			$done_url = $GLOBALS['phpgw']->link(
+									'/preferences/index.php');
+			$done_href = '<a href="'.$done_url.'">'.lang('Done').'</a>';
+			$GLOBALS['phpgw']->template->set_var('done_href',$done_href);
+			
+			// output the template
+			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ex_accounts');
+		}
 	}
 ?>

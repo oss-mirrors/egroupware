@@ -98,16 +98,17 @@
 
 &nbsp; <!-- == block sep == --> &nbsp; 
 
-<!-- BEGIN B_submit_and_delete_btns -->
+<!-- BEGIN B_submit_and_cancel_btns -->
 <tr>
 	<td align="center">
+		<input type="hidden" name="{ex_acctnum_varname}" value="{ex_acctnum_value}">
 		<input type="submit" name="{btn_submit_name}" value="{btn_submit_value}">
 	</td>
 	<td align="center">
-		<input type="submit" name="{btn_delete_name}" value="{btn_delete_value}">
+		<input type="button" name="{btn_cancel_name}" value="{btn_cancel_value}" onClick="parent.location='{btn_cancel_url}'">
 	</td>
 </tr>
-<!-- END B_submit_and_delete_btns -->
+<!-- END B_submit_and_cancel_btns -->
 
 &nbsp; <!-- == block sep == --> &nbsp; 
 

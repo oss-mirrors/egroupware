@@ -413,10 +413,13 @@
 			$this->xi['filters_href'] = '<a href="'.$this->xi['filters_link'].'">'.$this->xi['filters_txt'].'</a>';
 			// FIXME
 			// multiple account maintenance - not yet implemented
+			//$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
+			//					'/index.php',
+			//					 'menuaction=email.uipreferences.ex_accounts'
+			//					.'&acctnum=1');
 			$this->xi['accounts_link'] = $GLOBALS['phpgw']->link(
 								'/index.php',
-								 'menuaction=email.uipreferences.ex_accounts'
-								.'&acctnum=1');
+								 'menuaction=email.uipreferences.ex_accounts_list');
 			$this->xi['accounts_href'] = '<a href="'.$this->xi['accounts_link'].'">'.$this->xi['accounts_txt'].'</a>';
 			
 			// by now we have an acctnum!
