@@ -1,38 +1,34 @@
 <?php
+    /**************************************************************************\
+    * phpGroupWare - Daily Comics Global Options                               *
+    * http://www.phpgroupware.org                                              *
+    * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
+    * --------------------------------------------                             *
+    *  This program is free software; you can redistribute it and/or modify it *
+    *  under the terms of the GNU General Public License as published by the   *
+    *  Free Software Foundation; either version 2 of the License, or (at your  *
+    *  option) any later version.                                              *
+    \**************************************************************************/
 
-/*************************************************************************\
-* Daily Comics (phpGroupWare application)                                 *
-* http://www.phpgroupware.org                                             *
-* This file is written by: Sam Wynn: <neotexan@wynnsite.com>              *
-*                          Rick Bakker <r.bakker@linvision.com            *
-* --------------------------------------------                            *
-* This program is free software; you can redistribute it and/or modify it *
-* under the terms of the GNU General Public License as published by the   *
-* Free Software Foundation; either version 2 of the License, or (at your  *
-* option) any later version.                                              *
-\*************************************************************************/
-
-/* $Id$ */
-
+    /* $Id$ */
 {
+    $phpgw_info["flags"] = array("currentapp" => "comic",
+                                 "admin_header" => TRUE);
 
-$phpgw_info["flags"] = array("currentapp" => "comic",
-                             "admin_header" => TRUE);
+    include("../header.inc.php");
 
-include("../header.inc.php");
-
-$title             = lang("Daily Comics Global Options");
-$imgsrc_label      = lang("Image Source");
-$remote_label      = lang("Remote (Parse/Snarf) Enabled");
-$censor_label      = lang("Censorship Level");
-$filesize_label    = lang("Max File size");
-$override_label    = lang("Censorship Override Enabled");
-$action_label      = lang("Submit");
-$reset_label       = lang("Reset");
-$done_label        = lang("Done");
-$actionurl         = $phpgw->link('/comic/admin_options.php');
-$doneurl           = $phpgw->link('/admin/index.php');
-$message           = "";
+    $title             = lang("Daily Comics Global Options");
+    $imgsrc_label      = lang("Image Source");
+    $remote_label      = lang("Remote (Parse/Snarf) Enabled");
+    $censor_label      = lang("Censorship Level");
+    $filesize_label    = lang("Max File size");
+    $override_label    = lang("Censorship Override Enabled");
+    $action_label      = lang("Submit");
+    $reset_label       = lang("Reset");
+    $done_label        = lang("Done");
+    $actionurl         = $phpgw->link('/comic/admin_options.php');
+    $doneurl           = $phpgw->link('/admin/index.php');
+    $message           = "";
     
     if ($submit)
     {
