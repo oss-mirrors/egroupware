@@ -58,7 +58,7 @@
      rmdir($phpgw_info["server"]["temp_dir"] . $sep . $phpgw_info["user"]["sessionid"]);
   }		// if dir
 
-  $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
+  $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc, $from);
   if ($rc) {
 //    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
     header("Location: " . $phpgw->link("index.php","folder=" . urlencode($return)) );

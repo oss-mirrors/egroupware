@@ -17,7 +17,6 @@
 
   $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True);
   include("../header.inc.php");
-
   if ($msgnum) {
     $msg = $phpgw->msg->header($mailbox, $msgnum);
     $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
@@ -129,6 +128,18 @@
        }
 
 ?>"></td></tr>
+
+  <?php if ($phpgw_info["user"]["preferences"]["common"]["email_seperate_from"]){ ?>
+   <tr><td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>"><b>&nbsp;<?php echo lang("from"); ?>:</b></td>
+     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
+       <input type=text name=from size=80 value="<?php echo $phpgw_info["user"]["fullname"]." <".$phpgw_info["user"]["preferences"]["email"]["address"].">"?>">
+     </td>
+   </tr>
+  <?php 
+    }else{
+      echo "<input type=hidden name=from size=80 value=\"".$phpgw_info["user"]["fullname"]." <".$phpgw_info["user"]["preferences"]["email"]["address"]."\">";
+    }  
+  ?>
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"] ?>">
