@@ -1009,6 +1009,11 @@
 
 		function openConnection($_folderName='', $_options=0, $_adminConnection=false)
 		{
+			if(!function_exists('imap_open'))
+			{
+				return lang('This PHP has no IMAP support compiled in!!');
+			}
+			
 			if(!$this->mailPreferences['emailConfigValid'])
 			{
 				return lang('no valid emailprofile selected!!');
