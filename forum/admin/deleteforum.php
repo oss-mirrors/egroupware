@@ -27,7 +27,7 @@
 	{
 		$phpgw->template->set_var(array(
 		'ARE_U_SURE'	=> lang("Are you sure you want to delete this forum?"),
-		'ALL_DEL'	=> lang("All user posts	and topics will	be lost!"),
+		'ALL_DEL'	=> lang("All user posts and topics will be lost!"),
 		'NO'		=> lang("No"),
 		'YES'		=> lang("Yes"),
 		'NO_LINK'	=> $phpgw->link("/forum/admin/index.php"),

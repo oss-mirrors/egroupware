@@ -32,7 +32,7 @@
 	LANG_TOPIC		=> lang("Topic"),
 	LANG_AUTHOR		=> lang("Author"),
 	LANG_REPLIES		=> lang("Replies"),
-	LANG_LATREP		=> lang("Latest	Reply"),
+	LANG_LATREP		=> lang("Latest Reply"),
 	LANG_MAIN		=> lang("Forums"),
 	LANG_NEWTOPIC		=> lang("New Topic"),
 	LANG_CATEGORY		=> $category,

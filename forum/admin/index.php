@@ -35,8 +35,8 @@
 	'MAIN_LINK'	=> $phpgw->link("/forum/index.php"),
 	'LANG_CAT'	=> lang("New Category"),
 	'LANG_FOR'	=> lang("New Forum"),
-	'LANG_MAIN'	=> lang("Return	to Forums"),
-	'LANG_CURRENT_SUBFORUM'	=> lang("Current Categories and	Sub Forums"),
+	'LANG_MAIN'	=> lang("Return to Forums"),
+	'LANG_CURRENT_SUBFORUM'	=> lang("Current Categories and Sub Forums"),
 	'LANG_CATEGORY'	=> lang("Category"),
 	'LANG_SUBCAT'	=> lang("Sub Category"),
 	'LANG_ACTION'	=> lang("Action")
