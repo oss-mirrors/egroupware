@@ -47,10 +47,17 @@ function mail_ticket($ticket_id) {
   $phpgw->db->next_record();
   $group_id = $phpgw->db->f("group_id");
   $phpgw->db->query("SELECT account_lid FROM accounts WHERE account_groups LIKE '%,".$group_id.":%'");
-  $i = 0;
-  while($phpgw->db->next_record())
-    $toarray[$i++] = $phpgw->db->f("account_lid")."@".$phpgw_info["server"]["mail_suffix"];
-  $to = implode($toarray,",");
+  $toarray = Array();
+  $i = -1;
+  while($phpgw->db->next_record()) {
+    $i++;
+    $toarray[$i] = $phpgw->db->f("account_lid")."@".$phpgw_info["server"]["mail_suffix"];
+  }
+  if($i) {
+    $to = implode($toarray,",");
+  } else {
+    $to = $toarray[0];
+  }
   
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if (!$rc) {

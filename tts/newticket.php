@@ -121,6 +121,9 @@ include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 		           . " t_timestamp_opened,t_timestamp_closed,t_subject) VALUES ('$lstCategory','$txtDetail',"
  		           . "'$optPriority','" . $phpgw_info["user"]["userid"] . "','$assignto','"
 		           . time() . "',0,'$subject');");
+     $phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
+     $phpgw->db->next_record();
+     mail_ticket($phpgw->db->f("t_id"));
 
      Header("Location: " . $phpgw->link("index.php"));
   }

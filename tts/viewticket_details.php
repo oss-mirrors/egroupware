@@ -12,7 +12,7 @@
   /* $Id$ */
 
   if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "enable_send_class" => True);
   }
 
   $phpgw_info["flags"]["currentapp"] = "tts";

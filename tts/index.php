@@ -11,6 +11,7 @@
 
   /* $Id$ */
 
+  $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
   $phpgw_info["flags"]["currentapp"] = "tts";
   include("../header.inc.php");
 ?>
