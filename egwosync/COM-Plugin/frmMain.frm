@@ -5,7 +5,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FrmMain
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   5925
-   OleObjectBlob   =   "frmMain.dsx":0000
+   OleObjectBlob   =   "FrmMain.dsx":0000
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "FrmMain"
@@ -23,15 +23,12 @@ Attribute VB_Exposed = False
 '# heisters[at]0x09.com
 '#################################################################################################
 
-Public Helper As New CFormHelper
-
 '***********************************************************************************************
 ' Applies and saves settings
 '***********************************************************************************************
 Private Sub cmdApply_Click()
-    Helper.SaveSettings
-    Helper.PutSettings
-    ThisOutlookSession.RefreshSettingStatus
+    SaveSettings
+    PutSettings
 End Sub
 
 Private Sub cmdCancel_Click()
@@ -46,9 +43,8 @@ Private Sub cmdGet_Click()
 End Sub
 
 Private Sub cmdOK_Click()
-    Helper.SaveSettings
-    Helper.PutSettings
-    ThisOutlookSession.RefreshSettingStatus
+    SaveSettings
+    PutSettings
     Me.Hide
 End Sub
 
@@ -63,9 +59,69 @@ End Sub
 ' Set things up for frmMain
 '***********************************************************************************************
 Private Sub UserForm_Initialize()
-    Set Helper.Parent = Me
     'load previous settings
-    Helper.LoadSettings
-    Helper.PutSettings
-    ThisOutlookSession.RefreshSettingStatus
+    LoadSettings
+    PutSettings
 End Sub
+
+'***********************************************************************************************
+' Saves all the settings from frmMain to the registry.
+'***********************************************************************************************
+Public Sub SaveSettings()
+    SaveSetting AppName:="eGWOSync", Section:="Settings", _
+        Key:="Hostname", Setting:=myParent.txtHostname
+    SaveSetting AppName:="eGWOSync", Section:="Settings", _
+        Key:="Port", Setting:=myParent.txtPort
+    SaveSetting AppName:="eGWOSync", Section:="Settings", _
+        Key:="URI", Setting:=myParent.txtURI
+    SaveSetting AppName:="eGWOSync", Section:="Settings", _
+        Key:="Username", Setting:=myParent.txtUsername
+    SaveSetting AppName:="eGWOSync", Section:="Settings", _
+        Key:="Password", Setting:=myParent.txtPassword
+End Sub
+
+'***********************************************************************************************
+' Loads the settings for frmMain from the registry if they've been set previously.
+'***********************************************************************************************
+Public Sub LoadSettings()
+    If GetSetting(AppName:="eGWOSync", Section:="Settings", Key:="Hostname") <> "" Then
+        txtHostname.Text = GetSetting(AppName:="eGWOSync", _
+            Section:="Settings", Key:="Hostname")
+        txtPort.Text = GetSetting(AppName:="eGWOSync", _
+            Section:="Settings", Key:="Port")
+        txtURI.Text = GetSetting(AppName:="eGWOSync", _
+            Section:="Settings", Key:="URI")
+        txtUsername.Text = GetSetting(AppName:="eGWOSync", _
+            Section:="Settings", Key:="Username")
+        txtPassword.Text = GetSetting(AppName:="eGWOSync", _
+            Section:="Settings", Key:="Password")
+    End If
+End Sub
+
+'***********************************************************************************************
+' Puts log in info into the global CeGW instance.
+'***********************************************************************************************
+Public Sub PutSettings()
+    Master.eGW.Hostname = txtHostname
+    Master.eGW.Port = txtPort
+    Master.eGW.URI = txtURI
+    Master.eGW.Username = txtUsername
+    Master.eGW.Password = txtPassword
+End Sub
+
+'***********************************************************************************************
+' Makes it easy to get selected items from a listBox. Returns a collection of strings
+'***********************************************************************************************
+Public Function GetSelectedListItems(myList As ListBox) As Collection
+    Dim i As Integer
+    Set GetSelectedListItems = New Collection
+    
+    For i = 0 To myList.ListCount - 1
+        If myList.Selected(i) Then
+            Debug.Print myList.List(i)
+            GetSelectedListItems.Add myList.List(i)
+        End If
+    Next i
+End Function
+
+

@@ -38,7 +38,7 @@ End Sub
 '***********************************************************************************************
 Private Sub contactItems_ItemAdd(ByVal Item As Object)
     'This will only work if the main egwosync window isn't open!
-    If Not FrmMain.Visible And ThisOutlookSession.eGWOSyncEnabled Then
+    If Not FrmMain.Visible And Master.Ready Then
         Dim egwContacts As New CeGWContacts
         Dim msgResponse As VbMsgBoxResult
         Dim xmlResponse As XMLRPCResponse
@@ -50,8 +50,8 @@ Private Sub contactItems_ItemAdd(ByVal Item As Object)
                             "Add Contact Confirmation")
         
         If msgResponse = vbOK Then
-            If ThisOutlookSession.eGW.Hostname = "" Then
-                ThisOutlookSession.Setup
+            If Master.eGW.Hostname = "" Then
+                Master.Setup
             End If
             Set xmlResponse = egwContacts.Create(Contact)
             If xmlResponse.Status = XMLRPC_PARAMSRETURNED Then
@@ -63,4 +63,3 @@ Private Sub contactItems_ItemAdd(ByVal Item As Object)
         End If
     End If
 End Sub
-

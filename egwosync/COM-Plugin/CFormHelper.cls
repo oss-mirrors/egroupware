@@ -69,14 +69,14 @@ Public Sub LoadSettings()
 End Sub
 
 '***********************************************************************************************
-' Puts login info into the global CeGW instance.
+' Puts log in info into the global CeGW instance.
 '***********************************************************************************************
 Public Sub PutSettings()
-    ThisOutlookSession.eGW.Hostname = myParent.txtHostname
-    ThisOutlookSession.eGW.Port = myParent.txtPort
-    ThisOutlookSession.eGW.URI = myParent.txtURI
-    ThisOutlookSession.eGW.Username = myParent.txtUsername
-    ThisOutlookSession.eGW.Password = myParent.txtPassword
+    Master.eGW.Hostname = myParent.txtHostname
+    Master.eGW.Port = myParent.txtPort
+    Master.eGW.URI = myParent.txtURI
+    Master.eGW.Username = myParent.txtUsername
+    Master.eGW.Password = myParent.txtPassword
 End Sub
 
 '***********************************************************************************************
@@ -85,7 +85,7 @@ End Sub
 Public Function GetSelectedListItems(myList As ListBox) As Variant
     Dim intListIndex    As Integer
     Dim tempArray()     As String
-
+    
     'Loop through all the listbox items
     For intListIndex = 0 To (myList.ListCount - 1) Step 1
         'If the current item is selected...
@@ -97,4 +97,3 @@ Public Function GetSelectedListItems(myList As ListBox) As Variant
     Next intListIndex
     GetSelectedListItems = tempArray()
 End Function
-

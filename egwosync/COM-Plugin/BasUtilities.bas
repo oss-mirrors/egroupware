@@ -15,7 +15,7 @@ Dim egwContacts As New CeGWContacts
 ' in listboxes.
 '***********************************************************************************************
 Public Sub GetContacts()
-    If ThisOutlookSession.eGWOSyncEnabled Then
+    If Master.Ready Then
         Dim xmlParms    As New XMLRPCStruct
         Dim xmlArray    As New XMLRPCArray
         Dim xmlResponse As New XMLRPCResponse
@@ -41,8 +41,8 @@ Public Sub GetContacts()
         '[ When I tried to grab all the contacts from the server at once I got an Overflow
         '[ XML Parse Error, so now I grab them 50 at a time.
         Do
-            'It's not sufficient to only add the parameters that need updating, they all need to be
-            '   re-added in a specific order
+            '[ It's not sufficient to only add the parameters that need updating, they all need to be
+            '[ re-added in a specific order
             xmlParms.AddInteger "start", INT_START
             xmlParms.AddInteger "limit", INT_LIMIT
             xmlArray.AddString "fn"
@@ -79,7 +79,7 @@ Public Sub GetContacts()
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
         oContacts.List fldContacts
     Else
-        ThisOutlookSession.Setup
+        Master.Setup
     End If
 End Sub
 
@@ -90,9 +90,9 @@ End Sub
 ' simple overwrite protection in each direction.
 '***********************************************************************************************
 Public Sub SynchronizeContacts()
-    If ThisOutlookSession.eGWOSyncEnabled Then
-        Dim arrSelLocal()       As String
-        Dim arrSelRemote()      As String
+    If Master.Ready Then
+        Dim colSelLocal         As Collection
+        Dim colSelRemote        As Collection
         Dim arrFullInformation() As XMLRPCResponse
         Dim strListItem         As Variant
         Dim ciContact           As ContactItem
@@ -102,24 +102,23 @@ Public Sub SynchronizeContacts()
         Dim xmlResponse         As New XMLRPCResponse
         Dim tempValue           As XMLRPCValue
         Dim oContacts           As New COutlookContacts
-                
+        
         Set gnspNamespace = GetNamespace("MAPI")
         Set fldContacts = gnspNamespace.GetDefaultFolder(olFolderContacts)
         
         'Get the full names of the selected contacts from each listbox
-        '   and put them in XMLRPC arrays
         With FrmMain
-           arrSelLocal = .Helper.GetSelectedListItems(.listLocal)
-           arrSelRemote = .Helper.GetSelectedListItems(.listRemote)
+            Set colSelLocal = .GetSelectedListItems(.listLocal)
+            Set colSelRemote = .GetSelectedListItems(.listRemote)
         End With
-       
+        
         '[ > Start synchronizing remote contacts
         'If there are remote contacts selected
-        If GetUpper(arrSelRemote) > 0 Then
+        If colSelRemote.Count > 0 Then
             'reset ciContact
             Set ciContact = Nothing
             'Load all the available information on each selected contact into an array
-            For Each strListItem In arrSelRemote
+            For Each strListItem In colSelRemote
                 'Dynamically resize arrFullInformation
                 ReDim Preserve arrFullInformation(GetUpper(arrFullInformation))
                 '[ Pass an XMLRPCValue that holds the fullname of the contact to get the full
@@ -150,13 +149,13 @@ Public Sub SynchronizeContacts()
         
         '[ > Start synchronizing local contacts
         'If there are local contacts selected...
-        If GetUpper(arrSelLocal) > 0 Then
+        If colSelLocal.Count > 0 Then
             'Be sure everything is reset
             Set ciContact = Nothing
             Set tempResponse = Nothing
             
             'Add the selected local contacts to the remote directory
-            For Each strListItem In arrSelLocal
+            For Each strListItem In colSelLocal
                 'Find the contact in the local directory by their fullname, which was in the listbox
                 Set ciContact = fldContacts.Items.Find("[FullName] = " & strListItem)
                 Set tempResponse = egwContacts.Create(ciContact)
@@ -183,14 +182,14 @@ Public Sub SynchronizeContacts()
         End If
         '[ < End synchronizing local contacts
     Else
-        ThisOutlookSession.Setup
+        Master.Setup
     End If
 End Sub
 
 '***********************************************************************************************
 ' Provides a simplified way of running commands on the eGW XMLRPC server. No command should call
-' SimpleExec unless it has first checked to see if ThisOutlookSession.eGWOSyncEnabled is true,
-' which means that egwosync has all the information it needs to log in to the server.
+' SimpleExec unless it has first checked to see if Master.Ready is true, which means that
+' egwosync has all the information it needs to log in to the server.
 '***********************************************************************************************
 Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XMLRPCResponse
     Dim linsUtility As New XMLRPCUtility
@@ -199,30 +198,31 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
     
     '[ grab the login information from the form GUI. eGW is defined in ThisOutlookSession
     '[ so it's always accessible to everyone.
-    bEnabled = ThisOutlookSession.eGWOSyncEnabled
+    bEnabled = Master.Ready
     
     If bEnabled Then
         'login and put the result in a variable for testing
-        bLogin = ThisOutlookSession.eGW.Login
+        bLogin = Master.eGW.Login
         
         'If we logged in successfully...
         If bLogin Then
-            ThisOutlookSession.eGW.Reset
-            ThisOutlookSession.eGW.Exec methodName, xmlParms
+            Master.eGW.Reset
+            Master.eGW.Exec methodName, xmlParms
             'Error handling bonanza
-            If ThisOutlookSession.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
+            If Master.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
                 Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Status
-                If ThisOutlookSession.eGW.Response.Status = 4 Then
-                    Debug.Print "XML Parse Error: " & eGW.Response.XMLParseError
+                If Master.eGW.Response.Status = 4 Then
+                    Debug.Print "XML Parse Error: " & Master.eGW.Response.XMLParseError
+                    'This line will show the full response string from the server in all its glory
                     'Debug.Print eGW.Response.XMLResponse
                 End If
-            ElseIf ThisOutlookSession.eGW.Response.Params.Count <> 1 Then
-                Debug.Print "Unexpected response from XML-RPC request " & eGW.Response.Params.Count & " return parameters, expecting 1"
+            ElseIf Master.eGW.Response.Params.Count <> 1 Then
+                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
             End If
             'return the response from the XMLRPC server
-            Set SimpleExec = ThisOutlookSession.eGW.Response
+            Set SimpleExec = Master.eGW.Response
             'it's always polite to close the door when you leave
-            ThisOutlookSession.eGW.Logout
+            Master.eGW.Logout
         'If login failed...
         Else
             Dim x As VbMsgBoxResult
@@ -238,7 +238,7 @@ Public Function SimpleExec(methodName As String, xmlParms As XMLRPCStruct) As XM
                     (Chr(10)) & "server access parameters. Click okay to setup, cancel to abort.", _
                     vbExclamation + vbOKCancel, "Cannot log in to eGW server")
         If y = vbOK Then
-            ThisOutlookSession.Setup
+            Master.Setup
         End If
     End If
 End Function

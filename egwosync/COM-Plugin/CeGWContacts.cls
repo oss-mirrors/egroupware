@@ -1,10 +1,6 @@
 VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
-  Persistable = 0  'NotPersistable
-  DataBindingBehavior = 0  'vbNone
-  DataSourceBehavior  = 0  'vbNone
-  MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "CeGWContacts"
 Attribute VB_GlobalNameSpace = False
@@ -61,7 +57,7 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
     If dblDuplicateID <> 0 Then
         Dim OMResponse As Integer
         Dim OM As New COverwriteManager
-        OMResponse = OM.Manage(xmlResponse.Params(1).ArrayValue(1).StructValue, ciContact)
+        OMResponse = OM.Manage(xmlResponse.params(1).ArrayValue(1).StructValue, ciContact)
         
         If OMResponse = FrmOverwrite.OVERWRITE Then
             'No need to do anything, dblDuplicateID holds the ID to overwrite
@@ -91,13 +87,13 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
         '[ > If the write was succesful, get and return the cursory information on the contact
         '[ The server returns a boolean if an entry was overwritten, or an integer if a new entry
         '[ was made.
-        If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Or _
-           xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN Then
+        If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Or _
+           xmlResponse.params(1).ValueType = XMLRPC_BOOLEAN Then
             Set xmlParms = New XMLRPCStruct
-            If xmlResponse.Params(1).ValueType = XMLRPC_INT_I4 Then
-                xmlParms.AddInteger "id", xmlResponse.Params(1).IntegerValue
-            ElseIf xmlResponse.Params(1).ValueType = XMLRPC_BOOLEAN And _
-                xmlResponse.Params(1).BooleanValue Then
+            If xmlResponse.params(1).ValueType = XMLRPC_INT_I4 Then
+                xmlParms.AddInteger "id", xmlResponse.params(1).IntegerValue
+            ElseIf xmlResponse.params(1).ValueType = XMLRPC_BOOLEAN And _
+                xmlResponse.params(1).BooleanValue Then
                     xmlParms.AddInteger "id", dblDuplicateID
             End If
             xmlArray.AddString "fn"

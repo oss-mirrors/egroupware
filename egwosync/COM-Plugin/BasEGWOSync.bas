@@ -14,5 +14,5 @@ Attribute VB_Name = "BasEGWOSync"
 '***********************************************************************************************
 Sub eGWSynchronize()
     'open the GUI
-    FrmMain.Show
+    frmMain.Show
 End Sub
