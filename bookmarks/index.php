@@ -12,6 +12,10 @@
   \**************************************************************************/
 
   /* $Id$ */
+  /* $Log$
+   * Revision 1.7  2000/11/28 00:07:32  jengo
+   * Just testing some of the cvs commands
+   * */
 
   // Note: This file won't be here for too long
 
