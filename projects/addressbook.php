@@ -2,8 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects/addressbook                                      *
   * http://www.phpgroupware.org                                              *
-  * Written by Bettina Gille [bettina@lisa.de]                               *
-  *                          [http://bananenkeller.lisa.de                   *
+  * Written by Bettina Gille [aeb@hansenet.de]                               *
   * ------------------------------------------------------                   *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *

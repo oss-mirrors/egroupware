@@ -2,9 +2,8 @@
   /**************************************************************************\
   * phpGroupWare - projects                                                  *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Jens Lentfoehr <sw@lf.shlink.de>                              *
-  *            Bettina Gille  [bettina@lisa.de]                              *
-  *                           [http://bananenkeller.lisa.de]                 *
+  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
