@@ -772,8 +772,8 @@
 
 
 // ---- DEBUG: Show Information About Each Part  -----
-	//$show_debug_parts = False;
-	$show_debug_parts = True;
+	$show_debug_parts = False;
+	//$show_debug_parts = True;
 	
 	if ($show_debug_parts)
 	{
