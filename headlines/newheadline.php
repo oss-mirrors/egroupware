@@ -58,7 +58,7 @@
 
 		$phpgw->db->query("select display from news_site where base_url='"
 				. addslashes(strtolower($n_base_url)) . "' and newsfile='"
-				. addslashes(strtolower($n_newsfile)) . "'");
+				. addslashes(strtolower($n_newsfile)) . "'",__LINE__,__FILE__);
 		$phpgw->db->next_record();
 		if ($phpgw->db->f('display'))
 		{
@@ -76,7 +76,7 @@
 					. addslashes(strtolower($n_newsfile)) . "',0,'"
 					. $n_newstype . "',$n_cachetime,$n_listings)";
 
-			$phpgw->db->query($sql);
+			$phpgw->db->query($sql,__LINE__,__FILE__);
 
 			$phpgw->db->unlock();
 
