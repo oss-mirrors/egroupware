@@ -1,0 +1,119 @@
+add	phpldapadmin	sl	Dodaj
+add_a_jpeg_photo	phpldapadmin	sl	Dodaj jpeg fotografijo
+add_new	phpldapadmin	sl	Dodaj novo
+add_new_attribute	phpldapadmin	sl	Dodaj nov atribut
+add_new_attribute_tooltip	phpldapadmin	sl	Dodaj nov atribut/vrednost temu vnosu
+add_new_binary_attr	phpldapadmin	sl	Dodaj nov binarni atribut
+add_new_binary_attr_tooltip	phpldapadmin	sl	Dodaj nov binarni atribut/vrednost temu vnosu
+add_oclass_and_attrs	phpldapadmin	sl	Dodaj ObjectClass in atribute
+add_value	phpldapadmin	sl	dodaj vrednost
+add_value_tooltip	phpldapadmin	sl	Dodaj dodatno vrednost temu atributu
+advanced_search_form_str	phpldapadmin	sl	Napredno iskanje
+alias_for	phpldapadmin	sl	Drugo ime za
+bad_server_id	phpldapadmin	sl	Šifra strežnika ni veljavna
+base_dn	phpldapadmin	sl	Base DN
+binary_value	phpldapadmin	sl	Binarna vrednost
+change_entry_rdn	phpldapadmin	sl	Spremeni RDN temu vnosu
+chooser_link_tooltip	phpldapadmin	sl	Kliknite za pojavno okno za izbiro vnosa (DN)
+click_to_display	phpldapadmin	sl	kliknite za prikaz
+contains	phpldapadmin	sl	vsebuje
+copy_this_entry	phpldapadmin	sl	Kopiraj ta vnos
+copy_this_entry_tooltip	phpldapadmin	sl	Kopiraj ta objekt na drugo lokacijo, nov DN ali drug strežnik
+could_not_connect	phpldapadmin	sl	Ne morem se povezati z LDAP strežnikom.
+could_not_determine_root	phpldapadmin	sl	Ne najdem korena v LDAP strukturi
+could_not_perform_ldap_mod_add	phpldapadmin	sl	Ne morem izvesti ldap_mod_add operacije.
+create	phpldapadmin	sl	ustvari
+create_a_child_entry	phpldapadmin	sl	Ustvari podrejen vnost
+create_new	phpldapadmin	sl	Ustvari novega
+create_new_entry_in	phpldapadmin	sl	Ustvari nov vnos v
+create_new_entry_on	phpldapadmin	sl	Ustvari nov vnos na
+current_list_of	phpldapadmin	sl	Trenutni seznam od
+delete_attribute	phpldapadmin	sl	izbriši atribut
+delete_hint	phpldapadmin	sl	Namig: <b>Za brisanje atributa</b>, izpraznite polje in kliknite "Shrani"
+delete_this_entry	phpldapadmin	sl	Izbriši ta vnos
+delete_this_entry_tooltip	phpldapadmin	sl	Odločitev boste morali potrditi
+desc	phpldapadmin	sl	Opis
+distinguished_name	phpldapadmin	sl	Jasno ime
+download_value	phpldapadmin	sl	vrednost prenosa
+ends_with	phpldapadmin	sl	se konča z
+enter_value_to_add	phpldapadmin	sl	Vpišite vrednost, ki jo želite dodati:
+entry_attributes	phpldapadmin	sl	Atributi vnosa
+equals	phpldapadmin	sl	je enak
+export_subtree_to_ldif	phpldapadmin	sl	Izvoz podstrukture v LDIF datoteko
+export_subtree_to_ldif_tooltip	phpldapadmin	sl	Shrani LDIF tega objekta in vseh podrejenih objektov
+export_to_ldif	phpldapadmin	sl	Izvoz v LDIF
+export_to_ldif_mac	phpldapadmin	sl	Vrstica v Macintoshu se konča z
+export_to_ldif_tooltip	phpldapadmin	sl	Shrani LDIF tega objekta
+export_to_ldif_unix	phpldapadmin	sl	Vrstica v unixu se konča z
+export_to_ldif_win	phpldapadmin	sl	Vrstica v windowsih se konča z
+false	phpldapadmin	sl	NE
+hidden	phpldapadmin	sl	skrit
+hide_internal_attrs	phpldapadmin	sl	Skrij interne atribute
+import	phpldapadmin	sl	uvozi
+import_from_ldif	phpldapadmin	sl	Uvozi vnose iz LDIF datoteke
+inappropriate_matching_note	phpldapadmin	sl	Če na LDAP strežniku niste določili <tt>pravilo enakosti(EQUALITY)</tt>,<br />se bo izpisala napaka za nepravilno enakovredenje "inappropriate matching".
+info	phpldapadmin	sl	info
+inherits	phpldapadmin	sl	Nasledi
+internal_attributes	phpldapadmin	sl	Interni atributi
+internal_attrs_tooltip	phpldapadmin	sl	Atributi, ki ji sistem nastavi samodejno
+is_obsolete	phpldapadmin	sl	Ta objectClass je <b>zastarel</b>
+jump_to_attr	phpldapadmin	sl	Skok na ta atribut
+jump_to_objectclass	phpldapadmin	sl	Skok na ta objectClass
+jump_to_this_oclass	phpldapadmin	sl	Skok na to objectClass definicijo
+ldap_refuses_to_give_root	phpldapadmin	sl	LDAP strežnik je najverjetneje konfiguriran tako, da ne prikaže korena.
+logged_in_as	phpldapadmin	sl	Prijavljen kot:
+logout	phpldapadmin	sl	odjavi
+logout_of_this_server	phpldapadmin	sl	Odjava s strežnika
+matching_rule_oid	phpldapadmin	sl	Šifra OID enakovrednega pravila
+new_attributes	phpldapadmin	sl	novi atributi
+new_required_attrs	phpldapadmin	sl	Novi obvezni atributi
+new_required_attrs_instructions	phpldapadmin	sl	Navodilo: Da lahko dodate ta objectClass temu vnostu, morate določiti
+new_required_attrs_note	phpldapadmin	sl	Verjetno boste morali vnesti nove atribute<br />ki jih zahteva ta objectClass.
+no_new_attrs_available	phpldapadmin	sl	za ta vnos ni na voljo novih atributov
+no_updates_in_read_only_mode	phpldapadmin	sl	Dokler je strežnik v načinu "samo za branje", ga ne morete posodabljati.
+none	phpldapadmin	sl	noben
+none_remove_value	phpldapadmin	sl	noben, odstrani vrednost
+not_enough_login_info	phpldapadmin	sl	Nimam dovolj informacij za prijavo na strežnik. Prosim preverite konfiguracijo.
+oid	phpldapadmin	sl	OID šifra
+optional_attrs	phpldapadmin	sl	Neobvezni atributi
+please_specify_in_config	phpldapadmin	sl	Določite ga v datoteki config.php
+read_only	phpldapadmin	sl	samo za branje
+really_delete_attribute	phpldapadmin	sl	Res izbrišem atribut?
+refresh	phpldapadmin	sl	osveži
+refresh_expanded_containers	phpldapadmin	sl	Osveži vse razširjene vsebnike za
+refresh_this_entry	phpldapadmin	sl	Osveži vnos
+rename	phpldapadmin	sl	Preimenuj
+rename_entry	phpldapadmin	sl	Preimenuj vnos
+report_bug	phpldapadmin	sl	Sporoči hrošča
+request_new_feature	phpldapadmin	sl	Zahtevaj novo pojavo
+required_attrs	phpldapadmin	sl	Obvezen atribut
+requires_to_add	phpldapadmin	sl	To dejanje zahteva, da dodate
+save_changes	phpldapadmin	sl	Shrani spremembe
+schema	phpldapadmin	sl	shema
+schema_for_server	phpldapadmin	sl	Shema strežnika
+search	phpldapadmin	sl	iskanje
+search_ filter	phpldapadmin	sl	Iskalni filter
+search_for_entries_whose	phpldapadmin	sl	Iskanje vnosov, ki vsebujejo
+search_scope	phpldapadmin	sl	Iskalno območje
+see_open_bugs	phpldapadmin	sl	poglej odprte hrošče
+see_open_requests	phpldapadmin	sl	poglej odprte zahteve
+server	phpldapadmin	sl	Strežnik
+show_attributes	phpldapadmin	sl	Prikaži atribute
+show_internal_attrs	phpldapadmin	sl	Pokaži interne atribute
+simple_search_form_str	phpldapadmin	sl	Preprosto iskanje
+sounds_like	phpldapadmin	sl	je podobno kot
+starts_with	phpldapadmin	sl	se začne z
+syntax	phpldapadmin	sl	Sintaksa
+syntax_oid	phpldapadmin	sl	OID šifra sintakse
+that_this_oclass_requires	phpldapadmin	sl	ki ga ta objectClass zahteva. To lahko storite v tem obrazcu.
+the_following_attributes	phpldapadmin	sl	LDAP strežnik podpira naslednje <b>attributeTypes</b>.
+the_following_matching	phpldapadmin	sl	LDAP strežnik podpira naslednja <b>enakovredna pravila</b>.
+the_following_objectclasses	phpldapadmin	sl	LDAP strežnik podpira naslednje <b>objectClasses</b>.
+the_following_syntaxes	phpldapadmin	sl	LDAP strežnik podpira naslednjo <b>sintakso</b>.
+true	phpldapadmin	sl	DA
+value_to	phpldapadmin	sl	vrednost v
+values_for_attribute	phpldapadmin	sl	vrednosti atributa
+view	phpldapadmin	sl	Pogled
+view_schema_for	phpldapadmin	sl	Poglej shemo za
+view_server_info	phpldapadmin	sl	Poglej informacije, ki jih je posredoval strežnik
+viewing_read_only	phpldapadmin	sl	Poglej vnost v bralnem načinu
