@@ -52,6 +52,7 @@ keep the present state [%1].	tts	en	Keep the present state [%1].
 latest note added	tts	en	Latest Note Added
 list of available tickets' states.	tts	en	List of available tickets' states.
 list of available tickets' transitions.	tts	en	List of available tickets' transitions.
+missing description	tts	en	Missing description
 morework	tts	en	MOREWORK
 needswork	tts	en	NEEDSWORK
 new	tts	en	NEW

@@ -19,7 +19,7 @@
 <!-- END additional_notes_row_empty -->
 
 <!-- BEGIN row_history -->
-		<tr class="tr_color}">
+		<tr class="{row_class}">
 			<td>{value_date}</td>
 			<td>{value_user}</td>
 			<td>{value_action}</td>

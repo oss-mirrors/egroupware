@@ -55,6 +55,7 @@ keep the present state [%1].	tts	de	Aktuellen Status beibehalten [%1].
 latest note added	tts	de	Letzte zugefügte Notiz
 list of available tickets' states.	tts	de	Liste der verfügbaren Ticket Stati.
 list of available tickets' transitions.	tts	de	Liste der verfügbaren Ticket Übergänge.
+missing description	tts	de	fehlende Beschreibung
 morework	tts	de	MEHRARBEIT
 needswork	tts	de	MEHRARBEIT
 new	tts	de	NEU
