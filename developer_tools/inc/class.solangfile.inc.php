@@ -32,18 +32,6 @@
 			$this->db = $GLOBALS['phpgw']->db;
 		}
 
-		function isin_array($needle,$haystack)
-		{
-			while (list ($k,$v) = each($haystack))
-			{
-				if ($v == $needle)
-				{
-					return True;
-				}
-			}
-			return False;
-		}
-
 		//Known Issue, if a phrase contains a ' or a " the parse will be thrown off. unless ' are nesed inside "
 		function parse_php_app($fd,$plist)
 		{
