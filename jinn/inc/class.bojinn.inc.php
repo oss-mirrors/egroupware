@@ -833,6 +833,8 @@
 
 			$allrecords=$this->get_records_2($table,'','','','name',$display_field);
 
+
+			if(is_array($allrecords))
 			foreach ($allrecords as $record)
 			{
 				$related_fields[]=array
