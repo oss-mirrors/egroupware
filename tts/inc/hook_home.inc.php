@@ -25,7 +25,6 @@
 		&& $phpgw_info["user"]["preferences"]["tts"]["mainscreen_show_new_updated"])
 	{
 		echo "\n<!-- Begin TTS New/Updated -->\n";
-		echo "<font color=red>test</font>";
 
 		// this will be an user option
 		$filtermethod="where t_timestamp_closed='0' and t_assignedto='".$phpgw_info["user"]["userid"]."'";
