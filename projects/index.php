@@ -49,34 +49,37 @@
   if ($filter != "private") {
      if ($filter != "none") {
         $filtermethod = " access like '%,$filter,%' ";
-     } else {
-        $filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"] 
+    } 
+    else {
+    $filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"] 
                       . "' OR owner='" . $phpgw_info["user"]["account_id"] 
                       . "' OR access='public'"
                       . $phpgw->accounts->sql_search("access") . " ) ";
-     }
-  } else {
+      }
+     } 
+    else {
      $filtermethod = " coordinator='" . $phpgw_info["user"]["account_id"] . "' ";
-  }  
+     }  
 
   if ($query) {
-     $phpgw->db->query("select count(*) from p_projects where $filtermethod and descr "
+     $phpgw->db->query("select count(*) from p_projects where $filtermethod and title "
                     . "like '%$query%'");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search returned 1 match"));
+        $t->set_var(total_matchs,lang("your search has returned 1 match"));
      else
-        $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-  } else {
+        $t->set_var(total_matchs,lang("your search has returned x matchs",$phpgw->db->f(0)));
+     } 
+    else {
      $phpgw->db->query("select count(*) from p_projects where $filtermethod");
-//    $phpgw->db->next_record();
-   }
+     }
     $phpgw->db->next_record();
    if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                        
      $customer_sortorder = "customer.company_name";                                                                                                                 
-  } else {                                                                                                                                                  
+     } 
+    else {                                                                                                                                                  
      $customer_sortorder = "ab_company";                                                                                                                     
-  }
+    }
      
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
@@ -86,9 +89,7 @@
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
 //     $phpgw->db->next_record();
 
-    // ===========================================
-    // nextmatch variable template-declarations
-    // ===========================================
+//---------------------- nextmatch variable template-declarations ---------------------------
 
      $next_matchs = $phpgw->nextmatchs->show_tpl("index.php",$start,$phpgw->db->f(0),
                    "&order=$order&filter=$filter&sort="
@@ -96,11 +97,11 @@
      $t->set_var(next_matchs,$next_matchs);
      $t->set_var(total_matchs,$total_matchs);
 
-  // ---------- end nextmatch template --------------------
+// ------------------------------ end nextmatch template ------------------------------------
 
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
+// ------------------list header variable template-declarations -------------------------------
+
+
   $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
   $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"index.php",lang("Project ID")));
   $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"index.php",lang("Customer")));
@@ -121,14 +122,15 @@
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
                  . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND"
-                 . " descr like '%$query%' $ordermethod limit $limit");
-  } else {
+                 . " title like '%$query%' $ordermethod limit $limit");
+     } 
+     else {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname,account_lid FROM "
                  . "p_projects,accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
-  }
+     }
 
-  while ($phpgw->db->next_record()) {
+     while ($phpgw->db->next_record()) {
     
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   

@@ -12,6 +12,7 @@
       <center>
        <form method="POST" name="projects_form" action="{actionurl}">
         {common_hidden_vars}
+        {error}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
           <tr>
           <td>{lang_num}:</td>
@@ -36,18 +37,15 @@
 	 </tr>
 	 <tr>
 	 <td>{lang_access_type}:</td>
-	 <td><select name="access">
-	 {access_list}</select></td>
+	 <td><select name="access">{access_list}</select></td>
 	 </tr>
 	 <tr>
 	 <td>{lang_which_groups}:</td>
-	 <td><select name="n_groups[]" multiple>
-	 {group_list}</select></td>
+	 <td><select name="n_groups[]" multiple>{group_list}</select></td>
 	 </tr>
 	 <tr>
           <td>{lang_status}:</td>
-          <td><select name="status">{status_list}
-           </select></td>
+          <td><select name="status">{status_list}</select></td>
          </tr>
          <tr>
           <td>{lang_budget}:</td>
@@ -59,25 +57,15 @@
          </tr>
          <tr>
           <td>{lang_end_date}:</td>
-          <td>
-           {end_date_formatorder}
-          </td>
+          <td>{end_date_formatorder}</td>
          </tr>
          <tr>
           <td>{lang_bookable_activities}:</td>
-          <td>
-           <select name="ba_activities[]" multiple>
-            {ba_activities_list}
-           </select>
-          </td>
+          <td><select name="ba_activities[]" multiple>{ba_activities_list}</select></td>
          </tr>
          <tr>
           <td>{lang_billable_activities}:</td>
-          <td>
-           <select name="bill_activities[]" multiple>
-            {bill_activities_list}
-           </select>
-          </td>
+          <td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
          </tr>
          </table>
          
@@ -85,12 +73,8 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62">
-           <input type="submit" name="submit" value="{lang_addsubmitb}">
-          </td>
-          <td height="62">
-           <input type="reset" name="reset" value="{lang_addresetb}">
-          </td>
+          <td height="62"><input type="submit" name="submit" value="{lang_addsubmitb}"></td>
+          <td height="62"><input type="reset" name="reset" value="{lang_addresetb}"></td>
          </tr>
          </table>
          </form>
@@ -103,17 +87,14 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62">
-           <input type="submit" name="submit" value="{lang_editsubmitb}">
-                </form>
-          </td>
+          <td height="62"><input type="submit" name="submit" value="{lang_editsubmitb}">
+                </form></td>
           <td height="62">
            	<form method="POST" action="{deleteurl}">
                 {common_hidden_vars}
                 <input type="submit" name="delete" value="{lang_editdeleteb}">
-                </form>
-          </td>
-         </tr>
+            </form></td>
+          </tr>
          </table>
 	</center>
 	</html>
