@@ -1,19 +1,41 @@
-   After looking at the docs on porting phpComic to phpGroupWare I have a 
-   couple of comments. 
+This application is inspired by phpcomic.
 
-   1. I don't have a problem with you porting it, just give a link to the 
-   sourceforge phpComic site someplace. 
-   2. Just to maintain some compatibility with phpComic can we try and leave 
-   comic_functions.php as it is. This way people can 
-   upgrade to a new set of comics as they come along. 
-   3. If you want to add it to a CVS branch somewhere name it
-   phpComicGroupWare 
-   or something appropriate. If you would like to 
-   maintain it on the official phpComic sourceforge CVS repository as a 
-   seperate branch that is also an option. I would just 
-   add you as a developer. 
+However, proxy servers that are .pac configured
+do not allow direct http requests. 
+They, therefore, do not allow snarfing of 
+image or html data and cannot perform  the
+"connect and parse" of phpcomic.  So, either
+those comics need flagged that they cannot
+be resolved or I opt for some flat parsing rules
+that precludes some comics.  I am going to attempt
+the latter.
 
-   Other than that do what you like with it, after all it is Open Source ;-) 
+For the same reason as above, comics can either
+be static or snarfed.  Static is simply a fully
+qualified url to the host site that inlines the
+graphic.  Snarfed will download the graphic to
+the image directory and set the date in the
+comic data table.  I, also, plan to allow
+(at least snarfed images) to be scaled.
 
-   Regards, 
-   Ryan Phillips 
+Why snarf?  If your phpgw site runs on https,
+then static images will be broken (external
+links to otherwise unsecure sites).  The 
+"work around" for this is snarfing.
+
+If you run secure behind a .pac configured
+proxy server, then it sucks being you.
+
+TODO:
+
+01) admin
+02) preferences
+03) finish core functions
+04) map all phpcomic functions to 
+    my database and work with resolves
+05) about hook
+06) template images
+07) front page hook
+08) consider a mixed mode of static and
+    snarfed (or a by image basis)
+

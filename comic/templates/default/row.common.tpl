@@ -1,5 +1,5 @@
-  <th bgcolor="{th_bg}">
-    <td><font color="{th_text}" size=-1>{name}</font>
+  <th bgcolor="{th_bg}" align=left>
+    <td align=left><font color="{th_text}" size=-1>{name}</font>
   </th>
   <tr>
     <td>

@@ -271,5 +271,98 @@ function comic_display($comic_id, $comic_perpage, $start,
     }
 }
 
+function template_options($app_template, &$options_c, &$images_c)
+{
+    global $phpgw, $phpgw_info;
+
+    $appname = $phpgw_info["flags"]["currentapp"];
+    
+    $directory = opendir($phpgw_info["server"]["app_tpl"]);
+
+    $index=0;
+
+    while ($filename = readdir($directory))
+    {
+        if (eregi("format[0-9]{2}.$appname.tpl", $filename, $match))
+        {
+            $file_ar[$index] = $match[0];
+            $index++;
+        }
+    }
+
+    closedir($directory);
+
+    for ($loop=0; $loop < $index; $loop++)
+    {
+        eregi("[0-9]{2}", $file_ar[$loop], $tid);
+        eregi("format[0-9]{2}", $file_ar[$loop], $tname);
+
+        $template_id = "$tid[0]";
+        $template_name["$template_id"] = $tname[0];
+    }
+
+    asort($template_name);
+
+    /**************************************************************************
+     * start our template
+     *************************************************************************/
+    $image_tpl = $phpgw->template;
+    $image_tpl->set_unknowns("remove");
+    $image_tpl->set_file(
+        array(options => "option.common.tpl",
+              rows    => "row.images.tpl",
+              cells   => "cell.images.tpl"));
+
+    while (list($value, $name) = each($template_name))
+    {
+        $selected = "";
+        if ((int)$value == $app_template)
+        {
+            $selected = "selected";
+        }
+
+        $image_tpl->set_var(array(OPTION_SELECTED => $selected,
+                                  OPTION_VALUE    => (int)$value,
+                                  OPTION_NAME     => $name));
+        
+        $image_tpl->parse(option_list, "options", TRUE);
+    }
+    $options_c = $image_tpl->get("option_list");
+    
+    reset($template_name);
+    $counter = 0;
+
+    while (list($value, $name) = each($template_name))
+    {
+        $index--;
+        
+        $imgname = $name.".gif";
+
+        $filename_f =
+            $phpgw->common->get_image_dir($appname)."/".$imgname;
+        $filename_a =
+            $phpgw_info["server"]["app_images"]."/".$imgname;
+
+        if (file_exists($filename_f))
+        {
+            $counter++;
+
+            $image_tpl->set_var(array(image_number => $name,
+                                      image_url    => $filename_a));
+            $image_tpl->parse(image_row, "cells", TRUE);
+        }
+        
+        if (($counter == 5) || ($index == 0))
+        {
+            $cells_c = $image_tpl->get("image_row");
+            
+            $image_tpl->set_var(image_cells, $cells_c);
+            $image_tpl->parse(IMAGE_ROWS, rows, TRUE);
+            
+            $counter = 0;
+        }
+    }
+    $images_c = $image_tpl->get("IMAGE_ROWS");
+}
 
 ?>
