@@ -2,6 +2,7 @@
 (required)	email	de	(benötigt)
 1 message has been deleted	email	de	1 Nachricht wurde gelöscht
 1 message has been moved to	email	de	1 Nachricht wurde verschoben nach
+<b>*apply*</b> this filter	email	de	
 <b>apply all</b> filters	email	de	<b>ALLE</b> Filter anwenden
 a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	de	Ein Block von Scripttags, Javascript oder ähnliches, ist in dieser HTML E-Mail enthalten. Dies muss nicht eine Gefahr darstellen. Der enthaltene Code könnte folgende Form haben. SCRIPT ... code ... SCRIPT. Es handelt sich hierbei nicht um "OnMouseOver".
 account	email	de	Benutzerkonto
@@ -18,6 +19,7 @@ and	email	de	und
 and stop filtering	email	de	und beende das filtern
 answered	email	de	Beantwortet
 apply	email	de	anwenden
+apply filters report:	email	de	
 apr	email	de	Apr
 aqua fusion	email	de	Aqua Fusion
 arrival date	email	de	Eingangsdatum
@@ -80,6 +82,8 @@ e-mail folders	common	de	E-Mail Ordner
 e-mail inbox filters list	email	de	E-Mail Eingang (INBOX) Filterliste
 e-mail preferences	common	de	E-Mail Einstellungen
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	de	Die Übersichtsseite eines Benutzers kann unterschiedliche Informationen anzeigen. Diese Option zeigt eine kleine Anzahl von Nachrichten des Posteingangs, des Standard E-Mail Kontos, auf der Übersichtsseite an.
+each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	de	
+each user has a summary page which can display a variety of information. this option willshow a small list of email messages in the inbox of the users default email account onthe users summary home page.	email	de	
 edit filters	email	de	Filter bearbeiten
 email account name	email	de	Name des E-Mail Kontos
 email address	email	de	E-Mail Adresse
@@ -114,6 +118,7 @@ fill in as much as you can	email	de	Tragen Sie so viel wie möglich ein
 filter [number] and name	email	de	Filter [Nummer] und Name
 filter inbox for accounts	email	de	Filtere die INBOX folgender E-Mail Konten
 filter name	email	de	Filter Name
+filter name:	email	de	
 filter number	email	de	Filter Nummer
 filters	email	de	Filter
 filters list	email	de	Filter Liste
@@ -139,6 +144,7 @@ hide help	email	de	Hilfe ausblenden
 html messages with the iframe  tag may be klez or other worm emails.	email	de	Diese HTML E-Mail beinhaltet den IFRAME Tag, es könnte sich bei dieser Nachricht z. B. um KLEZ oder einen anderen Wurm handeln.
 icon size	email	de	Symbolgröße
 icon theme	email	de	Symbol Thema
+idots crystal style	email	de	iDots Crystal Style
 if &quot; (	email	de	
 if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	de	Wenn &quot;Ordner für gelöschte Nachrichten&quot; aktiviert wurde, werden gelöschte Nachrichten in den Ordner verschoben, den Sie hier angeben. Wenn dieser Ordner nicht schon existiert wird er automatisch angelegt. Der Standard Name des Ordners ist &quot;Trash&quot;, jedoch muss der Name des Ordners nicht &quot;Trash&quot; sein. Sie können einen beliebigen Namen für diesen Ordner vergeben. Ordner können nur angelegt werden in zusammenhang mit IMAP Servern, POP Server haben keine Ordner.
 if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	de	Wenn &quot;Ordner für versandte Nachrichten&quot; aktiviert wurde, wird eine Kopie der gesendeten Nachricht in dem Ordner gespeichert, den Sie hier angeben. Wenn dieser Ordner nicht schon existiert wird er automatisch angelegt. Der Standard Name des Ordners ist &quot;Sent&quot;, jedoch muss der Name des Ordners nicht &quot;Sent&quot; sein. Sie können einen beliebigen Namen für diesen Ordner verben. Ordner können nur angelegt werden in zusammenhang mit IMAP Servern, POP Server haben keine Ordner.
@@ -147,6 +153,7 @@ if &quot;sent messages folder&quot; is checked, a copy of your sent mail will be
 if applicable	email	de	Falls zutreffend
 if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder &quot;. only works with imap servers, pop servers do not have folders.	email	de	Wenn dieses Feld aktiviert ist, werden versendete E-Mails im Ordner &quot;Ordner für versandte Nachrichten&quot; gespeichert. Diese Funktion steht nur bei IMAP Servern zur verfügung, POP Server haben keine Ordner.
 if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot; only works with imap servers, pop servers do not have folders.	email	de	Wenn dieses Feld aktiviert ist, werden gesendete Nachrichten in den &quot;Gesendet&quot; verschoben. Den Namen des Ordners können Sie im Feld &quot; Ordner für versandte Nachrichten &quot; bestimmen. Diese Funktion steht nur bei IMAP Servern zur verfügung, POP Server haben keine Ordner.
+if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	de	
 if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	de	Wenn dieses Feld aktiviert ist, werden gelöschte Nachrichten in den &quot;Papierkorb&quot; verschoben. Den Namen des Ordners können Sie im Feld &quot;Ordner für gelöschte Nachrichten (Papierkorb)&quot; bestimmen. Diese Funktion steht nur bei IMAP Servern zur verfügung, POP Server haben keine Ordner.
 if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot;deleted messages (trash) folder&quot; only works with imap servers, pop servers do not have folders.	email	de	
 if fileto then select destination folder	email	de	Beim Ablegen bitte Ziel-Ordner auswählen
@@ -156,15 +163,15 @@ if using an imap server, what kind is it, most often this option can safely be s
 image	email	de	Grafik
 imap mail server hostname or ip address	admin	de	IMAP Mail-Server Hostname oder IP Adresse
 imap server type	common	de	IMAP-Servertyp
-imap server type - if applicable	email	de	
+imap server type - if applicable	email	de	IMAP Servertyp - wenn bekannt
 important	email	de	wichtig
 in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	de	In Ihrer E-Mail Übersichtsseite, die Seite welche alle E-Mails in einem Ordner auflistet, können Ihre Nachrichten sortiert angezeigt werden nach Datum, Author, Größe, oder Betreff. Die Sortierung kann erfolgen indem die Ansicht bei der ersten Nachricht in der Ansicht beginnt und mit der letzten endet. Zum Beispiel bewirkt eine sortierung nach Datum mit der Einstellung neueste -> älteste das die neuesten E-Mail Nachrichten am Anfang der Übersicht angezeigt werden und die ältesten am Ende.
 inbox	email	de	Posteingang
 input error	email	de	Eingabefehler
 input error:	email	de	Eingabefehler:
-it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	de	Es handelt sich nicht um einen RFC standard eine Nachricht base64 chiffriert zu versenden, wenn es sich dabei NICHT um einen Anhang handelt. Bitte beachten Sie das diese überprüfung zur Zeit durchgeführt wird nachdem die Nachricht geöffnet wurde. Die automatische Anzeige dieser Nachricht sollte stoppen und stattdessen ein Button angezeigt werden "anzeigen". 
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	de	Es handelt sich nicht um einen RFC standard eine Nachricht base64 chiffriert zu versenden, wenn es sich dabei NICHT um einen Anhang handelt. Bitte beachten Sie das diese überprüfung zur Zeit durchgeführt wird nachdem die Nachricht geöffnet wurde. Die automatische Anzeige dieser Nachricht sollte stoppen und stattdessen ein Button angezeigt werden "anzeigen".
 jan	email	de	Jan
-javascript	email	de	
+javascript	email	de	Javascript
 jul	email	de	Jul
 jun	email	de	Jun
 keep	email	de	Behalten
@@ -180,6 +187,7 @@ mail server	email	de	Mail Server
 mail server login type	admin	de	EMail-Server Logintyp
 mail server type	email	de	Typ des Mailservers
 mail settings	admin	de	EMail Einstellungen
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	de	
 mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	de	E-Mail Nachrichten welche Sie versenden benutzen diese Adresse im Feld &quot;Von&quot;. Dies kann die gleiche Name sein wie Ihr phpGroupWare Name, oder der Server Administrator hat einen Namen für Sie vergeben. Wenn der Empfänger auf Antworten klickt wird die hier angegebene Adresse als Antwort Adresse benutzt. Wenn Sie dieses Feld nicht ausfüllen wird eine Standard Einstellung verwendet.
 manage accounts	email	de	Benutzerkonten verwalten
 manage folders	email	de	Ordner verwalten
@@ -217,6 +225,7 @@ not used	email	de	nicht benutzt
 notify on delivery	email	de	Benachrichtigung bei Auslieferung
 nov	email	de	Nov
 number	common	de	Nummer
+number of matches:	email	de	Anzahl der Treffer
 oct	email	de	Okt
 old	email	de	Alte
 oldest	common	de	älteste
@@ -248,6 +257,7 @@ reply	email	de	Antworten
 reply all	email	de	Allen antworten
 replyto	email	de	Antwort an
 request delivery notification	email	de	Sendebestätigung anfordern
+requested filter action:	email	de	
 required	email	de	benötigt
 reset	email	de	Zurücksetzen
 result	email	de	Ergebnis
@@ -264,6 +274,7 @@ select this box if you want the text body of the message you are forwarding to a
 select work email address	email	de	geschäftl. EMail auswählen
 select your mail server type	admin	de	EMail-Servertyp auswählen
 select your screensize for proper showing of the javascript addressbook	email	de	Bildschirmgröße zum ordnungsgemäßen Anzeigen des neuen JavaScript Adressbuches auswählen
+select your screensize for propper showing of the javascript addressbook	email	de	
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	de	Typ des Adressbuchs auswählen: Traditioneller einfacher Type oder das neue komplexe JavaScript Adressbuch
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
@@ -286,11 +297,12 @@ show new messages on main screen	email	de	Neue Nachrichten auf der Startseite an
 show sender's email address with name	email	de	Email-Adresse des Senders mit Namen anzeigen
 show short names	email	de	Kurze Namen anzeigen
 show total folder size by default	email	de	Gesamtgröße des Ordners immer anzeigen
-simple	email	de	
+simple	email	de	Einfach
 size	email	de	Größe
 size larger than	email	de	Größer als
 size smaller than	email	de	Kleiner als
 small	email	de	klein
+small view	email	de	
 smaller	email	de	kleiner
 smallest	email	de	sehr klein
 somebody	email	de	irgendjemand
@@ -302,12 +314,16 @@ switch accounts	email	de	Konto wechseln
 switch current folder to	common	de	Wechseln zum Ordner
 test all filters	email	de	Alle Filter testen
 test or apply all filters	email	de	testen oder anwenden ALLER Filter
+test run this filter	email	de	Klicken Sie hier um die Filter zu testen
 text	email	de	Text
 the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	de	Für die Index  Seite (die Index Seite zeigt die E-Mails eines Ordeners an) stehen zwei unterschiedliche Layouts zur Verfügung.
 the email application offers different button displays, these buttons can be text, images, or both.	email	de	Die E-Mail Applikation stellt unterschiedliche Arten von Buttons zur Verfügung. Dies Buttons können angezeigt werden als Text, Bilder oder Text und Bild.
+the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape6 / mozilla browser buttons. additional themes are anticipated and welcome.	email	de	
 the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	de	Die E-Mail Applikation stellt unterschiedlich aussehende Gruppen von Icons/Buttons zur verfügung. Die momentan verfügbaren Icons basieren aud Evolution von Ximian und Mozilla Browser Buttons so wie zwei weiteren Themen.
 the email application offers different icon image themes, these icons can be big or small.	email	de	Für die E-Mail Applikation können unterschiedliche Größen für die Bilder festgelegt werden. Die Größe kann gewählt werden zwischen Groß und Klein.
 the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you clear this box, then it goes back to the default value. if you only need some custom settings but want this one to be the default value, then leave this box blank, the default value will be used, and you will see that default value in this box the next time you come to this preferences page.	email	de	Ihr Login Name welcher zur Abfrage dieses E-Mail Kontos benötigt wird. Dieser Name kann der gleiche sein wie Ihr phpGroupWare Login Name, oder der Administrator hat einen anderen für Sie vergeben.  Wenn Sie mit mehreren E-Mail Konten arbeiten müssen Sie hier einen Eintrag vornehmen. Falls der Inhalt dieses Feldes gelöscht wird, werden wieder die Standard Einstellungen verwendet. Um Ihren Benutzernamen zu verwenden, jedoch einige der möglichen persönlichen Einstellungen zu verwenden, können Sie dieses Feld leer lassen und hier wird der Standard Wert verwendet.
+the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. exra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	de	
+the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	de	
 the password to use when checking mail for this email account. this may be the same as your phpgroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	de	Ihr Passwort welches zur Abfrage dieses E-Mail Kontos benötigt wird. Dieses Passwort kann das gleiche sein wie Ihr phpGroupWare Passwort, oder der Administrator hat einen anderes für Sie vergeben.  Wenn Sie mit mehreren E-Mail Konten arbeiten müssen Sie hier einen Eintrag vornehmen. Wenn Sie ein eigenes Passwort eingegeben haben wird beim nächsten Aufrufen den  der Einstellungen hier kein Wert angezeigt. Hierbei handelt es sich um eine Sicherheits- Funktion, da das Passwort, nachdem Sie es gesetzt haben nicht an den Browser gesendet wird.  Um Ihr persönliches Passwort zu ändern, tragen Sie ein neues Passwort in das Feld ein. Für extra E-Mail Konten muss dieses Passwort generell angegeben werden. Für Ihr Standard E-Mail Konto können Sie Ihr Passwort zurücksetzen indem Sie das Feld für &quot;Benutzerdefinierte Einstellungen verwenden&quot; deaktivieren.
 the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your phpgroupware installation has a &quot;ssl&quot; capabable version of php.	email	de	Der E-Mail Server Type welchen Sie kontaktieren. IMAP Mail Server haben Ordner, beipielsweise Postausgang/Sent und Papierkorb/Trash. POP Server haben keine Ordner. POP, POP-3 und POP3 sind hierbei identische Server. Sie können verschlüsselte/sichere Server Verbindungen benutzen wie IMAPS oder POPS, wenn Ihr Mailserver dieses unterstützt und Ihre phpGroupWare Installation mit einer &quot;SSL&quot; fähigen PHP version betrieben wird.
 then do this	email	de	Dann führe folgendes aus
@@ -320,12 +336,13 @@ this confusing and often misunderstood option is left over from this email apps 
 this confusing and often misunderstood option is left over from this email apps origins as aeromail by mark cushman. when viewing a list of emails in a folder, the from column may show you<br>a) the senders name only, if a name was provided,<br>b) the senders from email address, in addition to the senders name, or<br>c) the senders reply to address if it is different from the senders<br>from address, in addition to the senders name if it was provided. typically users set this to none, which will show only the senders name. if no name was supplied by the sender, then the senders from email address will be shown, whether a seperate reply to address is provided has no effect on this, the from address is always used if the senders name is not provided.	email	de	
 this data not supplied.	email	de	Diese Daten wurden nicht eingetragen
 this folder is empty	email	de	Dieser Ordner ist leer
-this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	de	Diese Nachricht kann zu einen Konflikt mit der Darstellung in phpGroupWare führen. Das phpGroupWare Template benutzt ein eigenes CSS Stylesheet und das ausführen eines anderen Stylesheets kann das gewohnte aussehen dieser Applikation total verändern. 
+this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	de	Diese Nachricht kann zu einen Konflikt mit der Darstellung in phpGroupWare führen. Das phpGroupWare Template benutzt ein eigenes CSS Stylesheet und das ausführen eines anderen Stylesheets kann das gewohnte aussehen dieser Applikation total verändern.
 this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the phpgroupware setup.	email	de	Dies ist der Name welcher erscheint in der Auswahlbox für Ihre E-Mail Konten. Wenn Sie hier keinen Eintrag vornehmen, wird Ihrem Konto ein Standard Namen zugeordnet, beipielsweise Konto[0]: Max Muster, wobei Max Muster Ihr vollständiger Name aus Ihrem phpGroupWare Konto ist. Falls Sie Ihrem Konto einen eigenen Namen vergeben möchten, tragen Sie den Namen bitte hier ein. Der hier vergebene Kontenname dient nur zu Ihrer eigenen Identifikation Ihres Benutzerkontos. Für versendete E-Mails wird als ABSENDER der Name verwendet welchen Sie als E-Mail Adresse eingegeben haben.
-this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	de	Dies ist der Name der angezeigt wird als die VON Adresse des Benutzers. Die Standard E-Mail Konten erhalten diesen Wert automatisch. Zusätzliche Konten welche erstellt werden können für jedes Konto einen unterschiedlichen Namen besitzen. 
+this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	de	Dies ist der Name der angezeigt wird als die VON Adresse des Benutzers. Die Standard E-Mail Konten erhalten diesen Wert automatisch. Zusätzliche Konten welche erstellt werden können für jedes Konto einen unterschiedlichen Namen besitzen.
 this pref currently does nothing users may have more than one email account. in the future it is anticipated that automatic actions may be performed on these accounts, such as automatic new mail checks,auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use. also, an admin may want to disable accounts from time to time.	email	de	
 this pref currently does nothing<br>users may have more than one email account. in the future it is anticipated that automatic actions may be performedon these accounts, such as automatic new mail checks, auto filtering, etc... perhaps the user may want to disable an account so that these automatic actions do not occur for that account. this is one possible use.<br>also, an admin may want to disable accounts from time to time.	email	de	
 this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	de	Hiermit können Sie aktivieren ob die Anzahl neuer Nachrichten in der Orderübersicht angezeit werden soll auf der Hauptseite.
+this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size.	email	de	
 this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	de	Die Gesamtgröße des Ordners kann in der Standardansicht angezeigt werden. Wenn Sie diese Option nicht aktivieren wird Ihnen ein Button angezeigt mit welchen Sie in der Standardansicht die Ordnergröße amzeigen können.
 this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	de	Dieser Text wird für dieses E-Mail Konto ans Ende der E-Mail mit angefügt. Zur Zeit werden keine HTML Tags unterstützt. An weitergeleitete E-Mails wird keine Signatur angefügt, da diese sonst in Ihrem original Zustand verändert werden. Der Grund dafür das keine Signatur angefügt wird ist, dass möglicherweise eine Signatur vom original Author der E-Mail vorhanden ist und diese wirklich wichtige Informationen enthält.
 to	email	de	An
@@ -334,7 +351,7 @@ total messages	email	de	Nachrichten insgesamt
 trash	email	de	papierkorb
 trash folder	email	de	papierkorb ordner
 u-wash mail folder	email	de	U-Wash Mail Ordner
-u-wash mail folder - if applicable	email	de	
+u-wash mail folder - if applicable	email	de	U-Wash Mail Ordner- wenn anwendbar
 unable to get source folder name	email	de	Kann Ursprünglichen Ordnernamen nicht finden
 unable to get target folder name	email	de	Konnte Ziel Ordnernamen nicht finden
 unanswered	email	de	Unbeantwortet
@@ -352,9 +369,13 @@ view as html	email	de	Als HTML formatiert anzeigen
 view formatted	email	de	formatiert anzeigen
 view headers	email	de	Kopfzeilen (Header) anzeigen
 view unformatted	email	de	unformatiert anzeigen
+warn_attachment_name_dangerous	email	de	
 warn_attachment_only_mail	email	de	
+warn_b64_encoded_displayable	email	de	
+warn_has_iframe_maybe_klez	email	de	
 warn_script_tags	email	de	
-we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	de	Es stehen Ihnen zwei Arten von Adressbüchern zur verfügung. Ein &quot;einfaches&quot; Adressbuch und ein &quot;komplexes&quot; Adressbuch. Das &quot;komplexe&quot; ist für grössere Organisation besser geeignet, da es eine einfachere Auswahl ermöglicht. 
+warn_style_sheet	email	de	
+we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	de	Es stehen Ihnen zwei Arten von Adressbüchern zur verfügung. Ein &quot;einfaches&quot; Adressbuch und ein &quot;komplexes&quot; Adressbuch. Das &quot;komplexe&quot; ist für grössere Organisation besser geeignet, da es eine einfachere Auswahl ermöglicht.
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features<br>a) easy, point and click searching,<br>b) best suited for organizations with large central addressbooks with many categories.<br>you can choose here which addressbook do you prefer.	email	de	
 we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	de	Sie können zwischen 3 größen wählen in welchen Ihr Adressbuch angezeigt werden soll. 800x600 (das Addressbuch wird angezeigt in einem 700 pixel breiten Fenster), 1024x768 (breite des Fensters 700 pixel) und 1200x1600 (900 pixel breites Fenster). Die Schriftgröße in den Fenstern wird hierbei dargestellt als sehr klein/xx-small, klein/x-small und normal(keine skalierung),
 wrote	email	de	schrieb
