@@ -181,7 +181,7 @@
 
 		echo '<tr bgcolor="' . $phpgw_info['theme']['bgcolor'] . '"><td colspan="2">&nbsp;</td></tr>'
 			. '<tr bgcolor="' . $phpgw_info['theme']['bgcolor'] . '"><td colspan="2" align="center">'
-			. '<input name="submit" type="submit" value="Vote"></td></tr>'
+			. '<input name="submit" type="submit" value="' . lang('Vote') . '"></td></tr>'
 			. '</table></form>';
 	}
   

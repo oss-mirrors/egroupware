@@ -27,7 +27,7 @@
 		{
 			$phpgw->db->query("insert into phpgw_polls_settings values ('$name','$value')",__LINE__,__FILE__);
 		}
-		echo '<center>Settings updated</center>';
+		echo '<center>' . lang('Settings updated') . '</center>';
 	}
 	else
 	{
