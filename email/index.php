@@ -182,10 +182,10 @@
 
   if ($nummsg == 0) {
      if (!$mailbox) {
-        $phpgw->set_var("row_message",lang("Could not open this mailbox"));
+        $phpgw->template->set_var("row_message",lang("Could not open this mailbox"));
         $phpgw->template->parse("rows","row_message");
      } else {
-        $phpgw->set_var("row_message",lang("This folder is empty"));
+        $phpgw->template->set_var("row_message",lang("This folder is empty"));
         $phpgw->template->parse("rows","row_message");
      }
   }
