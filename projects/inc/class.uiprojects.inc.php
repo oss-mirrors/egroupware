@@ -69,6 +69,14 @@
 			$this->sort					= $this->boprojects->sort;
 			$this->cat_id					= $this->boprojects->cat_id;
 			$this->status					= $this->boprojects->status;
+			
+//ndee 140504
+			if (!is_object($this->jscal))
+				{
+					$this->jscal = CreateObject('phpgwapi.jscalendar');
+				}
+//ndee
+
 		}
 
 		function save_sessiondata($action)
@@ -734,8 +742,13 @@
 
 		function edit_project()
 		{
-//ndee 130504
-			$jscal = CreateObject('phpgwapi.jscalendar');
+
+//ndee 140504
+			if (!is_object($this->jscal))
+				{
+					$tihs->jscal = CreateObject('phpgwapi.jscalendar');
+				}
+//ndee
 
 			$action			= get_var('action',array('GET','POST'));
 			$pro_main		= get_var('pro_main',array('GET','POST'));
@@ -768,6 +781,12 @@
 
 				$values['book_activities'] = $book_activities;
 				$values['bill_activities'] = $bill_activities;
+
+				$startdate = $this->jscal->input2date($values['startdate']);
+				$values['sdate'] = $startdate['raw'];
+				$values['sday'] = $startdate['day'];
+				$values['smonth'] = $startdate['month'];
+				$values['syear'] = $startdate['year'];
 
 				$error = $this->boprojects->check_values($action, $values);
 				if (is_array($error))
@@ -1036,10 +1055,10 @@
 
 //ndee 130504 new date selectors
 
-			$GLOBALS['phpgw']->template->set_var('start_date_select',$jscal->input('values[startdate]',$values['sdate']?$values['sdate']:time()+(60*60*24*7)));
-			$GLOBALS['phpgw']->template->set_var('end_date_select',$jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
-			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$jscal->input('values[pstartdate]',$values['psdate']?$values['psdate']:time()+(60*60*24*7)));
-			$GLOBALS['phpgw']->template->set_var('pend_date_select',$jscal->input('values[penddate]',$values['pedate']?$values['pedate']:''));
+			$GLOBALS['phpgw']->template->set_var('start_date_select',$this->jscal->input('values[startdate]',$values['sdate']?$values['sdate']:time()+(60*60*24*7)));
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$this->jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
+			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$this->jscal->input('values[pstartdate]',$values['psdate']?$values['psdate']:time()+(60*60*24*7)));
+			$GLOBALS['phpgw']->template->set_var('pend_date_select',$this->jscal->input('values[penddate]',$values['pedate']?$values['pedate']:''));
 
 //ndee 130504 new date selectors
 

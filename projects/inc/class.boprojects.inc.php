@@ -74,13 +74,6 @@
 
 			$this->html_output	= True;
 
-//ndee 130504
-			if (!is_object($this->jscal))
-				{
-					$this->jscal = CreateObject('phpgwapi.jscalendar');
-				}
-//ndee
-
 			if ($is_active)
 			{
 				$this->read_sessiondata($action);
@@ -1370,19 +1363,37 @@
 
 			$values['ptime'] = intval($values['ptime'])*60;
 			
-//NDEE 130504
+//ndee 130504
+			if (!is_object($this->jscal))
+				{
+					$this->jscal = CreateObject('phpgwapi.jscalendar');
+				}
+//ndee
+
+//NDEE 140504
 
 			$startdate = $this->jscal->input2date($values['startdate']);
-			$values['sdate'] = $startdate['raw'];
+			$values['sday'] = $startdate['day'];
+			$values['smonth'] = $startdate['month'];
+			$values['syear'] = $startdate['year'];
+
 			$enddate = $this->jscal->input2date($values['enddate']);
-			$values['edate'] = $enddate['raw'];
+			$values['eday'] = $enddate['day'];
+			$values['emonth'] = $enddate['month'];
+			$values['eyear'] = $enddate['year'];
+
 			$pstartdate = $this->jscal->input2date($values['pstartdate']);
-			$values['psdate'] = $pstartdate['raw'];
+			$values['psday'] = $pstartdate['day'];
+			$values['psmonth'] = $pstartdate['month'];
+			$values['psyear'] = $pstartdate['year'];
+
 			$penddate = $this->jscal->input2date($values['penddate']);
-			$values['pedate'] = $penddate['raw'];
+			$values['peday'] = $penddate['day'];
+			$values['pemonth'] = $penddate['month'];
+			$values['peyear'] = $penddate['year'];
 //NDEE
 
-/*
+
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
 				$values['sdate'] = mktime(12,0,0,$values['smonth'], $values['sday'], $values['syear']);
@@ -1408,7 +1419,7 @@
 			{
 				$values['psdate'] = mktime(12,0,0,$values['psmonth'],$values['psday'],$values['psyear']);
 			}
-*/
+
 			if (!$values['previous'] && $values['parent'])
 			{
 				$values['previous'] = $this->return_value('previous',$values['parent']);
