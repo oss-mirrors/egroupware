@@ -50,8 +50,8 @@
 
   // If they don't have any stocks in there, give them something to look at
   if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
-     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"LNUX","stocks","VA%20Linux");
-     $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"RHAT","stocks","RedHat");
+     $phpgw->preferences->change("stocks","LNUX");
+     $phpgw->preferences->change("stocks","RHAT");
      $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
      $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
   }
@@ -141,5 +141,5 @@
     </tr>
    </table>
 <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
 ?>
