@@ -16,7 +16,7 @@
   include("../../header.inc.php");
 
   $actiontype = "addforum";
-  $buttontext = langs("Add Forum");
+  $buttontext = lang("Add Forum");
   $extrahidden = "";
 
   if($act == "edit") {
@@ -35,7 +35,7 @@
     $catname = $phpgw->db->f("name");
     $extraselect = "<option value=\"" . $cat_id . "\">" . $catname ."</option>";
     $extrahidden = "<input type=\"hidden\" name=\"for_id\" value=\"$for_id\">";
-    $buttontext = langs("Update Forum");
+    $buttontext = lang("Update Forum");
     $actiontype = "updforum";
    }
   }
@@ -68,19 +68,19 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . langs("Forums") . " " . langs("Admin") . "</b></td>" . "</tr>"; ?>
+<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . langs("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . langs("New Forum") ."</a>";   
+echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang("New Forum") ."</a>";   
 echo " | ";
-echo "<a href=\"" . $phpgw->link("./") . "\">" . langs("Return to Admin") ."</a>";  
+echo "<a href=\"" . $phpgw->link("./") . "\">" . lang("Return to Admin") ."</a>";  
 echo " | ";
-echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a>";
   
 ?>
   </font>
@@ -89,7 +89,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
   <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
     <td colspan=2 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo langs("Create New Forum")?></center>
+     <center><?echo lang("Create New Forum")?></center>
     </td>
    </tr>
    <tr>
@@ -98,7 +98,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
     <? echo $extrahidden ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
 
-    <td><? echo langs("Belongs to Category") ?>:</td>
+    <td><? echo lang("Belongs to Category") ?>:</td>
     <td>
      <select name="goestocat">
 <?
@@ -113,11 +113,11 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
     </select>
    </td>
    <tr>
-    <td><? echo langs("Forum Name") ?>:</td>
+    <td><? echo lang("Forum Name") ?>:</td>
     <td><input type="text" name="forname" size=40 maxlength=49 value="<? echo $forname ?>"></td>
    </tr>  
    <tr>
-    <td><? echo langs("Forum Description") ?>:</td>
+    <td><? echo lang("Forum Description") ?>:</td>
     <td><textarea rows="3" cols="40" name="fordescr" virtual-wrap maxlength=240><? echo $fordescr ?></textarea></td>
    </tr>
    <tr>

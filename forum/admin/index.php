@@ -18,17 +18,17 @@
 <p>
 <table border="0" width=100%>
 <tr>
-<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . langs("Forums") . " " . langs("Admin") . "</b></td>" . "</tr>"; ?>
+<?  echo "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] . "\" align=\"left\"><b>" . lang("Forums") . " " . lang("Admin") . "</b></td>" . "</tr>"; ?>
 
 <tr>
  <td>
   <font size=-1>
 <?
-echo "<a href=\"" . $phpgw->link("category.php") . "\">" . langs("New Category") ."</a>";
+echo "<a href=\"" . $phpgw->link("category.php") . "\">" . lang("New Category") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . langs("New Forum") ."</a>";
+echo "<a href=\"" . $phpgw->link("forum.php") . "\">" . lang("New Forum") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a>";
 
 ?>
   </font>
@@ -37,7 +37,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
   <table border="0" width=80% bgcolor="<? echo $phpgw_info["theme"]["table_bg"]?>">
    <tr>
     <td colspan=3 bgcolor="<?echo $phpgw_info["theme"]["th_bg"]?>">
-     <center><?echo langs("Current Categories and Sub Forums")?></center>
+     <center><?echo lang("Current Categories and Sub Forums")?></center>
     </td>
    </tr>
    <tr>
@@ -52,7 +52,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
   echo "<tr bgcolor=\"" . $phpgw_info["theme"]["bg06"] . "\">\n";
   echo " <td valign=top align=left width=20%>$cat_name</td>\n";
   echo " <td valign=top align=left width=70%>$cat_descr</td>\n"; 
-  echo "   <td width=150><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$cat_id") ."\">" . langs("Edit") . "</td>\n";
+  echo "   <td width=150><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$cat_id") ."\">" . lang("Edit") . "</td>\n";
   echo "</tr>\n";
   echo "<tr>\n";
   echo " <td colspan=3 align=right valign=top>\n";
@@ -63,7 +63,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
    echo "  <tr>\n";
    echo "   <td width=20%>" . $phpgw->db->f("name") . "</td>\n";
    echo "   <td width=70%>" . $phpgw->db->f("descr") . "</td>\n";
-   echo "   <td width=150>" . langs("Edit") . "</td>\n";
+   echo "   <td width=150>" . lang("Edit") . "</td>\n";
    echo "  </tr>\n";
 */
 
@@ -75,7 +75,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . langs("Return to Forums") ."</
     echo "  <tr bgcolor=\"$tr_color\">\n";
     echo "   <td width=20%>" . $row["name"] . "</td>\n";
     echo "   <td width=70%>" . $row["descr"] . "</td>\n";
-    echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . langs("Edit") . "</td>\n";
+    echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . lang("Edit") . "</td>\n";
     echo "  </tr>\n";
 
 

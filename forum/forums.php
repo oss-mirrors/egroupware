@@ -23,7 +23,7 @@
  $phpgw->db->next_record();
  $category = $phpgw->db->f("name");
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><a href=' . $phpgw->link("index.php") .'>' . langs("Forums") .'</a> : ' . $category . '</td>' . '</tr>';
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") .'</a> : ' . $category . '</td>' . '</tr>';
  echo "<tr>";
  echo '<td align="left" width="50%" valign="top">';
  echo "<center>";

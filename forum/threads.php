@@ -29,7 +29,7 @@
 
  $catfor = "cat=" . $cat . "&for=" . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . langs("Forums") ;
+ echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang("Forums") ;
  echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ' . $forums . '</font></td></tr>';
 
 
@@ -44,10 +44,10 @@
    // Collapsed view
    if(!$col) {
     echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
-	echo "<th width=40%>" .langs("Topic") ."</th>";
-	echo "<th>".langs("Author") ."</th>";
-	echo "<th>".langs("Replies")."</th>";
-	echo "<th>".langs("Latest Reply")."</th>";
+	echo "<th width=40%>" .lang("Topic") ."</th>";
+	echo "<th>".lang("Author") ."</th>";
+	echo "<th>".lang("Replies")."</th>";
+	echo "<th>".lang("Latest Reply")."</th>";
     echo "</tr>";
     $phpgw->db->query("select * from f_threads where cat_id = $cat and for_id = $for and parent = -1");
     while($phpgw->db->next_record()) {
@@ -81,9 +81,9 @@
    // Threaded view  ...... I hate these darn threads, and this gotta redo soon
    } else {
     echo "<tr bgcolor=" . $phpgw_info["theme"]["th_bg"] . " align=left>";
-	echo "<th width=40%>" .langs("Topic") ."</th>";
-	echo "<th>".langs("Author") ."</th>";
-	echo "<th>".langs("Date")."</th>";
+	echo "<th width=40%>" .lang("Topic") ."</th>";
+	echo "<th>".lang("Author") ."</th>";
+	echo "<th>".lang("Date")."</th>";
     echo "</tr>";
     echo "<tr>";
 
@@ -97,7 +97,7 @@
 
    }
  echo "</table>";
- if(!$phpgw->db->num_rows()) echo "<b>" . langs("No messages available!") . "</b>";
+ if(!$phpgw->db->num_rows()) echo "<b>" . lang("No messages available!") . "</b>";
 
  echo "</center>";
    ?>
