@@ -112,6 +112,7 @@ function comic_resolve_remote($remote_enabled, &$comic_url, &$comic_day)
       case "United":
         break;
       case "King":
+/*
         $baseurl = "{-15d}http://est.rbma.com/content/";
         $parseurl = $phpgw->db->f("data_title")."?date={Ymd}";
 
@@ -119,8 +120,10 @@ function comic_resolve_remote($remote_enabled, &$comic_url, &$comic_day)
         
         $status = comic_resolver($parseurl, &$comic_time);
 
-        $comicurl = $baseurl.$parseurl;
+        $comic_url = $baseurl.$parseurl;
         $status = STD_NOREMOTE;
+        echo $comic_url;
+*/        
         break;
       case "Comics":
         break;
