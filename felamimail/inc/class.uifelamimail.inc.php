@@ -252,7 +252,7 @@
 			{
 				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
 			}
-			//$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
+			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
@@ -941,6 +941,7 @@
 // 29-12-2003 NDEE
 // ToDo
 // check how many mails in folder
+// different style of parsing folders into file
 // open to active folder on reload
 
 			$counter = 0;
@@ -958,7 +959,6 @@
 				if ($this->mailbox == $key) 
 				{
 					$selected = ' selected';
-//ndee inserted
 					$this->t->set_var('current_folder',str_replace(".","",$value));
 				
 				}
@@ -968,8 +968,6 @@
 							htmlspecialchars($value));
 			
 				$counted_dots = substr_count($value,".");
-
-/*
 
 				if ($this->mailbox == $key) 
 				{
@@ -998,41 +996,6 @@
 				{
 					$parent = $last_parent;
 				}
-*/
-				if ($this->mailbox == $key) 
-				{
-					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
-				}
-				else
-				{
-					$folder_name = str_replace(".","",$value);
-				}
-
-				$folder_title = str_replace(".","",$value);
-				$folder_icon = $folderImageDir."/foldertree_folder.gif";
-
-				if($counter==0)
-				{
-					$parent = -1;
-					$folder_icon = $folderImageDir."/foldertree_felamimail_sm.png";
-				}
-				else
-				{
-					$folder_array[$key] = $counter;
-					$parent_name = str_replace(".".ltrim($folder_name),'',$key);
-					$parent_code = $folder_array[$parent_name];
-					$parent = intval($parent_code);
-				}
-
-//				if($folder_name = "INBOX")
-				if($counter < 5)
-				{
-
-					$folderStatus	= $this->bofelamimail->getFolderStatus($key);
-					$unseen = $folderStatus[unseen];
-					if($unseen != 0) $folder_name = "<b>".$folder_name." <small>(".$unseen.")</small></b>";
-				}
-
 // Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
 				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon');";
 				$counter++;
