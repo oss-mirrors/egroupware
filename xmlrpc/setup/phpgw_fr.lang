@@ -1,5 +1,6 @@
 (optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	fr	(optionnel: régler le domaine pour le login utilisateur/client, demandé: régler ce nom de serveur pour le login serveur)
 addressbook test	xmlrpc	fr	Test de carnet d'adresses
+app registry by id	xmlrpc	fr	Enregistrement d'application par ID
 apps	xmlrpc	fr	Apps
 assigned kp3	xmlrpc	fr	kp3 assigné
 assigned sessionid	xmlrpc	fr	Sessionid assigné
