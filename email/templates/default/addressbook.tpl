@@ -1,7 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML LANG="en">
 <head>
 <title>{title}</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
-<link rel="stylesheet" href="templates/default/style.css">                                                                                                                                                                                         
+<meta http-equiv="content-type" content="text/html; charset="{charset}">
+<STYLE type="text/css">                                                                                                                                                                                         
+   A {text-decoration:none;}                                                                                                                                                    
+   <!--
+   A:link {text-decoration:none;}                                                                                                                            
+   A:visted {text-decoration:none;}                                                                                                                          
+   A:active {text-decoration:none;}                                                                                                                          
+   body {margin-top: 0px; margin-right: 0px; margin-left: 0px;}
+   td {text-decoration:none;}
+   tr {text-decoration:none;}
+   table {text-decoration:none;}
+   center {text-decoration:none;}
+   -->
+</STYLE>
 <script LANGUAGE="JavaScript">
    function ExchangeTo(thisform)
    {

@@ -23,6 +23,8 @@
                      "addressbook_list"   => "addressbook.tpl"));
   $t->set_block("addressbook_list_t","addressbook_list","list");
   
+  $charset = $phpgw->translation->translate("charset");                                                                                                    
+  $t->set_var("charset",$charset);
   $t->set_var(title,$phpgw_info["site_title"]);
   $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
   $t->set_var(lang_addressbook_action,lang("Address book"));
