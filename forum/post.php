@@ -41,15 +41,10 @@
 			. "0,$next_f_body_id,-1,'" . $session_info['cat_id'] . "','" . $session_info['forum_id']
 			. "','" . $phpgw_info['user']['account_id'] . "','$subject',$stat,0)",__LINE__,__FILE__);
 
-		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES ("
-			. "$cat,$for,'$message')",__LINE__,__FILE__);
+		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES ('"
+			. $session_info['cat_id'] . "','" . $session_info['forum_id'] . "','$message')",__LINE__,__FILE__);
 
-		$link_values = array(
-			'cat' => $cat,
-			'for' => $for,
-			'col' => $col
-		);
-		$phpgw->redirect($phpgw->link('/forum/threads.php',$link_values));
+		$phpgw->redirect($phpgw->link('/forum/threads.php'));
 		$phpgw->common->phpgw_exit();
 	}
 
