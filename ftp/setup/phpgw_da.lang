@@ -18,7 +18,7 @@ log into ftp server	ftp	da	Logger på FTP server
 logout/relogin	ftp	da	Logud/Genlogin
 password	ftp	da	Adgangskode
 permissions	ftp	da	Rettigheder
-rename		ftp	da	omdøb
+rename	ftp	da	omdøb
 rename file	ftp	da	Omdøb fil
 rename from	ftp	da	Omdøb fra
 rename to	ftp	da	til
