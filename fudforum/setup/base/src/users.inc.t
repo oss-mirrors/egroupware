@@ -64,7 +64,7 @@ function init_user()
 			$thm->locale = file_get_contents($GLOBALS['DATA_DIR'].'thm/default/i18n/'.$langl[$lang].'/locale');
 			$thm->theme_opt = 1;
 			$thm->add();
-			compile_all('default', $langl[$lang]);
+			compile_all('default', $langl[$lang], $langl[$lang]);
 			$o = db_sab("SELECT * FROM {SQL_TABLE_PREFIX}themes WHERE lang='{$langl[$lang]}'");
 		}
 		$u->lang = $o->lang;

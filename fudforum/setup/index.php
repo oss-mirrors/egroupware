@@ -175,7 +175,7 @@ if (!function_exists('file_get_contents')) {
 		$lang = 'english';
 	}
 
-	$locale = trim(fread(fopen("{$DATA_DIR}/thm/default/i18n/{$lang}/charset", "r"), 1024));
+	$locale = trim(fread(fopen("{$DATA_DIR}/thm/default/i18n/{$lang}/locale", "r"), 1024));
 	$pspell_lang = trim(fread(fopen("{$DATA_DIR}/thm/default/i18n/{$lang}/pspell_lang", "r"), 1024));
 
 	$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_fud_themes");
