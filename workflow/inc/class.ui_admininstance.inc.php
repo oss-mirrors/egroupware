@@ -75,14 +75,14 @@
 				'message'			=> implode('<br>', $this->message),
 				'iid'				=> $iid,
 				'form_action'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_admininstance.form'),
-				'instance_process'	=> lang('Instance: %1 (Process: %2)', $instance['instanceid'], $process['name'] . ' ' . $process['version']),
-				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance['started']),
-				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['instanceId']),
-				'wi_wi'				=> $instance['workitems'],
-				'status_active'		=> ($instance['status'] == 'active')? 'selected="selected"' : '',
-				'status_exception'	=> ($instance['status'] == 'exception')? 'selected="selected"' : '',
-				'status_completed'	=> ($instance['status'] == 'completed')? 'selected="selected"' : '',
-				'status_aborted'	=> ($instance['status'] == 'aborted')? 'selected="selected"' : '',
+				'instance_process'	=> lang('Instance: %1 (Process: %2)', $instance['wf_instance_id'], $process['wf_name'] . ' ' . $process['wf_version']),
+				'inst_started'		=> $GLOBALS['phpgw']->common->show_date($instance['wf_started']),
+				'wi_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorworkitems.form&filter_instance='. $instance['wf_instance_id']),
+				'wi_wi'				=> $instance['wf_workitems'],
+				'status_active'		=> ($instance['wf_status'] == 'active')? 'selected="selected"' : '',
+				'status_exception'	=> ($instance['wf_status'] == 'exception')? 'selected="selected"' : '',
+				'status_completed'	=> ($instance['wf_status'] == 'completed')? 'selected="selected"' : '',
+				'status_aborted'	=> ($instance['wf_status'] == 'aborted')? 'selected="selected"' : '',
 			));
 
 
@@ -154,7 +154,7 @@
 
 					$this->t->set_var(array(
 						'inst_act_name'				=> $activity['wf_name'],
-						'inst_act_status'			=> $activity['wf_actstatus'],
+						'inst_act_status'			=> $activity['wf_act_status'],
 						'inst_act_id'				=> $activity['wf_activity_id'],
 						'inst_act_star_selected'	=> ($activity['wf_user'] == '*')? 'selected="selected"' : '',
 					));
