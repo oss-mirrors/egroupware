@@ -130,15 +130,15 @@ $lstCategory=$phpgw->db->f("t_category");
 <?php
   $details_string = nl2br(stripslashes($phpgw->db->f("t_detail")));
   if (empty($details_string)) {
-    echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
+    echo "   <input type=hidden value=\"" . htmlentities($details_string) . "\" name=\"prevtxtdetail\">";
     echo "     <tr>\n";
     echo "         <td colspan=3 align=center>\n";
     echo "         <textarea rows=\"12\" name=\"txtDetail\" cols=\"70\" wrap=physical></textarea>\n";
     echo "       </td>\n";
   } else {  
-    echo "   <input type=hidden value=\"$details_string\" name=\"prevtxtdetail\">";
+    echo "   <input type=hidden value=\"" . htmlentities($details_string) . "\" name=\"prevtxtdetail\">";
     echo "    <tr><td colspan=3 align=left><br><b>".lang("Subject").":</b> " . stripslashes($phpgw->db->f("t_subject")) . "<br><br>";
-    echo "    <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> $details_string </td></tr>\n";
+    echo "    <tr><td colspan=3 align=left><B>".lang("Details").":</B><BR> " . stripslashes($details_string) . " </td></tr>\n";
     echo "    <tr><td colspan=3 align=left><BR><BR>".lang("Additional notes").":<BR></td></tr>\n";
     echo "     <tr>\n";
     echo "         <td colspan=3 align=center>\n";
