@@ -3,6 +3,13 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Version 0.8.205a
+Fri Dec 24 17:01:31 CET 2004
+=============================
+- Completely rewritten pager for listview
+- Added general preference for records per page
+- code cleanups
+
 Version 0.8.205
 Wed Dec 22 16:42:47 CET 2004
 =============================

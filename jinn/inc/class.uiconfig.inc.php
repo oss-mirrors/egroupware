@@ -48,12 +48,13 @@
 
 			}
 
+
 			if (count($columns)>0)
 			{
 				// get the prefered columns, if they exist
-				$prefs_show_hide=$this->bo->read_preferences('show_fields'.$this->bo->site_object[id]); 
+				$prefs_show_hide=$this->bo->read_preferences('show_fields'.$this->bo->site_object[object_id]); 
 
-				$default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object[id]);
+				$default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object[object_id]);
 
 
 				$prefs_show_hide=explode('|',$prefs_show_hide);

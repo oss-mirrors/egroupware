@@ -6,27 +6,20 @@
 
 	<table cellpadding="0" cellspacing="0" style="border:solid 1px #cccccc">
 <tr>
-	<td><form action="{menu_action}" method="post">
+<!--	<td>
 			<table cellpadding="0" cellspacing="0">
 				<tr>
-					<td><input type="submit" name="direction" value="<<"></td>
-					<td><input type="submit" name="direction" value="<"></td>
-					<td><input type="submit" name="direction" value=">"></td>
-					<td><input type="submit" name="direction" value=">>">
-						<input type="hidden" name="limit_start" value="{limit_start}">
-						<input type="hidden" name="limit_stop" value="{limit_stop}">
-						<input type="hidden" name="search" value="{search_string}">
-						<input type="hidden" name="orderby" value="{orderby}">
+					<td><input type="button" name="direction" value="<<"></td>
+					<td><input type="button" name="direction" value="<"></td>
+					<td><input type="button" name="direction" value=">"></td>
+					<td><input type="button" name="direction" value=">>">
 					</td>
 				</tr>
 			</table>
-		</form>
-	</td>
+	</td>-->
 	<td align="center" style="padding-left:20px;">
 		<form action="{menu_action}" method="post">{search_for}&nbsp;<input type="text" size="8" name="search" value="{search_string}">
 		<input type="submit" value="{search}">
-		<input type="hidden" name="limit_start" value="0">
-		<input type="hidden" name="limit_stop" value="30">
 		</form>	
 	</td>
 </tr>
@@ -155,8 +148,19 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <br/>
 <div style="background-color:#ffffff;border:solid 1px #cccccc;">
 <table border="0" cellspacing="1" cellpadding="0" align="center" width="100%" >
-<tr><td style="font-size:12px;font-weight:bold;padding:2px;border-bottom:solid 1px #006699" align="left">{table_title}</td></tr>
+	<tr>
+		<td style="padding:2px;border-bottom:solid 1px #006699" align="left">
+			<table cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+				<td style="font-size:12px;font-weight:bold;">{table_title}</td>
+				<td style="font-size:10px;font-weight:normal" align="center">{pager}</td>
+				<td style="font-size:10px;font-weight:normal" align="right">{total_records} - {rec_per_page}</td>
+				</tr>
+			</table>
+			</td>
+		</tr>
 </table>
+
 <form name="frm" action="{list_form_action}" method="post">
 <input type="hidden" name="action" value="none">
 <table border="0" cellspacing="1" cellpadding="0" width="100%" style="padding-bottom:3px;border-bottom:solid 1px #006699">
@@ -213,8 +217,6 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <tr valign="top" bgcolor="{colhead_bg_color}">
 
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><input title="{colfield_lang_check_all}" type="checkbox" name="CHECKALL" id="CHECKALL" value="TRUE" onclick="doCheckAll(this)" /></td>
-
-<!--<td width="1%"  bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_view_sel}" href="#"><img src="{colfield_view_img_src}" alt="{colfield_lang_view_sel}" /></a></td>-->
 
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_edit_sel}" href="javascript:submit_multi_edit()"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit_sel}" /></a></td>
 

@@ -247,15 +247,16 @@
 		 return $fieldnames;
 	  }
 
-	  /****************************************************************************\
-	  * get all tablefield in array for table                                      *
-	  \****************************************************************************/
-
+	  /**
+	  @function num_rows_table
+	  @ abstract get all tablefield in array for table                                      
+	  */
 	  function num_rows_table($site_id,$table)
 	  {
 		 $this->site_db_connection($site_id);
 
-		 $this->site_db->query("SELECT * FROM $table",__LINE__,__FILE__);
+		 $sql="SELECT * FROM $table";
+		 $this->site_db->query($sql,__LINE__,__FILE__);
 
 		 $num_rows=$this->site_db->num_rows();
 

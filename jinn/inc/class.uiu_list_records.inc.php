@@ -61,7 +61,7 @@
 		 unset($this->bo->mult_where_array);
 
 
-		
+
 		 if($this->bo->site_object[max_records]==1)
 		 {
 			$columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
@@ -119,6 +119,114 @@
 	  }
 
 	  /**
+	  @function pager
+	  @abstract create pager to browse through pages in listview
+	  */
+	  function pager($current_page,$total_records,$rec_per_page)
+	  {
+		 if(!$current_page) $current_page=1;
+
+		 $total_pages_tmp=$total_records/$rec_per_page;
+
+		 if(is_float($total_pages_tmp))
+		 {
+			$total_pages = intval($total_pages_tmp)+1;
+		 }
+		 else
+		 {
+			$total_pages = intval($total_pages_tmp);
+		 }
+
+		 if($current_page>1)
+		 {
+			$pager='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($current_page-1)).'" title="'.lang('One page backwards').'">&lt&lt;</a>&nbsp;';
+		 }
+
+		 if($total_pages > 10)
+		 {
+			if($current_page<7)
+			{
+			   // start
+			   for($i=1; $i<=9;$i++)
+			   {
+				  if($current_page==$i)
+				  {
+					 $pager.= '<span style="font-weight:bold;">'.$i.'</span>&nbsp;';	
+				  }
+				  else
+				  {
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+				  }
+			   }
+
+			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
+
+			   //einde start
+			}
+			elseif($current_page <= ($total_pages-6))
+			{
+			   //midden
+			   $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.'1').'" title="'.lang('Page %1','1').'">'.'1'.'</a>&nbsp;...&nbsp;';	
+
+			   for($i=($current_page-4); $i<=($current_page+4);$i++)
+			   {
+				  if($current_page==$i)
+				  {
+					 $pager.= '<span style="font-weight:bold;">'.$i.'</span>&nbsp;';	
+				  }
+				  else
+				  {
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+				  }
+			   }
+
+			   $pager.= '...&nbsp;<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($total_pages)).'" title="'.lang('Page %1',$total_pages).'">'.$total_pages.'</a>&nbsp;';	
+
+			}
+			else
+			{
+			   //eind
+			   $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.'1').'" title="'.lang('Page %1','1').'">'.'1'.'</a>&nbsp;...&nbsp;';	
+
+			   for($i=($total_pages-8); $i<=$total_pages;$i++)
+			   {
+				  if($current_page==$i)
+				  {
+					 $pager.= '<span style="font-weight:bold;">'.$i.'</span>&nbsp;';	
+				  }
+				  else
+				  {
+					 $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+				  }
+			   }
+			}
+		 }
+		 else
+		 {
+			for($i=1; $i<=$total_pages;$i++)
+			{
+			   if($current_page==$i)
+			   {
+				  $pager.= '<span style="font-weight:bold;">'.$i.'</span>&nbsp;';	
+			   }
+			   else
+			   {
+				  $pager.= '<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($i)).'" title="'.lang('Page %1',$i).'">'.$i.'</a>&nbsp;';	
+			   }
+			}
+
+		 }
+
+		 if($total_pages>1 && $current_page!=$total_pages)
+		 {
+			$pager.='<a href="'.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display&current_page='.($current_page+1)).'" title="'.lang('One page forward').'">&gt;&gt;</a>';
+		 }
+
+		return $pager;
+		 
+	  }
+
+	  /**
 	  @function list_records
 	  @abstract make recordlist for browsing and selecting records
 	  @todo implement nextmatch-class, number of record, better navigation, 
@@ -130,6 +238,7 @@
 	  {
 		 unset($this->bo->mult_where_array);
 
+		 // check if table exists
 		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
 		 {
 			unset($this->bo->site_object_id);
@@ -140,6 +249,7 @@
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }				
 
+		 // check if there's permission to this object
 		 if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
 		 {
 			unset($this->bo->site_object_id);
@@ -150,10 +260,9 @@
 			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
 		 }
 
-		 $this->ui->header('browse through objects');
+		 $this->ui->header('browse through records');
 		 $this->ui->msg_box($this->bo->message);
 		 unset($this->bo->message);
-
 
 		 $this->ui->main_menu();	
 
@@ -169,39 +278,47 @@
 		 $this->template->set_block('list_records','emptyfooter','emptyfooter');
 		 $this->template->set_block('list_records','footer','footer');
 
-		 $pref_columns_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object_id); 
+		 $show_fields_str=$this->bo->read_preferences('show_fields'.$this->bo->site_object_id); 
 		 $default_order=$this->bo->read_preferences('default_order'.$this->bo->site_object_id);
 		 $default_col_num=$this->bo->read_preferences('default_col_num');
 
-		 // FIXME replace with GETS
-		 list($offset,$asc,$orderby,$filter,$navdir,$limit_start,$limit_stop,$direction,$show_all_cols,$search)=$this->bo->common->get_global_vars(array('offset','asc','orderby','filter','navdir','limit_start','limit_stop','direction','show_all_cols','search'));
+		 $current_page = 
+		 ($_GET[current_page]?$_GET[current_page]:$this->bo->browse_settings['current_page']);
 
-		 if(!$offset) $offset= $this->bo->browse_settings['offset'];
-		 if(!$asc)    $asc=    $this->bo->browse_settings['asc']; // FIXME remove?
-		 if(!$filter) $filter= $this->bo->browse_settings['filter'];
-		 if(!$orderby)  $orderby = $this->bo->browse_settings['orderby'];
+		 $rec_per_page = $this->bo->records_per_page();
+		 $offset = $this->bo->get_offset($current_page,$rec_per_page);
+
+		 $filter = ($_GET[filter]?$_GET[filter]:$this->bo->browse_settings['filter']);
+
+		 $orderby = ($_GET[orderby]?$_GET[orderby]:$this->bo->browse_settings['orderby']);
+		 if(!$orderby && $default_order) $orderby=$default_order;
+
+		 $navdir = ($_GET[navdir]?$_GET[navdir]:$this->bo->browse_settings['navdir']);
+		 $direction = ($_GET[direction]?$_GET[direction]:$this->bo->browse_settings['direction']);
+		 $search = ($_GET[search]?$_GET[search]:$this->bo->browse_settings['search']);
+
 		 $this->bo->browse_settings = array
 		 (
 			'offset'=>$offset,
-			'range'=>$range,
 			'navdir'=>$navdir, // FIXME test
 			'orderby'=>$orderby,
 			'filter'=>$filter
 		 );
 
-		 if(!$orderby && $default_order) $orderby=$default_order;
-
 		 $num_rows=$this->bo->so->num_rows_table($this->bo->site_id,$this->bo->site_object['table_name']);
 
-		 $limit=$this->bo->set_limits($limit_start,$limit_stop,$direction,$num_rows);
+		 $lang_total_records= lang('%1 records',$num_rows);
+		 $lang_rec_per_page= lang('%1 records per page', $rec_per_page);
+
+		 // get pager code
+		 $pager=$this->pager($current_page,$num_rows,$rec_per_page);
+
 
 		 $this->template->set_var('list_form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.multiple_actions'));
 
 		 $this->template->set_var('colfield_lang_confirm_delete_multiple',lang('Are you sure you want to delete these multiple records?'));
 		 $this->template->set_var('colfield_lang_confirm_edit_multiple',lang('Are you sure your want to edit these records?'));
 
-		 $this->template->set_var('limit_start',$limit['start']);
-		 $this->template->set_var('limit_stop',$limit['stop']);
 		 $this->template->set_var('orderby',$orderby);
 		 $this->template->set_var('menu_action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_list_records.display'));
 		 $this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
@@ -214,7 +331,9 @@
 		 $this->template->set_var('lang_config_this_tableview',lang('Configure this tableview'));
 		 $this->template->set_var('lang_select_checkboxes',lang('You must select one or more records for this function.'));
 		 $this->template->set_var('search_string',$search);
-		 //			$this->template->set_var('show_all_cols',$show_all_cols);
+		 $this->template->set_var('total_records',$lang_total_records);
+		 $this->template->set_var('rec_per_page',$lang_rec_per_page);
+		 $this->template->set_var('pager',$pager);
 		 $this->template->set_var('lang_Actions',lang('Actions'));
 		 $this->template->set_var('edit',lang('edit'));
 		 $this->template->set_var('delete',lang('delete'));
@@ -228,8 +347,6 @@
 
 		 $this->template->set_var('popuplink',$popuplink);
 
-		 $LIMIT="LIMIT $limit[start],$limit[stop]";
-
 		 /* get one with many relations */
 		 $relation1_array=$this->bo->extract_O2M_relations($this->bo->site_object['relations']);
 		 if (count($relation1_array)>0)
@@ -241,9 +358,9 @@
 		 }
 
 		 /* get prefered columnnames to show */
-		 if ($pref_columns_str)
+		 if ($show_fields_str)
 		 {
-			$all_prefs_show_hide=explode('|',$pref_columns_str);
+			$all_prefs_show_hide=explode('|',$show_fields_str);
 			foreach($all_prefs_show_hide as $pref_show_hide)
 			{
 			   $pref_show_hide_arr=explode(',',$pref_show_hide);
@@ -260,7 +377,6 @@
 			   }
 			}
 		 }
-
 
 		 $columns=$this->bo->so->site_table_metadata($this->bo->site_id, $this->bo->site_object['table_name']);
 		 if(!is_array($columns)) $columns=array();
@@ -288,7 +404,7 @@
 			   if ($where_condition)
 			   {
 				  $where_condition.= " OR {$onecol[name]} LIKE '%$search%'";
-				  $limit="";
+				  $limit=""; // FIXME why is this?
 			   }
 			   else
 			   {
@@ -377,7 +493,7 @@
 			}
 
 			$this->template->set_var('colhead_bg_color',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_list_records.display&orderby=$orderby_link&search=$search&limit_start=$limit_start&limit_stop=$limit_stop&show_all_cols=$show_all_cols"));
+			$this->template->set_var('colhead_order_link',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiu_list_records.display&orderby=$orderby_link"));
 			$this->template->set_var('colhead_name',str_replace('_','&nbsp;',$display_colname));
 			$this->template->set_var('colhead_order_by_img',$orderby_image);
 			$this->template->set_var('tipmouseover',$tipmouseover);
@@ -396,7 +512,7 @@
 			unset($akey_arr);
 		 }
 
-		 $records=$this->bo->get_records($this->bo->site_object[table_name],'','',$limit[start],$limit[stop],'name',$orderby,'*',$where_condition);
+		 $records=$this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','',$offset,$rec_per_page,'name',$orderby,'*',$where_condition);
 
 		 $record_count = count($records);
 

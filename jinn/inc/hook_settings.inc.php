@@ -46,6 +46,8 @@
 
    create_select_box('Disable the WYSIWYG/HTMLArea Plugin','disable_htmlarea',$yes_no,"The WYSIWYG plugin makes you edit text like you do in a program like OpenOffice Writer or Word. Some people don't like this feature though, so you can force JiNN not to use it.");
 
+   create_input_box('Number of records per page','default_record_num',"How many records do you want to list per page?");
+
    create_section('List view');
    $default_col_num = Array(
 	  "3"=>"3",
@@ -60,7 +62,7 @@
 	  "-1"=>lang("Show all colums, always")
    );
 
-   create_select_box('Default number of visable columns ','default_col_num',$default_col_num,"How many columns do you want to be visible by default in List View?");
+     create_select_box('Default number of visable columns ','default_col_num',$default_col_num,"How many columns do you want to be visible by default in List View?");
 
    if ($GLOBALS['phpgw_info']['user']['apps']['admin'])
    {
