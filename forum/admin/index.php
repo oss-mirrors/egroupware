@@ -62,13 +62,13 @@
 
 
 			$phpgw->template->set_var(array(
-			'BG6'		=> $phpgw_info["theme"]["bg03"],
-			'CAT_NAME'	=> $f_tree[$id]["name"],
-			'CAT_DESC'	=> $f_tree[$id]["descr"],
-			'EDIT_LINK'	=> $phpgw->link("/forum/admin/category.php","act=edit&cat_id=$id"),
-			'DEL_LINK'	=> $phpgw->link("/forum/admin/deletecategory.php", "cat_id=$id"),
-			'LANG_EDIT'	=> lang("Edit"),
-			'LANG_DEL'	=> lang("Delete")
+				'BG6'       => $phpgw_info['theme']['bg03'],
+				'CAT_NAME'  => $f_tree[$id]['name'],
+				'CAT_DESC'  => ($f_tree[$id]['descr']?$f_tree[$id]['descr']:'&nbsp;'),
+				'EDIT_LINK'	=> $phpgw->link('/forum/admin/category.php',"act=edit&cat_id=$id"),
+				'DEL_LINK'  => $phpgw->link('/forum/admin/deletecategory.php',"cat_id=$id"),
+				'LANG_EDIT'	=> lang('Edit'),
+				'LANG_DEL'  => lang('Delete')
 			));
 
 
@@ -91,15 +91,15 @@
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
 			$phpgw->template->set_var(array(
-			'TD_BG'		=> 'ffffff',
-			'TR_BG'		=> $tr_color,
-			'SUBCAT_NAME'	=> $f_tree[$id]["forums"][$fid]["name"],
-			'SUBCAT_DESC'	=> $f_tree[$id]["forums"][$fid]["descr"],
-			'SUBEDIT_LINK'	=> $phpgw->link("/forum/admin/forum.php","act=edit&for_id=$fid"),
-			'SUBDEL_LINK'	=> $phpgw->link("/forum/admin/deleteforum.php",	"for_id=$fid"),
-			'LANG_EDIT'	=> lang("Edit"),
-			'LANG_DEL'	=> lang("Delete"),
-			'LANG_FORUM'	=> lang("Forum")
+				'TD_BG'        => 'ffffff',
+				'TR_BG'        => $tr_color,
+				'SUBCAT_NAME'  => $f_tree[$id]['forums'][$fid]['name'],
+				'SUBCAT_DESC'  => ($f_tree[$id]['forums'][$fid]['descr']?$f_tree[$id]['forums'][$fid]['descr']:'&nbsp;'),
+				'SUBEDIT_LINK' => $phpgw->link('/forum/admin/forum.php',"act=edit&for_id=$fid"),
+				'SUBDEL_LINK'  => $phpgw->link('/forum/admin/deleteforum.php',	"for_id=$fid"),
+				'LANG_EDIT'    => lang('Edit'),
+				'LANG_DEL'     => lang('Delete'),
+				'LANG_FORUM'   => lang('Forum')
 			));
 
 			//Parsing the inner block
