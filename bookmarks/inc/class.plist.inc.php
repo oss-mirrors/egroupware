@@ -59,16 +59,16 @@
 			'SUBCATEGORY'        => htmlspecialchars(stripslashes($subcategory)),
 //			'SUBCATEGORY_SEARCH' => $subcat_search
 		));
-        
+
 		$list_tpl->fp('LIST_HDR','list_header');
-		$list_tpl->fp('LIST_FTR','list_footer');
+		$list_tpl->fp('LIST_FTR','list_footer');        
 		$list_tpl->fp('CONTENT','list_section',TRUE);
 		$list_tpl->set_var('LIST_ITEMS','');
 	}
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		global $phpgw, $phpgw_info, $bm_cat;
+		global $phpgw, $phpgw_info, $bm_cat, $page_header_shown;
 
 		$list_tpl = $phpgw->template;
 
@@ -84,7 +84,16 @@
 		$list_tpl->set_block('list','page_footer');
 
 		$list_tpl->set_var('list_mass_select_form',$phpgw->link('/bookmarks/mass_maintain.php'));
-		$list_tpl->fp('header','page_header');
+
+		if (! $page_header_shown)
+		{
+			$list_tpl->fp('header','page_header');
+			$page_header_shown = True;
+		}
+		else
+		{
+			$list_tpl->set_var('header','');
+		}
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
 		if (is_array($phpgw->bookmarks->grants))
