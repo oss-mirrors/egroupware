@@ -74,6 +74,8 @@ function init_user()
 		$u->theme = $o->theme;
 		$u->pspell_lang = $o->pspell_lang;
 		$u->theme_opt = $o->theme_opt;
+
+		q("UPDATE {SQL_TABLE_PREFIX}users SET theme=".$u->theme_id." WHERE id=".$u->id);
 	}
 
 	if ($u->data) {
