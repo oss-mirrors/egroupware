@@ -5,9 +5,9 @@
 	* Written by Mark A Peters <skeeter@phpgroupware.org>                         *
 	* Based off of Jani Hirvinen <jpkh@shadownet.com>                             *
 	* -------------------------------------------                                 *
-	*  This program is free software; you	can redistribute it and/or modify it  *
-	*  under the terms of	the GNU	General	Public License as published by the    *
-	*  Free Software Foundation; either version 2	of the License,	or (at your   *
+	*  This program is free software; you can redistribute it and/or modify it    *
+	*  under the terms of the GNU General Public License as published by the      *
+	*  Free Software Foundation; either version 2 of the License, or (at your     *
 	*  option) any later version.                                                 *
 	\*****************************************************************************/
 
@@ -83,7 +83,7 @@
 			$this->cat_id   = $data['cat_id'];
 			$this->forum_id = $data['forum_id'];
 		}
-		
+
 		function post()
 		{
 			if (get_var('action',Array('POST')) == 'post')
