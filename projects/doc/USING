@@ -11,33 +11,32 @@ Projecthours manages the daily jobs, Projectbilling is needed to create
 invoices, Projectstatistics creates user- and projectstatistics and 
 Projectdelivery manages delivery notes.
 
-The Projects main page contains an ADD button to create projects and an
-ACTIVITY LIST button. 
-First you have to create your activities. Activities meens global categories
-of your work for sort your jobs and regulate the minutes per workunit and the 
-bill per workunit for each job.  
+The phpGroupWare adminstrator has the ability to choose project administrators.
+This users are able to edit the activities list. The chosen project administrators 
+will have a link to the activities list at their projects app sites. 
+Activities means global categories of your work for sort your jobs and regulate 
+the minutes per workunit and the bill per workunit for each job.  
 
-than you can create your projects and assign activities to them.   
+The Projects main page contains an ADD button to create projects.
+Than you can create your projects and assign activities to them.   
 You can choose the type of activity: bookable(no invoice) or billable.
 The projecthours manages your daily jobs. You can only submit a job to a
-project, if there are activities avaiable.  
+project, if there are activities avaiable. So you have to assign activities to a 
+project before you can add hours to it.  
 
-The project-,activity-,delivery- and invoice-numbers are editable. If you 
-use your own numbers, enter these in the number-field during creating
-a project, an activity, an invoice or a delivery. 
+The project-,activity-,delivery- and invoice-numbers can be auto created or you can 
+edit them by hand.
 
 If you want to create invoices or deliveries you have to select a customer
 before. 
 You must create an invoice or a delivery first (button 'CREATE INVOICE' or
-'CREATE DELIVERY' before you can print that.
+'CREATE DELIVERY' before you can print them.
 A logo.jpg can be found in doc directory. Exchange it for yours or remove it 
 if you don't want a logo in your invoices or deliveries.
 
-You have to create a group 'projectAdmin'. Each member of this group is
-able to modify or delete all projects data.
 The project - coordinator is the chosen primary employee and authorized 
 to modify his project.   
 
 grtx
 
-bettina gille [aeb@hansenet.de]
+bettina gille [ceb@phpgroupware.org]
