@@ -819,16 +819,6 @@
 				$GLOBALS['phpgw']->msg->end_request();
 				
 				// redirect user back to main preferences page
-				//if ($this->debug_set_prefs > 1) 
-				//{
-				//	echo 'email.bopreferences.preferences(): *debug* skipping Header redirection<br>';
-				//}
-				//else
-				//{
-				//	Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
-				//}
-				
-				// redirect user back to main preferences page
 				$take_me_to_url = $GLOBALS['phpgw']->link(
 											'/preferences/index.php');
 			

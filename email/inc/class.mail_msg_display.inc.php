@@ -580,7 +580,8 @@ class mail_msg extends mail_msg_wrappers
 			'on_change'			=> 'document.acctbox.submit()',
 			'is_multiple'		=> False,
 			'multiple_rows'		=> '4',
-			'show_status_is'	=> 'enabled,disabled'
+			'show_status_is'	=> 'enabled,disabled',
+			'pre_select_multi'	=> (string)$acctnum
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
 		if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
@@ -636,7 +637,13 @@ class mail_msg extends mail_msg_wrappers
 			&& ($this->extra_and_default_acounts[$i]['status'] == 'enabled'))
 			{
 				// this logic determines if the combobox should be initialized with certain account already selected
-				if ((string)$local_args['pre_select_acctnum'] == (string)$this_acctnum)
+				if ((!$local_args['is_multiple'])
+				&& ((string)$local_args['pre_select_acctnum'] == (string)$this_acctnum))
+				{
+					$sel = ' selected';
+				}
+				elseif (($local_args['is_multiple'])
+				&& (strstr($local_args['pre_select_multi'], (string)$this_acctnum)))
 				{
 					$sel = ' selected';
 				}

@@ -19,7 +19,7 @@
 			'filters_edit' => True
 		);
 		var $bo;		
-		var $debug = 3;
+		var $debug = 0;
 
 		function uifilters()
 		{
@@ -87,6 +87,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_reject',lang('Reject'));
 			$GLOBALS['phpgw']->template->set_var('lang_redirect',lang('Redirect'));
 			$GLOBALS['phpgw']->template->set_var('lang_fileinto',lang('File into'));
+			$GLOBALS['phpgw']->template->set_var('lang_flag',lang('Flag as important'));
 			$GLOBALS['phpgw']->template->set_var('lang_ignore_me1',lang('not used'));
 			$GLOBALS['phpgw']->template->set_var('lang_and',lang('And'));
 			$GLOBALS['phpgw']->template->set_var('lang_or',lang('Or'));
@@ -95,36 +96,78 @@
 			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 			
 			
-			// DEBUGGING
-			if ($this->debug > 2) { echo 'uifilters.filters: HTTP_POST_VARS dump:<b>'."\r\n"; var_dump($GLOBALS['HTTP_POST_VARS']); echo '<br><br>'."\r\n"; }			
-			
-			
-			// THIS WILL BE MOVED
-			// make the filters object
-			$this->bo = CreateObject("email.bofilters");
-			$this->bo->distill_filter_args();
-			
-			
 			// setup some form vars
+			//$form_edit_filter_action = $GLOBALS['phpgw']->link(
+			//					'/index.php',
+			//					'menuaction=email.uifilters.filters_edit');
 			$form_edit_filter_action = $GLOBALS['phpgw']->link(
 								'/index.php',
-								'menuaction=email.uifilters.filters_edit');
+								'menuaction=email.bofilters.process_submitted_data');
 			
 			$form_cancel_action = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.uifilters.filters_list');
 			
+			// make the filters object
+			$this->bo = CreateObject("email.bofilters");
+			// get all filters
+			$this->bo->read_filter_data_from_prefs();
+			
 			// ---- Filter Number  ----
-			// for now we have only one filter
-			$filternum = 0;
-			$GLOBALS['phpgw']->template->set_var('filternum',$filternum);
+			// what filter are we supposed to edit
+			$filter_num = $this->bo->obtain_filer_num();
+			$GLOBALS['phpgw']->template->set_var('filter_num',$filter_num);
+			
+			if ($this->debug > 2) { echo 'uifilters.filters: $this->bo->obtain_filer_num(): ['.$this->bo->obtain_filer_num().'] ; $this->bo->all_filters DUMP<pre>'; print_r($this->bo->all_filters); echo '</pre>'."\r\n"; }
+			
+			// does the data exist or is this a new filter
+			if ((isset($this->bo->all_filters[$filter_num]))
+			&& (isset($this->bo->all_filters[$filter_num]['source_accounts'])))
+			{
+				$filter_exists = True;
+			}
+			else
+			{
+				$filter_exists = False;
+			}
 			
 			// ----  Filter Name  ----
-			$filter_name_box_name = 'filter_'.$filternum.'[filtername]';
-			$filter_name_box_value = '';
+			$filter_name_box_name = 'filtername';
+			if ($filter_exists)
+			{
+				$filter_name_box_value = $this->bo->all_filters[$filter_num]['filtername'];
+			}
+			else
+			{
+				$filter_name_box_value = 'Filter '.$filter_num;
+			}
 			
 			$GLOBALS['phpgw']->template->set_var('filter_name_box_name',$filter_name_box_name);
 			$GLOBALS['phpgw']->template->set_var('filter_name_box_value',$filter_name_box_value);
+			
+			// ----  source_account_listbox_name Selected logic ----
+			if ($filter_exists)
+			{
+				$pre_select_multi = '';
+				for ($i=0; $i < count($this->bo->all_filters[$filter_num]['source_accounts']); $i++)
+				{
+					$this_acct =  $this->bo->all_filters[$filter_num]['source_accounts'][$i]['acctnum'];
+					// make a comma sep string of all source accounts, so we can make them selected
+					if ($pre_select_multi == '')
+					{
+						$pre_select_multi .= (string)$this_acct;
+					}
+					else
+					{
+						$pre_select_multi .= ', '.(string)$this_acct;
+					}
+				}
+			}
+			else
+			{
+				// preselect the default account
+				$pre_select_multi = '0';
+			}
 			
 			// ---  many email apps offer 2 matches options rows  ---
 			// ---  others offer 1 match options row with the option of more ---
@@ -135,13 +178,13 @@
 				if ($i == 0)
 				{
 					// 1st row has an account combobox
-					//$source_account_listbox_name = 'filter_'.$filternum.'[source_account]'
+					//$source_account_listbox_name = 'filter_'.$filter_num.'[source_account]'
 					// now that we use a multi select box, and php3 can only handle one sub element on POST
 					// we have to put this outside the array that holds the other data
 					// should we use checkboxes instead?
-					$source_account_listbox_name = 'filter_'.$filternum.'_source_accounts[]';
+					$source_account_listbox_name = 'source_accounts[]';
 					$feed_args = Array(
-						'pre_select_acctnum'	=> 0,
+						'pre_select_acctnum'	=> '',
 						'widget_name'			=> $source_account_listbox_name,
 						'folder_key_name'		=> 'folder',
 						'acctnum_key_name'		=> 'acctnum',
@@ -149,7 +192,8 @@
 						'is_multiple'			=> True,
 						'multiple_rows'			=> '4',
 						//'show_status_is'		=> 'enabled,disabled'
-						'show_status_is'		=> 'enabled'
+						'show_status_is'		=> 'enabled',
+						'pre_select_multi'		=> $pre_select_multi
 					);
 					// get you custom built HTML combobox (a.k.a. selectbox) widget
 					$account_multi_box = $GLOBALS['phpgw']->msg->all_ex_accounts_listbox($feed_args);
@@ -159,18 +203,95 @@
 				else
 				{
 					// 2nd row has an and/or combo box with "not enabled" option for when you do not need the 2nd line
-					$andor_select_name = 'filter_'.$filternum.'[match_'.(string)$i.'_andor]';
+					$andor_select_name = 'match_'.(string)$i.'[andor]';
+					// what to preselect
+					$ignore_me_selected = '';
+					$or_selected = '';
+					$and_selected = '';
+					// as our numbers of rows go beyond what the user previously set, there will bo no andor data
+					if (!isset($this->bo->all_filters[$filter_num]['matches'][$i]['andor']))
+					{
+						$ignore_me_selected = ' selected';
+					}
+					elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['andor'] == 'or')
+					{
+						$or_selected = ' selected';
+					}
+					elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['andor'] == 'and')
+					{
+						$and_selected = ' selected';
+					}
+					else
+					{
+						$ignore_me_selected = ' selected';
+					}
 					$GLOBALS['phpgw']->template->set_var('andor_select_name',$andor_select_name);
+					$GLOBALS['phpgw']->template->set_var('or_selected',$or_selected);
+					$GLOBALS['phpgw']->template->set_var('and_selected',$and_selected);
+					$GLOBALS['phpgw']->template->set_var('ignore_me_selected',$ignore_me_selected);
 					$V_match_left_td = $GLOBALS['phpgw']->template->parse('V_match_and_or_ignore','B_match_and_or_ignore');	
 				}
 				// things both rows have
-				$examine_selectbox_name = 'filter_'.$filternum.'[match_'.(string)$i.'_examine]';
-				$comparator_selectbox_name = 'filter_'.$filternum.'[match_'.(string)$i.'_comparator]';
-				$matchthis_textbox_name = 'filter_'.$filternum.'[match_'.(string)$i.'_matchthis]';
-				$match_textbox_txt = '';
-				
+				$examine_selectbox_name = 'match_'.(string)$i.'[examine]';
+				// what to preselect for "examine"
+				$from_selected = '';
+				$to_selected = '';
+				$cc_selected = '';
+				$subject_selected = '';
+				// as our numbers of rows go beyond what the user previously set, there will bo no data
+				if ((!isset($this->bo->all_filters[$filter_num]['matches'][$i]['examine']))
+				|| ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'from'))
+				{
+					$from_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'to')
+				{
+					$to_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'cc')
+				{
+					$cc_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['examine'] == 'subject')
+				{
+					$subject_selected = ' selected';
+				}
+				else
+				{
+					$from_selected = ' selected';
+				}
 				$GLOBALS['phpgw']->template->set_var('examine_selectbox_name',$examine_selectbox_name);
+				$GLOBALS['phpgw']->template->set_var('from_selected',$from_selected);
+				$GLOBALS['phpgw']->template->set_var('to_selected',$to_selected);
+				$GLOBALS['phpgw']->template->set_var('cc_selected',$cc_selected);
+				$GLOBALS['phpgw']->template->set_var('subject_selected',$subject_selected);
+				// COMPARATOR
+				$comparator_selectbox_name = 'match_'.(string)$i.'[comparator]';
+				$contains_selected = '';
+				$notcontains_selected = '';
+				if ((!isset($this->bo->all_filters[$filter_num]['matches'][$i]['comparator']))
+				|| ($this->bo->all_filters[$filter_num]['matches'][$i]['comparator'] == 'contains'))
+				{
+					$contains_selected = ' selected';
+				}
+				elseif ($this->bo->all_filters[$filter_num]['matches'][$i]['comparator'] == 'notcontains')
+				{
+					$notcontains_selected = ' selected';
+				}
+				else
+				{
+					$contains_selected = ' selected';
+				}
 				$GLOBALS['phpgw']->template->set_var('comparator_selectbox_name',$comparator_selectbox_name);
+				$GLOBALS['phpgw']->template->set_var('contains_selected',$contains_selected);
+				$GLOBALS['phpgw']->template->set_var('notcontains_selected',$notcontains_selected);
+				// MATCHTHIS
+				$matchthis_textbox_name = 'match_'.(string)$i.'[matchthis]';
+				$match_textbox_txt = '';
+				if (isset($this->bo->all_filters[$filter_num]['matches'][$i]['matchthis']))
+				{
+					$match_textbox_txt = $this->bo->all_filters[$filter_num]['matches'][$i]['matchthis'];
+				}
 				$GLOBALS['phpgw']->template->set_var('matchthis_textbox_name',$matchthis_textbox_name);
 				$GLOBALS['phpgw']->template->set_var('match_textbox_txt',$match_textbox_txt);
 				$GLOBALS['phpgw']->template->set_var('V_match_left_td',$V_match_left_td);
@@ -182,12 +303,13 @@
 			// I'm not sure how the first action still allows for a second action
 			// for ex. if you "fileinto" a folder, what would the second action be? Delete it? doesn't make sense
 			// with evolution, the second action could be "scoring", but we don't have scoring
-			// so for now, offer ONE action row
+			// UPDATE: offer "flag as important" option, this could be a 2nd action
+			// but that's not coded yet, so for NOW offer 1 row, in the FUTURE offer 2 rows
 			$num_actionrows = 1;
 			for ($i=0; $i < $num_actionrows; $i++)
 			{
 				$action_rownum = (string)$i;
-				$actionbox_judgement_name = 'filter_'.$filternum.'[action_'.$action_rownum.'_judgement]';
+				$actionbox_judgement_name = 'action_'.$action_rownum.'[judgement]';
 				$GLOBALS['phpgw']->template->set_var('actionbox_judgement_name',$actionbox_judgement_name);
 				// 1st row does NOT have the IGNORE_ME option in the actionbox
 				if ($i == 0)
@@ -200,13 +322,27 @@
 				}
 				
 				// --- Folders Listbox  ---
-				$folder_listbox_name = 'filter_'.$filternum.'[action_'.$action_rownum.'_folder]';
+				$folder_listbox_name = 'action_'.$action_rownum.'[folder]';
 				$listbox_show_unseen = False;
-				// for existing data, we must specify which folder was selected in the script
-				$listbox_pre_select = '';
+				// for existing data, we must specify which folder was selected in the stored filter
+				if ((!isset($this->bo->all_filters[$filter_num]['actions'][$i]['folder']))
+				|| ($this->bo->all_filters[$filter_num]['actions'][$i]['folder'] == ''))
+				{
+					$pre_select_folder = '';
+					$pre_select_folder_acctnum = '';
+				}
+				else
+				{
+					parse_str($this->bo->all_filters[$filter_num]['actions'][$i]['folder'], $parsed_folder);
+					// note also that parse_str will urldecode the uri folder data
+					$pre_select_folder = $parsed_folder['folder'];
+					$pre_select_folder_acctnum = $parsed_folder['acctnum'];
+					//echo '$pre_select_folder: ['.$pre_select_folder.'] ; pre_select_folder_acctnum ['.$pre_select_folder_acctnum.']';
+				}
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
-					'pre_select_folder'	=> $listbox_pre_select,
+					'pre_select_folder'	=> $pre_select_folder,
+					'pre_select_folder_acctnum' => $pre_select_folder_acctnum,
 					'skip_folder'		=> '',
 					'show_num_new'		=> $listbox_show_unseen,
 					'widget_name'		=> $folder_listbox_name,
@@ -216,12 +352,28 @@
 					'first_line_txt'	=> lang('if fileto then select destination folder')
 				);
 				$folder_listbox = $GLOBALS['phpgw']->msg->folders_mega_listbox($feed_args);
-				
-				$action_textbox_name = 'filter_'.$filternum.'[action_'.$action_rownum.'_actiontext]';				
-				$action_textbox_txt = '';
-				
-				$stop_filtering_checkbox_name = 'filter_'.$filternum.'[action_'.$action_rownum.'_stop_filtering]';
-				$stop_filtering_checkbox_checked = '';
+				// ACTIONTEXT
+				$action_textbox_name = 'action_'.$action_rownum.'[actiontext]';	
+				if ((!isset($this->bo->all_filters[$filter_num]['actions'][$i]['actiontext']))
+				|| ($this->bo->all_filters[$filter_num]['actions'][$i]['actiontext'] == ''))
+				{
+					$action_textbox_txt = '';
+				}
+				else
+				{
+					$action_textbox_txt = $this->bo->all_filters[$filter_num]['actions'][$i]['actiontext'];
+				}
+				// STOP_FILTERING
+				$stop_filtering_checkbox_name = 'action_'.$action_rownum.'[stop_filtering]';
+				if ((!isset($this->bo->all_filters[$filter_num]['actions'][$i]['stop_filtering']))
+				|| ($this->bo->all_filters[$filter_num]['actions'][$i]['stop_filtering'] == ''))
+				{
+					$stop_filtering_checkbox_checked = '';
+				}
+				else
+				{
+					$stop_filtering_checkbox_checked = 'checked';
+				}
 				
 				$GLOBALS['phpgw']->template->set_var('V_action_widget',$V_action_widget);
 				$GLOBALS['phpgw']->template->set_var('folder_listbox', $folder_listbox);
@@ -239,6 +391,8 @@
 			$GLOBALS['phpgw']->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
 			$GLOBALS['phpgw']->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 			$GLOBALS['phpgw']->template->set_var('row_text',$GLOBALS['phpgw_info']['theme']['row_text']);
+			
+			
 			
 			// debugging result list
 			$mlist_html = '';

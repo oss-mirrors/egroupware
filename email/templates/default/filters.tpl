@@ -1,13 +1,14 @@
 <!-- BEGIN Sieve Mail Filters -->
 
-<FORM action="{form_edit_filter_action}" method="post">
-		
+<form action="{form_edit_filter_action}" method="post">
+	<input type="hidden" name="filter_num" value="{filter_num}">
+	
 	<h3><center>{lang_email_filters} - <em>Semi-Dumb UI</em></center></h3>
 	
 	<table width="90%" border="0" cellpadding="3" cellspacing="2" align="center">
 	<tr bgcolor="{row_off}">
 		<td colspan="4" align="left">
-			<font size="-1">{lang_filter_number}:&nbsp;<strong>[{filternum}]</strong>
+			<font size="-1">{lang_filter_number}:&nbsp;<strong>[{filter_num}]</strong>
 			&nbsp;&nbsp;
 			{lang_filter_name}:&nbsp;<input size="30" name="{filter_name_box_name}" value="{filter_name_box_value}">
 			</font>
@@ -32,26 +33,26 @@
 		<td align="center">
 			<font size="-1">
 			<select name="{examine_selectbox_name}">
-				<option value="from">{lang_from}</option>
-				<option value="to">{lang_to}</option>
-				<option value="cc">{lang_cc}</option>
-				<option value="bcc">{lang_bcc}</option>
-				<option value="recipient">{lang_recipient}</option>
-				<option value="sender">{lang_sender}</option>
-				<option value="subject">{lang_subject}</option>
-				<option value="header">{lang_header}</option>
-				<option value="size_larger">{lang_size_larger}</option>
-				<option value="size_smaller">{lang_size_smaller}</option>
-				<option value="allmessages">{lang_allmessages}</option>
-				<option value="body">{lang_body}</option>
+				<option value="from" {from_selected}>{lang_from}</option>
+				<option value="to" {to_selected}>{lang_to}</option>
+				<option value="cc" {cc_selected}>{lang_cc}</option>
+				<!-- <option value="bcc">{lang_bcc}</option> -->
+				<!-- <option value="recipient">{lang_recipient}</option> -->
+				<!-- <option value="sender">{lang_sender}</option> -->
+				<option value="subject" {subject_selected}>{lang_subject}</option>
+				<!-- <option value="header">{lang_header}</option> -->
+				<!-- <option value="size_larger">{lang_size_larger}</option> -->
+				<!-- <option value="size_smaller">{lang_size_smaller}</option> -->
+				<!-- <option value="allmessages">{lang_allmessages}</option> -->
+				<!-- <option value="body">{lang_body}</option> -->
 			</select>
 			</font>
 		</td>
 		<td align="center">
 			<font size="-1">
 			<select name="{comparator_selectbox_name}">
-				<option value="contains" selected>{lang_contains}</option>
-				<option value="notcontains">{lang_notcontains}</option>
+				<option value="contains" {contains_selected}>{lang_contains}</option>
+				<option value="notcontains" {notcontains_selected}>{lang_notcontains}</option>
 			</select>
 			</font>
 		</td>
