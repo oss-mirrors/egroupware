@@ -22,6 +22,13 @@
 			$this->activity_manager	= CreateObject('phpgwapi.workflow_activitymanager');
 		}
 
+		/**
+		* Shows and processes process form
+		* Fields in the database are in the form 'wf_field', whereas in the form just 'field'
+		*
+		* @author	Alejandro Pedraza
+		* @access	public
+		*/
 		function form()
 		{
 			$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['workflow']['title'] . ' - ' . lang('Admin Processes');
@@ -113,7 +120,7 @@
 				'message'			=> implode('<br>', $this->message),
 				'errors'			=> $error_str,
 				'link_new'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&p_id=0'),
-				'wf_p_id'				=> $proc_info['wf_p_id'],
+				'p_id'				=> $proc_info['wf_p_id'],
 				'name'				=> $proc_info['wf_name'],
 				'version'			=> $proc_info['wf_version'],
 				'description'		=> $proc_info['wf_description'],
