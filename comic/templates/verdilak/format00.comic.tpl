@@ -7,10 +7,10 @@
     </td>
   </tr>
   <tr>
-    <td width=50%>
+    <td width=50% valign=top>
       {comic_left}&nbsp;
     </td>
-    <td width=50%>
+    <td width=50% valign=top>
       {comic_right}&nbsp;
     </td>
   </tr>

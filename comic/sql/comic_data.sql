@@ -7,7 +7,7 @@ INSERT INTO phpgw_comic_data VALUES (5,'T','babyblue','Jerry Scott & Rick Kirkma
 INSERT INTO phpgw_comic_data VALUES (6,'T','tumblewd','Tom K. Ryan','Tumbleweeds','',0,0,'http://www.tumbleweeds.com/','http://www.tumbleweeds.com/images/{day}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static',0,580,580);
 INSERT INTO phpgw_comic_data VALUES (7,'T','jerkcity','TBD','JerkCity','',0,0,'http://www.jerkcity.com/','http://www.jerkcity.com/today.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','Geek',2,'Static',0,480,480);
 INSERT INTO phpgw_comic_data VALUES (8,'T','slagoon','Jim Toomey','Shermans Lagoon','',0,0,'http://www.slagoon.com/','http://www.slagoon.com/dailies/SL{y}.{m}.{d}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static',0,576,650);
-INSERT INTO phpgw_comic_data VALUES (9,'T','blondie','Dean Young and Denis Lebrun','Blondie','',0,0,'http://www.blondie.com/','http://www.blondie.com/dailies/blondie.{Ymd}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static',0,480,480);
+INSERT INTO phpgw_comic_data VALUES (9,'T','blondie','Dean Young and Denis Lebrun','Blondie','',0,0,'http://www.blondie.com/','http://www.blondie.com/dailies/blondie.{Ymd}.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','General',0,'Static',0,600,600);
 INSERT INTO phpgw_comic_data VALUES (10,'T','sluggy','Pete Abrams','Sluggy Freelance','',0,0,'http://www.sluggy.com/','http://pics.sluggy.com/comics/{ymd}a.gif','','','','Su:Mo:Tu:We:Th:Fr:Sa','None','Geek',0,'Static',0,700,700);
 INSERT INTO phpgw_comic_data VALUES (11,'T','ripleys','Don Wimmer and Karen Kemlo','Ripleys Believe It Or Not','',0,0,'','','','','','Mo:Tu:We:Th:Fr:Sa','United','General',0,'Remote',0,300,725);
 INSERT INTO phpgw_comic_data VALUES (12,'T','buckets','Scott Stantis','Buckets','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','United','General',0,'Remote',0,600,725);
@@ -83,7 +83,7 @@ INSERT INTO phpgw_comic_data VALUES (81,'T','grizzwells','Bill Schorr','The Griz
 INSERT INTO phpgw_comic_data VALUES (82,'T','herman','Jim Unger','Herman','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,300,725);
 INSERT INTO phpgw_comic_data VALUES (83,'T','jumpstart','Robb Armstrong','JumpStart','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,600,725);
 INSERT INTO phpgw_comic_data VALUES (84,'T','kitncarlyle','Larry Wright','Kit-n-Carlyle','',0,0,'','','','','','Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,300,0);
-INSERT INTO phpgw_comic_data VALUES (85,'T','liberty','Frank Cho','Liberty Meadows','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comics','General',0,'Remote',0,625,650);
+INSERT INTO phpgw_comic_data VALUES (85,'T','liberty','Frank Cho','Liberty Meadows','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Creators','General',0,'Remote',0,625,650);
 INSERT INTO phpgw_comic_data VALUES (86,'T','luann','Greg Evans','Luann','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,600,725);
 INSERT INTO phpgw_comic_data VALUES (87,'T','marmaduke','Brad Anderson','Marmaduke','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,300,725);
 INSERT INTO phpgw_comic_data VALUES (88,'T','meg','Greg Curfman','Meg!','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,600,725);
@@ -109,11 +109,11 @@ INSERT INTO phpgw_comic_data VALUES (107,'T','heartcity','Mark Tatulli','Heart o
 INSERT INTO phpgw_comic_data VALUES (108,'T','bleachers','Steve Moore','In the Bleachers','bl',0,0,'http://www.ucomics.com/inthebleachers/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,300,600);
 INSERT INTO phpgw_comic_data VALUES (109,'T','mrboffo','Joe Martin','Mister Boffo','mb',0,0,'http://www.ucomics.com/misterboffo/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
 INSERT INTO phpgw_comic_data VALUES (110,'T','overboard','Chip Dunham','Overboard','ob',0,0,'http://www.ucomics.com/overboard/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
-INSERT INTO phpgw_comic_data VALUES (111,'T','secchances','Jeff Millar & Bill Hinds','Second Chances','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,600,600);
+INSERT INTO phpgw_comic_data VALUES (111,'T','heathcliff','George Gately','Heathcliff','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Creators','General',0,'Remote',0,300,300);
 INSERT INTO phpgw_comic_data VALUES (112,'T','stonesoup','Jan Eliot','Stone Soup','ss',0,0,'http://www.ucomics.com/stonesoup/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
 INSERT INTO phpgw_comic_data VALUES (113,'T','reallife','Gary Wise & Lance Aldrich','Real Life Adventures','rl',0,0,'http://www.ucomics.com/reallifeadventures/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,300,600);
 INSERT INTO phpgw_comic_data VALUES (114,'T','tmcnamara','Jeff Millar & Bill Hinds','Tank McNamara','tm',0,0,'http://www.ucomics.com/tankmcnamara/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
-INSERT INTO phpgw_comic_data VALUES (115,'T','tradinpaint','Geof Brooks','Trading Paint','',0,0,'','','','','','Sa','Comiczone7','General',0,'Remote',0,600,0);
+INSERT INTO phpgw_comic_data VALUES (115,'T','baldo','Geof Brooks','Baldo','ba',0,0,'http://www.ucomics.com/baldo/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
 INSERT INTO phpgw_comic_data VALUES (116,'T','ziggy','Tom Wilson','Ziggy','',0,0,'','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Comiczone7','General',0,'Remote',0,300,600);
 INSERT INTO phpgw_comic_data VALUES (117,'T','fuscobros','Joe Duffy','The Fusco Brothers','fu',0,0,'http://www.ucomics.com/thefuscobrothers/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','General',0,'Remote',0,600,600);
 INSERT INTO phpgw_comic_data VALUES (118,'T','doonesbury','G. B. Trudeau','Doonesbury','db',0,0,'http://www.doonesbury.com/','','','','','Su:Mo:Tu:We:Th:Fr:Sa','Ucomics','Political',0,'Remote',0,600,600);

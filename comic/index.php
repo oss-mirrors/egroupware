@@ -54,7 +54,7 @@
      *************************************************************************/
     $template_format     = sprintf("format%02d", $template_id);
     if (!(file_exists($phpgw_info["server"]["app_tpl"]
-                      ."/".$template_format.".weather.tpl")))
+                      ."/".$template_format.".comic.tpl")))
     {
         $template_format = "format00";
     }

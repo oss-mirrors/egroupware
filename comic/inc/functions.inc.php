@@ -24,6 +24,9 @@ define("STD_NOREMOTE",  5);
 define("STD_CURRENT",   6);
 define("STD_TEMPLATE",  7);
 
+define("COMIC_LEFT",    1);
+define("COMIC_RIGHT",   0);
+
 $g_censor_level = array(0 => 'G',
                         1 => 'PG',
                         2 => 'R');
@@ -79,28 +82,26 @@ function comic_resolve_url($remote_enabled, &$fetch_url,
     $status = STD_SUCCESS;
 
     /**************************************************************************
-     * first check to see if we have the url already for today
+     * resolve our comic url, link url and comic day
+     *************************************************************************/
+    switch ($phpgw->db->f("data_resolve"))
+    {	 
+      case "Static":
+        $status = comic_resolve_static(&$comic_url, &$comic_day);
+        break;
+      case "Remote":
+        $status = comic_resolve_remote($remote_enabled, &$fetch_url,
+                                       &$comic_url, &$comic_day);
+        break;
+    }
+
+    /**************************************************************************
+     * check to see if already "snarfed" today
      *************************************************************************/
     if ($phpgw->db->f("data_date") == (int)date("Ymd"))
     {
         $status = STD_CURRENT;
         $comic_url = $phpgw->db->f("data_imageurl");
-    }
-    else
-    {
-        /**********************************************************************
-         * resolve our urls
-         *********************************************************************/
-        switch ($phpgw->db->f("data_resolve"))
-        {
-          case "Static":
-            $status = comic_resolve_static(&$comic_url, &$comic_day);
-            break;
-          case "Remote":
-            $status = comic_resolve_remote($remote_enabled, &$fetch_url,
-                                           &$comic_url, &$comic_day);
-            break;
-        }
     }
     
     return $status;
@@ -222,20 +223,13 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
         $unresolved = False;
         break;
       case "Creators":
-        if ($phpgw->db->f("data_daysold") == 0)
-        {
-            $comic_time = time() - (7*3600*24);
-        }
-        $baseurl    = "http://www.creators.com/";
-        $parseurl   = "images/".$phpgw->db->f("data_comicid")."/{Ymd}.gif";
-
-        comic_resolver(&$parseurl, $comic_time);
-
-        $fetch_url  = $baseurl."comics/".$phpgw->db->f("data_name")."/";
-        
-        $comic_url  = $baseurl.$parseurl;
-        
-        $unresolved = False;
+        $baseurl    = "http://www.comics.com";
+        $parseurl   = "/creators/".$phpgw->db->f("data_name")."/index.html";
+        $parse_expr = "/creators/"
+            .$phpgw->db->f("data_name")
+            ."/archive/images/"
+            .$phpgw->db->f("data_name")
+            ."[0-9]*.(gif|jpg)";
         break;
       case "ComicsPage":
         if ($phpgw->db->f("data_daysold") == 0)
@@ -250,6 +244,12 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
             .$phpgw->db->f("data_prefix")
             ."-a.gif";
         comic_resolver(&$parse_expr, $comic_time);
+
+        $fetch_url  = $baseurl.$parseurl;
+
+        $comic_url  = $baseurl.$parse_expr;
+
+        $unresolved = False;
         break;
       case "Ucomics":
         $baseurl    = "http://images.ucomics.com";
@@ -259,8 +259,11 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
             .$phpgw->db->f("data_prefix")
             ."{ymd}.gif";
         comic_resolver(&$parseurl, $comic_time);
+
         $fetch_url  = $phpgw->db->f("data_linkurl");
+
         $comic_url  = $baseurl.$parseurl;
+
         $unresolved = False;
         break;
       default:
@@ -561,6 +564,8 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
 {
     global $phpgw, $phpgw_info;
 
+    $sideno = COMIC_LEFT;
+    
     /**************************************************************************
      * how many potential comics
      *************************************************************************/
@@ -745,12 +750,14 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                     switch($image_location)
                     {
                       case 'S':
-                        switch ($side)
+                        switch ($sideno)
                         {
-                          case "left":
+                          case COMIC_RIGHT:
+                            $sideno = COMIC_LEFT;
                             $side = "right";
                             break;
-                          default:
+                          case COMIC_LEFT:
+                            $sideno = COMIC_RIGHT;
                             $side = "left";
                             break;
                         }
@@ -759,10 +766,11 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                         $side = "center";
                         break;
                     }
-
-                    $name = lang("%1 by %2",
+                    
+                    $name = lang("%1 by %2 (%3)",
                                  $phpgw->db->f("data_title"),
-                                 $phpgw->db->f("data_author"));
+                                 $phpgw->db->f("data_author"),
+                                 $index+1);
                     
                     $comic_tpl->
                         set_var

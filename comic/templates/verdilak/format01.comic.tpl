@@ -12,10 +12,10 @@
     </td>
   </tr>
   <tr>
-    <td>
+    <td width=50% valign=top>
       {comic_left}
     </td>
-    <td>
+    <td width=50% valign=top>
       {comic_right}
     </td>
   </tr>
