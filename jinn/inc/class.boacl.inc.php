@@ -36,4 +36,4 @@ class boacl
 	/* get all sites the user has access to */ 
 
 	// this was get_sites
-
+	}
