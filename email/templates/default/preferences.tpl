@@ -31,6 +31,16 @@
 	</td>
 </tr>
 <tr>
+	<td align="left" bgcolor="{bg_row2A}">
+		{layout_blurb}
+	</td>
+	<td align="center" bgcolor="{bg_row2A}">
+		<select name="{layout_select_name}">
+		{layout_select_options}
+		</select>
+	</td>
+</tr>
+<tr>
 	<td align="left" bgcolor="{bg_row3}">
 		{show_addresses_blurb}
 	</td>

@@ -20,7 +20,6 @@
 	include("../header.inc.php");
 
 	// ----  Save Preferences to Repository  (if this is a submit)  -----
-	//if ($submit_prefs)
 	if (isset($phpgw->msg->args['submit_prefs']))
 	{
 		$phpgw->preferences->read_repository();
@@ -47,39 +46,52 @@
 		}
 
 		$phpgw->preferences->delete("email","default_sorting");
-		if (isset($phpgw->msg->args['default_sorting']))
+		if ((isset($phpgw->msg->args['default_sorting']))
+		&& ($phpgw->msg->args['default_sorting'] != ''))
 		{
 			$phpgw->preferences->add("email","default_sorting",$phpgw->msg->args['default_sorting']);
 		}
 
+		$phpgw->preferences->delete("email","layout");
+		if ((isset($phpgw->msg->args['layout']))
+		&& ($phpgw->msg->args['layout'] != ''))
+		{
+			$phpgw->preferences->add("email","layout",$phpgw->msg->args['layout']);
+		}
+		
 		$phpgw->preferences->delete("email","show_addresses");
-		if (isset($phpgw->msg->args['show_addresses']))
+		if ((isset($phpgw->msg->args['show_addresses']))
+		&& ($phpgw->msg->args['show_addresses'] != ''))
 		{
 			$phpgw->preferences->add("email","show_addresses",$phpgw->msg->args['show_addresses']);
 		}
 		
 		$phpgw->preferences->delete("email","mainscreen_showmail");
-		if (isset($phpgw->msg->args['mainscreen_showmail']))
+		if ((isset($phpgw->msg->args['mainscreen_showmail']))
+		&& ($phpgw->msg->args['mainscreen_showmail'] != ''))
 		{
 			$phpgw->preferences->add("email","mainscreen_showmail",$phpgw->msg->args['mainscreen_showmail']);
 		}
 
 		// save sent mail to the sent folder
 		$phpgw->preferences->delete("email","use_sent_folder");
-		if (isset($phpgw->msg->args['use_sent_folder']))
+		if ((isset($phpgw->msg->args['use_sent_folder']))
+		&& ($phpgw->msg->args['use_sent_folder'] != ''))
 		{
 			$phpgw->preferences->add("email","use_sent_folder",$phpgw->msg->args['use_sent_folder']);
 		}
 
 		// use trash folder
 		$phpgw->preferences->delete("email","use_trash_folder");
-		if (isset($phpgw->msg->args['use_trash_folder']))
+		if ((isset($phpgw->msg->args['use_trash_folder']))
+		&& ($phpgw->msg->args['use_trash_folder'] != ''))
 		{
 			$phpgw->preferences->add("email","use_trash_folder",$phpgw->msg->args['use_trash_folder']);
 		}
 		// trash folder name
 		$phpgw->preferences->delete("email","trash_folder_name");
-		if (isset($phpgw->msg->args['trash_folder_name']))
+		if ((isset($phpgw->msg->args['trash_folder_name']))
+		&& ($phpgw->msg->args['trash_folder_name'] != ''))
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
  			// " becomes \" and  '  becomes  \'  and  \  becomes \\
@@ -94,7 +106,8 @@
 
 		// sent folder name to use
 		$phpgw->preferences->delete("email","sent_folder_name");
-		if (isset($phpgw->msg->args['sent_folder_name']))
+		if ((isset($phpgw->msg->args['sent_folder_name']))
+		&& ($phpgw->msg->args['sent_folder_name'] != ''))
 		{
 			// get rid of the escape \ that magic_quotes HTTP POST will add
  			// " becomes \" and  '  becomes  \'  and  \  becomes \\
@@ -109,7 +122,8 @@
 
 		// use utf 7 internationalization encoding/decoding of folder names
 		$phpgw->preferences->delete("email","enable_utf7");
-		if (isset($phpgw->msg->args['enable_utf7']))
+		if ((isset($phpgw->msg->args['enable_utf7']))
+		&& ($phpgw->msg->args['enable_utf7'] != ''))
 		{
 			$phpgw->preferences->add("email","enable_utf7",$phpgw->msg->args['enable_utf7']);
 		}
@@ -130,7 +144,8 @@
 		else
 		{
 			$phpgw->preferences->add("email","use_custom_settings",$phpgw->msg->args['use_custom_settings']);
-			if (isset($phpgw->msg->args['userid']))
+			if ((isset($phpgw->msg->args['userid']))
+			&& ($phpgw->msg->args['userid'] != ''))
 			{
 				$phpgw->preferences->add("email","userid",$phpgw->msg->args['userid']);
 			}
@@ -139,7 +154,8 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","userid");
 			}
-			if (isset($phpgw->msg->args['passwd']))
+			if ((isset($phpgw->msg->args['passwd']))
+			&& ($phpgw->msg->args['passwd'] != ''))
 			{
 				// there were multiple problems with previous custom email passwd handling
 				// fixed so far:
@@ -161,7 +177,8 @@
 			{
 				// is not specified, LEAVE PASSWD ALONE, retain previous setting
 			}
-			if (isset($phpgw->msg->args['address']))
+			if ((isset($phpgw->msg->args['address']))
+			&& ($phpgw->msg->args['address'] != ''))
 			{
 				$phpgw->preferences->add("email","address",$phpgw->msg->args['address']);
 			}
@@ -170,7 +187,8 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","address");
 			}
-			if (isset($phpgw->msg->args['mail_server']))
+			if ((isset($phpgw->msg->args['mail_server']))
+			&& ($phpgw->msg->args['mail_server'] != ''))
 			{
 				$phpgw->preferences->add("email","mail_server",$phpgw->msg->args['mail_server']);
 			}
@@ -179,7 +197,8 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","mail_server");
 			}
-			if (isset($phpgw->msg->args['mail_server_type']))
+			if ((isset($phpgw->msg->args['mail_server_type']))
+			&& ($phpgw->msg->args['mail_server_type'] != ''))
 			{
 				$phpgw->preferences->add("email","mail_server_type",$phpgw->msg->args['mail_server_type']);
 			}
@@ -188,7 +207,8 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","mail_server_type");
 			}
-			if (isset($phpgw->msg->args['imap_server_type']))
+			if ((isset($phpgw->msg->args['imap_server_type']))
+			&& ($phpgw->msg->args['imap_server_type'] != ''))
 			{
 				$phpgw->preferences->add("email","imap_server_type",$phpgw->msg->args['imap_server_type']);
 			}
@@ -198,7 +218,8 @@
 				// should probably be an error message here
 				$phpgw->preferences->delete("email","imap_server_type");
 			}
-			if (isset($phpgw->msg->args['mail_folder']))
+			if ((isset($phpgw->msg->args['mail_folder']))
+			&& ($phpgw->msg->args['mail_folder'] != ''))
 			{
 				$phpgw->preferences->add("email","mail_folder",$phpgw->msg->args['mail_folder']);
 			}
@@ -262,13 +283,29 @@
 	$t->set_var('sorting_select_name','default_sorting');
 	$t->set_var('sorting_select_options',$sorting_select_options);
 
+	// row2A = "Layout" loads different template (.tpl) files depending on the users choice, 1=default layout
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$layout_selected[1] = '';
+	$layout_selected[2] = '';
+	$layout_selected[$phpgw_info["user"]["preferences"]["email"]["layout"]] = " selected";
+	$layout_select_options =
+		 '<option value="1"' .$layout_selected[1] .'>' .lang('Layout 1') .'</option>' ."\r\n"
+		.'<option value="2"' .$layout_selected[2] .'>' .lang('Layout 2') .'</option>' ."\r\n";
+	$t->set_var('bg_row2A',$tr_color);
+	$t->set_var('layout_blurb',lang("Message List Layout"));
+	$t->set_var('layout_select_name','layout');
+	$t->set_var('layout_select_options',$layout_select_options);
+
 	// row3 = show sender's email address with name options
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$show_addresses_selected["none"] = '';
+	$show_addresses_selected["from"] = '';
+	$show_addresses_selected["replyto"] = '';
 	$show_addresses_selected[$phpgw_info["user"]["preferences"]["email"]["show_addresses"]] = " selected";
 	$show_addresses_select_options =
-		 '<option value="none"' .$show_addresses_selected["none"] .'>' .lang('none') .'</option>' ."\n"
-		.'<option value="from"' .$show_addresses_selected["from"] .'>' .lang('From') .'</option>' ."\n"
-		.'<option value="replyto"' .$show_addresses_selected["replyto"] .'>' .lang('ReplyTo') .'</option>' ."\n";
+		 '<option value="none"' .$show_addresses_selected["none"] .'>' .lang('none') .'</option>' ."\r\n"
+		.'<option value="from"' .$show_addresses_selected["from"] .'>' .lang('From') .'</option>' ."\r\n"
+		.'<option value="replyto"' .$show_addresses_selected["replyto"] .'>' .lang('ReplyTo') .'</option>' ."\r\n";
 	$t->set_var('bg_row3',$tr_color);
 	$t->set_var('show_addresses_blurb',lang("Show sender's email address with name"));
 	$t->set_var('show_addresses_select_name','show_addresses');
@@ -276,7 +313,7 @@
 
 	// row4 = show new messages on  main screen
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"])
+	if (isset($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]))
 	{
 		$mainscreen_showmail_checked = 'checked';
 	}
@@ -292,7 +329,7 @@
 
 	// row5 = TRASH folder options
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"])
+	if (isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
 	{
 		$use_trash_folder_checked = 'checked';
 	}
@@ -318,7 +355,7 @@
 
 	// row5A = SENT folder options
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	if ($phpgw_info["user"]["preferences"]["email"]["use_sent_folder"])
+	if (isset($phpgw_info["user"]["preferences"]["email"]["use_sent_folder"]))
 	{
 		$use_sent_folder_checked = 'checked';
 	}
@@ -344,7 +381,7 @@
 
 	// row5B = enable UTF-7 translation
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	if ($phpgw_info["user"]["preferences"]["email"]["enable_utf7"])
+	if (isset($phpgw_info["user"]["preferences"]["email"]["enable_utf7"]))
 	{
 		$enable_utf7_checked = 'checked';
 	}
@@ -364,7 +401,7 @@
 // ----  Custom Settings - Fill in HTML form -----
 	// row6 = use custon settings
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	if ($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"])
+	if (isset($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"]))
 	{
 		$use_custom_settings_checked = 'checked';
 	}
@@ -390,7 +427,8 @@
 	$t->set_var('bg_row8',$tr_color);
 	$t->set_var('passwd_blurb',lang("Email Password"));
 	$t->set_var('passwd_text_name','passwd');
-	// FIXME: bug
+	// NOTE: any email custom password here will NOT be sent TO the browser
+	// if user enters a value, it will be sent FROM the browser only
 	$t->set_var('passwd_text_value','');
 
 	// row9 = Email Address
@@ -409,6 +447,11 @@
 
 	// row11 = Mail Server type
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$mail_server_type_selected["imap"] = '';
+	$mail_server_type_selected["pop3"] = '';
+	$mail_server_type_selected["imaps"] = '';
+	$mail_server_type_selected["pop3s"] = '';
+	//$mail_server_type_selected["nntp"] = '';
 	$mail_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["mail_server_type"]] = " selected";
 	$mail_server_type_select_options =
 		 '<option value="imap"' .$mail_server_type_selected["imap"] .'>IMAP</option>' ."\r\n"
@@ -422,6 +465,9 @@
 
 	// row12 = IMAP Server Type
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$imap_server_type_selected["Cyrus"] = '';
+	$imap_server_type_selected["UWash"] = '';
+	$imap_server_type_selected["UW-Maildir"] = '';
 	$imap_server_type_selected[$phpgw_info["user"]["preferences"]["email"]["imap_server_type"]] = " selected";
 	$imap_server_type_select_options =
 		 '<option value="Cyrus"' .$imap_server_type_selected["Cyrus"] .'>Cyrus or Courier</option>' ."\r\n"
@@ -444,6 +490,8 @@
 	$t->set_var('btn_submit_value',lang("submit"));
 
 	$t->pparse('out','T_preferences_out');
+
+	$phpgw->msg->end_request();
 
 	$phpgw->common->phpgw_footer();
 ?>

@@ -174,20 +174,25 @@
 
 // ---- Control Bar =Row 2=   -----
 	$t->set_var('ctrl_bar_back2',$phpgw_info["theme"]["row_off"]);
-	$t->set_var('compose_txt',lang("compose"));
+	$t->set_var('compose_txt',lang("Compose New"));
 	$t->set_var('compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".$phpgw->msg->prep_folder_out('')));
-	$t->set_var('folders_txt',lang("folders"));
+	$t->set_var('folders_txt',lang("Manage Folders"));
 	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
 		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+		$t->set_var('folders_btn_js','window.location='."'".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php')."'".'"');
 	}
 	else
 	{
 		// doesn't support folders. just go to index page
 		$t->set_var('folders_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
+		$t->set_var('folders_btn_js','window.location='."'".$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php')."'".'"');
 	}
+	// go directly to email prefs page
+	$t->set_var('email_prefs_txt',lang("Email Preferences"));
+	$t->set_var('email_prefs_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/preferences.php'));
 	// "accounts" preferences FUTURE
-	$t->set_var('accounts_txt',lang("accounts"));
+	$t->set_var('accounts_txt',lang("Manage Accounts"));
 	$t->set_var('accounts_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'index.php'));
 	// "routing" preferences FUTURE
 	$t->set_var('routing_txt',lang("routing"));
@@ -244,6 +249,7 @@
 
 // ---- Folder Statistics Information Row  -----
 	$t->set_var('stats_backcolor',$phpgw_info['theme']['em_folder']);
+	//$t->set_var('stats_backcolor','#000000');
 	$t->set_var('stats_font',$phpgw_info['theme']['font']);
 	$t->set_var('stats_fontsize','+0');
 	$t->set_var('stats_color',$phpgw_info['theme']['em_folder_text']);
@@ -252,38 +258,51 @@
 	$t->set_var('stats_new',$stats_new);
 	$t->set_var('stats_size',$stats_size);
 	$t->set_var('lang_new',lang('New'));
+	$t->set_var('lang_new2',lang('New Messages'));
 	$t->set_var('lang_total',lang('Total'));
+	$t->set_var('lang_total2',lang('Total Messages'));
 	$t->set_var('lang_size',lang('Size'));
+	$t->set_var('lang_size2',lang('Folder Size'));
 	$t->set_var('stats_first',$phpgw->msg->start + 1);
 	// "last" can not be know until the calculations below
 	//$t->set_var('stats_last',$phpgw->msg->start + $phpgw_info['user']['preferences']['common']['maxmatchs']);
 
-// ----  Messages List Clickable Column Headers  -----
-	/*
+// ----  Messages List Clickable Column Headers (for Sort)  -----
+	// this is the indicator flag that will be applied to the header name that = current sort
+	$flag_sort_pre = '* ';
+	$flag_sort_post = ' *';
+	// initialize the lang'd header names
+	$lang_subject = lang("subject");
+	$lang_from = lang("from");
+	$lang_date = lang("date");
+	$lang_size = lang("size");
+	$lang_lines = lang("lines");
+	// this code will apply the above indicator flag to the corresponding header name
+	switch ((int)$phpgw->msg->sort)
+	{
+		case 1 : $lang_date = $flag_sort_pre .$lang_date .$flag_sort_post; break;
+		case 2 : $lang_from = $flag_sort_pre .$lang_from .$flag_sort_post; break;
+		case 3 : $lang_subject = $flag_sort_pre .$lang_subject .$flag_sort_post; break;
+		case 6 : $lang_size = $flag_sort_pre .$lang_size .$flag_sort_post;
+			 $lang_lines = $flag_sort_pre .$lang_lines .$flag_sort_post; break;
+	}
 	// clickable column headers which change the sorting of the messages
 	if ($phpgw->msg->newsmode)
 	{
 		// I think newsmode requires the "old way"
-		$sizesort = lang("lines");
-		$hdr_subject = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_from = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_date = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"0",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_size = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out(''));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order($phpgw->msg->sort,"6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_lines,"&folder=".$phpgw->msg->prep_folder_out(''));
 	}
 	else
 	{
 		// for email
-		$sizesort = lang("size");
-		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".$phpgw->msg->prep_folder_out(''));
-		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_subject,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=3&order='.$phpgw->msg->order);
+		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_from,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=2&order='.$phpgw->msg->order);
+		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_date,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=1&order='.$phpgw->msg->order);
+		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$phpgw->msg->order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$lang_size,"&folder=".$phpgw->msg->prep_folder_out('').'&sort=6&order='.$phpgw->msg->order);
 	}
-	*/
-	$hdr_subject = lang("subject");
-	$hdr_from = lang("from");
-	$hdr_date = lang("date");
-	$hdr_size = lang("size");
 
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
@@ -291,6 +310,12 @@
 	$t->set_var('hdr_from',$hdr_from);
 	$t->set_var('hdr_date',$hdr_date);
 	$t->set_var('hdr_size',$hdr_size);
+	// for those layouts that do not want these clickable headers, here are plain words
+	$t->set_var('lang_subject',$lang_subject);
+	$t->set_var('lang_from',$lang_from);
+	$t->set_var('lang_date',$lang_date);
+	$t->set_var('lang_size',$lang_size);
+	$t->set_var('lang_lines',$lang_size);
 
 
 // ----  Form delmov Intialization  Setup  -----
@@ -305,14 +330,6 @@
 	$t->set_var('images_dir',$svr_image_dir);
 	
 // ----  New Message Indicator  -----
-	/*
-	$t->set_var('mlist_newmsg_char','*');
-	$t->set_var('mlist_newmsg_color','#ff0000');
-	$t->set_var('mlist_newmsg_txt',lang("New message"));
-	// prepare new message character
-	$t->parse('V_new_msg','T_new_msg');
-	$mlist_new_msg = $t->get_var('V_new_msg');
-	*/
 	// to make things simpler, I made this a regular variable rather than a template file var
 	$mlist_newmsg_char = '<strong>*</strong>';
 	$mlist_newmsg_color = '#ff0000';
@@ -324,16 +341,12 @@
 	$t->set_var('mlist_newmsg_txt',$mlist_newmsg_txt);
 
 // ----  Attachment Indicator  -----
-	/*
-	// prepare attachment paperclip image
-	$t->parse('V_attach_clip','T_attach_clip');
-	$mlist_attach = $t->get_var('V_attach_clip');
-	*/
 	// to make things simpler, I made this a regular variable rather than a template file var
 	$mlist_attach_txt = lang("file");
-	$mlist_attach = '<div align="right">'
-				.'<img src="'.$svr_image_dir.'/attach.gif" alt="'.$mlist_attach_txt.'">'
-			.'</div>';
+	$mlist_attach =
+		'<div align="right">'
+			.'<img src="'.$svr_image_dir.'/attach.gif" alt="'.$mlist_attach_txt.'">'
+		.'</div>';
 
 // initialize (is this necessary?)
 	$t->set_var('V_msg_list','');
@@ -341,7 +354,6 @@
 // ----  Zero Messages To List  -----
 	if ($mailbox_status->messages == 0)
 	{
-		//if (!$mailbox)
 		if ((!isset($phpgw->msg->mailsvr_stream))
 		|| ($phpgw->msg->mailsvr_stream == ''))
 		{
@@ -549,10 +561,11 @@
 // ---- Delete/Move Folder Listbox  for Msg Table Footer -----
 	if ($phpgw->msg->get_mailsvr_supports_folders())
 	{
-		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
-			. '<option>' . lang("move selected messages into") . ':'
-			. $phpgw->msg->all_folders_listbox('','',$folder_short)
-			. '</select>';
+		$delmov_listbox =
+			 '<select name="tofolder" onChange="do_action(\'move\')">'
+			 	.'<option>' . lang("move selected messages into").':'
+			 	.$phpgw->msg->all_folders_listbox('','',$folder_short)
+			.'</select>';
             
 	}
 	else

@@ -34,54 +34,52 @@ function check_all()
 }
 </script>
 
-<!-- BEGIN B_action_report -->
-<p><center>{report_this}</center></p>
-<!-- END B_action_report -->
-
-<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="1" cellspacing="2" width="95%" align="center">
 <tr>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
-		<a href="{accounts_link}">{accounts_txt}</a>
+		<font size="-1"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
-		<a href="{compose_link}">{compose_txt}</a>
+		<font size="-1"><a href="{folders_link}">{folders_txt}</a></font>
 	</td>
 	<td bgcolor="{ctrl_bar_back2}" align="center">
-		<a href="{folders_link}">{folders_txt}</a>
-	</td>
-	<td colspan="4" bgcolor="{ctrl_bar_back2}" align="center">
-		<a href="{routing_link}">{routing_txt}</a>
+		<font size="-1"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
 	</td>
 </tr>
-<tr bgcolor="{arrows_backcolor}"> <!-- this color for the nav arrows -->
+</table>
+
+<table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
+<tr>
 	<form name="switchbox" action="{switchbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">Folder:</font>
-		{switchbox_listbox}
+	<td bgcolor="{ctrl_bar_back1}" align="left">
+		&nbsp;&nbsp;&nbsp;{switchbox_listbox}
 	</td>
 	</form>
 	<form name="sortbox" action="{sortbox_action}" method="post">
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">Sort:</font>
+	<td bgcolor="{ctrl_bar_back1}" align="left">
+		<font size="-1">&nbsp;&nbsp;Sort by:&nbsp;</font>
 		<select name="{sortbox_select_name}" onChange="{sortbox_on_change}">
 		{sortbox_select_options}
 		</select>
 	</td>
 	</form>
-	<td bgcolor="{ctrl_bar_back1}" align="center">
-		<font size="-1">Account:</font>
-		<select name="account">
-		<option value="default">Default</option>
-		<option value="other_1">Other 1</option>
-		</select>
-	</td>
+</tr>
+</table>
+
+<!-- BEGIN B_action_report -->
+<br><center>{report_this}</center>
+<!-- END B_action_report -->
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
+<tr bgcolor="{arrows_backcolor}">
 	{prev_arrows}
 	{next_arrows}
 </tr>
 </table>
-<br>
 
-<table border="0" cellpadding="4" cellspacing="1" width="95%" align="center">
+<table border="0" cellpadding="5" cellspacing="1" width="95%" align="center">
 <tr>
 	<td bgcolor="{stats_backcolor}" align="center">
 		<font face="{stats_font}" size="{stats_fontsize}" color="{stats_color}">
@@ -119,25 +117,24 @@ function check_all()
 	<td bgcolor="{hdr_backcolor}" width="2%">
 		&nbsp;
 	</td>
-	
-	<td bgcolor="{hdr_backcolor}" width="21%">
+	<td bgcolor="{hdr_backcolor}" width="20%">
 		<font size="2" face="{hdr_font}">
-		{hdr_from}
+		{lang_from}
 		</font>
 	</td>
-	<td bgcolor="{hdr_backcolor}" width="36%">
+	<td bgcolor="{hdr_backcolor}" width="37%">
 		<font size="2" face="{hdr_font}">
- 		{hdr_subject}
+ 		{lang_subject}
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="12%" align="center">
 		<font size="1" face="{hdr_font}">
-		{hdr_date}
+		{lang_date}
 		</font>
 	</td>
 	<td bgcolor="{hdr_backcolor}" width="4%" align="center">
 		<font size="1" face="{hdr_font}">
-		{hdr_size}
+		{lang_size}
 		</font>
 	</td>
 </tr>
@@ -159,9 +156,7 @@ function check_all()
 	<!-- INIT FORM ONCE -->{mlist_delmov_init}
 		<input type="checkbox" name="msglist[]" value="{mlist_msg_num}">
 	</td>
-	<td bgcolor="{mlist_backcolor}" width="1%" align="center">
-		{mlist_new_msg}
-		&nbsp;&nbsp;
+	<td bgcolor="{mlist_backcolor}" align="center">
 		{mlist_attach}
 	</td>
 	<td bgcolor="{mlist_backcolor}" align="left">
@@ -179,33 +174,26 @@ function check_all()
 </tr>
 <!-- END B_msg_list -->
 <tr>
-	<td bgcolor="{ftr_backcolor}" align="center">
-		<a href="javascript:check_all()">
-		<img src="{app_images}/check.gif" border="0" height="16" width="21"></a>
+	<td bgcolor="{ftr_backcolor}">
+		<a href="javascript:check_all()"><img src="{app_images}/check.gif" border="0" height="16" width="21"></a>
 	</td>
-	<td bgcolor="{ftr_backcolor}" colspan="5">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				<input type="button" value="{delmov_button}" onClick="do_action('delall')">
-			</td>
-			<td align="right">
-				{delmov_listbox}
-			</td>
-			</form>
-		</tr>
-		</table>
+	<td bgcolor="{ftr_backcolor}" colspan="2" align="left">
+		&nbsp;
+		<input type="button" value="{delmov_button}" onClick="do_action('delall')">
 	</td>
+	<td bgcolor="{ftr_backcolor}" colspan="3" align="right">
+		{delmov_listbox}&nbsp;
+	</td>
+	</form>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="1" width="95%" align="center">
+<tr bgcolor="{arrows_backcolor}">
+	{prev_arrows}
+	{next_arrows}
 </tr>
 </table>
 
 <br> 
-
-<table border="0" align="center" width="95%">
-<tr>
-	<td align="left">
-		<font color="{mlist_newmsg_color}">{mlist_newmsg_char}</font>&nbsp;=&nbsp;{mlist_newmsg_txt}
-	</td>
-</tr>
-</table>
 <!-- end email_index.tpl -->

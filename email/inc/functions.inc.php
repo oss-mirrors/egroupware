@@ -128,6 +128,7 @@
 		$args_array['submit_prefs'] = $submit_prefs;
 		if (isset($email_sig)) { $args_array['email_sig'] = $email_sig; unset($email_sig); }
 		if (isset($default_sorting)) { $args_array['default_sorting'] = $default_sorting; unset($default_sorting); }
+		if (isset($layout)) { $args_array['layout'] = $layout; unset($layout); }
 		if (isset($show_addresses)) { $args_array['show_addresses'] = $show_addresses; unset($show_addresses); }
 		if (isset($mainscreen_showmail)) { $args_array['mainscreen_showmail'] = $mainscreen_showmail; unset($mainscreen_showmail); }
 		if (isset($use_sent_folder)) { $args_array['use_sent_folder'] = $use_sent_folder; unset($use_sent_folder); }

@@ -123,6 +123,7 @@
 	// 0 = NO css ; 1 = CSS supported ; 2 = text only
 	// currently not implemented, use default 0 (NO CSS support in browser)
 	$this->browser = 0;
+	//$this->browser = 1;
 
 	// store the GPC args in a class var
 	$this->args = $args_array;
@@ -222,7 +223,8 @@
 	global $phpgw, $phpgw_info;
 
 	// args array currently not used
-	if (isset($this->mailsvr_stream))
+	if ((isset($this->mailsvr_stream))
+	&& ($this->mailsvr_stream != ''))
 	{
 		$phpgw->dcom->close($phpgw->msg->mailsvr_stream);
 		$phpgw->msg->mailsvr_stream = '';
@@ -369,11 +371,15 @@
 		}
 	}
 
-	// Layout Template Preference =FUTURE=
+	// Layout Template Preference
 	// layout 1 = default ; others are prefs
-	//$phpgw_info['user']['preferences']['email']['layout'] = '1';
+	if (!isset($phpgw_info['user']['preferences']['email']['layout']))
+	{
+		$phpgw_info['user']['preferences']['email']['layout'] = 1;
+	}
 	// currently working on layout2, so hard code it here
-	$phpgw_info['user']['preferences']['email']['layout'] = '2';
+	//$phpgw_info['user']['preferences']['email']['layout'] = 1;
+	//$phpgw_info['user']['preferences']['email']['layout'] = 2;
 
 	// DEBUG
 	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
