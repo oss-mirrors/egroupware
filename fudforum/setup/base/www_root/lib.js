@@ -19,16 +19,16 @@ JS_HELPOFF = false;
 DOM = (document.getElementById) ? 1 : 0;
 NS4 = (document.layers) ? 1 : 0;
 IE4 = (document.all) ? 1 : 0;
-OPERA = (navigator.userAgent.indexOf("Opera 5") > -1 || navigator.userAgent.indexOf("Opera/5") > -1 || navigator.userAgent.indexOf("Opera 6") > -1 || navigator.userAgent.indexOf("Opera/6") > -1) ? 1 : 0;
+OPERA = navigator.userAgent.indexOf("Opera") > -1 ? 1 : 0;
 
 /* edit box stuff */
 function insertTag(obj, stag, etag)
 {
-
-	if ( navigator.userAgent.indexOf("MSIE") > -1 && !OPERA ) {
+	if (navigator.userAgent.indexOf("MSIE") > -1 && !OPERA) {
 		insertTagIE(obj, stag, etag);
-	}
-	else {
+	} else if (window.getSelection) {
+		insertTagMoz(obj, stag, etag);	
+	} else {
 		insertTagNS(obj, stag, etag);	
 	}
 }
@@ -36,6 +36,26 @@ function insertTag(obj, stag, etag)
 function insertTagNS(obj, stag, etag)
 {
 	obj.value = obj.value+stag+etag;	
+}
+
+function insertTagMoz(obj, stag, etag)
+{
+	txt = window.getSelection();
+
+	if (!txt || txt == '') {
+		t = document.getElementById('txtb');
+		h = document.getElementsByTagName('textarea')[0];
+		if (t.selectionStart == t.selectionEnd) {
+			t.value = t.value.substring(0, t.selectionStart) + stag + etag +  t.value.substring(t.selectionEnd, t.value.length);
+			return;
+		}
+		txt = t.value.substring(t.selectionStart, t.selectionEnd);
+		if (txt) {
+			t.value = t.value.substring(0, t.selectionStart) + stag + txt + etag +  t.value.substring(t.selectionEnd, t.value.length);
+			return;
+		}
+	}
+	obj.value = obj.value+stag+etag;
 }
 
 function insertTagIE(obj, stag, etag)
@@ -178,5 +198,36 @@ function layerVis(layer,on)
 			document.layers[layer].visibility = "hide";
 		else if (IE4)
 			document.all[layer].style.visibility = "hidden";
+	}
+}
+
+function fud_msg_focus(mid_hash)
+{
+	if (!window.location.hash && !OPERA) {
+		window.location.hash = mid_hash;
+	}
+}
+
+// This code below is used to make PNG's to work in IE.
+// The code comes from youngpup.net. Thanks youngpup!
+
+if (navigator.platform == "Win32" && navigator.appName == "Microsoft Internet Explorer" && window.attachEvent) {
+	document.writeln('<style type="text/css">img { visibility:hidden; } </style>');
+	window.attachEvent("onload", fnLoadPngs);
+}
+
+function fnLoadPngs() {
+	var rslt = navigator.appVersion.match(/MSIE (\d+\.\d+)/, '');
+	var itsAllGood = (rslt != null && Number(rslt[1]) >= 5.5);
+
+	for (var i = document.images.length - 1, img = null; (img = document.images[i]); i--) {
+		if (itsAllGood && img.src.match(/\.png$/i) != null) {
+			var src = img.src;
+			img.style.width = img.width + "px";
+			img.style.height = img.height + "px";
+			img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')"
+			img.src = "blank.gif";
+		}
+		img.style.visibility = "visible";
 	}
 }
