@@ -34,9 +34,9 @@
   $phpgw->template->set_var("header_message",lang("Edit answer"));
   $phpgw->template->set_var("td_message","&nbsp;");
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
-  $phpgw->template->set_var("form_action",$phpgw->link("admin_editanswer.php","vote_id=$vote_id"));
+  $phpgw->template->set_var("form_action",$phpgw->link("/polls/admin_editanswer.php","vote_id=$vote_id"));
   $phpgw->template->set_var("form_button_1",'<input type="submit" name="submit" value="' . lang("Edit") . '">');
-  $phpgw->template->set_var("form_button_2",'</form><form method="POST" action="' . $phpgw->link("admin.php","show=answers") . '"><input type="submit" name="submit" value="' . lang("Cancel") . '">');
+  $phpgw->template->set_var("form_button_2",'</form><form method="POST" action="' . $phpgw->link("/polls/admin.php","show=answers") . '"><input type="submit" name="submit" value="' . lang("Cancel") . '">');
 
   $poll_select = '<select name="poll_id">';
   $phpgw->db->query("select * from phpgw_polls_desc",__LINE__,__FILE__);

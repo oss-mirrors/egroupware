@@ -1,0 +1,8 @@
+<!-- BEGIN row -->
+  <tr bgcolor="{tr_color}">
+   <td>{row_answer}</td>
+   <td>{row_title}</td>
+   <td>{row_edit}</td>
+   <td>{row_delete}</td>
+  </tr>
+<!-- END row -->

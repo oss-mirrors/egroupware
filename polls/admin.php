@@ -16,7 +16,7 @@
   include("../header.inc.php");
 
   if (! $show) {
-     $phpgw->common->phpgw_exit();
+     $phpgw->common->phpgw_exit(True);
   }
 
   if ($order) {
@@ -57,20 +57,20 @@
 
      if ($show == "questions") {
         $phpgw->template->set_var("row_title",$phpgw->db->f("poll_title"));
-        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editquestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Edit") . '</a>');
-        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deletequestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Delete") . '</a>');
-        $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("admin_viewquestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("View") . '</a>');
+        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("/polls/admin_editquestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Edit") . '</a>');
+        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("/polls/admin_deletequestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("Delete") . '</a>');
+        $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("/polls/admin_viewquestion.php","poll_id=" . $phpgw->db->f("poll_id")) . '">' . lang("View") . '</a>');
      } else {
         $phpgw->template->set_var("row_answer",$phpgw->db->f("option_text"));
         $phpgw->template->set_var("row_title",$phpgw->db->f("poll_title"));
-        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Edit") . '</a>');
-        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deleteanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Delete") . '</a>');
+        $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("/polls/admin_editanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Edit") . '</a>');
+        $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("/polls/admin_deleteanswer.php","vote_id=" . $phpgw->db->f("vote_id")) . '">' . lang("Delete") . '</a>');
      }
 
      $phpgw->template->parse("rows","row",True);
   }
 
-  $phpgw->template->set_var("add_action",$phpgw->link("admin_add" . substr($show,0,(strlen($show)-1)) . ".php"));
+  $phpgw->template->set_var("add_action",$phpgw->link("/polls/admin_add" . substr($show,0,(strlen($show)-1)) . ".php"));
   $phpgw->template->set_var("lang_add",lang("add"));
 
   $phpgw->template->pparse("out","form");

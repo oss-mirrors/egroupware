@@ -20,8 +20,8 @@
   } else {
      echo '<p><br><table border="0" width="40%" align="center"><tr><td align="center" colspan="center">';
      echo lang("Are you sure want to delete this answer ?") . "</td></tr>";
-     echo '<tr><td align="left"><a href="' . $phpgw->link("admin.php","show=answers") . '">' . lang("No") . '</td>';
-     echo '    <td align="right"><a href="' . $phpgw->link("admin_deleteanswer.php","vote_id=$vote_id&confirm=True") . '">' . lang("Yes") . '</td></tr>';
+     echo '<tr><td align="left"><a href="' . $phpgw->link("/polls/admin.php","show=answers") . '">' . lang("No") . '</td>';
+     echo '    <td align="right"><a href="' . $phpgw->link("/polls/admin_deleteanswer.php","vote_id=$vote_id&confirm=True") . '">' . lang("Yes") . '</td></tr>';
      echo '</table>';
   }
   $phpgw->common->phpgw_footer();

@@ -29,7 +29,7 @@
      }
   }
 
-  echo '<form action="' . $phpgw->link("admin_settings.php") . '" method="POST">';
+  echo '<form action="' . $phpgw->link("/polls/admin_settings.php") . '" method="POST">';
   echo '<table border="0">';
   echo '<tr><td>' . lang("Allow users to vote more then once") . '</td>'
      . '    <td><input type="checkbox" name="settings[allow_multiable_votes]"' . ($settings["allow_multiable_votes"]?" checked":"") . ' value="True"></td></tr>';
