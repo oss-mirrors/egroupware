@@ -888,7 +888,7 @@
 							$aes = ceil($inv['minutes']/$inv['minperae']);
 						}
 						$onehour = $inv['billperae']*$aes;
-        				$sum_netto += $sumpos;
+        				$sum_netto += $onehour;
 					}
 					else
 					{
