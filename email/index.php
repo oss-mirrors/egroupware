@@ -120,7 +120,6 @@
 	{
 		// build the $feed_args array for the all_folders_listbox function
 		// anything not specified will be replace with a default value if the function has one for that param
-		$feed_args = Array();
 		$feed_args = Array(
 			'mailsvr_stream'	=> '',
 			'pre_select_folder'	=> '',
