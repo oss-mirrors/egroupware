@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Ftp Module                                                *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Ftp Module                                                  *
+	* http://www.egroupware.org                                                *
 	* Written by Scott Moser <smoser@brickies.net>                             *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *

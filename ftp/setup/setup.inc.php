@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - FTP                                                       *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - FTP                                                         *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -22,8 +22,8 @@
 	$setup_info['ftp']['license']  = 'GPL';
 	$setup_info['ftp']['description'] =
 		'FTP client.';
-	$setup_info['ftp']['maintainer'] = 'phpGW Core';
-	$setup_info['ftp']['maintainer_email'] = 'ceb@phpgwroupware.org<br>jengo@phpgroupware.org<br>milosch@phpgroupware.org<br>seek3r@phpgroupware.org<br>skeeter@phpgroupware.org';
+	$setup_info['ftp']['maintainer'] = 'eGroupWare developers';
+	$setup_info['ftp']['maintainer_email'] = 'milosch@groupwhere.org';
 
 	/* Dependencies for this app to work */
 	$setup_info['ftp']['depends'][] = array(
