@@ -194,6 +194,184 @@
 				$this->limit = True;
 			}
 		}
+		
+		/**
+		* hook to check the workload
+		*
+		* this hooks gets called by calendar, when a new events gets created
+		* we use this function to send a message, when the workload is to high
+		*
+		* @param _hookValues contains the hook values as array
+		* @returns nothing
+		*/
+		function checkWorkLoad($_hookValues)
+		{
+			#_debug_array($_hookValues);
+			$profileID 	= 1;
+			#$prefs = $this->read_prefs();
+			
+			#_debug_array($mainProjectData);
+			#_debug_array($subProjectsData);
+
+			#$bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw']->translation->charset());			
+			$boemailadmin	= CreateObject('emailadmin.bo');
+			$template	= CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
+			$bocalendar	= CreateObject('calendar.bocalendar');
+			$bolink		= CreateObject('infolog.bolink');
+			
+			// find all calendar entries for event participants
+			$calData = Array
+			(
+				'syear'		=> $_hookValues['hookValues']['start']['year'],
+				'smonth'	=> $_hookValues['hookValues']['start']['month'],
+				'sday'		=> $_hookValues['hookValues']['start']['mday'],
+				'eyear'		=> $_hookValues['hookValues']['start']['year'],
+				'emonth'	=> $_hookValues['hookValues']['start']['month'],
+				'eday'		=> $_hookValues['hookValues']['start']['mday'],
+				'owner'		=> array_keys($_hookValues['hookValues']['participants'])
+			);
+			$calEntries = $bocalendar->store_to_cache($calData);
+			$dateString = $calData['syear'].sprintf('%02d',$calData['smonth']).sprintf('%02d',$calData['sday']);
+			$bocalendar->remove_doubles_in_cache($dateString,$dateString);
+			$calEntries = $bocalendar->cached_events;
+			if(is_array($calEntries[$dateString]) && count($calEntries[$dateString]))
+			{
+				foreach($calEntries[$dateString] as $calDayEntry)
+				{
+					foreach($calDayEntry['participants'] as $participant => $status)
+					{
+						$eventStartTime = mktime
+						(
+							$calDayEntry['start']['hour'],
+							$calDayEntry['start']['min'],
+							$calDayEntry['start']['sec'],
+							$calDayEntry['start']['month'],
+							$calDayEntry['start']['day'],
+							$calDayEntry['start']['year']
+						);
+						$eventEndTime = mktime
+						(
+							$calDayEntry['end']['hour'],
+							$calDayEntry['end']['min'],
+							$calDayEntry['end']['sec'],
+							$calDayEntry['end']['month'],
+							$calDayEntry['end']['day'],
+							$calDayEntry['end']['year']
+						);
+						$eventDuration = $eventEndTime-$eventStartTime;
+						$userData[$participant]['duration'][] = $eventDuration;
+						$userData[$participant]['eventID'][] = $calDayEntry['id'];
+					}
+				}
+			}
+			#_debug_array($userData);
+			
+			$emailSettings	= $boemailadmin->getProfile($profileID);
+			$emailAddresses	= $boemailadmin->getAccountEmailAddress(
+				$GLOBALS['phpgw_info']['user']['userid'], $profileID);
+			
+			$mail		= CreateObject('phpgwapi.phpmailer');
+			$mail->PluginDir = PHPGW_SERVER_ROOT."/phpgwapi/inc/";
+			
+			$mail->IsSMTP();
+			$mail->IsHTML(true);
+			
+			$template->set_file(array('email_project_t' => 'email_workload.tpl'));
+			$template->set_block('email_project_t','body_text');
+			$template->set_block('email_project_t','body_html');
+
+			$mail->From	= 'noreply@';
+			$mail->FromName	= $boemailadmin->encodeHeader('eGroupWare System','q');
+			$mail->Host	= $emailSettings['smtpServer'];
+			$mail->Port	= $emailSettings['smtpPort'];
+			$mail->Priority	= '3';
+			$mail->Encoding = 'quoted-printable';
+			$mail->CharSet  = $GLOBALS['phpgw']->translation->charset();
+			$mail->AddCustomHeader("X-Mailer: Projects for eGroupWare");
+
+			$GLOBALS['phpgw_info']['user']['preferences']['common']['account_display'] = 'all';
+			
+			// check if one participant works more then 8 hours
+			foreach($userData as $participant => $participantData)
+			{
+				// participant need to mork more then 8 hours?
+				if(array_sum($participantData['duration']) > 28800)
+				{
+					// check if any event is linked to project
+					foreach($participantData['eventID'] as $eventID)
+					{
+						$links = $bolink->get_links('calendar',$eventID,'projects');
+						if(count($links) > 0)
+						{
+							$mail->ClearAddresses();
+							// the event is linked to some project
+							// lets inform the project coordinator
+							$projectData = $this->read_single_project($links[0]);
+							#_debug_array($projectData);
+							$coordinator = $projectData['coordinator'];
+							$toEMailAddress = $boemailadmin->getAccountEmailAddress
+							(
+								$GLOBALS['phpgw']->accounts->id2name($coordinator), $profileID
+							);
+							$toEMailAddress = $toEMailAddress[0]['address'];
+							$mail->AddAddress($toEMailAddress);
+
+							$mail->Subject = $boemailadmin->encodeHeader(lang('workload warning for project').': '.
+								$projectData['title'],'q');
+							$template->set_var('project_list',
+								'<pre>'.print_r($projectData,true)."</pre>");
+							$template->set_var('lang_workload_warning_for',
+								lang('workload warning for project'));
+							$template->set_var('lang_project_name',
+								$projectData['title']);
+							$template->set_var('lang_project_description',
+								$projectData['descr']);
+								
+							$GLOBALS['phpgw']->accounts->get_account_name
+							(
+								$participant,
+								$accountLID,
+								$accountFirstName,
+								$accountLastName
+							);
+							$accountDisplayName = $GLOBALS['phpgw']->common->display_fullname
+							(
+								$accountLID,
+								$accountFirstName,
+								$accountLastName
+							);
+							$template->set_var('employee',$accountDisplayName);
+							$template->set_var('lang_is_schedules_for',
+								lang
+								(
+									'is scheduled for more then %1 hours on %2',
+									'8',
+									$calData['syear'].'-'.sprintf('%02d',$calData['smonth']).'-'.sprintf('%02d',$calData['sday'])
+								)
+							);
+
+							$mail->Body	= $template->fp('out','body_html');
+							$mail->AltBody	= $template->fp('out','body_text');
+			
+							if($emailSettings['smtpAuth'] == 'yes')
+							{
+								$mail->SMTPAuth = true;
+								$mail->Username = $emailSettings['username'];
+								$mail->Password = $emailSettings['key'];
+							}
+			
+							@set_time_limit(120);
+							if(!$mail->Send())
+							{
+								$this->errorInfo = $mail->ErrorInfo;
+								return false;
+							}
+						}
+					}
+				}
+			}
+			
+		}
 
 		function createHTMLOutput($_action, $_values, $_dataMainProject = array(), 
 			$_displayNavbar=true, $_displayFooter=true,

@@ -335,3 +335,5 @@ subproject	projects	de	Teilprojekt
 export as	projects	de	exportieren als
 delete selected files	projects	de	ausgewählte Dateien löschen
 add file	projects	de	Datei hinzufügen
+workload warning for project	calendar	de	Auslastungwarnung für Projekt
+is scheduled for more then %1 hours on %2	calendar	de	ist am %2 für mehr als %1 Stunden eingeplant
