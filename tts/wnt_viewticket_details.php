@@ -48,26 +48,26 @@
 
   $def_group = $GLOBALS['phpgw_info']['user']['account_primary_group'];
   // if user is admin, or VIP user, or HD_OPER user then ...
-  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_view_all=True;
            $can_close=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
+//ACL  {
            $can_mon=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
+//ACL  {
            $can_vip=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_add=True;
            $can_close=True;
-  }
+//ACL  }
   //
 
 
@@ -199,7 +199,7 @@
 
     if ($ticket['status'] == 'X')
     {
-     	$GLOBALS['phpgw']->template->set_var('value_status',lang('Closed'));
+      $GLOBALS['phpgw']->template->set_var('value_status',lang('Closed'));
     }
     else
     {
@@ -272,7 +272,7 @@
 
     /*
     $old_subject             = $GLOBALS['phpgw']->db->f('ticket_subject');
-    $old_caller_name  	     = $GLOBALS['phpgw']->db->f('ticket_caller_name');
+    $old_caller_name         = $GLOBALS['phpgw']->db->f('ticket_caller_name');
     $old_caller_telephone    = $GLOBALS['phpgw']->db->f('ticket_caller_telephone');
     $old_caller_telephone_2  = $GLOBALS['phpgw']->db->f('ticket_caller_telephone_2');
     $old_caller_email        = $GLOBALS['phpgw']->db->f('ticket_caller_email');

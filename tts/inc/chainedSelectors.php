@@ -71,15 +71,15 @@
             foreach($data as $row)
             {
 
-				if (($row[CS_SOURCE_ID]) != $temp_source_id)
+            if (($row[CS_SOURCE_ID]) != $temp_source_id)
                 {
                   $maxPerChoice[($row[CS_SOURCE_ID])]++;
                 }
                 else
                 {
-                 	if (($row[CS_TARGET_ID]) != $temp_target_id)
+                  if (($row[CS_TARGET_ID]) != $temp_target_id)
                     {
-                     	$maxPerChoice[($row[CS_SOURCE_ID])]++;
+                        $maxPerChoice[($row[CS_SOURCE_ID])]++;
                     }
                     else
                     {
@@ -87,7 +87,7 @@
                     }
                 }
 
-            	$temp_source_id = ($row[CS_SOURCE_ID]);
+               $temp_source_id = ($row[CS_SOURCE_ID]);
                 $temp_target_id = ($row[CS_TARGET_ID]);
 
                 //create list of unique choices for first selector
@@ -201,7 +201,7 @@
                         {}
                         else
                         {
-	                        print("\t\t" . $targetSelector .
+                           print("\t\t" . $targetSelector .
                             ".options[$count].value = '$optionValue';\n");
                             print("\t\t" . $targetSelector .
                             ".options[$count].text = '$optionLabel';\n\n");
@@ -503,7 +503,7 @@
             if ($def_value == "a" OR $def_value =="")
             {
                 $need_check_def_value = FALSE;
-             	$selected=TRUE;
+               $selected=TRUE;
             }
             else
             {
@@ -519,7 +519,7 @@
                 {
                     if ($def_value == $key)
                     {
-                     	$ret=$ret." selected";
+                        $ret=$ret." selected";
                         $need_check_def_value = FALSE;
                     }
                 }
@@ -594,17 +594,17 @@
             $ret="<select name=\"".$this->names[CS_THIRD_SELECTOR]."\" $disabled>\n";
             for($i=0; $i < $this->maxTarget2Choices; $i++)
             {
-             	if ($selected)
+               if ($selected)
                 {
-             	  if ($value <> "a" OR $value <> "")
+                 if ($value <> "a" OR $value <> "")
                   {
                     if ($name == "a" OR $name == "")
                     {
-                     	$name = $value;
+                        $name = $value;
                     }
                     if ($selected)
                     {
-                     	$ret=$ret."\t<option value=\"$value\">$name</option>\n";
+                        $ret=$ret."\t<option value=\"$value\">$name</option>\n";
                     }
                   }
                 }

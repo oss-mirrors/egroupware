@@ -75,24 +75,24 @@
 
   $def_group = $GLOBALS['phpgw_info']['user']['account_primary_group'];
   // if user is admin, or VIP user, or HD_OPER user then ...
-  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
+//ACL  {
            $can_mon=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
+//ACL  {
            $can_vip=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_add=True;
-  }
+//ACL  }
 
   // if user can add new ticket
 /*  if ($can_add)

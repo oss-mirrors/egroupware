@@ -52,26 +52,26 @@
 
   $def_group = $GLOBALS['phpgw_info']['user']['account_primary_group'];
   // if user is admin, or VIP user, or HD_OPER user then ...
-  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  if (($def_group == '16') || ($def_group == '6') || $GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_view_all=True;
            $can_close=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('mon',1,'tts'))
+//ACL  {
            $can_mon=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('vip',1,'tts'))
+//ACL  {
            $can_vip=True;
            $can_view_all=True;
-  }
-  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
+//ACL  }
+//ACL  if ($GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL  {
            $can_add=True;
            $can_close=True;
-  }
+//ACL  }
   //
 
 
@@ -294,8 +294,8 @@
             '"><b>'.lang('Duplicate ticket').'</b></a></td>'.
         '</tr>');
 */
-  		// if user can add and if ticket is open and ticket state is NEW then subject can be changed
-  		if ($ticket['status'] <> 'X') {
+      // if user can add and if ticket is open and ticket state is NEW then subject can be changed
+      if ($ticket['status'] <> 'X') {
              if ($ticket['state'] == '1')
              {
                  $GLOBALS['phpgw']->template->set_var('modify_subject', '<tr class="th">'.
@@ -355,34 +355,34 @@
     {
          //add by Josip
         //if ticket is closed then changes are not allowed
-        $disabled_for_standard_user = "DISABLED";
-        $disabled_for_admin_user = "DISABLED";
+//ACL        $disabled_for_standard_user = "DISABLED";
+//ACL        $disabled_for_admin_user = "DISABLED";
 
-        if ($can_add)
-        {
+//ACL        if ($can_add)
+//ACL        {
             $disabled_field_status = "";
-        }
-        else
-        {
-            $disabled_field_status = "DISABLED";
-        }
-    }
-    else
-    {
+//ACL        }
+//ACL        else
+//ACL        {
+//ACL            $disabled_field_status = "DISABLED";
+//ACL        }
+//ACL    }
+//ACL    else
+//ACL    {
         //add by Josip
         // if user doesn't have appropiate rights the certain fields are disabled or enabled for input
         $disabled_for_admin_user = "";
 
-        if ($can_add)
-        {
+//ACL        if ($can_add)
+//ACL        {
             $disabled_for_standard_user = "";
             $disabled_field_status = "";
-        }
-        else
-        {
-            $disabled_for_standard_user = "DISABLED";
-            $disabled_field_status = "DISABLED";
-        }
+//ACL        }
+//ACL        else
+//ACL        {
+//ACL            $disabled_for_standard_user = "DISABLED";
+//ACL            $disabled_field_status = "DISABLED";
+//ACL        }
     }
 
     $GLOBALS['phpgw']->template->set_var('disabled_for_standard_user',$disabled_for_standard_user);
@@ -575,8 +575,8 @@
 
       switch($value['status'])
       {
-      	//added custom atributes by josip
-      	case 'K1': $type = lang('Caller Name'); break;
+         //added custom atributes by josip
+         case 'K1': $type = lang('Caller Name'); break;
         case 'K2': $type = lang('Caller Telephone'); break;
         case 'K3': $type = lang('Caller Telephone ID'); break;
         case 'K4': $type = lang('Caller Address'); break;
@@ -817,7 +817,7 @@
     $GLOBALS['phpgw']->db->next_record();
     //added custom atributes by josip
     $old_subject             = $GLOBALS['phpgw']->db->f('ticket_subject');
-    $old_caller_name  	     = $GLOBALS['phpgw']->db->f('ticket_caller_name');
+    $old_caller_name         = $GLOBALS['phpgw']->db->f('ticket_caller_name');
     $old_caller_telephone    = $GLOBALS['phpgw']->db->f('ticket_caller_telephone');
     $old_caller_telephone_2  = $GLOBALS['phpgw']->db->f('ticket_caller_telephone_2');
     $old_caller_email        = $GLOBALS['phpgw']->db->f('ticket_caller_email');
@@ -881,14 +881,14 @@
     $ticket_state_is_assigned = false;
     if($ticket['state'] && $old_state != $ticket['state'])
     {
-     	//and if new ticket state is rejected then
-     	if ($ticket['state'] == 6)
+      //and if new ticket state is rejected then
+      if ($ticket['state'] == 6)
         {
-  	 	     // check if user write some note, if note is not changed and ticket state is rejected then write error message
-     	     if (!$ticket['note'])
+           // check if user write some note, if note is not changed and ticket state is rejected then write error message
+           if (!$ticket['note'])
              {
-                	$ticket['state'] = $old_state;
-         	    	$messages .= '<br>'.lang('You did not write any note! Ticket can not be rejected.');
+                  $ticket['state'] = $old_state;
+                  $messages .= '<br>'.lang('You did not write any note! Ticket can not be rejected.');
                     $GLOBALS['phpgw']->session->appsession('messages','tts',$messages);
                     $no_error=False;
              }

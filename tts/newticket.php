@@ -33,12 +33,12 @@
 
   $GLOBALS['phpgw']->config->read_repository();
 
-  //add by Josip
-  if (!$GLOBALS['phpgw']->acl->check('add',1,'tts'))
-  {
-    $GLOBALS['phpgw']->redirect_link('/tts/index.php');
-  }
-  ////
+//ACL  //add by Josip
+//ACL    if (!$GLOBALS['phpgw']->acl->check('add',1,'tts'))
+//ACL    {
+//ACL      $GLOBALS['phpgw']->redirect_link('/tts/index.php');
+//ACL    }
+//ACL    ////
 
   if($_POST['cancel'])
   {
