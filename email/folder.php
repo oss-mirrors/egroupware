@@ -60,6 +60,12 @@
 		}
 		else
 		{
+			// get rid of the escape \ that magic_quotes HTTP POST will add
+			// " becomes \" and  '  becomes  \'  and  \  becomes \\
+			$target_folder = $phpgw->msg->stripslashes_gpc($target_folder);
+			// == is that necessary ? == are folder names allowed with '  "  \  in them ? ===
+			// rfc2060 does NOT prohibit them
+
 			// obtain propper folder names
 			// if this is a delete, the folder name will (should) already exist
 			// although the user had to type in the folder name
@@ -67,13 +73,14 @@
 			// "do not add the name space for me, I'm an expert and I know what I'm doing"
 			if (($action == 'create_expert') || ($action == 'delete_expert') || ($action == 'rename_expert'))
 			{
-				//$target_folder_long = $target_folder;
-				// do nothing, the user is an expert, do not alter the target_folder name at all
+				// other than stripslashes_gpc,  do nothing
+				// the user is an expert, do not alter the target_folder name at all
 			}
 			else
 			{
 				// since the user is not an "expert", we properly prepare the folder name
 				// see if the folder already exists in the folder lookup list
+				// this would be the case if the user is deleting a folder
 				$target_lookup = $phpgw->msg->folder_lookup('', $target_folder);
 				if ($target_lookup != '')
 				{
@@ -111,25 +118,28 @@
 			// Result Message
 			if (($action == 'rename') || ($action == 'rename_expert'))
 			{
-				$action_report = $action .' folder "' .$source_folder .'" to "' .$target_folder .'" <br>';
+				$action_report =
+					$action .' '.lang('folder').' '.$source_folder
+					.' '.lang('to').' '.$target_folder .' <br>'
+					.lang('result').' : ';
 			}
 			else
 			{
-				$action_report = $action .' folder "' .$target_folder .'" <br>';
+				$action_report = $action.' '.lang('folder').' '.$target_folder.' <br>'
+				.lang('result').' : ';
 			}
 			// did it work or not
 			if ($success)
 			{
 				// assemble some feedback to show
-				$action_report = $action_report .'OK';
+				$action_report = $action_report .lang('OK');
 			}
 			else
 			{
 				$imap_err = imap_last_error();
 				if ($imap_err == '')
 				{
-					// NEEDS LANG
-					$imap_err = 'unknown error';
+					$imap_err = lang('unknown error');
 				}
 				// assemble some feedback to show the user about this error
 				$action_report = $action_report .$imap_err;
@@ -165,43 +175,53 @@
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 		$t->set_var('list_backcolor',$tr_color);
 		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .$phpgw->msg->prep_folder_out($folder_long)));
-		$t->set_var('folder_name',$folder_short);
-		//$t->set_var('folder_name',$folder_long);
-		//$t->set_var('folder_name',$folder_list[$i]);
-		//$t->set_var('folder_name',$phpgw->msg->htmlspecialchars_encode($folder_list[$i]));
+
+		if ((isset($show_long)) && ($show_long))
+		{
+			$t->set_var('folder_name',$folder_long);
+		}
+		else
+		{
+			$t->set_var('folder_name',$folder_short);
+		}
+		//$t->set_var('folder_name',$folder_list[$i]["folder_long"]);
+		//$t->set_var('folder_name',$phpgw->msg->htmlspecialchars_encode($folder_long));
+
 		$t->set_var('msgs_unseen',$mailbox_status->unseen);
 		//$t->set_var('msgs_total',$total_msgs);
 		$t->set_var('msgs_total',$mailbox_status->messages);
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
 
-// ----  Set Up Selectbox  ---
-
-
 // ----  Set Up Form Variables  ---
 	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
 	$t->set_var('all_folders_listbox',$phpgw->msg->all_folders_listbox('','','',False));
-
 	$t->set_var('select_name_rename','source_folder');
 
-	// FIXME  needs lang
-	$t->set_var('select_txt_rename',lang('choose to rename'));
-	$t->set_var('form_create_txt','Create a folder');
-	$t->set_var('form_delete_txt','Delete a folder');
-	$t->set_var('form_rename_txt','Rename a folder');
-	$t->set_var('form_create_expert_txt','Create (expert)');
-	$t->set_var('form_delete_expert_txt','Delete (expert)');
-	$t->set_var('form_rename_expert_txt','Rename (expert)');
+	$t->set_var('select_txt_rename',lang('choose for rename'));
+	$t->set_var('form_create_txt',lang('Create a folder'));
+	$t->set_var('form_delete_txt',lang('Delete a folder'));
+	$t->set_var('form_rename_txt',lang('Rename a folder'));
+	$t->set_var('form_create_expert_txt',lang('Create (expert)'));
+	$t->set_var('form_delete_expert_txt',lang('Delete (expert)'));
+	$t->set_var('form_rename_expert_txt',lang('Rename (expert)'));
 	$t->set_var('form_submit_txt',lang("submit"));
 
 // ----  Set Up Other Variables  ---	
 	$t->set_var('title_backcolor',$phpgw_info['theme']['em_folder']);
 	$t->set_var('title_textcolor',$phpgw_info['theme']['em_folder_text']);
-	// FIXME  needs lang()
-	$t->set_var('title_text','Folder Maintenance');
+	$t->set_var('title_text',lang('Folder Maintenance'));
+	$t->set_var('label_name_text',lang('Folder name'));
+	$t->set_var('label_messages_text',lang('Messages'));
+
+	$t->set_var('view_long_txt',lang('long names'));
+	$t->set_var('view_long_lnk',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php?show_long=1'));
+	$t->set_var('view_short_txt',lang('short names'));
+	$t->set_var('view_short_lnk',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php'));
+
 	$t->set_var('the_font',$phpgw_info['theme']['font']);
 	$t->set_var('th_backcolor',$phpgw_info['theme']['th_bg']);
-	
+
 	$t->pparse('out','T_folder_out');
 
 	$phpgw->msg->end_request();

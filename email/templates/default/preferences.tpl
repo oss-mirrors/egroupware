@@ -50,10 +50,28 @@
 </tr>
 <tr>
 	<td align="left" bgcolor="{bg_row5}">
-		{use_trash_folder_blurb}
+		<input type="checkbox" name="{use_trash_folder_checkbox_name}" value="{use_trash_folder_checkbox_value}" {use_trash_folder_checked}>
+		&nbsp;{use_trash_folder_blurb}
 	</td>
 	<td align="center" bgcolor="{bg_row5}">
-		<input type="checkbox" name="{use_trash_folder_checkbox_name}" value="{use_trash_folder_checkbox_value}" {use_trash_folder_checked}>
+		<input type="text" name="{trashname_text_name}" value="{trashname_text_value}">
+	</td>
+</tr>
+<tr>
+	<td align="left" bgcolor="{bg_row5A}">
+		<input type="checkbox" name="{use_sent_folder_checkbox_name}" value="{use_sent_folder_checkbox_value}" {use_sent_folder_checked}>
+		&nbsp;{use_sent_folder_blurb}
+	</td>
+	<td align="center" bgcolor="{bg_row5A}">
+		<input type="text" name="{sentname_text_name}" value="{sentname_text_value}">
+	</td>
+</tr>
+<tr>
+	<td align="left" bgcolor="{bg_row5B}">
+		{enable_utf7_blurb}
+	</td>
+	<td align="center" bgcolor="{bg_row5B}">
+		<input type="checkbox" name="{enable_utf7_checkbox_name}" value="{enable_utf7_checkbox_value}" {enable_utf7_checked}>
 	</td>
 </tr>
 <tr>

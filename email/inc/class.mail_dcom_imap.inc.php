@@ -231,11 +231,9 @@
 	global $phpgw_info, $phpgw;
 
 	$server_str = $phpgw->msg->get_mailsvr_callstr();
-	$folder_short = $phpgw->msg->get_folder_short($folder);
-	$folder_long = $phpgw->msg->get_folder_long($folder);
 
 	// does the target folder actually exist ?
-	$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder_long);
+	$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder);
 	if ($official_folder_long != '')
 	{
 		$havefolder = True;
@@ -245,12 +243,13 @@
 		$havefolder = False;
 	}
 
-	if (!$havefolder)
+	if ($havefolder == False)
 	{
 		// create the specified target folder so it will exist
-		$this->createmailbox($stream,$server_str .$folder_long);
+		$folder_long = $phpgw->msg->get_folder_long($folder);
+		$this->createmailbox($stream,"$server_str"."$folder_long");
 		// try again to get the real long folder name of the just created trash folder
-		$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder_long);
+		$official_folder_long = $phpgw->msg->folder_lookup($stream, $folder);
 		// did the folder get created and do we now have the official full name of that folder?
 		if ($official_folder_long != '')
 		{
@@ -261,16 +260,17 @@
 	// at this point we've tries 2 time to obtain the "server approved" long name for the target folder
 	// even tries creating it if necessary
 	// if we have the name, append the message to that folder
-	if ($havefolder)
+	if (($havefolder == True)
+	&& ($official_folder_long != ''))
 	{
 		$official_folder_long = $this->utf7_encode($official_folder_long);
-		return imap_append($stream, "$server_str" ."$official_folder_long", $message, $flags);
+		return imap_append($stream, "$server_str"."$official_folder_long", $message, $flags);
 	}
 	else
 	{
 		// we do not have the official long folder name for the target folder
 		// we can NOT append the message to a folder name we are not SURE is corrent
-		// it will either fail or hand the browser for a while
+		// it will fail  HANG the browser for a while
 		// so just SKIP IT
 		return False;
 	}

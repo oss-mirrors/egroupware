@@ -12,15 +12,14 @@
 
 	</td>
 </tr>
-
-<!-- <tr><td>d_server_str: {debug_server_str} d_namespace: {debug_namespace} d_delimiter: {debug_delimiter} d_folder: {debug_folder} d_folder_long: {debug_folder_long} d_folder_short: {debug_folder_short}</td></tr> -->
-
 <tr>
 	<td bgcolor="{th_backcolor}">
-		<font size="2" face="{the_font}"><strong>Folder name</strong></font>
+		<font size="2" face="{the_font}"><strong>{label_name_text}</strong></font>
+		&nbsp;&nbsp;&nbsp;<a href="{view_long_lnk}">({view_long_txt})</a>
+		&nbsp;&nbsp;&nbsp;<a href="{view_short_lnk}">({view_short_txt})</a>
 	</td>
 	<td bgcolor="{th_backcolor}">
-		<font size="2" face="{the_font}"><strong>Messages</strong></font>
+		<font size="2" face="{the_font}"><strong>{label_messages_text}</strong></font>
 	</td>
 </tr>
 

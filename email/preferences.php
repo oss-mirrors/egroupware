@@ -25,6 +25,26 @@
 		$phpgw->preferences->read_repository();
 
 		// ----  Typical (Non-Custom) Preferences   -----
+		/* email sig must not have  '  nor  "  in it, as they screw up the preferences in class session
+		    not an sql error, but the core bug lies somewhere in session caching */
+		if ($email_sig != '')
+		{
+			// get rid of the escape \ that magic_quotes HTTP POST will add
+ 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
+			$email_sig_clean = $phpgw->msg->stripslashes_gpc($email_sig);
+			// replace database offensive ASCII chars  with htmlspecialchars
+			// these chars are replaced:  '  "  /  \
+			$email_sig_clean = $phpgw->msg->html_quotes_encode($email_sig_clean);
+			$phpgw->preferences->add("email","email_sig",$email_sig_clean);
+		}
+		else
+		{
+			// have it set, but be empty
+			// why have it set? I guess it makes checking for it easier in the code ????
+			$phpgw->preferences->add("email","email_sig");
+		}
+
+		$phpgw->preferences->add("email","default_sorting");
 
 		$phpgw->preferences->delete("email","show_addresses");
 		if ($show_addresses)
@@ -38,28 +58,54 @@
 			$phpgw->preferences->add("email","mainscreen_showmail");
 		}
 
+		// save sent mail to the sent folder
+		$phpgw->preferences->delete("email","use_sent_folder");
+		if ($use_sent_folder)
+		{
+			$phpgw->preferences->add("email","use_sent_folder");
+		}
+
+		// use trash folder
 		$phpgw->preferences->delete("email","use_trash_folder");
 		if ($use_trash_folder)
 		{
 			$phpgw->preferences->add("email","use_trash_folder");
 		}
-
-		$phpgw->preferences->add("email","default_sorting");
-
-		/* email sig must not have  '  nor  "  in it, as they screw up the preferences in class session
-		    not an sql error, but the core bug lies somewhere in session caching */
-		if ($email_sig != '')
+		// trash folder name
+		$phpgw->preferences->delete("email","trash_folder_name");
+		if ($trash_folder_name)
 		{
-			/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  */
-			$email_sig_clean = $phpgw->msg->stripslashes_gpc($email_sig);
-			/*// replace database offensive ASCII chars  with htmlspecialchars */
-			$email_sig_clean = $phpgw->msg->html_quotes_encode($email_sig_clean);
-			$phpgw->preferences->add("email","email_sig",$email_sig_clean);
+			// get rid of the escape \ that magic_quotes HTTP POST will add
+ 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
+			$trash_folder_name = trim($phpgw->msg->stripslashes_gpc($trash_folder_name));
+			if ($trash_folder_name == '')
+			{
+				// for some reason the user did not fill it in properly
+				$trash_folder_name = $phpgw->msg->default_trash_folder;
+			}
+			$phpgw->preferences->add("email","trash_folder_name",$trash_folder_name);
 		}
-		else
+
+		// sent folder name to use
+		$phpgw->preferences->delete("email","sent_folder_name");
+		if ($sent_folder_name)
 		{
-			// have it set, but be empty
-			$phpgw->preferences->add("email","email_sig");
+			// get rid of the escape \ that magic_quotes HTTP POST will add
+ 			// " becomes \" and  '  becomes  \'  and  \  becomes \\
+			$sent_folder_name = trim($phpgw->msg->stripslashes_gpc($sent_folder_name));
+			if ($sent_folder_name == '')
+			{
+				// for some reason the user did not fill it in properly
+				$sent_folder_name = $phpgw->msg->default_sent_folder;
+			}
+			$phpgw->preferences->add("email","sent_folder_name",$sent_folder_name);
+		}
+
+		// use utf 7 internationalization encoding/decoding of folder names
+		$phpgw->preferences->delete("email","enable_utf7");
+		if ($enable_utf7)
+		{
+			$phpgw->preferences->add("email","enable_utf7");
 		}
 
 		// ----  Custom Preferences   -----
@@ -166,6 +212,9 @@
 	$phpgw->common->phpgw_header();
 	echo parse_navbar();
 
+// RE-PROCESS the Preferences!!!
+	$phpgw->msg->create_email_preferences();
+
 	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 	$t->set_file(array(		
 		'T_preferences_out' => 'preferences.tpl'
@@ -238,7 +287,7 @@
 	$t->set_var('mainscreen_showmail_checkbox_value','True');
 	$t->set_var('mainscreen_showmail_checked',$mainscreen_showmail_checked);
 
-	// row5 = Send deleted messages to the trash
+	// row5 = TRASH folder options
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"])
 	{
@@ -249,10 +298,62 @@
 		$use_trash_folder_checked = '';
 	}
 	$t->set_var('bg_row5',$tr_color);
-	$t->set_var('use_trash_folder_blurb',lang("Send deleted messages to the trash"));
+	//$t->set_var('use_trash_folder_blurb',lang("Send deleted messages to the trash"));
+	$t->set_var('use_trash_folder_blurb',lang("Deleted messages saved to folder:"));
 	$t->set_var('use_trash_folder_checkbox_name','use_trash_folder');
 	$t->set_var('use_trash_folder_checkbox_value','True');
 	$t->set_var('use_trash_folder_checked',$use_trash_folder_checked);
+	$t->set_var('trashname_text_name','trash_folder_name');
+	if (!isset($phpgw_info["user"]["preferences"]["email"]["trash_folder_name"]))
+	{
+		$t->set_var('trashname_text_value',$phpgw->msg->default_trash_folder);
+	}
+	else
+	{
+		$t->set_var('trashname_text_value',$phpgw_info["user"]["preferences"]["email"]["trash_folder_name"]);
+	}
+
+	// row5A = SENT folder options
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	if ($phpgw_info["user"]["preferences"]["email"]["use_sent_folder"])
+	{
+		$use_sent_folder_checked = 'checked';
+	}
+	else
+	{
+		$use_sent_folder_checked = '';
+	}
+	$t->set_var('bg_row5A',$tr_color);
+	//$t->set_var('use_sent_folder_blurb',lang("Send deleted messages to the sent"));
+	$t->set_var('use_sent_folder_blurb',lang("Sent messages saved to folder:"));
+	$t->set_var('use_sent_folder_checkbox_name','use_sent_folder');
+	$t->set_var('use_sent_folder_checkbox_value','True');
+	$t->set_var('use_sent_folder_checked',$use_sent_folder_checked);
+	$t->set_var('sentname_text_name','sent_folder_name');
+	if (!isset($phpgw_info["user"]["preferences"]["email"]["sent_folder_name"]))
+	{
+		$t->set_var('sentname_text_value',$phpgw->msg->default_sent_folder);
+	}
+	else
+	{
+		$t->set_var('sentname_text_value',$phpgw_info["user"]["preferences"]["email"]["sent_folder_name"]);
+	}
+
+	// row5B = enable UTF-7 translation
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	if ($phpgw_info["user"]["preferences"]["email"]["enable_utf7"])
+	{
+		$enable_utf7_checked = 'checked';
+	}
+	else
+	{
+		$enable_utf7_checked = '';
+	}
+	$t->set_var('bg_row5B',$tr_color);
+	$t->set_var('enable_utf7_blurb',lang("enable UTF-7 encoded folder names"));
+	$t->set_var('enable_utf7_checkbox_name','enable_utf7');
+	$t->set_var('enable_utf7_checkbox_value','True');
+	$t->set_var('enable_utf7_checked',$enable_utf7_checked);
 
 	// next section: Custom Email Settings
 	$t->set_var('section_title',lang("Custom Email settings"));
@@ -331,7 +432,7 @@
 	// row13 = Mail Folder(UW-Maildir)
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 	$t->set_var('bg_row13',$tr_color);
-	$t->set_var('mail_folder_blurb',lang("Mail Folder(UW-Maildir)"));
+	$t->set_var('mail_folder_blurb',lang("U-Wash Mail Folder"));
 	$t->set_var('mail_folder_text_name','mail_folder');
 	$t->set_var('mail_folder_text_value',$phpgw_info["user"]["preferences"]["email"]["mail_folder"]);
 
