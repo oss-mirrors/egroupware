@@ -14,7 +14,7 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '0.0.008';
+	$setup_info['emailadmin']['version']   = '1.0.0';
 	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 2;
 
@@ -35,13 +35,12 @@
 	
 	/* The hooks this app includes, needed for hooks registration */
 	#$setup_info['emailadmin']['hooks'][] = 'preferences';
-	#$setup_info['emailadmin']['hooks'][] = 'manual';
 	$setup_info['emailadmin']['hooks'][] = 'admin';
 
 	/* Dependacies for this app to work */
 	$setup_info['emailadmin']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.14','0.9.16')
+		'versions' => Array('0.9.14','0.9.16','1.0.0')
 	);
 
 

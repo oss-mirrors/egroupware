@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['headlines']['name']      = 'headlines';
 	$setup_info['headlines']['title']     = 'Headlines';
-	$setup_info['headlines']['version']   = '0.8.1.001';
+	$setup_info['headlines']['version']   = '1.0.0';
 	$setup_info['headlines']['app_order'] = 13;
 	$setup_info['headlines']['enable']    = 1;
 
@@ -22,8 +22,10 @@
 	$setup_info['headlines']['license']  = 'GPL';
 	$setup_info['headlines']['description'] =
 		'Read news site headlines.';
-	$setup_info['headlines']['maintainer'] = 'eGroupWare developers';
-	$setup_info['headlines']['maintainer_email'] = 'milosch@groupwhere.org';
+	$setup_info['headlines']['maintainer'] = array(
+		'name' => 'eGroupWare developers',
+		'email' => 'egroupware-developers@lists.sourceforge.net'
+	);
 
 	/* The tables this app creates */
 	$setup_info['headlines']['tables']    = array(
@@ -34,7 +36,6 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['headlines']['hooks'][]   = 'admin';
 	$setup_info['headlines']['hooks'][]   = 'home';
-	$setup_info['headlines']['hooks'][]   = 'manual';
 	$setup_info['headlines']['hooks'][]   = 'settings';
 	$setup_info['headlines']['hooks'][]   = 'preferences';
 	$setup_info['headlines']['hooks'][]   = 'sidebox_menu';

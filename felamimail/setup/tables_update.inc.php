@@ -128,4 +128,12 @@
 		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.5';
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
+
+
+	$test[] = '0.9.5';
+	function felamimail_upgrade0_9_5()
+	{
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
 ?>

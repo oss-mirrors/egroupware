@@ -71,3 +71,12 @@
 		$setup_info['bookmarks']['currentver'] = '0.9.2';
 		return $setup_info['bookmarks']['currentver'];
 	}
+
+	$test[] = '0.9.2';
+	function bookmarks_upgrade0_9_2()
+	{
+		global $setup_info,$phpgw_setup;
+
+		$setup_info['bookmarks']['currentver'] = '1.0.0';
+		return $setup_info['bookmarks']['currentver'];
+	}

@@ -129,3 +129,11 @@
 		return $GLOBALS['setup_info']['forum']['currentver'];
 	}
 
+
+	$test[] = '0.9.13.006';
+	function forum_upgrade0_9_13_006()
+	{
+		$GLOBALS['setup_info']['forum']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['forum']['currentver'];
+	}
+

@@ -15,8 +15,7 @@
 
 	$setup_info['email']['name']      = 'email';
 	$setup_info['email']['title']     = 'Email';
-	//$setup_info['email']['version']   = '0.9.13.110805';
-	$setup_info['email']['version']   = '0.9.13.005';
+	$setup_info['email']['version']   = '1.0.0';
 	$setup_info['email']['app_order'] = '2';
 	$setup_info['email']['enable']    = 1;
 	$setup_info['email']['tables']    = array('phpgw_anglemail');
@@ -32,7 +31,6 @@
 	$setup_info['email']['hooks'][] = 'admin';
 	$setup_info['email']['hooks'][] = 'email_add_def_prefs';
 	$setup_info['email']['hooks'][] = 'home';
-	$setup_info['email']['hooks'][] = 'manual';
 	$setup_info['email']['hooks'][] = 'notifywindow';
 	$setup_info['email']['hooks'][] = 'notifywindow_simple';
 	$setup_info['email']['hooks'][] = 'add_def_prefs';
@@ -44,16 +42,4 @@
 		'appname' => 'phpgwapi',
 		'versions' => Array('0.9.13','0.9.14','0.9.15','1.0.0')
 	);
-
-	/*
-	$setup_info['email']['depends'][] = array(
-		'appname' => 'admin',
-		'versions' => Array('0.9.13','0.9.14','0.9.15')
-	);
-
-	$setup_info['email']['depends'][] = array(
-		'appname' => 'preferences',
-		'versions' => Array('0.9.13','0.9.14','0.9.15')
-	);
-	*/
 ?>

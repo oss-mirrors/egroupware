@@ -16,7 +16,7 @@
 	/* Basic information about this app */
 	$setup_info['bookmarks']['name']      = 'bookmarks';
 	$setup_info['bookmarks']['title']     = 'Bookmarks';
-	$setup_info['bookmarks']['version']   = '0.9.2';
+	$setup_info['bookmarks']['version']   = '1.0.0';
 	$setup_info['bookmarks']['app_order'] = '12';
 	$setup_info['bookmarks']['enable']    = 1;
 
@@ -24,8 +24,10 @@
 	$setup_info['bookmarks']['license']  = 'GPL';
 	$setup_info['bookmarks']['description'] =
 		'Manage your bookmarks with eGW.  Has Netscape plugin.';
-	$setup_info['bookmarks']['maintainer'] = 'eGroupWare Developers';
-	$setup_info['bookmarks']['maintainer_email'] = 'ak703@users.sourceforge.net';
+	$setup_info['bookmarks']['maintainer'] = array(
+		'name' => 'eGroupWare Developers',
+		'email' => 'egroupware-developers@lists.sourceforge.net'
+	);
 
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables']	= Array(

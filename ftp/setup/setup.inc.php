@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['ftp']['name']      = 'ftp';
 	$setup_info['ftp']['title']     = 'FTP';
-	$setup_info['ftp']['version']   = '0.8.1';
+	$setup_info['ftp']['version']   = '1.0.0';
 	$setup_info['ftp']['app_order'] = 20;
 	$setup_info['ftp']['enable']    = 1;
 
@@ -22,8 +22,10 @@
 	$setup_info['ftp']['license']  = 'GPL';
 	$setup_info['ftp']['description'] =
 		'FTP client.';
-	$setup_info['ftp']['maintainer'] = 'eGroupWare developers';
-	$setup_info['ftp']['maintainer_email'] = 'milosch@groupwhere.org';
+	$setup_info['ftp']['maintainer'] = array(
+		'name' => 'eGroupWare developers',
+		'email' => 'egroupware-developers@lists.sourceforge.net'
+	);
 
 	/* Dependencies for this app to work */
 	$setup_info['ftp']['depends'][] = array(

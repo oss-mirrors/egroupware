@@ -24,4 +24,10 @@
 		return $setup_info['headlines']['currentver'];
 	}
 
+	$test[] = '0.8.1.001';
+	function headlines_upgrade0_8_1_001()
+	{
+		$setup_info['headlines']['currentver'] = '1.0.0';
+		return $setup_info['headlines']['currentver'];
+	}
 ?>

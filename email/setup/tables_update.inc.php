@@ -74,4 +74,11 @@
 		$GLOBALS['setup_info']['email']['currentver'] = '0.9.13.005';
 		return $GLOBALS['setup_info']['email']['currentver'];
 	}
+
+	$test[] = '0.9.13.005';
+	function email_upgrade0_9_13_005()
+	{
+		$GLOBALS['setup_info']['email']['currentver'] = '1.0.0';
+		return $GLOBALS['setup_info']['email']['currentver'];
+	}
 ?>

@@ -12,16 +12,18 @@
 
 	$setup_info['backup']['name']		= 'backup';
 	$setup_info['backup']['title']		= 'Backup';
-	$setup_info['backup']['version']	= '0.0.1.001';
+	$setup_info['backup']['version']	= '1.0.0';
 	$setup_info['backup']['app_order']	= 41;
 	$setup_info['backup']['enable'] = 1;
 
-	$setup_info['backup']['author'] = 'João Martins';
+	$setup_info['backup']['author'] = 
+	$setup_info['backup']['maintainer'] = array(
+		'name' => 'João Martins',
+		'joao@wipmail.com.br'
+	);
 	$setup_info['backup']['license']  = 'GPL';
 	$setup_info['backup']['description'] =
-		'An online configurable backup app to store EGW Database.';
-	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];
-	$setup_info['backup']['maintainer_email'] = 'joao@wipmail.com.br';
+		'An online configurable backup app to backup the eGW Database.';
 
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['backup']['hooks'][] = 'admin';
@@ -30,7 +32,7 @@
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13', '0.9.14')
+		'versions' => Array('0.9.13','0.9.14','1.0.0')
 	);
 
 	$setup_info['backup']['depends'][] = array

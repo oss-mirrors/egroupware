@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* eGroupWare - Developer tools                                           *
+	* eGroupWare - TranslationTools                                           *
 	* http://www.egroupware.org                                              *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
@@ -14,7 +14,7 @@
 	/* Basic information about this app */
 	$setup_info['developer_tools']['name']      = 'developer_tools';
 	$setup_info['developer_tools']['title']     = 'TranslationTools';
-	$setup_info['developer_tools']['version']   = '0.8.1';
+	$setup_info['developer_tools']['version']   = '1.0.0';
 	$setup_info['developer_tools']['app_order'] = 61;
 	$setup_info['developer_tools']['enable']    = 1;
 
@@ -25,8 +25,10 @@
 	$setup_info['developer_tools']['note'] =
 		'Reworked and improved version of the former language-management of Milosch\'s developer_tools.';
 	$setup_info['developer_tools']['license']  = 'GPL';
-	$setup_info['developer_tools']['maintainer'] = 'Ralf Becker';
-	$setup_info['developer_tools']['maintainer_email']    = 'RalfBecker@outdoor-training.de';
+	$setup_info['developer_tools']['maintainer'] = array(
+		'name' => 'Ralf Becker',
+		'email' => 'RalfBecker@outdoor-training.de'
+	);
 
 	/* The tables this app creates */
 	$setup_info['developer_tools']['tables']    = array();

@@ -14,15 +14,17 @@
 	/* Basic information about this app */
 	$setup_info['comic']['name']      = 'comic';
 	$setup_info['comic']['title']     = 'Comics';
-	$setup_info['comic']['version']   = '0.0.1';
+	$setup_info['comic']['version']   = '1.0.0';
 	$setup_info['comic']['app_order'] = 21;
 	$setup_info['comic']['enable']    = 1;
 
 	$setup_info['comic']['author'] = 'Sam Wynn';
 	$setup_info['comic']['license']  = 'GPL';
 	$setup_info['comic']['description'] = 'Displays comic strips.';
-	$setup_info['comic']['maintainer'] = 'eGroupWare developers';
-	$setup_info['comic']['maintainer_email']    = 'shrykedude@users.sourceforge.net';
+	$setup_info['comic']['maintainer'] = array(
+		'name' => 'eGroupWare Developers',
+		'email' => 'egroupware-developers@lists.sourceforge.net'
+	);
 
 	/* The tables this app creates */
 	$setup_info['comic']['tables']    = array(

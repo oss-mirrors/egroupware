@@ -13,7 +13,7 @@
 
 	$setup_info['felamimail']['name']      		= 'felamimail';
 	$setup_info['felamimail']['title']     		= 'FeLaMiMail';
-	$setup_info['felamimail']['version']		= '0.9.5';
+	$setup_info['felamimail']['version']		= '1.0.0';
 	$setup_info['felamimail']['app_order'] 		= 2;
 	$setup_info['felamimail']['enable']    		= 1;
 
@@ -32,7 +32,6 @@
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['felamimail']['hooks'][] = 'preferences';
 	$setup_info['felamimail']['hooks'][] = 'admin';
-	$setup_info['felamimail']['hooks'][] = 'manual';
 	$setup_info['felamimail']['hooks'][] = 'settings';
 	$setup_info['felamimail']['hooks'][] = 'home';
 	$setup_info['felamimail']['hooks'][] = 'sidebox_menu';
@@ -49,6 +48,6 @@
 	);
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'emailadmin',
-		'versions' => Array('0.0.008',)
+		'versions' => Array('0.0.008','1.0.0')
 	);
 ?>
