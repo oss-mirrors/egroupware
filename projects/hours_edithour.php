@@ -227,13 +227,13 @@
                       $db2->f("account_lastname")) . "</option>";
      } */
 
-    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+    $employees = $phpgw->accounts->get_list('accounts', $start = '', $sort = '', $order = '', $query = '');
 	while (list($null,$account) = each($employees)) {
-	    $employee_list .= "<option value=\"" . $account['account_id'] . "\"";
+	    $employee_list .= '<option value="' . $account['account_id'] . '"';
     	    if($account['account_id']==$phpgw->db->f("employee"))
-            $employee_list .= " selected";
-	    $employee_list .= ">"
-	    . $account['account_firstname'] . " " . $account['account_lastname'] . " [ " . $account['account_lid'] . " ]" . "</option>";
+            $employee_list .= ' selected';
+	    $employee_list .= '>'
+	    . $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
     }
 
     $t->set_var('employee_list',$employee_list);

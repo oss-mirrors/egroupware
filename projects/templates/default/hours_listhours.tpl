@@ -5,9 +5,9 @@
 <table border="0" width="100%">
     <tr>
     <td width="33%" align="left">
-    <form action="{project_action}" method="POST">
-    <select name="filter"><option value="">{lang_select_project}</option>{project_list}</select>
-    &nbsp; <input type="submit" name="submit" value="{lang_submit}"></form></td>
+    <form action="{project_action}" name="form" method="POST">
+    <select name="filter" onChange="this.form.submit();"><option value="">{lang_select_project}</option>{project_list}</select>
+    <noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
     <td width="33%" align="center">{lang_showing}</td>
     <td width="33%" align="right">
     <form method="POST" action="{search_action}">
@@ -61,10 +61,7 @@
 
 <tr>
   <td vailgn="bottom" height="62">
-     <form method="POST" action="{add_action}">
-      <input type="submit" value="{lang_add}">
-     </form>
-    </td>
+     {action}</td>
    </tr>
 
 <!-- END add -->

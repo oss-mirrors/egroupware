@@ -131,15 +131,19 @@
     $t->set_var('lang_select_project',lang('Select project'));
 
     if ($filter) {
-    $t->set_var('project_list',$projects->select_project_list($filter));
+	$t->set_var('project_list',$projects->select_project_list($filter));
 
-    $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
+	$phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
 		    . "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc");
-        while ($phpgw->db->next_record()) {
-           $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
-                    . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
-        }
-    $t->set_var('activity_list',$activity_list);
+    	    while ($phpgw->db->next_record()) {
+        	$activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
+                		. $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
+    	    }
+	$t->set_var('activity_list',$activity_list);
+    }
+    else { 
+	$t->set_var('project_list',lang('Please select a project first !)); 
+        $t->set_var('activity_list','');
     }
 
     $sm = CreateObject('phpgwapi.sbox');
@@ -234,13 +238,13 @@
                       $phpgw->db->f("account_lastname")) . "</option>";
         } */
         
-    $employees = $phpgw->accounts->get_list('accounts', $start, $sort, $order, $query);
+    $employees = $phpgw->accounts->get_list('accounts', $start = '', $sort = '', $order = '', $query = '');
         while (list($null,$account) = each($employees)) {
-            $employee_list .= "<option value=\"" . $account['account_id'] . "\"";
+            $employee_list .= '<option value="' . $account['account_id'] . '"';
             if($account['account_id']==$phpgw_info["user"]["account_id"])
-            $employee_list .= " selected";
-            $employee_list .= ">"
-	    . $account['account_firstname'] . " " . $account['account_lastname'] . " [ " . $account['account_lid'] . " ]" . "</option>";
+            $employee_list .= ' selected';
+            $employee_list .= '>'
+	    . $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
     }
 
     $t->set_var('employee_list',$employee_list);

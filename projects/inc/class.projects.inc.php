@@ -46,17 +46,17 @@
             if ($filter != 'private') {
                 if ($filter != 'none') { $filtermethod = " access like '%,$filter,%' "; }
                 else {
-                $filtermethod = " (coordinator=" . $phpgw_info['user']['account_id'] . " OR (access='public' ";
+                $filtermethod = " ( coordinator=" . $phpgw_info['user']['account_id'];
                     if (is_array($this->grants)) {
                         $grants = $this->grants;
                         while (list($user) = each($grants)) {
                                         $public_user_list[] = $user;
                         }
                         reset($public_user_list);
-                        $filtermethod .= ' AND coordinator in(' . implode(',',$public_user_list) . ')))';
+                        $filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . ")))";
                     }
                     else {
-                        $filtermethod .= '))';
+                        $filtermethod .= ' )';
                     }
                 }
             }
@@ -98,6 +98,28 @@
 	    return $projects;
 	}
 
+	function read_single_project($id = '') {
+	
+	$this->db->query("SELECT * from phpgw_p_projects WHERE id='$id'",__LINE__,__FILE__);
+	
+	while($this->db->next_record()) {
+                $projects[0]['id']             = $this->db->f('id');
+                $projects[0]['number']         = $this->db->f('num');
+                $projects[0]['access']         = $this->db->f('access');
+                $projects[0]['category']       = $this->db->f('category');
+                $projects[0]['entry_date']     = $this->db->f('entry_date');
+                $projects[0]['start_date']     = $this->db->f('start_date');
+                $projects[0]['end_date']       = $this->db->f('end_date');
+                $projects[0]['coordinator']    = $this->db->f('coordinator');
+                $projects[0]['customer']       = $this->db->f('customer');
+                $projects[0]['status']         = $this->db->f('status');
+                $projects[0]['description']    = $this->db->f('descr');
+                $projects[0]['title']          = $this->db->f('title');
+                $projects[0]['budget']         = $this->db->f('budget');
+            }
+            return $projects;
+	}
+
 	function select_project_list($selected = '') {
 	    global $phpgw;
 
@@ -113,5 +135,52 @@
                 }
                 return $pro_select;
 	}
+
+	function read_hours($start, $limit, $query = '', $filter, $sort = '', $order = '',$access = 'all',$status) {
+	    global $phpgw, $phpgw_info;
+
+	    $this->db2 = $this->db;
+
+	    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
+	    else { $join = " LEFT JOIN "; }
+
+	    if ($order) { $ordermethod = "order by $order $sort"; }
+	    else { $ordermethod = "order by h.start_date asc"; }
+
+	    if (!$status) { $filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed') "; }
+            else { $filtermethod = " AND h.status='$status' "; }
+
+	    if ($access == 'private') { $filtermethod .= "AND h.employee='" . $phpgw_info["user"]["account_id"] . "' "; }
+
+	    if ($query) {
+		$querymethod = " AND (h.remark like '%$query%' OR h.start_date like '%$query%' OR h.end_date like '%$query%' OR h.minutes like '%$query%' "
+			     . "OR h.hours_descr like '%$query%') "; 
+	    }
+
+
+	    $sql = "SELECT h.id as id,h.hours_descr,a.descr,h.status,"
+		 . "h.start_date,h.end_date,h.minutes,h.employee FROM phpgw_p_hours AS h"
+                 . "$join phpgw_p_activities AS a ON h.activity_id=a.id WHERE h.project_id='$filter' "
+                 . "$filtermethod $querymethod $ordermethod";
+
+	    $this->db2->query($sql,__LINE__,__FILE__);
+	    $this->total_records = $this->db2->num_rows();
+	    $this->db->query($sql . " " . $this->db->limit($start,$limit),__LINE__,__FILE__);
+
+	    $i = 0;
+	    while ($this->db->next_record()) {
+		$hours[$i]['id']		= $this->db->f('id');
+		$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
+		$hours[$i]['descr']		= $this->db->f('descr');
+		$hours[$i]['status']		= $this->db->f('status');
+		$hours[$i]['start_date']	= $this->db->f('start_date');
+		$hours[$i]['end_date']		= $this->db->f('end_date');
+		$hours[$i]['minutes']		= $this->db->f('minutes');
+		$hours[$i]['employee']		= $this->db->f('employee');
+		$i++;
+	    }
+	    return $hours;
+	}
+
 
     }
