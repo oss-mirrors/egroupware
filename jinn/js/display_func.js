@@ -57,7 +57,9 @@ function saveOptions(obj,hidden_fld) { //v1.0
 //alert('hallo');
 		var boxLength = document.frm[obj].length;
         var count = 0;
-        if (boxLength != 0) {
+        var strValues;
+		
+		if (boxLength != 0) {
                 for (i = 0; i < boxLength; i++) {
                         if (count == 0) {
                                selectAll(document.frm[obj],true)
@@ -70,7 +72,10 @@ function saveOptions(obj,hidden_fld) { //v1.0
                         count++;
                 }
         }
-		document.frm[hidden_fld].value=strValues;
+		
+		     if (strValues)  document.frm[hidden_fld].value=strValues;
+			 
+		//document.frm[hidden_fld].value=strValues;
 }
 
 function selectAll(cbList,bSelect) {
