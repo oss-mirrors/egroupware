@@ -13,7 +13,7 @@
 	</td>
 </tr>
 
-<!-- <tr><td>d_server_str: {debug_server_str} d_filter: {debug_filter} d_folder: {debug_folder} d_folder_long: {debug_folder_long} d_folder_short: {debug_folder_short} </td></tr> -->
+<!-- <tr><td>d_server_str: {debug_server_str} d_namespace: {debug_namespace} d_delimiter: {debug_delimiter} d_folder: {debug_folder} d_folder_long: {debug_folder_long} d_folder_short: {debug_folder_short}</td></tr> -->
 
 <tr>
 	<td bgcolor="{th_backcolor}">

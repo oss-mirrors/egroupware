@@ -152,11 +152,7 @@
   function get_mailsvr_callstr()
   {
 	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque
-	// Cyrus style: INBOX.Junque
-	// UWash style: ./aeromail/Junque
 
-	$server_call = '';
 	// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
 	if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 	{
@@ -169,41 +165,44 @@
 		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/ssl/novalidate-cert:993}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s')
-	{  /* POP3 over SSL: */
+	{
+		/* POP3 over SSL: */
 		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .'/pop3/ssl/novalidate-cert:995}';
 	}
 	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
-	{  /* POP3 normal connection, No SSL  */
-		// same as normal imap above
+	{
+		/* POP3 normal connection, No SSL  ( same string as normal imap above)  */
 		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
 	}
 	else
 	{
+		//UNKNOWN SERVER in Preferences
 		// probably should raise some kind of error here
-		$server_call = '';
+		$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'] .':' .$phpgw_info['user']['preferences']['email']['mail_port'] .'}';
 	}
 	return $server_call;
   }
 
 /* * * * * * * * * * *
   *  get_mailsvr_namespace
-  *  will generate the appropriate filter a.k.a. namespace string to access an imap mail server of type
-  *  imap: UW-Maildir, Cyrus, Courier
+  *  will generate the appropriate namespace (aka filter) string to access an imap mail server
+  *  Example: {mail.servyou.com:143}INBOX    where INBOX is the namespace
+  *  for more info see: see http://www.rfc-editor.org/rfc/rfc2342.txt
   * * * * * * *  * * * */
   function get_mailsvr_namespace()
   {
 	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque
-	// Cyrus style: INBOX.Junque
-	// UWash style: ./aeromail/Junque
+	// UWash patched for Maildir style: $Maildir.Junque ?????
+	// Cyrus and Courier style =" INBOX"
+	// UWash style: "email/"
 
-	$filter = '';
 	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
 	{
 		if ( isset($phpgw_info['user']['preferences']['email']['mail_folder']) )
 		{
 			if ( empty($phpgw_info['user']['preferences']['email']['mail_folder']) )
 			{
+				// do we need a default value here?
 				$filter = '';
 			}
 			else
@@ -217,12 +216,50 @@
 	{
 		$filter = 'INBOX';
 	}
+	elseif ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+	{
+		//$filter = 'mail/';
+		// delimiter "/" moved to get_mailsvr_delimiter()
+		$filter = 'mail';
+	}
 	else
 	{
-		$filter = 'mail/';
+		// imap servers usually use INBOX as their namespace
+		// this is supposed to be discoverablewith the NAMESPACE command
+		// see http://www.rfc-editor.org/rfc/rfc2342.txt
+		// however as of PHP 4.0 this is not implemented
+		$filter = 'INBOX';
 	}
 	return $filter;
-  }  
+  }
+
+/* * * * * * * * * * *
+  *  get_mailsvr_delimiter
+  *  will generate the appropriate token that goes between the namespace and the inferior folders (subfolders)
+  *  Example: typical imap: "INBOX.Sent"  then the "." is the delimiter
+  *  Example: UWash imap (stock mbox)  "email/Sent"  then the "/" is the delimiter
+  * * * * * * *  * * * */
+  function get_mailsvr_delimiter()
+  {
+	global $phpgw, $phpgw_info;
+	// UWash style: "/"
+	// all other imap servers *should* be "."
+
+	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+	{
+		$delimiter = '/';
+	}
+	else
+	{
+		// imap servers usually use a "." as their delimiter
+		// this is supposed to be discoverable with the NAMESPACE command
+		// see http://www.rfc-editor.org/rfc/rfc2342.txt
+		// however as of PHP 4.0 this is not implemented
+		$delimiter = '.';
+	}
+	return $delimiter;
+  }
+
 
 /* * * * * * * * * * *
   *  get_folder_long
@@ -235,26 +272,23 @@
   function get_folder_long($feed_folder='INBOX')
   {
 	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque
-	// Cyrus style: INBOX.Junque
 
 	$folder = ensure_no_brackets($feed_folder);
 	if ($folder == 'INBOX')
 	{
+		// INBOX is (always?) a special reserved word with nothing preceeding it in long or short form
 		$folder_long = 'INBOX';
 	}
 	else
 	{
-		if (strstr($folder,'.') == False)
+		$delimiter = get_mailsvr_delimiter();
+		if (strstr($folder,$delimiter) == False)
 		{
-			//$folder_long = $phpgw->msg->construct_folder_str($folder);
-			$folder_long = get_mailsvr_namespace() .'.' .$folder;
-			//$folder_short = $folder;
+			$folder_long = get_mailsvr_namespace() ."$delimiter" ."$folder";
 		}
 		else
 		{
 			$folder_long = $folder;
-			//$folder_short = $phpgw->msg->deconstruct_folder_str($folder);
 		}
 	}
 	return trim($folder_long);
@@ -263,34 +297,25 @@
   function get_folder_short($feed_folder='INBOX')
   {
 	global $phpgw, $phpgw_info;
-	// UWash patched for Maildir style: $Maildir.Junque
-	// Cyrus style: INBOX.Junque
+	// Example: "Sent"
+	// Cyrus may support  "Sent.Today"
 
 	$folder = ensure_no_brackets($feed_folder);
 	if ($folder == 'INBOX')
 	{
-		//$folder_long = 'INBOX';
 		$folder_short = 'INBOX';
 	}
 	else
 	{
-		if (strstr($folder,'.') == False)
+		$delimiter = get_mailsvr_delimiter();
+		if (strstr($folder,$delimiter) == False)
 		{
-			//$folder_long = $phpgw->msg->construct_folder_str($folder);
 			$folder_short = $folder;
 		}
 		else
 		{
-			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'Cyrus')
-			{
-				// cyrus supports multiple levels of subfolders
-				// is this accounted for in deconstruct_folder_str  ????
-				$folder_short = strstr($folder,'.');
-				$folder_short = substr($folder_short, 1);
-			}
-			else {
-				$folder_short = $phpgw->msg->deconstruct_folder_str($folder);
-			}
+			$folder_short = strstr($folder,$delimiter);
+			$folder_short = substr($folder_short, 1);
 		}
 	}
 	return $folder_short;
@@ -318,8 +343,9 @@
 	{
 		// Establish Email Server Connectivity Conventions
 		$server_str = get_mailsvr_callstr();
-		$namespace_filter = get_mailsvr_namespace();
-		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, $namespace_filter .'*');
+		$name_space = get_mailsvr_namespace();
+		$dot_or_slash = get_mailsvr_delimiter();
+		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" .'*');
 
 		// sort folder names 
 		if (gettype($mailboxes) == 'array')
@@ -359,7 +385,11 @@
 
 
  /* * * * * * * * * * *
-  *  DEPRECIATED ==== DEPRECIATED === WILL BE REMOVED
+  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
+  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
+  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
+  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
+  *  DEPRECIATED ==== DEPRECIATED === TO BE REMOVED
   *  list_folders: new param:  $echo_out
   * $echo_out  = True   means the function will echo its output
   * $echo_out  = False  means the function will return a string instead

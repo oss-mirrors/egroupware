@@ -44,16 +44,17 @@
 
 //  ----  Establish Email Server Connectivity Conventions  ----
 	$server_str = get_mailsvr_callstr();
-	$namespace_filter = get_mailsvr_namespace();
+	$name_space = get_mailsvr_namespace();
+	$dot_or_slash = get_mailsvr_delimiter();
 	$folder_long = get_folder_long($folder);
 	$folder_short = get_folder_short($folder);
-
 
 	/*
 	//$full_str = $server_str .$folder_long;
 	//$folder_short = get_folder_short($full_str);
 	$t->set_var('debug_server_str',$server_str .$folder_long);
-	$t->set_var('debug_filter',$namespace_filter);
+	$t->set_var('debug_namespace',get_mailsvr_namespace());
+	$t->set_var('debug_delimiter',get_mailsvr_delimiter());
 	$t->set_var('debug_folder',$folder);
 	$t->set_var('debug_folder_long',$folder_long);
 	$t->set_var('debug_folder_short',$folder_short);
@@ -80,7 +81,7 @@
 		$imap_err = imap_last_error();
 		if ($imap_err == '')
 		{
-			$action_report = $action_report .' OK';
+			$action_report = $action_report .'OK';
 		}
 		else
 		{
@@ -94,7 +95,7 @@
 		$t->set_var('V_action_report','');
 	}
 
-	$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, $namespace_filter .'*');
+	$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" .'*');
 
 	// sort folder names 
 	if (gettype($mailboxes) == 'array')
@@ -151,8 +152,6 @@
 	$t->set_var('the_font',$phpgw_info['theme']['font']);
 	$t->set_var('th_backcolor',$phpgw_info['theme']['th_bg']);
 	
-	
-
 	$t->pparse('out','T_folder_out');
 
 	$phpgw->msg->close($mailbox);
