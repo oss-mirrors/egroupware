@@ -185,7 +185,7 @@
         $folder = $this->construct_folder_str($folder);
       }
 
-      $pass = $phpgw->common->decrypt($phpgw_info["user"]["preferences"]["email"]["passwd"]);
+      $pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
       $user = $phpgw_info["user"]["preferences"]["email"]["userid"];
       $mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
 			     .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}"
