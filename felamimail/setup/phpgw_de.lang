@@ -112,7 +112,27 @@ unread	felamimail	de	ungelesen
 read	felamimail	de	gelesen
 deleted	felamimail	de	gelöscht
 replied	felamimail	de	beantwortet
-flagged	felamimail	de	markiert
+flagged	felamimail	de	wichtig
 recent	felamimail	de	neu
 compress folder	felamimail	de	Ordner komprimieren
 add to addressbook	felamimail	de	zum Adressbuch hinzufügen
+edit filter	felamimail	de	Filter bearbeiten
+unflagged	felamimail	de	unwichtig
+delete selected messages	felamimail	de	ausgewählte Nachrichten löschen
+mark messages as	felamimail	de	ausgewählte Nachrichten markieren als
+filter active	felamimail	de	Filter aktiv
+activate filter	felamimail	de	Filter aktivieren
+deactivate filter	felamimail	de	Filter deaktivieren
+filter name	felamimail	de	Filtername
+new filter	felamimail	de	neuer Filter
+no filter	felamimail	de	kein Filter
+activate	felamimail	de	aktivieren
+Refresh time in minutes	felamimail	de	Aktualisierungsinterval in Minuten
+date(oldest first)	felamimail	de	Datum(alte zuerst)
+date(newest first)	felamimail	de	Datum(neue zuerst)
+Manage Sieve	preferences	de	Sieve Scripte verwalten
+show header	felamimail	de	Kopfzeilen anzeigen
+hide header	felamimail	de	Kopfzeilen verbergen
+print it	felamimail	de	EMail drucken
+print this page	felamimail	de	Diese Seite drucken
+close this page	felamimail	de	Diese Seite schließen

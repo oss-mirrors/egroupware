@@ -585,8 +585,6 @@
                $urlMailbox = urlencode($mailbox);
                $ent = urlencode($message->header->entity_id);
                
-               $DefaultLink = $phpgw->link(
-                  "/felamimail/download.php","startMessage=$startMessage&passed_id=$id&mailbox=$urlMailbox&passed_ent_id=$ent");
                if ($where && $what)
                   $DefaultLink .= '&where=' . urlencode($where) . '&what=' . urlencode($what);
                $Links['download link']['text'] = lang("download");
@@ -594,15 +592,57 @@
                    "/felamimail/download.php","absolute_dl=true&passed_id=$id&mailbox=$urlMailbox&passed_ent_id=$ent");
                $ImageURL = '';
                
-               $HookResults = do_hook("attachment $type0/$type1", $Links,
-                   $startMessage, $id, $urlMailbox, $ent, $DefaultLink, 
-                   $display_filename, $where, $what);
-
-               $Links = $HookResults[1];
-               $DefaultLink = $HookResults[6];
-
                $body .= '<TR><TD>&nbsp;&nbsp;</TD><TD>';
-               $body .= "<A HREF=\"$DefaultLink\">$display_filename</A>&nbsp;</TD>";
+               	switch("$type0/$type1")
+               	{
+               		case "text/x-vcard":
+				$bofelamimail	= CreateObject('felamimail.bofelamimail',$mailbox);
+				$vcard		= CreateObject('phpgwapi.vcard');
+				
+				$attachment	= $bofelamimail->getAttachment($GLOBALS['HTTP_GET_VARS']['uid'],$ent);
+				$tmpfname	= tempnam ($GLOBALS['phpgw_info']['server']['temp_dir'], "phpgw_");
+				$fp		= fopen($tmpfname, "w");
+				fwrite($fp, $attachment['attachment']);
+				fclose($fp);
+				
+				$entry	= $vcard->in_file($tmpfname);
+				$entry['owner'] = $GLOBALS['phpgw_info']['user']['account_id'];
+				$entry['access'] = 'private';
+				$entry['tid'] = 'n';
+				
+				unlink($tmpfname);
+				
+				#_debug_array($entry);
+				#print "<br><br>";
+				
+				if(isset($entry['fn'])) 
+					$display_filename  = htmlentities(quoted_printable_decode($entry['fn']))."<br>";
+				if(isset($entry['org_name'])) 
+					$display_filename .= htmlentities(quoted_printable_decode($entry['org_name']))."<br>";
+				if(isset($entry['adr_one_postalcode'])) 
+					$display_filename .= htmlentities(quoted_printable_decode($entry['adr_one_postalcode']))."&nbsp;";
+				if(isset($entry['adr_one_locality'])) 
+					$display_filename .= htmlentities(quoted_printable_decode($entry['adr_one_locality']));
+				$linkData = array
+				(
+					'menuaction'	=> 'felamimail.uifelamimail.addVcard',
+					'startMessage'	=> $startMessage,
+					'mailbox'	=> $urlMailbox,
+					'messageID'	=> $GLOBALS['HTTP_GET_VARS']['uid'],
+					'partID'	=> $ent
+				);
+				$DefaultLink = $GLOBALS['phpgw']->link('/index.php',$linkData);
+               			$body .= "<A HREF=\"$DefaultLink\" target=\"_blank\">$display_filename</A>&nbsp;</TD>";
+				
+               			break;
+               			
+               		default:
+		               $DefaultLink = $phpgw->link(
+                  			"/felamimail/download.php","startMessage=$startMessage&passed_id=$id&mailbox=$urlMailbox&passed_ent_id=$ent");
+               			$body .= "<A HREF=\"$DefaultLink\" target=\"_blank\">$display_filename</A>&nbsp;</TD>";
+               			
+               			break;
+               	}
                $body .= '<TD><SMALL><b>' . show_readable_size($message->header->size) . 
                    '</b>&nbsp;&nbsp;</small></TD>';
                $body .= "<TD><SMALL>[ $type0/$type1 ]&nbsp;</SMALL></TD>";

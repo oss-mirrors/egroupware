@@ -5,42 +5,6 @@
 <table border="0" align="center" cellspacing="1" cellpadding="1" width="70%">
 <tr>
 	<td colspan="2" bgcolor="{th_bg}">
-		<b>{page_title}</b>
-	</td>
-</tr>
-<tr>
-	<td align="left" bgcolor="{bg_row1}">
-		{email_sig_blurb}
-	</td>
-	<td align="center" bgcolor="{bg_row1}">
-		<textarea name="{email_sig_textarea_name}" rows="3" cols="30">{email_sig_textarea_content}</textarea>
-	</td>
-</tr>
-<tr>
-	<td align="left" bgcolor="{bg_row2}">
-		{sorting_blurb}
-	</td>
-	<td align="center" bgcolor="{bg_row2}">
-		<select name="{sorting_select_name}">
-			{sorting_select_options}
-		</select>
-	</td>
-</tr>
-<tr>
-	<td align="left" bgcolor="{bg_row1}">
-		{mainscreen_showmail_blurb}
-	</td>
-	<td align="center" bgcolor="{bg_row1}">
-		<input type="checkbox" name="{mainscreen_showmail_checkbox_name}" value="{mainscreen_showmail_checkbox_value}" {mainscreen_showmail_checked}>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		&nbsp;
-	</td>
-</tr>
-<tr>
-	<td colspan="2" bgcolor="{th_bg}">
 		<b>{section_title}</b>
 	</td>
 </tr>

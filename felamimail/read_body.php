@@ -14,10 +14,13 @@
 	$enablePHPGW = 1;
 
 	// store the value of $mailbox, because it will overwriten
-	$MAILBOX = $mailbox;
 	$phpgw_info['flags'] = array('currentapp' => 'felamimail');
 	include('../header.inc.php');
-	$mailbox = $MAILBOX;
+	$mailbox = $GLOBALS['HTTP_GET_VARS']['mailbox'];
+	$passed_id = $GLOBALS['HTTP_GET_VARS']['passed_id'];
+	$uid = $GLOBALS['HTTP_GET_VARS']['uid'];
+	$show_more = $GLOBALS['HTTP_GET_VARS']['show_more'];
+	$view_hdr = $GLOBALS['HTTP_GET_VARS']['view_hdr'];
 
 	$phpgw->session->restore();
 
@@ -62,82 +65,40 @@
 	function createAddressbookButton($_addressString)
 	{
    		global $phpgw, $phpgw_info, $PHP_SELF, $QUERY_STRING;
+
+		$addressParts = imap_rfc822_parse_adrlist($_addressString,'');
+		if(count($addressParts)<1)
+		{
+			return false;
+		}
    		
-   		// if last char == , => remove it
-   		if (strrpos ($_addressString, ",")+1 == strlen($_addressString))
-   		{
-   			$_addressString = substr($_addressString,0, strlen($_addressString)-1);
-   		}
-   		
-   		#print "$_addressString<br>";
-   		
-		// "Lars Kneschke" <lars@kneschke.de>
-		if (preg_match("/^\"(.*)\".*<(.*)>/i",$_addressString , $matches))
+		$email = $addressParts[0]->mailbox.'@'.$addressParts[0]->host;
+		$name = $addressParts[0]->personal;
+		
+		if(!empty($name))
 		{
 			$linkData = array
 			(
 				'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-				'add_email'	=> urlencode($matches[2]),
-				'name'		=> urlencode($matches[1]),
+				'add_email'	=> urlencode($email),
+				'name'		=> urlencode($name),
 				'referer'	=> urlencode($PHP_SELF.'?'.$QUERY_STRING)
 			);
-			$link = $phpgw->link('/index.php',$linkData);
-			$image = '<img src="'.PHPGW_IMAGES.
-				 	'/sm_envelope.gif" width="10" height="8" 
-				 	alt="'.lang("Add to address book").'" border="0" align="absmiddle">';
-			return sprintf('&nbsp;<a href="%s">%s</a>',
-					$link, $image);
 		}
-		// Lars Kneschke <lars@kneschke.de>
-		elseif (preg_match("/^(.*).*<(.*)>/i",$_addressString , $matches))
+		else
 		{
 			$linkData = array
 			(
 				'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-				'add_email'	=> urlencode($matches[2]),
-				'name'		=> urlencode($matches[1]),
+				'add_email'	=> urlencode($email),
 				'referer'	=> urlencode($PHP_SELF.'?'.$QUERY_STRING)
 			);
-			$link = $phpgw->link('/index.php',$linkData);
-			$image = '<img src="'.PHPGW_IMAGES.
-				 	'/sm_envelope.gif" width="10" height="8" 
-				 	alt="'.lang("Add to address book").'" border="0" align="absmiddle">';
-			return sprintf('&nbsp;<a href="%s">%s</a>',
-					$link, $image);
 		}
-		// lars@kneschke.de (Lars Kneschke)
-		elseif (preg_match("/^(.*@.*).*\((.*)\)/i",$_addressString , $matches))
-		{
-			$linkData = array
-			(
-				'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-				'add_email'	=> urlencode($matches[2]),
-				'name'		=> urlencode($matches[1]),
-				'referer'	=> urlencode($PHP_SELF.'?'.$QUERY_STRING)
-			);
-			$link = $phpgw->link('/index.php',$linkData);
-			$image = '<img src="'.PHPGW_IMAGES.
-				 	'/sm_envelope.gif" width="10" height="8" 
-				 	alt="'.lang("Add to address book").'" border="0" align="absmiddle">';
-			return sprintf('&nbsp;<a href="%s">%s</a>',
-					$link, $image);
-		}
-		// lars@kneschke.de
-		elseif (preg_match("/^(.*@.*)/i",$_addressString , $matches))
-		{
-			$linkData = array
-			(
-				'menuaction'	=> 'addressbook.uiaddressbook.add_email',
-				'add_email'	=> urlencode($matches[1]),
-				'referer'	=> urlencode($PHP_SELF.'?'.$QUERY_STRING)
-			);
-			$link = $phpgw->link('/index.php',$linkData);
-			$image = '<img src="'.PHPGW_IMAGES.
-				 	'/sm_envelope.gif" width="10" height="8" 
-				 	alt="'.lang("Add to address book").'" border="0" align="absmiddle">';
-			return sprintf('&nbsp;<a href="%s">%s</a>',
-					$link, $image);
-		}
+		$link = $phpgw->link('/index.php',$linkData);
+		$image = '<img src="'.PHPGW_IMAGES.
+			 	'/sm_envelope.gif" width="10" height="8" 
+			 	alt="'.lang("Add to address book").'" border="0" align="absmiddle">';
+		return sprintf('&nbsp;<a href="%s">%s</a>', $link, $image);
 	}
 
 	function fillDataArray($_imapConnection, $_passed_id, $_mailbox)
@@ -448,10 +409,7 @@
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uifelamimail.deleteMessage',
-				'mailbox' 	=> $urlMailbox,
-				'message'	=> $_uid,
-				'sort'		=> $_sort,
-				'startMessage'	=> $_startMessage
+				'message'	=> $_uid
 				
 			);
 			$t->set_var('link_delete',$phpgw->link('/index.php',$linkData));
@@ -506,47 +464,34 @@
 		
 		$linkData = array
 		(
-			'menuaction'	=> 'felamimail.uicompose.compose',
-			'mailbox'	=> $urlMailbox
+			'menuaction'	=> 'felamimail.uicompose.compose'
 		);
 		$t->set_var('link_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
 		
 		$linkData = array
 		(
-			'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-			'mailbox'	=> $urlMailbox,
-			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
-			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort']
+			'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 		);
 		$t->set_var("link_message_list",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 		$linkData = array
 		(
 			'menuaction'	=> 'felamimail.uicompose.reply',
-			'mailbox'	=> $urlMailbox,
-			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
-			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
-			'reply_id'	=> $passed_id
+			'reply_id'	=> $GLOBALS['HTTP_GET_VARS']['uid']
 		);
 		$t->set_var("link_reply",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 		$linkData = array
 		(
 			'menuaction'	=> 'felamimail.uicompose.replyAll',
-			'mailbox'	=> $urlMailbox,
-			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
-			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
-			'reply_id'	=> $passed_id
+			'reply_id'	=> $GLOBALS['HTTP_GET_VARS']['uid']
 		);
 		$t->set_var("link_reply_all",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 		$linkData = array
 		(
 			'menuaction'	=> 'felamimail.uicompose.forward',
-			'mailbox'	=> $urlMailbox,
-			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
-			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
-			'reply_id'	=> $passed_id
+			'reply_id'	=> $GLOBALS['HTTP_GET_VARS']['uid']
 		);
 		$t->set_var("link_forward",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
@@ -574,7 +519,6 @@
 
 
 // here we go!
-
 
 	$imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 	sqimap_mailbox_select($imapConnection, $mailbox);

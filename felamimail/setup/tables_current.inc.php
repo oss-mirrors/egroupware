@@ -16,7 +16,7 @@
 			'fd' => array(
 				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
 				'hostname' 	=> array('type' => 'varchar', 'precision' => 60, 'nullable' => false),
-				'accountname' 	=> array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
+				'accountname' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
 				'foldername' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
 				'uid' 		=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
 				'subject'	=> array('type' => 'text'),
@@ -38,7 +38,7 @@
 			'fd' => array(
 				'accountid' 	=> array('type' => 'int', 'precision' => 4, 'nullable' => false),
 				'hostname' 	=> array('type' => 'varchar', 'precision' => 60, 'nullable' => false),
-				'accountname' 	=> array('type' => 'varchar', 'precision' => 20, 'nullable' => false),
+				'accountname' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
 				'foldername' 	=> array('type' => 'varchar', 'precision' => 200, 'nullable' => false),
 				'messages' 	=> array('type' => 'int', 'precision' => 4),
 				'recent'	=> array('type' => 'int', 'precision' => 4),

@@ -43,7 +43,8 @@
 				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID);
 			}			
 			
-			$this->t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail');
 
 			$this->t->set_unknowns('remove');
 			
@@ -53,6 +54,13 @@
 
 		}
 		
+		function unhtmlentities ($string)
+		{
+			$trans_tbl = get_html_translation_table (HTML_ENTITIES);
+			$trans_tbl = array_flip ($trans_tbl);
+			return strtr ($string, $trans_tbl);
+		}
+
 		function action()
 		{
 			$formData['to'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['to']);
@@ -63,6 +71,7 @@
 			$formData['body'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['body']);
 			$formData['priority'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['priority']);
 			$formData['signature'] 	= $this->bocompose->stripSlashes($GLOBALS['HTTP_POST_VARS']['signature']);
+			$formData['mailbox']	= $GLOBALS['HTTP_GET_VARS']['mailbox'];
 
 			if (isset($GLOBALS['HTTP_POST_VARS']['send'])) 
 			{
@@ -135,29 +144,25 @@
 
 			$linkData = array
 			(
-				'mailbox'	=> urlencode($GLOBALS['HTTP_GET_VARS']['mailbox']),
-				'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
-				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen',
-				'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort']
+				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
 			);
 			$this->t->set_var("link_message_list",$GLOBALS['phpgw']->link('/felamimail/index.php',$linkData));
 
 			$linkData = array
 			(
 				'menuaction'	=> 'felamimail.uicompose.action',
-				'composeid'	=> $this->composeID,
-				'mailbox'	=> urlencode($GLOBALS['HTTP_GET_VARS']['mailbox']),
-				'startMessage'	=> '1'
+				'composeid'	=> $this->composeID
 			);
 			$this->t->set_var("link_action",$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$this->t->set_var('folder_name',$GLOBALS['HTTP_GET_VARS']['mailbox']);
+			$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
 
 			// header
-			$this->t->set_var("to",$sessionData['to']);
-			$this->t->set_var("cc",$sessionData['cc']);
-			$this->t->set_var("bcc",$sessionData['bcc']);
-			$this->t->set_var("reply_to",$sessionData['reply_to']);
-			$this->t->set_var("subject",$sessionData['subject']);
+			$this->t->set_var("from",htmlentities($this->bocompose->getUserName(),ENT_QUOTES));
+			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES));
+			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES));
+			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES));
+			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES));
+			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES));
 			$this->t->pparse("out","header");
 
 			// body
@@ -201,11 +206,10 @@
 		function forward()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
-			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
-			if (!empty($replyID) && !empty($folder))
+			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getForwardData($folder, $replyID);
+				$this->bocompose->getForwardData($replyID);
 			}
 			$this->compose();
 		}
@@ -213,11 +217,10 @@
 		function reply()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
-			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
-			if (!empty($replyID) && !empty($folder))
+			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData($folder, $replyID);
+				$this->bocompose->getReplyData('single', $replyID);
 			}
 			$this->compose();
 		}
@@ -225,11 +228,10 @@
 		function replyAll()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
-			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
-			if (!empty($replyID) && !empty($folder))
+			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData($folder, $replyID);
+				$this->bocompose->getReplyData('all', $replyID);
 			}
 			$this->compose();
 		}
@@ -240,6 +242,7 @@
 			$this->t->set_var("lang_to",lang('to'));
 			$this->t->set_var("lang_cc",lang('cc'));
 			$this->t->set_var("lang_bcc",lang('bcc'));
+			$this->t->set_var("lang_from",lang('from'));
 			$this->t->set_var("lang_reply_to",lang('reply to'));
 			$this->t->set_var("lang_subject",lang('subject'));
 			$this->t->set_var("lang_addressbook",lang('addressbook'));
@@ -261,3 +264,5 @@
 			$this->t->set_var("bg03",$GLOBALS['phpgw_info']["theme"]["bg03"]);
 		}
 }
+
+?>

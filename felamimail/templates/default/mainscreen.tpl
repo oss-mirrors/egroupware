@@ -1,4 +1,24 @@
 <!-- BEGIN main -->
+<script language="JavaScript1.2">
+<!--
+var sURL = unescape(window.location.pathname);
+
+function doLoad()
+{
+	// the timeout value should be the same as in the "refresh" meta-tag
+	{refreshTime}
+}
+
+function refresh()
+{
+	var Ziel = '{refresh_url}'
+	window.location.href = Ziel;
+}
+
+doLoad();
+
+//-->
+</script>
 <script type="text/javascript">
 <!--
 	function toggleFolderRadio()
@@ -10,10 +30,12 @@
 </script>
 <TABLE BORDER=0 WIDTH="100%" CELLSPACING=0 CELLPADDING=2>
 	<TR BGCOLOR="{row_off}">
-		<TD ALIGN="left" WIDTH="30%">
-			<a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;<a href="{url_search}">{lang_search}</a>
+		<TD ALIGN="left" WIDTH="40%">
+			<a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
+			<a href="{url_filter}">{lang_edit_filter}</a>&nbsp;&nbsp;
+			<a href="{url_status_filter}">{lang_status_filter}</a>
 		</td>
-		<td align="right" width="70%">
+		<td align="right" width="60%">
 			&nbsp;
 		</td>
 	</tr>
@@ -86,16 +108,16 @@
 						&nbsp;
 					</td>
 					<td width="20%" bgcolor="#FFFFCC" align="center">
-						<b>{lang_from}</b>
+						<b><a href="{url_sort_from}"><font color="black">{lang_from}</font></a></b>
 					</td>
 					<td bgcolor="#FFFFCC" align="center">
-						<b>{lang_date}</b>
+						<b><a href="{url_sort_date}"><font color="black">{lang_date}</font></a></b>
 					</td>
 					<td bgcolor="#FFFFCC" align="center">
 						&nbsp;
 					</td>
 					<td bgcolor="#FFFFCC" align="center">
-						<b>{lang_subject}</b>
+						<b><a href="{url_sort_subject}"><font color="black">{lang_subject}</font></a
 					</td>
 					<td bgcolor="#FFFFCC" align="center">
 						<b>{lang_size}</b>
@@ -159,6 +181,30 @@
 	</td>
 </tr>
 <!-- END header_row_S -->
+
+<!-- BEGIN header_row_RS -->
+<tr>
+	<td width="1%" bgcolor="#FFFFFF" align="center">
+		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td width="10%" bgcolor="#FFFFFF" nowrap>
+		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
+	</td>
+	<td bgcolor="#FFFFFF">
+		<a name="subject_url" href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_RS -->
 
 <!-- BEGIN header_row_ -->
 <tr>
@@ -256,6 +302,54 @@
 </tr>
 <!-- END header_row_AS -->
 
+<!-- BEGIN header_row_RAS -->
+<tr>
+	<td width="1%" bgcolor="#FFFFFF" align="center">
+		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td width="10%" bgcolor="#FFFFFF" nowrap>
+		<a href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
+	</td>
+	<td bgcolor="#FFFFFF">
+		<a href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_RAS -->
+
+<!-- BEGIN header_row_A -->
+<tr>
+	<td width="1%" bgcolor="#FFFFFF" align="center">
+		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td width="10%" bgcolor="#FFFFFF" nowrap>
+		<b><a href="{url_compose}" title="{full_address}">{sender_name}</a></b>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
+	</td>
+	<td bgcolor="#FFFFFF">
+		<b><a href="{url_read_message}">{header_subject}</a></b>
+	</td>
+	<td bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_A -->
+
 <!-- BEGIN header_row_ADS -->
 <tr>
 	<td width="1%" bgcolor="#FFFFFF" align="center">
@@ -317,7 +411,7 @@
 		{date}
 	</td>
 	<td bgcolor="#FFFFFF" valign="middle" align="center">
-		<img src="{image_path}/read_answered_flagged_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
 	</td>
 	<td bgcolor="#FFFFFF">
 		<a href="{url_read_message}"><font color="red">{header_subject}</font></a>
@@ -327,6 +421,30 @@
 	</td>
 </tr>
 <!-- END header_row_FAS -->
+
+<!-- BEGIN header_row_FA -->
+<tr>
+	<td width="1%" bgcolor="#FFFFFF" align="center">
+		<input type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td width="10%" bgcolor="#FFFFFF" nowrap>
+		<a href="{url_compose}" title="{full_address}"><font color="red">{sender_name}</font></a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
+	</td>
+	<td bgcolor="#FFFFFF">
+		<a href="{url_read_message}"><font color="red">{header_subject}</font></a>
+	</td>
+	<td bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_FA -->
 
 <!-- BEGIN header_row_D -->
 <tr>
@@ -376,3 +494,11 @@
 </tr>
 <!-- END header_row_DS -->
 
+<!-- BEGIN error_message -->
+	<tr>
+		<td bgcolor="#FFFFCC" align="center" colspan="6">
+			<font color="red"><b>{lang_connection_failed}</b></font><br>
+			{message}
+		</td>
+	</tr>
+<!-- END error_message -->

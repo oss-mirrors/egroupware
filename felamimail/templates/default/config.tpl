@@ -16,17 +16,16 @@
 
    <tr bgcolor="{row_on}">
     <td>{lang_Enter_your_POP}/{lang_IMAP_mail_server_hostname_or_IP_address}:</td>
-    <td><input name="newsettings[mail_server]" value="{value_mail_server}"></td>
+    <td><input name="newsettings[imapServer]" value="{value_imapServer}"></td>
    </tr>
 
    <tr bgcolor="{row_off}">
     <td>{lang_Select_your_mail_server_type}:</td>
     <td>
-     <select name="newsettings[mail_server_type]">
-      <option value="imap" {selected_mail_server_type_imap}>IMAP</option>
-      <option value="pop3" {selected_mail_server_type_pop3}>POP-3</option>
-      <option value="imaps" {selected_mail_server_type_imaps}>IMAPS</option>
-      <option value="pop3s" {selected_mail_server_type_pop3s}>POP-3S</option>
+     <select name="newsettings[imapServerMode]">
+      <option value="imap" {selected_imapServerMode_imap}>IMAP</option>
+      <option value="imaps-encr-only" {selected_imapServerMode_imaps-encr-only}>IMAPS Encryption only</option>
+      <option value="imaps-encr-auth" {selected_imapServerMode_imaps-encr-auth}>IMAPS Authentication</option>
      </select>
     </td>
    </tr>
@@ -34,37 +33,48 @@
    <tr bgcolor="{row_on}">
     <td>IMAP server type:</td>
     <td>
-     <select name="newsettings[imap_server_type]">
-      <option value="Cyrus" {selected_imap_server_type_Cyrus}>Cyrus or Courier</option>
-      <option value="UWash" {selected_imap_server_type_UWash}>UWash</option>
-      <option value="UW-Maildir" {selected_imap_server_type_UW-Maildir}>UW-Maildir</option>
+     <select name="newsettings[imapServerType]">
+      <option value="Cyrus" {selected_imapServerType_Cyrus}>Cyrus</option>
+      <option value="Cyrus-LDAP" {selected_imapServerType_Cyrus-LDAP}>Cyrus-LDAP</option>
+      <option value="Courier" {selected_imapServerType_Courier}>Courier</option>
+      <option value="UWash" {selected_imapServerType_UWash}>UWash</option>
      </select>
     </td>
    </tr>
 
    <tr bgcolor="{row_off}">
     <td>{lang_Enter_your_default_mail_domain_(_From:_user@domain_)}:</td>
-    <td><input name="newsettings[mail_suffix]" value="{value_mail_suffix}"></td>
+    <td><input name="newsettings[mailSuffix]" value="{value_mailSuffix}"></td>
    </tr>
 
    <tr bgcolor="{row_on}">
     <td>{lang_Mail_server_login_type}:</td>
     <td>
-     <select name="newsettings[mail_login_type]">
-      <option value="standard" {selected_mail_login_type_standard}>standard</option>
-      <option value="vmailmgr" {selected_mail_login_type_vmailmgr}>vmailmgr</option>
+     <select name="newsettings[mailLoginType]">
+      <option value="standard" {selected_mailLoginType_standard}>standard</option>
+      <option value="vmailmgr" {selected_mailLoginType_vmailmgr}>vmailmgr</option>
      </select>
     </td>
    </tr>
 
    <tr bgcolor="{row_off}">
     <td>{lang_Enter_your_SMTP_server_hostname_or_IP_address}:</td>
-    <td><input name="newsettings[smtp_server]" value="{value_smtp_server}"></td>
+    <td><input name="newsettings[smtpServer]" value="{value_smtpServer}"></td>
    </tr>
 
    <tr bgcolor="{row_on}">
     <td>{lang_Enter_your_SMTP_server_port}:</td>
-    <td><input name="newsettings[smtp_port]" value="{value_smtp_port}"></td>
+    <td><input name="newsettings[smtpPort]" value="{value_smtpPort}"></td>
+   </tr>
+
+   <tr bgcolor="{row_off}">
+    <td>{lang_Enter_your_SIEVE_server_hostname_or_IP_address}:</td>
+    <td><input name="newsettings[sieveServer]" value="{value_sieveServer}"></td>
+   </tr>
+
+   <tr bgcolor="{row_on}">
+    <td>{lang_Enter_your_SMTP_server_port}:</td>
+    <td><input name="newsettings[sievePort]" value="{value_sievePort}"></td>
    </tr>
 
 <!-- END body -->

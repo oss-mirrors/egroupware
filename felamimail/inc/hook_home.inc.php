@@ -46,10 +46,38 @@
 		}
 		else
 		{
-			$app_id = $GLOBALS['phpgw']->applications->name2id('felamimail');
+			$title = '<font color="#FFFFFF">'.lang('E-Mail').'</font>';
+		
+			$portalbox = CreateObject('phpgwapi.listbox',
+				Array(
+					'title'	=> $title,
+					'primary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'secondary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'tertiary'	=> $GLOBALS['phpgw_info']['theme']['navbar_bg'],
+					'width'	=> '100%',
+					'outerborderwidth'	=> '0',
+					'header_background_image'	=> $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler.gif')
+				)
+			);
+
+			$app_id = $GLOBALS['phpgw']->applications->name2id('calendar');
 			$GLOBALS['portal_order'][] = $app_id;
-			$GLOBALS['phpgw']->portalbox->set_params(array('app_id'	=> $app_id,
-														'title'	=> lang('felamimail')));		
+			$var = Array(
+				'up'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'down'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'close'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'question'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id),
+				'edit'	=> Array('url'	=> '/set_box.php', 'app'	=> $app_id)
+			);
+
+			while(list($key,$value) = each($var))
+			{
+				$portalbox->set_controls($key,$value);
+			}
+
+			$portalbox->data = Array();
+
+		
 			/*  // this is the structure you will get
 			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
 		  	  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
@@ -122,9 +150,13 @@
 
 			if($data)
 			{
-				$GLOBALS['phpgw']->portalbox->data = $data;
+				$portalbox->data = $data;
 			}
-			$GLOBALS['phpgw']->portalbox->draw($extra_data);
+
+			// output the portalbox and below it (1) the folders listbox (if applicable) and (2) Compose New mail link
+			echo "\r\n".'<!-- start Mailbox info -->'."\r\n"
+				.$portalbox->draw($extra_data)
+				.'<!-- ends Mailox info -->'."\r\n";
 		}
 	}
 ?>

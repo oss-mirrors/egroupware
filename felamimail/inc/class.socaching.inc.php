@@ -47,7 +47,7 @@
 			#print "$query<br>";
 		}
 		
-		function getHeaders($_firstMessage='', $_numberOfMessages='', $_sort='')
+		function getHeaders($_firstMessage='', $_numberOfMessages='', $_sort='', $_filter='')
 		{
 			switch($_sort)
 			{
@@ -73,10 +73,27 @@
 					$sort = "order by date desc";
 			}
 			
+			while(list($key,$value) = @each($_filter))
+			{
+				switch($key)
+				{
+					case "from":
+						$filter .= " and (sender_name like '%$value%' or sender_address like '%$value%') ";
+						break;
+					case "to":
+						$filter .= " and (to_name like '%$value%' or to_address like '%$value%') ";
+						break;
+					case "subject":
+						$filter .= " and subject like '%$value%' ";
+						break;
+				}
+			}
+			
 			$query = sprintf("select uid, date, subject, sender_name, sender_address, to_name, to_address, size, attachments from phpgw_felamimail_cache ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' $sort",
+					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s $sort",
 					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname));
+					 addslashes($this->foldername), addslashes($this->accountname),
+					 $filter);
 			#print "$query<br>";
 			
 			if($_firstMessage == '' && $_numberOfMessages == '')
@@ -137,6 +154,40 @@
 			}
 		}
 		
+		// return the numbers of messages in cache currently
+		// but use the use filter
+		function getMessageCounter($_filter)
+		{
+			while(list($key,$value) = @each($_filter))
+			{
+				switch($key)
+				{
+					case "from":
+						$filter .= " and (sender_name like '%$value%' or sender_address like '%$value%') ";
+						break;
+					case "to":
+						$filter .= " and (to_name like '%$value%' or to_address like '%$value%') ";
+						break;
+					case "subject":
+						$filter .= " and subject like '%$value%' ";
+						break;
+				}
+			}
+			
+			$query = sprintf("select count(*) as count from phpgw_felamimail_cache ".
+					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s' %s",
+					 $this->accountid, addslashes($this->hostname),
+					 addslashes($this->foldername), addslashes($this->accountname),
+					 $filter);
+			#print "$query<br>";
+			
+			$this->db->query("$query",__LINE__,__FILE__);
+			
+			$this->db->next_record();
+			
+			return $this->db->f("count");
+		}
+		
 		function removeFromCache($_uid)
 		{
 			$query = sprintf("delete from phpgw_felamimail_cache ".
@@ -152,25 +203,19 @@
 		
 		function updateImapStatus($_status, $firstUpdate)
 		{
-			if ($firstUpdate == true)
-			{
-				$query = sprintf("insert into phpgw_felamimail_folderstatus ".
-					 "(accountid,hostname,foldername,accountname,messages,recent,unseen,uidnext,uidvalidity) ".
-					 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-					 $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname),
-					 $_status->messages, $_status->recent, $_status->unseen, $_status->uidnext,
-					 $_status->uidvalidity);
-			}
-			else
-			{
-				$query = sprintf("update phpgw_felamimail_folderstatus ".
-					 "set messages='%s', recent='%s', unseen='%s', uidnext='%s', uidvalidity='%s' ".
-					 "where accountid='%s' and hostname='%s' and foldername = '%s' and accountname='%s'",
-					 $_status->messages, $_status->recent, $_status->unseen, $_status->uidnext,
-					 $_status->uidvalidity, $this->accountid, addslashes($this->hostname),
-					 addslashes($this->foldername), addslashes($this->accountname));
-			}
+			$query = sprintf("delete from phpgw_felamimail_folderstatus where ".
+				 "accountid='%s' and hostname='%s' and foldername='%s' and accountname='%s'",
+				 $this->accountid, addslashes($this->hostname),
+				 addslashes($this->foldername), addslashes($this->accountname));
+			$this->db->query($query);
+
+			$query = sprintf("insert into phpgw_felamimail_folderstatus ".
+				 "(accountid,hostname,foldername,accountname,messages,recent,unseen,uidnext,uidvalidity) ".
+				 "values('%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+				 $this->accountid, addslashes($this->hostname),
+				 addslashes($this->foldername), addslashes($this->accountname),
+				 $_status->messages, $_status->recent, $_status->unseen, $_status->uidnext,
+				 $_status->uidvalidity);
 			$this->db->query($query);
 		}
 	}

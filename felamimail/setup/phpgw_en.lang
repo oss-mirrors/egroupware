@@ -1,109 +1,109 @@
-Add address	felamimail	en	Add address
-Additional info	felamimail	en	Additional info
-Address Book Search	felamimail	en	Address Book Search
-Address Book	felamimail	en	Address Book
+add address	felamimail	en	Add address
+additional info	felamimail	en	Additional info
+address book search	felamimail	en	Address Book Search
+address book	felamimail	en	Address Book
 add	felamimail	en	add
-Add	felamimail	en	Add
-Add to address book	felamimail	en	Add to address book
-Add to %s	felamimail	en	Add to %s
-After message body	felamimail	en	After message body
-All address books	felamimail	en	All address books
-All Folders	felamimail	en	All Folders
+add	felamimail	en	Add
+add to address book	felamimail	en	Add to address book
+add to %s	felamimail	en	Add to %s
+after message body	felamimail	en	After message body
+all address books	felamimail	en	All address books
+all folders	felamimail	en	All Folders
 as a subfolder of	felamimail	en	as a subfolder of
-Attachments	felamimail	en	Attachments
-Auto refresh folder list	felamimail	en	Auto refresh folder list
-Bad reque	felamimail	en	Bad reque
-Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	en	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
-Before headers	felamimail	en	Before headers
-Between headers and message body	felamimail	en	Between headers and message body
+attachments	felamimail	en	Attachments
+auto refresh folder list	felamimail	en	Auto refresh folder list
+bad reque	felamimail	en	Bad reque
+based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	en	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
+before headers	felamimail	en	Before headers
+between headers and message body	felamimail	en	Between headers and message body
 cc	felamimail	en	cc
-Checkbox	felamimail	en	Checkbox
-Click here to log back in.	felamimail	en	Click here to log back in.
-Click here to return to %s	felamimail	en	Click here to return to %s
-Close window	felamimail	en	Close window
-Color	felamimail	en	Color
-Compose	felamimail	en	Compose
-Created folder successfully!	felamimail	en	Created folder successfully!
-Create Folder	felamimail	en	Create Folder
-Create Sent	felamimail	en	Create Sent
-Create	felamimail	en	Create
-Create Trash	felamimail	en	Create Trash
-Dark Blue	felamimail	en	Dark Blue
-Dark Cyan	felamimail	en	Dark Cyan
-Dark Gray	felamimail	en	Dark Gray
-Dark Green	felamimail	en	Dark Green
-Dark Magenta	felamimail	en	Dark Magenta
-Dark Yellow	felamimail	en	Dark Yellow
+checkbox	felamimail	en	Checkbox
+click here to log back in.	felamimail	en	Click here to log back in.
+click here to return to %s	felamimail	en	Click here to return to %s
+close window	felamimail	en	Close window
+color	felamimail	en	Color
+compose	felamimail	en	Compose
+created folder successfully!	felamimail	en	Created folder successfully!
+create folder	felamimail	en	Create Folder
+create sent	felamimail	en	Create Sent
+create	felamimail	en	Create
+create trash	felamimail	en	Create Trash
+dark blue	felamimail	en	Dark Blue
+dark cyan	felamimail	en	Dark Cyan
+dark gray	felamimail	en	Dark Gray
+dark green	felamimail	en	Dark Green
+dark magenta	felamimail	en	Dark Magenta
+dark yellow	felamimail	en	Dark Yellow
 date	felamimail	en	date
 Date	felamimail	en	Date
-Deleted folder successfully!	felamimail	en	Deleted folder successfully!
-Delete Folder	felamimail	en	Delete Folder
-Delete selected	felamimail	en	Delete selected
-Delete	felamimail	en	Delete
-Display Preferences	felamimail	en	Display Preferences
-Done	felamimail	en	Done
-Do not use Sent	felamimail	en	Do not use Sent
-Do not use Trash	felamimail	en	Do not use Trash
-Don't use Sent	felamimail	en	Don't use Sent
-Don't use Trash	felamimail	en	Don't use Trash
+deleted folder successfully!	felamimail	en	Deleted folder successfully!
+delete folder	felamimail	en	Delete Folder
+delete selected	felamimail	en	Delete selected
+delete	felamimail	en	Delete
+display preferences	felamimail	en	Display Preferences
+done	felamimail	en	Done
+do not use sent	felamimail	en	Do not use Sent
+do not use trash	felamimail	en	Do not use Trash
+don't use sent	felamimail	en	Don't use Sent
+don't use trash	felamimail	en	Don't use Trash
 download	felamimail	en	download
-Download this as a file	felamimail	en	Download this as a file
+download this as a file	felamimail	en	Download this as a file
 down	felamimail	en	down
-Edit selected	felamimail	en	Edit selected
-Edit	felamimail	en	Edit
-E-mail address	felamimail	en	E-mail address
+edit selected	felamimail	en	Edit selected
+edit	felamimail	en	Edit
+e-mail address	felamimail	en	E-mail address
 E-Mail Address	felamimail	en	E-Mail Address
-E-mail	felamimail	en	E-mail
+e-mail	felamimail	en	E-mail
 empty trash	felamimail	en	empty trash
-Error connecting to IMAP serv	felamimail	en	Error connecting to IMAP serv
-Error opening 	felamimail	en	Error opening 
-ERROR	felamimail	en	ERROR
-ERRO	felamimail	en	ERRO
+error connecting to IMAP serv	felamimail	en	Error connecting to IMAP serv
+error opening 	felamimail	en	Error opening 
+error	felamimail	en	ERROR
+erro	felamimail	en	ERRO
 expunge	felamimail	en	Expunge
 felamimail	common	en	FelaMiMail
 files	felamimail	en	files
-First name	felamimail	en	First name
-Flags	felamimail	en	Flags
-Folder Path	felamimail	en	Folder Path
-Folder Preferences	felamimail	en	Folder Preferences
-Folders created successfully!	felamimail	en	Folders created successfully!
-Folders	felamimail	en	Folders
+first name	felamimail	en	First name
+flags	felamimail	en	Flags
+folder path	felamimail	en	Folder Path
+folder preferences	felamimail	en	Folder Preferences
+folders created successfully!	felamimail	en	Folders created successfully!
+folders	felamimail	en	Folders
 follow	felamimail	en	follow
-For mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
-For received mail	felamimail	en	For received mail
-Forward	felamimail	en	Forward
-Found	felamimail	en	Found
+for mail to be send - not functional yet	felamimail	en	For mail to be send - not functional yet
+for received mail	felamimail	en	For received mail
+forward	felamimail	en	Forward
+found	felamimail	en	Found
 from	felamimail	en	from
 From	felamimail	en	From
-Full Name	felamimail	en	Full Name
-Have a look at <a href="ht	felamimail	en	Have a look at <a href="ht
-Help	felamimail	en	Help
-HTML	felamimail	en	HTML
-Identifying name	felamimail	en	Identifying name
-Illegal folder name.  Please select a different name.	felamimail	en	Illegal folder name.  Please select a different name.
-Index Order	felamimail	en	Index Order
-Info	felamimail	en	Info
-In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.	felamimail	en	In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.
+full name	felamimail	en	Full Name
+have a look at <a href="ht	felamimail	en	Have a look at <a href="ht
+help	felamimail	en	Help
+html	felamimail	en	HTML
+identifying name	felamimail	en	Identifying name
+illegal folder name.  please select a different name.	felamimail	en	Illegal folder name.  Please select a different name.
+index order	felamimail	en	Index Order
+info	felamimail	en	Info
+in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	en	In order for SquirrelMail to provide the full set of options you need to create the special folders listed below.  Just click the check box and hit the create button.
 in	felamimail	en	in
 in the center	felamimail	en	in the center
-Invaild user name or password	felamimail	en	Invaild user name or password
-JavaScript	felamimail	en	JavaScript
-Language	felamimail	en	Language
-Last name	felamimail	en	Last name
-Left	felamimail	en	Left
+invaild user name or password	felamimail	en	Invaild user name or password
+javaScript	felamimail	en	JavaScript
+language	felamimail	en	Language
+last name	felamimail	en	Last name
+left	felamimail	en	Left
 less	felamimail	en	less
-Let this folder contain subfolders	felamimail	en	Let this folder contain subfolders
-Light Blue	felamimail	en	Light Blue
-Light Cyan	felamimail	en	Light Cyan
-Light Gray	felamimail	en	Light Gray
-Light Green	felamimail	en	Light Green
-Light Magenta	felamimail	en	Light Magenta
-Light Yellow	felamimail	en	Light Yellow
-List all	felamimail	en	List all
-Location of buttons when composing	felamimail	en	Location of buttons when composing
-Location of folder list	felamimail	en	Location of folder list
-Mail Settings	felamimail	en	Mail Settings
-Manage Folders	felamimail	en	Manage Folders
+let this folder contain subfolders	felamimail	en	Let this folder contain subfolders
+light blue	felamimail	en	Light Blue
+light cyan	felamimail	en	Light Cyan
+light gray	felamimail	en	Light Gray
+light green	felamimail	en	Light Green
+light magenta	felamimail	en	Light Magenta
+light yellow	felamimail	en	Light Yellow
+list all	felamimail	en	List all
+location of buttons when composing	felamimail	en	Location of buttons when composing
+location of folder list	felamimail	en	Location of folder list
+mail settings	felamimail	en	Mail Settings
+manage folders	felamimail	en	Manage Folders
 mark selected as flagged	felamimail	en	mark selected as flagged
 mark selected as read	felamimail	en	mark selected as read
 mark selected as unflagged	felamimail	en	mark selected as unflagged

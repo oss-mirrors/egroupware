@@ -31,4 +31,28 @@
 		return $GLOBALS['setup_info']['felamimail']['currentver'];
 	}
 
+	$test[] = '0.8.4';
+	function felamimail_upgrade0_8_4()
+	{
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.0';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
+	$test[] = '0.9.0';
+	function felamimail_upgrade0_9_0()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_felamimail_folderstatus', 'accountname', array('type' => 'varchar', 'precision' => 200, 'nullable' => false));
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_felamimail_cache', 'accountname', array('type' => 'varchar', 'precision' => 200, 'nullable' => false));
+
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.1';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
+	$test[] = '0.9.1';
+	function felamimail_upgrade0_9_1()
+	{
+		$GLOBALS['setup_info']['felamimail']['currentver'] = '0.9.2';
+		return $GLOBALS['setup_info']['felamimail']['currentver'];
+	}
+
 ?>

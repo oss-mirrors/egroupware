@@ -25,15 +25,23 @@
 		<input class="text" type="submit" value="{lang_send}" name="send">
 	</td>
 </tr>
+<tr bgcolor="{bg02}">
+	<td class="body" width="10%">
+		<b>{lang_from}:</b>
+	</td>
+	<td class="body" align="left" width="60%">
+		{from}
+	</td>
+	<td class="body" align="right">
+		<input class="text" type="button" value="{lang_addressbook}" onclick="addybook();">
+	</td>
+</tr>
 <tr bgcolor="{bg01}">
 	<td width="10%">
 		<b>{lang_to}:</b>
 	</td>
-	<td width="60%">
-		<input class="text" type=text size="60" name="to" value='{to}'>
-	</td>
-	<td align="right">
-		<input class="text" type="button" value="{lang_addressbook}" onclick="addybook();">
+	<td width="60%" colspan="2">
+		<input class="text" type=text size="60" name="to" value="{to}">
 	</td>
 </tr>
 <tr bgcolor="{bg02}">
@@ -77,6 +85,14 @@
 	</td>
 </tr>
 </table>
+
+<script language="javascript1.2">
+<!--
+// position cursor in top form field
+document.doit.to.focus();
+//-->
+</script>
+
 <!-- END header -->
 
 <!-- BEGIN body_input -->

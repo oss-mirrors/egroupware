@@ -126,7 +126,9 @@
 			$phpgw->common->phpgw_exit(True);
 		}
 
-		fputs ($imap_stream, "a001 LOGIN \"" . quotemeta($username) . '" "' . quotemeta($password) . "\"\r\n");
+		# BUG 1592
+		# fputs ($imap_stream, "a001 LOGIN \"" . quotemeta($username) . '" "' . quotemeta($password) . "\"\r\n");
+		fputs ($imap_stream, "a001 LOGIN \"" . $username . '" "' . quotemeta($password) . "\"\r\n");
 		$read = sqimap_read_data ($imap_stream, 'a001', false, $response, $message);
 
 		/** If the connection was not successful, lets see why **/

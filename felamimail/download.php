@@ -10,18 +10,19 @@
     **
     **  $Id$
     **/
-   header("Pragma: ");
-   header("Cache-Control: cache");
+#   header("Pragma: ");
+#   header("Cache-Control: cache");
 
 	// store the value of $mailbox, because it will overwriten
-	$MAILBOX = $mailbox;
 	$phpgw_info["flags"] = array(
 		'noheader'    => 'True',
 		'nonavbar'    => 'True',
 		"currentapp" => "felamimail"
 	);
 	include("../header.inc.php");
-	$mailbox = $MAILBOX;
+	$mailbox = $GLOBALS['HTTP_GET_VARS']['mailbox'];
+	$passed_id = $GLOBALS['HTTP_GET_VARS']['passed_id'];
+	$passed_ent_id = $GLOBALS['HTTP_GET_VARS']['passed_ent_id'];
 
 	$phpgw->session->restore();
 
@@ -159,8 +160,8 @@
             } else {
                 $body = mime_fetch_body($imapConnection, $passed_id, $passed_ent_id);
                 $body = decodeBody($body, $header->encoding);
-                header("Content-type: $type0/$type1; name=\"$filename\"");
-                header("Content-Disposition: attachment; filename=\"$filename\"");
+                header("Content-Type: $type0/$type1");
+                header("Content-Disposition: filename=\"$filename\"");
                 echo $body;
             }
             break;
@@ -173,9 +174,9 @@
             viewText($color, $body, $passed_id, $passed_ent_id, $mailbox, $type1, $wrap_at);
             break;
          default:
-            header("Content-type: $type0/$type1; name=\"$filename\"");
-            header("Content-Disposition: attachment; filename=\"$filename\"");
-            mime_print_body_lines ($imapConnection, $passed_id, $passed_ent_id, $header->encoding);
+            header("Content-Type: $type0/$type1");
+            header("Content-Disposition: filename=\"$filename\"");
+	    mime_print_body_lines ($imapConnection, $passed_id, $passed_ent_id, $header->encoding);
             break;
       }
    }    

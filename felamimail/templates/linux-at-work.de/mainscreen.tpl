@@ -1,6 +1,27 @@
 <!-- BEGIN main -->
 <div  class="main_body" style="border-width:0px; border-style:solid; vertical-align : bottom;  width : 100% ; height : 15% ; left : 0px ; top :0px ; overflow : auto">
-<script type="text/javascript">
+<script language="JavaScript1.2">
+<!--
+
+function doLoad()
+{
+	// the timeout value should be the same as in the "refresh" meta-tag
+	// the timeout is in miliseconds
+	// setTimeout( "refresh()", {timeout} );
+	{refreshTime}
+}
+
+function refresh()
+{
+    var Ziel = '{refresh_url}'
+    window.location.href = Ziel;
+}
+
+doLoad();
+
+//-->
+</script>
+<script LANGUAGE="Javascript">
 <!--
 	var oldColor, oldFontWeight;
 	
@@ -36,17 +57,54 @@
 		subject.style.color = oldColor;
 		subject.style.fontWeight = oldFontWeight;
 	}
+	
+	function mark_read(action)
+	{
+		document.messageList.mark_read.value = action;
+		document.messageList.submit() ;
+	}
+	function mark_unread(action)
+	{
+		document.messageList.mark_unread.value = action;
+		document.messageList.submit() ;
+	}
+
+	function mark_flagged(action)
+	{
+		document.messageList.mark_flagged.value = action;
+		document.messageList.submit() ;
+	}
+
+	function mark_unflagged(action)
+	{
+		document.messageList.mark_unflagged.value = action;
+		document.messageList.submit() ;
+	}
+
+	function mark_deleted(action)
+	{
+		document.messageList.mark_deleted.value = action;
+		document.messageList.submit() ;
+	}
+
+	function change_filter(action)
+	{
+		document.messageList.changeFilter.value = action;
+		document.messageList.submit() ;
+	}
 //-->
 </script>
+
 <center>
 
+<FORM name=messageList method=post action="{url_change_folder}">
+
 <TABLE WIDTH="99%" CELLPADDING="0" CELLSPACING="0" BORDER="0" style="height:50%; vertical-align : bottom;">
-	<FORM name=messageList method=post action="{url_change_folder}">
 	<TR>
 		<TD BGCOLOR="{row_off}">
 			<TABLE style='background:#f3f3ff;' bBGCOLOR="{row_off}" COLS=2 BORDER="0" cellpadding=0 cellspacing=0 width="100%">
 				<TR valign="middle">
-					<td nowrap width="40%" align="LEFT" valign="center" bgcolor="#ffffcc" colspan="8">
+					<td nowrap width="100%" align="LEFT" valign="top" bgcolor="#ffffcc" colspan="7" style='font-size:8.0pt; font-family:Arial;'>
 						<TT><SMALL>
 						<SELECT NAME="mailbox" onChange="document.messageList.submit()">
 							{options_folder}
@@ -55,35 +113,40 @@
 						<SMALL><INPUT TYPE=radio NAME="folderAction" value="moveMessage" {move_message_checked}>{lang_move_message}</SMALL>
 						<noscript>
 							<NOBR><SMALL><INPUT TYPE=SUBMIT NAME="moveButton" VALUE="{lang_doit}"></SMALL></NOBR>
+
 						</noscript>
 						<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 					</TD>
+					<td bgcolor="#ffffcc" align="right">
+						<SMALL>
+						<input type=hidden name="changeFilter">
+						<select name="filter" onChange="javascript:change_filter('changeFilter')">
+						{filter_options}
+						</SELECT></SMALL>
+					</td>
 				</TR>
 				<TR BGCOLOR="{row_off}">
-					<TD ALIGN="left" WIDTH="2%" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<a class="head_link" href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
+					<TD width="30%" colspan="4" ALIGN="left" nowrap style='font-size:8.0pt; font-family:Arial;color:#5A538D;border=0px solid #B0A3D9;'>
+						{lang_mark_messages_as}:&nbsp;
 					</td>
-					<td width="2%" align="LEFT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<a class="head_link" href="{url_search}">{lang_search}</a>
+					<TD width="30%" colspan="4" ALIGN="right" nowrap style='font-size:8.0pt; font-family:Arial;color:#5A538D;border=0px solid #B0A3D9;'>
+						<a class="body_link" href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
+						<a class="body_link" href="{url_filter}">{lang_edit_filter}</a>
 					</td>
-					<td width="60%">
-						&nbsp;
-					</td>
-					<td width="2%" align="LEFT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<input type="image" src="{image_path}/read_small.png" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16"> gelesen
-					</td>
-					<td width="2%" align="LEFT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<input type="image" src="{image_path}/unread_small.png" name="mark_unread" title="{desc_unread}" width="16"> ungelesen
+				</tr>
+				<tr>
+					<td width="10%" colspan="4" align="left" nowrap style='font-size:8.0pt; font-family:Arial;color:#5A538D;border=0px solid #B0A3D9;'>
+						<input type=hidden name="mark_read">
+						<input type=hidden name="mark_unread">
+						<input type=hidden name="mark_flagged">
+						<input type=hidden name="mark_unflagged">
+						<a class="body_link" href="javascript:mark_read('mark_read')">{lang_read}</a>/<a class="body_link" href="javascript:mark_unread('mark_unread')">{lang_unread}</a>&nbsp;
+						<a class="body_link" href="javascript:mark_flagged('mark_flagged')">{lang_flagged}</a>/<a class="body_link" href="javascript:mark_unflagged('mark_unflagged')">{lang_unflagged}</a>
                                         </td>
-                                        <td width="2%" align="LEFT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<input type="image" src="{image_path}/unread_flagged_small.png" name="mark_flagged" title="{desc_important}" width="16"> wichtig
-					</td>
-					<td width="2%" align="LEFT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<input type="image" src="{image_path}/unread_small.png" name="mark_unflagged" title="{desc_unimportant}"> unwichtig
+					<td width="10%" colspan="4" align="right" nowrap style='font-size:8.0pt; font-family:Arial;color:#5A538D;border=0px solid #B0A3D9;'>
+						<input type=hidden name="mark_deleted">
+						<a class="body_link" href="javascript:mark_deleted('mark_deleted')">{lang_delete_selected}</a><br>
                                         </td>
-                                        <td width="2%" align="RIGHT" valign="bottom" nowrap style='font-size:10.0pt; font-family:Arial;color:#5A538D;border=1px solid #B0A3D9;'>
-						<input type="image" src="{image_path}/unread_deleted_small.png" name="mark_deleted" title="{desc_deleted}"> gelöscht
-					</TD>
 				</tr>
 			</TABLE>
 		</TD>
@@ -122,6 +185,7 @@
 		</table>
 	</center>
 </div>
+</FORM>
 <!-- END main -->
 
 <!-- BEGIN status_row_tpl -->
@@ -156,7 +220,7 @@
 	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" align="center" valign="middle">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_S" width="22%" bgcolor="#FFFFFF" nowrap valign="middle">
+	<td class="header_row_S" width="24%" bgcolor="#FFFFFF" nowrap valign="middle">
 		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -175,12 +239,36 @@
 </tr>
 <!-- END header_row_S -->
 
+<!-- BEGIN header_row_RS -->
+<tr>
+	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" align="center" valign="middle">
+		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td class="header_row_S" width="24%" bgcolor="#FFFFFF" nowrap valign="middle">
+		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td class="header_row_S" width="9%" bgcolor="#FFFFFF" nowrap align="center" valign="middle">
+		{date}
+	</td>
+	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_small.png" width="16" border="0" alt="{lang_read}" title="{lang_read}">
+	</td>
+	<td class="header_row_S" bgcolor="#FFFFFF" valign="middle">
+		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_subject" name="subject_url" href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td class="header_row_S" width="5%" bgcolor="#FFFFFF" valign="middle">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_RS -->
+
 <!-- BEGIN header_row_ -->
 <tr>
 	<td class="header_row_" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -204,7 +292,7 @@
 	<td class="header_row_F" width="3%" bgcolor="#FFFFFF" align="center" valign="middle">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_F" width="22%" bgcolor="#FFFFFF" nowrap valign="middle">
+	<td class="header_row_F" width="24%" bgcolor="#FFFFFF" nowrap valign="middle">
 		<a class="header_row_F" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -228,7 +316,7 @@
 	<td class="header_row_R" width="3%" bgcolor="#FFFFFF" align="center" valign="middle">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_R" width="22%" bgcolor="#FFFFFF" nowrap valign="middle">
+	<td class="header_row_R" width="24%" bgcolor="#FFFFFF" nowrap valign="middle">
 		<a class="header_row_R" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -252,7 +340,7 @@
 	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_S" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_S" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -271,12 +359,61 @@
 </tr>
 <!-- END header_row_AS -->
 
+<!-- BEGIN header_row_RAS -->
+<tr>
+	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" align="center">
+		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td class="header_row_S" width="24%" bgcolor="#FFFFFF" nowrap>
+		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td class="header_row_S" width="9%" bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td class="header_row_S" width="3%" bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
+	</td>
+	<td class="header_row_S" bgcolor="#FFFFFF">
+		<a class="header_row_S" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_subject" name="subject_url" href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td class="header_row_S" width="5%" bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_RAS -->
+
+<!-- BEGIN header_row_A -->
+<tr>
+	<td class="header_row_" width="3%" bgcolor="#FFFFFF" align="center">
+		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td class="header_row_" width="24%" bgcolor="#FFFFFF" nowrap>
+		<a class="header_row_" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td class="header_row_" width="9%" bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td class="header_row_" width="3%" bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_small.png" width="16" border="0" alt="{lang_replied}" title="{lang_replied}">
+	</td>
+	<td class="header_row_" bgcolor="#FFFFFF">
+		<a class="header_row_" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_subject" name="subject_url" href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td class="header_row_" width="5%" bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_A -->
+
+
 <!-- BEGIN header_row_ADS -->
 <tr>
 	<td class="header_row_ADS" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_ADS" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_ADS" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_ADS" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -300,7 +437,7 @@
 	<td class="header_row_FS" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_FS" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_FS" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_FS" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -324,7 +461,7 @@
 	<td class="header_row_FS" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_FS" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_FS" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_FS" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -343,12 +480,36 @@
 </tr>
 <!-- END header_row_FAS -->
 
+<!-- BEGIN header_row_FA -->
+<tr>
+	<td class="header_row_FS" width="3%" bgcolor="#FFFFFF" align="center">
+		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
+	</td>
+	<td class="header_row_FS" width="24%" bgcolor="#FFFFFF" nowrap>
+		<a class="header_row_F" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
+		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+	</td>
+	<td class="header_row_FS" width="9%" bgcolor="#FFFFFF" nowrap align="center">
+		{date}
+	</td>
+	<td class="header_row_FS" width="3%" bgcolor="#FFFFFF" valign="middle" align="center">
+		<img src="{image_path}/read_answered_flagged_small.png" width="16" border="0" alt="{lang_replied}, {lang_flagged}" title="{lang_replied}, {lang_flagged}">
+	</td>
+	<td class="header_row_FS" bgcolor="#FFFFFF">
+		<a class="header_row_F" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_subject" href="{url_read_message}">{header_subject}</a>
+	</td>
+	<td class="header_row_FS" width="5%" bgcolor="#FFFFFF">
+		{size}
+	</td>
+</tr>
+<!-- END header_row_FA -->
+
 <!-- BEGIN header_row_D -->
 <tr>
 	<td class="header_row_D" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_D" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_D" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_D" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>
@@ -372,7 +533,7 @@
 	<td class="header_row_DS" width="3%" bgcolor="#FFFFFF" align="center">
 		<input class="header_row" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" type="checkbox" name="msg[{message_counter}]" value="{message_uid}" onClick="toggleFolderRadio()" {row_selected}>
 	</td>
-	<td class="header_row_DS" width="22%" bgcolor="#FFFFFF" nowrap>
+	<td class="header_row_DS" width="24%" bgcolor="#FFFFFF" nowrap>
 		<a class="header_row_DS" onmouseover="parentOn('{message_counter}')" onmouseout="parentOff('{message_counter}')" name="link_sender" href="{url_compose}" title="{full_address}">{sender_name}</a>
 		<a href="{url_add_to_addressbook}"><img src="{phpgw_images}/sm_envelope.gif" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
 	</td>

@@ -75,9 +75,9 @@
 			print "Uidvalidity: ".$this->uidvalidity."<br>";
 		}
 		
-		function getHeaders($_firstMessage='', $_numberOfMessages='' ,$_sort='')
+		function getHeaders($_firstMessage='', $_numberOfMessages='' ,$_sort='', $_filter='')
 		{
-			return $this->socaching->getHeaders($_firstMessage, $_numberOfMessages, $_sort);
+			return $this->socaching->getHeaders($_firstMessage, $_numberOfMessages, $_sort, $_filter);
 		}
 		
 		function getImapStatus()
@@ -93,6 +93,13 @@
 			
 			return $retValue;
 
+		}
+		
+		// return the numbers of messages in cache currently
+		// but use the use filter
+		function getMessageCounter($_filter)
+		{
+			return $this->socaching->getMessageCounter($_filter);
 		}
 
 		function removeFromCache($_uid)
