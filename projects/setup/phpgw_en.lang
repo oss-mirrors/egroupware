@@ -91,6 +91,7 @@ Project list	projects	en	Project list
 Project name	projects	en	Project name
 Project preferences	projects	en	Project preferences
 Project statistic	projects	en	Project statistic
+project statistics	projects	en	Project statistics
 Project x x has been updated !	projects	en	Project %1 %2 has been updated !
 Project x x has been added !	projects	en	Project %1 %2 has been added !
 Remark	projects	en	Remark
@@ -104,7 +105,6 @@ Select groups	projects	en	Select groups
 Select your address	projects	en	Select your address
 Statistic	projects	en	Statistic
 Statistics	projects	en	Statistics
-Status	projects	en	Status
 Short description	projects	en	Short description
 Sum	projects	en	Sum
 Sum workunits	projects	en	Sum workunits
@@ -114,6 +114,7 @@ Update invoice	projects	en	Update invoice
 Update delivery	projects	en	Update delivery
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
+user statistics	projects	en	User statistics
 View job	projects	en	View job
 View project	projects	en	View project
 Work date	projects	en	Work date

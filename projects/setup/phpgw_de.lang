@@ -90,6 +90,7 @@ Project list	projects	de	Projekt Liste
 Project name	projects	de	Projekt Name
 Project preferences	projects	de	Projekt Einstellungen
 Project statistic	projects	de	Projekt Statistik
+project statistics	projects	de	Projekt Statistiken
 Project x x has been updated !	projects	de	Projekt %1 %2 wurde &uuml;berarbeitet !
 Project x x has been added !	projects	de	Projekt %1 %2 wurde hinzugef&uuml;gt !
 Remark	projects	de	Betreff
@@ -103,7 +104,6 @@ Select groups	projects	de	Gruppen ausw&auml;hlen
 Select your address	projects	de	Eigene Adresse ausw&auml;hlen
 Statistic	projects	de	Statistik
 Statistics	projects	de	Statistiken
-Status	projects	de	Status
 Short description	projects	de	Kurzbeschreibung
 Sum	projects	de	Summe
 Sum workunits	projects	de	Summe Arbeitseinheiten
@@ -113,6 +113,7 @@ Update invoice	projects	de	Rechnung &uuml;berarbeiten
 Update delivery	projects	de	Lieferung &uuml;berarbeiten
 Username / Group	projects	de	Benutzername / Gruppe
 User statistic	projects	de	Benutzer Statistik
+User statistics	projects	de	Benutzer Statistiken
 View job	projects	de	Job anzeigen
 View project	projects	de	Projekt anzeigen
 Work date	projects	de	Arbeitsdatum

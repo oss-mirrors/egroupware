@@ -69,7 +69,7 @@
 	$t->set_var('hd_hours',lang('Hours'));
 
 	$t->set_var('lang_start_date',lang('Start date'));
-	$t->set_var('lang_end_date',lang('Date due'));
+	$t->set_var('lang_end_date',lang('End date'));
 
 	$sm = CreateObject('phpgwapi.sbox');
 
