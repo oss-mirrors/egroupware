@@ -380,21 +380,17 @@
 			$myownid=$GLOBALS['phpgw_info']['user']['account_id'];
 			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
 			{
-				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'messenger');
-				$users = array();
-				$this->build_part_list($users,$accounts,$myownid);
-
+				$users = $this->bo->get_messenger_users();
 				$str = '';
-				@asort($users);
-				foreach($users as $id => $user_array)
+				foreach($users as $user)
 				{
-					if($id != (int)$myownid)
+					if($user['account_id'] != (int)$myownid)
 					{
-						$str .= '    <option value="' .$GLOBALS['phpgw']->accounts->id2name($id). '"'.($sndid==$id ?' selected':'').'>'.$user_array['name'].'</option>'."\n";
+						$str .= '    <option value="' .$user['account_lid']. '"'.($sndid==$user['account_id'] ?' selected':'').'>'.$user['account_firstname'].' '.$user['account_lastname'].'</option>'."\n";
 					}
 				}
 
-				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
+				$tobox = "\n".'   <select name="n_message[to]" size="1">'."\n".$str.'   </select>';
 				if(count($users) <= 1)
 				{
 					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
@@ -454,21 +450,17 @@
 			$myownid = $GLOBALS['phpgw_info']['user']['account_id'];
 			if(@isset($GLOBALS['phpgw_info']['server']['messenger']['use_selectbox']))
 			{
-				$accounts = $GLOBALS['phpgw']->acl->get_ids_for_location('run',1,'messenger');
-				$users = array();
-				$this->build_part_list($users,$accounts,$myownid);
-
+				$users = $this->bo->get_messenger_users();
 				$str = '';
-				@asort($users);
-				foreach($users as $id => $user_array)
+				foreach($users as $user)
 				{
-					if($id != (int)$myownid)
+					if($user['account_id'] != (int)$myownid)
 					{
-						$str .= '    <option value="' .$GLOBALS['phpgw']->accounts->id2name($id). '"'.($sndid==$id ?' selected':'').'>'.$user_array['name'].'</option>'."\n";
+						$str .= '    <option value="' .$user['account_lid']. '"'.($sndid==$user['account_id'] ?' selected':'').'>'.$user['account_firstname'].' '.$user['account_lastname'].'</option>'."\n";
 					}
 				}
 
-				$tobox = "\n".'   <select name="message[to]" size="1">'."\n".$str.'   </select>';
+				$tobox = "\n".'   <select name="n_message[to]" size="1">'."\n".$str.'   </select>';
 				if(count($users) <= 1)
 				{
 					$tobox = '<input name="n_message[to]" value="' . $message['from'] . '" size="30">';
