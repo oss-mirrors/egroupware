@@ -32,7 +32,7 @@
     $phpgw->db->query("select * from phpgw_accounts where account_id = '$account_id'");
     $phpgw->db->next_record();
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('projects_stat' => 'stats_userstat.tpl'));
     $t->set_block('projects_stat','stat_list','list');
 

@@ -10,12 +10,12 @@
   \**************************************************************************/
   /* $Id$ */
   
-  $phpgw_info["flags"] = array("currentapp" => projects,
-                               "noheader" => True,
-                               "nonavbar"   => True);
+    $phpgw_info['flags'] = array('currentapp' => projects,
+                               'noheader' => True,
+                               'nonavbar' => True);
 
-  include("../header.inc.php");
+  include('../header.inc.php');
 
-echo "<p><center>" . lang("You have to CREATE a delivery or invoice first !");
-echo "</center>";
+echo '<p><center>' . lang('You have to CREATE a delivery or invoice first !');
+echo '</center>';
  ?>

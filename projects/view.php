@@ -12,15 +12,16 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"]["currentapp"] = "projects";
-    include("../header.inc.php");
-  
-    if (!$id) {
-    Header("Location: " . $phpgw->link('/projects/index.php'
+    $phpgw_info['flags']['currentapp'] = 'projects';
+    include('../header.inc.php');
+
+    if (!$id)
+    {
+	Header('Location: ' . $phpgw->link('/projects/index.php'
 	  . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('view' => 'view.tpl'));
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -31,8 +32,13 @@
                         . "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
 
-    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
-    else { $join = " LEFT JOIN "; }
+    if ($phpgw_info['server']['db_type']=='pgsql')
+    {
+	$join = " JOIN "; }
+    else
+    {
+	$join = " LEFT JOIN ";
+    }
 
     $db2 = $phpgw->db;
 

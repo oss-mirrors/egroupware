@@ -23,7 +23,7 @@
 
     include('../header.inc.php');
   
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('projects_edit' => 'form.tpl'));
     $t->set_block('projects_edit','add','addhandle');
     $t->set_block('projects_edit','edit','edithandle');

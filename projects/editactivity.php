@@ -20,7 +20,7 @@
 	  . "&filter=$filter"));
     }
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('activity_edit' => 'formactivity.tpl'));
     $t->set_file(array('activity_edit' => 'formactivity.tpl'));
     $t->set_block('activity_edit','add','addhandle');

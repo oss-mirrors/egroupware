@@ -16,7 +16,7 @@
                                'enable_nextmatchs_class' => True);
     include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('user_list_t' => 'stats_userlist.tpl'));
     $t->set_block('user_list_t','user_list','list');
 

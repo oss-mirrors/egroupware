@@ -41,7 +41,7 @@
  	. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  	. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
      
-     $t = new Template($phpgw_info["server"]["app_tpl"]);
+    $t = new Template(PHPGW_APP_TPL);
      $t->set_file(array( "activity_delete" => "delete.tpl"));
      
      $t->set_var("deleteheader",lang("Are you sure you want to delete this entry"));

@@ -35,7 +35,7 @@
     $phpgw->db->query("select * from phpgw_p_projects where id='$id'");
     $phpgw->db->next_record();
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('project_stat' => 'stats_projectstat.tpl'));
     $t->set_block('project_stat','stat_list','list');
      

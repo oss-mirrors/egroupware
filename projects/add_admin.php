@@ -44,7 +44,7 @@
 //    $phpgw->common->phpgw_exit;
     }
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('admin_add' => 'form_admin.tpl'));
 
     $t->set_var('lang_action',lang('Edit project administrator list'));

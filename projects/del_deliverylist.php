@@ -12,12 +12,12 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "projects", 
-                               "enable_nextmatchs_class" => True);
+    $phpgw_info['flags'] = array('currentapp' => 'projects', 
+                               'enable_nextmatchs_class' => True);
 
-    include("../header.inc.php");
+    include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('projects_list_t' => 'del_listdelivery.tpl'));
     $t->set_block('projects_list_t','projects_list','list');
 

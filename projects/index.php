@@ -18,7 +18,7 @@
 
     include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('projects_list' => 'list.tpl',
 		     'projects_list_t' => 'list.tpl'));
     $t->set_block('projects_list_t','projects_list','list');

@@ -12,10 +12,10 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"]["currentapp"] = "projects";
-    include("../header.inc.php");
+    $phpgw_info['flags']['currentapp'] = 'projects';
+    include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('activity_add' => 'formactivity.tpl'));
     $t->set_block('activity_add','add','addhandle');
     $t->set_block('activity_add','edit','edithandle');

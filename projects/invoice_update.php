@@ -16,7 +16,7 @@
                                'enable_nextmatchs_class' => True);
     include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('projecthours_list_t' => 'bill_listhours.tpl'));
     $t->set_block('projecthours_list_t','projecthours_list','list');
 

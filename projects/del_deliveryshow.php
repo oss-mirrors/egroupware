@@ -12,12 +12,12 @@
   \**************************************************************************/
   /* $Id$ */
   
-    $phpgw_info["flags"] = array("currentapp" => "projects",
-                               "noheader" => True, 
-                               "nonavbar" => True);         
-    include("../header.inc.php");
+    $phpgw_info['flags'] = array('currentapp' => 'projects',
+                               'noheader' => True, 
+                               'nonavbar' => True);         
+    include('../header.inc.php');
 
-    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('delivery_list_t' => 'del_deliveryform.tpl',
 			'deliverypos_list' => 'del_deliveryform.tpl'));
     $t->set_block('delivery_list_t','deliverypos_list','list');

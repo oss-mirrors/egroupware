@@ -17,7 +17,7 @@
   
     include('../header.inc.php');
 
-    $t = CreateObject('phpgw.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t = new Template(PHPGW_APP_TPL);
     $t->set_file(array('admin_list_t' => 'list_admin.tpl',
 			'admin_list' => 'list_admin.tpl'));
     $t->set_block('admin_list_t','admin_list','list');
