@@ -19,10 +19,10 @@ function action_diff()
 
   $diff = diff_compute($p1->read(), $p2->read());
 
-  template_diff(array('page'      => $page,
+  template_diff(array('page'      => $p2->as_array(),
                       'diff_html' => diff_parse($diff),
                       'html'      => parseText($p2->text, $ParseEngine, $page),
-                      'editable'  => isEditable($p2->mutable),
+                      'editable'  => $p2->acl_check(),
                       'timestamp' => $p2->time));
 }
 ?>

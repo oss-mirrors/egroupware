@@ -18,19 +18,17 @@
 //   Note that changing this might require a change to parse/transforms.php so
 //   that parse_wikiname knows how many parentheses are included in $LinkPtn.
 // the original settings do not work with utf-8, as they interpret multibyte chars wrong
-//$UpperPtn = "[A-Z\xc0-\xde]";
-//$LowerPtn = "[a-z\xdf-\xff]";
-//$AlphaPtn = "[A-Za-z\xc0-\xff]";
 $UpperPtn = "[A-Z]";
 $LowerPtn = "[a-z]";
 $AlphaPtn = "[A-Za-z]";
+
 $LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
            $UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
 
 // $UrlPtn establishes the format for URLs in this wiki.
 //   Note that changing this requires a change to parse/transforms.php so
 //   that parse_hyperlinkxxx know how many parentheses are included in $UrlPtn.
-$UrlPtn  = "(http:|mailto:|https:|ftp:|gopher:|news:|irc:)" .
+$UrlPtn  = "(http:|mailto:|https:|ftp:|gopher:|news:|irc:|egw:)" .
            "([^ \\/\"\']*\\/)*[^ \\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
 // $InterWikiPtn establishes the format for InterWiki links in this wiki.
@@ -155,8 +153,10 @@ $MaxHeading = 6;
 //   security hole.
 $ParseEngine = array(
                  'parse_elem_flag',
-                 'parse_raw_html',
-                 'parse_htmlisms',
+				 'parse_remove_script',
+				 'parse_htmlisms_outside_html',
+//                 'parse_raw_html',
+//                 'parse_htmlisms',
                  'parse_code',
                  'parse_nowiki',
                  'parse_hyperlink_ref',
@@ -167,6 +167,34 @@ $ParseEngine = array(
                  'parse_freelink',
                  'parse_interwiki',
                  'parse_wikiname',
+                 'parse_bold',
+                 'parse_italic',
+                 'parse_teletype',
+                 'parse_heading',
+                 'parse_table',
+                 'parse_horiz',
+                 'parse_indents',
+                 'parse_newline',
+                 'parse_elements'
+               );
+
+// convert wiki syntax to html, without any links!
+$ConvertEngine = array(
+                 'parse_elem_flag',
+				 'parse_remove_script',
+				 'parse_htmlisms_outside_html',
+//                 'parse_raw_html',
+//                 'parse_htmlisms',
+                 'parse_code',
+                 'parse_nowiki',
+//                 'parse_hyperlink_ref',
+//                 'parse_hyperlink_description',
+//                 'parse_hyperlink',
+//                 'parse_macros',
+//                 'parse_transclude',
+//                 'parse_freelink',
+//                 'parse_interwiki',
+//                 'parse_wikiname',
                  'parse_bold',
                  'parse_italic',
                  'parse_teletype',

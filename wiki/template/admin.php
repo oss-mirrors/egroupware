@@ -12,8 +12,8 @@ require_once(TemplateDir . '/common.php');
 function template_admin($args)
 {
   template_common_prologue(array('norobots' => 1,
-                                 'title'    => 'Administration',
-                                 'heading'  => 'Administration',
+                                 'title'    => lang('Administration'),
+                                 'heading'  => lang('Administration'),
                                  'headlink' => '',
                                  'headsufx' => '',
                                  'toolbar'  => 0));

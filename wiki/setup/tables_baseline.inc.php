@@ -15,36 +15,30 @@
 	$phpgw_baseline = array(
 		'phpgw_wiki_links' => array(
 			'fd' => array(
-				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
 				'page' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
 				'link' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'count' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0')
 			),
-			'pk' => array('wiki_id','page','lang','link'),
+			'pk' => array('page','link'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
 		'phpgw_wiki_pages' => array(
 			'fd' => array(
-				'wiki_id' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0'),
-				'name' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
+				'title' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'version' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '1'),
-				'time' => array('type' => 'int','precision' => '4'),
-				'supercede' => array('type' => 'int','precision' => '4'),
-				'readable' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'writable' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'username' => array('type' => 'varchar','precision' => '80'),
-				'hostname' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
+				'time' => array('type' => 'int','precision' => '4','nullable' => True),
+				'supercede' => array('type' => 'int','precision' => '4','nullable' => True),
+				'mutable' => array('type' => 'char','precision' => '3','nullable' => False,'default' => 'on'),
+				'username' => array('type' => 'varchar','precision' => '80','nullable' => True),
+				'author' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'comment' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'title' => array('type' => 'varchar','precision' => '80'),
-				'body' => array('type' => 'text')
+				'body' => array('type' => 'text','nullable' => True)
 			),
-			'pk' => array('wiki_id','name','lang','version'),
+			'pk' => array('title','version'),
 			'fk' => array(),
-			'ix' => array('title',array('body','options' => array('mysql' => 'FULLTEXT'))),
+			'ix' => array(),
 			'uc' => array()
 		),
 		'phpgw_wiki_rate' => array(
@@ -62,26 +56,22 @@
 		),
 		'phpgw_wiki_interwiki' => array(
 			'fd' => array(
-				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'where_defined_page' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'where_defined_lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
+				'prefix' => array('type' => 'varchar','precision' => '80','nullable' => false,'default' => ''),
+				'where_defined' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'url' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => '')
 			),
-			'pk' => array('wiki_id','prefix'),
+			'pk' => array('prefix'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
 		'phpgw_wiki_sisterwiki' => array(
 			'fd' => array(
-				'wiki_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'prefix' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'where_defined_page' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
-				'where_defined_lang' => array('type' => 'varchar','precision' => '5','nullable' => False,'default' => ''),
+				'where_defined' => array('type' => 'varchar','precision' => '80','nullable' => False,'default' => ''),
 				'url' => array('type' => 'varchar','precision' => '255','nullable' => False,'default' => '')
 			),
-			'pk' => array('wiki_id','prefix'),
+			'pk' => array('prefix'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()

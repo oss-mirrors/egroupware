@@ -19,9 +19,10 @@ function action_view()
 
   gen_headers($pg->time);
 
-  template_view(array('page'      => $page,
+  template_view(array('page'      => $pg->as_array(),
+                      'title'     => $pg->title,
                       'html'      => parseText($pg->text, $ParseEngine, $page),
-                      'editable'  => isEditable($pg->mutable),
+                      'editable'  => $pg->acl_check(),
                       'timestamp' => $pg->time,
                       'archive'   => $version != '',
                       'version'   => $pg->version));

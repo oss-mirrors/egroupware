@@ -3,8 +3,8 @@
 
 // Macros for on-save features.
 
-require('parse/html.php');
-require('parse/macros.php');
+require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/html.php');
+require_once(PHPGW_INCLUDE_ROOT.'/wiki/parse/macros.php');
 
 // Define the link table.
 function parse_define_links($text)

@@ -65,11 +65,11 @@ function html_diff_new_start()
 function html_diff_end()
   { return '</td></tr></table>'; }
 function html_diff_add()
-  { return html_bold_start() . 'Added:' . html_bold_end(); }
+  { return html_bold_start() . lang('Added').':' . html_bold_end(); }
 function html_diff_change()
-  { return html_bold_start() . 'Changed:' . html_bold_end(); }
+  { return html_bold_start() . lang('Changed').':' . html_bold_end(); }
 function html_diff_delete()
-  { return html_bold_start() . 'Deleted:' . html_bold_end(); }
+  { return html_bold_start() . lang('Deleted').':' . html_bold_end(); }
 function html_table_start()
   { return '<table border="1">'; }
 function html_table_end()
@@ -90,40 +90,68 @@ function html_table_cell_end()
 function html_time($time)
 {
   global $TimeZoneOff;
-  if($time == '') { return 'never'; }
-  
-  return date('D, d M Y H:i:s', $time + $TimeZoneOff * 60);
+  if($time == '') { return lang('never'); }
+
+  return lang(date('l',$time + $TimeZoneOff * 60)).', '.date($GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat'].' '.
+    ((int) $GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == 12 ? 'h:i:s a' : 'H:i:s'), $time + $TimeZoneOff * 60);
 }
 function html_gmtime($time)
 {
-  return gmdate('Y-m-d', $time) . 'T' . gmdate('H:i:s', $time) . 'Z';
+  return gmdate($GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat'], $time) . 'T' .
+    gmdate((int) $GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == 12 ? 'h:i:s a' : 'H:i:s', $time) . 'Z';
 }
 function html_timestamp($time)
 {
   global $TimeZoneOff;
   
-  return date('Y.m.d H:i:s', $time + $TimeZoneOff * 60);
+  return date($GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat'].' '.
+    ((int) $GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == 12 ? 'h:i:s a' : 'H:i:s'), $time + $TimeZoneOff * 60);
 }
+
 function html_url($url, $text)
 {
-  if($url == $text
-     && preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $text))
-  {
-    return "<img src=\"$url\" alt=\"" . basename($url) . "\" />";
-  }
-  if (preg_match('/^mailto:([^@]*)@(.*)$/i',$url,$matchs))	// spamsaver emailaddress
-  {
-     $url = "#";
-     $domains = "'".implode("'+unescape('%2E')+'",explode('.',$matchs[2]))."'";
-     $onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
-     $text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
-  }
-  return '<a href="'.$url.'" '.($onClick ? $onClick : 'target="_blank"').">$text</a>";
+	// egw: urls are relative to the egw install-dir and if they have only 2 parts (appname,image) they are resolved via
+	// common::image() - the template is taken into account
+	if (substr($url,0,4) == 'egw:')
+	{
+		$url = preg_replace('/egw:\\/?/i','',$url);
+		$parts = explode('/',$url);
+		if (count($parts) == 2 && preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url))
+		{
+			$url = $GLOBALS['phpgw']->common->image($parts[0],$parts[1]);
+		}
+		elseif (substr($url,-4) == '.php' || substr($url,-1) == '/')
+		{
+			$url = $GLOBALS['phpgw']->link('/'.$url);
+		}
+		else
+		{
+			$url = $GLOBALS['phpgw_info']['server']['webserver_url'].'/'.$url;
+		}
+	}
+	if(preg_match('/(.jpe?g|.png|.gif|.bmp)$/i', $url))
+	{
+		return "<img src=\"$url\" alt=\"" . basename($url) . "\" />";
+	}
+	if (preg_match('/^mailto:([^@]*)@(.*)$/i',$url,$matchs))	// spamsaver emailaddress
+	{
+		$url = "#";
+		$domains = "'".implode("'+unescape('%2E')+'",explode('.',$matchs[2]))."'";
+		$onClick = " onClick=\"document.location='mai'+'lto:$matchs[1]'+unescape('%40')+$domains; return false;\"";
+		$text = str_replace('@',' AT ',str_replace('mailto:','',str_replace('.',' DOT ',$text)));
+	}
+	return '<a href="'.$url.'" '.($onClick ? $onClick : 'target="_blank"').">$text</a>";
 }
+
 function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appearance = '')
 {
   global $db, $SeparateLinkWords;
 
+  $title = get_title($page);
+  if (is_array($appearance))
+  {
+    $appearance = $appearance['lang'] && $appearance['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ? $appearance['title'].':'.$appearance['lang'] : $appearance['title'];
+  }
   if($hover != '')
     { $hover = ' title="' . $hover . '"'; }
 
@@ -132,24 +160,24 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 
   if($p->exists())
   {
-    if($SeparateLinkWords && $page == $appearance)
-      { $appearance = html_split_name($page); }
+    if($SeparateLinkWords && $title == $appearance)
+      { $appearance = html_split_name($title); }
     return '<a href="' . viewURL($page) . $anchor . '"' . $hover . ' class="wiki">'
            . $appearance . $anchor_appearance . '</a>';
   }
-  elseif(!isEditable($p->mutable))
+  elseif(!$p->acl_check())
   {
-    if(validate_page($page) == 1        // Normal WikiName
-       && $appearance == $page)         // ... and is what it appears
-      { return $page; }
+    if(validate_page($title) == 1        // Normal WikiName
+       && $appearance == $title)         // ... and is what it appears
+      { return $title; }
     else                                // Free link.
       { return $appearance; }
   }
   else
   {
-    if(validate_page($page) == 1        // Normal WikiName
-       && $appearance == $page)         // ... and is what it appears
-      { return $page . '<a href="' . editURL($page) . '"' . $hover . '>?</a>'; }
+    if(validate_page($title) == 1        // Normal WikiName
+       && $appearance == $title)         // ... and is what it appears
+      { return $title . '<a href="' . editURL($page) . '"' . $hover . '>?</a>'; }
     else                                // Free link.
       { return '(' . $appearance . ')<a href="' . editURL($page) . '"' . $hover . '>?</a>'; }
   }
@@ -165,13 +193,13 @@ function html_twin($base, $ref)
   return '<a href="' . $pagestore->interwiki($base) . $ref . '" class="wiki">' .
          '<span class="twin"><em>[' . $base . ']</em></span></a>';
 }
-function html_category($time, $page, $host, $user, $comment)
+function html_category($time, $page, $host, $user, $comment, $lang='')
 {
   global $pagestore;
 
   $text = '(' . html_timestamp($time) . ') (' .
-          '<a href="' . historyURL($page) . '">history</a>) ' .
-          html_ref($page, $page);
+          '<a href="' . historyURL($page) . '">'.lang('history').'</a>) ' .
+          html_ref($lang ? array('title'=>$page,'lang'=>$lang) : $page, $page);
 
   if(count($twin = $pagestore->twinpages($page)))
   {
@@ -194,20 +222,20 @@ function html_category($time, $page, $host, $user, $comment)
 function html_fulllist($page, $count)
 {
   return '<strong><a href="' . viewURL($page, '', 1) . '">' .
-         'See complete list (' . $count . ' entries)</a></strong>';
+         lang('See complete list (%1 entries)',$count).'</a></strong>';
 }
 function html_fullhistory($page, $count)
 {
   return '<tr><td colspan="3"><strong><a href="' . historyURL($page, 1) .
-         '" class="wiki">' .  'See complete list (' . $count .
-         ' entries)</a></strong></td></tr>';
+         '" class="wiki">' .  lang('See complete list (%1 entries)',$count).
+         '</a></strong></td></tr>';
 }
 function html_toolbar_top()
 {
 	global $HomePage, $PrefsScript,$AdminScript;
     
 	return html_ref($HomePage, $HomePage) . ' | ' .
-	       html_ref('RecentChanges', 'RecentChanges');	
+	       html_ref('RecentChanges', lang('Recent Changes'));
 /*
            ' | <a href="' . $PrefsScript . '">Preferences</a>' .
 	       ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
@@ -239,12 +267,12 @@ function html_lock_start()
   return '<form method="post" action="' . $AdminScript . "\">\n" .
          '<div class="form">' . "\n" .
          '<input type="hidden" name="locking" value="1" />' . "\n" .
-         html_bold_start() . 'Locked' . html_bold_end() . html_newline();
+         html_bold_start() . lang('Locked') . html_bold_end() . html_newline();
 }
 function html_lock_end($count)
 {
   return '<input type="hidden" name="count" value="' . $count . '" />' . "\n" .
-         '<input type="submit" name="Save" value="Save" />' . "\n" .
+         '<input type="submit" name="Save" value="'.lang('Save').'" />' . "\n" .
          '</div>' . "\n" .
          '</form>' . "\n";
 }
@@ -260,7 +288,7 @@ function html_lock_page($page, $mutable)
 }
 function html_rate_start()
 {
-  return '<br /><strong>Blocked IP address ranges</strong>' .
+  return '<br /><strong>'.lang('Blocked IP address ranges').'</strong>' .
          "\n<dl>\n";
 }
 function html_rate_end()
@@ -271,12 +299,12 @@ function html_rate_end()
          '<form method="post" action="' . $AdminScript . "\">\n" .
          '<div class="form">' . "\n" .
          '<input type="hidden" name="blocking" value="1" />' . "\n" .
-         'Enter IP address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or ' .
-         '<tt>78.90.123.*</tt><br />' . "\n" .
+         lang('Enter IP address range in form <tt>12.*</tt>, <tt>34.56.*</tt>, or <tt>78.90.123.*</tt>').
+         '<br />' . "\n" .
          '<input type="text" name="address" value="" size="40" /><br />' .
          "\n" .
-         '<input type="submit" name="Block" value="Block" />' . "\n" .
-         '<input type="submit" name="Unblock" value="Unblock" />' . "\n" .
+         '<input type="submit" name="Block" value="'.lang('Block').'" />' . "\n" .
+         '<input type="submit" name="Unblock" value="'.lang('Unblock').'" />' . "\n" .
          '</div>' . "\n";
          '</form>' . "\n";
 }
@@ -292,12 +320,13 @@ function html_split_name($page)
 {
   global $UpperPtn, $LowerPtn;
 
+  $title = get_title($page);
   if(validate_page($page) != 1)
-    { return $page; }
+    { return $title; }
   $page = preg_replace("/(?<=$UpperPtn|$LowerPtn)($UpperPtn$LowerPtn)/",
-                       ' \\1', $page, -1);
+                       ' \\1', $title, -1);
   $page = preg_replace("/($LowerPtn)($UpperPtn)/",
-                       '\\1 \\2', $page, -1);
+                       '\\1 \\2', $title, -1);
   return $page;
 }
 ?>

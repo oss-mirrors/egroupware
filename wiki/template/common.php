@@ -24,6 +24,7 @@ function template_common_prologue($args)
   global $WikiName, $HomePage, $WikiLogo, $MetaKeywords, $MetaDescription;
   global $StyleScript, $SeparateTitleWords, $SeparateHeaderWords, $SearchURL, $FindScript;
 
+  //echo "<p>template_common_prologue(".print_r($args,True).")</p>";
   $keywords = ' ' . html_split_name($args['headlink']);
   $keywords = str_replace('"', '&quot;', $keywords);
 
@@ -54,7 +55,7 @@ function template_common_prologue($args)
 <?php
 */
 ?>
-<link rel="STYLESHEET" href="<?php echo $GLOBALS['phpgw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $GLOBALS['phpgw_info']['server']['webserver_url'].'/wiki/template/wiki.css'; ?>" type="text/css" />
 <div align="left">
 <div id="header">
   <?php /* removed logo for now: TODO show it on extern site
@@ -70,10 +71,11 @@ function template_common_prologue($args)
 ?>
     <a class="title" href="<?php print findURL($args['headlink']); ?>">
 <?php
+	$title = get_title($args['headlink']);
     if($SeparateHeaderWords)
-      { print html_split_name($args['headlink']); }
+      { print html_split_name($title); }
     else
-      { print $args['headlink']; }
+      { print $title; }
 ?></a>
 <?php
     }
@@ -93,7 +95,7 @@ function template_common_prologue($args)
 		
 		if(!$args['nosearch']) 
 		{
-			echo ' | ' . lang('Search') . ': <input type="text" name="find" size="20" />';
+			echo ' | '.lang('Search').': <input type="text" name="find" size="20" />';
 		}
 		echo "\n<hr align=left width=99% />\n";
 		
@@ -129,6 +131,7 @@ function template_common_prologue($args)
 function template_common_epilogue($args)
 {
   global $FindScript, $pagestore, $PrefsScript, $AdminScript;
+  //echo "<p>template_common_epilogue(".print_r($args,True).")</p>";
 
 ?>
 <div id="footer">
@@ -144,18 +147,16 @@ function template_common_epilogue($args)
   {
     if($args['editver'] == 0)
     {
-?>  <a href="<?php print editURL($args['edit']); ?>"><?php echo lang('Edit this document'); ?></a><?php
+       echo '<a href="'.editURL($args['edit']).'">'.lang('Edit this document').'</a>';
     }
     else if($args['editver'] == -1)
     {
-    echo lang('This document cannot be edited');
+       echo lang('This page cannot be edited.');
     }
     else
     {
-?>
-  <a href="<?php print editURL($args['edit'], $args['editver']); ?>">
-  Edit this <em>ARCHIVE VERSION</em> of this document</a>
-<?php
+       echo '<a href="'.editURL($args['edit'], $args['editver']).'">'.
+       lang('Edit this <em>ARCHIVE VERSION</em> of this document').'</a>';
     }
 
     if($args['history'])
@@ -163,24 +164,19 @@ function template_common_epilogue($args)
   }
   if($args['history'])
   {
-?>
-    <a href="<?php print historyURL($args['history']); ?>"><?php echo lang('View document history'); ?></a>
-<?php
-    echo ' | <a href="' . $PrefsScript . '">' . lang('Preferences') . '</a>' .
+    echo '<a href="'.historyURL($args['history']).'">'.lang('View document history').'</a>';
+    echo ' | <a href="' . $PrefsScript . '">'.lang('Preferences').'</a>' .
           ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
-            ' | <a href="'.$AdminScript.'">Administration</a>' : '');
+            ' | <a href="'.$AdminScript.'">'.lang('Administration').'</a>' : '');
   
-    if(!$args['nosearch']) { ?>	
-      | <?php echo lang('Search'); ?>: <input type="text" name="find" size="20" />
-<?php 
+    if(!$args['nosearch']) {
+      echo '| '.lang('Search').': <input type="text" name="find" size="20" />';
     }
 	echo "<br />";
   }
   if($args['timestamp'])
   {
-?>
-  <?php echo lang('Document last modified') ?> <?php print html_time($args['timestamp']); ?><br />
-<?php
+    echo lang('Document last modified').' '.html_time($args['timestamp']).'<br />';
   } ?>
       </div>
     </form>
@@ -189,7 +185,7 @@ function template_common_epilogue($args)
   {
     if(count($twin = $pagestore->twinpages($args['twin'])))
     {
-?>Twin pages: <?php
+      echo lang('Twin pages').': ';
       for($i = 0; $i < count($twin); $i++)
         { print html_twin($twin[$i][0], $twin[$i][1]) . ' '; } ?>
 <br /><?php

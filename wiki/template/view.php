@@ -17,7 +17,7 @@ require_once(TemplateDir . '/common.php');
 function template_view($args)
 {
   template_common_prologue(array('norobots' => $args['archive'],
-                                 'title'    => $args['page'],
+                                 'title'    => $args['title'],
                                  'heading'  => '',
                                  'headlink' => $args['page'],
                                  'headsufx' => $args['archive'] ?

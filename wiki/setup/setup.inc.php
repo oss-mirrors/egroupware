@@ -12,14 +12,14 @@
 
 	$setup_info['wiki']['name']      = 'wiki';
 	$setup_info['wiki']['title']     = 'Wiki';
-	$setup_info['wiki']['version']   = '0.9.15.001';
+	$setup_info['wiki']['version']   = '0.9.15.005';
 	$setup_info['wiki']['app_order'] = 11;
 	$setup_info['wiki']['enable']    = 1;
 
 	$setup_info['wiki']['author']    = 'Tavi Team';
 	$setup_info['wiki']['license']   = 'GPL';
 	$setup_info['wiki']['description'] =
-		'Wiki is a modified version of <a href="http://tavi.sf.net" target="_new">WikkiTikkiTavi</a> for use with eGroupware.';
+		'Wiki is a modified and enhanced version of <a href="http://tavi.sf.net" target="_new">WikkiTikkiTavi</a> for use with eGroupware.';
 	$setup_info['wiki']['maintainer'] = 'Ralf Becker';
 	$setup_info['wiki']['maintainer_email'] = 'RalfBecker@outdoor-training.de';
 
@@ -43,4 +43,15 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14', '0.9.15','1.0.0')
 	);
-?>
+	$setup_info['wiki']['depends'][] = array
+	(
+		'appname'  => 'etemplate',
+		'versions' => Array('0.9.14', '0.9.15','1.0.0')
+	);
+
+
+
+
+
+
+

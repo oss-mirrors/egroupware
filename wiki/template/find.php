@@ -13,8 +13,8 @@ require_once(TemplateDir . '/common.php');
 function template_find($args)
 {
   template_common_prologue(array('norobots' => 1,
-                                 'title'    => lang('Find') . ' ' . htmlspecialchars($args['find']),
-                                 'heading'  => lang('Find') . ' ' . htmlspecialchars($args['find']),
+                                 'title'    => lang('Find').' ' . htmlspecialchars($args['find']),
+                                 'heading'  => lang('Find').' ' . htmlspecialchars($args['find']),
                                  'headlink' => '',
                                  'headsufx' => '',
                                  'toolbar'  => 1));

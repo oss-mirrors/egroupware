@@ -35,34 +35,37 @@ function view_macro_category($args)
 
   $now = time();
  
-  for($i = 0; $i < count($list); $i++)
+  //for($i = 0; $i < count($list); $i++)
+  foreach($list as $i => $page)
   {
-    $editTime = $list[$i][0];
+    $editTime = $page['time'];
     if($DayLimit && $i >= $MinEntries
        && !$full && ($now - $editTime) > $DayLimit * 24 * 60 * 60)
       { break; }
 
-    $text = $text . html_category($list[$i][0], $list[$i][1],
-                                  $list[$i][2], $list[$i][3],
-                                  $list[$i][5]);
-    if($i < count($list) - 1)           // Don't put a newline on the last one.
-      { $text = $text . html_newline(); }
+    $text = $text . html_category($page['time'], $page,
+                                  $page['author'], $page['username'],
+                                  $page['comment']);
+    $text .= html_newline();
   }
 
-  if($i < count($list))
-    { $text = $text . html_fulllist($page, count($list)); }
+  if($i < count($list)-1)
+    { $text .= html_fulllist($page, count($list)); }
 
   return $text;
 }
 
 function catSort($p1, $p2)
-  { return strcmp($p2[0], $p1[0]); }
+  { return strcmp($p2['time'], $p1['time']); }
 
 function sizeSort($p1, $p2)
-  { return $p2[4] - $p1[4]; }
+  { return $p2['length'] - $p1['length']; }
 
 function nameSort($p1, $p2)
-  { return strcmp($p1[1], $p2[1]); }
+{
+	$titlecmp = strcmp($p1['title'], $p2['title']);
+	return $titlecmp ? $titlecmp : strcmp($p1['lang'],$p2['lang']);
+}
 
 // Prepare a list of pages sorted by size.
 function view_macro_pagesize()
@@ -93,27 +96,22 @@ function view_macro_pagesize()
 // Prepare a list of pages and those pages they link to.
 function view_macro_linktab()
 {
-  global $pagestore, $LkTbl;
+	global $pagestore;
 
-  $lastpage = '';
-  $text = '';
+	$text = '';
+	foreach($pagestore->get_links() as $page => $data)
+	{
+		foreach($data as $lang => $links)
+		{
+			$text .= ($text ? "\n" : '') . html_ref(array('page' => $page,'lang' => $lang), "$page:$lang") . ' |';
 
-  $q1 = $pagestore->dbh->query("SELECT page, link FROM $LkTbl ORDER BY page",__LINE__,__FILE__);
-  while(($result = $pagestore->dbh->result($q1)))
-  {
-    if($lastpage != $result[0])
-    {
-      if($lastpage != '')
-        { $text = $text . "\n"; }
-
-      $text = $text . html_ref($result[0], $result[0]) . ' |';
-      $lastpage = $result[0];
-    }
-
-    $text = $text . ' ' . html_ref($result[1], $result[1]);
-  }
-
-  return html_code($text);
+			foreach($links as $link)
+			{
+				$text .= ' ' . html_ref($link, $link);
+			}
+		}
+	}
+	return html_code($text);
 }
 
 // Prepare a list of pages with no incoming links.

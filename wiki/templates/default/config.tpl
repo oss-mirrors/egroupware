@@ -75,23 +75,14 @@
 </tr>
 
 <tr bgcolor="{row_off}">
-<td>{lang_Edit_With_Preview}:</td>
+<td>{lang_Automatically_convert_pages_with_wiki-syntax_to_richtext_(if_edited)?}:</td>
 <td>
-<select name="newsettings[Edit_With_Preview]">
-<option value=""{selected_Edit_With_Preview_False}>{lang_No}</option>
-<option value="True"{selected_Edit_With_Preview_True}>{lang_Yes}</option>
+<select name="newsettings[AutoconvertPages]">
+<option value="auto"{selected_AutoconvertPages_auto}>{lang_Only_if_browser_supports_a_richtext-editor}</option>
+<option value="never"{selected_AutoconvertPages_never}>{lang_No_never}</option>
+<option value="always"{selected_AutoconvertPages_always}>{lang_Yes_always}</option>
 </select>
 </td>
-</tr>
-
-<tr bgcolor="{row_on}">
-<td>{lang_MetaKeywords}:</td>
-<td><textarea name="newsettings[MetaKeywords]" cols="30" rows="2">{value_MetaKeywords}</textarea></td>
-</tr>
-
-<tr bgcolor="{row_off}">
-<td>{lang_MetaDescription}:</td>
-<td><textarea name="newsettings[MetaDescription]" cols="30" rows="2">{value_MetaDescription}</textarea></td>
 </tr>
 <!-- END body -->
 

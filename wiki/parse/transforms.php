@@ -21,9 +21,29 @@ function parse_noop($text)
 function q1($text)
   { return str_replace('\\"', '"', $text); }
 
+function get_title($page)
+{
+	if (is_array($page))
+	{
+		return $page['title'] ? $page['title'] : $page['name'];
+	}
+	return $page;
+}
+
+function get_name($page)
+{
+	if (is_array($page))
+	{
+		return $page['name'] ? $page['name'] : $page['title'];
+	}
+	return $page;
+}
+
 function validate_page($page)
 {
   global $FlgChr;
+
+  $page = get_title($page);
 
   $p = parse_wikiname($page, 1);
   if(preg_match('/^' . $FlgChr . '\\d+' . $FlgChr . '$/', $p))
@@ -31,6 +51,7 @@ function validate_page($page)
   $p = parse_freelink('((' . $page . '))', 1);
   if(preg_match('/^' . $FlgChr . '\\d+' . $FlgChr . '$/', $p))
     { return 2; }
+  //echo "<p>parse/transforms::validdate_page('$page')==0</p>\n";
   return 0;
 }
 
@@ -252,6 +273,8 @@ function pair_tokens($type, $text)
 function parse_newline($text)
 {
   static $last = array('', '');
+  global $htmlisms_outside_in_html;
+  if ($htmlisms_outside_in_html) return($text);	// no conversation, if inside <html> </html>
 
   // More than two consecutive newlines fold into two newlines.
 
@@ -306,6 +329,11 @@ function parse_code($text)
 
     return $text;
   }
+}
+
+function parse_remove_script($text)
+{
+  return preg_replace('/\<(\/*script)/i','&lt;\\1',$text);
 }
 
 function parse_raw_html($text)
@@ -505,6 +533,27 @@ function parse_htmlisms($text)
 {
   $text = str_replace('&', '&amp;', $text);
   $text = str_replace('<', '&lt;', $text);
+  return $text;
+}
+
+global $htmlisms_outside_in_html; $htmlisms_outside_in_html = False;
+function parse_htmlisms_outside_html($text)
+{
+  global $htmlisms_outside_in_html;
+
+  $ltext = strtolower($text);
+  if ($ltext == "<html>\n")
+  {
+    $htmlisms_outside_in_html = True;
+  }
+  elseif ($ltext == "</html>\n")
+  {
+    $htmlisms_outside_in_html = False;
+  }
+  elseif (!$htmlisms_outside_in_html)
+  {
+    $text = str_replace(array('&','<'),array('&amp;','&lt;'), $text);
+  }
   return $text;
 }
 

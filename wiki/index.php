@@ -1,5 +1,17 @@
 <?php
-// $Id$
+	/**************************************************************************\
+	* eGroupWare Wiki - UserInterface                                       *
+	* http://www.egroupware.org                                                *
+	* -------------------------------------------------                        *
+	* Copyright (C) 2004 RalfBecker@outdoor-training.de                        *
+	* --------------------------------------------                             *
+	*  This program is free software; you can redistribute it and/or modify it *
+	*  under the terms of the GNU General Public License as published by the   *
+	*  Free Software Foundation; either version 2 of the License, or (at your  *
+	*  option) any later version.                                              *
+	\**************************************************************************/
+
+	/* $Id$ */
 
 $GLOBALS['phpgw_info']['flags'] = array(
 	'currentapp' => 'wiki',
@@ -7,24 +19,6 @@ $GLOBALS['phpgw_info']['flags'] = array(
 );
 
 // the phpGW header.inc.php got included later by lib/init.php
-
-$action = $HTTP_GET_VARS['action'];
-switch ($action) {
-	case 'edit':
-		$GLOBALS['phpgw_info']['cursor_focus'] = "document.editform.document.focus();";
-	break;
-	case 'save':
-		if ($HTTP_POST_VARS['Preview'] == 'Preview') { 
-			$GLOBALS['phpgw_info']['cursor_focus'] = "document.editform.document.focus();";
-		} else {
-			$GLOBALS['phpgw_info']['cursor_focus'] = "document.thesearch.find.focus();";
-		}
-	break;
-	default:
-		$GLOBALS['phpgw_info']['cursor_focus'] = "document.thesearch.find.focus();";
-
-}
-
 require('lib/main.php');
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 /* $Id$ */
 
-// Under phpgw these URL's are NOT configurable, you can set the phpgw install-patch in setup
+// Under phpgw these URL's are NOT configurable, you can set the phpgw install-path in setup
 
 $ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
 $ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
@@ -11,7 +11,7 @@ $AdminScript = $ScriptBase . 'action=admin';
 //if(!isset($ViewBase))
   { $ViewBase    = $ScriptBase . 'page='; }
 //if(!isset($EditBase))
-  { $EditBase    = $ScriptBase . 'action=edit&page='; }
+  { $EditBase    = $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'wiki.uiwiki.edit')).'&page='; }
 //if(!isset($HistoryBase))
   { $HistoryBase = $ScriptBase . 'action=history&page='; }
 //if(!isset($FindScript))
@@ -27,58 +27,76 @@ $AdminScript = $ScriptBase . 'action=admin';
 //if(!isset($StyleScript))
   { $StyleScript = $ScriptBase . 'action=style'; }
 
-//if(!function_exists('viewURL'))
+if(!function_exists('viewURL'))
 {
-function viewURL($page, $version = '', $full = '')
-{
-  global $ViewBase;
+	function viewURL($page, $version = '', $full = '')
+	{
+		global $ViewBase;
 
-  return $ViewBase . urlencode($page) .
-         ($version == '' ? '' : "&version=$version") .
-         ($full == '' ? '' : '&full=1');
-}
-}
-
-//if(!function_exists('editURL'))
-{
-function editURL($page, $version = '')
-{
-  global $EditBase;
-
-  return $EditBase . urlencode($page) .
-         ($version == '' ? '' : "&version=$version");
-}
+		if (is_array($page))
+		{
+			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
+			$page = $page['name'];
+		}
+		return $ViewBase . urlencode($page) . @$lang .
+				($version == '' ? '' : "&version=$version") .
+				($full == '' ? '' : '&full=1');
+	}
 }
 
-//if(!function_exists('historyURL'))
+if(!function_exists('editURL'))
 {
-function historyURL($page, $full = '')
-{
-  global $HistoryBase;
+	function editURL($page, $version = '')
+	{
+		global $EditBase;
 
-  return $HistoryBase . urlencode($page) .
-         ($full == '' ? '' : '&full=1');
-}
-}
-
-//if(!function_exists('findURL'))
-{
-function findURL($page)
-{
-  global $FindBase;
-
-  return $FindBase . urlencode($page);
-}
+		if (is_array($page))
+		{
+			$lang = @$page['lang'] && $page['lang'] != $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'] ? '&lang='.$page['lang'] : '';
+			$page = $page['name'];
+		}
+		return $EditBase . urlencode($page) . @$lang .
+				($version == '' ? '' : "&version=$version");
+	}
 }
 
-//if(!function_exists('saveURL'))
+if(!function_exists('historyURL'))
 {
-function saveURL($page)
-{
-  global $SaveBase;
+	function historyURL($page, $full = '',$lang='')
+	{
+		global $HistoryBase;
 
-  return $SaveBase . urlencode($page);
+		if ($lang || (is_array($page) && isset($page['lang'])))
+		{
+			$lang = '&lang=' . ($lang ? $lang : $page['lang']);
+		}
+		return $HistoryBase . urlencode(is_array($page) ? $page['name'] : $page) . $lang;
+				($full == '' ? '' : '&full=1');
+	}
 }
+
+if(!function_exists('findURL'))
+{
+	function findURL($page,$lang='')
+	{
+		global $FindBase;
+
+		if ($lang || (is_array($page) && isset($page['lang'])))
+		{
+			$lang = '&lang=' . ($lang ? $lang : $page['lang']);
+		}
+		return $FindBase . urlencode(is_array($page) ? $page['name'] : $page) . $lang;
+	}
+}
+
+if(!function_exists('saveURL'))
+{
+	function saveURL($page)
+	{
+		global $SaveBase;
+
+		return $SaveBase . urlencode($page);
+	}
 }
 
 ?>

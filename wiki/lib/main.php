@@ -6,66 +6,73 @@
 // (Which is better form in case the admin has warnings cranked all the
 // way up).
 
-$HTTP_REFERER = isset($HTTP_SERVER_VARS['HTTP_REFERER'])
-                ? $HTTP_SERVER_VARS['HTTP_REFERER'] : '';
-$REMOTE_ADDR  = isset($HTTP_SERVER_VARS['REMOTE_ADDR'])
-                ? $HTTP_SERVER_VARS['REMOTE_ADDR'] : '';
+$HTTP_REFERER = isset($_SERVER['HTTP_REFERER'])
+                ? $_SERVER['HTTP_REFERER'] : '';
+$REMOTE_ADDR  = isset($_SERVER['REMOTE_ADDR'])
+                ? $_SERVER['REMOTE_ADDR'] : '';
 
-$action       = isset($HTTP_GET_VARS['action'])
-                ? $HTTP_GET_VARS['action'] : '';
-$page         = isset($HTTP_GET_VARS['page'])
-                ? $HTTP_GET_VARS['page'] : '';
-$ver1         = isset($HTTP_GET_VARS['ver1'])
-                ? $HTTP_GET_VARS['ver1'] : '';
-$ver2         = isset($HTTP_GET_VARS['ver2'])
-                ? $HTTP_GET_VARS['ver2'] : '';
-$find         = isset($HTTP_GET_VARS['find'])
-                ? $HTTP_GET_VARS['find'] : '';
-$version      = isset($HTTP_GET_VARS['version'])
-                ? $HTTP_GET_VARS['version'] : '';
-$full         = isset($HTTP_GET_VARS['full'])
-                ? $HTTP_GET_VARS['full'] : '';
-$min          = isset($HTTP_GET_VARS['min'])
-                ? $HTTP_GET_VARS['min'] : '';
-$days         = isset($HTTP_GET_VARS['days'])
-                ? $HTTP_GET_VARS['days'] : '';
+$action       = isset($_GET['action'])
+                ? $_GET['action'] : '';
+$page         = isset($_GET['page'])
+                ? $_GET['page'] : '';
+if (isset($_GET['lang']))
+{
+	$page = array(
+		'name' => $page,
+		'lang' => $_GET['lang'],
+	);
+}
+$ver1         = isset($_GET['ver1'])
+                ? $_GET['ver1'] : '';
+$ver2         = isset($_GET['ver2'])
+                ? $_GET['ver2'] : '';
+$find         = isset($_GET['find'])
+                ? $_GET['find'] : '';
+$version      = isset($_GET['version'])
+                ? $_GET['version'] : '';
+$full         = isset($_GET['full'])
+                ? $_GET['full'] : '';
+$min          = isset($_GET['min'])
+                ? $_GET['min'] : '';
+$days         = isset($_GET['days'])
+                ? $_GET['days'] : '';
 
-$Preview      = isset($HTTP_POST_VARS['Preview'])
-                ? $HTTP_POST_VARS['Preview'] : '';
-$Save         = isset($HTTP_POST_VARS['Save'])
-                ? $HTTP_POST_VARS['Save'] : '';
-$SaveAndContinue = isset($HTTP_POST_VARS['SaveAndContinue'])
-                ? $HTTP_POST_VARS['SaveAndContinue'] : '';
-$archive      = isset($HTTP_POST_VARS['archive'])
-                ? $HTTP_POST_VARS['archive'] : '';
-$auth         = isset($HTTP_POST_VARS['auth'])
-                ? $HTTP_POST_VARS['auth'] : '';
-$categories   = isset($HTTP_POST_VARS['categories'])
-                ? $HTTP_POST_VARS['categories'] : '';
-$cols         = isset($HTTP_POST_VARS['cols'])
-                ? $HTTP_POST_VARS['cols'] : '';
-$comment      = isset($HTTP_POST_VARS['comment'])
-                ? $HTTP_POST_VARS['comment'] : '';
-$days         = isset($HTTP_POST_VARS['days'])
-                ? $HTTP_POST_VARS['days'] : $days;
-$discard      = isset($HTTP_POST_VARS['discard'])
-                ? $HTTP_POST_VARS['discard'] : '';
-$document     = isset($HTTP_POST_VARS['document'])
-                ? $HTTP_POST_VARS['document'] : '';
-$hist         = isset($HTTP_POST_VARS['hist'])
-                ? $HTTP_POST_VARS['hist'] : '';
-$min          = isset($HTTP_POST_VARS['min'])
-                ? $HTTP_POST_VARS['min'] : $min;
-$nextver      = isset($HTTP_POST_VARS['nextver'])
-                ? $HTTP_POST_VARS['nextver'] : '';
-$rows         = isset($HTTP_POST_VARS['rows'])
-                ? $HTTP_POST_VARS['rows'] : '';
-$tzoff        = isset($HTTP_POST_VARS['tzoff'])
-                ? $HTTP_POST_VARS['tzoff'] : '';
-$user         = isset($HTTP_POST_VARS['user'])
-                ? $HTTP_POST_VARS['user'] : '';
-$referrer     = isset($HTTP_POST_VARS['referrer'])
-                ? $HTTP_POST_VARS['referrer'] : '';
+$Preview      = isset($_POST['Preview'])
+                ? $_POST['Preview'] : '';
+$Save         = isset($_POST['Save'])
+                ? $_POST['Save'] : '';
+$SaveAndContinue = isset($_POST['SaveAndContinue'])
+                ? $_POST['SaveAndContinue'] : '';
+$archive      = isset($_POST['archive'])
+                ? $_POST['archive'] : '';
+$auth         = isset($_POST['auth'])
+                ? $_POST['auth'] : '';
+$categories   = isset($_POST['categories'])
+                ? $_POST['categories'] : '';
+$cols         = isset($_POST['cols'])
+                ? $_POST['cols'] : '';
+$comment      = isset($_POST['comment'])
+                ? $_POST['comment'] : '';
+$days         = isset($_POST['days'])
+                ? $_POST['days'] : $days;
+$discard      = isset($_POST['discard'])
+                ? $_POST['discard'] : '';
+$document     = isset($_POST['document'])
+                ? $_POST['document'] : '';
+$hist         = isset($_POST['hist'])
+                ? $_POST['hist'] : '';
+$min          = isset($_POST['min'])
+                ? $_POST['min'] : $min;
+$nextver      = isset($_POST['nextver'])
+                ? $_POST['nextver'] : '';
+$rows         = isset($_POST['rows'])
+                ? $_POST['rows'] : '';
+$tzoff        = isset($_POST['tzoff'])
+                ? $_POST['tzoff'] : '';
+$user         = isset($_POST['user'])
+                ? $_POST['user'] : '';
+$referrer     = isset($_POST['referrer'])
+                ? $_POST['referrer'] : '';
 
 require('lib/init.php');
 require('parse/transforms.php');
@@ -88,9 +95,10 @@ $ActionList = array(
                 'admin'   => array('action/admin.php','','')
               );
 
+
 if(empty($action))
   { $action = 'view'; }
-if(empty($page))
+if(is_array($page) && empty($page['name']) || !is_array($page) && empty($page))
   { $page = $HomePage; }
 
 // Confirm we have a valid page name.
@@ -99,7 +107,7 @@ if(!validate_page($page))
 
 // Don't let people do too many things too quickly.
 if($ActionList[$action][2] != '')
-  { $pagestore->rateCheck($ActionList[$action][2],$REMOTE_ADDR); }
+  { $pagestore->rateCheck($ActionList[$action][2],$_SERVER['REMOTE_ADDR']); }
 
 // Dispatch the appropriate action.
 if(!empty($ActionList[$action]))

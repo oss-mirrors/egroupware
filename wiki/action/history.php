@@ -58,7 +58,7 @@ function action_history()
   $p2->version = $latest_ver;
 
   $diff = diff_compute($p1->read(), $p2->read());
-  template_history(array('page'    => $page,
+  template_history(array('page'    => $p2->as_array(),
                          'history' => $text,
                          'diff'    => diff_parse($diff)));
 }

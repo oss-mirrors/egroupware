@@ -6,7 +6,7 @@
 	require('lib/defaults.php');
 	//require('config.php');		// this has gone into the admin-page
 
-	$sessionid = (isset($GLOBALS['HTTP_GET_VARS']['sessionid'])?$GLOBALS['HTTP_GET_VARS']['sessionid']:(isset($GLOBALS['HTTP_COOKIE_VARS']['sessionid'])?$GLOBALS['HTTP_COOKIE_VARS']['sessionid']:''));
+	$sessionid = (isset($_GET['sessionid'])?$_GET['sessionid']:(isset($_COOKIE['sessionid'])?$_COOKIE['sessionid']:''));
 
 	//if ($sessionid || !(AnonymousSession == 'readonly' || AnonymousSession == 'editable'))
 	if ($sessionid)
@@ -15,7 +15,7 @@
 
 		include('../header.inc.php');
 
-		$c = CreateObject('phpgwapi.config',$config_appname);
+		$c = CreateObject('phpgwapi.config','wiki');
 		$c->read_repository();
 		$config = $c->config_data;
 
@@ -29,14 +29,11 @@
 			define('AnonymousPasswd',$config[anonymous_password]);
 		}
 
-		$Admin = $config[emailadmin];
 		$HomePage = (isset($config[wikihome])?$config[wikihome]:'eGroupWare');
 		$InterWikiPrefix = (isset($config[InterWikiPrefix])?$config[InterWikiPrefix]:'EGroupWare');
 		$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
 		$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
 		$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
-		$MetaKeywords = (isset($config[MetaKeywords])?$config[MetaKeywords]:'eGroupWare,Wiki');
-		$MetaDescription = (isset($config[MetaDescription])?$config[MetaDescription]:'eGroupWare,Wiki');
 	}
 	else
 	{
@@ -65,14 +62,11 @@
 			define('AnonymousPasswd',$config[anonymous_password]);
 		}
 
-		$Admin = $config[emailadmin];
 		$HomePage = (isset($config[wikihome])?$config[wikihome]:'eGroupWare');
 		$InterWikiPrefix = (isset($config[InterWikiPrefix])?$config[InterWikiPrefix]:'EGroupWare');
 		$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
 		$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
 		$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
-		$MetaKeywords = (isset($config[MetaKeywords])?$config[MetaKeywords]:'eGroupWare,Wiki');
-		$MetaDescription = (isset($config[MetaDescription])?$config[MetaDescription]:'eGroupWare,Wiki');
 
 		if (! $GLOBALS['phpgw']->session->verify())
 		{
@@ -94,6 +88,15 @@
 	define('TemplateDir', 'template');
 
 	$Charset = $GLOBALS['phpgw']->translation->charset();
+	if (strtolower($Charset) == 'iso-8859-1')	// allow all iso-8859-1 extra-chars
+	{
+		$UpperPtn = "[A-Z\xc0-\xde]";
+		$LowerPtn = "[a-z\xdf-\xff]";
+		$AlphaPtn = "[A-Za-z\xc0-\xff]";
+		$LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
+			$UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
+	}
+
 	$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
 	$anonymous = $UserName == AnonymousUser;
 	// echo "<p>user='$UserName', AnonymousUser='".AnonymousUser."', anonymous=".($anonymous?'True':'False').", action='$action', Preview='$Preview'</p>\n";
@@ -101,21 +104,6 @@
 	{
 		$GLOBALS['phpgw_info']['flags']['nonavbar'] = $anonymous;
 		$GLOBALS['phpgw']->common->phpgw_header();
-	}
-
-	/*!
-	@function isEditable
-	@abstract check if a page is editable for the user
-	@syntax isEditable($page_mutable=True)
-	@param $page_mutable Setting of the page in the db, independent of user
-	*/
-	function isEditable($page_mutable=True)
-	{
-		global $anonymous;
-
-		return $GLOBALS['phpgw_info']['user']['apps']['admin'] ||	// always editable for admins or
-		// only editable if set in the db AND (user is no anonymous or the anonymous sessions are editable)
-		$page_mutable && (!$anonymous || AnonymousSession == 'editable');
 	}
 
 	$WikiLogo = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/default/images/logo.png';
@@ -136,7 +124,14 @@
 		$document = stripslashes($document);
 		$categories = stripslashes($categories);
 		$comment = stripslashes($comment);
-		$page = stripslashes($page);
+		if (is_array($page))
+		{
+			$page['name'] = stripslashes($page['name']);
+		}
+		else
+		{
+			$page = stripslashes($page);
+		}
 	}
 
 	// Read user preferences from cookie.
