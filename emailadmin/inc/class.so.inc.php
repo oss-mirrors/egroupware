@@ -173,6 +173,7 @@
 		
 		function saveUserData($_accountID, $_accountData)
 		{
+			_debug_array($_accountData);_debug_array($_accountData);
 			$ldap = $GLOBALS['phpgw']->common->ldapConnect();
 			// need to be fixed
 			if(is_numeric($_accountID))
@@ -215,8 +216,7 @@
 				'mailMessageStore'	=> $homedirectory."/Maildir/",
 				'gidnumber'		=> '1000',
 				'qmailDotMode'		=> $_accountData["qmailDotMode"],
-				'deliveryProgramPath'	=> $_accountData["deliveryProgramPath"],
-				'accountStatus'		=> $_accountData["accountStatus"]
+				'deliveryProgramPath'	=> $_accountData["deliveryProgramPath"]
 			);
 			
 			if(!in_array('qmailUser',$objectClasses) &&
@@ -240,6 +240,15 @@
 			else
 			{
 				$newData['mailAlternateAddress'] = array();
+			}
+
+			if($_accountData["accountStatus"] == 'active')
+			{	
+				$newData['accountStatus'] = 'active';
+			}
+			else
+			{
+				$newData['accountStatus'] = 'disabled';
 			}
 
 			if(!empty($_accountData["deliveryMode"]))
