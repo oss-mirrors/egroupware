@@ -275,7 +275,7 @@
 
 			function object_insert()
 			{
-				$status=$this->bo->insert_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
+				$status=$this->bo->insert_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES]);
 				if ($status==1)
 				{
 					$this->message='Record met succes toegevoegd';

@@ -132,7 +132,9 @@
 		/* get storage filter from plugin */
 		function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
 		{
+			
 			$plugins=explode('|',$this->bo->site_object['plugins']);
+		
 			foreach($plugins as $plugin)
 			{
 				$sets=explode(':',$plugin);
@@ -148,6 +150,7 @@
 						$conf_arr[$conf_key]=$val;		
 					}
 				}
+
 				
 				if (substr($key,3)==$sets[0])
 				{

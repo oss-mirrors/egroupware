@@ -432,6 +432,7 @@
 
 		function insert_phpgw_data($table,$HTTP_POST_VARS,$HTTP_POST_FILES)
 		{
+
 			$data=$this->make_http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES);
 			$status=$this->so->insert_phpgw_data($table,$data);
 
@@ -625,9 +626,8 @@
 			{
 				if(substr($key,0,3)=='FLD')
 				{
-
 					/* Check for plugin need and plugin availability */
-					if ($filtered_data=$this->plug->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))
+					if ($filtered_data=$this->plug->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
 					{
 						if ($filtered_data==-1) $filtered_data='';
 						$data[] = array

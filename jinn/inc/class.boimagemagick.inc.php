@@ -84,7 +84,6 @@
 			if($this->verbose == TRUE) {
 				echo "  Command: {$command}\n";
 			}
-
 			exec($command, $returnarray, $returnvalue);
 
 			if($returnvalue) 

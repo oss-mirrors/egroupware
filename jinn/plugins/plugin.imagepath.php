@@ -30,7 +30,7 @@
 
 	$this->plugins['imagepath']['name']				= 'imagepath';
 	$this->plugins['imagepath']['title']			= 'ImagePath plugin';
-	$this->plugins['imagepath']['version']			= '0.8.2';
+	$this->plugins['imagepath']['version']			= '0.8.3';
 	$this->plugins['imagepath']['enable']			= 1;
 	$this->plugins['imagepath']['db_field_hooks']	= array
 	(
@@ -250,7 +250,7 @@
 					$filetype=$magick->Get_Imagetype($add_image['tmp_name']);	
 					if(!$filetype)
 					{
-						die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick. Version 4.2.9 and older doesn't work with JiNN for sure. Be sure to install a recent version",$add_image['name']));
+						die(lang("The file you uploaded named %1 is not an imagefile, is corrupt, or the filetype is not supported by JiNN. If this error repeates, please check your ImageMagick installation.  Older version of ImageMagick are known not work properly with JiNN. Be sure to install at least Version 5.4.9 or higher",$add_image['name']));
 					}
 					elseif($filetype!='JPEG' && $filetype!='GIF' && $filetype!='PNG')
 					{
