@@ -1168,10 +1168,10 @@ class mail_msg extends mail_msg_wrappers
 	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
 	/*!
 	@function get_who_wrote
-	@abstract PROBABLY NO LONGER USED
+	@abstract used in bocompose
 	@author Angles and code from previous maintainer
 	*/
-	function get_who_wrote($msg)
+	function get_who_wrote($msg, $do_htmlize='htmlize')
 	{
 		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
 		{
@@ -1197,10 +1197,11 @@ class mail_msg extends mail_msg_wrappers
 			$personal = trim($from->personal);
 			// non-us-ascii chars in headers MUST be specially encoded, so decode them (if any) now
 			$personal = $this->decode_header_string($personal);
-			// escape certain undesirable chars before HTML display
-			//$orig_charset = $this->get_encoded_header_charset($from->personal);
-			$personal =  $this->htmlspecialchars_encode($personal);
-			//$personal =  $this->htmlspecialchars_encode($personal, $orig_charset);
+			if ($do_htmlize)
+			{
+				// escape certain undesirable chars before HTML display
+				$personal =  $this->htmlspecialchars_encode($personal);
+			}
 			$personal = $personal .' ('.$from->mailbox.'@'.$from->host.')';
 		}
 		return $personal;

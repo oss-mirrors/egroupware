@@ -494,7 +494,7 @@
 				|| ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'replyall'))
 				{
 					// ----  Begin The Message Body  (of the body we are replying to) -----
-					$who_wrote = $GLOBALS['phpgw']->msg->get_who_wrote($msg_headers);
+					$who_wrote = $GLOBALS['phpgw']->msg->get_who_wrote($msg_headers, '');
 					$lang_wrote = lang('wrote');
 					// 2 blank lines (humm, why 3 crlf  then)
 					$body =	 "\r\n"

@@ -5214,7 +5214,15 @@
 			{
 				$charset = $GLOBALS['phpgw']->translation->system_charset ? $GLOBALS['phpgw']->translation->system_charset : 'iso-8859-1';
 			}
-			if (function_exists('html_entity_decode'))
+			// this list from php doc page for html_entity_decode around May 2004
+			$charsets_supported = array(
+				'iso-8859-1', 'iso8859-1', 'iso-8859-15', 'iso8859-15', 'utf-8', 'cp866', 'ibm866', '866', 
+				'cp1215', 'windows-1215', 'win-1215', '1215', 'cp-1252', 'windows-1252', '1252', 'koi8-r', 'koi8-ru', 
+				'koi8r', 'big5', '950', 'gb2312', '936', 'big5-hkscs', 'shift_jis', 'sjis', '932', 'euc-jp', 'eucjp'
+			);
+			$lower_charset = strtolower($charset);
+			if ((function_exists('html_entity_decode'))
+			&& (in_array($lower_charset, $charsets_supported)))
 			{
 				$str = html_entity_decode($str, ENT_QUOTES, $charset);
 			}
