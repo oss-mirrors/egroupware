@@ -24,7 +24,7 @@
 	$setup_info['projects']['license']  = 'GPL';
 	$setup_info['projects']['description'] = 'Advanced project management';
 
-        $setup_info['projects']['maintainer'] = 'eGroupWare coreteam';
+        $setup_info['projects']['maintainer'] = 'eGroupWare developers';
         $setup_info['addressbook']['maintainer_email'] = 'lkneschke@users.sourceforge.net';
 
 	$setup_info['projects']['tables'] = array
