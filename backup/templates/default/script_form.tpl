@@ -64,11 +64,14 @@
 
 	function get_rdate($versions, $bintval)
 	{	
+		$dd = date('d');
+		$dm = date('m');
+
 		switch($bintval)
 		{
-			case 'daily':	$dm = "date('m')"; $dd = "date('d')-$versions"; break;
-			case 'weekly':	$dm = "date('m')"; $dd = "date('d')-(7*$versions)"; break;
-			case 'monthly':	$dm = "date('m')-$versions"; $dd = "date('d')"; break;
+			case 'daily':	$dd = $dd - $versions; break;
+			case 'weekly':	$dd = $dd - ( 7 * $versions ); break;
+			case 'monthly':	$dm = $dm - $versions; break;
 		}
 		$rdate = mktime(0,0,0,$dm,$dd,date('Y'));
 		return $rdate;
