@@ -89,12 +89,12 @@
 	
 	
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
-	var $debug_logins = 3;
+	var $debug_logins = 0;
 	var $debug_session_caching = 0;
 	var $debug_longterm_caching = 0;
 	var $debug_accts = 0;
 	var $debug_args_input_flow = 0;
-	var $debug_args_oop_access = 3;
+	var $debug_args_oop_access = 0;
 	var $debug_args_special_handlers = 0;
 	//var $skip_args_special_handlers = 'get_mailsvr_callstr, get_mailsvr_namespace, get_mailsvr_delimiter, get_folder_list';
 	//var $skip_args_special_handlers = 'get_folder_list';
