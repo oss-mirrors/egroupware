@@ -130,9 +130,10 @@
 				if ($allValues['count'] > 0)
 				{
 					#print "found something<br>";
-					$userData["mailLocalAddress"]	= $allValues[0]["maillocaladdress"][0];
+					$userData["mailLocalAddress"]		= $allValues[0]["maillocaladdress"][0];
 					$userData["mailAlternateAddress"]	= $allValues[0]["mailalternateaddress"];
-					$userData["accountStatus"]	= $allValues[0]["accountstatus"][0];
+					$userData["accountStatus"]		= $allValues[0]["accountstatus"][0];
+					$userData["mailRoutingAddress"]		= $allValues[0]["mailroutingaddress"][0];
 					unset($userData["mailAlternateAddress"]["count"]);
 					return $userData;
 				}
@@ -171,6 +172,7 @@
 			(
 				'mailLocalAddress'	=> $_accountData["mailLocalAddress"],
 				'mailAlternateAddress'	=> $_accountData["mailAlternateAddress"],
+				'mailRoutingAddress'	=> $_accountData["mailRoutingAddress"],
 				'homedirectory'		=> $homedirectory,
 				'mailMessageStore'	=> $homedirectory."/Maildir/",
 				'gidnumber'		=> '1000',

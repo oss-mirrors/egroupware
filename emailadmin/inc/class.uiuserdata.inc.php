@@ -63,6 +63,7 @@
 			$this->t->set_var("lang_emailAddress",lang("email address"));
 			$this->t->set_var("lang_emailaccount_active",lang("email account active"));
 			$this->t->set_var("lang_mailAlternateAddress",lang("alternate email address"));
+			$this->t->set_var("lang_mailRoutingAddress",lang("forward email's to"));
 			$this->t->set_var("lang_forward_also_to",lang("forward also to"));
 			$this->t->set_var("lang_button",lang("save"));
 			$this->t->set_var("lang_deliver_extern",lang("deliver extern"));
@@ -100,7 +101,7 @@
 				$this->t->set_var("mailLocalAddress",$userData["mailLocalAddress"]);
 				$this->t->set_var("mailAlternateAddress",'');
 				$this->t->set_var("options_mailAlternateAddress",$options_mailAlternateAddress);
-				$this->t->set_var("forwardTo",$_accountData["forwardTo"]);
+				$this->t->set_var("mailRoutingAddress",$userData["mailRoutingAddress"]);
 				$this->t->set_var("uid",rawurlencode($_accountData["dn"]));
 				if ($userData["accountStatus"] == "active")
 					$this->t->set_var("account_checked","checked");
@@ -111,6 +112,7 @@
 			{
 				$this->t->set_var("mailLocalAddress",'');
 				$this->t->set_var("mailAlternateAddress",'');
+				$this->t->set_var("mailRoutingAddress",'');
 				$this->t->set_var("options_mailAlternateAddress",lang('no alternate email address'));
 				$this->t->set_var("account_checked",'');
 			}
@@ -135,6 +137,7 @@
 			$formData = array
 			(
 				'mailLocalAddress'		=> $HTTP_POST_VARS["mailLocalAddress"],
+				'mailRoutingAddress'		=> $HTTP_POST_VARS["mailRoutingAddress"],
 				'add_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddressInput"],
 				'remove_mailAlternateAddress'	=> $HTTP_POST_VARS["mailAlternateAddress"],
 				'accountStatus'			=> $accountStatus

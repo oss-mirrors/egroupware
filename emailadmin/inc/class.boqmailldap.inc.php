@@ -239,8 +239,9 @@
 		
 		function saveUserData($_accountID, $_formData, $_boAction)
 		{
-			$this->userSessionData[$_accountID]['mailLocalAddress'] = $_formData["mailLocalAddress"];
-			$this->userSessionData[$_accountID]['accountStatus'] = $_formData["accountStatus"];
+			$this->userSessionData[$_accountID]['mailLocalAddress'] 	= $_formData["mailLocalAddress"];
+			$this->userSessionData[$_accountID]['accountStatus'] 		= $_formData["accountStatus"];
+			$this->userSessionData[$_accountID]['mailRoutingAddress'] 	= $_formData["mailRoutingAddress"];
 			
 			switch ($_boAction)
 			{

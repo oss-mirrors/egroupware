@@ -3,7 +3,9 @@
   <center>
 	<table border="0" width="95%">
 		<tr>
+			<td valign="top">
 					{rows}
+			</td>
 			<td>
 				<table border=0 width=100%>
 					<tr bgcolor="{th_bg}">
@@ -42,6 +44,12 @@
 						</td>
 					</tr>
 					<tr bgcolor="{tr_color1}">
+						<td width="150">{lang_mailRoutingAddress}</td>
+						<td colspan="2">
+							<input name="mailRoutingAddress" value="{mailRoutingAddress}" size=35>
+						</td>
+					</tr>
+					<tr bgcolor="{tr_color2}">
 						<td>
 							{lang_emailaccount_active}
 						</td>
@@ -49,10 +57,10 @@
 							<input type="checkbox" name="accountStatus" {account_checked}>
 						</td>
 					</tr>
-					<tr bgcolor="{tr_color2}">
+					<tr bgcolor="{tr_color1}">
 						<td align="left">
-							<a href={link_back}>{lang_ready}</a>
-						</td>						
+							&nbsp;
+						</td>
 						<td align="right" colspan="2">
 							<input type="submit" name="save" value="{lang_button}">
 						</td>
