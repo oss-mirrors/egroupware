@@ -30,6 +30,7 @@ add role to process	workflow	es-ca	Afegir paper al procés
 add transitions	workflow	es-ca	Afegir transicions
 add transitions from	workflow	es-ca	Afegir transicions de
 add transitions to	workflow	es-ca	Afegir transicions a
+admin export	workflow	es-ca	Exportació administrativa
 admin instance	workflow	es-ca	Instància administrativa
 admin process activities	workflow	es-ca	Activitats del procés administratiu
 admin process roles	workflow	es-ca	Papers del procés administratiu
@@ -59,6 +60,8 @@ end activity is not reachable from start activity	workflow	es-ca	No es pot arrib
 exception instance	workflow	es-ca	instància d'excepció
 exceptions	workflow	es-ca	excepcions
 export	workflow	es-ca	Exportar
+export a process	workflow	es-ca	Exportar un procés
+export file	workflow	es-ca	Exportar Fitxer
 fatal error: nextactivity does not match any candidate in autorouting switch activity	workflow	es-ca	Error fatal: l'activitat següent no coincideix amb cap candidata dins l'activitat de canvi d'encaminament automàtic
 fatal error: non-deterministic decision for autorouting activity	workflow	es-ca	Error fatal: decisió no determinística per a l'activitat d'encaminament automàtic
 fatal error: setting next activity to an unexisting activity	workflow	es-ca	Error fatal: se vol enrutar la propera activitat cap a una activitat inexistent
@@ -100,8 +103,9 @@ monitor processes	workflow	es-ca	Monitorar processos
 monitor work items	workflow	es-ca	Monitorar elements de treball
 name	workflow	es-ca	Nom
 new	workflow	es-ca	Nova
-new mayor	workflow	es-ca	Nou major
+new major	workflow	es-ca	Nou major
 new mapping added	workflow	es-ca	S'ha afegit un nou mapatge
+new mayor	workflow	es-ca	Nou major
 new minor	workflow	es-ca	Nou menor
 new transition added	workflow	es-ca	S'ha afegit una nova transició
 no activity indicated	workflow	es-ca	No s'ha indicat una activitat
@@ -168,6 +172,7 @@ the following items must be corrected to be able to activate this process	workfl
 there are no activities available	workflow	es-ca	No hi ha activitats disponibles
 there are no instances available	workflow	es-ca	No hi ha instàncies disponibles
 there are no mappings defined for this process	workflow	es-ca	No hi ha mapatges definits per aquest procés
+there are no processes	workflow	es-ca	No hi ha processos
 there are no processes available	workflow	es-ca	No hi ha processos disponibles
 there are no processes defined	workflow	es-ca	No hi ha processos definits
 there are no properties available	workflow	es-ca	No hi ha propietats disponibles

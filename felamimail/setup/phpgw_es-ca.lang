@@ -3,7 +3,6 @@
 (unknown sender)	felamimail	es-ca	(remitent desconegut)
 activate	felamimail	es-ca	Activar
 activate script	felamimail	es-ca	activar script
-add	felamimail	es-ca	afegir
 add address	felamimail	es-ca	Afegir adreça
 add rule	felamimail	es-ca	Afegir regla
 add script	felamimail	es-ca	Afegir script
@@ -59,7 +58,6 @@ date(oldest first)	felamimail	es-ca	Data (la més antiga primer)
 days	felamimail	es-ca	dies
 deactivate script	felamimail	es-ca	desactivar seqüència
 default sorting order	felamimail	es-ca	Mode d'ordenació predeterminat
-delete	felamimail	es-ca	Esborrar
 delete all	felamimail	es-ca	Esborrar tots
 delete folder	felamimail	es-ca	Esborrar carpeta
 delete script	felamimail	es-ca	esborra seqüència
@@ -87,7 +85,6 @@ download this as a file	felamimail	es-ca	Baixar això com un fitxer
 e-mail	felamimail	es-ca	Correu electrònic
 e-mail address	felamimail	es-ca	Adreça de correu electrònic
 e-mail folders	felamimail	es-ca	Carpetes de correu electrònic
-edit	felamimail	es-ca	Editar
 edit filter	felamimail	es-ca	Editar filtre
 edit rule	felamimail	es-ca	Afegir regla
 edit selected	felamimail	es-ca	Editar selecció
@@ -102,7 +99,6 @@ enter your sieve server hostname or ip address	admin	es-ca	Introduïu el nom del 
 enter your sieve server port	admin	es-ca	Introduïu el port del servidor SIEVE
 enter your smtp server hostname or ip address	admin	es-ca	Introduïu el nom del servidor SIEVE o l'adreça IP
 enter your smtp server port	admin	es-ca	Introduïu el port del servidor smtp
-erro	felamimail	es-ca	ERROR
 error	felamimail	es-ca	ERROR
 error connecting to imap serv	felamimail	es-ca	Error en connectar al servidor IMAP
 error opening	felamimail	es-ca	Error en obrir
@@ -177,8 +173,8 @@ location of folder list	felamimail	es-ca	Ubicació de la llista de carpetes
 mail server login type	admin	es-ca	Tipus de sessió del servidor de correu
 mail settings	felamimail	es-ca	Configuració del correu
 mainmessage	felamimail	es-ca	missatge principal
-manage folders	felamimail	es-ca	Administrar carpetes
-manage sieve	felamimail	es-ca	Administrar scripts Sieve
+manage folders	common	es-ca	Administrar carpetes
+manage sieve	common	es-ca	Administrar scripts Sieve
 mark as deleted	felamimail	es-ca	Marcar com a esborrat
 mark messages as	felamimail	es-ca	Marcar missatges seleccionats com a
 mark selected as flagged	felamimail	es-ca	Marcar la selecció com a senyalat per a descarregar
@@ -204,7 +200,7 @@ move to trash	felamimail	es-ca	Moure a la paperera
 must be unique	felamimail	es-ca	Ha de ser únic
 name	felamimail	es-ca	Nom
 never display html emails	felamimail	es-ca	No mostrar mai els correus HTML
-new	felamimail	es-ca	Nou
+new	common	es-ca	Nou
 new filter	felamimail	es-ca	Nou filtre
 next	felamimail	es-ca	Següent
 next message	felamimail	es-ca	Missatge següent
@@ -352,7 +348,7 @@ unknown err	felamimail	es-ca	Error desconegut
 unknown error	felamimail	es-ca	Error desconegut
 unknown sender	felamimail	es-ca	Remitent desconegut
 unknown user or password incorrect.	felamimail	es-ca	Usuari desconegut o contrasenya incorrecta
-unread	felamimail	es-ca	No lllegit
+unread	common	es-ca	No llegit
 unseen	felamimail	es-ca	No vist
 unseen and total	felamimail	es-ca	No vists i total
 unseen message notification	felamimail	es-ca	Notificació de missatge desconeguda
@@ -363,6 +359,7 @@ unsubscribed	felamimail	es-ca	No subscrit
 unsubscribed successfully!	felamimail	es-ca	Desubscripció correcta
 up	felamimail	es-ca	a dalt
 update address	felamimail	es-ca	Actualitzar adreça
+use <a href="%1">emailadmin</a> to create profiles	felamimail	es-ca	utilitzeu <a href="%1">EmailAdmin</a> per a crear perfils de correu
 use a signature	felamimail	es-ca	Utilitzar una signatura
 use a signature?	felamimail	es-ca	Utilitzar una signatura?
 use addresses	felamimail	es-ca	Utilitzar adreces

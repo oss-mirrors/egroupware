@@ -1,4 +1,3 @@
-you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	es-ca	!!! Heu de [Desar] cada canvi manual als camps anteriors, abans de continuar amb el pas següent !!!
 add	developer_tools	es-ca	afegir
 add change	developer_tools	es-ca	Afegir canvi
 add more	developer_tools	es-ca	Afegir més
@@ -7,11 +6,11 @@ add phrase	developer_tools	es-ca	Afegir frase
 allows you to add a single phrase	developer_tools	es-ca	Us permet afegir una frase
 application	developer_tools	es-ca	Aplicació
 back	developer_tools	es-ca	Tornar
-cancel	developer_tools	es-ca	Cancel.lar
+cancel	developer_tools	es-ca	Cancel·lar
 change	developer_tools	es-ca	Canviar
 changelog entry has been added	developer_tools	es-ca	Entrada afegida al Registre de canvis
 changelogs	developer_tools	es-ca	Registres de canvis
-clears the internal buffer, all changes made sofar are lost	developer_tools	es-ca	Neteja el enmagatzemament intern, tots els canvis fets fins ara es perdràn
+clears the internal buffer, all changes made sofar are lost	developer_tools	es-ca	Neteja l'emmagatzemament intern, tots els canvis fets fins ara es perdran
 create new language file	developer_tools	es-ca	Crear Nou Arxiu d'Idioma
 create sgml file	developer_tools	es-ca	Crear arxiu SGML
 developer tools - preferences	developer_tools	es-ca	Eines de traducció - preferències
@@ -21,7 +20,7 @@ done	developer_tools	es-ca	Fet
 download	developer_tools	es-ca	Descarregar
 download the lang-file to be saved in the apps setup-dir	developer_tools	es-ca	Descarregar l'arxiu d'idioma per guardar-lo al directori "setup" de l'aplicació
 edit	developer_tools	es-ca	Editar
-installed applications	developer_tools	es-ca	Aplicacions instal.lades
+installed applications	developer_tools	es-ca	Aplicacions instal·lades
 language file management	developer_tools	es-ca	Gestió d'arxius d'idioma
 list changelogs	developer_tools	es-ca	Llistar Registres de canvi
 load	developer_tools	es-ca	Carregar
@@ -38,7 +37,7 @@ preferences	developer_tools	es-ca	Preferències
 preferences have been updated	developer_tools	es-ca	Preferències actualitzades
 project	developer_tools	es-ca	Projecte
 remove	developer_tools	es-ca	Treure
-returns to the application list, not saved changes get lost !!!	developer_tools	es-ca	Torna a la llista d'aplicacions, els canvis no guardats es perdràn !!!
+returns to the application list, not saved changes get lost !!!	developer_tools	es-ca	Torna a la llista d'aplicacions, els canvis no guardats es perdran !!!
 revert	developer_tools	es-ca	Revertir
 saves the added/changed translations to an internal buffer, to be used in further steps	developer_tools	es-ca	Desa les traduccions afegides/canviades a un magatzem intern, per al seu ús en posteriors accions
 search changelogs	developer_tools	es-ca	Cercar en registres de canvis
@@ -61,13 +60,14 @@ translation	developer_tools	es-ca	Traducció
 translation of phrase	developer_tools	es-ca	Traducció de frase
 update	developer_tools	es-ca	Actualitza
 update database	developer_tools	es-ca	Actualitza Base de Dades
-updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	es-ca	Actualitza la traducció de ambdós arxius d'idioma a la vostra base de dades, perqué pogueu verificar el vostre treball d'inmediat
+updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	es-ca	Actualitza la traducció d'ambdós arxius d'idioma a la vostra base de dades, perquè pogueu verificar el vostre treball d'immediat
 version	developer_tools	es-ca	Versió
 write	developer_tools	es-ca	Escriure
 write the lang-file to the apps setup-dir	developer_tools	es-ca	Escriu l'arxiu d'idioma al directori "setup" de l'aplicació
 write to lang table	developer_tools	es-ca	Escriu a la taula d'idioma
 writing langfile for '%1' ...	developer_tools	es-ca	Escrivint arxiu d'idioma per a '%1' ...
+you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	es-ca	Heu de [Desar] cada canvi manual als camps anteriors, abans de continuar amb el pas següent !!!
 you must a version	developer_tools	es-ca	Heu de versionar
 you must enter a change	developer_tools	es-ca	Heu d'entrar un canvi
-you must select a project	developer_tools	es-ca	Heu de sel.leccionar un projecte
+you must select a project	developer_tools	es-ca	Heu de sel·leccionar un projecte
 you need to set your preferences for this app	developer_tools	es-ca	Heu d'establir les vostres preferències per a aquesta aplicació

@@ -9,6 +9,8 @@ ascending	bookmarks	es-ca	Ascendent
 book marks	common	es-ca	Adreces d'Interès
 bookmark changed sucessfully	bookmarks	es-ca	Adreça d'interès canviada correctament
 bookmark created successfully.	bookmarks	es-ca	Adreça d'interès creada correctament
+bookmark deleted successfully	bookmarks	es-ca	Adreça d'interès esborrada correctament.
+bookmark deleted successfully.	bookmarks	es-ca	Adreça d'interès esborrada correctament.
 bookmark not editable	bookmarks	es-ca	Adreça d'interès no editable
 bookmark not readable	bookmarks	es-ca	Adreça d'interès no llegible
 bookmarks	common	es-ca	Adreces d'Interès
@@ -31,6 +33,7 @@ filter by	bookmarks	es-ca	Filtrar per
 found a link you might like	bookmarks	es-ca	Trobat un enllaç interessant
 from	bookmarks	es-ca	De
 from category %1	bookmarks	es-ca	de categoria %º
+global categories	bookmarks	es-ca	Categories globals
 highest	bookmarks	es-ca	La més alta
 i thought you would be interested in the following link(s):	bookmarks	es-ca	Hem trobat que potser són interessants els següents enllaços:
 import bookmarks	common	es-ca	Importar Adreces d'Interès
@@ -55,6 +58,7 @@ rating	bookmarks	es-ca	Estimació
 search for:	bookmarks	es-ca	Cercar:
 select the format you would like to export to	bookmarks	es-ca	Seleccioneu el format amb que ho voleu exportar
 send bookmark	bookmarks	es-ca	Enviar adreça d'interès
+site configuration	bookmarks	es-ca	Configuració del lloc
 sub category	bookmarks	es-ca	Subcategoria
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	es-ca	L'adreça Per: %1 no es vàlida. El format ha de ser <strong>usuari@domini</strong> i el domini ha d'existir.
 to e-mail addresses	bookmarks	es-ca	Adreces de correu destí
