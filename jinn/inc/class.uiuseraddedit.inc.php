@@ -30,7 +30,7 @@
 		function uiuseraddedit($bo)
 		{
 			$this->bo=$bo;
-			$this->relations = CreateObject('jinn.borelations.inc.php');
+			//$this->relations = CreateObject('jinn.borelations.inc.php');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 
@@ -73,7 +73,7 @@
 
 
 			/* get one with many relations */
-			$relation1_array=$this->relations->get_fields_with_1_relation($this->bo->site_object[relations]);
+			$relation1_array=$this->bo->get_fields_with_1_relation($this->bo->site_object[relations]);
 
 			if (count($relation1_array)>0)
 			{
@@ -121,7 +121,7 @@
 					if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
 					{
 						//get related field vals en displays
-						$related_fields=$this->relations->get_related_field($relation1_array[$fieldproperties[name]]);
+						$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
 
 						$input= '<select name="'.$input_name.'">';
 						$input.= $this->bo->make_options($related_fields,$value);
@@ -179,7 +179,7 @@
 			/*	check for many with many relations. 
 			if so make double selectionbox		*/
 
-			$relation2_array=$this->relations->get_fields_with_2_relation($this->bo->site_object[relations]);
+			$relation2_array=$this->bo->get_fields_with_2_relation($this->bo->site_object[relations]);
 			if (count($relation2_array)>0)
 			{
 
@@ -198,7 +198,7 @@
 					$input.= '<select onDblClick=SelectPlace(\'M2M'.$rel_i.'\',\'all_related'.$rel_i.'\') multiple size=5 name="all_related'.$rel_i.'">';
 
 					// make all possible options
-					$options=$this->relations->get_m2m_options($relation2,"all",'');
+					$options=$this->bo->get_m2m_options($relation2,"all",'');
 					$input.= $this->bo->make_options_non_empty($options,'');
 
 					$input.= '</select>';
@@ -214,7 +214,7 @@
 					$submit_javascript.='saveOptions(\'M2M'.$rel_i.'\',\'MANY_OPT_STR_'.$rel_i.'\');';
 
 					if($where_condition) $record_id=$record_identifier;
-					$options=$this->relations->get_m2m_options($relation2,"stored",$record_id);
+					$options=$this->bo->get_m2m_options($relation2,"stored",$record_id);
 					$input.= $this->bo->make_options_non_empty($options,'');
 					$input.= '</select>';
 					$input.= '<input type=hidden name=MANY_REL_STR_'.$rel_i.' value='.$relation2[via_primary_key].'|'.$relation2[via_foreign_key].'>';
