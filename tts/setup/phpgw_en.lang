@@ -76,16 +76,7 @@ perform irregular transition into the following state	tts	en	Perform irregular t
 prio	tts	en	Prio
 priority	tts	en	Priority
 priority changed	tts	en	Priority changed
-put the preexistent ticket into the state accept.	tts	en	Put the preexistent ticket into the state ACCEPT.
-put the preexistent ticket into the state closed.	tts	en	Put the preexistent ticket into the state CLOSED.
-put the preexistent ticket into the state duplicate.	tts	en	Put the preexistent ticket into the state DUPLICATE.
-put the preexistent ticket into the state invalid.	tts	en	Put the preexistent ticket into the state INVALID.
-put the preexistent ticket into the state needswork.	tts	en	Put the preexistent ticket into the state NEEDSWORK.
-put the preexistent ticket into the state new.	tts	en	Put the preexistent ticket into the state NEW.
-put the preexistent ticket into the state reopened.	tts	en	Put the preexistent ticket into the state REOPENED.
-put the preexistent ticket into the state resolved.	tts	en	Put the preexistent ticket into the state RESOLVED.
-put the preexistent ticket into the state tovalidate.	tts	en	Put the preexistent ticket into the state TOVALIDATE.
-put the preexistent ticket into the state verified.	tts	en	Put the preexistent ticket into the state VERIFIED.
+put the preexistent ticket into the state %1.	tts	en	Put the preexistent ticket into the state %1.
 re-assigned	tts	en	Re-assigned
 re-opened	tts	en	Re-opened
 refresh every (seconds)	tts	en	Refresh every (seconds)

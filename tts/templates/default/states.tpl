@@ -1,35 +1,33 @@
 <!-- $Id$ -->
 <!-- BEGIN states.tpl -->
 
-<p>
-<b>{lang_list_of_states}</b>
-<hr><p>
-
+<br>
 <!-- BEGIN state_list -->
-<table width="98%" cellspacing="1" cellpadding="1" border="0" align="center">
-	<tr bgcolor="{tts_head_bgcolor}">
+<table width="98%" cellspacing="1" cellpadding="3" border="0" align="center">
+	<tr class="th">
 		<td align="center">{tts_head_stateid}</td>
-		<td align="center">{tts_head_state}</td>
-		<td align="center">{tts_head_description}</td>
+		<td>{tts_head_state}</td>
+		<td>{tts_head_description}</td>
 		<td align="center">{lang_edit}</td>
 		<td align="center">{lang_delete}</td>
 	</tr>
 	{rows}
-	<tr bgcolor="{tts_row_color}">
+	<tr class="{row_class}">
 		<td colspan=3>&nbsp;</td>
 		<td align="center"><A HREF="{tts_stateadd_link}">[{lang_add}]</A></td>
 		<td >&nbsp;</td>
 	</tr>
 </table>
+<br>
 <!-- END state_list -->
 
 <!-- END states.tpl -->
 
 <!-- BEGIN state_row -->
-	<tr bgcolor="{tts_row_color}">
+	<tr class="{row_class}">
 		<td align="center">{state_id}</td>
-		<td align="center">{state_name}</td>
-		<td align="center">{state_description}</td>
+		<td>{state_name}</td>
+		<td>{state_description}</td>
 		<td align="center"><A HREF="{tts_stateedit_link}">[{lang_edit}]</A></td>
 		<td align="center"><A HREF="{tts_statedelete_link}">[{lang_delete}]</A></td>
 	</tr>

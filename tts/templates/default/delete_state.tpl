@@ -1,7 +1,6 @@
 <!-- $Id$ -->
 <!-- BEGIN delete_state.tpl -->
-<p><b>{lang_delete_state}</b>
-<hr><p>
+<br>
 
 {messages}
 
@@ -9,7 +8,7 @@
 <P><B>{lang_are_you_sure}</B></P>
 <P><B>{lang_tickets_in_state}</B></P>
 <table width="98%" cellspacing="1" cellpadding="1" border="0" align="center">
-	<tr bgcolor="{tts_head_bgcolor}">
+	<tr class="th">
 		<td width="22">&nbsp;</td>
 		<td align="center">{tts_head_ticket}</td>
 		<td align="center">{tts_head_subject}</td>
@@ -32,30 +31,27 @@
 
 <form method="POST" action="{delete_state_link}">
 <table border="0" width="80%" cellspacing="0" align="center">
-        <tr bgcolor="{row_off}">
-                <td colspan="4"><input name="ticket[state]" type="radio" value="-1" CHECKED>{lang_delete_the_tickets}</td>
-        </tr>
+	<tr bgcolor="{row_off}">
+		<td><input name="ticket[state]" type="radio" value="-1" CHECKED>{lang_delete_the_tickets}</td>
+	</tr>
 <!-- BEGIN update_state_items -->
-        <tr bgcolor="{row_off}">
-                <td colspan="4"><input name="ticket[state]" type="radio" value="{update_state_value}">{update_state_text}</td>
-        </tr>
+	<tr bgcolor="{row_off}">
+		<td><input name="ticket[state]" type="radio" value="{update_state_value}">{update_state_text}</td>
+	</tr>
 <!-- END update_state_items -->
 
 	<tr bgcolor="{row_off}">
-		<td align="left"><input name="ticket[state]" type="radio" value="-2" CHECKED>{lang_irregular_move_into_state}:&nbsp; &nbsp;<select name="ticket[newstate]">{options_state}</select></b></td>
-		<td align="left">&nbsp;</td>
-		<td align="left">&nbsp;</td>
-		<td align="left">&nbsp;</td>
+		<td><input name="ticket[state]" type="radio" value="-2">{lang_irregular_move_into_state}:&nbsp; &nbsp;<select name="ticket[newstate]">{options_state}</select></b></td>
 	</tr>
 
-	<tr bgcolor="{row_off}">
-		<td>&nbsp;</td>
-		<td align="center"><input type="submit" value="{lang_ok}" name="submit"></td>
-		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
-		<td colspan="2">&nbsp;</td>
+	<tr height="40">
+		<td>
+			<input type="submit" name="delete" value="{lang_delete}"> &nbsp;
+			<input type="submit" name="cancel" value="{lang_cancel}">
+		</td>
 	</tr>
 
-   </table>
+   </table><br>
 </form>
 <!-- END form -->
 

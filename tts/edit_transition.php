@@ -12,27 +12,22 @@
 	// $Id$
 	// $Source$
 
-	$submit = $HTTP_POST_VARS['submit'];
-	$cancel = $HTTP_POST_VARS['cancel'];
-	$transition_id = $HTTP_POST_VARS['transition_id'];
-	if ($transition_id==0) {
-		$transition_id = $HTTP_GET_VARS['transition_id'];
-	}
-	
-	if($submit || $cancel)
-	{
-		$GLOBALS['phpgw_info']['flags'] = array(
-			'noheader' => True,
-			'nonavbar' => True
-		);
-	}
-
 	$GLOBALS['phpgw_info']['flags']['currentapp']          = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_send_class']   = True;
 	$GLOBALS['phpgw_info']['flags']['enable_config_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
+	$GLOBALS['phpgw_info']['flags']['noheader']            = True;
 
 	include('../header.inc.php');
+
+	$submit   = $_POST['submit'];
+	$cancel   = $_POST['cancel'];
+	$transition_id = intval(get_var('transition_id',array('POST','GET')));
+
+	if($cancel)
+	{
+		$GLOBALS['phpgw']->redirect_link('/tts/transitions.php');
+	}
 
 	$GLOBALS['phpgw']->config->read_repository();
 
@@ -43,52 +38,56 @@
 
 	if($submit)
 	{
-		if ($transition_id==0) {
+		$transition = $_POST['transition'];
+
+		if (!$transition_id)
+		{
 			$GLOBALS['phpgw']->db->query("insert into phpgw_tts_transitions (transition_name,transition_description,transition_source_state,transition_target_state) values ('"
-			. $transition['name'] . "','"
-			. $transition['description'] . "',"
-			. $transition['source_state'] . ", "
-			. $transition['target_state']. ")",__LINE__,__FILE__);
+			. addslashes($transition['name']) . "','"
+			. addslashes($transition['description']) . "',"
+			. intval($transition['source_state']) . ", "
+			. intval($transition['target_state']). ")",__LINE__,__FILE__);
 		}
-		else {
+		else
+		{
 			$GLOBALS['phpgw']->db->query("update phpgw_tts_transitions "
 				. " set transition_name='". addslashes($transition['name']) . "', "
 				. " transition_description='". addslashes($transition['description']) . "', "
-				. " transition_source_state=". $transition['source_state']. ", "
-				. " transition_target_state=". $transition['target_state']
-				. " WHERE transition_id=".intval($transition_id),__LINE__,__FILE__);
+				. " transition_source_state=". intval($transition['source_state']). ", "
+				. " transition_target_state=". intval($transition['target_state'])
+				. " WHERE transition_id=".$transition_id,__LINE__,__FILE__);
 	
 		}
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/transitions.php'));
+		$GLOBALS['phpgw']->redirect_link('/tts/transitions.php');
 	}
-	else {
+	else
+	{
+		$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].
+			' - '.($transition_id ? lang('Create new transition') : lang('Edit the transition'));
+		$GLOBALS['phpgw']->common->phpgw_header();
+
 		// select the ticket that you selected
 		$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_id='$transition_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		$transition['name'] 				= $GLOBALS['phpgw']->db->f('transition_name');
-		$transition['description']  	= $GLOBALS['phpgw']->db->f('transition_description');
-		$transition['source_state']   = $GLOBALS['phpgw']->db->f('transition_source_state');
-		$transition['target_state']   = $GLOBALS['phpgw']->db->f('transition_target_state');
+		$transition['name']           = try_lang($GLOBALS['phpgw']->db->f('transition_name'));
+		$transition['source_state']   = try_lang($GLOBALS['phpgw']->db->f('transition_source_state'));
+		$transition['target_state']   = try_lang($GLOBALS['phpgw']->db->f('transition_target_state'));
+		$transition['description']    = try_lang($GLOBALS['phpgw']->db->f('transition_description'),$transition['target_state']);
 
 		$GLOBALS['phpgw']->template->set_file(array(
 			'edit_transition'   => 'edit_transition.tpl'
 		));
 		$GLOBALS['phpgw']->template->set_block('edit_transition','form');
 
-		$GLOBALS['phpgw']->template->set_var('lang_edit_a_state',($state_id==0?lang('Create new transition'):lang('Edit the transition')));
 		$GLOBALS['phpgw']->template->set_var('form_action', $GLOBALS['phpgw']->link('/tts/edit_transition.php','&transition_id='.$transition_id));
 
 		$GLOBALS['phpgw']->template->set_var('lang_transition_name',lang('Transition name'));
 		$GLOBALS['phpgw']->template->set_var('lang_transition_description', lang('Description'));
 		$GLOBALS['phpgw']->template->set_var('lang_source_state', lang('Source State'));
 		$GLOBALS['phpgw']->template->set_var('lang_target_state', lang('Target State'));
-		$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Submit'));
+		$GLOBALS['phpgw']->template->set_var('lang_save',lang('Save'));
 		$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
-
-		$GLOBALS['phpgw']->template->set_var('row_off', $GLOBALS['phpgw_info']['theme']['row_off']);
-		$GLOBALS['phpgw']->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
-		$GLOBALS['phpgw']->template->set_var('th_bg', $GLOBALS['phpgw_info']['theme']['th_bg']);
 
 		$GLOBALS['phpgw']->template->set_var('value_name',$transition['name']);
 		$GLOBALS['phpgw']->template->set_var('value_description',$transition['description']);

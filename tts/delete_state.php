@@ -24,58 +24,49 @@
 	** 4 - Allow to make changes to priority, billing hours, billing rate, category, and assigned to
 	*/
 
-	// select what tickets to view
-	$cancel     = $HTTP_POST_VARS['cancel'];
-	$submit 		= $HTTP_POST_VARS['submit'];
-	
-	$start  		= $HTTP_GET_VARS['start'];
-	$sort   		= $HTTP_GET_VARS['sort'];
-	$order  		= $HTTP_GET_VARS['order'];
-	$state_id  	= $HTTP_GET_VARS['state_id'];
-
-	if($submit || $cancel || $state_id==0)
-	{
-		$GLOBALS['phpgw_info']['flags'] = array(
-			'noheader' => True,
-			'nonavbar' => True
-		);
-	}
-
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
+	$GLOBALS['phpgw_info']['flags']['noheader'] = True;
 	include('../header.inc.php');
 
-	if ($state_id==0) {
-		$state_id  	= $HTTP_POST_VARS['state_id'];
-		if ($state_id==0) {
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
-		}
-	}
-	if($cancel)
+	// select what tickets to view
+	$filter = reg_var('filter','GET');
+	$start  = reg_var('start','GET','numeric',0);
+	$sort   = reg_var('sort','GET');
+	$order  = reg_var('order','GET');
+
+	$state_id  = intval(get_var('state_id',array('POST','GET')));
+
+	if($_POST['cancel'] || !$state_id)
 	{
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
+		$GLOBALS['phpgw']->redirect_link('/tts/states.php');
 	}
 
-	if($submit){
+	if($_POST['delete'])
+	{
 		if ($ticket['state']==-1) //delete the tickets
 		{ 
 			$GLOBALS['phpgw']->db->query("delete from phpgw_tts_tickets where ticket_state=$state_id",__LINE__,__FILE__);
 		}
 		else if ($ticket['state']==-2) //delete the tickets
 		{ 
-			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".$ticket['newstate'].
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".intval($ticket['newstate']).
 				" where ticket_state=$state_id",__LINE__,__FILE__);
 		}
-		else {
-			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".$ticket['state'].
+		else
+		{
+			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_state=".intval($ticket['state']).
 				" where ticket_state=$state_id",__LINE__,__FILE__);
 		}
 		$GLOBALS['phpgw']->db->query("delete from phpgw_tts_states where state_id=$state_id",__LINE__,__FILE__);
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/states.php'));
+		$GLOBALS['phpgw']->redirect_link('/tts/states.php');
 	}
 
+	$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].
+		' - '.lang('Deleting the state');
+	$GLOBALS['phpgw']->common->phpgw_header();
 
 	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
@@ -89,7 +80,6 @@
 	$GLOBALS['phpgw']->template->set_block('delete_state', 'tts_head_ifviewall', 'tts_head_ifviewall');
 	$GLOBALS['phpgw']->template->set_block('form','update_state_items','update_state_group');
 
-	$GLOBALS['phpgw']->template->set_var('lang_edit_state',lang('Deleting the state'));
 	$s=id2field('phpgw_tts_states','state_name','state_id',$state_id);
 	$GLOBALS['phpgw']->template->set_var('lang_are_you_sure',lang('You want to delete the state %1. Are you sure?',$s		));
 	$GLOBALS['phpgw']->template->set_var('lang_tickets_in_state',lang('The tickets in the following list are in the state %1. Please, decide what should be done with them.',$s));
@@ -104,22 +94,21 @@
 		$GLOBALS['phpgw']->link('/tts/delete_state.php','state_id='.$state_id));
 	$GLOBALS['phpgw']->template->set_var('lang_delete_the_tickets',lang('Delete the listed tickets.'));
 	$GLOBALS['phpgw']->template->set_var('lang_irregular_move_into_state',lang('Perform irregular transition into the following state'));
-	$GLOBALS['phpgw']->template->set_var('lang_ok',lang('Delete'));
+	$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
 	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 
 	$GLOBALS['phpgw']->db->query("select * from phpgw_tts_transitions where transition_source_state=".$state_id,__LINE__,__FILE__);
 		
 	while($GLOBALS['phpgw']->db->next_record())
 	{
-		$GLOBALS['phpgw']->template->set_var('update_state_value',$GLOBALS['phpgw']->db->f('transition_target_state'));
-		$GLOBALS['phpgw']->template->set_var('update_state_text',$GLOBALS['phpgw']->db->f('transition_description'));
-      $GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
+		$GLOBALS['phpgw']->template->set_var('update_state_value',try_lang($GLOBALS['phpgw']->db->f('transition_target_state')));
+		$GLOBALS['phpgw']->template->set_var('update_state_text',try_lang($GLOBALS['phpgw']->db->f('transition_description')));
+		$GLOBALS['phpgw']->template->parse('update_state_group', 'update_state_items', True);
 	}
 
 	// Choose the initial state to display
 	$GLOBALS['phpgw']->template->set_var('options_state',
 		listid_field('phpgw_tts_states','state_name','state_id','', "state_id<>".$state_id));
-
 
 	if (!$sort)
 	{

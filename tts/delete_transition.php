@@ -24,57 +24,39 @@
 	** 4 - Allow to make changes to priority, billing hours, billing rate, category, and assigned to
 	*/
 
-	// select what tickets to view
-	$cancel     = $HTTP_POST_VARS['cancel'];
-	$submit 		= $HTTP_POST_VARS['submit'];
-	
-	$transition_id  	= $HTTP_GET_VARS['transition_id'];
-
-	if($submit || $cancel || $transition_id==0)
-	{
-		$GLOBALS['phpgw_info']['flags'] = array(
-			'noheader' => True,
-			'nonavbar' => True
-		);
-	}
-
 	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'tts';
 	$GLOBALS['phpgw_info']['flags']['enable_contacts_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_categories_class'] = True;
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
+	$GLOBALS['phpgw_info']['flags']['noheader'] = True;
 	include('../header.inc.php');
 
-	if ($transition_id==0) {
-		$transition_id  	= $HTTP_POST_VARS['transition_id'];
-		if ($transition_id==0) {
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/transitions.php'));
-		}
-	}
-	if($cancel)
+	// select what tickets to view
+	$transition_id = intval(get_var('transition_id',array('POST','GET')));
+
+	if($_POST['delete'] && $transition_id)
 	{
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/transitions.php'));
-	}
-
-	if($submit){
 		$GLOBALS['phpgw']->db->query("delete from phpgw_tts_transitions where transition_id=$transition_id",__LINE__,__FILE__);
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/transitions.php'));
 	}
 
+	if ($_POST['delete'] || $_POST['cancel'] || !$transition_id)
+	{
+		$GLOBALS['phpgw']->redirect_link('/tts/transitions.php');
+	}
 
 	$GLOBALS['phpgw']->template->set_file('delete_transition','delete_transition.tpl');
 
-	$GLOBALS['phpgw']->template->set_var('lang_delete_transition',lang('Deleting the transition'));
+	$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'].
+		' - '.lang('Deleting the transition');
+	$GLOBALS['phpgw']->common->phpgw_header();
+
 	$s=id2field('phpgw_tts_transitions','transition_name','transition_id',$transition_id);
-	$GLOBALS['phpgw']->template->set_var('lang_are_you_sure',lang('You want to delete the transition %1. Are you sure?',$s));
+	$GLOBALS['phpgw']->template->set_var('lang_are_you_sure',lang('You want to delete the transition %1. Are you sure?',"'".$s."'"));
 
 	$GLOBALS['phpgw']->template->set_var('delete_transition_link',
 		$GLOBALS['phpgw']->link('/tts/delete_transition.php','transition_id='.$transition_id));
-	$GLOBALS['phpgw']->template->set_var('lang_ok',lang('Delete'));
+	$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
 	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
-
-	// fill header
-	$GLOBALS['phpgw']->template->set_var('tts_head_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg'] );
-	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg'] );
 
 	$GLOBALS['phpgw']->template->pfp('out','delete_transition');
 
