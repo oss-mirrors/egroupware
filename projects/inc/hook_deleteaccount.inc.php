@@ -15,7 +15,7 @@
 
 	if(intval($GLOBALS['HTTP_POST_VARS']['new_owner']) == 0)
 	{
-		$pro->delete_pa('co',intval($GLOBALS['HTTP_POST_VARS']['account_id']),True);
+		$pro->delete_pa('account',intval($GLOBALS['HTTP_POST_VARS']['account_id']),False);
 	}
 	else
 	{

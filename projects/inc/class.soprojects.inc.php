@@ -898,67 +898,28 @@
 			}
 		}
 
-		function delete_pa($action, $pa_id, $subs = False)
+		function delete_account_project_data($account_id)
 		{
-			if ($action == 'co')
+			if ($account_id && $account_id != 0)
 			{
-				$pro_id = $pa_id;
-				$this->db->query("delete from phpgw_p_hours where employee='" . $pro_id . "'",__LINE__,__FILE__);
-				$this->db->query("select id from phpgw_p_projects where coordinator='" . $pro_id . "'",__LINE__,__FILE__);
+				$this->db->query("delete from phpgw_p_hours where employee='" . $account_id . "'",__LINE__,__FILE__);
+				$this->db->query("select id from phpgw_p_projects where coordinator='" . $account_id . "'",__LINE__,__FILE__);
 
 				while ($this->db->next_record())
 				{
-					$pa_id[] = array
-					(
-						'id' => $this->db->f('id')
-					);
+					$drop_list[] = $this->db->f('id');
 				}
 
-				if (is_array($pa_id))
+				if (is_array($drop_list))
 				{
-					$action = 'subs';
-				}
-			}
+					reset($drop_list);
+				//	_debug_array($drop_list);
+				//	exit;
 
-			switch ($action)
-			{
-				case 'mains': $p_table = ' phpgw_p_projects'; break;
-				case 'subs'	: $p_table = ' phpgw_p_projects'; break;
-				case 'act'	: $p_table = ' phpgw_p_activities '; break;
-			}
-
-			if (is_array($pa_id))
-			{
-				while (list($null,$drop) = each($pa_id))
-				{
-					$drop_list[] = $drop;
-				}
-				reset($drop_list);
-//				_debug_array($drop_list);
-//				exit;
-
-				if ($subs)
-				{
 					$subdelete = " OR parent in (" . implode(',',$drop_list) . ")";
-				}
 
-				$this->db->query("DELETE from $p_table where id in (" . implode(',',$drop_list) . ")" . $subdelete,__LINE__,__FILE__);
-
-				if ($action == 'act')
-				{	
-					$this->db->query("DELETE from phpgw_p_projectactivities where activity_id in ("
-									. implode(',',$drop_list) . ")",__LINE__,__FILE__); 
-				}
-
-				if ($action == 'mains' || $action == 'subs')
-				{
-					if ($subs)
-					{
-						$subdelete = " or pro_parent in (" . implode(',',$drop_list) . ")";
-					}
-
-					$this->db->query("DELETE from phpgw_p_hours where project_id in (" . implode(',',$drop_list) . ")"
-									. $subdelete,__LINE__,__FILE__); 
+					$this->db->query("DELETE from phpgw_p_projects where id in (" . implode(',',$drop_list) . ")"
+									. $subdelete,__LINE__,__FILE__);
 
 					$this->db->query("select id from phpgw_p_delivery where project_id in (" . implode(',',$drop_list) . ")",__LINE__,__FILE__);
 
@@ -981,15 +942,15 @@
 
 					while ($this->db->next_record())
 					{
-						$del[] = array
+						$inv[] = array
 						(
 							'id'	=> $this->db->f('id')
 						);
 					}
 
-					for ($i=0;$i<=count($del);$i++)
+					for ($i=0;$i<=count($inv);$i++)
 					{
-						$this->db->query("Delete from phpgw_p_invoicepos where invoice_id='" . $del[$i]['id'] . "'",__LINE__,__FILE__);
+						$this->db->query("Delete from phpgw_p_invoicepos where invoice_id='" . $inv[$i]['id'] . "'",__LINE__,__FILE__);
 					}
 
 					$this->db->query("DELETE from phpgw_p_invoice where project_id in (" . implode(',',$drop_list) . ")",__LINE__,__FILE__);

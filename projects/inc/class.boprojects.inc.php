@@ -626,7 +626,14 @@
 
 		function delete_pa($action, $pa_id, $subs)
 		{
-			$this->soprojects->delete_pa($action, $pa_id, $subs);
+			if ($action == 'account')
+			{
+				$this->soprojects->delete_account_project_data($pa_id);
+			}
+			else
+			{
+				$this->soprojects->delete_pa($action, $pa_id, $subs);
+			}
 		}
 
 		function change_owner($old, $new)
