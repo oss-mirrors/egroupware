@@ -43,27 +43,26 @@
 
 	$GLOBALS['target']='/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php';
 
-	$t = $GLOBALS['phpgw']->template;
-	$t->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'main_' => 'main.tpl',
 		'login' => 'login.tpl',
 		'rename' => 'rename.tpl',
 		'confirm_delete' => 'confirm_delete.tpl',
 		'bad_connect' => 'bad_connection.tpl'
 	));
-	$t->set_var(array(
+	$GLOBALS['phpgw']->template->set_var(array(
 		'em_bgcolor' => $em_bg,
 		'em_text_color' => $em_bg_text,
 		'bgcolor' => $bgcolor[0]
 	));
 
-	$t->set_block('main_','main');
-	$t->set_block('main_','row');
-	$t->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-	$t->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+	$GLOBALS['phpgw']->template->set_block('main_','main');
+	$GLOBALS['phpgw']->template->set_block('main_','row');
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+	$GLOBALS['phpgw']->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 
-	$t->set_var('module_name',lang('module name'));
+	$GLOBALS['phpgw']->template->set_var('module_name',lang('module name'));
 
 	if ($action=='' || $action=='login')
 	{
@@ -117,15 +116,15 @@
 					}
 					if ($retval) 
 					{
-						$t->set_var("misc_data",lang('deleted',"$olddir/$file"), true);
+						$GLOBALS['phpgw']->template->set_var("misc_data",lang('deleted',"$olddir/$file"), true);
 					}
 					else
 					{
-						$t->set_var('misc_data',lang('failed to delete', "$olddir/$file"), true);
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to delete', "$olddir/$file"), true);
 					}
 				} else if (!$cancel) 
 				{
-					$t->set_var('misc_data',confirmDeleteForm($t,$session,$file,$olddir),true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',confirmDeleteForm($session,$file,$olddir),true);
 				}
 			}
 
@@ -135,18 +134,18 @@
 				{
 					if (ftp_rename($ftp,$olddir . '/' . $filename, $olddir . '/' . $newfilename)) 
 					{
-						$t->set_var('misc_data',lang('renamed',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('renamed',
 							"$filename", "$newfilename"), true);
 					} 
 					else 
 					{
-						$t->set_var('misc_data',lang('failed to rename',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to rename',
 							"$filename", "$newfilename"), true);
 					}
 				}
 				else
 				{
-					$t->set_var('misc_data', renameForm($t,$session,$file,$olddir), true);
+					$GLOBALS['phpgw']->template->set_var('misc_data', renameForm($session,$file,$olddir), true);
 				}
 			}
 			if ($action == 'get') 
@@ -164,11 +163,11 @@
 				$newfile=$olddir . '/' . $uploadfile_name;
 				if (ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY)) 
 				{
-					$t->set_var('misc_data',lang('uploaded',$newfile), true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',lang('uploaded',$newfile), true);
 				}
 				else 
 				{
-					$t->set_var('misc_data',lang('failed to upload',$newfile), true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to upload',$newfile), true);
 				}
 				unlink($uploadfile);
 			}
@@ -178,18 +177,18 @@
 				{
 					if (ftp_mkdir($ftp,$olddir . '/' . $newdirname)) 
 					{
-						$t->set_var('misc_data',lang('created directory',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('created directory',
 							"$olddir/$newdirname"), true);
 					}
 					else 
 					{
-						$t->set_var('misc_data',lang('failed to mkdir',
+						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to mkdir',
 							"$olddir/$newdirname"), true);
 					}
 				}
 				else 
 				{
-					$t->set_var('misc_data',lang('empty dirname'),true);
+					$GLOBALS['phpgw']->template->set_var('misc_data',lang('empty dirname'),true);
 				}
 			}
 
@@ -248,7 +247,7 @@
 			$olddir=$temp;
 
 			// set up all the global variables for the template
-			$t->set_var(array(
+			$GLOBALS['phpgw']->template->set_var(array(
 				'ftp_location' => $ftp_location,
 				'relogin_link'=> macro_get_Link('newlogin',lang('relogin')),
 				'home_link' => $home_link,
@@ -263,36 +262,36 @@
 			));
 
 			$total = count(ftp_rawlist($ftp,''));
-			$t->set_var('nextmatchs_left',$GLOBALS['phpgw']->nextmatchs->left('/ftp/index.php',$start,$total));
-			$t->set_var('nextmatchs_right',$GLOBALS['phpgw']->nextmatchs->right('/ftp/index.php',$start,$total));
+			$GLOBALS['phpgw']->template->set_var('nextmatchs_left',$GLOBALS['phpgw']->nextmatchs->left('/ftp/index.php',$start,$total));
+			$GLOBALS['phpgw']->template->set_var('nextmatchs_right',$GLOBALS['phpgw']->nextmatchs->right('/ftp/index.php',$start,$total));
 
 			$contents = phpftp_getList($ftp,'.',$start);
 
-			$t->set_var('lang_name',lang('Name'));
-			$t->set_var('lang_owner',lang('Owner'));
-			$t->set_var('lang_group',lang('Group'));
-			$t->set_var('lang_permissions',lang('Permissions'));
-			$t->set_var('lang_size',lang('Size'));
-			$t->set_var('lang_delete',lang('Delete'));
-			$t->set_var('lang_rename',lang('Rename'));
+			$GLOBALS['phpgw']->template->set_var('lang_name',lang('Name'));
+			$GLOBALS['phpgw']->template->set_var('lang_owner',lang('Owner'));
+			$GLOBALS['phpgw']->template->set_var('lang_group',lang('Group'));
+			$GLOBALS['phpgw']->template->set_var('lang_permissions',lang('Permissions'));
+			$GLOBALS['phpgw']->template->set_var('lang_size',lang('Size'));
+			$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
+			$GLOBALS['phpgw']->template->set_var('lang_rename',lang('Rename'));
 
 
 			$newdir = $olddir;
-			$t->set_var('name',macro_get_link('cwd','..'));
-			$t->set_var('del_link','&nbsp;');
-			$t->set_var('rename_link','&nbsp;');
-			$t->set_var('owner','');
-			$t->set_var('group','');
-			$t->set_var('permissions','');
-			$t->fp('rowlist_dir','row',True);
+			$GLOBALS['phpgw']->template->set_var('name',macro_get_link('cwd','..'));
+			$GLOBALS['phpgw']->template->set_var('del_link','&nbsp;');
+			$GLOBALS['phpgw']->template->set_var('rename_link','&nbsp;');
+			$GLOBALS['phpgw']->template->set_var('owner','');
+			$GLOBALS['phpgw']->template->set_var('group','');
+			$GLOBALS['phpgw']->template->set_var('permissions','');
+			$GLOBALS['phpgw']->template->fp('rowlist_dir','row',True);
 
 			while (list(,$fileinfo) = each($contents))
 			{
 //				echo '<pre>'; print_r($fileinfo); echo '</pre>';
 				$newdir = $fileinfo['name'];
-				$t->set_var('owner',$fileinfo['owner']);
-				$t->set_var('group',$fileinfo['group']);
-				$t->set_var('permissions',$fileinfo['permissions']);
+				$GLOBALS['phpgw']->template->set_var('owner',$fileinfo['owner']);
+				$GLOBALS['phpgw']->template->set_var('group',$fileinfo['group']);
+				$GLOBALS['phpgw']->template->set_var('permissions',$fileinfo['permissions']);
 
 /*				if ($fileinfo['size'] < 1024)
 				{
@@ -313,22 +312,22 @@
 				if (substr($fileinfo['permissions'],0,1) == 'd')
 				{
 					$file = $fileinfo['name'];
-					$t->set_var('name',macro_get_link('cwd',$fileinfo['name']));
-					$t->set_var('del_link',macro_get_link('rmdir',lang('Delete')));
-					$t->set_var('size','');
+					$GLOBALS['phpgw']->template->set_var('name',macro_get_link('cwd',$fileinfo['name']));
+					$GLOBALS['phpgw']->template->set_var('del_link',macro_get_link('rmdir',lang('Delete')));
+					$GLOBALS['phpgw']->template->set_var('size','');
 				}
 				else
 				{
 					$file = $fileinfo['name'];
-					$t->set_var('del_link',macro_get_link('delete',lang('Delete')));
-					$t->set_var('name',macro_get_link('get',$fileinfo['name']));
-					$t->set_var('size',$fileinfo['size']);
+					$GLOBALS['phpgw']->template->set_var('del_link',macro_get_link('delete',lang('Delete')));
+					$GLOBALS['phpgw']->template->set_var('name',macro_get_link('get',$fileinfo['name']));
+					$GLOBALS['phpgw']->template->set_var('size',$fileinfo['size']);
 				}
-				$t->set_var('rename_link',macro_get_link('rename',lang('Rename')));
-				$t->fp('rowlist_dir','row',True);
+				$GLOBALS['phpgw']->template->set_var('rename_link',macro_get_link('rename',lang('Rename')));
+				$GLOBALS['phpgw']->template->fp('rowlist_dir','row',True);
 			}
 			ftp_quit($ftp);
-			$t->pfp('out','main');
+			$GLOBALS['phpgw']->template->pfp('out','main');
 		} 
 		else 
 		{
@@ -341,12 +340,12 @@
 				{
 					 $pass.="*"; 
 				}
-				$t->set_var('error_message', lang('bad connection', 
+				$GLOBALS['phpgw']->template->set_var('error_message', lang('bad connection', 
 					$connInfo['ftpserver'], $connInfo['username'], $pass), true);
-				$t->parse('out','bad_connect',false);
-				$t->p('out');
+				$GLOBALS['phpgw']->template->parse('out','bad_connect',false);
+				$GLOBALS['phpgw']->template->p('out');
 			}
-			newLogin($t,$connInfo['ftpserver'],$connInfo['username'],'');
+			newLogin($connInfo['ftpserver'],$connInfo['username'],'');
 		}
 	}
 	else 
@@ -355,7 +354,7 @@
 		updateSession('');
 		$sessionUpdated=true;
 		// $GLOBALS['phpgw']->modsession(
-		newLogin($t,$default_server,$default_login,'');
+		newLogin($default_server,$default_login,'');
 	}
 	if (!$sessionUpdated && $action=='cwd') 
 	{

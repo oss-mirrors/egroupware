@@ -36,7 +36,7 @@
 		}
 	}
 
-	function renameForm($template,$session,$filename,$directory) 
+	function renameForm($session,$filename,$directory) 
 	{
 		$rename_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
 			. '<input type="hidden" name="action" value="rename">'."\n"
@@ -49,7 +49,7 @@
 		$rename_form_submit='<input type="submit" name="confirm" value="' . lang('rename') . '">'."\n";
 		$rename_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
-		$template->set_var(array(
+		$GLOBALS['phpgw']->template->set_var(array(
 			'rename_form_begin' => $rename_form_begin,
 			'rename_form_end'  => $rename_form_end,
 			'rename_form_from' => $rename_form_from,
@@ -60,16 +60,15 @@
 			'lang_rename_to' => lang('rename to')
 		));
 
-		$template->set_var('lang_message',lang('Rename file'));
+		$GLOBALS['phpgw']->template->set_var('lang_message',lang('Rename file'));
 
-
-		$template->parse('out','rename',true);
+		$GLOBALS['phpgw']->template->parse('out','rename',true);
 		// $template->p('renameform');
-		$template->set_var('return',$template->get('out'));
-		return $template->get('return');
+		$GLOBALS['phpgw']->template->set_var('return',$template->get('out'));
+		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function confirmDeleteForm($template,$session,$filename,$directory,$type ='') 
+	function confirmDeleteForm($session,$filename,$directory,$type ='') 
 	{
 		$delete_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
 			. '<input type="hidden" name="action" value="delete">'."\n"
@@ -83,7 +82,7 @@
 		$delete_form_confirm='<input type="submit" name="confirm" value="' . lang('delete') . '">'."\n";
 		$delete_form_cancel='<input type="submit" name="cancel" value="' . lang('cancel') . '">'."\n";
 
-		$template->set_var(array(
+		$GLOBALS['phpgw']->template->set_var(array(
 			'delete_form_begin' => $delete_form_begin,
 			'delete_form_end'  => $delete_form_end,
 			'delete_form_question' => $delete_form_question,
@@ -91,12 +90,12 @@
 			'delete_form_cancel' => $delete_form_cancel
 		));
 
-		$template->parse('out','confirm_delete',true);
-		$template->set_var('return',$template->get('out'));
-		return $template->get('return');
+		$GLOBALS['phpgw']->template->parse('out','confirm_delete',true);
+		$GLOBALS['phpgw']->template->set_var('return',$template->get('out'));
+		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function newLogin($template,$dfhost,$dfuser,$dfpass) 
+	function newLogin($dfhost,$dfuser,$dfpass) 
 	{
 		$login_form_begin= '<form action="'.createLink($GLOBALS['target']).'" method="post">'."\n".'<input type="hidden" name="action" value="login">'."\n";
 		$login_form_end='</form>'."\n";
@@ -106,7 +105,7 @@
 		$login_form_submit='<input type="submit" name="submit" value="'.lang('connect').'">'."\n";
 		$login_form_end="</form>";
 
-		$template->set_var(array(
+		$GLOBALS['phpgw']->template->set_var(array(
 			'login_form_begin' => $login_form_begin,
 			'login_form_end' => $login_form_end,
 			'login_form_username' => $login_form_username,
@@ -117,11 +116,11 @@
 			'lang_password' => lang('password'),
 			'langserver' => lang('ftpserver')
 		));
-		$template->set_var('lang_login',lang('Log into FTP server'));
-		$template->set_var('lang_ftpserver',lang('FTP hostname'));
+		$GLOBALS['phpgw']->template->set_var('lang_login',lang('Log into FTP server'));
+		$GLOBALS['phpgw']->template->set_var('lang_ftpserver',lang('FTP hostname'));
 
-		$template->parse('loginform','login',false);
-		$template->p('loginform');
+		$GLOBALS['phpgw']->template->parse('loginform','login',false);
+		$GLOBALS['phpgw']->template->p('loginform');
 		return;
 	}
 
@@ -234,19 +233,23 @@
 		{
 			$dirinfo[0] = -1;
 		}
-		else if($systyp=='Windows_NT')
+		elseif($systyp=='Windows_NT')
 		{
 			if (ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
 			{
 				$dirinfo[0] = 1;
 				$dirinfo[1] = 0;
 				$dirinfo[2] = $regs[1];
-			} elseif(ereg("[-0-9]+ *[0-9:]+[PA]?M? +([0-9]+) (.*)",$dirline,$regs)) {
+			}
+			elseif(ereg("[-0-9]+ *[0-9:]+[PA]?M? +([0-9]+) (.*)",$dirline,$regs))
+			{
 				$dirinfo[0] = 0;
 				$dirinfo[1] = $regs[1];
 				$dirinfo[2] = $regs[2];
 			}
-		} else if($systyp=='UNIX') {
+		}
+		elseif($systyp=='UNIX')
+		{
 			if (ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
 			{
 				$ta = explode(' ',$dirline);
@@ -256,7 +259,6 @@
 					{
 						$a[] = $p;
 					}
-				
 				}
 				$fileinfo['permissions'] = $a[0];
 				$fileinfo['owner']       = $a[2];
@@ -309,10 +311,9 @@
 
 	function phpftp_delete($file,$confirm)
 	{
- 	}
+	}
 
 	function phpftp_rename($origfile,$newfile,$confirm) 
 	{
 	}
-
 ?>
