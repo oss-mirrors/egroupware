@@ -41,7 +41,7 @@ mail settings	admin	sl	Nastavitve E-pošte
 name of organisation	emailadmin	sl	ime organizacije
 no alternate email address	emailadmin	sl	ni alternativnega E-naslova
 no forwarding email address	emailadmin	sl	ni E-naslova za posredovanje
-pop3 server hostname or ip address	emailadmin	sl	Ime ali IP POP3 stre�žnika
+pop3 server hostname or ip address	emailadmin	sl	Ime ali IP POP3 strežnika
 pop3 server port	emailadmin	sl	Vrata POP3 strežnika
 postfix with ldap	emailadmin	sl	Končnica pri LDAP
 profile list	emailadmin	sl	Seznam profilov

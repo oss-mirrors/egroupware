@@ -27,13 +27,14 @@ image source	comic	sl	Vir slike
 max file size	comic	sl	Največja velikost datoteke
 my comics	comic	sl	Moji stripi
 no_entries	comic	sl	brez vnosa
+parser	comic	sl	Razčlenjevalnik
 performed %1 of element	comic	sl	Obdelano %1 elementa
-egroupware daily comics	comic	sl	eGroupWare dnevni stripi
 random	comic	sl	Naključno
 rated	comic	sl	Ocenjeno
+remote (parse/snarf) enabled	comic	sl	Oddaljeno (razčlenjevalnik)
 reset	comic	sl	Ponastavi
 reset comic data	admin	sl	Ponastavi zapise o stripih
 resolve	comic	sl	Razreši
 showing %1 (%2 - %3 of %4)	comic	sl	prikazano %1 (%2 - %3 od %4)
 template	comic	sl	Predloga
-visit %1	comic	sl	Obišći %1
+visit %1	comic	sl	Obišči %1
