@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 <p>
-<table border="0" width=100%>
+<table border="0" width=98% align="center">
 <tr>
 
 {admin_info}
