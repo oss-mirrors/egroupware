@@ -293,7 +293,7 @@
 
 				if ($this->state != 'billed')
 				{
-					if ($this->boprojects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
+					if ($this->boprojects->check_perms($this->grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $this->account)
 					{
 						$this->t->set_var('edit',$phpgw->link('/projects/hours_edithour.php','id=' . $hours[$i]['id'] . '&pro_parent=' . $pro[0]['parent']
 													. '&filter=' . $filter . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&sort=' . $sort));
@@ -318,7 +318,7 @@
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
-			if ($this->boprojects->check_perms($grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+			if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 			{
 				$this->t->set_var('action','<form method="POST" action="' . $phpgw->link('/projects/hours_addhour.php','project_id=' . $pro['project_id']) . '&pro_parent=' . $pro[0]['parent']
 															. '"><input type="submit" value="' . lang('Add') .'"></form>');

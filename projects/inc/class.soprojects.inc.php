@@ -264,8 +264,8 @@
 						}
 					}
 				}
-			}
-//		}
+//			}
+		}
 
 		function edit_project($values, $book_activities, $bill_activities)
 		{
