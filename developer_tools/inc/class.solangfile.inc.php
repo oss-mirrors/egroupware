@@ -103,6 +103,8 @@
 			{
 				function display_sidebox($appname,$menu_title,$file)	// hook_sidebox_menu
 				{
+					if (!is_array($file)) return;
+
 					unset($file['_NewLine_']);
 					if (is_array($GLOBALS['file']))
 					{
@@ -119,6 +121,8 @@
 					{
 						$file = $file2;
 					}
+					if (!is_array($file)) return;
+
 					if (is_array($GLOBALS['file']))
 					{
 						$GLOBALS['file'] = $file;
