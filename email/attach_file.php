@@ -13,8 +13,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
-  $phpgw_info["flags"]["currentapp"] = "email";
+  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True, "currentapp" => "email");
   include("../header.inc.php");
   
   echo '<body bgcolor="' . $phpgw_info["theme"]["bg_color"] . '">';
