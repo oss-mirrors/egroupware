@@ -172,6 +172,20 @@
 
 		function web_backup()
 		{
+			global $delete, $archive;
+
+			if ($delete && $archive)
+			{
+				$this->bobackup->drop_archive($archive);
+			}
+
+			$link_data = array
+			(
+				'menuaction' 	=> 'backup.uibackup.web_backup',
+				'delete'		=> $delete,
+				'archive'		=> $archive
+			);
+
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
@@ -200,6 +214,10 @@
 						(
 							'archive' => $GLOBALS['phpgw']->strip_html($archives[$i])
 						));
+
+						$this->t->set_var('delete',$GLOBALS['phpgw']->link('/index.php','menuaction=backup.uibackup.web_backup&delete=True&archive='
+											. $archives[$i]));
+						$this->t->set_var('lang_delete',lang('Delete'));
 
 						$this->t->fp('list','archive_list',True);
 					}

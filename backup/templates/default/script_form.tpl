@@ -186,40 +186,19 @@
 
 		if ($rapp == 'smbmount')
 		{
-			$smbdir = '/mnt/smb';
-
-			if (!is_dir($smbdir))
-			{
-				mkdir($smbdir, 0700);
-			}
+			$smbdir = '/mnt';
 
 			$rip = '//' . $rip;
 
-			$pipe = system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw");
-
-			if (!$pipe)
-			{
-				echo 'mounting service ' . $rip . $rpath . 'trough smbmount failed !' . "\n";
-				exit;
-			}
+			system("mount.smbfs " . $rip . $rpath . ' ' . $smbdir . ' -o username=' . $ruser . ',password=' . $rpwd . ',rw');
 
 			chdir($smbdir);
 			for ($i=0;$i<count($output);$i++)
 			{
-				$put = system("cp " . $output[$i] . ' ' . $input[$i]);
-
-				if ($put)
-				{
-					echo 'smbmount backuptransfer ' . $input[$i] . ': success !' . "\n";
-				}
-				else
-				{
-					echo 'smbmount backuptransfer ' . $input[$i] . ': failed !' . "\n";
-					exit;
-				}
+				system("cp " . $output[$i] . ' ' . $input[$i]);
 			}
-			chdir('/mnt');
-			system("umount " . $smbdir);
+			chdir($basedir);
+			system("smbumount " . $smbdir);
 		}
 	}
 

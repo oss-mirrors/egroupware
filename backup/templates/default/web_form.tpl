@@ -11,6 +11,7 @@
 
 	<tr bgcolor="{tr_color}">
 		<td><a href="{archive}">{archive}</a></td>
+		<td align="center"><a href="{delete}">{lang_delete}<a><td>
 	</tr>
 
 <!-- END archive_list -->

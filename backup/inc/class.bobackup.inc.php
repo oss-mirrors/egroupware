@@ -34,7 +34,8 @@
 			'create_config'		=> True,
 			'save_config'		=> True,
 			'phpftp_connect'	=> True,
-			'get_archives'		=> True
+			'get_archives'		=> True,
+			'drop_archive'		=> True
 		);
 
 		function bobackup()
@@ -339,7 +340,7 @@
 
 		function get_archives()
 		{
-			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';	
+			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';
 			if (is_dir($basedir))
 			{
 				$basedir = opendir($basedir);
@@ -358,6 +359,16 @@
 			else
 			{
 				return False;
+			}
+		}
+
+		function drop_archive($archive)
+		{
+			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';			
+
+			if (is_file($basedir . '/' . $archive))
+			{
+				unlink($basedir . '/' . $archive);
 			}
 		}
 	}
