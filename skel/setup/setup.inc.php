@@ -18,7 +18,7 @@
 	$setup_info['skel']['app_order'] = 62;
 	$setup_info['skel']['enable']    = 1;
 	
-	/* some info's for about.php and apps.phpgroupware.org */
+	/* some info's for about.php and apps.egroupware.org */
 	$setup_info['skel']['author']    = 'Your Name';
 	$setup_info['skel']['license']   = 'GPL';
 	$setup_info['skel']['description'] =
