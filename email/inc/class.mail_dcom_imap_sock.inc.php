@@ -1,11 +1,9 @@
 <?php
 	/**************************************************************************\
 	* phpGroupWare API - IMAP                                                  *
-	* This file written by Mark Peters <skeeter@phpgroupware.org>              *
-	* and Angelo "Angles" Puglisi <angles@aminvestments.com>		*
-	* Handles specific operations in dealing with IMAP via Sockets                         *
-	* Copyright (C) 2001 Mark Peters                                           *
-	* Copyright (C) 2001, 2002 Anglo "Angles" Puglisi *
+	* This file written by Angelo "Angles" Puglisi <angles@aminvestments.com>	*
+	* Pure php code sunstantial replacement for php-imap functionality	*
+	* Copyright (C) 2002-2004 Anglo "Angles" Puglisi 	*
 	* -------------------------------------------------------------------------*
 	* This library is part of the phpGroupWare API                             *
 	* http://www.phpgroupware.org/api                                          * 
@@ -26,14 +24,20 @@
 	/*!
 	@class mail_dcom extends mail_dcom_base FOR SOCKETS
 	@abstract implements IMAP module FOR SOCKETS, replaces php IMAP extension
-	@author Angles, Mark Peters (skeeter)
+	@author Angles
 	@discussion In around summer 2001, Mark Peeters "skeeter" emailed me "Angles" some 
 	files which were the skeleton of a sockets replacement for the php IMAP extensions. I 
 	believe skeeter wrote the base "network" class in the phpgwapi, and these files extended 
 	that class, an excellent approach. Skeeter covered the low level network functionality 
-	and also had some higher level sockets functionality that appeared to be for NNTP. 
-	To the extent any function in this class uses any of skeeters code, even when that code 
-	may be just one line, skeeter is listed as an author for that function.
+	in his "network" class, but the original IMAP file was appeared to be templated from 
+	an incompleted NNTP sockets class that was itself perhaps a template. 
+	To the extent skeeters code still exitst in this file, skeeter is listed amoung the authors for that function. 
+	However, in early 2004 this file was substantially reimplemented from scratch by Angles. 
+	For example, the parsing of the IMAP server strings into php structures is original work by 
+	Angles and constitutes the majority of the concern of this class. In fact that is the primary goal of this class. 
+	Many of the other capabilities are standard data communications of a client server nature, such as 
+	a command to move mail as opposed as a request for a bodystructure which is then transformed 
+	into a known php structure.
 	*/
 	class mail_dcom extends mail_dcom_base
 	{
@@ -790,6 +794,7 @@
 					// delete that quote_space and trim
 					$folder_name = trim(substr($folder_name, 2));
 					// if the folder name includes space(s) then it will be enclosed in quotes
+					// note: Courier puts all folder names in quotes
 					if ((strlen($folder_name) > 0)
 					&& ($folder_name[0] == '"') )
 					{
@@ -798,6 +803,9 @@
 						// delete the closing quote
 						$folder_name = substr($folder_name, 0, -1);
 					}
+					// it looks like sockets data xfer with Courier adds escape slashes
+					// experiment: STRIP these magic slashes
+					$folder_name = stripslashes($folder_name);
 					// php builtin function returns the server_str before the folder name
 					$folder_name = $server_str .$folder_name;
 					// add to the result array
@@ -1909,9 +1917,10 @@
 					// show this later for better clarity of debugging
 					//if ($this->debug_dcom > 2) { echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
 				}
-				else
+				elseif ($this->bs_rawstr{0} == '"')
 				{
 					// there BETTER be a quote as first char, so start = 1
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $this->bs_rawstr{0} is ['.htmlspecialchars($this->bs_rawstr{0}).'] so description_str standard quoted data '."\n"; }
 					$start = 1;
 					$end = strpos($this->bs_rawstr, '" ' );
 					$slen = ($end-0) - $start;
@@ -1924,6 +1933,47 @@
 					// show this later for better clarity of debugging
 					//echo 'bs: NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n";
 				}
+				elseif ($this->bs_rawstr{0} == '{')
+				{
+					// there BETTER be a { as first char
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $this->bs_rawstr{0} is ['.htmlspecialchars($this->bs_rawstr{0}).'] so description_str STRING LITERAL data '."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): RFC3501 Sec 4.2 String Literal is rare in BODYSTRUCTURE, only loose typed strings like description or maybe some params'."\n"; }
+					// handle literl SEQUENCE
+					$start = 1;
+					$end = strpos($this->bs_rawstr, '}'."\r\n");
+					$slen = $end-$start;
+					$literal_len = substr($this->bs_rawstr, 1, $slen);
+					$literal_len = (int)trim($literal_len);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $literal_len is ['.serialize($literal_len).'] '."\n"; }
+					// chop up to start of literal data
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+3));
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): chopped interim NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n"; }
+					// grab exact literal data
+					// find the first space at or after $literal_len
+					// multibyte strings throw the function substr off 
+					// we use OFFSET to start searching at $literal_len
+					$best_space_pos = strpos($this->bs_rawstr, ' ', $literal_len);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $best_space_pos is ['.serialize($best_space_pos).'] '."\n"; }
+					if ($best_space_pos > $literal_len)
+					{
+						$end = $best_space_pos;
+					}
+					else
+					{
+						$end = $literal_len;
+					}
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): decide to use $end is ['.serialize($end).'] '."\n"; }
+					$tmp_data['description_str'] = substr($this->bs_rawstr, 0, $end);
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): $tmp_data[description_str] is ['.$tmp_data['description_str'].'] '."\n"; }
+					$tmp_data['ifdescription'] = True;
+					$tmp_data['description'] = $tmp_data['description_str'];
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					// str_replace WAS GREEDY, use another way
+					$this->bs_rawstr = substr($this->bs_rawstr, ($end+1));
+					// show this later for better clarity of debugging
+					if ($this->debug_dcom > 2) { echo 'bs('.__LINE__.'): NEW $this->bs_rawstr is: ['.$this->bs_rawstr."]\n\n"; }
+				}
+				
 				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[description_str] is: ['.$tmp_data['description_str'] ."]\n"; }
 				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[ifdescription] is: ['.serialize($tmp_data['ifdescription'])."]\n"; }
 				if ($this->debug_dcom > 2) { echo 'bs: $tmp_data[description] is: ['.$tmp_data['description'] ."]\n"; }
@@ -2632,7 +2682,9 @@
 			{
 				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array has more tham 1 element, this is element [0]: <br>'."\n"; }
 				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>'."\n";  }
-				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): assemble $return_str, checking if it has that _{NUMBER}_ chunk data thing pops up <br>'."\n"; }
+				
+				//if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): assemble $return_str, checking if it has that _{NUMBER}_ chunk data thing pops up <br>'."\n"; }
+				
 				/*
 				$test_str = rtrim($response_array[0]);
 				$last_char = strlen($test_str)-1;
@@ -2666,6 +2718,8 @@
 					$response_array[0] = substr($response_array[0], 0, $end);
 					if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): NEW $response_array DUMP: <pre>'; print_r(implode('', $response_array)); echo '</pre>'."\n";  }
 					*/
+				
+				/*
 				$return_str = '';
 				$loops = count($response_array);
 				$seen_chunky_brace = False;
@@ -2728,22 +2782,31 @@
 						}
 					}
 					$return_str .= $response_array[$i];
-				}				
-				//if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array needs imploding AND rtrim-ing, then call function fetch_head_and_struct <br>'; }
+				}
+				*/
+				
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array needs imploding AND rtrim-ing, then call function fetch_head_and_struct <br>'; }
 				// CALL PROCESSING FUNCTION
 				//$this->fetch_head_and_struct(implode('', $response_array));
 				//$this->fetch_head_and_struct(rtrim(implode('', $response_array)));
-				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): assembles $return_str DUMP: <pre>'; print_r($return_str); echo '</pre>'."\n";  }
+				$return_str = implode('', $response_array);
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): imploded $return_str DUMP: <pre>'; print_r($return_str); echo '</pre>'."\n";  }
 				// sometimes we still need to rtrim the final product, because we do not want a CRLF at the end of FETCHSTRUCTURE data
 				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): we also rtrim the assembled $return_str because we NEVER want a CRLF at the end of FETCHSTRUCTURE data<br>';  }
+				$return_str = rtrim($return_str);
 				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): now call function fetch_head_and_struct(rtrim($return_str)) <br>'; }
-				$this->fetch_head_and_struct(rtrim($return_str));
+				$this->fetch_head_and_struct($return_str);
 			}
 			else
 			{
+				$return_str = $response_array[0];
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): call function fetch_head_and_struct with rtrim and stripslashed $response_array[0] as feed param<br>'; }
+				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): we also rtrim the assembled $return_str because we NEVER want a CRLF at the end of FETCHSTRUCTURE data<br>';  }
+				$return_str = rtrim($return_str);
+				//if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): STRIPSLASH the assembled $return_str because TESTING indicates Courier slash escapes its data <br>';  }
+				//$return_str = stripslashes($return_str);
 				// CALL PROCESSING FUNCTION
-				if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): call function fetch_head_and_struct with rtrim($response_array[0]) as feed param<br>'; }
-				$this->fetch_head_and_struct(rtrim($response_array[0]));
+				$this->fetch_head_and_struct($return_str);
 			}
 			
 			if ($this->debug_dcom > 0) { echo 'imap_sock.fetch_request_common('.__LINE__.'): LEAVING <br>'.'</pre>'; }
@@ -2769,7 +2832,52 @@
 			if ($this->debug_dcom > 3) { echo '$this__fs_rawstr is: '.$this__fs_rawstr ."\n\n\n"; }
 			
 			// the data always comes in this order
-			// except if we do not use UID FETCH then UID will not appear, so we check to be safe
+			// except if we do not use UID FETCH then UID will not appear, so we check to be safe	
+			// NEW: U0Wash puts UID before FLAGS
+			
+			// ** MSGNO **
+			// if using UID then the msg sequence number will be available here
+			$start = 0;
+			$end = strpos($this__fs_rawstr, ' FETCH (');
+			// +7 will get rid of the open paren too
+			$end = $end + 8;
+			$slen = ($end+0) - $start;
+			$tmp_data['msgno'] = substr($this__fs_rawstr, $start, $slen);
+			//echo 'raw $tmp_data[msgno] is: ['.$tmp_data['msgno'] ."]\n";
+			// now reduce down to the msgnum itself
+			// [anything here] * 10 FETCH (
+			// chop off last 8 chars
+			$tmp_data['msgno'] = substr($tmp_data['msgno'], 0, -8);
+			//echo 'raw2 $tmp_data[msgno] is: ['.$tmp_data['msgno'] ."]\n";
+			// * 10
+			// msgno is from last space to end
+			$tmp_data['msgno'] = strrchr($tmp_data['msgno'], ' ');
+			$tmp_data['msgno'] = trim($tmp_data['msgno']);
+			if ($this->debug_dcom > 1) { echo '$tmp_data[msgno] is: ['.$tmp_data['msgno'] ."]\n"; }
+			//// type2 DELETE MAIN STRING OF DONE DATA
+			$this__fs_rawstr = substr($this__fs_rawstr, ($end+0));
+			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			
+			// ** UID for U-Wash **
+			// UWash puts UID first, other servers put it later
+			if (($this__fs_rawstr{0} == 'U')
+			&& ($this__fs_rawstr{1} == 'I')
+			&& ($this__fs_rawstr{2} == 'D'))
+			{
+				// ** UID **  main string is now
+				// UID 1044 FLAGS (\Seen) INTERNALDATE "19-Feb-2001 20:27:00 -0500" ...
+				// chop first 4 chars
+				$this__fs_rawstr = substr($this__fs_rawstr, 4);
+				$start = 0;
+				// we know a space is right after the number, so ...
+				$end = strpos($this__fs_rawstr, ' ');
+				$slen = ($end-0) - $start;
+				$tmp_data['uid'] = substr($this__fs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo '$tmp_data[uid] is: ['.$tmp_data['uid'] ."]\n"; }
+				// type2 DELETE MAIN STRING OF DONE DATA
+				$this__fs_rawstr = substr($this__fs_rawstr, ($end+1));
+				//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			}
 			
 			// ** FLAGS **
 			$start = strpos($this__fs_rawstr, 'FLAGS (');
@@ -2779,13 +2887,11 @@
 			$slen = ($end+1) - $start;
 			$tmp_data['flags'] = substr($this__fs_rawstr, $start, $slen);
 			if ($this->debug_dcom > 1) { echo '$tmp_data[flags] is: ['.$tmp_data['flags'] ."]\n"; }
-			// DELETE MAIN STRING OF DONE DATA
-			$done_data = substr($this__fs_rawstr, 0, ($end+2));
-			//echo '$done_data is: ['.$done_data."]\n\n\n";
-			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			// type2 DELETE MAIN STRING OF DONE DATA
+			$this__fs_rawstr = substr($this__fs_rawstr, ($end+2));
 			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
 			
-			
+			// ** UID for Cyrus **
 			if (($this__fs_rawstr{0} == 'U')
 			&& ($this__fs_rawstr{1} == 'I')
 			&& ($this__fs_rawstr{2} == 'D'))
@@ -2798,11 +2904,22 @@
 				$end = strpos($this__fs_rawstr, 'INTERNALDATE' );
 				$slen = ($end-1) - $start;
 				$tmp_data['uid'] = substr($this__fs_rawstr, $start, $slen);
+				//echo 'prelim $tmp_data[uid] is: ['.$tmp_data['uid'] ."]\n";
+				// type2 DELETE MAIN STRING OF DONE DATA
+				$this__fs_rawstr = substr($this__fs_rawstr, ($end+0));
+				// move this echo to below just for aestetics
+				//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+				// for robustness, just in case something came between UID and INTERNALDATE
+				if (stristr($tmp_data['uid'], ' '))
+				{
+					// chop anything after the first space
+					$start = 0;
+					$end = strpos($tmp_data['uid'], ' ');
+					$slen = ($end-0) - $start;
+					$tmp_data['uid'] = substr($tmp_data['uid'], $start, $slen);
+					//echo 'post-prep $tmp_data[uid] is: ['.$tmp_data['uid'] ."]\n";
+				}
 				if ($this->debug_dcom > 1) { echo '$tmp_data[uid] is: ['.$tmp_data['uid'] ."]\n"; }
-				// DELETE MAIN STRING OF DONE DATA
-				$done_data = substr($this__fs_rawstr, 0, ($end-0));
-				//echo '$done_data is: ['.$done_data."]\n\n\n";
-				$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
 				//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
 			}
 
@@ -2815,30 +2932,43 @@
 			$slen = ($end-2) - $start;
 			$tmp_data['internaldate'] = substr($this__fs_rawstr, $start, $slen);
 			if ($this->debug_dcom > 1) { echo '$tmp_data[internaldate] is: ['.$tmp_data['internaldate'] ."]\n"; }
-			// DELETE MAIN STRING OF DONE DATA
-			$done_data = substr($this__fs_rawstr, 0, ($end-0));
-			//echo '$done_data is: ['.$done_data."]\n\n\n";
-			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			// type2 DELETE MAIN STRING OF DONE DATA
+			$this__fs_rawstr = substr($this__fs_rawstr, ($end+0));
 			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
 			
 			// ** RFC822.SIZE **  main string is now
 			// RFC822.SIZE 2694 ENVELOPE ("Tue, 10 Feb 2004 06:....
-			$start = strpos($this__fs_rawstr, ' ');
-			$start = $start + 1;
-			// we know ENVELOPE is next, so ...
-			$end = strpos($this__fs_rawstr, 'ENVELOPE' );
-			$slen = ($end-1) - $start;
-			$tmp_data['rfc822.size'] = substr($this__fs_rawstr, $start, $slen);
-			if ($this->debug_dcom > 1) { echo '$tmp_data[rfc822.size] is: ['.$tmp_data['rfc822.size'] ."]\n"; }
-			// DELETE MAIN STRING OF DONE DATA
-			$done_data = substr($this__fs_rawstr, 0, ($end-0));
-			//echo '$done_data is: ['.$done_data."]\n\n\n";
-			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
-			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
-			
+			$start = strpos($this__fs_rawstr, 'FC822.SIZE ');
+			// a trick because RFC could be pos 0 that is confusing, so FC will be pos 1
+			if ($start > 0)
+			{
+				// snap off "RFC822.SIZE "
+				$this__fs_rawstr = substr($this__fs_rawstr, $start+11);
+				//echo 'interim NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+				// we know a space immediately follows the number
+				$start = 0;
+				$end = strpos($this__fs_rawstr, ' ');
+				$slen = ($end-0) - $start;
+				$tmp_data['rfc822.size'] = substr($this__fs_rawstr, $start, $slen);
+				if ($this->debug_dcom > 1) { echo '$tmp_data[rfc822.size] is: ['.$tmp_data['rfc822.size'] ."]\n"; }
+				// type2 DELETE MAIN STRING OF DONE DATA
+				$this__fs_rawstr = substr($this__fs_rawstr, ($end+1));
+				//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			}
 			
 			// ** ENVELOPE **  main string is now
 			// ENVELOPE ("Tue, 10 Feb 2004 06:48:53 -0200" "Re: sig -
+			if (($this__fs_rawstr{0} != 'E')
+			&& ($this__fs_rawstr{1} != 'N')
+			&& ($this__fs_rawstr{2} != 'V'))
+			{
+				// chop up to "ENVELOPE ("
+				// this is for robustness, ENVELOPE should be right here anyway
+				$start = strpos($this__fs_rawstr, 'ENVELOPE (');
+				// type2 DELETE MAIN STRING OF DONE DATA
+				$this__fs_rawstr = substr($this__fs_rawstr, $start);
+				//echo 'interim NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
+			}
 			$start = strpos($this__fs_rawstr, ' (');
 			$start = $start + 2;
 			// we know ) BODYSTRUCTURE ( is next, so ...
@@ -2846,10 +2976,8 @@
 			$slen = ($end-0) - $start;
 			$tmp_data['envelope'] = substr($this__fs_rawstr, $start, $slen);
 			if ($this->debug_dcom > 1) { echo '$tmp_data[envelope] is: ['.$tmp_data['envelope'] ."]\n"; }
-			// DELETE MAIN STRING OF DONE DATA
-			$done_data = substr($this__fs_rawstr, 0, ($end+2));
-			//echo '$done_data is: ['.$done_data."]\n\n\n";
-			$this__fs_rawstr = str_replace($done_data, '', $this__fs_rawstr);
+			// type2 DELETE MAIN STRING OF DONE DATA
+			$this__fs_rawstr = substr($this__fs_rawstr, ($end+2));
 			//echo 'NEW $this__fs_rawstr is: ['.$this__fs_rawstr."]\n\n\n";
 			
 			// ** BODYSTRUCTURE **  main string is now
@@ -2858,6 +2986,7 @@
 			$start = strpos($this__fs_rawstr, ' (');
 			$start = $start + 1;
 			// we know last char in string is extra ) paren from the outer fetch response as a whole
+			rtrim($this__fs_rawstr);
 			$end = strlen($this__fs_rawstr)-1;
 			$slen = ($end-0) - $start;
 			$tmp_data['bodystructure'] = substr($this__fs_rawstr, $start, $slen);
@@ -2897,6 +3026,8 @@
 			if ($this->debug_dcom > 2) { echo 'FINAL REPORT for msg_struct $this->msg_struct_stub DUMP'."\n"; print_r($this->msg_struct_stub); echo "\n\n"; }
 			
 			// GET ENVELOPE DATA
+			//if ($this->debug_dcom > 1) { echo ' prep for envelope: STRIPSLASH the $tmp_data[envelope] because TESTING indicates Courier slash escapes its data <br>';  }
+			//$tmp_data['envelope'] = stripslashes($tmp_data['envelope']);
 			if ($this->debug_dcom > 1) { echo ' *** ENVELOPE - calling $this->imap_parse_header($tmp_data) '."\n\n\n"; }
 			$this->envelope_struct = $this->imap_parse_header($tmp_data);
 			
@@ -3017,30 +3148,184 @@
 				if ($this->debug_dcom > 0) { echo 'extract_header_item('.__LINE__.'): LEAVING returning empty item'.'</pre>'."\n"; }
 				return;
 			}
+			if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): status update: $data_type is ['.$data_type.'], $next_item_type is ['.$next_item_type.'], $if_nothing is ['.$if_nothing.']'."\n"; }
+			
 			// continue
 			if ($data_type == 'string')
 			{
 				$got_str = '';
 				// sanity check
-				if ($this->env_rawstr{0} != '"')
+				if ($this->env_rawstr{0} == '"')
 				{
-					//echo 'extract_header_item('.__LINE__.'): FIXME: FREAK OUT first char is supposed to be " but it is not'."\n";
-					//$got_str = '';
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): first char is ['.$this->env_rawstr{0}.'] so we have standard quoted string'."\n"; }
+
+					if ($next_item_type == 'string')
+					{
+						//$end = strpos($this->env_rawstr, '" "');
+						$end_1 = strpos($this->env_rawstr, '" "');
+						$end_2 = strpos($this->env_rawstr, '" {');
+						$end_3 = strpos($this->env_rawstr, '" ');
+						if (($end_1 == $end_3)
+						|| ($end_2 == $end_3))
+						{
+							// good, this is what we expect
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): status: $end_1 = pos [" "] = ['.$end_1.']; $end_2 = pos [" {] ['.$end_2.']; $end_3 = pos [" ] ['.$end_3.']'."\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): good, either $end_1 == $end_3 or $end_2 == $end_3, so use $end is $end_3'."\n"; }
+							$end = $end_3;
+						}
+						else
+						{
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo "\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): STRANGE THINGS: $end_1 = pos [" "] = ['.$end_1.']; $end_2 = pos [" {] ['.$end_2.']; $end_3 = pos [" ] ['.$end_3.']'."\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): neither $end_1 == $end_3 nor does $end_2 == $end_3'."\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): so something somewhere is is a malfomed '."\n"; }
+							$end_4 = strpos($this->env_rawstr, ' "');
+							$end_5 = strpos($this->env_rawstr, ' NIL ');
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $end_3 = pos [ "] = ['.$end_3.']; $end_4 = pos [ NIL ] = ['.$end_4.']'."\n"; }
+							if (($end_4 - $end_2) == 1)
+							{
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $end_4 - $end_2 == 1 SO this item is OK and next item is NIL, $end_2 as $end'."\n"; }
+								$end = $end_2;
+							}
+							elseif ($end_4 < $end_3)
+							{
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $end_4 < $end_3 SO probably this item is missing close quote, $end_4 as $end'."\n"; }
+								$end = $end_4;
+							}
+							//elseif (($end_3 - $end_2) == 1)
+							//{
+							//	echo 'extract_header_item('.__LINE__.'): $end_3 - $end_2 == 1 SO probably next item is a malfomed string then use $end_2 as $end'."\n";
+							//	$end = $end_2;
+							//}
+							elseif (($end_3 < $end_2)
+							&& ($end_3 > 0))
+							{
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): GUESSING conditions say probably THIS item is a malfomed string then use $end_3 as $end'."\n"; }
+								$end = $end_3;
+							}
+							elseif ($end_2 > 0)
+							{
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): GUESSING conditions say probably next item is a malfomed string then use $end_2 as $end'."\n"; }
+								$end = $end_2;
+							}
+							elseif ($end_3 > 0)
+							{
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): conditions say this item is a malfomed string then use $end_3 as $end'."\n"; }
+								$end = $end_3;
+							}
+							else
+							{
+								echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
+								if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): unhandled condition, fallback to use $end_1 as $end'."\n"; }
+								$end = $end_1;
+							}
+						}
+					}
+					elseif ($next_item_type == 'paren_list')
+					{
+						//$end = strpos($this->env_rawstr, '" (');
+						// we know in these header items the parens are always enbeded so (( always is next
+						$end_1 = strpos($this->env_rawstr, '" ((');
+						$end_2 = strpos($this->env_rawstr, ' ((');
+						if (($end_2 - $end_1) == 1)
+						{
+							// good, this is what we expect
+							$end = $end_1;
+						}
+						else
+						{
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): STRANGE THINGS: $end_2 - $end_1 != 1; $end_1 = pos [" (] = ['.$end_1.']; $end_2 = pos [ (] ['.$end_2.']'."\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): probably this item is a malfomed string missing its ending quote, then use $end_2 as $end'."\n"; }
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo "\n"; }
+							$end = $end_2;
+						}	
+					}
+					elseif ($next_item_type == 'eol')
+					{
+						$end = strlen($this->env_rawstr)-1;
+					}
+					else
+					{
+						echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
+					}
+					$start = 1;
+					// end
+					$slen = ($end-0) - $start;
+					$got_str = substr($this->env_rawstr, $start, $slen);
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $got_str is ['.$got_str.']'."\n"; }
+
+					
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): we can now clean $this->env_rawstr of it '."\n"; }
+					// but do NOT chop off a potential open quote of the next string
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): first use ($end+1) as start of strip '."\n"; }
+					$this->env_rawstr = substr($this->env_rawstr, ($end+1));
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): prelim NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): secondly we ltrim to finish off the strip '."\n"; }
+					$this->env_rawstr = ltrim($this->env_rawstr);
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+
+					if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $got_str ['.$got_str.']'.'</pre>'."\n\n"; }
+					return $got_str;
+					
+				}
+				elseif ($this->env_rawstr{0} == '{')
+				{
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $this->env_rawstr{0} is ['.htmlspecialchars($this->env_rawstr{0}).'] so description_str STRING LITERAL data '."\n"; }
+					// handle literl SEQUENCE
+					$got_str = '';
+					$start = 1;
+					$end = strpos($this->env_rawstr, '}'."\r\n");
+					$slen = $end-$start;
+					$literal_len = substr($this->env_rawstr, 1, $slen);
+					$literal_len = (int)trim($literal_len);
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $literal_len is ['.$literal_len.'] '."\n"; }
+					// chop up to start of literal data
+					$this->env_rawstr = substr($this->env_rawstr, ($end+3));
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): chopped interim NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+					// grab exact literal data
+					// find the first space at or after $literal_len
+					// multibyte strings throw the function substr off 
+					// we use OFFSET to start searching at $literal_len
+					$best_space_pos = strpos($this->env_rawstr, ' ', $literal_len);
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $best_space_pos is ['.serialize($best_space_pos).'] '."\n"; }
+					if ($best_space_pos > $literal_len)
+					{
+						$end = $best_space_pos;
+					}
+					else
+					{
+						$end = $literal_len;
+					}
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): decide to use $end is ['.serialize($end).'] '."\n"; }
+					$got_str = substr($this->env_rawstr, 0, $end);
+					//// type2 DELETE MAIN STRING OF DONE DATA
+					$this->env_rawstr = substr($this->env_rawstr, ($end+1));
+					// show this later for better clarity of debugging
+					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+					if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $got_str ['.$got_str.']'.'</pre>'."\n\n"; }
+					return $got_str;
+				}
+				else
+				{
+					echo 'extract_header_item('.__LINE__.'): FIXME: FREAK OUT first char is supposed to be " but it is not'."\n";
+					$got_str = '';
+					
 					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): semi-FREAK OUT first char is supposed to be " but it is not'."\n"; }
 					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '."\n"; print_r($this->env_rawstr); echo "\n"; }
 					/*
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): attempt to recover by finding the next available " and assume it is open quote'."\n"; }
-					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): sometimes malformed subject can cause imap server to screw up the open quote for the subject element'."\n"; }
-					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): in which case anything before the open " is not RFC3501 compiant so dicsard it'."\n"; }
+					echo 'extract_header_item('.__LINE__.'): attempt to recover by finding the next available " and assume it is open quote'."\n";
+					echo 'extract_header_item('.__LINE__.'): sometimes malformed subject can cause imap server to screw up the open quote for the subject element'."\n";
+					echo 'extract_header_item('.__LINE__.'): in which case anything before the open " is not RFC3501 compiant so dicsard it'."\n";
 					$found_at = strpos($this->env_rawstr, '"');
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): found first open quote at $found_at ['.$found_at.'], eat all before it'."\n"; }
+					echo 'extract_header_item('.__LINE__.'): found first open quote at $found_at ['.$found_at.'], eat all before it'."\n";
 					if ($found_at > 0)
 					{
-						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): eat all before that paren as invalid data'."\n"; }
+						echo 'extract_header_item('.__LINE__.'): eat all before that paren as invalid data'."\n";
 						$this->env_rawstr = substr($this->env_rawstr, $found_at);
-						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo ""; }
+						echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo "";
 					}
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): DONE attempt to recover, contuinue on ... '."\n"; }
+					echo 'extract_header_item('.__LINE__.'): DONE attempt to recover, contuinue on ... '."\n";
 					*/
 					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): attempt to recover by simply adding a " to the beginning of the string'."\n"; }
 					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): yea I know it is crazy, but server should not send us unconforming strings anyway, and set var $manually_added_quote'."\n"; }
@@ -3048,66 +3333,6 @@
 					$this->env_rawstr = '"'.$this->env_rawstr;
 					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this->env_rawstr DUMP: '."\n"; print_r($this->env_rawstr); echo "\n"; }
 				}
-				else
-				{
-					// all is good
-					$manually_added_quote = False;
-				}
-				
-				// continue ...
-				if ($next_item_type == 'string')
-				{
-					//$end = strpos($this->env_rawstr, '" "');
-					$end_1 = strpos($this->env_rawstr, '" "');
-					$end_2 = strpos($this->env_rawstr, '" ');
-					if ($end_1 == $end_2)
-					{
-						// good, this is what we expect
-						$end = $end_1;
-					}
-					else
-					{
-						if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): STRANGE THINGS: $end_1 != $end_2 ; $end_1 = pos [" "] = ['.$end_1.']; $end_2 = pos [" ] ['.$end_2.']'."\n"; }
-						if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): probably next item is a malfomed string then use $end_2 as $end'."\n"; }
-						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): current $this->env_rawstr DUMP: '.""; print_r($this->env_rawstr); echo ""; }
-						$end = $end_2;
-					}
-				}
-				elseif ($next_item_type == 'paren_list')
-				{
-					$end = strpos($this->env_rawstr, '" (');
-				}
-				elseif ($next_item_type == 'eol')
-				{
-					$end = strlen($this->env_rawstr)-1;
-				}
-				else
-				{
-					echo 'extract_header_item: FREAK OUT line '.__LINE__."\n";
-				}
-				$start = 1;
-				// end
-				$slen = ($end-0) - $start;
-				$got_str = substr($this->env_rawstr, $start, $slen);
-				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $got_str is ['.$got_str.']'."\n"; }
-				
-				// sanity check if $manually_added_quote = True
-				if ($manually_added_quote == True)
-				{
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): since we added a " to the beginning of the string above ... '."\n"; }
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): we will do the equally crazy thing of adding ANOTHER " to the end of the $got_str '."\n"; }
-					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): why? because if server messed that up, it probably needs this to '."\n"; }
-					$got_str .= '"';
-					if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $got_str is ['.$got_str.']'."\n"; }
-				}
-				
-				//// type2 DELETE MAIN STRING OF DONE DATA
-				if ($this->debug_dcom > 1) { echo 'extract_header_item: we can now clean $this->bs_rawstr of it '."\n"; }
-				$this->env_rawstr = substr($this->env_rawstr, ($end+2));
-				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
-				
-				if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $got_str ['.$got_str.']'.'</pre>'."\n\n"; }
-				return $got_str;
 			}
 			elseif ($data_type == 'paren_list')
 			{
@@ -3144,20 +3369,23 @@
 					if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): fallback, assuming next item is NIL '."\n"; }
 					$end = strpos($this->env_rawstr, ') NIL');
 				}
-				//echo 'extract_header_item('.__LINE__.'): $end is ['.serialize($end).']'."\n";
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $end is ['.serialize($end).']'."\n"; }
 				$start = 1;
 				// end
 				$slen = ($end-0) - $start;
 				$tmp_data['raw_str'] = substr($this->env_rawstr, $start, $slen);
-				//echo 'extract_header_item('.__LINE__.'): $tmp_data[raw_str] is ['.$tmp_data['raw_str'].']'."\n";
+				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): $tmp_data[raw_str] is ['.$tmp_data['raw_str'].']'."\n"; }
 				
 				//// type2 DELETE MAIN STRING OF DONE DATA
 				if ($this->debug_dcom > 1) { echo 'extract_header_item: before we process paren_list, clean $this->bs_rawstr of it '."\n"; }
 				$this->env_rawstr = substr($this->env_rawstr, ($end+2));
 				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
+				
 				//
 				$tmp_data['addys_exploded'] = explode(')(', $tmp_data['raw_str']);
-				//echo 'extract_header_item('.__LINE__.'): $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "\n"; }
+				//
+				
 				// loop to clean of leading and trailing quotes
 				$loops = count($tmp_data['addys_exploded']);
 				for ($i=0; $i < $loops ;$i++)
@@ -3174,7 +3402,7 @@
 					}
 					$tmp_data['addys_exploded'][$i] = $this_str;
 				}
-				//echo 'extract_header_item('.__LINE__.'): post-paren-strip $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): post-paren-strip $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "\n"; }
 				
 				// loop to make address object(s)
 				$loops = count($tmp_data['addys_exploded']);
@@ -3198,13 +3426,49 @@
 						&& ($this_str{2} == 'L'))
 						{
 							$tmp_data['addy_item'][$i][$x] = False;
-							//echo 'extract_header_item('.__LINE__.'): empty DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n";
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): empty DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n"; }
 							// chop this item from $this_str
 							$this_str = substr($this_str, 4);
-							//echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n";
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n"; }
 						}
-
-
+						elseif ($this_str{0} == '{')
+						{
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $this_str{0} is ['.htmlspecialchars($this_str{0}).'] so description_str STRING LITERAL data '."\n"; }
+							// handle literl SEQUENCE
+							$my_personal = '';
+							$start = 1;
+							$end = strpos($this_str, '}'."\r\n");
+							$slen = $end-$start;
+							$literal_len = substr($this_str, 1, $slen);
+							$literal_len = (int)trim($literal_len);
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $literal_len is ['.$literal_len.'] '."\n"; }
+							// chop up to start of literal data
+							$this_str = substr($this_str, ($end+3));
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): chopped interim NEW $this_str is: ['.$this_str."]\n"; }
+							// grab exact literal data
+							// find the first space at or after $literal_len
+							// multibyte strings throw the function substr off 
+							// we use OFFSET to start searching at $literal_len
+							$best_space_pos = strpos($this_str, ' ', $literal_len);
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $best_space_pos is ['.serialize($best_space_pos).'] '."\n"; }
+							if ($best_space_pos > $literal_len)
+							{
+								$end = $best_space_pos;
+							}
+							else
+							{
+								$end = $literal_len;
+							}
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): decide to use $end is ['.serialize($end).'] '."\n"; }
+							$my_personal = substr($this_str, 0, $end);
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): initial $my_personal ['.$my_personal.']'."\n"; }
+							// put the personal into out item holder
+							$tmp_data['addy_item'][$i][$x] = $my_personal;
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): FINAL DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n"; }
+							//// type2 DELETE MAIN STRING OF DONE DATA
+							$this_str = substr($this_str, ($end+1));
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n"; }
+						}
 						elseif ($x == 0)
 						{
 							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): in real life we know item 2 is always NIL'."\n"; }
@@ -3299,13 +3563,13 @@
 								}
 							}
 							$slen = ($end-0) - $start;
-							//echo 'extract_header_item('.__LINE__.'): $start ['.$start.'], $end ['.$end.'],  $slen ['.$slen.']'."\n";
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): $start ['.$start.'], $end ['.$end.'],  $slen ['.$slen.']'."\n"; }
 							// grab the data
 							$tmp_data['addy_item'][$i][$x] = substr($this_str, $start, $slen);
-							//echo 'extract_header_item('.__LINE__.'): DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n";
+							if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): DATA ITEM: $tmp_data[addy_item]['.$i.']['.$x.'] is ['.$tmp_data['addy_item'][$i][$x].']'."\n"; }
 							// strip the main string of the done data
 							$this_str = substr($this_str, $end+2);
-							//echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n";
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): NEW $this_str is ['.$this_str.']'."\n"; }
 						}
 						if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): loop check $i is ['.$i.'], $x is is ['.$x.']'."\n"; }
 					}
@@ -3356,12 +3620,9 @@
 					$next_pos = count($tmp_data['return_array']);
 					$tmp_data['return_array'][$next_pos] = $this_addy;
 				}
-				//if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): post-process $tmp_data[addy_item] DUMP: '.""; print_r($tmp_data['addy_item']); echo ""; }
-				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): final $tmp_data[return_array] DUMP: '.""; print_r($tmp_data['return_array']); echo ""; }
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): post-process $tmp_data[addy_item] DUMP: '.""; print_r($tmp_data['addy_item']); echo "\n"; }
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): final $tmp_data[return_array] DUMP: '.""; print_r($tmp_data['return_array']); echo "\n"; }
 				
-
-
-				//echo 'extract_header_item: FREAK OUT this not coded yet, line '.__LINE__."\n";
 				if ($this->debug_dcom > 0) { echo 'extract_header_item: LEAVING returning $tmp_data[return_array] ['.serialize($tmp_data['return_array']).']'.'</pre>'."\n\n"; }
 				return $tmp_data['return_array'];
 			}
@@ -3762,16 +4023,87 @@
 			$response_array = array();
 			// for some reason I get back an array with a single element, item $raw_response[0] which is the string I want to work with
 			$response_array = $this->imap_read_port($expecting);
-			//if ($this->debug_dcom > 2) { echo 'imap_sock.fetchbody('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
 			
 			// prepare the return data
-			// 1. pop off the element [0] because it looks like this:
+			// we know that first line will be like this
+			// * 97 FETCH (UID 131 BODY[1] {1230}
+			// BUT it is possible last elements are continuation data like this
+			//  * 97 FETCH (FLAGS (\Seen))
+			// which the server may feed to us before the command completion string
+			
+			//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): prep-FIRST eliminate trailing continuation data <br>'; }
+			// 1. pop off any trailing continuation data
+			// grab up to " FETCH (" inclusive
+			$end = strpos($response_array[0], ' FETCH (');
+			if ($end > 0)
+			{
+				$end = $end+8;
+				$continue_str = substr($response_array[0], 0, $end);
+				// it should be like this [* 97 FETCH (]
+				//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): $continue_str ['.$continue_str.'] <br>'; }
+				// loop 3 times max, just an arbitrary number, server ashould not feed too much of this
+				$loops = 3;
+				$lines_pos = count($response_array)-1;
+				for ($i=0; $i < $loops ;$i++)
+				{
+					// look backwards 3 times for any continuation data
+					$this_pos = $lines_pos - $i;
+					//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): $this_pos is ['.$this_pos.'], $response_array[$this_pos] is ['.htmlspecialchars($response_array[$this_pos]).']<br>'; }
+					//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): strstr($response_array[$this_pos], $continue_str) which is ['.htmlspecialchars(serialize(strstr($response_array[$this_pos], $continue_str))).']<br>'; }
+					if (strstr($response_array[$this_pos], $continue_str))
+					{
+						// pop off the last element which is continuation data
+						//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): pop off continuation data at $response_array['.$this_pos.'] which is ['.$response_array[$this_pos].']<br>'; }
+						array_pop($response_array);
+					}
+					else
+					{
+						// continuation data must be contiguous,
+						// so if none is here, none can be before this
+						break;
+					}
+				}
+				//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): after continuation data strip, $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			}
+			
+			//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): prep-SECOND shift off element 0 from the array <br>'; }
+			// 2. pop off the element [0] because it looks like this:
 			// * 97 FETCH (UID 131 BODY[1] {1230}
 			array_shift($response_array);
-			// 2. pop off the last element which is only the close paren to the open paren we just eliminated above
-			array_pop($response_array);
 			
-			// 3. each element is one line, implode them, they already have CRLF
+			//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): prep-THIRD pop off the closing paren <br>'; }
+			// 3. pop off the last element which is only the close paren to the open paren we just eliminated above
+			// usually last element is bare ")"
+			$lines_pos = count($response_array)-1;
+			if ($response_array[$lines_pos] == ')'."\r\n")
+			{
+				//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): DONE, simple prep-THIRD pop off the closing paren <br>'; }
+				array_pop($response_array);
+			}
+			else
+			{
+				// it *may* be possible the server put the close paren at the end of the last line
+				$this_line = $response_array[$lines_pos];
+				if (strlen($this_line) > 3)
+				{
+					// flip it backwards for easier comparison
+					$this_line = strrev($this_line);
+					if (($this_line{0} == "\n")
+					&& ($this_line{1} == "\r")
+					&& ($this_line{2} == ")"))
+					{
+						// remove the last 3 chars of this string
+						$response_array[$lines_pos] = substr($response_array[$lines_pos], 0, -3);
+						// replace the final CRLF
+						$response_array[$lines_pos] .= "\r\n";
+						//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): DONE, prep-THIRD, used complicated method of removing the paren fron within the last line of data <br>'; }
+					}
+				}
+			}
+			//if ($this->debug_dcom > 3) { echo 'imap_sock.fetchbody('.__LINE__.'): FINAL prepped, after array_shift and array_pop, $response_array DUMP: <pre>'; print_r($response_array); echo '</pre>';  }
+			
+			// 4. each element is one line, implode them, they already have CRLF
 			// AND RETURN IT
 			if ($this->debug_dcom > 0) { echo 'imap_sock.fetchbody('.__LINE__.'): LEAVING fetchbody, imploding then returning a string<br>'; }
 			return implode("", $response_array);
