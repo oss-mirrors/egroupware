@@ -294,7 +294,7 @@
 			'bg_color' => $GLOBALS['phpgw_info']['theme']['bg_color'],
 			'th_bg'    => $GLOBALS['phpgw_info']['theme']['th_bg'],
 			'left_next_matchs'   => $this->nextmatchs->left($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id"),
-			'lang_user_accounts' => lang("administrators for site $site_name"),
+			'lang_user_accounts' => lang("administrators for site %1",$site_name),
 			'right_next_matchs'  => $this->nextmatchs->right($url,$start,$total,"menuaction=jinn.uiacl.set_access_rights_sites&site_id=$site_id"),
 			'lang_loginid'       => $this->nextmatchs->show_sort_order($sort,'account_lid',$order,$url,lang('LoginID')),
 			'lang_lastname'      => $this->nextmatchs->show_sort_order($sort,'account_lastname',$order,$url,lang('last name')),
