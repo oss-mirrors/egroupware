@@ -26,16 +26,7 @@
 	} else {
 		$t = 'index';
 	}
-
-	if ($t == 'rview') {
-		if (isset($_GET['th']) || isset($_GET['goto'])) {
-			$t = $_GET['t'] = d_thread_view;
-		} else if (isset($_GET['frm_id'])) {
-			$t = $_GET['t'] = t_thread_view;
-		} else {
-			$t = $_GET['t'] = 'index';
-		}
-	} else if (preg_match('/[^A-Za-z0-9_]/', $t)) {
+	if (preg_match('/[^A-Za-z0-9_]/', $t)) {
 		$t = 'index';
 	}
 
@@ -47,6 +38,16 @@
 
 /*{PRE_HTML_PHP}*/
 /*{POST_HTML_PHP}*/
+
+	if ($t == 'rview') {
+		if (isset($_GET['th']) || isset($_GET['goto'])) {
+			$t = $_GET['t'] = d_thread_view;
+		} else if (isset($_GET['frm_id'])) {
+			$t = $_GET['t'] = t_thread_view;
+		} else {
+			$t = $_GET['t'] = 'index';
+		}
+	}
 
 	fud_use('err.inc');
 
