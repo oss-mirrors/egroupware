@@ -67,7 +67,8 @@
 
 	function print_list ($where_clause, $start, $returnto, &$content, &$error_msg)
 	{
-		$bm_cat            = $GLOBALS['bm_cat'];
+		$bm_cat            = $GLOBALS['HTTP_GET_VARS']['bm_cat'];
+		$bm_subcat         = $GLOBALS['HTTP_GET_VARS']['bm_subcat'];
 		$page_header_shown = $GLOBALS['page_header_shown'];
 
 		$list_tpl = $GLOBALS['phpgw']->template;
@@ -112,16 +113,21 @@
 			$filtermethod .= ' )';
 		}
 
-		$query = sprintf('select * from phpgw_bookmarks where %s',$filtermethod);
+		$query = sprintf('SELECT * FROM phpgw_bookmarks WHERE %s',$filtermethod);
 
 		if ($bm_cat)
 		{
 			$where_clause .= " bm_category='$bm_cat' ";
 		}
 
+		if ($bm_subcat)
+		{
+			$where_clause .= " AND bm_subcategory='$bm_subcat' ";
+		}
+
 		if ($where_clause)
 		{
-			$where_clause_sql = ' and ' . $where_clause;
+			$where_clause_sql = ' AND ' . $where_clause;
 		}
 		else
 		{

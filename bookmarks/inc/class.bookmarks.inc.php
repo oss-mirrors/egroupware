@@ -491,7 +491,7 @@
 
 		function get_totalbookmarks()
 		{
-			global $bm_cat;
+			global $bm_cat,$bm_subcat;
 
 			$filtermethod = '( bm_owner=' . $GLOBALS['phpgw_info']['user']['account_id'];
 			if (is_array($GLOBALS['phpgw']->bookmarks->grants))
@@ -503,19 +503,27 @@
 					$public_user_list[] = $user;
 				}
 				reset($public_user_list);
-				$filtermethod .= " OR (bm_access='public' AND bm_owner in(" . implode(',',$public_user_list) . ')))';
+				$filtermethod .= " OR (bm_access='public' AND bm_owner IN(" . implode(',',$public_user_list) . ')))';
 			}
 			else
 			{
 				$filtermethod .= ' )';
 			}
 
-			if ($bm_cat)
+			if ($bm_cat || $bm_subcat)
 			{
-				$filtermethod .= " and bm_category='$bm_cat' ";
+				if($bm_cat)
+				{
+					$filtermethod .= " AND bm_category='$bm_cat' ";
+				}
+				if($bm_subcat)
+				{
+					$filtermethod .= " AND bm_subcategory='$bm_subcat' ";
+				}
 			}
 
-			$GLOBALS['phpgw']->db->query("select count(*) from phpgw_bookmarks where $filtermethod",__LINE__,__FILE__);
+			$sql = "SELECT COUNT(bm_id) FROM phpgw_bookmarks WHERE $filtermethod";
+			$GLOBALS['phpgw']->db->query($sql,__LINE__,__FILE__);
 			$GLOBALS['phpgw']->db->next_record();
 
 			return $GLOBALS['phpgw']->db->f(0);
@@ -537,10 +545,10 @@
 	# used throughout the application.
 	class bookmarker_class
 	{
-		var $version        = "2.8.0";
+		var $version        = '2.8.0';
 
 		# directory where templates are located on this server
-		var $template_dir   = "./lib/templates";
+		var $template_dir   = './lib/templates';
 
 		# image URL - string added to the begining of an image file
 		# (for example, I set this to "./images/" which makes bookmarker

@@ -29,10 +29,10 @@
 	));
 	app_header(&$GLOBALS['phpgw']->template);
 
-	$GLOBALS['phpgw']->template->set_var('list_mass_select_form',$GLOBALS['phpgw']->link('/bookmarks/mass_maintain.php'));
-	$GLOBALS['phpgw']->template->set_var('lang_massupdate',lang('Mass update:'));
-	$GLOBALS['phpgw']->template->set_var('massupdate_delete_icon','<input type="image" name="delete" border="0" src="' . PHPGW_IMAGES . '/delete.gif">');
-	$GLOBALS['phpgw']->template->set_var('massupdate_mail_icon','<input type="image" name="mail" border="0" src="' . PHPGW_IMAGES . '/mail.gif">');
+//	$GLOBALS['phpgw']->template->set_var('list_mass_select_form',$GLOBALS['phpgw']->link('/bookmarks/mass_maintain.php'));
+//	$GLOBALS['phpgw']->template->set_var('lang_massupdate',lang('Mass update:'));
+//	$GLOBALS['phpgw']->template->set_var('massupdate_delete_icon','<input type="image" name="delete" border="0" src="' . PHPGW_IMAGES . '/delete.gif">');
+//	$GLOBALS['phpgw']->template->set_var('massupdate_mail_icon','<input type="image" name="mail" border="0" src="' . PHPGW_IMAGES . '/mail.gif">');
 
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('messages',lang('Tree view'));
@@ -101,7 +101,7 @@
 		while ($sub = @each($subs))
 		{
 			$shown[] = $sub['value']['id'];
-			$tree[] = '..' . '<a href="' . $GLOBALS['phpgw']->link('/bookmarks/list.php','bm_cat='
+			$tree[] = '..' . '<a href="' . $GLOBALS['phpgw']->link('/bookmarks/list.php','bm_cat=' . $cat[1]['id'] . '&bm_subcat='
 				. $sub['value']['id']) . '">' . $sub['value']['name'] . '</a>' . '|';
 			$db2->query("select * from phpgw_bookmarks where bm_subcategory='" . $sub['value']['id'] . "' order by bm_name, bm_url",__LINE__,__FILE__);
 			while ($db2->next_record())

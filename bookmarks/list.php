@@ -32,9 +32,10 @@
 	if (! is_array($location_info))
 	{
 		$location_info = array(
-			'start'    => 0,
-			'bm_cat'   => $bm_cat,
-			'returnto' => 'list.php'
+			'start'     => 0,
+			'bm_cat'    => $bm_cat,
+			'bm_subcat' => $bm_subcat,
+			'returnto'  => 'list.php'
 		);
 		$GLOBALS['phpgw']->bookmarks->save_session_data($location_info);
 	}
@@ -42,12 +43,13 @@
 	if (! $start && $start != 0)
 	{
 		$start = $location_info['start'];
-		if ($bm_cat)
+		if ($bm_cat || $bm_subcat)
 		{
 			$location_info = array(
-				'start'    => $start,
-				'bm_cat'   => $bm_cat,
-				'returnto' => 'list.php'
+				'start'     => $start,
+				'bm_cat'    => $bm_cat,
+				'bm_subcat' => $bm_subcat,
+				'returnto'  => 'list.php'
 			);
 			$GLOBALS['phpgw']->bookmarks->save_session_data($location_info);
 		}
@@ -55,9 +57,10 @@
 	else
 	{
 		$location_info = array(
-			'start'    => $start,
-			'bm_cat'   => $bm_cat,
-			'returnto' => 'list.php'
+			'start'     => $start,
+			'bm_cat'    => $bm_cat,
+			'bm_subcat' => $bm_subcat,
+			'returnto'  => 'list.php'
 		);
 		$GLOBALS['phpgw']->bookmarks->save_session_data($location_info);
 	}
@@ -84,8 +87,8 @@
 		'IMAGE_EXT'        => $bookmarker->image_ext
 	));
 
-	$GLOBALS['phpgw']->template->set_var(next_matchs_left,  $GLOBALS['phpgw']->nextmatchs->left('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat));
-	$GLOBALS['phpgw']->template->set_var(next_matchs_right, $GLOBALS['phpgw']->nextmatchs->right('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat));
+	$GLOBALS['phpgw']->template->set_var('next_matchs_left',  $GLOBALS['phpgw']->nextmatchs->left('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat . '&bm_subcat=' . $bm_subcat));
+	$GLOBALS['phpgw']->template->set_var('next_matchs_right', $GLOBALS['phpgw']->nextmatchs->right('/bookmarks/list.php',$start,$total_bookmarks,'&bm_cat=' . $bm_cat . '&bm_subcat=' . $bm_subcat));
 
 	if ($total_bookmarks > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 	{
@@ -106,7 +109,7 @@
 	// Use appsession() to remeber the return page,instead of always passing it ?
 	print_list($where_clause,$start,"list.php----start=$start",&$bookmark_list,&$error_msg);
 
-	$GLOBALS['phpgw']->template->set_var(BOOKMARK_LIST, $bookmark_list);
+	$GLOBALS['phpgw']->template->set_var('BOOKMARK_LIST', $bookmark_list);
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
