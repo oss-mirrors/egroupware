@@ -49,20 +49,25 @@ function email_format($data)
 	return str_replace(array('.', '@'), array(' dot ', ' at '), $data);
 }
 
-/* build html encoding list */
-for ($i = 8; $i < 48; $i++) {
-	$e[chr($i)] = '&#' . $i . ';';
+function multi_id($data)
+{
+	$list = explode(',', $data);
+	$out = array();
+	foreach ($list as $v) {
+		$out[] = (int) $v;
+	}
+	return implode(',', $out);
 }
-for ($i = 60; $i < 65; $i++) {
-	$e[chr($i)] = '&#' . $i . ';';
+
+$enc_src = array('<br>', '&', "\r", '&nbsp;', '<', '>', chr(0));
+$enc_dst = array('<br />', '&amp;', '&#13;', ' ', '&lt;', '&gt;', '&#0;');
+
+function fud_xml_encode($str)
+{
+	return str_replace($GLOBALS['enc_src'], $GLOBALS['enc_dst'], $str);
 }
-for ($i = 92; $i < 97; $i++) {
-	$e[chr($i)] = '&#' . $i . ';';
-}
-for ($i = 123; $i < 256; $i++) {
-	$e[chr($i)] = '&#' . $i . ';';
-}
-unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
+
+	$charset = '{TEMPLATE: rdf_CHARSET}';
 
 /*{POST_HTML_PHP}*/
 
@@ -86,7 +91,7 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 	$basic_rss_data = $basic_rss_header = $join = '';
 	switch ($mode) {
 		case 'm':
-			$lmt = " m.apr=1";
+			$lmt = " t.moved_to=0 AND m.apr=1";
 			/* check for various supported limits
 			 * cat		- category
 			 * frm		- forum
@@ -100,16 +105,16 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 			 * basic	- output basic info parsable by all rdf parsers
 			 */
 			if (isset($_GET['cat'])) {
-			 	$lmt .= ' AND f.cat_id='.(int)$_GET['cat'];
+			 	$lmt .= ' AND f.cat_id IN('.multi_id($_GET['cat']).')';
 			}
 			if (isset($_GET['frm'])) {
-			 	$lmt .= ' AND t.forum_id='.(int)$_GET['frm'];
+			 	$lmt .= ' AND t.forum_id IN('.multi_id($_GET['frm']).')';
 			}
 			if (isset($_GET['th'])) {
-				$lmt .= ' AND m.thread_id='.(int)$_GET['th'];
+				$lmt .= ' AND m.thread_id IN('.multi_id($_GET['th']).')';
 			}
 			if (isset($_GET['id'])) {
-			 	$lmt .= ' AND m.id='.(int)$_GET['id'];
+			 	$lmt .= ' AND m.id IN('.multi_id($_GET['id']).')';
 			}
 			if (isset($_GET['ds'])) {
 				$lmt .= ' AND m.post_stamp >='.(int)$_GET['ds'];
@@ -117,8 +122,12 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 			if (isset($_GET['de'])) {
 				$lmt .= ' AND m.post_stamp <='.(int)$_GET['de'];
 			}
-			if ($lmt == " m.apr=1") {
-				$lmt .= ' AND m.post_stamp >= ' . (time() - 86400 * 5);
+			/* This is an optimization so that the forum does not need to 
+			 * go through the entire message db to fetch latest messages.
+			 * So, instead we set an arbitrary search limit if 5 days.
+			 */
+			if (isset($_GET['l']) && $lmt == " t.moved_to=0 AND m.apr=1") {
+				$lmt .= ' AND t.last_post_date >=' . (__request_timestamp__ - 86400 * 5);
 			}
 
 			if ($FUD_OPT_2 & 33554432) {
@@ -158,7 +167,7 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 			while ($r = db_rowobj($c)) {
 				if (!$res) {
 					header('Content-Type: text/xml');
-					echo '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+					echo '<?xml version="1.0" encoding="'.$charset.'"?>' . "\n";
 					if ($basic) {
 						echo '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:admin="http://webns.net/mvcb/" xmlns="http://purl.org/rss/1.0/">';
 
@@ -184,7 +193,7 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 				}
 
 				if ($basic) {
-					$body = strtr(read_msg_body($r->foff, $r->length, $r->file_id), $e);
+					$body = fud_xml_encode(read_msg_body($r->foff, $r->length, $r->file_id));
 
 $basic_rss_header .= "\t\t\t<rdf:li rdf:resource=\"".$WWW_ROOT."index.php?t=rview&amp;goto=".$r->id."&amp;th=".$r->thread_id."\" />\n";
 
@@ -216,7 +225,7 @@ $basic_rss_data .= '
 ';
 					if ($r->attach_cnt && $r->attach_cache) {
 						$al = @unserialize($r->attach_cache);
-						if (is_array($al) && @count($al)) {
+						if (!empty($al)) {
 							echo '<content:items><rdf:Bag>';
 							foreach ($al as $a) {
 								echo '<rdf:li>
@@ -235,7 +244,7 @@ $basic_rss_data .= '
 						echo '<content:items><rdf:Bag><poll_name>'.sp($r->poll_name).'</poll_name><total_votes>'.$r->total_votes.'</total_votes>';
 						if ($r->poll_cache) {
 							$pc = @unserialize($r->poll_cache);
-							if (is_array($pc) && count($pc)) {
+							if (!empty($pc)) {
 								foreach ($pc as $o) {
 									echo '<rdf:li>
 										<content:item rdf:about="poll_opt">
@@ -266,15 +275,15 @@ $basic_rss_data .= '
 			 * n		- number of rows to get
 			 * l		- latest
 			 */
-			$lmt = " m.apr=1";
+			$lmt = " t.moved_to=0 AND m.apr=1";
 			if (isset($_GET['cat'])) {
-			 	$lmt .= ' AND f.cat_id='.(int)$_GET['cat'];
+				$lmt .= ' AND f.cat_id IN('.multi_id($_GET['cat']).')';
 			}
 			if (isset($_GET['frm'])) {
-			 	$lmt .= ' AND t.forum_id='.(int)$_GET['frm'];
+				$lmt .= ' AND t.forum_id IN('.multi_id($_GET['frm']).')';
 			}
 			if (isset($_GET['id'])) {
-			 	$lmt .= ' AND t.id='.(int)$_GET['id'];
+			 	$lmt .= ' AND t.id IN ('.multi_id($_GET['id']).')';
 			}
 			if (isset($_GET['ds'])) {
 				$lmt .= ' AND t.last_post_date >='.(int)$_GET['ds'];
@@ -282,6 +291,15 @@ $basic_rss_data .= '
 			if (isset($_GET['de'])) {
 				$lmt .= ' AND t.last_post_date <='.(int)$_GET['de'];
 			}
+
+			/* This is an optimization so that the forum does not need to 
+			 * go through the entire message db to fetch latest messages.
+			 * So, instead we set an arbitrary search limit if 5 days.
+			 */
+			if (isset($_GET['l']) && $lmt == " t.moved_to=0 AND m.apr=1") {
+				$lmt .= ' AND t.last_post_date >=' . (__request_timestamp__ - 86400 * 5);
+			}
+
 			if ($FUD_OPT_2 & 33554432) {
 				if ($RDF_AUTH_ID) {
 					$join = '	INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=2147483647 AND g1.resource_id=f.id
@@ -314,7 +332,7 @@ $basic_rss_data .= '
 			while ($r = db_rowobj($c)) {
 				if (!$res) {
 					header('Content-Type: text/xml');
-					echo '<?xml version="1.0" encoding="utf-8"?>
+					echo '<?xml version="1.0" encoding="'.$charset.'"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns="http://purl.org/rss/1.0/">
 <channel rdf:about="'.__ROOT__.'">
 	<title>'.$FORUM_TITLE.' RDF feed</title>
@@ -403,7 +421,7 @@ $basic_rss_data .= '
 			while ($r = db_rowobj($c)) {
 				if (!$res) {
 					header('Content-Type: text/xml');
-					echo '<?xml version="1.0" encoding="utf-8"?>
+					echo '<?xml version="1.0" encoding="'.$charset.'"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns="http://purl.org/rss/1.0/">
 <channel rdf:about="'.__ROOT__.'">
 	<title>'.$FORUM_TITLE.' RDF feed</title>
