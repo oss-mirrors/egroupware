@@ -97,13 +97,13 @@
 			//_debug_array($instances_data);
 			// show table headers
 			$this->t->set_var(array(
-				'header_id'				=> $this->nextmatchs->show_sort_order($this->sort, 'instance_id', $this->order, 'index.php', lang('id')),
-				'header_owner'			=> $this->nextmatchs->show_sort_order($this->sort, 'owner', $this->order, 'index.php', lang('Owner')),
-				'header_inst_status'	=> $this->nextmatchs->show_sort_order($this->sort, 'status', $this->order, 'index.php', lang('Inst. Status')),
+				'header_id'				=> $this->nextmatchs->show_sort_order($this->sort, 'wf_instance_id', $this->order, 'index.php', lang('id')),
+				'header_owner'			=> $this->nextmatchs->show_sort_order($this->sort, 'wf_owner', $this->order, 'index.php', lang('Owner')),
+				'header_inst_status'	=> $this->nextmatchs->show_sort_order($this->sort, 'wf_status', $this->order, 'index.php', lang('Inst. Status')),
 				'header_process'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_procname', $this->order, 'index.php', lang('Process')),
-				'header_activity'		=> $this->nextmatchs->show_sort_order($this->sort, 'name', $this->order, 'index.php', lang('Activity')),
-				'header_user'			=> $this->nextmatchs->show_sort_order($this->sort, 'user', $this->order, 'index.php', lang('User')),
-				'header_act_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'act_status', $this->order, 'index.php', lang('Act. Status')),
+				'header_activity'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_name', $this->order, 'index.php', lang('Activity')),
+				'header_user'			=> $this->nextmatchs->show_sort_order($this->sort, 'wf_user', $this->order, 'index.php', lang('User')),
+				'header_act_status'		=> $this->nextmatchs->show_sort_order($this->sort, 'wf_act_status', $this->order, 'index.php', lang('Act. Status')),
 			));
 			$this->t->set_block('user_instances', 'block_list_instances', 'list_instances');
 			foreach ($instances_data as $instance)
