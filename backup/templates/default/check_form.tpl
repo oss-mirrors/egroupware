@@ -28,7 +28,7 @@ if	test -e {server_root}/backup/phpgw_start_backup.daily ; then
 		rm /etc/cron.monthly/phpgw_start_backup.monthly ;
 		echo -e -n "\nremoved script for monthly backup of the phpgroupware data from the cron.monthly dir\n" ;
 	fi
-else echo -e -n "\nno script for daily backup of the phpgroupware data\n" ;
+# else echo -e -n "\nno script for daily backup of the phpgroupware data\n" ;
 fi
 
 # check for weekly backup-file
@@ -46,7 +46,7 @@ if test -e {server_root}/backup/phpgw_start_backup.weekly ; then
 		rm /etc/cron.monthly/phpgw_start_backup.monthly ;
 		echo -e -n "\nremoved script for monthly backup of the phpgroupware data from the cron.monthly dir\n" ;
 	fi
-else echo -e -n "no script for weekly backup of the phpgroupware data\n";
+# else echo -e -n "no script for weekly backup of the phpgroupware data\n";
 fi
 
 # check for monthly backup-file
@@ -64,7 +64,7 @@ if test -e {server_root}/backup/phpgw_start_backup.monthly ; then
 		rm /etc/cron.weekly/phpgw_start_backup.weekly ;
 		echo -e -n "\nremoved script for weekly backup of the phpgroupware data from the cron.weekly dir\n" ;
 	fi
-else echo -e -n "no script for monthly backup of the phpgroupware data\n";
+# else echo -e -n "no script for monthly backup of the phpgroupware data\n";
 fi
 
 # check for delete backup-files
