@@ -68,7 +68,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 */
 
    $tr_color = $phpgw_info["theme"]["row_off"];
-   $phpgw->query->("select * from f_forums where cat_id=$cat_id");
+   $phpgw->db->query("select * from f_forums where cat_id=$cat_id");
    while($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $for_id = $phpgw->db->f("id");
