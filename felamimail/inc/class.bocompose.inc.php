@@ -524,7 +524,10 @@
 				while(list($key,$value) = @each($this->sessionData['attachments']))
 				{
 					#print "$key: ".$value['file']."<br>";
-					unlink($value['file']);
+					if (!empty($value['file']))	// happens when forwarding mails
+					{
+						unlink($value['file']);
+					}
 				}
 			}
 
