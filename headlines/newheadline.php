@@ -65,7 +65,7 @@
 
 		if($n_cachetime && !ereg('^[0-9]+$',$n_cachetime))
 		{
-			$errors[] = lang('You can only enter numbers minutes bewteen refresh');
+			$errors[] = lang('You can only enter numbers minutes between refresh');
 		}
 
 		$GLOBALS['phpgw']->db->query("select display from phpgw_headlines_sites where base_url='"
