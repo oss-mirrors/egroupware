@@ -372,7 +372,7 @@
 			// if not supplied anywhere, then INBOX is the assumed default value for "folder"
 			
 			// *update* "folder" obtains it's value from (1) args_array, (2) fldball, (3) msgball, (4) default "INBOX"
-			'folder',
+			'folder'
 			
 			// which email account is the object of this operation
 			// *update* now in fldball
@@ -544,6 +544,8 @@
 		// so by now, WE HAVE AN ACCT NUM
 		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: POST "grab_class_args_gpc": $this->get_acctnum() returns: '.serialize($this->get_acctnum()).'<br>'; }
 		
+		/*
+		// disable this for the moment, will re-enable it later
 		// attempt to reuse an existing stream
 		if (($this->reuse_existing_obj == True)
 		&& ($this->is_logged_in() == True))
@@ -607,7 +609,7 @@
 			{
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: already loggedin but need to change (reopen) folder from ['.$current_folder.'] to this ['.$desired_folder.']<br>';}
 				// switch to the desired folder now that we are sure we have it's official name
-				$did_reopen = $this->a[$this->acctnum]['dcom']->reopen($reopen_mailsvr_stream, $reopen_mailsvr_callstr.$this->get_arg_value('folder'), '');
+				$did_reopen = $this->a[$this->acctnum]['dcom']->reopen($reopen_mailsvr_stream, $reopen_mailsvr_callstr.$desired_folder, '');
 				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: already loggedin but reopening, reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				$ok_to_exit = $did_reopen;
@@ -635,6 +637,7 @@
 				if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: *NOT* Leaving! "re-use existing" Failed, change folder didnot work, or some other error... continue on with "begin request"<br>';}
 			}
 		}
+		*/
 		
 		// ===  we are here ONLY if creating NO OBJECT mail_msg exists  =====
 		// === or we are Not Already Logged In?  =====
