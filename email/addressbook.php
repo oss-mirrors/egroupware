@@ -33,12 +33,15 @@
     $t->set_var('bg_color',$phpgw_info["theme"]["bg_color"]);
     $t->set_var('lang_addressbook_action',lang('Address book'));
     $t->set_var('font',$phpgw_info["theme"]["font"]);  
+
     $t->set_var('lang_search',lang('Search'));
-    $t->set_var('searchurl',$phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php"));
+    $t->set_var('searchurl',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/addressbook.php'));
     $t->set_var('lang_select_cats',lang('Select category'));
 
     if (! $start) { $start = 0; }
   
+    if (!$filter) { $filter = 'none'; }
+
     if (!$cat_id) {
         if ($filter == 'none') { $qfilter  = 'tid=n'; }
         elseif ($filter == 'private') { $qfilter  = 'tid=n,owner='.$phpgw_info["user"]["account_id"]; }
@@ -59,8 +62,8 @@
 
     $cols = array('n_given'     => 'n_given',
 		  'n_family'    => 'n_family',
-		  'd_email'     => 'd_email',
-		  'd_emailtype' => 'd_emailtype');
+		  'email'     => 'email',
+		  'email_type' => 'email_type');
 
     $entries = $d->read($start,$offset,$cols,$query,$qfilter,$sort,$order,$account_id);
 
@@ -98,9 +101,9 @@
 	if (!$firstname) { $firstname = "&nbsp;"; }
 	$lastname = $entries[$i]['n_family'];
 	if (!$lastname) { $lastname = "&nbsp;"; }
-	$etype = $entries[$i]['d_emailtype'];
+	$etype = $entries[$i]['email_type'];
 	$id    = $entries[$i]['id'];
-	$email = $entries[$i]['d_email'];
+	$email = $entries[$i]['email'];
 
 // --------------------- template declaration for list records --------------------------
 
