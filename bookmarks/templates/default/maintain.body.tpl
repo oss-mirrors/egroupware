@@ -40,8 +40,21 @@
  </tr>
  <tr>
    <td>Date Added</td>
-   <td><strong>{ADDED}</strong>
+   <td><strong>{ADDED}&nbsp;</strong>
        <input type=hidden name=added value="{ADDED}"></td>
+ </tr>
+ 
+ <tr>
+   <td>Date Last visted</td>
+   <td><strong>{VISTED}&nbsp;</strong>
+       <input type=hidden name=added value="{VISTED}"></td>
+ </tr>
+
+ <tr>
+   <td>Date Last updated</td>
+   <td><strong>{UPDATED}&nbsp;</strong>
+ </tr>
+
  <tr>
   <td colspan=2 align=right>
    <input type="image" name="bk_delete" title="Delete Bookmark" src="{IMAGE_URL_PREFIX}delete.{IMAGE_EXT}" border=0 width=17 height=16>
