@@ -17,12 +17,10 @@ function ses_update_status($ses_id, $str=null, $forum_id=0, $ret='')
 
 function ses_putvar($ses_id, $data)
 {
-	$cond = is_int($ses_id) ? 'id='.$ses_id : "ses_id='".$ses_id."'";
-
 	if (empty($data)) {
-		q('UPDATE {SQL_TABLE_PREFIX}ses SET data=NULL WHERE '.$cond);
+		q('UPDATE {SQL_TABLE_PREFIX}ses SET data=NULL WHERE id='.$ses_id);
 	} else {
-		q("UPDATE {SQL_TABLE_PREFIX}ses SET data='".addslashes(serialize($data))."' WHERE ".$cond);
+		q("UPDATE {SQL_TABLE_PREFIX}ses SET data='".addslashes(serialize($data))."' WHERE id=".$ses_id);
 	}
 }
 ?>

@@ -536,7 +536,6 @@
 		'phpgw_fud_ses' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'ses_id' => array('type' => 'varchar','precision' => '32','nullable' => False,'default' => '0'),
 				'user_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
 				'action' => array('type' => 'varchar','precision' => '255'),
 				'forum_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
@@ -547,7 +546,7 @@
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array(array('time_sec', 'user_id')),
-			'uc' => array(array('ses_id'), array('user_id'))
+			'uc' => array('user_id')
 		),
 		'phpgw_fud_smiley' => array(
 			'fd' => array(

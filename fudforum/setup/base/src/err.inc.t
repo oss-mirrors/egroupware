@@ -12,10 +12,6 @@
 
 function error_dialog($title, $msg, $level='WARN', $ses=null)
 {
-	if (!$ses) {
-		$ses = (int) $GLOBALS['usr']->sid;
-	}
-
 	$error_msg = '[Error] '.$title.'<br />';
 	$error_msg .= '[Message Sent to User] '.trim($msg).'<br />';
 	$error_msg .= '[User IP] '.get_ip().'<br />';
@@ -29,7 +25,7 @@ function error_dialog($title, $msg, $level='WARN', $ses=null)
 	}
 	error_log('['.gmdate('D M j G:i:s T Y', __request_timestamp__).'] '.base64_encode($error_msg)."\n", 3, $GLOBALS['ERROR_PATH'].'fud_errors');
 
-	ses_putvar($ses, array('er_msg' => $msg, 'err_t' => $title));
+	ses_putvar($GLOBALS['usr']->sid, array('er_msg' => $msg, 'err_t' => $title));
 
 	if (is_int($ses)) {
 		header('Location: {ROOT}?t=error&'._rsidl);

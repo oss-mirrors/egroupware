@@ -22,22 +22,22 @@ function init_user()
 		q("DELETE FROM {SQL_TABLE_PREFIX}ses WHERE time_sec+".$GLOBALS['phpgw_info']['server']['sessions_timeout']." < ".__request_timestamp__);
 	}
 
-	$u = db_sab("SELECT s.id AS sid, s.ses_id, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=(CASE WHEN s.user_id>2000000000 THEN 1 ELSE s.user_id END) INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.ses_id='".$phpgw['sessionid']."'");
+	$u = db_sab("SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=(CASE WHEN s.user_id>2000000000 THEN 1 ELSE s.user_id END) INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.user_id=".(int)$phpgw['account_id']);
 	if (!$u) {
 		/* registered user */
 		if ($phpgw['account_lid'] != $GLOBALS['ANON_NICK']) {
 			/* this means we do not have an entry for this user in the sessions table */
 			if (!$u) {
 				$uid = q_singleval("SELECT id FROM {SQL_TABLE_PREFIX}users WHERE egw_id=".(int)$phpgw['account_id']);
-				$id = db_qid("INSERT INTO {SQL_TABLE_PREFIX}ses (ses_id, user_id, time_sec) VALUES('".$phpgw['sessionid']."', ".$uid.", ".__request_timestamp__.")");
-				$u = db_sab('SELECT s.id AS sid, s.ses_id, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=s.user_id INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
+				$id = db_qid("INSERT INTO {SQL_TABLE_PREFIX}ses (user_id, time_sec) VALUES(".$uid.", ".__request_timestamp__.")");
+				$u = db_sab('SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=s.user_id INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
 			}
 			q('UPDATE {SQL_TABLE_PREFIX}users SET last_visit='.__request_timestamp__.' WHERE id='.$u->id);
 		} else { /* anonymous user */
 			do {
 				$uid = 2000000000 + mt_rand(1, 147483647);
-			} while (!($id = db_li("INSERT INTO {SQL_TABLE_PREFIX}ses (ses_id, time_sec, user_id) VALUES ('".$phpgw['sessionid']."', ".__request_timestamp__.", ".$uid.")", $ef, 1)));
-			$u = db_sab('SELECT s.id AS sid, s.ses_id, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=1 INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
+			} while (!($id = db_li("INSERT INTO {SQL_TABLE_PREFIX}ses (time_sec, user_id) VALUES (".__request_timestamp__.", ".$uid.")", $ef, 1)));
+			$u = db_sab('SELECT s.id AS sid, s.data, s.returnto, t.id AS theme_id, t.lang, t.name AS theme_name, t.locale, t.theme, t.pspell_lang, t.theme_opt, u.alias, u.posts_ppg, u.time_zone, u.sig, u.last_visit, u.last_read, u.cat_collapse_status, u.users_opt, u.ignore_list, u.ignore_list, u.buddy_list, u.id, u.group_leader_list, u.email, u.login FROM {SQL_TABLE_PREFIX}ses s INNER JOIN {SQL_TABLE_PREFIX}users u ON u.id=1 INNER JOIN {SQL_TABLE_PREFIX}themes t ON t.id=u.theme WHERE s.id='.$id);
 		}
 	}
 	/* grant admin access */
