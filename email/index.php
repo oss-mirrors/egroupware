@@ -13,238 +13,189 @@
 
   /* $Id$ */
 
-  if(empty($folder)){ $folder="INBOX"; }
+	if(empty($folder)){ $folder="INBOX"; }
 
-  Header("Cache-Control: no-cache");
-  Header("Pragma: no-cache");
-  Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
+	Header("Cache-Control: no-cache");
+	Header("Pragma: no-cache");
+	Header("Expires: Sat, Jan 01 2000 01:01:01 GMT");
   
-  $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True, "enable_nextmatchs_class" => True);
-  if (isset($newsmode) && $newsmode == "on"){$phpgw_info["flags"]["newsmode"] = True;}
-  include("../header.inc.php");
+	$phpgw_info["flags"] = array(
+		'currentapp' => 'email', 
+		'enable_network_class' => True, 
+		'enable_nextmatchs_class' => True);
+	
+	if (isset($newsmode) && $newsmode == "on")
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
+	
+	include("../header.inc.php");
 
-  @set_time_limit(0);
-?>
+	@set_time_limit(0);
+	
+	$t = new Template($phpgw->common->get_tpl_dir('email'));
+	$t->set_file(array(		
+		'any_deleted' => 'any_deleted.tpl',
+		'delmov_init' => 'delmov_init.tpl',
+		'email_index' => 'email_index.tpl',
+	));
+	
+	// ---- lang var for checkbox javascript  -----
+	$t->set_var('select_msg',lang('Please select a message first'));
 
-<script>
+	// ---- report on number of messages deleted (if any)  -----
+	if ($td)
+	{
+		if ($td == 1) 
+		{
+			$num_deleted = lang("1 message has been deleted",$td);
+		} else {
+			$num_deleted = lang("x messages have been deleted",$td);
+		}
+		// template only outputs if msgs were deleted, otherwise skipped
+		$t->set_var('num_deleted',$num_deleted);
+		$t->parse('report_deleted','any_deleted',True);
+	}
+	else
+	{
+		// nothing deleted, so template gets blank string
+		$t->set_var('report_deleted',' ');
+	}
+	
+	// ----  Previous and Next arrows navigation  -----
+	$nummsg = $phpgw->msg->num_msg($mailbox);
+	if (! $start)
+	{
+		$start = 0;
+	}
+	
+	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+					$start,$nummsg,
+					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder));
 
-function do_action(act)
-{
-  flag = 0;
-  for (i=0; i<document.delmov.elements.length; i++) {
-      //alert(document.delmov.elements[i].type);
-      if (document.delmov.elements[i].type == "checkbox") {
-         if (document.delmov.elements[i].checked) {
-            flag = 1;
-         }
-      }
-   }
-   if (flag != 0) {
-      document.delmov.what.value = act;
-      document.delmov.submit();
-   } else {
-      alert("<?php echo lang("Please select a message first")."."; ?>");
-      document.delmov.tofolder.selectedIndex = 0;
-   }
-}
+	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
+					$start,$nummsg,
+					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder));
 
-function check_all()
-{
-  for (i=0; i<document.delmov.elements.length; i++) {
-      if (document.delmov.elements[i].type == "checkbox") {
-         if (document.delmov.elements[i].checked) {
-            document.delmov.elements[i].checked = false;
-         } else {
-            document.delmov.elements[i].checked = true;
-         }
-      } 
-  }
-}
+	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
+	$t->set_var('prev_arrows',$td_prev_arrows);
+	$t->set_var('next_arrows',$td_next_arrows);
 
-</script>
-<?php
-  if ($td) {
-     if ($td == 1) {
-        echo "<p><center>" . lang("1 message has been deleted",$td) . "</center>";
-     } else {
-        echo "<p><center>" . lang("x messages have been deleted",$td) . "</center>";
-     }
-  }
-?>
+	// ----  Folder Stats,  SwitchTo Folder Listbox,  and Folder Button  -----
+	if ($sort == "ASC") {
+		$oursort = 0;
+	} else {
+		$oursort = 1;
+	}
 
+	if (!isset($order))
+	{
+		// Only do this on first visit to the app, where order should depend on prefs date order
+		$order = 0;
+		if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") 
+		{
+			$oursort = 1;
+		} else {
+			$oursort = 0;
+		}
+	}
 
-<form name="switchbox" action="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php')?>" method="post">
- <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-  <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
-    <td>&nbsp;</td>
-<?php
-#     $out = $nummsg == 1 ? " ".lang("message") : " ".lang("messages");
-#     echo $out;
+	$mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
-      $nummsg = $phpgw->msg->num_msg($mailbox);
+	if ($folder != "INBOX")
+	{
+		$t_folder_s = $phpgw->msg->construct_folder_str($folder);
+	} else {
+		$t_folder_s = "INBOX";
+	}
+	
+	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+	{
+ 		/* IMAP over SSL */
+		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}$t_folder_s", SA_UNSEEN);
+	} else {
+		/* No SSL, normal connection */
+		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["server"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
+	}
 
-      if (! $start)
-         $start = 0;
+	if ($nummsg > 0) 
+	{
+		$msg_array = array();
+		// Note: sorting on email is on address, not displayed name per php imap_sort
+		//echo "<br>SORT GOT: column '$order', '$oursort'.";
+		$msg_array = $phpgw->msg->sort($mailbox, $order, $oursort);
+		$stats_new = $mailbox_status->unseen;
+		$ksize = round(10*($mailbox_info->Size/1024))/10;
+	} else {
+		$stats_new = '-';
+		$ksize = '-';
+	}
 
-     echo $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',$start,$nummsg,"&sort=$sort&order=$order"
-                                 . "&folder=" . urlencode($folder));
+	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" 
+	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" 
+	  || $phpgw_info["flags"]["newsmode"])
+	{
+		$folder_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
+				. '<option value="INBOX">' . lang('switch current folder to') . ':' .'</option>'
+				. list_folders($mailbox,$folder,False)
+				. '</select>';
+	} else {
+		$folder_listbox = '&nbsp';
+	}
+	
+	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" 
+	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" )
+	{
+		$folder_button = '<input type="button" value="' . lang("folder") . '" onClick="'
+				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php',
+				'folder=' .urlencode($folder)) . '\'">';
+	} else {
+		$folder_button = '&nbsp';
+	}
+		
+	$t->set_var('switchbox_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php'));
+	$t->set_var('stats_backcolor',$phpgw_info['theme']['em_folder']);
+	$t->set_var('stats_font',$phpgw_info['theme']['font']);
+	$t->set_var('stats_color',$phpgw_info['theme']['em_folder_text']);
+	$t->set_var('stats_folder',$folder);
+	$t->set_var('stats_saved',$nummsg);
+	$t->set_var('stats_new',$stats_new);
+	$t->set_var('stats_size',$ksize);	
+	$t->set_var('folder_listbox',$folder_listbox);
+	$t->set_var('folder_button',$folder_button);
 
-     echo "<td>&nbsp;</td>";
+	// ----  Form delmov Intialization  -----
+	// ----  FUTURE:  will be moved inside the table and occur only 1st loop through (FIXME)  -----
+	$t->set_var('delmov_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php'));
+	$t->set_var('current_folder',$folder);
+	$t->parse('form_delmov_init','delmov_init',True);
+	
+	// ----  Message List Table Headers  -----
+	  /*
+	     Sorting defs:
+	     SORTDATE:  0
+	     SORTFROM:  2
+	     SORTSUBJECT: 3
+	     SORTSIZE:  6
+	  */
+	if ($newsmode == "on")
+	{
+		$sizesort = lang("lines");
+	} else {
+		$sizesort = lang("size");
+	}
+	
+	$t->set_var('hdr_backcolor',$phpgw_info["theme"]["th_bg"]);
+	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
+	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder)) );
+	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder)) );
+	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder)) );
+	$t->set_var('hdr_size',$phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort) );
 
-     echo $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',$start,$nummsg,"&sort=$sort&order=$order"
-                                  . "&folder=" . urlencode($folder));
-?>
-    <td>&nbsp;</td>
-  </tr>
-  <!-- <tr> -->
-   <?php 
-     if ($sort == "ASC") {
-        $oursort = 0;
-     } else {
-        $oursort = 1;
-     }
+	$t->pparse('out','email_index');
 
-     if (!isset($order)) {
-        // Only do this on first visit to the app, where order should depend on prefs date order
-        $order = 0;
-        if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
-           $oursort = 1;
-        } else {
-           $oursort = 0;
-        }
-     }/* else {
+	// STOPPED HERE - templatization not yet complete
 
-     } */
-  ?>
-  <!-- </tr> -->
- </table>
-
- <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
-  <tr>
-   <td colspan="6" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"]; ?>">
-    <table border="0" cellpadding="0" cellspacing="1" width="100%">
-     <tr>
-      <td>
-        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>" color="<?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
-<?php
-      $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
-
-      if ($folder != "INBOX") {
-         $t_folder_s = $phpgw->msg->construct_folder_str($folder);
-      } else {
-         $t_folder_s = "INBOX";
-      }	
-
-      if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-      {
- 	/* IMAP over SSL */
-	$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}$t_folder_s", SA_UNSEEN);
-      } 
-      else 
-      {
-        /* No SSL, normal connection */
-        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["server"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
-
-      }
-      
-      if ($nummsg > 0) {
-	 $msg_array = array();
-         // Note: sorting on email is on address, not displayed name per php imap_sort
-         //echo "<br>SORT GOT: column '$order', '$oursort'.";
-         $msg_array = $phpgw->msg->sort($mailbox, $order, $oursort);
-         $folder_info .= "<br>Saved messages: " . $nummsg;
-         $folder_info .= "<br>New messages: " . $mailbox_status->unseen;
-
-         $ksize = round(10*($mailbox_info->Size/1024))/10;
-         $size = $mailbox_info->Size > 1024 ? "$ksize k" : $mailbox_info->Size;
-         $folder_info .= "<br>Total size of folder: " . $size;
-
-      } else {
-         $folder_info = $nummsg;
-      }
-
-      echo "$folder - $folder_info";
-?>
-
-        </font>
-      </td>
-      <td align="right">
-       <table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-         <td>
-           <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" || $phpgw_info["flags"]["newsmode"]) {
-                echo '<select name="folder" onChange="document.switchbox.submit()">'
-                   . '<option>' . lang("switch current folder to") . ':';
-                echo list_folders($mailbox,$folder);
-                echo "</select>";
-             }
-           ?>
-         </td>
-         <td>
-           &nbsp;&nbsp;
-           <?php
-             if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" ) {
-		echo '<input type="button" value="' . lang("folder") . '" onClick="'
-		   . 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php',"folder="
-		   . urlencode($folder)) . '\'">';
-             }
-           ?>
-         </td>
-        </tr>
-       </table>
-      </td>
-     </tr>
-    </table>
-   </td>
-  </tr>
-
-  <tr>
-  </form>
- <form name="delmov" action="<?php echo $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php'); ?>" method="post">
-  <input type="hidden" name="what" value="delete">
-  <input type="hidden" name="folder" value="<?php echo $folder; ?>">
-
- <td align="center" bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="3%">
-   &nbsp;
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="2%">
-   &nbsp;
- </td>
-
-<?php
-  /*
-     Sorting defs:
-     SORTDATE:  0
-     SORTFROM:  2
-     SORTSUBJECT: 3
-     SORTSIZE:  6
-  */
-?>
-
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="34%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="23%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="12%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
- <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="4%">
-  <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',($newsmode=="on"?lang("lines"):lang("size")),"&folder=".urlencode($folder)); ?></b>
-  </font>
- </td>
-</tr>
-
-<?php
         if ($nummsg == 0) {
           if (!$mailbox) {
 	   echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
@@ -360,6 +311,7 @@ function check_all()
           <td align="right">
            <?php
              if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps") {
+
                 echo '<select name="tofolder" onChange="do_action(\'move\')">'
                    . '<option>' . lang("move selected messages into") . ':';
                 echo list_folders($mailbox);
@@ -379,7 +331,7 @@ function check_all()
 <br> 
 <table border="0" align="center" width="95%">
  <tr>
-  <td align="left"><font color="FF0000">*</font>&nbsp;<?php echo lang("New message"); ?></td>
+  <td align="left"><font color="#ff0000">*</font>&nbsp;<?php echo lang("New message"); ?></td>
  </tr>
 </table>
 <?php $phpgw->common->phpgw_footer(); ?>

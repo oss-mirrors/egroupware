@@ -92,81 +92,127 @@
     } else return $string;
   }
 
-  function list_folders($mailbox,$folder="")
+ /* * * * * * * * * * *
+  *  list_folders: new param:  $echo_out
+  * $echo_out  = True   means the function will echo its output
+  * $echo_out  = False  means the function will return a string instead
+  * defaults to True to avoid breaking any calling code which expects echoed output
+  *  However, returning a string was necessary for templating index.php
+  * * * * * * *  * * * */
+  function list_folders($mailbox,$folder="",$echo_out=True)
   {
-    global $phpgw, $phpgw_info;
-    // UWash patched for Maildir style: $Maildir.Junque
-    // Cyrus style: INBOX.Junque
-    // UWash style: ./aeromail/Junque
+	global $phpgw, $phpgw_info;
+	// UWash patched for Maildir style: $Maildir.Junque
+	// Cyrus style: INBOX.Junque
+	// UWash style: ./aeromail/Junque
 
-    if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) {
-      while($pref = each($phpgw_info["user"]["preferences"]["nntp"])) {
-	      $phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
-	      while($phpgw->db->next_record()) {
-	        echo '<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
-	           . '</option>';
-        }
-      }
-    } else {
-      if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir") {
-        $stdoffset = 1;  // Used below to setup $nm
-	      if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-          if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) ) {
-            $filter = "";
-          } else {
-	          $filter = $phpgw_info["user"]["preferences"]["email"]["mail_folder"];
-          }
-	      }
-      } elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus") {
-	      $filter = "INBOX";
-	      $stdoffset = 1;
-      } else {
-	      $filter = "mail/";
-        $stdoffset = 1;
-      }
+	$outstr = '';
+	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+	{
+		while($pref = each($phpgw_info["user"]["preferences"]["nntp"]))
+		{
+			$phpgw->db->query("SELECT name FROM newsgroups WHERE con=".$pref[0]);
+			while($phpgw->db->next_record())
+			{
+				$outstr = $outstr .'<option value="' . urlencode($phpgw->db->f("name")) . '">' . $phpgw->db->f("name")
+				  . '</option>';
+			}
+		}
+	}
+	else
+	{
+		if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UW-Maildir")
+		{
+			$stdoffset = 1;  // Used below to setup $nm
+			if ( isset($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+			{
+				if ( empty($phpgw_info["user"]["preferences"]["email"]["mail_folder"]) )
+				{
+					$filter = "";
+				}
+				else
+				{
+					$filter = $phpgw_info["user"]["preferences"]["email"]["mail_folder"];
+				}
+			}
+		}
+		elseif ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "Cyrus")
+		{
+			$filter = "INBOX";
+			$stdoffset = 1;
+		}
+		else
+		{
+			$filter = "mail/";
+			$stdoffset = 1;
+		}
 
-      if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
-      {	/* Normal IMAP: */
-      	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-        .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");
-      }
-      elseif ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "pop3s")
-      {	/* POP3 over SSL: */
-	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-        ."/pop3/ssl/novalidate-cert:995}",$filter."*");
-      }
-      else
-      { /* IMAP over SSL: */
-  	$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-        ."/ssl/novalidate-cert:993}",$filter."*");
-      }
+		if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap")
+		{  /* Normal IMAP: */
+			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}",$filter."*");
+		}
+		elseif ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "pop3s")
+		{  /* POP3 over SSL: */
+			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+			."/pop3/ssl/novalidate-cert:995}",$filter."*");
+		}
+		else
+		{  /* IMAP over SSL: */
+			$mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+			."/ssl/novalidate-cert:993}",$filter."*");
+		}
 
-      if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
-        if (gettype($mailboxes) == "array") {
- 	        sort($mailboxes); // added sort for folder names 
-        }
-        if($mailboxes) {
-	        $num_boxes = count($mailboxes);
-	        if ($filter != "INBOX") { 
-	          echo '<option value="INBOX">INBOX</option>'; 
-	        }
-	        for ($index = 0; $index < $num_boxes; $index++) {
-	          $nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
-	          echo '<option value="';
-	          if ($nm != "INBOX") {
-	             $foldername = $phpgw->msg->deconstruct_folder_str($nm);
-	          } else {
-	             $foldername = "INBOX";
-	          }
-              if ($foldername == $folder) { $sel = " selected"; }
-              else                        { $sel = ""; }
-	          echo urlencode($foldername) . '"'.$sel.'>' . $foldername . '</option>';
-	          echo "\n";
-	        }
-        } else {
-	      echo '<option value="INBOX">INBOX</option>';
-      }
-    }
+		if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] != "pop3")
+		if (gettype($mailboxes) == "array")
+		{
+			sort($mailboxes); // added sort for folder names 
+		}
+		if($mailboxes)
+		{
+			$num_boxes = count($mailboxes);
+			if ($filter != "INBOX")
+			{
+				$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
+	        	}
+			for ($index = 0; $index < $num_boxes; $index++)
+			{
+				$nm = substr($mailboxes[$index], strrpos($mailboxes[$index], "}") + $stdoffset, strlen($mailboxes[$index]));
+				$outstr = $outstr .'<option value="';
+				if ($nm != "INBOX")
+				{
+					$foldername = $phpgw->msg->deconstruct_folder_str($nm);
+				}
+				else
+				{
+					$foldername = "INBOX";
+				}
+				if ($foldername == $folder)
+				{
+					$sel = " selected";
+				}
+				else
+				{
+					$sel = "";
+				}
+				$outstr = $outstr .urlencode($foldername) . '"'.$sel.'>' . $foldername . '</option>';
+				$outstr = $outstr ."\n";
+			}
+		}
+		else
+		{
+			$outstr = $outstr .'<option value="INBOX">INBOX</option>';
+		}
+	}
+	// do you echo out or return a string
+	if ($echo_out)
+	{
+		echo $outstr;
+	}
+	else
+	{
+		return $outstr;
+	}
   }
 
   function get_mime_type($de_part) {
