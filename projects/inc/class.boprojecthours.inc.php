@@ -253,6 +253,11 @@
 
 		function check_values($values)
 		{
+			if(!$values['project_id'])
+			{
+				$error[] = lang('please select a project for time tracking');
+			}
+
 			if (strlen($values['hours_descr']) > 250)
 			{
 				$error[] = lang('Description can not exceed 250 characters in length');
