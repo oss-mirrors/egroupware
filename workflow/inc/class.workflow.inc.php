@@ -219,6 +219,9 @@
 
 		function save_source($proc_name, $act_name, $type, $source)
 		{
+			// in case code was filtered
+			if (!$source) $source = @$GLOBALS['egw_unset_vars']['_POST[source]'];
+
 			switch($type)
 			{
 				case 'code':
