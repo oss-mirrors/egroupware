@@ -201,8 +201,7 @@
 		{
 			global $error_msg, $msg;
 
-			unset($error_msg);
-       
+			$error_msg = '';
 			// Do we have all necessary data?
 			if (! $values['url'] || $values['url'] == 'http://')
 			{
@@ -241,8 +240,7 @@
 						}
 					}
 				}
-			}    
-
+			} 
 			if ($error_msg)
 			{
 				return False;

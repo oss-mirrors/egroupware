@@ -62,7 +62,7 @@
 			while ($this->db->next_record())
 			{
 				$bookmark['name'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_name'));
-				$bookmark['url'] = $this->db->f('bm_url');
+				$bookmark['url'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_url'));
 				$bookmark['desc'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_desc'));
 				$bookmark['keywords'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_keywords'));
 				$bookmark['owner'] = $this->db->f('bm_owner');
@@ -83,7 +83,7 @@
 			if ($this->db->next_record())
 			{
 				$bookmark['name'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_name'));
-				$bookmark['url'] = $this->db->f('bm_url');
+				$bookmark['url'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_url'));
 				$bookmark['desc'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_desc'));
 				$bookmark['keywords'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_keywords'));
 				$bookmark['owner'] = $this->db->f('bm_owner');

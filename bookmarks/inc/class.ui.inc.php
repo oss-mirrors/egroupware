@@ -280,7 +280,6 @@ define('SEARCH',4);
 				$bookmark = $GLOBALS['HTTP_POST_VARS']['bookmark'];
 				$this->bo->update($bm_id,$bookmark);
 			}
-
 			$bookmark = $this->bo->read($bm_id);
 
 			if (!$bookmark[PHPGW_ACL_EDIT])
@@ -374,6 +373,7 @@ define('SEARCH',4);
 					''
 				),
 			));
+
 			$this->t->fp('body','form');
 			$this->app_messages();
 			$this->t->pfp('out','common_');
