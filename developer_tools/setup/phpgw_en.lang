@@ -10,8 +10,9 @@ changelog entry has been added	developer_tools	en	Changelog entry has been added
 changelogs	developer_tools	en	Changelogs
 create new language file	developer_tools	en	Create New Language File
 create sgml file	developer_tools	en	Create SGML file
-developer_tools	common	en	Developer Tools
+developer tools	developer_tools	en	Developer tools
 developer tools - preferences	developer_tools	en	Developer Tools - preferences
+developer_tools	common	en	Developer Tools
 diary	developer_tools	en	Diary
 done	developer_tools	en	done
 download	developer_tools	en	Download
@@ -35,10 +36,10 @@ search for missing phrase	developer_tools	en	Search for missing phrase
 select project	developer_tools	en	Select project
 sf project tracker	developer_tools	en	SF Project tracker
 sf project tracker preferences	preferences	en	SF Project tracker preferences
+source language	developer_tools	en	Source Language
 sourceforge project id	developer_tools	en	Sourceforge project ID
 sourceforge project tracker	developer_tools	en	Sourceforge project tracker
 sourceforge project tracker preferences	developer_tools	en	Sourceforge project tracker preferences
-source language	developer_tools	en	Source Language
 submit	developer_tools	en	Submit
 target language	developer_tools	en	Target Language
 title	developer_tools	en	Title
