@@ -1,4 +1,57 @@
+add document to category	wiki	fr	Ajouter un document à la catégorie
+allow anonymous access	admin	fr	Permettre les accès anonymes
+anonymous password	admin	fr	Mot de passe du compte "anonyme"
+anonymous session type	admin	fr	Type de session pour le compte "anonyme"
+anonymous username	admin	fr	Identifiant pour le compte "anonyme"
+block and unblock hosts	admin	fr	Bloquer/Débloquer des sites
+block/unblock hosts	wiki	fr	Bloquer/Débloquer des sites
+but display at least this many entries in recentchanges and other subscription lists	wiki	fr	Afficher au moins ce nombre d'entrées dans les changements récents et les listes d'abonnement
+changes by last author	wiki	fr	Changements par auteur
+choose your current time here, so the server may figure out what time zone you are in	wiki	fr	Choisissez votre fuseau horaire pour que le serveur sache ou vous vous trouvez
+columns	wiki	fr	Colonnes
+compute difference	wiki	fr	Voir la différence
+current version		fr	
+difference between versions	wiki	fr	Différences entre les versions
+differences in	wiki	fr	Différences
+document last modified	wiki	fr	Dernier document modifié
+edit box	wiki	fr	Modification
+edit this document	wiki	fr	Modifier le document
+edit with preview	admin	fr	Modifier avec unepré-visualisation
+editable	admin	fr	modifiable
+editing	wiki	fr	Modifiant
+emailaddress administrator	admin	fr	Adresse email de l'administrateur
+enable free links	admin	fr	Authoriser les liens libres
+enable wiki links	admin	fr	Authoriser les liens Wiki
+enter here the maximum number of entries to display in a documents history list	wiki	fr	Entrez le nombre maximum d'entrées à afficher dans l'historique
+enter here the number of days of edits to display on recentchanges or any other subscription list.  set this to zero if you wish to see all pages in recentchanges, regardless of how recently they were edited	wiki	fr	Entrez le nombre de jours à afficher sur la page "RecentChanges" ou dans la liste d'abonnement. En mettant zéro, vous pourrez voir toutes les pages dans "RecentChanges", en fonction de leur ancienneté.
+find	wiki	fr	Rechercher
+history display should show all changes made by the latest author.  otherwise, show only the last change made	wiki	fr	L'historique doit afficher tous les changements par le dernier auteur. Sinon, afficher seulement le dernier changement
+history lists	wiki	fr	Voir l'historique
+history of	wiki	fr	Historique de
+interwikiprefix	admin	fr	InterWikiPrefix
+lock and unlock pages	admin	fr	Bloquer/Débloquer des pages
+lock/unlock pages	wiki	fr	Bloquer/Débloquer des pages
+metadescription	admin	fr	MetaDescription
+metakeywords	admin	fr	MetaKeywords
+name wiki home link	admin	fr	Nom du Wiki
+newer	wiki	fr	Plus récents
+older	wiki	fr	Plus ancients
 please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	fr	SVP contactez l'<a href="mailto:%1">administrateur</a> pour de l'assistance.
+preferences		fr	
+preview	wiki	fr	Aperçu
+previewing	wiki	fr	Aperçu
+readonly	admin	fr	lecture seule
+rows	wiki	fr	Lignes
+save & continue	wiki	fr	Enregistrer et continuer
+search		fr	wiki
+site configuration	wiki	fr	Configuration du site
+summary of change	wiki	fr	Résumé des changements
+this document cannot be edited	wiki	fr	Ce document ne peut pas être modifié
+view document history	wiki	fr	Voir l'historique du document
+warning since you started editing this document has been changed by someone else	wiki	fr	Attention : depuis que vous avez commencé à modifier ce document, un autre utilisateur l'a modifié. Veuillez fusionner vos changements avec la version courante de ce document.
 wiki	common	fr	Wiki
+wiki administration	wiki	fr	Configuration du Wiki
+wiki menu	wiki	fr	Menu du Wiki
 you have been denied access to this site.	wiki	fr	L'accès à ce site vous a été refusé.
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	fr	Vous avez dépassé le nombre de pages que vous avez le droit de visiter dans une période de temps donnée.  SVP revenez plus tard.
+your user name is %1	wiki	fr	Votre nom est %1
