@@ -797,7 +797,7 @@ function toggle(image, catid)
 
 		function showcat($cats)
 		{
-			while(list(,$cat) = each($cats))
+			while(list(,$cat) = @each($cats))
 			{
 				$cat_id = $cat['id'];
 				$status = in_array($cat_id,$this->expandedcats);
