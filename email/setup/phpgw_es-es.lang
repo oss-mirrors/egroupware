@@ -299,7 +299,7 @@ send	email	es-es	Enviar
 send deleted messages to the trash	email	es-es	Enviar mensajes borrados a la Papelera
 send forwarded mail as quoted attachment	email	es-es	Enviar el correo reenviado como adjunto citado
 sender	email	es-es	Remitente
-sent	common	es-es	enviado
+sent	common	es-es	Enviados
 sent folder	email	es-es	carpeta de enviados
 sent messages folder	common	es-es	Carpeta de mensajes enviados
 sent messages folder name	email	es-es	Nombre de la carpeta de mensajes enviados
