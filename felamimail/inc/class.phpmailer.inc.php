@@ -357,7 +357,9 @@ class PHPMailer
 
         $this->SetMessageType();
         $header .= $this->CreateHeader();
+        $this->sentHeader = $header;
         $body = $this->CreateBody();
+        $this->sentBody = $body;
 
         if($body == "") { return false; }
 

@@ -1,5 +1,6 @@
 Version 0.9.5
 
+- forwarding messages now as message/rfc822
 - improved mainview
 	- javascript selectbutton to select all messages
 	- fixed layout

@@ -247,6 +247,14 @@
 		vvertical-align : middle;
 	}
 	
+	.header_row_RS, A.header_row_RS
+	{
+		FONT-SIZE: 11px;
+		height : 14px;
+		padding: 0;
+		vvertical-align : middle;
+	}
+	
 	.header_row_AS, A.header_row_AS
 	{
 		FONT-SIZE: 11px;
@@ -500,7 +508,8 @@
 				'unread_flagged_small',
 				'unread_small',
 				'unread_deleted_small',
-				'sm_envelope'
+				'sm_envelope',
+				'new'
 			);
 
 			foreach ($listOfImages as $image) 

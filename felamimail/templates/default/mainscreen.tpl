@@ -54,7 +54,6 @@ doLoad();
 		{
 			checkedCounter = maxMessages;
 			document.getElementsByTagName("input")[3].checked = "true";
-//			//{lang_move_message}
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_move_message}');
@@ -65,16 +64,12 @@ doLoad();
 		{
 			checkedCounter = 0;
 			document.getElementsByTagName("input")[2].checked = "true";
-//			//{lang_change_folder}
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_change_folder}');
 			folderFunctions.appendChild(textNode);
 			document.getElementsByName("folderAction")[0].value = "changeFolder";
 		}
-		//alert(checkedCounter);
-		//alert(document.getElementsByName("folderaction")[0].value);
-		
 	}
 
 	function toggleFolderRadio(inputBox)
@@ -87,17 +82,9 @@ doLoad();
 		}
 
 		folderFunctions = document.getElementById("folderFunction");
-		//var counter = parseInt(_counter);
-		//alert(document.getElementById("msg_input_"+_counter).checked);
-		//document.getElementsByTagName("input")[1].checked = "true";
-		//tr	= eval(document.getElementsByTagName("tr")[counter+23]);
-		//input	= eval(document.getElementsByTagName("input")[counter+10]);
-		//tr	= document.getElementById("msg_tr_"+_counter);
-		//input	= document.getElementById("msg_input_"+_counter);
 		checkedCounter += (inputBox.checked) ? 1 : -1;
 		if (checkedCounter > 0)
 		{
-			//document.getElementsByTagName("input")[3].checked = true;
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_move_message}');
@@ -106,7 +93,6 @@ doLoad();
 		}
 		else
 		{
-			//document.getElementsByTagName("input")[2].checked = true;
 			document.getElementById('messageCheckBox').checked = false;
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
@@ -118,32 +104,35 @@ doLoad();
 
 //-->
 </script>
-<TABLE BBORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
+
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
+<form name=searchForm method=post action="{url_search_settings}">
 	<TR bgcolor="#ffffcc">
-		<TD ALIGN="left" WIDTH="70%" >
-			<a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp;
-			<a href="{url_filter}">{lang_edit_filter}</a>&nbsp;&nbsp;
+		<td align="left" width="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
+			<a href="{url_compose_empty}">{lang_compose}</a>
 		</td>
-		<td align='right' width="30%" >
+		<td align="right" width="30%" valign="middle" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
 			{quota_display}
 		</td>
 	</tr>
 	<TR bgcolor="#ffffcc">
-		<form name=searchForm method=post action="{url_search_settings}">
-		<td align="left" width="70%"  style="border-color:silver; border-style:solid; border-width:1px 0px 1px 0px; font-size:10px;">
+		<TD ALIGN="left" WIDTH="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">
+			<!-- <a href="{url_compose_empty}">{lang_compose}</a>&nbsp;&nbsp; -->
 			{lang_quicksearch}
 			<input type="text" size="50" name="quickSearch" value="{quicksearch}"
 			onChange="javascript:document.searchForm.submit()">
 		</td>
-		<td align="right" width="30%" valign="middle" style="border-color:silver; border-style:solid; border-width:1px 0px 1px 0px; ">
+		<td align='right' width="30%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; ">
+			<a href="{url_filter}"><img src="{new}" alt="{lang_edit_filter}" title="{lang_edit_filter}" border="0"></a>&nbsp;&nbsp;
 			<input type=hidden name="changeFilter">
 			<select name="filter" onChange="javascript:document.searchForm.submit()">
 				{filter_options}
 			</select>
 		</td>
-		</form>
 	</tr>
+</form>
 </table>
+
 
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 	<TR>
@@ -151,10 +140,7 @@ doLoad();
 			<TABLE BGCOLOR="#ffffcc" COLS=2 BORDER='0' cellpadding="2" cellspacing=0 width="100%" sstyle="table-layout:fixed">
 				<TR valign="middle" bgcolor="#ffffcc">
 					<FORM name=messageList method=post action="{url_change_folder}">
-					<td nowrap id="folderFunction" width="1%" align="left" style="font-size:10px;">
-						{lang_change_folder}
-					</td>
-					<td align="LEFT" valign="center">
+					<td align="LEFT" valign="center" width="5%">
 						<TT><SMALL>
 						<SELECT NAME="mailbox" onChange="document.messageList.submit()">
 							{options_folder}
@@ -165,6 +151,9 @@ doLoad();
 						</noscript>
 						<INPUT TYPE=hidden NAME="oldMailbox" value="{oldMailbox}">
 					</TD>
+					<td nowrap id="folderFunction" wwidth="1%" align="left" style="font-size:10px;">
+						{lang_change_folder}
+					</td>
 					<td width="12px" align="right" valign="center">
 						<input type="image" src="{read_small}" name="mark_read" alt="{desc_read}" title="{desc_read}" width="16">
                                         </td>
@@ -259,7 +248,7 @@ doLoad();
 	</td>
 	<td width="10%" bgcolor="#FFFFFF" nowrap>
 		<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
-		<a href="{url_add_to_addressbook}"><img src="{sm_envelope}" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a>
+<!--		<a href="{url_add_to_addressbook}"><img src="{sm_envelope}" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a> -->
 	</td>
 	<td bgcolor="#FFFFFF" nowrap align="center">
 		{date}

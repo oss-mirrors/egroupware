@@ -842,15 +842,49 @@
 		}
 
 
-		function getMessageHeader($_uid)
+		function getMessageHeader($_uid, $_partID = '')
 		{
 			$msgno = imap_msgno($this->mbox, $_uid);
-			return imap_header($this->mbox, $msgno);
+			if($_partID == '')
+			{
+				$retValue = imap_header($this->mbox, $msgno);
+			}
+			else
+			{
+				// do it the hard way
+				// we need to fetch the headers of another part(message/rfcxxxx)
+				$headersPart = imap_fetchbody($this->mbox, $_uid, $_partID.".0", FT_UID);
+				$retValue = imap_rfc822_parse_headers($headersPart);
+			}
+			#_debug_array($retValue);
+			return $retValue;
 		}
 
-		function getMessageRawHeader($_uid)
+		function getMessageRawBody($_uid, $_partID = '')
 		{
-			return imap_fetchheader($this->mbox, $_uid, FT_UID);
+			if($_partID != '')
+			{
+				$body = imap_fetchbody($this->mbox, $_uid, $_partID, FT_UID);
+			}
+			else
+			{
+				$header = imap_fetchheader($this->mbox, $_uid, FT_UID);
+				$body = $header.imap_body($this->mbox, $_uid, FT_UID);
+			}
+			
+			return $body;
+		}
+
+		function getMessageRawHeader($_uid, $_partID = '')
+		{
+			if(!$_partID == '')
+			{
+				return imap_fetchbody($this->mbox, $_uid, $_partID.'.0', FT_UID);
+			}
+			else
+			{
+				return imap_fetchheader($this->mbox, $_uid, FT_UID);
+			}
 		}
 
 		function getMessageStructure($_uid)

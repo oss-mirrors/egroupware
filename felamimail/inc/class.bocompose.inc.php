@@ -102,6 +102,22 @@
 			#print"<pre>";print_r($this->sessionData);print"</pre>";
 		}
 		
+		function addMessageAttachment($_uid, $_partID, $_folder, $_name, $_size)
+		{
+			$this->sessionData['attachments'][]=array
+			(
+				'uid'		=> $_uid,
+				'partID'	=> $_partID,
+				'name'		=> $_name,
+				'type'		=> 'message/rfc822',
+				'size'		=> $_size,
+				'folder'	=> $_folder
+			);
+			
+			$this->saveSessionData();
+			#print"<pre>";print_r($this->sessionData);print"</pre>";
+		}
+		
 		function getAttachmentList()
 		{
 		}
@@ -129,88 +145,25 @@
 			return false;
 		}
 		
-		function getForwardData($_uid)
+		function getForwardData($_uid, $_partID, $_folder)
 		{
 			$bofelamimail    = CreateObject('felamimail.bofelamimail');
 			$bofelamimail->openConnection();
-			
+
 			// get message headers for specified message
-			$headers	= $bofelamimail->getMessageHeader($_uid);
-			
+			$headers	= $bofelamimail->getMessageHeader($_uid, $_partID);
 			// check for Re: in subject header
-			$this->sessionData['subject'] = "[FWD: " . $bofelamimail->decode_header($headers->Subject)."]";
+			$this->sessionData['subject'] 	= "[FWD] " . $bofelamimail->decode_header($headers->Subject);
+			if($headers->Size)
+				$size				= $headers->Size;
+			else
+				$size				= lang('unknown');
 
-			#$structure     = $bofelamimail->getMessageStructure($_uid, ST_UID);
-			#if(sizeof($structure->parts) > 1)
-			#{
-			#	$sections = $bofelamimail->parse($structure);
-			#	$attachments = $bofelamimail->get_attachments($sections);
-			#}
+			$this->addMessageAttachment($_uid, $_partID, 
+							$_folder, 
+							$bofelamimail->decode_header($headers->Subject), 
+							$size);
 			
-			$this->sessionData['body']	 = "                  -----------Originalnachricht-----------\n\n";
-			$this->sessionData['body']	.= "Betreff: ".$bofelamimail->decode_header($headers->Subject)."\n";
-			$this->sessionData['body']	.= "Von: ".$bofelamimail->decode_header($headers->toaddress)."\n";
-			$this->sessionData['body']	.= "An: ".$bofelamimail->decode_header($headers->fromaddress)."\n\n";
-			
-			// iterate through message parts
-			// get the body
-			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text');
-			for($i=0; $i<count($bodyParts); $i++)
-			{
-				$this->sessionData['body']	.= $bodyParts[$i]['body'];
-			}
-			
-			$this->sessionData['body']	 .= "\n\n                  -----------Originalnachricht-----------\n\n";
-					
-			$attachments = $bofelamimail->getMessageAttachments($_uid);
-			if(is_array($attachments))
-			{
-				// ensure existance of PHPGROUPWARE temp dir
-				// note: this is different from apache temp dir, 
-				// and different from any other temp file location set in php.ini
-				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
-				{
-					@mkdir($GLOBALS['phpgw_info']['server']['temp_dir'],0700);
-				}
-				
-				// if we were NOT able to create this temp directory, then make an ERROR report
-				if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
-				{
-					$alert_msg .= 'Error:'.'<br>'
-						.'Server is unable to access phpgw tmp directory'.'<br>'
-						.$phpgw_info['server']['temp_dir'].'<br>'
-						.'Please check your configuration'.'<br>'
-						.'<br>';
-				}
-
-				while(list($partID, $partData) = each($attachments))
-				{
-					$attachmentData = $bofelamimail->getAttachment($_uid, $partID);
-					#_debug_array($attachmentData);
-					
-					$tmpFileName = $GLOBALS['phpgw_info']['server']['temp_dir'].
-						SEP.
-						$GLOBALS['phpgw_info']['user']['account_id'].
-						$this->composeID.
-						basename($attachmentData['filename']);
-				
-					if ($handle = fopen($tmpFileName, 'w')) 
-					{
-						fwrite($handle, $attachmentData['attachment']);
-						fclose($handle);
-				
-						$this->sessionData['attachments'][]=array
-						(
-							'name'	=> $attachmentData['filename'],
-							'type'	=> $attachmentData['type'],
-							'file'	=> $tmpFileName,
-							'size'	=> filesize($tmpFileName)
-						);
-						
-					}
-				}
-			}
-																
 			$bofelamimail->closeConnection();
 			
 			$this->saveSessionData();
@@ -219,13 +172,13 @@
 		// $_mode can be:
 		// single: for a reply to one address
 		// all: for a reply to all
-		function getReplyData($_mode, $_uid)
+		function getReplyData($_mode, $_uid, $_partID)
 		{
 			$bofelamimail    = CreateObject('felamimail.bofelamimail');
 			$bofelamimail->openConnection();
 			
 			// get message headers for specified message
-			$headers	= $bofelamimail->getMessageHeader($_uid);
+			$headers	= $bofelamimail->getMessageHeader($_uid, $_partID);
 
 			$this->sessionData['uid'] = $_uid;
 			
@@ -322,7 +275,7 @@
 			$this->sessionData['body']	= $bofelamimail->decode_header($headers->fromaddress) . " ".lang("wrote").": \n>";
 			
 			// get the body
-			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text');
+			$bodyParts = $bofelamimail->getMessageBody($_uid, 'only_if_no_text', $_partID);
 
 			for($i=0; $i<count($bodyParts); $i++)
 			{
@@ -400,7 +353,8 @@
 
 		function send($_formData)
 		{
-			$bofelamimail    = CreateObject('felamimail.bofelamimail');
+			$bofelamimail	= CreateObject('felamimail.bofelamimail');
+			$mail 		= CreateObject('felamimail.phpmailer');
 			
 			$this->sessionData['to']	= $_formData['to'];
 			$this->sessionData['cc']	= $_formData['cc'];
@@ -412,7 +366,6 @@
 			$this->sessionData['signature']	= $_formData['signature'];
 
 
-			$mail = CreateObject('felamimail.phpmailer');
 			$userLang = $GLOBALS['phpgw_info']['user']['preferences']['common']['lang'];
 			$langFile = PHPGW_SERVER_ROOT."/felamimail/setup/phpmailer.lang-$userLang.php";
 			if(file_exists($langFile))
@@ -505,21 +458,38 @@
 				$mail->Body	.= "\r\n--\r\n";
 				$mail->Body	.= $this->sessionData['signature'];
 			}
+
+			// add the attachments
 			if (is_array($this->sessionData['attachments']))
 			{
 				while(list($key,$value) = each($this->sessionData['attachments']))
 				{
-					$mail->AddAttachment
-					(
-						$value['file'],
-						$value['name'],
-						'base64',
-						$value['type']
-					);
+					switch($value['type'])
+					{
+						case 'message/rfc822':
+							$bofelamimail->openConnection($value['folder']);
+			
+							$rawBody	= $bofelamimail->getMessageRawBody($value['uid'],$value['partID']);
+			
+							$bofelamimail->closeConnection();
+					
+							$mail->AddStringAttachment($rawBody,$value['name'],'7bit','message/rfc822');
+			
+							break;
+							
+						default:
+							$mail->AddAttachment
+							(
+								$value['file'],
+								$value['name'],
+								'base64',
+								$value['type']
+							);
+					}
 				}
 			}
 			#$mail->AltBody = $this->sessionData['body'];
-			
+
 			// SMTP Auth??
 			if($this->preferences['smtpAuth'] == 'yes')
 			{

@@ -113,8 +113,8 @@
 			$transformdate	= CreateObject('felamimail.transformdate');
 			$htmlFilter	= CreateObject('felamimail.htmlfilter');
 
-			$headers	= $this->bofelamimail->getMessageHeader($this->uid);
-			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid);
+			$headers	= $this->bofelamimail->getMessageHeader($this->uid, $partID);
+			$rawheaders	= $this->bofelamimail->getMessageRawHeader($this->uid, $partID);
 			$bodyParts	= $this->bofelamimail->getMessageBody($this->uid,'',$partID);
 			$attachments	= $this->bofelamimail->getMessageAttachments($this->uid,$partID);
 			$filterList 	= $this->bofilter->getFilterList();
@@ -206,15 +206,19 @@
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uicompose.reply',
-					'reply_id'	=> $this->uid
+					'reply_id'	=> $this->uid,
 				);
+				if($partID != '')
+					$linkData['part_id'] = $partID;
 				$this->t->set_var("link_reply",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 				$linkData = array
 				(
 					'menuaction'	=> 'felamimail.uicompose.replyAll',
-					'reply_id'	=> $this->uid
+					'reply_id'	=> $this->uid,
 				);
+				if($partID != '')
+					$linkData['part_id'] = $partID;
 				$this->t->set_var("link_reply_all",$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 				$linkData = array
@@ -222,6 +226,8 @@
 					'menuaction'	=> 'felamimail.uicompose.forward',
 					'reply_id'	=> $this->uid
 				);
+				if($partID != '')
+					$linkData['part_id'] = $partID;
 				$this->t->set_var("link_forward",$GLOBALS['phpgw']->link('/index.php',$linkData));	
 
 				$linkData = array
@@ -244,6 +250,8 @@
 					'printable'	=> 1,
 					'uid'		=> $this->uid
 				);
+				if($partID != '')
+					$linkData['part_id'] = $partID;
 				$this->t->set_var("link_printable",$GLOBALS['phpgw']->link('/index.php',$linkData));
 				
 				if($nextMessage['previous'])
@@ -602,6 +610,9 @@ $add_attr_to_tag = Array(
 							$target = '';
 							break;
 						case 'image/jpeg':
+						case 'image/png':
+						case 'image/gif':
+						case 'application/pdf':
 							$linkData = array
 							(
 								'menuaction'	=> 'felamimail.uidisplay.getAttachment',

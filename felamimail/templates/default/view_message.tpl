@@ -185,10 +185,10 @@
 
 <!-- BEGIN message_cc -->
 <tr>
-	<td width="100" style="font-weight:bold;">
+	<td width="100" style="font-weight:bold; font-size:10px;">
 		{lang_cc}:
 	</td> 
-	<td>
+	<td style="font-size:10px;">
 		{cc_data}
 	</td>
 </tr>
@@ -196,10 +196,10 @@
 
 <!-- BEGIN message_org -->
 <tr>
-	<td width="100" style="font-weight:bold;">
+	<td width="100" style="font-weight:bold; font-size:10px;">
 		{lang_organisation}:
 	</td> 
-	<td>
+	<td style="font-size:10px;">
 		{organization_data}
 	</td>
 </tr>
@@ -207,10 +207,10 @@
 
 <!-- BEGIN message_onbehalfof -->
 <tr>
-	<td width="100" style="font-weight:bold;">
+	<td width="100" style="font-weight:bold; font-size:10px;">
 		{lang_on_behalf_of}:
 	</td> 
-	<td>
+	<td style="font-size:10px;">
 		{onbehalfof_data}
 	</td>
 </tr>
@@ -221,10 +221,10 @@
 
 <table border="0" cellpadding="1" cellspacing="0" width="100%">
 <tr cclass="row_on">
-	<td style="text-align:left; width:120px; font-weight:bold;">
+	<td style="text-align:left; width:120px; font-weight:bold; font-size:10px;">
 		{lang_from}:
 	</td>
-	<td style="font-weight:bold;">
+	<td style="font-weight:bold; font-size:10px;">
 		{from_data}
 	</td>
 </tr>
@@ -234,10 +234,10 @@
 {org_part}
 
 <tr cclass="row_off">
-	<td style="font-weight:bold;">
+	<td style="font-weight:bold; font-size:10px;">
 		{lang_to}:
 	</td> 
-	<td>
+	<td style="font-size:10px;">
 		{to_data}
 	</td>
 </tr>
@@ -245,10 +245,10 @@
 {cc_data_part}
 
 <tr cclass="row_on">
-	<td style="font-weight:bold;">
+	<td style="font-weight:bold; font-size:10px;">
 		{lang_date}:
 	</td> 
-	<td>
+	<td style="font-size:10px;">
 		{date_data}
 	</td>
 </tr>

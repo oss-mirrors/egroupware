@@ -222,21 +222,25 @@
 		function forward()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$partID  = $_GET['part_id'];
+
 			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getForwardData($replyID);
+				$this->bocompose->getForwardData($replyID, $partID, 
+					$this->bofelamimail->sessionData['mailbox']);
 			}
 			$this->compose();
 		}
 
 		function reply()
 		{
-			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$replyID = $_GET['reply_id'];
+			$partID	 = $_GET['part_id'];
 			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData('single', $replyID);
+				$this->bocompose->getReplyData('single', $replyID, $partID);
 			}
 			$this->compose('body');
 		}
@@ -244,10 +248,11 @@
 		function replyAll()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$partID	 = $_GET['part_id'];
 			if (!empty($replyID))
 			{
 				// this fill the session data with the values from the original email
-				$this->bocompose->getReplyData('all', $replyID);
+				$this->bocompose->getReplyData('all', $replyID, $partID);
 			}
 			$this->compose('body');
 		}
