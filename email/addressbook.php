@@ -14,15 +14,15 @@
 
   $phpgw_flags = array("noheader" => True, "nonavbar" => True, "currentapp" => "email");
   include("../header.inc.php");
-   if (! $phpgw_info["user"]["permissions"]["addressbook"] || ! $phpgw_info["user"]["permissions"]["email"])
-      badsession();
+//   if (! $phpgw_info["user"]["permissions"]["addressbook"] || ! $phpgw_info["user"]["permissions"]["email"])
+//      badsession();
 
    if ($order)
       $ordermethod = "order by $order $sort";
    else
       $ordermethod = "order by lastname,firstname,email asc";
 
-   $filtermethod = " or access='public' " . $phpgw->groups->sql_search();
+   $filtermethod = " or access='public' " . $phpgw->accounts->sql_search("access");
 
    $sql = "select count(*) from addressbook where ( owner='"
 	. $phpgw->session->loginid . "' $filtermethod ) AND email != ''"; 
