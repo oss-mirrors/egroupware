@@ -1,6 +1,6 @@
 <?php
 	/***************************************************************************\
-	* phpGroupWare - Notes                                                      *
+	* phpGroupWare - QMailLDAP                                                  *
 	* http://www.phpgroupware.org                                               *
 	* Written by : Lars Kneschke [lkneschke@phpgroupware.org]                   *
 	* -------------------------------------------------                         *
@@ -22,77 +22,51 @@
 		var $public_functions = array
 		(
 			'listServers'	=> True,
-			'addServer'	=> True,
+			'addServer'		=> True,
 			'deleteServer'	=> True,
 			'editServer'	=> True,
 			'editSettings'	=> True,
 			'addSmtpRoute'	=> True,
-			'save'		=> True
+			'save'			=> True
 		);
 
 		function uiqmailldap()
 		{
-			global $phpgw, $phpgw_info;
-
 			$this->cats			= CreateObject('phpgwapi.categories');
-			$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
-			#$this->account			= $phpgw_info['user']['account_id'];
-			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			#$this->grants			= $phpgw->acl->get_grants('notes');
-			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
-			$this->boqmailldap		= CreateObject('qmailldap.boqmailldap');
-			
-			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
-			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
-
-			$this->dataRowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->dataRowColor[1] = $phpgw_info["theme"]["bg02"];
-			                 
+			$this->nextmatchs	= CreateObject('phpgwapi.nextmatchs');
+			$this->boqmailldap	= CreateObject('qmailldap.boqmailldap');
 		}
-		
+
 		function addServer()
 		{
-			$this->display_app_header();
-			
-			$this->t->set_file(array("body" => 'ldapsettings.tpl'));
-			$this->t->set_block('body','main');
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
-			
+			$GLOBALS['phpgw']->template->set_file(array('body' => 'ldapsettings.tpl'));
+			$GLOBALS['phpgw']->template->set_block('body','main');
+			$GLOBALS['phpgw']->template->set_block('body','menu_row');
+			$GLOBALS['phpgw']->template->set_block('body','menu_row_bold');
+			$GLOBALS['phpgw']->template->set_block('body','activation_row');
+
 			$this->translate();
 
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.uiqmailldap.listServers'
+				'menuaction' => 'qmailldap.uiqmailldap.listServers'
 			);
-			$this->t->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$GLOBALS['phpgw_info']["theme"]["bg02"]);
+			$GLOBALS['phpgw']->template->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 
 			$linkData = array
 			(
-				'menuaction'    => 'qmailldap.uiqmailldap.save'
+				'menuaction' => 'qmailldap.uiqmailldap.save'
 			);
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			                                                                                                                                                                        
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
-			
-			$GLOBALS['phpgw']->common->phpgw_footer();
+			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$GLOBALS['phpgw']->template->parse('out','main');
+			print $GLOBALS['phpgw']->template->get('out','main');
 		}
-	
+
 		function addSmtpRoute()
 		{
-			$this->display_app_header();
-			
 			$this->translate();
-			
-			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
-		
+
 		function createMenu($_serverid, $_pagenumber, $_ldapData)
 		{
 			$menu = array
@@ -119,31 +93,31 @@
 					   )
 			);
 			
-			$this->t->set_file(array("body" => $menu[$_pagenumber]['template']));
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
+			$GLOBALS['phpgw']->template->set_file(array('body' => $menu[$_pagenumber]['template']));
+			$GLOBALS['phpgw']->template->set_block('body','menu_row');
+			$GLOBALS['phpgw']->template->set_block('body','menu_row_bold');
+			$GLOBALS['phpgw']->template->set_block('body','activation_row');
 
 			reset($menu);
 			$i=0;
 			while (list($key,$value) = each($menu))
 			{
-				$this->t->set_var('menu_description',$value['name']);
+				$GLOBALS['phpgw']->template->set_var('menu_description',$value['name']);
 				$linkData = array
 				(
 					'menuaction'	=> 'qmailldap.uiqmailldap.editServer',
 					'pagenumber'	=> $key,
 					'serverid'	=> $_serverid
 				);
-				$this->t->set_var('menu_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-				$this->t->set_var('menu_row_color',$this->rowColor[$i%2]);
+				$GLOBALS['phpgw']->template->set_var('menu_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 				if ($_pagenumber == $key)
 				{
-					$this->t->parse('menu_rows','menu_row_bold',True);
+					$GLOBALS['phpgw']->template->parse('menu_rows','menu_row_bold',True);
 				}
 				else
 				{
-					$this->t->parse('menu_rows','menu_row',True);
+					$GLOBALS['phpgw']->template->parse('menu_rows','menu_row',True);
 				}
 				$i++;
 			}
@@ -154,20 +128,18 @@
 				(
 					'menuaction'	=> 'qmailldap.uiqmailldap.save',
 					'pagenumber'	=> $_pagenumber,
-					'serverid'	=> $_serverid,
-					'bo_action'	=> 'write_to_ldap'
+					'serverid'		=> $_serverid,
+					'bo_action'		=> 'write_to_ldap'
 				);
-				$this->t->set_var('activation_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-				$this->t->parse('activation_rows','activation_row');
+				$GLOBALS['phpgw']->template->set_var('activation_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+				$GLOBALS['phpgw']->template->parse('activation_rows','activation_row');
 			}
-			
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
+
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.uiqmailldap.listServers',
+				'menuaction' => 'qmailldap.uiqmailldap.listServers',
 			);
-			$this->t->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			
+			$GLOBALS['phpgw']->template->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 		}
 		
 		function deleteServer()
@@ -175,44 +147,35 @@
 			$this->boqmailldap->deleteServer($GLOBALS['HTTP_GET_VARS']['serverid']);
 			$this->listServers();
 		}
-		
-		function display_app_header()
-		{
-			global $phpgw, $phpgw_info;
-			
-			$phpgw->common->phpgw_header();
-			echo parse_navbar();
-			
-		}
 
 		function editServer($_serverid='', $_pagenumber='')
 		{
-			global $phpgw, $phpgw_info, $serverid, $pagenumber, $HTTP_GET_VARS;
-			
+			$serverid		= get_var('serverid',array('GET'));
+			$pagenumber		= get_var('pagenumber',array('GET'));
+			$HTTP_GET_VARS	= get_var('HTTP_GET_VARS',array('GET'));;
+
 			if(!empty($_serverid)) $serverid=$_serverid;
 			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
-			
-			$ldapData = $this->boqmailldap->getLDAPData($serverid);
 
-			$this->display_app_header();
+			$ldapData = $this->boqmailldap->getLDAPData($serverid);
 			
 			$this->createMenu($serverid, $pagenumber, $ldapData);
 
-			$this->t->set_block('body','main');
-			
+			$GLOBALS['phpgw']->template->set_block('body','main');
+
 			$this->translate();
 			
 			$linkData = array
 			(
 				'menuaction'	=> 'qmailldap.uiqmailldap.save',
 				'pagenumber'	=> $pagenumber,
-				'serverid'	=> $serverid
+				'serverid'		=> $serverid
 			);
-			$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
+			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
 			switch($pagenumber)
 			{
-				case "0":
+				case '0':
 					if (count($ldapData['rcpthosts']) > 0)
 					{
 						$selectBox  = "<select size=\"10\" name=\"rcpthosts\">\n";
@@ -223,14 +186,13 @@
 									"</option>\n";
 						}
 						$selectBox .= "</select>\n";
-						$this->t->set_var('rcpt_selectbox',$selectBox);
+						$GLOBALS['phpgw']->template->set_var('rcpt_selectbox',$selectBox);
 					}
 					else
 					{
-						$this->t->set_var('rcpt_selectbox',
+						$GLOBALS['phpgw']->template->set_var('rcpt_selectbox',
 							"<b>".lang("We don't accept any email!")."</b>");
 					}
-
 
 					if (count($ldapData['locals']) > 0)
 					{
@@ -242,39 +204,34 @@
 									"</option>\n";
 						}
 						$selectBox .= "</select>\n";
-						$this->t->set_var('locals_selectbox',$selectBox);
+						$GLOBALS['phpgw']->template->set_var('locals_selectbox',$selectBox);
 					}
 					else
 					{
-						$this->t->set_var('locals_selectbox',
+						$GLOBALS['phpgw']->template->set_var('locals_selectbox',
 							"<b>".lang("We don't deliver any email local!")."</b>");
 					}
-
-
 					break;
-					
-				case "15":
-					$this->t->set_block('body','smtproute_row');
-					
+				case '15':
+					$GLOBALS['phpgw']->template->set_block('body','smtproute_row');
 					if (count($ldapData['smtproutes']) > 0)
 					{
 						for ($i=0;$i < count($ldapData['smtproutes']); $i++)
 						{
 							$smtproute = explode(":",$ldapData['smtproutes'][$i]);
-							$this->t->set_var('domain_name',$smtproute[0]);
-							$this->t->set_var('remote_server',$smtproute[1]);
-							$this->t->set_var('remote_port',$smtproute[2]);
-							$this->t->set_var('row_color',$this->dataRowColor[($i)%2]);
+							$GLOBALS['phpgw']->template->set_var('domain_name',$smtproute[0]);
+							$GLOBALS['phpgw']->template->set_var('remote_server',$smtproute[1]);
+							$GLOBALS['phpgw']->template->set_var('remote_port',$smtproute[2]);
 							$linkData = array
 							(
 								'menuaction'	=> 'qmailldap.uiqmailldap.save',
-								'bo_action'	=> 'remove_smtproute',
+								'bo_action'		=> 'remove_smtproute',
 								'smtproute_id'	=> $i,
 								'pagenumber'	=> 15,
-								'serverid'	=> $serverid
+								'serverid'		=> $serverid
 							);
-							$this->t->set_var('delete_route_link',$phpgw->link('/index.php',$linkData));
-							$this->t->parse('smtproute_rows','smtproute_row',True);
+							$GLOBALS['phpgw']->template->set_var('delete_route_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+							$GLOBALS['phpgw']->template->parse('smtproute_rows','smtproute_row',True);
 						}
 					}
 					
@@ -284,103 +241,84 @@
 						'pagenumber'	=> 15,
 						'serverid'	=> $serverid
 					);
-					$this->t->set_var('last_row_color',$this->dataRowColor[($i)%2]);
-					$this->t->set_var('add_route_link',$phpgw->link('/index.php',$linkData));
-					
+					$GLOBALS['phpgw']->template->set_var('add_route_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					break;
-				
-				case "20":
-					$this->t->set_var("ldaplocaldelivery_".$ldapData['ldaplocaldelivery'],'selected');
-					$this->t->set_var("ldapdefaultdotmode_".$ldapData['ldapdefaultdotmode'],'selected');
-					$this->t->set_var("ldapbasedn",$ldapData['ldapbasedn']);
-				
+				case '20':
+					$GLOBALS['phpgw']->template->set_var('ldaplocaldelivery_'.$ldapData['ldaplocaldelivery'],'selected');
+					$GLOBALS['phpgw']->template->set_var('ldapdefaultdotmode_'.$ldapData['ldapdefaultdotmode'],'selected');
+					$GLOBALS['phpgw']->template->set_var('ldapbasedn',$ldapData['ldapbasedn']);
 					break;
-					
-				case "99":
+				case '99':
 					if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
 					{
-						$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
-						$this->t->set_var('description',$storageData['description']);
-						$this->t->set_var('ldap_basedn',$storageData['ldap_basedn']);
+						$GLOBALS['phpgw']->template->set_var('qmail_servername',$storageData['qmail_servername']);
+						$GLOBALS['phpgw']->template->set_var('description',$storageData['description']);
+						$GLOBALS['phpgw']->template->set_var('ldap_basedn',$storageData['ldap_basedn']);
 					}
 					break;
 			}
-			
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
-			
-			$phpgw->common->phpgw_footer();
+
+			$GLOBALS['phpgw']->template->parse('out','main');
+			print $GLOBALS['phpgw']->template->get('out','main');
 		}
 		
 		function editSettings($_serverid='')
 		{
-			global $phpgw, $phpgw_info, $serverid, $HTTP_GET_VARS;
-			
+			$serverid		= get_var('serverid',array('GET'));
+			$HTTP_GET_VARS	= get_var('HTTP_GET_VARS',array('GET'));;
+
 			if(!empty($_serverid)) $serverid=$_serverid;
-			
+
 			$ldapData = $this->boqmailldap->getLDAPData($serverid);
 
-			$this->display_app_header();
-			
-			$this->t->set_file(array("body" => 'ldapsettings.tpl'));
-			$this->t->set_block('body','main');
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
-			
+			$GLOBALS['phpgw']->template->set_file(array('body' => 'ldapsettings.tpl'));
+			$GLOBALS['phpgw']->template->set_block('body','main');
+			$GLOBALS['phpgw']->template->set_block('body','menu_row');
+			$GLOBALS['phpgw']->template->set_block('body','menu_row_bold');
+			$GLOBALS['phpgw']->template->set_block('body','activation_row');
+
 			$this->translate();
 
 			if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
 			{
-				$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
-				$this->t->set_var('description',$storageData['description']);
-				$this->t->set_var('ldap_basedn',$storageData['ldap_basedn']);
+				$GLOBALS['phpgw']->template->set_var('qmail_servername',$storageData['qmail_servername']);
+				$GLOBALS['phpgw']->template->set_var('description',$storageData['description']);
+				$GLOBALS['phpgw']->template->set_var('ldap_basedn',$storageData['ldap_basedn']);
 			}
 
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.uiqmailldap.listServers'
+				'menuaction' => 'qmailldap.uiqmailldap.listServers'
 			);
-			$this->t->set_var('done_link',$phpgw->link('/index.php',$linkData));
-			$this->t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
-			
+			$GLOBALS['phpgw']->template->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
 			$linkData = array
 			(
 				'menuaction'    => 'qmailldap.uiqmailldap.save',
 				'pagenumber'    => $pagenumber,
 				'serverid'      => $serverid
 			);
-			$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
-			                                                                                                                                                                        
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
-			
-			$phpgw->common->phpgw_footer();
+
+			$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$GLOBALS['phpgw']->template->parse('out','main');
+			print $GLOBALS['phpgw']->template->get('out','main');
 		}
 		
 		function listServers()
 		{
-			global $phpgw, $phpgw_info;
-			
-			$this->display_app_header();
-			
-			$this->t->set_file(array("body" => "listservers.tpl"));
-			$this->t->set_block('body','main','main');
-			$this->t->set_block('body','row','row');
+			$GLOBALS['phpgw']->template->set_file(array('body' => 'listservers.tpl'));
+			$GLOBALS['phpgw']->template->set_block('body','main','main');
+			$GLOBALS['phpgw']->template->set_block('body','row','row');
 			
 			$this->translate();
-
 			$serverList = $this->boqmailldap->getServerList();
-			
+
 			if ($serverList)
 			{
 				for ($i=0; $i < count($serverList); $i++)
 				{
-					$this->t->set_var('server_name',$serverList[$i]['qmail_servername']);
-					$this->t->set_var('server_description',$serverList[$i]['description']);
+					$GLOBALS['phpgw']->template->set_var('server_name',$serverList[$i]['qmail_servername']);
+					$GLOBALS['phpgw']->template->set_var('server_description',$serverList[$i]['description']);
 					$linkData = array
 					(
 						'menuaction'	=> 'qmailldap.uiqmailldap.editServer',
@@ -388,88 +326,74 @@
 						'pagenumber'	=> '0',
 						'serverid'	=> $serverList[$i]['id']
 					);
-					$this->t->set_var('edit_link',$phpgw->link('/index.php',$linkData));
+					$GLOBALS['phpgw']->template->set_var('edit_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					$linkData = array
 					(
 						'menuaction'	=> 'qmailldap.uiqmailldap.editSettings',
 						'nocache'	=> '1',
 						'serverid'	=> $serverList[$i]['id']
 					);
-					$this->t->set_var('settings_link',$phpgw->link('/index.php',$linkData));
+					$GLOBALS['phpgw']->template->set_var('settings_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					$linkData = array
 					(
 						'menuaction'	=> 'qmailldap.uiqmailldap.deleteServer',
 						'serverid'	=> $serverList[$i]['id']
 					);
-					$this->t->set_var('delete_link',$phpgw->link('/index.php',$linkData));
-					$this->t->set_var('row_color',$this->rowColor[$i%2]);
-					$this->t->parse('rows','row',True);
+					$GLOBALS['phpgw']->template->set_var('delete_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					$GLOBALS['phpgw']->template->parse('rows','row',True);
 				}
 			}
-			
+
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.uiqmailldap.addServer'
+				'menuaction' => 'qmailldap.uiqmailldap.addServer'
 			);
-			$this->t->set_var('add_link',$phpgw->link('/index.php',$linkData));
-			
-			$this->t->parse("out","main");
-			
-			print $this->t->get('out','main');
-			
-			$phpgw->common->phpgw_footer();
+			$GLOBALS['phpgw']->template->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			$GLOBALS['phpgw']->template->parse('out','main');
+			print $GLOBALS['phpgw']->template->get('out','main');
 		}
-
 
 		function save()
 		{
-			global $HTTP_POST_VARS, $HTTP_GET_VARS;
-
-			$this->boqmailldap->save($HTTP_POST_VARS, $HTTP_GET_VARS);
-			if ($HTTP_POST_VARS['bo_action'] == 'save_ldap' || $HTTP_GET_VARS['bo_action'] == 'save_ldap')
+			$this->boqmailldap->save($GLOBALS['HTTP_POST_VARS'], $GLOBALS['HTTP_GET_VARS']);
+			if ($GLOBALS['HTTP_POST_VARS']['bo_action'] == 'save_ldap' || $GLOBALS['HTTP_GET_VARS']['bo_action'] == 'save_ldap')
 			{
 				$this->listServers();
 			}
 			else
 			{
-				$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
+				$this->editServer($GLOBALS['HTTP_GET_VARS']['serverid'],$GLOBALS['HTTP_GET_VARS']['pagenumber']);
 			}
 		}
 		
 		function translate()
 		{
-			global $phpgw_info;			
-
-			$this->t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
-
-			$this->t->set_var('lang_server_list',lang('server list'));
-			$this->t->set_var('lang_server_name',lang('server name'));
-			$this->t->set_var('lang_server_description',lang('description'));
-			$this->t->set_var('lang_activate',lang('Activate'));
-			$this->t->set_var('lang_edit',lang('edit'));
-			$this->t->set_var('lang_save',lang('save'));
-			$this->t->set_var('lang_delete',lang('delete'));
-			$this->t->set_var('lang_disabled',lang('disabled'));
-			$this->t->set_var('lang_enabled',lang('enabled'));
-			$this->t->set_var('lang_add',lang('add'));
-			$this->t->set_var('lang_done',lang('Done'));
-			$this->t->set_var('lang_back',lang('back'));
-			$this->t->set_var('lang_remove',lang('remove'));
-			$this->t->set_var('lang_add_to_local',lang('add also to local domains'));
-			$this->t->set_var('lang_ldap_server',lang('LDAP server'));
-			$this->t->set_var('lang_ldap_basedn',lang('LDAP basedn'));
-			$this->t->set_var('lang_ldap_server_admin',lang('admin dn'));
-			$this->t->set_var('lang_ldap_server_password',lang('admin password'));
-			$this->t->set_var('lang_add_server',lang('add server'));
-			$this->t->set_var('lang_domain_name',lang('domainname'));
-			$this->t->set_var('lang_remote_server',lang('remote server'));
-			$this->t->set_var('lang_remote_port',lang('remote port'));
+			$GLOBALS['phpgw']->template->set_var('lang_server_list',lang('server list'));
+			$GLOBALS['phpgw']->template->set_var('lang_server_name',lang('server name'));
+			$GLOBALS['phpgw']->template->set_var('lang_server_description',lang('description'));
+			$GLOBALS['phpgw']->template->set_var('lang_activate',lang('Activate'));
+			$GLOBALS['phpgw']->template->set_var('lang_edit',lang('edit'));
+			$GLOBALS['phpgw']->template->set_var('lang_save',lang('save'));
+			$GLOBALS['phpgw']->template->set_var('lang_delete',lang('delete'));
+			$GLOBALS['phpgw']->template->set_var('lang_disabled',lang('disabled'));
+			$GLOBALS['phpgw']->template->set_var('lang_enabled',lang('enabled'));
+			$GLOBALS['phpgw']->template->set_var('lang_add',lang('add'));
+			$GLOBALS['phpgw']->template->set_var('lang_done',lang('Done'));
+			$GLOBALS['phpgw']->template->set_var('lang_back',lang('back'));
+			$GLOBALS['phpgw']->template->set_var('lang_remove',lang('remove'));
+			$GLOBALS['phpgw']->template->set_var('lang_add_to_local',lang('add also to local domains'));
+			$GLOBALS['phpgw']->template->set_var('lang_ldap_server',lang('LDAP server'));
+			$GLOBALS['phpgw']->template->set_var('lang_ldap_basedn',lang('LDAP basedn'));
+			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_admin',lang('admin dn'));
+			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_password',lang('admin password'));
+			$GLOBALS['phpgw']->template->set_var('lang_add_server',lang('add server'));
+			$GLOBALS['phpgw']->template->set_var('lang_domain_name',lang('domainname'));
+			$GLOBALS['phpgw']->template->set_var('lang_remote_server',lang('remote server'));
+			$GLOBALS['phpgw']->template->set_var('lang_remote_port',lang('remote port'));
 			
-			$this->t->set_var('desc_ldaplocaldelivery',lang('To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.'));
-			$this->t->set_var('desc_ldapdefaultdotmode',lang('The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.'));
-			$this->t->set_var('desc_ldapbasedn',lang('The base DN from where the search in the LDAP tree begins.'));
+			$GLOBALS['phpgw']->template->set_var('desc_ldaplocaldelivery',lang('To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.'));
+			$GLOBALS['phpgw']->template->set_var('desc_ldapdefaultdotmode',lang('The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.'));
+			$GLOBALS['phpgw']->template->set_var('desc_ldapbasedn',lang('The base DN from where the search in the LDAP tree begins.'));
 		}
 	}
 ?>

@@ -19,11 +19,11 @@
 
 		var $public_functions = array
 		(
-			'getServerList'		=> True,
-			'getLocals'		=> True,
-			'getRcptHosts'		=> True,
+			'getServerList'			=> True,
+			'getLocals'				=> True,
+			'getRcptHosts'			=> True,
 			'getLDAPStorageData'	=> True,
-			'abcdefgh'		=> True
+			'abcdefgh'				=> True
 		);
 
 		function boqmailldap()
