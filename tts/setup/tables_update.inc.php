@@ -12,6 +12,15 @@
 
   /* $Id$ */
 
+	$test[] = '0.0.0';
+	function tts_upgrade0_0_0()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameTable('ticket','phpgw_tts_tickets');
+
+		$GLOBALS['setup_info']['tts']['currentver'] = '0.8.1.003';
+		return $GLOBALS['setup_info']['tts']['currentver'];
+	}
+
 	$test[] = '0.8.1.003';
 	function tts_upgrade0_8_1_003()
 	{
