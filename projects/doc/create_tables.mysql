@@ -41,7 +41,7 @@ CREATE TABLE phpgw_p_hours (
 	project_id	int(11) DEFAULT '0' NOT NULL,
 	activity_id	int(11) DEFAULT '0' NOT NULL,
 	entry_date	int(11) DEFAULT '0' NOT NULL,
-	date		int(11) DEFAULT '0' NOT NULL,
+	start_date	int(11) DEFAULT '0' NOT NULL,
         end_date        int(11) DEFAULT '0' NOT NULL,
 	remark		text,
 	minutes		int(10) DEFAULT '0' NOT NULL,

@@ -44,7 +44,7 @@
           <td><select name="status">{status_list}</select></td>
          </tr>
          <tr>
-          <td>{lang_budget}:</td>
+          <td>{lang_budget}:&nbsp;{currency}</td>
           <td><input type="text" name="budget" value="{budget}"></td>
          </tr>
          <tr>

@@ -2,9 +2,9 @@
   /**************************************************************************\
   * phpGroupWare - projects/projecthours                                     *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
-  * -------------------------------------------------------                  *
+  * ------------------------------------------------                         *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
@@ -12,38 +12,33 @@
   \**************************************************************************/
 /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "projects", 
+    $phpgw_info["flags"] = array("currentapp" => "projects", 
                                "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+    include("../header.inc.php");
 
-  $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "projecthours_list_t" => "hours_listhours.tpl"));
-  $t->set_block("projecthours_list_t", "projecthours_list", "list");
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('hours_list_t' => 'hours_listhours.tpl'));
+    $t->set_block('hours_list_t','hours_list','list');
 
-  $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
- . "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
+    $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+		. "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
-  $t->set_var(common_hidden_vars,$common_hidden_vars); 
-  $t->set_var("lang_action",lang("List project hours"));   
+    $t->set_var(hidden_vars,$hidden_vars); 
+    $t->set_var('lang_action',lang('List project hours'));   
 
-  if (! $start)
-     $start = 0;
-  if ($order)
-     $ordermethod = "order by $order $sort";
-  else
-     $ordermethod = "order by date asc";
+    if (! $start) { $start = 0; }
+    if ($order) { $ordermethod = "order by $order $sort"; }
+    else { $ordermethod = "order by start_date asc"; }
 
-  $filtermethod = "employee='" . $phpgw_info["user"]["account_id"] . "' ";
+    $filtermethod = "employee='" . $phpgw_info["user"]["account_id"] . "' ";
 
-  if (!$filter)
-     $filter = "none";
+    if (!$filter) { $filter = "none"; }
  
-  if ($project_id) {
+    if ($project_id) {
      if ($filter=="none")
         $filter = "project_id=$project_id";
      }
@@ -57,7 +52,7 @@
      $filtermethod .= " AND status='$status' ";
 
   if ($query) {
-     $phpgw->db->query("select count(*) from p_hours where $filtermethod");
+     $phpgw->db->query("select count(*) from phpgw_p_hours where $filtermethod");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
         $t->set_var(total_matchs,lang("your search returned 1 match"));
@@ -65,7 +60,7 @@
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
        } 
     else {
-     $phpgw->db->query("select count(*) from p_hours where $filtermethod");
+     $phpgw->db->query("select count(*) from phpgw_p_hours where $filtermethod");
      $phpgw->db->next_record();                                                                      
      if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
@@ -89,34 +84,34 @@
   // list header variable template-declarations
   // ===========================================
 
-  $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_activity,$phpgw->nextmatchs->show_sort_order($sort,"p_activities.descr",$order,"hours_listhours.php",lang("Activity"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_remark,$phpgw->nextmatchs->show_sort_order($sort,"p_hours.remark",$order,"hours_listhours.php",lang("Remark"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_listhours.php",lang("Status"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_date,$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"hours_listhours.php",lang("Date"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_listhours.php",lang("Date due"),"&project_id=$project_id&status=$status"));
-  $t->set_var(sort_minutes,$phpgw->nextmatchs->show_sort_order($sort,"minutes",$order,"hours_listhours.php",lang("Time"),"&project_id=$project_id&status=$status"));
-  $t->set_var(h_lang_edithour,lang("Edit hours"));
-  $t->set_var(h_lang_deletehour,lang("Delete hours"));             
+  $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
+  $t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,"p_activities.descr",$order,"hours_listhours.php",lang("Activity"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_remark',$phpgw->nextmatchs->show_sort_order($sort,"p_hours.remark",$order,"hours_listhours.php",lang("Remark"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_listhours.php",lang("Status"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_date',$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"hours_listhours.php",lang("Date"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_listhours.php",lang("Date due"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_minutes',$phpgw->nextmatchs->show_sort_order($sort,"minutes",$order,"hours_listhours.php",lang("Time"),"&project_id=$project_id&status=$status"));
+  $t->set_var('h_lang_edit',lang('Edit hours'));
+  $t->set_var('h_lang_view',lang('View hours'));             
 
   // -------------- end header declaration -----------------
 
     $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
 //  $limit = $phpgw->db->limit($start);
 
-  if ($query) {
-     $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark as remark,p_activities.descr as descr,status,"
-                 . "date,end_date,minutes FROM p_activities,p_hours WHERE $filtermethod AND "
-                 . "p_hours.activity_id=p_activities.id AND "
+    if ($query) {
+     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark as remark,phpgw_p_activities.descr as descr,status,"
+                 . "start_date,end_date,minutes FROM phpgw_p_activities,phpgw_p_hours WHERE $filtermethod AND "
+                 . "phpgw_p_hours.activity_id=phpgw_p_activities.id AND "
                  . "descr like '%$query%' OR remark like '%$query%' $ordermethod limit $limit");
-  } else {
-     $phpgw->db->query("SELECT p_hours.id as id,p_hours.remark,p_activities.descr,status,date,"
-                 . "end_date,minutes FROM p_activities,p_hours WHERE $filtermethod AND "
-                 . "p_hours.activity_id=p_activities.id "
-                 . " $ordermethod limit $limit");
-  }
+    } 
+    else {
+     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,status,start_date,"
+                 . "end_date,minutes FROM phpgw_p_activities,phpgw_p_hours WHERE $filtermethod AND "
+                 . "phpgw_p_hours.activity_id=phpgw_p_activities.id $ordermethod limit $limit");
+    }
 
-  while ($phpgw->db->next_record()) {
+    while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     
      $activity  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                             
@@ -128,8 +123,8 @@
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
-    if ($phpgw->db->f("date") == 0)
-             $end_dateout = "&nbsp;";
+    if ($phpgw->db->f("start_date") == 0)
+             $start_dateout = "&nbsp;";
     else {
       $month = $phpgw->common->show_date(time(),"n");
       $day   = $phpgw->common->show_date(time(),"d");
@@ -157,23 +152,8 @@
     $minutes = floor($phpgw->db->f("minutes")/60).":"
 		. sprintf ("%02d",(int)($phpgw->db->f("minutes")-floor($phpgw->db->f("minutes")/60)*60));
 
-    if($phpgw->db->f("status")=="open")
-	$deleteurl = "<a href=\"". $phpgw->link("hours_deletehour.php","id=" . $phpgw->db->f("id") 
-                                         . "&sort=$sort&order=$order&"
-                                         . "query=$query&start=$start&filter="
-                                         . "$filter&status=$status")
-                                 . "\">". lang("Delete hours") . "</a>";
-    else 
-	$deleteurl = "";
-    if(($phpgw->db->f("status")=="open") or ($phpgw->db->f("status")=="done") or ($isadmin==1))
-        $editurl = "<a href=\"". $phpgw->link("hours_edithour.php","id=" . $phpgw->db->f("id")
-	                                . "&sort=$sort&order=$order&"
-					. "query=$query&start=$start&filter="
-					. "$filter&status=$status")
-			 	. "\">". lang("Edit hours") . "</a>";		
-    else
-       $editurl = "";
-    
+    $id = $phpgw->db->f("id");
+
 // ---------------- template declaration for list records ------------------------------
 
     $t->set_var(array("activity" =>$activity,
@@ -181,16 +161,26 @@
                       "status" => $status,
     		      "date" => $dateout,
       		      "end_date" => $end_dateout,
-      		      "minutes" => $minutes,
-      		      "edithour" => $editurl, 
-                      "deletehour" => $deleteurl));
-    $t->parse("list", "projecthours_list", true);
+      		      "minutes" => $minutes));
+
+    if ($status != "billed") {
+    $t->set_var('edit',$phpgw->link('hours_edithour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('lang_edit',lang('Edit'));
+    }
+    else { 
+    $t->set_var('edit','');
+    $t->set_var('lang_edit','');
+    }
+    $t->set_var('view',$phpgw->link('viewhours.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    $t->set_var('lang_view',lang('View'));
+
+    $t->parse('list','hours_list',True);
 
 // --------------------------- end record declaration -----------------------------------
-  }
+    }
 
-    $t->parse("out", "projecthours_list_t", true);
-    $t->p("out");
+    $t->parse('out','hours_list_t',True);
+    $t->p('out');
 
-$phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_footer();
 ?>

@@ -41,12 +41,12 @@
 
     if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); } 
     else {
-	if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date !'). "<br>" . "$smonth - $sday - $syear" . "</b></center>"; }
+	if ($smonth && $sday && $syear) { $error[$errorcount++] = lang('You have entered an invalid start date ! :') . " " . "$smonth - $sday - $syear"; }
     }
 
     if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); } 
       else {
-	if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date"). "<br>" . "$emonth - $eday - $eyear" . "</b></center>"; }                                                   
+	if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }                                                   
     }                                                                                                                                                                                
 
     if (! $error) {
@@ -85,9 +85,10 @@
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-    $t->set_var("error","");
+    $t->set_var('error','');
+    $t->set_var('currency',$currency);
     }
-    else { $t->set_var("error",lang("Please select your currency in preferences!")); }
+    else { $t->set_var('error',lang('Please select your currency in preferences !')); }
     
     $hidden_vars = "<input type=\"hidden\" name=\"id\" value=\"$id\">";
     $t->set_var('hidden_vars',$hidden_vars);
@@ -137,7 +138,7 @@
 	}
     else {
         $emonth = date('m',$edate);
-        $eday = date('d',$edate);
+        $emonth = date('m',$edate);
         $eyear = date('Y',$edate);
 	}
 

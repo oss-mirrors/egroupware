@@ -68,7 +68,6 @@
     return $projects;
     }
 
-
 // returns project-,invoice- and delivery-ID
 
     $id_type = "hex";

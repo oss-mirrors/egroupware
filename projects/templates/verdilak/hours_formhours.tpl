@@ -4,7 +4,8 @@
 
       <center>
        <form method="POST" name="activity_form" action="{actionurl}">
-        {common_hidden_vars}
+        {hidden_vars}
+	{error}{message}
         <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr>
           <td>{lang_num}:<br><br></td>
@@ -16,29 +17,27 @@
          </tr>
          <tr>
           <td>{lang_activity}:</td>
-          <td>
-           <select name="activity">
-            {activity_list}
-           </select>
-          </td>
+          <td><select name="activity">{activity_list}</select></td>
          </tr>
          <tr>
-          <td>{lang_date}:</td>
-          <td>
-            {date_formatorder}
-          </td>
+          <td height="35">{lang_minperae}:</td>
+          <td height="35">{minperae}</td>
+         </tr>
+         <tr>
+          <td height="35">{lang_billperae}:&nbsp;{currency}</td>
+          <td height="35">{billperae}</td>
+         </tr>
+         <tr>
+          <td>{lang_start_date}:</td>
+          <td>{start_date_select}</td>
          </tr>
          <tr>
           <td>{lang_end_date}:</td>
-          <td>
-            {end_date_formatorder}
-          </td>
+          <td>{end_date_select}</td>
          </tr>
          <tr>
           <td>{lang_remark}:</td>
-          <td colspan="2">
-           <textarea name="remark" rows=4 cols=50 wrap="VIRTUAL">{remark}</textarea>
-          </td>
+          <td colspan="2"><textarea name="remark" rows=4 cols=50 wrap="VIRTUAL">{remark}</textarea></td>
          </tr>
          <tr>
           <td>{lang_time}:</td>
@@ -49,32 +48,20 @@
          </tr>
          <tr>
           <td>{lang_status}:</td>
-          <td>
-           <select name="status">
-            {status_list}
-           </select>
-          </td>
+          <td><select name="status">{status_list}</select></td>
          </tr>
          <tr>
           <td>{lang_employee}:</td>
-          <td>
-           <select name="employee">
-            {employee_list}
-           </select>
-          </td>
+          <td><select name="employee">{employee_list}</select></td>
          </tr>
-         
-         <!-- BEGIN add -->
          </table>
+
+         <!-- BEGIN add -->
          
          <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr valign="bottom">
-          <td height="62">
-           <input type="submit" name="submit" value="{lang_addsubmitb}">
-          </td>
-          <td height="62">
-           <input type="reset" name="reset" value="{lang_addresetb}">
-          </td>
+          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
+          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
          </tr>
          </table>
          </form>
@@ -84,27 +71,14 @@
         
         <!-- BEGIN edit -->
 
-         <tr>
-          <td>{lang_minperae}:</td>
-          <td>
-           <input type="text" name="minperae" value="{minperae}">
-          </td>
-         </tr>
-         <tr>
-          <td>{lang_billperae}:</td>
-          <td>
-           <input type="text" name="billperae" value="{billperae}">
-          </td>
-         </tr>
-         </table>
-         
          <table width="75%" border="0" cellspacing="0" cellpadding="0">
          <tr valign="bottom">
-          <td height="62">
-           <input type="submit" name="submit" value="{lang_editsubmitb}">
-            &nbsp;
-           </form>
-          </td>
+          <td height="62"><input type="submit" name="submit" value="{lang_edit}">
+           </form></td>
+	<td height="62">
+	    <form method="POST" action="{deleteurl}">
+	    {hidden_vars}
+	    <input type="submit" name="delete" value="{lang_delete}"></form></td>
          </tr>
          </table>
 	</center>

@@ -129,7 +129,7 @@
     $t->set_var('edit',$phpgw->link('edit.php',"id=$id"));  
     $t->set_var('lang_edit_entry',lang('Edit'));
 
-    $t->set_var('view',$phpgw->link('view_project.php',"id=$id"));
+    $t->set_var('view',$phpgw->link('view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_view_entry',lang('View'));
 
     $t->parse('list','projects_list',True);

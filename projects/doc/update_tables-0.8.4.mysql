@@ -1,7 +1,8 @@
 # $Id$
-#######################
-# update : 03/03/2001 #
-#######################
+
+#################################################
+# update : 03/03/2001 from 0.8.3.1 to 0.8.4pre1 #
+#################################################
 
 alter table p_projects rename phpgw_p_projects;
 alter table phpgw_p_projects change column date start_date int(11) DEFAULT '0' NOT NULL;
@@ -30,3 +31,10 @@ alter table phpgw_p_delivery modify column num varchar(20) NOT NULL;
 CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num);
 
 alter table p_deliverypos rename phpgw_p_deliverypos;
+
+###################################################
+#             03/05/2001 0.8.4pre2                #
+###################################################
+
+alter table phpgw_p_hours drop column date;
+alter table phpgw_p_hours add column start_date int(11) DEFAULT '0' NOT NULL after entry_date;

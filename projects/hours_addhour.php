@@ -2,9 +2,9 @@
   /**************************************************************************\
   * phpGroupWare - projects/projecthours                                     *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              * 
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         * 
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
-  * --------------------------------------------------------                 *
+  * ------------------------------------------------                         *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
@@ -12,113 +12,150 @@
   \**************************************************************************/
 /* $Id$ */
   
-  if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, 
-                                  "nonavbar" => True);
-  }
-  $phpgw_info["flags"]["currentapp"] = "projects";
-  include("../header.inc.php");
+    $phpgw_info["flags"]["currentapp"] = "projects";
+    include("../header.inc.php");
 
-  if (! $submit) {
-       $isadmin = isprojectadmin();
+    if (!$id) {
+    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/"
+          . "sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
+    }
+
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('hours_add' => 'hours_formhours.tpl'));
+    $t->set_block('hours_add','add','addhandle');
+    $t->set_block('hours_add','edit','edithandle');
+
+    if ($submit) {
       
-        $t = new Template($phpgw_info["server"]["app_tpl"]);
-  	$t->set_var("actionurl",$phpgw->link("hours_addhour.php"));
-  	$t->set_file(array( "projects_add" => "hours_formhours.tpl"));
-     	$t->set_block("projects_add", "add", "addhandle");
-     	$t->set_block("projects_add", "edit", "edithandle");
-     	$t->set_block("projects_add", "edit_act", "acthandle");
-  	
-  	$t->set_var("lang_action",lang("add project hours"));
+    $errorcount = 0;
+
+    if (checkdate($smonth,$sday,$syear)) { $sdate = mktime(2,0,0,$smonth,$sday,$syear); } 
+    else {
+       if ($smonth && $sday && $syear) { $error[$errorcount++] = lang("You have entered an invalid date ! :") . " " . "$smonth - $sday - $syear"; }
+    }
+
+    if (checkdate($emonth,$eday,$eyear)) { $edate = mktime(2,0,0,$emonth,$eday,$eyear); } 
+    else {
+       if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
+    }
+
+    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
+    $phpgw->db->next_record();
+    if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
+    else {
+    $billperae = $phpgw->db->f("billperae");
+    $minperae = $phpgw->db->f("minperae");
+
+    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
+    }
+
+    if (! $error) {
+    $remark = addslashes($remark);
+    $ae_minutes = $hours*60+$minutes;
+//    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
+
+    $phpgw->db->query("insert into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,"
+               . "remark,minutes,status,minperae,billperae,employee) values "
+               . " ('$id','$activity','" . time() ."','$sdate','$date','$remark',"
+               . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
+
+      } 
+    }
+
+    if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Hours has been added !')); }
+    if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
+
+    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
+    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
+    $t->set_var('error','');
+    $t->set_var('currency',$currency);
+    }
+    else {
+    $t->set_var('error',lang('Please select your currency in preferences !'));
+    }
+
+    $t->set_var('actionurl',$phpgw->link("hours_addhour.php"));
+    $t->set_var('lang_action',lang('Add project hours'));
 	
-	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+    $hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
         		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
         		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
         		. "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
         		. "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         		
-        $t->set_var("common_hidden_vars",$common_hidden_vars);
-        $phpgw->db->query("SELECT num,title FROM p_projects "
-                        . " WHERE id = '".$id."'");
-        if ($phpgw->db->next_record()) {
-           $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
-           $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
-           if (! $title)  $title  = "&nbsp;";
-           $t->set_var("title",$title);
-        }
-        $t->set_var("lang_num",lang("Project ID"));
-        $t->set_var("lang_title",lang("Title"));
+    $t->set_var('hidden_vars',$hidden_vars);
 
-        $t->set_var("lang_activity",lang("Activity"));
-        $phpgw->db->query("SELECT activity_id,descr FROM p_projectactivities,p_activities"
-                        . " WHERE project_id = '".$id."' AND p_projectactivities.activity_id="
-                        . "p_activities.id");
+    $phpgw->db->query("SELECT num,title FROM phpgw_p_projects WHERE id = '".$id."'");
+    if ($phpgw->db->next_record()) {
+    $t->set_var('num',$phpgw->strip_html($phpgw->db->f("num")));
+    $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                
+    if (! $title)  $title  = "&nbsp;";
+    $t->set_var('title',$title);
+    $t->set_var('lang_num',lang('Project ID'));
+    $t->set_var('lang_title',lang('Title'));
+    }
+
+    $t->set_var("lang_activity",lang("Activity"));
+
+    $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities"
+                        . " WHERE project_id = '".$id."' AND phpgw_p_projectactivities.activity_id="
+                        . "phpgw_p_activities.id");
         while ($phpgw->db->next_record()) {
            $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\">"
 	            . $phpgw->strip_html($phpgw->db->f("descr")) . "</option>";
         }
-        $t->set_var("activity_list",$activity_list);
+        
+    $t->set_var('activity_list',$activity_list);
 
-	$cur_month=date("n",time());
-        $cur_day=date("j",time());
-        $cur_year=date("Y",time());
-        $t->set_var("lang_date",lang("Date"));
-        $n_month[$cur_month]=" selected ";
-        $date_formatorder ="<select name=month>\n"
-               . "<option value=\"\"$n_month[0]> </option>\n"
-               . "<option value=\"1\"$n_month[1]>" . lang("January") . "</option>\n" 
-               . "<option value=\"2\"$n_month[2]>" . lang("February") . "</option>\n"
-               . "<option value=\"3\"$n_month[3]>" . lang("March") . "</option>\n"
-               . "<option value=\"4\"$n_month[4]>" . lang("April") . "</option>\n"
-               . "<option value=\"5\"$n_month[5]>" . lang("May") . "</option>\n"
-               . "<option value=\"6\"$n_month[6]>" . lang("June") . "</option>\n" 
-               . "<option value=\"7\"$n_month[7]>" . lang("July") . "</option>\n"
-               . "<option value=\"8\"$n_month[8]>" . lang("August") . "</option>\n"
-               . "<option value=\"9\"$n_month[9]>" . lang("September") . "</option>\n"
-               . "<option value=\"10\"$n_month[10]>" . lang("October") . "</option>\n"
-               . "<option value=\"11\"$n_month[11]>" . lang("November") . "</option>\n"
-               . "<option value=\"12\"$n_month[12]>" . lang("December") . "</option>\n"
-               . "</select>";
-  	$date_formatorder  .= "<input maxlength=2 name=\"day\" value=\"$cur_day\" size=2>\n";
-  	$date_formatorder .= "<input maxlength=4 name=\"year\" value=\"$cur_year\" size=4>\n";
-        $t->set_var("date_formatorder",$date_formatorder);
+    $sm = CreateObject('phpgwapi.sbox');
 
-        $t->set_var("lang_end_date",lang("Date due"));
-	$end_date_formatorder = "<select name=\"end_month\">\n"
-              . "<option value=\"\" SELECTED> </option>\n"
-              . "<option value=\"1\">" . lang("january") . "</option>\n"
-              . "<option value=\"2\">" . lang("February"). "</option>\n"
-              . "<option value=\"3\">" . lang("March")   . "</option>\n"
-              . "<option value=\"4\">" . lang("April")   . "</option>\n"
-              . "<option value=\"5\">" . lang("May")     . "</option>\n"
-              . "<option value=\"6\">" . lang("June")    . "</option>\n"
-              . "<option value=\"7\">" . lang("July")    . "</option>\n"
-              . "<option value=\"8\">" . lang("August")  . "</option>\n"
-              . "<option value=\"9\">" . lang("September") . "</option>\n"
-              . "<option value=\"10\">" . lang("October")  . "</option>\n"
-              . "<option value=\"11\">" . lang("November") . "</option>\n"
-              . "<option value=\"12\">" . lang("December") . "</option>\n"
-              . "</select>\n";
-  	$end_date_formatorder  .= "<input maxlength=2 name=\"end_day\" size=2>\n";
-  	$end_date_formatorder .= "<input maxlength=4 name=\"end_year\" size=4>\n";
-        $t->set_var("end_date_formatorder",$end_date_formatorder);
+    if (!$sdate) {
+        $smonth = date('m',time());
+        $sday = date('d',time()); 
+        $syear = date('Y',time());
+        }
+    else {
+        $smonth = date('m',$sdate);
+        $sday = date('d',$sdate);
+        $syear = date('Y',$sdate);
+        }
 
-        $t->set_var("lang_remark",lang("Remark"));
-        $t->set_var("remark","");
+    $t->set_var('start_date_select',$phpgw->common->dateformatorder($sm->getYears('syear',$syear),$sm->getMonthText('smonth',$smonth),$sm->getDays('sday',$sday)));
+    $t->set_var('lang_start_date',lang('Start_date'));
 
-        $t->set_var("lang_time",lang("Time"));
-        $t->set_var("hours","");
-        $t->set_var("minutes","");
+    if (!$edate) {
+        $emonth = 0;
+        $eday = 0;
+        $eyear = 0;
+        }
+    else {
+        $emonth = date('m',$edate);
+        $emonth = date('m',$edate);
+        $eyear = date('Y',$edate);
+        }
 
-        $t->set_var("lang_status",lang("Status"));
-	$status_list = "<option value=\"done\" selected>" . lang("Done") . "</option>\n"
+    $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
+    $t->set_var('lang_end_date',lang('Date due'));
+
+    $t->set_var('lang_remark',lang('Remark'));
+    $t->set_var('remark',$remark);
+
+    $t->set_var('lang_time',lang("Time"));
+    $t->set_var('hours',$hours);
+    $t->set_var('minutes',$minutes);
+
+    $t->set_var('lang_status',lang('Status'));
+    
+    $status_list = "<option value=\"done\" selected>" . lang("Done") . "</option>\n"
            		. "<option value=\"open\">" . lang("Open") . "</option>\n"
            		. "<option value=\"billed\">" . lang("Billed") . "</option>\n";	
-        $t->set_var("status_list",$status_list);
+    $t->set_var("status_list",$status_list);
 
-        $t->set_var("lang_employee",lang("Employee"));
-        $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
+    $t->set_var('lang_employee',lang('Employee'));
+    
+    $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
         while ($phpgw->db->next_record()) {
            $employee_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
@@ -135,67 +172,21 @@
                       $phpgw->db->f("account_firstname"),
                       $phpgw->db->f("account_lastname")) . "</option>"; */
         }
-        $t->set_var("employee_list",$employee_list);
-
-        $t->set_var("lang_addsubmitb",lang("Add"));
-        $t->set_var("lang_addresetb",lang("Clear Form"));
         
-        $t->set_var("edithandle","");
-    	$t->set_var("addhandle","");
-    	$t->set_var("acthandle","");
-    	$t->pparse("out","projects_add");
-    	$t->pparse("addhandle","add");
-    } 
-   else {
+    $t->set_var('employee_list',$employee_list);
 
-    if (checkdate($month,$day,$year)) {
-       $date = mktime(2,0,0,$month,$day,$year);
-    } else {
-       if ($month && $day && $year) {
-          $phpgw->common->phpgw_header();
-          echo parse_navbar();
-          echo "<p><center>" . lang("You have entered an invalid date"). "</center>";
-          echo "<br>$month - $day - $year";
-          exit;
-       }
-    }
-    if (checkdate($end_month,$end_day,$end_year)) {
-       $end_date = mktime(2,0,0,$end_month,$end_day,$end_year);
-    } else {
-       if ($end_month && $end_day && $end_year) {
-          $phpgw->common->phpgw_header();
-          echo parse_navbar();
-          echo "<p><center>" . lang("You have entered an invalid date"). "</center>";
-          echo "<br>$end_month - $end_day - $end_year";
-          exit;
-       }
-    }
-    $ae_minutes = $hours*60+$minutes;
-    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM p_activities"
-                        . " WHERE id = '".$activity."'");
-    if (!$phpgw->db->next_record()) {
-        $phpgw->common->phpgw_header();
-        echo parse_navbar();
-        echo "<p><center>" . lang("You have selected an invalid activity"). "</center>";
-        exit;
-    }
-    if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)){
-        $phpgw->common->phpgw_header();
-        echo parse_navbar();
-        echo "<p><center>" . lang("You have to enter a remark"). "</center>";
-        exit;
-    }
-    $billperae = $phpgw->db->f("billperae");
-    $minperae = $phpgw->db->f("minperae");
-    $remark = addslashes($remark);
-//    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
-    $phpgw->db->query("insert into p_hours (project_id,activity_id,entry_date,date,end_date,"
-               . "remark,minutes,status,minperae,billperae,employee) values "
-               . " ('$id','$activity','" . time() ."','$date','$end_date','$remark',"
-               . "'$ae_minutes','$status','$minperae','$billperae','$employee')");
-    Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/hours_index.php",
-           "cd=14&sort=$sort&order=$order&query=$query&start="
-         . "$start&filter=$filter"));
-  }
-$phpgw->common->phpgw_footer();
+    $t->set_var('lang_minperae',lang('Minutes per workunit'));
+    $t->set_var('minperae',$minperae);
+    $t->set_var('lang_billperae',lang("Bill per workunit"));
+    $t->set_var('billperae',$billperae);
+
+    $t->set_var('lang_add',lang('Add'));
+    $t->set_var('lang_reset',lang('Clear Form'));
+        
+    $t->set_var('edithandle','');
+    $t->set_var('addhandle','');
+    $t->pparse('out','hours_add');
+    $t->pparse('addhandle','add');
+
+    $phpgw->common->phpgw_footer();
 ?>

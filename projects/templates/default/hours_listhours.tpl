@@ -14,12 +14,13 @@
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_minutes}</td>
-      <td width="9%" align=center>{h_lang_edithour}</td>
-      <td width="9%" align=center>{h_lang_deletehour}</td>
+      <td width="9%" align=center>{h_lang_view}</td>
+      <td width="9%" align=center>{h_lang_edit}</td>
     </tr>
   </form>
   
-<!-- BEGIN projecthours_list -->
+<!-- BEGIN hours_list -->
+
       <tr bgcolor="{tr_color}">
         <td>{activity}</td>
         <td>{remark}</td>
@@ -27,10 +28,11 @@
         <td align=center>{date}</td>
         <td align=center>{end_date}</td>
         <td align=right>{minutes}</td>
-        <td align=center>{edithour}</td>
-        <td align=center>{deletehour}</td>
+        <td align=center><a href="{view}">{lang_view}</a></td>
+        <td align=center><a href="{edit}">{lang_edit}</a></td>
       </tr>
-<!-- END projecthours_list -->
+
+<!-- END hours_list -->
 
   </table>
 </center>
