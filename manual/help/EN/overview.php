@@ -20,7 +20,7 @@
 The following pages are an to be used as a guideline/ready reference
 for how to navigate the pages found here, and the functionality of
 each application.<p/>
-Please visit <a href="http://www.phpgroupware.org" target=_new><b> phpgroupware </b></a> the 
+Please visit <a href="http://www.egroupware.org" target=_new><b> egroupware </b></a> the 
 home page of this free software project, by way of trying to say to the young
 people who wrote (or at least put together much of this) , <b>Thank You</b>.
 Without such keen and enthusiastic joint co-operation, many projects on the
