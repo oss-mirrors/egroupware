@@ -17,7 +17,7 @@ $phpgw->template->set_file('FORUM' ,'forums.body.tpl');
 
 $phpgw->template->set_block('FORUM','ForumList','ForumL');
 
-$phpgw->db->query("select * from f_categories where id = $cat");
+$phpgw->db->query("select * from phpgw_forum_categories where id = $cat");
 $phpgw->db->next_record();
 
 $phpgw->template->set_var(array(
@@ -28,7 +28,7 @@ $phpgw->template->set_var(array(
 	MAIN_LINK	 => $phpgw->link("/forum/index.php")
 				));
 			
-$phpgw->db->query("select * from f_forums where	cat_id = $cat");
+$phpgw->db->query("select * from phpgw_forum_forums where	cat_id = $cat");
 
 while($phpgw->db->next_record()) 
 {

@@ -16,11 +16,11 @@
 	include("../header.inc.php");
 
 
-	$phpgw->db->query("select * from f_categories where id = $cat");
+	$phpgw->db->query("select * from phpgw_forum_categories where id = $cat");
 	$phpgw->db->next_record();
 	$category = $phpgw->db->f("name");
 
-	$phpgw->db->query("select * from f_forums where	id = $for");
+	$phpgw->db->query("select * from phpgw_forum_forums where	id = $for");
 	$phpgw->db->next_record();
 	$forums	= $phpgw->db->f("name");
 
@@ -46,7 +46,7 @@
 	{
 		$phpgw->template->set_file('COLLAPSE','collapse.threads.tpl');
 		$phpgw->template->set_block('COLLAPSE','CollapseThreads','CollapseT');
-		$phpgw->db->query("select * from f_threads where cat_id=$cat and for_id=$for and parent	= -1  order by postdate	DESC");
+		$phpgw->db->query("select * from phpgw_forum_threads where cat_id=$cat and for_id=$for and parent	= -1  order by postdate	DESC");
 
 
 		//for viewing the collapse threads
@@ -87,7 +87,7 @@
 	{
 		$phpgw->template->set_file('NORMAL','normal.threads.tpl');
 		$phpgw->template->set_block('NORMAL','NormalThreads','NormalT');
-		$phpgw->db->query("select * from f_threads where cat_id	= $cat and for_id = $for order by thread DESC, postdate, depth");
+		$phpgw->db->query("select * from phpgw_forum_threads where cat_id	= $cat and for_id = $for order by thread DESC, postdate, depth");
 
 		while($phpgw->db->next_record())
 		{
@@ -101,6 +101,9 @@
 				}
 			*/
 			$move	.= "&nbsp;&nbsp;";
+			//putting some images point like <li></li>
+			$move .= '<img src="'. PHPGW_IMAGES  . '/n.gif">';
+			$move .= "&nbsp;&nbsp;";
 			$subject = $phpgw->db->f("subject");
 			if (! $subject)
 			{

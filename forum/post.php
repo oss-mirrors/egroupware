@@ -28,18 +28,18 @@
 
 		$stat = 0;
 
-		$phpgw->db->query("select max(id) from	f_body");
+		$phpgw->db->query("select max(id) from	phpgw_forum_body");
 		$phpgw->db->next_record();
 		$next_f_body_id = $phpgw->db->f("0") +	1;
 
-		$phpgw->db->query("select max(id) from	f_threads");
+		$phpgw->db->query("select max(id) from	phpgw_forum_threads");
 		$phpgw->db->next_record();
 		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
 		//print	"$next_f_threads_id <br> $next_f_body_id";
 		$datetime = $phpgw->common->show_date(time(),"Y-m-d h:i:s");
 
-		$phpgw->db->query("insert into	f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
+		$phpgw->db->query("insert into	phpgw_forum_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES (
 		'$datetime',
 		0,
 		$next_f_body_id,
@@ -54,7 +54,7 @@
 		'$host',
 		$stat)");
 
-		$phpgw->db->query("insert into f_body	(cat_id,for_id,message)	VALUES (
+		$phpgw->db->query("insert into phpgw_forum_body	(cat_id,for_id,message)	VALUES (
 		$cat,
 		$for,
 		'$message')");
@@ -68,11 +68,11 @@
 	$phpgw->template->set_file('POST','post.body.tpl');
 
 
-	$phpgw->db->query("select * from f_categories where id	= $cat");
+	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat");
 	$phpgw->db->next_record();
 	$category = $phpgw->db->f("name");
 
-	$phpgw->db->query("select * from f_forums where id = $for");
+	$phpgw->db->query("select * from phpgw_forum_forums where id = $for");
 	$phpgw->db->next_record();
 	$forums = $phpgw->db->f("name");
 

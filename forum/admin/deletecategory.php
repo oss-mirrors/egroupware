@@ -42,10 +42,10 @@
 	{
 
 		//Delete all the info related to this category
-		$phpgw->db->query("delete from f_threads where cat_id=$cat_id");
-		$phpgw->db->query("delete from f_body where cat_id=$cat_id");
-		$phpgw->db->query("delete from f_forums where cat_id=$cat_id");
-		$phpgw->db->query("delete from f_categories where id=$cat_id");
+		$phpgw->db->query("delete from phpgw_forum_threads where cat_id=$cat_id");
+		$phpgw->db->query("delete from phpgw_forum_body where cat_id=$cat_id");
+		$phpgw->db->query("delete from phpgw_forum_forums where cat_id=$cat_id");
+		$phpgw->db->query("delete from phpgw_forum_categories where id=$cat_id");
 
 		Header("Location: " . $phpgw->link("/forum/admin/index.php"));
 	}

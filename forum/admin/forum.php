@@ -47,7 +47,7 @@
 	if($act == "edit")
 	{
 
-		$phpgw->db->query("select * from f_forums where id=$for_id");
+		$phpgw->db->query("select * from phpgw_forum_forums where id=$for_id");
 
 		$phpgw->db->next_record();
 		$forname = $phpgw->db->f("name");
@@ -55,7 +55,7 @@
 		$cat_id = $phpgw->db->f("cat_id");
 
 		// for the drop down category
-		$phpgw->db->query("select * from f_categories");
+		$phpgw->db->query("select * from phpgw_forum_categories");
 		while($phpgw->db->next_record())
 		{
 			if($catname == $phpgw->db->f("name"))
@@ -74,7 +74,7 @@
 
 		if ($cat_id > 0)
 		{
-			$phpgw->db->query("select * from f_categories where id=$cat_id");
+			$phpgw->db->query("select * from phpgw_forum_categories where id=$cat_id");
 			$phpgw->db->next_record();
 
 			$catname = $phpgw->db->f("name");
@@ -119,7 +119,7 @@
 		));
 
 
-		$phpgw->db->query("select * from f_categories");
+		$phpgw->db->query("select * from phpgw_forum_categories");
 		while($phpgw->db->next_record())
 		{
 			$phpgw->template->set_var(
@@ -136,13 +136,13 @@
 	{
 		if($action == "addforum")
 		{
-			$phpgw->db->query("insert into f_forums (name,descr,cat_id) values ('$forname','$fordescr',$goestocat)");
+			$phpgw->db->query("insert into phpgw_forum_forums (name,descr,cat_id) values ('$forname','$fordescr',$goestocat)");
 			Header("Location: " . $phpgw->link("/forum/admin/index.php"));
 			$phpgw->common->phpgw_exit();
 		}
 		elseif ($action == "updforum" && $for_id)
 		{
-			$phpgw->db->query("update f_forums set name='$forname',descr='$fordescr',cat_id=$goestocat where id=$for_id ");
+			$phpgw->db->query("update phpgw_forum_forums set name='$forname',descr='$fordescr',cat_id=$goestocat where id=$for_id ");
 			Header("Location: " . $phpgw->link("/forum/admin/index.php"));
 			$phpgw->common->phpgw_exit();
 		}

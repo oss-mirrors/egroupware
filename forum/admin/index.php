@@ -42,12 +42,12 @@
 	));
 
 	$f_tree = array();
-	$phpgw->db->query("select * from f_categories");
+	$phpgw->db->query("select * from phpgw_forum_categories");
 	while($phpgw->db->next_record())
 	{
 		$f_tree[$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"),	"descr"=>$phpgw->db->f("descr"), "forums"=>array());
 	}
-	$phpgw->db->query("select * from f_forums");
+	$phpgw->db->query("select * from phpgw_forum_forums");
 	while($phpgw->db->next_record())
 	{
 		$f_tree[$phpgw->db->f("cat_id")]["forums"][$phpgw->db->f("id")] = array("name"=>$phpgw->db->f("name"), "descr"=>$phpgw->db->f("descr"));

@@ -48,7 +48,7 @@
 
 	if($act == "edit")
 	{
-		$phpgw->db->query("select * from f_categories where id=$cat_id");
+		$phpgw->db->query("select * from phpgw_forum_categories where id=$cat_id");
 		$phpgw->db->next_record();
 		$catname = $phpgw->db->f("name");
 		$catdescr = $phpgw->db->f("descr");
@@ -82,13 +82,13 @@
 	{
 		if($action == "addcat")
 		{
-			$phpgw->db->query("insert into f_categories (name,descr) values ('$catname','$catdescr')");
+			$phpgw->db->query("insert into phpgw_forum_categories (name,descr) values ('$catname','$catdescr')");
 			Header("Location: " . $phpgw->link("/forum/admin/index.php"));
 			$phpgw->common->phpgw_exit();
 		}
 		elseif ($action == "updcat" && $cat_id)
 		{
-			$phpgw->db->query("update f_categories set name='$catname',descr='$catdescr' where id = $cat_id");
+			$phpgw->db->query("update phpgw_forum_categories set name='$catname',descr='$catdescr' where id = $cat_id");
 			Header("Location: " . $phpgw->link("/forum/admin/index.php"));
 		}
 		else

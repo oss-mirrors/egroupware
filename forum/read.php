@@ -27,11 +27,11 @@
 
 		$stat = 0;
 
-		$phpgw->db->query("select max(id) from	f_body");
+		$phpgw->db->query("select max(id) from	phpgw_forum_body");
 		$phpgw->db->next_record();
 		$next_f_body_id = $phpgw->db->f("0") +	1;
 
-		$phpgw->db->query("select max(id) from	f_threads");
+		$phpgw->db->query("select max(id) from	phpgw_forum_threads");
 		$phpgw->db->next_record();
 		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
@@ -39,13 +39,13 @@
 
 		if($pos	!= 0)
 		{
-			$tmp =	$phpgw->db->query("select id,pos from f_threads	where thread = $thread and pos >= $pos order by	pos desc");
+			$tmp =	$phpgw->db->query("select id,pos from phpgw_forum_threads	where thread = $thread and pos >= $pos order by	pos desc");
 			while($phpgw->db->next_record($tmp))
 			{
 				$oldpos = $phpgw->db->f("pos") + 1;
 				$oldid = $phpgw->db->f("id");
 				print	"$oldid	$oldpos<br>";
-				$phpgw->db->query("update f_threads set pos=$oldpos where thread = $thread and id = $oldid");
+				$phpgw->db->query("update phpgw_forum_threads set pos=$oldpos where thread = $thread and id = $oldid");
 			}
 		}
 		else
@@ -53,14 +53,14 @@
 			$pos = 1;
 		}
 
-		$phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES ("
+		$phpgw->db->query("insert into phpgw_forum_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES ("
 		. "'$datetime','$pos','$thread','$depth','$next_f_body_id','"	. addslashes($msg) . "','"
 		. "$cat','$for','$author','" . addslashes($subject) .	"','$email','$host','$stat')");
 
 
-		$phpgw->db->query("update f_threads set n_replies	= n_replies+1 where thread='$thread'");
+		$phpgw->db->query("update phpgw_forum_threads set n_replies = n_replies+1 where thread='$thread'");
 
-		$phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
+		$phpgw->db->query("insert into phpgw_forum_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
 
 
 
@@ -75,12 +75,12 @@
 
 	$phpgw->template->set_file('READ','read.body.tpl');
 
-	$phpgw->db->query("select * from f_categories where id	= $cat");
+	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat");
 
 	$phpgw->db->next_record();
 	$category = $phpgw->db->f("name");
 
-	$phpgw->db->query("select * from f_forums where id = $for");
+	$phpgw->db->query("select * from phpgw_forum_forums where id = $for");
 	$phpgw->db->next_record();
 	$forums = $phpgw->db->f("name");
 
@@ -106,7 +106,6 @@
 	READ_ACTION		=> $phpgw->link("/forum/read.php"),
 	CAT			=> $cat,
 	FORU			=> $for,
-	TYPE			=> $type,
 	MSG			=> $msg,
 	POST			=> $pos,
 	ACTION			=> 'reply'
@@ -118,7 +117,8 @@
 	{
 		$phpgw->template->set_var(array(
 		THREADS_LINK  => $phpgw->link("/forum/threads.php","$catfor&col=1"),
-		LANG_THREADS  => lang("Normal View")
+		LANG_THREADS  => lang("Normal View"),
+		COL		=> '0'
 		));
 	}
 	if($col)
@@ -132,7 +132,7 @@
 	}
 
 
-	$phpgw->db->query("select * from f_threads where id = $msg");
+	$phpgw->db->query("select * from phpgw_forum_threads where id = $msg");
 
 	$phpgw->db->next_record();
 	$thread = $phpgw->db->f("thread");
@@ -163,7 +163,7 @@
 
 
 
-	$phpgw->db->query("select * from f_body where id = $msgid");
+	$phpgw->db->query("select * from phpgw_forum_body where id = $msgid");
 	$phpgw->db->next_record();
 
 	$phpgw->template->set_var(array(
@@ -185,7 +185,7 @@
 	LANG_MESSAGE		=> lang("Message"),
 	NAME			=> $name,
 	EMAIL			=> $email,
-	SUBJECT			=> $subject,
+	SUBJECT			=> $subject
 	));
 	$phpgw->template->pfp('Out','READ');
 

@@ -39,9 +39,9 @@
 
 	if (($for_id)	&& ($confirm))
 	{
-		$phpgw->db->query("delete from f_threads where for_id=$for_id");
-		$phpgw->db->query("delete from f_body where	for_id=$for_id");
-		$phpgw->db->query("delete from f_forums where id=$for_id");
+		$phpgw->db->query("delete from phpgw_forum_threads where for_id=$for_id");
+		$phpgw->db->query("delete from phpgw_forum_body where	for_id=$for_id");
+		$phpgw->db->query("delete from phpgw_forum_forums where id=$for_id");
 
 		Header("Location: "	. $phpgw->link("/forum/admin/index.php"));
 	}
