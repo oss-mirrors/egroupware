@@ -184,6 +184,7 @@
 						break;
 					case 'imapType':
 					case 'smtpType':
+					case 'imapLoginType':
 						$this->t->set_var('selected_'.$key.'_'.$value,'selected="1"');
 						break;
 					default:
