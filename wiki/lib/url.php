@@ -5,7 +5,8 @@
 
 $ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
 $ScriptBase .= strstr($ScriptBase,'?') ? '&' : '?';
-$AdminScript = $GLOBALS['phpgw']->link('/wiki/admin/index.php');
+
+$AdminScript = $ScriptBase . 'action=admin';
 
 //if(!isset($ViewBase))
   { $ViewBase    = $ScriptBase . 'page='; }

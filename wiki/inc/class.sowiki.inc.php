@@ -630,7 +630,7 @@ class sowiki	// DB-Layer
 	@syntax rateBlockAdd($address)
 	@param $address ip-addr. or addr-range
 	*/
-	function rateBlockAdd($db, $address)
+	function rateBlockAdd($address)
 	{
 		if(preg_match('/^\\d+\\.(\\d+\\.(\\d+\\.)?)?\\*$/', $address))
 		{

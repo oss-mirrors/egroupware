@@ -4,12 +4,12 @@
 // Don't freak out lib/init.php.
 $document = $categories = $comment = $page = '';
 
-require('lib/init.php');
+//require('lib/init.php');
 require('parse/html.php');
-require('parse/transforms.php');
+//require('parse/transforms.php');
 require('template/admin.php');
 
-if(!$GLOBALS['phpgw']['user']['apps']['admin'])
+if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
   { die($ErrorAdminDisabled); }
 
 // Harvest script parameters.
@@ -58,6 +58,8 @@ if($locking)                            // Locking/unlocking pages.
 {
   if(empty($Save))                      // Not saving results; display form.
   {
+    $GLOBALS['phpgw']->common->phpgw_header();
+	
     $html = html_lock_start();
     $pagelist = $pagestore->allpages();
     foreach($pagelist as $page)
@@ -102,7 +104,9 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
 {
   if(empty($Block) && empty($Unblock))  // Not saving results; display form.
   {
-    $html = '';
+    $GLOBALS['phpgw']->common->phpgw_header();
+	
+	$html = '';
     if($RatePeriod == 0)
     {
       $html = $html . html_bold_start() .
@@ -130,10 +134,12 @@ else if($blocking)                      // Blocking/unblocking IP addrs.
 }
 else                                    // Display main menu for admin.
 {
-  template_admin(array('html' => html_url($AdminScript . '?locking=1',
+  $GLOBALS['phpgw']->common->phpgw_header();
+
+  template_admin(array('html' => html_url($AdminScript . '&locking=1',
                                           'Lock / unlock pages') .
                                  html_newline() .
-                                 html_url($AdminScript . '?blocking=1',
+                                 html_url($AdminScript . '&blocking=1',
                                           'Block / unblock hosts') .
                                  html_newline()));
 }

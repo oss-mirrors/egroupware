@@ -189,13 +189,13 @@ function html_fullhistory($page, $count)
 }
 function html_toolbar_top()
 {
-	global $HomePage, $PrefsScript;
+	global $HomePage, $PrefsScript,$AdminScript;
     
 	return html_ref($HomePage, $HomePage) . ' | ' .
 	       html_ref('RecentChanges', 'RecentChanges') . ' | ' .
            '<a href="' . $PrefsScript . '">Preferences</a>' .
 	       ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
-            ' | <a href="'.$GLOBALS['phpgw']->link("/wiki/admin/index.php").'">Administration</a>' : '').'<br>';
+            ' | <a href="'.$AdminScript.'">Administration</a>' : '').'<br>';
 }
 function html_history_entry($page, $version, $time, $host, $user, $c1, $c2,
                             $comment)

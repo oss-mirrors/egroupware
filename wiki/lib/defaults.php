@@ -84,8 +84,7 @@ $EditRows = 20;
 $EditCols = 65;
 
 // Initialize the default user name to empty.
-$UserName = ExecMethod('phpgwapi.accounts.id2name',get_account_id());
-#$UserName = '';
+$UserName = '';
 
 // Default time zone offset (in minutes) for visitors who haven't yet set their
 //   preferences.

@@ -9,12 +9,12 @@ require(TemplateDir . '/preview.php');
 // Edit a page (possibly an archive version).
 function action_edit()
 {
-  global $page, $pagestore, $ParseEngine, $version, $ErrorPageLocked, $EditWithPreview;
+  global $page, $pagestore, $ParseEngine, $version, $ErrorPageLocked, $EditWithPreview,$anonymous;
 
   $pg = $pagestore->page($page);
   $pg->read();
 
-  if(!$pg->mutable)
+  if(!isEditable($pg->mutable))
     { die($ErrorPageLocked); }
 
   $archive = 0;

@@ -6,12 +6,25 @@
 // should copy them from there to here.  The settings here will safely
 // over-ride those in lib/defaults.php.
 
+/*
+   to allow anonymous access to the wiki, you have to ancomment one of the next lines
+   AND create a user/passwd with access to the wiki-app.
+*/
+//define('AnonymousSession','readonly');	// anonymouns access is always readonly
+//define('AnonymousSession','editable');	// full anonymous access (still no admin)
+/*
+   If the username and passwd is not 'anonymouse' you have to change to following lines:
+*/
+define('AnonymousUser','anonymous');
+define('AnonymousPasswd','anonymous');
+
 // $Admin specifies the administrator e-mail address used in error messages.
 $Admin = 'webmaster@domain.com';
 
 // $WikiName determines the name of your wiki.  This name is used in the
 // browser title bar.  Often, it will be the same as $HomePage.
-$WikiName = 'PhpGroupWare';
+//$WikiName = 'PhpGroupWare';
+# not used under phpGroupWare
 
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
@@ -44,7 +57,8 @@ $EditWithPreview = 1;
 # this is NOT configurable for phpgw
 
 // $WikiLogo determines the location of your wiki logo.
-$WikiLogo = $GLOBALS['phpgw']->common->find_image('wiki','navbar.gif');
+//$WikiLogo = $GLOBALS['phpgw']->common->find_image('wiki','navbar.gif');
+# this is not configurable for phpgw
 
 // $MetaKeywords indicates what keywords to report on the meta-keywords tag.
 // This is useful to aid search engines in indexing your wiki.
@@ -67,5 +81,4 @@ define('TemplateDir', 'template');
 //   and block others from accessing the wiki.
 // If $AdminEnabled is set to 0, administrator control will be disallowed.
 # this is not used in phpGW, only phpGW admins have admin-rights
-
 ?>

@@ -22,7 +22,7 @@ function action_diff()
   template_diff(array('page'      => $page,
                       'diff_html' => diff_parse($diff),
                       'html'      => parseText($p2->text, $ParseEngine, $page),
-                      'editable'  => $p2->mutable,
+                      'editable'  => isEditable($p2->mutable),
                       'timestamp' => $p2->time));
 }
 ?>

@@ -26,7 +26,7 @@ function action_save()
   $pg = $pagestore->page($page);
   $pg->read();
 
-  if(!$pg->mutable)                     // Edit disallowed.
+  if(!isEditable($pg->mutable))         // Edit disallowed.
     { die($ErrorPageLocked); }
 
   if($pg->exists()                      // Page already exists.

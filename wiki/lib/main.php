@@ -82,7 +82,8 @@ $ActionList = array(
                 'prefs'   => array('action/prefs.php', 'action_prefs', 'view'),
                 'macro'   => array('action/macro.php', 'action_macro', 'search'),
                 'rss'     => array('action/rss.php', 'action_rss', 'view'),
-                'style'   => array('action/style.php', 'action_style', '')
+                'style'   => array('action/style.php', 'action_style', ''),
+                'admin'   => array('action/admin.php','','')
               );
 
 if(empty($action))
@@ -102,11 +103,15 @@ if($ActionList[$action][2] != '')
 if(!empty($ActionList[$action]))
 {
   include($ActionList[$action][0]);
-  $ActionList[$action][1]();
+  if ($ActionList[$action][1])
+    $ActionList[$action][1]();
 }
 
 // Expire old versions, etc.
 $pagestore->maintain();
 
-$GLOBALS['phpgw']->common->phpgw_footer();
+if (!$anonymous)
+{
+	$GLOBALS['phpgw']->common->phpgw_footer();
+}
 ?>
