@@ -362,4 +362,11 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.5.008';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.5.008';
+	function projects_upgrade0_8_5_008()
+	{
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.001';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>
