@@ -20,7 +20,7 @@
    $t = new Template($phpgw_info["server"]["app_tpl"]);                                                                                                                                     
    $t->set_file(array( "quotes_list" => "main.tpl"));
      
-   if ($phpgw_info["user"]["preferences"]["stocks"]["enabled"]) {                                                                                        
+   if ($phpgw_info["user"]["preferences"]["stocks"]["disabled"]) {                                                                                        
    $t->set_var("quotes",return_quotes($quotes));
        }
    else { 

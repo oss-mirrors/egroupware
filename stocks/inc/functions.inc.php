@@ -130,7 +130,7 @@
      }
      
      while ($stock = each($phpgw_info["user"]["preferences"]["stocks"])) {
-        if (rawurldecode($stock[0]) != "enabled") {
+        if ((rawurldecode($stock[0]) != "enabled") && (rawurldecode($stock[0]) != "disabled")) {
            $symbol = rawurldecode($stock[0]);
            $name   = rawurldecode($stock[1]);
            if ($symbol) {

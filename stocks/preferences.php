@@ -38,7 +38,7 @@
         $phpgw->preferences->change("stocks","enabled","True");
      }
      if ($mainscreen == "disable") {
-        $phpgw->preferences->delete("stocks","enabled");
+        $phpgw->preferences->change("stocks","disabled","True");
      }
      $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
@@ -72,7 +72,7 @@
       echo "\n";
          
       while ($stock = each($phpgw_info["user"]["preferences"]["stocks"])) {
-         if ($stock[0] != "enabled") {
+         if (($stock[0] != "enabled") && ($stock[0] != "disabled")) {
             $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
             echo '<tr bgcolor="' . $tr_color . '">';
 
