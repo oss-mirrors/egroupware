@@ -14,12 +14,9 @@
 {REF: return.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 
 {PAGE: ERROR_PAGE a page where the users are taken to when they encounter a problem with the forum}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <div align="center">
 <table border="0" cellspacing="1" cellpadding="2" class="DialogTable">
 <tr><th>{VAR: error_title}</th></tr>
@@ -27,7 +24,6 @@
 <br /><br /><form action="{TEMPLATE: ERROR_PAGE_lnk3}" name="error_frm" method="post">{DEF: _hs}<input type="submit" class="button" name="ok" value="OK"></form>
 </td></tr>
 </table></div>
-{TEMPLATE: curtime}
 {TEMPLATE: footer}
 {PAGE: END}
 

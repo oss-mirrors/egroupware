@@ -13,11 +13,8 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: usercp.tmpl}
 {REF: iemail.tmpl}
 {REF: rev_fmt.tmpl}
-{REF: admincp.tmpl}
-{REF: curtime.tmpl}
 {REF: return.tmpl}
 {REF: stats.tmpl}
 {REF: alt_var.tmpl}
@@ -38,7 +35,6 @@
 
 {PAGE: EMAIL_PAGE }
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <form method="post" action="{TEMPLATE: EMAIL_PAGE_lnk3}">
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th colspan=2>{MSG: email_pg_title}</th></tr>
@@ -47,7 +43,6 @@
 <tr class="RowStyleB"><td nowrap class="GenText" valign="top">{MSG: email_body} {VAR: body_err}</td><td width="100%" class="RowStyleA"><textarea name="tx_body" cols=40 rows=20>{VAR-HTML: tx_body}</textarea></td></tr>
 <tr class="RowStyleC"><td align="right" colspan=2><input type="submit" class="button" name="btn_submit" value="{MSG: email_submit}"></td></tr>
 </table>{DEF: _hs}</form>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

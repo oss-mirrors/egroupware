@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: merge_th.php.t; output: merge_th.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: th.tmpl}
 {REF: fileio.tmpl}
@@ -26,8 +23,6 @@
 
 {PAGE: MERGE_TH_PAGE a form that allowes moderators to merge threads}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <form name="merge_th" action="{TEMPLATE: MERGE_TH_PAGE_lnk3}" method="post">{DEF: _hs}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th width="100%" colspan=2>{MSG: merge_topics_cp}</th></tr>
@@ -56,7 +51,6 @@
 <input type="hidden" name="page" value="{VAR: page}">
 <input type="hidden" name="frm" value="{VAR: frm}">
 </form>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

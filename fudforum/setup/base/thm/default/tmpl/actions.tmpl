@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: actions.php.t; output: actions.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: alt_var.tmpl}
 {REF: ulink.tmpl}
@@ -49,15 +46,12 @@
 
 {PAGE: ACTION_PAGE iSpy User Action List}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <div align="center" class="GenText">[<a href="{TEMPLATE: ACTION_PAGE_lnk}" class="GenLink">{MSG: refresh_list}</a>]</div>
 <p>
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th>{MSG: user}</th><th>{MSG: action}</th><th>{MSG: time}</th><th>{MSG: action_latest_post}</th></tr>
 {TEMPLATE-DATA: action_data}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: finduser.php.t; output: finduser.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: draw_pager.tmpl}
 {REF: imsg.tmpl}
@@ -24,8 +21,6 @@
 
 {PAGE: FINDUSER_PAGE user search form}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <form method="get" action="{TEMPLATE: FINDUSER_PAGE_lnk3}">{DEF: _hs}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th colspan=2>{MSG: finduser_user_info}</th></tr>
@@ -41,7 +36,6 @@
 {TEMPLATE-DATA: find_user_data}
 </table>
 {TEMPLATE-DATA: pager}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

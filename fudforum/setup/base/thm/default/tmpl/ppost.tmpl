@@ -18,9 +18,7 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
 {REF: stats.tmpl}
-{REF: usercp.tmpl}
 {REF: smiley.tmpl}
 {REF: postcheck.tmpl}
 {REF: spell.tmpl}
@@ -92,7 +90,6 @@
 
 {PAGE: PPOST_PAGE  form for writing private messages}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: cur_ppage}
 {TEMPLATE-DATA: tabs}
 <form action="{TEMPLATE: PPOST_PAGE_lnk3}" method="post" name="post_form" enctype="multipart/form-data" onSubmit="javascript: document.post_form.btn_submit.disabled = true; document.post_form.btn_draft.disabled = true;">
@@ -132,7 +129,6 @@
 <input type="hidden" name="prev_loaded" value="1">
 </form>
 {TEMPLATE-DATA: reference_msg}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

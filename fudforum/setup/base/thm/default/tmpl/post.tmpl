@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: draw_select_opt.tmpl}
 {REF: draw_radio_opt.tmpl}
@@ -114,7 +112,6 @@
 
 {PAGE: moderated_forum_post}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <div align="center">
 <table border="0" cellspacing="1" cellpadding="2" class="DialogTable">
 <tr><th>{MSG: post_moderated_forum_ttl}</th></tr>
@@ -129,13 +126,11 @@
 </tr>
 </table>
 </div>
-{TEMPLATE: curtime}
 {TEMPLATE: footer}
 {PAGE: END}
 
 {PAGE: POST_PAGE message posting form}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <form action="{TEMPLATE: POST_PAGE_lnk3}" method="post" name="post_form" enctype="multipart/form-data" onSubmit="javascript: document.post_form.btn_submit.disabled = true;">
 {TEMPLATE-DATA: post_error}
 {TEMPLATE-DATA: preview_message}
@@ -177,7 +172,6 @@
 <input type="hidden" name="old_subject" value="{VAR: old_subject}">
 <input type="hidden" name="prev_loaded" value="1">
 </form>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

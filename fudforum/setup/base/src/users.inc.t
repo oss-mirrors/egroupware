@@ -66,10 +66,6 @@ function init_user()
 	define('_uid', !($u->users_opt & 2097152) ? $u->id : 0);
 	define('__fud_real_user__', ($u->id != 1 ? $u->id : 0));
 
-	/* define constants used to track URL sessions & referrals */
-	define('s', $phpgw['sessionid']); define('_hs', '<input type="hidden" name="S" value="'.$phpgw['sessionid'].'">');
-	define('_rsid', 'S='.$phpgw['sessionid']); define('_rsidl', 'S='.$phpgw['sessionid']);
-
 	return $u;
 }
 

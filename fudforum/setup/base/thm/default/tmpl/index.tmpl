@@ -12,11 +12,8 @@
 {PHP_FILE: input: index.php.t; output: index.php;}
 {REF: security.tmpl}
 {REF: logedin.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: show.tmpl}
 
@@ -146,17 +143,14 @@
 
 {PAGE: INDEX_PAGE}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-{TEMPLATE: show_links}{TEMPLATE-DATA: admin_cp}
+{TEMPLATE: show_links}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 {TEMPLATE: index_table_heading}
 {TEMPLATE-DATA: forum_list_table_data}
 </table>
 {TEMPLATE-DATA: mark_all_read}
-{TEMPLATE-DATA: quick_login}
 {TEMPLATE-DATA: loged_in_list}
 {TEMPLATE: forum_icon_legend}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

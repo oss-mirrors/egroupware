@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: modque.php.t; output: modque.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: drawmsg.tmpl}
 {REF: imsg.tmpl}
@@ -43,13 +40,10 @@
 
 {PAGE: MODQUE_PAGE draws a list of all the messages that are pending approval by the moderator}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <table border="0" cellspacing="1" cellpadding="2" class="MsgTable">
 <tr><th colspan=2>{MSG: modque_pending_approval}</th></tr>
 {TEMPLATE-DATA: modque_message}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

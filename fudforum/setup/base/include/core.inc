@@ -170,6 +170,11 @@ function fud_egw($t='index', $plain=0)
 		exit;
 	}
 
+	/* define constants */
+	define('s', $sessionid); define('_hs', '<input type="hidden" name="S" value="'.$sessionid.'">');
+	define('_rsid', 'S='.$sessionid); define('_rsidl', 'S='.$sessionid);
+	define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
+
 	if (!$plain) {
 		ob_start();
 		$GLOBALS['phpgw']->common->phpgw_header();

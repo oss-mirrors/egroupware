@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: draw_select_opt.tmpl}
 {REF: draw_radio_opt.tmpl}
@@ -108,7 +106,6 @@
 
 {PAGE: REGISTER_PAGE registration AND profile page}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: tabs}
 <form method="post" action="{TEMPLATE: REGISTER_PAGE_lnk3}" name="fud_register" enctype="multipart/form-data">
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
@@ -165,7 +162,6 @@
 <input type="hidden" name="prev_loaded" value="1">
 <input type="hidden" name="mod_id" value="{VAR: mod_id}">
 </form>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

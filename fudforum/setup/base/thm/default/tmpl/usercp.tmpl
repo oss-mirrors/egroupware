@@ -9,7 +9,7 @@
 * (at your option) any later version.
 ***************************************************************************/
 
-{PHP_FILE: input: usercp.inc.t; output: @usercp.inc;}
+{PHP_FILE: input: usercp.inc.t; output: usercp.inc;}
 
 {SECTION: usercp_lnk}
 {ROOT}?t=search&amp;{DEF: _rsid}
@@ -23,36 +23,36 @@
 {ROOT}?t=index&amp;{DEF: _rsid}
 {SECTION: END}
 
-{MAIN_SECTION: usercp user control panel}
-<div style="margin-bottom: 5px" align="right">{TEMPLATE-DATA: private_msg} {TEMPLATE-DATA: member_search} <a class="UserControlPanel" href="{TEMPLATE: usercp_lnk}"><img src="{THEME_IMAGE_ROOT}/top_search.gif" alt="{MSG: search}" /> {MSG: search}</a>&nbsp;&nbsp; <a class="UserControlPanel" href="{TEMPLATE: usercp_lnk2}"><img src="{THEME_IMAGE_ROOT}/top_help.gif" alt="{MSG: faq}" /> {MSG: faq}</a> {TEMPLATE-DATA: register_n_profile} <a class="UserControlPanel" href="{TEMPLATE: usercp_lnk3}"><img src="{THEME_IMAGE_ROOT}/top_home.gif" alt="{MSG: home}" /> {MSG: home}</a> {TEMPLATE-DATA: admin_control_panel}</div>
-{MAIN_SECTION: END}
+{SECTION: uc_home}
+{MSG: home}
+{SECTION: END}
+
+{SECTION: uc_search}
+{MSG: search}
+{SECTION: END}
+
+{SECTION: uc_faq}
+{MSG: faq}
+{SECTION: END}
 
 {SECTION: register_lnk}
 {ROOT}?t=register&amp;{DEF: _rsid}
 {SECTION: END}
 
 {SECTION: profile profile link}
-&nbsp;&nbsp;<a class="UserControlPanel" href="{TEMPLATE: register_lnk}"><img src="{THEME_IMAGE_ROOT}/top_profile.gif" title="{MSG: profile_desc}" alt="{MSG: profile}" /> {MSG: profile}</a>
+{MSG: profile}
 {SECTION: END}
 
-{SECTION: admin_control_panel admin control panel link}
-&nbsp;&nbsp;<a class="UserControlPanel" href="adm/admglobal.php?{DEF: _rsid}"><img src="{THEME_IMAGE_ROOT}/top_admin.gif" alt="{MSG: admin_control_panel}" /> {MSG: admin_control_panel}</a>
-{SECTION: END}
-
-{SECTION: private_msg_empty_lnk}
+{SECTION: private_msg_lnk}
 {ROOT}?t=pmsg&amp;{DEF: _rsid}
 {SECTION: END}
 
 {SECTION: private_msg_empty link to private msg control panel}
-<a href="{TEMPLATE: private_msg_empty_lnk}" class="UserControlPanel"><img src="{THEME_IMAGE_ROOT}/top_pm.gif" alt="{MSG: pm}" /> {MSG: pm}</a>&nbsp;&nbsp;
-{SECTION: END}
-
-{SECTION: private_msg_unread_lnk}
-{ROOT}?t=pmsg&amp;{DEF: _rsid}
+{MSG: pm}
 {SECTION: END}
 
 {SECTION: private_msg_unread link to private msg control panel with unread messages indicator}
-<a href="{TEMPLATE: private_msg_unread_lnk}" class="UserControlPanel"><img src="{THEME_IMAGE_ROOT}/top_pm.gif" alt="{MSG: pm}" /> {MSG: new_private_messages}</a>&nbsp;&nbsp;
+{MSG: new_private_messages}
 {SECTION: END}
 
 {SECTION: member_search_lnk}
@@ -60,5 +60,45 @@
 {SECTION: END}
 
 {SECTION: member_search link to member search}
-<a class="UserControlPanel" href="{TEMPLATE: member_search_lnk}"><img src="{THEME_IMAGE_ROOT}/top_members.gif" alt="{MSG: members}" /> {MSG: members}</a>&nbsp;&nbsp;
+{MSG: members}
+{SECTION: END}
+
+{SECTION: custom_avatar_queue (appears if there are custom avatars in que for approval)}
+{MSG: custom_avatar_queue} <span class="GenTextRed">({VAR: avatar_count})</span>
+{SECTION: END}
+
+{SECTION: group_mgr_lnk}
+{ROOT}?t=groupmgr&amp;{DEF: _rsid}
+{SECTION: END}
+
+{SECTION: group_mgr link to the group manager for admin & group managers}
+{MSG: group_mgr}
+{SECTION: END}
+
+{SECTION: reported_msgs_lnk}
+{ROOT}?t=reported&amp;{DEF: _rsid}
+{SECTION: END}
+
+{SECTION: reported_msgs link to reported messages form, with an idicator that shows the # of reported messages}
+{MSG: reported_messages} <span class="GenTextRed">({VAR: report_count})</span>
+{SECTION: END}
+
+{SECTION: thr_exch_lnk}
+{ROOT}?t=thr_exch&amp;{DEF: _rsid}
+{SECTION: END}
+
+{SECTION: thr_exch a link to thread exchange, with an idicator of the # of threads waiting approval}
+{MSG: thread_exchange} <span class="GenTextRed">({VAR: thr_exchc})</span>
+{SECTION: END}
+
+{SECTION: mod_que_lnk}
+{ROOT}?t=modque&amp;{DEF: _rsid}
+{SECTION: END}
+
+{SECTION: mod_que link to form for approving messages in moderated forums}
+{MSG: moderation_queue} <span class="GenTextRed">({VAR: approve_count})</span>
+{SECTION: END}
+
+{SECTION: admin_control_panel admin control panel link}
+{MSG: admin_control_panel}
 {SECTION: END}

@@ -53,8 +53,7 @@ function fud_sql_error_handler($query, $error_string, $error_number, $server_ver
 	exit;
 }
 
-if (!defined('fud_sql_lnk')) {
-	define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
+if (!defined('__dbtype__')) {
 	define('__dbtype__', 'pgsql');
 	define('__FUD_SQL_CONCAT__', 'textcat');
 }
@@ -138,73 +137,17 @@ function uq($q)
 	return q($q);
 }
 
-if (!defined('fud_query_stats')) {
-	if (!defined('debug')) {
-		function q($q)
-		{
-			$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
-			return $GLOBALS['__FLPG__'];
-		}
-	} else {
-		function q($q)
-		{
-			$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
-			$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $q;
-			return $GLOBALS['__FLPG__'];
-		}
-	}
-} else {
-	function q($q)
-	{
-		if (!isset($GLOBALS['__DB_INC_INTERNALS__']['query_count'])) {
-			$GLOBALS['__DB_INC_INTERNALS__']['query_count'] = 1;
-		} else {
-			++$GLOBALS['__DB_INC_INTERNALS__']['query_count'];
-		}
-	
-		if (!isset($GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'])) {
-			$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'] = 0;
-		}
-	
-		$s = gettimeofday();
-		$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
-		$e = gettimeofday(); 
-	
-		$GLOBALS['__DB_INC_INTERNALS__']['last_time'] = ($e['sec'] - $s['sec'] + (($e['usec'] - $s['usec'])/1000000));;
-		$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'] += $GLOBALS['__DB_INC_INTERNALS__']['last_time'];
-		$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $q;
+function q($q)
+{
+	$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
+	return $GLOBALS['__FLPG__'];
+}
 
-		echo '<pre>'.preg_replace('!\s+!', ' ', $q).'</pre>';
-		echo '<pre>query count: '.$GLOBALS['__DB_INC_INTERNALS__']['query_count'].' time taken: '.$GLOBALS['__DB_INC_INTERNALS__']['last_time'].'</pre>';
-		echo '<pre>Affected rows: '.db_affected().'</pre>';
-		echo '<pre>total sql time: '.$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'].'</pre>';
-
-		return $GLOBALS['__FLPG__'];
-	}
-
-	function query_count()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['query_count'];
-	}
-
-	function last_query($filter='')
-	{
-		if ($filter) {
-			return str_replace("\t", "", str_replace("\n", " ", $GLOBALS['__DB_INC_INTERNALS__']['last_query']));
-		} else {
-			return $GLOBALS['__DB_INC_INTERNALS__']['last_query'];
-		}
-	}
-
-	function last_time()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['last_time'];
-	}
-
-	function total_time()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'];
-	}
+function q($q)
+{
+	$GLOBALS['__FLPG__'] = pg_query(fud_sql_lnk, $q) or die (fud_sql_error_handler($q, pg_last_error(fud_sql_lnk), '', get_version()));
+	$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $q;
+	return $GLOBALS['__FLPG__'];
 }
 
 function db_count($r)

@@ -452,11 +452,9 @@ function resolve_compile($file)
 	}
 	resolve_refs($file, $file);
 	resolve_inc_refs($file);
-	if (empty($GLOBALS['file_cache'][$file]['src'])) {
-		exit('No source for '.$file);
+	if (!empty($GLOBALS['file_cache'][$file]['src'])) {
+		$GLOBALS['file_cache'][$file]['compiled'] = compile_file($GLOBALS['file_cache'][$file]['src']);
 	}
-
-	$GLOBALS['file_cache'][$file]['compiled'] = compile_file($GLOBALS['file_cache'][$file]['src']);
 }
 
 function fud_mkdir($dir, $perms=0700)

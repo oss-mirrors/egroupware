@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: mnav.php.t; output: mnav.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: show.tmpl}
 {REF: rev_fmt.tmpl}
@@ -27,8 +24,7 @@
 
 {PAGE: MNAV_PAGE message navigator}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-{TEMPLATE: show_links}{TEMPLATE-DATA: admin_cp}
+{TEMPLATE: show_links}
 
 <form method="get" action="{TEMPLATE: MNAV_PAGE_lnk3}">{DEF: _hs}<input type="hidden" name="t" value="mnav">
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
@@ -49,7 +45,6 @@
 <br />
 {TEMPLATE-DATA: mnav_data}
 <div align="left">{TEMPLATE-DATA: mnav_pager}</div>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

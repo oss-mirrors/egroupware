@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: iemail.tmpl}
 {REF: return.tmpl}
 {REF: postcheck.tmpl}
@@ -23,7 +21,6 @@
 
 {PAGE: REMAIL_PAGE email to friend page}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <div align=center>
 {TEMPLATE-DATA: remail_error}
 <form action="{TEMPLATE: REMAIL_PAGE_lnk3}" name="remail" method="post"><input type="hidden" name="posted" value="1">
@@ -33,7 +30,6 @@
 </table>
 {DEF: _hs}<input type="hidden" name="th" value="{VAR: th}"></form>
 </div>
-{TEMPLATE: curtime}
 {TEMPLATE: footer}
 {PAGE: END}
 

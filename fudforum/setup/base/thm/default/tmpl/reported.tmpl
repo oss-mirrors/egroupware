@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: reported.php.t; output: reported.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: drawmsg.tmpl}
 {REF: logaction.tmpl}
@@ -61,13 +58,10 @@
 
 {PAGE: REPORTED_PAGE a list of the reported messages}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <table border="0" cellspacing="1" cellpadding="2" class="MsgTable">
 <tr><th colspan=2>{MSG: reported_reported_msg}</th></tr>
 {TEMPLATE-DATA: reported_message}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

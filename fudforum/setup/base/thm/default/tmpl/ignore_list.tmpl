@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: ignore.tmpl}
 {REF: return.tmpl}
@@ -54,7 +52,6 @@
 
 {PAGE: IGNORELIST_PAGE ignore users control panel}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: tabs}
 {TEMPLATE-DATA: ignore_list}
 <br /><br />
@@ -65,7 +62,6 @@
 <td nowrap class="GenText"><font class="Smalltext">{MSG: buddy_search}{TEMPLATE-DATA: ignore_member_search}</font><p>
 <input type="text" name="add_login" value="" maxlength=100 size=25> <input type="submit" class="button" name="submit" value="{MSG: add}"></td></tr>
 </table></div></form>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

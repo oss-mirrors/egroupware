@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: pmsg_view.php.t; output: pmsg_view.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: get_cur_ppage.tmpl}
 {REF: drawpmsg.tmpl}
@@ -27,14 +24,12 @@
 
 {PAGE: PMSG_PAGE form for viewing private messages}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: cur_ppage}
 {TEMPLATE-DATA: tabs}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th colspan=2>{MSG: msg_author}</th>
 {TEMPLATE-DATA: private_message_entry}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

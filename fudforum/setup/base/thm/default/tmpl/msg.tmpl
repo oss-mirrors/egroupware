@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: msg.php.t; output: msg.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: draw_pager.tmpl}
 {REF: forumsel.tmpl}
@@ -96,9 +93,7 @@
 
 {PAGE: MSG_PAGE  draws a flat view of the messages inside a thread}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: msg_forum_path} {TEMPLATE-DATA: thread_rating}
-{TEMPLATE-DATA: admin_cp}
 <table cellspacing=0 cellpadding=0 border=0 width="100%">
 <tr>
 <td align="left" class="GenText">{TEMPLATE: show_links}{TEMPLATE-DATA: split_thread}{TEMPLATE-DATA: lock_thread}{TEMPLATE-DATA: email_page_to_friend}{TEMPLATE-DATA: first_unread_message_link}{TEMPLATE-DATA: subscribe_status}</td>
@@ -124,7 +119,6 @@
 <div align="right"><font class="SmallText">{TEMPLATE-DATA: pdf_link} {TEMPLATE-DATA: xml_link}</font></div>
 <div align="center">-=] <a href="#page_top">{MSG: back_to_top}</a> [=-</div>
 {TEMPLATE-DATA: msg_page_focus}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: thr_exch.php.t; output: thr_exch.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: ssu.tmpl}
 {REF: private.tmpl}
@@ -67,13 +64,10 @@
 
 {PAGE: THR_EXCH_PAGE list of messages that moderators have put up for moving}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
 <table border="0" cellspacing="0" cellpadding="0" class="ContentTable">
 <tr><th>{MSG: thread_exchange}</th></tr>
 {TEMPLATE-DATA: thr_exch_data}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

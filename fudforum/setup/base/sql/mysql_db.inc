@@ -9,7 +9,6 @@
 * Free Software Foundation; either version 2 of the License, or 
 * (at your option) any later version.
 ***************************************************************************/
-#define('fud_query_stats', 1);
 
 function fud_sql_error_handler($query, $error_string, $error_number, $server_version)
 {
@@ -54,8 +53,7 @@ function fud_sql_error_handler($query, $error_string, $error_number, $server_ver
 	exit;
 }
 
-if (!defined('fud_sql_lnk')) {
-	define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
+if (!defined('__dbtype__')) {
 	define('__dbtype__', 'mysql');
 	define('__FUD_SQL_CONCAT__', 'CONCAT');
 }
@@ -123,93 +121,16 @@ function db_affected()
 	return mysql_affected_rows(fud_sql_lnk);	
 }
 
-if (!defined('fud_query_stats')) {
-	if (!defined('debug')) {
-		function q($query)
-		{
-			$r = mysql_query($query, fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
-			return $r;
-		}
-		function uq($query)
-		{
-			$r = mysql_unbuffered_query($query,fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
-			return $r;
-		}
-		function last_query() {}
-	} else {
-		function q($query) 
-		{
-			$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $query;
-			$r = mysql_query($query,fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
-			return $r;
-		}
-		function uq($query) 
-		{
-			$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $query;
-			$r = mysql_unbuffered_query($query,fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
-			return $r;
-		}
-		function last_query($filter='')
-		{
-			if ($filter) {
-				return str_replace("\t", " ", str_replace("\n", " ", $GLOBALS['__DB_INC_INTERNALS__']['last_query']));
-			} else {
-				return $GLOBALS['__DB_INC_INTERNALS__']['last_query'];
-			}
-		}
-	}
-} else {
-	function q($query)
-	{
-		if (!isset($GLOBALS['__DB_INC_INTERNALS__']['query_count'])) {
-			$GLOBALS['__DB_INC_INTERNALS__']['query_count'] = 1;
-		} else {
-			++$GLOBALS['__DB_INC_INTERNALS__']['query_count'];
-		}
-	
-		if (!isset($GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'])) {
-			$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'] = 0;
-		}
-	
-		$s = gettimeofday();
-		$result = mysql_query($query, fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
-		$e = gettimeofday(); 
+function q($query)
+{
+	$r = mysql_query($query, fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
+	return $r;
+}
 
-		$GLOBALS['__DB_INC_INTERNALS__']['last_time'] = ($e['sec'] - $s['sec'] + (($e['usec'] - $s['usec'])/1000000));
-		$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'] += $GLOBALS['__DB_INC_INTERNALS__']['last_time'];
-		$GLOBALS['__DB_INC_INTERNALS__']['last_query'] = $query;
-
-		echo '<pre>'.preg_replace('!\s+!', ' ', $query).'</pre>';
-		echo '<pre>query count: '.$GLOBALS['__DB_INC_INTERNALS__']['query_count'].' time taken: '.$GLOBALS['__DB_INC_INTERNALS__']['last_time'].'</pre>';
-		echo '<pre>Affected rows: '.db_affected().'</pre>';
-		echo '<pre>total sql time: '.$GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'].'</pre>';
-
-		return $result; 
-	}
-	function uq($query)
-	{
-		return q($query);
-	}
-	function query_count()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['query_count'];
-	}
-	function last_time()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['last_time'];
-	}
-	function total_time()
-	{
-		return $GLOBALS['__DB_INC_INTERNALS__']['total_sql_time'];
-	}
-	function last_query($filter='')
-	{
-		if ($filter) {
-			return str_replace("\t", "", str_replace("\n", " ", $GLOBALS['__DB_INC_INTERNALS__']['last_query']));
-		} else {
-			return $GLOBALS['__DB_INC_INTERNALS__']['last_query'];
-		}
-	}
+function uq($query)
+{
+	$r = mysql_unbuffered_query($query,fud_sql_lnk) or die (fud_sql_error_handler($query, mysql_error(fud_sql_lnk), mysql_errno(fud_sql_lnk), get_version()));
+	return $r;
 }
 
 function db_count($result)

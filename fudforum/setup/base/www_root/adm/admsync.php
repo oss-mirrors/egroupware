@@ -17,7 +17,7 @@
 function copy_dir($base, $dest, $dir_ar)
 {
 	while (list(,$d) = each($dir_ar)) {
-		echo "&nbsp;&nbsp;&nbsp;Syncronizing: {$base}{$d}<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;Syncronizing: {$d}<br />\n";
 		if (is_dir($base . $d)) {
 			$dir = opendir($base . $d);
 			readdir($dir); readdir($dir);
@@ -42,6 +42,17 @@ function copy_dir($base, $dest, $dir_ar)
 
 	/* web directories */
 	copy_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/", $WWW_ROOT_DISK, array('adm', 'images'));
+
+	$remove_list = array(
+		'thm/default/tmpl/admincp.tmpl',
+		'thm/default/tmpl/curtime.tmpl',
+		'src/admincp.inc.t'
+	);
+
+	/* remove old files */
+	foreach ($remove_list as $f) {
+		@unlink($DATA_DIR . $f);
+	}
 
 	/* recompile all enabled themes */
 	$c = uq("SELECT theme, lang, name FROM ".$DBHOST_TBL_PREFIX."themes WHERE (theme_opt > 0) AND (theme_opt & 1) > 0");

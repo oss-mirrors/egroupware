@@ -1,5 +1,5 @@
 <?php
-	/***************************************************************************
+/***************************************************************************
 * copyright            : (C) 2001-2003 Advanced Internet Designs Inc.
 * email                : forum@prohost.org
 * $Id$
@@ -29,7 +29,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id'),
+			'ix' => array(array('user_id', 'logtime')),
 			'uc' => array()
 		),
 		'phpgw_fud_ann_forums' => array(
@@ -39,7 +39,7 @@
 			),
 			'pk' => array(),
 			'fk' => array(),
-			'ix' => array('ann_id','forum_id'),
+			'ix' => array(array('ann_id','forum_id'), array('ann_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_announce' => array(
@@ -52,7 +52,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('date_started'),
+			'ix' => array(array('date_started', 'date_ended')),
 			'uc' => array()
 		),
 		'phpgw_fud_attach' => array(
@@ -69,7 +69,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('message_id'),
+			'ix' => array(array('message_id', 'attach_opt')),
 			'uc' => array()
 		),
 		'phpgw_fud_avatar' => array(
@@ -101,7 +101,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id'),
+			'ix' => array(array('user_id', 'bud_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_cat' => array(
@@ -170,7 +170,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('cat_id','last_post_id'),
+			'ix' => array(array('cat_id'),array('last_post_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_fc_view' => array(
@@ -192,7 +192,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id','forum_id'),
+			'ix' => array(array('user_id','forum_id'), array('forum_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_forum_read' => array(
@@ -204,8 +204,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('forum_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('forum_id', 'user_id'))
 		),
 		'phpgw_fud_group_cache' => array(
 			'fd' => array(
@@ -217,7 +217,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('resource_id','group_id'),
+			'ix' => array(array('resource_id','user_id'), array('group_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_group_members' => array(
@@ -229,8 +229,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('group_id','group_members_opt'),
-			'uc' => array()
+			'ix' => array(array('group_members_opt')),
+			'uc' => array(array('group_id', 'user_id'))
 		),
 		'phpgw_fud_group_resources' => array(
 			'fd' => array(
@@ -240,7 +240,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('group_id','resource_id'),
+			'ix' => array(array('group_id','resource_id'),array('resource_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_groups' => array(
@@ -254,7 +254,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('inherit_id','forum_id'),
+			'ix' => array(array('inherit_id'),array('forum_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_index' => array(
@@ -265,7 +265,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('word_id','msg_id'),
+			'ix' => array(array('word_id','msg_id'), array('msg_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_ip_block' => array(
@@ -332,8 +332,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('user_id', 'forum_id'))
 		),
 		'phpgw_fud_mod_que' => array(
 			'fd' => array(
@@ -375,7 +375,17 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('thread_id','poster_id','ip_addr','post_stamp','subject','attach_cnt','poll_id','mlist_msg_id','apr'),
+			'ix' => array(
+					array('thread_id', 'apr'),
+					array('poster_id', 'apr'),
+					array('apr'),
+					array('post_stamp'),
+					array('attach_cnt'),
+					array('poll_id'),
+					array('ip_addr','post_stamp'),
+					array('subject'),
+					array('mlist_msg_id')
+				),
 			'uc' => array()
 		),
 		'phpgw_fud_msg_report' => array(
@@ -388,7 +398,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('msg_id','user_id'),
+			'ix' => array(array('msg_id','user_id'), array('user_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_nntp' => array(
@@ -430,7 +440,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('duser_id'),
+			'ix' => array(array('duser_id', 'fldr', 'read_stamp'), array('duser_id', 'fldr', 'id')),
 			'uc' => array()
 		),
 		'phpgw_fud_poll' => array(
@@ -470,8 +480,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('poll_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('poll_id', 'user_id'))
 		),
 		'phpgw_fud_read' => array(
 			'fd' => array(
@@ -483,8 +493,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('thread_id','user_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('thread_id', 'user_id'))
 		),
 		'phpgw_fud_replace' => array(
 			'fd' => array(
@@ -508,7 +518,7 @@
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array(),
-			'uc' => array('word')
+			'uc' => array(array('word'))
 		),
 		'phpgw_fud_search_cache' => array(
 			'fd' => array(
@@ -520,7 +530,7 @@
 			),
 			'pk' => array(),
 			'fk' => array(),
-			'ix' => array('srch_query','expiry'),
+			'ix' => array(array('srch_query', 'query_type'), array('expiry')),
 			'uc' => array()
 		),
 		'phpgw_fud_ses' => array(
@@ -536,8 +546,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('time_sec'),
-			'uc' => array('ses_id','user_id')
+			'ix' => array(array('time_sec', 'user_id')),
+			'uc' => array(array('ses_id'), array('user_id'))
 		),
 		'phpgw_fud_smiley' => array(
 			'fd' => array(
@@ -612,7 +622,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('forum_id','root_msg_id','replies','thread_opt'),
+			'ix' => array(array('forum_id', 'last_post_date', 'moved_to'), array('root_msg_id'), array('replies'), array('thread_opt')),
 			'uc' => array()
 		),
 		'phpgw_fud_thread_notify' => array(
@@ -623,7 +633,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id','thread_id'),
+			'ix' => array(array('user_id','thread_id'), array('thread_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_thread_rate_track' => array(
@@ -636,8 +646,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('thread_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('thread_id', 'user_id'))
 		),
 		'phpgw_fud_thread_view' => array(
 			'fd' => array(
@@ -649,7 +659,7 @@
 			),
 			'pk' => array('forum_id','page','pos'),
 			'fk' => array(),
-			'ix' => array(),
+			'ix' => array(array('forum_id', 'thread_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_title_index' => array(
@@ -660,7 +670,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('word_id','msg_id'),
+			'ix' => array(array('word_id','msg_id'), array('msg_id')),
 			'uc' => array()
 		),
 		'phpgw_fud_user_ignore' => array(
@@ -671,8 +681,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('user_id'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array(array('user_id', 'ignore_id'))
 		),
 		'phpgw_fud_users' => array(
 			'fd' => array(
@@ -721,8 +731,8 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('conf_key','last_visit','referer_id','reset_key','users_opt'),
-			'uc' => array('login','alias','email','egw_id')
+			'ix' => array(array('conf_key'), array('last_visit'), array('referer_id'), array('reset_key'), array('users_opt')),
+			'uc' => array(array('login'), array('alias'), array('email'), array('egw_id'))
 		)
 	);
 ?>

@@ -16,11 +16,8 @@
 
 {PHP_FILE: input: online_today.php.t; output: online_today.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: alt_var.tmpl}
 {REF: ulink.tmpl}
@@ -48,14 +45,10 @@
 
 {PAGE: ONLINE_TODAY_PAGE List of users who were online today}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-<br />{TEMPLATE-DATA: admin_cp}
-<p>
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th>{MSG: user}</th><th>{MSG: online_today_last_visit}</th><th>{MSG: action_latest_post}</th></tr>
 {TEMPLATE-DATA: user_entries}
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

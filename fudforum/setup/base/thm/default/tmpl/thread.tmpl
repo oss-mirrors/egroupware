@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: thread.php.t; output: thread.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: announcement.tmpl}
 {REF: draw_pager.tmpl}
@@ -139,8 +136,6 @@
 
 {PAGE: THREAD_PAGE shows the threads in a particular forum}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
-{TEMPLATE-DATA: admin_cp}
 <table width="100%" border=0 cellspacing=0 cellpadding=0><tr>
 <td align="left" width="100%">{TEMPLATE: forum_path}<br />{TEMPLATE: show_links}<br />{TEMPLATE-DATA: subscribe}{TEMPLATE-DATA: merget}</td>
 <td valign="bottom" align="right" class="GenText">{TEMPLATE-DATA: threaded_view}{TEMPLATE: new_thread_link}</td>
@@ -155,7 +150,6 @@
 {TEMPLATE-DATA: forum_select}
 {TEMPLATE-DATA: mark_all_read}
 {TEMPLATE: thread_legend}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

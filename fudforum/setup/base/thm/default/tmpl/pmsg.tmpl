@@ -11,11 +11,8 @@
 
 {PHP_FILE: input: pmsg.php.t; output: pmsg.php;}
 {REF: security.tmpl}
-{REF: admincp.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: draw_select_opt.tmpl}
 {REF: get_cur_ppage.tmpl}
@@ -87,7 +84,6 @@
 
 {PAGE: PMSG_PAGE private messages control panel}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: cur_ppage}
 {TEMPLATE: pmsg_disk_usage}
 <div align="right"><a class="GenLink" href="{TEMPLATE: PMSG_PAGE_lnk}"><img src="{THEME_IMAGE_ROOT}/new_pm.gif" alt="" /></a></div><img src="blank.gif" alt="" width=1 height=2 />
@@ -112,7 +108,6 @@
 </table></form>
 <img src="blank.gif" alt="" width=1 height=2 />
 <div align="right"><a class="GenLink" href="{TEMPLATE: PMSG_PAGE_lnk}"><img src="{THEME_IMAGE_ROOT}/new_pm.gif" alt="" /></a></div>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

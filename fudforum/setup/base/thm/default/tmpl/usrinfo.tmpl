@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: stats.tmpl}
 {REF: rev_fmt.tmpl}
 {REF: is_perms.tmpl}
@@ -181,7 +179,6 @@
 
 {PAGE: USERINFO_PAGE info about a particular user in the forum}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th colspan=2 width="100%">{MSG: usrinfo_profile}</th></tr>
 <tr class="RowStyleA"><td nowrap class="GenText">{MSG: date_registered}</td><td width="100%" class="DateText">{DATE: u->join_date %B %d, %Y}</td></tr>
@@ -209,7 +206,6 @@
 {TEMPLATE-DATA: im_affero}
 <tr class="RowStyleC"><td nowrap align="right" class="GenText" colspan=2><a class="GenLink" href="{TEMPLATE: USERINFO_PAGE_lnk}">{MSG: usrinfo_show_all_posts}</a></td></tr>
 </table>
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

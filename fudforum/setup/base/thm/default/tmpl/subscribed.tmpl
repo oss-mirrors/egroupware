@@ -13,8 +13,6 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: forum_notify.tmpl}
 {REF: thread_notify.tmpl}
 {REF: stats.tmpl}
@@ -24,7 +22,6 @@
 
 {PAGE: SUBSCRIBED_PAGE subscribed forums and threads list}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 {TEMPLATE-DATA: tabs}
 <table border="0" cellspacing="1" cellpadding="2" class="ContentTable">
 <tr><th colspan=2>{MSG: subscribed_forums}<a name="fff"></a></th></tr>
@@ -33,7 +30,6 @@
 {TEMPLATE-DATA: subscribed_thread_data}
 </table>
 {TEMPLATE-DATA: pager}
-{TEMPLATE: curtime}
 {TEMPLATE-DATA: page_stats}
 {TEMPLATE: footer}
 {PAGE: END}

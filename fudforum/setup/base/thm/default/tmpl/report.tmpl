@@ -13,14 +13,11 @@
 {REF: security.tmpl}
 {REF: header.tmpl}
 {REF: footer.tmpl}
-{REF: curtime.tmpl}
-{REF: usercp.tmpl}
 {REF: return.tmpl}
 {REF: allowed_user_lnk.tmpl}
 
 {PAGE: REPORT_PAGE report message to moderator/administrator form}
 {TEMPLATE: header}
-{TEMPLATE: usercp}
 <form method="post" action="{ROOT}?t=report">
 <div align="center"><table border="0" cellspacing="1" cellpadding="2" class="MiniTable">
 <tr><th>{MSG: report_report_post}</th></tr>
@@ -29,7 +26,6 @@
 <tr class="RowStyleB"><td align=right><input type="submit" class="button" name="btn_report" value="{MSG: report_submit_report}"></td></tr>
 </table></div>
 <input type="hidden" name="msg_id" value="{VAR: msg_id}">{DEF: _hs}</form>
-{TEMPLATE: curtime}
 {TEMPLATE: footer}
 {PAGE: END}	
 
