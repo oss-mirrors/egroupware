@@ -2,6 +2,7 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                  
 <hr noshade width="98%" align="center" size="1">
 <center>
+{hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2">	
  <tr>
   <td colspan="8" align="left">

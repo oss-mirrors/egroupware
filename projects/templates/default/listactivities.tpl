@@ -30,7 +30,6 @@
       <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_edit}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_delete}</td>
     </tr>
-  </form>
   
 <!-- BEGIN activities_list -->
       <tr bgcolor="{tr_color}">

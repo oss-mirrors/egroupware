@@ -2,6 +2,7 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                  
 <hr noshade width="98%" align="center" size="1">
 <center>
+{hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2">	
  <tr>
   <td colspan="8" align="left">
@@ -50,7 +51,7 @@
   </table>
   <table cellpadding=3 cellspacing=1>
   <form method="POST" action="{addurl}">
-  {common_hidden_vars}
+  {hidden_vars}
     <tr> 
       <td><input type="submit" name="Add" value="{lang_add}"></form></td>
   <form method="POST" action="{activitiesurl}">

@@ -30,7 +30,6 @@
       <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_edit}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{h_lang_delete}</td>
     </tr>
-  </form>
   
 <!-- BEGIN activities_list -->
       <tr bgcolor="{tr_color}">
@@ -47,7 +46,7 @@
   <table border=0 cellpadding=3 cellspacing=1>
   <tr>
   <form method="POST" action="{actionurl}">
-  {common_hidden_vars} 
+  {hidden_vars} 
       <td><input type="submit" name="Add" value="{lang_add}"></form></td>
   <td><form method="POST" action="{projectsurl}"> 
       <input type="submit" name="Add" value="{lang_projects}"></form></td>

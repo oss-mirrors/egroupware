@@ -27,7 +27,7 @@
 <td>{date_select}</td>
 </tr>
 </table> 
- {common_hidden_vars}
+ {hidden_vars}
 <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="3%" bgcolor="{th_bg}" align=center>{h_lang_select}</td>
