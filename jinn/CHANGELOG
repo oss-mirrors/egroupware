@@ -3,14 +3,21 @@ CHANGELOG JiNN for eGroupWare
 =============================
 $Id$
 
+Mayor updates and when database changes the versionnumber increases.
+Minor updates only get a new alphabet character. 
 
-Version 0.8.212
+Version 0.8.210d
+===========================
+Tue Feb 15 17:43:49 CET 2005
+- implemented on_update for multiple record update
+
+Version 0.8.210c
 Mon Feb 14 CET 2005
 ============================
 - implemented multiple records view
 - small layout change single record view
 
-Version 0.8.211
+Version 0.8.210b
 Thu Feb 11 CET 2005
 ============================
 - implemented object event plugin system

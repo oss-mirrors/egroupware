@@ -487,7 +487,7 @@
 			   // _debug_array($data);
 			   // die();
 			   $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
-//$eventstatus = $this->run_event_plugins('on_update');
+			   $eventstatus = $this->run_event_plugins('on_update', $post_arr);
 
 			}
 		 }
@@ -495,7 +495,7 @@
 		 if ($status[status]==1)	
 		 {
 			$this->message['info']='Records successfully saved';
-//if($eventstatus) $this->message[info].=', but error in On Update event plugin';
+			if($eventstatus) $this->message[info].=', but error in event plugin';
 		 }
 		 else 
 		 {
@@ -546,7 +546,7 @@
 	  }
 
 
-	  function run_event_plugins($event)
+	  function run_event_plugins($event, $post)
 	  {
 			//get all events plugins configured to this object
 		$object_arr=$this->so->get_object_values($this->site_object[object_id]);
@@ -564,7 +564,7 @@
 					Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
 					De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
 					
-					$status = $this->object_events_plugin_manager->call_event_action($_POST, $config);
+					$status = $this->object_events_plugin_manager->call_event_action($post, $config);
 				}
 			}
 		}
@@ -598,7 +598,7 @@
 		 else 
 		 {
 			$this->message[info]='Record succesfully saved';
-			$eventstatus = $this->run_event_plugins('on_update');
+			$eventstatus = $this->run_event_plugins('on_update', $_POST);
 			if($eventstatus) $this->message[info].=', but error in On Update event plugin';
 		 }
 
