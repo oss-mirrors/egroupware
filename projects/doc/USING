@@ -2,7 +2,7 @@
 +                             quick instruction                              +
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 This file provided that you have successfully installed the projects
-applications under phpgroupware and can access the "Projects" menu
+application under phpgroupware and can access the "Projects" menu
 page including p*hours-, p*statistics-, p*delivery- and p*billing-links.  
 
 The main page contains a ADD button to create projects and a
