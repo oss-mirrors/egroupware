@@ -1780,6 +1780,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_notify_mstone',lang('would you like to get notified if milestones date due change'));
 			$GLOBALS['phpgw']->template->set_var('lang_notify_pro',lang('would you like to get notified if projects data get updated'));
 			$GLOBALS['phpgw']->template->set_var('lang_notify_assign',lang('would you like to get notified if you get assigned to a project'));
+			$GLOBALS['phpgw']->template->set_var('lang_mainscreen_show',lang('would you like to view your assigned projects on the main screen'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_notifications',lang('email notifications'));
 
@@ -1787,6 +1788,19 @@
 			$GLOBALS['phpgw']->template->set_var('notify_mstone_selected',($prefs['notify_mstone'] == 'yes'? ' checked':''));
 			$GLOBALS['phpgw']->template->set_var('notify_pro_selected',($prefs['notify_pro'] == 'yes'? ' checked':''));
 			$GLOBALS['phpgw']->template->set_var('notify_assign_selected',($prefs['notify_assign'] == 'yes'? ' checked':''));
+			$options = array(
+					0 => lang('No'),
+					1 => lang('Yes'),
+					/*NOT YET: 2 => lang('Yes').' - '.lang('small view'),*/
+			);
+			$mainscreen_options = '';
+			foreach($options as $i=>$opt)
+			{
+				$sel = ($prefs['mainscreen_showevents']==$i)?" selected":"";
+				$mainscreen_options .= '<option'.$sel.' value="'.$i.'">'.$opt.'</a>' . "\n";
+			}
+			$GLOBALS['phpgw']->template->set_var('mainscreen_options',$mainscreen_options);
+			//unset($mainscreen_options);
 
 			if ($this->bo->isprojectadmin('pbo') || $this->bo->isprojectadmin('pad'))
 			{

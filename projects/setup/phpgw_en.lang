@@ -77,6 +77,7 @@ ending date can not be before start date	projects	en	Ending date can not be befo
 error in calculation sum does not match !	projects	en	Error in calculation sum does not match !
 exactly accounting	projects	en	Exactly accounting
 failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	en	Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!
+failed sending message to \'%1\' #%2 subject=\'%3\', sender=\'%4\' !!!	projects	en	Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!
 gantt chart for project %1	projects	en	Gantt chart for project %1
 gantt chart from %1 to %2	projects	en	Gantt chart from %1 to %2
 generate activity id ?	projects	en	Generate Activity ID ?
@@ -227,9 +228,10 @@ work hours list	projects	en	Work hours list
 work time	projects	en	Work time
 workunit	projects	en	Workunit
 workunits	projects	en	Workunits
-would you like to get notified if milestones date due change	projects	en	Would you like to get notified if milestones date due change ?
-would you like to get notified if projects data get updated	projects	en	Would you like to get notified if projects data get updated ?
-would you like to get notified if you get assigned to a project	projects	en	Would you like to get notified if you get assigned to a project ?
+would you like to get notified if milestones date due change	projects	en	Would you like to get notified if milestones date due change?
+would you like to get notified if projects data get updated	projects	en	Would you like to get notified if projects data get updated?
+would you like to get notified if you get assigned to a project	projects	en	Would you like to get notified if you get assigned to a project?
+would you like to view your assigned projects on the main screen	projects	en	Would you like to view your assigned projects on the main screen?
 written by:	projects	en	Written by:
 you have entered an invalid date !	projects	en	You have entered an invalid date !
 you have entered an invalid end date !	projects	en	You have entered an invalid end date !

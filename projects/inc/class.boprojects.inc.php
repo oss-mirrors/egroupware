@@ -237,6 +237,7 @@
 				$prefs['notify_mstone'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
 				$prefs['notify_pro'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_pro'];
 				$prefs['notify_assign'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
+				$prefs['mainscreen_showevents'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mainscreen_showevents'];
 			}
 			return $prefs;
 		}
@@ -256,6 +257,7 @@
 				$GLOBALS['phpgw']->preferences->change('projects','notify_mstone',(isset($prefs['notify_mstone'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_pro',(isset($prefs['notify_pro'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_assign',(isset($prefs['notify_assign'])?'yes':''));
+				$GLOBALS['phpgw']->preferences->change('projects','mainscreen_showevents',intval($prefs['mainscreen_showevents']));
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 		//	_debug_array($prefs);
