@@ -42,6 +42,10 @@
 		'T_index_out' => 'index.tpl'
 	));
 
+// ----  Fill Some Important Variables  -----
+	$svr_image_dir = PHPGW_IMAGES_DIR;
+	$image_dir = PHPGW_IMAGES;
+
 // ----  Are We In Newsmode Or Not  -----
 	if (isset($newsmode) && $newsmode == "on")
 	{
@@ -272,7 +276,9 @@
 
 // ----  Init Vars Used In Messages List  -----
 	$t->set_var('mlist_font',$phpgw_info['theme']['font']);
-	$t->set_var('images_dir',$phpgw_info['server']['images_dir']);
+	//$t->set_var('images_dir',$phpgw_info['server']['images_dir']);
+	$t->set_var('images_dir',$svr_image_dir);
+	
 	// prepare attachment paperclip image
 	$t->parse('V_attach_clip','T_attach_clip');
 	$mlist_attach = $t->get_var('V_attach_clip');
@@ -335,8 +341,7 @@
 			$mlist_msg_num = $msg_array[$i];
 
 			// SUBJECT
-			$subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
-			$subject = decode_header_string($subject);
+			$subject = $phpgw->msg->get_subject($msg,'');
 			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder_short).'&msgnum='.$mlist_msg_num);
 
 			// SIZE
@@ -453,7 +458,8 @@
 	}
 	
 // ----  Messages List Table Footer  -----
-	$t->set_var('app_images',$phpgw_info['server']['app_images']);
+	//$t->set_var('app_images',$phpgw_info['server']['app_images']);
+	$t->set_var('app_images',$image_dir);
 	$t->set_var('ftr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('ftr_font',$phpgw_info['theme']['font']);
 	$t->set_var('ftr_compose_txt',lang("compose"));

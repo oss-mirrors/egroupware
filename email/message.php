@@ -54,8 +54,8 @@
 	}
 
 // ----  Fill Some Important Variables  -----
-	$image_dir = $phpgw->common->get_image_path($phpgw_info['flags']['currentapp']);
-	$svr_image_dir = $phpgw_info['server']['images_dir'];
+	$svr_image_dir = PHPGW_IMAGES_DIR;
+	$image_dir = PHPGW_IMAGES;
 	$sm_envelope_img = img_maketag($image_dir.'/sm_envelope.gif',"Add to address book","8","10","0");
 	$session_folder = 'folder='.urlencode($folder).'&msgnum=';
 	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
@@ -961,8 +961,6 @@
 			$t->set_var('message_body',$dsp);
 			$t->parse('V_display_part','B_display_part');
 		}
-
-
 		// do we Force Echo Out Unformatted Text ?
 		elseif (($part_nice[$i]['m_description'] == 'presentable')
 		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
@@ -1105,7 +1103,7 @@
 				$dsp = ereg_replace("\n", "\r\n", $dsp);
 				if (strtoupper(lang("charset")) <> "BIG5")
 				{
-					$dsp = $phpgw->strip_html($dsp);
+					$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
 				}
 				$dsp = make_clickable($dsp);
 

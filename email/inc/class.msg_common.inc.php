@@ -244,7 +244,30 @@
 				$subject = $desired_prefix . $subject;
 			}
 		}
+		$subject = $this->htmlspecialchars_encode($subject);
 		return $subject;
+	}
+
+	function htmlspecialchars_encode($str)
+	{
+		/*// replace  '  and  "  with htmlspecialchars */
+		$str = ereg_replace('&', '&amp;', $str);
+		$str = ereg_replace('"', '&quot;', $str);
+		$str = ereg_replace('\'', '&#039;', $str);
+		$str = ereg_replace('<', '&lt;', $str);
+		$str = ereg_replace('>', '&gt;', $str);
+		return $str;
+	}
+
+	function htmlspecialchars_decode($str)
+	{
+		/*// reverse of htmlspecialchars */
+		$str = ereg_replace('&gt;', '>', $str);
+		$str = ereg_replace('&lt;', '<', $str);
+		$str = ereg_replace('&quot;', '"', $str);
+		$str = ereg_replace('&#039;', '\'', $str);
+		$str = ereg_replace('&amp;', '&', $str);
+		return $str;
 	}
 
 // ----  High-Level Function To Get The "so-and-so" wrote String   -----

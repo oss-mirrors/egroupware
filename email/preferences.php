@@ -51,6 +51,11 @@
 		if ($email_sig != '')
 		{
 			/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  */
+			
+			/* // FUTURE: requires change to class common (not yet implemented)
+			// $email_sig_clean = $phpgw->common->stripslashes_gpc($email_sig); */
+			
+			// CURRENT: does not need class common change
 			if (get_magic_quotes_gpc()==1)
 			{
 				$email_sig_clean = stripslashes($email_sig);
@@ -59,6 +64,7 @@
 			{
 				$email_sig_clean = $email_sig;
 			}
+
 			/*// replace  '  and  "  with htmlspecialchars */
 			$email_sig_clean = ereg_replace('\'', '&#039;', $email_sig_clean);
 			$email_sig_clean = ereg_replace('"', '&quot;', $email_sig_clean);
@@ -98,7 +104,27 @@
 			}
 			if ($passwd)
 			{
-				$encrypted_passwd = $phpgw->common->encrypt($passwd);
+				/* // FUTURE: requires change to class common (not yet implemented)
+				//echo 'in pref page b4 strip: '.$passwd.'<br>';
+				$encrypted_passwd = $phpgw->common->stripslashes_gpc($passwd);
+				//echo 'in pref page after strip: '.$encrypted_passwd.'<br>';
+				$encrypted_passwd = $phpgw->common->encrypt($encrypted_passwd);
+				//echo 'encrypted_passwd: '.$encrypted_passwd.'<br>';
+				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
+				//$test_str = 'a test string';
+				//echo 'test_str before base64 decode: '.$test_str.'<br>';
+				//$test_str = base64_decode($test_str);
+				//echo 'test_str after base64 decode: '.$test_str.'<br>'; */
+				
+				// CURRENT: does not need class common change, 
+				// BUT CURRENT CODE IS BROKEN - waiting for api change to implement the above fix
+				/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  */
+				$encrypted_passwd = $passwd;
+				if (get_magic_quotes_gpc()==1)
+				{
+					$encrypted_passwd = stripslashes($encrypted_passwd);
+				}
+				$encrypted_passwd = $phpgw->common->encrypt($encrypted_passwd);
 				$phpgw->preferences->add("email","passwd",$encrypted_passwd);
 			}
 			else
