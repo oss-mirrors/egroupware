@@ -62,11 +62,11 @@
   }
 
   $phpgw->template->set_file(array(standard   => "common.standard.tpl",
-                                   body       => "list.body.tpl",
-                                   first      => "list.first.tpl",
-                                   prev       => "list.prev.tpl",
-                                   next       => "list.next.tpl",
-                                   last       => "list.last.tpl"
+                                   body       => "list.body.tpl"
+//                                   first      => "list.first.tpl",
+//                                   prev       => "list.prev.tpl",
+//                                   next       => "list.next.tpl",
+//                                   last       => "list.last.tpl"
                             ));
 
   // get/set the $user_last_page as a user variable.
@@ -86,84 +86,31 @@ $total_public = 0;
     if ($phpgw->db->next_record()) $total_public = $phpgw->db->f("total_public");
   } */
 //}
-$bmark = new bmark;
-
+  $bmark = new bmark;
   $bmark->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
+  $total_bookmarks = $total_public + $bmark->getUserTotalBookmarks();
 
-$total_bookmarks = $total_public + $bmark->getUserTotalBookmarks();
-
-$phpgw->template->set_var(array(
-  TOTAL_BOOKMARKS  => $total_bookmarks,
-  IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
-  IMAGE_EXT        => $bookmarker->image_ext
-));
-
-# get the user defined nbr of bookmarks per page
-# the local admin can set this to 0 if the database
-# doesn't support the use of the "LIMIT offset, nbr"
-# statement.
-$limit = $bookmarker->urls_per_page;
-
-# the first page is page one
-$first_page = 1;
-
-# calculate the page number of the last page
-# (divide and round UP)
-if ( $limit > 0 ) {
-  $last_page = ceil($total_bookmarks / $limit);
-} else {
-  $last_page = $first_page;
-}
-
-# if page specified in URL, then use it
-if ( $page > 0 ) {
-
-# otherwise try and bring up the last page
-# this user looked at.
-} elseif ( $user_last_page > 0 && $user_last_page <= $last_page ) {
-  $page = $user_last_page;
-
-# as a last resort, start at page 1
-} else {
-  $page = 1;
-}
+  $phpgw->template->set_var(array(TOTAL_BOOKMARKS  => $total_bookmarks,
+                                  IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
+                                  IMAGE_EXT        => $bookmarker->image_ext
+                                 ));
 
   $phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left("list.php",$start,$total_bookmarks));
   $phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right("list.php",$start,$total_bookmarks));
 
+  $phpgw->template->set_var(PAGE_NBR, $page);
+  $phpgw->template->set_var(TOTAL_PAGES, $last_page);
 
-$phpgw->template->set_var(PAGE_NBR, $page);
-$phpgw->template->set_var(TOTAL_PAGES, $last_page);
 
-# calculate the row offset (what row number do
-# we start printing for this page)
-//$offset = ( ($page - 1) * $limit ) + $bk_db_callout->db_first_row_offset;
+  # store the last page this user looked at in
+  # a PHPLIB user var.
+  $user_last_page = $page;
 
-# if we are on the last page, set the limit to
-# the max so that we can be sure we get everything
-if ($page < $last_page ) {
-  $last_url = $phpgw->link("list.php","page=$last_page");
-  $phpgw->template->set_var(LAST_URL, $last_url);
-  $phpgw->template->parse(LAST_LINK, "last");
-  
-  $next_page = $page + 1;
-  $next_url = $phpgw->link("list.php","page=$last_page");
-  $phpgw->template->set_var(NEXT_URL, $next_url);
-  $phpgw->template->parse(NEXT_LINK, "next");
-} else {
-  unset($next_page);
-  $limit = $total_bookmarks;
-}
+  print_list ($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
 
-# store the last page this user looked at in
-# a PHPLIB user var.
-$user_last_page = $page;
+  $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 
-print_list ($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
-
-$phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
-
-set_standard("list ($page of $last_page)", &$phpgw->template);
+  set_standard("list ($page of $last_page)", &$phpgw->template);
 
   include($phpgw_info["server"]["server_root"] . "/bookmarks/inc/footer.inc.php");
 ?>
