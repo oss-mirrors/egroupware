@@ -27,16 +27,6 @@
 		'enable_network_class' => True, 
 		'enable_nextmatchs_class' => True);
 
-	// guarantee a set value for newsmode testing for later on down the page
-	if (isset($newsmode) && $newsmode == "on")
-	{
-		$phpgw_info['flags']['newsmode'] = True;
-	}
-	else
-	{
-		$phpgw_info['flags']['newsmode'] = False;
-	}
-	
 	include("../header.inc.php");
 
 	@set_time_limit(0);
@@ -51,6 +41,16 @@
 		'T_msg_list' => 'index_msg_list.tpl',
 		'T_index_out' => 'index.tpl',
 	));
+
+// ----  Are We In Newsmode Or Not  -----
+	if (isset($newsmode) && $newsmode == "on")
+	{
+		$phpgw_info['flags']['newsmode'] = True;
+	}
+	else
+	{
+		$phpgw_info['flags']['newsmode'] = False;
+	}
 
 // ----  Learn About The Email Server  -----
 	// Does This Mailbox Support Folders (i.e. more than just INBOX)?
@@ -90,12 +90,19 @@
 
 	// SORT: if not set in the url, then assign some defaults
 	if ((isset($sort))
-	  && (($sort >= 0) && ($sort <= 6)) )
+	 && (($sort >= 0) && ($sort <= 6)) )
 	{
-		// do nothing,  this is a valid $sort variableset in the URL
+		// do nothing,  this is a valid $sort variableset in the URL (for email)
+	}
+	elseif ((isset($sort))
+	  && ($sort == "ASC") && ($phpgw_info['flags']['newsmode']))
+	{
+		// needed for newsmode ????
+		$sort = 0;
 	}
 	else
 	{
+		// SORTARRIVAL as noted above, the preferred default for email
 		$sort = 1;
 	}
 
@@ -231,21 +238,33 @@
 	$t->set_var('switchbox_listbox',$switchbox_listbox);
 	$t->set_var('folder_maint_button',$folder_maint_button);
 
-// ----  Messages List Table Headers  -----
-	// $phpgw_info['flags']['newsmode'] is checked and set above
+// ----  Messages List Clickable Column Headers  -----
+	// clickable column headers which change the sorting of the messages
 	if ($phpgw_info['flags']['newsmode'])
 	{
+		// I think newsmode requires the "old way"
 		$sizesort = lang("lines");
-	} else {
-		$sizesort = lang("size");
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
 	}
-	
+	else
+	{
+		// for email
+		$sizesort = lang("size");
+		$hdr_subject = $phpgw->nextmatchs->show_sort_order_imap("3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short));
+		$hdr_from = $phpgw->nextmatchs->show_sort_order_imap("2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short));
+		$hdr_date = $phpgw->nextmatchs->show_sort_order_imap("1",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short));
+		$hdr_size = $phpgw->nextmatchs->show_sort_order_imap("6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort);
+	}
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
-	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order_imap("3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order_imap("2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order_imap("1",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short)) );
-	$t->set_var('hdr_size',$phpgw->nextmatchs->show_sort_order_imap("6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort) );
+	$t->set_var('hdr_subject',$hdr_subject);
+	$t->set_var('hdr_from',$hdr_from);
+	$t->set_var('hdr_date',$hdr_date);
+	$t->set_var('hdr_size',$hdr_size);
+
 
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
