@@ -294,7 +294,7 @@
 					if ($pro[$i]['customer'] != 0) 
 					{
 						$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
-            			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			if (!$customer[0]['org_name']) { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
 					else { $td_action = '&nbsp;'; }
@@ -448,7 +448,7 @@
 					if ($inv['customer'] != 0) 
 					{
 						$customer = $this->boprojects->read_single_contact($inv['customer']);
-            			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			if (!$customer[0]['org_name']) { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
 					else { $customerout = '&nbsp;'; }
@@ -465,7 +465,6 @@
 					$link_data['invoice_id']	= $inv['invoice_id'];
 					$link_data['project_id']	= $inv['project_id'];
 					$link_data['menuaction']	= 'projects.uibilling.invoice';
-					$link_data['action']		= 'ubill';
 					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_td_data',lang('Invoice'));
 					$this->t->fp('list','projects_list',True);
@@ -485,14 +484,6 @@
 
 			$this->t->set_file(array('hours_list_t' => 'bill_listhours.tpl'));
 			$this->t->set_block('hours_list_t','hours_list','list');
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uibilling.invoice',
-				'action'		=> $action,
-				'project_id'	=> $project_id,
-				'invoice_id'	=> $invoice_id
-			);
 
 			$nopref = $this->boprojects->check_prefs();
 			if (is_array($nopref))
@@ -518,7 +509,7 @@
 				}
 				else
 				{
-					if ($action == 'ubill')
+					if ($invoice_id)
 					{
 						$values['invoice_id'] = $invoice_id;
 						$this->bobilling->update_invoice($values,$select);
@@ -526,24 +517,21 @@
 					else
 					{
 						$invoice_id = $this->bobilling->invoice($values,$select);
-						$link_data['invoice_id'] = $invoice_id;
 					}
 				}
 			}
 
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uibilling.invoice',
+				'action'		=> $action,
+				'project_id'	=> $project_id,
+				'invoice_id'	=> $invoice_id
+			);
+
 			$this->t->set_var('lang_action',lang('Invoice'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('currency',$prefs['currency']);
-
-			if (!$invoice_id)
-			{
-				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.fail'));
-			}
-			else
-			{
-				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.show_invoice'
-																		. '&invoice_id=' . $invoice_id));
-			}
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
@@ -559,7 +547,7 @@
 			{
 				$customer = $this->boprojects->read_single_contact($pro['customer']);
 
-				if ($customer[0]['org_name'] = '') { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+				if (!$customer[0]['org_name']) { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
 				else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 				$this->t->set_var('customer',$customername);
 			}
@@ -568,6 +556,7 @@
 			{
 				$this->t->set_var('lang_choose',lang('Generate Invoice ID ?'));
 				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
+				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.fail'));
 				$this->t->set_var('invoice_num',$values['invoice_num']);
 				$hours = $this->bobilling->read_hours($project_id);
 			}
@@ -575,6 +564,8 @@
 			{
 				$this->t->set_var('lang_choose','');
 				$this->t->set_var('choose','');
+				$this->t->set_var('print_invoice',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.show_invoice'
+																		. '&invoice_id=' . $invoice_id));
 				$bill = $this->bobilling->read_single_invoice($invoice_id);
 				$this->t->set_var('invoice_num',$bill['invoice_num']);
 				$hours = $this->bobilling->read_invoice_hours($project_id,$invoice_id);
@@ -668,16 +659,12 @@
 					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
 				}
 			}
- 			else if ($action = 'ubill')
+ 			else
 			{
 				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 				{
 					$this->t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
 				}
-			}
-			else
-			{
-				$this->t->set_var('invoice','');
 			}
 
 			$this->t->pfp('out','hours_list_t',True);

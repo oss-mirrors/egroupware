@@ -276,7 +276,7 @@
 					if ($pro[$i]['customer'] != 0) 
 					{
 						$customer = $this->boprojects->read_single_contact($pro[$i]['customer']);
-            			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			if (!$customer[0]['org_name']) { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
 					else { $td_action = '&nbsp;'; }
@@ -353,12 +353,37 @@
 
 		function delivery()
 		{
-			global $action, $Delivery, $project_id, $delivery_id;
+			global $action, $Delivery, $project_id, $delivery_id, $values, $select;
 
 			$this->display_app_header();
 
 			$this->t->set_file(array('hours_list_t' => 'del_listhours.tpl'));
 			$this->t->set_block('hours_list_t','hours_list','list');
+
+			if ($Delivery)
+			{
+				$values['project_id']	= $project_id;
+				$pro = $this->boprojects->read_single_project($project_id);
+				$values['customer']		= $pro['customer'];
+
+				$error = $this->bodeliveries->check_values($values, $select);
+				if (is_array($error))
+				{
+					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
+				}
+				else
+				{
+					if ($delivery_id)
+					{
+						$values['delivery_id'] = $delivery_id;
+						$this->bodeliveries->update_delivery($values, $select);
+					}
+					else
+					{
+						$delivery_id = $this->bodeliveries->delivery($values, $select);
+					}
+				}
+			}
 
 			$link_data = array
 			(
@@ -369,42 +394,8 @@
 				'delivery_id'	=> $delivery_id
 			);
 
-			if ($Delivery)
-			{
-				$values['project_id']	= $project_id;
-
-				$error = $this->bodeliveries->check_values($values);
-				if (is_array($error))
-				{
-					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
-				}
-				else
-				{
-					if ($action == 'udel')
-					{
-						$values['delivery_id'] = $delivery_id;
-						$this->bodeliveries->update_delivery($values);
-					}
-					else
-					{
-						$delivery_id = $this->bodeliveries->delivery($values);
-						$link_data['delivery_id'] = $delivery_id;
-					}
-				}
-			}
-
 			$this->t->set_var('lang_action',lang('Delivery'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			if (!$delivery_id)
-			{
-				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
-			}
-			else
-			{
-				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.show_delivery'
-																		. '&delivery_id=' . $delivery_id));
-			}
 
 			$pro = $this->boprojects->read_single_project($project_id);
 
@@ -419,30 +410,25 @@
 			else
 			{
 				$customer = $this->boprojects->read_single_contact($pro['customer']);
-				$values['customer'] = $pro['customer'];
-				if ($customer[0]['org_name'] = '') { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+				if (!$customer[0]['org_name']) { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
 				else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 				$this->t->set_var('customer',$customername);
 			}
 
-			if(!$Delivery)
+			if(!$delivery_id)
 			{
 				$this->t->set_var('lang_choose',lang('Generate Delivery ID ?'));
 				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
-			}
-			else
-			{
-				$this->t->set_var('lang_choose','');
-				$this->t->set_var('choose','');
-			}
-
-			if(!$delivery_id)
-			{
+				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.fail'));
 				$this->t->set_var('delivery_num',$values['delivery_num']);
 				$hours = $this->bodeliveries->read_hours($project_id);
 			}
 			else
 			{
+				$this->t->set_var('lang_choose','');
+				$this->t->set_var('choose','');
+				$this->t->set_var('print_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.show_delivery'
+																		. '&delivery_id=' . $delivery_id));
 				$del = $this->bodeliveries->read_single_delivery($delivery_id);
 				$this->t->set_var('delivery_num',$del['delivery_num']);
 				$hours = $this->bodeliveries->read_delivery_hours($project_id,$delivery_id);
@@ -468,19 +454,19 @@
 			$sumaes=0;
 			if (is_array($hours))
 			{
-				for ($i=0;$i<=count($hours);$i++)
+				while (list($null,$note) = each($hours))
 				{
 					$this->nextmatchs->template_alternate_row_color(&$this->t);
 
-					$select = '<input type="checkbox" name="values[select[' . $hours[$i]['hours_id'] . ']]" value="True" checked>';
+					$select = '<input type="checkbox" name="select[' . $note['hours_id'] . ']" value="True" checked>';
 
-					$activity = $GLOBALS['phpgw']->strip_html($hours[$i]['descr']);
+					$activity = $GLOBALS['phpgw']->strip_html($note['descr']);
 					if (! $activity)  $activity  = '&nbsp;';
 
-					$hours_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['hours_descr']);
+					$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
 					if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
-					$start_date = $hours[$i]['sdate'];
+					$start_date = $note['sdate'];
 					if ($start_date == 0) { $start_dateout = '&nbsp;'; }
 					else
 					{
@@ -488,9 +474,9 @@
 						$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 					}
 
-					if ($hours[$i]['minperae'] != 0)
+					if ($note['minperae'] != 0)
 					{
-						$aes = ceil($hours[$i]['minutes']/$hours[$i]['minperae']);
+						$aes = ceil($note['minutes']/$note['minperae']);
 					}
 					$sumaes += $aes;
 
@@ -499,16 +485,16 @@
 					$this->t->set_var(array('select' => $select,
 										'activity' => $activity,
 									'hours_descr' => $hours_descr,
-										'status' => lang($hours[$i]['status']),
+										'status' => lang($note['status']),
 									'start_date' => $start_dateout,
 											'aes' => $aes));
 
-					if (($hours[$i]['status'] != 'billed') && ($hours[$i]['status'] != 'closed'))
+					if (($note['status'] != 'billed') && ($note['status'] != 'closed'))
 					{
 						if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_EDIT) || $pro['coordinator'] == $this->account)
 						{
 							$link_data['menuaction']	= 'projects.uiprojecthours.edit_hours';
-							$link_data['hours_id']		= $hours[$i]['hours_id'];
+							$link_data['hours_id']		= $note['hours_id'];
 							$this->t->set_var('edithour',$GLOBALS['phpgw']->link('/index.php',$link_data));
 							$this->t->set_var('lang_edit_entry',lang('Edit'));
 						}
@@ -532,16 +518,12 @@
 					$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
 				}
 			}
- 			else if ($action = 'udel')
+ 			else
 			{
 				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 				{
 					$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Update delivery') . '">');
 				}
-			}
-			else
-			{
-				$this->t->set_var('delivery','');
 			}
 
 			$this->t->pfp('out','hours_list_t',True);
@@ -606,50 +588,50 @@
 
 // -------------- end header declaration -----------------
 
-			for ($i=0;$i<=count($del);$i++)
+			if (is_array($del))
 			{
-				$this->nextmatchs->template_alternate_row_color(&$this->t);
-				$title = $GLOBALS['phpgw']->strip_html($del[$i]['title']);
-				if (! $title) $title  = '&nbsp;';
-
-				$date = $del[$i]['date'];
-				if ($date == 0)
-					$dateout = '&nbsp;';
-				else
+				while (list($null,$note) = each($del))
 				{
-					$date = $date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-					$dateout = $GLOBALS['phpgw']->common->show_date($date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-				}
+					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$title = $GLOBALS['phpgw']->strip_html($note['title']);
+					if (! $title) $title  = '&nbsp;';
 
-				if ($del[$i]['customer'] != 0) 
-				{
-					$customer = $this->boprojects->read_single_contact($del[$i]['customer']);
-            		if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            		else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-				}
-				else { $customerout = '&nbsp;'; }
+					$date = $note['date'];
+					if ($date == 0)
+						$dateout = '&nbsp;';
+					else
+					{
+						$date = $date + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+						$dateout = $GLOBALS['phpgw']->common->show_date($date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+					}
 
-				$this->t->set_var('sum','');
+					if ($note['customer'] != 0) 
+					{
+						$customer = $this->boprojects->read_single_contact($del[$i]['customer']);
+            			if (!$customer[0]['org_name']) { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+					}
+					else { $customerout = '&nbsp;'; }
+
+					$this->t->set_var('sum','');
 
 // ------------------ template declaration for list records ----------------------------------
 
-				$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($del[$i]['delivery_num']),
-							'customer' => $customerout,
-								'title' => $title,
-								'date' => $dateout));
+					$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($note['delivery_num']),
+									'customer' => $customerout,
+										'title' => $title,
+										'date' => $dateout));
 
-				if ($del[$i]['delivery_id'])
-				{
-					$link_data['delivery_id']	= $del[$i]['delivery_id'];
-					$link_data['project_id']	= $del[$i]['project_id'];
+					$link_data['delivery_id']	= $note['delivery_id'];
+					$link_data['project_id']	= $note['project_id'];
 					$link_data['menuaction']	= 'projects.uideliveries.delivery';
-					$link_data['action']		= 'udel';
 					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_td_data',lang('Delivery'));
-				}
-				$this->t->fp('list','projects_list',True);
+
+					$this->t->fp('list','projects_list',True);
 
 // ------------------------ end record declaration --------------------------------------------
+				}
 			}
 			$this->t->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
@@ -696,38 +678,41 @@
 			$pos = 0;
 			$hours = $this->bodeliveries->read_delivery_pos($delivery_id);
 
-			for ($i=0;$i<=count($hours);$i++)
+			if (is_array($hours))
 			{
-				$pos++;
-				$this->t->set_var('pos',$pos);
-
-				if ($hours[$i]['sdate'] == 0)
+				while (list($null,$note) = each($hours))
 				{
-					$hours_dateout = '&nbsp;';
-				}
-				else
-				{
-					$hours[$i]['sdate'] = $hours[$i]['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-					$hours_dateout = $GLOBALS['phpgw']->common->show_date($hours[$i]['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-				}
+					$pos++;
+					$this->t->set_var('pos',$pos);
 
-				$this->t->set_var('hours_date',$hours_dateout);
+					if ($note['sdate'] == 0)
+					{
+						$hours_dateout = '&nbsp;';
+					}
+					else
+					{
+						$note['sdate'] = $note['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+						$hours_dateout = $GLOBALS['phpgw']->common->show_date($note['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+					}
 
-				if ($hours[$i]['minperae'] != 0)
-				{
-					$aes = ceil($hours[$i]['minutes']/$hours[$i]['minperae']);
+					$this->t->set_var('hours_date',$hours_dateout);
+
+					if ($note['minperae'] != 0)
+					{
+						$aes = ceil($note['minutes']/$note['minperae']);
+					}
+					$sumaes += $aes;
+
+					$this->t->set_var('aes',$aes);
+					$act_descr = $GLOBALS['phpgw']->strip_html($note['descr']);
+					if (! $act_descr) { $act_descr  = '&nbsp;'; }
+					$this->t->set_var('act_descr',$act_descr);
+					$this->t->set_var('billperae',$note['billperae']);
+					$hours_descr = $GLOBALS['phpgw']->strip_html($note['hours_descr']);
+					if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
+					$this->t->set_var('hours_descr',$hours_descr);
+					$this->t->fp('list','del_list',True);
 				}
-				$sumaes += $aes;
-
-				$this->t->set_var('aes',$aes);
-				$act_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['descr']);
-				if (! $act_descr) { $act_descr  = '&nbsp;'; }
-				$this->t->set_var('act_descr',$act_descr);
-				$this->t->set_var('billperae',$hours[$i]['billperae']);
-				$hours_descr = $GLOBALS['phpgw']->strip_html($hours[$i]['hours_descr']);
-				if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
-				$this->t->set_var('hours_descr',$hours_descr);
-				$this->t->fp('list','del_list',True);
 			}
 			$this->t->set_var('sumaes',$sumaes);
 

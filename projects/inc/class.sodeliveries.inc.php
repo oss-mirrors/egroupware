@@ -46,7 +46,7 @@
 			return $join;
 		}
 
-		function delivery($values)
+		function delivery($values,$select)
 		{
 			$values['delivery_num'] = addslashes($values['delivery_num']);
 			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "','"
@@ -56,7 +56,7 @@
 			$this->db2->next_record();
 			$delivery_id = $this->db2->f('id');
 
-			while($values['select'] && $entry=each($values['select']))
+			while($select && $entry=each($select))
 			{
 				$this->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('$delivery_id','" . $entry[0]
 								. "')",__LINE__,__FILE__);
@@ -66,14 +66,15 @@
 			return $delivery_id;
 		}
 
-		function update_delivery($values)
+		function update_delivery($values,$select)
 		{
 			$values['delivery_num'] = addslashes($values['delivery_num']);
 			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date='" . $values['date'] . "',customer='"
 								. $values['customer'] . "' where id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
 
 			$this->db2->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
-			while($values['select'] && $entry=each($values['select']))
+
+			while($select && $entry=each($select))
 			{
 				$this->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('" . $values['delivery_id'] . "','"
 								. $entry[0] . "')",__LINE__,__FILE__);

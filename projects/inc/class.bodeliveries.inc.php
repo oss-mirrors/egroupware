@@ -94,7 +94,7 @@
 			return $address;
 		}
 
-		function check_values($values)
+		function check_values($values,$select)
 		{
 			if (!$values['choose'])
 			{
@@ -112,7 +112,7 @@
 				}
 			}
 
-			if (! is_array($values['select']))
+			if (! is_array($select))
 			{
 				$error[] = lang('The delivery note contains no items !');				
 			}
@@ -133,7 +133,7 @@
 			}
 		}
 
-		function delivery($values)
+		function delivery($values,$select)
 		{
 			if ($values['choose'])
 			{
@@ -142,15 +142,15 @@
 
 			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
 
-			$delivery_id = $this->sodeliveries->delivery($values);
+			$delivery_id = $this->sodeliveries->delivery($values,$select);
 			return $delivery_id;
 		}
 
-		function update_delivery($values)
+		function update_delivery($values,$select)
 		{
 			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
 
-			$this->sodeliveries->update_delivery($values);
+			$this->sodeliveries->update_delivery($values,$select);
 		}
 	}
 ?>
