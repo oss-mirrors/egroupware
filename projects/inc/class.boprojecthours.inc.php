@@ -295,7 +295,7 @@
 				}
 			}*/
 
-			if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
+			if (! @checkdate($values['smonth'],$values['sday'],$values['syear']))
 			{
 				$error[] = lang('You have entered an invalid start date');
 			}

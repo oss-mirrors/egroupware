@@ -558,7 +558,7 @@
 		function ttracker($values)
 		{
 			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
-			$values['remark']		= $this->db->db_addslashes($values['remark']);
+			$values['remark']	= $this->db->db_addslashes($values['remark']);
 			$values['km_distance']	= $values['km_distance'] + 0.0;
 			$values['t_journey']	= $values['t_journey'] + 0.0;
 			$project_id				= intval($values['project_id']);
@@ -645,6 +645,8 @@
 
 			while(is_array($hours) && list(,$hour) = each($hours))
 			{
+				$hour['hours_descr']	= $this->db->db_addslashes($hour['hours_descr']);
+				$hour['remark']		= $this->db->db_addslashes($hour['remark']);
 				$hour['pro_parent']	= $this->return_value('pro_parent',$hour['project_id']);
 				$hour['pro_main']	= $this->return_value('pro_main',$hour['project_id']);
 				$hour['km_distance']	= $hour['km_distance'] + 0.0;

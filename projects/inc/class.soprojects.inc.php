@@ -454,24 +454,24 @@
 		*/
 		function add_project($values)
 		{
-			$values['descr']			= $this->db->db_addslashes($values['descr']);
-			$values['title']			= $this->db->db_addslashes($values['title']);
-			$values['number']			= $this->db->db_addslashes($values['number']);
+			$values['descr']		= $this->db->db_addslashes($values['descr']);
+			$values['title']		= $this->db->db_addslashes($values['title']);
+			$values['number']		= $this->db->db_addslashes($values['number']);
 			$values['investment_nr']	= $this->db->db_addslashes($values['investment_nr']);
 			$values['customer_nr']		= $this->db->db_addslashes($values['customer_nr']);
-			$values['result']			= $this->db->db_addslashes($values['result']);
-			$values['test']				= $this->db->db_addslashes($values['test']);
-			$values['quality']			= $this->db->db_addslashes($values['quality']);
+			$values['result']		= $this->db->db_addslashes($values['result']);
+			$values['test']			= $this->db->db_addslashes($values['test']);
+			$values['quality']		= $this->db->db_addslashes($values['quality']);
 			$values['inv_method']		= $this->db->db_addslashes($values['inv_method']);
-			$values['url']				= $this->db->db_addslashes($values['url']);
+			$values['url']			= $this->db->db_addslashes($values['url']);
 			$values['reference']		= $this->db->db_addslashes($values['reference']);
 
-			//$values['budget']			= $values['budget'] + 0.0;
-			$values['e_budget']			= $values['e_budget'] + 0.0;
-			$values['discount']			= $values['discount'] + 0.0;
+			//$values['budget']		= $values['budget'] + 0.0;
+			$values['e_budget']		= $values['e_budget'] + 0.0;
+			$values['discount']		= $values['discount'] + 0.0;
 			$values['project_accounting_factor'] = $values['project_accounting_factor'] + 0.0;
 			$values['project_accounting_factor_d'] = $values['project_accounting_factor_d'] + 0.0;
-			$values['parent']			= intval($values['parent']);
+			$values['parent']		= intval($values['parent']);
 
 			if ($values['parent'] > 0)
 			{
