@@ -319,7 +319,7 @@
 
 			switch($action)
 			{
-				case 'all':
+				case 'all':			break;
 				case 'mains':			$parent_select = ' AND parent=0'; break;
 				case 'subs':			$parent_select = ' AND (parent=' . $parent . ' AND parent != 0)'; break;
 				case 'mainandsubs':		$parent_select = ' AND main=' . $main; break;
