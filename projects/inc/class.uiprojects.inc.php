@@ -798,7 +798,10 @@
 			$GLOBALS['phpgw']->template->set_var('customer',$customerout);
 
 			$GLOBALS['phpgw']->template->pfp('out','view');
-			$GLOBALS['phpgw']->hooks->process('projects_view');
+			$GLOBALS['phpgw']->hooks->process(array(
+				'location'   => 'projects_view',
+				'project_id' => $project_id
+			));
 		}
 
 		function delete_pa()
