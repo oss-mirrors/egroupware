@@ -342,7 +342,6 @@
 				(
 					'number'		=> $GLOBALS['phpgw']->strip_html($pro[$i]['number']),
 					'td_action'		=> $td_action,
-					'status'		=> lang($pro[$i]['status']),
 					'title'			=> $title,
 					'end_date'		=> $edateout,
 					'coordinator'	=> $coordinatorout
