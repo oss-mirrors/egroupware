@@ -25,42 +25,42 @@
 	\*******************************************************************/
 	/* $Id$ */
 
-	$bdate = time();
-	$month  = date('n',$bdate);
-	$day    = date('d',$bdate);
-	$year   = date('Y',$bdate);
-	$bdateout =  $day . '_' . $month . '_' . $year;
+	$bdate		= time();
+	$month		= date('n',$bdate);
+	$day		= date('d',$bdate);
+	$year		= date('Y',$bdate);
+	$bdateout	=  $day . '_' . $month . '_' . $year;
 
-	$basedir = '{basedir}';
+	$basedir	= '{basedir}' . '/';
 
-	$bmysql = '{bmysql}';
-//	$bpsql = '{bpsql}';
-	$bldap = '{bldap}';
-	$bemail = '{bemail}';
+	$bmysql		= '{bmysql}';
+//	$bpsql		= '{bpsql}';
+	$bldap		= '{bldap}';
+	$bemail		= '{bemail}';
 
-	$bzip2 = '/usr/bin/bzip2';
+	$bzip2		= '/usr/bin/bzip2';
 
-	$bcomp = '{bcomp}';
+	$bcomp		= '{bcomp}';
 
 	switch ($bcomp)
 	{
-		case 'tgz': $end = 'tar.gz'; break;
-		case 'tar.bz2': $end = 'tar'; break;
-		case 'zip': $end = 'zip'; break;
+		case 'tgz':		$end = 'tar.gz'; break;
+		case 'tar.bz2':	$end = 'tar'; break;
+		case 'zip':		$end = 'zip'; break;
 	}
 
 	switch ($bcomp)
 	{
-		case 'tgz': $command = '/bin/tar -czf '; break;
-		case 'tar.bz2': $command = '/bin/tar -cf '; break;
-		case 'zip': $command = '/usr/bin/zip -rq9 '; break;
+		case 'tgz':		$command = '/bin/tar -czf '; break;
+		case 'tar.bz2':	$command = '/bin/tar -cf '; break;
+		case 'zip':		$command = '/usr/bin/zip -rq9 '; break;
 	}
 
 	if ($bmysql == 'yes')
 	{
 		chdir('/var/lib/mysql');
-		$out = $basedir . '/' . $bdateout . '_phpGWBackup_{db_type}.' . $end;
-		$in = ' {db_name}';
+		$out	= $basedir . $bdateout . '_phpGWBackup_{db_type}.' . $end;
+		$in		= ' {db_name}';
 
 		system("$command" . $out . $in);
 
@@ -70,15 +70,15 @@
 			system("$bzip2 -z " . $out); 
 			$out = $out . $end;
 		}
-		$output[] = $out;
-		$input[] = $bdateout . '_phpGWBackup_{db_type}.' . $end;
+		$output[]	= $out;
+		$input[]	= substr($out,strlen($basedir));
 	}
 
 	if ($bldap == 'yes')
 	{
 		chdir('/var/lib');
-		$out = $basedir . '/' . $bdateout . '_phpGWBackup_ldap.' . $end;
-		$in = ' ldap';
+		$out	= $basedir . $bdateout . '_phpGWBackup_ldap.' . $end;
+		$in		= ' ldap';
 
 		system("$command" . $out . $in);
 
@@ -88,8 +88,8 @@
 			system("$bzip2 -z " . $out); 
 			$out = $out . $end;
 		}
-		$output[] = $out;
-		$input[] = $bdateout . '_phpGWBackup_ldap.' . $end;
+		$output[]	= $out;
+		$input[]	= substr($out,strlen($basedir));
 	}
 
 	if ($bemail == 'yes')
@@ -98,8 +98,8 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out = $basedir . '/' . $bdateout . '_phpGWBackup_email_{lid}.' . $end;
-			$in = ' Maildir';
+			$out	= $basedir . $bdateout . '_phpGWBackup_email_{lid}.' . $end;
+			$in		= ' Maildir';
 			system("$command" . $out . $in);
 
 			if ($bcomp == 'tar.bz2')
@@ -108,8 +108,8 @@
 				system("$bzip2 -z " . $out);
 				$out = $out . $end;
 			}
-			$output[] = $out;
-			$input[] = $bdateout . '_phpGWBackup_email_{lid}.' . $end;
+			$output[]	= $out;
+			$input[]	= substr($out,strlen($basedir));
 		}
 <!-- END script_ba -->
 	}
