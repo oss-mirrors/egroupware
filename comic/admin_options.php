@@ -26,10 +26,8 @@
     $action_label      = lang("Submit");
     $reset_label       = lang("Reset");
     $done_label        = lang("Done");
-    $actionurl         = $phpgw->link($phpgw_info["server"]["webserver_url"]
-        ."/comic/admin_options.php");
-    $doneurl           = $phpgw->link($phpgw_info["server"]["webserver_url"]
-        ."/admin/index.php");
+    $actionurl         = $phpgw->link('/comic/admin_options.php');
+    $doneurl           = $phpgw->link('/admin/index.php');
     $message           = "";
     
     if ($submit)

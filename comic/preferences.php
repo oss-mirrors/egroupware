@@ -31,10 +31,8 @@
     $done_label        = lang("Done");
     $comic_size        = 8;
     
-    $actionurl         = $phpgw->link($phpgw_info["server"]["webserver_url"]
-        ."/comic/preferences.php");
-    $doneurl           = $phpgw->link($phpgw_info["server"]["webserver_url"]
-        ."/preferences/index.php");
+    $actionurl         = $phpgw->link('/comic/preferences.php');
+    $doneurl           = $phpgw->link('/preferences/index.php');
     $message           = "";
     
     if ($submit)

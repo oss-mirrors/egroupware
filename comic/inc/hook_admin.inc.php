@@ -34,13 +34,11 @@
 
     section_start("Daily Comics",$imgpath);
 
-    $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]
-                       ."/comic/admin_options.php");
+    $pg = $phpgw->link('/comic/admin_options.php');
     printf("<A href=\"%s\">%s</A><br>", $pg,
            lang("Global Options"));
 
-    $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]
-                       ."/comic/admin_comics.php");
+    $pg = $phpgw->link('/comic/admin_comics.php');
     printf("<A href=\"%s\">%s</A><br>", $pg,
            lang("Comic Data"));
 
