@@ -25,11 +25,11 @@
 
   include('../header.inc.php');
   
-	$filter = reg_var('filter','GET');
-	$start  = reg_var('start','GET','numeric',0);
-	$sort   = reg_var('sort','GET');
-	$order  = reg_var('order','GET');
-	$searchfilter = reg_var('searchfilter','POST');
+  $filter = reg_var('filter','GET');
+  $start  = reg_var('start','GET','numeric',0);
+  $sort   = reg_var('sort','GET');
+  $order  = reg_var('order','GET');
+  $searchfilter = reg_var('searchfilter','POST');
 
   if($_POST['cancel'])
   {
@@ -507,7 +507,8 @@
     ** G - Group
     ** N - Petri Net State change
     */
-
+  
+    $no_error=True;
     if($old_status != $ticket['status'])
     {
       //only allow assigned-to or admin members to close tickets
@@ -524,6 +525,7 @@
       {
         $messages .= '<br>'.lang('You can only close a ticket if it is assigned to you.');
         $GLOBALS['phpgw']->session->appsession('messages','tts',$messages);
+        $no_error=False;
       }
     }
 
@@ -603,7 +605,7 @@
 
     if($fields_updated)
     {
-      $GLOBALS['phpgw']->session->appsession('messages','tts',lang('Ticket has been updated'));
+      $GLOBALS['phpgw']->session->appsession('messages','tts',lang('Ticket has been updated').'<br/>'.$messages);
 
       if($GLOBALS['phpgw']->config->config_data['mailnotification'])
       {
@@ -611,7 +613,7 @@
       }
     }
 
-    if ($_POST['save'])
+    if ($_POST['save'] && $no_error)
     {
       $GLOBALS['phpgw']->redirect_link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort));
     }

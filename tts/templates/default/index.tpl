@@ -16,6 +16,8 @@
 <!-- _END tts_links -->
 
 <!-- BEGIN tts_search -->
+<center><font color=red>{messages}</font></center>
+
 <table width="98%" cellspacing="0" cellpadding="0" border="0" align="center">
 	<tr bgcolor="{th_bg}">
 		<td colspan="3">{lang_appname}</td>
