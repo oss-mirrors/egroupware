@@ -32,7 +32,7 @@
 		<td>
 			<select name="owner">
 			<!-- BEGIN block_select_owner -->
-			<option value="{selecte_owner_value}" {selected_owner_selected}>{select_owner_name}</option>
+			<option value="{select_owner_value}" {select_owner_selected}>{select_owner_name}</option>
 			<!-- END block_select_owner -->
 			</select>
 		</td>
