@@ -22,8 +22,8 @@
 
    $filtermethod = " or ab_access='public' " . $phpgw->accounts->sql_search("ab_access");
 
-   $sql = "select count(*) from addressbook where (ab_owner='"
-	   . $phpgw_info["user"]["userid"] . "' $filtermethod) AND ab_email != ''"; 
+   $sql = "select count(*) from addressbook where (ab_owner="
+	   . $phpgw_info["user"]["account_id"] . " $filtermethod) AND ab_email != ''"; 
 
    $phpgw->db->query($sql);
    $phpgw->db->next_record();
@@ -105,8 +105,8 @@
 
  <?php
 
-   $phpgw->db->query("SELECT * FROM addressbook WHERE (ab_owner='"
-	              . $phpgw_info["user"]["userid"] . "' $filtermethod) AND ab_email != '' "
+   $phpgw->db->query("SELECT * FROM addressbook WHERE (ab_owner="
+	              . $phpgw_info["user"]["account_id"] . " $filtermethod) AND ab_email != '' "
 	              . $ordermethod);
 
    while ($phpgw->db->next_record()) {
