@@ -84,6 +84,7 @@
 				'img_change'			=> $GLOBALS['phpgw']->common->image('workflow', 'change'),
 				'link_admin_shared_source'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminsource.form&p_id='. $proc_info['wf_p_id']),
 				'img_code'				=> $GLOBALS['phpgw']->common->image('workflow', 'code'),
+				'link_admin_export'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminexport.form&p_id='. $proc_info['wf_p_id']),
 				'link_admin_roles'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminroles.form&p_id='. $proc_info['wf_p_id']),
 				'img_roles'				=> $GLOBALS['phpgw']->common->image('workflow', 'roles'),
 				'link_graph'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminactivities.show_graph&p_id=' . $proc_info['wf_p_id']),
