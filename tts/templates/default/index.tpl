@@ -47,9 +47,7 @@
 
 <!-- BEGIN tts_row -->
    <tr bgcolor="{tts_row_color}">
-     <td align=center><a href="{tts_ticketdetails_link}">
-     {tts_ticket_id}
-     </a></td>
+     <td align=center>{tts_ticket_id}</td>
      <td align=left><font size=-2>{tts_t_priostr}</font></td>
      <td align=center>{tts_t_catstr}</td>
      <td align=center>{tts_t_assignedto}</td>
@@ -61,11 +59,11 @@
 <!-- END tts_row -->
 
 <!-- BEGIN tts_ticket_id_unread -->
-&gt;{tts_t_id}&lt;
+<img src="templates/default/images/updated.gif"><a href="{tts_ticketdetails_link}">{tts_t_id}</a>
 <!-- END tts_ticket_id_unread -->
 
 <!-- BEGIN tts_ticket_id_read -->
-{tts_t_id}
+<a href="{tts_ticketdetails_link}">{tts_t_id}</a>
 <!-- END tts_ticket_id_read -->
 
 <!-- BEGIN tts_col_ifviewall -->
