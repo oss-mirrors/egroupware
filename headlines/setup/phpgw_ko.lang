@@ -1,16 +1,47 @@
-are you sure you want to delete this news site ?	admin	ko	이 뉴스사이트를 정말 삭제하시겠습니까?
-base url	admin	ko	기본  URL
-headlines	common	ko	헤드라인
-headline sites	admin	ko	헤드라인 사이트
-listings displayed	admin	ko	Listings Displayed
-minutes between reloads	admin	ko	재로드 시간(분단위)
-news file	admin	ko	새로운 파일
+are you sure you want to delete this news site ?	headlines	ko	이 뉴스사이트를 정말 삭제하시겠습니까?
+base url	headlines	ko	기본 URL
+basic	headlines	ko	기본
+choose layout	headlines	ko	레이아웃을 선택
+color	headlines	ko	색
+create new headline	headlines	ko	새로운 표제어를 생성
+current headlines in cache	headlines	ko	캐쉬에 있는 현재 표제어들
+display	headlines	ko	보이기
+edit headline sites	headlines	ko	표제어 사이트를 편집
+edit headlines shown by default	headlines	ko	기본적으로 보일 표제어을 편집
+grab new news sites	common	ko	새로운 뉴스 사이트를 끌어오기(Grab)
+gray	headlines	ko	회색
+headline preferences	common	ko	표제어 설정
+headline site management	common	ko	표제어 관리
+headline sites	headlines	ko	표제어 사이트
+headlines	common	ko	표제어
+headlines administration	headlines	ko	표제어관리
+headlines administration - delete headline	headlines	ko	표제어관리 - 표제어 삭제
+headlines layout	headlines	ko	표제어 레이아웃
+listings displayed	headlines	ko	목록이 표시됨
+minutes between refresh	headlines	ko	다시 갱신할 시간(분단위)
+minutes between reloads	headlines	ko	다시 로드할 시간(분단위)
+monitor	common	ko	모니터
+news file	headlines	ko	새로운 파일
 news headlines	common	ko	새 표제어
-news type	admin	ko	뉴스 타입
-select headline news sites	preferences	ko	표제어 뉴스 사이트 선택
-that site has already been entered	admin	ko	이 사이트는 이미 입력되어 있습니다.
-you must enter a base url	admin	ko	기본 URL을 입력해야 합니다.
-you must enter a display	admin	ko	출력을 입력해야 합니다.
-you must enter a news url	admin	ko	뉴스 URL을 입력해야 합니다.
-you must enter the number of listings display	admin	ko	한번에 출혁할 개수를 입력해야 합니다.
-you must enter the number of minutes between reload	admin	ko	재로드될 시간 간격을 입력해야 합니다.
+news type	headlines	ko	뉴스 타입
+no headlines found	headlines	ko	표제어를 찾지 못했습니다
+other preferences	preferences	ko	기타 설정
+reload news sites	headlines	ko	뉴스 사이트를 다시 로드
+reset	headlines	ko	초기화
+sample	headlines	ko	예제
+select headline news sites	headlines	ko	표제어 뉴스 사이트 선택
+select headlines to display	common	ko	보여줄 표제어 선택
+select layout	common	ko	표제어 레이아웃
+show headlines on homepage	headlines	ko	홈페이지에 보일 표제어
+site	headlines	ko	사이트
+that site has already been entered	headlines	ko	이 사이트는 이미 입력되어 있습니다.
+unable to retrieve links	headlines	ko	링크를 확인할 수 없습니다
+update headline	headlines	ko	표제어 갱신
+view headline	headlines	ko	표제어 보기
+you can only enter numbers for listings display	headlines	ko	목&#47309;을 표시하기 위해 오직 숫자만 입력하세요
+you can only enter numbers minutes between refresh	headlines	ko	재 갱신되는 분단위 시간 간격입력은 숫자로만 하세요
+you must enter a base url	headlines	ko	기본 URL을 입력해야 합니다.
+you must enter a display	headlines	ko	출력을 입력해야 합니다.
+you must enter a news url	headlines	ko	뉴스 URL을 입력해야 합니다.
+you must enter the number of listings display	headlines	ko	한번에 출혁할 개수를 입력해야 합니다.
+you must enter the number of minutes between reload	headlines	ko	재로드될 시간 간격을 입력해야 합니다.
