@@ -93,10 +93,9 @@
         $year  = $phpgw->common->show_date(time(),"Y");
 
         $end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout =  "<font color=\"CC0000\">"; }
-
         $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout .= "</font>"; }
+        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
+        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
     }
 
     $ab_customer = $projects[$i]['customer'];

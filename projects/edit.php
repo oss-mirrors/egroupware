@@ -195,16 +195,17 @@
     $customer = $d->read_single_entry($abid,$cols);
     
     $t->set_var('name',$customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]");
+    $t->set_var('abid',$abid);
 
 // activites bookable
     $t->set_var("lang_bookable_activities",lang("Bookable activities"));
 
-    $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id FROM phpgw_p_activities "
-		     . "$join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) and  "
-                     . "((project_id='$id') or (project_id IS NULL)) WHERE billable IS NULL OR billable='N' ORDER BY descr asc");
+    $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable FROM phpgw_p_activities "
+		     . "$join phpgw_p_projectactivities ON (phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
+                     . "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
     while ($db2->next_record()) {
         $ba_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
-        if($db2->f("project_id"))
+        if($db2->f("billable")=="N")
             $ba_activities_list .= " selected";
         $ba_activities_list .= ">"        
                     . $phpgw->strip_html($db2->f("descr"))
@@ -219,8 +220,8 @@
      $db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_activities.billperae, "
 		     . "phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable"
 		     . " FROM phpgw_p_activities $join phpgw_p_projectactivities ON "
-                     . "(phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) and  "
-                     . "((project_id='$id') or (project_id IS NULL)) WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
+                     . "(phpgw_p_activities.id=phpgw_p_projectactivities.activity_id) AND "
+                     . "((project_id='$id') OR (project_id IS NULL)) WHERE billable IS NULL OR billable='Y' OR billable='N' ORDER BY descr asc");
 
      while ($db2->next_record()) {
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";

@@ -4,18 +4,18 @@
 <head>
 <title>{title}</title>
 <meta http-equiv="content-type" content="text/html"; charset="{charset}">
-<STYLE type="text/css">                                                                                                                                                                         
-   A {text-decoration:none;}                                                                                                                                                                    
-   <!--                                                                                                                                                                                         
-   A:link {text-decoration:none;}                                                                                                                                                               
-   A:visted {text-decoration:none;}                                                                                                                                                             
-   A:active {text-decoration:none;}                                                                                                                                                             
-   body {margin-top: 0px; margin-right: 0px; margin-left: 0px;}                                                                                                                                 
-   td {text-decoration:none;}                                                                                                                                                                   
-   tr {text-decoration:none;}                                                                                                                                                                   
-   table {text-decoration:none;}                                                                                                                                                                
-   center {text-decoration:none;}                                                                                                                                                               
-   -->                                                                                                                                                                                          
+<STYLE type="text/css">
+   A {text-decoration:none;}
+   <!--
+   A:link {text-decoration:none;}
+   A:visted {text-decoration:none;}
+   A:active {text-decoration:none;}
+   body {margin-top: 0px; margin-right: 0px; margin-left: 0px;}
+   td {text-decoration:none;}
+   tr {text-decoration:none;}
+   table {text-decoration:none;}
+   center {text-decoration:none;}
+   -->
 </STYLE>
 <script LANGUAGE="JavaScript">
    function ExchangeCustomer(thisform)
@@ -25,29 +25,29 @@
    }
 </script>
 </head>
-<body bgcolor="{bg_color}">   
+<body bgcolor="{bg_color}">
 <center>
 <p><font face="{font}"><b>{lang_addressbook_action}</b></font><br>
 <hr noshade width="98%" align="center" size="1">
 
-<table border="0" cellspacing="2" cellpadding="2">                                                                                                                                       
- <tr>                                                                                                                                                                                    
-  <td colspan="4" align="left">                                                                                                                                                          
-   <table border="0" width="100%">                                                                                                                                                                    
-    <tr>                                                                                                                                                                                 
-    {left}                                                                                                                                                                               
-    <td align="center">{lang_showing}</td>                                                                                                                                               
-    {right}                                                                                                                                                                              
-    </tr>                                                                                                                                                                                
-   </table>                                                                                                                                                                              
-   </td>                                                                                                                                                                                 
-  </tr>                                                                                                                                                                                  
- <tr>                                                                                                                                                                                    
-  <td>&nbsp;</td>                                                                                                                                                                        
-  <td colspan="4" align=right>                                                                                                                                                           
-  <form method="post" action="{searchurl}">                                                                                                                                              
-  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">                                                                                        
-  </form></td>                                                                                                                                                                           
+<table border="0" cellspacing="2" cellpadding="2">
+ <tr>
+  <td colspan="4" align="left">
+   <table border="0" width="100%">
+    <tr>
+    {left}
+    <td align="center">{lang_showing}</td>
+    {right}
+    </tr>
+   </table>
+   </td>
+  </tr>
+ <tr>
+  <td>&nbsp;</td>
+  <td colspan="4" align=right>
+  <form method="post" action="{searchurl}">
+  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+  </form></td>
  </tr>
     <tr bgcolor="{th_bg}">
       <td width="30%" bgcolor="{th_bg}" align="center"><font face="{font}">{sort_company}</font></td>

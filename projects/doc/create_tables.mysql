@@ -32,7 +32,7 @@ CREATE TABLE phpgw_p_projectactivities (
 	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
 	project_id	int(11) DEFAULT '0' NOT NULL,
 	activity_id	int(11) DEFAULT '0' NOT NULL,
-	billable	enum('N','Y') NOT NULL
+	billable	enum('N','Y') NOT NULL,
 );
 
 CREATE TABLE phpgw_p_hours (

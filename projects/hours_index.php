@@ -26,6 +26,7 @@
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"status\" value=\"$status\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var(lang_action,lang("Project hours"));
@@ -87,10 +88,9 @@
 	$year  = $phpgw->common->show_date(time(),"Y");
 
 	$end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout =  "<font color=\"CC0000\">"; }
-
-        $end_dateout =  $phpgw->common->show_date($phpgw->db->f("end_date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout .= "</font>"; }
+        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
+        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
     }
     $ab_customer = $projects[$i]['customer'];
     $cols = array('n_given' => 'n_given',
@@ -105,12 +105,12 @@
       
 // ----------------- template declaration for list records ---------------------------
 
-    $t->set_var(array("number" => $number,
-                      "customer" => $customerout,
-                      "status" => $status,
-    		      "title" => $title,
-      		      "end_date" => $end_dateout,
-      		      "coordinator" => $coordinatorout));
+    $t->set_var(array('number' => $number,
+                      'customer' => $customerout,
+                      'status' => $status,
+    		      'title' => $title,
+      		      'end_date' => $end_dateout,
+      		      'coordinator' => $coordinatorout));
 
     $t->set_var('part',$phpgw->link('hours_addhour.php',"id=$id"));
     $t->set_var('lang_part',lang('Add hours'));

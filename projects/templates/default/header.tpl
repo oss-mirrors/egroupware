@@ -26,9 +26,9 @@
 &nbsp;
 
 {link_delivery}
-&nbsp;                                                                                                                               
-&nbsp;                                                                                                                               
-                                                                                                                                     
+&nbsp;
+&nbsp;
+
 {link_return_projects}
 </td></tr>
 </table>

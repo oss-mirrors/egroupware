@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 <p>
-<table border="0" width=98% align="center">
+<table border="0" width=100%>
 <tr>
 
 {admin_info}
@@ -26,9 +26,9 @@
 &nbsp;
 
 {link_delivery}
-&nbsp;                                                                                                                               
-&nbsp;                                                                                                                               
-                                                                                                                                     
+&nbsp;
+&nbsp;
+
 {link_return_projects}
 </td></tr>
 </table>

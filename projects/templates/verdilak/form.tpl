@@ -14,9 +14,9 @@
         {hidden_vars}
         {error}{message}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
-          <tr>                                                                                                                                                               
-          <td>{lang_choose}</td>                                                                                                                                            
-          <td>{choose}</td>                                                                                                                                                  
+          <tr>
+          <td>{lang_choose}</td>
+          <td>{choose}</td>
          </tr>
           <tr>
           <td>{lang_num}:</td>
@@ -27,7 +27,7 @@
           <td><input type="text" name="title" size="50" value="{title}"></td>
          </tr>
          <tr>
-         <td>{lang_descr}:</td> 
+         <td>{lang_descr}:</td>
 	 <td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descrval}</textarea></td>
          </tr>
          <tr>

@@ -47,7 +47,7 @@
        if ($emonth && $eday && $eyear) { $error[$errorcount++] = lang("You have entered an invailed end date ! :") . " " . "$emonth - $eday - $eyear"; }
     }
 
-    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM p_activities WHERE id = '".$activity."'");
+    $phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id = '".$activity."'");
     $phpgw->db->next_record();
     if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
     if (($phpgw->db->f("remarkreq")=="Y") and (!$remark)) { $error[$errorcount++] = lang('You have to enter a remark !'); }
@@ -58,17 +58,14 @@
     $ae_minutes=$hours*60+$minutes;
     $remark = addslashes($remark);
 
-    $phpgw->db->query("update p_hours set activity_id='$activity',entry_date='" . time()
-                . "',start_date='$sdate',end_date='$date',remark='$remark',"
-                . "minutes='$ae_minutes',status='$status',minperae='$minperae',"
-                . "billperae='$billperae',employee='$employee' where id='$id'");
-
+    $phpgw->db->query("update phpgw_p_hours set activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',remark='$remark',"
+                . "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
       }
     }
 
     if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
-    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Hours has been added !')); }
-    if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',""); }
+    if (($submit) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Hours has been updated !')); }
+    if ((! $submit) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
     if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
@@ -131,7 +128,11 @@
     $t->set_var('lang_start_date',lang('Start date'));
     $t->set_var('lang_end_date',lang('Date due'));
      
+    $sdate = $phpgw->db->f("start_date");
+    $edate = $phpgw->db->f("end_date");
+
     $sm = CreateObject('phpgwapi.sbox');
+
     if (!$sdate) {
         $smonth = date('m',time());
         $sday = date('d',time());
@@ -142,6 +143,7 @@
         $sday = date('d',$sdate);
         $syear = date('Y',$sdate);
         }
+
     $t->set_var('start_date_select',$phpgw->common->dateformatorder($sm->getYears('syear',$syear),$sm->getMonthText('smonth',$smonth),$sm->getDays('sday',$sday)));
 
     if (!$edate) {
@@ -157,16 +159,16 @@
 
     $t->set_var('end_date_select',$phpgw->common->dateformatorder($sm->getYears('eyear',$eyear),$sm->getMonthText('emonth',$emonth),$sm->getDays('eday',$eday)));
 
-    $t->set_var("lang_remark",lang("Remark"));
+    $t->set_var('lang_remark',lang("Remark"));
     $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
     if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
     $t->set_var("remark",$remark);
 
-    $t->set_var("lang_time",lang("Time"));
-    $t->set_var("hours",floor($phpgw->db->f("minutes")/60));
-    $t->set_var("minutes",($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
+    $t->set_var('lang_time',lang('Time'));
+    $t->set_var('hours',floor($phpgw->db->f("minutes")/60));
+    $t->set_var('minutes',($phpgw->db->f("minutes"))-((floor($phpgw->db->f("minutes")/60)*60)));
 
-    $t->set_var("lang_employee",lang("Employee"));
+    $t->set_var('lang_employee',lang('Employee'));
     $db2->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts where "
                      . "account_status != 'L' ORDER BY account_lastname,account_firstname asc");
      while ($db2->next_record()) {
@@ -178,7 +180,7 @@
                       $db2->f("account_firstname"),
                       $db2->f("account_lastname")) . "</option>";
      }
-    $t->set_var("employee_list",$employee_list);  
+    $t->set_var('employee_list',$employee_list);  
 
     $t->set_var('lang_minperae',lang('Minutes per workunit'));
     $t->set_var('minperae',$phpgw->db->f('minperae'));

@@ -30,46 +30,48 @@
     $t->set_var(hidden_vars,$hidden_vars); 
     $t->set_var('lang_action',lang('List project hours'));   
 
+    if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
+    else { $join = " LEFT JOIN "; }
+
     if (! $start) { $start = 0; }
     if ($order) { $ordermethod = "order by $order $sort"; }
-    else { $ordermethod = "order by start_date asc"; }
+    else { $ordermethod = "order by phpgw_p_hours.end_date asc"; }
 
     $filtermethod = "employee='" . $phpgw_info["user"]["account_id"] . "' ";
-
+    
     if (!$filter) { $filter = "none"; }
- 
+  
     if ($project_id) {
-     if ($filter=="none")
-        $filter = "project_id=$project_id";
-     }
+	if ($filter=="none")
+	$filter = "project_id=$project_id";
+    }
 
     if($filter != "private") {
-      if($filter<>"none")     
-         $filtermethod .= " AND $filter ";
-         }
-  
-   if($status)
-     $filtermethod .= " AND status='$status' ";
+	if($filter<>"none")     
+	$filtermethod .= " AND $filter ";
+    } 
+    
+    if($status) { $filtermethod .= " AND phpgw_p_hours.status='$status' "; }
 
-  if ($query) {
-     $phpgw->db->query("select count(*) from phpgw_p_hours where $filtermethod");
-     $phpgw->db->next_record();
-     if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search returned 1 match"));
-     else
-        $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
-       } 
+    if ($query) {
+	$phpgw->db->query("select count(*) from phpgw_p_hours WHERE $filtermethod");
+	$phpgw->db->next_record();
+	if ($phpgw->db->f(0) == 1)
+	$t->set_var(total_matchs,lang("your search returned 1 match"));
+	else
+	$t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
+    } 
     else {
-     $phpgw->db->query("select count(*) from phpgw_p_hours where $filtermethod");
-     $phpgw->db->next_record();                                                                      
-     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
-     $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
+    $phpgw->db->query("select count(*) from phpgw_p_hours WHERE $filtermethod");
+    $phpgw->db->next_record();                                                                      
+    if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+    $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-     else
-     $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-     $t->set_var(total_matchs,$total_matchs);                                                                                                               
-      }
+    else
+    $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+    $t->set_var(total_matchs,$total_matchs);                                                                                                               
+    }
 
 // ------------ nextmatch variable template-declarations ----------------------------
 
@@ -80,19 +82,17 @@
 
 // ----------------------- end nextmatch template -------------------------------------
 
-  // ===========================================
-  // list header variable template-declarations
-  // ===========================================
+// ---------------- list header variable template-declarations ------------------------
 
   $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
-  $t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,"p_activities.descr",$order,"hours_listhours.php",lang("Activity"),"&project_id=$project_id&status=$status"));
-  $t->set_var('sort_remark',$phpgw->nextmatchs->show_sort_order($sort,"p_hours.remark",$order,"hours_listhours.php",lang("Remark"),"&project_id=$project_id&status=$status"));
-  $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"hours_listhours.php",lang("Status"),"&project_id=$project_id&status=$status"));
-  $t->set_var('sort_date',$phpgw->nextmatchs->show_sort_order($sort,"date",$order,"hours_listhours.php",lang("Date"),"&project_id=$project_id&status=$status"));
-  $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_listhours.php",lang("Date due"),"&project_id=$project_id&status=$status"));
-  $t->set_var('sort_minutes',$phpgw->nextmatchs->show_sort_order($sort,"minutes",$order,"hours_listhours.php",lang("Time"),"&project_id=$project_id&status=$status"));
-  $t->set_var('h_lang_edit',lang('Edit hours'));
-  $t->set_var('h_lang_view',lang('View hours'));             
+  $t->set_var('sort_project',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_projects.num',$order,'hours_listhours.php',lang('Project ID'),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_activities.descr',$order,'hours_listhours.php',lang('Activity'),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_remark',$phpgw->nextmatchs->show_sort_order($sort,'phpgw_p_hours.remark',$order,'hours_listhours.php',lang('Remark'),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,"hours_listhours.php",lang("Status"),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'hours_listhours.php',lang('Date due'),"&project_id=$project_id&status=$status"));
+  $t->set_var('sort_minutes',$phpgw->nextmatchs->show_sort_order($sort,'minutes',$order,'hours_listhours.php',lang('Time'),"&project_id=$project_id&status=$status"));
+  $t->set_var('h_lang_edit',lang('Edit'));
+  $t->set_var('h_lang_view',lang('View'));             
 
   // -------------- end header declaration -----------------
 
@@ -100,22 +100,24 @@
 //  $limit = $phpgw->db->limit($start);
 
     if ($query) {
-     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark as remark,phpgw_p_activities.descr as descr,status,"
-                 . "start_date,end_date,minutes FROM phpgw_p_activities,phpgw_p_hours WHERE $filtermethod AND "
-                 . "phpgw_p_hours.activity_id=phpgw_p_activities.id AND "
-                 . "descr like '%$query%' OR remark like '%$query%' $ordermethod limit $limit");
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_projects.num FROM phpgw_p_hours $join phpgw_p_projects ON phpgw_p_projects.id=phpgw_p_hours.project_id "
+		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE $filtermethod AND "
+		    . "(descr like '%$query%' OR remark like '%$query%') $ordermethod limit $limit");
     } 
     else {
-     $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,status,start_date,"
-                 . "end_date,minutes FROM phpgw_p_activities,phpgw_p_hours WHERE $filtermethod AND "
-                 . "phpgw_p_hours.activity_id=phpgw_p_activities.id $ordermethod limit $limit");
+    $phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.remark,phpgw_p_activities.descr,phpgw_p_hours.status,"
+		    . "phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_projects.num FROM phpgw_p_hours $join phpgw_p_projects ON phpgw_p_projects.id=phpgw_p_hours.project_id "
+		    . "$join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE $filtermethod $ordermethod limit $limit");
     }
 
     while ($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     
-     $activity  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                             
-     if (! $activity)  $activity  = "&nbsp;";                                                                                                                                                
+    $project = $phpgw->db->f("num");
+
+    $activity  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                             
+    if (! $activity)  $activity  = "&nbsp;";                                                                                                                                                
 
     $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
     if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
@@ -123,32 +125,20 @@
     $status = lang($phpgw->db->f("status"));
     $t->set_var(tr_color,$tr_color);
 
-    if ($phpgw->db->f("start_date") == 0)
-             $start_dateout = "&nbsp;";
-    else {
-      $month = $phpgw->common->show_date(time(),"n");
-      $day   = $phpgw->common->show_date(time(),"d");
-      $year  = $phpgw->common->show_date(time(),"Y");
-
-      $date = (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-      $dateout =  $phpgw->common->show_date($phpgw->db->f("date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-    }
-
-    if ($phpgw->db->f("end_date") == 0)
+    $end_date = $phpgw->db->f("end_date");
+    if ($end_date == 0)
              $end_dateout = "&nbsp;";
     else {
-      $month = $phpgw->common->show_date(time(),"n");
-      $day   = $phpgw->common->show_date(time(),"d");
-      $year  = $phpgw->common->show_date(time(),"Y");
+	$month = $phpgw->common->show_date(time(),"n");
+	$day   = $phpgw->common->show_date(time(),"d");
+	$year  = $phpgw->common->show_date(time(),"Y");
 
-      $end_date = (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-        	$end_dateout =  "<font color=\"CC0000\">";
-
-        $end_dateout =  $phpgw->common->show_date($phpgw->db->f("end_date"),$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-        if (mktime(2,0,0,$month,$day,$year) >= $phpgw->db->f("end_date"))
-                $end_dateout .= "</font>";
+	$end__date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+	$end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
+        if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
     }
+    
     $minutes = floor($phpgw->db->f("minutes")/60).":"
 		. sprintf ("%02d",(int)($phpgw->db->f("minutes")-floor($phpgw->db->f("minutes")/60)*60));
 
@@ -156,12 +146,12 @@
 
 // ---------------- template declaration for list records ------------------------------
 
-    $t->set_var(array("activity" =>$activity,
-                      "remark" => $remark,
-                      "status" => $status,
-    		      "date" => $dateout,
-      		      "end_date" => $end_dateout,
-      		      "minutes" => $minutes));
+    $t->set_var(array('activity' =>$activity,
+                      'remark' => $remark,
+                      'status' => $status,
+      		      'end_date' => $end_dateout,
+      		      'minutes' => $minutes,
+		      'project' => $project));
 
     if ($status != "billed") {
     $t->set_var('edit',$phpgw->link('hours_edithour.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));

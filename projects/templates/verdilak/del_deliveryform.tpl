@@ -11,21 +11,21 @@
 <td valign=bottom>{ad_company}</td>
 <td><img src="doc/logo.jpg"></td>
 </tr>
-<tr>                                                                                                                                                                                 
-<td>{ad_firstname}&nbsp;{ad_lastname}</td>                                                                                                                                           
-<td>&nbsp;</td>                                                                                                                                                                      
-</tr>                                                                                                                                                                                
-<tr>                                                                                                                                                                                 
-<td>{ad_street}</td>                                                                                                                                                                 
-<td>&nbsp;</td>                                                                                                                                                                      
-</tr>                                                                                                                                                                                
-<tr>                                                                                                                                                                                 
-<td>{ad_zip}&nbsp;{ad_city}</td>                                                                                                                                         
-<td>&nbsp;</td>                                                                                                                                                                      
+<tr>
+<td>{ad_firstname}&nbsp;{ad_lastname}</td>
+<td>&nbsp;</td>
 </tr>
-<tr>                                                                                                                                                                                 
-<td>{ad_state}<br><br><br></td>                                                                                                                                         
-<td>&nbsp;</td>                                                                                                                                                                      
+<tr>
+<td>{ad_street}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{ad_zip}&nbsp;{ad_city}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{ad_state}<br><br><br></td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{company}</td>
@@ -59,7 +59,7 @@
 <td>{lang_project}:&nbsp;{title}</td>
 <td>&nbsp;</td>
 </tr>
-</table><br><br><br>  
+</table><br><br><br>
 <table width=70% border=0 cellspacing=3 cellpadding=3>
     <tr>
       <td width="8%" align=right>{lang_pos}</td>
@@ -82,11 +82,11 @@
         <td>{act_remark}</td>
       </tr>
 <!-- END deliverypos_list -->
-      <tr>                                                                                                                                                                                
-        <td>&nbsp;</td>                                                                                                                                                                   
-        <td>&nbsp;</td>                                                                                                                                                                   
-        <td>&nbsp;</td>    
-        <td>{error}</td>                                                                                                                                                             
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>{error}</td>
       </tr>
   <hr noshade width="70%" align="left" size="1">
     </table>

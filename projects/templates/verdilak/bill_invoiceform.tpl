@@ -11,20 +11,20 @@
 <td valign=bottom>{ad_company}</td>
 <td align=right><img src="doc/logo.jpg"></td>
 </tr>
-<tr>                                                                                                                                                                                              
-<td>{ad_firstname}&nbsp;{ad_lastname}</td>                                                                                                                                                              
-<td>&nbsp;</td>                                                                                                                                                                                   
-</tr>                                                                                                                                                                                             
-<tr>                                                                                                                                                                                              
-<td>{ad_street}</td>                                                                                                                                                                                 
-<td>&nbsp;</td>                                                                                                                                                                                   
-</tr>                                                                                                                                                                                             
-<tr>                                                                                                                                                                                              
-<td>{ad_zip}&nbsp;{ad_city}</td>                                                                                                                                                            
-<td>&nbsp;</td>                                                                                                                                                                                   
+<tr>
+<td>{ad_firstname}&nbsp;{ad_lastname}</td>
+<td>&nbsp;</td>
 </tr>
-<td>{ad_state}<br><br><br></td>                                                                                                                                                               
-<td>&nbsp;</td>                                                                                                                                                                                            
+<tr>
+<td>{ad_street}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{ad_zip}&nbsp;{ad_city}</td>
+<td>&nbsp;</td>
+</tr>
+<td>{ad_state}<br><br><br></td>
+<td>&nbsp;</td>
 </tr>
 <tr>
 <td>{company}</td>
