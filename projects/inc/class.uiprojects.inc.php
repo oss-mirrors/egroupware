@@ -734,6 +734,9 @@
 
 		function edit_project()
 		{
+//ndee 130504
+			$jscal = CreateObject('phpgwapi.jscalendar');
+
 			$action			= get_var('action',array('GET','POST'));
 			$pro_main		= get_var('pro_main',array('GET','POST'));
 			$pro_parent		= get_var('pro_parent',array('GET','POST'));
@@ -1013,7 +1016,7 @@
 						break;
 				}
 			}
-
+/*
 			$GLOBALS['phpgw']->template->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
 																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
 																							$this->sbox->getDays('values[sday]',$values['sday'])));
@@ -1029,6 +1032,16 @@
 			$GLOBALS['phpgw']->template->set_var('pend_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[peyear]',$values['peyear']),
 																							$this->sbox->getMonthText('values[pemonth]',$values['pemonth']),
 																							$this->sbox->getDays('values[peday]',$values['peday'])));
+*/
+
+//ndee 130504 new date selectors
+
+			$GLOBALS['phpgw']->template->set_var('start_date_select',$jscal->input('values[startdate]',$values['sdate']?$values['sdate']:time()+(60*60*24*7)));
+			$GLOBALS['phpgw']->template->set_var('end_date_select',$jscal->input('values[enddate]',$values['edate']?$values['edate']:''));
+			$GLOBALS['phpgw']->template->set_var('pstart_date_select',$jscal->input('values[pstartdate]',$values['psdate']?$values['psdate']:time()+(60*60*24*7)));
+			$GLOBALS['phpgw']->template->set_var('pend_date_select',$jscal->input('values[penddate]',$values['pedate']?$values['pedate']:''));
+
+//ndee 130504 new date selectors
 
 			if ($action == 'mains')
 			{
