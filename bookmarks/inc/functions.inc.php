@@ -13,8 +13,6 @@
 
   /* $Id$ */
 
-  include(PHPGW_APP_ROOT . '/inc/class.Validator.inc');
-
   class bktemplate extends Template
   {
      var $classname = "bktemplate";
@@ -481,13 +479,9 @@ if (ereg( "MSIE ([0-9]+)",$HTTP_USER_AGENT,$version)) {
   if ($ver>=5) $bookmarker->image_ext="png";
 }
 
-# every bookmarker page uses templates to generate HTML.
-//$tpl = new bktemplate;
-//$tpl->set_root(TEMPLATEDIR);
-#$phpgw->template->set_unknowns("remove");
+$phpgw->template->set_unknowns("remove");
 
-# create an instance of the data validation class
-$validate = new Validator ();
+$validate = createobject('phpgwapi.validator');
 
 
 ?>
