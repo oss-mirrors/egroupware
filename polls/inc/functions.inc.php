@@ -12,16 +12,6 @@
   \**************************************************************************/
 
   /* $Id$ */
-
-  function add_template_row(&$tmpl,$label,$value)
-  {
-     global $phpgw;
-
-     $tmpl->set_var("tr_color",$phpgw->nextmatchs->alternate_row_color());
-     $tmpl->set_var("label",$label);
-     $tmpl->set_var("value",$value);
-     $tmpl->parse("rows","row",True);
-  }
   
   function verify_uservote($poll_id)
   {
@@ -55,7 +45,7 @@
      echo '<p><table border="0" align="center" width="50%">';
      echo '<tr><td colspan="3" bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="center">'
         . $db->f("poll_title") . '</td></tr>';
-     $db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
+     $db->query("SELECT * FROM polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
      while ($db->next_record()) {
         $poll_optionText  = $db->f("option_text");
         $poll_optionCount = $db->f("option_count");

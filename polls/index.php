@@ -15,10 +15,8 @@
 
   $phpgw_info["flags"] = array("currentapp" => "polls", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
-
-  $inindex = True;
-  include($phpgw_info["server"]["server_root"] . "/polls/hooks/hook_mainscreen.inc.php");
   
-//  display_poll();
+  display_poll();
+//  poll_generateUI("","");
   
 ?>

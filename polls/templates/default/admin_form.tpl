@@ -1,13 +1,12 @@
 <!-- BEGIN form -->
- <center>{message}</center>
- <form action="{form_action}" method="POST">
-  <table border="0">
-   
-{rows}
+ <form method="POST" action="{form_action}">
+  <table border="0" align="center">
+   <tr bgcolor="{th_bg}">
+    <td>&nbsp;{td_message}</td>
+   </tr>
 
-  <tr>
-   <td>{form_button}</td>
-  </tr>
+   {rows}
+
   </table>
  </form>
 <!-- END form -->
