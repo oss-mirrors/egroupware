@@ -42,8 +42,8 @@
 				'_header' => 'header.tpl'
 			));
 			$this->template->set_block('_header','global_header');
-			$this->template->set_var('lang_inbox','<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.inbox') . '">' . lang('Inbox') . '</a>');
-			$this->template->set_var('lang_compose','<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.compose') . '">' . lang('Compose') . '</a>');
+			$this->template->set_var('lang_inbox','<a href="' . $phpgw->link('/index.php','menuaction=messenger.uimessage.inbox') . '">' . lang('Inbox') . '</a>');
+			$this->template->set_var('lang_compose','<a href="' . $phpgw->link('/index.php','menuaction=messenger.uimessage.compose') . '">' . lang('Compose') . '</a>');
 
 			if ($extras['nextmatchs_left'])
 			{
@@ -85,8 +85,8 @@
 			$total      = $so->total_messages();
 
 			$extra_menuaction = '&menuaction=messenger.uimessage.inbox';
-			$extra_header_info['nextmatchs_left']  = $nextmatchs->left('/messenger/main.php',$start,$total,$extra_menuaction);
-			$extra_header_info['nextmatchs_right'] = $nextmatchs->right('/messenger/main.php',$start,$total,$extra_menuaction);
+			$extra_header_info['nextmatchs_left']  = $nextmatchs->left('/index.php',$start,$total,$extra_menuaction);
+			$extra_header_info['nextmatchs_right'] = $nextmatchs->right('/index.php',$start,$total,$extra_menuaction);
 
 			$this->display_headers($extra_header_info);
 
@@ -106,7 +106,7 @@
 				$this->template->set_var('row_status',$message['status']);
 				$this->template->set_var('row_from',$message['from']);
 				$this->template->set_var('row_date',$message['date']);
-				$this->template->set_var('row_subject','<a href="' . $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.read_message&message_id=' . $message['id']) . '">' . $message['subject'] . '</a>');
+				$this->template->set_var('row_subject','<a href="' . $phpgw->link('/index.php','menuaction=messenger.uimessage.read_message&message_id=' . $message['id']) . '">' . $message['subject'] . '</a>');
 				$this->template->set_var('row_status',$message['status']);
 				$this->template->set_var('row_checkbox','<input type="checkbox" name="messages[]" value="' . $message['id'] . '">');
 
@@ -120,7 +120,7 @@
 			}
 			else
 			{
-				$this->template->set_var('form_action',$phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.delete_message'));
+				$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=messenger.bomessage.delete_message'));
 				$this->template->set_var('button_delete','<input type="image" src="' . PHPGW_IMAGES . '/delete.gif" name="delete" title="' . lang('Delete selected') . '" border="0">');
 			}
 
@@ -163,7 +163,7 @@
 			$this->set_common_langs();
 			$this->template->set_var('header_message',lang('Compose global message'));
 
-			$this->template->set_var('form_action',$phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.send_global_message'));
+			$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=messenger.bomessage.send_global_message'));
 			$this->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '">');
 			$this->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
 
@@ -189,7 +189,7 @@
 			$this->set_common_langs();
 			$this->template->set_var('header_message',lang('Compose message'));
 
-			$this->template->set_var('form_action',$phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.send_message'));
+			$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=messenger.bomessage.send_message'));
 			$this->template->set_var('value_to','<input name="message[to]" value="' . $message['to'] . '" size="30">');
 			$this->template->set_var('value_subject','<input name="message[subject]" value="' . $message['subject'] . '" size="30">');
 			$this->template->set_var('value_content','<textarea name="message[content]" rows="20" wrap="hard" cols="76">' . $message['content'] . '</textarea>');
@@ -221,15 +221,15 @@
 			$this->template->set_var('value_content','<pre>' . $phpgw->strip_html($message['content']) . '</pre>');
 
 			$this->template->set_var('link_delete','<a href="'
-					. $phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.delete_message&messages%5B%5D=' . $message['id'])
+					. $phpgw->link('/index.php','menuaction=messenger.bomessage.delete_message&messages%5B%5D=' . $message['id'])
 					. '">' . lang('Delete') . '</a>');
 
 			$this->template->set_var('link_reply','<a href="'
-					. $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.reply&message_id=' . $message['id'])
+					. $phpgw->link('/index.php','menuaction=messenger.uimessage.reply&message_id=' . $message['id'])
 					. '">' . lang('Reply') . '</a>');
 
 			$this->template->set_var('link_forward','<a href="'
-					. $phpgw->link('/messenger/main.php','menuaction=messenger.uimessage.forward&message_id=' . $message['id'])
+					. $phpgw->link('/index.php','menuaction=messenger.uimessage.forward&message_id=' . $message['id'])
 					. '">' . lang('Forward') . '</a>');
 
 			switch($message['status'])
@@ -275,7 +275,7 @@
 
 			$this->template->set_var('header_message',lang('Reply to a message'));
 
-			$this->template->set_var('form_action',$phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.reply&message_id=' . $message['id']));
+			$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=messenger.bomessage.reply&message_id=' . $message['id']));
 			$this->template->set_var('value_to','<input name="n_message[to]" value="' . $message['from'] . '" size="30">');
 			$this->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
 			$this->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
@@ -310,7 +310,7 @@
 
 			$this->template->set_var('header_message',lang('Forward a message'));
 
-			$this->template->set_var('form_action',$phpgw->link('/messenger/main.php','menuaction=messenger.bomessage.forward&message_id=' . $message['id']));
+			$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=messenger.bomessage.forward&message_id=' . $message['id']));
 			$this->template->set_var('value_to','<input name="n_message[to]" value="' . $message['from'] . '" size="30">');
 			$this->template->set_var('value_subject','<input name="n_message[subject]" value="' . stripslashes($message['subject']) . '" size="30">');
 			$this->template->set_var('value_content','<textarea name="n_message[content]" rows="20" wrap="hard" cols="76">' . stripslashes($message['content']) . '</textarea>');
