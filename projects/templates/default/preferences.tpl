@@ -6,7 +6,7 @@
         <table width="39%" border="0" cellspacing="0" cellpadding="0">
         <tr>       
           <td>{lang_select_tax}:</td>                                                                                                                
-          <td><input type="text" name="tax" value="{tax}" size=3 maxlength=2>&nbsp;%</td>
+          <td><input type="text" name="tax" value="{tax}" size=6 maxlength=6>&nbsp;%</td>
          </tr>    
        </table> 
        <table width="39%" border="0" cellspacing="0" cellpadding="0">

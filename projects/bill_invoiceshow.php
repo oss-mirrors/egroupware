@@ -27,7 +27,8 @@
 
   if (isset($phpgw_info["user"]["preferences"]["projects"]["tax"]) && (isset($phpgw_info["user"]["preferences"]["common"]["currency"]))) {                                                                                
     $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];                                                                                 
-    $taxpercent = ((int)$tax/100);
+    $tax = ((float)$tax);
+    $taxpercent = ($tax/100);
     $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
     $t->set_var("error","");     
      }
