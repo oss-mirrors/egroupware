@@ -42,15 +42,35 @@ div.inactivetab{ display:none; }
 .quoted4 { color:#000099; }
 .quoted5 { color:#bb6600; }
 
-.header_row_, A.header_row_
+TR.header_row_
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	font-weight : bold;
+	background : White;
+}
+
+A.header_row_
 {
 	FONT-SIZE: 11px;
 	height : 14px;
 	padding: 0;
 	font-weight : bold;
 }
+
+TR.header_row_D
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	color: silver;
+	text-decoration : line-through;
+	font-weight : bold;
+	background : White;
+}
 	
-.header_row_D, A.header_row_D
+A.header_row_D
 {
 	FONT-SIZE: 11px;
 	height : 14px;
@@ -60,7 +80,17 @@ div.inactivetab{ display:none; }
 	font-weight : bold;
 }
 	
-.header_row_DS, A.header_row_DS, .header_row_ADS, A.header_row_ADS
+TR.header_row_DS, TR.header_row_ADS
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	color: silver;
+	text-decoration : line-through;
+	background : White;
+}
+
+A.header_row_DS, A.header_row_ADS
 {
 	FONT-SIZE: 11px;
 	height : 14px;
@@ -69,28 +99,61 @@ div.inactivetab{ display:none; }
 	text-decoration : line-through;
 }
 	
-.header_row_S, A.header_row_S
+TR.header_row_S
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+}
+
+A.header_row_S
 {
 	FONT-SIZE: 11px;
 	height : 14px;
 	padding: 0;
 }
 	
-.header_row_RS, A.header_row_RS
+TR.header_row_RS
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+}
+
+A.header_row_RS
 {
 	FONT-SIZE: 11px;
 	height : 14px;
 	padding: 0;
 }
 
-.header_row_AS, A.header_row_AS, .header_row_RAS, A.header_row_RAS
+TR.header_row_AS,TR.header_row_RAS
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+}
+
+A.header_row_AS, A.header_row_RAS
 {
 	FONT-SIZE: 11px;
 	height : 14px;
 	padding: 0;
 }
 
-.header_row_FAS, A.header_row_FAS, .header_row_FS, A.header_row_FS
+TR.header_row_FAS,  TR.header_row_FS
+{
+	color: red;
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	background : White;
+}
+
+A.header_row_FAS, A.header_row_FS
 {
 	color: red;
 	FONT-SIZE: 11px;
@@ -98,7 +161,17 @@ div.inactivetab{ display:none; }
 	padding: 0;
 }
 
-.header_row_F, A.header_row_F
+TR.header_row_F
+{
+	color: red;
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	font-weight : bold;
+	background : White;
+}
+
+A.header_row_F
 {
 	color: red;
 	FONT-SIZE: 11px;
@@ -107,7 +180,16 @@ div.inactivetab{ display:none; }
 	font-weight : bold;
 }
 
-.header_row_R, A.header_row_R
+TR.header_row_R
+{
+	FONT-SIZE: 11px;
+	height : 20px;
+	padding: 0;
+	font-weight : bold;
+	background : White;
+}
+
+A.header_row_R
 {
 	FONT-SIZE: 11px;
 	height : 14px;

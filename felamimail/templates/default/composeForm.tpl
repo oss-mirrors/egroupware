@@ -123,10 +123,10 @@
 
 <!-- BEGIN attachment -->
 <script language="javascript1.2">
-<!--
 // position cursor in top form field
 document.doit.{focusElement}.focus();
-//-->
+//sString = document.doit.{focusElement}.innerHTML;
+//document.doit.{focusElement}.innerHTML = sString;
 </script>
 
 <br>

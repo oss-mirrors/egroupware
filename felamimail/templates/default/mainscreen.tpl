@@ -248,24 +248,24 @@ doLoad();
 <!-- END status_row_tpl -->
 
 <!-- BEGIN header_row -->
-<tr class="{row_css_class}" style=" height:15px; ">
-	<td width="1%" bgcolor="#FFFFFF" align="center">
+<tr class="{row_css_class}" sstyle="height:15px;" onmouseover="javascript:style.backgroundColor='#E6E7E4';" onmouseout="javascript:style.backgroundColor='#FFFFFF';">
+	<td width="1%" align="center">
 		<input class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" onClick="toggleFolderRadio(this)" {row_selected}>
 	</td>
-	<td width="10%" bgcolor="#FFFFFF" nowrap>
+	<td width="10%" nowrap>
 		<a class="{row_css_class}" href="{url_compose}" title="{full_address}">{sender_name}</a>
 <!--		<a href="{url_add_to_addressbook}"><img src="{sm_envelope}" width="10" height="8" border="0" align="absmiddle" alt="{lang_add_to_addressbook}" title="{lang_add_to_addressbook}"></a> -->
 	</td>
-	<td bgcolor="#FFFFFF" nowrap align="center">
+	<td nowrap align="center">
 		{date}
 	</td>
-	<td bgcolor="#FFFFFF" align="center">
+	<td align="center">
 		{state}{row_text}
 	</td>
-	<td bgcolor="#FFFFFF">
+	<td>
 		<a class="{row_css_class}" name="subject_url" href="{url_read_message}" title="{full_subject}">{header_subject}</a>
 	</td>
-	<td bgcolor="#FFFFFF">
+	<td>
 		{size}
 	</td>
 </tr>
