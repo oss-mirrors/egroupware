@@ -166,7 +166,7 @@
 
 		$phpgw_setup->oProc->RenameTable('p_activities','phpgw_p_activities');
 		$phpgw_setup->oProc->AlterColumn('phpgw_p_activities','descr',array('type' => 'varchar','precision' => 255,'nullable' => False));
-		$phpgw_setup->oProc->AlterColumn('phpgw_p_activities','num',array('type' => 'int','precision' => 20,'nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_activities','num',array('type' => 'varchar','precision' => 20,'nullable' => False));
 		$phpgw_setup->oProc->query("CREATE INDEX phpgw_p_activities_key ON phpgw_p_activities(id,num)");
 
 		$phpgw_setup->oProc->RenameTable('p_projectactivities','phpgw_p_projectactivities');
@@ -174,13 +174,13 @@
 		$phpgw_setup->oProc->RenameTable('p_projectmembers','phpgw_p_projectmembers');
 
 		$phpgw_setup->oProc->RenameTable('p_invoice','phpgw_p_invoice');
-		$phpgw_setup->oProc->AlterColumn('phpgw_p_invoice','num',array('type' => 'int','precision' => 20,'nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_invoice','num',array('type' => 'varchar','precision' => 20,'nullable' => False));
 		$phpgw_setup->oProc->query("CREATE INDEX phpgw_p_invoice_key ON phpgw_p_invoice(id,num)");
 
 		$phpgw_setup->oProc->RenameTable('p_invoicepos','phpgw_p_invoicepos');
 
 		$phpgw_setup->oProc->RenameTable('p_delivery','phpgw_p_delivery');
-		$phpgw_setup->oProc->AlterColumn('phpgw_p_delivery','num',array('type' => 'int','precision' => 20,'nullable' => False));
+		$phpgw_setup->oProc->AlterColumn('phpgw_p_delivery','num',array('type' => 'varchar','precision' => 20,'nullable' => False));
 		$phpgw_setup->oProc->query("CREATE INDEX phpgw_p_delivery_key ON phpgw_p_delivery(id,num)");
 
 		$phpgw_setup->oProc->RenameTable('p_deliverypos','phpgw_p_deliverypos');
