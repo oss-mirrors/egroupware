@@ -210,19 +210,23 @@ function fud_egw($t='index', $plain=0)
 	require_once($GLOBALS['WWW_ROOT_DISK'].'../../header.inc.php');
 
 	/* anon user handling */
-	if ($GLOBALS['ANON_NICK'] && !$GLOBALS['phpgw']->session->verify()) {
-		$sessionid = $GLOBALS['phpgw']->session->create($GLOBALS['ANON_NICK'], $GLOBALS['ANON_PASS'], 'text');
-		/* still no session, failed to create session for anon user */
-		if (!$sessionid) {
-			echo "<p>Can't create session for user '".$GLOBALS['ANON_NICK']."' !!!</p>\n";
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		}
-		if (isset($_SERVER['PHP_SELF'], $_SERVER['QUERY_STRING'])) {
-			header("Location: ".$_SERVER['PHP_SELF']."?".$_SERVER['QUERY_STRING']."&S=".$GLOBALS['phpgw']->session->sessionid);
+	if (!$GLOBALS['phpgw']->session->verify()) {
+		if ($GLOBALS['ANON_NICK'] && $GLOBALS['ANON_PASS']) {
+			$sessionid = $GLOBALS['phpgw']->session->create($GLOBALS['ANON_NICK'], $GLOBALS['ANON_PASS'], 'text');
+			/* still no session, failed to create session for anon user */
+			if (!$sessionid) {
+				echo "<p>Can't create session for user '".$GLOBALS['ANON_NICK']."' !!!</p>\n";
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			if (isset($_SERVER['PHP_SELF'], $_SERVER['QUERY_STRING'])) {
+				header("Location: ".$_SERVER['PHP_SELF']."?".$_SERVER['QUERY_STRING']."&S=".$GLOBALS['phpgw']->session->sessionid);
+			} else {
+				header("Location: ".$GLOBALS['WWW_ROOT']."index.php?S=".$GLOBALS['phpgw']->session->sessionid);
+			}
+			exit;
 		} else {
-			header("Location: ".$GLOBALS['WWW_ROOT']."index.php?S=".$GLOBALS['phpgw']->session->sessionid);
+			$GLOBALS['phpgw']->redirect_link('/login.php', 'cd=10');
 		}
-		exit;
 	}
 
 	/* define constants */
