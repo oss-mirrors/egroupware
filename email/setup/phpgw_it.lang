@@ -219,11 +219,6 @@ next message	email	it	Prossimo Messaggio
 no change	email	it	nessun cambiamento
 no error returned from server	email	it	Il server non ha tornato nessun errore
 no message found in folder '%1'	email	it	Nessun messaggio trovato nella cartella '%1'
-no message found in folder \'%1\'	email	it	Nessun messaggio trovato nella cartella '%1'
-no message found in folder \\\'%1\\\'	email	it	Nessun messaggio trovato nella cartella '%1'
-no message found in folder \\\\\\\'%1\\\\\\\'	email	it	Nessun messaggio trovato nella cartella '%1'
-no message found in folder \\\\\\\\\\\\\\\'%1\\\\\\\\\\\\\\\'	email	it	Nessun messaggio trovato nella cartella '%1'
-no message found in folder \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'%1\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'	email	it	Nessun messaggio trovato nella cartella '%1'
 no next message	email	it	nessun messaggio successivo
 no previous message	email	it	nessun messaggio precedente
 noia &#64; carlitus style	email	it	Stile Noia @ Carlitus
@@ -303,11 +298,6 @@ show message	email	it	mostra messaggio
 show new messages in combobox	email	it	Mostra i Nuovi Messaggi nella ComboBox
 show new messages on main screen	email	it	Mostra i Nuovi Messaggi nella schermata principale
 show sender's email address with name	email	it	Show sender's email address with name
-show sender\'s email address with name	email	it	Show sender's email address with name
-show sender\\\'s email address with name	email	it	Show sender's email address with name
-show sender\\\\\\\'s email address with name	email	it	Show sender's email address with name
-show sender\\\\\\\\\\\\\\\'s email address with name	email	it	Show sender's email address with name
-show sender\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'s email address with name	email	it	Show sender's email address with name
 show short names	email	it	Mostra i nomi brevi
 show total folder size by default	email	it	Show total folder size by default
 simple	email	it	Semplice
