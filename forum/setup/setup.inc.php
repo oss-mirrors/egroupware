@@ -14,7 +14,7 @@
 
 	$setup_info['forum']['name'] = 'forum';
 	$setup_info['forum']['title'] = 'forum';
-	$setup_info['forum']['version'] = '0.9.13.002';
+	$setup_info['forum']['version'] = '0.9.13.005';
 	$setup_info['forum']['app_order'] = 7;
 	$setup_info['forum']['enable'] = 1;
 
@@ -28,6 +28,8 @@
 
 	/* the hooks */
 	$setup_info['forum']['hooks'][] = 'admin';
+	$setup_info['forum']['hooks'][] = 'settings';
+	$setup_info['forum']['hooks'][] = 'preferences';
 
 	/* the dependencies */
 	$setup_info['forum']['depends'][] = array(

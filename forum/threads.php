@@ -18,15 +18,15 @@
 	);
 	include('../header.inc.php');
 
-	$phpgw->db->query("select * from phpgw_forum_categories where id = $cat");
+	$phpgw->db->query("select * from phpgw_forum_categories where id='" . $session_info['cat_id'] . "'");
 	$phpgw->db->next_record();
 	$category = $phpgw->db->f('name');
 
-	$phpgw->db->query("select * from phpgw_forum_forums where	id = $for");
+	$phpgw->db->query("select * from phpgw_forum_forums where id='" . $session_info['forum_id'] . "'");
 	$phpgw->db->next_record();
 	$forums	= $phpgw->db->f('name');
 
-	$catfor	= "cat=" . $cat	. "&for=" . $for;
+//	$catfor	= "cat=" . $cat	. "&for=" . $for;
 	$phpgw->template->set_var(array(
 		BGROUND			=> $phpgw_info["theme"]["th_bg"],
 		IMG_URL_PREFIX		=> PHPGW_IMAGES . "/",
@@ -38,22 +38,23 @@
 		LANG_NEWTOPIC		=> lang("New Topic"),
 		LANG_CATEGORY		=> $category,
 		LANG_FORUM		=> $forum,
-		FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
-		MAIN_LINK		=> $phpgw->link("/forum/index.php"),
-		POST_LINK		=> $phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
+		FORUM_LINK		=> $phpgw->link('/forum/forums.php'),
+		MAIN_LINK		=> $phpgw->link('/forum/index.php'),
+		POST_LINK		=> $phpgw->link('/forum/post.php','type=new'),
 	));
 
 
-	if(!$col)
+	if ($session_info['view'] == 'collapsed')
 	{
 		$phpgw->template->set_file('COLLAPSE','collapse.threads.tpl');
 		$phpgw->template->set_block('COLLAPSE','CollapseThreads','CollapseT');
-		$phpgw->db->query("select * from phpgw_forum_threads where cat_id=$cat and for_id=$for and parent	= -1  order by postdate	DESC");
+		$phpgw->db->query("select * from phpgw_forum_threads where cat_id='" . $session_info['cat_id'] . "' and for_id='" . $session_info['forum_id'] . "'"
+			. " and parent	= -1  order by postdate	DESC");
 
 
 		//for viewing the collapse threads
 
-		while($phpgw->db->next_record())
+		while ($phpgw->db->next_record())
 		{
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 			$subject = $phpgw->db->f("subject");
@@ -66,9 +67,9 @@
 			$phpgw->template->set_var(array(
 				COLOR => $tr_color,
 				TOPIC => $subject,
-				AUTHOR => $phpgw->db->f("author"),
+				AUTHOR => ($phpgw->db->f('thread_owner')?$phpgw->accounts->id2name($phpgw->db->f('thread_owner')):lang('Unknown')),
 				REPLIES	=> $phpgw->db->f("n_replies") ,
-				READ_LINK => $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")),
+				READ_LINK => $phpgw->link('/forum/read.php','msg=$msg' . $phpgw->db->f('id')),
 				LATESTREPLY => $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate')))
 			));
 
@@ -76,8 +77,8 @@
 
 		}		//end	while
 		$phpgw->template->set_var(array(
-			THREADS_LINK =>	$phpgw->link("/forum/threads.php","$catfor&col=1"),
-			LANG_THREADS => lang("View Threads")
+			THREADS_LINK =>	$phpgw->link('/forum/threads.php','view=threads'),
+			LANG_THREADS => lang('View Threads')
 		));
 		$phpgw->template->parse("Out",'COLLAPSE');
 		$phpgw->template->p("Out");
@@ -89,7 +90,8 @@
 	{
 		$phpgw->template->set_file('NORMAL','normal.threads.tpl');
 		$phpgw->template->set_block('NORMAL','NormalThreads','NormalT');
-		$phpgw->db->query("select * from phpgw_forum_threads where cat_id	= $cat and for_id = $for order by thread DESC, postdate, depth");
+		$phpgw->db->query("select * from phpgw_forum_threads where cat_id='" . $session_info['cat_id'] . "' and for_id='"
+			. $session_info['forum_id'] . "' order by thread DESC, postdate, depth");
 
 		while($phpgw->db->next_record())
 		{
@@ -117,10 +119,10 @@
 			$phpgw->template->set_var(array(
 				COLOR		=> $tr_color,
 				TOPIC		=> $subject,
-				AUTHOR		=> $phpgw->db->f("author"),
+				AUTHOR		=> ($phpgw->db->f('thread_owner')?$phpgw->accounts->id2name($phpgw->db->f('thread_owner')):lang('Unknown')),
 				REPLIES		=> $phpgw->db->f("n_replies") ,
 				LATESTREPLY	=> $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate'))),
-				READ_LINK	=> $phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")),
+				READ_LINK	=> $phpgw->link('/forum/read.php','pos=' . $pos . '&msg=' . $phpgw->db->f('id')),
 				DEPTH		=> $move
 			));
 
@@ -130,8 +132,8 @@
 		}		//end	while
 
 		$phpgw->template->set_var(array(
-			THREADS_LINK	=> $phpgw->link("/forum/threads.php","$catfor&col=0"),
-			LANG_THREADS	=> lang("Collapse Threads")
+			THREADS_LINK	=> $phpgw->link('/forum/threads.php','view=collapsed'),
+			LANG_THREADS	=> lang('Collapse Threads')
 		));
 
 		$phpgw->template->parse('Out','NORMAL');

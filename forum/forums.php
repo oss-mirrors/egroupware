@@ -24,7 +24,7 @@
 	$phpgw->template->set_block('_list','list');
 	$phpgw->template->set_block('_list','row');
 
-	$phpgw->db->query("select * from phpgw_forum_categories where id='$cat'",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_forum_categories where id='$cat_id'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 
 	$phpgw->template->set_var(array(
@@ -35,7 +35,8 @@
 		MAIN_LINK      => $phpgw->link('/forum/index.php')
 	));
 
-	$phpgw->db->query("select * from phpgw_forum_forums where cat_id='$cat'",__LINE__,__FILE__);
+	$db2 = $phpgw->db;
+	$phpgw->db->query("select * from phpgw_forum_forums where cat_id='$cat_id'",__LINE__,__FILE__);
 	if (! $phpgw->db->num_rows())
 	{
 		$phpgw->nextmatchs->template_alternate_row_color(&$phpgw->template);
@@ -47,11 +48,32 @@
 	{
 		while ($phpgw->db->next_record())
 		{
+			$db2->query("select max(postdate) from phpgw_forum_threads where cat_id='$cat_id' and for_id='"
+				. $phpgw->db->f('id') . "'",__LINE__,__FILE__);
+			$db2->next_record();
+
+			if ($db2->f(0))
+			{
+				$last_post_date = $phpgw->common->show_date($phpgw->db->from_timestamp($db2->f(0)));
+			}
+			else
+			{
+				$last_post_date = '&nbsp;';
+			}
+
+			$db2->query("select count(*) from phpgw_forum_threads where cat_id='$cat_id' and for_id='"
+				. $phpgw->db->f('id') . "'",__LINE__,__FILE__);
+			$db2->next_record();
+
+			$total = $db2->f(0);
+
 			$phpgw->nextmatchs->template_alternate_row_color(&$phpgw->template);
 			$phpgw->template->set_var(array(
-				NAME         => $phpgw->db->f('name'),
-				DESC         => ($phpgw->db->f('descr')?$phpgw->db->f('descr'):'&nbsp;'),
-				THREADS_LINK => $phpgw->link('/forum/threads.php' ,'cat=' .	$cat . '&for=' . $phpgw->db->f('id'))
+				NAME              => $phpgw->db->f('name'),
+				DESC              => ($phpgw->db->f('descr')?$phpgw->db->f('descr'):'&nbsp;'),
+				THREADS_LINK      => $phpgw->link('/forum/threads.php' ,'forum_id=' . $phpgw->db->f('id')),
+				'value_last_post' => $last_post_date,
+				'value_total'     => $total
 			));
 	
 			$phpgw->template->fp('rows','row',True);

@@ -28,18 +28,6 @@
               <th colspan=3 bgcolor=D3DCE3>{LANG_NEWTOPIC}</th>
             </tr>
             <tr bgcolor="#FFFFFF"> 
-              <td width="31%">{LANG_NAME}</td>
-              <td colspan="2"> 
-                <input type=text size=32 maxlength=49 value="{NAME}" name=author>
-              </td>
-            </tr>
-            <tr bgcolor="#FFFFFF"> 
-              <td width="31%">{LANG_EMAIL}</td>
-              <td colspan="2"> 
-                <input type=text size=32 maxlength=49 value="{EMAIL}" name=email>
-              </td>
-            </tr>
-            <tr bgcolor="#FFFFFF"> 
               <td width="31%">{LANG_SUBJECT}</td>
               <td colspan="2"> 
                 <input type=text size=32 maxlength=49 value="{SUBJECT}" name=subject>

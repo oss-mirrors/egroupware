@@ -56,9 +56,9 @@
 		}
 
 		$phpgw->db->query("insert into phpgw_forum_threads (pos,thread,depth,main,parent,cat_id,for_id,"
-			. "author,subject,email,host,stat,n_replies) VALUES ('$pos','$thread','$depth','"
-			. "$next_f_body_id','"	. addslashes($msg) . "','$cat','$for','$author','"
-			. addslashes($subject) .	"','$email','$host','$stat',0)",__LINE__,__FILE__);
+			. "thread_owner,subject,stat,n_replies) VALUES ('$pos','$thread','$depth','"
+			. "$next_f_body_id','"	. addslashes($msg) . "','$cat','$for','"
+			. $phpgw_info['user']['account_id']	. "','" . addslashes($subject) .	"','$stat',0)",__LINE__,__FILE__);
 
 		$phpgw->db->query("update phpgw_forum_threads set n_replies = n_replies+1 where thread='$thread'",__LINE__,__FILE__);
 
@@ -74,6 +74,9 @@
 
 	$phpgw->template->set_file('READ','read.body.tpl');
 
+	$phpgw->template->set_var('row_off',$phpgw_info['theme']['row_off']);
+	$phpgw->template->set_var('row_on',$phpgw_info['theme']['row_on']);
+
 	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat",__LINE__,__FILE__);
 
 	$phpgw->db->next_record();
@@ -86,29 +89,28 @@
 	$catfor = "cat=" . $cat . "&for=" . $for;
 
 	$phpgw->template->set_var(array(
-	BGROUND			=> $phpgw_info["theme"]["th_bg"],
-	LANG_TOPIC		=> lang("Topic"),
-	LANG_AUTHOR		=> lang("Author"),
-	LANG_REPLIES		=> lang("Replies"),
-	LANG_LATREP		=> lang("Latest	Reply"),
-	LANG_MAIN		=> lang("Forum"),
-	LANG_NEWTOPIC		=> lang("New Topic"),
-	LANG_CATEGORY		=> $category,
-	LANG_FORUM		=> $forums,
-	LANG_SEARCH		=> lang("Search"),
-	LANG_POST		=> lang("Post"),
-	FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
-	MAIN_LINK		=> $phpgw->link("/forum/index.php"),
-	POST_LINK		=> $phpgw->link("/forum/read.php","$catfor&type=new"),
-	THREADS_LINK		=> $phpgw->link("/forum/threads.php","$catfor&col=$col"),
-	SEARCH_LINK		=> $phpgw->link("/forum/search.php","$catfor"),
-	READ_ACTION		=> $phpgw->link("/forum/read.php"),
-	CAT			=> $cat,
-	FORU			=> $for,
-	MSG			=> $msg,
-	POST			=> $pos,
-	ACTION			=> 'reply'
-
+		BGROUND			=> $phpgw_info["theme"]["th_bg"],
+		LANG_TOPIC		=> lang("Topic"),
+		LANG_AUTHOR		=> lang("Author"),
+		LANG_REPLIES		=> lang("Replies"),
+		LANG_LATREP		=> lang("Latest	Reply"),
+		LANG_MAIN		=> lang("Forum"),
+		LANG_NEWTOPIC		=> lang("New Topic"),
+		LANG_CATEGORY		=> $category,
+		LANG_FORUM		=> $forums,
+		LANG_SEARCH		=> lang("Search"),
+		LANG_POST		=> lang("Post"),
+		FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
+		MAIN_LINK		=> $phpgw->link("/forum/index.php"),
+		POST_LINK		=> $phpgw->link("/forum/read.php","$catfor&type=new"),
+		THREADS_LINK		=> $phpgw->link("/forum/threads.php","$catfor&col=$col"),
+		SEARCH_LINK		=> $phpgw->link("/forum/search.php","$catfor"),
+		READ_ACTION		=> $phpgw->link("/forum/read.php"),
+		CAT			=> $cat,
+		FORU			=> $for,
+		MSG			=> $msg,
+		POST			=> $pos,
+		ACTION			=> 'reply'
 	));
 
 
@@ -152,7 +154,7 @@
 		LANG_AUTHOR  => lang('Author'),
 		LANG_DATE    => lang('Date'),
 		LANG_SUBJECT => lang('Subject'),
-		AUTHOR       => $phpgw->db->f('author'),
+		AUTHOR       => ($phpgw->db->f('thread_owner')?$phpgw->accounts->id2name($phpgw->db->f('thread_owner')):lang('Unknown')),
 		POSTDATE     => $phpgw->common->show_date($phpgw->db->from_timestamp($phpgw->db->f('postdate'))),
 		SUBJECT      => $subj
 	));
@@ -169,15 +171,15 @@
 	$email	= $phpgw_info["user"]["email_address"];
 
 	$phpgw->template->set_var(array(
-	LANG_NAME		=> lang("Your Name"),
-	LANG_EMAIL		=> lang("Your Email"),
-	LANG_SUBJECT		=> lang("Subject"),
-	LANG_REPLY		=> lang("Email replies to this thread, to the address above"),
-	LANG_SUBMIT		=> lang("Submit"),
-	LANG_MESSAGE		=> lang("Message"),
-	NAME			=> $name,
-	EMAIL			=> $email,
-	SUBJECT			=> $subject
+		LANG_NAME		=> lang("Your Name"),
+		LANG_EMAIL		=> lang("Your Email"),
+		LANG_SUBJECT		=> lang("Subject"),
+		LANG_REPLY		=> lang("Email replies to this thread, to the address above"),
+		LANG_SUBMIT		=> lang("Submit"),
+		LANG_MESSAGE		=> lang("Message"),
+		NAME			=> $name,
+		EMAIL			=> $email,
+		SUBJECT			=> $subject
 	));
 	$phpgw->template->pfp('Out','READ');
 
