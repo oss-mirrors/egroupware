@@ -1,18 +1,18 @@
-CREATE TABLE polls_data (
+CREATE TABLE phpgw_polls_data (
    poll_id      int NOT NULL,
    option_text  char(50) NOT NULL,
    option_count int DEFAULT '0' NOT NULL,
    vote_id      int DEFAULT '0' NOT NULL
 );
 
-CREATE TABLE polls_desc (
+CREATE TABLE phpgw_polls_desc (
    poll_id        int NOT NULL auto_increment,
    poll_title     char(100) NOT NULL,
    poll_timestamp int NOT NULL,
    PRIMARY KEY (poll_id)
 );
 
-CREATE TABLE polls_user (
+CREATE TABLE phpgw_polls_user (
    poll_id        int NOT NULL,
    vote_id        int DEFAULT '0' NOT NULL,
    user_id        int NOT NULL,
