@@ -122,10 +122,10 @@ unset($e['_'], $e[':'], $e[47], $e['&'], $e['-'], $e['='], $e['#']);
 			}
 
 			if ($FUD_OPT_2 & 33554432) {
-				if ($AUTH_ID) {
+				if ($RDF_AUTH_ID) {
 					$join = '	INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=2147483647 AND g1.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$AUTH_ID.' AND g2.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$AUTH_ID.' ';
+							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$RDF_AUTH_ID.' AND g2.resource_id=f.id
+							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$RDF_AUTH_ID.' ';
 					$lmt .= " AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 2) > 0)";
 				} else {
 					$join = ' INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=0 AND g1.resource_id=f.id ';
@@ -283,10 +283,10 @@ $basic_rss_data .= '
 				$lmt .= ' AND t.last_post_date <='.(int)$_GET['de'];
 			}
 			if ($FUD_OPT_2 & 33554432) {
-				if ($AUTH_ID) {
+				if ($RDF_AUTH_ID) {
 					$join = '	INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=2147483647 AND g1.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$AUTH_ID.' AND g2.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$AUTH_ID.' ';
+							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$RDF_AUTH_ID.' AND g2.resource_id=f.id
+							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$RDF_AUTH_ID.' ';
 					$lmt .= " AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 2) > 0)";
 				} else {
 					$join = ' INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=0 AND g1.resource_id=f.id ';
@@ -369,10 +369,10 @@ $basic_rss_data .= '
 				$lmt .= ' AND u.last_visit>='.(__request_timestamp__ - $LOGEDIN_TIMEOUT * 60);
 			}
 			if ($FUD_OPT_2 & 33554432) {
-				if ($AUTH_ID) {
+				if ($RDF_AUTH_ID) {
 					$join = '	INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=2147483647 AND g1.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$AUTH_ID.' AND g2.resource_id=f.id
-							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$AUTH_ID.' ';
+							LEFT JOIN {SQL_TABLE_PREFIX}group_cache g2 ON g2.user_id='.$RDF_AUTH_ID.' AND g2.resource_id=f.id
+							LEFT JOIN {SQL_TABLE_PREFIX}mod mm ON mm.forum_id=f.id AND mm.user_id='.$RDF_AUTH_ID.' ';
 					$perms = ", (CASE WHEN (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 2) > 0) THEN 1 ELSE 0 END) AS can_show_msg";
 				} else {
 					$join = ' INNER JOIN {SQL_TABLE_PREFIX}group_cache g1 ON g1.user_id=0 AND g1.resource_id=f.id ';

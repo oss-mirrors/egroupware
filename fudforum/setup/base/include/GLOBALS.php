@@ -81,8 +81,8 @@
 	$MNAV_MAX_DATE		= 31;		/* days */
 	$MNAV_MAX_LEN		= 256;		/* characters */
 
-	$AUTH_ID		= 0;		/* 0 - treat as anon user, >0 treat like specific forum user */
-	$MAX_N_RESULTS		= 100;		/* int */
+	$RDF_AUTH_ID		= 0;		/* 0 - treat as anon user, >0 treat like specific forum user */
+	$RDF_MAX_N_RESULTS	= 100;		/* int */
 
 	$PDF_PAGE		= "letter";	/* string */
 	$PDF_WMARGIN		= 15;		/* int */
