@@ -232,6 +232,22 @@
 				);
 				$this->t->set_var("link_compose",$GLOBALS['phpgw']->link('/index.php',$linkData));
 				$this->t->set_var('folder_name',$this->bofelamimail->sessionData['mailbox']);
+				
+				// return link to main message
+				if($partID != '')
+				{
+					$linkData = array
+					(
+						'menuaction'	=> 'felamimail.uidisplay.display',
+						'showHeader'	=> 'false',
+						'uid'		=> $this->uid
+					);
+					$this->t->set_var('link_mainmessage','<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.lang('mainmessage').'</a>');
+				}
+				else
+				{
+					$this->t->set_var('link_mainmessage','');
+				}
 
 				$linkData = array
 				(
@@ -281,7 +297,7 @@
 					'uid'		=> $this->uid
 				);
 				if($partID != '')
-					$linkData['part_id'] = $partID;
+					$linkData['part'] = $partID;
 				$this->t->set_var("link_printable",$GLOBALS['phpgw']->link('/index.php',$linkData));
 				
 				if($nextMessage['previous'])

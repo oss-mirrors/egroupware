@@ -98,7 +98,7 @@ self.focus();
 <!-- BEGIN message_navbar -->
 <table border="0" cellpadding="1" cellspacing="0" width="100%">
 	<tr bgcolor="{th_bg}">
-		<td width="50%">
+		<td width="40%">
 			{lang_back_to_folder}:&nbsp;<a href="{link_message_list}">{folder_name}</a>
 		</td>
 		<td align="right">
@@ -107,7 +107,10 @@ self.focus();
 		</td>
 	</tr>
 	<tr bgcolor="{th_bg}">
-		<td align="right" colspan="2">
+		<td align="left">
+			{link_mainmessage}
+		</td>
+		<td align="right">
 			<a href="{link_reply}">
 			<!-- <img src="{app_image_path}/sm_reply.gif" height="26" width="28" alt="{lang_reply}" border="0"> -->
 			{lang_reply}
