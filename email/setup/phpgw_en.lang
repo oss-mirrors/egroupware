@@ -7,18 +7,25 @@ default sorting order	email	en	Default sorting order
 email account name	email	en	Email Account Name
 email address	email	en	E-Mail address
 email password	email	en	E-Mail password
-email signature	email	en	E-Mail signature
 e-mail preferences	common	en	E-Mail preferences
+email signature	email	en	E-Mail signature
 email type	common	en	E-Mail Type
+enter your default mail domain ( From: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
+enter your pop	admin	en	Enter your POP
+enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
+enter your smtp server port	admin	en	Enter your SMTP server porr
 folder	email	en	Folder
 forward	email	en	Forward
 from	email	en	From
 if applicable	email	en	If Applicable
 image	email	en	Image
+imap mail server hostname or ip address	admin	en	IMAP mail server hostname or IP address
 imap server type	email	en	IMAP Server Type
 mail folder(uw-maildir)	email	en	Mail Folder(uw-maildir)
 mail server	email	en	Mail Server
+mail server login type	admin	en	Mail server login type
 mail server type	email	en	Mail Server type
+mail settings	admin	en	Mail settings
 messages	email	en	Messages
 move selected messages into	email	en	Move Selected Messages into
 new message	email	en	New message
@@ -29,6 +36,7 @@ reply all	email	en	Reply All
 reply	email	en	Reply
 replyto	email	en	ReplyTo
 section	email	en	Section
+select your mail server type	admin	en	Select your mail server type
 send deleted messages to the trash	email	en	Send deleted messages to the trash
 send	email	en	Send
 show new messages on main screen	email	en	Show new messages on main screen
@@ -47,4 +55,3 @@ you have messages!	common	en	You have messages!
 you have no new messages	common	en	You have no new messages!
 you have x new messages!	common	en	You have %1 new messages!
 your message has been sent	common	en	Your message has been sent!
-

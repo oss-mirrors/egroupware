@@ -26,7 +26,7 @@
       <option value="imap" {selected_mail_server_type_imap}>IMAP</option>
       <option value="pop3" {selected_mail_server_type_pop3}>POP-3</option>
       <option value="imaps" {selected_mail_server_type_imaps}>IMAPS</option>
-      <option value="pop3s" {selected_mail_server_type_pop3s}>POP-3S"</option>
+      <option value="pop3s" {selected_mail_server_type_pop3s}>POP-3S</option>
      </select>
     </td>
    </tr>
