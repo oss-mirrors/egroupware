@@ -172,13 +172,8 @@
 		/* TODO - Adjust the values below as desired */
 		$is->send(
 			'calendar.bocalendar.store_to_cache', array(
-				'syear'  => date('Y'),
-				'smonth' => date('m'),
-				'sday'   => date('d'),
-				'eyear'  => date('Y'),
-				'emonth' => date('m'),
-				'eday'   => date('d'),
-				'xmlrpc' => 1
+				'start' => date('Y-m-d').'T00:00:00',
+				'end'   => date('Y-m-d').'T00:00:00',
 			),
 			$is->server['server_url']
 		);
