@@ -27,9 +27,9 @@
   require(LIBDIR    . "class.Validator.inc");
   //require(LIBDIR    . "bklocal.inc");
   //require(PHPLIBDIR . "page.inc");
-  require(LIBDIR    . "bmark.inc");
-  require(LIBDIR    . "bookmarker.inc");
-  require(LIBDIR    . "bkshared.inc");
+  //require(LIBDIR    . "bmark.inc");
+  //require(LIBDIR    . "bookmarker.inc");
+  //require(LIBDIR    . "bkshared.inc");
 
 class bktemplate extends Template {
   var $classname = "bktemplate";
@@ -63,5 +63,507 @@ class bktemplate extends Template {
     return $str;
   } 
 }
+
+function  set_standard($title, &$p_tpl)  {
+  global $sess, $auth, $bookmarker, $SERVER_NAME;
+  global $phpgw;
+  
+//  $p_tpl = $phpgw->template;
+
+/*  if (isset($auth) 
+  && $auth->is_authenticated()
+  && $auth->auth["uid"] != "nobody" ) {
+    $name_html = sprintf("as %s", $auth->auth["name"]);
+    $logout_html = sprintf("<a class=hdr href=\"%s\"><img width=24 height=24 src=\"%slogout.%s\" border=0 alt=\"Logout\"></a>"
+      ,$sess->url("logout.php")
+      ,$bookmarker->image_url_prefix
+      ,$bookmarker->image_ext);
+  } else {
+    $name_html = "as Guest";
+    $logout_html = sprintf("<a class=hdr href=\"%s\"><img width=24 height=24 src=\"%slogin.%s\" border=0 alt=\"Login\"></a>"
+      ,$sess->url("index.php?login=YES")
+      ,$bookmarker->image_url_prefix
+      ,$bookmarker->image_ext);
+  } */
+
+  $p_tpl->set_var(array(
+    TITLE            => $title,
+    START_URL        => $phpgw->link("index.php"),
+    TREE_URL         => $phpgw->link("tree.php"),
+    LIST_URL         => $phpgw->link("list.php"),
+    CREATE_URL       => $phpgw->link("create.php"),
+    MAINTAIN_URL     => $phpgw->link("maintain.php"),
+    MAILLINK_URL     => $phpgw->link("maillink.php"),
+    SEARCH_URL       => $phpgw->link("search.php"),
+    FAQ_URL          => $phpgw->link("faq.php"),
+    CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
+    SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
+    RATINGS_URL      => $phpgw->link("codes.php","codetable=bookmarks_rating"),
+    USER_URL         => $phpgw->link("useropt.php"),
+    USER_SETTINGS_URL=> $phpgw->link("user.php"),
+    IMPORT_URL       => $phpgw->link("import.php"),
+    LOGOUT_HTML      => $logout_html,
+    DOWNLOAD_URL     => $phpgw->link("download.php"),
+    BUGS_URL         => $phpgw->link("bugs.php"),
+    MAILLIST_URL     => $phpgw->link("maillist.php"),
+    VERSION          => $bookmarker->version,
+    IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
+    IMAGE_EXT        => $bookmarker->image_ext,
+    NAME_HTML        => $name_html,
+    SERVER_NAME      => $SERVER_NAME
+  ));
+}
+
+  // function to load a drop down list box from one
+  // of the standard id-name formatted tables. this
+  // routine will insert the <option> tags, it does
+  // not insert the <select> tags.
+  function load_ddlb($table, $selected_id, &$content, $blank)
+  {
+     global $bookmarker, $phpgw, $phpgw_info;
+
+     $db_ddlb = $phpgw->db;
+
+     $option_tpl = $phpgw->template;
+
+     $option_tpl->set_file(array(option_list => "common.option.tpl",
+                                 select      => "common.select.tpl"
+                          ));
+
+     // if the user wants a blank option, add that first
+     // the blank can be selected.
+     if ($blank) {
+        $opt_value =  "NONE";
+        $opt_name  =  "----";
+        if ($selected_id == $opt_value) {
+           $opt_selected = "selected";
+        } else {
+           $opt_selected = "";
+        }
+        $option_tpl->set_var(array(OPTION_SELECTED => $opt_selected,
+                                   OPTION_VALUE    => $opt_value,
+                                   OPTION_NAME     => $opt_name
+                            ));
+        $option_tpl->parse(OPTION_LIST, "option_list", TRUE);
+     }
+
+     $query = sprintf("select id, name from %s where username='%s' order by name", $table, $phpgw_info["user"]["account_id"]);
+     //echo "<br><b>TEST:</b> $query";
+     $db_ddlb->query($query,__LINE__,__FILE__);
+     while ($db_ddlb->next_record()) {
+        $cnt = $cnt + 1;
+        $opt_value =  $db_ddlb->f("id");
+        $opt_name  =  htmlspecialchars(stripslashes($db_ddlb->f("name")));
+
+        if ($selected_id == $opt_value) {
+           $opt_selected = "selected";
+        } else {
+           $opt_selected = "";
+        }
+
+        $option_tpl->set_var(array(OPTION_SELECTED => $opt_selected,
+                                   OPTION_VALUE    => $opt_value,
+                                   OPTION_NAME     => $opt_name
+                            ));
+        $option_tpl->parse(OPTION_LIST, "option_list", TRUE);
+     }
+
+     if ( $cnt > 0 ) {
+        $option_tpl->set_var(FIELD_NAME, $table);
+        $option_tpl->parse(MAIN, "select");
+        $content = $option_tpl->get("MAIN");
+     } else {
+        $content = " ";
+     }
+  }
+
+  // function to determine what type of browser the user has.
+  // code idea from http://www.php.net/
+  function check_browser()
+  {
+    global $HTTP_USER_AGENT;
+  
+    $browser= "UNKNOWN";
+  
+    if (ereg("MSIE",$HTTP_USER_AGENT)) {
+       $browser = "MSIE";
+    } elseif (ereg("Mozilla",$HTTP_USER_AGENT)) {
+       $browser = "NETSCAPE";
+    } else {
+       $browser = "UNKNOWN";
+    }
+  
+    return $browser;
+  }
+
+
+
+
+class bmark  {
+
+  function add(&$id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
+                  $rating, $public) {
+    global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
+
+    $db = $phpgw->db;
+
+    if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
+                         &$rating, &$public, &$public_db)) return false;
+
+    ## Does the bookmark already exist?
+    $query = sprintf("select id from bookmarks where url='%s' and username = '%s'",$url, $phpgw_info["user"]["account_id"]);
+    $db->query($query,__LINE__,__FILE__);
+    if ($db->Errno != 0) return false;
+
+    if ($db->nf() > 0) {
+       $error_msg .= sprintf("<br>URL <B>%s</B> already exists!", $url);
+       return false;
+    }
+
+    ## Get the next available ID key
+//    $id = $db->nextid('bookmark');
+//    if ($db->Errno != 0) return false;
+
+    ## Insert the bookmark
+    $query = sprintf("insert into bookmarks (url, name, ldesc, keywords, category_id, 
+                      subcategory_id, rating_id, username, public_f, bm_timestamps) 
+                      values('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,,')", 
+                      $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
+                      $category, $subcategory, $rating, $phpgw_info["user"]["account_id"], $public_db,
+                      time());
+
+    $db->query($query,__LINE__,__FILE__);
+    if ($db->Errno != 0) return false;
+
+//    $maintain_url = "maintain.php?id=".$id;
+    $msg .= "Bookmark created sucessfully.";
+/*                     <br>Click <a href=\"%s\">here</a> to modify this bookmark.
+                     <a href=\"maillink.php?id=%s\">
+                     <img width=24 height=24 align=top border=0 src=\"%smail.png\"></a>", 
+                     $id, $phpgw->link($maintain_url), $id, $bookmarker->image_url_prefix); */
+
+    ## Update the PHPLIB user variable that keeps track of how
+    ## many bookmarks this user has.
+    $this->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
+
+    return true;
+  }
+
+  function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
+                  $rating, $public) {
+    global $error_msg, $msg, $bookmarker, $validate, $phpgw_info, $added, $visted, $db;
+
+    if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
+                        &$rating, &$public, &$public_db)) return false;
+
+    if ($visted == 1) {
+       $visted = 0;
+    }
+
+    $timestamps = sprintf("%s,%s,%s",$added,$visted,time());
+
+    ## Update bookmark information.
+    $query = sprintf("update bookmarks set url='%s', name='%s', ldesc='%s' , keywords='%s', 
+                      category_id='%s', subcategory_id='%s', rating_id='%s', public_f='%s',
+                      bm_timestamps='%s' where id='%s' and username='%s'", 
+                      $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
+                      $category, $subcategory, $rating, $public_db, $timestamps, $id, $phpgw_info["user"]["account_id"]);
+
+    $db->query($query,__LINE__,__FILE__);
+    if ($db->Errno != 0) return false;
+
+    $msg .= "Bookmark changed sucessfully.";
+    
+    ## Update the PHPLIB user variable that keeps track of how
+    ## many bookmarks this user has.
+    $this->update_user_total_bookmarks($phpgw_info["user"]["acount_id"]);
+
+    return true;
+  }
+
+  function delete($id) {
+    global $perm, $error_msg, $msg, $phpgw, $phpgw_info;
+
+    $db = $phpgw->db;
+
+    ## Do we have permission to do so?
+/*    if (!$perm->have_perm("editor")) {
+      $error_msg .= "You do not have permission to delete bookmarks.";
+      return false;
+    } */
+    
+    ## Delete that bookmark.
+    $query = sprintf("delete from bookmarks where id='%s' and username='%s'", $id, $phpgw_info["user"]["account_id"]);
+    $db->query($query,__LINE__,__FILE__);
+    if ($db->Errno != 0) return false;
+    
+    $msg .= "Bookmark deleted sucessfully.";
+
+    ## Update the PHPLIB user variable that keeps track of how
+    ## many bookmarks this user has.
+    $this->update_user_total_bookmarks($phpgw_info["user"]["account_id"]);
+
+    return true;
+  }
+
+  function validate (&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
+                     &$rating, &$public, &$public_db) {
+    global $perm, $error_msg, $msg, $bookmarker, $validate;
+
+    ## Do we have permission to do so?
+/*    if (!$perm->have_perm("editor")) {
+       $error_msg .= "<br>You do not have permission to maintain bookmarks.";
+    } */
+
+    ## trim the form fields
+//    $url = $validate->strip_space($url);
+    $name = trim($name);
+    $desc = trim($ldesc);
+    $keyw = trim($keywords);
+    
+    ## Do we have all necessary data?
+    if (empty($url)) {
+       $error_msg .= "<br>URL is required.";
+    }
+
+    if (empty($name)) {
+       $error_msg .= "<br>Name is required.";
+    }
+
+    if (isset($category) && $category >= 0 ) {
+    } else {
+       $error_msg .= "<br>Category is required.";
+    }
+
+    if (isset($subcategory) && $subcategory >= 0 ) {
+    } else {
+       $error_msg .= "<br>Subcategory is required.";
+    }
+
+    if (isset($rating) && $rating >= 0 ) {
+    } else {
+       $error_msg .= "<br>Rating is required.";
+    }
+
+     ## does the admin want us to check URL format
+     if ($bookmarker->url_format_check > 0) {
+     ## Is the URL format valid
+        if (!$validate->is_url($url))  { 
+           $format_msg = "<br>URL invalid. Format must be <strong>http://</strong> or 
+                          <strong>ftp://</strong> followed by a valid hostname and 
+                          URL!<br><small> $validate->ERROR </small>";
+
+           ## does the admin want this formatted as a warning or an error?
+          if ($bookmarker->url_format_check == 2) {
+             $error_msg .= $format_msg;
+          } else {
+             $msg .= $format_msg;
+          }
+       }
+    }    
+
+/*    ## Does the URL respond
+    if ($bookmarker->url_responds_check) {
+//      if (!$validate->url_responds($url))  { 
+        $msg .= "<br><strong>**WARNING**</strong>: The URL you entered is not responding.
+               <br><small> $validate->ERROR </small>";
+//      }
+    } */
+
+    if ($public == "on") {
+       $public_db = "Y";
+    } else {
+       $public_db = "N";
+    }
+
+    ## if we found an error, then return false
+    if (!empty($error_msg)) {
+       return false;
+    } else {
+       return true;
+    }
+  }
+
+  function update_user_total_bookmarks($uname) {
+    global $user_total_bookmarks, $phpgw, $phpgw_info;
+
+    $db = $phpgw->db;
+
+    if ($uname == $phpgw_info["user"]["account_id"]) {
+       $user_total_bookmarks = 0;
+       $db = $phpgw->db;
+
+       $db->query("select count(id) as total_bookmarks from bookmarks where username = '"
+                . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
+       if ($db->Errno == 0) {
+          if ($db->next_record()) 
+             $user_total_bookmarks = $db->f("total_bookmarks");
+          } else {
+             return False;
+          }
+       }
+
+       // need to find out how many public bookmarks exist from
+       // this user so other users can correctly calculate pages
+       // on the list page.
+/*       $total_public = 0;
+       //$db = $phpgw->db;
+       $query = sprintf("select count(id) as total_public from bookmark where username = '%s' and public_f='Y'",$uname);
+       $db->query($query,__LINE__,__FILE__);
+       if ($db->Errno == 0) {
+          if ($db->next_record()) {
+             $total_public = $db->f("total_public");
+          } else {
+             return False;
+          }
+
+          $query = sprintf("update auth_user set total_public_bookmarks=%s where username = '%s'",$total_public, $uname);
+          $db->query($query,__LINE__,__FILE__);
+          if ($db->Errno != 0) {
+             return False;
+          }
+          return true;
+      } */
+  }
+
+      # get the total nbr of bookmarks for this user.
+      # stored as session variable so re-calculated at
+      # least once per session.
+  function getUserTotalBookmarks() {
+    global $user_total_bookmarks, $sess, $auth;
+
+    # get/set the $user_total_bookmarks as a session variable.
+/*    # we use this to keep the total nbr of bookmarks this
+    # user has so we can calculate the list pages correctly.
+    $sess->register("user_total_bookmarks");
+
+    if ($auth->is_nobody()) {
+      return 0;
+
+    } else if (isset($user_total_bookmarks) &&
+               $user_total_bookmarks > 0) {
+      return $user_total_bookmarks;
+
+    } else {
+      $this->update_user_total_bookmarks($auth->auth["uname"]);
+      return (isset($user_total_bookmarks)?$user_total_bookmarks:0);
+    } */
+  } 
+}
+
+
+
+# the following class sets various configuration variables
+# used throughout the application.
+class bookmarker_class  {
+  var $version        = "2.8.0";
+
+# directory where templates are located on this server
+  var $template_dir   = "./lib/templates";
+
+# image URL - string added to the begining of an image file
+# (for example, I set this to "./images/" which makes bookmarker
+# build image URLs like <img src="./images/mailto.png"...)
+  var $image_url_prefix = "./images/";
+
+# URL format checking. bookmarker can check the format of
+# URLs entered on the create/maintain pages. This option
+# lets you control this checking. Possible values:
+#  0 = no checking of URL format
+#  1 = URL format is checked, problems reported as warnings
+#  2 = URL format is checked, problems reported as errors
+  var $url_format_check = 2;
+
+# URL response checking. bookmarker can check that the URL
+# responds to a request and show a warning if it does not
+# respond.
+  var $url_responds_check = true;
+
+# how many URLs to show per page on the plain list page
+# NOTE: If your database doesn't support the "LIMIT offset, rows"
+# statement, set this to zero. In that case the LIMIT clause
+# won't be added to the SQL. You will get all bookmarks on a
+# single plain list page.
+  var $urls_per_page  = 10;
+
+# how many characters after the scheme(http://) and hostname
+# (www.mydomain.com) to match when checking for possible
+# duplicates on the create page.
+# Zero means to just match on scheme and hostname - this is
+# what I prefer.
+  var $possible_dup_chars = 0;
+
+# level of access required for user to use the mail-this-link
+# page. The default is to only allow registered users to send
+# email using bookmarker - anything else is asking for abuse!
+# if you allow guest, you may want to bcc yourself by using the
+# site header variable below.
+  var $mail_this_link_permission_required = "editor";
+
+# this var controls if the bookmarker links (start, create, search...)
+# are displayed in the tree view. NOTE: these links are only displayed
+# if 'group by category/subcategory' is also selected.
+  var $show_bk_in_tree = 0; # set to 0 for 'off' 1 for 'on'
+
+# for how many seconds is the "permanent" login cookie good
+# for. Defaulted here to 100 days.
+  var $perm_cookie_lifetime=8640000;
+
+# class constructor for bookmarker_class
+# setup a few more variables that are based on variables.
+  function bookmarker_class () {
+    global $SERVER_NAME;
+    global $SERVER_ADMIN;
+    global $REMOTE_ADDR;
+    global $PHP_SELF;
+
+    $where_am_i = sprintf("http://%s%s/", $SERVER_NAME, dirname($PHP_SELF));
+
+# used for quik-mark bookmark
+    $this->create_url   = $where_am_i . "create.php";
+
+# used for mail-this-link bookmark
+    $this->maillink_url = $where_am_i . "maillink.php";
+
+# the following wording is automatically added to all outgoing
+# mail-this-link email messages
+    $this->site_footer  = sprintf("--\nThis message sent from the bookmarker bookmark manager\nat %s\nPlease contact the server administrator at\n%s to report abuse of this service.", $where_am_i, $SERVER_ADMIN);
+
+# this var controls the headers that are added to the mail-this-link
+# email message. You may choose to bcc: yourself, record the senders IP...
+# the headers should be separated by a newline ("\n")
+    $this->site_headers = sprintf("X-Sender: bookmarker at %s\nX-Sender-IP: $REMOTE_ADDR", $SERVER_NAME);
+  }
+     
+}
+
+# instantiate the bookmarker class so we can access
+# the variables.
+$bookmarker = new bookmarker_class ();
+
+# if the user's browser is a 5.0 or later version, then
+# use PNG images. otherwise use GIF images.
+$bookmarker->image_ext="gif";
+
+if (ereg( "MSIE ([0-9]+)",$HTTP_USER_AGENT,$version)) {
+  $ver=(int)$version[1];
+  if ($ver>=5) $bookmarker->image_ext="png";
+
+} elseif (ereg( "Opera/([0-9]+)",$HTTP_USER_AGENT,$version)) {
+    # $opera=true;
+
+} elseif (ereg( "Mozilla/([0-9]+)",$HTTP_USER_AGENT,$version)) {
+  $ver=(int)$version[1];
+  if ($ver>=5) $bookmarker->image_ext="png";
+}
+
+# every bookmarker page uses templates to generate HTML.
+//$tpl = new bktemplate;
+//$tpl->set_root(TEMPLATEDIR);
+#$phpgw->template->set_unknowns("remove");
+
+# create an instance of the data validation class
+$validate = new Validator ();
+
 
 ?>
