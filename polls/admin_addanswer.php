@@ -1,9 +1,21 @@
 <?php
+  /**************************************************************************\
+  * phpGroupWare - Polls                                                     *
+  * http://www.phpgroupware.org                                              *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
+
+  /* $Id$ */
+
   $phpgw_info["flags"] = array("currentapp" => "polls", "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
   $phpgw->template->set_file(array("form"   => "admin_form.tpl",
-                                   "row"    => "admin_form_row.tpl"
+                                   "row"    => "admin_form_row_2.tpl"
                                   ));
   if ($submit) {
      $phpgw->db->query("insert into phpgw_polls_data (poll_id,option_text) values ('$poll_id','" . addslashes($answer) . "')",__LINE__,__FILE__);
