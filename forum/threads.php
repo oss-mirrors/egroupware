@@ -12,8 +12,7 @@
 
 
 
-	$phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class"	=> 
-True);
+	$phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class"	=> True);
 	include("../header.inc.php");
 
 
@@ -29,6 +28,7 @@ True);
 
 	$phpgw->template->set_var(array(
 	BGROUND			=> $phpgw_info["theme"]["th_bg"],
+	IMG_URL_PREFIX		=> $phpgw_info["server"]["app_images"]	 . "/",
 	LANG_TOPIC		=> lang("Topic"),
 	LANG_AUTHOR		=> lang("Author"),
 	LANG_REPLIES		=> lang("Replies"),
@@ -39,8 +39,7 @@ True);
 	LANG_FORUM		=> $forum,
 	FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
 	MAIN_LINK		=> $phpgw->link("/forum/index.php"),
-	POST_LINK		=> 
-$phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
+	POST_LINK		=> $phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
 	));
 
 
@@ -48,8 +47,7 @@ $phpgw->link("/forum/post.php","$catfor&type=new&col=$col"),
 	{
 		$phpgw->template->set_file('COLLAPSE','collapse.threads.tpl');
 		$phpgw->template->set_block('COLLAPSE','CollapseThreads','CollapseT');
-		$phpgw->db->query("select * from f_threads where cat_id=$cat and for_id=$for 
-and parent	= -1  order by postdate	DESC");
+		$phpgw->db->query("select * from f_threads where cat_id=$cat and for_id=$for and parent	= -1  order by postdate	DESC");
 
 
 		//for viewing the collapse threads
@@ -69,8 +67,7 @@ and parent	= -1  order by postdate	DESC");
 			TOPIC => $subject,
 			AUTHOR => $phpgw->db->f("author"),
 			REPLIES	=> $phpgw->db->f("n_replies") ,
-			READ_LINK => 
-$phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")),
+			READ_LINK => $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id")),
 			LATESTREPLY => $phpgw->db->f("postdate")
 			));
 
@@ -79,7 +76,7 @@ $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id"
 		}		//end	while
 		$phpgw->template->set_var(array(
 		THREADS_LINK =>	$phpgw->link("/forum/threads.php","$catfor&col=1"),
-		LANG_THREAD => lang("View Threads")
+		LANG_THREADS => lang("View Threads")
 		));
 		$phpgw->template->parse("Out",'COLLAPSE');
 		$phpgw->template->p("Out");
@@ -91,15 +88,19 @@ $phpgw->link("/forum/read.php","cat=$cat&for=$for&msg=$msg" . $phpgw->db->f("id"
 	{
 		$phpgw->template->set_file('NORMAL','normal.threads.tpl');
 		$phpgw->template->set_block('NORMAL','NormalThreads','NormalT');
-		$phpgw->db->query("select * from f_threads where cat_id	= $cat and for_id = 
-$for order by thread DESC, postdate, depth");
+		$phpgw->db->query("select * from f_threads where cat_id	= $cat and for_id = $for order by thread DESC, postdate, depth");
 
 		while($phpgw->db->next_record())
 		{
 			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-
-			$move =	"";
+			$move = "";
+			//$move =	'<img src="'.$phpgw_info["server"]["app_images"] . '/trans.gif"';
 			for($tmp = 1;$tmp <= $phpgw->db->f("depth"); $tmp++)
+			/*	if($tmp==1)
+				{
+				$move .= '<img src="'.$phpgw_info["server"]["app_images"] . '/n.gif"';
+				}
+			*/
 			$move	.= "&nbsp;&nbsp;";
 			$subject = $phpgw->db->f("subject");
 			if (! $subject)
@@ -115,9 +116,7 @@ $for order by thread DESC, postdate, depth");
 			AUTHOR		=> $phpgw->db->f("author"),
 			REPLIES		=> $phpgw->db->f("n_replies") ,
 			LATESTREPLY	=> $phpgw->db->f("postdate"),
-			READ_LINK	=> 
-$phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . 
-$phpgw->db->f("id")),
+			READ_LINK	=> $phpgw->link("/forum/read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")),
 			DEPTH		=> $move
 			));
 
@@ -128,7 +127,7 @@ $phpgw->db->f("id")),
 
 		$phpgw->template->set_var(array(
 		THREADS_LINK	=> $phpgw->link("/forum/threads.php","$catfor&col=0"),
-		LANG_THREAD	=> lang("Collapse Threads")
+		LANG_THREADS	=> lang("Collapse Threads")
 		));
 
 		$phpgw->template->parse('Out','NORMAL');
@@ -139,4 +138,3 @@ $phpgw->db->f("id")),
 
 	$phpgw->common->phpgw_footer();
 ?>
-
