@@ -1503,8 +1503,12 @@
 
 			switch($type)
 			{
-				case 'delete':	$acl = PHPGW_ACL_DELETE;
-				default:		$acl = PHPGW_ACL_EDIT;
+				case 'delete':	
+					$acl = PHPGW_ACL_DELETE;
+					break;
+				default:
+					$acl = PHPGW_ACL_EDIT;
+					break;
 			}
 
 			if($this->check_perms($this->grants[$pro['coordinator']],$acl) || $pro['coordinator'] == $this->account)
@@ -2577,7 +2581,8 @@
 
 				$ptime_parent	= $this->soprojects->return_value('ptime',$values['parent']);
 				$sum_ptime	= $this->soprojects->get_planned_value(array('action' => 'tparent','parent_id' => $values['parent']
-																	,'project_id' => $values['project_id']));
+							,'project_id' => $values['project_id']));
+
 				$pminutes = intval($values['ptime'])*60;
 
 				if (($pminutes+$sum_ptime) > $ptime_parent)

@@ -610,6 +610,7 @@
 					$GLOBALS['phpgw']->template->set_var('pro_column','');
 					foreach($prefs['columns'] as $col)
 					{
+						$edit = 'yes';
 						switch($col)
 						{
 							case 'priority':
@@ -649,8 +650,17 @@
 					}
 					//$GLOBALS['phpgw']->template->set_var('pro_column',$pdata);
 
-					if (!$this->boprojects->edit_perms(array('action' => $action,'coordinator' => $p['coordinator'],
-														'main' => $p['main'], 'parent' => $p['parent'])))
+					if (!$this->boprojects->edit_perms
+						(
+							array
+							(
+								'action' => $action,
+								'coordinator' => $p['coordinator'],
+								'main' => $p['main'], 
+								'parent' => $p['parent']
+							)
+						)
+					)
 					{
 						$edit = 'no';
 					}
