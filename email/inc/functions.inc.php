@@ -26,12 +26,16 @@
 		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
 	}
 
+// ----  Load "Preferences" from db (currently "phpgw_preferences")    -----
+	// NOTE: Preferences *MAY* have the "custom email password" which is different than other passwords
+	// because it is stored in the "Preferences" table, and may require special treatment
 	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
 
+// ----  Create the base email Class    -----
 	$phpgw->msg = CreateObject("email.msg");
 	$phpgw->msg->msg_common_();
 
-	/*Set some defults*/
+// ----  Ensure certasin Defaults are Set, and some bug workarounds    -----
 	if ($phpgw_info["user"]["preferences"]["email"]["imap_server_type"] == "UWash" &&
 	$phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" && @!$folder)
 	{
@@ -45,29 +49,36 @@
 		$folder = $phpgw_info["user"]["preferences"]["email"]["folder"];
 	}
 
+// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
 	if(!$folder) $folder="INBOX";
-  
-	//echo "<b>TEST:</b> ".$phpgw_info["user"]["preferences"]["email"]["folder"];
 
+// ----  What Process Called Us (many processes use this functions file)  -----
 	// Its better then them using a ton of PHP errors.
 	// Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
 	// From the msg_imap class.  I tried to clean it up here so I could see what was happening.
+	// -- (obviously, PHP_SELF is the built-in php variable = "filename on the currently executing script") --
 	if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me.
-	$attop = ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
-	$inprefs = ereg("preferences",$PHP_SELF);
+	// were we called from the "main screen" a.k.a. "front page"
+	$in_mainscreen = eregi($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
+	// were we called from the preferences page
+	$in_preferences = eregi("preferences",$PHP_SELF);
 
-	if (!$inprefs)
+// ----  Connect To Mail Server ( only if NOT called from the Preferences Page)  -----
+	if (!$in_preferences)
 	{
 		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
 	}
 
-	if (!$mailbox && !($attop || $inprefs))
+// ----  Error Msg And Exit If Mailbox Connection Not Established  -----
+	if (!$mailbox && !($in_mainscreen || $in_preferences))
 	{
-		echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
-		. "</b></center>";
+		echo "<p><center><b>"
+		  . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
+		  . "</b></center></p>";
 		$phpgw->common->phpgw_exit(True);
 	}
 
+// ----  Various Functions Used To Support Email   -----
   function decode_header_string($string)
   {
 	global $phpgw;
@@ -117,7 +128,7 @@
 	else
 	return $string;
   }
-  
+
 
 /* * * * * * * * * * *
   *  ensure_no_brackets
@@ -682,170 +693,6 @@
 	return $part_nice;
   }
 
-  /*
-  function mime_number_dumb($part_nice, $flat_idx)
-  {
-	global $phpgw, $phpgw_info, $struct_not_set;
-	
-	$mime_return_struct = Array();
-	
-	// ---- establish a $last_mime_num
-	if ((isset($part_nice[$flat_idx-1]['ex_mime_number_dumb']))
-	&& ($part_nice[$flat_idx-1]['ex_mime_number_dumb'] != $struct_not_set))
-	{
-		$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
-		//echo 'mime_number_dumb a';
-	}
-	else
-	{
-		$last_mime_num = $struct_not_set;
-		//echo 'mime_number_dumb b';
-	}
-
-	// ---- compute the mime_number_dumb
-	
-	// error detection
-	if (($part_nice[$flat_idx]['ex_level_debth'] > 2)
-	&& ($last_mime_num == $struct_not_set))
-	{
-		// last_mime_num should be set for any debth above level 1
-		$new_mime_dumb = 'last_mime_num error 1 in mime_number_dumb';
-	}
-	// is this the first time here?
-	//elseif (($part_nice[$flat_idx]['ex_level_debth'] == 1)
-	//&& ($last_mime_num == $struct_not_set))
-	elseif ($part_nice[$flat_idx]['ex_level_debth'] == 1)
-	{
-		$new_mime_dumb = (string)$part_nice[$flat_idx]['ex_level_iteration'];
-	}
-	// another error detection
-	elseif ((strlen($last_mime_num) > 2)
-	&& (!strstr($last_mime_num, '.')))
-	{
-		$new_mime_dumb = 'last_mime_num error 2 in mime_number_dumb';
-	}
-	else
-	{
-		$debth_idx = $part_nice[$flat_idx]['ex_level_debth'] - 1;
-		// explode string into an array
-		$last_mime_num_array = explode('.', $last_mime_num);
-		// set the new value
-		$last_mime_num_array[$debth_idx] = (string)$part_nice[$flat_idx]['ex_level_iteration'];
-		// reassemble the mime number
-		$new_mime_dumb = implode('.', $last_mime_num_array);
-		
-		// how long *should* this string be
-		$target_len = ($part_nice[$flat_idx]['ex_level_debth'] + $part_nice[$flat_idx]['ex_level_debth']) - 1;
-		// if longer than expected, we dropped back a level, trim the string accordingly
-		if (strlen($new_mime_dumb) > $target_len)
-		{
-			$target_base_zero = $target_len - 1;
-			$new_mime_dumb = substr($new_mime_dumb, 0, $target_base_zero);
-		}
-	}
-	return $new_mime_dumb;
-  }
-
-
-  // CURRENTLY NOT USED
-  function mime_number_dumb($part_nice, $flat_idx)
-  {
-	global $phpgw, $phpgw_info, $struct_not_set;
-
-	//$debug = False;
-	//if (($flat_idx >= 5) && ($flat_idx <= 11))
-	//{
-	//	$debug = True;
-	//}
-	
-	if ($debug) { echo 'ENTER mime_number_dumb<br>'; }
-	if ($debug) { echo 'flat_idx='.$flat_idx.'<br>'; }
-	if ($debug) { echo 'part_nice[flat_idx][ex_level_debth]='.$part_nice[$flat_idx]['ex_level_debth'].'<br>'; }
-	
-	$mime_return_struct = Array();
-	
-	// ---- establish a last_mime_num
-	if ((isset($part_nice[$flat_idx-1]['ex_mime_number_dumb']))
-	&& ($part_nice[$flat_idx-1]['ex_mime_number_dumb'] != $struct_not_set))
-	{
-		//$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
-		$last_mime_num = $part_nice[$flat_idx-1]['ex_mime_number_dumb'];
-		if ($debug) { echo 'method A ex_mime_number_dumb='.$last_mime_num.'<br>'; }
-		//echo 'mime_number_dumb a';
-	}
-	else
-	{
-		$last_mime_num = $struct_not_set;
-		//echo 'mime_number_dumb b';
-	}
-
-	// ---- compute the mime_number_dumb
-	
-	// error detection
-	if (($part_nice[$flat_idx]['ex_level_debth'] > 2)
-	&& ($last_mime_num == $struct_not_set))
-	{
-		// last_mime_num should be set for any debth above level 1
-		$new_mime_dumb = 'last_mime_num error 1 in mime_number_dumb';
-	}
-	// is this the first time here?
-	//elseif (($part_nice[$flat_idx]['ex_level_debth'] == 1)
-	//&& ($last_mime_num == $struct_not_set))
-	elseif ($part_nice[$flat_idx]['ex_level_debth'] == 1)
-	{
-		$new_mime_dumb = (string)$part_nice[$flat_idx]['ex_level_iteration'];
-	}
-	// another error detection
-	elseif ((strlen($last_mime_num) > 2)
-	&& (!strstr($last_mime_num, '.')))
-	{
-		$new_mime_dumb = 'last_mime_num error 2 in mime_number_dumb';
-	}
-	else
-	{
-		$debth_idx = $part_nice[$flat_idx]['ex_level_debth'] - 1;
-		//$debth_idx = $part_nice[$flat_idx]['ex_level_debth'];
-		if ($debug) { echo 'debth_idx='.$debth_idx.'<br>'; }
-		// explode string into an array
-		$last_mime_num_array = explode('.', $last_mime_num);
-
-		// cast all values in last_mime_num_array as integers
-		for ($z = 0; $z < count($last_mime_num_array); $z++)
-		{
-			$last_mime_num_array[$z] = (int)$last_mime_num_array[$z];
-		}
-
-		if ($debug) { echo 'exploded last_mime_num ('.$last_mime_num.') into last_mime_num_array='.serialize($last_mime_num_array).'<br>'; }
-		if ($debug) { echo 'last_mime_num_array[debth_idx('.$debth_idx.')]='.$last_mime_num_array[$debth_idx].' -this will be replaced below<br>'; }
-		if ($debug) { echo 'part_nice[flat_idx('.$flat_idx.')][ex_level_iteration]='.$part_nice[$flat_idx]['ex_level_iteration'].'<br>'; }
-		// set the new value
-		$last_mime_num_array[$debth_idx] = (int)$part_nice[$flat_idx]['ex_level_iteration'];
-		if ($debug) { echo 'last_mime_num_array[debth_idx('.$debth_idx.')]='.$last_mime_num_array[$debth_idx].' -after being replaced<br>'; }
-		if ($debug) { echo 'new last_mime_num_array='.serialize($last_mime_num_array).'<br>'; }
-		// reassemble the mime number
-		$new_mime_dumb = implode('.', $last_mime_num_array);
-		if ($debug) { echo 'implode last_mime_num_array into new_mime_dumb='.$new_mime_dumb.'<br>'; }
-		
-		// how long *should* this string be
-		//$target_len = ($part_nice[$flat_idx]['ex_level_debth'] + $part_nice[$flat_idx]['ex_level_debth']) - 1;
-		$target_len = (int)$part_nice[$flat_idx]['ex_level_debth'];
-		$target_len = ($target_len * 2) + 1;
-		if ($debug) { echo 'target_len='.$target_len.' and strlen(new_mime_dumb)='.strlen($new_mime_dumb).'<br>'; }
-
-		
-		// if longer than expected, we dropped back a level, trim the string accordingly
-		if (strlen($new_mime_dumb) > $target_len)
-		{
-			//$target_base_zero = $target_len - 1;
-			//$new_mime_dumb = substr($new_mime_dumb, 0, $target_base_zero);
-			$new_mime_dumb = substr($new_mime_dumb, 0, $target_len);
-		}
-	}
-	if ($debug) { echo 'LEAVING mime_number_dumb, new_mime_dumb='.$new_mime_dumb.'<br>'; }
-	return $new_mime_dumb;
-  }
-  */
-
 
   function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
   {
@@ -996,86 +843,6 @@
   }
 
 
-  function mime_go_deeper($prev_mime_num)
-  {
-	return $prev_mime_num .'.0';
-  }
-
-  function mime_advance($prev_mime_num)
-  {
-	$mime_int = (int)substr($prev_mime_num, -1);
-	$mime_int++;
-	$mime_str_len = strlen($prev_mime_num);
-	$base_num =  substr($prev_mime_num, 0, $mime_str_len - 2);
-	$advanced = $base_num .'.'.(string)$mime_int;
-	return $advanced;
-  }
-
-  function mime_back_one_level($prev_mime_num)
-  {
-	$mime_str_len = strlen($prev_mime_num);
-	return substr($prev_mime_num, 0, ($mime_str_len - 2));
-  }
-
-  /*
-  function mime_expected_level_parts($last_m_part_num_mime, $part_nice, $i)
-  {
-	$parent_num_mime = substr($last_m_part_num_mime, 0, ($last_m_part_num_mime - 2));
-	for ($x = $i-1; $x > (0-1); $x--)
-	{
-		if ($part_nice[$x]['m_part_num_mime'] == $parent_num_mime)
-		{
-			$num_kids = $part_nice[$x]['ex_childern_this_level'];
-			break;
-		}
-	}
-	return $num_kids;
-  }
-
-  function mime_is_last_kid($part_nice, $i)
-  {
-	// determine mime_expected_level_parts
-	$this_part_num = $part_nice[$i]['m_part_num_mime'];
-	$this_part_num_len = strlen($this_part_num);
-	$retain_len = $this_part_num_len - 2;
-	$parent_num_mime = substr($this_part_num, 0, $retain_len);
-	// get rid of trailing "." if any
-	//if (substr($parent_num_mime, -1) == '.')
-	
-	//echo'<br>-xxx- entering mime_is_last_kid<br>';
-	//echo'<br>this_part_num='.$this_part_num .'~parent_num_mime='.$parent_num_mime .'<br>';
-	
-	$discovered = False;
-	for ($x = $i-1; $x > (-1); $x--)
-	{
-		//echo '(string)part_nice['.$x.'][m_part_num_mime]='.(string)$part_nice[$x]['m_part_num_mime'].'/(string)parent_num_mime='.(string)$parent_num_mime.'<br>';
-		if ((string)$part_nice[$x]['m_part_num_mime'] == (string)$parent_num_mime)
-		{
-			$childern_this_level = $part_nice[$x]['m_level_total_parts'];
-			//echo '*****childern_this_level='.$childern_this_level .'** part_nice['.$x.'][m_level_total_parts]='.$part_nice[$x]['m_level_total_parts'];
-			$discovered = True;
-			break;
-		}
-		if ($discovered == True)
-		{
-			break;
-		}
-	}
-	// last kid test
-	$mime_int = (int)substr($part_nice[$i]['m_part_num_mime'], -1);
-	//echo '<br>'.$part_nice[$i]['m_part_num_mime'] .'~int='.$mime_int.' - parent/m_part_num_mime=['.$parent_num_mime.'] '. ' - level kids=['.$childern_this_level.'] ';
-	//echo'<br>-xxx- leaving mime_is_last_kid<br>';
-	if ($mime_int == $childern_this_level)
-	{
-		return True;
-	}
-	else
-	{
-		return False;
-	}
-  }
-  */
-
   function mime_is_packagelist($part_nice)
   {
 	if ((stristr($part_nice['subtype'], 'MIXED')) 
@@ -1128,6 +895,7 @@
 	$href_part_name = decode_header_string($part_name);
 	// ex_part_clickable
 	$ex_part_clickable = '<a href="'.$ex_part_href.'">'.$href_part_name.'</a>';
+	// put these two vars in an array, serialize it, and pass it back to the calling process
 	$click_info[0] = $ex_part_href;
 	$click_info[1] = $ex_part_clickable;
 	return serialize($click_info);
@@ -1299,54 +1067,55 @@
   *  href_maketag
   *  will generate a typical A HREF html item
   * * * * * * *  * * * */
-	function href_maketag($href_link='',$href_text='default text')
-	{
-		return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
-	}
+  function href_maketag($href_link='',$href_text='default text')
+  {
+	return '<a href="' .$href_link .'">' .$href_text .'</a>' ."\n";
+  }
 
-	function img_maketag($location='',$alt='',$height='',$width='',$border='')
+
+  function img_maketag($location='',$alt='',$height='',$width='',$border='')
+  {
+	$alt_default_txt = 'image';
+	$alt_unknown_txt = 'unknown';
+	if ($location == '')
 	{
-		$alt_default_txt = 'image';
-		$alt_unknown_txt = 'unknown';
-		if ($location == '')
-		{
-			return '<img src="" alt="['.$alt_unknown_txt.']">';
-		}
-		if ($alt != '')
-		{
-			$alt_tag = ' alt="['.$alt.']"';
-		}
-		else
-		{
-			$alt_tag = ' alt="['.$alt_default_txt.']"';
-		}
-		if ($height != '')
-		{
-			$height_tag = ' height="' .$height .'"';
-		}
-		else
-		{
-			$height_tag = '';
-		}
-		if ($width != '')
-		{
-			$width_tag = ' width="' .$width .'"';
-		}
-		else
-		{
-			$width_tag = '';
-		}
-		if ($border != '')
-		{
-			$border_tag = ' border="' .$border .'"';
-		}
-		else
-		{
-			$border_tag = '';
-		}
-		$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
-		return $image_html;
+		return '<img src="" alt="['.$alt_unknown_txt.']">';
 	}
+	if ($alt != '')
+	{
+		$alt_tag = ' alt="['.$alt.']"';
+	}
+	else
+	{
+		$alt_tag = ' alt="['.$alt_default_txt.']"';
+	}
+	if ($height != '')
+	{
+		$height_tag = ' height="' .$height .'"';
+	}
+	else
+	{
+		$height_tag = '';
+	}
+	if ($width != '')
+	{
+		$width_tag = ' width="' .$width .'"';
+	}
+	else
+	{
+		$width_tag = '';
+	}
+	if ($border != '')
+	{
+		$border_tag = ' border="' .$border .'"';
+	}
+	else
+	{
+		$border_tag = '';
+	}
+	$image_html = '<img src="'.$location.'"' .$height_tag .$width_tag .$border_tag .$alt_tag .'>';
+	return $image_html;
+  }
 
 /* * * * * * * * * * *
   *  isValidUrl
