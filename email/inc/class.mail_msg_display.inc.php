@@ -389,6 +389,7 @@ class mail_msg extends mail_msg_wrappers
 				// using SORTDATE cause some messages to be displayed in the wrong cronologicall order
 		SORTFROM:  2
 		SORTSUBJECT: 3
+		SORTTO: 4
 		SORTSIZE:  6
 
 		// imap_sort(STREAM,  CRITERIA,  REVERSE,  OPTIONS)
@@ -2232,6 +2233,21 @@ class mail_msg extends mail_msg_wrappers
 			// Part 1 of 2 of the From string (see above)
 			// NOTE: wasn't this decode_header_string proc already done above?
 			$msg_list_display[$x]['from_name'] = $this->decode_header_string($personal);
+
+			if ($this->get_isset_pref ('use_sent_folder')
+			&& ($msg_list_display[$x]['folder'] == $this->folder_lookup ('', $this->get_pref_value ('sent_folder_name'))))
+			{
+				$to = $hdr_envelope->to[0];
+				if ($to->personal)
+				{
+					$topersonal = $this->decode_header_string ($to->personal);
+				}
+				else
+				{
+					$topersonal = $to->mailbox.'@'.$to->host;
+				}
+				$msg_list_display[$x]['from_name'] = $topersonal;
+			}
 
 			// ----  From Link  ----
 			// this is a URL that can be used to turn the "From String" into a clickable link

@@ -141,6 +141,7 @@
 				'lang_email_date'	=> lang('Email Date'),
 				'lang_arrival_date'	=> lang('Arrival Date'),
 				'lang_from'			=> lang('From'),
+				'lang_to'			=> lang('To'),
 				'lang_subject'		=> lang('Subject'),
 				'lang_size'			=> lang('Size'),
 				// folder stats Information bar
@@ -480,6 +481,7 @@
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
 				.'<option value="2"' .$sort_selected[2] .'>'.$this->xi['lang_from'].'</option>' ."\r\n"
 				.'<option value="3"' .$sort_selected[3] .'>'.$this->xi['lang_subject'].'</option>' ."\r\n"
+				.'<option value="4"' .$sort_selected[4] .'>'.$this->xi['lang_to'].'</option>' ."\r\n"
 				.'<option value="6"' .$sort_selected[6] .'>'.$this->xi['lang_size'].'</option>' ."\r\n";
 			
 			$this->xi['sortbox_action'] = $GLOBALS['phpgw']->link(
@@ -542,6 +544,7 @@
 				case 1 : $this->xi['lang_date'] = $flag_sort_pre .$this->xi['lang_date'] .$flag_sort_post; break;
 				case 2 : $this->xi['lang_from'] = $flag_sort_pre .$this->xi['lang_from'] .$flag_sort_post; break;
 				case 3 : $this->xi['lang_subject'] = $flag_sort_pre .$this->xi['lang_subject'] .$flag_sort_post; break;
+				case 4 : $this->xi['lang_to'] = $flag_sort_pre .$this->xi['lang_to'] .$flag_sort_post; break;
 				case 6 : $this->xi['lang_size'] = '*'.$this->xi['lang_size'].'*';
 					 $this->xi['lang_lines'] = $this->xi['lang_lines'] .$flag_sort_post; break;
 			}
@@ -560,7 +563,15 @@
 			&& ($GLOBALS['phpgw']->msg->get_arg_value('newsmode') == True))
 			{
 				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_subject'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				if ($GLOBALS['phpgw']->msg->get_isset_pref ('use_sent_folder')
+				&& ($GLOBALS['phpgw']->msg->prep_folder_out() == $GLOBALS['phpgw']->msg->folder_lookup ('', $GLOBALS['phpgw']->msg->get_pref_value ('sent_folder_name'))))
+				{
+					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'4',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_to'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				}
+				else
+				{
+					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
+				}
 				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_date'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 				$this->xi['hdr_size'] = $this->nextmatchs->show_sort_order($GLOBALS['phpgw']->msg->get_arg_value('sort'),'6',$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_lines'],'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out(''));
 			}
@@ -569,9 +580,19 @@
 				$this->xi['hdr_subject'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'3',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_subject'],
 						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
 						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
-				$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],
+				if ($GLOBALS['phpgw']->msg->get_isset_pref ('use_sent_folder')
+				&& ($GLOBALS['phpgw']->msg->prep_folder_out() == $GLOBALS['phpgw']->msg->folder_lookup ('', $GLOBALS['phpgw']->msg->get_pref_value ('sent_folder_name'))))
+				{
+					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'4',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_to'],
 						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
 						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+				}
+				else
+				{
+					$this->xi['hdr_from'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'2',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_from'],
+						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
+				}
 				$this->xi['hdr_date'] = $this->nextmatchs->show_sort_order_imap($GLOBALS['phpgw']->msg->get_arg_value('sort'),'1',$this->xi['default_order'],$GLOBALS['phpgw']->msg->get_arg_value('order'),'/index.php'.'menuaction=email.uiindex.index',$this->xi['lang_date'],
 						'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
 						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum());
@@ -825,6 +846,7 @@
 				.'<option value="1"' .$sort_selected[1] .'>'.$this->xi['lang_arrival_date'].'</option>' ."\r\n"
 				.'<option value="2"' .$sort_selected[2] .'>'.$this->xi['lang_from'].'</option>' ."\r\n"
 				.'<option value="3"' .$sort_selected[3] .'>'.$this->xi['lang_subject'].'</option>' ."\r\n"
+				.'<option value="4"' .$sort_selected[4] .'>'.$this->xi['lang_to'].'</option>' ."\r\n"
 				.'<option value="6"' .$sort_selected[6] .'>'.$this->xi['lang_size'].'</option>' ."\r\n";
 			
 			$this->xi['sortbox_action'] = $this->index_base_link.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('');
