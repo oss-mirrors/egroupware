@@ -1,0 +1,32 @@
+address 1	contactcenter	de	Adresse 1
+address 2	contactcenter	de	Adresse 2
+address other	contactcenter	de	andere Adresse
+addresses	contactcenter	de	Adressen
+alias	contactcenter	de	Alias
+available	contactcenter	de	Verfügbar
+birthdate	contactcenter	de	Geburtstag
+catalogues	contactcenter	de	Katalog
+choose city	contactcenter	de	Stadt asuwählen
+choose sex ...	contactcenter	de	Geschlecht wählen
+edit contact	contactcenter	de	Kontakt bearbeiten
+entry added with success!	contactcenter	de	Eintrag erfolgreich hinzugefügt
+family names	contactcenter	de	Familienname
+female	contactcenter	de	Weiblich
+full name	contactcenter	de	Kompletter Name
+given names	contactcenter	de	Vorname
+go	common	de	Gehe
+gpg finger print	contactcenter	de	GPG Fingerprint
+new	contactcenter	de	Neu
+new city	contactcenter	de	Neue Stadt
+no cards	contactcenter	de	Keine Karten vorhanden
+no city	contactcenter	de	Kein Stadt
+people	contactcenter	de	Personen
+phone	contactcenter	de	Telefon
+remove contact	contactcenter	de	Kontak löschen
+search for...	common	de	Suchen nach
+select photo	contactcenter	de	Photo auswählen
+sex	contactcenter	de	Geschlecht
+type new city here	contactcenter	de	Geben Sie eine neue Stadt hier ein
+type new state here	contactcenter	de	Geben Sie einen neuen Staat hier ein
+type of address	contactcenter	de	Art der Adresse
+updated successfully!	contactcenter	de	Erfolgreich upgedated
