@@ -12,7 +12,7 @@
 
     /* $Id$ */
 {
-    $phpgw_info["flags"]["currentapp"] = "comic";
+    $GLOBALS['phpgw_info']['flags']['currentapp'] = "comic";
 
     include("../header.inc.php");
 
@@ -31,12 +31,12 @@
     $done_label        = lang("Done");
     $comic_size        = 8;
     
-    $actionurl         = $phpgw->link('/comic/preferences.php');
-    $doneurl           = $phpgw->link('/preferences/index.php');
+    $actionurl         = $GLOBALS['phpgw']->link('/comic/preferences.php');
+    $doneurl           = $GLOBALS['phpgw']->link('/preferences/index.php');
 	$returnmain        = intval(get_var('returnmain',array('GET','POST')));
 	if ( $returnmain == 1 ) 
 	{
-		$doneurl       = $phpgw->link('/comic/index.php');
+		$doneurl       = $GLOBALS['phpgw']->link('/comic/index.php');
 	}
 
     $message           = "";
@@ -62,8 +62,8 @@
 		$comic_template = intval($_POST['comic_template']);
 		$comic_id = intval($_POST['comic_id']);
 
-        $phpgw->db->lock("phpgw_comic");
-        $phpgw->db->query("update phpgw_comic set "
+        $GLOBALS['phpgw']->db->lock("phpgw_comic");
+        $GLOBALS['phpgw']->db->query("update phpgw_comic set "
                           ."comic_list='".$data_ids."', "
                           ."comic_scale='".$scale_enabled."', "
                           ."comic_perpage='".$perpage."', "
@@ -72,32 +72,32 @@
                           ."comic_censorlvl='".$censor_level."', "
                           ."comic_template='".$comic_template."' "
                           ."WHERE comic_id='".$comic_id."'");
-        $phpgw->db->unlock();
+        $GLOBALS['phpgw']->db->unlock();
     }
 
-    $phpgw->db->query("select * from phpgw_comic "
+    $GLOBALS['phpgw']->db->query("select * from phpgw_comic "
                       ."WHERE comic_owner='"
-                      .$phpgw_info["user"]["account_id"]."'");
+                      .$GLOBALS['phpgw_info']["user"]["account_id"]."'");
 
-    if ($phpgw->db->num_rows() == 0)
+    if ($GLOBALS['phpgw']->db->num_rows() == 0)
     {
-        $phpgw->db->query("insert into phpgw_comic (comic_owner) values ".
-                          "('".$phpgw_info["user"]["account_id"]."')");
-        $phpgw->db->query("select * from phpgw_comic "
+        $GLOBALS['phpgw']->db->query("insert into phpgw_comic (comic_owner) values ".
+                          "('".$GLOBALS['phpgw_info']["user"]["account_id"]."')");
+        $GLOBALS['phpgw']->db->query("select * from phpgw_comic "
                           ."WHERE comic_owner='"
-                          .$phpgw_info["user"]["account_id"]."'");
+                          .$GLOBALS['phpgw_info']["user"]["account_id"]."'");
     }
 
-    $phpgw->db->next_record();
+    $GLOBALS['phpgw']->db->next_record();
 
-    $comic_id        = $phpgw->db->f("comic_id");
-    $data_ids        = explode(":", $phpgw->db->f("comic_list"));
-    $scale_enabled   = $phpgw->db->f("comic_scale");
-    $perpage         = $phpgw->db->f("comic_perpage");
-    $frontpage       = $phpgw->db->f("comic_frontpage");
-    $fpscale_enabled = $phpgw->db->f("comic_fpscale");
-    $censor_level    = $phpgw->db->f("comic_censorlvl");
-    $comic_template  = $phpgw->db->f("comic_template");
+    $comic_id        = $GLOBALS['phpgw']->db->f("comic_id");
+    $data_ids        = explode(":", $GLOBALS['phpgw']->db->f("comic_list"));
+    $scale_enabled   = $GLOBALS['phpgw']->db->f("comic_scale");
+    $perpage         = $GLOBALS['phpgw']->db->f("comic_perpage");
+    $frontpage       = $GLOBALS['phpgw']->db->f("comic_frontpage");
+    $fpscale_enabled = $GLOBALS['phpgw']->db->f("comic_fpscale");
+    $censor_level    = $GLOBALS['phpgw']->db->f("comic_censorlvl");
+    $comic_template  = $GLOBALS['phpgw']->db->f("comic_template");
     
     $indexlimit = count($data_ids);
 
@@ -113,7 +113,7 @@
 
     template_options($comic_template, &$t_options_c, &$t_images_c);
     
-    $prefs_tpl = $phpgw->template;
+    $prefs_tpl = $GLOBALS['phpgw']->template;
     $prefs_tpl->set_unknowns("remove");
     $prefs_tpl->set_file(
         array(message   => "message.common.tpl",
@@ -177,30 +177,30 @@
         $prefs_tpl->parse(fpage_list, "frontpage", TRUE);
     }
 
-    $phpgw->db->query("select * from phpgw_comic_data "
+    $GLOBALS['phpgw']->db->query("select * from phpgw_comic_data "
                       ."where data_enabled='T' order by data_name");
 
     $index = 0;
     
     asort($data_ids);
     
-    while ($phpgw->db->next_record())
+    while ($GLOBALS['phpgw']->db->next_record())
     {
         $selected = "";
-        if ($phpgw->db->f("data_id") == $frontpage)
+        if ($GLOBALS['phpgw']->db->f("data_id") == $frontpage)
         {
             $selected = "selected";
         }
 
         $prefs_tpl->set_var
             (array(OPTION_SELECTED => $selected,
-                   OPTION_VALUE    => $phpgw->db->f("data_id"),
-                   OPTION_NAME     => $phpgw->db->f("data_title")));
+                   OPTION_VALUE    => $GLOBALS['phpgw']->db->f("data_id"),
+                   OPTION_NAME     => $GLOBALS['phpgw']->db->f("data_title")));
         $prefs_tpl->parse(fpage_list, "frontpage", TRUE);
 
 
         $selected = "";
-        if ($phpgw->db->f("data_id") == $data_ids[$index])
+        if ($GLOBALS['phpgw']->db->f("data_id") == $data_ids[$index])
         {
             $index++;
             
@@ -208,12 +208,12 @@
         }
 
         $name = sprintf("%s - %s",
-                        $phpgw->db->f("data_resolve"),
-                        $phpgw->db->f("data_title"));
+                        $GLOBALS['phpgw']->db->f("data_resolve"),
+                        $GLOBALS['phpgw']->db->f("data_title"));
         
         $prefs_tpl->set_var
             (array(OPTION_SELECTED => $selected,
-                   OPTION_VALUE    => $phpgw->db->f("data_id"),
+                   OPTION_VALUE    => $GLOBALS['phpgw']->db->f("data_id"),
                    OPTION_NAME     => $name));
         $prefs_tpl->parse(comic_list, "comic", TRUE);
     }
@@ -250,8 +250,8 @@
                  comic_options    => $comic_c,
                  comic_id         => $comic_id,
                  returnmain       => $returnmain,
-                 th_bg            => $phpgw_info["theme"]["th_bg"],
-                 th_text          => $phpgw_info["theme"]["th_text"]));
+                 th_bg            => $GLOBALS['phpgw_info']['theme']['th_bg'],
+                 th_text          => $GLOBALS['phpgw_info']['theme']['th_text']));
 
     $prefs_tpl->parse(message_part, "message");
     $message_c = $prefs_tpl->get("message_part");
@@ -262,7 +262,7 @@
     /**************************************************************************
      * pull it all together
      *************************************************************************/
-    $body_tpl = $phpgw->template;
+    $body_tpl = $GLOBALS['phpgw']->template;
     $body_tpl->set_unknowns("remove");
     $body_tpl->set_file(body, "prefs.common.tpl");
     $body_tpl->set_var(array(preferences_message => $message_c,
@@ -270,7 +270,7 @@
     $body_tpl->parse(BODY, "body");
     $body_tpl->p("BODY");
 
-    $phpgw->common->phpgw_footer();
+    $GLOBALS['phpgw']->common->phpgw_footer();
 }
 
 ?>

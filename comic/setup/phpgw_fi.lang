@@ -5,6 +5,7 @@ comics	common	fi	Sarjakuvat
 comic	common	fi	Sarjakuvat
 daily comics data	comic	fi	Sarjakuvien tiedot
 daily comics global options	comic	fi	Sarjakuvien järjestelmäasetukset
+egroupware daily comics	comic	fi	eGroupWare Sarjakuvat
 genre	comic	fi	Tyylilaji
 image source	comic	fi	Kuvan lähde
 max file size	comic	fi	Suurin tiedoston koko

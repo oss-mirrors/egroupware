@@ -18,37 +18,33 @@ class soadmin
 {
         function admin_global_options_data()
         {
-		global $phpgw;
-
-		$phpgw->db->query("select * from phpgw_comic_admin");
-		if (!$phpgw->db->num_rows())
+		$GLOBALS['phpgw']->db->query("select * from phpgw_comic_admin");
+		if (!$GLOBALS['phpgw']->db->num_rows())
 		{
-			$phpgw->db->query("insert into phpgw_comic_admin values (0,0,0,0,120000)");
-			$phpgw->db->query("select * from phpgw_comic_admin");
+			$GLOBALS['phpgw']->db->query("insert into phpgw_comic_admin values (0,0,0,0,120000)");
+			$GLOBALS['phpgw']->db->query("select * from phpgw_comic_admin");
 		}
-		$phpgw->db->next_record();
+		$GLOBALS['phpgw']->db->next_record();
     
-		$field['image_source']     = $phpgw->db->f('admin_imgsrc');
-		$field['censor_level']     = $phpgw->db->f('admin_censorlvl');
-		$field['override_enabled'] = $phpgw->db->f('admin_coverride');
-		$field['remote_enabled']   = $phpgw->db->f('admin_rmtenabled');
-		$field['filesize']         = $phpgw->db->f('admin_filesize');
+		$field['image_source']     = $GLOBALS['phpgw']->db->f('admin_imgsrc');
+		$field['censor_level']     = $GLOBALS['phpgw']->db->f('admin_censorlvl');
+		$field['override_enabled'] = $GLOBALS['phpgw']->db->f('admin_coverride');
+		$field['remote_enabled']   = $GLOBALS['phpgw']->db->f('admin_rmtenabled');
+		$field['filesize']         = $GLOBALS['phpgw']->db->f('admin_filesize');
 
 		return ($field);
 	}
 
 	function update_global_options($field)
 	{
-		global $phpgw;
-
-		$phpgw->db->lock('phpgw_comic_admin');
-		$phpgw->db->query("update phpgw_comic_admin set "
+		$GLOBALS['phpgw']->db->lock('phpgw_comic_admin');
+		$GLOBALS['phpgw']->db->query("update phpgw_comic_admin set "
 			."admin_imgsrc='".$field['image_source']."', "
 			."admin_rmtenabled='".$field['remote_enabled']."', "
 			."admin_censorlvl='".$field['censor_level']."', "
 			."admin_coverride='".$field['override_enabled']."', "
 			."admin_filesize='".$field['filesize']."'");
-		$phpgw->db->unlock();
+		$GLOBALS['phpgw']->db->unlock();
 	}
 }
 

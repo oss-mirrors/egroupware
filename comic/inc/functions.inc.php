@@ -43,61 +43,55 @@ $g_dayofweek    = array(Mon => 1,
 
 function comic_admin_data(&$image, &$censor, &$override, &$remote, &$filesize)
 {
-    global $phpgw;
-    
-    $phpgw->db->query("select * from phpgw_comic_admin");
-    if (!$phpgw->db->num_rows())
+    $GLOBALS['phpgw']->db->query("select * from phpgw_comic_admin");
+    if (!$GLOBALS['phpgw']->db->num_rows())
     {
-        $phpgw->db->query("insert into phpgw_comic_admin values "
+        $GLOBALS['phpgw']->db->query("insert into phpgw_comic_admin values "
                           ."(0,0,0,0,120000)");
         
-        $phpgw->db->query("select * from phpgw_comic_admin");
+        $GLOBALS['phpgw']->db->query("select * from phpgw_comic_admin");
     }
-    $phpgw->db->next_record();
+    $GLOBALS['phpgw']->db->next_record();
     
-    $image    = $phpgw->db->f("admin_imgsrc");
-    $censor   = $phpgw->db->f("admin_censorlvl");
-    $override = $phpgw->db->f("admin_coverride");
-    $remote   = $phpgw->db->f("admin_rmtenabled");
-    $filesize = $phpgw->db->f("admin_filesize");
+    $image    = $GLOBALS['phpgw']->db->f("admin_imgsrc");
+    $censor   = $GLOBALS['phpgw']->db->f("admin_censorlvl");
+    $override = $GLOBALS['phpgw']->db->f("admin_coverride");
+    $remote   = $GLOBALS['phpgw']->db->f("admin_rmtenabled");
+    $filesize = $GLOBALS['phpgw']->db->f("admin_filesize");
 }
 
 function comic_flag_success($comic_url, $data_id)
 {
-    global $phpgw;
-                
-    $phpgw->db->lock("phpgw_comic_data");
-    $phpgw->db->query("update phpgw_comic_data set "
+    $GLOBALS['phpgw']->db->lock("phpgw_comic_data");
+    $GLOBALS['phpgw']->db->query("update phpgw_comic_data set "
                       ."data_date='".(int)date("Ymd")."', "
                       ."data_imageurl='".$comic_url."' "
                       ."WHERE data_id='".$data_id."'");
-    $phpgw->db->unlock();
+    $GLOBALS['phpgw']->db->unlock();
 }
 
 function comic_resolve_url($remote_enabled, &$fetch_url,
                            &$comic_url, &$comic_day)
 {
-    global $phpgw;
-    
     $status = STD_SUCCESS;
 
     /**************************************************************************
      * check to see if already "snarfed" today
      *************************************************************************/
-    if ($phpgw->db->f("data_date") == (int)date("Ymd"))
+    if ($GLOBALS['phpgw']->db->f("data_date") == (int)date("Ymd"))
     {
         $status = STD_CURRENT;
-        $comic_url = $phpgw->db->f("data_imageurl");
+        $comic_url = $GLOBALS['phpgw']->db->f("data_imageurl");
 
         /**********************************************************************
          * need to generate resolve type links without going to the web
          * and not putting them in the database
          *********************************************************************/
-        if ($phpgw->db->f("data_linkurl") == "")
+        if ($GLOBALS['phpgw']->db->f("data_linkurl") == "")
         {
-            $fetch_url = $phpgw->db->f("data_baseurl")
-                .$phpgw->db->f("data_parseurl");
-            $comic_time   = time() - ($phpgw->db->f("data_daysold")*3600*24);
+            $fetch_url = $GLOBALS['phpgw']->db->f("data_baseurl")
+                .$GLOBALS['phpgw']->db->f("data_parseurl");
+            $comic_time   = time() - ($GLOBALS['phpgw']->db->f("data_daysold")*3600*24);
             comic_resolver(&$fetch_url, $comic_time);
             
         }
@@ -108,7 +102,7 @@ function comic_resolve_url($remote_enabled, &$fetch_url,
         /**********************************************************************
          * resolve our comic url, link url and comic day
          *********************************************************************/
-        switch ($phpgw->db->f("data_resolve"))
+        switch ($GLOBALS['phpgw']->db->f("data_resolve"))
         {	 
           case "Static":
             $status = comic_resolve_static(&$comic_url, &$comic_day);
@@ -125,8 +119,6 @@ function comic_resolve_url($remote_enabled, &$fetch_url,
 
 function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
 {
-    global $phpgw;
-
     $link_tgt = "_blank";
     
     if ($status != STD_CENSOR)
@@ -134,7 +126,7 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
         /**********************************************************************
          * ultimately want to go where DB says
          *********************************************************************/
-        $link_url = $phpgw->db->f("data_linkurl");
+        $link_url = $GLOBALS['phpgw']->db->f("data_linkurl");
 
         /**********************************************************************
          * if can't then see if we built a url where we got the image from
@@ -148,14 +140,14 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
              *****************************************************************/
             if ($link_url == "")
             {
-                $link_url = $phpgw->db->f("data_baseurl");
+                $link_url = $GLOBALS['phpgw']->db->f("data_baseurl");
 
                 /**************************************************************
                  * everything else is failing so let's link self
                  *************************************************************/
                 if ($link_url == "")
                 {
-                    $link_url = $phpgw->link("/comic/index.php");
+                    $link_url = $GLOBALS['phpgw']->link("/comic/index.php");
                     $link_tgt = "_self";
                 }
                 
@@ -167,7 +159,7 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
         /**********************************************************************
          * need to break the link url
          *********************************************************************/
-        $link_url = $phpgw->link("/comic/index.php");
+        $link_url = $GLOBALS['phpgw']->link("/comic/index.php");
         $link_tgt = "_self";
     }
 
@@ -177,12 +169,10 @@ function comic_resolve_linkurl($status, $fetch_url, &$link_url, &$comment)
                     
 function comic_resolve_static(&$comic_url, &$comic_day)
 {
-    global $phpgw;
-    
     $status       = STD_SUCCESS;
 
-    $comic_url    = $phpgw->db->f("data_baseurl");
-    $comic_time   = time() - ($phpgw->db->f("data_daysold")*3600*24);
+    $comic_url    = $GLOBALS['phpgw']->db->f("data_baseurl");
+    $comic_time   = time() - ($GLOBALS['phpgw']->db->f("data_daysold")*3600*24);
     $comic_day    = substr(date("D", $comic_time),0,2);
 
     /**************************************************************************
@@ -197,43 +187,41 @@ function comic_resolve_static(&$comic_url, &$comic_day)
 function comic_resolve_remote($remote_enabled, &$fetch_url,
                               &$comic_url, &$comic_day)
 {
-    global $phpgw;
-    
     $status       = STD_SUCCESS;
     $unresolved   = True;
     
-    $comic_time   = time() - ($phpgw->db->f("data_daysold")*3600*24);
+    $comic_time   = time() - ($GLOBALS['phpgw']->db->f("data_daysold")*3600*24);
 
     /**************************************************************************
      * generate the resolver components
      *************************************************************************/
-    switch ($phpgw->db->f("data_parser"))
+    switch ($GLOBALS['phpgw']->db->f("data_parser"))
     {
       case "Comics":
       case "Comiczone7":
       case "Comiczone10":
       case "United":
         $baseurl    = "http://www.comics.com";
-        $parseurl   = "/comics/".$phpgw->db->f("data_name")."/index.html";
+        $parseurl   = "/comics/".$GLOBALS['phpgw']->db->f("data_name")."/index.html";
         $parse_expr = "/comics/"
-            .$phpgw->db->f("data_name")
+            .$GLOBALS['phpgw']->db->f("data_name")
             ."/archive/images/"
-            .$phpgw->db->f("data_name")
+            .$GLOBALS['phpgw']->db->f("data_name")
             ."[0-9]*.(gif|jpg)";
         break;
       case "King":
 /*
-        if ($phpgw->db->f("data_daysold") == 0)
+        if ($GLOBALS['phpgw']->db->f("data_daysold") == 0)
         {
             $comic_time = time() - (14*3600*24);
         }
         $baseurl  = "http://est.rbma.com/content/";
-        $parseurl = $phpgw->db->f("data_prefix")."?date={Ymd}";
+        $parseurl = $GLOBALS['phpgw']->db->f("data_prefix")."?date={Ymd}";
 
         comic_resolver(&$parseurl, $comic_time);
 
         $fetch_url = "http://www.kingfeatures.com/comics/".
-            $phpgw->db->f("data_name");
+            $GLOBALS['phpgw']->db->f("data_name");
 
         $comic_url = $baseurl.$parseurl;
         
@@ -243,11 +231,11 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
         
       case "Toonville":
         $baseurl    = "http://aolsvc.toonville.aol.com";
-        $parseurl   = "/main.asp?fnum=".$phpgw->db->f("data_comicid");
+        $parseurl   = "/main.asp?fnum=".$GLOBALS['phpgw']->db->f("data_comicid");
         $parse_expr = "/[cC]*ontent1/"
-            .$phpgw->db->f("data_name")
+            .$GLOBALS['phpgw']->db->f("data_name")
             ."/"
-            .$phpgw->db->f("data_prefix")
+            .$GLOBALS['phpgw']->db->f("data_prefix")
             ."[0-9]*"
             ."[g]*.(jpg|gif)";
 
@@ -255,24 +243,24 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
         break;
       case "Creators":
         $baseurl    = "http://www.comics.com";
-        $parseurl   = "/creators/".$phpgw->db->f("data_name")."/index.html";
+        $parseurl   = "/creators/".$GLOBALS['phpgw']->db->f("data_name")."/index.html";
         $parse_expr = "/creators/"
-            .$phpgw->db->f("data_name")
+            .$GLOBALS['phpgw']->db->f("data_name")
             ."/archive/images/"
-            .$phpgw->db->f("data_name")
+            .$GLOBALS['phpgw']->db->f("data_name")
             ."[0-9]*.(gif|jpg)";
         break;
       case "ComicsPage":
-        if ($phpgw->db->f("data_daysold") == 0)
+        if ($GLOBALS['phpgw']->db->f("data_daysold") == 0)
         {
             $comic_time = time() - (7*3600*24);
         }
         $baseurl    = "http://www.comicspage.com";
-        $parseurl   = "/".$phpgw->db->f("data_name")."/index.html";
+        $parseurl   = "/".$GLOBALS['phpgw']->db->f("data_name")."/index.html";
         $parse_expr = "/daily/"
-            .$phpgw->db->f("data_prefix")
+            .$GLOBALS['phpgw']->db->f("data_prefix")
             ."/{Ymd}"
-            .$phpgw->db->f("data_prefix")
+            .$GLOBALS['phpgw']->db->f("data_prefix")
             ."-a.gif";
         comic_resolver(&$parse_expr, $comic_time);
 
@@ -285,22 +273,22 @@ function comic_resolve_remote($remote_enabled, &$fetch_url,
       case "Ucomics":
         $baseurl    = "http://images.ucomics.com";
         $parseurl   = "/comics/"
-            .$phpgw->db->f("data_prefix")
+            .$GLOBALS['phpgw']->db->f("data_prefix")
             ."/{Y}/"
-            .$phpgw->db->f("data_prefix")
+            .$GLOBALS['phpgw']->db->f("data_prefix")
             ."{ymd}.gif";
         comic_resolver(&$parseurl, $comic_time);
 
-        $fetch_url  = $phpgw->db->f("data_linkurl");
+        $fetch_url  = $GLOBALS['phpgw']->db->f("data_linkurl");
 
         $comic_url  = $baseurl.$parseurl;
 
         $unresolved = False;
         break;
       default:
-        $baseurl      = $phpgw->db->f("data_baseurl");
-        $parseurl     = $phpgw->db->f("data_parseurl");
-        $parse_expr   = $phpgw->db->f("data_parsexpr");
+        $baseurl      = $GLOBALS['phpgw']->db->f("data_baseurl");
+        $parseurl     = $GLOBALS['phpgw']->db->f("data_parseurl");
+        $parse_expr   = $GLOBALS['phpgw']->db->f("data_parsexpr");
         
         $status = comic_resolver(&$parseurl, $comic_time);
 
@@ -407,14 +395,12 @@ function comic_resolver(&$myurl, $comic_time)
 
 function comic_parser($baseurl, $fetch_url, $parse_expr, &$comic_url)
 {
-    global $phpgw;
-
     $status = STD_SUCCESS;
     
     /**************************************************************************
      * get the file to parse
      *************************************************************************/
-    if ($file  = $phpgw->network->gethttpsocketfile($fetch_url))
+    if ($file  = $GLOBALS['phpgw']->network->gethttpsocketfile($fetch_url))
     {
         $lines = count($file);
 
@@ -446,16 +432,14 @@ function comic_parser($baseurl, $fetch_url, $parse_expr, &$comic_url)
 
 function comic_snarf(&$comic_url, $filesize)
 {
-    global $phpgw, $phpgw_info;
-    
     $status = STD_SUCCESS;
-    $filename   = "images/" . $phpgw->db->f("data_name") . substr($comic_url,-4);
+    $filename   = "images/" . $GLOBALS['phpgw']->db->f("data_name") . substr($comic_url,-4);
     $filename_w = PHPGW_SERVER_ROOT."/comic/".$filename;
     
     /**************************************************************************
      * get our image or fail
      *************************************************************************/
-    // if($file  = $phpgw->network->gethttpsocketfile($comic_url))
+    // if($file  = $GLOBALS['phpgw']->network->gethttpsocketfile($comic_url))
 
     if($fpread = @fopen($comic_url, 'r'))
     {
@@ -485,7 +469,7 @@ function comic_snarf(&$comic_url, $filesize)
                 
                 fclose($fp);
             
-                $comic_url = $phpgw_info["server"]["webserver_url"]
+                $comic_url = $GLOBALS['phpgw_info']["server"]["webserver_url"]
                     ."/comic/"
                     .$filename;
             }
@@ -506,8 +490,6 @@ function comic_snarf(&$comic_url, $filesize)
 
 function comic_error($image_location, $status, &$comic_url)
 {
-    global $phpgw_info;
-
     /**************************************************************************
      * the image should either be a side or center
      *************************************************************************/
@@ -540,8 +522,8 @@ function comic_error($image_location, $status, &$comic_url)
     /**************************************************************************
      * compose the error comic url
      *************************************************************************/
-    $comic_url = $phpgw_info["server"]["webserver_url"]
-        ."/".$phpgw_info["flags"]["currentapp"]
+    $comic_url = $GLOBALS['phpgw_info']["server"]["webserver_url"]
+        ."/".$GLOBALS['phpgw_info']["flags"]["currentapp"]
         ."/images/template"
         .$label
         .$image_size
@@ -551,8 +533,6 @@ function comic_error($image_location, $status, &$comic_url)
 function comic_match_bar($start, $end, $indexlimit,
                          $comics_displayed, &$matchs_c)
 {
-    global $phpgw, $phpgw_info;
-
     switch ($indexlimit)
     {
       case 0:
@@ -573,18 +553,18 @@ function comic_match_bar($start, $end, $indexlimit,
         break;
     }
 
-    $matchs_tpl = $phpgw->template;
+    $matchs_tpl = $GLOBALS['phpgw']->template;
     $matchs_tpl->set_unknowns("remove");
     $matchs_tpl->set_file(matchs, "matchs.comic.tpl");
     $matchs_tpl->
         set_var
         (array(next_matchs_left  =>
-               $phpgw->nextmatchs->left("/comic/index.php",$start,$indexlimit,""),
+               $GLOBALS['phpgw']->nextmatchs->left("/comic/index.php",$start,$indexlimit,""),
                next_matchs_label => $showstring,
                next_matchs_right =>
-               $phpgw->nextmatchs->right("/comic/index.php",$start,$indexlimit,""),
-               navbar_bg         => $phpgw_info["theme"]["navbar_bg"],
-               navbar_text       => $phpgw_info["theme"]["navbar_text"]));
+               $GLOBALS['phpgw']->nextmatchs->right("/comic/index.php",$start,$indexlimit,""),
+               th_bg         	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+               th_text       	=> $GLOBALS['phpgw_info']['theme']['th_text']));
     $matchs_tpl->parse(MATCHS, "matchs");
     $matchs_c = $matchs_tpl->get("MATCHS");
 }
@@ -593,8 +573,6 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                        $user_censorlvl, $start, &$comic_left_c,
                        &$comic_right_c, &$comic_center_c, &$matchs_c)
 {
-    global $phpgw, $phpgw_info;
-
     $sideno = COMIC_LEFT;
     
     /**************************************************************************
@@ -624,7 +602,7 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
         /**********************************************************************
          * start our template
          *********************************************************************/
-        $comic_tpl = $phpgw->template;
+        $comic_tpl = $GLOBALS['phpgw']->template;
         $comic_tpl->set_unknowns("remove");
         $comic_tpl->set_file(
             array(tableleft   => "table.left.tpl",
@@ -656,14 +634,14 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
             /******************************************************************
              * get the comic data
              *****************************************************************/
-            $phpgw->db->query("select * from phpgw_comic_data "
+            $GLOBALS['phpgw']->db->query("select * from phpgw_comic_data "
                               ."WHERE data_id='"
                               .intval($comic_list[$index])."' AND "
                               ."data_enabled='T'");
 
-            if ($phpgw->db->next_record())
+            if ($GLOBALS['phpgw']->db->next_record())
             {
-                $comic_censorlvl = $phpgw->db->f("data_censorlvl");
+                $comic_censorlvl = $GLOBALS['phpgw']->db->f("data_censorlvl");
                 $comic_day       = substr(date("D", time()),0,2);   /* today */
                 $comic_url       = "";
                 $fetch_url       = "";
@@ -699,7 +677,7 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                 /**************************************************************
                  * if comic_day is not in days allowed flag error
                  *************************************************************/
-                if (!strstr($phpgw->db->f("data_pubdays"), $comic_day))
+                if (!strstr($GLOBALS['phpgw']->db->f("data_pubdays"), $comic_day))
                 {
                     $status = STD_WARNING;
                     $end++;
@@ -718,11 +696,11 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                  *************************************************************/
                 if ($comic_day == "Su")
                 {
-                    $image_width = $phpgw->db->f("data_swidth");
+                    $image_width = $GLOBALS['phpgw']->db->f("data_swidth");
                 }
                 else
                 {
-                    $image_width = $phpgw->db->f("data_width");
+                    $image_width = $GLOBALS['phpgw']->db->f("data_width");
                 }
                 if ( $image_width <= 300)
                 {
@@ -799,8 +777,8 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                     }
                     
                     $name = lang("%1 by %2 (%3)",
-                                 $phpgw->db->f("data_title"),
-                                 $phpgw->db->f("data_author"),
+                                 $GLOBALS['phpgw']->db->f("data_title"),
+                                 $GLOBALS['phpgw']->db->f("data_author"),
                                  $index+1);
                     
                     $comic_tpl->
@@ -812,8 +790,8 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
                           link_tgt    => $link_tgt,
                           comment     => $comment,
                           name        => $name,
-                          th_bg       => $phpgw_info["theme"]["th_bg"],
-                          th_text     => $phpgw_info["theme"]["th_text"]));
+                          th_bg       => $GLOBALS['phpgw_info']['theme']['th_bg'],
+                          th_text     => $GLOBALS['phpgw_info']['theme']['th_text']));
                     $comic_tpl->parse($side."_part", "row", TRUE);
 
                     $comics_displayed++;
@@ -854,21 +832,17 @@ function comic_display($comic_list, $comic_scale, $comic_perpage,
         /**********************************************************************
          * finish out the template with the next matchs bar
          *********************************************************************/
-        $temp = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-        $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]
-            = $comic_perpage;
+        $temp = $GLOBALS['phpgw']->nextmatchs->maxmatches;
+		$GLOBALS['phpgw']->nextmatchs->maxmatches = $comic_perpage;
         comic_match_bar($start, $end, $indexlimit,
                         $comics_displayed,
                         &$matchs_c);
-        $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]
-            = $temp;
+		$GLOBALS['phpgw']->nextmatchs->maxmatches = $temp;
     }
 }
 
 function comic_display_frontpage($data_id, $scale, $censor_level)
 {
-    global $phpgw, $phpgw_info;
-
     /**************************************************************************
      * get the admin settings
      *************************************************************************/
@@ -909,7 +883,7 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
     /**************************************************************************
      * get the comic data
      *************************************************************************/
-    $phpgw->db->query("select * from phpgw_comic_data "
+    $GLOBALS['phpgw']->db->query("select * from phpgw_comic_data "
                       .$match_str);
 
     /**************************************************************************
@@ -919,11 +893,11 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
     if ($data_id == 0)
     {
         srand((double)microtime()*1000000);
-        $randval = rand(1,$phpgw->db->num_rows());
+        $randval = rand(1,$GLOBALS['phpgw']->db->num_rows());
 
         for ($index = 1; $index < $randval; $index++)
         {
-            $phpgw->db->next_record();
+            $GLOBALS['phpgw']->db->next_record();
             
         }
     }
@@ -931,9 +905,9 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
     /**************************************************************************
      * process valid comic data
      *************************************************************************/
-    if ($phpgw->db->next_record())
+    if ($GLOBALS['phpgw']->db->next_record())
     {
-        $comic_censorlvl = $phpgw->db->f("data_censorlvl");
+        $comic_censorlvl = $GLOBALS['phpgw']->db->f("data_censorlvl");
         $comic_url       = "";
         $fetch_url       = "";
         
@@ -968,7 +942,7 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
         /**********************************************************************
          * if comic_day is not in days allowed flag error
          *********************************************************************/
-        if (!strstr($phpgw->db->f("data_pubdays"), $comic_day))
+        if (!strstr($GLOBALS['phpgw']->db->f("data_pubdays"), $comic_day))
         {
             $status = STD_WARNING;
             $end++;
@@ -987,11 +961,11 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
          *********************************************************************/
         if ($comic_day == "Su")
         {
-            $image_width = $phpgw->db->f("data_swidth");
+            $image_width = $GLOBALS['phpgw']->db->f("data_swidth");
         }
         else
         {
-            $image_width = $phpgw->db->f("data_width");
+            $image_width = $GLOBALS['phpgw']->db->f("data_width");
         }
         if ( $image_width <= 300)
         {
@@ -1045,14 +1019,14 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
             }
 
             $name = lang("%1 by %2",
-                         $phpgw->db->f("data_title"),
-                         $phpgw->db->f("data_author"));
+                         $GLOBALS['phpgw']->db->f("data_title"),
+                         $GLOBALS['phpgw']->db->f("data_author"));
 
             /******************************************************************
              * our template
              *****************************************************************/
             $comic_tpl = CreateObject('phpgwapi.Template',
-                                      $phpgw->common->get_tpl_dir('comic'));
+                                      $GLOBALS['phpgw']->common->get_tpl_dir('comic'));
             $comic_tpl->set_unknowns("remove");
             $comic_tpl->set_file(
                 array(table       => "table.front.tpl",
@@ -1066,8 +1040,8 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
                   link_tgt    => $link_tgt,
                   comment     => $comment,
                   name        => $name,
-                  th_bg       => $phpgw_info["theme"]["th_bg"],
-                  th_text     => $phpgw_info["theme"]["th_text"]));
+                  th_bg       => $GLOBALS['phpgw_info']['theme']['th_bg'],
+                  th_text     => $GLOBALS['phpgw_info']['theme']['th_text']));
             $comic_tpl->parse("center_part", "row");
             $comic_tpl->parse(TABLE, "table");
             
@@ -1085,9 +1059,7 @@ function comic_display_frontpage($data_id, $scale, $censor_level)
 
 function template_options($app_template, &$options_c, &$images_c)
 {
-    global $phpgw, $phpgw_info;
-
-    $appname = $phpgw_info["flags"]["currentapp"];
+    $appname = $GLOBALS['phpgw_info']["flags"]["currentapp"];
     
     $directory = opendir(PHPGW_SERVER_ROOT . SEP. $appname . SEP . 'templates' . SEP . 'default' . SEP);
 
@@ -1116,7 +1088,7 @@ function template_options($app_template, &$options_c, &$images_c)
     /**************************************************************************
      * start our template
      *************************************************************************/
-    $image_tpl = $phpgw->template;
+    $image_tpl = $GLOBALS['phpgw']->template;
     $image_tpl->set_unknowns("remove");
     $image_tpl->set_file(
         array(options => "option.common.tpl",
@@ -1155,9 +1127,9 @@ function template_options($app_template, &$options_c, &$images_c)
            $imgname = $name.".gif";
 
            $filename_f =
-               $phpgw->common->get_image_dir($appname)."/".$imgname;
+               $GLOBALS['phpgw']->common->get_image_dir($appname)."/".$imgname;
            $filename_a =
-               $phpgw->common->get_image_path($appname)."/".$imgname;
+               $GLOBALS['phpgw']->common->get_image_path($appname)."/".$imgname;
 
            if (file_exists($filename_f))
            {
