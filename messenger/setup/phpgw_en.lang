@@ -11,8 +11,7 @@ read message	messenger	en	Read message
 reply	messenger	en	Reply
 reply to a message	messenger	en	Reply to a message
 send	messenger	en	Send
-send global message	messenger	en	Send global message
 send message to	messenger	en	Send message to
 you have %1 new messages	messenger	en	You have %1 new messages
 messenger    common   en    Messenger
-send global message   admin    en    Send global message
+compose global message   admin    en    Compose global message
