@@ -101,8 +101,8 @@
 		<td>
 			<input type="submit" name="values[save]" value="{lang_save}"></form></td>
 		<td align="right">
-			<form method="POST" action="{done_url}">
-			<input type="submit" name="done" value="{lang_done_cancel}"></form></td>
+			<form method="POST" action="{cancel_url}">
+			<input type="submit" name="cancel" value="{lang_cancel}"></form></td>
 	</tr>
 </table>
 </center>

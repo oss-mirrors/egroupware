@@ -67,7 +67,6 @@
 			$GLOBALS['phpgw']->template->set_var('lang_select_app',lang('Select transport application'));
 			$GLOBALS['phpgw']->template->set_var('lang_save',lang('Save'));
 			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('cancel'));
-			$GLOBALS['phpgw']->template->set_var('lang_done',lang('done'));
 			$GLOBALS['phpgw']->template->set_var('lang_versions',lang('Number of stored backup versions'));
 		}
 
@@ -90,7 +89,7 @@
 				else
 				{
 					$this->bobackup->save_items($values);
-					$GLOBALS['phpgw']->template->set_var('message',lang('values have been saved'));
+					$GLOBALS['phpgw']->redirect_link('/admin/index.php');
 				}
 			}
 
@@ -101,17 +100,7 @@
 			$GLOBALS['phpgw']->template->set_file(array('admin_form' => 'admin_form.tpl'));
 
 			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$GLOBALS['phpgw']->template->set_var('done_url',$GLOBALS['phpgw']->link('/admin/index.php'));
-
-			if ($values && !$error)
-			{
-				$GLOBALS['phpgw']->template->set_var('lang_done_cancel',lang('done'));
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var('lang_done_cancel',lang('cancel'));
-			}
+			$GLOBALS['phpgw']->template->set_var('cancel_url',$GLOBALS['phpgw']->link('/admin/index.php'));
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('backup') . ': ' . lang('administration');
 
