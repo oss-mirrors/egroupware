@@ -18,6 +18,7 @@
 	</td>
 	<td width="50%" class="td_right">
 		<select name="profileID">
+			<option value="-1"></option>
 			{select_options}
 		</select>
 	</td>

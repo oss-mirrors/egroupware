@@ -1009,6 +1009,10 @@
 
 		function openConnection($_folderName='', $_options=0, $_adminConnection=false)
 		{
+			if(!$this->mailPreferences['emailConfigValid'])
+			{
+				return lang('no valid emailprofile selected!!');
+			}
 			
 			if($_folderName == '' && !$_adminConnection)
 			{

@@ -32,12 +32,21 @@
 		
 		function getPreferences()
 		{
+			$data['emailConfigValid'] = true;
+
 			$imapServerTypes	= $this->boemailadmin->getIMAPServerTypes();
 			$profileData		= $this->boemailadmin->getProfile($this->profileID);
+			if($this->profileID < 0 || $this->profileID == '')
+			{
+				$data['emailConfigValid'] = false;
+			}
+			
+			if($imapServerTypes[$profileData['imapType']]['protocol'] != 'imap')
+			{
+				$data['emailConfigValid'] = false;
+			}
 			
 			#$usersEMailAddresses	= $this->boemailadmin->getAccountEmailAddress($GLOBALS['phpgw_info']['user']['userid'], $this->profileID);
-			
-			#$imapServerTypes[$profileData['imapType']]['protocol'];
 			
 			#_debug_array($usersEMailAddresses);
 			

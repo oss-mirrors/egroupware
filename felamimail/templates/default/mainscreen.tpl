@@ -275,7 +275,7 @@ doLoad();
 	<tr>
 		<td bgcolor="#FFFFCC" align="center" colspan="6">
 			<font color="red"><b>{lang_connection_failed}</b></font><br>
-			{message}
+			<br>{message}<br><br>
 		</td>
 	</tr>
 <!-- END error_message -->
