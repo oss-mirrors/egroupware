@@ -51,7 +51,7 @@
 	}
     else
 	{                                                                                                                                                                      
-		$t->set_var('error',lang('Please select your address in preferences !'));                                                                                  
+		$t->set_var('error',lang('Please set your preferences for this application !'));                                                                                  
 	}
 
 	$t->set_var('site_title',$phpgw_info['site_title']);

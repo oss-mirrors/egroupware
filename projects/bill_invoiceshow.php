@@ -57,7 +57,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select currency,tax and your address in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 		$taxpercent = ((int)0);
 	}
 

@@ -52,14 +52,14 @@
 
 		if (!$num)
 		{
-			$error[$errorcount++] = lang('Please enter an ID for that Project !');
+			$error[$errorcount++] = lang('Please enter an ID !');
 		}
 
 		$phpgw->db->query("select count(*) from phpgw_p_projects where num='$num'");
 		$phpgw->db->next_record();
 		if ($phpgw->db->f(0) != 0)
 		{
-			$error[$errorcount++] = lang('That Project ID has been used already !');
+			$error[$errorcount++] = lang('That ID has been used already !');
 		}
 
 		if (checkdate($smonth,$sday,$syear))
@@ -88,7 +88,7 @@
 
 		if ((!$ba_activities) && (!$bill_activities))
 		{
-			$error[$errorcount++] = lang('Please choose activityies for that project first !');
+			$error[$errorcount++] = lang('Please choose activities for that project first !');
 		}
 
 		if (! $error)
@@ -165,7 +165,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select your currency in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
 	$hidden_vars = '<input type="hidden" name="id" value="' . $id . '">' . "\n"

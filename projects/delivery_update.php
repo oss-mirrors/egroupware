@@ -42,14 +42,14 @@
 		$customer = $db2->f('customer'); 
 
 		$phpgw->db->query("SELECT num FROM phpgw_p_delivery WHERE num='$delivery_num' AND id != '$delivery_id'"); 
-		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That Delivery ID has been used already !'); }
-		if (!$delivery_num) { $error[$errorcount++] = lang('Please enter a Delivery ID for that delivery !'); }
+		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That ID has been used already !'); }
+		if (!$delivery_num) { $error[$errorcount++] = lang('Please enter an ID !'); }
 		if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
 
 		if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
 		else
 		{
-			if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date !') . " : " . "$month - $day - $year"; }
+			if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid date !') . '<br> . $month . '/' . $day . '/' . $year; }
 		}
 
 		if (! $error)

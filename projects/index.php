@@ -33,7 +33,7 @@
 				. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
-	$t->set_var('lang_action',lang('Projects list'));
+	$t->set_var('lang_action',lang('Project list'));
 	$t->set_var('add_url',$phpgw->link('/projects/add.php'));
 	$t->set_var('search_url',$phpgw->link('/projects/index.php'));
 	$t->set_var('cat_url',$phpgw->link('/projects/index.php'));

@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 <script language="JavaScript">
 	self.name="first_Window";
-	function addressbook()
+	function abook()
 	{
 		Window1=window.open('{addressbook_link}',"Search","width=800,height=600,toolbar=no,scrollbars=yes,resizable=yes");
 	}
@@ -34,7 +34,7 @@
 		<td><select name="new_cat"><option value="">{lang_select_cat}</option>{category_list}</select></font></td>
 	</tr>
 	<tr>
-		<td><input type="button" value="{lang_customer}" onClick="addressbook();"></td>
+		<td><input type="button" value="{lang_customer}" onClick="abook();"></td>
 		<td><input type="hidden" name="abid" value="{abid}">
 			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
 	</tr>

@@ -34,14 +34,14 @@
 		$errorcount = 0;
 		if (!$num)
 		{
-			$error[$errorcount++] = lang('Please enter an ID for that activity !');
+			$error[$errorcount++] = lang('Please enter an ID !');
 		}
 
 		$phpgw->db->query("select count(*) from phpgw_p_activities where num='$num'");
 		$phpgw->db->next_record();
 		if ($phpgw->db->f(0) != 0)
 		{
-			$error[$errorcount++] = lang('That Activity ID has been used already !');
+			$error[$errorcount++] = lang('That ID has been used already !');
 		}
 
 		if ((!$billperae) || ($billperae==0))
@@ -74,7 +74,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select your currency in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
 	$t->set_var('lang_action',lang('Add activity'));

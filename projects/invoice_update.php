@@ -39,7 +39,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select your currency in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
 	$db2 = $phpgw->db;
@@ -53,14 +53,14 @@
 
 		$invoice_num = addslashes($invoice_num);
 		$phpgw->db->query("SELECT num FROM phpgw_p_invoice WHERE num='$invoice_num' AND id != '$invoice_id'"); 
-		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That Invoice ID has been used already !'); }
-		if (!$invoice_num) { $error[$errorcount++] = lang('Please enter a Invoice ID for that invoice !'); }
+		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That ID has been used already !'); }
+		if (!$invoice_num) { $error[$errorcount++] = lang('Please enter an ID !'); }
 		if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
 
 		if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
 		else
 		{
-			if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid invoice date !') . '<br>' . $month .  '/' . $day . '/' . $year; }
+			if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid date !') . '<br>' . $month .  '/' . $day . '/' . $year; }
 		}
 
 		if (! $error)
@@ -70,7 +70,7 @@
 /*	$db2->query("SELECT hours_id FROM phpgw_p_invoicepos WHERE invoice_id=$invoice_id");
 		while ($db2->next_record())
 		{
-			$phpgw->db->query("UPDATE phpgw_p_hours SET status='done' WHERE id=".$db2->f("hours_id"));
+			$phpgw->db->query("UPDATE phpgw_p_hours SET status='done' WHERE id=".$db2->f('hours_id'));
 		} */
 
 			$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'");

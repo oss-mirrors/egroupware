@@ -61,14 +61,14 @@
 
 		if (!$num)
 		{
-			$error[$errorcount++] = lang('Please enter an ID for that Project !');
+			$error[$errorcount++] = lang('Please enter an ID !');
 		}
 
 		$phpgw->db->query("select count(*) from phpgw_p_projects where num='$num' and id != '$id'");
 		$phpgw->db->next_record();
 		if ($phpgw->db->f(0) != 0)
 		{
-			$error[$errorcount++] = lang('That Project ID has been used already !');
+			$error[$errorcount++] = lang('That ID has been used already !');
 		}
 
 		if (checkdate($smonth,$sday,$syear))

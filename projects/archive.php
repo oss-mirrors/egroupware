@@ -32,7 +32,7 @@
 				. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n";
 
-	$t->set_var('lang_action',lang('Projects archive'));
+	$t->set_var('lang_action',lang('Project archive'));
 	$t->set_var('searchurl',$phpgw->link('/projects/archive.php'));
 	$t->set_var('cat_url',$phpgw->link('/projects/archive.php'));
 	$t->set_var('hidden_vars',$hidden_vars);

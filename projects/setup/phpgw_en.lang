@@ -1,3 +1,136 @@
 projects	common	en	Projects
 project administration	admin	en	Project administration
+Account	projects	en	Account
+Active	projects	en	Active
+Activities	projects	en	Activities
+Activities list	projects	en	Activities list
+Activity	projects	en	Activity
+Activity ID	projects	en	Activity ID
+Activity x has been added !	projects	en	Activity %1 has been added !
+Activity x has been updated !	projects	en	Activity %1 has been updated !
+Add Activity	projects	en	Add activity
+Add hours	projects	en	Add hours
+Add project	projects	en	Add project
+Add project hours	projects	en	Add project hours
+Admin	projects	en	Admin
+All invoices	projects	en	All invoices
+All	projects	en	All
+All delivery notes	projects	en	ALL delivery notes
+archive	projects	en	Archive
+Are you sure you want to delete this entry ?	projects	en	Are you sure you want to delete this entry ?
+billed	projects	en	Billed
+Billed only	projects	en	Billed only
+Billing	projects	en	Billing
+Bookable activities	projects	en	Bookable activities
+Billable activities	projects	en	Billable activities
+Bill per workunit	projects	en	Bill per workunit
+Budget	projects	en	Budget
+Calculate	projects	en	Calculate
+Coordinator	projects	en	Coordinator
+Create delivery	projects	en	Create delivery
+Create invoice	projects	en	Create invoice
+Customer	projects	en	Customer
+Date due	projects	en	Date due
+Delete hours	projects	en	Delete hours
+Deliveries	projects	en	Deliveries
+Delivery	projects	en	Delivery
+Delivery date	projects	en	Delivery date
+Delivery note	projects	en	Delivery note
+Delivery ID	projects	en	Delivery ID
+Delivery list	projects	en	Delivery list
+Delivery notes	projects	en	Delivery notes
+Delivery x has been created !	projects	en	Delivery %1 has been created !
+Delivery x has been updated !	projects	en	Delivery %1 has been updated !
+Description	projects	en	Description
+Edit Activity	projects	en	Edit activity
+Edit hours	projects	en	Edit Hours
+Edit project administrator list	projects	en	Edit project administrator list
+Edit project	projects	en	Edit project
+Edit project hours	projects	en	Edit project hours
+Employee	projects	en	Employee
+End date	projects	en	End date
+End time	projects	en	End time
+Generate Activity ID ?	projects	en	Generate Activity ID ?
+Generate Delivery ID ?	projects	en	Generate Delivery ID ?
+Generate Project ID ?	projects	en	Generate Project ID ?
+Generate Invoice ID ?	projects	en	Generate Invoice ID ?
+Hours	projects	en	Hours
+Invoice	projects	en	Invoice
+Invoice date	projects	en	Invoice date
+Invoice ID	projects	en	Invoice ID
+Invoice list	projects	en	Invoice list
+Invoices	projects	en	Invoices
+Invoice x has been created !	projects	en	Invoice %1 has been created !
+Invoice x has been updated !	projects	en	Invoice %1 has been updated !
+Job	projects	en	Job
+Job date	projects	en	Job date
+Job description	projects	en	Job description
+Job has been added !	projects	en	Job has been added !
+Job has been updated !	projects	en	Job has been updated !
+Job list	projects	en	Job list
+Jobs	projects	en	Jobs
+List hours	projects	en	List hours
+Minutes per workunit	projects	en	Minutes per workunit
+net	projects	en	net
+New project	projects	en	New project
+Nonactive	projects	en	Nonactive
+Number	projects	en	Number
+open	projects	en	Open
+Overall	projects	en	Overall
+per	projects	en	per
+per workunit	projects	en	per workunit
+Please enter an ID !	projects	en	Please enter an ID !
+Please choose activities for that project first !	projects	en	Please choose activities for that project first !
+Please enter a remark !	projects	en	Please enter a remark !
+Please enter the bill per workunit !	projects	en	Please enter the bill per workunit !
+Please enter the minutes per workunit !	projects	en	Please enter the minutes per workunit !
+Position	projects	en	Position
+Print delivery	projects	en	Print delivery
+Print invoice	projects	en	Print invoice
+Project	projects	en	Project
+Project administration	projects	en	Project administration
+Project archive	projects	en	Project archive
+Project ID	projects	en	Project ID
+Project list	projects	en	Project list
+Project name	projects	en	Project name
+Project statistic	projects	en	Project statistic
+Project x x has been updated !	projects	en	Project %1 %2 has been updated !
+Project x x has been added !	projects	en	Project %1 %2 has been added !
+Remark	projects	en	Remark
+Remark required	projects	en	Remark required
+Select per button !	projects	en	Select per button !
+Select project	projects	en	Select project
+Select tax for workhours	projects	en	Select tax for workhours
+Select users	projects	en	Select users
+Select groups	projects	en	Select groups
+Select your address	projects	en	Select your address
+Start date	projects	en	Start date
+Start time	projects	en	Start time
+Statistic	projects	en	Statistic
+Statistics	projects	en	Statistics
+Status	projects	en	Status
+Short description	projects	en	Short description
+Sum	projects	en	Sum
+Sum workunits	projects	en	Sum workunits
+tax	projects	en	tax
+That ID has been used already !	projects	en	That ID has been used already !
+Title	projects	en	Title
+Time	projects	en	Time
+Update invoice	projects	en	Update invoice
+Update delivery	projects	en	Update delivery
+Username / Group	projects	en	Username / Group
+User statistic	projects	en	User statistic
+User statistics	projects	en	User statistics
+View job	projects	en	View job
+View project	projects	en	View project
+Work date	projects	en	Work date
+Work time	projects	en	Work time
+Workunit	projects	en	Workunit
+Workunits	projects	en	Workunits
 written by:	projects	en	Written by:
+You have entered an invalid date !	projects	en	You have entered an invalid date !
+You have entered an invalid start date !	projects	en	You have entered an invalid start date !
+You have entered an invalid end date !	projects	en	You have entered an invalid end date !
+You have selected an invalid activity !	projects	en	You have selected an invalid activity !
+You have no customer selected !	projects	en	You have no customer selected !
+You have to CREATE a delivery or invoice first !	projects	en	You have to CREATE a delivery or invoice first !

@@ -39,9 +39,9 @@
 
 	if (! $filter) { $filter = "none"; }
 
-	if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0)
+	if ($phpgw_info['user']['preferences']['common']['maxmatchs'] && $phpgw_info['user']['preferences']['common']['maxmatchs'] > 0)
 	{
-		$limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+		$limit = $phpgw_info['user']['preferences']['common']['maxmatchs'];
 	}
 	else { $limit = 15; }
 

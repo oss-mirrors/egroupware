@@ -105,7 +105,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select your currency in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
 	$t->set_var('actionurl',$phpgw->link('/projects/hours_addhour.php'));

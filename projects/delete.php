@@ -49,7 +49,7 @@
 		$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 		$t->set_file(array('projects_delete' => 'delete.tpl'));
 
-		$t->set_var('deleteheader',lang('Are you sure you want to delete this project ?'));
+		$t->set_var('deleteheader',lang('Are you sure you want to delete this entry ?'));
 		$t->set_var('hidden_vars',$hidden_vars);
 		$t->set_var('nolink',$phpgw->link('/projects/index.php','cat_id=' . $cat_id . '&sort=' . $sort . '&order=' . $order . '&query=' . $query
 																. '&start=' . $start . '&filter=' . $filter));

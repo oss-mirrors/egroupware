@@ -28,7 +28,7 @@
 	}
 	else
 	{
-		$t->set_var('error',lang('Please select your currency in preferences !'));
+		$t->set_var('error',lang('Please set your preferences for this application'));
 	}
 
 	$hidden_vars = '<input type="hidden" name="sort" value="' . $sort . '">' . "\n"
