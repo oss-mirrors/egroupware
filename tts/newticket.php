@@ -33,16 +33,23 @@
 	if($_POST['submit'])
 	{
 		$ticket = $_POST['ticket'];
+		if (get_magic_quotes_gpc())
+		{
+			foreach(array('subject','details') as $name)
+			{
+				$ticket[$name] = stripslashes($ticket[$name]);
+			}
+		}
 		$GLOBALS['phpgw']->db->query("insert into phpgw_tts_tickets (ticket_state,ticket_group,ticket_priority,ticket_owner,"
 			. "ticket_assignedto,ticket_subject,ticket_category,ticket_billable_hours,"
 			. "ticket_billable_rate,ticket_status,ticket_details) values ('"
 			. intval($ticket['state']) . "','"
-			. addslashes($ticket['group']) . "','"
+			. intval($ticket['group']) . "','"
 			. intval($ticket['priority']) . "','"
 			. $GLOBALS['phpgw_info']['user']['account_id'] . "','"
-			. addslashes($ticket['assignedto']) . "','"
+			. intval($ticket['assignedto']) . "','"
 			. addslashes($ticket['subject']) . "','"
-			. addslashes($ticket['category']) . "','"
+			. intval($ticket['category']) . "','"
 			. addslashes($ticket['billable_hours']) . "','"
 			. addslashes($ticket['billable_rate']) . "','O','"
 			. addslashes($ticket['details']) . "')",__LINE__,__FILE__);
