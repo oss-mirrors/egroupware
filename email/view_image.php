@@ -19,7 +19,7 @@
   include("../header.inc.php");
   Header("Content-type: image/$subtype");
 
-  $data = imap_fetchbody($mailbox, $msgnum, $part_no);
+  $data = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
 
-  echo imap_base64($data);
+  echo $phpgw->msg->base64($data);
 

@@ -175,7 +175,7 @@ if ($msg->from) {
 if ($msg->to) {
   for ($i = 0; $i < count($msg->to); $i++) {
     $topeople = $msg->to[$i];
-    $personal = !$topeople->personal ? "$topeople->mailbox@$topeople->host" : $topeople->personal;
+    $personal = !$topeople->personal ? $topeople->mailbox."@".$topeople->host : $topeople->personal;
     $personal = decode_header_string($personal);
       echo "<a href=\""
         . $phpgw->link("compose.php", "folder=".urlencode($folder)
