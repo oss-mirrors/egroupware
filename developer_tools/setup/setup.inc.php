@@ -20,10 +20,10 @@
 
 	$setup_info['developer_tools']['author'] = 'Miles Lott';
 	$setup_info['developer_tools']['description'] =
-		'The TranslationTools allow to create and extend translations-files for phpGroupWare. 
+		'The TranslationTools allow to create and extend translations-files for eGroupWare. 
 		They can search the sources for new / added phrases and show you the ones missing in your language.';
 	$setup_info['developer_tools']['note'] =
-		'Reworked and imporved version of the former language-management of Miloschi\'s the developer_tools.';
+		'Reworked and improved version of the former language-management of Milosch\'s developer_tools.';
 	$setup_info['developer_tools']['license']  = 'GPL';
 	$setup_info['developer_tools']['maintainer'] = 'Ralf Becker';
 	$setup_info['developer_tools']['maintainer_email']    = 'RalfBecker@outdoor-training.de';
@@ -36,7 +36,7 @@
 
 	/* Dependencies for this app to work */
 	$setup_info['developer_tools']['depends'][] = array(
-		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.11','0.9.12','0.9.13', '0.9.14')
+		'appname' => 'phpgwapi',
+		'versions' => Array('0.9.11','0.9.12','0.9.13', '0.9.14')
 	);
 ?>
