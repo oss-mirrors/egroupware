@@ -11,7 +11,7 @@
 /* $Id$ */
 
     {
-    echo '<p>\n';
+    echo "<p>\n";
     $imgfile = $phpgw->common->get_image_dir('projects') . '/' . $appname . '.gif';
     if (file_exists($imgfile)) {
 	$imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
