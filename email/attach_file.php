@@ -13,18 +13,18 @@
 	/* $Id$ */
 
 	$phpgw_flags = Array(
-		'currentapp' =>	'email',
-		'enable_network_class'	=> True,
+		'currentapp' => 'email',
+		'enable_network_class' => True,
 		'noheader'   => True,
 		'nonavbar'   => True
 	);
-	
+
 	$GLOBALS['phpgw_info']['flags'] = $phpgw_flags;
 
 	include('../header.inc.php');
 
 	$GLOBALS['phpgw']->template->set_file(
-		Array(		
+		Array(
 			'T_attach_file' => 'attach_file.tpl',
 			'T_attach_file_blocks' => 'attach_file_blocks.tpl'
 		)
@@ -62,15 +62,15 @@
 
 	//$uploaddir = $GLOBALS['phpgw_info']['server']['temp_dir'] . SEP . $GLOBALS['phpgw_info']['user']['sessionid'] . SEP;
 	$uploaddir = $GLOBALS['phpgw']->msg->att_files_dir;
-	
+
 	// if we were NOT able to create this temp directory, then make an ERROR report
 	if (!file_exists($uploaddir))
 	{
 		$alert_msg .= 'Error:'.'<br>'
-			.'Server is unable to access phpgw email tmp directory'.'<br>'
-			.$uploaddir.'<br>'
-			.'Please check your configuration'.'<br>'
-			.'<br>';
+			. 'Server is unable to access phpgw email tmp directory'.'<br>'
+			. $uploaddir.'<br>'
+			. 'Please check your configuration'.'<br>'
+			. '<br>';
 	}
 
 	/*
@@ -87,7 +87,7 @@
 	// also see http://www.php.net/bugs.php?id=8377  for the status of an upload bug not fixed as of 4.0.4
 	// also note that uploading file to *memory* is wasteful
 	*/
-	
+
 	// clean / prepare PHP provided file info
 	if(floor(phpversion()) >= 4)
 	{
@@ -103,7 +103,7 @@
 		$file_size = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile_size));
 		$file_type = $GLOBALS['phpgw']->msg->stripslashes_gpc(trim($uploadedfile_type));
 	}
-	
+
 	// sometimes PHP is very clue-less about MIME types, and gives NO file_type
 	// rfc default for unknown MIME type is:
 	$mime_type_default = 'application/octet-stream';
@@ -121,7 +121,7 @@
 			// no filesystem seperator is present
 			return $input;
 		}
-		
+
 		for($i=0; $i < strlen($input); $i++ )
 		{
 			$pos = strpos($input, SEP, $i);
@@ -136,7 +136,6 @@
 	// Netscape 6 passes file_name with a full path, we need to extract just the filename
 	$file_name = wbasename($file_name);
 
-
 	// Some of the methods were borrowed from
 	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
 	if ($action == lang('Delete'))
@@ -149,9 +148,9 @@
 	}
 
 	//if ($action == 'Attach File')
-	if (($action == lang('Attach File'))
-	&& ($file_tmp_name != '')
-	&& ($file_tmp_name != 'none'))
+	if (($action == lang('Attach File')) &&
+		($file_tmp_name != '') &&
+		($file_tmp_name != 'none'))
 	{
 		srand((double)microtime()*1000000);
 		$random_number = rand(100000000,999999999);
@@ -172,22 +171,22 @@
 		fputs($ftp,$file_type."\n".$file_name."\n");
 		fclose($ftp);
 	}
-	elseif (($action == lang('Attach File'))
-	&& (($file_tmp_name == '') || ($file_tmp_name == 'none')))
+	elseif (($action == lang('Attach File')) &&
+		(($file_tmp_name == '') || ($file_tmp_name == 'none')))
 	{
 		$langed_attach_file = lang("Attach File");
 		$alert_msg = lang('Input Error:').'<br>'
-			.lang('Please submit a filename to attach').'<br>'
-			.lang('You must click').' "'.lang('Attach File').'" '.lang('for the file to actually upload').'<br>'
-			.'<br>';
+			. lang('Please submit a filename to attach').'<br>'
+			. lang('You must click').' "'.lang('Attach File').'" '.lang('for the file to actually upload').'<br>'
+			. '<br>';
 	}
 
 	$dh = opendir($uploaddir);
 	while ($file = readdir($dh))
 	{
-		if (($file != '.')
-		&& ($file != '..')
-		&& (ereg("\.info",$file)))
+		if (($file != '.') &&
+		($file != '..') &&
+		(ereg("\.info",$file)))
 		{
 			$file_info = file($uploaddir.SEP.$file);
 			// for every file, fill the file list template with it

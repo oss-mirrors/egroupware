@@ -30,10 +30,10 @@
 	$d = CreateObject('phpgwapi.contacts');
 	$c = CreateObject('phpgwapi.categories');
 	$c->app_name = 'addressbook';
-	
+
 	$include_personal = True;
 	//$include_personal = False;
-	
+
 	$charset = $GLOBALS['phpgw']->translation->translate('charset');
 	$GLOBALS['phpgw']->template->set_var('charset',$charset);
 	$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
@@ -86,8 +86,8 @@
 		}
 	}
 
-	if (($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
-	&& ($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0))
+	if (($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']) &&
+	($GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'] > 0))
 	{
 		$offset = $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'];
 	}
@@ -148,26 +148,26 @@
 		{
 			$lastname = '&nbsp;';
 		}
-		
+
 		$personal_firstname = '';
 		$personal_lastname = '';
 		$personal_part = '';
-		if ((isset($firstname))
-		&& ($firstname != '')
-		&& ($firstname != '&nbsp;'))
+		if ((isset($firstname)) &&
+			($firstname != '') &&
+			($firstname != '&nbsp;'))
 		{
 			$personal_firstname = $firstname.' ';
 		}
-		if ((isset($lastname))
-		&& ($lastname != '')
-		&& ($lastname != '&nbsp;'))
+		if ((isset($lastname)) &&
+			($lastname != '') &&
+			($lastname != '&nbsp;'))
 		{
 			$personal_lastname = $lastname;
 		}
 		$personal_part = $personal_firstname.$personal_lastname;
 		
-		if (($personal_part == '')
-		|| ($include_personal == False))
+		if (($personal_part == '') ||
+			($include_personal == False))
 		{
 			$id     = $entries[$i]['id'];
 			$email  = $entries[$i]['email'];
@@ -176,8 +176,8 @@
 		else
 		{
 			$id = $entries[$i]['id'];
-			if ((isset($entries[$i]['email']))
-			&& (trim($entries[$i]['email']) != ''))
+			if ((isset($entries[$i]['email'])) &&
+				(trim($entries[$i]['email']) != ''))
 			{
 				$email  = '&quot;'.$personal_part.'&quot; &lt;'.$entries[$i]['email'].'&gt;';
 			}
@@ -185,8 +185,8 @@
 			{
 				$email  = $entries[$i]['email'];
 			}
-			if ((isset($entries[$i]['email_home']))
-			&& (trim($entries[$i]['email_home']) != ''))
+			if ((isset($entries[$i]['email_home'])) &&
+				(trim($entries[$i]['email_home']) != ''))
 			{
 				$hemail = '&quot;'.$personal_part.'&quot; &lt;'.$entries[$i]['email_home'].'&gt;';
 			}
