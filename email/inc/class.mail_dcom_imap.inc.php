@@ -49,58 +49,47 @@
     {
 	global $phpgw_info, $phpgw;
     
-	if ($currentfolder == "Trash")
+	if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
+	&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
 	{
-		return imap_delete($stream,$msg_num);
-	}
-	else
-	{
-		if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
-		&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
+		$trash_folder_long = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['trash_folder_name']);
+		$trash_folder_short = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
+		if ($currentfolder != '')
 		{
-			$trash_folder_long = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['trash_folder_name']);
-			$trash_folder_short = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
-			
-			// $filter = $this->construct_folder_str("");
-			// $mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
-
-			$server_str = $phpgw->msg->get_mailsvr_callstr();
-			$name_space = $phpgw->msg->get_mailsvr_namespace();
-			$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
-
-			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-			{
-				$mailboxes = $this->listmailbox($stream, $server_str, "$name_space" ."$dot_or_slash" ."*");
-			}
-			else
-			{
-				$mailboxes = $this->listmailbox($stream, $server_str, "$name_space" ."*");
-			}
-			// does the trash folder exist already
-			if (count($mailboxes) != 0)
-			{
-				$havetrashfolder = False;
-				while ($folder = each($mailboxes))
-				{
-					if ($phpgw->msg->get_folder_short($folder[1]) == $trash_folder_short)
-					{
-						$havetrashfolder = True;
-					}
-				}
-			}
-			// create the trash folder (similar to Netscape's behavior here)
-			if (! $havetrashfolder)
-			{
-				$this->createmailbox($stream,$server_str .$trash_folder_long);
-			}
-			// $tofolder =  $this->construct_folder_str($trash_folder);
-			// return imap_mail_move($stream,$msg_num,$tofolder);
-			return imap_mail_move($stream,$msg_num,$trash_folder_long);
+			$currentfolder = $phpgw->msg->get_folder_short($currentfolder);
 		}
-		else
+		// if we are deleting FROM the trash folder, we doa straight delete
+		if ($currentfolder == $trash_folder_short)
 		{
 			return imap_delete($stream,$msg_num);
 		}
+		else
+		{
+			// get a list of all available folders
+			$folder_list = $phpgw->msg->get_folder_list($stream);
+			// does the trash folder actually exist ?
+			$havefolder = False;
+			for ($i=0; $i<count($folder_list);$i++)
+			{
+				if ($folder_list[$i]['folder_short'] == $trash_folder_short)
+				{
+					$havefolder = True;
+					break;
+				}
+			}
+			// if not, create the trash folder (similar to Netscape's behavior here)
+			if (! $havefolder)
+			{
+				$server_str = $phpgw->msg->get_mailsvr_callstr();
+				$this->createmailbox($stream,$server_str .$trash_folder_long);
+			}
+			// do the move to the trash folder
+			return imap_mail_move($stream,$msg_num,$trash_folder_long);
+		}
+	}
+	else
+	{
+		return imap_delete($stream,$msg_num);
 	}
     }
 
@@ -201,40 +190,33 @@
     {
 	global $phpgw_info, $phpgw;
 
-	$filter = $this->construct_folder_str("");
+	//$filter = $this->construct_folder_str("");
+	//$mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
 
 	$server_str = $phpgw->msg->get_mailsvr_callstr();
 	$name_space = $phpgw->msg->get_mailsvr_namespace();
 	$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
-	//$mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
+	$folder_short = $phpgw->msg->get_folder_short($folder);
+	$folder_long = $phpgw->msg->get_folder_long($folder);
 
-	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+	// get a list of all available folders
+	$folder_list = $phpgw->msg->get_folder_list($stream);
+	// does the target folder of the append actually exist
+	$havefolder = False;
+	for ($i=0; $i<count($folder_list);$i++)
 	{
-		$mailboxes = $this->listmailbox($stream, $server_str, "$name_space" ."$dot_or_slash" ."*");
-	}
-	else
-	{
-		$mailboxes = $this->listmailbox($stream, $server_str, "$name_space" ."*");
-	}
-	
-	if (count($mailboxes) != 0)
-	{
-		$havefolder = False;
-		while ($eachfolder = each($mailboxes))
+		if ($folder_list[$i]['folder_short'] == $folder_short)
 		{
-			if ($eachfolder[1] == $folder)
-			{
-				$havefolder = True;
-			}
+			$havefolder = True;
+			break;
 		}
 	}
 	if (! $havefolder)
 	{
-		$this->createmailbox($stream,$server_str .$this->construct_folder_str($folder));
+		$this->createmailbox($stream,$server_str .$folder_long);
 	}
-
-	$folder = $this->construct_folder_str($folder);
-	return imap_append($stream, $server_str.$folder, $message, $flags);
+	
+	return imap_append($stream, $server_str.$folder_long, $message, $flags);
     }
 
     function login( $folder = "INBOX")

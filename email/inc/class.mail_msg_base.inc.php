@@ -32,6 +32,7 @@
 	//global $phpgw, $phpgw_info;
 
 	var $att_files_dir;
+	var $folder_list = array();
 	var $known_subtypes = array();
 
 	function mail_msg_init()
@@ -442,6 +443,127 @@
 			}
 		}
 		return $folder_short;
+	}
+
+
+	/* * * * * * * * * * *
+	  *  get_folder_list
+	  *  returns a numbered array, each element has 2 properties, "folder_long" and "folder_short"
+	  *  so every available folder is in the structure in both long form [namespace][delimiter][foldername]
+	  *  and short form (does not have the [namespace][delimiter] prefix to the folder name)
+	  * * * * * * *  * * * */
+	function get_folder_list($mailbox, $force_refresh=False)
+	{
+		global $phpgw, $phpgw_info;
+		
+		// see if we have cached data that we can use
+		if ((count($this->folder_list) > 0)
+		&& ($force_refresh == False))
+		{
+			// use the cached data
+			return $this->folder_list;
+		}
+		elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3')
+		|| ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'pop3s'))
+		{
+			// normalize the folder_list property
+			$this->folder_list = Array();
+			// POP3 servers have 1 folder: INBOX
+			$this->folder_list[0]['folder_long'] = 'INBOX';
+			$this->folder_list[0]['folder_short'] = 'INBOX';
+			return $this->folder_list;
+		}
+		else
+		{
+			// Establish Email Server Connectivity Information
+			$server_str = $this->get_mailsvr_callstr();
+			$name_space = $this->get_mailsvr_namespace();
+			$delimiter = $this->get_mailsvr_delimiter();
+
+			// get a list of available folders from the server
+			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+			{
+				// uwash is file system based, so it requires a filesystem slash after the namespace
+				// note with uwash the delimited is infact the file system slash
+				// example: "mail/*"( which will NOT list the INBOX with the folder list, however)
+				// however, we have no choice since w/o the delimiter "email*" we get NOTHING
+				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
+				// UWASH IMAP returns information in this format:
+				// {SERVER_NAME:PORT}FOLDERNAME
+				// example:
+				// {some.server.com:143}Trash
+				// {some.server.com:143}Archives/Letters
+			}
+			else
+			{
+				// the last arg is typically "INBOX*" which will include the inbox in the list of folders
+				// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
+				// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
+				// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
+				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
+				// returns information in this format:
+				// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
+				// example:
+				// {some.server.com:143}INBOX
+				// {some.server.com:143}INBOX.Trash
+			}
+
+			// ERROR DETECTION
+			if (!$mailboxes)
+			{
+				// we got no information back, clear the folder_list property
+				// normalize the folder_list property
+				$this->folder_list = Array();
+				// *assume* (i.e. pretend)  we have a server with only one box: INBOX
+				$this->folder_list[0]['folder_long'] = 'INBOX';
+				$this->folder_list[0]['folder_short'] = 'INBOX';
+				return $this->folder_list;
+			}
+
+			// was INBOX included in the list? Some servers (uwash) do not return it
+			$has_inbox = False;
+			for ($i=0; $i<count($mailboxes);$i++)
+			{
+				$this_folder = $this->get_folder_short($mailboxes[$i]);
+				if ($this_folder == 'INBOX')
+				{
+					$has_inbox = True;
+					break;
+				}
+			}
+			// ADD INBOX if necessary
+			if ($has_inbox == False)
+			{
+				// use the same format as "listmailbox" returns
+				$add_inbox = $server_str.'INBOX';
+				$next_available = count($mailboxes);
+				// add it to the $mailboxes array
+				$mailboxes[$next_available] = $add_inbox;
+			}
+
+			// sort folder names 
+			if (gettype($mailboxes) == 'array')
+			{
+				sort($mailboxes);
+			}
+
+			// normalize the folder_list property
+			$this->folder_list = Array();
+
+			// make the folder_list array structure
+			for ($i=0; $i<count($mailboxes);$i++)
+			{
+				// "is_imap_folder" really just a check on what UWASH imap returns, may be files that are not MBOX's
+				if ($this->is_imap_folder($mailboxes[$i]))
+				{
+					$this->folder_list[$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
+					$this->folder_list[$i]['folder_short'] = $this->get_folder_short($mailboxes[$i]);
+				}
+			}
+
+			// finished, treturn the folder_list array atructure
+			return $this->folder_list;
+		}
 	}
 
 	function is_imap_folder($folder)

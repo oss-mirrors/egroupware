@@ -65,90 +65,38 @@
 				}
 			}
 		}
-		elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
-		    && ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3s'))
+		else
 		{
-			// Establish Email Server Connectivity Conventions
-			$server_str = $this->get_mailsvr_callstr();
-			$name_space = $this->get_mailsvr_namespace();
-			$delimiter = $this->get_mailsvr_delimiter();
-			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-			{
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
-			}
-			else
-			{
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
-			}
+			$folder_list = $this->get_folder_list($mailbox);
 
-			// sort folder names 
-			if (gettype($mailboxes) == 'array')
+			for ($i=0; $i<count($folder_list);$i++)
 			{
-				sort($mailboxes);
-			}
-
-			if($mailboxes)
-			{
-				$num_boxes = count($mailboxes);
-				if ($name_space != 'INBOX')
+				$folder_long = $folder_list[$i]['folder_long'];
+				$folder_short = $folder_list[$i]['folder_short'];
+				if ($folder_short == $pre_select)
 				{
-					// UWash for example, we must FORCE it to look at the INBOX 
-					$outstr = $outstr .'<option value="INBOX">INBOX';
-					if ($indicate_new)
+					$sel = ' selected';
+				}
+				else
+				{
+					$sel = '';
+				}
+				if ($folder_short != $skip)
+				{
+					$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
+					// do we show the number of new (unseen) messages for this folder
+					if (($indicate_new)
+					&& ($this->care_about_unseen($folder_short)))
 					{
-						$mailbox_status = $phpgw->dcom->status($mailbox,$server_str . 'INBOX',SA_UNSEEN);
+						$server_str = $this->get_mailsvr_callstr();
+						$mailbox_status = $phpgw->dcom->status($mailbox, $server_str .$folder_long,SA_UNSEEN);
 						if ($mailbox_status->unseen > 0)
 						{
 							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
 						}
 					}
-					$outstr = $outstr . "</option>\r\n"; 
+					$outstr = $outstr . "</option>\r\n";
 				}
-				for ($i=0; $i<$num_boxes;$i++)
-				{
-					/*
-					if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-					&& (strstr($mailboxes[$i],"/.")) )
-					{
-						// {serverstring}~/. indicates this is a hidden file in the users home directory
-						// $server_str."/."
-						// actually, ANY pattern matching "/." for UWash is NOT an MBOX
-						// DO NOTHING - this is not an MBOX file
-					}
-					else
-					*/
-					if ($this->is_imap_folder($mailboxes[$i]))
-					{
-						$folder_short = $this->get_folder_short($mailboxes[$i]);
-						if ($folder_short == $pre_select)
-						{
-							$sel = ' selected';
-						}
-						else
-						{
-							$sel = '';
-						}
-						if ($folder_short != $skip)
-						{
-							$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
-							// do we show the number of new (unseen) messages for this folder
-							if (($indicate_new)
-							&& ($this->care_about_unseen($folder_short)))
-							{
-								$mailbox_status = $phpgw->dcom->status($mailbox,$mailboxes[$i],SA_UNSEEN);
-								if ($mailbox_status->unseen > 0)
-								{
-									$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;
-								}
-							}
-							$outstr = $outstr . "</option>\r\n";
-						}
-					}
-				}
-			}
-			else
-			{
-				$outstr = $outstr .'<option value="INBOX">INBOX</option>';
 			}
 		}
 		return $outstr;

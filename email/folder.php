@@ -47,6 +47,8 @@
 	$name_space = $phpgw->msg->get_mailsvr_namespace();
 	$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
 
+	// urldecode folder especially needed to change "+" into spaces in folder names that have spaces
+	$folder = urldecode($folder);
 	$folder_long = $phpgw->msg->get_folder_long($folder);
 	$folder_short = $phpgw->msg->get_folder_short($folder);
 	/*
@@ -106,71 +108,42 @@
 	}
 
 
-// ----  Get a List Of All Folders  ----
-	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-	{
-		// last arg may be "mail/*" which will NOT list the INBOX with the folder list
-		// however, we have no choice since w/o the delimiter "email*" we get NOTHING
-		$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" ."*");
-	}
-	else
-	{
-		// the last arg is typically "INBOX*" which will include the inbox in the list of folders
-		// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
-		// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
-		// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-		$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
-	}
+// ----  Get a List Of All Folders  AND Display them ----
+	$folder_list = $phpgw->msg->get_folder_list($mailbox);
 
-	// sort folder names 
-	if (gettype($mailboxes) == 'array')
+	for ($i=0; $i<count($folder_list);$i++)
 	{
-		sort($mailboxes);
-	}
-	
-	if ($mailboxes)
-	{
-		for ($i=0; $i<count($mailboxes);$i++)
+		$folder_long = $folder_list[$i]['folder_long'];
+		$folder_short = $folder_list[$i]['folder_short'];
+		// open this particular folder
+		if (((count($folder_list)) == 1)
+		&& ($folder_short == 'INBOX'))
 		{
-			/*
-			if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
-			&& (strstr($mailboxes[$i],"/.")) )
-			{
-				// {serverstring}~/. indicates this is a hidden file in the users home directory
-				// $server_str."/."
-				// any pattern matching "/." for UWash is NOT an MBOX
-				// DO NOTHING - this is not an MBOX file
-			}
-			else
-			*/
-			if ($phpgw->msg->is_imap_folder($mailboxes[$i]))
-			{
-				$folder_long = $phpgw->msg->get_folder_long($mailboxes[$i]);
-				$folder_short = $phpgw->msg->get_folder_short($mailboxes[$i]);
-				$phpgw->dcom->reopen($mailbox, $mailboxes[$i]);
-				$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
-
-				$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-				$t->set_var('list_backcolor',$tr_color);
-				$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .urlencode($folder_short)));
-				$t->set_var('folder_name',$folder_short);
-				$t->set_var('msgs_unseen',$mailbox_status->unseen);
-				$t->set_var('msgs_total',$phpgw->dcom->num_msg($mailbox));
-				$t->parse('V_folder_list','B_folder_list',True);
-			}
+			// only difference here is that we do NOT REOPEN a stream to INBOX because
+			// we already have an open stream to INBOX (it's the only folder in this case)
+			// so DO NOTHING
 		}
-	}
-	else
-	{
+		else
+		{
+			// do we really have to do this?
+			$phpgw->dcom->reopen($mailbox, "$server_str"."$folder_long");
+		}
+		// get the stats ONLY for the number of new (unseen) messages
+		//$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
+		// $total_msgs = $phpgw->dcom->num_msg($mailbox)
+
+		// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
+		$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_ALL);
+
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-
-		$mailbox_status = $phpgw->dcom->status($mailbox,$server_str.'INBOX',SA_UNSEEN);
-
 		$t->set_var('list_backcolor',$tr_color);
-		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=INBOX'));
-		$t->set_var('folder_name','INBOX');
+		$t->set_var('folder_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder=' .urlencode($folder_short)));
+		$t->set_var('folder_name',$folder_short);
+		//$t->set_var('folder_name',$folder_long);
+		//$t->set_var('folder_name',$folder_list[$i]);
 		$t->set_var('msgs_unseen',$mailbox_status->unseen);
-		$t->set_var('msgs_total',$phpgw->dcom->num_msg($mailbox));
+		//$t->set_var('msgs_total',$total_msgs);
+		$t->set_var('msgs_total',$mailbox_status->messages);
 		$t->parse('V_folder_list','B_folder_list',True);
 	}
 
@@ -184,7 +157,7 @@
 // ----  Set Up Other Variables  ---	
 	$t->set_var('title_backcolor',$phpgw_info['theme']['em_folder']);
 	$t->set_var('title_textcolor',$phpgw_info['theme']['em_folder_text']);
-	// FIXME  needs lang
+	// FIXME  needs lang()
 	$t->set_var('title_text','Folder Maintenance');
 	$t->set_var('the_font',$phpgw_info['theme']['font']);
 	$t->set_var('th_backcolor',$phpgw_info['theme']['th_bg']);
