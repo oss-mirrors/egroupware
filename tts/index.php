@@ -59,33 +59,33 @@
   <TABLE CELLSPACING=1 CELLPADDING=1 BORDER=0>
    <TR bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_id",$order,"index.php",lang("Ticket")." #"); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_id",$order,"/tts/index.php",lang("Ticket")." #"); ?>
     </td>
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_priority",$order,"index.php",lang("Prio")); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_priority",$order,"/tts/index.php",lang("Prio")); ?>
     </td>
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_category",$order,"index.php",lang("Group")); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_category",$order,"/tts/index.php",lang("Group")); ?>
     </td>
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_assignedto",$order,"index.php",lang("Assigned to")); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_assignedto",$order,"/tts/index.php",lang("Assigned to")); ?>
     </td>
 
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_user",$order,"index.php",lang("Opened by")); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_user",$order,"/tts/index.php",lang("Opened by")); ?>
     </td>
     <td align=center>
-     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_opened",$order,"index.php",lang("Date opened")); ?>
+     <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_opened",$order,"/tts/index.php",lang("Date opened")); ?>
     </td>
     <?php
       if ($filter == "viewall") {
         echo "<td align=center>";
-        echo $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_closed",$order,"index.php",lang("Status/Date closed"));
+        echo $phpgw->nextmatchs->show_sort_order($sort,"t_timestamp_closed",$order,"/tts/index.php",lang("Status/Date closed"));
         echo "</td>";
       }
     ?>
     <td align=center>
-      <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_subject",$order,"index.php",lang("Subject")); ?>
+      <?php echo $phpgw->nextmatchs->show_sort_order($sort,"t_subject",$order,"/tts/index.php",lang("Subject")); ?>
     </td>
    </TR>
 
