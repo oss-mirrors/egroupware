@@ -36,7 +36,7 @@
 
 			$this->read_sessiondata();
 
-			$country = $GLOBALS['HTTP_POST_VARS']['country']  ? $GLOBALS['HTTP_POST_VARS']['country'] : $GLOBALS['HTTP_GET_VARS']['country'];
+			$country = get_var('country',Array('GET','POST'));
 
 			if (isset($country) && !empty($country))
 			{

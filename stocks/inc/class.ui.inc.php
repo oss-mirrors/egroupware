@@ -160,8 +160,6 @@
 
 		function index()
 		{
-			$country	= $GLOBALS['HTTP_GET_VARS']['country'];
-
 			$this->display_app_header();
 			$this->t->set_file(array('quotes_list' => 'main.tpl'));
 			$this->t->set_var('country_list',$this->selected_country($this->country));
@@ -173,8 +171,8 @@
 
 		function list_stocks()
 		{
-			$action 	= $GLOBALS['HTTP_GET_VARS']['action'] ? $GLOBALS['HTTP_GET_VARS']['action'] : $GLOBALS['HTTP_POST_VARS']['action'];
-			$stock_id	= $GLOBALS['HTTP_GET_VARS']['stock_id'];
+			$action 	= get_var('action',Array('POST','GET'));
+			$stock_id	= get_var('stock_id',Array('GET'));
 
 			$link_data = array
 			(
@@ -239,7 +237,7 @@
 
 		function preferences()
 		{
-			$prefs = $GLOBALS['HTTP_POST_VARS']['prefs'];
+			$prefs = get_var('prefs',Array('POST'));
 
 			$link_data = array
 			(
@@ -277,8 +275,8 @@
 
 		function add_stock()
 		{
-			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
-			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
+			$submit		= get_vars('submit',Array('POST'));
+			$values		= get_vars('values',Array('POST'));
 
 			if ($submit)
 			{
@@ -302,9 +300,9 @@
 
 		function edit_stock()
 		{
-			$submit		= $GLOBALS['HTTP_POST_VARS']['submit'];
-			$values		= $GLOBALS['HTTP_POST_VARS']['values'];
-			$stock_id	= $GLOBALS['HTTP_GET_VARS']['stock_id'];
+			$submit		= get_var('submit',Array('POST'));
+			$values		= get_var('values',Array('POST'));
+			$stock_id	= get_var('stock_id',Array('POST'));
 
 			$link_data = array
 			(
