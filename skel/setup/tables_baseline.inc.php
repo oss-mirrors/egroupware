@@ -12,7 +12,7 @@
   /* $Id$ */
 
 	$phpgw_baseline = array(
-		'phpgw_skel' => array(
+		'skel' => array(
 			'fd' => array(
 				'skel_id' => array('type' => 'auto', 'nullable' => false),
 				'skel_owner' => array('type' => 'varchar', 'precision' => 25),
