@@ -71,7 +71,13 @@ function mail_ticket($ticket_id) {
   } else {
     $to = $toarray[0];
   }
-  
+
+  if($phpgw_info["user"]["apps"]["email"]) {
+    $phpgw->preferences->read_preferences("email");
+  } else {
+    $phpgw_info["user"]["preferences"]["email"]["address"] = $phpgw_info["user"]["account_lid"]."@".$phpgw_info["server"]["mail_suffix"];
+  }
+
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if (!$rc) {
     echo "Your message could <B>not</B> be sent!<BR>\n";
