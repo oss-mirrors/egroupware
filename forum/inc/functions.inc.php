@@ -55,3 +55,5 @@ function newdbhandle() {
  $db_handler = mysql_connect($phpgw->db->Host,$phpgw->db->User,$phpgw->db->Pass);
 }
 
+
+

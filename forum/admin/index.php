@@ -69,11 +69,12 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
 
    $q2 = mysql_db_query($phpgw->db->Database,"select * from f_forums where cat_id=$cat_id");
    while($row = mysql_fetch_array($q2)) {
-   echo "  <tr>\n";
-   echo "   <td width=20%>" . $row["name"] . "</td>\n";
-   echo "   <td width=70%>" . $row["descr"] . "</td>\n";
-   echo "   <td width=150>" . lang_forums("Edit") . "</td>\n";
-   echo "  </tr>\n";
+    $for_id = $row["id"];
+    echo "  <tr>\n";
+    echo "   <td width=20%>" . $row["name"] . "</td>\n";
+    echo "   <td width=70%>" . $row["descr"] . "</td>\n";
+    echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . lang_forums("Edit") . "</td>\n";
+    echo "  </tr>\n";
 
 
   }
