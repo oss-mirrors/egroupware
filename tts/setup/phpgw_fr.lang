@@ -39,6 +39,7 @@ detail	tts	fr	Détail
 duplicate	tts	fr	Dupliqué
 edit the state	tts	fr	Editer l'état
 edit the transition	tts	fr	Editer la transition
+error: the subject of the ticket is not specified.	tts	fr	ERREUR: Le sujet du ticket n'est pas spécifié.
 force	tts	fr	Force
 global categories	tts	fr	Catégories Globales
 group ownership changed	tts	fr	Propriétaire du groupe changé
@@ -79,6 +80,7 @@ opened	tts	fr	Ouvert
 opened by	tts	fr	Ouvert par
 original ticket details	tts	fr	Détails du ticket original
 perform irregular transition into the following state	tts	fr	Traiter les transition irrégulières dans l'état suivant
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	fr	Veuillez entrer le sujet du ticket, sans cela le ticket ne peut pas être enregistré.
 prio	tts	fr	Prio
 priority	tts	fr	Priorité
 priority changed	tts	fr	Priorité changée
@@ -153,7 +155,10 @@ verify	tts	fr	En cours de vérification
 verify the ticket to work on it.	tts	fr	Vérifier le ticket pour pouvoir le traiter.
 view all tickets	tts	fr	Voir tous les tickets
 view job detail	tts	fr	Voir le détail du travail
+view only my open tickets	tts	fr	Voir seulement mes tickets ouverts
 view only open tickets	tts	fr	Voir seulement les tickets ouverts
 you can only close a ticket if it is assigned to you.	tts	fr	Vous pouvez fermer un ticket s'il vous est assigné.
+you want to delete the state %1 and associated transitions. are you sure?	tts	fr	Vous voulez effacer l'état %1 et ses transitions associées. Etes-vous sûr?
+Voulez-vous effacer l'état
 you want to delete the state %1. are you sure?	tts	fr	Vous souhaitez supprimer l'état %1. Etes-vous sûr ?
 you want to delete the transition %1. are you sure?	tts	fr	Vous souhaitez supprimer la transition %1. Etes-vous sûr ?
