@@ -36,5 +36,14 @@
 		$file['Meerkat Browser'] = $GLOBALS['phpgw']->link('/meerkat/index.php');
 	}
 	display_sidebox($appname,$menu_title,$file);
+
+	if ($GLOBALS['phpgw_info']['user']['apps']['admin'] && !$GLOBALS['phpgw']->acl->check('peer_server_access',1,'admin'))
+	{
+		$menu_title = lang('Administration');
+		$file = array(
+			'Peer Servers' => $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiserver.list_servers')
+		);
+		display_sidebox($appname,$menu_title,$file);
+	}
 }
 ?>
