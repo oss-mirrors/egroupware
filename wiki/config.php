@@ -19,38 +19,38 @@ $Admin = 'webmaster@domain.com';
 
 // If $DBPersist is not 0, persistent database connections will be used.
 // Note that this is not supported by all hosting providers.
-$DBPersist = 0;
+$DBPersist = $GLOBALS['phpgw_info']['server']['db_persistent'];
 
 // $DBServer indicates the hostname of the database server.  It may be
 // set to '' for the local host.
-$DBServer = 'localhost';
+$DBServer = $GLOBALS['phpgw_info']['server']['db_host'];
 
 // $DBName indicates the name of the database that the wiki should use.
-$DBName = 'axiswiki';
+$DBName = $GLOBALS['phpgw_info']['server']['db_name'];
 
 // $DBUser indicates the name of the database user.
-$DBUser = 'axisgroupware';
+$DBUser = $GLOBALS['phpgw_info']['server']['db_user'];
 
 // $DBPasswd indicates the password to use for database access.
-$DBPasswd = 'password';
+$DBPasswd = $GLOBALS['phpgw_info']['server']['db_pass'];
 
 // $DBTablePrefix is used to start table names for the wiki's tables.  If your
 // hosting provider only allows you one database, you can set up multiple
 // wikis in the same database by creating tables that have different prefixes.
-$DBTablePrefix = '';
+$DBTablePrefix = 'phpgw_wiki_';
 
 // $WikiName determines the name of your wiki.  This name is used in the
 // browser title bar.  Often, it will be the same as $HomePage.
-$WikiName = 'AxisWiki';
+$WikiName = 'PhpGroupWareWiki';
 
 // $HomePage determines the "main" page of your wiki.  If browsers do not ask
 // to see a specific page they will be shown the home page.  This should be
 // a wiki page name, like 'AcmeProjectWiki'.
-$HomePage = 'AxisWiki';
+$HomePage = 'PhpGroupWareWiki';
 
 // $InterWikiPrefix determines what interwiki prefix you recommend other
 // wikis use to link to your wiki. Usually it is similar to your WikiName.
-$InterWikiPrefix = 'Axis';
+$InterWikiPrefix = 'PhpGroupWare';
 
 // If $EnableFreeLinks is set to 1, links of the form "((page name))" will be
 // turned on for this wiki.  If it is set to 0, they will be disallowed.
@@ -64,22 +64,22 @@ $EnableWikiLinks = 1;
 // $ScriptBase determines the location of your wiki script.  It should indicate
 // the full URL of the main index.php script itself.
 # simply set the relative directory here for phpgw support
-$ScriptBase = $GLOBALS['phpgw']->link("/axiswiki/index.php");
+$ScriptBase = $GLOBALS['phpgw']->link('/wiki/index.php');
 
 // $AdminScript indicates the location of your admin wiki script.  It should
 // indicate the full URL of the admin/index.php script itself.
-$AdminScript = $GLOBALS['phpgw']->link("/axiswiki/admin/index.php");
+$AdminScript = $GLOBALS['phpgw']->link('/wiki/admin/index.php');
 
 // $WikiLogo determines the location of your wiki logo.
-$WikiLogo = $GLOBALS['phpgw']->link("/axiswiki/logo.gif");
+$WikiLogo = $GLOBALS['phpgw']->link('/wiki/templates/default/images/navbar.gif');
 
 // $MetaKeywords indicates what keywords to report on the meta-keywords tag.
 // This is useful to aid search engines in indexing your wiki.
-$MetaKeywords = 'axis documentation wiki';
+$MetaKeywords = 'phpgw documentation wiki';
 
 // $MetaDescription should be a sentence or two describing your wiki.  This
 // is useful to aid search engines in indexing your wiki.
-$MetaDescription = 'Axis Documentation Wiki';
+$MetaDescription = 'phpGroupWare Documentation Wiki';
 
 // TemplateDir indicates what directory your wiki templates are located in.
 // You may use this to install other templates than the default template.

@@ -87,28 +87,28 @@ function html_table_cell_start($span = 1)
 }
 function html_table_cell_end()
   { return '</td>'; }
-function html_time($timestamp)
+function html_time($time/*stamp*/)
 {
   global $TimeZoneOff;
-  if($timestamp == '') { return 'never'; }
-  $time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
+  if($time/*stamp*/ == '') { return 'never'; }
+/*$time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
                  substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));
+                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));*/
   return date('D, d M Y H:i:s', $time + $TimeZoneOff * 60);
 }
-function html_gmtime($timestamp)
+function html_gmtime($time/*stamp*/)
 {
-  $time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
+/*$time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
                  substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));
+                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));*/
   return gmdate('Y-m-d', $time) . 'T' . gmdate('H:i:s', $time) . 'Z';
 }
-function html_timestamp($timestamp)
+function html_timestamp($time/*stamp*/)
 {
   global $TimeZoneOff;
-  $time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
+/*  $time = mktime(substr($timestamp, 8, 2),  substr($timestamp, 10, 2),
                  substr($timestamp, 12, 2), substr($timestamp, 4, 2),
-                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4));
+                 substr($timestamp, 6, 2),  substr($timestamp, 0, 4)); */
   return date('Y.m.d H:i:s', $time + $TimeZoneOff * 60);
 }
 function html_url($url, $text)
@@ -200,7 +200,7 @@ function html_toolbar_top()
     return html_ref($HomePage, $HomePage) . ' | ' .
          html_ref('RecentChanges', 'RecentChanges') . ' | ' .
          '<a href="' . $PrefsScript . '">Preferences</a> | '.
-         '<a href="'.$GLOBALS['phpgw']->link("/axiswiki/admin/index.php").'">Administration</a><br>';
+         '<a href="'.$GLOBALS['phpgw']->link("/wiki/admin/index.php").'">Administration</a><br>';
   } else {
     return html_ref($HomePage, $HomePage) . ' | ' .
          html_ref('RecentChanges', 'RecentChanges') . ' | ' .

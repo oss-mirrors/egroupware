@@ -32,7 +32,7 @@ class WikiPage
     global $PgTbl;
 
     $qid = $this->db->query("SELECT MAX(version) FROM $PgTbl " .
-                            "WHERE title='$this->dbname'");
+                            "WHERE title='$this->dbname'",__LINE__,__FILE__);
     return !!(($result = $this->db->result($qid)) && $result[0]);
   }
 
@@ -51,7 +51,7 @@ class WikiPage
     else
       { $query = $query . "ORDER BY version DESC"; }
 
-    $qid = $this->db->query($query);
+    $qid = $this->db->query($query,__LINE__,__FILE__);
 
     if(!($result = $this->db->result($qid)))
       { return ""; }
@@ -64,7 +64,7 @@ class WikiPage
     $this->username = $result[6];
     $this->text     = $result[3];
     $this->comment  = $result[7];
-
+    
     return $this->text;
   }
 
@@ -81,16 +81,16 @@ class WikiPage
 
     $this->db->query("INSERT INTO $PgTbl (title, version, time, supercede, " .
                      "mutable, username, author, comment, body) " .
-                     "VALUES('$this->dbname', $this->version, NULL, NULL, '" .
+                     "VALUES('$this->dbname', $this->version, ".time().','.time(). /*NULL, NULL*/", '" .
                      ($this->mutable ? 'on' : 'off') . "', " .
                      "'$this->username', '$this->hostname', " .
-                     "'$this->comment', '$this->text')");
+                     "'$this->comment', '$this->text')",__LINE__,__FILE__);
 
     if($this->version > 1)
     {
       $this->db->query("UPDATE $PgTbl SET time=$this->time, " .
-                       "supercede=NULL WHERE title='$this->dbname' " .
-                       "AND version=" . ($this->version - 1));
+                       "supercede=".time()./*NULL*/" WHERE title='$this->dbname' " .
+                       "AND version=" . ($this->version - 1),__LINE__,__FILE__);
     }
   }
 }

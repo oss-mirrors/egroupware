@@ -100,7 +100,7 @@ function view_macro_linktab()
   $lastpage = '';
   $text = '';
 
-  $q1 = $pagestore->dbh->query("SELECT page, link FROM $LkTbl ORDER BY page");
+  $q1 = $pagestore->dbh->query("SELECT page, link FROM $LkTbl ORDER BY page",__LINE__,__FILE__);
   while(($result = $pagestore->dbh->result($q1)))
   {
     if($lastpage != $result[0])
@@ -133,7 +133,7 @@ function view_macro_orphans()
   {
     $esc_page = addslashes($page[1]);
     $q2 = $pagestore->dbh->query("SELECT page FROM $LkTbl " .
-                                 "WHERE link='$esc_page' AND page!='$esc_page'");
+                                 "WHERE link='$esc_page' AND page!='$esc_page'",__LINE__,__FILE__);
     if(!($r2 = $pagestore->dbh->result($q2)) || empty($r2[0]))
     {
       if(!$first)                       // Don't prepend newline to first one.
@@ -161,7 +161,7 @@ function view_macro_wanted()
                                "ON l.link = p.title " .
                                "GROUP BY l.link " .
                                "HAVING p.title IS NULL " .
-                               "ORDER BY ct DESC, l.link");
+                               "ORDER BY ct DESC, l.link",__LINE__,__FILE__);
 
   while(($result = $pagestore->dbh->result($q1)))
   {
@@ -187,7 +187,7 @@ function view_macro_outlinks()
   $first = 1;
 
   $q1 = $pagestore->dbh->query("SELECT page, SUM(count) AS ct FROM $LkTbl " .
-                               "GROUP BY page ORDER BY ct DESC, page");
+                               "GROUP BY page ORDER BY ct DESC, page",__LINE__,__FILE__);
   while(($result = $pagestore->dbh->result($q1)))
   {
     if(!$first)                         // Don't prepend newline to first one.
@@ -217,12 +217,12 @@ function view_macro_refs()
 // entertain them.  -- ScottMoonen
 
   $q1 = $pagestore->dbh->query("SELECT link, SUM(count) AS ct FROM $LkTbl " .
-                               "GROUP BY link ORDER BY ct DESC, link");
+                               "GROUP BY link ORDER BY ct DESC, link",__LINE__,__FILE__);
   while(($result = $pagestore->dbh->result($q1)))
   {
     $esc_page = addslashes($result[0]);
     $q2 = $pagestore->dbh->query("SELECT MAX(version) FROM $PgTbl " .
-                                 "WHERE title='$esc_page'");
+                                 "WHERE title='$esc_page'",__LINE__,__FILE__);
     if(($r2 = $pagestore->dbh->result($q2)) && !empty($r2[0]))
     {
       if(!$first)                       // Don't prepend newline to first one.

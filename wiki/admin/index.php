@@ -1,10 +1,10 @@
 <?php
 // $Id$
 if(empty($Save) && empty($Block) && empty($Unblock)) {
-$phpgw_info["flags"] = array ("currentapp" => "axiswiki",
+$phpgw_info["flags"] = array ("currentapp" => "wiki",
 							 "enable_nextmatchs_class" => True );
 } else {
-				$phpgw_info["flags"] = array ("currentapp" => "axiswiki",
+				$phpgw_info["flags"] = array ("currentapp" => "wiki",
 							 "enable_nextmatchs_class" => True,
  							 "noheader" => True );
 }
@@ -24,7 +24,7 @@ if ($GLOBALS['phpgw_info']['user']['apps']['admin']) {
 }
 else {
 		echo "You are not authorized to access this page.<br><a href=\"";
-		echo $GLOBALS['phpgw']->link("/axiswiki/index.php");
+		echo $GLOBALS['phpgw']->link("/wiki/index.php");
 		echo "\">Go Back</a>";
 }
 ?>

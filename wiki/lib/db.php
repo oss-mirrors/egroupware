@@ -9,7 +9,8 @@ class WikiDB
 
   function WikiDB($persistent, $server, $user, $pass, $database)
   {
-    global $ErrorDatabaseConnect, $ErrorDatabaseSelect;
+/*
+	global $ErrorDatabaseConnect, $ErrorDatabaseSelect;
 
     if($persistent)
       { $this->handle = mysql_pconnect($server, $user, $pass); }
@@ -21,20 +22,26 @@ class WikiDB
 
     if(mysql_select_db($database, $this->handle) == false)
       { die($ErrorDatabaseSelect); }
+*/
+	$this->handle = $GLOBALS['phpgw']->db;
   }
 
-  function query($text)
+  function query($text,$line='',$file='')
   {
+/*
     global $ErrorDatabaseQuery;
 
     if(!($qid = mysql_query($text, $this->handle)))
-      { die($ErrorDatabaseQuery); }
+      { die($ErrorDatabaseQuery.", '$text'"); }
     return $qid;
+*/
+	return $this->handle->query($text,$line,$file);
   }
 
   function result($qid)
   {
-    return mysql_fetch_row($qid);
+//    return mysql_fetch_row($qid);
+	return $this->handle->next_record() ? $this->handle->Record : False;
   }
 }
 ?>

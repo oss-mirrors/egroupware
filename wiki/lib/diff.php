@@ -6,8 +6,9 @@ function diff_compute($text1, $text2)
 {
   global $TempDir, $DiffCmd, $ErrorCreatingTemp, $ErrorWritingTemp;
 
-  $num = posix_getpid();                // Comment if running on Windows.
+  //$num = rand();                // Comment if running on Windows.
   // $num = rand();                     // Uncomment if running on Windows.
+  $num = strncmp(PHP_OS,'WIN',3) ? posix_getpid() : rand();
 
   $temp1 = $TempDir . '/wiki_' . $num . '_1.txt';
   $temp2 = $TempDir . '/wiki_' . $num . '_2.txt';

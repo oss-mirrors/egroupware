@@ -73,7 +73,7 @@ class PageStore
     global $IwTbl;
 
     $name = addslashes($name);
-    $qid = $this->dbh->query("SELECT url FROM $IwTbl WHERE prefix='$name'");
+    $qid = $this->dbh->query("SELECT url FROM $IwTbl WHERE prefix='$name'",__LINE__,__FILE__);
     if(($result = $this->dbh->result($qid)))
       { return $result[0]; }
     return '';
@@ -85,7 +85,7 @@ class PageStore
     global $LkTbl;
 
     $page = addslashes($page);
-    $this->dbh->query("DELETE FROM $LkTbl WHERE page='$page'");
+    $this->dbh->query("DELETE FROM $LkTbl WHERE page='$page'",__LINE__,__FILE__);
   }
 
   // Clear all the interwiki definitions for a particular page.
@@ -94,7 +94,7 @@ class PageStore
     global $IwTbl;
 
     $page = addslashes($page);
-    $this->dbh->query("DELETE FROM $IwTbl WHERE where_defined='$page'");
+    $this->dbh->query("DELETE FROM $IwTbl WHERE where_defined='$page'",__LINE__,__FILE__);
   }
 
   // Clear all the sisterwiki definitions for a particular page.
@@ -103,7 +103,7 @@ class PageStore
     global $SwTbl;
 
     $page = addslashes($page);
-    $this->dbh->query("DELETE FROM $SwTbl WHERE where_defined='$page'");
+    $this->dbh->query("DELETE FROM $SwTbl WHERE where_defined='$page'",__LINE__,__FILE__);
   }
 
   // Add a link for a given page to the link table.
@@ -121,14 +121,14 @@ class PageStore
 
     if(empty($links[$link]))
     {
-      $this->dbh->query("INSERT INTO $LkTbl VALUES('$page', '$link', 1)");
+      $this->dbh->query("INSERT INTO $LkTbl VALUES('$page', '$link', 1)",__LINE__,__FILE__);
       $links[$link] = 1;
     }
     else
     {
       $links[$link]++;
       $this->dbh->query("UPDATE $LkTbl SET count=" . $links[$link] .
-                        " WHERE page='$page' AND link='$link'");
+                        " WHERE page='$page' AND link='$link'",__LINE__,__FILE__);
     }
   }
 
@@ -143,16 +143,16 @@ class PageStore
     $where_defined = addslashes($where_defined);
 
     $qid = $this->dbh->query("SELECT where_defined FROM $IwTbl " .
-                             "WHERE prefix='$prefix'");
+                             "WHERE prefix='$prefix'",__LINE__,__FILE__);
     if($this->dbh->result($qid))
     {
       $this->dbh->query("UPDATE $IwTbl SET where_defined='$where_defined', " .
-                        "url='$url' WHERE prefix='$prefix'");
+                        "url='$url' WHERE prefix='$prefix'",__LINE__,__FILE__);
     }
     else
     {
       $this->dbh->query("INSERT INTO $IwTbl(prefix, where_defined, url) " .
-                        "VALUES('$prefix', '$where_defined', '$url')");
+                        "VALUES('$prefix', '$where_defined', '$url')",__LINE__,__FILE__);
     }
   }
 
@@ -167,16 +167,16 @@ class PageStore
     $where_defined = addslashes($where_defined);
 
     $qid = $this->dbh->query("SELECT where_defined FROM $SwTbl " .
-                             "WHERE prefix='$prefix'");
+                             "WHERE prefix='$prefix'",__LINE__,__FILE__);
     if($this->dbh->result($qid))
     {
       $this->dbh->query("UPDATE $SwTbl SET where_defined='$where_defined', " .
-                        "url='$url' WHERE prefix='$prefix'");
+                        "url='$url' WHERE prefix='$prefix'",__LINE__,__FILE__);
     }
     else
     {
       $this->dbh->query("INSERT INTO $SwTbl(prefix, where_defined, url) " .
-                        "VALUES('$prefix', '$where_defined', '$url')");
+                        "VALUES('$prefix', '$where_defined', '$url')",__LINE__,__FILE__);
     }
   }
 
@@ -188,7 +188,7 @@ class PageStore
     $list = array();
     $page = addslashes($page);
     $q2 = $this->dbh->query("SELECT site, page FROM $RemTbl " .
-                            "WHERE page LIKE '$page'");
+                            "WHERE page LIKE '$page'",__LINE__,__FILE__);
     while(($twin = $this->dbh->result($q2)))
       { $list[] = array($twin[0], $twin[1]); }
 
@@ -201,13 +201,13 @@ class PageStore
     global $PgTbl, $IwTbl, $SwTbl, $LkTbl;
 
     $this->dbh->query("LOCK TABLES $PgTbl WRITE, $IwTbl WRITE, $SwTbl WRITE, " .
-                      "$LkTbl WRITE");
+                      "$LkTbl WRITE",__LINE__,__FILE__);
   }
 
   // Unlock the database tables.
   function unlock()
   {
-    $this->dbh->query("UNLOCK TABLES");
+    $this->dbh->query("UNLOCK TABLES",__LINE__,__FILE__);
   }
 
   // Retrieve a list of all of the pages in the wiki.
@@ -221,7 +221,7 @@ class PageStore
                              "FROM $PgTbl AS t1, $PgTbl AS t2 " .
                              "WHERE t1.title = t2.title " .
                              "GROUP BY t2.title, t1.version " .
-                             "HAVING t1.version = MAX(t2.version)");
+                             "HAVING t1.version = MAX(t2.version)",__LINE__,__FILE__);
 
     $list = array();
     while(($result = $this->dbh->result($qid)))
@@ -240,7 +240,7 @@ class PageStore
 
     $qid = $this->dbh->query("SELECT title, author, time, username, " .
                              "LENGTH(body), comment " .
-                             "FROM $PgTbl WHERE version=1");
+                             "FROM $PgTbl WHERE version=1",__LINE__,__FILE__);
 
     $list = array();
     while(($result = $this->dbh->result($qid)))
@@ -264,7 +264,7 @@ class PageStore
                              "WHERE t1.title = t2.title " .
                              "GROUP BY t2.title, t1.version " .
                              "HAVING t1.version = MAX(t2.version) " .
-                             "AND t1.body=''");
+                             "AND t1.body=''",__LINE__,__FILE__);
 
     $list = array();
     while(($result = $this->dbh->result($qid)))
@@ -287,7 +287,7 @@ class PageStore
       $esc_page = addslashes($page);
       $qid = $this->dbh->query("SELECT time, author, username, LENGTH(body), " .
                                "comment FROM $PgTbl WHERE title='$esc_page' " .
-                               "ORDER BY version DESC");
+                               "ORDER BY version DESC",__LINE__,__FILE__);
 
       if(!($result = $this->dbh->result($qid)))
         { continue; }
@@ -305,21 +305,23 @@ class PageStore
     global $PgTbl, $RtTbl, $ExpireLen, $RatePeriod;
 
     $qid = $this->dbh->query("SELECT title, MAX(version) FROM $PgTbl " .
-                             "GROUP BY title");
+                             "GROUP BY title",__LINE__,__FILE__);
 
     while(($result = $this->dbh->result($qid)))
     {
       $result[0] = addslashes($result[0]);
       $this->dbh->query("DELETE FROM $PgTbl WHERE title='$result[0]' AND " .
                         "(version < $result[1] OR body='') AND " .
-                        "TO_DAYS(NOW()) - TO_DAYS(supercede) > $ExpireLen");
+                      //"TO_DAYS(NOW()) - TO_DAYS(supercede) > $ExpireLen",__LINE__,__FILE__);
+                        intval(time()/86400-$ExpireLen)."<supercede/86400",__LINE__,__FILE__);
     }
 
     if($RatePeriod)
     {
       $this->dbh->query("DELETE FROM $RtTbl " .
                         "WHERE ip NOT LIKE '%.*' " .
-                        "AND TO_DAYS(NOW()) > TO_DAYS(time)");
+                      //"AND TO_DAYS(NOW()) > TO_DAYS(time)",__LINE__,__FILE__);
+                        "AND ".intval(time()/86400)." > time/86400",__LINE__,__FILE__);
     }
   }
 }
