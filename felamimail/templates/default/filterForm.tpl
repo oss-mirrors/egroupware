@@ -60,7 +60,7 @@
 		<a href="{link_newFilter} ">{lang_new_filter}</a>
 	</td>
 	<td  class="body" align="right" colspan="2">
-		<input type="submit" class="body" value="Speichern">
+		<input type="submit" class="body" value="{lang_save}" name="save">
 	</td>
 </tr>
 

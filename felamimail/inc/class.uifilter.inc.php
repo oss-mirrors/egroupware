@@ -219,6 +219,7 @@
 			$this->t->set_var("lang_new_filter",lang('new filter'));
 			$this->t->set_var("lang_no_filter",lang('no filter'));
 			$this->t->set_var("lang_activate",lang('activate'));
+			$this->t->set_var("lang_save",lang('save'));
 
 			$this->t->set_var("bg01",$GLOBALS['phpgw_info']["theme"]["bg01"]);
 			$this->t->set_var("bg02",$GLOBALS['phpgw_info']["theme"]["bg02"]);
