@@ -22,14 +22,15 @@ Main features are:
 - fast browsing trough records
 - fast seaching for records
 - themable(using phpGroupware-templates)
+- language independant
+- uploading support for other attachments then images
+- wysiwyg html/xml editor
+- many with many fieldrelations
+- relationeditor
 
 Future features:
 - backup interface for databases and directories
 - waiting,prgrammed and blind content
-- uploadingsupport for other attachments then images
-- wysiwyg html/xml editor
-- many with many fieldrelations
-- relationeditor
 - support for other databases
 - support for remote sites/databases
 - more browsing functions, like sorting, hiding columns and previewing thumbs
@@ -37,7 +38,6 @@ Future features:
 - accessrights administrion by site-administrator
 - automatic database-setup
 - more databaseadministration-features like creating databases/fields etc, etc.
-- language independant
 
 Please report bugs or better, patches to pim@lingewoud.nl
 
