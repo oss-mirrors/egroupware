@@ -12,15 +12,15 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'ftp',
 		'enable_nextmatchs_class' => True
 	);
 
 	if ($action == 'get' || $action == 'view')
 	{
-		$phpgw_info['flags']['nonavbar'] = True;
-		$phpgw_info['flags']['noheader'] = True;
+		$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
+		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
 	}
 	include('../header.inc.php');
 
@@ -29,33 +29,33 @@
 		$start = 0;
 	}
 
-	$default_login  = $phpgw_info['user']['account_lid'];
-	$default_pass   = $phpgw->session->appsession('password','phpgwapi');
-	$default_server = $phpgw_info['server']['default_ftp_server'];
+	$default_login  = $GLOBALS['phpgw_info']['user']['account_lid'];
+	$default_pass   = $GLOBALS['phpgw']->session->appsession('password','phpgwapi');
+	$default_server = $GLOBALS['phpgw_info']['server']['default_ftp_server'];
 
 	$sessionUpdated=false;
 
-	$em_bg=$GLOBALS['phpgw_info']['theme']['table_bg'];
-	$em_bg_text=$GLOBALS['phpgw_info']['theme']['table_text'];
-	$bgcolor[0]=$GLOBALS['phpgw_info']['theme']['row_on'];
-	$bgcolor[1]=$GLOBALS['phpgw_info']['theme']['row_off'];
-	$tempdir=$GLOBALS['phpgw_info']['server']['temp_dir'];
+	$em_bg      = $GLOBALS['phpgw_info']['theme']['table_bg'];
+	$em_bg_text = $GLOBALS['phpgw_info']['theme']['table_text'];
+	$bgcolor[0] = $GLOBALS['phpgw_info']['theme']['row_on'];
+	$bgcolor[1] = $GLOBALS['phpgw_info']['theme']['row_off'];
+	$tempdir    = $GLOBALS['phpgw_info']['server']['temp_dir'];
 
 	$GLOBALS['target']='/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/index.php';
 
-	$t = $phpgw->template;
+	$t = $GLOBALS['phpgw']->template;
 	$t->set_file(array(
-			'main_' => 'main.tpl',
-			'login' => 'login.tpl',
-			'rename' => 'rename.tpl',
-			'confirm_delete' => 'confirm_delete.tpl',
-			'bad_connect' => 'bad_connection.tpl'
-		));
+		'main_' => 'main.tpl',
+		'login' => 'login.tpl',
+		'rename' => 'rename.tpl',
+		'confirm_delete' => 'confirm_delete.tpl',
+		'bad_connect' => 'bad_connection.tpl'
+	));
 	$t->set_var(array(
-			'em_bgcolor' => $em_bg,
-			'em_text_color' => $em_bg_text,
-			'bgcolor' => $bgcolor[0]
-		));
+		'em_bgcolor' => $em_bg,
+		'em_text_color' => $em_bg_text,
+		'bgcolor' => $bgcolor[0]
+	));
 
 	$t->set_block('main_','main');
 	$t->set_block('main_','row');
@@ -72,18 +72,18 @@
 		{
 			// username, ftpserver and password should have been passed in
 			// via POST
-			$connInfo['username']=$username;
-			$connInfo['password']=$password;
-			$connInfo['ftpserver']=$ftpserver;
+			$connInfo['username']  = $username;
+			$connInfo['password']  = $password;
+			$connInfo['ftpserver'] = $ftpserver;
 		}
 		else
 		{
 			// try to default with session id and passwd
 			if (!($connInfo=getConnectionInfo())) 
 			{
-				$connInfo['username']=$default_login;
-				$connInfo['password']=$default_pass;
-				$connInfo['ftpserver']=$default_server;
+				$connInfo['username']  = $default_login;
+				$connInfo['password']  = $default_pass;
+				$connInfo['ftpserver'] = $default_server;
 
 				$tried_default=true;
 			}
@@ -136,12 +136,12 @@
 					if (ftp_rename($ftp,$olddir . '/' . $filename, $olddir . '/' . $newfilename)) 
 					{
 						$t->set_var('misc_data',lang('renamed',
-								"$filename", "$newfilename"), true);
+							"$filename", "$newfilename"), true);
 					} 
 					else 
 					{
 						$t->set_var('misc_data',lang('failed to rename',
-								"$filename", "$newfilename"), true);
+							"$filename", "$newfilename"), true);
 					}
 				}
 				else
@@ -159,7 +159,7 @@
 				phpftp_view($ftp,$tempdir,$olddir,$file);
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			if ($action == "upload") 
+			if ($action == 'upload') 
 			{
 				$newfile=$olddir . '/' . $uploadfile_name;
 				if (ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY)) 
@@ -179,12 +179,12 @@
 					if (ftp_mkdir($ftp,$olddir . '/' . $newdirname)) 
 					{
 						$t->set_var('misc_data',lang('created directory',
-								"$olddir/$newdirname"), true);
+							"$olddir/$newdirname"), true);
 					}
 					else 
 					{
 						$t->set_var('misc_data',lang('failed to mkdir',
-								"$olddir/$newdirname"), true);
+							"$olddir/$newdirname"), true);
 					}
 				}
 				else 
@@ -206,13 +206,13 @@
 						$olddir = $olddir . '/' . $newdir;
 				}
 			}
-			else if ($action == '' && $connInfo['cwd'] != '')
+			elseif ($action == '' && $connInfo['cwd'] != '')
 			{
 				// this must have come back from another module, try to 
 				// get into the old directory
 				ftp_chdir($ftp,$connInfo['cwd']);
 			}
-			else if ($olddir)
+			elseif ($olddir)
 			{
 				ftp_chdir($ftp,$olddir);
 			}
@@ -348,15 +348,13 @@
 			}
 			newLogin($t,$connInfo['ftpserver'],$connInfo['username'],'');
 		}
-
 	}
 	else 
 	{
-
 		// set the login and such to ""
 		updateSession('');
 		$sessionUpdated=true;
-		// $phpgw->modsession(
+		// $GLOBALS['phpgw']->modsession(
 		newLogin($t,$default_server,$default_login,'');
 	}
 	if (!$sessionUpdated && $action=='cwd') 
@@ -365,5 +363,5 @@
 		updateSession($connInfo);
 	}
 
-$GLBOALS['phpgw']->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

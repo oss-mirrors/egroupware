@@ -36,7 +36,6 @@
 		}
 	}
 
-
 	function renameForm($template,$session,$filename,$directory) 
 	{
 		$rename_form_begin= '<form action="' . createLink($GLOBALS['target']) . '" method="post">'."\n"
@@ -128,8 +127,6 @@
 
 	function phpftp_get( $ftp, $tempdir, $dir, $file )
 	{
-		global $phpgw_info;
-
 		srand((double)microtime()*1000000);
 		$randval = rand();
 		$tmpfile=$tempdir.'/'.$file.".".$randval;
@@ -146,7 +143,7 @@
 		{
 			ftp_quit( $ftp );
 			$b = CreateObject('phpgwapi.browser');
-			if ($phpgw_info['server']['ftp_use_mime'])
+			if ($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
 			{
 				$mime = getMimeType($file);
 				$b->content_header($file,$mime);
@@ -166,7 +163,6 @@
 
 	function getMimeType($file)
 	{
-		global $phpgw_info;
 		$file=basename($file);
 		$mimefile = PHPGW_APP_ROOT . SEP . 'mime.types';
 		$fp=fopen($mimefile,"r");
