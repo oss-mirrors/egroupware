@@ -55,8 +55,9 @@
 
 			$GLOBALS['phpgw']->template->set_var('qmail_servername',$values['qmail_servername']);
 			$GLOBALS['phpgw']->template->set_var('description',$values['description']);
-			$GLOBALS['phpgw']->template->set_var('ldap_basedn',$values['ldap_basedn']);
-			$GLOBALS['phpgw']->template->set_var('ldap_basedn',$values['ldap_basedn']);
+			$GLOBALS['phpgw']->template->set_var('qmail_dn',$values['qmail_dn']);
+
+			$GLOBALS['phpgw']->template->set_var('dirmaker',$values['dirmaker']);
 
 
 			$linkData = array
@@ -410,14 +411,19 @@
 			$GLOBALS['phpgw']->template->set_var('lang_remove',lang('remove'));
 			$GLOBALS['phpgw']->template->set_var('lang_add_to_local',lang('add also to local domains'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server',lang('LDAP server'));
-			$GLOBALS['phpgw']->template->set_var('lang_qmail_base',lang('qmail dn'));
+			$GLOBALS['phpgw']->template->set_var('lang_qmail_dn',lang('qmail dn'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_admin',lang('admin dn'));
 			$GLOBALS['phpgw']->template->set_var('lang_ldap_server_password',lang('admin password'));
 			$GLOBALS['phpgw']->template->set_var('lang_add_server',lang('add server'));
 			$GLOBALS['phpgw']->template->set_var('lang_domain_name',lang('domainname'));
 			$GLOBALS['phpgw']->template->set_var('lang_remote_server',lang('remote server'));
 			$GLOBALS['phpgw']->template->set_var('lang_remote_port',lang('remote port'));
-			
+
+			$GLOBALS['phpgw']->template->set_var('lang_qmail_settings',lang('qmail settings'));
+			$GLOBALS['phpgw']->template->set_var('lang_ldap_base_settings',lang('ldap base settings'));
+			$GLOBALS['phpgw']->template->set_var('lang_additional_settings_for_qmail',lang('additional settings for qmail'));
+			$GLOBALS['phpgw']->template->set_var('lang_dirmaker_path',lang('absolute path to dirmaker script | application'));
+
 			$GLOBALS['phpgw']->template->set_var('desc_ldaplocaldelivery',lang('To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.'));
 			$GLOBALS['phpgw']->template->set_var('desc_ldapdefaultdotmode',lang('The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.'));
 			$GLOBALS['phpgw']->template->set_var('desc_ldapbasedn',lang('The base DN from where the search in the LDAP tree begins.'));

@@ -22,8 +22,7 @@
 			'getServerList'			=> True,
 			'getLocals'				=> True,
 			'getRcptHosts'			=> True,
-			'getLDAPStorageData'	=> True,
-			'abcdefgh'				=> True
+			'getLDAPStorageData'	=> True
 		);
 
 		function boqmailldap()
@@ -204,10 +203,12 @@
 					(
 						'qmail_servername'	=> $vars['qmail_servername'],
 						'description'		=> $vars['description'],
-						'ldap_basedn'		=> $vars['ldap_basedn'],
+						'qmail_dn'			=> $vars['qmail_dn'],
+						'dirmaker'			=> $vars['dirmaker'],
 						'id'				=> $vars['serverid']
 					);
-					if (!isset($_getVars['serverid']))
+
+					if (!isset($vars['serverid']))
 					{
 						$this->soqmailldap->update('add_server',$data);
 					}

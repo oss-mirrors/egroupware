@@ -51,8 +51,8 @@
 			{
 				$storageData['qmail_servername'] 	= $this->db->f('qmail_servername');
 				$storageData['description'] 		= $this->db->f('description');
-				$storageData['ldap_basedn'] 		= $this->db->f('ldap_basedn');
-				
+				$storageData['qmail_dn'] 			= $this->db->f('qmail_dn');
+
 				return $storageData;
 			}
 			else
@@ -60,18 +60,18 @@
 				return False;
 			}
 		}
-		
+
 		function getLDAPData($_serverid)
 		{
 			$storageData = $this->getLDAPStorageData($_serverid);
 
 			$filter = "cn=".$storageData['qmail_servername'];
 
-			$sri = @ldap_read($this->ldap,$storageData['ldap_basedn'],$filter);
+			$sri = @ldap_read($this->ldap,$storageData['qmail_dn'],$filter);
 			if ($sri)
 			{
-				$allValues = ldap_get_entries($ldap, $sri);
-				
+				$allValues = ldap_get_entries($this->ldap, $sri);
+
 				unset($allValues[0]['rcpthosts']['count']);
 				unset($allValues[0]['locals']['count']);
 				unset($allValues[0]['smtproutes']['count']);
@@ -80,16 +80,15 @@
 				(
 					'rcpthosts'		=> $allValues[0]['rcpthosts'],
 					'locals'		=> $allValues[0]['locals'],
-					'smtproutes'	=> $allValues[0]['smtproutes'],
-					'ldapbasedn'	=> $allValues[0]['ldapbasedn'][0]
+					'smtproutes'	=> $allValues[0]['smtproutes']
 				);
-				
+
 				#$data['smtproutes'] = array
 				#(
 				#	'0'	=> 't-online.de:smtprelay.t-online.de:25',
 				#	'1'	=> 't-dialin.net:smtprelay.t-online.de:25'
 				#);
-				
+
 				if (isset($allValues[0]['ldaplocaldelivery'][0]))
 				{
 					$data['ldaplocaldelivery'] = $allValues[0]['ldaplocaldelivery'][0];
@@ -110,6 +109,10 @@
 					$data['ldapdefaultdotmode'] = 'ldaponly';
 				}
 
+				if (isset($allValues[0]['dirmaker'][0]))
+				{
+					$data['dirmaker'] = $allValues[0]['dirmaker'][0];
+				}
 				return $data;
 			}
 			else
@@ -249,16 +252,16 @@
 			switch ($_action)
 			{
 				case 'add_server':
-					$query = sprintf("insert into phpgw_qmailldap (description, ldap_basedn, qmail_servername) values ('%s','%s','%s')",
+					$query = sprintf("insert into phpgw_qmailldap (description, qmail_dn, qmail_servername) values ('%s','%s','%s')",
 							$_data['description'],
-							$_data['ldap_basedn'],
+							$_data['qmail_dn'],
 							$_data['qmail_servername']);
 					$this->db->query($query);
 					break;
 				case 'update_server':
-					$query = sprintf("update phpgw_qmailldap set description='%s',ldap_basedn='%s',qmail_servername='%s' where id='%s'",
+					$query = sprintf("update phpgw_qmailldap set description='%s',qmail_dn='%s',qmail_servername='%s' where id='%s'",
 						$_data['description'],
-						$_data['ldap_basedn'],
+						$_data['qmail_dn'],
 						$_data['qmail_servername'],
 						$_data['id']);
 					$this->db->query($query);
@@ -269,24 +272,28 @@
 		function writeConfigData($_data, $_serverid)
 		{
 			$storageData = $this->getLDAPStorageData($_serverid);
-			
+
 			#print "write Data for ".$storageData['qmail_servername']."<br>";
-			
+
 			// check if the DN exists, if not create it
 			$filter = "objectclass=*";
-			@ldap_read($this->ldap,$storageData['ldap_basedn'], $filter);
+			@ldap_read($this->ldap,$storageData['qmail_dn'], $filter);
 			if (ldap_errno($ds) == 32)
 			{
 				$ldapData['objectclass'][0]	= 'qmailcontrol';
 				$ldapData['cn']				= $storageData['qmail_servername'];
-				ldap_add($ds,$storageData['ldap_basedn'],$ldapData);
+				ldap_add($this->ldap,$storageData['qmail_dn'],$ldapData);
 			}
 
 			$ldapData['rcpthosts']	= $_data['rcpthosts'];
 			$ldapData['locals']		= $_data['locals'];
 			$ldapData['smtproutes']	= $_data['smtproutes'];
 
-			ldap_modify($this->ldap,$storageData['ldap_basedn'],$ldapData);
+			if (isset($_data['dirmaker']) && !empty($_data['dirmaker']))
+			{
+				$ldapData['dirMaker'] = $_data['dirmaker'];
+			}
+			ldap_modify($this->ldap,$storageData['qmail_dn'],$ldapData);
 		}
 	}
 ?>

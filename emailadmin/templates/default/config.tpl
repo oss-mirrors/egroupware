@@ -20,11 +20,21 @@
 	</tr>
 	<tr class="row_on">
 		<td>{lang_mail_address_}:</td>
-		<td><input name="newsettings[mail]" value="{value_mail}"></td>
+		<td>
+			<select name="newsettings[mail]">
+				<option value="mail"{selected_mail_mail}>mail</option>
+				<option value="maillocaladdress"{selected_mail_maillocaladdress}>mailLocalAddress</option>
+			</select>
+		</td>
 	</tr>
 	<tr class="row_off">
 		<td>{lang_forwarding_address}:</td>
-		<td><input name="newsettings[routing]" value="{value_routing}"></td>
+        <td>
+            <select name="newsettings[routing]">
+                <option value="mailforwardingaddress"{selected_routing_mailforwardingaddress}>mailForwardingAddress</option>
+                <option value="mailroutingaddress"{selected_routing_mailroutingaddress}>mailRoutingAddress</option>
+            </select>
+        </td>
 	</tr>
 	<tr class="row_off">
 		<td colspan="2">&nbsp;</td>
