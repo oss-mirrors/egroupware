@@ -11,6 +11,18 @@
  *
  */
 
+// This is eGroupWare specific stuff, please dont change it
+if (!isset($GLOBALS['phpgw_info']['flags']))
+{
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'phpldapadmin',
+		'noheader'   => True,
+		'nofooter'   => True
+	);
+}
+include_once ('../header.inc.php');
+$phpgw_lang = &$lang; unset($lang);		// save the eGW lang-array
+
 // Your LDAP servers
 $i=0;
 $servers = array();
@@ -21,20 +33,23 @@ $servers[$i]['host'] = 'ldap.example.com'; /*  Examples: 'ldap.example.com', 'ld
 $servers[$i]['base'] = 'dc=example,dc=com';/*  The base DN of your LDAP server. Leave this blank to have phpLDAPadmin
                                                auto-detect it for you. */
 $servers[$i]['port'] = 389;                /*  The port your LDAP server listens on (no quotes) */
-$servers[$i]['auth_type'] = 'config';      /*  2 options: 'form': you will be prompted, and a cookie stored 
-                                               with your login dn and password. 'config': specify your login dn 
+
+// the auth_type need to be set to config for eGW atm and the pw need to be set in login_pass !!!
+//
+$servers[$i]['auth_type'] = 'config';      /*  2 options: 'form': you will be prompted, and a cookie stored
+                                               with your login dn and password. 'config': specify your login dn
                                                and password here. In both cases, use caution! */
 $servers[$i]['login_dn'] = 'cn=Manager,dc=example,dc=com'; /* For anonymous binds, leave the login_dn and
                                                               login_pass blank */
-$servers[$i]['login_pass'] = 'secret';     /*  Your password (only if you specified 'config' for 'auth_type' */ 
+$servers[$i]['login_pass'] = 'secret';     /*  Your password (only if you specified 'config' for 'auth_type' */
 $servers[$i]['tls'] = false;               /*  Use TLS to connect. Requires PHP 4.2 or greater */
-$servers[$i]['default_hash'] = 'crypt';    /*  Default password hashing algorith: one of md5, sha, md5crpyt, blowfish or 
+$servers[$i]['default_hash'] = 'crypt';    /*  Default password hashing algorith: one of md5, sha, md5crpyt, blowfish or
                                                leave blank for now default algorithm. */
-$servers[$i]['login_attr'] = 'dn';         /*  If you specified 'form' as the auth_type above, you can optionally 
+$servers[$i]['login_attr'] = 'dn';         /*  If you specified 'form' as the auth_type above, you can optionally
                                                specify here an attribute to use when logging in. If you enter 'uid',
 					       then login as 'dsmith', phpLDAPadmin will search for uid=dsmith and
 					       log in as such. Leave blank or specify 'dn' to use full DN for logging in .*/
-$servers[$i]['read_only'] = false;         /*  Specify true If you want phpLDAPadmin to not display or permit any 
+$servers[$i]['read_only'] = false;         /*  Specify true If you want phpLDAPadmin to not display or permit any
                                                modification to the LDAP server. */
 
 
@@ -56,8 +71,11 @@ $servers[$i]['read_only'] = false;
 
 // The temporary storage directory where we will put jpegPhoto data
 // This directory must be readable and writable by your web server 
-$jpeg_temp_dir = "/tmp";       // Example for Unix systems
+//$jpeg_temp_dir = "/tmp";       // Example for Unix systems
 //$jpeg_temp_dir = "c:\\temp"; // Example for Windows systems
+
+// fetch the tmp-dir from the eGW config
+$jpeg_temp_dir = $GLOBALS['phpgw_info']['server']['tmp_dir'];
 
 /**                            **/
 /** Appearance and Behavior **/
@@ -66,13 +84,25 @@ $jpeg_temp_dir = "/tmp";       // Example for Unix systems
 // The language setting. Right now, 'english', 'german' and 'french' are available
 // Localization is not complete yet, but most strings have been translated.
 // Please help by writing language files. See lang/english.php for an example.
-$language = 'english';
+
+// fetch the language from the eGW prefs
+switch ($GLOBALS['phpgw_info']['user']['preferences']['common']['lang'])
+{
+	case 'de':
+		$language = 'german';
+		break;
+	case 'fr':
+		$language = 'frensh';
+		break;
+	default:
+		$language = 'english';
+}
 
 // Set to true if you want LDAP data to be displayed read-only (without input fields)
 // when a user logs in to a server anonymously
 $anonymous_bind_implies_read_only = true;
 
-// If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last 
+// If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last
 // (default is 0 seconds, which expires when you close the browser)
 $cookie_time = 0; // seconds
 

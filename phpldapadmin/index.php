@@ -9,19 +9,24 @@ PHP is not installed on your web server!!!
 </pre>
 *******************************************/
 
+$GLOBALS['phpgw_info']['flags'] = array(
+	'currentapp' => 'phpldapadmin',
+);
+
 @require 'common.php';
 
 ?>
 
-<?php if( ! file_exists(realpath( 'config.php' )) ) { ?>
+<?php if( ! file_exists(realpath( 'config.php' )) ) { /* ?>
 
 <html>
 <head>
 	<title>phpLDAPadmin - <?php echo pla_version(); ?></title>
-	<link rel="stylesheet" href="style.css" />		
+	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+<?php */ ?>
 <h3 class="title">Configure phpLDAPadmin</h1>
 <br />
 <br />
@@ -31,11 +36,14 @@ You need to configure phpLDAPadmin. Edit the file 'config.php' to do so.<br />
 An example config file is provided in 'config.php.example'
 
 </center>
+<?php /*
 </body>
 </html>
 
-<?php  } elseif( check_config() )  { 
+<?php */ } elseif( check_config() )  {
 require 'config.php';
+
+/*
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 ?>
@@ -53,7 +61,14 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 </html>
 
-<?php  } else { ?>
+<?php
+*/
+echo '<table width="100%" height="400"><tr>'."\n";
+echo '<td width="25%"><iframe src="tree.php" name="left_frame" width="100%" height="100%" frameborder="0" marginwidth="0" marginheight="0"></iframe></td>'."\n";
+echo '<td width="75%"><iframe src="welcome.php" name="right_frame" width="100%" height="100%" frameborder="0" marginwidth="0" marginheight="0"></iframe></td>'."\n";
+echo "</tr></table>\n";
+
+  } else { ?>
 
 <?php } ?>
 
@@ -107,13 +122,13 @@ function check_config()
 	include 'config.php';
 	$str = ob_get_contents();
 	ob_end_clean();
-	if( $str && false !== strpos( $str, 'error' ) ) 
+	if( $str && false !== strpos( $str, 'error' ) )
 	{
 		$str = strip_tags( $str );
 		$parse_error = preg_match( "/on line (\d+)/", $str, $matches );
 		$line_num = $matches[1];
 		$file = file( 'config.php' );
-		?>
+		/* ?>
 			<html>
 			<head>
 			<title>phpLDAPadmin Config File Error</title>
@@ -121,11 +136,12 @@ function check_config()
 			</head>
 
 			<body>
+		<?php */ ?>
 			<h3 class="title">Config file error</h3>
 			<h3 class="subtitle">Syntax error on line <?php echo $line_num; ?></h3>
-	
+
 			<center>
-			Looks like your config file has a syntax error on line <?php echo $line_num; ?>. 
+			Looks like your config file has a syntax error on line <?php echo $line_num; ?>.
 			Here is a snippet around that line
 			<br />
 			<br />
@@ -146,10 +162,11 @@ function check_config()
 			</div>
 			<br />
 			Hint: Sometimes these errors are caused by lines <b>preceding</b> the line reported.
+		<?php /* ?>
 			</body>
 			</html>
 
-		<?php
+		<?php */
 		return false;
 	}
 
@@ -160,7 +177,7 @@ function check_config()
 
 	/* check the existence of the servers array */
 	require 'config.php';
-	if( ! is_array( $servers ) || count( $servers ) == 0 ) 
+	if( ! is_array( $servers ) || count( $servers ) == 0 )
 	{
 		echo "Your config.php is missing the servers array or the array is empty. ";
 		echo " Please see the sample file config.php.example ";
@@ -181,5 +198,9 @@ function check_config()
 
 	return true;
 }
+
+$lang = &$phpgw_lang;	// restore the eGW lang-array
+$GLOBALS['phpgw']->common->phpgw_footer();
+$GLOBALS['phpgw']->common->phpgw_exit();
 
 ?>
