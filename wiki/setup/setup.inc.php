@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Setup                                                     *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Setup                                                       *
+	* http://www.egroupware.org                                                *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -19,7 +19,7 @@
 	$setup_info['wiki']['author']    = 'Tavi Team';
 	$setup_info['wiki']['license']   = 'GPL';
 	$setup_info['wiki']['description'] =
-		'Wiki is a modified version of <a href="http://tavi.sf.net" target="_new">WikkiTikkiTavi</a> for use with phpGroupware.';
+		'Wiki is a modified version of <a href="http://tavi.sf.net" target="_new">WikkiTikkiTavi</a> for use with eGroupware.';
 	$setup_info['wiki']['maintainer'] = 'Ralf Becker';
 	$setup_info['wiki']['maintainer_email'] = 'RalfBecker@outdoor-training.de';
 
