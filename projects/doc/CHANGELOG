@@ -20,3 +20,5 @@
 12/22/2000: included call to function strip_html()  
 01/16/2001: updated coordinator/employee_select to display the current user at first when adding a project/hours
             fixed delivery/invoice error when trying to save a delivery/invoice a second time with the same ID
+01/27/2001: update search
+01/29/2001: updated access_field in p_projects table

@@ -4,7 +4,7 @@
 	id		int(11) NOT NULL auto_increment,
 	num		varchar(20) NOT NULL,
 	owner		int(11),
-	access		varchar(10),
+	access		varchar(25),
 	entry_date	int(11),
 	date		int(11),
         end_date        int(11),

@@ -4,7 +4,7 @@ CREATE TABLE p_projects (
    id          serial,
    num         varchar(20) NOT NULL,
    owner       int,
-   access      varchar(10),
+   access      varchar(25),
    entry_date  int,
    date        int,
    end_date    int,
