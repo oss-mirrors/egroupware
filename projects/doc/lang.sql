@@ -1,6 +1,9 @@
 DELETE from lang WHERE app_name='projects' and lang='en';
 DELETE from lang WHERE app_name='common' and message_id='Projects' and content='Projects' and lang='en';
 DELETE from lang WHERE message_id='Project preferences' and app_name='preferences' and lang='en' and content='Project preferences';
+DELETE from lang WHERE message_id='Project access' and app_name='preferences' and lang='en' and content='Project access';
+DELETE from lang WHERE message_id='Project categories' and app_name='preferences' and lang='en' and content='Project categories';
+DELETE from lang WHERE message_id='Project administration' and app_name='admin' and lang='en' and content='Project administration';
 DELETE from lang WHERE message_id='Projects' and app_name='admin' and lang='en' and content='Projects';
 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','common','en','Projects');
@@ -10,10 +13,14 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select cur
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select your address in preferences!','projects','en','Please select your address in preferences!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select your currency in preferences!','projects','en','Please select your currency in preferences!'); 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','admin','en','Projects');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project administration','admin','en','Project administration');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project administration','projects','en','Project administration');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select per button !','projects','en','Select per button !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('You have entered an invalid invoice date !','projects','en','You have entered an invalid invoice date !');  
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select project','projects','en','Select project');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','preferences','en','Project access');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project categories','preferences','en','Project categories');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been created !','projects','en','Invoice has been created !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('per','projects','en','per');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been updated !','projects','en','Invoice has been updated !');

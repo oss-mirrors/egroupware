@@ -69,7 +69,7 @@
 </table>
 <table width="50%" border=0 cellpadding="2" cellspacing="2">
 <tr>
-<td align="center"><input type="submit" name="Invoice" value="{lang_invoice}"></td>
+<td align="center">{invoice}</td>
 </form>
 <!-- url zum druck -->
 <td align="center"><a href={print_invoice} target=_blank>{lang_print_invoice}</a></td>

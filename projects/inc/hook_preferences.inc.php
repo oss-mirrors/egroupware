@@ -8,7 +8,7 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-/* $Id$ */
+  /* $Id$ */
 
     {
     echo "<p>\n";
@@ -17,7 +17,7 @@
 	$imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
     }
     else {
-    $imgfile = $phpgw->common->get_image_dir("projects")."/navbar.gif";
+    $imgfile = $phpgw->common->get_image_dir('projects') . '/navbar.gif';
 	if (file_exists($imgfile)) {
     	    $imgpath = $phpgw->common->get_image_path('projects') . '/navbar.gif';
 	}
@@ -32,10 +32,10 @@
     printf("<A href=\"%s\">%s</A><br>", $pg, lang('Project preferences'));
 
     $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
-    echo '<a href=' . $pg . '>' . lang('Projects access') . '</a><br>';
+    echo '<a href=' . $pg . '>' . lang('Project access') . '</a><br>';
 
     $pg = $phpgw->link('/preferences/categories.php','cats_app=projects');
-    echo '<a href=' . $pg . '>' . lang('Projects categories') . '</a>';
+    echo '<a href=' . $pg . '>' . lang('Project categories') . '</a>';
     section_end();
     }
 ?>

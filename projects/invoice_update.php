@@ -12,24 +12,25 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "projects",
-                               "enable_nextmatchs_class" => True);
-    include("../header.inc.php");
+    $phpgw_info["flags"] = array('currentapp' => 'projects',
+                               'enable_nextmatchs_class' => True);
+    include('../header.inc.php');
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('projecthours_list_t' => 'bill_listhours.tpl'));
     $t->set_block('projecthours_list_t','projecthours_list','list');
 
+    $projects = CreateObject('projects.projects');
+    $grants = $phpgw->acl->get_grants('projects');
+
     if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; }
     else { $join = " LEFT JOIN "; }
 
-    if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
-    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-    $t->set_var('error','');
+    if (isset($phpgw_info['user']['preferences']['common']['currency'])) {
+	$currency = $phpgw_info['user']['preferences']['common']['currency'];
+	$t->set_var('error','');
     }
-    else {
-    $t->set_var('error',lang('Please select your currency in preferences !'));
-    }
+    else { $t->set_var('error',lang('Please select your currency in preferences !')); }
 
     $db2 = $phpgw->db;
   
@@ -98,7 +99,6 @@
     $t->set_var('sort_sum',lang('Sum'));
     $t->set_var('h_lang_select',lang('Select'));
     $t->set_var('h_lang_edithour',lang('Edit hours'));
-    $t->set_var('lang_invoice',lang('Update invoice'));
     $t->set_var('actionurl',$phpgw->link('/projects/invoice_update.php'));
     $t->set_var('lang_print_invoice',lang('Print invoice'));
   
@@ -108,20 +108,22 @@
 // ------------------------ end header declaration ------------------------------------
 
     $d = CreateObject('phpgwapi.contacts');
-    $phpgw->db->query("SELECT title,customer FROM phpgw_p_projects WHERE id='$project_id'");
-    if($phpgw->db->next_record()) {
-	$title = $phpgw->strip_html($phpgw->db->f("title"));
-        if (! $title)  $title  = "&nbsp;";
-        $t->set_var('project',$title);
-	$ab_customer = $phpgw->db->f("customer");
+    $phpgw->db->query("SELECT title,customer,coordinator FROM phpgw_p_projects WHERE id='$project_id'");
+    $phpgw->db->next_record();
+    $title = $phpgw->strip_html($phpgw->db->f("title"));
+    if (! $title)  $title  = '&nbsp;';
+    $t->set_var('project',$title);
+    $ab_customer = $phpgw->db->f("customer");
+    if (!$ab_customer) { $t->set_var('customer',lang('You have no customer selected !')); }
+    else {
 	$cols = array('n_given' => 'n_given',
                  'n_family' => 'n_family',
                  'org_name' => 'org_name');
 	$customer = $d->read_single_entry($ab_customer,$cols);
-	$customername = $customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]";
+        if ($customer[0]['org_name'] = '') { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+        else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 	$t->set_var('customer',$customername);
-        }
-    else { $t->set_var('customer',lang('You have no customer selected !')); }
+    }
 
     $t->set_var('title_project',lang('Title'));
     $t->set_var('title_customer',lang('Customer'));
@@ -165,23 +167,23 @@
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
     $activity = $phpgw->strip_html($phpgw->db->f("descr"));
-    if (! $activity)  $activity  = "&nbsp;";
+    if (! $activity)  $activity  = '&nbsp;';
 
     $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
     if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
     $status = lang($phpgw->db->f("status"));
-    $t->set_var(tr_color,$tr_color);
+    $t->set_var('tr_color',$tr_color);
 
     $start_date = $phpgw->db->f("start_date");
     if ($start_date == 0) { $start_dateout = "&nbsp;"; } 
     else {
-      $month = $phpgw->common->show_date(time(),"n");
-      $day   = $phpgw->common->show_date(time(),"d");
-      $year  = $phpgw->common->show_date(time(),"Y");
+	$month = $phpgw->common->show_date(time(),'n');
+        $day   = $phpgw->common->show_date(time(),'d');
+        $year  = $phpgw->common->show_date(time(),'Y');
 
-      $start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-      $start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        $start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+        $start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
     }
 
     if ($phpgw->db->f("minperae") != 0) {
@@ -237,14 +239,14 @@
 
     $start_date = $phpgw->db->f("start_date");  
 
-    if ($start_date == 0) { $start_dateout = "&nbsp;"; }
+    if ($start_date == 0) { $start_dateout = '&nbsp;'; }
     else {
-	$month = $phpgw->common->show_date(time(),"n");
-        $day   = $phpgw->common->show_date(time(),"d");
-        $year  = $phpgw->common->show_date(time(),"Y");
+	$month = $phpgw->common->show_date(time(),'n');
+        $day   = $phpgw->common->show_date(time(),'d');
+        $year  = $phpgw->common->show_date(time(),'Y');
   
-        $start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+        $start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
     }
 
     if ($phpgw->db->f("minperae") != 0) {
@@ -274,6 +276,11 @@
     }
   }
 // ------------------------------- na_list_end ---------------------------------------------------
+
+    if ($projects->check_perms($grants[$coordinator],PHPGW_ACL_EDIT) || $coordinator == $phpgw_info['user']['account_id']) {
+        $t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Update invoice') . '">');
+    }
+    else { $t->set_var('invoice',''); }
 
     $t->parse('out','projecthours_list_t',True);
     $t->p('out');

@@ -12,9 +12,9 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "projects",
-                               "enable_nextmatchs_class" => True);
-    include("../header.inc.php");
+    $phpgw_info["flags"] = array('currentapp' => 'projects',
+                               'enable_nextmatchs_class' => True);
+    include('../header.inc.php');
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('projecthours_list_t' => 'del_listhours.tpl'));
@@ -41,7 +41,7 @@
 
     if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
     else {
-        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date !') . " : " . "$month - $day - $year"; }
+        if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid delivery date !') . ' : ' . "$month - $day - $year"; }
     }
 
     if (! $error) {
@@ -57,7 +57,7 @@
       }
     }
 
-    if ($errorcount) { $t->set_var("message",$phpgw->common->error_list($error)); }
+    if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
     if (($Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',lang('Delivery has been created !')); }
     if ((! $Delivery) && (! $error) && (! $errorcount)) { $t->set_var('message',''); }
 
@@ -74,12 +74,6 @@
     if (! $start) { $start = 0; }
     $ordermethod = "order by end_date asc";
 
-// ------------------------- nextmatch variable template-declarations --------------------------
-
-     $t->set_var(total_matchs,$total_matchs);
-
-// ---------------------------------- end nextmatch template -----------------------------------
-
 // --------------------------- list header variable template-declarations ----------------------
   
     $t->set_var('th_bg',$phpgw_info["theme"][th_bg]);
@@ -90,31 +84,32 @@
     $t->set_var('sort_aes',lang('Workunits'));
     $t->set_var('h_lang_select',lang('Select'));
     $t->set_var('h_lang_edithour',lang('Edit hours'));
-    $t->set_var('lang_delivery',lang('Create delivery'));
     $t->set_var('actionurl',$phpgw->link('/projects/del_delivery.php'));
     $t->set_var('lang_print_delivery',lang('Print delivery'));
 
     if (!$delivery_id) { $t->set_var('print_delivery',$phpgw->link('/projects/fail.php')); }
     else { $t->set_var(print_delivery,$phpgw->link('/projects/del_deliveryshow.php',"delivery_id=$delivery_id")); }
-  
+
 // ------------------------ end header declaration ----------------------------
 
     $d = CreateObject('phpgwapi.contacts');
     $phpgw->db->query("SELECT title,customer FROM phpgw_p_projects WHERE id='$project_id'");
 
-    if($phpgw->db->next_record()) {
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
-    if (! $title)  $title  = "&nbsp;";
-    $t->set_var("project",$title);
+    $phpgw->db->next_record();
+    $title = $phpgw->strip_html($phpgw->db->f("title"));
+    if (! $title)  $title  = '&nbsp;';
+    $t->set_var('project',$title);
     $ab_customer = $phpgw->db->f("customer"); 
-    $cols = array('n_given' => 'n_given',
-                 'n_family' => 'n_family',
-                 'org_name' => 'org_name');
-    $customer = $d->read_single_entry($ab_customer,$cols);
-    $customername = $customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]";
-    $t->set_var('customer',$customername);
+    if (!$ab_customer) { $t->set_var('customer',lang('You have no customer selected !')); }
+    else {
+	$cols = array('n_given' => 'n_given',
+    	             'n_family' => 'n_family',
+        	     'org_name' => 'org_name');
+	$customer = $d->read_single_entry($ab_customer,$cols);
+        if ($customer[0]['org_name'] = '') { $customername = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+        else { $customername = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+	$t->set_var('customer',$customername);
     }
-    else { $t->set_var('customer',lang('You have no customer selected !')); }
 
     $t->set_var('title_project',lang('Title'));  
     $t->set_var('title_customer',lang('Customer')); 
@@ -162,10 +157,10 @@
         $day = date('d',time());
         $year = date('Y',time());
         }
-    
+
     $sm = CreateObject('phpgwapi.sbox');
     $t->set_var('date_select',$phpgw->common->dateformatorder($sm->getYears('year',$year),$sm->getMonthText('month',$month),$sm->getDays('day',$day)));    
-    $t->set_var("lang_delivery_date",lang("Delivery date"));
+    $t->set_var('lang_delivery_date',lang('Delivery date'));
 
     $summe=0;
     $sumaes=0;
@@ -174,8 +169,8 @@
     $select = "<input type=\"checkbox\" name=\"select[".$phpgw->db->f("id")."]\" value=\"True\" checked>";
 
     $activity = $phpgw->strip_html($phpgw->db->f("descr"));
-    if (! $activity)  $activity  = "&nbsp;";
-    
+    if (! $activity)  $activity  = '&nbsp;';
+
     $hours_descr = $phpgw->strip_html($phpgw->db->f("hours_descr"));
     if (! $hours_descr)  $hours_descr  = '&nbsp;';
 
@@ -184,16 +179,16 @@
     $t->set_var(tr_color,$tr_color);
 
     $start_date = $phpgw->db->f("start_date");
-    if ($start_date == 0) { $start_dateout = "&nbsp;"; }
+    if ($start_date == 0) { $start_dateout = '&nbsp;'; }
     else {
-	$month = $phpgw->common->show_date(time(),"n");
-	$day   = $phpgw->common->show_date(time(),"d");
-	$year  = $phpgw->common->show_date(time(),"Y");
+	$month = $phpgw->common->show_date(time(),'n');
+	$day   = $phpgw->common->show_date(time(),'d');
+	$year  = $phpgw->common->show_date(time(),'Y');
 
-	$start_date = $start_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+	$start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+	$start_dateout =  $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
     }
-    
+
     if ($phpgw->db->f("minperae") != 0) {
     $aes = ceil($phpgw->db->f("minutes")/$phpgw->db->f("minperae"));
     }
@@ -201,12 +196,12 @@
 
 // --------------------- template declaration for list records ---------------------------
 
-    $t->set_var(array("select" => $select,
-		      "activity" => $activity,
-                      "hours_descr" => $hours_descr,
-                      "status" => $statusout,
-    		      "start_date" => $start_dateout,
-      		      "aes" => $aes));
+    $t->set_var(array('select' => $select,
+		      'activity' => $activity,
+                      'hours_descr' => $hours_descr,
+                      'status' => $statusout,
+    		      'start_date' => $start_dateout,
+      		      'aes' => $aes));
 
     if ($phpgw->db->f("status") == 'billed') {
     $t->set_var('edithour','');
@@ -224,6 +219,9 @@
     }
     $t->set_var(sum_aes,$sumaes);
     $t->set_var('lang_aes',lang('Sum workunits'));
+
+    $t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
+
     $t->parse('out','projecthours_list_t',True);
     $t->p('out');
 

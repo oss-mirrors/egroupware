@@ -118,9 +118,15 @@
       		      'end_date' => $end_dateout,
       		      'coordinator' => $coordinatorout));
 
-    $t->set_var('part',$phpgw->link('/projects/del_delivery.php',"project_id=$id"));                                                                                                           
-    $t->set_var('lang_part',lang('Delivery'));                                                                                                                                        
-                                                                                                                                                                                        
+    if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_ADD) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id']) {
+	$t->set_var('part',$phpgw->link('/projects/del_delivery.php',"project_id=$id"));                                                                                                           
+	$t->set_var('lang_part',lang('Delivery'));                                                                                                                                        
+    }
+    else {
+        $t->set_var('part','');
+        $t->set_var('lang_part','');
+    }
+
     $t->set_var('partlist',$phpgw->link('/projects/del_deliverylist.php',"project_id=$id"));                                                                                                   
     $t->set_var('lang_partlist',lang('Delivery list'));
 

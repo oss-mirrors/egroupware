@@ -28,8 +28,6 @@
 </table> 
 
  {hidden_vars}
- {total_matchs}
- {next_matchs}
   
    <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
@@ -70,7 +68,7 @@
 </table>
 <table width="50%" border=0 cellpadding="2" cellspacing="2">
 <tr>
-<td align="center"><input type="submit" name="Delivery" value="{lang_delivery}"></td>
+<td align="center">{delivery}</td>
   </form>
 <!-- url zum druck -->
 <td align="center"><a href={print_delivery} target=_blank>{lang_print_delivery}</a></td>

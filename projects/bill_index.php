@@ -12,14 +12,14 @@
   \**************************************************************************/
   /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "projects", 
-		    "enable_nextmatchs_class" => True);
+    $phpgw_info['flags'] = array('currentapp' => 'projects', 
+		    'enable_nextmatchs_class' => True);
 
-    include("../header.inc.php");
+    include('../header.inc.php');
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
-    $t->set_file(array( "projects_list_t" => "bill_list.tpl"));
-    $t->set_block("projects_list_t", "projects_list", "list");
+    $t->set_file(array('projects_list_t' => 'bill_list.tpl'));
+    $t->set_block('projects_list_t','projects_list','list');
 
     $projects = CreateObject('projects.projects');
     $grants = $phpgw->acl->get_grants('projects');
@@ -121,8 +121,14 @@
       		      'end_date' => $end_dateout,
       		      'coordinator' => $coordinatorout));
 
-    $t->set_var('part',$phpgw->link('/projects/bill_invoice.php',"project_id=$id"));
-    $t->set_var('lang_part',lang('Invoice'));
+    if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_ADD) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id']) {
+	$t->set_var('part',$phpgw->link('/projects/bill_invoice.php',"project_id=$id"));
+	$t->set_var('lang_part',lang('Invoice'));
+    }
+    else {
+        $t->set_var('part','');
+        $t->set_var('lang_part','');
+    }
 
     $t->set_var('partlist',$phpgw->link('/projects/bill_invoicelist.php',"project_id=$id"));
     $t->set_var('lang_partlist',lang('Invoice list'));
