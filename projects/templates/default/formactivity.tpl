@@ -11,7 +11,7 @@
 	</tr>
 	<tr>
 		<td>{lang_act_number}:</td>
-		<td><input type="text" name="values[number]" value="{num}"></td>
+		<td><input type="text" name="values[number]" value="{num}" size="20" maxlength="20"></td>
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>

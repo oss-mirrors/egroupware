@@ -453,7 +453,7 @@
 
 			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
 			$this->db->next_record();
-			$max = $this->add_leading_zero(substr($this->db->f(0),7));
+			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
 			return $prefix . $max;
 		}
@@ -468,7 +468,7 @@
 
 			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
 			$this->db->next_record();
-			$max = $this->add_leading_zero(substr($this->db->f(0),8));
+			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
 			return $prefix . $max;
 		}
@@ -482,7 +482,7 @@
 
 			$this->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
 			$this->db->next_record();
-			$max = $this->add_leading_zero(substr($this->db->f(0),7));
+			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
 			return $prefix . $max;
 		}

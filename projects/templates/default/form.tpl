@@ -25,7 +25,7 @@
 	</tr>
 	<tr>
 		<td>{lang_number}:</td>
-		<td><input type="text" name="values[number]" value="{number}"></td>
+		<td><input type="text" name="values[number]" value="{number}" size="20" maxlength="15"></td>
 	</tr>
 	<tr>
 		<td>{lang_title}:</font></td>

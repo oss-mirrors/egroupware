@@ -267,7 +267,12 @@
 
 			if (strlen($values['descr']) >= 8000)
 			{
-				$error[] = lang('Description can not exceed 8000 characters in length');
+				$error[] = lang('Description can not exceed 8000 characters in length !');
+			}
+
+			if (strlen($values['title']) >= 255)
+			{
+				$error[] = lang('Title can not exceed 255 characters in length !');
 			}
 
 			if (! $values['choose'])
@@ -283,6 +288,11 @@
 					if ($exists)
 					{
 						$error[] = lang('That ID has been used already !');
+					}
+
+					if (strlen($values['number']) >= 15)
+					{
+						$error[] = lang('ID can not exceed 15 characters in length !');
 					}
 				}
 			}
@@ -322,13 +332,13 @@
 			}
 		}
 
-		function check_pa_values($action, $values)
+		function check_pa_values($values)
 		{
 			global $phpgw;
 
-			if (strlen($values['descr']) >= 8000)
+			if (strlen($values['descr']) >= 255)
 			{
-				$error[] = lang('Description can not exceed 8000 characters in length');
+				$error[] = lang('Description can not exceed 255 characters in length !');
 			}
 
 			if (! $values['choose'])
@@ -345,20 +355,22 @@
 					{
 						$error[] = lang('That ID has been used already !');
 					}
+
+					if (strlen($values['number']) >= 20)
+					{
+						$error[] = lang('ID can not exceed 20 characters in length !');
+					}
 				}
 			}
 
-			if ($action == 'act')
+			if ((! $values['billperae']) || ($values['billperae'] == 0))
 			{
-				if ((! $values['billperae']) || ($values['billperae'] == 0))
-				{
-					$error[] = lang('Please enter the bill per workunit !');
-				}
+				$error[] = lang('Please enter the bill per workunit !');
+			}
 
-				if ((! $values['minperae']) || ($values['minperae'] == 0))
-				{
-					$error[] = lang('Please enter the minutes per workunit !');
-				}
+			if ((! $values['minperae']) || ($values['minperae'] == 0))
+			{
+				$error[] = lang('Please enter the minutes per workunit !');
 			}
 
 			if (is_array($error))

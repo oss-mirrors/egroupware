@@ -962,7 +962,7 @@
 			{
 				$values['cat'] = $cat_id;
 
-				$error = $this->boprojects->check_pa_values('act',$values);
+				$error = $this->boprojects->check_pa_values($values);
 				if (is_array($error))
 				{
 					$this->t->set_var('message',$phpgw->common->error_list($error));
@@ -1048,7 +1048,7 @@
 				$values['cat'] = $cat_id;
 				$values['activity_id'] = $activity_id;
 
-				$error = $this->boprojects->check_pa_values('act',$values);
+				$error = $this->boprojects->check_pa_values($values);
 				if (is_array($error))
 				{
 					$this->t->set_var('message',$phpgw->common->error_list($error));
