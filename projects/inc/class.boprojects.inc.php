@@ -64,7 +64,7 @@
 			$this->sohours		= CreateObject('projects.soprojecthours');
 			$this->soconfig		= $this->soprojects->soconfig;
 			$this->contacts		= CreateObject('phpgwapi.contacts');
-			$this->cats			= CreateObject('phpgwapi.categories');
+			$this->cats		= CreateObject('phpgwapi.categories');
 			$this->debug		= False;
 			$this->siteconfig	= $this->soprojects->siteconfig;
 
@@ -385,8 +385,8 @@
 				'year'		=> $GLOBALS['phpgw']->common->show_date(time(),'Y')
 			);
 
-			$date['daydate']		= mktime(2,0,0,$date['month'],$date['day'],$date['year']);
-			$date['monthdate']		= mktime(2,0,0,$date['month']+2,0,$date['year']);
+			$date['daydate']	= mktime(2,0,0,$date['month'],$date['day'],$date['year']);
+			$date['monthdate']	= mktime(2,0,0,$date['month']+2,0,$date['year']);
 			$date['monthformatted'] = $GLOBALS['phpgw']->common->show_date($date['monthdate'],'n/Y');
 			return $date;
 		}
@@ -395,11 +395,14 @@
 		{
 			$account_id = $GLOBALS['phpgw_info']['user']['account_id'];
 
-			$cols = array('n_given' => 'n_given',
+			$cols = array
+			(
+				'n_given' => 'n_given',
 				'n_family'  => 'n_family',
-				'org_name'  => 'org_name');
+				'org_name'  => 'org_name'
+			);
 
-			$entries = $this->contacts->read($start,$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $qfilter, $sort, $order, $account_id);
+			$entries = $this->contacts->read($start,$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'], $cols, $query, $filter, $sort, $order, $account_id);
 
 			$this->total_records = $this->contacts->total_records;
 			return $entries;

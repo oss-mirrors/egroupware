@@ -417,7 +417,7 @@
 			if(is_array($pro))
 			{
 				foreach($pro as $p)
-            	{
+            			{
 					$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
 // --------------- template declaration for list records -------------------------------------
@@ -1583,8 +1583,8 @@
 		{
 			$start		= get_var('start',array('POST'));
 			$cat_id 	= get_var('cat_id',array('POST'));
-			$sort		= get_var('sort',array('POST'));
-			$order		= get_var('order',array('POST'));
+			$sort		= get_var('sort',array('GET','POST'));
+			$order		= get_var('order',array('GET','POST'));
 			$filter		= get_var('filter',array('POST'));
 			$qfilter	= get_var('qfilter',array('POST'));
 			$query		= get_var('query',array('POST'));
@@ -1598,18 +1598,27 @@
 
 			$GLOBALS['phpgw']->template->set_var('title',$GLOBALS['phpgw_info']['site_title']);
 			$GLOBALS['phpgw']->template->set_var('lang_action',lang('Address book'));
-			$GLOBALS['phpgw']->template->set_var('charset',$GLOBALS['phpgw']->translation->translate('charset'));
+			$GLOBALS['phpgw']->template->set_var('charset',$GLOBALS['phpgw']->translation->charset());
 			$GLOBALS['phpgw']->template->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.abook',
-				'start'			=> $start,
-				'sort'			=> $sort,
-				'order'			=> $order,
-				'cat_id'		=> $cat_id,
-				'filter'		=> $filter,
-				'query'			=> $query
+				'start'		=> $start,
+				'sort'		=> $sort,
+				'order'		=> $order,
+				'cat_id'	=> $cat_id,
+				'filter'	=> $filter,
+				'query'		=> $query
+			);
+
+			$link_data_nm = array
+			(
+				'menuaction'	=> 'projects.uiprojects.abook',
+				'start'		=> $start,
+				'cat_id'	=> $cat_id,
+				'filter'	=> $filter,
+				'query'		=> $query
 			);
 
 			if (! $start) { $start = 0; }
@@ -1654,9 +1663,9 @@
 
 // -------------- list header variable template-declaration ------------------------
 
-			$GLOBALS['phpgw']->template->set_var('sort_company',$this->nextmatchs->show_sort_order($sort,'org_name',$order,'/index.php',lang('Company'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_firstname',$this->nextmatchs->show_sort_order($sort,'n_given',$order,'/index.php',lang('Firstname'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_lastname',$this->nextmatchs->show_sort_order($sort,'n_family',$order,'/index.php',lang('Lastname'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_company',$this->nextmatchs->show_sort_order($sort,'org_name',$order,'/index.php',lang('Company'),$link_data_nm));
+			$GLOBALS['phpgw']->template->set_var('sort_firstname',$this->nextmatchs->show_sort_order($sort,'n_given',$order,'/index.php',lang('Firstname'),$link_data_nm));
+			$GLOBALS['phpgw']->template->set_var('sort_lastname',$this->nextmatchs->show_sort_order($sort,'n_family',$order,'/index.php',lang('Lastname'),$link_data_nm));
 			$GLOBALS['phpgw']->template->set_var('lang_select',lang('Select'));
 
 // ------------------------- end header declaration --------------------------------
