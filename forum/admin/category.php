@@ -18,7 +18,7 @@
   include("../../header.inc.php");
 
   $actiontype = "addcat";
-  $buttontext = lang("Add Forum");
+  $buttontext = lang("Add Category");
   $extrahidden = "";
 
   if($act == "edit") {

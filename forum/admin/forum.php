@@ -107,13 +107,14 @@ echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."
 <?
     if($extraselect) echo $extraselect;
     $q = $phpgw->db->query("select * from f_categories");
+    $phpgw->db->next_record($q);
     while($phpgw->db->next_record($q)) {
      $cat_id = $phpgw->db->f("id");
      $cat_name = $phpgw->db->f("name");
      echo "<option value=\"$cat_id\">$cat_name</option>\n";
     }
 ?>
-    <option value=-1><? echo lang("No Catagory") ?></option>
+    <option value=-1><? echo lang("No Category") ?></option>
     </select>
    </td>
    <tr>

@@ -28,7 +28,7 @@ echo "<a href=\"" . $phpgw->link("admin/category.php") . "\">" . lang("New Categ
 echo " | ";
 echo "<a href=\"" . $phpgw->link("admin/forum.php") . "\">" . lang("New Forum") ."</a>";
 echo " | ";
-echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a>";
+echo "<a href=\"" . $phpgw->link("/forum") . "\">" . lang("Return to Forums") ."</a>";
 
 ?>
   </font>
