@@ -17,7 +17,7 @@
 
     $admin_info = lang('Projects');
     $t->set_var('admin_info',$admin_info);
-    $t->set_var('bg_color',$phpgw_info["theme"]["th_bg"]);
+    $t->set_var('bg_color',$phpgw_info['theme']['th_bg']);
 
     $t->set_var('link_activities',$phpgw->link('/projects/activities.php'));
     $t->set_var('lang_activities',lang('Activities'));
@@ -31,8 +31,8 @@
     $t->set_var('lang_delivery',lang('Delivery'));
     $t->set_var('link_projects',$phpgw->link('/projects/index.php'));
     $t->set_var('lang_projects',lang('Projects'));
-    $t->set_var('link_archiv',$phpgw->link('/projects/archiv.php'));
-    $t->set_var('lang_archiv',lang('Archiv'));
+    $t->set_var('link_archiv',$phpgw->link('/projects/archive.php'));
+    $t->set_var('lang_archiv',lang('archive'));
 
     $t->pparse('out','projects_header');
  

@@ -72,10 +72,10 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Description','pro
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark','projects','de','Job [ Beschreibung ]');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark required','projects','de','Beschreibung des Jobs erforderlich?');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Time','projects','de','Zeit');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Archiv','projects','de','Archiv');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Done','projects','de','Erledigt');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Open','projects','de','Offen');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Billed','projects','de','Abgerechnet');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('archive','projects','de','Archiv');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('done','projects','de','Erledigt');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('open','projects','de','Offen');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('billed','projects','de','Abgerechnet');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Employee','projects','de','Mitarbeiter');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit hours','projects','de','Jobs bearbeiten');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delete hours','projects','de','Stunden l&ouml;schen');

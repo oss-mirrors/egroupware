@@ -44,3 +44,10 @@ alter table phpgw_p_hours add column start_date int(11) DEFAULT '0' NOT NULL aft
 ###################################################
 
 alter table phpgw_p_hours add column hours_descr varchar(255) NOT NULL after end_date;
+
+###################################################
+#             03/09/2001 0.8.4pre4                # 
+###################################################
+
+alter table phpgw_p_projects add column access char(7) after owner;
+alter table phpgw_p_projects add column category int(9) DEFAULT '0' NOT NULL after access;

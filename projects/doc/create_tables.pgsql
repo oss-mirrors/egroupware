@@ -1,18 +1,20 @@
 -- $Id$
 
 CREATE TABLE phpgw_p_projects (
-   id          serial,
-   num         varchar(20) NOT NULL,
-   owner       int,
-   entry_date  int,
-   start_date  int,
-   end_date    int,
-   coordinator int,
-   customer    int,
-   status      text check(status in('active','nonactive','archiv')) DEFAULT 'active' NOT NULL,
-   descr       text,
-   title       varchar(255) NOT NULL,
-   budget      decimal(20,2)
+    id          serial,
+    num         varchar(20) NOT NULL,
+    owner       int,
+    access	char(7),
+    category	int,
+    entry_date  int,
+    start_date  int,
+    end_date    int,
+    coordinator int,
+    customer    int,
+    status      text check(status in('active','nonactive','archive')) DEFAULT 'active' NOT NULL,
+    descr       text,
+    title       varchar(255) NOT NULL,
+    budget      decimal(20,2)
 );
 
 CREATE INDEX phpgw_p_projects_key ON phpgw_p_projects(id,num);

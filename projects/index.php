@@ -12,17 +12,18 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"] = array("currentapp" => "projects",
-		    "enable_nextmatchs_class" => True);
+    $phpgw_info["flags"] = array('currentapp' => 'projects',
+		    'enable_nextmatchs_class' => True);
 
-    include("../header.inc.php");
+    include('../header.inc.php');
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('projects_list' => 'list.tpl',
 		     'projects_list_t' => 'list.tpl'));
     $t->set_block('projects_list_t','projects_list','list');
 
-    $d = CreateObject('phpgwapi.contacts');
+    $projects = CreateObject('projects.projects');
+    $grants = $phpgw->acl->get_grants('projects');
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -31,11 +32,11 @@
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
     $t->set_var('lang_action',lang('Projects'));
-    $t->set_var('addurl',$phpgw->link("/projects/add.php"));
+    $t->set_var('addurl',$phpgw->link('/projects/add.php'));
     $t->set_var('lang_activities',lang('Activities list'));
-    $t->set_var('activitiesurl',$phpgw->link("/projects/activities.php"));
-    $t->set_var('searchurl',$phpgw->link("/projects/index.php"));
-    $t->set_var('hidden_vars',$hidden_vars);   
+    $t->set_var('activitiesurl',$phpgw->link('/projects/activities.php'));
+    $t->set_var('searchurl',$phpgw->link('/projects/index.php'));
+    $t->set_var('hidden_vars',$hidden_vars);
 
     if (! $start) { $start = 0; }
 
@@ -44,20 +45,19 @@
     }
     else { $limit = 15; }
 
-    $projects = read_projects($start,$limit,$query,$filter,$sort,$order);
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order);
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('/projects/index.php',$start,$total_records);
-    $right = $phpgw->nextmatchs->right('/projects/index.php',$start,$total_records);
+    $left = $phpgw->nextmatchs->left('/projects/index.php',$start,$projects->total_records);
+    $right = $phpgw->nextmatchs->right('/projects/index.php',$start,$projects->total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
-    if ($total_records > $limit) {
-	$lang_showing=lang("showing x - x of x",($start + 1),($start + $limit),$total_records);
+    if ($projects->total_records > $limit) {
+	$t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $limit),$projects->total_records));
     }
-    else { $lang_showing=lang("showing x",$total_records); }
-    $t->set_var('lang_showing',$lang_showing);
+    else { $t->set_var('lang_showing',lang("showing x",$projects->total_records)); }
 
 // ------------------------------ end nextmatch template ------------------------------------
 
@@ -73,47 +73,49 @@
     $t->set_var('lang_jobs',lang('Jobs'));
     $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_view',lang('View'));
-    $t->set_var('lang_search',lang('Search'));             
+    $t->set_var('lang_search',lang('Search'));
 
   // -------------- end header declaration -----------------
 
-    for ($i=0;$i<count($projects);$i++) {    
+    $d = CreateObject('phpgwapi.contacts');
+
+    for ($i=0;$i<count($pro);$i++) {
 
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $title = $phpgw->strip_html($projects[$i]['title']);                                                                                                                                   
-    if (! $title)  $title  = "&nbsp;";
+    $title = $phpgw->strip_html($pro[$i]['title']);
+    if (! $title)  $title  = '&nbsp;';
 
-    $number = $phpgw->strip_html($projects[$i]['number']);
-    $status = lang($projects[$i]['status']);
+    $number = $phpgw->strip_html($pro[$i]['number']);
+    $status = lang($pro[$i]['status']);
     $t->set_var('tr_color',$tr_color);
 
-    $end_date = $projects[$i]['end_date'];
-    if ($end_date == 0) { $end_dateout = "&nbsp;"; }
+    $end_date = $pro[$i]['end_date'];
+    if ($end_date == 0) { $end_dateout = '&nbsp;'; }
     else {
-	$month = $phpgw->common->show_date(time(),"n");
-	$day   = $phpgw->common->show_date(time(),"d");
-	$year  = $phpgw->common->show_date(time(),"Y");
+	$month = $phpgw->common->show_date(time(),'n');
+	$day   = $phpgw->common->show_date(time(),'d');
+	$year  = $phpgw->common->show_date(time(),'Y');
 
-	$end_date = $end_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
-        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
-	if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = "<b>" . $end_dateout . "</b>"; }
-	if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = "<font color=\"CC0000\"><b>" . $end_dateout . "</b></font>"; }
+	$end_date = $end_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+        $end_dateout =  $phpgw->common->show_date($end_date,$phpgw_info['user']['preferences']['common']['dateformat']);
+	if (mktime(2,0,0,$month,$day,$year) == $end_date) { $end_dateout = '<b>' . $end_dateout . '</b>'; }
+	if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = '<font color="CC0000"><b>' . $end_dateout . '</b></font>'; }
     }
 
-    $ab_customer = $projects[$i]['customer'];
-    $cols = array('n_given' => 'n_given',
-		 'n_family' => 'n_family',
-		 'org_name' => 'org_name');
-    $customer = $d->read_single_entry($ab_customer,$cols);    
-    $customerout = $customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]";
+    $ab_customer = $pro[$i]['customer'];
+    if (!$ab_customer) { $customerout = '&nbsp;'; }
+    else {
+	$cols = array('n_given' => 'n_given',
+		     'n_family' => 'n_family',
+		     'org_name' => 'org_name');
+	$customer = $d->read_single_entry($ab_customer,$cols);    
+        if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+	else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+    }
 
-    $coordinatorout = $projects[$i]['lid'] . " [ " . $projects[$i]['firstname'] . " " . $projects[$i]['lastname'] . " ]";
-      
-/*    $edit = $phpgw->common->check_owner($projects[$i]['coordinator'],'edit.php',lang('Edit'),'id=' . $projects[$i]['id']
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter");
-    $delete = $phpgw->common->check_owner($projects[$i]['coordinator'],'delete.php',lang('Delete'),'id=' . $projects[$i]['id']
-                                         . "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"); */
-    $id = $projects[$i]['id'];
+    $coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
+
+    $id = $pro[$i]['id'];
     
 // ------------------ template declaration for list records -----------------------------------
       
@@ -128,8 +130,14 @@
 
     $t->set_var('jobs',$phpgw->link('/projects/hours_listhours.php',"filter=$id")); 
 
-    $t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id"));  
-    $t->set_var('lang_edit_entry',lang('Edit'));
+    if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id']) {
+	$t->set_var('edit',$phpgw->link('/projects/edit.php',"id=$id"));
+	$t->set_var('lang_edit_entry',lang('Edit'));
+    }
+    else {
+        $t->set_var('edit','');
+        $t->set_var('lang_edit_entry','&nbsp;');
+    }
 
     $t->set_var('view',$phpgw->link('/projects/view.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_view_entry',lang('View'));

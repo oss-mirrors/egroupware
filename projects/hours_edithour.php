@@ -34,6 +34,8 @@
     $t->set_block('hours_edit','add','addhandle');
     $t->set_block('hours_edit','edit','edithandle');
 
+    $projects = CreateObject('projects.projects');
+
     if ($submit) {
     $errorcount = 0;
 
@@ -121,7 +123,7 @@
     $t->set_var('lang_select_project',lang('Select project'));
 
     $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
-    $phpgw->db->next_record();     
+    $phpgw->db->next_record();
 
     $filter = $phpgw->db->f("project_id");
 
@@ -236,7 +238,7 @@
 
     $t->set_var('employee_list',$employee_list);
 
-    $t->set_var('project_list',select_project_list($filter));
+    $t->set_var('project_list',$projects->select_project_list($filter));
 
     $db2 = $phpgw->db;
     $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
@@ -250,10 +252,6 @@
         }
 
     $t->set_var('activity_list',$activity_list);
-
-/*    print "Referrer".$HTTP_REFERER."<br>";
-    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . 'project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"
-                                        . "query=$query&start=$start&filter=$filter&status=$status")); */
 
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');

@@ -93,10 +93,10 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Remark required',
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Time','projects','en','Time');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Start time','projects','en','Start time');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('End time','projects','en','End time');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Archiv','projects','en','Archiv');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Done','projects','en','Done');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Open','projects','en','Open');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Billed','projects','en','Billed');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('archive','projects','en','Archive');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('done','projects','en','Done');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('open','projects','en','Open');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('billed','projects','en','Billed');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Employee','projects','en','Employee');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Edit hours','projects','en','Edit Hours');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Number','projects','en','Number');

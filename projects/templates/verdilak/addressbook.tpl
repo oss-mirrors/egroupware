@@ -29,26 +29,31 @@
 <center>
 <p><font face="{font}"><b>{lang_addressbook_action}</b></font><br>
 <hr noshade width="98%" align="center" size="1">
-
-<table border="0" cellspacing="2" cellpadding="2">
- <tr>
-  <td colspan="4" align="left">
-   <table border="0" width="100%">
+<table border="0" width="100%">
+    <tr>
+    <td width="33%" align="left">
+    <form action="{cats_action}" name="form" method="POST">
+    <select name="cat_id" onChange="this.form.submit();"><option value="">{lang_select_cats}</option>{cats_list}</select>
+    <noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
+    <td width="33%" align="center">{lang_showing}</td>
+    <td width="33%" align="right">
+    <form method="POST" action="{search_action}">
+    <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+    </form></td>
+    </tr>
+    <tr>
+    <td colspan="4">
+    <table border="0" width="100%">
     <tr>
     {left}
-    <td align="center">{lang_showing}</td>
+    <td>&nbsp;</td>
     {right}
     </tr>
-   </table>
-   </td>
-  </tr>
- <tr>
-  <td>&nbsp;</td>
-  <td colspan="4" align=right>
-  <form method="post" action="{searchurl}">
-  <input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-  </form></td>
- </tr>
+    </table>
+    </td>
+    </tr>
+</table>
+<table border="0" width="100%" cellpadding="2" cellspacing="2">
     <tr bgcolor="{th_bg}">
       <td width="30%" bgcolor="{th_bg}" align="center"><font face="{font}">{sort_company}</font></td>
       <td width="20%" bgcolor="{th_bg}" align="center"><font face="{font}">{sort_firstname}</font></td>

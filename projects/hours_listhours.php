@@ -23,6 +23,8 @@
     if ($phpgw_info["server"]["db_type"]=="pgsql") { $join = " JOIN "; } 
     else { $join = " LEFT JOIN "; }
 
+    $projects = CreateObject('projects.projects');
+
     if (! $start) { $start = 0; }
     if ($order) { $ordermethod = "order by $order $sort"; } 
     else { $ordermethod = "order by phpgw_p_hours.start_date asc"; }
@@ -33,13 +35,10 @@
     $querymethod = " (status like '%$query%' OR remark like '%$query%' OR start_date like '%$query%' OR end_date like '%$query%' OR minutes like '%$query%') ";
 
     if (! $filter) {
-    if ($query) {
 	$phpgw->db->query("SELECT project_id from phpgw_p_hours WHERE $filtermethod AND $querymethod");
 	    if ($phpgw->db->next_record()) { 
 	    $filter = $phpgw->db->f("project_id");
-	    $project_select[$filter] = " selected";
 	    }
-    }
     else { $filter = "999"; }
     }
 
@@ -86,8 +85,7 @@
     $t->set_var('search_action',$phpgw->link('/projects/hours_listhours.php'));
     $t->set_var('project_action',$phpgw->link('/projects/hours_listhours.php'));
     $t->set_var('lang_submit',lang('Submit'));
-    $project_select[$filter] = " selected";
-    $t->set_var('project_list',select_project_list($filter));
+    $t->set_var('project_list',$projects->select_project_list($filter));
     $t->set_var('lang_select_project',lang('Select project'));
     $t->set_var('add_action',$phpgw->link('/projects/hours_addhour.php',"filter=$filter"));
 

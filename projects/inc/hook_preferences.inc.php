@@ -9,26 +9,33 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 /* $Id$ */
-   
-   {
-  echo "<p>\n";                                                                                                                                                                          
-  $imgfile = $phpgw->common->get_image_dir("projects")."/" . $appname .".gif";                                                                                                                
-  if (file_exists($imgfile)) {                                                                                                                                                           
-    $imgpath = $phpgw->common->get_image_path("projects")."/" . $appname .".gif";                                                                                                             
-  } else {                                                                                                                                                                               
-    $imgfile = $phpgw->common->get_image_dir("projects")."/navbar.gif";                                                                                                                       
-    if (file_exists($imgfile)) {                                                                                                                                                         
-      $imgpath = $phpgw->common->get_image_path("projects")."/navbar.gif";                                                                                                                    
-    } else {                                                                                                                                                                             
-      $imgpath = "";
-      }
-   }
 
-   section_start("projects",$imgpath);
+    {
+    echo '<p>\n';
+    $imgfile = $phpgw->common->get_image_dir('projects') . '/' . $appname . '.gif';
+    if (file_exists($imgfile)) {
+	$imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
+    }
+    else {
+    $imgfile = $phpgw->common->get_image_dir("projects")."/navbar.gif";
+	if (file_exists($imgfile)) {
+    	    $imgpath = $phpgw->common->get_image_path('projects') . '/navbar.gif';
+	}
+	else {
+    	    $imgpath = '';
+	}
+    }
 
-   $pg = $phpgw->link('/projects/preferences.php');
-   printf("<A href=\"%s\">%s</A><br>", $pg, lang("Project preferences"));
+    section_start('projects',$imgpath);
 
-   section_end(); 
-   }
+    $pg = $phpgw->link('/projects/preferences.php');
+    printf("<A href=\"%s\">%s</A><br>", $pg, lang('Project preferences'));
+
+    $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
+    echo '<a href=' . $pg . '>' . lang('Projects access') . '</a><br>';
+
+    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects');
+    echo '<a href=' . $pg . '>' . lang('Projects categories') . '</a>';
+    section_end();
+    }
 ?>

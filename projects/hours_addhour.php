@@ -12,13 +12,15 @@
   \**************************************************************************/
   /* $Id$ */
   
-    $phpgw_info["flags"]["currentapp"] = "projects";
-    include("../header.inc.php");
+    $phpgw_info['flags']['currentapp'] = 'projects';
+    include('../header.inc.php');
 
     $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
     $t->set_file(array('hours_add' => 'hours_formhours.tpl'));
     $t->set_block('hours_add','add','addhandle');
     $t->set_block('hours_add','edit','edithandle');
+
+    $projects = CreateObject('projects.projects');
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
                 . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -129,8 +131,7 @@
     $t->set_var('lang_select_project',lang('Select project'));
 
     if ($filter) {
-    $project_select[$filter] = " selected";
-    $t->set_var('project_list',select_project_list($filter));
+    $t->set_var('project_list',$projects->select_project_list($filter));
 
     $phpgw->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
 		    . "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc");

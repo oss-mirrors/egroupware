@@ -4,6 +4,8 @@
 	id		int(11) unsigned PRIMARY KEY NOT NULL auto_increment,
 	num		varchar(20) NOT NULL,
 	owner		int(11) DEFAULT '0' NOT NULL,
+	access		char(7),
+	category	int(9) DEFAULT '0' NOT NULL,
 	entry_date	int(11) DEFAULT '0' NOT NULL,
 	start_date	int(11) DEFAULT '0' NOT NULL,
         end_date        int(11) DEFAULT '0' NOT NULL,
