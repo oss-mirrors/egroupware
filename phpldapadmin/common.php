@@ -6,6 +6,18 @@
  * include this file at the top of every PHP file.
  */
 
+// This is eGroupWare specific stuff, please dont change it
+if (!isset($GLOBALS['phpgw_info']['flags']))
+{
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'phpldapadmin',
+		'noheader'   => True,
+		'nofooter'   => True
+	);
+}
+include_once ('../header.inc.php');
+$phpgw_lang = &$lang; unset($lang);		// save the eGW lang-array
+
 if( file_exists( realpath( 'config.php' ) ) ) {
 	require realpath( 'config.php' );
 }

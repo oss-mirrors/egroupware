@@ -11,18 +11,6 @@
  *
  */
 
-// This is eGroupWare specific stuff, please dont change it
-if (!isset($GLOBALS['phpgw_info']['flags']))
-{
-	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp' => 'phpldapadmin',
-		'noheader'   => True,
-		'nofooter'   => True
-	);
-}
-include_once ('../header.inc.php');
-$phpgw_lang = &$lang; unset($lang);		// save the eGW lang-array
-
 // Your LDAP servers
 $i=0;
 $servers = array();
