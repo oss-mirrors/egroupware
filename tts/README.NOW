@@ -1,0 +1,8 @@
+TTS is undergoing some masive changes at the molment, I have changed the format at least 4 times now.
+Everytime I do this, I have to create upgrades.  Which is making things more difficault.  As I make my way
+through the code, I am coming up with new and better ways of handling the data.  Until I have settled on a
+format DO NOT run upgrades on it.  DO NOT use it for production!!! You WILL loose data this way.  I hope to
+have everything settled in the next week.
+
+You have been warned.
+Joseph Engo
