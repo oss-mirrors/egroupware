@@ -79,7 +79,7 @@
             $admin_info = lang("projects")."&nbsp;&nbsp;&nbsp;".lang("admin");
 	 }
        $t->set_var("admin_info", "<td bgcolor=\"" . $phpgw_info["theme"]["th_bg"] 
-                        . "\" align=\"left\"><b>" . $admin_info . "</b>");
+                        . "\" align=\"left\"><b>" . $admin_info);
 
      
      

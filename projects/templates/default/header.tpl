@@ -2,15 +2,17 @@
 <p>
 <table border="0" width=100%>
 <tr>
+
 {admin_info}
-</td>
+</b></td>
 </tr>
 <tr>
- <td>
+<td>
 
 {link_hours}
 &nbsp;
 &nbsp;
+
 {link_statistics}
 &nbsp;
 &nbsp;
@@ -24,7 +26,5 @@
 &nbsp;                                                                                                                               
                                                                                                                                      
 {link_return_projects}
-
-  </font>
 </td></tr>
 </table>
