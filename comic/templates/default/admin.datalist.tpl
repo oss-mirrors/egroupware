@@ -5,7 +5,7 @@
 {add_form}
 {other_form}
 <center>
-  <form action="{done_url}">
+  <form action="{done_url}" method="post">
     <input type="submit" name="done" value="{done_label}">
   </form>
 </center>
