@@ -162,14 +162,15 @@
 				(strstr($name,' ') !== False ? '(('.$name.'))' : $name);
 
 			return preg_replace(array(
-				'/\(\('.preg_quote($old_name).'\ ?\| ?[^)]+\)\)/',
-				'/\(\('.preg_quote($old_name).'\)\)/',
-				'/(?=\b)'.preg_quote($old_name).'(?=\b )/',
+				'/\(\('.preg_quote($old_name).'\ ?\| ?[^)]+\)\)/i',
+				'/\(\('.preg_quote($old_name).'\)\)/i',
+				'/(?=\b)'.preg_quote($old_name).'(?=\b )/i',
 			),$new_link,$text);
 		}
 
 		function rename(&$values,$old_name,$old_lang)
 		{
+			@set_time_limit(0);
 			//echo "<p>bowiki::rename '$old_name:$old_lang' to '$values[name]:$values[lang]'</p>";
 			$page = $this->page($old_name,$old_lang);
 
