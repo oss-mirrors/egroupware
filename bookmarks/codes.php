@@ -125,8 +125,8 @@
     $name = trim($name);
     
     ## Do we have all necessary data?
-    if (empty($id) || empty($name)) {
-      $error_msg .= "<br>Please fill out <B>ID</B>, and <B>Name</B>!";
+    if (empty($name)) {
+      $error_msg .= "<br>You need to enter a name";
       break;
     }
 
@@ -137,22 +137,22 @@
     }
         
     ## Does the code already exist?
-    $query = sprintf("select id from %s where id=%s and username='%s'", $codetable, $id, $username);
+    $query = sprintf("select name from %s where name='%s' and username='%s'", $codetable, addslashes($name), $username);
     $phpgw->db->query($query,__LINE__,__FILE__);
     if ($phpgw->db->Errno != 0) break;
 
     if ($phpgw->db->nf() > 0) {
-       $error_msg .= "<br>$codetable <B>$id</B> already exists!";
+       $error_msg .= "<br>$name already exists.";
        break;
     }
 
     ## Insert the code
-    $query = sprintf("insert into %s (id, name, username) values(%s, '%s', '%s')", $codetable, $id, addslashes($name), $username);
+    $query = sprintf("insert into %s (name, username) values ('%s', '%s')", $codetable, addslashes($name), $username);
     $phpgw->db->query($query,__LINE__,__FILE__);
     if ($phpgw->db->Errno != 0) break;
 
     $mode = "S";
-    $msg .= sprintf("<br>%s %s (%s) created.", $codetable, htmlspecialchars(stripslashes($name)), $id);
+    $msg .= sprintf("<br>%s %s created.", ereg_replace("bookmarks_","",$codetable), htmlspecialchars(stripslashes($name)));
   break;
   
   default:
@@ -161,7 +161,7 @@
 } /* end while */
 
 $phpgw->template->set_var(CODETABLE, $codetable);
-$phpgw->template->set_var(FORM_ACTION, $phpgw->link());
+$phpgw->template->set_var(FORM_ACTION, $phpgw->link("codes.php","mode=$mode&codetable=$codetable"));
 
 # if no mode specified, or mode is S (Select)
 # then print html to allow user to select from
@@ -175,27 +175,30 @@ if (!isset($mode) || $mode=="S") {
   $phpgw->db->query($query,__LINE__,__FILE__);
   if ($phpgw->db->Errno == 0) {
      while ($phpgw->db->next_record()) {
-       $id = $phpgw->db->f("id");
-       $url = $phpgw->link("codes.php","codetable=$codetable&mode=U&id=$id");
-
-       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-       $phpgw->template->set_var(TR_COLOR, $tr_color);
-
-       $phpgw->template->set_var(EDIT, '<a href="' . $phpgw->link() . '"> Edit </a>');
-       $phpgw->template->set_var(DELETE, '<a href="' . $phpgw->link() . '"> Delete </a>');
-
-       $phpgw->template->set_var(URL, $url);
-       $phpgw->template->set_var(NAME, htmlspecialchars(stripslashes($phpgw->db->f("name"))));
-       $phpgw->template->set_var(ID, $id);
-       $phpgw->template->parse(CODE_LIST, "code_list", TRUE);
-
-/*       if (($codetable == "category" || $codetable == "subcategory") && ($id == 0)) {
-       } else {
-          $url = $phpgw->link("codes.php","codetable=$codetable&mode=D&id=$id");
+       if ($phpgw->db->f("name") != "--") {
+          $id = $phpgw->db->f("id");
+          $url = $phpgw->link("codes.php","codetable=$codetable&mode=U&id=$id");
+   
+          $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+          $phpgw->template->set_var(TR_COLOR, $tr_color);
+   
+          $phpgw->template->set_var(EDIT, '<a href="' . $phpgw->link("code.php","codetable=$codetable&mode=U&id=$id") . '"> Edit </a>');
+          $phpgw->template->set_var(DELETE, '<a href="' . $phpgw->link("code.php","codetable=$codetable&mode=D&id=$id") . '"> Delete </a>');
+   
           $phpgw->template->set_var(URL, $url);
-          $phpgw->template->parse(DELETE_CODE_LIST, "code_list", TRUE);
-      } */
+          $phpgw->template->set_var(NAME, htmlspecialchars(stripslashes($phpgw->db->f("name"))));
+          $phpgw->template->set_var(ID, $id);
+          $phpgw->template->parse(CODE_LIST, "code_list", TRUE);
+   
+   /*       if (($codetable == "category" || $codetable == "subcategory") && ($id == 0)) {
+          } else {
+             $url = $phpgw->link("codes.php","codetable=$codetable&mode=D&id=$id");
+             $phpgw->template->set_var(URL, $url);
+             $phpgw->template->parse(DELETE_CODE_LIST, "code_list", TRUE);
+         } */
+       }
     }
+    $phpgw->template->set_var(CREATE_LINK, '<a href="' . $phpgw->link("codes.php","mode=C&codetable=$codetable") . '"> ' . $codetable . '</a>');
     $phpgw->template->parse(BODY, "select_form");
   }
 
@@ -229,6 +232,10 @@ if (!isset($mode) || $mode=="S") {
         $default_id = 0;
     }
     $phpgw->template->set_var(DEFAULT_ID, $default_id);
+    $phpgw->template->set_var(th_bg, $phpgw_info["theme"]["th_bg"]);
+    $phpgw->template->set_var(lang_cancel, lang("Cancel"));
+    $phpgw->template->set_var(lang_create, lang("Create"));
+    $phpgw->template->set_var(table_header_message, lang("create new " . ereg_replace("bookmarks_","",$codetable)));
   }
 
 # if mode is D, present the are you sure delete form

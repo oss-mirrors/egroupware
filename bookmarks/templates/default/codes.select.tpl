@@ -10,8 +10,7 @@
 
  <tr>
   <td colspan="3" valign="top">
-   <a href="{createlink}">New {CODETABLE}</a>
-<!--   <a href="codes.php?mode=C&codetable={CODETABLE}">New {CODETABLE}</a> -->
+   {CREATE_LINK}
   </td>
  </tr>
 </table>
