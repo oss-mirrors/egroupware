@@ -25,9 +25,9 @@
 	$tpl->set_block('form','channel');
 	$tpl->set_block('form','row');
 
-	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	while($preference = @each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
-		if ($preference[0] != 'headlines_layout')
+		if($preference[0] != 'headlines_layout')
 		{
 			$sites[] = $preference[0];
 		}

@@ -25,10 +25,13 @@
 	$tpl->set_block('form','channel');
 	$tpl->set_block('form','row');
 
-	$sites = array(
-		0 => 35,
-		1 => 13
-	);
+	while($preference = @each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
+	{
+		if($preference[0] != 'headlines_layout')
+		{
+			$sites[] = $preference[0];
+		}
+	}
 
 	$j = 0;
 	$i = count($sites);
