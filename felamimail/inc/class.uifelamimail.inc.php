@@ -493,7 +493,7 @@
 				}
 				else
 				{
-					$this->t->set_var('quotaBG','#33ff33');
+					$this->t->set_var('quotaBG','#66ff66');
 				}
 				
 				if($quotaPercent > 50)
