@@ -46,7 +46,7 @@
 
 // ----  == IS IT OK TO LOGIN To Mailserver ==  -----
 	//$debug_logins = True;
-	//$debug_logins = False;
+	$debug_logins = False;
 	
 	// OK TO LOGIN pre-conditions
 	// were we called from the main screen (user's home page)
