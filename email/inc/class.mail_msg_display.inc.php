@@ -325,7 +325,7 @@ class mail_msg extends mail_msg_wrappers
 					$folder_acctnum = $folder_list[$i]['acctnum'];
 					// this logic determines if the combobox should be initialized with certain folder already selected
 					// we use "folder short" as the comparator because that way at least we know we are comparing syntatic-ally similar items
-					if (($folder_short == $this->get_folder_short($local_args['pre_select_folder']))
+					if (($folder_short == $this->get_folder_short($local_args['pre_select_folder'], $local_args['pre_select_folder_acctnum']))
 					&& ($folder_acctnum == $local_args['pre_select_folder_acctnum']))
 					{
 						$sel = ' selected';
@@ -600,7 +600,8 @@ class mail_msg extends mail_msg_wrappers
 				if ($debug_widget) { echo '* a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
 				if ($debug_widget) { echo '* b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
 				if ((isset($feed_args[$key]))
-				&& ($feed_args[$key] != $value))
+				//&& ($feed_args[$key] != $value))
+				&& ((string)$feed_args[$key] != (string)$value))
 				{
 					// we have a specified arg that should replace the default value
 					if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
@@ -642,8 +643,11 @@ class mail_msg extends mail_msg_wrappers
 				{
 					$sel = ' selected';
 				}
-				elseif (($local_args['is_multiple'])
-				&& (strstr($local_args['pre_select_multi'], (string)$this_acctnum)))
+				elseif ( ($local_args['is_multiple'])
+				&& (	(strstr((string)$local_args['pre_select_multi'], (string)$this_acctnum))
+						|| ($local_args['pre_select_multi'] == $this_acctnum)
+					)
+				)
 				{
 					$sel = ' selected';
 				}
@@ -2038,11 +2042,20 @@ class mail_msg extends mail_msg_wrappers
 		{
 			$totaltodisplay = $folder_info['number_all'];
 		}
-
+		
+		if ($this->get_isset_arg('start'))
+		{
+			$start = $this->get_arg_value('start');
+		}
+		else
+		{
+			$start = 0;
+		}
 		// keep track of how many loops we've done, for the return array, will be advanced to 0 before it's used
 		$x = -1;
-		for ($i=$this->get_arg_value('start'); $i < $totaltodisplay; $i++)
+		for ($i=$start; $i < $totaltodisplay; $i++)
 		{
+			if ($debug_msg_list_display > 2) { echo 'mail_msg: get_msg_list_display: $msgball_list['.$i.'] dump:<pre>'; print_r($msgball_list[$i]); echo '</pre>'; }
 			// we use $x to sequentially fill the $msg_list_display array
 			$x++;
 			// place the delmov form header tags ONLY ONCE, blank string all subsequent loops

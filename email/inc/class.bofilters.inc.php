@@ -15,7 +15,8 @@
 	class bofilters
 	{
 		var $public_functions = array(
-			'process_submitted_data'	=> True
+			'process_submitted_data'	=> True,
+			'run_single_filter'	=> True
 		);
 		
 		var $all_filters = Array();
@@ -100,6 +101,42 @@
 		{
 			// NOT coded yet
 			return 0;
+		}
+		
+		function just_testing()
+		{
+			if ((isset($GLOBALS['HTTP_POST_VARS']['filter_test']))
+			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_test'] != ''))
+			{
+				$just_testing = True;
+			}
+			elseif ((isset($GLOBALS['HTTP_GET_VARS']['filter_test']))
+			&& ((string)$GLOBALS['HTTP_GET_VARS']['filter_test'] != ''))
+			{
+				$just_testing = True;
+			}
+			else
+			{
+				$just_testing = False;
+			}
+			return $just_testing;
+		}
+		
+		function filter_exists($feed_filter_num)
+		{
+			if (count($this->all_filters) == 0)
+			{
+				$this->read_filter_data_from_prefs();
+			}
+			if ((isset($this->all_filters[$feed_filter_num]))
+			&& (isset($this->all_filters[$feed_filter_num]['source_accounts'])))
+			{
+				return True;
+			}
+			else
+			{
+				return False;
+			}
 		}
 		
 		function process_submitted_data()
@@ -254,9 +291,9 @@
 			
 			// $this_filter['matches']	Array
 			// $this_filter['matches'][X]	Array
-			// $this_filter['matches'][X]['andor']	UNSET for $this_filter['matches'][0], SET for all the rest
-			// $this_filter['matches'][X]['examine']		known_string
-			// $this_filter['matches'][X]['comparator']	known_string
+			// $this_filter['matches'][X]['andor']	UNSET for $this_filter['matches'][0], SET for all the rest : and | or | ignore_me
+			// $this_filter['matches'][X]['examine']		known_string : IMAP search keys
+			// $this_filter['matches'][X]['comparator']	known_string : contains | notcontains
 			// $this_filter['matches'][X]['matchthis']	user_string
 			for ($i=0; $i < count($this_filter['matches']); $i++)
 			{
@@ -365,42 +402,255 @@
 			return $this->all_filters;
 		}
 		
-		function sieve_to_imap_string()
+		
+		
+		function run_single_filter()
 		{
-			if ($this->debug > 2) { echo 'bofilters: sieve_to_imap_string: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
-			$look_here_sieve = $this->filters[0]['matches'][0]['examine'];
-			$look_here_imap = $this->sieve_to_imap_fields[$look_here_sieve];
-			$for_this = $this->filters[0]['matches'][0]['matchthis'];
+			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING<br>'; }
+			if (count($this->all_filters) == 0)
+			{
+				$this->read_filter_data_from_prefs();
+			}
+			$filter_num = $this->obtain_filer_num();
+			$filter_exists = $this->filter_exists($filter_num);
+			if (!$filter_exists)
+			{
+				if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING with ERROR, filter data for $filter_num ['.$filter_num.'] does not exist, return False<br>'; }
+				return False;
+			}
+			$this_filter = $this->all_filters[$filter_num];
+			if ($this->debug > 2) { echo 'bofilters.run_single_filter: $filter_num ['.$filter_num.'] ; $this_filter DUMP:<pre>'; print_r($this_filter); echo "</pre>\r\n"; }
 			
+			// make the imap search string
+			$search_str = $this->make_imap_search_str($this_filter);
+			if ($this->debug > 1) { echo 'bofilters.run_single_filter: loop ['.$i.'] ; $this->make_imap_search_str($this_filter) returns ['.$search_str.'] <br>'; }
+			
+			// WE NEED TO DO THIS FOR EVERY SOURCE ACCOUNT
+			$all_accounts_result_set = array();
+			$msgball_list = array();
+			for ($i=0; $i < count($this_filter['source_accounts']); $i++)
+			{
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: source_accounts loop ['.$i.']<br>'; }
+				
+				// ACCOUNT TO SEARCH (always filter source is INBOX)
+				$fake_fldball = array();
+				$fake_fldball['acctnum'] = $this_filter['source_accounts'][$i]['acctnum'];
+				$fake_fldball['folder'] = $this_filter['source_accounts'][$i]['folder'];
+				
+				// FINAL DATA
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: will feed phpgw_search this $fake_fldball [<code>'.serialize($fake_fldball).'</code>] <br>'; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter:  will feed phpgw_search this $search_str ['.$search_str.'] <br>'; }
+				
+				$initial_result_set = Array();
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: about to call $GLOBALS[phpgw]->msg->phpgw_search($fake_fldball, $search_str)<br>'; }
+				$initial_result_set = $GLOBALS['phpgw']->msg->phpgw_search($fake_fldball, $search_str);
+				// sanity check on 1 returned hit, is it for real?
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
+			
+				if (($initial_result_set == False)
+				|| (count($initial_result_set) == 0))
+				{
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: no hits or possible search error<br>'."\r\n"; }
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: server_last_error (if any) was: "'.$GLOBALS['phpgw']->msg->phpgw_server_last_error((int)$fake_fldball['acctnum']).'"<br>'."\r\n"; }
+					// we leave this->result_set_mlist an an empty array, as it was initialized on class creation
+				}
+				else
+				{
+					if ($this->debug > 2) { echo 'bofilters.run_single_filter: $initial_result_set DUMP:<pre>'; print_r($initial_result_set); echo "</pre>\r\n"; }
+					// accumulate the results for all accounts
+					for ($x=0; $x < count($initial_result_set); $x++)
+					{
+						$next_pos = count($all_accounts_result_set);
+						$all_accounts_result_set[$next_pos] = $initial_result_set[$x];
+						// and this has the essential data we'll need to move msgs around
+						$msgball_list[$next_pos]['acctnum'] = $fake_fldball['acctnum'];
+						$msgball_list[$next_pos]['folder'] = $fake_fldball['folder'];
+						$msgball_list[$next_pos]['msgnum'] = $initial_result_set[$x];
+						$msgball_list[$next_pos]['uri'] = 
+							 'msgball[msgnum]='.$msgball_list[$next_pos]['msgnum']
+							.'&msgball[folder]='.$msgball_list[$next_pos]['folder']
+							.'&msgball[acctnum]='.$msgball_list[$next_pos]['acctnum'];
+					}
+				}
+			}
+			
+			
+			if ((count($all_accounts_result_set > 0))
+			&& (isset($all_accounts_result_set[0]))
+			&& ((string)$all_accounts_result_set[0] != '')
+			&& ($this->just_testing()))
+			{
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: Filter Test Run<br>'; }
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: number of matches $all_accounts_result_set = ' .count($all_accounts_result_set).'<br>'."\r\n"; }
+				// make a "fake" folder_info array to make things simple for get_msg_list_display
+				$this->fake_folder_info['is_imap'] = True;
+				$this->fake_folder_info['folder_checked'] = 'INBOX';
+				$this->fake_folder_info['alert_string'] = 'you have search results';
+				$this->fake_folder_info['number_new'] = count($all_accounts_result_set);
+				$this->fake_folder_info['number_all'] = count($all_accounts_result_set);
+				if ($this->debug > 2) { echo 'bofilters.run_single_filter:  $msgball_list DUMP:<pre>'; print_r($msgball_list); echo "</pre>\r\n"; }
+				// retrieve user displayable data for each message in the result set
+				$this->result_set_mlist = $GLOBALS['phpgw']->msg->get_msg_list_display($this->fake_folder_info,$msgball_list);
+				$html_list = $this->make_mlist_box();
+				echo '<html><table>'.$html_list.'</table></html>';
+			}
+			elseif ((count($all_accounts_result_set > 0))
+			&& (isset($all_accounts_result_set[0]))
+			&& ((string)$all_accounts_result_set[0] != ''))
+			{
+				// NOT A TEST - APPLY THE ACTION(S)
+				if ($this->debug > 1) { echo 'bofilters.run_single_filter: NOT a Test, *Apply* the Action(s) ; $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
+				if ($this_filter['actions'][0]['judgement'] == 'fileinto')
+				{
+					parse_str($this_filter['actions'][0]['folder'], $target_folder);
+					$target_folder['folder'] = urlencode($target_folder['folder']);
+					//if ($this->debug > 2) { echo 'bofilters.run_single_filter: $target_folder DUMP:<pre>'; print_r($target_folder); echo "</pre>\r\n"; }
+					$to_fldball = array();
+					$to_fldball['folder'] = $target_folder['folder'];
+					$to_fldball['acctnum'] = (int)$target_folder['acctnum'];
+					if ($this->debug > 2) { echo 'bofilters.run_single_filter: $to_fldball DUMP:<pre>'; print_r($to_fldball); echo "</pre>\r\n"; }
+					$tm = count($msgball_list);
+					for ($i = 0; $i < count($msgball_list); $i++)
+					{
+						if ($this->debug > 2) { echo 'bofilters.run_single_filter: in mail move loop ['.(string)($i+1).'] of ['.$tm.']<br>'; }
+						$mov_msgball = $msgball_list[$i];
+						if ($this->debug > 1) { echo 'bofilters.run_single_filter: pre-move info: $mov_msgball [<code>'.serialize($mov_msgball).'</code>]<br>'; }
+						$good_to_go = $GLOBALS['phpgw']->msg->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+						if (!$good_to_go)
+						{
+							// ERROR
+							if ($this->debug > 1) { echo 'bofilters.run_single_filter: ERROR: industrial_interacct_mail_move returns FALSE<br>'; }
+							break;
+						}
+					}
+				}
+				else
+				{
+					// not yet coded action
+					if ($this->debug > 1) { echo 'bofilters.run_single_filter: action not yet coded: $this_filter[actions][0][judgement] : ['.$this_filter['actions'][0]['judgement'].']<br>'; }
+				}
+			}
+			else
+			{
+				// NO MATCHES
+			}
+			
+			
+			if ($this->debug > 1) { echo 'bofilters.run_single_filter: calling end_request<br>'; }
+			$GLOBALS['phpgw']->msg->end_request();
+			if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING<br>'; }
+			$take_me_to_url = $GLOBALS['phpgw']->link(
+										'/index.php',
+										'menuaction=email.uifilters.filters_list');
+										
+			$take_me_to_href = '<a href="'.$take_me_to_url.'"> Go Back </a>';
+			//Header('Location: ' . $take_me_to_url);
+			echo '<p>&nbsp;</p><br><p>'.$take_me_to_href.'</p>';
+		}
+		
+		
+		
+		function make_imap_search_str($feed_filter)
+		{
+			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: ENTERING<br>'; }
+			if ($this->debug > 2) { echo 'bofilters.make_imap_search_str: $feed_filter DUMP:<pre>'; print_r($feed_filter); echo "</pre>\r\n"; }
+			/*
+			examples of how to construct IMAP search strings
+			From a google search in a "turnpike" newsgroup:
+			
+			IMAP's [AND] OR and NOT are all prefix operators, i.e. there is no 
+			precedence or hierarchy (I put the [AND] in brackets as it is implied, 
+			there is no AND keyword).
+
+			[AND] and OR operate on the next two search-keys.
+			NOT operates on the next search-key.
+			
+			Parentheses can be used to group an expression of search-keys into a 
+			single search-key.
+			
+			Some examples translated into infix notation with "not" "and" "or" as 
+			infix operators, k1, k2 .. are search-keys.  These infix operators are 
+			purely for explanation, they are not part of IMAP.			
+			
+			k1 k2 k3                means (k1 and k2) and k3
+			OR k1 k2 k3             means (k1 or k2) and k3
+			OR (OR k1 k2) k3        means (k1 or k2) or k3
+			NOT k1 k2               means (not k1) and k2
+			NOT OR k1 k2            means not (k1 or k2)
+			OR NOT k1 k2            means (not k1) or k2
+			NOT k1 NOT k2           means (not k1) and (not k2)
+			*/
+			
+			if ($this->debug > 2) { echo 'bofilters: make_imap_search_str: mappings are:<pre>'; print_r($this->sieve_to_imap_fields); echo "</pre>\r\n"; }
+			
+			// do we have one search or two, or more
+			$num_search_criteria = count($feed_filter['matches']);
+			if ($this->debug > 1) { echo 'bofilters.make_imap_search_str: $num_search_criteria: ['.$num_search_criteria.']<br>'; }
+			// 1st search criteria
+			// convert form submitted data into usable IMAP search keys
+			$search_key_sieve = $feed_filter['matches'][0]['examine'];
+			$search_key_imap = $this->sieve_to_imap_fields[$search_key_sieve];
+			// what to learch for
+			$search_for = $feed_filter['matches'][0]['matchthis'];
+			// does or does not contain
+			$comparator = $feed_filter['matches'][0]['comparator'];
+			// DOES NOT CONTAIN - BROKEN - FIXME
+			$search_str_1_criteria = $search_key_imap.' "'.$search_for.'"';
+			
+			// 2nd Line 
+			if ($num_search_criteria == 1)
+			{
+				// no seconnd line, our string is complete
+				$final_search_str = $search_str_1_criteria;
+			}
+			else
+			{
+				// convert form submitted data into usable IMAP search keys
+				$search_key_sieve = $feed_filter['matches'][1]['examine'];
+				$search_key_imap = $this->sieve_to_imap_fields[$search_key_sieve];
+				// what to learch for
+				$search_for = $feed_filter['matches'][1]['matchthis'];
+				// does or does not contain
+				$comparator = $feed_filter['matches'][1]['comparator'];
+				// DOES NOT CONTAIN - BROKEN - FIXME
+				$search_str_2_criteria = $search_key_imap.' "'.$search_for.'"';
+				// preliminary  compound search string
+				$final_search_str = $search_str_1_criteria .' '.$search_str_2_criteria;
+				// final syntax of this limited 2 line search
+				$andor = $feed_filter['matches'][1]['andor'];
+				// ANDOR - BROKEN - FIXME
+			}
+			
+			/*
 			$conv_error = '';
 			if ((!isset($look_here_sieve))
 			|| (trim($look_here_sieve) == '')
 			|| ($look_here_imap == ''))
 			{
 				$conv_error = 'invalid or no examine data';
-				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
+				if ($this->debug > 1) { echo '<b> *** error</b>: bofilters.make_imap_search_str: error: '.$conv_error."<br> \r\n"; }
 				return '';
 			}
 			elseif ((!isset($for_this))
 			|| (trim($for_this) == ''))
 			{
 				$conv_error = 'invalid or no search string data';
-				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: sieve_to_imap_string: error: '.$conv_error."<br> \r\n"; }
+				if ($this->debug > 1) { echo '<b> *** error</b>: bofilters.make_imap_search_str: error: '.$conv_error."<br> \r\n"; }
 				return '';
 			}
-			
 			$imap_str = $look_here_imap.' "'.$for_this.'"';
-			if ($this->debug > 0) { echo 'bofilters: sieve_to_imap_string: string is: '.$imap_str."<br>\r\n"; }
-			return $imap_str;
+			*/
+			if ($this->debug > 0) { echo 'bofilters.make_imap_search_str: LEAVING, returning search string: <code>'.$final_search_str.'</code><br>'."\r\n"; }
+			return $final_search_str;
 		}
 
-		
+		// DEPRECIATED
 		function do_imap_search()
 		{
-			$imap_search_str = $this->sieve_to_imap_string();
+			$imap_search_str = $this->make_imap_search_str();
 			if (!$imap_search_str)
 			{
-				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: do_imap_search: sieve_to_imap_string returned empty<br>'."\r\n"; }
+				if ($this->debug > 0) { echo '<b> *** error</b>: bofilters: do_imap_search: make_imap_search_str returned empty<br>'."\r\n"; }
 				return array();
 			}
 			
@@ -571,6 +821,8 @@
 				$this->template->parse('V_mlist_submit_form','B_mlist_submit_form');
 				
 				$this->submit_mlist_to_class_form = $this->template->get_var('V_mlist_submit_form');
+				
+				return $this->finished_mlist;
 			}
 			
 		}

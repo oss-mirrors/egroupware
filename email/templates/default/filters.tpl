@@ -52,7 +52,7 @@
 			<font size="-1">
 			<select name="{comparator_selectbox_name}">
 				<option value="contains" {contains_selected}>{lang_contains}</option>
-				<option value="notcontains" {notcontains_selected}>{lang_notcontains}</option>
+				<!-- <option value="notcontains" {notcontains_selected}>{lang_notcontains}</option> -->
 			</select>
 			</font>
 		</td>
@@ -103,33 +103,45 @@
 	
 	<br>
 	
-	<table width="75%" border="0" cellPadding="0" cellSpacing="0">
+	<table width="50%" border="0" cellPadding="0" cellSpacing="0" align="center">
 	<tr> 
-		<td width="50%">
-			&nbsp;
-		</td>
-		<td width="25%">
+		<td width="33%" align="center">
 			<input type="submit" name="submit" value="{lang_submit}">
-			&nbsp; &nbsp;
+		</td>
+		<td width="34%" align="center">
 			<input type="reset" name="reset" value="{lang_clear}">
 		</td>
-	
 </form>
-	
 <form action="{form_cancel_action}" method="post">
-	
-		<td width="25%">
+		<td width="33%" align="center">
 			<input type="submit" name="cancel" value="{lang_cancel}">
 		</td>
-	
 </form>
-	
 	</tr>
 	</table>
 	
 	<p>&nbsp;</p>
-
-	{V_mlist_html}
+	<hr>
+	<p>&nbsp;</p>
 	
+	<table width="90%" border="0" cellPadding="4" cellSpacing="4" align="center">
+	<tr> 
+		<td colspan="2" align="center">
+			<em>Under Development</em>
+			<br>Submit the filter data to the database by clicking submit,
+			<br>then you may test or apply the filter.
+		</td>
+	</tr>
+	<tr> 
+		<td width="50%" align="center">
+			{test_this_filter_href}
+		</td>
+		<td width="50%" align="center">
+			{apply_this_filter_href}
+		</td>
+	</tr>
+	</table>
+	
+	<p>&nbsp;</p>
 
 <!-- END Sieve Mail Filters -->

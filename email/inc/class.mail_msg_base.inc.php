@@ -1207,7 +1207,7 @@
 
 
   // ----  Various Functions Used To Support Email   -----
-	function prep_folder_in($feed_folder)
+	function prep_folder_in($feed_folder, $acctnum='')
 	{
 		// ----  Ensure a Folder Variable exists, if not, set to INBOX (typical practice)   -----
 		if (!$feed_folder)
@@ -1216,10 +1216,16 @@
 			// note: return auto-exits this function
 		}
 		
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
+		{
+			$acctnum = $this->get_acctnum();
+		}
+		
 		// FILESYSTEM imap server "dot_slash" CHECK
 		if ((strstr(urldecode($feed_folder), './'))
-		&& 	((($this->get_pref_value('imap_server_type') == 'UW-Maildir')
-			|| ($this->get_pref_value('imap_server_type') == 'UWash'))) )
+		&& 	((($this->get_pref_value('imap_server_type', $acctnum) == 'UW-Maildir')
+			|| ($this->get_pref_value('imap_server_type', $acctnum) == 'UWash'))) )
 		{
 			// UWash and UW-Maildir IMAP servers are filesystem based,
 			// so anything like "./" or "../" *might* make the server list files and directories
@@ -1234,7 +1240,7 @@
 		// an incoming folder name has generally been urlencoded before it gets here
 		// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
 		$feed_folder = urldecode($feed_folder);
-		return $this->folder_lookup('', $feed_folder);
+		return $this->folder_lookup('', $feed_folder, $acctnum);
 	}
 
 	function prep_folder_out($feed_folder='')
@@ -2063,16 +2069,15 @@
 	  *  during the get_folder_list routine - "folder_list[folder_long]"
 	  *  if False, an empty string is returned
 	  * * * * * * *  * * * */
-	function folder_lookup($mailsvr_stream, $folder_needle='INBOX')
+	function folder_lookup($mailsvr_stream, $folder_needle='INBOX', $acctnum='')
 	{
-		if ((!$mailsvr_stream)
-		|| ($mailsvr_stream == ''))
+		if ((!isset($acctnum))
+		|| ((string)$acctnum == ''))
 		{
-			$mailsvr_stream = $this->get_arg_value('mailsvr_stream');
+			$acctnum = $this->get_acctnum();
 		}
 		
-		//$folder_list = $this->get_folder_list($mailsvr_stream);
-		$folder_list = $this->get_folder_list();
+		$folder_list = $this->get_folder_list($acctnum);
 		
 		//$debug_folder_lookup = True;
 		$debug_folder_lookup = False;

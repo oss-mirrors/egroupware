@@ -96,18 +96,6 @@
 			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 			
 			
-			// setup some form vars
-			//$form_edit_filter_action = $GLOBALS['phpgw']->link(
-			//					'/index.php',
-			//					'menuaction=email.uifilters.filters_edit');
-			$form_edit_filter_action = $GLOBALS['phpgw']->link(
-								'/index.php',
-								'menuaction=email.bofilters.process_submitted_data');
-			
-			$form_cancel_action = $GLOBALS['phpgw']->link(
-								'/index.php',
-								'menuaction=email.uifilters.filters_list');
-			
 			// make the filters object
 			$this->bo = CreateObject("email.bofilters");
 			// get all filters
@@ -120,7 +108,33 @@
 			
 			if ($this->debug > 2) { echo 'uifilters.filters: $this->bo->obtain_filer_num(): ['.$this->bo->obtain_filer_num().'] ; $this->bo->all_filters DUMP<pre>'; print_r($this->bo->all_filters); echo '</pre>'."\r\n"; }
 			
+			// setup some form vars
+			//$form_edit_filter_action = $GLOBALS['phpgw']->link(
+			//					'/index.php',
+			//					'menuaction=email.uifilters.filters_edit');
+			$form_edit_filter_action = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.bofilters.process_submitted_data');
+			
+			$form_cancel_action = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.uifilters.filters_list');
+			
+			$apply_this_filter_url = $GLOBALS['phpgw']->link(
+								'/index.php',
+								'menuaction=email.bofilters.run_single_filter'
+								.'&filter_num='.$filter_num);
+			$apply_this_filter_href = '<a href="'.$apply_this_filter_url.'"><b>*APPLY*</b> This Filter</a>';
+			
+			$test_this_filter_url = $apply_this_filter_url.'&filter_test=1';
+			$test_this_filter_href = '<a href="'.$test_this_filter_url.'">Test Run This Filter</a>';
+			
+			$GLOBALS['phpgw']->template->set_var('apply_this_filter_href',$apply_this_filter_href);
+			$GLOBALS['phpgw']->template->set_var('test_this_filter_href',$test_this_filter_href);
+			
+			
 			// does the data exist or is this a new filter
+			/*
 			if ((isset($this->bo->all_filters[$filter_num]))
 			&& (isset($this->bo->all_filters[$filter_num]['source_accounts'])))
 			{
@@ -130,6 +144,8 @@
 			{
 				$filter_exists = False;
 			}
+			*/
+			$filter_exists = $this->bo->filter_exists($filter_num);
 			
 			// ----  Filter Name  ----
 			$filter_name_box_name = 'filtername';
@@ -153,6 +169,7 @@
 				{
 					$this_acct =  $this->bo->all_filters[$filter_num]['source_accounts'][$i]['acctnum'];
 					// make a comma sep string of all source accounts, so we can make them selected
+					//$pre_select_multi .= (string)$this_acct.', ';
 					if ($pre_select_multi == '')
 					{
 						$pre_select_multi .= (string)$this_acct;
@@ -171,8 +188,9 @@
 			
 			// ---  many email apps offer 2 matches options rows  ---
 			// ---  others offer 1 match options row with the option of more ---
-			// ---  for now we will offer 4 rows ---
-			$num_matchrow_pairs = 4;
+			// ---  for now we will offer 2 rows ---
+			// because the IMAP search string for 2 items is not as comlicated as for 3 or 4
+			$num_matchrow_pairs = 2;
 			for ($i=0; $i < $num_matchrow_pairs; $i++)
 			{
 				if ($i == 0)
