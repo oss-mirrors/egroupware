@@ -20,18 +20,18 @@
 	You should have received a copy of the GNU General Public License 
 	along with JiNN; if not, write to the Free Software Foundation, Inc.,
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
-	
+
 	---------------------------------------------------------------------
-	 
+
 	plugin.standard_set.php contains a number off standardly available 
 	plugins for JiNN. 
-	
+
 	*/
 
 
-	
+
 	/*-------------------------------------------------------------------
-		NewLine to Break PLUGIN                                                                    
+	NewLine to Break PLUGIN                                                                    
 	-------------------------------------------------------------------*/
 	$description = '
 	The Newline2Break Plugin is the most simple WYSIWYG plugin there is. The 
@@ -69,14 +69,14 @@
 		{
 			$input=strip_tags($input);
 		}
-		
+
 		$output=addslashes(nl2br($input));
 
 		return $output;
 	}
 
 	/*-------------------------------------------------------------------
-		Hide This Field PLUGIN                                                                     
+	Hide This Field PLUGIN                                                                     
 	-------------------------------------------------------------------*/
 	$this->plugins['hidefield']['name'] 			= 'hidefield';
 	$this->plugins['hidefield']['title']			= 'Hide This Field';
@@ -98,7 +98,7 @@
 	}
 
 	/*-------------------------------------------------------------------
-		Boolian PLUGIN                                                                     
+	Boolian PLUGIN                                                                     
 	-------------------------------------------------------------------*/
 	$this->plugins['boolian']['name'] 			= 'boolian';
 	$this->plugins['boolian']['title']			= 'Boolian';
@@ -144,4 +144,47 @@
 		return $input;
 	}
 
+	/*-------------------------------------------------------------------
+		SelectBox PLUGIN                                                                     
+	-------------------------------------------------------------------*/
+	$this->plugins['selectbox']['name'] 			= 'selectbox';
+	$this->plugins['selectbox']['title']			= 'Select Box';
+	$this->plugins['selectbox']['version']		= '0.2';
+	$this->plugins['selectbox']['enable']			= 1;
+	$this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
+	$this->plugins['selectbox']['db_field_hooks']	= array
+	(
+		'string'	
+	);
+	$this->plugins['selectbox']['config']		= array
+	(
+		'Value_seperated_by_commas'=>array('one,two,three','text',''),
+		'Default_value'=>array('one','text',''),
+		'Empty_option_available'=> array(array('yes','no'),'select','')
+	);
+
+	function plg_fi_selectbox($field_name,$value, $config)
+	{
+		$pos_values=explode(',',$config['Value_seperated_by_commas']);
+		if(is_array($pos_values))
+		{
+			$input='<select name="'.$field_name.'">';
+			if($config['Empty_option_available']=='yes') $input.='<option>';
+			foreach($pos_values as $pos_val) 
+			{
+				unset($selected);
+				if(empty($value) && $pos_val==$config['Default_value']) $selected='SELECTED';	
+				if($value==$pos_val) $selected='SELECTED';	
+				$input.='<option '.$selected.' value="'.$pos_val.'">'.$pos_val.'</option>';
+			}
+			$input.='</select>';
+		}	
+		else
+		{
+			$input= '<input name="'.$field_name.'" type=text value="'.$value.'">';
+
+		}
+
+		return $input;
+	}
 ?>
