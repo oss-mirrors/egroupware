@@ -67,7 +67,7 @@
 			$template->set_var('cc_loading_2', lang('Server Contacted. Waiting for response...'));
 			$template->set_var('cc_loading_3', lang('Processing Information...'));
 			$template->set_var('cc_loading_image', $GLOBALS['phpgw_info']['server']['webserver_url'] . '/contactcenter/templates/default/images/loading_back.png');
-			$template->set_var('cc_server_root', $GLOBALS['phpgw_info']['server']['webserver_url']);
+			$template->set_var('cc_server_root', $GLOBALS['phpgw_info']['server']['webserver_url'] ? $GLOBALS['phpgw_info']['server']['webserver_url'] : '/');
 			$template->set_var('cc_phpgw_img_dir', $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/images');
 
 			/* Style Sheets */
