@@ -1,13 +1,14 @@
 %	stocks	pl	%
-add new stock	stocks	pl	Dodaj now± spó³kê
-disable	stocks	pl	Wy³±cz
-display stocks on main screen is disabled	stocks	pl	Wy³±czone wy¶wietlanie na stonie g³ównej
-display stocks on main screen is enabled	stocks	pl	W³±czone wy¶wietlanie na stonie g³ównej
-edit stock	stocks	pl	Edycja spó³ki
-enable	stocks	pl	W³±cz
+add new stock	stocks	pl	Dodaj now spk
+company name	stocks	pl	Nazwa spki
+disable	stocks	pl	Wycz
+display stocks on main screen is disabled	stocks	pl	Wyczone wywietlanie na stronie gwnej
+display stocks on main screen is enabled	stocks	pl	Wczone wywietlanie na stronie gwnej
+edit stock	stocks	pl	Edycja spki
+enable	stocks	pl	Wcz
 price	stocks	pl	Cena
-select displayed stocks	preferences	pl	Wybierz wy¶wietlane spó³ki
-stock quote preferences	stocks	pl	Preferencje spó³ki
-stock quotes	common	pl	Gie³da
-stocks	common	pl	Gie³da
+select displayed stocks	preferences	pl	Wybierz wywietlane spki
+stock quote preferences	stocks	pl	Preferencje spki
+stock quotes	common	pl	Gieda
+stocks	common	pl	Gieda
 symbol	stocks	pl	Symbol
