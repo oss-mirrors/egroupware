@@ -53,12 +53,12 @@
 			}
 			$nummsg = $phpgw->msg->num_msg($mailbox);
 //			$title = '<a href="'.$phpgw->link($phpgw_info['server']['webserver_url'].'/email/index.php').'">EMail'.($str ? ' - '.$str : '').'</a>';
-			$title = '<font color="FFFFFF">EMail' . ($str ? ' - ' . $str : '') . '</font>';
+			$title = '<font color="FFFFFF">' . lang('EMail') . ($str ? ' - ' . $str : '') . '</font>';
 
 			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
 			$portalbox->setvar('width',600);
 			$portalbox->outerborderwidth = 0;
-			$portalbox->header_background_image = PHPGW_APP_TPL . '/images/bg_filler.gif';
+			$portalbox->header_background_image = $phpgw_info['server']['webserver_url'] . '/phpgwapi/templates/verdilak/images/bg_filler.gif';
 			if($nummsg >= 5)
 			{
 				$check_msgs = 5;
