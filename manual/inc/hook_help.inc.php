@@ -18,9 +18,9 @@
 
 	$GLOBALS['phpgw']->help->data[] = array
 	(
-		'text'					=> lang('owerview'),
+		'text'					=> lang('overview'),
 		'link'					=> $GLOBALS['phpgw']->help->check_help_file('overview.php'),
-		'lang_link_statustext'	=> lang('owerview')
+		'lang_link_statustext'	=> lang('overview')
 	);
 
 	$GLOBALS['phpgw']->help->data[] = array
