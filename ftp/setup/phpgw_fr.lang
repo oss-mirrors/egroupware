@@ -1,33 +1,34 @@
-log into ftp server	ftp	fr	Se connecter au serveur FTP
-permissions	ftp	fr	Permissions
-size	ftp	fr	Taille
-ftp hostname	ftp	fr	Nom du serveur FTP
-relogin	ftp	fr	Déconnecte/reconnecte
-cd	ftp	fr	cd
-delete	ftp	fr	Supprimer %1
-deleted	ftp	fr	%1 supprimé avec succès
-failed to delete	ftp	fr	Impossible de supprimer %1
-view	ftp	fr	Voir
-save	ftp	fr	Sauvegarder
-save to filemanager	ftp	fr	Sauvegarder vers le gestionnaire de fichiers
-upload	ftp	fr	Uploader
-uploaded	ftp	fr	Uploadé %1 avec succès
-failed to upload	ftp	fr	Echec d'upload de %1
-create new directory	ftp	fr	Créer un nouveau répertoire
-failed to mkdir	ftp	fr	Echec de création du répertoire %1
-empty dirname	ftp	fr	Tentative de création d'un répertoire avec un nom vide
-module name	ftp	fr	Client FTP
-home	ftp	fr	Maison
-username	ftp	fr	Nom d'utilisateur
-password	ftp	fr	Mot de passe
-ftpserver	ftp	fr	Serveur FTP
-connect	ftp	fr	Se connecter
 bad connection	ftp	fr	Echec de connexion à %1 avec l'utilisateur %2 et le mot de passe %3
 cancel	ftp	fr	Annuler
-rename	ftp	fr	Renommer %1
-renamed	ftp	fr	Renommer %1 en %2
+cd	ftp	fr	cd
+confirm delete	ftp	fr	Voulez-vous réellement effacer %1 ?
+connect	ftp	fr	Se connecter
+create new directory	ftp	fr	Créer un nouveau répertoire
 created directory	ftp	fr	Répertoire %1 crée avec succès
+delete	ftp	fr	Supprimer %1
+deleted	ftp	fr	%1 supprimé avec succès
+empty dirname	ftp	fr	Tentative de création d'un répertoire avec un nom vide
+failed to delete	ftp	fr	Impossible de supprimer %1
+failed to mkdir	ftp	fr	Echec de création du répertoire %1
 failed to rename	ftp	fr	Echec de renommage de %1 en %2
+failed to upload	ftp	fr	Echec d'upload de %1
+ftp hostname	ftp	fr	Nom du serveur FTP
+ftpserver	ftp	fr	Serveur FTP
+home	ftp	fr	Maison
+log into ftp server	ftp	fr	Se connecter au serveur FTP
+module name	ftp	fr	Client FTP
+password	ftp	fr	Mot de passe
+permissions	ftp	fr	Permissions
+relogin	ftp	fr	Déconnecte/reconnecte
+rename	ftp	fr	Renommer %1
+rename file	ftp	fr	Renommer le fichier
 rename from	ftp	fr	Renommer depuis
 rename to	ftp	fr	vers
-confirm delete	ftp	fr	Voulez-vous réellement effacer %1 ?
+renamed	ftp	fr	Renommer %1 en %2
+save	ftp	fr	Sauvegarder
+save to filemanager	ftp	fr	Sauvegarder vers le gestionnaire de fichiers
+size	ftp	fr	Taille
+upload	ftp	fr	Uploader
+uploaded	ftp	fr	Uploadé %1 avec succès
+username	ftp	fr	Nom d'utilisateur
+view	ftp	fr	Voir
