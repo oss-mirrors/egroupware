@@ -160,10 +160,10 @@
   
   $t->set_var(title_invoice_num,lang("invoice_num"));
   if(!$invoice_num) {
-    $phpgw->db->query("SELECT max(num)+1 AS max FROM p_invoice");
+    $phpgw->db->query("SELECT max(num) AS max FROM p_invoice");
     $t->set_var(title_invoice_num,lang("invoice_num"));
     if($phpgw->db->next_record()) {
-      $t->set_var(invoice_num,(int)($phpgw->db->f("max")));
+      $t->set_var(invoice_num,(int)($phpgw->db->f("max"))+1);
     } else {
       $t->set_var(invoice_num,"1");
     }

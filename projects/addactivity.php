@@ -51,9 +51,9 @@
         $t->set_var("common_hidden_vars",$common_hidden_vars);
         $t->set_var("lang_num",lang("num"));
         
-        $db2->query("select max(num+1) as max from p_activities");
+        $db2->query("select max(num) as max from p_activities");
         if($db2->next_record()) { 
-        $t->set_var("num",(int)($db2->f("max")));
+        $t->set_var("num",(int)($db2->f("max"))+1);
         } else {                                                                                                                                              
            $t->set_var("num","1");	 
         }

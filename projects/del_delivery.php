@@ -148,10 +148,10 @@
     $t->set_var(title_delivery_num,lang("delivery_num"));
   
   if(!$delivery_num) {
-    $phpgw->db->query("SELECT max(num+1) AS max FROM p_delivery");
+    $phpgw->db->query("SELECT max(num) AS max FROM p_delivery");
     $t->set_var(title_delivery_num,lang("delivery_num"));
     if($phpgw->db->next_record()) {
-      $t->set_var(delivery_num,(int)($phpgw->db->f("max")));
+      $t->set_var(delivery_num,(int)($phpgw->db->f("max"))+1);
     } else {
       $t->set_var(delivery_num,"1");
     }
