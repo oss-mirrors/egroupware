@@ -691,7 +691,6 @@
 		//  fetch_raw_mail  is DEPRECIATED - NOT USED
 		// SEE BELOW for:  fetchheader
 		// SEE BELOW for:  fetchstructure
-		//  get_body is DEPRECIATED - NOT USED
 		//  get_header is DEPRECIATED - NOT USED
 		// SEE BELOW for:  listmailbox  *=DONE=*
 		// SEE BELOW for:  mailboxmsginfo
@@ -4443,16 +4442,16 @@
 		\**************************************************************************/
 		/*!
 		@function fetchheader
-		@abstract not yet implemented in IMAP sockets module
-		@discussion implements imap_fetchheader
+		@abstract implements IMAP_FETCHHEADER
+		@discussion gets raw message headers via PEEK so the seen flag is left unchanged.
 		*/
-		function fetchheader($stream_notused,$msg_num,$flags='')
+		function fetchheader($stream_notused,$msg_num,$flags=0)
 		{
 			// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
 			//if ($this->debug_dcom > 0) { echo 'imap: fetchheader NOT YET IMPLEMENTED imap sockets function<br>'; }
 			//return False;
 			if ($this->debug_dcom > 0) { echo 'imap: fetchheader('.__LINE__.'): ENTERING+LEAVING by returning $this->fetchbody() just for headers <br>'; }
-			return $this->fetchbody($stream_notused,$msg_num,'HEADER',$flags);
+			return $this->fetchbody($stream_notused,$msg_num,'HEADER',$flags, 'PEEK');
 		}
 		
 		
@@ -4464,7 +4463,7 @@
 		@abstract not yet implemented in IMAP sockets module
 		@discussion implements imap_fetchbody
 		*/
-		function fetchbody($stream_notused,$msg_num,$part_num="",$flags=0)
+		function fetchbody($stream_notused,$msg_num,$part_num="",$flags=0, $just_peek='')
 		{
 			//if ($this->debug_dcom > 0) { echo 'imap: fetchbody  NOT YET IMPLEMENTED imap sockets function<br>'; }
 			//return False;
@@ -4493,10 +4492,26 @@
 			}
 			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): $flags ['.htmlspecialchars(serialize($flags)).'], $using_uid ['.htmlspecialchars(serialize($using_uid)).'] only SE_UID coded for, so continuing...<br>'; }
 			
+			// do some RFC3501 formatting (lame, needs more work)
+			if ((string)$part_num == '0')
+			{
+				$part_num = 'HEADER';
+			}
+			
 			// assemble the server querey, looks like this:  
 			// 00000006 UID FETCH 131 BODY[1]
+			// OR if only peeking at the header
+			// 00000003 UID FETCH 6  BODY.PEEK[HEADER]
 			$cmd_tag = 's008';
-			$full_command = $cmd_tag.' UID FETCH '.$msg_num.' BODY['.$part_num.']';
+			if (($part_num == 'HEADER')
+			|| ($just_peek))
+			{
+				$full_command = $cmd_tag.' UID FETCH '.$msg_num.' BODY.PEEK['.$part_num.']';
+			}
+			else
+			{
+				$full_command = $cmd_tag.' UID FETCH '.$msg_num.' BODY['.$part_num.']';
+			}
 			$expecting = $cmd_tag; // may be followed by OK, NO, or BAD
 			
 			if ($this->debug_dcom > 1) { echo 'imap_sock.fetchbody('.__LINE__.'): write_port: "'. htmlspecialchars($full_command) .'"<br>'; }
@@ -4606,14 +4621,14 @@
 		/*!
 		@function get_body
 		@abstract implements IMAP_BODY
+		@discussion mostly used only for raw message viewing. Passes thru to fetchbody with TEXT as part num.
+		@author Angles
 		*/
-		function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
+		function get_body($stream_notused,$msg_num,$flags=0)
 		{
-			// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
-			if ($this->debug_dcom > 0) { echo 'imap: get_body  NOT YET IMPLEMENTED imap sockets function<br>'; }
-			return False;
+			if ($this->debug_dcom > 0) { echo 'imap: get_body('.__LINE__.'): ENTERING+LEAVING by returning $this->fetchbody() just for headers <br>'; }
+			return $this->fetchbody($stream_notused,$msg_num,'TEXT',$flags);
 		}
-		
 	}
 
 ?>

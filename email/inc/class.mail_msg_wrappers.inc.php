@@ -570,6 +570,8 @@
 			if ($data)
 			{
 				// notice of event
+				// note even if $part_no == 0 (HEADERS only) this function in php-imap WILL set the SEEN flag
+				// use phpgw_fetchheader if you only want to PEEK the headers without changing SEEN
 				$this->event_msg_seen($msgball, 'phpgw_fetchbody');
 				// SET_CACHE_ITEM
 				$meta_data = array();

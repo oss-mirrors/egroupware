@@ -1119,8 +1119,18 @@
 			////echo '$mime: ['.$mime.']<br>';
 			////echo '$GLOBALS[phpgw]->msg->get_arg_value(encoding): ['.$GLOBALS['phpgw']->msg->get_arg_value('encoding').']<br>';
 			
+			// is this only a header PEEK?
+			if ((string)$msgball['part_no'] == '0')
+			{
+				// just getting headers should be via PEEK so the "seen" flag is left alone
+				$this->output_data = $GLOBALS['phpgw']->msg->phpgw_fetchheader($msgball);
+				$size = strlen($this->output_data);
+				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime, $size);
+				echo $this->output_data;
+				$this->output_data = '';
+			}
 			// ----  'irregular' "view raw message" functionality  ----
-			if ($msgball['part_no'] == 'raw_message')
+			elseif ($msgball['part_no'] == 'raw_message')
 			{
 				// NOTE no length for this purpose
 				$this->browser->content_header($GLOBALS['phpgw']->msg->get_arg_value('name'), $mime);
