@@ -3,7 +3,7 @@ absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/arc
 absolute path of the directory of egw backup application	backup	it	Path assoluto della directory dell'applicazione Backup EGW
 absolute path of the directory to store the backup script	backup	it	Path assoluto della directory dell'applicazione Backup EGW
 archive type	backup	it	Seleziona il tipo di archivio
-backup	common	it	Backup
+backup	common	it	backup
 backup administration	common	it	Gestione Backup
 bzip2	admin	it	bzip2
 configuration backup	backup	it	Configurazione Backup
