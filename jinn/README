@@ -26,7 +26,7 @@ Main features are:
 - uploading support for other attachments then images
 - wysiwyg html/xml editor
 - many with many fieldrelations
-- relationeditor
+- relation editor
 
 Future features:
 - backup interface for databases and directories
@@ -35,17 +35,8 @@ Future features:
 - support for remote sites/databases
 - more browsing functions, like sorting, hiding columns and previewing thumbs
 - userpreferences
-- accessrights administrion by site-administrator
+- accessrights administration by site-administrator
 - automatic database-setup
-- more databaseadministration-features like creating databases/fields etc, etc.
+- more database administration-features like creating databases/fields etc, etc.
 
 Please report bugs or better, patches to pim@lingewoud.nl
-
-
-
-
-
-
-
-
-
