@@ -75,7 +75,7 @@
         <td>Last view</td>
         <td><? 
          if ($phpgw->db->f("lastview") != 0)
-            echo $phpgw->preferences->show_date($phpgw->db->f("lastview")); 
+            echo $phpgw->common->show_date($phpgw->db->f("lastview")); 
          else
             echo "never";
          ?></td>
