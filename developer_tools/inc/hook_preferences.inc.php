@@ -13,8 +13,8 @@
 	/* $Id$ */
 
 	$file  = array(
-		'Edit Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=developer_tools&cats_level=True&global_cats=True'),
-		'SF Project tracker preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uisf_project_tracker.preferences')
+		'Edit Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=developer_tools&cats_level=True&global_cats=True')
+		//'SF Project tracker preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uisf_project_tracker.preferences')
 	);
 
 	display_section('developer_tools','Developer Tools',$file);
