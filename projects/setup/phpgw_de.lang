@@ -251,7 +251,7 @@ sequencing project	projects	de	Nachfolgendes Projekt
 settings	admin	de	Einstellungen
 short description	projects	de	Kurzbeschreibung
 show gantt chart	projects	de	Gantt Chart anzeigen
-site configuration	projects	de	Application konfigurieren
+site configuration	projects	de	Applikation konfigurieren
 start	projects	de	Start
 start date can not be before parent projects start date	projects	de	Startdatum kann nicht vor dem Startdatum des &uuml;bergeordneten Projektes liegen.
 start date planned	projects	de	Geplantes Startdatum
