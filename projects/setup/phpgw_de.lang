@@ -39,7 +39,7 @@ create invoice	projects	de	Rechnung erstellen
 creator	projects	de	Ersteller
 customer	projects	de	Kunde
 date created	projects	de	Erstellungs-Datum
-date due of milestone %1 of project %2 has been updated	projects	de	Fälligkeit des Meilensteines %1 von Projekt %2 wurde geändert.
+date due of milestone %1 of project %2 has been updated	projects	de	FÃ¤lligkeit des Meilensteines %1 von Projekt %2 wurde geÃ¤ndert.
 delete hours	projects	de	Stunden l&ouml;schen
 deliveries	projects	de	Lieferungen
 delivery	projects	de	Lieferung
@@ -103,7 +103,7 @@ milestones	common	de	Meilensteine
 minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
 net	projects	de	netto
-new date due of milestone %1: %2	projects	de	Neuer Fälligkeitstermin des Meilensteines %1: %2.
+new date due of milestone %1: %2	projects	de	Neuer FÃ¤lligkeitstermin des Meilensteines %1: %2.
 new project	projects	de	Neues Projekt
 nonactive	common	de	Nicht aktiv
 number	projects	de	Nummer
@@ -135,7 +135,7 @@ project archive	projects	de	Projekt Archiv
 project billing	projects	de	Projekt Abrechnung
 project delivery	projects	de	Projekt Lieferung
 project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
-project %1 has been updated	projects	de	Projekt %1 wurde überarbeitet.
+project %1 has been updated	projects	de	Projekt %1 wurde Ã¼berarbeitet.
 project id	common	de	Projekt ID
 project list	projects	de	Projekt Liste
 project name	projects	de	Projekt Name

@@ -1,39 +1,39 @@
 action	tts	de	Aktion
-add new ticket	tts	de	Neues Ticket hinzufügen
-add ticket	tts	de	Ticket hinzufügen
-additional notes	tts	de	Zusätzliche Anmerkungen
+add new ticket	tts	de	Neues Ticket hinzufÃ¼gen
+add ticket	tts	de	Ticket hinzufÃ¼gen
+additional notes	tts	de	ZusÃ¤tzliche Anmerkungen
 admin options	common	de	Admin Optionen
 assign to	tts	de	Zuweisen an
 assigned from	tts	de	Zugewiesen von
 assigned to	tts	de	Zugewiesen an
 billable hours	tts	de	Abrechenbare Stunden
-billable hours changed	tts	de	Abrechenbare Stunden geändert
-billable hours rate	tts	de	Satz für abrechenbare Stunden
+billable hours changed	tts	de	Abrechenbare Stunden geÃ¤ndert
+billable hours rate	tts	de	Satz fÃ¼r abrechenbare Stunden
 billable rate	tts	de	abrechenbarer Satz
-billable rate changed	tts	de	abrechenbarer Satz geändert
-category changed	tts	de	Kategorie geändert
-clear form	tts	de	Formular löschen
-close	tts	de	Schließen
+billable rate changed	tts	de	abrechenbarer Satz geÃ¤ndert
+category changed	tts	de	Kategorie geÃ¤ndert
+clear form	tts	de	Formular lÃ¶schen
+close	tts	de	SchlieÃŸen
 close date	tts	de	Geschlossen am
 closed	tts	de	Geschlossen
 create new ticket	tts	de	Neues Ticket anlegen
-creates a new ticket, returns ticket_id	tts	de	Legt ein neues Ticket an und liefert die ticket_id zurück
+creates a new ticket, returns ticket_id	tts	de	Legt ein neues Ticket an und liefert die ticket_id zurÃ¼ck
 creates a struct of tickets	tts	de	Legt einen Satz von Tickets an
 date opened	tts	de	Angelegt am
 default assign to	tts	de	Vorgabewert zugewiesen an
 default group	tts	de	Vorgabewert Gruppe
-default priority	tts	de	Vorgabewert Priorität
+default priority	tts	de	Vorgabewert PrioritÃ¤t
 detail	tts	de	Detail
 details	tts	de	Details
 force	tts	de	erzwungen
 global categories	tts	de	Globale Kategorien
-group ownership changed	tts	de	Gruppen-Eigentümer geändert
+group ownership changed	tts	de	Gruppen-EigentÃ¼mer geÃ¤ndert
 in progress	tts	de	in Bearbeitung
-latest note added	tts	de	Letzte zugefügte Notiz
+latest note added	tts	de	Letzte zugefÃ¼gte Notiz
 new ticket	tts	de	Neues Ticket
 new value	tts	de	Neuer Wert
-no additional notes	tts	de	Keine zusätzlichen Notizen
-no notes for this ticket	tts	de	Keine Notizen für dieses Ticket
+no additional notes	tts	de	Keine zusÃ¤tzlichen Notizen
+no notes for this ticket	tts	de	Keine Notizen fÃ¼r dieses Ticket
 no tickets found	tts	de	Keine Tickets gefunden
 not assigned	tts	de	Nicht zugewiesen
 old value	tts	de	Alter Wert
@@ -41,26 +41,26 @@ open	tts	de	Offen
 open date	tts	de	Angelegt am
 opened	tts	de	Angelegt
 opened by	tts	de	Angelegt von
-original ticket details	tts	de	Ursprüngliche Details des Tickets
+original ticket details	tts	de	UrsprÃ¼ngliche Details des Tickets
 prio	tts	de	Prio
-priority	tts	de	Priorität
-priority changed	tts	de	Priorität geändert
+priority	tts	de	PrioritÃ¤t
+priority changed	tts	de	PrioritÃ¤t geÃ¤ndert
 re-assigned	tts	de	Wieder-zugewiesen
-re-opened	tts	de	Wieder-eröffnet
+re-opened	tts	de	Wieder-erÃ¶ffnet
 refresh every (seconds)	tts	de	Auffrischen alle (Sekunden)
 returns a struct of a tickets history	tts	de	Liefert einen Satz von Ticket-Historien
 returns a struct of values of a single ticket	tts	de	Liefert einen Satz von Werten eines einzelnen Tickets
-returns the additional notes attached to a ticket	tts	de	Liefert die zusätzlichen Notizen eines Tickets
-show new/updated tickets on main screen	tts	de	Neue / geänderte Tickets auf Startseite anzeigen
+returns the additional notes attached to a ticket	tts	de	Liefert die zusÃ¤tzlichen Notizen eines Tickets
+show new/updated tickets on main screen	tts	de	Neue / geÃ¤nderte Tickets auf Startseite anzeigen
 status/date closed	tts	de	Status/Datum geschlossen
-subject changed	tts	de	Betreff geändert
+subject changed	tts	de	Betreff geÃ¤ndert
 test	tts	de	TEST
 ticket	tts	de	Ticket
 ticket has been updated	tts	de	Ticket wurde aktualisiert
 tickets found %1	tts	de	Tickets gefundene %1
 tickets open %1	tts	de	Tickets offen %1
 tickets total %1	tts	de	Tickets insgesamt: %1
-to go back to the tts index, click <a href= %1 >here</a>	tts	de	Um zur Startseite des TTS zurück zu kehren, <a href="%1">hier</a> klicken
+to go back to the tts index, click <a href= %1 >here</a>	tts	de	Um zur Startseite des TTS zurÃ¼ck zu kehren, <a href="%1">hier</a> klicken
 total billable	tts	de	Gesamt abrechenbar
 trouble ticket system	common	de	Trouble Ticket System
 tts	common	de	Trouble Ticket System

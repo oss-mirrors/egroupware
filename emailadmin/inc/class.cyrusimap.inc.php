@@ -132,7 +132,7 @@
 				{
 					if(imap_createmailbox($mbox,imap_utf7_encode("{".$this->profileData['imapServer']."}$mailBoxName")))
 					{
-						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipcd"))
+						if(!imap_setacl($mbox, $mailBoxName, $username, "lrswipc"))
 						{
 							# log error message
 						}

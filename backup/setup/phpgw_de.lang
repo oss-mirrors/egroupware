@@ -25,14 +25,14 @@ nfs	backup	de	NFS
 no backup archives available !	backup	de	Es sind keine Datensicherungs-Archive vorhanden !
 number of stored backup versions	backup	de	Anzahl der gespeicherten Datensicherungs Versionen
 operating system	backup	de	Betriebssystem
-password	backup	de	Paﬂwort
+password	backup	de	Pa√üwort
 pgsql	admin	de	PostgreSQL
 php cgi	admin	de	php cgi
 please enter the path of the backup dir and/or enable showing archives in phpgroupware !	backup	de	Bitte den Pfad zum Sicherungsverzeichnis angeben und/oder das anzeigen der Archive in phpGroupWare aktivieren !
 please enter the path of the needed applications in *site configuration* !	backup	de	
 please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	de	
-please enter username and password for remote connection !	backup	de	Bitte Benutzername and Paﬂwort f¸r die Verbindung angeben !
-please select an application for transport to the remote host !	backup	de	bitte ein Programm zum Transport zum entfernten Host ausw‰hlen !
+please enter username and password for remote connection !	backup	de	Bitte Benutzername and Pa√üwort f√ºr die Verbindung angeben !
+please select an application for transport to the remote host !	backup	de	bitte ein Programm zum Transport zum entfernten Host ausw√§hlen !
 please set the path to a local dir to store the backup script !	backup	de	Bitte den Pfad eines lokalen Verzeichnisses zum speichern des Datensicherungs-Skriptes angeben !
 please set the path to the ldap database dir in *site configuration* !	backup	de	
 please set the path to the mysql database dir in *site configuration* !	backup	de	
@@ -45,9 +45,9 @@ please specify the path to the user-homedirectories in *site configuration* !	ba
 program locations	admin	de	Programmpfade
 save backup locally ?	backup	de	Daten lokal sichern ?
 save backup to a remote host ?	backup	de	Daten auf einen entfernten Host sichern ?
-select archive type	backup	de	Archiv Typ ausw‰hlen
+select archive type	backup	de	Archiv Typ ausw√§hlen
 select interval	backup	de	Intervall ausw&auml;hlen
-select transport application	backup	de	Transport Programm ausw‰hlen
+select transport application	backup	de	Transport Programm ausw√§hlen
 settings	admin	de	Einstellungen
 show backup archives in phpgroupware ?	backup	de	Datensicherungs-Archive in eGroupWare anzeigen ?
 smbmount	backup	de	SMBMOUNT
@@ -56,11 +56,11 @@ tar	admin	de	tar
 tar.bz2	backup	de	tar.bz2
 tar.gz	backup	de	tar.gz
 the backup application is not configured for showing the archives in phpgroupware yet !	backup	de	Die Datensicherung ist noch nicht zum anzeigen der Archive in eGroupWare konfiguriert worden !
-the directory to store the backup script must be outside of the webservers *documentroot* !	backup	de	Das Verzeichnis zum speichern des Datensicherungs-Skriptes muﬂ sich auﬂerhalb des Webservers *DocumentRoot* befinden !
-the ftp connection failed ! please check your configuration !	backup	de	Die ftp Verbindung schlug fehl ! Bitte die Konfiguration ¸berpr¸fen !
+the directory to store the backup script must be outside of the webservers *documentroot* !	backup	de	Das Verzeichnis zum speichern des Datensicherungs-Skriptes mu√ü sich au√üerhalb des Webservers *DocumentRoot* befinden !
+the ftp connection failed ! please check your configuration !	backup	de	Die ftp Verbindung schlug fehl ! Bitte die Konfiguration √ºberpr√ºfen !
 transport application	backup	de	Transport Programm
 user	backup	de	Benutzer
 versions can only be a number !	backup	de	Die Version kann nur eine Zahl sein
-weekly	backup	de	wˆchentlich
-your sql database isnt supported by this application !	backup	de	Ihre SQL Datenbank wird nicht von dieser Applikation unterst¸tzt
+weekly	backup	de	w√∂chentlich
+your sql database isnt supported by this application !	backup	de	Ihre SQL Datenbank wird nicht von dieser Applikation unterst√ºtzt
 zip	common	de	zip
