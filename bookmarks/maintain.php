@@ -16,10 +16,26 @@
 	$phpgw_info['flags'] = array(
 		'currentapp' => 'bookmarks',
 		'enable_nextmatchs_class' => True,
-		'enable_categories_class' => True
+		'enable_categories_class' => True,
+		'noheader'                => True,
+		'nonavbar'                => True
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if ($delete_x || $delete_y)
+	{
+		if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
+		{
+			$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+		}
+		else
+		{
+			$phpgw->bookmarks->delete($id);
+			$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
+		}
+	}
 
 	// This is going to use appsession()
   function return_to()
@@ -36,12 +52,17 @@
      }
   }
 
-  $phpgw->template->set_file(array("common" => "common.tpl",
-                                   "body"   => "form.tpl",
-                                   "info"   => "form_info.tpl"
-                            ));
+	$phpgw->template->set_file(array(
+		'common' => 'common.tpl',
+		'body'   => 'form.tpl',
+		'info'   => 'form_info.tpl'
+	));
 
-  app_header(&$phpgw->template);
+	$phpgw->common->phpgw_header();
+	include(PHPGW_APP_INC . '/header.inc.php');
+	echo parse_navbar();
+
+	app_header(&$phpgw->template);
 
   ## Check if there was a submission
   while (is_array($HTTP_POST_VARS) && list($key, $val) = each($HTTP_POST_VARS)) {
@@ -55,13 +76,13 @@
      return_to();
      break;
 
-     ## Delete the bookmark
-     case "bk_delete":
-     case "bk_delete_x":
+//     ## Delete the bookmark
+//     case "bk_delete":
+/*     case 'delete':
      if (! $phpgw->bookmarks->delete($id))
         break;
      return_to();
-     break;
+     break; */
   
      ## Cancel the changes, send user back to referring page.
      case "bk_cancel":
@@ -106,7 +127,12 @@
      $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
      $phpgw->template->set_var("updated",$f_ts[2]);
      $phpgw->template->set_var("total_visits",$phpgw->db->f("bm_visits"));
-        
+
+		$phpgw->template->set_var('lang_owner',lang('Created by'));
+		$account = createobject('phpgwapi.accounts',$phpgw->db->f('bm_owner'));
+		$ad      = $account->read_repository();
+		$phpgw->template->set_var('owner_value',$phpgw->common->display_fullname($ad['account_lid'],$ad['firstname'],$ad['lastname']));
+
      $phpgw->template->set_var("lang_added",lang("Date added"));
      $phpgw->template->set_var("lang_updated",lang("Date last updated"));
      $phpgw->template->set_var("lang_visited",lang("Date last visited"));
@@ -140,18 +166,22 @@
                                                  . '</select>');
   
   
-     $phpgw->template->set_var("input_url",'<input name="url" size="60" maxlength="255" value="' . $phpgw->db->f("bm_url") . '">');
-     $phpgw->template->set_var("input_name",'<input name="name" size="60" maxlength="255" value="' . $phpgw->db->f("bm_name") . '">');
-     $phpgw->template->set_var("input_desc",'<textarea name="desc" rows="3" cols="60" wrap="virtual">' . $phpgw->db->f("bm_desc") . '</textarea>');
-     $phpgw->template->set_var("input_keywords",'<input type="text" name="keyw" size="60" maxlength="255" value="' . $phpgw->db->f("bm_keywords") . '">');
-  
-     $phpgw->template->parse(BODY, "body");
+		$phpgw->template->set_var('input_url','<input name="url" size="60" maxlength="255" value="' . $phpgw->db->f('bm_url') . '">');
+		$phpgw->template->set_var('input_name','<input name="name" size="60" maxlength="255" value="' . $phpgw->db->f('bm_name') . '">');
+		$phpgw->template->set_var('input_desc','<textarea name="desc" rows="3" cols="60" wrap="virtual">' . $phpgw->db->f('bm_desc') . '</textarea>');
+		$phpgw->template->set_var('input_keywords','<input type="text" name="keyw" size="60" maxlength="255" value="' . $phpgw->db->f('bm_keywords') . '">');
 
-     $phpgw->template->set_var("delete_link","");
-     $phpgw->template->set_var("cancel_link","");
-     $phpgw->template->set_var("form_link",'<input type="image" name="bk_edit" title="'
+		$phpgw->template->parse('BODY','body');
+
+		if ($phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
+		{
+			$phpgw->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
+		}
+
+		$phpgw->template->set_var('cancel_link','');
+		$phpgw->template->set_var('form_link','<input type="image" name="bk_edit" title="'
                                          . LANG("Change Bookmark") . '" src="'
                                          . $phpgw_info["server"]["app_images"] . '/save.gif" border="0">');
-  }
-  $phpgw->common->phpgw_footer();
+	}
+	$phpgw->common->phpgw_footer();
 ?>

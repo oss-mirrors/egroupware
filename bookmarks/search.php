@@ -19,6 +19,7 @@
 		'enable_categories_class' => True
 	);
 	include('../header.inc.php');
+	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
 
 	$phpgw->template->set_file(array(
 		'common'  => 'common.tpl',

@@ -50,16 +50,12 @@
 {info}
  
   <tr>
-   <td colspan="4" align=right>
-    {delete_link}
+   <td colspan="4" align="right">
+    {delete_button}
+    {edit_button}
     &nbsp;&nbsp;&nbsp;
     {cancel_button}
     {form_link}
-
-<!--    <input type="image" name="bk_delete" title="Delete Bookmark" src="{IMAGE_URL_PREFIX}delete.gif" border=0 width=17 height=16>
-    &nbsp;&nbsp;&nbsp;
-    {CANCEL_BUTTON}
-    <input type="image" name="bk_edit" title="Change Bookmark" src="{IMAGE_URL_PREFIX}save.gif" border=0 width=24 height=24> -->
    </td>
   </tr>
  </table>

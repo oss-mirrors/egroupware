@@ -14,10 +14,18 @@
 	$phpgw_info['flags'] = array(
 		'currentapp'               => 'bookmarks',
 		'enable_nextmatchs_class'  => True,
-		'enable_categories_class'  => True
+		'enable_categories_class'  => True,
+		'noheader'                 => True,
+		'nonavbar'                 => True
 	);
 	include('../header.inc.php');
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if ($cancel_x || $cancel_y)
+	{
+		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
+	}
 
 	$phpgw->template->set_file(array(
 		'common'   => 'common.tpl',
@@ -31,16 +39,25 @@
 		$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
 	}
 
+	$phpgw->common->phpgw_header();
+	include(PHPGW_APP_INC . '/header.inc.php');
+	echo parse_navbar();
+
 	app_header(&$phpgw->template);
 
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 
-	$phpgw->db->query("select * from phpgw_bookmarks where bm_owner='"
-			. $phpgw_info['user']['account_id'] . "' and bm_id='$bm_id'",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 
 	date_information(&$phpgw->template,$phpgw->db->f('bm_info'));
 	$phpgw->template->set_var('total_visits',$phpgw->db->f('bm_visits'));
+
+	$phpgw->template->set_var('lang_owner',lang('Created by'));
+
+	$account = createobject('phpgwapi.accounts',$phpgw->db->f('bm_owner'));
+	$ad      = $account->read_repository();
+	$phpgw->template->set_var('owner_value',$phpgw->common->display_fullname($ad['account_lid'],$ad['firstname'],$ad['lastname']));
 
 	$phpgw->template->set_var('lang_added',lang('Date added'));
 	$phpgw->template->set_var('lang_updated',lang('Date last updated'));
@@ -49,7 +66,7 @@
 
 	$phpgw->template->parse('info','info');
 
-	$phpgw->template->set_var('form_action',$phpgw->link());
+	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/view.php'));
 	$phpgw->template->set_var('lang_url',lang('URL'));
 	$phpgw->template->set_var('lang_name',lang('Name'));
 	$phpgw->template->set_var('lang_desc',lang('Description'));
@@ -72,9 +89,17 @@
 	$phpgw->template->set_var('input_category',$phpgw->categories->return_name($phpgw->db->f('bm_category')));
 	$phpgw->template->set_var('input_subcategory',$phpgw->categories->return_name($phpgw->db->f('bm_subcategory')));
 
-	$phpgw->template->set_var('delete_link','');
-	$phpgw->template->set_var('cancel_link','');
-	$phpgw->template->set_var('edit_link','');
+	$phpgw->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
+
+	if ($phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_EDIT))
+	{
+		$phpgw->template->set_var('edit_button','<input type="image" name="edit" title="' . lang('Edit') . '" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+	}
+
+	if ($phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
+	{
+		$phpgw->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
+	}
 
 	$phpgw->common->phpgw_footer();
 ?>

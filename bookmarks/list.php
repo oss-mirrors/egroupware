@@ -23,30 +23,36 @@
 	$phpgw->bookmarks       = createobject('bookmarks.bookmarks');
 	include(PHPGW_APP_ROOT . '/inc/plist.inc.php');
 
-	$account_id = $phpgw_info['user']['account_id'];	// only temp
+	$phpgw->template->set_file(array(
+		'common' => 'common.tpl',
+		'body'   => 'list.body.tpl'
+	));
 
-	$phpgw->template->set_file(array('common' => 'common.tpl',
-                                    'body'   => 'list.body.tpl'
-//                                   first      => "list.first.tpl",
-//                                   prev       => "list.prev.tpl",
-//                                   next       => "list.next.tpl",
-//                                   last       => "list.last.tpl"
-                            ));
+	app_header(&$phpgw->template);
 
-  app_header(&$phpgw->template);
+	$location_info = $phpgw->bookmarks->read_session_data();
+	if (! is_array($location_info))
+	{
+		$location_info = array(
+			'start'    => 0,
+			'returnto' => 'list.php'
+		);
+		$phpgw->bookmarks->save_session_data($location_info);
+	}
+	$start         = $location_info['start'];
 
-  $phpgw->template->set_var("filter_action",$phpgw->link("list.php"));
-  $phpgw->template->set_var("lang_filter_by",lang("Filter by"));
-  $phpgw->template->set_var("lang_none",lang("None"));
-  $phpgw->template->set_var("lang_date_added",lang("Date Added"));
-  $phpgw->template->set_var("lang_date_changed",lang("Date Changed"));
-  $phpgw->template->set_var("lang_date_last_visited",lang("Date Last visited"));
-  $phpgw->template->set_var("lang_url",lang("URL"));
-  $phpgw->template->set_var("lang_name",lang("Name"));
+	$phpgw->template->set_var('filter_action',$phpgw->link('list.php'));
+	$phpgw->template->set_var('lang_filter_by',lang('Filter by'));
+	$phpgw->template->set_var('lang_none',lang('None'));
+	$phpgw->template->set_var('lang_date_added',lang('Date Added'));
+	$phpgw->template->set_var('lang_date_changed',lang('Date Changed'));
+	$phpgw->template->set_var('lang_date_last_visited',lang('Date Last visited'));
+	$phpgw->template->set_var('lang_url',lang('URL'));
+	$phpgw->template->set_var('lang_name',lang('Name'));
 
-  $phpgw->template->set_var("lang_asc",lang("Ascending"));
-  $phpgw->template->set_var("lang_desc",lang("Descending"));
-  $phpgw->template->set_var("lang_filter",lang("Filter"));
+	$phpgw->template->set_var('lang_asc',lang('Ascending'));
+	$phpgw->template->set_var('lang_desc',lang('Descending'));
+	$phpgw->template->set_var('lang_filter',lang('Filter'));
 
   // get/set the $user_last_page as a user variable.
   // we use this to keep the last page nbr that the user
@@ -54,30 +60,27 @@
   //if (isset($user))
   //   $user->register("user_last_page");
 
-$total_public = 0;
-//if ($auth->auth["include_public"] == 'Y' ||  $auth->is_nobody() ) {
-  # need to find out how many public bookmarks exist from
-  # users other than this user. need this to get an accurate
-  # total of bookmarks being displayed by this page.
-/*  $phpgw->db->query("select sum(total_public_bookmarks) as total_public from auth_user where "
-                  . "username != '" . $phpgw_info["user"]["account_id"] . "'");
-  if ($phpgw->db->Errno == 0) {
-    if ($phpgw->db->next_record()) $total_public = $phpgw->db->f("total_public");
-  } */
-//}
+	$total_bookmarks = $phpgw->bookmarks->get_totalbookmarks();
 
-  $total_bookmarks = $total_public + $phpgw->bookmarks->getUserTotalBookmarks();
+	$phpgw->template->set_var(array(
+		'TOTAL_BOOKMARKS'  => $total_bookmarks,
+		'IMAGE_URL_PREFIX' => $bookmarker->image_url_prefix,
+		'IMAGE_EXT'        => $bookmarker->image_ext
+	));
 
-  $phpgw->template->set_var(array(TOTAL_BOOKMARKS  => $total_bookmarks,
-                                  IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
-                                  IMAGE_EXT        => $bookmarker->image_ext
-                                 ));
+	$phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left('list.php',$start,$total_bookmarks));
+	$phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right('list.php',$start,$total_bookmarks));
 
-  $phpgw->template->set_var(next_matchs_left,  $phpgw->nextmatchs->left("list.php",$start,$total_bookmarks));
-  $phpgw->template->set_var(next_matchs_right, $phpgw->nextmatchs->right("list.php",$start,$total_bookmarks));
-
-  $phpgw->template->set_var(PAGE_NBR, $page);
-  $phpgw->template->set_var(TOTAL_PAGES, $last_page);
+	if ($total_bookmarks > $phpgw_info['user']['preferences']['common']['maxmatchs'])
+	{
+		$total_matchs = lang('showing x - x of x',($start + 1),
+			($start + $phpgw_info['user']['preferences']['common']['maxmatchs']),$total_bookmarks);
+	}
+	else
+	{
+		$total_matchs = lang('showing x',$total_bookmarks);
+	}
+	$phpgw->template->set_var('messages',$total_matchs);
 
 
   // store the last page this user looked at in
@@ -89,9 +92,6 @@ $total_public = 0;
   print_list($where_clause,$start,"list.php----start=$start",&$bookmark_list,&$error_msg);
 
   $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
-
-  // There needs to be a function in the nextmatchs class to handle this
-  //set_standard("list ($page of $last_page)", &$phpgw->template);
 
   $phpgw->common->phpgw_footer();
 ?>

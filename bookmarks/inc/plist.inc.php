@@ -141,19 +141,19 @@
 			}
 
 			// Check owner
-			if (($this->grants[$phpgw->db->f('bm_owner')] & $required) || ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id']))
+			if (($this->grants[$phpgw->db->f('bm_owner')] & PHPGW_ACL_EDIT) || ($phpgw->db->f('bm_owner') == $phpgw_info['user']['account_id']))
 			{
 				$maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
 				$maintain_link = sprintf('<a href="%s"><img src="%s/edit.gif" align="top" border="0" alt="%s"></a>', $maintain_url,PHPGW_IMAGES,lang('Edit this bookmark'));
-
-				$view_url      = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
-				$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 			}
 			else
 			{
-				$maintain_link = '';
+				$maintain_link = '';			
 			}
 			$list_tpl->set_var('maintain_link',$maintain_link);
+
+			$view_url      = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+			$view_link     = sprintf('<a href="%s"><img src="%s/document.gif" align="top" border="0" alt="%s"></a>', $view_url,PHPGW_IMAGES,lang('View this bookmark'));
 			$list_tpl->set_var('view_link',$view_link);
 
 			$mail_link = sprintf('<a href="%s"><img align="top" border="0" src="%s/mail.gif" alt="%s"></a>',

@@ -162,6 +162,8 @@
 			$this->db->query("select bm_owner from phpgw_bookmarks where bm_id='$id'",__LINE__,__FILE__);
 			$this->db->next_record();
 
+			//echo "<br>id: $id required: $required grants: " . $this->grants[$this->db->f('bm_owner')] . " owner: " . $this->db->f('bm_owner') . " user: " . $phpgw_info['user']['account_id'];
+
 			if (($this->grants[$this->db->f('bm_owner')] & $required) || ($this->db->f('bm_owner') == $phpgw_info['user']['account_id']))
 			{
 				return True;
@@ -414,32 +416,47 @@
        //}
    }
 
-   // get the total nbr of bookmarks for this user.
-   // stored as session variable so re-calculated at
-   // least once per session.
-   function getUserTotalBookmarks()
-   {
-      global $user_total_bookmarks, $phpgw;
+	function get_totalbookmarks()
+	{
+		global $phpgw, $phpgw_info;
 
-      return $phpgw->common->appsession();
+		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
+		if (is_array($phpgw->bookmarks->grants))
+		{
+			$grants = $phpgw->bookmarks->grants;
+			reset($grants);
+			while (list($user) = each($grants))
+			{
+				$public_user_list[] = $user;
+			}
+			reset($public_user_list);
+			$filtermethod .= " OR (bm_access='public' AND bm_owner in(" . implode(',',$public_user_list) . ')))';
+		}
+		else
+		{
+			$filtermethod .= ' )';
+		}
 
-/*    # get/set the $user_total_bookmarks as a session variable.
-    # we use this to keep the total nbr of bookmarks this
-    # user has so we can calculate the list pages correctly.
-    $sess->register("user_total_bookmarks");
+		$phpgw->db->query("select count(*) from phpgw_bookmarks where $filtermethod",__LINE__,__FILE__);
+		$phpgw->db->next_record();
 
-    if ($auth->is_nobody()) {
-      return 0;
+		return $phpgw->db->f(0);
+	} 
 
-    } else if (isset($user_total_bookmarks) &&
-               $user_total_bookmarks > 0) {
-      return $user_total_bookmarks;
+	function save_session_data($data)
+	{
+		global $phpgw;
 
-    } else {
-      $this->update_user_total_bookmarks($auth->auth["uname"]);
-      return (isset($user_total_bookmarks)?$user_total_bookmarks:0);
-    } */
-  } 
+		$phpgw->session->appsession('session_data','bookmarks',$data);
+	}
+
+	function read_session_data()
+	{
+		global $phpgw;
+
+		return unserialize($phpgw->session->appsession('session_data','bookmarks'));
+	}
+
 }
 
 
