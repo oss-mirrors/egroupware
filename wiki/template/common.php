@@ -126,7 +126,7 @@ function template_common_prologue($args)
 
 function template_common_epilogue($args)
 {
-  global $FindScript, $pagestore;
+  global $FindScript, $pagestore, $PrefsScript, $AdminScript;
 
 ?>
 <div id="footer">
