@@ -335,5 +335,5 @@ Enable/disable the forum's built-in email client.}}}
 {{{DISABLE_REPORT_LNK	FUD_OPT_3	1
 Do not show the 'report to moderator' link inside each message.}}}
 
-{{{DISABLE_IGNORE_LIST	FUD_OPT_3	2
-Disable ignore user functionality.}}}
+{{{DISABLE_TREE_MSG	FUD_OPT_3	2
+Disable the threaded view of the contents for a single topic.}}}
