@@ -35,7 +35,7 @@
 <br>
 <table border="0" cellpadding="1" cellspacing="0" width="100%" style="table-layout:fixed">
 
-<tr class="row_on">
+<tr class="th">
 	<td style="font-weight:bold;">
 		{subject_data}
 	</td>

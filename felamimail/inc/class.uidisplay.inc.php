@@ -542,8 +542,8 @@
 				if($bodyParts[$i]['mimeType'] == 'text/plain')
 				{
 					$newBody	= $bodyParts[$i]['body'];
-					
-					$newBody	= htmlspecialchars($newBody,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
+
+					$newBody	= htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
 					$newBody	= $this->bofelamimail->wordwrap($newBody,90,"\n");
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= "<pre>".$newBody."</pre>";
@@ -552,6 +552,7 @@
 				else
 				{
 					$newBody	= $bodyParts[$i]['body'];
+					$newBody	= $this->highlightQuotes($newBody);
 					$newBody 	= $this->kses->Parse($newBody);
 				}
 				$body .= $newBody;
@@ -567,8 +568,9 @@
 			
 			
 			// create links for websites
-#			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-#				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+			$charSet = $GLOBALS['phpgw_info']['server']['system_charset'];
+			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,$charSet).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -583,13 +585,13 @@
 			#$body = preg_replace("/(--)/im","<font color=\"grey\">$1</font>", $body);
 			
 			// create links for email addresses
-#			$linkData = array
-#			(
-#				'menuaction'    => 'felamimail.uicompose.compose'
-#			);
-#			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
-#			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
-#				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
+			$linkData = array
+			(
+				'menuaction'    => 'felamimail.uicompose.compose'
+			);
+			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
+				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
 				
 			$this->t->set_var("body",$body);
 			$this->t->set_var("signature",$sessionData['signature']);
