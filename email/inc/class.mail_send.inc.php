@@ -35,8 +35,12 @@
 	var $debug_send = False;
 	var $get_svr_response = False;
 	var $svr_response = '';
-	
-	
+	var $retain_copy = False;
+	// some of the MTA communication should not go into the copy, like ELHO stuff
+	var $retain_copy_ignore = True;
+	var $assembled_copy = '';
+
+
 	function send_init()
 	{
 	    $this->err["code"] = " ";
@@ -99,6 +103,12 @@
 			//echo "hex> ".bin2hex($message)."<BR>\r\n";
 			return True;
 		}
+		// if we need a copy of this message for the "sent" folder, assemble it here
+                if (($this->retain_copy)
+		&& (!$this->retain_copy_ignore))
+		{
+			$this->assembled_copy .= "$message";
+		}
 
 		$rc = fputs($socket,"$message");
 		if (!$rc)
@@ -118,6 +128,9 @@
 	{
 		global $phpgw, $phpgw_info;
 
+		// don't start retaining the email copy until after the MTA handshake
+		$this->retain_copy_ignore = True;
+		
 		//$this->debug_send = True;
 		//$this->get_svr_response = True;
 
@@ -201,7 +214,7 @@
 				return false;
 			}
 		}
-
+		
 		// HEADERS - now we can go to deliver the headers!
 		if (!$this->msg2socket($socket,"DATA\r\n"))
 		{
@@ -211,6 +224,11 @@
 		{
 			return false;
 		}
+		
+		// READY TO SEND MAIL: start retaining the email copy (if necessary)
+		$this->retain_copy_ignore = False;
+		
+		// BEGIN THE DATA SEND
 		for ($i=0; $i<count($mail_out['main_headers']); $i++)
 		{
 			if (!$this->msg2socket($socket,$mail_out['main_headers'][$i]."\r\n"))
@@ -287,7 +305,10 @@
 				return false;
 			}
 		}
-
+		
+		// stop retaining the email copy, the message is over, only MTA closing handshake remainse
+		$this->retain_copy_ignore = True;
+	
 		// DATA END - special string "DOTCRLF" signals the end of the body
 		if (!$this->msg2socket($socket,".\r\n"))
 		{

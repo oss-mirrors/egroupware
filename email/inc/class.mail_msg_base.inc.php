@@ -123,6 +123,43 @@
 	// These sets the mail_port server variable
 	$phpgw_info['user']['preferences']['email']['mail_port'] = $this->get_mailsvr_port();
 
+	// === FUTURE: OPTIONALIZATION OF TRASH FOLDER HANDLING ====
+	// the option to use the Trash folder already exists
+	if (!isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
+	{
+		$phpgw_info['user']['preferences']['email']['use_trash_folder'] = False;
+		$phpgw_info['user']['preferences']['email']['trash_folder_name'] = '';
+	}
+	// elseif (isset($phpgw_info['user']['preferences']['email']['use_trash_folder']))
+	else
+	{
+		// but the name of the trash foilder is hard coded to "Trash" at the moment
+		// NEEDED: PICK UP NAME OF TRASH FOLDER FROM PREFERENCES DATA
+		$phpgw_info['user']['preferences']['email']['trash_folder_name'] = 'Trash';
+	}
+	
+	// === FUTURE: OPTIONALIZATION OF SENT FOLDER HANDLING ====
+	// NEEDED: PICK THIS UP FROM THE PREFERENCES DATA
+	// for all true prefs we use 'True' as a string (instead of True boolean 1)
+	// however false is simply the absense of a setting, so that's similar to boolean -1
+	$phpgw_info['user']['preferences']['email']['use_sent_folder'] = 'True';
+	$phpgw_info['user']['preferences']['email']['sent_folder_name'] = 'Sent';
+	
+	// and is it possible (i.e. using IMAP server, and "Sent" folder exists)
+	if ( ($phpgw_info['user']['preferences']['email']['use_sent_folder'] == True)
+	&&  (($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
+	    || ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps'))
+	&& ($phpgw_info['user']['apps']['email']))
+	{
+		$phpgw_info['user']['preferences']['email']['use_sent_folder'] = True;
+		$phpgw_info['user']['preferences']['email']['sent_folder_name'] = 'Sent';
+	}
+	else
+	{
+		$phpgw_info['user']['preferences']['email']['use_sent_folder'] = False;
+		$phpgw_info['user']['preferences']['email']['sent_folder_name'] = '';	
+	}
+
 	// DEBUG
 	//echo "<br>phpgw_info['user']['preferences']['email']: <br>"
 	//	.'<pre>'.serialize($phpgw_info['user']['preferences']['email']) .'</pre><br>';

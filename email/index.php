@@ -203,6 +203,7 @@
 		// SIZE OF FOLDER - total size of all emails added up
 		// can take a long time if alot of mail is in the folder
 		// TEST: make it optional
+		
 		//$stats_size_speed_skip = True;
 		$stats_size_speed_skip = False;
 		$stats_size_threshold = 1000;

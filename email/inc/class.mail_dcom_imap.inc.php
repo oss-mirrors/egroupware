@@ -58,12 +58,15 @@
 		if ((isset($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
 		&& ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]))
 		{
-			$filter = $this->construct_folder_str("");
+			$trash_folder_long = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['trash_folder_name']);
+			$trash_folder_short = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
+			
+			// $filter = $this->construct_folder_str("");
+			// $mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
 
 			$server_str = $phpgw->msg->get_mailsvr_callstr();
 			$name_space = $phpgw->msg->get_mailsvr_namespace();
 			$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
-			//$mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
 
 			if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 			{
@@ -73,25 +76,26 @@
 			{
 				$mailboxes = $this->listmailbox($stream, $server_str, "$name_space" ."*");
 			}
-
+			// does the trash folder exist already
 			if (count($mailboxes) != 0)
 			{
 				$havetrashfolder = False;
 				while ($folder = each($mailboxes))
 				{
-					if ($folder[1] == "Trash")
+					if ($phpgw->msg->get_folder_short($folder[1]) == $trash_folder_short)
 					{
 						$havetrashfolder = True;
 					}
 				}
 			}
-
+			// create the trash folder (similar to Netscape's behavior here)
 			if (! $havetrashfolder)
 			{
-				$this->createmailbox($stream,$server_str .$this->construct_folder_str("Trash"));
+				$this->createmailbox($stream,$server_str .$trash_folder_long);
 			}
-			$tofolder =  $this->construct_folder_str("Trash");
-			return imap_mail_move($stream,$msg_num,$tofolder);
+			// $tofolder =  $this->construct_folder_str($trash_folder);
+			// return imap_mail_move($stream,$msg_num,$tofolder);
+			return imap_mail_move($stream,$msg_num,$trash_folder_long);
 		}
 		else
 		{

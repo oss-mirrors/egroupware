@@ -223,6 +223,11 @@
 	// USE CLASS MAIL SEND 2822
 	$phpgw->mail_send = CreateObject("email.mail_send");
 	$phpgw->mail_send->send_init();
+	// do we need to retain a copy of the sent message for the "Sent" folder?
+	if($phpgw_info['user']['preferences']['email']['use_sent_folder'])
+	{
+		$phpgw->mail_send->retain_copy = True;
+	}
 
 	// initialize structure for 1st part
 	$body_part_num = 0;
@@ -250,11 +255,24 @@
 			$mail_out['body'][0]['mime_headers'][$m_line] = '  phpgw-type="'.$msgtype.'"';
 			$m_line++;
 		}
-		// if we need to do 7bit, then we must qprint the body
-		// also, the top most level encoding can not be less restrictive than any embedded part's encoding
+		// 7 BIT vs. 8 BIT Content-Transfer-Encoding
+		// 7 bit means that no chars > 127 can be in the email, or else MTA's will get confused
+		// if you really want to enforce 7 bit you should qprint encode the email body
+		// however, if you are forwarding via MIME encapsulation then I do not believe it's cool to alter 
+		// the original message's content by qprinting it if it was not already qprinted
+		// in which case you should send it 8 bit instead.
+		// ALSO, the top most level encoding can not be less restrictive than any embedded part's encoding
 		// 7bit is more restrictive than 8 bit
-		//$mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Transfer-Encoding: 8bit';
+		// OPTIONS:
+		// 1) send it out with no encoding header - against RFC's but the MTA will probably put it there for you
+		// 2) do a scan for chars > 127, if so, send 8 bit and hope the MTA can handle 8 bit
+		// 3) scan for > 127 then qprint what we can (not embeded) then send out 7 bit
+		// 4) listen to the initial string from the MTA indicating if it can handle MIME8BIT
+		// 5) just send it out 8 bit and hope for the best (for now do this)
+		//$mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Transfer-Encoding: 7bit';
 		//$m_line++;
+		$mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Transfer-Encoding: 8bit';
+		$m_line++;
 		$mail_out['body'][0]['mime_headers'][$m_line] = 'Content-Disposition: inline';
 		$m_line++;
 	}
@@ -575,9 +593,13 @@
 		$hdr_line++;
 		// RFC2045 - the next line is *assumed* as default 7bit if it is not included
 		// BUT 7bit requires qprinting the body, so let's use 8bit here
-		//$mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 8bit';
-		//$hdr_line++;
 		// FUTURE: Content-Transfer-Encoding:  Needs To Match What is In the Body, i.e. may be qprint
+		// for now send out as 8 bit and hope for the best (see notes above)
+		//$mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 7bit';
+		//$hdr_line++;
+		$mail_out['main_headers'][$hdr_line] =	'Content-Transfer-Encoding: 8bit';
+		$hdr_line++;
+	
 		$mail_out['main_headers'][$hdr_line] =	'Content-Disposition: inline';
 		$hdr_line++;
 		// Content-Description: this is not really a "technical" header
@@ -608,91 +630,54 @@
 	// ----  Send It   -----
 	$returnccode = $phpgw->mail_send->smail_2822($mail_out);
 
+	/*
+	// ===== DEBUG =====	
+	echo '<br>';
+	echo 'retain_copy: '.serialize($phpgw->mail_send->retain_copy);
+	echo '<br>=== POST SEND ===<br>';
+	echo '<pre>'.$phpgw->msg->htmlspecialchars_encode($phpgw->mail_send->assembled_copy).'</pre>';
+	echo '<br>';
+	// ===== DEBUG ===== 
+	*/
+	
 
 	//  -------  Put in "Sent" Folder, if Applicable  -------
 	$skip_this = False;
 	//$skip_this = True;
 
 	if (($skip_this == False)
-	&& ($returnccode == True)
-	&& ( ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
-	    || ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imaps') )
-	&& ($phpgw_info['user']['apps']['email'])
-	&& (is_object($phpgw->dcom)) )
+	&& ($returnccode)
+	&& ($phpgw_info['user']['preferences']['email']['use_sent_folder']))
 	{
-		$sent_folder_header = '';
-		$sent_folder_body = '';
-		// --- Assemble the Mail Into A String ----
-		for ($i=0; $i<count($mail_out['main_headers']); $i++)
-		{
-			$sent_folder_header .= $mail_out['main_headers'][$i]."\r\n";
-		}
-		// this CRLF terminates the header, signals the body will follow next (ONE CRLF ONLY)
-		$sent_folder_header .= "\r\n";
-		// now we can go to deliver the body!
-		for ($part_num=0; $part_num<count($mail_out['body']); $part_num++)
-		{
-			// mime headers for this mime part (if any)
-			if (($mail_out['is_multipart'] == True)
-			|| ($mail_out['is_forward'] == True))
-			{
-				for ($i=0; $i<count($mail_out['body'][$part_num]['mime_headers']); $i++)
-				{
-					$this_line = rtrim($this_line = $mail_out['body'][$part_num]['mime_headers'][$i])."\r\n";
-					$sent_folder_body .= $this_line;
-				}
-				// a space needs to seperate the mime part headers from the mime part content
-				$sent_folder_body .= "\r\n";
-			}
-
-			// the part itself
-			for ($i=0; $i<count($mail_out['body'][$part_num]['mime_body']); $i++)
-			{
-				$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
-				if (trim($this_line) == ".")
-				{
-					// rfc2822 escape the "special" single dot line into a double dot line
-					$this_line = "." .$this_line;
-				}
-				$sent_folder_body .= $this_line;
-			}
-			// this space will seperate this part from any following parts that may be coming
-			$sent_folder_body .= "\r\n";
-		}
-		// at the end of a multipart email, we need to add the "final" boundary
-		if (($mail_out['is_multipart'] == True)
-		|| ($mail_out['is_forward'] == True))
-		{
-			// attachments / parts have their own boundary preceeding them in their mime headers
-			// this is: "--"boundary
-			// all boundary strings are have 2 dashes "--" added to their begining
-			// and the FINAL boundary string (after all other parts) ALSO has 
-			// 2 dashes "--" tacked on tho the end of it, very important !! 
-			//   the first or last \r\n is *probably* not necessary
-			$final_boundary = '--' .$mail_out['boundary'].'--'."\r\n";
-			$sent_folder_body .= $final_boundary;
-			// another blank line
-			$sent_folder_body .= "\r\n";
-		}
+		//echo 'ENTERING SENT FOLDER CODE';
+		// note: what format should these folder name options (sent and trash) be held in
+		// i.e. long or short name form, in the prefs database
+		$sent_folder_name = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['sent_folder_name']);	
 		// --- Put This in the User's Sent Folder  -----
+		// NOTE: as of not there is NO CHECKING to make sure this folder exists
+		// NEEDED:  "folder_exists()" function for this and the "Trash" folder option as well
+		
+		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
 		if (!$mailbox)
 		{
-			$stream = $phpgw->dcom->login('Sent');
-			$phpgw->dcom->append($stream, 'Sent', $sent_folder_header, $sent_folder_body, "\\Seen");
+			$stream = $phpgw->dcom->login($sent_folder_name);
+			$phpgw->dcom->append($stream, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
 			$phpgw->dcom->close($stream);
 		}
 		else
 		{
-			$phpgw->dcom->append($mailbox, 'Sent', $sent_folder_header, $sent_folder_body, "\\Seen");				
+			$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
 			//echo 'used existing stream for trash folder';
 		}
 	}
 
-	// ----  Error Report and Redirect   -----
+	// ----  Redirect on Success, else show Error Report   -----
 	if ($returnccode)
 	{
+		// Success
 		if ($phpgw->mail_send->get_svr_response)
 		{
+			// for debugging
 			$return = trim($return);
 			echo '<strong>Here is the communication from the MTA</strong><br><br>'."\r\n";
 			echo '<pre>';
@@ -705,13 +690,17 @@
 		{
 			//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
 			//$return = ereg_replace ("^\r\n", '', $return);
+			// unset some vars (is this necessary?)
 			send_message_cleanup($mailbox);
+			// what folder to go back to (the one we came from)
 			$return = trim($return);
+			// redirect the browser to the index page for the appropriate folder
 			header('Location: '.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
 		}
 	}
 	else
 	{
+		// ERROR - mail NOT sent
 		$return = trim($return);
 		echo 'Your message could <B>not</B> be sent!<BR>'."\r\n"
 		. 'The mail server returned:<BR>'
