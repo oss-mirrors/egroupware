@@ -425,7 +425,7 @@ function decode_uent(&$uent)
 	}
 
 	if (!$mod_id) {
-		ses_update_status($usr->sid, '{TEMPLATE: register_register_update}', 0, 0);
+		ses_update_status($usr->sid, '{TEMPLATE: register_profile_update}', 0, 0);
 	}
 
 	$TITLE_EXTRA = ': {TEMPLATE: register_title}';
