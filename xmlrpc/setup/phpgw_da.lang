@@ -1,0 +1,23 @@
+(optional: set domain for user/client login, required: set this servername for server login)		da	(valgfri: sæt domæne for bruger/klient login, krævet: sæt dette servernavn for server login)
+addressbook test		da	Adressebog test
+app		da	App
+apps		da	Applikationer
+assigned kp3		da	Tildelt kp3
+assigned sessionid		da	Tildelt sessionid
+bogus request		da	Bogus Forspørgelse
+calendar test		da	Kalender test
+client / server test		da	Klient / Server test
+configure using admin - peer servers		da	Konfigurer via admin - Peer servere
+introspection		da	Selvanalyse
+meerkat browser		da	Meerkat Browser
+methods		da	Metoder
+note: listapps and listusers are disabled by default in xml_functions.php		da	NOTE: listapps og listusers er deaktiveret som standart i xml_functions.php
+phpgroupware xml-rpc/soap client<->server and server<->server test (soap pending...)		da	eGroupWare XML-RPC/SOAP klient<-->server og server<-->server test (SOAP endnu uafgjort)
+select target server		da	Vælg destinations server
+server test		da	Server test
+server<->server		da	Server<->Server
+servername/domain		da	Servernavn/Domæne
+simple client		da	Simpel klient
+system		da	System
+test suite		da	Test suite
+xmlrpc test		da	XMLRPC test
