@@ -521,8 +521,8 @@ function compile_all($tset='default', $lang='english', $tname='default')
 	build_msg($back_msg_file);
 
 	$dir = opendir($GLOBALS['DATA_DIR'].'/thm/default/tmpl');
-	readdir($dir); readdir($dir);
 	while ($file = readdir($dir)) {
+		if ($file == '.' || $file == '..') continue;
 		if (substr($file, -5) != '.tmpl') {
 			continue;
 		}
@@ -576,8 +576,8 @@ function fudcopy($src, $dest, $mask='!.*!i', $recur=false)
 		echo 'Cannot open directory "'.$src.'"<br>';
 		return;
 	}
-	readdir($dp); readdir($dp);
 	while ($de = readdir($dp)) {
+		if ($de == '.' || $de == '..') continue;
 		if (!preg_match($mask, $de, $regs)) {
 			continue;
 		}
@@ -648,8 +648,8 @@ function copyhelp($thm)
 	$path .= '/';
 	$dp = opendir($src);
 	$src .= '/';
-	readdir($dp); readdir($dp);
 	while ($de = readdir($dp)) {
+		if ($de == '.' || $de == '..') continue;
 		if (!@is_file($src . $de) || substr($de, -4) != '.hlp') {
 			continue;
 		}

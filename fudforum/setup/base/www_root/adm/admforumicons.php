@@ -69,8 +69,8 @@
 <?php
 	$i = 1;
 	$dp = opendir($GLOBALS['WWW_ROOT_DISK'] . $ICONS_DIR);
-	readdir($dp); readdir($dp);
 	while ($de = readdir($dp)) {
+		if ($de == '.' || $de == '..') continue;
 		if (!preg_match('!\.(gif|png|jpg|jpeg)$!i', $de)) {
 			continue;
 		}

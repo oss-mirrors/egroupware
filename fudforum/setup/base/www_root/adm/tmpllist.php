@@ -207,8 +207,8 @@ function goto_tmpl($tmpl)
 	if (!($dp = opendir($path))) {
 		exit('Unable to open template directory at: "'.$path.'"<br>');
 	}
-	readdir($dp); readdir($dp);
 	while ($f = readdir($dp)) {
+		if ($f == '.' || $f == '..') continue;
 		if (substr($f, -5) != '.tmpl') {
 			continue;
 		}

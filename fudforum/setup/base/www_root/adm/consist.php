@@ -393,8 +393,8 @@ forum will be disabled.
 	draw_stat('Checking disk files against smilies');
 	$cnt = 0;
 	$dp = opendir($WWW_ROOT_DISK . 'images/smiley_icons');
-	readdir($dp); readdir($dp);
 	while ($f = readdir($dp)) {
+		if ($f == '.' || $f == '..') continue;
 		if (!isset($sml[$f]) && !preg_match('!\.(gif|png|jpg|jpeg|html)$!i', $f)) {
 			if (@unlink($WWW_ROOT_DISK . 'images/smiley_icons/' . $f)) {
 				draw_stat('deleted smiley: ' . $f);
@@ -635,8 +635,8 @@ forum will be disabled.
 
 	draw_stat('Cleaning forum\'s tmp directory');
 	if (($d = opendir($TMP))) {
-		readdir($d); readdir($d);
 		while ($f = readdir($d)) {
+			if ($f == '.' || $f == '..') continue;
 			if (@is_file($TMP . $f)) {
 				@unlink($TMP . $f);
 			}

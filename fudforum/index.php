@@ -16,7 +16,6 @@
 		$dom = sprintf("%u", crc32(stripslashes($_GET['domain'])));
 	} else {
 		$d = opendir('.');
-		readdir($d); readdir($d);
 		while (($dom = readdir($d)) && !is_numeric($dom));
 		closedir($d);
 

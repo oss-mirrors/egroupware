@@ -36,9 +36,9 @@
 	$path = $GLOBALS['DATA_DIR'].'/thm';
 
 	$dp = opendir($path);
-	readdir($dp); readdir($dp);
 	echo '<td>Template Set:</td><td><select name="tname">';
 	while ($de = readdir($dp)) {
+		if ($de == '.' || $de == '..') continue;
 		if ($de == 'CVS' || !@is_dir($path . '/' . $de)) {
 			continue;
 		}
@@ -52,9 +52,9 @@
 	$path .= '/default/i18n';
 
 	$dp = opendir($path);
-	readdir($dp); readdir($dp);
 	echo '<td>Language:</td><td><select name="tlang">';
 	while ($de = readdir($dp)) {
+		if ($de == '.' || $de == '..') continue;
 		if ($de == 'CVS' || !@is_dir($path . '/' . $de)) {
 			continue;
 		}

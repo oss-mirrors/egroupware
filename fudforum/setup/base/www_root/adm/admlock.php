@@ -21,8 +21,8 @@ function chmoddir($dirn, $dirp, $filep, $rec=false)
 		echo 'ERROR: Unable to open "'.$dirn.'" directory<br>';
 		return;
 	}
-	readdir($d); readdir($d);
 	while ($f = readdir($d)) {
+		if ($f == '.' || $f == '..') continue;
 		$path = $dirn . '/' . $f;
 		if (@is_file($path) && !@chmod($path, $filep)) {
 			echo 'ERROR: couldn\'t chmod "'.$path.'"<br>';

@@ -32,8 +32,8 @@ function draw_post_icons($msg_icon)
 	$none_checked = !$msg_icon ? ' checked' : '';
 
 	if ($d = opendir($GLOBALS['WWW_ROOT_DISK'] . 'images/message_icons')) {
-		readdir($d); readdir($d);
 		while ($f = readdir($d)) {
+			if ($f == '.' || $f == '..') continue;
 			if (strlen($f) < 4 || !isset($allowed_ext[strtolower(strrchr($f, '.'))])) {
 				continue;
 			}

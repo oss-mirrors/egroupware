@@ -23,9 +23,8 @@ function dir_space_usage($dirp)
 	if (!($dir = @opendir($dirp))) {
 		return;
 	}
-	readdir($dir); readdir($dir);
-
 	while ($f = readdir($dir)) {
+		if ($f == '.' || $f == '..') continue;
 		$file = $dirp . '/' . $f;
 		if (@is_link($file)) {
 			continue;

@@ -109,8 +109,8 @@ if (!function_exists('file_get_contents')) {
 		}
 		if (is_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/{$d}")) {
 			$dir = opendir(PHPGW_SERVER_ROOT."/fudforum/setup/base/{$d}");
-			readdir($dir); readdir($dir);
 			while ($f = readdir($dir)) {
+				if ($f == '.' || $f == '..') continue;
 				if (!is_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/{$d}/{$f}")) {
 					copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/{$d}/{$f}", "{$DATA_DIR}{$d}/{$f}");
 					chmod("{$DATA_DIR}{$d}/{$f}", 0600);
@@ -132,8 +132,8 @@ if (!function_exists('file_get_contents')) {
 		}
 		if (is_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/{$d}")) {
 			$dir = opendir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/{$d}");
-			readdir($dir); readdir($dir);
 			while ($f = readdir($dir)) {
+				if ($f == '.' || $f == '..') continue;
 				if (!is_dir(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/{$d}/{$f}")) {
 					copy(PHPGW_SERVER_ROOT."/fudforum/setup/base/www_root/{$d}/{$f}", "{$WWW_ROOT_DISK}{$d}/{$f}");
 					chmod("{$WWW_ROOT_DISK}{$d}/{$f}", 0600);

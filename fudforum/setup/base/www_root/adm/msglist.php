@@ -33,8 +33,8 @@ function makedeps()
 {
 	$path = $GLOBALS['DATA_DIR'].'thm/'.$GLOBALS['tname'].'/tmpl';
 	$dp = opendir($path);
-	readdir($dp); readdir($dp);
 	while( $file = readdir($dp) ) {
+		if ($file == '.' || $file == '..') continue;
 		if (substr($file, -5) == '.tmpl') {
 			$data = file_get_contents($path . '/' . $file);
 

@@ -147,8 +147,8 @@ function cleandir($dir)
 	}
 
 	$dp = opendir($dir);
-	readdir($dp); readdir($dp);
 	while ($f = readdir($dp)) {
+		if ($f == '.' || $f == '..') continue;
 		if ($f == 'GLOBALS.php' || $f == 'oldfrm_upgrade.php' || @is_link($dir . '/' .$f)) {
 			continue;
 		}

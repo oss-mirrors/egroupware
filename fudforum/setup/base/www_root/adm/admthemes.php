@@ -154,8 +154,8 @@ function clean_code($path, $toks)
 		$path = $WWW_ROOT_DISK . 'theme/' . $t_name;
 		$dir = opendir($path);
 		$path .= '/';
-		readdir($dir); readdir($dir);
 		while ($f = readdir($dir)) {
+			if ($f == '.' || $f == '..') continue;
 			if (@is_file($path . $f) && substr($f, -4) == '.php') {
 				$toks = token_get_all(file_get_contents($path . $f));
 				while (get_func_usage($toks));
@@ -168,8 +168,8 @@ function clean_code($path, $toks)
 		$path = $WWW_ROOT_DISK . 'include/theme/' . $t_name;
 		$dir = opendir($path);
 		$path .= '/';
-		readdir($dir); readdir($dir);
 		while ($f = readdir($dir)) {
+			if ($f == '.' || $f == '..') continue;
 			if (@is_file($path . $f) && substr($f, -4) == '.inc') {
 				clean_code($path . $f, token_get_all(file_get_contents($path . $f)));
 			}
@@ -213,8 +213,8 @@ function clean_code($path, $toks)
 	<select name="thm_theme">
 	<?php
 		$dp = opendir($DATA_DIR . '/thm');
-		readdir($dp); readdir($dp);
 		while ($de = readdir($dp)) {
+			if ($de == '.' || $de == '..') continue;
 			$dr = $DATA_DIR . '/thm/' . $de;
 			if ($de == 'CVS' || !@is_dir($dr) || !@is_dir($dr.'/tmpl')) {
 				continue;
@@ -230,12 +230,12 @@ function clean_code($path, $toks)
 	<td>
 	<?php
 		$dp = opendir($DATA_DIR . '/thm/default/i18n');
-		readdir($dp); readdir($dp);
 		$selopt = '';
 		if (!$thm_lang) {
 			$thm_lang = 'english';
 		}
 		while ($de = readdir($dp)) {
+			if ($de == '.' || $de == '..') continue;
 			$dr = $DATA_DIR . '/thm/default/i18n/' . $de;
 			if ($de == 'CVS' || !@is_dir($dr)) {
 				continue;

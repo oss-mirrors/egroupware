@@ -20,8 +20,8 @@ function copy_dir($base, $dest, $dir_ar)
 		echo "&nbsp;&nbsp;&nbsp;Syncronizing: {$d}<br />\n";
 		if (is_dir($base . $d)) {
 			$dir = opendir($base . $d);
-			readdir($dir); readdir($dir);
 			while ($f = readdir($dir)) {
+				if ($f == '.' || $f == '..') continue;
 				if (!is_dir("{$base}{$d}/{$f}") && $f != 'GLOBALS.php') {
 					copy("{$base}{$d}/{$f}", "{$dest}{$d}/{$f}");
 					chmod("{$dest}{$d}/{$f}", 0600);

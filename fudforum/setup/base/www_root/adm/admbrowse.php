@@ -77,8 +77,8 @@ function fud_rmdir($dir)
 	if (!($d = opendir($dir))) {
 		return;
 	}
-	readdir($d); readdir($d);
 	while ($f = readdir($d)) {
+		if ($f == '.' || $f == '..') continue;
 		if (@is_dir($dir . '/' . $f)) {
 			if (!fud_rmdir($dir . '/' . $f)) {
 				return;

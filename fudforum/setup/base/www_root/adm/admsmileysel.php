@@ -16,11 +16,11 @@
 	echo '<html><body bgcolor="#ffffff">';
 
 	if ($dp = opendir($GLOBALS['WWW_ROOT_DISK'] . 'images/smiley_icons')) {
-		readdir($dp); readdir($dp);
 		$icons_per_row = 6;
 		$col = $i = 0;
 		echo '<table border=0 cellspacing=1 cellpadding=2><tr>';
 		while ($de = readdir($dp)) {
+			if ($de == '.' || $de == '..') continue;
 			$ext = strtolower(substr($de, -4));
 			if ($ext != '.gif' && $ext != '.jpg' && $ext != '.png' && $ext != 'jpeg') {
 				continue;

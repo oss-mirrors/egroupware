@@ -17,11 +17,11 @@
 
 	/* here we draw the avatar control */
 	if ($dp = opendir($GLOBALS['WWW_ROOT_DISK'] . 'images/avatars')) {
-		readdir($dp); readdir($dp);
 		$icons_per_row = 7;
 		$col = $i = 0;
 		echo '<table border=0 cellspacing=1 cellpadding=2><tr>';
 		while ($de = readdir($dp)) {
+			if ($de == '.' || $de == '..') continue;
 			$ext = strtolower(substr($de, -4));
 			if ($ext != '.gif' && $ext != '.jpg' && $ext != '.png' && $ext != 'jpeg') {
 				continue;

@@ -24,10 +24,10 @@
 	if (!($dp = opendir($WWW_ROOT_DISK . 'images/forum_icons'))) {
 		exit('ERROR: Unable to open icon directory for read');
 	}
-	readdir($dp); readdir($dp);
 	echo '<tr>';
 	$col = $i = 0;
 	while ($f = readdir($dp)) {
+		if ($f == '.' || $f == '..') continue;
 		if (!isset($ima[strtolower(strchr($f, '.'))])) {
 			continue;
 		}
