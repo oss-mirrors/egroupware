@@ -21,13 +21,13 @@ The following pages are an to be used as a guideline/ready reference
 for how to navigate the pages found here, and the functionality of
 each application.<p/>
 Please visit <a href="http://www.phpgroupware.org" target=_new><b> phpgroupware </b></a> the 
-home page of this open source project, by way of trying to say to  the young
-people who wrote (or at least put together much of this) ,<b> thankyou</b>.
-Without such keen and enthusiastic joint, co-operation, many projects on the
+home page of this free software project, by way of trying to say to the young
+people who wrote (or at least put together much of this) , <b>Thank You</b>.
+Without such keen and enthusiastic joint co-operation, many projects on the
 internet as we know it, would not be available, or would at the very least
 be similar to many other well known <b> costly </b> alternatives.<br/>
-For those of you who are not familar with open source, please visit 
-<a href="http://www.opensource.org" target=_new> www.opensource.org</a><p/>
+For those of you who are not familar with "<a href="http://www.gnu.org/philosophy/free-sw.html" target=_new>free software</a>", please visit 
+a short philosophy of the <a href="http://www.fsf.org" target=_new>Free Software Foundation</a>.<p/>
 Now on with the overview: (NB: please be aware this is an evolving project, so some
 functionality may not be available to you yet, or perhaps there will be be extra
 things, not yet included here.)If you have any problems with these pages or understanding
