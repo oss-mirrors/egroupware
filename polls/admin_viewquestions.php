@@ -28,7 +28,8 @@
   $phpgw->template->set_var("td_message","&nbsp;");
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
   $phpgw->template->set_var("form_action",$phpgw->link("admin_editquestion.php"));
-  $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Edit") . '">');
+  $phpgw->template->set_var("form_button_1",'<input type="submit" name="submit" value="' . lang("Edit") . '">');
+  $phpgw->template->set_var("form_button_2",'</form><form method="POST" action="' . $phpgw->link("admin_deletequestion.php","poll_id=$poll_id") . '"><input type="submit" name="submit" value="' . lang("Delete") . '">');
 
   add_template_row($phpgw->template,lang("Poll question"),$phpgw->strip_html($poll_title));
 

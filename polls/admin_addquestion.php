@@ -31,7 +31,8 @@
   $phpgw->template->set_var("td_message","&nbsp;");
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
   $phpgw->template->set_var("form_action",$phpgw->link("admin_addquestion.php"));
-  $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Add") . '">');
+  $phpgw->template->set_var("form_button_1",'<input type="submit" name="submit" value="' . lang("Add") . '">');
+  $phpgw->template->set_var("form_button_2",'</form><form method="POST" action="' . $phpgw->link("admin.php") . '"><input type="submit" name="submit" value="' . lang("Cancel") . '">');
 
   add_template_row($phpgw->template,lang("Enter poll question"),'<input name="question">');
 

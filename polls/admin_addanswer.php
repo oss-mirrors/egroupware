@@ -29,7 +29,8 @@
   $phpgw->template->set_var("td_message","&nbsp;");
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
   $phpgw->template->set_var("form_action",$phpgw->link("admin_addanswer.php"));
-  $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Add") . '">');
+  $phpgw->template->set_var("form_button_1",'<input type="submit" name="submit" value="' . lang("Add") . '">');
+  $phpgw->template->set_var("form_button_2",'</form><form method="POST" action="' . $phpgw->link("admin.php") . '"><input type="submit" name="submit" value="' . lang("Cancel") . '">');
 
   $poll_select = '<select name="poll_id">';
   $phpgw->db->query("select * from phpgw_polls_desc",__LINE__,__FILE__);

@@ -14,7 +14,8 @@
    {rows}
 
    <tr>
-    <td align="center">{form_button}</td>
+    <td align="center">{form_button_1}</td>
+    <td align="center">{form_button_2}</td>
    </tr>
   </table>
  </form>
