@@ -21,14 +21,8 @@
   $phpgw_info["flags"]["enable_nextmatchs_class"] = True;
   include("../header.inc.php");
 
-  if ($submit) {
-     if ($poll_settings["allow_multiable_vote"]) {
-        echo "<br>TEST: True";
-     } else {
-        echo "<br>TEST: False";
-     }
-  
-     if ($poll_settings["allow_multiable_vote"] || verify_uservote($poll_id)) {
+  if ($submit) { 
+     if (verify_uservote($poll_id)) {
 //        $phpgw->db->lock(array("phpgw_polls_data","phpgw_polls_user"));
         $phpgw->db->query("UPDATE phpgw_polls_data SET option_count=option_count+1 WHERE "
                         . "poll_id='$poll_id' AND vote_id='$poll_voteNr'",__LINE__,__FILE__);

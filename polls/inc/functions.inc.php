@@ -16,7 +16,7 @@
   $phpgw->db->query("select * from phpgw_polls_settings");
   while ($phpgw->db->next_record()) {
      //echo "<br>TEST: " . $phpgw->db->f("setting_name") . " - " . $phpgw->db->f("setting_value");
-     $poll_setings[$phpgw->db->f("setting_name")] = $phpgw->db->f("setting_value");
+     $poll_settings[$phpgw->db->f("setting_name")] = $phpgw->db->f("setting_value");
   }
 
   function add_template_row(&$tpl,$label,$value)
@@ -31,8 +31,12 @@
   
   function verify_uservote($poll_id)
   {
-     global $phpgw,$phpgw_info;
+     global $phpgw, $phpgw_info, $poll_settings;
      $db = $phpgw->db;
+
+     if ($poll_settings["allow_multiable_votes"]) {
+        return True;
+     }
 
      $db->query("select count(*) from phpgw_polls_user where user_id='" . $phpgw_info["user"]["account_id"]
               . "' and poll_id='$poll_id'",__LINE__,__FILE__);
@@ -140,7 +144,7 @@
      }
     
      if (! verify_uservote($poll_id)) {
-        return 0;
+        return False;
      }
 
      $db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
@@ -168,17 +172,12 @@
   
   function display_poll()
   {
-     global $phpgw, $poll_settings;
+     global $poll_settings;
 
-     $phpgw->db->query("select max(poll_id) from phpgw_polls_data",__LINE__,__FILE__);
-     $phpgw->db->next_record();
-
-     $poll_id = $phpgw->db->f(0);
-
-     if (! verify_uservote($poll_id) && ! $poll_settings["allow_multiable_vote"]) {
-        poll_viewResults($poll_id);
+     if (! verify_uservote($poll_settings["currentpoll"])) {
+        poll_viewResults($poll_settings["currentpoll"]);
      } else {
-        poll_generateUI($poll_id);
+        poll_generateUI($poll_settings["currentpoll"]);
      }
   }
 ?>

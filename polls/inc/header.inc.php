@@ -20,7 +20,8 @@
      $tpl->set_var("link_list_questions",'<a href="' . $phpgw->link("admin.php") . '">' . lang("Show questions") . '</a>');
      $tpl->set_var("link_questions",'<a href="' . $phpgw->link("admin_addanswer.php") . '">' . lang("Add answers") . '</a>');
      $tpl->set_var("link_answers",'<a href="' . $phpgw->link("admin_addquestion.php") . '">' . lang("Add questions") . '</a>');
-     
+     $tpl->set_var("link_settings",'<a href="' . $phpgw->link("admin_settings.php") . '">' . lang("Poll settings") . '</a>');
+
      $tpl->pparse("out","admin_header");
   }
 ?>

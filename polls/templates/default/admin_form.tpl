@@ -8,7 +8,7 @@
  <form method="POST" action="{form_action}">
   <table border="0" align="center">
    <tr bgcolor="{th_bg}">
-    <td>&nbsp;{td_message}</td>
+    <td colspan="2">&nbsp;{td_message}</td>
    </tr>
 
    {rows}

@@ -19,21 +19,28 @@
                                    "row"    => "admin_form_row_2.tpl"
                                   ));
 
-  if ($submit) {
-     $phpgw->db->query("insert into phpgw_polls_desc (poll_title,poll_timestamp) values ('"
-                     . addslashes($question) . "','" . time() . "')",__LINE__,__FILE__);
-     $phpgw->template->set_var("message",lang("New poll has been added, now you need to add questions for this poll"));
-  } else {
-     $phpgw->template->set_var("message","");
-  }
+  $phpgw->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'");
+  $phpgw->db->next_record();
+  $poll_title = $phpgw->db->f("poll_title");
 
-  $phpgw->template->set_var("header_message",lang("Add new poll question"));
+  $phpgw->template->set_var("message","");
+  $phpgw->template->set_var("header_message",lang("View poll"));
   $phpgw->template->set_var("td_message","&nbsp;");
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
-  $phpgw->template->set_var("form_action",$phpgw->link("admin_addquestion.php"));
-  $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Add") . '">');
+  $phpgw->template->set_var("form_action",$phpgw->link("admin_editquestion.php"));
+  $phpgw->template->set_var("form_button",'<input type="submit" name="submit" value="' . lang("Edit") . '">');
 
-  add_template_row($phpgw->template,lang("Enter poll question"),'<input name="question">');
+  add_template_row($phpgw->template,lang("Poll question"),$phpgw->strip_html($poll_title));
+
+  $phpgw->db->query("select * from phpgw_polls_data where poll_id='$poll_id'");
+  while ($phpgw->db->next_record()) {
+     if (! $title_shown) {
+        $title = lang("Answers");
+        $title_shown = True;
+     }
+     add_template_row($phpgw->template,$title,$phpgw->strip_html($phpgw->db->f("option_text")));
+     $title = "&nbsp;";
+  }
 
   $phpgw->template->pparse("out","form");
 

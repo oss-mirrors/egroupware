@@ -1,5 +1,6 @@
 
 <!-- BEGIN form -->
+ <p>
  <table border="0" align="center">
   <tr bgcolor="{th_bg}">
    <td>{sort_title}</td>
