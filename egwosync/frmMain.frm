@@ -42,4 +42,6 @@ Private Sub cmdTest_Click()
     
     Set response = modEGWUtilities.SimpleExec("addressbook.boaddressbook.search", xmlParms)
     Debug.Print response.params.Count
+    
+    modEGWUtilities.GetOutlookContacts
 End Sub
