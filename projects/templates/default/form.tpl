@@ -56,6 +56,10 @@
 		<td colspan"2"><textarea name="values[descr]" rows="4" cols="50" wrap="VIRTUAL">{descr}</textarea></td>
 	</tr>
 	<tr>
+		<td colspan"2">{lang_previous}:</td>
+		<td colspan"2"><select name="values[previous]"><option value="">{lang_none}</option>{previous_select}</select></td>
+	</tr>
+	<tr>
 		<td colspan"2">{lang_category}:</td>
 		<td colspan"2">{cat}</td>
 	</tr>
@@ -210,6 +214,7 @@
 	<tr valign="bottom" height="50">
 		<td><input type="hidden" name="values[old_status]" value="{old_status}">
 			<input type="hidden" name="values[old_parent]" value="{old_parent}">
+			<input type="hidden" name="values[old_edate]" value="{old_edate}">
 			<input type="submit" name="save" value="{lang_save}"></td>
 		<td><input type="submit" name="apply" value="{lang_apply}"></td>
 		<td>{delete}</td>

@@ -57,6 +57,7 @@ edit project	projects	de	Projekt &uuml;berarbeiten
 edit administrator list	projects	de	Projekt-Administrator Liste &uuml;berarbeiten
 edit project hours	projects	de	Projektstunden &uuml;berarbeiten
 edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
+email notifications projects de E-Mail Benachrichtigungen
 employee	projects	de	Mitarbeiter
 employees	projects	de	Mitarbeiter
 exactly accounting	projects	de	exakte Abrechnung
@@ -122,6 +123,7 @@ please set the minutes per workunit for each activity now !	projects	de	Bitte tr
 please specify the budget	projects	de	Bitte geben Sie das Budget an !
 position	projects	de	Position
 preferences for accountancy	projects	de	Einstellungen zum Rechnungswesen
+previous project	projects	de	Vorprojekt
 print delivery	projects	de	Lieferung drucken
 print invoice	projects	de	Rechnung drucken
 processor	projects	de	Bearbeiter
@@ -180,7 +182,9 @@ work hours list	projects	de	Arbeitsstunden Liste
 work time	projects	de	Arbeitszeit
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
-would you like to get notified via email about dates due	projects	de	M&ouml;chten Sie per E-Mail &uuml;ber F&auml;lligkeitstermine informiert werden ?
+would you like to get notified if milestones date due change	projects	de	M&ouml;chten Sie informiert werden, wenn sich F&auml;lligkeiten von Milestones &auml;ndern ?
+would you like to get notified if projects data get updated	projects	de	M&ouml;chten Sie informiert werden, wenn sich Projektdaten &auml;ndern ?
+would you like to get notified if you get assigned to a project	projects	de	M&ouml;chten Sie informiert werden, wenn Sie einem Projekt zugeordnet werden ?
 you have entered an invalid end date !	projects	de	Sie haben ein ung&uuml;ltiges Enddatum ausgew&auml;hlt !
 you have entered an invalid start date !	projects	de	Sie haben ein ung&uuml;ltiges Startdatum ausgew&auml;hlt !
 you have no customer selected !	projects	de	Sie haben keinen Kunden ausgew&auml;hlt !

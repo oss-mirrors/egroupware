@@ -18,7 +18,7 @@
 		'phpgw_p_projects' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+				'num' => array('type' => 'varchar','precision' => 25,'nullable' => False),
 				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'access' => array('type' => 'varchar','precision' => 7,'nullable' => True),
 				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -38,7 +38,8 @@
 				'investment_nr' => array('type' => 'varchar','precision' => 50,'nullable' => False),
 				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
 				'main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'level' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+				'level' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'previous' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),

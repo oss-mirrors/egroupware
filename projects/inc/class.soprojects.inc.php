@@ -91,7 +91,8 @@
 					'investment_nr'	=> $this->db->f('investment_nr'),
 					'pcosts'		=> $this->db->f('pcosts'),
 					'main'			=> $this->db->f('main'),
-					'level'			=> $this->db->f('level')
+					'level'			=> $this->db->f('level'),
+					'previous'		=> $this->db->f('previous')
 				);
 			}
 			return $projects;
@@ -165,7 +166,7 @@
 			}
 			else
 			{
-				$filtermethod = ' coordinator=' . $this->account . "' AND access='private'";
+				$filtermethod = ' coordinator=' . $this->account . " AND access='private'";
 			}
 
 			if ($cat_id > 0)
@@ -318,12 +319,12 @@
 			$this->db->lock($table);
 
 			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
-							. 'descr,title,budget,num,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level) VALUES (' . $this->account
+							. 'descr,title,budget,num,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level,previous) VALUES (' . $this->account
 							. ",'" . $values['access'] . "'," . intval($values['cat']) . ',' . time() . ',' . intval($values['sdate']) . ','
 							. intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'" . $values['status']
 							. "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
 							. intval($values['parent']) . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
-							. "'," . $values['pcosts'] . ',' . intval($values['main']) . ',' . intval($values['level']) . ')',__LINE__,__FILE__);
+							. "'," . $values['pcosts'] . ',' . intval($values['main']) . ',' . intval($values['level']) . ',' . intval($values['previous']) . ')',__LINE__,__FILE__);
 
 			$p_id = $this->db->get_last_insert_id($table,'id');
 			$this->db->unlock();
@@ -482,7 +483,7 @@
 							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", num='"
 							. $values['number'] . "', time_planned=" . intval($values['ptime']) . ', processor=' . $this->account . ", investment_nr='"
 							. $values['investment_nr'] . "', pcosts=" . $values['pcosts'] . ', parent=' . $values['parent']
-							. ', level=' . intval($values['level']) . ' where id=' . $values['project_id'],__LINE__,__FILE__);
+							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ' where id=' . $values['project_id'],__LINE__,__FILE__);
 
 			$this->db->query('SELECT max(month) FROM phpgw_p_pcosts where project_id=' . $values['project_id'],__LINE__,__FILE__);
 			if($this->db->next_record())
@@ -509,6 +510,77 @@
 			if($values['oldstatus'] && $values['oldstatus'] == 'archive' && $values['status'] != 'archive')
 			{
 				$this->db->query("Update phpgw_p_projects set status='" . $values['status'] . "' WHERE parent=" . $values['project_id'],__LINE__,__FILE__);
+			}
+
+			if (isset($values['old_edate']) && $values['old_edate'] != $values['edate'])
+			{
+				$this->db->query('SELECT id,start_date,end_date from phpgw_p_projects where previous=' . $values['project_id'],__LINE__,__FILE__);
+
+				while($this->db->next_record())
+				{
+					$following[] = array
+					(
+						'id'	=> $this->db->f('id'),
+						'sdate'	=> $this->db->f('start_date'),
+						'edate'	=> $this->db->f('end_date')
+					);
+				};
+
+				if (is_array($following))
+				{
+					$diff = abs($values['edate']-$values['old_edate']);
+
+					if ($values['old_edate'] > $values['edate'])
+					{
+						$op = 'sub';
+					}
+					else
+					{
+						$op = 'add';
+					}
+
+					while (list(,$fol) = each($following))
+					{
+						switch($op)
+						{
+							case 'add':
+								$nsdate = $fol['sdate']+$diff;
+								$nedate = $fol['edate']+$diff;
+								break;
+							case 'sub':
+								$nsdate = $fol['sdate']-$diff;
+								$nedate = $fol['edate']-$diff;
+								break;
+						}
+						$this->db->query('UPDATE phpgw_p_projects set start_date=' . $nsdate . ', end_date=' . $nedate . ', entry_date=' . time()
+										. ', processor=' . $this->account . ' WHERE id=' . $fol['id'],__LINE__,__FILE__);
+
+						$this->db->query('SELECT s_id, edate from phpgw_p_mstones WHERE project_id=' . $fol['id'],__LINE__,__FILE__);
+
+						while($this->db->next_record())
+						{
+							$stones[] = array
+							(
+								's_id'	=> $this->db->f('s_id'),
+								'edate'	=> $this->db->f('edate')
+							);
+						};
+
+						while(is_array($stones) && list(,$stone) = each($stones))
+						{
+							switch($op)
+							{
+								case 'add':
+									$sedate = $stone['edate']+$diff;
+									break;
+								case 'sub':
+									$sedate = $stone['edate']-$diff;
+									break;
+							}
+							$this->db->query('UPDATE phpgw_p_mstones set edate=' . $sedate . ' WHERE s_id=' . $stone['s_id'],__LINE__,__FILE__);
+						}
+					}
+				}
 			}
 		}
 
@@ -674,12 +746,13 @@
 			{
 				switch ($action)
 				{
-					case 'pro':		$column = 'num,title'; break;
-					case 'edate':	$column = 'end_date'; break;
-					case 'sdate':	$column = 'start_date'; break;
-					case 'ptime':	$column = 'time_planned'; break;
-					case 'invest':	$column = 'investment_nr'; break;
-					case 'budget':	$column = 'budget'; break;
+					case 'pro':			$column = 'num,title'; break;
+					case 'edate':		$column = 'end_date'; break;
+					case 'sdate':		$column = 'start_date'; break;
+					case 'ptime':		$column = 'time_planned'; break;
+					case 'invest':		$column = 'investment_nr'; break;
+					case 'budget':		$column = 'budget'; break;
+					case 'previous':	$column = 'previous'; break;
 				}
 
 				$this->db->query('SELECT ' . $column . ' from phpgw_p_projects where id=' . $pro_id,__LINE__,__FILE__);

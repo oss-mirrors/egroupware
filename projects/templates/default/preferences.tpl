@@ -61,8 +61,8 @@
 		<td><input type="checkbox" name="prefs[notify_mstone]" value="True" {notify_mstone_selected}></td>
 	</tr>
 	<tr bgcolor="{row_on}">
-		<td>{lang_notify_task}:</td>
-		<td><input type="checkbox" name="prefs[notify_task]" value="True" {notify_task_selected}></td>
+		<td>{lang_notify_pro}:</td>
+		<td><input type="checkbox" name="prefs[notify_pro]" value="True" {notify_pro_selected}></td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td>{lang_notify_assign}:</td>

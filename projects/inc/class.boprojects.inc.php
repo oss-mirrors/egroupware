@@ -233,7 +233,7 @@
 				$prefs['mysize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
 				$prefs['allsize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
 				$prefs['notify_mstone'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
-				$prefs['notify_task'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_task'];
+				$prefs['notify_pro'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_pro'];
 				$prefs['notify_assign'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
 			}
 			return $prefs;
@@ -252,7 +252,7 @@
 				$GLOBALS['phpgw']->preferences->change('projects','mysize',$prefs['mysize']);
 				$GLOBALS['phpgw']->preferences->change('projects','allsize',$prefs['allsize']);
 				$GLOBALS['phpgw']->preferences->change('projects','notify_mstone',(isset($prefs['notify_mstone'])?'yes':''));
-				$GLOBALS['phpgw']->preferences->change('projects','notify_task',(isset($prefs['notify_task'])?'yes':''));
+				$GLOBALS['phpgw']->preferences->change('projects','notify_pro',(isset($prefs['notify_pro'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_assign',(isset($prefs['notify_assign'])?'yes':''));
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
@@ -299,10 +299,9 @@
 			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			$prefs['country']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
 
-
-			if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
+			if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
 			{
-				if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
+				if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
 				{
 					$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
 					$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
@@ -310,10 +309,10 @@
 					$prefs['ifont']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
 					$prefs['mysize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
 					$prefs['allsize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
-					$prefs['notify_mstone']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
-					$prefs['notify_task']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_task'];
-					$prefs['notify_assign']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
 				}
+				$prefs['notify_mstone']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
+				$prefs['notify_pro']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_pro'];
+				$prefs['notify_assign']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
 			}
 			return $prefs;
 		}
@@ -521,7 +520,8 @@
 				'customer'			=> $pro['customer'],
 				'status'			=> $pro['status'],
 				'owner'				=> $pro['owner'],
-				'processor'			=> $pro['processor']
+				'processor'			=> $pro['processor'],
+				'previous'			=> $pro['previous']
 			);
 
 			if ($project['utime'] > 0)
@@ -670,9 +670,19 @@
 				}
 			}
 
+			if ($values['previous'])
+			{
+				$edate = $this->return_value('edate',$values['previous']);
+
+				if (intval($edate) == 0)
+				{
+					$error[] = lang('the choosen previous project does not have an end date specified');
+				}
+			}
+
 			if ($action == 'mains')
 			{
-				if ((!$values['budget'] || $values['budget'] == 0) && $values['pcosts'])
+				if ((!$values['budget'] || $values['budget'] == 0) && $values['pcosts'] > 0)
 				{
 					$error[] = lang('please specify the budget');
 				}
@@ -733,7 +743,8 @@
 
 			if (is_array($error))
 			{
-				return $error;
+				//return $error;
+				_debug_array($error);
 			}
 		}
 
@@ -828,15 +839,28 @@
 				$values['edate'] = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
-			//_debug_array($values);
+			if (!$values['previous'] && $values['parent'])
+			{
+				$values['previous'] = $this->return_value('previous',$values['parent']);
+			}
 
 			if (intval($values['project_id']) > 0)
 			{
 				$this->so->edit_project($values, $book_activities, $bill_activities);
+
+				if(is_array($values['employees']))
+				{
+					$this->send_alarm($values,'pro');
+				}
 			}
 			else
 			{
 				$values['project_id'] = $this->so->add_project($values, $book_activities, $bill_activities);
+
+				if(is_array($values['employees']))
+				{
+					$this->send_alarm($values);
+				}
 			}
 
 			$values['project_id'] = intval($values['project_id']);
@@ -929,7 +953,10 @@
 			{
 				if ($values['old_edate'] != $values['edate'])
 				{
-					$this->send_alarm($values);
+					$values['edateformatted']	= $this->formatted_edate($values['edate'],False);
+					$values['pro_title']		= $this->return_value('pro',$values['project_id']);
+
+					$this->send_alarm($values,'mstone');
 				}
 			}
 
@@ -948,7 +975,7 @@
 			$this->so->delete_mstone($s_id);
 		}
 
-		function formatted_edate($edate = '')
+		function formatted_edate($edate = '',$colored = True)
 		{
 			$edate = intval($edate);
 
@@ -962,15 +989,17 @@
 				$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 			}
 
-			if (mktime(2,0,0,$month,$day,$year) == $edate)
+			if($colored)
 			{
-				$edateout = '<b>' . $edateout . '</b>';
+				if (mktime(2,0,0,$month,$day,$year) == $edate)
+				{
+					$edateout = '<b>' . $edateout . '</b>';
+				}
+				if (mktime(2,0,0,$month,$day,$year) >= $edate)
+				{
+					$edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>';
+				}
 			}
-			if (mktime(2,0,0,$month,$day,$year) >= $edate)
-			{
-				$edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>';
-			}
-
 			return $edateout;
 		}
 
@@ -979,9 +1008,95 @@
 			return $this->so->member($project_id);
 		}
 
-		function send_alarm($values)
+		function send_alarm($values,$type = 'assign')
 		{
+			$GLOBALS['phpgw_info']['user']['preferences'] = $GLOBALS['phpgw']->preferences->create_email_preferences();
+			$sender = $GLOBALS['phpgw_info']['user']['preferences']['email']['address'];
+			//$msgtype = '"projects";';
 
+			switch($type)
+			{
+				case 'assign':
+					$subject = lang('assignment to project %1',$values['title']);
+					$msg = lang('assignment to project %1',$values['title']);
+					break;
+				case 'update':
+					$subject = lang('project %1 has been updated',$values['title']);
+					$msg = lang('project %1 has been updated',$values['title']);
+					break;
+				case 'mstone':
+					$action = lang('date due of milestone %1 of project %2 has been updated', $values['title'],$values['pro_title']);
+					$msg = lang('new date due of milestone %1: %2', $values['title'], $values['edateformatted']);
+					break;
+			}
+
+			if(!is_object($GLOBALS['phpgw']->send))
+			{
+				$GLOBALS['phpgw']->send = CreateObject('phpgwapi.send');
+			}
+
+			for($i=0;$i<count($values['employees']);$i++)
+			{
+				//$GLOBALS['phpgw']->preferences->account_id = $values['employees'][$i];
+				//$GLOBALS['phpgw']->preferences->read_repository();
+
+				$prefs = CreateObject('phpgwapi.preferences',$values['employees'][$i]);
+				$prefs->read_repository();
+
+				switch($type)
+				{
+					case 'assign':
+						if ($prefs['projects']['notify_assign'] == 'yes')
+						{
+							$to_notify = True;
+						}
+						break;
+					case 'pro':
+						if($prefs['projects']['notify_pro'] == 'yes')
+						{
+							$to_notify = True;
+						}
+						break;
+					case 'mstone':
+						if($prefs['projects']['notify_mstone'] == 'yes')
+						{
+							$to_notify = True;
+						}
+						break;
+				}
+
+				if($to_notify)
+				{
+					/*print_debug('Msg Type',$msg_type);
+					print_debug('UserID',$userid);
+
+					$GLOBALS['phpgw']->accounts->get_account_name($userid,$lid,$details['to-firstname'],$details['to-lastname']);
+					$details['to-fullname'] = $GLOBALS['phpgw']->common->display_fullname('',$details['to-firstname'],$details['to-lastname']);*/
+
+					$to = $prefs->email_address($values['employees'][$i]);
+					/*if (empty($to) || $to[0] == '@' || $to[0] == '$')	// we have no valid email-address
+					{
+						//echo "<p>boprojects::send_update: Empty email adress for user '".$details['to-fullname']."' ==> ignored !!!</p>\n";
+						continue;
+					}
+					print_debug('Email being sent to',$to);*/
+
+					$subject = $GLOBALS['phpgw']->send->encode_subject($subject);
+
+					$returncode = $GLOBALS['phpgw']->send->msg('email',$to,$subject,$msg,''/*$msgtype*/,'','','',$sender);
+					//echo "<p>send(to='$to', sender='$sender'<br>subject='$subject') returncode=$returncode<br>".nl2br($body)."</p>\n";
+
+					if (!$returncode)	// not nice, but better than failing silently
+					{
+						echo '<p><b>boprojects::send_alarm</b>: '.lang("Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!",$to,$values['employees'][$i],htmlspecialchars($subject), $sender)."<br>\n";
+						echo '<i>'.$GLOBALS['phpgw']->send->err['desc']."</i><br>\n";
+						echo lang('This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.')."</p>\n";
+						echo '<p>'.lang('Click %1here%2 to return to projects.','<a href="'.$GLOBALS['phpgw']->link('/projects/').'">','</a>')."</p>\n";
+					}
+				}
+				//unset($prefs);
+			}
+			return $returncode;
 		}
 	}
 ?>

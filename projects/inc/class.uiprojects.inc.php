@@ -128,7 +128,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_employees',lang('Employees'));
 			$GLOBALS['phpgw']->template->set_var('lang_creator',lang('creator'));
 			$GLOBALS['phpgw']->template->set_var('lang_processor',lang('processor'));
-
+			$GLOBALS['phpgw']->template->set_var('lang_previous',lang('previous project'));
 			$GLOBALS['phpgw']->template->set_var('lang_bookable_activities',lang('Bookable activities'));
 			$GLOBALS['phpgw']->template->set_var('lang_billable_activities',lang('Billable activities'));
 			$GLOBALS['phpgw']->template->set_var('lang_edit',lang('edit'));
@@ -148,6 +148,9 @@
 			$GLOBALS['phpgw']->template->set_var('lang_apply',lang('apply'));
 			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('cancel'));
 			$GLOBALS['phpgw']->template->set_var('lang_search',lang('search'));
+
+			$GLOBALS['phpgw']->template->set_var('lang_parent',lang('Parent project'));
+			$GLOBALS['phpgw']->template->set_var('lang_main',lang('Main project'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_add_milestone',lang('add milestone'));
 			$GLOBALS['phpgw']->template->set_var('lang_milestones',lang('milestones'));
@@ -447,13 +450,13 @@
 
 		function employee_format($data)
 		{
-			$selected	= (isset($data['selected'])?$data['selected']:'');
 			$type		= ($data['type']?$data['type']:'list');
 			$project_id	= ($data['project_id']?$data['project_id']:0);
 
+			$selected = $this->bo->get_acl_for_project($project_id);
 			if (!is_array($selected))
 			{
-				$selected = explode(',',$selected);
+				$selected = array();
 			}
 
 			switch($type)
@@ -462,12 +465,12 @@
 					$employees = $this->bo->employee_list();
 					break;
 				case 'field':
-					$employees = $this->bo->selected_employees($project_id);
-					$selected = $this->bo->get_acl_for_project($project_id);
+					$employees	= $this->bo->selected_employees($project_id);
 					break;
 			}
 
 			//_debug_array($employees);
+			//_debug_array($selected);
 			while (is_array($employees) && list($null,$account) = each($employees))
 			{
 				$s .= '<option value="' . $account['account_id'] . '"';
@@ -604,6 +607,7 @@
 				$values = $this->bo->read_single_project($project_id);
 				$GLOBALS['phpgw']->template->set_var('old_status',$values['status']);
 				$GLOBALS['phpgw']->template->set_var('old_parent',$values['parent']);
+				$GLOBALS['phpgw']->template->set_var('old_edate',$values['edate']);
 				$GLOBALS['phpgw']->template->set_var('lang_choose','');
 				$GLOBALS['phpgw']->template->set_var('choose','');
 				$this->cat_id = $values['cat'];
@@ -697,9 +701,14 @@
 
 			$GLOBALS['phpgw']->template->set_var('access','<input type="checkbox" name="values[access]" value="True"' . ($values['access'] == 'private'?' checked':'') . '>');
 
+			$GLOBALS['phpgw']->template->set_var('previous_select',$this->bo->select_project_list(array('type' => 'all',
+																										'status' => $values['status'],
+																										'self' => $project_id,
+																									'selected' => $values['previous'])));
+
 			if ($action == 'mains' || $action == 'amains')
 			{
-				$cat = '<select name="cat_id"><option value="">' . lang('None') . '</option>'
+				$cat = '<select name="values[cat]"><option value="">' . lang('None') . '</option>'
 						.	$this->bo->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
 
 				$GLOBALS['phpgw']->template->set_var('cat',$cat);
@@ -790,7 +799,7 @@
 						$GLOBALS['phpgw']->template->set_var('cfieldhandle','');
 						$GLOBALS['phpgw']->template->fp('clisthandle','clist',True);
 
-					$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format(array('selected' => $values['employees'],'project_id' => $project_id)));
+					$GLOBALS['phpgw']->template->set_var('employee_list',$this->employee_format(array('project_id' => $project_id)));
 						$GLOBALS['phpgw']->template->set_var('efieldhandle','');
 						$GLOBALS['phpgw']->template->fp('elisthandle','elist',True);
 					break;
@@ -834,6 +843,7 @@
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('view' => 'view.tpl'));
+			$GLOBALS['phpgw']->template->set_block('view','sub','subhandle');
 			$GLOBALS['phpgw']->template->set_block('view','mslist','mslisthandle');
 
 			$nopref = $this->bo->check_prefs();
@@ -883,30 +893,31 @@
 				$GLOBALS['phpgw']->template->set_var('lang_number',lang('Project ID'));
 				$GLOBALS['phpgw']->template->set_var('pcosts',$values['pcosts']);
 			}
-			else
+			else if($pro_main && $action == 'subs')
 			{
-				if ($pro_main && $action == 'subs')
-				{
-					$main = $this->bo->read_single_project($pro_main);
+				$main = $this->bo->read_single_project($pro_main);
 
-					$GLOBALS['phpgw']->template->set_var('pro_main',$GLOBALS['phpgw']->strip_html($main['number']) . ' ' . $GLOBALS['phpgw']->strip_html($main['title']));
-					$GLOBALS['phpgw']->template->set_var('cat',$this->bo->cats->id2name($main['cat']));
-					$GLOBALS['phpgw']->template->set_var('investment_nr',($main['investment_nr']?$main['investment_nr']:'&nbsp;'));
-					$GLOBALS['phpgw']->template->set_var('pcosts',$parent['pcosts']);
-				}
+				$GLOBALS['phpgw']->template->set_var('pro_main',$GLOBALS['phpgw']->strip_html($main['title']) . ' [' . $GLOBALS['phpgw']->strip_html($main['number']) . ']');
+				$GLOBALS['phpgw']->template->set_var('cat',$this->bo->cats->id2name($main['cat']));
+				$GLOBALS['phpgw']->template->set_var('investment_nr',($main['investment_nr']?$main['investment_nr']:'&nbsp;'));
+				$GLOBALS['phpgw']->template->set_var('pcosts',$main['pcosts']);
 				$GLOBALS['phpgw']->template->set_var('lang_number',lang('Job ID'));
-				$GLOBALS['phpgw']->template->set_var('lang_main',lang('Main project'));
 
-				//$GLOBALS['phpgw']->template->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($main['number']) . ' ' . $GLOBALS['phpgw']->strip_html($main['title']));	
-				$GLOBALS['phpgw']->template->set_var('lang_parent',lang('Parent project'));
+				$GLOBALS['phpgw']->template->set_var('pro_parent',$this->bo->return_value('pro',$values['parent']));	
+				$GLOBALS['phpgw']->template->fp('subhandle','sub',True);
 			}
 
+			if ($values['previous'])
+			{
+				$GLOBALS['phpgw']->template->set_var('previous',$this->bo->return_value('pro',$values['previous']));	
+			}
 			$GLOBALS['phpgw']->template->set_var('number',$GLOBALS['phpgw']->strip_html($values['number']));
 			$GLOBALS['phpgw']->template->set_var('title',($values['title']?$values['title']:'&nbsp;'));
 			$GLOBALS['phpgw']->template->set_var('descr',($values['descr']?$values['descr']:'&nbsp;'));
 			$GLOBALS['phpgw']->template->set_var('status',lang($values['status']));
 			$GLOBALS['phpgw']->template->set_var('budget',$values['budget']);
 			$GLOBALS['phpgw']->template->set_var('currency',$prefs['currency']);
+
 			$month = $this->bo->return_date();
 			$GLOBALS['phpgw']->template->set_var('month',$month['monthformatted']);
 
@@ -1532,15 +1543,15 @@
 
 			$GLOBALS['phpgw']->template->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$GLOBALS['phpgw']->template->set_var('lang_notify_mstone',lang('would you like to get notified via email about changes of milestones date due'));
-			$GLOBALS['phpgw']->template->set_var('lang_notify_task',lang('would you like to get notified via email about changes of tasks'));
-			$GLOBALS['phpgw']->template->set_var('lang_notify_assign',lang('would you like to get notified via email if you get assigned to a project'));
+			$GLOBALS['phpgw']->template->set_var('lang_notify_mstone',lang('would you like to get notified if milestones date due change'));
+			$GLOBALS['phpgw']->template->set_var('lang_notify_pro',lang('would you like to get notified if projects data get updated'));
+			$GLOBALS['phpgw']->template->set_var('lang_notify_assign',lang('would you like to get notified if you get assigned to a project'));
 
-			$GLOBALS['phpgw']->template->set_var('lang_notifications',lang('notifications'));
+			$GLOBALS['phpgw']->template->set_var('lang_notifications',lang('email notifications'));
 
 			$prefs = $this->bo->read_prefs();
 			$GLOBALS['phpgw']->template->set_var('notify_mstone_selected',($prefs['notify_mstone'] == 'yes'? ' checked':''));
-			$GLOBALS['phpgw']->template->set_var('notify_task_selected',($prefs['notify_task'] == 'yes'? ' checked':''));
+			$GLOBALS['phpgw']->template->set_var('notify_pro_selected',($prefs['notify_pro'] == 'yes'? ' checked':''));
 			$GLOBALS['phpgw']->template->set_var('notify_assign_selected',($prefs['notify_assign'] == 'yes'? ' checked':''));
 
 			if ($this->bo->isprojectadmin('pbo') || $this->bo->isprojectadmin('pad'))

@@ -63,7 +63,9 @@ Edit job	projects	en	Edit job
 Edit project	projects	en	Edit project
 Edit project hours	projects	en	Edit project hours
 Edit work hours	projects	en	Edit work hours
+email notifications	projects	en	E-Mail notifications
 Employee	projects	en	Employee
+employees	projects	en	Employees
 ending date can not be after main projects ending date	projects	en	Ending date can not be after main projects ending date !
 ending date can not be before start date	projects	en	Ending date can not be before start date !
 Error in calculation sum does not match !	projects	en	Error in calculation sum does not match !
@@ -121,7 +123,6 @@ open	projects	en	Open
 open popup window	projects	en	open popup window
 Overall	projects	en	Overall
 parent project	projects	en	Parent project
-parent project:	projects	en	Parent project:
 pcosts can not be higher than the budget	projects	en	Planned costs can not be higher than the budget !
 per hour	projects	en	per hour
 per hour/workunit	projects	en	per hour/workunit
@@ -141,6 +142,7 @@ please specify country and currency in the global preferences section	projects	e
 please specify the budget	projects	en	Please specify the budget !
 Position	projects	en	Position
 preferences for accountancy	projects	en	Preferences for accountancy
+previous project	projects	en	Previous project
 Print delivery	projects	en	Print delivery
 Print invoice	projects	en	Print invoice
 processor	projects	en	Processor
@@ -209,7 +211,9 @@ Work hours list	projects	en	Work hours list
 Work time	projects	en	Work time
 Workunit	projects	en	Workunit
 Workunits	projects	en	Workunits
-would you like to get notified via email about dates due	projects	en	Would you like to get notified via email about dates due ?
+would you like to get notified if milestones date due change	projects	en	Would you like to get notified if milestones date due change ?
+would you like to get notified if projects data get updated	projects	en	Would you like to get notified if projects data get updated ?
+would you like to get notified if you get assigned to a project	projects	en	Would you like to get notified if you get assigned to a project ?
 written by:	projects	en	Written by:
 you have entered an invalid date !	projects	en	You have entered an invalid date !
 you have entered an invalid end date !	projects	en	You have entered an invalid end date !
