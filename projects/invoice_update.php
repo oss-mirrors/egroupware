@@ -53,10 +53,18 @@
 
 		$invoice_num = addslashes($invoice_num);
 		$phpgw->db->query("SELECT num FROM phpgw_p_invoice WHERE num='$invoice_num' AND id != '$invoice_id'"); 
-		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That ID has been used already !'); }
-		if (!$invoice_num) { $error[$errorcount++] = lang('Please enter an ID !'); }
-		if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
-
+		if ($phpgw->db->next_record())
+		{
+			$error[$errorcount++] = lang('That ID has been used already !');
+		}
+		if (!$invoice_num)
+		{
+			$error[$errorcount++] = lang('Please enter an ID !');
+		}
+		if (!$customer)
+		{
+			$error[$errorcount++] = lang('You have no customer selected !');
+		}
 		if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
 		else
 		{
@@ -74,10 +82,15 @@
 				$db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
 			}
 
-			$phpgw->db->query("SELECT sum(billperae*(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
+			$phpgw->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
 							."WHERE phpgw_p_invoicepos.invoice_id='$invoice_id' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id");
-			$phpgw->db->next_record();
-			$db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $phpgw->db->f('sum') . ",2) WHERE id='$invoice_id'");
+			while($phpgw->db->next_record())
+			{
+				$aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae'));
+				$sum = $phpgw->db->f('billperae')*$aes;
+				$sum_sum += $sum;
+			}
+			$db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='$invoice_id'");
 		}
 	}
 	if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
