@@ -387,3 +387,4 @@ class Template {
     printf("<b>Template Error:</b> %s<br>\n", $msg);
   }
 }
+?>
