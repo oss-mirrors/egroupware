@@ -26,10 +26,13 @@ add image	jinn	nl	afbeelding toevoegen
 add image %1	jinn	nl	voeg beeld %1 toe
 add new	jinn	nl	Toevoegen
 add new entry	jinn	nl	Record toevoegen
+add new many to many relation	jinn	nl	Nieuwe VEEL-OP-VEEL relatie toevoegen
 add new many with many relation	jinn	nl	Nieuwe VEEL-OP-VEEL relatie toevoegen
+add new one to many	jinn	nl	Nieuwe ……N-OP-VEEL relatie toevoegen
 add new one with many	jinn	nl	Nieuwe ……N-OP-VEEL relatie toevoegen
 add object	jinn	nl	Object toevoegen
 add or remove	jinn	nl	toevoegen of verwijderen
+add phpgw_jinn_sites	jinn	nl	Sites toevoegen
 add site	jinn	nl	Site toevoegen
 add site object	jinn	nl	Site-object toevoegen
 add site-object	jinn	nl	Site-object toevoegen
@@ -41,6 +44,7 @@ another	jinn	nl	een kopie
 are you sure?	jinn	nl	Weet u het zeker
 attachment directory does not exist or is not correct, nor can it be created...<br>please check object's upload dir:	jinn	nl	Bestandsdirectory bestaat en kan ook niet worden aangemaakt. Controleer de upload-directory van dit object
 automatic	jinn	nl	automatisch
+automaticly incrementing	jinn	nl	telt automatisch op
 binary	jinn	nl	binair
 browse	jinn	nl	Bladeren
 browse current object	jinn	nl	Blader in huidig object
@@ -71,6 +75,7 @@ could not find any tables! check your database name, database username or databa
 database connection failed! <p>please recheck your settings.	jinn	nl	Het is misluk een databaseconnectie te maken! <p>Controleer a.u.b. uw instellingen.</p>
 database connection was succesfull. <p>you can go on with the site-objects	jinn	nl	Het is gelukt een databaseconnectie te maken! <p>U kunt verder gaan met het toevoegen van Site-objecten</p>
 days	jinn	nl	dagen
+default	jinn	nl	standaard
 default image type (jpg, gif, png)	admin	nl	Standaard afbeelingstype (jpg, gif, png)
 default image width	admin	nl	Standaard afbeelingsbreedte
 default order	jinn	nl	standaard volgorde
@@ -83,6 +88,10 @@ development server	jinn	nl	Development Server
 dimensions	jinn	nl	afmetingen
 edit	jinn	nl	Wijzig
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	nl	Wijzig JiNN Site object instellingen:
+edit object	jinn	nl	Object wijzigen
+edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	nl	
+edit phpgw_jinn_sites	jinn	nl	Sites wijzigen
+edit site	jinn	nl	Site wijzigen
 edit this site	jinn	nl	Wijzig deze site
 edit this site object	jinn	nl	Wijzig dit Site-object
 editors for object $object_name in site $site_name	jinn	nl	redacteuren voor het object $object_name in de site $site_name
@@ -113,10 +122,13 @@ import was succesfull<br>imported one site with	jinn	nl	Het importeren is gelukt
 index	jinn	nl	index
 insert another record after saving	jinn	nl	nog een item toevoegen nadat deze is opgeslagen
 insert jinn site parameters: <li>insert a jinn site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	nl	Voeg JiNN Site instelling toe:
+insert new site configuration: <li>insert a site name for display</li> <li>insert correct database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview url for uploaded elements</li>	jinn	nl	
 insert/select jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	nl	Voeg JiNN object instellingen toe:
 jinn	common	nl	JiNN
 jinn editors menu	jinn	nl	JiNN Redactiemenu
 jinn preferences	jinn	nl	JiNN Voorkeuren
+list sites	jinn	nl	Sites weergeven
+many 2 many relations will not work	jinn	nl	VEEL-op-VEEL-relaties zullen niet werken
 max. number of previews in form	jinn	nl	Max. aantal previews in "wijzigen formulier"
 maximum image width isn	jinn	nl	maximale beeld breedte is
 maximum image width isn\	jinn	nl	maximale beeld breedte is
@@ -126,9 +138,13 @@ months_abbr	jinn	nl
 new image size limits.	jinn	nl	Nieuwe max. afmetingen voor afbeeldingen
 no matchs found	jinn	nl	Geen resultaten gevonden
 no max. number	jinn	nl	Geen max. aantal
+no records found	jinn	nl	Geen records gevonden
 normal view	jinn	nl	Normale weergave
+object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	nl	
 only if thumnails exits	jinn	nl	Alleen als er een thumbnail bestaat
-path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	nl	
+optional max. height	jinn	nl	Optionele max. hoogte
+optional max. width	jinn	nl	Optionele max. breedte
+path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	nl	Pad naar de applicatie 'convert' uit ImageMagick (bijv. /usr/X11R6/bin)
 please set your preferences for this application	jinn	nl	Stel a.u.b. uw voorkeuren in voor deze toepassing
 preview thumbs or images in form	jinn	nl	Voorbeelden van thumbnails of afbeeldingen weergeven in "wijzigen formulier"
 production	admin	nl	Productie
@@ -150,6 +166,9 @@ replace existing site with the same name?	jinn	nl	Huidige site met dezelfde naam
 replaced existing site named <strong>%1</strong>.	jinn	nl	Bestaande site met de naam <strong>%1</strong> is vervangen.
 reset form	jinn	nl	Formulier herstellen
 save	jinn	nl	Opslaan
+save and continue	jinn	nl	Opslaan en doorgaan met bewerken
+save and contiue	jinn	nl	Opslaan en doorgaan met bewerken
+save and finish	jinn	nl	Opslaan en bewerking beÎindigen
 search	jinn	nl	Zoek
 search for string	jinn	nl	zoek op trefwoord
 select directory	jinn	nl	Selecteer directorie
@@ -163,6 +182,7 @@ set access right for site objects	jinn	nl	Stel toegangsrechten voor site objecte
 set access rights	admin	nl	Stel toegangsrechten in
 set access rights for sites	jinn	nl	Stel toegangsrechten in voor Sites
 set administrators for	jinn	nl	Stel beheerders in voor
+set administrators for %1	jinn	nl	Stel beheerders in voor %1
 set object moderator	jinn	nl	Stel objectredacteur in
 set site admin	jinn	nl	Stel Sitebeheerder
 show	jinn	nl	weergeven
@@ -194,6 +214,7 @@ site succesfully saved	jinn	nl	Site met succes opgeslagen.
 site title	admin	nl	Titel Site
 site-objects	jinn	nl	Site-objecten
 sites	jinn	nl	Sites
+something went wrong	jinn	nl	Er is iets misgegaan
 start	admin	nl	Start
 start at record	jinn	nl	Start bij record
 stop at record	jinn	nl	Stop bij record
@@ -206,6 +227,7 @@ the file you uploaded named %1 is not an imagefile, is corrupt, or the filetype 
 the name of the new site is <strong>%1</strong>.	jinn	nl	De naam van de nieuwe site is <strong>%1</strong>.
 the resize process failed, please contact the administrator	jinn	nl	Het veranderen van de afbeeldingafmetingen is mislukt. Neem a.u.b. contact op met de systeembeheerder
 there are no directories in this site you have access to.	jinn	nl	Er zijn geen directories in deze site waartoe u toegang heeft
+this table has not unique identifier field	jinn	nl	Deze tabel heeft geen uniek identificatie veld
 thisfile	jinn	nl	
 thumb directory does not exist or is not correct ...<br>please check object's upload dir	jinn	nl	Afbeeldingsthumbdirectory bestaat niet. Controleer de upload-directory van dit object
 thumbnail	jinn	nl	thumbnail
@@ -215,3 +237,4 @@ when you choose 'never', only links to the images are displayed; when you choose
 width:	jinn	nl	Breedte:
 with_checked_files	jinn	nl	met aangevinkte bestanden
 you're not allowed to administrate media files	jinn	nl	U bent niet toegestaan om mediabestanden te beheren.
+Preview Website	jinn	nl	Open Website

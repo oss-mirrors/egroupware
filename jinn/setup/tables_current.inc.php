@@ -47,7 +47,8 @@
 				'dev_site_db_password' => array('type' => 'varchar','precision' => '30','nullable' => False),
 				'dev_site_db_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
 				'dev_upload_path' => array('type' => 'varchar','precision' => '250','nullable' => False),
-				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False)
+				'dev_upload_url' => array('type' => 'varchar','precision' => '250','nullable' => False),
+				'website_url' => array('type' => 'varchar','precision' => '250','nullable' => False)
 			),
 			'pk' => array('site_id'),
 			'fk' => array(),
