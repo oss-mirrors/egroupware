@@ -1,0 +1,11 @@
+add stock	stocks	fi	Lis‰‰ osake
+default country	stocks	fi	Oletusmaa
+display stocks on main screen is enabled	stocks	fi	Osakekurssit n‰ytet‰‰n p‰‰n‰ytˆll‰
+edit stock	stocks	fi	Muokkaa osaketta
+price	stocks	fi	Hinta
+stocks	common	fi	Osakekurssit
+stock quotes	common	fi	Osakekurssit
+select stocks to display	stocks	fi	Valitse n‰ytett‰v‰t osakkeet
+stock quotes list	stocks	fi	Osakekurssilista
+stock quote preferences	stocks	fi	Osakekurssien asetukset
+symbol	stocks	fi	Symboli
