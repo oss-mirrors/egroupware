@@ -1,0 +1,17 @@
+
+Skeleton App Change History
+
+Dan Kuykendall <dan@kuykendall.org>
+
+   v1.0, 19 May 2001
+   
+   History/Changes for skel app
+     _________________________________________________________________
+   
+Revision History
+
+   Version 0.0.0.001
+          Basic start of code
+          
+   Version 0.0.1.000
+          First public release

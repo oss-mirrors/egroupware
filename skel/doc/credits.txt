@@ -1,0 +1,15 @@
+
+Credits
+
+Dan Kuykendall <dan@kuykendall.org>
+
+   v1.0, 19 May 2001
+   
+   Credits for skel app
+     _________________________________________________________________
+   
+Credits
+
+   Dan Kuykendall Created this app
+   
+   Many thanks to the whole phpGroupWare team!

@@ -1,0 +1,24 @@
+
+Skeleton App Installation Guide
+
+Dan Kuykendall <dan@kuykendall.org>
+
+   v1.0, 19 May 2001
+   
+   Steps for installing skeleton app
+     _________________________________________________________________
+   
+Getting and Installing
+
+Downloading
+
+   Can be downloaded from some url.
+     _________________________________________________________________
+   
+Installing
+
+   Point your browser to your
+   http://www.yourdomain.com/phpgroupware/setup The setup prog will
+   autodetect this application and allow you to have it create the
+   tables. From there you will need to assign this app to the users you
+   want to have be able to use it.
