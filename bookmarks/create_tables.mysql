@@ -8,7 +8,7 @@ CREATE TABLE bookmarks (
   subcategory_id tinyint(4) DEFAULT '0' NOT NULL,
   rating_id   tinyint(4) DEFAULT '0' NOT NULL,
   username    varchar(32) DEFAULT '' NOT NULL,
-  added       int,
+  bm_timestamps varchar(255),
   public_f    char(1) DEFAULT 'N' NOT NULL,
   PRIMARY KEY (id),
   KEY username (username)

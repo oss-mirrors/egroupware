@@ -41,13 +41,13 @@
  <tr>
    <td>Date Added</td>
    <td><strong>{ADDED}&nbsp;</strong>
-       <input type=hidden name=added value="{ADDED}"></td>
+       <input type="hidden" name="added" value="{ADDED_VALUE}"></td>
  </tr>
  
  <tr>
    <td>Date Last visted</td>
    <td><strong>{VISTED}&nbsp;</strong>
-       <input type=hidden name=added value="{VISTED}"></td>
+       <input type="hidden" name="visted" value="{VISTED_VALUE}"></td>
  </tr>
 
  <tr>

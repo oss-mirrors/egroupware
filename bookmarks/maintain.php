@@ -48,7 +48,7 @@
      ## Change bookmark
      case "bk_edit":
      case "bk_edit_x":
-     if (!$bmark->update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, $rating, $public)) break;
+     if (!$bmark->update($id, $url, $name, $ldesc, $keywords, $bookmarks_category, $bookmarks_subcategory, $bookmarks_rating, $public)) break;
 
      return_to();
      break;
@@ -87,8 +87,24 @@ if (empty($error_msg)) {
         $rating      = $db->f("rating_id");
         $category    = $db->f("category_id");
         $subcategory = $db->f("subcategory_id");
-        $added       = $db->f("added");
+        $bm_timestamps_raw = $db->f("bm_timestamps");
         $public      = $db->f("public_f");
+
+        $ts = explode(",",$bm_timestamps_raw);
+
+        $f_ts[0] = $phpgw->common->show_date($ts[0]);
+
+        if ($ts[1]) {
+           $f_ts[1] = $phpgw->common->show_date($ts[1]);
+        } else {
+           $f_ts[1] = lang("Never");
+        }
+
+        if ($ts[2]) {
+           $f_ts[2] = $phpgw->common->show_date($ts[2]);
+        } else {
+           $f_ts[2] = lang("Never");
+        }
 
         if ($public == "on" || $public == "Y") {
            $public_selected = "CHECKED";
@@ -112,7 +128,11 @@ if (empty($error_msg)) {
                                         CATEGORY           => $category_select,
                                         SUBCATEGORY        => $subcategory_select,
                                         RATING             => $rating_select,
-                                        ADDED              => $phpgw->common->show_date($added),
+                                        ADDED              => $f_ts[0],
+                                        VISTED             => $f_ts[1],
+                                        UPDATED            => $f_ts[2],
+                                        ADDED_VALUE        => $ts[0],
+                                        VISTED_VALUE       => $ts[1],
                                         PUBLIC_SELECTED    => $public_selected,
                                         CANCEL_BUTTON      => $cancel_button
                                 ));

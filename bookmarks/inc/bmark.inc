@@ -40,8 +40,8 @@ class bmark  {
 
     ## Insert the bookmark
     $query = sprintf("insert into bookmarks (url, name, ldesc, keywords, category_id, 
-                      subcategory_id, rating_id, username, public_f, added) 
-                      values('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s', %s)", 
+                      subcategory_id, rating_id, username, public_f, bm_timestamps) 
+                      values('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,,')", 
                       $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
                       $category, $subcategory, $rating, $phpgw_info["user"]["account_id"], $public_db,
                       time());
@@ -49,12 +49,12 @@ class bmark  {
     $db->query($query,__LINE__,__FILE__);
     if ($db->Errno != 0) return false;
 
-    $maintain_url = "maintain.php?id=".$id;
-    $msg .= sprintf("Bookmark %s created sucessfully.
-                     <br>Click <a href=\"%s\">here</a> to modify this bookmark.
+//    $maintain_url = "maintain.php?id=".$id;
+    $msg .= "Bookmark created sucessfully.";
+/*                     <br>Click <a href=\"%s\">here</a> to modify this bookmark.
                      <a href=\"maillink.php?id=%s\">
                      <img width=24 height=24 align=top border=0 src=\"%smail.png\"></a>", 
-                     $id, $phpgw->link($maintain_url), $id, $bookmarker->image_url_prefix);
+                     $id, $phpgw->link($maintain_url), $id, $bookmarker->image_url_prefix); */
 
     ## Update the PHPLIB user variable that keeps track of how
     ## many bookmarks this user has.
@@ -65,17 +65,23 @@ class bmark  {
 
   function update($id, $url, $name, $ldesc, $keywords, $category, $subcategory, 
                   $rating, $public) {
-    global $auth, $perm, $error_msg, $msg, $bookmarker, $validate, $db, $phpgw_info;
+    global $auth, $perm, $error_msg, $msg, $bookmarker, $validate, $db, $phpgw_info, $added;
 
     if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
                         &$rating, &$public, &$public_db)) return false;
 
+    if ($visted == 1) {
+       $visted = 0;
+    }
+
+    $timestamps = sprintf("%s,%s,%s",$added,$visted,time());
+
     ## Update bookmark information.
     $query = sprintf("update bookmarks set url='%s', name='%s', ldesc='%s' , keywords='%s', 
-                      category_id='%s', subcategory_id='%s', rating_id='%s', public_f='%s' 
-                      where id='%s' and username='%s'", 
+                      category_id='%s', subcategory_id='%s', rating_id='%s', public_f='%s',
+                      bm_timestamps='%s' where id='%s' and username='%s'", 
                       $url, addslashes($name), addslashes($ldesc), addslashes($keywords), 
-                      $category, $subcategory, $rating, $public_db, $id, $phpgw_info["user"]["account_id"]);
+                      $category, $subcategory, $rating, $public_db, $timestamps, $id, $phpgw_info["user"]["account_id"]);
 
     $db->query($query,__LINE__,__FILE__);
     if ($db->Errno != 0) return false;
