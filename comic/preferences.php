@@ -81,8 +81,8 @@
 
     if ($GLOBALS['phpgw']->db->num_rows() == 0)
     {
-        $GLOBALS['phpgw']->db->query("insert into phpgw_comic (comic_owner) values ".
-                          "('".$GLOBALS['phpgw_info']["user"]["account_id"]."')");
+        $GLOBALS['phpgw']->db->query("insert into phpgw_comic (comic_owner,comic_list) values ".
+                          "('".$GLOBALS['phpgw_info']["user"]["account_id"]."','0')");
         $GLOBALS['phpgw']->db->query("select * from phpgw_comic "
                           ."WHERE comic_owner='"
                           .$GLOBALS['phpgw_info']["user"]["account_id"]."'");
