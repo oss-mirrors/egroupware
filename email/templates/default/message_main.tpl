@@ -39,9 +39,7 @@ In the future, this will process a specially formated email msg.<hr>
 	</td>
 	<td bgcolor="{tofrom_data_bkcolor}" width="570">
 		<font size="2" face="{theme_font}">
-		{from_real_name}
-		{from_raw_addy}
-		{from_addybook_add}
+		{from_data_final}
 		</font>
 	</td>
 </tr>

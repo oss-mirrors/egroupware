@@ -40,7 +40,7 @@
 			{
 				$reply = $msg->from[0];
 			}
-			$to = $reply->mailbox.'@'.$reply->host;
+			$to = $phpgw->msg->make_rfc2822_address($reply);
 			$subject = $phpgw->msg->get_subject($msg,'Re: ');
 		}
 		if ($action == 'replyall')
@@ -50,10 +50,19 @@
 				for ($i = 0; $i < count($msg->to); $i++)
 				{
 					$topeople = $msg->to[$i];
-					$tolist[$i] = "$topeople->mailbox@$topeople->host";
+					$tolist[$i] = $phpgw->msg->make_rfc2822_address($topeople);
 				}
-				$from = $msg->from[0];
-				$to = "$from->mailbox@$from->host, " . implode(", ", $tolist);
+				if ($msg->reply_to[0])
+				{
+					$from = $msg->reply_to[0];
+				}
+				else
+				{
+					$from = $msg->from[0];
+				}
+				$to = $phpgw->msg->make_rfc2822_address($from);
+				// these spaces after the comma will be taken out in send_message, they are only for user readability here
+				$to = $to.', ' . implode(", ", $tolist);
 			}
 
 			if ($msg->cc)
@@ -61,8 +70,9 @@
 				for ($i = 0; $i < count($msg->cc); $i++)
 				{
 					$ccpeople = $msg->cc[$i];
-					$cclist[$i] = "$ccpeople->mailbox@$ccpeople->host";	
+					$cclist[$i] = $phpgw->msg->make_rfc2822_address($ccpeople);
 				}
+				// these spaces after the comma will be taken out in send_message, they are only for user readability here
 				$cc = implode(", ", $cclist);
 			}
 			$subject = $phpgw->msg->get_subject($msg,'Re: ');
@@ -164,9 +174,8 @@
 							// I think the email needs to be sent out as if it were PLAIN text
 							// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; 
 							// it's up to the endusers MUA to handle any htmlspecialchars
-							$body .= '>' . $body_array[$bodyidx];
-							$body = chop ($body);
-							$body .= "\n";
+							$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+							$body .= $this_line;
 						}
 					}
 					trim ($body);
@@ -176,6 +185,35 @@
 					$body = $phpgw->msg->htmlspecialchars_decode($body);
 				}
 			}
+		}
+		// so what goes in the to and cc box
+		$to_box_value = $to;
+		$cc_box_value = $cc;
+	}
+	else
+	{
+		// no var $msgnum  means we were not called by the reply, replyall, or forward
+		// i do NOT what page calls this page with the var mailto in the url
+		if ($mailto)
+		{
+			$to_box_value = substr($mailto, 7, strlen($mailto));
+		}
+		// called fromthe message list, most likely
+		elseif ((isset($to)) && ($to) && (isset($personal)) && ($personal)
+		&& (urldecode($personal) != urldecode($to)) )
+		{
+			$to = $phpgw->msg->stripslashes_gpc($to);
+			$personal = $phpgw->msg->stripslashes_gpc($personal);
+			$to_box_value = $phpgw->msg->htmlspecialchars_encode('"'.urldecode($personal).'" <'.urldecode($to).'>');
+		}
+		elseif ((isset($to)) && ($to))
+		{
+			$to = $phpgw->msg->stripslashes_gpc($to);
+			$to_box_value = urldecode($to);
+		}
+		else
+		{
+			$to_box_value = '';
 		}
 	}
 
@@ -197,18 +235,12 @@
 	$t->set_var('to_boxs_font',$phpgw_info["theme"]["font"]);
 	$t->set_var('to_box_desc',lang("to"));
 	$t->set_var('to_box_name','to');
-	if ($mailto)
-	{
-		$to_box_value = substr($mailto, 7, strlen($mailto));
-	}
-	else
-	{
-		$to_box_value = $to;
-	}
+	// to_box_value set above
 	$t->set_var('to_box_value',$to_box_value);
 	$t->set_var('cc_box_desc',lang("cc"));
 	$t->set_var('cc_box_name','cc');
-	$t->set_var('cc_box_value',$cc);
+	//$t->set_var('cc_box_value',$cc);
+	$t->set_var('cc_box_value',$cc_box_value);
 	$t->set_var('subj_box_desc',lang("subject"));
 	$t->set_var('subj_box_name','subject');
 	$t->set_var('subj_box_value',$subject);

@@ -12,7 +12,7 @@
 		<font size="2" face="{mlist_font}"><a href="{mlist_subject_link}">{mlist_subject}</a></font>
 	</td>
 	<td bgcolor="{mlist_backcolor}">
-		<font size="2" face="{mlist_font}"><a href="{mlist_reply_link}">{mlist_from}</a> </font>
+		<font size="2" face="{mlist_font}"><a href="{mlist_reply_link}">{mlist_from}</a> {mlist_from_extra}</font>
 	</td>
 	<td bgcolor="{mlist_backcolor}">
 		<font size="2" face="{mlist_font}">{mlist_date}</font>

@@ -342,7 +342,8 @@
 
 			// SUBJECT
 			$subject = $phpgw->msg->get_subject($msg,'');
-			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder_short).'&msgnum='.$mlist_msg_num);
+			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',
+				'folder='.urlencode($folder_short).'&msgnum='.$mlist_msg_num);
 
 			// SIZE
 			if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
@@ -365,40 +366,64 @@
 				$show_newmsg = False;
 			}
 
-			// FROM and REPLY TO  LINK
+			// FROM and REPLY TO  HANDLING
 			if ($msg->reply_to[0])
 			{
-				$reply   = $msg->reply_to[0];
+				$reply = $msg->reply_to[0];
 			}
 			else
 			{
-				$reply   = $msg->from[0];
+				$reply = $msg->from[0];
 			}
 
-			$replyto = $reply->mailbox . "@" . $reply->host;
+			//$replyto = $phpgw->msg->make_rfc2822_address($reply);
+			$replyto = $reply->mailbox.'@'.$reply->host;
 
 			$from = $msg->from[0];
-			// what does this do
-			$personal = !$from->personal ? "$from->mailbox@$from->host" : $from->personal;
+			if (!$from->personal)
+			{
+				// no "personal" info available, only can show plain address
+				$personal = $from->mailbox.'@'.$from->host;
+			}
+			else
+			{
+				$personal = decode_header_string($from->personal);
+			}
 			if ($personal == "@")
 			{
 				$personal = $replyto;
 			}
-			if ($phpgw_info['user']['preferences']['email']['show_addresses'] == 'from' && ($personal != "$from->mailbox@$from->host"))
+			// display the "from" data according to user preferences
+			// assumes user always wants "personal" shown, question is when to also show the plain address
+			if (($phpgw_info['user']['preferences']['email']['show_addresses'] == 'from')
+			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
-				$display_address_from = "($from->mailbox@$from->host)";
+				// user wants "personal" AND the plain address of who the email came from, in the "From"  column
+				$display_address_from = '('.$from->mailbox.'@'.$from->host.')';
+				$who_to = $from->mailbox.'@'.$from->host;
 			}
-			elseif ($phpgw_info["user"]["preferences"]["email"]["show_addresses"] == "replyto" && ($personal != $replyto))
+			elseif (($phpgw_info['user']['preferences']['email']['show_addresses'] == 'replyto')
+			&& ($personal != $from->mailbox.'@'.$from->host))
 			{
-				$display_address_from = "($replyto)";
+				// user wants "personal" AND the plain address of the "ReplyTo" header, if available, in the "From" column
+				$display_address_from = '&lt;'.$replyto.'&gt;';
+				//$who_to = $replyto;
+				$who_to = $from->mailbox.'@'.$from->host;
 			}
 			else
 			{
+				// user does not want to see any plain address, or "personal" was not available, so we show plain anyway
 				$display_address_from = "";
+				$who_to = $from->mailbox.'@'.$from->host;
 			}
 
-			$from_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='
-					.urlencode($folder_short) .'&to=' .urlencode($replyto));
+			$from_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',
+				'folder='.urlencode($folder_short).'&to='.urlencode($who_to));
+			if ($personal != $from->mailbox.'@'.$from->host)
+			{
+				$from_link = $from_link .'&personal='.urlencode($personal);
+			}
+			// this will be the href clickable text in the from column
 			$from_name = decode_header_string($personal);
 			//echo "$display_address->from";
 
@@ -435,6 +460,9 @@
 		$t->set_var('mlist_subject',$subject);
 		$t->set_var('mlist_subject_link',$subject_link);		
 		$t->set_var('mlist_from',$from_name);
+		$t->set_var('mlist_from_extra',$display_address_from);
+		//$t->set_var('mlist_from',$display_address_from);
+		//$t->set_var('mlist_from_extra',$from_name);
 		$t->set_var('mlist_reply_link',$from_link);
 		$t->set_var('mlist_date',$msg_date);
 		$t->set_var('mlist_size',$size);

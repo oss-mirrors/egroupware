@@ -59,6 +59,7 @@
 	$sm_envelope_img = img_maketag($image_dir.'/sm_envelope.gif',"Add to address book","8","10","0");
 	$session_folder = 'folder='.urlencode($folder).'&msgnum=';
 	$default_sorting = $phpgw_info['user']['preferences']['email']['default_sorting'];
+	$struct_not_set = '-1';
 
 // ----  General Information about The Message  -----
 	$msg = $phpgw->msg->header($mailbox, $msgnum);
@@ -193,72 +194,106 @@
 	$t->set_var('lang_subject', lang('subject'));
 
 // ----  From: Message Data  -----
-	// format "From" according to user preferences  ?
-	// WHAT IS THIS PREF SUPPOSED TO DO ???
-	$from = $msg->from[0];
-	$personal = !isset($from->personal) || !$from->personal ? $from->mailbox.'@'.$from->host : $from->personal;
-        //$display_address = Object();
-        if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $from->mailbox.'@'.$from->host))
+	if (!$msg->from)
 	{
-		$display_address['from'] = '('.$from->mailbox.'@'.$from->host.')';
-	}
-	if ($msg->from)
-	{
-
-		$from_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.urlencode($from->mailbox.'@'.$from->host)),
-			decode_header_string($personal) );
-		$from_raw_addy = trim($display_address['from']);
-
-		$from_addybook_add = href_maketag(
-			$phpgw->link('/addressbook/add.php','add_email='.urlencode($from->mailbox.'@'.$from->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
-			$sm_envelope_img
-		);
+		// no header info about this sender is available
+		$from_data_final = lang('Undisclosed Sender');
 	}
 	else
 	{
-		$from_real_name = '';
-		$from_raw_addy = lang('Undisclosed Sender');
-		$from_addybook_add = '';
+		$from = $msg->from[0];
+		//a typical email address have 2 properties: (1) rfc2822 addr_spec  (user@some.com)  and (2) maybe a descriptive string
+		// get (1) - the from rfc2822 addr_spec
+		$from_plain = $from->mailbox.'@'.$from->host;
+		// get (2) the associated descriptive string. if supplied, the header usually looks like this: "personal name" <some@where.com>
+		// that associasted string, called "personal" here, usally has the persons full name
+		if (!isset($from->personal) || (!$from->personal))
+		{
+			// there is no "personal" info available, just fill this with the standard email addr
+			$from_personal = $from_plain;
+		}
+		else
+		{
+			$from_personal = decode_header_string($from->personal);
+		}
+		// display "From" according to user preferences
+		if (isset($phpgw_info['user']['preferences']['email']['show_addresses'])
+		&& ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'none')
+		&& ($from_personal != $from_plain))
+		{
+			// user wants to see "personal" info AND the plain address, and we have both available to us
+			$from_extra_info = " ".'('.$from_plain.')'." ";
+		}
+		else
+		{
+			//user  want to see the "personal" ONLY (no plain address) OR we do not have any "personal" info to show
+			$from_extra_info = ' ';
+		}
+
+		// first text in the "from" table data, AND click on it to compose a new, blank email to this email address
+		$from_and_compose_link = 
+			href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',
+				'folder='.urlencode($folder).'&to='.urlencode($from_plain).'&personal='.urlencode($from_personal)),
+			$from_personal);
+		// click on the little envelope image to add this person/address to your address book
+		$from_addybook_add = 
+			href_maketag($phpgw->link('/addressbook/add.php',
+				'add_email='.urlencode($from_plain).'&name='.urlencode($from_personal)
+				.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+			$sm_envelope_img);
+		
+		// assemble the "From" data string  (note to_extra_info also handles the spacing)
+		$from_data_final = $from_and_compose_link .$from_extra_info .$from_addybook_add;
 	}
 
-	$t->set_var('from_real_name',$from_real_name);
-	$t->set_var('from_raw_addy',$from_raw_addy);
-	$t->set_var('from_addybook_add',$from_addybook_add);
+	$t->set_var('from_data_final',$from_data_final);
 
 
 // ----  To:  Message Data  -----
-	if ($msg->to)
+	if (!$msg->to)
+	{
+		$to_data_final = lang('Undisclosed Recipients');
+	}
+	else
 	{
 		for ($i = 0; $i < count($msg->to); $i++)
 		{
 			$topeople = $msg->to[$i];
-			$personal = !isset($topeople->personal) || !$topeople->personal ? $topeople->mailbox.'@'.$topeople->host : $topeople->personal;
-			$personal = decode_header_string($personal);
-			if ($phpgw_info['user']['preferences']['email']['show_addresses'] != 'no' && ($personal != $topeople->mailbox.'@'.$topeople->host))
+			$to_plain = $topeople->mailbox.'@'.$topeople->host;
+			if ((!isset($topeople->personal)) || (!$topeople->personal))
 			{
-				$display_address['to'] = '('.$topeople->mailbox.'@'.$topeople->host.')';
+				$to_personal = $to_plain;
+			}
+			else
+			{
+				$to_personal = decode_header_string($topeople->personal);
+			}
+			if (($phpgw_info['user']['preferences']['email']['show_addresses'] != 'none')
+			&& ($to_personal != $to_plain))
+			{
+				$to_extra_info = " ".'('.$to_plain.')'." ";
+			}
+			else
+			{
+				$to_extra_info = ' ';
 			}
 
 			$to_real_name = href_maketag(
-				$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder).'&to='.$topeople->mailbox.'@'.$topeople->host),
-				$personal
-			);
-			$to_raw_addy = trim($display_address['to']);
-
+				$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',
+					'folder='.urlencode($folder).'&to='.urlencode($to_plain).'&personal='.urlencode($to_personal)),
+				$to_personal);
 			$to_addybook_add = href_maketag(
-				$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
-				$sm_envelope_img
-			);
-			// assemble the string and store for later use
-			$to_data_array[$i] = $to_real_name.' '.$to_raw_addy.' '.$to_addybook_add;
+				$phpgw->link('/addressbook/add.php',
+					'add_email='.urlencode($to_plain).'&name='.urlencode($to_personal)
+					.'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$sm_envelope_img);
+			// assemble the string and store for later use (note to_extra_info also handles the spacing)
+			$to_data_array[$i] = $to_real_name .$to_extra_info .$to_addybook_add;
 		}
 		// throw a spacer comma in between addresses, if more than one
 		$to_data_final = implode(', ',$to_data_array);
 	}
-	else
-	{
-		$to_data_final = lang('Undisclosed Recipients');
-	}
+
 	$t->set_var('to_data_final',$to_data_final);
 
 
@@ -268,22 +303,35 @@
 		for ($i = 0; $i < count($msg->cc); $i++)
 		{
 			$ccpeople = $msg->cc[$i];
-			$personal = !$ccpeople->personal ? $ccpeople->mailbox.'@'.$ccpeople->host : $ccpeople->personal;
-			$personal = decode_header_string($personal);
-
+			$cc_plain = $ccpeople->mailbox.'@'.$ccpeople->host;
+			if ((!isset($ccpeople->personal)) || (!$ccpeople->personal))
+			{
+				$cc_personal = $cc_plain;
+			}
+			else
+			{
+				$cc_personal = decode_header_string($ccpeople->personal);
+			}
+			if (($phpgw_info['user']['preferences']['email']['show_addresses'] != 'none')
+			&& ($cc_personal != $cc_plain))
+			{
+				$cc_extra_info = " ".'('.$cc_plain.')'." ";
+			}
+			else
+			{
+				$cc_extra_info = ' ';
+			}
 			$cc_real_name = href_maketag($phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='.urlencode($folder)
-				.'&to='.urlencode($ccpeople->mailbox.'@'.$ccpeople->host)),
-				$personal
+					.'&to='.urlencode($cc_plain).'&personal='.urlencode($cc_personal)),
+				$cc_personal
 			);
-			// we never show cc's raw address
-			$cc_raw_addy = '';
-
 			$cc_addybook_add = href_maketag(
-				$phpgw->link('/addressbook/add.php','add_email='.urlencode($topeople->mailbox.'@'.$topeople->host).'&name='.urlencode($personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
+				$phpgw->link('/addressbook/add.php',
+					'add_email='.urlencode($cc_plain).'&name='.urlencode($cc_personal).'&referer='.urlencode($PHP_SELF.'?'.$QUERY_STRING)),
 				$sm_envelope_img
 			);
 			// assemble the string and store for later use
-			$cc_data_array[$i] = $cc_real_name.' '.$cc_raw_addy.' '.$cc_addybook_add;
+			$cc_data_array[$i] = $cc_real_name .$cc_extra_info .$cc_addybook_add;
 		}
 		// throw a spacer comma in between addresses, if more than one
 		$cc_data_final = implode(', ',$cc_data_array);
@@ -372,9 +420,6 @@
 */
 
 // ---- Message Structure Analysis   -----
-//	global $struct_not_set;
-	$struct_not_set = '-1';
-
 
 	//echo '<br>var struct serialized:<br>' .serialize($struct) .'<br><br>';
 	//echo '<br>var struct->parts serialized:<br>' .serialize($struct->parts) .'<br><br>';
@@ -656,7 +701,7 @@
 		{
 			$part_nice[$i]['m_description'] = 'packagelist';
 		}
-		elseif ((stristr($part_nice[$i]['m_keywords'], 'base64')) 
+		elseif ((stristr($part_nice[$i]['m_keywords'], 'base64'))
 		&& ((stristr($part_nice[$i]['m_keywords'], 'JPEG'))
 		|| (stristr($part_nice[$i]['m_keywords'], 'GIF'))
 		|| (stristr($part_nice[$i]['m_keywords'], 'PJPEG')) ) )
@@ -1013,7 +1058,7 @@
 				.'<pre>'.$boundary.'</pre> <br>'
 				.'<br> === BODY ==== <br><br>';
 			$dsp = $dsp .$phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-
+			
 			$t->set_var('message_body',$dsp);
 			$t->parse('V_display_part','B_display_part');
 		}
@@ -1021,14 +1066,14 @@
 		elseif (($part_nice[$i]['m_description'] == 'presentable')
 		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
 		&& ($d1_num_parts <= 2)
-		&& (($part_nice[$i]['m_part_num_mime'] == '1') || ($part_nice[$i]['m_part_num_mime'] == '1.1'))
+		&& (($part_nice[$i]['m_part_num_mime'] == 1) || ((string)$part_nice[$i]['m_part_num_mime'] == '1.1'))
 		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
 		{
 			// output a blank message body, we'll use an alternate method below
 			$t->set_var('V_display_part','');
 			// -----  Finished With Message_Mail Template, Output It
 			$t->pparse('out','T_message_main');
-
+			
 			// -----  Prepare a Table for this Echo Dump
 			$title_text = '&nbsp;message: ';
 			$t->set_var('title_text',$title_text);
@@ -1246,7 +1291,6 @@
 			$t->parse('V_message_part','B_message_part');
 			$v_msg_body = $v_msg_body . $t->get_var('V_message_part');
 			*/
-
 		}
 		elseif ($part_nice[$i]['m_description'] == 'presentable')
 		{
@@ -1274,17 +1318,8 @@
 					$tag = "tt";
 				}
 
-				//    normalize line breaks to rfc822 CRLF
-				//   $dsp = str_replace("=\r\n","\r\n",$dsp);
-				$dsp = ereg_replace("\r\n", "\n", $dsp);
-				$dsp = ereg_replace("\r", "\n", $dsp);
-				$dsp = ereg_replace("\n", "\r\n", $dsp);
-				if (strtoupper(lang("charset")) <> "BIG5")
-				{
-					$dsp = $phpgw->msg->htmlspecialchars_decode($dsp);
-					$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
-				}
-				$dsp = make_clickable($dsp);
+				//    normalize line breaks to rfc2822 CRLF
+				$dsp = $phpgw->msg->normalize_crlf($dsp);
 
 				/*// THIS NEEDS TO BE SMARTER
 				// how many "\r\n\r\n" do we have? too_many was set above
@@ -1298,16 +1333,50 @@
 				}
 				*/
 
-				// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
-				// enforce HARD WRAP
-				//$max_line_chars = 100;
-				//$dsp = '<pre>'.$dsp.'</pre>';
+				// the "view unformatted" or "view formatted" option base url
+				$view_option_url = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','&folder='.urlencode($folder).'&msgnum='.$msgnum);
 
-				// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
-				$dsp = ereg_replace("\r\n","<br>",$dsp);
-				// add a line after the last line of the message
-				$dsp = $dsp .'<br><br>';
+				if ((isset($no_fmt)) && ($no_fmt))
+				{
+					$dsp = $phpgw->msg->htmlspecialchars_decode($dsp);
+					// (OPT 1) THIS WILL DISPLAY UNFORMATTED TEXT (faster)
+					// enforce HARD WRAP - X chars per line
+					$dsp = $phpgw->msg->body_hard_wrap($dsp, 85);
+					$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
+					$dsp = '<pre>'.$dsp.'</pre>';
+					// alternate to view formatted
+					$view_option = href_maketag($view_option_url, 'view formatted');
+				}
+				else
+				{
+					if (strtoupper(lang("charset")) <> "BIG5")
+					{
+						// befor we can encode some chars into html entities (ex. change > to &gt;)
+						// we need to make sure there are no html entities already there
+						// else we'll end up encoding the & (ampersand) when it should not be
+						// ex. &gt; becoming &amp;gt; is NOT what we want
+						$dsp = $phpgw->msg->htmlspecialchars_decode($dsp);
+						// now we can make browser friendly html entities out of $ < > ' " chars
+						$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
+						// now lets preserve the spaces, else html squashes multiple spaces into 1 space
+						// NOT WORTH IT: give view unformatted option instead
+						//$dsp = $phpgw->msg->space_to_nbsp($dsp);
+					}
+					$dsp = make_clickable($dsp);
+					// (OPT 2) THIS CONVERTS UNFORMATTED TEXT TO *VERY* SIMPLE HTML - adds only <br>
+					$dsp = ereg_replace("\r\n","<br>",$dsp);
+					// add a line after the last line of the message
+					$dsp = $dsp .'<br><br>';
+					// choice to view unformatted
+					$view_option = href_maketag($view_option_url."&no_fmt=1", 'view unformatted');
+				}
 
+				// one last thing with "view option" - only show it with PLAIN email parts
+				if (!stristr($part_nice[$i]['m_keywords'], 'plain'))
+				{
+					$view_option = '';
+				}
+				
 				// prepare the message sep
 				if ($d1_num_parts > 1)
 				{
@@ -1320,6 +1389,9 @@
 				$t->set_var('title_text',$title_text);
 				$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
 					.' - '.format_byte_size(strlen($dsp));
+				
+				$display_str = $display_str 
+					.' &nbsp; '.$view_option;
 				$t->set_var('display_str',$display_str);
 
 				$t->set_var('message_body',$dsp);

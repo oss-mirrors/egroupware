@@ -539,7 +539,8 @@
 
  function pgw_msg_struct($part, $parent_flat_idx, $feed_dumb_mime, $feed_i, $feed_loops, $feed_debth, $folder, $msgnum)
   {
-	global $phpgw, $phpgw_info, $struct_not_set;
+	global $phpgw, $phpgw_info;
+	$struct_not_set = '-1';
 
 	//echo 'BEGIN pgw_msg_struct<br>';
 	//echo var_dump($part);
@@ -748,7 +749,8 @@
 
   function mime_number_smart($part_nice, $flat_idx, $new_mime_dumb)
   {
-	global $phpgw, $phpgw_info, $struct_not_set;
+	global $phpgw, $phpgw_info;
+	$struct_not_set = '-1';
 
 	// ---- Construct a "Smart" mime number
 	
@@ -913,7 +915,8 @@
 
   function make_part_clickable($part_nice, $folder, $msgnum)
   {
-	global $phpgw, $phpgw_info, $struct_not_set;
+	global $phpgw, $phpgw_info;
+	$struct_not_set = '-1';
 
 	$click_info = Array();
 	// Part Number used to request parts from the server
@@ -1068,8 +1071,7 @@
 
   function image_display($folder, $msgnum, $de_part, $part_no, $att_name) 
   {
-	global $phpgw;
-	global $phpgw_info;
+	global $phpgw, $phpgw_info;
 
 	output_bound(lang("image").":" , $att_name);
 	$extra_parms = "folder=".urlencode($folder)."&m=".$msgnum

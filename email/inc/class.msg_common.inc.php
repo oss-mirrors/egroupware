@@ -500,30 +500,94 @@
 		return $personal;
 	}
 
+	// ----  Make Address accoring to RFC2822 Standards  -----
+	function make_rfc2822_address($addy_data, $html_encode=True)
+	{
+		//echo '<br>'.$this->htmlspecialchars_encode(serialize($addy_data)).'<br>'.'<br>';
+		
+		if ((!isset($addy_data->mailbox)) && (!$addy_data->mailbox)
+		&& (!isset($addy_data->host)) && (!$addy_data->host))
+		{
+			// fallback value, we do not want to sent a string like this "@" if no data if available
+			return '';
+		}
+		// now we can continue, 1st make a simple, plain address
+		// RFC2822 allows this simple form if not using "personal" info
+		$rfc_addy = $addy_data->mailbox.'@'.$addy_data->host;
+		// add "personal" data if it exists
+		if (isset($addy_data->personal) && ($addy_data->personal))
+		{
+			// why DECODE when we are just going to feed it right back into a header?
+			$personal = decode_header_string($addy_data->personal);
+			// add slashes because RFC2822 requires "specials" in header string to be escaped if inside a string
+			// NO - do this somewhere else
+			//$personal = addslashes($addy_data->personal);
+			// need to format according to RFC2822 spec for non-plain email address
+			$rfc_addy = '"'.$personal.'" <'.$rfc_addy.'>';
+			// if using this addy in an html page, we need to encode the ' " < > chars
+			if ($html_encode)
+			{
+				$rfc_addy = $this->htmlspecialchars_encode($rfc_addy);
+				//NOTE: in rfc_comma_sep we will decode any html entities back into these chars
+			}
+		}
+		return $rfc_addy;
+	}
+
 	// ----  Ensures To, CC, and BCC are properly comma seperated   -----
+	// param $data should be the desired header string, with one or more addresses 
 	function rfc_comma_sep($data)
 	{
+		// if we are fed a null value, return nothing (i.e. a null value)
 		if (isset($data))
 		{
 			$data = trim($data);
+			// if we are fed a whitespace only string, return a blank string
 			if ($data == '')
 			{
 				return $data;
 				// return performs an implicit break, so we are outta here
 			}
-		
-			//$data = str_replace(", ", " ", $data);
-			// turn commas into spaces
-			$data = str_replace(",", " ", $data);
-			// now reduce all spaces to just one space
-			$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			// in some cases the data may be in html entity form
+			// i.e. the compose page uses html entities when filling the To: box with a predefined value
+			$data = $this->htmlspecialchars_decode($data);
+			//reduce all multiple spaces to just one space
+			//$data = ereg_replace("[' ']{2,20}", ' ', $data);
+			$this_space = " ";
+			$data = ereg_replace("$this_space{2,20}", " ", $data);
 			// explode into an array of email addys
-			$data = explode(" ", $data);
-			// trim each one
+			$data = explode(",", $data);
+			// formatting loop
 			for ($i=0;$i<count($data);$i++)
 			{
+				// trim off leading and trailing whitespaces and \r and \n
 				$data[$i] = trim($data[$i]);
+				// the non-simple (i.e. "personal" info is included) need special escaping
+				if (strstr($data[$i], '" <'))
+				{
+					// SEPERATE "personal" part from the <x@x.com> part
+					$addr_spec_parts = explode('" <', $data[$i]);
+					// that got rid of the closing " in personal, now get rig of the first "
+					$addr_spec_parts[0] = substr($addr_spec_parts[0], 1);
+					
+					// QPRINT NON US-ASCII CHARS in "personal" string
+					// header ENCODE non us-ascii chars as per RFC2822
+					// -- future -- not yet implemented
+					
+					// ESCAPE SPECIALS:  rfc2822 requires the "personal" comment string to escape "specials" inside the quotes
+					// escape these:  ' " ( ) 
+					$addr_spec_parts[0] = ereg_replace('\'', "\\'", $addr_spec_parts[0]);
+					$addr_spec_parts[0] = str_replace('"', '\"', $addr_spec_parts[0]);
+					$addr_spec_parts[0] = str_replace("(", "\(", $addr_spec_parts[0]);
+					$addr_spec_parts[0] = str_replace(")", "\)", $addr_spec_parts[0]);
+					//echo 'addr_spec_parts: '.$this->htmlspecialchars_encode($addr_spec_parts[0]).'<br>';
+					
+					// REASSEMBLE the personal and plain address into 1 string
+					$data[$i] = '"'.$addr_spec_parts[0].'" <'.$addr_spec_parts[1];
+					//echo 'trimmed and slashes stripped data[i]: '.$this->htmlspecialchars_encode($data[$i]).'<br>';
+				}
 			}
+			
 			// reconstruct data in the correct email address format
 			if (count($data) == 0)
 			{
@@ -531,24 +595,90 @@
 			}
 			elseif (count($data) == 1)
 			{
+				// add the final CRLF to finish off this header string
+				//$data = (string)$data[0]."\r\n";
 				$data = (string)$data[0];
 			}
 			else
 			{
+				/*// CLASS SEND CAN NOT HANDLE FOLDED HEADERS YET (7/10/01)
+				// this snippit just assembles the headers
+				for ($i=0;$i<count($data);$i++)
+				{
+					$data[$i] = trim($data[$i]);
+				}
 				// addresses should be seperated by one comma with NO SPACES AT ALL
-				// *some* MTA's can not handle the space, while others can
 				$data = implode(",", $data);
-			}
+				// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
+				$data = ereg_replace("[,]{2}", ',', $data);
+				*/
 
+				// if folding headers - use SEND_2822  instead of class.send
+				// FRC2822 recommended max header line length, excluding the required CRLF
+				$rfc_max_length = 78;
+
+				// establish an arrays in case we need a multiline header string
+				$header_lines = Array();
+				$line_num = 0;
+				$header_lines[$line_num] = '';
+				// loop thru the addresses, construct the header string
+				for ($z=0;$z<count($data);$z++)
+				{
+					// see how long this line would be if this address were added
+					//if ($z == 0)
+					$cur_len = strlen($header_lines[$line_num]);
+					if ($cur_len < 1)
+					{
+						$would_be_str = $data[$z];
+					}
+					else
+					{
+						$would_be_str = $header_lines[$line_num] .','.$data[$z];
+					}
+					//echo 'would_be_str: '.$this->htmlspecialchars_encode($would_be_str).'<br>';
+					//echo 'strlen(would_be_str): '.strlen($would_be_str).'<br>';
+					if ((strlen($would_be_str) > $rfc_max_length)
+					&& ($cur_len > 1))
+					{
+						// Fold Header: RFC2822 "fold" = CRLF followed by a "whitespace" (#9 or #20)
+						// preferable to "fold" after the comma, and DO NOT TRIM that white space, preserve it
+						$rfc_fold_a = "\r\n";
+						$rfc_fold_b = " ";
+						//$rfc_fold = "\r\n".(chr(9));
+						$header_lines[$line_num] = $header_lines[$line_num].','.$rfc_fold_a;
+						// advance to the next line
+						$line_num++;
+						// now start the new line with this address
+						$header_lines[$line_num] = $rfc_fold_b;
+						$header_lines[$line_num] = $header_lines[$line_num] .$data[$z];
+					}
+					else
+					{
+						// simply comma sep the items
+						$header_lines[$line_num] = $would_be_str;
+					}
+				}
+				// assemble $header_lines array into a single string
+				$new_data = '';
+				for ($x=0;$x<count($header_lines);$x++)
+				{
+					$new_data = $new_data .$header_lines[$x];
+				}
+				$data = trim($new_data);
+				// add the final CRLF to finish off this header string
+				//$data = $data ."\r\n";
+			}
+			// data leaves here with NO FINAL (trailing) CRLF - will add that later
 			return $data;
 		}
 	}
 
-	// ----  Ensure CR and LF are always together, RFC's prefer the standard CRLF  -----
+	// ----  Ensure CR and LF are always together, RFCs prefer the CRLF combo  -----
 	function normalize_crlf($data)
 	{
 		// this is to catch all plain \n instances and replace them with \r\n.  
 		$data = ereg_replace("\r\n", "\n", $data);
+		$data = ereg_replace("\r", "\n", $data);
 		$data = ereg_replace("\n", "\r\n", $data);
 		return $data;
 	}
@@ -620,6 +750,64 @@
 		return $str;
 	}
 
+	function space_to_nbsp($data)
+	{
+		// change every other space to a html "non breaking space" so lines can still wrap
+		$data = str_replace("  "," &nbsp;",$data);
+		return $data;
+	}
+
+	function body_hard_wrap($in, $size=80)
+	{
+		// this function formats lines according to the defined
+		// linesize. Linebrakes (\n\n) are added when neccessary,
+		// but only between words.
+
+		$out="";
+		$exploded = explode ("\r\n",$in);
+
+		for ($i = 0; $i < count($exploded); $i++)
+		{
+			$this_line = $exploded[$i];
+			$this_line_len = strlen($this_line); 
+			if ($this_line_len > $size)
+			{
+				$temptext="";
+				$temparray = explode (" ",$this_line);
+				$z = 0;
+				while ($z <= count($temparray))
+				{
+					while ((strlen($temptext." ".$temparray[$z]) < $size) && ($z <= count($temparray)))
+					{
+						$temptext = $temptext." ".$temparray[$z];
+						$z++;
+					}
+					$out = $out."\r\n".$temptext;
+					$temptext = $temparray[$z];
+					$z++;
+				}
+			}
+			else
+			{
+				//$out = trim($out);
+				// get the rest of the line now
+				$out = $out . $this_line . "\r\n";
+			}
+			//$out = trim($out);
+			//$out = $out . "\r\n";
+		}
+		// one last trimming
+		$temparray = explode("\r\n",$out);
+		for ($i = 0; $i < count($temparray); $i++)
+		{
+			$temparray[$i] = trim($temparray[$i]);
+		}
+		$out = implode("\r\n",$temparray);
+		
+		return $out;
+	}
+
+
 	// magic_quotes_gpc  PHP MANUAL:
 	/* Sets the magic_quotes state for GPC (Get/Post/Cookie) operations. 
 	  When magic_quotes are on, all ' (single-quote), " (double quote), \ (backslash) and NUL's 
@@ -637,6 +825,19 @@
 		else
 		{
 			return $data;
+		}
+	}
+
+	function addslashes_gpc($data)
+	{	/* add the escape \ that magic_quotes HTTP POST would add, " becomes \" and  '  becomes  \'  
+		  but ONLY if magic_quotes is OFF, else we may *double* add slashes */
+		if (get_magic_quotes_gpc()==1)
+		{
+			return $data;
+		}
+		else
+		{
+			return addslashes($data);
 		}
 	}
 
