@@ -61,6 +61,7 @@
   $rc = $phpgw->send->msg("email", $to, $subject, stripslashes($body), "", $cc, $bcc);
   if ($rc) {
 //    header("Location: " . $phpgw->link("index.php","cd=13&folder=" . urlencode($return)) );
+    $return = ereg_replace ("^\r\n", "", $return);
     header("Location: " . $phpgw->link("index.php","folder=" . urlencode($return)) );
   } else {
     echo "Your message could <B>not</B> be sent!<BR>\n";
