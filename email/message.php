@@ -23,16 +23,17 @@
     $phpgw_info["flags"]["newsmode"] = True;
   }
 
-  $phpgw_info["flags"]["noheader"] = True;
+  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   $phpgw_info["flags"]["currentapp"] = "email";
   include("../header.inc.php");
 
-  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
+//  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
   if (!empty($msgtype)) {
     Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
     exit;
   } else {
     $phpgw->common->phpgw_header();
+    $phpgw->common->navbar();
   }
 
   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
@@ -57,10 +58,10 @@
 ?>
 
 <? 
-  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
-  if (!empty($msgtype)) {
-    echo "the type is: ".$msgtype; 
-  }
+//  $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
+//  if (!empty($msgtype)) {
+//    echo "the type is: ".$msgtype; 
+//  }
 ?>
 
 <table cellpadding="1" cellspacing="1" width="95%" align="center"><form>
