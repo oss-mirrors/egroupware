@@ -11,7 +11,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "manual");
   include("../header.inc.php");
 
   $phpgw->common->phpgw_footer();
