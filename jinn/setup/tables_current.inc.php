@@ -73,35 +73,6 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'egw_jinn_mail_list' => array(
-			'fd' => array(
-				'id' => array('type' => 'auto'),
-				'name' => array('type' => 'varchar','precision' => '40'),
-				'email_object_id' => array('type' => 'varchar','precision' => '40'),
-				'email_field' => array('type' => 'varchar','precision' => '40')
-			),
-			'pk' => array('id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		),
-		'egw_jinn_mail_data' => array(
-			'fd' => array(
-				'id' => array('type' => 'auto','nullable' => False),
-				'subject' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'body_text' => array('type' => 'text','nullable' => False),
-				'body_html' => array('type' => 'text','nullable' => False),
-				'attachments' => array('type' => 'text','nullable' => False),
-				'reply_address' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'reply_name' => array('type' => 'varchar','precision' => '255','nullable' => False),
-				'email_type' => array('type' => 'varchar','precision' => '10','nullable' => False),
-				'list_id' => array('type' => 'varchar','precision' => '255')
-			),
-			'pk' => array('id'),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		),
 		'phpgw_jinn_adv_field_conf' => array(
 			'fd' => array(
 				'parent_object' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
