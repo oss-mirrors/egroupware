@@ -46,6 +46,7 @@ ticket	tts	fr	Ticket
 ticket has been updated	tts	fr	Le ticket a été mis à jour
 tickets open x	tts	fr	Tickets ouverts %1
 tickets total x	tts	fr	Tickets total %1
+to go back to the tts index, click <a href= x >here</a>	tts	fr	Pour retourner à l'index de tts, cliquez <a href="%1">ici</a>
 total billable	tts	fr	Total facturable
 trouble ticket system	common	fr	Système de tickets d'incidents
 tts	common	fr	Système de tickets d'incidents
