@@ -5,6 +5,7 @@ account	email	de	Benutzerkonto
 account name	email	de	Name des Benutzerkontos
 account user name	email	de	Benutzername
 accounts	email	de	Benutzerkonten
+and stop filtering	email	de	und beende das filtern
 add to addressbook	email	de	Zum Addressbuch hinzufügen
 and	email	de	und
 arrival date	email	de	Eingangsdatum
@@ -67,6 +68,9 @@ fewer choices	email	de	Weniger Auswahl
 file	email	de	Datei
 file into	email	de	Ablegen unter
 filter [number] and name	email	de	Filter [Nummer] und Name
+filter inbox for accounts	email	de	Filtere die INBOX folgender E-Mail Konten
+filter name	email	de	Filter Name
+filter number	email	de	Filter Nummer
 filters	email	de	Filter
 folder	email	de	Ordner
 folder maintenance	email	de	Ordner Verwaltung
@@ -83,7 +87,7 @@ icon size	email	de	Symbolgröße
 icon theme	email	de	Symbol Thema
 if applicable	email	de	Falls zutreffend
 if fileto then select destination folder	email	de	Beim Ablegen bitte Ziel-Ordner auswählen
-if messages match	email	de	Wenn die Nachricht passt
+if messages match	email	de	Wenn für die Nachricht gilt
 image	email	de	Grafik
 imap mail server hostname or ip address	admin	de	IMAP Mail-Server Hostname oder IP Adresse
 imap server type	common	de	IMAP-Servertyp
@@ -120,6 +124,7 @@ no error returned from server	email	de	Der Server lieferte keine Fehlermeldung
 no next message	email	de	keine weitere Nachricht
 no previous message	email	de	keine vorherige Nachricht
 non-standard	email	de	nicht Standard
+not used	email	de	nicht benutzt
 notify on delivery	email	de	Benachrichtigung bei Auslieferung
 number	common	de	Nummer
 oldest	common	de	älteste
@@ -132,6 +137,8 @@ please type a folder name in the text box	email	de	Bitte den Ordnername in das T
 previous	email	de	Vorige
 raw message	email	de	Orginal Nachricht
 read mail	email	de	Nachrichten lesen
+received headers	email	de	Empfangene Kopfzeilen (Header)
+recipient	email	de	Empfänger
 redirect	email	de	Weiterleiten
 reject	email	de	Zurückweisen
 rename (expert)	email	de	Umbennenen (Experte)
@@ -151,6 +158,7 @@ select your style for the addressbook. the traditional, simple style. or the new
 send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
 send forwarded mail as quoted attachment	email	de	Nachrichten als Zitierten Anhang (quoted attachment) weiterleiten
+sender	email	de	Absender
 sent messages folder	common	de	Ordner für versandte Nachrichten
 sent messages saved in &quot;sent&quot; folder	common	de	Versandte wurden im &quot;sent&quot; Ordner gespeichert
 sent messages saved to folder:	email	de	Ordner für versendete Nachrichten:
@@ -170,6 +178,7 @@ stop if matched	email	de	Stop wenn zutreffend
 switch accounts	email	de	Konto wechseln
 switch current folder to	common	de	Wechseln zum Ordner
 text	email	de	Text
+then do this	email	de	Dann führe folgendes aus
 then take this actions	email	de	Danach diesen Befehl ausführen
 there was an error trying to connect to your mail server.<br>please, check your username and password, or contact your admin.	email	de	Die Verbindung zum Mailserver ist leider fehlgeschlagen.<br>Bitte prüfen sie Ihren Usernamen und Ihr Passwort, oder setzen Sie sich mit Ihrem Administrator in Verbindung.
 this data not supplied.	email	de	Diese Daten wurden nicht eingetragen
