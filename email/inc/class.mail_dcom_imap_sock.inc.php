@@ -1450,9 +1450,12 @@
 			// what we have now looks somethign like one of these
 			// "CHARSET" "utf-8"
 			// "TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0"
+			// "NAME" "GTMASTERsplash copy.pdf"
 			$tmp_data['params_exploded'] = array();
-			$tmp_data['parameters'] = array();				
-			$tmp_data['params_exploded'] = explode(' ', $tmp_data['parameters_str']);
+			$tmp_data['parameters'] = array();
+			// no this b0rks on items with spaces in them
+			//$tmp_data['params_exploded'] = explode(' ', $tmp_data['parameters_str']);
+			$tmp_data['params_exploded'] = explode('" "', $tmp_data['parameters_str']);
 			// loop to clean of leading and trailing quotes
 			$loops = count($tmp_data['params_exploded']);
 			for ($i=0; $i < $loops ;$i++)
@@ -1703,6 +1706,8 @@
 				// ("CHARSET" "utf-8") NIL NIL "QUOT
 				// OR multiple params look like this
 				// ("TYPE" "multipart/alternative" "BOUNDARY" "----=_NextPart_000_00B9_01C3CE2B.BE78A8C0") NIL ....
+				// OR some params have spaces in them
+				// ("NAME" "GTMASTERsplash copy.pdf")
 				// OR COULD it BE BLANK  ()  ???
 				// OR could be nested params  ???
 				// OR could it be NIL ???
@@ -2189,6 +2194,7 @@
 					// 	("INLINE" NIL)
 					//	("ATTACHMENT" ("FILENAME" "hook_sidebox_menu.inc.php"))
 					//	("ATTACHMENT" ("FILENAME" "hook_sidebox_menu.inc.php" "another_value" "another_attrib"))
+					//	("ATTACHMENT" ("FILENAME" "GTMASTERsplash copy.pdf"))
 					// a. the first "string" is the disposition
 					// b. then we see NIL or (list) as dparams
 					// this is hypothetical, not seen but is this possible (NIL ("value" "attrib"))
@@ -2218,6 +2224,7 @@
 						// 	NIL)
 						//	("FILENAME" "hook_sidebox_menu.inc.php"))
 						//	("FILENAME" "hook_sidebox_menu.inc.php" "another_value" "another_attrib"))
+						//	("NAME" "GTMASTERsplash copy.pdf"))
 						if (($tmp_data['disposition_total']{0} == 'N')
 						&& ($tmp_data['disposition_total']{1} == 'I')
 						&& ($tmp_data['disposition_total']{2} == 'L'))
@@ -2315,7 +2322,8 @@
 				else
 				{
 					if ($this->debug_dcom > 1) { echo 'bs: we found LANGUAGE element ... grab it for future compat even though php-imap does not handle it'."\n"; }
-					if ($this->debug_dcom > 2) { echo 'bs: apparently it should be a paren list item'."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: apparently it should be a paren list item... '."\n"; }
+					if ($this->debug_dcom > 2) { echo 'bs: I have only seen paren list of string although rfc3501s7.3.2 says it can be a simple string'."\n"; }
 					$start = 0;
 					$end = strpos($this->bs_rawstr, ')');
 					$slen = ($end+1) - $start;
@@ -2347,6 +2355,7 @@
 			if ($this->bs_rawstr{0} != ')')
 			{
 				if ($this->debug_dcom > 1) { echo 'bs: oops, we have extension data we are not coded to handle, so we should eat it'."\n"; }
+				if ($this->debug_dcom > 1) { echo 'bs: note that rfc3501s7.3.2 does define for here LOCATION as string list giving the body content URI as defined in LOCATION'."\n"; }
 				if ($this->debug_dcom > 1) { echo 'bs: next char is NOT  ) so we have more extension data we are not coded to handle'."\n"; }
 				if ($this->debug_dcom > 1) { echo 'bs: ATTEMPTING to eat this extra unhandlable data up to right before the final ) '."\n"; }
 				$end = strpos($this->bs_rawstr, ')');
@@ -2533,32 +2542,6 @@
 		@param $flags FT_UID is the only valid flag
 		@author Angles
 		@discussion implements imap_fetchstructure
-		@example php-imap source code has this
-		a. codes for standard bodystruct items
-		b. check for TYPEMULTIPART ; recurse loop on each part ; add the object
-		c. check for TYPEMESSAGE rfc822; recursel add the object
-			if (body->type == TYPEMULTIPART) {
-				MAKE_STD_ZVAL(parametres);
-				array_init(parametres);
-				for (part = body->CONTENT_PART; part; part = part->next) {
-					MAKE_STD_ZVAL(param);
-					object_init(param);
-					_php_imap_add_body(param, &part->body TSRMLS_CC);
-					add_next_index_object(parametres, param);
-				}
-				add_assoc_object(arg, "parts", parametres);
-			}
-			//  encapsulated message ?
-			if ((body->type == TYPEMESSAGE) && (!strcasecmp(body->subtype, "rfc822"))) {
-				body = body->CONTENT_MSG_BODY;
-				MAKE_STD_ZVAL(parametres);
-				array_init(parametres);
-				MAKE_STD_ZVAL(param);
-				object_init(param);
-				_php_imap_add_body(param, body TSRMLS_CC);
-				add_next_index_object(parametres, param);
-				add_assoc_object(arg, "parts", parametres);
-			}
 		*/
 		function fetchstructure($stream_notused,$msg_num,$flags="")
 		{
@@ -2723,16 +2706,28 @@
 					//}
 					
 					// assemble return string
-					if ($seen_chunky_brace == False)
-					{
-						$return_str .= $response_array[$i];
-					}
-					else
+					if ($seen_chunky_brace == True)
 					{
 						// chop crlf, we do not want in FETCHSTRUCTURE data
-						$this_end = strlen($response_array[$i])-2;
-						$return_str .= substr($response_array[$i], 0 , $this_end);
+						$this_end = strlen($response_array[$i])-1;
+						if (($response_array[$i]{$this_end} == "\n")
+						|| ($response_array[$i]{$this_end} == "\r"))
+						{
+							//$this_end = strlen($response_array[$i])-2;
+							//$return_str .= substr($response_array[$i], 0 , $this_end);
+							$response_array[$i] = substr($response_array[$i], 0 , $this_end);
+						}
+						// try again
+						$this_end = strlen($response_array[$i])-1;
+						if (($response_array[$i]{$this_end} == "\n")
+						|| ($response_array[$i]{$this_end} == "\r"))
+						{
+							//$this_end = strlen($response_array[$i])-2;
+							//$return_str .= substr($response_array[$i], 0 , $this_end);
+							$response_array[$i] = substr($response_array[$i], 0 , $this_end);
+						}
 					}
+					$return_str .= $response_array[$i];
 				}				
 				//if ($this->debug_dcom > 1) { echo 'imap_sock.fetch_request_common('.__LINE__.'): $response_array needs imploding AND rtrim-ing, then call function fetch_head_and_struct <br>'; }
 				// CALL PROCESSING FUNCTION
@@ -2999,6 +2994,8 @@
 			if ($this->debug_dcom > 0) { echo '<pre>'.'extract_header_item('.__LINE__.'): ENTERING'."\n"; }
 			// is it empty
 			$nothing_test = substr($this->env_rawstr, 0, strlen($if_nothing));
+			// backup test for nil
+			$backup_nil_test = substr($this->env_rawstr, 0, 3);
 			if ($nothing_test == $if_nothing)
 			{
 				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): this item is empty, clean $this->env_rawstr, param $if_nothing ['.$if_nothing.']'."\n"; }
@@ -3006,6 +3003,17 @@
 				$this->env_rawstr = substr($this->env_rawstr, strlen($if_nothing)+1);
 				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
 				// return empty item
+				if ($this->debug_dcom > 0) { echo 'extract_header_item('.__LINE__.'): LEAVING returning empty item'.'</pre>'."\n"; }
+				return;
+			}
+			// BACKUP TEST FOR NIL
+			if (($if_nothing != 'NIL')
+			&& ($backup_nil_test == 'NIL'))
+			{
+				if ($this->debug_dcom > 1) { echo 'extract_header_item('.__LINE__.'): this item is NIL, UNEXPECTEDLY we did not expect a NIL here, clean $this->env_rawstr, note param $if_nothing ['.$if_nothing.']'."\n"; }
+				// eat this empty item
+				$this->env_rawstr = substr($this->env_rawstr, strlen('NIL')+1);
+				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
 				if ($this->debug_dcom > 0) { echo 'extract_header_item('.__LINE__.'): LEAVING returning empty item'.'</pre>'."\n"; }
 				return;
 			}
@@ -3149,7 +3157,7 @@
 				if ($this->debug_dcom > 2) { echo 'extract_header_item: NEW $this->env_rawstr is: ['.$this->env_rawstr."]\n"; }
 				//
 				$tmp_data['addys_exploded'] = explode(')(', $tmp_data['raw_str']);
-				//echo 'make_address('.__LINE__.'): $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				//echo 'extract_header_item('.__LINE__.'): $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
 				// loop to clean of leading and trailing quotes
 				$loops = count($tmp_data['addys_exploded']);
 				for ($i=0; $i < $loops ;$i++)
@@ -3166,7 +3174,7 @@
 					}
 					$tmp_data['addys_exploded'][$i] = $this_str;
 				}
-				//echo 'make_address('.__LINE__.'): post-paren-strip $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
+				//echo 'extract_header_item('.__LINE__.'): post-paren-strip $tmp_data[addys_exploded] DUMP: '.""; print_r($tmp_data['addys_exploded']); echo "";
 				
 				// loop to make address object(s)
 				$loops = count($tmp_data['addys_exploded']);
@@ -3243,12 +3251,15 @@
 						else
 						{
 							// grab this string
-							// we knpw the open quote is first char
+							// we know the open quote is first char
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): step 1. we know first char is quote'."\n"; }
 							$start = 1;
 							// what is the end of this data?
+							if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): step 2. what is the end of this data'."\n"; }
 							if ($x == 3)
 							{
 								// this is the end of the string
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): step 2 answer: since $x == 3 (it is ['.$x.']). that means we are at the end of data, last item of 4'."\n"; }
 								$end = strlen($this_str)-1;
 							}
 							else
@@ -3256,6 +3267,7 @@
 								// pick the smallest number above zero
 								$end_1 = strpos($this_str, '" "');
 								$end_2 = strpos($this_str, '" NIL');
+								if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): ... $end_1 is ['.$end_1.'] and $end_2 is ['.$end_2.'], pick the smallest number above zero'."\n"; }
 								if (($end_1 < 1)
 								&& ($end_2 < 1))
 								{
@@ -3264,12 +3276,21 @@
 								}
 								else
 								{
-									$end = $end_1;
-									if (($end_2 < $end)
-									&& ($end_2 > 0))
+									// start here
+									$end = (int)$end_1;
+									// imediate check
+									if ($end < 1)
 									{
+										// we have no choice here
 										$end = $end_2;
 									}
+									elseif (($end_2 < $end)
+									&& ($end_2 > 0))
+									{
+										// looks like end_2 is smallest number above zero
+										$end = $end_2;
+									}
+									// freak out fallback
 									if ($end < 1)
 									{
 										// FREAKED OUT! fallback to the end of the string
@@ -3303,36 +3324,40 @@
 					}
 					// adl - in real life this is not used
 					unset($this_addy->adl);
-					// mailbox - php says something like SYNTAX_ERROR on error
+					// mailbox - php says INVALID_ADDRESS on error
 					// because we better have a mailbox or we do not have an email addy
-					if ($tmp_data['addy_item'][$i][2])
+					// and with a basic check for the absence if @ in this part
+					if (($tmp_data['addy_item'][$i][2])
+					&& (!stristr($tmp_data['addy_item'][$i][2], '@')))
 					{
 						$this_addy->mailbox = $tmp_data['addy_item'][$i][2];
 					}
 					else
 					{
 						//unset($this_addy->mailbox);
-						// php says something like SYNTAX_ERROR on error
+						// php says INVALID_ADDRESS on error
 						// because we better have a mailbox or we do not have an email addy
-						$this_addy->mailbox = 'SYNTAX_ERROR';
+						$this_addy->mailbox = 'INVALID_ADDRESS';
 					}
-					// mailbox
-					if ($tmp_data['addy_item'][$i][3])
+					// mailbox, with a very basic syntax check for presence a dot
+					// we do not check specific for dot at end-3 or end-2 because I hear of a ".mobile" coming
+					if (($tmp_data['addy_item'][$i][3])
+					&& (stristr($tmp_data['addy_item'][$i][3], '.')))
 					{
 						$this_addy->host = $tmp_data['addy_item'][$i][3];
 					}
 					else
 					{
 						//unset($this_addy->host);
-						// php says something like INVALID_HOST on error
-						$this_addy->host = 'INVALID_HOST';
+						// php says something like .SYNTAX-ERROR. (with those dots) on error
+						$this_addy->host = '.SYNTAX-ERROR.';
 					}
 					// put into the return structure
 					$next_pos = count($tmp_data['return_array']);
 					$tmp_data['return_array'][$next_pos] = $this_addy;
 				}
-				//if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): post-process $tmp_data[addy_item] DUMP: '.""; print_r($tmp_data['addy_item']); echo ""; }
-				if ($this->debug_dcom > 2) { echo 'make_address('.__LINE__.'): final $tmp_data[return_array] DUMP: '.""; print_r($tmp_data['return_array']); echo ""; }
+				//if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): post-process $tmp_data[addy_item] DUMP: '.""; print_r($tmp_data['addy_item']); echo ""; }
+				if ($this->debug_dcom > 2) { echo 'extract_header_item('.__LINE__.'): final $tmp_data[return_array] DUMP: '.""; print_r($tmp_data['return_array']); echo ""; }
 				
 
 
@@ -3506,7 +3531,16 @@
 			
 			// 2. subject - string
 			$info->subject = $this->extract_header_item('string', 'paren_list', '""');
-			$info->Subject = $info->subject;
+			// if subject line is not in headers we get nil here
+			if ($info->subject)
+			{
+				$info->Subject = $info->subject;
+			}
+			else
+			{
+				unset($info->subject);
+				unset($info->Subject);
+			}
 			if ($this->debug_dcom > 1) { echo 'imap_parse_header('.__LINE__.'): got $info->subject is: ['.$info->subject."]\n\n"; }
 			
 			// 3. from
