@@ -155,13 +155,13 @@
 			return $button;
 		}
 
-        function add_template_row($label,$value)
-        {
-            $this->nextmatchs->template_alternate_row_color($this->t);
-            $this->t->set_var('td_1',$label);
-            $this->t->set_var('td_2',$value);
-            $this->t->parse('rows','row',True);
-        }
+		function add_template_row($label,$value)
+		{
+			$this->nextmatchs->template_alternate_row_color($this->t);
+			$this->t->set_var('td_1',$label);
+			$this->t->set_var('td_2',$value);
+			$this->t->parse('rows','row',True);
+		}
 
 		function adminlink($action = 'show',$type = 'question',$extra = '')
 		{
@@ -175,7 +175,7 @@
 
 		function addanswer()
 		{
-            $GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add Answer to poll');
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add Answer to poll');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
@@ -225,7 +225,7 @@
 				$this->t->set_var('tr_color',$tr_color);
 
 				$_poll_id = $array['poll_id'];
-                $_vote_id = $array['vote_id'];
+				$_vote_id = $array['vote_id'];
 
 				$_poll_title = $array['poll_title'];
 				$_option_text = $array['option_text'];
@@ -244,7 +244,7 @@
 
 		function addquestion()
 		{
-            $GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add new poll question');
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('Add new poll question');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
@@ -584,16 +584,16 @@
 				return 0;
 			}
 
-            $GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.$pagetitle;
-            $GLOBALS['phpgw']->common->phpgw_header();
-            echo parse_navbar();
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.$pagetitle;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
 
 			$this->bo->sort  = $_GET['sort'] ? $_GET['sort'] : 'ASC';
 			$this->bo->order = isset($_GET['order']) ? $_GET['order'] : 'poll_title';
-            if(!$this->bo->start)
-            {
-                $this->bo->start = 0;
-            }
+			if(!$this->bo->start)
+			{
+				$this->bo->start = 0;
+			}
 			$this->bo->save_sessiondata();
 
 			$this->t->set_block('admin','form','form');
@@ -610,12 +610,12 @@
 				$this->t->set_var('sort_answer',$this->nextmatchs->show_sort_order($this->bo->sort,'option_text',$this->bo->order,'index.php',lang('Answer'),'&menuaction=polls.ui.admin&action=show&type='.$type));
 			}
 
-            $left  = $this->nextmatchs->left('/index.php',$this->bo->start,$this->bo->total,'menuaction=polls.ui.admin&action=show&type='.$type);
-            $right = $this->nextmatchs->right('/index.php',$this->bo->start,$this->bo->total,'menuaction=polls.ui.admin&action=show&type='.$type);
-            $this->t->set_var('match_left',$left);
-            $this->t->set_var('match_right',$right);
+			$left  = $this->nextmatchs->left('/index.php',$this->bo->start,$this->bo->total,'menuaction=polls.ui.admin&action=show&type='.$type);
+			$right = $this->nextmatchs->right('/index.php',$this->bo->start,$this->bo->total,'menuaction=polls.ui.admin&action=show&type='.$type);
+			$this->t->set_var('match_left',$left);
+			$this->t->set_var('match_right',$right);
 
-            $this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bo->total,$this->bo->start));
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bo->total,$this->bo->start));
 
 			$this->t->set_var('lang_actions',lang('actions'));
 			$this->t->set_var('lang_view',lang('view'));
@@ -629,7 +629,7 @@
 				$this->t->set_var('tr_color',$tr_color);
 
 				$poll_id = $array['poll_id'];
-                $vote_id = $array['vote_id'];
+				$vote_id = $array['vote_id'];
 
 				$poll_title = $array['poll_title'];
 				$option_text = $array['option_text'];
@@ -659,16 +659,14 @@
 				{
 					$this->t->set_var('row_answer',stripslashes($option_text));
 					$this->t->set_var('row_title',stripslashes($poll_title));
-					$this->t->set_var('row_edit',
-									'<a href="' . $this->adminlink('edit','answer',
-																	array ('vote_id' => $vote_id,
-																		   'poll_id' => $poll_id
-												  ) ) .'">' . lang('Edit') . '</a>');
-					$this->t->set_var('row_delete',
-									'<a href="' . $this->adminlink('delete','answer',
-																	array ('vote_id' => $vote_id,
-																		   'poll_id' => $poll_id
-												  ) ) .'">' . lang('Delete') . '</a>');
+					$this->t->set_var('row_edit','<a href="' . $this->adminlink('edit','answer',
+									array ('vote_id' => $vote_id,
+									       'poll_id' => $poll_id
+									  ) ) .'">' . lang('Edit') . '</a>');
+					$this->t->set_var('row_delete','<a href="' . $this->adminlink('delete','answer',
+									array ('vote_id' => $vote_id,
+									       'poll_id' => $poll_id
+									  ) ) .'">' . lang('Delete') . '</a>');
 				}
 				$this->t->parse('rows','row',True);
 			}
@@ -685,7 +683,7 @@
 		{
 			$poll_id = (int)$poll_id;
 
-            $title = $this->bo->get_poll_title($poll_id);
+			$title = $this->bo->get_poll_title($poll_id);
 			$sum = $this->bo->get_poll_total($poll_id);
 			$results = $this->bo->get_poll_data($poll_id);
 
@@ -731,12 +729,12 @@
 					{
 						$poll_percentScale = (int)($poll_percent * 1);
 						$this->t->set_var('scale',$poll_percentScale);
+						$this->t->parse('poll_bar','image');
 					}
 					else
 					{
-						$poll_bar = '&nbsp;';
+						$this->t->set_var('poll_bar','&nbsp;');
 					}
-					$this->t->parse('poll_bar','image');
 
 					$this->t->set_var('option_text',$option_text);
 					$this->t->set_var('option_count',$option_count);
@@ -776,7 +774,7 @@
 				return False;
 			}
 
-            $poll_title = $this->bo->get_poll_title($poll_id);
+			$poll_title = $this->bo->get_poll_title($poll_id);
 			$poll_sum = $this->bo->get_poll_total($poll_id);
 			$results = $this->bo->get_poll_data($poll_id);
 
