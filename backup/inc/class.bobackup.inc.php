@@ -33,7 +33,8 @@
 			'get_config'		=> True,
 			'create_config'		=> True,
 			'save_config'		=> True,
-			'phpftp_connect'	=> True
+			'phpftp_connect'	=> True,
+			'get_archives'		=> True
 		);
 
 		function bobackup()
@@ -219,6 +220,13 @@
 			$co['db_name'] = $GLOBALS['phpgw_info']['server']['db_name'];
 			$co['server_root'] = PHPGW_SERVER_ROOT;
 
+			if (!is_dir($co['script_path'] . '/backup'))
+			{
+				mkdir($co['script_path'] . '/backup',0700);
+			}
+
+			$co['script_path'] = $co['script_path'] . '/backup';
+
 			if ($co['b_create'] == 'yes')
 			{
 				
@@ -319,6 +327,11 @@
 				$conf_file = $co['server_root'] . '/backup/phpgw_delete_backup.all';
 				$this->save_config($conf_file,'delete');
 			}
+		}
+
+		function get_archives()
+		{
+			$base_dir = PHPGW_SERVER_ROOT . '/backup/';	
 		}
 	}
 ?>

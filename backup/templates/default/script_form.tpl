@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 	/*******************************************************************\
 	* phpGroupWare - Backup                                             *
@@ -190,7 +191,7 @@
 				mkdir($smbdir, 0700);
 			}
 
-			$pipe = system("mount -t smbfs -o ip=$rip,username=$ruser,password=$rpwd,rw /$rpath $smbdir");
+			$pipe = system("mount -t smbfs -o ip=$rip,username=$ruser,password=$rpwd,rw //$rpath $smbdir");
 
 			if (!$pipe)
 			{

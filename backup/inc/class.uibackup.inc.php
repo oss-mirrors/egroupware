@@ -28,7 +28,8 @@
 	{
 		var $public_functions = array
 		(
-			'backup_admin'	=> True
+			'backup_admin'	=> True,
+			'web_backup'	=> True
 		);
 
 		function uibackup()
@@ -140,8 +141,7 @@
 
 			$r_app_list = '<option value="ftp"' . $r_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
 						. '<option value="scp"' . $r_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
-						. '<option value="smbmount"' . $r_type_sel[2] . '>' . lang('
-') . '</option>' . "\n";
+						. '<option value="smbmount"' . $r_type_sel[2] . '>' . lang('smbmount') . '</option>' . "\n";
 
 			$this->t->set_var('r_app_list',$r_app_list);
 
@@ -169,5 +169,34 @@
 
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
+
+/*		function web_backup()
+		{
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+
+			$this->set_app_langs();
+
+			$this->t->set_file(array('archive_list_t' => 'web_form.tpl'));
+			$this->t->set_block('archive_list_t','archive_list','list');
+
+			$this->t->set_var('lang_action',lang('Backup'));
+
+			$archives = $this->bobackup->get_archives();
+
+            for ($i=0;$i<count($archives);$i++)
+            {
+				$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color(&$this->t);
+
+				$this->t->set_var(array
+				(
+					'archive'	=> $GLOBALS['phpgw']->strip_html($archives[$i]['name'])
+				);
+
+				$this->t->fp('list','archives_list',True);
+			}
+			$this->t->pfp('out','archives_list_t',True);
+			$GLOBALS['phpgw']->common->phpgw_footer();
+		} */
 	}
 ?>
