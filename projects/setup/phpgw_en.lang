@@ -1,5 +1,8 @@
 % to	projects	en	% to
 + jobs	projects	en	+ Jobs
+a new project has been created	projects	en	A new project has been created on:
+a project has been updated	projects	en	A project has been updated on:
+a project has been deleted	projects	en	A project has been deleted on:
 account	projects	en	Account
 accounting	common	en	Accounting
 accounting factor	projects	en	Accounting factor
@@ -81,6 +84,7 @@ date due planned	projects	en	Date due planned
 days	projects	en	days
 days before	projects	en	days before
 definition per project	admin	en	Definition per project
+delete	admin	en	Delete
 delete activity	projects	en	delete activity
 delete factor	projects	en	delete factor
 delete hours	projects	en	Delete hours
@@ -186,16 +190,25 @@ minutes per workunit	projects	en	Minutes per workunit
 month	projects	en	Month
 move start date if pervious projects end date changes	admin	en	Move start date if previous projects end date changes
 name not exceed 250 characters in length	projects	en	name not exceed 250 characters in length
+new	admin	en	New
 new date due of milestone %1: %2	projects	en	New date due of milestone %1: %2.
 new end date	projects	en	New end date
 new milestone	projects	en	New milestone
 new project	projects	en	New project
+new project created	projects	en	New project created:
 new start date	projects	en	New start date
 nonactive	common	en	Nonactive
 not billable	projects	en	not billable
+notification settings	admin	en	Notification settings
+notify management committee	admin	en	Notify management committee
+notify project administrators	admin	en	Notify project administrators
+notify sales department	admin	en	Notify sales department
 number	projects	en	Number
 old end date	projects	en	Old end date
 old start date	projects	en	Old start date
+onadd	admin	en	On Add
+ondelete	admin	en	On Delete
+onstatuschange	admin	en	On Statuschange
 open	projects	en	Open
 open popup	projects	en	open popup
 open popup window	projects	en	open popup window
@@ -237,11 +250,13 @@ project accounting	admin	en	Project accounting
 project administrators	common	en	Project Administrators
 project data due	projects	en	Project date due
 project date due	projects	en	Project date due
+project deleted	projects	en	Project deleted
 project dependencies	common	en	Project dependencies
 project id	common	en	Project ID
 project list	projects	en	Project list
 project overview	projects	en	project overview
 project statistic	projects	en	project statistic
+project updated	projects	en	Project updated
 project url	projects	en	Project URL
 projects	common	en	Projects
 projects, which are assigned as sequencing	projects	en	Projects, which are assigned as sequencing
@@ -282,6 +297,7 @@ start date can not be before parent projects start date	projects	en	Start date c
 start date planned	projects	en	Start date planned
 statistic	projects	en	Statistic
 statistics	projects	en	Statistics
+status change	admin	en	Status Change
 stop	projects	en	Stop
 sub project level %1	projects	en	Sub project level %1
 subproject	projects	en	subproject

@@ -80,12 +80,12 @@
 				{
 					$admin_file['Site Configuration'] =
 						$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uiconfig.index&appname=' . $appname);
-					/* $admin_file['managing committee'] =
-						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=pmanager'); */
+					$admin_file['managing committee'] =
+						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=pmanager');
 					$admin_file['project administrators'] =
 						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=pad');
-					/* $admin_file['sales department'] =
-						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=psale'); */
+					$admin_file['sales department'] =
+						$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiconfig.list_admins&action=psale');
 					$admin_file['Global Categories'] =
 						$GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname);
 				}

@@ -1,6 +1,6 @@
 <!-- BEGIN header -->
 <form method="POST" action="{action_url}">
-<table border="0" align="center">
+<table border="0" align="center" width="100%">
    <tr bgcolor="{th_bg}">
 	   <td colspan="2" align="center"><font color="{th_text}"><b>{title}</b></font></td>
    </tr>
@@ -47,7 +47,115 @@
 			</select>
 		</td>
 	</tr>
-
+	</table>
+	<table align="center" width="100%">
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			<table width="100%">
+				<tr width="100%">
+					<td align="center" width="33%">
+						<small>{lang_onadd}</small>
+					</td>
+					<td align="center" width="33%">
+						<small>{lang_onstatuschange}</small>
+					</td>
+					<td align="center" width="33%">
+						<small>{lang_ondelete}</small>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>
+			{lang_notify_management_committee}:
+		</td>
+		<td>
+			<table width="100%">
+				<tr width="100%">
+					<td align="center" width="33%">
+						<select name="newsettings[notifymanagementcmte_new]" size="1">
+							<option value="no"{selected_notifymanagementcmte_new_no}>{lang_no}</option>
+							<option value="yes"{selected_notifymanagementcmte_new_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifymanagementcmte_status_change]" size="1">
+							<option value="no"{selected_notifymanagementcmte_status_change_no}>{lang_no}</option>
+							<option value="yes"{selected_notifymanagementcmte_status_change_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifymanagementcmte_delete]" size="1">
+							<option value="no"{selected_notifymanagementcmte_delete_no}>{lang_no}</option>
+							<option value="yes"{selected_notifymanagementcmte_delete_yes}>{lang_yes}</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>
+			{lang_notify_project_administrators}:
+		</td>
+		<td>
+			<table width="100%">
+				<tr width="100%">
+					<td align="center" width="33%">
+						<select name="newsettings[notifyprojectadmins_new]" size="1">
+							<option value="no"{selected_notifyprojectadmins_new_no}>{lang_no}</option>
+							<option value="yes"{selected_notifyprojectadmins_new_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifyprojectadmins_status_change]" size="1">
+							<option value="no"{selected_notifyprojectadmins_status_change_no}>{lang_no}</option>
+							<option value="yes"{selected_notifyprojectadmins_status_change_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifyprojectadmins_delete]" size="1">
+							<option value="no"{selected_notifyprojectadmins_delete_no}>{lang_no}</option>
+							<option value="yes"{selected_notifyprojectadmins_delete_yes}>{lang_yes}</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="{row_off}">
+		<td>
+			{lang_notify_sales_department}:
+		</td>
+		<td>
+			<table width="100%">
+				<tr width="100%">
+					<td align="center" width="33%">
+						<select name="newsettings[notifysalesdept_new]" size="1">
+							<option value="no"{selected_notifysalesdept_new_no}>{lang_no}</option>
+							<option value="yes"{selected_notifysalesdept_new_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifysalesdept_status_change]" size="1">
+							<option value="no"{selected_notifysalesdept_status_change_no}>{lang_no}</option>
+							<option value="yes"{selected_notifysalesdept_status_change_yes}>{lang_yes}</option>
+						</select>
+					</td>
+					<td align="center" width="33%">
+						<select name="newsettings[notifysalesdept_delete]" size="1">
+							<option value="no"{selected_notifysalesdept_delete_no}>{lang_no}</option>
+							<option value="yes"{selected_notifysalesdept_delete_yes}>{lang_yes}</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 <!-- END body -->
 <!-- BEGIN footer -->
   <tr height="50" valign="bottom">

@@ -1,5 +1,8 @@
 % to	projects	de	% bis
 + jobs	projects	de	+ Unter-<br>projekte
+a new project has been created	projects	de	Ein neues Projekt wurde angelegt:
+a project has been deleted	projects	de	Folgendes Projekt wurde gelöscht:
+a project has been updated	projects	de	Folgendes Projekt wurde aktualisiert:
 account	projects	de	Benutzerkonto
 accounting	common	de	Abrechnung
 accounting factor	projects	de	Abrechnungsfaktor
@@ -82,6 +85,7 @@ date due planned	projects	de	Geplantes Enddatum
 days	projects	de	Tage
 days before	projects	de	Tage vor
 definition per project	admin	de	Definition per Projekt
+delete	admin	de	Löschen
 delete activity	projects	de	Aktivität löschen
 delete factor	projects	de	Faktor löschen
 delete hours	projects	de	Stunden l&ouml;schen
@@ -189,15 +193,25 @@ minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
 move start date if pervious projects end date changes	admin	de	Startdatum verschieben, wenn sich das Enddatum des vorausgehenden Projektes ändert
 name not exceed 250 characters in length	projects	de	Die Länge des Namens darf 250 Zeichen nicht überschreiten
+new	admin	de	Neu
 new date due of milestone %1: %2	projects	de	Neuer Fälligkeitstermin des Meilensteines %1: %2.
 new end date	projects	de	Neues Enddatum
 new milestone	projects	de	Neuer Meilenstein
 new project	projects	de	Neues Projekt
+new project created	projects	de	Neues Projekt angelegt
 new start date	projects	de	Neues Startdatum
 nonactive	common	de	Nicht aktiv
+not billable	projects	de	nicht verrechenbar
+notification settings	admin	de	Benachrichtigungseinstellungen
+notify management committee	admin	de	Management benachrichtigen
+notify project administrators	admin	de	Projektadmins benachrichtigen
+notify sales department	admin	de	Vertriebsmitarbeiter benachrichtigen
 number	projects	de	Nummer
 old end date	projects	de	Altes Enddatum
 old start date	projects	de	Altes Startdatum
+onadd	admin	de	Bei Neuanlage
+ondelete	admin	de	Bei Löschung
+onstatuschange	admin	de	Bei Statusänderung
 open	projects	de	Offen
 open popup	projects	de	Popup Fenter öffnen
 open popup window	projects	de	Popup-Fenster öffnen
@@ -239,11 +253,13 @@ project accounting	admin	de	Projektabrechnung
 project administrators	common	de	Projektadministratoren
 project data due	projects	de	Projektfälligkeit
 project date due	projects	de	Projektfälligkeit
+project deleted	projects	de	Projekt wurde gelöscht
 project dependencies	common	de	Projektabhängigkeiten
 project id	common	de	Projekt-ID
 project list	projects	de	Projektliste
 project overview	projects	de	Projektübersicht
 project statistic	projects	de	Projektstatistik
+project updated	projects	de	Projekt wurde aktualisiert
 project url	projects	de	Projekt-URL
 projects	common	de	Projekte
 projects, which are assigned as sequencing	projects	de	Nachfolgende Projekte
@@ -284,6 +300,7 @@ start date can not be before parent projects start date	projects	de	Startdatum k
 start date planned	projects	de	Geplantes Startdatum
 statistic	projects	de	Report
 statistics	projects	de	Reporting
+status change	admin	de	Statusänderung
 stop	projects	de	Stop
 sub project level %1	projects	de	Unterprojekt Niveau %1
 subproject	projects	de	Teilprojekt

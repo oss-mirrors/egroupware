@@ -532,6 +532,9 @@
 					}
 				}
 				return $p_id;
+
+				$this->send_notification($p_id, $values['number'], 'new', $GLOBALS['phpgw']->accounts->id2name($values['coordinator'],'account_email'), $values['title'], $values['descr']);
+				
 			}
 			return False;
 		}
@@ -828,6 +831,7 @@
 				}
 				return False;
 			}
+			$this->send_notification($p_id, $values['number'], 'update', $GLOBALS['phpgw']->accounts->id2name($values['coordinator'],'account_email'), $values['title'], $values['descr']);
 		}
 
 		function return_value($action,$pro_id)
@@ -1024,6 +1028,15 @@
 		function delete_project($project_id, $subs = False)
 		{
 			$project_id = intval($project_id);
+			$this->db->query("select p_number, coordinator, title, descr from phpgw_p_projects where project_id=$project_id");
+			
+			if ($this->db->next_record()) {
+				$p_number = $this->db->f('p_number');
+				$coord = $this->db->f('coordinator');
+				$title = $this->db->f('title');
+				$descr = $this->db->f('descr');
+				$this->send_notification($project_id, $p_number, 'delete', $GLOBALS['phpgw']->accounts->id2name($coord,'account_email'), $title, $descr);
+			}
 
 			if ($subs)
 			{
@@ -1610,8 +1623,142 @@
 				$items['accounting']	= isset($items['accounting'])?$items['accounting']:'own';
 				$items['activity_bill']	= isset($items['activity_bill'])?$items['activity_bill']:'h';
 				$items['dateprevious']	= isset($items['dateprevious'])?$items['dateprevious']:'no';
+				$items['notifymanagementcmte_new'] = isset($items['notifymanagementcmte_new'])?$items['notifymanagementcmte_new']:'N';
+				$items['notifymanagementcmte_status_change'] = isset($items['notifymanagementcmte_status_change'])?$items['notifymanagementcmte_status_change']:'N';           
+				$items['notifymanagementcmte_delete'] = isset($items['notifymanagementcmte_delete'])?$items['notifymanagementcmte_delete']:'N';
+				$items['notifyprojectadmins_new'] = isset($items['notifyprojectadmins_new'])?$items['notifyprojectadmins_new']:'N';
+				$items['notifyprojectadmins_status_change'] = isset($items['notifyprojectadmins_status_change'])?$items['notifyprojectadmins_status_change']:'N';
+				$items['notifyprojectadmins_delete'] = isset($items['notifyprojectadmins_delete'])?$items['notifyprojectadmins_delete']:'N';
+				$items['notifysalesdept_new'] = isset($items['notifysalesdept_new'])?$items['notifysalesdept_new']:'N';
+				$items['notifysalesdept_status_change'] = isset($items['notifysalesdept_status_change'])?$items['notifysalesdept_status_change']:'N';
+				$items['notifysalesdept_delete'] = isset($items['notifysalesdept_delete'])?$items['notifysalesdept_delete']:'N';
+
 			}
 			return $items;
 		}
+
+		function send_notification($p_id, $p_number, $action, $coordinator_email, $title, $descr)
+		{
+		
+// FIXME: strings, which need to be translated, should go out of here (NDEE 20040811)
+		
+			# Send email(s) about the new project depending on notification settings
+			$recipients[] = $coordinator_email; # coordinator included by default
+			$body = "";
+			
+			if ($action == 'new')
+			{
+				$subject = "New project created: " . $p_number . " " . $title;
+				$body = "A new project has been created on:\n\n" . $p_number . "\n\n" . $title . "\n\n" . $descr;
+				if ($this->siteconfig['notifyprojectadmins_new']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="aa" or type="ag"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifymanagementcmte_new']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="ma"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifysalesdept_new']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="sa"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+			}
+			
+			if ($action == 'update')
+			{
+				$subject = "Project updated: " . $p_number . " " . $title;
+				$body = "A project has been updated on:\n\n" . $p_number . "\n\n" . $title . "\n\n" . $descr;
+				if ($this->siteconfig['notifyprojectadmins_status_change']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="aa" or type="ag"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifymanagementcmte_status_change']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="ma"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifysalesdept_status_change']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="sa"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+			}
+			
+			if ($action == 'delete')
+			{
+				$subject = "Project deleted: " . $p_number . " " . $title;
+				$body = "A project has been deleted on:\n\n" . $p_number . "\n\n" . $title . "\n\n" . $descr;
+				if ($this->siteconfig['notifyprojectadmins_delete']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="aa" or type="ag"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifymanagementcmte_delete']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="ma"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+				if ($this->siteconfig['notifysalesdept_delete']['0'] == 'y')
+				{
+					$this->db->query('select account_id,type from phpgw_p_projectmembers WHERE type="sa"');
+					while($this->db->next_record())
+					{
+						$recipient_ids[] = $this->db->f('account_id');
+					}
+				}
+			}
+			
+			foreach($recipient_ids as $this_id)
+			{
+			  $new_recipient = $GLOBALS['phpgw']->accounts->id2name($this_id,'account_email');
+			  if(eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $new_recipient)) {
+			  	$recipients[] = $new_recipient;
+			  	}
+			}
+			
+ 			$unique_recipients = array_unique($recipients);
+			
+			$to = implode(",", $unique_recipients);
+			$GLOBALS['phpgw']->send = CreateObject('phpgwapi.send');
+			$errors = $GLOBALS['phpgw']->send->msg('email', $to, $subject, $body);
+			if (!$errors) {
+					echo  'Your message could <B>not</B> be sent!<BR>'."\n"
+					. 'Emails: ' . implode(",", $unique_recipients) . "<br>\n"
+					. 'The mail server returned:<BR>'
+					. "err_code: '".$GLOBALS['phpgw']->send->err['code']."';<BR>"
+					. "err_msg: '".htmlspecialchars($GLOBALS['phpgw']->send->err['msg'])."';<BR>\n"
+					. "err_desc: '".$GLOBALS['phpgw']->err['desc']."'.<P>\n";
+					$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+		}
+
 	}
 ?>
