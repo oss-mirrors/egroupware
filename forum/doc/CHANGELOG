@@ -1,0 +1,5 @@
+[0.8.1]
+	- Converted the non-standard date formats over to the db specific format (jengo)
+	- Tables names changed to match phpGroupWare standard prefixes (jengo)
+	- Template conversions started
+	- NOTE: Old history on this app isn't avaiable, only in the CVS comments.
