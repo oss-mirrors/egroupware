@@ -146,27 +146,25 @@
         $members  = $GLOBALS['phpgw']->accounts->member($group_id);
       }
 
-
       // do we need to email the owner of this ticket?
       if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
       {
         // add owner to recipients
-		$members[] = array('account_id' => $GLOBALS['phpgw']->accounts->name2id($GLOBALS['phpgw']->db->f('ticket_owner')), 'account_name' => $GLOBALS['phpgw']->db->f('ticket_owner'));
+		$members[] = array('account_id' => $GLOBALS['phpgw']->db->f('ticket_owner'));
       }
 
       // do we need to email the user who is assigned to this ticket?
       if ($GLOBALS['phpgw']->config->config_data['assignednotification'])
       {
         // add assigned to recipients
-        $members[] = array('account_id' => $t_assigned, 'account_name' => $t_assigned_name);
+        $members[] = array('account_id' => $t_assigned);
       }
-
 
       $toarray = Array();
       $i=0;
       for ($i=0;$i<count($members);$i++)
       {
-        if ($members[$i]['account_name'])
+        if ($members[$i])
         {
           $toarray[] = $GLOBALS['phpgw']->accounts->id2name($members[$i]['account_id'], 'account_email');
         }
