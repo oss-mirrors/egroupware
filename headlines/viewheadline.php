@@ -28,7 +28,6 @@
 	}
 
 	$GLOBALS['phpgw']->common->phpgw_header();
-	echo parse_navbar();
 
 	$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_headlines_sites WHERE con='$con'",__LINE__,__FILE__);
 	$GLOBALS['phpgw']->db->next_record();

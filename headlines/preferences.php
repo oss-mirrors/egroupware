@@ -24,7 +24,6 @@
 	if(!$submit)
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
-		echo parse_navbar();
 
 		$GLOBALS['phpgw']->template->set_file(array('form' => 'preferences.tpl'));
 

@@ -25,7 +25,6 @@
 	else
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
-		echo parse_navbar();
 	}
 	$submit = get_var('submit',Array('POST'));
 

@@ -29,7 +29,6 @@
 	else
 	{
 		$GLOBALS['phpgw']->common->phpgw_header();
-		echo parse_navbar();
 	}
 
 	if(!$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])

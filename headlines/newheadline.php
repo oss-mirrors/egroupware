@@ -93,7 +93,6 @@
 	}
 
 	$GLOBALS['phpgw']->common->phpgw_header();
-	echo parse_navbar();
 
 	// This is done for a reason (jengo)
 	$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
