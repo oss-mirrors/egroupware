@@ -147,6 +147,17 @@ function html_ref($page, $appearance, $hover = '', $anchor = '', $anchor_appeara
 {
   global $db, $SeparateLinkWords;
 
+  if (!is_array($page) && strstr($page,':'))
+  {
+	list($name,$lang) = explode(':',$page);
+	if (strlen($lang) == 2 || strlen($lang) == 5 && $lang[2] == '-')
+	{
+		$page = array(
+			'name' => $name,
+			'lang' => $lang
+		);
+	}
+  }
   $title = get_title($page);
   if (is_array($appearance))
   {
