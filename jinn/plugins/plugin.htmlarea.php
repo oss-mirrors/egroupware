@@ -90,7 +90,9 @@
 			{
 				$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
 			}
-			$input = $GLOBALS['phpgw']->html->htmlarea($field_name, $value,$style);
+
+			$plugins='ContextMenu,UploadImage';
+			$input = $GLOBALS['phpgw']->html->htmlarea($field_name, $value,$style,false,$plugins);
 		
 		return $input;
 	}
