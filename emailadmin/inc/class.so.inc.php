@@ -16,53 +16,62 @@
 		function so()
 		{
 			$this->db		= $GLOBALS['phpgw']->db;
+			include(PHPGW_INCLUDE_ROOT.'/emailadmin/setup/tables_current.inc.php');
+			$this->tables = &$phpgw_baseline;
+			unset($phpgw_baseline);
+			$this->table = &$this->tables['phpgw_emailadmin'];
 		}
 		
-		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
+		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			$fields = '';
-			$values = '';
-			
-			foreach($_smtpSettings as $key => $value)
-			{
-				if($fields != '')
-					$fields .= ',';
-				if($values != '')
-					$values .= ',';
-				$fields .= "$key";
-				$values .= "'$value'";
-			}
-			
-			foreach($_globalSettings as $key => $value)
+			$profileID = intval($_globalSettings['profileID']);
+			$fields = $values = $query = '';
+
+			foreach($_smtpSettings+$_globalSettings+$_imapSettings as $key => $value)
 			{
 				if($key == 'profileID')
 					continue;
+
 				if($fields != '')
+				{
 					$fields .= ',';
-				if($values != '')
 					$values .= ',';
+					$query  .= ',';
+				}
+				switch($this->table['fd'][$key]['type'])
+				{
+					case 'int': case 'auto':
+						$value = intval($value);
+						break;
+					default:
+						$value = $this->db->db_addslashes($value);
+						break;
+				}
 				$fields .= "$key";
 				$values .= "'$value'";
+				$query  .= "$key='$value'";
 			}
-			
-			foreach($_imapSettings as $key => $value)
+			if ($profileID)
 			{
-				if($fields != '')
-					$fields .= ',';
-				if($values != '')
-					$values .= ',';
-				$fields .= "$key";
-				$values .= "'$value'";
+				$query = "update phpgw_emailadmin set $query where profileID=$profileID";
 			}
-			
-			$query = "insert into phpgw_emailadmin ($fields) values ($values)";
-			
+			else
+			{
+				$query = "insert into phpgw_emailadmin ($fields) values ($values)";
+			}
 			$this->db->query($query,__LINE__,__FILE__);
+		}
+
+		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
+		{
+			unset($_globalSettings['profileID']);	// just in case
+
+			$this->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 		}
 
 		function deleteProfile($_profileID)
 		{
-			$query = "delete from phpgw_emailadmin where profileID='$_profileID'";
+			$query = 'DELETE FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
 			$this->db->query($query,__LINE__ , __FILE__);
 		}
 
@@ -72,11 +81,13 @@
 			foreach($_fieldNames as $key => $value)
 			{
 				if(!empty($query))
+				{
 					$query .= ', ';
+				}
 				$query .= $value;
 			}
 			
-			$query = "select $query from phpgw_emailadmin where profileID='$_profileID'";
+			$query = "SELECT $query FROM phpgw_emailadmin WHERE profileID=".intval($_profileID);
 			
 			$this->db->query($query, __LINE__, __FILE__);
 			
@@ -84,7 +95,7 @@
 			{
 				foreach($_fieldNames as $key => $value)
 				{
-					$profileData[$value] = $this->db->f($value);
+					$profileData[$value] = $this->db->f($key);
 				}
 
 				return $profileData;
@@ -95,26 +106,25 @@
 		
 		function getProfileList($_profileID='')
 		{
-			if(is_int(intval($_profileID)) && $_profileID != '')
+			if(intval($_profileID) > 0)
 			{
-				$query = "select profileID,smtpServer,smtpType,imapServer,imapType,description from phpgw_emailadmin where profileID='".intval($_profileID)."'";
+				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description FROM phpgw_emailadmin WHERE profileID='.intval($_profileID);
 			}
 			else
 			{
-				$query = "select profileID,smtpServer,smtpType,imapServer,imapType,description from phpgw_emailadmin";
+				$query = 'SELECT profileID,smtpServer,smtpType,imapServer,imapType,description FROM phpgw_emailadmin';
 			}
-			
 			$this->db->query($query);
-			
+
 			$i=0;
 			while ($this->db->next_record())
 			{
-				$serverList[$i]['profileID'] 		= $this->db->f('profileID');
-				$serverList[$i]['smtpServer']		= $this->db->f('smtpServer');
-				$serverList[$i]['smtpType']		= $this->db->f('smtpType');
-				$serverList[$i]['imapServer']		= $this->db->f('imapServer');
-				$serverList[$i]['imapType']		= $this->db->f('imapType');
-				$serverList[$i]['description']		= $this->db->f('description');
+				$serverList[$i]['profileID']   = $this->db->f(0);
+				$serverList[$i]['smtpServer']  = $this->db->f(1);
+				$serverList[$i]['smtpType']    = $this->db->f(2);
+				$serverList[$i]['imapServer']  = $this->db->f(3);
+				$serverList[$i]['imapType']    = $this->db->f(4);
+				$serverList[$i]['description'] = $this->db->f(5);
 				$i++;
 			}
 			
@@ -258,38 +268,6 @@
 			#print "DN: $accountDN<br>";
 			ldap_mod_replace ($ldap, $accountDN, $newData);
 			#print ldap_error($ldap);
-		}
-
-		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
-		{
-			$query = '';
-			
-			foreach($_smtpSettings as $key => $value)
-			{
-				if($query != '')
-					$query .= ', ';
-				$query .= "$key='$value'";
-			}
-			
-			foreach($_globalSettings as $key => $value)
-			{
-				if($key == 'profileID')
-					continue;
-				if($query != '')
-					$query .= ', ';
-				$query .= "$key='$value'";
-			}
-			
-			foreach($_imapSettings as $key => $value)
-			{
-				if($query != '')
-					$query .= ', ';
-				$query .= "$key='$value'";
-			}
-			
-			$query = "update phpgw_emailadmin set $query where profileID='".$_globalSettings['profileID']."'";
-			
-			$this->db->query($query,__LINE__,__FILE__);
 		}
 	}
 ?>
