@@ -8,7 +8,7 @@
    </tr>
 
    <tr bgcolor="e6e6e6">
-    <td>Enter the location of your mail server:</td>
+    <td>Enter your POP/IMAP mail server hostname or IP address:</td>
     <td><input name="newsettings[mail_server]" value="<?php echo $current_config["mail_server"]; ?>"></td>
    </tr>
 
@@ -38,7 +38,7 @@
    <?php $selected = array(); ?>
 
    <tr bgcolor="e6e6e6">
-    <td>Enter your mail sufix:</td>
+    <td>Enter your default mail domain ( From: user@domain ):</td>
     <td><input name="newsettings[mail_suffix]" value="<?php echo $current_config["mail_suffix"]; ?>"></td>
    </tr>
 
@@ -55,7 +55,7 @@
    <?php $selected = array(); ?>
 
    <tr bgcolor="e6e6e6">
-    <td>Enter your SMTP server hostname:</td>
+    <td>Enter your SMTP server hostname or IP address:</td>
     <td><input name="newsettings[smtp_server]" value="<?php echo $current_config["smtp_server"]; ?>"></td>
    </tr>
 
