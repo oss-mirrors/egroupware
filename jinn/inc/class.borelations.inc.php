@@ -24,14 +24,9 @@
 
 	class borelations extends bojinn
 	{
-
-		//var $bo;
-		//var $so;
-
 		function borelations()
 		{
-			//$this->so = CreateObject('jinn.sojinn');
-			//$this->bo = CreateObject('jinn.bojinn');
+
 		}
 
 		/****************************************************************************\
@@ -57,7 +52,6 @@
 				}
 
 			}
-			//die(var_dump($return_relation));
 			return $return_relation;
 		}
 
@@ -106,7 +100,6 @@
 
 			$allrecords=$this->bo->get_records_2($table,'','','','name',$display_field);
 
-			//die(count($allrecords));
 			foreach ($allrecords as $record)
 			{
 				$related_fields[]=array
@@ -115,19 +108,12 @@
 					'name'=>$record[$display_field]
 				);
 			}
-			//die(var_dump($related_fields));
 			return $related_fields;
 		}
 
 		function get_m2m_options($relation2,$all_or_stored,$object_id)
 		{
-
 			return $this->bo->so->get_m2m_record_values($this->bo->site_id,$object_id,$relation2,$all_or_stored);
-
 		}
-
-
-
 	}
-
 ?>

@@ -4,7 +4,7 @@
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
 	phpGroupWare - http://www.phpgroupware.org
-	
+
 	This file is part of JiNN
 
 	JiNN is free software; you can redistribute it and/or modify it under
@@ -20,7 +20,7 @@
 	You should have received a copy of the GNU General Public License 
 	along with JiNN; if not, write to the Free Software Foundation, Inc.,
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
- */
+	*/
 
 	class uijinn
 	{
@@ -36,7 +36,7 @@
 			'save_object_config'	=> True,
 			'copy_object'			=> True
 		);
-		
+
 		var $app_title='JiNN';
 		var $bo;// = CreateObject('jinn.bojinn');
 		var $template;
@@ -91,17 +91,11 @@
 
 		function index()
 		{
-
 			if (!empty($this->bo->site_object_id) && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
 			{
-
 				$this->save_sessiondata();
-				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.browse_objects'));			// all the same so remove 2
-			//$this->template->set_var('buttons_action',$GLOBALS['phpgw']->link('/index.php?menuaction=jinn.uijinn.browse_objects'));
-			//$this->template->set_var('number_action',$GLOBALS['phpgw']->link('/index.php?menuaction=jinn.uijinn.browse_objects'));
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.browse_objects'));
 				$GLOBALS['phpgw']->common->phpgw_exit();
-
-
 			}
 			else
 			{
@@ -113,30 +107,26 @@
 				$GLOBALS['phpgw']->common->phpgw_header();
 				$this->template->set_file(array('header' => 'header.tpl'));
 
-                                if (!$this->bo->site_id)
-                                {
-                                        $this->message=lang('Select site to moderate');
-                                }
-                                else
-                                {
-                                        $this->message=lang('Select site-object to moderate');
-                                }
+				if (!$this->bo->site_id)
+				{
+					$this->message=lang('Select site to moderate');
+				}
+				else
+				{
+					$this->message=lang('Select site-object to moderate');
+				}
 
-                                $action=lang('Start');
+				$action=lang('Start');
 				$this->template->set_var('title',$this->app_title);
-                                $this->template->set_var('action',$action);
+				$this->template->set_var('action',$action);
 				$this->template->pparse('out','header');
-                //unset($this->site_object_id);
 				$this->debug_info();
-                                $this->message_box();
-                                $this->main_menu();
+				$this->message_box();
+				$this->main_menu();
 				$this->save_sessiondata();
 			}
 		}
 
-
-
-		
 		function header()
 		{
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
@@ -144,21 +134,20 @@
 			unset($GLOBALS['phpgw_info']['flags']['noappheader']);
 			unset($GLOBALS['phpgw_info']['flags']['noappfooter']);
 
-
 			$GLOBALS['phpgw']->common->phpgw_header();
 			$this->template->set_file(array(
 				'header' => 'header.tpl'
 			));
 
-				$action=lang('add object');
+			$action=lang('add object');
 
-         	$this->template->set_var('title',$this->app_title);
-            $this->template->set_var('action',$action);
+			$this->template->set_var('title',$this->app_title);
+			$this->template->set_var('action',$action);
 			$this->template->pparse('out','header');
 		}
-		
 
-		
+
+
 		/****************************************************************************\
 		* 	create form to new objectrecord                                          *
 		\****************************************************************************/
@@ -174,15 +163,14 @@
 			$this->save_sessiondata();
 		}
 
-		
-		
+
+
 		/****************************************************************************\
 		* 	Browse through site_objects                                              *
 		\****************************************************************************/
-		
+
 		function browse_objects()
 		{
-			
 			$this->browse= CreateObject('jinn.uiuserbrowse',$this->bo);
 
 			$this->debug_info();
@@ -192,29 +180,28 @@
 			$this->browse->render_list();
 			$this->save_sessiondata();
 
-
 		}
 
 		/****************************************************************************\
 		* 	Config site_objects                                              *
 		\****************************************************************************/
-		
+
 		function config_objects()
 		{
-			$config = CreateObject('jinn.uiconfig');
+			$config = CreateObject('jinn.uiconfig',$this->bo);
 
 			$this->debug_info();
 			$this->header();
 			$this->main_menu();	
 
 			$config->show_fields();
-			
+
 			$this->save_sessiondata();
 		}
 		/****************************************************************************\
 		* 	Config site_objects                                              *
 		\****************************************************************************/
-		
+
 		function save_object_config()
 		{
 			$config = CreateObject('jinn.uiconfig');
@@ -223,23 +210,20 @@
 			$this->header();
 			$this->main_menu();	
 
-			//$data=$this->bo->make_http_vars_pairs($GLOBALS[HTTP_POST_VARS],'');
 			while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
 			{
-				//echo $key;
 				$columns[]=$key;
 			}
-			
+
 			foreach($columns as $col)
 			{
 
 
 			}
-			
-			
+
+
 			var_dump($columns);
-			//			$config->show_fields();
-			
+
 			$this->save_sessiondata();
 		}
 		/****************************************************************************\
@@ -251,123 +235,120 @@
 			$this->template->set_file(array(
 				'main_menu' => 'main_menu.tpl'));
 
-			// get sites for user and group and make options
-			$sites=$this->bo->get_sites($this->bo->uid);
-			$site_options=$this->bo->site_options($sites);
+				// get sites for user and group and make options
+				$sites=$this->bo->get_sites($this->bo->uid);
+				$site_options=$this->bo->site_options($sites);
 
-			// get object options for site and user
-			if ($this->bo->site_id)
-			{
-				$objects=$this->bo->get_objects($this->bo->site_id, $this->bo->uid);
-				$object_options=$this->bo->object_options($objects);
+				// get object options for site and user
+				if ($this->bo->site_id)
+				{
+					$objects=$this->bo->get_objects($this->bo->site_id, $this->bo->uid);
+					$object_options=$this->bo->object_options($objects);
+				}
+				else
+				{
+					unset($this->bo->site_object_id);
+				}
+
+				// set theme_colors
+				$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+				$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
+				$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
+				$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+
+				// set menu
+				$this->template->set_var('site_objects',$object_options);
+				$this->template->set_var('site_options',$site_options);
+
+				$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.index" name="jinn'));
+				$this->template->set_var('select_site',lang('select site'));
+				$this->template->set_var('select_object',lang('select_object'));
+				$this->template->set_var('go',lang('go'));
+
+				$this->template->pparse('out','main_menu');
+
 			}
-			else
+
+			/****************************************************************************\
+			* insert routine after submission                                            *
+			\****************************************************************************/
+
+			function object_insert()
 			{
-			        unset($this->bo->site_object_id);
+				$status=$this->bo->insert_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
+				if ($status==1)
+				{
+					$this->message='Record met succes toegevoegd';
+				}
+
+				$this->save_sessiondata();
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
 
-			// set theme_colors
-			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
-			$this->template->set_var('th_text',$GLOBALS['phpgw_info']['theme']['th_text']);
-			$this->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
+			/****************************************************************************\
+			* update routine after submission                                            *
+			\****************************************************************************/
 
-			// set menu
-			$this->template->set_var('site_objects',$object_options);
-			$this->template->set_var('site_options',$site_options);
+			function object_update()
+			{
+				$where_condition = $GLOBALS[where_condition];
+				if($GLOBALS[HTTP_POST_VARS][delete])
+				{
+					$this->del_object();
+				}
 
-			$this->template->set_var('main_form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.index" name="jinn'));
+				$status = $this->bo->update_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES],$where_condition);
+				if ($status==1)
+				{
+					$this->message='Record met succes gewijzigd';
+				}
 
-			$this->template->set_var('select_site',lang('select site'));
-			$this->template->set_var('select_object',lang('select_object'));
-			$this->template->set_var('go',lang('go'));
+				$this->save_sessiondata();
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
 
-			$this->template->pparse('out','main_menu');
+			}
+
+			/****************************************************************************\
+			* delete routine after submission                                            *
+			\****************************************************************************/
+
+			function message_box()
+			{
+				echo '<table align=center width="80%"><tr><td>'.$this->message.'</td></tr></table>';
+				unset($this->message);
+			}
+
+
+			function del_object()
+			{
+
+
+				$status = $this->bo->delete_object_data($this->bo->site_object[table_name],$GLOBALS[where_condition]);
+				if ($status==1)
+				{
+					$this->message=lang('Record succesfully deleted');
+				}
+
+				$this->save_sessiondata();
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			function copy_object()
+			{
+				$status = $this->bo->copy_object_data($this->bo->site_object[table_name],$GLOBALS[where_condition]);
+				if ($status==1)
+				{
+					$this->message=lang('Record succesfully copied');
+				}
+
+				$this->save_sessiondata();
+				Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
 
 		}
-
-		/****************************************************************************\
-		* insert routine after submission                                            *
-		\****************************************************************************/
-
-		function object_insert()
-		{
-			$status=$this->bo->insert_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
-			if ($status==1)
-			{
-			        $this->message='Record met succes toegevoegd';
-			}
-
-			$this->save_sessiondata();
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		}
-
-		/****************************************************************************\
-		* update routine after submission                                            *
-		\****************************************************************************/
-
-		function object_update()
-		{
-			$where_condition = $GLOBALS[where_condition];
-			if($GLOBALS[HTTP_POST_VARS][delete])
-			{
-			        $this->del_object();
-			}
-
-			$status = $this->bo->update_object_data($this->bo->site_object[table_name],$GLOBALS[HTTP_POST_VARS],$GLOBALS[HTTP_POST_FILES],$where_condition);
-			if ($status==1)
-			{
-			        $this->message='Record met succes gewijzigd';
-			}
-
-			$this->save_sessiondata();
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-
-		}
-
-		/****************************************************************************\
-		* delete routine after submission                                            *
-		\****************************************************************************/
-
-		function message_box()
-		{
-		        echo '<table align=center width="80%"><tr><td>'.$this->message.'</td></tr></table>';
-			unset($this->message);
-		}
-
-
-		function del_object()
-		{
-			
-			
-			$status = $this->bo->delete_object_data($this->bo->site_object[table_name],$GLOBALS[where_condition]);
-			if ($status==1)
-			{
-			        $this->message=lang('Record succesfully deleted');
-			}
-
-			$this->save_sessiondata();
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		}
-
-		function copy_object()
-		{
-			
-			
-			$status = $this->bo->copy_object_data($this->bo->site_object[table_name],$GLOBALS[where_condition]);
-			if ($status==1)
-			{
-			        $this->message=lang('Record succesfully copied');
-			}
-
-			$this->save_sessiondata();
-			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uijinn.index'));
-			$GLOBALS['phpgw']->common->phpgw_exit();
-		}
-
-
-	}
-?>
+	?>

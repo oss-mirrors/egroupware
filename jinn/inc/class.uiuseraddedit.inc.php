@@ -22,7 +22,6 @@
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
 
-
 	class uiuseraddedit extends uijinn
 	{
 
@@ -51,13 +50,11 @@
 			$where_condition=$GLOBALS[where_condition];
 			if ($where_condition)
 			{
-
 				/* set vars for edit form */
 				$form_action = $GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.object_update');
 				$where_condition_form="<input type=\"hidden\" name=\"where_condition\" value=\"$where_condition\">";
 				$values_object= $this->bo->get_records($this->bo->site_object[table_name],$where_condition,'','','name');
 				$add_edit_button=lang('edit');
-
 			}
 			else
 			{
@@ -113,90 +110,11 @@
 					$record_identifier=$value;
 				}
 
-				// deze velden handelen plaatjes, hier moet meer mee gebeuren incl uploaden
-				// move to standard plugins
-				/*	elseif ($fieldproperties[name]=='image_path'||$fieldproperties[name]=='img_path')
-				{
-					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'text');
-
-				}
-				*/
-				/*				elseif ($fieldproperties[name]=='thumb_path')
-				{
-					unset($input);
-					if($value)
-					{
-						$input='<input type="hidden" name="thumb_path_org" value="'.$value.'">';
-
-						$values=explode(';',$value);
-						if (is_array($values))
-						{
-
-							$i=0;
-							foreach($values as $img_path)
-							{
-								$i++;
-								$input.=$i.'.<b> '.$img_path.'</b> <input type="checkbox" value="'.$img_path.'" name="TMBDEL'.$i.'">'.lang('remove').'<br>';
-							}
-						}
-						else
-						{
-							$input=$img_path.'<input type="checkbox" value="'.$img_path.'" name="TMBDEL'.$img_path.'"> '.lang('remove').'<br>';
-						}
-
-					}
-					$input.='<input type="hidden" name="'.$fieldproperties[name].'" value="True">'.lang('automatic');
-
-				}
-				*/
-				/*************************************
-				* start attachments
-				*************************************/
-				/*
-				elseif ($fieldproperties[name]=='attachment_path')
-				{
-					unset($input);
-					if($value)
-					{
-						$input='<input type="hidden" name="attachment_path_org" value="'.$value.'">';
-
-						$value=explode(';',$value);
-						if (is_array($value))
-						{
-
-							$i=0;
-							foreach($value as $attachment_path)
-							{
-								$i++;
-								$input.=$i.'.<b> <a href="'.$this->bo->site_object[image_dir_url].'/'
-								.$attachment_path.'" >'.$attachment_path
-								.'<a href="'.$this->bo->site_object[image_dir_url].'/'.$attachment_path
-								.'"></a> </b> <input type="checkbox" value="'.$attachment_path
-								.'" name="ATTDEL'.$i.'">'.lang('remove').' <br>';
-							}
-						}
-						else
-						{
-							$input=$attachment_path.'<input type="checkbox" value="'.$attachment_path.'" name="ATTDEL'.$attachment_path.'"> '.lang('remove').'<br>';
-						}
-
-
-
-					}
-					$input.=lang('add attachent').' <input type="file" name="'.$fieldproperties[name].'">';
-
-				}
-				*/
-				/*************************************
-				* end attachments
-				*************************************/
-
 				elseif ($fieldproperties[type]=='string')
 				{
 					$input=$this->bo->plug->get_plugin_fi($input_name,$value,'string');
 				}
 
-				// int int int int int int int int int
 				elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real')
 				{
 					/* If this integer has a relation get that options */
@@ -215,7 +133,6 @@
 					}
 				}
 
-				// timestamp timestamp timestamp timestamp timestamp
 				elseif ($fieldproperties[type]=='timestamp')
 				{
 					if ($value)
@@ -253,7 +170,6 @@
 					$this->template->pparse('out','object_field');
 				}
 			}
-
 
 			/***********************************************
 			* MANY WITH MANY RELATION SECTION OF FORM      *

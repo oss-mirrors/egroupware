@@ -87,7 +87,6 @@
 				$input_length=$fieldproperties[len];
 				$value=$values_object[0][$fieldproperties[name]];
 
-
 				if ($input_length>40)
 				{
 					$input_length=40;
@@ -126,7 +125,6 @@
 					{
 						die('Something went wrong, contact the uberadministrator');
 					}
-
 				}
 
 				elseif ($fieldproperties[name]=='table_name')
@@ -400,7 +398,6 @@
 
 									}
 								}
-								//var_dump($plugin_settings);
 								$input.='<tr><td>';
 								$input.=$field['name'] . '</td><td>';
 
@@ -431,9 +428,6 @@
 							$input.='</table>';
 
 						}
-						//else
-						//{
-						//}
 					}
 					else 
 					{
@@ -484,9 +478,7 @@
 							
 				</td>
 
-				<td><form method=post action="index.php?menuaction=jinn.uiadmin.export_site&where_condition=site_id='.
-				$values_object[0][site_id].'"><input type=submit value="'.
-				lang('export this site').'"></form></td>';
+				<td><input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.export_site&where_condition=site_id='.$values_object[0][site_id]).'\'" value="'.lang('export this site').'"></td>';
 
 			}
 			$this->template->set_var('add_edit_button',$add_edit_button);

@@ -24,41 +24,17 @@
 
 
 
-	class uiconfig
+	class uiconfig extends uijinn
 	{
-		var $public_functions = Array
-		(
-			'index' => True,
-			'add_edit_object' => True,
-			'object_update' => True,
-			'object_insert' => True,
-			'del_object' => True,
-			'browse_objects' => True
-		);
-
-		var $app_title='jinn';
-		var $bo;
-		var $template;
-		//var $plugins;
-		var $relations;
-		var $debug=False;
-
-		function uiconfig()
+		function uiconfig($bo)
 		{
-
-			$this->bo = CreateObject('jinn.bojinn');
-			//$this->plugins = CreateObject('jinn.boplugins.inc.php');
-			$this->relations = CreateObject('jinn.borelations.inc.php');
+			$this->bo = $bo; 
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 
 		function show_fields()
 		{
-
-			//echo 'test';
-
 			$this->template->set_file(array(
-				//				'browse_menu' => 'browse_menu.tpl',
 				'config' => 'config_browse_view.tpl'
 			));
 
@@ -66,8 +42,6 @@
 
 			if (count($columns)>0)
 			{
-
-
 				// get the prefered columns, if they exist
 				$prefs=$this->bo->read_preferences('show_fields'); //False; // function not implemented yet
 				// "1:id,name,place|2:id,name,city" // example
@@ -76,10 +50,6 @@
 				foreach ($prefs_objects as $prefs_obj)
 				{
 					list($object,$fields)=explode(':',$prefs_obj);
-
-
-
-
 
 					// which/how many column to show, all, the prefered, or the default thirst 4
 					if($pref_columns)
@@ -114,9 +84,9 @@
 
 				$button_save='<td><input type="submit" name="action" value="'.lang('save').'"></td>';
 
-				$button_cancel='<td><form name=form2 action="'.
+				$button_cancel='<td><input type="button" onClick="location=\''.
 				$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uijinn.browse_objects') .
-				'" method="post"><input type="submit" name="action" value="'.lang('cancel').'"></form></td>';
+				'\'" name="action" value="'.lang('cancel').'"></td>';
 
 				$this->template->set_var('form_action',$form_action);
 				$this->template->set_var('button_save',$button_save);

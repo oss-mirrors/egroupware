@@ -25,40 +25,17 @@
 
 	class uiuserbrowse extends uijinn
 	{
-
-		/*		var $public_functions = Array
-		(
-			'index' => True,
-			'add_edit_object' => True,
-			'object_update' => True,
-			'object_insert' => True,
-			'del_object' => True,
-			'browse_objects' => True
-		);
-		*/
-
-		//var $app_title='jinn';
-		//var $bo;
-		//var $template;
-		//var $debug=False;	
-
-
 		function uiuserbrowse($bo)
 		{
 
 			$this->bo=$bo;
-			//var_dump(get_class_vars(uijinn));
-			//die(var_dump($this->bo));
 
 			$GLOBALS['phpgw']->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			//	$this->bo = CreateObject('jinn.bojinn');
 			$this->template = $GLOBALS['phpgw']->template;
 		}
 
 		function render_list()
 		{
-
-			//echo 'test';
 			$this->template->set_file(array(
 				'browse_menu' => 'browse_menu.tpl',
 				'browse' => 'browse.tpl'

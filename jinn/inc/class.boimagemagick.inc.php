@@ -39,7 +39,6 @@
 
 		function boimagemagick() 
 		{
-			//die('hallo?');
 			$this->get_config();
 			$this->imagemagickdir=$this->current_config['imagemagickdir'];
 		}
