@@ -1,39 +1,39 @@
-add forum	forum	zh	Ìí¼ÓÂÛÌ³
-all forums, user posts, and topics in this category will be lost!	forum	zh	¸ÃÀà±ğÏÂµÄËùÓĞÂÛÌ³¡¢Ö÷ÌâºÍÎÄÕÂ½«¶ªÊ§£¡
-all user posts and topics will be lost!	forum	zh	ËùÓĞÖ÷ÌâºÍÎÄÕÂ½«¶ªÊ§£¡
-all user posts, and topics in this forum will be lost!	forum	zh	¸ÃÂÛÌ³ÄÚËùÓĞÖ÷ÌâºÍÎÄÕÂ½«¶ªÊ§!
-are you sure you want to delete this category?	forum	zh	È·¶¨ÒªÉ¾³ı¸ÃÀà±ğ£¿
-are you sure you want to delete this forum?	forum	zh	È·¶¨ÒªÉ¾³ı¸ÃÂÛÌ³£¿
-belongs to category	forum	zh	ÊôÓÚ¸ÃÀà±ğ
-category description	forum	zh	Àà±ğËµÃ÷
-category name	forum	zh	Àà±ğÃû³Æ
-collapse threads	forum	zh	¹Ø±ÕÏßË÷
-collapsed	forum	zh	ÒÑ¹Ø±Õ
-create new category	forum	zh	ĞÂ½¨Àà±ğ
-current categories and sub forums	forum	zh	µ±Ç°Àà±ğ¼°ÆäËùÓĞ×ÓÂÛÌ³
-edit forum	forum	zh	±à¼­ÂÛÌ³
-email replies to this thread, to the address above	forum	zh	ÒÔÓÊ¼ş·½Ê½»Ø¸´ÏßË÷ÖÁÉÏÊöµØÖ·
-forum	common	zh	ÂÛÌ³
-forum administration	admin	zh	ÂÛÌ³¹ÜÀí
-forum description	forum	zh	ÂÛÌ³ËµÃ÷
-forum name	forum	zh	ÂÛÌ³Ãû³Æ
-forums	common	zh	ÂÛÌ³
-latest reply	forum	zh	×îĞÂ»Ø¸´
-new category	forum	zh	ĞÂ½¨Àà±ğ
-new forum	forum	zh	ĞÂ½¨ÂÛÌ³
-new topic	forum	zh	·¢±íĞÂÖ÷Ìâ
-no category	forum	zh	ÎŞÀà±ğ
-post	forum	zh	·¢±íÎÄÕÂ
-post a message to this thread	forum	zh	·¢±íÏûÏ¢ÖÁ¸ÃÏßË÷
-replies	forum	zh	»Ø¸´
-return to admin	forum	zh	·µ»ØÂÛÌ³¹ÜÀí
-return to forums	forum	zh	·µ»ØÂÛÌ³
-sub category	forum	zh	×ÓÀà±ğ
-there are no forums in this category	forum	zh	¸ÃÀà±ğÄ¿Ç°Ã»ÓĞÂÛÌ³
-threaded	forum	zh	ÏßË÷
-topic	forum	zh	Ö÷Ìâ
-update category	forum	zh	¸üĞÂÀà±ğ
-update forum	forum	zh	¸üĞÂÂÛÌ³
-view threads	forum	zh	²é¿´ÏßË÷
-your email	forum	zh	ÄúµÄEMail
-your name	forum	zh	ÄúµÄÃû×Ö
+ï»¿add forum	forum	zh	æ·»åŠ è®ºå›
+all forums, user posts, and topics in this category will be lost!	forum	zh	è¯¥ç±»åˆ«ä¸‹çš„æ‰€æœ‰è®ºå›ã€ä¸»é¢˜å’Œæ–‡ç« å°†ä¸¢å¤±ï¼
+all user posts and topics will be lost!	forum	zh	æ‰€æœ‰ä¸»é¢˜å’Œæ–‡ç« å°†ä¸¢å¤±ï¼
+all user posts, and topics in this forum will be lost!	forum	zh	è¯¥è®ºå›å†…æ‰€æœ‰ä¸»é¢˜å’Œæ–‡ç« å°†ä¸¢å¤±!
+are you sure you want to delete this category?	forum	zh	ç¡®å®šè¦åˆ é™¤è¯¥ç±»åˆ«ï¼Ÿ
+are you sure you want to delete this forum?	forum	zh	ç¡®å®šè¦åˆ é™¤è¯¥è®ºå›ï¼Ÿ
+belongs to category	forum	zh	å±äºè¯¥ç±»åˆ«
+category description	forum	zh	ç±»åˆ«è¯´æ˜
+category name	forum	zh	ç±»åˆ«åç§°
+collapse threads	forum	zh	å…³é—­çº¿ç´¢
+collapsed	forum	zh	å·²å…³é—­
+create new category	forum	zh	æ–°å»ºç±»åˆ«
+current categories and sub forums	forum	zh	å½“å‰ç±»åˆ«åŠå…¶æ‰€æœ‰å­è®ºå›
+edit forum	forum	zh	ç¼–è¾‘è®ºå›
+email replies to this thread, to the address above	forum	zh	ä»¥é‚®ä»¶æ–¹å¼å›å¤çº¿ç´¢è‡³ä¸Šè¿°åœ°å€
+forum	common	zh	è®ºå›
+forum administration	admin	zh	è®ºå›ç®¡ç†
+forum description	forum	zh	è®ºå›è¯´æ˜
+forum name	forum	zh	è®ºå›åç§°
+forums	common	zh	è®ºå›
+latest reply	forum	zh	æœ€æ–°å›å¤
+new category	forum	zh	æ–°å»ºç±»åˆ«
+new forum	forum	zh	æ–°å»ºè®ºå›
+new topic	forum	zh	å‘è¡¨æ–°ä¸»é¢˜
+no category	forum	zh	æ— ç±»åˆ«
+post	forum	zh	å‘è¡¨æ–‡ç« 
+post a message to this thread	forum	zh	å‘è¡¨æ¶ˆæ¯è‡³è¯¥çº¿ç´¢
+replies	forum	zh	å›å¤
+return to admin	forum	zh	è¿”å›è®ºå›ç®¡ç†
+return to forums	forum	zh	è¿”å›è®ºå›
+sub category	forum	zh	å­ç±»åˆ«
+there are no forums in this category	forum	zh	è¯¥ç±»åˆ«ç›®å‰æ²¡æœ‰è®ºå›
+threaded	forum	zh	çº¿ç´¢
+topic	forum	zh	ä¸»é¢˜
+update category	forum	zh	æ›´æ–°ç±»åˆ«
+update forum	forum	zh	æ›´æ–°è®ºå›
+view threads	forum	zh	æŸ¥çœ‹çº¿ç´¢
+your email	forum	zh	æ‚¨çš„EMail
+your name	forum	zh	æ‚¨çš„åå­—

@@ -1,145 +1,145 @@
-%1 messages have been deleted	email	zh	ÒÑÉ¾³ı%1·âÓÊ¼ş
-1 message has been deleted	email	zh	ÒÑÉ¾³ı1·âÓÊ¼ş
-1 message has been moved to	email	zh	ÒÑ½«1·âÓÊ¼şÒÆÖÁ
-<b>*apply*</b> this filter	email	zh	Ó¦ÓÃ¸Ã¹ıÂËÆ÷
-<b>apply all</b> filters	email	zh	Ó¦ÓÃËùÓĞ¹ıÂËÆ÷
-a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zh	a scrips tag block of code, javascript or otherwise, is in an inline html message. Not necessarily bad, but user may want to know. This is SCRIPT ... code ... SCRIPT blocks, not the "OnMouseOver"  stuff.
-account	email	zh	ÕÊ»§
-account name	email	zh	ÕÊ»§Ãû
-account user name	email	zh	ÕÊ»§ÓÃ»§Ãû
-accounts	email	zh	ÕÊ»§
-accounts:	email	zh	ÕÊ»§:
-add to address book	email	zh	¼ÓÈëÍ¨Ñ¶Â¼
-add to addressbook	email	zh	¼ÓÈëÍ¨Ñ¶Â¼
-address book	email	zh	Í¨Ñ¶Â¼
-after	email	zh	Ö®ºó
-all messages	email	zh	ËùÓĞÓÊ¼ş
-and	email	zh	¼°
-and stop filtering	email	zh	²¢Í£Ö¹¹ıÂË
-answered	email	zh	ÒÑ»Ø¸´
-apply	email	zh	Ó¦ÓÃ
-apply filters report:	email	zh	¹ıÂËÆ÷Ó¦ÓÃ±¨¸æ:
-apr	email	zh	ËÄÔÂ
+ï»¿%1 messages have been deleted	email	zh	å·²åˆ é™¤%1å°é‚®ä»¶
+1 message has been deleted	email	zh	å·²åˆ é™¤1å°é‚®ä»¶
+1 message has been moved to	email	zh	å·²å°†1å°é‚®ä»¶ç§»è‡³
+<b>*apply*</b> this filter	email	zh	åº”ç”¨è¯¥è¿‡æ»¤å™¨
+<b>apply all</b> filters	email	zh	åº”ç”¨æ‰€æœ‰è¿‡æ»¤å™¨
+a scrips tag block of code, javascript or otherwise, is in an inline html message. not necessarily bad, but user may want to know. this is script ... code ... script blocks, not the "onmouseover"  stuff.	email	zh	åœ¨ä¸€æ®µHTMLä»£ç ä¸­æœ‰ä¸€æ®µå®¢æˆ·ç«¯è„šæœ¬ä»£ç ï¼Œå¯èƒ½æ˜¯javascriptæˆ–VBScriptï¼Œè¿™å¯èƒ½ä¼šæœ‰å±é™©ã€‚è¯·æ³¨æ„è¿™æ˜¯ä¸€æ®µå®Œæ•´çš„è„šæœ¬ä»£ç ï¼Œä¸åªæ˜¯ä¸€ç‚¹é¼ æ ‡ç‰¹æ•ˆï¼Œè¯·ä¸è¦å¤§æ„ã€‚
+account	email	zh	å¸æˆ·
+account name	email	zh	å¸æˆ·å
+account user name	email	zh	å¸æˆ·ç”¨æˆ·å
+accounts	email	zh	å¸æˆ·
+accounts:	email	zh	å¸æˆ·:
+add to address book	email	zh	åŠ å…¥é€šè®¯å½•
+add to addressbook	email	zh	åŠ å…¥é€šè®¯å½•
+address book	email	zh	é€šè®¯å½•
+after	email	zh	ä¹‹å
+all messages	email	zh	æ‰€æœ‰é‚®ä»¶
+and	email	zh	åŠ
+and stop filtering	email	zh	å¹¶åœæ­¢è¿‡æ»¤
+answered	email	zh	å·²å›å¤
+apply	email	zh	åº”ç”¨
+apply filters report:	email	zh	è¿‡æ»¤å™¨åº”ç”¨æŠ¥å‘Š:
+apr	email	zh	å››æœˆ
 aqua fusion	email	zh	Aqua Fusion
-arrival date	email	zh	µ½´ïÈÕÆÚ
-as	email	zh	×÷Îª
-attach file	email	zh	¸½¼ş
-attach signature	email	zh	¸½ÉÏÇ©Ãû
-attachment	email	zh	¸½¼ş
-aug	email	zh	°ËÔÂ
-bcc	email	zh	°µËÍ
-bcc address	email	zh	°µËÍµØÖ·
-before	email	zh	Ö®Ç°
-big	email	zh	´ó
-bigger	email	zh	¸ü´ó
-biggest	email	zh	×î´ó
-body	email	zh	ÕıÎÄ
-both	email	zh	¶¼
-button type	email	zh	°´Å¥ÀàĞÍ
-cache server data whenever possible	email	zh	¿ÉÄÜµÄ»°£¬»º´æ·şÎñÆ÷Êı¾İ
-cc	email	zh	³­ËÍ
-cc address	email	zh	³­ËÍµØÖ·
-change font size in your e-mail pages	email	zh	¸Ä±äE-MailÒ³ÃæµÄ×ÖÌå´óĞ¡
-check flags for type of mails	email	zh	¼ì²éÓÊ¼şÀàĞÍ±ê¼Ç
-choose for rename	email	zh	Choose for rename
-choose to rename	email	zh	choose for rename
-click here for more info in a new window	email	zh	µã»÷´Ë´¦£¬ÔÚĞÂ´°¿ÚÖĞÏÔÊ¾¸ü¶àÌáÊ¾
-click here to continue	email	zh	µã»÷´Ë´¦¼ÌĞø
-click here to edit the settings for this email account.	email	zh	Çëµã»÷´Ë´¦±à¼­¸ÃÓÊ¼şÕÊ»§ÅäÖÃ¡£
-click here to return to your home page.	email	zh	µã»÷´Ë´¦·µ»ØÖ÷Ò³Ãæ¡£
-company	email	zh	¹«Ë¾
-compose	email	zh	×«Ğ´
-compose message	email	zh	×«Ğ´ÓÊ¼ş
-compose new	common	zh	×«Ğ´ĞÂÓÊ¼ş
-contains	email	zh	°üº¬
-could not open this mailbox	email	zh	ÎŞ·¨´ò¿ª¸ÃÓÊÏä
-create (expert)	email	zh	´´½¨(×¨¼ÒÄ£Ê½)
-create a folder	email	zh	´´½¨ÓÊ¼ş¼Ğ
-current attachments (%1)	email	zh	µ±Ç°¸½¼ş(%1¸ö)
-custom e-mail preferences	email	zh	×Ô¶¨ÒåE-Mail¸öĞÔ»¯ÅäÖÃ
-custom e-mail settings	email	zh	×Ô¶¨ÒåE-MailÅäÖÃ
-debugging page	email	zh	µ÷ÊÔÒ³Ãæ
-dec	email	zh	Ê®¶şÔÂ
-default sorting order	email	zh	Ä¬ÈÏÅÅÁĞ´ÎĞò
-default:	common	zh	Ä¬ÈÏ:
-delete (expert)	email	zh	É¾³ı(×¨¼ÒÄ£Ê½)
-delete a folder	email	zh	É¾³ıÓÊ¼ş¼Ğ
-delete account	common	zh	É¾³ıÕÊ»§
-deleted	email	zh	ÒÑÉ¾³ı
-deleted messages (trash) folder	email	zh	ÒÑÉ¾ÓÊ¼ş(»ØÊÕÕ¾)
-deleted messages folder name	email	zh	»ØÊÕÕ¾Ãû³Æ
-deleted messages go to trash	email	zh	ÒÑÉ¾ÓÊ¼ş·ÅÈë»ØÊÕÕ¾
-deleted messages saved to folder:	email	zh	ÒÑÉ¾ÓÊ¼ş·ÅÈëÓÊ¼ş¼Ğ:
-discard	email	zh	¶ªÆú
-does not contain	email	zh	²»°üº¬
-draft	email	zh	²İ¸å
-e-mail extra account	email	zh	ÌØÊâE-MailÕÊ»§
-e-mail extra accounts	email	zh	ÌØÊâE-MailÕÊ»§
-e-mail extra accounts list	email	zh	ÌØÊâE-MailÕÊ»§ÁĞ±í
-e-mail filters	common	zh	E-Mail¹ıÂËÆ÷
-e-mail folders	common	zh	E-MailÓÊ¼ş¼Ğ
-e-mail inbox filters list	email	zh	E-MailÊÕ¼şÏä¹ıÂËÆ÷ÁĞ±í
-e-mail preferences	common	zh	E-Mail¸öĞÔ»¯ÅäÖÃ
+arrival date	email	zh	åˆ°è¾¾æ—¥æœŸ
+as	email	zh	ä½œä¸º
+attach file	email	zh	é™„ä»¶
+attach signature	email	zh	é™„ä¸Šç­¾å
+attachment	email	zh	é™„ä»¶
+aug	email	zh	å…«æœˆ
+bcc	email	zh	æš—é€
+bcc address	email	zh	æš—é€åœ°å€
+before	email	zh	ä¹‹å‰
+big	email	zh	å¤§
+bigger	email	zh	æ›´å¤§
+biggest	email	zh	æœ€å¤§
+body	email	zh	æ­£æ–‡
+both	email	zh	éƒ½
+button type	email	zh	æŒ‰é’®ç±»å‹
+cache server data whenever possible	email	zh	å¯èƒ½çš„è¯ï¼Œç¼“å­˜æœåŠ¡å™¨æ•°æ®
+cc	email	zh	æŠ„é€
+cc address	email	zh	æŠ„é€åœ°å€
+change font size in your e-mail pages	email	zh	æ”¹å˜E-Mailé¡µé¢çš„å­—ä½“å¤§å°
+check flags for type of mails	email	zh	æ£€æŸ¥é‚®ä»¶ç±»å‹æ ‡è®°
+choose for rename	email	zh	æ”¹å
+choose to rename	email	zh	æ”¹å
+click here for more info in a new window	email	zh	ç‚¹å‡»æ­¤å¤„ï¼Œåœ¨æ–°çª—å£ä¸­æ˜¾ç¤ºæ›´å¤šæç¤º
+click here to continue	email	zh	ç‚¹å‡»æ­¤å¤„ç»§ç»­
+click here to edit the settings for this email account.	email	zh	è¯·ç‚¹å‡»æ­¤å¤„ç¼–è¾‘è¯¥é‚®ä»¶å¸æˆ·é…ç½®ã€‚
+click here to return to your home page.	email	zh	ç‚¹å‡»æ­¤å¤„è¿”å›ä¸»é¡µé¢ã€‚
+company	email	zh	å…¬å¸
+compose	email	zh	æ’°å†™
+compose message	email	zh	æ’°å†™é‚®ä»¶
+compose new	common	zh	æ’°å†™æ–°é‚®ä»¶
+contains	email	zh	åŒ…å«
+could not open this mailbox	email	zh	æ— æ³•æ‰“å¼€è¯¥é‚®ç®±
+create (expert)	email	zh	åˆ›å»º(ä¸“å®¶æ¨¡å¼)
+create a folder	email	zh	åˆ›å»ºé‚®ä»¶å¤¹
+current attachments (%1)	email	zh	å½“å‰é™„ä»¶(%1ä¸ª)
+custom e-mail preferences	email	zh	è‡ªå®šä¹‰E-Mailä¸ªæ€§åŒ–é…ç½®
+custom e-mail settings	email	zh	è‡ªå®šä¹‰E-Mailé…ç½®
+debugging page	email	zh	è°ƒè¯•é¡µé¢
+dec	email	zh	åäºŒæœˆ
+default sorting order	email	zh	é»˜è®¤æ’åˆ—æ¬¡åº
+default:	common	zh	é»˜è®¤:
+delete (expert)	email	zh	åˆ é™¤(ä¸“å®¶æ¨¡å¼)
+delete a folder	email	zh	åˆ é™¤é‚®ä»¶å¤¹
+delete account	common	zh	åˆ é™¤å¸æˆ·
+deleted	email	zh	å·²åˆ é™¤
+deleted messages (trash) folder	email	zh	å·²åˆ é‚®ä»¶(å›æ”¶ç«™)
+deleted messages folder name	email	zh	å›æ”¶ç«™åç§°
+deleted messages go to trash	email	zh	å·²åˆ é‚®ä»¶æ”¾å…¥å›æ”¶ç«™
+deleted messages saved to folder:	email	zh	å·²åˆ é‚®ä»¶æ”¾å…¥é‚®ä»¶å¤¹:
+discard	email	zh	ä¸¢å¼ƒ
+does not contain	email	zh	ä¸åŒ…å«
+draft	email	zh	è‰ç¨¿
+e-mail extra account	email	zh	ç‰¹æ®ŠE-Mailå¸æˆ·
+e-mail extra accounts	email	zh	ç‰¹æ®ŠE-Mailå¸æˆ·
+e-mail extra accounts list	email	zh	ç‰¹æ®ŠE-Mailå¸æˆ·åˆ—è¡¨
+e-mail filters	common	zh	E-Mailè¿‡æ»¤å™¨
+e-mail folders	common	zh	E-Mailé‚®ä»¶å¤¹
+e-mail inbox filters list	email	zh	E-Mailæ”¶ä»¶ç®±è¿‡æ»¤å™¨åˆ—è¡¨
+e-mail preferences	common	zh	E-Mailä¸ªæ€§åŒ–é…ç½®
 each user has a summary page which can display a variety of information. this option will show a small list of email messages in the inbox of the users default email account on the users summary home page.	email	zh	Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account on the users summary home page.
-edit filters	email	zh	±à¼­¹ıÂËÆ÷
-email account name	email	zh	EmailÕÊ»§Ãû
-email address	email	zh	E-MailµØÖ·
-email date	email	zh	EmailÈÕÆÚ
-email filters	email	zh	Email¹ıÂËÆ÷
-email password	email	zh	E-MailÃÜÂë
-email preferences	email	zh	Email¸öĞÔ»¯ÅäÖÃ
-email signature	email	zh	E-MailÇ©Ãû
-email type	common	zh	E-MailÀàĞÍ
-enable this email account	common	zh	ÆôÓÃ¸ÃEMailÕÊ»§
-enable utf-7 encoded folder names	email	zh	ÓÊ¼ş¼ĞÃû³ÆÊ¹ÓÃUTF-7±àÂë
-enter the search string in the text boxes	email	zh	ÔÚÎÄ±¾¿òÖĞÊäÈë²éÕÒ×Ö·û´®
-enter your default mail domain ( from: user@domain )	admin	zh	ÊäÈëÄ¬ÈÏÓÊ¼şÓòÃû(À´×Ô: ÓÃ»§Ãû@ÓòÃû )
-enter your pop	admin	zh	ÊäÈëPOP·şÎñÆ÷
-enter your smtp server hostname or ip address	admin	zh	ÊäÈëSMTP·şÎñÆ÷µÄÖ÷»úÃû»òIPµØÖ·
-enter your smtp server port	admin	zh	ÊäÈëSMTP·şÎñÆ÷µÄ¶Ë¿ÚºÅ
-error moving messages to	email	zh	ÒÆÓÊ¼şÖÁ¸ÃÓÊ¼ş¼ĞÊ±³ö´í:
-error text not provided	email	zh	¸Ã´íÎóÎŞÏêÏ¸ĞÅÏ¢
-error: unknown message data	email	zh	´íÎó: Î´ÖªµÄÓÊ¼şÊı¾İ
-evolution style	email	zh	Ñİ»¯·ç¸ñ
-extra accounts	email	zh	ÌØÊâÕÊ»§
-extra e-mail account	common	zh	ÌØÊâE-MailÕÊ»§
-extra e-mail accounts	common	zh	ÌØÊâE-MailÕÊ»§
-feb	email	zh	¶şÔÂ
-fewer actions	email	zh	½ÏÉÙ²Ù×÷
-fewer choices	email	zh	½ÏÉÙÑ¡Ïî
-file	email	zh	ÎÄ¼ş
-file attachment	email	zh	¸½¼ş
+edit filters	email	zh	ç¼–è¾‘è¿‡æ»¤å™¨
+email account name	email	zh	Emailå¸æˆ·å
+email address	email	zh	E-Mailåœ°å€
+email date	email	zh	Emailæ—¥æœŸ
+email filters	email	zh	Emailè¿‡æ»¤å™¨
+email password	email	zh	E-Mailå¯†ç 
+email preferences	email	zh	Emailä¸ªæ€§åŒ–é…ç½®
+email signature	email	zh	E-Mailç­¾å
+email type	common	zh	E-Mailç±»å‹
+enable this email account	common	zh	å¯ç”¨è¯¥EMailå¸æˆ·
+enable utf-7 encoded folder names	email	zh	é‚®ä»¶å¤¹åç§°ä½¿ç”¨UTF-7ç¼–ç 
+enter the search string in the text boxes	email	zh	åœ¨æ–‡æœ¬æ¡†ä¸­è¾“å…¥æŸ¥æ‰¾å­—ç¬¦ä¸²
+enter your default mail domain ( from: user@domain )	admin	zh	è¾“å…¥é»˜è®¤é‚®ä»¶åŸŸåï¼ˆå°±æ˜¯æ‚¨çš„é‚®ä»¶åœ°å€ä¸­"@"ç¬¦å·åé¢çš„å†…å®¹ï¼‰
+enter your pop	admin	zh	è¾“å…¥POPæœåŠ¡å™¨
+enter your smtp server hostname or ip address	admin	zh	è¾“å…¥SMTPæœåŠ¡å™¨çš„ä¸»æœºåæˆ–IPåœ°å€
+enter your smtp server port	admin	zh	è¾“å…¥SMTPæœåŠ¡å™¨çš„ç«¯å£å·
+error moving messages to	email	zh	ç§»é‚®ä»¶è‡³è¯¥é‚®ä»¶å¤¹æ—¶å‡ºé”™:
+error text not provided	email	zh	è¯¥é”™è¯¯æ— è¯¦ç»†ä¿¡æ¯
+error: unknown message data	email	zh	é”™è¯¯: æœªçŸ¥çš„é‚®ä»¶æ•°æ®
+evolution style	email	zh	æ¼”åŒ–é£æ ¼
+extra accounts	email	zh	ç‰¹æ®Šå¸æˆ·
+extra e-mail account	common	zh	ç‰¹æ®ŠE-Mailå¸æˆ·
+extra e-mail accounts	common	zh	ç‰¹æ®ŠE-Mailå¸æˆ·
+feb	email	zh	äºŒæœˆ
+fewer actions	email	zh	è¾ƒå°‘æ“ä½œ
+fewer choices	email	zh	è¾ƒå°‘é€‰é¡¹
+file	email	zh	æ–‡ä»¶
+file attachment	email	zh	é™„ä»¶
 file into	email	zh	File Into
-fill in as much as you can	email	zh	¾¡¿ÉÄÜÌîĞ´
-filter [number] and name	email	zh	¹ıÂËÆ÷±àºÅºÍÃû³Æ
-filter inbox for accounts	email	zh	¹ıÂËÊÕ¼şÏä
-filter name	email	zh	¹ıÂËÆ÷Ãû
-filter name:	email	zh	¹ıÂËÆ÷Ãû:
-filter number	email	zh	Filter Number
-filters	email	zh	¹ıÂËÆ÷
-filters list	email	zh	¹ıÂËÆ÷ÁĞ±í
-flag as important	email	zh	ÒÑ±ê¼ÇÎªÖØÒª
-flagged	email	zh	ÒÑ±ê¼Ç
-folder	email	zh	ÓÊ¼ş¼Ğ
-folder maintenance	email	zh	ÓÊ¼ş¼Ğ¹ÜÀí
-folder name	email	zh	ÓÊ¼ş¼ĞÃû
-folder size	email	zh	ÓÊ¼ş¼Ğ´óĞ¡
-folders	email	zh	ÓÊ¼ş¼Ğ
+fill in as much as you can	email	zh	å°½å¯èƒ½å¡«å†™
+filter [number] and name	email	zh	è¿‡æ»¤å™¨ç¼–å·å’Œåç§°
+filter inbox for accounts	email	zh	è¿‡æ»¤æ”¶ä»¶ç®±
+filter name	email	zh	è¿‡æ»¤å™¨å
+filter name:	email	zh	è¿‡æ»¤å™¨å:
+filter number	email	zh	è¿‡æ»¤å™¨å·
+filters	email	zh	è¿‡æ»¤å™¨
+filters list	email	zh	è¿‡æ»¤å™¨åˆ—è¡¨
+flag as important	email	zh	å·²æ ‡è®°ä¸ºé‡è¦
+flagged	email	zh	å·²æ ‡è®°
+folder	email	zh	é‚®ä»¶å¤¹
+folder maintenance	email	zh	é‚®ä»¶å¤¹ç®¡ç†
+folder name	email	zh	é‚®ä»¶å¤¹å
+folder size	email	zh	é‚®ä»¶å¤¹å¤§å°
+folders	email	zh	é‚®ä»¶å¤¹
 for the file to actually upload	email	zh	for the file to actually upload
 for these items, fill only what is different from you default e-mail preferences	common	zh	For these items, fill only what is different from you default E-Mail preferences
-forward	email	zh	×ª·¢
-from	email	zh	À´×Ô
-from address	email	zh	À´×ÔµØÖ·
-get size	email	zh	»ñÈ¡ÓÊ¼ş´óĞ¡
+forward	email	zh	è½¬å‘
+from	email	zh	æ¥è‡ª
+from address	email	zh	æ¥è‡ªåœ°å€
+get size	email	zh	è·å–é‚®ä»¶å¤§å°
 go	email	zh	go
-go back	email	zh	·µ»Ø
-go back to	email	zh	·µ»ØÖÁ
-header field	email	zh	Í·²¿×Ö¶Î
-hidden	email	zh	Òş²Ø
-hide help	email	zh	²»ÏÔÊ¾°ïÖú
-html messages with the iframe  tag may be klez or other worm emails.	email	zh	¸Ã³¬ÎÄ±¾(HTML)ÓÊ¼şº¬ÓĞIFRAME±ê¼Ç£¬¿ÉÄÜÊ±KLEZ»òÆäËûÈä³æ²¡¶¾ÓÊ¼ş.
-icon size	email	zh	Í¼±ê´óĞ¡
-icon theme	email	zh	Í¼±êÖ÷Ìâ
+go back	email	zh	è¿”å›
+go back to	email	zh	è¿”å›è‡³
+header field	email	zh	å¤´éƒ¨å­—æ®µ
+hidden	email	zh	éšè—
+hide help	email	zh	ä¸æ˜¾ç¤ºå¸®åŠ©
+html messages with the iframe  tag may be klez or other worm emails.	email	zh	è¯¥è¶…æ–‡æœ¬(HTML)é‚®ä»¶å«æœ‰IFRAMEæ ‡è®°ï¼Œå¯èƒ½æ˜¯KLEZæˆ–ç±»ä¼¼çš„è •è™«ç—…æ¯’é‚®ä»¶.
+icon size	email	zh	å›¾æ ‡å¤§å°
+icon theme	email	zh	å›¾æ ‡ä¸»é¢˜
 if &quot; deleted messages go to trash &quot; is checked, deleted message will be sent to the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;trash&quot;. this will be your &quot;trash&quot; folder, but it does not have to actually be called &quot;trash&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh	If &quot; Deleted messages go to Trash &quot; is checked, Deleted message will be sent to the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Trash&quot;. This will be your &quot;Trash&quot; folder, but it does not have to actually be called &quot;Trash&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.
 if &quot; sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. if this folder does not exist, it will be created for you automatically. default name is &quot;sent&quot;. this will be your &quot;sent&quot; folder, but it does not have to actually be called &quot;sent&quot;, you can name it anything. only works with imap servers, pop servers do not have folders.	email	zh	If &quot; Sent messages folder &quot; is checked, a copy of your sent mail will be stored in the folder name you type in this box. If this folder does not exist, it will be created for you automatically. Default name is &quot;Sent&quot;. This will be your &quot;Sent&quot; folder, but it does not have to actually be called &quot;Sent&quot;, you can name it anything. Only works with IMAP servers, POP servers do not have folders.
 if applicable	email	zh	If Applicable
@@ -147,157 +147,157 @@ if checked, a copy of your sent mail will be stored in the &quot;sent&quot; fold
 if checked, a copy of your sent mail will be stored in the &quot;sent&quot; folder name which you specify in the box for &quot;sent messages folder&quot;. only works with imap servers, pop servers do not have folders.	email	zh	If checked, a copy of your sent mail will be stored in the &quot;Sent&quot; folder name which you specify in the box for &quot;Sent messages folder&quot;. Only works with IMAP servers, POP servers do not have folders.
 if checked, deleted message will be sent to the &quot;trash&quot; folder name which you specify in the box for &quot; deleted messages (trash) folder &quot;. only works with imap servers, pop servers do not have folders.	email	zh	If checked, Deleted message will be sent to the &quot;Trash&quot; folder name which you specify in the box for &quot; Deleted messages (Trash) folder &quot;. Only works with IMAP servers, POP servers do not have folders.
 if fileto then select destination folder	email	zh	if fileto then select destination folder
-if messages match	email	zh	If messages match
+if messages match	email	zh	å¦‚æœé‚®ä»¶ç¬¦åˆå¦‚ä¸‹æ¡ä»¶
 if there is no obvious error, check your username and password first.	email	zh	if there is no obvious error, check your username and password first.
 if using an imap server, what kind is it, most often this option can safely be set to &quot;cyrus or courier&quot;. technically, this means the server uses a dot between the different parts of the folder names, such as &quot;inbox.sent&quot;. the other major kind of imap server is the university of washington &quot;uwash&quot; imap server. it uses slashes instead of the dots the other servers use, and although it has a folder called &quot;inbox&quot;, it is not considered the &quot;namespace&quot; for the other folder names. the &quot;uw-maildir&quot; is a rare combination of the two above types. this is the least used kind of imap server. if you are unsure, ask your it administrator. only applies to imap servers.	email	zh	If using an IMAP server, what kind is it, most often this option can safely be set to &quot;Cyrus or Courier&quot;. Technically, this means the server uses a dot between the different parts of the folder names, such as &quot;INBOX.Sent&quot;. The other major kind of IMAP server is the University of Washington &quot;UWash&quot; IMAP server. It uses slashes instead of the dots the other servers use, and although it has a folder called &quot;INBOX&quot;, it is not considered the &quot;Namespace&quot; for the other folder names. The &quot;UW-Maildir&quot; is a rare combination of the two above types. This is the least used kind of IMAP server. If you are unsure, ask your IT administrator. Only applies to IMAP servers.
-image	email	zh	Í¼Æ¬
-imap mail server hostname or ip address	admin	zh	IMAP·şÎñÆ÷Ö÷»úÃû»òIPµØÖ·
-imap server type	common	zh	IMAP·şÎñÆ÷ÀàĞÍ
-important	email	zh	ÖØÒªÓÊ¼ş
-in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	zh	²é¿´ÓÊ¼ş¼ĞÊ±£¬ÓÊ¼ş¿É°´ÕÕÈÕÆÚ¡¢·¢¼şÈË¡¢´óĞ¡»òÕßÖ÷ÌâÅÅĞò¡£¸ÃÑ¡ÏîÓÃÓÚ¿ØÖÆÅÅĞò·½Ê½£¬ÀıÈç£¬°´ÈÕÆÚ½µĞòÅÅĞòÊ±£¬×î½üµÄÓÊ¼şÔÚÉÏ¶ø×îÔçµÄÓÊ¼şÔÚÏÂ¡£
-inbox	email	zh	ÊÕ¼şÏä
-input error	email	zh	ÊäÈë´íÎó
-input error:	email	zh	ÊäÈë´íÎó:
-it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	zh	Ê¹ÓÃbase64·½Ê½ÎªÓÊ¼şÕıÎÄ²¿·Ö±àÂë²¢·ÇRFC±ê×¼¡£×¢Òâ£ºÍ¨³£ÔÚ²é¿´ÓÊ¼şºóÖ´ĞĞÕâÏî¼ì²é£¬ÓÊ¼ş¿ÉÄÜÎŞ·¨×Ô¶¯ÏÔÊ¾£¬ĞèÒªµã»÷¡°ÏÔÊ¾¡±°´Å¥ÒÔ¼ÌĞø¡£
-jan	email	zh	Ò»ÔÂ
-jul	email	zh	ÆßÔÂ
-jun	email	zh	ÁùÔÂ
-keep	email	zh	±£³Ö
-keyword	email	zh	¹Ø¼ü×Ö
-keywords	email	zh	¹Ø¼ü×Ö
-layout 1	common	zh	²¼¾Ö·½Ê½1
-layout 2	common	zh	²¼¾Ö·½Ê½2
-lines	email	zh	ĞĞ
-list messages	email	zh	ÁĞ³öÓÊ¼ş
-long names	email	zh	È«Ãû
-mail folder(uw-maildir)	email	zh	ÓÊ¼ş¼Ğ(uw-maildir)
-mail server	email	zh	ÓÊ¼ş·şÎñÆ÷
-mail server login type	admin	zh	ÓÊ¼ş·şÎñÆ÷µÇÂ¼ÀàĞÍ
-mail server type	email	zh	ÓÊ¼ş·şÎñÆ÷ÀàĞÍ
-mail settings	admin	zh	ÓÊ¼şÅäÖÃ
-mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zh	Äú·¢ËÍµÄÓÊ¼ş½«Ê¹ÓÃ¸ÃµØÖ·×÷Îª¡¸·¢ËÍµØÖ·¡¹¡£·¢ËÍµØÖ·Ò²¿ÉÒÔÊÇÄúÔÚphpGroupWareµÄµÇÂ¼Ãû£¬»òÕßÓÉ·şÎñÆ÷¹ÜÀíÔ±Ö¸¶¨£¬ÒÔ¹©µ±ÊÕ¼şÈË»Ø¸´ÓÊ¼şÊ±Ê¹ÓÃ¡£´Ë´¦Áô¿ÕÔòÊ¹ÓÃÄ¬ÈÏ·¢ËÍµØÖ·¡£
-manage accounts	email	zh	¹ÜÀíÕÊ»§
-manage folders	email	zh	¹ÜÀíÓÊ¼ş¼Ğ
-mar	email	zh	ÈıÔÂ
-message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zh	¾¯¸æ£º¸ÃÓÊ¼şËù´ø¸½¼şÊÇ¿ÉÖ´ĞĞ½Å±¾»òÎÄ¼ş£¬Çë²»ÒªÇáÒ×´ò¿ª¡£·²´øÓĞÒÔÏÂºó×ºÃûµÄ¸½¼ş£¬¶¼Ó¦½÷É÷´¦Àí£ºbat¡¢inf¡¢pif¡¢com¡¢exe¡¢reg¡¢vbsºÍscr¡£
-message list layout	common	zh	ÓÊ¼şÁĞ±í²¼¾Ö·½Ê½
-messages	email	zh	ÓÊ¼ş
-messages found in folder	email	zh	ÓÊ¼şÔÚÕâĞ©ÓÊ¼ş¼ĞÖĞÕÒµ½£º
-messages have been moved to	email	zh	ÓÊ¼şÒÑÒÆÖÁ
-more actions	email	zh	¸ü¶à²Ù×÷
-more choices	email	zh	¸ü¶àÑ¡Ïî
-most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zh	´ó¶àÊıÃÀ¹úºÍÅ·ÖŞÓÃ»§ÎŞĞèÆôÓÃ¸ÃÑ¡Ïî¡£ÆôÓÃ¸ÃÑ¡Ïî£¬¿ÉÊ¹EMail·şÎñÆ÷´¦Àí°üº¬·ÇUS-ASCII×Ö·ûµÄÓÊ¼ş¼ĞÃû³Æ¡£/ ¸ÃÑ¡ÏîÄ¬ÈÏ½ûÓÃ£¬ÔÚÓĞÈ·ÇĞ°ÑÎÕÖ®Ç°ÇëÎğÆôÓÃ¡£¸ÃÑ¡Ïî½ö¶ÔIMAP·şÎñÆ÷ÓĞĞ§, POP·şÎñÆ÷ÎŞÓÊ¼ş¼Ğ¡£
-move down	email	zh	ÏÂÒÆ
-move selected messages into	email	zh	½«Ñ¡¶¨µÄÓÊ¼şÒÆÖÁ
-move this message into	email	zh	½«¸ÃÓÊ¼şÒÆÖÁ
-move up	email	zh	ÉÏÒÆ
-mozilla modern style	email	zh	MozillaÏÖ´úĞÍ·ç¸ñ
-name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zh	ÇëÊäÈëÄúÒª·ÃÎÊµÄÓÊ¼ş·şÎñÆ÷Ãû³Æ£¬ÀıÈç£ºmail.example.com¡£´Ë´¦Áô¿ÕÔòÊ¹ÓÃÄ¬ÈÏÃû³Æ¡£
-new	email	zh	ĞÂ
-new account	email	zh	ĞÂ½¨ÕÊ»§
-new filter	email	zh	ĞÂ½¨¹ıÂËÆ÷
-new message	email	zh	ĞÂ½¨ÓÊ¼ş
-new messages	email	zh	ĞÂ½¨ÓÊ¼ş
-newest	common	zh	×îĞÂ
-next message	email	zh	ÏÂÒ»·âÓÊ¼ş
-no change	email	zh	ÎŞÈÎºÎ¸ü¸Ä
+image	email	zh	å›¾ç‰‡
+imap mail server hostname or ip address	admin	zh	IMAPæœåŠ¡å™¨ä¸»æœºåæˆ–IPåœ°å€
+imap server type	common	zh	IMAPæœåŠ¡å™¨ç±»å‹
+important	email	zh	é‡è¦é‚®ä»¶
+in the email index page, the page which lists all the mails in a folder, mail may be sorted by date, author, size, or subject, however all of these need to be ordered from first to last, this options controlls what is first and last. for example, if sorting by date, the newest to oldest displays the most recent emails first, in decending order down to the oldest emails last.	email	zh	æŸ¥çœ‹é‚®ä»¶å¤¹æ—¶ï¼Œé‚®ä»¶å¯æŒ‰ç…§æ—¥æœŸã€å‘ä»¶äººã€å¤§å°æˆ–è€…ä¸»é¢˜æ’åºã€‚è¯¥é€‰é¡¹ç”¨äºæ§åˆ¶æ’åºæ–¹å¼ï¼Œä¾‹å¦‚ï¼ŒæŒ‰æ—¥æœŸé™åºæ’åºæ—¶ï¼Œæœ€è¿‘çš„é‚®ä»¶åœ¨ä¸Šè€Œæœ€æ—©çš„é‚®ä»¶åœ¨ä¸‹ã€‚
+inbox	email	zh	æ”¶ä»¶ç®±
+input error	email	zh	è¾“å…¥é”™è¯¯
+input error:	email	zh	è¾“å…¥é”™è¯¯:
+it is not rfc standard to base64 encode a part of a message that is not an attachment. note this check is currently done after the message is already being viewed, it should probably stop the message from being automatically displayed, i.e. give a "show this" button instead.	email	zh	ä½¿ç”¨base64æ–¹å¼ä¸ºé‚®ä»¶æ­£æ–‡éƒ¨åˆ†ç¼–ç å¹¶éRFCæ ‡å‡†ã€‚æ³¨æ„ï¼šé€šå¸¸åœ¨æŸ¥çœ‹é‚®ä»¶åæ‰§è¡Œè¿™é¡¹æ£€æŸ¥ï¼Œé‚®ä»¶å¯èƒ½æ— æ³•è‡ªåŠ¨æ˜¾ç¤ºï¼Œéœ€è¦ç‚¹å‡»â€œæ˜¾ç¤ºâ€æŒ‰é’®ä»¥ç»§ç»­ã€‚
+jan	email	zh	ä¸€æœˆ
+jul	email	zh	ä¸ƒæœˆ
+jun	email	zh	å…­æœˆ
+keep	email	zh	ä¿æŒ
+keyword	email	zh	å…³é”®å­—
+keywords	email	zh	å…³é”®å­—
+layout 1	common	zh	å¸ƒå±€æ–¹å¼1
+layout 2	common	zh	å¸ƒå±€æ–¹å¼2
+lines	email	zh	è¡Œ
+list messages	email	zh	åˆ—å‡ºé‚®ä»¶
+long names	email	zh	å…¨å
+mail folder(uw-maildir)	email	zh	é‚®ä»¶å¤¹(uw-maildir)
+mail server	email	zh	é‚®ä»¶æœåŠ¡å™¨
+mail server login type	admin	zh	é‚®ä»¶æœåŠ¡å™¨ç™»å½•ç±»å‹
+mail server type	email	zh	é‚®ä»¶æœåŠ¡å™¨ç±»å‹
+mail settings	admin	zh	é‚®ä»¶é…ç½®
+mail you send will use this address as the &quot;from&quot; address. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. when the recipient clicks reply, this address will be used. you can leave this box blank and the default value will be used.	email	zh	æ‚¨å‘é€çš„é‚®ä»¶å°†ä½¿ç”¨è¯¥åœ°å€ä½œä¸ºã€Œå‘é€åœ°å€ã€ã€‚å‘é€åœ°å€ä¹Ÿå¯ä»¥æ˜¯æ‚¨åœ¨phpGroupWareçš„ç™»å½•åï¼Œæˆ–è€…ç”±æœåŠ¡å™¨ç®¡ç†å‘˜æŒ‡å®šï¼Œä»¥ä¾›å½“æ”¶ä»¶äººå›å¤é‚®ä»¶æ—¶ä½¿ç”¨ã€‚æ­¤å¤„ç•™ç©ºåˆ™ä½¿ç”¨é»˜è®¤å‘é€åœ°å€ã€‚
+manage accounts	email	zh	ç®¡ç†å¸æˆ·
+manage folders	email	zh	ç®¡ç†é‚®ä»¶å¤¹
+mar	email	zh	ä¸‰æœˆ
+message has an attachment that is some kind of script or exe file that windows users should be warned not to click on it. these are filenames like attachments the end with the usual "bad stuff", such as bat, inf, pif, com, exe, reg, vbs, and scr	email	zh	è­¦å‘Šï¼šè¯¥é‚®ä»¶æ‰€å¸¦é™„ä»¶æ˜¯å¯æ‰§è¡Œè„šæœ¬æˆ–æ–‡ä»¶ï¼Œè¯·ä¸è¦è½»æ˜“æ‰“å¼€ã€‚å‡¡å¸¦æœ‰ä»¥ä¸‹åç¼€åçš„é™„ä»¶ï¼Œéƒ½åº”è°¨æ…å¤„ç†ï¼šbatã€infã€pifã€comã€exeã€regã€vbså’Œscrã€‚
+message list layout	common	zh	é‚®ä»¶åˆ—è¡¨å¸ƒå±€æ–¹å¼
+messages	email	zh	é‚®ä»¶
+messages found in folder	email	zh	é‚®ä»¶åœ¨è¿™äº›é‚®ä»¶å¤¹ä¸­æ‰¾åˆ°ï¼š
+messages have been moved to	email	zh	é‚®ä»¶å·²ç§»è‡³
+more actions	email	zh	æ›´å¤šæ“ä½œ
+more choices	email	zh	æ›´å¤šé€‰é¡¹
+most us and european users do not need to enable this. if this option is checked then your email server can handle folder names with non us-ascii charactors in them/ default is disabled, not checked. only use if you are really sure you need it. only works with imap servers, pop servers do not have folders.	email	zh	å¤§å¤šæ•°ç¾å›½å’Œæ¬§æ´²ç”¨æˆ·æ— éœ€å¯ç”¨è¯¥é€‰é¡¹ã€‚å¯ç”¨è¯¥é€‰é¡¹ï¼Œå¯ä½¿EMailæœåŠ¡å™¨å¤„ç†åŒ…å«éUS-ASCIIå­—ç¬¦çš„é‚®ä»¶å¤¹åç§°ã€‚/ è¯¥é€‰é¡¹é»˜è®¤ç¦ç”¨ï¼Œåœ¨æœ‰ç¡®åˆ‡æŠŠæ¡ä¹‹å‰è¯·å‹¿å¯ç”¨ã€‚è¯¥é€‰é¡¹ä»…å¯¹IMAPæœåŠ¡å™¨æœ‰æ•ˆ, POPæœåŠ¡å™¨æ— é‚®ä»¶å¤¹ã€‚
+move down	email	zh	ä¸‹ç§»
+move selected messages into	email	zh	å°†é€‰å®šçš„é‚®ä»¶ç§»è‡³
+move this message into	email	zh	å°†è¯¥é‚®ä»¶ç§»è‡³
+move up	email	zh	ä¸Šç§»
+mozilla modern style	email	zh	Mozillaç°ä»£å‹é£æ ¼
+name of the mail server you want to access. should be a name like &quot;mail.example.com&quot;. if you leave this box blank then the default value will be used.	email	zh	è¯·è¾“å…¥æ‚¨è¦è®¿é—®çš„é‚®ä»¶æœåŠ¡å™¨åç§°ï¼Œä¾‹å¦‚ï¼šmail.example.comã€‚æ­¤å¤„ç•™ç©ºåˆ™ä½¿ç”¨é»˜è®¤åç§°ã€‚
+new	email	zh	æ–°
+new account	email	zh	æ–°å»ºå¸æˆ·
+new filter	email	zh	æ–°å»ºè¿‡æ»¤å™¨
+new message	email	zh	æ–°å»ºé‚®ä»¶
+new messages	email	zh	æ–°å»ºé‚®ä»¶
+newest	common	zh	æœ€æ–°
+next message	email	zh	ä¸‹ä¸€å°é‚®ä»¶
+no change	email	zh	æ— ä»»ä½•æ›´æ”¹
 no error returned from server	email	zh	No error returned from server
-no message found in folder '%1'	email	zh	'%1'ÓÊ¼ş¼ĞÊÇ¿ÕµÄ
-no next message	email	zh	ÒÑÊÇ×îºóÒ»·âÓÊ¼ş
-no previous message	email	zh	ÒÑÊÇµÚÒ»·âÓÊ¼ş
+no message found in folder '%1'	email	zh	'%1'é‚®ä»¶å¤¹æ˜¯ç©ºçš„
+no next message	email	zh	å·²æ˜¯æœ€åä¸€å°é‚®ä»¶
+no previous message	email	zh	å·²æ˜¯ç¬¬ä¸€å°é‚®ä»¶
 noia &#64; carlitus style	email	zh	Noia &#64; Carlitus Style
-non-standard	email	zh	·Ç±ê×¼
-not used	email	zh	²»ÔÚÓÃ
-notify on delivery	email	zh	·¢ËÍÊ±Í¨¸æ
-nov	email	zh	Ê®Ò»ÔÂ
-number	common	zh	±àºÅ
-number of matches:	email	zh	·ûºÏÌõ¼şµÄÓÊ¼şÊı:
-oct	email	zh	Ê®ÔÂ
-old	email	zh	¾É
-oldest	common	zh	×î¾É
-on	email	zh	ÔÚ
+non-standard	email	zh	éæ ‡å‡†
+not used	email	zh	ä¸åœ¨ç”¨
+notify on delivery	email	zh	å‘é€æ—¶é€šå‘Š
+nov	email	zh	åä¸€æœˆ
+number	common	zh	ç¼–å·
+number of matches:	email	zh	ç¬¦åˆæ¡ä»¶çš„é‚®ä»¶æ•°:
+oct	email	zh	åæœˆ
+old	email	zh	æ—§
+oldest	common	zh	æœ€æ—§
+on	email	zh	åœ¨
 only needed with the university of washington &quot;uwash&quot; imap server. the default value is &quot;mail&quot; which means your mail folders, other then inbox, are located in a directory called &quot;mail&quot; directly under your &quot;home&quot; directory. this box may be left empty, which means your mail folders are located in your &quot;home&quot; directory, not a subdirectory. if your mail folders are located in a subdirectory of &quot;home&quot; then put the name of that subdirectory here. generally, it is not necessary to use any special slashes or tildes, &quot;home&quot; is always considered the base directory, and the slash bewteen &quot;home&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.	email	zh	Only needed with the University of Washington &quot;UWash&quot; IMAP server. The default value is &quot;mail&quot; which means your mail folders, other then INBOX, are located in a directory called &quot;mail&quot; directly under your &quot;HOME&quot; directory. This box may be left empty, which means your mail folders are located in your &quot;HOME&quot; directory, not a subdirectory. If your mail folders are located in a subdirectory of &quot;HOME&quot; then put the name of that subdirectory here. Generally, it is not necessary to use any special slashes or tildes, &quot;HOME&quot; is always considered the base directory, and the slash bewteen &quot;HOME&quot; and the subdirectory will be added for you automatically, do not put the slash in this box.
-or	common	zh	»òÕß
-or enter text	email	zh	»òÕßÊäÈëÎÄ×Ö
-organization	email	zh	×éÖ¯
-persistent email server session	email	zh	±£³ÖEMail·şÎñÆ÷»á»°
-phone	email	zh	µç»°
-please fill in everything you need	email	zh	ÇëÌîĞ´ËùÓĞĞèÒªµÄĞÅÏ¢
-please select a folder to rename	email	zh	ÇëÑ¡Ôñ´ıÖØÃüÃûµÄÓÊ¼ş¼Ğ
-please select a message first	email	zh	ÇëÏÈÑ¡ÔñÒ»·âÓÊ¼ş
-please submit a filename to attach	email	zh	Ìá½»¸½¼şÎÄ¼şÃû
-please type a folder name in the text box	email	zh	ÇëÔÚÎÄ±¾¿òÖĞÊäÈëÓÊ¼ş¼ĞÃû³Æ
-previous	email	zh	ÉÏÒ»·â
-previous message	email	zh	ÉÏÒ»·âÓÊ¼ş
-printable	email	zh	ÏÔÊ¾¿É´òÓ¡°æ±¾
+or	common	zh	æˆ–è€…
+or enter text	email	zh	æˆ–è€…è¾“å…¥æ–‡å­—
+organization	email	zh	ç»„ç»‡
+persistent email server session	email	zh	ä¿æŒEMailæœåŠ¡å™¨ä¼šè¯
+phone	email	zh	ç”µè¯
+please fill in everything you need	email	zh	è¯·å¡«å†™æ‰€æœ‰éœ€è¦çš„ä¿¡æ¯
+please select a folder to rename	email	zh	è¯·é€‰æ‹©å¾…é‡å‘½åçš„é‚®ä»¶å¤¹
+please select a message first	email	zh	è¯·å…ˆé€‰æ‹©ä¸€å°é‚®ä»¶
+please submit a filename to attach	email	zh	æäº¤é™„ä»¶æ–‡ä»¶å
+please type a folder name in the text box	email	zh	è¯·åœ¨æ–‡æœ¬æ¡†ä¸­è¾“å…¥é‚®ä»¶å¤¹åç§°
+previous	email	zh	ä¸Šä¸€å°
+previous message	email	zh	ä¸Šä¸€å°é‚®ä»¶
+printable	email	zh	æ˜¾ç¤ºå¯æ‰“å°ç‰ˆæœ¬
 raw message	email	zh	raw message
 read mail	email	zh	Read Mail
 received headers	email	zh	Received Headers
-recent	email	zh	×î½üµÄÓÊ¼ş
+recent	email	zh	æœ€è¿‘çš„é‚®ä»¶
 recipient	email	zh	Recipient
 redirect	email	zh	Redirect
-reject	email	zh	¾Ü¾ø
+reject	email	zh	æ‹’ç»
 rename (expert)	email	zh	Rename (expert)
 rename a folder	email	zh	Rename a Folder
-reply	email	zh	»Ø¸´
-reply all	email	zh	È«²¿»Ø¸´
-replyto	email	zh	»Ø¸´ÖÁ
+reply	email	zh	å›å¤
+reply all	email	zh	å…¨éƒ¨å›å¤
+replyto	email	zh	å›å¤è‡³
 request delivery notification	email	zh	Request delivery notification
 requested filter action:	email	zh	requested filter action:
 required	email	zh	required
-reset	email	zh	¸´Î»
+reset	email	zh	å¤ä½
 result	email	zh	result
 return mails during this time period	email	zh	Return mails during this time period
-save deleted messages in folder named below	email	zh	ÔÚÒÔÏÂÓÊ¼ş¼ĞÖĞ±£´æÒÑÉ¾ÓÊ¼ş
-save sent messages in folder named below	email	zh	ÔÚÒÔÏÂÓÊ¼ş¼ĞÖĞ±£´æÒÑ·¢ÓÊ¼ş
-search for mails in these folders	email	zh	ÔÚÒÔÏÂÓÊ¼ş¼ĞÖĞ²éÕÒÓÊ¼ş
-search this folder	email	zh	ÔÚ¸ÃÓÊ¼ş¼ĞÖĞ²éÕÒ
-section	email	zh	½Ú
-seen	email	zh	ÒÑ¶Á
-select home email address	email	zh	Ö¸¶¨¼ÒÍ¥EMailµØÖ·
+save deleted messages in folder named below	email	zh	åœ¨ä»¥ä¸‹é‚®ä»¶å¤¹ä¸­ä¿å­˜å·²åˆ é‚®ä»¶
+save sent messages in folder named below	email	zh	åœ¨ä»¥ä¸‹é‚®ä»¶å¤¹ä¸­ä¿å­˜å·²å‘é‚®ä»¶
+search for mails in these folders	email	zh	åœ¨ä»¥ä¸‹é‚®ä»¶å¤¹ä¸­æŸ¥æ‰¾é‚®ä»¶
+search this folder	email	zh	åœ¨è¯¥é‚®ä»¶å¤¹ä¸­æŸ¥æ‰¾
+section	email	zh	èŠ‚
+seen	email	zh	å·²è¯»
+select home email address	email	zh	æŒ‡å®šå®¶åº­EMailåœ°å€
 select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message	email	zh	Select this box if you want the text body of the message you are forwarding to appear inline in the body of your sent message
 select work email address	email	zh	Select work email address
-select your mail server type	admin	zh	Select your mail server type
+select your mail server type	admin	zh	é€‰æ‹©é‚®ä»¶æœåŠ¡å™¨ç±»å‹
 select your screensize for propper showing of the javascript addressbook	email	zh	Select your screensize for propper showing of the Javascript addressbook
 select your style for the addressbook. the traditional, simple style. or the new javascript enabled complex addressbook	email	zh	Select your style for the addressbook. The traditional, simple style. Or the new javascript enabled complex addressbook
-send	email	zh	·¢ËÍ
+send	email	zh	å‘é€
 send deleted messages to the trash	email	zh	Send deleted messages to the trash
-send forwarded mail as quoted attachment	email	zh	×÷ÎªÒıÓÃ¸½¼ş×ª·¢
-sender	email	zh	·¢¼şÈË
-sent	email	zh	ÒÑ·¢ËÍ
-sent folder	email	zh	·¢¼şÏä
-sent messages folder	common	zh	ÒÑ·¢ÓÊ¼ş¼Ğ
-sent messages folder name	email	zh	ÒÑ·¢ÓÊ¼ş¼ĞÃû³Æ
-sent messages saved in &quot;sent&quot; folder	common	zh	ÔÚ·¢¼şÏäÖĞ±£´æÒÑ·¢ÓÊ¼ş
-sent messages saved to folder:	email	zh	ÔÚ¸ÃÓÊ¼ş¼ĞÖĞ±£´æÒÑ·¢ÓÊ¼ş:
+send forwarded mail as quoted attachment	email	zh	ä½œä¸ºå¼•ç”¨é™„ä»¶è½¬å‘
+sender	email	zh	å‘ä»¶äºº
+sent	email	zh	å·²å‘é€
+sent folder	email	zh	å‘ä»¶ç®±
+sent messages folder	common	zh	å·²å‘é‚®ä»¶å¤¹
+sent messages folder name	email	zh	å·²å‘é‚®ä»¶å¤¹åç§°
+sent messages saved in &quot;sent&quot; folder	common	zh	åœ¨å‘ä»¶ç®±ä¸­ä¿å­˜å·²å‘é‚®ä»¶
+sent messages saved to folder:	email	zh	åœ¨è¯¥é‚®ä»¶å¤¹ä¸­ä¿å­˜å·²å‘é‚®ä»¶:
 sep	email	zh	Sep
-settings	email	zh	ÅäÖÃ
-short names	email	zh	¼ò³Æ
-show help	email	zh	ÏÔÊ¾°ïÖú
-show long names	email	zh	ÏÔÊ¾È«Ãû
-show message	email	zh	ÏÔÊ¾ÓÊ¼ş
+settings	email	zh	é…ç½®
+short names	email	zh	ç®€ç§°
+show help	email	zh	æ˜¾ç¤ºå¸®åŠ©
+show long names	email	zh	æ˜¾ç¤ºå…¨å
+show message	email	zh	æ˜¾ç¤ºé‚®ä»¶
 show new messages in combobox	email	zh	Show New Messages in ComboBox
-show new messages on main screen	email	zh	ÔÚÖ÷Ò³ÃæÖĞÏÔÊ¾ĞÂÓÊ¼ş
+show new messages on main screen	email	zh	åœ¨ä¸»é¡µé¢ä¸­æ˜¾ç¤ºæ–°é‚®ä»¶
 show sender's email address with name	email	zh	Show sender's email address with name
-show short names	email	zh	ÏÔÊ¾¼ò³Æ
+show short names	email	zh	æ˜¾ç¤ºç®€ç§°
 show total folder size by default	email	zh	Show total folder size by default
-size	email	zh	´óĞ¡
-size larger than	email	zh	ÓÊ¼ş´óĞ¡´óÓÚ
-size smaller than	email	zh	ÓÊ¼ş´óĞ¡Ğ¡ÓÚ
-small	email	zh	Ğ¡
-smaller	email	zh	¸üĞ¡
-smallest	email	zh	×îĞ¡
+size	email	zh	å¤§å°
+size larger than	email	zh	é‚®ä»¶å¤§å°å¤§äº
+size smaller than	email	zh	é‚®ä»¶å¤§å°å°äº
+small	email	zh	å°
+smaller	email	zh	æ›´å°
+smallest	email	zh	æœ€å°
 somebody	email	zh	somebody
-sort by	email	zh	ÅÅĞò·½Ê½
-spell check	email	zh	Æ´Ğ´¼ì²é
-standard e-mail preferences	email	zh	±ê×¼E-Mail¸öĞÔ»¯ÅäÖÃ
+sort by	email	zh	æ’åºæ–¹å¼
+spell check	email	zh	æ‹¼å†™æ£€æŸ¥
+standard e-mail preferences	email	zh	æ ‡å‡†E-Mailä¸ªæ€§åŒ–é…ç½®
 stop if matched	email	zh	Stop if Matched
-switch accounts	email	zh	ÇĞ»»ÕÊ»§
-switch current folder to	common	zh	ÇĞ»»µ±Ç°ÓÊ¼ş¼ĞÖÁ
-test all filters	email	zh	²âÊÔËùÓĞ¹ıÂËÆ÷
-test or apply all filters	email	zh	²âÊÔ»òÓ¦ÓÃËùÓĞ¹ıÂËÆ÷
+switch accounts	email	zh	åˆ‡æ¢å¸æˆ·
+switch current folder to	common	zh	åˆ‡æ¢å½“å‰é‚®ä»¶å¤¹è‡³
+test all filters	email	zh	æµ‹è¯•æ‰€æœ‰è¿‡æ»¤å™¨
+test or apply all filters	email	zh	æµ‹è¯•æˆ–åº”ç”¨æ‰€æœ‰è¿‡æ»¤å™¨
 test run this filter	email	zh	Test Run This Filter
-text	email	zh	ÎÄ×Ö
+text	email	zh	æ–‡å­—
 the email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. this page may be the page the user looks at the most and so different layouts, or looks, are offered.	email	zh	The email application offers 2 different layouts for the index page, that is the page that lists the emails in a folder. This page may be the page the user looks at the most and so different layouts, or looks, are offered.
 the email application offers different button displays, these buttons can be text, images, or both.	email	zh	The email application offers different button displays, these buttons can be text, images, or both.
 the email application offers different icon image themes, groups of images of a similar style which are used in this email application. currently the available themes are images based on evolution by ximian and the netscape7, mozilla browser buttons. additional themes are anticipated and welcome.	email	zh	The email application offers different icon image themes, groups of images of a similar style which are used in this email application. Currently the available themes are images based on Evolution by Ximian and the Netscape7, Mozilla browser buttons. Additional themes are anticipated and welcome.
@@ -306,7 +306,7 @@ the login name to use when checking mail for this email account. this may be the
 the login name to use when checking mail for this email account. this may be the same as your phpgroupware login name, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh	The login name to use when checking mail for this email account. This may be the same as your phpGroupWare login name, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
 the password to use when checking mail for this email account. this may be the same as your phpgroupware password, or the server administrator may have set it for you. if your have multiple email accounts set up, you will need to fill this in. if you have only one email account set up, then you can probably leave this alone. if you do set a custom password, this box will be blank the next time you come to this settings page. this is a security feature because your custom email password is not sent to your browser after you set it. to change your custom password, simply enter a new password in the box. extra email accounts require you to set this. for your default email account, you can clear your custom password by unchecking the &quot;use custom settings&quot; option.	email	zh	The password to use when checking mail for this email account. This may be the same as your phpGroupWare password, or the server administrator may have set it for you. If your have multiple email accounts set up, you will need to fill this in. If you have only one email account set up, then you can probably leave this alone. If you do set a custom password, this box will be blank the next time you come to this settings page. This is a security feature because your custom email password is not sent to your browser after you set it. To change your custom password, simply enter a new password in the box. Extra email accounts require you to set this. For your default email account, you can clear your custom password by unchecking the &quot;Use Custom Settings&quot; option.
 the type of mail server you want to access. imap mail servers have folders, such as the sent and trash folders. pop servers do not have folders. pop, pop-3, and pop3 are the same thing. you can have the server connection encrypted by using imaps or pops, only if the mailserver supports it and if your phpgroupware installation has a &quot;ssl&quot; capabable version of php.	email	zh	The type of mail server you want to access. IMAP mail servers have folders, such as the Sent and Trash folders. POP servers do not have folders. POP, POP-3, and POP3 are the same thing. You can have the server connection encrypted by using IMAPS or POPS, only if the mailserver supports it and if your phpGroupWare installation has a &quot;SSL&quot; capabable version of PHP.
-then do this	email	zh	Then do this
+then do this	email	zh	æ‰§è¡Œå¦‚ä¸‹æ“ä½œ
 then take this actions	email	zh	Then take this actions
 there is no text or other part of the email to display to the user, all part(s) are attachments.	email	zh	There is no text or other part of the email to display to the user, all part(s) are attachments.
 there was an error trying to connect to your imap server.<br>please contact your admin to check the servername, username or password.	email	zh	There was an error trying to connect to your IMAP server.<br>Please contact your admin to check the servername, username or password.
@@ -322,39 +322,39 @@ this pref currently does nothing users may have more than one email account. in 
 this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	zh	This specifies whether or not to show the number of new message in the folders combo box on the index screen.
 this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	zh	This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..
 this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	zh	This text will be appended to the bottom of the users emails for this email account. Currently, html tags are not supported. Also, forwarded email will NOT get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.
-to	email	zh	·¢ËÍÖÁ
-to address	email	zh	·¢ËÍÖÁ
-total messages	email	zh	ËùÓĞÓÊ¼ş
-trash	email	zh	»ØÊÕÕ¾
-trash folder	email	zh	»ØÊÕÕ¾
-u-wash mail folder	email	zh	U-WashÓÊ¼ş¼Ğ
-unable to get source folder name	email	zh	ÎŞ·¨»ñÈ¡Ô´ÓÊ¼ş¼ĞÃû³Æ
-unable to get target folder name	email	zh	ÎŞ·¨»ñÈ¡Ä¿±êÓÊ¼ş¼ĞÃû³Æ
-unanswered	email	zh	³·Ïú»Ø¸´
-undeleted	email	zh	³·ÏúÉ¾³ı
+to	email	zh	å‘é€è‡³
+to address	email	zh	å‘é€è‡³
+total messages	email	zh	æ‰€æœ‰é‚®ä»¶
+trash	email	zh	å›æ”¶ç«™
+trash folder	email	zh	å›æ”¶ç«™
+u-wash mail folder	email	zh	U-Washé‚®ä»¶å¤¹
+unable to get source folder name	email	zh	æ— æ³•è·å–æºé‚®ä»¶å¤¹åç§°
+unable to get target folder name	email	zh	æ— æ³•è·å–ç›®æ ‡é‚®ä»¶å¤¹åç§°
+unanswered	email	zh	æ’¤é”€å›å¤
+undeleted	email	zh	æ’¤é”€åˆ é™¤
 undisclosed recipients	email	zh	Undisclosed Recipients
 undisclosed sender	email	zh	Undisclosed Sender
-unflagged	email	zh	³·Ïú±ê¼Ç
-unknown action	email	zh	Î´Öª²Ù×÷
-unknown error	email	zh	Î´Öª´íÎó
-unknown translation	email	zh	Î´Öª·­Òë
-unseen	email	zh	Î´¶Á
-use custom settings	email	zh	Ê¹ÓÃ×Ô¶¨ÒåÅäÖÃ
-view as html	email	zh	ÒÔ³¬ÎÄ±¾(HTML)·½Ê½²é¿´
-view formatted	email	zh	¸ñÊ½»¯²é¿´
-view headers	email	zh	²é¿´ÓÊ¼şÍ·²¿
-view unformatted	email	zh	ÎŞ¸ñÊ½²é¿´
+unflagged	email	zh	æ’¤é”€æ ‡è®°
+unknown action	email	zh	æœªçŸ¥æ“ä½œ
+unknown error	email	zh	æœªçŸ¥é”™è¯¯
+unknown translation	email	zh	æœªçŸ¥ç¿»è¯‘
+unseen	email	zh	æœªè¯»
+use custom settings	email	zh	ä½¿ç”¨è‡ªå®šä¹‰é…ç½®
+view as html	email	zh	ä»¥è¶…æ–‡æœ¬(HTML)æ–¹å¼æŸ¥çœ‹
+view formatted	email	zh	æ ¼å¼åŒ–æŸ¥çœ‹
+view headers	email	zh	æŸ¥çœ‹é‚®ä»¶å¤´éƒ¨
+view unformatted	email	zh	æ— æ ¼å¼æŸ¥çœ‹
 warn_b64_encoded_displayable	email	zh	warn_b64_encoded_displayable
 warn_style_sheet	email	zh	warn_style_sheet
 we have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) easy, point and click searching, b) best suited for organizations with large central addressbooks with many categories. you can choose here which addressbook do you prefer.	email	zh	We have recently added this new addressbook so that users can choose to have a more complex addressbook that features a) Easy, point and click searching, b) Best suited for organizations with large central addressbooks with many categories. You can choose here which addressbook do you prefer.
 we have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). the fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).	email	zh	We have three sizes that tell us how to better render the addressbook for you: 800x600 (addressbook will popout in a 700 pixel wide box), 1024x768 (it will be a 800 box), 1200x1600 (will be a 900 box). The fonts for all html stuff will be, respectively set to xx-small, x-small and normal (no font setting).
 wrote	email	zh	wrote
-you have %1 new messages!	common	zh	ÄúÓĞ%1·âĞÂÓÊ¼ş!
-you have 1 new message!	common	zh	ÄúÓĞ1·âĞÂÓÊ¼ş!
-you have messages!	common	zh	ÄúÓĞĞÂÓÊ¼ş!
-you have no new messages	common	zh	Ã»ÓĞĞÂÓÊ¼ş!
+you have %1 new messages!	common	zh	æ‚¨æœ‰%1å°æ–°é‚®ä»¶!
+you have 1 new message!	common	zh	æ‚¨æœ‰1å°æ–°é‚®ä»¶!
+you have messages!	common	zh	æ‚¨æœ‰æ–°é‚®ä»¶!
+you have no new messages	common	zh	æ²¡æœ‰æ–°é‚®ä»¶!
 you must click	email	zh	You must click
 you must click %1 for the file to actually upload	email	zh	You must click %1 for the file to actually upload
-your full name	common	zh	ÄúµÄÈ«Ãû
-your message has been sent	common	zh	ÓÊ¼şÒÑ·¢ËÍ!
+your full name	common	zh	æ‚¨çš„å…¨å
+your message has been sent	common	zh	é‚®ä»¶å·²å‘é€!
 your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zh	Your server administrator will set the default values for the following options. You may never need to change any of them. If you do need to use settings that are different from the defaults for the options below here, then check this box. Default is disabled, not checked. If you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.

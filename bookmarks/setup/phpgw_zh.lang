@@ -1,66 +1,66 @@
-%1 bookmarks have been deleted	bookmarks	zh	%1 ÊéÇ©ÒÑÉ¾³ı¡£
-%1 bookmarks imported from %2 successfully.	bookmarks	zh	%1 ÊéÇ©³É¹¦´Ó %2 µ¼Èë¡£
-(comma separate multiple addresses)	bookmarks	zh	(ÒÔ¶ººÅ·Ö¸ô¶à¸öµØÖ·)
-<b>note:</b> this currently works with netscape bookmarks only	bookmarks	zh	<b>Note:</b> Ä¿Ç°Ö»ÄÜÊ¹ÓÃNetscapeÊéÇ©
-all bookmarks	bookmarks	zh	ËùÓĞÊéÇ©
-and	bookmarks	zh	¼°
-append this message to mailed bookmarks	bookmarks	zh	ÔÚÒÑÓÊ¼ÄÊéÇ©ÖĞ¸½¼Ó¸ÃĞÅÏ¢
-ascending	bookmarks	zh	ÉıĞò
-book marks	common	zh	ÊéÇ©
-bookmark changed sucessfully	bookmarks	zh	ÊéÇ©¸ü¸Ä³É¹¦
-bookmark created successfully.	bookmarks	zh	ÊéÇ©´´½¨³É¹¦
-bookmark not editable	bookmarks	zh	ÊéÇ©²»¿É±à¼­
-bookmark not readable	bookmarks	zh	ÊéÇ©²»¿É¶Á
-bookmarks	common	zh	ÊéÇ©
-bookmarks settings	bookmarks	zh	ÊéÇ©ÅäÖÃ
-change bookmark	bookmarks	zh	¸ü¸ÄÊéÇ©
-close this window to return	bookmarks	zh	¹Ø±Õ´°¿Ú²¢·µ»Ø
-create bookmark	bookmarks	zh	´´½¨ÊéÇ©
-create new bookmark	bookmarks	zh	´´½¨ĞÂÊéÇ©
-date added	bookmarks	zh	ÈÕÆÚÒÑÌí¼Ó
-date changed	bookmarks	zh	ÈÕÆÚÒÑ¸ü¸Ä
-date last updated	bookmarks	zh	×î½ü¸üĞÂÈÕÆÚ
-date last visited	bookmarks	zh	×î½ü·ÃÎÊÈÕÆÚ
-descending	bookmarks	zh	½µĞò
-edit bookmark	bookmarks	zh	±à¼­ÊéÇ©
-edit this bookmark	bookmarks	zh	±à¼­¸ÃÊéÇ©
-enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zh	ÇëÖ¸¶¨Òªµ¼Èëµ½ÊÕ²Ø¼ĞµÄNetscapeÊéÇ©ÎÄ¼şÃû
-fewer	bookmarks	zh	ÉÙĞ©
-filter by	bookmarks	zh	É¸Ñ¡Ìõ¼ş£º
-found a link you might like	bookmarks	zh	ÕÒµ½Ò»¸öÄú¿ÉÄÜÏ²»¶µÄÁ´½Ó
-from	bookmarks	zh	´Ó
-from category %1	bookmarks	zh	´ÓÀà±ğ%1
-highest	bookmarks	zh	×î¸ß
-i thought you would be interested in the following link(s):	bookmarks	zh	ÄúÒ²Ğí»á¶ÔÒÔÏÂÁ´½Ó¸ĞĞËÈ¤
-import bookmarks	preferences	zh	µ¼ÈëÊéÇ©
-like	bookmarks	zh	Ïñ
-list	bookmarks	zh	ÁĞ±í
-lowest	bookmarks	zh	×îµÍ
-mail this bookmark	bookmarks	zh	ÓÊ¼Ä¸ÃÊéÇ©
-mail-this-link message sent to %1.	bookmarks	zh	¸ÃÁ´½ÓĞÅÏ¢ÒÑ·¢ËÍµ½%1.
-mass update:	bookmarks	zh	´ó¹æÄ£¸üĞÂ:
-message from	bookmarks	zh	ÏûÏ¢À´×Ô£º
-more	bookmarks	zh	¸ü¶à
-name	bookmarks	zh	Ãû³Æ
-name is required	bookmarks	zh	È±ÉÙÃû³Æ
-netscape bookmark file	bookmarks	zh	NetscapeÊéÇ©ÎÄ¼ş
-netscape bookmark filename is required!	bookmarks	zh	È±ÉÙNetscapeÊéÇ©ÎÄ¼şÃû!
-new	bookmarks	zh	ĞÂ½¨
-please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	ÇëÌîĞ´<b>EMailµØÖ·</b>¡¢<b><Ö÷Ìâ</b>ºÍ<b>ÏûÏ¢ÄÚÈİ</b>!
-query condition	bookmarks	zh	²éÑ¯Ìõ¼ş
-rating	bookmarks	zh	¼¶±ğ
-search for:	bookmarks	zh	²éÕÒ:
-send bookmark	bookmarks	zh	·¢ËÍÊéÇ©
-sub category	bookmarks	zh	×ÓÀà±ğ
-to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh	µØÖ·%1ÎŞĞ§¡£ÕıÈ·¸ñÊ½ÊÇ <strong>ÓÃ»§Ãû@ÓòÃû</strong> £¬ÓòÃû±ØĞë´æÔÚ!
-to e-mail addresses	bookmarks	zh	·¢ËÍµ½£º
-to which category should the imported folder hierarchy be attached	bookmarks	zh	µ¼ÈëµÄÎÄ¼ş¼ĞÊôÓÚÀà±ğ£º
-total visits	bookmarks	zh	·ÃÎÊ×ÜÊı
-tree view	bookmarks	zh	Ê÷ĞÍÄ¿Â¼ÊÓÍ¼
-unable to open temp file %1 for import.	bookmarks	zh	ÎŞ·¨´ò¿ªÓÃÓÚµ¼ÈëµÄÁÙÊ±ÎÄ¼ş%1 
-url is required.	bookmarks	zh	È±ÉÙµØÖ·
-view bookmark	bookmarks	zh	ä¯ÀÀÊéÇ©
-view this bookmark	bookmarks	zh	ä¯ÀÀ¸ÃÊéÇ©
-warning	bookmarks	zh	¾¯¸æ
-you are viewing this site outside of phpgroupware	bookmarks	zh	ÄúÕıÔÚä¯ÀÀphpGroupWareÒÔÍâµÄÍøÕ¾
-you must select a category	bookmarks	zh	±ØĞëÑ¡ÔñÒ»¸öÀà±ğ
+ï»¿%1 bookmarks have been deleted	bookmarks	zh	%1 ä¹¦ç­¾å·²åˆ é™¤ã€‚
+%1 bookmarks imported from %2 successfully.	bookmarks	zh	%1 ä¹¦ç­¾æˆåŠŸä» %2 å¯¼å…¥ã€‚
+(comma separate multiple addresses)	bookmarks	zh	(ä»¥é€—å·åˆ†éš”å¤šä¸ªåœ°å€)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	zh	<b>Note:</b> ç›®å‰åªèƒ½ä½¿ç”¨Netscapeä¹¦ç­¾
+all bookmarks	bookmarks	zh	æ‰€æœ‰ä¹¦ç­¾
+and	bookmarks	zh	åŠ
+append this message to mailed bookmarks	bookmarks	zh	åœ¨å·²é‚®å¯„ä¹¦ç­¾ä¸­é™„åŠ è¯¥ä¿¡æ¯
+ascending	bookmarks	zh	å‡åº
+book marks	common	zh	ä¹¦ç­¾
+bookmark changed sucessfully	bookmarks	zh	ä¹¦ç­¾æ›´æ”¹æˆåŠŸ
+bookmark created successfully.	bookmarks	zh	ä¹¦ç­¾åˆ›å»ºæˆåŠŸ
+bookmark not editable	bookmarks	zh	ä¹¦ç­¾ä¸å¯ç¼–è¾‘
+bookmark not readable	bookmarks	zh	ä¹¦ç­¾ä¸å¯è¯»
+bookmarks	common	zh	ä¹¦ç­¾
+bookmarks settings	bookmarks	zh	ä¹¦ç­¾é…ç½®
+change bookmark	bookmarks	zh	æ›´æ”¹ä¹¦ç­¾
+close this window to return	bookmarks	zh	å…³é—­çª—å£å¹¶è¿”å›
+create bookmark	bookmarks	zh	åˆ›å»ºä¹¦ç­¾
+create new bookmark	bookmarks	zh	åˆ›å»ºæ–°ä¹¦ç­¾
+date added	bookmarks	zh	æ—¥æœŸå·²æ·»åŠ 
+date changed	bookmarks	zh	æ—¥æœŸå·²æ›´æ”¹
+date last updated	bookmarks	zh	æœ€è¿‘æ›´æ–°æ—¥æœŸ
+date last visited	bookmarks	zh	æœ€è¿‘è®¿é—®æ—¥æœŸ
+descending	bookmarks	zh	é™åº
+edit bookmark	bookmarks	zh	ç¼–è¾‘ä¹¦ç­¾
+edit this bookmark	bookmarks	zh	ç¼–è¾‘è¯¥ä¹¦ç­¾
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	zh	è¯·æŒ‡å®šè¦å¯¼å…¥åˆ°æ”¶è—å¤¹çš„Netscapeä¹¦ç­¾æ–‡ä»¶å
+fewer	bookmarks	zh	å°‘äº›
+filter by	bookmarks	zh	ç­›é€‰æ¡ä»¶ï¼š
+found a link you might like	bookmarks	zh	æ‰¾åˆ°ä¸€ä¸ªæ‚¨å¯èƒ½å–œæ¬¢çš„é“¾æ¥
+from	bookmarks	zh	ä»
+from category %1	bookmarks	zh	ä»ç±»åˆ«%1
+highest	bookmarks	zh	æœ€é«˜
+i thought you would be interested in the following link(s):	bookmarks	zh	æ‚¨ä¹Ÿè®¸ä¼šå¯¹ä»¥ä¸‹é“¾æ¥æ„Ÿå…´è¶£
+import bookmarks	preferences	zh	å¯¼å…¥ä¹¦ç­¾
+like	bookmarks	zh	åƒ
+list	bookmarks	zh	åˆ—è¡¨
+lowest	bookmarks	zh	æœ€ä½
+mail this bookmark	bookmarks	zh	é‚®å¯„è¯¥ä¹¦ç­¾
+mail-this-link message sent to %1.	bookmarks	zh	è¯¥é“¾æ¥ä¿¡æ¯å·²å‘é€åˆ°%1.
+mass update:	bookmarks	zh	å¤§è§„æ¨¡æ›´æ–°:
+message from	bookmarks	zh	æ¶ˆæ¯æ¥è‡ªï¼š
+more	bookmarks	zh	æ›´å¤š
+name	bookmarks	zh	åç§°
+name is required	bookmarks	zh	ç¼ºå°‘åç§°
+netscape bookmark file	bookmarks	zh	Netscapeä¹¦ç­¾æ–‡ä»¶
+netscape bookmark filename is required!	bookmarks	zh	ç¼ºå°‘Netscapeä¹¦ç­¾æ–‡ä»¶å!
+new	bookmarks	zh	æ–°å»º
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	zh	è¯·å¡«å†™<b>EMailåœ°å€</b>ã€<b><ä¸»é¢˜</b>å’Œ<b>æ¶ˆæ¯å†…å®¹</b>!
+query condition	bookmarks	zh	æŸ¥è¯¢æ¡ä»¶
+rating	bookmarks	zh	çº§åˆ«
+search for:	bookmarks	zh	æŸ¥æ‰¾:
+send bookmark	bookmarks	zh	å‘é€ä¹¦ç­¾
+sub category	bookmarks	zh	å­ç±»åˆ«
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	zh	åœ°å€%1æ— æ•ˆã€‚æ­£ç¡®æ ¼å¼æ˜¯ <strong>ç”¨æˆ·å@åŸŸå</strong> ï¼ŒåŸŸåå¿…é¡»å­˜åœ¨!
+to e-mail addresses	bookmarks	zh	å‘é€åˆ°ï¼š
+to which category should the imported folder hierarchy be attached	bookmarks	zh	å¯¼å…¥çš„æ–‡ä»¶å¤¹å±äºç±»åˆ«ï¼š
+total visits	bookmarks	zh	è®¿é—®æ€»æ•°
+tree view	bookmarks	zh	æ ‘å‹ç›®å½•è§†å›¾
+unable to open temp file %1 for import.	bookmarks	zh	æ— æ³•æ‰“å¼€ç”¨äºå¯¼å…¥çš„ä¸´æ—¶æ–‡ä»¶%1 
+url is required.	bookmarks	zh	ç¼ºå°‘åœ°å€
+view bookmark	bookmarks	zh	æµè§ˆä¹¦ç­¾
+view this bookmark	bookmarks	zh	æµè§ˆè¯¥ä¹¦ç­¾
+warning	bookmarks	zh	è­¦å‘Š
+you are viewing this site outside of phpgroupware	bookmarks	zh	æ‚¨æ­£åœ¨æµè§ˆphpGroupWareä»¥å¤–çš„ç½‘ç«™
+you must select a category	bookmarks	zh	å¿…é¡»é€‰æ‹©ä¸€ä¸ªç±»åˆ«

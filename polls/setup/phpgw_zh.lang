@@ -1,29 +1,29 @@
-add answer to poll	polls	zh	½«ºòÑ¡Ïî¼ÓÈë±í¾ö
-add answers	polls	zh	Ìí¼ÓºòÑ¡Ïî
-add new poll question	polls	zh	Ìí¼ÓĞÂµÄ±í¾öÖ÷Ìâ
-add questions	polls	zh	Ìí¼ÓÖ÷Ìâ
-allow users to vote more then once	polls	zh	ÔÊĞíÓÃ»§¶à´ÎÍ¶Æ±
-answer	polls	zh	ºòÑ¡Ïî
-answer has been added to poll	polls	zh	ÒÑ½«ºòÑ¡Ïî¼ÓÈë±í¾ö
-answer has been updated	polls	zh	ÒÑ¸üĞÂºòÑ¡Ïî
-Answers	polls	zh	ºòÑ¡Ïî
-are you sure want to delete this answer ?	polls	zh	ÄúÈ·¶¨ÒªÉ¾³ı¸ÃºòÑ¡ÏîÂğ£¿
-are you sure want to delete this question ?	polls	zh	ÄúÈ·¶¨ÒªÉ¾³ı¸ÃÖ÷ÌâÂğ£¿
-edit answer	polls	zh	±à¼­ºòÑ¡Ïî
-edit poll question	polls	zh	±à¼­±í¾öÖ÷Ìâ
-enter poll question	polls	zh	ÌîÈë±í¾öÖ÷Ìâ
-new poll has been added.  you should now add some answers for this poll	polls	zh	ĞÂ±í¾öÒÑ¼ÓÈë  ÇëÄúÎª¸Ã±í¾öÌí¼ÓºòÑ¡Ïî
-poll question	polls	zh	 ±í¾öÖ÷Ìâ
-poll settings	polls	zh	±í¾öÉèÖÃ
-polls	common	zh	±í¾ö
-question has been updated	polls	zh	ÒÑ¸üĞÂÖ÷Ìâ
-select current poll	polls	zh	Ñ¡Ôñµ±Ç°±í¾ö
-settings updated	polls	zh	ÒÑ¸üĞÂÉèÖÃ
-show answers	polls	zh	ÏÔÊ¾±í¾öµÄ±»Ñ¡´ğ°¸
-show questions	polls	zh	ÏÔÊ¾±í¾öÖ÷Ìâ
-total votes	polls	zh	×ÜÆ±Êı
-View poll	polls	zh	²é¿´±í¾ö
-vote	polls	zh	Í¶Æ±
-voting booth admin	admin	zh	Í¶Æ±ÊÒ¹ÜÀí
-voting booth administration	polls	zh	Í¶Æ±ÊÒ¹ÜÀí
-which poll	polls	zh	ÄÄÒ»¸ö±í¾ö
+ï»¿add answer to poll	polls	zh	å°†å€™é€‰é¡¹åŠ å…¥è¡¨å†³
+add answers	polls	zh	æ·»åŠ å€™é€‰é¡¹
+add new poll question	polls	zh	æ·»åŠ æ–°çš„è¡¨å†³ä¸»é¢˜
+add questions	polls	zh	æ·»åŠ ä¸»é¢˜
+allow users to vote more then once	polls	zh	å…è®¸ç”¨æˆ·å¤šæ¬¡æŠ•ç¥¨
+answer	polls	zh	å€™é€‰é¡¹
+answer has been added to poll	polls	zh	å·²å°†å€™é€‰é¡¹åŠ å…¥è¡¨å†³
+answer has been updated	polls	zh	å·²æ›´æ–°å€™é€‰é¡¹
+Answers	polls	zh	å€™é€‰é¡¹
+are you sure want to delete this answer ?	polls	zh	æ‚¨ç¡®å®šè¦åˆ é™¤è¯¥å€™é€‰é¡¹å—ï¼Ÿ
+are you sure want to delete this question ?	polls	zh	æ‚¨ç¡®å®šè¦åˆ é™¤è¯¥ä¸»é¢˜å—ï¼Ÿ
+edit answer	polls	zh	ç¼–è¾‘å€™é€‰é¡¹
+edit poll question	polls	zh	ç¼–è¾‘è¡¨å†³ä¸»é¢˜
+enter poll question	polls	zh	å¡«å…¥è¡¨å†³ä¸»é¢˜
+new poll has been added.  you should now add some answers for this poll	polls	zh	æ–°è¡¨å†³å·²åŠ å…¥  è¯·æ‚¨ä¸ºè¯¥è¡¨å†³æ·»åŠ å€™é€‰é¡¹
+poll question	polls	zh	 è¡¨å†³ä¸»é¢˜
+poll settings	polls	zh	è¡¨å†³è®¾ç½®
+polls	common	zh	è¡¨å†³
+question has been updated	polls	zh	å·²æ›´æ–°ä¸»é¢˜
+select current poll	polls	zh	é€‰æ‹©å½“å‰è¡¨å†³
+settings updated	polls	zh	å·²æ›´æ–°è®¾ç½®
+show answers	polls	zh	æ˜¾ç¤ºè¡¨å†³çš„è¢«é€‰ç­”æ¡ˆ
+show questions	polls	zh	æ˜¾ç¤ºè¡¨å†³ä¸»é¢˜
+total votes	polls	zh	æ€»ç¥¨æ•°
+View poll	polls	zh	æŸ¥çœ‹è¡¨å†³
+vote	polls	zh	æŠ•ç¥¨
+voting booth admin	admin	zh	æŠ•ç¥¨å®¤ç®¡ç†
+voting booth administration	polls	zh	æŠ•ç¥¨å®¤ç®¡ç†
+which poll	polls	zh	å“ªä¸€ä¸ªè¡¨å†³

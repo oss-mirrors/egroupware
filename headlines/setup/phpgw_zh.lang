@@ -1,46 +1,46 @@
-are you sure you want to delete this news site ?	headlines	zh	ÄúÏëÉ¾³ı¸ÃĞÂÎÅÍøÕ¾Âğ£¿
-base url	headlines	zh	Ê×Ñ¡ÍøÖ·
-basic	headlines	zh	Òªµã
-choose layout	headlines	zh	Ñ¡Ôñ²¼¾Ö
-color	headlines	zh	ÑÕÉ«
-create new headline	headlines	zh	ĞÂ½¨±êÌâ
-current headlines in cache	headlines	zh	»º´æÖĞµÄµ±Ç°±êÌâ
-display	headlines	zh	ÏÔÊ¾
-edit headline sites	headlines	zh	±à¼­±êÌâÍøÕ¾
-edit headlines shown by default	headlines	zh	±à¼­È±Ê¡±êÌâ
-grab new news sites	common	zh	»ñÈ¡ĞÂµÄĞÂÎÅÍøÕ¾
-gray	headlines	zh	»ÒÉ«
-headline preferences	common	zh	±êÌâ¸öĞÔ»¯ÅäÖÃ
-headline site management	common	zh	±êÌâÍøÕ¾¹ÜÀí
-headline sites	headlines	zh	±êÌâÍøÕ¾
-headlines	common	zh	±êÌâ
-headlines administration	headlines	zh	±êÌâ¹ÜÀí
-headlines administration - delete headline	headlines	zh	±êÌâ¹ÜÀí - É¾³ı±êÌâ
-headlines layout	headlines	zh	±êÌâ²¼¾Ö
-listings displayed	headlines	zh	ÒÑÏÔÊ¾µÄÁĞ±í
-minutes between refresh	headlines	zh	Ë¢ĞÂÊ±¼ä¼ä¸ô(·ÖÖÓ)
-minutes between reloads	headlines	zh	ÖØĞÂ¼ÓÔØÊ±¼ä¼ä¸ô(·ÖÖÓ)
-monitor	common	zh	¼àÊÓÆ÷
-news file	headlines	zh	ĞÂÎÅÎÄ¼ş
-news headlines	common	zh	ĞÂÎÅ±êÌâ
-news type	headlines	zh	ĞÂÎÅÀàĞÍ
-no headlines found	headlines	zh	ÕÒ²»µ½±êÌâ
-other preferences	preferences	zh	ÆäËü¸öĞÔ»¯ÅäÖÃ
-reload news sites	headlines	zh	ÖØĞÂ¼ÓÔØĞÂÎÅÍøÕ¾
-reset	headlines	zh	¸´Î»
-sample	headlines	zh	Àı×Ó
-select headline news sites	headlines	zh	Ñ¡Ôñ±êÌâĞÂÎÅÍøÕ¾
-select headlines to display	common	zh	Ñ¡Ôñ´ıÏÔÊ¾±êÌâ
-select layout	common	zh	Ñ¡Ôñ²¼¾Ö
-site	headlines	zh	ÍøÕ¾
-that site has already been entered	headlines	zh	ÒÑµÇÂ¼¸ÃÍøÕ¾
-unable to retrieve links	headlines	zh	ÎŞ·¨»Ö¸´Á´½Ó
-update headline	headlines	zh	¸üĞÂ±êÌâ
-view headline	headlines	zh	²é¿´±êÌâ
-you can only enter numbers for listings display	headlines	zh	Ö»ÄÜÊäÈëÏÔÊ¾µÄÁĞ±íÊı
-you can only enter numbers minutes between refresh	headlines	zh	Ö»ÄÜÊäÈëË¢ĞÂÊ±¼ä¼ä¸ô
-you must enter a base url	headlines	zh	±ØĞëÊäÈëÊ×Ñ¡ÍøÖ·
-you must enter a display	headlines	zh	±ØĞëÊäÈëÏÔÊ¾µÄĞÅÏ¢
-you must enter a news url	headlines	zh	±ØĞëÊäÈëĞÂÎÅÍøÖ·
-you must enter the number of listings display	headlines	zh	±ØĞëÊäÈëÏÔÊ¾µÄÁĞ±íÊı
-you must enter the number of minutes between reload	headlines	zh	±ØĞëÊäÈëÖØĞÂ¼ÓÔØÊ±¼ä¼ä¸ô
+ï»¿are you sure you want to delete this news site ?	headlines	zh	æ‚¨æƒ³åˆ é™¤è¯¥æ–°é—»ç½‘ç«™å—ï¼Ÿ
+base url	headlines	zh	é¦–é€‰ç½‘å€
+basic	headlines	zh	è¦ç‚¹
+choose layout	headlines	zh	é€‰æ‹©å¸ƒå±€
+color	headlines	zh	é¢œè‰²
+create new headline	headlines	zh	æ–°å»ºæ ‡é¢˜
+current headlines in cache	headlines	zh	ç¼“å­˜ä¸­çš„å½“å‰æ ‡é¢˜
+display	headlines	zh	æ˜¾ç¤º
+edit headline sites	headlines	zh	ç¼–è¾‘æ ‡é¢˜ç½‘ç«™
+edit headlines shown by default	headlines	zh	ç¼–è¾‘ç¼ºçœæ ‡é¢˜
+grab new news sites	common	zh	è·å–æ–°çš„æ–°é—»ç½‘ç«™
+gray	headlines	zh	ç°è‰²
+headline preferences	common	zh	æ ‡é¢˜ä¸ªæ€§åŒ–é…ç½®
+headline site management	common	zh	æ ‡é¢˜ç½‘ç«™ç®¡ç†
+headline sites	headlines	zh	æ ‡é¢˜ç½‘ç«™
+headlines	common	zh	æ ‡é¢˜
+headlines administration	headlines	zh	æ ‡é¢˜ç®¡ç†
+headlines administration - delete headline	headlines	zh	æ ‡é¢˜ç®¡ç† - åˆ é™¤æ ‡é¢˜
+headlines layout	headlines	zh	æ ‡é¢˜å¸ƒå±€
+listings displayed	headlines	zh	å·²æ˜¾ç¤ºçš„åˆ—è¡¨
+minutes between refresh	headlines	zh	åˆ·æ–°æ—¶é—´é—´éš”(åˆ†é’Ÿ)
+minutes between reloads	headlines	zh	é‡æ–°åŠ è½½æ—¶é—´é—´éš”(åˆ†é’Ÿ)
+monitor	common	zh	ç›‘è§†å™¨
+news file	headlines	zh	æ–°é—»æ–‡ä»¶
+news headlines	common	zh	æ–°é—»æ ‡é¢˜
+news type	headlines	zh	æ–°é—»ç±»å‹
+no headlines found	headlines	zh	æ‰¾ä¸åˆ°æ ‡é¢˜
+other preferences	preferences	zh	å…¶å®ƒä¸ªæ€§åŒ–é…ç½®
+reload news sites	headlines	zh	é‡æ–°åŠ è½½æ–°é—»ç½‘ç«™
+reset	headlines	zh	å¤ä½
+sample	headlines	zh	ä¾‹å­
+select headline news sites	headlines	zh	é€‰æ‹©æ ‡é¢˜æ–°é—»ç½‘ç«™
+select headlines to display	common	zh	é€‰æ‹©å¾…æ˜¾ç¤ºæ ‡é¢˜
+select layout	common	zh	é€‰æ‹©å¸ƒå±€
+site	headlines	zh	ç½‘ç«™
+that site has already been entered	headlines	zh	å·²ç™»å½•è¯¥ç½‘ç«™
+unable to retrieve links	headlines	zh	æ— æ³•æ¢å¤é“¾æ¥
+update headline	headlines	zh	æ›´æ–°æ ‡é¢˜
+view headline	headlines	zh	æŸ¥çœ‹æ ‡é¢˜
+you can only enter numbers for listings display	headlines	zh	åªèƒ½è¾“å…¥æ˜¾ç¤ºçš„åˆ—è¡¨æ•°
+you can only enter numbers minutes between refresh	headlines	zh	åªèƒ½è¾“å…¥åˆ·æ–°æ—¶é—´é—´éš”
+you must enter a base url	headlines	zh	å¿…é¡»è¾“å…¥é¦–é€‰ç½‘å€
+you must enter a display	headlines	zh	å¿…é¡»è¾“å…¥æ˜¾ç¤ºçš„ä¿¡æ¯
+you must enter a news url	headlines	zh	å¿…é¡»è¾“å…¥æ–°é—»ç½‘å€
+you must enter the number of listings display	headlines	zh	å¿…é¡»è¾“å…¥æ˜¾ç¤ºçš„åˆ—è¡¨æ•°
+you must enter the number of minutes between reload	headlines	zh	å¿…é¡»è¾“å…¥é‡æ–°åŠ è½½æ—¶é—´é—´éš”

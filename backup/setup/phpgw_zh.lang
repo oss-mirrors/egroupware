@@ -1,65 +1,65 @@
-Absolute path of the backup directory	backup	zh	±¸·İÄ¿Â¼µÄÍêÕûÂ·¾¶
-Absolute path of the directory to store the backup script	backup	zh	½Å±¾±¸·İÄ¿Â¼µÄÍêÕûÂ·¾¶
-Archive type	backup	zh	µµ°¸ÀàĞÍ
-Backup	common	zh	±¸·İ
-Backup administration	common	zh	±¸·İ¹ÜÀí
+ï»¿Absolute path of the backup directory	backup	zh	å¤‡ä»½ç›®å½•çš„å®Œæ•´è·¯å¾„
+Absolute path of the directory to store the backup script	backup	zh	è„šæœ¬å¤‡ä»½ç›®å½•çš„å®Œæ•´è·¯å¾„
+Archive type	backup	zh	æ¡£æ¡ˆç±»å‹
+Backup	common	zh	å¤‡ä»½
+Backup administration	common	zh	å¤‡ä»½ç®¡ç†
 bzip2	admin	zh	bzip2
-Configuration backup	backup	zh	±¸·İÅäÖÃ
-Configuration localhost	backup	zh	±¾µØÖ÷»úÅäÖÃ
-Configuration remote host	backup	zh	Ô¶³ÌÖ÷»úÅäÖÃ
-Create backups of your data ?	backup	zh	Òª´´½¨Êı¾İ±¸·İÂğ?
-daily	backup	zh	ÈÕÖ¾
-Data	backup	zh	Êı¾İ
-directory locations	admin	zh	Ä¿Â¼Î»ÖÃ
-directory names	admin	zh	Ä¿Â¼Ãû
+Configuration backup	backup	zh	å¤‡ä»½é…ç½®
+Configuration localhost	backup	zh	æœ¬åœ°ä¸»æœºé…ç½®
+Configuration remote host	backup	zh	è¿œç¨‹ä¸»æœºé…ç½®
+Create backups of your data ?	backup	zh	è¦åˆ›å»ºæ•°æ®å¤‡ä»½å—?
+daily	backup	zh	æ—¥å¿—
+Data	backup	zh	æ•°æ®
+directory locations	admin	zh	ç›®å½•ä½ç½®
+directory names	admin	zh	ç›®å½•å
 E-MAIL	backup	zh	E-Mail
-homedirs	admin	zh	Ö÷Ä¿Â¼
-interval	backup	zh	¼ä¸ô
-ip or hostname	backup	zh	IPµØÖ·»òÖ÷»úÃû
+homedirs	admin	zh	ä¸»ç›®å½•
+interval	backup	zh	é—´éš”
+ip or hostname	backup	zh	IPåœ°å€æˆ–ä¸»æœºå
 LDAP	common	zh	LDAP
-ldap database	admin	zh	LDAPÊı¾İ¿â
-maildir	admin	zh	ÓÊ¼şÄ¿Â¼
-monthly	backup	zh	Ã¿ÔÂ
+ldap database	admin	zh	LDAPæ•°æ®åº“
+maildir	admin	zh	é‚®ä»¶ç›®å½•
+monthly	backup	zh	æ¯æœˆ
 mysql	admin	zh	MySQL	
 nfs	backup	zh	NFS
-No backup archives available !	backup	zh	ÎŞ±¸·İµµ°¸¿ÉÓÃ!
-Number of stored backup versions	backup	zh	´æ´¢µÄ±¸·İ°æ±¾Êı×Ö
-Operating system	backup	zh	²Ù×÷ÏµÍ³
-Password	backup	zh	ÃÜÂë
+No backup archives available !	backup	zh	æ— å¤‡ä»½æ¡£æ¡ˆå¯ç”¨!
+Number of stored backup versions	backup	zh	å­˜å‚¨çš„å¤‡ä»½ç‰ˆæœ¬æ•°å­—
+Operating system	backup	zh	æ“ä½œç³»ç»Ÿ
+Password	backup	zh	å¯†ç 
 pgsql	admin	zh	PostgreSQL
 php cgi	admin	zh	PHP CGI
-Please enter the path of the needed applications in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÊäÈëËùĞèÓ¦ÓÃ³ÌĞòµÄÂ·¾¶!
-Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !	backup	zh	ÇëÊäÈë±¸·İÄ¿Â¼Â·¾¶»òÏÔÊ¾µµ°¸!
-Please enter username and password for remote connection !	backup	zh	ÇëÊäÈëÔ¶³ÌÁ¬½ÓµÄÓÃ»§ÃûºÍÃÜÂë
-Please select an application for transport to the remote host !	backup	zh	ÇëÑ¡Ôñ´«Êäµ½Ô¶³ÌÖ÷»úÓ¦ÓÃ³ÌĞò!
-Please set the path to a local dir to store the backup script !	backup	zh	ÇëÖ¸¶¨±¸·İ½Å±¾Ä¿Â¼µÄ±¾µØÂ·¾¶!
-Please set the path to the LDAP database dir in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨LDAPÊı¾İ¿âÄ¿Â¼µÄÂ·¾¶!
-Please set the path to the MySQL database dir in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨MySQLÊı¾İ¿âÄ¿Â¼µÄÂ·¾¶!
-Please set the path to the PostgreSQL database dir in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨PostgreSQLÊı¾İ¿âÄ¿Â¼Â·¾¶!
-Please set the values in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨ÕâĞ©Öµ!
-please specify the ip of the remote host !	backup	zh	ÇëÖ¸¶¨Ô¶³ÌÖ÷»úIPµØÖ·!
-Please specify the name of the Maildir in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨ÓÊ¼şÄ¿Â¼Ãû!
-Please specify the path to the backup directory !	backup	zh	ÇëÖ¸¶¨±¸·İÄ¿Â¼µÄÂ·¾¶!
-Please specify the path to the user-homedirectories in *Site configuration* !	backup	zh	ÇëÔÚ¡¸Õ¾µãÅäÖÃ¡¹ÖĞÖ¸¶¨ÓÃ»§Ö÷Ä¿Â¼!
-program locations	admin	zh	³ÌĞòÎ»ÖÃ
-Save backup locally ?	backup	zh	ÔÚ±¾µØ±£´æ±¸·İ£¿
-Save backup to a remote host ?	backup	zh	ÔÚÔ¶³ÌÖ÷»úÉÏ±£´æ±¸·İ£¿
-Select archive type	backup	zh	Ñ¡Ôñµµ°¸ÀàĞÍ
-Select interval	backup	zh	Ñ¡Ôñ±¸·İ¼ä¸ô
-Select transport application	backup	zh	Ñ¡¶¨´ı´«ÊäµÄÓ¦ÓÃ³ÌĞò
-settings	admin	zh	ÅäÖÃ
-Show backup archives in phpGroupWare ?	backup	zh	ÔÚphpGroupWareÖĞÏÔÊ¾±¸·İµµ°¸£¿
+Please enter the path of the needed applications in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­è¾“å…¥æ‰€éœ€åº”ç”¨ç¨‹åºçš„è·¯å¾„!
+Please enter the path to the backup dir and/or enable showing archives in phpGroupWare !	backup	zh	è¯·è¾“å…¥å¤‡ä»½ç›®å½•è·¯å¾„æˆ–æ˜¾ç¤ºæ¡£æ¡ˆ!
+Please enter username and password for remote connection !	backup	zh	è¯·è¾“å…¥è¿œç¨‹è¿æ¥çš„ç”¨æˆ·åå’Œå¯†ç 
+Please select an application for transport to the remote host !	backup	zh	è¯·é€‰æ‹©ä¼ è¾“åˆ°è¿œç¨‹ä¸»æœºåº”ç”¨ç¨‹åº!
+Please set the path to a local dir to store the backup script !	backup	zh	è¯·æŒ‡å®šå¤‡ä»½è„šæœ¬ç›®å½•çš„æœ¬åœ°è·¯å¾„!
+Please set the path to the LDAP database dir in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šLDAPæ•°æ®åº“ç›®å½•çš„è·¯å¾„!
+Please set the path to the MySQL database dir in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šMySQLæ•°æ®åº“ç›®å½•çš„è·¯å¾„!
+Please set the path to the PostgreSQL database dir in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šPostgreSQLæ•°æ®åº“ç›®å½•è·¯å¾„!
+Please set the values in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šè¿™äº›å€¼!
+please specify the ip of the remote host !	backup	zh	è¯·æŒ‡å®šè¿œç¨‹ä¸»æœºIPåœ°å€!
+Please specify the name of the Maildir in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šé‚®ä»¶ç›®å½•å!
+Please specify the path to the backup directory !	backup	zh	è¯·æŒ‡å®šå¤‡ä»½ç›®å½•çš„è·¯å¾„!
+Please specify the path to the user-homedirectories in *Site configuration* !	backup	zh	è¯·åœ¨ã€Œç«™ç‚¹é…ç½®ã€ä¸­æŒ‡å®šç”¨æˆ·ä¸»ç›®å½•!
+program locations	admin	zh	ç¨‹åºä½ç½®
+Save backup locally ?	backup	zh	åœ¨æœ¬åœ°ä¿å­˜å¤‡ä»½ï¼Ÿ
+Save backup to a remote host ?	backup	zh	åœ¨è¿œç¨‹ä¸»æœºä¸Šä¿å­˜å¤‡ä»½ï¼Ÿ
+Select archive type	backup	zh	é€‰æ‹©æ¡£æ¡ˆç±»å‹
+Select interval	backup	zh	é€‰æ‹©å¤‡ä»½é—´éš”
+Select transport application	backup	zh	é€‰å®šå¾…ä¼ è¾“çš„åº”ç”¨ç¨‹åº
+settings	admin	zh	é…ç½®
+Show backup archives in phpGroupWare ?	backup	zh	åœ¨phpGroupWareä¸­æ˜¾ç¤ºå¤‡ä»½æ¡£æ¡ˆï¼Ÿ
 smbmount	backup	zh	SMBMOUNT
 SQL	backup	zh	SQL
 tar	admin	zh	tar
 tar.bz2	backup	zh	tar.bz2
 tar.gz	backup	zh	tar.gz
-The backup application is not configured for showing the archives in phpGroupWare yet !	backup	zh	±¸·İ³ÌĞòÉĞÎ´ÅäÖÃ£¬ÎŞ·¨ÏÔÊ¾µµ°¸!
-The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	zh	±¸·İ½Å±¾µÄÄ¿Â¼²»ÄÜÎ»ÓÚ·şÎñÆ÷µÄÎÄµµÄ¿Â¼ÄÚ!
-The ftp connection failed ! Please check your configuration !	backup	zh	ftpÁ¬½ÓÊ§°Ü!Çë¼ì²éÅäÖÃ!
-Transport application	backup	zh	´«ÊäÓ¦ÓÃ³ÌĞò
-User	backup	zh	ÓÃ»§
-Versions can only be a number !	backup	zh	°æ±¾ºÅÖ»ÄÜÊÇÊı×Ö!
-weekly	backup	zh	Ã¿ÖÜ
-Your SQL database isnt supported by this application !	backup	zh	¸ÃÓ¦ÓÃ³ÌĞò²»Ö§³ÖÄúµÄSQLÊı¾İ¿â!
+The backup application is not configured for showing the archives in phpGroupWare yet !	backup	zh	å¤‡ä»½ç¨‹åºå°šæœªé…ç½®ï¼Œæ— æ³•æ˜¾ç¤ºæ¡£æ¡ˆ!
+The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	zh	å¤‡ä»½è„šæœ¬çš„ç›®å½•ä¸èƒ½ä½äºæœåŠ¡å™¨çš„æ–‡æ¡£ç›®å½•å†…!
+The ftp connection failed ! Please check your configuration !	backup	zh	ftpè¿æ¥å¤±è´¥!è¯·æ£€æŸ¥é…ç½®!
+Transport application	backup	zh	ä¼ è¾“åº”ç”¨ç¨‹åº
+User	backup	zh	ç”¨æˆ·
+Versions can only be a number !	backup	zh	ç‰ˆæœ¬å·åªèƒ½æ˜¯æ•°å­—!
+weekly	backup	zh	æ¯å‘¨
+Your SQL database isnt supported by this application !	backup	zh	è¯¥åº”ç”¨ç¨‹åºä¸æ”¯æŒæ‚¨çš„SQLæ•°æ®åº“!
 zip	common	zh	zip
