@@ -60,54 +60,56 @@
 	{
 		echo '<center>' . lang('please set your preferences for this application') . '.</center>';
 	}
-	foreach($sites as $site)
+	elseif (is_array($sites))
 	{
-		$j++;
-		$headlines->readtable($site);
-
-		$GLOBALS['phpgw']->template->set_var('channel_url',$headlines->base_url);
-		$GLOBALS['phpgw']->template->set_var('channel_title',$headlines->display);
-
-		$links = $headlines->getLinks($site);
-		if($links == False)
+		foreach($sites as $site)
 		{
-			$var = Array(
-				'item_link'  => '',
-				'item_label' => '',
-				'error'      => lang('Unable to retrieve links').'.'
-			);
-			$GLOBALS['phpgw']->template->set_var($var);
-			$s .= $GLOBALS['phpgw']->template->parse('o_','row');
-		}
-		else
-		{
-			while (list($title,$link) = each($links))
+			$j++;
+			$headlines->readtable($site);
+
+			$GLOBALS['phpgw']->template->set_var('channel_url',$headlines->base_url);
+			$GLOBALS['phpgw']->template->set_var('channel_title',$headlines->display);
+
+			$links = $headlines->getLinks($site);
+			if($links == False)
 			{
-
 				$var = Array(
-					'item_link'  => stripslashes($link),
-					'item_label' => stripslashes($title),
-					'error'      => ''
+					'item_link'  => '',
+					'item_label' => '',
+					'error'      => lang('Unable to retrieve links').'.'
 				);
 				$GLOBALS['phpgw']->template->set_var($var);
 				$s .= $GLOBALS['phpgw']->template->parse('o_','row');
 			}
-		}
-		$GLOBALS['phpgw']->template->set_var('rows',$s);
-		unset($s);
+			else
+			{
+				while (list($title,$link) = each($links))
+				{
 
-		$GLOBALS['phpgw']->template->set_var('section_' . $j,$GLOBALS['phpgw']->template->parse('o','channel'));
+					$var = Array(
+						'item_link'  => stripslashes($link),
+						'item_label' => stripslashes($title),
+						'error'      => ''
+					);
+					$GLOBALS['phpgw']->template->set_var($var);
+					$s .= $GLOBALS['phpgw']->template->parse('o_','row');
+				}
+			}
+			$GLOBALS['phpgw']->template->set_var('rows',$s);
+			unset($s);
 
-		if ($j == 3 || $i == 1)
-		{
-			$GLOBALS['phpgw']->template->pfp('out','layout_row');
-			$GLOBALS['phpgw']->template->set_var('section_1', '');
-			$GLOBALS['phpgw']->template->set_var('section_2', '');
-			$GLOBALS['phpgw']->template->set_var('section_3', '');
-			$j = 0;
+			$GLOBALS['phpgw']->template->set_var('section_' . $j,$GLOBALS['phpgw']->template->parse('o','channel'));
+
+			if ($j == 3 || $i == 1)
+			{
+				$GLOBALS['phpgw']->template->pfp('out','layout_row');
+				$GLOBALS['phpgw']->template->set_var('section_1', '');
+				$GLOBALS['phpgw']->template->set_var('section_2', '');
+				$GLOBALS['phpgw']->template->set_var('section_3', '');
+				$j = 0;
+			}
+			$i--;
 		}
-		$i--;
 	}
-
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
