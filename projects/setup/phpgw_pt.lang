@@ -5,8 +5,6 @@ Activities list	projects	pt	Activities list
 Activities	projects	pt	Activities
 Activity ID	projects	pt	Activity ID
 Activity	projects	pt	Activity
-Activity x has been added !	projects	pt	Activity %1 has been added !
-Activity x has been updated !	projects	pt	Activity %1 has been updated !
 Add Activity	projects	pt	Add activity
 Add job	projects	pt	Add job
 Add project hours	projects	pt	Add project hours
@@ -44,8 +42,6 @@ delivery note for project	projects	pt	Delivery note for project
 Delivery note	projects	pt	Delivery note
 Delivery notes	projects	pt	Delivery notes
 Delivery	projects	pt	Delivery
-Delivery x has been created !	projects	pt	Delivery %1 has been created !
-Delivery x has been updated !	projects	pt	Delivery %1 has been updated !
 Edit Activity	projects	pt	Edit activity
 Edit project administrator list	projects	pt	Edit project administrator list
 edit project bookkeeper list	projects	pt	Editar lista de contabilidades de projetos
@@ -69,14 +65,10 @@ Invoice layout	projects	pt	Invoice layout
 Invoice list	projects	pt	Invoice list
 Invoice	projects	pt	Invoice
 Invoices	projects	pt	Invoices
-Invoice x has been created !	projects	pt	Invoice %1 has been created !
-Invoice x has been updated !	projects	pt	Invoice %1 has been updated !
 invoicing	projects	pt	Invoicing
 job archive	projects	pt	Arquivo de tarefas
 Job date	projects	pt	Job date
 Job description	projects	pt	Job description
-Job has been added !	projects	pt	Job has been added !
-Job has been updated !	projects	pt	Job has been updated !
 Job ID	projects	pt	Job ID
 Job list	projects	pt	Job list
 Job	projects	pt	Job

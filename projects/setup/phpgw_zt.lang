@@ -6,8 +6,6 @@ Activities	projects	zt	動作
 Activities list	projects	zt	動作列表
 Activity	projects	zt	動作
 Activity ID	projects	zt	動作代碼
-Activity x has been added !	projects	zt	已經成功新增活動 %1 ！
-Activity x has been updated !	projects	zt	已經成功更新活動 %1 ！
 Add Activity	projects	zt	新增活動
 Add hours	projects	zt	新增時數
 Add project	projects	zt	新增專案
@@ -38,8 +36,6 @@ Delivery note	projects	zt	Delivery note
 Delivery ID	projects	zt	Delivery ID
 Delivery list	projects	zt	Delivery list
 Delivery notes	projects	zt	Delivery notes
-Delivery x has been created !	projects	zt	Delivery %1 has been created !
-Delivery x has been updated !	projects	zt	Delivery %1 has been updated !
 Edit Activity	projects	zt	編輯動作
 Edit hours	projects	zt	編輯時數
 Edit project administrator list	projects	zt	編輯專案管理人員
@@ -56,13 +52,9 @@ Invoice date	projects	zt	發票日期
 Invoice ID	projects	zt	發票號碼
 Invoice list	projects	zt	發票列表
 Invoices	projects	zt	發票
-Invoice x has been created !	projects	zt	已成功建立發票 %1 ！
-Invoice x has been updated !	projects	zt	已成功更新發票 %1 ！
 Job	projects	zt	工作
 Job date	projects	zt	工作日期
 Job description	projects	zt	工作敘述
-Job has been added !	projects	zt	已成功新增工作！
-Job has been updated !	projects	zt	已成功更新工作！
 Job ID	projects	zt	工作代碼
 Job list	projects	zt	工作列表
 Jobs	projects	zt	工作

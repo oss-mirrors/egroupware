@@ -6,7 +6,6 @@ Activities	projects	br	Ativos
 Activities list	projects	br	Lista ativos
 Activity	projects	br	Ativado
 Activity ID	projects	br	ID da atividade
-Activity x has been added !	projects	br	Atividade %1 foi adicionada !
 Add Activity	projects	br	Adicionar ativo
 Add hours	projects	br	Adicionar horas
 Add project	projects	br	Adicionar projeto
@@ -36,8 +35,6 @@ Delivery note	projects	br	Nota de entrega
 Delivery ID	projects	br	ID da entrega
 Delivery list	projects	br	Lista de entregas
 Delivery notes	projects	br	Notas de entrega
-Delivery x has been created !	projects	br	Entrega %1 foi criada !
-Delivery x has been updated !	projects	br	Entrega %1 foi atualizada !
 Edit Activity	projects	br	Editar ativo
 Edit hours	projects	br	Editar horas
 Edit project administrator list	projects	br	Editar Lista de administração de projetos
@@ -53,13 +50,9 @@ Invoice date	projects	br	Data da fatura
 Invoice ID	projects	br	ID da fatura
 Invoice list	projects	br	Lista de faturas
 Invoices	projects	br	Faturas
-Invoice x has been created !	projects	br	Fatura %1 foi criada !
-Invoice x has been updated !	projects	br	Fatura %1 foi atualizada !
 Job	projects	br	Trabalho
 Job date	projects	br	Data do Trabalho
 Job description	projects	br	Descrição do Trabalho
-Job has been added !	projects	br	Horas foram adicionadas !
-Job has been updated !	projects	br	Horas foram adicionadas !
 Job list	projects	br	Lista de trabalhos
 List hours	projects	br	Lista de horas
 Main project	projects	en	Main project

@@ -6,8 +6,6 @@ Activities	projects	en	Activities
 Activities list	projects	en	Activities list
 Activity	projects	en	Activity
 Activity ID	projects	en	Activity ID
-Activity x has been added !	projects	en	Activity %1 has been added !
-Activity x has been updated !	projects	en	Activity %1 has been updated !
 Add Activity	projects	en	Add activity
 Add work hours	projects	en	Add work hours
 Add job	projects	en	Add job
@@ -44,8 +42,6 @@ delivery note for project	projects	en	Delivery note for project
 Delivery ID	projects	en	Delivery ID
 Delivery list	projects	en	Delivery list
 Delivery notes	projects	en	Delivery notes
-Delivery x has been created !	projects	en	Delivery %1 has been created !
-Delivery x has been updated !	projects	en	Delivery %1 has been updated !
 Edit Activity	projects	en	Edit activity
 Edit work hours	projects	en	Edit work hours
 Edit project administrator list	projects	en	Edit project administrator list
@@ -70,15 +66,11 @@ Invoice ID	projects	en	Invoice ID
 Invoice layout	projects	en	Invoice layout
 Invoice list	projects	en	Invoice list
 Invoices	projects	en	Invoices
-Invoice x has been created !	projects	en	Invoice %1 has been created !
-Invoice x has been updated !	projects	en	Invoice %1 has been updated !
 invoicing of work time	projects	en	Invoicing of work time
 Job	projects	en	Job
 job archive	projects	en	Job archive
 Job date	projects	en	Job date
 Job description	projects	en	Job description
-Job has been added !	projects	en	Job has been added !
-Job has been updated !	projects	en	Job has been updated !
 Job ID	projects	en	Job ID
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs

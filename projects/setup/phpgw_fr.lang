@@ -6,8 +6,6 @@ Activities	projects	fr	Activités
 Activities list	projects	fr	Liste d'activités
 Activity	projects	fr	Activité
 Activity ID	projects	fr	ID Activité
-Activity x has been added !	projects	fr	L'activité %1 a été ajoutée !
-Activity x has been updated !	projects	fr	L'activité %1 a été mise à jour !
 Add Activity	projects	fr	Ajouter activité
 Add work hours	projects	fr	Ajouter heures de travail
 Add job	projects	fr	Ajouter tâche
@@ -44,8 +42,6 @@ delivery note for project	projects	fr	Note de livraison pour le projet
 Delivery ID	projects	fr	ID de livraison
 Delivery list	projects	fr	Liste de livraison
 Delivery notes	projects	fr	Notes de livraison
-Delivery x has been created !	projects	fr	La livraison %1 a été crée !
-Delivery x has been updated !	projects	fr	La livraison %1 a été mise à jour !
 Edit Activity	projects	fr	Modifier l'activité
 Edit work hours	projects	fr	Modifier les heures de travail
 Edit project administrator list	projects	fr	Modifier la liste d'administrateurs de projets
@@ -70,15 +66,11 @@ Invoice ID	projects	fr	ID de facture
 Invoice layout	projects	fr	Mise en page de facture
 Invoice list	projects	fr	Liste de factures
 Invoices	projects	fr	Factures
-Invoice x has been created !	projects	fr	La facture %1 a été crée !
-Invoice x has been updated !	projects	fr	La facture %1 a été mise à jour !
 invoicing of work time	projects	fr	Facturation du temps de travail
 Job	projects	fr	Tâche
 job archive	projects	fr	Archive des tâches
 Job date	projects	fr	Date de tâche
 Job description	projects	fr	Description de tâche
-Job has been added !	projects	fr	La tâche a été ajoutée !
-Job has been updated !	projects	fr	La tâche a été mise à jour !
 Job ID	projects	fr	ID de tâche
 Job list	projects	fr	Liste de tâches
 Jobs	projects	fr	Tâches

@@ -6,8 +6,6 @@ Activities	projects	de	Aktivit&auml;ten
 Activities list	projects	de	Aktivit&auml;ten Liste
 Activity	projects	de	Aktivit&auml;t
 Activity ID	projects	de	Aktivit&auml;ts ID
-Activity x has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;gt !
-Activity x has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet !
 Add Activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
 Add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
 Add project	projects	de	Projekt hinzuf&uuml;gen
@@ -42,8 +40,6 @@ delivery note fpr project	projects	de	Lieferschein für Projekt
 Delivery ID	projects	de	Lieferungs ID
 Delivery list	projects	de	Lieferungs Liste
 Delivery notes	projects	de	Lieferscheine
-Delivery x has been created !	projects	de	Lieferung %1 wurde erstellt !
-Delivery x has been updated !	projects	de	Lieferung %1 wurde überarbeitet !
 Edit Activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
 Edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
 Edit project administrator list	projects	de	Projekt Administrator Liste überarbeiten
@@ -66,15 +62,11 @@ Invoice ID	projects	de	Rechnungs ID
 invoice layout	projects	de	Rechnungs Layout
 Invoice list	projects	de	Rechnungs Liste
 Invoices	projects	de	Rechnungen
-Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
-Invoice x has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet !
 invoicing of work time	projects	de	in Rechnung stellen der Arbeitszeit
 Job	projects	de	Job
 job archive	projects	de	Job Archiv
 Job date	projects	de	Job Datum
 Job description	projects	de	Job Beschreibung
-Job has been added !	projects	de	Job wurde hinzugef&uuml;gt !
-Job has been updated !	projects	de	Job wurde &uuml;berarbeitet !
 Job ID	projects	de	Job ID
 Job list	projects	de	Job Liste
 Jobs	projects	de	Jobs

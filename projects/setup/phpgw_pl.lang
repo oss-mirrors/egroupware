@@ -5,8 +5,6 @@ activities	projects	pl	Dzia³alno¶ci
 activities list	projects	pl	Lista dzia³alno¶ci
 activity	projects	pl	Dzia³alno¶æ
 activity id	projects	pl	ID Dzia³alno¶ci
-activity x has been added !	projects	pl	Dodano dzia³alno¶æ %1
-activity x has been updated !	projects	pl	Zaktualizowano dzia³alno¶æ %1
 add activity	projects	pl	Dodaj dzia³alno¶æ
 add hours	projects	pl	Dodaj godziny
 add job	projects	pl	Dodaj zadanie
@@ -54,8 +52,6 @@ delivery list	projects	pl	Lista dostaw
 delivery note	projects	pl	Dostawy
 delivery note for project	projects	pl	
 delivery notes	projects	pl	Dostawy
-delivery x has been created !	projects	pl	Utworzono dostawê %1
-delivery x has been updated !	projects	pl	Zaktualizowano dostawê %1
 description	projects	pl	Opis
 done	projects	pl	Gotowe
 edit	projects	pl	Edycja
@@ -86,16 +82,12 @@ invoice for project	projects	pl	Faktura dla projektu
 invoice id	projects	pl	ID Faktury
 invoice layout	projects	pl	Uk³ad faktury
 invoice list	projects	pl	Lista faktur
-invoice x has been created !	projects	pl	Utworzono fakturê %1
-invoice x has been updated !	projects	pl	Zaktualizowano fakturê %1
 invoices	projects	pl	Faktury
 invoicing	projects	pl	
 job	projects	pl	Zadanie
 job archive	projects	pl	Zadanie archiwalne
 job date	projects	pl	Data zadania
 job description	projects	pl	Opis zadania
-job has been added !	projects	pl	Dodano zadanie
-job has been updated !	projects	pl	Zaktualizowano zadanie
 job id	projects	pl	ID Zadania
 job list	projects	pl	Lista zadañ
 jobs	projects	pl	Zadania
@@ -141,8 +133,6 @@ project name	projects	pl	Nazwa projektu
 project preferences	projects	pl	Preferencje projektu
 project statistic	projects	pl	Statystyka projektu
 project statistics	projects	pl	Statystyki projektów
-project x x has been added !	projects	pl	Dodano projekt %1 %2
-project x x has been updated !	projects	pl	Zaktualizowano projekt %1 %2
 projects	common	pl	Projekty
 projects archive	projects	pl	Projekty archiwalne
 projects list	projects	pl	Lista projektów
@@ -181,10 +171,7 @@ sum net	projects	pl	Suma netto
 sum workunits	projects	pl	Suma jednostek pracy
 tahoma	projects	pl	Tahoma
 tax	projects	pl	Podatek
-that activity id has been used already !	projects	pl	Ten ID Dzia³alno¶ci ju¿ istnieje
-that delivery id has been used already !	projects	pl	Ten ID Dostawy ju¿ istnieje
 that id has been used already !	projects	pl	Podany ID jest ju¿ u¿ywany
-that invoice id has been used already !	projects	pl	Ten ID Faktury ju¿ istnieje
 there are no entries	projects	pl	Nie ma wpisów!
 time	projects	pl	Czas
 times new roman	projects	pl	Times New Roman
