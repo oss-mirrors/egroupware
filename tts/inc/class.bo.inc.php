@@ -465,7 +465,7 @@
 					if ($members[$i]['account_id'])
 					{
 						$prefs = $GLOBALS['phpgw']->preferences->create_email_preferences($members[$i]['account_id']);
-						$toarray[] = $prefs['email']['address'];
+						$toarray[$prefs['email']['address']] = $prefs['email']['address'];
 					}
 				}
 				if(count($toarray) > 1)
@@ -475,7 +475,7 @@
 				}
 				else
 				{
-					$to = $toarray[0];
+					$to = current($toarray);
 				}
 
 				$rc = $GLOBALS['phpgw']->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
