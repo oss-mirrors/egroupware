@@ -26,7 +26,7 @@
 
 		$portalbox = CreateObject('phpgwapi.listbox',
 			Array(
-				'title'     => '<font color="#FFFFFF">'.lang('projects').'</font>',
+				'title'     => lang('projects'),
 				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],

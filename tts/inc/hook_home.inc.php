@@ -107,7 +107,7 @@
 
 		$portalbox = CreateObject('phpgwapi.listbox',
 			array(
-				'title'     => '<font color="#FFFFFF">' . lang('Trouble Ticket System') . '</font>',
+				'title'     => lang('Trouble Ticket System'),
 				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
 				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
