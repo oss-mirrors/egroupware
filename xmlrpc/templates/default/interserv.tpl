@@ -31,6 +31,7 @@
     <input type="submit" name="logout" value="{lang_logout}">
     <input type="submit" name="addressbook" value="{lang_addressbook}">
     <input type="submit" name="calendar" value="{lang_calendar}">
+    <input type="submit" name="infolog" value="{lang_infolog}">
     <input type="submit" name="methods" value="{lang_list} {method_type}{lang_methods}">&nbsp;
     {applist}
     </td>

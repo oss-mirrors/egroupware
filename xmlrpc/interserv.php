@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Interserver XML-RPC/SOAP Test app                         *
-	* http://www.phpgroupware.org                                              *
-	* This file written by Miles Lott <milosch@phpgroupware.org                *
+	* eGroupWare - Interserver XML-RPC/SOAP Test app                           *
+	* http://www.eGroupWare.org                                                *
+	* This file written by Miles Lott <milos@groupwhere.org                    *
 	* --------------------------------------------                             *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -150,13 +150,27 @@
 		$is->kp3 = $xkp3;
 		/* TODO - Adjust the values below as desired */
 		$is->send(
-			'service.contacts.read_list',array(
+			'addressbook.boaddressbook.search',array(
 				'start' => 1,
 				'limit' => 5,
-				'fields' => array(
-					'n_given'  => 'n_given',
-					'n_family' => 'n_family'
-				),
+				//'fields' => array('n_given','n_family','cat_id','bday','last_mod'),
+				'query'  => '',
+				'filter' => '',
+				'sort'   => '',
+				'order'  => ''
+			),
+			$is->server['server_url']
+		);
+	}
+	elseif($_POST['infolog'])
+	{
+		$is->sessionid = $xsessionid;
+		$is->kp3 = $xkp3;
+		/* TODO - Adjust the values below as desired */
+		$is->send(
+			'infolog.boinfolog.search',array(
+				'start' => 1,
+				'limit' => 5,
 				'query'  => '',
 				'filter' => '',
 				'sort'   => '',
@@ -182,13 +196,14 @@
 	$GLOBALS['phpgw']->template->set_file('interserv','interserv.tpl');
 
 	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/xmlrpc/interserv.php'));
-	$GLOBALS['phpgw']->template->set_var('lang_title',lang('phpGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
+	$GLOBALS['phpgw']->template->set_var('lang_title',lang('eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)'));
 	$GLOBALS['phpgw']->template->set_var('lang_select_target',lang('Select target server'));
 	$GLOBALS['phpgw']->template->set_var('lang_st_note',lang('Configure using admin - Peer servers'));
 	$GLOBALS['phpgw']->template->set_var('lang_this_servername',lang('Servername/Domain'));
 	$GLOBALS['phpgw']->template->set_var('lang_sd_note',lang('(optional: set domain for user/client login, required: set this servername for server login)'));
 	$GLOBALS['phpgw']->template->set_var('lang_addressbook',lang('Addressbook test'));
 	$GLOBALS['phpgw']->template->set_var('lang_calendar',lang('Calendar test'));
+	$GLOBALS['phpgw']->template->set_var('lang_infolog',lang('Infolog test'));
 	$GLOBALS['phpgw']->template->set_var('lang_login',lang('Login'));
 	$GLOBALS['phpgw']->template->set_var('lang_logout',lang('Logout'));
 	$GLOBALS['phpgw']->template->set_var('lang_list',lang('List'));
