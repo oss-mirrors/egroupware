@@ -64,7 +64,8 @@
 
 	$selectOptions = array(
 		'0' => lang('no'),
-		'1' => lang('yes')
+		'1' => lang('yes'),
+		'2' => lang('yes') . ' - ' . lang('small view')
 	);
 	create_select_box('show new messages on main screen','mainscreen_showmail',$selectOptions);
 
