@@ -206,10 +206,17 @@
 			
 			$this->bofelamimail->deleteMessages($message);
 
+			// set the url to open when refreshing
+			$linkData = array
+			(
+				'menuaction'	=> 'felamimail.uifelamimail.viewMainScreen'
+			);
+			$refreshURL = $GLOBALS['phpgw']->link('/index.php',$linkData);
+
 			if($preferences['messageNewWindow'])
 			{
 				print "<script type=\"text/javascript\">
-				opener.location.reload();
+				opener.location.href = '".$refreshURL."';
 				window.close();</script>";
 			}
 			else
