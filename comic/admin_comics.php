@@ -147,5 +147,4 @@
 	$body_tpl->p('BODY');
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
-}
 ?>
