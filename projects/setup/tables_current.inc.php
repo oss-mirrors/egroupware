@@ -186,6 +186,7 @@
 				's_id' => array('type' => 'auto','nullable' => False),
 				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'title' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+				'description' => array('type' => 'varchar','precision' => 255,'nullable' => True),
 				'edate' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('s_id'),
@@ -238,7 +239,7 @@
 		),
 		'phpgw_p_alarm' => array(
 			'fd' => array(
-				'alarm_id'		=> array('type' => 'auto','nullable' => False),
+				'alarm_id'	=> array('type' => 'auto','nullable' => False),
 				'alarm_type'	=> array('type' => 'varchar','precision' => 20,'nullable' => False),
 				'project_id'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True),
 				'alarm_extra'	=> array('type' => 'int','precision' => 4,'default' => 0,'nullable' => True),

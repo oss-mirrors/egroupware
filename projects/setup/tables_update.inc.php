@@ -902,4 +902,13 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.035';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.7.035';
+	function projects_upgrade0_8_7_035()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_mstones','description',array('type' => 'varchar','precision' => 255,'nullable' => True));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.036';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

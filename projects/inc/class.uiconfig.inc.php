@@ -557,13 +557,13 @@
 
 			if ($this->siteconfig['activity_bill'] == 'wu')
 			{
-    			$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per workunit'));
+				$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per workunit'));
 				$GLOBALS['phpgw']->template->set_var('lang_minperae',lang('Minutes per workunit'));
 				$GLOBALS['phpgw']->template->set_var('minperae','<input type="text" name="values[minperae]" value="' . $values['minperae'] . '">');
 			}
 			else
 			{
-    			$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per hour'));
+				$GLOBALS['phpgw']->template->set_var('lang_billperae',lang('Bill per hour'));
 			}
 
 			$GLOBALS['phpgw']->template->set_var('billperae',$values['billperae']);

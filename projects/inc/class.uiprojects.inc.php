@@ -671,8 +671,8 @@
 
 		function employee_format($data)
 		{
-			$type				= ($data['type']?$data['type']:'selectbox');
-			$selected			= $data['selected']?$data['selected']:$this->boprojects->get_acl_for_project($data['project_id']);
+			$type			= ($data['type']?$data['type']:'selectbox');
+			$selected		= $data['selected']?$data['selected']:$this->boprojects->get_acl_for_project($data['project_id']);
 			$project_only		= $data['project_only']?$data['project_only']:False;
 			$admins_included	= $data['admins_included']?$data['admins_included']:False;
 
@@ -726,21 +726,21 @@
 
 		function edit_project()
 		{
-			$action				= get_var('action',array('GET','POST'));
-			$pro_main			= get_var('pro_main',array('GET','POST'));
-			$pro_parent			= get_var('pro_parent',array('GET','POST'));
+			$action			= get_var('action',array('GET','POST'));
+			$pro_main		= get_var('pro_main',array('GET','POST'));
+			$pro_parent		= get_var('pro_parent',array('GET','POST'));
 			$book_activities	= get_var('book_activities',array('POST'));
 			$bill_activities	= get_var('bill_activities',array('POST'));
 
-			$project_id			= get_var('project_id',array('GET','POST'));
-			$name				= get_var('name',array('POST'));
-			$values				= get_var('values',array('POST'));
+			$project_id		= get_var('project_id',array('GET','POST'));
+			$name			= get_var('name',array('POST'));
+			$values			= get_var('values',array('POST'));
 
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_main'		=> $pro_main,
-				'action'		=> $action,
+				'pro_main'	=> $pro_main,
+				'action'	=> $action,
 				'project_id'	=> $project_id,
 				'pro_parent'	=> $pro_parent
 			);
@@ -1194,8 +1194,17 @@
 
 			$abid = $values['customer'];
 			$customer = $this->boprojects->read_single_contact($abid);
-			if ($customer[0]['org_name'] == '') { $name = $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name']; }
-            else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['per_first_name'] . ' ' . $customer[0]['per_last_name'] . ' ]'; }
+			if ($customer[0]['org_name'] == '') 
+			{ 
+				$name = $customer[0]['per_first_name'] . ' ' . 
+				$customer[0]['per_last_name']; 
+			}
+			else 
+			{
+				$name = $customer[0]['org_name'] . ' [ ' . 
+				$customer[0]['per_first_name'] . ' ' . 
+				$customer[0]['per_last_name'] . ' ]'; 
+			}
 
 			$GLOBALS['phpgw']->template->set_var('name',$name);
 			$GLOBALS['phpgw']->template->set_var('abid',$abid);
@@ -1643,8 +1652,8 @@
 
 				$GLOBALS['phpgw']->template->set_var(array('company' 	=> $company,
 									'firstname' 	=> $firstname,
-									'lastname'		=> $lastname,
-									'abid'			=> $entries[$i]['id']));
+									'lastname'	=> $lastname,
+									'abid'		=> $entries[$i]['id']));
 
 				$GLOBALS['phpgw']->template->parse('list','abook_list',True);
 			}
@@ -1843,14 +1852,14 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uiprojects.project_mstones',
-				'action'		=> $action,
+				'action'	=> $action,
 				'project_id'	=> $project_id,
-				'referer'		=> $referer
+				'referer'	=> $referer
 			);
 
 			if ($_POST['save'])
 			{
-				$values['s_id']			= $values['new']?'':$s_id;
+				$values['s_id']		= $values['new']?'':$s_id;
 				$values['project_id']	= $project_id;
 				$error = $this->boprojects->check_mstone($values);
 				if(is_array($error))
