@@ -85,6 +85,16 @@ class soWikiPage
 			$this->lang_priority_sql .= ' WHEN '.$this->db->quote($lang)." THEN $order";
 		}
 		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END) END AS lang_priority';
+
+		// $GLOBALS['config'] is set by lib/init
+		if (!is_array($GLOBALS['config']))
+		{
+			$c = CreateObject('phpgwapi.config','wiki');
+			$c->read_repository();
+			$GLOBALS['config'] = $c->config_data;
+			unset($c);
+		}
+		$this->config = &$GLOBALS['config'];
 	}
 
 	/*!
@@ -107,7 +117,7 @@ class soWikiPage
 
 		$filters[] = WIKI_ACL_ALL;
 
-		if ($GLOBALS['phpgw_info']['user']['account_lid'] !=  $GLOBALS['phpgw_info']['server']['wiki']['AnonymousUser'])
+		if ($GLOBALS['phpgw_info']['user']['account_lid'] !=  $GLOBALS['config']['AnonymousUser'])
 		{
 			$filters[] = WIKI_ACL_USER;
 		}
@@ -129,16 +139,23 @@ class soWikiPage
 	@abstracts check if page is readable or writeable by the current user
 	@param bool $readable check if page is readable or writable, default False == writeable
 	@returns True if check was successful, or false
+	@note If we have an anonymous session and the anonymous session-type is NOT editable,
+		all pages are readonly (even if their own setting is editable by all) !!!
 	*/
 	function acl_check($readable = False)
 	{
+		if (!$readable && $this->config['Anonymous_Session_Type'] != 'editable' &&
+			$GLOBALS['phpgw_info']['user']['account_lid'] == $this->config['anonymous_username'])
+		{
+			return False;	// Global config overrides page-specific setting
+		}
 		switch ($acl = $readable ? $this->readable : $this->writable)
 		{
 			case WIKI_ACL_ALL:
 				return True;
 
 			case WIKI_ACL_USER:
-				return $GLOBALS['phpgw_info']['user']['account_lid'] !=  $GLOBALS['phpgw_info']['server']['wiki']['AnonymousUser'];
+				return $GLOBALS['phpgw_info']['user']['account_lid'] !=  $this->config['anonymous_username'];
 
 			case WIKI_ACL_ADMIN:
 				return  isset($GLOBALS['phpgw_info']['user']['apps']['admin']);
@@ -344,21 +361,31 @@ class sowiki	// DB-Layer
 	@function find
 	@abstract Find $text in the database, searches title and body.
 	@syntax find($text)
-	@param $text Name of the page
-	@returns an array of page-titles
+	@param $text string pattern to search
+	@param $search_in mixed comma-separated string or array with columns to search (name,title,body) or
+		False to search all three for "%text%" (!)
+	@returns an array of wiki-pages (array with column-name / value pairs)
 	*/
-	function find($text)
+	function find($text,$search_in=False)
 	{
+		$sql="SELECT t1.name,t1.lang,t1.version,MAX(t2.version),t1.title,t1.body".
+			" FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
+			" WHERE t1.name=t2.name AND t1.lang=t2.lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
+			" GROUP BY t1.name,t1.lang,t1.version,t1.title,t1.body".
+			" HAVING t1.version=MAX(t2.version) AND (";
+
 		// fix for case-insensitiv search on pgsql for lowercase searchwords
 		$op_text = $this->db->type == 'pgsql' && !preg_match('/[A-Z]/') ? 'ILIKE' : 'LIKE';
-		$op_text .= ' '.$this->db->quote("%$text%");
+		$op_text .= ' '.$this->db->quote($search_in ? $text : "%$text%");
 
-		$this->db->query($sql="SELECT t1.name,t1.lang,t1.version,MAX(t2.version),t1.title,t1.body".
-		                  " FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
-		                  " WHERE t1.name=t2.name AND t1.lang=t2.lang AND t1.wiki_id=$this->wiki_id AND t2.wiki_id=$this->wiki_id".
-		                  " GROUP BY t1.name,t1.lang,t1.version,t1.title,t1.body".
-		                  " HAVING t1.version=MAX(t2.version) AND (t1.name $op_text OR t1.title $op_text OR t1.body $op_text)",
-		                  __LINE__,__FILE__);
+		$search_in = $search_in ? explode(',',$search_in) : array('name','title','body');
+		foreach($search_in as $n => $name)
+		{
+			$sql .= ($n ? ' OR ' : '') . "t1.$name $op_text";
+		}
+		$sql .= ')';
+
+		$this->db->query($sql,__LINE__,__FILE__);
 		$list = array();
 		while($row = $this->db->row(True))
 		{
@@ -754,8 +781,7 @@ the new code generates only one query, by using the fact the time == supercede f
 			                 //was "TO_DAYS(NOW()) > TO_DAYS(time)"
 		}
 	}
-	
-	
+
 	/*!
 	@function rateCheck
 	@abstract Perform a lookup on an IP addresses edit-rate.

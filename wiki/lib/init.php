@@ -6,40 +6,10 @@
 	require('lib/defaults.php');
 	//require('config.php');		// this has gone into the admin-page
 
-	$sessionid = (isset($_GET['sessionid'])?$_GET['sessionid']:(isset($_COOKIE['sessionid'])?$_COOKIE['sessionid']:''));
+	$sessionid = isset($_GET['sessionid']) ? $_GET['sessionid'] : (isset($_COOKIE['sessionid']) ? $_COOKIE['sessionid'] : '');
 
-	//if ($sessionid || !(AnonymousSession == 'readonly' || AnonymousSession == 'editable'))
-	if ($sessionid)
+	if (!$sessionid)
 	{
-		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
-
-		include('../header.inc.php');
-
-		$c = CreateObject('phpgwapi.config','wiki');
-		$c->read_repository();
-		$config = $c->config_data;
-
-		if($config[allow_anonymous])
-		{
-			if($config[Anonymous_Session_Type])
-			{	
-				define('AnonymousSession',$config[Anonymous_Session_Type]); // editable gives full anonymous access (still no admin)
-			}
-			define('AnonymousUser',$config[anonymous_username]);
-			define('AnonymousPasswd',$config[anonymous_password]);
-		}
-
-		$HomePage = (isset($config[wikihome])?$config[wikihome]:'eGroupWare');
-		$InterWikiPrefix = (isset($config[InterWikiPrefix])?$config[InterWikiPrefix]:'EGroupWare');
-		$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
-		$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
-		$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
-	}
-	else
-	{
-		$login  = AnonymousUser;
-		$passwd = AnonymousPasswd;
-
 		$GLOBALS['phpgw_info']['flags'] = array(
 			'disable_Template_class' => True,
 			'login' => True,
@@ -47,42 +17,49 @@
 			'noheader'  => True
 		);
 		include('../header.inc.php');
+		$GLOBALS['phpgw_info']['flags']['currentapp'] = 'wiki';
 
 		$c = CreateObject('phpgwapi.config','wiki');
 		$c->read_repository();
 		$config = $c->config_data;
+		unset($c);
 
-		if($config[allow_anonymous])
+		if ($config['allow_anonymous'] && $config['anonymous_username'])
 		{
-			if($config[Anonymous_Session_Type])
-			{	
-				define('AnonymousSession',$config[Anonymous_Session_Type]); // editable gives full anonymous access (still no admin)
-			}
-			define('AnonymousUser',$config[anonymous_username]);
-			define('AnonymousPasswd',$config[anonymous_password]);
+			$sessionid = $GLOBALS['phpgw']->session->create($config['anonymous_username'],$config['anonymous_password'], 'text');
 		}
-
-		$HomePage = (isset($config[wikihome])?$config[wikihome]:'eGroupWare');
-		$InterWikiPrefix = (isset($config[InterWikiPrefix])?$config[InterWikiPrefix]:'EGroupWare');
-		$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
-		$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
-		$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
-
-		if (! $GLOBALS['phpgw']->session->verify())
+		if (!$sessionid)
 		{
-			$login  = AnonymousUser;
-			$passwd = AnonymousPasswd;
+			$GLOBALS['phpgw']->redirect('../login.php'.
+				(isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING']) ?
+				'?phpgw_forward='.urlencode('/wiki/index.php?'.$_SERVER['QUERY_STRING']):''));
+			$GLOBALS['phpgw']->phpgw_exit();
+		}
+		// we redirect to the same page again, as we cant reset some of the defines in the API
+		$GLOBALS['phpgw']->redirect_link('/wiki/index.php',$_SERVER['QUERY_STRING']);
+	}
+	// if we get here, we have a sessionid
 
-			$sessionid = $GLOBALS['phpgw']->session->create($login,$passwd,'text');
-		}
-		if (!$sessionid) {
-			echo "<p>Can't create session for user '".AnonymousUser."' !!!</p>\n";
-		}
-		else
-		{	
-			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/wiki/index.php',$_SERVER['QUERY_STRING']));
-		}
-		$GLOBALS['phpgw']->common->phpgw_exit();
+	include('../header.inc.php');
+
+	$c = CreateObject('phpgwapi.config','wiki');
+	$c->read_repository();
+	$config = $c->config_data;
+
+	// anonymous sessions have no navbar !!!
+	$GLOBALS['phpgw_info']['flags']['nonavbar'] = $config['allow_anonymous'] &&
+		$config['anonymous_username'] == $GLOBALS['phpgw_info']['user']['account_lid'];
+
+	$HomePage = (isset($config[wikihome])?$config[wikihome]:'eGroupWare');
+	$InterWikiPrefix = (isset($config[InterWikiPrefix])?$config[InterWikiPrefix]:'EGroupWare');
+	$EnableFreeLinks = (isset($config[Enable_Free_Links])?$config[Enable_Free_Links]:1);
+	$EnableWikiLinks = (isset($config[Enable_Wiki_Links])?$config[Enable_Wiki_Links]:1);
+	$EditWithPreview = (isset($config[Edit_With_Preview])?$config[Edit_With_Preview]:1);
+
+	$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
+	if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save))
+	{
+		$GLOBALS['phpgw']->common->phpgw_header();
 	}
 
 	define('TemplateDir', 'template');
@@ -95,15 +72,6 @@
 		$AlphaPtn = "[A-Za-z\xc0-\xff]";
 		$LinkPtn = $UpperPtn . $AlphaPtn . '*' . $LowerPtn . '+' .
 			$UpperPtn . $AlphaPtn . '*(\\/' . $UpperPtn . $AlphaPtn . '*)?';
-	}
-
-	$UserName = $GLOBALS['phpgw_info']['user']['account_lid'];
-	$anonymous = $UserName == AnonymousUser;
-	// echo "<p>user='$UserName', AnonymousUser='".AnonymousUser."', anonymous=".($anonymous?'True':'False').", action='$action', Preview='$Preview'</p>\n";
-	if (!($action == 'save' && !$Preview) && $action != 'admin' && !($action == 'prefs' && $Save))
-	{
-		$GLOBALS['phpgw_info']['flags']['nonavbar'] = $anonymous;
-		$GLOBALS['phpgw']->common->phpgw_header();
 	}
 
 	$WikiLogo = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/default/images/logo.png';

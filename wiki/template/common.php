@@ -151,7 +151,7 @@ function template_common_epilogue($args)
     }
     else if($args['editver'] == -1)
     {
-       echo lang('This page cannot be edited.');
+       echo lang('This page can not be edited.');
     }
     else
     {
