@@ -23,7 +23,6 @@ global options	comic	pl	Opcje globalne
 image source	comic	pl	
 max file size	comic	pl	
 parser	comic	pl	
-phpgroupware daily comics	comic	pl	Codzienne komiksy phpGroupWare
 random	comic	pl	Losowy
 rated	comic	pl	
 remote (parse/snarf) enabled	comic	pl	

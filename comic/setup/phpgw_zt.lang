@@ -29,7 +29,6 @@ my comics	comic	zt	我的漫畫
 no_entries	comic	zt	沒有資料
 parser	comic	zt	語法
 performed %1 of element	comic	zt	執行元素的 %1
-phpgroupware daily comics	comic	zt	EGroupWare每日漫畫
 random	comic	zt	隨機
 rated	comic	zt	評分
 remote (parse/snarf) enabled	comic	zt	遠端(parse/snarf)

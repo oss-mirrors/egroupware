@@ -10,7 +10,6 @@ genre	comic	fi	Tyylilaji
 image source	comic	fi	Kuvan lähde
 max file size	comic	fi	Suurin tiedoston koko
 parser	comic	fi	Tulkki
-phpgroupware daily comics	comic	fi	phpGroupWare Sarjakuvat
 rated	comic	fi	Luokitus
 remote (parse/snarf) enabled	comic	fi	Etäpalvelin (tulkkaa/paikalliskopio)
 reset	comic	fi	Nollaa
