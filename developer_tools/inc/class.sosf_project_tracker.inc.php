@@ -54,14 +54,14 @@
 
 			$network = createobject('phpgwapi.network');
 			$lines   = $network->gethttpsocketfile('http://sourceforge.net/export/projhtml.php?group_id=' . $this->group_id . '&mode=compat&no_table=0');
-	
+
 			while (list(,$line) = each($lines))
 			{
-				if ($html_found)
+				if ($html_found && !ereg('Content-Type:',$line))
 				{
 					$data .= $line;
 				}
-			
+
 				if (ereg('Connection: close',$line))
 				{
 					$html_found = True;
