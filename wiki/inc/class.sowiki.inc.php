@@ -93,7 +93,7 @@ class soWikiPage
 		$this->hostname = $this->db->f('author');
 		$this->exists   = 1;
 		$this->version  = $this->db->f('version');
-		$this->mutable  = ($this->db->f('mutable') == 'on');
+		$this->mutable  = !strncmp($this->db->f('mutable'),'on',2);
 		$this->username = $this->db->f('username');
 		$this->text     = $this->db->f('body');
 		$this->comment  = $this->db->f('comment');
@@ -180,10 +180,11 @@ class sowiki	// DB-Layer
 	*/
 	function find($text)
 	{
-		$this->db->query("SELECT t1.title,t1.version,t1.body,MAX(t2.version)".
+		$this->db->query("SELECT t1.title,t1.version,MAX(t2.version)".
 		                  " FROM $this->PgTbl AS t1,$this->PgTbl AS t2".
-		                  " WHERE t1.title=t2.title GROUP BY t2.title,t1.version".
-		                  " HAVING t1.version=MAX(t2.version) AND (body LIKE '%$text%' OR title LIKE '%$text%')",
+		                  " WHERE t1.title=t2.title ".
+		                  " GROUP BY t1.title,t1.version,t1.body".
+		                  " HAVING t1.version=MAX(t2.version) AND (t1.body LIKE '%$text%' OR t1.title LIKE '%$text%')",
 		                  __LINE__,__FILE__);
 		$list = array();
 		while($this->db->next_record())
@@ -410,13 +411,14 @@ class sowiki	// DB-Layer
 		$qid = $this->db->query("SELECT t1.time,t1.title,t1.author,t1.username,".
 		                        " LENGTH(t1.body) AS length,t1.comment,t1.mutable,t1.version,MAX(t2.version)" .
 		                        " FROM $this->PgTbl AS t1, $this->PgTbl AS t2" .
-		                        " WHERE t1.title = t2.title GROUP BY t2.title, t1.version" .
+		                        " WHERE t1.title = t2.title".
+		                        " GROUP BY t1.title,t1.version,t1.time,t1.author,t1.username,t1.body,t1.comment,t1.mutable" .
 		                        " HAVING t1.version = MAX(t2.version)",__LINE__,__FILE__);
 		$list = array();
 		while($this->db->next_record())
 		{
 			$page = $this->db->Record;
-			$page['mutable'] = $page[6] = $page['mutable'] == 'on';
+			$page['mutable'] = $page[6] = !strncmp($page['mutable'],'on',2);
 			$list[] = $page;
 		}
 
@@ -452,7 +454,8 @@ class sowiki	// DB-Layer
 	{
 		$this->db->query("SELECT t1.time,t1.title,t1.author,t1.username,0,t1.comment,t1.version,MAX(t2.version) " .
 		                 " FROM $this->PgTbl AS t1,$this->PgTbl AS t2" .
-		                 " WHERE t1.title=t2.title GROUP BY t2.title,t1.version".
+		                 " WHERE t1.title=t2.title".
+		                 " GROUP BY t1.title,t1.version,t1.time,t1.author,t1.username,t1.comment".
 		                 " HAVING t1.version = MAX(t2.version) AND t1.body=''",__LINE__,__FILE__);
 		$list = array();
 		while($this->db->next_record())
