@@ -23,7 +23,7 @@
 	}
 
 	TD.header_row_S {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 	}
 
@@ -41,7 +41,7 @@
 	}
 
 	TD.header_row_ADS {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 		color: #CCCCCC;
 		text-decoration: line-through;
@@ -61,7 +61,7 @@
 	}
 
 	TD.header_row_DS {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 		color: #CCCCCC;
 		text-decoration: line-through;
@@ -81,7 +81,7 @@
 	}
 
 	TD.header_row_D {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 		color: #CCCCCC;
 		text-decoration: line-through;
@@ -102,7 +102,7 @@
 	}
 
 	TD.header_row_ {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 	}
 
@@ -121,7 +121,7 @@
 	}
 
 	TD.header_row_F {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 		color: Red;
 	}
@@ -141,7 +141,7 @@
 	}
 
 	TD.header_row_FS {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 		color: Red;
 	}
@@ -161,7 +161,7 @@
 	}
 
 	TD.header_row_R {
-		border-bottom : 1px dashed #BBBBBB;
+		border-bottom : 1px dashed #DDDDDD;
 		FONT-SIZE: 12px;
 	}
 
