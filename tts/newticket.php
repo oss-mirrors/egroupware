@@ -135,7 +135,10 @@
 			. time() . "',0,'$subject');");
 		$phpgw->db->query("SELECT t_id FROM ticket WHERE t_subject='$subject' AND t_user='".$phpgw_info["user"]["userid"]."'");
 		$phpgw->db->next_record();
-		mail_ticket($phpgw->db->f("t_id"));
+		if($phpgw_info['server']['tts_mailticket'])
+		{
+			mail_ticket($phpgw->db->f("t_id"));
+		}
 
 		Header("Location: " . $phpgw->link("/tts/index.php"));
 	}
