@@ -56,7 +56,7 @@
 			{
 				$var_str = $var[$i];
 //				$this->$var_str = intval(get_var($var_str,'Array('DEFAULT','GET','POST'),$this->$var_str));
-				$this->$var_str = get_var($var_str,'Array('DEFAULT','GET','POST'),$this->$var_str);
+				$this->$var_str = get_var($var_str,Array('DEFAULT','GET','POST'),$this->$var_str);
 			}
 			if(!@isset($this->view))
 			{
