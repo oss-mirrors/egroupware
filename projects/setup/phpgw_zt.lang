@@ -74,6 +74,9 @@ columns to show in the projects list	projects	zt	專案列表要顯示的欄位
 comment	projects	zt	備註
 continue	projects	zt	繼續
 coordinator	common	zt	專案協調人
+costs	projects	zt	成本
+costs list	projects	zt	成本列表
+costtype	projects	zt	成本類型
 create delivery	projects	zt	建立遞送
 create invoice	projects	zt	建立發票
 creator	projects	zt	建立者
@@ -136,6 +139,7 @@ event %1 has been saved	projects	zt	%1事件已經儲存
 event %1 has been updated	projects	zt	%1事件已經更新
 events	projects	zt	事件
 exact accounting [hh.mm]	admin	zt	確實的會計時間[hh.mm]
+export as	projects	zt	匯出成
 external reference	projects	zt	外部參考
 extra budget	projects	zt	其他預算
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	zt	所有附屬專案的額外預算總合超過主要專案的額外預算金額。
@@ -200,7 +204,7 @@ main project	projects	zt	主要專案
 main project:	projects	zt	主要專案：
 manager	projects	zt	管理
 manager list	projects	zt	管理員清單
-managing committee	admin	zt	管理委員會
+managing committee	projects	zt	管理委員會
 manuell entries	projects	zt	手冊資料
 milestone	projects	zt	階段
 milestone date due	projects	zt	預訂階段日期
@@ -223,6 +227,7 @@ number	projects	zt	編號
 old end date	projects	zt	舊的結束日期
 old start date	projects	zt	舊的開始日期
 open	projects	zt	開放
+open popup	projects	zt	開啟跳出視窗
 open popup window	projects	zt	開啟彈出式視窗
 overall	projects	zt	總覽
 parent project	projects	zt	主要專案
@@ -267,10 +272,11 @@ project %1 has been saved	projects	zt	專案%1已經儲存了。
 project %1 has been updated	projects	zt	專案%1已經更新了。
 project accounting	admin	zt	專案會計帳
 project administration	projects	zt	專案管理
-project administrators	admin	zt	專案管理者
+project administrators	projects	zt	專案管理者
 project archive	projects	zt	專案封存
 project billing	projects	zt	專案計費
 project data due	projects	zt	專案預定時程
+project date due	projects	zt	專案預定時程
 project delivery	projects	zt	專案運送
 project dependencies	common	zt	專案附加說明
 project id	common	zt	專案代碼
@@ -296,7 +302,7 @@ role %1 has been updated	projects	zt	角色 %1 已經更新
 role has been deleted	projects	zt	角色已經刪除
 roles	projects	zt	角色
 roles list	projects	zt	角色清單
-sales department	admin	zt	業務部
+sales department	projects	zt	業務部
 save factor	projects	zt	儲存要素
 save milestone	projects	zt	儲存階段
 select factor	projects	zt	選擇要素
