@@ -88,7 +88,6 @@
 			$this->t->fp('app_header','stock_header');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 		}
 
 		function return_html($quotes)

@@ -94,7 +94,6 @@
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 
 			$this->set_app_langs();
 
@@ -194,7 +193,6 @@
 			);
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 
 			$this->set_app_langs();
 
