@@ -74,8 +74,9 @@ done	felamimail	en	Done
 down	felamimail	en	down
 download	felamimail	en	download
 download this as a file	felamimail	en	Download this as a file
-e-mail	felamimail	en	E-mail
-e-mail address	felamimail	en	E-mail address
+e-mail	felamimail	en	E-Mail
+e-mail address	felamimail	en	E-Mail address
+EMail Address	felamimail	en	E-Mail Address
 e-mail folders	felamimail	en	E-Mail Folders
 edit	felamimail	en	Edit
 edit filter	felamimail	en	Edit filter
@@ -305,6 +306,7 @@ Update address	felamimail	en	Update address
 Use a signature	felamimail	en	Use a signature
 Use a signature?	felamimail	en	Use a signature?
 Use Addresses	felamimail	en	Use Addresses
+use custom settings	felamimail	en	Use Custom Settings
 Use Javascript or HTML addressbook?	felamimail	en	Use Javascript or HTML addressbook?
 Use SMTP auth	admin	en	Use SMTP auth
 View full header	felamimail	en	View full header
