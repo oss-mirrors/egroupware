@@ -61,8 +61,8 @@
 
 
   if ($query) {
-     $phpgw->db->query("select count(*) from p_projects where $filtermethod and descr "
-                    . "like '%$query%'");
+     $phpgw->db->query("select count(*) from p_projects where $filtermethod and (title "
+                     . "like '%$query%' OR descr like '%$query%')");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
         $t->set_var(total_matchs,lang("your search returned 1 match"));
@@ -70,17 +70,22 @@
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
   } else {
      $phpgw->db->query("select count(*) from p_projects where $filtermethod");
-  }
+     $phpgw->db->next_record();                                                                      
 
-  $phpgw->db->next_record();                                                                      
-
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-
+     $t->set_var(total_matchs,$total_matchs);
+        }
+     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                   
+      $customer_sortorder = "customer.company_name";                                                                                                      
+      }                                                                                                                                                   
+     else {                                                                                                                                               
+      $customer_sortorder = "ab_company";                                                                                                                 
+     }
 
     // ===========================================
     // nextmatch variable template-declarations
@@ -90,7 +95,6 @@
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
 
   // ---------- end nextmatch template --------------------
 
@@ -115,13 +119,14 @@
   
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname,accounts.account_lid FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND accounts.account_id=p_projects.coordinator AND"
-                 . " descr like '%$query%' $ordermethod limit $limit");
-  } else {
+                 . "p_projects,accounts WHERE $filtermethod AND accounts.account_id=p_projects.coordinator AND "
+                 . "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
+     } 
+    else {
      $phpgw->db->query("SELECT p_projects.*,accounts.account_firstname,accounts.account_lastname,accounts.account_lid FROM "
                  . "p_projects,accounts WHERE accounts.account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
-  }
+    }
 
   while ($phpgw->db->next_record()) {
     

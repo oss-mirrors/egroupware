@@ -62,40 +62,38 @@
      }  
 
   if ($query) {
-     $phpgw->db->query("select count(*) from p_projects where $filtermethod and title "
-                    . "like '%$query%'");
+     $phpgw->db->query("select count(*) from p_projects where $filtermethod and (title "
+                    . "like '%$query%' OR descr like '%$query%')");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
-        $t->set_var(total_matchs,lang("your search has returned 1 match"));
+        $t->set_var(total_matchs,lang("Your search returned 1 match"));
      else
-        $t->set_var(total_matchs,lang("your search has returned x matchs",$phpgw->db->f(0)));
+        $t->set_var(total_matchs,lang("Your search returned x matchs",$phpgw->db->f(0)));
      } 
     else {
      $phpgw->db->query("select count(*) from p_projects where $filtermethod");
-     }
-    $phpgw->db->next_record();
-   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                        
-     $customer_sortorder = "customer.company_name";                                                                                                                 
-     } 
-    else {                                                                                                                                                  
-     $customer_sortorder = "ab_company";                                                                                                                     
-    }
-     
-  if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
+     $phpgw->db->next_record();
+     if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),
                            $phpgw->db->f(0));
-  else
+     else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
-//     $phpgw->db->next_record();
-
+     $t->set_var(total_matchs,$total_matchs);
+      }
+     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                       
+      $customer_sortorder = "customer.company_name";                                                                                                         
+      }                                                                                                                                                      
+     else {                                                                                                                                                  
+      $customer_sortorder = "ab_company";                                                                                                                    
+     }
 //---------------------- nextmatch variable template-declarations ---------------------------
 
      $next_matchs = $phpgw->nextmatchs->show_tpl("index.php",$start,$phpgw->db->f(0),
                    "&order=$order&filter=$filter&sort="
                  . "$sort&query=$query","85%",$phpgw_info["theme"][th_bg]);
      $t->set_var(next_matchs,$next_matchs);
-     $t->set_var(total_matchs,$total_matchs);
+//     $t->set_var(total_matchs,$total_matchs);
 
 // ------------------------------ end nextmatch template ------------------------------------
 
@@ -121,8 +119,8 @@
   
   if ($query) {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
-                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND"
-                 . " title like '%$query%' $ordermethod limit $limit");
+                 . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND "
+                 . "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
      } 
      else {
      $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname,account_lid FROM "
