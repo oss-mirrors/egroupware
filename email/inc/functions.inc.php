@@ -19,7 +19,7 @@
     $phpgw->common->phpgw_exit();
   } unset($d1);
 
-  if(floor(php_version()) == 4)
+  if(floor($PHP_VERSION) == 4)
   {
   	global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
   }
