@@ -10,148 +10,144 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
-  if($action) {
-    $phpgw_info["flags"]["noheader"] = True;
-    $phpgw_info["flags"]["nonavbar"] = True;
-  } 
-  include("../header.inc.php");
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'forum',
+		'enable_nextmatchs_class' => True
+	);
+	if($action)
+	{
+		$phpgw_info['flags']['noheader'] = True;
+		$phpgw_info['flags']['nonavbar'] = True;
+	}
+	include('../header.inc.php');
 
+	if ($action == 'reply')
+	{
+		$host = getenv('REMOTE_ADDR');
+		if(!$host) getenv('REMOTE_HOST');
 
-if($action == "reply") {
+		$stat = 0;
 
- $host = getenv('REMOTE_ADDR');
- if(!$host) getenv('REMOTE_HOST');
+		$phpgw->db->query("select max(id) from f_body");
+		$phpgw->db->next_record();
+		$next_f_body_id = $phpgw->db->f("0") + 1;
 
- $stat = 0;
+		$phpgw->db->query("select max(id) from f_threads");
+		$phpgw->db->next_record();
+		$next_f_threads_id = $phpgw->db->f("0") + 1;
 
- $phpgw->db->query("select max(id) from f_body");
- $phpgw->db->next_record();
- $next_f_body_id = $phpgw->db->f("0") + 1;
+		$dattim = date("Y-m-d H:i:s",time());
 
- $phpgw->db->query("select max(id) from f_threads");
- $phpgw->db->next_record();
- $next_f_threads_id = $phpgw->db->f("0") + 1;
+		if($pos != 0)
+		{
+			$tmp = $phpgw->db->query("select id,pos from f_threads where thread = $thread and pos >= $pos order by pos desc");
+			while($phpgw->db->next_record($tmp))
+			{
+				$oldpos = $phpgw->db->f('pos') + 1;
+				$oldid = $phpgw->db->f('id');
+				//print "$oldid $oldpos<br>";
+				$phpgw->db->query("update f_threads set pos=$oldpos where thread = $thread and id = $oldid");
+			}
+		}
+		else
+		{
+			$pos = 1;
+		}
 
-$dattim = date("Y-m-d H:i:s",time());
+		$phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES ("
+			. "'$dattim','$pos','$thread','$depth','$next_f_body_id','" . addslashes($msg) . "','"
+			. "$cat','$for','$author','" . addslashes($subject) . "','$email','$host','$stat')");
 
-if($pos != 0) {
- $tmp = $phpgw->db->query("select id,pos from f_threads where thread = $thread and pos >= $pos order by pos desc");
- while($phpgw->db->next_record($tmp)) {
-  $oldpos = $phpgw->db->f("pos") + 1;
-  $oldid = $phpgw->db->f("id");
-  //print "$oldid $oldpos<br>";
-  $phpgw->db->query("update f_threads set pos=$oldpos where thread = $thread and id = $oldid");
- }
-} else $pos = 1;
+		$phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
 
+		$phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
 
-  $phpgw->db->query("insert into f_threads (postdate,pos,thread,depth,main,parent,cat_id,for_id,author,subject,email,host,stat) VALUES ("
-                  . "'$dattim','$pos','$thread','$depth','$next_f_body_id','" . addslashes($msg) . "','"
-                  . "$cat','$for','$author','" . addslashes($subject) . "','$email','$host','$stat')");
- 
-  $phpgw->db->query("update f_threads set n_replies = n_replies+1 where thread='$thread'");
-
-
-  $phpgw->db->query("insert into f_body (cat_id,for_id,message) VALUES ('$cat','$for','" . addslashes($message) . "')");
-
-
-  Header("Location: ". $phpgw->link("/forum/threads.php","cat=".$cat."&for=".$for."&col=".$col));
-  $phpgw->common->phpgw_exit();
-
-}
-
-
-
-
+		Header("Location: ". $phpgw->link("/forum/threads.php","cat=".$cat."&for=".$for."&col=".$col));
+		$phpgw->common->phpgw_exit();
+	}
 ?>
-
 <p>
 <table border="0" width="100%">
  <tr>
 <?php
- $phpgw->db->query("select * from f_categories where id = $cat");
- $phpgw->db->next_record();
- $category = $phpgw->db->f("name");
+	$phpgw->db->query("select * from f_categories where id = $cat");
+	$phpgw->db->next_record();
+	$category = $phpgw->db->f('name');
 
- $phpgw->db->query("select * from f_forums where id = $for");
- $phpgw->db->next_record();
- $forums = $phpgw->db->f("name");
+	$phpgw->db->query("select * from f_forums where id = $for");
+	$phpgw->db->next_record();
+	$forums = $phpgw->db->f('name');
 
- $catfor = "cat=" . $cat . "&for=" . $for;
+	$catfor = 'cat=' . $cat . '&for=' . $for;
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") ;
- echo '</a> : <a href=' . $phpgw->link("/forum/forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
- echo "<a href=" . $phpgw->link("/forum/threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
+	echo '<td bgcolor="' . $phpgw_info['theme']['th_bg'] . '" align="left"><font size=+1><a href="' . $phpgw->link('/forum/index.php') .'">' . lang('Forums') ;
+	echo '</a> : <a href=' . $phpgw->link('/forum/forums.php','cat=' . $cat) . '>' . $category . '</a> : ';
+	echo '<a href=' . $phpgw->link('/forum/threads.php',$catfor . '&col=' . $col) . '">' . $forums . '</a></font></td></tr>';
 
- echo "<tr>";
- echo '<td align="left" width="50%" valign="top">';
+	echo '<tr>';
+	echo '<td align="left" width="50%" valign="top">';
 
- include("./inc/bar.inc.php");
+	include('./inc/bar.inc.php');
 
- echo "<center>\n";
- echo "<form method=\"post\" action=\"".$phpgw->link("/forum/read.php")."\">\n";
- echo "<input type=\"hidden\" name=\"cat\" value=\"$cat\">\n";
- echo "<input type=\"hidden\" name=\"for\" value=\"$for\">\n";
- echo "<input type=\"hidden\" name=\"type\" value=\"$type\">\n";
- echo "<input type=\"hidden\" name=\"msg\" value=\"$msg\">\n";
- echo "<input type=\"hidden\" name=\"pos\" value=\"$pos\">\n";
- if($col) echo "<input type=\"hidden\" name=\"col\" value=\"$col\">\n";
- echo "<input type=\"hidden\" name=\"action\" value=\"reply\">\n";
+	echo "<center>\n";
+	echo '<form method="post" action="' . $phpgw->link('/forum/read.php').'">' . "\n";
+	echo '<input type="hidden" name="cat"  value="' . $cat . '">' . "\n";
+	echo '<input type="hidden" name="for"  value="' . $for. '">' . "\n";
+	echo '<input type="hidden" name="type" value="' . $type . '">' . "\n";
+	echo '<input type="hidden" name="msg"  value="' . $msg . '">' . "\n";
+	echo '<input type="hidden" name="pos"  value="' . $pos . '">' . "\n";
+	if($col) { echo '<input type="hidden" name="col" value="' . $col . '">' . "\n"; }
+	echo '<input type="hidden" name="action" value="reply">' . "\n";
 
- echo ' <table border="0" width="80%" bgcolor=' . $phpgw_info["theme"]["table_bg"] . '>';
- $phpgw->db->query("select * from f_threads where id = $msg");
- $phpgw->db->next_record();
- $thread = $phpgw->db->f("thread");
- $depth = $phpgw->db->f("depth") + 1;
- $subject = $phpgw->db->f("subject");
- if (! $subject) {
-    $subject = "[ No subject ]";
- }
+	echo ' <table border="0" width="80%" bgcolor="' . $phpgw_info['theme']['table_bg'] . '">';
+	$phpgw->db->query("select * from f_threads where id = $msg");
+	$phpgw->db->next_record();
+	$thread = $phpgw->db->f('thread');
+	$depth = $phpgw->db->f('depth') + 1;
+	$subject = $phpgw->db->f('subject');
+	if (! $subject)
+	{
+		$subject = '[ No subject ]';
+	}
 
- echo "<input type=\"hidden\" name=\"thread\" value=\"$thread\">\n";
- echo "<input type=\"hidden\" name=\"depth\" value=\"$depth\">\n";
+	echo '<input type="hidden" name="thread" value="' . $thread . '">' . "\n";
+	echo '<input type="hidden" name="depth" value="' . $depth . '">' . "\n";
 
- echo "<tr><td>" . lang("Author") .": </td><td>" . $phpgw->db->f("author") . "</td></tr>";
- echo "<tr><td>" . lang("Date") .": </td><td>" . $phpgw->db->f("postdate") . "</td></tr>";
- echo "<tr><td>" . lang("Subject") .": </td><td>" . $subject . "</td></tr>";
- $msgid = $phpgw->db->f("main");
+	echo '<tr><td>' . lang('Author') .': </td><td>' . $phpgw->db->f('author') . '</td></tr>';
+	echo '<tr><td>' . lang('Date') .': </td><td>' . $phpgw->db->f('postdate') . '</td></tr>';
+	echo '<tr><td>' . lang('Subject') .': </td><td>' . $subject . '</td></tr>';
+	$msgid = $phpgw->db->f('main');
 
- $subj = "Re: " . $subject;
+	$subj = 'Re: ' . $subject;
 
+	$phpgw->db->query("select * from f_body where id = $msgid");
+	$phpgw->db->next_record();
 
- $phpgw->db->query("select * from f_body where id = $msgid");
- $phpgw->db->next_record();
+	echo '<tr><td colspan="2"><br>' . $phpgw->db->f('message') . '</td></tr>';
+	echo '</table>';
+	echo '<br>';
 
- echo "<tr><td colspan=2><br>" . $phpgw->db->f("message") . "</td></tr>";
- echo "</table>";
- echo "<br>";
+	echo '<table border="0" width="80%">';
+	showthread($thread,$msg);
+	echo '</table><br>';
 
- echo "<table border=0 width=80%>";
-  showthread($thread,$msg);
- echo "</table><br>";
+	echo ' <table border="0" width="80%" bgcolor="' . $phpgw_info['theme']['table_bg'] . '">';
 
- echo ' <table border="0" width="80%" bgcolor=' . $phpgw_info["theme"]["table_bg"] . '>';
+	$name = $phpgw_info['user']['firstname'] . ' ' . $phpgw_info['user']['lastname'];
+	$email = $phpgw_info['user']['email_address'];
 
- $name = $phpgw_info["user"]["firstname"] . " " . $phpgw_info["user"]["lastname"];
- $email = $phpgw_info["user"]["email_address"];
-
- echo " <tr><th colspan=3 bgcolor=" . $phpgw_info["theme"]["th_bg"] . ">" . lang("Reply to this message") . "</th></tr>";
- echo " <tr><td>" . lang("Your Name") . ":</td><td><input type=text name=author size=32 maxlength=49 value=\"$name\"></td><td></td></tr>";
- echo " <tr><td>" . lang("Your Email") . ":</td><td><input type=text name=email size=32 maxlength=49 value=\"$email\"></td><td></td></tr>";
- echo " <tr><td>" . lang("Subject") . ":</td><td><input type=text name=subject size=32 maxlength=49 value=\"$subj\"></td><td></td></tr>";
- echo " <tr><td colspan=3><center><textarea rows=20 cols=50 name=message></textarea>";
- echo " <tr><td colspan=2><input type=checkbox name=repmail> " . lang("Email replies to this thread, to the address above") . "</td>";
- echo "  <td align=right><input type=submit value=" . lang("Reply") . "></td></tr>";
-
-
- echo "</table>";
- echo "</center>";
-   ?>
+	echo ' <tr><th colspan="3" bgcolor="' . $phpgw_info['theme']['th_bg'] . '">' . lang('Reply to this message') . '</th></tr>';
+	echo ' <tr><td>' . lang('Your Name') . ':</td><td><input type="text" name="author" size="32" maxlength="49" value="' . $name . '"></td><td></td></tr>';
+	echo ' <tr><td>' . lang('Your Email') . ':</td><td><input type="text" name="email" size="32" maxlength="49" value="' .$email . '"></td><td></td></tr>';
+	echo ' <tr><td>' . lang('Subject') . ':</td><td><input type="text" name="subject" size="32" maxlength="49" value="' . $subj . '"></td><td></td></tr>';
+	echo ' <tr><td colspan=3><center><textarea rows="20" cols="50" name="message"></textarea>';
+	echo ' <tr><td colspan=2><input type="checkbox" name="repmail"> ' . lang('Email replies to this thread, to the address above') . '</td>';
+	echo '  <td align=right><input type=submit value="' . lang('Reply') . '"></td></tr>';
+?>
+    </table>
+    </center>
   </td>
 </table>
-
-
 <?php
-  $phpgw->common->phpgw_footer();
+	$phpgw->common->phpgw_footer();
 ?>
