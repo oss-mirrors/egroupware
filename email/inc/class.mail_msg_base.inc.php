@@ -45,6 +45,7 @@
 	var $start = '';
 	var $msgnum = '';
 	var $browser = 0;
+	var $use_uid = False;
 
 	var $default_trash_folder = 'Trash';
 	var $default_sent_folder = 'Sent';

@@ -59,8 +59,11 @@
 	define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
 	define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
   
-	define ('SE_NOPREFETCH',1); // used with IMAP_SORT , don't really understand it though
-
+	define ('SE_UID',1); // used with IMAP_SORT, IMAP_SEARCH,
+	define ('SE_NOPREFETCH',2); // used with IMAP_SORT , don't really understand it though
+		//SE_UID	Return UIDs instead of sequence numbers
+		//SE_NOPREFETCH	Don't prefetch searched messages.
+	
 	// This may need to be a reference to the different months in native tongue....
 	$GLOBALS['month_array'] = Array(
 		'jan' => 1,

@@ -293,11 +293,54 @@
 			if ($this->debug_dcom >= 1) { echo 'imap: call to unimplemented socket function: append<br>'; }
 			return False;
 		}
-		function fetch_overview($stream,$sequence,$flags)
+		function fetch_overview($stream,$criteria,$flags)
 		{
 			// not yet implemented
 			if ($this->debug_dcom >= 1) { echo 'imap: call to not-yet-implemented socket function: fetch_overview<br>'; }
 			return False;
+		}
+		/*
+		@function search
+		@abstract  implements IMAP_SEARCH, search the mailbox currently opened for param $criteria args
+		@param $stream : notused in socket class
+		@param  $criteria : string, delimited by spaces, in which the following keywords are allowed.
+		Any multi-word arguments (eg. FROM "joey smith") must be quoted.
+			ALL - return all messages matching the rest of the criteria
+			ANSWERED - match messages with the \\ANSWERED flag set
+			BCC "string" - match messages with "string" in the Bcc: field
+			BEFORE "date" - match messages with Date: before "date"
+			BODY "string" - match messages with "string" in the body of the message
+			CC "string" - match messages with "string" in the Cc: field
+			DELETED - match deleted messages
+			FLAGGED - match messages with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
+			FROM "string" - match messages with "string" in the From: field
+			KEYWORD "string" - match messages with "string" as a keyword
+			NEW - match new messages
+			OLD - match old messages
+			ON "date" - match messages with Date: matching "date"
+			RECENT - match messages with the \\RECENT flag set
+			SEEN - match messages that have been read (the \\SEEN flag is set)
+			SINCE "date" - match messages with Date: after "date"
+			SUBJECT "string" - match messages with "string" in the Subject:
+			TEXT "string" - match messages with text "string"
+			TO "string" - match messages with "string" in the To:
+			UNANSWERED - match messages that have not been answered
+			UNDELETED - match messages that are not deleted
+			UNFLAGGED - match messages that are not flagged
+			UNKEYWORD "string" - match messages that do not have the keyword "string"
+			UNSEEN - match messages which have not been read yet
+		@param  flags  Valid values for flags are SE_UID, which causes the returned array to contain UIDs 
+		instead of messages sequence numbers.
+		@result  array
+		@discussion: To match all unanswered messages sent by Mom, you'd use: "UNANSWERED FROM mom".
+		Searches appear to be case insensitive.
+		*/
+		function search($stream,$sequence,$flags)
+		{
+			$empty_return=array();
+			// not yet implemented
+			if ($this->debug_dcom >= 1) { echo 'imap: call to not-yet-implemented socket function: search<br>'; }
+			return $empty_return;
 		}
 	
 		
@@ -924,6 +967,9 @@
 		/**************************************************************************\
 		*	Message Sorting
 		\**************************************************************************/
+		// options/flags are:
+			//SE_UID	Return UIDs instead of sequence numbers
+			//SE_NOPREFETCH	Don't prefetch searched messages.
 		function sort($stream_notused='',$criteria=SORTARRIVAL,$reverse=False,$options='')
 		{
 			if ($this->debug_dcom >= 1) { echo 'imap: sort<br>'; }
