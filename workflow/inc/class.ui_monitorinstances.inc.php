@@ -41,7 +41,7 @@
 				$this->extra['filter_status'] = $filter_status;
 			}
 			if ($filter_process) {
-				$this->wheres[] = "ga.wf_p_id='" .$filter_process. "'"; 
+				$this->wheres[] = "gp.wf_p_id='" .$filter_process. "'"; 
 				$this->extra['filter_process'] = $filter_process;
 			}		
 			if ($filter_activity) {
