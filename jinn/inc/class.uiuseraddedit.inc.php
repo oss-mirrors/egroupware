@@ -85,6 +85,7 @@
 			$fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 
 			/* The main loop to create all rows with input fields start here */ 
+//			die(var_dump($fields));
 			foreach ( $fields as $fieldproperties )
 			{
 
@@ -121,7 +122,7 @@
 						$related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
 
 						$input= '<select name="'.$input_name.'">';
-						$input.= $this->ui->select_options($related_fields,$value);
+						$input.= $this->ui->select_options($related_fields,$value,true);
 						$input.= '</select> ('.lang('real value').': '.$value.')';
 					}
 					else
@@ -152,7 +153,12 @@
 					$input=$this->bo->get_plugin_fi($input_name,$value,'blob');
 				}
 
+				else
+				{
+					$input=$this->bo->get_plugin_fi($input_name,$value,'string');
+				}
 
+				
 				/* if there is something to render to this */
 				if($input!='hide')
 				{

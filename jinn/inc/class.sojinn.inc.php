@@ -739,6 +739,7 @@ $field_list_arr=(explode(',',$field_list));
 
 			$SQL='INSERT INTO ' . $site_object . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 
+			//die($SQL);
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;
@@ -773,7 +774,7 @@ $field_list_arr=(explode(',',$field_list));
 				{
 					$SQL="INSERT INTO $table ($via_primary_key,$via_foreign_key) VALUES ('$data[FLDid]', '$option')";
 
-					if (!$this->site_db->query($SQL,__LINE__,__FILE__))
+			if (!$this->site_db->query($SQL,__LINE__,__FILE__))
 					{
 						$status=False;
 					}
@@ -793,6 +794,7 @@ $field_list_arr=(explode(',',$field_list));
 		{
 			$this->site_db_connection($site_id);
 
+//			die(var_dump($data));
 			foreach($data as $field)
 			{
 				if ($SQL_SUB) $SQL_SUB .= ', ';
@@ -801,6 +803,7 @@ $field_list_arr=(explode(',',$field_list));
 
 			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($this->strip_magic_quotes_gpc($where_condition));
 
+//		die($SQL);
 			if ($this->site_db->query($SQL,__LINE__,__FILE__))
 			{
 				$status=1;

@@ -211,6 +211,7 @@
 
 			$status=$this->so->update_object_many_data($this->site_id, $many_data);
 
+//		die(var_dump($GLOBALS[HTTP_POST_VARS]));
 			$data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_condition);
 
