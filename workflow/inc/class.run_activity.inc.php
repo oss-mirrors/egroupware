@@ -1,6 +1,6 @@
 <?php
 
-	include(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
+	include_once(dirname(__FILE__) . SEP . 'class.workflow.inc.php');
 
 	class run_activity extends workflow
 	{
