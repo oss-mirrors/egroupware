@@ -750,9 +750,9 @@
 			}
 			else
 			{
-				$end	= $projectData['edate'];
+				$end	= $projectData['edate']?$projectData['edate']:mktime(12,0,0,date('m'),date('d')+30,date('Y'));;
 			}
-#print "$start $end<br>";
+print "$start $end<br>";
 #_debug_array($projectData);
 			$GLOBALS['phpgw']->template->set_var('sdate_select',$jscal->input('sdate[str]',$start));
 			$GLOBALS['phpgw']->template->set_var('edate_select',$jscal->input('edate[str]',$end));

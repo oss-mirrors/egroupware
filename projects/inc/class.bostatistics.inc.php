@@ -210,13 +210,14 @@
 				#$graph->scale->SetDateLocale('de_DE');
 				
 				// Change the scale font
-				$graph->scale->week->SetFont(FF_FONT0);
-				$graph->scale->year->SetFont(FF_VERA,FS_BOLD,12);
+				$graph->scale->week->SetFont(FF_VERA,FS_NORMAL,8);
+				$graph->scale->year->SetFont(FF_VERA,FS_BOLD,10);
 				
 				// Titles for chart
 				$graph->title->Set(lang('project overview'));
 				$graph->subtitle->Set(lang('from %1 to %2',$sdateout,$edateout));
 				$graph->title->SetFont(FF_VERA,FS_BOLD,12);
+				$graph->subtitle->SetFont(FF_VERA,FS_BOLD,10);
 				
 				// set the start and end date
 				// add one day to the end is needed internaly by jpgraph
@@ -287,7 +288,7 @@
 					// mark beginn of new project bold
 					if($pro['level'] == 0)
 					{
-						$bar->title->SetFont(FF_FONT1,FS_BOLD);
+						$bar->title->SetFont(FF_VERA,FS_BOLD,9);
 						#$bar->title->SetColor("#9999FF");
 						$bar->SetPattern(BAND_SOLID,"#9999FF");
 					}
@@ -308,14 +309,14 @@
 						$bar->progress->Set(1);
 						#$bar->progress->SetPattern(GANTT_SOLID,"darkred",98);
 						$bar->caption->SetColor("red");
-						$bar->caption->SetFont(FF_FONT1,FS_BOLD);
+
 					}
 					else
 					{
 						$bar->progress->Set($finnishedPercent/100);
 						#$bar->progress->SetPattern(GANTT_SOLID,"darkgreen",98);
 					}
-					
+					$bar->caption->SetFont(FF_VERA,FS_NORMAL,8);
 					// ... and add the bar to the gantt chart
 					$graphs['bars'][] = $bar;
 					#$graph->Add($bar);
@@ -451,8 +452,8 @@
 							
 								// Create a milestone mark
 								$ms = new MileStone($counter, str_repeat(' ',$pro['level']+1) . lang('Milestone'),date('Y-m-d',$msData['edate']),$msData['title']);
-								$ms->caption->SetFont(FF_FONT1);
-								$ms->title->SetFont(FF_FONT1);
+								$ms->caption->SetFont(FF_VERA,FS_NORMAL,8);
+								$ms->title->SetFont(FF_VERA,FS_NORMAL,8);
 								$ms->mark->SetColor($msColor);
 								$ms->mark->SetFillColor('#EEEEEE');
 								$graphs['ms'][$counter] = $ms;

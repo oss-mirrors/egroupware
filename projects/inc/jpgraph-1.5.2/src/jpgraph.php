@@ -1086,7 +1086,7 @@ class TTF {
 	    FF_COMIC => TTF_DIR."comic",
 	    FF_ARIAL => TTF_DIR."arial",
 	    FF_BOOK => TTF_DIR."bookant",
-	    FF_VERA => TTF_DIR."vera");
+	    FF_VERA => TTF_DIR."Vera");
     }
 
 //---------------
@@ -1098,17 +1098,17 @@ class TTF {
 	switch( $style ) {
 	    case FS_NORMAL:
 		break;
-	    case FS_BOLD: $f .= "bd";
+	    case FS_BOLD: $f .= "Bd";
 		break;
-	    case FS_ITALIC: $f .= "i";
+	    case FS_ITALIC: $f .= "It";
 		break;
-	    case FS_BOLDIT: $f .= "bi";
+	    case FS_BOLDIT: $f .= "BI";
 		break;
 	    default:
 		JpGraphError::Raise("<b>JpGraph Error:</b> Unknown TTF Style.");
 	}
 	$f .= ".ttf";
-		
+	
 	// Check that file exist
 	if( !file_exists($f) ) 
 	    JpGraphError::Raise("<b>JpGraph Error:</b> Can't open font file \"$f\". Wrong directory?");

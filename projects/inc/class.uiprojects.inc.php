@@ -2209,7 +2209,7 @@
 				$GLOBALS['phpgw']->template->set_var('ubudget_main',$main['u_budget_jobs']);    //sprintf("%01.2f",$main['u_budget_jobs']));
 				$GLOBALS['phpgw']->template->set_var('abudget_main',sprintf("%01.2f",$main['a_budget_jobs']));
 
-				$GLOBALS['phpgw']->template->set_var('pbudget_main',$main['budgetSum']);
+				$GLOBALS['phpgw']->template->set_var('pbudget_main',$main['budget']);
 				$GLOBALS['phpgw']->template->parse('main','project_main',True);
 			}
 
@@ -2276,15 +2276,15 @@
 
 				$GLOBALS['phpgw']->template->set_var(array
 				(
-					'number'		=> $pro[$i]['number'],
-					'sub_url'		=> $projects_url,
-					'title'			=> $pro[$i]['title']?$pro[$i]['title']:lang('browse'),
-					'p_budget'		=> ($pro[$i]['budgetSum']?$pro[$i]['budgetSum']:'&nbsp;'),
-					'u_budget'		=> $pro[$i]['u_budget'],
+					'number'	=> $pro[$i]['number'],
+					'sub_url'	=> $projects_url,
+					'title'		=> $pro[$i]['title']?$pro[$i]['title']:lang('browse'),
+					'p_budget'	=> ($pro[$i]['budget']?$pro[$i]['budgetSum']:'&nbsp;'),
+					'u_budget'	=> $pro[$i]['u_budget'],
 					'u_budget_jobs'	=> $pro[$i]['u_budget_jobs'],
-					'b_budget'		=> sprintf("%01.2f",$pro[$i]['b_budget']),
+					'b_budget'	=> sprintf("%01.2f",$pro[$i]['b_budget']),
 					'b_budget_jobs'	=> sprintf("%01.2f",$pro[$i]['b_budget_jobs']),
-					'a_budget'		=> sprintf("%01.2f",$pro[$i]['a_budget']),
+					'a_budget'	=> sprintf("%01.2f",$pro[$i]['a_budget']),
 					'a_budget_jobs'	=> sprintf("%01.2f",$pro[$i]['a_budget_jobs']),
 				));
 				$GLOBALS['phpgw']->template->parse('list','projects_list',True);
