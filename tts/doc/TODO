@@ -1,0 +1,7 @@
+/* $Id$ */
+
+- better look for visual notification of updated tickets
+- options for notification : 
+	- To : group / owner / assigned / nobody / fixed user
+	- Trigger on : Create / Update / Close
+- full text search
