@@ -1,0 +1,10 @@
+# $Id$
+
+drop table p_projects;
+drop table p_activities;
+drop table p_projectactivities;
+drop table p_hours;
+drop table p_projectmembers;
+drop table p_invoice;
+drop table p_invoicepos;
+drop table p_delivery;
