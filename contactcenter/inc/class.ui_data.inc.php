@@ -791,27 +791,28 @@
 					return;
 				}
 				
+				/* Select the correct Email and Telephone to be shown */
+				$conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
+
+				if (!is_array($conns_types) and !$conns_types['cc_people_email'])
+				{
+					$GLOBALS['phpgw']->exit('Default Connections Types Not Configured. Call Administrator!');
+				}
+			
 				$i = 0;
 				foreach($contacts as $contact)
 				{
-					$final[3][$i][0] = $contact['companies']['company1']['company_name']?$contact['companies']['company1']['company_name']:'none';
+					$final[3][$i][0] = $contact['companies']['company1']['company_name'] ? $contact['companies']['company1']['company_name']:'none';
 					$final[3][$i][1] = $contact['names_ordered'] ? $contact['names_ordered'] : 'none';
 					$final[3][$i][2] = $contact['companies']['company1']['title']?$contact['companies']['company1']['title']:'none';
 
-					/* Select the correct Email and Telephone to be shown */
-					$preferences = ExecMethod('contactcenter.ui_preferences.get_preferences');
-					if (!is_array($preferences))
-					{
-						$preferences['personCardEmail'] = 1;
-						$preferences['personCardPhone'] = 2;
-					}
 					if ($contact['connections'])
 					{
 						$default_email_found = false;
 						$default_phone_found = false;
 						foreach($contact['connections'] as $conn_info)
 						{
-							if ($conn_info['id_type'] == $preferences['personCardEmail'] and !$default_email_found)
+							if ($conn_info['id_type'] == $conns_types['cc_people_email'] and !$default_email_found)
 							{
 								if ($conn_info['connection_is_default'])
 								{
@@ -819,7 +820,7 @@
 								}
 								$final[3][$i][4] = $conn_info['connection_value'] ? $conn_info['connection_value'] : 'none';
 							}
-							else if ($conn_info['id_type'] == $preferences['personCardPhone'] and !$default_phone_found)
+							else if ($conn_info['id_type'] == $conns_types['cc_people_phone'] and !$default_phone_found)
 							{
 								if ($conn_info['connection_is_default'])
 								{
@@ -1827,7 +1828,13 @@
 				$result = $this->bo->catalog->get_multiple_entries($this->all_entries, $data['fields']);
 			}
 
-			$prefs = ExecMethod('contactcenter.ui_preferences.get_preferences');
+			/* Select the correct Email and Telephone to be shown */
+			$conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
+
+			if (!is_array($conns_types) and !$conns_types['cc_people_email'])
+			{
+				$GLOBALS['phpgw']->exit('Default Connections Types Not Configured. Call Administrator!');
+			}
 			
 			$jsCode = array();
 			$count = 0;
@@ -1848,7 +1855,7 @@
 					{
 						foreach ($value as $connection)
 						{
-							if ($connection['id_type'] == $prefs['personCardEmail'])
+							if ($connection['id_type'] == $conns_types['cc_people_email'])
 							{
 								$jsCode[] = '_this.entries.options[_this.entries.options.length] = new Option("'.$name.' <'.$connection['connection_value'].'>", "'.$count.'");';
 								$count++;

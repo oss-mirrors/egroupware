@@ -2,7 +2,7 @@
 <form method="POST" action="{action_url}">
 <table border="0" align="center">
 	<tr class="th">
-		<td colspan="2"><font color="{th_text}">&nbsp;<b>{title}</b></font></td>
+		<td colspan="2" align="center"><font color="{th_text}">&nbsp;<b>{title}</b></font></td>
 	</tr>
 	<tr>
    		<td></td>
@@ -16,7 +16,7 @@
 <!-- END header -->
 <!-- BEGIN body -->
 	<tr class="th">
-		<td colspan="2" align="center"><b>{lang_ContactCenter_Global_Catalogue_Setup}</b></td>
+		<td colspan="2" align="center"><b>{lang_Contact_Center_Global_Catalogue_Setup}</b></td>
 	</tr>
 	<tr>
    		<td></td>
@@ -94,6 +94,31 @@
 		<td>{lang_Contact_Full_Name}:</td>
 		<td><input type="text" size="40" name="newsettings[cc_ldap_ass_fulln0]" value="{value_cc_ldap_ass_fulln0}"></td>
 	</tr>-->
+	
+	<!-- Default Fields Association -->
+	<tr><td><br></td></tr>
+	<tr class="th">
+		<td colspan="2" align="center"><b>{lang_Contact_Center_Default_Fields_Association}</b></td>
+	</tr>
+	<tr>
+   		<td></td>
+	</tr>
+	<tr class="row_off">
+		<td>{lang_Default_People_Catalog_Email_Type}:</td>
+		<td>
+			<select name="newsettings[cc_people_email]">
+				{hook_people_email_type}
+			</select>
+		</td>
+	</tr>
+	<tr class="row_on">
+		<td>{lang_Default_People_Catalog_Telephone_Type}:</td>
+		<td>
+			<select name="newsettings[cc_people_phone]">
+				{hook_people_phone_type}
+			</select>
+		</td>
+	</tr>
 <!-- END body -->
 <!-- BEGIN footer -->
 	<tr class="th">

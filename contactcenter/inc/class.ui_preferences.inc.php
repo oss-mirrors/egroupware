@@ -31,44 +31,6 @@
 			/* Get Saved Preferences */
 			$actual = $this->get_preferences();
 			
-			/* Get the catalog options */
-			$pCatalog = CreateObject('contactcenter.bo_people_catalog');
-			$types = $pCatalog->get_all_connections_types();
-
-			if (count($types))
-			{
-				$options_email = '';
-				foreach($types as $id => $name)
-				{
-					$options_email .= '<option value="'.$id.'"';
-					
-					if ($actual['personCardEmail'] == $id)
-					{
-						$options_email .= ' selected ';
-					}
-				
-					$options_email .= '>'.$name."</option>\n";
-				}
-			
-				$options_phone = '';
-				foreach($types as $id => $name)
-				{
-					$options_phone .= '<option value="'.$id.'"';
-					
-					if ($actual['personCardPhone'] == $id)
-					{
-						$options_phone .= ' selected ';
-					}
-				
-					$options_phone .= '>'.$name."</option>\n";
-				}
-			}
-			else
-			{
-				$options_email = '';
-				$options_phone = '';
-			}
-			
 			if ($actual['displayConnector'] or !$actual['displayConnectorDefault'])
 			{
 				$GLOBALS['phpgw']->template->set_var('displayConnector', 'checked');
@@ -78,9 +40,6 @@
 				$GLOBALS['phpgw']->template->set_var('displayConnector', '');
 			}
 			
-			$GLOBALS['phpgw']->template->set_var('personCardEmail', $options_email);
-			$GLOBALS['phpgw']->template->set_var('personCardPhone', $options_phone);
-
 			/* Translate the fields */
 			$this->translate('pref');
 
@@ -106,17 +65,8 @@
 			if ($_POST['save'])
 			{
 				$GLOBALS['phpgw']->preferences->read();
-				/*
-				$GLOBALS['phpgw']->preferences->delete('contactcenter', 'personCardEmail');
-				$GLOBALS['phpgw']->preferences->delete('contactcenter', 'personCardPhone');
-				*/
 				$GLOBALS['phpgw']->preferences->delete('contactcenter', 'displayConnector');
 				$GLOBALS['phpgw']->preferences->delete('contactcenter', 'displayConnectorDefault');
-				
-				/*
-				$GLOBALS['phpgw']->preferences->add('contactcenter', 'personCardEmail', $_POST['personCardEmail'], 'forced');
-				$GLOBALS['phpgw']->preferences->add('contactcenter', 'personCardPhone', $_POST['personCardPhone'], 'forced');
-				*/
 				
 				$GLOBALS['phpgw']->preferences->add('contactcenter', 'displayConnectorDefault', '1');
 
@@ -143,9 +93,6 @@
 			{
 				$prefs['contactcenter']['displayConnector'] = true;
 			}
-			
-			$prefs['contactcenter']['personCardEmail'] = 1;
-			$prefs['contactcenter']['personCardPhone'] = 2;
 			
 			return $prefs['contactcenter'];
 		}

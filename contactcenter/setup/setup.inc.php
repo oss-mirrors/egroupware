@@ -16,7 +16,7 @@
 	/* Basic information about this app */
 	$setup_info['contactcenter']['name']      = 'contactcenter';
 	$setup_info['contactcenter']['title']     = 'ContactCenter';
-	$setup_info['contactcenter']['version']   = '0.4.1';
+	$setup_info['contactcenter']['version']   = '0.4.3';
 	$setup_info['contactcenter']['app_order'] = 4;
 	$setup_info['contactcenter']['enable']    = 1;
 
@@ -36,6 +36,7 @@
 	$setup_info['contactcenter']['hooks'][] = 'admin';
 	$setup_info['contactcenter']['hooks'][] = 'preferences';
 	$setup_info['contactcenter']['hooks'][] = 'config_validate';
+	$setup_info['contactcenter']['hooks'][] = 'config';
 	
 	/* ContactCenter Tables */
 	$setup_info['contactcenter']['tables'][] = 'phpgw_cc_status';

@@ -1,0 +1,52 @@
+/*****************************************************************************\
+ *                       eGroupWare - Contact Center                         *
+\*****************************************************************************/
+
+                          City and State Management
+
+
+ABSTRACT
+
+	This file intends to introduce the techiniques used to manage Cities and
+States inside Contact Center, and thus, inside eGroupWare.
+
+
+Contact Center Aproche to City and State Management
+
+	Contact Center intends to become part of a full-featured CRM inside
+eGroupWare. Its initial design was made so that it can incorporate a wide set
+of functions that will allow a complete CRM solution to grow inside eGW.
+	A very important part of this is the Cities and States Management. The most
+majority of GroupWare solutions permits every user to insert Cities and States
+on an open field paradigm. Inside Contact Center we are getting to a new approach.
+We closed the City and State information and made a relation scheme so that each
+address is associated with a city/state/country.
+	This will allow us to keep a centrilized city information database with things
+like timezone, location and so over. But this also brings us a new problem: how to
+manage this information on a wide instalation? Does all users have the ability to
+insert new States/Cities? If not, how can one user insert a contact that is not
+in the listed cities?
+	We developed a scheme that may solve this problem...
+
+CITY AND STATE TABLEs
+
+	Both City and State tables have a special field which holds its Global 
+Availability Status (GAS). The reason for this field to exist is that it permits
+Contact Center to allow each user to add their Cities/States, putting the user ID
+into GAS. The user gets the option of making these entries Global. If he/she 
+chooses to do so, form time to time, they are grouped and a notice is sent to
+the admin so that he/she can approve (and possibilly correct) these entries and 
+set them as Global (asseting NULL to GAS), so any user can make use of that.
+
+GLOBAL eGW CITY/STATE MANAGEMENT
+
+	As eGW is Open Source/Free Software and is available world-wide, we are
+proposing an interface to permit eGW admins around the world to contribute
+to eGW City/State Database. So, there will be (soon) an interface to allow
+these Admins to send/sync their City/State DB with main eGW distribution.
+The way to do that, in my humble opinion, should be through a mailling list.
+With these we will be able to distribute eGW installations with a presset
+City/State DB. This is the power of FS/OS!
+
+I hope this small document cleared everybody's mind about Contact Center
+strategy to City and State Management.

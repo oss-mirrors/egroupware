@@ -25,20 +25,21 @@
 		
 		function ui_api()
 		{
-			$preferences = ExecMethod('contactcenter.ui_preferences.get_preferences');
-			
-			if (!is_array($preferences))
+			$conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
+
+			if (!is_array($conns_types) and !$conns_types['cc_people_email'])
 			{
-				$preferences['personCardEmail'] = 1;
-				//$preferences['personCardPhone'] = 2;
+				$GLOBALS['phpgw']->exit('Default Connections Types Not Configured. Call Administrator!');
 			}
+			
+			$preferences = ExecMethod('contactcenter.ui_preferences.get_preferences');
 			
 			$template_dir = PHPGW_SERVER_ROOT . '/contactcenter/templates/default/';
 			$template = CreateObject('phpgwapi.Template',$template_dir);
 
 			$template->set_file(array('api' => 'api_common.tpl'));
 			
-			$template->set_var('cc_email_id_type', $preferences['personCardEmail']);
+			$template->set_var('cc_email_id_type', $conns_types['cc_people_email']);
 			
 			/* Messages */
 			$template->set_var('cc_msg_err_invalid_catalog',lang('Unavailable or empty Catalog'));

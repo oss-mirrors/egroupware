@@ -127,24 +127,26 @@
 
 		'phpgw_cc_state' => array(
 			'fd' => array(
-				'id_state' => array( 'type' => 'int', 'precision' => 8, 'nullable' => false),
-				'id_country' => array( 'type' => 'char', 'nullable' => false, 'precision' => 2),
-				'state_name' => array( 'type' => 'varchar', 'precision' => 30),
-				'state_symbol' => array( 'type' => 'varchar', 'precision' => 10)
+				'id_state'     => array( 'type' => 'int', 'precision' => 8, 'nullable' => false ),
+				'id_country'   => array( 'type' => 'char', 'nullable' => false, 'precision' => 2 ),
+				'state_gas'    => array( 'type' => 'int', 'precision' => 4, 'nullable' => true ),
+				'state_name'   => array( 'type' => 'varchar', 'precision' => 30 ),
+				'state_symbol' => array( 'type' => 'varchar', 'precision' => 10 )
 			),
 			'pk' => array('id_state'),
-			'fk' => array('id_country' => array('phpgw_common_country_list' => 'id_country')),
+			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
 		'phpgw_cc_city' => array(
 			'fd' => array(
-				'id_city' => array( 'type' => 'int', 'precision' => 8, 'nullable' => false ),
-				'id_state' => array( 'type' => 'int', 'precision' => 8 ),
-				'id_country' => array( 'type' => 'char', 'nullable' => false, 'precision' => 2),
-				'city_name' => array( 'type'  => 'varchar', 'precision' => 60, 'nullable' => 'false' ),
-				'city_timezone' => array( 'type' => 'int', 'precision' => 2 ),
-				'city_geo_location' => array(  'type'  => 'varchar', 'precision' => 27 ),
+				'id_city'           => array( 'type' => 'int', 'precision' => 8, 'nullable' => false ),
+				'id_state'          => array( 'type' => 'int', 'precision' => 8 ),
+				'id_country'        => array( 'type' => 'char', 'nullable' => false, 'precision' => 2 ),
+				'city_gas'          => array( 'type' => 'int', 'precision' => 4, 'nullable' => true ),
+				'city_name'         => array( 'type'  => 'varchar', 'precision' => 60, 'nullable' => 'false' ),
+				'city_timezone'     => array( 'type' => 'int', 'precision' => 2 ),
+				'city_geo_location' => array( 'type'  => 'varchar', 'precision' => 27 ),
 			),
 			'pk' => array('id_city'),
 			'fk' => array(

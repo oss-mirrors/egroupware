@@ -673,12 +673,13 @@
 						break;
 					
 					case 'connections':
-	                    $preferences = ExecMethod('contactcenter.ui_preferences.get_preferences');
-	                    if (!is_array($preferences))
-	                    {
-							$preferences['personCardEmail'] = 1;
-							$preferences['personCardPhone'] = 2;
+	                    $conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
+
+						if (!is_array($conns_types) and !$conns_types['cc_people_email'])
+						{
+							$GLOBALS['phpgw']->exit('Default Connections Types Not Configured. Call Administrator!');
 						}
+						
 						unset($l_fields);
 				 		$l_fields['connection_name'] = $this->trans_table['contact.connection.connection_name'];
 				 		$l_fields['connection_value'] = $this->trans_table['contact.connection.connection_value'];
@@ -704,11 +705,11 @@
 									switch ($l_type)
 									{
 										case 'email':
-										$contact_data['connections']['connection'.$i]['id_type'] = $preferences['personCardEmail'];
+										$contact_data['connections']['connection'.$i]['id_type'] = $conns_types['cc_people_email'];
 										break;
 
 										default:
-										$contact_data['connections']['connection'.$i]['id_type'] = $preferences['personCardPhone'];
+										$contact_data['connections']['connection'.$i]['id_type'] = $conns_types['cc_people_phone'];
 									}
 									$contact_data['connections']['connection'.$i]['type'] = $l_type;
 									$contact_data['connections']['connection'.$i][$l_field] = $contact[$l_type_fields[0]][0];

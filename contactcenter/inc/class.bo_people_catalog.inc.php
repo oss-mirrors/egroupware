@@ -1062,12 +1062,11 @@
 
 			// TODO: GET THE ORDER TO PUT names_ordered FROM PREFERENCES!
 
-			$preferences = ExecMethod('contactcenter.ui_preferences.get_preferences');
-			
-			if (!is_array($preferences))
+			$conns_types = ExecMethod('phpgwapi.config.read_repository', 'contactcenter');
+
+			if (!is_array($conns_types) and !$conns_types['cc_people_email'])
 			{
-				$preferences['personCardEmail'] = 1;
-				$preferences['personCardPhone'] = 2;
+				$GLOBALS['phpgw']->exit('Default Connections Types Not Configured. Call Administrator!');
 			}
 			
 			$new_data = array(
@@ -1082,7 +1081,7 @@
 			if ($data['connections']['default_email']['connection_value'])
 			{
 		 		$new_data['connections']['connection'.$i] = array(
-			 		'id_typeof_connection'  => $preferences['personCardEmail'],
+			 		'id_typeof_connection'  => $conns_types['cc_people_email'],
 			 		'connection_name'       => $data['connections']['default_email']['connection_name'],
 			 		'connection_value'      => $data['connections']['default_email']['connection_value'],
 			 		'connection_is_default' => 1,
@@ -1093,7 +1092,7 @@
 			if ($data['connections']['default_phone']['connection_value'])
 			{
 		 		$new_data['connections']['connection'.$i] = array(
-			 		'id_typeof_connection'  => $preferences['personCardPhone'],
+			 		'id_typeof_connection'  => $conns_types['cc_people_phone'],
 			 		'connection_name'       => $data['connections']['default_phone']['connection_name'],
 			 		'connection_value'      => $data['connections']['default_phone']['connection_value'],
 			 		'connection_is_default' => 1,
