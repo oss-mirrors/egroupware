@@ -99,17 +99,18 @@ function check_all()
   <tr>
    <?php 
      if ($sort == "ASC") {
-        $sort = 1;
+        $oursort = 0;
      } else {
-        $sort = 0;
+        $oursort = 1;
      }
 
-     if (! $order) {
+     if (!isset($order)) {
+        // Only do this on first visit to the app, where order should depend on prefs date order
         $order = 0;
         if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
-	   $sort = 1;
+           $oursort = 1;
         } else {
-           $sort = 0;
+           $oursort = 0;
         }
      }/* else {
 
@@ -139,7 +140,9 @@ function check_all()
 
       if ($nummsg > 0) {
 	 $msg_array = array();
-         $msg_array = $phpgw->msg->sort($mailbox, $order, $sort);
+         // Note: sorting on email is on address, not displayed name per php imap_sort
+         //echo "<br>SORT GOT: column '$order', '$oursort'.";
+         $msg_array = $phpgw->msg->sort($mailbox, $order, $oursort);
          $folder_info .= "<br>Saved messages: " . $nummsg;
          $folder_info .= "<br>New messages: " . $mailbox_status->unseen;
 
