@@ -31,6 +31,13 @@
 	$year   = date('Y',$bdate);
 	$bdateout =  $day . '_' . $month . '_' . $year;
 
+	$basedir = '{server_root}/backup/archives';
+
+	if (!is_dir($basedir))
+	{
+		mkdir($basedir, 0700);
+	}
+
 	$bmysql = '{bmysql}';
 //	$bpsql = '{bpsql}';
 	$bldap = '{bldap}';
@@ -57,7 +64,7 @@
 	if ($bmysql == 'yes')
 	{
 		chdir('/var/lib/mysql');
-		$out = '{server_root}/backup/' . $bdateout . '_backup_{db_type}.' . $end;
+		$out = $basedir . '/' . $bdateout . '_backup_{db_type}.' . $end;
 		$in = ' {db_name}';
 
 		system("$command" . $out . $in);
@@ -75,7 +82,7 @@
 	if ($bldap == 'yes')
 	{
 		chdir('/var/lib');
-		$out = '{server_root}/backup/' . $bdateout . '_backup_ldap.' . $end;
+		$out = $basedir . '/' . $bdateout . '_backup_ldap.' . $end;
 		$in = ' ldap';
 
 		system("$command" . $out . $in);
@@ -96,7 +103,7 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out = '{server_root}/backup/' . $bdateout . '_backup_email_{lid}.' . $end;
+			$out = $basedir . '/' . $bdateout . '_backup_email_{lid}.' . $end;
 			$in = ' Maildir';
 			system("$command" . $out . $in);
 

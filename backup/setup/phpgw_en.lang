@@ -28,12 +28,14 @@ Show backup archives in phpGroupWare ?	backup	en	Show backup archives in phpGrou
 smbmount	backup	en	SMBMOUNT
 tar.gz	backup	en	tar.gz
 tar.bz2	backup	en	tar.bz2
+The backup application is not configured for showing the archives in phpGroupWare yet !	backup	en	The backup application is not configured for showing the archives in phpGroupWare yet !
 The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	en	The directory to store the backup script must be outside of the webservers *DocumentRoot* !
 The ftp connection failed ! Please check your configuration !	backup	en	The ftp connection failed ! Please check your configuration !	
 Transport application	backup	en	Transport application
 Absolute path of the backup directory	backup	en	Absolute path of the backup directory
-ip	backup	en	IP
+ip or hostname	backup	en	IP or hostname
 monthly	backup	en	monthly
+No backup archives available !	backup	en	No backup archives available !
 User	backup	en	User
 Password	backup	en	Password
 weekly	backup	en	weekly

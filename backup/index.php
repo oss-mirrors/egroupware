@@ -34,6 +34,6 @@
 	include('../header.inc.php');
 
 	$obj = CreateObject('backup.uibackup');
-	$obj->backup_admin();
+	$obj->web_backup();
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

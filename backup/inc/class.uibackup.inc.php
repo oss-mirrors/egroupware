@@ -55,7 +55,7 @@
 			$this->t->set_var('lang_r_save',lang('Save backup to a remote host ?'));
 			$this->t->set_var('lang_config_path',lang('Absolute path of the directory to store the backup script'));
 			$this->t->set_var('lang_path',lang('Absolute path of the backup directory'));
-			$this->t->set_var('lang_r_ip',lang('IP'));
+			$this->t->set_var('lang_r_ip',lang('IP or hostname'));
 			$this->t->set_var('lang_user',lang('User'));
 			$this->t->set_var('lang_pwd',lang('Password'));
 			$this->t->set_var('lang_l_config',lang('Configuration localhost'));
@@ -121,9 +121,9 @@
 
 			switch($values['b_type'])
 			{
-				case 'tgz': $b_type_sel[0]=' selected';break;
-				case 'tar.bz2': $b_type_sel[1]=' selected';break;
-				case 'zip': $b_type_sel[2]=' selected';break;
+				case 'tgz':		$b_type_sel[0]=' selected';break;
+				case 'tar.bz2':	$b_type_sel[1]=' selected';break;
+				case 'zip':		$b_type_sel[2]=' selected';break;
 			}
 
 			$type_list = '<option value="tgz"' . $b_type_sel[0] . '>' . lang('tar.gz') . '</option>' . "\n"
@@ -134,9 +134,9 @@
 
 			switch($values['r_app'])
 			{
-				case 'ftp': $r_type_sel[0]=' selected';break;
-				case 'scp': $r_type_sel[1]=' selected';break;
-				case 'samba': $r_type_sel[2]=' selected';break;
+				case 'ftp':			$r_type_sel[0]=' selected';break;
+				case 'scp':			$r_type_sel[1]=' selected';break;
+				case 'smbmount':	$r_type_sel[2]=' selected';break;
 			}
 
 			$r_app_list = '<option value="ftp"' . $r_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
@@ -170,7 +170,7 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
-/*		function web_backup()
+		function web_backup()
 		{
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
@@ -182,21 +182,40 @@
 
 			$this->t->set_var('lang_action',lang('Backup'));
 
-			$archives = $this->bobackup->get_archives();
+			$config = $this->bobackup->get_config();
 
-            for ($i=0;$i<count($archives);$i++)
-            {
-				$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color(&$this->t);
+			if ($config['l_websave'] == 'yes')
+			{
+				$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 
-				$this->t->set_var(array
-				(
-					'archive'	=> $GLOBALS['phpgw']->strip_html($archives[$i]['name'])
-				);
+				$archives = $this->bobackup->get_archives();
 
-				$this->t->fp('list','archives_list',True);
+				if ($archives)
+				{
+					for ($i=0;$i<count($archives);$i++)
+					{
+						$this->nextmatchs->template_alternate_row_color(&$this->t);
+
+						$this->t->set_var(array
+						(
+							'archive' => $GLOBALS['phpgw']->strip_html($archives[$i])
+						));
+
+						$this->t->fp('list','archive_list',True);
+					}
+				}
+				else
+				{
+					$this->t->set_var('noweb',lang('No backup archives available !'));
+				}
 			}
-			$this->t->pfp('out','archives_list_t',True);
+			else
+			{
+				$this->t->set_var('noweb',lang('The backup application is not configured for showing the archives in phpGroupWare yet !'));
+			}
+
+			$this->t->pfp('out','archive_list_t',True);
 			$GLOBALS['phpgw']->common->phpgw_footer();
-		} */
+		}
 	}
 ?>

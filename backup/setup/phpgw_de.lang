@@ -28,12 +28,14 @@ Show backup archives in phpGroupWare ?	backup	de	Datensicherungs-Archive in phpG
 smbmount	backup	de	SMBMOUNT
 tar.gz	backup	de	tar.gz
 tar.bz2	backup	de	tar.bz2
+The backup application is not configured for showing the archives in phpGroupWare yet !	backup	de	Die Datensicherung ist noch nicht zum anzeigen der Archive in phpGroupWare konfiguriert worden !
 The directory to store the backup script must be outside of the webservers *DocumentRoot* !	backup	de	Das Verzeichnis zum speichern des Datensicherungs-Skriptes muß sich außerhalb des Webservers *DocumentRoot* befinden !
 The ftp connection failed ! Please check your configuration !	backup	de	Die ftp Verbindung schlug fehl ! Bitte die Konfiguration überprüfen !
 Transport application	backup	de	Transport Programm
 Absolute path of the backup directory	backup	de	Absoluter Pfad des Backup-Verzeichnisses
-ip	backup	de	IP
+ip or hostname	backup	de	IP oder Rechnername
 monthly	backup	de	monatlich
+No backup archives available !	backup	de	Es sind keine Datensicherungs-Archive vorhanden !
 User	backup	de	Benutzer
 Password	backup	de	Paßwort
 weekly	backup	de	wöchentlich

@@ -39,7 +39,7 @@
 
 		function bobackup()
 		{
-			$this->config	= CreateObject('phpgwapi.config','backup');
+			$this->config = CreateObject('phpgwapi.config','backup');
 			$this->config->read_repository();
 		}
 
@@ -331,7 +331,27 @@
 
 		function get_archives()
 		{
-			$base_dir = PHPGW_SERVER_ROOT . '/backup/';	
+			$basedir = PHPGW_SERVER_ROOT . '/backup/archives';	
+			if (is_dir($basedir))
+			{
+				$basedir = opendir($basedir);
+
+				while (false !== ($files = readdir($basedir)))
+				{
+					if (($files != '.') && ($files != '..'))
+					{
+						$archives[] = $files;
+//						_debug_array($archives);
+//						exit;
+					}
+				}
+				return $archives;
+			}
+			else
+			{
+				return False;
+			}
 		}
 	}
+
 ?>
