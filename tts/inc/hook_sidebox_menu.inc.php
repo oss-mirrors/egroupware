@@ -17,7 +17,7 @@
 	$file = Array(
 		'New ticket'        => $GLOBALS['phpgw']->link('/tts/newticket.php'),
 		'View all tickets' => $GLOBALS['phpgw']->link('/tts/index.php','filter=viewall'),
-		'View only open tickets' => $GLOBALS['phpgw']->link('/tts/index.php')
+		'View only open tickets' => $GLOBALS['phpgw']->link('/tts/index.php','filter=viewopen')
 	);
 	display_sidebox($appname,$menu_title,$file);
 
