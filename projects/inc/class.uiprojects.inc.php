@@ -1094,9 +1094,9 @@
 			$GLOBALS['phpgw']->template->set_block('edit_form','msfield2','msfield2handle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','mslist','mslisthandle');*/
 
-			$GLOBALS['phpgw']->template->set_block('edit_form','rolefield1','rolefield1handle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','rolefield2','rolefield2handle');
-			$GLOBALS['phpgw']->template->set_block('edit_form','rolelist','rolelisthandle');
+			#$GLOBALS['phpgw']->template->set_block('edit_form','rolefield1','rolefield1handle');
+			#$GLOBALS['phpgw']->template->set_block('edit_form','rolefield2','rolefield2handle');
+			#$GLOBALS['phpgw']->template->set_block('edit_form','rolelist','rolelisthandle');
 
 			$GLOBALS['phpgw']->template->set_block('edit_form','accounting_act','accounting_acthandle');
 			$GLOBALS['phpgw']->template->set_block('edit_form','accounting_own','accounting_ownhandle');
@@ -1190,26 +1190,8 @@
 				$GLOBALS['phpgw']->template->set_var('lang_edit_mstones',lang('edit milestones'));
 				$GLOBALS['phpgw']->template->fp('msfield2handle','msfield2',True);
 */
-//-- roles --
-
-				$GLOBALS['phpgw']->template->fp('rolefield1handle','rolefield1',True);
-				$roles = $this->boprojects->get_employee_roles($project_id);
-
-				//$link_data['menuaction'] = 'projects.uiprojects.edit_mstones';
-
-				while(is_array($roles) && list(,$role) = each($roles))
-				{
-					//$link_data['s_id'] = $ms['s_id'];
-					$GLOBALS['phpgw']->template->set_var('emp_name',$role['emp_name']);
-					//$GLOBALS['phpgw']->template->set_var('mstone_edit_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-					$GLOBALS['phpgw']->template->set_var('role_name',$role['role_name']);
-					$GLOBALS['phpgw']->template->fp('rolelisthandle','rolelist',True);
-				}
-				$GLOBALS['phpgw']->template->set_var('lang_edit_roles',lang('edit roles'));
-				$GLOBALS['phpgw']->template->fp('rolefield2handle','rolefield2',True);
-
 				$GLOBALS['phpgw']->template->set_var('edit_mstones_button','<input type="submit" name="mstone" value="' . lang('edit milestones') . '">');
-				$GLOBALS['phpgw']->template->set_var('edit_roles_events_button','<input type="submit" name="roles" value="' . lang('edit roles and events') . '">');
+				$GLOBALS['phpgw']->template->set_var('edit_roles_button','<input type="submit" name="roles" value="' . lang('edit roles and events') . '">');
 			}
 			else
 			{
@@ -2304,7 +2286,6 @@
 
 			$emps	= $this->boprojects->get_acl_for_project($project_id);
 			$co	= $this->boprojects->return_value('co',$project_id);
-
 			for ($i=0;$i<count($roles);$i++)
 			{
 				$this->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);

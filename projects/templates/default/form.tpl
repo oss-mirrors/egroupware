@@ -164,33 +164,8 @@
 		<td colspan="2">
 		{employees_accounts}
 		</td>
-		<td align="right" valign="top">{edit_roles_events_button}</td>
+		<td align="right" valign="top">{edit_roles_button}</td>
 	</tr>
-
-<!-- BEGIN rolefield1 -->
-
-	<tr bgcolor="{row_off}">
-		<td valign="top">{lang_roles}:</td>
-		<td colspan="2">
-			<table width="100%" border="0" cellspacing="2" cellpadding="2">
-
-<!-- END rolefield1 -->
-
-<!-- BEGIN rolelist -->
-
-				<tr>
-					<td width="50%">{emp_name}</td>
-					<td width="50%">{role_name}</td>
-				</tr>
-<!-- END rolelist -->
-
-<!-- BEGIN rolefield2 -->
-				</table>
-		</td>
-		<td valign="top" align="right"><input type="submit" name="roles" value="{lang_edit_roles}"></td>
-	</tr>
-
-<!-- END rolefield2 -->
 
 	<tr height="15">
 		<td>&nbsp;</td>

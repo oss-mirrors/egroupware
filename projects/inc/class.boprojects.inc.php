@@ -2929,7 +2929,7 @@
 
 		function send_alarm($values)
 		{
-			$event_type		= isset($values['event_type'])?$values['event_type']:'assignment to role';
+			$event_type	= isset($values['event_type'])?$values['event_type']:'assignment to role';
 			$project_name	= isset($values['project_name'])?$values['project_name']:$this->soprojects->return_value('pro',$values['project_id']);
 
 			switch($event_type)
@@ -2954,7 +2954,7 @@
 				for($i=0;$i<count($emp_events[$k]['events']);$i++)
 				{
 					$event		= $this->soprojects->id2item(array('action' => 'event','item_id' => $emp_events[$k]['events'][$i],'item' => 'event_name'));
-					$co			= $this->soprojects->return_value('co',$values['project_id']);
+					$co		= $this->soprojects->return_value('co',$values['project_id']);
 					$subject	= lang('project') .  ': ' . $project_name . ': ' . lang($event) . ' ';
 
 					switch($event_type)
@@ -3108,25 +3108,22 @@
 
 						$to = $prefs->email_address($emp_events[$k]['account_id']);
 
-						/*if (empty($to) || $to[0] == '@' || $to[0] == '$')	// we have no valid email-address
-						{
-							//echo "<p>boprojects::send_update: Empty email adress for user '".$emp_events[$k]['emp_name']."' ==> ignored !!!</p>\n";
-							continue;
-						}*/
-						//echo 'Email being sent to ' . $to;
-
 						$subject = $GLOBALS['phpgw']->send->encode_subject($subject);
 
 						$returncode = $GLOBALS['phpgw']->send->msg('email',$to,$subject,$msg,''/*$msgtype*/,'','','',$sender);
 						//echo "<p>send(to='$to', sender='$sender'<br>subject='$subject') returncode=$returncode<br>".nl2br($body)."</p>\n";
 
-						if (!$returncode)	// not nice, but better than failing silently
-						{
-							echo '<p><b>boprojects::send_alarm</b>: '.lang("Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!",$to,$emp['account_id'],htmlspecialchars($subject), $sender)."<br>\n";
-							echo '<i>'.$GLOBALS['phpgw']->send->err['desc']."</i><br>\n";
-							echo lang('This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.')."</p>\n";
-							echo '<p>'.lang('Click %1here%2 to return to projects.','<a href="'.$GLOBALS['phpgw']->link('/projects/').'">','</a>')."</p>\n";
-						}
+						# i commented it out
+						# this gets called maybe by cron, so this error message is useless
+						# also i breaks any egw app
+						#// not nice, but better than failing silently
+						#if (!$returncode)
+						#{
+						#	echo '<p><b>boprojects::send_alarm</b>: '.lang("Failed sending message to '%1' #%2 subject='%3', sender='%4' !!!",$to,$emp['account_id'],htmlspecialchars($subject), $sender)."<br>\n";
+						#	echo '<i>'.$GLOBALS['phpgw']->send->err['desc']."</i><br>\n";
+						#	echo lang('This is mostly caused by a not or wrongly configured SMTP server. Notify your administrator.')."</p>\n";
+						#	echo '<p>'.lang('Click %1here%2 to return to projects.','<a href="'.$GLOBALS['phpgw']->link('/projects/').'">','</a>')."</p>\n";
+						#}
 						unset($prefs);
 					}
 				}
@@ -3387,8 +3384,12 @@
 
 			switch($action)
 			{
-				case 'event':	$list = $this->list_events($type); break;
-				default:		$list = $this->list_roles(); break;
+				case 'event':	
+					$list = $this->list_events($type); 
+					break;
+				default:		
+					$list = $this->list_roles('role'); 
+					break;
 			}
 
 			if(!is_array($selected))
