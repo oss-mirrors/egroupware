@@ -373,4 +373,25 @@
 					break;
 			}
 		}
+
+		function get_messenger_users()
+		{
+			$users = array();
+			$accounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
+			foreach ($accounts as $account)
+			{
+				$GLOBALS['phpgw']->acl->account_id = $account['account_id'];
+				$user_acl = $GLOBALS['phpgw']->acl->read_repository();
+				foreach ($user_acl as $user_app)
+				{
+					if ($user_app[appname] == 'messenger' && $user_app['location'] == 'run' && $user_app['rights'] == 1)
+					{
+						$users[] = $account;
+						continue 2;
+					}
+				}
+			}
+
+			return $users;
+		}
 	}
