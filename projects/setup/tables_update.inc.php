@@ -53,6 +53,15 @@
 		$setup_info['projects']['currentver'] == '0.0.0';
 	}
 
+	$test[] = '0.8.2';
+	function projects_upgrade0_8_2()
+	{
+		global $setup_info;
+
+		$setup_info['projects']['currentver'] == '0.0.0';
+		return $setup_info['projects']['currentver'];
+	}
+
 	$test[] = '0.0.0';
 	function projects_upgrade0_0_0()
 	{
@@ -257,10 +266,7 @@
 	$test[] = '0.8.4.005';
 	function projects_upgrade0_8_4_005()
 	{
-		global $setup_info,$phpgw_setup;
-
-		$db = $phpgw_setup->db;
-
+		global $setup_info;
 
 		$setup_info['projects']['currentver'] = '0.8.4.006';
 		return $setup_info['projects']['currentver'];
