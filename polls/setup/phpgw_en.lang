@@ -10,6 +10,7 @@ answer has been updated	polls	en	Answer has been updated
 answers	polls	en	Answers
 are you sure want to delete this answer ?	polls	en	Are you sure want to delete this answer ?
 are you sure want to delete this question ?	polls	en	Are you sure want to delete this question ?
+current poll	polls	en	Current Poll
 edit answer	polls	en	Edit answer
 edit poll question	polls	en	Edit poll question
 enter poll question	polls	en	Enter poll question
@@ -25,6 +26,7 @@ show answers	polls	en	Show answers
 show questions	common	en	Show questions
 total votes	polls	en	Total
 view poll	polls	en	View poll
+view results	polls	en	View Results
 vote	polls	en	Vote
 voting booth admin	admin	en	Voting Booth
 voting booth administration	polls	en	Voting Booth Administration
