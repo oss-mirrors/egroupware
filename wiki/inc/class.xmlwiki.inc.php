@@ -118,13 +118,23 @@
 
 		function import($url,$debug_messages=False)
 		{
-			if (function_exists('file_get_contents'))
+			if (substr($url,0,4) == 'http')
 			{
-				$xmldata = file_get_contents($url);
+				// use our network class, as it deals with proxies and the proxy-config in admin->configuration
+				$network = CreateObject('phpgwapi.network');
+				$xmldata = $network->gethttpsocketfile($url,'','',True);
+				$xmldata = strstr($xmldata,'<?xml');	// discard everything before the start of the xml-file
 			}
-			elseif (($xmldata = file($url)) !== False)
+			else
 			{
-				$xmldata = implode('',$xmldata);
+				if (function_exists('file_get_contents'))
+				{
+					$xmldata = file_get_contents($url);
+				}
+				elseif (($xmldata = file($url)) !== False)
+				{
+					$xmldata = implode('',$xmldata);
+				}
 			}
 			//echo '<pre>'.htmlspecialchars($xmldata)."</pre>\n";
 			if (!$xmldata)
