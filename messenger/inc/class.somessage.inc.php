@@ -36,8 +36,8 @@
 
 		function read_inbox($start,$order)
 		{
-			$this->db->query("select * from phpgw_messenger_messages where message_owner='" . $this->owner
-								. "' " . $this->db->limit($start),__LINE__,__FILE__);
+			$this->db->limit_query("select * from phpgw_messenger_messages where message_owner='" . $this->owner
+								. "'",$start,__LINE__,__FILE__);
 			while ($this->db->next_record())
 			{
 				$messages[] = array(
