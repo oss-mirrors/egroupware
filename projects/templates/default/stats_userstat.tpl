@@ -1,5 +1,5 @@
-      <p>&nbsp;&nbsp;&nbsp;{lang_action}<br>
-      <hr noshade width="98%" align="center" size="1">
+<p>&nbsp;&nbsp;&nbsp;{lang_action}<br>
+<hr noshade width="98%" align="center" size="1">
 
       <center>
        <form method="POST" name="projects_form" action="{actionurl}">

@@ -3,17 +3,22 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 This file provided that you have successfully installed the projects
 application under phpgroupware and can access the "Projects" menu
-page including p*hours-, p*statistics-, p*delivery- and p*billing-links.  
+page including Hours-, Statistics-, Delivery- and Billing-links.  
 
-The main page contains a ADD button to create projects and a
+Projects is the main application for Hours, Statistics, Billing and Delivery. 
+Projecthours manages the daily jobs, Projectbilling is needed to create 
+invoices, Projectstatistics creates user- and projectstatistics and 
+Projectdelivery manages delivery notes.
+
+The Projects main page contains an ADD button to create projects and an
 ACTIVITY LIST button. 
 First you have to create your activities. Activities meens global categories
-of your work into you have to sort your jobs. They regulate the hours 
-per workunit and the bill per workunit for each job.  
+of your work for sort your jobs and regulate the minutes per workunit and the 
+bill per workunit for each job.  
 
 than you can create your projects and assign activities to them.   
 You can choose the type of activity: bookable(no invoice) or billable.
-The projecthours app manages your daily jobs. You can only submit a job to a
+The projecthours manages your daily jobs. You can only submit a job to a
 project, if there are activities avaiable.  
 
 The project-,activity-,delivery- and invoice-numbers are editable if you 
@@ -33,3 +38,5 @@ The project - coordinator is the chosen primary employee and authorized
 to modify his project.   
 
 grtx
+
+bettina gille [aeb@hansenet.de]

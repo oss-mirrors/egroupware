@@ -42,7 +42,7 @@
   }
 
   if ($project_id) {
-     $phpgw->db->query("select count(*) from p_delivery where project_id=$project_id ");
+     $phpgw->db->query("select count(*) from p_delivery where project_id=$project_id");
      $phpgw->db->next_record();
      if ($phpgw->db->f(0) == 1)
         $t->set_var(total_matchs,lang("your search returned 1 match"));
@@ -50,8 +50,8 @@
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
   } else {
      $phpgw->db->query("select count(*) from p_delivery");
+    $phpgw->db->next_record();
   }
-  $phpgw->db->next_record();                                                                      
 
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
@@ -59,6 +59,7 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+     $phpgw->db->next_record();
 ?>
 
 <?php
@@ -95,33 +96,33 @@
   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
   if ($project_id) {
      $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company_id"
-		 . ",company_name,title,p_delivery.date,p_delivery.project_id as pid "
+		 . ",company_name,title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook,customers WHERE "
                  . "customers.company_id=addressbook.ab_company_id and "
                  . "p_delivery.customer=ab_company_id AND p_delivery.project_id=p_projects.id "
- 		 . "AND p_delivery.project_id=$project_id limit $limit");   //$ordermethod limit $limit");
+ 		 . "AND p_delivery.project_id=$project_id $ordermethod limit $limit");
   } else {
      $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company_id,"
-		 . "company_name,title,p_delivery.date,p_delivery.project_id as pid "
+		 . "company_name,title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook,customers WHERE "
                  . "customers.company_id=addressbook.ab_company_id and "
-                 . "p_delivery.customer=ab_company_id AND p_delivery.project_id=p_projects.id limit $limit");
-//		 . "$ordermethod limit $limit");
+                 . "p_delivery.customer=ab_company_id AND p_delivery.project_id=p_projects.id "
+		 . "$ordermethod limit $limit");
     }
   }
    else {
     if ($project_id) {
-     $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company " // as customer "
-		 . ",title,p_delivery.date,p_delivery.project_id as pid "
+     $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company "
+		 . ",title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook WHERE "
                  . "p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id "
  		 . "AND p_delivery.project_id=$project_id $ordermethod limit $limit");
     } else {
-     $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company "  //as customer "
-		 . ",title,p_delivery.date,p_delivery.project_id as pid "
+     $phpgw->db->query("SELECT p_delivery.id as id,p_delivery.num,ab_firstname,ab_lastname,ab_company "
+		 . ",title,p_delivery.date,p_delivery.project_id as pid,p_delivery.customer "
  		 . "FROM p_delivery,p_projects,addressbook WHERE "
-                 . "p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id limit $limit");
-//		 . "$ordermethod limit $limit");
+                 . "p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id "
+		 . "$ordermethod limit $limit");
      }
    }
   while ($phpgw->db->next_record()) {

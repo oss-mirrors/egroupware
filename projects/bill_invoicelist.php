@@ -40,20 +40,6 @@
      $filter = "none";
   }
 
-    if ($filter != "private") {                                                                                                                                                               
-        if ($filter != "none") {                                                                                                                                                               
-	$filtermethod = " access like '%,$filter,%' ";                                                                                                                                      
-	} else {                                                                                                                                                                               
-	$filtermethod = " (coordinator='" . $phpgw_info["user"]["account_id"]                                                                                                               
-	. "' OR owner='" . $phpgw_info["user"]["account_id"]                                                                                                                  
-	. "' OR access='public' "                                                                                                                                             
-	. $phpgw->accounts->sql_search("access") . " ) ";                                                                                                                     
-	}                                                                                                                                                                                      
-   } else {                                                                                                                                                                                  
-  $filtermethod = " coordinator='" . $phpgw_info["user"]["account_id"] . "' ";                                                                                                           
-  }
-  
-  
   if ($project_id) {
      $phpgw->db->query("select count(*) from p_invoice where project_id=$project_id");
      $phpgw->db->next_record();
@@ -63,8 +49,8 @@
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
   } else {
      $phpgw->db->query("select count(*) from p_invoice");
+    $phpgw->db->next_record();
   }
-  $phpgw->db->next_record();                                                                      
 
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
@@ -72,6 +58,7 @@
                            $phpgw->db->f(0));
   else
      $total_matchs = "<br>" . lang("showing x",$phpgw->db->f(0));
+     $phpgw->db->next_record();
 ?>
 
 <?php
@@ -109,33 +96,33 @@
   
   if ($project_id) {
      $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company_id "
-		 . ",company_name,title,p_invoice.date,sum,p_invoice.project_id as pid "
+		 . ",company_name,title,p_invoice.date,sum,p_invoice.project_id as pid,p_invoice.customer "
  		 . "FROM p_invoice,p_projects,addressbook,customers WHERE "
                  . "p_invoice.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id "
                  . "AND p_invoice.project_id=p_projects.id "
- 		 . "AND p_invoice.project_id=$project_id limit $limit");   //$ordermethod limit $limit");
+ 		 . "AND p_invoice.project_id=$project_id $ordermethod limit $limit");
   } else {
      $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company_id, "
-		 . "company_name,title,p_invoice.date,sum,p_invoice.project_id as pid "
+		 . "company_name,title,p_invoice.date,sum,p_invoice.project_id as pid,p_invoice.customer "
  		 . "FROM p_invoice,p_projects,addressbook,customers WHERE "
                  . "p_invoice.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id "
-                 . "AND p_invoice.project_id=p_projects.id limit $limit");    //$ordermethod limit $limit");
+                 . "AND p_invoice.project_id=p_projects.id $ordermethod limit $limit");
   
     } 
   }
   else {
   if ($project_id) {
-     $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company " //as customer "
-		 . ",title,p_invoice.date,sum,p_invoice.project_id as pid "
+     $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company "
+		 . ",title,p_invoice.date,sum,p_invoice.project_id as pid,p_invoice.customer "
  		 . "FROM p_invoice,p_projects,addressbook WHERE "
                  . "p_invoice.customer=ab_id AND p_invoice.project_id=p_projects.id "
- 		 . "AND p_invoice.project_id=$project_id limit $limit");  //$ordermethod limit $limit");
+ 		 . "AND p_invoice.project_id=$project_id $ordermethod limit $limit");
   } else {
-     $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company " //as customer "
-		 . ",title,p_invoice.date,sum,p_invoice.project_id as pid "
+     $phpgw->db->query("SELECT p_invoice.id as id,p_invoice.num,ab_firstname,ab_lastname,ab_company "
+		 . ",title,p_invoice.date,sum,p_invoice.project_id as pid,p_invoice.customer "
  		 . "FROM p_invoice,p_projects,addressbook WHERE "
-                 . "p_invoice.customer=ab_id AND p_invoice.project_id=p_projects.id limit $limit"); 
-//                 . "$ordermethod limit $limit");
+                 . "p_invoice.customer=ab_id AND p_invoice.project_id=p_projects.id " 
+                 . "$ordermethod limit $limit");
   
     }
   }

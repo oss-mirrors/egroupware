@@ -27,7 +27,7 @@
   . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
   . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("project list"));
+  $t->set_var(lang_action,lang("projects"));
   $t->set_var(actionurl,$phpgw->link("add.php"));
   $t->set_var(lang_activities,lang("activities list"));
   $t->set_var(activitiesurl,$phpgw->link("activities.php"));
@@ -78,8 +78,6 @@
      $customer_sortorder = "ab_company";                                                                                                                     
   }
      
- //  $phpgw->db->next_record();                                                                      
-
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
                            ($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),

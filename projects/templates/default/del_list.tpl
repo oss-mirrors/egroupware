@@ -1,6 +1,6 @@
+<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                  
+<hr noshade width="98%" align="center" size="1">
 <center>
-{lang_projects_action}
-
  {total_matchs}
  {next_matchs}
 	
@@ -12,8 +12,8 @@
       <td width="20%" bgcolor="{th_bg}" align=center>{sort_coordinator}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="8%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
-      <td width="8%" align=center>{h_lang_delivery}</td>
-      <td width="8%" align=center>{h_lang_deliverylist}</td>
+      <td width="10%" align=center>{h_lang_delivery}</td>
+      <td width="10%" align=center>{h_lang_deliverylist}</td>
     </tr>
   </form>
   

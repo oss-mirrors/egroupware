@@ -1,42 +1,23 @@
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+     install instructions for projects                   +
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                  install the database tables                  +
++              install instructions for projects                +
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-create_tables.mysql [ can be found in projects-doc-directory ]
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                 install the database tables                   +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-command: mysql -uusername -ppassword dbname < create_tables.mysql
-
-lang.sql & de_translation.sql 
+files:
+create_tables.mysql 
+lang.sql and/or de_translation.sql
 [ can be found in projects-doc-directory ]
 
-command: mysql -uusername -ppassword dbname < lang.sql
-command: mysql -uusername -ppassword dbname < de_translation.sql
+Import the projects tables into your phpgroupware database in the 
+command shell:
+mysql -uusername -ppassword dbname < create_tables.mysql
+mysql -uusername -ppassword dbname < lang.sql
+mysql -uusername -ppassword dbname < de_translation.sql
 
-you have to replace 'username' with your db-user-name,
-'password' with your db-users-password and 'dbname' with the
-phpgroupware-db-name
+Exchange 'username' for your db-user-name,
+'password' for your db-users-password and 'dbname' for the
+phpgroupware-db-name.
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                       project Admin                           +
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-create a group 'projectAdmin'
-each member of this group is able to edit or delete all 
-created projects
-
-also the chosen coordinator of a project is able to manage 
-his project 
-
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                          management                           +
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-projects is the main app for p*hours, p*statistics, p*billing 
-and p*delivery
-projecthours manages the daily jobs
-projectbilling is needed to create invoices
-projectstatistics creates user- and projectstatisticss
-projectdelivery manages delivery notes 

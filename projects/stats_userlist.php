@@ -27,7 +27,8 @@
  . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_activities,lang("activities list"));
+
+  $t->set_var(lang_action,lang("userstatistics"));
   $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
   if (! $start)

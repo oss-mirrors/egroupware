@@ -28,6 +28,7 @@
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
   $t->set_var(lang_all_open_hours,lang("all open hours"));
+  $t->set_var(lang_action,lang("projecthours"));
   $t->set_var(all_open_hours,$phpgw->link("hours_listhours.php","status=open"));
   $t->set_var(lang_all_done_hours,lang("all done hours"));
   $t->set_var(all_done_hours,$phpgw->link("hours_listhours.php","status=done"));

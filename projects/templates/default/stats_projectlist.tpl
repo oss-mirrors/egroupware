@@ -1,9 +1,8 @@
+<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                             
+<hr noshade width="98%" align="center" size="1">
 <center>
-{lang_projectstats_action}
-
- {total_matchs}
+{total_matchs}
  {next_matchs}
-	
   <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="3%" align=center bgcolor="{th_bg}" align=center>{sort_num}</td>
@@ -27,6 +26,11 @@
         <td align=center>{stat}</td>
       </tr>
 <!-- END project_list -->
-
+   </table>
+  <table cellpadding=3 cellspacing=1>                                                                                                                                           
+    <tr>                                                                                                                                                                        
+     <form method="POST" action="{userlisturl}">                                                                                                                                 
+      <td><input type="submit" name="submit" value="{lang_userlist}"></form></td>                                                                                                
+    </tr>                                                                                                                                                                       
   </table>
 </center>
