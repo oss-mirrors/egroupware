@@ -757,7 +757,14 @@
 							'send_to'	=> base64_encode($headers['header'][$i]['sender_address'])
 						);
 					}
-					$this->t->set_var('url_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					if($preferences['messageNewWindow'])
+					{
+						$this->t->set_var('url_compose',"javascript:displayMessage('".$GLOBALS['phpgw']->link('/index.php',$linkData)."');");
+					}
+					else
+					{
+						$this->t->set_var('url_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
+					}
 					
 					$linkData = array
 					(
