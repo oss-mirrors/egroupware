@@ -228,7 +228,7 @@
 			$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 			
 			if ($this->debug > 2) { echo 'class.bomessage.message_data: $msg_struct DUMP:<pre>'; print_r($msg_struct); echo '</pre>';  }
-			#set_time_limit(0);
+			#@set_time_limit(0);
 			
 			// ----  Special X-phpGW-Type Message Flag  -----
 			// is this still a planned feature?
@@ -878,7 +878,7 @@
 			
 			// -----  GET BODY AND SHOW MESSAGE  -------
 			
-			set_time_limit(120);
+			@set_time_limit(120);
 			
 			// $this->part_nice[X]['d_instructions']
 			// possible values for "d_instructions" (d_ means "display")
@@ -1422,7 +1422,7 @@
 					$done_processing = False;
 				}
 			}
-			set_time_limit(0);
+			@set_time_limit(0);
 			
 			/* // IS THIS STILL USED ???????
 			if($application)

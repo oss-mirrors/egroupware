@@ -869,13 +869,13 @@
 				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->force_msg_uids = True;
 			}
 			
-			set_time_limit(60);
+			@set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open: $GLOBALS["phpgw_dcom_".$acctnum('.$acctnum.')]->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
 			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
-			set_time_limit(0);
+			@set_time_limit(0);
 			
 			if ($this->debug_logins > 1) {  echo 'mail_msg: begin_request: open returns $mailsvr_stream = ['.serialize($mailsvr_stream).']<br>'; }
 			
@@ -1100,11 +1100,11 @@
 				$GLOBALS['phpgw_dcom_'.$acctnum]->dcom->force_msg_uids = True;
 			}
 			// log in to INBOX because we know INBOX should exist on every mail server, "reopen" to desired folder (if different) later
-			set_time_limit(60);
+			@set_time_limit(60);
 			if ($this->debug_logins > 1) { echo 'mail_msg: ensure_stream_and_folder: about to call dcom->open: $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->open('.$mailsvr_callstr."INBOX".', '.$user.', '.$pass.', )'.'<br>'; }
 			$mailsvr_stream = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->open($mailsvr_callstr."INBOX", $user, $pass, '');
 			$pass = '';
-			set_time_limit(0);
+			@set_time_limit(0);
 			if ($this->debug_logins > 1) {  echo 'mail_msg: ensure_stream_and_folder: open returns $mailsvr_stream = ['.serialize($mailsvr_stream).']<br>'; }
 			
 			if ( (!isset($mailsvr_stream))

@@ -229,7 +229,7 @@
 			$GLOBALS['phpgw']->template->set_var('view_raw_message_href',$this->bo->xi['view_raw_message_href']);
 			
 			// -----  SHOW MESSAGE  -------
-			set_time_limit(120);
+			@set_time_limit(120);
 			$count_part_nice = count($this->bo->part_nice);
 			for ($i = 0; $i < $count_part_nice; $i++)
 			{
@@ -272,7 +272,7 @@
 					break;
 				}
 			}
-			set_time_limit(0);
+			@set_time_limit(0);
 			// by now it should be OK to close the stream
 			$GLOBALS['phpgw']->msg->end_request();
 			

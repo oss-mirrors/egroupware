@@ -23,7 +23,7 @@
 
 	//  if (isset($GLOBALS['phpgw_info']['flags']['newsmode']) && $GLOBALS['phpgw_info']['flags']['newsmode'])
 	//    $GLOBALS['phpgw']->common->read_preferences('nntp');
-	//  set_time_limit(0);
+	//  @set_time_limit(0);
 
 	// //  echo 'Mailbox = '.$mailbox.'<br>'."\n";
 	//  echo 'Mailbox = '.$GLOBALS['phpgw']->msg->mailsvr_stream.'<br>'."\n";
