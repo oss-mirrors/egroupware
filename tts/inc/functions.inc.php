@@ -49,9 +49,9 @@
 			$body .= 'TTS #'.$ticket_id."\n\n";
 			$body .= 'Subject: '.$GLOBALS['phpgw']->db->f('t_subject')."\n\n";
 			$body .= 'Assigned To: '.$GLOBALS['phpgw']->db->f('t_assignedto')."\n\n";
-			$body .= 'Priority: ".$GLOBALS['phpgw']->db->f('t_priority')."\n\n";
-			$body .= 'Group: ".$group."\n\n";
-			$body .= 'Opened By: ".$GLOBALS['phpgw']->db->f('t_user')."\n";
+			$body .= 'Priority: '.$GLOBALS['phpgw']->db->f('t_priority')."\n\n";
+			$body .= 'Group: '.$group."\n\n";
+			$body .= 'Opened By: '.$GLOBALS['phpgw']->db->f('t_user')."\n";
 			$body .= 'Date Opened: '.$GLOBALS['phpgw']->common->show_date($GLOBALS['phpgw']->db->f('t_timestamp_opened'))."\n\n";
 			if($GLOBALS['phpgw']->db->f('t_timestamp_closed'))
 			{
