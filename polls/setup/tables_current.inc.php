@@ -22,7 +22,7 @@
 				'poll_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'option_text' => array('type' => 'char', 'precision' => 8,'nullable' => False),
 				'option_count' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'vote_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
+				'vote_id' => array('type' => 'int', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -33,7 +33,7 @@
 			'fd' => array(
 				'poll_id' => array('type' => 'auto','nullable' => False),
 				'poll_title' => array('type' => 'char', 'precision' => 8,'nullable' => False),
-				'poll_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => False),
+				'poll_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => False)
 			),
 			'pk' => array('poll_id'),
 			'fk' => array(),
@@ -45,7 +45,7 @@
 				'poll_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'vote_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
 				'user_id' => array('type' => 'int', 'precision' => 8,'nullable' => False),
-				'vote_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => True),
+				'vote_timestamp' => array('type' => 'int', 'precision' => 8,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
@@ -55,7 +55,7 @@
 		'phpgw_polls_settings' => array(
 			'fd' => array(
 				'setting_name' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
-				'setting_value' => array('type' => 'varchar', 'precision' => 8,'nullable' => True),
+				'setting_value' => array('type' => 'varchar', 'precision' => 8,'nullable' => True)
 			),
 			'pk' => array(),
 			'fk' => array(),
