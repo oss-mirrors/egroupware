@@ -130,7 +130,7 @@
                  . "p_projects,accounts WHERE $filtermethod AND account_id=p_projects.coordinator AND"
                  . " descr like '%$query%' $ordermethod limit $limit");
   } else {
-     $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname FROM "
+     $phpgw->db->query("SELECT p_projects.*,account_firstname,account_lastname,account_lid FROM "
                  . "p_projects,accounts WHERE account_id=p_projects.coordinator AND $filtermethod "
                  . "$ordermethod limit $limit");
   }
@@ -169,7 +169,7 @@
                         . "addressbook,customers where customers.company_id=addressbook.ab_company_id and "
                         . "addressbook.ab_company_id='" .$phpgw->db->f("customer")."'");
       if ($db2->next_record()) {
-        $customerout = $db2->f("company_name")." [".$db2->f("ab_lastname")."]";
+        $customerout = $db2->f("company_name")." [".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")."]";
 	}
 	else {
 	$customerout = $t->set_var("customer","");
@@ -180,15 +180,16 @@
                         . "ab_id='" .$phpgw->db->f("customer")."'");
                        
     if ($db2->next_record()) {
-      $customerout = $db2->f("ab_company")." [".$db2->f("ab_lastname")."]";
+      $customerout = $db2->f("ab_company")." [ ".$db2->f("ab_firstname"). " " .$db2->f("ab_lastname")." ]";
     }
     else {
     $customerout = $t->set_var("customer","");
     }
     }
     
-    $coordinatorout = htmlentities($phpgw->db->f("account_firstname") . " "
-               . $phpgw->db->f("account_lastname")); 
+    
+    $coordinatorout = htmlentities($phpgw->db->f("account_lid") ." [ ".$phpgw->db->f("account_firstname") . " "
+               . $phpgw->db->f("account_lastname"). " ]"); 
                
       
     if($isadmin==1) {
