@@ -1,0 +1,13 @@
+%	stocks	ja	%
+add new stock	stocks	ja	Add new stock
+display stocks on main screen is disabled	stocks	ja	Display stocks on main screen is disabled
+display stocks on main screen is enabled	stocks	ja	Display stocks on main screen is enabled
+disable	stocks	ja	disable
+edit stock	stocks	ja	Edit stock
+enable	stocks	ja	enable
+price	stocks	ja	Price
+stocks	common	ja	Stock Quotes
+stock quotes	common	ja	Stock Quotes
+select displayed stocks	preferences	ja	Select displayed stock quotes
+stock quote preferences	stocks	ja	Stock Quote preferences
+symbol	stocks	ja	Symbol
