@@ -15,8 +15,8 @@
 
 	$phpgw_info['flags'] = array(
 		'currentapp'              => 'bookmarks',
-		'enable_nextmatchs_class' = True,
-		'enable_categories_class' = True
+		'enable_nextmatchs_class' => True,
+		'enable_categories_class' => True
 	);
 	include('../header.inc.php');
   
