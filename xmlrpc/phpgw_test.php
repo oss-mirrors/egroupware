@@ -21,9 +21,20 @@
 
 	include('../header.inc.php');
 
+	$method = get_var('method',array('POST'),'system.listMethods');
+
+	echo '
+<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '" method="post">
+<input name="method" VALUE="' . $method . '">
+<input name="param" VALUE="' . $param . '">
+<input type="submit" value="go" name="submit">
+</form>
+<p>
+Enter a method to execute and one parameter';
+
 	if ($_POST['method'])
 	{
-		$f = CreateObject('phpgwapi.xmlrpcmsg',$_POST['method'],array(
+		$f = CreateObject('phpgwapi.xmlrpcmsg',$method,array(
 			CreateObject('phpgwapi.xmlrpcval',$_POST['param'], 'string')
 		));
 		print '<pre style="text-align: left;">' . htmlentities($f->serialize()) . "</pre>\n";
@@ -36,31 +47,12 @@
 			die('send failed');
 		}
 		$v = $r->value();
-		if (!$r->faultCode())
-		{
-			print 'State number ' . $_POST['stateno'] . ' is ' . $v->scalarval() . '<br>';
-			// print "<HR>I got this value back<BR><PRE>" .
-			//  htmlentities($r->serialize()). "</PRE><HR>\n";
-		}
-		else
+		if ($r->faultCode())
 		{
 			print 'Fault: ';
 			print 'Code: ' . $r->faultCode() . " Reason '" .$r->faultString()."'<br>";
 		}
 	}
-
-	if (!$method)
-	{
-		$method = 'system.listMethods';
-	}
-	echo '
-<form action="' . $GLOBALS['phpgw']->link('/xmlrpc/phpgw_test.php') . '" method="post">
-<input name="method" VALUE="' . $method . '">
-<input name="param" VALUE="' . $param . '">
-<input type="submit" value="go" name="submit">
-</form>
-<p>
-Enter a method to execute and one parameter';
 
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
