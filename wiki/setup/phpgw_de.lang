@@ -1,4 +1,4 @@
-allow anonymous access	admin	de	Anonymen Zgriff erlauben
+﻿allow anonymous access	admin	de	Anonymen Zgriff erlauben
 anonymous password	admin	de	Password des Anonymen Benutzers
 anonymous session type	admin	de	
 anonymous username	admin	de	Benutzername des Anonymen Benutzers
@@ -23,3 +23,38 @@ wiki administration	wiki	de	Wiki Administration
 wiki menu	wiki	de	Wiki Menü
 you have been denied access to this site.	wiki	de	Ihr Zugriff auf diese Seite wurde gesperrt
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	de	
+
+this document cannot be edited	wiki	de	Diese Seite kann nicht bearbeitet werden
+edit this document	wiki	de	Diese Seite bearbeiten
+view document history	wiki	de	&Auml;nderungen an dieser Seite anzeigen
+preferences		wiki	de	Einstellungen
+search			wiki	de	Suchen
+warning since you started editing this document has been changed by someone else	wiki	de	Achtung: Seitdem Sie mit dem Bearbeiten dieser Seite begonnen haben, wurde diese bereits von jemand anderem ver&auml;ndert. Bitte f&uuml;gen Sie Ihre &Auml;nderungen zur aktuellen Version der Seite hinzu.
+document last modified	wiki	de	Letzte &Auml;nderung
+current version		wiki	de	Aktuelle Version
+your user name is %1	wiki	de	Ihr Benutzername ist %1
+summary of change	wiki	de	Zusammenfassung der &Auml;nderung
+preview	wiki	de	Vorschau
+save & continue	wiki	de	Speichern & Weiter
+add document to category	wiki	de	Seite zu Kategorie hinzuf&uuml;gen
+editing	wiki	de	Bearbeite
+Previewing	wiki	de	Vorschau
+edit box	wiki	de	Textfeld
+rows	wiki	de	Zeilen
+columns	wiki	de	Spalten
+history lists	wiki	de	Liste der &Auml;nderungen
+enter here the maximum number of entries to display in a documents history list	wiki	de	Geben Sie hier die Anzahl der &Auml;nderungen ein, die in einer Liste gezeigt werden sollen
+Choose your current time here, so the server may figure out what time zone you are in	wiki	de	W&auml;hlen Sie hier Ihre lokale Zeit aus, damit der Server weiß in welcher Zeitzone Sie sich befinden
+Enter here the number of days of edits to display on RecentChanges or any other subscription list.  Set this to zero if you wish to see all pages in RecentChanges, regardless of how recently they were edited	wiki	de	Geben Sie hier ein wieviele Tage die &Auml;nderungslisten zur&uuml;ckreichen sollen. Geben Sie 0 ein um alle &Auml;nderungen, egal wie weit zur&uuml;ckliegend, angezeigt zu bekommen.
+But display at least this many entries in RecentChanges and other subscription lists	wiki	de	Anzahl der &Auml;nderungen die mindestens angezeigt werden sollen. Sollte in der oben angegebenen Anzahl von Tagen keine &Auml;nderung vorgenommen worden sein, werden trotzdem Eintr&auml;ge angezeigt
+History display should show all changes made by the latest author.  Otherwise, show only the last change made	wiki	de	&Auml;nderungslisten sollen alle &Auml;nderungen eines Autors zeigen. Andernfalls wird f&uuml;r jeden Autor nur die letzte &Auml;nderung angezeigt
+history of	wiki	de	&Auml;nderungen an
+older	wiki	de	&Auml;lter
+newer	wiki	de	Neuer
+compute difference	wiki	de	Unterschiede berechnen
+changes by last author	wiki	de	&Auml;nderungen durch letzten Autor
+differences in	wiki	de	Unterschiede in
+difference between versions	wiki	de	Unterschiede in den Versionen
+lock/unlock pages	wiki	de	Seiten sperren / entsperren
+block/unblock hosts	wiki	de	IP-Adresse sperren / entsperren
+find	wiki	de	Suche nach

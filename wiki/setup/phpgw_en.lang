@@ -2,3 +2,38 @@ please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	en
 wiki	common	en	Wiki
 you have been denied access to this site.	wiki	en	You have been denied access to this site.
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	en	You have exeeded the number of pages you are allowed to visit in a given period of time.  Please return later.
+warning since you started editing this document has been changed by someone else	wiki	en	Warning: since you started editing, this document has been changed by someone else. Please merge your edits into the current version of this document.
+
+this document cannot be edited	wiki	en	This document cannot be edited
+edit this document	wiki	en	Edit this document
+view document history	wiki	en	View document history
+preferences		wiki	en	Preferences
+search			wiki	en	Search
+document last modified	wiki	en	Document last modified
+current version		wiki	en	Current version
+your user name is %1	wiki	en	Your user name is %1
+summary of change	wiki	en	Summary of changes
+preview	wiki	en	Preview
+save & continue	wiki	en	Save & Continue
+add document to category	wiki	en	Add document to category
+editing	wiki	en	Editing
+previewing	wiki	en	Previewing
+edit box	wiki	en	Edit box
+rows	wiki	en	Rows
+columns	wiki	en	Columns
+history lists	wiki	en	History lists
+enter here the maximum number of entries to display in a documents history list	wiki	en	Enter here the maximum number of entries to display in a document's history list
+Choose your current time here, so the server may figure out what time zone you are in	wiki	en	Choose your current time here, so the server may figure out what time zone you are in
+Enter here the number of days of edits to display on RecentChanges or any other subscription list.  Set this to zero if you wish to see all pages in RecentChanges, regardless of how recently they were edited	wiki	en	Enter here the number of days of edits to display on RecentChanges or any other subscription list.  Set this to zero if you wish to see all pages in RecentChanges, regardless of how recently they were edited
+But display at least this many entries in RecentChanges and other subscription lists	wiki	en	But display at least this many entries in RecentChanges and other subscription lists
+History display should show all changes made by the latest author.  Otherwise, show only the last change made	wiki	en	History display should show all changes made by the latest author.  Otherwise, show only the last change made
+history of	wiki	en	History of
+older	wiki	en	Older
+newer	wiki	en	Newer
+compute difference	wiki	en	Compute Difference
+changes by last author	wiki	en	Changes by last author
+differences in	wiki	en	Differences in
+difference between versions	wiki	en	Difference between versions
+lock/unlock pages	wiki	en	lock/unlock pages
+block/unblock hosts	wiki	en	block/unblock hosts
+find	wiki	en	Find
