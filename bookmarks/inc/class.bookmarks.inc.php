@@ -207,6 +207,37 @@
 
 			while (is_array($mains) && $main = each($mains))
 			{
+				if ($main[1]['parent'] == 0)
+				{
+					$s .= '<option value="' . $main[1]['id'] . '|0"';
+					if ($main[1]['id'] == $selected)
+					{
+						$s .= ' selected';
+					}
+					$s .= '>' . $main[1]['name'] . ' :: --</option>';
+				}
+
+				$subs = $GLOBALS['phpgw']->categories->return_array('subs',0,False,'','','',True,$main[1]['id']);
+				while ($sub = @each($subs))
+				{
+					$id = $main[1]['id'] . '|' . $sub['value']['id'];
+					$s .= '<option value="' . $id . '"';
+					if ($id == $selected)
+					{
+						$s .= ' selected';
+					}
+					$s .= '>' . $main[1]['name'] . ' :: ' . $sub['value']['name'] . '</option>';
+				}
+			}
+			return '<select name="bookmark[category]" size="5">' . $s . '</select>';
+		}
+
+		function OLD_categories_list($selected)
+		{
+			$mains = $GLOBALS['phpgw']->categories->return_array('mains',0,True,'','cat_name','',True);
+
+			while (is_array($mains) && $main = each($mains))
+			{
 				$GLOBALS['phpgw']->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' and (cat_appname='bookmarks' or cat_appname='phpgw') order by cat_name",__LINE__,__FILE__);
 				while ($GLOBALS['phpgw']->db->next_record())
 				{
@@ -270,6 +301,7 @@
 			}
 
 			list($category,$subcategory) = explode('|',$values['category']);
+			$subcategory = ereg_replace('!','',$subcategory);
 
 			if (! $return_no_errors && ! $category)
 			{
@@ -278,17 +310,17 @@
 			}
 
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
-                       . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
-                       . "values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s','%s',0)", 
-                          $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
-                          $category, '0', $values['rating'], $GLOBALS['phpgw_info']['user']['account_id'], $values['access'],
-                          $values['timestamps']);
+				. "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
+				. "values ('%s','%s','%s','%s',%s,%s,%s,'%s','%s','%s',0)", 
+				$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
+				$category, $subcategory, $values['rating'], $GLOBALS['phpgw_info']['user']['account_id'], $values['access'],
+				$values['timestamps']);
     
 			$db->query($query,__LINE__,__FILE__);
 
 			if (! $return_no_errors)
 			{
-				$msg .= 'Bookmark created sucessfully.';
+				$msg .= 'Bookmark created successfully.';
 			}
 
 			return true;
@@ -298,10 +330,12 @@
 		{
 			global $error_msg, $msg, $validate;
 
-/*       if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory,
-                        &$rating, &$public, &$public_db)) {
-          return False;
-       } */
+			/*
+			if (!$this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, &$rating, &$public, &$public_db))
+			{
+				return False;
+			}
+			*/
 
 			if (! $values['access'])
 			{
@@ -315,13 +349,14 @@
 			$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
 
 			list($category,$subcategory) = explode('|',$values['category']);
+			$subcategory = ereg_replace('!','',$subcategory);
 
 			// Update bookmark information.
 			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
 	                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
 	                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
 	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
-	                         $category, '0', $values['rating'], $timestamps, $values['access'], $id);
+	                         $category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
 
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 

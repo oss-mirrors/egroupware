@@ -13,7 +13,7 @@
 
 	/* $Id$ */
   
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'bookmarks',
 		'enable_nextmatchs_class' => True,
 		'enable_categories_class' => True,
@@ -21,26 +21,35 @@
 		'nonavbar'                => True
 	);
 	include('../header.inc.php');
-	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
+
+	$edit_category_x = $GLOBALS['HTTP_POST_VARS']['edit_category_x'];
+	$edit_category_y = $GLOBALS['HTTP_POST_VARS']['edit_category_y'];
+	$delete_x        = $GLOBALS['HTTP_POST_VARS']['delete_x'];
+	$delete_y        = $GLOBALS['HTTP_POST_VARS']['delete_y'];
+	$cancel_x        = $GLOBALS['HTTP_POST_VARS']['cancel_x'];
+	$cancel_y        = $GLOBALS['HTTP_POST_VARS']['cancel_y'];
+	$bm_id           = $GLOBALS['HTTP_GET_VARS']['bm_id'] ? $GLOBALS['HTTP_GET_VARS']['bm_id'] : $GLOBALS['HTTP_POST_VARS']['bm_id'];
 
 	if ($edit_category_x || $edit_category_y)
 	{
 		grab_form_values('maintain.php',True);
-		$phpgw->redirect($phpgw->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True'));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True'));
 	}
 
-	$location_info = $phpgw->bookmarks->read_session_data();
+	$location_info = $GLOBALS['phpgw']->bookmarks->read_session_data();
 
 	if ($delete_x || $delete_y)
 	{
-		if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
+		if (! $GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
 		{
-			$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/list.php'));
 		}
 		else
 		{
-			$phpgw->bookmarks->delete($bm_id);
-			$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
+			$GLOBALS['phpgw']->bookmarks->delete($bm_id);
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/' . $location_info['returnto']));
 		}
 	}
 
@@ -53,34 +62,34 @@
 				'start'    => 0,
 				'returnto' => 'list.php'
 			);
-			$phpgw->bookmarks->save_session_data($location_info);
+			$GLOBALS['phpgw']->bookmarks->save_session_data($location_info);
 		}
 		if ($location_info['bm_id'])
 		{
 			$extravars = 'bm_id=' . $location_info['bm_id'];
 		}
-		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/' . $location_info['returnto'],$extravars));
 	}
 
 	if ($edit_x || $edit_y)
 	{
-		if (! $phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_EDIT))
+		if (! $GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_EDIT))
 		{
-			$phpgw->redirect($phpgw->link('/bookmarks/list.php'));
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/list.php'));
 		}
 		else
 		{
-			$phpgw->bookmarks->update($bm_id,$bookmark);
+			$GLOBALS['phpgw']->bookmarks->update($bm_id,$bookmark);
 
 			if ($location_info['bm_id'])
 			{
 				$extravars = 'bm_id=' . $bm_id;
 			}
-			$phpgw->redirect($phpgw->link('/bookmarks/view.php',$extravars));
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/view.php',$extravars));
 		}	
 	}
 
-	$location_info = $phpgw->bookmarks->read_session_data();
+	$location_info = $GLOBALS['phpgw']->bookmarks->read_session_data();
 	if ($location_info['returnto'] == 'maintain.php')
 	{
 		$bookmark['name']        = $location_info['bookmark_name'];
@@ -92,100 +101,100 @@
 	}
 	else if (! $edit_x || ! $edit_y)
 	{
-		$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
-		$phpgw->db->next_record();
+		$GLOBALS['phpgw']->db->query("select * from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->next_record();
 
-		$bookmark['name']        = $phpgw->db->f('bm_name');
-		$bookmark['url']         = $phpgw->db->f('bm_url');
-		$bookmark['desc']        = $phpgw->db->f('bm_desc');
-		$bookmark['keywords']    = $phpgw->db->f('bm_keywords');
-		$bookmark['category']    = $phpgw->db->f('bm_category') . '|' . $phpgw->db->f('bm_subcategory');
-		$bookmark['rating']      = $phpgw->db->f('bm_rating');
+		$bookmark['name']        = $GLOBALS['phpgw']->db->f('bm_name');
+		$bookmark['url']         = $GLOBALS['phpgw']->db->f('bm_url');
+		$bookmark['desc']        = $GLOBALS['phpgw']->db->f('bm_desc');
+		$bookmark['keywords']    = $GLOBALS['phpgw']->db->f('bm_keywords');
+		$bookmark['category']    = $GLOBALS['phpgw']->db->f('bm_category') . '|' . $GLOBALS['phpgw']->db->f('bm_subcategory');
+		$bookmark['rating']      = $GLOBALS['phpgw']->db->f('bm_rating');
 	}
 
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'common_' => 'common.tpl',
 		'form'    => 'form.tpl'
 	));
-	$phpgw->template->set_block('form','body');
-	$phpgw->template->set_block('form','form_info');
+	$GLOBALS['phpgw']->template->set_block('form','body');
+	$GLOBALS['phpgw']->template->set_block('form','form_info');
 
-	$phpgw->common->phpgw_header();
+	$GLOBALS['phpgw']->common->phpgw_header();
 	include(PHPGW_APP_INC . '/header.inc.php');
 	echo parse_navbar();
 
-	app_header(&$phpgw->template);
+	app_header(&$GLOBALS['phpgw']->template);
 
 	if (empty($error_msg))
 	{
-		date_information(&$phpgw->template,$phpgw->db->f('bm_info'));
+		date_information(&$GLOBALS['phpgw']->template,$GLOBALS['phpgw']->db->f('bm_info'));
 
 		$rs[$bookmark['rating']] = ' selected';
 		$rating_select = '<select name="bookmark[rating]">'
-                    . ' <option value="0">--</option>'
-                    . ' <option value="1"' . $rs[1] . '>1 - ' . lang('Lowest') . '</option>'
-                    . ' <option value="2"' . $rs[2] . '>2</option>'
-                    . ' <option value="3"' . $rs[3] . '>3</option>'
-                    . ' <option value="4"' . $rs[4] . '>4</option>'
-                    . ' <option value="5"' . $rs[5] . '>5</option>'
-                    . ' <option value="6"' . $rs[6] . '>6</option>'
-                    . ' <option value="7"' . $rs[7] . '>7</option>'
-                    . ' <option value="8"' . $rs[8] . '>8</option>'
-                    . ' <option value="9"' . $rs[9] . '>9</option>'
-                    . ' <option value="10"' . $rs[10] . '>10 - ' . lang('Highest') . '</option>'
-                    . '</select>';
+			. ' <option value="0">--</option>'
+			. ' <option value="1"' . $rs[1] . '>1 - ' . lang('Lowest') . '</option>'
+			. ' <option value="2"' . $rs[2] . '>2</option>'
+			. ' <option value="3"' . $rs[3] . '>3</option>'
+			. ' <option value="4"' . $rs[4] . '>4</option>'
+			. ' <option value="5"' . $rs[5] . '>5</option>'
+			. ' <option value="6"' . $rs[6] . '>6</option>'
+			. ' <option value="7"' . $rs[7] . '>7</option>'
+			. ' <option value="8"' . $rs[8] . '>8</option>'
+			. ' <option value="9"' . $rs[9] . '>9</option>'
+			. ' <option value="10"' . $rs[10] . '>10 - ' . lang('Highest') . '</option>'
+			. '</select>';
     
-		$phpgw->template->set_var('lang_header',lang('Edit bookmark'));
-		$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-		$phpgw->template->set_var('updated',$f_ts[2]);
-		$phpgw->template->set_var('total_visits',$phpgw->db->f('bm_visits'));
+		$GLOBALS['phpgw']->template->set_var('lang_header',lang('Edit bookmark'));
+		$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+		$GLOBALS['phpgw']->template->set_var('updated',$f_ts[2]);
+		$GLOBALS['phpgw']->template->set_var('total_visits',$GLOBALS['phpgw']->db->f('bm_visits'));
 
-		$phpgw->template->set_var('lang_owner',lang('Created by'));
-		$account = createobject('phpgwapi.accounts',$phpgw->db->f('bm_owner'));
+		$GLOBALS['phpgw']->template->set_var('lang_owner',lang('Created by'));
+		$account = createobject('phpgwapi.accounts',$GLOBALS['phpgw']->db->f('bm_owner'));
 		$ad      = $account->read_repository();
-		$phpgw->template->set_var('owner_value',$phpgw->common->display_fullname($ad['account_lid'],$ad['firstname'],$ad['lastname']));
+		$GLOBALS['phpgw']->template->set_var('owner_value',$GLOBALS['phpgw']->common->display_fullname($ad['account_lid'],$ad['firstname'],$ad['lastname']));
 
-		$phpgw->template->set_var('lang_added',lang('Date added'));
-		$phpgw->template->set_var('lang_updated',lang('Date last updated'));
-		$phpgw->template->set_var('lang_visited',lang('Date last visited'));
-		$phpgw->template->set_var('lang_visits',lang('Total visits'));
+		$GLOBALS['phpgw']->template->set_var('lang_added',lang('Date added'));
+		$GLOBALS['phpgw']->template->set_var('lang_updated',lang('Date last updated'));
+		$GLOBALS['phpgw']->template->set_var('lang_visited',lang('Date last visited'));
+		$GLOBALS['phpgw']->template->set_var('lang_visits',lang('Total visits'));
 
-		$phpgw->template->parse('info','form_info');
+		$GLOBALS['phpgw']->template->parse('info','form_info');
 
-		$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
-		$phpgw->template->set_var('lang_url',lang('URL'));
-		$phpgw->template->set_var('lang_name',lang('Name'));
-		$phpgw->template->set_var('lang_desc',lang('Description'));
-		$phpgw->template->set_var('lang_keywords',lang('Keywords'));
+		$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/bookmarks/maintain.php','bm_id=' . $bm_id));
+		$GLOBALS['phpgw']->template->set_var('lang_url',lang('URL'));
+		$GLOBALS['phpgw']->template->set_var('lang_name',lang('Name'));
+		$GLOBALS['phpgw']->template->set_var('lang_desc',lang('Description'));
+		$GLOBALS['phpgw']->template->set_var('lang_keywords',lang('Keywords'));
 
-		$phpgw->template->set_var('lang_category',lang('Category'));
-		$phpgw->template->set_var('lang_subcategory',lang('Sub Category'));
-		$phpgw->template->set_var('lang_rating',lang('Rating'));
+		$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
+		$GLOBALS['phpgw']->template->set_var('lang_subcategory',lang('Sub Category'));
+		$GLOBALS['phpgw']->template->set_var('lang_rating',lang('Rating'));
 
-		$phpgw->template->set_var('lang_access',lang('Private'));
-		$phpgw->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . ($bookmark['access']=='private'?' checked':'') . '>');
+		$GLOBALS['phpgw']->template->set_var('lang_access',lang('Private'));
+		$GLOBALS['phpgw']->template->set_var('input_access','<input type="checkbox" name="bookmark[access]" value="private"' . ($bookmark['access']=='private'?' checked':'') . '>');
 
-		$phpgw->template->set_var('input_rating',$rating_select);
+		$GLOBALS['phpgw']->template->set_var('input_rating',$rating_select);
 
-		$phpgw->template->set_var('input_category',$phpgw->bookmarks->categories_list($bookmark['category']));
-		$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+		$GLOBALS['phpgw']->template->set_var('input_category',$GLOBALS['phpgw']->bookmarks->categories_list($bookmark['category']));
+		$GLOBALS['phpgw']->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
     
   
-		$phpgw->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . $bookmark['url'] . '">');
-		$phpgw->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');
-		$phpgw->template->set_var('input_desc','<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . $bookmark['desc'] . '</textarea>');
-		$phpgw->template->set_var('input_keywords','<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . $bookmark['keywords'] . '">');
+		$GLOBALS['phpgw']->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . $bookmark['url'] . '">');
+		$GLOBALS['phpgw']->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');
+		$GLOBALS['phpgw']->template->set_var('input_desc','<textarea name="bookmark[desc]" rows="3" cols="60" wrap="virtual">' . $bookmark['desc'] . '</textarea>');
+		$GLOBALS['phpgw']->template->set_var('input_keywords','<input type="text" name="bookmark[keywords]" size="60" maxlength="255" value="' . $bookmark['keywords'] . '">');
 
-		$phpgw->template->parse('BODY','body');
+		$GLOBALS['phpgw']->template->parse('BODY','body');
 
-		if ($phpgw->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
+		if ($GLOBALS['phpgw']->bookmarks->check_perms($bm_id,PHPGW_ACL_DELETE))
 		{
-			$phpgw->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
+			$GLOBALS['phpgw']->template->set_var('delete_button','<input type="image" name="delete" title="' . lang('Delete') . '" src="' . PHPGW_IMAGES . '/delete.gif" border="0">');
 		}
 
-		$phpgw->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
-		$phpgw->template->set_var('form_link','<input type="image" name="edit" title="' . lang('Change Bookmark') . '" src="'
+		$GLOBALS['phpgw']->template->set_var('cancel_button','<input type="image" name="cancel" title="' . lang('Done') . '" src="' . PHPGW_IMAGES . '/cancel.gif" border="0">');
+		$GLOBALS['phpgw']->template->set_var('form_link','<input type="image" name="edit" title="' . lang('Change Bookmark') . '" src="'
                                          . PHPGW_IMAGES . '/save.gif" border="0">');
 	}
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
