@@ -33,8 +33,7 @@
 
    section_start("Daily Comics",$imgpath);
 
-   $pg = $phpgw->link($phpgw_info["server"]["webserver_url"]
-                      ."/comic/preferences.php");
+   $pg = $phpgw->link('/comic/preferences.php');
    printf("<A href=\"%s\">%s</A><br>", $pg,
           lang("Comic Preferences"));
    

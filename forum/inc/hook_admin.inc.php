@@ -12,7 +12,7 @@
     }                                                                                                                                                                                  
   }
   section_start("Forum",$imgpath);
-  echo "<a HREF=" . $phpgw->link($phpgw_info["server"]["webserver_url"] ."/" . $appname ."/" . "admin/index.php") . ">";
-  echo lang("Change Forum settings") . "</a>";
+  echo '<a href="' . $phpgw->link('/forum/admin/index.php') . '">';
+  echo lang('Change Forum settings') . '</a>';
   section_end();
 ?>
