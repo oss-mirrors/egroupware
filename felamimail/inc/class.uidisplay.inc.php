@@ -43,7 +43,8 @@
 		{
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['server']['system_charset']);
+			$this->displayCharset   = $GLOBALS['phpgw']->translation->charset();
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->kses		= CreateObject('phpgwapi.kses');
@@ -442,14 +443,14 @@
                                                                                                                                                                                                                                                                                                                 
 			$this->t->set_var("date_data",
 				htmlspecialchars($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
-				ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+				ENT_QUOTES,$this->displayCharset));
 			$this->t->set_var("subject_data",
 				htmlspecialchars($this->bofelamimail->decode_header($headers->subject),
-				ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+				ENT_QUOTES,$this->displayCharset));
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,$this->displayCharset));
 
 			#$this->kses->AddProtocol("http");
 			$this->kses->AddHTML(
@@ -543,7 +544,7 @@
 				{
 					$newBody	= $bodyParts[$i]['body'];
 
-					$newBody	= htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']);
+					$newBody	= htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$this->displayCharset);
 					$newBody	= $this->bofelamimail->wordwrap($newBody,90,"\n");
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= "<pre>".$newBody."</pre>";
@@ -568,9 +569,8 @@
 			
 			
 			// create links for websites
-			$charSet = $GLOBALS['phpgw_info']['server']['system_charset'];
 			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$charSet\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -612,7 +612,7 @@
 				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$this->displayCharset));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
@@ -719,8 +719,8 @@
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
 									$link,
-									htmlentities($newSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']),
-									htmlentities($val->personal,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+									htmlentities($newSenderAddress,ENT_QUOTES,$this->displayCharset),
+									htmlentities($val->personal,ENT_QUOTES,$this->displayCharset));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -749,7 +749,7 @@
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
-									$link,htmlentities($tempSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['server']['system_charset']));
+									$link,htmlentities($tempSenderAddress,ENT_QUOTES,$this->displayCharset));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
