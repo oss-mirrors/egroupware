@@ -25,7 +25,7 @@
     $sites[]=$phpgw->db->f(0);
   }
 
-  $headlines = new HEADLINES;
+  $headlines = new headlines;
 ?>
 <table width="99%" border="0" bordercolor="#ffffff" cellspacing="2" cellpadding="2">
 <tr>
