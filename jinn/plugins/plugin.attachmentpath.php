@@ -98,12 +98,17 @@
 
 		for($i=1;$i<=$num_input;$i++)
 		{
-			if($num_input==1) $input .=lang('add attachment');
+			if($num_input==1) 
+			{
+				$input.='<br>';
+				$input .=lang('add attachment').
+					' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
+			}
 			else
 			{
 				$input.='<br>';
 				$input.=lang('add attachment %1', $i).
-				' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
+			' <input type="file" name="ATT_SRC'.$field_name.$i.'">';
 			}
 		}
 

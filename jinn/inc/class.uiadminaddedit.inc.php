@@ -49,7 +49,7 @@
 
 			if ($where_key && $where_value)
 			{
-	
+
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_$table");
 				$where_key_form="<input type=\"hidden\" name=\"where_key\" value=\"$where_key\">";
 				$where_value_form="<input type=\"hidden\" name=\"where_value\" value=\"$where_value\">";
@@ -73,7 +73,7 @@
 
 			$fields=$this->bo->so->phpgw_table_metadata($table);
 
-			
+
 			foreach ($fields as $fieldproperties)
 			{
 
@@ -116,8 +116,6 @@
 				elseif ($fieldproperties[name]=='parent_site_id')
 				{
 
-//					var_dump($parent_site_id);
-//					die();
 					if($value) // when we are editing
 					{
 						$parent_site_name=$this->bo->so->get_site_name($value);
@@ -142,36 +140,55 @@
 					$table_name=$value;
 					$tables=$this->bo->so->site_tables_names($parent_site_id);
 
-					foreach($tables as $table)
+					if(!is_array($tables[0]))
 					{
-						$tables_check_arr[]=$table[table_name];
-						$table_array[]=array
-						(
-							'name'=> $table[table_name],
-							'value'=> $table[table_name]
-						);
+						$error_msg='<font color=red>'.lang('Could not find any tables! Check your database name, database username or database password or create one or more  tables in the database.').'</font><br>';
+
+						$input=$error_msg;
+					}
+					else
+					{
+						foreach($tables as $table)
+						{
+							$tables_check_arr[]=$table[table_name];
+							$table_array[]=array
+							(
+								'name'=> $table[table_name],
+								'value'=> $table[table_name]
+							);
+						}
+
+						if($where_key && $where_value && in_array($table_name,$tables_check_arr))
+						{							
+							$valid_table_name=true;
+
+						}
+						elseif(!$where_key && !$where_value && !$value)
+						{
+							$valid_table_name=true;
+						}
+						else
+						{
+							$error_msg='<font color=red>'.lang('Tablename <i>%1</i> is not correct. Probably the tablename has changed or or the table is deleted. Please select a new table or delete this object',$table_name).'</font><br>';
+						}
+
+						$input=$error_msg.'<select name="'.$input_name.'">';
+
+						$input.=$this->ui->select_options($table_array,$value,false);
+						$input.='</select>';
+
+
 					}
 
-					if($where_key && $where_value && in_array($table_name,$tables_check_arr))
-					{							
-						$valid_table_name=true;
-						
-					}else
-					{
-						$error_msg='<font color=red>'.lang('Tablename <i>%1</i> is not correct. Probably the tablename has changed or or the table is deleted. Please select a new table or delete this object',$table_name).'</font><br>';
-					}
-									
-					$input=$error_msg.'<select name="'.$input_name.'">';
-					
-					$input.=$this->ui->select_options($table_array,$value,false);
-					$input.='</select>';
+
+
 				}
 				elseif ($fieldproperties[name]=='upload_path')
 				{
 					$input='<input type="text" name="'.$input_name.'" size="'.$input_length.'" $input_max_length" value="'.$value.'">
 
 					<input type=button onClick=\'OpenExplorer("jinn/quixplorer_2_3/index.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">
-<!--					<input type=button onClick=\'PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">-->';
+					<!--					<input type=button onClick=\'PcjsOpenExplorer("jinn/inc/pcsexplorer.php", "forms.frm.'.$input_name.'.value", "type=dir", "calling_dir=", "start_dir=")\' value="'.lang('select directory').'">-->';
 				}
 				elseif ($fieldproperties[type]=='string')
 				{
@@ -232,7 +249,7 @@
 						// ADD NEW ONE WITH MANY RELATION
 						//die($parent_site_id);	
 
-						
+
 						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
 						{
 
@@ -382,7 +399,7 @@
 					}
 
 
-					
+
 					// end relations
 				}
 
@@ -431,37 +448,33 @@
 
 								if ($field['name']!='id')
 								{ 
-									
+
 									// remove
 									$plugin_hooks=$this->bo->plugin_hooks($field['type']);
 									$options=$this->ui->select_options($plugin_hooks,$plg_name,true);
 
-									
+
 									if ($options)
 									{
 										$input.='<select name="PLG'.$field['name'].'">';
 										$input.=$options;
 										$input.='</select></td>';
 
-/*
-$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&
-plug_orig='.$plg_name.'&
-plug_name=document.frm.PLG'.$field['name'].'.value\'&
-hidden_name=CFG_PLG'.$field['name'].'&
-hidden_val='.$plg_conf)
-*/
-										
+										/*
+										$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&
+										plug_orig='.$plg_name.'&
+										plug_name=document.frm.PLG'.$field['name'].'.value\'&
+										hidden_name=CFG_PLG'.$field['name'].'&
+										hidden_val='.$plg_conf)
+										*/
+
 										/************************************
 										* here comes the plugin conf button *
 										************************************/
 										$input.='<td>
 										<input type="hidden" name="CFG_PLG'.$field['name'].'" value="'.$plg_conf.'">
-										
-										<input type="button" onClick="parent.window.open(\'jinn/plgconfwrapper.php?plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf.'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=yes,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
 
-<!--										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
-
-										<input type="button" onClick="alert(document.frm.PLG'.$field['name'].'.value);" value="'.lang('configure').'">-->
+										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf.'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=yes,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
 										</td>';
 									}
 								}

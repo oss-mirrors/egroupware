@@ -366,6 +366,23 @@
 
 		}
 				
+		/****************************************************************************\
+		* get sitename for site id                                                   *
+		\****************************************************************************/
+
+		function get_sites_by_name($name)
+		{
+			$this->phpgw_db->query("SELECT * FROM phpgw_jinn_sites
+			WHERE site_name='$name'",__LINE__,__FILE__);
+
+			while($this->phpgw_db->next_record())
+			{
+				$ids[]=$this->phpgw_db->f('id');
+			}
+			return $ids;
+
+		}	
+		
 		/* 
 			strip_magic_quotes_gpc checks if magic_quotes_gpc is set on in 
 			the current php configuration. If this is true it removes the slashes
@@ -461,12 +478,15 @@
 					$object_sql .= "site_object_id='".$this->phpgw_db->f('object_id')."'";
 				}
 
-				$SQL="SELECT site_object_id FROM phpgw_jinn_acl WHERE ($object_sql) AND (uid='$uid' $group_sql)";
-				$this->phpgw_db->query($SQL,__LINE__,__FILE__);
-
-				while ($this->phpgw_db->next_record())
+				if($object_sql)
 				{
-					$objects[]= $this->phpgw_db->f('site_object_id');
+					$SQL="SELECT site_object_id FROM phpgw_jinn_acl WHERE ($object_sql) AND (uid='$uid' $group_sql)";
+					$this->phpgw_db->query($SQL,__LINE__,__FILE__);
+
+					while ($this->phpgw_db->next_record())
+					{
+						$objects[]= $this->phpgw_db->f('site_object_id');
+					}
 				}
 
 			}
@@ -482,19 +502,17 @@
 
 		function get_phpgw_record_values($table,$where_key,$where_value,$offset,$limit,$value_reference)
 		{
-
 			if ($where_key && $where_value)
 			{
 				$SQL_WHERE_KEY = $this->strip_magic_quotes_gpc($where_key);
 				$SQL_WHERE_VALUE = $this->strip_magic_quotes_gpc($where_value);
 				$WHERE="WHERE $SQL_WHERE_KEY='$SQL_WHERE_VALUE'";
 			}
-
+			
 			
 			$fieldproperties = $this->phpgw_table_metadata($table);
 
 			$SQL="SELECT * FROM  $table $WHERE";
-//			die($SQL);
 			if (!$limit) $limit=1000000;
 
 			$this->phpgw_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit
@@ -632,7 +650,6 @@
 				}
 				$rows[]=$row;
 			}
-//			die(var_dump($rows));
 
 			return $rows;
 		}
@@ -808,7 +825,9 @@
 			$SQL='INSERT INTO ' . $table . ' (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 			if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 			{
-				$status=1;//$this->phpgw_db->get_last_insert_id($table,'x');
+			
+				//$status=1;//$this->phpgw_db->get_last_insert_id($table,'x');
+				$status=$this->phpgw_db->get_last_insert_id($table,'x');
 			}
 
 			return $status;

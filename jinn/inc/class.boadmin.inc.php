@@ -268,7 +268,7 @@
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
 
-			if ($status==1)	
+			if ($status>0)	
 			{
 				$this->message[info]=lang('Site succesfully added');
 				 $this->message[error]='';
@@ -291,7 +291,7 @@
 			$table='phpgw_jinn_site_objects';
 
 			$status=$this->insert_phpgw_data($table,$GLOBALS[HTTP_POST_VARS],$GLOBAL[HTTP_POST_FILES]);
-			if ($status==1)	$this->message[info]=lang('Site Object succesfully added');
+			if ($status>0)	$this->message[info]=lang('Site Object succesfully added');
 			else $this->message[error]=lang('Site Object NOT succesfully added, unknown error');
 
 			$this->save_sessiondata();

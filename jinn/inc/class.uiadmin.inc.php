@@ -216,7 +216,6 @@
 
 			$this->ui->header(lang('Import JiNN-Site'.$table));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
 
 			if (is_array($GLOBALS[HTTP_POST_FILES][importfile]))
 			{
@@ -240,6 +239,24 @@
 					/* insert site */
 					if ($new_site_id=$this->bo->so->insert_phpgw_data('phpgw_jinn_sites',$data))
 					{
+						// check is name exist and if add another to this name 
+						$new_site_name=$this->bo->so->get_site_name($new_site_id);
+						$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
+						
+						if(count($thissitename)>1)
+						{
+							$new_name=$new_site_name.' ('.lang('another').')';
+						
+						//	unset($data);
+							$datanew[]=array(
+								'name'=>'site_name',
+								'value'=>$new_name
+							);
+							//var_dump($data);
+							//die();
+							$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
+						}
+						
 						if (is_array($import_site_objects))
 						{
 							foreach($import_site_objects as $object)
@@ -397,6 +414,8 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
+		//	$GLOBALS['phpgw']->common->phpgw_header();
+			
 			$use_records_cfg=False;
 			
 			$plugin_name=$this->bo->plugins[$GLOBALS['plug_name']]['title'];
@@ -409,7 +428,7 @@
 			{
 				$GLOBALS[hidden_val]=str_replace('~','=',$GLOBALS[hidden_val]);
 				$orig_conf=explode(";",$GLOBALS[hidden_val]);
-				var_dump($GLOBALS[hidden_val]);
+				//var_dump($GLOBALS[plug_name]);
 				if ($GLOBALS[plug_name]==$GLOBALS[plug_orig]) $use_records_cfg=True;
 			}
 
@@ -528,7 +547,7 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-			$site_data=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_key,$where_value,'','','name');
+			$site_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_sites',$where_key,$where_value,'','','name');
 
 			$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
 			$date=date("d-m-Y",time());
@@ -578,7 +597,8 @@
 			}
 			$out.=");\n\n";
 
-			$site_object_data=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_'.$where_key,$Where_value,'','','name');
+			
+			$site_object_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_site_objects','parent_site_id', $where_value ,'','','name');
 
 			$out.= "\n/* SITE_OBJECT ARRAY */\n";
 
