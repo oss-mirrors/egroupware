@@ -126,7 +126,10 @@
 	//$this->browser = 1;
 
 	// store the GPC args in a class var
-	$this->args = $args_array;
+	//$this->args = $args_array;
+	// NO this is now assumed you put your typical GPC args directly into
+	// $this->args
+
 	// NOTE: after this, if any args values are changes, 
 	// you MUST store them as such:  $this->args['some_arg'] = new_value
 	// since the $args_array local var is NO LONGER USED after this procedure
@@ -163,7 +166,7 @@
 			$phpgw->dcom->enable_utf7 = True;
 		}
 
-		set_time_limit(90);
+		set_time_limit(60);
 		// login to INBOX because we know that always(?) should exist on an imap server
 		// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
 		$this->mailsvr_stream = $phpgw->dcom->open($this->mailsvr_callstr."INBOX", $user, $pass, '');
