@@ -143,31 +143,34 @@
 				$this->template->set_var('ForumB','');
 
 				$forums = $this->bo->get_forums_for_cat($cat['id']);
-				while(list($key,$forum) = each($forums))
+				if(sizeof($forums))
 				{
-					$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color();
-					$var = Array(
-						'TR_BG'        => $GLOBALS['tr_color'],
-						'SUBCAT_NAME'  => $forum['name'],
-						'SUBCAT_DESC'  => ($forum['descr']?$forum['descr']:'&nbsp;'),
-						'SUBEDIT_LINK' => $GLOBALS['phpgw']->link('/index.php',
-								Array(
-									'menuaction'	=> 'forum.uiadmin.edit_forum',
-									'cat_id'	=> $cat['id'],
-									'forum_id'	=> $forum['id']
+					while(list($key,$forum) = each($forums))
+					{
+						$GLOBALS['tr_color'] = $GLOBALS['phpgw']->nextmatchs->alternate_row_color();
+						$var = Array(
+							'TR_BG'        => $GLOBALS['tr_color'],
+							'SUBCAT_NAME'  => $forum['name'],
+							'SUBCAT_DESC'  => ($forum['descr']?$forum['descr']:'&nbsp;'),
+							'SUBEDIT_LINK' => $GLOBALS['phpgw']->link('/index.php',
+									Array(
+										'menuaction'	=> 'forum.uiadmin.edit_forum',
+										'cat_id'	=> $cat['id'],
+										'forum_id'	=> $forum['id']
+									)
+								),
+							'SUBDEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
+									Array(
+										'menuaction'	=> 'forum.uiadmin.delete_forum',
+										'cat_id'	=> $cat['id'],
+										'forum_id'	=> $forum['id']
+									)
 								)
-							),
-						'SUBDEL_LINK'  => $GLOBALS['phpgw']->link('/index.php',
-								Array(
-									'menuaction'	=> 'forum.uiadmin.delete_forum',
-									'cat_id'	=> $cat['id'],
-									'forum_id'	=> $forum['id']
-								)
-							)
-					);
-					$this->template->set_var($var);
-					//Parsing the inner block
-					$this->template->fp('ForumB','ForumBlock',true);
+						);
+						$this->template->set_var($var);
+						//Parsing the inner block
+						$this->template->fp('ForumB','ForumBlock',true);
+					}
 				}
 				// Parsing the outer block
 				$var = Array(
