@@ -14,10 +14,8 @@
 
 	class boqmailldap
 	{
-		var $start;
-		var $search;
-		var $filter;
-		var $cat_id;
+		var $sessionData;
+		var $LDAPData;
 
 		var $public_functions = array
 		(
@@ -33,21 +31,39 @@
 			#global $phpgw;
 
 			$this->soqmailldap = CreateObject('qmailldap.soqmailldap');
+			
+			$this->restoreSessionData();
 
 		}
 		
-		function getLocals()
+		function getLDAPData($_serverid, $_nocache=0)
 		{
-		}
-		
-		function getRcptHosts()
-		{
-		}
-		
-		function getLDAPData($_serverid)
-		{
-			$data = $this->soqmailldap->getLDAPData($_serverid);
-			return $data;
+			global $phpgw, $HTTP_GET_VARS;
+			
+			if ($HTTP_GET_VARS['nocache'] == '1' || $_nocache == '1')
+			{
+				#print "option1<br>";
+				$LDAPData = $this->soqmailldap->getLDAPData($_serverid);
+				$this->sessionData[$_serverid]['data'] = $LDAPData;
+				
+				$this->saveSessionData();
+
+				#while(list($key, $value) = each($this->sessionData[$_serverid]['data']['rcpthosts']))
+				#{
+				#	print "... $key: $value<br>";
+				#}
+				
+				return $this->sessionData['$_serverid']['data'];
+			}
+			else
+			{
+				#print "option2<br>";
+				#while(list($key, $value) = each($this->sessionData[$_serverid]['data']['rcpthosts']))
+				#{
+				#	print ".... $key: $value<br>";
+				#}
+				return $this->sessionData[$_serverid]['data'];
+			}
 		}
 		
 		function getLDAPStorageData($_serverid)
@@ -62,10 +78,91 @@
 			return $serverList;
 		}
 		
+		function restoreSessionData()
+		{
+			global $phpgw;
+		
+			$this->sessionData = $phpgw->session->appsession('session_data');
+			
+			#while(list($key, $value) = each($this->sessionData))
+			#{
+			#	print "++ $key: $value<br>";
+			#}
+			#print "restored Session<br>";
+		}
+		
 		function save($_postVars, $_getVars)
 		{
+			$serverid = $_getVars['serverid'];
+			
 			switch ($_postVars["bo_action"])
 			{
+				case "add_locals":
+					$count = count($this->sessionData[$serverid]['data']['locals']);
+					
+					$this->sessionData[$serverid]['data']['locals'][$count] = 
+						$_postVars["new_local"];
+					
+					$this->saveSessionData();
+					
+					break;
+					
+				case "add_rcpthosts":
+					$count = count($this->sessionData[$serverid]['data']['rcpthosts']);
+					
+					$this->sessionData[$serverid]['data']['rcpthosts'][$count] = 
+						$_postVars["new_rcpthost"];
+						
+					if ($_postVars["add_to_local"] == "on")
+					{
+						$count = count($this->sessionData[$serverid]['data']['locals']);
+						
+						$this->sessionData[$serverid]['data']['locals'][$count] = 
+							$_postVars["new_rcpthost"];
+					}
+					
+					$this->saveSessionData();
+					
+					break;
+					
+				case "remove_locals":
+					$i=0;
+					
+					while(list($key, $value) = each($this->sessionData[$serverid]['data']['locals']))
+					{
+						#print ".. $key: $value<br>";
+						if ($key != $_postVars["locals"])
+						{
+							$newLocals[$i]=$value;
+							#print "!! $i: $value<br>";
+							$i++;
+						}
+					}
+					$this->sessionData[$serverid]['data']['locals'] = $newLocals;
+					
+					$this->saveSessionData();
+					
+					break;
+					
+				case "remove_rcpthosts":
+					$i=0;
+					
+					while(list($key, $value) = each($this->sessionData[$serverid]['data']['rcpthosts']))
+					{
+						#print ".. $key: $value<br>";
+						if ($key != $_postVars["rcpthosts"])
+						{
+							$newRcpthosts[$i]=$value;
+							#print "!! $i: $value<br>";
+							$i++;
+						}
+					}
+					$this->sessionData[$serverid]['data']['rcpthosts'] = $newRcpthosts;
+					
+					$this->saveSessionData();
+					
+					break;
+					
 				case "save_ldap":
 					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
 					$data = array
@@ -76,8 +173,17 @@
 						"id"			=> $_getVars["serverid"]
 					);
 					$this->soqmailldap->update("save_ldap",$data);
+					$this->getLDAPData($_getVars["serverid"], '1');
+					
 					break;
 			}
+		}
+		
+		function saveSessionData()
+		{
+			global $phpgw;
+			
+			$phpgw->session->appsession('session_data','',$this->sessionData);
 		}
 
 	}

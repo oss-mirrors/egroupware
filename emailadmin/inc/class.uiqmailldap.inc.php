@@ -59,11 +59,7 @@
 			if(!empty($_serverid)) $serverid=$_serverid;
 			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
 			
-			if ($HTTP_GET_VARS['nocache'] == '1')
-			{
-				print "no cache<br>";
-				$ldapData = $this->boqmailldap->getLDAPData($serverid);
-			}
+			$ldapData = $this->boqmailldap->getLDAPData($serverid);
 
 			$menu = array
 			(
@@ -127,15 +123,25 @@
 			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
 			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
 			
+			$linkData = array
+			(
+				'menuaction'	=> 'qmailldap.uiqmailldap.save',
+				'pagenumber'	=> $pagenumber,
+				'serverid'	=> $serverid
+			);
+			$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
+			
 			switch($pagenumber)
 			{
 				case "0":
 					if (count($ldapData['rcpthosts']) > 0)
 					{
-						$selectBox  = "<select size=\"10\">\n";
+						$selectBox  = "<select size=\"10\" name=\"rcpthosts\">\n";
 						for ($i=0;$i < count($ldapData['rcpthosts']); $i++)
 						{
-							$selectBox .= "<option>".$ldapData['rcpthosts'][$i]."</option>\n";
+							$selectBox .= "<option value=\"$i\">".
+									$ldapData['rcpthosts'][$i].
+									"</option>\n";
 						}
 						$selectBox .= "</select>\n";
 						$this->t->set_var('rcpt_selectbox',$selectBox);
@@ -149,10 +155,12 @@
 
 					if (count($ldapData['locals']) > 0)
 					{
-						$selectBox  = "<select size=\"10\">\n";
+						$selectBox  = "<select size=\"10\" name=\"locals\">\n";
 						for ($i=0;$i < count($ldapData['locals']); $i++)
 						{
-							$selectBox .= "<option>".$ldapData['locals'][$i]."</option>\n";
+							$selectBox .= "<option value=\"$i\">".
+									$ldapData['locals'][$i].
+									"</option>\n";
 						}
 						$selectBox .= "</select>\n";
 						$this->t->set_var('locals_selectbox',$selectBox);
@@ -167,13 +175,6 @@
 					break;
 					
 				case "99":
-					$linkData = array
-					(
-						'menuaction'	=> 'qmailldap.uiqmailldap.save',
-						'pagenumber'	=> $pagenumber,
-						'serverid'	=> $serverid
-					);
-					$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
 					if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
 					{
 						$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
@@ -239,8 +240,7 @@
 		function save()
 		{
 			global $HTTP_POST_VARS, $HTTP_GET_VARS;
-			#print phpinfo();
-			#exit;
+
 			$this->boqmailldap->save($HTTP_POST_VARS, $HTTP_GET_VARS);
 			$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
 		}

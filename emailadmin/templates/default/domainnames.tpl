@@ -1,6 +1,5 @@
 <!-- BEGIN main -->
 <center>
-<form>
 <table border="0" cellspacing="1" cellpading="0" width="95%">
 <tr>
 	<td width="10%" valign="top">
@@ -25,32 +24,43 @@
 				Domains we receive email for
 			</td>
 		</tr>
+		<form action="{form_action}" method="post">
 		<tr bgcolor="{bg_01}">
 			<td width="50%" rowspan="5" align="center">
 				{rcpt_selectbox}
 			</td>
 			<td width="50%" align="center">
-				<input type="text" size="30">
+				<input type="submit" value="{lang_remove} -->">
+				<input type="hidden" name="bo_action" value="remove_rcpthosts">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_02}">
-			<td width="50%" align="center">
-				<input type="submit" value="<-- {lang_add}">
-			</td>
-		</tr>
-		<tr bgcolor="{bg_01}">
-			<td width="50%" align="center">
-				<input type="checkbox" name="local_domain">{lang_add_to_local}
-			</td>
-		</tr>
+		</form>
 		<tr bgcolor="{bg_02}">
 			<td width="50%" align="center">
 				&nbsp;
 			</td>
 		</tr>
+		<form action="{form_action}" method="post">
 		<tr bgcolor="{bg_01}">
 			<td width="50%" align="center">
-				<input type="submit" value="{lang_remove} -->">
+				<input type="text" size="30" name="new_rcpthost">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_02}">
+			<td width="50%" align="center">
+				<input type="checkbox" name="add_to_local">{lang_add_to_local}
+			</td>
+		</tr>
+		<tr bgcolor="{bg_01}">
+			<td width="50%" align="center">
+				<input type="submit" value="<-- {lang_add}">
+				<input type="hidden" name="bo_action" value="add_rcpthosts">
+			</td>
+		</tr>
+		</form>
+		<tr>
+			<td colspan="2">
+				&nbsp;
 			</td>
 		</tr>
 		<tr bgcolor="{th_bg}">
@@ -58,29 +68,35 @@
 				Domains which email we handle local
 			</td>
 		</tr>
+		<form action="{form_action}" method="post">
 		<tr bgcolor="{bg_01}">
 			<td width="50%" rowspan="4" align="center">
 				{locals_selectbox}
 			</td>
 			<td width="50%" align="center">
-				<input type="text" size="30">
+				<input type="submit" value="{lang_remove} -->">
+				<input type="hidden" name="bo_action" value="remove_locals">
+			</td>
+		</tr>
+		</form>
+		<tr bgcolor="{bg_02}">
+			<td width="50%" align="center">
+				&nbsp;
+			</td>
+		</tr>
+		<form action="{form_action}" method="post">
+		<tr bgcolor="{bg_01}">
+			<td width="50%" align="center">
+				<input type="text" size="30" name="new_local">
 			</td>
 		</tr>
 		<tr bgcolor="{bg_02}">
 			<td width="50%" align="center">
 				<input type="submit" value="<-- {lang_add}">
+				<input type="hidden" name="bo_action" value="add_locals">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_01}">
-			<td width="50%" align="center">
-				&nbsp;
-			</td>
-		</tr>
-		<tr bgcolor="{bg_02}">
-			<td width="50%" align="center">
-				<input type="submit" value="{lang_remove} -->">
-			</td>
-		</tr>
+		</form>
 		</table>
 	</td>
 </tr>
@@ -105,8 +121,3 @@
 </tr>
 <!-- END menu_row_bold -->
 
-<!-- BEGIN selectbox_rcpthosts -->
-<!-- END selectbox_rcpthosts -->
-
-<!-- BEGIN selectbox_locals -->
-<!-- END selectbox_locals -->

@@ -13,8 +13,6 @@
 
 	class soqmailldap
 	{
-		var $grants;
-
 		function soqmailldap()
 		{
 			global $phpgw, $phpgw_info;

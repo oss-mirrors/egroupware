@@ -1,3 +1,4 @@
+remove	qmailldap	de	Entfernen
 server list	qmailldap	de	Serverliste
 server name	qmailldap	de	Servername
 LDAP settings	qmailldap	de	LDAP Einstellungen
