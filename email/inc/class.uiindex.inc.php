@@ -124,7 +124,8 @@
 				'images_dir'		=> $this->bo->xi['svr_image_dir'],
 				'compose_text'		=> $this->bo->xi['compose_text'],
 				'compose_link'		=> $this->bo->xi['compose_link'],
-				'compose_img'		=> $this->bo->xi['compose_img']
+				'compose_img'		=> $this->bo->xi['compose_img'],
+				'auto_refresh_widget'	=> $this->bo->xi['auto_refresh_widget']
 				
 			);
 			$GLOBALS['phpgw']->template->set_var($tpl_vars);

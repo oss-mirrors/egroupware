@@ -34,6 +34,8 @@ function check_all()
 }
 </script>
 
+{auto_refresh_widget}
+
 {widget_toolbar}
 
 {V_arrows_form_table}

@@ -593,7 +593,7 @@
 				$fldball['folder'] = $this->get_arg_value('folder', $fldball['acctnum']);
 			}
 			
-			//if ($this->debug_session_caching > 0) { echo 'class_msg: get_folder_status_info: NO LONGER USE L1/class var cached data for "folder_status_info"<br>'; }
+			if ($this->debug_session_caching > 0) { echo 'class_msg: get_folder_status_info('.__LINE__.'): ONLY L1 CACHE OF THIS INFO IF IN NON-EXTREME MODE<br>'; } 
 			
 			if ($this->session_cache_extreme == False)
 			{
@@ -1109,14 +1109,15 @@
 			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
 			// then we buffer each command with this function
 			$this->buffer_move_commands($mov_msgball, $to_fldball);
-			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move ('.__LINE__.'): ok, now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
+			
+			//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move ('.__LINE__.'): ok, now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
+			// do this during actual moves
 			$this->track_expungable_folders($mov_msgball);
 
 			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return True so we do not confuse calling process<br>'; }
 			return True;
 		}
 		
-
 		/*!
 		@function buffer_mail_move_commands
 		@abstract ?
@@ -1130,48 +1131,9 @@
 		{
 			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): ENTERING<br>'; } 
 			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $mov_msgball ['.serialize($mov_msgball).'] $to_fldball ['.serialize($to_fldball).']<br>'; } 
-			if ( (!isset($mov_msgball['acctnum']))
-			|| ((string)$mov_msgball['acctnum'] == '')
-			|| (!isset($mov_msgball['folder']))
-			|| ((string)$mov_msgball['folder'] == '') )
-			{
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, $mov_msgball not complete, returning False<br>'; }
-				return False;
-			}
-			if ( (!isset($to_fldball['acctnum']))
-			|| ((string)$to_fldball['acctnum'] == '')
-			|| (!isset($to_fldball['folder']))
-			|| ((string)$to_fldball['folder'] == '') )
-			{
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, $to_fldball not complete, returning False<br>'; }
-				return False;
-			}
-			
-			$first_addition_to_array = False;
-			// use the "from folder" as the acctnum base, get an array of collected (buffered) move commands
-			if ($this->get_isset_arg('buffered_move_commmands', $mov_msgball['acctnum']) == False)
-			{
-				$first_addition_to_array = True;
-				$buffered_move_commmands = array();
-			}
-			else
-			{
-				// get a REFERENCE to an existing array
-				$buffered_move_commmands =& $this->_get_arg_ref('buffered_move_commmands', $mov_msgball['acctnum']);
-			}
-			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $buffered_move_commmands DUMP <pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-			
+						
 			// assemble the URI like string that will hold the command move request instructions
 			$this_move_data = '';
-			// use urlencode on the foldername, because in decode we;ll use parse_str() which will url decode for us.
-			// also, put them in  an order that can be ordered to ease finding groupable moves
-			//$this_move_data = 
-			//	 'mov_msgball[acctnum]='.$mov_msgball['acctnum']
-			//	.'&mov_msgball[folder]='.urlencode($mov_msgball['folder'])
-			//	.'&to_fldball[acctnum]='.$to_fldball['acctnum']
-			//	.'&to_fldball[folder]='.urlencode($to_fldball['folder'])
-			//	.'&mov_msgball[msgnum]='.$mov_msgball['msgnum'];
-			
 			$this_move_data = 
 				 'mov_msgball[acctnum]='.$mov_msgball['acctnum']
 				.'&mov_msgball[folder]='.$mov_msgball['folder']
@@ -1186,83 +1148,38 @@
 				parse_str($this_move_data, $this_move_balls);
 				echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): parse_str($this_move_data, $this_move_balls) $this_move_balls DUMP <pre>'; print_r($this_move_balls); echo '</pre>';
 			}
-
-			// if this particular acct already has an array, is this a duplicate?
-			// too SLOW to check this ?
-			//if (in_array($this_move_data, $buffered_move_commmands))
-			//{
-			//	if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, DUPLICATE $this_move_data, returning False<br>'; } 
-			//	return False;
-			//}
 			
-			// if this folder was NOT already in the array, put it there and save the arg  value
-			//$new_idx = count($buffered_move_commmands);
-			//$buffered_move_commmands[$new_idx] = $this_move_data;
-			array_push($buffered_move_commmands, $this_move_data);
-			if ($first_addition_to_array == True)
-			{
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $first_addition_to_array: [] so this one time we set it, after this we use a reference.<br>'; } 
-				$this->set_arg_value('buffered_move_commmands', $buffered_move_commmands, $mov_msgball['acctnum']);
-			}
-			else
-			{
-				if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): did use array_push, directly modified args VIA REFERENCE $buffered_move_commmands DUMP <pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-			}
-			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count is ['.count($buffered_move_commmands).'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'; } 
-			return True;
+			// add this to the array
+			$this->buffered_move_commmands[$this->buffered_move_commmands_count] = $this_move_data;
+			// increase the count, avoids calling count() every trip thru this loop
+			$this->buffered_move_commmands_count++;
+			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): added new item to array, new $this->buffered_move_commmands DUMP <pre>'; print_r($this->buffered_move_commmands); echo '</pre>'; } 
+			
+			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'; } 
+			return;
 		}
-
-
-		/*
-		@function buffer_mail_move_commands
+		
+		/*!
+		@function buffer_delete_commands
 		@abstract ?
 		@param $mov_msgball (array of type msgball) the message the will be moved. 
 		@param $to_fldball (array of type fldball) the target of the move. 
 		@author Angles
 		@discussion ?
 		@access public
-		
-		function buffer_move_commands($mov_msgball='', $to_fldball='')
+		*/
+		function buffer_delete_commands($mov_msgball='', $to_fldball='')
 		{
 			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): ENTERING<br>'; } 
 			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $mov_msgball ['.serialize($mov_msgball).'] $to_fldball ['.serialize($to_fldball).']<br>'; } 
-			if ( (!isset($mov_msgball['acctnum']))
-			|| ((string)$mov_msgball['acctnum'] == '')
-			|| (!isset($mov_msgball['folder']))
-			|| ((string)$mov_msgball['folder'] == '') )
-			{
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, $mov_msgball not complete, returning False<br>'; }
-				return False;
-			}
-			if ( (!isset($to_fldball['acctnum']))
-			|| ((string)$to_fldball['acctnum'] == '')
-			|| (!isset($to_fldball['folder']))
-			|| ((string)$to_fldball['folder'] == '') )
-			{
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, $to_fldball not complete, returning False<br>'; }
-				return False;
-			}
-			
-			// use the "from folder" as the acctnum base, get an array of collected (buffered) move commands
-			if ($this->get_isset_arg('buffered_move_commmands', $mov_msgball['acctnum']) == False)
-			{
-				$buffered_move_commmands = array();
-			}
-			else
-			{
-				$buffered_move_commmands = $this->get_arg_value('buffered_move_commmands', $mov_msgball['acctnum']);
-			}
-			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $buffered_move_commmands DUMP <pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-			
+						
 			// assemble the URI like string that will hold the command move request instructions
 			$this_move_data = '';
-			// use urlencode on the foldername, because in decode we;ll use parse_str() which will url decode for us.
-			// also, put them in  an order that can be ordered to ease finding groupable moves
 			$this_move_data = 
 				 'mov_msgball[acctnum]='.$mov_msgball['acctnum']
-				.'&mov_msgball[folder]='.urlencode($mov_msgball['folder'])
+				.'&mov_msgball[folder]='.$mov_msgball['folder']
 				.'&to_fldball[acctnum]='.$to_fldball['acctnum']
-				.'&to_fldball[folder]='.urlencode($to_fldball['folder'])
+				.'&to_fldball[folder]='.$to_fldball['folder']
 				.'&mov_msgball[msgnum]='.$mov_msgball['msgnum'];
 			
 			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): $this_move_data ['.htmlspecialchars($this_move_data).']<br>'; } 
@@ -1272,24 +1189,16 @@
 				parse_str($this_move_data, $this_move_balls);
 				echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): parse_str($this_move_data, $this_move_balls) $this_move_balls DUMP <pre>'; print_r($this_move_balls); echo '</pre>';
 			}
-
-			// if this particular acct already has an array, is this a duplicate?
-			if (in_array($this_move_data, $buffered_move_commmands))
-			{
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING with error, DUPLICATE $this_move_data, returning False<br>'; } 
-				return False;
-			}
 			
-			// if this folder was NOT already in the array, put it there and save the arg  value
-			//$new_idx = count($buffered_move_commmands);
-			//$buffered_move_commmands[$new_idx] = $this_move_data;
-			array_push($buffered_move_commmands, $this_move_data);
-			$this->set_arg_value('buffered_move_commmands', $buffered_move_commmands, $mov_msgball['acctnum']);
-			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): did use array_push, modified $buffered_move_commmands DUMP <pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count is ['.count($buffered_move_commmands).'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'; } 
-			return True;
+			// add this to the array
+			$this->buffered_move_commmands[$this->buffered_move_commmands_count] = $this_move_data;
+			// increase the count, avoids calling count() every trip thru this loop
+			$this->buffered_move_commmands_count++;
+			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): added new item to array, new $this->buffered_move_commmands DUMP <pre>'; print_r($this->buffered_move_commmands); echo '</pre>'; } 
+			
+			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): buffer_move_commands ('.__LINE__.'): LEAVING: did add $this_move_data to array, new array count $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.'], "from" acctnum is ['.$mov_msgball['acctnum'].']<br>'; } 
+			return;
 		}
-		*/
 		
 		/*
 Array
@@ -1351,532 +1260,350 @@ Array
 			$did_give_big_move_notice = False;
 			
 			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ENTERING, called by ['.$called_by.'], <br>'; } 
-			//$buffered_move_commmands = array();
-			for ($i=0; $i < count($this->extra_and_default_acounts); $i++)
+			// leave now if nothing is in the buffered command array
+			if ($this->buffered_move_commmands_count == 0)
 			{
-				if ($this->extra_and_default_acounts[$i]['status'] == 'enabled')
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING, nothing to do, return False, $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'; } 
+				return False;
+			}
+			
+			// is this a "big move"
+			$big_move_thresh = 2;
+			//$big_move_thresh = 11;
+			$is_big_move = False;
+			if ($this->buffered_move_commmands_count > $big_move_thresh)
+			{
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): issue $this->event_begin_big_move because $big_move_thresh: ['.$big_move_thresh.'] $this->buffered_move_commmands_count: ['.$this->buffered_move_commmands_count.']<br>'; } 
+				$this->event_begin_big_move(array(), 'mail_msg(_wrappers): buffered_move_commmands: LINE '.__LINE__);
+				$is_big_move = True;
+			}
+			// Sort will GROUP THE MOVES AS MUCH AS POSSIBLE RIGHT NOW
+			// the way we put the strings in the $this->buffered_move_commmands is designed to be 
+			// used by sort to end up grouping similar moves for us inside the array,
+			// grouping by _from_acctnum__from_folder__to_acctnum__to_folder__msgnum
+			// so similar moves are grouped as much as possible, simply, by calling sort.
+			reset($this->buffered_move_commmands);
+			//sort($this->buffered_move_commmands);
+			sort($this->buffered_move_commmands, SORT_NUMERIC & SORT_STRING);
+			// we know the FROM acct num is the same for all commands
+			// we know the list is sorted so all FROM folders are together, and then the TO_FOLDERS
+			// note the the "del_pseudo_folder" also will be grouped together, later we determing what command to call whether move or straight delete
+			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): we have delete instructions(s) to be processed, (sorted) $this->buffered_move_commmands DUMP<pre>'; print_r($this->buffered_move_commmands); echo '</pre>'; } 
+			
+			$grouped_move_balls = array();
+			// group the commands
+			for ($x=0; $x < $this->buffered_move_commmands_count; $x++)
+			{
+				$this_move_balls = array();
+				parse_str($this->buffered_move_commmands[$x], $this_move_balls);				
+				if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.']: $this_move_balls: ['.serialize($this_move_balls).']<br>'; }
+				// NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES
+				// NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS
+				if ($this->debug_args_input_flow > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.']: NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'; } 
+				if (isset($this_move_balls['mov_msgball']['folder']))
 				{
-					$this_acctnum = $this->extra_and_default_acounts[$i]['acctnum'];
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] needs to be checked<br>'; } 
-					if ($this->get_isset_arg('buffered_move_commmands', $this_acctnum) == True)
+					$this_move_balls['mov_msgball']['folder'] = stripslashes($this_move_balls['mov_msgball']['folder']);
+				}
+				if (isset($this_move_balls['to_fldball']['folder']))
+				{
+					$this_move_balls['to_fldball']['folder'] = stripslashes($this_move_balls['to_fldball']['folder']);
+				}
+				
+				// no matter what, we know we are going to move this message, so notify cache if needed
+				// IF WE ISSUED A BIG MOVE NOTICE THEN THE CACHE IS FLUSHED ALREADY
+				if ($is_big_move == False)
+				{
+					if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands: loop ['.$x.'] $is_big_move: ['.serialize($is_big_move).'] so calling $this->event_msg_move_or_delete()<br>'; }
+					$this->event_msg_move_or_delete($this_move_balls['mov_msgball'], 'flush_buffered_move_commmands'.' LINE: '.__LINE__, $this_move_balls['to_fldball']);
+				}
+				
+				// --- does the FROM folder match the previous one in the list? ---
+				$count_grouped = count($grouped_move_balls);
+				// make sure at lease one move is in this array, we need at least on previous to compare to, else just add it to start an array
+				if ($count_grouped  == 0)
+				{
+					// add it to the array to get it started
+					//array_push($grouped_move_balls, $this_move_balls);
+					$grouped_move_balls[0] = $this_move_balls;
+					if ($this->buffered_move_commmands_count > 1)
 					{
-						// flush and turn off extreme caching for the duration of this "big move"
-						if ($did_give_big_move_notice == False)
+						// SKIP TO NEXT LOOP, we need to compare (try to group) b4 we know to issue the actual move command or not
+						// NOTE: CONTINUE
+						if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'; }
+						continue;
+					}
+					else
+					{
+						if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, NOT skipping to next iteration because there is only 1 item in array ['.$this->buffered_move_commmands_count.']<br>'; }
+					}
+				}
+				//elseif (($count_grouped > 0)
+				//&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['folder'] == $this_move_balls['mov_msgball']['folder'])
+				//&& ($grouped_move_balls[$count_grouped-1]['to_fldball']['folder'] == $this_move_balls['to_fldball']['folder'])
+				//)
+				elseif (($count_grouped > 0)
+				&& ($x != $this->buffered_move_commmands_count-1)
+				&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['acctnum'] == $this_move_balls['mov_msgball']['acctnum'])
+				&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['folder'] == $this_move_balls['mov_msgball']['folder'])
+				&& ($grouped_move_balls[$count_grouped-1]['to_fldball']['folder'] == $this_move_balls['to_fldball']['folder'])
+				)
+				{
+					// PASSES the "is grouped" test, add to the "grouped array"
+					// AND this is NOT the last item in buffered_move_commmands (that would require action, not another loop)
+					array_push($grouped_move_balls, $this_move_balls);
+					// NOTE: CONTINUE
+					if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, skip to next iteration<br>'; }
+					continue;
+				}
+				elseif (($count_grouped > 0)
+				&& ($x == $this->buffered_move_commmands_count-1)
+				&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['acctnum'] == $this_move_balls['mov_msgball']['acctnum'])
+				&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['folder'] == $this_move_balls['mov_msgball']['folder'])
+				&& ($grouped_move_balls[$count_grouped-1]['to_fldball']['folder'] == $this_move_balls['to_fldball']['folder'])
+				)
+				{
+					// PASSES the "is grouped" test, add to the "grouped array"
+					// AND this is the FINAL ITEM, so KEEP GOING down to the code to issue the actual move command
+					array_push($grouped_move_balls, $this_move_balls);
+					if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: added item to array, but NOT skipping to next iteration<br>'; }
+					// DO NOT issue "CONTINUE" here
+				}
+				else
+				{
+					if ($this->debug_wrapper_dcom_calls > 1) { echo ' * mail_msg(_wrappers): flush_buffered_move_commmands('.__LINE__.'): loop ['.$x.']: UNHANDLED if .. then, $$grouped_move_balls[$count_grouped-1] DUMP<pre>'; print_r($grouped_move_balls[$count_grouped-1]); echo "\r\n".' $$this_move_balls DUMP'; print_r($this_move_balls); echo '</pre>' ; } 
+				}
+				
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: if we get here, we can not group anymore, or the series just ended, so issue the command now<br>'; }
+				// OK if we are here then we know this
+				// * "grouped_move_balls" has at least one command in it
+				// ** the current command does not match the preious one in terms or grouping them together
+				// ** OR the urrent command is the final in the $this->buffered_move_commmands array
+				// THEREFOR:
+				// 1) we need now make a IMAP command that has all the grouped msgnums from grouped_move_balls
+				// 2) if NOT the final item in $this->buffered_move_commmands we need to
+				//     2a) then we need to clear grouped_move_balls and ADD this_move_balls to it to start a new grouping array
+				//     2b) then run again thru the loop after that
+				
+				// update this, this loop may have added to it since we last checked this
+				$count_grouped = count($grouped_move_balls);
+				
+				// IF THIS MOVE IS TO ANOTHER ACCOUNT, HAND IT OFF RIGHT NOW
+				if ( ($count_grouped = 1)
+				&& ((int)$grouped_move_balls[0]['mov_msgball']['acctnum'] != (int)$grouped_move_balls[0]['to_fldball']['acctnum']) ) 
+				{
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ($do_it_for_real is '.serialize($do_it_for_real).'): 1 single **DIFFERENT** Account Move item in $grouped_move_balls, hand off to "single_interacct_mail_move"<br>'; } 
+					if ($do_it_for_real == True)
+					{
+						$this->single_interacct_mail_move($grouped_move_balls[$count_grouped-1]['mov_msgball'], $grouped_move_balls[$count_grouped-1]['to_fldball']);
+					}
+				}
+				elseif ( ($count_grouped > 1)
+				&& ((int)$grouped_move_balls[$count_grouped-1]['mov_msgball']['acctnum'] != (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) ) 
+				{
+					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>'; } 
+					echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING with ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>';
+					return False;
+				}
+				else
+				{
+					// FIXME: some logic below relies on strlen of $collected_msg_num_string to determine if it has ONE DIGIT or not
+					// but a single integer can be 1 char or 5 chars, for example, this causes *very* rare errors in the string groupings
+					// causing not all message to be moved, or in the worst case, an error from the mailserver if a msgnum does not exist on it
+					// whih can happen if 2 digits are put together without a comman or colon inbetween, makes a number unrelated to the grouping
+					
+					if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): action required $grouped_move_balls DUMP:<pre>'; print_r($grouped_move_balls); echo '</pre>'; } 
+					// update this, this loop may have added to it since we last checked this
+					$count_grouped = count($grouped_move_balls);
+					$collected_msg_num_string = '';
+					// super dumb but simple way, just put a comma between all msgnum's
+					//for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
+					//{
+					//	if ($group_loops > 0)
+					//	{
+					//		$collected_msg_num_string .= ',';
+					//	}
+					//	$collected_msg_num_string .= $grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
+					//}
+					// BETTER way, use rfv2060 specs to put range of msgnums together seperated by a colon
+					for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
+					{
+						if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): loop ['.$group_loops.'] of ['.(string)($count_grouped-1).'],  $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
+						if ( ($group_loops > 0)
+						//&& (($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
+						&& ($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1 == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
 						{
-							$this->event_begin_big_move(array(), 'mail_msg(_wrappers): buffered_move_commmands: LINE '.__LINE__);
-							$did_give_big_move_notice = True;
-						}
-						// get the moves, moving stuff out of this account, although not known yet where TO
-						//$buffered_move_commmands = array();
-						//$buffered_move_commmands = $this->get_arg_value('buffered_move_commmands', $this_acctnum);
-						$buffered_move_commmands =& $this->_get_arg_ref('buffered_move_commmands', $this_acctnum);
-						//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] has delete instructions(s) to be processed, (sorted) $buffered_move_commmands DUMP<pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-						
-						// Sort will GROUP THE MOVES AS MUCH AS POSSIBLE RIGHT NOW
-						// the way we put the strings in the $buffered_move_commmands is designed to be 
-						// used by sort to end up grouping similar moves for us inside the array,
-						// grouping by _from_acctnum__from_folder__to_acctnum__to_folder__msgnum
-						// so similar moves are grouped as much as possible, simply, by calling sort.
-						reset($buffered_move_commmands);
-						//sort($buffered_move_commmands);
-						sort($buffered_move_commmands, SORT_NUMERIC & SORT_STRING);
-						// we know the FROM acct num is the same for all commands
-						// we know the list is sorted so all FROM folders are together
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] has delete instructions(s) to be processed, (sorted) $buffered_move_commmands DUMP<pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-						
-						$grouped_move_balls = array();
-						// group the commands
-						for ($x=0; $x < count($buffered_move_commmands); $x++)
-						{
-							$this_move_balls = array();
-							parse_str($buffered_move_commmands[$x], $this_move_balls);
-							
-							// does the FROM folder match the previous one in the list?
-							$count_grouped = count($grouped_move_balls);
-							// we need at least on previous to compare to, else just add it to start an array
-							if ($count_grouped  == 0)
+							// we have a contiguous series, handle string specially
+							if (($count_grouped == 2)
+							&& ($group_loops == 1))
 							{
-								// add it to the array to get it started
-								array_push($grouped_move_balls, $this_move_balls);
+								// two items will never make a series
+								$collected_msg_num_string .= ','.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
 							}
-							elseif (($count_grouped > 0)
-							&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['folder'] == $this_move_balls['mov_msgball']['folder'])
-							&& ($grouped_move_balls[$count_grouped-1]['to_fldball']['folder'] == $this_move_balls['to_fldball']['folder'])
-							)
+							elseif ($group_loops == $count_grouped-1)
 							{
-								// PASSES the "is grouped" test, add to the "grouped array"
-								array_push($grouped_move_balls, $this_move_balls);
-							}
-							else
-							{
-								// OK if we are here then we know this
-								// * "grouped_move_balls" has at least one command in it
-								// * the current command does not match the preious one in terms or grouping them together
-								// THEREFOR:
-								// 1) we need now make a IMAP command that has all the grouped msgnums from grouped_move_balls
-								// 2) then we need to clear grouped_move_balls and ADD this_move_balls to it to start a new grouping array
-								// 3) then run again thru the loop after that
-								$collected_msg_num_string = '';
-								/*
-								for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
+								// the contiguous series of numbers just ended because the list is done
+								// if there is not a comma nor a colon after the last number, put one there
+								$last_char_idx = strlen((string)$collected_msg_num_string)-1;
+								$last_char = $collected_msg_num_string[$last_char_idx];
+								// situation is that two contiguos numbers at the end of a list like this need a comma
+								if (($last_char != ',')
+								&& ($last_char != ':'))
 								{
-									if ($group_loops > 0)
+									// COLON OR A COMMAN NEEDED
+									if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): loop ['.$group_loops.'] of ['.(string)($count_grouped-1).'], COLON OR COMMA NEEDED: $last_char: ['.$last_char.'], $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
+									if (($count_grouped > 2)
+									//&& (strlen((string)$collected_msg_num_string) == 1))
+									&& (!stristr($collected_msg_num_string, ':'))
+									&& (!stristr($collected_msg_num_string, ',')))
 									{
-										$collected_msg_num_string .= ',';
-									}
-									$collected_msg_num_string .= $grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-								}
-								*/
-								for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
-								{
-									if ( ($group_loops > 0)
-									//&& (($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
-									&& ($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1 == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
-									{
-										// we have a contiguous series, handle string specially
-										if (($count_grouped == 2)
-										&& ($group_loops == 1))
-										{
-											// two items will never make a series
-											$collected_msg_num_string .= ','.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-										}
-										elseif ( (strlen($collected_msg_num_string) > 1)
-										&& ($collected_msg_num_string[strlen($collected_msg_num_string)-1] != ':') )
-										{
-											// this is a contiguous series just starting, needs a dash
-											$collected_msg_num_string .= ':';
-										}
-										elseif ($group_loops == $count_grouped-1)
-										{
-											// the contiguous series of numbers just ended because the list is done
-											$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-										}
-										else
-										{
-											// DO NOTHING we are in the middle of this contiguous series of numbers
-										}
-									}
-									// did a series just end?
-									elseif ( ($group_loops > 1)
-									&& (($grouped_move_balls[$group_loops-2]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']) ) 
-									{
-										//  inset the number of the end of the series, a comman, and the current non-contiguous number
-										$collected_msg_num_string .= 
-											 (string)$grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']
-											.','
-											.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-									}
-									else
-									{
-										// we are NOT in a contiguous series, inset  a comma, and the current number
-										if (strlen($collected_msg_num_string) > 0)
-										{
-											$collected_msg_num_string .= ',';
-										}
-										$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-									}
-									if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
-								}
-								
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; }
-								// 1b) issue the delete COMMAND finally now
-								$mov_msgball = array();
-								$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
-								$to_fldball = array();
-								$to_fldball = $grouped_move_balls[$count_grouped-1]['to_fldball'];
-								// EXPIRE MSGBALL
-								// note since we ALWAYS turn off extreme caching when weuse this function, we *could* DIRECTLY expire it
-								//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with call to $this->event_msg_move_or_delete<br>'; }
-								//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
-								$this->expire_session_cache_item('msgball_list', $this_acctnum);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'; }
-								if ($do_it_for_real == True)
-								{
-									$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
-								}
-								$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$mailsvr_stream.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'; }
-								if ($do_it_for_real == True)
-								{
-									$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
-									if (!$did_move)
-									{
-										$imap_err = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->server_last_error();
-										if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'; }
-										return False;
-									}
-								}
-								
-								// 2) clear grouped_move_balls and start new one with this_move_balls
-								$grouped_move_balls = array();
-								array_push($grouped_move_balls, $this_move_balls);
-								// 3) then run again thru the loop after that
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: continue; ... to look for groupable move commands for acctnum ['.$mailsvr_stream.']<br>'; }
-								continue;
-							}
-						}
-						
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): just completed all loops for $buffered_move_commmands array, do we have $grouped_move_balls we need to handle? count($grouped_move_balls): ['.count($grouped_move_balls).']<br>'; } 
-						//if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): did use array_push, modified $grouped_move_balls DUMP <pre>'; print_r($grouped_move_balls); echo '</pre>'; } 
-						
-						$count_grouped = count($grouped_move_balls);
-						if ( ($count_grouped > 0)
-						&& ($this_acctnum == (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) )
-						{
-							if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): SAME ACCOUNT items in $grouped_move_balls<br>'; } 
-							// OK if we are here then we know this
-							// * "grouped_move_balls" might need to be processed, may be full of grouped commands
-							// * were done with this $buffered_move_commmands for this account
-							// THEREFOR:
-							// 1) we need now make a IMAP command that has all the grouped msgnums from grouped_move_balls
-							// 2) break out and move onto the next account
-							$collected_msg_num_string = '';
-							/*
-							for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
-							{
-								if ($group_loops > 0)
-								{
-									$collected_msg_num_string .= ',';
-								}
-								$collected_msg_num_string .= $grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-							}
-							*/
-							for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
-							{
-								if ( ($group_loops > 0)
-								//&& (($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
-								&& ($grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']+1 == $grouped_move_balls[$group_loops]['mov_msgball']['msgnum']) ) 
-								{
-									// we have a contiguous series, handle string specially
-									if (($count_grouped == 2)
-									&& ($group_loops == 1))
-									{
-										// two items will never make a series
-										$collected_msg_num_string .= ','.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-									}
-									elseif ( (strlen($collected_msg_num_string) > 1)
-									&& ($collected_msg_num_string[strlen($collected_msg_num_string)-1] != ':') )
-									{
-										// this is a contiguous series just starting, needs a dash
+										// ADD A COLON IF
+										// (a) if the total things the move are > 2 AND 
+										// (b) there is so far only ONE number in our $collected_msg_num_string
+										// then this is a series that had been uninterupted since it began looping here
+										// situation is nums are 1, 2, 3, 4, 5, so in the last loop $collected_msg_num_string = "1:5"
+										if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): loop ['.$group_loops.'] of ['.(string)($count_grouped-1).'], ADDING A COLON: $last_char: ['.$last_char.'], $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
 										$collected_msg_num_string .= ':';
 									}
-									elseif ($group_loops == $count_grouped-1)
-									{
-										// the contiguous series of numbers just ended because the list is done
-										$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-									}
 									else
 									{
-										// DO NOTHING we are in the middle of this contiguous series of numbers
-									}
-								}
-								// did a series just end?
-								elseif ( ($group_loops > 1)
-								&& (($grouped_move_balls[$group_loops-2]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']) ) 
-								{
-									//  inset the number of the end of the series, a comman, and the current non-contiguous number
-									$collected_msg_num_string .= 
-										 (string)$grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']
-										.','
-										.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-								}
-								else
-								{
-									// we are NOT in a contiguous series, inset  a comma, and the current number
-									if (strlen($collected_msg_num_string) > 0)
-									{
+										// ADD A COMMA, these are 
+										// situation is nums are 3, 37, 38, so in the last loop $collected_msg_num_string = "3,37"
+										if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): loop ['.$group_loops.'] of ['.(string)($count_grouped-1).'], ADDING A COMMA: $last_char: ['.$last_char.'], $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
 										$collected_msg_num_string .= ',';
 									}
-									$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
 								}
-								if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
+								$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
 							}
-							
-							$collected_msg_num_string = trim($collected_msg_num_string);
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; }
-							// 1b) issue the delete COMMAND finally now
-							$mov_msgball = array();
-							$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
-							$to_fldball = array();
-							$to_fldball = $grouped_move_balls[$count_grouped-1]['to_fldball'];
-							// EXPIRE MSGBALL
-							//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with call to $this->event_msg_move_or_delete<br>'; }
-							//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
-							// note since we ALWAYS turn off extreme caching when weuse this function, we *could* DIRECTLY expire it
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
-							$this->expire_session_cache_item('msgball_list', $this_acctnum);
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'; }
-							if ($do_it_for_real == True)
+							elseif ( (strlen($collected_msg_num_string) > 1)
+							&& ($collected_msg_num_string[strlen($collected_msg_num_string)-1] != ':') )
 							{
-								$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
-							}
-							$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).', '.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'; }
-							if ($do_it_for_real == True)
-							{
-								$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
-								if (!$did_move)
-								{
-									//$imap_err = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->server_last_error();
-									$imap_err = 'no_error_obtained';
-									if (function_exists('imap_last_error'))
-									{
-										$imap_err = imap_last_error();
-									}
-									if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'], $collected_msg_num_string ['.$collected_msg_num_string.'], return False'.' LINE '.__LINE__.'<br>'; }
-									echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'], $collected_msg_num_string ['.$collected_msg_num_string.'], return False'.' LINE '.__LINE__.'<br>';
-									return False;
-								}
-							}
-						}
-						elseif ( ($count_grouped = 1)
-						&& ($this_acctnum != (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) )
-						{
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ($do_it_for_real is '.serialize($do_it_for_real).'): 1 single **DIFFERENT** Account Move item in $grouped_move_balls, hand off to "single_interacct_mail_move"<br>'; } 
-							if ($do_it_for_real == True)
-							{
-								$this->single_interacct_mail_move($grouped_move_balls[$count_grouped-1]['mov_msgball'], $grouped_move_balls[$count_grouped-1]['to_fldball']);
-							}
-						}
-						elseif ($count_grouped > 1)
-						{
-							if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>'; } 
-						}
-						else
-						{
-							if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ERROR: totally unhandled if .. then, what the hell are we doing here on this line ???? <br>'; } 
-						}
-						// we are done with this account, we expunged all expungable folders, not UNSET that arg so it is not left hanging around
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): finished flushing move commands for acctnum ['.$this_acctnum.'] , now issue: $this->unset_arg("buffered_move_commmands", '.$this_acctnum.') <br>'; } 
-						$this->unset_arg('buffered_move_commmands', $this_acctnum);
-					}
-					else
-					{
-						//$buffered_move_commmands = array();
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] has NO value for "expunge_folders"<br>'; } 
-					}
-				}
-			}
-			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING<br>'; } 
-			// FIXME return something more useful
-			return True;
-		}
-		
-		
-		
-		/*
-		@function flush_buffered_move_commmands
-		@abstract ?
-		@author Angles
-		@discussion ?
-		@access public
-		
-		function flush_buffered_move_commmands($called_by='not_specified')
-		{
-			$do_it_for_real = True;
-			//$do_it_for_real = False;
-			
-			// we tell the cache to flush and surn off during a big move, if we find a move is requested, just call the notice once.
-			$did_give_big_move_notice = False;
-			
-			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ENTERING, called by ['.$called_by.'], <br>'; } 
-			$buffered_move_commmands = array();
-			for ($i=0; $i < count($this->extra_and_default_acounts); $i++)
-			{
-				if ($this->extra_and_default_acounts[$i]['status'] == 'enabled')
-				{
-					$this_acctnum = $this->extra_and_default_acounts[$i]['acctnum'];
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] needs to be checked<br>'; } 
-					if ($this->get_isset_arg('buffered_move_commmands', $this_acctnum) == True)
-					{
-						// flush and turn off extreme caching for the duration of this "big move"
-						if ($did_give_big_move_notice == False)
-						{
-							$this->event_begin_big_move(array(), 'mail_msg(_wrappers): buffered_move_commmands: LINE '.__LINE__);
-							$did_give_big_move_notice = True;
-						}
-						// get the moves, moving stuff out of this account, although not known yet where TO
-						$buffered_move_commmands = array();
-						$buffered_move_commmands = $this->get_arg_value('buffered_move_commmands', $this_acctnum);
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] indicates these folder(s) need to be expunged, $buffered_move_commmands DUMP<pre>'; print_r($buffered_move_commmands); echo '</pre>'; } 
-						
-						// Sort will GROUP THE MOVES AS MUCH AS POSSIBLE RIGHT NOW
-						// the way we put the strings in the $buffered_move_commmands is designed to be 
-						// used by sort to end up grouping similar moves for us inside the array,
-						// grouping by _from_acctnum__from_folder__to_acctnum__to_folder__msgnum
-						// so similar moves are grouped as much as possible, simply, by calling sort.
-						reset($buffered_move_commmands);
-						sort($buffered_move_commmands);
-						// we know the FROM acct num is the same for all commands
-						// we know the list is sorted so all FROM folders are together
-						
-						$grouped_move_balls = array();
-						// group the commands
-						for ($x=0; $x < count($buffered_move_commmands); $x++)
-						{
-							$this_move_balls = array();
-							parse_str($buffered_move_commmands[$x], $this_move_balls);
-							
-							// does the FROM folder match the previous one in the list?
-							$count_grouped = count($grouped_move_balls);
-							// we need at least on previous to compare to, else just add it to start an array
-							if ($count_grouped  == 0)
-							{
-								// add it to the array to get it started
-								array_push($grouped_move_balls, $this_move_balls);
-							}
-							elseif (($count_grouped > 0)
-							&& ($grouped_move_balls[$count_grouped-1]['mov_msgball']['folder'] == $this_move_balls['mov_msgball']['folder'])
-							&& ($grouped_move_balls[$count_grouped-1]['to_fldball']['folder'] == $this_move_balls['to_fldball']['folder'])
-							)
-							{
-								// PASSES the "is grouped" test, add to the "grouped array"
-								array_push($grouped_move_balls, $this_move_balls);
+								// this is a contiguous series just starting, needs a colon
+								$collected_msg_num_string .= ':';
 							}
 							else
 							{
-								// OK if we are here then we know this
-								// * "grouped_move_balls" has at least one command in it
-								// * the current command does not match the preious one in terms or grouping them together
-								// THEREFOR:
-								// 1) we need now make a IMAP command that has all the grouped msgnums from grouped_move_balls
-								// 2) then we need to clear grouped_move_balls and ADD this_move_balls to it to start a new grouping array
-								// 3) then run again thru the loop after that
-								$collected_msg_num_string = '';
-								for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
-								{
-									$collected_msg_num_string .= $grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-									if ($group_loops < ($count_grouped-1))
-									{
-										$collected_msg_num_string .= ',';
-									}
-								}
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; }
-								// 1b) issue the delete COMMAND finally now
-								$mov_msgball = array();
-								$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
-								$to_fldball = array();
-								$to_fldball = $grouped_move_balls[$count_grouped-1]['to_fldball'];
-								// EXPIRE MSGBALL
-								// note since we ALWAYS turn off extreme caching when weuse this function, we *could* DIRECTLY expire it
-								//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with call to $this->event_msg_move_or_delete<br>'; }
-								//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
-								$this->expire_session_cache_item('msgball_list', $this_acctnum);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'; }
-								if ($do_it_for_real == True)
-								{
-									$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
-								}
-								$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$mailsvr_stream.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'; }
-								if ($do_it_for_real == True)
-								{
-									$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
-									if (!$did_move)
-									{
-										if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-										return False;
-									}
-								}
-								
-								// 2) clear grouped_move_balls and start new one with this_move_balls
-								$grouped_move_balls = array();
-								array_push($grouped_move_balls, $this_move_balls);
-								// 3) then run again thru the loop after that
-								if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: continue; ... to look for groupable move commands for acctnum ['.$mailsvr_stream.']<br>'; }
-								continue;
+								// DO NOTHING we are in the middle of this contiguous series of numbers
 							}
 						}
-						
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): just completed all loops for $buffered_move_commmands array, do we have $grouped_move_balls we need to handle? count($grouped_move_balls): ['.count($grouped_move_balls).']<br>'; } 
-						//if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): did use array_push, modified $grouped_move_balls DUMP <pre>'; print_r($grouped_move_balls); echo '</pre>'; } 
-						
-						$count_grouped = count($grouped_move_balls);
-						if ( ($count_grouped > 0)
-						&& ($this_acctnum == (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) )
+						// did a series just end?
+						elseif ( ($group_loops > 1)
+						&& (($grouped_move_balls[$group_loops-2]['mov_msgball']['msgnum']+1) == $grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']) ) 
 						{
-							if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): SAME ACCOUNT items in $grouped_move_balls<br>'; } 
-							// OK if we are here then we know this
-							// * "grouped_move_balls" might need to be processed, may be full of grouped commands
-							// * were done with this $buffered_move_commmands for this account
-							// THEREFOR:
-							// 1) we need now make a IMAP command that has all the grouped msgnums from grouped_move_balls
-							// 2) break out and move onto the next account
-							$collected_msg_num_string = '';
-							for ($group_loops=0; $group_loops < $count_grouped; $group_loops++)
+							// NOTE: ADD A COLON 
+							// if the previous existing $collected_msg_num_string does NOT have a colon or comma as its last crag
+							$last_char_idx = strlen((string)$collected_msg_num_string)-1;
+							$last_char = $collected_msg_num_string[$last_char_idx];
+							// situation is that the current end of a list needs something before we can add another number, (a comma or a colon)
+							if (($last_char != ',')
+							&& ($last_char != ':'))
 							{
-								$collected_msg_num_string .= $grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
-								if ($group_loops < ($count_grouped-1))
-								{
-									$collected_msg_num_string .= ',';
-								}
+								// so why colon and no check for a needed comma?  
+								// SINCE WE KNOW A SERIES JUST ENDED, whether just 2 contiguous numbers or 20 contiguous numbers
+								// WE KNOW that a colon would be valid because we KNOW the previous existing number 
+								//   AND the number we are about to add are IN A SERIES
+								// so a colon would not create an unwanted series becuase we KNOW we have a series at this point
+								// so ... a colon can not hurt, a colon between contiguous numbers is still valid syntax (i.e. "3:4"
+								if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): loop ['.$group_loops.'] of ['.(string)($count_grouped-1).'], ADDING A COLON: $last_char: ['.$last_char.'], $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
+								$collected_msg_num_string .= ':';
 							}
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; }
-							// 1b) issue the delete COMMAND finally now
-							$mov_msgball = array();
-							$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
-							$to_fldball = array();
-							$to_fldball = $grouped_move_balls[$count_grouped-1]['to_fldball'];
-							// EXPIRE MSGBALL
-							//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with call to $this->event_msg_move_or_delete<br>'; }
-							//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
-							// note since we ALWAYS turn off extreme caching when weuse this function, we *could* DIRECTLY expire it
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
-							$this->expire_session_cache_item('msgball_list', $this_acctnum);
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'; }
-							if ($do_it_for_real == True)
-							{
-								$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
-							}
-							$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).', '.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'; }
-							if ($do_it_for_real == True)
-							{
-								$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
-								if (!$did_move)
-								{
-									if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-									return False;
-								}
-							}
-						}
-						elseif ( ($count_grouped = 1)
-						&& ($this_acctnum != (int)$grouped_move_balls[$count_grouped-1]['to_fldball']['acctnum']) )
-						{
-							if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ($do_it_for_real is '.serialize($do_it_for_real).'): 1 single **DIFFERENT** Account Move item in $grouped_move_balls, hand off to "single_interacct_mail_move"<br>'; } 
-							if ($do_it_for_real == True)
-							{
-								$this->single_interacct_mail_move($grouped_move_balls[$count_grouped-1]['mov_msgball'], $grouped_move_balls[$count_grouped-1]['to_fldball']);
-							}
-						}
-						elseif ($count_grouped > 1)
-						{
-							if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ERROR: unhandled if .. then,  $grouped_move_balls has multiple items but accounts do not match, different accounts should be handled one at a time!!!<br>'; } 
+							//  inset the number of the end of the series, a comman, and the current non-contiguous number
+							$collected_msg_num_string .= 
+								 (string)$grouped_move_balls[$group_loops-1]['mov_msgball']['msgnum']
+								.','
+								.(string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
 						}
 						else
 						{
-							if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): ERROR: totally unhandled if .. then, what the hell are we doing here on this line ???? <br>'; } 
+							// we are NOT in a contiguous series, inset  a comma, and the current number
+							if (strlen((string)$collected_msg_num_string) > 0)
+							{
+								$collected_msg_num_string .= ',';
+							}
+							$collected_msg_num_string .= (string)$grouped_move_balls[$group_loops]['mov_msgball']['msgnum'];
 						}
-						// we are done with this account, we expunged all expungable folders, not UNSET that arg so it is not left hanging around
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): finished flushing move commands for acctnum ['.$this_acctnum.'] , now issue: $this->unset_arg("buffered_move_commmands", '.$this_acctnum.') <br>'; } 
-						$this->unset_arg('buffered_move_commmands', $this_acctnum);
+						if ($this->debug_wrapper_dcom_calls > 1) { echo ' * flush_buffered_move_commmands ('.__LINE__.'): $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; } 
+					}
+					
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: final $collected_msg_num_string: ['.$collected_msg_num_string.']<br>'; }
+					// 1b) issue the delete COMMAND finally now
+					$mov_msgball = array();
+					$mov_msgball = $grouped_move_balls[$count_grouped-1]['mov_msgball'];
+					$to_fldball = array();
+					$to_fldball = $grouped_move_balls[$count_grouped-1]['to_fldball'];
+					// the FROM acctnum we'll use as "this_acctnum"
+					$this_acctnum = $mov_msgball['acctnum'];
+					// EXPIRE MSGBALL ???? wasn't this done with the notice of big move?
+					// note since we ALWAYS turn off extreme caching when weuse this function, we *could* DIRECTLY expire it
+					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with call to $this->event_msg_move_or_delete<br>'; }
+					//$this->event_msg_move_or_delete($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__.' and CACHE SHOULD BE OFF NOW', $to_fldball);
+					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: expire msgball list with DIRECT call to $this->expire_session_cache_item (because we know extreme caching os turned off for the duration of this function)<br>'; }
+					//$this->expire_session_cache_item('msgball_list', $this_acctnum);
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): calling $this->ensure_stream_and_folder($mov_msgball ['.serialize($mov_msgball).'], who_is_calling) <br>'; }
+					if ($do_it_for_real == True)
+					{
+						$this->ensure_stream_and_folder($mov_msgball, 'flush_buffered_move_commmands'.' LINE: '.__LINE__);
+					}
+					$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
+					// IS THIS A MOVE OR A DELETE?
+					if ($to_fldball['folder'] == $this->del_pseudo_folder)
+					{
+						// STRAIGHT DELETE
+						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: SRAIGHT DELETE ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.')<br>'; }
+						if ($do_it_for_real == True)
+						{
+							$did_delete = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->delete($mailsvr_stream , $collected_msg_num_string);
+							if (!$did_delete)
+							{
+								$imap_err = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->server_last_error();
+								if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: STRAIGHT DELETE: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'; }
+								echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>';
+								echo '&nbsp; command was: $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.')<br>';
+								return False;
+							}
+						}
 					}
 					else
 					{
-						$buffered_move_commmands = array();
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): acctnum ['.$this_acctnum.'] has NO value for "expunge_folders"<br>'; } 
+						// MOVE
+						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>'; }
+						if ($do_it_for_real == True)
+						{
+							$did_move = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->mail_move($mailsvr_stream , $collected_msg_num_string, $to_fldball['folder']);
+							if (!$did_move)
+							{
+								$imap_err = $GLOBALS['phpgw_dcom_'.$this_acctnum]->dcom->server_last_error();
+								if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>'; }
+								echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LEAVING on ERROR, $imap_err: ['.$imap_err.'] return False'.' LINE '.__LINE__.'<br>';
+								echo '&nbsp; command was: $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.', '.serialize($to_fldball['folder']).')<br>';
+								return False;
+							}
+						}
 					}
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: LINE '.__LINE__.': is we get here we probably just issued a move or delete command, we may try to group more (usually only with filter usage) or we may be done with buffered command list<br>'; }
 				}
+				
+				// 2) if NOT the final item in $this->buffered_move_commmands we need to
+				//     2a) then we need to clear grouped_move_balls and ADD this_move_balls to it to start a new grouping array
+				//     2b) then run again thru the loop after that
+				if ($x != $this->buffered_move_commmands_count-1)
+				{
+					$grouped_move_balls = array();
+					array_push($grouped_move_balls, $this_move_balls);
+					// 3) then run again thru the loop after that
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: continue; ... to look for groupable move commands for acctnum ['.$mailsvr_stream.']<br>'; }
+					// doesn't this happen anyway here?
+					continue;
+				}
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: still in that loop $x: ['.$x.'] $this->buffered_move_commmands_count-1: ['.(string)($this->buffered_move_commmands_count-1).'], if we get to here we SHOULD be done with all moves, else a continue would have been hit<br>'; }
 			}
+			
 			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands ('.__LINE__.'): LEAVING<br>'; } 
 			// FIXME return something more useful
 			return True;
 		}
-		*/
 		
-		/*
+		
+		/*!
 		@function single_interacct_mail_move
 		@abstract Primary mail move function for DIFFERENT Accounts. Moves single mails, use a loop if moving more than one mail. 
 		@param $mov_msgball (array of type msgball) the message the will be moved. 
@@ -2018,150 +1745,6 @@ Array
 			}
 		}
 		
-		
-		/*
-		@function industrial_interacct_mail_move
-		@abstract Primary mail move function. Moves single mails, use a loop if moving more than one mail. 
-		@param $mov_msgball (array of type msgball) the message the will be moved. 
-		@param $to_fldball (array of type fldball) the target of the move. 
-		@author Angles
-		@discussion Can handle any kind of move, same account, different account, different server. The delete mail 
-		function will call this if mail needs to be moved to the Trash folder.
-		Fills arg "expunge_folders" for any account that has folders needing to be expunged. 
-		@access public
-		
-		function industrial_interacct_mail_move($mov_msgball='', $to_fldball='')
-		{
-			if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: ENTERING (note: only feed ONE msgball at a time, i.e. NOT a list of msgballs) <br>'; }
-			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
-			// INTERACCOUNT -OR- SAME ACCOUNT ?
-			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: $mov_msgball DUMP:<pre>'; print_r($mov_msgball); echo "</pre>\r\n"; }
-			if ($this->debug_wrapper_dcom_calls > 2) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: $to_fldball DUMP:<pre>'; print_r($to_fldball); echo "</pre>\r\n"; }
-			// --- Establist account numbers ----
-			$mov_msgball['acctnum'] = (int)$mov_msgball['acctnum'];
-			if (!(isset($mov_msgball['acctnum']))
-			|| ((string)$mov_msgball['acctnum'] == ''))
-			{
-				$mov_msgball['acctnum'] = $this->get_acctnum();
-			}
-			$to_fldball['acctnum'] = (int)$to_fldball['acctnum'];
-			if (!(isset($to_fldball['acctnum']))
-			|| ((string)$to_fldball['acctnum'] == ''))
-			{
-				$to_fldball['acctnum'] = $this->get_acctnum();
-			}
-			
-			// Are the acctnums the same?
-			if ((string)$mov_msgball['acctnum'] == (string)$to_fldball['acctnum'])
-			{
-				// SAME ACCOUNT MAIL MOVE
-				
-				$common_acctnum = $mov_msgball['acctnum'];
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: SAME ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
-				$this->event_msg_move_or_delete($mov_msgball, 'industrial_interacct_mail_move'.' LINE: '.__LINE__, $to_fldball);
-				//$this->expire_session_cache_item('msgball_list', $common_acctnum);
-				// we need to SELECT the folder the message is being moved FROM
-				$mov_msgball['folder'] = urldecode($mov_msgball['folder']);
-				
-				$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move'.' LINE: '.__LINE__);
-				$mov_msgball['msgnum'] = (string)$mov_msgball['msgnum'];
-				$to_fldball['folder'] = urldecode($to_fldball['folder']);
-				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $common_acctnum);
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: $GLOBALS[phpgw_dcom_'.$common_acctnum.']->dcom->mail_move('.serialize($mailsvr_stream).' ,'.serialize($mov_msgball['msgnum']).', '.serialize($to_fldball['folder']).')<br>'; }
-				$did_move = $GLOBALS['phpgw_dcom_'.$common_acctnum]->dcom->mail_move($mailsvr_stream ,$mov_msgball['msgnum'], $to_fldball['folder']);
-				if (!$did_move)
-				{
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-					return False;
-				}
-				else
-				{
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move ('.__LINE__.'): SAME ACCOUNT MOVE *SUCCESS*, $did_move ['.serialize($did_move).'], now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
-					$this->track_expungable_folders($mov_msgball);
-					//if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, about to call $this->phpgw_expunge('.$mov_msgball['acctnum'].')'.' LINE '.__LINE__.'<br>'; }
-					//return $this->phpgw_expunge($mov_msgball['acctnum']);
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move ('.__LINE__.'): LEAVING, returning True, SAME ACCOUNT MOVE SUCCESS (do not forget to expunge later) <br>'; } 
-					return True;
-				}
-			}
-			else
-			{
-				// DIFFERENT ACCOUNT MAIL MOVE
-				
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: Different ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
-				$good_to_go = False;
-				// delete session msg array data thAt is now stale
-				$this->event_msg_move_or_delete($mov_msgball, 'industrial_interacct_mail_move'.' LINE: '.__LINE__, $to_fldball);
-				//$this->expire_session_cache_item('msgball_list', $mov_msgball['acctnum']);
-				$mov_msgball['folder'] = urldecode($mov_msgball['folder']);
-				// Make Sure Stream Exists
-				// multiple accounts means one stream may be open but another may not
-				// "ensure_stream_and_folder" will verify for us, 
-				$this->ensure_stream_and_folder($mov_msgball, 'industrial_interacct_mail_move');
-				// GET MESSAGE FLAGS (before you get the mgs, so unseen/seen is not tainted by our grab)
-				$hdr_envelope = $this->phpgw_header($mov_msgball);
-				$mov_msgball['flags'] = $this->make_flags_str($hdr_envelope);
-				// GET THE MESSAGE
-				// part_no 0 only used to get the headers
-				$mov_msgball['part_no'] = 0;
-				// (a)  the headers, specify part_no 0
-				//$moving_message = $GLOBALS['phpgw']->msg->phpgw_fetchbody($mov_msgball);
-				$moving_message = $this->phpgw_fetchbody($mov_msgball);
-				// (b) the body, plus a CRLF, reuse headers_msgball b/c "phpgw_body" cares not about part_no
-				//$moving_message .= $GLOBALS['phpgw']->msg->phpgw_body($mov_msgball)."\r\n";
-				$moving_message .= $this->phpgw_body($mov_msgball)."\r\n";
-				$good_to_go = (strlen($moving_message) > 3);
-				if (!$good_to_go)
-				{
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-					return False;
-				}
-				
-				// APPEND TO TARGET FOLDER
-				// delete session msg array data thAt is now stale
-				// WE DO NOT GUESS ABOUT APPENDS, WE EXPIRE THE DATA AND GET FRESH
-				//$this->expire_session_cache_item('msgball_list', $to_fldball['acctnum']);
-				$this->event_msg_append($to_fldball, 'industrial_interacct_mail_move  Line '.__LINE__);
-				
-				
-				$to_fldball['folder'] = urldecode($to_fldball['folder']);
-				// TEMP (MUST add this back!!!) append does NOT require we open the target folder, only requires a stream
-				$remember_to_fldball = $to_fldball['folder'];
-				$to_fldball['folder'] = '';
-				$this->ensure_stream_and_folder($to_fldball, 'industrial_interacct_mail_move');
-				$mailsvr_callstr = $this->get_arg_value('mailsvr_callstr', $to_fldball['acctnum']);
-				$to_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $to_fldball['acctnum']);
-				$to_fldball['folder'] = $remember_to_fldball;
-				$good_to_go = $GLOBALS['phpgw_dcom_'.$to_fldball['acctnum']]->dcom->append($to_mailsvr_stream, $mailsvr_callstr.$to_fldball['folder'], $moving_message, $mov_msgball['flags']);
-				if (!$good_to_go)
-				{
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-					return False;
-				}
-				// DELETE and EXPUNGE from FROM FOLDER
-				$from_mailsvr_stream = $this->get_arg_value('mailsvr_stream', $mov_msgball['acctnum']);
-				$good_to_go = $GLOBALS['phpgw_dcom_'.$mov_msgball['acctnum']]->dcom->delete($from_mailsvr_stream, $mov_msgball['msgnum']);
-				if (!$good_to_go)
-				{
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-					return False;
-				}
-				//$good_to_go = $GLOBALS['phpgw']->msg->phpgw_expunge($mov_msgball['acctnum']);
-				//$good_to_go = $this->phpgw_expunge($mov_msgball['acctnum']);
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move ('.__LINE__.'): different account append and delete SUCCESS, now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
-				$this->track_expungable_folders($mov_msgball);
-				
-				if (!$good_to_go)
-				{
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return False'.' LINE '.__LINE__.'<br>'; }
-					return False;
-				}
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: LEAVING, return TRUE'.' LINE '.__LINE__.'<br>'; }
-				return True;
-			}
-		}
-		*/
-		
 		/*!
 		@function track_expungable_folders
 		@abstract Keeps track of what accounts folders will need to be expunged. 
@@ -2198,14 +1781,17 @@ Array
 			$my_fldball['acctnum'] = $acctnum;
 			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): track_expungable_folders ('.__LINE__.'): $my_fldball ['.serialize($my_fldball).']<br>'; } 
 			
+			$first_addition_to_array = False;
 			// get an array of folders that need expunging that we know of
 			if ($this->get_isset_arg('expunge_folders', $my_fldball['acctnum']) == False)
 			{
 				$expunge_folders = array();
+				$first_addition_to_array = True;
 			}
 			else
 			{
-				$expunge_folders = $this->get_arg_value('expunge_folders', $my_fldball['acctnum']);
+				//$expunge_folders = $this->get_arg_value('expunge_folders', $my_fldball['acctnum']);
+				$expunge_folders =& $this->_get_arg_ref('expunge_folders', $my_fldball['acctnum']);
 			}
 			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): track_expungable_folders ('.__LINE__.'): $expunge_folders DUMP <pre>'; print_r($expunge_folders); echo '</pre>'; } 
 			// if this particular folder already in the array
@@ -2225,8 +1811,15 @@ Array
 			{
 				$new_idx = count($expunge_folders);
 				$expunge_folders[$new_idx] = $my_fldball['folder'];
-				$this->set_arg_value('expunge_folders', $expunge_folders, $my_fldball['acctnum']);
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): track_expungable_folders ('.__LINE__.'): LEAVING: added $my_fldball[folder] ['.$my_fldball['folder'].'] to $expunge_folders ['.htmlspecialchars(serialize($expunge_folders)).']<br>'; } 
+				if ($first_addition_to_array == True)
+				{
+					$this->set_arg_value('expunge_folders', $expunge_folders, $my_fldball['acctnum']);
+					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): track_expungable_folders ('.__LINE__.'): LEAVING: added first item to $my_fldball[folder] ['.$my_fldball['folder'].'] to $expunge_folders ['.htmlspecialchars(serialize($expunge_folders)).']<br>'; } 
+				}
+				else
+				{
+					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): track_expungable_folders ('.__LINE__.'): LEAVING: added VIA REFERENCE $my_fldball[folder] ['.$my_fldball['folder'].'] to $expunge_folders ['.htmlspecialchars(serialize($expunge_folders)).']<br>'; } 
+				}
 				return True;
 			}
 			else
@@ -2343,6 +1936,12 @@ Array
 		@function phpgw_delete
 		@abstract Delete a message, will move to "Trash" folder is necessary.
 		@author Angles
+		@param $msg_num (int) single msgnum of msg to "delete" (or move to trash folder") 
+		@param $currentfolder (string) full name (as in folder_long) and urlencoded name of the 
+		folder from which we are deleting from.
+		@param $acctnum (int) (optional) acctnum this applies to
+		@param $known_single_delete (boolean) BEING PHASED OUT was used to take abreviated action 
+		if we know this is only a single delete, not just one in a series, this logic being moved elsewhere. 
 		@discussion If the user pref wants to use the Trash folder, this function will auto-create 
 		that folder if it does not already exist, and move the mail to that trash folder. If 
 		the user pref is to not use a trash folder, or if deleting mail that is IN the trash folder, 
@@ -2363,133 +1962,151 @@ Array
 			// everything from now on MUST specify this $acctnum
 			
 			// now get the stream that applies to that acctnum
-			//$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: $acctnum: '.$acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msg_num: '.$msg_num.'<br>'; }
-			
-			//if ( ($this->get_isset_pref('use_trash_folder', $acctnum))
-			//&& ($this->get_pref_value('use_trash_folder', $acctnum))
-			//&& ($this->get_arg_value('verified_trash_folder_long', $acctnum) != '') )
-			
+			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: $acctnum: ['.$acctnum.'], $msg_num: ['.$msg_num.']<br>'; }
+						
 			// this get arg value checks the pref for enabled or not enabled, no need to do it again
-			if ($this->get_arg_value('verified_trash_folder_long', $acctnum) != '')
+			if ($this->get_isset_arg('verified_trash_folder_long', $acctnum) == False)
 			{
-				$trash_folder_long = $this->get_arg_value('verified_trash_folder_long', $acctnum);
-				$trash_folder_short = $this->get_folder_short($trash_folder_long);
+				$trash_folder_primer = $this->get_arg_value('verified_trash_folder_long', $acctnum);
+				$trash_folder_primer = '';
+				unset($trash_folder_primer);
+			}
+			
+			// -- determine if we are moving to the trash folder or actually deleting the message
+			$trash_folder_long =& $this->_get_arg_ref('verified_trash_folder_long', $acctnum);
+			// if $trash_folder_long is not an ampty string, we need to try to move msgs to it
+			if ($trash_folder_long != '')
+			{
+				// get a clean version 
+				$currentfolder_encoded = $currentfolder;
+				$currentfolder_clean = urldecode($currentfolder);
 				
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: "Trash" folder pref is enabled, $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] $trash_folder_short: ['.htmlspecialchars($trash_folder_short).'] <br>'; }
-				if ($currentfolder != '')
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): "Trash" folder pref is enabled, does $currentfolder_clean ['.htmlspecialchars($currentfolder_clean).'] equal $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] <br>'; }
+				//echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): "Trash" folder pref is enabled, does ['.$currentfolder.'] == ['.$trash_folder_long.']<br>'; 
+				if ( ($currentfolder_clean != '')
+				&& ($currentfolder_clean == $trash_folder_long) )
 				{
-					$currentfolder_short = $this->get_folder_short($currentfolder);
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: $currentfolder: '.htmlspecialchars($currentfolder).' $currentfolder_short: '.htmlspecialchars($currentfolder_short).' <br>'; }
-				}
-				// if we are deleting FROM the trash folder, we do a straight delete
-				if ($currentfolder_short == $trash_folder_short)
-				{
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: $currentfolder_short == $trash_folder_short :: '.htmlspecialchars($currentfolder_short).' == '.htmlspecialchars($trash_folder_short).' <br>'; }
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: STRAIGHT DELETE of msg, we are deleting FROM the "Trash" folder <br>'; }
-					// delete session msg array data thAt is now stale
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling $this->expire_session_cache_item("msgball_list", $acctnum ='.htmlspecialchars($acctnum).') <br>'; }
-					$mov_msgball = array();
-					$mov_msgball['folder'] = $this->prep_folder_out();
-					$mov_msgball['acctnum'] = $acctnum;
-					$mov_msgball['msgnum'] = $msg_num;
-					$this->event_msg_move_or_delete($mov_msgball, 'phpgw_delete'.' LINE: '.__LINE__);
-					//$this->expire_session_cache_item('msgball_list', $acctnum);
-					
-					$this->ensure_stream_and_folder($mov_msgball, 'phpgw_delete'.' LINE '.__LINE__);
-				
-					$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-					//return imap_delete($mailsvr_stream,$msg_num);
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->delete('.serialize($mailsvr_stream).', '.serialize($msg_num).') <br>'; }
-					$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($mailsvr_stream, $msg_num);
-					if ($retval)
-					{
-						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete ('.__LINE__.'): delete *SUCCESS*, now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
-						$this->track_expungable_folders($mov_msgball);
-					}
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete: EXITING with $retval ['.serialize($retval).'] DO NOT FORGET TO EXPUNGE LATER<br>'; }
-					return $retval;
+					$straight_delete = True;
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): "Trash" folder pref is enabled, YES to does $currentfolder_clean ['.htmlspecialchars($currentfolder_clean).'] equal $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] <br>'; }
+					//echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): "Trash" folder pref is enabled, shortcut good<br>'; 
 				}
 				else
 				{
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: $currentfolder_short  ['.serialize($currentfolder_short).']NOT SAME as $trash_folder_short ['.serialize($trash_folder_short).']<br>'; }
-					// delete session msg array data thAt is now stale
-					$mov_msgball = array();
-					$mov_msgball['folder'] = $this->prep_folder_out();
-					$mov_msgball['acctnum'] = $acctnum;
-					$mov_msgball['msgnum'] = $msg_num;
-					// destination Trash Folder
-					$to_fldball = array();
-					$to_fldball['folder'] = $trash_folder_long;
-					$to_fldball['acctnum'] = $acctnum;
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling $this->event_msg_move_or_delete<br>'; }
-					$this->event_msg_move_or_delete($mov_msgball, 'phpgw_delete'.' LINE: '.__LINE__, $to_fldball);
-					//$this->expire_session_cache_item('msgball_list', $acctnum);
-					
-					$this->ensure_stream_and_folder($mov_msgball, 'phpgw_delete'.' LINE '.__LINE__);
-										
-					//return imap_mail_move($mailsvr_stream,$msg_num,$trash_folder_long);
-					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling then EXIT this->phpgw_mail_move($msg_num['.$msg_num.'],$trash_folder_long['.htmlspecialchars($trash_folder_long).']) <br>'; }
-					//return $this->phpgw_mail_move($msg_num,$trash_folder_long);
-					
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling $this->industrial_interacct_mail_move($mov_msgball['.serialize($mov_msgball).'],$to_fldball['.serialize($to_fldball).']) <br>'; }
-					if ($known_single_delete == True)
-					{
-						// we were told this is just a SINGLE delete call, NOT multiple deletes involved
-						$did_move = $this->single_interacct_mail_move($mov_msgball, $to_fldball);
-					}
-					else
-					{
-						// most likely multiple deletes, so use the command that buffers the moves
-						$did_move = $this->industrial_interacct_mail_move($mov_msgball, $to_fldball);
-					}
-					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: industrial_interacct_mail_move returns ['.serialize($did_move).']<br>'; }
-					
-					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling $this->expunge_expungable_folders <br>'; }
-					//$did_expunge = $this->expunge_expungable_folders('phpgw_delete LINE '.__LINE__);
-					//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: expunge_expungable_folders returns ['.serialize($did_expunge).']<br>'; }
-					
-					if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete ('.__LINE__.'): LEAVING, returning $did_move ['.serialize($did_move).'] DO NOT FORGET TO EXPUNGE LATER<br>'; }
-					return $did_move;
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): "Trash" folder pref is enabled, NO to does $currentfolder_clean ['.htmlspecialchars($currentfolder_clean).'] equal $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] <br>'; }
+					$straight_delete = False;
 				}
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): $straight_delete: ['.serialize($straight_delete).'], $currentfolder_clean: ['.htmlspecialchars($currentfolder_clean).'] $trash_folder_long: ['.htmlspecialchars($trash_folder_long).'] <br>'; }
 			}
 			else
 			{
-				if ( ($this->debug_wrapper_dcom_calls > 1)
-				&& ($this->get_isset_pref('use_trash_folder', $acctnum))
-				&& ($this->get_pref_value('use_trash_folder', $acctnum)) )
-				{
-					echo 'mail_msg(_wrappers): phpgw_delete: "Trash" folder pref is DISABLED, do a Straing Delete <br>';
-				} 
-				elseif ($this->debug_wrapper_dcom_calls > 1)
-				{
-					echo 'mail_msg(_wrappers): phpgw_delete: "Trash" folder pref is enabled, BUT we could NOT obtain or create it, so do a Straing Delete <br>';
-				}
-				
-				// delete session msg array data thAt is now stale
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling  this->expire_session_cache_item(msgball_list, '.$acctnum.') <br>'; }
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): $straight_delete: ['.serialize($straight_delete).'] because $trash_folder_long ['.htmlspecialchars($trash_folder_long).'] is empty string<br>'; }
+				$straight_delete = True;
+			}
+			
+			// now that we know if this is a straight delete or not
+			// TAKE ACTION
+			if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): taking action based on info that $straight_delete: ['.serialize($straight_delete).']<br>'; }
+			if ($straight_delete == True)
+			{
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): begin code for STRAIGHT DELETE<br>'; }
 				$mov_msgball = array();
-				$mov_msgball['folder'] = $this->prep_folder_out();
+				if ((isset($currentfolder_encoded))
+				&& ((string)$currentfolder_encoded != ''))
+				{
+					// lets trust that current folder is in long form
+					$mov_msgball['folder'] = $currentfolder_encoded;
+				}
+				else
+				{
+					$mov_msgball['folder'] = $this->prep_folder_out();				
+				}
 				$mov_msgball['acctnum'] = $acctnum;
 				$mov_msgball['msgnum'] = $msg_num;
+				
+				// STRAIGHT DELETE has a "PSUEDO FOLDER" called "##DELETE##"
+				// that we use in the "flush_buffered_move_commmands" to indicate a delete instead of a move
+				// AND we'll use the same "acctnum" as the delete from acctnum because this will group them together during a "sort" of the array
+				// so we can use the same function  for both
+				$to_fldball = array();
+				$to_fldball['acctnum'] = $mov_msgball['acctnum'];
+				$to_fldball['folder'] = $this->del_pseudo_folder;
+				
+				// PUT THIS COMMAND IN THE BUFFERED MOVE (OR DELETE) ARRAY
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): STRAIGHT DELETE: calling $this->industrial_interacct_mail_move($mov_msgball['.serialize($mov_msgball).'],$to_fldball['.serialize($to_fldball).']) <br>'; }
+				$did_take_action = $this->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): LEAVING, returning $did_take_action ['.serialize($did_take_action).'] (does not really mean anything since we buffer the command) DO NOT FORGET TO EXPUNGE LATER<br>'; }
+				// LEAVING
+				return $did_take_action;
+				
+				/*
+				// BELOW HERE SHOULD GO INTO THE NEW STRAIGHT DELETE BUFFER
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): calling $this->event_msg_move_or_delete()<br>'; }
 				$this->event_msg_move_or_delete($mov_msgball, 'phpgw_delete'.' LINE: '.__LINE__);
 				//$this->expire_session_cache_item('msgball_list', $acctnum);
-				
+				// delete this when we start buffering straight deletes
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): calling $this->ensure_stream_and_folder()<br>'; }
 				$this->ensure_stream_and_folder($mov_msgball, 'phpgw_delete'.' LINE '.__LINE__);
-				
-				//return imap_delete($mailsvr_stream,$msg_num);
+			
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): getting "mailsvr_stream"<br>'; }
 				$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete: calling GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->delete($mailsvr_stream['.serialize($mailsvr_stream).'], $msg_num['.$msg_num.']) <br>'; }
+				//return imap_delete($mailsvr_stream,$msg_num);
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): calling GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->delete('.serialize($mailsvr_stream).', '.serialize($msg_num).') <br>'; }
 				$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->delete($mailsvr_stream, $msg_num);
 				if ($retval)
 				{
 					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete ('.__LINE__.'): delete *SUCCESS*, now add this folder to this accounts "expunge_folders" arg via "track_expungable_folders"<br>'; } 
 					$this->track_expungable_folders($mov_msgball);
 				}
-				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete: LEAVING, returning $retval ['.serialize($retval).'] DO NOT FORGET TO EXPUNGE LATER<br>'; }
+				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): EXITING with $retval ['.serialize($retval).'] DO NOT FORGET TO EXPUNGE LATER<br>'; }
+				// LEAVING
 				return $retval;
+				*/
+			}
+			else
+			{
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): begin do move to trash folder<br>'; }
+				$mov_msgball = array();
+				if ((isset($currentfolder_encoded))
+				&& ((string)$currentfolder_encoded != ''))
+				{
+					// lets trust that current folder is in long form (and encoded - I guess we like it that way? it came in here that way)
+					$mov_msgball['folder'] = $currentfolder_encoded;
+				}
+				else
+				{
+					$mov_msgball['folder'] = $this->prep_folder_out();				
+				}
+				$mov_msgball['acctnum'] = $acctnum;
+				$mov_msgball['msgnum'] = $msg_num;
+				// destination Trash Folder
+				$to_fldball = array();
+				$to_fldball['folder'] = $trash_folder_long;
+				$to_fldball['acctnum'] = $acctnum;
+				// this event MOVED to flush command
+				//if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): calling $this->event_msg_move_or_delete<br>'; }
+				//$this->event_msg_move_or_delete($mov_msgball, 'phpgw_delete'.' LINE: '.__LINE__, $to_fldball);
+				//$this->expire_session_cache_item('msgball_list', $acctnum);
+				
+				//if ($known_single_delete == True)
+				//{
+				//	// we were told this is just a SINGLE delete call, NOT multiple deletes involved
+				//	if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): $known_single_delete: ['.serialize($known_single_delete).'] so calling $this->single_interacct_mail_move($mov_msgball['.serialize($mov_msgball).'],$to_fldball['.serialize($to_fldball).']) <br>'; }
+				//	$did_move = $this->single_interacct_mail_move($mov_msgball, $to_fldball);
+				//}
+				//else
+				//{
+					// most (WAS) likely multiple deletes, so use the command that buffers the moves
+					// this logic concerning single or not has been moved elsewhere
+					if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): $known_single_delete: ['.serialize($known_single_delete).'] so calling $this->industrial_interacct_mail_move($mov_msgball['.serialize($mov_msgball).'],$to_fldball['.serialize($to_fldball).']) <br>'; }
+					$did_move = $this->industrial_interacct_mail_move($mov_msgball, $to_fldball);
+				//}
+				if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): phpgw_delete('.__LINE__.'): $did_move: ['.serialize($did_move).'], does not mean unless you called $this->single_interacct_mail_move()<br>'; }
+				
+				if ($this->debug_wrapper_dcom_calls > 0) { echo 'mail_msg(_wrappers): phpgw_delete ('.__LINE__.'): LEAVING, returning $did_move ['.serialize($did_move).'] DO NOT FORGET TO EXPUNGE LATER<br>'; }
+				return $did_move;
 			}
 		}
+		
 		
 		/*!
 		@function get_verified_trash_folder_long
@@ -2508,13 +2125,6 @@ Array
 		*/
 		function get_verified_trash_folder_long($acctnum='')
 		{
-			if (stristr($this->skip_args_special_handlers, 'get_verified_trash_folder_long'))
-			{
-				$fake_return = '';
-				if ($this->debug_args_special_handlers > 0) { echo 'mail_msg: get_verified_trash_folder_long: debug SKIP, $fake_return: '.serialize($fake_return).' <br>'; }
-				return $fake_return;
-			}
-			
 			if ($this->debug_args_special_handlers > 0) { echo 'mail_msg(_wrappers): get_verified_trash_folder_long: ENTERING<br>'; }
 			
 			if ((!isset($acctnum))
@@ -2652,6 +2262,20 @@ Array
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: ENTERED $uri_type_string ['.$uri_type_string.'] <br>'; }
 			parse_str($uri_type_string, $embeded_data);
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: parse_str('.$uri_type_string.', into $embeded_data dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
+			
+			// NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES
+			// NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS
+			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: decode_fake_uri ('.__LINE__.'): NOTE PARSE_STR ***WILL ADD SLASHES*** TO ESCAPE QUOTES NO MATTER WHAT YOUR MAGIC SLASHES SETTING IS **stripping slashes NOW***'; } 
+			if (isset($embeded_data['folder']))
+			{
+				$embeded_data['folder'] = stripslashes($embeded_data['folder']);
+			}
+			if (isset($embeded_data['msgball']['folder']))
+			{
+				$embeded_data['msgball']['folder'] = stripslashes($embeded_data['msgball']['folder']);
+			}
+			
+			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: post "stripslashes" parse_str('.$uri_type_string.', into $embeded_data dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
 			
 			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
 			if ($raise_up)
@@ -3312,7 +2936,7 @@ Array
 				$acctnum = $this->get_acctnum();
 			}
 			
-			if ($this->debug_session_caching > 0) { echo 'mail_msg: expire_session_cache_item: ENTERED, $this->session_cache_enabled='.serialize($this->session_cache_enabled).', $data_name to expire=['.$data_name.']<br>'; }
+			if ($this->debug_session_caching > 0) { echo 'mail_msg: expire_session_cache_item: ENTERED, $this->session_cache_enabled='.serialize($this->session_cache_enabled).', $data_name: ['.$data_name.'], $acctnum (optional): ['.$acctnum.'], $special_extra_stuff: ['.$special_extra_stuff.']<br>'; }
 			
 			if ($this->session_cache_extreme == False)
 			{
@@ -3326,11 +2950,15 @@ Array
 			}
 			
 			// now eliminate the EXPIRED data, 1st get rid of any L1 cache it it exists for this item
-			if ($this->debug_session_caching > 1) { echo 'mail_msg: expire_session_cache_item: checking for L1 cache/class var for $data_name = ['.$data_name.']<br>'; }
-			if ($this->get_isset_arg($data_name, $acctnum))
+			if ($this->debug_session_caching > 1) { echo 'mail_msg: expire_session_cache_item('.__LINE__.'): checking for L1 cache/class var for $data_name = ['.$data_name.']<br>'; }
+			if ($this->debug_session_caching > 1) { echo 'mail_msg: expire_session_cache_item('.__LINE__.'): NOTE when session_class_extreme is True, "folder_status_info" is NOT cached in L1 cache/class var, only in appsession<br>'; }
+			
+			if (($this->get_isset_arg($data_name, $acctnum))
+			&& ($data_name != 'folder_status_info'))
 			{
+				// NOTE 
 				$old_content = $this->get_arg_value($data_name, $acctnum);
-				if ($this->debug_session_caching > 2) { echo 'mail_msg: expire_session_cache_item: found and clearing L1 cache/class for ['.$data_name.'] OLD value dump:<pre>'; print_r($old_content); echo '</pre>'; }
+				if ($this->debug_session_caching > 2) { echo 'mail_msg: expire_session_cache_item('.__LINE__.'): found and clearing L1 cache/class for ['.$data_name.'] OLD value dump:<pre>'; print_r($old_content); echo '</pre>'; }
 				if (gettype($old_content) == 'array')
 				{
 					$empty_data = array();
@@ -3344,8 +2972,11 @@ Array
 			}
 			
 			// ---  now get rid of any "$data_name" value saved in the session cache  ---
+			// DUDE IF THE DATA REQUIRES "$special_extra_stuff" THEN PUT IT HERE, CHECK FOR ITS $data_name HERE
+			// OR ELSE YOU EXPIRE A SUPERSTRUCTURE OF DATA INSTEAD OF THE INDIVIDUAL SUB ELEMENT!
 			if ((($data_name == 'msg_structure')
-				|| ($data_name == 'phpgw_header'))
+				|| ($data_name == 'phpgw_header')
+				|| ($data_name == 'folder_status_info'))
 			&& ($special_extra_stuff != ''))
 			{
 				// NOTE if no $special_extra_stuff is passed, then indeed we will expire the entire array, (that is expiration as usual, done below)

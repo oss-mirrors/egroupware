@@ -247,8 +247,10 @@
 		// ----  class-wide settings - not account specific
 		// some functions use $not_set instead of actuallt having something be "unset"
 		var $not_set = '-1';
-		// functions required to return a refernce can return a ref to this to indicate a failure
+		// EXPERIMENTAL: functions required to return a refernce can return a ref to this to indicate a failure
 		var $nothing = '##NOTHING##';
+		// EXPERIMENTAL: straight delete (not a move to trash) use this psudo acct. folder name to fill the "to_fldball"
+		var $del_pseudo_folder = '##DELETE##';
 		// when uploading files for attachment to outgoing mail, use this location in the filesystem
 		var $att_files_dir;
 		// *maybe* future use - does the client's browser support CSS
@@ -262,6 +264,12 @@
 		var $unprocessed_prefs=array();
 		// raw filters array for use by the filters class, we just put the data here, that is all, while collecting other prefs
 		var $raw_filters=array();
+		// move URI data is buffered to here, then executed at one time
+		var $buffered_move_commmands = array();
+		// since move URIs are added in a speed sensitive loop, manually track the count, avoids repeated count() commands
+		var $buffered_move_commmands_count=0;
+		// delete URI data is buffered to here, then executed at one time (FUTURE)
+		var $buffered_delete_commmands = array();
 		var $crypto;
 		
 		// ---- Data Caching  ----
@@ -1253,6 +1261,18 @@
 			}
 			else
 			{
+				// EXPERIMENTAL since we did not login can we still get a good refresh URI?
+				// now we have folder, sort and order, make a URI for auto-refresh use
+				// we can NOT put "start" in auto refresh or user may not see the 1st index page on refresh
+				$this_index_refresh_uri = 
+					'menuaction=email.uiindex.index'
+					.'&fldball[folder]='.$this->prep_folder_out()
+					.'&fldball[acctnum]='.$this->get_acctnum()
+					.'&sort='.$this->get_arg_value('sort')
+					.'&order='.$this->get_arg_value('order');
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call $this->set_arg_value(index_refresh_uri, $this_index_refresh_uri, $acctnum(='.$acctnum.')); ; where $this_index_refresh_uri: '.htmlspecialchars($this_index_refresh_uri).'<br>'; }
+				$this->set_arg_value('index_refresh_uri', $this_index_refresh_uri, $acctnum);
+				
 				//if ($this->debug_logins > 1) { echo 'mail_msg: begin_request ('.__LINE__.'): LEAVING, we were NOT allowed to, $args_array[do_login]: ['.serialize($args_array['do_login']).'] if TRUE, then we must return *something* so calling function does NOT think error, so return $args_array[do_login] <br>'; } 
 				//return $args_array['do_login'];
 				if ($this->debug_logins > 0) { echo 'mail_msg: begin_request ('.__LINE__.'): LEAVING, we did NOT login, see above debug output, $args_array[do_login]: ['.serialize($args_array['do_login']).'] if TRUE, then we must return *something* so calling function does NOT think error, so return TRUE (what impact does this have??) <br>'; } 
@@ -4663,41 +4683,53 @@
 			{
 				// EXTREME MODE
 				if ($this->debug_events > 1) { echo 'mail_msg_base: event_begin_big_move: ('.__LINE__.') (extreme mode) pre-expire cached items before a big delete or move operation, so we do not directly alter cached items for each single move or delete<br>'; } 
-				$this->batch_expire_extreme_items('mail_msg_base: event_begin_big_move: LINE '.__LINE__);
+				$this->batch_expire_cached_items('mail_msg_base: event_begin_big_move: LINE '.__LINE__);
 				
 				if ($this->debug_events > 1) { echo 'mail_msg_base: event_begin_big_move: ('.__LINE__.') (extreme mode) now that we expired stuff, we can TURN OFF extreme caching for the rest of this operation, this puts "folder_status_info" in L1 cache only<br>'; } 
 				// TURN OFF "session_cache_extreme"for the remainder of this script run
 				$this->session_cache_extreme = False;
 			}
-			if ($this->debug_events > 0) { echo 'mail_msg_base: event_begin_big_move: LEAVING, ('.__LINE__.') exiting $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).'], returning the initial_session_cache_extreme ['.$initial_session_cache_extreme.']<br>'; } 
+			else
+			{
+				if ($this->debug_events > 1) { echo 'mail_msg_base: event_begin_big_move('.__LINE__.'): eventhough $this->session_cache_extreme is off, WE STILL NEED TO EXPIRE MSGBALL_LIST, because it is cached in non-extreme mode too<br>'; } 
+				$this->batch_expire_cached_items('mail_msg_base: event_begin_big_move: LINE '.__LINE__.' but only for msgball_list', True);
+			}
+			if ($this->debug_events > 0) { echo 'mail_msg_base: event_begin_big_move: LEAVING, ('.__LINE__.') exiting $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).'], returning the $initial_session_cache_extreme ['.serialize($initial_session_cache_extreme).']<br>'; } 
 			return $initial_session_cache_extreme;
 		}
 		
 		/*!
-		@function batch_expire_extreme_items
+		@function batch_expire_cached_items
 		@abstract expires all data associated with "extreme" caching for ALL account 
+		@param (string) $called_by optional for debug information
+		@param (boolean) $only_msgball_list DEFAULT is False, specify true when extreme mode is off BUT 
+		WE STILL NEED TO EXPIRE ALL MSGBALL_LIST DATA because it is cached outside of extreme mode. 
 		@author Angles
 		@discussion Plain, unconditional expiration of phpgw_header, msg_structure, 
 		msgball_list, folder_status_info (in appsession) items, for all accounts that are "enabled". 
 		Does a loop thru existing accounts. 
 		UNDER DEVELOPMEMT 
 		*/
-		function batch_expire_extreme_items($called_by='not_specified')
+		function batch_expire_cached_items($called_by='not_specified', $only_msgball_list=False)
 		{
-			if ($this->debug_events > 0) { echo 'mail_msg_base: batch_expire_extreme_items: ('.__LINE__.') ENTERING, called by ['.$called_by.'], $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'; } 
+			if ($this->debug_events > 0) { echo 'mail_msg_base: batch_expire_cached_items: ('.__LINE__.') ENTERING, called by ['.$called_by.'], $only_msgball_list: ['.serialize($only_msgball_list).'], $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'; } 
 			for ($i=0; $i < count($this->extra_and_default_acounts); $i++)
 			{
 				if ($this->extra_and_default_acounts[$i]['status'] == 'enabled')
 				{
 					$this_acctnum = $this->extra_and_default_acounts[$i]['acctnum'];
-					if ($this->debug_events > 1) { echo 'mail_msg_base: batch_expire_extreme_items: ('.__LINE__.') (extreme mode) for acctnum ['.$this_acctnum.'] expire cached items <br>'; } 
-					$this->expire_session_cache_item('phpgw_header', $this_acctnum);
-					$this->expire_session_cache_item('msg_structure', $this_acctnum);
 					$this->expire_session_cache_item('msgball_list', $this_acctnum);
-					$this->expire_session_cache_item('folder_status_info', $this_acctnum);
+					if ($this->debug_events > 1) { echo ' * mail_msg_base: batch_expire_cached_items: ('.__LINE__.') (extreme OR non-extreme mode) for acctnum ['.$this_acctnum.'] expire whatever msgball_list is cached for this account<br>'; } 
+					if ($only_msgball_list == False)
+					{
+						if ($this->debug_events > 1) { echo ' * mail_msg_base: batch_expire_cached_items: ('.__LINE__.') (extreme mode) for acctnum ['.$this_acctnum.'] expire extreme cached items <br>'; } 
+						$this->expire_session_cache_item('phpgw_header', $this_acctnum);
+						$this->expire_session_cache_item('msg_structure', $this_acctnum);
+						$this->expire_session_cache_item('folder_status_info', $this_acctnum);
+					}
 				}
 			}
-			if ($this->debug_events > 0) { echo 'mail_msg_base: batch_expire_extreme_items: ('.__LINE__.') LEAVING, called by ['.$called_by.'], $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'; } 
+			if ($this->debug_events > 0) { echo 'mail_msg_base: batch_expire_cached_items: ('.__LINE__.') LEAVING, called by ['.$called_by.'],  $only_msgball_list: ['.serialize($only_msgball_list).'], $this->session_cache_extreme is ['.serialize($this->session_cache_extreme).']<br>'; } 
 		}
 		
 		
@@ -4868,6 +4900,21 @@
 		function event_msg_move_or_delete($msgball='', $called_by='not_specified', $to_fldball='')
 		{
 			if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') ENTERING, called by ['.$called_by.']<br>'; } 
+			if (($this->session_cache_enabled == False)
+			&& ($this->session_cache_extreme == False))
+			{
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') LEAVING, BOTH session_cache_enabled AND session_cache_extreme are FALSE, we have nothing to do here, returning False<br>'; }
+				return False;
+			}
+			
+			if ( (isset($msgball) == False)
+			|| (is_array($msgball) == False) )
+			{
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') FALLBACK BATCH EXPIRE because param $msgball ['.serialize($msgball).'] is not set or not an array, we do not know what account nor folder we need to operate on, but we still need to clean cache so it matches reality after the move or delete<br>'; }
+				$this->batch_expire_cached_items('mail_msg: event_msg_move_or_delete: ('.__LINE__.') (because we got erronious msgball data) ');
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') LEAVING, returning True because we did expire stuff<br>'; }
+				return True;
+			}
 			$did_alter_or_expire = False;
 			/*
 			// make sure folder name in msgball is in URLENCODED form
@@ -4879,301 +4926,324 @@
 			*/
 			$clean_folder = $this->prep_folder_in($msgball['folder']);
 			$urlencoded_folder = $this->prep_folder_out($clean_folder);
-			if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') $clean_folder ['.$clean_folder.'], $urlencoded_folder ['.$urlencoded_folder.']<br>'; } 
+			if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') $clean_folder ['.$clean_folder.'], $urlencoded_folder ['.$urlencoded_folder.']<br>'; } 
 			
 			$msgball['folder'] = $urlencoded_folder;
 			$acctnum = $msgball['acctnum'];
 			if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (pre step 1) $this->read_session_cache_item("msgball_list", $acctnum); to see if we have a session cached folderlist <br>'; }
-			$cached_msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list($acctnum);
-			if (($msgball)
-			&& ($this->session_cache_enabled))
+			//$cached_msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list($acctnum);
+			//$cached_msgball_list = $GLOBALS['phpgw']->msg->get_msgball_list($acctnum, $clean_folder);
+			$cached_msgball_list = $this->get_msgball_list($acctnum, $clean_folder);
+			
+			if ((!$cached_msgball_list)
+			&& ($this->session_cache_extreme == False))
 			{
-
-				if ($this->session_cache_extreme == False && (!$cached_msgball_list))
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') LEAVING, because NOTHING TO DO, IN NON-EXTREME MODE, and we have NO CACHED MSGBALL_LIST, there is no action we need to take, return False<br>'; }
+				return False;
+			}
+			elseif (($this->session_cache_extreme == False)
+			&& ($cached_msgball_list))
+			{
+				// NON-EXTREME MODE but session cache is on, so expire msgball_list for this folder
+				if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (non-extreme mode) session_cache_extreme is ['.serialize($this->session_cache_extreme).'] (false) means "msg_structure" and "phpgw_header" is NOT cached BUT msgball_list IS cached in non-extreme mode, so ...<br>'; } 
+				
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) session_cache_extreme is ['.serialize($this->session_cache_extreme).'] means we should simply expire the entire "msgball_list" (and maybe the "folder_status_info" too? no "folder_status_info" is not even cached in non extreme mode<br>'; } 
+				// expire entire msgball_list and the folder_status_info
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) calling $this->expire_session_cache_item("msgball_list", '.$msgball['acctnum'].')<br>'; } 
+				$this->expire_session_cache_item('msgball_list', $msgball['acctnum']);
+				
+				// ANYTIME a message is moved out of a folder, we need to remove any cached "" and "phpgw_header" data
+				// damn why are we doing this in non-extreme mode?
+				$specific_key = (string)$msgball['msgnum'].'_'.$msgball['folder'];
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) extreme or not, "msg_structure" and "phpgw_header" needs expired this specific message leaving this folder, $specific_key ['.$specific_key.'] (but why would that data exist in non-extreme mode?)<br>'; }
+				$this->expire_session_cache_item('msg_structure', $msgball['acctnum'], $specific_key);
+				$this->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
+				
+				// folder_status_info in "non-extreme" mode is not saved to appsession, so it does not need expiring
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) in non-extreme mode we do NOT alter the "folder_status_info", in fact "folder_status_info" is not even appsession cached in non-extreme mode <br>'; } 
+				
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) LEAVING, expiring entire msgball list<br>'; } 
+				return True;
+			}
+			// IF EXTREME MODE IS OFF, WE SIMPLY EXPIRE THE WHOLE MSGBALL_LIST
+			// UNLESS POPPING SINGLE ITEMS IS USEFUL ENOUGH TO DO ANYWAY
+			// lex added this code, angles commented out (oops :(  but I saw what he did and incorporated it above
+			// however we still need to answer that qestion in cap letters 2 lines up
+			/*
+			//mail_msg_display calls get_msgball_list with nonextreme mode and 
+			//it actually has cached data...this makes sense since it needs not be extreme
+			//to cache folder data, this is good behaviour of any imap mail client
+			//so im gonna kill the deleted messages
+			elseif($this->session_cache_extreme == False)
+			{
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step1) Since the msgball list is session cached in non-extreme mode, we need to take this deleted element out of it<br>'; }
+				$found_msgball_idx = $this->not_set;
+				$loops = count($cached_msgball_list);
+				for ($i = 0; $i < $loops; $i++)
 				{
-					// NON-EXTREME MODE
-					if ($this->debug_events > 0) { echo 'mail_msg_base: event_msg_move_or_delete: (non-extreme mode) session_cache_extreme is ['.serialize($this->session_cache_extreme).'] (false) means "msg_structure" and "phpgw_header" is NOT cached and we DO NOTHING here.<br>'; } 
-					// DO NOTHING IF WE HAVE NO NON-EXTREME CACHED LIST, this data is not cached in non-extreme mode
-					
-					
-					/*
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) session_cache_extreme is ['.serialize($this->session_cache_extreme).'] means we should simply expire the entire "msgball_list" and maybe the "folder_status_info" too<br>'; } 
-					// expire entire msgball_list and the folder_status_info
-					$this->expire_session_cache_item('msgball_list', $msgball['acctnum']);
-					
-					// ANYTIME a message is moved out of a folder, we need to remove any cached "" and "phpgw_header" data
-					$specific_key = (string)$msgball['msgnum'].'_'.$msgball['folder'];
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) extreme or not, "msg_structure" and "phpgw_header" needs expired this specific message leaving this folder, $specific_key ['.$specific_key.']<br>'; }
-					$this->expire_session_cache_item('msg_structure', $msgball['acctnum'], $specific_key);
-					$this->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
-					
-					// folder_status_info in "non-extreme" mode is not saved to appsession, so it does not need expiring
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) in non-extreme mode we do NOT alter the "folder_status_info", in fact "folder_status_info" is not even appsession cached in non-extreme mode <br>'; } 
-					
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) LEAVING, expiring entire msgball list<br>'; } 
-					return True;
-					*/
-					return False;
+					$this_msgball = $cached_msgball_list[$i];
+					if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) (step 1) cached msgball_list loop ['.$i.'] $this_msgball DUMP<pre>'; print_r($this_msgball); echo '</pre>'; }
+					if (($this_msgball['acctnum'] == $msgball['acctnum'])
+							&& ($this_msgball['folder'] == $msgball['folder'])
+							&& ($this_msgball['msgnum'] == $msgball['msgnum']))
+					{
+						$found_msgball_idx = $i;
+						break;
+					}
 				}
-					//mail_msg_display calls get_msgball_list with nonextreme mode and 
-					//it actually has cached data...this makes sense since it needs not be extreme
-					//to cache folder data, this is good behaviour of any imap mail client
-					//so im gonna kill the deleted messages */
-				elseif($this->session_cache_extreme == False)
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) (step 1) searched for msgball from the msgball_list, $found_msgball_idx ['.serialize($found_msgball_idx).'] <br>'; }
+				array_splice($cached_msgball_list, $found_msgball_idx, 1);
+				$did_alter_or_expire = True;
+				 if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') deleted msgball index '.$found_msgball_idx.' Also dumpung the modiffief msgball list<pre>'; print_r($this_msgball); echo '</pre>'; }
+				$GLOBALS['phpgw']->msg->expire_session_cache_item('msgball_list',$acctnum);
+				$this->save_session_cache_item('msgball_list', $msgball_list, $acctnum); 
+				//Now time to refresh the folder status info....
+				//What happens is that, if possible, the boaction class will directly call the display
+				//class's function to show the index list. This means that, even though this is L1 cache
+				//we are still in the same page view, so, its possible that this information is stale
+				//first lets check if its in L1 cache
+				$l1_folder_status_info = $this->get_arg_value('folder_status_info', $acctnum);
+				if($l1_folder_status_info)
 				{
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step1) Since the msgball list is session cached in non-extreme mode, we need to take this deleted element out of it<br>'; }
+					//we expire this data
+					$this->set_arg_value('folder_status_info',$this->get_folder_status_info('',True),$acctnum);
+				}
+			}
+			*/
+			elseif (($this->session_cache_extreme == True)
+			&& ($called_by == 'phpgw_mail_move'))
+			{
+				// OLD FUNCTION does not provide enough information, all we can do is expire
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step 1) called by OLD FUNCTION ['.$called_by.'], does not provide enough information, all we can do is expire the entire "msgball_list"<br>'; } 
+				// comment out for DEBUG
+				$this->expire_session_cache_item('msgball_list');
+				$did_alter_or_expire = True;
+				
+				// ANYTIME a message is moved out of a folder, we need to remove any cached "" and "phpgw_header" data
+				// BUT this old function does not provide enough information
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) OLD calling function does not provide enough information to expire cached "msg_structure" and "phpgw_header" this specific message leaving this folder<br>'; }
+				//$GLOBALS['phpgw']->msg->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
+				
+				
+				// FUTURE, PART TWO, EXPIRE folder status info.
+				// with no specific info, all we can do is expire the entire folder status info
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') *FUTURE* (step 2) called by OLD FUNCTION ['.$called_by.'], does not provide enough information, extreme or not, all we can do is expire the entire "folder_status_info" *FUTURE*<br>'; } 
+				
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') LEAVING, old calling function limited us to expiring entire msgball list<br>'; } 
+				return True;
+			}
+			elseif ($this->session_cache_extreme == True)
+			{
+				// EXTREME MODE
+				// directloy manipulate existing cached items to make them "fresh" and resave to cache
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) pop out a single msgball from the msgball_list and resave to cache<br>'; } 
+				if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) search msgball_list looking for this $msgball DUMP <pre>'; print_r($msgball); echo '</pre>'; } 
+				$did_alter = False;
+				// STEP ONE:
+				// we should be able to pop out a single msgball from the msg_ball list 
+				// when mail moves OUT of a folder
+				//$meta_data = $this->read_session_cache_item('msgball_list', $msgball['acctnum']);
+			
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) grabbing msgball_list DIRECTLY from appsession, <br> * can not call "read_session_cache_item" because when moving multiple mails, we do not "expunge" until the last one, so validity check will fail because we are *ahead* of the mail server in "freshness"<br>'; } 
+				$acctnum = $msgball['acctnum'];
+				$data_name = 'msgball_list';
+				$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
+				$app = 'email';
+				// get session data
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) calling $GLOBALS[phpgw]->session->appsession('.$location.','.$app.')<br>'; } 
+				$meta_data = $GLOBALS['phpgw']->session->appsession($location,$app);
+				
+				if (!$meta_data)
+				{
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) <b>no</b> cached "msgball_list" exists<br>'; } 
+				}
+				else
+				{
+					if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) cached msgball_list $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
+					// get the array index if the msgball we want to delete
+					//$found_msgball_idx = '-1';
 					$found_msgball_idx = $this->not_set;
-					$loops = count($cached_msgball_list);
+					$loops = count($meta_data['msgball_list']);
 					for ($i = 0; $i < $loops; $i++)
 					{
-						$this_msgball = $cached_msgball_list[$i];
-						if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) (step 1) cached msgball_list loop ['.$i.'] $this_msgball DUMP<pre>'; print_r($this_msgball); echo '</pre>'; }
+						$this_msgball = $meta_data['msgball_list'][$i];
+						if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) cached msgball_list loop ['.$i.'] $this_msgball DUMP<pre>'; print_r($this_msgball); echo '</pre>'; } 
 						if (($this_msgball['acctnum'] == $msgball['acctnum'])
-								&& ($this_msgball['folder'] == $msgball['folder'])
-								&& ($this_msgball['msgnum'] == $msgball['msgnum']))
+						&& ($this_msgball['folder'] == $msgball['folder'])
+						&& ($this_msgball['msgnum'] == $msgball['msgnum']))
 						{
 							$found_msgball_idx = $i;
 							break;
 						}
 					}
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) (step 1) searched for msgball from the msgball_list, $found_msgball_idx ['.serialize($found_msgball_idx).'] <br>'; }
-					array_splice($cached_msgball_list, $found_msgball_idx, 1);
-					$did_alter_or_expire = True;
-					 if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') deleted msgball index '.$found_msgball_idx.' Also dumpung the modiffief msgball list<pre>'; print_r($this_msgball); echo '</pre>'; }
-					$GLOBALS['phpgw']->msg->expire_session_cache_item('msgball_list',$acctnum);
-					$this->save_session_cache_item('msgball_list', $msgball_list, $acctnum); 
-					//Now time to refresh the folder status info....
-					//What happens is that, if possible, the boaction class will directly call the display
-					//class's function to show the index list. This means that, even though this is L1 cache
-					//we are still in the same page view, so, its possible that this information is stale
-					//first lets check if its in L1 cache
-					$l1_folder_status_info = $this->get_arg_value('folder_status_info', $acctnum);
-					if($l1_folder_status_info)
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) searched for msgball from the msgball_list, $found_msgball_idx ['.serialize($found_msgball_idx).'] <br>'; } 
+					
+					// if we have an idx, we can delete it
+					if ((string)$found_msgball_idx != $this->not_set)
 					{
-						//we expire this data
-						$this->set_arg_value('folder_status_info',$this->get_folder_status_info('',True),$acctnum);
-					}
-				}
-				elseif (($this->session_cache_extreme == True)
-				&& ($called_by == 'phpgw_mail_move'))
-				{
-					// OLD FUNCTION does not provide enough information, all we can do is expire
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step 1) called by OLD FUNCTION ['.$called_by.'], does not provide enough information, all we can do is expire the entire "msgball_list"<br>'; } 
-					// comment out for DEBUG
-					$this->expire_session_cache_item('msgball_list');
-					$did_alter_or_expire = True;
-					
-					// ANYTIME a message is moved out of a folder, we need to remove any cached "" and "phpgw_header" data
-					// BUT this old function does not provide enough information
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (non-extreme mode) OLD calling function does not provide enough information to expire cached "msg_structure" and "phpgw_header" this specific message leaving this folder<br>'; }
-					//$GLOBALS['phpgw']->msg->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
-					
-					
-					// FUTURE, PART TWO, EXPIRE folder status info.
-					// with no specific info, all we can do is expire the entire folder status info
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') *FUTURE* (step 2) called by OLD FUNCTION ['.$called_by.'], does not provide enough information, extreme or not, all we can do is expire the entire "folder_status_info" *FUTURE*<br>'; } 
-					
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') LEAVING, old calling function limited us to expiring entire msgball list<br>'; } 
-					return True;
-				}
-				elseif ($this->session_cache_extreme == True)
-				{
-					// EXTREME MODE
-					// directloy manipulate existing cached items to make them "fresh" and resave to cache
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) pop out a single msgball from the msgball_list and resave to cache<br>'; } 
-					if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) search msgball_list looking for this $msgball DUMP <pre>'; print_r($msgball); echo '</pre>'; } 
-					$did_alter = False;
-					// STEP ONE:
-					// we should be able to pop out a single msgball from the msg_ball list 
-					// when mail moves OUT of a folder
-					//$meta_data = $this->read_session_cache_item('msgball_list', $msgball['acctnum']);
-				
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) grabbing msgball_list DIRECTLY from appsession, <br> * can not call "read_session_cache_item" because when moving multiple mails, we do not "expunge" until the last one, so validity check will fail because we are *ahead* of the mail server in "freshness"<br>'; } 
-					$acctnum = $msgball['acctnum'];
-					$data_name = 'msgball_list';
-					$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
-					$app = 'email';
-					// get session data
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) calling $GLOBALS[phpgw]->session->appsession('.$location.','.$app.')<br>'; } 
-					$meta_data = $GLOBALS['phpgw']->session->appsession($location,$app);
-					
-					if (!$meta_data)
-					{
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) <b>no</b> cached "msgball_list" exists<br>'; } 
-					}
-					else
-					{
-						if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) cached msgball_list $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
-						// get the array index if the msgball we want to delete
-						//$found_msgball_idx = '-1';
-						$found_msgball_idx = $this->not_set;
-						$loops = count($meta_data['msgball_list']);
-						for ($i = 0; $i < $loops; $i++)
-						{
-							$this_msgball = $meta_data['msgball_list'][$i];
-							if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) cached msgball_list loop ['.$i.'] $this_msgball DUMP<pre>'; print_r($this_msgball); echo '</pre>'; } 
-							if (($this_msgball['acctnum'] == $msgball['acctnum'])
-							&& ($this_msgball['folder'] == $msgball['folder'])
-							&& ($this_msgball['msgnum'] == $msgball['msgnum']))
-							{
-								$found_msgball_idx = $i;
-								break;
-							}
-						}
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) searched for msgball from the msgball_list, $found_msgball_idx ['.serialize($found_msgball_idx).'] <br>'; } 
-						
-						// if we have an idx, we can delete it
-						if ((string)$found_msgball_idx != $this->not_set)
-						{
-							if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) searched SUCCESS, $found_msgball_idx ['.serialize($found_msgball_idx).'] , now doing an ARRAY_SPLICE<br>'; } 
-							array_splice($meta_data['msgball_list'], $found_msgball_idx, 1);
-							if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) now msgball_list has 1 less item, update msgball_list "vality" data to match this deletion, $meta_data[validity][number_all] before '.serialize($meta_data['validity']['number_all']).'<br>'; } 
-							$old_count = $meta_data['validity']['number_all'];
-							$new_count = ($old_count - 1);
-							$meta_data['validity']['number_all'] = $new_count;
-							if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) $meta_data[validity][number_all] AFTER reduction '.serialize($meta_data['validity']['number_all']).'<br>'; } 
-							if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 1) array_splice of $meta_data[msgball_list] results in this $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
-							
-							// save altered data back into the cache
-							$acctnum = $msgball['acctnum'];
-							$data_name = 'msgball_list';
-							$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
-							$app = 'email';
-							if ($this->session_cache_debug_nosave == False)
-							{
-								if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') saving altered msgball_list directly to appsession, location: ['.$location.'] $app='.$app.'<br>'; }
-								$GLOBALS['phpgw']->session->appsession($location,$app,$meta_data);
-								$did_alter = True;
-							}
-							else
-							{
-								//if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: session_cache_debug_nosave disallows actual saving of any data <br>'; } 
-								echo 'mail_msg: event_msg_move_or_delete: session_cache_debug_nosave disallows actual saving of data<br>';
-							}
-							
-						}
-					}
-					
-					// PART TWO, alter folder status info. 
-					// reduct TOTAL by one, reduce UNDEEN by one if moving an UNSEEN mail
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) alter and resave the "folder_status_info" appsession cache<br>'; } 
-					
-					
-					$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) check if mail leaving folder was UNSEEN <br>'; } 
-					// SEEN OR UNSEEN/NEW test
-					if (($msg_headers->Unseen == 'U') || ($msg_headers->Recent == 'N'))
-					{
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) msg_headers indicate mail leaving folder was UNSEEN <br>'; } 
-						$reduce_unseen = True;
-					}
-					else
-					{
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) msg_headers indicate mail leaving folder was NOT recent, NOT unseen <br>'; } 
-						$reduce_unseen = False;
-					}
-					
-					
-					//$did_alter = False;
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) grabbing folder_status_info DIRECTLY from appsession, <br> * can not call "read_session_cache_item" because when moving multiple mails, we do not "expunge" until the last one, so validity check will fail because we are *ahead* of the mail server in "freshness"<br>'; } 
-					$acctnum = $msgball['acctnum'];
-					$data_name = 'folder_status_info';
-					$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
-					$app = 'email';
-					$specific_key = $msgball['folder'];
-					// get session data
-					$meta_data = array();
-					$meta_data = $GLOBALS['phpgw']->session->appsession($location,$app);
-					if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (extreme mode) (step 2) grabbed $meta_data DUMP <pre>'; print_r($meta_data); echo '</pre>'; } 
-					$folder_status_info = unserialize($meta_data['folder_status_info'][$specific_key]);
-					if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (extreme mode) (step 2) grabbed folder_status_info :: unserialized $meta_data[folder_status_info]['.$specific_key.'] DUMP <pre>'; print_r($folder_status_info); echo '</pre>'; } 
-					
-					if (!$meta_data)
-					{
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) no cached "folder_status_info" exists<br>'; } 
-					}
-					else
-					{
-						if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) unaltered cached msgball_list $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
-						// reducr NUMBER ALL - obviously if mail is leaving a folder, number_all must be reduced
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) reducing "folder_status_info" number_all count<br>'; } 
-						$prev_total_count = $folder_status_info['number_all'];
-						$adjusted_total_count = ($prev_total_count - 1);
-						$folder_status_info['number_all'] = $adjusted_total_count;
-						
-						// reduce UNSEEN if necessary
-						if ($reduce_unseen == True)
-						{
-							if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) reducing "folder_status_info" UNSEEN count<br>'; } 
-							$prev_new_count = $folder_status_info['number_new'];
-							$adjusted_new_count = ($prev_new_count - 1);
-							$folder_status_info['number_new'] = $adjusted_new_count;
-							
-							// the user alert string needs updating also
-							$folder_status_info['alert_string'] = str_replace((string)$prev_new_count, (string)$adjusted_new_count, $folder_status_info['alert_string']); 
-						}
-						
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) searched SUCCESS, $found_msgball_idx ['.serialize($found_msgball_idx).'] , now doing an ARRAY_SPLICE<br>'; } 
+						array_splice($meta_data['msgball_list'], $found_msgball_idx, 1);
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) now msgball_list has 1 less item, update msgball_list "vality" data to match this deletion, $meta_data[validity][number_all] before '.serialize($meta_data['validity']['number_all']).'<br>'; } 
+						$old_count = $meta_data['validity']['number_all'];
+						$new_count = ($old_count - 1);
+						$meta_data['validity']['number_all'] = $new_count;
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (extreme mode) (step 1) $meta_data[validity][number_all] AFTER reduction '.serialize($meta_data['validity']['number_all']).'<br>'; } 
+						if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 1) array_splice of $meta_data[msgball_list] results in this $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
 						
 						// save altered data back into the cache
-						$meta_data['folder_status_info'][$specific_key] = '';
-						$meta_data['folder_status_info'][$specific_key] = serialize($folder_status_info);
-						
-						//if ($this->debug_events > 1) { echo 'mail_msg: event_msg_seen: (extreme mode) (step 2) $meta_data[number_new] AFTER reduction '.serialize($folder_status_info['number_new']).' <br>'; } 
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) ADJUSTED "folder_status_info", unserialized $meta_data[folder_status_info]['.$specific_key.'] DUMP<pre>'; print_r(unserialize($meta_data['folder_status_info'][$specific_key])); echo '</pre>'; } 
-						
 						$acctnum = $msgball['acctnum'];
-						$data_name = 'folder_status_info';
+						$data_name = 'msgball_list';
 						$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
 						$app = 'email';
 						if ($this->session_cache_debug_nosave == False)
 						{
-							if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: saving altered folder_status_info directly to appsession, location: ['.$location.'] $app='.$app.'<br>'; }
+							if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') saving altered msgball_list directly to appsession, location: ['.$location.'] $app='.$app.'<br>'; }
 							$GLOBALS['phpgw']->session->appsession($location,$app,$meta_data);
 							$did_alter = True;
 						}
 						else
 						{
 							//if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: session_cache_debug_nosave disallows actual saving of any data <br>'; } 
-							echo 'mail_msg: event_msg_seen: session_cache_debug_nosave disallows actual saving of "folder_status_info" data<br>';
+							echo 'mail_msg: event_msg_move_or_delete: session_cache_debug_nosave disallows actual saving of data<br>';
 						}
+						
+					}
+				}
+				
+				// PART TWO, alter folder status info. 
+				// reduct TOTAL by one, reduce UNDEEN by one if moving an UNSEEN mail
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) alter and resave the "folder_status_info" appsession cache<br>'; } 
+				
+				
+				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) check if mail leaving folder was UNSEEN <br>'; } 
+				// SEEN OR UNSEEN/NEW test
+				if (($msg_headers->Unseen == 'U') || ($msg_headers->Recent == 'N'))
+				{
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) msg_headers indicate mail leaving folder was UNSEEN <br>'; } 
+					$reduce_unseen = True;
+				}
+				else
+				{
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) msg_headers indicate mail leaving folder was NOT recent, NOT unseen <br>'; } 
+					$reduce_unseen = False;
+				}
+				
+				
+				//$did_alter = False;
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) grabbing folder_status_info DIRECTLY from appsession, <br> * can not call "read_session_cache_item" because when moving multiple mails, we do not "expunge" until the last one, so validity check will fail because we are *ahead* of the mail server in "freshness"<br>'; } 
+				$acctnum = $msgball['acctnum'];
+				$data_name = 'folder_status_info';
+				$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
+				$app = 'email';
+				$specific_key = $msgball['folder'];
+				// get session data
+				$meta_data = array();
+				$meta_data = $GLOBALS['phpgw']->session->appsession($location,$app);
+				if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (extreme mode) (step 2) session ['.$location.','.$app.'] grabbed $meta_data serialized DUMP <pre>'; echo "\r\n".serialize($meta_data)."\r\n"; echo '</pre>'; } 
+				if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (extreme mode) (step 2) session ['.$location.','.$app.'] grabbed $meta_data DUMP <pre>'; print_r($meta_data); echo '</pre>'; } 
+				$folder_status_info = unserialize($meta_data['folder_status_info'][$specific_key]);
+				if ($this->debug_events > 1) { echo 'mail_msg_base: event_msg_move_or_delete: (extreme mode) (step 2) grabbed folder_status_info :: unserialized $meta_data[folder_status_info]['.$specific_key.'] DUMP <pre>'; print_r($folder_status_info); echo '</pre>'; } 
+				
+				if (!$meta_data)
+				{
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) no cached "folder_status_info" exists<br>'; } 
+				}
+				else
+				{
+					if ($this->debug_events > 2) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) unaltered cached msgball_list $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
+					// reducr NUMBER ALL - obviously if mail is leaving a folder, number_all must be reduced
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) reducing "folder_status_info" number_all count<br>'; } 
+					$prev_total_count = $folder_status_info['number_all'];
+					$adjusted_total_count = ($prev_total_count - 1);
+					$folder_status_info['number_all'] = $adjusted_total_count;
+					
+					// reduce UNSEEN if necessary
+					if ($reduce_unseen == True)
+					{
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) reducing "folder_status_info" UNSEEN count<br>'; } 
+						$prev_new_count = $folder_status_info['number_new'];
+						$adjusted_new_count = ($prev_new_count - 1);
+						$folder_status_info['number_new'] = $adjusted_new_count;
+						
+						// the user alert string needs updating also
+						$folder_status_info['alert_string'] = str_replace((string)$prev_new_count, (string)$adjusted_new_count, $folder_status_info['alert_string']); 
 					}
 					
-					// PART3 - THINGS NECESSARY DURING ANY DELETE
-					// ANYTIME a message is moved out of a folder, we need to remove any cached "" and "phpgw_header" data
-					$specific_key = (string)$msgball['msgnum'].'_'.$msgball['folder'];
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) extreme or not, "msg_structure" and "phpgw_header" needs expired this specific message leaving this folder, $specific_key ['.$specific_key.']<br>'; }
-					$this->expire_session_cache_item('msg_structure', $msgball['acctnum'], $specific_key);
-					$this->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
 					
-					// IF a target folder is provided, EXPIRE the "folder_status_info" for that TARGET folder
-					//if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) <b>DISABLED, problem expiring current status info</b> "folder_status_info" for the TARGET folder (if known) needs expired, I will not go to the brain-damaging extent of adjusting Target folder stats, $to_fldball ['.serialize($to_fldball).']<br>'; }
-					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) <b>expiring current status info</b> "folder_status_info" for the TARGET folder (if known) needs expired, I will not go to the brain-damaging extent of adjusting Target folder stats, $to_fldball ['.serialize($to_fldball).']<br>'; }
-					/*
-					// make sure TARGET name is in URLENCODED form
-					if (isset($to_fldball['folder']))
-					//&& (stristr($msgball['folder'],'%') == False))
+					// save altered data back into the cache
+					$meta_data['folder_status_info'][$specific_key] = '';
+					$meta_data['folder_status_info'][$specific_key] = serialize($folder_status_info);
+					
+					//if ($this->debug_events > 1) { echo 'mail_msg: event_msg_seen: (extreme mode) (step 2) $meta_data[number_new] AFTER reduction '.serialize($folder_status_info['number_new']).' <br>'; } 
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) ADJUSTED "folder_status_info", unserialized $meta_data[folder_status_info]['.$specific_key.'] DUMP<pre>'; print_r(unserialize($meta_data['folder_status_info'][$specific_key])); echo '</pre>'; } 
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) (step 2) ADJUSTED "folder_status_info", unserialized $meta_data DUMP<pre>'; print_r($meta_data); echo '</pre>'; } 
+					
+					$acctnum = $msgball['acctnum'];
+					$data_name = 'folder_status_info';
+					$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
+					$app = 'email';
+					if ($this->session_cache_debug_nosave == False)
 					{
-						$to_fldball['folder'] = $this->prep_folder_out($to_fldball['folder']);
-						$specific_key = $to_fldball['folder'];
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) TARGET folder data was provided, MUST expire target folders "folder_status_info", $to_fldball[acctnum] is ['.$to_fldball['acctnum'].'], $specific_key is urlencoded target folder name ['.$specific_key.']<br>'; }
-						$GLOBALS['phpgw']->msg->expire_session_cache_item('folder_status_info', $to_fldball['acctnum'], $specific_key);
+						if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: saving altered folder_status_info **directly** to appsession, $location: ['.$location.'] $app['.$app.']<br>'; }
+						$GLOBALS['phpgw']->session->appsession($location,$app,$meta_data);
+						$did_alter = True;
 					}
-					*/
-					if ((isset($to_fldball['folder']))
-					&& (isset($to_fldball['acctnum'])))
+					else
 					{
-						$target_clean = $this->prep_folder_in($to_fldball['folder']);
-						$urlencoded_target = $this->prep_folder_out($target_clean);
-						if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') $target_clean ['.$target_clean.'], $urlencoded_target ['.$urlencoded_target.']<br>'; } 
+						//if (($this->debug_session_caching > 1) || ($this->debug_events > 1)) { echo 'mail_msg: event_msg_move_or_delete: session_cache_debug_nosave disallows actual saving of any data <br>'; } 
+						echo 'mail_msg: event_msg_seen: session_cache_debug_nosave disallows actual saving of "folder_status_info" data<br>';
+					}
+				}
+				
+				// PART3 - THINGS NECESSARY DURING ANY DELETE
+				// ANYTIME a message is moved out of a folder, we need to remove any cached "msg_structure" and "phpgw_header" data
+				$specific_key = (string)$msgball['msgnum'].'_'.$msgball['folder'];
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3a) (extreme mode) extreme or not, "msg_structure" and "phpgw_header" needs expired this specific message leaving this folder, $specific_key ['.$specific_key.']<br>'; }
+				$this->expire_session_cache_item('msg_structure', $msgball['acctnum'], $specific_key);
+				$this->expire_session_cache_item('phpgw_header', $msgball['acctnum'], $specific_key);
+				
+				if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): (step 3b) (extreme mode) IF a target folder is provided and is a valid folder name, EXPIRE the "folder_status_info" for that TARGET folder, $to_fldball ['.serialize($to_fldball).']<br>'; }
+				//if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) <b>DISABLED, problem expiring current status info</b> "folder_status_info" for the TARGET folder (if known) needs expired, I will not go to the brain-damaging extent of adjusting Target folder stats, $to_fldball ['.serialize($to_fldball).']<br>'; }
+				/*
+				// make sure TARGET name is in URLENCODED form
+				if (isset($to_fldball['folder']))
+				//&& (stristr($msgball['folder'],'%') == False))
+				{
+					$to_fldball['folder'] = $this->prep_folder_out($to_fldball['folder']);
+					$specific_key = $to_fldball['folder'];
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: (step 3) (extreme mode) TARGET folder data was provided, MUST expire target folders "folder_status_info", $to_fldball[acctnum] is ['.$to_fldball['acctnum'].'], $specific_key is urlencoded target folder name ['.$specific_key.']<br>'; }
+					$GLOBALS['phpgw']->msg->expire_session_cache_item('folder_status_info', $to_fldball['acctnum'], $specific_key);
+				}
+				*/
+				if ((isset($to_fldball['folder']))
+				&& (isset($to_fldball['acctnum']))
+				&& ($to_fldball['folder'] != $this->del_pseudo_folder))
+				{
+					$target_clean = $this->prep_folder_in($to_fldball['folder']);
+					$urlencoded_target = $this->prep_folder_out($target_clean);
+					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step 3b) (extreme mode)  $target_clean ['.$target_clean.'], $urlencoded_target ['.$urlencoded_target.']<br>'; } 
+					if ((isset($target_clean))
+					|| (trim($target_clean) != ''))
+					{
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): (step 3b) (extreme mode) <b>expiring current status info</b> "folder_status_info" for the TARGET folder (was provided and it exists) needs expired, I will not go to the brain-damaging extent of adjusting Target folder stats, $to_fldball ['.serialize($to_fldball).']<br>'; }
 						$specific_key = $urlencoded_target;
 						$acctnum = $to_fldball['acctnum'];
-						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step 3) (extreme mode) TARGET folder data was provided, MUST expire target folders "folder_status_info", $to_fldball[acctnum] is ['.$acctnum.'], $specific_key is urlencoded target folder name ['.$specific_key.']<br>'; }
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete: ('.__LINE__.') (step 3b) (extreme mode) TARGET folder data was provided, MUST expire target folders "folder_status_info", $to_fldball[acctnum] is ['.$acctnum.'], $specific_key is urlencoded target folder name ['.$specific_key.']<br>'; }
 						$this->expire_session_cache_item('folder_status_info', $acctnum, $specific_key);
 					}
-					
-					if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) LEAVING, $did_alter ['.serialize($did_alter).']<br>'; } 
-					return $did_alter;
+					else
+					{
+						if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): (step 3b) (extreme mode) can not do this step3 because TARGET FOLDER data was provided BUT empty $target_clean ['.$target_clean.'] indicates we could not verify it is a known valid folder, $to_fldball ['.serialize($to_fldball).']<br>'; }
+					}
 				}
+				else
+				{
+					if ($this->debug_events > 1) { echo 'mail_msg: event_msg_move_or_delete('.__LINE__.'): (step 3b) (extreme mode) can not do this step3 because TARGET FOLDER data was NOT provided OR the folder is $this->del_pseudo_folder: ['.$this->del_pseudo_folder.'], note data for $to_fldball was ['.serialize($to_fldball).']<br>'; }
+				}
+				
+				if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: (extreme mode) LEAVING, $did_alter ['.serialize($did_alter).']<br>'; } 
+				return $did_alter;
 			}
 			
 			if ($this->debug_events > 0) { echo 'mail_msg: event_msg_move_or_delete: LEAVING, unhandled situation or caching not enabled<br>'; } 
