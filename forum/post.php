@@ -81,7 +81,8 @@ $dattim = date("Y-m-d H:i:s",time());
  $catfor = "cat=" . $cat . "&for=" . $for;
 
  echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><font size=+1><a href=' . $phpgw->link("index.php") .'>' . lang_forums("Forums") ;
- echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ' . $forums . '</font></td></tr>';
+ echo '</a> : <a href=' . $phpgw->link("forums.php","cat=" . $cat) . '>' . $category . '</a> : ';
+ echo "<a href=" . $phpgw->link("threads.php","$catfor&col=" . $col) . ">". $forums . "</a></font></td></tr>";
 
 
  echo "<tr>";
