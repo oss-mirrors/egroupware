@@ -35,6 +35,10 @@
 			$this->displayCharset	= $GLOBALS['phpgw']->translation->charset();
 
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+
+			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->mailPreferences	= $this->bopreferences->getPreferences();
+
 			$this->bofelamimail     = CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->connectionStatus	= $this->bofelamimail->openConnection();
 			
@@ -47,8 +51,8 @@
 			
 			$sieveHost		= $felamimailConfig["sieveServer"];
 			$sievePort		= $felamimailConfig["sievePort"];
-			$username		= $GLOBALS['phpgw_info']['user']['userid'];
-			$password		= $GLOBALS['phpgw_info']['user']['passwd'];
+			$username		= $this->mailPreferences['username'];
+			$password		= $this->mailPreferences['key'];
 			$this->sieve		= CreateObject('felamimail.SieveSession',$sieveHost, $sievePort, $username, $password);
 			if(!$this->sieve->start())
 			{
