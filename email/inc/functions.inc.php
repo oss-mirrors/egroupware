@@ -4,7 +4,7 @@
   $d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
   if($d1 == "htt" || $d1 == "ftp" ) {
     echo "Failed attempt to break in via an old Security Hole!<br>\n";
-    exit;
+    $phpgw->common->phpgw_exit();
   } unset($d1);
 
   /**************************************************************************\
@@ -326,7 +326,7 @@
   if (!$mailbox && !ereg("preferences",$PHP_SELF)) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
-     exit;
+     $phpgw->common->phpgw_exit();
   }
 
   function decode_header_string($string) {

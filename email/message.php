@@ -30,7 +30,7 @@
   $msgtype = $phpgw->msg->get_flag($mailbox,$msgnum,"X-phpGW-Type");
   if (!empty($msgtype)) {
     Header("Location: " . $phpgw->link("message_$msgtype.php","folder=". urlencode($folder)."&msgnum=".$msgnum));
-    exit;
+    $phpgw->common->phpgw_exit();
   } else {
     $phpgw->common->phpgw_header();
     $phpgw->common->navbar();

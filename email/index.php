@@ -134,7 +134,8 @@ function check_all()
       } else {
          $t_folder_s = "INBOX";
       }
-      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+      $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+
 
       if ($nummsg > 0) {
 	 $msg_array = array();

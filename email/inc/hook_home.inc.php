@@ -2,7 +2,7 @@
   $d1 = strtolower(substr($phpgw_info["server"]["app_inc"],0,3));
   if($d1 == "htt" || $d1 == "ftp" ) {
     echo "Failed attempt to break in via an old Security Hole!<br>\n";
-    exit;
+    $phpgw->common->phpgw_exit();
   } unset($d1);
 
   $tmp_app_inc = $phpgw_info["server"]["app_inc"];
@@ -14,7 +14,7 @@
     $mbox = $phpgw->msg->login();
     if (! $mbox) {
       echo "Mail error: can not open connection to mail server";
-      exit;
+      $phpgw->common->phpgw_exit();
     }
 
   	$mailbox_status = $phpgw->msg->status($mbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);

@@ -1108,7 +1108,7 @@
 //      echo "-- inside uudecode - ".count($str)." --<br>\n";
       for($i=0;$i<count($str);$i++) {
 	if (ereg("^begin",$str[$i]) || ereg("^end",$str[$i])) continue;
-	if ($i==count($str)-1 && $str[$i] == "`") exit;
+	if ($i==count($str)-1 && $str[$i] == "`") $phpgw->common->phpgw_exit();
 	$pos=1;
 	$d=0;
 	$len=(int)(((ord(substr($str[$i],0,1)) ^ 0x20) - ' ') & 077);
