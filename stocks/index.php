@@ -10,18 +10,15 @@
   \**************************************************************************/
   /* $Id$ */
 
-    $phpgw_info["flags"] = array(
-		"currentapp" => "stocks", 
-		"enable_network_class" => True
-	);
+    $phpgw_info['flags'] = array('currentapp' => 'stocks', 
+			'enable_network_class' => True);
 
-	include("../header.inc.php");
+    include('../header.inc.php');
 
-	$t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('stocks'));
-	$t->set_file(array( "quotes_list" => "main.tpl"));
+    $t = new Template(PHPGW_APP_TPL);
+    $t->set_file(array('quotes_list' => 'main.tpl'));
+    $t->set_var('quotes',return_quotes($quotes));
+    $t->pparse('out','quotes_list');
 
-	$t->set_var("quotes",return_quotes($quotes));
-	$t->pparse("out", "quotes_list");
-
-	$phpgw->common->phpgw_footer();
+    $phpgw->common->phpgw_footer();
 ?>
