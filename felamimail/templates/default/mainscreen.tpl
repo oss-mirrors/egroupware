@@ -61,7 +61,7 @@ doLoad();
 			document.getElementsByTagName("input")[3].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
-			var textNode = document.createTextNode('{lang_move_message}');
+			var textNode = document.createTextNode('{lang_select_target_folder}');
 			folderFunctions.appendChild(textNode);
 			document.getElementsByName("folderAction")[0].value = "moveMessage";
 		}
@@ -71,7 +71,7 @@ doLoad();
 			document.getElementsByTagName("input")[2].checked = "true";
 			while (folderFunctions.hasChildNodes())
 			    folderFunctions.removeChild(folderFunctions.lastChild);
-			var textNode = document.createTextNode('{lang_change_folder}');
+			var textNode = document.createTextNode('');
 			folderFunctions.appendChild(textNode);
 			document.getElementsByName("folderAction")[0].value = "changeFolder";
 		}
@@ -94,7 +94,7 @@ doLoad();
 			    folderFunctions.removeChild(folderFunctions.lastChild);
 			var textNode = document.createTextNode('{lang_move_message}');
 			//folderFunctions.appendChild(textNode);
-			document.getElementById("folderFunction").innerHTML="<b>{lang_move_message}</b> <br><small>{lang_select_target_folder}</small>";
+			document.getElementById("folderFunction").innerHTML="{lang_select_target_folder}";
 			document.getElementsByName("folderAction")[0].value = "moveMessage";
 		}
 		
@@ -157,12 +157,15 @@ doLoad();
 -->
 	<TR>
 		<TD BGCOLOR="{th_bg}" width="20%">
-			<a href="{url_compose_empty}" style="font-size:12px; font-weight:bold;">{lang_compose}</a>
+			<a href="{url_compose_empty}" style="font-weight:bold;">{lang_compose}</a>
 		</td>
-		<TD BGCOLOR="{th_bg}" align="center" style="white-space: nowrap;">
-			<b>{current_folder}</b>{quota_display}
+		<TD BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
+			<b>{current_folder}</b>
 		</td>
-		<TD BGCOLOR="{th_bg}" align="right" width="10%">
+		<td BGCOLOR="{th_bg}" width="30%" align="center" style="white-space: nowrap;">
+			{quota_display}
+		</td>
+		<TD BGCOLOR="{th_bg}" align="right" width="20%">
 			<TABLE BORDER="0" cellpadding="2" cellspacing=0>
 				<TR valign="middle" bgcolor="{th_bg}">
 					<td width="12px" align="right" valign="center">
@@ -188,33 +191,31 @@ doLoad();
 			</TABLE>
 		</TD>
 	</TR>
+</table>
+
+<TABLE width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td align="center" colspan="3" style="font-size:10px">
+		<td>
+			<span id="folderFunction" align="left" style="font-size:10px;">&nbsp;</span>	
+		</td>
+		<td>
+			&nbsp;
+		</td>
+		<td align="center" style="font-size:10px">
 			&lt;-&nbsp;{link_previous}&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;{message}&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;{link_next}&nbsp;-&gt;&nbsp;{trash_link}
 		</td>
 	</tr>
-</table>
-
-<TABLE width="100%" cellpadding="0" cellspacing="0">
 	<TR>
 		<td valign="top" class="folderlist" width="180">
 	
-	
 			<!-- StartFolderTree -->
 
-			<div id="divFolderTree" style="overflow:auto; width:180px; height:472px; margin-bottom: 0px;padding-left: 4px; padding-top:4px; z-index:100; border : 1px solid Silver;">
+			<div id="divFolderTree" style="overflow:auto; width:180px; height:472px; margin-bottom: 0px;padding-left: 0px; padding-top:0px; z-index:100; border : 1px solid Silver;">
 			
-				<table width=100% BORDER=0 style="table-layout:fixed;padding-left:2;">
-				<tr><td><span id="folderFunction" align="left" style="font-size:10px;">&nbsp;</span></td><tr>
-	
-	
+				<table width=100% BORDER="0" style="table-layout:fixed;padding-left:2;">
 					<tr>
-						<td width="160" nowrap style="font-size:10px">
-							<nobr>
+						<td width="100%" nowrap style="font-size:10px">
 							{folder_tree}
-							<br>
-							<br>
-							<br>
 							<br>
 							<p align="center">
 							<small><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></small>
@@ -252,10 +253,10 @@ doLoad();
 						&nbsp;&nbsp;<a href="{url_sort_date}">{lang_date}</a>
 					</td>
 					<td width="70px" bgcolor="{th_bg}" align="center" class="text_small">
-						&nbsp;&nbsp;&nbsp;Status*
+						{lang_status}
 					</td>
-					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">&nbsp;
-						
+					<td width="14px" bgcolor="{th_bg}" align="center" class="text_small">
+						&nbsp;
 					</td>
 					<td bgcolor="{th_bg}" align="center" class="{css_class_subject}">
 						&nbsp;&nbsp;&nbsp;<a href="{url_sort_subject}">{lang_subject}</a>
