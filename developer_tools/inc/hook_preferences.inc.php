@@ -13,7 +13,7 @@
 	/* $Id$ */
 
 	$file  = array(
-		'Categories' => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=developer_tools&global_cats=True'),
+		'Edit Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=developer_tools&cats_level=True&global_cats=True'),
 		'SF Project tracker preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uisf_project_tracker.preferences')
 	);
 
