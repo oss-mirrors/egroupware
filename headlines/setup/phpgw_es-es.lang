@@ -22,6 +22,7 @@ minutes between refresh	headlines	es-es	Minutos entre refrescos
 minutes between reloads	headlines	es-es	Minutos entre recargas
 monitor	common	es-es	Monitor
 news file	headlines	es-es	Archivo de noticias
+news from x	headlines	es-es	Noticias de x
 news headlines	common	es-es	Encabezados de noticias
 news headlines  common  es  encabezados de noticias		es-es	
 news type	headlines	es-es	Tipo de noticias
@@ -33,7 +34,7 @@ sample	headlines	es-es	Ejemplo
 select headline news sites	headlines	es-es	Seleccione sitios de encabezados de noticias
 select headlines to display	common	es-es	Seleccione los encabezados a mostrar
 select layout	common	es-es	Seleccione formato
-show headlines on homepage	headlines	es-es	
+show headlines on homepage	headlines	es-es	Mostrar encabezados en la página de inicio
 site	headlines	es-es	Sitio
 that site has already been entered	headlines	es-es	Este sitio ya fue entrado
 unable to retrieve links	headlines	es-es	No se pudieron recuperar los enlaces

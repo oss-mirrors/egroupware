@@ -109,7 +109,7 @@ that_this_oclass_requires	phpldapadmin	es-es	que esta clase de objeto requiere. 
 the_following_attributes	phpldapadmin	es-es	Los siguientes <b>tipos de atributo</b> están soportados por el servidor LDAP.
 the_following_matching	phpldapadmin	es-es	Las siguientes <b>reglas de coincidencia</b> están soportadas por el servidor LDAP.
 the_following_objectclasses	phpldapadmin	es-es	Las siguientes <b>clases de objetos</b> están soportadas por el servidor LDAP
-the_following_syntaxes	phpldapadmin	es-es	Las siguientes <b>sintaxis</b> están soportadas por servidor LDAP.
+the_following_syntaxes	phpldapadmin	es-es	Las siguientes <b>sintaxis</b> están soportadas por el servidor LDAP.
 true	phpldapadmin	es-es	verdadero
 value_to	phpldapadmin	es-es	valor a
 values_for_attribute	phpldapadmin	es-es	valores para el atributo

@@ -18,6 +18,7 @@ interval	backup	es-es	Intervalo
 ip or hostname	backup	es-es	IP o nombre del equipo
 ldap	common	es-es	LDAP
 ldap database	admin	es-es	Base de datos LDAP
+list backup archives	backup	es-es	lista de archivos de copia de seguridad
 maildir	admin	es-es	Directorio del correo
 monthly	backup	es-es	Cada mes
 mysql	admin	es-es	MySQL

@@ -133,14 +133,15 @@ from	felamimail	es-es	De
 from(a->z)	felamimail	es-es	De (A-> Z)
 from(z->a)	felamimail	es-es	De (Z-> A)
 full name	felamimail	es-es	Nombre completo
-have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	
-have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	
+have a look at <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
+have a look at <a href=\"http://www.felamimail.org\" target=\"_new\">www.felamimail.org</a> to learn more about squirrelmail.<br>	felamimail	es-es	Eche un vistazo a <a href="http://www.felamimail.org" target="_new">www.felamimail.org</a> para saber más acerca de Squirrelmail.<br>
 help	felamimail	es-es	Ayuda
 hide header	felamimail	es-es	Ocultar cabecera
 html	felamimail	es-es	HTML
 icons and text	felamimail	es-es	Iconos y texto
 icons only	felamimail	es-es	Sólo iconos
 identifying name	felamimail	es-es	Nombre identificativo
+if	felamimail	es-es	SI
 illegal folder name.  please select a different name.	felamimail	es-es	Nombre de carpeta ilegal. Por favor, seleccione un nombre distinto
 imap	felamimail	es-es	IMAP
 imap server	felamimail	es-es	Servidor IMAP
@@ -363,3 +364,4 @@ you can only edit one address at the time	felamimail	es-es	Sólo puede editar una
 you must login first.	felamimail	es-es	Antes, debe iniciar la sesión.
 you need a valid user and password to access this page!	felamimail	es-es	Necesita un usuario y una contraseña válidos para acceder a esta página
 your search failed with the following error(s)	felamimail	es-es	La búsqueda falló, dando los siguientes errores:
+1	felamimail	es-es	1

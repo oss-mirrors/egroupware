@@ -1,5 +1,6 @@
 %	stocks	es-es	%
 add new stock	stocks	es-es	Añadir nueva cotización
+company name	stocks	es-es	Nombre de la empresa
 disable	stocks	es-es	desactivar
 display stocks on main screen is disabled	stocks	es-es	Mostrar las cotizaciones en la pantalla principal está desactivado
 display stocks on main screen is enabled	stocks	es-es	Mostrar las cotizaciones en la pantalla principal está activado
