@@ -19,8 +19,15 @@
 
 	function getConnectionInfo()
 	{
-		$unencrypted = $GLOBALS['phpgw']->session->appsession();
-		return $unencrypted;
+		$connectionInfo = unserialize(stripslashes($GLOBALS['phpgw']->session->appsession('connectionInfo','ftp')));
+		//echo "<p>getConnectionInfo()=".print_r($connectionInfo,true)."</p>\n";
+		return $connectionInfo;
+	}
+
+	function updateSession($connectionInfo='')
+	{
+		//echo "<p>updateSession(".print_r($connectionInfo,true).")</p>\n";
+		$GLOBALS['phpgw']->session->appsession('connectionInfo','ftp',addslashes(serialize($connectionInfo)));
 	}
 
 	function phpftp_connect($host,$user,$pass) 
@@ -212,12 +219,6 @@
 		return $retval;
 	}
 
-	function updateSession($string='')
-	{
-		$GLOBALS['phpgw']->common->appsession($string);
-		return;
-	}
-
 	function analysedir($dirline)
 	{
 		if(ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
@@ -246,7 +247,7 @@
 				}
 				break;
 			case 'UNIX':
-				if(ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
+				if(ereg("([-dl][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
 				{
 					$ta = explode(' ',$dirline);
 					while(list(,$p) = each($ta))
@@ -261,7 +262,8 @@
 					$fileinfo['group']       = $a[3];
 					$fileinfo['size']        = $a[4];
 					$fileinfo['date']        = $regs[3];
-					$fileinfo['name']        = $regs[4];
+					list($fileinfo['name'],$fileinfo['link']) = explode(' -> ',$regs[4]);
+					
 					//echo '<pre>'; print_r($regs); echo '</pre>';
 				}
 		}
@@ -280,6 +282,7 @@
 
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
+
 		for($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
 		{
 			if($i < count($dirlist))
