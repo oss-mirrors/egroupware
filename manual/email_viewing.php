@@ -36,4 +36,3 @@ to your mailserver (as set by the systems admin). All your mail should then be d
 <p>Make a choice ! :)
 <ul>
 <?php $phpgw->common->phpgw_footer(); ?>
-

@@ -34,4 +34,3 @@ months easily accessible with one click.
 <p>
 </ul>
 <?php $phpgw->common->phpgw_footer(); ?>
-

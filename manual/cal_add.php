@@ -51,4 +51,3 @@ Simply fill in the fields, and click Submit.
 Readable.
 <p>
 <?php $phpgw->common->phpgw_footer(); ?>
-

@@ -30,4 +30,3 @@ of people you want to email to, easy.  Point and click.
 <br><li>Muliple addressee's or cc addresses should be seperated with a comma.
 <br><li>Add attachment function is available in all stages of sending,composing,forwarding mail.
 <?php $phpgw->common->phpgw_footer(); ?>
-

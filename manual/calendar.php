@@ -70,4 +70,3 @@ Chose edit or delete from the bottom of the page.
 <p>
 </ul>
 <?php $phpgw->common->phpgw_footer(); ?>
-

@@ -36,4 +36,3 @@ into and the email will be saved  into that folder.
 <br>Click the small box on the left of the screen, next to the message you want to delete. A tick will appear in
 the box, then scroll down to the bottom of the screen, click on delete. The mail will then be deleted.
 <?php $phpgw->common->phpgw_footer(); ?>
-

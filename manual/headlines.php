@@ -27,4 +27,3 @@ profiles setting option in preferences.
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/headlinesscreen.gif"  border=0>
 <br>ScreenShot
 <?php $phpgw->common->phpgw_footer(); ?>
-

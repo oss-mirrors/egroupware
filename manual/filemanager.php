@@ -66,4 +66,3 @@ you want rename, a new box will appear at the top of the screen.
 Click on yes, and the file will be deleted.
 <p>
 <?php $phpgw->common->phpgw_footer(); ?>
-

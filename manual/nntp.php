@@ -19,4 +19,3 @@
 <p>
 The news
 <?php $phpgw->common->phpgw_footer(); ?>
-

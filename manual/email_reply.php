@@ -43,4 +43,3 @@ To send email to an address not in the address book, type the address in the fie
 to send a copy to another email address, type in the field marked CC:, add a subject in 
 the subject line, type the body of the large text field, then click on the send button.
 <?php $phpgw->common->phpgw_footer(); ?>
-
