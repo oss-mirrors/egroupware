@@ -16,6 +16,7 @@
 	$setup_info['ftp']['title']     = 'FTP';
 	$setup_info['ftp']['version']   = '0.8.1';
 	$setup_info['ftp']['app_order'] = 25;
+	$setup_info['ftp']['enable']    = 1;
 
 	/* Dependencies for this app to work */
 	$setup_info['ftp']['depends'][] = array(

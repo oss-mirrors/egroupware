@@ -16,6 +16,7 @@
 	$setup_info['forum']['title']     = 'forum';
 	$setup_info['forum']['version']   = '0.8.1';
 	$setup_info['forum']['app_order'] = 4;
+	$setup_info['forum']['enable']    = 1;
 
 	/* The tables this app creates */
 	$setup_info['forum']['tables']    = array(
@@ -25,6 +26,7 @@
 		'f_threads'
 	);
 
+	$setup_info['forum']['hooks'][]   = array('admin');
 	/* Dependencies for this app to work */
 	$setup_info['forum']['depends'][] = array(
 		 'appname' => 'phpgwapi',
