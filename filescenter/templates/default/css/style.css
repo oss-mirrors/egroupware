@@ -1,0 +1,656 @@
+.cal_todos{
+	background-color: #f1f1f1;
+	border: 1px solid #666666;
+	border-top: 0;
+
+}
+a.todo:visited, a.todo:link, a.todo:active {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        color: #000000;		
+}
+a.todo:hover{
+	color:  #900;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+a.todo_completed:visited, a.todo_completed:link, a.todo_completed:active {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        color: #000000;	
+        text-decoration: line-through;
+}
+a.todo_completed:hover{
+	color:  #900;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+a.todo_late:visited, a.todo_late:link, a.todo_late:active {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        color: red;	
+}
+a.todo_late:hover{
+	color:  black;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.ModuleIcons {
+	padding: 2px;
+	margin:0px; 
+	padding-right: 15px;
+	font-size: 10px;
+	text-align: center;
+}
+
+a.ActiveModuleIcon:link, a.ActiveModuleIcon:visited, a.ActiveModuleIcon:active {
+
+}
+
+.FooterBar {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	background-color: #F7FBF7;
+	padding:	0;
+	border-top: 1px solid black;
+	text-align: right;
+}
+
+a.FooterBar:link, a.FooterBar:visited, a.FooterBar:active {
+	color: #000000;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	border: 0;
+	padding: 2px;
+}
+
+a.FooterBar:hover {
+	color: #00AAD6;
+	text-decoration: none;
+}
+
+.HeaderBar {
+	font-family:	arial, verdana, sans-serif;
+	font-size:	12px;
+	font-weight: normal;
+	background-color: #F7FBF7;
+	padding:	0;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	height: 22px;
+	text-align: right;
+}
+
+a.HeaderBar:link, a.HeaderBar:visited, a.HeaderBar:active {
+	color: #000000;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	border: 0;
+	padding: 2px;
+	padding-right: 10px;
+}
+
+a.HeaderBar:hover {
+	color: #00AAD6;
+	text-decoration: underline;
+}
+
+#tabtable
+{
+	border: 1px solid #666666;
+	background-color: #F6F7F2;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+}
+
+#tabtable th {
+        background-color: #01619B;
+        font-size: 14px;
+	padding: 2px;
+        font-weight: bold;
+        color: #FFFFFF;
+        border: 0px;
+        border-bottom: 1px solid #666666;
+        text-align: left;
+}
+
+.ActiveTab{
+	background-color: #CCCCCC;
+	border-right: 1px solid #666666;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	color: #000000;
+	text-align: center;
+
+}
+
+.Tab {	
+	background-color: #FFF7EB;
+	border-right: 1px solid #666666;
+	text-align: center;
+}
+
+
+a.Tab:link, a.Tab:visited, a.Tab:active {
+	color: #000000;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	border: 0;
+	text-align: center;
+
+}
+.TabBackground {
+	background-color: #FFF7EB;
+        border-bottom: 1px solid #666666;	
+}
+.ActiveTabVert{
+	background-color: #CCCCCC;
+	border-bottom: 1px solid #666666;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	color: #000000;
+	padding: 2px;
+
+}
+
+.TabVert {	
+	background-color: #FFF7EB;
+	border-bottom: 1px solid #666666;
+	padding: 2px;
+}
+a.TabVert:link, a.TabVert:visited, a.TabVert:active {
+	color: #000000;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	border: 0;
+
+}
+.TabBackgroundVert {
+	background-color: #FFF7EB;
+	border-right: 1px solid #666666;
+}
+
+
+.alert{
+	padding: 5px;
+	margin: 5px;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10px;
+	background-color: #ffffff;
+	border: 1px solid #666666;
+}
+.alert a {
+	font-decoration: underline;
+}
+
+.alert td {
+	padding: 5px;
+}
+#cal{
+	border: 1px solid #666666;
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+}
+#cal td {
+	vertical-align: top;
+	border-collapse: collapse;
+	border: 1px solid #666666;
+	margin: 0px;
+	padding: 0px;
+	vertical-align: top;
+}
+.cal_title{
+	background-color: #01619B;
+	color: #ffffff;
+	padding: 4px !important;
+	font-weight: bold;
+	font-size: 14px;
+}
+#cal th {
+	vertical-align: top;
+	border-collapse: collapse;
+	border: 1px solid #666666;
+	padding: 0px;
+	margin: 5px;
+	vertical-align: top;
+	background-color: #FFF7EB;
+	color: black;
+	text-align: center;
+	font-weight: normal;
+}
+
+#cal_event{
+	border-collapse: collapse;
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+	vertical-align: top;
+}
+
+#cal_event td{
+	border: 0px;
+	padding: 2px;
+	margin: 0px;
+	vertical-align: top;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10px;
+}
+
+#cal_all_day_events{
+	background-color: #FFFFCC;
+}
+
+.cal_hour {
+	background-color: #f1f1f1;
+	padding: 2px;
+	font-size: 10px;
+}
+
+.calendar_event_link {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+}
+ 
+body {
+	background-color: #ffffff;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+
+table {
+
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        color: #000000;
+	margin: 0;
+}
+
+h1{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 16px;
+        color: #000000;
+	font-weight: bold;
+	margin: 0px;
+	margin-bottom: 12px;
+	
+}
+
+h2{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14px;
+        font-weight: bold;
+        color: #000000;
+	margin: 0px;
+	margin-bottom: 5px;
+}
+
+h3{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        font-weight: bold;
+        color: #000000;
+	margin: 0px;
+}
+
+a:link, a:visited, a:active  {
+    text-decoration:    none;
+    color:  #000000;
+}
+
+a:hover {
+    text-decoration:    none;
+    color:  #00AAD6;
+}
+
+td.f{
+	background-color: #FFFFFF;
+}
+
+
+.Header {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 18px;
+        color: #18425b;
+	font-weight: bold;
+	font-style: italic;
+	background-color: #E6EFF4;
+}
+
+
+.TableHead{
+        background-color: #01619B;
+        font-size: 14px;
+	padding: 2px;
+        font-weight: bold;
+        color: #FFFFFF;
+}
+
+.TableHead2{
+        background-color: #01619B;
+        font-size: 12px;
+		padding: 2px;
+        font-weight: bold;
+        color: #FFFFFF;
+}
+
+a.TableHead2:link, a.TableHead2:visited, a.TableHead2:active {
+        font-size: 12px;
+	padding: 2px;
+        font-weight: bold;
+        color: #FFFFFF;
+}
+a.TableHead2:hover{
+	text-decoration: underline;
+}
+
+.TableBorder{
+        background-color: #666666;
+        font-size: 12px;
+        font-weight: bold;
+        color: #FFFFFF;
+}
+
+.TableInside{
+        background-color: #F6F7F2;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #000000;
+	cursor: default;
+	padding-left: 2px;
+	padding-right: 2px;
+
+}
+
+.Table1{
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #000000;
+		padding-left: 2px;
+		padding-right: 2px;
+		border-bottom-width : 1px; 
+        border-bottom-style : solid;
+        border-bottom-color : #333333;
+
+}
+.Table2{
+        background-color: #FFFFCC;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #000000;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.Table3{
+        background-color: #ccffff;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #000000;
+	padding-left: 2px;
+	padding-right: 2px;
+
+}
+
+.Table4{
+        background-color: #e6eff4;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        color: #000000;
+	cursor: default;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.Table5{
+        font-family: arial, helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        color: #000000;
+	cursor: default;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+
+.TableInside1{
+	background-color: white;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: normal;
+        color: #000000;
+	cursor: default;
+	padding-left: 2px;
+	padding-right: 2px;
+
+}
+.TableInside2{
+        background-color: #e6eff4;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: normal;
+        color: #000000;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.TableInside3{
+        background-color: #ccffff;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: normal;
+        color: #000000;
+	cursor: default;
+	padding-left: 2px;
+	padding-right: 2px;
+
+}
+
+.TableInside4{
+        background-color: #FFFFCC;
+        font-family: arial, helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: normal;
+        color: #000000;
+	cursor: default;
+	padding: 0px;
+}
+
+.Error {
+	font-size: 12px;
+        color: red;
+	font-weight: bold;
+}
+a.Error:link, a.Error:visited, a.Error:active{
+	font-size: 12px;
+	color: red;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.Success {
+	font-size: 12px;
+        color: #01619B;
+	font-weight: bold;
+}
+.normal
+{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+        color: #000000;
+}
+a.normal:link, a.normal:visited, a.normal:active
+{
+	text-decoration: underline;
+}
+a.normal:hover {
+    text-decoration:    none;
+    color:  #FF9900;
+}
+
+.normal2 {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10px;
+        color: #FFFFCC;
+}
+
+.blue
+{
+        color: blue;
+}
+
+a.blue:link, a.blue:visited, a.blue:active
+{
+	text-decoration: underline;
+	color: blue;
+}
+a.blue:hover {
+    text-decoration:    none;
+    color:  red;
+}
+
+a.HoverLink, a.HoverLink:visited, a.HoverLink:active {
+  background-color: #FFF7EB;
+  color: #000000;
+  display: block;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  white-space: nowrap;
+  height: 100%;
+  width: 100%;
+
+}
+
+a.HoverLinkSelected, a.HoverLinkSelected:visited, a.HoverLinkSelected:active {
+  background-color: #666666;
+  color: #ffffff;
+  display: block;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  white-space: nowrap;
+  height: 100%;
+  width: 100%;
+
+}
+
+a.HoverLink:hover, a.HoverLinkSelected:hover {
+  background-color: #cccccc;
+  color: #000000;
+  text-decoration: none;
+}
+
+a.Holiday, a.Holiday:visited, a.Holiday:active {
+  background-color: #84CBFF;
+  color: #000000;
+  display: block;
+  font-family: arial, helvetica, sans-serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0px;
+  padding: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+
+}
+
+
+.textbox{
+	background-color: #FFF7EB;
+	border-style: solid;
+	
+        border-left-color: #cccccc;
+	border-bottom-color: #cccccc;
+        border-top-color: #cccccc;
+	border-right-color: #cccccc;
+
+        border-left-width: 1px;
+	border-bottom-width: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+
+.button{
+	background-color: #006699;
+	border-style: solid;
+	
+        border-color: #666666;
+
+        border-width: 1px;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+	color: #ffffff;
+}
+.button_mo{
+	background-color: #E27B1E;
+	border-style: solid;
+	
+        border-color: #e6eff4;
+
+        border-width: 1px;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+	color: #ffffff;
+}
+
+.go_small{
+        font-family: arial, helvetica, sans-serif;
+        font-size: 10px;
+        font-weight: italic;
+}
+
+a.small_underline, a.small_underline:visited, a.small_underline:active{
+        font-family: arial, helvetica, sans-serif;
+        font-size: 10px;	
+	text-decoration: underline;
+}
+
+.count{
+        font-family: arial, helvetica, sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        color: blue;
+}
+

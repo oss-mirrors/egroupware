@@ -1,0 +1,280 @@
+<!-- BEGIN dhtml_externals -->
+<script language="javascript" type="text/javascript" src="{fm2_js_dir}/common.js"></script>
+<link href="{fm2_css_dir}/style.css" rel="stylesheet" type="text/css">
+<link href="{fm2_css_dir}/htmlarea.css" rel="stylesheet" type="text/css">
+<link href="{fm2_css_dir}/calendar.css" type="text/css" rel="stylesheet">
+<!-- END dhtml_externals -->
+
+  <div id="overDiv" style=
+  "position: absolute; visibility: hidden; z-index: 1000;"></div>
+  <!--Einde header-->
+
+  <form name="filesystem" method="post" action="{fm2_formaction}" enctype="multipart/form-data" id="filesystem">
+    <input name="path" value="{fm2_path}" type="hidden">
+	<input name="return_to_path" value="{fm2_returntopath}" type="hidden">
+	<input name="share_path" type="hidden">
+
+    <h1>{fm2_lang_path}: {fm2_path}</h1><input name="task" type=
+    "hidden">
+
+    <table border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+		  <!-- BEGIN module_icons -->
+          <td class="ModuleIcons"><a class="small" href="{fm2_icon_link}"><img src="{fm2_icon_imgsrc}" border="0" height="32" width="32"><br>{fm2_lang_icon_imgalias}</a></td>
+		  <!-- END module_icons -->
+        </tr>
+      </tbody>
+    </table>
+
+    <table border="0" width="100%">
+      <tbody>
+        <tr>
+          <td style="padding-right: 25px;" nowrap="nowrap" valign="top">
+		  {fm2_tree_path}
+		  
+		  <a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin">
+          <img src="index.php_files/workstation.png" align="middle"
+          border="0" height="22" width="20">home</a><br>
+          <a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;expand_path=%2Fpublic%2Fgroupoffice%2Fadmin">
+          <img src="index.php_files/mlastnode.gif" align="middle"
+          border="0" height="22" width="16"></a><a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin"
+          title="admin"><img src="index.php_files/folderclosed.png"
+          align="middle" border="0" height="22" width=
+          "24">admin</a><br>
+          <a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;expand_path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius">
+          <img src="index.php_files/blank.gif" align="middle"
+          border="0" height="22" width="16"><img src=
+          "index.php_files/mlastnode.gif" align="middle" border="0"
+          height="22" width="16"></a><a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius"
+          title="vinicius"><img src=
+          "index.php_files/shared_folder_closed.png" align="middle"
+          border="0" height="22" width="24">vinicius</a><br>
+          <a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;expand_path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah">
+          <img src="index.php_files/blank.gif" align="middle"
+          border="0" height="22" width="16"><img src=
+          "index.php_files/blank.gif" align="middle" border="0"
+          height="22" width="16"><img src=
+          "index.php_files/emptylastnode.gif" align="middle"
+          border="0" height="22" width="16"></a><a href=
+          "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah"
+          title="blah"><img src=
+          "index.php_files/shared_folder_open.png" align="middle"
+          border="0" height="22" width="24">blah</a><br></td>
+
+          <td valign="top" width="100%">
+            <table border="0" cellpadding="0" cellspacing="0"
+            width="100%">
+              <tbody>
+                <tr>
+                  <td class="TableHead2" width="16"><input onclick=
+                  "javascript:invert_selection()" name="dummy"
+                  type="checkbox"></td>
+
+                  <td class="TableHead2" nowrap="nowrap"><a class=
+                  "TableHead2" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;new_sort_field=basename&amp;new_sort_order=ASC">
+                  Nome</a>&nbsp;<img src=
+                  "index.php_files/arrow_down.gif" border="0"></td>
+
+                  <td class="TableHead2" nowrap="nowrap"><a class=
+                  "TableHead2" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;new_sort_field=filemimefriendly&amp;new_sort_order=ASC">
+                  Tipo</a></td>
+
+                  <td class="TableHead2" align="right" nowrap=
+                  "nowrap"><a class="TableHead2" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;new_sort_field=filesize&amp;new_sort_order=ASC">
+                  Tamanho</a></td>
+
+                  <td class="TableHead2" nowrap="nowrap"><a class=
+                  "TableHead2" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/index.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah&amp;new_sort_field=filemtime&amp;new_sort_order=ASC">
+                  Modificado</a></td>
+                </tr>
+
+                <tr id=
+                "/public/groupoffice/admin/vinicius/blah/Group-Office_manual_English.pdf"
+                class="Table1">
+                  <td><input onclick="javascript:item_click(this)"
+                  name="files[]" value=
+                  "/public/groupoffice/admin/vinicius/blah/Group-Office_manual_English.pdf"
+                  type="checkbox"></td>
+
+                  <td nowrap="nowrap"><a target="_self" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/download.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah%2FGroup-Office_manual_English.pdf"
+                  title="Group-Office_manual_English.pdf"><img src=
+                  "index.php_files/icon.gif" align="middle" border=
+                  "0" height="16" width=
+                  "16">&nbsp;Group-Office_manual_English</a></td>
+
+                  <td nowrap="nowrap">PDF document&nbsp;&nbsp;</td>
+
+                  <td align="right" nowrap="nowrap">108,6
+                  KB&nbsp;&nbsp;</td>
+
+                  <td nowrap="nowrap">30-07-2004
+                  16:08&nbsp;&nbsp;</td>
+                </tr>
+
+                <tr>
+                  <td colspan="99" height="1"><img src=
+                  "index.php_files/cccccc.gif" border="0" height=
+                  "1" width="100%"></td>
+                </tr>
+
+                <tr id=
+                "/public/groupoffice/admin/vinicius/blah/GO-Manual-Nederlands-1.93.pdf"
+                class="Table1">
+                  <td><input onclick="javascript:item_click(this)"
+                  name="files[]" value=
+                  "/public/groupoffice/admin/vinicius/blah/GO-Manual-Nederlands-1.93.pdf"
+                  type="checkbox"></td>
+
+                  <td nowrap="nowrap"><a target="_self" href=
+                  "http://127.0.0.1/groupoffice-com-2.05/modules/filesystem/download.php?path=%2Fpublic%2Fgroupoffice%2Fadmin%2Fvinicius%2Fblah%2FGO-Manual-Nederlands-1.93.pdf"
+                  title="GO-Manual-Nederlands-1.93.pdf"><img src=
+                  "index.php_files/icon.gif" align="middle" border=
+                  "0" height="16" width=
+                  "16">&nbsp;GO-Manual-Nederlands-1.93</a></td>
+
+                  <td nowrap="nowrap">PDF document&nbsp;&nbsp;</td>
+
+                  <td align="right" nowrap="nowrap">173,7
+                  KB&nbsp;&nbsp;</td>
+
+                  <td nowrap="nowrap">02-08-2004
+                  16:36&nbsp;&nbsp;</td>
+                </tr>
+
+                <tr>
+                  <td colspan="99" height="1"><img src=
+                  "index.php_files/cccccc.gif" border="0" height=
+                  "1" width="100%"></td>
+                </tr>
+
+                <tr>
+                  <td colspan="99" class="small" height="18">
+                  &nbsp;2
+                  Item(s)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tamanho da
+                  pasta: 282,3 KB</td>
+                </tr>
+
+                <tr>
+                  <td colspan="99" height="1"><img src=
+                  "index.php_files/cccccc.gif" border="0" height=
+                  "1" width="100%"></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><script type="text/javascript" language="javascript"
+    src="index.php_files/filesystem.js">
+</script> <script type="text/javascript" language="javascript">
+
+function submit_to_handler()
+{
+      document.forms[0].task.value = 'GO_HANDLER';
+  document.forms[0].action = "download.php";
+  document.forms[0].submit();
+}
+
+function delete_items()
+{
+  var count = 0;
+  var filename = new String;
+  var path = new String;
+
+  for (var i=0;i<document.forms[0].elements.length;i++)
+  {
+    if(document.forms[0].elements[i].type == 'checkbox' && document.forms[0].elements[i].name != 'dummy')
+    {
+      if (document.forms[0].elements[i].checked == true)
+      {
+        count++;
+        path = document.forms[0].elements[i].value;
+        filename = path.substring(path.lastIndexOf('/')+1, path.length);
+      }
+    }
+  }
+  switch (count)
+  {
+    case 0:
+      alert("Você não selecionou nenhum item. Clique no ícone próximo ao nome para selecionar um item.");
+      break;
+
+    case 1:
+      if (confirm("Tem certeza que deseja excluir '"+filename+"'?"))
+      {
+        document.forms[0].task.value = 'delete';
+        document.forms[0].submit();
+      }
+      break;
+
+    default:
+      if (confirm("Tem certeza que deseja excluir Isto "+count+" Items?"))
+      {
+        document.forms[0].task.value = 'delete';
+        document.forms[0].submit();
+      }
+      break;
+  }
+}
+
+function create_archive()
+{
+  var count = 0;
+
+  for (var i=0;i<document.forms[0].elements.length;i++)
+  {
+    if(document.forms[0].elements[i].type == 'checkbox' && document.forms[0].elements[i].name != 'dummy')
+    {
+      if (document.forms[0].elements[i].checked == true)
+      {
+        count++;
+      }
+    }
+  }
+  if (count == 0)
+  {
+    alert("Você não selecionou nenhum item. Clique no ícone próximo ao nome para selecionar um item.");
+  }else
+  {
+    document.forms[0].task.value = 'create_archive';
+    document.forms[0].submit();
+  }
+}
+
+function extract()
+{
+  var count = 0;
+
+  for (var i=0;i<document.forms[0].elements.length;i++)
+  {
+    if(document.forms[0].elements[i].type == 'checkbox' && document.forms[0].elements[i].name != 'dummy')
+    {
+      if (document.forms[0].elements[i].checked == true)
+      {
+        count++;
+      }
+    }
+  }
+  if (count == 0)
+  {
+    alert("Você não selecionou nenhum item. Clique no ícone próximo ao nome para selecionar um item.");
+  }else
+  {
+    document.forms[0].task.value = 'extract';
+    document.forms[0].submit();
+  }
+}
+</script>
+  </form>
