@@ -35,16 +35,36 @@
 	$bldap = '{bldap}';
 	$bemail = '{bemail}';
 
-	$tar = '/bin/tar';
+	$bzip2 = '/usr/bin/bzip2';
 
+	$bcomp = '{bcomp}';
+
+	switch ($bcomp)
+	{
+		case 'tgz': $end = 'tar.gz'; break;
+		case 'tar.bz2': $end = 'tar'; break;
+		case 'zip': $end = 'zip'; break;
+	}
+
+	switch ($bcomp)
+	{
+		case 'tgz': $command = '/bin/tar -czf '; break;
+		case 'tar.bz2': $command = '/bin/tar -cf '; break;
+		case 'zip': $command = '/usr/bin/zip -rq9 '; break;
+	}
 
 	if ($bmysql == 'yes')
 	{
 		chdir('/var/lib/mysql');
-		$out = '{server_root}/backup/' . $bdateout . '_backup_{db_type}.tar.gz';
+		$out = '{server_root}/backup/' . $bdateout . '_backup_{db_type}.' . $end;
 		$in = ' {db_name}';
 
-		system("$tar -czf " . $out . $in);
+		system("$command" . $out . $in);
+
+		if ($bcomp == 'tar.bz2')
+		{
+			system("$bzip2 -z " . $out); 
+		}
 	}
 
 	if ($bemail == 'yes')
@@ -53,9 +73,14 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out = '{server_root}/backup/' . $bdateout . '_backup_email_{lid}.tar.gz';
-			$in = ' Mail';
-			system("$tar -czf " . $out . $in);
+			$out = '{server_root}/backup/' . $bdateout . '_backup_email_{lid}.' . $end;
+			$in = ' Maildir';
+			system("$command" . $out . $in);
+
+			if ($bcomp == 'tar.bz2')
+			{
+				system("$bzip2 -z " . $out); 
+			}
 		}
 <!-- END script_ba -->
 	}

@@ -197,7 +197,7 @@
 			$co['db_type'] = $GLOBALS['phpgw_info']['server']['db_type'];
 			$co['db_name'] = $GLOBALS['phpgw_info']['server']['db_name'];
 			$co['server_root'] = PHPGW_SERVER_ROOT;
-
+				
 // ------------------------------------ check -----------------------------------------------
 
 			$check_exists = $co['server_root'] . '/backup/phpgw_check_for_backup';
@@ -227,6 +227,8 @@
 			$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
 
 			$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+
+			$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
 
 			if ($co['b_sql'] == 'yes')
 			{
