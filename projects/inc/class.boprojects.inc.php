@@ -232,7 +232,7 @@
 			$profileID 	= 1;
 
 			$template	= CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
-			$bocalendar	= CreateObject('appointmentcenter.bocalendar');
+			$bocalendar	= CreateObject('calendar.bocalendar');
 			$bolink		= CreateObject('infolog.bolink');
 			
 			// find all calendar entries for event participants
