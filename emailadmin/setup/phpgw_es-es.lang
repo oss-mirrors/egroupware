@@ -1,0 +1,69 @@
+add profile	emailadmin	es	Añadir perfil
+admin dn	emailadmin	es	dn del administrador
+admin password	emailadmin	es	contraseña del administrador
+admin passwort	emailadmin	es	contraseña del administrador
+admin username	emailadmin	es	usuario del administrador
+advanced options	emailadmin	es	opciones avanzadas
+alternate email address	emailadmin	es	dirección de correo alternativa
+cyrus imap server	emailadmin	es	Servidor IMAP Cyrus
+cyrus imap server administration	emailadmin	es	Administración del servidor IMAP Cyrus
+default	emailadmin	es	predeterminada
+deliver extern	emailadmin	es	entrega externa
+do you really want to delete this profile	emailadmin	es	¿Realmente desea borrar este perfil?
+domainname	emailadmin	es	nombre del dominio
+edit email settings	emailadmin	es	editar configuración de la cuenta
+email account active	emailadmin	es	cuenta de correo electrónico activa
+email address	emailadmin	es	dirección de correo electrónico
+enable cyrus imap server administration	emailadmin	es	activar administración del servidor Cyrus IMAP
+enable sieve	emailadmin	es	activar Sieve
+enter your default mail domain (from: user@domain)	emailadmin	es	introduzca el dominio predeterminado (de usuario@dominio)
+forward also to	emailadmin	es	reeenviar también a
+forward email's to	emailadmin	es	reenviar correos a
+forward only	emailadmin	es	sólo reenviar
+imap admin password	admin	es	contraseña del administrador IMAP
+imap admin user	admin	es	usuario administrador IMAP
+imap c-client version < 2001	emailadmin	es	Versión C-Cliente IMAP < 2001
+imap server hostname or ip address	emailadmin	es	Servidor IMAP o dirección IP
+imap server logintyp	emailadmin	es	Tipo de sesión del servidor IMAP
+imap server port	emailadmin	es	Puerto del servidor IMAP
+imap/pop3 server name	emailadmin	es	Nombre del servidor POP/IMAP
+in mbyte	emailadmin	es	en MBytes
+ldap basedn	emailadmin	es	basedn para LDAP
+ldap server	emailadmin	es	servidor LDAP
+ldap server accounts dn	emailadmin	es	DN para cuentas del servidor LDAP
+ldap server admin dn	emailadmin	es	DN del administrador del servidor LDAP
+ldap server admin password	emailadmin	es	contraseña del administrador del servidor LDAP
+ldap server hostname or ip address	emailadmin	es	Nombre del servidor LDAP o dirección IP
+ldap settings	emailadmin	es	Configuración LDAP
+leave empty for no quota	emailadmin	es	Dejar en blanco para no poner cuota
+mail settings	admin	es	Configuración del correo.
+name of organisation	emailadmin	es	Nombre de la organización
+no alternate email address	emailadmin	es	Sin dirección de correo alternativa
+no forwarding email address	emailadmin	es	Sin dirección de correo para reenviar
+pop3 server hostname or ip address	emailadmin	es	Nombre del servidor POP3 o dirección IP
+pop3 server port	emailadmin	es	Puerto del servidor POP3
+postfix with ldap	emailadmin	es	Postfix con LDAP
+profile list	emailadmin	es	Lista de perfiles
+profile name	emailadmin	es	Nombre del perfil
+qmaildotmode	emailadmin	es	Modo de punto de qmail
+qouta size in mbyte	emailadmin	es	Tamaño de la cuota en MBytes
+quota settings	emailadmin	es	Configuración de las cuotas
+remove	emailadmin	es	borrar
+select type of imap/pop3 server	emailadmin	es	Seleccione el tipo de servidor IMAP/POP3
+select type of smtp server	emailadmin	es	Seleccione el tipo de servidor SMTP
+sieve server hostname or ip address	emailadmin	es	Nombre del servidor Sieve o dirección IP
+sieve server port	emailadmin	es	Puerto del servidor Sieve
+sieve settings	emailadmin	es	Configuración de Sieve
+smtp server name	emailadmin	es	Nombre del servidor SMTP
+smtp-server hostname or ip address	emailadmin	es	Nombre del servidor SMTP o dirección IP
+smtp-server port	emailadmin	es	Puerto del servidor SMTP
+standard	emailadmin	es	Estándar
+standard imap server	emailadmin	es	Servidor IMAP estándar
+standard pop3 server	emailadmin	es	Servidor POP3 estándar
+standard smtp-server	emailadmin	es	Servidor SMTP estándar
+use ldap defaults	emailadmin	es	usar las opciones predeterminadas para LDAP
+use smtp auth	emailadmin	es	Usar identificación SMTP
+use tls authentication	emailadmin	es	Usar identificación TLS
+use tls encryption	emailadmin	es	Usar cifrado TLS
+users can define their own emailaccounts	emailadmin	es	Los usuarios pueden definir sus propias cuentas de correo
+virtual mail manager	emailadmin	es	Gestor de correo virtual

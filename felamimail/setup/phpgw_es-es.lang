@@ -1,0 +1,363 @@
+(no subject)	felamimail	es	(Sin asunto)
+(only cc/bcc)	felamimail	es	(sólo Cc/Cco)
+(unknown sender)	felamimail	es	(remitente desconocido)
+activate	felamimail	es	Activar
+activate script	felamimail	es	sctivar script
+add	felamimail	es	añadir
+add address	felamimail	es	Añadir dirección
+add rule	felamimail	es	Añadir regla
+add script	felamimail	es	Añadir script
+add to %1	felamimail	es	Añadir a %1
+add to address book	felamimail	es	Añadir a la libreta de direcciones
+add to addressbook	felamimail	es	Añadir a la libreta de direcciones
+additional info	felamimail	es	Información adicional
+address book	felamimail	es	Libreta de direcciones
+address book search	felamimail	es	Buscar en la libreta de direcciones
+after message body	felamimail	es	Después del cuerpo del mensaje
+all address books	felamimail	es	Todas las libretas de direcciones
+all folders	felamimail	es	Todas las carpetas
+always show html emails	felamimail	es	Mostrar siempre los correos HTML
+anyone	felamimail	es	cualquiera
+as a subfolder of	felamimail	es	como una subcarpeta de
+attachments	felamimail	es	Adjuntos
+auto refresh folder list	felamimail	es	Refrescar automáticamente la lista de carpetas
+back to folder	felamimail	es	Volver a la carpeta
+bad reque	felamimail	es	Petición errónea
+based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	es	Basado en los criterios dados, los mensajes que lleguen pueden tener distintos colores de fondo en la lista de mensajes. Esto ayuda a distinguir fácilmente de quién son los mensajes, espcialmente para listas de correo.
+bcc	felamimail	es	Cco
+before headers	felamimail	es	Antes de las cabeceras
+between headers and message body	felamimail	es	Entre las cabeceras y el cuerpo del mensaje
+body part	felamimail	es	Parte del cuerpo
+cc	felamimail	es	Cc
+change folder	felamimail	es	Cambiar carpeta
+checkbox	felamimail	es	Casilla
+click here to log back in.	felamimail	es	Pulse aquí para volver a iniciar sesión
+click here to return to %1	felamimail	es	Pulse aquí para volver a %1
+close this page	felamimail	es	cerrar esta página
+close window	felamimail	es	Cerrar ventana
+color	felamimail	es	Color
+compose	felamimail	es	Redactar
+compress folder	felamimail	es	Comprimir carpeta
+configuration	felamimail	es	Configuración
+contains	felamimail	es	contiene
+create	felamimail	es	Crear
+create folder	felamimail	es	Crear carpeta
+create sent	felamimail	es	Crear carpeta de enviados
+create subfolder	felamimail	es	Crear subcarpeta
+create trash	felamimail	es	Crear Papelera
+created folder successfully!	felamimail	es	La carpeta se ha creado correctamente
+dark blue	felamimail	es	Azul oscuro
+dark cyan	felamimail	es	Cyan oscuro
+dark gray	felamimail	es	Gris oscuro
+dark green	felamimail	es	Verde oscuro
+dark magenta	felamimail	es	Violeta oscuro
+dark yellow	felamimail	es	Amarillo oscuro
+date	felamimail	es	Fecha
+date(newest first)	felamimail	es	Fecha (la más reciente primero)
+date(oldest first)	felamimail	es	Fecha (la más antigua primero)
+deactivate script	felamimail	es	desactivar script
+default sorting order	felamimail	es	Modo de ordenar predeterminado
+delete	felamimail	es	Borrar
+delete all	felamimail	es	Borrar todos
+delete folder	felamimail	es	Borrar carpeta
+delete selected	felamimail	es	Borrar la selección
+delete selected messages	felamimail	es	Borrar mensajes seleccionados
+deleted	felamimail	es	Borrado
+deleted folder successfully!	felamimail	es	Carpeta borrada correctamente
+disable	felamimail	es	Deshabilitar
+display message in new window	felamimail	es	Mostrar el mensaje en una ventana nueva
+display of html emails	felamimail	es	Mostrar los mensajes HTML
+display only when no plain text is available	felamimail	es	Mostrar sólo cuando no hay texto simple disponible
+display preferences	felamimail	es	Preferencias de visualización
+do it!	felamimail	es	¡Hacerlo!
+do not use sent	felamimail	es	No usar Enviados
+do not use trash	felamimail	es	No usar Papelera
+do you really want to delete the '%1' folder?	felamimail	es	¿Realmente quiere borrar la carpeta '%1'?
+do you really want to delete the \'%1\' folder?	felamimail	es	¿Realmente quiere borrar la carpeta '%1'?
+does not contain	felamimail	es	No contiene
+does not match	felamimail	es	No coincide con
+does not match regexp	felamimail	es	No coincide con la expresión
+don't use sent	felamimail	es	No usar Enviados
+don't use trash	felamimail	es	No usar Papelera
+don\'t use sent	felamimail	es	No usar Enviados
+don\'t use trash	felamimail	es	No usar Papelera
+done	felamimail	es	Hecho
+down	felamimail	es	abajo
+download	felamimail	es	descargar
+download this as a file	felamimail	es	Descargar esto como un fichero
+e-mail	felamimail	es	Correo electrónico
+e-mail address	felamimail	es	Dirección de correo electrónico
+e-mail folders	felamimail	es	Carpetas de correo electrónico
+edit	felamimail	es	Editar
+edit filter	felamimail	es	Editar filtro
+edit rule	felamimail	es	Añadir regla
+edit selected	felamimail	es	Editar selección
+email address	felamimail	es	Dirección de correo electrónico
+email signature	felamimail	es	Firma de correo
+empty trash	felamimail	es	Vaciar papelera
+enable	felamimail	es	Habilitar
+enter your default mail domain ( from: user@domain )	admin	es	Introduzca su dominio de correo predeterminado (de usuario@dominio)
+enter your imap mail server hostname or ip address	admin	es	Introduzca el nombre del servidor de correo IMAP o la dirección IP
+enter your sieve server hostname or ip address	admin	es	Introduzca el nombre del servidor SIEVE o la dirección IP
+enter your sieve server port	admin	es	Introduzca el puerto del servidor SIEVE
+enter your smtp server hostname or ip address	admin	es	ntroduzca el nombre del servidor SIEVE o la dirección IP
+enter your smtp server port	admin	es	Introduzca el el puerto del servidor smtp
+erro	felamimail	es	ERROR
+error	felamimail	es	ERROR
+error connecting to imap serv	felamimail	es	Error al conectar al servidor IMAP
+error opening	felamimail	es	Error al abrir
+expunge	felamimail	es	Suprimir
+felamimail	common	es	FelaMiMail
+file into	felamimail	es	Información del fichero
+files	felamimail	es	Ficheros
+filter active	felamimail	es	Filtro activo
+filter name	felamimail	es	Nombre del filtro
+first name	felamimail	es	Nombre de pila
+flagged	felamimail	es	marcado
+flags	felamimail	es	Marcas
+folder acl	felamimail	es	ACL de la carpeta
+folder name	felamimail	es	Nombre de la carpeta
+folder path	felamimail	es	Ruta de la carpeta
+folder preferences	felamimail	es	Preferencias de la carpeta
+folder settings	felamimail	es	Opciones de la carpeta
+folder status	felamimail	es	Estado de la carpeta
+folderlist	felamimail	es	Lista de carpetas
+folders	felamimail	es	Carpetas
+folders created successfully!	felamimail	es	Las carpetas se han creado correctamente
+follow	felamimail	es	seguir
+for mail to be send - not functional yet	felamimail	es	Para el correo pendiente de enviar - todavía no funciona
+for received mail	felamimail	es	Para el correo recibido
+forward	felamimail	es	Reenviar
+found	felamimail	es	Encontrado
+from	felamimail	es	De
+from(a->z)	felamimail	es	De (A-> Z)
+from(z->a)	felamimail	es	De (Z-> A)
+full name	felamimail	es	Nombre completo
+help	felamimail	es	Ayuda
+hide header	felamimail	es	Ocultar cabecera
+html	felamimail	es	HTML
+icons and text	felamimail	es	Iconos y texto
+icons only	felamimail	es	Sólo iconos
+identifying name	felamimail	es	Nombre identificativo
+illegal folder name.  please select a different name.	felamimail	es	Nombre de carpeta ilegal. Por favor, seleccione un nombre distinto
+imap	felamimail	es	IMAP
+imap server	felamimail	es	Servidor IMAP
+imap server address	felamimail	es	Dirección del servidor IMAP
+imap server type	felamimail	es	Tipo de servidor IMAP
+imaps authentication	felamimail	es	Identificación IMAPS
+imaps encryption only	felamimail	es	Cifrado IMAPS solamente
+in	felamimail	es	en
+in order for squirrelmail to provide the full set of options you need to create the special folders listed below.  just click the check box and hit the create button.	felamimail	es	Para que SquirrelMail proporcione todas las opciones necesita crear las carpetas especiales que se indican debajo. Simplemente marque la casilla pulse el botón de crear.
+in the center	felamimail	es	en el centro
+index order	felamimail	es	Orden del índica
+info	felamimail	es	Información
+invalid user name or password	felamimail	es	El usuario o la contraseña no son válidos
+javascript	felamimail	es	JavaScript
+language	felamimail	es	Idioma
+last name	felamimail	es	Apellidos
+left	felamimail	es	Izquierda
+less	felamimail	es	menos
+let this folder contain subfolders	felamimail	es	Permitir a este carpeta tener subcarpetas
+light blue	felamimail	es	Azul claro
+light cyan	felamimail	es	Cyan claro
+light gray	felamimail	es	Gris claro
+light green	felamimail	es	Verde claro
+light magenta	felamimail	es	Morado claro
+light yellow	felamimail	es	Amarillo claro
+list all	felamimail	es	Listar todo
+location of buttons when composing	felamimail	es	Ubicación de los botones al redactar
+location of folder list	felamimail	es	Ubicación de la lista de carpetas
+mail server login type	admin	es	Tipo de sesión del servidor de correo
+mail settings	felamimail	es	Configuración del correo
+manage folders	felamimail	es	Administrar carpetas
+manage sieve	felamimail	es	Administrar scripts Sieve
+mark as deleted	felamimail	es	Marcar como borrado
+mark messages as	felamimail	es	Marcar mensajes seleccionados como
+mark selected as flagged	felamimail	es	Marcar la selección como para descargar
+mark selected as read	felamimail	es	Marcar la selección como leído
+mark selected as unflagged	felamimail	es	Marcar la selección como para no descargar
+mark selected as unread	felamimail	es	Marcar la selección como no leído
+match	felamimail	es	Coincidencia
+matches	felamimail	es	coincide
+matches regexp	felamimail	es	coincide con la expresión
+medium gray	felamimail	es	Gris medio
+message highlighting	felamimail	es	Resaltado del mensaje
+message list	felamimail	es	Lista de mensajes
+messages	felamimail	es	mensajes
+minute	felamimail	es	Minuto
+minutes	felamimail	es	Minutos
+more	felamimail	es	más
+move	felamimail	es	mover
+move messages	felamimail	es	mover mensajes
+move selected to	felamimail	es	mover los seleccionados a
+move to trash	felamimail	es	Mover a la papelera
+must be unique	felamimail	es	Debe ser único
+name	felamimail	es	Nombre
+never display html emails	felamimail	es	Nunca mostar los correos en HTML
+new	felamimail	es	Nuevo
+new filter	felamimail	es	Nuevo filtro
+next	felamimail	es	Siguiente
+next message	felamimail	es	Mensaje siguiente
+nickname	felamimail	es	Apodo
+no filter	felamimail	es	Sin filtro
+no folders found	felamimail	es	No se encontraron carpetas
+no folders were found to subscribe to!	felamimail	es	No se encontraron carpetas a las que suscribirse
+no folders were found to unsubscribe from!	felamimail	es	No se encontraron carpetas de las que desuscribirse
+no highlighting is defined	felamimail	es	No se definió un resaltado
+no messages were selected.	felamimail	es	No se seleccionaron mensajes
+no next message	felamimail	es	No hay mensaje siguiente
+no notification	felamimail	es	Sin notificación
+no personal address book is defined. contact administrator.	felamimail	es	No se ha definido una libreta de direcciones personal. Póngase en contacto con el administrador
+no persons matching your search was found	felamimail	es	No se han encontrado personas con el criterio indicado
+no previous message	felamimail	es	No hay mensaje anterior
+no valid emailprofile selected!!	felamimail	es	No se ha seleccionado un perfil de correo válido
+none	felamimail	es	ninguno
+number of messages to index	felamimail	es	Número de mensajes a indexar
+on behalf of	felamimail	es	en nombre de
+only inbox	felamimail	es	Sólo la Bandeja de entrada
+only unseen	felamimail	es	Sólo los no vistos
+options	felamimail	es	Opciones
+organisation	felamimail	es	Organización
+organization	felamimail	es	Organización
+organization name	admin	es	Nombre de la organización
+oth	felamimail	es	Otros
+participants	felamimail	es	Participantes
+personal information	felamimail	es	Información personal
+posting	felamimail	es	enviar
+preference file %1 not found. exiting abnormally	felamimail	es	El fichero de preferencias %1 no se ha encontrado. Saliendo de forma anormal.
+preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	es	El fichero de preferencias %1 no existe. Cierre la sesión y vuelva a iniciarla para crear un fichero de preferencias predeterminado.
+previous	felamimail	es	Anterior
+previous message	felamimail	es	Mensaje anterior
+print it	felamimail	es	Imprimirlo
+print this page	felamimail	es	Imprimir esta página
+purge	felamimail	es	Purgar
+quicksearch	felamimail	es	Búsqueda rápida
+read	felamimail	es	leídos
+read da	felamimail	es	Fecha de lectura
+reading	felamimail	es	leyendo
+reason giv	felamimail	es	Razón
+recent	felamimail	es	reciente(s)
+refresh folder list	felamimail	es	Refrescar la lista de carpetas
+refresh page	felamimail	es	Refrescar página
+refresh time in minutes	felamimail	es	Tiempo de refresco en minutos
+remove	felamimail	es	eliminar
+remove immediately	felamimail	es	Eliminar inmediatamente
+rename	felamimail	es	Renombrar
+rename a folder	felamimail	es	Renombrar una carpeta
+rename folder	felamimail	es	Renombrar carpeta
+renamed successfully!	felamimail	es	Renombrado correctamente
+replied	felamimail	es	respondido
+reply	felamimail	es	Responder
+reply all	felamimail	es	Responder a todos
+reply to	felamimail	es	Responder A
+replyto	felamimail	es	Responder A
+return	felamimail	es	Volver
+return to options page	felamimail	es	Volver a la página de opciones
+right	felamimail	es	Derecha
+rule	felamimail	es	Regla
+running squirrelmail version %1 (c) 1999-2000.	felamimail	es	Ejecutando SquirrelMail versión %1 (c) 1999-2000
+same window - not functional yet	felamimail	es	En la misma ventana - no funciona todavía
+save	felamimail	es	Guardar
+search	felamimail	es	Buscar
+search for	felamimail	es	Buscar
+seconds	felamimail	es	Segundos
+select	felamimail	es	Seleccionar
+select all	felamimail	es	Seleccionar todo
+select emailprofile	felamimail	es	Seleccionar perfil de correo
+select home email address	felamimail	es	Seleccionar dirección de correo
+select work email address	felamimail	es	Seleccionar dirección de correo del trabajo
+select your mail server type	admin	es	Seleccionar el tipo de servidor de correo
+send	felamimail	es	Enviar
+sent fold	felamimail	es	Carpeta de enviados
+sent folder	felamimail	es	Carpeta de enviados
+server respond	felamimail	es	Respuesta del servidor
+show header	felamimail	es	mostrar cabecera
+show new messages on main screen	felamimail	es	Mostrar mensajes nuevos en la pantalla principal
+sieve settings	admin	es	Configuración de Sieve
+signature	felamimail	es	Firma
+site configuration	felamimail	es	Configuración del sitio
+size	felamimail	es	Tamaño
+size of editor window	felamimail	es	Tamaño de la ventana del editor
+size(...->0)	felamimail	es	Tamaño (...->0)
+size(0->...)	felamimail	es	Tamaño (0->...)
+small view	felamimail	es	Vista reducida
+smtp settings	admin	es	Opciones SMTP
+some or all of the help documents are not present!	felamimail	es	Algunos o todos los documentos de la ayuda no están presentes
+source	felamimail	es	Origen
+special folder options	felamimail	es	Opciones especiales de la carpeta
+squirrelmail	felamimail	es	Squirrelmail
+subject	felamimail	es	Asunto
+subject(a->z)	felamimail	es	Asunto (A->Z)
+subject(z->a)	felamimail	es	Asunto (Z->A)
+submit	felamimail	es	Enviar
+subscribe	felamimail	es	Suscribirse
+subscribed	felamimail	es	Suscrito
+subscribed successfully!	felamimail	es	Suscripción correcta
+successfully saved display preferences!	felamimail	es	Las preferencias de visualización se han guardado correctamente
+successfully saved folder preferences!	felamimail	es	Las preferencias de las carpetas se han guardado correctamente
+successfully saved personal information!	felamimail	es	La información personal se ha guardado correctamente
+switch current folder to	felamimail	es	cambiar la carpeta actual a
+table of contents	felamimail	es	Tabla de contenidos
+text only	felamimail	es	Sólo texto
+the connection to the imap server failed!!	felamimail	es	¡Ha fallado la conexión con el servidor IMAP!
+the help has not been translated to %1.  it will be displayed in english instead.	felamimail	es	La ayuda no ha sido traducida a %1. Se mostrará en inglés.
+the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	es	El orden de los índices es el orden en el cual se muestran las columnas en el índice de mensajes. Puede añadir, borrar y mover columnas para personalizarlas y ajustarlas a sus necesidades.
+the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	es	El orden del índice de mensajes puede reordenarse y cambiarse para contener las cabeceras en el orden que quiera.
+theme	felamimail	es	Tema
+then	felamimail	es	ENTONCES
+these settings change the way your folders are displayed and manipulated.	felamimail	es	Estas opciones varían dependiendo de cómo se manipulen las carpetas.
+this contains personal information about yourself such as your name, your email address, etc.	felamimail	es	Esta contiene información personal acerca de usted como su nombre, dirección de correo electrónico, etc.
+this folder is empty	felamimail	es	ESTA CARPETA ESTA VACIA
+this php has no imap support compiled in!!	felamimail	es	¡Esta instalación de PHP no tiene soporte IMAP!
+this port is based on squirrelmail, which is a standalone imap client.<br>	felamimail	es	El puerto en el que está basado Squirrelmail, que es un cliente IMAP.<br>
+to	felamimail	es	Para
+to the left	felamimail	es	a la izquierda
+to the right	felamimail	es	a la derecha
+top	felamimail	es	Superior
+translation location	felamimail	es	Ubicación de la traducción
+translation preferences	felamimail	es	Preferencias de la traducción
+translation server	felamimail	es	Servidor de traducciones
+trash fold	felamimail	es	Carpeta Papelera
+trash folder	felamimail	es	Carpeta Papelera
+type	felamimail	es	tipo
+unable to list addresses from %1	felamimail	es	No se pudieron listar las direcciones desde %1
+unflagged	felamimail	es	Sin marcar
+unknown err	felamimail	es	Error desconocido
+unknown error	felamimail	es	Error desconocido
+unknown sender	felamimail	es	Remitente desconocido
+unknown user or password incorrect.	felamimail	es	Usuario desconocido o contraseña incorrecta
+unread	felamimail	es	No leído
+unseen and total	felamimail	es	No vistos y total
+unseen message notification	felamimail	es	Notificación de mensaje desconocida
+unseen message notification type	felamimail	es	Tipo de notificación de mensaje no visto
+unselect all	felamimail	es	Deseleccionar todo
+unsubscribe	felamimail	es	Desuscribir
+unsubscribed	felamimail	es	No suscrito
+unsubscribed successfully!	felamimail	es	Desuscripción correcta
+up	felamimail	es	arriba
+update address	felamimail	es	Actualizar dirección
+use a signature	felamimail	es	Usar una firma
+use a signature?	felamimail	es	¿Usar una firma?
+use addresses	felamimail	es	Usar direcciones
+use custom settings	felamimail	es	Usar opciones personalizadas
+use javascript or html addressbook?	felamimail	es	Usar javascript o libreta de direcciones HTML
+use smtp auth	admin	es	Usar identificación SMTP
+users can define their own emailaccounts	admin	es	Los usuarios pueden definir sus propias cuentas de correo
+view full header	felamimail	es	Ver la cabecera completa
+view message	felamimail	es	Ver mensaje
+viewing full header	felamimail	es	Viendo la cabecera completa
+viewing message	felamimail	es	Viendo mensaje
+viewing messages	felamimail	es	Viendo mensajes
+welcome to %1's webmail system	felamimail	es	Bienvenido al sistema de WebMail %1
+welcome to %1\'s webmail system	felamimail	es	Bienvenido al sistema de WebMail %1
+when deleting messages	felamimail	es	Al borrar mensajes
+white	felamimail	es	Blanco
+width of folder list	felamimail	es	Ancho de la lista de carpetas
+wrap incoming text at	felamimail	es	Ajustar el texto entrante a
+writing	felamimail	es	escribiendo
+wrote	felamimail	es	escribió
+you can change the way that squirrelmail looks and displays information to you, such as the colors, the language, and other settings.	felamimail	es	Puede cambiar la forma en que SquirrelMail mira y muestra la información, como los colores, el idioma y otras opciones.
+you can only edit one address at the time	felamimail	es	Sólo puede editar una dirección al mismo tiempo
+you must login first.	felamimail	es	Antes, debe iniciar la sesión.
+you need a valid user and password to access this page!	felamimail	es	Necesita un usuario y una contraseña válidos para acceder a esta página
+your search failed with the following error(s)	felamimail	es	La búsqueda falló, dando los siguientes errores:

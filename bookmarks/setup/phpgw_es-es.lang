@@ -1,0 +1,68 @@
+%1 bookmarks have been deleted	bookmarks	es	Se han borrado %1 marcadores
+%1 bookmarks imported from %2 successfully.	bookmarks	es	Se han importado %1 marcadores de %2 correctamente
+(comma separate multiple addresses)	bookmarks	es	(la coma separa varias direcciones)
+<b>note:</b> this currently works with netscape bookmarks only	bookmarks	es	<b>Nota:</b> Actualmente sólo funciona con marcadores de netscape
+all bookmarks	bookmarks	es	Todos los marcadores
+and	bookmarks	es	Y
+append this message to mailed bookmarks	bookmarks	es	Añadir este mensaje a los marcadores enviados
+ascending	bookmarks	es	Ascendente
+book marks	common	es	Marcadores
+bookmark changed sucessfully	bookmarks	es	Marcador cambiado correctamente
+bookmark created successfully.	bookmarks	es	Marcador creado correctamente
+bookmark not editable	bookmarks	es	Marcador no editable
+bookmark not readable	bookmarks	es	Marcador no leíble
+bookmarks	common	es	Marcadores
+bookmarks settings	bookmarks	es	Configuración de los marcadores
+change bookmark	bookmarks	es	Cambiar marcador
+close this window to return	bookmarks	es	cerrar esta ventana para volver
+create bookmark	bookmarks	es	Crear marcador
+create new bookmark	bookmarks	es	Crear nuevo marcador
+date added	bookmarks	es	Fecha añadida
+date changed	bookmarks	es	Fecha cambiada
+date last updated	bookmarks	es	Fecha de la última actualización
+date last visited	bookmarks	es	Fecha de la última visita
+descending	bookmarks	es	Descendente
+edit bookmark	bookmarks	es	Editar marcador
+edit this bookmark	bookmarks	es	Editar este marcador
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	es	Introduzca el nombre del fichero de marcadores de Netscaep<br>que quiera ver importado debajo.
+export bookmarks	preferences	es	Exportar marcadores
+fewer	bookmarks	es	Menos
+filter by	bookmarks	es	Filtrar por
+found a link you might like	bookmarks	es	Encontré un enlace que le puede gustar
+from	bookmarks	es	De
+from category %1	bookmarks	es	de categoría %º
+highest	bookmarks	es	La más alta
+i thought you would be interested in the following link(s):	bookmarks	es	Pensé que le interesarían los siguientes enlaces:
+import bookmarks	preferences	es	Importar marcadores
+like	bookmarks	es	como
+list	bookmarks	es	Lista
+lowest	bookmarks	es	La más baja
+mail this bookmark	bookmarks	es	Añadir este marcador
+mail-this-link message sent to %1.	bookmarks	es	Mensaje de enviar este enlace enviado a %1
+mass update:	bookmarks	es	Actualización masiva:
+message from	bookmarks	es	Mensaje de
+more	bookmarks	es	Más
+name	bookmarks	es	Nombre
+name is required	bookmarks	es	El nombre es obligatorio
+netscape bookmark file	bookmarks	es	Fichero de marcadores de Netscape
+netscape bookmark filename is required!	bookmarks	es	El nombe del fichero de marcadores de Netscape es obligatorio
+new	bookmarks	es	Nuevo
+or	bookmarks	es	o
+please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	es	Por favor, rellene <b>Dirección destino</b>, <b>Asunto</b> y <b>Mensaje</b>
+query condition	bookmarks	es	Condición de consulta
+rating	bookmarks	es	Estimación
+search for:	bookmarks	es	Buscar:
+send bookmark	bookmarks	es	Enviar marcador
+sub category	bookmarks	es	Subcategoría
+to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	es	La dirección Para: %1 no es válida. El formato debe ser <strong>usuario@dominio</strong> y el dominio debe existir.
+to e-mail addresses	bookmarks	es	Direcciones de correo de los destinatarios
+to which category should the imported folder hierarchy be attached	bookmarks	es	A qué categoría hay que adjuntar la jerarquía de la carpeta importada
+total visits	bookmarks	es	visitas totales
+tree view	bookmarks	es	Vista de árbol
+unable to open temp file %1 for import.	bookmarks	es	No se pudo abrir el fichero temporal %1 para importar
+url is required.	bookmarks	es	Hace falta una URL
+view bookmark	bookmarks	es	Ver marcador
+view this bookmark	bookmarks	es	Ver este marcador
+warning	bookmarks	es	Aviso
+you are viewing this site outside of phpgroupware	bookmarks	es	Está viendo este sito desde fuera de eGroupWare
+you must select a category	bookmarks	es	Debe seleccionar una categoría
