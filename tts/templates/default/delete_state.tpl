@@ -32,16 +32,16 @@
 <form method="POST" action="{delete_state_link}">
 <table border="0" width="80%" cellspacing="0" align="center">
 	<tr bgcolor="{row_off}">
-		<td><input name="ticket[state]" type="radio" value="-1" CHECKED>{lang_delete_the_tickets}</td>
+		<td><input name="ticket_state" type="radio" value="-100" CHECKED>{lang_delete_the_tickets}</td>
 	</tr>
 <!-- BEGIN update_state_items -->
 	<tr bgcolor="{row_off}">
-		<td><input name="ticket[state]" type="radio" value="{update_state_value}">{update_state_text}</td>
+		<td><input name="ticket_state" type="radio" value="{update_state_value}">{update_state_text}</td>
 	</tr>
 <!-- END update_state_items -->
 
 	<tr bgcolor="{row_off}">
-		<td><input name="ticket[state]" type="radio" value="-2">{lang_irregular_move_into_state}:&nbsp; &nbsp;<select name="ticket[newstate]">{options_state}</select></b></td>
+		<td><input name="ticket_state" type="radio" value="-200">{lang_irregular_move_into_state}:&nbsp; &nbsp;<select name="ticket_newstate">{options_state}</select></b></td>
 	</tr>
 
 	<tr height="40">
