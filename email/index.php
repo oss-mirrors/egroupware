@@ -44,9 +44,28 @@
 		'T_attach_clip' => 'index_attach_clip.tpl',
 		'T_new_msg' => 'index_new_msg.tpl',
 		'T_msg_list' => 'index_msg_list.tpl',
-		'index_out' => 'index.tpl',
+		'T_index_out' => 'index.tpl',
 	));
-	
+
+// ----  Learn About The Email Server  -----
+	// Does This Mailbox Support Folders (i.e. more than just INBOX)?
+	if (($phpgw_info['user']['preferences']['email']['mail_server_type']=='imap')
+	  || ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
+	  || ($phpgw_info['flags']['newsmode'] == True))
+	{
+		$uses_folders = True;
+	} else {
+		$uses_folders = False;
+	}
+	// How To Communicate With The Server
+	$server_str = get_mailsvr_callstr();
+	// Fully Qualified Folder Name, Includes Namespace and Delimiter
+	$folder_long = get_folder_long($folder);
+	// Abreviated Folder Name, NO namespace, NO delimiter
+	$folder_short = get_folder_short($folder);
+	// How Many Messages Are In This Inbox/Folder
+	$nummsg = $phpgw->msg->num_msg($mailbox);
+
 // ---- lang var for checkbox javascript  -----
 	$t->set_var('select_msg',lang('Please select a message first'));
 
@@ -70,7 +89,6 @@
 	}
 	
 // ----  Previous and Next arrows navigation  -----
-	$nummsg = $phpgw->msg->num_msg($mailbox);
 	if (! $start)
 	{
 		$start = 0;
@@ -78,11 +96,11 @@
 	
 	$td_prev_arrows = $phpgw->nextmatchs->left('/'.$phpgw_info['flags']['currentapp'].'/index.php',
 					$start,$nummsg,
-					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder));
+					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder_short));
 
 	$td_next_arrows = $phpgw->nextmatchs->right('/'.$phpgw_info['flags']['currentapp'].'/index.php',
 					$start,$nummsg,
-					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder));
+					'&sort=' .$sort .'&order=' .$order .'&folder=' .urlencode($folder_short));
 
 	$t->set_var('arrows_backcolor',$phpgw_info['theme']['bg_color']);
 	$t->set_var('prev_arrows',$td_prev_arrows);
@@ -108,22 +126,7 @@
 	}
 
 	$mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
-
-	if ($folder != "INBOX")
-	{
-		$t_folder_s = $phpgw->msg->construct_folder_str($folder);
-	} else {
-		$t_folder_s = "INBOX";
-	}
-	
-	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
-	{
- 		/* IMAP over SSL */
-		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . "/ssl/novalidate-cert:993}$t_folder_s", SA_UNSEEN);
-	} else {
-		/* No SSL, normal connection */
-		$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":". $phpgw_info["user"]["preferences"]["email"]["mail_port"] ."}$t_folder_s",SA_UNSEEN);
-	}
+	$mailbox_status = $phpgw->msg->status($mailbox,"$server_str" ."$folder_long",SA_UNSEEN);
 
 	if ($nummsg == 0)
 	{
@@ -165,9 +168,7 @@
 	}
 
 // ---- SwitchTo Folder Listbox   -----
-	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" 
-	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" 
-	  || $phpgw_info["flags"]["newsmode"])
+	if ($uses_folders)
 	{
 		$switchbox_listbox = '<select name="folder" onChange="document.switchbox.submit()">'
 				. '<option>' . lang('switch current folder to') . ':'
@@ -178,8 +179,7 @@
 	}
 
 // ---- Folder Button  -----
-	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap" 
-	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps" )
+	if ($uses_folders)
 	{
 		$folder_maint_button = '<input type="button" value="' . lang("folder") . '" onClick="'
 				. 'window.location=\'' . $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/folder.php').'\'">';
@@ -194,7 +194,7 @@
 	$t->set_var('stats_font',$phpgw_info['theme']['font']);
 	$t->set_var('stats_fontsize','+0');
 	$t->set_var('stats_color',$phpgw_info['theme']['em_folder_text']);
-	$t->set_var('stats_folder',$folder);
+	$t->set_var('stats_folder',$folder_short);
 	$t->set_var('stats_saved',$stats_saved);
 	$t->set_var('stats_new',$stats_new);
 	$t->set_var('stats_size',$stats_size);	
@@ -219,15 +219,15 @@
 	
 	$t->set_var('hdr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hdr_font',$phpgw_info['theme']['font']);
-	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder)) );
-	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder)) );
-	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder)) );
+	$t->set_var('hdr_subject',$phpgw->nextmatchs->show_sort_order($sort,"3",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("subject"),"&folder=".urlencode($folder_short)) );
+	$t->set_var('hdr_from',$phpgw->nextmatchs->show_sort_order($sort,"2",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("from"),"&folder=".urlencode($folder_short)) );
+	$t->set_var('hdr_date',$phpgw->nextmatchs->show_sort_order($sort,"0",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',lang("date"),"&folder=".urlencode($folder_short)) );
 	$t->set_var('hdr_size',$phpgw->nextmatchs->show_sort_order($sort,"6",$order,'/'.$phpgw_info['flags']['currentapp'].'/index.php',$sizesort) );
 
 // ----  Form delmov Intialization  Setup  -----
 	// ----  place in first checkbox cell of the messages list table, ONE TIME ONLY   -----
 	$t->set_var('delmov_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/action.php'));
-	$t->set_var('current_folder',$folder);
+	$t->set_var('current_folder',$folder_short);
 	$t->parse('V_form_delmov_init','T_form_delmov_init');
 	$mlist_delmov_init = $t->get_var('V_form_delmov_init');	
 
@@ -293,33 +293,7 @@
 			$struct = $phpgw->msg->fetchstructure($mailbox, $msg_array[$i]);
 
 			// SHOW ATTACHMENT CLIP ?
-			$show_attach = False; // fallback value
-			if (count($struct->parts) == 0)
-			{
-				// no attachment, no paperclip image
-				$show_attach = False;
-			}
-			else
-			// show paperclip image indicating attachment(s)
-			{
-				for ($j = 0; $j< (count($struct->parts) - 1); $j++)
-				{
-					if (!$struct->parts[$j])
-					{
-						$part = $struct;
-					}
-					else
-					{
-						$part = $struct->parts[$j];
-					}
-
-					$att_name = get_att_name($part);
-					if ($att_name != "Unknown")
-					{
-						$show_attach = True;
-					}
-				}
-			}
+			$show_attach = has_real_attachment($struct);
 
 			$msg = $phpgw->msg->header($mailbox, $msg_array[$i]);
 			
@@ -329,7 +303,7 @@
 			// SUBJECT
 			$subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
 			$subject = decode_header_string($subject);
-			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder).'&msgnum='.$mlist_msg_num);
+			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder_short).'&msgnum='.$mlist_msg_num);
 
 			// SIZE
 			if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
@@ -385,7 +359,7 @@
 			}
 
 			$from_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php','folder='
-					.urlencode($folder) .'&to=' .urlencode($replyto));
+					.urlencode($folder_short) .'&to=' .urlencode($replyto));
 			$from_name = decode_header_string($personal);
 			//echo "$display_address->from";
 
@@ -431,12 +405,11 @@
 	}
 
 // ---- Delete/Move Folder Listbox  for Msg Table Footer -----
-	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap"
-	  || $phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imaps")
+	if ($uses_folders)
 	{
 		$delmov_listbox = '<select name="tofolder" onChange="do_action(\'move\')">'
 			. '<option>' . lang("move selected messages into") . ':'
-			. all_folders_listbox($mailbox,'')
+			. all_folders_listbox($mailbox,'',$folder_short)
 			. '</select>';
             
 	}
@@ -450,12 +423,12 @@
 	$t->set_var('ftr_backcolor',$phpgw_info['theme']['th_bg']);
 	$t->set_var('ftr_font',$phpgw_info['theme']['font']);
 	$t->set_var('ftr_compose_txt',lang("compose"));
-	$t->set_var('ftr_compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".urlencode($folder)));
+	$t->set_var('ftr_compose_link',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/compose.php',"folder=".urlencode($folder_short)));
 	$t->set_var('delmov_button',lang("delete"));
 	$t->set_var('delmov_listbox',$delmov_listbox);
 	
 // ----  Output the Template   -----
-	$t->pparse('out','index_out');
+	$t->pparse('out','T_index_out');
 
 	$phpgw->msg->close($mailbox);
 

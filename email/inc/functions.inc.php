@@ -327,7 +327,7 @@
   }
 
 
- function all_folders_listbox($mailbox,$pre_select="")
+ function all_folders_listbox($mailbox,$pre_select="",$skip="")
   {
 	global $phpgw, $phpgw_info;
 
@@ -344,13 +344,19 @@
 			}
 		}
 	}
-	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
+	elseif (($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3')
+	    && ($phpgw_info['user']['preferences']['email']['mail_server_type'] != 'pop3s'))
 	{
 		// Establish Email Server Connectivity Conventions
 		$server_str = get_mailsvr_callstr();
 		$name_space = get_mailsvr_namespace();
-		$dot_or_slash = get_mailsvr_delimiter();
-		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" .'*');
+		$delimiter = get_mailsvr_delimiter();
+		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+		{
+			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$delimiter" ."*");
+		} else {
+			$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."*");
+		}
 
 		// sort folder names 
 		if (gettype($mailboxes) == 'array')
@@ -361,7 +367,7 @@
 		if($mailboxes)
 		{
 			$num_boxes = count($mailboxes);
-			if ($namespace_filter != 'INBOX')
+			if ($name_space != 'INBOX')
 			{
 				$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
         		}
@@ -376,8 +382,11 @@
 				{
 					$sel = '';
 				}
-				$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
-				$outstr = $outstr ."\n";
+				if ($folder_short != $skip)
+				{
+					$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
+					$outstr = $outstr ."\n";
+				}
 			}
 		}
 		else
@@ -533,7 +542,7 @@
 			case TYPEVIDEO:		$mime_type = "video"; break;
 			case TYPEMODEL:		$mime_type = "model"; break;
 			default:		$mime_type = "unknown";
-		}
+		} 
 	}
 	return $mime_type;
   }
@@ -557,109 +566,138 @@
 
   function get_att_name($de_part)
   {
-    $att_name = "Unknown";
-    if ($de_part->ifparameters) {
-      for ($i = 0; $i < count($de_part->parameters); $i++) 
-      {
-        $param = $de_part->parameters[$i];
-        if (strtoupper($param->attribute) == "NAME") {
-          $att_name = $param->value;
-        }
-      }
-    }
-    return $att_name;
+	$att_name = "Unknown";
+	if ($de_part->ifparameters)
+	{
+		for ($i = 0; $i < count($de_part->parameters); $i++) 
+		{
+			$param = $de_part->parameters[$i];
+			if (strtoupper($param->attribute) == "NAME")
+			{
+				$att_name = $param->value;
+			}
+		}
+	}
+	return $att_name;
+  }
+
+  function has_real_attachment($struct)
+  {
+	$finding = False;
+	$struct_count = (!isset($struct->parts) || !$struct->parts ? 1 : count($struct->parts));
+	for ($z = 0; $z < $struct_count; $z++)
+	{
+		$part = !isset($struct->parts[$z]) || !$struct->parts[$z] ? $struct : $struct->parts[$z];
+		$att_name = get_att_name($part);
+
+		if ($att_name != 'Unknown')
+		{
+			// if it has a name, it's an attachment
+			$finding = True;
+		}
+	}
+	return $finding;
   }
 
   function attach_display($de_part, $part_no)
   {
-    global $msgnum, $phpgw, $phpgw_info, $folder;
-    $mime_type = get_mime_type($de_part);  
-    $mime_encoding = get_mime_encoding($de_part);
+	global $msgnum, $phpgw, $phpgw_info, $folder;
+	$mime_type = get_mime_type($de_part);  
+	$mime_encoding = get_mime_encoding($de_part);
 
-    $att_name = "unknown";
+	$att_name = "unknown";
 
-    for ($i = 0; $i < count($de_part->parameters); $i++)
-    {
-      $param = $de_part->parameters[$i];
-      if (strtoupper($param->attribute) == "NAME")
-      {
-        $att_name = $param->value;
-	      $url_att_name = urlencode($att_name);
-	      $att_name = decode_header_string($att_name);
-      }
-    }
+	for ($i = 0; $i < count($de_part->parameters); $i++)
+	{
+		$param = $de_part->parameters[$i];
+		if (strtoupper($param->attribute) == "NAME")
+		{
+			$att_name = $param->value;
+			$url_att_name = urlencode($att_name);
+			$att_name = decode_header_string($att_name);
+		}
+	}
 
-//    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
-    $jnk = "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/get_attach.php","folder=".$folder
-		       ."&msgnum=$msgnum&part_no=$part_no&type=$mime_type"
-		       ."&subtype=".$de_part->subtype."&name=$url_att_name"
-		       ."&encoding=$mime_encoding")."\">$att_name</a>";
-    return $jnk;
+	//    $jnk = "<a href=\"".$phpgw->link("get_attach.php","folder=".$phpgw_info["user"]["preferences"]["email"]["folder"]
+	$jnk = "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/get_attach.php","folder=".$folder
+	       ."&msgnum=$msgnum&part_no=$part_no&type=$mime_type"
+	       ."&subtype=".$de_part->subtype."&name=$url_att_name"
+	       ."&encoding=$mime_encoding")."\">$att_name</a>";
+	return $jnk;
   }
 
   function inline_display($de_part, $part_no)
   {
-    global $mailbox, $msgnum, $phpgw, $phpgw_info;
-    $mime_type = get_mime_type($de_part);
-    $mime_encoding = get_mime_encoding($de_part);
+	global $mailbox, $msgnum, $phpgw, $phpgw_info;
+	$mime_type = get_mime_type($de_part);
+	$mime_encoding = get_mime_encoding($de_part);
 
-    $dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
+	$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_no);
 
-    $tag = "pre";
-    $jnk = $de_part->ifdisposition ? $de_part->disposition : "unknown";
-    if ($mime_encoding == "qprint")
-    {
-      $dsp = $phpgw->msg->qprint($dsp);
-      $tag = "tt";
-    }
+	$tag = "pre";
+	$jnk = $de_part->ifdisposition ? $de_part->disposition : "unknown";
+	if ($mime_encoding == "qprint")
+	{
+		$dsp = $phpgw->msg->qprint($dsp);
+		$tag = "tt";
+	}
 
-    // Thanks to Omer Uner Guclu <oquclu@superonline.com> for figuring out
-    // a better way to do message wrapping
+	// Thanks to Omer Uner Guclu <oquclu@superonline.com> for figuring out
+	// a better way to do message wrapping
 
-    if (strtoupper($de_part->subtype) == "PLAIN")
-    {
-      // nlbr and htmlentities functions are strip latin5 characters
-      if (strtoupper(lang("charset")) <> "BIG5")
-         $dsp = $phpgw->strip_html($dsp);
-      $dsp = ereg_replace( "^","<p>",$dsp);
-      $dsp = ereg_replace( "\n","<br>",$dsp);
-      $dsp = ereg_replace( "$","</p>", $dsp);
-      $dsp = make_clickable($dsp);
-      echo "<table border=\"0\" align=\"left\" cellpadding=\"10\" width=\"80%\">"
-           ."<tr><td>$dsp</td></tr></table>";
-    } else if (strtoupper($de_part->subtype) == "HTML") {
-      output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
-      echo $dsp;
-    } else {
-      output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
-      echo "<$tag>$dsp</$tag>\n";
-    }
+	if (strtoupper($de_part->subtype) == "PLAIN")
+	{
+		// nlbr and htmlentities functions are strip latin5 characters
+		if (strtoupper(lang("charset")) <> "BIG5")
+		{
+			$dsp = $phpgw->strip_html($dsp);
+		}
+		$dsp = ereg_replace( "^","<p>",$dsp);
+		$dsp = ereg_replace( "\n","<br>",$dsp);
+		$dsp = ereg_replace( "$","</p>", $dsp);
+		$dsp = make_clickable($dsp);
+		echo "<table border=\"0\" align=\"left\" cellpadding=\"10\" width=\"80%\">"
+		  ."<tr><td>$dsp</td></tr></table>";
+	}
+	elseif (strtoupper($de_part->subtype) == "HTML")
+	{
+		output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
+		echo $dsp;
+	}
+	else
+	{
+		output_bound(lang("section").":" , "$mime_type/".strtolower($de_part->subtype));
+		echo "<$tag>$dsp</$tag>\n";
+	}
   }
 
   function output_bound($title, $str)
   {
-    global $phpgw_info;
-    echo "</td></tr></table>\n"
-      . "<table border=\"0\" cellpadding=\"4\" cellspacing=\"3\" "
-      . "width=\"700\">\n<tr><td bgcolor\"" . $phpgw_info["theme"]["th_bg"] . "\" " 
-      . "valign=\"top\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
-      . "<b>$title</b></td>\n<td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" "
-      . "width=\"570\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
-      . "$str</td></tr></table>\n<p>\n<table border=\"0\" cellpadding=\"2\" "
-      . "cellspacing=\"0\" width=\"100%\"><tr><td>";
+	global $phpgw_info;
+	echo "</td></tr></table>\n"
+	  . "<table border=\"0\" cellpadding=\"4\" cellspacing=\"3\" "
+	  . "width=\"700\">\n<tr><td bgcolor\"" . $phpgw_info["theme"]["th_bg"] . "\" " 
+	  . "valign=\"top\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
+	  . "<b>$title</b></td>\n<td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" "
+	  . "width=\"570\"><font size=\"2\" face=\"" . $phpgw_info["theme"]["font"] . "\">"
+	  . "$str</td></tr></table>\n<p>\n<table border=\"0\" cellpadding=\"2\" "
+	  . "cellspacing=\"0\" width=\"100%\"><tr><td>";
   }
 
-  function image_display($folder, $msgnum, $de_part, $part_no, $att_name)  {
-    global $phpgw;
-    global $phpgw_info;
+  function image_display($folder, $msgnum, $de_part, $part_no, $att_name) 
+  {
+	global $phpgw;
+	global $phpgw_info;
 
-    output_bound(lang("image").":" , $att_name);
-    $extra_parms = "folder=".urlencode($folder)."&m=".$msgnum
-		 . "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
-    if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"]) 
-      $extra_parms .= "&newsmode=on";
-    $view_link = $phpgw->link("/".$phpgw_info['flags']['currentapp']."/view_image.php",$extra_parms);
-    echo "\n<img src=\"".$view_link."\">\n<p>\n";
+	output_bound(lang("image").":" , $att_name);
+	$extra_parms = "folder=".urlencode($folder)."&m=".$msgnum
+		. "&p=".$part_no."&s=".strtolower($de_part->subtype)."&n=".$att_name;
+	if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])
+	{
+		$extra_parms .= "&newsmode=on";
+	}
+	$view_link = $phpgw->link("/".$phpgw_info['flags']['currentapp']."/view_image.php",$extra_parms);
+	echo "\n<img src=\"".$view_link."\">\n<p>\n";
   }
 
   // function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
@@ -667,31 +705,28 @@
   // modified to make mailto: addresses compose in phpGW
   function make_clickable($data)
   {
-    global $phpgw,$phpgw_info;
+	global $phpgw,$phpgw_info;
 
-    if(empty($data))
-    {
-      return $data;
-    }
+	if(empty($data))
+	{
+		return $data;
+	}
 
-    $lines = split("\n",$data);
+	$lines = split("\n",$data);
 
-    while ( list ($key,$line) = each ($lines))
-    {
+	while ( list ($key,$line) = each ($lines))
+	{
+		$line = eregi_replace("([ \t]|^)www\."," http://www.",$line);
+		$line = eregi_replace("([ \t]|^)ftp\."," ftp://ftp.",$line);
+		$line = eregi_replace("(http://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+		$line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+		$line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+		$line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
+		    "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
+		    ."&to=\\1\">\\1</a>", $line);
 
-      $line = eregi_replace("([ \t]|^)www\."," http://www.",$line);
-      $line = eregi_replace("([ \t]|^)ftp\."," ftp://ftp.",$line);
-      $line = eregi_replace("(http://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
-      $line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
-      $line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
-      $line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
-               "<a href=\"".$phpgw->link("/".$phpgw_info['flags']['currentapp']."/compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
-               ."&to=\\1\">\\1</a>", $line);
-
-      $newText .= $line . "\n";
-
-    }
-
-    return $newText;
+		$newText .= $line . "\n";
+	}
+	return $newText;
   }
 ?>

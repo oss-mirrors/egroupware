@@ -46,9 +46,9 @@
 	$server_str = get_mailsvr_callstr();
 	$name_space = get_mailsvr_namespace();
 	$dot_or_slash = get_mailsvr_delimiter();
+
 	$folder_long = get_folder_long($folder);
 	$folder_short = get_folder_short($folder);
-
 	/*
 	//$full_str = $server_str .$folder_long;
 	//$folder_short = get_folder_short($full_str);
@@ -63,29 +63,39 @@
 // ----  Create or Delete A Folder  ----
 	if (($action == 'create') || ($action == 'delete'))
 	{
-		// maybe some "are you sure" code
-		$folder_long = get_folder_long($target_folder);
-		$folder_short = get_folder_short($target_folder);
-		
-		if ($action == 'create')
+		// basic sanity check
+		if ($target_folder == '')
 		{
-			$phpgw->msg->createmailbox($mailbox, "$server_str"."$folder_long");
-		}
-		else if ($action == 'delete')
-		{
-			$phpgw->msg->deletemailbox($mailbox, "$server_str"."$folder_long");
-		}
-
-		// Result Message
-		$action_report = $action .' folder "' .$folder_short .'": ';
-		$imap_err = imap_last_error();
-		if ($imap_err == '')
-		{
-			$action_report = $action_report .'OK';
+			// Result Message
+			// FIXME needs lang
+			$action_report = 'Please type a folder name in the text box';		
 		}
 		else
 		{
-			$action_report = $action_report .$imap_err;
+			// maybe some "are you sure" code
+			$folder_long = get_folder_long($target_folder);
+			$folder_short = get_folder_short($target_folder);
+		
+			if ($action == 'create')
+			{
+				$phpgw->msg->createmailbox($mailbox, "$server_str"."$folder_long");
+			}
+			else if ($action == 'delete')
+			{
+				$phpgw->msg->deletemailbox($mailbox, "$server_str"."$folder_long");
+			}
+
+			// Result Message
+			$action_report = $action .' folder "' .$folder_short .'": ';
+			$imap_err = imap_last_error();
+			if ($imap_err == '')
+			{
+				$action_report = $action_report .'OK';
+			}
+			else
+			{
+				$action_report = $action_report .$imap_err;
+			}
 		}
 		$t->set_var('action_report',$action_report);
 		$t->parse('V_action_report','B_action_report');
@@ -95,7 +105,14 @@
 		$t->set_var('V_action_report','');
 	}
 
-	$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" .'*');
+
+// ----  Get a List Of All Folders  ----
+	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
+	{
+		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."$dot_or_slash" ."*");
+	} else {
+		$mailboxes = $phpgw->msg->listmailbox($mailbox, $server_str, "$name_space" ."*");
+	}
 
 	// sort folder names 
 	if (gettype($mailboxes) == 'array')
