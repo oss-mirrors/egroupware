@@ -66,7 +66,7 @@
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0')
+		 'versions' => Array('0.9.16','0.9.17','0.9.14','1.0.0','1.0.1')
 	);
 
 	$setup_info['projects']['depends'][] = array
