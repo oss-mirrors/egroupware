@@ -86,7 +86,7 @@
 			}
    
 
-			for($i=0;$i<=$check_msgs;$i++,$j++)
+			for($i=0;$i<$check_msgs;$i++,$j++)
 			{
 				$msg = $phpgw->msg->header($mailbox,$msg_array_hook[$i]);
 				$subject = !$msg->Subject ? '['.lang('no subject').']' : substr($msg->Subject,0,65).' ...';
