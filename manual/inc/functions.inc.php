@@ -20,4 +20,29 @@
 
     return $str;
   }
+
+	function check_file($file)
+	{
+		if(is_file($file))
+		{
+			$file = str_replace(PHPGW_SERVER_ROOT,'',$file);
+		}
+		else
+		{
+			$file = '';
+		}
+		return $file;
+	}
+
+	function check_help_file($appname,$lang,$file)
+	{
+		$lang = strtoupper($lang);
+		$help_file = check_file(PHPGW_SERVER_ROOT.'/'.$appname.'/help/'.$lang.'/'.$file);
+		if($help_file == '')
+		{
+			$help_file = check_file(PHPGW_SERVER_ROOT.'/'.$appname.'/help/EN/'.$file);
+		}
+		return $help_file;
+	}
+
 ?>
