@@ -1,4 +1,7 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
@@ -10,15 +13,15 @@
 		<td>{choose}</td>
 	</tr>
 	<tr>
-		<td>{title_delivery_num}&nbsp;:</td>
-		<td><input type=text name="delivery_num" value="{delivery_num}"></td>
+		<td>{lang_delivery_num}&nbsp;:</td>
+		<td><input type=text name="values[delivery_num]" value="{delivery_num}"></td>
 	</tr>
 	<tr>
-		<td>{title_customer}&nbsp;:</td>
+		<td>{lang_customer}&nbsp;:</td>
 		<td>{customer}</td>
 	</tr>
 	<tr>
-		<td>{title_project}&nbsp;:</td>
+		<td>{lang_project}&nbsp;:</td>
 		<td>{project}</td>
 	</tr>
 	<tr>
@@ -26,21 +29,18 @@
 		<td>{date_select}</td>
 	</tr>
 </table> 
-
- {hidden_vars}
-  
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
-		<td width="3%" bgcolor="{th_bg}" align="center">{h_lang_select}</td>
-		<td width="25%" bgcolor="{th_bg}">{sort_activity}</td>
-		<td width="25%" bgcolor="{th_bg}">{sort_hours_descr}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{sort_status}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{sort_start_date}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{sort_aes}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{h_lang_edithour}</td>
+		<td width="3%" bgcolor="{th_bg}" align="center">{lang_select}</td>
+		<td width="25%" bgcolor="{th_bg}">{lang_activity}</td>
+		<td width="25%" bgcolor="{th_bg}">{lang_hours}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_status}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_start_date}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{lang_aes}</td>
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_edit}</td>
 	</tr>
 
-<!-- BEGIN projecthours_list -->
+<!-- BEGIN hours_list -->
 
 	<tr bgcolor="{tr_color}">
 		<td align="center">{select}</td>
@@ -52,7 +52,7 @@
 		<td align="center"><a href="{edithour}">{lang_edit_entry}</a></td>
 	</tr>
 
-<!-- END projecthours_list -->
+<!-- END hours_list -->
 
 </table><br><br>
 

@@ -36,6 +36,7 @@
 			$this->grants	= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 			$this->currency = $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
+			$this->year		= $GLOBALS['phpgw']->common->show_date(time(),'Y');
 		}
 
 		function project_filter($type)
@@ -548,8 +549,7 @@
 
 		function create_projectid()
 		{
-			$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-			$prefix = 'P-' . $year . '-';
+			$prefix = 'P-' . $this->year . '-';
 
 			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
 			$this->db->next_record();
@@ -573,12 +573,21 @@
 
 		function create_activityid()
 		{
-			$year = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-			$prefix = 'A-' . $year . '-';
+			$prefix = 'A-' . $this->year . '-';
 
 			$this->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
+
+			return $prefix . $max;
+		}
+
+		function create_deliveryid()
+		{
+			$prefix = 'D-' . $this->year . '-';
+			$this->db->query("select max(num) from phpgw_p_delivery where num like ('$prefix%')");
+			$this->db->next_record();
+			$max = add_leading_zero(substr($this->db->f(0),-4));
 
 			return $prefix . $max;
 		}

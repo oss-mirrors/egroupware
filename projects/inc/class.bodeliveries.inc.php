@@ -28,12 +28,81 @@
 	{
 		var $public_functions = array
 		(
-
+			'check_values'			=> True,
+			'read_hours'			=> True,
+			'read_delivery_hours'	=> True,
+			'get_date'				=> True,
+			'delivery'				=> True
 		);
 
 		function bodeliveries()
 		{
 			$this->sodeliveries	= CreateObject('projects.sodeliveries');
+		}
+
+		function read_hours($project_id)
+		{
+			$hours = $this->sodeliveries->read_hours($project_id);
+			return $hours;
+		}
+
+		function read_delivery_hours($project_id,$delivery_id)
+		{
+			$hours = $this->sodeliveries->read_hours($project_id,$delivery_id);
+			return $hours;
+		}
+
+		function get_date($delivery_id)
+		{
+			$date = $this->bodeliveries->get_date($delivery_id);
+			return $date;
+		}
+
+		function check_values($values)
+		{
+			if (!$values['choose'])
+			{
+				if (!$values['delivery_num'])
+				{
+					$error[] = lang('Please enter an ID !');
+				}
+				else
+				{
+					$num = $this->sodeliveries->exists($values['delivery_num']);
+					if ($num)
+					{
+						$error[] = lang('That ID has been used already !');
+					}
+				}
+			}
+
+			if (! $values['customer'])
+			{
+				$error[] = lang('You have no customer selected !');				
+			}
+
+			if (! checkdate($values['month'],$values['day'],$values['year']))
+			{
+				$error[] = lang('You have entered an invalid date !');
+			}
+
+			if (is_array($error))
+			{
+				return $error;
+			}
+		}
+
+		function delivery($values)
+		{
+			if ($values['choose'])
+			{
+				$values['delivery_num'] = $this->sodeliveries->create_deliveryid();
+			}
+
+			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
+
+			$delivery_id = $this->sodeliveries->delivery($values);
+			return $delivery_id;
 		}
 	}
 ?>
