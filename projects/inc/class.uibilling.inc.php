@@ -924,10 +924,9 @@
 			$this->t->set_var('error_hint','');
 
 			$tax = $this->format_tax($prefs['tax']);
+            $this->t->set_var('tax',$tax);
+
 			$taxpercent = ($tax/100);
-
-			$this->t->set_var('tax',$taxpercent);
-
 			$sum_tax = $sum_netto*$taxpercent;
 
 			$this->t->set_var('sum_netto',sprintf("%01.2f",round($sum_netto,2)));
