@@ -19,12 +19,11 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw_info['server']['app_inc'];
-	$phpgw_info['server']['app_inc'] = $phpgw->common->get_inc_dir('email');
+	$tmp_app_inc = $phpgw->common->get_inc_dir('email');
 
 	if ($phpgw_info['user']['preferences']['email']['mainscreen_showmail'] == True)
 	{
-		include($phpgw_info['server']['app_inc'] . '/functions.inc.php');
+		include($tmp_app_inc . '/functions.inc.php');
 		echo "\n".'<tr><td align="left"><!-- Mailbox info -->'."\n";
 		if (! $mailbox)
 		{
@@ -55,12 +54,11 @@
 			$nummsg = $phpgw->msg->num_msg($mailbox);
 //			$title = '<a href="'.$phpgw->link($phpgw_info['server']['webserver_url'].'/email/index.php').'">EMail'.($str ? ' - '.$str : '').'</a>';
 			$title = '<font color="FFFFFF">EMail' . ($str ? ' - ' . $str : '') . '</font>';
-   
+
 			$portalbox = CreateObject('phpgwapi.linkbox',Array($title,$phpgw_info['theme']['navbar_bg'],$phpgw_info['theme']['bg_color'],$phpgw_info['theme']['bg_color']));
 			$portalbox->setvar('width',600);
 			$portalbox->outerborderwidth = 0;
-			$portalbox->header_background_image = $phpgw_info['server']['webserver_url']
-                                           . '/phpgwapi/templates/verdilak/images/bg_filler.gif';
+			$portalbox->header_background_image = PHPGW_APP_TPL . '/images/bg_filler.gif';
 			if($nummsg >= 5)
 			{
 				$check_msgs = 5;
@@ -87,7 +85,6 @@
 				$msg_array_hook = array();
 				$msg_array_hook = $phpgw->msg->sort($mailbox, $order_hook, $sort_hook);
 			}
-   
 
 			for($i=0;$i<$check_msgs;$i++,$j++)
 			{
@@ -103,6 +100,4 @@
 		}
 		echo "\n".'<!-- Mailox info --></td></tr>'."\n";
 	}
-
-	$phpgw_info["server"]["app_inc"] = $tmp_app_inc;
 ?>

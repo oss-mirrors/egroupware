@@ -19,9 +19,7 @@
 		$phpgw->common->phpgw_exit();
 	} unset($d1);
 
-	$tmp_app_inc = PHPGW_APP_INC;
-
-	define('PHPGW_APP_INC',$phpgw->common->get_inc_dir('comic'));
+	$tmp_app_inc = $phpgw->common->get_inc_dir('comic');
 
 	$phpgw->db->query("select * from phpgw_comic "
 		."WHERE comic_owner='"
@@ -37,11 +35,9 @@
 
 		if ($data_id != -1)
 		{
-			include(PHPGW_APP_INC . '/functions.inc.php');
+			include($tmp_app_inc . '/functions.inc.php');
 			comic_display_frontpage($data_id, $scale, $censor_level);
 		}
 	}
-
-	define('PHPGW_APP_INC',$tmp_app_inc);
 }
 ?>

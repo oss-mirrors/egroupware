@@ -18,16 +18,13 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = PHPGW_APP_INC;
-	define('PHPGW_APP_INC',$phpgw->common->get_inc_dir('stocks'));
+	$tmp_app_inc = $phpgw->common->get_inc_dir('stocks');
 
 	if ($phpgw_info['user']['apps']['stocks'] && $phpgw_info['user']['preferences']['stocks']['enabled'])
 	{
 		echo "\n" . '<!-- Stock Quotes -->' . "\n";
-		include(PHPGW_APP_INC . '/stocks/inc/functions.inc.php');
+		include($tmp_app_inc . '/functions.inc.php');
 		echo '<tr><td align="center">' . return_quotes($quotes) . '</td></tr>';
 		echo "\n" . '<!-- Stock Quotes -->' . "\n";
 	}
-
-	define('PHPGW_APP_INC',$tmp_app_inc);
 ?>

@@ -19,8 +19,7 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw_info['server']['app_inc'];
-	$phpgw_info['server']['app_inc'] = $phpgw->common->get_inc_dir('tts');
+	$tmp_app_tpl = $phpgw->common->get_tpl_dir('tts');
 
 	if ($phpgw_info["user"]["apps"]["tts"]
 		&& $phpgw_info["user"]["preferences"]["tts"]["mainscreen_show_new_updated"])
@@ -37,7 +36,7 @@
 		$phpgw->db->next_record();
 		$phpgw->db->f('0') ;
 
-		$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+		$p = CreateObject('phpgwapi.Template',$tmp_app_tpl);
 		// echo PHPGW_APP_TPL;
 		$p->set_file(array(
 			'index'   => 'hook_home.tpl',
@@ -94,6 +93,4 @@
 
 		echo "\n<!-- End TTS New/Updated -->\n";
 	}
-
-	$phpgw_info["server"]["app_inc"] = $tmp_app_inc;
 ?>
