@@ -120,7 +120,7 @@
     $remark  = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                             
     if (! $remark)  $remark  = "&nbsp;";                                                                                                                                                
 
-    $status = lang($phpgw->db->f("status"));
+    $status = $phpgw->db->f("status");
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $phpgw->db->f("end_date");
@@ -158,7 +158,7 @@
     }
     else { 
     $t->set_var('edit','');
-    $t->set_var('lang_edit','');
+    $t->set_var('lang_edit','&nbsp;');
     }
     $t->set_var('view',$phpgw->link('/projects/viewhours.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_view',lang('View'));

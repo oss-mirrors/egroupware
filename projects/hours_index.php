@@ -124,10 +124,10 @@
 // --------------------------- end record declaration --------------------------------------
     }
 
-    $t->set_var('all_partlist',$phpgw->link("/projects/hours_listhours.php","status=open"));
+    $t->set_var('all_partlist',$phpgw->link('/projects/hours_listhours.php',"status=open&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     $t->set_var('lang_all_partlist',lang("All open hours"));
     $t->set_var('lang_all_part2list',lang("All done hours"));
-    $t->set_var('all_part2list',$phpgw->link("/projects/hours_listhours.php","status=done"));
+    $t->set_var('all_part2list',$phpgw->link('/projects/hours_listhours.php',"status=done&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
 
     $t->parse("out", "projects_list_t", true);
     $t->p("out");
