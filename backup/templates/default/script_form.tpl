@@ -134,7 +134,7 @@
 
 			if (!$con || !$login_result)
 			{
-				echo 'Connection to remote ftp-server failed !';
+				echo 'Connection to remote ftp-server failed !' . "\n";
 				exit;
 			}
 
@@ -146,15 +146,69 @@
 
 				if ($put)
 				{
-					echo "ftp backuptransfer $input[$i]: success !";
+					echo "ftp backuptransfer $input[$i]: success !\n";
 				}
 				else
 				{
-					echo "ftp backuptransfer $input[$i]: failed !";
+					echo "ftp backuptransfer $input[$i]: failed !\n";
 					exit;
 				}
 			}
 			ftp_quit($con);
+		}
+
+// might not work yet!
+
+		if ($rapp == 'scp')
+		{
+			for ($i=0;$i<count($output);$i++)
+			{
+				$pipe = popen("$rapp $output[$i] $ruser@$rip:$rpath/$input[$i]",'w');
+				fputs($pipe, "$rpwd");
+
+				if (!$pipe)
+				{
+					echo "scp backuptransfer $input[$i]: failed !\n";
+					exit;
+				}
+				else
+				{
+					echo "scp backuptransfer $input[$i]: success !\n";
+				}
+				pclose($pipe);
+			}
+		}
+
+// not tested yet! does not work (i guess...)!
+
+		if ($rapp == 'smbmount')
+		{
+			$smbdir = '/mnt/smb';
+			mkdir("$smbdir", 0700);
+			$pipe = system("mount -t smbfs -o ip=$rip,username=$ruser,password=$rpwd,rw /$rpath $smbdir");
+
+			if (!$pipe)
+			{
+				echo "mounting the remote dir trough smbmount failed !\n";
+				exit;
+			}
+
+			chdir("$smbdir");
+			for ($i=0;$i<count($output);$i++)
+			{
+				$put = system("cp " . $output[$i] . ' ' . $input[$i]);
+
+				if ($put)
+				{
+					echo "smbmount backuptransfer $input[$i]: success !\n";
+				}
+				else
+				{
+					echo "smbmount backuptransfer $input[$i]: failed !\n";
+					exit;
+				}
+			}
+			system("umount " . $smbmount);
 		}
 	}
 

@@ -17,22 +17,26 @@
 		<td>{lang_b_intval}:</td>
 		<td><select name="values[b_intval]"><option value="">{lang_select_b_intval}</option>{intval_list}</select></td>
 	</tr>
-	<tr>
-		<td bgcolor="{row_on}" colspan="2"><b>{lang_b_data}</b></td>
+	<tr bgcolor="{row_on}">
+		<td>{lang_config_path}:</td>
+		<td><input type="text" name="values[script_path]" value="{script_path}"></td>
 	</tr>
-	<tr bgcolor="{row_off}">
+	<tr>
+		<td bgcolor="{row_off}" colspan="2"><b>{lang_b_data}</b></td>
+	</tr>
+	<tr bgcolor="{row_on}">
 		<td>{lang_b_sql}:</td>
 		<td>{b_sql}</td>
 	</tr>
-	<tr bgcolor="{row_on}">
+	<tr bgcolor="{row_off}">
 		<td>{lang_b_ldap}:</td>
 		<td>{b_ldap}</td>
 	</tr>
-	<tr bgcolor="{row_off}">
+	<tr bgcolor="{row_on}">
 		<td>{lang_b_email}:</td>
 		<td>{b_email}</td>
 	</tr>
-	<tr bgcolor="{row_on}">
+	<tr bgcolor="{row_off}">
 		<td>{lang_b_type}:</td>
 		<td><select name="values[b_type]"><option value="">{lang_select_b_type}</option>{type_list}</select></td>
 	</tr>

@@ -59,37 +59,58 @@
 				if (ftp_login($ftp,$user,$pass))
 				{
 					return $ftp;
+					ftp_quit($ftp);
 				}
 			}
 		}
 
-
 		function check_values($values)
 		{
-			if ($values['l_save'])
+			if ($values['b_create'])
 			{
-				if (! $values['l_path'] && ! $values['l_websave'])
-				{
-					$error[] = lang('Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !');					
-				}
-			}
+				$doc_root = $GLOBALS['HTTP_SERVER_VARS']['DOCUMENT_ROOT'] ? $GLOBALS['HTTP_SERVER_VARS']['DOCUMENT_ROOT'] : $GLOBALS['DOCUMENT_ROOT'];
 
-			if ($values['r_save'])
-			{
-				if (! $values['r_app'])
+				if ($values['script_path'])
 				{
-					$error[] = lang('Plase select an application for transport to the remote host !');					
-				}
-				elseif (! $values['r_user'] || ! $values['r_pwd'])
-				{
-					$error[] = lang('Plase enter username and password for remote connection !');					
-				}
-				elseif ($values['r_app'] == 'ftp')
-				{
-					$ftp = $this->phpftp_connect($values['r_ip'],$values['r_user'],$values['r_pwd']);
-					if (! $ftp)
+					if (substr($values['script_path'],0,strlen($doc_root)) == $doc_root)
 					{
-						$error[] = lang('The ftp connection failed ! Please check your configuration !');
+						$msg[] = lang('The directory to store the backup script must be outside of the webservers *DocumentRoot* !');
+					}
+				}
+				else
+				{
+					$msg[] = lang('Please set the path to a local dir to store the backup script !');
+				}
+
+				if ($values['l_save'])
+				{
+					if (! $values['l_path'] && ! $values['l_websave'])
+					{
+						$error[] = lang('Plase enter the path of the backup dir and/or enable showing archives in phpGroupWare !');					
+					}
+				}
+
+				if ($values['r_save'])
+				{
+					if (! $values['r_app'])
+					{
+						$error[] = lang('Please select an application for transport to the remote host !');					
+					}
+					elseif (! $values['r_user'] || ! $values['r_pwd'])
+					{
+						$error[] = lang('Please enter username and password for remote connection !');					
+					}
+					elseif ($values['r_app'] == 'ftp')
+					{
+						$ftp = $this->phpftp_connect($values['r_ip'],$values['r_user'],$values['r_pwd']);
+						if (! $ftp)
+						{
+							$error[] = lang('The ftp connection failed ! Please check your configuration !');
+						}
+					}
+					elseif (!$values['r_ip'])
+					{
+						$error[] = lang('Please specify the ip of the remote host !');
 					}
 				}
 			}
@@ -197,97 +218,107 @@
 			$co['db_type'] = $GLOBALS['phpgw_info']['server']['db_type'];
 			$co['db_name'] = $GLOBALS['phpgw_info']['server']['db_name'];
 			$co['server_root'] = PHPGW_SERVER_ROOT;
+
+			if ($co['b_create'] == 'yes')
+			{
 				
 // ------------------------------------ check -----------------------------------------------
 
-			$check_exists = $co['server_root'] . '/backup/phpgw_check_for_backup';
-			if (file_exists($check_exists) == False)
-			{
-				$check = $GLOBALS['phpgw']->template->set_file(array('check' => 'check_form.tpl'));
-				$check .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-				$check .= $GLOBALS['phpgw']->template->fp('out','check',True);
-				$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
-				$this->save_config($conf_file,$check);
-			}
+				$check_exists = $co['server_root'] . '/backup/phpgw_check_for_backup';
+				if (file_exists($check_exists) == False)
+				{
+					$check = $GLOBALS['phpgw']->template->set_file(array('check' => 'check_form.tpl'));
+					$check .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+					$check .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
+					$check .= $GLOBALS['phpgw']->template->fp('out','check',True);
+					$conf_file = $co['server_root'] . '/backup/phpgw_check_for_backup';
+					$this->save_config($conf_file,$check);
+				}
 // -------------------------------- end check -----------------------------------------------
 
 // --------------------------------- backup -------------------------------------------------
 
-			$config = $GLOBALS['phpgw']->template->set_file(array('backup' => 'backup_form.tpl'));
-			$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-			$config .= $GLOBALS['phpgw']->template->fp('out','backup',True);
-			$conf_file = $co['server_root'] . '/backup/phpgw_start_backup.' . $co['b_intval'];
-			$this->save_config($conf_file,$config);
+				$config = $GLOBALS['phpgw']->template->set_file(array('backup' => 'backup_form.tpl'));
+				$config .= $GLOBALS['phpgw']->template->set_var('script_path',$co['script_path']);
+				$config .= $GLOBALS['phpgw']->template->fp('out','backup',True);
+				$conf_file = $co['server_root'] . '/backup/phpgw_start_backup.' . $co['b_intval'];
+				$this->save_config($conf_file,$config);
 
 // -------------------------------- end backup ----------------------------------------------
 
 // --------------------------------- script --------------------------------------------------
 
-			$config = $GLOBALS['phpgw']->template->set_file(array('script_ba_t' => 'script_form.tpl'));
-			$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
+				$config = $GLOBALS['phpgw']->template->set_file(array('script_ba_t' => 'script_form.tpl'));
+				$config .= $GLOBALS['phpgw']->template->set_block('script_ba_t','script_ba','ba');
 
-			$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
+				$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
 
-			$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
+				$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
 
-			if ($co['b_sql'] == 'yes')
-			{
-				if ($co['db_type'] == 'mysql')
+				if ($co['b_sql'] == 'yes')
 				{
-					$config .= $GLOBALS['phpgw']->template->set_var('bmysql','yes');
+					if ($co['db_type'] == 'mysql')
+					{
+						$config .= $GLOBALS['phpgw']->template->set_var('bmysql','yes');
+					}
+					$config .= $GLOBALS['phpgw']->template->set_var('db_type',$co['db_type']);
+					$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
 				}
-				$config .= $GLOBALS['phpgw']->template->set_var('db_type',$co['db_type']);
-				$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
-			}
 
-			if ($co['b_ldap'] == 'yes')
-			{
-				$config .= $GLOBALS['phpgw']->template->set_var('bldap','yes');
-			}
-
-			if ($co['b_email'] == 'yes')
-			{
-				$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
-
-				$allaccounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
-
-				while (list($null,$account) = each($allaccounts))
+				if ($co['b_ldap'] == 'yes')
 				{
-					$config .= $GLOBALS['phpgw']->template->set_var(array
-					(
-						'lid'			=> stripslashes($account['account_lid']),
-						'server_root'	=> $co['server_root']
-					));
-					$GLOBALS['phpgw']->template->fp('ba','script_ba',True);
+					$config .= $GLOBALS['phpgw']->template->set_var('bldap','yes');
 				}
-			}
 
-			if ($co['r_save'] == 'yes')
+				if ($co['b_email'] == 'yes')
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var('bemail','yes');
+
+					$allaccounts = $GLOBALS['phpgw']->accounts->get_list('accounts');
+
+					while (list($null,$account) = each($allaccounts))
+					{
+						$config .= $GLOBALS['phpgw']->template->set_var(array
+						(
+							'lid'			=> stripslashes($account['account_lid']),
+							'server_root'	=> $co['server_root']
+						));
+						$GLOBALS['phpgw']->template->fp('ba','script_ba',True);
+					}
+				}
+
+				if ($co['r_save'] == 'yes')
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var('rsave','yes');
+					$config .= $GLOBALS['phpgw']->template->set_var('rip',$co['r_ip']);
+					$config .= $GLOBALS['phpgw']->template->set_var('rpath',$co['r_path']);
+					$config .= $GLOBALS['phpgw']->template->set_var('ruser',$co['r_user']);
+					$config .= $GLOBALS['phpgw']->template->set_var('rpwd',$co['r_pwd']);
+					$config .= $GLOBALS['phpgw']->template->set_var('rapp',$co['r_app']);
+				}
+
+				if ($co['l_save'] == 'yes')
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
+					$config .= $GLOBALS['phpgw']->template->set_var('lpath',$co['l_path']);		
+				}
+
+				if ($co['l_websave'] == 'yes')
+				{
+					$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
+					$config .= $GLOBALS['phpgw']->template->set_var('lwebsave','yes');
+				}
+
+				$config .= $GLOBALS['phpgw']->template->fp('out','script_ba_t',True);
+
+				$conf_file = $co['script_path'] . '/phpgw_data_backup.php';
+				$this->save_config($conf_file,$config);
+			}
+			else
 			{
-				$config .= $GLOBALS['phpgw']->template->set_var('rsave','yes');
-				$config .= $GLOBALS['phpgw']->template->set_var('rip',$co['r_ip']);
-				$config .= $GLOBALS['phpgw']->template->set_var('rpath',$co['r_path']);
-				$config .= $GLOBALS['phpgw']->template->set_var('ruser',$co['r_user']);
-				$config .= $GLOBALS['phpgw']->template->set_var('rpwd',$co['r_pwd']);
-				$config .= $GLOBALS['phpgw']->template->set_var('rapp',$co['r_app']);
+				$conf_file = $co['server_root'] . '/backup/phpgw_delete_backup.all';
+				$this->save_config($conf_file,'delete');
 			}
-
-			if ($co['l_save'] == 'yes')
-			{
-				$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
-				$config .= $GLOBALS['phpgw']->template->set_var('lpath',$co['l_path']);		
-			}
-
-			if ($co['l_websave'] == 'yes')
-			{
-				$config .= $GLOBALS['phpgw']->template->set_var('lsave','yes');
-				$config .= $GLOBALS['phpgw']->template->set_var('lwebsave','yes');
-			}
-
-			$config .= $GLOBALS['phpgw']->template->fp('out','script_ba_t',True);
-
-			$conf_file = $co['server_root'] . '/backup/inc/phpgw_data_backup.php';
-			$this->save_config($conf_file,$config);
 		}
 	}
 ?>

@@ -52,6 +52,7 @@
 			$this->t->set_var('lang_r_host',lang('Operating system'));
 			$this->t->set_var('lang_r_config',lang('Configuration remote host'));
 			$this->t->set_var('lang_r_save',lang('Save backup to a remote host ?'));
+			$this->t->set_var('lang_config_path',lang('Absolute path of the directory to store the backup script'));
 			$this->t->set_var('lang_path',lang('Absolute path of the backup directory'));
 			$this->t->set_var('lang_r_ip',lang('IP'));
 			$this->t->set_var('lang_user',lang('User'));
@@ -139,7 +140,8 @@
 
 			$r_app_list = '<option value="ftp"' . $r_type_sel[0] . '>' . lang('ftp') . '</option>' . "\n"
 						. '<option value="scp"' . $r_type_sel[1] . '>' . lang('scp') . '</option>' . "\n"
-						. '<option value="samba"' . $r_type_sel[2] . '>' . lang('samba') . '</option>' . "\n";
+						. '<option value="smbmount"' . $r_type_sel[2] . '>' . lang('
+') . '</option>' . "\n";
 
 			$this->t->set_var('r_app_list',$r_app_list);
 
@@ -160,6 +162,7 @@
 			$this->t->set_var('r_user',$values['r_user']);
 			$this->t->set_var('r_pwd',$values['r_pwd']);
 
+			$this->t->set_var('script_path',$values['script_path']);
 			$this->t->set_var('l_path',$values['l_path']);
 
 			$this->t->pfp('out','admin_form');
