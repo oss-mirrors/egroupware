@@ -48,6 +48,12 @@
 
 			// delete roles
 			if (isset($_POST['delete_roles'])) $this->delete_roles(array_keys($_POST['role']));
+			
+			// delete mappings
+			if (isset($_POST['delete_map'])) 
+			{
+			  $this->delete_maps(array_keys($_POST['map']));
+			}
 
 			// retrieve process info
 			$proc_info = $this->process_manager->get_process($this->pId);
@@ -118,7 +124,19 @@
 			}
 			$this->message[] = lang('Roles deleted');
 		}
-
+		
+		function delete_maps($mappings)
+		{
+		        foreach($mappings as $map)
+		        {
+		               $pos = strpos($map,":::");
+		               $user=substr($map,0,$pos);
+		               $roleId=substr($map,$pos+3);
+		               $this->role_manager->remove_mapping($user,$roleId);
+		        }
+			$this->message[] = lang('Mappings deleted');
+		}
+		
 		function show_mappings()
 		{
 			$this->t->set_block('admin_roles', 'block_list_mappings', 'list_mappings');
