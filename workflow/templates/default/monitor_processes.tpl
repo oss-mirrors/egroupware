@@ -91,7 +91,7 @@
 			<tr>
 			 <td style="text-align:right;"><a style="color:green;" href="{process_href_inst_active}">{process_inst_active}</a></td>
 			 <td style="text-align:right;"><a style="color:black;" href="{process_href_inst_comp}">{process_inst_comp}</a></td>
-			 <td style="text-align:right;"><a style="color:grey;" href="{process_href_isnt_abort}">{process_inst_abort}</a></td>
+			 <td style="text-align:right;"><a style="color:grey;" href="{process_href_inst_abort}">{process_inst_abort}</a></td>
 			 <td style="text-align:right;"><a style="color:red;" href="{process_href_inst_excep}">{process_inst_excep}</a></td>
 			</tr>
 			</table>
