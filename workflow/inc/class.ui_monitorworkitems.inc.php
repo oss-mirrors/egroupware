@@ -24,6 +24,7 @@
 
 			$wi_users	= $this->process_monitor->monitor_list_wi_users();
 			$workitems	= $this->process_monitor->monitor_list_workitems($this->start, -1, $this->sort_mode, $this->search_str, '');
+		    $this->stats= $this->process_monitor->monitor_stats();
 
 			$this->show_filter_process();
 			$this->show_filter_activities();

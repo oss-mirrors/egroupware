@@ -65,7 +65,7 @@
 			
 		        $activities		= $this->process_monitor->monitor_list_activities($this->start, -1, $this->sort_mode, $this->search_str,$where);
 		        $all_types		= $this->process_monitor->monitor_list_activity_types();
-		        $stats			= $this->process_monitor->monitor_stats();
+		        $this->stats	= $this->process_monitor->monitor_stats();
 
 		        $this->show_filter_process();
 		        $this->show_filter_activities();

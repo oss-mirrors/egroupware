@@ -29,7 +29,7 @@
 			$this->wheres = implode(' and ', $this->wheres);
 
 			$processes_list	= $this->process_monitor->monitor_list_processes($this->start, -1, $this->sort_mode, $this->search_str, $this->wheres);
-			$stats			= $this->process_monitor->monitor_stats();
+			$this->stats		= $this->process_monitor->monitor_stats();
 
 			$this->show_filter_process();
 			$this->show_filter_active($filter_active);
