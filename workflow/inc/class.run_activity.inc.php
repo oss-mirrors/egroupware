@@ -73,9 +73,10 @@
 				$GLOBALS['phpgw']->common->phpgw_header();
 				echo parse_navbar();
 			
-				// activities' code will have at their disposition the $template object to handle the corresponding activity template
+				// activities' code will have at their disposition the $template object to handle the corresponding activity template, but $GLOBALS['phpgw']->template will also be available, in case global scope for this is needed
 				$template = CreateObject('phpgwapi.Template', GALAXIA_PROCESSES.SEP);
 				$template->set_file('template', $this->process->getNormalizedName().SEP.'code'.SEP.'templates'.SEP.$activity->getNormalizedName().'.tpl');
+				$GLOBALS['phpgw']->template =& $template;
 			}
 			//echo "<br><br><br><br><br>Including $source <br>In request: <pre>";print_r($_REQUEST);echo "</pre>";
 			include_once ($source);
