@@ -12,6 +12,8 @@ activity %1 has been added	projects	de	Tätigkeit %1 wurde hinzugefügt.
 activity %1 has been updated	projects	de	Tätigkeit %1 wurde überarbeitet.
 activity id	projects	de	Tätigkeits-ID
 add activity	projects	de	Tätigkeit hinzufügen
+add cost	projects	de	Kosten hinzufügen
+add file	projects	de	Datei hinzufügen
 add job	projects	de	Teilprojekt hinzufügen
 add milestone	projects	de	Meilenstein hinzufügen
 add project	projects	de	Projekt hinzufügen
@@ -47,7 +49,7 @@ billed only	projects	de	nur bezahlte
 billing	projects	de	Rechnung
 bookable activities	projects	de	Buchbare Aktivitäten
 bookkeeper	projects	de	Buchhalter
-browse	projects	de	
+browse	projects	de	Navigieren
 budget	projects	de	Budget
 budget available	projects	de	Verfügbares Budget
 budget limit	projects	de	Budgetlimit
@@ -67,6 +69,9 @@ columns to show in the projects list	projects	de	Spalten zum Anzeigen in der Pro
 comment	projects	de	Kommentar
 continue	projects	de	Fortsetzen
 coordinator	common	de	Koordinator
+costs	projects	de	Kosten
+costs list	projects	de	Kostenliste
+costtype	projects	de	Kostenart
 create delivery	projects	de	Lieferung erstellen
 creator	projects	de	Ersteller
 customer	common	de	Kunde
@@ -82,6 +87,7 @@ delete factor	projects	de	Faktor löschen
 delete hours	projects	de	Stunden l&ouml;schen
 delete job	projects	de	Teilprojekt löschen
 delete project	projects	de	Projekt löschen
+delete selected files	projects	de	ausgewählte Dateien löschen
 delete work hours	projects	de	Arbeitsstunden löschen
 deliveries	projects	de	Lieferungen
 delivery	projects	de	Lieferung
@@ -121,6 +127,7 @@ event %1 has been saved	projects	de	Ereignis wurde gespeichert
 event %1 has been updated	projects	de	Ereignis wurde aktualisiert
 events	projects	de	Ereignisse
 exact accounting [hh.mm]	admin	de	Exakte Abrechnung [hh.mm]
+export as	projects	de	exportieren als
 external reference	projects	de	Externe Referenz
 extra budget	projects	de	Extra-Budget
 extra budget sum of all sub projects is bigger than the extra budget of the main project	projects	de	Summe des Extra-Budgets aller Unterprojekte ist gr&ouml;&szlig;er als das Extra-Budget des Hauptprojektes.
@@ -153,6 +160,7 @@ if you are not an administrator, please inform the administrator to configure pr
 investment nr	projects	de	Investitions-Nr.
 invoicing method	projects	de	Art der Abrechnung
 invoicing of work time	admin	de	Arbrechnung von Arbeitszeit
+is scheduled for more then %1 hours on %2	calendar	de	ist am %2 für mehr als %1 Stunden eingeplant
 job	projects	de	Teilprojekt
 job has been added	projects	de	Teilprojekt wurde hinzugefügt.
 job has been updated	projects	de	Teilprojekt wurde aktualisiert.
@@ -194,6 +202,7 @@ number	projects	de	Nummer
 old end date	projects	de	Altes Enddatum
 old start date	projects	de	Altes Startdatum
 open	projects	de	Offen
+open popup	projects	de	Popup Fenter öffnen
 open popup window	projects	de	Popup-Fenster &ouml;ffnen
 overall	projects	de	Gesamt
 parent project	projects	de	&Uuml;bergeordnetes Projekt
@@ -211,6 +220,7 @@ please choose activities for the project	projects	de	Bitte wählen Sie Tätigkeite
 please choose the accounting system for the project	projects	de	Bitte wählen Sie die Abrechnungsart.
 please choose the columns to list in the projects preferences section	projects	de	Bitte wählen Sie die Listenspalten in den Benutzereinstellungen für Projekte.
 please choose the discount type	projects	de	Bitte wählen Sie einen Rabatt aus.
+please enable html view of emails.	projects	de	Bitte erlauben Sie E-Mails als HTML darzustellen
 please enter a remark	projects	de	Bitte geben Sie einen Betreff an.
 please enter an id	projects	de	Bitte geben Sie eine ID an.
 please enter an id !	projects	de	Bitte geben Sie eine ID an.
@@ -268,7 +278,10 @@ sequencing project	projects	de	Nachfolgendes Projekt
 settings	admin	de	Einstellungen
 short description	projects	de	Kurzbeschreibung
 show gantt chart	projects	de	Gantt-Chart anzeigen
+show milestones	projects	de	Meilensteine anzeigen
+show planned resources	projects	de	eingeplante Mitarbeiter anzeigen
 site configuration	projects	de	Applikation konfigurieren
+size	projects	de	Größe
 start	projects	de	Start
 start date can not be before parent projects start date	projects	de	Startdatum kann nicht vor dem Startdatum des übergeordneten Projektes liegen.
 start date planned	projects	de	Geplantes Startdatum
@@ -276,6 +289,7 @@ statistic	projects	de	Report
 statistics	projects	de	Reporting
 stop	projects	de	Stop
 sub project level %1	projects	de	Unterprojekt Niveau %1
+subproject	projects	de	Teilprojekt
 sum	projects	de	Summe
 sum budget	projects	de	Summe Budget
 sum hours	projects	de	Summe Stunden
@@ -286,12 +300,12 @@ that id has been used already	projects	de	Diese ID ist bereits in Benutzung.
 that id has been used already !	projects	de	Diese ID ist bereits in Benutzung.
 the choosen previous project does not have an end date specified	projects	de	Für das gewählte Vorprojekt wurde kein Enddatum angegeben.
 the delivery note contains no items !	projects	de	Der Leiferschein enthält keine weiteren Angaben.
-this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	de	
+this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	de	Die Ursache dieses Fehlers liegt meist in einem nicht oder falsch konfigurierten Mailserver
 till	projects	de	Bis
 time of journey	projects	de	Reisezeit
 time planned	projects	de	geplante Zeit
 time tracker	projects	de	Zeiterfassung
-time tracking actions	projects	de	
+time tracking actions	projects	de	Zeiterfassung Einstellungen
 time tracking for this project has been stopped already	projects	de	Die Zeiterfassung für dieses Projekt wurde deaktiviert
 time tracking for this project is already active	projects	de	Die Zeiterfassung für dieses Projekt ist aktiviert
 time used	projects	de	verbrauchte Zeit
@@ -317,6 +331,7 @@ view work hours	projects	de	Arbeitsstunden anzeigen
 work date	common	de	Arbeitsdatum
 work hours	common	de	Arbeitsstunden
 work time	projects	de	Arbeitszeit
+workload warning for project	projects	de	Auslastungwarnung für Projekt
 workunit	projects	de	Arbeitseinheit
 workunits	projects	de	Arbeitseinheiten
 you have entered an invalid date !	projects	de	Sie haben ein ungültiges Datum eingegeben!
@@ -329,14 +344,3 @@ you have no customer selected !	projects	de	Sie haben keinen Kunden ausgewählt!
 you have no projects selected	projects	de	Sie haben kein Projekt ausgewählt
 you have selected an invalid activity	projects	de	Sie haben eine ungültige Tätigkeit angegeben.
 you have to create a delivery or invoice first !	projects	de	Sie müssen zuerst einen Lieferschein oder eine Rechnung erstellen
-show milestones	projects	de	Meilensteine anzeigen
-show planned resources	projects	de	eingeplante Mitarbeiter anzeigen
-subproject	projects	de	Teilprojekt
-export as	projects	de	exportieren als
-delete selected files	projects	de	ausgewählte Dateien löschen
-add file	projects	de	Datei hinzufügen
-workload warning for project	calendar	de	Auslastungwarnung für Projekt
-is scheduled for more then %1 hours on %2	calendar	de	ist am %2 für mehr als %1 Stunden eingeplant
-costs list	projects	de	Kostenliste
-add cost	projects	de	Kosten hinzufügen
-costs	projects	de	Kosten
