@@ -31,7 +31,7 @@
 		$phpgw->template->set_var('lang_header',lang('select headline news sites'));
 		$phpgw->template->set_var('lang_headlines',lang('Headline preferences'));
 
-		$phpgw->db->query('SELECT con,display FROM news_site ORDER BY display asc',__LINE__,__FILE__);
+		$phpgw->db->query('SELECT con,display FROM phpgw_headlines_sites ORDER BY display asc',__LINE__,__FILE__);
 		while ($phpgw->db->next_record())
 		{
 			$html_select .= '<option value=\'' . $phpgw->db->f('con') . '\'';

@@ -57,7 +57,7 @@
 			$errors[] = lang('You can only enter numbers minutes bewteen refresh');
 		}
 
-		$phpgw->db->query("select display from news_site where base_url='"
+		$phpgw->db->query("select display from phpgw_headlines_sites where base_url='"
 				. addslashes(strtolower($n_base_url)) . "' and newsfile='"
 				. addslashes(strtolower($n_newsfile)) . "'",__LINE__,__FILE__);
 		$phpgw->db->next_record();
@@ -68,9 +68,7 @@
 
 		if (! is_array($errors))
 		{
-			$phpgw->db->lock('news_site');
-
-			$sql = "insert into news_site (display,base_url,newsfile,"
+			$sql = "insert into phpgw_headlines_sites (display,base_url,newsfile,"
 					. "lastread,newstype,cachetime,listings) "
 					. "values ('" . addslashes($n_display) . "','"
 					. addslashes(strtolower($n_base_url)) . "','" 
@@ -78,8 +76,6 @@
 					. $n_newstype . "',$n_cachetime,$n_listings)";
 
 			$phpgw->db->query($sql,__LINE__,__FILE__);
-
-			$phpgw->db->unlock();
 
 			$phpgw->redirect($phpgw->link('/headlines/admin.php','cd=28'));
 		}

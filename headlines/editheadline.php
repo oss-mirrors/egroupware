@@ -62,8 +62,7 @@
 			$errors[] = lang('You can only enter numbers minutes bewteen refresh');
 		}
 
-		$phpgw->db->lock('news_site');
-		$phpgw->db->query("select display from news_site where base_url='"
+		$phpgw->db->query("select display from phpgw_headlines_sites where base_url='"
 				. addslashes(strtolower($n_base_url)) . "' and newsfile='"
 				. addslashes(strtolower($n_newsfile)) . "' and con !='$con'",__LINE__,__FILE__);
 		$phpgw->db->next_record();
@@ -72,19 +71,17 @@
 			$errors[] = lang('That site has already been entered');
 		}
 
-		$phpgw->db->query("UPDATE news_site SET display='" . addslashes($n_display) . "', " 
+		$phpgw->db->query("UPDATE phpgw_headlines_sites SET display='" . addslashes($n_display) . "', " 
 			. "base_url='" . addslashes($n_base_url) . "', "
 			. "newsfile='" . addslashes($n_newsfile) . "', "
 			. "lastread=0, newstype='" . $n_newstype . "', "
 			. "cachetime='$n_cachetime', listings='$n_listings' WHERE con='$con'",__LINE__,__FILE__);
 
-		$phpgw->db->unlock();
-
 		$phpgw->redirect($phpgw->link('/headlines/admin.php'));
 	}
 	else
 	{
-		$phpgw->db->query("select * from news_site where con='$con'",__LINE__,__FILE__);
+		$phpgw->db->query("select * from phpgw_headlines_sites where con='$con'",__LINE__,__FILE__);
 		$phpgw->db->next_record();
 
 		$n_display   = $phpgw->db->f('display');

@@ -28,7 +28,7 @@
 	$phpgw->common->phpgw_header();
 	echo parse_navbar();
 
-	$phpgw->db->query("select * from news_site where con='$con'",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_headlines_sites where con='$con'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 
 	// This is done for a reason (jengo)
@@ -61,7 +61,7 @@
 	$phpgw->template->set_var('input_type',$phpgw->db->f('newstype'));
 
 
-	$phpgw->db->query("select title,link from news_headlines where site='$con'",__LINE__,__FILE__);
+	$phpgw->db->query("select title,link from phpgw_headlines_cached where site='$con'",__LINE__,__FILE__);
 
 	$phpgw->template->set_var('th_bg2',$phpgw_info['theme']['th_bg']);
 	$phpgw->template->set_var('lang_current_cache',lang('Current headlines in cache'));

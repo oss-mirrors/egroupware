@@ -17,7 +17,7 @@
 
   // table array for headlines
 	$phpgw_baseline = array(
-		'news_site' => array(
+		'phpgw_headlines_sites' => array(
 			'fd' => array(
 				'con' => array('type' => 'auto','nullable' => False),
 				'display' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
@@ -33,21 +33,11 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'news_headlines' => array(
+		'phpgw_headlines_cached' => array(
 			'fd' => array(
 				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False),
 				'title' => array('type' => 'varchar', 'precision' => 255,'nullable' => True),
 				'link' => array('type' => 'varchar', 'precision' => 255,'nullable' => True)
-			),
-			'pk' => array(),
-			'fk' => array(),
-			'ix' => array(),
-			'uc' => array()
-		),
-		'users_headlines' => array(
-			'fd' => array(
-				'owner' => array('type' => 'varchar', 'precision' => 25,'nullable' => False),
-				'site' => array('type' => 'int', 'precision' => 4,'nullable' => False)
 			),
 			'pk' => array(),
 			'fk' => array(),

@@ -14,20 +14,21 @@
 	/* Basic information about this app */
 	$setup_info['headlines']['name']      = 'headlines';
 	$setup_info['headlines']['title']     = 'Headlines';
-	$setup_info['headlines']['version']   = '0.8.1';
+	$setup_info['headlines']['version']   = '0.8.1.001';
 	$setup_info['headlines']['app_order'] = 19;
 	$setup_info['headlines']['enable']    = 1;
 
 	/* The tables this app creates */
 	$setup_info['headlines']['tables']    = array(
-		'news_site',
-		'news_headlines',
-		'users_headlines'
+		'phpgw_headlines_sites',
+		'phpgw_headlines_cached'
 	);
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['headlines']['hooks'][] = 'preferences';
-	$setup_info['headlines']['hooks'][] = 'admin';
+	$setup_info['headlines']['hooks'][]   = 'admin';
+	$setup_info['headlines']['hooks'][]   = 'manual';
+	$setup_info['headlines']['hooks'][]   = 'settings';
+	$setup_info['headlines']['hooks'][]   = 'preferences';
 
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(

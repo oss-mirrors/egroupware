@@ -20,12 +20,6 @@
 	);
 	include('../header.inc.php');
 
-	function remove_account_data($query,$t)
-	{
-		global $phpgw;
-		$phpgw->db->query("delete from $t where $query");
-	}
-  
 	if (($con) && (! $confirm))
 	{
 		$phpgw->common->phpgw_header();
@@ -52,11 +46,10 @@
 	}
 	else
 	{
-		$phpgw->db->lock(array('news_site','news_headlines'));
+		$phpgw->db->transaction_begin();
 
-		remove_account_data('con=' . $con,'news_site');
-		remove_account_data('site=' . $con,'news_headlines');
-		$phpgw->db->unlock();
+		$phpgw->db->query("delete from phpgw_headlines_sites where con='$con'",__LINE__,__FILE__);
+		$phpgw->db->query("delete from phpgw_headlines_cached where site='$con'",__LINE__,__FILE__);
 
 		$phpgw->db->query("SELECT * FROM phpgw_preferences",__LINE__,__FILE__);
 		while ($phpgw->db->next_record())
@@ -80,6 +73,7 @@
 			}
 		}
 
+		$phpgw->db->transaction_commit();
 		$phpgw->redirect($phpgw->link('/headlines/admin.php','cd=16'));
 	}
 ?>

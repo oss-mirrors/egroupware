@@ -36,7 +36,7 @@
 	$phpgw->template->set_var('lang_view',lang('View'));
 	$phpgw->template->set_var('lang_add',lang('Add'));
 
-	$phpgw->db->query('select count(*) from news_site');
+	$phpgw->db->query('select count(*) from phpgw_headlines_sites',__LINE__,__FILE__);
 	$phpgw->db->next_record();
 
 	if (! $phpgw->db->f(0))
@@ -46,12 +46,12 @@
 		$phpgw->template->parse('rows','row_empty');
 	}
 
-	$phpgw->db->query('select con,display from news_site order by display');
+	$phpgw->db->query('select con,display from phpgw_headlines_sites order by display',__LINE__,__FILE__);
 	while ($phpgw->db->next_record())
 	{
 		$phpgw->nextmatchs->template_alternate_row_color($phpgw->template);
 
-		$phpgw->template->set_var('row_display',$phpgw->strip_html($phpgw->db->f('display')));
+		$phpgw->template->set_var('row_display',$phpgw->db->f('display'));
 		$phpgw->template->set_var('row_edit',$phpgw->link('/headlines/editheadline.php','con='.$phpgw->db->f('con')));
 		$phpgw->template->set_var('row_delete',$phpgw->link('/headlines/deleteheadline.php','con='.$phpgw->db->f('con')));
 		$phpgw->template->set_var('row_view',$phpgw->link('/headlines/viewheadline.php','con='.$phpgw->db->f('con')));
@@ -66,4 +66,5 @@
 	$phpgw->template->pfp('out','list');
 
 	$phpgw->common->phpgw_footer();
+
 ?>
