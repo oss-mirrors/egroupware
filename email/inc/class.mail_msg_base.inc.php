@@ -464,6 +464,29 @@
 				}
 			}
 			
+			// NEW: allow "session_cache_extreme ONLY IF
+			// 1.am table exists and is in use
+			// 2. if php_imap is built in 
+			// 3. if using imap (we can not really check prefs yet though, since we are only in the constructor)
+			// BECAUSE php4_sessions and sessions_db can not handle large data that session_cache_extreme generates
+			// and sockets does not use statdard MIME numbers, can cause header body misalign if using extreme caching
+			// (Note: it does not matter if sessions_db or php4 sessions - if no AM table then no session_cache_extreme)
+			// we do NOT YET have preferences loaded, so can not yet check for server type, however...
+			// sockets supports only POP3 and pop3 sockets can cause body-header misalign
+			$ses_cache_exteme = $this->session_cache_extreme;
+			if ($ses_cache_exteme == True)
+			{
+				// check conditions  to change to false
+				if (($this->use_private_table == False)
+				|| ($this->so->so_am_table_exists() == False)
+				|| (function_exists('imap_open') == False))
+				{
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
+					$this->session_cache_extreme = False;
+				}
+			}
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: post-check $this->session_cache_extreme is set to ['.serialize($this->session_cache_extreme).'] <br>'); }
+			
 			// UNDER DEVELOPMENT when to use cached preferences
 			if ($this->use_cached_prefs == True)
 			{
@@ -474,12 +497,20 @@
 					$this->use_cached_prefs = False;
 				}
 			}
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: $this->use_cached_prefs is set to ['.serialize($this->use_cached_prefs).']<br>'); }
 			
 			// UNDER DEVELOPMENT bulk data query from AngleMail DB
-			// only necessary to grab huge bulk data for INDEX page
-			// and some other menuactions too, but we will add more later
-			if ((stristr($this->ref_GET['menuaction'], 'email.uiindex'))
-			|| (stristr($this->ref_GET['menuaction'], 'email.uimessage.message')))
+			// only necessary to grab huge bulk data for INDEX page, (and maybe some other menuactions too, we may add more later)
+			// THIS SHOULD ONLY MATTER is session_cache_extreme = True AND use_private_table = True otherwise we do not cache the data that benefits from grouping of queries
+			if
+			(
+			  ($this->session_cache_extreme == True)
+			  && ($this->use_private_table == True)
+			  && (
+					((stristr($this->ref_GET['menuaction'], 'email.uiindex'))
+					|| (stristr($this->ref_GET['menuaction'], 'email.uimessage.message')))
+				  )
+			)
 			{
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.initialize_mail_msg('.__LINE__.'): manual *constructor*: calling $this->so->so_prop_use_group_data(True)<br>'); }
 				//$this->so->use_group_data = True;
@@ -505,46 +536,6 @@
 					$this->phpgw_before_xslt = True;
 				}
 			}
-			/*
-			// relfbecker recommends NOT using a version test for xslt check
-			if ($this->phpgw_before_xslt == '-1')
-			{
-				$this_ver = $GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
-				$pre_xslt_ver = '0.9.14.0.1.1';
-				if (!$this_ver)
-				{
-					// damn stupid fallback if the api moves the version to another place
-					$this->phpgw_before_xslt = True;
-				}
-				// this is a function in phpgwapi "common_functions" file for phpgw 0.9.15+
-				elseif (function_exists(amorethanb))
-				{
-					if (amorethanb($this_ver, $pre_xslt_ver))
-					{
-						// this phpgw version is after the switch to xslt templates
-						$this->phpgw_before_xslt = False;
-					}
-					else
-					{
-						// this phpgw version is NOT in the xslt era
-						$this->phpgw_before_xslt = True;
-					}
-				}
-				else
-				{
-					if ($GLOBALS['phpgw']->common->cmp_version_long($this_ver, $pre_xslt_ver))
-					{
-						// this phpgw version is after the switch to xslt templates
-						$this->phpgw_before_xslt = False;
-					}
-					else
-					{
-						// this phpgw version is NOT in the xslt era
-						$this->phpgw_before_xslt = True;
-					}
-				}
-			}
-			*/
 			
 			$this->known_external_args = array(
 				// === NEW GPC "OBJECTS" or Associative Arrays === 
@@ -1295,6 +1286,31 @@
 				if ($this->debug_logins > 2) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): POST create_email_preferences we made the $cached_prefs for storage DUMP:', $cached_prefs); } 
 				$this->so->so_appsession_passthru($my_location, $cached_prefs);
 			}
+			
+			/*
+			// MUST USE IN CONSTRUCTOR because other stuff there depends on a reliable "session_cache_extreme" there, too late to change it here
+			// NEW: allow "session_cache_extreme" ONLY IF
+			// 1.am table exists and is in use
+			// 2. if php_imap is built in 
+			// 3. if using imap  (this we can only check NOW that the prefs have been loaded)
+			// BECAUSE php4_sessions and sessions_db can not handle large data that session_cache_extreme generates
+			// and sockets does not use statdard MIME numbers, can cause header body misalign
+			// (Note: it does not matter if sessions_db or php4 sessions - if no AM table then no session_cache_extreme)
+			$ses_cache_exteme = $this->session_cache_extreme;
+			if ($ses_cache_exteme == True)
+			{
+				// check conditions  to change to false
+				if (($this->use_private_table == False)
+				|| ($this->so->so_am_table_exists() == False)
+				|| (function_exists('imap_open') == False)
+				|| (!stristr($this->get_pref_value('mail_server_type', $acctnum), 'imap')) )
+				{
+					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): conditions not good for session_cache_extreme, will FORCE CHANGE $this->session_cache_extreme to FALSE<br>'); }
+					$this->session_cache_extreme = False;
+				}
+			}
+			if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): post-check $this->session_cache_extreme is set to ['.serialize($this->session_cache_extreme).'] <br>'); }
+			*/
 			
 			// ---- SET important class vars  ----
 			$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
@@ -2527,21 +2543,21 @@
 				return $fake_return;
 			}
 			
-			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr: ENTERING , feed $acctnum: ['.$acctnum.']<br>'); }
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): ENTERING , feed $acctnum: ['.$acctnum.']<br>'); }
 			
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: after testing feed arg, using $acctnum: ['.$acctnum.']<br>'); }
+			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): after testing feed arg, using $acctnum: ['.$acctnum.']<br>'); }
 			
 			// do we have "level one cache" class var data that we can use?
 			$class_cached_mailsvr_callstr = $this->_direct_access_arg_value('mailsvr_callstr', $acctnum);
 			if ($class_cached_mailsvr_callstr != '')
 			{
 				// return the "level one cache" class var data
-				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr: LEAVING, returned class var cached data: '.serialize($class_cached_mailsvr_callstr).'<br>'); }
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING, returned class var cached data: '.htmlspecialchars($class_cached_mailsvr_callstr).'<br>'); }
 				return $class_cached_mailsvr_callstr;
 			}
 			
@@ -2550,15 +2566,15 @@
 			// -----------
 			// try to restore "mailsvr_callstr" from saved appsession data store
 			$appsession_cached_mailsvr_callstr = $this->read_session_cache_item('mailsvr_callstr', $acctnum);
-			if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_mailsvr_callstr: $appsession_cached_mailsvr_callstr is  ['.serialize($appsession_cached_mailsvr_callstr).']<br>'); }
+			if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): $appsession_cached_mailsvr_callstr is  ['.htmlspecialchars($appsession_cached_mailsvr_callstr).']<br>'); }
 			if (strlen($appsession_cached_mailsvr_callstr) > 6)	// as it defaults to '{:143}'
 			{
 				// cache the result in "level one cache" class var holder
-				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: recovered "mailsvr_callstr" data from appsession <br>'); }
-				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: put appsession retored data into "level 1 cache, class var" arg $this->set_arg_value(mailsvr_namespace, '.$appsession_cached_mailsvr_callstr['mailsvr_callstr'].', '.$acctnum.']) <br>'); }
+				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): recovered "mailsvr_callstr" data from appsession <br>'); }
+				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): put appsession retored data into "level 1 cache, class var" arg $this->set_arg_value(mailsvr_namespace, '.htmlspecialchars($appsession_cached_mailsvr_callstr).', '.$acctnum.']) <br>'); }
 				$this->set_arg_value('mailsvr_callstr', $appsession_cached_mailsvr_callstr, $acctnum);
 				
-				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr: LEAVING, returned appsession cached data: '.serialize($appsession_cached_mailsvr_callstr['mailsvr_callstr']).'<br>'); }
+				if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING, returned appsession cached data: '.htmlspecialchars($appsession_cached_mailsvr_callstr).'<br>'); }
 				return $appsession_cached_mailsvr_callstr;
 			}
 			
@@ -2606,13 +2622,17 @@
 			elseif ($mail_server_type == 'pop3')
 			{
 				// POP3 normal connection, No SSL
-				$callstr_extra = '/pop3';
+				//$callstr_extra = '/pop3';
+				// this is not really smart but users demand it, this ensures there will be no redhat 7.3+ tls problem
+				$callstr_extra = '/pop3/notls';
 				$mail_port = 110;
 			}
 			elseif ($mail_server_type == 'imap')
 			{
 				// IMAP normal connection, No SSL
-				$callstr_extra = '';
+				//$callstr_extra = '';
+				// this is not really smart but users demand it, this ensures there will be no redhat 7.3+ tls problem
+				$callstr_extra = '/imap/notls';
 				$mail_port = 143;
 			}
 			elseif ($mail_server_type == 'nntp')
@@ -2636,17 +2656,17 @@
 			$mailsvr_callstr = '{'.$mail_server.':'.$mail_port.$callstr_extra .'}';
 				
 			// cache the result in "level one cache" class var holder
-			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: set "level 1 cache, class var" arg $this->set_arg_value(mailsvr_callstr, '.htmlspecialchars($mailsvr_callstr).', '.$acctnum.']) <br>'); }
+			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): set "level 1 cache, class var" arg $this->set_arg_value(mailsvr_callstr, '.htmlspecialchars($mailsvr_callstr).', '.$acctnum.']) <br>'); }
 			$this->set_arg_value('mailsvr_callstr', $mailsvr_callstr, $acctnum);
 			
 			// -----------
 			// SAVE DATA TO APPSESSION CACHE
 			// -----------
 			// save "mailsvr_callstr" to appsession data store
-			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: set appsession cache (will base64_encode) $this->save_session_cache_item(mailsvr_callstr, '.$mailsvr_callstr.', '.$acctnum.']) <br>'); }
+			if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): set appsession cache (will base64_encode) $this->save_session_cache_item(mailsvr_callstr, '.htmlspecialchars($mailsvr_callstr).', '.$acctnum.']) <br>'); }
 			$this->save_session_cache_item('mailsvr_callstr', $mailsvr_callstr, $acctnum);
 			
-			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr: LEAVING, returning $mailsvr_callstr: '.serialize($mailsvr_callstr).' for $acctnum ['.$acctnum.']<br>'); }
+			if ($this->debug_args_special_handlers > 0) { $this->dbug->out('mail_msg: get_mailsvr_callstr('.__LINE__.'): LEAVING, returning $mailsvr_callstr: '.htmlspecialchars($mailsvr_callstr).' for $acctnum ['.$acctnum.']<br>'); }
 			return $mailsvr_callstr;
 		}
 	

@@ -34,8 +34,11 @@
 	*/
 	class so_mail_msg
 	{
+		// am_table_exists IS PRIVATE  you must USE FUNCTION so_am_table_exists() to access
+		var $am_table_exists = '##NOTHING##';
+		
 		var $use_group_data=True;
-		//var $use_group_data=False;
+		//var $use_group_data=False;	
 		var $data_group_array=array();
 		var $data_group_done_filled=0;
 		// when something with a folder triggers gathering of group data
@@ -333,11 +336,19 @@
 		// ==BEGIN== TEMP DATA STORE COMMANDS
 		/*!
 		@function so_am_table_exists
-		@abstract ?
+		@abstract is the anglemail DB table installed or not
 		@author Angles
 		*/
 		function so_am_table_exists()
 		{
+			if (($this->am_table_exists != '##NOTHING##')
+			&& (is_bool($this->am_table_exists)))
+			{
+				//echo 'so_am_table_exists: result: $this->am_table_exists reports we checked before and says table  DOES exist<br>';
+				// this is for speed eventhough we store this in appsession there is no need to querey apsession after first time
+				return $this->am_table_exists;
+			}
+			
 			$look_for_me = 'phpgw_anglemail';
 			
 			// have we cached this in SESSION cache - NOT the AM table itself!
@@ -348,11 +359,13 @@
 			if ($appsession_returns == $affirmative_value)
 			{
 				//echo 'so_am_table_exists: result: Actual APPSESSION reports stored info saying table ['.$look_for_me.'] DOES exist<br>';
+				$this->am_table_exists = True;
 				return True;
 			}
 			elseif ($appsession_returns == $negative_value)
 			{
 				//echo 'so_am_table_exists: result: Actual APPSESSION reports stored info saying table ['.$look_for_me.'] does NOT exist<br>';
+				$this->am_table_exists = False;
 				return False;
 			}
 			
@@ -363,6 +376,7 @@
 			{
 				// STORE THE POSITIVE ANSWER
 				$this->so_appsession_passthru($appsession_key, $affirmative_value);
+				$this->am_table_exists = True;
 				//echo 'so_am_table_exists: result: table ['.$look_for_me.'] DOES exist<br>';
 				return True;
 			}
@@ -370,6 +384,7 @@
 			{
 				// STORE THE NEGATIVE ANSWER
 				$this->so_appsession_passthru($appsession_key, $negative_value);
+				$this->am_table_exists = False;
 				//echo 'so_am_table_exists: result: table ['.$look_for_me.'] does NOT exist<br>';
 				return False;
 			}

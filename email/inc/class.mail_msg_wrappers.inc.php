@@ -3242,6 +3242,8 @@ Array
 				while(list($key,$value) = each($this->ref_POST))
 				{
 					if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): looking for "_fake_uri" token in HTTP_POST_VARS ['.$key.'] = '.$this->ref_POST[$key].'<br>'); }
+					/*
+					// THERE IS NO WAY THIS EARLY VERSION PHP BUG CAN STILL EXIST
 					if ($key == 'delmov_list')
 					{
 						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
@@ -3286,7 +3288,9 @@ Array
 						// increment our shadow iteation count
 						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data DUMP:', $this->ref_POST[$key]); }
 					}
-					elseif (strstr($key, '_fake_uri'))
+					else
+					*/
+					if (strstr($key, '_fake_uri'))
 					{
 						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
 						$embedded_data = array();
@@ -3298,20 +3302,20 @@ Array
 						$this->ref_POST[$new_key] = $embedded_data;
 						if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): decoded "_fake_uri" data: HTTP_POST_VARS['.$new_key.'] data DUMP:', $this->ref_POST[$new_key]); }
 					}
-					/*
+					// use this original "delmov_list" code without the RH8 bug check
 					elseif ($key == 'delmov_list')
 					{
 						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list" needs decoding HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'; }
-						$sub_loops = count($this->ref_POST[$key]);				
+						$sub_loops = count($this->ref_POST[$key]);
 						for($i=0;$i<$sub_loops;$i++)
 						{
 							$sub_embedded_data = array();
-							$sub_embedded_data = $this->decode_fake_uri($this->ref_POST[$key][$i]);
+							// True = attempt to "raise up" embedded data to top level
+							$sub_embedded_data = $this->decode_fake_uri($this->ref_POST[$key][$i], True);
 							$this->ref_POST[$key][$i] = $sub_embedded_data;
 						}
 						if ($this->debug_args_input_flow > 2) { echo 'mail_msg: grab_class_args_gpc: decoded ARRAY "_fake_uri" data: HTTP_POST_VARS['.$key.'] data dump: <pre>'; print_r($this->ref_POST[$key]); echo '</pre>'; }
 					}
-					*/
 				}
 			}
 			
@@ -3903,8 +3907,32 @@ Array
 				if ((isset($data['msgball_list']) == False)
 				|| (!$data['msgball_list']))
 				{
-					$this->dbug->out('mail_msg: save_session_cache_item: LEAVING on ERROR, FIXME line '.__LINE__.' we have no msgball_list<br>');
-					echo 'mail_msg: save_session_cache_item: LEAVING on ERROR, FIXME line '.__LINE__.' we have no msgball_list<br>';
+					$this->dbug->out('mail_msg: save_session_cache_item: LEAVING on ERROR, FIXME line '.__LINE__.' we have no msgball_list, sometimes caused when you ask call get_msgball_list on an empty folder, or if trying to use imap sockets<br>');
+					echo 'mail_msg: save_session_cache_item: LEAVING on ERROR, FIXME line '.__LINE__.' we have no msgball_list, check: is this an empty folder, is php_imap installed <br>';
+					// LEAVING ERROR
+					return False;
+				}
+				
+				// FIRST do a CACHE SANITY CHECK
+				// anglemail table is good for about 8,000 to 10,000 item msgball list
+				// while php4 sessions and sessions_db are good for much less than that
+				// if we put too much data into a store that can not handle it, we get an error on retieving that data
+				// which error will stop page view and because php has no excepion handler, we must avoid the error before it happens
+				$msgball_list_count = count($data['msgball_list']);
+				if 
+				(
+				  (
+					(($this->use_private_table == True)
+					&& ($msgball_list_count > 9000))
+				  )
+				 ||
+				  (
+					(($this->use_private_table == False)
+					&& ($msgball_list_count > 2000))
+				  )
+				)
+				{
+					if ($this->debug_session_caching > 0) { $this->dbug->out('mail_msg: save_session_cache_item: LEAVING on $msgball_list_count ['.$msgball_list_count.'] TOO LARGE, line '.__LINE__.' test indicates msgball_list too big for data store <br>'); }
 					// LEAVING ERROR
 					return False;
 				}
