@@ -214,7 +214,7 @@
 		function get_forums_for_cat($cat_id)
 		{
 			$forums = $this->so->get_forum_info($cat_id);
-			while(list($key,$forum) = each($forums))
+			while($forums && list($key,$forum) = each($forums))
 			{
 				$summary[$key] = $forum;
 				$temp = $this->so->get_thread_summary($cat_id,$forum['id']);
