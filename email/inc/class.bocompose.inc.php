@@ -18,8 +18,8 @@
 			'get_langed_labels'	=> True,
 			'compose'		=> True
 		);
-		//var $debug = True;
-		var $debug = False;
+		//var $debug = 3;
+		var $debug = 0;
 		var $xi;
 		var $xml_functions = array();
 		var $my_validator;
@@ -68,7 +68,7 @@
 			$args_array['do_login'] = True;
 			
 			// "start your engines"
-			if ($this->debug == True) { echo 'email.bocompose.compose: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
+			if ($this->debug > 1) { echo 'email.bocompose.compose: call msg->begin_request with args array:<pre>'; print_r($args_array); echo '</pre>'; }
 			$some_stream = $GLOBALS['phpgw']->msg->begin_request($args_array);
 			// error if login failed
 			if (($args_array['do_login'] == True)
@@ -83,6 +83,8 @@
 			// ----  Handle Replying and Forwarding  -----
 			if ($GLOBALS['phpgw']->msg->get_isset_arg('["msgball"]["msgnum"]'))
 			{
+				if ($this->debug > 1) { echo 'email.bocompose.compose: get_isset_arg ["msgball"]["msgnum"] is TRUE <br>'; }
+				if ($this->debug > 1) { echo 'email.bocompose.compose: $GLOBALS[phpgw]->msg->get_arg_value(action) : ['.$GLOBALS['phpgw']->msg->get_arg_value('action').'] <br>'; }
 				$msgball = $GLOBALS['phpgw']->msg->get_arg_value('msgball');
 				$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header($msgball);
 				$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure($msgball);
@@ -389,11 +391,12 @@
 			if ($GLOBALS['phpgw']->msg->get_isset_arg('msgball'))
 			{
 				// generally, msgball arg exists when reply,replyall, or forward is being done
-				// if it exists, preserve (carry forward) its "folder" and "acctnum" values
+				// if it exists, preserve (carry forward) its "folder" "action" and "acctnum" values
 				$send_btn_action = $GLOBALS['phpgw']->link(
 						'/index.php',
 						'menuaction=email.bosend.send'
-						.'&action=forward'
+						//.'&action=forward'
+						.'&action='.$GLOBALS['phpgw']->msg->get_arg_value('action')
 						.'&'.$msgball['uri']
 						// this is used to preserve these values when we return to folder list after the send
 						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')

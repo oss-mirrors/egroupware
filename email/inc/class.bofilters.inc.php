@@ -17,7 +17,9 @@
 		var $public_functions = array(
 			'process_submitted_data'	=> True,
 			'delete_filter'	=> True,
-			'do_filter'	=> True
+			'do_filter'	=> True,
+			'move_up'	=> True,
+			'move_down'	=> True
 		);
 		
 		var $not_set='-1';
@@ -189,6 +191,80 @@
 			}
 		}
 		
+		function move_up()
+		{
+			// "False" means  return $this->not_set  if no filter number was found anywhere
+			$found_filter_num = $this->obtain_filer_num(False);
+			if ($this->debug > 1) { echo 'bofilters.move_up: $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
+			
+			if ($found_filter_num == $this->not_set)
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_up: LEAVING with error, no filter num was found<br>'."\r\n"; }
+				return False;
+			}
+			elseif($this->filter_exists($found_filter_num) == False)
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_up: LEAVING with error, filter $found_filter_num [<code>'.serialize($found_filter_num).'</code>] does not exist<br>'."\r\n"; }
+				return False;
+			}
+			elseif((string)$found_filter_num == '0')
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_up: LEAVING with error, filter $found_filter_num [<code>'.serialize($found_filter_num).'</code>] can not be moved up<br>'."\r\n"; }
+				return False;
+			}
+			// if we get here we need to move up this filter
+			$take_my_position = $this->all_filters[$found_filter_num-1];
+			$im_moving_up = $this->all_filters[$found_filter_num];
+			$this->all_filters[$found_filter_num-1] = array();
+			$this->all_filters[$found_filter_num-1] = $im_moving_up;
+			$this->all_filters[$found_filter_num] = array();
+			$this->all_filters[$found_filter_num] = $take_my_position;
+			$this->save_all_filters_to_repository();
+			// redirect user back to filters list page
+			$take_me_to_url = $GLOBALS['phpgw']->link(
+										'/index.php',
+										'menuaction=email.uifilters.filters_list');
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.move_up: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+			Header('Location: ' . $take_me_to_url);
+		}
+		
+		function move_down()
+		{
+			// "False" means  return $this->not_set  if no filter number was found anywhere
+			$found_filter_num = $this->obtain_filer_num(False);
+			if ($this->debug > 1) { echo 'bofilters.move_down: $found_filter_num : [<code>'.serialize($found_filter_num).'</code>]<br>'."\r\n"; }
+			
+			if ($found_filter_num == $this->not_set)
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_down: LEAVING with error, no filter num was found<br>'."\r\n"; }
+				return False;
+			}
+			elseif($this->filter_exists($found_filter_num) == False)
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_down: LEAVING with error, filter $found_filter_num [<code>'.serialize($found_filter_num).'</code>] does not exist<br>'."\r\n"; }
+				return False;
+			}
+			elseif($found_filter_num == (count($this->all_filters)-1))
+			{
+				if ($this->debug > 0) { echo 'bofilters.move_down: LEAVING with error, filter $found_filter_num [<code>'.serialize($found_filter_num).'</code>] can not be moved down<br>'."\r\n"; }
+				return False;
+			}
+			// if we get here we need to move up this filter
+			$take_my_position = $this->all_filters[$found_filter_num+1];
+			$im_moving_down = $this->all_filters[$found_filter_num];
+			$this->all_filters[$found_filter_num+1] = array();
+			$this->all_filters[$found_filter_num+1] = $im_moving_down;
+			$this->all_filters[$found_filter_num] = array();
+			$this->all_filters[$found_filter_num] = $take_my_position;
+			$this->save_all_filters_to_repository();
+			// redirect user back to filters list page
+			$take_me_to_url = $GLOBALS['phpgw']->link(
+										'/index.php',
+										'menuaction=email.uifilters.filters_list');
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.move_down: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+			Header('Location: ' . $take_me_to_url);
+		}
+		
 		function process_submitted_data()
 		{
 			if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data: ENTERING<br>'."\r\n"; }
@@ -203,9 +279,7 @@
 			// FILTER NUMBER
 			//$found_filter_num = $this->obtain_filer_num(False);
 			$found_filter_num = $this->obtain_filer_num();
-			// is_bool is in the php3 compat library
-			if ((is_bool($found_filter_num))
-			&& ($found_filter_num == False))
+			if ((string)$found_filter_num == $this->not_set)
 			{
 				echo 'bofilters.process_submitted_data: LEAVING with ERROR, unable to obtain POST filter_num';
 				return;

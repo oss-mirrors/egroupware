@@ -545,6 +545,18 @@
 					$filters_list[$i]['display_string'] = '['.$i.'] '.$filters_list[$i]['filtername'];
 					$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
 					
+					$filters_list[$i]['move_up_url'] = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.bofilters.move_up'
+									.'&filter_num='.$i);
+					$filters_list[$i]['move_up_href'] = '<a href="'.$filters_list[$i]['move_up_url'].'">'.lang('Move Up').'</a>';
+					
+					$filters_list[$i]['move_down_url'] = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.bofilters.move_down'
+									.'&filter_num='.$i);
+					$filters_list[$i]['move_down_href'] = '<a href="'.$filters_list[$i]['move_down_url'].'">'.lang('Move Down').'</a>';
+					
 					$filters_list[$i]['edit_url'] = $GLOBALS['phpgw']->link(
 									'/index.php',
 									 'menuaction=email.uifilters.filters_edit'
