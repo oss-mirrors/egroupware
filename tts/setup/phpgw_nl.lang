@@ -1,18 +1,18 @@
-a new ticket has been reported.	tts	nl	
-accept	tts	nl	
+a new ticket has been reported.	tts	nl	Er is een nieuwe melding gedaan
+accept	tts	nl	ACCEPTEER
 accept the ticket into verification process.	tts	nl	
-accepted	tts	nl	
-action	tts	nl	
+accepted	tts	nl	GEACCEPTEERD
+action	tts	nl	Actie
 add new ticket	tts	nl	Nieuwe melding toevoegen
 add ticket	tts	nl	Melding toevoegen
 additional notes	tts	nl	Aanvullende opmerkingen
-admin options	common	nl	
+admin options	common	nl	Beheeropties
 assign to	tts	nl	Toewijzen aan
 assigned from	tts	nl	Toegewezen door
 assigned to	tts	nl	Toegewezen aan
-billable hours	tts	nl	
-billable hours changed	tts	nl	
-billable hours rate	tts	nl	
+billable hours	tts	nl	Te factureren uren
+billable hours changed	tts	nl	Te factureren uren gewijzigd
+billable hours rate	tts	nl	Te factureren uren tarief
 billable rate	tts	nl	
 billable rate changed	tts	nl	
 category changed	tts	nl	
@@ -22,7 +22,7 @@ close	tts	nl	Sluiten
 close date	tts	nl	Datum sluiting
 close the invalid ticket.	tts	nl	
 closed	tts	nl	Gesloten
-completed	tts	nl	
+completed	tts	nl	AFGESLOTEN
 configure the states	tts	nl	
 configure the transitions	tts	nl	
 create new state	tts	nl	
@@ -39,7 +39,7 @@ deleting the state	tts	nl
 deleting the transition	tts	nl	
 detail	tts	nl	Detail
 details	tts	nl	Details
-duplicate	tts	nl	
+duplicate	tts	nl	DUPLICEER
 edit the state	tts	nl	
 edit the transition	tts	nl	
 force	tts	nl	
@@ -84,31 +84,31 @@ original ticket details	tts	nl
 perform irregular transition into the following state	tts	nl	
 prio	tts	nl	Prio
 priority	tts	nl	Prioriteit
-priority changed	tts	nl	
+priority changed	tts	nl	Prioriteit  gewijzigd
 put the preexistent ticket into the state %1.	tts	nl	
-re-assigned	tts	nl	
-re-opened	tts	nl	
-refresh every (seconds)	tts	nl	
-reopen	tts	nl	Heropenen
-reopened	tts	nl	
+re-assigned	tts	nl	Opnieuw geopend
+re-opened	tts	nl	Heropend
+refresh every (seconds)	tts	nl	Ververs elke (seconden)
+reopen	tts	nl	HEROPENEN
+reopened	tts	nl	HEROPEND
 resolve	tts	nl	
 resolved	tts	nl	
 returns a struct of a tickets history	tts	nl	
 returns a struct of values of a single ticket	tts	nl	
 returns the additional notes attached to a ticket	tts	nl	
-selected	tts	nl	
-show new/updated tickets on main screen	tts	nl	
-source state	tts	nl	
-state	tts	nl	
-state changed	tts	nl	
-state id	tts	nl	
-state name	tts	nl	
+selected	tts	nl	geselecteerd
+show new/updated tickets on main screen	tts	nl	Nieuwe en gewijzigde meldingen op startscherm weergeven
+source state	tts	nl	Bronstatus
+state	tts	nl	Status
+state changed	tts	nl	Status gewijzigd
+state id	tts	nl	ID Status
+state name	tts	nl	Naam Status
 status/date closed	tts	nl	Status/Datum sluiting
 subject	tts	nl	Onderwerp
-subject changed	tts	nl	
-target state	tts	nl	
-test	tts	nl	
-the closed ticket requires more work. reopen it.	tts	nl	
+subject changed	tts	nl	Onderwerp gewijzigd
+target state	tts	nl	Doelstatus
+test	tts	nl	TEST
+the closed ticket requires more work. reopen it.	tts	nl	De gesloten melding vereist meer werk. Heropen de melding.
 the owner of the ticket was not able to confirm the issue.	tts	nl	
 the ticket has been accepted by the owner, who is about to work on it.	tts	nl	
 the ticket has been closed without resolution.	tts	nl	
@@ -127,7 +127,7 @@ the tickets in the following list are in the state %1. please, decide what shoul
 the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	nl	
 ticket	tts	nl	Melding
 ticket assigned to %1	tts	nl	Melding toegewezen aan %1
-ticket has been updated	tts	nl	
+ticket has been updated	tts	nl	Medling is bijgewerkt
 tickets found %1	tts	nl	
 tickets open %1	tts	nl	
 tickets total %1	tts	nl	
