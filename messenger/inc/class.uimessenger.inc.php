@@ -54,7 +54,6 @@
 			$this->template->fp('app_header','global_header');
 
 			$GLOBALS['phpgw']->common->phpgw_header();
-			echo parse_navbar();
 		}
 
 		function set_common_langs()
