@@ -106,7 +106,7 @@
 		//@param nameselectbox The value of the selected fields on the name selectbox (center select box)
 		var $nameselectbox;
 		//@param nameselect The value of the first selected field on the name selectbox (center select box)
-		var $nameselectbox;
+		var $nameselect;
 		//@param searchautocomplete The value of the searchautocomplete textbox, just above the name selectbox
 		var $searchautocomplete;
 		//@param hideto If this is set to 1, this framework will hide the toselctbox
