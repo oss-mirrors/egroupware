@@ -65,11 +65,67 @@
 				$this->GUI->gui_send_instance($GLOBALS['phpgw_info']['user']['account_id'], $activity_id, $instance_id);
 			}
 
+		    $where = '';
+		    $wheres = array();
+
+
+		    if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {  
+	        	$filter_process= (int)get_var('filter_process','any','');
+		    	$wheres[] = "ga.wf_p_id=" .$filter_process. "";
+		    }  
+/*
+		    if (isset($_REQUEST['filter_status']) && $_REQUEST['filter_status']) {  
+		    	$filter_status= (int)get_var('filter_status', 'any', 0);
+		    	$wheres[] = "wf_activity_id=" .$filter_status. "";
+		    }
+  
+		        if (isset($_REQUEST['filter_type']) && $_REQUEST['filter_type'])
+		        { 
+		          $filter_type= get_var('filter_type', 'any', '');
+		          $wheres[] = "type= '".$filter_type."'";
+		        }  
+		        if (isset($_REQUEST['search_str']))
+		        {  
+		          $this->search_str = get_var('search_str','any','');
+		        } 
+		        else {
+		          $this->search_str = '';
+		        }
+		        */
+			if( count($wheres) > 0 ) {
+		        $where = implode(' and ', $wheres);
+				//echo "where: <pre>";print_r($where);echo "</pre>";
+			}
+			
+			
 			// retrieve all user processes info
-			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', '');
+			$all_processes = $this->GUI->gui_list_user_processes($GLOBALS['phpgw_info']['user']['account_id'], 0, -1, 'wf_procname__asc', '', $where);
+				
+			//echo "all_processes: <pre>";print_r($all_processes);echo "</pre>";
+			//echo "filter_act_status: <pre>";print_r($filter_act_status);echo "</pre>";
+			
+		    $where = '';
+		    $wheres = array();
+		    if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {  
+	        	$filter_process= (int)get_var('filter_process','any','');
+		    	$wheres[] = "ga.wf_p_id=" .$filter_process. "";
+		    }  
+		    if (isset($_REQUEST['filter_act_status']) && $_REQUEST['filter_act_status']) {  
+	        	$filter_act_status= get_var('filter_act_status','any','');
+		    	$wheres[] = "gia.wf_status='" .$filter_act_status. "'";
+		    }  
+		    if (isset($_REQUEST['filter_status']) && $_REQUEST['filter_status']) {  
+	        	$filter_status= get_var('filter_status','any','');
+		    	$wheres[] = "gi.wf_status='" .$filter_status. "'";
+		    }  
+			
+			if( count($wheres) > 0 ) {
+		        $where = implode(' and ', $wheres);
+				//echo "where: <pre>";print_r($where);echo "</pre>";
+			}
 
 			// retrieve user instances
-			$instances = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, $this->sort_mode, $this->search_str, '');
+			$instances = $this->GUI->gui_list_user_instances($GLOBALS['phpgw_info']['user']['account_id'], $this->start, -1, $this->sort_mode, $this->search_str, $where);
 			//echo "instances: <pre>";print_r($instances);echo "</pre>";
 
 			$this->show_select_status($filter_status);
