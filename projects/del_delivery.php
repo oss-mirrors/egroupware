@@ -21,6 +21,7 @@
   $t->set_block("projecthours_list_t", "projecthours_list", "list");
 
   $t->set_var(date_hint,"");
+  $t->set_var("lang_action",lang("Delivery"));
 
   if(($Update) or ($Delivery)) {
   if (checkdate($month,$day,$year)) {
@@ -147,7 +148,7 @@
   
   if(!$delivery_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_delivery");
-    $t->set_var(title_delivery_num,lang("delivery_num"));
+    $t->set_var(title_delivery_num,lang("Delivery ID"));
     if($phpgw->db->next_record()) {
       $t->set_var(delivery_num,(int)($phpgw->db->f("max"))+1);
     } else {

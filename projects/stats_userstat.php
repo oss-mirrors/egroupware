@@ -98,7 +98,7 @@
 
      if($billed)                                                                                                                                                   
        $t->set_var("billed","checked");                                                                                                                            
-       $t->set_var("billedonly",lang("billedonly"));                                                                                                                 
+       $t->set_var("billedonly",lang("Billed only"));                                                                                                                 
                                                   
                                                                                                                      
     // calculate statistics                                                                                                                                   
@@ -148,7 +148,7 @@
     }                                                                                                                                                       
     $db2->query("SELECT SUM(minutes) as min,descr FROM p_hours,p_activities WHERE "                                                               
                         ." employee='$account_id' AND "                                                                                                  
-                        ." p_hours.activity_id=p_activities.id $filter GROUP BY p_hours.activity_id");$t->set_var("lang_calcb",lang("calc"));
+                        ." p_hours.activity_id=p_activities.id $filter GROUP BY p_hours.activity_id");$t->set_var("lang_calcb",lang("Calculate"));
 
 
      $summin=0;                                                                                                                                              

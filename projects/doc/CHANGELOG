@@ -10,4 +10,5 @@
             removed p_projectaddress table
             included address in print invoice & delivery
 12/01/2000: update activities listing in editproject
-12/02/2000: update lang -> Project ID, Activity ID, Invoice ID, Delivery ID 
+12/02/2000: update lang -> Project ID, Activity ID, Invoice ID, Delivery ID
+12/03/2000: moved select own address to preferences 

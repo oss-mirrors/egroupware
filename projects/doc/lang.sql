@@ -25,6 +25,7 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Title','projects
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Invoice','projects','en','Invoice');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('User statistics','projects','en','User statistics');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Date due','projects','en','Date due');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('End date','projects','en','End date');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project statistics','projects','en','Project statistics');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Position','projects','en','Position');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project statistic','projects','en','Project statistic');
@@ -35,7 +36,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('User statistic',
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project delivery','projects','en','Project delivery');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Hours','projects','en','Hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Billed only','projects','en','Billed only');
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('View hours','projects','en','View hours');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('List hours','projects','en','List hours');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('List project hours','projects','en','List project hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Copy template','projects','en','Copy template');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Overall','projects','en','Overall');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Search','projects','en','Search');
@@ -103,7 +105,6 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Number','project
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Status','projects','en','Status');                                                                                                      
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Title','projects','en','Title');                                                                                                        
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Admin','projects','en','Admin');                                                                                                        
-REPLACE INTO lang (message_id, app_name, lang, content) VALUES('View hour','projects','en','View hour');                                                                                                 
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Copy template','projects','en','Copy template');                                                                                        
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Search','projects','en','Search');                                                                                                      
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Submit','projects','en','Submit');                                                                                                      

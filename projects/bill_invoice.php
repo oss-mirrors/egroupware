@@ -20,7 +20,8 @@
   $t = new Template($phpgw_info["server"]["app_tpl"]);
   $t->set_file(array( "projecthours_list_t" => "bill_listhours.tpl"));
   $t->set_block("projecthours_list_t", "projecthours_list", "list");
-
+  
+  $t->set_var("lang_action",lang("Invoice"));
   $t->set_var(date_hint,"");
   
   $db2 = $phpgw->db;
@@ -157,7 +158,7 @@
   $t->set_var(title_invoice_num,lang("Invoice ID"));
   if(!$invoice_num) {
     $phpgw->db->query("SELECT max(num) AS max FROM p_invoice");
-    $t->set_var(title_invoice_num,lang("invoice_num"));
+    $t->set_var(title_invoice_num,lang("Invoice ID"));
     if($phpgw->db->next_record()) {
       $t->set_var(invoice_num,(int)($phpgw->db->f("max"))+1);
     } else {

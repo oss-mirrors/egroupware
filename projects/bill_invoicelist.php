@@ -20,6 +20,8 @@
   $t->set_file(array( "projects_list_t" => "bill_listinvoice.tpl"));
   $t->set_block("projects_list_t", "projects_list", "list");
 
+  $t->set_var("lang_action",lang("Invoice list"));
+
   $common_hidden_vars =
    "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
  . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"

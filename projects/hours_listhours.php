@@ -28,7 +28,8 @@
  . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
  . "<input type=\"hidden\" name=\"project_id\" value=\"$project_id\">\n";
 
-  $t->set_var(common_hidden_vars,$common_hidden_vars);   
+  $t->set_var(common_hidden_vars,$common_hidden_vars); 
+  $t->set_var("lang_action",lang("List project hours"));   
 
   if (! $start)
      $start = 0;

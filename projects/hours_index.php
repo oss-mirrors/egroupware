@@ -104,7 +104,7 @@
   $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"hours_index.php",lang("Date due")));
   $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"hours_index.php",lang("Coordinator")));
   $t->set_var(h_lang_addhour,lang("Add hours"));
-  $t->set_var(h_lang_viewhour,lang("View hours"));             
+  $t->set_var(h_lang_viewhour,lang("List hours"));             
 
   // -------------- end header declaration -----------------
 
@@ -194,7 +194,7 @@
                                          . $filter)
                                  . "\">". lang("Add hours") . "</a>",
                       "viewhour" => "<a href=\"". $phpgw->link("hours_listhours.php","project_id=" . $phpgw->db->f("id") )
-                                 . "\">". lang("View hours") . "</a>"));
+                                 . "\">". lang("List hours") . "</a>"));
        $t->parse("list", "projects_list", true);
 
        // -------------- end record declaration ------------------------

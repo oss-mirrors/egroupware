@@ -111,7 +111,7 @@
                       "firstname" => $phpgw->db->f("account_firstname"),
                       "lastname" => $phpgw->db->f("account_lastname"),
       		      "stat" =>  "<a href=\"". $el
-                                 . "\">". lang("stat") . "</a>"));
+                                 . "\">". lang("Statistic") . "</a>"));
        $t->parse("list", "user_list", true);
 
        // -------------- end record declaration ------------------------

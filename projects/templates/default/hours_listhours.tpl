@@ -1,5 +1,6 @@
+<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                        
+<hr noshade width="98%" align="center" size="1">                                                                                                                                                     
 <center>
-{lang_projecthours_action}
 
  {total_matchs}
  {next_matchs}

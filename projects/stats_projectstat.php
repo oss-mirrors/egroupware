@@ -134,7 +134,7 @@
     
     if($billed)                     
        $t->set_var("billed","checked");                                 
-       $t->set_var("billedonly",lang("Billedonly"));
+       $t->set_var("billedonly",lang("Billed only"));
     
     $t->set_var("lang_calcb",lang("Calculate"));
 

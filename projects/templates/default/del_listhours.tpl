@@ -1,6 +1,8 @@
+<p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>                                                                                                                                                     
+<hr noshade width="98%" align="center" size="1">                                                                                                                                                  
 <center>
-{lang_projecthours_action}
- <form method="POST" action="{actionurl}">
+ 
+<form method="POST" action="{actionurl}">
 
 <table border=0 cellspacing=1 cellpadding=3>
 <tr>
