@@ -202,6 +202,7 @@
 function html_activate_urls($str)
 {
     // lift all links, images and image maps
+
     preg_match_all("/<a [^>]+>.*<\/a>/is", $str, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
     {
@@ -218,6 +219,7 @@ function html_activate_urls($str)
         $replace[] = $match[0];
     }
 
+
     preg_match_all("/<img [^>]+>/is", $str, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
     {
@@ -227,6 +229,7 @@ function html_activate_urls($str)
     }
 
     $str = str_replace($replace, $search, $str);
+
 
     // indicate where urls end if they have these trailing special chars
     $sentinals = array("'&(quot|#34);'i",                 // Replace html entities
@@ -238,11 +241,11 @@ function html_activate_urls($str)
                        "'&(pound|#163);'i",
                        "'&(copy|#169);'i",
                        "'&#(\d+);'e");
+
     $str = preg_replace($sentinals, "^^sentinal^^\\0^^sentinal^^", $str);
 
     $vdom = "[:alnum:]";                // Valid domain chars
     $vurl = $vdom."_~-";                // Valid subdomain and path chars
-    //$vura = "A-ßa-y!#$%&*+,;=@.".$vurl; // Valid additional parameters (after '?') chars;
     $vura = "A-Ya-y!#$%&*+,;=@./".$vurl; // Valid additional parameters (after '?') chars;
                                         // insert other local characters if needed
     $protocol = "[[:alpha:]]{3,10}://"; // Protocol exp
@@ -251,7 +254,15 @@ function html_activate_urls($str)
     $name = "[$vurl]+([.][$vurl]+)*";   // Document name exp
     $params = "[?][$vura]*";            // Additional parameters (for GET)
 
-    $str = eregi_replace("$protocol$server(/$path($name)?)?($params)?",  "<a href=\"\\0\">\\0</a>", $str); // URL into links
+    // URL into links
+    $str = eregi_replace("$protocol$server(/$path($name)?)?($params)?",  "<a href=\"\\0\">\\0</a>", $str); 
+
+    // mailto into links
+    $protocol = "mailto:"; // Protocol exp
+    $str = eregi_replace("$protocol$name@$server($params)?",  "<a href=\"\\0\">\\0</a>", $str); 
+
+    // <someone@somewhere.net> into links
+    $str = eregi_replace("<($name@$server($params)?)>",  "&lt;<a href=\"mailto:\\1\">\\1</a>&gt;", $str); 
 
     $str = str_replace("^^sentinal^^", '', $str);
     $str=str_replace($search, $replace, $str);
