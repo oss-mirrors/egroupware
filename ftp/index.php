@@ -49,7 +49,7 @@
 
    $phpgw->Template->set_var("misc_data","");
 
-   $phpgw->Template->set_var("module_name",lang_ftp("module name"));
+   $phpgw->Template->set_var("module_name",lang("module name"));
 
    if ($action=="" || $action=="login") {
        // if theres no action, try to login to default host with user and pass
@@ -89,10 +89,10 @@
                   $retval=ftp_rmdir($ftp,$olddir . "/" . $file);
                }
                if ($retval) {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("deleted","$olddir/$file"),
+                  $phpgw->Template->set_var("misc_data",lang("deleted","$olddir/$file"),
                      true);
                } else {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("failed to delete",
+                  $phpgw->Template->set_var("misc_data",lang("failed to delete",
                      "$olddir/$file"), true);
                }
             } elseif (!$cancel) {
@@ -104,10 +104,10 @@
             if ($confirm) {
                if (ftp_rename($ftp,$olddir . "/" . $filename, $olddir . 
                   "/" . $newfilename)) {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("renamed",
+                  $phpgw->Template->set_var("misc_data",lang("renamed",
                      "$filename", "$newfilename"), true);
                } else {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("failed to rename",
+                  $phpgw->Template->set_var("misc_data",lang("failed to rename",
                      "$filename", "$newfilename"), true);
                }
             } else {
@@ -126,10 +126,10 @@
          if ($action == "upload") {
             $newfile=$olddir . "/" . $uploadfile_name;
             if (ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY)) {
-               $phpgw->Template->set_var("misc_data",lang_ftp("uploaded",
+               $phpgw->Template->set_var("misc_data",lang("uploaded",
                   $newfile), true);
             } else {
-               $phpgw->Template->set_var("misc_data",lang_ftp("failed to upload",
+               $phpgw->Template->set_var("misc_data",lang("failed to upload",
                   $newfile), true);
             }
             unlink($uploadfile);
@@ -137,14 +137,14 @@
          if ($action == "mkdir") {
             if ($newdirname!="") {
                if (ftp_mkdir($ftp,$olddir . "/" . $newdirname)) {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("created directory",
+                  $phpgw->Template->set_var("misc_data",lang("created directory",
                      "$olddir/$newdirname"), true);
                } else {
-                  $phpgw->Template->set_var("misc_data",lang_ftp("failed to mkdir",
+                  $phpgw->Template->set_var("misc_data",lang("failed to mkdir",
                      "$olddir/$newdirname"), true);
                }
             } else {
-               $phpgw->Template->set_var("misc_data",lang_ftp("empty dirname"),true);
+               $phpgw->Template->set_var("misc_data",lang("empty dirname"),true);
             }
          }
          // heres where most of the work takes place
@@ -196,7 +196,7 @@
          // set up all the global variables for the template
          $phpgw->Template->set_var(array(
             "ftp_location" => $ftp_location,
-            "relogin_link"=> macro_get_Link("newlogin",lang_ftp("relogin")),
+            "relogin_link"=> macro_get_Link("newlogin",lang("relogin")),
             "home_link" => $home_link,
             "ul_select" => $ul_select, 
             "ul_submit" => $ul_submit,
@@ -219,14 +219,14 @@
                   $newdir=$file;
                   $cd_link=macro_get_Link("cwd",
                      "<img border=0 src=\"images/directory.gif\" " .
-                     "alt=\"" . lang_ftp("cd") . " $newdir\">");
+                     "alt=\"" . lang("cd") . " $newdir\">");
                   if ($file!="..") {
                      $rename_link=macro_get_Link("rename",
                         "<img border=0 src=\"images/rename.gif\" " .
-                        "alt=\"" . lang_ftp("rename",$newdir) . "\">");
+                        "alt=\"" . lang("rename",$newdir) . "\">");
                      $del_link=macro_get_Link("rmdir",
                         "<img border=0 src=\"images/trash.gif\" " .
-                        "alt=\"" . lang_ftp("delete", $newdir) . " \">");
+                        "alt=\"" . lang("delete", $newdir) . " \">");
                   } else { $del_link=""; }
                   $directory=$file;
                   $size="&nbsp;";
@@ -234,16 +234,16 @@
                   $newdir="";
                   $save_link=macro_get_Link("get",
                      "<img border=0 src=\"images/save.gif\" " .
-                     "alt=\"" . lang_ftp("save") . " $file\">");
+                     "alt=\"" . lang("save") . " $file\">");
                   $del_link=macro_get_Link("delete",
                      "<img border=0 src=\"images/trash.gif\" " . 
-                     "alt=\"" . lang_ftp("delete") . " $file\">");
+                     "alt=\"" . lang("delete") . " $file\">");
                   $rename_link=macro_get_Link("rename",
                      "<img border=0 src=\"images/rename.gif\" " .
-                     "alt=\"" . lang_ftp("rename") . " $file\">");
+                     "alt=\"" . lang("rename") . " $file\">");
                   $view_link=macro_get_Link("view",
                      "<img border=0 src=\"images/view.gif\" " . 
-                     "alt=\"" . lang_ftp("view") . " $file\">");
+                     "alt=\"" . lang("view") . " $file\">");
                }
                $phpgw->Template->set_var(array(
                   "save_link" => $save_link, "fmsave_link" => $fmsave_link,
@@ -268,7 +268,7 @@
          if (!$tried_default) {
             // don't put out an error on the default login
             for($i=0;$i<strlen($connInfo["password"]);$i++){ $pass.="*"; }
-            $phpgw->Template->set_var("error_message", lang_ftp("bad connection", 
+            $phpgw->Template->set_var("error_message", lang("bad connection", 
                $connInfo["ftpserver"], $connInfo["username"], $pass), true);
             $phpgw->Template->parse("out","bad_connect",false);
             $phpgw->Template->p("out");

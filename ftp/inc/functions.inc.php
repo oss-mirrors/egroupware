@@ -34,9 +34,9 @@
       $rename_form_to="<input type=text name=\"newfilename\" size=20" .
          "value=\"\">";
       $rename_form_submit="<input type=\"submit\" name=\"confirm\" " .
-         "value=\"" . lang_ftp("rename") . "\">\n";
+         "value=\"" . lang("rename") . "\">\n";
       $rename_form_cancel="<input type=\"submit\" name=\"cancel\" " .
-         "value=\"" . lang_ftp("cancel") . "\">\n";
+         "value=\"" . lang("cancel") . "\">\n";
 
       $template->set_var(array(
          "rename_form_begin" => $rename_form_begin,
@@ -45,8 +45,8 @@
          "rename_form_to" => $rename_form_to,
          "rename_form_submit" => $rename_form_submit,
          "rename_form_cancel" => $rename_form_cancel,
-         "lang_rename_from" => lang_ftp("rename from"), 
-         "lang_rename_to" => lang_ftp("rename to")
+         "lang_rename_from" => lang("rename from"), 
+         "lang_rename_to" => lang("rename to")
          ));
 
       $template->parse("out","rename",true);
@@ -64,15 +64,15 @@
          "<input type=\"hidden\" name=\"newdir\" value=\"$directory\">\n" .
          "<input type=\"hidden\" name=\"file\" value=\"$filename\">\n";
       $delete_form_end = "</form>\n";
-      $delete_form_question = lang_ftp("confirm delete",$directory . "/" . 
+      $delete_form_question = lang("confirm delete",$directory . "/" . 
          $filename);
       $delete_form_from= $directory . "/" . $filename;
       $delete_form_to="<input type=text name=\"newname\" size=20" .
          "value=\"\">";
       $delete_form_confirm="<input type=\"submit\" name=\"confirm\" " .
-         "value=\"" . lang_ftp("delete") . "\">\n";
+         "value=\"" . lang("delete") . "\">\n";
       $delete_form_cancel="<input type=\"submit\" name=\"cancel\" " .
-         "value=\"" . lang_ftp("cancel") . "\">\n";
+         "value=\"" . lang("cancel") . "\">\n";
 
       $template->set_var(array(
          "delete_form_begin" => $delete_form_begin,
@@ -100,7 +100,7 @@
       $login_form_ftpserver="<input type=text name=\"ftpserver\" size=20 " .
          "value=\"$dfhost\">";
       $login_form_submit="<input type=\"submit\" name=\"submit\" value=\"" .
-         lang_ftp("connect") . "\">\n";
+         lang("connect") . "\">\n";
       $login_form_end="</form>";
 
       $template->set_var(array(
@@ -110,9 +110,9 @@
          "login_form_password" => $login_form_password,
          "login_form_ftpserver" => $login_form_ftpserver,
          "login_form_submit" => $login_form_submit,
-         "lang_username" => lang_ftp("username"),
-         "lang_password" => lang_ftp("password"),
-         "lang_ftpserver" => lang_ftp("ftpserver")
+         "lang_username" => lang("username"),
+         "lang_password" => lang("password"),
+         "langserver" => lang("ftpserver")
          ));
 
       $template->parse("loginform","login",false);
