@@ -96,7 +96,7 @@ function check_all()
 ?>
     <td>&nbsp;</td>
   </tr>
-  <tr>
+  <!-- <tr> -->
    <?php 
      if ($sort == "ASC") {
         $oursort = 0;
@@ -116,7 +116,7 @@ function check_all()
 
      } */
   ?>
-  </tr>
+  <!-- </tr> -->
  </table>
 
  <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
@@ -125,8 +125,7 @@ function check_all()
     <table border="0" cellpadding="0" cellspacing="1" width="100%">
      <tr>
       <td>
-        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?> color="
-        <?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
+        <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>" color="<?php echo $phpgw_info["theme"]["em_folder_text"]; ?>">
 <?php
       $mailbox_info = $phpgw->msg->mailboxmsginfo($mailbox);
 
@@ -288,18 +287,18 @@ function check_all()
            // Whats up with this ??
            $bg = (($i + 1)/2 == floor(($i + 1)/2)) ? $phpgw_info["theme"]["row_off"] : $phpgw_info["theme"]["row_on"];
                         
-           echo "<tr><td bgcolor=\"$bg\" align=\"center\">"
-              . "<input type=\"checkbox\" name=\"msglist[]\" value=\"".$msg_array[$i]."\"></td>\n";
+           echo  '<tr><td bgcolor="'.$bg.'" align="center">'
+              . '<input type="checkbox" name="msglist[]" value="'.$msg_array[$i].'"></td>' ."\n";
            if (($msg->Unseen == "U") || ($msg->Recent == "N"))
-              echo "<td bgcolor=\"$bg\" width=\"1%\" align=\"center\"><font color=\"FF0000\">"
-                 . "*</font>&nbsp;$attach</td>";
+              echo  '<td bgcolor="'.$bg.'" width="1%" align="center"><font color="FF0000">'
+                 . '*</font>&nbsp;'.$attach.'</td>';
            else
-              echo "<td bgcolor=\"$bg\" width=\"1%\">&nbsp;$attach</td>";
+              echo '<td bgcolor="'.$bg.'" width="1%">&nbsp;'.$attach.'</td>';
 
-           echo '<td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info['theme']['font'].'">'
+           echo  '<td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info['theme']['font'].'">'
               . '<a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array[$i]).'">'
-              . decode_header_string($subject) . "</a></font></td>\n"
-              . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
+              . decode_header_string($subject) . '</a></font></td>' ."\n"
+              . '<td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info["theme"]["font"].'">';
 
            if ($msg->reply_to[0]) {
              $reply   = $msg->reply_to[0];
@@ -323,13 +322,14 @@ function check_all()
               . urlencode($folder) . "&to=" . urlencode($replyto)) . "\">"
               . decode_header_string($personal) . "</a> $display_address->from";
 
-           echo "</font></td>\n"
-              . "<td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">";
+           echo '</font></td>' ."\n"
+              . '<td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info["theme"]["font"].'">';
 
            echo $phpgw->common->show_date($msg->udate);
 
-           echo "</td><td bgcolor=\"$bg\"><font size=\"2\" face=\"".$phpgw_info["theme"]["font"]."\">$size</font>"
-              . "</td></tr></font></td></tr>\n\n";
+           echo '</font></td><td bgcolor="'.$bg.'"><font size="2" face="'.$phpgw_info["theme"]["font"].'">'.$size
+              // . '</td></tr></font></td></tr>' ."\n\n";
+	      . '</font></td></tr>' ."\n\n";
         }
 ?>
 <tr>
@@ -353,7 +353,7 @@ function check_all()
                 echo '<select name="tofolder" onChange="do_action(\'move\')">'
                    . '<option>' . lang("move selected messages into") . ':';
                 echo list_folders($mailbox);
-		echo "</select>";
+		echo '</select>';
             
              }
              $phpgw->msg->close($mailbox);
