@@ -11,8 +11,10 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "manual");
-  include("../header.inc.php");
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'manual'
+	);
+	include('../header.inc.php');
 
-  $phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

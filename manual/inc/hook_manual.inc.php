@@ -11,15 +11,11 @@
   \**************************************************************************/
 
 	/* $Id$ */
-	if (floor(phpversion()) == 4)
-	{
-		global $phpgw, $phpgw_info, $treemenu;
-	} 
 
-	$lang = strtoupper($phpgw_info['user']['preferences']['common']['lang']); 
+	$lang = strtoupper($GLOBALS['phpgw_info']['user']['preferences']['common']['lang']); 
 	$help_file = check_help_file($appname,$lang,'overview.php');
 	if($help_file != '') 
 	{ 
-		$treemenu[] = '.<font face="'.$phpgw_info['theme']['font'].'">Overview</font>|'.$phpgw->link($help_file); 
+		$GLOBALS['treemenu'][] = '.<font face="'.$GLOBALS['phpgw_info']['theme']['font'].'">Overview</font>|'.$GLOBALS['phpgw']->link($help_file); 
 	} 
 ?>

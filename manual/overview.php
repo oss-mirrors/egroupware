@@ -11,10 +11,13 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
-  include("../header.inc.php");
+	$GLOBALS['phpgw_info']['flags'] = array(
+		'currentapp' => 'manual',
+		'enable_utilities_class' => True
+	);
+	include('../header.inc.php');
 ?>
-<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_overview.gif" border=0>
+<img src="<?php echo $GLOBALS['phpgw_info']['server']['app_images']; ?>/title_overview.gif" border="0">
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 The following pages are an to be used as a guideline/ready reference
@@ -81,4 +84,6 @@ That is about it.. for a more detailed howto, please look into each section for 
 explainations.. and remember to click on the little square boxes next to the icons for drop
 downs of what is in each folder.
 <p>
-<?php $phpgw->common->phpgw_footer(); ?>
+<?php
+	$GLOBALS['phpgw']->common->phpgw_footer();
+?>
