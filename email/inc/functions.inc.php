@@ -33,6 +33,7 @@
 	set_magic_quotes_runtime(0);
 
 // ----  Create the base email Msg Class    -----
+	// if (isset($phpgw->msg)) { echo 'phpgw_msg ISSET before creation';}
 	$phpgw->msg = CreateObject("email.mail_msg");
 	// initialize the class
 	// *AND* this also obtains the email preferences from the db (currently "phpgw_preferences")

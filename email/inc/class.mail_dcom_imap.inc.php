@@ -38,11 +38,13 @@
     function createmailbox($stream,$mailbox) 
     {
 	return imap_createmailbox($stream,$mailbox);
+	$this->folder_list_changed = True;
     }
 
     function deletemailbox($stream,$mailbox)
     {
 	return imap_deletemailbox($stream,$mailbox);
+	$this->folder_list_changed = True;
     } 
 
     function delete($stream,$msg_num,$flags="", $currentfolder="") 

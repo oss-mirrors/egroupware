@@ -34,6 +34,9 @@
 	{
 		global $phpgw, $phpgw_info;
 
+		// DEBUG: force unseen display
+		//$indicate_new = True;
+
 		// init some important variables
 		$outstr = '';
 		//$unseen_prefix = ' &lt;';
@@ -89,7 +92,8 @@
 					&& ($this->care_about_unseen($folder_short)))
 					{
 						$server_str = $this->get_mailsvr_callstr();
-						$mailbox_status = $phpgw->dcom->status($mailbox, $server_str .$folder_long,SA_UNSEEN);
+						//$mailbox_status = $phpgw->dcom->status($mailbox, $server_str .$folder_long,SA_UNSEEN);
+						$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_ALL);
 						if ($mailbox_status->unseen > 0)
 						{
 							$outstr = $outstr . $unseen_prefix . $mailbox_status->unseen . $unseen_suffix;

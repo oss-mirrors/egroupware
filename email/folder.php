@@ -126,7 +126,8 @@
 		else
 		{
 			// do we really have to do this?
-			$phpgw->dcom->reopen($mailbox, "$server_str"."$folder_long");
+			// TEST: elimnate reopen, see if it was really needed
+			//$phpgw->dcom->reopen($mailbox, "$server_str"."$folder_long");
 		}
 		// get the stats ONLY for the number of new (unseen) messages
 		//$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
@@ -141,6 +142,7 @@
 		$t->set_var('folder_name',$folder_short);
 		//$t->set_var('folder_name',$folder_long);
 		//$t->set_var('folder_name',$folder_list[$i]);
+		//$t->set_var('folder_name',$phpgw->msg->htmlspecialchars_encode($folder_list[$i]));
 		$t->set_var('msgs_unseen',$mailbox_status->unseen);
 		//$t->set_var('msgs_total',$total_msgs);
 		$t->set_var('msgs_total',$mailbox_status->messages);

@@ -20,6 +20,7 @@
 	var $msg_info = Array(Array());
 
 	var $tempfile;
+	var $folder_list_changed = False;
 	//var $att_files_dir;
 	var $force_check;
 

@@ -456,10 +456,27 @@
 	{
 		global $phpgw, $phpgw_info;
 		
+		//$debug_get_folder_list = True;
+		$debug_get_folder_list = False;
+
+		// check if class dcom reports that the folder list has changed
+		if ((isset($phpgw->dcom))
+		&& ($phpgw->dcom->folder_list_changed == True))
+		{
+			// class dcom recorded a change in the folder list
+			// supposed to happen when create or delete mailbox is called
+			// reset the changed flag
+			$phpgw->dcom->folder_list_changed = False;
+			// set up for a force_refresh
+			$force_refresh = True;
+			if ($debug_get_folder_list) { echo 'class dcom report folder list changed<br>';}
+		}
+
 		// see if we have cached data that we can use
 		if ((count($this->folder_list) > 0)
 		&& ($force_refresh == False))
 		{
+			if ($debug_get_folder_list) { echo 'using cached folder list data<br>';}
 			// use the cached data
 			return $this->folder_list;
 		}
@@ -500,13 +517,17 @@
 				// wheres adding the delimiter "INBOX.*" will NOT include the INBOX in the list of folders
 				// so - it's safe to include the delimiter here, but the INBOX will not be included in the list
 				// this is typically the ONLY TIME you would ever *not* use the delimiter between the namespace and what comes after it
-				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
+				//$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "$name_space" ."*");
+				// problem: Cyrus does not like anything but a "*" after the server string
+				$mailboxes = $phpgw->dcom->listmailbox($mailbox, $server_str, "*");
 				// returns information in this format:
 				// {SERVER_NAME:PORT} NAMESPACE DELIMITER FOLDERNAME
 				// example:
 				// {some.server.com:143}INBOX
 				// {some.server.com:143}INBOX.Trash
 			}
+
+			//echo 'raw mailbox list:<br>'.$phpgw->msg->htmlspecialchars_encode(serialize($mailboxes)).'<br>';
 
 			// ERROR DETECTION
 			if (!$mailboxes)
@@ -556,7 +577,10 @@
 				// "is_imap_folder" really just a check on what UWASH imap returns, may be files that are not MBOX's
 				if ($this->is_imap_folder($mailboxes[$i]))
 				{
-					$this->folder_list[$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
+					//$this->folder_list[$i]['folder_long'] = $this->get_folder_long($mailboxes[$i]);
+					// a TRUE folder long is the raw data returned from the server
+					// with ONLY the bracketed server string removed
+					$this->folder_list[$i]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
 					$this->folder_list[$i]['folder_short'] = $this->get_folder_short($mailboxes[$i]);
 				}
 			}
