@@ -11,9 +11,6 @@
 	/* $Id$ */
 
 	{
-// Only Modify the $file and $title variables.....
-
-		$title = 'Stock Quotes';
 		$file = Array
 		(
 			'Preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=stocks.ui.preferences')
@@ -21,7 +18,7 @@
 
 //Do not modify below this line
 
-		display_section($appname,$title,$file);
+		display_section($appname,$file);
 	}
 ?>
 
