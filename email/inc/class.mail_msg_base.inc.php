@@ -78,6 +78,13 @@
 		2	=> 'match_cached_account'
 	);
 	
+	// EXTRA ACCOUNTS
+	var $num_ex_accounts = 0;
+	// holds the integer array key(s) of any defined extra account that has data, whether enabled or not
+	var $defined_ex_accounts = array();
+	// same as above BUT only has "enabled" extra accounts integer array key(s)
+	var $enabled_ex_accounts = array();
+	
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
 	var $debug_logins = 0;
 	var $debug_session_caching = 0;
@@ -153,6 +160,7 @@
 	{
 		//if ($this->debug_logins > 0) { echo 'mail_msg: *constructor*: $GLOBALS[PHP_SELF] = ['.$GLOBALS['PHP_SELF'].'] $this->acctnum = ['.$this->acctnum.']  get_class($this) : "'.get_class($this).'" ; get_parent_class($this) : "'.get_parent_class($this).'"<br>'; }
 		if ($this->debug_logins > 1) { echo 'mail_msg: *constructor*: $this->acctnum = ['.$this->acctnum.'] ; $this->a  Dump<pre>'; print_r($this->a); echo '</pre>'; }
+		if ($this->debug_logins > 1) { echo 'mail_msg: *constructor*: extra data $p1 (if provided): '.serialize($p1).'<br>'; }
 		
 		$this->known_external_args = array(
 			// === NEW GPC "OBJECTS" or Associative Arrays === 
@@ -666,12 +674,12 @@
 		// ===  we are here ONLY if creating NO OBJECT mail_msg exists  =====
 		// === or we are Not Already Logged In?  =====
 		// === or we *something* did not work during "re-use existing" attempt  =====
-		// === OR we are not attempting to re-use an existing mail_msg object  ====
+		// === OR we are NOT attempting to re-use an existing mail_msg object  ====
 		if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: NOT reusing an established logged-in stream-object, will create new'.'<br>'; }
 		
 		// ----  Things To Be Done Whether You Login Or Not  -----
 		
-		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: PRE create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to create_email_preferences and setup extra accounts<br>';}
 		// ----  Obtain Preferences Data  ----
 		$tmp_prefs = array();
 		// obtain the preferences from the database
@@ -679,17 +687,63 @@
 		// fill $GLOBALS['phpgw_info']['user']['preferences'] with the data for backwards compatibility (we don't use that)
 		$GLOBALS['phpgw_info']['user']['preferences'] = $tmp_prefs;
 		// for our use, put prefs in a class var to be accessed thru OOP-style access calls in mail_msg_wrapper
-		// since we know these prefs to be the  top level prefs, force them into acctnum 0
+		// since we know these prefs to be the  top level prefs, for the default email account, force them into acctnum 0
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: putting top level, default account, pref data in acct 0 with $this->set_pref_array($tmp_prefs[email], 0); <br>';}
+		if ($this->debug_logins > 2) { echo 'mail_msg: begin_request:  $tmp_prefs[email] dump:<pre>'; print_r($tmp_prefs['email']) ; echo '</pre>';}
 		$this->set_pref_array($tmp_prefs['email'], 0);
 		
-		// TEMP - STUFF EXTRA ACCT #1 WHERE IT BELONGS
-		// run thru the create prefs function requesting this particular acctnum
-		$tmp_prefs = array();
-		$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', 1);
-		$this->set_pref_array($tmp_prefs['email'], 1);
+		// ===  EXTRA ACCOUNTS  ===
+		// they are located in an array based at $tmp_prefs['email']['ex_accounts'][]
+		// determine what extra accounts have been defined
+		// note: php3 DOES have is_array(), ok to use it here
+		if ((isset($tmp_prefs['email']['ex_accounts']))
+		&& (is_array($tmp_prefs['email']['ex_accounts'])))
+		{
+			$this->num_ex_accounts = count($tmp_prefs['email']['ex_accounts']);
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] is set and is_array, its count: $this->num_ex_accounts: ['.$this->num_ex_accounts.']<br>';}
+		}
+		else
+		{
+			$this->num_ex_accounts = 0;
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $tmp_prefs[email][ex_accounts] NOT set or NOT is_array, $this->num_ex_accounts: ['.$this->num_ex_accounts.']<br>';}
+		}
 		
+		// ---- what accounts have some data defined
+		while(list($key,$value) = each($tmp_prefs['email']['ex_accounts']))
+		{
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: for each $tmp_prefs[email][ex_accounts] ; $key: ['.serialize($key).'] $value: ['.serialize($value).']<br>';}
+			// if we are here at all then this array item must have some data defined
+			$next_pos = count($this->defined_ex_accounts);
+			$this->defined_ex_accounts[$next_pos] = $key;
+			// is this account "enabled"
+			if ( (isset($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']))
+			&& ((string)$tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled'] != ''))
+			{
+				// this account is defined AND enabled, add it to $this->enabled_ex_accounts
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: inside loop: account enabled: $tmp_prefs[email][ex_accounts]['.$key.'][ex_account_enabled]:  ['.serialize($tmp_prefs['email']['ex_accounts'][$key]['ex_account_enabled']).']<br>';}
+				$next_pos = count($this->enabled_ex_accounts);
+				$this->enabled_ex_accounts[$next_pos] = $key;
+			}
+		}
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: $this->defined_ex_accounts: ['.serialize($this->defined_ex_accounts).'] ; $this->enabled_ex_accounts: ['.serialize($this->enabled_ex_accounts).']<br>';}
+		
+		// PROCESS EXTRA ACCOUNT PREFS
+		// run thru the create prefs function requesting this particular acctnum
+		// fills in certain missing data, and does some sanity checks, and any data processing that may be necessary
+		for ($i=0; $i <count($this->enabled_ex_accounts); $i++)
+		{
+			$tmp_prefs = array();
+			// we "fool" create_email_preferences into processing extra account info as if it were top level data
+			// by specifing the secong function arg as the integer of this particular enabled account
+			$this_ex_acctnum = $this->enabled_ex_accounts[$i];
+			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call create_email_preferences("", $this_ex_acctnum) where $this_ex_acctnum: ['.serialize($this_ex_acctnum).'] <br>'; }
+			$tmp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this_ex_acctnum);
+			// now put these processed prefs in the correct location  in our prefs array
+			$this->set_pref_array($tmp_prefs['email'], $this_ex_acctnum);
+		}
 		// clear the temp var
 		$tmp_prefs = array();
+		// -end- extra account init handling
 		
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
 		//if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: POST create_email_preferences $this->get_all_prefs() dump:<pre>'; print_r($this->get_all_prefs()) ; echo '</pre>';}

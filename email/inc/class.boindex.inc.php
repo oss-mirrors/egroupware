@@ -269,6 +269,35 @@
 								.'&acctnum='.$GLOBALS['phpgw']->msg->get_acctnum();
 			$this->xi['show_num_new'] = False;
 			
+			// ---- account switchbox  ----
+
+
+			// make a HTML comobox used to switch accounts
+			$make_acctbox = True;
+			//$make_acctbox = False;
+			if ($make_acctbox)
+			{
+				$feed_args = Array(
+					'pre_select_acctnum'	=> $GLOBALS['phpgw']->msg->get_acctnum(),
+					'widget_name'		=> 'fldball_fake_uri',
+					'folder_key_name'	=> 'folder',
+					'acctnum_key_name'	=> 'acctnum',
+					'on_change'		=> 'document.acctbox.submit()'
+				);
+				$this->xi['acctbox_listbox'] = $GLOBALS['phpgw']->msg->all_ex_accounts_listbox($feed_args);
+			}
+			else
+			{
+				$this->xi['acctbox_listbox'] = '&nbsp';
+			}
+			$this->xi['acctbox_frm_name'] = 'acctbox';
+			
+			// switchbox will itself contain "fake_uri" embedded data which includes the applicable account number for the folder
+			$this->xi['acctbox_action'] = $GLOBALS['phpgw']->link(
+								'/index.php',
+								 'menuaction=email.uiindex.index');
+			
+			
 			$this->xi['mailsvr_supports_folders'] = $GLOBALS['phpgw']->msg->get_mailsvr_supports_folders();
 			// if using folders, make a HTML comobox used to switch folders
 			if ($this->xi['mailsvr_supports_folders'])

@@ -261,15 +261,19 @@
 				'ctrl_bar_acct_0_link'	=> $this->bo->xi['ctrl_bar_acct_0_link'],
 				'ctrl_bar_acct_1_link'	=> $this->bo->xi['ctrl_bar_acct_1_link'],
 
+				'acctbox_frm_name'	=> $this->bo->xi['acctbox_frm_name'],
+				'acctbox_action'	=> $this->bo->xi['acctbox_action'],
+				'acctbox_listbox'	=> $this->bo->xi['acctbox_listbox'],
+
 				'ctrl_bar_back1'	=> $this->bo->xi['ctrl_bar_back1'],
-				'sortbox_action'	=> $this->bo->xi['sortbox_action'],
 				'switchbox_frm_name'	=> $this->bo->xi['switchbox_frm_name'],
+				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
+				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
+				'sortbox_action'	=> $this->bo->xi['sortbox_action'],
 				'sortbox_on_change'	=> $this->bo->xi['sortbox_on_change'],
 				'sortbox_select_name'	=> $this->bo->xi['sortbox_select_name'],
 				'sortbox_select_options' => $this->bo->xi['sortbox_select_options'],
 				'sortbox_sort_by_txt'	=> $this->bo->xi['lang_sort_by'],
-				'switchbox_action'	=> $this->bo->xi['switchbox_action'],
-				'switchbox_listbox'	=> $this->bo->xi['switchbox_listbox'],
 				// old version of first prev next last arrows for "layout 1"
 				'prev_arrows'		=> $this->bo->xi['td_prev_arrows'],
 				'next_arrows'		=> $this->bo->xi['td_next_arrows'],

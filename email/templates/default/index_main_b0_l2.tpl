@@ -36,30 +36,26 @@ function check_all()
 
 <table border="0" cellpadding="2" cellspacing="1" width="95%" align="center">
 <tr>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+	<td bgcolor="{ctrl_bar_back1}" width="25%" align="center">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}"><a href="{compose_link}">{compose_txt}</a></font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+	<td bgcolor="{ctrl_bar_back1}" width="25%" align="center">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{folders_href}</font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+	<td bgcolor="{ctrl_bar_back1}" width="25%" align="center">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{filters_href}</font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+	<td bgcolor="{ctrl_bar_back1}" width="25%" align="center">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}"><a href="{email_prefs_link}">{email_prefs_txt}</a></font>
 	</td>
 </tr>
 <tr>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">Current Account: {ctrl_bar_current_acctnum}</a></font>
+	<form name="{acctbox_frm_name}" action="{acctbox_action}" method="post">
+	<td colspan="2" bgcolor="{ctrl_bar_back2}" width="50%" align="left">
+		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">&nbsp;&nbsp;&nbsp;{acctbox_listbox}</font>
 	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{ctrl_bar_acct_0_link}</font>
-	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
-		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{ctrl_bar_acct_1_link}</font>
-	</td>
-	<td bgcolor="{ctrl_bar_back2}" width="25%" align="center">
+	</form>
+	<td colspan="2" bgcolor="{ctrl_bar_back2}" width="50%" align="center">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{accounts_href}</font>
 	</td>
 </tr>

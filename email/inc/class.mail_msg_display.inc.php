@@ -397,6 +397,148 @@ class mail_msg extends mail_msg_wrappers
 		return $nav_data;
 	}
 
+	function all_ex_accounts_listbox($feed_args)
+	{
+		// $this->num_ex_accounts
+		// $this->defined_ex_accounts
+		// $this->enabled_ex_accounts
+		
+		if(!$feed_args)
+		{
+			$feed_args=array();
+		}
+		//$debug_widget = True;
+		$debug_widget = False;
+		
+		// establish fallback default args
+		$acctnum = $this->get_acctnum();
+		$local_args = Array(
+			'pre_select_acctnum'	=> $acctnum,
+			'widget_name'		=> 'fldball_fake_uri',
+			'folder_key_name'	=> 'folder',
+			'acctnum_key_name'	=> 'acctnum',
+			'on_change'		=> 'document.acctbox.submit()'
+		);		
+		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
+		if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if (count($feed_args) == 0)
+		{
+			if ($debug_widget) { echo 'all_ex_accounts_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+		}
+		else
+		{
+			reset($local_args);
+			// the feed args may not be an array, the @ will supress warnings
+			@reset($feed_args);		
+			while(list($key,$value) = each($local_args))
+			{
+				// DEBUG
+				if ($debug_widget) { echo '* a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
+				if ($debug_widget) { echo '* b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ((isset($feed_args[$key]))
+				&& ($feed_args[$key] != $value))
+				{
+					// we have a specified arg that should replace the default value
+					if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+					$local_args[$key] = $feed_args[$key];
+				}
+			}
+			reset($local_args);
+			@reset($feed_args);
+		}
+		// at this point, local_args[] has anything that was passed in the feed_args[]
+		if ($debug_widget) { echo 'all_ex_accounts_listbox: FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
+		
+		$item_tags = '';
+		
+		// this logic determines if the combobox should be initialized with certain account already selected
+		if ((string)$local_args['pre_select_acctnum'] == '0')
+		{
+			$sel = ' selected';
+		}
+		else
+		{
+			$sel = '';
+		}
+		
+		// add the default email account, account number 0
+		// this fake_uri data will be converted to fldball data on submit processing
+		$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
+				.'&'.$local_args['acctnum_key_name'].'=0';
+		//$option_text = lang('default account').' '.lang('as').' &quot;'.$this->get_pref_value('fullname', 0).'&quot;';
+		//$option_text = lang('default').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
+		$option_text = lang('default: ').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', 0);
+		
+		$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
+		
+		// iterate thru the ex_accounts list, building the HTML tags using that data
+		for ($i=0; $i < count($this->defined_ex_accounts); $i++)
+		{
+			// the option values below are in the form of embedded fake_uri
+			$this_acctnum = $this->defined_ex_accounts[$i];
+			// is this account "enabled" ?
+			// array_search_ex($needle='', $haystack='', $strict=False)
+			$enabled = $this->array_search_ex($this_acctnum, $this->enabled_ex_accounts);
+			// note: is_bool is in the php3 compat library
+			// note: array position 0 != boolean false, thus the test below
+			if ((is_bool($enabled))
+			&& ($enabled == False))
+			{
+				// FUTURE: take user to the extra accounts management page for this particular account
+				// now: put the user back to the default account
+				$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
+						.'&'.$local_args['acctnum_key_name'].'=0';
+				$option_text = lang('account').' ['.$this_acctnum.'] disabled';
+				
+				// note: a disabled account can not be pre-selected
+				$item_tags .= '<option value="'.$option_value.'">'.$option_text.'</option>'."\r\n";
+			}
+			else
+			{
+				// this logic determines if the combobox should be initialized with certain account already selected
+				if ((string)$local_args['pre_select_acctnum'] == (string)$this_acctnum)
+				{
+					$sel = ' selected';
+				}
+				else
+				{
+					$sel = '';
+				}
+				
+				// we need to make value="X" imitate URI type data, so we can embed the acctnum data 
+				// for the folder in there with folder name, whereas normally option value="X" can only 
+				// hold no nore than one data item as limited by BOTH html and php 's treatment of a combobox					
+				
+				$option_value =  '&'.$local_args['folder_key_name'].'=INBOX'
+						.'&'.$local_args['acctnum_key_name'].'='.$this_acctnum;
+				//$option_text = lang('account').' ['.$this_acctnum.']'.' '.lang('as').' &quot;'.$this->get_pref_value('fullname', $this_acctnum).'&quot;';
+				//$option_text = lang('account').' ['.$this_acctnum.']'.'&nbsp;&nbsp;'.$this->get_pref_value('fullname', $this_acctnum);
+				$option_text = lang('account '.$this_acctnum.':').'&nbsp;&nbsp;'.$this->get_pref_value('fullname', $this_acctnum);
+				
+				$item_tags .= '<option value="'.$option_value.'"'.$sel.'>'.$option_text.'</option>'."\r\n";
+			}
+		}
+		// now $item_tags contains the internal folder list
+		
+		// ----  add the HTML tags that surround this internal list data  ----
+		if ((isset($local_args['on_change']))
+		&& ($local_args['on_change'] != ''))
+		{
+			$on_change_tag = 'onChange="'.$local_args['on_change'].'"';
+		}
+		else
+		{
+			$on_change_tag = '';
+		}
+		
+		// the widget_name with "_fake_uri" tells the script what to do with this data
+		$listbox_widget =
+			 '<select name="'.$local_args['widget_name'].'" '.$on_change_tag.'>'
+				. $item_tags
+			.'</select>';
+		// return a pre-built HTML listbox (selectbox) widget
+		return $listbox_widget;
+	}
 	
 	function format_byte_size($feed_size)
 	{
