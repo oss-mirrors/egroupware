@@ -62,13 +62,13 @@
       $msgid = $phpgw->db->f("id");
       $mainid = $phpgw->db->f("main");
 
-      $dbQ = mysql_db_query($phpgw->db->Database,"select count(*) from f_threads where thread = " . $msgid);
-      $row = mysql_fetch_array($dbQ);
-      $replycount = $row[0] - 1;
+      $phpgw->db->query("select count(*) from f_threads where thread = " . $msgid);
+      $phpgw->db->next_record();
+      $replycount = ($phpgw->db->f(0) - 1);
 
-      $dbQ = mysql_db_query($phpgw->db->Database,"select postdate from f_threads where parent = " . $msgid . " order by postdate ");
-      $row = mysql_fetch_array($dbQ);	
-      if($row[0]) $lastreply = $row[0];
+      $phpgw->db->query("select postdate from f_threads where parent = " . $msgid . " order by postdate ");
+      $phpgw->db->next_record();
+      if($phpgw->db->f(0)) $lastreply = $phpgw->db->f(0);
  
      echo "<td align=left valign=top>$replycount</td>\n";
      echo "<td align=left valign=top>$lastreply</td>\n";

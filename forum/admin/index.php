@@ -68,13 +68,13 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 */
 
    $tr_color = $phpgw_info["theme"]["row_off"];
-   $q2 = mysql_db_query($phpgw->db->Database,"select * from f_forums where cat_id=$cat_id");
-   while($row = mysql_fetch_array($q2)) {
+   $phpgw->query->("select * from f_forums where cat_id=$cat_id");
+   while($phpgw->db->next_record()) {
     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-    $for_id = $row["id"];
+    $for_id = $phpgw->db->f("id");
     echo "  <tr bgcolor=\"$tr_color\">\n";
-    echo "   <td width=20%>" . $row["name"] . "</td>\n";
-    echo "   <td width=70%>" . $row["descr"] . "</td>\n";
+    echo "   <td width=20%>" . $phpgw->db->f("name") . "</td>\n";
+    echo "   <td width=70%>" . $phpgw->db->f("descr") . "</td>\n";
     echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . lang("Edit") . "</td>\n";
     echo "  </tr>\n";
 

@@ -24,35 +24,30 @@
 function showthread ($thread,$current) {
     Global $phpgw, $phpgw_info, $tr_color;
 
-    $SQL = "select * from f_threads where thread = $thread order by pos";
-    $dbQ = mysql_db_query($phpgw->db->Database,$SQL);
-    while($row = mysql_fetch_array($dbQ)) {
+    $phpgw->db->query("select * from f_threads where thread = $thread order by pos");
+    while($phpgw->db->next_record()) {
       $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 
-      if($row["id"] == $current) $tr_color = $phpgw_info["theme"]["bg05"];
+      if($phpgw->db->f("id") == $current) $tr_color = $phpgw_info["theme"]["bg05"];
       echo "<tr bgcolor=\"$tr_color\">";
 
       $move = "";
       for($tmp = 1;$tmp <= $row["depth"];$tmp++)
           $move .= "&nbsp;&nbsp;";
  
-      $pos = $row["pos"];
-      $cat = $row["cat_id"];
-      $for = $row["for_id"];
-      echo "<td>" . $move . "<a href=" . $phpgw->link("read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $row["id"]) .">"
-       . $row["subject"] . "</a></td>\n";
+      $pos = $phpgw->db->f("pos");
+      $cat = $phpgw->db->f("cat_id");
+      $for = $phpgw->db->f("for_id");
+      echo "<td>" . $move . "<a href=" . $phpgw->link("read.php","cat=$cat&for=$for&pos=$pos&col=1&msg=" . $phpgw->db->f("id")) .">"
+       . $phpgw->db->f("subject") . "</a></td>\n";
 
-      echo "<td align=left valign=top>" . $row["author"] ."</td>\n";
-      echo "<td align=left valign=top>" . $row["postdate"] ."</td>\n";
+      echo "<td align=left valign=top>" . $phpgw->db->f("author") ."</td>\n";
+      echo "<td align=left valign=top>" . $phpgw->db->f("postdate") ."</td>\n";
   
-      if($debug) echo "<td>" . $row["id"]." " . $row["parent"] ." " .$row["depth"] ." " . $row["pos"] ."</td>";
+      if($debug) echo "<td>" . $phpgw->db->f("id")." " . $phpgw->db->f("parent") ." "
+                    . $phpgw->db->f("depth") ." " . $phpgw->db->f("pos") ."</td>";
 
     }
-}
-
-function newdbhandle() {
- Global $phpgw, $phpgw_info;
- $db_handler = mysql_connect($phpgw->db->Host,$phpgw->db->User,$phpgw->db->Pass);
 }
 
 
