@@ -26,6 +26,29 @@
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"default_sorting","email");
      $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"email_sig","email"); 
 
+     if ($use_custom_settings) {
+        $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"use_custom_settings","email");
+       if ($userid) {
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"userid","email");
+       }
+       if ($passwd) {
+          $encrypted_passwd = $phpgw->common->encrypt($passwd);
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"passwd","email", $encrypted_passwd);
+       }
+       if ($address) {
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"address","email");
+       }
+       if ($mail_server) {
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"mail_server","email");
+       }
+       if ($mail_server_type) {
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"mail_server_type","email");
+       }
+       if ($imap_server_type) {
+          $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],"imap_server_type","email");
+       }
+     }
+
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
   }
 
@@ -73,6 +96,60 @@
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("Send deleted messages to the trash"); ?></td>
      <td align="center"><input type="checkbox" name="use_trash_folder" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_trash_folder"]) echo " checked"; ?>></td>
+    </tr>
+
+
+
+    <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
+     <td colspan="2">Custom Email settings</td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Use custom settings"); ?> - (<?php echo lang("Non-Standard"); ?>)</td>
+     <td align="center"><input type="checkbox" name="use_custom_settings" value="True"<?php if ($phpgw_info["user"]["preferences"]["email"]["use_custom_settings"]) echo " checked"; ?>></td>
+    </tr>
+
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Email Account Name"); ?></td>
+     <td align="center">
+      <input type="text" name="userid" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["userid"];?>">
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Email Password"); ?></td>
+     <td align="center">
+      <input type="password" name="passwd" value="<?php echo $phpgw->common->decrypt($phpgw_info["user"]["preferences"]["email"]["passwd"]); ?>">
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Email address"); ?></td>
+     <td align="center">
+      <input type="text" name="address" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["address"]; ?>">
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Mail Server"); ?></td>
+     <td align="center">
+      <input type="text" name="mail_server" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_server"]; ?>">
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("Mail Server type"); ?></td>
+     <td align="center">
+      <input type="text" name="mail_server_type" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["mail_server_type"]; ?>">
+     </td>
+    </tr>
+    <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
+    <tr bgcolor="<?php echo $tr_color; ?>">
+     <td align="left"><?php echo lang("IMAP Server Type"); ?> - (<?php echo lang("If Applicable"); ?>)</td>
+     <td align="center">
+      <input type="text" name="imap_server_type" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["imap_server_type"]; ?>">
+     </td>
     </tr>
     <tr>
      <td colspan="3" align="center">
