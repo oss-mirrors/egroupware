@@ -42,7 +42,7 @@
 //      $phpgw->network->set_addcrlf(True);
     }
 
-    function append($stream, $folder = "Sent", $header, $body) {
+    function append($stream, $folder = "Sent", $header, $body, $flags = "") {
       return false;
     }
 

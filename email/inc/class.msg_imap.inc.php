@@ -155,7 +155,7 @@
       return imap_status($stream,$mailbox,$options);
     }
 
-    function append($stream, $folder = "Sent", $header, $body) {
+    function append($stream, $folder = "Sent", $header, $body, $flags = "") {
       global $phpgw_info, $phpgw;
 
       $filter = $phpgw->msg->construct_folder_str("");
@@ -174,7 +174,7 @@
       }
 
       $folder = $this->construct_folder_str($folder);
-      return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}".$folder, $header ."\n". $body);
+      return imap_append($stream, "{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}".$folder, $header ."\n". $body, $flags);
     }
 
     function login( $folder = "INBOX")
