@@ -14,10 +14,7 @@
 
 	$phpgw_info = array();
 	$GLOBALS['phpgw_info']['flags'] = array(
-		'currentapp'  => 'soap',
-		'noheader'    => True,
-		'noappheader' => True,
-		'nonavbar'    => True
+		'currentapp'  => 'soap'
 	);
 	include('../header.inc.php');
 ?>
@@ -236,6 +233,7 @@
 		print "<strong>Response:</strong><br><xmp>$soap->incoming_payload</xmp>";
 	}
 
+	$GLOBALS['phpgw']->common->phpgw_footer();
 	unset($soapmsg);
 	unset($soap);
 ?>
