@@ -1,28 +1,41 @@
+activate	qmailldap	en	Activate
 add also to local domains	qmailldap	en	Add also to local domains
 add server	qmailldap	en	Add server
+additional settings for qmail	qmailldap	en	additional settings for qmail
 admin dn	qmailldap	en	Admin DN
 admin password	qmailldap	en	Admin password
+advanced options	qmailldap	en	advanced options
 alternate email address	qmailldap	en	Alternate email address
 back	common	en	Back
+default	qmailldap	en	default
+deliver extern	qmailldap	en	deliver extern
+deliveryprogrampath	qmailldap	en	deliveryProgramPath
 domain names	qmailldap	en	Domain names
 domainname	qmailldap	en	Domainname
 edit email settings	qmailldap	en	edit email settings
 email account active	qmailldap	en	Email account active
 email address	qmailldap	en	Email address
 email settings	admin	en	Email settings
+forward also to	qmailldap	en	forward also to
 forward emails to	qmailldap	en	Forward emails to
-qmail dn	qmailldap	en	QMail DN
+ldap base settings	qmailldap	en	ldap base settings
 ldap server	qmailldap	en	LDAP server
 ldap settings	qmailldap	en	LDAP settings
 no alternate email address	qmailldap	en	No alternate email address
 options	common	en	Options
+qmail dn	qmailldap	en	QMail DN
+qmail settings	qmailldap	en	qmail settings
+qmaildotmode	qmailldap	en	qmaildotmode
 qmailldap	common	en	QMailLDAP
-remote server	qmailldap	en	Remote server
 remote port	qmailldap	en	Remote port
+remote server	qmailldap	en	Remote server
 remove	qmailldap	en	Remove
 server list	qmailldap	en	Server list
 server name	qmailldap	en	Server name
 smtp routing	qmailldap	en	SMTP routing
+the base dn from where the search in the ldap tree begins.	qmailldap	en	The base DN from where the search in the LDAP tree begins.
+the default interpretation of .qmail files.<br><b>note:</b> works only for deliveries based on ldap lookups. local mails use dotonly like in normal qmail.	qmailldap	en	The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.
+to lookup the local passwd file if the ldap lookup finds no match. this affects qmail-lspawn and auth_* if the ldap lookup returns nothing.	qmailldap	en	To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.
 userdata	qmailldap	en	Userdata
 virtual domains	qmailldap	en	Virtual domains
 we don't accept any email!	qmailldap	en	We don't accept any email!
