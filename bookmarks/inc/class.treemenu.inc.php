@@ -7,15 +7,15 @@
 		{
 			$p = $GLOBALS['HTTP_GET_VARS']['p'];
 
-			$img_expand   = PHPGW_IMAGES . '/plus.gif';
-			$img_collapse = PHPGW_IMAGES . '/tree_collapse.gif';
-			$img_line     = PHPGW_IMAGES . '/tree_vertline.gif';
-			$img_split    = PHPGW_IMAGES . '/tree_split.gif';
-			$img_end      = PHPGW_IMAGES . '/tree_end.gif';
-			$img_leaf     = PHPGW_IMAGES . '/minus.gif';
-			$img_spc      = PHPGW_IMAGES . '/tree_space.gif';
-			$img_closed   = PHPGW_IMAGES . '/closed.gif';
-			$img_open     = PHPGW_IMAGES . '/open.gif';
+			$img_expand   = $GLOBALS['phpgw']->common->image('bookmarks','plus');
+			$img_collapse = $GLOBALS['phpgw']->common->image('bookmarks','tree_collapse');
+			$img_line     = $GLOBALS['phpgw']->common->image('bookmarks','tree_vertline');
+			$img_split    = $GLOBALS['phpgw']->common->image('bookmarks','tree_split');
+			$img_end      = $GLOBALS['phpgw']->common->image('bookmarks','tree_end');
+			$img_leaf     = $GLOBALS['phpgw']->common->image('bookmarks','minus');
+			$img_spc      = $GLOBALS['phpgw']->common->image('bookmarks','tree_space');
+			$img_closed   = $GLOBALS['phpgw']->common->image('bookmarks','closed');
+			$img_open     = $GLOBALS['phpgw']->common->image('bookmarks','open');
 
 			/*********************************************/
 			/* read file to $tree array                  */
