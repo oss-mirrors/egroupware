@@ -50,7 +50,8 @@
 		minutes		int(10) DEFAULT '0' NOT NULL,
 		minperae	decimal(4,0) DEFAULT '0' NOT NULL,
 		billperae	decimal(20,2) DEFAULT '0' NOT NULL,
-		status		varchar(6) default 'done' NOT NULL
+		status		varchar(6) default 'done' NOT NULL,
+		dstatus		char(1) default 'o' NOT NULL
 	);
 
 	CREATE TABLE phpgw_p_projectmembers (
