@@ -21,17 +21,15 @@
    59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 */
 
-	$setup_info['jinn']['name']		= 'jinn';
-	$setup_info['jinn']['title']	= 'JiNN Data Manager';
-	$setup_info['jinn']['version']	= '0.8.000';
-	$setup_info['jinn']['app_order']= 15;
-	$setup_info['jinn']['author'] 	= 'Pim Snel';
-	$setup_info['jinn']['license']  = 'GPL';
-	$setup_info['jinn']['note'] 	= 'PostgreSQL support is not stable. Wanna help?';
+	$setup_info['jinn']['name']			= 'jinn';
+	$setup_info['jinn']['title']		= 'JiNN CMS/Database Manager';
+	$setup_info['jinn']['version']		= '0.8.100';
+	$setup_info['jinn']['app_order']	= 15;
+	$setup_info['jinn']['author'] 		= 'Pim Snel';
+	$setup_info['jinn']['license']  	= 'GPL';
+	$setup_info['jinn']['note'] 		= 'PostgreSQL support is not stable. Wanna help?';
 
-	$setup_info['jinn']['description'] =
-	"JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.";
-	
+	$setup_info['jinn']['description'] = 'JiNN-DESCRIPTION';
 	
 	$plg = CreateObject('jinn.bofieldplugins');
 
@@ -42,7 +40,6 @@
 
 		  foreach($plg->plugins as $plugin)
 		  {
-
 			 if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin[db_field_hooks]);
 			 
 			 $setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[title].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[version].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[author].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin[description]?lang($plugin[description]):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
@@ -56,11 +53,11 @@
 		'email' => 'pim@lingewoud.nl');
 	$setup_info['jinn']['tables']	= array
 	(
-		'phpgw_jinn_acl',
-		'phpgw_jinn_sites',
-		'phpgw_jinn_site_objects',
-		'phpgw_jinn_adv_field_conf'
-	);
+		'egw_jinn_acl',
+		'egw_jinn_sites',
+		'egw_jinn_objects',
+		'egw_jinn_obj_fields'
+	 );
 
 	$setup_info['jinn']['enable']		= 1;
 
@@ -79,6 +76,11 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14','0.9.15','1.0.0','1.0.1','1.0.2')
 	);
+
+
+
+
+
 
 
 

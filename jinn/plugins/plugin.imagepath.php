@@ -414,8 +414,7 @@
 			   if($config['Generate_thumbnail']=='True')
 			   {
 				  //generate thumb
-				  $new_temp_thumb=$graphic->Resize($config['Max_thumbnail_width'],
-				  $config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype);
+					$new_temp_thumb=$graphic->Resize($config['Max_thumbnail_width'], $config['Max_thumbnail_height'],$add_image['tmp_name'],$filetype);
 			   }
 
 			   $target_image_name = time() . ereg_replace("[^a-zA-Z0-9_.]", '_', $add_image['name']);
@@ -478,7 +477,7 @@
    }
 
 
-   function plg_ro_imagepath($value,$config,$where_val_enc)
+   function plg_ro_imagepath($value,$config)
    {
 
 	  global $local_bo;

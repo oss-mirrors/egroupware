@@ -52,7 +52,7 @@
 	   return '__hide__';
 	}
 	
-	function plg_ro_hidefield($field_name,$value, $config,$attr_arr)
+	function plg_ro_hidefield($field_name,$value)
 	{
 	   return '__hide__';
 	}

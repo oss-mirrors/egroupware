@@ -54,7 +54,44 @@
 		return $input;
 	}
 
+	/* DEFAULT/FALLBACK AUTO INCREMENTING PLUGIN */
+	$this->plugins['def_auto']['name'] 			= 'def_auto';
+	$this->plugins['def_auto']['title']			= 'default auto incrementing';
+	$this->plugins['def_auto']['author']			= 'Pim Snel';
+	$this->plugins['def_auto']['version']			= '1.0';
+	$this->plugins['def_auto']['enable']			= 1;
+	$this->plugins['def_auto']['db_field_hooks']	= array
+	(
+	   'int'
+	);
 
+	function plg_fi_def_auto($field_name, $value, $config,$attr_arr)
+	{
+
+	   if(!$value) $display_value=lang('automaticly incrementing');
+	   $input='<b>'.$value.'</b><input type="hidden" name="'.$field_name.'" value="'.$value.'">'.$display_value;
+
+	   return $input;
+	}
+
+	/* DEFAULT/FALLBACK BINARY PLUGIN */
+	$this->plugins['def_binary']['name'] 			= 'def_string';
+	$this->plugins['def_binary']['title']			= 'default binary';
+	$this->plugins['def_binary']['author']			= 'Pim Snel';
+	$this->plugins['def_binary']['version']			= '1.0';
+	$this->plugins['def_binary']['enable']			= 1;
+	$this->plugins['def_binary']['db_field_hooks']	= array
+	(
+	   'blob',
+	   'text',
+	);
+	
+	
+	function plg_fi_def_binary($field_name,$value, $config,$attr_arr)
+	{
+	   return lang('binary');
+	}
+	
 	/* DEFAULT/FALLBACK VARCHAR PLUGIN */
 	$this->plugins['def_string']['name'] 			= 'def_string';
 	$this->plugins['def_string']['title']			= 'default varchar';
@@ -105,7 +142,7 @@
 	/* DEFAULT/FALLBACK TIMESPAMP/DATE PLUGIN */
 	$this->plugins['def_timestamp']['name'] 			= 'def_timestamp';
 	$this->plugins['def_timestamp']['title']			= 'default timestamp plugin';
-	$this->plugins['def_timestamp']['version']		= '1.0';
+	$this->plugins['def_timestamp']['version']		= '1.1';
 	$this->plugins['def_timestamp']['author']		= 'Pim Snel';
 	$this->plugins['def_timestamp']['enable']			= 1;
 	$this->plugins['def_timestamp']['db_field_hooks']	= array
@@ -115,9 +152,15 @@
 
 	function plg_fi_def_timestamp($field_name,$value, $config,$attr_arr)
 	{
-
 		global $local_bo;
-		$input=$local_bo->common->format_date($value);
+		if ($value)
+		{
+		   $input=$local_bo->common->format_date($value);
+		}
+		else
+		{
+		   $input = lang('automatic');
+		}
 
 		return $input;
 	}

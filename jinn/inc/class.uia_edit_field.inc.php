@@ -131,15 +131,15 @@
 	  {
 		 if ($this->bool_edit_record)
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_phpgw_jinn_site_objects");
-			$action=lang('edit '. 'phpgw_jinn_site_objects');
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_objects");
+			$action=lang('edit '. 'egw_jinn_objects');
 			$where_key_form='<input type="hidden" name="where_key" value="'.$this->where_key.'">';
 			$where_value_form='<input type="hidden" name="where_value" value="'.$this->where_value.'">';
 		 }
 		 else
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_phpgw_jinn_site_objects");
-			$action=lang('add '. 'phpgw_jinn_site_objects' );
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_objects");
+			$action=lang('add '. 'egw_jinn_objects' );
 		 }
 
 		 $this->template->set_var('form_action',$form_action);
@@ -150,11 +150,11 @@
 
 	  function render_body()
 	  {
-		 $fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_site_objects');
+		 $fields=$this->bo->so->phpgw_table_metadata('egw_jinn_objects');
 
 		 if($this->bool_edit_record)
 		 {
-			$values_object= $this->bo->get_phpgw_records('phpgw_jinn_site_objects',$this->where_key,$this->where_value,'','','name');
+			$values_object= $this->bo->get_phpgw_records('egw_jinn_objects',$this->where_key,$this->where_value,'','','name');
 		 }
 
 		 foreach ($fields as $testone => $fieldproperties)
@@ -172,7 +172,7 @@
 			   $input_length=40;
 			}
 
-			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_site_objects'::text)")
+			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_egw_jinn_objects'::text)")
 			{
 			   if (!$value)
 			   {
@@ -638,7 +638,7 @@
 			
 			$this->template->set_var('lang_object_conf',lang('Using object configuration'));
 
-			$objects_array=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_site_id',$this->parent_site_id,$limit[start],$limit[stop],'name');
+			$objects_array=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$this->parent_site_id,$limit[start],$limit[stop],'name');
 
 			foreach($objects_array as $object)
 			{
@@ -664,7 +664,7 @@
 	  {
 		 $cancel_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$this->parent_site_id);
 
-		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=object_id&where_value='.$this->where_value);
+		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_objects&where_key=object_id&where_value='.$this->where_value);
 
 		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));

@@ -72,7 +72,7 @@
    {
 	  global $local_bo;
 
-	  $baselink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.get_plugin_afa');
+	  $baselink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.bouser.submit_to_plugin_afa');
 
 	  // FIXME clean up
 	  //up-attributes
@@ -106,11 +106,11 @@
 	  $last_image = '<img src="'. $GLOBALS['phpgw']->common->image('phpgw','last2.png').'" border="0">';
 
 	  
-	  $display='<a href="'.$baselink.'&plg=vorder&attributes='.$enc_attributes_up.'&where='.$where_val_enc.'" title="'.lang('move up').'">'.$up_image.'</a>';
+	  $display='<a href="'.$baselink.'&field_name='.$fieldname.'&attributes='.$enc_attributes_up.'&where='.$where_val_enc.'" title="'.lang('move up').'">'.$up_image.'</a>';
 	  
-	  $display.=' <a href="'.$baselink.'&plg=vorder&attributes='.$enc_attributes_down.'&where='.$where_val_enc.'" title="'.lang('move down').'">'.$down_image.'</a>';
+	  $display.=' <a href="'.$baselink.'&field_name='.$fieldname.'&attributes='.$enc_attributes_down.'&where='.$where_val_enc.'" title="'.lang('move down').'">'.$down_image.'</a>';
 	  
-	  $display.=' <a href="'.$baselink.'&plg=vorder&attributes='.$enc_attributes_last.'&where='.$where_val_enc.'" title="'.lang('move to last position').'">'.$last_image.'</a>';
+	  $display.=' <a href="'.$baselink.'&field_name='.$fieldname.'&attributes='.$enc_attributes_last.'&where='.$where_val_enc.'" title="'.lang('move to last position').'">'.$last_image.'</a>';
 
 	  return $display . "&nbsp;&nbsp;($value)";
    }
@@ -118,6 +118,7 @@
    // debut of the AUTONOME FORM ACTION PLUGIN !!! WHOOPIE
    function plg_afa_vorder($where_val_enc,$attributes,$conf_arr)
    {
+
 	  global $local_bo;
 	  $debug=1;
 

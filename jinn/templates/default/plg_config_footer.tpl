@@ -1,5 +1,4 @@
     </table>
-</form>
 <script type="text/JavaScript">
 <!--
 	
@@ -13,10 +12,11 @@
 //-->
 </script>
 <div align="center">
-<input type="button" value="{save}" onClick="fake_submit()" />
+<input type="submit" value="{save}"  />
 <input type="button" value="{cancel}" onClick="self.close()" />
 </div>
 </div>
 </div>
+</form>
 </body>
 </html>

@@ -57,9 +57,9 @@
 	  return $input;
    }
 
-   function plg_ro_timestamp($value,$config,$attr_arr)
+   function plg_ro_timestamp($value,$config)
    {	
-	  return plg_bv_timestamp($value,$config,$attr_arr);
+	  return plg_bv_timestamp($value,$config,'');
    }
 
    function plg_bv_timestamp($value,$config,$attr_arr)

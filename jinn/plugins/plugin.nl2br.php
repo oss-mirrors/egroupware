@@ -61,7 +61,7 @@
 	function plg_sf_nl2br($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	{
 		$input=$HTTP_POST_VARS[$key];
-		if (!$config['Strip_HTML_TAGS'] || $config['Strip_HTML_TAGS']=='Yes')
+		if ($config['Strip_HTML_TAGS']=='Yes')
 		{
 			$input=strip_tags($input);
 		}

@@ -27,16 +27,16 @@
 	{
 		var $public_functions = Array(
 			'index' => True,
-			'import_phpgw_jinn_site' => True,
+			'import_egw_jinn_site' => True,
 			'add_edit_site' => True,
 			'add_edit_object' => True,
-			'browse_phpgw_jinn_sites' => True,
-			'del_phpgw_jinn_sites'=> True,
-			'del_phpgw_jinn_site_objects' => True,
-			'insert_phpgw_jinn_sites'=> True,
-			'insert_phpgw_jinn_site_objects'=> True,
-			'update_phpgw_jinn_sites'=> True,
-			'update_phpgw_jinn_site_objects' => True,
+			'browse_egw_jinn_sites' => True,
+			'del_egw_jinn_sites'=> True,
+			'del_egw_jinn_objects' => True,
+			'insert_egw_jinn_sites'=> True,
+			'insert_egw_jinn_objects'=> True,
+			'update_egw_jinn_sites'=> True,
+			'update_egw_jinn_objects' => True,
 			'access_rights'=> True,
 			'set_access_rights_site_objects'=> True,
 			'set_access_rights_sites'=> True,
@@ -46,7 +46,8 @@
 			'plug_config'=> True,
 			'edit_this_jinn_site'=> True,
 			'edit_this_jinn_site_object'=> True,
-			'test_db_access'=> True
+			'test_db_access'=> True,
+			'upgrade_plugins'=>True,
 		);
 
 		var $bo;
@@ -203,7 +204,7 @@
 			//		$this->bo->save_sessiondata();
 		}
 
-		function import_phpgw_jinn_site()
+		function import_egw_jinn_site()
 		{
 
 			$this->template->set_file(array(
@@ -238,17 +239,17 @@
 					if($GLOBALS[HTTP_POST_VARS][replace_existing] && count($thissitename)>=1)
 					{
 						$new_site_id=$thissitename[0];
-						$this->bo->so->upAndValidate_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
-//						$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$data,'site_id',$new_site_id);
+						$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
+//						$this->bo->so->update_phpgw_data('egw_jinn_sites',$data,'site_id',$new_site_id);
 
 						// remove all existing objects
-						$this->bo->so->delete_phpgw_data('phpgw_jinn_site_objects',parent_site_id,$new_site_id);
+						$this->bo->so->delete_phpgw_data('egw_jinn_objects',parent_site_id,$new_site_id);
 
 						$msg= lang('Import was succesfull').'<br/>'.lang('Replaced existing site named <strong>%1</strong>.',$new_site_name);
 						$proceed=true;
 					}
 					/* insert as new site */
-					elseif ($new_site_id=$this->bo->so->insert_phpgw_data('phpgw_jinn_sites',$data))
+					elseif ($new_site_id=$this->bo->so->insert_phpgw_data('egw_jinn_sites',$data))
 					{
 
 						if(count($thissitename)>=1)
@@ -259,7 +260,7 @@
 								'name'=>'site_name',
 								'value'=>$new_name
 							);
-							$this->bo->so->upAndValidate_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
+							$this->bo->so->upAndValidate_phpgw_data('egw_jinn_sites',$datanew,'site_id',$new_site_id);
 						}
 						else
 						{
@@ -288,7 +289,7 @@
 									);
 
 								}
-								if ($object_id[]=$this->bo->so->validateAndInsert_phpgw_data('phpgw_jinn_site_objects',$data_objects))
+								if ($object_id[]=$this->bo->so->validateAndInsert_phpgw_data('egw_jinn_objects',$data_objects))
 								{
 									$num_objects=count($object_id);
 								} 
@@ -309,7 +310,7 @@
 			}
 			else
 			{
-				$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'));
+				$this->template->set_var('form_action',$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'));
 				$this->template->set_var('lang_Select_JiNN_site_file',lang('Select JiNN site file'));
 				$this->template->set_var('lang_Replace_existing_Site_with_the_same_name',lang('Replace existing site with the same name?'));
 				$this->template->set_var('lang_submit_and_import',lang('submit and import'));
@@ -320,7 +321,7 @@
 
 		}
 
-		function browse_phpgw_jinn_sites()
+		function browse_egw_jinn_sites()
 		{
 			$this->ui->header(lang('List Sites'));
 			$this->ui->msg_box($this->bo->message);
@@ -369,6 +370,7 @@
 			$this->bo->save_sessiondata();
 		}
 
+
 		function plug_config()
 		{
 			$GLOBALS['phpgw_info']['flags']['noheader']=True;
@@ -377,6 +379,14 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
+			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+			
+			if(!empty($object_arr[plugins]))
+			{
+			   $this->bo->upgrade_plugins($object_arr[object_id]);
+			  $GLOBALS['phpgw']->common->phpgw_exit();
+			}
+			
 			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
 
 			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
@@ -402,32 +412,29 @@
 
 			$use_records_cfg=False;
 
-			$plugin_name=$GLOBALS[HTTP_GET_VARS]['plug_name'];
+			$plugin_name=$_GET['plug_name'];
 
 			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
 			
+
+			$action=$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_field_plugin_conf&object_id='.$_GET[object_id].'&field_name='.$_GET[field_name].'&plug_name='.$_GET[plug_name]);
+
+			$this->template->set_var('action',$action);
 			$this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
 			$this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
 			$this->template->set_var('plug_version',lang('version').' '.$this->bo->plugins[$plugin_name]['version']);
 			$this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
 
-			if ($GLOBALS[HTTP_GET_VARS][hidden_val])
-			{
-				$GLOBALS[HTTP_GET_VARS][hidden_val]=str_replace('~','=',rawurldecode($GLOBALS[HTTP_GET_VARS][hidden_val]));
-				$orig_conf=explode(";",$GLOBALS[HTTP_GET_VARS][hidden_val]);
-				if ($GLOBALS[HTTP_GET_VARS][plug_name]==$GLOBALS[HTTP_GET_VARS][plug_orig]) $use_records_cfg=True;
-			}
+			$field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$_GET[field_name]);
+			
 
-			if (is_array($orig_conf))
+			$plugins_conf_arr=unserialize(base64_decode($field_conf_arr[field_plugins]));
+			
+			if (is_array($plugins_conf_arr))
 			{
-				foreach($orig_conf as $orig_conf_entry)
-				{
-					unset($cnf_pair);
-					$cnf_pair[]=explode("=",$orig_conf_entry);
-					$def_orig_conf[$cnf_pair[0][0]]=$cnf_pair[0][1];
-				}
+				if ($_GET[plug_name]==$_GET[plug_orig]) $use_records_cfg=True;
 			}
-
+			
 			$this->template->set_var('fld_plug_cnf',lang('field plugin configuration'));
 			$this->template->pfp('out','config_head');
 
@@ -448,7 +455,7 @@
 					/* if configuration is already set use these values */
 					if ($use_records_cfg)
 					{
-						$set_val=$def_orig_conf[$cfg_key];
+					   $set_val=$plugins_conf_arr[conf][$cfg_key];
 					}
 
 					$this->template->set_file(array('config_body' => 'plg_config_body.tpl'));
@@ -471,7 +478,7 @@
 							break;
 						case 'area'  :
 							if ($use_records_cfg) $val[0]=$set_val;
-							$output= '<textarea name="'.$cfg_key.'" rows="3" cols="30">'.$val[0].'</textarea>';
+							$output= '<textarea name="'.$cfg_key.'" rows="5" cols="50">'.$val[0].'</textarea>';
 							break;
 						case 'select':
 							$output= '<select name="'.$cfg_key.'">';
@@ -499,7 +506,7 @@
 				}
 
 				$this->template->set_file(array('config_foot' => 'plg_config_footer.tpl'));
-				$this->template->set_var('fld_name',$GLOBALS[HTTP_GET_VARS][hidden_name]);
+				$this->template->set_var('fld_name',$_GET[hidden_name]);
 				$this->template->set_var('newconfig',$newconfig);
 				$this->template->set_var('save',lang('save'));
 				$this->template->set_var('cancel',lang('cancel'));
@@ -508,7 +515,147 @@
 				$this->bo->save_sessiondata();
 			}
 
+			function plug_config_old()
+			{
+			   $GLOBALS['phpgw_info']['flags']['noheader']=True;
+			   $GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+			   $GLOBALS['phpgw_info']['flags']['noappheader']=True;
+			   $GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+			   $GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
+			   $this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
+
+			   $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+			   if(!file_exists($theme_css))
+			   {
+				  $theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+			   }
+
+			   $app = $GLOBALS['phpgw_info']['flags']['currentapp'];
+			   $app = $app ? ' ['.(isset($GLOBALS['phpgw_info']['apps'][$app]) ? $GLOBALS['phpgw_info']['apps'][$app]['title'] : lang($app)).']':'';
+
+			   $var = Array(
+				  'img_icon'      => PHPGW_IMAGES_DIR . '/favicon.ico',
+				  'img_shortcut'  => PHPGW_IMAGES_DIR . '/favicon.ico',
+				  'charset'       => $GLOBALS['phpgw']->translation->charset(),
+				  'font_family'   => $GLOBALS['phpgw_info']['theme']['font'],
+				  'website_title' => $GLOBALS['phpgw_info']['server']['site_title'].$app,
+				  'theme_css'     => $theme_css,
+				  'css'           => $GLOBALS['phpgw']->common->get_css(),
+				  'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
+			   );
+			   $this->template->set_var($var);
+
+			   $use_records_cfg=False;
+
+			   $plugin_name=$GLOBALS[HTTP_GET_VARS]['plug_name'];
+
+			   $this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
+
+			   $this->template->set_var('lang',$GLOBALS[phpgw_info][user][preferences][common][lang]);
+			   $this->template->set_var('plug_name',$this->bo->plugins[$plugin_name]['title']);
+			   $this->template->set_var('plug_version',lang('version').' '.$this->bo->plugins[$plugin_name]['version']);
+			   $this->template->set_var('plug_descr',$this->bo->plugins[$plugin_name]['description']);
+
+			   if ($GLOBALS[HTTP_GET_VARS][hidden_val])
+			   {
+				  $GLOBALS[HTTP_GET_VARS][hidden_val]=str_replace('~','=',rawurldecode($GLOBALS[HTTP_GET_VARS][hidden_val]));
+				  $orig_conf=explode(";",$GLOBALS[HTTP_GET_VARS][hidden_val]);
+				  if ($GLOBALS[HTTP_GET_VARS][plug_name]==$GLOBALS[HTTP_GET_VARS][plug_orig]) $use_records_cfg=True;
+			   }
+
+			   if (is_array($orig_conf))
+			   {
+				  foreach($orig_conf as $orig_conf_entry)
+				  {
+					 unset($cnf_pair);
+					 $cnf_pair[]=explode("=",$orig_conf_entry);
+					 $def_orig_conf[$cnf_pair[0][0]]=$cnf_pair[0][1];
+				  }
+			   }
+
+			   $this->template->set_var('fld_plug_cnf',lang('field plugin configuration'));
+			   $this->template->pfp('out','config_head');
+
+			   // get config fields for this plugin
+			   // if hidden value is empty get defaults vals for this plugin
+
+			   $cfg=$this->bo->plugins[$plugin_name]['config'];
+			   if(is_array($cfg))
+			   {
+				  foreach($cfg as $cfg_key => $cfg_val)
+				  {
+					 /* replace underscores for spaces */
+					 $render_cfg_key=ereg_replace('_',' ',$cfg_key);
+
+					 $val=$cfg_val;
+					 $row=($row=='row_on')? 'row_off' : 'row_on';
+
+					 /* if configuration is already set use these values */
+					 if ($use_records_cfg)
+					 {
+						$set_val=$def_orig_conf[$cfg_key];
+					 }
+
+					 $this->template->set_file(array('config_body' => 'plg_config_body.tpl'));
+					 $this->template->set_var('row',$row);
+					 $this->template->set_var('descr',$render_cfg_key);
+
+					 switch ($val[1])
+					 {
+						case 'radio' :
+						   foreach($val[0] as $radio)
+						   {
+							  unset($checked);
+							  if($set_val==$radio) $checked='checked';
+							  $output='<input name="'.$cfg_key.'" type="radio" '.$checked.' value="'.$radio.'">'.$radio.'<br/>';
+						   }
+						   break;
+						case 'text'  :
+						   if ($use_records_cfg) $val[0]=$set_val;
+						   $output= '<input name="'.$cfg_key.'" type=text '.$val[2].' value="'.$val[0].'">';
+						   break;
+						case 'area'  :
+						   if ($use_records_cfg) $val[0]=$set_val;
+						   $output= '<textarea name="'.$cfg_key.'" rows="5" cols="50">'.$val[0].'</textarea>';
+						   break;
+						case 'select':
+						   $output= '<select name="'.$cfg_key.'">';
+							  foreach($val[0] as $option)
+							  {
+								 unset($selected);
+								 if($set_val==$option) $selected='selected';
+								 $output.='<option value="'.$option.'" '.$selected.'>'.$option.'</option>';
+							  }
+							  $output.='</select>';
+						   break;
+						case 'none'  :
+						   unset($output);
+						   break;
+						   default      :
+						   $output.= '<input name="'.$cfg_key.'" type=text value="'.$val[0].'">';
+						}
+
+						$this->template->set_var('fld',$output);
+						$this->template->pparse('out','config_body');
+
+						if($newconfig) $newconfig.='+";"+';
+						$newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
+					 }
+				  }
+
+				  $this->template->set_file(array('config_foot' => 'plg_config_footer.tpl'));
+				  $this->template->set_var('fld_name',$GLOBALS[HTTP_GET_VARS][hidden_name]);
+				  $this->template->set_var('newconfig',$newconfig);
+				  $this->template->set_var('save',lang('save'));
+				  $this->template->set_var('cancel',lang('cancel'));
+				  $this->template->pparse('out','config_foot');
+
+				  $this->bo->save_sessiondata();
+			   }
+
+
+			
 
 			function export_site()
 			{
@@ -518,7 +665,7 @@
 				$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 				$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-				$site_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_sites',$this->bo->where_key,$this->bo->where_value,'','','name');
+				$site_data=$this->bo->so->get_phpgw_record_values('egw_jinn_sites',$this->bo->where_key,$this->bo->where_value,'','','name');
 
 				$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
 				$date=date("d-m-Y",time());
@@ -569,7 +716,7 @@
 				$out.=");\n\n";
 
 
-				$site_object_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_site_objects','parent_site_id', $this->bo->where_value ,'','','name');
+				$site_object_data=$this->bo->so->get_phpgw_record_values('egw_jinn_objects','parent_site_id', $this->bo->where_value ,'','','name');
 
 				$out.= "\n/* SITE_OBJECT ARRAY */\n";
 

@@ -30,11 +30,11 @@
 </head>
 <!-- END head -->
 <body {body_tags}>
+<form name="popfrm" action="{action}" method="post">
 <div id="divMain">
 <div id="divAppboxHeader">{plug_name}</div>
 <div id="divAppbox">
 {plug_version}
 <p><i>{plug_descr}</i></p><br/>
 <b>{fld_plug_cnf}</b><br/>
-<form name="popfrm" action="">
 	<table align="center" cellpadding="3" cellspacing="3" width="100%">

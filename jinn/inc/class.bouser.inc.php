@@ -34,6 +34,7 @@
 		 'multiple_actions'			=> True,
 		 'get_plugin_afa'			=> True,
 		 'mult_change_num_records'	=> True,
+		 'submit_to_plugin_afa'		=> True,
 		 'copy_record'				=> True
 	  );
 
@@ -49,6 +50,8 @@
 	  var $local_bo;
 	  var $magick;
 
+	  var $plug;
+
 	  var $current_config;
 	  var $action;
 	  var $common;
@@ -58,6 +61,7 @@
 	  var $where_key;
 	  var $where_value;
 	  var $where_string;
+	  var $last_where_string;
 
 	  var $mult_where_array;
 	  var $mult_records_amount;
@@ -69,7 +73,9 @@
 
 		 $this->so = CreateObject('jinn.sojinn');
 
+		 
 		 $this->include_plugins();
+
 		 $this->magick = CreateObject('jinn.boimagemagick.inc.php');	
 
 		 $this->read_sessiondata();
@@ -90,6 +96,7 @@
 		 {
 			$this->where_string  = base64_decode($_where_string);
 			$this->where_string_encoded  = $_where_string;
+			$this->last_where_string = $this->where_string_encoded;
 		 }
 
 		 if (($_form=='main_menu')|| !empty($site_id)) $this->site_id  = $_site_id;
@@ -97,11 +104,11 @@
 
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
+		 $this->plug = CreateObject('jinn.plugins');
+		 $this->plug->local_bo = $this;
 
 
 	  }
-
-
 
 	  
 	  function save_sessiondata()
@@ -112,7 +119,8 @@
 			'site_object_id' => $this->site_object_id,
 			'browse_settings'=>	$this->browse_settings,
 			'mult_where_array'=> $this->mult_where_array,
-			'mult_records_amount'=>$this->mult_records_amount
+			'mult_records_amount'=>$this->mult_records_amount,
+			'last_where_string'=>$this->last_where_string
 		 );
 
 		 $GLOBALS['phpgw']->session->appsession('session_data','jinn',$data);
@@ -129,6 +137,7 @@
 			$this->browse_settings	= $data['browse_settings'];
 			$this->mult_where_array	= $data['mult_where_array'];
 			$this->mult_records_amount = $data['mult_records_amount'];
+			$this->last_where_string = $data['last_where_string'];
 		 }
 	  }
 
@@ -208,9 +217,9 @@
 		 $data=$this->http_vars_pairs($_POST,$_FILES);
 		 $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 
-		 $many_data=$this->http_vars_pairs_many($_FILES);
-		 $many_data['FLDXXX'.$status['idfield']]=$status['id'];
-		 $status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
+		 $m2m_data=$this->http_vars_pairs_m2m($_POST);
+		 $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
+		 $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
 
 		 if ($status[status]==1)	$this->message['info']='Record successfully added';
 		 else $this->message[error]=lang('Record NOT succesfully deleted. Unknown error');
@@ -223,7 +232,6 @@
 		 }
 		 else
 		 {
-
 			if($_POST[repeat_input]=='true')
 			{
 			   $this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&repeat_input=true');
@@ -260,8 +268,6 @@
 			   }
 			
 			}
-
-
 		 }
 		 else
 		 {
@@ -279,7 +285,6 @@
 			}
 
 		 }
-
 		 return $post_arr;
 	  }
 
@@ -332,9 +337,9 @@
 				  $data=$this->http_vars_pairs($post_arr,$files_arr);
 				  $status=$this->so->insert_object_data($this->site_id,$this->site_object[table_name],$data);
 				  $this->mult_where_array[]=$status[where_string];
-				  $many_data=$this->http_vars_pairs_many($post_arr);
-				  $many_data['FLDXXX'.$status['idfield']]=$status['id'];
-				  $status_relations=$this->so->update_object_many_data($this->site_id, $many_data);
+				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
+				  $m2m_data['FLDXXX'.$status['idfield']]=$status['id'];
+				  $status_relations=$this->so->update_object_many_data($this->site_id, $m2m_data);
 			   }
 			}
 
@@ -379,12 +384,14 @@
 
 				  $table=$this->site_object[table_name];
 
-				  $many_data=$this->http_vars_pairs_many($post_arr);
+				  $m2m_data=$this->http_vars_pairs_m2m($post_arr);
 
-				  $status=$this->so->update_object_many_data($this->site_id, $many_data);
+				  $status=$this->so->update_object_many_data($this->site_id, $m2m_data);
 
 				  $data=$this->http_vars_pairs($post_arr, $files_arr);
-
+					
+				 // _debug_array($data);
+				// die();
 				  $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
 			   }
 			}
@@ -438,10 +445,10 @@
 			$where_string=$this->where_string;
 			$table=$this->site_object[table_name];
 
-			$many_data=$this->http_vars_pairs_many($_POST, $_FILES);
+			$m2m_data=$this->http_vars_pairs_m2m($_POST);
+			$status[o2o]=$this->o2o_update();
 
-			$status=$this->so->update_object_many_data($this->site_id, $many_data);
-
+			$status=$this->so->update_object_many_data($this->site_id, $m2m_data);
 			$data=$this->http_vars_pairs($_POST, $_FILES);
 
 			$status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
@@ -460,6 +467,35 @@
 			   $this->common->exit_and_open_screen('jinn.uiuser.index');
 			}
 		 }
+		
+		 function o2o_update()
+		 {		 
+			$o2o_data=$this->http_vars_pairs_o2o($_POST, $_FILES);
+
+			if(is_array($o2o_data))
+			{
+			   // FIXME implement m2m relations for o2o related objects
+			   foreach($o2o_data as $o2o_entry)
+			   {
+				  if($o2o_entry[meta][O2OW])
+				  {
+
+					 //_debug_array($o2o_data);
+					 //die();
+					 // update
+					 $status=$this->so->update_object_data($this->site_id, $o2o_entry[meta][O2OT], $o2o_entry[data], '','',$this->so->strip_magic_quotes_gpc($o2o_entry[meta][O2OW]));	   
+				  }
+				  else
+				  {
+					 // insert
+					 $status=$this->so->insert_object_data($this->site_id,$o2o_entry[meta][O2OT],$o2o_entry[data]);
+				  }			   
+			   }
+			}
+			return $status;
+		 }
+
+
 
 		 function del_record() 
 		 {
@@ -505,7 +541,32 @@
 		 }
 
 
-		 function extract_1w1_relations($string)
+		 // one-to-one relations
+		 function extract_O2O_relations($string)
+		 {
+			$relations_array = explode('|',$string);
+
+			foreach($relations_array as $relation)
+			{
+			   $relation_part=explode(':',$relation);
+			   if ($relation_part[0]=='3')
+			   {
+				  $relation_arr[$relation_part[1]] = array
+				  (
+					 'type'=>$relation_part[0],
+					 'field_org'=>$relation_part[1],
+					 'related_with'=>$relation_part[3],
+					 'object_conf'=>$relation_part[4]
+				  );
+			   }
+
+			}
+			return $relation_arr;
+		 }
+
+
+		 // one-to-many relations
+		 function extract_O2M_relations($string)
 		 {
 			$relations_array = explode('|',$string);
 
@@ -527,7 +588,8 @@
 			return $relation_arr;
 		 }
 
-		 function extract_1wX_relations($string)
+		 // many-to-many relations
+		 function extract_M2M_relations($string)
 		 {
 			$relations_array = explode('|',$string);
 
@@ -555,6 +617,9 @@
 			}
 			return $relation_arr;
 		 }
+
+		 
+		 
 		 function get_related_field($relation_array)
 		 {
 			$table_info=explode('.',$relation_array[related_with]);
@@ -601,13 +666,21 @@
 
 		 function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
 		 {
-
 			while(list($key, $val) = each($HTTP_POST_VARS)) 
 			{
 			   if(substr($key,0,6)=='FLDXXX')
 			   {
-				  /* Check for plugin need and plugin availability */
-				  if ($filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
+				  // being backwards compatible, check for old method 
+				  if($this->site_object['plugins'])
+				  {
+					 $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$this->site_object['plugins']);
+				  }
+				  else
+				  {
+					 $field_values=$this->so->get_field_values($this->site_object[object_id],substr($key,6));
+					 $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
+				  }
+				  if ($filtered_data)				
 				  {
 					 if ($filtered_data==-1) $filtered_data='';
 					 $data[] = array
@@ -621,20 +694,83 @@
 					 $data[] = array
 					 (
 						'name' => substr($key,6),
-
 						'value' => addslashes($val) 
 					 );
 				  }
 
+
 			   }
 			}
+
 
 			return $data;
 
 		 }
 
+		 function http_vars_pairs_o2o($HTTP_POST_VARS,$HTTP_POST_FILES) 
+		 {
 
-		 function http_vars_pairs_many($HTTP_POST_VARS) {
+			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			{
+			   if(substr($key,0,4)=='O2OO')
+			   {
+				  $curr_object_arr=$this->so->get_object_values($val);
+			   }
+			   
+			   if(substr($key,0,4)=='O2OW' || substr($key,0,4)=='O2OT' || substr($key,0,4)=='O2OO')
+			   {
+				  $idx=intval(substr($key,4,2));
+				  $o2o_data_arr[$idx]['meta'][substr($key,0,4)]=$val;
+			   }
+			   elseif(substr($key,0,3)=='O2O')
+			   {
+
+				  // being backwards compatible, check for old method 
+				  if($curr_object_arr[plugins])
+				  {
+					 $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$curr_object_arr[plugins]);
+					 // $filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$this->site_object['plugins']);
+				  }
+				  else
+				  {
+//					 echo ($curr_object_arr[plugins].substr($key,6));
+					 $field_values=$this->so->get_field_values($curr_object_arr[object_id],substr($key,6));
+					 $filtered_data=$this->plug->call_plugin_sf($key,$field_values,$HTTP_POST_VARS,$HTTP_POST_FILES);
+
+				  }
+				  
+				  /* Check for plugin need and plugin availability */
+				  if($filtered_data)				
+				  {
+					 if ($filtered_data==-1) $filtered_data='';
+					 $data = array
+					 (
+						'name' => substr($key,6),
+						'value' =>  $filtered_data  //addslashes($val)
+					 );
+				  }
+				  else // if there's no plugin, just save the vals
+				  {
+					 $data = array
+					 (
+						'name' => substr($key,6),
+						'value' => addslashes($val) 
+					 );
+				  }
+				  $idx=intval(substr($key,4,2));
+				  $o2o_data_arr[$idx]['data'][]=$data;
+
+			   }
+
+			}
+
+			return $o2o_data_arr;
+		 }
+
+
+
+		 
+		 function http_vars_pairs_m2m($HTTP_POST_VARS) {
 
 			while(list($key, $val) = each($HTTP_POST_VARS)) {
 
@@ -728,11 +864,18 @@
 		 /**
 		 * get storage filter from plugin 
 		 */
-		 function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
+		 function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES,$plugin_string=false)
 		 {
 			global $local_bo;
+
 			$local_bo=$this;
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+
+			if(!$plugin_string)
+			{
+			   $plugin_string=$this->site_object['plugins'];
+			}
+			
+			$plugins=explode('|',str_replace('~','=',$plugin_string));
 
 			foreach($plugins as $plugin)
 			{
@@ -750,11 +893,9 @@
 				  }
 			   }
 
-			   //substr($key,6)==$sets[0] ||
 			   if ( substr($key,-strlen($sets[0]))==$sets[0] )
 			   {
-//				  	   echo $sets[1].' '.$key.' '.substr($key,-strlen($sets[0]));
-//				  	   echo '<br/>';
+				  
 				  $data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr);
 				  if(!$data) return;
 			   }
@@ -848,12 +989,18 @@
 			/**
 			* get input function from plugin 
 			*/
-			function get_plugin_fi($input_name,$value,$type,$attr_arr)
+			function get_plugin_fi($input_name,$value,$type,$attr_arr,$plugin_string=false)
 			{
 			   global $local_bo;
 			   $local_bo=$this;
 
-			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+			   if(!$plugin_string)
+			   {
+				  $this->message['error'] = 'Warning: get_plugin_fi called with old behaviour';
+				  $plugin_string = $this->site_object['plugins'];
+			   }
+			   
+			   $plugins=explode('|',str_replace('~','=',$plugin_string));
 			   foreach($plugins as $plugin)
 			   {	
 				  $sets=explode(':',$plugin);
@@ -869,8 +1016,8 @@
 					 }
 				  }
 
-
-				  if ( (substr($input_name,0,4)=='MLTX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,6)=='FLDXXX' && substr($input_name,6)==$sets[0]) )
+				  // test for valid field-prefixes (MLTX##,FLDXXX,O2OX##)
+				  if ( (substr($input_name,0,4)=='MLTX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,6)=='FLDXXX' && substr($input_name,6)==$sets[0]) || (substr($input_name,0,4)=='O2OX' && substr($input_name,6)==$sets[0]))
 				  {
 					 //FIXME all plugins must get an extra argument in the sf_func
 					 $input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr);
@@ -883,8 +1030,25 @@
 
 			}
 
+			/*!
+			@function submit_to_plugin_afa
+			@abstract wrapper for the autonome form action plugin caller which resides in the class plugins
+			*/
+			function submit_to_plugin_afa()
+			{
+			   if($this->site_object[plugins])
+			   {
+				  $this->get_plugin_afa();
+			   }
+			   else 
+			   {
+				  $field_values=$this->so->get_field_values($this->site_object[object_id],$_GET[field_name]);
+				  $this->plug->call_plugin_afa($field_values);
+			   }
+			}
+			
 			/**
-			* get autonome form action function from plugin 
+			* get autonome form action function from plugin see visual ordering plugin how it works
 			*/
 			function get_plugin_afa()
 			{
@@ -893,6 +1057,8 @@
 
 			   $action_plugin_name=$_GET[plg];
 
+
+			   
 			   $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
 			   foreach($plugins as $plugin)
 			   {	

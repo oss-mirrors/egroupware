@@ -333,7 +333,7 @@
 			$LIMIT="LIMIT $limit[start],$limit[stop]";
 
 			/* get one with many relations */
-			$relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object['relations']);
+			$relation1_array=$this->bo->extract_O2M_relations($this->bo->site_object['relations']);
 			if (count($relation1_array)>0)
 			{
 			   foreach($relation1_array as $relation1)
@@ -424,9 +424,20 @@
 			// make columnheaders
 			foreach ($col_list as $col)
 			{
+			   unset($testvalue);
 
+			   $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$col[name]);
+			   
 			   //--- this is a special hack for the hide-this-field-plugin ----//
-			   $testvalue=$this->bo->get_plugin_bv($col[name],'x',$where_string,$col[name]);
+			   if($this->bo->site_object[plugins])
+			   {
+				  $testvalue=$this->bo->get_plugin_bv($col[name],'x',$where_string,$col[name]);
+			   }
+			   else
+			   {
+				  $testvalue=$this->bo->plug->call_plugin_bv($col[name],'x',$where_string,$field_conf_arr);
+			   }
+			   
 			   if($testvalue=='__hide__')
 			   {
 				  continue ;
@@ -531,6 +542,7 @@
 
 					 foreach($col_names_list  as $onecolname)
 					 {
+						$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$onecolname);
 						$recordvalue=$recordvalues[$onecolname];
 						if (is_array($fields_with_relation1) && in_array($onecolname,$fields_with_relation1))
 						{
@@ -539,7 +551,14 @@
 						}
 						else
 						{	
-						   $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
+						   if($this->bo->site_object[plugins])
+						   {
+							  $recordvalue=$this->bo->get_plugin_bv($onecolname,$recordvalue,$where_string,$onecolname);
+						   }
+						   else
+						   {
+							  $recordvalue=$this->bo->plug->call_plugin_bv($onecolname,$recordvalue,$where_string,$field_conf_arr);
+						   }
 						}
 
 						if (empty($recordvalue))

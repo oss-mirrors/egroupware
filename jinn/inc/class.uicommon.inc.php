@@ -99,10 +99,12 @@
 			{
 				foreach ( $list_array as $array ) {
 
-					unset($SELECTED);
+				   unset($SELECTED);
 					if ($array[value]==$selected_value)
 					{
-						$SELECTED='SELECTED';
+					   //echo $array[value].'='.$selected_value.'<br/>';
+
+					   $SELECTED='selected="selected"';
 					}				
 					if ($array[name]) $name = $array[name];
 					else $name = $array[value];

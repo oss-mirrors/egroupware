@@ -107,7 +107,7 @@
 	  return $input;
    }
 
-   function plg_ro_htmlArea($value, $config,$attr_arr)
+   function plg_ro_htmlArea($value, $config)
    {}
 
    function plg_bv_htmlArea($value, $config,$attr_arr)

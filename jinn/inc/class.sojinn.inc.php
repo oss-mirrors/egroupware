@@ -51,7 +51,7 @@
 
 		 if($site_id=='') $site_id=-1;//pgsql hack
 		 
-		 $SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id'";
+		 $SQL="SELECT * FROM egw_jinn_sites WHERE site_id='$site_id'";
 
 		 $this->phpgw_db->free();
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
@@ -131,14 +131,14 @@
 
 	  function get_site_values($site_id)
 	  {
-		 $site_metadata=$this->phpgw_db->metadata('phpgw_jinn_sites');
+		 $site_metadata=$this->phpgw_db->metadata('egw_jinn_sites');
 		 $this->phpgw_db->free();	
 
 
 		 //FIXME psql error;
 		if($site_id=='') $site_id=-1;
 		 
-		 $SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id';";
+		 $SQL="SELECT * FROM egw_jinn_sites WHERE site_id='$site_id';";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
@@ -180,10 +180,10 @@
 
 	  function get_object_values($object_id)
 	  {
-		 $object_metadata=$this->phpgw_db->metadata('phpgw_jinn_site_objects');
+		 $object_metadata=$this->phpgw_db->metadata('egw_jinn_objects');
 		 $this->phpgw_db->free();	
 
-		 $this->phpgw_db->query("SELECT * FROM phpgw_jinn_site_objects
+		 $this->phpgw_db->query("SELECT * FROM egw_jinn_objects
 		 WHERE object_id='$object_id'",__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
@@ -199,6 +199,27 @@
 		 return $object_values;
 	  }
 
+	  function get_field_values($object_id,$field_name)
+	  {
+		 $field_metadata=$this->phpgw_db->metadata('egw_jinn_obj_fields');
+		 $this->phpgw_db->free();	
+
+		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object='$object_id' AND field_name='$field_name'";
+//		die($sql);
+		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
+
+		 $this->phpgw_db->next_record();
+		 foreach($field_metadata as $fieldmeta)
+		 {
+			$field_values[$fieldmeta['name']]=$this->strip_magic_quotes_gpc($this->phpgw_db->f($fieldmeta['name']));
+		 }
+
+//			_debug_array($field_values);
+		 return $field_values;
+
+	  }
+
+	  
 	  /****************************************************************************\
 	  * get all tablefield in array for table                                      *
 	  \****************************************************************************/
@@ -299,7 +320,7 @@
 	  // new, without group(this has to be done seperately) and without objectsection(this also has to be done seperately)
 	  function get_sites_for_user2($uid)
 	  {
-		 $SQL = "SELECT site_id FROM phpgw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
+		 $SQL = "SELECT site_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 while ($this->phpgw_db->next_record())
@@ -327,7 +348,7 @@
 
 		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
 		 {
-			$SQL = "SELECT site_id FROM phpgw_jinn_sites ORDER BY site_name";
+			$SQL = "SELECT site_id FROM egw_jinn_sites ORDER BY site_name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -345,7 +366,7 @@
 			   }
 			}
 
-			$SQL = "SELECT site_id FROM phpgw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
+			$SQL = "SELECT site_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql GROUP BY site_id";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -373,7 +394,7 @@
 				  $SUB_SQL.="(object_id='$object')";
 			   }
 
-			   $SQL="SELECT parent_site_id FROM phpgw_jinn_site_objects WHERE $SUB_SQL GROUP BY parent_site_id";
+			   $SQL="SELECT parent_site_id FROM egw_jinn_objects WHERE $SUB_SQL GROUP BY parent_site_id";
 			   $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			   while ($this->phpgw_db->next_record())
@@ -406,7 +427,7 @@
 		 // als user phpGWADMIN is alle sites geven
 		 if($GLOBALS['phpgw_info']['user']['apps']['admin'])
 		 {
-			$SQL="SELECT object_id FROM phpgw_jinn_site_objects ";
+			$SQL="SELECT object_id FROM egw_jinn_objects ";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 		 }
 		 else
@@ -419,7 +440,7 @@
 			   }
 			}
 
-			$SQL="SELECT site_object_id FROM phpgw_jinn_acl WHERE uid='$uid' $group_sql";
+			$SQL="SELECT site_object_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 }
@@ -469,7 +490,7 @@
 
 	  function get_site_name($site_id)
 	  {
-		 $this->phpgw_db->query("SELECT site_name FROM phpgw_jinn_sites
+		 $this->phpgw_db->query("SELECT site_name FROM egw_jinn_sites
 		 WHERE site_id='$site_id'",__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
@@ -484,7 +505,7 @@
 
 	  function get_sites_by_name($name)
 	  {
-		 $this->phpgw_db->query("SELECT * FROM phpgw_jinn_sites
+		 $this->phpgw_db->query("SELECT * FROM egw_jinn_sites
 		 WHERE site_name='$name'",__LINE__,__FILE__);
 
 		 while($this->phpgw_db->next_record())
@@ -515,7 +536,7 @@
 
 	  function get_object_name($object_id)
 	  {
-		 $this->phpgw_db->query("SELECT name FROM phpgw_jinn_site_objects
+		 $this->phpgw_db->query("SELECT name FROM egw_jinn_objects
 		 WHERE object_id='$object_id'",__LINE__,__FILE__);
 
 		 $this->phpgw_db->next_record();
@@ -526,7 +547,7 @@
 	  function get_objects_for_user($uid)
 	  {
 
-		 $SQL="SELECT site_object_id FROM phpgw_jinn_acl WHERE uid='$uid'";
+		 $SQL="SELECT site_object_id FROM egw_jinn_acl WHERE uid='$uid'";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 while ($this->phpgw_db->next_record())
@@ -556,7 +577,7 @@
 		 }
 
 		 /* check if user or group administers this site */
-		 $SQL="SELECT site_id FROM phpgw_jinn_acl WHERE uid='$uid' $group_sql";
+		 $SQL="SELECT site_id FROM egw_jinn_acl WHERE uid='$uid' $group_sql";
 		 $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 		 while ($this->phpgw_db->next_record())
@@ -570,7 +591,7 @@
 		 /* yes it's an admin so we can get all objects for this site */
 		 if ($admin)
 		 {
-			$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id' ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id' ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -581,7 +602,7 @@
 		 // he's no admin so get all the objects which are assigned to the user
 		 else
 		 {
-			$SQL="SELECT object_id FROM phpgw_jinn_site_objects WHERE parent_site_id = '$site_id' ORDER BY name";
+			$SQL="SELECT object_id FROM egw_jinn_objects WHERE parent_site_id = '$site_id' ORDER BY name";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			while ($this->phpgw_db->next_record())
@@ -592,7 +613,7 @@
 
 			if($object_sql)
 			{
-			   $SQL="SELECT site_object_id FROM phpgw_jinn_acl WHERE ($object_sql) AND (uid='$uid' $group_sql)";
+			   $SQL="SELECT site_object_id FROM egw_jinn_acl WHERE ($object_sql) AND (uid='$uid' $group_sql)";
 			   $this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			   while ($this->phpgw_db->next_record())
@@ -871,6 +892,7 @@
 		 $this->site_db_connection($site_id);
 		 $metadata=$this->site_table_metadata($site_id,$site_object,true);
 
+		 
 		 foreach($data as $field)
 		 {
 			if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
@@ -879,6 +901,13 @@
 			   $value[idfield]=$field['name'];
 			   continue;
 			}
+			if($field[value]=='' && eregi('int',$metadata[$field['name']]['type']) )
+			{
+			   continue;
+			}
+
+
+
 			
 //			if(!$thirstfield) $thirstfield=$field[name];
 			if ($SQLfields) $SQLfields .= ',';
@@ -977,6 +1006,7 @@
 		 if($curr_where_string)
 		 {
 			$SQL = 'UPDATE ' . $site_object . ' SET ' . $SQL_SUB . ' WHERE ' . $curr_where_string ." LIMIT 1";
+//			die($SQL);
 
 		 }
 		 else
@@ -1093,11 +1123,11 @@
 
 	  function insert_new_site($data)
 	  {
-		 $meta=$this->phpgw_table_metadata('phpgw_jinn_sites',true);
+		 $meta=$this->phpgw_table_metadata('egw_jinn_sites',true);
 
 		 foreach($data as $field)
 		 {
-			if($meta[$field['name']]['auto_increment'] || eregi('seq_phpgw_jinn_sites',$meta[$field['name']]['default'])) 
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_sites',$meta[$field['name']]['default'])) 
 			{
 			   $last_insert_id_col=$field['name'];
 			   continue;
@@ -1121,12 +1151,12 @@
 			$SQLvalues .= "'".$field[value]."'";
 		 }
 
-		 $SQL='INSERT INTO phpgw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 $SQL='INSERT INTO egw_jinn_sites (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status[ret_code]=0;
    
-			$SQL='SELECT * FROM phpgw_jinn_sites WHERE serialnumber='.$serial;
+			$SQL='SELECT * FROM egw_jinn_sites WHERE serialnumber='.$serial;
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
@@ -1140,11 +1170,11 @@
 
 	  function insert_new_object($data)
 	  {
-		 $meta=$this->phpgw_table_metadata('phpgw_jinn_site_objects',true);
+		 $meta=$this->phpgw_table_metadata('egw_jinn_objects',true);
 
 		 foreach($data as $field)
 		 {
-			if($meta[$field['name']]['auto_increment'] || eregi('seq_phpgw_jinn_site_objects',$meta[$field['name']]['default'])) 
+			if($meta[$field['name']]['auto_increment'] || eregi('seq_egw_jinn_objects',$meta[$field['name']]['default'])) 
 			{
 			   $last_insert_id_col=$field['name'];
 			   continue;
@@ -1174,10 +1204,10 @@
 			$SQLvalues .= "'".$field[value]."'";
 		 }
 
-		 $SQL='INSERT INTO phpgw_jinn_site_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
+		 $SQL='INSERT INTO egw_jinn_objects (' . $SQLfields . ') VALUES (' . $SQLvalues . ')';
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
-			$SQL='SELECT * FROM phpgw_jinn_site_objects WHERE serialnumber='.$serial;
+			$SQL='SELECT * FROM egw_jinn_objects WHERE serialnumber='.$serial;
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
@@ -1197,11 +1227,11 @@
 	  function insert_phpgw_data($table,$data)
 	  {
 
-		 if($table=='phpgw_jinn_sites') 
+		 if($table=='egw_jinn_sites') 
 		 {
 			return $this->insert_new_site($data);
 		 }
-		 elseif($table=='phpgw_jinn_site_objects')
+		 elseif($table=='egw_jinn_objects')
 		 {
 			return $this->insert_new_object($data);
 		 }
@@ -1260,17 +1290,19 @@
 		 foreach($data as $field)
 		 {
 
-			if($field[value]=='' || eregi('int',$meta[$field['name']]['type'])) 
+			if($field[value]=='' && eregi('int',$meta[$field['name']]['type'])) 
 			{
-			   $field[value]=null;
-			   continue;
+			   $field[value]="null";
+//			   continue;
 			}
+			else $field[value]="'$field[value]'";
 			
 			if ($SQL_SUB) $SQL_SUB .= ', ';
-			$SQL_SUB .= "$field[name]='$field[value]'";
+			$SQL_SUB .= "$field[name]=$field[value]";
 		 }
 
 		 $SQL = 'UPDATE ' . $table . ' SET ' . $SQL_SUB . ' WHERE ' . $this->strip_magic_quotes_gpc($where_key)."='".$this->strip_magic_quotes_gpc($where_value)."'";
+//		 die($SQL);
 		 if ($this->phpgw_db->query($SQL,__LINE__,__FILE__))
 		 {
 			$status=1;
@@ -1279,19 +1311,60 @@
 		 return $status;
 	  }
 
+	  function save_field_plugin_conf($object_id,$fieldname,$conf_serialed)
+	  {
+		 if(!$object_id) $object_id=-1;
+		 $sql="SELECT * FROM egw_jinn_obj_fields WHERE field_parent_object=$object_id AND field_name='$fieldname'";
+		 $this->phpgw_db->query($sql,__LINE__,__FILE__);
+		 if($this->phpgw_db->num_rows()>0)
+		 {
+			$this->phpgw_db->next_record();
+			$old_setting=unserialize(base64_decode($this->phpgw_db->f('field_plugins')));
+			$new_setting=unserialize(base64_decode($conf_serialed));
+			
+			// test if conf is set is not and new plugin is the same as old plugin don't save 
+			if(is_array($old_setting) AND ($old_setting[name]==$new_setting[name]) AND !is_array($new_setting[conf]) )
+			{
+			   $status[ret_code]=0;	
+			   return $status;
+			}
+			
+			// update
+			$sql="UPDATE egw_jinn_obj_fields SET field_plugins='$conf_serialed' WHERE (field_parent_object=$object_id) AND (field_name='$fieldname')";
+		 }
+		 else
+		 {
+			// insert
+			$sql="INSERT INTO egw_jinn_obj_fields (field_parent_object,field_name,field_plugins) VALUES ($object_id,'$fieldname','$conf_serialed')";
+		 }
+//			die($sql);
+		 
+		 if($this->phpgw_db->query($sql,__LINE__,__FILE__))
+		 {
+			$status[ret_code]=0;
+		 }
+		 else
+		 {
+			$status[ret_code]=1;
+		 }
+
+		 return $status;
+	  }
+
+	  
 	  function update_object_access_rights($editors,$object_id)
 	  {
 		 $error=0;
 		 if ($object_id)
 		 {
 
-			$SQL="DELETE FROM phpgw_jinn_acl WHERE site_object_id='$object_id' AND uid IS NOT NULL";
+			$SQL="DELETE FROM egw_jinn_acl WHERE site_object_id='$object_id' AND uid IS NOT NULL";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			if (count($editors)>0){
 			   foreach ($editors as $editor)
 			   {
-				  $SQL="INSERT INTO phpgw_jinn_acl (site_object_id, uid) VALUES ('$object_id','$editor')";
+				  $SQL="INSERT INTO egw_jinn_acl (site_object_id, uid) VALUES ('$object_id','$editor')";
 				  if(!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 				  {
 					 $error++;
@@ -1318,13 +1391,13 @@
 		 $error=0;
 		 if ($site_id)
 		 {
-			$SQL="DELETE FROM phpgw_jinn_acl WHERE site_id='$site_id' AND uid IS NOT NULL";
+			$SQL="DELETE FROM egw_jinn_acl WHERE site_id='$site_id' AND uid IS NOT NULL";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			if (count($editors)>0){
 			   foreach ($editors as $editor)
 			   {
-				  $SQL="INSERT INTO phpgw_jinn_acl (site_id, uid) VALUES ('$site_id','$editor')";
+				  $SQL="INSERT INTO egw_jinn_acl (site_id, uid) VALUES ('$site_id','$editor')";
 				  if(!$this->phpgw_db->query($SQL,__LINE__,__FILE__))
 				  {
 					 $error++;

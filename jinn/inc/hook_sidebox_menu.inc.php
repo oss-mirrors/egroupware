@@ -91,12 +91,12 @@
 			'icon'=>'new'
 			),
 			'Browse through sites' => array(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_phpgw_jinn_sites'),
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.browse_egw_jinn_sites'),
 			'text'=>'Browse through sites',
 			'icon'=>'browse'
 			),
 			'Import JiNN Site' => array(
-			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_phpgw_jinn_site'),
+			'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.import_egw_jinn_site'),
 			'text'=>'Import JiNN Site',
 			'icon'=>'fileopen'
 			),
@@ -116,7 +116,20 @@
 			'text'=>'Edit this Site Object',
 			'icon'=>'edit'
 			)
-		);
+		 );
+
+		 if($GLOBALS[local_bo]->last_where_string)
+		 {
+			$last_record=Array(
+			   'Last edited record' => array(
+				  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.$GLOBALS[local_bo]->last_where_string),
+				  'text'=>'Last edited record',
+				  'icon'=>'edit'
+			   ));
+		
+			$file=array_merge($file,$last_record);
+		 }
+		 
 		display_sidebox($appname,$menu_title,$file);
 
 		if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')

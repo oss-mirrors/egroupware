@@ -64,7 +64,7 @@
 		 $this->template->set_var('lang_auto_add_object',$lang_auto_add_object);
 		 $this->template->set_var('link_auto_add_object',$link_auto_add_object);
 
-		 $fieldnames = $this->bo->so->get_phpgw_fieldnames('phpgw_jinn_site_objects');
+		 $fieldnames = $this->bo->so->get_phpgw_fieldnames('egw_jinn_objects');
 
 		 $col_list=array_slice($fieldnames,2,2);
 
@@ -76,7 +76,7 @@
 			$column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang($display_name).'</font></td>';
 		 }
 
-		 $records=$this->bo->get_phpgw_records('phpgw_jinn_site_objects',$where_key,$where_value,$limit[start],$limit[stop],'num');
+		 $records=$this->bo->get_phpgw_records('egw_jinn_objects',$where_key,$where_value,$limit[start],$limit[stop],'num');
 
 		 $this->template->set_var('bgclr',$GLOBALS['phpgw_info']['theme']['th_bg']);
 		 $this->template->set_var('fieldnames',$column_header);
@@ -104,7 +104,7 @@
 			   $this->template->set_var('link_edit',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_object&where_key=$where_key&where_value=$where_value"));
 			   $this->template->set_var('lang_edit',lang('edit'));
 
-			   $this->template->set_var('link_del',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=$where_key&where_value=$where_value"));
+			   $this->template->set_var('link_del',$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_objects&where_key=$where_key&where_value=$where_value"));
 			   $this->template->set_var('lang_del',lang('delete'));
 			   $this->template->set_var('confirm_del',lang('Are you sure?'));
 

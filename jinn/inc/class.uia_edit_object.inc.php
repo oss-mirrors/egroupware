@@ -25,7 +25,6 @@
    // FIXME do we need to extend?
    class uia_edit_object extends uiadmin
    {
-
 	  var $where_key;
 	  var $where_value;
 	  var $parent_site_id;
@@ -53,15 +52,6 @@
 			'form_site' => 'frm_edit_object.tpl',
 		 ));
 
-	/*	 if ($_GET[serial])
-		 {
-			$this->bool_edit_record=true;
-			$tmp_arr=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','serialnumber',$_GET[serial],'','','name');
-			$this->object_values=$tmp_arr[0];
-//			$this->object_values=$this->bo->so->get_object_values($this->where_value);
-			$this->parent_site_id=$this->object_values[parent_site_id];
-		 }
-		 */
 		 if ($this->where_key && $this->where_value)
 		 {
 			$this->bool_edit_record=true;
@@ -124,15 +114,16 @@
 	  {
 		 if ($this->bool_edit_record)
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_phpgw_jinn_site_objects");
-			$action=lang('edit '. 'phpgw_jinn_site_objects');
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.update_egw_jinn_objects");
+			$action=lang('edit '. 'egw_jinn_objects');
 			$where_key_form='<input type="hidden" name="where_key" value="'.$this->where_key.'">';
 			$where_value_form='<input type="hidden" name="where_value" value="'.$this->where_value.'">';
+
 		 }
 		 else
 		 {
-			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_phpgw_jinn_site_objects");
-			$action=lang('add '. 'phpgw_jinn_site_objects' );
+			$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_egw_jinn_objects");
+			$action=lang('add '. 'egw_jinn_objects' );
 		 }
 
 		 $this->template->set_var('form_action',$form_action);
@@ -143,11 +134,19 @@
 
 	  function render_body()
 	  {
-		 $fields=$this->bo->so->phpgw_table_metadata('phpgw_jinn_site_objects');
+		 $fields=$this->bo->so->phpgw_table_metadata('egw_jinn_objects');
 
 		 if($this->bool_edit_record)
 		 {
-			$values_object= $this->bo->get_phpgw_records('phpgw_jinn_site_objects',$this->where_key,$this->where_value,'','','name');
+			// fixme DON'T WE HAVE THESE ALLREADY
+			$values_object= $this->bo->get_phpgw_records('egw_jinn_objects',$this->where_key,$this->where_value,'','','name');
+			if($values_object[0][plugins]!='')
+			{
+			   $this->bo->upgrade_plugins($values_object[0][object_id],true);
+			   $this->object_values[plugins]='';
+			   $values_object[0][plugins]='';
+			}
+
 		 }
 
 		 foreach ($fields as $testone => $fieldproperties)
@@ -166,7 +165,6 @@
 			}
 
 			if ($fieldproperties[name]=='object_id')
-//			if (eregi("auto_increment", $fieldproperties[flags]) || $fieldproperties['default']=="nextval('seq_phpgw_jinn_site_objects'::text)")
 			{
 			   if (!$value)
 			   {
@@ -252,7 +250,7 @@
 			   unset($selected);
 			   if($value==1) $selected='selected';
 			   $input='<select name="'.$input_name.'"><option value="">'.lang('unlimited').'</option><option '.$selected.' value="1">'.lang('only one').'</option></select>';
-			   
+
 			}
 			elseif ($fieldproperties[name]=='serialnumber')
 			{
@@ -280,7 +278,7 @@
 			else
 			{
 			   $value = ereg_replace ("(<br />|<br/>)","",$value);
-			   $input='<textarea name="'.$input_name.'" cols="60" rows="15">'.$value.'</textarea>';
+			   $input='<textarea name="'.$input_name.'" cols="60" rows="5">'.$value.'</textarea>';
 			}
 
 			if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on'])
@@ -302,15 +300,18 @@
 
 	  function render_plugins()
 	  {
-		 $value=$this->object_values[plugins];
+		 if($this->object_values[plugins])
+		 {
+			$value=$this->object_values[plugins];
+			if(!$value) $value='TRUE';
+			$hidden_value='<input type="hidden" name="FLDplugins" value="'.$value.'">';
+			$plugin_settings_old=explode('|',$value);
+		 }
+
 		 $table_name=$this->object_values[table_name];
 
 		 if ($this->bool_edit_record && $this->valid_table_name)
 		 {
-			if(!$value) $value='TRUE';
-
-			$hidden_value='<input type="hidden" name="FLDplugins" value="'.$value.'">';
-
 			if ($fields=$this->bo->so->site_table_metadata($this->parent_site_id,$table_name))
 			{
 			   $this->template->set_var('lang_fields',lang('field'));
@@ -319,7 +320,6 @@
 			   $this->template->set_var('lang_field_plugins',lang('Field Plugins'));
 			   $this->template->parse('out','plugins_header');
 
-			   $plugin_settings=explode('|',$value);
 
 			   foreach($fields as $field)
 			   {
@@ -327,9 +327,9 @@
 				  unset($sets);
 				  unset($plg_name);
 				  unset($plg_conf);
-				  if (is_array($plugin_settings))
+			   if(is_array($plugin_settings_old))
 				  {
-					 foreach($plugin_settings as $setting)
+					 foreach($plugin_settings_old as $setting)
 					 {
 						$sets=explode(':',$setting);
 						if ($sets[0]==$field['name'])
@@ -339,6 +339,21 @@
 						}
 
 					 }
+
+				  }
+				  else
+				  {
+					 $plugin_conf_arr=$this->bo->so->get_field_values($this->object_values[object_id],$field['name']);
+
+					 if($plugin_conf_arr[field_plugins])
+					 {
+						$plugin_settings=unserialize(base64_decode($plugin_conf_arr[field_plugins]));
+
+						if (is_array($plugin_settings))
+						{
+						   $plg_name=$plugin_settings[name];
+						}
+					 }
 				  }
 
 				  $this->template->set_var('field_name',$field['name']);
@@ -346,17 +361,15 @@
 				  $plugin_hooks=$this->bo->plugin_hooks($field['type']);
 				  $options=$this->ui->select_options($plugin_hooks,$plg_name,true);
 
-				  if ($field['name']!='id' && $options)
+				  if ($field['name']!='id' && $options) // FIXME the name id is now allowed isn't it?
 				  {
-					 $popup_onclick='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
-
-					 $popup_onclick_afc='parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uia_edit_field.display&object_id='.$this->$this->where_value.'&field_key='.$field['name']).'\', \'pop'.$field['name'].'\', \'width=400,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
+					 $popup_onclick='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&field_name='.$field['name'].'&object_id='.$this->object_values['object_id'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=500,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
 					 // FIXME experimental
 					 if($this->bo->common->prefs[experimental]=='no') $popup_onclick_afc = 'alert(\''.lang('not yet implemented').'\')';
 
 					 $this->template->set_var('plg_options',$options);
-					 
+
 					 $this->template->set_var('plg_conf',$plg_conf);
 					 $this->template->set_var('lang_field_configuration',lang('Field configuration'));
 					 $this->template->set_var('lang_afc',lang('advanced configuration'));
@@ -387,7 +400,7 @@
 	  function render_relations()
 	  {
 		 // FIXME re-use options vars to speed up rendering
-		 
+
 		 /* 
 		 relation type 1 = one to many relation
 		 relation type 2 = many to many relation
@@ -460,7 +473,7 @@
 				  $this->template->parse('relations_defined3','relation_defined3',true);
 			   }
 
-			   
+
 			   $i++;
 			}
 		 }
@@ -627,15 +640,15 @@
 
 			$rel3_options1=$this->ui->select_options($fields_array,$value,true);
 			$this->template->set_var('rel3_options1',$rel3_options1);
-			
+
 			$this->template->set_var('lang_has_3rel',lang('has a ONE-TO-ONE relation with'));
 
 			$rel3_options2=$this->ui->select_options($related_fields_array,'',true);
 			$this->template->set_var('rel3_options2',$rel3_options2);
-			
+
 			$this->template->set_var('lang_object_conf',lang('Using object configuration'));
 
-			$objects_array=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_site_id',$this->parent_site_id,$limit[start],$limit[stop],'name');
+			$objects_array=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$this->parent_site_id,$limit[start],$limit[stop],'name');
 
 			foreach($objects_array as $object)
 			{
@@ -647,7 +660,7 @@
 			}
 			$rel3_options3=$this->ui->select_options($objects,'',true);
 			$this->template->set_var('rel3_options3',$rel3_options3);
-		
+
 
 			$this->template->parse('out','relations3');
 		 }
@@ -661,7 +674,7 @@
 	  {
 		 $cancel_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$this->parent_site_id);
 
-		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_phpgw_jinn_site_objects&where_key=object_id&where_value='.$this->where_value);
+		 $delete_link=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.boadmin.del_egw_jinn_objects&where_key=object_id&where_value='.$this->where_value);
 
 		 $this->template->set_var('confirm_del',lang('Are you sure?'));
 		 $this->template->set_var('save_button',lang('save and finish'));

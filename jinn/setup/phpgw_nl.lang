@@ -20,6 +20,7 @@ add attachent	jinn	nl	bestand toevoegen
 add attachment	jinn	nl	bestand toevoegen
 add attachment %1	jinn	nl	voeg bestand %1 toe
 add edit	jinn	nl	Toevoegen / WIjzigen
+add egw_jinn_sites	jinn	nl	Sites toevoegen
 add image	jinn	nl	afbeelding toevoegen
 add image %1	jinn	nl	voeg beeld %1 toe
 add multiple records	jinn	nl	Meerdere records toevoegen
@@ -45,6 +46,9 @@ amount of fieldvariables	jinn	nl	Aantal veldvariabelen
 an error occured.	jinn	nl	Er is een fout opgetreden
 another	jinn	nl	een kopie
 apply new amount	jinn	nl	Nieuw aantal toepassen
+are you sure you want to delete these multiple records?	jinn	nl	Weet u zeker dat u deze meerdere record wilt verwijderen?
+are you sure you want to delete this record?	jinn	nl	Weet u zeker dat u dit record wilt verwijderen?
+are you sure your want to edit these records?	jinn	nl	Weet u zeker dat u deze meerdere record wilt bewerken?
 are you sure?	jinn	nl	Weet u het zeker
 ascending	jinn	nl	oplopend
 attachment 1	jinn	nl	Bijlage 1
@@ -55,7 +59,7 @@ attachment directory does not exist or is not correct, nor can it be created...<
 automatic	jinn	nl	automatisch
 automaticly add objects for all tables	jinn	nl	voor alle tabellen automatisch objecten maken
 automaticly incrementing	jinn	nl	telt automatisch op
-available for field types	jinn	nl	Beschikbaar voor de veldtypen
+available for field types	common	nl	Beschikbaar voor veldtype
 back to record list	jinn	nl	terug naar lijstweergave
 binary	jinn	nl	binair
 body html	jinn	nl	Bericht in HTML
@@ -81,6 +85,7 @@ column name	jinn	nl	kolomnaam
 come back after new valid tablename is saved to configure plugins	jinn	nl	Kom terug nadat een nieuwe geldige tabelnaam is opgeslagen om de insteekmodules te configureren
 come back in edit mode for configuring plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
 come back in edit mode to configure plugins	jinn	nl	kom terug in de wijzigenweergave om insteekmodules te configureren
+come back in edit mode to enter one-to-one fields for this record.	jinn	nl	Kom terug in bewerken-modus om één-op-één-relaties te bewerken voor dit record.
 condition	jinn	nl	Voorwaarde
 condition type	jinn	nl	Type voorwaarde
 configure	jinn	nl	configureer
@@ -108,7 +113,7 @@ default:	jinn	nl	standaard:
 delete	jinn	nl	Verwijder
 delete all selected records	jinn	nl	alle geselecteerde records verwijderen
 descending	jinn	nl	aflopend
-descrition	jinn	nl	Beschrijving
+descrition	common	nl	Beschrijving
 dev site db host	jinn	nl	Ontwikkelingssite (Testsite) database hostnaam
 dev site db name	jinn	nl	Ontwikkelingssite (Testsite) database naam
 dev site db password	jinn	nl	Ontwikkelingssite (Testsite) database wachtwoord
@@ -120,8 +125,10 @@ development	admin	nl	Development
 development server	jinn	nl	Development Server
 dimensions	jinn	nl	afmetingen
 disable the wysiwyg/htmlarea plugin	jinn	nl	De visuele tekstinvoer-plugin(WYSIWYS) uitschakelen.
+do you want to copy and then edit this record?	jinn	nl	Wilt u dit record kopiëren en vervolgens bewerken?
 edit	jinn	nl	Wijzig
 edit all selected records	jinn	nl	alle geselecteerde records bewerken
+edit egw_jinn_sites	jinn	nl	wijzig sites
 edit jinn site object parameters: <li>select a jinn object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	nl	Wijzig JiNN Site object instellingen:
 edit object	jinn	nl	Object wijzigen
 edit object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li><br><li>define field relations</li><li>configure fieldplugins</li>	jinn	nl	Wijzig object configuratie.
@@ -134,6 +141,7 @@ editors for object $object_name in site $site_name	jinn	nl	redacteuren voor het 
 editors for object %1 in site %2	jinn	nl	redacteuren voor object %1 in site %2
 emailaddress for testing	jinn	nl	Emailadres om te testen
 emailtype	jinn	nl	Type email
+error path_open %1	jinn	nl	Kon het pad %1 niet openen
 error: the file %1 doesn't exists, please contact the webmaster	jinn	nl	FOUT: het bestand %1 bestaat niet, neem a.u.b. contact op met uw webmaster
 export this site	jinn	nl	exporteer deze site
 extra info	jinn	nl	extra informatie
@@ -162,6 +170,7 @@ has a one to many relation with	jinn	nl	Heeft een één-op-veel-relatie met
 has a one-to-one relation with	jinn	nl	Heeft een één-op-één-relatie met
 height:	jinn	nl	Hoogte:
 hidden	jinn	nl	verborgen
+hide from menu	jinn	nl	Niet in objectmenu tonen
 image directory does not exist or is not correct ...<br>please check object's upload dir	jinn	nl	Afbeeldingsdirectory bestaat niet. Controleer de upload directory van dit object
 image directory does not exist or is not correct ...<br>please check object\'s upload dir	jinn	nl	Afbeeldingsdirectory bestaat niet. Controleer de upload directory van dit object
 image directory does not exist or is not correct ...<br>please check object\\\'s upload dir	jinn	nl	Afbeeldingsdirectory bestaat niet. Controleer de upload directory van dit object
@@ -183,6 +192,9 @@ jinn	common	nl	JiNN
 jinn editors menu	jinn	nl	JiNN Redactiemenu
 jinn main menu	jinn	nl	JiNN Hoofdmenu
 jinn preferences	jinn	nl	JiNN Voorkeuren
+jinn-description	common	nl	JiNN is een Content Management Systeem, en Database Management Systeem en een ontwikkelomgeving voor CMS'en. JiNN is een recursief acroniem dat 'JiNN is Not Nuke' betekend omdat de Auteur niet van de Nuke-Methode houden om een C.M.S. te implementeren. Deze systemen zijn zowel website als cms in een. Als u JiNN gaat gebruiken zult u nog steeds zelf u op een database gebaseerde website moeten bouwen. JiNN is echter zo universeel toepasbaar dat u ook vele bestaande sites kunt koppelen aan JiNN.
+last edited record	jinn	nl	Laatst gewijzigde record
+license	common	nl	Licentie
 list sites	jinn	nl	Sites weergeven
 mailing not succesfully added, unknown error	jinn	nl	Mailing NIET met succes toegevoegd. Onbekende fout.
 mailing not succesfully deleted, unknown error	jinn	nl	Mailing NIET met succes verwijderd. Onbekende fout.
@@ -194,6 +206,7 @@ mailing succesfully deleted	jinn	nl	Mailing met succes verwijderd.
 mailing succesfully saved	jinn	nl	Mailing met succes opgeslagen.
 mailing succesfully saved and test is sent	jinn	nl	Mailing met succes opgeslagen en test is verzonden.
 mailinglists	jinn	nl	Mailinglijsten
+maintainer	common	nl	Hoofdontwikkelaar
 manually enter a new relative file path	jinn	nl	Voer handmatig een bestandspad in
 many 2 many relations will not work	jinn	nl	VEEL-op-VEEL-relaties zullen niet werken
 max records	jinn	nl	Max. records
@@ -221,6 +234,7 @@ no records found	jinn	nl	Geen records gevonden
 normal view	jinn	nl	Normale weergave
 not yet implemented	jinn	nl	Nog niet geïmplementeerd
 notice that jinn needs imagemagick 5.4.9 or a later version	admin	nl	Let op JiNN heeft ImageMagick 5.4.9 of een latere versie nodig. U kunt ook de in PHP ingebouwde GDLIB gebruiken.
+number of objects	jinn	nl	Aantal objecten
 object configuration: <li>select a object name for display</li> <li>select a database table to use with this object</li> <li>if necessary an alternative correct absolute upload path</li><li>if necessary a corresponding alternative preview url for uploaded elements</li>	jinn	nl	Objectconfiguratie.
 object fields	jinn	nl	Objectvelden
 object id	jinn	nl	Object id
@@ -237,6 +251,7 @@ path to convert from imagemagick ( e.g. /usr/x11r6/bin )	admin	nl	Pad naar de ap
 please contact administrator with this message	jinn	nl	Neem contact op met de beheerder met dit bericht.
 please contact administrator with this message.	jinn	nl	Neem contact op met de beheerder met dit bericht.
 please set your preferences for this application	jinn	nl	Stel a.u.b. uw voorkeuren in voor deze toepassing
+postgresql support is not stable. wanna help?	common	nl	PostgreSQL ondersteuning is niet stabiel. Wilt u meehelpen?
 preview thumbs or images in form	jinn	nl	Voorbeelden van thumbnails of afbeeldingen weergeven in "wijzigen formulier"
 preview website	jinn	nl	Open Website
 process mailing	jinn	nl	Mailing verwerken.
@@ -254,7 +269,7 @@ record succesfully deleted	jinn	nl	Record met succes verwijderd
 record succesfully editted	jinn	nl	Record met succes gewijzigd
 records not succesfully deleted. (error code 101)	jinn	nl	Records zijn niet met succes vewijderd (foutcode 101)
 records succesfully deleted	jinn	nl	Records zijn met succes verwijderd
-registered field plugins	jinn	nl	Geregistreerde veldplugins
+registered field plugins	common	nl	Geregistreerde veldplugins
 related	jinn	nl	gerelateerde
 related entries from table %1	jinn	nl	Gerelateerde records from tabel %1
 relation %1	jinn	nl	relatie %1
@@ -325,11 +340,13 @@ site succesfully saved	jinn	nl	Site met succes opgeslagen.
 site title	admin	nl	Titel Site
 site-objects	jinn	nl	Site-objecten
 sites	jinn	nl	Sites
+some errors accured while upgrading. we have not touched the old settings so you can try again. if this error keeps coming back please contact your administrator or the jinn developers<br/><br/>	jinn	nl	Er zijn fouten opgetreden bij het upgraden. We hebben de oude plugin-instellingen niet gewijzigd, zodat u het nogmaals kunt proberen. Als deze fout blijft terugkeren, moet u contact opnemen met uw beheerder of de JiNN ontwikkelaals.
 something went wrong	jinn	nl	Er is iets misgegaan
 start	admin	nl	Start
 start at record	jinn	nl	Start bij record
 stop at record	jinn	nl	Stop bij record
 submit and import	jinn	nl	verzend en importeer
+switchboard	jinn	nl	Schakelbord
 t/m	jinn	nl	t/m
 table name	jinn	nl	Naam tabel
 tablename <i>%1</i> is not correct. probably the tablename has changed or or the table is deleted. please select a new table or delete this object	jinn	nl	Naam van tabel <i>%1</i> is niet correct. Waarschijnlijk is de naam veranderd of is de tabel verwijderd uit de database. Selecteer a.u.b. een nieuwe tabel of verwijder dit object.
@@ -347,11 +364,13 @@ the image_path normal_size subdirectory is not writable by the webserver ...	jin
 the image_path thumb subdirectory is not writable by the webserver ...	jinn	nl	De afbeeldingen 'thumb' subdirectorie is niet schrijfbaar voor de webserver ...
 the max. file upload size is %1 mb.	jinn	nl	De maximale. bestandsgrootte is %1 Mb.
 the name of the new site is <strong>%1</strong>.	jinn	nl	De naam van de nieuwe site is <strong>%1</strong>.
+the old confguration data is replaced<br/><br/>	jinn	nl	De oude configuratie is vervangen<br/><br/>
 the path to upload files is not correct, please contact your jinn administrator.	jinn	nl	Het pad om bestanden te uploaden is niet correct. Neem contact op met uw JiNN beheerder.
 the path to upload files is not set, please contact your jinn administrator.	jinn	nl	Het pad om bestanden te uploaden is niet ingesteld. Neem contact op met uw JiNN beheerder.
 the path to upload images is not correct, please contact your jinn administrator.	jinn	nl	Het pad om afbeeldingen te uploaden is correct. Neem contact op met uw JiNN beheerder.
 the path to upload images is not set, please contact your jinn administrator.	jinn	nl	Het pad om afbeeldingen te uploaden is niet ingesteld. Neem contact op met uw JiNN Beheerder.
 the resize process failed, please contact the administrator	jinn	nl	Het veranderen van de afbeeldingafmetingen is mislukt. Neem a.u.b. contact op met de systeembeheerder
+the upgrade process has is finished. you can now close this windows and start over again<br/><br/>	jinn	nl	Het upgradeprocess is beeindigd. U kunt dit venster sluiten en nogmaals de plugin configuren.
 the wysiwyg plugin makes you edit text like you do in a program like openoffice writer or word. some people don't like this feature though, so you can force jinn not to use it.	jinn	nl	De visuele tekstinvoer plugin maakt het mogelijk dat u tekst kunt bewerken op een zelfde manier zoals in OpenOffice Writer of MS Word. Sommige mensen houden niet van deze functionaliteit dus zullen er voorkiezen deze uit te schakelen.
 there are no directories in this site you have access to.	jinn	nl	Er zijn geen directories in deze site waartoe u toegang heeft
 there is not site you have access to. ask your administrator to give you access to your site of site-objects or check if any site exist	jinn	nl	Er is geen site waartoe u toegang heeft. Neem contact op met de beheerder voor meer rechten of controleer of er uberhaubt een site bestaat.
@@ -363,11 +382,13 @@ thumb directory does not exist or is not correct ...<br>please check object\\\'s
 thumb directory does not exist or is not correct ...<br>please check object\\\\\\\'s upload dir	jinn	nl	Afbeeldingsthumbdirectory bestaat niet. Controleer de upload-directory van dit object
 thumbnail	jinn	nl	thumbnail
 toggle all above checkboxes	jinn	nl	(de)selecteer alle checkboxen die hierboven staan
+unexpected error	jinn	nl	onverwachte fout
 unlimited	jinn	nl	ongelimiteerd
 upload path	jinn	nl	Upload-pad
 using object configuration	jinn	nl	Gebruik object-configuratie
 version	jinn	nl	versie
 view all selected records	jinn	nl	alle geselecteerde records weergeven
+we must upgrade your plugin configuration. <p>please don't click on back or stop untill i'm finished and a close button appears</p>	jinn	nl	We moeten iw pluginconfiguratie upgraden. <p>Klik a.u.b. niet op stop of terug totdat ik klaar ben met dit process en een sluitknop verschijnt.</p>
 website url	jinn	nl	URL van de website
 when a lot of images are attached to a record, the form can load very slow. you can set a maximum number of images that is show in the form.	jinn	nl	als de voorbeelden worden weergegeven. en er zijn afbeeldingen gelinkt aan een record kan het "wijzig formulier" erg traag inladen. Om dit te voorkomen kunt u een maximum aantal afbeeldingen aangeven die als voorbeeld worden weergegeven.
 when this is enables information like field length and field type is shown when editing record	jinn	nl	Als u dit aanzet ziet u extra info zoals veldlengte en veldtype
@@ -377,6 +398,7 @@ when you choose \\\'never\\\', only links to the images are displayed; when you 
 when you choose \\\\\\\'never\\\\\\\', only links to the images are displayed; when you choose \\\\\\\'only if thumnails exists\\\\\\\' previews are  shown if an thumbnail of the image exists; if you choose \\\\\\\'yes\\\\\\\' all images are shown	jinn	nl	Als u kiest voor 'Nooit' worden alleen links naar de afbeeldingen weergeven; wanneer u kiest voor 'Alleen als thumbnail bestaat' wordt eerst gecontroleerd of er wel een kleine versie van de afbeelding bestaan vor deze wordt weergeven; als u kiest voor 'Ja' dan worden zowel thumbnail als normale afbeeldingen weergeven.
 width:	jinn	nl	Breedte:
 with_checked_files	jinn	nl	met aangevinkte bestanden
+you must select one or more records for this function.	jinn	nl	U moet eerst één of meerdere records selecteren.
 you're not allowed to administrate media files	jinn	nl	U bent niet toegestaan om mediabestanden te beheren.
 you\'re not allowed to administrate media files	jinn	nl	U bent niet toegestaan om mediabestanden te beheren.
 you\\\'re not allowed to administrate media files	jinn	nl	U bent niet toegestaan om mediabestanden te beheren.

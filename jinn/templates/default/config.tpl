@@ -24,11 +24,6 @@
    </td>
    </tr>
 
-   <tr>
-   <td colspan="2">&nbsp;</td>
-   </tr>
-   
-
    <tr bgcolor="{row_on}">
    <td colspan="2"><b>{lang_Image_settings}</b></td>
    </tr>

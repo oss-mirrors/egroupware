@@ -58,10 +58,15 @@
 		 $dy		= 0;
 		 $dw		= $curwidth * $factor;
 		 $dh		= $curheight *  $factor;
+		 
+		 //die('hallo');
 
 
 		 if ($ext == "JPEG") { $src = ImageCreateFromJPEG($filename); }
+		 
+		 // FIXME gif doesn't work
 		 if ($ext == "GIF") { $src = ImageCreateFromGIF($filename); }
+		 
 		 if ($ext == "PNG") { $src = ImageCreateFromPNG($filename); }
 
 		 if(function_exists('ImageCreateTrueColor')) {

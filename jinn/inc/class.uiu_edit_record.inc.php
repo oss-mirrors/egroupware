@@ -33,12 +33,18 @@
 	  var $bo;
 	  var $template;
 	  var $ui;
-	  var $mult_records;	// get from user input
+
+	  var $mult_records;	
+	  var $mult_index;
+
+	  var $o2o_index;
 
 	  var $record_id_key;
 	  var $record_id_val;
 	  
 	  var $submit_javascript;
+
+	  var $db_ftypes;
 
 	  function uiu_edit_record()
 	  {
@@ -50,6 +56,9 @@
 			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 		 }
 		 $this->ui->app_title=$dev_title_string;//.lang('Moderator Mode');
+
+		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
+	  
 	  }
 
 	  function display_form()
@@ -75,7 +84,7 @@
 
 		 $this->render_header();
 		 $this->render_fields();
-		 $this->render_one_to_one();
+		 $this->render_one_to_one_input();
 		 $this->render_many_to_many_input();
 		 $this->render_footer();
 
@@ -91,6 +100,7 @@
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
 
+ /*		 echo($this->bo->where_string);*/
 		 if ($this->bo->where_string)
 		 {
 			$this->ui->header('edit record');
@@ -129,9 +139,6 @@
 			$GLOBALS['phpgw']->js->validate_file('jinn','display_func','jinn');
 		 }
 		 
-		 //_debug_array($this->bo->mult_where_array);
-		 //die();
-
 		 
 		 if (is_array($this->bo->mult_where_array))
 		 {
@@ -309,26 +316,40 @@
 		 $this->template->parse('form_header','form_header');
 	  }
 
-	  function render_fields()
+	  function render_fields($alt_values_object=false,$alt_object_arr=false)
 	  {
-
+		
 		 if($this->mult_records>1 && is_numeric($this->mult_index)) 
 		 {
 			$input_prefix='MLTX'.$this->mult_index; //becoming like MLTFLD02name_field
+		 }
+		 elseif($this->o2o_index)
+		 {
+			$input_prefix='O2OX'.$this->o2o_index;
 		 }
 		 else
 		 {
 			$input_prefix='FLDXXX';
 		 }
 
-		 if ($this->bo->where_string)
+		 // when this function is called by o2o-relations
+		 if(is_array($alt_object_arr))
 		 {
-			$values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$this->bo->where_string);
+			$object_arr=$alt_object_arr;
+		 }
+		 else
+		 {
+			$object_arr=$this->bo->site_object;
+		 }
 
+		 if($this->bo->where_string && !$alt_object_arr)
+		 {
+			$this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$object_arr[table_name],'','','','','name','','*',$this->bo->where_string);
+		 
 		 }
 
 		 /* get one with many relations */
-		 $relation1_array=$this->bo->extract_1w1_relations($this->bo->site_object[relations]);
+		 $relation1_array=$this->bo->extract_O2M_relations($object_arr[relations]);
 
 		 if (count($relation1_array)>0)
 		 {
@@ -340,136 +361,113 @@
 		 }
 
 		 /* get all fieldproperties (name, type, etc...) */
-		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
-
+		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$object_arr[table_name]);
+ 
 		 /* The main loop to create all rows with input fields start here */ 
-		 foreach ( $fields as $fieldproperties )
+		 foreach ( $fields as $fprops )
 		 {
-			$value=$values_object[0][$fieldproperties[name]];	/* get value */
-			$input_name=$input_prefix.$fieldproperties[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
-			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name]))); /* replace _ for a space */
+			unset($input);
+			unset($ftype);
+			
+			if(is_array($alt_values_object) && $alt_object_arr) 
+			{
+			   $value=$alt_values_object[0][$fprops[name]];	/* get value from o2o-relation */
+			}
+			elseif(is_array($this->values_object) && !$alt_object_arr)
+			{
+			   $value=$this->values_object[0][$fprops[name]];	/* get value */
+			}
+
+			$input_name=$input_prefix.$fprops[name];	/* add FLD so we can identify the real input HTTP_POST_VARS */
+			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); /* replace _ for a space */
 
 
 			/* ---------------------- start fields -------------------------------- */
 
-			/* Its an identifier field */
-			if (eregi("auto_increment", $fieldproperties[flags]) || eregi("nextval",$fieldproperties['default']))
+			
+			// auto
+			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
 			{
-			   if(!$value) $display_value=lang('automaticly incrementing');
-			   $input='<b>'.$value.'</b><input type="hidden" name="'.$input_name.'" value="'.$value.'">'.$display_value;
+			   $ftype='auto';
+			   
 			   $this->record_id_key=$input_name;
 			   $record_identifier[name]=$input_name;
 
 			   $this->record_id_val=$value;
 			   $record_identifier[value]=$value;
 			}
-
-			elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string' ||  $fieldproperties[type]=='char')
+			/* string */
+			elseif($this->db_ftypes->get_db_f_type($fprops[type])=='string')
 			{
-			   /* If this integer has a relation get that options */
-			   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+			   /* If this field has a relation, get that options */
+			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
+				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
 
-				  //get related field vals en displays
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
-
-				  $input= '<select name="'.$input_name.'">';
-					 $input.= $this->ui->select_options($related_fields,$value,true);
-					 $input.= '</select> ('.lang('real value').': '.$value.')';
+				  $input= '<sel'.'ect name="'.$input_name.'">';
+				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			   else
 			   {
-				  if($fieldproperties[len] && $fieldproperties[len]!=-1)
+				  if($fprops[len] && $fprops[len]!=-1)
 				  {
 					 $attr_arr=array(
-						'max_size'=>$fieldproperties[len],
+						'max_size'=>$fprops[len],
 					 );
 				  }
-				  $input=$this->bo->get_plugin_fi($input_name,$value,'string', $attr_arr);
 			   }
 			}
-
-			elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint' || $fieldproperties[type]=='int4' )
+			// int
+			elseif ($this->db_ftypes->get_db_f_type($fprops[type])=='int')
 			{
 			   /* If this integer has a relation get that options */
-			   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
-				  //get related field vals en displays
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
-
-
-				  $input= '<select name="'.$input_name.'">';
-					 $input.= $this->ui->select_options($related_fields,$value,true);
-					 $input.= '</select> ('.lang('real value').': '.$value.')';
-			   }
-			   else
-			   {	
-				  $input=$this->bo->get_plugin_fi($input_name,$value,'int',$attr_arr);
+				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
+				  $input= '<sel'.'ect name="'.$input_name.'">';
+				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-
-			elseif ($fieldproperties[type]=='timestamp')
-			{
-			   if ($value)
-			   {
-				  $input=$this->bo->get_plugin_fi($input_name,$value,'timestamp',$attr_arr);
-			   }
-			   else
-			   {
-				  $input = lang('automatic');
-			   }
-			}
-
-			elseif ($fieldproperties[type]=='blob' && ereg('binary',$fieldproperties[flags]))
-			{
-			   // FIXME this is a quick hack make a standard routine
-			   $tmpplugins=explode('|',str_replace('~','=',$this->bo->site_object['plugins']));
-			   foreach ($tmpplugins as $tval)
-			   {
-				  if (stristr($tval, $fieldproperties[name])) 
-				  {
-					 $has_plugin=true;
-					 break;
-				  }
-			   }
-			   if($has_plugin)
-			   {
-				  $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
-			   }
-			   else
-			   {
-				  $input = lang('binary');
-			   }
-			}
-
-			elseif (ereg('text',$fieldproperties[type]) && ereg('binary',$fieldproperties[flags]))
+			// binary
+			elseif (ereg('binary',$fprops[flags]))
 			{
 			   $input = lang('binary');
 			}
-			elseif ($fieldproperties[type]=='blob' || ereg('text',$fieldproperties[type])) //then it is a textblob
+			
+			if(!$input)
 			{
-			   $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
-			}
-			else
-			{
-			   $input=$this->bo->get_plugin_fi($input_name,$value,'string',$attr_arr);
-			}
+			   if(!$ftype) $ftype=$this->db_ftypes->get_db_f_type($fprops[type]);
+			   if(!$ftype) $ftype='string';
 
+			   if(!$object_arr[plugins])
+			   {
+				  unset($field_conf_arr);
+				  $field_conf_arr=$this->bo->so->get_field_values($object_arr[object_id],$fprops[name]);
+				  $input = $this->bo->plug->call_plugin_fi($input_name,$value,$ftype,$field_conf_arr, $attr_arr);
+			   }
+			   else
+			   {
+				  $input = $this->bo->get_plugin_fi($input_name,$value,$ftype, $attr_arr,$object_arr[plugins]);
+			   }
+			}
+			
 			/* if there is something to render to this */
 			if($input!='__hide__')
 			{
 			   if($this->bo->read_preferences('table_debugging_info')=='yes')
 			   {
-				  $keys=array_keys($fieldproperties);
+				  $keys=array_keys($fprops);
 				  $input.='<br/>';
 				  foreach($keys as $key)
 				  {
-					 if(!$fieldproperties[$key]) continue;
-					 $input.= $key.'='.$fieldproperties[$key].' ';
+					 if(!$fprops[$key]) continue;
+					 $input.= $key.'='.$fprops[$key].' ';
 
 				  }
 			   }
-
+			   
 			   /* set the row colors */
 			   $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
 			   if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
@@ -482,9 +480,6 @@
 			   $this->template->parse('row','rows',true);
 			}
 		 }
-
-
-
 	  }
 
 	  function render_footer()
@@ -515,7 +510,7 @@
 
 	  function render_many_to_many_ro()
 	  {
-		 $relation2_array=$this->bo->extract_1wX_relations($this->bo->site_object[relations]);
+		 $relation2_array=$this->bo->extract_M2M_relations($this->bo->site_object[relations]);
 		 if (count($relation2_array)>0)
 		 {
 			$rel_i=0;
@@ -553,6 +548,75 @@
 		 }
 	  }
 
+	  function render_one_to_one_input()
+	  {
+		 $O2O_arr=$this->bo->extract_O2O_relations($this->bo->site_object[relations]);
+
+		 if(!$this->bo->where_string && !$this->bo->mult_where_array)
+		 {
+			$this->template->set_var('input',lang('Come back in edit mode to enter one-to-one fields for this record.'));
+			$this->template->set_var('row_color','');
+			$this->template->set_var('fieldname','');
+			$this->template->parse('row','rows',true);
+			return;
+		 }
+		 
+		 if (count($O2O_arr)>0)
+		 {
+	        $i=1;
+			
+			foreach($O2O_arr as $O2O_rule_arr)
+			{
+			   $O2O_where_key=$O2O_rule_arr[related_with];
+			   $tmp_arr=explode('.',$O2O_rule_arr[related_with]);
+
+			   $O2O_related_key=$tmp_arr[1];
+			   $O2O_where_value=$this->values_object[0][$O2O_rule_arr[field_org]];
+			   $O2O_where_string="($O2O_where_key='$O2O_where_value')";
+			   
+			   $O2O_object_arr=$this->bo->so->get_object_values($O2O_rule_arr[object_conf]);
+
+			   //fixme we do nee hide field
+			   /*			   // add hidefield fi-plugin for related key
+			   if($O2O_object_arr[plugins])
+			   {
+				  $O2O_object_arr[plugins].='|';
+			   }
+			   $O2O_object_arr[plugins].=$O2O_related_key.':hidefield::';
+*/			   
+
+			   $O2O_values_object = $this->bo->so->get_record_values($this->bo->site_id,$O2O_object_arr[table_name],'','','','','name','','*',$O2O_where_string);
+
+			   $this->o2o_index=sprintf("%02d",$i);
+
+			   if($O2O_values_object)
+			   {
+				  $input.='<input type="hidden" name="O2OW'.$this->o2o_index.'" value="'.$O2O_where_string.'"/>';
+			   }
+
+			   $input.='<input type="hidden" name="O2OT'.$this->o2o_index.'" value="'.$O2O_object_arr[table_name].'"/>';
+			   $input.='<input type="hidden" name="O2OO'.$this->o2o_index.'" value="'.$O2O_rule_arr[object_conf].'"/>';
+
+			   $this->template->set_var('input',$input);
+			   $this->template->set_var('row_color','');
+			   $this->template->set_var('fieldname','');
+
+			   $this->template->parse('row','rows',true);
+			   
+			   $this->render_fields($O2O_values_object,$O2O_object_arr);
+
+			   $this->template->set_var('input','<input type="hidden" name="O2OX'.$this->o2o_index.$O2O_related_key.'" value="'.$O2O_where_value.'"/>');
+			   $this->template->set_var('row_color','');
+			   $this->template->set_var('fieldname','');
+
+			   $this->template->parse('row','rows',true);
+
+			   $i++;
+			}
+		 }
+	  }
+
+	  
 	  function render_many_to_many_input()
 	  {
 
@@ -572,7 +636,7 @@
 			$prefix4='M2MRXX';
 		 }
 
-		 $relation2_array=$this->bo->extract_1wX_relations($this->bo->site_object[relations]);
+		 $relation2_array=$this->bo->extract_M2M_relations($this->bo->site_object[relations]);
 		 if (count($relation2_array)>0)
 		 {
 			$rel_i=0;
@@ -632,19 +696,6 @@
 			   $this->template->parse('row','many_to_many',true);
 			}
 		 }
-
-		 
-	  }
-
-	  function render_one_to_one()
-	  {
-		 /*
-		 1 get all one2one relations
-		 2 foreach relation:
-		 2a get all fields
-		 2b per field render field with of wioth out plugin
-		 2c use name with object enclosed
-		 */
 	  }
 
 	  function view_record()
@@ -668,103 +719,74 @@
 
 		 $where_string=$this->bo->where_string;
 
-		 $values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
+		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
 
-		 /* The main loop to create all rows with input fields start here */ 
-		 foreach ( $fields as $fieldproperties )
-		 {
-			$value=$values_object[0][$fieldproperties[name]];
-			$input_name=$fieldproperties[name];	
-			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fieldproperties[name])));
 
-			/* Its an identifier field */
-			if (eregi("auto_increment", $fieldproperties[flags]) || eregi("nextval",$fieldproperties['default']))
+		 
+		 /* The main loop to create all rows with input fields start here */ 
+		 foreach ( $fields as $fprops )
+		 {
+			unset($input);
+			unset($ftype);
+
+			$value=$this->values_object[0][$fprops[name]];
+			$input_name=$fprops[name];	
+			$display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name])));
+
+			// auto
+			if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
 			{
 			   $this->record_id_val=$value;
-
 			   $input='<b>'.$value.'</b>';
 			}
-
-			elseif ($fieldproperties[type]=='varchar' || $fieldproperties[type]=='string' ||  $fieldproperties[type]=='char')
+			// string
+			elseif($this->db_ftypes->get_db_f_type($fprops[type])=='string')
 			{
-			   //FIXME implement relation
-			   /* If this integer has a relation get that options */
-			   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
+			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
+			   {
+				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
+				  $input= '<sel'.'ect name="'.$input_name.'">';
+				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+			   }
+			}
+			// int
+			elseif ($this->db_ftypes->get_db_f_type($fprops[type])=='int')
+			{
+			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
 			   {
 				  //get related field vals en displays
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
+				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
 
-				  $input= '<select name="'.$input_name.'">';
-					 $input.= $this->ui->select_options($related_fields,$value,true);
-					 $input.= '</select> ('.lang('real value').': '.$value.')';
-			   }
-			   else
-			   {
-				  $input=$this->bo->get_plugin_ro($input_name,$value,'string','');
+				  $input= '<sel'.'ect name="'.$input_name.'">';
+				  $input.= $this->ui->select_options($related_fields,$value,true);
+				  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
 			   }
 			}
-
-			elseif ($fieldproperties[type]=='int' || $fieldproperties[type]=='real' || $fieldproperties[type]=='smallint'|| $fieldproperties[type]=='tinyint' || $fieldproperties[type]=='int4' )
-			{
-			   /* If this integer has a relation get that options */
-			   if (is_array($fields_with_relation1) && in_array($fieldproperties[name],$fields_with_relation1))
-			   {
-				  //get related field vals en displays
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fieldproperties[name]]);
-
-
-				  $input= '<select name="'.$input_name.'">';
-					 $input.= $this->ui->select_options($related_fields,$value,true);
-					 $input.= '</select> ('.lang('real value').': '.$value.')';
-			   }
-			   else
-			   {	
-				  $input=$this->bo->get_plugin_ro($input_name,$value,'int','');
-			   }
-			}
-
-			elseif ($fieldproperties[type]=='timestamp')
-			{
-			   if ($value)
-			   {
-				  $input=$this->bo->get_plugin_ro($input_name,$value,'timestamp','');
-			   }
-			}
-
-			elseif ($fieldproperties[type]=='blob' && ereg('binary',$fieldproperties[flags]))
-			{
-			   // FIXME this is a quick hack make a standard routine
-			   $tmpplugins=explode('|',str_replace('~','=',$this->bo->site_object['plugins']));
-			   foreach ($tmpplugins as $tval)
-			   {
-				  if (stristr($tval, $fieldproperties[name])) 
-				  {
-					 $has_plugin=true;
-					 break;
-				  }
-			   }
-			   if($has_plugin)
-			   {
-				  $input=$this->bo->get_plugin_ro($input_name,$value,'blob',$attr_arr);
-			   }
-			   else
-			   {
-				  $input = lang('binary');
-			   }
-			}
-
-			elseif (ereg('text',$fieldproperties[type]) && ereg('binary',$fieldproperties[flags]))
+			// binary
+			elseif (ereg('binary',$fprops[flags]))
 			{
 			   $input = lang('binary');
 			}
-			elseif ($fieldproperties[type]=='blob' || ereg('text',$fieldproperties[type])) //then it is a textblob
+
+			if(!$input)
 			{
-			   $input=$this->bo->get_plugin_ro($input_name,$value,'blob',$attr_arr);
-			}
-			else
-			{
-			   $input=$this->bo->get_plugin_ro($input_name,$value,'string',$attr_arr);
+			   if(!$ftype) $ftype=$this->db_ftypes->get_db_f_type($fprops[type]);
+			   if(!$ftype) $ftype='string';
+			   
+			   if(!$this->bo->site_object[plugins])
+			   {
+				  //unset($field_conf_arr);
+				  $field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$fprops[name]);
+				  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
+				  //echo $input;
+			   }
+			   else
+			   {
+				  $input=$this->bo->get_plugin_ro($input_name,$value,$this->db_ftypes->get_db_f_type($fprops[type]),'');
+			   }
+
 			}
 
 			/* if there is something to render to this */
@@ -772,12 +794,12 @@
 			{
 			   if($this->bo->read_preferences('table_debugging_info')=='yes')
 			   {
-				  $keys=array_keys($fieldproperties);
+				  $keys=array_keys($fprops);
 				  $input.='<br/>';
 				  foreach($keys as $key)
 				  {
-					 if(!$fieldproperties[$key]) continue;
-					 $input.= $key.'='.$fieldproperties[$key].' ';
+					 if(!$fprops[$key]) continue;
+					 $input.= $key.'='.$fprops[$key].' ';
 
 				  }
 			   }

@@ -24,12 +24,12 @@
    * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.         *
    \*******************************************************************/
 
-   $this->plugins['selectbox']['name'] 		= 'selectbox';
-   $this->plugins['selectbox']['title']		= 'Select Box';
-   $this->plugins['selectbox']['author']	= 'Pim Snel';
-   $this->plugins['selectbox']['version']	= '0.5';
-   $this->plugins['selectbox']['enable']	= 1;
-   $this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
+   $this->plugins['selectbox']['name'] 				= 'selectbox';
+   $this->plugins['selectbox']['title']				= 'Select Box';
+   $this->plugins['selectbox']['author']			= 'Pim Snel';
+   $this->plugins['selectbox']['version']			= '0.6';
+   $this->plugins['selectbox']['enable']			= 1;
+   $this->plugins['selectbox']['description']		= 'List a couple of values in a listbox....';
    $this->plugins['selectbox']['db_field_hooks']	= array
    (
 	  'string',
@@ -120,9 +120,9 @@
 	  return $input;
    }
 
-   function plg_ro_selectbox($value, $config,$where_val_enc)
+   function plg_ro_selectbox($value, $config)
    {
-	  plg_bv_selectbox($value, $config,$where_val_enc);
+	  return plg_bv_selectbox($value, $config,'');
    }
 
    function plg_bv_selectbox($value, $config,$where_val_enc)
@@ -150,13 +150,17 @@
 
 
 		 $i=0;
+	     	
 		 foreach($pos_values as $pos_val) 
 		 {
-			if($value==$pos_val) $display = trim($keys[$i]);	
+			
+			if($value==$pos_val) 
+			{
+			  $display = trim($keys[$i]);	
+			}
 			$i++;
 		 }
 	  }	
-
 	  return $display;
    }
 ?>

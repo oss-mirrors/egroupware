@@ -18,7 +18,7 @@
 
   /* table array for jinn */
 	$phpgw_baseline = array(
-		'phpgw_jinn_acl' => array(
+		'egw_jinn_acl' => array(
 			'fd' => array(
 				'site_id' => array('type' => 'int','precision' => '4','nullable' => True),
 				'site_object_id' => array('type' => 'int','precision' => '4','nullable' => True),
@@ -30,7 +30,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_jinn_sites' => array(
+		'egw_jinn_sites' => array(
 			'fd' => array(
 				'site_id' => array('type' => 'auto','nullable' => False),
 				'site_name' => array('type' => 'varchar','precision' => '100'),
@@ -54,7 +54,7 @@
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_jinn_site_objects' => array(
+		'egw_jinn_objects' => array(
 			'fd' => array(
 				'object_id' => array('type' => 'auto','nullable' => False),
 				'parent_site_id' => array('type' => 'int','precision' => '4'),
@@ -66,26 +66,28 @@
 				'help_information' => array('type' => 'text'),
 				'dev_upload_path' => array('type' => 'varchar','precision' => '255'),
 				'max_records' => array('type' => 'int','precision' => '4'),
-				'serialnumber' => array('type' => 'int','precision' => '4')
+				'serialnumber' => array('type' => 'int','precision' => '4'),
+				'hide_from_menu' => array('type' => 'int','precision' => '4')
 			),
 			'pk' => array('object_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
 		),
-		'phpgw_jinn_adv_field_conf' => array(
+		'egw_jinn_obj_fields' => array(
 			'fd' => array(
-				'parent_object' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
-				'field_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
-				'field_type' => array('type' => 'varchar','precision' => '20','nullable' => False),
-				'field_alt_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
-				'field_help_info' => array('type' => 'text','nullable' => False),
-				'field_read_protection' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0')
+				'field_id' => array('type' => 'auto'),
+				'field_parent_object' => array('type' => 'int','precision' => '4'),
+				'field_name' => array('type' => 'varchar','precision' => '50'),
+				'field_type' => array('type' => 'varchar','precision' => '20'),
+				'field_alt_name' => array('type' => 'varchar','precision' => '50'),
+				'field_help_info' => array('type' => 'text'),
+				'field_plugins' => array('type' => 'text')
 			),
-			'pk' => array('parent_object','field_name'),
+			'pk' => array('field_id'),
 			'fk' => array(),
-			'ix' => array('parent_object','field_name'),
-			'uc' => array()
+			'ix' => array(),
+			'uc' => array('field_id')
 		)
 	);
 ?>

@@ -320,7 +320,7 @@
 	  }
    }
 
-   function plg_ro_attachpath($value,$config,$where_val_enc)
+   function plg_ro_attachpath($value,$config)
    {
 	  global $local_bo;
 

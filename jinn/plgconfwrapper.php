@@ -35,15 +35,11 @@
 
 	include('../header.inc.php');
 
-//	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
+	/*	old call*/
+	//	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&hidden_val='.$_GET[hidden_val]));
 
-
-
-//die();
-//echo urlencode($GLOBALS[hidden_val]);
-//die();
-Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$GLOBALS[HTTP_GET_VARS][plug_orig].'&plug_name='.$GLOBALS[HTTP_GET_VARS][plug_name].'&hidden_name='.$GLOBALS[HTTP_GET_VARS][hidden_name].'&hidden_val='.$GLOBALS[HTTP_GET_VARS][hidden_val]));
-
+	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.plug_config&plug_orig='.$_GET[plug_orig].'&plug_name='.$_GET[plug_name].'&hidden_name='.$_GET[hidden_name].'&&field_name='.$_GET[field_name].'&object_id='.$_GET[object_id].'&hidden_val='.$_GET[hidden_val]));
+	
 	$GLOBALS['phpgw']->common->phpgw_exit();
 
 ?>

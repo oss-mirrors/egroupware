@@ -76,9 +76,9 @@
 		return $input;
 	}
 
-	function plg_ro_boolian($value,$config,$where_val_enc)
+	function plg_ro_boolian($value,$config)
 	{
-	   return plg_bv_boolian($value,$config,$where_val_enc);	
+	   return plg_bv_boolian($value,$config,'');	
 	}
 	
 	function plg_bv_boolian($value,$config,$where_val_enc)

@@ -66,7 +66,7 @@
 			else $search_string=$GLOBALS['search'];
 
 
-			$fieldnames = $this->bo->so->get_phpgw_fieldnames('phpgw_jinn_sites');
+			$fieldnames = $this->bo->so->get_phpgw_fieldnames('egw_jinn_sites');
 			$col_list=$fieldnames;
 
 			// which/how many column to show, all, the prefered, or the default thirst 4
@@ -93,7 +93,7 @@
 			 $column_header.='<td bgcolor="'.$GLOBALS['phpgw_info']['theme']['th_bg'].'" valign="top"><font color="'.$GLOBALS['phpgw_info']['theme']['th_text'] .'">'.lang('Number of objects').'</font></td>';
 
 
-			$records=$this->bo->get_phpgw_records('phpgw_jinn_sites',$where_key,$where_value,$limit[start],$limit[stop],'num');
+			$records=$this->bo->get_phpgw_records('egw_jinn_sites',$where_key,$where_value,$limit[start],$limit[stop],'num');
 
 			if (count($records)>0)
 			{
@@ -118,10 +118,10 @@
 					"<td bgcolor=$bgclr align=\"left\">
 					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.uiadmin.add_edit_site&where_key=$where_key&where_value=$where_value")."\">".lang('edit')."</a></td>
 					<td bgcolor=$bgclr align=\"left\">
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_phpgw_jinn_sites&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.del_egw_jinn_sites&where_key=$where_key&where_value=$where_value")."\" onClick=\"return window.confirm('".lang('Are you sure?')."');\"  >".lang('delete')."</a></td>
 <!--					<td bgcolor=$bgclr align=\"left\">
 
-					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_phpgw_jinn_sites&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>-->
+					<a href=\"".$GLOBALS[phpgw]->link("/index.php","menuaction=jinn.boadmin.copy_egw_jinn_sites&where_key=$where_key&where_value=$where_value")."\"  onClick=\"return window.confirm('".lang('Are you sure?')."');\"   >".lang('copy')."</a></td>-->
 					";
 
 					if(count($recordvalues)>0)
@@ -142,7 +142,7 @@
 
 
 						// get object amount
-						$objects=$this->bo->get_phpgw_records('phpgw_jinn_site_objects','parent_site_id',$record_list[0],'','','num');
+						$objects=$this->bo->get_phpgw_records('egw_jinn_objects','parent_site_id',$record_list[0],'','','num');
 						$num_objects= @count($objects);
 
 						foreach($record_list as $recordvalue)
@@ -168,7 +168,7 @@
 				}
 			}
 
-			$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_phpgw_jinn_sites&where_key=site_id&where_val='.
+			$button_browse='<td><form method=post action="index.php?menuaction=jinn.uiadmin.browse_egw_jinn_sites&where_key=site_id&where_val='.
 			$this->bo->site_id.'"><input type=submit value="'.
 			lang('browse').'"></form></td>';
 
