@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'E-Mail Preferences'	=> $phpgw->link('/email/preferences.php')
+		'E-Mail Preferences'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=email.uipreferences.preferences')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
