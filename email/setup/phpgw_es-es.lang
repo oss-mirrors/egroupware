@@ -8,7 +8,7 @@ a scrips tag block of code, javascript or otherwise, is in an inline html messag
 account	email	es-es	Cuenta
 account name	email	es-es	Nombre de la cuenta
 account user name	email	es-es	Nombre de usuario de la cuenta
-accounts	email	es-es	Cuentas
+accounts	common	es-es	Cuentas
 accounts:	email	es-es	Cuentas:
 add to address book	email	es-es	Añadir a la libreta de direcciones
 add to addressbook	email	es-es	Añadir a la libreta de direcciones
@@ -51,7 +51,7 @@ click here to continue	email	es-es	Pulse aquí para continuar
 click here to edit the settings for this email account.	email	es-es	Pulse aquí para editar la configuración de esta cuenta de correo
 click here to return to your home page.	email	es-es	Pulse aquí para volver a la página de inicio
 company	email	es-es	Compañía
-compose	email	es-es	Redactar
+compose	common	es-es	Redactar
 compose message	email	es-es	redactar mensaje
 compose new	common	es-es	Redactar
 contains	email	es-es	Contiene
@@ -135,7 +135,7 @@ filters	email	es-es	Filtros
 filters list	email	es-es	Lista de filtros
 flag as important	email	es-es	Marcar como importante
 flagged	email	es-es	Marcado
-folder	email	es-es	Carpeta
+folder	common	es-es	Carpeta
 folder maintenance	email	es-es	Mantenimiento de carpetas
 folder name	email	es-es	Nombre de la carpeta
 folder size	email	es-es	Tamaño de la carpeta
@@ -299,14 +299,14 @@ send	email	es-es	Enviar
 send deleted messages to the trash	email	es-es	Enviar mensajes borrados a la Papelera
 send forwarded mail as quoted attachment	email	es-es	Enviar el correo reenviado como adjunto citado
 sender	email	es-es	Remitente
-sent	email	es-es	enviado
+sent	common	es-es	enviado
 sent folder	email	es-es	carpeta de enviados
 sent messages folder	common	es-es	Carpeta de mensajes enviados
 sent messages folder name	email	es-es	Nombre de la carpeta de mensajes enviados
 sent messages saved in &quot;sent&quot; folder	common	es-es	Mensajes grabados en carpeta &quot;Enviados&quot;
 sent messages saved to folder:	email	es-es	Los mensajes enviados se guardan en la carpeta:
 sep	email	es-es	Sep
-settings	email	es-es	Opciones
+settings	common	es-es	Opciones
 short names	email	es-es	Nombres cortos
 show help	email	es-es	Mostrar la ayuda
 show long names	email	es-es	Mostrar nombres largos
@@ -360,6 +360,7 @@ this confusing and often misunderstood option is left over from this email apps 
 this data not supplied.	email	es-es	Esta información no fue suministrada
 this folder is empty	email	es-es	Esta carpeta esta vacía
 this is really a visual template conflict issue. the egw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	es-es	He aquí un conflicto visual de plantillas. La plantilla de eGW ya tiene su propio CSS, y las hojas de estilo están en cascada, por lo que las siguientes hojas CSS se heredan por la página y rompen totalmente el aspecto del tema de la plantilla. O puede que no, sólo ciertas etiquetas CSS realmente son capaces de esto, como la propiedad css BODY, o las propiedades A (href).
+this is really a visual template conflict issue. the phpgw template already has it own css, and style sheets are cascading, subsequent css can be inherited by the page and totally b0rk the look of the template theme. or maybe not, only certain css tags are really capable of this such as the css body property, or the a (href) properties.	email	es-es	He aquí un conflicto visual de plantillas. La plantilla de eGW ya tiene su propio CSS, y las hojas de estilo están en cascada, por lo que las siguientes hojas CSS se heredan por la página y rompen totalmente el aspecto del tema de la plantilla. O puede que no, sólo ciertas etiquetas CSS realmente son capaces de esto, como la propiedad css BODY, o las propiedades A (href).
 this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as "your full name". if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use "your full name" as your from name for email messages. note that "your full name" for your email account 0 is the name you gave in the egroupware setup.	email	es-es	Este es el nombre que aparece en la lista desplegable de la cuenta. Si deja esto en blanco, sus cuentas tendrán un nombre estándar como Cuenta[1]: José Pérez, donde José Pérez es el nombre que figura debajo del nombre completo. Si quiere dar un nombre especial a una cuenta entonces puede llenar este campo. No importa el contenido, esto es para su uso, los correos seguirán usando su nombre completo como identidad. Dése cuenta que su nombre completo para su cuenta de correo 0 es la que proporcionó en la configuración de eGroupWare.
 this is the name that appears in the account combobox. if for leave this blank, your accounts will be given a standard name like account[1]: jane doe, where jane doe is the name you give below as your full name. if you want to give an account a special name you can fill this in. no matter what, this is for your use, your emails will still use your full name as your from name for email messages. note that your full name for your email account 0 is the name you gave in the egroupware setup.	email	es-es	Este es el nombre que aparece en la lista desplegable de la cuenta. Si deja esto en blanco, sus cuentas tendrán un nombre estándar como Cuenta[1]: José Pérez, donde José Pérez es el nombre que figura debajo del nombre completo. Si quiere dar un nombre especial a una cuenta entonces puede llenar este campo. No importa el contenido, esto es para su uso, los correos seguirán usando su nombre completo como identidad. Dése cuenta que su nombre completo para su cuenta de correo 0 es la que proporcionó en la configuración de eGroupWare.
 this is the name that appears in the users from address. the default mail account gets this value automatically from the phpgwapi. additional accounts are created with the phpgwapi supplied fullname you can specify a different fullname for each extra email account.	email	es-es	Este es el nombre que aparece en el campo del remitente del usuario. La cuenta predeterminada de correo toma este valor automáticamente de phpgwapi. Las cuentas adicionales se crean con el nombre completo que indicó en phpgwapi. Puede especificar un nombre completo distinto para cada cuenta adicional.

@@ -69,6 +69,9 @@ no tickets found	tts	es-es	No se encontraron incidencias
 no transitions found	tts	es-es	No se encontraron transiciones
 not assigned	tts	es-es	Sin asignar
 not completed	tts	es-es	SIN COMPLETAR
+notify changes to ticket assignee by e-mail	tts	es-es	Notificar cambios por correo al asignado en la incidencia
+notify changes to ticket group by e-mail	tts	es-es	Notificar cambios por correo al grupo en la incidencia
+notify changes to ticket owner by e-mail	tts	es-es	Notificar cambios por correo al propietario de la incidencia
 old value	tts	es-es	Valor anterior
 open	tts	es-es	Abrir
 open / closed	tts	es-es	Abierta / Cerrada
@@ -125,6 +128,7 @@ ticket has been updated	tts	es-es	La incidencia ha sido actualizada
 tickets found %1	tts	es-es	Incidencias encontradas: %1
 tickets open %1	tts	es-es	Incidencias abiertas: %1
 tickets total %1	tts	es-es	Total de incidencias: %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	es-es	Para volver al índice, pulsar <a href="%1">aquí</a>
 to go back to the tts index, click <a href= %1?sessionid=69211c0c32aa5581c5d69abdbcac4d64 >here</a>	tts	es-es	Para volver al índice del Sistema, pulse <a href="%1">aquí</a>
 to go back to the tts index, click <a href= %1?sessionid=7fe5595a67d8747e64c2b92411ceaf31 >here</a>	tts	es-es	
 to go back to the tts index, click <a href= %1?sessionid=e8b5fbb098cb6b1e628cc61a5b848229 >here</a>	tts	es-es	Para volver al índice, pulse <a href="%1">aquí</a>
