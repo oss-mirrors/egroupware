@@ -73,7 +73,7 @@
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$portalbox->data[$i] = array('text'=>$subject,'link'=>$GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
+				$data[] = array('text'=>$subject,'link'=>$GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
@@ -126,6 +126,11 @@
 		while(list($key,$value) = each($var))
 		{
 			$portalbox->set_controls($key,$value);
+		}
+
+		if($data)
+		{
+			$portalbox->data = $data;
 		}
 
 		// output the portalbox and (if applicable) the folders listbox below it
