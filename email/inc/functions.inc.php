@@ -471,6 +471,13 @@
 		{
 			// if it has a name, it's an attachment
 			$finding = True;
+			break;
+		}
+		elseif ((isset($part->encoding)) && ($part->encoding) && ($part->encoding == ENCBASE64))
+		{
+			// some LAME MUA's allow attachments with NO name
+			$finding = True;
+			break;
 		}
 	}
 	return $finding;

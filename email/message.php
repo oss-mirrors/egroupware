@@ -373,7 +373,13 @@
 // ---- Message Structure Analysis   -----
 	global $struct_not_set;
 	$struct_not_set = '-1';
-	
+
+
+	//echo '<br>var struct serialized:<br>' .serialize($struct) .'<br><br>';
+	//echo '<br>var struct->parts serialized:<br>' .serialize($struct->parts) .'<br><br>';
+	//echo '<br>var count(struct->parts): [' .count($struct->parts) .']<br><br>';
+
+
 	// get INITIAL part structure / array from the fetchstructure  variable
 	if ((!isset($struct->parts[0]) || (!$struct->parts[0])))
 	{
@@ -383,26 +389,12 @@
 	{
 		$part = $struct->parts;
 	}
+
+	//echo '<br>INITIAL var part serialized:<br>' .serialize($part) .'<br><br>';
+	
+
 	$d1_num_parts = count($part);
 	
-	/*
-	// how many parts does this message have
-	if ((!isset($struct->parts)) || (!$struct->parts))
-	{
-		// either (a) a text only message or (b) email with NO body text, but has 1 attachment
-		$d1_num_parts = 1;
-	}
-	elseif (count($struct->parts) == 0)
-	{
-		// either (a) a text only message or (b) email with NO body text, but has 1 attachment
-		$d1_num_parts = 1;
-	}
-	else
-	{
-		$d1_num_parts = count($struct->parts);
-	}
-	*/
-
 	$part_nice = Array();
 
 	// get PRIMARY level part information
@@ -608,10 +600,10 @@
 		{
 			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
 		}
-		if ($part_nice[$i]['encoding'] != $struct_not_set)
-		{
-			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
-		}
+		//if ($part_nice[$i]['description'] != $struct_not_set)
+		//{
+		//	$part_nice[$i]['m_keywords'] .= $part_nice[$i]['description'] .' ';
+		//}
 		if ($part_nice[$i]['param_attribute'] != $struct_not_set)
 		{
 			$part_nice[$i]['m_keywords'] .= $part_nice[$i]['param_attribute'] .' ';
@@ -624,7 +616,7 @@
 		{
 			$part_nice[$i]['m_keywords'] .= 'ex_has_attachment' .' ';
 		}
-		$part_nice[$i]['m_keywords'] = trim($part_nice[$i]['m_keywords']);
+		//$part_nice[$i]['m_keywords'] = trim($part_nice[$i]['m_keywords']);
 
 		// ------  Test For Non-File Attachments like X-VCARD  ------
 		// add any others that I missed to the $other_attach_types array above
@@ -802,14 +794,16 @@
 			$msg_body_info .= 'ex_parent_flat_idx ['. $part_nice[$i]['ex_parent_flat_idx'] .']' .$crlf;
 			$msg_body_info .= 'm_description: '. $part_nice[$i]['m_description'] .$crlf;
 			$msg_body_info .= 'm_keywords: '. $part_nice[$i]['m_keywords'] .$crlf;
+			
 			$keystr = array_keys_str($part_nice[$i]);
 			$msg_body_info .= 'Array Keys (len='.strlen($keystr).'): '.$keystr .$crlf;
+			
 			if ((isset($part_nice[$i]['m_level_total_parts']))
 			&& ($part_nice[$i]['m_level_total_parts'] != $struct_not_set))
 			{
 				$msg_body_info .= 'm_level_total_parts: '. $part_nice[$i]['m_level_total_parts'] .$crlf;
 			}
-			$msg_body_info .= 'm_last_kid: '. $part_nice[$i]['m_last_kid'] .$crlf;
+			//$msg_body_info .= 'm_last_kid: '. $part_nice[$i]['m_last_kid'] .$crlf;
 			if ($part_nice[$i]['type'] != $struct_not_set)
 			{
 				$msg_body_info .= 'type: '. $part_nice[$i]['type'] .$crlf;
@@ -899,7 +893,113 @@
 	set_time_limit(120);
 	for ($i = 0; $i < count($part_nice); $i++)
 	{
-		if (($part_nice[$i]['m_description'] == 'presentable')
+		// TEMPORARY: some lame servers do not give any mime data out
+		if ((count($part_nice) == 1) 
+		&&  (($part_nice[$i]['m_description'] == 'container') 
+		    || ($part_nice[$i]['m_description'] == 'packagelist')) )
+		{
+			// ====  POP 3 SERVER -OR- MIME IGNORANT SERVER  ====
+			$title_text = '&nbsp;Mime-Ignorant Email: ';
+			$t->set_var('title_text',$title_text);
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size(strlen($dsp));
+			$t->set_var('display_str',$display_str);
+
+			//$msg_headers = $phpgw->msg->fetchheader($mailbox, $msgnum);
+			//$msg_headers = $phpgw->msg->header($mailbox, $msgnum); // returns a structure w/o boundry info
+			//$struct_pop3 = $phpgw->msg->get_structure($msg_headers, 1);
+			//$msg_boundry = $phpgw->msg->get_boundary($msg_headers);
+			//$msg_body = $phpgw->msg->fetchbody($mailbox, $msgnum, '1');
+			$msg_body = $phpgw->msg->get_body($mailbox, $msgnum);
+
+			// GET THE BOUNDRY
+			for ($bs=0;$bs<count($struct->parameters);$bs++)
+			{
+				$pop3_temp = $struct->parameters[$bs];
+				if ($pop3_temp->attribute == "boundary")
+				{
+					$boundary = $pop3_temp->value;
+				}
+			}
+			$boundary = trim($boundary);
+
+			/*
+			// GET THE PARTS
+			$this->boundary = $boundary;
+			for ($i=1;$i<=$body[0];$i++)
+			{
+				$pos1 = strpos($body[$i],"--$boundary");
+				$pos2 = strpos($body[$i],"--$boundary--");
+				if (is_int($pos2) && !$pos2)
+				{
+					break;
+				}
+				if (is_int($pos1) && !$pos1)
+				{
+					$info->parts[] = $this->get_structure($body,&$i,true);
+				}
+			}
+			*/
+
+			/*
+			$dsp = '<br><br> === API STRUCT ==== <br><br>'
+				.'<pre>'.serialize($struct).'</pre>'
+				//.'<br><br> === HEADERS ==== <br><br>'
+				//.'<pre>'.$msg_headers.'</pre>'
+				.'<br><br> === struct->parameters ==== <br><br>'
+				.'<pre>'.serialize($struct->parameters).'</pre>'
+				.'<br><br> === BOUNDRY ==== <br><br>'
+				.'<pre>'.serialize($boundary).'</pre>'
+				.'<br><br> === BODY ==== <br><br>';
+				.'<pre>'.serialize($msg_body).'</pre>';
+			*/
+
+			$dsp = '<br> === BOUNDRY ==== <br>'
+				.'<pre>'.$boundary.'</pre> <br>'
+				.'<br> === BODY ==== <br><br>';
+			$dsp = $dsp .$phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			
+			$t->set_var('message_body',$dsp);
+			$t->parse('V_display_part','B_display_part');
+		}
+
+
+		// do we Force Echo Out Unformatted Text ?
+		elseif (($part_nice[$i]['m_description'] == 'presentable')
+		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
+		&& ($d1_num_parts <= 2)
+		&& (($part_nice[$i]['m_part_num_mime'] === '1') || ($part_nice[$i]['m_part_num_mime'] === '1.1'))
+		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
+		{
+			// output a blank message body, we'll use an alternate method below
+			$t->set_var('V_display_part','');
+			// -----  Finished With Message_Mail Template, Output It
+			$t->pparse('out','T_message_main');
+			
+			// -----  Prepare a Table for this Echo Dump
+			$title_text = '&nbsp;message: ';
+			$t->set_var('title_text',$title_text);
+			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size($part_nice[$i]['bytes'])
+				.'; meets force_echo ('.format_byte_size($force_echo_size).') criteria';
+			$t->set_var('display_str',$display_str);
+			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
+			$t->set_var('V_done_echo_dump','');
+			$t->pparse('out','T_message_echo_dump');
+			// -----  Echo This Data Directly to the Client
+			echo '<pre>';
+			echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
+			echo '</pre>';
+			// -----  Close Table
+			$t->set_var('V_setup_echo_dump','');
+			$t->parse('V_done_echo_dump','B_done_echo_dump');
+			$t->pparse('out','T_message_echo_dump');
+
+			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
+			unset($part_nice);
+			$phpgw->msg->close($mailbox); 
+			$phpgw->common->phpgw_footer();
+			exit;
+		}
+		elseif (($part_nice[$i]['m_description'] == 'presentable')
 		&& (stristr($part_nice[$i]['m_keywords'], 'HTML')))
 		{
 
@@ -976,45 +1076,7 @@
 			*/
 
 		}
-		// do we Force Echo Out Unformatted Text ?
-		elseif (($part_nice[$i]['m_description'] == 'presentable')
-		&& (stristr($part_nice[$i]['m_keywords'], 'PLAIN'))
-		&& ($d1_num_parts <= 2)
-		&& (($part_nice[$i]['m_part_num_mime'] === '1') || ($part_nice[$i]['m_part_num_mime'] === '1.1'))
-		&& ((int)$part_nice[$i]['bytes'] > $force_echo_size))
-		{
-			// output a blank message body, we'll use an alternate method below
-			$t->set_var('V_display_part','');
-			// -----  Finished With Message_Mail Template, Output It
-			$t->pparse('out','T_message_main');
-			
-			// -----  Prepare a Table for this Echo Dump
-			$title_text = '&nbsp;message: ';
-			$t->set_var('title_text',$title_text);
-			$display_str = 'keywords: '.$part_nice[$i]['m_keywords'].' - '.format_byte_size($part_nice[$i]['bytes'])
-				.'; meets force_echo ('.format_byte_size($force_echo_size).') criteria';
-			$t->set_var('display_str',$display_str);
-			$t->parse('V_setup_echo_dump','B_setup_echo_dump');
-			$t->set_var('V_done_echo_dump','');
-			$t->pparse('out','T_message_echo_dump');
-			// -----  Echo This Data Directly to the Client
-			echo '<pre>';
-			echo $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
-			echo '</pre>';
-			// -----  Close Table
-			$t->set_var('V_setup_echo_dump','');
-			$t->parse('V_done_echo_dump','B_done_echo_dump');
-			$t->pparse('out','T_message_echo_dump');
-
-			//  = = = =  = =======  CLEANUP AND EXIT PAGE ======= = = = = = =
-			unset($part_nice);
-			$phpgw->msg->close($mailbox); 
-			$phpgw->common->phpgw_footer();
-			exit;
-		}
-		elseif (($part_nice[$i]['m_description'] == 'presentable')
-		// or some lame servers do not give any mime data out
-		|| ((count($part_nice) == 1) &&  ($part_nice[$i]['m_description'] != 'presentable')) )
+		elseif ($part_nice[$i]['m_description'] == 'presentable')
 		{
 			// ----- get the part from the server
 			$dsp = $phpgw->msg->fetchbody($mailbox, $msgnum, $part_nice[$i]['m_part_num_mime']);
