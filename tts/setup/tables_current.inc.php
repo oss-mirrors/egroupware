@@ -35,11 +35,11 @@
 			'fd' => array(
 				'view_id'             => array('type' => 'int', 'precision' => 4, 'nullable' => False),
 				'view_account_id'     => array('type' => 'varchar', 'precision' => 40, 'nullable' => True),
-				'view_time'           => array('type' => 'int', 'precision' => 4, 'nullable' => False),
+				'view_time'           => array('type' => 'int', 'precision' => 4, 'nullable' => False)
 			),
 			'pk' => array(),
 			'ix' => array(),
 			'fk' => array(),
 			'uc' => array()
-		),
+		)
 	);
