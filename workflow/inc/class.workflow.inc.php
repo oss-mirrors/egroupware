@@ -22,6 +22,8 @@
 
 		var $sort_mode;
 
+		var $stats;
+
 		var $wheres = array();
 
 		function workflow()
@@ -137,13 +139,13 @@
 				'processes'				=> $stats['processes'],
 				'active_processes'		=> $stats['active_processes'],
 				'running_processes'		=> $stats['running_processes'],
-				'href_active_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances&filter_status=active'),
+				'href_active_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=active'),
 				'active_instances'		=> $stats['active_instances'],
-				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances&filter_status=completed'),
+				'href_completed_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=completed'),
 				'completed_instances'	=> $stats['completed_instances'],
-				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances&filter_status=aborted'),
+				'href_aborted_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=aborted'),
 				'aborted_instances'		=> $stats['aborted_instances'],
-				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances&filter_status=exception'),
+				'href_exception_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_status=exception'),
 				'exception_instances'	=> $stats['exception_instances'],
 			));
 			$this->translate_template('monitor_stats_tpl');
