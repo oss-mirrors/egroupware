@@ -24,7 +24,3 @@ $appname)
         display_section($appname,$title,$file);
 }
 ?>
-
-
-
-?>
