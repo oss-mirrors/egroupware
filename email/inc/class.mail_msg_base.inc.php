@@ -287,6 +287,14 @@
 		var $reply_prefix = '> ';
 		//var $reply_prefix = '| ';
 		
+		// mail servers _should_ supply us with RFC822 specified CRLF linebreaks. We assume so.
+		// set to false if your mailserve does not always end the line with CRLF
+		// this applies ONLY if a given body part is coming from a mailserver, not a POST html form
+		// currently Dec 2003 used for handling of reply stuff in class.bosend
+		// the idea is to slowly eliminate unnecessary CRLF ensuring functions by wrapping them with this
+		var $expect_good_body_crlf = True;
+		//var $expect_good_body_crlf = False;
+		
 		// ---- Data Caching  ----
 		var $use_cached_prefs = True;
 		//var $use_cached_prefs = False;

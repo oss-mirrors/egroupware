@@ -873,6 +873,15 @@ $msg_headers->udate = $new_time;
 					break;
 				}
 			}
+			// ----  no "First Presentable" part is a possibility  -----
+			if ($first_presentable == '')
+			{
+				// some mail has nothing but an attachment, we have nothing to quote if we reply
+				// ex. we do NOT want to "quote" a base64 attachment
+				// so in that case send "none" as the first_presentable "part_no"
+				// this is passed into class.bocompose  if reply or replyall is clicked
+				$first_presentable = '&msgball[part_no]=none';
+			}
 			/*
 			// FUTURE: Forward needs entirely different handling
 			// ADD: adopt

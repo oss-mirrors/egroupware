@@ -212,7 +212,20 @@
 		function quote_inline_message($body,$msgball)
 		{
 			
-					// ----  Quoted Bodystring of Re:,Fwd: Message is the "First Presentable" part  -----
+				// ----  "First Presentable" part handling  -----
+				// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
+				// it is possible "none" has been passed as "First Presentable" part from class.bomessage 
+				// some mail has nothing but an attachment, which is then part 1, we do NOT want to "quote" a base64 attachment
+				// class.bomessage will specify "none" in such a case
+				if ((isset($msgball['part_no']))
+				&& ($msgball['part_no'] == 'none'))
+				{
+					// we have no text to quote
+					return '';
+				}
+				else
+				{
+					// ----  Quoted Bodystring of Re: Message is the "First Presentable" part  -----
 					// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
 					// most emails have many MIME parts, some may actually be blank, we do not want to
 					// reply to a blank part, that would look dumb and is not correct behavior. Instead, we want
@@ -245,6 +258,7 @@
 						{
 							// a human readable body part (non-attachment) should NOT be base64 encoded
 							// but you can never account for idiots
+							// NEW: preferred encoding for Russian char set is base64 for the body, NOT qprint
 							$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
 						}
 						// after that idiot check, we need another now as well...
@@ -285,6 +299,16 @@
 						// aim for a 74-80 char line length
 						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
 					}
+					else
+					{
+						// NEW CHANGE: compose page no longer wraps hard
+						// this bodystring is the text we are about to add reply quotes to
+						// it may already have CRLF but the line lengths could be too darn long
+						// AND so we need to have somewhat sane line lengths fed to the textbox
+						// AND we need to have sane line lengths before we add the quote char
+						// since textbox will happily submit any length line to the send code and look stupid maybe
+						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 88);
+					}
 					// explode into an array
 					$body_array = explode("\r\n", $bodystring);
 					// cleanup, we do not need $bodystring var anymore				
@@ -309,6 +333,7 @@
 					// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
 					// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
 					return $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
+				}
 		}
 		
 		/*!
@@ -461,121 +486,140 @@
 						// then one blank quoted line b4 the quoted body
 						.$GLOBALS['phpgw']->msg->reply_prefix."\r\n";
 					
-					// ----  Quoted Bodystring of Re: Message is the "First Presentable" part  -----
+					// ----  "First Presentable" part handling  -----
 					// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
-					// most emails have many MIME parts, some may actually be blank, we do not want to
-					// reply to a blank part, that would look dumb and is not correct behavior. Instead, we want
-					// to quote the first body port that has some text, which could be anywhere.
-					// NOTE: we should ALWAYS get a "First Presentable" value from class.bomessage
-					// if not (a rare and screwed up situation) then assume msgball[part_no]=1
-					// Also, if the first presentable part is encoded as qprint or base64, or is subtype html
-					// class.bomessage should pass that info along as well
-					if ((!isset($msgball['part_no']))
-					|| ($msgball['part_no'] == ''))
+					// it is possible "none" has been passed as "First Presentable" part from class.bomessage 
+					// some mail has nothing but an attachment, which is then part 1, we do NOT want to "quote" a base64 attachment
+					// class.bomessage will specify "none" in such a case
+					if ((isset($msgball['part_no']))
+					&& ($msgball['part_no'] == 'none'))
 					{
-						// this *should* never happen, we should always get a good "First Presentable"
-						// value in $msgball['part_no'] , but we can assume the first part if not specified
-						$msgball['part_no'] = '1';
-					}
-					
-					$bodystring = '';
-					$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
-					// see if we have to un-do qprint (or other) encoding of the part we are about to quote
-					if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
-					|| ($GLOBALS['phpgw']->msg->get_isset_arg('subtype')))
-					{
-						// see if we have to un-do qprint encoding (fairly common)
-						if ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
-						{
-							$bodystring = $GLOBALS['phpgw']->msg->qprint($bodystring);
-						}
-						// *rare, maybe never seen* see if we have to un-do base64 encoding
-						elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
-						{
-							// a human readable body part (non-attachment) should NOT be base64 encoded
-							// but you can never account for idiots
-							$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
-						}
-						// after that idiot check, we need another now as well...
-						// *TOTALLY IDIOTIC* hotmail.com may send HTML ONLY mail
-						// without the rfc REQUIRED text only part, so we have to strip html
-						if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
-						{
-							// class validator has the required function
-							$this->my_validator = CreateObject("phpgwapi.validator");
-							// you can never account for idiots, there should be a plain version of this IN THE MAIL
-							$bodystring = $this->my_validator->strip_html($bodystring);
-						}
-					}
-					// "normalize" all line breaks into CRLF pairs
-					$bodystring = $GLOBALS['phpgw']->msg->normalize_crlf($bodystring);
-					
-					// ----- Remove Email "Personal Signature" from Quoted Body  -----
-					// RFC's unofficially suggest you remove the "personal signature" before quoting the body
-					// a standard sig begins with "-- CRFL", that's [dash][dash][space][CRLF]
-					// and *should* be no more than 4 lines in length, followed by a CFLF
-					//$bodystring = preg_replace("/--\s{0,1}\r\n.{1,}\r\n\r\n/smx", "BLAA", $bodystring);
-					//$bodystring = preg_replace("/--\s{0,1}\r\n(.{1,}\r\n){1,5}/smx", "", $bodystring);
-					// sig = "dash dash space CRLF (anything and CRLF) repeated 1 to 5 times"
-					//$bodystring = preg_replace("/--\s{0,1}\r\n.(?!>)(.{1,}\r\n){1,5}/smx", "", $bodystring);
-					// THIS ONE DOES IT - USE THIS ONE
-					$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
-					// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
-					
-					//now is a good time to trim the retireved bodystring
-					trim($bodystring);
-					
-					// ----- Quote The Body You Are Replying To With ">"  ------
-					$body_array = array();
-					// NOTE compose page html has a textarea with "cols" set to 84
-					// this means on submit the text automatically is hardwrapped to 84 chars
-					// NEW - NOT ANY MORE, no more wrap=hard in the html-textbox tags
-					// I did this so replies to messages already having "> " added will not wrap to early 
-					// because the message lines are lengthened by 1 or 2 chars already due to the 
-					// already existing "> " and there may be many of them already.
-					// HOWEVER a new message should go out with standard 78 char line length (see below)
-					
-					// we need *some* line breaks in the body so we know where to add the ">" quoting char(s)
-					// some relatively short emails may not have any CRLF pairs, but may have a few real long lines
-					//so, add linebreaks to the body if none are already existing
-					if (!ereg("\r\n", $bodystring))
-					{
-						// aim for a 74-80 char line length
-						//$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
-						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 78);
+						// we have no text to quote
+						// just make empty vars that we would use below if we had a body
+						$bodystring = '';
+						$body_array = array();
+						// all we have is the "who wrote" line and some "> ", so use that
+						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 					}
 					else
 					{
-						// NEW CHANGE: compose page no longer wraps hard
-						// this bodystring is the text we are about to add reply quotes to
-						// it may already have CRLF but the line lengths could be too darn long
-						// AND so we need to have somewhat sane line lengths fed to the textbox
-						// AND we need to have sane line lengths before we add the quote char
-						// since textbox will happily submit any length line to the send code and look stupid maybe
-						$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 88);
+						// ----  Quoted Bodystring of Re: Message is the "First Presentable" part  -----
+						// as determimed in class.bomessage and passed in the uri as "msgball[part_no]=X.X"
+						// most emails have many MIME parts, some may actually be blank, we do not want to
+						// reply to a blank part, that would look dumb and is not correct behavior. Instead, we want
+						// to quote the first body port that has some text, which could be anywhere.
+						// NOTE: we should ALWAYS get a "First Presentable" value from class.bomessage
+						// if not (a rare and screwed up situation) then assume msgball[part_no]=1
+						// Also, if the first presentable part is encoded as qprint or base64, or is subtype html
+						// class.bomessage should pass that info along as well
+						if ((!isset($msgball['part_no']))
+						|| ($msgball['part_no'] == ''))
+						{
+							// this *should* never happen, we should always get a good "First Presentable"
+							// value in $msgball['part_no'] , but we can assume the first part if not specified
+							$msgball['part_no'] = '1';
+						}
+						
+						$bodystring = '';
+						$bodystring = $GLOBALS['phpgw']->msg->phpgw_fetchbody($msgball);
+						// see if we have to un-do qprint (or other) encoding of the part we are about to quote
+						if (($GLOBALS['phpgw']->msg->get_isset_arg('encoding'))
+						|| ($GLOBALS['phpgw']->msg->get_isset_arg('subtype')))
+						{
+							// see if we have to un-do qprint encoding (fairly common)
+							if ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'qprint')
+							{
+								$bodystring = $GLOBALS['phpgw']->msg->qprint($bodystring);
+							}
+							// *rare, maybe never seen* see if we have to un-do base64 encoding
+							elseif ($GLOBALS['phpgw']->msg->get_arg_value('encoding') == 'base64')
+							{
+								// a human readable body part (non-attachment) should NOT be base64 encoded
+								// but you can never account for idiots
+								// NEW: preferred encoding for Russian char set is base64 for the body, NOT qprint
+								$bodystring = $GLOBALS['phpgw']->msg->de_base64($bodystring);
+							}
+							// after that idiot check, we need another now as well...
+							// *TOTALLY IDIOTIC* hotmail.com may send HTML ONLY mail
+							// without the rfc REQUIRED text only part, so we have to strip html
+							if ($GLOBALS['phpgw']->msg->get_arg_value('subtype') == 'html')
+							{
+								// class validator has the required function
+								$this->my_validator = CreateObject("phpgwapi.validator");
+								// you can never account for idiots, there should be a plain version of this IN THE MAIL
+								$bodystring = $this->my_validator->strip_html($bodystring);
+							}
+						}
+						// "normalize" all line breaks into CRLF pairs
+						$bodystring = $GLOBALS['phpgw']->msg->normalize_crlf($bodystring);
+						
+						// ----- Remove Email "Personal Signature" from Quoted Body  -----
+						// RFC's unofficially suggest you remove the "personal signature" before quoting the body
+						// a standard sig begins with "-- CRFL", that's [dash][dash][space][CRLF]
+						// and *should* be no more than 4 lines in length, followed by a CFLF
+						//$bodystring = preg_replace("/--\s{0,1}\r\n.{1,}\r\n\r\n/smx", "BLAA", $bodystring);
+						//$bodystring = preg_replace("/--\s{0,1}\r\n(.{1,}\r\n){1,5}/smx", "", $bodystring);
+						// sig = "dash dash space CRLF (anything and CRLF) repeated 1 to 5 times"
+						//$bodystring = preg_replace("/--\s{0,1}\r\n.(?!>)(.{1,}\r\n){1,5}/smx", "", $bodystring);
+						// THIS ONE DOES IT - USE THIS ONE
+						$bodystring = preg_replace("/\r\n[-]{2}\s{0,1}\r\n\w.{0,}\r\n(.{1,}\r\n){0,4}/", "\r\n", $bodystring);
+						// sig = "CRLF dash dash space(0or1) CRLF anyWordChar anything CRLF (anything and CRLF) repeated 0 to 4 times"
+						
+						//now is a good time to trim the retireved bodystring
+						trim($bodystring);
+						
+						// ----- Quote The Body You Are Replying To With ">"  ------
+						$body_array = array();
+						// NOTE compose page html has a textarea with "cols" set to 84
+						// this means on submit the text automatically is hardwrapped to 84 chars
+						// NEW - NOT ANY MORE, no more wrap=hard in the html-textbox tags
+						// I did this so replies to messages already having "> " added will not wrap to early 
+						// because the message lines are lengthened by 1 or 2 chars already due to the 
+						// already existing "> " and there may be many of them already.
+						// HOWEVER a new message should go out with standard 78 char line length (see below)
+						
+						// we need *some* line breaks in the body so we know where to add the ">" quoting char(s)
+						// some relatively short emails may not have any CRLF pairs, but may have a few real long lines
+						//so, add linebreaks to the body if none are already existing
+						if (!ereg("\r\n", $bodystring))
+						{
+							// aim for a 74-80 char line length
+							//$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 74);
+							$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 78);
+						}
+						else
+						{
+							// NEW CHANGE: compose page no longer wraps hard
+							// this bodystring is the text we are about to add reply quotes to
+							// it may already have CRLF but the line lengths could be too darn long
+							// AND so we need to have somewhat sane line lengths fed to the textbox
+							// AND we need to have sane line lengths before we add the quote char
+							// since textbox will happily submit any length line to the send code and look stupid maybe
+							$bodystring = $GLOBALS['phpgw']->msg->body_hard_wrap($bodystring, 88);
+						}
+						$body_array = explode("\r\n", $bodystring);
+						// cleanup, we do not need $bodystring var anymore				
+						$bodystring = '';
+						// add the ">" quoting char to the beginning of each line
+						// note, this *will* loop at least once assuming the body has one line at least
+						// therefor the var "body" *will* get filled
+						$body_array_count = count($body_array);
+						for ($bodyidx = 0; $bodyidx < $body_array_count; ++$bodyidx)
+						{
+							// add the ">" so called "quoting" char to the original body text
+							// NOTE: do NOT trim the LEFT part of the string, use RTRIM instead
+							$this_line = $GLOBALS['phpgw']->msg->reply_prefix . rtrim($body_array[$bodyidx]) ."\r\n";
+							$body .= $this_line;
+						}
+						// cleanup
+						$body_array = array();
+						
+						// email needs to be sent with NO ENCODED HTML ENTITIES
+						// it's up to the endusers MUA to handle any htmlspecialchars
+						// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
+						// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
+						$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 					}
-					$body_array = explode("\r\n", $bodystring);
-					// cleanup, we do not need $bodystring var anymore				
-					$bodystring = '';
-					// add the ">" quoting char to the beginning of each line
-					// note, this *will* loop at least once assuming the body has one line at least
-					// therefor the var "body" *will* get filled
-					$body_array_count = count($body_array);
-					for ($bodyidx = 0; $bodyidx < $body_array_count; ++$bodyidx)
-					{
-						// add the ">" so called "quoting" char to the original body text
-						// NOTE: do NOT trim the LEFT part of the string, use RTRIM instead
-						$this_line = $GLOBALS['phpgw']->msg->reply_prefix . rtrim($body_array[$bodyidx]) ."\r\n";
-						$body .= $this_line;
-					}
-					// cleanup
-					$body_array = array();
-					
-					// email needs to be sent with NO ENCODED HTML ENTITIES
-					// it's up to the endusers MUA to handle any htmlspecialchars
-					// as for 7-bit vs. 8-bit, we prefer to leave body chars as-is and send out as 8-bit mail
-					// Later Note: see RFCs 2045-2049 for what MTA's (note "T") can and can not handle
-					$body = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($body);
 				}
 				elseif ($GLOBALS['phpgw']->msg->get_arg_value('action') == 'forward')
 				{

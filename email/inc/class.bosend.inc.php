@@ -896,32 +896,42 @@
 				$fwd_this['sub_body'] = trim($GLOBALS['phpgw']->msg->phpgw_body());
 				//$fwd_this['sub_body'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['sub_body']);
 				
-				// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
-				// because some lame MUA's don't properly format the message with CRLF CRLF BOUNDARY
-				// in which case when we encapsulate such a malformed message, it *may* not be understood correctly 
-				// by the receiving MUA, so we attempt to correct such a malformed message before we encapsulate it
-				// ---- not yet complete ----
-				$char_quot = '"';
-				preg_match("/boundary=[$char_quot]{0,1}.*[$char_quot]{0,1}\r\n/",$fwd_this['sub_header'],$fwd_this['matches']);
-				if (stristr($fwd_this['matches'][0], 'boundary='))
+				// -- "expect_good_body_crlf" --
+				// we expect modern email equipment to give us properly formatted CRLF
+				// although this is not always the case
+				// WE USED TO ASSUME FALSE, now changing this to assume true.
+				// we can do this here because this body is coming from a mailserver, not a POST html form
+				if ($GLOBALS['phpgw']->msg->expect_good_body_crlf == False)
 				{
-					$fwd_this['boundaries'] = trim($fwd_this['matches'][0]);
-					$fwd_this['boundaries'] = str_replace('boundary=', '', $fwd_this['boundaries']);
-					$fwd_this['boundaries'] = str_replace('"', '', $fwd_this['boundaries']);
-					$this_boundary = $fwd_this['boundaries'];
-					//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
-					//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
-					//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}".$this_boundary."[-]{0,2}/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
-					//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
-					$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}".$this_boundary."/m", "\r\n\r\n".'--'.$this_boundary, $fwd_this['sub_body']);
-					$dash_dash = '--';
-					$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$dash_dash$this_boundary$dash_dash/", "\r\n\r\n".'--'.$this_boundary.'--', $fwd_this['sub_body']);
-					$fwd_this['sub_body'] = trim($fwd_this['sub_body']);
+					// Make Sure ALL INLINE BOUNDARY strings actually have CRLF CRLF preceeding them
+					// because some lame MUA's don't properly format the message with CRLF CRLF BOUNDARY
+					// in which case when we encapsulate such a malformed message, it *may* not be understood correctly 
+					// by the receiving MUA, so we attempt to correct such a malformed message before we encapsulate it
+					// ---- not yet complete ----
+					$char_quot = '"';
+					preg_match("/boundary=[$char_quot]{0,1}.*[$char_quot]{0,1}\r\n/",$fwd_this['sub_header'],$fwd_this['matches']);
+					if (stristr($fwd_this['matches'][0], 'boundary='))
+					{
+						$fwd_this['boundaries'] = trim($fwd_this['matches'][0]);
+						$fwd_this['boundaries'] = str_replace('boundary=', '', $fwd_this['boundaries']);
+						$fwd_this['boundaries'] = str_replace('"', '', $fwd_this['boundaries']);
+						$this_boundary = $fwd_this['boundaries'];
+						//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
+						//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
+						//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}".$this_boundary."[-]{0,2}/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
+						//$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$this_boundary/m", "\r\n\r\n".'DASHDASH'.$this_boundary, $fwd_this['sub_body']);
+						$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}".$this_boundary."/m", "\r\n\r\n".'--'.$this_boundary, $fwd_this['sub_body']);
+						$dash_dash = '--';
+						$fwd_this['sub_body'] = preg_replace("/(?<!(\r\n\r\n))[-]{2}$dash_dash$this_boundary$dash_dash/", "\r\n\r\n".'--'.$this_boundary.'--', $fwd_this['sub_body']);
+						$fwd_this['sub_body'] = trim($fwd_this['sub_body']);
+					}
 				}
-				
 				
 				// assemble it and add the blank line that seperates the headers from the body
 				$fwd_this['processed'] = $fwd_this['sub_header']."\r\n"."\r\n".$fwd_this['sub_body'];
+				// memory mgt, doing this can really save memory with big attachments
+				$fwd_this['sub_body'] = '';
+				unset($fwd_this['sub_body']);
 				
 				
 				/*
@@ -938,9 +948,16 @@
 				
 				
 				// Explode Body into Array of strings
-				//$fwd_this['processed'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['processed']);
-				//$this->mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n", $fwd_this['processed']);
-				$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this['processed']));
+				if ($GLOBALS['phpgw']->msg->expect_good_body_crlf == False)
+				{
+					//$fwd_this['processed'] = $GLOBALS['phpgw']->msg->normalize_crlf($fwd_this['processed']);
+					//$this->mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n", $fwd_this['processed']);
+					$this->mail_out['body'][$body_part_num]['mime_body'] = $GLOBALS['phpgw']->msg->explode_linebreaks(trim($fwd_this['processed']));
+				}
+				else
+				{
+					$this->mail_out['body'][$body_part_num]['mime_body'] = explode("\r\n",(trim($fwd_this['processed'])));
+				}
 				// clear this no longer needed var
 				$fwd_this = '';
 				unset($fwd_this);
