@@ -30,15 +30,23 @@
   }
 
   if ($what == "delall") {
-     for ($i = 0; $i < count($msglist); $i++) {
-	$phpgw->msg->delete($mailbox, $msglist[$i]);
-     }
-     $totaldeleted = "&td=$i";
-     $dontforward = False;
+    for ($i = 0; $i < count($msglist); $i++) {
+      if ($folder == "Trash"){
+	      $phpgw->msg->delete($mailbox, $msglist[$i],"",$folder);
+      } else {
+	     $phpgw->msg->delete($mailbox, $msglist[$i]);
+      }
+    }
+    $totaldeleted = "&td=$i";
+    $dontforward = False;
   }
 
   if ($what == "delete") {
-     $phpgw->msg->delete($mailbox, $msgnum);
+    if ($folder == "Trash"){
+      $phpgw->msg->delete($mailbox, $msgnum,"",$folder);
+    } else {
+      $phpgw->msg->delete($mailbox, $msgnum);
+    }
      if ($totalmessages != $msgnum || $phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
         if ($phpgw_info["user"]["preferences"]["default_sorting"] == "new_old") {
            $nm = $msgnum - 1;
