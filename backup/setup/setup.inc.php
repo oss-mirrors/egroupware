@@ -17,6 +17,7 @@
 	$setup_info['backup']['enable'] = 1;
 
 	$setup_info['backup']['author'] = 'Bettina Gille';
+	$setup_info['backup']['license']  = 'GPL';
 	$setup_info['backup']['description'] =
 		'An online configurable backup app to store data offline.';
 	$setup_info['backup']['maintainer'] = $setup_info['backup']['author'];

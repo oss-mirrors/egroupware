@@ -21,6 +21,7 @@
 	$setup_info['bookmarks']['enable']    = 1;
 
 	$setup_info['bookmarks']['author'] = 'Joseph Engo';
+	$setup_info['bookmarks']['license']  = 'GPL';
 	$setup_info['bookmarks']['description'] =
 		'Manage your bookmarks with phpGW.  Has Netscape plugin.';
 	$setup_info['bookmarks']['maintainer'] = 'Joseph Engo';

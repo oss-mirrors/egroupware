@@ -18,6 +18,14 @@
 	$setup_info['developer_tools']['app_order'] = 8;
 	$setup_info['developer_tools']['enable']    = 1;
 
+	$setup_info['developer_tools']['author'] = 'Miles Lott';
+	$setup_info['developer_tools']['note'] = '';
+	$setup_info['developer_tools']['license']  = 'GPL';
+	$setup_info['developer_tools']['description'] =
+		'Contains the language management system.';
+	$setup_info['developer_tools']['maintainer'] = 'Miles Lott';
+	$setup_info['developer_tools']['maintainer_email']    = 'milosch@phpgroupware.org';
+
 	/* The tables this app creates */
 	$setup_info['developer_tools']['tables']    = array(
 		'phpgw_devtools_diary',

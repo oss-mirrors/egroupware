@@ -18,6 +18,14 @@
 	$setup_info['comic']['app_order'] = 21;
 	$setup_info['comic']['enable']    = 1;
 
+	$setup_info['comic']['author'] = 'Ryan Phillips';
+	$setup_info['comic']['note'] = 'Originally ported from phpComic.';
+	$setup_info['comic']['license']  = 'GPL';
+	$setup_info['comic']['description'] =
+		'Displays comic strips.';
+	$setup_info['comic']['maintainer'] = 'neotexan';
+	$setup_info['comic']['maintainer_email']    = '?????';
+
 	/* The tables this app creates */
 	$setup_info['comic']['tables']    = array(
 		'phpgw_comic',
