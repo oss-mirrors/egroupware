@@ -12,7 +12,7 @@ assigned from	tts	sv	Tilldelad av
 assigned to	tts	sv	Tilldelad till
 billable hours	tts	sv	Budgeterade timmar
 billable hours changed	tts	sv	Budgeterade timmar ändrade
-billable hours rate	tts	sv	Faktura tim taxa
+billable hours rate	tts	sv	Faktura timtaxa
 billable rate	tts	sv	Faktura taxa
 billable rate changed	tts	sv	Faktura taxa ändrad
 category changed	tts	sv	Kategori ändrad
@@ -39,7 +39,7 @@ detail	tts	sv	Detaljer
 duplicate	tts	sv	Dublett
 edit the state	tts	sv	Ändra tillstånd
 edit the transition	tts	sv	Redigera övergång
-error: the subject of the ticket is not specified.	tts	sv	Fel: Ärende rubrik inte angivet
+error: the subject of the ticket is not specified.	tts	sv	Fel: Ärenderubrik inte angivet
 force	tts	sv	Tvinga
 global categories	tts	sv	Globala kategorier
 group ownership changed	tts	sv	Ägande grupp ändrad
@@ -69,16 +69,16 @@ no tickets found	tts	sv	Inga ärenden
 no transitions found	tts	sv	Ingen övergång hittad
 not assigned	tts	sv	Inte tilldelad
 not completed	tts	sv	Inte färdig
-notify changes to ticket assignee by e-mail	tts	sv	Meddela ärende ändringar till uppdragsinnehavare
-notify changes to ticket group by e-mail	tts	sv	Meddela ärende ändringar till gruppen
-notify changes to ticket owner by e-mail	tts	sv	Meddela ärende ändringar till ägare
+notify changes to ticket assignee by e-mail	tts	sv	Meddela ärendeändringar till uppdragsinnehavare
+notify changes to ticket group by e-mail	tts	sv	Meddela ärendeändringar till gruppen
+notify changes to ticket owner by e-mail	tts	sv	Meddela ärendeändringar till ägare
 old value	tts	sv	Gammalt värde
 open	tts	sv	Öppen
 open / closed	tts	sv	Öppen/Stängd
 open date	tts	sv	Öppnande datum
 opened	tts	sv	Öppen
 opened by	tts	sv	Öppnad av
-original ticket details	tts	sv	Ursprungliga ärende detaljer
+original ticket details	tts	sv	Ursprungliga ärendedetaljer
 perform irregular transition into the following state	tts	sv	Genomför oriktig övergång till följande tillstånd
 please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	sv	Ange rubrik för ärendet, utan den kan det inte sparas
 prio	tts	sv	Prioritet
@@ -142,12 +142,12 @@ totovalidate	tts	sv	TillValidering
 tovalidate	tts	sv	Validering
 toverified	tts	sv	TillVerifiering
 transition	tts	sv	Övergång
-transition name	tts	sv	Övergångs namn
-trouble ticket system	common	sv	Ärende Hanterings System
+transition name	tts	sv	Övergångsnamn
+trouble ticket system	common	sv	ÄrendeHanteringsSystem
 tts	common	sv	ÄHS
-tts preferences	tts	sv	Ärende Hanterings System - Alternativ
+tts preferences	tts	sv	ÄrendeHanteringsSystem - Alternativ
 undefined	tts	sv	Odefinierad
-update ticket state	tts	sv	Uppdatera ärende tillstånd
+update ticket state	tts	sv	Uppdatera ärendetillstånd
 updates ticket	tts	sv	Uppdaterar ärende
 verified	tts	sv	Verifierad
 verify	tts	sv	Verifiera
@@ -156,7 +156,7 @@ view all tickets	tts	sv	Alla ärenden
 view job detail	tts	sv	Ärende detaljer
 view only my open tickets	tts	sv	Mina öppna ärenden
 view only open tickets	tts	sv	Öppna ärenden
-you can only close a ticket if it is assigned to you.	tts	sv	Du kan bara stänga till dig tilldelade ärenden.
+you can only close a ticket if it is assigned to you.	tts	sv	Du kan bara stänga ärenden tilldelade till dig.
 you want to delete the state %1 and associated transitions. are you sure?	tts	sv	Vill du verkligen radera tillstånd %1 och associerad övergång?
 you want to delete the state %1. are you sure?	tts	sv	Vill du verkligen radera tillstånd %1?
 you want to delete the transition %1. are you sure?	tts	sv	Vill du verkligen radera övergång %1?

@@ -1,11 +1,14 @@
 % to	projects	sv	% till
 + jobs	projects	sv	+ Jobb
+a new project has been created	projects	sv	Ett nytt projekt har skapats den:
+a project has been deleted	projects	sv	Ett projekt har tagits bort den:
+a project has been updated	projects	sv	Ett projekt har uppdaterats den:
 account	projects	sv	Redovisning
 accountancy	common	sv	Bokföring
 accounting	common	sv	Bokföring
 accounting factor	projects	sv	Revisor
-accounting factor for project	projects	sv	Projekt revisor
-accounting system	projects	sv	Bokförings system
+accounting factor for project	projects	sv	Projektrevisor
+accounting system	projects	sv	Bokföringssystem
 active	projects	sv	Aktiv
 activities	projects	sv	Aktiviteter
 activity	common	sv	Aktivitet
@@ -24,7 +27,7 @@ add role	projects	sv	Lägg till roll
 add work hours	projects	sv	Lägg till arbetstimmar
 address book	projects	sv	Adressbok
 administrator	projects	sv	Administratör
-administrator list	projects	sv	Administratörs lista
+administrator list	projects	sv	Administratörslista
 alarm	projects	sv	Larm
 all	projects	sv	Alla
 all delivery notes	projects	sv	Alla leveransnoteringar
@@ -71,14 +74,14 @@ changed start date and end date of projects bellow	projects	sv	Ändra start och s
 changes of project data	projects	sv	Ändrade projekt data
 click %1here%2 to return to projects.	projects	sv	%1Återvänd%2 till projekten
 closed	projects	sv	Stängd
-color legend	projects	sv	Färg märkning
-columns to show in the projects list	projects	sv	Kolumner att visa i projekt listan
+color legend	projects	sv	Färgmärkning
+columns to show in the projects list	projects	sv	Kolumner att visa i projektlistan
 comment	projects	sv	Kommentarer
 continue	projects	sv	Fortsätt
 coordinator	common	sv	Koordinator
 costs	projects	sv	Kostnader
-costs list	projects	sv	Kostnads lista
-costtype	projects	sv	Kostnads typ
+costs list	projects	sv	Kostnadslista
+costtype	projects	sv	Kostnadstyp
 courier new	projects	sv	Courier New
 create delivery	projects	sv	Skapa leverans
 create invoice	projects	sv	Skapa faktura
@@ -91,6 +94,7 @@ date due planned	projects	sv	Planerat förfallodatum
 days	projects	sv	Dagar
 days before	projects	sv	Dagar före
 definition per project	admin	sv	Definition per projekt
+delete	admin	sv	Radera
 delete activity	projects	sv	Radera aktivitet
 delete factor	projects	sv	Radera revisor
 delete hours	projects	sv	Radera timmar
@@ -117,11 +121,11 @@ distance	projects	sv	Avstånd
 do you also want to delete all sub projects	projects	sv	Vill  du även radera alla underprojekt?
 do you also want to delete all sub projects ?	projects	sv	Vill  du även radera alla underprojekt?
 edit activity	projects	sv	Redigera aktivitet
-edit administrator list	projects	sv	Redigera administratörs lista
+edit administrator list	projects	sv	Redigera administratörslista
 edit bookkeeper list	projects	sv	Ändra projektbokförarlista
 edit events	projects	sv	Redigera händelse
 edit job	projects	sv	Redigera jobb
-edit manager list	projects	sv	Redigera förvaltar lista
+edit manager list	projects	sv	Redigera förvaltarlista
 edit milestone	projects	sv	Redigera milstolpe
 edit milestones	projects	sv	Redigera milstolpar
 edit project	projects	sv	Redigera projekt
@@ -129,14 +133,14 @@ edit project hours	projects	sv	Ändra projekttimmar
 edit roles	projects	sv	Redigera roller
 edit roles and events	projects	sv	Redigera roller och händelser
 edit seller list	projects	sv	Redigera försäljar lista
-edit time tracker entry	projects	sv	Redigera tiduppföljnings post
+edit time tracker entry	projects	sv	Redigera tiduppföljningspost
 edit work hours	projects	sv	Redigera arbetstimmar
 employee	projects	sv	Anställd
 employees	projects	sv	Anställda
 end date has changed	projects	sv	Slutdatum ändrat
 ending date can not be after main projects ending date	projects	sv	Slutdatum kan inte vara efter huvudprojekts slutdatum !
 ending date can not be after parent projects date due	projects	sv	Slutdatum kan inte vara senare änn huvudprojektets förfallodatum
-ending date can not be after projects date due	projects	sv	Slutdatum kan inte vara senare änn huvudprojektets förfallodatum
+ending date can not be after projects date due	projects	sv	Slutdatum kan inte vara senare än huvudprojektets förfallodatum
 ending date can not be before start date	projects	sv	Slutdatum kan inte vara före startdatum !
 entry	projects	sv	Post
 error in calculation sum does not match !	projects	sv	Fel i uträknad summa stämmer inte.
@@ -153,8 +157,8 @@ extra budget sum of all sub projects is bigger than the extra budget of the main
 failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	sv	Kunde inte skicka meddelande till '%1' #%2 ämne='%3', avsändare='%4'
 from	projects	sv	Från
 from %1 to %2	projects	sv	Från %1 till %2
-gantt chart	projects	sv	Gantt diagram
-gantt chart from %1 to %2	projects	sv	Gantt diagram från %1 till %2
+gantt chart	projects	sv	Ganttdiagram
+gantt chart from %1 to %2	projects	sv	Ganttdiagram från %1 till %2
 generate activity id	projects	sv	Generera aktivitets ID?
 generate activity id ?	projects	sv	Generera aktivitets ID?
 generate delivery id ?	projects	sv	Generera leverans ID?
@@ -191,7 +195,7 @@ invoice id	projects	sv	Faktura ID
 invoice layout	projects	sv	Faktura utseende
 invoice list	projects	sv	Fakturalista
 invoices	projects	sv	Fakturor
-invoicing method	projects	sv	Fakturerings metod
+invoicing method	projects	sv	Faktureringsmetod
 invoicing of work time	admin	sv	Fakturering av arbetstid
 job	projects	sv	Jobb
 job archive	projects	sv	Jobb arkiv
@@ -203,7 +207,7 @@ job has been updated	projects	sv	Jobb uppdaterat
 job has been updated !	projects	sv	Jobb har uppdaterats.
 job id	projects	sv	Jobb ID
 job list	projects	sv	Jobblista
-job manager	projects	sv	Jobb administratör
+job manager	projects	sv	Jobbadministratör
 jobs	common	sv	Jobb
 large	projects	sv	Stor
 last update	projects	sv	Senaste uppdatering
@@ -217,8 +221,8 @@ list work hours	projects	sv	Lista arbetstimmar
 main project	projects	sv	Huvudprojekt
 main project:	projects	sv	Huvudprojekt:
 manager	projects	sv	Administratör
-manager list	projects	sv	Administratörs lista
-managing committee	projects	sv	Lednings grupp
+manager list	projects	sv	Administratörslista
+managing committee	projects	sv	Ledningsgrupp
 manuell entries	projects	sv	Manuella poster
 milestone	projects	sv	Milstolpe
 milestone date due	projects	sv	Milstolpe förfallodatum
@@ -230,20 +234,29 @@ month	projects	sv	Månad
 move start date if pervious projects end date changes	admin	sv	Flytta startdatum om föregående projekts slutdatum ändras
 name not exceed 250 characters in length	projects	sv	Namnet kan inte överstiga 250 tecken
 net	projects	sv	netto
+new	admin	sv	Ny
 new date due of milestone %1: %2	projects	sv	Nytt förfallodatum för milstolpe %1: %2
 new end date	projects	sv	Nytt slutdatum
 new milestone	projects	sv	Ny milstolpe
 new project	projects	sv	Nytt projekt
+new project created	projects	sv	Nytt Projekt skapat:
 new start date	projects	sv	Nytt startdatum
 nonactive	common	sv	Inaktiv
 not billable	projects	sv	Inte fakturerbar
+notification settings	admin	sv	Notifieringsinställningar
 notifications	projects	sv	noteringar
+notify management committee	admin	sv	Notifiera styrgrupp
+notify project administrators	admin	sv	Notifiera projektadministratörer
+notify sales department	admin	sv	Notifiera försäljningsavdelningen
 number	projects	sv	Nummer
 old end date	projects	sv	G:a slutdatum
 old start date	projects	sv	G:a startdatum
+onadd	admin	sv	Vid Ny
+ondelete	admin	sv	Vid radering
+onstatuschange	admin	sv	Vid statusförändring
 open	projects	sv	Öppna
 open popup	projects	sv	Öppna popup
-open popup window	projects	sv	öppna popup fönster
+open popup window	projects	sv	öppna popupfönster
 overall	projects	sv	Helhet
 parent project	projects	sv	Huvudprojekt
 parent project:	projects	sv	Överliggande projekt:
@@ -255,15 +268,15 @@ per hour	projects	sv	per timme
 per hour/workunit	projects	sv	per timme/arbetsenhet
 per workunit	common	sv	per arbetsenhet
 percent	projects	sv	Procent
-planned	projects	sv	Plannerade
+planned	projects	sv	Planerad
 planned costs	projects	sv	Planerade kostnader
 planned time	projects	sv	Planerad tid
 planned time sum of all sub projects is bigger than the planned time of the main project	projects	sv	Planerad tid för alla underprojekt är mer än tiden för huvudprojektet
 please choose a project coordinator	projects	sv	Välj en projektkoordinator
 please choose activities for the project	projects	sv	Välj aktivitet för projektet
-please choose the accounting system for the project	projects	sv	Välj bokförings system för projektet
+please choose the accounting system for the project	projects	sv	Välj bokföringssystem för projektet
 please choose the columns to list in the projects preferences section	projects	sv	Välj kolumner att visa i projekt alternativ sektionen
-please choose the discount type	projects	sv	Rabatt typ
+please choose the discount type	projects	sv	Rabattyp
 please enable html view of emails.	projects	sv	Aktivera HTML i e-post
 please enter a remark	projects	sv	Skriv anmärkning
 please enter a remark !	projects	sv	Ange en anmärkning !
@@ -289,25 +302,28 @@ processor	projects	sv	Central
 project	projects	sv	Projekt
 project %1 has been saved	projects	sv	Projekt %1 sparad
 project %1 has been updated	projects	sv	Projekt %1 uppdaterad
-project accounting	admin	sv	Projekt bokföring
-project administrators	projects	sv	Projekt administratörer
+project accounting	admin	sv	Projektbokföring
+project administrators	common	sv	Projektadministratörer
 project archive	projects	sv	Projektarkiv
 project billing	projects	sv	Projektfakturering
 project data due	projects	sv	Projektets förfallodatum
 project date due	projects	sv	Projektets förfallodatum
+project deleted	projects	sv	Projekt raderat
 project delivery	projects	sv	Projektleverans
-project dependencies	common	sv	Projekt beroenden
+project dependencies	common	sv	Projektberoenden
 project id	common	sv	Projekt ID
 project list	projects	sv	Projektlista
 project name	projects	sv	Projektnamn
-project overview	projects	sv	Projekt översikt
+project overview	projects	sv	Projektöversikt
 project preferences	projects	sv	Projekt inställningar
 project statistic	projects	sv	Projektstatistik
 project statistics	projects	sv	Projektstatistik
+project updated	projects	sv	Projekt uppdaterat
 project url	projects	sv	Projekt URL
 projects	common	sv	Projekt
 projects preferences	preferences	sv	Projektens inställningar
-quality check	projects	sv	Kvalitets kontroll
+projects, which are assigned as sequencing	projects	sv	Projekt vilka är lagda i sekvens
+quality check	projects	sv	Kvalitetskontroll
 reference	projects	sv	Referens
 remark	projects	sv	Anmärkning
 remark can not exceed 8000 characters in length	projects	sv	Anmärkning kan inte överstiga 8 000 tecken
@@ -320,7 +336,7 @@ role %1 has been updated	projects	sv	Roll %1 uppdaterad
 role has been deleted	projects	sv	Rollen raderad
 roles	projects	sv	Roller
 roles list	projects	sv	Roll lista
-sales department	projects	sv	Försäljnings avdelning
+sales department	projects	sv	Försäljningsavdelning
 save factor	projects	sv	Spara revisor
 save milestone	projects	sv	Spara milstolpe
 select factor	projects	sv	Välj revisor
@@ -331,13 +347,15 @@ select groups	projects	sv	Välj grupper
 select main project	common	sv	Välj huvudprojekt
 select own address	projects	sv	Välj egen adress
 select project	projects	sv	Välj projekt
+select role	projects	sv	Välj roll
 select tax for work time	projects	sv	Välj skatt för arbetstid
 select users	projects	sv	Välj användare
 seller	projects	sv	Säljare
 seller list	projects	sv	Säljar lista
+sequencing project	projects	sv	Efterföljande projekt
 settings	admin	sv	Alternativ
 short description	projects	sv	Kort beskrivning
-show gantt chart	projects	sv	Visa gantt diagram
+show gantt chart	projects	sv	Visa Ganttdiagram
 show milestones	projects	sv	Visa milstolpar
 show planned resources	projects	sv	Visa planerade resurser
 site configuration	projects	sv	Site konfiguration
@@ -350,6 +368,7 @@ start date can not be before parent projects start date	projects	sv	Startdatum k
 start date planned	projects	sv	Planerat startdatum
 statistic	projects	sv	Statistik
 statistics	projects	sv	Statistik
+status change	admin	sv	Statusförändring
 stop	projects	sv	Stop
 sub project level %1	projects	sv	Underprojekt nivå %1
 subproject	projects	sv	Underprojekt
@@ -374,7 +393,7 @@ time of journey	projects	sv	Restid
 time planned	projects	sv	Planerad tid
 time planned main project	projects	sv	Tid planerad huvudprojekt
 time tracker	projects	sv	Tidsuppföljning
-time tracking actions	projects	sv	Tidsuppföljnings åtgärd
+time tracking actions	projects	sv	Tidsuppföljningsåtgärd
 time tracking for this project has been stopped already	projects	sv	Tidsuppföljning för projektet redan stoppad
 time tracking for this project is already active	projects	sv	Tidsuppföljning för projektet redan startad
 time used	projects	sv	Förbrukad tid
@@ -398,7 +417,7 @@ verdana	projects	sv	Verdana
 very large	projects	sv	Mycket stor
 very small	projects	sv	Mycket liten
 view employees	projects	sv	Visa användare
-view gantt chart	projects	sv	Visa gantt diagram
+view gantt chart	projects	sv	Visa Ganttdiagram
 view hours	projects	sv	Visa timmar
 view job	projects	sv	Visa jobb
 view project	projects	sv	Visa projekt

@@ -13,19 +13,19 @@ changelogs	developer_tools	sv	Ändringshistorik
 clears the internal buffer, all changes made sofar are lost	developer_tools	sv	Tömmer intern chache och alla tidigare ändringar förloras
 create new language file	developer_tools	sv	Skapa ny språkfil
 create sgml file	developer_tools	sv	Skapa SGML fil
-developer tools - preferences	developer_tools	sv	Översättnings Verktyg - Alternativ
-developer_tools	common	sv	Översättnings Verktyg
+developer tools - preferences	developer_tools	sv	Översättningsverktyg - Alternativ
+developer_tools	common	sv	Översättningsverktyg
 diary	developer_tools	sv	Kalender
 done	developer_tools	sv	Klar
 download	developer_tools	sv	Ladda ner
 download the lang-file to be saved in the apps setup-dir	developer_tools	sv	Ladda ner språkfil till applikationens setup katalog
 edit	developer_tools	sv	Redigera
 installed applications	developer_tools	sv	Installerade applikationer
-language file management	developer_tools	sv	Språkfils hantering
+language file management	developer_tools	sv	Språkfilshantering
 list changelogs	developer_tools	sv	Lista ändringshistorik
 load	developer_tools	sv	Ladda
-loading source langfile	developer_tools	sv	Laddar källspråk fil
-loading target langfile	developer_tools	sv	Laddar målspråk fil
+loading source langfile	developer_tools	sv	Laddar källspråksfil
+loading target langfile	developer_tools	sv	Laddar målspråksfil
 loads the selected lang-files, to be modified in the next steps	developer_tools	sv	Laddar språkfil att redigera i nästa steg
 message	developer_tools	sv	Meddelande
 message_id in english	developer_tools	sv	Meddelande ID på engelska
@@ -63,8 +63,8 @@ update database	developer_tools	sv	Uppdatera databas
 updates the translations of both lang-files in your database, so you can verify your work immediately	developer_tools	sv	Uppdatera båda språkfilerna för att verifiera ändringar genast
 version	developer_tools	sv	Version
 write	developer_tools	sv	Skriv
-write the lang-file to the apps setup-dir	developer_tools	sv	Skriv språkfil till setup katalogen
-write to lang table	developer_tools	sv	Skriv till språk tabellen
+write the lang-file to the apps setup-dir	developer_tools	sv	Skriv språkfil till setupkatalogen
+write to lang table	developer_tools	sv	Skriv till språktabellen
 writing langfile for '%1' ...	developer_tools	sv	Skriver språkfil för '%1' ...
 you have to [save] every manual change in the above fields, before you can go to the next step !!!	developer_tools	sv	Du måste [Spara] alla tidigare ändringar innan du kan gå vidare till nästa steg!
 you must a version	developer_tools	sv	Du måste en version
