@@ -12,6 +12,7 @@
   /* $Id$ */
 
 	$phpgw_info['flags'] = array(
+		'admin_only'              => True,
 		'currentapp'              => 'polls',
 		'enable_nextmatchs_class' => True,
 		'admin_header'            => True

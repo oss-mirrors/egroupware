@@ -12,9 +12,11 @@
   /* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp'   => 'polls',
+		'admin_only'              => True,
+		'currentapp'              => 'polls',
 		'enable_nextmatchs_class' => True,
-		'admin_header' => True);
+		'admin_header'            => True
+	);
 	include('../header.inc.php');
 
 	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
