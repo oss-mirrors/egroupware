@@ -41,7 +41,6 @@
 		function uidisplay()
 		{
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
 			$this->displayCharset   = $GLOBALS['phpgw']->translation->charset();
 			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$this->displayCharset);
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
@@ -143,7 +142,7 @@
 			$activeFilter 	= $this->bofilter->getActiveFilter();
 			$filter 	= $filterList[$activeFilter];
 			$nextMessage	= $this->bocaching->getNextMessage($this->uid, $this->sort, $filter);
-			
+
 			$webserverURL	= $GLOBALS['phpgw_info']['server']['webserver_url'];
 
 			#print "<pre>";print_r($rawheaders);print"</pre>";exit;
@@ -579,43 +578,44 @@
 
 					$newBody	= htmlentities($bodyParts[$i]['body'],ENT_QUOTES,$this->displayCharset);
 					$newBody	= $this->bofelamimail->wordwrap($newBody,90,"\n");
+					
+					// search http[s] links and make them as links available again
+					// to understand what's going on here, have a look at 
+					// http://www.php.net/manual/en/function.preg-replace.php
+			
+					// create links for websites
+					$newBody = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+						"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $newBody);
+			
+					// create links for ftp sites
+					$newBody = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
+						"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $newBody);
+
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody	= "<pre>".$newBody."</pre>";
-					
 				}
 				else
 				{
 					$newBody	= $bodyParts[$i]['body'];
 					$newBody	= $this->highlightQuotes($newBody);
 					$newBody 	= $this->kses->Parse($newBody);
+
+					// create links for websites
+					$newBody = preg_replace("/href=(\"|\')((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)(\"|\')/ie", 
+						"'href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$4://$5$6'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"'", $newBody);
+
+					// create links for ftp sites
+					$newBody = preg_replace("/href=(\"|\')((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)(\"|\')/i", 
+						"href=\"ftp://$4$5\" target=\"_blank\"", $newBody);
 				}
 				$body .= $newBody;
 				#print "<hr><pre>$body</pre><hr>";
 			}
 			
-			// search http[s] links and make them as links available again
-			// to understand what's going on here, have a look at 
-			// http://www.php.net/manual/en/function.preg-replace.php
-			
-			#$body = preg_replace("/(\&gt\;)/", 
-			#	"<font color=\"blue\">$1</font>", $body);
-			
-			
-			// create links for websites
-			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,\"$this->displayCharset\").'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
-			
-			// create links for ftp sites
-			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
-				"<a href=\"ftp://$3$4\" target=\"_blank\"><font color=\"blue\">$1$3$4</font></a>", $body);
-
 			// create links for windows shares
 			// \\\\\\\\ == '\\' in real life!! :)
 			$body = preg_replace("/(\\\\\\\\)([\w,\\\\,-]+)/i", 
 				"<a href=\"file:$1$2\" target=\"_blank\"><font color=\"blue\">$1$2</font></a>", $body);
-			
-			// make the signate light grey
-			#$body = preg_replace("/(--)/im","<font color=\"grey\">$1</font>", $body);
 			
 			// create links for email addresses
 			$linkData = array
