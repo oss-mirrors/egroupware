@@ -15,22 +15,25 @@
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'enable_nextmatchs_class' => True,
 		'enable_categories_class' => True,
-		'enable_config_class' => True,
-		'currentapp'              => 'tts'
+		'enable_config_class'     => True,
+		'currentapp'              => 'tts',
+		'noheader'                => True,
+		'nonavbar'                => True,
+		'enable_config_class'     => !$_POST['submit'] && !$_POST['cancel']
 	);
-	$submit = $HTTP_POST_VARS['submit'];
 
-	if($submit)
-	{
-		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
-		$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
-		$GLOBALS['phpgw_info']['flags']['enable_config_class'] = True;
-	}
 	include('../header.inc.php');
+
+	if($_POST['cancel'])
+	{
+		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
+	}
+	$ticket_id = get_var('ticket_id',array('POST','GET'));
 
 	$GLOBALS['phpgw']->config->read_repository();
 
 	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
+
 	$GLOBALS['phpgw']->historylog->types = array(
 		'R' => 'Re-opened',
 		'X' => 'Closed',
@@ -44,8 +47,12 @@
 		'G' => 'Group ownership changed'
 	);
 
-	if(!$submit)
+	if(!$_POST['submit'])
 	{
+		$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('View Job Detail');
+		$GLOBALS['phpgw']->common->phpgw_header();
+		echo parse_navbar();
+
 		// Have they viewed this ticket before ?
 		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_tts_views where view_id='$ticket_id' "
 			. "and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
@@ -298,8 +305,6 @@
 		$GLOBALS['phpgw']->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
 		$GLOBALS['phpgw']->template->set_var('th_bg', $GLOBALS['phpgw_info']['theme']['th_bg']);
 
-		$GLOBALS['phpgw']->template->set_var('lang_viewjobdetails', lang('View Job Detail'));
-
 		$GLOBALS['phpgw']->template->set_var('lang_opendate', lang('Open Date'));
 		$GLOBALS['phpgw']->template->set_var('value_opendate',$ticket['opened']);
 
@@ -340,6 +345,7 @@
 
 		$GLOBALS['phpgw']->template->set_var('lang_additional_notes',lang('Additional notes'));
 		$GLOBALS['phpgw']->template->set_var('lang_ok', lang('OK'));
+		$GLOBALS['phpgw']->template->set_var('lang_cancel', lang('Cancel'));
 
 		$GLOBALS['phpgw']->template->set_var('lang_category',lang('Category'));
 		$GLOBALS['phpgw']->template->set_var('value_category',$GLOBALS['phpgw']->categories->id2name($ticket['category']));
@@ -471,6 +477,6 @@
 			} 
 		}
 
-		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/tts/viewticket_details.php','ticket_id=' . $ticket_id));
+		$GLOBALS['phpgw']->redirect_link('/tts/viewticket_details.php','ticket_id=' . $ticket_id);
 	}
 ?>

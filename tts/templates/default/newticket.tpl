@@ -5,9 +5,7 @@
 <!-- BEGIN form -->
 <form method="POST" action="{form_action}">
 
-<b>{lang_create_new_ticket}</b>
-<hr><p>
-
+<br>
 {messages}
 
 <form method="POST" action="{form_action}">
@@ -59,9 +57,10 @@
 	</tr>
 
 	<tr>
-		<td align="left"><input type="submit" name="submit" value="{lang_submit}"></td>
-		<td colspan="2">&nbsp;</td>
-		<td align="right"><input type="submit" name="cancel" value="{lang_cancel}"></td>
+		<td colspan="2" align="left" height="40">
+			<input type="submit" name="submit" value="{lang_submit}"> &nbsp;
+			<input type="submit" name="cancel" value="{lang_cancel}">
+		</td>
 	</tr>
 </table>
 

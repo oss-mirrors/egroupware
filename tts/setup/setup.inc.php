@@ -30,10 +30,11 @@
 	$setup_info['tts']['hooks'][]   = 'manual';
 	$setup_info['tts']['hooks'][]   = 'preferences';
 	$setup_info['tts']['hooks'][]   = 'settings';
+	$setup_info['tts']['hooks'][]   = 'sidebox_menu';
 
 	/* Dependencies for this app to work */
 	$setup_info['tts']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.13','0.9.14')
+		 'versions' => Array('0.9.13','0.9.14','0.9.15','0.9.16')
 	);
 ?>

@@ -4,7 +4,7 @@
 <!-- END tts_select_options -->
 
 <!-- BEGIN admin.tpl -->
-<p><b>{lang_admin}:</b><hr><p>
+<br>
    <form method="POST" action="{action_url}">
    <table border="0" align="center" cellspacing="1" cellpadding="1">
     <tr bgcolor="#EEEEEE">
@@ -36,8 +36,9 @@
      </td>
     </tr>
     <tr>
-     <td colspan="3" align="center">
-      <input type="submit" name="submit" value="{lang_submit}">
+     <td colspan="3" align="center" height="40">
+      <input type="submit" name="submit" value="{lang_submit}"> &nbsp;
+      <input type="submit" name="cancel" value="{lang_cancel}">
      </td>
     </tr>
    </table>

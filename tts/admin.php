@@ -23,6 +23,11 @@
 
 	include('../header.inc.php');
 
+	if ($_POST['cancel'])
+	{
+		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
+	}
+
 	$option_names = array(lang('Disabled'), lang('Users choice'), lang('Force'));
 	$owner_selected = array ();
 	$group_selected = array ();
@@ -30,9 +35,9 @@
 
 	$GLOBALS['phpgw']->config->read_repository();
 
-	if ($HTTP_POST_VARS['submit'])
+	if ($_POST['submit'])
 	{
-		if ($HTTP_POST_VARS['usemailnotification'])
+		if ($_POST['usemailnotification'])
 		{
 			$GLOBALS['phpgw']->config->config_data['mailnotification'] = True;
 		}
@@ -41,27 +46,27 @@
 			unset($GLOBALS['phpgw']->config->config_data['mailnotification']);
 		}
 
-		if ($HTTP_POST_VARS['ownernotification'])
+		if ($_POST['ownernotification'])
 		{
-			$GLOBALS['phpgw']->config->config_data['ownernotification'] = $HTTP_POST_VARS['ownernotification'];
+			$GLOBALS['phpgw']->config->config_data['ownernotification'] = $_POST['ownernotification'];
 		}
 		else
 		{
 			unset($GLOBALS['phpgw']->config->config_data['ownernotification']);
 		}
 
-		if ($HTTP_POST_VARS['groupnotification'])
+		if ($_POST['groupnotification'])
 		{
-			$GLOBALS['phpgw']->config->config_data['groupnotification'] = $HTTP_POST_VARS['groupnotification'];
+			$GLOBALS['phpgw']->config->config_data['groupnotification'] = $_POST['groupnotification'];
 		}
 		else
 		{
 			unset($GLOBALS['phpgw']->config->config_data['groupnotification']);
 		}
 
-		if ($HTTP_POST_VARS['assignednotification'])
+		if ($_POST['assignednotification'])
 		{
-			$GLOBALS['phpgw']->config->config_data['assignednotification'] = $HTTP_POST_VARS['assignednotification'];
+			$GLOBALS['phpgw']->config->config_data['assignednotification'] = $_POST['assignednotification'];
 		}
 		else
 		{
@@ -69,11 +74,12 @@
 		}
 
 		$GLOBALS['phpgw']->config->save_repository(True);
-		Header('Location: ' . $GLOBALS['phpgw']->link('/admin/index.php'));
+		$GLOBALS['phpgw']->redirect_link('/tts/index.php');
 	}
-$after= $GLOBALS['phpgw']->config->config_data['mailnotification'];
-echo "after: $after <br>";
+	$after= $GLOBALS['phpgw']->config->config_data['mailnotification'];
+	echo "after: $after <br>";
 
+	$GLOBALS['phpgw_info']['flags']['app_header'] = $GLOBALS['phpgw_info']['apps']['tts']['title'] . ' - ' . lang('Administration');
 	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();
 
@@ -151,8 +157,8 @@ echo "after: $after <br>";
 		$GLOBALS['phpgw']->template->parse('tts_assignedoptions','tts_select_options',true);
 	}
 
-	$GLOBALS['phpgw']->template->set_var('lang_admin',lang('TTS').' '.lang('Admin'));
-	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('submit'));
+	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('Save'));
+	$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 	$GLOBALS['phpgw']->template->set_var('tts_select_options','');
 
 	$GLOBALS['phpgw']->template->pparse('out','admin');

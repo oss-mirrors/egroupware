@@ -37,9 +37,7 @@
 <!-- END row_history_empty -->
 
 <!-- BEGIN form -->
-<b>{lang_viewjobdetails}</b>
-<hr><p>
-
+<br>
 <center><font color=red>{messages}</font></center>
 
 <form method="POST" action="{viewticketdetails_link}">
@@ -143,7 +141,8 @@
 	<tr bgcolor="{row_off}">
 		<td>&nbsp;</td>
 		<td align="center"><input type="submit" value="{lang_ok}" name="submit"></td>
-		<td colspan="2">&nbsp;</td>
+		<td align="center"><input type="submit" value="{lang_cancel}" name="cancel"></td>
+		<td>&nbsp;</td>
 	</tr>
 
 		<tr>

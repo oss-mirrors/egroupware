@@ -2,7 +2,7 @@ action	tts	en	Action
 add new ticket	tts	en	Add new ticket
 add ticket	tts	en	Add ticket
 additional notes	tts	en	Additional notes
-admin options	admin	en	Admin Options
+admin options	common	en	Admin Options
 assign to	tts	en	Assign to
 assigned from	tts	en	Assigned from
 assigned to	tts	en	Assigned to
@@ -20,6 +20,7 @@ creates a struct of tickets	tts	en	Creates a struct of tickets
 date opened	tts	en	Date opened
 detail	tts	en	Detail
 force	tts	en	Force
+global categories	tts	en	Global Categories
 group ownership changed	tts	en	Group ownership changed
 in progress	tts	en	In progress
 latest note added	tts	en	Latest Note Added

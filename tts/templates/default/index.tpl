@@ -54,6 +54,7 @@
 	</tr>
 	{rows}
 </table>
+<br>
 <!-- END tts_list -->
 
 <!-- END index.tpl -->
