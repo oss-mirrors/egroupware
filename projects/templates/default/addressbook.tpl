@@ -2,7 +2,7 @@
 <title>{title}</title>
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="css/style.css">
-<script>
+<script LANGUAGE="JavaScript">
    function ExchangeCustomer(thisform)
    {
    opener.document.projects_form.customer.value = thisform.elements[0].value;

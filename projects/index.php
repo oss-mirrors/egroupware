@@ -68,9 +68,16 @@
         $t->set_var(total_matchs,lang("your search returned x matchs",$phpgw->db->f(0)));
   } else {
      $phpgw->db->query("select count(*) from p_projects where $filtermethod");
-  }
+    $phpgw->db->next_record();
+   }
 
-     $phpgw->db->next_record();                                                                      
+   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                        
+     $customer_sortorder = "customer.company_name";                                                                                                                 
+  } else {                                                                                                                                                  
+     $customer_sortorder = "ab_company";                                                                                                                     
+  }
+     
+ //  $phpgw->db->next_record();                                                                      
 
   if ($phpgw->db->f(0) > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
      $total_matchs = "<br>" . lang("showing x - x of x",($start + 1),
