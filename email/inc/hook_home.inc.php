@@ -22,7 +22,14 @@
 	
 	// does this array item actually exist before we create the mail_msg, where is it created?
 	//if ($GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'] == True)
-	
+	$homedisplay = $GLOBALS['phpgw_info']['user']['preferences']['email']['mainscreen_showmail'];
+	if($homedisplay=='True')
+	{
+		$homedisplay = 1;
+	}	
+	// need to pass through intval() after check of legacy (quasi-)boolean value
+	$homedisplay = intval($homedisplay);
+
 	$debug_hook_home = 0;
 	//$debug_hook_home = 3;
 	
@@ -45,7 +52,7 @@
 	// this pref is either set for "ON", of not set which represents a "no"
 	// other accounts can be shown by (1) giving the extra accounts access to this pref item, and 
 	// (2) by doing a loop testing for accounts other then just account 0
-	if ($GLOBALS['phpgw']->msg->get_isset_pref('mainscreen_showmail', 0))
+	if(intval($homedisplay)>0)  //$GLOBALS['phpgw']->msg->get_isset_pref('mainscreen_showmail', 0))
 	{
 		// from here on, msg objects opens streams on demand if requied
 		$data = Array();
@@ -62,7 +69,7 @@
 		$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 		//if ($debug_hook_home > 2) { echo 'hook_home('.__LINE__.'): $inbox_data dump:<pre>'; print_r($inbox_data); echo '</pre>'; } 
 
-		$title = '<font color="#FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
+		$title = lang('EMail').' - '.$inbox_data['alert_string'];
 
 		if($inbox_data['number_all'] >= 5)
 		{
@@ -98,73 +105,84 @@
 			);
 		}
 
-		// COMPOSE NEW email link
-		$compose_link = $GLOBALS['phpgw']->link(
-					'/index.php',
-					'menuaction=email.uicompose.compose'
-					// this data tells us where to return to after sending a message
-					// since we started from home page, send can not (at this time) take us back there
-					// so instead take user to INBOX for the default account (acctnum 0) after clicking the send button
-					.'&fldball[folder]=INBOX'
-					.'&fldball[acctnum]=0'
-		);
-		$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
-
-		// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
-		// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-		if($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
+		if($homedisplay==2)
 		{
-			$extra_data = '&nbsp; &nbsp;'.$compose_href;
+			$extra_data = '';
 		}
 		else
 		{
-			// build the $feed_args array for the all_folders_listbox function
-			// anything not specified will be replace with a default value if the function has one for that param
-			/*
-			$feed_args = Array(
-				'mailsvr_stream'    => '',
-				'pre_select_folder' => '',
-				'skip_folder'       => '',
-				'show_num_new'      => $GLOBALS['phpgw_info']['user']['preferences']['email']['newmsg_combobox'],
-				'widget_name'       => 'fldball_fake_uri',
-				'folder_key_name'   => 'folder',
-				'acctnum_key_name'  => 'acctnum',
-				'on_change'         => 'document.switchbox.submit()',
-				'first_line_txt'    => lang('switch current folder to')
-			);
-			// get you custom built HTML listbox (a.k.a. selectbox) widget
-			$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
-			// make it another TR we can insert into the home page portal object
-			// and surround it in FORM tags so the submit will work
-			$switchbox_action = $GLOBALS['phpgw']->link(
+
+			// COMPOSE NEW email link
+			$compose_link = $GLOBALS['phpgw']->link(
 						'/index.php',
-						'menuaction=email.uiindex.index'
+						'menuaction=email.uicompose.compose'
+						// this data tells us where to return to after sending a message
+						// since we started from home page, send can not (at this time) take us back there
+						// so instead take user to INBOX for the default account (acctnum 0) after clicking 
+						// the send button
+						.'&fldball[folder]=INBOX'
+						.'&fldball[acctnum]=0'
 			);
-			$extra_data = '<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
-				.'<td align="left">'."\r\n"
-				.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
-				.'&nbsp; &nbsp;'.$compose_href."\r\n"
-				.'</td>'."\r\n"
-				.'</form>'."\r\n";
-			*/
-			// REPLACE all the above with some high levels calls to the widget class
-			// WHY does not lang inbox work here? It is called in the base class and works fine except from "home" page.
-			$my_widgets = CreateObject('email.html_widgets');
-			$my_widgets->new_form();
-			$my_widgets->set_form_name('switchbox');
-			$my_widgets->set_form_action($GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
-			$my_widgets->set_form_method('post');
-			$form_folder_switch_opentag = $my_widgets->get_form();
-			$folder_switch_combobox = $my_widgets->all_folders_combobox('switchbox');
-			$form_folder_switch_closetag = $my_widgets->form_closetag();
-			$extra_data = 
-				$form_folder_switch_opentag
-				.'<td align="left">'."\r\n"
-				.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'
-				.$folder_switch_combobox
-				.'&nbsp; &nbsp;'.$compose_href
-				.'</td>'."\r\n"
-				.$form_folder_switch_closetag;
+			$compose_href = '<a href="'.$compose_link.'">'.lang('Compose New').'</a>'."\r\n";
+
+			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
+			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
+			if($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
+			{
+				$extra_data = '&nbsp; &nbsp;'.$compose_href;
+			}
+			else
+			{
+				// build the $feed_args array for the all_folders_listbox function
+				// anything not specified will be replace with a default value if the function has one for 
+				// that param
+				/*
+				$feed_args = Array(
+					'mailsvr_stream'    => '',
+					'pre_select_folder' => '',
+					'skip_folder'       => '',
+					'show_num_new'      => $GLOBALS['phpgw_info']['user']['preferences']['email']['newmsg_combobox'],
+					'widget_name'       => 'fldball_fake_uri',
+					'folder_key_name'   => 'folder',
+					'acctnum_key_name'  => 'acctnum',
+					'on_change'         => 'document.switchbox.submit()',
+					'first_line_txt'    => lang('switch current folder to')
+				);
+				// get you custom built HTML listbox (a.k.a. selectbox) widget
+				$switchbox_listbox = $GLOBALS['phpgw']->msg->all_folders_listbox($feed_args);
+				// make it another TR we can insert into the home page portal object
+				// and surround it in FORM tags so the submit will work
+				$switchbox_action = $GLOBALS['phpgw']->link(
+							'/index.php',
+							'menuaction=email.uiindex.index'
+				);
+				$extra_data = '<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
+					.'<td align="left">'."\r\n"
+					.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'.$switchbox_listbox."\r\n"
+					.'&nbsp; &nbsp;'.$compose_href."\r\n"
+					.'</td>'."\r\n"
+					.'</form>'."\r\n";
+				*/
+				// REPLACE all the above with some high levels calls to the widget class
+				// WHY does not lang inbox work here? It is called in the base class and works fine except 
+				// from "home" page.
+				$my_widgets = CreateObject('email.html_widgets');
+				$my_widgets->new_form();
+				$my_widgets->set_form_name('switchbox');
+				$my_widgets->set_form_action($GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'));
+				$my_widgets->set_form_method('post');
+				$form_folder_switch_opentag = $my_widgets->get_form();
+				$folder_switch_combobox = $my_widgets->all_folders_combobox('switchbox');
+				$form_folder_switch_closetag = $my_widgets->form_closetag();
+				$extra_data = 
+					$form_folder_switch_opentag
+					/*.'<td align="left">'."\r\n"*/
+					.'&nbsp;<strong>'.lang('E-Mail Folders').':</strong>&nbsp;'
+					.$folder_switch_combobox
+					.'<br>'.'&nbsp; &nbsp;'.$compose_href
+					/*.'</td>'."\r\n"*/
+					.$form_folder_switch_closetag;
+			}
 		}
 		
 		// how to display this data

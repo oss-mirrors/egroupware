@@ -301,12 +301,16 @@
 			$this->std_prefs[$i] = Array(
 				'id' 		=> 'mainscreen_showmail',
 				'type'		=> 'exists',
-				'widget'	=> 'checkbox',
+				'widget'	=> 'combobox',
 				'accts_usage'	=> 'default',
 				'write_props'	=> '',
 				'lang_blurb'	=> lang('show new messages on main screen'),
 				'init_default'	=> 'set_or_not,not_set',
-				'values'	=> array(),
+				'values'	=> array(
+					'0' => lang('no'),
+					'1' => lang('yes'),
+					'2' => lang('yes') . ' - ' . lang('small view')
+				),
 				'long_desc' => lang('Each user has a summary page which can display a variety of information. This option will show a small list of email messages in the INBOX of the users default email account on the users summary home page.')
 			);
 			$i++;
