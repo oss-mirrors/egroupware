@@ -938,7 +938,7 @@ function toggle(image, catid)
 			$this->t->set_block('form','body');
 			$this->t->set_block('form','form_info');
 
-			$this->bo->date_information(&$this->t,$bookmark['info']);
+			$this->bo->date_information($this->t,$bookmark['info']);
 			$this->app_template();
 
 			$account = createobject('phpgwapi.accounts',$bookmark['owner']);
