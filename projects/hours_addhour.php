@@ -142,7 +142,7 @@
 	$t->set_var('activity_list',$activity_list);
     }
     else { 
-	$t->set_var('project_list',lang('Please select a project first !)); 
+	$t->set_var('project_list',lang('Please select a project first !')); 
         $t->set_var('activity_list','');
     }
 
