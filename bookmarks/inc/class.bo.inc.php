@@ -77,9 +77,9 @@
 			return $this->so->_list($cat_list,$this->get_user_grant_list(),$start,$where_clause);
 		}
 
-		function read($id)
+		function read($id,$do_htmlspecialchars=True)
 		{
-			$bookmark = $this->so->read($id);
+			$bookmark = $this->so->read($id,$do_htmlspecialchars);
 			foreach(array(PHPGW_ACL_READ,PHPGW_ACL_EDIT,PHPGW_ACL_DELETE) as $required)
 			{
 				$bookmark[$required] = $this->check_perms2($bookmark['owner'],$bookmark['access'],$required);
@@ -183,6 +183,7 @@
 
 		function update($id, $values)
 		{
+echo "bo::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 			if ($this->validate($values) && $this->check_perms($id,PHPGW_ACL_EDIT))
 			{
 				if ($this->so->update($id,$values))

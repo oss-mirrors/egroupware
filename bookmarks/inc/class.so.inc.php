@@ -76,22 +76,30 @@
 			return $result;
 		}
 
-		function read($id)
+		function read($id,$do_htmlspecialchars=True)
 		{
 			$query = "SELECT * FROM phpgw_bookmarks WHERE bm_id=$id";
 			$this->db->query($query);
 			if ($this->db->next_record())
 			{
-				$bookmark['name'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_name'));
-				$bookmark['url'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_url'));
-				$bookmark['desc'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_desc'));
-				$bookmark['keywords'] = $GLOBALS['phpgw']->strip_html($this->db->f('bm_keywords'));
+				$bookmark['name'] = $this->db->f('bm_name');
+				$bookmark['url'] = $this->db->f('bm_url');
+				$bookmark['desc'] = $this->db->f('bm_desc');
+				$bookmark['keywords'] = $this->db->f('bm_keywords');
 				$bookmark['owner'] = $this->db->f('bm_owner');
 				$bookmark['access'] = $this->db->f('bm_access');
 				$bookmark['category'] = $this->db->f('bm_category');
 				$bookmark['rating'] = $this->db->f('bm_rating');
 				$bookmark['visits'] = $this->db->f('bm_visits');
 				$bookmark['info'] = $this->db->f('bm_info');
+
+				if ($do_htmlspecialchars)
+				{
+					foreach(array('name','url','desc','keywords') as $name)
+					{
+						$bookmark[$name] = $GLOBALS['phpgw']->strip_html($bookmark[$name]);
+					}
+				}
 				return $bookmark;
 			}
 			else
@@ -140,6 +148,7 @@
 
 		function update($id, $values)
 		{
+echo "so::update<pre>".htmlspecialchars(print_r($values,True))."</pre>\n";
 			if (! $values['access'])
 			{
 				$values['access'] = 'public';

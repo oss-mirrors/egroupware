@@ -154,15 +154,15 @@ define('SEARCH',4);
 		function create()
 		{
 			//if we redirect to edit categories, we remember form values and try to come back to create
-			if ($GLOBALS['HTTP_POST_VARS']['edit_category_x'] || $GLOBALS['HTTP_POST_VARS']['edit_category_y'])
+			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
 			{
-				$this->bo->grab_form_values($this->location_info['returnto'],'create',$GLOBALS['HTTP_POST_VARS']['bookmark']);
+				$this->bo->grab_form_values($this->location_info['returnto'],'create',$_POST['bookmark']);
 				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
 			}
 			//save bookmark
-			if ($GLOBALS['HTTP_POST_VARS']['save_x'] || $GLOBALS['HTTP_POST_VARS']['save_y'])
+			if ($_POST['save_x'] || $_POST['save_y'])
 			{
-				$bookmark = $GLOBALS['HTTP_POST_VARS']['bookmark'];
+				$bookmark = $_POST['bookmark'];
 				$bm_id = $this->bo->add($bookmark);
 				if ($bm_id)
 				{
@@ -183,7 +183,7 @@ define('SEARCH',4);
 				$bookmark['access']      = $this->location_info['bookmark']['access'];
 			}
 			//if the user cancelled we go back to the view we came from
-			if ($GLOBALS['HTTP_POST_VARS']['cancel_x'] || $GLOBALS['HTTP_POST_VARS']['cancel_y'])
+			if ($_POST['cancel_x'] || $_POST['cancel_y'])
 			{
 				unset($this->location_info['returnto2']);
 				$this->init();
@@ -249,23 +249,23 @@ define('SEARCH',4);
 
 		function edit()
 		{
-			if (isset($GLOBALS['HTTP_GET_VARS']['bm_id']))
+			if (isset($_GET['bm_id']))
 			{
-				$bm_id = $GLOBALS['HTTP_GET_VARS']['bm_id'];
+				$bm_id = $_GET['bm_id'];
 			}
 			elseif (is_array($this->location_info))
 			{
 				$bm_id = $this->location_info['bm_id'];
 			}
 			//if the user cancelled we go back to the view we came from
-			if ($GLOBALS['HTTP_POST_VARS']['cancel_x'] || $GLOBALS['HTTP_POST_VARS']['cancel_y'])
+			if ($_POST['cancel_x'] || $_POST['cancel_y'])
 			{
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
 			}
 			//delete bookmark and go back to view we came from
-			if ($GLOBALS['HTTP_POST_VARS']['delete_x'] || $GLOBALS['HTTP_POST_VARS']['delete_y'])
+			if ($_POST['delete_x'] || $_POST['delete_y'])
 			{
 				$this->bo->delete($bm_id);
 				unset($this->location_info['returnto2']);
@@ -273,15 +273,15 @@ define('SEARCH',4);
 				return;
 			}
 			//if we redirect to edit categories, we remember form values and try to come back to edit
-			if ($GLOBALS['HTTP_POST_VARS']['edit_category_x'] || $GLOBALS['HTTP_POST_VARS']['edit_category_y'])
+			if ($_POST['edit_category_x'] || $_POST['edit_category_y'])
 			{
-				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$GLOBALS['HTTP_POST_VARS']['bookmark']);
+				$this->bo->grab_form_values($this->location_info['returnto'],'edit',$_POST['bookmark']);
 				$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=bookmarks&global_cats=True'));
 			}
 			//save bookmark and go to view interface
-			if ($GLOBALS['HTTP_POST_VARS']['save_x'] || $GLOBALS['HTTP_POST_VARS']['save_y'])
+			if ($_POST['save_x'] || $_POST['save_y'])
 			{
-				$bookmark = $GLOBALS['HTTP_POST_VARS']['bookmark'];
+				$bookmark = $_POST['bookmark'];
 				if ($this->bo->update($bm_id,$bookmark))
 				{
 					$this->location_info['bm_id'] = $bm_id;
@@ -395,17 +395,17 @@ define('SEARCH',4);
 				$start = $this->location_info['start'];
 				$bm_cat = $this->location_info['bm_cat'];
 			}
-			if (isset($GLOBALS['HTTP_GET_VARS']['bm_cat']))
+			if (isset($_GET['bm_cat']))
 			{
-				$bm_cat = $GLOBALS['HTTP_GET_VARS']['bm_cat'];
+				$bm_cat = $_GET['bm_cat'];
 			}
-			if (isset($GLOBALS['HTTP_GET_VARS']['start']))
+			if (isset($_GET['start']))
 			{
-				$start = $GLOBALS['HTTP_GET_VARS']['start'];
+				$start = $_GET['start'];
 			}
-			if (isset($GLOBALS['HTTP_POST_VARS']['start']))
+			if (isset($_POST['start']))
 			{
-				$start = $GLOBALS['HTTP_POST_VARS']['start'];
+				$start = $_POST['start'];
 			}
 			$this->location_info['start'] = $start;
 			$this->location_info['bm_cat'] = $bm_cat;
@@ -480,14 +480,14 @@ define('SEARCH',4);
 				$start = $this->location_info['searchstart'];
 				$x = $this->location_info['x'];
 			}
-			if (isset($GLOBALS['HTTP_POST_VARS']['x']))
+			if (isset($_POST['x']))
 			{
-				$x = $GLOBALS['HTTP_POST_VARS']['x'];
+				$x = $_POST['x'];
 				$this->location_info['x'] = $x;
 			}
-			if (isset($GLOBALS['HTTP_POST_VARS']['start']))
+			if (isset($_POST['start']))
 			{
-				$start = $GLOBALS['HTTP_POST_VARS']['start'];
+				$start = $_POST['start'];
 				$this->location_info['searchstart'] = $start;
 			}
 			$this->location_info['returnto'] = 'search';
@@ -861,11 +861,11 @@ function toggle(image, catid)
 							lang('View this bookmark')
 						);
 
-						$redirect_link = '<a href="' . 
+						$redirect_link = '<a href="' .
 							$GLOBALS['phpgw']->link('/index.php','menuaction=bookmarks.ui.redirect&bm_id='.$bm_id) .
 							'" target="_new">' . $bookmark['name'] . '</a>';
 
-						$tree .= $maintain_link . $view_link . $redirect_link . 
+						$tree .= $maintain_link . $view_link . $redirect_link .
 							'</td></tr>';
 					}
 
@@ -882,30 +882,30 @@ function toggle(image, catid)
 
 		function view()
 		{
-			if (isset($GLOBALS['HTTP_GET_VARS']['bm_id']))
+			if (isset($_GET['bm_id']))
 			{
-				$bm_id = $GLOBALS['HTTP_GET_VARS']['bm_id'];
+				$bm_id = $_GET['bm_id'];
 			}
 			elseif (is_array($this->location_info))
 			{
 				$bm_id = $this->location_info['bm_id'];
 			}
 			//if the user cancelled we go back to the view we came from
-			if ($GLOBALS['HTTP_POST_VARS']['cancel_x'] || $GLOBALS['HTTP_POST_VARS']['cancel_y'])
+			if ($_POST['cancel_x'] || $_POST['cancel_y'])
 			{
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
 			}
 			//delete bookmark and go back to view we came from
-			if ($GLOBALS['HTTP_POST_VARS']['delete_x'] || $GLOBALS['HTTP_POST_VARS']['delete_y'])
+			if ($_POST['delete_x'] || $_POST['delete_y'])
 			{
 				$this->bo->delete($bm_id);
 				unset($this->location_info['returnto2']);
 				$this->init();
 				return;
 			}
-			if ($GLOBALS['HTTP_POST_VARS']['edit_x'] || $GLOBALS['HTTP_POST_VARS']['edit_y'])
+			if ($_POST['edit_x'] || $_POST['edit_y'])
 			{
 				$this->edit();
 				return;
@@ -995,16 +995,16 @@ function toggle(image, catid)
 				'mail'    => 'maillink.body.tpl'
 			));
 
-			if ($GLOBALS['HTTP_POST_VARS']['send'])	// Send button clicked
+			if ($_POST['send'])	// Send button clicked
 			{
 				$validate = createobject('phpgwapi.validator');
 				// Strip space and tab from anywhere in the To field
-				$to = $validate->strip_space($GLOBALS['HTTP_POST_VARS']['to']);
+				$to = $validate->strip_space($_POST['to']);
 
 				// Trim the subject
-				$subject = $GLOBALS['phpgw']->strip_html(trim($GLOBALS['HTTP_POST_VARS']['subject']));
+				$subject = $GLOBALS['phpgw']->strip_html(trim($_POST['subject']));
 
-				$message = $GLOBALS['phpgw']->strip_html($GLOBALS['HTTP_POST_VARS']['message']);
+				$message = $GLOBALS['phpgw']->strip_html($_POST['message']);
 
 				// Do we have all necessary data?
 				if (empty($to) || empty($subject) || empty($message))
@@ -1056,9 +1056,9 @@ function toggle(image, catid)
 
 			if (empty($message))
 			{
-				if (is_array($GLOBALS['HTTP_POST_VARS']['item_cb']))
+				if (is_array($_POST['item_cb']))
 				{
-					while (list(,$id) = each($GLOBALS['HTTP_POST_VARS']['item_cb']))
+					while (list(,$id) = each($_POST['item_cb']))
 					{
 						$bookmark = $this->bo->read($id);
 						$links[] = array(
@@ -1069,7 +1069,7 @@ function toggle(image, catid)
 				}
 				else
 				{
-					$bookmark = $this->bo->read($GLOBALS['HTTP_GET_VARS']['bm_id']);
+					$bookmark = $this->bo->read($_GET['bm_id']);
 					$links[] = array(
 						'name' => $bookmark['name'],
 						'url'  => $bookmark['url']
@@ -1104,8 +1104,8 @@ function toggle(image, catid)
 
 		function mass()
 		{
-			$item_cb = $GLOBALS['HTTP_POST_VARS']['item_cb'];
-			if ($GLOBALS['HTTP_POST_VARS']['delete_x'] || $GLOBALS['HTTP_POST_VARS']['delete_y'])
+			$item_cb = $_POST['item_cb'];
+			if ($_POST['delete_x'] || $_POST['delete_y'])
 			{
 				if (is_array($item_cb))
 				{
@@ -1122,7 +1122,7 @@ function toggle(image, catid)
 
 				$this->_list();
 			}
-			elseif ($GLOBALS['HTTP_POST_VARS']['mail_x'] || $GLOBALS['HTTP_POST_VARS']['mail_y'])
+			elseif ($_POST['mail_x'] || $_POST['mail_y'])
 			{
 				$this->mail();
 			}
@@ -1130,8 +1130,8 @@ function toggle(image, catid)
 
 		function redirect()
 		{
-			$bm_id = $GLOBALS['HTTP_GET_VARS']['bm_id'];
-			$bookmark = $this->bo->read($bm_id);
+			$bm_id = $_GET['bm_id'];
+			$bookmark = $this->bo->read($bm_id,False);	// dont htmlspecialchars the url (!)
 			$ts = explode(",",$bookmark['info']);
 			$newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);
 			$this->bo->updatetimestamp($bm_id,$newtimestamp);
