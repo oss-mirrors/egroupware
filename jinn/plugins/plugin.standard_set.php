@@ -51,17 +51,26 @@
 		'blob',
 		'text'
 	);
+	$this->plugins['nl2br']['config']		= array
+	(
+		'Strip_HTML_TAGS'=>array(array('Yes','No'),'select','')
+	);
 
 	function plg_fi_nl2br($field_name, $value, $config)
 	{
-		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.strip_tags($value).'</textarea>';
+		$input='<textarea name="'.$field_name.'" style="width:100%; height:200">'.str_replace('<br />','',$value).'</textarea>';
 		return $input;
 	}
 
-	function plg_sf_nl2br($key, $HTTP_POST_VARS)
+	function plg_sf_nl2br($key, $HTTP_POST_VARS,$HTTP_POST_FILES,$config)
 	{
 		$input=$HTTP_POST_VARS[$key];
-		$output=addslashes(nl2br(strip_tags($input)));
+		if (!$config['Strip_HTML_TAGS'] || $config['Strip_HTML_TAGS']=='Yes')
+		{
+			$input=strip_tags($input);
+		}
+		
+		$output=addslashes(nl2br($input));
 
 		return $output;
 	}
@@ -87,9 +96,6 @@
 	{
 		return 'hide';
 	}
-
-
-
 
 	/*-------------------------------------------------------------------
 		Boolian PLUGIN                                                                     
