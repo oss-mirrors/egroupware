@@ -273,6 +273,9 @@
 
 	$t->set_var('lang_select',lang('Select per button !'));
 	$t->set_var('lang_customer',lang('Customer'));
+	$t->set_var('lang_descr',lang('Description'));
+	$t->set_var('lang_bookable_activities',lang('Bookable activities'));
+	$t->set_var('lang_billable_activities',lang('Billable activities'));
 
 	$d = CreateObject('phpgwapi.contacts');
 	$abid = $phpgw->db->f('customer');
@@ -301,39 +304,49 @@
 
 // --------------- activites bookable --------------------------
 
-	$t->set_var('lang_bookable_activities',lang('Bookable activities'));
-	$db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_projectactivities.project_id,phpgw_p_projectactivities.billable "
-				. "FROM phpgw_p_activities $join phpgw_p_projectactivities ON phpgw_p_activities.id=phpgw_p_projectactivities.activity_id AND " 
-				. "(project_id='$id' OR project_id IS NULL) WHERE billable IS NULL OR billable='N' OR billable='Y' ORDER BY descr asc");
+	$phpgw->db->query("SELECT id,descr FROM phpgw_p_activities ORDER BY descr asc");
+
+	$db2->query("SELECT activity_id from phpgw_p_projectactivities WHERE project_id='$id' AND billable='N'",__LINE__,__FILE__);
 	while ($db2->next_record())
 	{
-		$ba_activities_list .= '<option value="' . $db2->f('id') . '"';
-		if($db2->f('billable')=='N')
-			$ba_activities_list .= ' selected';
-			$ba_activities_list .= '>'
-								. $phpgw->strip_html($db2->f('descr'))
-								. '</option>' . "\n";
+		$ba_selected[] = Array('activity_id' => $db2->f('activity_id'));
 	}
 
-	$t->set_var('lang_descr',lang('Description'));
-	$t->set_var('ba_activities_list',$ba_activities_list);  
+	while ($phpgw->db->next_record())
+	{
+		for ($i=0;$i<count($ba_selected);$i++)
+		{
+			$ba_activities_list .= '<option value="' . $phpgw->db->f('id') . '"';
+			if($ba_selected[$i]['activity_id']==$phpgw->db->f('id'))
+				$ba_activities_list .= ' selected';
+			$ba_activities_list .= '>'
+								. $phpgw->strip_html($phpgw->db->f('descr'))
+								. '</option>' . "\n";
+		}
+	}
+
+	$t->set_var('ba_activities_list',$ba_activities_list);
 
 // ------------------------ activities billable -----------------------
 
-	$t->set_var('lang_billable_activities',lang('Billable activities'));
-	$db2->query("SELECT phpgw_p_activities.id as id,phpgw_p_activities.descr,phpgw_p_activities.billperae,phpgw_p_projectactivities.project_id,"
-				. "phpgw_p_projectactivities.billable FROM phpgw_p_activities $join phpgw_p_projectactivities ON "
-				. "phpgw_p_activities.id=phpgw_p_projectactivities.activity_id AND "
-				. "(project_id='$id' OR project_id IS NULL) WHERE billable IS NULL OR billable='Y' OR billable='N' ORDER BY descr asc");
+	$phpgw->db->query("SELECT id,descr,billperae FROM phpgw_p_activities ORDER BY descr asc");
 
+	$db2->query("SELECT activity_id from phpgw_p_projectactivities WHERE project_id='$id' AND billable='Y'",__LINE__,__FILE__);
 	while ($db2->next_record())
 	{
-		$bill_activities_list .= '<option value="' . $db2->f('id') . '"';
-		if($db2->f('billable')=='Y')
-			$bill_activities_list .= ' selected';
+		$bill_selected[] = Array('activity_id' => $db2->f('activity_id'));
+	}
+	while ($phpgw->db->next_record())
+	{
+		for ($i=0;$i<count($bill_selected);$i++)
+		{
+			$bill_activities_list .= '<option value="' . $phpgw->db->f('id') . '"';
+			if($bill_selected[$i]['activity_id']==$phpgw->db->f('id'))
+				$bill_activities_list .= ' selected';
 			$bill_activities_list .= '>'
-					. $phpgw->strip_html($db2->f('descr')) . ' ' . $currency . ' ' . $db2->f('billperae')
-					. ' ' . lang('per workunit') . ' ' . '</option>' . "\n";
+								. $phpgw->strip_html($phpgw->db->f('descr')) . ' ' . $currency . ' ' . $phpgw->db->f('billperae')
+								. ' ' . lang('per workunit') . ' ' . '</option>' . "\n";
+		}
 	}
 
 	$t->set_var('bill_activities_list',$bill_activities_list);

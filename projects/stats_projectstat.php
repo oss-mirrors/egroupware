@@ -62,6 +62,11 @@
 	$t->set_var('lang_budget',lang('Budget'));
 	$t->set_var('budget',$phpgw->db->f('budget'));
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('tr_color',$tr_color);
+	$t->set_var('hd_account',lang('Account'));
+	$t->set_var('hd_activity',lang('Activity'));
+	$t->set_var('hd_hours',lang('Hours'));
 
 	$t->set_var('lang_start_date',lang('Start date'));
 	$t->set_var('lang_end_date',lang('Date due'));
@@ -170,12 +175,8 @@
 		$filter .= " AND end_date <= '$edate' ";
 	}
 
-	$phpgw->db->query("SELECT account_id,account_firstname,account_lastname,COUNT(employee) FROM phpgw_accounts $join phpgw_p_hours ON "
+	$phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM phpgw_accounts $join phpgw_p_hours ON "
 					. "phpgw_p_hours.employee=account_id WHERE project_id='$id' $filter GROUP BY account_id,account_firstname,account_lastname");
-
-	$t->set_var('hd_account',lang('Account'));
-	$t->set_var('hd_activity',lang('Activity'));
-	$t->set_var('hd_hours',lang('Hours'));
 
 	while ($phpgw->db->next_record())
 	{
@@ -193,8 +194,6 @@
 
 		while ($db2->next_record())
 		{
-			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-			$t->set_var('tr_color',$tr_color);
 			$t->set_var('e_account','');
 			$t->set_var('e_activity',$db2->f('descr'));
 			$summin += $db2->f('min');
@@ -216,6 +215,8 @@
 				. "phpgw_p_hours.activity_id=phpgw_p_activities.id $filter GROUP BY phpgw_p_activities.descr");
 
 	$summin=0;
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('tr_color',$tr_color);
 	$t->set_var('e_account',lang('Overall'));
 	$t->set_var('e_activity','');
 	$t->set_var('e_hours','');
@@ -224,8 +225,6 @@
 
 	while ($db2->next_record())
 	{
-		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-		$t->set_var('tr_color',$tr_color);
 		$t->set_var('e_account','');
 		$t->set_var('e_activity',$phpgw->strip_html($db2->f('descr')));
 		$summin += $db2->f('min');
@@ -235,13 +234,14 @@
 		$t->parse('list','stat_list',True);
 	}
 
+	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+	$t->set_var('tr_color',$tr_color);
 	$t->set_var('e_account',lang('sum'));
 	$t->set_var('e_activity','');
 	$hrs = floor($summin/60). ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60));
 	$t->set_var('e_hours',$hrs);
 
 	$t->parse('list','stat_list',True);
-
 	$t->pparse('out','project_stat');
 
 	$phpgw->common->phpgw_footer();
