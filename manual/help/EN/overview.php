@@ -63,6 +63,8 @@ The first page you reach after you log in to the system</li><p/>
 View where all the people on the network fit in.. which group they belong to and what groups have what users.</li><p/>
 <li><b>Preferences</b><br/>
 Here you can change your passwd, select differement themes, change your settings and choose which news groups you would like to monitor... fun with color :)</li><p/>
+<li><b>Infolog:</b><br/>
+Replacement for ToDo List, Notes and Phonelog in one app. Infolog entries can be linked to and viewed from addressbook and projekt entries.</li><p/>
 <li><b>Inventory:</b><br/>
 Build and maintain an inventory.</li><p/>
 <li><b>Todo list:</b><br/>
