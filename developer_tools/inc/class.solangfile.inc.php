@@ -245,62 +245,11 @@
 		}
 
 		/*!
-		@function add_app
-		@abstract loads all app phrases into langarray
-		@param $lang	user lang variable (defaults to en)
-		*/
-		function add_app($app,$userlang='en')
-		{
-			define('SEP',filesystem_separator());
-
-			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . ($app == 'setup' ? 'lang' : 'setup');
-			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
-			if (@is_writeable($fn) || is_writeable($fd))
-			{
-				$wr = True;
-			}
-			$this->src_apps = array($app => $app);
-
-			if (file_exists($fn))
-			{
-				$this->src_file = $fn;
-				$fp = fopen($fn,'rb');
-				while ($data = fgets($fp,8000))
-				{
-					list($message_id,$app_name,$null,$content) = explode("\t",$data);
-					if(!$message_id)
-					{
-						continue;
-					}
-					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
-					$_mess_id = strtolower(trim($message_id));
-					$app_name = trim($app_name);
-					$this->langarray[$_mess_id]['message_id'] = $_mess_id;
-					$this->langarray[$_mess_id]['app_name']   = $app_name;
-					$this->langarray[$_mess_id]['content']    = trim($content);
-					$this->src_apps[$app_name] = $app_name;
-				}
-				fclose($fp);
-			}
-			else
-			{
-				$this->src_file = lang('no file');
-			}
-			// stuff class array listing apps that are included already
-			$this->loaded_apps[$userlang]['filename']  = $fn;
-			$this->loaded_apps[$userlang]['writeable'] = $wr;
-
-			if($this->debug) { _debug_array($this->langarray); }
-			@ksort($this->langarray);
-			return $this->langarray;
-		}
-
-		/*!
 		@function load_app
 		@abstract loads all app phrases into langarray
 		@param $lang user lang variable (defaults to en)
 		*/
-		function load_app($app,$userlang='en')
+		function load_app($app,$userlang='en',$target=True)
 		{
 			define('SEP',filesystem_separator());
 
@@ -312,30 +261,42 @@
 				$wr = True;
 			}
 
+			$from = $GLOBALS['phpgw']->translation->charset($userlang);
+			$to = $GLOBALS['phpgw']->translation->system_charset;
+			//echo "<p>solangfile::load_app('$app','$userlang') converting from charset('$userlang')='$from' to '$to'</p>\n";
+
 			if (file_exists($fn))
 			{
-				$this->tgt_file = $fn;
 				if ($fp = @fopen($fn,'rb'))
 				{
 				   while ($data = fgets($fp,8000))
 				   {
-					   list($message_id,$app_name,$null,$content) = explode("\t",$data);
-					   if(!$message_id)
-					   {
-						   continue;
-					   }
-					   //echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
-					   $_mess_id = strtolower(trim($message_id));
-					   $langarray[$_mess_id]['message_id'] = $_mess_id;
-					   $langarray[$_mess_id]['app_name']   = trim($app_name);
-					   $langarray[$_mess_id]['content']    = trim($content);
+						list($message_id,$app_name,$null,$content) = explode("\t",$data);
+						if(!$message_id)
+						{
+							continue;
+						}
+						//echo '<br>load_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
+						$_mess_id = strtolower(trim($message_id));
+						$langarray[$_mess_id]['message_id'] = $_mess_id;
+						$langarray[$_mess_id]['app_name']   = trim($app_name);
+						$langarray[$_mess_id]['content']    =
+							$GLOBALS['phpgw']->translation->convert(trim($content),$from,$to);
 				   }
 				   fclose($fp);
 				}
 			}
 			else
 			{
-				$this->tgt_file = lang('no file');
+				$fn = lang('no file');
+			}
+			if ($target)
+			{
+				$this->tgt_file = $fn;
+			}
+			else
+			{
+				$this->src_file = $fn;
 			}
 			// stuff class array listing apps that are included already
 			$this->loaded_apps[$userlang]['filename']  = $fn;
@@ -371,6 +332,10 @@
 
 		function write_file($app_name,$langarray,$userlang,$which='target')
 		{
+			$to = $GLOBALS['phpgw']->translation->charset($userlang);
+			$from = $GLOBALS['phpgw']->translation->system_charset;
+			//echo "<p>solangfile::write_file('$app_name',,'$userlang') converting from '$from' to charset('$userlang')='$to'</p>\n";
+
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . ($app_name == 'setup' ? 'lang' : 'setup') . SEP . 'phpgw_' . $userlang . '.lang';
 			if (file_exists($fn))
 			{
@@ -381,6 +346,8 @@
 			$fp = fopen($fn,'wb');
 			while(list($mess_id,$data) = @each($langarray))
 			{
+				$data['content'] = $GLOBALS['phpgw']->translation->convert(trim($data['content']),$from,$to);
+
 				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
 			}
 			fclose($fp);
@@ -396,66 +363,14 @@
 			return $fn;
 		}
 
-		function loaddb($app_name,$userlang)
+		function loaddb($app_name,$userlangs)
 		{
-			$langarray = $this->load_app($app_name,$userlang);
-			if (!is_array($langarray))
+			if (!is_array($userlangs))
 			{
-				return False;
+				$userlangs = array($userslangs => $userlangs);
 			}
+			$GLOBALS['phpgw']->translation->install_langs($userlangs,'addmissing',$app_name);
 
-			$this->db->transaction_begin();
-
-			$userlang = $this->db->db_addslashes($userlang);
-			foreach($langarray as $x => $data)
-			{
-				$message_id = $this->db->db_addslashes(trim(substr($data['message_id'],0,MAX_MESSAGE_ID_LENGTH)));
-				$app = $this->db->db_addslashes($data['app_name']);
-				$content = $this->db->db_addslashes($data['content']);
-
-				$addit = False;
-				/*echo '<br><br><pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'];*/
-				$this->db->query("SELECT COUNT(*) FROM phpgw_lang"
-					."  WHERE message_id='$message_id' AND lang='$userlang' AND app_name='$app'",__LINE__,__FILE__);
-				$this->db->next_record();
-
-				if ($this->db->f(0) == 0)
-				{
-					$addit = True;
-					/* echo '... no</pre>'; */
-				}
-				else
-				{
-					/* echo '... yes</pre>'; */
-				}
-
-				if ($addit)
-				{
-					if($data['message_id'] && $data['content'])
-					{
-						/* echo "<br>adding - insert into lang values ('" . $data['message_id'] . "','$app_name','$userlang','" . $data['content'] . "')"; */
-						$this->db->query("INSERT into phpgw_lang VALUES ('$message_id','$app','$userlang','$content')",__LINE__,__FILE__);
-					}
-				}
-				else
-				{
-					if($data['message_id'] && $data['content'])
-					{
-						$this->db->query("UPDATE phpgw_lang SET content='$content'"
-							. " WHERE message_id='$message_id'"
-							. " AND app_name='$app' AND lang='$userlang'",__LINE__,__FILE__);
-						if ($this->db->affected_rows() > 0)
-						{
-/*
-							echo "<br>changing - update lang set content='". $data['content'] . "'"
-								. " where message_id='" . $data['message_id'] ."'"
-								. " and app_name='$app_name' and lang='$userlang'";
-*/
-						}
-					}
-				}
-			}
-			$this->db->transaction_commit();
 			return lang('done');
 		}
 	}

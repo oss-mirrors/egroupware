@@ -145,7 +145,7 @@
 
 			if (!is_array($this->extra_langarray['common']))
 			{
-				$this->extra_langarray['common'] = $this->so->add_app('phpgwapi',$userlang);
+				$this->extra_langarray['common'] = $this->so->load_app('phpgwapi',$userlang);
 			}
 			$plist = $this->so->missing_app($app = trim($app),$userlang);
 			
@@ -156,7 +156,7 @@
 				{
 					if (!is_array($this->extra_langarray[$loc]))
 					{
-						$this->extra_langarray[$loc] = $this->so->add_app($loc,$userlang);
+						$this->extra_langarray[$loc] = $this->so->load_app($loc,$userlang);
 						//echo "<p>loading translations for '$loc'</p>\n";
 					}
 				}
@@ -186,7 +186,7 @@
 			{
 				return $this->source_langarray;
 			}
-			$this->source_langarray = $this->so->add_app($app,$userlang);
+			$this->source_langarray = $this->so->load_app($app,$userlang,False);
 			$this->src_file = $this->so->src_file;
 			$this->loaded_apps = $this->so->loaded_apps;
 			$this->src_apps = $this->so->src_apps;
@@ -225,9 +225,9 @@
 			$this->save_sessiondata();
 		}
 
-		function loaddb($app_name,$userlang)
+		function loaddb($app_name,$userlangs)
 		{
-			return $this->so->loaddb($app_name,$userlang);
+			return $this->so->loaddb($app_name,$userlangs);
 		}
 	}
 ?>

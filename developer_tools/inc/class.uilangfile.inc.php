@@ -50,12 +50,13 @@
 			echo parse_navbar();
 
 			echo '<br>' . lang('Loading source langfile') . ': ' . $sourcelang . '... ';
-			echo $this->bo->loaddb($app_name,$sourcelang);
 			if ($sourcelang != $targetlang)
 			{
 				echo '<br>' . lang('Loading target langfile') . ': ' . $targetlang . '... ';
-				echo $this->bo->loaddb($app_name,$targetlang);
 			}
+			$langs[$sourcelang] = $sourcelang;
+			$langs[$targetlang] = $targetlang;
+			echo $this->bo->loaddb($app_name,$langs);
 			echo '<br><form method="post" action="' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name=' . $app_name
 				. '&sourcelang=' . $sourcelang . '&targetlang=' . $targetlang) . '"><input type="submit" name="Ok" value="' . lang('Ok') . '"></from>';
 		}
@@ -179,23 +180,21 @@
 				}
 				unset($deleteme);
 
-				if (!count($missingarray)) {	// if no phrases left, go direct back
-					$this->bo->save_sessiondata();
-					$GLOBALS['phpgw']->redirect_link('/index.php',array(
-						'menuaction' => 'developer_tools.uilangfile.edit',
-						'app_name'   => $app_name,
-						'sourcelang' => $sourcelang,
-						'targetlang' => $targetlang
-					));
-				}
+				$this->bo->save_sessiondata();
+				$GLOBALS['phpgw']->redirect_link('/index.php',array(
+					'menuaction' => 'developer_tools.uilangfile.edit',
+					'app_name'   => $app_name,
+					'sourcelang' => $sourcelang,
+					'targetlang' => $targetlang
+				));
 			}
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
 			$this->template->set_var('lang_remove',lang('Add phrase'));
 			$this->template->set_var('lang_application',lang('Application'));
-			$this->template->set_var('lang_update',lang('Save'));
-			$this->template->set_var('lang_view',lang('Back'));
+			$this->template->set_var('lang_update',lang('Add'));
+			$this->template->set_var('lang_view',lang('Cancel'));
 			
 			$this->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.missingphrase2'));
 			$this->template->set_var('sourcelang',$sourcelang);
@@ -460,7 +459,7 @@
 				while(list($key,$data) = @each($langarray))
 				{
 					$mess_id  = $this->encode_id($key);
-					$content  = $data['content'];
+					$content  = $mess_id == 'charset' ? $mess_id : $data['content'];
 					$transy   = $translation[$key]['content'];
 					$this->template->set_var('mess_id',$mess_id);
 					$this->template->set_var('source_content',htmlspecialchars($content));
