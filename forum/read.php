@@ -12,36 +12,33 @@
 
 	/* $Id$ */
 
-	$phpgw_info["flags"] = array("currentapp" => "forum",	"enable_nextmatchs_class" => True);
-	if($action)
+	$phpgw_info['flags'] = array(
+		'currentapp'              => 'forum',
+		'enable_nextmatchs_class' => True
+	);
+	if ($action)
 	{
-		$phpgw_info["flags"]["noheader"] = True;
-		$phpgw_info["flags"]["nonavbar"] = True;
+		$phpgw_info['flags']['noheader'] = True;
+		$phpgw_info['flags']['nonavbar'] = True;
 	}
-	include("../header.inc.php");
+	include('../header.inc.php');
 
 
-	if($action == "reply")
+	if ($action == 'reply')
 	{
-
-		$host = getenv('REMOTE_ADDR');
-		if(!$host) getenv('REMOTE_HOST');
-
 		$stat = 0;
 
 		$phpgw->db->query("select max(id) from	phpgw_forum_body",__LINE__,__FILE__);
 		$phpgw->db->next_record();
-		$next_f_body_id = $phpgw->db->f("0") +	1;
+		$next_f_body_id = $phpgw->db->f(0) + 1;
 
 		$phpgw->db->query("select max(id) from	phpgw_forum_threads",__LINE__,__FILE__);
 		$phpgw->db->next_record();
-		$next_f_threads_id = $phpgw->db->f("0") + 1;
+		$next_f_threads_id = $phpgw->db->f(0) + 1;
 
-		//$datetime = $phpgw->common->show_date(time(),"Y-m-d H:i:s");
-
-		if($pos	!= 0)
+		if ($pos != 0)
 		{
-			$tmp =	$phpgw->db->query("select id,pos from phpgw_forum_threads	where thread = $thread and pos >= $pos order by	pos desc",__LINE__,__FILE__);
+			$tmp = $phpgw->db->query("select id,pos from phpgw_forum_threads	where thread = $thread and pos >= $pos order by	pos desc",__LINE__,__FILE__);
 			while($phpgw->db->next_record($tmp))
 			{
 				$oldpos = $phpgw->db->f("pos") + 1;
@@ -77,16 +74,16 @@
 	$phpgw->template->set_var('row_off',$phpgw_info['theme']['row_off']);
 	$phpgw->template->set_var('row_on',$phpgw_info['theme']['row_on']);
 
-	$phpgw->db->query("select * from phpgw_forum_categories where id	= $cat",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_forum_categories where id='" . $session_info['cat_id']
+		. "'",__LINE__,__FILE__);
 
 	$phpgw->db->next_record();
-	$category = $phpgw->db->f("name");
+	$category = $phpgw->db->f('name');
 
-	$phpgw->db->query("select * from phpgw_forum_forums where id = $for",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_forum_forums where id='" . $session_info['forum_id']
+		. "'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
-	$forums = $phpgw->db->f("name");
-
-	$catfor = "cat=" . $cat . "&for=" . $for;
+	$forums = $phpgw->db->f('name');
 
 	$phpgw->template->set_var(array(
 		BGROUND			=> $phpgw_info["theme"]["th_bg"],
@@ -100,53 +97,37 @@
 		LANG_FORUM		=> $forums,
 		LANG_SEARCH		=> lang("Search"),
 		LANG_POST		=> lang("Post"),
-		FORUM_LINK		=> $phpgw->link("/forum/forums.php","cat=" . $cat),
-		MAIN_LINK		=> $phpgw->link("/forum/index.php"),
-		POST_LINK		=> $phpgw->link("/forum/read.php","$catfor&type=new"),
-		THREADS_LINK		=> $phpgw->link("/forum/threads.php","$catfor&col=$col"),
-		SEARCH_LINK		=> $phpgw->link("/forum/search.php","$catfor"),
-		READ_ACTION		=> $phpgw->link("/forum/read.php"),
-		CAT			=> $cat,
-		FORU			=> $for,
+		FORUM_LINK		=> $phpgw->link('/forum/forums.php'),
+		MAIN_LINK		=> $phpgw->link('/forum/index.php'),
+		POST_LINK		=> $phpgw->link('/forum/read.php','type=new'),
+		THREADS_LINK		=> $phpgw->link('/forum/threads.php'),
+		SEARCH_LINK		=> $phpgw->link('/forum/search.php'),
+		READ_ACTION		=> $phpgw->link('/forum/read.php'),
 		MSG			=> $msg,
 		POST			=> $pos,
 		ACTION			=> 'reply'
 	));
 
 
-	if(!$col)
-	{
-		$phpgw->template->set_var(array(
-		THREADS_LINK  => $phpgw->link("/forum/threads.php","$catfor&col=1"),
-		LANG_THREADS  => lang("Normal View"),
-		COL		=> '0'
-		));
-	}
-	if($col)
-	{
-		$phpgw->template->set_var(array(
-		THREADS_LINK	=> $phpgw->link("/forum/threads.php","$catfor&col=0"),
-		LANG_THREADS	=> lang("View Collapse"),
-		COL		=> $col
-		));
+	$phpgw->template->set_var(array(
+		THREADS_LINK  => $phpgw->link('/forum/threads.php'),
+		LANG_THREADS  => lang('Return to forums')
+	));
 
-	}
-
-
-	$phpgw->db->query("select * from phpgw_forum_threads where id = $msg",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_forum_threads where id='$msg'",__LINE__,__FILE__);
 
 	$phpgw->db->next_record();
-	$thread = $phpgw->db->f("thread");
-	$depth	= $phpgw->db->f("depth") + 1;
-	$subject = $phpgw->db->f("subject");
+	$thread  = $phpgw->db->f('thread');
+	$depth   = $phpgw->db->f('depth') + 1;
+	$subject = $phpgw->db->f('subject');
 	if (! $subject)
 	{
-		$subject = "[ No subject ]";
+		$subject = '[ ' . lang('No subject') . ' ]';
 	}
 
-	$msgid	= $phpgw->db->f("main");
+	$msgid	= $phpgw->db->f('main');
 
-	$subj = "Re: "	. $subject;
+	$subj = 'Re: ' . $subject;
 
 	$phpgw->template->set_var(array(
 		THREAD       => $thread,
@@ -159,20 +140,12 @@
 		SUBJECT      => $subj
 	));
 
-	$phpgw->db->query("select * from phpgw_forum_body where id = $msgid",__LINE__,__FILE__);
+	$phpgw->db->query("select * from phpgw_forum_body where id='$msgid'",__LINE__,__FILE__);
 	$phpgw->db->next_record();
 
 	$phpgw->template->set_var('MESSAGE',$phpgw->strip_html($phpgw->db->f('message')));
 
-	$name = $phpgw_info["user"]["firstname"] . " "	. $phpgw_info["user"]["lastname"];
-	$email	= $phpgw_info["user"]["email_address"];
-
-	$name =	$phpgw_info["user"]["firstname"] . " " . $phpgw_info["user"]["lastname"];
-	$email	= $phpgw_info["user"]["email_address"];
-
 	$phpgw->template->set_var(array(
-		LANG_NAME		=> lang("Your Name"),
-		LANG_EMAIL		=> lang("Your Email"),
 		LANG_SUBJECT		=> lang("Subject"),
 		LANG_REPLY		=> lang("Email replies to this thread, to the address above"),
 		LANG_SUBMIT		=> lang("Submit"),
