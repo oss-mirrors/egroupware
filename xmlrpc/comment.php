@@ -1,77 +1,106 @@
 <?php
-include("xmlrpc.inc");
+/**************************************************************************\
+* phpGroupWare - XML-RPC Test App                                          *
+* http://www.phpgroupware.org                                              *
+* --------------------------------------------                             *
+*  This program is free software; you can redistribute it and/or modify it *
+*  under the terms of the GNU General Public License as published by the   *
+*  Free Software Foundation; either version 2 of the License, or (at your  *
+*  option) any later version.                                              *
+\**************************************************************************/
 
-$mydir="/demo";
+/* $Id$ */
 
-// define some utility functions
-function bomb() { print "</body></html>"; exit(); }
-function dispatch($client, $method, $args) {
-	$msg=new xmlrpcmsg($method, $args);
-	$resp=$client->send($msg);
-	if (!$resp) { print "<p>IO error: ".$client->errstring."</p>"; bomb(); }
-	if ($resp->faultCode()) {
-		print "<p>There was an error: " . $resp->faultCode() . " " .
-			$resp->faultString() . "</p>";
-		bomb();
-	} 
-	return xmlrpc_decode($resp->value());	
-}
+	$phpgw_info['flags'] = array(
+		'currentapp'  => 'xmlrpc',
+		'noheader'    => True,
+		'noappheader' => True,
+		'nonavbar'    => True 
+	);
 
-// create client for discussion server
-$dclient=new xmlrpc_client("${mydir}/discuss.php",
-													 "xmlrpc.usefulinc.com", 80);
+	include('../header.inc.php');
 
-// check if we're posting a comment, and send it if so
-$storyid=$HTTP_POST_VARS["storyid"];
-if ($storyid) {
+	$mydir = '/phpgroupware/xmlrpc';
 
+	// define some utility functions
+	function bomb()
+	{
+		$GLOBALS['phpgw']->common->phpgw_footer();
+	}
 
-	//	print "Returning to " . $HTTP_POST_VARS["returnto"];
+	function dispatch($client, $method, $args)
+	{
+		$msg  = CreateObject('phpgwapi.xmlrpcmsg',$method, $args);
+		$client->debug = True;
+		$resp = $client->send($msg);
+		if (!$resp)
+		{
+			print "<p>IO error: ".$client->errstring."</p>"; bomb();
+		}
+//		_debug_array($msg);
+		if ($resp->faultCode())
+		{
+			print "<p>There was an error: " . $resp->faultCode() . " " .
+				$resp->faultString() . "</p>";
+			bomb();
+		} 
+		return xmlrpc_decode($resp->value());	
+	}
 
-	$res=dispatch($dclient, "discuss.addComment", 
-								array(new xmlrpcval($storyid),
-											new xmlrpcval(stripslashes
-																		($HTTP_POST_VARS["name"])),
-											new xmlrpcval(stripslashes
-																		($HTTP_POST_VARS["commenttext"]))));
+	// create client for discussion server
+	$dclient = CreateObject('phpgwapi.xmlrpc_client',"${mydir}/discuss.php",$HTTP_HOST, 80);
 
-	// send the browser back to the originating page
-	Header("Location: ${mydir}/comment.php?catid=" .
-				 $HTTP_POST_VARS["catid"] . "&chanid=" .
-				 $HTTP_POST_VARS["chanid"] . "&oc=" .
-				 $HTTP_POST_VARS["catid"]);
-	exit(0);
-}
+	// check if we're posting a comment, and send it if so
+//	$storyid = $HTTP_POST_VARS['storyid'];
 
-// now we've got here, we're exploring the story store
+	if ($storyid)
+	{
+		//	print "Returning to " . $HTTP_POST_VARS["returnto"];
 
+		$res = dispatch($dclient, 'discuss.addComment', array(
+				CreateObject('phpgwapi.xmlrpcval',$storyid),
+				CreateObject('phpgwapi.xmlrpcval',stripslashes($name)),
+				CreateObject('phpgwapi.xmlrpcval',stripslashes($commenttext))
+		));
+
+		// send the browser back to the originating page
+		Header('Location: ' . $phpgw->link($mydir . '/comment.php',
+			  'catid='   . $catid
+			. '&chanid=' . $chanid
+			. '&oc='     . $catid
+		));
+	}
+
+	// now we've got here, we're exploring the story store
+	$phpgw->common->phpgw_header();
+	echo parse_navbar();
 ?>
-<html><head><title>meerkat browser</title></head>
-<body bgcolor="#ffffff">
 <h2>Meerkat integration</h2>
 <?php
-$catid=$HTTP_GET_VARS["catid"];
-if ($HTTP_GET_VARS["oc"]==$catid)
-	$chanid=$HTTP_GET_VARS["chanid"];
-else 
-	$chanid=0;
+	if ($oc==$catid)
+	{
+		$chanid = $chanid;
+	}
+	else
+	{
+		$chanid=0;
+	}
 
-$client=new xmlrpc_client("/meerkat/xml-rpc/server.php",
-													"www.oreillynet.com", 80);
+	$client = CreateObject('phpgwapi.xmlrpc_client',"/meerkat/xml-rpc/server.php","www.oreillynet.com", 80);
 
-if ($HTTP_GET_VARS["comment"] &&
-		(!$HTTP_GET_VARS["cdone"])) {
-	// we're making a comment on a story,
-	// so display a comment form
+	if ($comment && !$cdone)
+	{
+		// we're making a comment on a story,
+		// so display a comment form
 ?>
 <h3>Make a comment on the story</h3>
-<form method="post">
+<form method="post" action="<?php echo $phpgw->link('/xmlrpc/comment.php') ?>">
 <p>Your name:<br /><input type="text" size="30" name="name" /></p>
 <p>Your comment:<br /><textarea rows="5" cols="60"
    name="commenttext"></textarea></p>
 <input type="submit" value="Send comment" />
 <input type="hidden" name="storyid" 
-   value="<?php echo $HTTP_GET_VARS["comment"];?>" />
+   value="<?php echo $comment;?>" />
 <input type="hidden" name="chanid" 
    value="<?php echo $chanid; ?>" />
 <input type="hidden" name="catid" 
@@ -79,49 +108,68 @@ if ($HTTP_GET_VARS["comment"] &&
 
 </form>
 <?php
-} else {
-	$categories=dispatch($client, "meerkat.getCategories", array());
-	if ($catid)
-		$sources = dispatch($client, "meerkat.getChannelsByCategory", 
-												array(new xmlrpcval($catid, "int")));
-	if ($chanid) {
-		$stories = dispatch($client, "meerkat.getItems",
-					array(new xmlrpcval(
-						array(
-							"channel" => new xmlrpcval($chanid, "int"),
-							"ids" => new xmlrpcval(1, "int"),
-							"descriptions" => new xmlrpcval(200, "int"),
-							"num_items" => new xmlrpcval(5, "int"),
-							"dates" => new xmlrpcval(0, "int")
-						), "struct")));
 	}
+	else
+	{
+		$categories = dispatch($client, 'meerkat.getCategories', array());
+		if ($catid)
+		{
+			$sources = dispatch($client, 'meerkat.getChannelsByCategory', array(CreateObject('phpgwapi.xmlrpcval',$catid, 'int')));
+		}
+		if ($chanid)
+		{
+			$stories = dispatch($client, 'meerkat.getItems', array(
+				CreateObject('phpgwapi.xmlrpcval',array(
+					'channel'      => CreateObject('phpgwapi.xmlrpcval',$chanid, 'int'),
+					'ids'          => CreateObject('phpgwapi.xmlrpcval',1, 'int'),
+					'descriptions' => CreateObject('phpgwapi.xmlrpcval',200, 'int'),
+					'num_items'    => CreateObject('phpgwapi.xmlrpcval',5, 'int'),
+					'dates'        => CreateObject('phpgwapi.xmlrpcval',0, 'int')
+					),
+					'struct'
+				)
+			));
+		}
 ?>
-<form>
+<form method="post" action="<?php echo $phpgw->link('/xmlrpc/comment.php') ?>">
 <p>Subject area:<br />
 <select name="catid">
 <?php
-	  if (!$catid)
-		    print "<option value=\"0\">Choose a category</option>\n";
-	  while(list($k,$v) = each($categories)) {
+		if (!$catid)
+		{
+			print "<option value=\"0\">Choose a category</option>\n";
+		}
+		while(list($k,$v) = each($categories))
+		{
 			print "<option value=\"" . $v['id'] ."\"";
-			if ($v['id']==$catid) print " selected=\"selected\"";
+			if ($v['id']==$catid)
+			{
+				print ' selected';
+			}
 			print ">". $v['title'] . "</option>\n"; 
 		}
 ?>
 </select></p>
 <?php 
-		if ($catid) { 
+		if ($catid)
+		{
 ?>
 <p>News source:<br />
 <select name="chanid">
 <?php
-	 if (!$chanid)
-		   print "<option value=\"0\">Choose a source</option>\n";
-    while(list($k,$v) = each($sources)) {
-			print "<option value=\"" . $v['id'] ."\"";
-			if ($v['id']==$chanid) print "\" selected=\"selected\"";
-			print ">". $v['title'] . "</option>\n"; 
-		}
+			if (!$chanid)
+			{
+				print "<option value=\"0\">Choose a source</option>\n";
+			}
+			while(list($k,$v) = each($sources))
+			{
+				print "<option value=\"" . $v['id'] ."\"";
+				if ($v['id']==$chanid)
+				{
+					print "\" selected=\"selected\"";
+				}
+				print ">". $v['title'] . "</option>\n"; 
+			}
 ?>
 </select>
 </p>
@@ -135,44 +183,46 @@ if ($HTTP_GET_VARS["comment"] &&
 </form>
 
 <?php 
-	 if ($chanid) { 
+		if ($chanid)
+		{
 ?>
 
 <h2>Stories available</h2>
 <table>
 <?php
-	 while(list($k,$v) = each($stories)) {
-		 print "<tr>";
-		 print "<td><b>" . $v['title'] . "</b><br />";
-		 print $v['description'] . "<br />";
-		 print "<em><a target=\"_blank\" href=\"" . 
-			 $v['link'] . "\">Read full story</a> ";
-		 print "<a href=\"comment.php?catid=${catid}&chanid=${chanid}&" .
-			 "oc=${oc}&comment=" . $v['id'] . "\">Comment on this story</a>";
-		 print "</em>";
-		 print "</td>";
-		 print "</tr>\n";
-		 // now look for existing comments
-		 $res=dispatch($dclient, "discuss.getComments", 
-							array(new xmlrpcval($v['id'])));
-		 if (sizeof($res)>0) {
-			 print "<tr><td bgcolor=\"#dddddd\"><p><b><i>" .
-				 "Comments on this story:</i></b></p>";
-			 for($i=0; $i<sizeof($res); $i++) {
-				 $s=$res[$i];
-				 print "<p><b>From:</b> " . htmlentities($s['name']) . "<br />";
-				 print "<b>Comment:</b> " . htmlentities($s['comment']) . "</p>";
+			while(list($k,$v) = each($stories))
+			{
+				print "<tr>";
+				print "<td><b>" . $v['title'] . "</b><br />";
+				print $v['description'] . "<br />";
+				print "<em><a target=\"_blank\" href=\"" . 
+					 $v['link'] . "\">Read full story</a> ";
+				print "<a href=\"" . $phpgw->link('/xmlrpc/comment.php',"catid=${catid}&chanid=${chanid}&" .
+					 "oc=${oc}&comment=" . $v['id']) . "\">Comment on this story</a>";
+				print "</em>";
+				print "</td>";
+				print "</tr>\n";
+				// now look for existing comments
+				$res = dispatch($dclient, "discuss.getComments", array(CreateObject('phpgwapi.xmlrpcval',$v['id'])));
+				if (sizeof($res)>0)
+				{
+					 print "<tr><td bgcolor=\"#dddddd\"><p><b><i>" . "Comments on this story:</i></b></p>";
+					 for($i=0; $i<sizeof($res); $i++)
+					 {
+						 $s=$res[$i];
+						 print "<p><b>From:</b> " . htmlentities($s['name']) . "<br />";
+						 print "<b>Comment:</b> " . htmlentities($s['comment']) . "</p>";
+					 }
+					 print "</td></tr>\n";
+				 }
+				 print "<tr><td><hr /></td></tr>\n";
 			 }
-			 print "</td></tr>\n";
-		 }
-		 print "<tr><td><hr /></td></tr>\n";
-	 }
 ?>
 </table>
 
 <?php 
 		} // end if ($chanid) 
-} // end if comment
+	} // end if comment
 ?>
 <hr />
 <p>
@@ -181,5 +231,7 @@ if ($HTTP_GET_VARS["comment"] &&
 	height="31" width="88" alt="Meerkat powered, yeah!"
 	border="0" hspace="8" /></a>
 <em>$Id$</em></p>
-</body>
-</html>
+
+<?php
+	$phpgw->common->phpgw_footer();
+?>

@@ -1,95 +1,130 @@
 <?php
-include("xmlrpc.inc");
-include("xmlrpcs.inc");
+/**************************************************************************\
+* phpGroupWare - XML-RPC Test App                                          *
+* http://www.phpgroupware.org                                              *
+* --------------------------------------------                             *
+*  This program is free software; you can redistribute it and/or modify it *
+*  under the terms of the GNU General Public License as published by the   *
+*  Free Software Foundation; either version 2 of the License, or (at your  *
+*  option) any later version.                                              *
+\**************************************************************************/
 
-$addcomment_sig=array(array($xmlrpcInt, $xmlrpcString,
-    $xmlrpcString, $xmlrpcString));
+/* $Id$ */
 
-$addcomment_doc='Adds a comment to an item. The first parameter
+	/*
+	$login  = 'anonymous';
+	$passwd = 'anonymous1';
+
+	$phpgw_info['flags'] = array(
+		'disable_template_class' => True,
+		'login' => True,
+		'currentapp' => 'login',
+		'noheader'  => True
+	);
+	*/
+	$phpgw_info['flags'] = array(
+		'currentapp' => 'login',
+		'noheader'   => True
+	);
+	include('../header.inc.php');
+	/* $sessionid = $phpgw->session->create($login,$passwd); */
+
+	$addcomment_sig = array(array($xmlrpcInt, $xmlrpcString, $xmlrpcString, $xmlrpcString));
+	$addcomment_doc = 'Adds a comment to an item. The first parameter
 is the item ID, the second the name of the commenter, and the third
 is the comment itself. Returns the number of comments against that
 ID.';
 
-function addcomment($m) {
-  global $xmlrpcerruser;
-  $err="";
-  // get the first param
-  $msgID=xmlrpc_decode($m->getParam(0));
-	$name=xmlrpc_decode($m->getParam(1));
-	$comment=xmlrpc_decode($m->getParam(2));
+	function addcomment($m)
+	{
+		global $xmlrpcerruser,$phpgw;
+		$err = '';
+		// get the first param
+		$msgID   = xmlrpc_decode($m->getParam(0));
+		$name    = xmlrpc_decode($m->getParam(1));
+		$comment = xmlrpc_decode($m->getParam(2));
 	
-	$dbh=dba_open("/tmp/comments.db", "c", "db2");
-	if ($dbh) {
-		$countID="${msgID}_count";
-		if (dba_exists($countID, $dbh))
-			$count=dba_fetch($countID, $dbh);
-		else
-			$count=0;
+		$countID = "${msgID}_count";
+		$sql = 'SELECT COUNT(msg_id) FROM phpgw_discuss';
+		$phpgw->db->query($sql,__LINE__,__FILE__);
+		$phpgw->db->next_record();
+		$count = $phpgw->db->f(0);
+		
+		if(!$count)
+		{
+			$count = 0;
+		}
 		// add the new comment in
-		dba_insert($msgID . "_comment_${count}", $comment, $dbh);
-		dba_insert($msgID . "_name_${count}", $name, $dbh);
 		$count++;
-		dba_replace($countID, $count, $dbh);
-		dba_close($dbh);
-	} else {
-		$err="Unable to open comments database.";
+		$sql = "INSERT INTO phpgw_discuss (msg_id,comment,name,count) VALUES ($msgID,'$comment','$name',$count)";
+		$phpgw->db->query($sql,__LINE__,__FILE__);
+
+		// if we generated an error, create an error return response
+		if ($err)
+		{
+			return CreateObject('phpgwapi.xmlrpcresp',0, $xmlrpcerruser, $err);
+		}
+		else
+		{
+			// otherwise, we create the right response
+			// with the state name
+			return CreateObject('phpgwapi.xmlrpcresp', CreateObject('phpgwapi.xmlrpcval',$count, "int"));
+		}
 	}
-  // if we generated an error, create an error return response
-  if ($err) {
-		return new xmlrpcresp(0, $xmlrpcerruser, $err);
-  } else {
-	// otherwise, we create the right response
-	// with the state name
-	return new xmlrpcresp(new xmlrpcval($count, "int"));
-  }
-}
 
-$getcomments_sig=array(array($xmlrpcArray, $xmlrpcString));
-
-$getcomments_doc='Returns an array of comments for a given ID, which
+	$getcomments_sig = array(array($xmlrpcArray, $xmlrpcString));
+	$getcomments_doc = 'Returns an array of comments for a given ID, which
 is the sole argument. Each array item is a struct containing name
 and comment text.';
 
-function getcomments($m) {
-  global $xmlrpcerruser;
-  $err="";
-	$ra=array();
-  // get the first param
-  $msgID=xmlrpc_decode($m->getParam(0));
+	function getcomments($m)
+	{
+		global $xmlrpcerruser,$phpgw;
 
-	$dbh=dba_open("/tmp/comments.db", "r", "db2");
-	if ($dbh) {
-		$countID="${msgID}_count";
-		if (dba_exists($countID, $dbh)) {
-			$count=dba_fetch($countID, $dbh);
-			for($i=0; $i<$count; $i++) {
-				$name=dba_fetch("${msgID}_name_${i}", $dbh);
-				$comment=dba_fetch("${msgID}_comment_${i}", $dbh);
-				// push a new struct onto the return array
-				$ra[]=new xmlrpcval(array(
-																	"name" => new xmlrpcval($name),
-																	"comment" => new xmlrpcval($comment)
-																	), "struct");
-			}
+		$err = '';
+		$ra = array();
+		// get the first param
+		$msgID = xmlrpc_decode($m->getParam(0));
+
+		$countID = "${msgID}_count";
+		$sql = 'SELECT * FROM phpgw_discuss WHERE msg_id=' . $msgID;
+		$phpgw->db->query($sql,__LINE__,__FILE__);
+		$count = $phpgw->db->num_rows();
+		while($data = $phpgw->db->next_record())
+		{
+			$name    = $phpgw->db->f('name');
+			$comment = $phpgw->db->f('comment');
+			// push a new struct onto the return array
+			$ra[] = CreateObject('phpgwapi.xmlrpcval',array(
+				'name'    => CreateObject('phpgwapi.xmlrpcval',$name),
+				'comment' => CreateObject('phpgwapi.xmlrpcval',$comment)
+				),
+				'struct'
+			);
 		}
-	} 
-	// if we generated an error, create an error return response
-  if ($err) {
-		return new xmlrpcresp(0, $xmlrpcerruser, $err);
-  } else {
-		// otherwise, we create the right response
-		// with the state name
-		return new xmlrpcresp(new xmlrpcval($ra, "array"));
-  }
-}	
+		// if we generated an error, create an error return response
+		if ($err)
+		{
+			return CreateObject('phpgwapi.xmlrpcresp','', $xmlrpcerruser, $err);
+		}
+		else
+		{
+			// otherwise, we create the right response
+			// with the state name
+			return CreateObject('phpgwapi.xmlrpcresp',CreateObject('phpgwapi.xmlrpcval',$ra, 'array'));
+		}
+	}
 
-$s=new xmlrpc_server( array( "discuss.addComment" => 
-														 array("function" => "addcomment",
-																	 "signature" => $addcomment_sig,
-																	 "docstring" => $addcomment_doc),
-														 "discuss.getComments" => 
-														 array("function" => "getcomments",
-																	 "signature" => $getcomments_sig,
-																	 "docstring" => $getcomments_doc))
-											);
+	$s = CreateObject('phpgwapi.xmlrpc_server', array(
+		'discuss.addComment' => array(
+			'function'  => 'addcomment',
+			'signature' => $addcomment_sig,
+			'docstring' => $addcomment_doc
+		),
+		'discuss.getComments' => array(
+			'function'  => 'getcomments',
+			'signature' => $getcomments_sig,
+			'docstring' => $getcomments_doc
+		)
+	));
 ?>

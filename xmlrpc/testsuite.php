@@ -13,18 +13,18 @@
 
 	$phpgw_info['flags'] = array(
 		'currentapp'  => 'xmlrpc',
-		'noheader'    => True,
-		'noappheader' => True,
-		'nonavbar'    => True
+		'noheader'    => False,
+		'noappheader' => False,
+		'nonavbar'    => False
 	);
 
 	include('../header.inc.php');
+	require './phpunit.php';
 
-require "phpunit.php";
+	$DEBUG = 1;
+	$LOCALSERVER = $HTTP_HOST;
 
-$DEBUG=1;
-$LOCALSERVER="milosch.dyndns.org";
-$suite = new TestSuite;
+	$suite = new TestSuite;
 
 	class TestLocalhost extends TestCase
 	{
@@ -38,7 +38,7 @@ $suite = new TestSuite;
 		function setUp()
 		{
 			global $DEBUG, $LOCALSERVER;
-			$this->client= CreateObject('phpgwapi.xmlrpc_client',"/phpgroupware/xmlrpc/server.php", $LOCALSERVER, 80);
+			$this->client= CreateObject('phpgwapi.xmlrpc_client','/phpgroupware/xmlrpc.php', $LOCALSERVER, 80);
 			if ($DEBUG) $this->client->setDebug(1);
 		}
 
@@ -187,10 +187,6 @@ And turned it into nylon";
 //	$suite->addTest(new TestFileCases("stringBug"));
 	$title = 'XML-RPC Unit Tests';
 ?>
-<html>
-<head><title><?php echo $title; ?></title></head>
-<body>
-<h1><?php echo $title; ?></h1>
 <p>Note, tests beginning with 'f_' <i>should</i> fail.</p>
 <p>
 <?php
@@ -200,6 +196,6 @@ And turned it into nylon";
 	}
 	$testRunner = new TestRunner;
 	$testRunner->run($suite);
+
+	$phpgw->common->phpgw_footer();
 ?>
-</body>
-</html>
