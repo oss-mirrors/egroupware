@@ -39,7 +39,7 @@
 			$d=dir($fd);
 			while ($fn=$d->read())
 			{
-				if (is_dir($fd.$fn.SEP))
+				if (@is_dir($fd.$fn.SEP))
 				{
 					if (($fn!='.')&&($fn!='..')&&($fn!='CVS'))
 					{
@@ -192,7 +192,7 @@
 
 			$fd = PHPGW_SERVER_ROOT . SEP . $app . SEP . 'setup';
 			$fn = $fd . SEP . 'phpgw_' . $userlang . '.lang';
-			if (is_writeable($fn))
+			if (@is_writeable($fn))
 			{
 				$wr = True;
 			}
@@ -272,7 +272,7 @@
 		{
 			$fn = PHPGW_SERVER_ROOT . SEP . $app_name . SEP . 'setup' . SEP . 'phpgw_' . $userlang . '.lang';
 			$fp = fopen($fn,'wb');
-			while(list($mess_id,$data) = each($langarray))
+			while(list($mess_id,$data) = @each($langarray))
 			{
 				fwrite($fp,$mess_id . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'] . "\n");
 			}
