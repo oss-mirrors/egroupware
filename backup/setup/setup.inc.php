@@ -17,7 +17,12 @@
 	$setup_info['backup']['enable'] = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['backup']['hooks'][] = 'admin';
+	$setup_info['backup']['hooks'] = array
+	(
+		'admin',
+		'about',
+		'manual'
+	);
 
 	/* Dependencies for this app to work */
 	$setup_info['backup']['depends'][] = array
