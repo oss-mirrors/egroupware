@@ -135,8 +135,7 @@
 				. '<input type="hidden" name="query" value="' . $query . '">' . "\n"
 				. '<input type="hidden" name="start" value="' . $start . '">' . "\n"
 				. '<input type="hidden" name="filter" value="' . $filter . '">' . "\n"
-				. '<input type="hidden" name="pro_parent" value="' . $pro_parent . '">' . "\n"
-				. '<input type="hidden" name="cat_id" value="' . $cat_id . '">' . "\n";
+				. '<input type="hidden" name="pro_parent" value="' . $pro_parent . '">' . "\n";
 
 	$t->set_var('hidden_vars',$hidden_vars);
 	$t->set_var('lang_num',lang('Job ID'));
@@ -148,7 +147,7 @@
 
 		$parent = $projects->read_single_project($pro_parent);
 
-		$t->set_var('pro_parent',$parent[0]['title']);
+		$t->set_var('pro_parent',$phpgw->strip_html($parent[0]['number']) . ' ' . $phpgw->strip_html($parent[0]['title']));
 		$t->set_var('category',$phpgw->categories->id2name($parent[0]['category']));
 	}
 
