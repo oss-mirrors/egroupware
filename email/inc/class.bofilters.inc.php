@@ -16,12 +16,15 @@
 	{
 		var $public_functions = array(
 			'process_submitted_data'	=> True,
-			'run_single_filter'	=> True
+			'delete_filter'	=> True,
+			'run_single_filter'	=> True,
+			'run_all_filters'	=> True
 		);
 		
 		var $all_filters = Array();
 		var $filter_num = 0;
 		//var $this_filter = Array();
+		var $add_new_filter_token = 'add_new';
 		var $template = '';
 		var $finished_mlist = '';
 		var $submit_mlist_to_class_form = '';
@@ -77,14 +80,49 @@
 			//$args_array['do_login'] = True;
 			if ($this->debug > 1) { echo 'email.bofilters. *constructor*: call msg->begin_request with args array:'.serialize($args_array).'<br>'; }
 			$GLOBALS['phpgw']->msg->begin_request($args_array);
-			$already_initialized = True;
-			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
 			
+			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: calling $this->read_filter_data_from_prefs<br>'; }
+			$this->read_filter_data_from_prefs();
+			if ($this->debug > 0) { echo 'email.bofilters. *constructor*: LEAVING<br>'; }
 		}
 		
-		function obtain_filer_num()
+		function read_filter_data_from_prefs()
+		{
+			/*
+			$this->all_filters = array();
+			// read sublevel data from prefs
+			// since we know the constructor called begin_request, we know we can get that data here:
+			if ((isset($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']))
+			&& (is_array($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']))
+			&& (count($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']) > 0)
+			&& (isset($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters'][0]['source_accounts'])))
+			{
+				$this->all_filters = $GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters'];
+			}
+			return $this->all_filters;
+			*/
+			$this->all_filters = array();
+			if ((isset($GLOBALS['phpgw']->preferences->data['email']['filters']))
+			&& (is_array($GLOBALS['phpgw']->preferences->data['email']['filters'])))
+			{
+				$this->all_filters = $GLOBALS['phpgw']->preferences->data['email']['filters'];
+			}
+			return $this->all_filters;
+		}
+		
+		function obtain_filer_num($get_next_avail_if_none=True)
 		{
 			if ((isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
+			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_num'] == $this->add_new_filter_token))
+			{
+				$filter_num = $this->get_next_avail_num();
+			}
+			elseif ((isset($GLOBALS['HTTP_GET_VARS']['filter_num']))
+			&& ((string)$GLOBALS['HTTP_GET_VARS']['filter_num'] == $this->add_new_filter_token))
+			{
+				$filter_num = $this->get_next_avail_num();
+			}
+			elseif ((isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
 			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_num'] != ''))
 			{
 				$filter_num = (int)$GLOBALS['HTTP_POST_VARS']['filter_num'];
@@ -94,17 +132,20 @@
 			{
 				$filter_num = (int)$GLOBALS['HTTP_GET_VARS']['filter_num'];
 			}
-			else
+			elseif($get_next_avail_if_none == True)
 			{
 				$filter_num = $this->get_next_avail_num();
 			}
-			return $filter_num;
+			else
+			{
+				$filter_num = False;
+			}
+			return (int)$filter_num;
 		}
 		
 		function get_next_avail_num()
 		{
-			// NOT coded yet
-			return 0;
+			return count($this->all_filters)+4;
 		}
 		
 		function just_testing()
@@ -128,10 +169,7 @@
 		
 		function filter_exists($feed_filter_num)
 		{
-			if (count($this->all_filters) == 0)
-			{
-				$this->read_filter_data_from_prefs();
-			}
+			$feed_filter_num = (int)$feed_filter_num;
 			if ((isset($this->all_filters[$feed_filter_num]))
 			&& (isset($this->all_filters[$feed_filter_num]['source_accounts'])))
 			{
@@ -155,17 +193,16 @@
 			// --- get submitted data that is not in the form of an array  ----
 			
 			// FILTER NUMBER
-			if ((isset($GLOBALS['HTTP_POST_VARS']['filter_num']))
-			&& ((string)$GLOBALS['HTTP_POST_VARS']['filter_num'] != ''))
-			{
-				$this_filter['filter_num'] = (int)$GLOBALS['HTTP_POST_VARS']['filter_num'];
-			}
-			else
+			//$found_filter_num = $this->obtain_filer_num(False);
+			$found_filter_num = $this->obtain_filer_num();
+			// is_bool is in the php3 compat library
+			if ((is_bool($found_filter_num))
+			&& ($found_filter_num == False))
 			{
 				echo 'bofilters.process_submitted_data: LEAVING with ERROR, unable to obtain POST filter_num';
 				return;
 			}
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filter_num]: ['.$this_filter['filter_num'].']<br>'; }
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filter_num]: ['.$found_filter_num.']<br>'; }
 			
 			// FILTER NAME
 			if ((isset($GLOBALS['HTTP_POST_VARS']['filtername']))
@@ -175,7 +212,8 @@
 			}
 			else
 			{
-				$this_filter['filtername'] = 'Filter '.$this_filter['filter_num'];
+				//$this_filter['filtername'] = 'Filter '.$found_filter_num;
+				$this_filter['filtername'] = 'My Mail Filter';
 			}
 			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: $this_filter[filtername]: ['.$this_filter['filtername'].']<br>'; }
 			
@@ -259,116 +297,178 @@
 				}
 			}
 			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: $this_filter[] dump <strong><pre>'; print_r($this_filter); echo "</pre></strong>\r\n"; }
+			$this->all_filters[$found_filter_num] = array();
+			$this->all_filters[$found_filter_num] = $this_filter;
+			$this->save_all_filters_to_repository();
+		}
+		
+		function squash_all_filters_gap()
+		{
+			$did_squash = False;
+			//for ($i=0; $i < count($this->all_filters); $i++)
+			for ($i=0; $i < 20; $i++)
+			{
+				if ((!isset($this->all_filters[$i]))
+				&& (!isset($this->all_filters[$i+1])))
+				{
+					// ok
+				}
+				elseif ((isset($this->all_filters[$i]))
+				&& (isset($this->all_filters[$i+1])))
+				{
+					// good
+				}
+				elseif ((!isset($this->all_filters[$i]))
+				&& (isset($this->all_filters[$i+1]))
+				&& ($this->filter_exists($i+1)))
+				{
+					$move_me_down = array();
+					$move_me_down = $this->all_filters[$i+1];
+					$this->all_filters[$i] = array();
+					$this->all_filters[$i] = $move_me_down;
+					$this->all_filters[$i+1] = array();
+					unset($this->all_filters[$i+1]);
+					$did_squash = True;
+					break;
+				}
+			}
+			return $did_squash;
+		}
+		
+		function save_all_filters_to_repository()
+		{
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: ENTERING<br>'; }
+			// KEY SORT so the filters are numbered in acending array index order
+			ksort($this->all_filters);
+			// SQUASH / COMPACT $this->all_prefs so there are NO GAPS
+			// use a while statement in the future, for now use $i loop so we won't loop forever if something goes wrong
+			for ($i=0; $i < 11; $i++)
+			{
+				$did_squash = $this->squash_all_filters_gap();
+				if ($did_squash == False)
+				{
+					break;
+				}
+			}
 			
-			// SAVE TO PREFS DATABASE
-			// we called begin_request in the constructor, so we know the prefs object exists
-			// filters are based at [filters][X] where X is the filter_num, based on the [email] top level array tree
-			// first we delete any existing data at the desired prefs location
-			$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']';
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-			$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
+			// KEY SORT so the filters are numbered in acending array index order
+			ksort($this->all_filters);
+			
 			// now add this filter piece by piece
 			// we can only set a non-array value, but we can use array string for the base
 			// but we can grab structures
 			
-			// $this_filter['filter_num']	integer	use this as the array key based on [filters]
-			// $this_filter['filtername']	string (will require htmlslecialchars_encode and decode
-			$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["filtername"]';
-			if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['filtername'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-			$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['filtername']);
-
-			// $this_filter['source_accounts']	array
-			// $this_filter['source_accounts'][X]	array
-			// $this_filter['source_accounts'][X]['folder']	string
-			// $this_filter['source_accounts'][X]['acctnum']	integer
-			for ($i=0; $i < count($this_filter['source_accounts']); $i++)
-			{
-				// folder
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["source_accounts"]['.$i.']["folder"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['source_accounts'][$i]['folder'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['source_accounts'][$i]['folder']);
-				// acctnum
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["source_accounts"]['.$i.']["acctnum"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['source_accounts'][$i]['acctnum'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['source_accounts'][$i]['acctnum']);
-			}
+			// first we delete any existing data at the desired prefs location
+			$pref_struct_str = '["filters"]';
+			if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->delete_struct("email", $pref_struct_str) which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+			$GLOBALS['phpgw']->preferences->delete_struct('email',$pref_struct_str);
 			
-			// $this_filter['matches']	Array
-			// $this_filter['matches'][X]	Array
-			// $this_filter['matches'][X]['andor']	UNSET for $this_filter['matches'][0], SET for all the rest : and | or | ignore_me
-			// $this_filter['matches'][X]['examine']		known_string : IMAP search keys
-			// $this_filter['matches'][X]['comparator']	known_string : contains | notcontains
-			// $this_filter['matches'][X]['matchthis']	user_string
-			for ($i=0; $i < count($this_filter['matches']); $i++)
+			for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
 			{
-				// andor
-				if (isset($this_filter['matches'][$i]['andor']))
+				// SAVE TO PREFS DATABASE
+				// we called begin_request in the constructor, so we know the prefs object exists
+				
+				$this_filter = $this->all_filters[$filter_idx];
+				// filters are based at [filters][X] where X is the filter_num, based on the [email] top level array tree
+				
+				// $this_filter['filtername']	string (will require htmlslecialchars_encode and decode
+				$pref_struct_str = '["filters"]['.$filter_idx.']["filtername"]';
+				if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['filtername'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['filtername']);
+				
+				// $this_filter['source_accounts']	array
+				// $this_filter['source_accounts'][X]	array
+				// $this_filter['source_accounts'][X]['folder']	string
+				// $this_filter['source_accounts'][X]['acctnum']	integer
+				for ($i=0; $i < count($this_filter['source_accounts']); $i++)
 				{
-					$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["matches"]['.$i.']["andor"]';
-					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['andor'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['andor']);
+					// folder
+					$pref_struct_str = '["filters"]['.$filter_idx.']["source_accounts"]['.$i.']["folder"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['source_accounts'][$i]['folder'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['source_accounts'][$i]['folder']);
+					// acctnum
+					$pref_struct_str = '["filters"]['.$filter_idx.']["source_accounts"]['.$i.']["acctnum"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['source_accounts'][$i]['acctnum'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['source_accounts'][$i]['acctnum']);
 				}
-				// examine
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["matches"]['.$i.']["examine"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['examine'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['examine']);
-				// comparator
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["matches"]['.$i.']["comparator"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['comparator'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['comparator']);
-				// matchthis
-				// user_string, may need htmlslecialchars_encode decode and/or the user may forget to tnter data here
-				if ((!isset($this_filter['matches'][$i]['matchthis']))
-				|| (trim($this_filter['matches'][$i]['matchthis']) == ''))
+				
+				// $this_filter['matches']	Array
+				// $this_filter['matches'][X]	Array
+				// $this_filter['matches'][X]['andor']	UNSET for $this_filter['matches'][0], SET for all the rest : and | or | ignore_me
+				// $this_filter['matches'][X]['examine']		known_string : IMAP search keys
+				// $this_filter['matches'][X]['comparator']	known_string : contains | notcontains
+				// $this_filter['matches'][X]['matchthis']	user_string
+				for ($i=0; $i < count($this_filter['matches']); $i++)
 				{
-					$this_filter['matches'][$i]['matchthis'] = 'user_string_not_filled_by_user';
+					// andor
+					if (isset($this_filter['matches'][$i]['andor']))
+					{
+						$pref_struct_str = '["filters"]['.$filter_idx.']["matches"]['.$i.']["andor"]';
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['andor'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+						$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['andor']);
+					}
+					// examine
+					$pref_struct_str = '["filters"]['.$filter_idx.']["matches"]['.$i.']["examine"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['examine'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['examine']);
+					// comparator
+					$pref_struct_str = '["filters"]['.$filter_idx.']["matches"]['.$i.']["comparator"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['comparator'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['comparator']);
+					// matchthis
+					// user_string, may need htmlslecialchars_encode decode and/or the user may forget to tnter data here
+					if ((!isset($this_filter['matches'][$i]['matchthis']))
+					|| (trim($this_filter['matches'][$i]['matchthis']) == ''))
+					{
+						$this_filter['matches'][$i]['matchthis'] = 'user_string_not_filled_by_user';
+					}
+					$pref_struct_str = '["filters"]['.$filter_idx.']["matches"]['.$i.']["matchthis"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['matchthis'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['matchthis']);
 				}
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["matches"]['.$i.']["matchthis"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['matches'][$i]['matchthis'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['matches'][$i]['matchthis']);
+				
+				// $this_filter['actions']	Array
+				// $this_filter['actions'][X]		Array
+				// $this_filter['actions'][X]['judgement']	known_string
+				// $this_filter['actions'][X]['folder']		string contains URI style data ex. "&folder=INBOX.Trash&acctnum=0"
+				// $this_filter['actions'][X]['actiontext']	user_string
+				// $this_filter['actions'][X]['stop_filtering']	UNSET | SET string "True"
+				for ($i=0; $i < count($this_filter['actions']); $i++)
+				{
+					// judgement
+					$pref_struct_str = '["filters"]['.$filter_idx.']["actions"]['.$i.']["judgement"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['judgement'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['judgement']);
+					// folder
+					$pref_struct_str = '["filters"]['.$filter_idx.']["actions"]['.$i.']["folder"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['folder'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['folder']);
+					// actiontext
+					$pref_struct_str = '["filters"]['.$filter_idx.']["actions"]['.$i.']["actiontext"]';
+					if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['actiontext'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['actiontext']);
+					// stop_filtering
+					if (isset($this_filter['actions'][$i]['stop_filtering']))
+					{
+						$pref_struct_str = '["filters"]['.$filter_idx.']["actions"]['.$i.']["stop_filtering"]';
+						if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['stop_filtering'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
+						$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['stop_filtering']);
+					}
+				}
 			}
-			
-			// $this_filter['actions']	Array
-			// $this_filter['actions'][X]		Array
-			// $this_filter['actions'][X]['judgement']	known_string
-			// $this_filter['actions'][X]['folder']		string contains URI style data ex. "&folder=INBOX.Trash&acctnum=0"
-			// $this_filter['actions'][X]['actiontext']	user_string
-			// $this_filter['actions'][X]['stop_filtering']	UNSET | SET string "True"
-			for ($i=0; $i < count($this_filter['actions']); $i++)
-			{
-				// judgement
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["actions"]['.$i.']["judgement"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['judgement'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['judgement']);
-				// folder
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["actions"]['.$i.']["folder"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['folder'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['folder']);
-				// actiontext
-				$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["actions"]['.$i.']["actiontext"]';
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['actiontext'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-				$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['actiontext']);
-				// stop_filtering
-				if (isset($this_filter['actions'][$i]['stop_filtering']))
-				{
-					$pref_struct_str = '["filters"]['.$this_filter['filter_num'].']["actions"]['.$i.']["stop_filtering"]';
-					if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: using preferences->add_struct("email", $pref_struct_str, '.$this_filter['actions'][$i]['stop_filtering'].') which will eval $pref_struct_str='.$pref_struct_str.'<br>'; }
-					$GLOBALS['phpgw']->preferences->add_struct('email', $pref_struct_str, $this_filter['actions'][$i]['stop_filtering']);
-				}
-			}
-			// SORT THAT ARRAY by key, so the integer array heys go from lowest to hightest
-			ksort($GLOBALS['phpgw']->preferences->data['email']['filters']);
-			if ($this->debug_set_prefs > 2) { echo 'bofilters.process_submitted_data: direct pre-save $GLOBALS[phpgw]->preferences->data[email][filters] DUMP:<pre>'; print_r($GLOBALS['phpgw']->preferences->data['email']['filters']); echo '</pre>'; }
 			
 			// DONE processing prefs, SAVE to the Repository
-			if ($this->debug_set_prefs > 1) 
+			if ($this->debug_set_prefs > 3) 
 			{
-				echo 'bofilters.process_submitted_data: *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
+				echo 'bofilters.save_all_filters_to_repository: *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
 			}
 			else
 			{
-				if ($this->debug_set_prefs > 1) { echo 'bofilters.process_submitted_data: SAVING REPOSITORY<br>'; }
+				if ($this->debug_set_prefs > 2) { echo 'bofilters.save_all_filters_to_repository: direct pre-save $GLOBALS[phpgw]->preferences->data[email][filters] DUMP:<pre>'; print_r($GLOBALS['phpgw']->preferences->data['email']['filters']); echo '</pre>'; }
+				if ($this->debug_set_prefs > 1) { echo 'bofilters.save_all_filters_to_repository: SAVING REPOSITORY<br>'; }
 				$GLOBALS['phpgw']->preferences->save_repository();
+				// re-grab data from prefs
+				
 			}
 			// end the email session
 			$GLOBALS['phpgw']->msg->end_request();
@@ -378,44 +478,67 @@
 										'/index.php',
 										'menuaction=email.uifilters.filters_list');
 			
-			if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data: almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.save_all_filters_to_repository: almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
 			if ($this->debug_set_prefs > 1) 
 			{
-				echo 'bofilters.process_submitted_data: LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
+				echo 'bofilters.save_all_filters_to_repository: LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
 			}
 			else
 			{
-				if ($this->debug_set_prefs > 0) { echo 'bofilters.process_submitted_data: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+				if ($this->debug_set_prefs > 0) { echo 'bofilters.save_all_filters_to_repository: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
 				Header('Location: ' . $take_me_to_url);
 			}
 		}
 		
-		
-		function read_filter_data_from_prefs()
+		function delete_filter()
 		{
-			$this->all_filters = array();
-			// read sublevel data from prefs
-			// since we know the constructor called begin_request, we know we can get that data here:
-			if ((isset($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']))
-			&& (is_array($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']))
-			&& (count($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters']) > 0)
-			&& (isset($GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters'][0]['source_accounts'])))
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.delete_filter: ENTERING<br>'; }
+			// FILTER NUMBER
+			$filter_num = $this->obtain_filer_num();
+			
+			if (!$this->filter_exists($filter_num))
 			{
-				$this->all_filters = $GLOBALS['phpgw']->msg->unprocessed_prefs['email']['filters'];
+				echo 'bofilters.delete_filter: LEAVING with ERROR, filter $filter_num ['.serialize($filter_num).'] does not even exist';
+				return;
 			}
-			return $this->all_filters;
+			
+			// by now it's ok to unset the target filter
+			$this->all_filters[$filter_num] = array();
+			unset($this->all_filters[$filter_num]);
+			$this->save_all_filters_to_repository();
+			if ($this->debug_set_prefs > 0) { echo 'bofilters.delete_filter: LEAVING<br>'; }
 		}
 		
 		
+		function run_all_filters()
+		{
+			if ($this->debug > 0) { echo 'bofilters.run_all_filters: ENTERING<br>'; }
+			if (count($this->all_filters) == 0)
+			{
+				if ($this->debug > 0) { echo 'bofilters.run_all_filters: LEAVING with ERROR, no filters exist<br>'; }
+			}
+			
+			for ($filter_idx=0; $filter_idx < count($this->all_filters); $filter_idx++)
+			{
+				// APPLY THIS FILTER
+				if ($this->debug > 1) { echo 'bofilters.run_all_filters: calling $this->run_single_filter['.$filter_idx.']<br>'; }
+				$this->run_single_filter[$filter_idx];
+			}
+			if ($this->debug > 0) { echo 'bofilters.run_all_filters: LEAVING<br>'; }
+		}
 		
-		function run_single_filter()
+		function run_single_filter($filter_num='')
 		{
 			if ($this->debug > 0) { echo 'bofilters.run_single_filter: ENTERING<br>'; }
 			if (count($this->all_filters) == 0)
 			{
-				$this->read_filter_data_from_prefs();
+				if ($this->debug > 0) { echo 'bofilters.run_single_filter: LEAVING with ERROR, no filters exist<br>'; }
 			}
-			$filter_num = $this->obtain_filer_num();
+			if ((!isset($filter_num))
+			|| (trim((string)$filter_num) == ''))
+			{
+				$filter_num = $this->obtain_filer_num();
+			}
 			$filter_exists = $this->filter_exists($filter_num);
 			if (!$filter_exists)
 			{

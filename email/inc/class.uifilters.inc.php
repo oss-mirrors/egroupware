@@ -18,21 +18,17 @@
 			'filters_list' => True,
 			'filters_edit' => True
 		);
-		var $bo;		
+		var $bo;
+		var $theme;
+		var $nextmatchs;
 		var $debug = 0;
 
 		function uifilters()
 		{
-			
-		}
-		
-		function filters_list()
-		{			
-			// FUTURE
-			// for now, pass off to edit so we at leadt show something
-			if ($this->debug > 0) { echo 'uifilters.filters_list: function not coded yet, pass off to $this->filters_edit()<br>'."\r\n"; }
-			$this->filters_edit();
-			
+			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
+			$this->theme = $GLOBALS['phpgw_info']['theme'];
+			// make the filters object
+			$this->bo = CreateObject("email.bofilters");
 		}
 		
 		function filters_edit()
@@ -96,8 +92,6 @@
 			$GLOBALS['phpgw']->template->set_var('lang_cancel',lang('Cancel'));
 			
 			
-			// make the filters object
-			$this->bo = CreateObject("email.bofilters");
 			// get all filters
 			$this->bo->read_filter_data_from_prefs();
 			
@@ -155,7 +149,8 @@
 			}
 			else
 			{
-				$filter_name_box_value = 'Filter '.$filter_num;
+				//$filter_name_box_value = 'Filter '.$filter_num;
+				$filter_name_box_value = 'My Mail Filter';
 			}
 			
 			$GLOBALS['phpgw']->template->set_var('filter_name_box_name',$filter_name_box_name);
@@ -411,10 +406,10 @@
 			$GLOBALS['phpgw']->template->set_var('form_edit_filter_action',$form_edit_filter_action);
 			$GLOBALS['phpgw']->template->set_var('form_cancel_action',$form_cancel_action);
 			
-			$GLOBALS['phpgw']->template->set_var('body_bg_color',$GLOBALS['phpgw_info']['theme']['bg_color']);
-			$GLOBALS['phpgw']->template->set_var('row_on',$GLOBALS['phpgw_info']['theme']['row_on']);
-			$GLOBALS['phpgw']->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
-			$GLOBALS['phpgw']->template->set_var('row_text',$GLOBALS['phpgw_info']['theme']['row_text']);
+			$GLOBALS['phpgw']->template->set_var('body_bg_color',$this->theme['bg_color']);
+			$GLOBALS['phpgw']->template->set_var('row_on',$this->theme['row_on']);
+			$GLOBALS['phpgw']->template->set_var('row_off',$this->theme['row_off']);
+			$GLOBALS['phpgw']->template->set_var('row_text',$this->theme['row_text']);
 			
 			
 			
@@ -439,6 +434,9 @@
 			}
 			$GLOBALS['phpgw']->template->set_var('V_mlist_html',$mlist_html);
 			
+			$GLOBALS['phpgw']->template->pparse('out','T_filters_out');
+			
+			$GLOBALS['phpgw']->msg->end_request();
 			
 			// GENERAL INFO
 			//echo 'get_loaded_extensions returns:<br><pre>'; print_r(get_loaded_extensions()); echo '</pre>';
@@ -487,11 +485,114 @@
 			echo 'SE_FREE: ['.(string)SE_FREE.']<br>'."\r\n";
 			echo 'SE_NOPREFETCH: ['.(string)SE_NOPREFETCH.']<br>'."\r\n";
 			*/
-			
-			$GLOBALS['phpgw']->template->pparse('out','T_filters_out');
-			
-			$GLOBALS['phpgw']->msg->end_request();
-		
 		}
+		
+		
+		function filters_list()
+		{
+			unset($GLOBALS['phpgw_info']['flags']['noheader']);
+			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
+			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
+			$GLOBALS['phpgw_info']['flags']['noappfooter'] = True;
+			$GLOBALS['phpgw']->common->phpgw_header();
+			
+			$GLOBALS['phpgw']->template->set_file(
+				Array(
+					'T_filters_list'	=> 'filters_list.tpl'
+				)
+			);
+			$GLOBALS['phpgw']->template->set_block('T_filters_list','B_filter_list_row','V_filter_list_row');
+			
+			$var = Array(
+				'pref_errors'		=> '',
+				'font'				=> $this->theme['font'],
+				'tr_titles_color'	=> $this->theme['th_bg'],
+				'page_title'		=> lang('E-Mail INBOX Filters List'),
+				'filter_name_header' => lang('Filter [number] and Name'),
+				'lang_move_up'		=> lang('Move Up'),
+				'lang_move_down'		=> lang('Move Down'),
+				'lang_edit'			=> lang('Edit'),
+				'lang_delete'		=> lang('Delete')
+			);
+			$GLOBALS['phpgw']->template->set_var($var);
+			
+			$filters_list = array();
+			// get all filters
+			$filters_list = $this->bo->read_filter_data_from_prefs();
+			
+			
+			if ($this->debug > 2) { echo 'email.uifilters.filters_list: $filters_list dump<pre>'; print_r($filters_list); echo '</pre>'; }
+			
+			$tr_color = $this->theme['row_off'];
+			$loops = count($filters_list);
+			if ($loops == 0)
+			{
+				$nothing = '&nbsp;';
+				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+				$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+				$GLOBALS['phpgw']->template->set_var('filter_identity',$nothing);
+				$GLOBALS['phpgw']->template->set_var('move_up_href',$nothing);
+				$GLOBALS['phpgw']->template->set_var('move_down_href',$nothing);
+				$GLOBALS['phpgw']->template->set_var('edit_href',$nothing);
+				$GLOBALS['phpgw']->template->set_var('delete_href',$nothing);
+				$GLOBALS['phpgw']->template->parse('V_filter_list_row','B_filter_list_row');
+			}
+			else
+			{
+				for($i=0; $i < $loops; $i++)
+				{
+					// add extra display and handling data
+					$filters_list[$i]['display_string'] = '['.$i.'] '.$filters_list[$i]['filtername'];
+					$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
+					
+					$filters_list[$i]['edit_url'] = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.uifilters.filters_edit'
+									.'&filter_num='.$i);
+					$filters_list[$i]['edit_href'] = '<a href="'.$filters_list[$i]['edit_url'].'">'.lang('Edit').'</a>';
+					
+					$filters_list[$i]['delete_url'] = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.bofilters.delete_filter'
+									.'&filter_num='.$i);
+					$filters_list[$i]['delete_href'] = '<a href="'.$filters_list[$i]['delete_url'].'">'.lang('Delete').'</a>';
+					
+					$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
+					$GLOBALS['phpgw']->template->set_var('filter_identity',$filters_list[$i]['display_string']);
+					$GLOBALS['phpgw']->template->set_var('move_up_href',$filters_list[$i]['move_up_href']);
+					$GLOBALS['phpgw']->template->set_var('move_down_href',$filters_list[$i]['move_down_href']);
+					$GLOBALS['phpgw']->template->set_var('edit_href',$filters_list[$i]['edit_href']);
+					$GLOBALS['phpgw']->template->set_var('delete_href',$filters_list[$i]['delete_href']);
+					$GLOBALS['phpgw']->template->parse('V_filter_list_row','B_filter_list_row', True);
+				}
+			}
+			$add_new_filter_url = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.uifilters.filters_edit'
+									.'&filter_num='.$this->bo->add_new_filter_token);
+			$add_new_filter_href = '<a href="'.$add_new_filter_url.'">'.lang('New Filter').'</a>';
+			$GLOBALS['phpgw']->template->set_var('add_new_filter_href',$add_new_filter_href);
+			
+			$done_url = $GLOBALS['phpgw']->link(
+									'/preferences/index.php');
+			$done_href = '<a href="'.$done_url.'">'.lang('Done').'</a>';
+			$GLOBALS['phpgw']->template->set_var('done_href',$done_href);
+			
+			// TEST AND APPLY LINKS
+			$run_all_filters_url = $GLOBALS['phpgw']->link(
+									'/index.php',
+									 'menuaction=email.bofilters.run_all_filters');
+			$run_all_filters_href = '<a href="'.$run_all_filters_url.'">'.lang('Run ALL Filters').'</a>';
+			$GLOBALS['phpgw']->template->set_var('run_all_filters_href',$run_all_filters_href);
+			
+			$test_all_filters_url = $run_all_filters_url.'&filter_test=1';
+			$test_all_filters_href = '<a href="'.$test_all_filters_url.'">Test Run All Filters</a>';
+			$GLOBALS['phpgw']->template->set_var('test_all_filters_href',$test_all_filters_href);
+			
+			// output the template
+			$GLOBALS['phpgw']->template->pfp('out','T_filters_list');
+		}
+		
+		
 	}
 ?>
