@@ -167,7 +167,7 @@
 
 			$ldap = $phpgw->common->ldapConnect();
 			// need to be fixed
-			if(is_int(intval($_accountID)))
+			if(is_numeric($_accountID))
 			{
 				$filter = "uidnumber=$_accountID";
 			}
@@ -175,7 +175,7 @@
 			{
 				$filter = "uid=$_accountID";
 			}
-			
+
 			$sri = @ldap_search($ldap,$phpgw_info['server']['ldap_context'],$filter);
 			if ($sri)
 			{
