@@ -21,4 +21,5 @@ else {
 		echo $GLOBALS['phpgw']->link("/wiki/index.php");
 		echo "\">Go Back</a>";
 }
+$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -112,4 +112,6 @@ if(!empty($ActionList[$action]))
 
 // Expire old versions, etc.
 $pagestore->maintain();
+
+$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
