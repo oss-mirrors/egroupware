@@ -25,7 +25,7 @@
 <table width="39%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50" align="left">
-			<input type="submit" name="submit" value="{lang_edit}">
+			<input type="submit" name="submit" value="{lang_save}">
 			</form>
 		</td>
 	</tr>

@@ -394,6 +394,23 @@
 			return $activities_list;
 		}
 
+		function select_hours_activities($project_id, $activity = '')
+		{
+			$this->db->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='"
+							. $project_id . "' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc",__LINE__,__FILE__);
+
+			while ($this->db->next_record())
+			{
+				$hours_act .= '<option value="' . $this->db->f('activity_id') . '"';
+				if($this->db->f('activity_id') == $activity)
+				{
+					$hours_act .= ' selected';
+				}
+				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . '</option>';
+			}
+			return $hours_act;
+		}
+
 		function return_value($item)
 		{
 			$this->db->query("select num from phpgw_p_projects where id='$item'",__LINE__,__FILE__);

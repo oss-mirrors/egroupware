@@ -36,29 +36,33 @@
 
 		var $public_functions = array
 		(
-			'cached_accounts'		=> True,
-			'list_projects'			=> True,
-			'check_perms'			=> True,
-			'check_values'			=> True,
-			'select_project_list'	=> True,
-			'check_act_values'		=> True,
-			'save_project'			=> True,
-			'read_single_project'	=> True,
-			'delete_pa'				=> True,
-			'exists'				=> True,
-			'read_customer_data'	=> True,
-			'isprojectadmin'		=> True,
-			'select_activity_list'	=> True,
-			'coordinator_list'		=> True,
-			'check_prefs'			=> True,
-			'get_prefs'				=> True,
-			'list_activities'		=> True,
-			'read_single_activity'	=> True,
-			'save_activity'			=> True,
-			'read_abook'			=> True,
-			'read_single_contact'	=> True,
-			'read_prefs'			=> True,
-			'save_prefs'			=> True		
+			'cached_accounts'			=> True,
+			'list_projects'				=> True,
+			'check_perms'				=> True,
+			'check_values'				=> True,
+			'select_project_list'		=> True,
+			'check_act_values'			=> True,
+			'save_project'				=> True,
+			'read_single_project'		=> True,
+			'delete_pa'					=> True,
+			'exists'					=> True,
+			'read_customer_data'		=> True,
+			'isprojectadmin'			=> True,
+			'select_activity_list'		=> True,
+			'employee_list'				=> True,
+			'check_prefs'				=> True,
+			'get_prefs'					=> True,
+			'list_activities'			=> True,
+			'read_single_activity'		=> True,
+			'save_activity'				=> True,
+			'read_abook'				=> True,
+			'read_single_contact'		=> True,
+			'read_prefs'				=> True,
+			'save_prefs'				=> True,
+			'return_value'				=> True,
+			'select_activities_list'	=> True,
+			'select_pro_activities'		=> True,
+			'select_hours_activities'	=> True
 		);
 
 		function boprojects($session=False, $action = '')
@@ -157,6 +161,12 @@
 			return $entry;
 		}
 
+		function return_value($item)
+		{
+			$thing = $this->soprojects->return_value($item);
+			return $thing;
+		}
+
 		function read_prefs()
 		{
 			$GLOBALS['phpgw']->preferences->read_repository();
@@ -216,9 +226,16 @@
 			return $customer;
 		}
 
-		function coordinator_list()
+		function employee_list()
 		{		
 			$employees = $GLOBALS['phpgw']->accounts->get_list('accounts');
+
+
+
+
+
+
+
 			return $employees;
 		}
 
@@ -367,6 +384,12 @@
 		function select_pro_activities($project_id, $pro_parent, $billable)
 		{
 			$activities_list = $this->soprojects->select_pro_activities($project_id, $pro_parent, $billable);
+			return $activities_list;
+		}
+
+		function select_hours_activities($project_id, $act)
+		{
+			$activities_list = $this->soprojects->select_hours_activities($project_id, $act);
 			return $activities_list;
 		}
 

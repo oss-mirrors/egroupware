@@ -411,6 +411,43 @@
 			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
+		function coordinator_format($employee = '')
+		{
+			if (! $employee)
+			{
+				$employee = $this->account;
+			}
+
+			$employees = $this->boprojects->employee_list();
+
+			while (list($null,$account) = each($employees))
+			{
+				$coordinator_list .= '<option value="' . $account['account_id'] . '"';
+				if($account['account_id'] == $employee)
+				$coordinator_list .= ' selected';
+				$coordinator_list .= '>' . $account['account_firstname'] . ' ' . $account['account_lastname']
+										. ' [ ' . $account['account_lid'] . ' ]' . '</option>' . "\n";
+			}
+			return $coordinator_list;
+		}
+
+		function status_format($status = '')
+		{
+			switch ($status)
+			{
+				case 'active':		$stat_sel[0]=' selected'; break;
+				case 'nonactive':	$stat_sel[1]=' selected'; break;
+				case 'archive':		$stat_sel[2]=' selected'; break;
+			}
+
+			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
+						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
+						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
+			return $status_list;
+		}
+
+
+
 		function add_project()
 		{
 			global $submit, $cat_id, $new_cat, $abid, $name, $values, $book_activities, $bill_activities, $pro_parent, $action;
@@ -452,6 +489,7 @@
 			$this->t->set_block('projects_add','add','addhandle');
 			$this->t->set_block('projects_add','edit','edithandle');
 
+			$nopref = $this->boprojects->check_prefs();
 			if ($nopref)
 			{
 				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
@@ -496,32 +534,9 @@
 																				$this->sbox->getDays('values[eday]',$values['eday'])));
 
 
-			switch ($values['status'])
-			{
-				case 'active':		$stat_sel[0]=' selected'; break;
-				case 'nonactive':	$stat_sel[1]=' selected'; break;
-				case 'archive':		$stat_sel[2]=' selected'; break;
-			}
+			$this->t->set_var('status_list',$this->status_format($values['status']));
 
-			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
-						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
-						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
-
-			$this->t->set_var('status_list',$status_list);
-
-			$employees = $this->boprojects->coordinator_list();
-	
-			while (list($null,$account) = each($employees))
-			{
-				$coordinator_list .= '<option value="' . $account['account_id'] . '"';
-				if($account['account_id'] == $this->account)
-				$coordinator_list .= ' selected';
-				$coordinator_list .= '>' . $account['account_firstname'] . ' ' . $account['account_lastname']
-										. ' [ ' . $account['account_lid'] . ' ]' . '</option>' . "\n";
-			}
-
-			$this->t->set_var('coordinator_list',$coordinator_list);
-
+			$this->t->set_var('coordinator_list',$this->coordinator_format($values['coordinator']));
 
 			$this->t->set_var('budget',$values['budget']);
 
@@ -627,6 +642,7 @@
 			$this->t->set_block('projects_edit','add','addhandle');
 			$this->t->set_block('projects_edit','edit','edithandle');
 
+			$nopref = $this->boprojects->check_prefs();
 			if ($nopref)
 			{
 				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
@@ -684,32 +700,9 @@
 																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
 																							$this->sbox->getDays('values[eday]',$values['eday'])));
 
+			$this->t->set_var('status_list',$this->status_format($values['status']));
 
-			switch ($values['status'])
-			{
-				case 'active':		$stat_sel[0]=' selected'; break;
-				case 'nonactive':	$stat_sel[1]=' selected'; break;
-				case 'archive':		$stat_sel[2]=' selected'; break;
-			}
-
-			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
-						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
-						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
-
-			$this->t->set_var('status_list',$status_list);
-
-			$employees = $this->boprojects->coordinator_list();
-	
-			while (list($null,$account) = each($employees))
-			{
-				$coordinator_list .= '<option value="' . $account['account_id'] . '"';
-				if($account['account_id'] == $values['coordinator'])
-				$coordinator_list .= ' selected';
-				$coordinator_list .= '>' . $account['account_firstname'] . ' ' . $account['account_lastname']
-										. ' [ ' . $account['account_lid'] . ' ]' . '</option>' . "\n";
-			}
-
-			$this->t->set_var('coordinator_list',$coordinator_list);
+			$this->t->set_var('coordinator_list',$this->coordinator_format($values['coordinator']));
 
 			$this->t->set_var('budget',$values['budget']);
 
@@ -795,6 +788,7 @@
 
 			$this->t->set_file(array('view' => 'view.tpl'));
 
+			$nopref = $this->boprojects->check_prefs();
 			if ($nopref)
 			{
 				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));

@@ -103,58 +103,73 @@
 			return $single_pro;
 		}
 
-		function check_values($values, $book_activities, $bill_activities)
+		function check_values($values)
 		{
-			global $phpgw;
-
 			if (strlen($values['descr']) >= 8000)
 			{
 				$error[] = lang('Description can not exceed 8000 characters in length');
 			}
 
-			if (! $values['choose'])
+			if ($shour && ($shour != 0) && ($shour != 12))
 			{
-				if (! $values['number'])
-				{
-					$error[] = lang('Please enter an ID !');
-				}
-				else
-				{
-					$exists = $this->soprojects->exists($values['number'], $values['project_id']);
-
-					if ($exists)
-					{
-						$error[] = lang('That ID has been used already !');
-					}
-				}
+				if ($sampm=='pm') { $shour = $shour + 12; }
 			}
 
-			if ((! $book_activities) && (! $bill_activities))
+			if ($shour && ($shour == 12))
 			{
-				$error[] = lang('Please choose activities for that project first !');
+				if ($sampm=='am') { $shour = 0; }
 			}
 
-			if ($values['smonth'] || $values['sday'] || $values['syear'])
+			if ($ehour && ($ehour != 0) && ($ehour != 12))
 			{
-					if (! checkdate($values['smonth'],$values['sday'],$values['syear']))
-					{
-						$error[] = lang('You have entered an starting invalid date');
-					}
+				if ($eampm=='pm') { $ehour = $ehour + 12; }
 			}
 
-			if ($values['emonth'] || $values['eday'] || $values['eyear'])
+			if ($ehour && ($ehour == 12))
 			{
-				if (! checkdate($values['emonth'],$values['eday'],$values['eyear']))
-				{
-					$error[] = lang('You have entered an ending invalid date');
-				}
+				if ($eampm=='am') { $ehour = 0; }
 			}
 
-/*			if ($values['edate'] < $values['sdate'] && $values['edate'] && $values['sdate'])
+			if (checkdate($smonth,$sday,$syear)) { $sdate = mktime($shour,$smin,0,$smonth,$sday,$syear); } 
+			else
+		{
+			if ($shour && $smin && $smonth && $sday && $syear)
 			{
-				$error[] = lang('Ending date can not be before start date');
-			} */
+				$error[$errorcount++] = lang('You have entered an invalid start date !') . '<br>' . $shour . ':' . $smin  . ' ' . $smonth . '/' . $sday . '/' . $syear;
+			}
+		}
 
+		if (checkdate($emonth,$eday,$eyear)) { $edate = mktime($ehour,$emin,0,$emonth,$eday,$eyear); } 
+		else
+		{
+			if ($ehour && $emin && $emonth && $eday && $eyear)
+			{
+				$error[$errorcount++] = lang('You have entered an invalid end date !') . '<br>' . $ehour . ':' . $emin . ' ' . $emonth . '/' . $eday . '/' . $eyear;
+			}
+		}
+
+		$phpgw->db->query("SELECT minperae,billperae,remarkreq FROM phpgw_p_activities WHERE id ='$activity'");
+		$phpgw->db->next_record();
+		if ($phpgw->db->f(0) == 0) { $error[$errorcount++] = lang('You have selected an invalid activity !'); }
+		else
+		{
+			$billperae = $phpgw->db->f('billperae');
+			$minperae = $phpgw->db->f('minperae');
+			if (($phpgw->db->f('remarkreq')=='Y') and (!$remark)) { $error[$errorcount++] = lang('Please enter a remark !'); }
+		}
+
+		if (! $error)
+		{
+			$remark = addslashes($remark);
+			$ae_minutes = $hours*60+$minutes;
+//    $ae_minutes = ceil($ae_minutes / $phpgw->db->f("minperae"));
+
+			$phpgw->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,status,minperae,"
+							. "billperae,employee) VALUES ('$project_id','$activity','" . time() . "','$sdate','$edate','$hours_descr','$remark','$ae_minutes',"
+							. "'$status','$minperae','$billperae','$employee')");
+
+		}
+	}
 			if (is_array($error))
 			{
 				return $error;
