@@ -14,21 +14,24 @@ class fud_sidebox_hooks
 {
 	function all_hooks($args)
 	{
+		if (empty($GLOBALS['t'])) {
+			fud_use('db.inc');
+		}
+		$GLOBALS['adm_file'] = array();
+		$GLOBALS['fudh_uopt'] = (int) q_singleval("SELECT users_opt FROM phpgw_fud_users WHERE id!=1 AND egw_id=".(int)$GLOBALS['phpgw_info']['user']['account_id']);
+		if (!empty($GLOBALS['phpgw_info']['user']['apps']['admin'])) {
+			$GLOBALS['fudh_uopt'] |= 1048576;
+		}
+		fud_use('usercp.inc');
+
+		/* regular user links */
 		if (!empty($GLOBALS['t'])) {
-			$GLOBALS['adm_file'] = array();
-			$GLOBALS['fudh_uopt'] = (int) q_singleval("SELECT users_opt FROM phpgw_fud_users WHERE id!=1 AND egw_id=".(int)$GLOBALS['phpgw_info']['user']['account_id']);
-			if (!empty($GLOBALS['phpgw_info']['user']['apps']['admin'])) {
-				$GLOBALS['fudh_uopt'] |= 1048576;
-			}
-			fud_use('usercp.inc');
-
-			/* regular user links */
 			display_sidebox('fudforum', lang('Preferences'), $GLOBALS['usr_file']);
+		}
 
-			/* admin stuff */
-			if ($GLOBALS['adm_file']) {
-				display_sidebox('fudforum', lang('Administration'), $GLOBALS['adm_file']);
-			}
+		/* admin stuff */
+		if ($GLOBALS['adm_file']) {
+			display_sidebox('fudforum', lang('Administration'), $GLOBALS['adm_file']);
 		}
 	}
 }
