@@ -189,7 +189,7 @@ views:				Views
 vote:				{VAR: frm->n_rating}stemmer
 vote_button:			Stem
 vote_for_thread:		Stem
-was_moved_msg:			Moderatoren har flyttet tr&aring;den <a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> til forumet <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			Moderatoren har flyttet tr&aring;den <a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> til forumet <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		Velkommen <b>{VAR: usr->alias}</b>! Ditt forrige bes&oslash;k var {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			vis hva folk holder p&aring; med
 reported_del_report:		Slett rapport
@@ -473,7 +473,7 @@ remail_message:			Melding:
 remail_send_now:		Send e-post n&aring;
 remail_anon_opt:		Kopier denne meldingen til en valgbar e-postklient for &aring; sende til dine kontakter.
 remail_done:			Klart
-remail_sent_conf:		E-posten til din kontakt {VAR-HTML: _POST['femail']} med emnet{{VAR: data->subject} er sendt.
+remail_sent_conf:		E-posten til din kontakt {VAR-HTML: _POST['femail']} med emnet{VAR: data->subject} er sendt.
 remail_continue:		Fortsett
 remail_error:			En feil har oppst&aring;tt
 mklist_type:			Type:

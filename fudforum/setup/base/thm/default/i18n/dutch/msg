@@ -188,7 +188,7 @@ views:				keer bekeken
 vote:				{VAR: frm->n_rating} stemmen
 vote_button:			stem
 vote_for_thread:		stem
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> has been moved to <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a> door de moderator
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> has been moved to <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a> door de moderator
 welcome_message:		Welkom <b>{VAR: usr->alias}</b>, je laatste bezoek was op {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			laat zien wat de mensen aan het doen zijn
 reported_del_report:		Verwijder Raport
@@ -475,7 +475,7 @@ remail_message:			Bericht:
 remail_send_now:		verzend Email
 remail_anon_opt:		Copieer dit bericht naar een mail programma van uw keuze om het naar uw vrienden te versturen.
 remail_done:			Gedaan
-remail_sent_conf:		De email naar uw vriend op {VAR-HTML: _POST['femail']} over het {{VAR: data->subject} onderwerp was succesvol verstuurd.
+remail_sent_conf:		De email naar uw vriend op {VAR-HTML: _POST['femail']} over het {VAR: data->subject} onderwerp was succesvol verstuurd.
 remail_continue:		Doorgaan
 remail_error:			U heeft een fout
 mklist_type:			Type:

@@ -188,7 +188,7 @@ views:				點選
 vote:				{VAR: frm->n_rating} 投票
 vote_button:			投票
 vote_for_thread:		投票
-was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> 已經被版主移至<a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> 已經被版主移至<a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		歡迎！ <b>{VAR: usr->alias}</b>, 您最後一次登入是 {DATE: usr->last_visit %Y-%m-%d %H:%M}
 what_ppl_doing:			顯示瀏覽者的操作
 reported_del_report:		刪除報告
@@ -474,7 +474,7 @@ remail_message:			內容：
 remail_send_now:		發送郵件
 remail_anon_opt:		把這些內容拷貝到您選擇的郵件網址中，發送給您的朋友。
 remail_done:			完成
-remail_sent_conf:		給您的朋友 {VAR-HTML: _POST['femail']} 的關於{{VAR: data->subject} 的郵件已經成功發送。
+remail_sent_conf:		給您的朋友 {VAR-HTML: _POST['femail']} 的關於{VAR: data->subject} 的郵件已經成功發送。
 remail_continue:		繼續
 remail_error:			發生了錯誤
 mklist_type:			類型:

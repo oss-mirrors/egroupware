@@ -188,7 +188,7 @@ views:				Vistas
 vote:				{VAR: frm->n_rating} Voto(s)
 vote_button:			Votar
 vote_for_thread:		Votar
-was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _RSID}" class="GenLink">{VAR: r[2]}</a> ha sido movido a <a href="{ROOT}?t={DEF: t_thread_view}&amp;frm_id={VAR: r[11]}&amp;{DEF: _RSID}" class="GenLink">{{VAR: r[12]}</a> por el moderador
+was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _RSID}" class="GenLink">{VAR: r[2]}</a> ha sido movido a <a href="{ROOT}?t={DEF: t_thread_view}&amp;frm_id={VAR: r[11]}&amp;{DEF: _RSID}" class="GenLink">{VAR: r[12]}</a> por el moderador
 welcome_message:		Bienvenido <b>{VAR: usr->alias}</b>, su última visita fue el {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			Mostrar lo que la gente está haciendo
 reported_del_report:		Borrar Reporte
@@ -473,7 +473,7 @@ remail_message:			Mensaje:
 remail_send_now:		Enviar E-mail Ahora
 remail_anon_opt:		Copiar este mensaje a un cliente de correo elegido por Ud, para ser enviado a su(s) amigo(s).
 remail_done:			Hecho
-remail_sent_conf:		El e-mail a su amigo en {VAR-HTML: _POST['femail']} acerca de {{VAR: data->subject} fue enviado exitosamente.
+remail_sent_conf:		El e-mail a su amigo en {VAR-HTML: _POST['femail']} acerca de {VAR: data->subject} fue enviado exitosamente.
 remail_continue:		Continuar
 remail_error:			Ud tiene un error
 mklist_type:			Tipo:

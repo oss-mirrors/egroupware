@@ -188,7 +188,7 @@ views:				Pârskati
 vote:				{VAR: frm->n_rating}balsis
 vote_button:			Balsot
 vote_for_thread:		Novçrtçjums
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> moderâtors pârcçla uz forumu <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> moderâtors pârcçla uz forumu <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		Sveiki <b><u>{VAR: usr->alias}</u></b>, prieks Jûs atkal redzçt kopð {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			parâdît ko kurð dara
 reported_del_report:		Dzçst atskaiti
@@ -474,7 +474,7 @@ remail_message:			Publikâcija:
 remail_send_now:		Nosûtît E-pastu
 remail_anon_opt:		Pârkopçjiet publikâciju uz E-pasta klienta programmu (pie. Outlook Express), lai pârsûtîtu saviem draugiem.
 remail_done:			Gatavs
-remail_sent_conf:		Elektroniskâ vçstule uz adresi {VAR-HTML: _POST['femail']} par tçmu {{VAR: data->subject} veiksmîgi nosûtîta.
+remail_sent_conf:		Elektroniskâ vçstule uz adresi {VAR-HTML: _POST['femail']} par tçmu {VAR: data->subject} veiksmîgi nosûtîta.
 remail_continue:		Turpinât
 remail_error:			Kïûda
 mklist_type:			Tips:

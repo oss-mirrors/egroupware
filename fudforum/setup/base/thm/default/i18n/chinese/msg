@@ -473,7 +473,7 @@ remail_message:			内容：
 remail_send_now:		发送邮件
 remail_anon_opt:		把这些内容拷贝到你选择的邮件地址中，发送给你的朋友。
 remail_done:			完成
-remail_sent_conf:		给你的朋友 {VAR-HTML: _POST['femail']} 的关于{{VAR: data->subject} 的邮件已经成功发送。
+remail_sent_conf:		给你的朋友 {VAR-HTML: _POST['femail']} 的关于{VAR: data->subject} 的邮件已经成功发送。
 remail_continue:		继续
 remail_error:			发生了错误
 mklist_type:			类型：

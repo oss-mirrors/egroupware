@@ -188,7 +188,7 @@ views:				Видяно
 vote:				{VAR: frm->n_rating} гласа
 vote_button:			Гласувай
 vote_for_thread:		Гласувай
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> е преместено на <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> е преместено на <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		Добре дошли, <b>{VAR: usr->alias}</b>, вашето последно посещение на форума: {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			покажи кой какво прави
 reported_del_report:		Изтрий доклада
@@ -476,7 +476,7 @@ remail_message:			Съобщение:
 remail_send_now:		Изпрати e-mailа
 remail_anon_opt:		Копирай съобщението в твоята програма за изпращане на електронна поща и го прати на приятел.
 remail_done:			Готово
-remail_sent_conf:		Е-мейл за адрес {VAR-HTML: _POST['femail']} със заглавие {{VAR: data->subject} е изпратено успешно.
+remail_sent_conf:		Е-мейл за адрес {VAR-HTML: _POST['femail']} със заглавие {VAR: data->subject} е изпратено успешно.
 remail_continue:		Продължи
 remail_error:			Възникна грешка
 mklist_type:			Вид:

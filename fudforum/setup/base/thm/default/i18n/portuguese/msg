@@ -188,7 +188,7 @@ views:				Vistas
 vote:				{VAR: frm->n_rating} Voto(s)
 vote_button:			Voto
 vote_for_thread:		Voto
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> foi movido para <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a> pelo moderador
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> foi movido para <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a> pelo moderador
 welcome_message:		Bem vindo <b>{VAR: usr->alias}</b>, a sua ultima visita foi em {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			Mostrar o que os membros estão a fazer
 reported_del_report:		Apagar relatório
@@ -476,7 +476,7 @@ remail_message:			Mensagem:
 remail_send_now:		Enviar E-mail agora
 remail_anon_opt:		Copiar esta mensagem para um cliente de e-mail á sua escolha e envie-o aos seus amigos
 remail_done:			Concluido
-remail_sent_conf:		O e-mail do seu amigo {VAR-HTML: _POST['femail']} sobre {{VAR: data->subject} foi enviado com sucesso.
+remail_sent_conf:		O e-mail do seu amigo {VAR-HTML: _POST['femail']} sobre {VAR: data->subject} foi enviado com sucesso.
 remail_continue:		Continuar
 remail_error:			Tem um erro
 mklist_type:			Tipo:

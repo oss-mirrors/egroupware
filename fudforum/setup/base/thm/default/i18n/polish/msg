@@ -189,7 +189,7 @@ views:				Ods³on
 vote:				{VAR: frm->n_rating} G³osów
 vote_button:			G³osuj
 vote_for_thread:		G³osuj
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> zosta³ przeniesiony do forum <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a> przez moderatora.
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> zosta³ przeniesiony do forum <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a> przez moderatora.
 welcome_message:		Witaj <b>{VAR: usr->alias}</b>, Twoja ostatnia wizyta by³a dnia {DATE: usr->last_visit %a, %d %B %Y %H:%M}.
 what_ppl_doing:			poka¿, co robi± inni u¿ytkownicy
 reported_del_report:		Usuñ Zg³oszenie
@@ -473,7 +473,7 @@ remail_message:			Wiadomo¶æ:
 remail_send_now:		Wy¶lij teraz
 remail_anon_opt:		Skopiuj tê wiadomo¶æ do wybranego klienta poczty, aby wys³aæ go do swoich znajomych.
 remail_done:			Zrobione
-remail_sent_conf:		List do Twojego znajomego o adresie {VAR-HTML: _POST['femail']} o temacie {{VAR: data->subject} zosta³ pomy¶lnie wys³any.
+remail_sent_conf:		List do Twojego znajomego o adresie {VAR-HTML: _POST['femail']} o temacie {VAR: data->subject} zosta³ pomy¶lnie wys³any.
 remail_continue:		Kontynuuj
 remail_error:			Zosta³ wykryty b³±d
 mklist_type:			Typ:

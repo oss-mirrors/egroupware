@@ -188,7 +188,7 @@ views:				Zobrazení
 vote:				{VAR: frm->n_rating} hlasù
 vote_button:			Hlasovat
 vote_for_thread:		Hlasovat
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> byla pøemístìna do <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a> moderátorem
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> byla pøemístìna do <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a> moderátorem
 welcome_message:		Vítejte <b>{VAR: usr->alias}</b>, tvoje poslední náv¹tìva byla v {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			uka¾, co dìlají ostatní
 reported_del_report:		Zpráva o smazání
@@ -476,7 +476,7 @@ remail_message:			Zpráva:
 remail_send_now:		Odeslat email
 remail_anon_opt:		Zkopírovat zprávu do va¹eho emaulového klienta k odeslání.
 remail_done:			Hotovo
-remail_sent_conf:		Email pro {VAR-HTML: _POST['femail']} ohlednì {{VAR: data->subject} byl úspì¹nì odeslán.
+remail_sent_conf:		Email pro {VAR-HTML: _POST['femail']} ohlednì {VAR: data->subject} byl úspì¹nì odeslán.
 remail_continue:		Popkraèovat
 remail_error:			Máte chybu
 mklist_type:			Typ:

@@ -188,7 +188,7 @@ views:				Просмотров
 vote:				Голосов: {VAR: frm->n_rating}
 vote_button:			Проголосовать
 vote_for_thread:		Оценить
-was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> перенесено модератором в форум <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			<a href="{TEMPLATE: was_moved_msg_lnk}" class="GenLink">{VAR: r[2]}</a> перенесено модератором в форум <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		Добро пожаловать, <b>{VAR: usr->alias}</b>, ваше последнее посещение форума: {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			показать кто чем занимается
 reported_del_report:		Удалить отчет
@@ -474,7 +474,7 @@ remail_message:			Сообщение:
 remail_send_now:		Отправить email
 remail_anon_opt:		Скопируйте это сообщение в используемую вами программу - почтовый клиент для отсылки вашим друзьям.
 remail_done:			Готово
-remail_sent_conf:		Электронное письмо на адрес {VAR-HTML: _POST['femail']} на тему {{VAR: data->subject} было успешно отправлено.
+remail_sent_conf:		Электронное письмо на адрес {VAR-HTML: _POST['femail']} на тему {VAR: data->subject} было успешно отправлено.
 remail_continue:		Продолжить
 remail_error:			Возникла ошибка
 mklist_type:			Тип:

@@ -187,7 +187,7 @@ views:				View
 vote:				{VAR: frm->n_rating} Voti
 vote_button:			Vota
 vote_for_thread:		Vota il topic
-was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> è stato spostato in <a href="{ROOT}?t=thread&frm_id={VAR: r[11]}&{DEF: _rsid}" class="GenLink">{{VAR: r[12]}</a> dal moderatore
+was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> è stato spostato in <a href="{ROOT}?t=thread&frm_id={VAR: r[11]}&{DEF: _rsid}" class="GenLink">{VAR: r[12]}</a> dal moderatore
 welcome_message:		Benvenuto <b>{VAR: usr->alias}</b>, l&#39;ultima volta sei stato con noi {DATE: usr->last_visit %A, %d %B %Y alle %H:%M}
 what_ppl_doing:			mostra quello che fa la gente
 reported_del_report:		Cancella report
@@ -473,7 +473,7 @@ remail_message:			Testo:
 remail_send_now:		Spedisci email
 remail_anon_opt:		Copia questo messaggio in un programma di posta elettronica.
 remail_done:			Fatto
-remail_sent_conf:		L&#39;email {{VAR: data->subject} al tuo amico ({VAR-HTML: _POST['femail']}) è stata spedita con successo.
+remail_sent_conf:		L&#39;email {VAR: data->subject} al tuo amico ({VAR-HTML: _POST['femail']}) è stata spedita con successo.
 remail_continue:		Continua
 remail_error:			Hai un errore
 mklist_type:			Tipo:

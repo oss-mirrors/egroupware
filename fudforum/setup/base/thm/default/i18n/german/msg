@@ -652,7 +652,7 @@ remail_friends_name:		Name des Freundes:
 remail_message:			Beitrag:
 remail_required:		erforderlich
 remail_send_now:		Email jetzt verschicken
-remail_sent_conf:		Die Email an Deinen Freund {VAR-HTML: _POST['femail']} &uuml;ber {{VAR: data->subject} wurde erfolgreich verschickt.
+remail_sent_conf:		Die Email an Deinen Freund {VAR-HTML: _POST['femail']} &uuml;ber {VAR: data->subject} wurde erfolgreich verschickt.
 remail_subject:			Betreff:
 remail_your_email:		Deine Email:
 remail_your_name:		Dein Name:
@@ -852,7 +852,7 @@ views:				Aufrufe
 vote:				{VAR: frm->n_rating} Stimmen
 vote_button:			Abstimmen
 vote_for_thread:		Abstimmen
-was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> ist vom Moderator nach <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a> verschoben worden
+was_moved_msg:			<a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> ist vom Moderator nach <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a> verschoben worden
 welcome_message:		Willkommen <b>{VAR: usr->alias}</b>, Dein letzter Besuch war am {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			Anzeigen, was die Leute gerade machen
 writing_pm:			Eine private Message schreiben

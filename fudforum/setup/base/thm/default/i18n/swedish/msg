@@ -189,7 +189,7 @@ views:				Visningar
 vote:				{VAR: frm->n_rating} r&ouml;ster
 vote_button:			R&ouml;sta
 vote_for_thread:		R&ouml;sta
-was_moved_msg:			Moderatorn har flyttat diskussionen <a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> till forumet <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{{VAR: r[12]}</a>
+was_moved_msg:			Moderatorn har flyttat diskussionen <a href="{ROOT}?t={DEF: d_thread_view}&amp;goto={VAR: r[15]}&{DEF: _rsid}" class="GenLink">{VAR: r[2]}</a> till forumet <a href="{TEMPLATE: was_moved_msg_lnk2}" class="GenLink">{VAR: r[12]}</a>
 welcome_message:		V&auml;lkommen <b>{VAR: usr->alias}</b>! Ditt senaste bes&ouml;k var {DATE: usr->last_visit %a, %d %B %Y %H:%M}
 what_ppl_doing:			visa vad folk h&aring;ller p&aring; med
 reported_del_report:		Radera rapport
@@ -473,7 +473,7 @@ remail_message:			Meddelande:
 remail_send_now:		Skicka e-post nu
 remail_anon_opt:		Kopiera det h&auml;r meddelandet till en valbar e-postklient f&ouml;r att s&auml;nda till dina v&auml;nner.
 remail_done:			Klart
-remail_sent_conf:		E-postmeddelandet till din v&auml;n {VAR-HTML: _POST['femail']} med rubriken {{VAR: data->subject} har skickats.
+remail_sent_conf:		E-postmeddelandet till din v&auml;n {VAR-HTML: _POST['femail']} med rubriken {VAR: data->subject} har skickats.
 remail_continue:		Forts&auml;tt
 remail_error:			Ett fel har uppst&aring;tt
 mklist_type:			Typ:
