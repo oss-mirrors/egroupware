@@ -16,72 +16,161 @@
 	{
 		var $sessionData;
 		var $LDAPData;
+		
+		var $SMTPServerType = array();		// holds a list of config options
 
 		var $public_functions = array
 		(
-			'getServerList'		=> True,
-			'getLocals'		=> True,
-			'getRcptHosts'		=> True,
+			'getFieldNames'		=> True,
 			'getLDAPStorageData'	=> True,
-			'abcdefgh'		=> True
+			'getLocals'		=> True,
+			'getProfile'		=> True,
+			'getProfileList'	=> True,
+			'getRcptHosts'		=> True,
+			'getSMTPServerTypes'	=> True
 		);
 
 		function bo()
 		{
-			$this->soqmailldap = CreateObject('qmailldap.soqmailldap');
-			$config = CreateObject('phpgwapi.config','qmailldap');
-			$config->read_repository();
-			$this->qmailldapConfig = $config->config_data;
+			$this->soemailadmin = CreateObject('emailadmin.so');
+			
+			$this->SMTPServerType = array(
+				'1' 	=> array(
+					'fieldNames'	=> array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'smtpType'
+					),
+					'description'	=> lang('standard SMTP-Server')
+				),
+				'2' 	=> array(
+					'fieldNames'	=> array(
+						'smtpServer',
+						'smtpPort',
+						'smtpAuth',
+						'smtpType',
+						'smtpLDAPServer',
+						'smtpLDAPAdminDN',
+						'smtpLDAPAdminPW',
+						'smtpLDAPBaseDN',
+						'smtpLDAPUseDefault'
+					),
+					'description'	=> lang('Postfix with LDAP')
+				)
+			);
+
+			$this->IMAPServerType = array(
+				'1' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication'
+					),
+					'description'	=> lang('standard POP3 server'),
+					'protocol'	=> 'pop3'
+				),
+				'2' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication'
+					),
+					'description'	=> lang('standard IMAP server'),
+					'protocol'	=> 'imap'
+				),
+				'3' 	=> array(
+					'fieldNames'	=> array(
+						'imapServer',
+						'imapPort',
+						'imapType',
+						'imapLoginType',
+						'imapTLSEncryption',
+						'imapTLSAuthentication',
+						'imapEnableCyrusAdmin',
+						'imapAdminUsername',
+						'imapAdminPW',
+						'imapEnableSieve',
+						'imapSieveServer',
+						'imapSievePort'
+					),
+					'description'	=> lang('Cyrus IMAP Server'),
+					'protocol'	=> 'imap'
+				)
+			); 
 			
 			$this->restoreSessionData();
 		}
 		
-		function deleteServer($_serverid)
+		function deleteProfile($_profileID)
 		{
-			$this->soqmailldap->deleteServer($_serverid);
+			$this->soemailadmin->deleteProfile($_profileID);
 		}
 		
-		function getLDAPData($_serverid, $_nocache=0)
+		function getFieldNames($_serverTypeID, $_class)
 		{
-			global $phpgw, $HTTP_GET_VARS;
+			switch($_class)
+			{
+				case 'imap':
+					return $this->IMAPServerType[$_serverTypeID]['fieldNames'];
+					break;
+				case 'smtp':
+					return $this->SMTPServerType[$_serverTypeID]['fieldNames'];
+					break;
+			}
+		}
+		
+		function getIMAPServerTypes()
+		{
+			foreach($this->IMAPServerType as $key => $value)
+			{
+				$retData[$key]['description']	= $value['description'];
+				$retData[$key]['protocol']	= $value['protocol'];
+			}
 			
-			if ($HTTP_GET_VARS['nocache'] == '1' || $_nocache == '1')
-			{
-				#print "option1<br>";
-				$LDAPData = $this->soqmailldap->getLDAPData($_serverid);
-				$this->sessionData[$_serverid] = $LDAPData;
-				$this->sessionData[$_serverid]['needActivation'] = 0;
-				
-				$this->saveSessionData();
-
-				#while(list($key, $value) = each($this->sessionData[$_serverid]['rcpthosts']))
-				#{
-				#	print "... $key: $value<br>";
-				#}
-				
-				return $this->sessionData[$_serverid];
-			}
-			else
-			{
-				#print "option2<br>";
-				#while(list($key, $value) = each($this->sessionData[$_serverid]['rcpthosts']))
-				#{
-				#	print ".... $key: $value<br>";
-				#}
-				return $this->sessionData[$_serverid];
-			}
+			return $retData;
 		}
 		
 		function getLDAPStorageData($_serverid)
 		{
-			$storageData = $this->soqmailldap->getLDAPStorageData($_serverid);
+			$storageData = $this->soemailadmin->getLDAPStorageData($_serverid);
 			return $storageData;
 		}
 		
-		function getServerList()
+		function getProfile($_profileID)
 		{
-			$serverList = $this->soqmailldap->getServerList();
-			return $serverList;
+			$profileData = $this->soemailadmin->getProfileList($_profileID);
+			$fieldNames = $this->SMTPServerType[$profileData[0]['smtpType']]['fieldNames'];
+			$fieldNames = array_merge($fieldNames, $this->IMAPServerType[$profileData[0]['imapType']]['fieldNames']);
+			$fieldNames[] = 'description';
+			$fieldNames[] = 'defaultDomain';
+			$fieldNames[] = 'profileID';
+			$fieldNames[] = 'organisationName';
+			$fieldNames[] = 'userDefinedAccounts';
+			
+			return $this->soemailadmin->getProfile($_profileID, $fieldNames);
+		}
+		
+		function getProfileList($_profileID='')
+		{
+			$profileList = $this->soemailadmin->getProfileList($_profileID);
+			return $profileList;
+		}
+		
+		function getSMTPServerTypes()
+		{
+			foreach($this->SMTPServerType as $key => $value)
+			{
+				$retData[$key] = $value['description'];
+			}
+			
+			return $retData;
 		}
 		
 		function getUserData($_accountID, $_usecache)
@@ -92,7 +181,7 @@
 			}
 			else
 			{
-				$userData = $this->soqmailldap->getUserData($_accountID);
+				$userData = $this->soemailadmin->getUserData($_accountID);
 				$bofelamimail = CreateObject('felamimail.bofelamimail');
 				$bofelamimail->openConnection('','',true);
 				$userQuota = 
@@ -122,168 +211,15 @@
 			#print "restored Session<br>";
 		}
 		
-		function save($_postVars, $_getVars)
+		function saveProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			$serverid = $_getVars['serverid'];
-			
-			if (isset($_postVars["bo_action"]))
+			if(!isset($_globalSettings['profileID']))
 			{
-				$bo_action = $_postVars["bo_action"];
-			}
-			elseif (isset($_getVars["bo_action"]))
-			{
-				$bo_action = $_getVars["bo_action"];
+				$this->soemailadmin->addProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 			}
 			else
 			{
-				return false;
-			}
-			
-			#print "bo_action: $bo_action<br>";
-			
-			switch ($bo_action)
-			{
-				case "add_locals":
-					$count = count($this->sessionData[$serverid]['locals']);
-					
-					$this->sessionData[$serverid]['locals'][$count] = 
-						$_postVars["new_local"];
-						
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-					
-				case "add_rcpthosts":
-					$count = count($this->sessionData[$serverid]['rcpthosts']);
-					
-					$this->sessionData[$serverid]['rcpthosts'][$count] = 
-						$_postVars["new_rcpthost"];
-						
-					if ($_postVars["add_to_local"] == "on")
-					{
-						$count = count($this->sessionData[$serverid]['locals']);
-						
-						$this->sessionData[$serverid]['locals'][$count] = 
-							$_postVars["new_rcpthost"];
-					}
-					
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-					
-				case "add_smtproute":
-					$count = count($this->sessionData[$serverid]['smtproutes']);
-				
-					$this->sessionData[$serverid]['smtproutes'][$count] =
-						sprintf("%s:%s:%s",
-							$_postVars["domain_name"],
-							$_postVars["remote_server"],
-							$_postVars["remote_port"]
-						);
-				
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-					
-				case "remove_locals":
-					$i=0;
-					
-					while(list($key, $value) = each($this->sessionData[$serverid]['locals']))
-					{
-						#print ".. $key: $value<br>";
-						if ($key != $_postVars["locals"])
-						{
-							$newLocals[$i]=$value;
-							#print "!! $i: $value<br>";
-							$i++;
-						}
-					}
-					$this->sessionData[$serverid]['locals'] = $newLocals;
-					
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-					
-				case "remove_rcpthosts":
-					$i=0;
-					
-					while(list($key, $value) = each($this->sessionData[$serverid]['rcpthosts']))
-					{
-						#print ".. $key: $value<br>";
-						if ($key != $_postVars["rcpthosts"])
-						{
-							$newRcpthosts[$i]=$value;
-							#print "!! $i: $value<br>";
-							$i++;
-						}
-					}
-					$this->sessionData[$serverid]['rcpthosts'] = $newRcpthosts;
-					
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-					
-				case "remove_smtproute":
-					$i=0;
-					
-					while(list($key, $value) = each($this->sessionData[$serverid]['smtproutes']))
-					{
-						#print ".. $key: $value : ".$_getVars["smtproute_id"]."<br>";
-						if ($key != $_getVars["smtproute_id"])
-						{
-							$newSmtproutes[$i]=$value;
-							#print "!! $i: $value<br>";
-							$i++;
-						}
-					}
-					$this->sessionData[$serverid]['smtproutes'] = $newSmtproutes;
-				
-					$this->sessionData[$serverid]['needActivation'] = 1;
-					
-					$this->saveSessionData();
-					
-					break;
-				case "save_ldap":
-					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
-					$data = array
-					(
-						"qmail_servername"	=> $_postVars["qmail_servername"],
-						"description"		=> $_postVars["description"],
-						"ldap_basedn"		=> $_postVars["ldap_basedn"],
-						"id"			=> $_getVars["serverid"]
-					);
-					if (!isset($_getVars["serverid"]))
-					{
-						$this->soqmailldap->update("add_server",$data);
-					}
-					else
-					{
-						$this->soqmailldap->update("update_server",$data);
-					}
-
-					$this->getLDAPData($_getVars["serverid"], '1');
-					
-					break;
-					
-				case "write_to_ldap":
-				
-					$this->soqmailldap->writeConfigData($this->sessionData[$serverid], $serverid);
-				
-					$this->sessionData[$serverid]['needActivation'] = 0;
-				
-					$this->saveSessionData();
-					
-					break;
+				$this->soemailadmin->updateProfile($_globalSettings, $_smtpSettings, $_imapSettings);
 			}
 		}
 		
@@ -381,7 +317,7 @@
 					break;
 					
 				case 'save':
-					$this->soqmailldap->saveUserData($_accountID, $this->userSessionData[$_accountID]);
+					$this->soemailadmin->saveUserData($_accountID, $this->userSessionData[$_accountID]);
 					$bofelamimail = CreateObject('felamimail.bofelamimail');
 					$bofelamimail->openConnection('','',true);
 					$bofelamimail->imapSetQuota($GLOBALS['phpgw']->accounts->id2name($_accountID),

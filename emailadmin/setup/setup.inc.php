@@ -14,20 +14,31 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '0.0.3';
-	$setup_info['emailadmin']['app_order'] = 99;
-	$setup_info['emailadmin']['tables']    = array('phpgw_emailadmin');
+	$setup_info['emailadmin']['version']   = '0.0.6';
+	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 1;
 
+	$setup_info['emailadmin']['author'] = 'Lars Kneschke';
+	$setup_info['emailadmin']['license']  = 'GPL';
+	$setup_info['emailadmin']['description'] =
+		'A central Mailserver management application for EGroupWare.';
+	$setup_info['emailadmin']['note'] =
+		'';
+	$setup_info['emailadmin']['maintainer'] = array(
+		'name'  => 'Lars Kneschke',
+		'email' => 'lkneschke@linux-at-work.de'
+	);
+
+
+
+	$setup_info['emailadmin']['tables'][]	= 'phpgw_emailadmin';
+	
 	/* The hooks this app includes, needed for hooks registration */
 	$setup_info['emailadmin']['hooks'][] = 'preferences';
 	$setup_info['emailadmin']['hooks'][] = 'manual';
 	$setup_info['emailadmin']['hooks'][] = 'editaccount';
-	$setup_info['emailadmin']['hooks'][] = 'edit_user';
-	$setup_info['emailadmin']['hooks'][] = 'add_def_pref';
 	$setup_info['emailadmin']['hooks'][] = 'addaccount';
 	$setup_info['emailadmin']['hooks'][] = 'deleteaccount';
-	$setup_info['emailadmin']['hooks'][] = 'about';
 	$setup_info['emailadmin']['hooks'][] = 'admin';
 
 	/* Dependacies for this app to work */

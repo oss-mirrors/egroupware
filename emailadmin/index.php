@@ -1,8 +1,8 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Notes                                                     *
-	* http://www.phpgroupware.org                                              *
-	* Written by Bettina Gille [ceb@phpgroupware.org]                          *
+	* EGroupWare - EMailAdmin                                                  *
+	* http://www.egroupware.org                                                *
+	* Written by Lars Kneschke [lkneschke@egroupware.org]                      *
 	* -----------------------------------------------                          *
 	*  This program is free software; you can redistribute it and/or modify it *
 	*  under the terms of the GNU General Public License as published by the   *
@@ -13,12 +13,12 @@
 
 	$phpgw_info['flags'] = array
 	(
-		'currentapp' => 'qmailldap',
+		'currentapp' => 'emailadmin',
 		'noheader'   => True,
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
 
-	$obj = CreateObject('qmailldap.uiqmailldap');
-	$obj->listServers();
+	$obj = CreateObject('emailadmin.ui');
+	$obj->listProfiles();
 ?>

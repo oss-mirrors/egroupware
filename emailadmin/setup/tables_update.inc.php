@@ -1,6 +1,6 @@
 <?php
 	/**************************************************************************\
-	* EGroupWare - Setup                                                       *
+	* EGroupWare - EMailadmin                                                  *
 	* http://www.egroupware.org                                                *
 	* http://www.phpgw.de                                                      *
 	* Author: lkneschke@phpgw.de                                               *
@@ -12,25 +12,32 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$test[] = '0.0.1';
-	function emailadmin_upgrade0_0_1()
+	$test[] = '0.0.3';
+	function emailadmin_upgrade0_0_3()
 	{
-		global $setup_info,$phpgw_setup;
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','smtpType', array('type' => 'int', 'precision' => 4));		
 
-		$phpgw_setup->oProc->AddColumn('phpgw_qmailldap','description', array('type' => 'varchar', 'precision' => 200));		
-
-		$setup_info['qmailldap']['currentver'] = '0.0.2';
-		return $setup_info['qmailldap']['currentver'];
+		$setup_info['emailadmin']['currentver'] = '0.0.4';
+		return $setup_info['emailadmin']['currentver'];
 	}
 
-	$test[] = '0.0.2';
-	function emailadmin_upgrade0_0_2()
+	$test[] = '0.0.4';
+	function emailadmin_upgrade0_0_4()
 	{
-		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','add_def_pref','hook_add_def_pref.inc.php')");
-		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','manual','hook_manual.inc.php')");
-		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','about','hook_about.inc.php')");
-		$GLOBALS['phpgw_setup']->oProc->query("INSERT INTO phpgw_hooks (hook_appname,hook_location,hook_filename) VALUES ('qmailldap','edit_user','hook_edit_user.inc.php')");
-		$GLOBALS['setup_info']['qmailldap']['currentver'] = '0.0.3';
-		return $GLOBALS['setup_info']['qmailldap']['currentver'];
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','defaultDomain', array('type' => 'varchar', 'precision' => 100));		
+
+		$setup_info['emailadmin']['currentver'] = '0.0.5';
+		return $setup_info['emailadmin']['currentver'];
 	}
+
+	$test[] = '0.0.5';
+	function emailadmin_upgrade0_0_5()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','organisationName', array('type' => 'varchar', 'precision' => 100));		
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','userDefinedAccounts', array('type' => 'varchar', 'precision' => 3));		
+
+		$setup_info['emailadmin']['currentver'] = '0.0.6';
+		return $setup_info['emailadmin']['currentver'];
+	}
+	
 ?>

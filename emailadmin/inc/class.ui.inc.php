@@ -13,390 +13,270 @@
 
 	class ui
 	{
+		
 		var $public_functions = array
 		(
-			'listServers'	=> True,
-			'addServer'	=> True,
-			'deleteServer'	=> True,
-			'editServer'	=> True,
-			'editSettings'	=> True,
-			'addSmtpRoute'	=> True,
-			'save'		=> True
+			'addProfile'	=> True,
+			'css'		=> True,
+			'deleteProfile'	=> True,
+			'editProfile'	=> True,
+			'listProfiles'	=> True,
+			'saveProfile'	=> True
 		);
 		
 		var $cats;
 		var $nextmatchs;
 		var $t;
 		var $boqmailldap;
-		var $rowColor;
-		var $dataRowColor;
 
 		function ui()
 		{
-			global $phpgw, $phpgw_info;
-
 			$this->cats			= CreateObject('phpgwapi.categories');
 			$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
 			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->grants			= $phpgw->acl->get_grants('notes');
 			#$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
-			$this->boqmailldap		= CreateObject('qmailldap.boqmailldap');
-			
-			$this->rowColor[0] = $phpgw_info["theme"]["row_on"];
-			$this->rowColor[1] = $phpgw_info["theme"]["row_off"];
-
-			$this->dataRowColor[0] = $phpgw_info["theme"]["bg01"];
-			$this->dataRowColor[1] = $phpgw_info["theme"]["bg02"];
-			                 
+			$this->boemailadmin		= CreateObject('emailadmin.bo');
 		}
 		
-		function addServer()
+		function addProfile()
 		{
 			$this->display_app_header();
 			
-			$this->t->set_file(array("body" => 'ldapsettings.tpl'));
+			$this->t->set_file(array("body" => "editprofile.tpl"));
 			$this->t->set_block('body','main');
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
 			
 			$this->translate();
-
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
+			
+			#$this->t->set_var('profile_name',$profileList[0]['description']);
+			$this->t->set_var('smtpActiveTab','1');
+			$this->t->set_var('imapActiveTab','1');
+			
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.ui.listServers'
+				'menuaction'	=> 'emailadmin.ui.saveProfile'
 			);
-			$this->t->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			$this->t->set_var('th_bg',$GLOBALS['phpgw_info']["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$GLOBALS['phpgw_info']["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$GLOBALS['phpgw_info']["theme"]["bg02"]);
-
+			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
 			$linkData = array
 			(
-				'menuaction'    => 'qmailldap.ui.save'
+				'menuaction'	=> 'emailadmin.ui.listProfiles'
 			);
-			$this->t->set_var('form_action',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			                                                                                                                                                                        
+			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
+			{
+				$this->t->set_var("lang_smtp_option_$key",$value);
+			};
+						
+			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
+			{
+				$this->t->set_var("lang_imap_option_$key",$value['description']);
+			};
+						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
-			
-			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 	
-		function addSmtpRoute()
+		function css()
 		{
-			$this->display_app_header();
-			
-			$this->translate();
-			
-			$GLOBALS['phpgw']->common->phpgw_footer();
-		}
-		
-		function createMenu($_serverid, $_pagenumber, $_ldapData)
-		{
-			$menu = array
-			(
-				'0'	=> array
-					   (
-					   	'name'		=> lang('domain names'),
-					   	'template'	=> 'domainnames.tpl'
-					   ),
-				'10'	=> array
-					   (
-					   	'name'		=> lang('virtual domains'),
-					   	'template'	=> 'defaultpage.tpl'
-					   ),
-				'15'	=> array
-					   (
-					   	'name'		=> lang('smtp routing'),
-					   	'template'	=> 'smtprouting.tpl'
-					   ),
-				'20'	=> array
-					   (
-					   	'name'		=> lang('options'),
-					   	'template'	=> 'options.tpl'
-					   )
-			);
-			
-			$this->t->set_file(array("body" => $menu[$_pagenumber]['template']));
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
-
-			reset($menu);
-			$i=0;
-			while (list($key,$value) = each($menu))
+			$appCSS = 
+			'th.activetab
 			{
-				$this->t->set_var('menu_description',$value['name']);
-				$linkData = array
-				(
-					'menuaction'	=> 'qmailldap.ui.editServer',
-					'pagenumber'	=> $key,
-					'serverid'	=> $_serverid
-				);
-				$this->t->set_var('menu_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-				$this->t->set_var('menu_row_color',$this->rowColor[$i%2]);
-				if ($_pagenumber == $key)
-				{
-					$this->t->parse('menu_rows','menu_row_bold',True);
-				}
-				else
-				{
-					$this->t->parse('menu_rows','menu_row',True);
-				}
-				$i++;
+				color:#000000;
+				background-color:#D3DCE3;
+				border-top-width : 1px;
+				border-top-style : solid;
+				border-top-color : Black;
+				border-left-width : 1px;
+				border-left-style : solid;
+				border-left-color : Black;
+				border-right-width : 1px;
+				border-right-style : solid;
+				border-right-color : Black;
 			}
 			
-			if ($_ldapData['needActivation'] == 1)
+			th.inactivetab
 			{
-				$linkData = array
-				(
-					'menuaction'	=> 'qmailldap.ui.save',
-					'pagenumber'	=> $_pagenumber,
-					'serverid'	=> $_serverid,
-					'bo_action'	=> 'write_to_ldap'
-				);
-				$this->t->set_var('activation_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-				$this->t->parse('activation_rows','activation_row');
+				color:#000000;
+				background-color:#E8F0F0;
+				border-bottom-width : 1px;
+				border-bottom-style : solid;
+				border-bottom-color : Black;
 			}
 			
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
-			$linkData = array
-			(
-				'menuaction'	=> 'qmailldap.ui.listServers',
-			);
-			$this->t->set_var('done_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			.td_left { border-left : 1px solid Gray; border-top : 1px solid Gray; }
+			.td_right { border-right : 1px solid Gray; border-top : 1px solid Gray; }
 			
+			div.activetab{ display:inline; }
+			div.inactivetab{ display:none; }';
+			
+			return $appCSS;
 		}
 		
-		function deleteServer()
+		function deleteProfile()
 		{
-			$this->boqmailldap->deleteServer($GLOBALS['HTTP_GET_VARS']['serverid']);
-			$this->listServers();
+			$this->boemailadmin->deleteProfile($_GET['profileid']);
+			$this->listProfiles();
 		}
 		
 		function display_app_header()
 		{
-			global $phpgw, $phpgw_info;
-			
-			$phpgw->common->phpgw_header();
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('tabs','tabs');
+			switch($_GET['menuaction'])
+			{
+				case 'emailadmin.ui.addProfile':
+				case 'emailadmin.ui.editProfile':
+					$GLOBALS['phpgw']->js->validate_file('jscode','editProfile','emailadmin');
+					$GLOBALS['phpgw']->js->set_onload('javascript:initAll();');
+					#$GLOBALS['phpgw']->js->set_onload('smtp.init();');
+
+					break;
+			}
+			                     
+			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			
 		}
 
-		function editServer($_serverid='', $_pagenumber='')
+		function editProfile($_profileID='')
 		{
-			global $phpgw, $phpgw_info, $serverid, $pagenumber, $HTTP_GET_VARS;
+			if($_profileID != '')
+			{
+				$profileID = $_profileID;
+			}
+			elseif(is_int(intval($_GET['profileid'])) && !empty($_GET['profileid']))
+			{
+				$profileID = intval($_GET['profileid']);
+			}
+			else
+			{
+				return false;
+			}
 			
-			if(!empty($_serverid)) $serverid=$_serverid;
-			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
-			
-			$ldapData = $this->boqmailldap->getLDAPData($serverid);
-
+			$profileList = $this->boemailadmin->getProfileList($profileID);
+			$profileData = $this->boemailadmin->getProfile($profileID);
 			$this->display_app_header();
 			
-			$this->createMenu($serverid, $pagenumber, $ldapData);
-
+			$this->t->set_file(array("body" => "editprofile.tpl"));
 			$this->t->set_block('body','main');
 			
 			$this->translate();
 			
-			$linkData = array
-			(
-				'menuaction'	=> 'qmailldap.ui.save',
-				'pagenumber'	=> $pagenumber,
-				'serverid'	=> $serverid
-			);
-			$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
+			#$this->t->set_var('profile_name',$profileList[0]['description']);
+			$this->t->set_var('smtpActiveTab',$profileData['smtpType']);
+			$this->t->set_var('imapActiveTab',$profileData['imapType']);
 			
-			switch($pagenumber)
+			foreach($profileData as $key => $value)
 			{
-				case "0":
-					if (count($ldapData['rcpthosts']) > 0)
-					{
-						$selectBox  = "<select size=\"10\" name=\"rcpthosts\">\n";
-						for ($i=0;$i < count($ldapData['rcpthosts']); $i++)
-						{
-							$selectBox .= "<option value=\"$i\">".
-									$ldapData['rcpthosts'][$i].
-									"</option>\n";
-						}
-						$selectBox .= "</select>\n";
-						$this->t->set_var('rcpt_selectbox',$selectBox);
-					}
-					else
-					{
-						$this->t->set_var('rcpt_selectbox',
-							"<b>".lang("We don't accept any email!")."</b>");
-					}
-
-
-					if (count($ldapData['locals']) > 0)
-					{
-						$selectBox  = "<select size=\"10\" name=\"locals\">\n";
-						for ($i=0;$i < count($ldapData['locals']); $i++)
-						{
-							$selectBox .= "<option value=\"$i\">".
-									$ldapData['locals'][$i].
-									"</option>\n";
-						}
-						$selectBox .= "</select>\n";
-						$this->t->set_var('locals_selectbox',$selectBox);
-					}
-					else
-					{
-						$this->t->set_var('locals_selectbox',
-							"<b>".lang("We don't deliver any email local!")."</b>");
-					}
-
-
-					break;
-					
-				case "15":
-					$this->t->set_block('body','smtproute_row');
-					
-					if (count($ldapData['smtproutes']) > 0)
-					{
-						for ($i=0;$i < count($ldapData['smtproutes']); $i++)
-						{
-							$smtproute = explode(":",$ldapData['smtproutes'][$i]);
-							$this->t->set_var('domain_name',$smtproute[0]);
-							$this->t->set_var('remote_server',$smtproute[1]);
-							$this->t->set_var('remote_port',$smtproute[2]);
-							$this->t->set_var('row_color',$this->dataRowColor[($i)%2]);
-							$linkData = array
-							(
-								'menuaction'	=> 'qmailldap.ui.save',
-								'bo_action'	=> 'remove_smtproute',
-								'smtproute_id'	=> $i,
-								'pagenumber'	=> 15,
-								'serverid'	=> $serverid
-							);
-							$this->t->set_var('delete_route_link',$phpgw->link('/index.php',$linkData));
-							$this->t->parse('smtproute_rows','smtproute_row',True);
-						}
-					}
-					
-					$linkData = array
-					(
-						'menuaction'	=> 'qmailldap.ui.addSmtpRoute',
-						'pagenumber'	=> 15,
-						'serverid'	=> $serverid
-					);
-					$this->t->set_var('last_row_color',$this->dataRowColor[($i)%2]);
-					$this->t->set_var('add_route_link',$phpgw->link('/index.php',$linkData));
-					
-					break;
-				
-				case "20":
-					$this->t->set_var("ldaplocaldelivery_".$ldapData['ldaplocaldelivery'],'selected');
-					$this->t->set_var("ldapdefaultdotmode_".$ldapData['ldapdefaultdotmode'],'selected');
-					$this->t->set_var("ldapbasedn",$ldapData['ldapbasedn']);
-				
-					break;
-					
-				case "99":
-					if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
-					{
-						$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
-						$this->t->set_var('description',$storageData['description']);
-						$this->t->set_var('ldap_basedn',$storageData['ldap_basedn']);
-					}
-					break;
+				#print "$key $value<br>";
+				switch($key)
+				{
+					case 'imapEnableCyrusAdmin':
+					case 'imapEnableSieve':
+					case 'imapTLSAuthentication':
+					case 'imapTLSEncryption':
+					case 'smtpAuth':
+					case 'smtpLDAPUseDefault':
+					case 'userDefinedAccounts':
+						if($value == 'yes')
+							$this->t->set_var('selected_'.$key,'checked');
+						break;
+					case 'imapLoginType':
+					case 'smtpLoginType':
+						$this->t->set_var('selected_'.$key.'_'.$value,'selected');
+						break;
+					default:
+						$this->t->set_var('value_'.$key,$value);
+						break;
+				}
 			}
 			
+			$linkData = array
+			(
+				'menuaction'	=> 'emailadmin.ui.saveProfile',
+				'profileID'	=> $profileID
+			);
+			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
+			$linkData = array
+			(
+				'menuaction'	=> 'emailadmin.ui.listProfiles'
+			);
+			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+			foreach($this->boemailadmin->getSMTPServerTypes() as $key => $value)
+			{
+				$this->t->set_var("lang_smtp_option_$key",$value);
+			};
+						
+			foreach($this->boemailadmin->getIMAPServerTypes() as $key => $value)
+			{
+				$this->t->set_var("lang_imap_option_$key",$value['description']);
+			};
+						
 			$this->t->parse("out","main");
 			print $this->t->get('out','main');
-			
-			$phpgw->common->phpgw_footer();
 		}
 		
-		function editSettings($_serverid='')
+		function listProfiles()
 		{
-			global $phpgw, $phpgw_info, $serverid, $HTTP_GET_VARS;
-			
-			if(!empty($_serverid)) $serverid=$_serverid;
-			
-			$ldapData = $this->boqmailldap->getLDAPData($serverid);
-
 			$this->display_app_header();
 			
-			$this->t->set_file(array("body" => 'ldapsettings.tpl'));
+			$this->t->set_file(array("body" => "listprofiles.tpl"));
 			$this->t->set_block('body','main');
-			$this->t->set_block('body','menu_row');
-			$this->t->set_block('body','menu_row_bold');
-			$this->t->set_block('body','activation_row');
 			
 			$this->translate();
 
-			if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
-			{
-				$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
-				$this->t->set_var('description',$storageData['description']);
-				$this->t->set_var('ldap_basedn',$storageData['ldap_basedn']);
-			}
-
-			$this->t->set_var('done_row_color',$this->rowColor[($i)%2]);
-			$linkData = array
-			(
-				'menuaction'	=> 'qmailldap.ui.listServers'
-			);
-			$this->t->set_var('done_link',$phpgw->link('/index.php',$linkData));
-			$this->t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
-			
-			$linkData = array
-			(
-				'menuaction'    => 'qmailldap.ui.save',
-				'pagenumber'    => $pagenumber,
-				'serverid'      => $serverid
-			);
-			$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
-			                                                                                                                                                                        
-			$this->t->parse("out","main");
-			print $this->t->get('out','main');
-			
-			$phpgw->common->phpgw_footer();
-		}
-		
-		function listServers()
-		{
-			$this->display_app_header();
-			
-			$this->t->set_file(array("body" => "listservers.tpl"));
-			$this->t->set_block('body','main','main');
-			
-			$this->translate();
-
-			$serverList = $this->boqmailldap->getServerList();
+			$profileList = $this->boemailadmin->getProfileList();
 			
 			// create the data array
-			if ($serverList)
+			if ($profileList)
 			{
-				for ($i=0; $i < count($serverList); $i++)
+				for ($i=0; $i < count($profileList); $i++)
 				{
 					$linkData = array
 					(
-						'menuaction'	=> 'qmailldap.ui.editServer',
+						'menuaction'	=> 'emailadmin.ui.editProfile',
 						'nocache'	=> '1',
 						'pagenumber'	=> '0',
-						'serverid'	=> $serverList[$i]['id']
+						'profileid'	=> $profileList[$i]['profileID']
 					);
-					$editLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.lang('edit').'</a>';
+					$imapServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
 					
 					$linkData = array
 					(
-						'menuaction'	=> 'qmailldap.ui.deleteServer',
-						'serverid'	=> $serverList[$i]['id']
+						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'nocache'	=> '1',
+						'pagenumber'	=> '0',
+						'profileid'	=> $profileList[$i]['profileID']
+					);
+					$descriptionLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['description'].'</a>';
+					
+					$linkData = array
+					(
+						'menuaction'	=> 'emailadmin.ui.editProfile',
+						'nocache'	=> '1',
+						'pagenumber'	=> '0',
+						'profileid'	=> $profileList[$i]['profileID']
+					);
+					$smtpServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
+					
+					$linkData = array
+					(
+						'menuaction'	=> 'emailadmin.ui.deleteProfile',
+						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$deleteLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.lang('delete').'</a>';
 					
 					$data[] = array(
-						$serverList[$i]['qmail_servername'],
-						$serverList[$i]['description'],
-						$editLink,
+						$descriptionLink,
+						$smtpServerLink,
+						$imapServerLink,
 						$deleteLink
 						
 					);
@@ -405,9 +285,9 @@
 
 			// create the array containing the table header 
 			$rows = array(
-				lang('server name'),
 				lang('description'),
-				lang('edit'),
+				lang('smtp server name'),
+				lang('imap/pop3 server name'),
 				lang('delete')
 			);
 				
@@ -415,7 +295,7 @@
 			$this->t->set_var('server_next_match',$this->nextMatchTable(
 				$rows, 
 				$data, 
-				lang('server list'), 
+				lang('profile list'), 
 				$_start, 
 				$_total, 
 				$_menuAction)
@@ -423,10 +303,10 @@
 			
 			$linkData = array
 			(
-				'menuaction'	=> 'qmailldap.ui.addServer'
+				'menuaction'	=> 'emailadmin.ui.addProfile'
 			);
 			$this->t->set_var('add_link',$GLOBALS['phpgw']->link('/index.php',$linkData));
-			
+
 			$this->t->parse("out","main");
 			
 			print $this->t->get('out','main');
@@ -482,54 +362,106 @@
 			
 		}
 
-		function save()
+		function saveProfile()
 		{
-			global $HTTP_POST_VARS, $HTTP_GET_VARS;
-
-			$this->boqmailldap->save($HTTP_POST_VARS, $HTTP_GET_VARS);
-			if ($HTTP_POST_VARS['bo_action'] == 'save_ldap' || $HTTP_GET_VARS['bo_action'] == 'save_ldap')
+			$globalSettings	= array();
+			$smtpSettings	= array();
+			$imapSettings	= array();
+			
+			// try to get the profileID
+			if(is_int(intval($_GET['profileID'])) && !empty($_GET['profileID']))
 			{
-				$this->listServers();
+				$globalSettings['profileID'] = intval($_GET['profileID']);
 			}
-			else
+			$globalSettings['description'] = $_POST['globalsettings']['description'];
+			$globalSettings['defaultDomain'] = $_POST['globalsettings']['defaultDomain'];
+			$globalSettings['organisationName'] = $_POST['globalsettings']['organisationName'];
+			$globalSettings['userDefinedAccounts'] = $_POST['globalsettings']['userDefinedAccounts'];
+			
+			
+			// get the settings for the smtp server
+			$smtpType = $_POST['smtpsettings']['smtpType'];
+			foreach($this->boemailadmin->getFieldNames($smtpType,'smtp') as $key)
 			{
-				$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
+				$smtpSettings[$key] = $_POST['smtpsettings'][$smtpType][$key];
 			}
+			$smtpSettings['smtpType'] = $smtpType;
+			
+			#_debug_array($smtpSettings);
+			
+			// get the settings for the imap/pop3 server
+			$imapType = $_POST['imapsettings']['imapType'];
+			foreach($this->boemailadmin->getFieldNames($imapType,'imap') as $key)
+			{
+				$imapSettings[$key] = $_POST['imapsettings'][$imapType][$key];
+			}
+			$imapSettings['imapType'] = $imapType;
+			
+			#_debug_array($imapSettings);
+			
+			$this->boemailadmin->saveProfile($globalSettings, $smtpSettings, $imapSettings);
+			#if ($HTTP_POST_VARS['bo_action'] == 'save_ldap' || $HTTP_GET_VARS['bo_action'] == 'save_ldap')
+			#{
+				$this->listProfiles();
+			#}
+			#else
+			#{
+			#	$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
+			#}
 		}
 		
 		function translate()
 		{
-			global $phpgw_info;			
-
-			$this->t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
-			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
-			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
-
+			# skeleton
+			# $this->t->set_var('',lang(''));
+			
 			$this->t->set_var('lang_server_name',lang('server name'));
 			$this->t->set_var('lang_server_description',lang('description'));
-			$this->t->set_var('lang_activate',lang('Activate'));
 			$this->t->set_var('lang_edit',lang('edit'));
 			$this->t->set_var('lang_save',lang('save'));
 			$this->t->set_var('lang_delete',lang('delete'));
-			$this->t->set_var('lang_disabled',lang('disabled'));
-			$this->t->set_var('lang_enabled',lang('enabled'));
-			$this->t->set_var('lang_add',lang('add'));
-			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_back',lang('back'));
 			$this->t->set_var('lang_remove',lang('remove'));
-			$this->t->set_var('lang_add_to_local',lang('add also to local domains'));
 			$this->t->set_var('lang_ldap_server',lang('LDAP server'));
 			$this->t->set_var('lang_ldap_basedn',lang('LDAP basedn'));
 			$this->t->set_var('lang_ldap_server_admin',lang('admin dn'));
 			$this->t->set_var('lang_ldap_server_password',lang('admin password'));
-			$this->t->set_var('lang_add_server',lang('add server'));
+			$this->t->set_var('lang_add_profile',lang('add profile'));
 			$this->t->set_var('lang_domain_name',lang('domainname'));
-			$this->t->set_var('lang_remote_server',lang('remote server'));
-			$this->t->set_var('lang_remote_port',lang('remote port'));
+			$this->t->set_var('lang_SMTP_server_hostname_or_IP_address',lang('SMTP-Server hostname or IP address'));
+			$this->t->set_var('lang_SMTP_server_port',lang('SMTP-Server port'));
+			$this->t->set_var('lang_Use_SMTP_auth',lang('Use SMTP auth'));
+			$this->t->set_var('lang_Select_type_of_SMTP_Server',lang('Select type of SMTP Server'));
+			$this->t->set_var('lang_profile_name',lang('Profile Name'));
+			$this->t->set_var('lang_default_domain',lang('enter your default mail domain (from: user@domain)'));
+			$this->t->set_var('lang_organisation_name',lang('name of organisation'));
+			$this->t->set_var('lang_user_defined_accounts',lang('users can define their own emailaccounts'));
+			$this->t->set_var('lang_LDAP_server_hostname_or_IP_address',lang('LDAP server hostname or ip address'));
+			$this->t->set_var('lang_LDAP_server_admin_dn',lang('LDAP server admin DN'));
+			$this->t->set_var('lang_LDAP_server_admin_pw',lang('LDAP server admin password'));
+			$this->t->set_var('lang_LDAP_server_base_dn',lang('LDAP server accounts DN'));
+			$this->t->set_var('lang_use_LDAP_defaults',lang('use LDAP defaults'));
+			$this->t->set_var('lang_LDAP_settings',lang('LDAP settings'));
+			$this->t->set_var('lang_select_type_of_imap/pop3_server',lang('select type of IMAP/POP3 server'));
+			$this->t->set_var('lang_pop3_server_hostname_or_IP_address',lang('POP3 server hostname or ip address'));
+			$this->t->set_var('lang_pop3_server_port',lang('POP3 server port'));
+			$this->t->set_var('lang_imap_server_hostname_or_IP_address',lang('IMAP server hostname or ip address'));
+			$this->t->set_var('lang_imap_server_port',lang('IMAP server port'));
+			$this->t->set_var('lang_use_tls_encryption',lang('use tls encryption'));
+			$this->t->set_var('lang_use_tls_authentication',lang('use tls authentication'));
+			$this->t->set_var('lang_sieve_settings',lang('Sieve settings'));
+			$this->t->set_var('lang_enable_sieve',lang('enable Sieve'));
+			$this->t->set_var('lang_sieve_server_hostname_or_ip_address',lang('Sieve server hostname or ip address'));
+			$this->t->set_var('lang_sieve_server_port',lang('Sieve server port'));
+			$this->t->set_var('lang_enable_cyrus_imap_administration',lang('enable Cyrus IMAP server administration'));
+			$this->t->set_var('lang_cyrus_imap_administration',lang('Cyrus IMAP server administration'));
+			$this->t->set_var('lang_admin_username',lang('admin username'));
+			$this->t->set_var('lang_admin_password',lang('admin passwort'));
+			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
+			$this->t->set_var('lang_standard',lang('standard'));
+			$this->t->set_var('lang_vmailmgr',lang('Virtual MAIL ManaGeR'));
+			# $this->t->set_var('',lang(''));
 			
-			$this->t->set_var('desc_ldaplocaldelivery',lang('To lookup the local passwd file if the LDAP lookup finds no match. This affects qmail-lspawn and auth_* if the LDAP lookup returns nothing.'));
-			$this->t->set_var('desc_ldapdefaultdotmode',lang('The default interpretation of .qmail files.<br><b>Note:</b> Works only for deliveries based on LDAP lookups. Local mails use dotonly like in normal qmail.'));
-			$this->t->set_var('desc_ldapbasedn',lang('The base DN from where the search in the LDAP tree begins.'));
 		}
 	}
 ?>

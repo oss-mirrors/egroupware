@@ -18,102 +18,102 @@
 			$this->db		= $GLOBALS['phpgw']->db;
 		}
 		
-		function deleteServer($_serverid)
+		function addProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			$query = "delete from phpgw_qmailldap where id='$_serverid'";
-			$this->db->query($query);
+			$fields = '';
+			$values = '';
+			
+			foreach($_smtpSettings as $key => $value)
+			{
+				if($fields != '')
+					$fields .= ',';
+				if($values != '')
+					$values .= ',';
+				$fields .= "$key";
+				$values .= "'$value'";
+			}
+			
+			foreach($_globalSettings as $key => $value)
+			{
+				if($key == 'profileID')
+					continue;
+				if($fields != '')
+					$fields .= ',';
+				if($values != '')
+					$values .= ',';
+				$fields .= "$key";
+				$values .= "'$value'";
+			}
+			
+			foreach($_imapSettings as $key => $value)
+			{
+				if($fields != '')
+					$fields .= ',';
+				if($values != '')
+					$values .= ',';
+				$fields .= "$key";
+				$values .= "'$value'";
+			}
+			
+			$query = "insert into phpgw_emailadmin ($fields) values ($values)";
+			
+			$this->db->query($query,__LINE__,__FILE__);
 		}
 
-		function getLDAPStorageData($_serverid)
+		function deleteProfile($_profileID)
 		{
-			$query = "select * from phpgw_qmailldap where id='$_serverid'";
-			$this->db->query($query);
-			
-			if ($this->db->next_record())
+			$query = "delete from phpgw_emailadmin where profileID='$_profileID'";
+			$this->db->query($query,__LINE__ , __FILE__);
+		}
+
+		function getProfile($_profileID, $_fieldNames)
+		{
+			$query = '';
+			foreach($_fieldNames as $key => $value)
 			{
-				$storageData['qmail_servername'] 	= $this->db->f('qmail_servername');
-				$storageData['description'] 		= $this->db->f('description');
-				$storageData['ldap_basedn'] 		= $this->db->f('ldap_basedn');
-				
-				return $storageData;
+				if(!empty($query))
+					$query .= ', ';
+				$query .= $value;
+			}
+			
+			$query = "select $query from phpgw_emailadmin where profileID='$_profileID'";
+			
+			$this->db->query($query, __LINE__, __FILE__);
+			
+			if($this->db->next_record())
+			{
+				foreach($_fieldNames as $key => $value)
+				{
+					$profileData[$value] = $this->db->f($value);
+				}
+
+				return $profileData;
+			}
+			
+			return false;
+		}
+		
+		function getProfileList($_profileID='')
+		{
+			if(is_int(intval($_profileID)) && $_profileID != '')
+			{
+				$query = "select profileID,smtpServer,smtpType,imapServer,imapType,description from phpgw_emailadmin where profileID='".intval($_profileID)."'";
 			}
 			else
 			{
-				return false;
-			}
-		}
-		
-		function getLDAPData($_serverid)
-		{
-			global $phpgw;
-		
-			$storageData = $this->getLDAPStorageData($_serverid);
-			
-			$ldap = $phpgw->common->ldapConnect();
-			$filter = "cn=".$storageData['qmail_servername'];
-			
-			$sri = @ldap_read($ldap,$storageData['ldap_basedn'],$filter);
-			if ($sri)
-			{
-				$allValues = ldap_get_entries($ldap, $sri);
-				
-				unset($allValues[0]['rcpthosts']['count']);
-				unset($allValues[0]['locals']['count']);
-				unset($allValues[0]['smtproutes']['count']);
-				
-				$data = array
-				(
-					'rcpthosts'	=> $allValues[0]['rcpthosts'],
-					'locals'	=> $allValues[0]['locals'],
-					'smtproutes'	=> $allValues[0]['smtproutes'],
-					'ldapbasedn'	=> $allValues[0]['ldapbasedn'][0]
-				);
-				
-				#$data['smtproutes'] = array
-				#(
-				#	'0'	=> 't-online.de:smtprelay.t-online.de:25',
-				#	'1'	=> 't-dialin.net:smtprelay.t-online.de:25'
-				#);
-				
-				if (isset($allValues[0]['ldaplocaldelivery'][0]))
-				{
-					$data['ldaplocaldelivery'] = $allValues[0]['ldaplocaldelivery'][0];
-				}
-				else
-				{
-					//set to default
-					$data['ldaplocaldelivery'] = 1;
-				}
-
-				if (isset($allValues[0]['ldapdefaultdotmode'][0]))
-				{
-					$data['ldapdefaultdotmode'] = $allValues[0]['ldapdefaultdotmode'][0];
-				}
-				else
-				{
-					//set to default
-					$data['ldapdefaultdotmode'] = 'ldaponly';
-				}
-
-				return $data;
-			}
-			else
-			{
-				return false;
+				$query = "select profileID,smtpServer,smtpType,imapServer,imapType,description from phpgw_emailadmin";
 			}
 			
-		}
-		
-		function getServerList()
-		{
-			$query = "select id,email_servername,description from phpgw_emailadmin";
 			$this->db->query($query);
 			
 			$i=0;
 			while ($this->db->next_record())
 			{
-				$serverList[$i]['id'] 			= $this->db->f('id');
-				$serverList[$i]['email_servername']	= $this->db->f('email_servername');
+				$serverList[$i]['profileID'] 		= $this->db->f('profileID');
+				$serverList[$i]['smtpServer']		= $this->db->f('smtpServer');
+				$serverList[$i]['smtpType']		= $this->db->f('smtpType');
+				$serverList[$i]['imapServer']		= $this->db->f('imapServer');
+				$serverList[$i]['imapType']		= $this->db->f('imapType');
 				$serverList[$i]['description']		= $this->db->f('description');
 				$i++;
 			}
@@ -248,58 +248,36 @@
 			
 		}
 
-		function update($_action, $_data)
+		function updateProfile($_globalSettings, $_smtpSettings, $_imapSettings)
 		{
-			switch ($_action)
+			$query = '';
+			
+			foreach($_smtpSettings as $key => $value)
 			{
-				case "add_server":
-					$query = sprintf("insert into phpgw_qmailldap (description, ldap_basedn, qmail_servername)
-							values ('%s','%s','%s')",
-							$_data['description'],
-							$_data['ldap_basedn'],
-							$_data["qmail_servername"]);
-					$this->db->query($query);
-					break;
-					
-				case "update_server":
-					$query = sprintf("update phpgw_qmailldap set 
-							  description='%s',
-							  ldap_basedn='%s',
-							  qmail_servername='%s' where id='%s'",
-						$_data['description'],
-						$_data['ldap_basedn'],
-						$_data["qmail_servername"],
-						$_data["id"]);
-					$this->db->query($query);
-					break;
-			}
-		}
-
-		function writeConfigData($_data, $_serverid)
-		{
-			global $phpgw;
-		
-			$storageData = $this->getLDAPStorageData($_serverid);
-			
-			#print "write Data for ".$storageData['qmail_servername']."<br>";
-			
-			$ds = $phpgw->common->ldapConnect();
-			
-			// check if the DN exists, if not create it
-			$filter = "objectclass=*";
-			@ldap_read($ds,$storageData['ldap_basedn'], $filter);
-			if (ldap_errno($ds) == 32)
-			{
-				$ldapData["objectclass"][0] 	= "qmailcontrol";
-				$ldapData["cn"]         	= $storageData['qmail_servername'];
-				ldap_add($ds,$storageData['ldap_basedn'],$ldapData);
+				if($query != '')
+					$query .= ', ';
+				$query .= "$key='$value'";
 			}
 			
-			$ldapData['rcpthosts']		= $_data['rcpthosts'];
-			$ldapData['locals']		= $_data['locals'];
-			$ldapData['smtproutes']		= $_data['smtproutes'];
+			foreach($_globalSettings as $key => $value)
+			{
+				if($key == 'profileID')
+					continue;
+				if($query != '')
+					$query .= ', ';
+				$query .= "$key='$value'";
+			}
 			
-			ldap_modify($ds,$storageData['ldap_basedn'],$ldapData);
+			foreach($_imapSettings as $key => $value)
+			{
+				if($query != '')
+					$query .= ', ';
+				$query .= "$key='$value'";
+			}
+			
+			$query = "update phpgw_emailadmin set $query where profileID='".$_globalSettings['profileID']."'";
+			
+			$this->db->query($query,__LINE__,__FILE__);
 		}
 	}
 ?>
