@@ -1545,7 +1545,7 @@ Array
 					}
 					$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $this_acctnum);
 					// IS THIS A MOVE OR A DELETE?
-					if ($to_fldball['folder'] == $this->del_pseudo_folder)
+					if ($to_fldball['folder'] == $this->del_pseudo_folder || $to_fldball['folder'] == '##NOTHING##')
 					{
 						// STRAIGHT DELETE
 						if ($this->debug_wrapper_dcom_calls > 1) { echo 'mail_msg(_wrappers): flush_buffered_move_commmands: SRAIGHT DELETE ($do_it_for_real is '.serialize($do_it_for_real).'): $GLOBALS[phpgw_dcom_'.$this_acctnum.']->dcom->delete('.serialize($mailsvr_stream).' ,'.$collected_msg_num_string.')<br>'; }
