@@ -659,7 +659,7 @@
 		{
 			$calendar_id = intval($header->phpgw_type[id]);
 			echo '<table align="center" width="100%"><tr><td align="center">';
-			$phpgw->common->hook_single('email',$header->phpgw_type[type]);
+			$phpgw->hooks->single('email',$header->phpgw_type[type]);
 			echo '</td></tr></table>';
 		}
 	}

@@ -1165,7 +1165,7 @@
 			$calendar_id = intval(substr($id_array[1],1,strlen($id_array[1])-2));
 
 			echo '<tr><td align="center">';
-			$GLOBALS['phpgw']->common->hook_single('email',$application);
+			$GLOBALS['phpgw']->hooks->single('email',$application);
 			echo '</td></tr>';
 		}
 	} */
