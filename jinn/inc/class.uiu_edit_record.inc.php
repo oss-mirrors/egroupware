@@ -31,9 +31,10 @@
    {
 	  var $public_functions = Array
 	  (
-		 'display_form'		=> True,
-		 'multiple_entries'		=> True,
-		 'view_record'		=> True
+		 'display_form'				=> True,
+		 'multiple_entries'			=> True,
+		 'view_multiple_records'	=> True,
+		 'view_record'				=> True
 	  );
 	  var $bo;
 	  var $template;
@@ -650,7 +651,7 @@
 		 $this->template->parse('form_footer','form_footer');
 	  }
 
-	  function render_many_to_many_ro()
+	  function render_many_to_many_ro($template_block)
 	  {
 		 $relation2_array=$this->bo->extract_M2M_relations($this->bo->site_object[relations]);
 		 if (count($relation2_array)>0)
@@ -677,14 +678,21 @@
 					 }
 
 					 $this->template->set_var('row_color',$row_color);
-
 					 $this->template->set_var('tipmouseover',$tipmouseover);
 					 $this->template->set_var('input',$input);
 					 $this->template->set_var('fieldname',$display_name);
 
-					 $this->template->parse('row','rows',true);
+					 $this->template->parse($template_block,'rows',true);
 				  }
-
+				  else
+				  {
+					 $this->template->set_var('row_color',$row_color);
+					 $this->template->set_var('tipmouseover',$tipmouseover);
+					 $this->template->set_var('input',lang('empty'));
+					 $this->template->set_var('fieldname',$display_name);
+			
+					 $this->template->parse($template_block,'rows',true);
+				  }
 			   }
 
 			}
@@ -841,6 +849,184 @@
 		 }
 	  }
 
+  	  function view_multiple_records()
+	{
+		 $this->ui->header('View multiple records');
+		 $this->ui->msg_box($this->bo->message);
+
+		 $this->ui->main_menu();	
+
+		 $this->template->set_file(array(
+			'view_record' => 'view_multiple_records.tpl'
+		 ));
+
+		 $popuplink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.img_popup');
+
+		 $this->template->set_var('popuplink',$popuplink);
+		 $this->template->set_block('view_record','header','');
+		 $this->template->set_block('view_record','rows','rows');
+		 $this->template->set_block('view_record','recordheader','recordheader');
+		 $this->template->set_block('view_record','recordfooter','recordfooter');
+		 $this->template->set_block('view_record','back_button','back_button');
+		 $this->template->set_block('view_record','footer','footer');
+
+		 $this->template->pparse('out','header');
+		 
+		 
+		 if (is_array($this->bo->mult_where_array))
+		 {
+			$mult_where_array=$this->bo->mult_where_array; // get local en unset bo
+			$this->bo->where_string=true;
+			$this->mult_records=count($mult_where_array);
+			//$i=0;
+			//$setwhere=true;
+			foreach($mult_where_array as $where_string)	
+			{
+				 $this->template->parse('record','recordheader',true);
+
+				 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
+				 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
+		
+				 /* The main loop to create all rows with input fields start here */ 
+				 foreach ( $fields as $fprops )
+				 {
+					unset($input);
+					unset($ftype);
+		
+					$value=$this->values_object[0][$fprops[name]];
+					$input_name=$fprops[name];	
+		
+					unset($field_conf_arr);
+					$field_conf_arr=$this->bo->so->get_field_values($this->bo->site_object[object_id],$fprops[name]);
+		
+					if($field_conf_arr[field_alt_name])
+					{
+					   $display_name=$field_conf_arr[field_alt_name];
+					}
+					else
+					{
+					   $display_name = ucfirst(strtolower(ereg_replace("_", " ", $fprops[name]))); 
+					}
+		
+		
+					unset($tipmouseover);
+					if(trim($field_conf_arr[field_help_info]))
+					{
+					   $tooltip=str_replace("'", "\'", $field_conf_arr[field_help_info]);
+					   $tipmouseover='<img onMouseover="tooltip(\''.$tooltip.'\')" onMouseout="hidetooltip()" src="'.$GLOBALS[phpgw]->common->image('phpgwapi','info').'" alt="" />'; 
+					}
+		
+					// auto
+					if (eregi("auto_increment", $fprops[flags]) || eregi("nextval",$fprops['default']))
+					{
+					   $this->record_id_val=$value;
+					   $input='<b>'.$value.'</b>';
+					}
+					// string
+					elseif($this->db_ftypes->complete_resolve($fprops)=='string')
+					{
+					   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
+					   {
+						  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
+						  $input= '<sel'.'ect name="'.$input_name.'">';
+						  $input.= $this->ui->select_options($related_fields,$value,true);
+						  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+					   }
+					}
+					// int
+					elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
+					{
+					   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
+					   {
+						  //get related field vals en displays
+						  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
+		
+						  $input= '<sel'.'ect name="'.$input_name.'">';
+						  $input.= $this->ui->select_options($related_fields,$value,true);
+						  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
+					   }
+					}
+		
+					if(!$input)
+					{
+					   if(!$ftype) $ftype=$this->db_ftypes->complete_resolve($fprops);
+					   if(!$ftype) $ftype='string';
+		
+					   if(!$this->bo->site_object[plugins])
+					   {
+						  $input=$this->bo->plug->call_plugin_ro($value,$field_conf_arr);
+					   }
+					   else
+					   {
+						  $input=$this->bo->get_plugin_ro($input_name,$value,$this->db_ftypes->complete_resolve($fprops),'');
+					   }
+		
+					}
+		
+					/* if there is something to render to this */
+					if($input!='__disabled__')
+					{
+					   if($this->bo->read_preferences('table_debugging_info')=='yes')
+					   {
+						  $keys=array_keys($fprops);
+						  $input.='<br/>';
+						  foreach($keys as $key)
+						  {
+							 if(!$fprops[$key]) continue;
+							 $input.= $key.'='.$fprops[$key].' ';
+		
+						  }
+					   }
+		
+					   /* set the row colors */
+					   $GLOBALS['phpgw_info']['theme']['row_off']='#eeeeee';
+					   if ($row_color==$GLOBALS['phpgw_info']['theme']['row_on']) $row_color=$GLOBALS['phpgw_info']['theme']['row_off'];
+					   else $row_color=$GLOBALS['phpgw_info']['theme']['row_on'];
+		
+					   $this->template->set_var('row_color',$row_color);
+					   $this->template->set_var('tipmouseover',$tipmouseover);
+					   $this->template->set_var('input',$input);
+					   $this->template->set_var('fieldname',$display_name);
+		
+					   $this->template->parse('record','rows',true);
+					}
+				 }
+				 $this->render_many_to_many_ro('record');
+				$this->template->parse('record','recordfooter',true);
+			}
+			$this->template->pparse('out','record');
+
+		}
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+
+		 if($this->bo->site_object[max_records]!=1)
+		 {
+			$back_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_list_records.display').'\'';
+			$this->template->set_var('back_onclick',$back_onclick);
+
+			$this->template->parse('extra_back_button','back_button');
+		 }
+		 else
+		 {
+			$this->template->set_var('extra_back_button','');
+		 }
+		 
+		 //$this->template->set_var('lang_edit',lang('edit this record'));
+		 $this->template->set_var('lang_back',lang('back to record list'));
+		 //$edit_onclick='location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiu_edit_record.display_form&where_string='.base64_encode($where_string)).'\'';
+		 //$this->template->set_var('edit_onclick',$edit_onclick);
+		 
+		 $this->template->pparse('out','footer');
+		 
+	  }
+	  
 	  function view_record()
 	  {
 		 $this->ui->header('View record');
@@ -974,7 +1160,7 @@
 		 }
 
 
-		 $this->render_many_to_many_ro();
+		 $this->render_many_to_many_ro('row');
 
 
 

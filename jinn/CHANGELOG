@@ -4,10 +4,16 @@ CHANGELOG JiNN for eGroupWare
 $Id$
 
 
-Version 0.8.210b
+Version 0.8.212
+Mon Feb 14 CET 2005
+============================
+- implemented multiple records view
+- small layout change single record view
+
+Version 0.8.211
 Thu Feb 11 CET 2005
 ============================
-- implemented all basic functionality object event plugin system
+- implemented object event plugin system
 - fixed class variable 'plug' was not declared in boadmin class
 
 Version 0.8.210

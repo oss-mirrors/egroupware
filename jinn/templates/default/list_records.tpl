@@ -25,7 +25,7 @@
 	</td>
 	<td align="center" style="padding-left:20px;">
 		<form name="filterform" action="{filter_action}" method="post">{filter_text}&nbsp;
-			<select name="filtername" OnChange=" document.filterform.action = document.filterform.refresh_url.value; submit();">
+			<select name="filtername" onChange="document.filterform.action = document.filterform.refresh_url.value; submit();">
 				{filter_list}
 			</select>
 			<input type="hidden" name="refresh_url" value="{refresh_url}">
@@ -147,6 +147,19 @@ function submit_multi_edit()
    }
 }
 
+function submit_multi_view()
+{
+   if(countSelectedCheckbox()==0)
+   {
+	  alert('{lang_select_checkboxes}');
+   }
+   else
+   {
+	  document.frm.action.value='view';
+	  document.frm.submit();
+   }
+}
+
 function img_popup(img,pop_width,pop_height,attr)
 {
 options="width="+pop_width+",height="+pop_height+",location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no";
@@ -227,6 +240,8 @@ parent.window.open("{popuplink}&path="+img+"&attr="+attr, "pop", options);
 <tr valign="top" bgcolor="{colhead_bg_color}">
 
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><input title="{colfield_lang_check_all}" type="checkbox" name="CHECKALL" id="CHECKALL" value="TRUE" onclick="doCheckAll(this)" /></td>
+
+<td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_view_sel}" href="javascript:submit_multi_view()"><img src="{colfield_view_img_src}" alt="{colfield_lang_view_sel}" /></a></td>
 
 <td width="1%" bgcolor="{colhead_bg_color}" align="left"><a title="{colfield_lang_edit_sel}" href="javascript:submit_multi_edit()"><img src="{colfield_edit_img_src}" alt="{colfield_lang_edit_sel}" /></a></td>
 

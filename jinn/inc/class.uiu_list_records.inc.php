@@ -30,6 +30,7 @@
 	  (
 		 'display'		=> True,
 		 'browse_objects'		=> True,
+		 'advanced_filters'	=> True
 	  );
 
 	  var $bo;
@@ -54,7 +55,7 @@
 	  /**
 	  @function display
 	  @abstract wrapper function for listing one or more record
-	  @note FIXME this function must be removed or at leased renamed
+	  @note FIXME this function must be removed or at least renamed
 	  */
 	  function display()
 	  {
@@ -233,15 +234,15 @@
 	  
 	function format_filter_options($filterstore, $selected)
 	{
-		$options  = '<option value="">'.lang('no filter').'</option>';
+		$options  = '<option value="">'.lang('empty filter').'</option>';
 		$options .= '<option value="">------------</option>';
 		if($selected == 'sessionfilter')
 		{
-		   $options .= '<option value="sessionfilter" selected="selected">'.lang('current session filter').'</option>';
+			$options .= '<option value="sessionfilter" selected>'.lang('session filter').'</option>';
 		}
 		else
 		{
-			$options .= '<option value="sessionfilter">'.lang('current session filter').'</option>';
+			$options .= '<option value="sessionfilter">'.lang('session filter').'</option>';
 		}
 		$options .= '<option value="">------------</option>';
 		if(is_array($filterstore))
@@ -250,7 +251,7 @@
 			{
 				if($filter[name] == $selected)
 				{
-					$options .= '<option value="'.$filter[name].'" selected="selected">'.$filter[name].'</option>';
+					$options .= '<option value="'.$filter[name].'" selected>'.$filter[name].'</option>';
 				}
 				else
 				{
@@ -521,7 +522,6 @@
 			   $where_condition= " ($filter_where)"; 	
 			}
 		 }
-//_debug_array($where_condition);
 
 		 /* which/how many column to show: all, the preferred, the default fields set by the site admin, the default first X, or the default first 4 */
 		 if ($show_all_cols=='True' || $default_col_num=='-1')
@@ -793,10 +793,71 @@
 			$this->template->pparse('out','emptyfooter');
 		 }
 
+		 //			unset($this->message);
+
+		 //			unset($this->bo->message);
 		 $this->bo->save_sessiondata();
 	  }
 
-	 
+	  function advanced_filters()
+	  {
+		 unset($this->bo->mult_where_array);
+
+		 // check if table exists
+		 if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+		 {
+			unset($this->bo->site_object_id);
+			$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+			$this->bo->message['error_code']=117;
+
+			$this->bo->save_sessiondata();
+			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+		 }				
+
+		 // check if there's permission to this object
+		 if(!$this->bo->acl->has_object_access($this->bo->site_object_id))
+		 {
+			unset($this->bo->site_object_id);
+			$this->bo->message['error']=lang('You have no access to this object');
+			$this->bo->message['error_code']=116;
+
+			$this->bo->save_sessiondata();
+			$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+
+		 $this->ui->header('set advanced browsing filters');
+		 $this->ui->msg_box($this->bo->message);
+		 unset($this->bo->message);
+
+		 $this->ui->main_menu();	
+
+		 $this->template->set_file(array(
+			'adv_filters' => 'advanced_filters.tpl',
+		 ));
+
+		 $adv_filter_str=$this->bo->browse_settings[adv_filter_str];  
+
+
+		 $this->template->set_block('adv_filters','header','header');
+		 $this->template->set_block('adv_filters','row','row');
+		 $this->template->set_block('adv_filters','footer','footer');
+
+		 $this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.bouser.set_adv_filter'));
+		 $this->template->set_var('adv_filter',$adv_filter_str);
+		 $this->template->set_var('submit',lang('submit'));
+
+
+		 $this->template->parse('out','header');
+		 $this->template->pparse('out','header');
+
+		 $this->template->parse('out','footer');
+		 $this->template->pparse('out','footer');
+
+		 $this->bo->save_sessiondata();
+
+
+	  }
+
    }
 
 

@@ -88,8 +88,8 @@ document.onmousemove=positiontip
 
 
 <!-- BEGIN rows -->
-<tr><td bgcolor="{row_color}" nowrap="nowrap" valign="top">{fieldname}{tipmouseover}</td>
-<td bgcolor="{row_color}">{input}</td></tr>
+<tr><td bgcolor="{row_color}" nowrap="nowrap" valign="top">{fieldname}{tipmouseover}&nbsp;</td>
+<td style="width:570px" bgcolor="{row_color}">{input}</td></tr>
 <!-- END rows -->
 
 <!-- BEGIN back_button -->

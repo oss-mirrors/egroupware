@@ -372,6 +372,11 @@
 			$this->save_sessiondata();
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.multiple_entries');
 			break;
+			case 'view':
+			$this->mult_where_array=$this->set_multiple_where();
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiu_edit_record.view_multiple_records');
+			break;
 			default:
 			$this->message[error]=lang('Operation on multiple records failed.');
 			$this->message[error_code]=100;
