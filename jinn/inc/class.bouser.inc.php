@@ -482,10 +482,16 @@
 			   // _debug_array($data);
 			   // die();
 			   $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
+//$eventstatus = $this->run_event_plugins('on_update');
+
 			}
 		 }
 
-		 if ($status[status]==1)	$this->message['info']='Records successfully saved';
+		 if ($status[status]==1)	
+		 {
+			$this->message['info']='Records successfully saved';
+//if($eventstatus) $this->message[info].=', but error in On Update event plugin';
+		 }
 		 else 
 		 {
 			$this->message[error]=lang('One or more records NOT succesfully saved.');

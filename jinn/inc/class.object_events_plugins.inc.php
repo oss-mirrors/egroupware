@@ -81,9 +81,9 @@
 	  */
 	  function plugin_hooks($eventtype)
 	  {
-		 if (count($this->plugins>0))
+		 if (count($this->object_events_plugins>0))
 		 {	
-			foreach($this->plugins as $plugin)
+			foreach($this->object_events_plugins as $plugin)
 			{
 			   foreach($plugin['event_hooks'] as $hook)
 			   {

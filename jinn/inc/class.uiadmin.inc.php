@@ -410,11 +410,14 @@
  		 $this->template->set_block('config','pre_block','pre_block');
  		 $this->template->set_block('config','config_block','config_block');
  		 $this->template->set_block('config','delete_block','delete_block');
+ 		 $this->template->set_block('config','new_block','new_block');
  		 $this->template->set_block('config','row_block','row_block');
  		 $this->template->set_block('config','post_block','post_block');
 
+		 $this->template->set_var('lang_objecteventconfiguration',lang('Object event configuration'));
+		 
 		 ///////////////////////////////////////////////////////////
-		 // the pre block takes care of the event/plugin selectors
+		 // the pre block takes care of form start and stuff..
 		 ///////////////////////////////////////////////////////////
 
 		 if($_GET[close_me]=='true')
@@ -426,56 +429,140 @@
 			$this->template->set_var('close', '');		 
 		 }
 		 
-		 $this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
-		 $this->template->set_var('event_options', $this->getEventOptions($_POST[event]));		 
-		 $this->template->set_var('event_label', lang('select an event'));		 
-		 $this->template->set_var('option_selected', 'document.events_config.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; submit();');
-
-		 $this->template->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
-		 $this->template->set_var('plugin_label', lang('select a plugin'));		 
+		 if($_GET[edit]=='')
+		 {
+			$this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id]));
+		 }
+		 else
+		 {
+			$this->template->set_var('action',$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.boadmin.save_object_events_conf&object_id='.$_GET[object_id].'&edit='.$_GET[edit]));
+		 }
 
 		 $this->template->pparse('out','pre_block');
 
-		 ///////////////////////////////////////////////////////////
-		 // the delete block shows all active object event plugins
-		 ///////////////////////////////////////////////////////////
 
-
-		$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
-		$stored_configs = unserialize(base64_decode($object_arr[events_config]));
-		if(is_array($stored_configs))
+		if($_GET[edit]=='')
 		{
-			$this->template->set_var('delete_label', lang('delete'));		 
-			foreach($stored_configs as $key => $config)
+			 ///////////////////////////////////////////////////////////
+			 // the delete block shows all active object event plugins
+			 ///////////////////////////////////////////////////////////
+	
+			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+			if(is_array($stored_configs))
 			{
-				$this->template->set_var('config_id', $key);		 
-				$this->template->set_var('config_description', lang('event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin]));		 
-				$this->template->pparse('out','delete_block');
+				$this->template->set_var('delete_label', lang('delete'));		 
+				foreach($stored_configs as $key => $config)
+				{
+					$this->template->set_var('edit_url', $GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id].'&edit='.$key));
+					$this->template->set_var('config_id', $key);		 
+					$this->template->set_var('config_description', lang('%3: event <b>%1</b> triggers plugin <b>%2</b>', $config[conf][event], $config[conf][plugin], $key+1));		 
+					$this->template->pparse('out','delete_block');
+				}
 			}
+			
+			 ///////////////////////////////////////////////////////////
+			 // the new block takes care of select boxes for a new configuration
+			 ///////////////////////////////////////////////////////////
+	
+			 $this->template->set_var('block_title', lang('add a new configuration:'));		 
+			 $this->template->set_var('event_label', lang('select an event'));		 
+			 $this->template->set_var('event_options', $this->getEventOptions($_POST[event]));		 
+			 $this->template->set_var('plugin_label', lang('select a plugin'));		 
+			 $this->template->set_var('plugin_options', $this->getPluginOptions($_POST[event], $_POST[plugin]));		 
+			 $this->template->set_var('option_selected', 'document.events_config.action=\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiadmin.object_events_config&object_id='.$_GET[object_id]).'\'; submit();');
+	
+			 $this->template->pparse('out','new_block');
+		
+			 ///////////////////////////////////////////////////////////
+			 // the config block shows the plugin configuration if a plugin was selected
+			 ///////////////////////////////////////////////////////////
+	
+			 if($_POST[plugin] != '')
+			 {
+				 $this->template->set_var('title',lang('Plugin Configuration'));
+				 $this->template->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
+	
+				 $this->template->pparse('out','config_block');
+				 
+					// get config fields for this plugin
+				 $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
+				 $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
+	
+				 if(is_array($cfg))
+				 {
+	
+					///////////////////////////////////////////////////////////
+					// the row block shows each configuration field the plugin has
+					///////////////////////////////////////////////////////////
+	
+					foreach($cfg as $key => $val)
+					{
+					   /* replace underscores for spaces */
+					   $render_cfg_key='<strong>'.ereg_replace('_',' ',$key).'</strong>';
+					   if($cfg_help[$key]) $render_cfg_key .= '<br/><i>'.$cfg_help[$key].'</i>';
+		
+					   $this->template->set_var('description',$render_cfg_key);
+		
+					   switch ($val[1])
+					   {
+						  case 'radio' :
+							 foreach($val[0] as $radio)
+							 {
+								$output='<input name="'.$key.'" type="radio" value="'.$radio.'">'.$radio.'<br/>';
+							 }
+							 break;
+						  case 'text'  :
+							 $output= '<input name="'.$key.'" type="text" '.$val[2].' value="'.$val[0].'">';
+							 break;
+						  case 'area'  :
+							 $output= '<textarea name="'.$key.'" rows="5" cols="50">'.$val[0].'</textarea>';
+							 break;
+						  case 'select':
+							 $output= '<select name="'.$key.'">';
+								foreach($val[0] as $option)
+								{
+								   $output.='<option value="'.$option.'">'.$option.'</option>';
+								}
+								$output.='</select>';
+							 break;
+						  case 'none'  :
+							 unset($output);
+							 break;
+							 default      :
+							 $output.= '<input name="'.$key.'" type=text value="'.$val[0].'">';
+					   }
+		
+						$this->template->set_var('row',$output);
+						$this->template->pparse('out','row_block');
+					}
+				 }
+			 }
 		}
-		 
-		 ///////////////////////////////////////////////////////////
-		 // the config block shows the plugin configuration if a plugin was selected
-		 ///////////////////////////////////////////////////////////
-
-		 if($_POST[plugin] != '')
-		 {
-			 $this->template->set_var('title',lang('Plugin Configuration'));
-			 $this->template->set_var('plug_name',$this->bo->object_events_plugins[$_POST[plugin]]['title']);
-
-			 $this->template->pparse('out','config_block');
+		else
+		{
+			$object_arr=$this->bo->so->get_object_values($_GET[object_id]);
+			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
+			if(is_array($stored_configs))
+			{
+				$edit_conf = $stored_configs[$_GET[edit]];
+			}
+			
+			$this->template->set_var('title',lang('Existing Plugin Configuration'));
+			$this->template->set_var('plug_name',$this->bo->object_events_plugins[$edit_conf[name]]['title']);
+			$this->template->pparse('out','config_block');
 			 
 				// get config fields for this plugin
-			 $cfg=$this->bo->object_events_plugins[$_POST[plugin]]['config'];
-			 $cfg_help=$this->bo->object_events_plugins[$_POST[plugin]]['config_help'];
-
-			 if(is_array($cfg))
-			 {
-
+			$cfg=$this->bo->object_events_plugins[$edit_conf[name]]['config'];
+			$cfg_help=$this->bo->object_events_plugins[$edit_conf[name]]['config_help'];
+	
+			if(is_array($cfg))
+			{
+	
 				///////////////////////////////////////////////////////////
 				// the row block shows each configuration field the plugin has
 				///////////////////////////////////////////////////////////
-
+		
 				foreach($cfg as $key => $val)
 				{
 				   /* replace underscores for spaces */
@@ -483,28 +570,36 @@
 				   if($cfg_help[$key]) $render_cfg_key .= '<br/><i>'.$cfg_help[$key].'</i>';
 	
 				   $this->template->set_var('description',$render_cfg_key);
+				   
+				   $set_val=$edit_conf[conf][$key];
 	
 				   switch ($val[1])
 				   {
 					  case 'radio' :
 						 foreach($val[0] as $radio)
 						 {
-							$output='<input name="'.$key.'" type="radio" value="'.$radio.'">'.$radio.'<br/>';
+							unset($checked);
+							if($set_val==$radio) $checked='checked';
+							$output='<input name="'.$key.'" type="radio" '.$checked.' value="'.$radio.'">'.$radio.'<br/>';
 						 }
 						 break;
 					  case 'text'  :
+						 $val[0]=$set_val;
 						 $output= '<input name="'.$key.'" type="text" '.$val[2].' value="'.$val[0].'">';
 						 break;
 					  case 'area'  :
+						 $val[0]=$set_val;
 						 $output= '<textarea name="'.$key.'" rows="5" cols="50">'.$val[0].'</textarea>';
 						 break;
 					  case 'select':
 						 $output= '<select name="'.$key.'">';
-							foreach($val[0] as $option)
-							{
-							   $output.='<option value="'.$option.'">'.$option.'</option>';
-							}
-							$output.='</select>';
+						 foreach($val[0] as $option)
+						 {
+						   unset($selected);
+						   if($set_val==$option) $selected='selected';
+						   $output.='<option value="'.$option.'" '.$selected.'>'.$option.'</option>';
+						 }
+						 $output.='</select>';
 						 break;
 					  case 'none'  :
 						 unset($output);
@@ -516,14 +611,15 @@
 					$this->template->set_var('row',$output);
 					$this->template->pparse('out','row_block');
 				}
-			 }
-		 }
-		 
+			}
+		}
 		 ///////////////////////////////////////////////////////////
 		 // the post block closes stuff
 		 ///////////////////////////////////////////////////////////
 
-		 $this->template->set_var('submit', lang('submit'));		 
+		 $this->template->set_var('submit', lang('save'));		 
+		 $this->template->set_var('close', lang('close'));		 
+		 $this->template->set_var('back', lang('back'));		 
 		 $this->template->pparse('out','post_block');
 
 		 $this->bo->save_sessiondata();

@@ -4,8 +4,14 @@ CHANGELOG JiNN for eGroupWare
 $Id$
 
 
+Version 0.8.210b
+Thu Feb 11 CET 2005
+============================
+- implemented all basic functionality object event plugin system
+- fixed class variable 'plug' was not declared in boadmin class
+
 Version 0.8.210
-Thu Feb ???? CET 2005
+Thu Feb 11 CET 2005
 ============================
 - implemented column filters in List Records
 - started object event plugin system

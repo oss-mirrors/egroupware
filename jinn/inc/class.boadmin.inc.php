@@ -58,7 +58,9 @@
 	  var $where_key;
 	  var $where_value;
 
+	  var $plug;
 	  var $plugins;
+	  var $object_events_plugin_manager;
 	  var $object_events_plugins;
 
 	  var $db_ftypes;
@@ -121,7 +123,7 @@
 		 
 		 $this->object_events_plugin_manager = CreateObject('jinn.object_events_plugins'); //$this->include_plugins();
 		 $this->object_events_plugin_manager->local_bo = $this;
-		 $this->object_events_plugins = $this->object_events_plugin_manager->plugins;
+		 $this->object_events_plugins = $this->object_events_plugin_manager->object_events_plugins;
 
 		 $this->db_ftypes = CreateObject('jinn.dbfieldtypes');
 
@@ -350,7 +352,7 @@
 	  */
 	  function save_object_events_conf()
 	  {
-		 if(!$_GET[object_id])
+		 if(!$_GET[object_id] && !$_GET[edit])
 		 {
 			die('error');
 		 }
@@ -364,32 +366,54 @@
 			$object_arr=$this->so->get_object_values($_GET[object_id]);
 			$stored_configs = unserialize(base64_decode($object_arr[events_config]));
 				
-				//check if configurations need to be deleted
-			if(is_array($stored_configs)) 
+			if($_GET[edit]=='')
 			{
-				$numconfigs=count($stored_configs);
-				for($i=0; $i<$numconfigs; $i++)
+					//check if configurations need to be deleted
+				if(is_array($stored_configs)) 
 				{
-					if($_POST['delete_'.$i] == 'true')
+					$numconfigs=count($stored_configs);
+					for($i=0; $i<$numconfigs; $i++)
 					{
-						unset($stored_configs[$i]);
-						$dirty=true;
+						if($_POST['delete_'.$i] == 'true')
+						{
+							unset($stored_configs[$i]);
+							unset($_POST['delete_'.$i]); //or else it gets stored in the plugin config
+							$dirty=true;
+						}
 					}
+					$stored_configs = array_values($stored_configs);
 				}
-				$stored_configs = array_values($stored_configs);
+					
+					//if a new plugin was configured, add it to the store
+				if($_POST[event] != '' && $_POST[plugin] != '')
+				{
+					if(!is_array($stored_configs)) $stored_configs = array();
+					$conf=array
+						(
+							'name'=>$_POST[plugin],
+							'conf'=>$_POST
+						);
+					$stored_configs[] = $conf;
+					$dirty=true;
+				}
 			}
-				
-				//if a new plugin was configured, add it to the store
-			if($_POST[event] != '' && $_POST[plugin] != '')
+			else
 			{
-				if(!is_array($stored_configs)) $stored_configs = array();
-				$conf=array
-					(
-						'name'=>$_POST[plugin],
-						'conf'=>$_POST
-					);
-				$stored_configs[] = $conf;
-				$dirty=true;
+				if(is_array($stored_configs)) 
+				{
+					$_POST[event]  = $stored_configs[$_GET[edit]][conf][event];
+					$_POST[plugin] = $stored_configs[$_GET[edit]][conf][plugin];
+	
+						//replace the existing config with this one
+					if(!is_array($stored_configs)) $stored_configs = array();
+					$conf=array
+						(
+							'name'=>$_POST[plugin],
+							'conf'=>$_POST
+						);
+					$stored_configs[$_GET[edit]] = $conf;
+					$dirty=true;
+				}
 			}
 
 			if($dirty)
@@ -416,10 +440,13 @@ _debug_array(lang('nothing to save. Please select a plugin to delete or configur
 
 		$this->save_sessiondata();
 
-	  
-	  /* fixme: this gives a strange error:
-		 $this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
-		 */
+//fixme: this gives a strange error:
+		//$this->common->exit_and_open_screen('menuaction=jinn.uiadmin.object_events_config&close_me=true&object_id='.$_GET[object_id]);
+		 
+//VERY dirty hack to solve this problem:		 
+echo('<input type="button" onClick="self.close()" value="'.lang('close').'"/>');
+//obviously this needs to be fixed. Then also the above _debug_arrays can be removed.
+		 
 	  }
 	  
 	  /**
