@@ -76,6 +76,6 @@
 			'fk' => array(),
 			'ix' => array('postdate'),
 			'uc' => array()
-		),
+		)
 	);
 ?>

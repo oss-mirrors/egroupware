@@ -61,6 +61,6 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		),
+		)
 	);
 ?>
