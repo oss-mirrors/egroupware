@@ -1050,6 +1050,20 @@
 	$test[] = '1.0.0';
 	function projects_upgrade1_0_0()
 	{
+		// fix for the 1.0.0 schema-proc because it does not find / correctly calculate the old schema
+		$GLOBALS['phpgw_setup']->oProc->m_aTables['phpgw_p_budget'] = array(
+			'fd' => array(
+				'budget_id' => array('type' => 'auto','nullable' => False),
+				'project_id' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'budget' => array('type' => 'decimal','precision' => '20','scale' => '2','nullable' => False,'default' => '0'),
+				'year' => array('type' => 'int','precision' => '4','default' => '0'),
+				'month' => array('type' => 'int','precision' => '4','default' => '0')
+			),
+			'pk' => array('budget_id'),
+			'fk' => array(),
+			'ix' => array('project_id','year','month'),
+			'uc' => array()
+		);
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','budget','budget_amount');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','year','budget_year');
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_budget','month','budget_month');
