@@ -158,7 +158,7 @@
 					$title  = $this->db->f('app_title');
 					$apps[$name] = array(
 						'title'  => $title,
-						'name'   => $name,
+						'name'   => $name
 					);
 				}
 			}
