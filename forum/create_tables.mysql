@@ -33,7 +33,6 @@ CREATE TABLE f_categories (
 # Dumping data for table 'f_categories'
 #
 
-INSERT INTO f_categories VALUES (1,'General','General talk forums');
 
 #
 # Table structure for table 'f_forums'
@@ -52,8 +51,6 @@ CREATE TABLE f_forums (
 # Dumping data for table 'f_forums'
 #
 
-INSERT INTO f_forums VALUES (1,'Bonk',0,'0','Teststestestestesttes and even more tests',1);
-INSERT INTO f_forums VALUES (2,'Bull',0,'0','Some other stupid forum',1);
 
 #
 # Table structure for table 'f_threads'
@@ -81,3 +78,9 @@ CREATE TABLE f_threads (
 # Dumping data for table 'f_threads'
 #
 
+
+#
+# Add forum to applications table too
+#
+
+INSERT INTO applications VALUES ('forum','Forum',1);
