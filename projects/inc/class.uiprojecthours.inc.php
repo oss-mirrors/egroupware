@@ -479,7 +479,8 @@
 						'start_date'	=> $hours[$i]['sdate_formatted']['date'],
 						'start_time'	=> $hours[$i]['sdate_formatted']['time'],
 						'end_time'	=> $hours[$i]['edate_formatted']['time'],
-						'wh'		=> $this->boprojects->formatTime($hours[$i]['wh']['whwm'])
+						'wh'		=> $this->boprojects->formatTime($hours[$i]['wh']['whwm']),
+						'remark'	=> substr($hours[$i]['remark'],0,150)
 					)
 				);
 

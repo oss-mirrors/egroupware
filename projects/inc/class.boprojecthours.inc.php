@@ -206,6 +206,7 @@
 					'sdate_formatted'	=> $this->format_htime($hour['sdate']),
 					'edate_formatted'	=> $this->format_htime($hour['edate']),
 					'billable'			=> $hour['billable'],
+					'remark'			=> $hour['remark']
 				);
 			}
 			return $hours;

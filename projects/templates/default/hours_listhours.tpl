@@ -60,14 +60,15 @@
 
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
-		<td width="25%">{sort_hours_descr}</td>
+		<td width="10%">{sort_hours_descr}</td>
+		<td width="20%">{lang_remark}</td>
 		<td>{lang_billable}</td>
 		<td width="10%" align="center">{sort_status}</td>
 		<td width="10%" align="center">{sort_start_date}</td>
 		<td width="10%" align="center">{sort_start_time}</td>
 		<td width="10%" align="center">{sort_end_time}</td>
 		<td width="10%" align="right">{sort_hours}</td>
-		<td width="20%">{sort_employee}</td>
+		<td width="15%">{sort_employee}</td>
 		<td width="5%">&nbsp;</td>
 	</tr>
 
@@ -75,6 +76,7 @@
 
 	<tr bgcolor="{tr_color}">
 		<td>{hours_descr}</td>
+		<td>{remark}</td>
 		<td align="center">{billable}</td>
 		<td align="center">{status}</td>
 		<td align="center">{start_date}</td>
