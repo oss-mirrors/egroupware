@@ -61,8 +61,8 @@
 //			'SUBCATEGORY_SEARCH' => $subcat_search
 		));
         
-		$list_tpl->fp('LIST_HDR','header');
-		$list_tpl->fp('LIST_FTR','footer');
+		$list_tpl->fp('LIST_HDR','list_header');
+		$list_tpl->fp('LIST_FTR','list_footer');
 		$list_tpl->fp('CONTENT','list_section',TRUE);
 		$list_tpl->set_var('LIST_ITEMS','');
 	}
@@ -74,12 +74,18 @@
 		$list_tpl = $phpgw->template;
 
 		$list_tpl->set_file(array(
-			'list_section'   => 'common.list.section.tpl',
+			'list' => 'list.tpl'
+/*			'list_section'   => 'common.list.section.tpl',
 			'header'         => 'common.list.hdr.tpl',
 			'footer'         => 'common.list.ftr.tpl',
 			'list_item'      => 'common.list.item.tpl',
-			'item_keyw'      => 'common.list.item_keyw.tpl'
+			'item_keyw'      => 'common.list.item_keyw.tpl' */
 		));
+		$list_tpl->set_block('list','list_section');
+		$list_tpl->set_block('list','list_header');
+		$list_tpl->set_block('list','list_footer');
+		$list_tpl->set_block('list','list_item');
+		$list_tpl->set_block('list','list_keyw');
 
 		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
 		if (is_array($phpgw->bookmarks->grants))
@@ -142,7 +148,7 @@
 			if ($phpgw->db->f('bm_keywords'))
 			{
 				$list_tpl->set_var(BOOKMARK_KEYW, htmlspecialchars(stripslashes($phpgw->db->f('bm_keywords'))));
-				$list_tpl->parse('bookmark_keywords','item_keyw');
+				$list_tpl->parse('bookmark_keywords','list_keyw');
 			}
 			else
 			{
@@ -183,7 +189,7 @@
 		if ($rows_printed > 0)
 		{
 			print_list_break(&$list_tpl, $prev_category, $prev_subcategory);
-			$content = $list_tpl->get("CONTENT");
+			$content = $list_tpl->get('CONTENT');
 		}
 
 	}
