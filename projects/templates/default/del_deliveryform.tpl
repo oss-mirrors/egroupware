@@ -1,3 +1,4 @@
+<!-- $Id$ -->
 <html>
 <head>
 <title>{site_title}</title>

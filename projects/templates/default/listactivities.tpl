@@ -1,7 +1,8 @@
-<center>
-{lang_activities_action}
-
- {total_matchs}
+<!-- $Id$ -->
+<p><b>{lang_action}</b><br>                                                                                                      
+<hr noshade width="98%" align="center" size="1">
+<center> 
+{total_matchs}
  {next_matchs}
 	
   <table width=85% border=0 cellspacing=1 cellpadding=3>

@@ -1,3 +1,4 @@
+<!-- $Id$ -->
       <p>&nbsp;&nbsp;&nbsp;{lang_action}<br>
       <hr noshade width="98%" align="center" size="1">
 

@@ -1,3 +1,4 @@
+<!-- $Id$ -->
 <html>
 <head>
 <title>{title}</title>
@@ -13,9 +14,8 @@
 </head>
 <body bgcolor="{bg_color}">   
 <center>
-<p>{lang_address_action}<br>
+<p><b>{lang_address_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
-
  {total_matchs}
  {next_matchs}
   

@@ -34,7 +34,8 @@
      if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                                         
      $phpgw->db->query("SELECT ab_firstname,ab_lastname,ab_street,ab_zip,ab_city,ab_state,ab_company_id,company_name FROM "                                                                     
                      . "addressbook,customers where "                                                                                                                                          
-                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                                      
+                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."' and customers.company_id= "
+                     . "addressbook.ab_company_id");                                                                                      
       if ($phpgw->db->next_record()) {                                                                                                                                                         
       $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                                 
       $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                                               

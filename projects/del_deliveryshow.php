@@ -27,7 +27,8 @@
      if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                        
      $phpgw->db->query("SELECT ab_firstname,ab_lastname,ab_street,ab_zip,ab_city,ab_state,ab_company_id,company_name FROM "                                                    
                      . "addressbook,customers where "                                                                                                                          
-                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                      
+                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."' and "
+                     . "customers.company_id=addressbook.ab_company_id");                                                                      
       if ($phpgw->db->next_record()) {                                                                                                                                         
       $t->set_var("ad_company",$phpgw->db->f("company_name"));                                                                                                                 
       $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                               
@@ -89,7 +90,7 @@
    $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "
                  . "ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip, "
                  . "ab_city,p_projects.title FROM addressbook,customers,p_delivery,p_projects WHERE "
-                 . "p_delivery_id=$delivery_id AND p_delivery.project_id=p_projects.id AND "
+                 . "p_delivery.id=$delivery_id AND p_delivery.project_id=p_projects.id AND "
                  . "p_delivery.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id");
    if ($phpgw->db->next_record()) {  
    $t->set_var("company",$phpgw->db->f("company_name"));
