@@ -102,6 +102,7 @@
 			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_project_num',lang('Project ID'));
+			$this->t->set_var('lang_project',lang('Project'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_delivery_num',lang('Delivery ID'));
 			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
@@ -319,8 +320,8 @@
 				$this->t->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_part',lang('Delivery'));
 
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_deliveries&action=del'
-											. '&project_id=' . $pro[$i]['project_id']));
+				$link_data['menuaction'] = 'projects.uideliveries.list_deliveries';
+				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_partlist',lang('Delivery list'));
 
 				if ($action == 'mains')
@@ -648,7 +649,7 @@
 
 		function list_deliveries()
 		{
-			global $project_id;
+			global $project_id, $action, $start, $sort, $order, $query;
 
 			$this->display_app_header();
 
@@ -658,17 +659,21 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uideliveries.list_deliveries',
-				'action'		=> 'del',
-				'project_id'	=> $project_id
+				'action'		=> $action,
+				'project_id'	=> $project_id,
+				'start'			=> $start,
+				'query'			=> $query,
+				'sort'			=> $sort,
+				'order'			=> $order
 			);
 
 			$this->t->set_var('lang_action',lang('Delivery list'));
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
 
-			if (! $this->start)
+			if (! $start)
 			{
-				$this->start = 0;
+				$start = 0;
 			}
 
 			if (!$project_id)
@@ -676,25 +681,25 @@
 				$project_id = '';
 			}
 
-			$del = $this->bodeliveries->read_deliveries($this->query, $this->sort, $this->order, True, $project_id);
+			$del = $this->bodeliveries->read_deliveries($query, $sort, $order, True, $project_id);
 
 // -------------------- nextmatch variable template-declarations -----------------------------
 
-			$left = $this->nextmatchs->left('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
-			$right = $this->nextmatchs->right('/index.php',$this->start,$this->bodeliveries->total_records,$link_data);
+			$left = $this->nextmatchs->left('/index.php',$start,$this->bodeliveries->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$start,$this->bodeliveries->total_records,$link_data);
 			$this->t->set_var('left',$left);
 			$this->t->set_var('right',$right);
 
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$this->start));
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bodeliveries->total_records,$start));
 
 // ------------------------ end nextmatch template -------------------------------------------
 
 // ---------------- list header variable template-declarations -------------------------------
 
-			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Delivery ID'),$link_data));
-			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
-			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
-			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
+			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($sort,'num',$order,'/index.php',lang('Delivery ID'),$link_data));
+			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($sort,'customer',$order,'/index.php',lang('Customer'),$link_data));
+			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title',$order,'/index.php',lang('Title'),$link_data));
+			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($sort,'date',$order,'/index.php',lang('Date'),$link_data));
 			$this->t->set_var('sort_sum','');
 			$this->t->set_var('lang_data',lang('Delivery'));
 
@@ -746,7 +751,6 @@
 				}
 			}
 			$this->t->pfp('out','projects_list_t',True);
-			$this->save_sessiondata('del');
 		}
 
 		function show_delivery()

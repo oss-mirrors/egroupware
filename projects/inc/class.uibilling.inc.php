@@ -335,8 +335,8 @@
 				$this->t->set_var('part',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_part',lang('Invoice'));
 
-				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_invoices&action=bill'
-											. '&project_id=' . $pro[$i]['project_id']));
+				$link_data['menuaction'] = 'projects.uibilling.list_invoices';
+				$this->t->set_var('partlist',$GLOBALS['phpgw']->link('/index.php',$link_data));
 				$this->t->set_var('lang_partlist',lang('Invoice list'));
 
 				if ($action == 'mains')
@@ -368,7 +368,7 @@
 
 		function list_invoices()
 		{
-			global $project_id, $action;
+			global $project_id, $action, $start, $sort, $order, $query;
 
 			$this->display_app_header();
 
@@ -379,7 +379,11 @@
 			(
 				'menuaction'	=> 'projects.uibilling.list_invoices',
 				'action'		=> $action,
-				'project_id'	=> $project_id
+				'project_id'	=> $project_id,
+				'start'			=> $start,
+				'sort'			=> $sort,
+				'order'			=> $order,
+				'query'			=> $query
 			);
 
 			$nopref = $this->boprojects->check_prefs();
@@ -401,9 +405,9 @@
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$this->t->set_var('search_list',$this->nextmatchs->search(1));
 
-			if (! $this->start)
+			if (! $start)
 			{
-				$this->start = 0;
+				$start = 0;
 			}
 
 			if (! $project_id)
@@ -411,30 +415,30 @@
 				$project_id = '';
 			}
 
-			$bill = $this->bobilling->read_invoices($this->start, $this->query, $this->sort, $this->order, True, $project_id);
+			$bill = $this->bobilling->read_invoices($start, $query, $sort, $order, True, $project_id);
 
 // -------------------- nextmatch variable template-declarations -----------------------------
 
-			$left = $this->nextmatchs->left('/index.php',$this->start,$this->bobilling->total_records,$link_data);
-			$right = $this->nextmatchs->right('/index.php',$this->start,$this->bobilling->total_records,$link_data);
+			$left = $this->nextmatchs->left('/index.php',$start,$this->bobilling->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$start,$this->bobilling->total_records,$link_data);
 			$this->t->set_var('left',$left);
 			$this->t->set_var('right',$right);
 
-			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bobilling->total_records,$this->start));
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->bobilling->total_records,$start));
 
 // ------------------------ end nextmatch template -------------------------------------------
 
-// ------------- list header variable template-declarations ------------------
+// ------------------- list header variable template-declarations ----------------------------
 
-			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Invoice ID'),$link_data));
-			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
-			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
-			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
+			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($sort,'num',$order,'/index.php',lang('Invoice ID'),$link_data));
+			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($sort,'customer',$order,'/index.php',lang('Customer'),$link_data));
+			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($sort,'title',$order,'/index.php',lang('Title'),$link_data));
+			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($sort,'date',$order,'/index.php',lang('Date'),$link_data));
 			$this->t->set_var('sort_sum','<td width="10%" align="right" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '">'
-			. $prefs['currency'] . '&nbsp;' . $this->nextmatchs->show_sort_order($this->sort,'sum',$this->order,'/index.php',lang('Sum'),$link_data) . '</td>');
+			. $prefs['currency'] . '&nbsp;' . $this->nextmatchs->show_sort_order($sort,'sum',$order,'/index.php',lang('Sum'),$link_data) . '</td>');
 			$this->t->set_var('lang_data',lang('Invoice'));
 
-// ----------------------- end header declaration -----------------------------
+// --------------------  --- end header declaration ---------             --------------------
 
 			if (is_array($bill))
 			{

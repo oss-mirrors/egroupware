@@ -94,11 +94,10 @@
 				case 'subs'		: $column = 'projects_subs'; break;
 				case 'act'		: $column = 'projects_act'; break;
 				case 'pad'		: $column = 'projects_pad'; break;
+				case 'pbo'		: $column = 'projects_pbo'; break;
 				case 'amains'	: $column = 'projects_amains'; break;
 				case 'asubs'	: $column = 'projects_asubs'; break;
 				case 'ustat'	: $column = 'projects_ustat'; break;
-				case 'del'		: $column = 'projects_del'; break;
-				case 'bill'		: $column = 'projects_bill'; break;
 			}
 			return $column;
 		}
