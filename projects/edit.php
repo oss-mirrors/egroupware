@@ -12,6 +12,11 @@
   \**************************************************************************/
 /* $Id$ */
 
+    if (!$id) { 
+	Header('Location: ' . $phpgw->link('/projects/index.php',"sort=$sort&order=$order&query=$query&start=$start&filter=$filter&cat_id=$cat_id")); 
+	$phpgw->common->phpgw_exit();
+    }
+
     $phpgw_info['flags'] = array('currentapp' => 'projects',
 			'enable_categories_class' => True);
 
@@ -23,6 +28,8 @@
     $t->set_file(array('projects_edit' => 'form.tpl'));
     $t->set_block('projects_edit','add','addhandle');
     $t->set_block('projects_edit','edit','edithandle');
+
+    $projects = CreateObject('projects.projects');
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -211,16 +218,15 @@
     $d = CreateObject('phpgwapi.contacts');
     $abid = $phpgw->db->f('customer');
 
-    if ($abid) {
-	$cols = array('n_given' => 'n_given',
-    	             'n_family' => 'n_family',
-        	     'org_name' => 'org_name');
-
-	$customer = $d->read_single_entry($abid,$cols);
-    
-	$t->set_var('name',$customer[0]['org_name'] . " [ " . $customer[0]['n_given'] . " " . $customer[0]['n_family'] . " ]");
+    if (!$abid) { $name = ''; }
+    else {
+        $cols = array('n_given' => 'n_given',
+                     'n_family' => 'n_family',
+                     'org_name' => 'org_name');
+        $customer = $d->read_single_entry($ab_customer,$cols);
+        if ($customer[0]['org_name'] == '') { $t->set_var('name',$customer[0]['n_given'] . ' ' . $customer[0]['n_family']); }
+        else { $t->set_var('name',$customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'); }
     }
-    else { $t->set_var('name',''); } 
 
     $t->set_var('abid',$abid);
 
@@ -296,7 +302,11 @@
     $t->set_var("group_list",$group_list); */
 
     $t->set_var('lang_edit',lang('Edit'));
-    $t->set_var('lang_delete',lang('Delete'));
+
+    if ($projects->check_perms($grants[$phpgw->db->f('coordinator')],PHPGW_ACL_DELETE) || $phpgw->db->f('coordinator') == $phpgw_info['user']['account_id']) {
+        $t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/delete.php',"id=$id") . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+    }
+    else { $t->set_var('delete','&nbsp;'); }
 
     $t->set_var('lang_done',lang('Done'));
     $t->set_var('done_url',$phpgw->link('/projects/index.php',"cat_id=$cat_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
