@@ -14,27 +14,27 @@
   if (isset($submit) && $submit) {
      $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
-  $phpgw_info["flags"]["enable_network_class"] = True;
   $phpgw_info["flags"]["currentapp"] = "admin";
   include("../header.inc.php");
   if (isset($submit) && $submit) {
+    $error = "";
     if (! $n_display)
-      $error = "<br>" . lang("You must enter a display");
+      $error .= "<br>" . lang("You must enter a display");
 
     if (! $n_base_url)
-      $error = "<br>" . lang("You must enter a base url");
+      $error .= "<br>" . lang("You must enter a base url");
 
     if (! $n_newsfile)
-      $error = "<br>" . lang("You must enter a news url");
+      $error .= "<br>" . lang("You must enter a news url");
 
     if (! $n_cachetime)
-      $error = "<br>" . lang("You must enter the number of minutes between reload");
+      $error .= "<br>" . lang("You must enter the number of minutes between reload");
 
     if (! $n_listings)
-      $error = "<br>" . lang("You must enter the number of listings display");
+      $error .= "<br>" . lang("You must enter the number of listings display");
 
     if (! $n_newstype)
-      $error = "<br>" . lang("You must select a file type");
+      $error .= "<br>" . lang("You must select a file type");
 
     if (!$error) {
       $phpgw->db->query("select display from news_site where base_url='"
@@ -42,12 +42,11 @@
 		 . addslashes(strtolower($n_newsfile)) . "'");
       $phpgw->db->next_record();
       if ($phpgw->db->f("display")) {
-        $phpgw->common->phpgw_header();
-        $phpgw->common->navbar();
-        echo "<center>" . lang("That site has already been entered") . "</center>";
-        exit;
+        $error = "<center>" . lang("That site has already been entered") . "</center>";
       }
+    }
 
+    if (!$error) {
       $phpgw->db->lock("news_site");
 
       $sql = "insert into news_site (display,base_url,newsfile,"
@@ -63,33 +62,36 @@
 
       Header("Location: " . $phpgw->link("admin.php", "cd=28"));
     }
-  } else {
+  }
 
-    if($error)
-      echo $error;
+  if(isset($error) && $error) {
+    $phpgw->common->phpgw_header();
+    $phpgw->common->navbar();
+    echo "<center>".$error."</center>";
+  }
      ?>
        <form method="POST" action="<?php echo $phpgw->link("newheadline.php"); ?>">
         <center>
          <table border=0 width=65%>
            <tr>
              <td><?php echo lang("Display"); ?></td>
-             <td><input name="n_display"></td>
+             <td><input name="n_display" value="<?php echo $n_display; ?>"></td>
            </tr>
            <tr>
              <td><?php echo lang("Base URL"); ?></td>
-             <td><input name="n_base_url"></td>
+             <td><input name="n_base_url" value="<?php echo $n_base_url; ?>"></td>
            </tr>
            <tr>
              <td><?php echo lang("News File"); ?></td>
-             <td><input name="n_newsfile"></td>
+             <td><input name="n_newsfile" value="<?php echo $n_newsfile; ?>"></td>
            </tr>
            <tr>
              <td><?php echo lang("Minutes between Reloads"); ?></td>
-             <td><input name="n_cachetime"></td>
+             <td><input name="n_cachetime" value="<?php echo $n_cachetime; ?>"></td>
            </tr>
            <tr>
              <td><?php echo lang("Listings Displayed"); ?></td>
-             <td><input name="n_listings"></td>
+             <td><input name="n_listings" value="<?php echo $n_listings; ?>"></td>
            </tr>
            <tr>
              <td><?php echo lang("News Type"); ?></td>
@@ -98,7 +100,7 @@
 	 $news_type = array('rdf','fm','lt','sf','rdf-chan');
          for($i=0;$i<count($news_type);$i++) {
            echo "<input type=\"radio\" name=\"n_newstype\" value=\""
-                . $news_type[$i] . "\">&nbsp;$news_type[$i]<br>";
+                . $news_type[$i] . "\"".($n_newstype == $news_type[$i]?" checked=checked":"").">&nbsp;".$news_type[$i]."<br>";
          }
 ?>
              </td>
@@ -113,5 +115,4 @@
        </form>
      <?php
     $phpgw->common->phpgw_footer();
-  }
 ?>
