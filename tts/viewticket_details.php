@@ -230,6 +230,7 @@ $lstCategory=$phpgw->db->f("t_category");
         $phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
       }
 
+      mail_ticket($t_id);
     }
     Header("Location: " . $phpgw->link("index.php"));
   }
