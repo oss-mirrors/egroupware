@@ -120,16 +120,8 @@
 						'end_date' => $end_dateout,
 					'coordinator' => $coordinatorout));
 
-		if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_ADD) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id'])
-		{
-			$t->set_var('part',$phpgw->link('/projects/bill_invoice.php','project_id=' . $id));
-			$t->set_var('lang_part',lang('Invoice'));
-		}
-		else
-		{
-			$t->set_var('part','');
-			$t->set_var('lang_part','');
-		}
+		$t->set_var('part',$phpgw->link('/projects/bill_invoice.php','project_id=' . $id));
+		$t->set_var('lang_part',lang('Invoice'));
 
 		$t->set_var('partlist',$phpgw->link('/projects/bill_invoicelist.php','project_id=' . $id));
 		$t->set_var('lang_partlist',lang('Invoice list'));

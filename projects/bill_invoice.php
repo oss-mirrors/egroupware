@@ -21,6 +21,9 @@
 	$t->set_file(array('projecthours_list_t' => 'bill_listhours.tpl'));
 	$t->set_block('projecthours_list_t','projecthours_list','list');
 
+	$projects = CreateObject('projects.projects');
+	$grants = $phpgw->acl->get_grants('projects');
+
 	if ($phpgw_info['server']['db_type']=='pgsql')
 	{
 		$join = " JOIN ";
@@ -67,14 +70,14 @@
 		if (! $error)
 		{
 			$phpgw->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('$invoice_num',0,'$project_id','$customer','$date')");
-			$phpgw->db->query("SELECT id from phpgw_p_invoice WHERE num='$invoice_num'");
-			$phpgw->db->next_record();
-			$invoice_id = $phpgw->db->f('id');
+			$db2->query("SELECT id from phpgw_p_invoice WHERE num='$invoice_num'");
+			$db2->next_record();
+			$invoice_id = $db2->f('id');
 
 			while($select && $entry=each($select))
 			{
 				$phpgw->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('$invoice_id','$entry[0]')");
-				$phpgw->db->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
+				$db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
 			}
 
 			$phpgw->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
@@ -129,9 +132,9 @@
 // ------------------------ end header declaration ------------------------------------
 
 	$d = CreateObject('phpgwapi.contacts');
-	$phpgw->db->query("select title,customer from phpgw_p_projects where id='$project_id'");
+	$phpgw->db->query("select title,customer,coordinator from phpgw_p_projects where id='$project_id'");
 	$phpgw->db->next_record();
-
+	$coordinator = $phpgw->db->f('coordinator');
 	$title = $phpgw->strip_html($phpgw->db->f('title'));
 	if (! $title)  $title  = '&nbsp;';
 	$t->set_var('project',$title);
@@ -169,9 +172,9 @@
 	{
 		$date=0; 
 		$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
-						. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
+						. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae,phpgw_p_hours.employee FROM "
 						. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_projectactivities " 
-						. "ON phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE phpgw_p_hours.status='done' AND "
+						. "ON phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='closed') AND "
 						. "phpgw_p_hours.project_id='$project_id' AND phpgw_p_projectactivities.project_id='$project_id' "
 						. "AND phpgw_p_projectactivities.billable='Y' AND phpgw_p_projectactivities.activity_id=phpgw_p_hours.activity_id $ordermethod");
 	}
@@ -183,8 +186,7 @@
 		$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
 						. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
 						. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_invoicepos "
-						. "ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id "
-						. "WHERE phpgw_p_hours.status='billed' AND phpgw_p_hours.project_id='$project_id' "
+						. "ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE phpgw_p_hours.project_id='$project_id' "
 						. "AND phpgw_p_invoicepos.invoice_id='$invoice_id' $ordermethod");
 	}
 
@@ -253,26 +255,34 @@
 						'billperae' => $phpgw->db->f('billperae'),
 							'sum' => sprintf ("%01.2f",$phpgw->db->f('billperae')*$aes)));
 
-		if ($phpgw->db->f('status') == 'billed')
+		if (($status != 'billed') && ($status != 'closed'))
 		{
-			$t->set_var('edithour','');
-			$t->set_var('lang_edit_entry','&nbsp;');
+			if ($projects->check_perms($grants[$coordinator],PHPGW_ACL_EDIT) || $coordinator == $phpgw_info['user']['account_id'])
+			{
+				$t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f('id') . '&invoice_id=' . $invoice_id . '&sort=' . $sort
+												. '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
+				$t->set_var('lang_edit_entry',lang('Edit hours'));
+			}
 		}
 		else
 		{
-			$t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f('id') . '&invoice_id=' . $invoice_id . '&sort=' . $sort
-												. '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
-			$t->set_var('lang_edit_entry',lang('Edit hours'));
+			$t->set_var('edithour','');
+			$t->set_var('lang_edit_entry','&nbsp;');
 		}
 		$t->parse('list','projecthours_list',True);
 
 // ------------------------ end record declaration ------------------------
 	}
+
 	$t->set_var('sum_sum',sprintf("%01.2f",$summe));
 	$t->set_var('sum_aes',$sumaes);
 	$t->set_var('title_netto',lang('Sum net'));
 
-	$t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
+	if ($projects->check_perms($grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $phpgw_info['user']['account_id'])
+	{
+		$t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
+	}
+    else { $t->set_var('invoice',''); }
 
 	$t->parse('out','projecthours_list_t',True);
 	$t->p('out');

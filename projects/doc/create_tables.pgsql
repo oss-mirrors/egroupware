@@ -50,7 +50,7 @@
 		minutes			int,
 		minperae		decimal(4,0),
 		billperae		decimal(20,2),
-		status			text check(status in('open','done','billed')) DEFAULT 'open' NOT NULL
+		status			varchar(6) DEFAULT 'done' NOT NULL
 	);
 
 	CREATE TABLE phpgw_p_projectmembers (

@@ -19,10 +19,11 @@
 </STYLE>
 </head>
 <body bgcolor="#FFFFFF">
+<center>
 <table width="70%" border="0" cellpadding="3" cellspacing="3">
 	<tr>
 		<td valign="bottom">{myaddress}</td>
-		<td><img src="doc/logo.jpg"></td>
+		<td align="right"><img src="doc/logo.jpg"></td>
 	</tr>
 	<tr>
 		<td height="2">&nbsp;</td>
@@ -49,7 +50,7 @@
 </table><br><br><br>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
 	<tr>
-		<td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
+		<td width="5%" align="right"><font face="{font}">{lang_pos}</font></td>
 		<td width="30%"><font face="{font}">{lang_descr}</font></td>
 		<td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
 		<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
@@ -75,7 +76,7 @@
 </table><br><br>
 <table width="70%" border="0" cellspacing="3" cellpadding="3">
 	<tr>
-		<td width="8%">&nbsp;</td>
+		<td width="5%">&nbsp;</td>
 		<td width="30%"><font face="{font}" size="4"><b>{lang_sumaes}</b></font></td>
 		<td width="10%">&nbsp;</td>
 		<td width="10%" align="right"><font face="{font}" size="4"><b>{sumaes}</b></font></td>
@@ -86,7 +87,8 @@
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
-	<hr noshade width="70%" align="left" size="1">
+	<hr noshade width="70%" size="1">
 </table>
+</center>
 </body>
 </html>

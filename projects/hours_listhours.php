@@ -33,7 +33,7 @@
 	if ($order) { $ordermethod = "order by $order $sort"; }
 	else { $ordermethod = "order by phpgw_p_hours.start_date asc"; }
 
-	if (!$status) { $statussort = " (status='open' OR status='done' OR status='billed') "; } 
+	if (!$status) { $statussort = " (status='open' OR status='done' OR status='billed' OR status='closed') "; } 
 	else { $statussort = " status='$status' "; }
 
 	if ($access == 'private') { $filtermethod = " AND employee='" . $phpgw_info['user']['account_id'] . "' "; }
@@ -157,7 +157,7 @@
 							'end_time' => $end_timeout,
 							'minutes' => $minutes));
 
-		if ($status != 'billed')
+		if (($status != 'billed') && ($status != 'closed'))
 		{
 			if ($projects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $phpgw_info['user']['account_id'])
 			{

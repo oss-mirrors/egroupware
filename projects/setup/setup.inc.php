@@ -12,7 +12,7 @@
 
 	$setup_info['projects']['name']      = 'projects';
 	$setup_info['projects']['title']     = 'Projects';
-	$setup_info['projects']['version']   = '0.8.5.001';
+	$setup_info['projects']['version']   = '0.8.5.002';
 	$setup_info['projects']['app_order'] = 14;
 	$setup_info['projects']['enable']    = 1;
 
@@ -37,6 +37,6 @@
 
 	$setup_info['projects']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13')
+		 'versions' => Array('0.9.13','0.9.14')
 	);
 ?>

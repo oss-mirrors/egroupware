@@ -199,11 +199,7 @@
 				$ordermethod = " order by h.start_date asc";
 			}
 
-			if (!$status)
-			{
-				$filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed')";
-			}
-			else
+			if ($status)
 			{
 				$filtermethod = " AND h.status='$status'";
 			}

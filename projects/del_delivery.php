@@ -20,6 +20,9 @@
 	$t->set_file(array('projecthours_list_t' => 'del_listhours.tpl'));
 	$t->set_block('projecthours_list_t','projecthours_list','list');
 
+	$projects = CreateObject('projects.projects');
+	$grants = $phpgw->acl->get_grants('projects');
+
 	if ($phpgw_info['server']['db_type']=='pgsql')
 	{
 		$join = " JOIN ";
@@ -39,14 +42,33 @@
 		$db2->next_record();
 		$customer = $db2->f('customer');
 
-		if ($choose) { $delivery_num = create_deliveryid($year); }
-		else { $delivery_num = addslashes($delivery_num); }
-		if (!$delivery_num) { $error[$errorcount++] = lang('Please enter an ID !'); }
-		$phpgw->db->query("SELECT num FROM phpgw_p_delivery WHERE num='$delivery_num'");
-		if ($phpgw->db->next_record()) { $error[$errorcount++] = lang('That ID has been used already !'); }
-		if (!$customer) { $error[$errorcount++] = lang('You have no customer selected !'); }
+		if ($choose)
+		{
+			$delivery_num = create_deliveryid($year);
+		}
+		else
+		{
+			$delivery_num = addslashes($delivery_num);
+		}
+		if (!$delivery_num)
+		{
+			$error[$errorcount++] = lang('Please enter an ID !');
+		}
 
-		if (checkdate($month,$day,$year)) { $date = mktime(2,0,0,$month,$day,$year); }
+		$phpgw->db->query("SELECT num FROM phpgw_p_delivery WHERE num='$delivery_num'");
+		if ($phpgw->db->next_record())
+		{
+			$error[$errorcount++] = lang('That ID has been used already !');
+		}
+		if (!$customer)
+		{
+			$error[$errorcount++] = lang('You have no customer selected !');
+		}
+
+		if (checkdate($month,$day,$year))
+		{
+			$date = mktime(2,0,0,$month,$day,$year);
+		}
 		else
 		{
 			if ($month && $day && $year) { $error[$errorcount++] = lang('You have entered an invalid date !') . '<br>' . $month . '/' . $day . '/' . $year; }
@@ -55,14 +77,15 @@
 		if (! $error)
 		{
 			$phpgw->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('$delivery_num','$project_id','$date','$customer')");
-			$phpgw->db->query("SELECT id from phpgw_p_delivery WHERE num='$delivery_num'");
-			$phpgw->db->next_record();
-			$delivery_id = $phpgw->db->f('id');
+			$db2->query("SELECT id from phpgw_p_delivery WHERE num='$delivery_num'");
+			$db2->next_record();
+			$delivery_id = $db2->f('id');
 
-			$phpgw->db->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='$delivery_id'");
+		//	$phpgw->db->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='$delivery_id'");
 			while($select && $entry=each($select))
 			{
 				$phpgw->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('$delivery_id','$entry[0]')");
+				$db2->query("UPDATE phpgw_p_hours set status='closed' WHERE id='$entry[0]'");
 			}
 		}
 	}
@@ -103,9 +126,9 @@
 // ------------------------ end header declaration ----------------------------
 
 	$d = CreateObject('phpgwapi.contacts');
-	$phpgw->db->query("SELECT title,customer FROM phpgw_p_projects WHERE id='$project_id'");
-
+	$phpgw->db->query("SELECT title,customer,coordinator FROM phpgw_p_projects WHERE id='$project_id'");
 	$phpgw->db->next_record();
+	$coordinator = $phpgw->db->f('coordinator');
 	$title = $phpgw->strip_html($phpgw->db->f('title'));
 	if (! $title)  $title  = '&nbsp;';
 	$t->set_var('project',$title);
@@ -142,11 +165,9 @@
 	{
 		$date=0;
 		$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
-						. "phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
-						. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
-						. "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
-						. "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
-						. "AND phpgw_p_deliverypos.id IS NULL $ordermethod");
+						. "phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours $join phpgw_p_activities ON "
+						. "phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') "
+						. "AND phpgw_p_hours.project_id='$project_id' $ordermethod");
 	}
 	else
 	{
@@ -154,11 +175,9 @@
 		$phpgw->db->next_record();
 		$date=$phpgw->db->f('date');    
 		$phpgw->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,phpgw_p_hours.start_date,"
-						. "phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
-						. "phpgw_p_hours $join phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
-						. "$join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
-						. "WHERE (phpgw_p_hours.status='done' OR phpgw_p_hours.status='billed') AND phpgw_p_hours.project_id='$project_id' "
-						. "AND phpgw_p_deliverypos.delivery_id='$delivery_id' $ordermethod");
+						. "phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours $join phpgw_p_activities ON "
+						. "phpgw_p_hours.activity_id=phpgw_p_activities.id $join phpgw_p_deliverypos ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id "
+						. "WHERE phpgw_p_hours.project_id='$project_id' AND phpgw_p_deliverypos.delivery_id='$delivery_id' $ordermethod");
 	}
 
 	if ($date != 0)
@@ -178,7 +197,6 @@
 	$t->set_var('date_select',$phpgw->common->dateformatorder($sm->getYears('year',$year),$sm->getMonthText('month',$month),$sm->getDays('day',$day)));    
 	$t->set_var('lang_delivery_date',lang('Delivery date'));
 
-	$summe=0;
 	$sumaes=0;
 	while ($phpgw->db->next_record())
 	{
@@ -207,7 +225,10 @@
 			$start_dateout = $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 		}
 
-		if ($phpgw->db->f('minperae') != 0) { $aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae')); }
+		if ($phpgw->db->f('minperae') != 0)
+		{
+			$aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae'));
+		}
 		$sumaes += $aes;
 
 // --------------------- template declaration for list records ---------------------------
@@ -219,18 +240,20 @@
 					'start_date' => $start_dateout,
 							'aes' => $aes));
 
-		if ($phpgw->db->f('status') == 'billed')
+		if (($status != 'billed') && ($status != 'closed'))
+		{
+			if ($projects->check_perms($grants[$coordinator],PHPGW_ACL_EDIT) || $coordinator == $phpgw_info['user']['account_id'])
+			{
+				$t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f('id') . '&delivery_id=' . $delivery_id . '&sort=' . $sort
+													. '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
+				$t->set_var('lang_edit_entry',lang('Edit hours'));
+			}
+		}
+		else
 		{
 			$t->set_var('edithour','');
 			$t->set_var('lang_edit_entry','&nbsp;');
 		}
-		else
-		{
-			$t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f('id') . '&delivery_id=' . $delivery_id . '&sort=' . $sort
-												. '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
-			$t->set_var('lang_edit_entry',lang('Edit hours'));
-		}
-
 		$t->parse('list','projecthours_list',True);
 
 // -------------------------- end record declaration --------------------------
@@ -240,7 +263,11 @@
 	$t->set_var(sum_aes,$sumaes);
 	$t->set_var('lang_aes',lang('Sum workunits'));
 
-	$t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
+	if ($projects->check_perms($grants[$coordinator],PHPGW_ACL_ADD) || $coordinator == $phpgw_info['user']['account_id'])
+	{
+		$t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
+	}
+    else { $t->set_var('delivery',''); }
 
 	$t->parse('out','projecthours_list_t',True);
 	$t->p('out');
