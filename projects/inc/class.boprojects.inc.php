@@ -828,7 +828,9 @@
 			$subProjectsData	= $this->list_projects(array('action' => 'subs','parent' => $_pro_main));
 			$prefs 			= $this->read_prefs();
 			
-			//_debug_array($subProjectsData);
+			if($mainProjectData['customerout'] == '&nbsp;') $mainProjectData['customerout'] = '';
+			
+			#_debug_array($subProjectsData);exit;
 			
 			$pdf->AliasNbPages();
 			$pdf->AddPage();
@@ -2137,6 +2139,7 @@
 			{
 				foreach($pro_list as $pro)
 				{
+					#_debug_array($pro);
 					/*$cached_data = $this->cached_accounts($pro['coordinator']);
 					$coordinatorout = $GLOBALS['phpgw']->common($cached_data[$pro['coordinator']]['account_lid']
                                         . ' [' . $cached_data[$pro['coordinator']]['firstname'] . ' '
@@ -2146,15 +2149,15 @@
 					if ($pro['customer'])
 					{
 						$customer = $this->read_single_contact($pro['customer']);
-    					if ($customer[0]['org_name'] == '') 
-    					{ 
-    						$customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; 
-    					}
-    					else
-    					{
-    						$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . 
-    						' ' . $customer[0]['n_family'] . ' ]'; 
-    					}
+    						if ($customer[0]['org_name'] == '') 
+    						{ 
+    							$customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; 
+    						}
+    						else
+    						{
+    							$customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . 
+    							' ' . $customer[0]['n_family'] . ' ]'; 
+    						}
 					}
 
 					$mstones = $this->get_mstones($pro['project_id']);
@@ -2201,19 +2204,20 @@
 						'priority'		=> $pro['priority'],
 						'title'			=> $spaceset . $GLOBALS['phpgw']->strip_html($pro['title']),
 						'number'		=> $GLOBALS['phpgw']->strip_html($pro['number']),
+						'descr'			=> $GLOBALS['phpgw']->strip_html($pro['descr']),
 						'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
 						'coordinatorout'	=> $GLOBALS['phpgw']->common->grab_owner_name($pro['coordinator']),
 						'customerout'		=> $customerout,
 						'customer_nr'		=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
-						'sdateout'		=> $this->formatted_edate($pro['sdate'],False),
-						'edateout'		=> $this->formatted_edate($pro['edate']),
+						'sdate_formatted'	=> $this->formatted_edate($pro['sdate'],False),
+						'edate_formatted'	=> $this->formatted_edate($pro['edate']),
 						'sdate'			=> $pro['sdate'],
 						'edate'			=> $pro['edate'],
 						'psdate'		=> $pro['psdate'],
 						'pedate'		=> $pro['pedate'],
-						'psdateout'		=> $this->formatted_edate($pro['psdate'],False),
-						'pedateout'		=> $this->formatted_edate($pro['pedate'],False),
-						'previousout'		=> $this->return_value('pro',$pro['previous']),
+						'psdate_formatted'	=> $this->formatted_edate($pro['psdate'],False),
+						'pedate_formatted'	=> $this->formatted_edate($pro['pedate'],False),
+						'previous_formatted'	=> $this->return_value('pro',$pro['previous']),
 						'phours'		=> ($pro['ptime']/60) . '.00',
 						'budgetSum'		=> $pro['budgetSum'],
 						'budget'		=> $pro['budget'],
@@ -2233,11 +2237,17 @@
 						'previous'		=> $pro['previous'],
 						'status'		=> $pro['status'],
 						'level'			=> $pro['level'],
+						'test'                  => $GLOBALS['phpgw']->strip_html($pro['test']),
+						'quality'               => $GLOBALS['phpgw']->strip_html($pro['quality']),
+						'result'                => $GLOBALS['phpgw']->strip_html($pro['result']),
+						'inv_method'		=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
+						'discount'		=> $pro['discount'],
+						'discount_type'		=> $pro['discount_type'],
 						'uhours_pro'		=> $uhours_pro,      //$acc['uhours_pro']?$acc['uhours_pro']:'0.00',
 						'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0.00',
 						'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0.00',
 						'uhours_jobs'		=> $uhours_jobs,     //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
-						'uhours_jobs_nobill'=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
+						'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
 						'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0.00',
 						'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
 						'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
@@ -2314,27 +2324,27 @@
 			(
 				'ptime'			=> ($pro['ptime']/60) . '.00',
 				'ptime_min'		=> $pro['ptime'],
-				'ptime_jobs'	=> $acc['ptime_jobs'],
+				'ptime_jobs'		=> $acc['ptime_jobs'],
 				'atime'			=> $atime['whwm'],
 				'title'			=> $GLOBALS['phpgw']->strip_html($pro['title']),
 				'number'		=> $GLOBALS['phpgw']->strip_html($pro['number']),
-				'investment_nr'	=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
+				'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
 				'descr'			=> $GLOBALS['phpgw']->strip_html($pro['descr']),
 				'budgetSum'		=> $pro['budgetSum'],
 				'budget'		=> $pro['budget'],
 				'e_budget'		=> $pro['e_budget'],
-				'pbudget_jobs'	=> $acc['pbudget_jobs']?$acc['pbudget_jobs']:'0.00',
+				'pbudget_jobs'		=> $acc['pbudget_jobs']?$acc['pbudget_jobs']:'0.00',
 				'ap_budget_jobs'	=> $pro['budgetSum']-$acc['pbudget_jobs'],
 				'a_budget'		=> $pro['budgetSum']-$acc['u_budget'],
-				'a_budget_jobs'	=> $pro['budgetSum']-$acc['u_budget_jobs'],
+				'a_budget_jobs'		=> $pro['budgetSum']-$acc['u_budget_jobs'],
 				'u_budget'		=> $ubudget_pro,       //$acc['u_budget']?$acc['u_budget']:'0.00',
-				'u_budget_jobs'	=> $ubudget_jobs,      //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
-				'project_id'	=> $pro['project_id'],
+				'u_budget_jobs'		=> $ubudget_jobs,      //$acc['u_budget_jobs']?$acc['u_budget_jobs']:'0.00',
+				'project_id'		=> $pro['project_id'],
 				'parent'		=> $pro['parent'],
 				'main'			=> $pro['main'],
 				'cat'			=> $pro['cat'],
 				'access'		=> $pro['access'],
-				'coordinator'	=> $pro['coordinator'],
+				'coordinator'		=> $pro['coordinator'],
 				'coordinatorout'	=> $GLOBALS['phpgw']->common->grab_owner_name($pro['coordinator']),
 				'customer'		=> $pro['customer'],
 				'status'		=> $pro['status'],
@@ -2343,27 +2353,27 @@
 				'previous'		=> $pro['previous'],
 				'url'			=> $GLOBALS['phpgw']->strip_html($pro['url']),
 				'reference'		=> $GLOBALS['phpgw']->strip_html($pro['reference']),
-				'customer_nr'	=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
+				'customer_nr'		=> $GLOBALS['phpgw']->strip_html($pro['customer_nr']),
 				'test'			=> $GLOBALS['phpgw']->strip_html($pro['test']),
 				'quality'		=> $GLOBALS['phpgw']->strip_html($pro['quality']),
 				'result'		=> $GLOBALS['phpgw']->strip_html($pro['result']),
-				'accounting'	=> $pro['accounting'],
+				'accounting'		=> $pro['accounting'],
 				'project_accounting_factor'	=> $pro['project_accounting_factor'],
 				'project_accounting_factor_d'	=> $pro['project_accounting_factor_d'],
 				'billable'		=> $pro['billable'],
 				'uhours_pro'		=> $uhours_pro,          //$acc['uhours_pro']?$acc['uhours_pro']:'0.00',
 				'uhours_pro_nobill'	=> $acc['uhours_pro_nobill']?$acc['uhours_pro_nobill']:'0.00',
 				'uhours_pro_bill'	=> $acc['uhours_pro_bill']?$acc['uhours_pro_bill']:'0.00',
-				'uhours_jobs'	=> $uhours_jobs,          //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
+				'uhours_jobs'		=> $uhours_jobs,          //$acc['uhours_jobs']?$acc['uhours_jobs']:'0.00',
 				'uhours_jobs_nobill'	=> $acc['uhours_jobs_nobill']?$acc['uhours_jobs_nobill']:'0.00',
 				'uhours_jobs_bill'	=> $acc['uhours_jobs_bill']?$acc['uhours_jobs_bill']:'0.00',
 				'uhours_jobs_wminutes'	=> $acc['uhours_jobs_wminutes']?$acc['uhours_jobs_wminutes']:0,
-				'ahours_pro'	=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
-				'ahours_jobs'	=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
+				'ahours_pro'		=> $acc['ahours_pro']?$acc['ahours_pro']:'0.00',
+				'ahours_jobs'		=> $acc['ahours_jobs']?$acc['ahours_jobs']:'0.00',
 				'priority'		=> $pro['priority'],
-				'inv_method'	=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
+				'inv_method'		=> $GLOBALS['phpgw']->strip_html($pro['inv_method']),
 				'discount'		=> $pro['discount'],
-				'discount_type'	=> $pro['discount_type']
+				'discount_type'		=> $pro['discount_type']
 			);
 
 			$project['edate']			= $pro['edate'];
