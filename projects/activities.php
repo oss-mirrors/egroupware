@@ -12,7 +12,8 @@
   \**************************************************************************/
 
 
-  $phpgw_info["flags"] = array("currentapp" => "projects", "enable_nextmatchs_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "projects", 
+                               "enable_nextmatchs_class" => True);
   include("../header.inc.php");
 
   $t = new Template($phpgw_info["server"]["app_tpl"]);

@@ -12,7 +12,8 @@
   \**************************************************************************/
 
   if (($submit) or ($template)) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+     $phpgw_info["flags"] = array("noheader" => True, 
+                                  "nonavbar" => True);
   }
 
   $phpgw_info["flags"]["currentapp"] = "projects";

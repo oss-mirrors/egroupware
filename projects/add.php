@@ -12,7 +12,8 @@
   \**************************************************************************/
 
   if ($submit) {
-     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+     $phpgw_info["flags"] = array("noheader" => True, 
+                                  "nonavbar" => True);
   }
   $phpgw_info["flags"]["currentapp"] = "projects";
   include("../header.inc.php");
