@@ -133,17 +133,17 @@ function check_all()
 	<td colspan="5">
 		<table width="100%" border="0" cellpadding="1" cellspacing="1">
 		<tr bgcolor="{ftr_backcolor}" class="{ftr_backcolor_class}">
-			<td width="10%" align="left">
+			<td width="10%" align="left" align="top">
 				<font face="{stats_font}" size="{stats_font_size}">
-					&nbsp;{delmov_button}
+					{delmov_button}
 				</font>
 			</td>
-			<td width="10%" align="left">
+			<td width="10%" align="left" align="top">
 				<font face="{stats_font}" size="{stats_font_size}">
-					&nbsp;&nbsp;{compose_clickme}
+					{compose_clickme}
 				</font>
 			</td>
-			<td width="80%" align="right">
+			<td width="80%" align="right" align="top">
 				{delmov_listbox}
 			</td>
 			</form>
