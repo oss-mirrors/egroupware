@@ -104,7 +104,7 @@
 		$n_base_url  = $GLOBALS['phpgw']->db->f('base_url');
 		$n_newsfile  = $GLOBALS['phpgw']->db->f('newsfile');
 		$n_cachetime = $GLOBALS['phpgw']->db->f('cachetime');
-		$newstype    = $GLOBALS['phpgw']->db->f('newstype');
+		$n_newstype    = $GLOBALS['phpgw']->db->f('newstype');
 		$n_listings  = $GLOBALS['phpgw']->db->f('listings');
 	}
 
