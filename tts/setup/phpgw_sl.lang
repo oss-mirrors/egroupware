@@ -6,7 +6,7 @@ action	tts	sl	Sprememba
 add new ticket	tts	sl	Dodaj novo opravilo
 add ticket	tts	sl	Dodaj opravilo
 additional notes	tts	sl	Opombe
-admin options	admin	sl	Upravljanje
+admin options	common	sl	Upravljanje
 assign to	tts	sl	Dodeli
 assigned from	tts	sl	Dodelil
 assigned to	tts	sl	Dodeljeno
@@ -72,7 +72,7 @@ open date	tts	sl	Datum odprtja
 opened	tts	sl	Odprto
 opened by	tts	sl	Odprl
 original ticket details	tts	sl	Za&#269;etne podrobnosti opravila
-perform irregular transition into the following state	tts	sl	Izvedi neveljaven prehod stanje 
+perform irregular transition into the following state	tts	sl	Izvedi neveljaven prehod stanje
 prio	tts	sl	Prio
 priority	tts	sl	Prioriteta
 priority changed	tts	sl	Sprememba prioritete
@@ -145,6 +145,7 @@ toverified	tts	sl	VPOTRJENO
 transition	tts	sl	Prehod
 transition name	tts	sl	Ime prehoda
 trouble ticket system	common	sl	Sistem Obdelave Opravil
+tts	common	sl	Sistem Obdelave Opravil
 tts preferences	tts	sl	Sistem Obdelave Opravil - nastavitve
 undefined	tts	sl	NEDEFINIRANO
 update ticket state	tts	sl	Spremeni stanje opravila
