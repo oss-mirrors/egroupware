@@ -1,4 +1,3 @@
-projects	common	fr	Projets
 Account	projects	fr	Compte
 accountancy	common	fr	Comptabilité
 Active	projects	fr	Actif
@@ -7,58 +6,67 @@ Activities list	projects	fr	Liste d'activités
 Activity	projects	fr	Activité
 Activity ID	projects	fr	ID Activité
 Add Activity	projects	fr	Ajouter activité
-Add work hours	projects	fr	Ajouter heures de travail
 Add job	projects	fr	Ajouter tâche
 Add project	projects	fr	Ajouter projet
 Add project hours	projects	fr	Ajouter heures de projet
+Add work hours	projects	fr	Ajouter heures de travail
 Administrator	projects	fr	Administrateur
-All invoices	projects	fr	Toutes les factures
 All	projects	fr	Tout
 All delivery notes	projects	fr	Toutes les notes de livraison
+All invoices	projects	fr	Toutes les factures
 archive	projects	fr	Archive
 arial	projects	fr	Arial
+bill per hour	projects	fr	Facturer par heure
+Bill per workunit	projects	fr	Facturer par unité de travail
+Billable activities	projects	fr	Activités facturables
 billed	projects	fr	Facturé
 Billed only	projects	fr	Facturé seulement
 Billing	projects	fr	Facturation
 Bookable activities	projects	fr	Activités réservables
-Billable activities	projects	fr	Activités facturables
-bill per hour	projects	fr	Facturer par heure
-Bill per workunit	projects	fr	Facturer par unité de travail
 bookkeeper	projects	fr	Comptable
+bookkeeping	common	fr	comptabilité
 Budget	projects	fr	Budget
 Calculate	projects	fr	Calculer
 closed	projects	fr	Fermé
 Coordinator	projects	fr	Coordinateur
+courier new	projects	fr	Courier New
 Create delivery	projects	fr	Créer une livraison
 Create invoice	projects	fr	Créer une facture
-courier new	projects	fr	Courier New
 customer	projects	fr	Client
 Delete hours	projects	fr	Effacer les heures
 Deliveries	projects	fr	Livraisons
 Delivery	projects	fr	Livraison
 Delivery date	projects	fr	Date de livraison
-Delivery note	projects	fr	Note de livraison
-delivery note for project	projects	fr	Note de livraison pour le projet
 Delivery ID	projects	fr	ID de livraison
 Delivery list	projects	fr	Liste de livraison
+Delivery note	projects	fr	Note de livraison
+delivery note for project	projects	fr	Note de livraison pour le projet
 Delivery notes	projects	fr	Notes de livraison
+description can not exceed 255 characters in length !	projects	fr	La description ne peut excéder 255 caractères de long !
+description can not exceed 8000 characters in length !	projects	fr	La description ne peut excéder 8000 caractères de long !
+Do you also want to delete all sub projects ?	projects	fr	Voulez-vous aussi effacer tous les sous-projets ?
 Edit Activity	projects	fr	Modifier l'activité
-Edit work hours	projects	fr	Modifier les heures de travail
+Edit job	projects	fr	Modifier le job
+Edit project	projects	fr	Modifier le projet
 Edit project administrator list	projects	fr	Modifier la liste d'administrateurs de projets
 edit project bookkeeper list	projects	fr	Modifier la liste de comptables de projets
-Edit project	projects	fr	Modifier le projet
 Edit project hours	projects	fr	Modifier les heures de projet
+Edit work hours	projects	fr	Modifier les heures de travail
 Employee	projects	fr	Employé
-Ending date can not be after main projects ending date !	projects	fr	La date de fin ne peut pas être après la date de fin des projets principaux !
+Ending date can not be after main projects ending date !	projects	fr	La date de fin ne peut pas être après celle des projets principaux !
+ending date can not be before start date	projects	fr	La date de fin ne peut pas être avant la date de début
+Error in calculation sum does not match !	projects	fr	Erreur dans le calcul la somme ne correspond pas !
 exactly accounting	projects	fr	Comptabilisation exacte
 Generate Activity ID ?	projects	fr	Générer l'ID d'activité ?
 Generate Delivery ID ?	projects	fr	Générer l'ID de livraison ?
-Generate Project ID ?	projects	fr	Générer l'ID de projet ?
 Generate Invoice ID ?	projects	fr	Générer l'ID de facture ?
 Generate Job ID ?	projects	fr	Générer l'ID de tâche ?
+Generate Project ID ?	projects	fr	Générer l'ID de projet ?
 georgia	projects	fr	Georgia
 helvetica	projects	fr	Helvetica
 Hours	projects	fr	Heures
+id can not exceed 19 characters in length !	projects	fr	L'ID ne peut pas excéder 19 caractères de long !
+id can not exceed 25 characters in length !	projects	fr	L'ID ne peut pas excéder 25 caractères de long !
 Invoice	projects	fr	Facture
 Invoice date	projects	fr	Date de facture
 invoice for project	projects	fr	Facture pour projet
@@ -84,66 +92,72 @@ Number	projects	fr	Nombre
 open	projects	fr	Ouvert
 Overall	projects	fr	Total
 per hour	projects	fr	Par heure
+per hour/workunit	projects	fr	Unité de travai/heure
 per workunit	projects	fr	Par unité de travail
-Please enter an ID !	projects	fr	SVP entrez un ID !
-Please choose activities for that project first !	projects	fr	SVP choisissez d'abord les activités pour ce projet !
-Please enter a remark !	projects	fr	SVP entrez une remarque !
-Please enter the bill !	projects	fr	SVP entrez la facture !
-Please enter the minutes per workunit !	projects	fr	SVP entrez les minutes par unité de travail !
+please choose activities for that project first !	projects	fr	SVP choisissez d'abord les activités pour ce projet !
+please enter a remark !	projects	fr	SVP entrez une remarque !
+please enter an ID !	projects	fr	SVP entrez un ID !
+please enter the bill !	projects	fr	SVP entrez la facture !
+please enter the minutes per workunit !	projects	fr	SVP entrez les minutes par unité de travail !
 Please set the minutes per workunit for each activity now !	projects	fr	SVP entrez les minutes par unité de travail pour chaque activité maintenant !
+Please set your preferences for this application !	projects	fr	SVP réglez vos préférences pour cette application !
 Position	projects	fr	Position
+preferences for accountancy	projects	fr	Préférences pour la comptabilité
 Print delivery	projects	fr	Imprimer la livraison
 Print invoice	projects	fr	Imprimer la facture
 Project	projects	fr	Projet
 Project archive	projects	fr	Archive de projets
 Project billing	projects	fr	Facturation de projet
-bookkeeping	common	fr	comptabilité
 Project delivery	projects	fr	Livraison de projet
 Project ID	projects	fr	ID de projet
 Project list	projects	fr	Liste de projets
 Project name	projects	fr	Nom de projet
-preferences for accountancy	projects	fr	Préférences pour la comptabilité
-projects preferences	preferences	fr	Préférences de projets
+Project preferences	projects	fr	Préférences de Projet
 Project statistic	projects	fr	Statistique de projet
 project statistics	projects	fr	Statistiques de projet
+projects	common	fr	Projets
 Remark	projects	fr	Remarque
+remark can not exceed 8000 characters in length !	projects	fr	La remarque ne peut pas excéder 8000 caractères de long !
 Remark required	projects	fr	Remarque requise
-select font	projects	fr	Choisissez la fonte
-Select font size for own address	projects	fr	Choisissez la taille de la fonte pour l'adresse propre
-Select font size for customer address	projects	fr	Choisissez la taille de fonte pour l'adresse du client
 select	projects	fr	Choisir
+select font	projects	fr	Choisissez la fonte
+Select font size for customer address	projects	fr	Choisissez la taille de fonte pour l'adresse du client
+Select font size for own address	projects	fr	Choisissez la taille de la fonte pour l'adresse propre
+Select groups	projects	fr	Choisissez les groupes
 Select main project	projects	fr	Choisir le projet principal
+Select own address	projects	fr	Choisissez votre propre adresse
 Select per button !	projects	fr	Choisir par bouton !
 Select project	projects	fr	Choisissez le projet
 Select tax for work time	projects	fr	Choisissez la taxe pour le temps de travail
 Select users	projects	fr	Choisissez les utilisateurs
-Select groups	projects	fr	Choisissez les groupes
-Select own address	projects	fr	Choisissez votre propre adresse
+Short description	projects	fr	Courte description
 small	projects	fr	Petit
-Start date can not be before main projects start date !	projects	fr	La date de début ne peut pas être avant la date de début des projets principaux !
+Sorry, no preferences to set for you :)	projects	fr	Désolé, aucune préférence à régler pour vous :)
+start date can not be before main projects start date !	projects	fr	La date de départ ne peut pas être avant celle des projets principaux !
 Statistic	projects	fr	Statistique
 statistics	projects	fr	Statistiques
-Short description	projects	fr	Courte description
-Sorry, no preferences to set for you :)	projects	fr	Désolé, aucune préférence à régler pour vous :)
-sum net	projects	fr	Total net
-sum hours	projects	fr	Total heures
 Sum	projects	fr	Total
+sum hours	projects	fr	Total heures
+sum net	projects	fr	Total net
 Sum workunits	projects	fr	Total unités de travail
 tahoma	projects	fr	Tahoma
 tax	projects	fr	Taxe
-That ID has been used already !	projects	fr	Cet ID a déjà été utilisé !
+that id has been used already !	projects	fr	Cet ID a déjà été utilisé !
+The delivery note contains no items !	projects	fr	La note de livraison ne contient aucun objet !
+The invoice contains no items !	projects	fr	La facture ne contient aucun objet !
 times new roman	projects	fr	Times New Roman
-Update invoice	projects	fr	Mettre à jour la facture
+title can not exceed 255 characters in length !	projects	fr	Le titre ne peut pas excéder 255 caractères de long !
 Update delivery	projects	fr	Mettre à jour la livraison
-Username / Group	projects	fr	Utilisateur / Groupe
+Update invoice	projects	fr	Mettre à jour la facture
 User statistic	projects	fr	Statistique d'utilisateur
 user statistics	projects	fr	Statistiques d'utilisateur
+Username / Group	projects	fr	Utilisateur / Groupe
 verdana	projects	fr	Verdana
 very large	projects	fr	Très grand
 very small	projects	fr	Très petit
-View work hours	projects	fr	Voir les heures de travail
 View job	projects	fr	Voir la tâche
 View project	projects	fr	Voir le projet
+View work hours	projects	fr	Voir les heures de travail
 Work date	projects	fr	Date de travail
 Work hours	projects	fr	Heures de travail
 Work hours archive	projects	fr	Archive des heures de travail
@@ -152,8 +166,9 @@ Work time	projects	fr	Temps de travail
 Workunit	projects	fr	Unité de travail
 Workunits	projects	fr	Unités de travail
 written by:	projects	fr	Ecrit par:
-You have entered an invalid start date !	projects	fr	Vous avez entré une date de début invalide !
-You have entered an invalid end date !	projects	fr	Vous avez entré une date de fin invalide !
-You have selected an invalid activity !	projects	fr	Vous avez sélectionné une activité invalide !
+you have entered an invalid date !	projects	fr	Vous avez entré une date invalide !
+you have entered an invalid end date !	projects	fr	Vous avez entré une date de fin invalide !
+you have entered an invalid start date !	projects	fr	Vous avez entré une date de début invalide !
 You have no customer selected !	projects	fr	Vous n'avez aucun client sélectionné !
+You have selected an invalid activity !	projects	fr	Vous avez sélectionné une activité invalide !
 You have to CREATE a delivery or invoice first !	projects	fr	Vous devez d'abord créer une livraison ou une facture !
