@@ -123,10 +123,10 @@
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
 		 
-		 $this->plug = CreateObject('jinn.plugins');
+		 $this->plug = CreateObject('jinn.plugins_db_fields');
 		 $this->plug->local_bo = $this;
 
- 		 $this->object_events_plugin_manager = CreateObject('jinn.object_events_plugins'); //$this->include_plugins();
+		 $this->object_events_plugin_manager = CreateObject('jinn.plugins_object_events'); //$this->include_plugins();
 		 $this->object_events_plugin_manager->local_bo = $this;
 
 		 /* this is for the sidebox */

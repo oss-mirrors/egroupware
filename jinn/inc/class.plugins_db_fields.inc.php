@@ -26,7 +26,7 @@
    @class plgins
    @abstract JiNN field plugin class
    */
-   class plugins
+   class plugins_db_fields
    {
 	  var $local_bo;
 	  var $test;
@@ -34,7 +34,7 @@
 	  @function plugins
 	  @abstract standard contructure that includes all plugins
 	  */
-	  function plugins()
+	  function plugins_db_fields()
 	  {
 		 $this->include_plugins();
 	  }
@@ -219,7 +219,7 @@
 	  {
 		 global $local_bo;
 		 $local_bo=$this;
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
+		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/')) {
 
 			/* This is the correct way to loop over the directory. */
 
@@ -228,7 +228,7 @@
 			   if (substr($file,0,7)=='plugin.')
 			   {
 
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/db_fields_plugins/'.$file);
 			   }
 			}
 			closedir($handle); 

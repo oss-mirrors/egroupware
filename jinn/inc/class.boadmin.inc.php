@@ -116,12 +116,12 @@
 			$this->site_object = $this->so->get_object_values($this->site_object_id);
 		 }
 
-		 $this->plug = CreateObject('jinn.plugins'); //$this->include_plugins();
+		 $this->plug = CreateObject('jinn.plugins_db_fields'); //$this->include_plugins();
 		 $this->plug->local_bo = $this;
 		 $this->plugins = $this->plug->plugins;
 		 
 		 
-		 $this->object_events_plugin_manager = CreateObject('jinn.object_events_plugins'); //$this->include_plugins();
+		 $this->object_events_plugin_manager = CreateObject('jinn.plugins_object_events'); //$this->include_plugins();
 		 $this->object_events_plugin_manager->local_bo = $this;
 		 $this->object_events_plugins = $this->object_events_plugin_manager->object_events_plugins;
 
