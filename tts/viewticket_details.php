@@ -25,7 +25,6 @@
 	if (! $submit)
 	{
 
-
 		// select the ticket that you selected
 		$phpgw->db->query("select t_id,t_category,t_detail,t_priority,t_user,t_assignedto,"
 			. "t_timestamp_opened, t_timestamp_closed, t_subject, t_watchers from ticket where t_id='$ticketid'");
@@ -151,65 +150,72 @@
 	}
 	else
 	{
-		$txtDetail = $prevtxtdetail;
 
-		if (! empty($txtAdditional))
-		{
-			$txtDetail .= "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - "
-				. $phpgw->common->show_date(time()) . "</i><BR>\n";
-		}
-		else
-		{
-			$textDetail = $prevtextdetail;
-		}
-
+		// DB Content is fresher than http posted value.
+		$phpgw->db->query("select t_detail, t_assignedto, t_category, t_priority from ticket where t_id='".$t_id."'");
+		$phpgw->db->next_record();
+		$txtDetail = $phpgw->db->f("t_detail");
+		$oldassigned = $phpgw->db->f("t_assignedto");
+		$oldpriority = $phpgw->db->f("t_priority");
+		$oldcategory = $phpgw->db->f("t_category");
+		
 		if ($optUpdateclose == "letclosed" )
 		{
 			# let ticket be closed
 			# don't do any changes, ppl will have to reopen tickets to
 			# submit additional infos
-		}
-		else
-		{
+		} else {
 			if ($optUpdateclose == "reopen")
 			{
 				# reopen the ticket
 				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='0' WHERE t_id=$t_id");
-				$txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
+				$txtReopen = "<b>".lang("Ticket reopened")."</b><br>";
 			}
-
-			if (! empty($txtAdditional)) { $txtDetail .= nl2br($txtAdditional); }
 
 			if ( $optUpdateclose == "close" )
 			{
-				$txtDetail .= "<br><b>\n\n".lang("Ticket closed")."</b><br>\n";
-			}
-     
-			if (! empty($txtAdditional))
-			{
-				$txtDetail .= "<hr>";
-				$txtDetail = addslashes($txtDetail);
-			}
-
-			# update the database if ticket content changed
-			$phpgw->db->query("select t_assignedto from ticket where t_id='$t_id'");
-			$phpgw->db->next_record();
-			if ($phpgw->db->f("t_assignedto") != $lstAssignedto)
-			{
-				// I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
-				$txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
-			}
-			$phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto',t_watchers='".$phpgw_info["user"]["userid"]."' WHERE t_id=$t_id");
-
-			if ( $optUpdateclose == "close" )
-			{
+				$txtClose = "<br /><b>".lang("Ticket closed")."</b>";
 				$phpgw->db->query("UPDATE ticket set t_timestamp_closed='" . time() . "' WHERE t_id=$t_id");
 			}
-
-			if ($phpgw_info['server']['tts_mailticket']) {
-			  mail_ticket($t_id);
+	
+			if ($oldassigned != $lstAssignedto)
+			{
+				// I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
+				$txtAssignTo = "<br /><b>".lang("Ticket assigned to x",$lstAssignedto)."</b>";
 			}
+
+			if ($oldpriority != $optPriority)
+			{
+				$txtPriority = "<br /><b>".lang("Priority changed to x",$lstPriority)."</b>";
+			}
+
+			if ($oldcategory != $lstCategory)
+			{
+				$txtCategory = "<br /><b>".lang("Category changed to x",$lstCategory)."</b>";
+			}
+
+			$txtAdditional = $txtReopen.$txtAdditional.$txtAssignTo.$txtCategory.$txtPriority.$txtClose;
+
+			if (! empty($txtAdditional))
+			{
+		    	
+				$UserInfo = "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - "
+		    				. $phpgw->common->show_date(time()) . "</i><BR>\n";
+
+				$txtDetail .= $UserInfo;
+				$txtDetail .= nl2br($txtAdditional);
+				$txtDetail .= "<hr>";
+	
+				# update the database if ticket content changed
+				$phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='".addslashes($txtDetail)."',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto',t_watchers='".$phpgw_info["user"]["userid"]."' WHERE t_id=$t_id");
+		
+				if ($phpgw_info['server']['tts_mailticket']) {
+				    mail_ticket($t_id);
+				}
+			}
+
 		}
 		Header("Location: " . $phpgw->link("/tts/index.php"));
 	}
+
 ?>
