@@ -34,7 +34,7 @@
      	$t->set_block("projects_add", "edit", "edithandle");
      	$t->set_block("projects_add", "edit_act", "acthandle");
   	
-  	$t->set_var("lang_action",lang("project hours - add"));
+  	$t->set_var("lang_action",lang("add project hours"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"

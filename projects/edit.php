@@ -64,7 +64,7 @@
      $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
      $t->set_var("actionurl",$phpgw->link("edit.php"));
      $t->set_var("deleteurl",$phpgw->link("delete.php"));
-     $t->set_var("lang_action",lang("project list - edit"));
+     $t->set_var("lang_action",lang("edit project"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("num"));
      $t->set_var("num", stripslashes($phpgw->db->f("num")));
@@ -244,8 +244,8 @@
 		     . " FROM p_activities LEFT JOIN p_projectactivities ON "
                      . "(p_activities.id=p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) "
-//                     . " WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
-                     . " ORDER BY descr asc");
+                     . " WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
+//                     . " ORDER BY descr asc");
      while ($db2->next_record()) {
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
         if($db2->f("billable")=="Y")
@@ -256,7 +256,6 @@
                     . $db2->f("billperae") . "</option>";
      }
      $t->set_var("bill_activities_list",$bill_activities_list);  
-//
 
     $t->set_var("lang_access_type",lang("Access type"));   
     $access_list = "<option value=\"private\"";
@@ -298,9 +297,7 @@
     $t->set_var("addhandle","");
     $t->pparse("out","projects_edit");
     $t->pparse("edithandle","edit");
-   ?>
 
-   <?
   } else {
     // Create function to take care of this
     if ($access == "group") {

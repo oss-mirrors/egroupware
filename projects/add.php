@@ -24,9 +24,7 @@
   
   
   if (! $submit) {
-     ?>
       
-   <?PHP
   	$t = new Template($phpgw_info["server"]["app_tpl"]);
   	
   	$t->set_var("actionurl",$phpgw->link("add.php"));
@@ -43,7 +41,7 @@
         $t->set_var("addressbook_link",$phpgw->link("addressbook.php","query="));
         $t->set_var("addresses_link",$phpgw->link("addresses.php","query="));
 
-  	$t->set_var("lang_action",lang("project list - add"));
+  	$t->set_var("lang_action",lang("add project"));
 	
 	$common_hidden_vars = "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
         		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -197,9 +195,6 @@
     	$t->pparse("out","projects_add");
     	$t->pparse("addhandle","add");
         
-?>
-
-   <?php
   } else {
 
     if (checkdate($month,$day,$year)) {
@@ -263,3 +258,4 @@
          . "$start&filter=$filter"));
   }
   include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+?>
