@@ -140,10 +140,19 @@
 
 			// get the file that contains the links
 			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile($this->base_url.$this->newsfile);
-			if (!$lines)
+			if (!is_array($lines))
 			{
 				return False;
 			}
+			foreach($lines as $line)
+			{
+				if (eregi('encodeing="([^"]*)"',$line,$encoding) || eregi('content="[^;]*; charset=([^"]*)"',$encodeing))	// standard xml
+				{
+					break;
+				}
+			}
+			$encoding = is_array($encoding) ? strtolower($encoding[1]) : 'iso-8859-1';
+			$lines = $GLOBALS['phpgw']->translation->convert($lines,$encoding,$GLOBALS['phpgw']->translation->charset());
 
 			$startnum = 0;
 
