@@ -77,7 +77,18 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
+		'p_projectaddress' => array(
+			'fd' => array(
+				'id' => array('type' => 'auto', 'nullable' => False),
+				'project_id' => array('type' => 'int','precision' => 4,'nullable' => True),
+				'addressbook_id' => array('type' => 'int','precision' => 4,'nullable' => True)
+			),
+			'pk' => array('id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
 		'p_projectmembers' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => False),
@@ -88,7 +99,7 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
 		'p_invoice' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => False),
@@ -102,7 +113,7 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array('num')
-		)
+		),
 		'p_invoicepos' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => False),
@@ -113,7 +124,7 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
-		)
+		),
 		'p_delivery' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => False),
@@ -126,7 +137,7 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array('num')
-		)
+		),
 		'p_deliverypos' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto', 'nullable' => False),

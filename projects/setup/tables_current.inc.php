@@ -35,7 +35,7 @@
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array('id','num'),
-			'uc' => array()
+			'uc' => array('num')
 		),
 		'phpgw_p_activities' => array(
 			'fd' => array(
@@ -108,7 +108,7 @@
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array('id','num'),
-			'uc' => array()
+			'uc' => array('num')
 		),
 		'phpgw_p_invoicepos' => array(
 			'fd' => array(
@@ -132,7 +132,7 @@
 			'pk' => array('id'),
 			'fk' => array(),
 			'ix' => array('id','num'),
-			'uc' => array()
+			'uc' => array('num')
 		),
 		'phpgw_p_deliverypos' => array(
 			'fd' => array(
