@@ -125,7 +125,7 @@
 
 	if ($filter != 'viewopen')
 	{
-		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>$filter,'order'=>$order,'sort'=>$sort)));
+		$GLOBALS['phpgw']->template->set_var('tts_changeview_link', $GLOBALS['phpgw']->link('/tts/index.php',array('filter'=>'viewopen','order'=>$order,'sort'=>$sort)));
 		$GLOBALS['phpgw']->template->set_var('tts_changeview', lang('View only open tickets'));
 	}
 	else
