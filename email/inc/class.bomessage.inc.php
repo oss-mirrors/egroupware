@@ -309,7 +309,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			#@set_time_limit(0);
 			
 			// ----  Special X-phpGW-Type Message Flag  -----
-			// is this still a planned feature?
+			// this is used at least by the calendar for the notifications
 			$this->xi['application'] = '';
 			$msgtype = $GLOBALS['phpgw']->msg->phpgw_get_flag('X-phpGW-Type');
 			$this->xi['msgtype'] = $msgtype;
@@ -317,7 +317,7 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 			if (!empty($msgtype))
 			{
 				$msg_type = explode(';',$msgtype);
-				$application = substr($msg_type[0],1,strlen($msg_type[0])-2);
+				$application = substr($msg_type[0],1,-1);
 				$this->xi['application'] = $application;
 				//$GLOBALS['phpgw']->template->parse('V_x-phpgw-type','B_x-phpgw-type');
 			}
@@ -1617,20 +1617,16 @@ lang_warn_style_sheet = lang of "warn_style_sheet"
 				set_time_limit(0);
 			}
 			
-			/* // IS THIS STILL USED ???????
+			// used to show in calendar-notifications the event and allow to except it there
 			if($application)
 			{
 				if(strstr($msgtype,'"; Id="'))
 				{
 					$msg_type = explode(';',$msgtype);
 					$id_array = explode('=',$msg_type[2]);
-					$calendar_id = intval(substr($id_array[1],1,strlen($id_array[1])-2));
-					
-					echo '<tr><td align="center">';
-\					$GLOBALS['phpgw']->hooks->single('email',$application)
-					echo '</td></tr>';
+					$this->xi['calendar_id'] = intval(substr($id_array[1],1,-1));
 				}
-			} */
+			}
 			
 			//$GLOBALS['phpgw']->template->pparse('out','T_message_main');
 			

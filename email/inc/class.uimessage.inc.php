@@ -257,6 +257,13 @@
 				$GLOBALS['phpgw']->template->pfp('out','T_message_main');
 				//$GLOBALS['phpgw']->common->phpgw_footer();
 			}
+			if (isset($this->bo->xi['application']))
+			{
+				global $calendar_id;
+				$calendar_id = $this->bo->xi['calendar_id'];
+				$GLOBALS['phpgw']->hooks->single('email',$this->bo->xi['application']);
+
+			}
 			// tell apache to release emeory back to the system on script end
 			//apache_child_terminate();
 

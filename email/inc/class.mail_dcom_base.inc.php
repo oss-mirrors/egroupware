@@ -287,7 +287,7 @@
 				}
 				else
 				{
-					if ($this->debug_utf7 > 0) { echo ' _ mail_dcom_base: utf7_decode_string ('.__LINE__.'): returning decoded name, $name[] DUMP: ['.htmlspecialchars(serialize($name)).']<br>'; } 
+					if ($this->debug_utf7 > 0) { echo ' _ mail_dcom_base: utf7_decode_string ('.__LINE__.'): returning decoded name, $name[] DUMP: ['.htmlspecialchars(serialize($name)).']<br>'; }
 					return $name['translated'];
 				}
 			}
@@ -299,7 +299,7 @@
 		*/
 		function get_flag($stream,$msg_num,$flag)
 		{
-			$header = $this->fetchheader($stream,$msg_num);
+			$header = explode("\n",$this->fetchheader($stream,$msg_num));
 			$flag = strtolower($flag);
 			for ($i=0;$i<count($header);$i++)
 			{
