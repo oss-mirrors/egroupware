@@ -28,7 +28,7 @@
 			'pk' => array('message_id'),
 			'fk' => array(),
 			'ix' => array(),
-			'uc' => array('message_id')
+			'uc' => array()
 		)
 	);
 ?>
