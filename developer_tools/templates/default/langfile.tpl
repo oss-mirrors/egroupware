@@ -91,6 +91,7 @@
 <hr>
 <table width="80%" align="center">
   <tr valign="top">
+     <input name="app_name" type="hidden" value="{app_name}">
    <td align="center"><input type="submit" name="update" value="{lang_update}"></td>
   </form>
   <form method="post" action="{phrase_link}">
@@ -98,6 +99,7 @@
    <td align="center"><input type="submit" name="addphrase" value="{lang_addphrase}"></td>
   </form>
   <form method="post" action="{revert_url}">
+     <input name="app_name" type="hidden" value="{app_name}">
    <td align="center"><input name="revert" type="submit" value="{lang_revert}"></td>
   </form>
   <form method="post" action="{cancel_link}">
