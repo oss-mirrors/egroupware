@@ -1,0 +1,29 @@
+add also to local domains	qmailldap	fr	Ajouter aussi au domaine local
+add server	qmailldap	fr	Ajouter un serveur
+admin dn	qmailldap	fr	DN de l'administrateur
+admin password	qmailldap	fr	Mot de passe de l'administrateur
+alternate email address	qmailldap	fr	Adresse EMail secondaire
+back	common	fr	Retour
+domain names	qmailldap	fr	Noms de domaine
+domainname	qmailldap	fr	Nom de domaine
+edit email settings	qmailldap	fr	Modifier les réglages d'EMail
+email account active	qmailldap	fr	Compte EMail actif
+email address	qmailldap	fr	Adresse EMail
+email settings	admin	fr	Réglages EMail
+forward email's to	qmailldap	fr	Faire suivre l'EMail à
+ldap basedn	qmailldap	fr	DN de BASE LDAP
+ldap server	qmailldap	fr	Serveur LDAP
+ldap settings	qmailldap	fr	Réglages LDAP
+no alternate email address	qmailldap	fr	Pas d'adresse EMail secondaire
+options	common	fr	Options
+qmailldap	common	fr	QMailLDAP
+remote server	qmailldap	fr	Serveur distant
+remote port	qmailldap	fr	Port distant
+remove	qmailldap	fr	Enlever
+server list	qmailldap	fr	Liste de serveur
+server name	qmailldap	fr	Nom de serveur
+smtp routing	qmailldap	fr	Routage SMTP
+userdata	qmailldap	fr	Données utilisateur
+virtual domains	qmailldap	fr	Domaines virtuels
+we don't accept any email!	qmailldap	fr	Nous n'acceptons aucun EMail!
+we don't deliver any email local!	qmailldap	fr	Nous ne délivrons pas d'EMail local!
