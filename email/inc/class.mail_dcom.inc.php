@@ -26,8 +26,9 @@
 	$debug_dcom = False;
 	
 // -----  is IMAP compiled into PHP
-	if (extension_loaded("imap"))
+	//if (extension_loaded("imap"))
 	//if (defined("TYPEVIDEO"))
+	if (extension_loaded('imap') || function_exists('imap_open'))
 	{
 		$imap_builtin = True;
 		$sock_fname = '';
@@ -69,6 +70,11 @@
 	{
 		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php');
 		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_pop3'.$sock_fname.'.inc.php<br>'; }
+	}
+	elseif ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'nntp')
+	{
+		include(PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php');
+		if ($debug_dcom) { echo 'including :'.PHPGW_INCLUDE_ROOT.'/email/inc/class.mail_dcom_nntp'.$sock_fname.'.inc.php<br>'; }
 	}
         elseif ((isset($phpgw_info['user']['preferences']['email']['mail_server_type']))
 	&& ($phpgw_info['user']['preferences']['email']['mail_server_type'] != ''))
