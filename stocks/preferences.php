@@ -70,7 +70,7 @@
 
 	// If they don't have any stocks in there, give them something to look at
 	$GLOBALS['phpgw']->preferences->read_repository();
-	if(count($GLOBALS['phpgw_info']['user']['preferences']['stocks']) == 1)
+	if(count($GLOBALS['phpgw_info']['user']['preferences']['stocks']) == 0)
 	{
 		$GLOBALS['phpgw']->preferences->change('stocks','LNUX','VA%20Linux');
 		$GLOBALS['phpgw']->preferences->change('stocks','RHAT','RedHat');
