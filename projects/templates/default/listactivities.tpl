@@ -6,8 +6,8 @@
 <hr noshade width="98%" align="center" size="1">
 <center>
 <table border="0" width="85%" cellpadding="2" cellspacing="2">
-	<tr>
-		<td colspan="3" align="left">
+	<tr colspan="6">
+		<td colspan="6">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -17,7 +17,7 @@
 			</table>
 		</td>
 	</tr>
-	<tr colspan="3">
+	<tr colspan="6">
 		<td width="33%" align="left">
 				<form method="POST" name="cat" action="{cat_action}">
 				{lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();">

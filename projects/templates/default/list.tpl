@@ -5,9 +5,9 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_header}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-<table border="0" width="100%">
-	<tr>
-		<td colspan="9" align="left">
+<table border="0" width="98%" cellpadding="2" cellspacing="2">
+	<tr colspan="9">
+		<td colspan="9">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -26,7 +26,7 @@
 	</tr>
 </table>
 {pref_message}
-<table border="0" width="100%" cellpadding="2" cellspacing="2">
+<table border="0" width="98%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_number}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_title}</td>
