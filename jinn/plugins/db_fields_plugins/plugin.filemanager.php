@@ -459,12 +459,16 @@
 
 			   }
 
-			   /* check for thumb and create previewlink */
-			   if(is_file($upload_path . SEP . str_replace('normal_size','thumb',$img_path)))
-			   {
-				  $tmpthumbpath=$upload_path.SEP.str_replace('normal_size','thumb',$img_path);
-				  $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$tmpthumbpath);
-			   }
+				  $path_array = explode('/', $img_path);
+				  $path_array[count($path_array)-1] = '.'.$path_array[count($path_array)-1];
+				  $thumb_path = implode('/', $path_array);
+				  
+					/* check for thumb and create previewlink */
+				  if(is_file($upload_path . SEP . $thumb_path))
+				  {
+					 $thumblink=$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiuser.file_download&file='.$upload_path . SEP . $thumb_path);
+				  }
+			   
 
 			   $input.='<tr><td '.$cell_style.' valign="top">'.$i.'.</td><td '.$cell_style.'>';
 
@@ -524,6 +528,7 @@
 
 
 	  $upload_path=$local_bo->cur_upload_path();
+	  $upload_url =$local_bo->cur_upload_url ();
 
 	  /* if value is set, show existing images */	
 	  if($value)
@@ -555,8 +560,24 @@
 				  $popup = "img_popup('".base64_encode($imglink)."','$pop_width','$pop_height');";
 			   }
 			   
-			   if($imglink) $display.='<a href="javascript:'.$popup.'">'.$i.'</a>';
-			   else $display.=' '.$i;
+				  unset($thumblink); 
+
+				  $path_array = explode('/', $img_path);
+				  $path_array[count($path_array)-1] = '..'.$path_array[count($path_array)-1];
+				  $thumb_path = implode('/', $path_array);
+				  
+					/* check for thumb and create previewlink */
+				  if(is_file($upload_path . SEP . $thumb_path))
+				  {
+					 $thumblink='<img src="'.$upload_url . SEP . $thumb_path.'" alt="'.$i.'">';
+				  }
+				  else
+				  {
+					 $thumblink=$i;
+				  }
+			   
+			   if($imglink) $display.='<a href="javascript:'.$popup.'">'.$thumblink.'</a>';
+			   else $display.=' '.$thumblink;
 			   $display.=' ';
 
 			}

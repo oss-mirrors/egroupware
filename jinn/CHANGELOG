@@ -6,6 +6,12 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.215
+===========================
+Tue Mar 23 14:00:00 CET 2005
+- filemanager plugin: added micro thumbnails (20x30 px) to list records view
+- filemanager plugin: regular thumbs now used in (multiple) record view
+
 Version 0.8.214
 ===========================
 Tue Mar 23 13:00:00 CET 2005

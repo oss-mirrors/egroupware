@@ -103,6 +103,7 @@
 			$w = $img_info[0]; 
 			$h = $img_info[1];
 
+			adapt_size($file['tmp_name'],$dest_dir.'..'.$file['name'], 30, 20);
 			
 			if($_POST[thumb]=='true')
 			{
@@ -227,6 +228,7 @@
 
 	  $del_image = dir_name($BASE_DIR).$IMG_ROOT.$file;
 	  $del_thumb = dir_name($BASE_DIR).$IMG_ROOT.'.'.$file;
+	  $del_mini = dir_name($BASE_DIR).$IMG_ROOT.'..'.$file;
 	  $del_thumb_01 = dir_name($BASE_DIR).$IMG_ROOT.'.thumb_01_'.$file;
 
 	  if(is_file($del_image)) 
@@ -237,6 +239,11 @@
 	  if(is_file($del_thumb)) 
 	  {
 		 unlink($del_thumb);	
+	  }
+
+  	  if(is_file($del_mini)) 
+	  {
+		 unlink($del_mini);	
 	  }
 
 	  if(is_file($del_thumb_01)) 
