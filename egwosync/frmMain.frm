@@ -27,9 +27,16 @@ Attribute VB_Exposed = False
 '# heisters[at]0x09.com
 '#################################################################################################
 Private myFilter As String
+Private myCategories As Collection
 
-Property Get filter() As String
-    filter = myFilter
+Property Get SelectedCategoryID() As String
+    If cbCategories.Value <> "" Then
+        SelectedCategoryID = myCategories.Item(cbCategories.Value)("idnum")
+    End If
+End Property
+
+Property Get Filter() As String
+    Filter = myFilter
 End Property
 
 Property Get Filters() As Collection
@@ -77,6 +84,12 @@ End Sub
 Private Sub cmdGet_Click()
     Me.MousePointer = vbHourglass
     BasUtilities.GetContacts
+    Me.MousePointer = vbDefault
+End Sub
+
+Private Sub cmdListCats_Click()
+    Me.MousePointer = vbHourglass
+    listCategories
     Me.MousePointer = vbDefault
 End Sub
 
@@ -186,4 +199,84 @@ Public Function GetSelectedListItems(ByRef myList As MSForms.ListBox) As Collect
             GetSelectedListItems.Add myList.List(i)
         End If
     Next i
+End Function
+
+Private Sub listCategories()
+'[ This is a messy cut and paste job. What needs to be done is a simpler simple exec needs to be
+'[ written that takes things besides XMLRPCStructs as arguents, then this function and SimpleExec
+'[ can use the new function.
+    Dim xmlResponse As New XMLRPCResponse
+    Dim bEnabled As Boolean
+    Dim bLogin As Boolean
+    Dim thingy As Variant
+    Dim tempCol As Collection
+    
+    Set myCategories = New Collection
+    
+    bEnabled = Master.Ready
+    If bEnabled Then
+        
+        bLogin = Master.eGW.Login
+        If bLogin Then
+            Master.eGW.Reset
+            
+            Master.eGW.Exec "addressbook.boaddressbook.categories", False
+            
+            'Error handling bonanza
+            If Master.eGW.Response.Status <> XMLRPC_PARAMSRETURNED Then
+                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Status
+                If Master.eGW.Response.Status = 4 Then
+                    Debug.Print "XML Parse Error: " & Master.eGW.Response.XMLParseError
+                    'This line will show the full response string from the server in all its glory
+                    'Debug.Print Master.eGW.Response.xmlResponse
+                End If
+            ElseIf Master.eGW.Response.Params.Count <> 1 Then
+                Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"
+            End If
+            
+            'return the response from the XMLRPC server
+            Set xmlResponse = Master.eGW.Response
+        End If
+    Else
+        Dim y As VbMsgBoxResult
+        y = MsgBox("You cannot use eGWOSync without first setting the " & _
+                    (Chr(10)) & "server access parameters. Click okay to setup, cancel to abort.", _
+                    vbExclamation + vbOKCancel, "Cannot log in to eGW server")
+        If y = vbOK Then _
+            Master.Setup
+    End If
+    
+    For Each thingy In xmlResponse.Params(1).StructValue
+        Set tempCol = New Collection
+        tempCol.Add thingy.Name, "idnum"
+        tempCol.Add thingy.Value.StringValue, "name"
+        If Not ExistsInCollection(myCategories, thingy.Value.StringValue) Then
+            myCategories.Add tempCol, thingy.Value.StringValue
+        End If
+    Next thingy
+    
+    If myCategories.Count > 0 Then
+        For Each thingy In myCategories
+            cbCategories.AddItem thingy("name")
+        Next thingy
+    End If
+End Sub
+
+Public Function ExistsInCollection(myCol As Collection, Key As String) As Boolean
+    Dim x
+    On Error Resume Next
+    ExistsInCollection = False
+    Set x = myCol(Key)
+    If Err.Number Then
+        If Err.Number = 5 Then
+            ExistsInCollection = False
+        Else
+            With Err
+                MsgBox "Error:" & .Number & "-" & .Description
+            End With
+            Exit Function
+        End If
+    Else
+        ExistsInCollection = True
+    End If
 End Function

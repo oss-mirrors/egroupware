@@ -23,13 +23,15 @@ Public Sub GetContacts()
         Dim INT_START   As Integer
         Dim INT_LIMIT   As Integer
         Dim query       As String
-        Dim filter      As String
+        Dim Filter      As String
         Dim ORDER       As String
         Dim SORT        As String
         Dim oContacts   As New COutlookContacts
         Dim colFields   As Collection
         Dim strTemp     As Variant
         Dim bLogin      As Boolean
+        Dim bContinue   As Boolean
+        Dim tempVariant As Variant
         
         FrmMain.lblStatus.Caption = "Getting Contacts..."
         
@@ -51,17 +53,23 @@ Public Sub GetContacts()
         xmlArray.AddString "fn"
         If FrmMain.Filters.Count > 0 Then
             For Each strTemp In FrmMain.Filters
-                filter = filter & strTemp("field") & "=" & strTemp("query") & ","
+                Filter = Filter & strTemp("field") & "=" & strTemp("query") & ","
             Next strTemp
             'chop off the last comma
-            filter = Left(filter, Len(filter) - 1)
+            Filter = Left(Filter, Len(Filter) - 1)
+        End If
+        
+        If FrmMain.SelectedCategoryID <> "" Then
+            Filter = Filter & "," & "cat_id" & "=" & FrmMain.SelectedCategoryID
         End If
         
         bLogin = Master.eGW.Login
+        bContinue = True
         
         '[ > Get the contacts from the eGW server.
         '[ When I tried to grab all the contacts from the server at once I got an Overflow
         '[ XML Parse Error, so now I grab them 25 at a time.
+        'If Not bNoneFound Then
         Do
             '[ It's not sufficient to only add the parameters that need updating, they all need to be
             '[ re-added in a specific order
@@ -69,28 +77,40 @@ Public Sub GetContacts()
             xmlParms.AddInteger "limit", INT_LIMIT
             xmlParms.AddArray "fields", xmlArray
             xmlParms.AddString "query", query
-            xmlParms.AddString "filter", filter
+            xmlParms.AddString "filter", Filter
             xmlParms.AddString "order", ORDER
             xmlParms.AddString "sort", SORT
-            
+                
             'Get the contacts from the server and temporarily store them in xmlResponse
             Set xmlResponse = BasUtilities.SimpleExec("addressbook.boaddressbook.search", _
                                                         xmlParms, _
                                                         bLogin)
-            
+                
             'A touch of Ye Olde Error Handling. Aborts execution if login failed.
             If xmlResponse.Status <> XMLRPC_PARAMSRETURNED Then
+                FrmMain.lblStatus = "Idle"
                 Exit Sub
             End If
-            
-            For Each tempValue In xmlResponse.Params(1).ArrayValue
-                'Add each contact to the response collection
-                egwContacts.CursoryInfo.Add tempValue.StructValue
-            Next tempValue
-            
+                
+            If xmlResponse.Params(1).ValueType = XMLRPC_ARRAY Then
+                For Each tempValue In xmlResponse.Params(1).ArrayValue
+                    'Add each contact to the response collection
+                    egwContacts.CursoryInfo.Add tempValue.StructValue
+                Next tempValue
+            ElseIf xmlResponse.Params(1).ValueType = XMLRPC_STRING And _
+                    xmlResponse.Params(1).StringValue = "" Then
+                MsgBox "No contacts matching your search parameters were found on the server"
+                bContinue = False
+            End If
+    
             'update our place in the remote list of contacts
             INT_START = INT_LIMIT + INT_START
-        Loop While xmlResponse.Params(1).ArrayValue.Count = INT_LIMIT
+            If bContinue Then
+                If xmlResponse.Params(1).ArrayValue.Count <> INT_LIMIT Then
+                    bContinue = False
+                End If
+            End If
+        Loop While bContinue
         'load them into the listbox
         egwContacts.List FrmMain.listRemote
         Debug.Print "Got all contacts from the server."
@@ -252,7 +272,7 @@ Public Function SimpleExec(methodName As String, _
                 If Master.eGW.Response.Status = 4 Then
                     Debug.Print "XML Parse Error: " & Master.eGW.Response.XMLParseError
                     'This line will show the full response string from the server in all its glory
-                    Debug.Print Master.eGW.Response.xmlResponse
+                    'Debug.Print Master.eGW.Response.xmlResponse
                 End If
             ElseIf Master.eGW.Response.Params.Count <> 1 Then
                 Debug.Print "Unexpected response from XML-RPC request " & Master.eGW.Response.Params.Count & " return parameters, expecting 1"

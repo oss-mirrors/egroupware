@@ -13,6 +13,10 @@ C:\Documents and Settings\Ian Smith-Heisters\My Documents\Projects\merce\egwosyn
 [Install License]
 C:\Documents and Settings\Ian Smith-Heisters\My Documents\Projects\merce\egwosync\Installer\gpl.txt
 
+[UninstallAction]
+C:\Program Files\eGWOSync\eGWOSync_rem.reg
+regedit.exe /s <Destination>\eGWOSync_rem.reg
+
 [CopyFile]
 ToSet
 C:\Program Files\eGWOSync\eGWOSync.dll
@@ -28,6 +32,10 @@ C:\WINDOWS\system32\vbXMLRPC.dll
 [CopyFile]
 ToSet
 C:\WINDOWS\system32\vbXML.dll
+
+[CopyFile]
+ToSet
+C:\Program Files\eGWOSync\eGWOSync_rem.reg
 
 [Registry]
 HKCU

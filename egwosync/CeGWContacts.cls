@@ -30,13 +30,13 @@ End Sub
 '***********************************************************************************************
 ' Returns a collection of all the XMLRPCStructs that match the query
 '***********************************************************************************************
-Public Function filter(colContacts As Collection, field As String, query As String) As Collection
+Public Function Filter(colContacts As Collection, field As String, query As String) As Collection
     Dim xvalTemp As XMLRPCStruct
-    Set filter = New Collection
+    Set Filter = New Collection
     
     For Each xvalTemp In colContacts
         If query = xvalTemp.GetValueByName(field).StringValue Then
-            filter.Add xvalTemp
+            Filter.Add xvalTemp
         End If
     Next xvalTemp
 End Function
@@ -63,7 +63,7 @@ Public Function Create(ByVal ciContact As ContactItem) As XMLRPCResponse
     
     'Look for the local contact in the downloaded list of remote contacts
     If CursoryInfo.Count > 0 Then
-        Set colTemp = filter(CursoryInfo, "fn", ciContact.FullName)
+        Set colTemp = Filter(CursoryInfo, "fn", ciContact.FullName)
         For Each valTemp In colTemp
             'record the contact's id number
             dblDuplicateID = Val(valTemp.GetValueByName("id").StringValue)
@@ -132,19 +132,19 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
     Debug.Print "Getting full information on " & strSelectedName & " from the server"
     Dim xmlParms    As New XMLRPCStruct
     Dim varTemp     As XMLRPCStruct
-    'Now we need to go back and get the full information on the selected contacts.
-    '   arrResponses holds the id of each contact which we can use in a
-    '   boaddressbook.read call, we just need to get the id out of arrResponses.
-    '   I can't think of any other way to do this than to do a loop search. It
-    '   seems inefficient though.
+    '[ Now we need to go back and get the full information on the selected contacts.
+    '[ arrResponses holds the id of each contact which we can use in a
+    '[ boaddressbook.read call, we just need to get the id out of arrResponses.
+    '[ I can't think of any other way to do this than to do a loop search. It
+    '[ seems inefficient though.
     For Each varTemp In CursoryInfo
     
-        'For every selected item from the listbox, cycle through the responses from the
-        '   server. If a fullname property is the same as the selected item...
+        '[ For every selected item from the listbox, cycle through the responses from the
+        '[ server. If a fullname property is the same as the selected item...
         If (strSelectedName = varTemp.GetValueByName("fn").StringValue) Then
 
-            'Get the full information on this contact from the server. The ID needs to be
-            '   converted to an Integer.
+            '[ Get the full information on this contact from the server. The ID needs to be
+            '[ converted to an Integer.
             xmlParms.AddInteger "id", Val(varTemp.GetValueByName("id").StringValue)
             Set GetFullInfoFromServer = BasUtilities.SimpleExec("addressbook.boaddressbook.read", xmlParms)
             'Break out of the loop since we've found our man.
@@ -155,30 +155,9 @@ Public Function GetFullInfoFromServer(strSelectedName As String) As XMLRPCRespon
 End Function
 
 Public Function List(putItHere As MSForms.ListBox)
-'    Dim colFiltered As Collection
-'    Dim colFields   As Collection
-'    Dim colQueries  As Collection
-'    Dim i           As Integer
     Dim Contact     As XMLRPCStruct
     
-'    Set colFields = FrmMain.AdditionalFields
-'    Set colQueries = FrmMain.FieldQueries
-'
-'    If colFields.Count > 0 And colQueries.Count = colFields.Count Then
-'        For i = 1 To colFields.Count
-'            Set colFiltered = filter(CursoryInfo, colFields(i), colQueries(i))
-'        Next i
-'    ElseIf colQueries.Count <> colFields.Count Then
-'        MsgBox "You must specify a query for each field to be filtered"
-'    End If
-'
-'    If colFiltered Is Nothing Then
-        For Each Contact In CursoryInfo
-            putItHere.AddItem Contact.GetValueByName("fn").StringValue
-        Next Contact
-'    Else
-'        For Each Contact In colFiltered
-'            putItHere.AddItem Contact.GetValueByName("fn").StringValue
-'        Next Contact
-'    End If
+    For Each Contact In CursoryInfo
+        putItHere.AddItem Contact.GetValueByName("fn").StringValue
+    Next Contact
 End Function

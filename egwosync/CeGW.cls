@@ -165,7 +165,13 @@ Public Function Exec(szMethod As String, Optional xmlParams) As Boolean
     linsRequest.methodName = szMethod
     
     If Not IsMissing(xmlParams) Then
-        linsRequest.Params.AddStruct xmlParams
+        If TypeOf xmlParams Is XMLRPCStruct Then
+            linsRequest.Params.AddStruct xmlParams
+        ElseIf TypeOf xmlParams Is XMLRPCArray Then
+            linsRequest.Params.AddArray xmlParams
+        Else
+            linsRequest.Params.AddBoolean xmlParams
+        End If
     End If
     
     Set linsResponse = linsRequest.Submit
