@@ -337,6 +337,36 @@ function mlist_error_log($error, $msg_data, $level='WARNING')
 		exit("Forum is currently disabled.\n");
 	}
 
+	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'fudforum';
+
+	$egw_dir = realpath($GLOBALS['WWW_ROOT_DISK'] . "../../");
+	require_once($egw_dir. '/header.inc.php');
+
+	if (!empty($GLOBALS['phpgw_info']['server']['use_adodb'])) {
+		// open your own connection, as ADOdb does not export the use Link_ID
+	        switch ($GLOBALS['phpgw_info']['server']['db_type']) {
+	        	case 'mysql':
+	                	$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'mysql_pconnect' : 'mysql_connect';
+				define('fud_sql_lnk',$func($GLOBALS['phpgw']->db->Host,
+				$GLOBALS['phpgw']->db->User, $GLOBALS['phpgw']->db->Password));
+	                	mysql_select_db($GLOBALS['phpgw']->db->Database,fud_sql_lnk);
+	                        break;
+
+			case 'pgsql':
+				$func = $GLOBALS['phpgw_info']['server']['db_persistent'] ? 'pg_pconnect' : 'pg_connect';
+				define('fud_sql_lnk',$func('dbname='.$GLOBALS['phpgw']->db->Database.
+						' host='.$GLOBALS['phpgw']->db->Host.
+						' user='.$GLOBALS['phpgw']->db->User.
+						' password='.$GLOBALS['phpgw']->db->Password));
+				break;
+	                                                                                                                                                                                                                                                                                                                                                                                                        
+			default:
+				die('FUDforum only supports mysql or pgsql !!!');
+		}
+	} else {
+		define('fud_sql_lnk', $GLOBALS['phpgw']->db->Link_ID);
+	}
+
 	fud_use('err.inc');
 	fud_use('db.inc');
 	fud_use('imsg.inc');
