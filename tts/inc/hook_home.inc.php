@@ -39,8 +39,8 @@
 		$p = CreateObject('phpgwapi.Template',$tmp_app_tpl);
 		// echo PHPGW_APP_TPL;
 		$p->set_file(array(
-			'index'   => 'hook_home.tpl',
-	    	));
+			'index'   => 'hook_home.tpl'
+	   	));
 
 		$p->set_unknowns('remove');
 	    
