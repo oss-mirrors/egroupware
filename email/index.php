@@ -43,7 +43,7 @@ function do_action(act)
       document.delmov.what.value = act;
       document.delmov.submit();
    } else {
-      alert("<?php echo lang_email("Please select a message first")."."; ?>");
+      alert("<?php echo lang("Please select a message first")."."; ?>");
       document.delmov.tofolder.selectedIndex = 0;
    }
 }
@@ -65,9 +65,9 @@ function check_all()
 <?php
   if ($td) {
      if ($td == 1) {
-        echo "<p><center>" . lang_email("1 message has been deleted",$td) . "</center>";
+        echo "<p><center>" . lang("1 message has been deleted",$td) . "</center>";
      } else {
-        echo "<p><center>" . lang_email("x messages have been deleted",$td) . "</center>";
+        echo "<p><center>" . lang("x messages have been deleted",$td) . "</center>";
      }
   }
 ?>
@@ -78,7 +78,7 @@ function check_all()
   <tr bgcolor="<?php echo $phpgw_info["theme"]["bg_color"]; ?>" align="center">
     <td>&nbsp;</td>
 <?php
-#     $out = $nummsg == 1 ? " ".lang_email("message") : " ".lang_email("messages");
+#     $out = $nummsg == 1 ? " ".lang("message") : " ".lang("messages");
 #     echo $out;
 
       $nummsg = $phpgw->msg->num_msg($mailbox);
@@ -157,7 +157,7 @@ function check_all()
            <?php
              if ($phpgw_info["server"]["mail_server_type"] == "imap") {
                 echo '<select name="folder" onChange="document.switchbox.submit()">'
-                   . '<option>' . lang_email("switch current folder to") . ':';
+                   . '<option>' . lang("switch current folder to") . ':';
                 echo list_folders($mailbox);
 	 	echo "</select>";
              }
@@ -167,7 +167,7 @@ function check_all()
            &nbsp;&nbsp;
            <?php
              if ($phpgw_info["server"]["mail_server_type"] == "imap") {
-		echo '<input type="button" value="' . lang_email("folder") . '" onClick="'
+		echo '<input type="button" value="' . lang("folder") . '" onClick="'
 		   . 'window.location=\'' . $phpgw->link("folder.php","folder="
 		   . urlencode($folder)) . '\'">';
              }
@@ -206,22 +206,22 @@ function check_all()
 
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="34%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,"index.php",lang_email("subject"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"3",$order,"index.php",lang("subject"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="23%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,"index.php",lang_email("from"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"2",$order,"index.php",lang("from"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="12%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,"index.php",lang_email("date"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"0",$order,"index.php",lang("date"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"] ?>" width="4%">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",lang_email("size"),"&folder=".urlencode($folder)); ?></b>
+   <b><?php echo $phpgw->nextmatchs->show_sort_order($sort,"6",$order,"index.php",lang("size"),"&folder=".urlencode($folder)); ?></b>
   </font>
  </td>
 </tr>
@@ -229,7 +229,7 @@ function check_all()
 <?php
         if ($nummsg == 0) {
            echo "<tr><td bgcolor=\"" . $phpgw_info["theme"]["row_on"] . "\" colspan=\"6\" align=\"center\">"
-              . lang_email("this folder is empty")."</td></tr>";
+              . lang("this folder is empty")."</td></tr>";
         }
 
         if ($nummsg < $phpgw_info["user"]["preferences"]["maxmatchs"]) {
@@ -262,7 +262,7 @@ function check_all()
 
            $msg = $phpgw->msg->header($mailbox, $msg_array[$i]);
 
-           $subject = !$msg->Subject ? "[".lang_email("no subject")."]" : $msg->Subject;
+           $subject = !$msg->Subject ? "[".lang("no subject")."]" : $msg->Subject;
 
            $ksize = round(10*($msg->Size/1024))/10;
            $size = $msg->Size > 1024 ? "$ksize k" : $msg->Size;
@@ -321,14 +321,14 @@ function check_all()
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
          <tr>
           <td>
-            <input type="button" value="<?php echo lang_email("delete"); ?>" onClick="do_action('delall')">
-            <a href="<?php echo $phpgw->link("compose.php","folder=".urlencode($folder)); ?>"><?php echo lang_email("compose"); ?></a>
+            <input type="button" value="<?php echo lang("delete"); ?>" onClick="do_action('delall')">
+            <a href="<?php echo $phpgw->link("compose.php","folder=".urlencode($folder)); ?>"><?php echo lang("compose"); ?></a>
           </td>
           <td align="right">
            <?php
              if ($phpgw_info["server"]["mail_server_type"] == "imap") {
                 echo '<select name="tofolder" onChange="do_action(\'move\')">'
-                   . '<option>' . lang_email("move selected messages into") . ':';
+                   . '<option>' . lang("move selected messages into") . ':';
                 echo list_folders($mailbox);
 		echo "</select>";
             
@@ -346,7 +346,7 @@ function check_all()
 <br> 
 <table border="0" align="center" width="95%">
  <tr>
-  <td align="left"><font color="FF0000">*</font>&nbsp;<?php echo lang_email("New message"); ?></td>
+  <td align="left"><font color="FF0000">*</font>&nbsp;<?php echo lang("New message"); ?></td>
  </tr>
 </table>
 <?php include($phpgw_info["server"]["api_dir"]."/footer.inc.php"); ?>
