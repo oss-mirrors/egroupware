@@ -2,7 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects/projectbilling                                   *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -12,34 +12,28 @@
   \**************************************************************************/
 /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "projects", 
+    $phpgw_info["flags"] = array("currentapp" => "projects", 
                                "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+    include("../header.inc.php");
 
-  $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "projects_list_t" => "bill_list.tpl"));
-  $t->set_block("projects_list_t", "projects_list", "list");
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array( "projects_list_t" => "bill_list.tpl"));
+    $t->set_block("projects_list_t", "projects_list", "list");
 
-  $common_hidden_vars =
-   "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
- . "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
- . "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
- . "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
- . "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
+    $common_hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
+			. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
+			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
+			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
+			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-  $t->set_var(lang_action,lang("Project billing"));
-  $t->set_var(common_hidden_vars,$common_hidden_vars);   
+    $t->set_var(lang_action,lang("Project billing"));
+    $t->set_var(common_hidden_vars,$common_hidden_vars);   
 
-  if (! $start)
-     $start = 0;
-  if ($order)
-     $ordermethod = "order by $order $sort";
-  else
-     $ordermethod = "order by date asc";
+    if (! $start) { $start = 0; }
+    if ($order) { $ordermethod = "order by $order $sort"; }
+    else { $ordermethod = "order by date asc"; }
 
-  if (! $filter) {
-     $filter = "none";
-  }
+    if (! $filter) { $filter = "none"; }
 
   if ($filter != "private") {
      if ($filter != "none") {

@@ -11,8 +11,8 @@
 
       <center>
        <form method="POST" name="projects_form" action="{actionurl}">
-        {common_hidden_vars}
-        {error}
+        {hidden_vars}
+        {error}{message}
         <table width="85%" border="0" cellspacing="1" cellpadding="3">
           <tr>                                                                                                                                                               
           <td>{lang_choose}</td>                                                                                                                                            
@@ -40,14 +40,6 @@
 	 <td><select name="coordinator">{coordinator_list}</select></td>
 	 </tr>
 	 <tr>
-	 <td>{lang_access_type}:</td>
-	 <td><select name="access">{access_list}</select></td>
-	 </tr>
-	 <tr>
-	 <td>{lang_which_groups}:</td>
-	 <td><select name="n_groups[]" multiple>{group_list}</select></td>
-	 </tr>
-	 <tr>
           <td>{lang_status}:</td>
           <td><select name="status">{status_list}</select></td>
          </tr>
@@ -56,12 +48,12 @@
           <td><input type="text" name="budget" value="{budget}"></td>
          </tr>
          <tr>
-          <td>{lang_date}:</td>
-          <td>{date_formatorder}</td>
+          <td>{lang_start_date}:</td>
+          <td>{start_date_select}</td>
          </tr>
          <tr>
           <td>{lang_end_date}:</td>
-          <td>{end_date_formatorder}</td>
+          <td>{end_date_select}</td>
          </tr>
          <tr>
           <td>{lang_bookable_activities}:</td>
@@ -77,8 +69,8 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_addsubmitb}"></td>
-          <td height="62"><input type="reset" name="reset" value="{lang_addresetb}"></td>
+          <td height="62"><input type="submit" name="submit" value="{lang_add}"></td>
+          <td height="62"><input type="reset" name="reset" value="{lang_reset}"></td>
          </tr>
          </table>
          </form>
@@ -90,12 +82,12 @@
          
          <table width="75%" border="0" cellspacing="1" cellpadding="3">
          <tr valign="bottom">
-          <td height="62"><input type="submit" name="submit" value="{lang_editsubmitb}">
+          <td height="62"><input type="submit" name="submit" value="{lang_edit}">
                 </form></td>
           <td height="62">
            	<form method="POST" action="{deleteurl}">
-                {common_hidden_vars}
-                <input type="submit" name="delete" value="{lang_editdeleteb}">
+                {hidden_vars}
+                <input type="submit" name="delete" value="{lang_delete}">
             </form></td>
           </tr>
          </table>

@@ -12,90 +12,129 @@
   \**************************************************************************/
 /* $Id$ */
 
-// returns wether the current acount is in group projectAdmin or not.
+    function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '') {
 
-  function isprojectadmin() {
-  global $phpgw;
-  global $phpgw_info;
-       if (!$account_id)                                                                                                                                 
-       $account_id = $phpgw_info["user"]["account_id"];       
-       $phpgw->db->query("select acl_account,acl_account_type from phpgw_acl where acl_appname='projects' and acl_location ='admin' and acl_rights=15");                                            
-       $admin = Array();                                                                                                                                 
-       $i = -1;                                                                                                                                          
-       while ($phpgw->db->next_record()) {                                                                                                               
-       $i++;                                                                                                                                             
-       $admin[$i] = $phpgw->db->f("acl_account");                                                                                                        
-       if($admin[$i] == $account_id) {
-       return 1;
-      }
-    return 0;
+    global $phpgw, $phpgw_info, $total_records;
+
+    if (!$account_id) { $account_id = $phpgw_info['user']['account_id']; }
+
+    if (!$sort) { $sort = "ASC";  }
+
+    if ($order)	{ $ordermethod = "order by $order $sort"; }
+    else { $ordermethod = "order by start_date asc"; }
+
+    if ($filter) {
+    $filtermethod = " AND (coordinator='" . $account_id . "' OR owner='" . $account_id . "')";
     }
-   }
 
-  $id_type = "hex";
+    if ($query) {
+		$phpgw->db->query("SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
+				. "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
+				. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $filtermethod AND "
+				. "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
+		}
+    else {
+	    $phpgw->db->query("SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
+			    . "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
+			    . "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $filtermethod "
+			    . "$ordermethod limit $limit");
+	}
 
-  function add_leading_zero($num)  {                                                                      
-     global $id_type;                                             
+    $i = 0;
+    while ($phpgw->db->next_record()) {	
+	    $projects[$i]['id'] 	 = $phpgw->db->f('id');
+	    $projects[$i]['owner'] 	 = $phpgw->db->f('owner');
+	    $projects[$i]['number'] 	 = $phpgw->db->f('num');
+	    $projects[$i]['entry_date']  = $phpgw->db->f('entry_date');
+	    $projects[$i]['start_date']  = $phpgw->db->f('start_date');
+	    $projects[$i]['end_date'] 	 = $phpgw->db->f('end_date');
+	    $projects[$i]['coordinator'] = $phpgw->db->f('coordinator');
+	    $projects[$i]['customer']	 = $phpgw->db->f('customer');
+	    $projects[$i]['status'] 	 = $phpgw->db->f('status');
+	    $projects[$i]['description'] = $phpgw->db->f('descr');
+	    $projects[$i]['title'] 	 = $phpgw->db->f('title');
+	    $projects[$i]['budget'] 	 = $phpgw->db->f('budget');
+	    $projects[$i]['lid'] 	 = $phpgw->db->f('account_lid');
+	    $projects[$i]['firstname'] 	 = $phpgw->db->f('account_firstname');
+	    $projects[$i]['lastname'] 	 = $phpgw->db->f('account_lastname');
+	    $i++;
+	}
+    return $projects;
+    }
+
+
+// returns project-,invoice- and delivery-ID
+
+    $id_type = "hex";
+    
+    function add_leading_zero($num)  {                                                                      
+    global $id_type;                                             
                                                                          
-     if ($id_type == "hex") {                                     
+    if ($id_type == "hex") {                                     
         $num = hexdec($num);                                             
         $num++;                                                          
         $num = dechex($num);                                             
-     } else {                                                             
+    } else {                                                             
         $num++;                                                          
-     }                                                                   
+    }                                                                   
                                                                          
-     if (strlen($num) == 4)                                              
+    if (strlen($num) == 4)                                              
         $return = $num;                                                  
-     if (strlen($num) == 3)                                              
+    if (strlen($num) == 3)                                              
         $return = "0$num";                                               
-     if (strlen($num) == 2)                                              
+    if (strlen($num) == 2)                                              
         $return = "00$num";                                              
-     if (strlen($num) == 1)                                              
+    if (strlen($num) == 1)                                              
         $return = "000$num";                                             
-     if (strlen($num) == 0)                                              
-        $return = "0001";                                                
-                                                                         
-     return strtoupper($return);                                         
-  }
+    if (strlen($num) == 0)                                              
+        $return = "0001";
 
-  $year = $phpgw->common->show_date(time(),"Y"); 
-
-  function create_projectid($year) {                                                                                                   
-     global $phpgw;                                                                                    
-     global $year;
-
-     $prefix = "P-$year-";
-     $phpgw->db->query("select max(num) from p_projects where num like ('$prefix%')");         
-     $phpgw->db->next_record();                                                                       
-     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
-                                                                                                      
-     return $prefix.$max;
-     }
-
-  function create_invoiceid($year)  {                                                                                                   
-     global $phpgw;                                                                                    
-     global $year;
-
-     $prefix = "I-$year-";
-     $phpgw->db->query("select max(num) from p_invoice where num like ('$prefix%')");         
-     $phpgw->db->next_record();                                                                       
-     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
-                                                                                                      
-     return $prefix.$max; 
-      
+    return strtoupper($return);
     }
 
-  function create_deliveryid($year)  {                                                                                                   
-     global $phpgw;                                                                                    
-     global $year;
+    $year = $phpgw->common->show_date(time(),"Y");
 
-     $prefix = "D-$year-";
-     $phpgw->db->query("select max(num) from p_delivery where num like ('$prefix%')");         
-     $phpgw->db->next_record();                                                                       
-     $max = add_leading_zero(substr($phpgw->db->f(0),7));                                             
-                                                                                                      
-     return $prefix.$max; 
-      
+    function create_projectid($year) {
+    global $phpgw, $year;
+
+    $prefix = "P-$year-";
+    $phpgw->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
+    $phpgw->db->next_record();
+    $max = add_leading_zero(substr($phpgw->db->f(0),7));
+
+    return $prefix.$max;
+    }
+
+    function create_activityid($year) {
+    global $phpgw, $year;
+
+    $prefix = "A-$year-";
+    $phpgw->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
+    $phpgw->db->next_record();
+    $max = add_leading_zero(substr($phpgw->db->f(0),7));
+
+    return $prefix.$max;
+    }
+
+    function create_invoiceid($year)  {
+    global $phpgw, $year;
+
+    $prefix = "I-$year-";
+    $phpgw->db->query("select max(num) from phpgw_p_invoice where num like ('$prefix%')");
+    $phpgw->db->next_record();
+    $max = add_leading_zero(substr($phpgw->db->f(0),7));
+
+    return $prefix.$max;
+    }
+
+    function create_deliveryid($year)  {
+    global $phpgw, $year;
+
+    $prefix = "D-$year-";
+    $phpgw->db->query("select max(num) from phpgw_p_delivery where num like ('$prefix%')");
+    $phpgw->db->next_record();
+    $max = add_leading_zero(substr($phpgw->db->f(0),7));
+
+    return $prefix.$max;
     }
 ?>
