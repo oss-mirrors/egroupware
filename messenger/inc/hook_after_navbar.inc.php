@@ -14,14 +14,14 @@
 
 	/* $Id$ */
 
-	if ($GLOBALS['phpgw_info']['flags']['currentapp'] != 'messenger' &&
+	if($GLOBALS['phpgw_info']['flags']['currentapp'] != 'messenger' &&
 		$GLOBALS['phpgw_info']['flags']['currentapp'] != 'welcome')
 	{
 		$GLOBALS['phpgw']->db->query("select count(*) from phpgw_messenger_messages where message_owner='"
-				. $GLOBALS['phpgw_info']['user']['account_id'] . "' and message_status='N'",__LINE__,__FILE__);
+			. $GLOBALS['phpgw_info']['user']['account_id'] . "' and message_status='N'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
-	
-		if ($GLOBALS['phpgw']->db->f(0))
+
+		if($GLOBALS['phpgw']->db->f(0))
 		{
 			echo '<center><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=messenger.uimessenger.inbox')
 				. '">' . lang('You have %1 new message' . ($GLOBALS['phpgw']->db->f(0)>1?'s':''),$GLOBALS['phpgw']->db->f(0)) . '</a>'

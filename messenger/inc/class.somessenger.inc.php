@@ -17,24 +17,19 @@
 	class somessenger
 	{
 		var $db;
+		var $table = 'phpgw_messenger_messages';
 		var $owner;
-		var $xmlrpc_methods = array();
 
 		function somessenger()
 		{
-			$this->db    = $GLOBALS['phpgw']->db;
+			$this->db    = &$GLOBALS['phpgw']->db;
 			$this->owner = $GLOBALS['phpgw_info']['user']['account_id'];
-
-			$this->xmlrpc_methods[] = array(
-				'name'        => 'read_inbox',
-				'description' => 'Read the inbox and return raw values'
-			);
 		}
 
 		function update_message_status($status, $message_id)
 		{
-			$this->db->query("update phpgw_messenger_messages set message_status='$status' where message_id='"
-				. $message_id . "' and message_owner='" . $this->owner ."'",__LINE__,__FILE__);
+			$this->db->query('UPDATE ' . $this->table . " SET message_status='$status' WHERE message_id='"
+				. $message_id . "' AND message_owner='" . $this->owner ."'",__LINE__,__FILE__);
 
 			return ($this->db->affected_rows() ? True : False);
 		}
@@ -43,18 +38,18 @@
 		{
 			$messages = array();
 
-			if ($sort && $order)
+			if($sort && $order)
 			{
-				$sortmethod = " order by $order $sort";
+				$sortmethod = " ORDER BY $order $sort";
 			}
 			else
 			{
-				$sortmethod = ' order by message_date asc';
+				$sortmethod = ' ORDER BY message_date ASC';
 			}
 
-			$this->db->limit_query("select * from phpgw_messenger_messages where message_owner='" . $this->owner
+			$this->db->limit_query('SELECT * FROM ' . $this->table . " WHERE message_owner='" . $this->owner
 				. "' $sortmethod",$start,__LINE__,__FILE__);
-			while ($this->db->next_record())
+			while($this->db->next_record())
 			{
 				$messages[] = array(
 					'id'      => $this->db->f('message_id'),
@@ -70,8 +65,8 @@
 
 		function read_message($message_id)
 		{
-			$this->db->query("select * from phpgw_messenger_messages where message_id='"
-				. $message_id . "' and message_owner='" . $this->owner ."'",__LINE__,__FILE__);
+			$this->db->query('SELECT * FROM ' . $this->table . " WHERE message_id='"
+				. $message_id . "' AND message_owner='" . $this->owner ."'",__LINE__,__FILE__);
 			$this->db->next_record();
 			$message = array(
 				'id'      => $this->db->f('message_id'),
@@ -90,26 +85,26 @@
 
 		function send_message($message, $global_message = False)
 		{
-			if ($global_message)
+			if($global_message)
 			{
 				$this->owner = -1;
 			}
 
-			if (! ereg('^[0-9]+$',$message['to']))
+			if(!ereg('^[0-9]+$',$message['to']))
 			{
-				$message['to'] = $GLOBALS['phpgw']->accounts->name2id($message['to']);
+				$message['to'] = $GLOBALS['phpgw']->accounts->name2id($message['to'],'u');
 			}
 
-			$this->db->query("insert into phpgw_messenger_messages (message_owner, message_from, message_status, "
-				. "message_date, message_subject, message_content) values ('"
+			$this->db->query('INSERT INTO ' . $this->table . ' (message_owner, message_from, message_status, '
+				. "message_date, message_subject, message_content) VALUES ('"
 				. $message['to'] . "','" . $this->owner . "','N','" . time() . "','"
-				. addslashes($message['subject']) . "','"	. addslashes($message['content'])
+				. addslashes($message['subject']) . "','" . $this->db->db_addslashes($message['content'])
 				. "')",__LINE__,__FILE__);
 		}
 
 		function total_messages($extra_where_clause = '')
 		{
-			$this->db->query("select count(*) from phpgw_messenger_messages where message_owner='"
+			$this->db->query('SELECT COUNT(message_owner) FROM ' . $this->table . " WHERE message_owner='"
 				. $this->owner . "' " . $extra_where_clause,__LINE__,__FILE__);
 			$this->db->next_record();
 			return $this->db->f(0);
@@ -117,7 +112,7 @@
 
 		function delete_message($message_id)
 		{
-			$this->db->query("delete from phpgw_messenger_messages where message_id='$message_id' and "
+			$this->db->query('DELETE FROM ' . $this->table . " WHERE message_id='$message_id' AND "
 				. "message_owner='" . $this->owner . "'",__LINE__,__FILE__);
 		}
 	}
