@@ -38,7 +38,7 @@ CREATE TABLE f_threads (
   n_replies int DEFAULT '0' NOT NULL
 );
 
-INSERT INTO applications VALUES ('forum','Forum',1);
+INSERT INTO phpgw_applications VALUES ('forum','Forum',1);
 
 
 INSERT INTO f_body (cat_id, for_id, message) VALUES ('1', '1','Here is an example message.');
