@@ -13,15 +13,16 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'bookmarks',
 		'noheader'   => True,
 		'nofooter'   => True,
 		'nonavbar'   => True
 	);
 	include('../header.inc.php');
-	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
-	$location_info = $phpgw->bookmarks->read_session_data();
+
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
+	$location_info = $GLOBALS['phpgw']->bookmarks->read_session_data();
 
 	if ($delete_x || $delete_y)
 	{
@@ -29,17 +30,17 @@
 		{
 			while (list(,$id) = each($item_cb))
 			{
-				$phpgw->bookmarks->delete($id);
+				$GLOBALS['phpgw']->bookmarks->delete($id);
 			}
-			$phpgw->session->appsession('message','bookmarks',count($item_cb) . ' bookmarks have been deleted');
+			$GLOBALS['phpgw']->session->appsession('message','bookmarks',count($item_cb) . ' bookmarks have been deleted');
 		}
 	}
 
 	if ($mail_x || $mail_y)
 	{
 		$mass_bm_id = serialize($item_cb);
-		$phpgw->redirect($phpgw->link('/bookmarks/maillink.php','mass_bm_id=' . urlencode($mass_bm_id)));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/maillink.php','mass_bm_id=' . urlencode($mass_bm_id)));
 	}
 
-	$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto']));
+	$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/' . $location_info['returnto']));
 ?>

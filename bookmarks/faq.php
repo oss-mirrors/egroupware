@@ -12,44 +12,48 @@
   \**************************************************************************/
 
   /* $Id$ */
-  $phpgw_info["flags"]["currentapp"] = "bookmarks";
-  include("../header.inc.php");
+
+	$GLOBALS['phpgw_info']['flags']['currentapp'] = 'bookmarks';
+	include('../header.inc.php');
 ?>
-  <center>Not avaiable</center>
+<center>Not avaiable</center>
 <?php
-  $phpgw->common->phpgw_exit();
-  
-  // Not sure if this is gonna be used, but its here for reference
+	$GLOBALS['phpgw']->common->phpgw_exit();
 
-include(dirname(__FILE__)."/lib/bkprepend.inc");
-page_open(array( "sess" => "bk_sess_cache"));
+	// Not sure if this is gonna be used, but its here for reference
 
-$tpl->set_file(array(
-  standard   => "common.standard.tpl",
-  body       => "faq.body.tpl",
-  msie_qm    => "faq.msie.quik-mark.tpl",
-  ns_qm      => "faq.ns.quik-mark.tpl",
-  msie_ml    => "faq.msie.mail-this-link.tpl",
-  ns_ml      => "faq.ns.mail-this-link.tpl"
-));
+	include(dirname(__FILE__) . '/lib/bkprepend.inc');
+	page_open(array( 'sess' => 'bk_sess_cache'));
 
-set_standard("faq", &$tpl);
+	$tpl->set_file(array(
+		'standard' => 'common.standard.tpl',
+		'body'     => 'faq.body.tpl',
+		'msie_qm'  => 'faq.msie.quik-mark.tpl',
+		'ns_qm'    => 'faq.ns.quik-mark.tpl',
+		'msie_ml'  => 'faq.msie.mail-this-link.tpl',
+		'ns_ml'    => 'faq.ns.mail-this-link.tpl'
+	));
 
-$tpl->set_var(array(
-  CREATE_URL         => $bookmarker->create_url,
-  MAIL_THIS_LINK_URL => $bookmarker->maillink_url,
-  IMAGE_URL_PREFIX   => $bookmarker->image_url_prefix,
-  USER_AGENT         => $HTTP_USER_AGENT
-));
+	set_standard("faq", &$tpl);
 
-if (check_browser() == "MSIE") {
-  $tpl->parse(QUIK_MARK_LINK, msie_qm);
-  $tpl->parse(MAIL_THIS_LINK, msie_ml);
-} else {
-  $tpl->parse(QUIK_MARK_LINK, ns_qm);
-  $tpl->parse(MAIL_THIS_LINK, ns_ml);
-}
+	$tpl->set_var(array(
+		'CREATE_URL'         => $bookmarker->create_url,
+		'MAIL_THIS_LINK_URL' => $bookmarker->maillink_url,
+		'IMAGE_URL_PREFIX'   => $bookmarker->image_url_prefix,
+		'USER_AGENT'         => $HTTP_USER_AGENT
+	));
 
-include(LIBDIR . "bkend.inc");
-$phpgw->common->phpgw_footer();
+	if (check_browser() == 'MSIE')
+	{
+		$tpl->parse('QUIK_MARK_LINK', 'msie_qm');
+		$tpl->parse('MAIL_THIS_LINK', 'msie_ml');
+	}
+	else
+	{
+		$tpl->parse('QUIK_MARK_LINK', 'ns_qm');
+		$tpl->parse('MAIL_THIS_LINK', 'ns_ml');
+	}
+
+	include(LIBDIR . 'bkend.inc');
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

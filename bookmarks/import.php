@@ -13,12 +13,12 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'               => 'bookmarks',
 		'enable_categories_class' => True
 	);
 	include('../header.inc.php');
-	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
 
 	// Uncomment the echo line to return debugging info
 	function _debug($s)
@@ -36,9 +36,9 @@
 	// create a new one. return id.
 	function getCategory($name)
 	{
-		global $phpgw, $phpgw_info, $cat_cache, $catNext;
+		global $cat_cache, $catNext;
 
-		$db = $phpgw->db;
+		$db = $GLOBALS['phpgw']->db;
 
 		_debug('<br>Testing for category: ' . $name);
      
@@ -54,21 +54,21 @@
 		}
 		else
 		{
-			if ($phpgw->categories->exists('mains',$name))
+			if ($GLOBALS['phpgw']->categories->exists('mains',$name))
 			{
-				$cat_cache[$name] = $phpgw->categories->name2id($name);
+				$cat_cache[$name] = $GLOBALS['phpgw']->categories->name2id($name);
 				_debug(' - ' . $name . ' already exists - id: ' . $cat_cache[$name]);
 			}
 			else
 			{
-				$phpgw->categories->add(array(
+				$GLOBALS['phpgw']->categories->add(array(
 					'name'   => $name,
 					'descr'  => '',
 					'parent' => 0,
 					'access' => '',
 					'data'   => ''
 				));
-				$cat_cache[$name] = $phpgw->categories->name2id($name);
+				$cat_cache[$name] = $GLOBALS['phpgw']->categories->name2id($name);
 				_debug(' - ' . $name . ' does not exist - new id: ' . $cat_cache[$name]);
 			}
 
@@ -76,48 +76,47 @@
 		}
 	}
 
-  # find existing subcategory matching name, or
-  # create a new one. return id.
-  function getSubCategory ($name)
-  {
-/*     global $phpgw,$phpgw_info,$subcat,$subcatNext,$default_subcategory;
+	# find existing subcategory matching name, or
+	# create a new one. return id.
+	function getSubCategory ($name)
+	{
+		/*     global $subcat,$subcatNext,$default_subcategory;
 
-     $db = $phpgw->db;
-     $upperName = strtoupper($name);
-     
-     if (! $name) {
-        $subcat[$upperName] = $default_subcategory;
-        return $default_subcategory;
-     }
+		$db = $GLOBALS['phpgw']->db;
+		$upperName = strtoupper($name);
 
-     if (isset($subcat[$upperName])) {
-        return $subcat[$upperName];
-     } else {
-        $q  = "INSERT INTO bookmarks_subcategory (name, username) ";
-        $q .= "VALUES ('" . addslashes($name) . "', '" . $phpgw_info["user"]["account_id"] . "') ";
+		if (! $name) {
+			$subcat[$upperName] = $default_subcategory;
+			return $default_subcategory;
+		}
 
-        $db->query($q,__LINE__,__FILE__);
-        if ($db->Errno != 0) {
-           $error_msg .= "<br>Error adding subcategory ".$name." - ".$subcatNext;
-           return -1;
-        }
-        
-        $db->query("select id from bookmarks_subcategory where name='" . addslashes($name) . "' and username='"
-                 . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
-        $db->next_record();
-        
-        $subcat[$upperName] = $db->f("id");
-        $subcatNext++;
-        return $db->f("id");
-     } */
-  }
+		if (isset($subcat[$upperName])) {
+			return $subcat[$upperName];
+		} else {
+			$q  = "INSERT INTO bookmarks_subcategory (name, username) ";
+			$q .= "VALUES ('" . addslashes($name) . "', '" . $GLOBALS['phpgw_info']["user"]["account_id"] . "') ";
 
+			$db->query($q,__LINE__,__FILE__);
+			if ($db->Errno != 0) {
+				$error_msg .= "<br>Error adding subcategory ".$name." - ".$subcatNext;
+				return -1;
+			}
 
-	$phpgw->template->set_file(array(
+			$db->query("select id from bookmarks_subcategory where name='" . addslashes($name) . "' and username='"
+			. $GLOBALS['phpgw_info']["user"]["account_id"] . "'",__LINE__,__FILE__);
+			$db->next_record();
+
+			$subcat[$upperName] = $db->f("id");
+			$subcatNext++;
+			return $db->f("id");
+		} */
+	}
+
+	$GLOBALS['phpgw']->template->set_file(array(
 		'common'   => 'common.tpl',
 		'body'     => 'import.body.tpl'
 	));
-	set_standard("import", &$phpgw->template);
+	set_standard("import", &$GLOBALS['phpgw']->template);
 
 	if ($import)
 	{
@@ -154,15 +153,14 @@
 					$url_parts = @parse_url($match[1]);
 					if ($url_parts[scheme] == 'http' || $url_parts[scheme] == 'https' || $url_parts[scheme] == 'ftp' || $url_parts[scheme] == 'news')
 					{
-   
 						reset($folder_stack);
 						unset($error_msg);
-						$cid  = $phpgw->categories->name2id('No category');
+						$cid  = $GLOBALS['phpgw']->categories->name2id('No category');
 						$scid = 0;
 						$i    = 0;
 						$keyw = '';
 
-//						echo '<br>test: ' . $folder_index;				
+//						echo '<br>test: ' . $folder_index;
 
 						while ($i <= $folder_index)
 						{
@@ -181,7 +179,7 @@
 							$i++;
 						}
 						$values['category'] = sprintf('%s|%s',$cid,$scid);
-   					$values['url']      = $match[1];
+						$values['url']      = $match[1];
 						$values['name']     = $match[2];
 						$values['rating']   = 0;
 
@@ -192,14 +190,14 @@
 						$values['timestamps'] = sprintf('%s,%s,%s',$add_info[1],$vist_info[1],$change_info[1]);
 
 						$bid = -1;
-						if (! $phpgw->bookmarks->add(&$bid, $values, True))
+						if (! $GLOBALS['phpgw']->bookmarks->add(&$bid, $values, True))
 						{
 							print("<br>" . $error_msg . "\n");
 							$all_errors .= $error_msg;
 						}
 						else
 						{
-							$inserts++;						
+							$inserts++;
 						}
 
 						_debug(sprintf("<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td> </tr>",$cid,$scid,$match[2],$match[1],$add_info[1],$change_info[1],$vist_info[1]));
@@ -210,7 +208,7 @@
 				// and end with the close </DL> tag.
 				// we use a stack to keep track of where we are in the
 				// folder hierarchy.
-				else if (eregi('<H3[^>]*>(.*)</H3>', $line, $match))
+				elseif (eregi('<H3[^>]*>(.*)</H3>', $line, $match))
 				{
 					$folder_index ++;
 					$id = -1;
@@ -220,7 +218,6 @@
 						$cat_index ++;
 						$cat_array[$cat_index] = $match[1];
 						$id = $cat_index + $cat_start;
-
 					}
 					elseif ($folder_index == 1)
 					{
@@ -230,29 +227,26 @@
 					}
 					$folder_stack[$folder_index] = $id;
 					$folder_name_stack[$folder_index] = $match[1];
-
 				}
-				else if (eregi('</DL>', $line))
+				elseif (eregi('</DL>', $line))
 				{
 					$folder_index-- ;
 				}
+			}
+			@fclose($fd);
+			_debug('</table>');
 		}
-		@fclose($fd);
-		_debug('</table>');
+		else
+		{
+			$error_msg .= "<br>Unable to open temp file " . $bkfile . " for import.";
+		}
+
+		unset($msg);
+		$msg .= sprintf("<br>%s bookmarks imported from %s successfully.", $inserts, $bkfile_name);
+		$error_msg = $all_errors;
+//		break;
 	}
-	else
-	{
-		$error_msg .= "<br>Unable to open temp file " . $bkfile . " for import.";
-	}
 
-	unset($msg);
-	$msg .= sprintf("<br>%s bookmarks imported from %s successfully.", $inserts, $bkfile_name);
-	$error_msg = $all_errors;
-//	break;
-
- }
-
-
-  $phpgw->template->set_var('FORM_ACTION',$phpgw->link('/bookmarks/import.php'));
-  $phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->template->set_var('FORM_ACTION',$GLOBALS['phpgw']->link('/bookmarks/import.php'));
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

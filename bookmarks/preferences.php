@@ -13,19 +13,19 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'               => 'bookmarks',
 		'enabled_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
-	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
 
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'common'     => 'common.tpl',
 		'body'       => 'useropt.body.tpl'
 	));
-	app_header(&$phpgw->template);
-//  set_standard("user preferences",&$phpgw->template);
+	app_header(&$GLOBALS['phpgw']->template);
+//  set_standard("user preferences",&$GLOBALS['phpgw']->template);
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,7 +11,7 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'bookmarks',
 		'nonavbar'   => True,
 		'noheader'   => True,
@@ -19,33 +19,33 @@
 	);
 	include('../header.inc.php');
 
-	$phpgw->db->query("select bm_info, bm_url from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
-	$phpgw->db->next_record();
-	$url = $phpgw->db->f('bm_url');
+	$GLOBALS['phpgw']->db->query("select bm_info, bm_url from phpgw_bookmarks where bm_id='$bm_id'",__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->next_record();
+	$url = $GLOBALS['phpgw']->db->f('bm_url');
 
-	$ts = explode(",",$phpgw->db->f("bm_info"));
+	$ts = explode(",",$GLOBALS['phpgw']->db->f("bm_info"));
 	$newtimestamp = sprintf("%s,%s,%s",$ts[0],time(),$ts[2]);
 
-	$phpgw->db->query("update phpgw_bookmarks set bm_info='$newtimestamp', bm_visits=bm_visits+1 "
+	$GLOBALS['phpgw']->db->query("update phpgw_bookmarks set bm_info='$newtimestamp', bm_visits=bm_visits+1 "
 		. "where bm_id='$bm_id'");
 
 	if (isset($showheader))
 	{
-		$phpgw->template->set_file(array(
+		$GLOBALS['phpgw']->template->set_file(array(
 			'header' => 'redirect_frames_header.tpl'
 		));
-		$phpgw->template->set_var('img_root',$phpgw->common->get_image_path('phpgwapi'));
-		$phpgw->template->set_var('message',lang('You are viewing this site outside of phpGroupWare') . '<br>'
+		$GLOBALS['phpgw']->template->set_var('img_root',$GLOBALS['phpgw']->common->get_image_path('phpgwapi'));
+		$GLOBALS['phpgw']->template->set_var('message',lang('You are viewing this site outside of phpGroupWare') . '<br>'
 			. lang('close this window to return'));
-		$phpgw->template->pfp('out','header');
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->template->pfp('out','header');
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'redirect' => 'redirect_frames.tpl'
 	));
-	$phpgw->template->set_var('redirect_url',$phpgw->link('/bookmarks/redirect.php','showheader=True'));
-	$phpgw->template->set_var('bm_site_url',$url);
-	$phpgw->template->pfp('out','redirect');
+	$GLOBALS['phpgw']->template->set_var('redirect_url',$GLOBALS['phpgw']->link('/bookmarks/redirect.php','showheader=True'));
+	$GLOBALS['phpgw']->template->set_var('bm_site_url',$url);
+	$GLOBALS['phpgw']->template->pfp('out','redirect');
 
-	$phpgw->common->phpgw_exit();
+	$GLOBALS['phpgw']->common->phpgw_exit();

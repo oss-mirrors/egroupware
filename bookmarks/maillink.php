@@ -13,28 +13,28 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'bookmarks',
 		'enable_nextmatchs_class' => True,
 		'enable_categories_class' => True
 	);
-
 	include('../header.inc.php');
-	$phpgw->bookmarks  = createobject('bookmarks.bookmarks');
-	$phpgw->send       = createobject('phpgwapi.send');
 
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
+	$GLOBALS['phpgw']->send      = createobject('phpgwapi.send');
+
+	$GLOBALS['phpgw']->template->set_file(array(
 		'common_' => 'common.tpl',
 		'body'    => 'maillink.body.tpl'
 	));
-	app_header(&$phpgw->template);
+	app_header(&$GLOBALS['phpgw']->template);
 
 	// if browser is MSIE, then need to add this bit
 	// of javascript to the page so that MSIE correctly
 	// brings quik-mark and mail-this-link popups to the front.
 	if (check_browser() == 'MSIE')
 	{
-		$phpgw->template->parse(MSIE_JS,'msie_js');
+		$GLOBALS['phpgw']->template->parse(MSIE_JS,'msie_js');
 	}
 
 	// Check if there was a submission
@@ -43,51 +43,49 @@
 		switch ($key)
 		{
 			// Send button clicked
-			case "bk_send":
+			case 'bk_send':
+				// Strip space and tab from anywhere in the To field
+				$to = $validate->strip_space($to);
 
-			// Strip space and tab from anywhere in the To field
-			$to = $validate->strip_space($to);
+				// Trim the subject
+				$subject = trim($subject);
 
-			// Trim the subject
-			$subject = trim($subject);
-
-			// Do we have all necessary data?
-			if (empty($to) || empty($subject) || empty($message))
-			{
-				$error_msg .= "<br>Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!";
-				break;
-			}
-
-			// the To field may contain one or more email addresses
-			// separated by commas. Check each one for proper format.
-			$to_array = explode(",", $to);
-
-			while (list($key, $val) = each($to_array))
-			{
-				// Is email address in the proper format?
-				if (!$validate->is_email($val))
+				// Do we have all necessary data?
+				if (empty($to) || empty($subject) || empty($message))
 				{
-					$error_msg .= "<br>To address $val invalid. Format must be <strong>user@domain</strong> and domain must exist!<br><small> $validate->ERROR </small>";
+					$error_msg .= "<br>Please fill out <B>To E-Mail Address</B>, <B>Subject</B>, and <B>Message</B>!";
 					break;
 				}
-			}
 
-			if (isset ($error_msg))
-			{
+				// the To field may contain one or more email addresses
+				// separated by commas. Check each one for proper format.
+				$to_array = explode(",", $to);
+
+				while (list($key, $val) = each($to_array))
+				{
+					// Is email address in the proper format?
+					if (!$validate->is_email($val))
+					{
+						$error_msg .= "<br>To address $val invalid. Format must be <strong>user@domain</strong> and domain must exist!<br><small> $validate->ERROR </small>";
+						break;
+					}
+				}
+
+				if (isset ($error_msg))
+				{
+					break;
+				}
+
+				// add additional headers to our email
+				$addl_headers = sprintf("From: %s <%s>", stripslashes($from_name), $from);
+	
+				$addl_headers = sprintf('%s\n%s',$addl_headers,$GLOBALS['phpgw']->template->parse('_footer','footer'));
+	
+				// send the message
+				$send->msg('email',$to,$subject,$mail_message . $GLOBALS['phpgw']->bookmarks->config['mail_footer'],'','','','No reply <noreply@' . $SERVER_NAME . '>');
+	
+				$msg .= "<br>mail-this-link message sent to $to.";
 				break;
-			}
-
-			// add additional headers to our email
-			$addl_headers = sprintf("From: %s <%s>", stripslashes($from_name), $from);
-	
-			$addl_headers = sprintf('%s\n%s',$addl_headers,$phpgw->template->parse('_footer','footer'));
-	
-			// send the message
-			$send->msg('email',$to,$subject,$mail_message . $phpgw->bookmarks->config['mail_footer'],'','','','No reply <noreply@' . $SERVER_NAME . '>');
-	
-			$msg .= "<br>mail-this-link message sent to $to.";
-			break;
-
 			default:
 				break;
 		}
@@ -100,10 +98,10 @@
 
 	if (empty($message))
 	{
-		$filtermethod = '( bm_owner=' . $phpgw_info['user']['account_id'];
-		if (is_array($phpgw->bookmarks->grants))
+		$filtermethod = '( bm_owner=' . $GLOBALS['phpgw_info']['user']['account_id'];
+		if (is_array($GLOBALS['phpgw']->bookmarks->grants))
 		{
-			$grants = $phpgw->bookmarks->grants;
+			$grants = $GLOBALS['phpgw']->bookmarks->grants;
 			reset($grants);
 			while (list($user) = each($grants))
 			{
@@ -124,23 +122,23 @@
 	
 			while (list(,$id) = each($bm_id) && is_array($bm_id))
 			{
-				$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$id' and $filtermethod",__LINE__,__FILE__);
-				$phpgw->db->next_record();
+				$GLOBALS['phpgw']->db->query("select * from phpgw_bookmarks where bm_id='$id' and $filtermethod",__LINE__,__FILE__);
+				$GLOBALS['phpgw']->db->next_record();
 	
 				$links[] = array(
-					'name' => $phpgw->db->f('bm_name'),
-					'url'  => $phpgw->db->f('bm_url')
+					'name' => $GLOBALS['phpgw']->db->f('bm_name'),
+					'url'  => $GLOBALS['phpgw']->db->f('bm_url')
 				);		
 			}
 		}
 		else
 		{
-			$phpgw->db->query("select * from phpgw_bookmarks where bm_id='$bm_id' and $filtermethod",__LINE__,__FILE__);
-			$phpgw->db->next_record();
+			$GLOBALS['phpgw']->db->query("select * from phpgw_bookmarks where bm_id='$bm_id' and $filtermethod",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->next_record();
 	
 			$links[] = array(
-				'name' => $phpgw->db->f('bm_name'),
-				'url'  => $phpgw->db->f('bm_url')
+				'name' => $GLOBALS['phpgw']->db->f('bm_name'),
+				'url'  => $GLOBALS['phpgw']->db->f('bm_url')
 			);
 		}
 	
@@ -151,19 +149,19 @@
 		}
 	}
 
-	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$phpgw->template->set_var('header_message',lang('Send bookmark'));
-	$phpgw->template->set_var('lang_from',lang('Message from'));
-	$phpgw->template->set_var('lang_to',lang('To E-Mail Addresses'));
-	$phpgw->template->set_var('lang_subject',lang('Subject'));
-	$phpgw->template->set_var('lang_message',lang('Message'));
-	$phpgw->template->set_var('lang_send',lang('Send'));
-	$phpgw->template->set_var('from_name',$phpgw->common->display_fullname());
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('header_message',lang('Send bookmark'));
+	$GLOBALS['phpgw']->template->set_var('lang_from',lang('Message from'));
+	$GLOBALS['phpgw']->template->set_var('lang_to',lang('To E-Mail Addresses'));
+	$GLOBALS['phpgw']->template->set_var('lang_subject',lang('Subject'));
+	$GLOBALS['phpgw']->template->set_var('lang_message',lang('Message'));
+	$GLOBALS['phpgw']->template->set_var('lang_send',lang('Send'));
+	$GLOBALS['phpgw']->template->set_var('from_name',$GLOBALS['phpgw']->common->display_fullname());
 
-	$phpgw->template->set_var('form_action',$phpgw->link('/bookmarks/maillink.php'));
-	$phpgw->template->set_var('to',$to);
-	$phpgw->template->set_var('subject',$subject);
-	$phpgw->template->set_var('message',$message);
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/bookmarks/maillink.php'));
+	$GLOBALS['phpgw']->template->set_var('to',$to);
+	$GLOBALS['phpgw']->template->set_var('subject',$subject);
+	$GLOBALS['phpgw']->template->set_var('message',$message);
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
