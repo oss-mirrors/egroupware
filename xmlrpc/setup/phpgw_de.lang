@@ -1,23 +1,23 @@
-(optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	en	(optional: set domain for user/client login, benötigt: Sie müssen einen Server Namen angeben für das Server login)
-addressbook test	xmlrpc	en	Adressbuch Test
-app	xmlrpc	en	Applikation
-apps	xmlrpc	en	Applikationen
-assigned kp3	xmlrpc	en	Assigned kp3
-assigned sessionid	xmlrpc	en	Zuegwiesene sessionid
-bogus request	xmlrpc	en
-calendar test	xmlrpc	en	Kalendar Test
+(optional: set domain for user/client login, required: set this servername for server login)	xmlrpc	de	(optional: set domain for user/client login, benötigt: Sie müssen einen Server Namen angeben für das Server login)
+addressbook test	xmlrpc	de	Adressbuch Test
+app	xmlrpc	de	Applikation
+apps	xmlrpc	de	Applikationen
+assigned kp3	xmlrpc	de	Assigned kp3
+assigned sessionid	xmlrpc	de	Zuegwiesene sessionid
+bogus request	xmlrpc	de
+calendar test	xmlrpc	de	Kalendar Test
 client / server test	xmlrpc	en	Client / Server test
-configure using admin - peer servers	xmlrpc	en
-introspection	xmlrpc	en
-meerkat browser	xmlrpc	en	Meerkat Browser
-methods	xmlrpc	en	Methoden
-note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	en
-egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	en	eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)
-select target server	xmlrpc	en	Ziel Server auswählen
-server test	xmlrpc	en	Server Test
-server<->server	xmlrpc	en	Server<->Server
-servername/domain	xmlrpc	en	Servername/Domain
-simple client	xmlrpc	en	Einfacher Client
-system	xmlrpc	en	System
-test suite	xmlrpc	en	Test Suite
-xmlrpc test	common	en	XMLRPC Test
+configure using admin - peer servers	xmlrpc	de
+introspection	xmlrpc	de
+meerkat browser	xmlrpc	de	Meerkat Browser
+methods	xmlrpc	de	Methoden
+note: listapps and listusers are disabled by default in xml_functions.php	xmlrpc	de
+egroupware xml-rpc/soap client<->server and server<->server test (soap pending...)	xmlrpc	de	eGroupWare XML-RPC/SOAP Client<->Server and Server<->Server Test (SOAP pending...)
+select target server	xmlrpc	de	Ziel Server auswählen
+server test	xmlrpc	de	Server Test
+server<->server	xmlrpc	de	Server<->Server
+servername/domain	xmlrpc	de	Servername/Domain
+simple client	xmlrpc	de	Einfacher Client
+system	xmlrpc	de	System
+test suite	xmlrpc	de	Test Suite
+xmlrpc test	common	de	XMLRPC Test
