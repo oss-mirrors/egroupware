@@ -17,12 +17,11 @@
                                   'nonavbar' => True);
     }
 
-    $phpgw_info["flags"]["currentapp"] = "projects";
+    $phpgw_info['flags']['currentapp'] = 'projects';
     include('../header.inc.php');
 
 
-    if (! $id) {
-	Header('Location: ' . $phpgw->link('/projects/hours_index.php',
+    if (! $id) { Header('Location: ' . $phpgw->link('/projects/hours_index.php',
 		    "&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));
     }
 

@@ -156,13 +156,13 @@
     if ($status != "billed") {
 	if ($projects->check_perms($grants[$hours[$i]['employee']],PHPGW_ACL_EDIT) || $hours[$i]['employee'] == $phpgw_info['user']['account_id']) {
 
-	$t->set_var('edit',$phpgw->link('/projects/hours_edithour.php',"id=$id&filter=$filter&order=$order&query=$query&start=$start&sort=$sort"));
-	$t->set_var('lang_edit',lang('Edit'));
+	    $t->set_var('edit',$phpgw->link('/projects/hours_edithour.php',"id=$id&filter=$filter&order=$order&query=$query&start=$start&sort=$sort"));
+	    $t->set_var('lang_edit',lang('Edit'));
 	}
     }
     else {
-    $t->set_var('edit','');
-    $t->set_var('lang_edit','&nbsp;');
+	$t->set_var('edit','');
+	$t->set_var('lang_edit','&nbsp;');
     }
 
     $t->set_var('view',$phpgw->link('/projects/viewhours.php',"id=$id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter"));

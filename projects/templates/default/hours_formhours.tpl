@@ -103,10 +103,7 @@
 	    {hidden_vars}
           <td height="62"><input type="submit" name="submit" value="{lang_edit}">
            </form></td>
-	<td height="62">
-	    <form method="POST" action="{deleteurl}">
-	    {hidden_vars}
-	    <input type="submit" name="delete" value="{lang_delete}"></form></td>
+	<td height="62">{hidden_vars}{delete}</td>
 	<td height="62">
 	    <form method="POST" action="{doneurl}">
 	    {hidden_vars}

@@ -27,6 +27,8 @@
 			. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+			. "<input type=\"hidden\" name=\"sdate\" value=\"$sdate\">\n"
+			. "<input type=\"hidden\" name=\"edate\" value=\"$edate\">\n"
 			. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n";
 
 
@@ -37,25 +39,30 @@
     $t->set_file(array('project_stat' => 'stats_projectstat.tpl'));
     $t->set_block('project_stat','stat_list','list');
      
-    $t->set_var('actionurl',$phpgw->link('/projects/stats_projectstat.php'));
-    $t->set_var('lang_action',lang("Project statistic"));
+    $t->set_var('actionurl',$phpgw->link('/projects/stats_projectstat.php',"sdate=$sdate&edate=$edate"));
+    $t->set_var('lang_action',lang('Project statistic'));
     $t->set_var('hidden_vars',$hidden_vars);
-    $t->set_var("lang_num",lang("Project ID"));
-    $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
-    $t->set_var("lang_title",lang("Title"));
-    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                   
-    if (! $title)  $title  = "&nbsp;";
-    $t->set_var("title",$title);
-    $t->set_var("lang_status",lang("Status"));
-    $t->set_var("status",$phpgw->db->f("status"));
-    $t->set_var("lang_budget",lang("Budget"));
-    $t->set_var("budget",$phpgw->db->f("budget"));
-    $t->set_var('th_bg',$phpgw_info["theme"]["th_bg"]);
+    $t->set_var('lang_num',lang('Project ID'));
+    $t->set_var('num',$phpgw->strip_html($phpgw->db->f('num')));
+    $t->set_var('lang_title',lang('Title'));
+    $title = $phpgw->strip_html($phpgw->db->f('title'));                                                                                                                                   
+    if (! $title)  $title  = '&nbsp;';
+    $t->set_var('title',$title);
+    $t->set_var('lang_status',lang('Status'));
+    $t->set_var('status',lang($phpgw->db->f('status')));
+    $t->set_var('lang_budget',lang('Budget'));
+    $t->set_var('budget',$phpgw->db->f('budget'));
+    $t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 
     $t->set_var('lang_start_date',lang('Start date'));
     $t->set_var('lang_end_date',lang('Date due'));
 
     $sm = CreateObject('phpgwapi.sbox');
+
+    if (!$submit) {
+	$sdate = $phpgw->db->f('start_date');
+	$edate = $phpgw->db->f('end_date');
+    }
 
     if (!$sdate) {
         $smonth = 0;
@@ -117,18 +124,18 @@
 
 // -------------------------------- calculate statistics -------------------------------------------                                                                                                                                         
   
-    $filter="";                                                                                                                                                   
+//    $filter="";                                                                                                                                                   
 
     if($billed) { $filter .= " AND phpgw_p_hours.status='billed' "; }                                                                                                                 
 
     if (checkdate($smonth,$sday,$syear)) {
 	$sdate = mktime(2,0,0,$smonth,$sday,$syear);
-	$filter .= " AND date >= '$sdate' ";
+	$filter .= " AND start_date >= '$sdate' ";
     }
 
     if (checkdate($emonth,$eday,$eyear)) { 
 	$edate = mktime(2,0,0,$emonth,$eday,$eyear);
-	$filter .= " AND date <= '$edate' ";
+	$filter .= " AND end_date <= '$edate' ";
     }
 
     $phpgw->db->query("SELECT employee,account_firstname,account_lastname FROM phpgw_p_hours"

@@ -26,7 +26,7 @@
       <td width="20%" align=center bgcolor="{th_bg}" align=center>{sort_lid}</td>
       <td width="20%" align=center bgcolor="{th_bg}" align=center>{sort_firstname}</td>
       <td width="20%" align=center bgcolor="{th_bg}">{sort_lastname}</td>
-      <td align=center width="8%" bgcolor="{th_bg}">{h_lang_stat}</td>
+      <td align=center width="8%" bgcolor="{th_bg}">{lang_stat}</td>
     </tr>
   
 <!-- BEGIN user_list -->
@@ -35,7 +35,7 @@
         <td>{lid}</td>
         <td>{firstname}</td>
 	<td>{lastname}</td>
-        <td align=center>{stat}</td>
+        <td align=center><a href="{stat}">{lang_stat}</a></td>
       </tr>
 
 <!-- END user_list -->

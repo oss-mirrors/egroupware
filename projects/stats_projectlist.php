@@ -48,8 +48,8 @@
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
-    $left = $phpgw->nextmatchs->left('index.php',$start,$projects->total_records);
-    $right = $phpgw->nextmatchs->right('index.php',$start,$projects->total_records);
+    $left = $phpgw->nextmatchs->left('projects/stats_projectlist.php',$start,$projects->total_records);
+    $right = $phpgw->nextmatchs->right('/projects/stats_projectlist.php',$start,$projects->total_records);
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
@@ -63,12 +63,12 @@
 // ------------------list header variable template-declarations ------------------------------- 
 
     $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-    $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("Project ID")));
-    $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("Customer")));
-    $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"stats_projectlist.php",lang("Status")));
-    $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"stats_projectlist.php",lang("Title")));
-    $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"stats_projectlist.php",lang("Date due")));
-    $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"stats_projectlist.php",lang("Coordinator")));
+    $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"/projects/stats_projectlist.php",lang("Project ID")));
+    $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"/projects/stats_projectlist.php",lang("Customer")));
+    $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"/projects/stats_projectlist.php",lang("Status")));
+    $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"/projects/stats_projectlist.php",lang("Title")));
+    $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"/projects/stats_projectlist.php",lang("Date due")));
+    $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"/projects/stats_projectlist.php",lang("Coordinator")));
     $t->set_var(h_lang_stat,lang("Statistic"));
     $t->set_var('lang_search',lang('Search'));
 

@@ -12,12 +12,15 @@
   \**************************************************************************/
 /* $Id$ */
 
-    $phpgw_info["flags"]["currentapp"] = "projects";
-    include("../header.inc.php");
+    $phpgw_info['flags']['currentapp'] = 'projects';
+    include('../header.inc.php');
   
     if (!$submit) { $referer = $HTTP_REFERER; }
 
     if (!$id) { Header('Location: ' . $HTTP_REFERER); }
+
+    $projects = CreateObject('projects.projects');
+    $grants = $phpgw->acl->get_grants('projects');
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
 		. "<input type=\"hidden\" name=\"order\" value=\"$order\">\n"
@@ -118,7 +121,6 @@
     $t->set_var('lang_billperae',lang('Bill per workunit'));
     $t->set_var('lang_done',lang('Done'));
     $t->set_var('lang_edit',lang('Edit'));
-    $t->set_var('lang_delete',lang('Delete'));
     $t->set_var('lang_status',lang('Status'));
     $t->set_var('lang_select_project',lang('Select project'));
 
@@ -252,6 +254,11 @@
         }
 
     $t->set_var('activity_list',$activity_list);
+
+    if ($projects->check_perms($grants[$phpgw->db->f('employee')],PHPGW_ACL_DELETE) || $phpgw->db->f('employee') == $phpgw_info['user']['account_id']) {
+        $t->set_var('delete','<form method="POST" action="' . $phpgw->link('/projects/hours_deletehour.php',"id=$id") . '"><input type="submit" value="' . lang('Delete') .'"></form>');
+    }
+    else { $t->set_var('delete','&nbsp;'); }
 
     $t->set_var('edithandle','');
     $t->set_var('addhandle','');
