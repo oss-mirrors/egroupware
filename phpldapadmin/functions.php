@@ -911,12 +911,41 @@ function password_hash( $password_clear, $enc_type )
 				pla_error( "Your PHP install does not support blowfish encryption." );
 			$new_value = '{crypt}' . crypt( $password_clear , '$2$' . random_salt(13) );
 			break;
+		case 'smd5':
+			if(function_exists('mhash'))
+			{
+				$salt = randomsalt(8);
+				$hash = mhash(MHASH_MD5, $password_clear . $salt);
+				$e_password = '{SMD5}' . base64_encode($hash . $salt);
+			}
+			else
+			{
+				pla_error("Your PHP install does not have the mhash() function."
+					. " Cannot do SMD5 hashes.");
+			}
+			break;
 		case 'sha':
-			if( function_exists( 'mhash' ) ) {
+			if(function_exists('mhash'))
+			{
 				$new_value = '{sha}' . base64_encode( mhash( MHASH_SHA1, $password_clear) );
-			} else {
-				pla_error( "Your PHP install does not have the mhash() function." . 
-				" Cannot do SHA hashes." );
+			}
+			else
+			{
+				pla_error("Your PHP install does not have the mhash() function."
+					. " Cannot do SHA hashes.");
+			}
+			break;
+		case 'ssha':
+			if(function_exists('mhash'))
+			{
+				$salt = randomsalt(8);
+				$hash = mhash(MHASH_SHA1, $password_clear . $salt);
+				$new_value = '{SSHA}' . base64_encode($hash . $salt);
+			}
+			else
+			{
+				pla_error("Your PHP install does not have the mhash() function."
+					. " Cannot do SSHA hashes.");
 			}
 			break;
 		case 'clear':

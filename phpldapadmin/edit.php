@@ -498,9 +498,11 @@ if( $show_internal_attrs ) {
 			<option>clear</option>
 			<option<?php echo $enc_type=='crypt'?' selected':''; ?>>crypt</option>
 			<option<?php echo $enc_type=='md5'?' selected':''; ?>>md5</option>
+			<option<?php echo $enc_type=='smd5'?' selected':''; ?>>smd5</option>
 			<option<?php echo $enc_type=='md5crypt'?' selected':''; ?>>md5crypt</option>
 			<option<?php echo $enc_type=='blowfish'?' selected':''; ?>>blowfish</option>
 			<option<?php echo $enc_type=='sha'?' selected':''; ?>>sha</option>
+			<option<?php echo $enc_type=='ssha'?' selected':''; ?>>ssha</option>
 			</select>
 
 		<?php continue; 
