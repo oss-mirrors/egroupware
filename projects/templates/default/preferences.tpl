@@ -14,7 +14,7 @@
 <table width="80%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_select_tax}:</td>
-		<td><input type="text" name="tax" value="{tax}" size="6" maxlength="6">&nbsp;{lang_percent}</td>
+		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
 	</tr>
 	<tr>
 		<td><input type="button" value="{lang_address}" onClick="abook();"></td>

@@ -54,7 +54,11 @@
 			'get_prefs'				=> True,
 			'list_activities'		=> True,
 			'read_single_activity'	=> True,
-			'save_activity'			=> True
+			'save_activity'			=> True,
+			'read_abook'			=> True,
+			'read_single_contact'	=> True,
+			'read_prefs'			=> True,
+			'save_prefs'			=> True		
 		);
 
 		function boprojects($session=False, $action = '')
@@ -128,6 +132,55 @@
 			$cached_data[$this->accounts->data['account_id']]['lastname']    = $this->accounts->data['lastname'];
 
 			return $cached_data;
+		}
+
+		function read_abook($start, $query, $qfilter, $sort, $order)
+		{
+			$account_id = $GLOBALS['phpgw_info']['user']['account_id'];
+
+			$cols = array('n_given'	=> 'n_given',
+						'n_family'	=> 'n_family',
+						'org_name'	=> 'org_name');
+
+			$entries = $this->contacts->read($start, True, $cols, $query, $qfilter, $sort, $order, $account_id);
+			$this->total_records = $this->contacts->total_records;
+			return $entries;
+		}
+
+		function read_single_contact($abid)
+		{
+			$cols = array('n_given' => 'n_given',
+						'n_family' => 'n_family',
+						'org_name' => 'org_name');
+
+			$entry = $this->contacts->read_single_entry($abid,$cols);
+			return $entry;
+		}
+
+		function read_prefs()
+		{
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			$prefs = array();
+
+			if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
+			{
+				$prefs['tax'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
+				$prefs['abid'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
+			}
+			return $prefs;
+		}
+
+		function save_prefs($prefs)
+		{
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			if ($prefs)
+			{
+				$GLOBALS['phpgw']->preferences->change('projects','tax',$prefs['tax']);
+				$GLOBALS['phpgw']->preferences->change('projects','abid',$prefs['abid']);
+				$GLOBALS['phpgw']->preferences->save_repository(True);
+			}
 		}
 
 		function check_prefs()

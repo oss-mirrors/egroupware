@@ -27,30 +27,30 @@
 </head>
 <body bgcolor="{bg_color}">
 <center>
-<p><font face="{font}"><b>{lang_addressbook_action}</b></font><br>
+<p><font face="{font}"><b>{lang_action}</b></font><br>
 <hr noshade width="98%" align="center" size="1">
 <table border="0" width="100%">
-	<tr>
-		<td width="33%" align="left">
-			<form action="{cats_action}" name="form" method="POST">
-			{lang_category}&nbsp;&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{cats_list}</select>
-			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
-		<td width="33%" align="center">{lang_showing}</td>
-		<td width="33%" align="right">
-			<form method="POST" action="{search_action}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
-	</tr>
 	<tr>
 		<td colspan="4">
 			<table border="0" width="100%">
 				<tr>
 				{left}
-					<td>&nbsp;</td>
+					<td align="center">{lang_showing}</td>
 				{right}
 				</tr>
 			</table>
 		</td>
+	</tr>
+	<tr>
+		<td width="33%" align="left">
+			<form action="{cats_action}" name="form" method="POST">
+			{lang_category}&nbsp;&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{cats_list}</select>
+			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
+		<td width="33%" align="center"><form method="POST" name="filter" action="{filter_action}">{filter_list}</form></td>
+		<td width="33%" align="right">
+			<form method="POST" action="{search_action}">
+			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
+			</form></td>
 	</tr>
 </table>
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
@@ -61,20 +61,20 @@
 		<td width="10%" bgcolor="{th_bg}" align="center"><font face="{font}">{lang_select}</font></td>
 	</tr>
 
-<!-- BEGIN addressbook_list -->
+<!-- BEGIN abook_list -->
 
 	<tr bgcolor="{tr_color}">
 		<td><font face="{font}">{company}</font></td>
 		<td><font face="{font}">{firstname}</font></td>
 		<td><font face="{font}">{lastname}</font></td>
 		<form>
-		<input type="hidden" size="25" name="hidden" value="{id}">
+		<input type="hidden" size="25" name="hidden" value="{abid}">
 		<input type="hidden" size="25" name="hidden" value="{company} {firstname} {lastname}">
 		<td align=center><font face="{font}"><input type="button" value="{lang_select}" onClick="ExchangeCustomer(this.form);" name="button"></td>
 		</font></form>    
 	</tr>
 
-<!-- END addressbook_list -->
+<!-- END abook_list -->
 
 </table>
 <table cellpadding="2" cellspacing="2">

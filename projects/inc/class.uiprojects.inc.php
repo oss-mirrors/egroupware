@@ -47,7 +47,9 @@
 			'add_sub'			=> True,
 			'view_project'		=> True,
 			'list_admins'		=> True,
-			'edit_admins'		=> True
+			'edit_admins'		=> True,
+			'abook'				=> True,
+			'preferences'		=> True
 		);
 
 		function uiprojects()
@@ -463,7 +465,7 @@
 
 			$link_data['menuaction'] = 'projects.uiprojects.add_project';
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/projects/addressbook.php','query='));
+			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
 
 			$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
 
@@ -635,7 +637,7 @@
 			}
 
 			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/projects/addressbook.php','query='));
+			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
 
 			$link_data['menuaction'] = 'projects.uiprojects.edit_project';
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -1357,6 +1359,158 @@
 
 			$this->t->pfp('out','admin_add');
 			$GLOBALS['phpgw']->common->phpgw_footer();
+		}
+
+		function abook()
+		{
+			global $start, $cat_id, $sort, $order, $filter, $qfilter;
+
+			$this->t->set_file(array('abook_list_t' => 'addressbook.tpl'));
+			$this->t->set_block('abook_list_t','abook_list','list');
+
+			$this->cats->app_name = 'addressbook';
+
+			$this->set_app_langs();
+
+			$this->t->set_var('title',$GLOBALS['phpgw_info']['site_title']);
+			$this->t->set_var('lang_action',lang('Address book'));
+			$this->t->set_var('charset',$GLOBALS['phpgw']->translation->translate('charset'));
+			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uiprojects.abook',
+				'start'			=> $start,
+				'sort'			=> $sort,
+				'order'			=> $order,
+				'cat_id'		=> $cat_id,
+				'filter'		=> $filter
+			);
+
+			if (! $start) { $start = 0; }
+
+			if (!$filter) { $filter = 'none'; }
+
+			$qfilter = 'tid=n';
+
+			switch ($filter)
+			{
+				case 'none': break;		
+				case 'private': $qfilter .= ',access=private'; break;
+				case 'yours': $qfilter .= ',owner=' . $this->account; break;
+			}
+
+			if ($cat_id)
+			{
+				$qfilter .= ',cat_id=' . $cat_id;
+			}
+ 
+			$entries = $this->boprojects->read_abook($start, $query, $qfilter, $sort, $order);
+
+// --------------------------------- nextmatch ---------------------------
+
+			$left = $this->nextmatchs->left('/index.php',$start,$this->boprojects->total_records,$link_data);
+			$right = $this->nextmatchs->right('/index.php',$start,$this->boprojects->total_records,$link_data);
+			$this->t->set_var('left',$left);
+			$this->t->set_var('right',$right);
+
+			$this->t->set_var('lang_showing',$this->nextmatchs->show_hits($this->boprojects->total_records,$start));
+
+// -------------------------- end nextmatch ------------------------------------
+
+			$this->t->set_var('cats_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('cats_list',$this->cats->formated_list('select','all',$cat_id,True));
+			$this->t->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('filter_list',$this->nextmatchs->filter(1,1));
+			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->t->set_var('search_list',$this->nextmatchs->search(1));
+
+// ---------------- list header variable template-declarations --------------------------
+
+// -------------- list header variable template-declaration ------------------------
+
+			$this->t->set_var('sort_company',$this->nextmatchs->show_sort_order($sort,'org_name',$order,'/index.php',lang('Company'),$link_data));
+			$this->t->set_var('sort_firstname',$this->nextmatchs->show_sort_order($sort,'n_given',$order,'/index.php',lang('Firstname'),$link_data));
+			$this->t->set_var('sort_lastname',$this->nextmatchs->show_sort_order($sort,'n_family',$order,'/index.php',lang('Lastname'),$link_data));
+			$this->t->set_var('lang_select',lang('Select'));
+
+// ------------------------- end header declaration --------------------------------
+
+			for ($i=0;$i<count($entries);$i++)
+			{
+				$this->t->set_var('tr_color',$this->nextmatchs->alternate_row_color($tr_color));
+				$firstname = $entries[$i]['n_given'];
+				if (!$firstname) { $firstname = '&nbsp;'; }
+				$lastname = $entries[$i]['n_family'];
+				if (!$lastname) { $lastname = '&nbsp;'; }
+				$company = $entries[$i]['org_name'];
+				if (!$company) { $company = '&nbsp;'; }
+
+// ---------------- template declaration for list records -------------------------- 
+
+				$this->t->set_var(array('company' 	=> $company,
+									'firstname' 	=> $firstname,
+									'lastname'		=> $lastname,
+									'abid'			=> $entries[$i]['id']));
+
+				$this->t->parse('list','abook_list',True);
+			}
+
+			$this->t->set_var('lang_done',lang('Done'));
+			$this->t->parse('out','abook_list_t',True);
+			$this->t->p('out');
+
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		}
+
+		function preferences()
+		{
+			global $submit, $prefs, $abid;
+
+			if ($submit)
+			{
+				$prefs['abid'] = $abid;
+				$this->boprojects->save_prefs($prefs);
+				Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
+				$GLOBALS['phpgw']->common->phpgw_exit();
+			}
+
+			$GLOBALS['phpgw']->common->phpgw_header();
+			echo parse_navbar();
+
+			$this->t->set_file(array('prefs' => 'preferences.tpl'));
+
+			$this->set_app_langs();
+
+			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'));
+			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
+
+			$this->t->set_var('lang_action',lang('Project preferences'));
+			$this->t->set_var('lang_select_tax',lang('Select tax for workhours'));
+			$this->t->set_var('lang_select',lang('Select per button !'));
+			$this->t->set_var('lang_address',lang('Select your address'));
+
+			$prefs = $this->boprojects->read_prefs();
+
+			$this->t->set_var('tax',$prefs['tax']);
+
+			if (isset($prefs['abid']))
+			{
+				$abid = $prefs['abid'];
+
+				$entry = $this->boprojects->read_single_contact($abid);
+
+				if ($entry[0]['org_name'] == '') { $this->t->set_var('name',$entry[0]['n_given'] . ' ' . $entry[0]['n_family']); }
+				else { $this->t->set_var('name',$entry[0]['org_name'] . ' [ ' . $entry[0]['n_given'] . ' ' . $entry[0]['n_family'] . ' ]'); }
+			}
+			else
+			{
+				$this->t->set_var('name',$name);
+			}
+
+			$this->t->set_var('abid',$abid);
+
+			$this->t->pfp('out','prefs');
 		}
 	}
 ?>

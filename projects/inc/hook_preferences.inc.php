@@ -13,7 +13,7 @@
 	{
 		$title = $appname;
 		$file = Array(
-			'Preferences' => $GLOBALS['phpgw']->link('/projects/preferences.php'),
+			'Preferences' => $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'),
 			'Grant Access' => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=projects'),
 			'Edit categories' => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=projects&cats_level=True&global_cats=True')
 		);
