@@ -16,12 +16,11 @@
 
 		function form()
 		{
-			$filter_status			= get_var('filter_status', 'any', '');
-			$filter_process 		= (int)get_var('filter_process', 'any', 0);			
-			$filter_activity		= (int)get_var('filter_activity', 'any', 0);
-			$filter_act_status		= get_var('filter_act_status', 'any', '');
-			$filter_user			= get_var('filter_user', 'any', '');
-			      
+	        $this->order			= get_var('order', 'any', 'wf_flow_num');
+	        $this->sort				= get_var('sort', 'any', 'asc');
+	        $this->sort_mode		= $this->order . '__'. $this->sort;
+	        $this->search_str 		= get_var('search_str','any','');
+
 			$filter_is_interactive	= get_var('filter_is_interactive', 'any', '');
 		    $filter_is_autorouted	= get_var('filter_is_autorouted', 'any', '');
 			$filter_process			= (int)get_var('filter_process','any','');
@@ -60,17 +59,7 @@
 			if( count($this->extra) == 0 ) {
 				$this->extra = '';
 			}
-	        if (isset($_REQUEST['search_str']))
-	        {  
-	          $this->search_str = get_var('search_str','any','');
-	        } 
-	        else {
-	          $this->search_str = '';
-	        }
-			
-	        $this->order			= get_var('order', 'GET', 'wf_flow_num');
-	        $this->sort				= get_var('sort', 'GET', 'asc');
-	        $this->sort_mode		= $this->order . '__'. $this->sort;
+
 			
 	        $activities		= $this->process_monitor->monitor_list_activities($this->start, -1, $this->sort_mode, $this->search_str,$this->where);
 	        $all_types		= $this->process_monitor->monitor_list_activity_types();
