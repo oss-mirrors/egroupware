@@ -776,20 +776,22 @@ function toggle(image, catid)
 	}
 	else //we're helpless
 	{
-	return 
+		return
 	}
-
-	if (styleObj.style.display == 'none')
+	if (styleObj)	// if an object is found
 	{
-		add(catid);
-		image.src = '" . $this->img['collapse'] . "';
-		styleObj.style.display = 'block';
-	}
-	else
-	{
-		remove(catid);
-		image.src = '" . $this->img['expand'] . "';
-		styleObj.style.display = 'none';
+		if (styleObj.style.display == 'none')
+		{
+			add(catid);
+			image.src = '" . $this->img['collapse'] . "';
+			styleObj.style.display = 'block';
+		}
+		else
+		{
+			remove(catid);
+			image.src = '" . $this->img['expand'] . "';
+			styleObj.style.display = 'none';
+		}
 	}
 }
 </script>" . 
@@ -813,7 +815,7 @@ function toggle(image, catid)
 					'<tr><td width="10%">' . 
 					'<img src="' .
 					$this->img[$status ? "collapse" : "expand"] .
-					'" onclick="toggle(this, \'' . 
+					'" onclick="toggle(this, \'' .
 					$cat_id . 
 					'\')"></td><td><a style="font-weight:bold" title="' .
 					$GLOBALS['phpgw']->strip_html($cat['description']) .
