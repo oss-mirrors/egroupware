@@ -26,7 +26,7 @@ operating system	backup	el	Λειτουργικό Σύστημα
 pgsql	admin	el	PostgreSQL
 php cgi	admin	el	Πλήρης διαδρομή για το PHP εκτελέσιμο (π.χ.: /usr/local/bin/php)
 please enter the path of the needed applications in *site configuration* !	backup	el	Εισάγετε τις διαδρομές των απαιτούμενων εφαρμογών στo *Site configuration* !
-please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	el	Εισάγετε τη διαδρομή για τον κατάλογο των αντίγραφων ασφαλείας και/ή ενεργοποιήστε την εμφάνιση των αρχείων στο phpGroupWare !
+please enter the path to the backup dir and/or enable showing archives in egroupware !	backup	el	Εισάγετε τη διαδρομή για τον κατάλογο των αντίγραφων ασφαλείας και/ή ενεργοποιήστε την εμφάνιση των αρχείων στο eGroupWare !
 please enter username and password for remote connection !	backup	el	Εισάγετε όνομα και κωδικό πρόσβασης για την απομακρυνσμένη σύνδεση !
 please select an application for transport to the remote host !	backup	el	Επιλέξτε εφαρμογή για μεταφορά στον απομακρυνσμένο κεντρικό υπολογιστή !
 please set the path to a local dir to store the backup script !	backup	el	Ορίστε τη διαδρομή σε τοπικό κατάλογο για την αποθήκευση του αρχείου δέσμης εντολών για τα αντίγραφα ασφαλείας !
