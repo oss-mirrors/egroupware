@@ -29,8 +29,15 @@
 
 {widget_toolbar}
 
+<!-- style specially for the return to FOLDER_LINK to get a better color for that link using class in that A element -->
+<STYLE type="text/css">
+<!--  
+  a.c_nicecolor:link { color: {buttons_text_color}; }
+-->
+</STYLE>
+
 <table border="0" cellpadding="1" cellspacing="1" width="100%" align="center">
-<!--  <form enctype="multipart/form-data" name="{ form1_name }" action="{form1_action}" method="{ form1_method }"> -->
+<!--  <form enctype="multipart/form-data" name="_ form1_name _" action="_form1_action_" method="_ form1_method _"> -->
 <form enctype="application/x-www-form-urlencoded" name="{form1_name}" action="{form1_action}" method="{form1_method}">
 <tr bgcolor="{buttons_bgcolor}" class="{buttons_bgcolor_class}">
 	<td colspan="2">

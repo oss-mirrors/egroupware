@@ -1020,9 +1020,9 @@
 					$this->tpl->set_var('compose_txt_link', '&nbsp;');			
 					//Create Search Button
 					$this->set_href_link($search_link);
-					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-search-16.gif',lang('Search'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/search-'.$icon_size,'_on'),lang('Search'),'','','0'));
 					// will fix this later when new images are made
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
+					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
 					$this->tpl->set_var('search_img_link', $this->get_href());
 					$this->tpl->set_var('search_txt_link', '&nbsp;');			
 					//Create Filter Button
@@ -1066,9 +1066,9 @@
 					$this->tpl->set_var('compose_txt_link', $this->get_href());			
 					//Create Search Button
 					$this->set_href_link($search_link);
-					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.$icon_theme.'-search-16.gif',lang('Search'),'','','0'));
+					$this->set_href_clickme($this->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/search-'.$icon_size,'_on'),lang('Search'),'','','0'));
 					// will fix this later when new images are made
-					$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
+					//$this->set_href_clickme($this->img_maketag($image_dir.'/'.'evo'.'-search-16.gif',lang('Search'),'','','0'));
 					$this->tpl->set_var('search_img_link', $this->get_href());
 					$this->set_href_link($search_link);
 					$this->set_href_clickme(lang('Search'));

@@ -755,6 +755,7 @@
 			$this->xi['form1_method'] = 'POST';
 			$this->xi['buttons_bgcolor'] = $GLOBALS['phpgw_info']['theme']['em_folder'];
 			$this->xi['buttons_bgcolor_class'] = 'email_folder';
+			$this->xi['buttons_text_color'] = $GLOBALS['phpgw_info']['theme']['em_folder_text'];
 			$this->mail_spell = CreateObject("email.spell");
 			// Set Variables for AddressBook button
 			$addressbook_text = lang('Address Book');
@@ -779,6 +780,8 @@
 						'menuaction' => 'email.uiattach_file.attach'
 					)
 			);
+			// this makes for a better color for these hrefs which might be on a back color blue
+			$css_class ='c_nicecolor';
 			$this->xi['attachfile_js_onclick'] = 'attach_window(\''.$this->attachfile_js_link.'\')';
 			$attachfile_js_text = lang('Attach file');
 			$attachfile_js_image = $GLOBALS['phpgw']->msg->img_maketag($GLOBALS['phpgw']->msg->_image_on('email',$icon_theme.'/add-attachment-'.$icon_size,'_on'),$attachfile_js_text,'','','0');
@@ -786,12 +789,12 @@
 			// This code looksup the users preference for the type of button and create the buttons to send to the UI
 			switch ($GLOBALS['phpgw']->msg->get_pref_value('button_type',$acctnum)){
 				case 'text':
-					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_text.'</a>';
-					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_text.'</a>';
+					$this->xi['addressbook_button'] = '<a class="'.$css_class.'" href="javascript:'.$addressbook_onclick.'">'.$addressbook_text.'</a>';
+					$this->xi['send_button'] = '<a class="'.$css_class.'" href="javascript:'.$send_onclick.'">'.$send_text.'</a>';
 					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->xi['attachfile_js_onclick'].'">'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
-						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+						$this->xi['spellcheck_button'] = '<a class="'.$css_class.'" href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
 					}
 					
 					break;
@@ -805,12 +808,12 @@
 					}
 					break;
 				case 'both':
-					$this->xi['send_button'] = '<a href="javascript:'.$send_onclick.'">'.$send_image.'&nbsp;'.$send_text.'</a>';
-					$this->xi['addressbook_button'] = '<a href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'&nbsp;'.$addressbook_text.'</a>';
+					$this->xi['send_button'] = '<a class="'.$css_class.'" href="javascript:'.$send_onclick.'">'.$send_image.'&nbsp;'.$send_text.'</a>';
+					$this->xi['addressbook_button'] = '<a class="'.$css_class.'" href="javascript:'.$addressbook_onclick.'">'.$addressbook_image.'&nbsp;'.$addressbook_text.'</a>';
 					$this->xi['attachfile_js_button'] = '<a href="javascript:'.$this->xi['attachfile_js_onclick'].'">'.$attachfile_js_image.'&nbsp;'.$attachfile_js_text.'</a>';
 					if ($this->mail_spell->get_can_spell())
 					{
-						$this->xi['spellcheck_button'] = '<a href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'&nbsp;'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
+						$this->xi['spellcheck_button'] = '<a class="'.$css_class.'" href="javascript:'.$spellcheck_onclick.'">'.$spellcheck_image.'&nbsp;'.$spellcheck_text.'</a><input type=hidden name="btn_spellcheck">';
 					}
 					break;
 			}

@@ -108,6 +108,7 @@
 				'js_addylink'		=> $this->bo->xi['js_addylink'],
 				'buttons_bgcolor'	=> $this->bo->xi['buttons_bgcolor'],
 				'buttons_bgcolor_class'	=> $this->bo->xi['buttons_bgcolor_class'],
+				'buttons_text_color'	=> $this->bo->xi['buttons_text_color'],
 				'to_boxs_bgcolor'	=> $this->bo->xi['to_boxs_bgcolor'],
 				'to_boxs_bgcolor_class'	=> $this->bo->xi['to_boxs_bgcolor_class'],
 				'to_boxs_font'		=> $this->bo->xi['to_boxs_font'],
