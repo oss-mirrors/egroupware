@@ -204,6 +204,17 @@
 				$GLOBALS['phpgw']->preferences->change('projects','mysize',$prefs['mysize']);
 				$GLOBALS['phpgw']->preferences->change('projects','allsize',$prefs['allsize']);
 				$GLOBALS['phpgw']->preferences->save_repository(True);
+		//	_debug_array($prefs);
+		//	exit;
+			}
+
+			if ($prefs['oldbill'] == 'h' && $prefs['bill'] == 'wu')
+			{
+				return True;
+			}
+			else
+			{
+				return False;
 			}
 		}
 
@@ -602,6 +613,12 @@
 				if ($values['activity_id'] != 0)
 				{
 					$this->soprojects->edit_activity($values);
+
+					if ($values['minperae'])
+					{
+						$this->soprojecthours = CreateObject('projects.soprojecthours');
+						$this->soprojecthours->update_hours_act($values['activity_id'],$values['minperae']);
+					}
 				}
 			}
 			else

@@ -139,5 +139,26 @@
 		{
 			$this->db->query("Delete from phpgw_p_hours where id = '$hours_id'",__LINE__,__FILE__);
 		}
+
+		function update_hours_act($activity_id, $minperae)
+		{
+			$this->db->query("SELECT id,minperae from phpgw_p_hours where activity_id='" . $activity_id . "'",__LINE__,__FILE__); 
+
+			while ($this->db->next_record())
+			{
+				if ($this->db->f('minperae') == 0)
+				{
+					$hours[] = $this->db->f('id');
+				}
+			}
+
+			if (is_array($hours))
+			{
+				for ($i=0;$i<=count($hours);$i++)
+				{
+					$this->db->query("UPDATE phpgw_p_hours set minperae='" . $minperae . "' WHERE id='" . $hours[$i] . "'",__LINE__,__FILE__);
+				}
+			}
+		}
 	}
 ?>

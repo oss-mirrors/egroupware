@@ -10,6 +10,7 @@
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
+{bill_message}
 <form method="POST" name="projects_form" action="{actionurl}">
 <table width="80%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
@@ -28,7 +29,7 @@
 		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
 	</tr>
 	<tr>
-		<td>{lang_bill}:</td>
+		<td>{lang_bill}</td>
 		<td>{bill}</td>
 	</tr>
 	<tr>
@@ -51,12 +52,15 @@
 		<td><select name="prefs[allsize]">{allsize}</select></td>
 	</tr>
 </table>
-<table width="39%" border="0" cellspacing="2" cellpadding="2">
+<table width="80%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50" align="left">
 			<input type="submit" name="submit" value="{lang_save}">
 			</form>
 		</td>
+		<td height="50" align="left">
+			<form method="POST" action="{doneurl}">
+			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>
 </center>

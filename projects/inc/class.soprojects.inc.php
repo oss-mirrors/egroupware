@@ -56,7 +56,7 @@
 			{
 				case 'wu':	$l = lang('per workunit'); break;
 				case 'h':	$l = lang('per hour'); break;
-				default	:	$l = lang('per hour');
+				default	:	$l = lang('per hour/workunit');
             }
 			return $l;
 		}

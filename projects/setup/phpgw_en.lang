@@ -1,5 +1,6 @@
 projects	common	en	Projects
 Account	projects	en	Account
+accountancy	common	en	Accountancy
 Active	projects	en	Active
 Activities	projects	en	Activities
 Activities list	projects	en	Activities list
@@ -96,14 +97,14 @@ Please choose activities for that project first !	projects	en	Please choose acti
 Please enter a remark !	projects	en	Please enter a remark !
 Please enter the bill !	projects	en	Please enter the bill !
 Please enter the minutes per workunit !	projects	en	Please enter the minutes per workunit !
+Please set the minutes per workunit for each activity now !	projects	en	Please set the minutes per workunit for each activity now !
 Position	projects	en	Position
 Print delivery	projects	en	Print delivery
 Print invoice	projects	en	Print invoice
 Project	projects	en	Project
-Project administration	common	en	Project administration
 Project archive	projects	en	Project archive
 Project billing	projects	en	Project billing
-project bookkeeping	common	en	Project bookkeeping
+bookkeeping	common	en	bookkeeping
 Project delivery	projects	en	Project delivery
 Project ID	projects	en	Project ID
 Project list	projects	en	Project list
@@ -128,7 +129,7 @@ Select your address	projects	en	Select your address
 small	projects	en	Small
 Start date can not be before main projects start date !	projects	en	Start date can not be before main projects start date !
 Statistic	projects	en	Statistic
-Statistics	projects	en	Statistics
+statistics	projects	en	Statistics
 Short description	projects	en	Short description
 Sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set for you :)
 sum net	projects	en	Sum net

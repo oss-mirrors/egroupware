@@ -1303,13 +1303,15 @@
 			$this->t->set_file(array('admin_list_t' => 'list_admin.tpl'));
 			$this->t->set_block('admin_list_t','admin_list','list');
 
+			$this->t->set_var('lang_action',lang('Projects'));
+
 			if ($action == 'pad')
 			{
-				$this->t->set_var('lang_action',lang('Project administration'));
+				$this->t->set_var('lang_admin',lang('administration'));
 			}
 			else
 			{
-				$this->t->set_var('lang_action',lang('Project bookkeeping'));
+				$this->t->set_var('lang_admin',lang('accountancy'));
 			}
 
 			$this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
@@ -1520,14 +1522,19 @@
 
 		function preferences()
 		{
-			global $submit, $prefs, $abid;
+			global $submit, $prefs, $abid, $oldbill;
 
 			if ($submit)
 			{
-				$prefs['abid'] = $abid;
-				$this->boprojects->save_prefs($prefs);
-				Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
-				$GLOBALS['phpgw']->common->phpgw_exit();
+				$prefs['abid']		= $abid;
+				$prefs['oldbill']	= $oldbill;
+				$obill = $this->boprojects->save_prefs($prefs);
+
+				if ($obill == False)
+				{
+					Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
+					$GLOBALS['phpgw']->common->phpgw_exit();
+				}
 			}
 
 			$GLOBALS['phpgw']->common->phpgw_header();
@@ -1543,19 +1550,26 @@
 
 				$this->t->set_var('lang_action',lang('Project preferences'));
 
+				if ($obill == True)
+				{
+					$this->t->set_var('bill_message',lang('Please set the minutes per workunit for each activity now !'));
+				}
+
 				$this->t->set_var('lang_layout',lang('Invoice layout'));
 				$this->t->set_var('lang_select_font',lang('Select font'));
 				$this->t->set_var('lang_select_mysize',lang('Select font size for own address'));
 				$this->t->set_var('lang_select_allsize',lang('Select font size for customer address'));
-
-				$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'));
-				$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
-
+				$this->t->set_var('lang_bill',lang('Invoicing'));
 				$this->t->set_var('lang_select_tax',lang('Select tax for workhours'));
 				$this->t->set_var('lang_address',lang('Select your address'));
-				$this->t->set_var('lang_bill',lang('Invoicing'));
 
 				$prefs = $this->boprojects->read_prefs();
+
+				$oldbill = $prefs['bill'];
+
+				$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences&oldbill=' . $oldbill));
+				$this->t->set_var('doneurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
+				$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
 
 				$this->t->set_var('tax',$prefs['tax']);
 

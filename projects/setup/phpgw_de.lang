@@ -1,5 +1,6 @@
 projects	common	de	Projekte
 Account	projects	de	Account
+accountancy	common	de	Rechnungswesen
 Active	projects	de	Activ
 Activities	projects	de	Aktivit&auml;ten
 Activities list	projects	de	Aktivit&auml;ten Liste
@@ -87,19 +88,18 @@ open	projects	de	Offen
 Overall	projects	de	Gesammt
 per	hour	projects	de	pro Stunde
 per workunit	projects	de	pro Arbeitseinheit
-Please enter an ID !	projects	de	Bitte geben Sie eine ID ein !
-Please choose activities for that project first !	projects	de	Bitte wählen Sie erst Aktiviäten für das Projekt !
-Please enter a remark !	projects	de	Bitte geben Sie einen Betreff ein !
-Please enter the bill per workunit !	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit ein !
-Please enter the minutes per workunit !	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit ein !
+Please enter an ID !	projects	de	Bitte eine ID eingeben !
+Please choose activities for that project first !	projects	de	Bitte erst Aktivitäten für das Projekt wählen !
+Please enter a remark !	projects	de	Bitte einen Betreff eingeben !
+Please enter the bill per workunit !	projects	de	Bitte den Preis pro Arbeitseinheit eingeben !
+Please enter the minutes per workunit !	projects	de	Bitte die Minuten pro Arbeitseinheit eingeben !
+Please set the minutes per workunit for each activity now !	projects	de	Bitte jetzt die Minuten pro Arbeitseinheit für jede Aktivität eintragen !
 Position	projects	de	Position
 Print delivery	projects	de	Lieferung drucken
 Print invoice	projects	de	Rechnung drucken
 Project	projects	de	Projekt
-Project administration	common	de	Projekt Administration
 Project archive	projects	de	Projekt Archiv
 Project billing	projects	de	Projekt Abrechnung
-project bookkeeping	common	de	Projekt Buchhaltung
 Project delivery	projects	de	Projekt Lieferung
 Project ID	projects	de	Projekt ID
 Project list	projects	de	Projekt Liste

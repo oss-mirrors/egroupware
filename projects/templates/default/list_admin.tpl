@@ -2,7 +2,7 @@
 <center>
 <table width="80%" border="0" cellpadding="2" cellspacing="2">
 	<tr>
-		<td colspan="4" align="center" bgcolor="{th_bg}"><b>{lang_action}</b></td>
+		<td colspan="4" align="center" bgcolor="{th_bg}"><b>{lang_action}&nbsp;{lang_admin}</b></td>
 	</tr>
 	<tr>
 		<td colspan="4" align="left">
