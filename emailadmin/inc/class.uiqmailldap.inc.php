@@ -23,10 +23,7 @@
 		(
 			'listServers'	=> True,
 			'editServer'	=> True,
-			'add'		=> True,
-			'edit'		=> True,
-			'delete'	=> True,
-			'preferences'	=> True
+			'save'		=> True
 		);
 
 		function uiqmailldap()
@@ -34,7 +31,7 @@
 			global $phpgw, $phpgw_info;
 
 			$this->cats			= CreateObject('phpgwapi.categories');
-			#$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
+			$this->nextmatchs		= CreateObject('phpgwapi.nextmatchs');
 			#$this->account			= $phpgw_info['user']['account_id'];
 			$this->t			= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->grants			= $phpgw->acl->get_grants('notes');
@@ -55,9 +52,12 @@
 			
 		}
 
-		function editServer()
+		function editServer($_serverid='', $_pagenumber='')
 		{
 			global $phpgw, $phpgw_info, $serverid, $pagenumber;
+			
+			if(!empty($_serverid)) $serverid=$_serverid;
+			if(!empty($_pagenumber)) $pagenumber=$_pagenumber;
 
 			$menu = array
 			(
@@ -121,13 +121,29 @@
 			$this->t->set_var('bg_01',$phpgw_info["theme"]["bg01"]);
 			$this->t->set_var('bg_02',$phpgw_info["theme"]["bg02"]);
 			
-			switch($serverid)
+			switch($pagenumber)
 			{
 				case "0":
 					$this->t->set_var('rcpt_selectbox',
 						"<b>".lang("We don't accept any email!")."</b>");
 					$this->t->set_var('locals_selectbox',
 						"<b>".lang("We don't deliver any email local!")."</b>");
+					break;
+					
+				case "99":
+					$linkData = array
+					(
+						'menuaction'	=> 'qmailldap.uiqmailldap.save',
+						'pagenumber'	=> $pagenumber,
+						'serverid'	=> $serverid
+					);
+					$this->t->set_var('form_action',$phpgw->link('/index.php',$linkData));
+					if ($storageData = $this->boqmailldap->getLDAPStorageData($serverid))
+					{
+						$this->t->set_var('qmail_servername',$storageData['qmail_servername']);
+						$this->t->set_var('description',$storageData['description']);
+						$this->t->set_var('ldap_basedn',$storageData['ldap_basedn']);
+					}
 					break;
 			}
 			
@@ -151,27 +167,30 @@
 
 			$serverList = $this->boqmailldap->getServerList();
 			
-			for ($i=0; $i < count($serverList); $i++)
+			if ($serverList)
 			{
-				$this->t->set_var('server_name',$serverList[$i]['servername']);
-				$this->t->set_var('server_description',$serverList[$i]['description']);
-				$linkData = array
-				(
-					'menuaction'	=> 'qmailldap.uiqmailldap.editServer',
-					'pagenumber'	=> '0',
-					'serverid'	=> $serverList[$i]['id']
-				);
-				$this->t->set_var('edit_link',$phpgw->link('/index.php',$linkData));
-				$linkData = array
-				(
-					'menuaction'	=> 'qmailldap.uiqmailldap.deleteServer',
-					'serverid'	=> $serverList[$i]['id']
-				);
-				$this->t->set_var('delete_link',$phpgw->link('/index.php',$linkData));
-				$this->t->set_var('row_color',$this->rowColor[$i%2]);
-				$this->t->parse('rows','row',True);
+				for ($i=0; $i < count($serverList); $i++)
+				{
+					$this->t->set_var('server_name',$serverList[$i]['qmail_servername']);
+					$this->t->set_var('server_description',$serverList[$i]['description']);
+					$linkData = array
+					(
+						'menuaction'	=> 'qmailldap.uiqmailldap.editServer',
+						'pagenumber'	=> '0',
+						'serverid'	=> $serverList[$i]['id']
+					);
+					$this->t->set_var('edit_link',$phpgw->link('/index.php',$linkData));
+					$linkData = array
+					(
+						'menuaction'	=> 'qmailldap.uiqmailldap.deleteServer',
+						'serverid'	=> $serverList[$i]['id']
+					);
+					$this->t->set_var('delete_link',$phpgw->link('/index.php',$linkData));
+					$this->t->set_var('row_color',$this->rowColor[$i%2]);
+					$this->t->parse('rows','row',True);
+				}
 			}
-
+			
 			$this->t->parse("out","main");
 			
 			print $this->t->get('out','main');
@@ -179,6 +198,16 @@
 			$phpgw->common->phpgw_footer();
 		}
 
+
+		function save()
+		{
+			global $HTTP_POST_VARS, $HTTP_GET_VARS;
+			#print phpinfo();
+			#exit;
+			$this->boqmailldap->save($HTTP_POST_VARS, $HTTP_GET_VARS);
+			$this->editServer($HTTP_GET_VARS["serverid"],$HTTP_GET_VARS["pagenumber"]);
+		}
+		
 		function translate()
 		{
 			global $phpgw_info;			
@@ -189,11 +218,14 @@
 			$this->t->set_var('lang_server_name',lang('server name'));
 			$this->t->set_var('lang_server_description',lang('description'));
 			$this->t->set_var('lang_edit',lang('edit'));
+			$this->t->set_var('lang_save',lang('save'));
 			$this->t->set_var('lang_delete',lang('delete'));
 			$this->t->set_var('lang_add',lang('add'));
+			$this->t->set_var('lang_done',lang('Done'));
 			$this->t->set_var('lang_remove',lang('remove'));
-			$this->t->set_var('lang_add_to_local',lang('add also to local domains '));
+			$this->t->set_var('lang_add_to_local',lang('add also to local domains'));
 			$this->t->set_var('lang_ldap_server',lang('LDAP server'));
+			$this->t->set_var('lang_ldap_basedn',lang('LDAP basedn'));
 			$this->t->set_var('lang_ldap_server_admin',lang('admin dn'));
 			$this->t->set_var('lang_ldap_server_password',lang('admin password'));
 		}

@@ -24,9 +24,8 @@
 			'getServerList'		=> True,
 			'getLocals'		=> True,
 			'getRcptHosts'		=> True,
-			'delete_note'		=> True,
-			'read_preferences'	=> True,
-			'save_preferences'	=> True
+			'getLDAPStorageData'	=> True,
+			'abcdefgh'		=> True
 		);
 
 		function boqmailldap()
@@ -45,27 +44,34 @@
 		{
 		}
 		
+		function getLDAPStorageData($_serverid)
+		{
+			$storageData = $this->soqmailldap->getLDAPStorageData($_serverid);
+			return $storageData;
+		}
+		
 		function getServerList()
 		{
-			$data = array
-			(
-				'0'	=> array
-				(
-					'servername'		=> 'gateway.intranet.local',
-					'description'		=> 'Standard Server',
-					'default_ldap_server'	=> '1',
-					'qmail_base_dn'		=> 'ou=qmailldap, ou=future_project, dc=intranet, dc=local',
-					'id'			=> '0'
-				),
-				'1'	=> array
-				(
-					'servername'	=> 'gateway.intranet.local',
-					'description'	=> 'Standard Server1',
-					'id'		=> '1'
-				)
-			);
-			
-			return $data;
+			$serverList = $this->soqmailldap->getServerList();
+			return $serverList;
+		}
+		
+		function save($_postVars, $_getVars)
+		{
+			switch ($_postVars["bo_action"])
+			{
+				case "save_ldap":
+					#print "hallo".$_getVars["serverid"]." ".$_postVars["servername"]."<br>";
+					$data = array
+					(
+						"qmail_servername"	=> $_postVars["qmail_servername"],
+						"description"		=> $_postVars["description"],
+						"ldap_basedn"		=> $_postVars["ldap_basedn"],
+						"id"			=> $_getVars["serverid"]
+					);
+					$this->soqmailldap->update("save_ldap",$data);
+					break;
+			}
 		}
 
 	}

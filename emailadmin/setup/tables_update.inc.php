@@ -32,4 +32,14 @@
 		return $setup_info['notes']['currentver'];
 	}
 */
+	$test[] = "0.0.1";
+	function qmailldap_upgrade0_0_1()
+	{
+		global $setup_info,$phpgw_setup;
+		
+		$phpgw_setup->oProc->AddColumn("phpgw_qmailldap", "description", array('type' => 'varchar', 'precision' => 200));		
+
+		$setup_info['notes']['currentver'] = '0.0.2';
+		return $setup_info['notes']['currentver'];
+	}
 ?>

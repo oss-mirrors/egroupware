@@ -15,7 +15,7 @@
 
 	$setup_info['qmailldap']['name']      = 'qmailldap';
 	$setup_info['qmailldap']['title']     = 'QMailLDAP';
-	$setup_info['qmailldap']['version']   = '0.0.1';
+	$setup_info['qmailldap']['version']   = '0.0.2';
 	$setup_info['qmailldap']['app_order'] = 99;
 	$setup_info['qmailldap']['tables']    = array('phpgw_qmailldap');
 	$setup_info['qmailldap']['enable']    = 1;

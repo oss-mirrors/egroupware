@@ -13,7 +13,7 @@
 		</tr>
 		<tr bgcolor="{done_row_color}">
 			<td>
-				<a href="{done_link}">Done</a>
+				<a href="{done_link}">{lang_done}</a>
 			</td>
 		</tr>
 		</table>

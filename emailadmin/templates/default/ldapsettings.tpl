@@ -12,19 +12,20 @@
 		</tr>
 		<tr bgcolor="{done_row_color}">
 			<td>
-				<a href="{done_link}">Done</a>
+				<a href="{done_link}">{lang_done}</a>
 			</td>
 		</tr>
 		</table>
 	</td>
 	<td width="90%" valign="top">
+		<form action="{form_action}" method="post">
 		<table border="0" cellspacing="1" cellpading="0" width="100%">
 		<tr bgcolor="{bg_01}">
 			<td>
 				{lang_server_name}
 			</td>
 			<td>
-				<input type="text" size="50">
+				<input type="text" size="50" name="qmail_servername" value="{qmail_servername}">
 			</td>
 		</tr>
 		<tr bgcolor="{bg_02}">
@@ -32,7 +33,7 @@
 				{lang_server_description}
 			</td>
 			<td>
-				<input type="text" size="50">
+				<input type="text" size="50" name="description" value="{description}">
 			</td>
 		</tr>
 		<tr bgcolor="{bg_01}">
@@ -45,13 +46,21 @@
 		</tr>
 		<tr bgcolor="{bg_02}">
 			<td>
+				{lang_ldap_basedn}
+			</td>
+			<td>
+				<input type="text" size="50" name="ldap_basedn" value="{ldap_basedn}">
+			</td>
+		</tr>
+		<tr bgcolor="{bg_01}">
+			<td>
 				{lang_ldap_server_admin}
 			</td>
 			<td>
 				<input type="text" size="50">
 			</td>
 		</tr>
-		<tr bgcolor="{bg_01}">
+		<tr bgcolor="{bg_02}">
 			<td>
 				{lang_ldap_server_password}
 			</td>
@@ -59,7 +68,14 @@
 				<input type="text" size="50">
 			</td>
 		</tr>
+		<tr bgcolor="{bg_01}">
+			<td colspan="2" align="right">
+				<input type="submit" name="save_ldap" value="{lang_save}">
+				<input type="hidden" name="bo_action" value="save_ldap">
+			</td>
+		</tr>
 		</table>
+		</form>
 	</td>
 </tr>
 </table>
