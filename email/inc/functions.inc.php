@@ -69,6 +69,11 @@
 		$mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
 	}
 
+	//echo '<br>user_pass='.$phpgw_info['user']['passwd']
+	//   .'<br>email_pass='.$phpgw_info['user']['preferences']['email']['passwd'].'<br><br>';
+	//var_dump($phpgw_info['user']['preferences']['email']);
+	//var_dump($phpgw_info['user']);
+
 // ----  Error Msg And Exit If Mailbox Connection Not Established  -----
 	if (!$mailbox && !($in_mainscreen || $in_preferences))
 	{
