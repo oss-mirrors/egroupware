@@ -36,6 +36,9 @@
 
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 
+			$this->bopreferences    = CreateObject('felamimail.bopreferences');
+			$this->mailPreferences  = $this->bopreferences->getPreferences();
+			
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 
