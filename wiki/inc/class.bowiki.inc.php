@@ -75,7 +75,7 @@
 		{
 			if (!is_object($page))
 			{
-				$page = page($page,$lang,$wiki_id);
+				$page = $this->page($page,$lang,$wiki_id);
 				$page->read();
 			}
 			global $ViewBase;
