@@ -110,7 +110,7 @@
    </div>
   </form>
 <?php
-include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+$phpgw->common->phpgw_footer();
   } else {
      //$current_date = date("ymdHi");		//set timestamp
 

@@ -185,7 +185,7 @@ $lstCategory=$phpgw->db->f("t_category");
 
 </form>
 <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
+  $phpgw->common->phpgw_footer();
   } else {
     $txtDetail = $prevtxtdetail;
 
