@@ -11,31 +11,35 @@
   /* $Id$ */
 
     {
-    echo "<p>\n";
-    $imgfile = $phpgw->common->get_image_dir('projects') . '/' . $appname . '.gif';
-    if (file_exists($imgfile)) {
-	$imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
-    }
-    else {
-    $imgfile = $phpgw->common->get_image_dir('projects') . '/navbar.gif';
-	if (file_exists($imgfile)) {
-    	    $imgpath = $phpgw->common->get_image_path('projects') . '/navbar.gif';
+	echo "<p>\n";
+	$imgfile = $phpgw->common->get_image_dir('projects') . '/' . $appname . '.gif';
+	if (file_exists($imgfile)) 
+	{
+	    $imgpath = $phpgw->common->get_image_path('projects') . '/' . $appname . '.gif';
 	}
-	else {
-    	    $imgpath = '';
+	else 
+	{
+	    $imgfile = $phpgw->common->get_image_dir('projects') . '/navbar.gif';
+	    if (file_exists($imgfile)) 
+	    {
+    		$imgpath = $phpgw->common->get_image_path('projects') . '/navbar.gif';
+	    }
+	    else 
+	    {
+    		$imgpath = '';
+	    }
 	}
-    }
 
-    section_start('projects',$imgpath);
+	    section_start('projects',$imgpath);
 
-    $pg = $phpgw->link('/projects/preferences.php');
-    printf("<A href=\"%s\">%s</A><br>", $pg, lang('Project preferences'));
+	    $pg = $phpgw->link('/projects/preferences.php');
+	    printf("<A href=\"%s\">%s</A><br>", $pg, lang('Preferences'));
 
-    $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
-    echo '<a href=' . $pg . '>' . lang('Project access') . '</a><br>';
+	    $pg = $phpgw->link('/preferences/acl_preferences.php','acl_app=projects');
+	    echo '<a href=' . $pg . '>' . lang('Grant access') . '</a><br>';
 
-    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True');
-    echo '<a href=' . $pg . '>' . lang('Project categories') . '</a>';
-    section_end();
+	    $pg = $phpgw->link('/preferences/categories.php','cats_app=projects&cats_level=True');
+	    echo '<a href=' . $pg . '>' . lang('Edit categories') . '</a>';
+	    section_end();
     }
 ?>

@@ -8,7 +8,6 @@ DELETE from lang WHERE message_id='Projects' and app_name='admin' and lang='en' 
 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','common','en','Projects');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','projects','en','Project preferences');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project preferences','preferences','en','Project preferences');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select currency,tax and your address in preferences!','projects','en','Please select currency,tax and your address in preferences!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select your address in preferences!','projects','en','Please select your address in preferences!');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Please select your currency in preferences!','projects','en','Please select your currency in preferences!'); 
@@ -23,8 +22,6 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select users','pr
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select groups','projects','en','Select groups');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','en','Projects');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Username / Group','projects','en','Username / Group');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project access','preferences','en','Project access');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project categories','preferences','en','Project categories');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoice has been created !','projects','en','Invoice has been created !');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('per','projects','en','per');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('All','projects','en','All');
