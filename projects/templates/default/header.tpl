@@ -17,7 +17,7 @@
 			&nbsp;|&nbsp;
 			<a href="{link_hours}"><b>{lang_hours}</b></a>
 			&nbsp;|&nbsp;
-			<a href="{link_delivery}"><b>{lang_delivery}</b></a>
+			<a href="{link_delivery}"><b>{lang_deliveries}</b></a>
 			&nbsp;|&nbsp;
 			<a href="{link_billing}"><b>{lang_billing}</b></a>
 			&nbsp;|&nbsp;
