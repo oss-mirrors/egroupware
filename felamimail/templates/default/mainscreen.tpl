@@ -248,7 +248,7 @@ doLoad();
 <!-- END status_row_tpl -->
 
 <!-- BEGIN header_row -->
-<tr class="{row_css_class}" sstyle="height:15px;" onmouseover="javascript:style.backgroundColor='#E6E7E4';" onmouseout="javascript:style.backgroundColor='#FFFFFF';">
+<tr class="{row_css_class}" onmouseover="javascript:style.backgroundColor='#F6F7F4';" onmouseout="javascript:style.backgroundColor='#FFFFFF';">
 	<td width="1%" align="center">
 		<input class="{row_css_class}" type="checkbox" id="msgSelectInput" name="msg[]" value="{message_uid}" onClick="toggleFolderRadio(this)" {row_selected}>
 	</td>
