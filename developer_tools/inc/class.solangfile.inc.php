@@ -214,7 +214,7 @@
 					}
 					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
 					$_mess_id = strtolower(trim($message_id));
-					$langarray[$_mess_id]['message_id'] = $mess_id;
+					$langarray[$_mess_id]['message_id'] = $_mess_id;
 					$langarray[$_mess_id]['app_name']   = trim($app_name);
 					$langarray[$_mess_id]['content']    = trim($content);
 				}
@@ -293,7 +293,7 @@
 				/*echo '<br><br><pre> checking ' . $data['message_id'] . "\t" . $data['app_name'] . "\t" . $userlang . "\t" . $data['content'];*/
 				$this->db->query('SELECT COUNT(*) FROM phpgw_lang'
 					."  WHERE message_id='" . $this->db->db_addslashes($data['message_id'])
-					."' AND lang='$userlang' AND app_name='$app_name'",__LINE__,__FILE__);                                $this->db->next_record();
+					."' AND lang='".$userlang."' AND app_name='".$app_name."'",__LINE__,__FILE__);
 				$this->db->next_record();
 
 				if ($this->db->f(0) == 0)

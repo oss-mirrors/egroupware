@@ -92,6 +92,7 @@
 			$GLOBALS['phpgw']->session->appsession('developer_target_lang','developer_tools','');
 			$GLOBALS['phpgw']->session->appsession('developer_source_file','developer_tools','');
 			$GLOBALS['phpgw']->session->appsession('developer_target_file','developer_tools','');
+			$GLOBALS['phpgw']->session->appsession('developer_t_lang','developer_tools','');
 			$GLOBALS['phpgw']->session->appsession('developer_loaded_apps','developer_tools','');
 		}
 
