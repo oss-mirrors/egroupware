@@ -25,7 +25,7 @@
 
 include ($phpgw_info["server"]["api_dir"] . "/phpgw_network.inc.php");
 
-class HEADLINES extends network {
+class headlines extends network {
   // socket timeout in seconds
   var $current_time;
 
@@ -94,7 +94,7 @@ class HEADLINES extends network {
   // determines if the headlines were cached less than $cachetime minutes ago
   function isCached() {
     $this->current_time = time();
-    return (($this->current_time - $this->lastread)<$this->cachetime * 60);
+    return (($this->current_time - $this->lastread) < ($this->cachetime * 60));
   }
 
   // get the links from the database
