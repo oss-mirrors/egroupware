@@ -252,6 +252,8 @@ function get_max_upload_size()
 	print_bit_field('Show Syndication Link', 'SHOW_XML_LINK');
 	print_bit_field('Attachment Referrer Check', 'DWLND_REF_CHK');
 	print_bit_field('Show Reply Reference', 'SHOW_REPL_LNK');
+	print_bit_field('Disable Report to Moderator', 'DISABLE_REPORT_LNK');
+	print_bit_field('Disable Ignore User', 'DISABLE_IGNORE_LIST');
 
 	if (function_exists('ob_gzhandler')) {
 		print_bit_field('Use PHP compression', 'PHP_COMPRESSION_ENABLE');

@@ -331,3 +331,9 @@ Whether or not to show a link (beside the message subject) to the message that t
 
 {{{ALLOW_EMAIL	FUD_OPT_2	1073741824
 Enable/disable the forum's built-in email client.}}}
+
+{{{DISABLE_REPORT_LNK	FUD_OPT_3	1
+Do not show the 'report to moderator' link inside each message.}}}
+
+{{{DISABLE_IGNORE_LIST	FUD_OPT_3	2
+Disable ignore user functionality.}}}

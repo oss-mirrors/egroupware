@@ -46,19 +46,24 @@ if (_uid) {
 	if ($usr->buddy_list) {
 		$usr->buddy_list = @unserialize($usr->buddy_list);
 	}
-	if ($usr->ignore_list) {
-		$usr->ignore_list = @unserialize($usr->ignore_list);
-	}
 
-	/* handle temporarily un-hidden users */
-	if (isset($_GET['reveal'])) {
-		$tmp = explode(':', $_GET['reveal']);
-		foreach($tmp as $v) {
-			if (isset($usr->ignore_list[$v])) {
-				$usr->ignore_list[$v] = 0;
-			}
+	if (!($FUD_OPT_3 & 2)) {
+		if ($usr->ignore_list) {
+			$usr->ignore_list = @unserialize($usr->ignore_list);
 		}
-		define('unignore_tmp', '&amp;reveal='.$_GET['reveal']);
+
+		/* handle temporarily un-hidden users */
+		if (isset($_GET['reveal'])) {
+			$tmp = explode(':', $_GET['reveal']);
+			foreach($tmp as $v) {
+				if (isset($usr->ignore_list[$v])) {
+					$usr->ignore_list[$v] = 0;
+				}
+			}
+			define('unignore_tmp', '&amp;reveal='.$_GET['reveal']);
+		} else {
+			define('unignore_tmp', '');
+		}
 	} else {
 		define('unignore_tmp', '');
 	}
@@ -101,6 +106,7 @@ function tmpl_drawmsg($obj, $usr, $perms, $hide_controls, &$m_num, $misc)
 {
 	$o1 =& $GLOBALS['FUD_OPT_1'];
 	$o2 =& $GLOBALS['FUD_OPT_2'];
+	$o3 =& $GLOBALS['FUD_OPT_3'];
 	$a =& $obj->users_opt;
 	$b =& $usr->users_opt;
 	$c =& $obj->level_opt;
@@ -153,7 +159,7 @@ function tmpl_drawmsg($obj, $usr, $perms, $hide_controls, &$m_num, $misc)
 	}
 
 	/* check if the message should be ignored and it is not temporarily revelead */
-	if ($usr->ignore_list && !empty($usr->ignore_list[$obj->poster_id]) && !isset($GLOBALS['__FMDSP__'][$obj->id])) {
+	if (!($o3 & 2) && $usr->ignore_list && !empty($usr->ignore_list[$obj->poster_id]) && !isset($GLOBALS['__FMDSP__'][$obj->id])) {
 		$rev_url = make_reveal_link($obj->id);
 		$un_ignore_url = make_tmp_unignore_lnk($obj->poster_id);
 		return !$hide_controls ? '{TEMPLATE: dmsg_ignored_user_message}' : '{TEMPLATE: dmsg_ignored_user_message_static}';
@@ -199,7 +205,11 @@ function tmpl_drawmsg($obj, $usr, $perms, $hide_controls, &$m_num, $misc)
 
 			if (_uid && _uid != $obj->user_id) {
 				$buddy_link	= !isset($usr->buddy_list[$obj->user_id]) ? '{TEMPLATE: dmsg_buddy_link_add}' : '{TEMPLATE: dmsg_buddy_link_remove}';
-				$ignore_link	= !isset($usr->ignore_list[$obj->user_id]) ? '{TEMPLATE: dmsg_add_user_ignore_list}' : '{TEMPLATE: dmsg_remove_user_ignore_list}';
+				if (!($o3 & 2)) {
+					$ignore_link	= !isset($usr->ignore_list[$obj->user_id]) ? '{TEMPLATE: dmsg_add_user_ignore_list}' : '{TEMPLATE: dmsg_remove_user_ignore_list}';
+				} else {
+					$ignore_link	= '';
+				}
 				$dmsg_bd_il	= '{TEMPLATE: dmsg_bd_il}';
 			} else {
 				$dmsg_bd_il = '';
@@ -334,7 +344,7 @@ function tmpl_drawmsg($obj, $usr, $perms, $hide_controls, &$m_num, $misc)
 		$msg_icon = !$obj->icon ? '{TEMPLATE: dmsg_no_msg_icon}' : '{TEMPLATE: dmsg_msg_icon}';
 		$signature = ($obj->sig && $o1 & 32768 && $obj->msg_opt & 1 && $b & 4096) ? '{TEMPLATE: dmsg_signature}' : '';
 
-		$report_to_mod_link = '{TEMPLATE: dmsg_report_to_mod_link}';
+		$report_to_mod_link = $o3 & 1 ? '' : '{TEMPLATE: dmsg_report_to_mod_link}';
 
 		if ($obj->reply_to && $obj->reply_to != $obj->id && $o2 & 536870912) {
 			if ($_GET['t'] != 'tree' && $_GET['t'] != 'msg') {
