@@ -77,12 +77,14 @@ class soWikiPage
 		$this->use_langs = array($this->user_lang,'');
 		// english as fallback, should be configurable or a pref
 		if ($this->user_lang != 'en') $this->use_langs[] = 'en';
-		$this->lang_priority_sql  = "IF(body='',".(count($this->use_langs)+1).',CASE lang';
+//		$this->lang_priority_sql  = "IF(body='',".(count($this->use_langs)+1).',CASE lang';
+		$this->lang_priority_sql  = "CASE body WHEN '' THEN ".(count($this->use_langs)+1).' ELSE (CASE lang';
+
 		foreach($this->use_langs as $order => $lang)
 		{
 			$this->lang_priority_sql .= ' WHEN '.$this->db->quote($lang)." THEN $order";
 		}
-		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END) AS lang_priority';
+		$this->lang_priority_sql  .= ' ELSE '.count($this->use_langs).' END) END AS lang_priority';
 	}
 
 	/*!
