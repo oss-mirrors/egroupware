@@ -54,6 +54,10 @@
 			{
 				$email_sig_clean = stripslashes($email_sig);
 			}
+			else
+			{
+				$email_sig_clean = $email_sig;
+			}
 			// (2) turn offensive single and double quotes into harmless html entities like used in URLs
 			$email_sig_clean = htmlspecialchars($email_sig_clean, ENT_QUOTES);
 			//note: ENT_QUOTES adds single quotes ' to the translation, but only in php >3.0.17
