@@ -190,9 +190,8 @@ class mail_msg_wrappers extends mail_msg_base
 		//$debug_folder_status_info = True;
 		$debug_folder_status_info = False;
 
-		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: ENTERING<br>'; }
+		if ($debug_folder_status_info) { echo 'class_msg: get_folder_status_info: ENTERING<br>'; }
 
-		/*
 		// do we have cached data in L1 cache / class object var, that we can use
 		if ((!$force_refresh)
 		&& ($this->folder_status_info)
@@ -200,10 +199,9 @@ class mail_msg_wrappers extends mail_msg_base
 		&& ($this->folder_status_info['folder_checked'] == $this->folder))
 		{
 			// this data is cached, L1 cache, temp cache, so it should still be "fresh"
-			if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: LEAVING returning L1/class var cached data<br>'; }
+			if ($debug_folder_status_info) { echo 'class_msg: get_folder_status_info: LEAVING returning L1/class var cached data<br>'; }
 			return $this->folder_status_info;
 		}
-		*/
 		
 		// initialize return structure
 		$return_data = Array();
@@ -263,7 +261,7 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 		// cache data in a class var (L1 Cache)
 		$this->folder_status_info = $return_data;
-		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: LEAVING returning data obtained from server<br>'; }
+		if ($debug_folder_status_info) { echo 'class_msg: get_folder_status_info: LEAVING returning data obtained from server<br>'; }
 		return $return_data;
 	}
 
@@ -334,6 +332,9 @@ class mail_msg_wrappers extends mail_msg_base
 		if (($havefolder == True)
 		&& ($official_folder_long != ''))
 		{
+			// delete session msg array data thAt is now stale
+			$this->expire_sessiondata(0,'msg_array');
+			// do the append
 			return $this->dcom->append($this->mailsvr_stream, "$server_str"."$official_folder_long", $message, $flags);
 		}
 		else
@@ -348,6 +349,9 @@ class mail_msg_wrappers extends mail_msg_base
 
 	function phpgw_mail_move($msg_list,$mailbox,$flags=0)
 	{
+		// delete session msg array data thAt is now stale
+		$this->expire_sessiondata(0,'msg_array');
+
 		return $this->dcom->mail_move($this->mailsvr_stream,$msg_list,$mailbox,$flags);
 	}
 
@@ -373,6 +377,9 @@ class mail_msg_wrappers extends mail_msg_base
 			// if we are deleting FROM the trash folder, we do a straight delete
 			if ($currentfolder_short == $trash_folder_short)
 			{
+				// delete session msg array data thAt is now stale
+				$this->expire_sessiondata(0,'msg_array');
+				
 				//return imap_delete($stream,$msg_num);
 				return $this->dcom->delete($this->mailsvr_stream, $msg_num);
 			}
@@ -409,11 +416,17 @@ class mail_msg_wrappers extends mail_msg_base
 				// if we have the name, do the move to the trash folder
 				if ($havefolder)
 				{
+					// delete session msg array data thAt is now stale
+					$this->expire_sessiondata(0,'msg_array');
+					
 					//return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
 					return $this->phpgw_mail_move($msg_num,$official_trash_folder_long);
 				}
 				else
 				{
+					// delete session msg array data thAt is now stale
+					$this->expire_sessiondata(0,'msg_array');
+					
 					// we do not have the trash official folder name, but we have to do something
 					// can't just leave the mail sitting there
 					// so just straight delete the message
@@ -424,6 +437,9 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 		else
 		{
+			// delete session msg array data thAt is now stale
+			$this->expire_sessiondata(0,'msg_array');
+			
 			//return imap_delete($stream,$msg_num);
 			return $this->dcom->delete($this->mailsvr_stream, $msg_num);
 		}
@@ -923,13 +939,40 @@ class mail_msg_wrappers extends mail_msg_base
 	}
 
 	// attempt to use appsession
+	function expire_sessiondata($acct_num=0,$data_name='misc')
+	{
+		//$debug_session_data = True;
+		$debug_session_data = False;
+		
+		if ($debug_session_data) { echo 'mail_msg: expire_sessiondata: ENTERED, $this->session_enabled='.serialize($this->session_enabled).'<br>'; }
+		
+		// get rid of any L1 cache folder status info
+		if ($debug_session_data) { echo 'mail_msg: expire_sessiondata: clearing L1 cache/class var $this->folder_status_info<br>'; }
+		$this->folder_status_info = array();
+		// save blank data to session to erase/expire it
+		$empty_data = '';
+		$this->save_sessiondata($acct_num,$data_name,$empty_data);
+		if ($debug_session_data) { echo 'mail_msg: expire_sessiondata: LEAVING<br>'; }
+
+	}
+	
 	function save_sessiondata($acct_num=0,$data_name='misc',$data)
 	{
 		//$debug_session_data = True;
 		$debug_session_data = False;
 		
 		if ($debug_session_data) { echo 'mail_msg: save_sessiondata: ENTERED, $this->session_enabled='.serialize($this->session_enabled).'<br>'; }
-		if ($this->session_enabled)
+		if (($this->session_enabled)
+		&& (!$data))
+		{
+			// EXPIRE the data
+			$location = 'acct='.(string)$acct_num.';dataname='.$data_name;
+			$app = 'email';
+			$meta_data = '';
+			if ($debug_session_data) { echo 'mail_msg: save_sessiondata: saving BLANK data (expiriring) location: ['.$location.'] $app='.$app.'; $meta_data dump:<pre>'; print_r($meta_data); echo '</pre>'; }
+			$GLOBALS['phpgw']->session->appsession($location,$app,$meta_data);
+		}
+		elseif ($this->session_enabled)
 		{
 			$folder_info = $this->get_folder_status_info();
 			
@@ -953,12 +996,14 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 		if ($debug_session_data) { echo 'mail_msg: save_sessiondata: LEAVING<br>'; }
 	}
+	
 	function read_sessiondata($acct_num=0,$data_name='misc')
 	{
 		//$debug_session_data = True;
 		$debug_session_data = False;
 		
 		if ($debug_session_data) { echo 'mail_msg: read_sessiondata: ENTERED, $this->session_enabled='.serialize($this->session_enabled).'<br>'; }
+		
 		if ($this->session_enabled)
 		{
 			$folder_info = $this->get_folder_status_info();
@@ -992,10 +1037,15 @@ class mail_msg_wrappers extends mail_msg_base
 					return False;
 				}
 			}
+			elseif ($got_data)
+			{
+				if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, $got_data exists, BUT no handler for $data_name='.$data_name.', so return session data unchecked<br>'; }
+				return $got_data;
+			}
 			else
 			{
-				if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, no handler for $data_name='.$data_name.', so return session data unchecked<br>'; }
-				return $got_data;
+				if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, returning False, $got_data does NOT EXIST for $data_name='.$data_name.'<br>'; }
+				return False;
 			}
 		}
 	}

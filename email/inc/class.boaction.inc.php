@@ -240,6 +240,8 @@
 			&& (count($goto_args) > 0))
 			{
 				// attempting to reuse existing object msg
+				// FORCE refreesh of folder data that is in L1 cache (object var)
+				//$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info(True);
 				$obj = CreateObject('email.uiindex');
 				$obj->index($goto_args);
 				exit;
