@@ -13,11 +13,11 @@
 
 	if (! $inindex)
 	{
-		if (! $phpgw_info['user']['preferences']['polls']['show_on_mainscreen'])
+		if (! $GLOBALS['phpgw_info']['user']['preferences']['polls']['show_on_mainscreen'])
 		{
 			return False;
 		}
 	}
 
-	display_poll();  
+	display_poll();
 ?>

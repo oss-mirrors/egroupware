@@ -11,7 +11,8 @@
 
   /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
 		'enable_nextmatchs_class' => True,
@@ -21,39 +22,39 @@
 
 	if ($submit)
 	{
-		$phpgw->db->query("delete from phpgw_polls_settings",__LINE__,__FILE__);
+		$GLOBALS['phpgw']->db->query("delete from phpgw_polls_settings",__LINE__,__FILE__);
 
 		while (list($name,$value) = each($settings))
 		{
-			$phpgw->db->query("insert into phpgw_polls_settings values ('$name','$value')",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("insert into phpgw_polls_settings values ('$name','$value')",__LINE__,__FILE__);
 		}
 		echo '<center>' . lang('Settings updated') . '</center>';
 	}
 	else
 	{
-		$phpgw->db->query("select * from phpgw_polls_settings");
-		while ($phpgw->db->next_record())
+		$GLOBALS['phpgw']->db->query("select * from phpgw_polls_settings");
+		while ($GLOBALS['phpgw']->db->next_record())
 		{
-			$settings[$phpgw->db->f('setting_name')] = $phpgw->db->f('setting_value');
+			$settings[$GLOBALS['phpgw']->db->f('setting_name')] = $GLOBALS['phpgw']->db->f('setting_value');
 		}
 	}
 
-	echo '<form action="' . $phpgw->link('/polls/admin_settings.php') . '" method="POST">';
+	echo '<form action="' . $GLOBALS['phpgw']->link('/polls/admin_settings.php') . '" method="POST">';
 	echo '<table border="0">';
 	echo '<tr><td>' . lang('Allow users to vote more then once') . '</td>'
 		. '    <td><input type="checkbox" name="settings[allow_multiable_votes]"' . ($settings['allow_multiable_votes']?' checked':'') . ' value="True"></td></tr>';
 	echo '<tr><td>' . lang('Select current poll') . '</td>'
 		. '    <td><select name="settings[currentpoll]">';
-	$phpgw->db->query("select * from phpgw_polls_desc order by poll_title",__LINE__,__FILE__);
-	while ($phpgw->db->next_record())
+	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc order by poll_title",__LINE__,__FILE__);
+	while ($GLOBALS['phpgw']->db->next_record())
 	{
-		echo '<option value="' . $phpgw->db->f('poll_id') . '"'
-			. ($settings['currentpoll'] == $phpgw->db->f('poll_id')?' selected':'') 
-			. '>' . $phpgw->db->f('poll_title') . '</option>';
+		echo '<option value="' . $GLOBALS['phpgw']->db->f('poll_id') . '"'
+			. ($settings['currentpoll'] == $GLOBALS['phpgw']->db->f('poll_id')?' selected':'') 
+			. '>' . $GLOBALS['phpgw']->db->f('poll_title') . '</option>';
 	}
 	echo '</select></td></tr>';
 
 	echo '<tr><td colspan="2"><input type="submit" name="submit" value="' . lang('Submit') . '"></td></tr>';
 	echo '</table></form>';
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,26 +11,34 @@
 
   /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
 		'enable_nextmatchs_class' => True,
 		'admin_header'            => True
 	);
+	if ($HTTP_GET_VARS['confirm'])
+	{
+		$GLOBALS['phpgw_info']['flags']['noheader'] = True;
+		$GLOBALS['phpgw_info']['flags']['nonavbar'] = True;
+		$GLOBALS['phpgw_info']['flags']['admin_header'] = False;
+	}
 	include('../header.inc.php');
 
-	if ($confirm)
+	if ($HTTP_GET_VARS['confirm'])
 	{
-		$phpgw->db->query("delete from phpgw_polls_data where vote_id='$vote_id'");
+		$GLOBALS['phpgw']->db->query("delete from phpgw_polls_data where vote_id='" . $HTTP_GET_VARS['vote_id'] . "'");
+		Header('Location: ' . $GLOBALS['phpgw']->link('/polls/admin.php','show=answers'));
 	}
 	else
 	{
 		echo '<p><br><table border="0" width="40%" align="center"><tr><td align="center" colspan="center">';
 		echo lang('Are you sure want to delete this answer ?') . '</td></tr>';
-		echo '<tr><td align="left"><a href="' . $phpgw->link('/polls/admin.php','show=answers') . '">' . lang('No') . '</td>';
-		echo '    <td align="right"><a href="' . $phpgw->link('/polls/admin_deleteanswer.php','vote_id='
-			. $vote_id . '&confirm=True') . '">' . lang('Yes') . '</td></tr>';
+		echo '<tr><td align="left"><a href="' . $GLOBALS['phpgw']->link('/polls/admin.php','show=answers') . '">' . lang('No') . '</td>';
+		echo '    <td align="right"><a href="' . $GLOBALS['phpgw']->link('/polls/admin_deleteanswer.php','vote_id='
+			. $HTTP_GET_VARS['vote_id'] . '&confirm=True') . '">' . lang('Yes') . '</td></tr>';
 		echo '</table>';
 	}
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

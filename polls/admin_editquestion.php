@@ -11,7 +11,8 @@
 
   /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'polls',
 		'enable_nextmatchs_class' => True,
@@ -19,37 +20,39 @@
 	);
 	include('../header.inc.php');
 
-	$p = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$p->set_file(array('admin' => 'admin_form.tpl'));
-	$p->set_block('admin','form','form');
-	$p->set_block('admin','row','row');
+	$GLOBALS['phpgw']->template->set_file(array('admin' => 'admin_form.tpl'));
+	$GLOBALS['phpgw']->template->set_block('admin','form','form');
+	$GLOBALS['phpgw']->template->set_block('admin','row','row');
 
+	$poll_id = $HTTP_GET_VARS['poll_id'] ? $HTTP_GET_VARS['poll_id'] : $HTTP_POST_VARS['poll_id'];
 
-	if ($submit)
+	if ($HTTP_POST_VARS['edit'])
 	{
-		$phpgw->db->query("update phpgw_polls_desc set poll_title='" . addslashes($question)
+		$question = $HTTP_POST_VARS['question'];
+		$GLOBALS['phpgw']->db->query("update phpgw_polls_desc set poll_title='" . addslashes($question)
 			. "' where poll_id='$poll_id'",__LINE__,__FILE__);
-		$p->set_var('message',lang('Question has been updated'));
+		$GLOBALS['phpgw']->template->set_var('message',lang('Question has been updated'));
 	}
 	else
 	{
-		$p->set_var('message','');
+		$GLOBALS['phpgw']->template->set_var('message','');
 	}
 
-	$phpgw->db->query("select * from phpgw_polls_desc where poll_id='$poll_id'");
-	$phpgw->db->next_record();
+	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_desc where poll_id='$poll_id'");
+	$GLOBALS['phpgw']->db->next_record();
 
-	$p->set_var('header_message',lang('Edit poll question'));
-	$p->set_var('td_message','&nbsp;');
-	$p->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$p->set_var('form_action',$phpgw->link('/polls/admin_editquestion.php','poll_id=' . $poll_id));
-	$p->set_var('form_button_1','<input type="submit" name="submit" value="' . lang('Edit') . '">');
-	$p->set_var('form_button_2','</form><form method="POST" action="' . $phpgw->link('/polls/admin.php','show=questions')
+	$GLOBALS['phpgw']->template->set_var('header_message',lang('Edit poll question'));
+	$GLOBALS['phpgw']->template->set_var('td_message','&nbsp;');
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('poll_id',$poll_id);
+	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/polls/admin_editquestion.php','poll_id=' . $poll_id));
+	$GLOBALS['phpgw']->template->set_var('form_button_1','<input type="submit" name="edit" value="' . lang('Edit') . '">');
+	$GLOBALS['phpgw']->template->set_var('form_button_2','</form><form method="POST" action="' . $GLOBALS['phpgw']->link('/polls/admin.php','show=questions')
 		. '"><input type="submit" name="submit" value="' . lang('Cancel') . '">'
 	);
 
-	add_template_row($p,lang('Poll question'),'<input name="question" value="' . $phpgw->db->f('poll_title') . '">');
+	add_template_row($GLOBALS['phpgw']->template,lang('Poll question'),'<input name="question" value="' . $GLOBALS['phpgw']->db->f('poll_title') . '">');
 
-	$p->pparse('out','form');
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->template->pparse('out','form');
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

@@ -11,12 +11,13 @@
 
   /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$phpgw_info = array();
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'polls',
 		'enable_nextmatchs_class' => True
 	);
 	include('../header.inc.php');
   
 	display_poll();
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

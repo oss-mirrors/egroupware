@@ -6,6 +6,7 @@
  <center>{message}</center>
 
  <form method="POST" action="{form_action}">
+ <input type="hidden" name="poll_id" value="{poll_id}">
   <table border="0" align="center">
    <tr bgcolor="{th_bg}">
     <td colspan="2">&nbsp;{td_message}</td>

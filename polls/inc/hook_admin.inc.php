@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Voting Booth Admin'		=> $GLOBALS['phpgw']->link('/polls/admin.php')
+		'Voting Booth Admin' => $GLOBALS['phpgw']->link('/polls/admin.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
