@@ -57,7 +57,7 @@
             <td width="75%" valign="middle">
               <select size="1" name="assignto">
 <?php
-  $phpgw->db->query("select loginid from accounts");
+  $phpgw->db->query("select account_lid from accounts");
 	echo "<option value=none SELECTED>none</option>\n";
   while ($phpgw->db->next_record()) {
     echo "<option value= " . $phpgw->db->f(0) . ">" . $phpgw->db->f(0) . "</option>\n";

@@ -29,13 +29,13 @@
 
   function groupusers_list($db,$curruser)
   {
-    $db->query("select loginid from accounts");
+    $db->query("select account_lid from accounts");
     $db->next_record();
 	echo "<option value=none ";
 	if($db->f(0) == "none")
 		echo "SELECTED ";
 	echo ">none</option>";
-    $db->query("select loginid from accounts"); // no db::rewind function?
+    $db->query("select account_lid from accounts"); // no db::rewind function?
     while ($db->next_record()) {
       $tag="";
       if ($db->f(0) == "$curruser") { $tag = "selected"; }
