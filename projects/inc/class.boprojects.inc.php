@@ -62,6 +62,7 @@
 			global $phpgw;
 
 			$this->soprojects	= CreateObject('projects.soprojects');
+			$this->contacts		= CreateObject('phpgwapi.contacts');
 
 			if ($session)
 			{
@@ -165,8 +166,6 @@
 
 		function read_customer_data($ab_id)
 		{
-			$this->contacts = CreateObject('phpgwapi.contacts');
-
 			$cols = array('n_given'=> 'n_given',
 						'n_family' => 'n_family',
 						'org_name' => 'org_name');
@@ -174,7 +173,6 @@
 			$customer = $this->contacts->read_single_entry($ab_id,$cols);
 			return $customer;
 		}
-
 
 		function coordinator_list()
 		{
@@ -429,7 +427,7 @@
 			{
 				if ($values['project_id'] != 0)
 				{
-					$this->soprojects->edit_project($action, $values, $book_activities, $bill_activities);
+					$this->soprojects->edit_project($values, $book_activities, $bill_activities);
 				}
 			}
 			else

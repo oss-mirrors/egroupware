@@ -81,11 +81,9 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			{hidden_vars}
 			<input type="submit" name="submit" value="{lang_save}"></td>
 		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
 		<td height="50">
-			{hidden_vars}
 			<form method="POST" action="{done_url}">
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
@@ -99,13 +97,11 @@
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			{hidden_vars}
 			<input type="submit" name="submit" value="{lang_save}"></form></td>
 		<td height="50">
-			{hidden_vars}{delete}</td>
+			{delete}</td>
 		<td height="50">
 			<form method="POST" action="{done_url}">
-			{hidden_vars}
 			<input type="submit" name="done" value="{lang_done}"></form></td>
 	</tr>
 </table>

@@ -281,7 +281,7 @@
 					if ($pro[$i]['customer'] != 0) 
 					{
 						$customer = $this->boprojects->read_customer_data($pro[$i]['customer']);
-            			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            			if ($customer[0]['org_name'] == '') { $td_action = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
             			else { $td_action = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 					}
 					else { $td_action = '&nbsp;'; }
@@ -428,7 +428,7 @@
 
 			if ($submit)
 			{
-				$values['cat'] = $cat_id;
+				$values['cat']		= $cat_id;
 				$values['customer'] = $abid;
 				$values['parent']	= $pro_parent;
 
@@ -598,15 +598,15 @@
 				'pro_parent'	=> $pro_parent,
 				'action'		=> $action,
 				'cat_id'		=> $this->cat_id,
-				'project_id'	=> $project_id,
+				'project_id'	=> $project_id
 			);
 
 			if ($submit)
 			{
-				$values['project_id'] = $project_id;
-				$values['cat'] = $cat_id;
-				$values['customer'] = $abid;
-				$values['parent']	= $pro_parent;
+				$values['project_id']	= $project_id;
+				$values['cat']			= $cat_id;
+				$values['customer']		= $abid;
+				$values['parent']		= $pro_parent;
 
 				$error = $this->boprojects->check_values($action, $values, $book_activities, $bill_activities);
 				if (is_array($error))
@@ -717,11 +717,14 @@
 			{
 				$this->t->set_var('addressbook_link',$phpgw->link('/projects/addressbook.php','query='));
 
-				$abid = $values['customer'];
+				if ($values['customer'] != 0)
+				{
+					$abid = $values['customer'];
 
-				$customer = $this->boprojects->read_customer_data($abid);
-            	if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            	else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+					$customer = $this->boprojects->read_customer_data($abid);
+            		if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            		else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+				}
 
 				$customerout = '<input type="button" value="' . lang('Customer') . '" onClick="abook();"></td>' . "\n"
 							. '<td><input type="hidden" name="abid" value="' . $abid . '">' . "\n"
