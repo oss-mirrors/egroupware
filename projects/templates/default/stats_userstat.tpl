@@ -1,9 +1,11 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}<b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-<form method="POST" name="projects_form" action="{actionurl}">
-{hidden_vars}
+<form method="POST" action="{actionurl}">
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
 		<td>{lang_lid}:</td>
@@ -26,26 +28,26 @@
 		<td>{end_date_select}</td>
 	</tr>
 	<tr>
-		<td>{billedonly}:</td>
+		<td>{lang_billedonly}:</td>
 		<td><input type="checkbox" name="billed" value="billed" {billed}></td>
 	</tr>
 </table>
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50">
-			<input type="submit" name="submit" value="{lang_calcb}">
+			<input type="submit" name="submit" value="{lang_calculate}">
 		</td>
 	</tr>
 </table>
 </form>
 <table width="85%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
-		<td width="10%" bgcolor="{th_bg}">{hd_project}</td>
-		<td width="10%" bgcolor="{th_bg}">{hd_activity}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{hd_hours}</td>
+		<td width="10%" bgcolor="{th_bg}">{lang_project}</td>
+		<td width="10%" bgcolor="{th_bg}">{lang_activity}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{lang_hours}</td>
 	</tr>
 
-<!-- BEGIN stat_list -->
+<!-- BEGIN user_stat -->
 
 	<tr bgcolor="{tr_color}">
 		<td>{e_project}</td>
@@ -53,7 +55,7 @@
 		<td align="right">{e_hours}</td>
 	</tr>
 
-<!-- END stat_list -->
+<!-- END user_stat -->
 
 </table>
 </center>

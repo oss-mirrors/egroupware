@@ -37,7 +37,8 @@
 		var $public_functions = array
 		(
 			'list_projects'	=> True,
-			'list_users'	=> True
+			'list_users'	=> True,
+			'user_stat'		=> True
 		);
 
 		function uistatistics()
@@ -83,26 +84,27 @@
 			$this->t->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 
 			$this->t->set_var('lang_category',lang('Category'));
-			$this->t->set_var('lang_select',lang('Select'));
+			$this->t->set_var('lang_calculate',lang('Calculate'));
 			$this->t->set_var('lang_descr',lang('Description'));
 			$this->t->set_var('lang_title',lang('Title'));
 			$this->t->set_var('lang_none',lang('None'));
 			$this->t->set_var('lang_start_date',lang('Start Date'));
 			$this->t->set_var('lang_end_date',lang('End Date'));
 			$this->t->set_var('lang_date_due',lang('Date due'));
-			$this->t->set_var('lang_access',lang('Private'));
-			$this->t->set_var('lang_projects',lang('Projects'));
+			$this->t->set_var('lang_project',lang('Project'));
+			$this->t->set_var('lang_hours',lang('Hours'));
 			$this->t->set_var('lang_jobs',lang('Jobs'));
-			$this->t->set_var('lang_act_number',lang('Activity ID'));
+			$this->t->set_var('lang_activity',lang('Activity'));
 			$this->t->set_var('lang_title',lang('Title'));
 			$this->t->set_var('lang_status',lang('Status'));
-			$this->t->set_var('lang_save',lang('Save'));
 			$this->t->set_var('lang_budget',lang('Budget'));
 			$this->t->set_var('lang_customer',lang('Customer'));
 			$this->t->set_var('lang_coordinator',lang('Coordinator'));
 			$this->t->set_var('lang_done',lang('Done'));
-			$this->t->set_var('lang_edit',lang('Edit'));
-			$this->t->set_var('lang_view',lang('View'));
+			$this->t->set_var('lang_firstname',lang('Firstname'));
+			$this->t->set_var('lang_lastname',lang('Lastname'));
+			$this->t->set_var('lang_lid',lang('Username'));
+			$this->t->set_var('lang_billedonly',lang('Billed only'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
     		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
@@ -428,8 +430,10 @@
 				$this->t->set_var(array('lid' => $users[$i]['account_lid'],
 							'firstname' => $firstname,
 							'lastname' => $lastname));
-				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/projects/stats_userstat.php','account_id=' . $users[$i]['account_id'] . '&sort=' . $sort . '&order=' . $order
-										. '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
+	
+				$link_data['account_id'] = $users[$i]['account_id'];
+				$link_data['menuaction'] = 'projects.uistatistics.user_stat';
+				$this->t->set_var('stat',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 				$this->t->set_var('lang_stat_entry',lang('Statistic'));
 				$this->t->fp('list','user_list',True);
@@ -441,509 +445,157 @@
 			$this->save_sessiondata($action);
 		}
 
-		function add_project()
+		function user_stat()
 		{
-			global $submit, $cat_id, $new_cat, $abid, $name, $values, $book_activities, $bill_activities, $pro_parent, $action;
-
-			if ($new_cat)
-			{
-				$cat_id = $new_cat;
-			}
+			global $submit, $billed, $account_id;
 
 			$link_data = array
 			(
-				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_parent'	=> $pro_parent,
-				'action'		=> $action,
-				'cat_id'		=> $cat_id
+				'menuaction'	=> 'projects.uistatistics.user_stat',
+				'action'		=> 'ustat',
+				'account_id'	=> $account_id,
+				'billed'		=> $billed
 			);
 
-			if ($submit)
+			if (! $account_id)
 			{
-				$values['cat']		= $cat_id;
-				$values['customer'] = $abid;
-				$values['parent']	= $pro_parent;
-
-				$error = $this->boprojects->check_values($action, $values, $book_activities, $bill_activities);
-				if (is_array($error))
-				{
-					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
-				}
-				else
-				{
-					$this->boprojects->save_project($action, $values, $book_activities, $bill_activities);
-					Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
-				}
+				Header('Location: ' . $phpgw->link('/index.php','menuaction=projects.uistatistics.list_users&action=ustat'));
 			}
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('projects_add' => 'form.tpl'));
-			$this->t->set_block('projects_add','add','addhandle');
-			$this->t->set_block('projects_add','edit','edithandle');
+			$this->t->set_file(array('user_stat_t' => 'stats_userstat.tpl'));
+			$this->t->set_block('user_stat_t','user_stat','stat');
 
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$currency = $this->boprojects->get_prefs();
-			}
-
-			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$link_data['menuaction'] = 'projects.uiprojects.add_project';
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
-
-			$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
-
-			$this->t->set_var('number',$values['number']);
-			$this->t->set_var('title',$values['title']);
-			$this->t->set_var('descr',$values['descr']);
-
-			if (!$values['smonth'])
-			{
-				$values['smonth'] = date('m',time());
-			}
-
-			if (!$values['sday'])
-			{
-				$values['sday'] = date('d',time());
-			}
-
-			if (!$values['syear'])
-			{
-				$values['syear'] = date('Y',time());
-			}
-
-			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																				$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-																				$this->sbox->getDays('values[sday]',$values['sday'])));
-			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-																				$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-																				$this->sbox->getDays('values[eday]',$values['eday'])));
-
-
-			$this->t->set_var('status_list',$this->status_format($values['status']));
-
-			$this->t->set_var('coordinator_list',$this->coordinator_format($values['coordinator']));
-
-			$this->t->set_var('budget',$values['budget']);
-
-			$this->t->set_var('access', '<input type="checkbox" name="values[access]" value="True"'
-										. ($values['access'] == 'private'?' checked':'') . '>');
-
-			if ($action == 'mains')
-			{
-				$this->t->set_var('lang_action',lang('Add project'));
-				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$cat_id,True) . '</select>';
-
-				$this->t->set_var('cat',$cat);
-				$this->t->set_var('lang_parent','');
-				$this->t->set_var('pro_parent','');
-				$this->t->set_var('lang_choose',lang('Generate Project ID ?'));
-				$this->t->set_var('lang_number',lang('Project ID'));
-
-// ------------ activites bookable ----------------------
-
-				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id, False));
-
-// -------------- activities billable ---------------------- 
-
-    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id, True));
-			}
-			else
-			{
-				if ($pro_parent && $action == 'subs')
-				{
-					$parent = $this->boprojects->read_single_project($pro_parent);
-
-					$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($parent['number']) . ' ' . $GLOBALS['phpgw']->strip_html($parent['title']));
-					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
-					$cat_id = $parent['cat'];
-					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($project_id = '', $pro_parent, False));				
-    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id = '', $pro_parent, True));
-
-					$abid = $parent['customer'];
-				}
-
-				$this->t->set_var('lang_parent',lang('Main project:'));
-				$this->t->set_var('lang_action',lang('Add job'));
-				$this->t->set_var('lang_choose',lang('Generate Job ID ?'));
-				$this->t->set_var('lang_number',lang('Job ID'));
-			}
-
-			$customer = $this->boprojects->read_customer_data($abid);
-            if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-
-			$this->t->set_var('name',$name);
-			$this->t->set_var('abid',$abid);
-
-			$this->t->set_var('edithandle','');
-			$this->t->set_var('addhandle','');
-			$this->t->pfp('out','projects_add');
-			$this->t->pfp('addhandle','add');
-		}
-
-		function edit_project()
-		{
-			global $submit, $cat_id, $new_cat, $abid, $name, $values, $book_activities, $bill_activities, $project_id, $action, $pro_parent;
-
-			if ($new_cat)
-			{
-				$cat_id = $new_cat;
-			}
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_parent'	=> $pro_parent,
-				'action'		=> $action,
-				'project_id'	=> $project_id,
-				'cat_id'		=> $cat_id
-			);
-
-			if ($submit)
-			{
-				$values['project_id']	= $project_id;
-				$values['cat']			= $cat_id;
-				$values['customer']		= $abid;
-				$values['parent']		= $pro_parent;
-
-				$error = $this->boprojects->check_values($action, $values, $book_activities, $bill_activities);
-				if (is_array($error))
-				{
-					$this->t->set_var('message',$GLOBALS['phpgw']->common->error_list($error));
-				}
-				else
-				{
-					$this->boprojects->save_project($action, $values, $book_activities, $bill_activities);
-					Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
-				}
-			}
-
-			$this->display_app_header();
-
-			$this->t->set_file(array('projects_edit' => 'form.tpl'));
-			$this->t->set_block('projects_edit','add','addhandle');
-			$this->t->set_block('projects_edit','edit','edithandle');
-
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$currency = $this->boprojects->get_prefs();
-			}
-
-			$this->t->set_var('done_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
-
-			$link_data['menuaction'] = 'projects.uiprojects.edit_project';
+			$this->t->set_var('lang_action',lang('User statistic'));
 			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
-			$values = $this->boprojects->read_single_project($project_id);
+			$cached_data = $this->boprojects->cached_accounts($account_id);
 
-			$this->t->set_var('lang_choose','');
-			$this->t->set_var('choose','');
+			$this->t->set_var('lid',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_lid']));
+			$this->t->set_var('firstname',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_firstname']));
+			$this->t->set_var('lastname',$GLOBALS['phpgw']->strip_html($cached_data[$account_id]['account_lastname']));
 
-			$this->t->set_var('number',$values['number']);
-			$this->t->set_var('title',$values['title']);
-			$this->t->set_var('descr',$values['descr']);
+			$this->nextmatchs->alternate_row_color(&$this->t);
 
-			if ($values['sdate'] == 0)
+			if (!$submit)
 			{
-				$values['sday'] = 0;
-				$values['smonth'] = 0;
-				$values['syear'] = 0;
+				$emonth = date('m',time());
+				$eday = date('d',time());
+				$eyear = date('Y',time());
+				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
+			}
+
+			if (!$sdate)
+			{
+				$smonth = 0;
+				$sday = 0;
+				$syear = 0;
 			}
 			else
 			{
-				$values['sday'] = date('d',$values['sdate']);
-				$values['smonth'] = date('m',$values['sdate']);
-				$values['syear'] = date('Y',$values['sdate']);
+				$smonth = date('m',$sdate);
+				$sday = date('d',$sdate);
+				$syear = date('Y',$sdate);
 			}
 
-			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[syear]',$values['syear']),
-																							$this->sbox->getMonthText('values[smonth]',$values['smonth']),
-																							$this->sbox->getDays('values[sday]',$values['sday'])));
-			if ($values['edate'] == 0)
+			if (!$edate)
 			{
-				$values['eday'] = 0;
-				$values['emonth'] = 0;
-				$values['eyear'] = 0;
+				$emonth = 0;
+				$eday = 0;
+				$eyear = 0;
 			}
 			else
 			{
-				$values['eday'] = date('d',$values['edate']);
-				$values['emonth'] = date('m',$values['edate']);
-				$values['eyear'] = date('Y',$values['edate']);
+				$emonth = date('m',$edate);
+				$eday = date('d',$edate);
+				$eyear = date('Y',$edate);
 			}
 
-			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[eyear]',$values['eyear']),
-																							$this->sbox->getMonthText('values[emonth]',$values['emonth']),
-																							$this->sbox->getDays('values[eday]',$values['eday'])));
+			$this->t->set_var('start_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('syear',$syear),
+																						$this->sbox->getMonthText('smonth',$smonth),
+																						$this->sbox->getDays('sday',$sday)));
+			$this->t->set_var('end_date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('eyear',$eyear),
+																					$this->sbox->getMonthText('emonth',$emonth),
+																					$this->sbox->getDays('eday',$eday)));
 
-			$this->t->set_var('status_list',$this->status_format($values['status']));
+// -------------- calculate statistics --------------------------
 
-			$this->t->set_var('coordinator_list',$this->coordinator_format($values['coordinator']));
-
-			$this->t->set_var('budget',$values['budget']);
-
-			$this->t->set_var('access','<input type="checkbox" name="values[access]" value="True"' . ($values['access'] == 'private'?' checked':'') . '>');
-
-			if ($action == 'mains')
+			if($billed)
 			{
-				$this->t->set_var('lang_action',lang('Edit project'));
-				$cat = '<select name="new_cat"><option value="">' . lang('None') . '</option>'
-						.	$this->cats->formated_list('select','all',$values['cat'],True) . '</select>';
-
-				$this->t->set_var('cat',$cat);
-				$this->t->set_var('lang_parent','');
-				$this->t->set_var('pro_parent','');
-				$this->t->set_var('lang_number',lang('Project ID'));
-
-// ------------ activites bookable ----------------------
-
-				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
-
-// -------------- activities billable ---------------------- 
-
-    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
+				$this->t->set_var('billed','checked');
+				$filter .= " AND phpgw_p_hours.status='billed' ";
 			}
-			else
+
+			if (checkdate($smonth,$sday,$syear))
 			{
-				if ($pro_parent && $action == 'subs')
+				$sdate = mktime(2,0,0,$smonth,$sday,$syear);
+				$filter .= " AND phpgw_p_hours.start_date>='$sdate' ";
+			}
+
+			if (checkdate($emonth,$eday,$eyear))
+			{
+				$edate = mktime(2,0,0,$emonth,$eday,$eyear);
+				$filter .= " AND phpgw_p_hours.end_date<='$edate' ";
+			}
+
+			$pro = $this->bostatistics->get_userstat_pro($account_id, $filter);
+
+			while (list($null,$userpro) = each($pro))
+			{
+				$summin = 0;
+				$this->nextmatchs->template_alternate_row_color(&$this->t);
+				$this->t->set_var('e_project',$GLOBALS['phpgw']->strip_html($userpro['title']));
+				$this->t->set_var('e_activity','');
+				$this->t->set_var('e_hours','');
+				$this->t->fp('stat','user_stat',True);
+
+				$hours = $this->bostatistics->get_userstat_hours($account_id, $userpro['project_id'], $filter); 
+				for ($i=0;$i<=count($hours);$i++)
 				{
-					$parent = $this->boprojects->read_single_project($pro_parent);
-
-					$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($parent['number']) . ' ' . $GLOBALS['phpgw']->strip_html($parent['title']));
-					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
-					$cat_id = $parent['cat'];
-					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, False));				
-    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, True));
+//					$this->nextmatchs->template_alternate_row_color(&$this->t);
+					$this->t->set_var('e_project','');
+					$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($hours[$i]['descr']));
+					$summin += $hours[$i]['min'];
+					$hrs = floor($hours[$i]['min']/60) . ':' . sprintf ("%02d",(int)($hours[$i]['min']-floor($hours[$i]['min']/60)*60));
+					$this->t->set_var('e_hours',$hrs);
+					$this->t->fp('stat','user_stat',True);
 				}
 
-				$this->t->set_var('lang_parent',lang('Main project:'));
-				$this->t->set_var('lang_action',lang('Edit job'));
-				$this->t->set_var('lang_number',lang('Job ID'));
+				$this->t->set_var('e_project','');
+				$this->t->set_var('e_activity','');
+				$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
+				$this->t->set_var('e_hours',$hrs);
+				$this->t->fp('stat','user_stat',True);
 			}
 
-			$abid = $values['customer'];
-			$customer = $this->boprojects->read_customer_data($abid);
-            if ($customer[0]['org_name'] == '') { $name = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            else { $name = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+			$allhours = $this->bostatistics->get_userstat_hours($account_id, $project_id ='', $filter);
 
-			$this->t->set_var('name',$name);
-			$this->t->set_var('abid',$abid);
+			$summin=0;
+			$this->nextmatchs->template_alternate_row_color(&$this->t);
+			$this->t->set_var('e_project',lang('Overall'));
+			$this->t->set_var('e_activity','');
+			$this->t->set_var('e_hours','');
+			$this->t->fp('stat','user_stat',True);
 
-			$link_data['menuaction'] = 'projects.uiprojects.delete_pa';
-			$link_data['pa_id'] = $project_id;
-			if ($this->boprojects->check_perms($this->grants[$values['coordinator']],PHPGW_ACL_DELETE) || $values['coordinator'] == $this->account)
+			while (list($null,$userall) = each($allhours))
 			{
-				$this->t->set_var('delete','<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data)
-											. '"><input type="submit" value="' . lang('Delete') .'"></form>');
-			}
-			else
-			{
-				$this->t->set_var('delete','&nbsp;');
-			}
-
-			$this->t->set_var('edithandle','');
-			$this->t->set_var('addhandle','');
-			$this->t->pfp('out','projects_edit');
-			$this->t->pfp('edithandle','edit');
-		}
-
-
-		function view_project()
-		{
-			global $project_id, $action, $pro_parent;
-
-			$link_data = array
-			(
-				'menuaction'	=> 'projects.uiprojects.list_projects',
-				'pro_parent'	=> $pro_parent,
-				'action'		=> $action,
-				'project_id'	=> $project_id
-			);
-
-			$this->display_app_header();
-
-			$this->t->set_file(array('view' => 'view.tpl'));
-
-			$nopref = $this->boprojects->check_prefs();
-			if ($nopref)
-			{
-				$this->t->set_var('pref_message',lang('Please set your preferences for this application !'));
-			}
-			else
-			{
-				$currency = $this->boprojects->get_prefs();
+				$this->t->set_var('e_project','');
+				$this->t->set_var('e_activity',$GLOBALS['phpgw']->strip_html($userall['descr']));
+				$summin += $userall['min'];
+				$hrs = floor($userall['min']/60) . ':' . sprintf ("%02d",(int)($userall['min']-floor($userall['min']/60)*60));
+				$this->t->set_var('e_hours',$hrs);
+				$this->t->fp('stat','user_stat',True);
 			}
 
-			$this->t->set_var('done_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
+			$this->nextmatchs->template_alternate_row_color(&$this->t);
+			$this->t->set_var('e_project',lang('Sum'));
+			$this->t->set_var('e_activity','');
+			$hrs = floor($summin/60) . ':' . sprintf ("%02d",(int)($summin-floor($summin/60)*60)); 
+			$this->t->set_var('e_hours',$hrs);
+			$this->t->fp('stat','user_stat',True);
 
-			$values = $this->boprojects->read_single_project($project_id);
-
-			$this->t->set_var('cat',$this->cats->id2name($values['cat']));
-
-			if ($action == 'mains')
-			{
-				$this->t->set_var('lang_action',lang('View project'));
-				$this->t->set_var('lang_number',lang('Project ID'));
-				$this->t->set_var('lang_parent','');
-				$this->t->set_var('pro_parent','');
-// ------------ activites bookable ----------------------
-
-				$this->t->set_var('book_activities_list',$this->boprojects->select_activities_list($project_id,False));
-
-// -------------- activities billable ---------------------- 
-
-    			$this->t->set_var('bill_activities_list',$this->boprojects->select_activities_list($project_id,True));
-			}
-			else
-			{
-				if ($pro_parent && $action == 'subs')
-				{
-					$parent = $this->boprojects->read_single_project($pro_parent);
-
-					$this->t->set_var('pro_parent',$GLOBALS['phpgw']->strip_html($parent['number']) . ' ' . $GLOBALS['phpgw']->strip_html($parent['title']));
-					$this->t->set_var('cat',$this->cats->id2name($parent['cat']));
-					$this->t->set_var('book_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, False));				
-    				$this->t->set_var('bill_activities_list',$this->boprojects->select_pro_activities($project_id, $pro_parent, True));
-				}
-				$this->t->set_var('lang_action',lang('View job'));
-				$this->t->set_var('lang_number',lang('Job ID'));
-				$this->t->set_var('lang_parent',lang('Main project:'));
-			}
-
-			$this->t->set_var('number',$GLOBALS['phpgw']->strip_html($values['number']));
-			$title = $GLOBALS['phpgw']->strip_html($values['title']);
-			if (! $title) $title = '&nbsp;';
-			$this->t->set_var('title',$title);
-			$descr = $GLOBALS['phpgw']->strip_html($values['descr']);
-			if (! $descr) $descr = '&nbsp;';
-			$this->t->set_var('descr',$descr);
-			$this->t->set_var('status',$values['status']);
-			$this->t->set_var('budget',$values['budget']);
-
-			$sdate = $values['sdate'];
-			$edate = $values['edate'];
-
-			if ($sdate != 0)
-			{
-				$smonth = $GLOBALS['phpgw']->common->show_date(time(),'n');
-				$sday = $GLOBALS['phpgw']->common->show_date(time(),'d');
-				$syear = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-				$sdate = $sdate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-				$sdateout = $GLOBALS['phpgw']->common->show_date($sdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-			}
-			else
-			{
-				$sdateout = '&nbsp;';
-			}
-
-			$this->t->set_var('sdate',$sdateout);
-
-			if ($edate != 0)
-			{
-				$emonth = $GLOBALS['phpgw']->common->show_date(time(),'n');
-				$eday = $GLOBALS['phpgw']->common->show_date(time(),'d');
-				$eyear = $GLOBALS['phpgw']->common->show_date(time(),'Y');
-				$edate = $edate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-				$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-			}
-			else
-			{
-				$edateout = '&nbsp;';
-			}
-
-			$this->t->set_var('edate',$edateout);
-
-			$this->t->set_var('coordinator',$GLOBALS['phpgw']->accounts->id2name($values['coordinator']));
-
-// ----------------------------------- customer ------------------------------
-
-			if ($values['customer'] != 0) 
-			{
-				$customer = $this->boprojects->read_customer_data($values['customer']);
-            	if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-            	else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
-			}
-			else { $customerout = '&nbsp;'; }
-
-			$this->t->set_var('customer',$customerout);
-
-			$this->t->pfp('out','view');
-//			$phpgw->common->hook('projects_view');
-		}
-
-		function delete_pa()
-		{
-			global $confirm, $pa_id, $subs, $pro_parent, $action;
-
-			switch($action)
-			{
-				case 'mains'	: $menu = 'projects.uiprojects.list_projects'; break;
-				case 'subs'		: $menu = 'projects.uiprojects.list_projects'; break;
-				case 'act'		: $menu = 'projects.uiprojects.list_activities'; break;
-			}
-
-			$link_data = array
-			(
-				'menuaction'	=> $menu,
-				'pro_parent'	=> $pro_parent,
-				'pa_id'			=> $pa_id,
-				'action'		=> $action
-			);
-
-			if ($confirm)
-			{
-				if ($subs)
-				{
-					$this->boprojects->delete_pa($action, $pa_id, True);
-				}
-				else 
-				{
-					$this->boprojects->delete_pa($action, $pa_id, False);
-				}
-				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
-			}
-
-			$this->display_app_header();
-			$this->t->set_file(array('pa_delete' => 'delete.tpl'));
-
-			$this->t->set_var('lang_subs','');
-			$this->t->set_var('subs', '');
-
-			$this->t->set_var('nolink',$GLOBALS['phpgw']->link('/index.php',$link_data));
-			$this->t->set_var('deleteheader',lang('Are you sure you want to delete this entry ?'));
-			$this->t->set_var('lang_no',lang('No'));
-			$this->t->set_var('lang_yes',lang('Yes'));
-
-			if ($action != 'act')
-			{
-				$exists = $this->boprojects->exists('mains', 'par', $num ='', $pa_id);
-
-				if ($exists)
-				{
-					$this->t->set_var('lang_subs',lang('Do you also want to delete all sub projects ?'));
-					$this->t->set_var('subs','<input type="checkbox" name="subs" value="True">');
-				}
-			}
-
-			$link_data['menuaction'] = 'projects.uiprojects.delete_pa';
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php',$link_data));
-
-			$this->t->pfp('out','pa_delete');
+			$this->t->pfp('out','user_stat_t',True);
 		}
 	}
 ?>
