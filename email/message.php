@@ -33,7 +33,7 @@
     $phpgw->common->phpgw_exit();
   } else {
     $phpgw->common->phpgw_header();
-    $phpgw->common->navbar();
+    echo parse_navbar();
   }
 
   if (isset($phpgw_info["flags"]["newsmode"]) && $phpgw_info["flags"]["newsmode"])

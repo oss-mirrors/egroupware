@@ -20,7 +20,7 @@
     Header("Location: ".$phpgw->link("preferences.php"));
   } else {
     $phpgw->common->phpgw_header();
-    $phpgw->common->navbar();
+    echo parse_navbar();
   }
 
   $i = 0;

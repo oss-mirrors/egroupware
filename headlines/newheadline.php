@@ -68,7 +68,7 @@
 
   if(isset($error) && $error) {
     $phpgw->common->phpgw_header();
-    $phpgw->common->navbar();
+    echo parse_navbar();
     echo "<center>".$error."</center>";
   }
      ?>

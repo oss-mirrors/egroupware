@@ -19,7 +19,7 @@
 
   if (! $submit) {
      $phpgw->common->phpgw_header();
-     $phpgw->common->navbar();
+     echo parse_navbar();
      
      $phpgw->template->set_file(array("form" => "preferences.tpl"));
      

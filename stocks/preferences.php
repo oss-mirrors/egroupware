@@ -45,7 +45,6 @@
      $phpgw->preferences->commit();
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      $phpgw->common->phpgw_exit();
-    
   }
 
   $phpgw->common->phpgw_header();
