@@ -68,7 +68,7 @@
 			$smtp->from = $ADMIN_EMAIL;
 			$smtp->headers = "Reply-To: ".$ADMIN_EMAIL."\r\nErrors-To: ".$ADMIN_EMAIL."\r\n";
 
-			while ($r = db_rowobj($c)) {
+			while ($r = db_rowarr($c)) {
 				$to[] = $r[0];
 				if (!(++$email_block_stat % $email_block)) {
 					$email_block_stat = 0;
