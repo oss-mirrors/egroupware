@@ -1,6 +1,6 @@
 are you sure you want to delete this news site ?	admin	fi	Haluatko poistaa tämän uutispalvelun?
 base url	admin	fi	Pohja-URL
-grab new news sites	common	fi Hae uudet uutispalvelut
+grab new news sites	common	fi	Hae uudet uutispalvelut
 headlines	common	fi	Uutisotsikot
 headline preferences	common	fi	Uutisotsikkojen asetukset
 headline sites	admin	fi	Uutisotsikkopalvelut
