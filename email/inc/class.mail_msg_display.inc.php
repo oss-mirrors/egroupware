@@ -894,10 +894,18 @@ class mail_msg extends mail_msg_wrappers
 				$part_nice[$i]['m_keywords'] .= $part_nice[$i]['encoding'] .' ';
 			}
 			
-			// ------  MS "RELATED" FLAGGING  -------
 			
-			// Outl00k Stationary handling - where an HTML part has references to other parts (images) in it
-			// initialize and prepare for the following mime exceptions code
+			// ------  EXCEPTIONS TO THE RULES  -------
+			
+			// = = = = =  Exceptions for Less-Standard Subtypes = = = = =
+			//"m_description" set above will work *most all* the time. However newer standards
+			// are encouraged to make use of the "subtype" param, not create new "type"s 
+			// the following "multipart/SUBTYPES" should be treated as
+			// "container" instead of "packagelist"
+			
+			// (1) Exception: multipart/RELATED: for ex. Outl00k Stationary handling
+			// where an HTML part has references to other parts (images) in it
+			// treat it's *child* multipart/alternative as "container", not as "packagelist"
 			$part_nice[$i]['m_html_related_kids'] = False;
 			$parent_idx = $part_nice[$i]['ex_parent_flat_idx'];
 			if (($part_nice[$i]['ex_level_debth'] > 1)  // does not apply to level1, b/c level1 has no parent
@@ -906,6 +914,9 @@ class mail_msg extends mail_msg_wrappers
 			&& ($part_nice[$parent_idx]['type'] == 'multipart')
 			&& ($part_nice[$parent_idx]['subtype'] == 'related'))
 			{
+				// NOTE: treat it's *child* multipart/alternative as "container", not as "packagelist"
+				$part_nice[$i]['m_description'] = 'container';
+				$part_nice[$i]['m_keywords'] .= 'Force Container, id_swap' .' ';
 				// SET THIS FLAG: then, in presentation loop, see if a HTML part 
 				// has a parent with this flag - if so, replace "id" reference(s) with 
 				// http... mime reference(s). Example: MS Stationary mail's image background
@@ -913,15 +924,7 @@ class mail_msg extends mail_msg_wrappers
 				$part_nice[$i]['m_keywords'] .= 'id_swap' .' ';
 			}
 			
-			// ------  EXCEPTIONS TO THE RULES  -------
-
-			// = = = = =  Exceptions for Less-Standart Subtypes = = = = =
-			//"m_description" set above will work *most all* the time. However newer standards
-			// are encouraged to make use of the "subtype" param, not create new "type"s 
-			// the following "multipart/SUBTYPES" should be treated as
-			// "container" instead of "packagelist"
-			
-			// (1) Exception: multipart/APPLEDOUBLE  (ex. mac thru X.400 gateway)
+			// (2) Exception: multipart/APPLEDOUBLE  (ex. mac thru X.400 gateway)
 			// treat as "container", not as "packagelist"
 			if (($part_nice[$i]['type'] == 'multipart')
 			&& ($part_nice[$i]['subtype'] == 'appledouble'))
