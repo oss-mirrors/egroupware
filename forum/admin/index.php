@@ -49,10 +49,10 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
   $cat_name = $phpgw->db->f("name");
   $cat_descr = $phpgw->db->f("descr");
 
-  echo "<tr>\n";
+  echo "<tr bgcolor=\"" . $phpgw_info["theme"]["bg06"] . "\">\n";
   echo " <td valign=top align=left width=20%>$cat_name</td>\n";
-  echo " <td valign=top align=left width=70%>$cat_descr</td>\n";
-  echo " <td width=150>" . lang_forums("Edit") . "</td>\n";
+  echo " <td valign=top align=left width=70%>$cat_descr</td>\n"; 
+  echo "   <td width=150><a href=\"" . $phpgw->link("category.php","act=edit&cat_id=$cat_id") ."\">" . lang_forums("Edit") . "</td>\n";
   echo "</tr>\n";
   echo "<tr>\n";
   echo " <td colspan=3 align=right valign=top>\n";
@@ -67,10 +67,12 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
    echo "  </tr>\n";
 */
 
+   $tr_color = $phpgw_info["theme"]["row_off"];
    $q2 = mysql_db_query($phpgw->db->Database,"select * from f_forums where cat_id=$cat_id");
    while($row = mysql_fetch_array($q2)) {
+    $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
     $for_id = $row["id"];
-    echo "  <tr>\n";
+    echo "  <tr bgcolor=\"$tr_color\">\n";
     echo "   <td width=20%>" . $row["name"] . "</td>\n";
     echo "   <td width=70%>" . $row["descr"] . "</td>\n";
     echo "   <td width=150><a href=\"" . $phpgw->link("forum.php","act=edit&for_id=$for_id") ."\">" . lang_forums("Edit") . "</td>\n";

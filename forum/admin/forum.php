@@ -40,7 +40,6 @@
    }
   }
 
-
   
   if($action) {
    if($action == "addforum") {

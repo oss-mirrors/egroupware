@@ -20,6 +20,7 @@
 	case "forum description":		$s = "Forum Description";		break;
 	case "add forum":		$s = "Add Forum";		break;
 	case "update forum":		$s = "Update Forum";		break;
+	case "update category":		$s = "Update Category";		break;
 	case "belongs to category":		$s = "Belongs to Category";		break;
 	case "add category":		$s = "Add Category";		break;
 	case "create new category":		$s = "Create New Category";		break;

@@ -16,6 +16,25 @@
   include("../../header.inc.php");
 
   $actiontype = "addcat";
+  $buttontext = lang_forums("Add Forum");
+  $extrahidden = "";
+
+  if($act == "edit") {
+   if(!$phpgw->db->query("select * from f_categories where id=$cat_id")) {
+    print "Error in reading database<br>\n";
+     exit;
+   } else {
+    $phpgw->db->next_record();
+    $catname = $phpgw->db->f("name");
+    $catdescr = $phpgw->db->f("descr");
+    $cat_id = $phpgw->db->f("id"); 
+
+    $extrahidden = "<input type=\"hidden\" name=\"cat_id\" value=\"$cat_id\">"; 
+    $buttontext = lang_forums("Update Category");
+    $actiontype = "updcat";
+   }
+  } 
+
   
   if($action) {
    if($action == "addcat") {
@@ -26,6 +45,15 @@
      Header("Location: " . $phpgw->link("./"));
      exit;
     }
+   } elseif ($action == "updcat" && $cat_id) {
+    if(!$phpgw->db->query("update f_categories set name='$catname',descr='$catdescr' where id = $cat_id")) {
+     print "Error in adding forum to database<br>\n";
+     exit;
+    } else {
+     Header("Location: " . $phpgw->link("./"));  
+     exit;
+    }
+
    }
   } 
 
@@ -62,15 +90,16 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang_forums("Return to Forums"
    <tr>
     <form method="POST" action="./category.php">
     <?  echo $phpgw->session->hidden_var(); ?>
+    <? echo $extrahidden ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
     <td><? echo lang_forums("Category Name") ?>:</td>
-    <td><input type="text" name="catname" size=40 maxlength=49></td>
+    <td><input type="text" name="catname" size=40 maxlength=49 value="<? echo $catname ?>"></td>
    </tr>  
    <tr>
     <td><? echo lang_forums("Category Description") ?>:</td>
-    <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240></textarea></td>
+    <td><textarea rows="3" cols="40" name="catdescr" virtual-wrap maxlength=240><? echo $catdescr ?></textarea></td>
    </tr>
-   <tr><td colspan=2 align=right><input type="submit" value="<?echo lang_forums("Add Category")?>"></td></tr>
+   <tr><td colspan=2 align=right><input type="submit" value="<? echo $buttontext ?>"></td></tr>
 
   </table>
   </center>
