@@ -224,7 +224,7 @@
 			{
 				$users = $this->bo->get_messenger_users();
 
-				$str = '';
+				$str = '<option value="" selected>'.lang('Select User').'</option>'."\n";
 
 				foreach($users as $user)
 				{
