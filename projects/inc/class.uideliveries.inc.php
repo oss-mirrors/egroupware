@@ -554,7 +554,7 @@
 
 			$this->display_app_header();
 
-			$this->t->set_file(array('projects_list_t' => 'del_listdelivery.tpl'));
+			$this->t->set_file(array('projects_list_t' => 'bill_listinvoice.tpl'));
 			$this->t->set_block('projects_list_t','projects_list','list');
 
 			$link_data = array
@@ -602,7 +602,8 @@
 			$this->t->set_var('sort_customer',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
 			$this->t->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
 			$this->t->set_var('sort_date',$this->nextmatchs->show_sort_order($this->sort,'date',$this->order,'/index.php',lang('Date'),$link_data));
-			$this->t->set_var('h_lang_delivery',lang('Delivery'));
+			$this->t->set_var('sort_sum','');
+			$this->t->set_var('lang_data',lang('Delivery'));
 
 // -------------- end header declaration -----------------
 
@@ -629,9 +630,11 @@
 				}
 				else { $customerout = '&nbsp;'; }
 
+				$this->t->set_var('sum','');
+
 // ------------------ template declaration for list records ----------------------------------
 
-				$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($del[$i]['number']),
+				$this->t->set_var(array('num' => $GLOBALS['phpgw']->strip_html($del[$i]['delivery_num']),
 							'customer' => $customerout,
 								'title' => $title,
 								'date' => $dateout));
@@ -642,8 +645,8 @@
 					$link_data['project_id']	= $del[$i]['project_id'];
 					$link_data['menuaction']	= 'projects.uideliveries.delivery';
 					$link_data['action']		= 'udel';
-					$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php',$link_data));
-					$this->t->set_var('lang_delivery',lang('Delivery'));
+					$this->t->set_var('td_data',$GLOBALS['phpgw']->link('/index.php',$link_data));
+					$this->t->set_var('lang_td_data',lang('Delivery'));
 				}
 				$this->t->fp('list','projects_list',True);
 

@@ -1,12 +1,13 @@
 <!-- $Id$ -->
+
+{app_header}
+
 <p><b>&nbsp;&nbsp;&nbsp;{lang_action}</b><br>
 <hr noshade width="98%" align="center" size="1">
 <center>
-{hidden_vars}
-{error}
-<table border="0" cellspacing="2" cellpadding="2">
+<table width="79%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
-		<td colspan="6" align="left">
+		<td colspan="4">
 			<table border="0" width="100%">
 				<tr>
 				{left}
@@ -17,19 +18,20 @@
 		</td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td colspan="6" align="right">
-			<form method="post" action="{searchurl}">
-			<input type="text" name="query">&nbsp;<input type="submit" name="search" value="{lang_search}">
-			</form></td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%">&nbsp;</td>
+		<td width="33%" align="right">
+			<form method="POST" name="query" action="{search_action}">{search_list}</form></td>
 	</tr>
+</table>
+<table width="79%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{th_bg}">
 		<td width="10%" bgcolor="{th_bg}">{sort_num}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_customer}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_title}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{sort_date}</td>
-		<td width="10%" align="right" bgcolor="{th_bg}">{currency}&nbsp;{sort_sum}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{h_lang_invoice}</td>
+		{sort_sum}
+		<td width="10%" bgcolor="{th_bg}" align="center">{lang_data}</td>
 	</tr>
   
 <!-- BEGIN projects_list -->
@@ -39,8 +41,8 @@
 		<td>{customer}</td>
 		<td>{title}</td>
 		<td align="center">{date}</td>
-		<td align="right">{sum}</td>
-		<td align="center"><a href="{invoice}">{lang_invoice}</a></td>
+		{sum}
+		<td align="center"><a href="{td_data}">{lang_td_data}</a></td>
 	</tr>
 
 <!-- END projects_list -->

@@ -136,7 +136,7 @@
 		}
 
 
-		function read_deliveries($query = '', $sort = '', $order = '', $limit = True, $project_id = '')
+		function read_deliveries($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')
 		{
 			if ($order)
 			{
@@ -155,13 +155,13 @@
 			if ($project_id)
 			{
 				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
-					. "phpgw_p_delivery.project_id as pid,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
 					. "phpgw_p_delivery.project_id='$project_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id";
 			}
     		else
 			{
 				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
-					. "phpgw_p_delivery.project_id as pid,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+					. "phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
 					. "phpgw_p_delivery.project_id=phpgw_p_projects.id";
 			}
 
@@ -177,16 +177,17 @@
 				$this->db->query($sql . $querymethod,__LINE__,__FILE__);
 			}
 
-			$i = 0;
 			while ($this->db->next_record())
 			{
-				$del[$i]['delivery_id']	= $this->db->f('id');
-				$del[$i]['project_id']	= $this->db->f('pid');
-				$del[$i]['number']		= $this->db->f('num');
-				$del[$i]['title']		= $this->db->f('title');
-				$del[$i]['date']		= $this->db->f('date');
-				$del[$i]['customer']	= $this->db->f('customer');
-				$i++;
+				$del[] = array
+				(
+					'delivery_id'	=> $this->db->f('id'),
+					'project_id'	=> $this->db->f('project_id'),
+					'delivery_num'	=> $this->db->f('num'),
+					'title'			=> $this->db->f('title'),
+					'date'			=> $this->db->f('date'),
+					'customer'		=> $this->db->f('customer')
+				);
 			}
 			return $del;
 		}

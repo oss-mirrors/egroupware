@@ -28,13 +28,20 @@
 	{
 		var $public_functions = array
 		(
-
+			'read_invoices'	=> True
 		);
 
 		function bobilling()
 		{
 			$this->sobilling	= CreateObject('projects.sobilling');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
+		}
+
+		function read_invoices($start, $query, $sort, $order, $limit, $project_id)
+		{
+			$bill = $this->sobilling->read_invoices($start, $query, $sort, $order, $limit, $project_id);
+			$this->total_records = $this->sobilling->total_records;
+			return $bill;
 		}
 	}
 ?>
