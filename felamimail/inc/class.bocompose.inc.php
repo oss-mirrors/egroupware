@@ -282,8 +282,9 @@
 			$this->sessionData['signature']	= $_formData['signature'];
 
 			$mail = CreateObject('felamimail.phpmailer');
+			#_debug_array($this->preferences);
 			
-			include(PHPGW_APP_ROOT . "/config/config.php");
+			#include(PHPGW_APP_ROOT . "/config/config.php");
 				
 			$mail->IsSMTP();
 			$mail->From 	= $this->preferences['emailAddress'];
@@ -297,16 +298,28 @@
 				$address = split(",",$this->sessionData['to']);
 				while (list($key,$value) = each($address))
 				{
-					$mail->AddAddress($value);
+					$address_array	= imap_rfc822_parse_adrlist($value,'');
+					if(count($address_array)>0)
+					{
+						$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
+						$emailName = $address_array[0]->personal;
+						$mail->AddAddress($emailAddress,$emailName);
+					}
 				}
 			}
-			
+
 			if (!empty($this->sessionData['cc']))
 			{
 				$address = split(",",$this->sessionData['cc']);
 				while (list($key,$value) = each($address))
 				{
-					$mail->AddCC($value);
+					$address_array	= imap_rfc822_parse_adrlist($value,'');
+					if(count($address_array)>0)
+					{
+						$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
+						$emailName = $address_array[0]->personal;
+						$mail->AddCC($emailAddress,$emailName);
+					}
 				}
 			}
 			
@@ -315,7 +328,13 @@
 				$address = split(",",$this->sessionData['bcc']);
 				while (list($key,$value) = each($address))
 				{
-					$mail->AddBCC($value);
+					$address_array	= imap_rfc822_parse_adrlist($value,'');
+					if(count($address_array)>0)
+					{
+						$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
+						$emailName = $address_array[0]->personal;
+						$mail->AddBCC($emailAddress,$emailName);
+					}
 				}
 			}
 			
@@ -324,7 +343,13 @@
 				$address = split(",",$this->sessionData['reply_to']);
 				while (list($key,$value) = each($address))
 				{
-					$mail->AddReplyTo($value);
+					$address_array	= imap_rfc822_parse_adrlist($value,'');
+					if(count($address_array)>0)
+					{
+						$emailAddress = $address_array[0]->mailbox."@".$address_array[0]->host;
+						$emailName = $address_array[0]->personal;
+						$mail->AddReplyTo($emailAddress,$emailName);
+					}
 				}
 			}
 			

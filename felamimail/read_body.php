@@ -532,6 +532,16 @@
 
 		$linkData = array
 		(
+			'menuaction'	=> 'felamimail.uicompose.replyAll',
+			'mailbox'	=> $urlMailbox,
+			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
+			'sort'		=> $GLOBALS['HTTP_GET_VARS']['sort'],
+			'reply_id'	=> $passed_id
+		);
+		$t->set_var("link_reply_all",$GLOBALS['phpgw']->link('/index.php',$linkData));
+
+		$linkData = array
+		(
 			'menuaction'	=> 'felamimail.uicompose.forward',
 			'mailbox'	=> $urlMailbox,
 			'startMessage'	=> $GLOBALS['HTTP_GET_VARS']['startMessage'],
@@ -552,7 +562,7 @@
 				'lang_back_to_folder'	=> lang('back to folder'),
 				'app_image_path'	=> PHPGW_IMAGES,
 				'link_replyy'		=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replyto&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
-				'link_reply_all'	=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replytoall&send_to_cc=$url_replytoallcc&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
+				'link_reply_alll'	=> $phpgw->link('/felamimail/compose.php',"send_to=$url_replytoall&send_to_cc=$url_replytoallcc&reply_subj=$url_subj&reply_id=$passed_id&mailbox=$urlMailbox&ent_num=$ent_num"),
 				'link_forwardd'		=> $phpgw->link('/felamimail/compose.php',"forward_id=$passed_id&forward_subj=$url_subj&mailbox=$urlMailbox&ent_num=$ent_num")
 			);
 			

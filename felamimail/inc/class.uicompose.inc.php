@@ -20,6 +20,7 @@
 		(
 			'compose'	=> 'True',
 			'reply'		=> 'True',
+			'replyAll'	=> 'True',
 			'forward'	=> 'True',
 			'action'	=> 'True'
 		);
@@ -210,6 +211,18 @@
 		}
 
 		function reply()
+		{
+			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
+			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
+			if (!empty($replyID) && !empty($folder))
+			{
+				// this fill the session data with the values from the original email
+				$this->bocompose->getReplyData($folder, $replyID);
+			}
+			$this->compose();
+		}
+		
+		function replyAll()
 		{
 			$replyID = $GLOBALS['HTTP_GET_VARS']['reply_id'];
 			$folder  = urldecode($GLOBALS['HTTP_GET_VARS']['mailbox']);
