@@ -1,9 +1,9 @@
 <?php
 	/*
-	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
+	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.eGroupware.org
 
 	This file is part of JiNN
 
@@ -77,7 +77,7 @@
 			{
 				$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
 			}
-			
+
 			$this->ui->app_title=$dev_title_string.	lang('Administrator Mode');
 		}
 
@@ -112,10 +112,10 @@
 		{
 			$GLOBALS[where_key]='site_id';
 			$GLOBALS[where_value]=$this->bo->site_id;
-			
+
 			$this->edit_phpgw_jinn_sites();
 		}
-		
+
 		function add_edit_phpgw_jinn_site_objects()
 		{
 			if ($GLOBALS[where_key] && $GLOBALS[where_value])
@@ -133,7 +133,7 @@
 
 			$this->add_edit_record('phpgw_jinn_site_objects');
 			unset($this->bo->message[help]);
-			
+
 			$this->bo->save_sessiondata();
 		}
 
@@ -185,14 +185,14 @@
 			}
 
 			unset($this->bo->message[help]);
-			
+
 			$this->bo->save_sessiondata();
 		}
 
 		function edit_phpgw_jinn_sites()
 		{
 			$this->bo->message[help]=lang('Insert JiNN Site Parameters: <li>Insert a JiNN Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
-//			unset($this->bo->message[info]);
+			//			unset($this->bo->message[info]);
 			unset($this->bo->message[error]);
 
 			$this->add_edit_record('phpgw_jinn_sites');
@@ -205,7 +205,7 @@
 			}
 
 			unset($this->bo->message[help]);
-			
+
 			$this->bo->save_sessiondata();
 		}
 
@@ -244,21 +244,21 @@
 						// check is name exist and if add another to this name 
 						$new_site_name=$this->bo->so->get_site_name($new_site_id);
 						$thissitename=$this->bo->so->get_sites_by_name($new_site_name);
-						
+
 						if(count($thissitename)>1)
 						{
 							$new_name=$new_site_name.' ('.lang('another').')';
-						
-						//	unset($data);
+
+							//							unset($data);
 							$datanew[]=array(
 								'name'=>'site_name',
 								'value'=>$new_name
 							);
-							//var_dump($data);
+							//							var_dump($data);
 							//die();
 							$this->bo->so->update_phpgw_data('phpgw_jinn_sites',$datanew,'site_id',$new_site_id);
 						}
-						
+
 						if (is_array($import_site_objects))
 						{
 							foreach($import_site_objects as $object)
@@ -317,7 +317,7 @@
 
 			$this->ui->header(lang('Browse '.$table));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
+			//			$this->admin_menu();
 
 			$this->browse_record('phpgw_jinn_sites','','');
 			$this->bo->save_sessiondata();
@@ -340,7 +340,7 @@
 			$this->ui->header(lang('Browse '.$table));
 
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
+			//			$this->admin_menu();
 
 			$this->browse_record('phpgw_jinn_site_objects','','');
 			$this->bo->save_sessiondata();
@@ -351,7 +351,7 @@
 		{
 			$this->ui->header(lang('Set Access Rights'));
 			$this->ui->msg_box($this->bo->message);
-//			$this->admin_menu();
+			//			$this->admin_menu();
 			$access_rights = CreateObject('jinn.uiadminacl', $this->bo);
 			$access_rights->main_screen();
 
@@ -405,6 +405,7 @@
 		}
 
 
+
 		function plug_config()
 		{
 			$GLOBALS['phpgw_info']['flags']['noheader']=True;
@@ -413,21 +414,55 @@
 			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
 			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
 
-			$use_records_cfg=False;
+			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
 			
-			$plugin_name=$this->bo->plugins[$GLOBALS['plug_name']]['title'];
-			$plugin_version=$this->bo->plugins[$GLOBALS['plug_name']]['version'];
+			/*
+			$bodyheader = ' bgcolor="' . $GLOBALS['phpgw_info']['theme']['bg_color'] . '" alink="'
+			. $GLOBALS['phpgw_info']['theme']['alink'] . '" link="' . $GLOBALS['phpgw_info']['theme']['link'] . '" vlink="'
+			. $GLOBALS['phpgw_info']['theme']['vlink'] . '"';
 
-			$output= '<h1>'.$plugin_name.'</h1> '.lang('version').' '. $plugin_version.'<P>';
-			$output.='<p><i>'.$this->bo->plugins[$GLOBALS['plug_name']]['description'].'</i></p>';	
-
-			if ($GLOBALS[hidden_val]) 
+			if(!$GLOBALS['phpgw_info']['server']['htmlcompliant'])
 			{
-				$GLOBALS[hidden_val]=str_replace('~','=',$GLOBALS[hidden_val]);
+				$bodyheader .= '';
+			}
+			*/
+			#_debug_array($GLOBALS['phpgw_info']['user']['preferences']['common']);
+			$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+			if(!file_exists($theme_css))
+			{
+				$theme_css = $GLOBALS['phpgw_info']['server']['webserver_url'] . '/phpgwapi/templates/idots/css/'.$GLOBALS['phpgw_info']['user']['preferences']['common']['theme'].'.css';
+			}
+
+			$app = $GLOBALS['phpgw_info']['flags']['currentapp'];
+			$app = $app ? ' ['.(isset($GLOBALS['phpgw_info']['apps'][$app]) ? $GLOBALS['phpgw_info']['apps'][$app]['title'] : lang($app)).']':'';
+
+			$var = Array(
+				'img_icon'      => PHPGW_IMAGES_DIR . '/favicon.ico',
+				'img_shortcut'  => PHPGW_IMAGES_DIR . '/favicon.ico',
+				'charset'       => $GLOBALS['phpgw']->translation->charset(),
+				'font_family'   => $GLOBALS['phpgw_info']['theme']['font'],
+				'website_title' => $GLOBALS['phpgw_info']['server']['site_title'].$app,
+				//		  'body_tags'     => $bodyheader .' '. $GLOBALS['phpgw']->common->get_body_attribs(),
+				'theme_css'     => $theme_css,
+				'css'           => $GLOBALS['phpgw']->common->get_css(),
+				'java_script'   => $GLOBALS['phpgw']->common->get_java_script(),
+			);
+			$this->template->set_var($var);
+
+			$use_records_cfg=False;
+
+			$this->template->set_file(array('config_head' => 'plg_config_header.tpl'));
+			$this->template->set_var('plug_name',$this->bo->plugins[$GLOBALS['plug_name']]['title']);
+			$this->template->set_var('plug_version',lang('version').' '.$this->bo->plugins[$GLOBALS['plug_name']]['version']);
+			$this->template->set_var('plug_descr',$this->bo->plugins[$GLOBALS['plug_name']]['description']);
+
+			if ($GLOBALS[hidden_val])
+			{
+				$GLOBALS[hidden_val]=str_replace('~','=',rawurldecode($GLOBALS[hidden_val]));
 				$orig_conf=explode(";",$GLOBALS[hidden_val]);
 				if ($GLOBALS[plug_name]==$GLOBALS[plug_orig]) $use_records_cfg=True;
 			}
-			
+
 			if (is_array($orig_conf))
 			{
 				foreach($orig_conf as $orig_conf_entry)
@@ -438,19 +473,21 @@
 				}
 			}
 
+			$this->template->set_var('fld_plug_cnf',lang('field plugin configuration'));
+			$this->template->pfp('out','config_head');
+
 			// get config fields for this plugin
 			// if hidden value is empty get defaults vals for this plugin
 			$cfg=$this->bo->plugins[$GLOBALS['plug_name']]['config'];
 			if(is_array($cfg))
 			{
-				$output.='<b>'.lang('field plugin configuration').'</b><BR>';	
-				$output.= '<form name=popfrm><table border=1>';
 				foreach($cfg as $cfg_key => $cfg_val)
 				{
 					/* replace underscores for spaces */
 					$render_cfg_key=ereg_replace('_',' ',$cfg_key);
 
-					$val=$cfg_val;	
+					$val=$cfg_val;
+					$row=($row=='row_on')? 'row_off' : 'row_on';
 
 					/* if configuration is already set use these values */
 					if ($use_records_cfg)
@@ -458,161 +495,145 @@
 						$set_val=$def_orig_conf[$cfg_key];
 					}
 
-					$output.= '<tr>';
-					$output.= '<td valign=top>'.$render_cfg_key.'</td>';
+					$this->template->set_file(array('config_body' => 'plg_config_body.tpl'));
+					$this->template->set_var('row',$row);
+					$this->template->set_var('descr',$render_cfg_key);
 
-					if($val[1]=='radio')
+					switch ($val[1])
 					{
-						$output.= '<td valign=top>';
-						foreach($val[0] as $radio)			
-						{
-							unset($checked);
-							if($set_val==$radio) $checked='checked';
-							$output.='<input name="'.$cfg_key.'" type="radio" '.$checked.' value="'.$radio.'">'.$radio.'<br>';
+						case 'radio' :
+							foreach($val[0] as $radio)
+							{
+								unset($checked);
+								if($set_val==$radio) $checked='checked';
+								$output='<input name="'.$cfg_key.'" type="radio" '.$checked.' value="'.$radio.'">'.$radio.'<br/>';
+							}
+							break;
+						case 'text'  :
+							if ($use_records_cfg) $val[0]=$set_val;
+							$output= '<input name="'.$cfg_key.'" type=text '.$val[2].' value="'.$val[0].'">';
+							break;
+						case 'area'  :
+							if ($use_records_cfg) $val[0]=$set_val;
+							$output= '<textarea name="'.$cfg_key.'" rows="3" cols="30">'.$val[0].'</textarea>';
+							break;
+						case 'select':
+							$output= '<select name="'.$cfg_key.'">';
+							foreach($val[0] as $option)
+							{
+								unset($selected);
+								if($set_val==$option) $selected='selected';
+								$output.='<option value="'.$option.'" '.$selected.'>'.$option.'</option>';
+							}
+							$output.='</select>';
+							break;
+							default      :
+							$output.= '<input name="'.$cfg_key.'" type=text value="'.$val[0].'">';
 						}
-						$output.='</td>';
+
+						$this->template->set_var('fld',$output);
+						$this->template->pparse('out','config_body');
+
+						if($newconfig) $newconfig.='+";"+';
+						$newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
 					}
-					elseif($val[1]=='text')
-					{
-						if ($use_records_cfg) $val[0]=$set_val;
-						$output.= '<td valign=top><input name="'.$cfg_key.'" type=text '.$val[2].' value="'.$val[0].'"></td>';
-
-					}
-					elseif($val[1]=='select')
-					{
-						$output.= '<td valign=top>';
-						$output.= '<select name="'.$cfg_key.'">';
-
-						foreach($val[0] as $option)			
-						{
-							unset($selected);
-							if($set_val==$option) $selected='selected';
-							$output.='<option value="'.$option.'" '.$selected.'>'.$option.'</option>';
-						}
-
-						$output.='</select></td>';
-
-					}
-					else
-					{
-						$output.= '<td valign=top><input name="'.$cfg_key.'" type=text value="'.$val[0].'"></td>';
-					}
-
-					$output.= '</tr>';
-
-					if($newconfig) $newconfig.='+";"+';
-					$newconfig.='"'.$cfg_key.'~"+document.popfrm.'.$cfg_key.'.value';
-
-
 				}
-				$output.= '</table></form>';
-				$output.= '<script>
-				function fake_submit()
+
+				$this->template->set_file(array('config_foot' => 'plg_config_footer.tpl'));
+				$this->template->set_var('fld_name',$GLOBALS[hidden_name]);
+				$this->template->set_var('newconfig',$newconfig);
+				$this->template->set_var('save',lang('save'));
+				$this->template->set_var('cancel',lang('cancel'));
+				$this->template->pparse('out','config_foot');
+
+				$this->bo->save_sessiondata();
+			}
+
+
+
+			function export_site()
+			{
+				global $where_key, $where_value;
+
+				$GLOBALS['phpgw_info']['flags']['noheader']=True;
+				$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
+				$GLOBALS['phpgw_info']['flags']['noappheader']=True;
+				$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
+				$GLOBALS['phpgw_info']['flags']['nofooter']=True;
+
+				$site_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_sites',$where_key,$where_value,'','','name');
+
+				$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
+				$date=date("d-m-Y",time());
+
+				header("Content-type: text");
+				header("Content-Disposition:attachment; filename=$filename");
+
+				$out='<'.'?p'.'hp'."\n\n"; 
+				/* ugly, but for nice indention */
+				$out.='	/***************************************************************************'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.="	** JiNN Site Export:  ".$filename."\n";
+				$out.="	** Date: ".$date."\n";
+				$out.='	** ---------------------------------------------------------------------- **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare **'."\n";
+				$out.='	** Copyright (C)2002, 2003 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
+				$out.='	** eGroupWare - http://www.egroupware.org                             **'."\n";
+				$out.='	** This file is part of JiNN                                              **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
+				$out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
+				$out.='	** Software Foundation; either version 2 of the License.                  **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
+				$out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
+				$out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
+				$out.='	** for more details.                                                      **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	** You should have received a copy of the GNU General Public License      **'."\n";
+				$out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
+				$out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
+				$out.='	**                                                                        **'."\n";
+				$out.='	***************************************************************************/'."\n";
+				$out.="\n";
+
+				$out.= "/* SITE ARRAY */\n";
+
+				$out.= '$import_site=array('."\n";
+
+				while (list ($key, $val) = each($site_data[0])) 
 				{
-					var newconfig;
-					newconfig='.$newconfig.';
-
-					window.opener.document.frm.'.$GLOBALS[hidden_name].'.value=newconfig;
-
-					//alert(window.opener.document.frm.'.$GLOBALS[hidden_name].'.value);
-					self.close();
-				}
-
-				</script>';
-				$output.= '<P><input type=button value='.lang('save').' onClick="fake_submit()">';
-
-			}
-			$output.= '<input type=button value='.lang('cancel').' onClick="self.close()">';
-
-			echo $output;
-
-			$this->bo->save_sessiondata();
-
-		}
-
-		function export_site()
-		{
-			global $where_key, $where_value;
-
-			$GLOBALS['phpgw_info']['flags']['noheader']=True;
-			$GLOBALS['phpgw_info']['flags']['nonavbar']=True;
-			$GLOBALS['phpgw_info']['flags']['noappheader']=True;
-			$GLOBALS['phpgw_info']['flags']['noappfooter']=True;
-			$GLOBALS['phpgw_info']['flags']['nofooter']=True;
-
-			$site_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_sites',$where_key,$where_value,'','','name');
-
-			$filename=ereg_replace(' ','_',$site_data[0][site_name]).'.JiNN';
-			$date=date("d-m-Y",time());
-
-			header("Content-type: text");
-			header("Content-Disposition:attachment; filename=$filename");
-
-			$out='<'.'?p'.'hp'."\n\n"; 
-			/* ugly, but for nice indention */
-			$out.='	/***************************************************************************'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.="	** JiNN Site Export:  ".$filename."\n";
-			$out.="	** Date: ".$date."\n";
-			$out.='	** ---------------------------------------------------------------------- **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare **'."\n";
-			$out.='	** Copyright (C)2002, 2003 Pim Snel <pim.jinn@lingewoud.nl>               **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN - http://linuxstart.nl/jinn                                       **'."\n";
-			$out.='	** phpGroupWare - http://www.phpgroupware.org                             **'."\n";
-			$out.='	** This file is part of JiNN                                              **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN is free software; you can redistribute it and/or modify it under  **'."\n";
-			$out.='	** the terms of the GNU General Public License as published by the Free   **'."\n";
-			$out.='	** Software Foundation; either version 2 of the License, or (at your      **'."\n";
-			$out.='	** option) any later version.                                             **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	** JiNN is distributed in the hope that it will be useful,but WITHOUT ANY **'."\n";
-			$out.='	** WARRANTY; without even the implied warranty of MERCHANTABILITY or      **'."\n";
-			$out.='	** FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License  **'."\n";
-			$out.='	** for more details.                                                      **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	** You should have received a copy of the GNU General Public License      **'."\n";
-			$out.='	** along with JiNN; if not, write to the Free Software Foundation, Inc.,  **'."\n";
-			$out.='	** 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA                 **'."\n";
-			$out.='	**                                                                        **'."\n";
-			$out.='	***************************************************************************/'."\n";
-			$out.="\n";
-
-			$out.= "/* SITE ARRAY */\n";
-
-			$out.= '$import_site=array('."\n";
-
-			while (list ($key, $val) = each($site_data[0])) 
-			{
-				if($key!='site_id') $out.= "	'$key '=> '$val',\n";
-			}
-			$out.=");\n\n";
-
-			
-			$site_object_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_site_objects','parent_site_id', $where_value ,'','','name');
-
-			$out.= "\n/* SITE_OBJECT ARRAY */\n";
-
-			foreach($site_object_data as $object)
-			{
-				$out.= '$import_site_objects[]=array('."\n";
-
-				while (list ($key, $val) = each ($object)) 
-				{ 
-					if ($key != 'object_id') 
-					{
-						$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
-					}
+					if($key!='site_id') $out.= "	'$key '=> '$val',\n";
 				}
 				$out.=");\n\n";
+
+
+				$site_object_data=$this->bo->so->get_phpgw_record_values('phpgw_jinn_site_objects','parent_site_id', $where_value ,'','','name');
+
+				$out.= "\n/* SITE_OBJECT ARRAY */\n";
+
+				foreach($site_object_data as $object)
+				{
+					$out.= '$import_site_objects[]=array('."\n";
+
+					while (list ($key, $val) = each ($object)) 
+					{ 
+						if ($key != 'object_id') 
+						{
+							$out .= "	'$key' => '".ereg_replace("'","\'",$val)."',\n"; 
+						}
+					}
+					$out.=");\n\n";
+				}
+
+				$out.='$checkbit=true;'."\n";
+				$out.='?>';
+				echo $out;
 			}
 
-			$out.='$checkbit=true;'."\n";
-			$out.='?>';
-			echo $out;
 		}
-
-	}
-	?>
+		?>

@@ -175,6 +175,15 @@
 			function add_edit_object()
 			{
 
+				if(!$this->bo->so->test_JSO_table($this->bo->site_object))
+				{
+					unset($this->bo->site_object_id);
+					$this->bo->message['error']=lang('Failed to open table. Please check if table <i>%1</i> still exists in database',$this->bo->site_object['table_name']);
+
+					$this->bo->save_sessiondata();
+					$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
+				}				
+
 				$this->ui->header('add or edit objects');
 				$this->ui->msg_box($this->bo->message);
 				$this->main_menu();	
@@ -201,9 +210,8 @@
 
 					$this->bo->save_sessiondata();
 					$this->bo->common->exit_and_open_screen('jinn.uiuser.index');
-
-				}
-
+				}				
+			
 				$this->ui->header('browse through objects');
 				$this->ui->msg_box($this->bo->message);
 				$this->main_menu();	

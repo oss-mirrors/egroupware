@@ -1,23 +1,23 @@
 <?php
 	/*
-	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for phpGroupWare
+	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
 	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
 
-	phpGroupWare - http://www.phpgroupware.org
+	eGroupWare - http://www.eGroupware.org
 
 	This file is part of JiNN
 
 	JiNN is free software; you can redistribute it and/or modify it under
 	the terms of the GNU General Public License as published by the Free
-	Software Foundation; either version 2 of the License, or (at your 
+	Software Foundation; either version 2 of the License, or (at your
 	option) any later version.
 
 	JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
-	WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+	WARRANTY; without even the implied warranty of MERCHANTABILITY or
 	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
 	for more details.
 
-	You should have received a copy of the GNU General Public License 
+	You should have received a copy of the GNU General Public License
 	along with JiNN; if not, write to the Free Software Foundation, Inc.,
 	59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 	*/
@@ -27,7 +27,7 @@
 
 		function uiadminaddedit($bo)
 		{
-			$this->bo = $bo; 
+			$this->bo = $bo;
 			$this->template = $GLOBALS['phpgw']->template;
 
 			$this->ui = CreateObject('jinn.uicommon');
@@ -159,7 +159,7 @@
 						}
 
 						if($where_key && $where_value && in_array($table_name,$tables_check_arr))
-						{							
+						{
 							$valid_table_name=true;
 
 						}
@@ -244,7 +244,7 @@
 							}
 						}
 						// ADD NEW ONE WITH MANY RELATION
-						//die($parent_site_id);	
+						//die($parent_site_id);
 
 
 						if($fields=$this->bo->so->site_table_metadata($parent_site_id,$table_name))
@@ -444,7 +444,7 @@
 								$input.=$field['name'] . '</td><td>';
 
 								if ($field['name']!='id')
-								{ 
+								{
 
 									// remove
 									$plugin_hooks=$this->bo->plugin_hooks($field['type']);
@@ -471,7 +471,7 @@
 										$input.='<td>
 										<input type="hidden" name="CFG_PLG'.$field['name'].'" value="'.$plg_conf.'">
 
-										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.$plg_conf.'\', \'pop'.$field['name'].'\', \'width=400,height=300,location=yes,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
+										<input type="button" onClick="parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')" value="'.lang('configure').'">
 										</td>';
 									}
 								}
@@ -487,7 +487,7 @@
 
 						}
 					}
-					elseif(!$where_key && !$where_value) 
+					elseif(!$where_key && !$where_value)
 					{
 						$input.=lang('come back in edit mode to configure plugins');
 					}
@@ -511,7 +511,7 @@
 			}
 
 			if ($phpgw_table=='phpgw_jinn_site_objects')
-			{                
+			{
 
 				$cancel_button='<input type=button onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_phpgw_jinn_sites&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 
