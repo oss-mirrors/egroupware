@@ -13,7 +13,7 @@ email type	common	en	E-Mail Type
 enter your default mail domain ( From: user@domain )	admin	en	Enter your default mail domain ( From: user@domain )
 enter your pop	admin	en	Enter your POP
 enter your smtp server hostname or ip address	admin	en	Enter your SMTP server hostname or IP address
-enter your smtp server port	admin	en	Enter your SMTP server porr
+enter your smtp server port	admin	en	Enter your SMTP server port
 folder	email	en	Folder
 forward	email	en	Forward
 from	email	en	From
