@@ -93,7 +93,7 @@ function template_common_prologue($args)
 		
 		if(!$args['nosearch']) 
 		{
-			echo ' | Search: <input type="text" name="find" size="20" />';
+			echo ' | ' . lang('Search') . ': <input type="text" name="find" size="20" />';
 		}
 		echo "\n<hr align=left width=99% />\n";
 		
@@ -144,11 +144,11 @@ function template_common_epilogue($args)
   {
     if($args['editver'] == 0)
     {
-?>  <a href="<?php print editURL($args['edit']); ?>">Edit this document</a><?php
+?>  <a href="<?php print editURL($args['edit']); ?>"><?php echo lang('Edit this document'); ?></a><?php
     }
     else if($args['editver'] == -1)
     {
-?>    This document cannot be edited <?php
+    echo lang('This document cannot be edited');
     }
     else
     {
@@ -164,14 +164,14 @@ function template_common_epilogue($args)
   if($args['history'])
   {
 ?>
-    <a href="<?php print historyURL($args['history']); ?>">View document history</a>
+    <a href="<?php print historyURL($args['history']); ?>"><?php echo lang('View document history'); ?></a>
 <?php
-    echo ' | <a href="' . $PrefsScript . '">Preferences</a>' .
+    echo ' | <a href="' . $PrefsScript . '">' . lang('Preferences') . '</a>' .
           ($GLOBALS['phpgw_info']['user']['apps']['admin'] ?
             ' | <a href="'.$AdminScript.'">Administration</a>' : '');
   
     if(!$args['nosearch']) { ?>	
-      | Search: <input type="text" name="find" size="20" /> 
+      | <?php echo lang('Search'); ?>: <input type="text" name="find" size="20" />
 <?php 
     }
 	echo "<br />";
@@ -179,7 +179,7 @@ function template_common_epilogue($args)
   if($args['timestamp'])
   {
 ?>
-  Document last modified <?php print html_time($args['timestamp']); ?><br />
+  <?php echo lang('Document last modified') ?> <?php print html_time($args['timestamp']); ?><br />
 <?php
   } ?>
       </div>

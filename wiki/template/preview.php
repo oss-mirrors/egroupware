@@ -18,7 +18,7 @@ function template_preview($args)
 {
   global $EditRows, $EditCols, $categories, $UserName, $comment, $PrefsScript, $EditWithPreview;
   
-  $title = $EditWithPreview ? 'Editing' : 'Previewing';
+  $title = $EditWithPreview ? lang('Editing') : lang('Previewing');
 
   template_common_prologue(array('norobots' => 1,
                                  'title'    => $title . ' ' . $args['page'],
@@ -31,12 +31,12 @@ function template_preview($args)
 <div id="body">
 <form method="post" name="editform" action="<?php print saveURL($args['page']); ?>">
 <div class="form">
-  <input type="submit" name="Save" value="Save" />
-  <input type="submit" name="Preview" value="Preview" />
-  <input type="submit" name="SaveAndContinue" value="Save & Continue" />
+  <input type="submit" name="Save" value="<?php echo lang('Save'); ?>" />
+  <input type="submit" name="Preview" value="<?php echo lang('Preview'); ?>" />
+  <input type="submit" name="SaveAndContinue" value="<?php echo lang('Save & Continue'); ?>" />
 <?php
   if($UserName != '')
-    { print 'Your user name is ' . html_ref($UserName, $UserName); }
+    { print lang('Your user name is %1', html_ref($UserName, $UserName)); }
   else
   {
 ?>  Visit <a href="<?php print $PrefsScript; ?>">Preferences</a> to set your
@@ -53,10 +53,10 @@ user name<?php
     print $EditCols; ?>" wrap="virtual"><?php
   print str_replace('<', '&lt;', str_replace('&', '&amp;', $args['text']));
 ?></textarea><br />
-  Summary of change:
+  <?php echo lang('Summary of change'); ?>:
   <input type="text" name="comment" size="40" value="<?php
     print $comment; ?>" /><br />
-  Add document to category:
+  <?php echo lang('Add document to category'); ?>:
   <input type="text" name="categories" size="40" value="<?php
     print $categories; ?>" />
 </div>
