@@ -27,7 +27,7 @@
    $this->plugins['selectbox']['name'] 		= 'selectbox';
    $this->plugins['selectbox']['title']		= 'Select Box';
    $this->plugins['selectbox']['author']	= 'Pim Snel';
-   $this->plugins['selectbox']['version']	= '0.4';
+   $this->plugins['selectbox']['version']	= '0.5';
    $this->plugins['selectbox']['enable']	= 1;
    $this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
    $this->plugins['selectbox']['db_field_hooks']	= array
@@ -77,10 +77,36 @@
 			$i=0;
 			foreach($pos_values as $pos_val) 
 			{
+			   
+				// quick fix for handling with 0's 
+			   if(strval($pos_val)=='0')
+			   {
+				  $pos_val='null'; 
+			   }
+
+			   if(strval($value)=='0')
+			   {
+				  $value='null'; 
+			   }
+
+			   if(strval($config['Default_value'])=='0')
+			   {
+				  $config['Default_value']='null'; 
+			   }
+				// end quick fix for handling with 0's 
+
 			   unset($selected);
-			   if(empty($value) && $pos_val==$config['Default_value']) $selected='SELECTED';	
-			   //	  die($value.' '.$pos_val);
-			   if($value==$pos_val) $selected='SELECTED';	
+
+			   if(strval(empty($value)) && strval($pos_val)==strval($config['Default_value'])) 
+			   {
+				  $selected='SELECTED';	
+			   }
+			   elseif(strval($value)==strval($pos_val))
+			   {
+//				  die($value .' '. $pos_val);
+				  $selected='SELECTED';	
+			   }
+
 			   $input.='<option '.$selected.' value="'.trim($pos_val).'">'.trim($keys[$i]).'</option>';
 			   $i++;
 			}
