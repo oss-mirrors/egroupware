@@ -46,7 +46,17 @@
 		$random_number = rand(100000000,999999999);
 		$newfilename = md5($uploadedfile.', '.$uploadedfile_name.', '.$phpgw_info['user']['sessionid'].time().getenv('REMOTE_ADDR').$random_number);
 
-		copy($uploadedfile, $uploaddir . $newfilename);
+		// Check for uploaded file of 0-length, or no file (patch from Zone added by Milosch)
+		//if ($uploadedfile == "none" && $uploadedfile_size == 0) This could work also
+		if ($uploadedfile_size == 0)
+		{
+			touch ($uploaddir . $newfilename);
+		}
+		else
+		{
+			copy($uploadedfile, $uploaddir . $newfilename);
+		}
+
 		$ftp = fopen($uploaddir . $newfilename . '.info','w');
 		fputs($ftp,$uploadedfile_type."\n".$uploadedfile_name."\n");
 		fclose($ftp);
