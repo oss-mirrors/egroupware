@@ -74,10 +74,9 @@
 		*/
 		function msg_box($msg_arr)
 		{
-			//var_dump($msg_arr);
-			if ($msg_arr['info']) $info='<p><font color=green>'.$msg_arr['info'].'</font></p>';
-			if ($msg_arr['help']) $help='<p><font color=blue>'.$msg_arr['help'].'</font></p>';
-			if ($msg_arr['error']) $error='<p><font color=red>'.$msg_arr['error'].'</font></p>';
+			if ($msg_arr['info']) $info='<span style="color:green">'.$msg_arr['info'].'</span><br/>';
+			if ($msg_arr['help']) $help='<span style="color:blue">'.$msg_arr['help'].'</span><br/>';
+			if ($msg_arr['error']) $error='<span style="color:red">'.$msg_arr['error'].'</span><br/>';
 
 			if($info || $error || $help)
 			{

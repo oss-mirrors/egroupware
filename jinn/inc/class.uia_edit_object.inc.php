@@ -1,7 +1,7 @@
 <?php
 	/*
 	JiNN - Jinn is Not Nuke, a mutli-user, multi-site CMS for eGroupWare
-	Copyright (C)2002, 2003 Pim Snel <pim@lingewoud.nl>
+	Copyright (C)2002, 2004 Pim Snel <pim@lingewoud.nl>
 
 	eGroupWare - http://www.eGroupware.org
 
@@ -61,7 +61,7 @@
 				$form_action = $GLOBALS[phpgw]->link('/index.php',"menuaction=jinn.boadmin.insert_phpgw_jinn_site_objects");
 //				$add_edit_button=lang('add');
 				$action=lang('add '. 'phpgw_jinn_site_objects' );
-				$parent_site_id=$GLOBALS['HTTP_POST_VARS']['parent_site_id'];
+				$parent_site_id=$_GET['parent_site_id'];
 			}
 
 			$this->template->set_var('form_action',$form_action);
@@ -216,7 +216,6 @@
 						$input = 'automatisch';
 					}
 				}
-
 
 				/*************************************************
 				* RELATION SECTION                               *
@@ -521,7 +520,6 @@
 				$this->template->pparse('out','object_field');
 
 			}
-
 
 			$cancel_button='<input type="button" onClick="location=\''.$GLOBALS[phpgw]->link('/index.php','menuaction=jinn.uiadmin.add_edit_site&cancel=true&where_key=site_id&where_value='.$parent_site_id).'\'" value="'.lang('cancel').'">';
 

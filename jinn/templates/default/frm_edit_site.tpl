@@ -5,6 +5,9 @@
 <table align="center" cellspacing="2" cellpadding="2" width="100%">
 <!-- END header -->
 
+<!-- BEGIN rows -->
+<tr><td bgcolor={row_color} valign="top">{fieldname}</td><td bgcolor={row_color}>{input}</td></tr>
+<!-- END rows -->
 
 <!-- BEGIN footer -->
 </tr>
@@ -20,11 +23,4 @@
 	</tr>
 </table>
 </form>
-<br/><div style="width:100%;background-color:grey;height:1px;"></div><br/>
 <!-- END footer -->
-
-
-<!-- BEGIN object_buttons -->
-<input type="button" value="{lang_add_object}" onclick="document.location.href='{link_add_object}'">
-<input type="button" value="{lang_auto_add_object}" onclick="document.location.href='{link_auto_add_object}'">
-<!-- END object_buttons -->

@@ -132,7 +132,9 @@
 
 		function add_edit_site()
 		{
-			$where_key=stripslashes($this->bo->where_key);
+
+		   // FIXME
+		   $where_key=stripslashes($this->bo->where_key);
 			$where_value=stripslashes($this->bo->where_value);
 
 			if($GLOBALS[HTTP_GET_VARS][cancel]=='true')
@@ -148,9 +150,9 @@
 			else
 			{
 				$this->ui->header(lang('Add Site'));
-				$this->bo->message[help]=lang('Insert new Site configuration: <li>Insert a Site Name for display</li> <li>insert correct Database settings</li> <li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li>');
+				$helptext='Insert new Site configuration:<ol><li>Insert a Site Name for display</li><li>insert correct Database settings</li><li>insert a correct absolute upload path</li><li>insert a corresponding preview URL for uploaded elements</li></ol>';
+				$this->bo->message[help]=lang($helptext);
 			}
-
 
 			$this->ui->msg_box($this->bo->message);
 

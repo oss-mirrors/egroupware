@@ -165,7 +165,6 @@
 			lang('add site').'"></form></td>';
 			$table_title=lang('Sites');
 
-
 			$this->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 			$this->template->set_var('fieldnames',$column_header);
 			$this->template->set_var('button_add',$button_add);
@@ -175,15 +174,11 @@
 			$this->template->set_var('table_title',$table_title);
 			$this->template->set_var('record_info','');
 			$this->template->set_var('table_row',$table_row);
+			$this->template->set_var('lang_Actions',lang('Actions'));
 			$this->template->set_var('edit',lang('edit'));
 			$this->template->set_var('delete',lang('delete'));
 			$this->template->set_var('copy',lang('copy'));
 			$this->template->pparse('out','browse');
-
-
 		}
-
 	}
-
-
 ?>
