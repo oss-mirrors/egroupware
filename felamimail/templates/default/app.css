@@ -49,6 +49,7 @@ TR.header_row_
 	padding: 0;
 	font-weight : bold;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_
@@ -68,6 +69,7 @@ TR.header_row_D
 	text-decoration : line-through;
 	font-weight : bold;
 	background : White;
+	white-space: nowrap;
 }
 	
 A.header_row_D
@@ -88,6 +90,7 @@ TR.header_row_DS, TR.header_row_ADS
 	color: silver;
 	text-decoration : line-through;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_DS, A.header_row_ADS
@@ -105,6 +108,7 @@ TR.header_row_S
 	height : 20px;
 	padding: 0;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_S
@@ -120,6 +124,7 @@ TR.header_row_RS
 	height : 20px;
 	padding: 0;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_RS
@@ -135,6 +140,7 @@ TR.header_row_AS,TR.header_row_RAS
 	height : 20px;
 	padding: 0;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_AS, A.header_row_RAS
@@ -151,6 +157,7 @@ TR.header_row_FAS,  TR.header_row_FS
 	height : 20px;
 	padding: 0;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_FAS, A.header_row_FS
@@ -169,6 +176,7 @@ TR.header_row_F
 	padding: 0;
 	font-weight : bold;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_F
@@ -187,6 +195,7 @@ TR.header_row_R
 	padding: 0;
 	font-weight : bold;
 	background : White;
+	white-space: nowrap;
 }
 
 A.header_row_R

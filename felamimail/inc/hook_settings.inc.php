@@ -123,10 +123,5 @@
 		);
 		create_select_box('IMAP Server type','imapServerMode',$selectOptions);
 
-		#$selectOptions = array(
-		#	'no' => lang('no'),
-		#	'yes' => lang('yes')
-		#);
-		#create_select_box('use custom settings','use_custom_settings',$selectOptions);
 	}
 ?>

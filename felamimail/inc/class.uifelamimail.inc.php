@@ -227,6 +227,11 @@
 		
 		function display_app_header()
 		{
+			if(!@is_object($GLOBALS['phpgw']->js))
+			{
+				$GLOBALS['phpgw']->js = CreateObject('phpgwapi.javascript');
+			}
+			$GLOBALS['phpgw']->js->validate_file('foldertree','foldertree');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
@@ -659,17 +664,22 @@
 					{
 						// make the subject shorter if it is to long
 						$fullSubject = $headers['header'][$i]['subject'];
-						if(strlen($headers['header'][$i]['subject']) > $maxSubjectLength)
-						{
-							$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
-						}
+						#if(strlen($headers['header'][$i]['subject']) > $maxSubjectLength)
+						#{
+						#	$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
+						#}
 						$headers['header'][$i]['subject'] = htmlspecialchars($headers['header'][$i]['subject'],ENT_QUOTES,$this->displayCharset);
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
-							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
+//modified NDEE 29-12-03 for 
+//separate attachment icon
+							//$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
+							$headers['header'][$i]['attachment'] = $image;
 						}
 						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
+// added
+						$this->t->set_var('attachments', $headers['header'][$i]['attachment']);
 						$this->t->set_var('full_subject',htmlspecialchars($fullSubject,ENT_QUOTES,$this->displayCharset));
 					}
 					else
@@ -713,10 +723,10 @@
 						}
 						#$this->t->set_var('lang_from',lang("from"));
 					}
-					if(strlen($sender_name) > $maxAddressLength)
-					{
-						$sender_name = substr($sender_name,0,$maxAddressLength)."...";
-					}
+					#if(strlen($sender_name) > $maxAddressLength)
+					#{
+					#	$sender_name = substr($sender_name,0,$maxAddressLength)."...";
+					#}
 					$this->t->set_var('sender_name',htmlentities($sender_name,
 											 ENT_QUOTES,$this->displayCharset));
 					$this->t->set_var('full_address',$full_address);
@@ -728,6 +738,7 @@
 
 					$this->t->set_var('message_counter',$i);
 					$this->t->set_var('message_uid',$headers['header'][$i]['uid']);
+// HINT: date style should be set according to preferences!
 					$this->t->set_var('date',$headers['header'][$i]['date']);
 					$this->t->set_var('size',$this->show_readable_size($headers['header'][$i]['size']));
 
@@ -898,18 +909,77 @@
 			$this->t->parse('status_row','status_row_tpl',True);
 			
 			@reset($folders);
+			
+// Start of the new folder tree system
+// 29-12-2003 NDEE
+// ToDo
+// check how many mails in folder
+// open to active folder on reload
+
+			$counter = 0;
+
+			// careful! "d = new..." MUST be on a new line!!!
+			$folder_tree_new = "<script type='text/javascript'><!--	
+			d = new dTree('d');";
+			
+			
 			while(list($key,$value) = @each($folders))
 			{
 				$selected = '';
 				if ($this->mailbox == $key) 
 				{
 					$selected = ' selected';
+//ndee inserted
+					$this->t->set_var('current_folder',str_replace(".","",$value));
+				
 				}
 				$options_folder .= sprintf('<option value="%s"%s>%s</option>',
 							htmlspecialchars($key),
 							$selected,
 							htmlspecialchars($value));
+			
+				$counted_dots = substr_count($value,".");
+				// <b> will be replaced by div style later
+				if ($this->mailbox == $key) 
+				{
+					$folder_name = "<font style=\"background-color: #dddddd\">".str_replace(".","",$value)."</font>";
+				}
+				else
+				{
+					$folder_name = str_replace(".","",$value);
+				}
+
+				$folder_title = str_replace(".","",$value);
+				$folder_icon = PHPGW_IMAGES_DIR."/foldertree/folder.gif";
+
+				if($counter==0)
+				{
+					$parent = -1;
+					$folder_icon = PHPGW_IMAGES_DIR."/foldertree/felamimail_sm.png";
+				}
+
+				if($counted_dots == 2) 
+				{
+					$parent = 0;
+					$last_parent = $counter;
+				}
+				if($counted_dots > 2)
+				{
+					$parent = $last_parent;
+				}
+// Node(id, pid, name, url, urlClick, urlOut, title, target, icon, iconOpen, open) {
+				$folder_tree_new .= "d.add($counter,$parent,'$folder_name','#','document.messageList.mailbox.value=\'$key\'; document.messageList.submit();','','$folder_title $key','','$folder_icon');";
+				$counter++;
 			}
+
+			$folder_tree_new.= "document.write(d);//--></script>";
+
+			$this->t->set_var('current_mailbox',$current_mailbox);
+			$this->t->set_var('folder_tree',$folder_tree_new);
+			$this->t->set_var('foldertree_image_path',PHPGW_IMAGES_DIR.'/foldertree/');
+			
+// Finish of the new folder tree system			
+
 			$this->t->set_var('options_folder',$options_folder);
 			
 			$linkData = array
@@ -1019,6 +1089,7 @@
 			$this->t->set_var('lang_add_to_addressbook',lang("add to addressbook"));
 			$this->t->set_var('lang_no_filter',lang("no filter"));
 			$this->t->set_var('lang_connection_failed',lang("The connection to the IMAP Server failed!!"));
+			$this->t->set_var('lang_select_target_folder',lang("Simply click the target-folder"));
 		}
 	}
 ?>
