@@ -137,14 +137,23 @@
 
 
 
-  class bmark
-  {
+	class bmark
+	{
 
-     function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
-     {
-        global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
+		var $db;
 
-        $db = $phpgw->db;
+		function bmark()
+		{
+			global $phpgw;
+
+			$this->db = $phpgw->db;
+		}
+
+		function add(&$id,$url,$name,$ldesc,$keywords,$category,$subcategory,$rating,$access,$groups)
+		{
+			global $phpgw_info,$error_msg, $msg, $bookmarker, $phpgw;
+
+			$db = $phpgw->db;
 
 /*      if (! $this->validate(&$url, &$name, &$ldesc, &$keywords, &$category, &$subcategory, 
                          &$rating, &$public, &$public_db)) {

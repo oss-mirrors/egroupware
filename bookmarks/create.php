@@ -204,8 +204,8 @@ if ($rating > 0) {
   $phpgw->template->set_var("input_desc",'<textarea name="desc" rows="3" cols="60" wrap="virtual"></textarea>');
   $phpgw->template->set_var("input_keywords",'<input type="text" name="keyw" size="60" maxlength="255">');
 
-  $phpgw->template->set_var("input_access",$phpgw->sbox->getAccessList("access") . "&nbsp;"
-                                         . $phpgw->sbox->getGroups($phpgw->accounts->get_list('groups'),-1,"groups"));
+	$phpgw->template->set_var("input_access",$phpgw->sbox->getAccessList("access") . "&nbsp;"
+                                         . $phpgw->sbox->getGroups($phpgw->accounts->memberships($phpgw_info["user"]["account_id"]),-1,"groups"));
 
   $phpgw->template->set_var("delete_link","");
   $phpgw->template->set_var("cancel_link","");

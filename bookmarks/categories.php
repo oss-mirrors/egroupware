@@ -31,10 +31,10 @@
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
 
   if ($type == "category") {
-     $cats = $phpgw->categories->return_array("mains");
+     $cats = $phpgw->categories->return_array("mains", $start, $phpgw_info['user']['preferences']['common']['maxmatchs']);
   }
   if ($type == "subcategory") {
-     $cats = $phpgw->categories->return_array("submains");
+     $cats = $phpgw->categories->return_array("subs", $start, $phpgw_info['user']['preferences']['common']['maxmatchs']);
   }
 
   while ($cat = each($cats)) {

@@ -25,8 +25,8 @@
     // we use base64 coding rather than urlencode and rawencode since
     // it seems to be more reliable.
 
-    $cat_search    = $phpgw->link("search.php","where=" . urlencode("category.name='$category'"));
-    $subcat_search = $phpgw->link("search.php","where=" . urlencode("subcategory.name='$subcategory'"));
+    $cat_search    = $phpgw->link("/bookmarks/search.php","where=" . urlencode("category.name='$category'"));
+    $subcat_search = $phpgw->link("/bookmarks/search.php","where=" . urlencode("subcategory.name='$subcategory'"));
 
     $list_tpl->set_var(array(CATEGORY           => htmlspecialchars(stripslashes($category)),
 //                           CATEGORY_SEARCH    => $cat_search,
@@ -115,16 +115,16 @@
 
       // Check owner
       if ($phpgw->db->f("bm_owner") == $phpgw_info["user"]["account_id"]) {
-         $maintain_url  = $phpgw->link("maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+         $maintain_url  = $phpgw->link("/bookmarks/maintain.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
          $maintain_link = sprintf("<a href=\"%s\"><img src=\"%s%s.%s\" width=24 height=24 align=top border=0 alt=\"Edit this Bookmark\"></a>", $maintain_url, $bookmarker->image_url_prefix, "edit", $bookmarker->image_ext);
 
-         $view_url  = $phpgw->link("view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
+         $view_url  = $phpgw->link("/bookmarks/view.php","bm_id=" . $phpgw->db->f("bm_id") . "&returnto=" . urlencode($returnto));
          $view_link     = sprintf("<a href=\"%s\"><img src=\"" . $phpgw_info["server"]["app_images"] . "/document.gif\" width=17 height=16 align=top border=0 alt=\"" . lang("View this Bookmark") . "\"></a>", $view_url);
       } else {
          $maintain_link = sprintf("<!-- owned by: %s -->&nbsp;", $phpgw->db->f("bm_owner"));
       }
       if ($phpgw->acl->check("anonymous",1,"bookmarks")) {
-         $list_tpl->set_var("MAIL_THIS_LINK_URL",$phpgw->link("maillink.php","bm_id=".$phpgw->db->f("bm_id")));
+         $list_tpl->set_var("MAIL_THIS_LINK_URL",$phpgw->link("/bookmarks/maillink.php","bm_id=".$phpgw->db->f("bm_id")));
       } else {
          $list_tpl->set_var("MAIL_THIS_LINK_URL","&nbsp;");
       }
@@ -136,7 +136,7 @@
 //                               MAIL_THIS_LINK_URL => $phpgw->link("maillink.php","id=".$phpgw->db->f("id")),
                                BOOKMARK_USERNAME  => $phpgw->db->f("bm_owner"),
                                BOOKMARK_ID        => $phpgw->db->f("bm_id"),
-                               BOOKMARK_URL       => $phpgw->link("redirect.php","url=" . urlencode($phpgw->db->f("bm_url")) ."&bm_id=" . $phpgw->db->f("bm_id")),
+                               BOOKMARK_URL       => $phpgw->link("/bookmarks/redirect.php","url=" . urlencode($phpgw->db->f("bm_url")) ."&bm_id=" . $phpgw->db->f("bm_id")),
                                BOOKMARK_RATING    => htmlspecialchars(stripslashes($phpgw->db->f("bm_rating"))),
                                BOOKMARK_RATING_ID => $phpgw->db->f("bm_rating"),
                                BOOKMARK_NAME      => htmlspecialchars(stripslashes($phpgw->db->f("bm_name"))),

@@ -55,7 +55,7 @@
                             ));
   app_header(&$phpgw->template);
 
-  $phpgw->template->set_var("form_action",$phpgw->link("category_maintain.php","type=$type&method=$method"));
+  $phpgw->template->set_var("form_action",$phpgw->link("/bookmarks/category_maintain.php","type=$type&method=$method"));
   $phpgw->template->set_var("th_bg",$phpgw_info["theme"]["th_bg"]);
   $phpgw->template->set_var("row_on",$phpgw_info["theme"]["row_on"]);
   $phpgw->template->set_var("lang_name",lang("Name"));
