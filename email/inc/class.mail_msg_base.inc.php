@@ -2525,7 +2525,7 @@
 			// try to restore "mailsvr_callstr" from saved appsession data store
 			$appsession_cached_mailsvr_callstr = $this->read_session_cache_item('mailsvr_callstr', $acctnum);
 			if ($this->debug_args_special_handlers > 2) { $this->dbug->out('mail_msg: get_mailsvr_callstr: $appsession_cached_mailsvr_callstr is  ['.serialize($appsession_cached_mailsvr_callstr).']<br>'); }
-			if ($appsession_cached_mailsvr_callstr)
+			if (strlen($appsession_cached_mailsvr_callstr) > 6)	// as it defaults to '{:143}'
 			{
 				// cache the result in "level one cache" class var holder
 				if ($this->debug_args_special_handlers > 1) { $this->dbug->out('mail_msg: get_mailsvr_callstr: recovered "mailsvr_callstr" data from appsession <br>'); }
