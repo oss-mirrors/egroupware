@@ -29,12 +29,6 @@
 		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=category'));
 	}
 
-	if ($edit_subcategory_x || $edit_subcategory_y)
-	{
-		grab_form_values('create.php',True);
-		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=subcategory'));
-	}
-
 	$location_info = $phpgw->bookmarks->read_session_data();
 	if ($location_info['returnto'] == 'create.php')
 	{
@@ -43,7 +37,6 @@
 		$bookmark['desc']        = $location_info['bookmark_desc'];
 		$bookmark['keywords']    = $location_info['bookmark_keywords'];
 		$bookmark['category']    = $location_info['bookmark_category'];
-		$bookmark['subcategory'] = $location_info['bookmark_subcategory'];
 		$bookmark['rating']      = $location_info['bookmark_rating'];
 	}
 
@@ -115,17 +108,9 @@
 
 	$phpgw->template->set_var('lang_header',lang('Create new bookmark'));
 
-	$phpgw->template->set_var('input_category','<select name="bookmark[category]">'
-                                           . '<option value="0">--</option>'
-                                           . $phpgw->categories->formated_list('select','mains',$bookmark['category'])
-                                           . '</select>');
-	$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+	$phpgw->template->set_var('input_category',$phpgw->bookmarks->categories_list($bookmark['category']));
 
-	$phpgw->template->set_var('input_subcategory','<select name="bookmark[subcategory]">'
-                                              . '<option value="0">--</option>'
-                                              . $phpgw->categories->formated_list('select','subs',$bookmark['subcategory'])
-                                              . '</select>');
-	$phpgw->template->set_var('subcategory_image','<input type="image" name="edit_subcategory" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
+	$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
 
 	$selected[$bookmark['rating']] = ' selected';
 	$phpgw->template->set_var('input_rating','<select name="bookmark[rating]">'

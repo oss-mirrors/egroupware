@@ -5,6 +5,7 @@
   <td>{sort_name}</td>
   <td width="5%">{lang_edit}</td>
   <td width="5%">{lang_delete}</td>
+  <td width="20%">{lang_subcategories}</td>
  </tr>
 
  {rows}

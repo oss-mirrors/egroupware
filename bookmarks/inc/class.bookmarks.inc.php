@@ -192,6 +192,39 @@
 			}
 		}
 
+		function categories_list($selected)
+		{
+			global $phpgw;
+
+			$mains[] = array(
+				'id'      => 0,
+				'parent'  => 0,
+				'name'    => '--'
+			);
+
+			$_mains = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
+			while ($main = each($_mains))
+			{
+				$mains[] = $main[1];
+			}
+
+			while ($main = each($mains))
+			{
+				$phpgw->db->query("select * from phpgw_categories where cat_parent='" . $main[1]['id'] . "' order by cat_name",__LINE__,__FILE__);
+				while ($phpgw->db->next_record())
+				{
+					$id = $main[1]['id'] . '|' . $phpgw->db->f('cat_id');
+					$s .= '<option value="' . $id . '"';
+					if ($id == $selected)
+					{
+						$s .= ' selected';
+					}
+					$s .= '>' . $main[1]['name'] . ' :: ' . $phpgw->db->f('cat_name') . '</option>';
+				}
+			}
+			return '<select name="bookmark[category]" size="5">' . $s . '</select>';
+		}
+
 		function add(&$id,$values)
 		{
 			global $phpgw_info, $error_msg, $msg, $phpgw;
@@ -218,12 +251,13 @@
 				$values['access'] = 'public';
 			}
 
-			// Insert the bookmark
+			list($category,$subcategory) = explode('|',$values['category']);
+
 			$query = sprintf("insert into phpgw_bookmarks (bm_url, bm_name, bm_desc, bm_keywords, bm_category,"
                        . "bm_subcategory, bm_rating, bm_owner, bm_access, bm_info, bm_visits) "
                        . "values ('%s', '%s', '%s','%s',%s,%s,%s, '%s', '%s','%s,0,0',0)", 
                           $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']),
-                          $values['category'], $values['subcategory'], $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
+                          $category, $subcategory, $values['rating'], $phpgw_info['user']['account_id'], $values['access'],
                           time());
     
 			$db->query($query,__LINE__,__FILE__);
@@ -259,13 +293,15 @@
 	
 			$timestamps = sprintf('%s,%s,%s',$ts[0],$ts[1],time());
 
+			list($category,$subcategory) = explode('|',$values['category']);
+
 			// Update bookmark information.
 			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
 	                      . "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
 	                      . "bm_info='%s', bm_access='%s' where bm_id='%s'", 
 	                         $values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
-	                         $values['category'], $values['subcategory'], $values['rating'], $timestamps, $values['access'], $id);
-	
+	                         $category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
+
 			$phpgw->db->query($query,__LINE__,__FILE__);
 
 			$msg .= lang('Bookmark changed sucessfully');
@@ -484,7 +520,7 @@ class bookmarker_class  {
 # this var controls if the bookmarker links (start, create, search...)
 # are displayed in the tree view. NOTE: these links are only displayed
 # if 'group by category/subcategory' is also selected.
-  var $show_bk_in_tree = 0; # set to 0 for 'off' 1 for 'on'
+  var $show_bk_in_tree = 1; # set to 0 for 'off' 1 for 'on'
 
 
   function bookmarker_class()

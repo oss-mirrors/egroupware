@@ -27,7 +27,8 @@
 	$phpgw->template->set_file(array(
 		'common'    => 'common.tpl',
 		'body'      => 'categories_list.tpl',
-		'row'       => 'categories_list_row.tpl'
+		'row'       => 'categories_list_row.tpl',
+		'empty_row' => 'categories_list_row_empty.tpl'
 	));
 	app_header(&$phpgw->template);
 
@@ -35,6 +36,7 @@
 	$phpgw->template->set_var('sort_name',lang('Name'));
 	$phpgw->template->set_var('lang_edit',lang('Edit'));
 	$phpgw->template->set_var('lang_delete',lang('Delete'));
+	$phpgw->template->set_var('lang_subcategories',lang('Sub categorys'));
 	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 
 	if ($type == 'category')
@@ -44,20 +46,32 @@
 
 	if ($type == 'subcategory')
 	{
-		$cats = $phpgw->categories->return_array('subs', $start, $phpgw_info['user']['preferences']['common']['maxmatchs']);
+		$cats = $phpgw->categories->return_array('subs', $start, $phpgw_info['user']['preferences']['common']['maxmatchs'],'','','',False,$parent_id);
 	}
 
-	while ($cat = each($cats))
+	if (is_array($cats))
 	{
-		$phpgw->nextmatchs->template_alternate_row_color(&$phpgw->template);
-		$phpgw->template->set_var('cat_name',$cat[1]['name']);
-		$phpgw->template->set_var('cat_edit','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','bm_id=' . $cat[1]['id'] . '&type=' . $type . '&method=edit')
-                                        . '">' . lang('Edit') . '</a>');
-		$phpgw->template->set_var('cat_delete','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','bm_id=' . $cat[1]['id'] . '&type=' . $type . '&method=delete')
-                                        . '">' . lang('Delete') . '</a>');
-		$phpgw->template->parse('rows','row',True);
+		while ($cat = each($cats))
+		{
+			$phpgw->nextmatchs->template_alternate_row_color(&$phpgw->template);
+			$phpgw->template->set_var('cat_name',$cat[1]['name']);
+			$phpgw->template->set_var('cat_edit','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','bm_id=' . $cat[1]['id'] . '&type=' . $type . '&method=edit')
+	                                        . '">' . lang('Edit') . '</a>');
+			$phpgw->template->set_var('cat_delete','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','bm_id=' . $cat[1]['id'] . '&type=' . $type . '&method=delete')
+	                                        . '">' . lang('Delete') . '</a>');
+			$phpgw->template->set_var('cat_subs','<a href="' . $phpgw->link('/bookmarks/categories.php','type=subcategory&parent_id=' . $cat[1]['id'])
+	                                        . '">' . lang('Sub categorys') . '</a>');
+	
+			$phpgw->template->parse('rows','row',True);
+		}
 	}
-	$phpgw->template->set_var('add_link','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','type=' . $type . '&method=add') . '">' . lang('Add') . '</a>');
+	else
+	{
+		$phpgw->template->set_var('lang_no_cats',lang('None found'));
+		$phpgw->template->parse('rows','empty_row',True);
+	}
+
+	$phpgw->template->set_var('add_link','<a href="' . $phpgw->link('/bookmarks/category_maintain.php','type=' . $type . '&method=add&parent_id=' . $parent_id ) . '">' . lang('Add') . '</a>');
 
 	if ($location_info['need_done_button'])
 	{

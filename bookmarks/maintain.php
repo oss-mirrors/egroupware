@@ -29,12 +29,6 @@
 		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=category'));
 	}
 
-	if ($edit_subcategory_x || $edit_subcategory_y)
-	{
-		grab_form_values('maintain.php',True);
-		$phpgw->redirect($phpgw->link('/bookmarks/categories.php','type=subcategory'));
-	}
-
 	$location_info = $phpgw->bookmarks->read_session_data();
 
 	if ($delete_x || $delete_y)
@@ -94,7 +88,6 @@
 		$bookmark['desc']        = $location_info['bookmark_desc'];
 		$bookmark['keywords']    = $location_info['bookmark_keywords'];
 		$bookmark['category']    = $location_info['bookmark_category'];
-		$bookmark['subcategory'] = $location_info['bookmark_subcategory'];
 		$bookmark['rating']      = $location_info['bookmark_rating'];
 	}
 	else if (! $edit_x || ! $edit_y)
@@ -106,8 +99,7 @@
 		$bookmark['url']         = $phpgw->db->f('bm_url');
 		$bookmark['desc']        = $phpgw->db->f('bm_desc');
 		$bookmark['keywords']    = $phpgw->db->f('bm_keywords');
-		$bookmark['category']    = $phpgw->db->f('bm_category');
-		$bookmark['subcategory'] = $phpgw->db->f('bm_subcategory');
+		$bookmark['category']    = $phpgw->db->f('bm_category') . '|' . $phpgw->db->f('bm_subcategory');
 		$bookmark['rating']      = $phpgw->db->f('bm_rating');
 	}
 
@@ -174,18 +166,9 @@
 
 		$phpgw->template->set_var('input_rating',$rating_select);
 
-		$phpgw->template->set_var('input_category','<select name="bookmark[category]">'
-                                              . '<option value="0">--</option>'
-                                              . $phpgw->categories->formated_list('select','mains',$bookmark['bm_category'])
-                                              . '</select>');
+		$phpgw->template->set_var('input_category',$phpgw->bookmarks->categories_list($bookmark['category']));
 		$phpgw->template->set_var('category_image','<input type="image" name="edit_category" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
-  
-		$phpgw->template->set_var('input_subcategory','<select name="bookmark[subcategory]">'
-                                                 . '<option value="0">--</option>'
-                                                 . $phpgw->categories->formated_list('select','subs',$bookmark['bm_subcategory'])
-                                                 . '</select>');
-		$phpgw->template->set_var('subcategory_image','<input type="image" name="edit_subcategory" src="' . PHPGW_IMAGES . '/edit.gif" border="0">');
-  
+    
   
 		$phpgw->template->set_var('input_url','<input name="bookmark[url]" size="60" maxlength="255" value="' . $bookmark['url'] . '">');
 		$phpgw->template->set_var('input_name','<input name="bookmark[name]" size="60" maxlength="255" value="' . $bookmark['name'] . '">');

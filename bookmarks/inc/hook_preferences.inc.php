@@ -40,11 +40,9 @@
 	echo '<br><a href="' . $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks')
 		. '">' . lang('Grant Bookmark access') . '</a>';
 
-	echo '<br><a href="' . $phpgw->link('/bookmarks/categories.php','type=category')
+	echo '<br><a href="' . $phpgw->link('/preferences/categories.php','cats_app=bookmarks')
 		. '">' . lang('Bookmark categorys') . '</a>';
 
-	echo '<br><a href="' . $phpgw->link('/bookmarks/categories.php','type=subcategory')
-		. '">' . lang('Bookmark sub-categorys') . '</a>';
 
 	section_end(); 
 }
