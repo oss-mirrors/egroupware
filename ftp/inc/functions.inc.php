@@ -17,9 +17,9 @@
 		return $GLOBALS['phpgw']->link($string,$params);
 	}
 
-	function getConnectionInfo() 
+	function getConnectionInfo()
 	{
-		$unencrypted=$GLOBALS['phpgw']->session->appsession();
+		$unencrypted = $GLOBALS['phpgw']->session->appsession();
 		return $unencrypted;
 	}
 
@@ -27,9 +27,9 @@
 	{
 		// echo "connecting to $host with $user and $pass\n";
 		$ftp = ftp_connect($host);
-		if ( $ftp ) 
+		if($ftp) 
 		{
-			if ( ftp_login($ftp,$user,$pass) ) 
+			if(ftp_login($ftp,$user,$pass)) 
 			{
 				return $ftp;
 			}
@@ -95,7 +95,7 @@
 		return $GLOBALS['phpgw']->template->get('return');
 	}
 
-	function newLogin($dfhost,$dfuser,$dfpass) 
+	function newLogin($dfhost,$dfuser,$dfpass)
 	{
 		$login_form_begin= '<form action="'.createLink($GLOBALS['target']).'" method="post">'."\n".'<input type="hidden" name="action" value="login">'."\n";
 		$login_form_end='</form>'."\n";
@@ -131,18 +131,18 @@
 		$tmpfile=$tempdir.'/'.$file.".".$randval;
 		ftp_chdir($ftp,$dir);
 		$remotefile=$dir . '/' . $file;
-		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) )
+		if(!ftp_get($ftp, $tmpfile, $remotefile, FTP_BINARY))
 		{
 			echo 'tmpfile="' . $tmpfile . '",file="' . $remotefile . '"<br>' . "\n";
-			ftp_quit( $ftp );
+			ftp_quit($ftp);
 			echo macro_get_Link('newlogin','Start over?');
 			$retval=0;
 		}
 		else
 		{
-			ftp_quit( $ftp );
+			ftp_quit($ftp);
 			$b = CreateObject('phpgwapi.browser');
-			if ($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
+			if($GLOBALS['phpgw_info']['server']['ftp_use_mime'])
 			{
 				$mime = getMimeType($file);
 				$b->content_header($file,$mime);
@@ -153,34 +153,34 @@
 			}
 			//header( "Content-Type: application/octet-stream" );
 			//header( "Content-Disposition: attachment; filename=" . $file );
-			readfile( $tmpfile );
-			$retval=1;
+			readfile($tmpfile);
+			$retval = 1;
 		}
-		@unlink( $tmpfile );
+		@unlink($tmpfile);
 		return $retval;
 	}
 
 	function getMimeType($file)
 	{
-		$file=basename($file);
+		$file = basename($file);
 		$mimefile = PHPGW_APP_ROOT . SEP . 'mime.types';
-		$fp=fopen($mimefile,"r");
+		$fp = fopen($mimefile,"r");
 		$contents = explode("\n",fread ($fp, filesize($mimefile)));
 		fclose($fp);
 
-		$parts=explode(".",$file);
-		$ext=$parts[(sizeof($parts)-1)];
+		$parts = explode(".",$file);
+		$ext = $parts[(sizeof($parts)-1)];
 
 		for($i=0;$i<sizeof($contents);$i++)
 		{
-			if (! ereg("^#",$contents[$i]))
+			if(!ereg("^#",$contents[$i]))
 			{
-				$line=split("[[:space:]]+", $contents[$i]);
-				if (sizeof($line) >= 2)
+				$line = split("[[:space:]]+", $contents[$i]);
+				if(sizeof($line) >= 2)
 				{
 					for($j=1;$j<sizeof($line);$j++)
 					{
-						if ($line[$j] == $ext)
+						if($line[$j] == $ext)
 						{
 							$mimetype=$line[0];
 							return $mimetype;
@@ -192,27 +192,27 @@
 		return 'text/plain';
 	}
 
-	function phpftp_view( $ftp, $tempdir, $dir, $file ) 
+	function phpftp_view($ftp, $tempdir, $dir, $file)
 	{
 		srand((double)microtime()*1000000);
 		$randval = rand();
-		$tmpfile="$tempdir/" . $file . "." . $randval;
+		$tmpfile = "$tempdir/" . $file . "." . $randval;
 		ftp_chdir($ftp,$dir);
 		$remotefile=$dir . "/" . $file;
-		if ( ! ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY ) ) 
+		if(!ftp_get( $ftp, $tmpfile, $remotefile, FTP_BINARY))
 		{
 			echo "tmpfile=\"$tmpfile\",file=\"$remotefile\"<BR>\n";
 			macro_get_Link('newlogin','Start over?');
-			$retval=0;
+			$retval = 0;
 		}
 		else 
 		{
 			$content_type=getMimeType($remotefile);
 			header('Content-Type: '.$content_type);
 			readfile( $tmpfile );
-			$retval=1;
+			$retval = 1;
 		}
-		@unlink( $tmpfile );
+		@unlink($tmpfile);
 		return $retval;
 	}
 
@@ -224,18 +224,18 @@
 
 	function analysedir($dirline)
 	{
-		if (ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
+		if(ereg("([-dl])[rwxst-]{9}",substr($dirline,0,10)))
 		{
 			$systyp = 'UNIX';
 		}
 
-		if (substr($dirline,0,5) == 'total')
+		if(substr($dirline,0,5) == 'total')
 		{
 			$dirinfo[0] = -1;
 		}
 		elseif($systyp=='Windows_NT')
 		{
-			if (ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
+			if(ereg("[-0-9]+ *[0-9:]+[PA]?M? +<DIR> {10}(.*)",$dirline,$regs))
 			{
 				$dirinfo[0] = 1;
 				$dirinfo[1] = 0;
@@ -250,12 +250,12 @@
 		}
 		elseif($systyp=='UNIX')
 		{
-			if (ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
+			if(ereg("([-d][rwxst-]{9}).*  ([a-zA-Z0-9]*) ([a-zA-Z]+ [0-9: ]*[0-9]) (.+)",$dirline,$regs))
 			{
 				$ta = explode(' ',$dirline);
-				while (list(,$p) = each($ta))
+				while(list(,$p) = each($ta))
 				{
-					if ($p)
+					if($p)
 					{
 						$a[] = $p;
 					}
@@ -269,12 +269,12 @@
 				//echo '<pre>'; print_r($regs); echo '</pre>';
 			}
 		}
-    
-		if (($dirinfo[2]=='.') || ($dirinfo[2]=='..'))
+
+		if(($dirinfo[2]=='.') || ($dirinfo[2]=='..'))
 		{
 			$dirinfo[0] = 0;
 		}
-        
+
 		return $fileinfo;
 	}
 
@@ -285,9 +285,9 @@
 
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
-		for ($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
+		for($i=$start; $i<($start+$GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']); $i++)
 		{
-			if ($i < count($dirlist))
+			if($i < count($dirlist))
 			{
 				$dirinfo[] = analysedir($dirlist[$i]);
 			}
@@ -295,7 +295,7 @@
 		return $dirinfo;
 	}
 
-	function macro_get_Link($action,$string) 
+	function macro_get_Link($action,$string)
 	{
 		// globals everything it needs but the string to link
 		global $olddir, $newdir, $file;
@@ -303,7 +303,8 @@
 			. $GLOBALS['phpgw']->link($GLOBALS['target'],
 				'olddir='.urlencode($olddir).'&action='.urlencode($action)
 				. '&file='.urlencode($file).'&newdir='.urlencode($newdir)
-			).'">';
+			)
+			. '">';
 		$retval .= $string;
 		$retval .= '</a>';
 		return $retval;
@@ -313,7 +314,7 @@
 	{
 	}
 
-	function phpftp_rename($origfile,$newfile,$confirm) 
+	function phpftp_rename($origfile,$newfile,$confirm)
 	{
 	}
 ?>

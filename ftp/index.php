@@ -1,16 +1,16 @@
 <?php
-/**************************************************************************\
-* phpGroupWare - Ftp Module                                                *
-* http://www.phpgroupware.org                                              *
-* Written by Scott Moser <smoser@brickies.net>                             *
-* --------------------------------------------                             *
-*  This program is free software; you can redistribute it and/or modify it *
-*  under the terms of the GNU General Public License as published by the   *
-*  Free Software Foundation; either version 2 of the License, or (at your  *
-*  option) any later version.                                              *
-\**************************************************************************/
+  /**************************************************************************\
+  * phpGroupWare - Ftp Module                                                *
+  * http://www.phpgroupware.org                                              *
+  * Written by Scott Moser <smoser@brickies.net>                             *
+  * --------------------------------------------                             *
+  *  This program is free software; you can redistribute it and/or modify it *
+  *  under the terms of the GNU General Public License as published by the   *
+  *  Free Software Foundation; either version 2 of the License, or (at your  *
+  *  option) any later version.                                              *
+  \**************************************************************************/
 
-	/* $Id$ */
+  /* $Id$ */
 
 	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'              => 'ftp',
@@ -24,7 +24,7 @@
 	}
 	include('../header.inc.php');
 
-	if (! $start)
+	if(!$start)
 	{
 		$start = 0;
 	}
@@ -64,10 +64,10 @@
 
 	$GLOBALS['phpgw']->template->set_var('module_name',lang('module name'));
 
-	if ($action=='' || $action=='login')
+	if($action=='' || $action=='login')
 	{
 		// if theres no action, try to login to default host with user and pass
-		if ($action=='login') 
+		if($action=='login')
 		{
 			// username, ftpserver and password should have been passed in
 			// via POST
@@ -78,7 +78,7 @@
 		else
 		{
 			// try to default with session id and passwd
-			if (!($connInfo=getConnectionInfo())) 
+			if(!($connInfo=getConnectionInfo()))
 			{
 				$connInfo['username']  = $default_login;
 				$connInfo['password']  = $default_pass;
@@ -89,32 +89,32 @@
 		}
 		updateSession($connInfo);
 		$sessionUpdated=true;
-	} 
+	}
 
-	if ($action != 'newlogin') 
+	if($action != 'newlogin')
 	{
-		if (empty($connInfo)) 
+		if(empty($connInfo))
 		{
 			$connInfo=getConnectionInfo();
 		}
 		$ftp=@phpftp_connect($connInfo['ftpserver'],$connInfo['username'],$connInfo['password']);
-		if ($ftp)
+		if($ftp)
 		{
 			$homedir=ftp_pwd($ftp);
 			$retval=ftp_pasv($ftp,1);
-			if ($action == 'delete' || $action == 'rmdir') 
+			if($action == 'delete' || $action == 'rmdir')
 			{
-				if ($confirm) 
+				if($confirm)
 				{
-					if ($action=='delete') 
+					if($action=='delete')
 					{
 						$retval=ftp_delete($ftp,$olddir . '/' . $file);
 					}
-					else 
+					else
 					{
 						$retval=ftp_rmdir($ftp,$olddir . '/' . $file);
 					}
-					if ($retval) 
+					if($retval)
 					{
 						$GLOBALS['phpgw']->template->set_var("misc_data",lang('deleted',"$olddir/$file"), true);
 					}
@@ -122,22 +122,23 @@
 					{
 						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to delete', "$olddir/$file"), true);
 					}
-				} else if (!$cancel) 
+				}
+				elseif(!$cancel)
 				{
 					$GLOBALS['phpgw']->template->set_var('misc_data',confirmDeleteForm($session,$file,$olddir),true);
 				}
 			}
 
-			if ($action == 'rename')
+			if($action == 'rename')
 			{
-				if ($confirm) 
+				if($confirm)
 				{
-					if (ftp_rename($ftp,$olddir . '/' . $filename, $olddir . '/' . $newfilename)) 
+					if(ftp_rename($ftp,$olddir . '/' . $filename, $olddir . '/' . $newfilename))
 					{
 						$GLOBALS['phpgw']->template->set_var('misc_data',lang('renamed',
 							"$filename", "$newfilename"), true);
-					} 
-					else 
+					}
+					else
 					{
 						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to rename',
 							"$filename", "$newfilename"), true);
@@ -148,54 +149,54 @@
 					$GLOBALS['phpgw']->template->set_var('misc_data', renameForm($session,$file,$olddir), true);
 				}
 			}
-			if ($action == 'get') 
+			if($action == 'get')
 			{
 				phpftp_get($ftp,$tempdir,$olddir,$file);
 				$GLOBALS['phpgw']->common->phpgw_exit();
-			} 
-			if ($action == 'view') 
+			}
+			if($action == 'view')
 			{
 				phpftp_view($ftp,$tempdir,$olddir,$file);
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}
-			if ($action == 'upload') 
+			if($action == 'upload')
 			{
 				$newfile=$olddir . '/' . $uploadfile_name;
-				if (ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY)) 
+				if(ftp_put($ftp,$newfile, $uploadfile, FTP_BINARY))
 				{
 					$GLOBALS['phpgw']->template->set_var('misc_data',lang('uploaded',$newfile), true);
 				}
-				else 
+				else
 				{
 					$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to upload',$newfile), true);
 				}
 				unlink($uploadfile);
 			}
-			if ($action == 'mkdir')
+			if($action == 'mkdir')
 			{
-				if ($newdirname!='')
+				if($newdirname!='')
 				{
-					if (ftp_mkdir($ftp,$olddir . '/' . $newdirname)) 
+					if(ftp_mkdir($ftp,$olddir . '/' . $newdirname))
 					{
 						$GLOBALS['phpgw']->template->set_var('misc_data',lang('created directory',
 							"$olddir/$newdirname"), true);
 					}
-					else 
+					else
 					{
 						$GLOBALS['phpgw']->template->set_var('misc_data',lang('failed to mkdir',
 							"$olddir/$newdirname"), true);
 					}
 				}
-				else 
+				else
 				{
 					$GLOBALS['phpgw']->template->set_var('misc_data',lang('empty dirname'),true);
 				}
 			}
 
 			// heres where most of the work takes place
-			if ($action == 'cwd')
+			if($action == 'cwd')
 			{
-				if ($olddir == $newdir)
+				if($olddir == $newdir)
 				{
 					ftp_chdir($ftp,$newdir);
 				}
@@ -205,18 +206,18 @@
 						$olddir = $olddir . '/' . $newdir;
 				}
 			}
-			elseif ($action == '' && $connInfo['cwd'] != '')
+			elseif($action == '' && $connInfo['cwd'] != '')
 			{
 				// this must have come back from another module, try to 
 				// get into the old directory
 				ftp_chdir($ftp,$connInfo['cwd']);
 			}
-			elseif ($olddir)
+			elseif($olddir)
 			{
 				ftp_chdir($ftp,$olddir);
 			}
 
-			if (! $olddir)
+			if(!$olddir)
 			{
 				$olddir = ftp_pwd($ftp);
 			}
@@ -275,7 +276,6 @@
 			$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
 			$GLOBALS['phpgw']->template->set_var('lang_rename',lang('Rename'));
 
-
 			$newdir = $olddir;
 			$GLOBALS['phpgw']->template->set_var('name',macro_get_link('cwd','..'));
 			$GLOBALS['phpgw']->template->set_var('del_link','&nbsp;');
@@ -285,7 +285,7 @@
 			$GLOBALS['phpgw']->template->set_var('permissions','');
 			$GLOBALS['phpgw']->template->fp('rowlist_dir','row',True);
 
-			while (list(,$fileinfo) = each($contents))
+			while(list(,$fileinfo) = each($contents))
 			{
 //				echo '<pre>'; print_r($fileinfo); echo '</pre>';
 				$newdir = $fileinfo['name'];
@@ -293,12 +293,12 @@
 				$GLOBALS['phpgw']->template->set_var('group',$fileinfo['group']);
 				$GLOBALS['phpgw']->template->set_var('permissions',$fileinfo['permissions']);
 
-/*				if ($fileinfo['size'] < 1024)
+/*				if($fileinfo['size'] < 1024)
 				{
 					$fileinfo['size'] = $fileinfo['size'] . ' b';
 				}
-				else */
-				if ($fileinfo['size'] < 999999)
+				else*/
+				if($fileinfo['size'] < 999999)
 				{
 					$fileinfo['size'] = round(10*($fileinfo['size']/1024))/10 .' k';
 				}
@@ -309,7 +309,7 @@
 					// then bring it back one digit and add the MB string
 					$fileinfo['size'] = ($fileinfo['size']/10) .' MB';
 				}
-				if (substr($fileinfo['permissions'],0,1) == 'd')
+				if(substr($fileinfo['permissions'],0,1) == 'd')
 				{
 					$file = $fileinfo['name'];
 					$GLOBALS['phpgw']->template->set_var('name',macro_get_link('cwd',$fileinfo['name']));
@@ -328,19 +328,19 @@
 			}
 			ftp_quit($ftp);
 			$GLOBALS['phpgw']->template->pfp('out','main');
-		} 
-		else 
+		}
+		else
 		{
 			updateSession();
 			$sessionUpdated=true;
-			if (!$tried_default) 
+			if(!$tried_default)
 			{
 				// don't put out an error on the default login
 				for($i=0;$i<strlen($connInfo['password']);$i++)
 				{
-					 $pass.="*"; 
+					$pass.="*";
 				}
-				$GLOBALS['phpgw']->template->set_var('error_message', lang('bad connection', 
+				$GLOBALS['phpgw']->template->set_var('error_message', lang('bad connection',
 					$connInfo['ftpserver'], $connInfo['username'], $pass), true);
 				$GLOBALS['phpgw']->template->parse('out','bad_connect',false);
 				$GLOBALS['phpgw']->template->p('out');
@@ -348,7 +348,7 @@
 			newLogin($connInfo['ftpserver'],$connInfo['username'],'');
 		}
 	}
-	else 
+	else
 	{
 		// set the login and such to ""
 		updateSession('');
@@ -356,7 +356,7 @@
 		// $GLOBALS['phpgw']->modsession(
 		newLogin($default_server,$default_login,'');
 	}
-	if (!$sessionUpdated && $action=='cwd') 
+	if(!$sessionUpdated && $action=='cwd')
 	{
 		// echo "updating session with new cwd<BR>\n";
 		updateSession($connInfo);
