@@ -7,8 +7,10 @@ require(TemplateDir . '/find.php');
 // Find a string in the database.
 function action_find()
 {
-  global $pagestore, $find;
-
+  global $pagestore;
+  
+  $find = $_POST['find'];
+  
   $list = $pagestore->find($find);
 
   $text = '';
