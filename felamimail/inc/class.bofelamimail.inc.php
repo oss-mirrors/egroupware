@@ -183,7 +183,7 @@
 			}
 			
 			// if not
-			return imap_utf7_decode($_folderName);
+			return @imap_utf7_decode($_folderName);
 		}
 
 		function decode_header($string)
