@@ -15,9 +15,11 @@
   include("../header.inc.php");
 ?>
 <table cellpadding="10">
-<?php include("side.php"); ?>
 <td valign="top">
-<img src="images/title_calendar.gif" border=0> 
+<?php echo show_menu(); ?>
+</td>
+<td valign="top">
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_calendar.gif" border=0> 
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 A searchable daily,weekly,monthly calendar/scheduling application with alerts for high priority events.
@@ -25,7 +27,7 @@ A searchable daily,weekly,monthly calendar/scheduling application with alerts fo
 icons at the top left hand corner.
 <br>
 <ul>
-<li><b>Viewing:</b><img src="images/today.gif">Day <img src="images/week.gif">Week <img src="images/month.gif">Month <img src="images/year.gif">Year
+<li><b>Viewing:</b><img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/today.gif">Day <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/week.gif">Week <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/month.gif">Month <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/year.gif">Year
 <br><i>Day:</i>
 <br>Current day is displayed, broken down in hour slots. Start and end time of the day
 can be set in the preferences.
@@ -38,7 +40,7 @@ months easily accessible with one click.
 <br>Current year is displayed. This displays the current year using the small calendar month
 views.
 <p>
-<li><b>Adding an entry:</b> <img src="images/addevent.gif"> 
+<li><b>Adding an entry:</b> <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/addevent.gif"> 
 <br>To add a new entry for yourself other members of your group click on the small icon as shown above.
 A form page will be presented, where you can input the relevant fields.
 <table width="80%">
@@ -65,7 +67,7 @@ Simply fill in the fields, and click Submit.
 <br><b>Note:</b> Access can be set as with other applications in this suite, Private,Group Readable,Globally
 Readable.
 <p>
-<li><b>Edit:Delete</b>&nbsp&nbsp<img src="images/circle.gif">
+<li><b>Edit:Delete</b>&nbsp&nbsp<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/circle.gif">
 <br>To edit an entry group click on the small icon as shown above.
 A form page will be presented, where you can edit the relevant fields.
 Chose edit or delete from the bottom of the page.

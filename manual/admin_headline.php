@@ -15,9 +15,11 @@
   include("../header.inc.php");
 ?>
 <table cellpadding="10">
-<?php include("side.php"); ?>
 <td valign="top">
-<img src="images/title_administration.gif" border=0>
+<?php echo show_menu($p); ?>
+</td>
+<td valign="top">
+<img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_administration.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
 <p>
 This function is usually only available to the systems administrator of the system.

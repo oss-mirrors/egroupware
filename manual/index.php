@@ -13,16 +13,8 @@
 
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
   include("../header.inc.php");
+
+  echo show_menu($p);
+
+  $phpgw->common->phpgw_footer();
 ?>
-<table cellpadding="10" width=20%>
-<td>
-<font face="Arial, Helvetica, san-serif" size="2">
-Note: Some of this information is out of date<br>
-<?php
-  $phpgw->utilities->menutree->showtree("mymenu.txt");
-//  $treefile = "mymenu.txt";
-//  require "./menutree.inc";
-?>
-</td>
-</table>
-<?php include($phpgw_info["server"]["api_inc"] . "/footer.inc.php"); ?>
