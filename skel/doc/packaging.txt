@@ -1,0 +1,17 @@
+
+Packaging tips
+
+Dan Kuykendall <dan@kuykendall.org>
+
+   v1.0, 19 May 2001
+   
+   How to build RPM and DEB packages...
+     _________________________________________________________________
+   
+RPM
+
+   Run these two commands:
+   
+   tar c skel | bzip2 > skel-0.0.1.00.tar.bz2
+   
+   rpm -tb skel-0.0.1.000.tar.bz2
