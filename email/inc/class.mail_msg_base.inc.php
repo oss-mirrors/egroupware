@@ -163,7 +163,9 @@
 			// if moving msgs, this is where they should go
 			'to_fldball_fake_uri',
 			'to_fldball',
-			
+			// when moving a message while viewing it in the uimessage page, this var will be passed
+			// telling us what to show the user after we do the move, it will be a URI string that begins with "menuaction"
+			'move_postmove_goto',
 			// === SORT/ORDER/START === 
 			// if sort,order, and start are sometimes passed as GPC's, if not, default prefs are used
 			'sort',

@@ -135,10 +135,6 @@
 			$this->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 			$this->xi['ctrl_bar_font_size'] =  '-1';
 			$this->xi['ctrl_bar_back1'] = $GLOBALS['phpgw_info']['theme']['row_on'];
-			// pass on (preserve these valus) after the message move
-			$this->xi['current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
-			$this->xi['current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
-			$this->xi['current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
 			// ---- account switchbox  ----
 			// make a HTML comobox used to switch accounts
 			$make_acctbox = True;
@@ -167,15 +163,27 @@
 			
 			// ---- Move Message Box  ----
 			// borrow code from boindex and uiindex for this functionality
-			$this->xi['mlist_checkbox_name'] = 'delmov_list[]';
+			// pass on (preserve these valus) after the message move
+			$this->xi['move_current_sort'] = $GLOBALS['phpgw']->msg->get_arg_value('sort');
+			$this->xi['move_current_order'] = $GLOBALS['phpgw']->msg->get_arg_value('order');
+			$this->xi['move_current_start'] = $GLOBALS['phpgw']->msg->get_arg_value('start');
+			// POST MOVE INSTRUCTIONS
+			// will pass as hidden var, this is the name of the POST var
+			$this->xi['move_postmove_goto_name'] = 'move_postmove_goto';
+			// this is the value of the POST var
+			// THIS CAN NOT be filled YET - wait till after prev/next arrows code obtains this data for us
+			//$this->xi['move_postmove_goto_value'] = '';
 			
+			$this->xi['mlist_checkbox_name'] = 'delmov_list[]';
 			$this->xi['frm_delmov_action'] = $GLOBALS['phpgw']->link(
 								'/index.php',
 								'menuaction=email.boaction.delmov');
 			$this->xi['frm_delmov_name'] = 'delmov';
+			// imitate the stuff that happens when message(s) is/are selected on the uiindex page, then the move combobox is used
 			$this->xi['mlist_embedded_uri'] = $GLOBALS['phpgw']->msg->get_arg_value('["msgball"]["uri"]');
 			// add a special flag to the uri to indicate we should goto the next message, not to the index page
-			$this->xi['mlist_embedded_uri'] .= '&msgball[called_by]=uimessage';
+			//$this->xi['mlist_embedded_uri'] .= '&msgball[called_by]=uimessage';
+			// that has been REPLACED by "move_postmove_goto" POST var
 			$this->xi['mailsvr_supports_folders'] = $GLOBALS['phpgw']->msg->get_mailsvr_supports_folders();
 			if ($this->xi['mailsvr_supports_folders'])
 			{
@@ -303,7 +311,36 @@
 			
 			$this->xi['ilnk_prev_msg'] = $ilnk_prev_msg;
 			$this->xi['ilnk_next_msg'] = $ilnk_next_msg;
-
+			
+			
+			// ----  "MOVE THIS MESSAGE TO" MENU BAR BOX  ----
+			// now that we have obtained "$next_msg_link" we can make this combobox widget
+			// since we already need and use prev / next message navigation data on this page
+			// we will make use of it and pass it on as a hidden var which will tell us which message
+			// to show the user after the move has taken place. If folder becomes empty after the move, goto index page instead
+			// Concept: after the move, we should goto the "PREV MESSAGE", unless the folder is now empty
+			// why "PREV MESSAGE" : it more likely to take you to a message you habenot seen yet
+			// "prev message" means "go to the message above this one in the message list on the uiindex page"
+			//$this->xi['move_nav_mext_msgball_value'] = '';
+			if ($nav_data['prev_msg'] != $not_set)
+			{
+				// use the "$prev_msg_link" generated above
+				$this->xi['move_postmove_goto_value'] = $prev_msg_link;
+			}
+			else
+			{
+				// folder is probably empty, probably no more messages to show, so goto uiindex page *for this same folder*
+				$this->xi['move_postmove_goto_value'] = $GLOBALS['phpgw']->link(
+						'/index.php',
+						 'menuaction=email.uiindex.index'
+						.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
+						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
+						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
+						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
+						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
+			}
+			
+			
 			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
 			$this->xi['tofrom_labels_bkcolor'] = $GLOBALS['phpgw_info']['theme']['th_bg'];
 			$this->xi['tofrom_data_bkcolor'] = $GLOBALS['phpgw_info']['theme']['row_on'];

@@ -101,49 +101,6 @@
 				*/
 				
 				$delmov_list = $GLOBALS['phpgw']->msg->get_arg_value('delmov_list');
-				
-				// were we called by uimessage, if so, then treat the post-move navigation like a "delete_single_msg"
-				if ((isset($delmov_list[0]['called_by']))
-				&& ($delmov_list[0]['called_by'] == 'uimessage'))
-				{
-					// BEFORE we move, if there is no mext message, then we will go back to index page
-					$nav_data = $GLOBALS['phpgw']->msg->prev_next_navigation();
-					if ($this->debug > 2) { echo 'emai.boaction.delmov: move single *called by uimessage*: pre-move $nav_data[] dump <pre>: '; print_r($nav_data); echo '</pre>'; }
-					// ----  "Go To Previous Message" Handling  -----
-					// this is actually a little broken when moving a single message when called by uimessage
-					// this is a workaround the almost works, it takes you to the message you looked a 1 message ago
-					// whereas I think you should go to the next message, but next_msg data is not passed by prev_next_navigation when
-					// we're called by uimessage, this also means that with one message left in the folder *after* the move, this code
-					// thinks the folder is empty and takes us to uiindex *for the same folder* though, so at lease the user knows
-					// there's a mail left in that folder
-					// FUTURE: pass these insrustions from hidden data obtained from uimessage when prev_next_navigation is more accurate
-					if (($nav_data['prev_msg'] != $not_set)
-					&& ((string)$nav_data['lowest_left'] != '0') 
-					&& ((string)$nav_data['highest_right'] != '0'))
-					{
-						$this->redirect_to = $GLOBALS['phpgw']->link(
-							'/index.php',
-							 'menuaction=email.uimessage.message'
-							.'&'.$nav_data['prev_msg']['msgball']['uri']
-							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-					}
-					else
-					{
-						// go back to index page
-						$this->redirect_to = $GLOBALS['phpgw']->link(
-							'/index.php',
-							 'menuaction=email.uiindex.index'
-							.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out($delmov_list[0]['folder'])
-							.'&fldball[acctnum]='.(int)$delmov_list[0]['acctnum']
-							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start'));
-					}
-					if ($this->debug > 1) { echo 'emai.boaction.delmov: move single *called by uimessage*: pre-move determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
-				}
-				
 				$to_fldball = $GLOBALS['phpgw']->msg->get_arg_value('to_fldball');
 				$to_fldball['folder'] = $GLOBALS['phpgw']->msg->prep_folder_in($to_fldball['folder']);
 				$to_fldball['acctnum'] = (int)$to_fldball['acctnum'];
@@ -182,11 +139,19 @@
 				}
 				// report folder messages were moved to
 				$tf = $GLOBALS['phpgw']->msg->prep_folder_out($to_fldball['folder']);
-				// folder we should go back to
-				if ((isset($delmov_list[0]['called_by']))
-				&& ($delmov_list[0]['called_by'] == 'uimessage'))
+				
+				// folder or message we should go back to
+				if (($GLOBALS['phpgw']->msg->get_isset_arg('move_postmove_goto'))
+				&& ($GLOBALS['phpgw']->msg->get_arg_value('move_postmove_goto') != ''))
 				{
-					// we already figured this out before the move
+					// THIS MEANS WE WERE CALLED BY UIMESSAGE
+					// treat the post-move navigation like a "delete_single_msg", as per data passed to us from that page
+					$move_postmove_goto = $GLOBALS['phpgw']->msg->get_arg_value('move_postmove_goto');
+					if ($this->debug > 1) { echo 'emai.boaction.delmov: move single *called by uimessage*: $move_postmove_goto: : '.$move_postmove_goto.'<br>'; }
+					// ----  "Go To Previous Message" Handling  -----
+					// these insrustions passed from uimessage when prev_next_navigation is obtained anyway
+					$this->redirect_to = $move_postmove_goto;
+					if ($this->debug > 1) { echo 'emai.boaction.delmov: move single *called by uimessage*: determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
 				}
 				else
 				{
@@ -213,6 +178,7 @@
 						'order'  => $GLOBALS['phpgw']->msg->get_arg_value('order'),
 						'start'  => $GLOBALS['phpgw']->msg->get_arg_value('start')
 					);
+					if ($this->debug > 1) { echo 'emai.boaction.delmov: NOT called by uimessage, determination of $this->redirect_to : ['.$this->redirect_to.']<br>'; }
 				}
 				// end session if we are not going to reuse the current object
 				if ($attempt_reuse == False)

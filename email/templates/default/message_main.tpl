@@ -22,9 +22,10 @@ In the future, this will process a specially formated email msg.<hr>
 	</form>
 	<form name="{frm_delmov_name}" action="{frm_delmov_action}" method="post">
 	<input type="hidden" name="what" value="delete">
-	<input type="hidden" name="sort" value="{current_sort}">
-	<input type="hidden" name="order" value="{current_order}">
-	<input type="hidden" name="start" value="{current_start}">
+	<input type="hidden" name="sort" value="{move_current_sort}">
+	<input type="hidden" name="order" value="{move_current_order}">
+	<input type="hidden" name="start" value="{move_current_start}">
+	<input type="hidden" name="{move_postmove_goto_name}" value="{move_postmove_goto_value}">
 	<input type="hidden" name="{mlist_checkbox_name}" value="{mlist_embedded_uri}">
 	<td bgcolor="{ctrl_bar_back1}" width="50%" align="right">
 		<font face="{ctrl_bar_font}" size="{ctrl_bar_font_size}">{delmov_listbox}&nbsp;</font>

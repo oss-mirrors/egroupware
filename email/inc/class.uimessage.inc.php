@@ -106,20 +106,21 @@
 			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font',$this->bo->xi['ctrl_bar_font']);
 			$GLOBALS['phpgw']->template->set_var('ctrl_bar_font_size',$this->bo->xi['ctrl_bar_font_size']);
 			$GLOBALS['phpgw']->template->set_var('ctrl_bar_back1',$this->bo->xi['ctrl_bar_back1']);
-			$GLOBALS['phpgw']->template->set_var('current_sort',$this->bo->xi['current_sort']);
-			$GLOBALS['phpgw']->template->set_var('current_order',$this->bo->xi['current_order']);
-			$GLOBALS['phpgw']->template->set_var('current_start',$this->bo->xi['current_start']);
 			// ---- account switchbox  ----
 			$GLOBALS['phpgw']->template->set_var('acctbox_listbox',$this->bo->xi['acctbox_listbox']);
 			$GLOBALS['phpgw']->template->set_var('acctbox_frm_name',$this->bo->xi['acctbox_frm_name']);
 			$GLOBALS['phpgw']->template->set_var('acctbox_action',$this->bo->xi['acctbox_action']);
 			// ---- Move Message Box  ----
+			$GLOBALS['phpgw']->template->set_var('move_current_sort',$this->bo->xi['move_current_sort']);
+			$GLOBALS['phpgw']->template->set_var('move_current_order',$this->bo->xi['move_current_order']);
+			$GLOBALS['phpgw']->template->set_var('move_current_start',$this->bo->xi['move_current_start']);
 			$GLOBALS['phpgw']->template->set_var('mlist_checkbox_name',$this->bo->xi['mlist_checkbox_name']);
 			$GLOBALS['phpgw']->template->set_var('mlist_embedded_uri',$this->bo->xi['mlist_embedded_uri']);
 			$GLOBALS['phpgw']->template->set_var('frm_delmov_action',$this->bo->xi['frm_delmov_action']);
 			$GLOBALS['phpgw']->template->set_var('frm_delmov_name',$this->bo->xi['frm_delmov_name']);
 			$GLOBALS['phpgw']->template->set_var('delmov_listbox',$this->bo->xi['delmov_listbox']);
-			
+			$GLOBALS['phpgw']->template->set_var('move_postmove_goto_name',$this->bo->xi['move_postmove_goto_name']);
+			$GLOBALS['phpgw']->template->set_var('move_postmove_goto_value',$this->bo->xi['move_postmove_goto_value']);
 		
 		/*
 		ok	acctbox_frm_name
