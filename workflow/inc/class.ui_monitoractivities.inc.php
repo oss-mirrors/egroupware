@@ -118,7 +118,7 @@
 						'act_is_autorouted'			=> $activity['wf_is_autorouted'],
 						'act_active_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=active&filter_activity='. $activity['wf_activity_id']),
 						'act_completed_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=completed&filter_activity='. $activity['wf_activity_id']),
-						'act_aborted_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=aborted&filter_activity='. $activity['activityId']),
+						'act_aborted_href'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=aborted&filter_activity='. $activity['wf_activity_id']),
 						'act_exception_href'		=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_monitorinstances.form&filter_process='. $activity['wf_p_id'] .'&filter_status=exception&filter_activity='. $activity['wf_activity_id']),
 						'active_instances'			=> $activity['active_instances'],
 						'completed_instances'		=> $activity['completed_instances'],
