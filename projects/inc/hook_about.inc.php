@@ -12,11 +12,14 @@
 
 	function about_app($tpl,$handle)
 	{
-		$t = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('projects'));
-		$s = $t->set_file(array('about' => 'about.tpl'));
+		$t = CreateObject('phpgwapi.Template',$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi'));
+		$s = $t->set_file(array('about' => 'about_app.tpl'));
 		$s .= $t->set_var('app_title',lang('Projects'));
+		$s .= $t->set_var('lang_version',lang('Version'));
+		$s .= $t->set_var('app_version',$GLOBALS['phpgw_info']['apps']['projects']['version']);
 		$s .= $t->set_var('written_by',lang('written by'));
 		$s .= $t->set_var('developers','Bettina Gille&nbsp;&nbsp;[ceb@phpgroupware.org]');
+		$s .= $t->set_var('description',lang('Project manager'));
 		$s .= $t->fp('out','about');
 		return $s;
 	}
