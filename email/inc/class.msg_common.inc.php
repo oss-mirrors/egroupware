@@ -225,79 +225,6 @@
 	return $info;
     }
 
-	// ----  High-Level Function To Get The Subject String  -----
-	function get_subject($msg, $desired_prefix='Re: ')
-	{
-		if ( (! $msg->Subject) || ($msg->Subject == '') )
-		{
-			$subject = lang('no subject');
-		}
-		else
-		{
-			$subject = decode_header_string($msg->Subject);
-		}
-		// do we add a prefix like Re: or Fw:
-		if ($desired_prefix != '')
-		{
-			if (strtoupper(substr($subject, 0, 3)) != strtoupper(trim($desired_prefix)))
-			{
-				$subject = $desired_prefix . $subject;
-			}
-		}
-		$subject = $this->htmlspecialchars_encode($subject);
-		return $subject;
-	}
-
-	function htmlspecialchars_encode($str)
-	{
-		/*// replace  '  and  "  with htmlspecialchars */
-		$str = ereg_replace('&', '&amp;', $str);
-		$str = ereg_replace('"', '&quot;', $str);
-		$str = ereg_replace('\'', '&#039;', $str);
-		$str = ereg_replace('<', '&lt;', $str);
-		$str = ereg_replace('>', '&gt;', $str);
-		return $str;
-	}
-
-	function htmlspecialchars_decode($str)
-	{
-		/*// reverse of htmlspecialchars */
-		$str = ereg_replace('&gt;', '>', $str);
-		$str = ereg_replace('&lt;', '<', $str);
-		$str = ereg_replace('&quot;', '"', $str);
-		$str = ereg_replace('&#039;', '\'', $str);
-		$str = ereg_replace('&amp;', '&', $str);
-		return $str;
-	}
-
-// ----  High-Level Function To Get The "so-and-so" wrote String   -----
-	function get_who_wrote($msg)
-	{
-		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
-		{
-			$lang_somebody = 'somebody';
-			return $lang_somebody;
-		}
-		elseif ($msg->from[0])
-		{
-			$from = $msg->from[0];
-		}
-		else
-		{
-			$from = $msg->reply_to[0];
-		}
-		if ((!isset($from->personal)) || ($from->personal == ''))
-		{
-			$personal = $from->mailbox.'@'.$from->host;
-			//$personal = 'not set or blank';
-		}
-		else
-		{
-			$personal = $from->personal." ($from->mailbox@$from->host)";
-		}
-		return $personal;
-	}
-
     function header($stream,$msg_nr,$fromlength="",$tolength="",$defaulthost="")
     {
 	$info = new msg_headinfo;
@@ -391,12 +318,265 @@
 	return false;
     }
 
-    function qprint($string)
-    {
-	$string = str_replace("_", " ", $string);
-	$string = str_replace("=\r\n","",$string);
-	$string = quoted_printable_decode($string);
-	return $string;
-    } 
+// ----  Password Crypto Workaround broken common->en/decrypt  -----
+	/*!
+	@function encrypt_email_passwd
+	@abstract encrypt data passed to the function
+	@param $data data string to be encrypted
+	*/
+	function encrypt_email_passwd($data)
+	{
+		global $phpgw_info, $phpgw;
+
+		$encrypted_passwd = $data;
+		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		{
+			// this will return a string that has (1) been serialized (2) had addslashes applied
+			// and (3) been encrypted with mcrypt (assuming mcrypt is enabled and working)
+			$encrypted_passwd = $phpgw->crypto->encrypt($encrypted_passwd);
+		}
+		else
+		{
+			// clean up the string
+			$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
+			if ($this->is_serialized($encrypted_passwd))
+			{
+				$encrypted_passwd = unserialize($encrypted_passwd);
+			}
+			$encrypted_passwd = $this->html_quotes_encode($encrypted_passwd);
+		}
+		return $encrypted_passwd;
+	}
+	/*!
+	@function decrypt_email_pass
+	@abstract decrypt $data
+	@param $data data to be decrypted
+	*/
+	function decrypt_email_passwd($data)
+	{
+		global $phpgw_info, $phpgw;
+
+		$passwd = $data;
+		if ($phpgw_info['server']['mcrypt_enabled'] && extension_loaded('mcrypt'))
+		{
+			// this will return a string that has:
+			// (1) been decrypted with mcrypt (assuming mcrypt is enabled and working)
+			// (2) had stripslashes applied and (3) *MAY HAVE* been unserialized
+			$passwd = $phpgw->crypto->encrypt($passwd);
+		}
+		else
+		{
+			// ASSUMING set_magic_quotes_runtime(0) is in functions.inc.php (it is) then
+			// there should be NO escape slashes coming from the database
+			if ($this->is_serialized($passwd))
+			{
+				$passwd = unserialize($passwd);
+			}
+			$passwd = $this->html_quotes_decode($passwd);
+			//echo 'decrypt_email_passwd result: '.$passwd;
+		}
+		return $passwd;
+	}
+
+	function get_email_passwd()
+	{
+		global $phpgw_info, $phpgw;
+		
+		$tmp_prefs = $phpgw->preferences->read();
+
+		if (!isset($tmp_prefs['email']['passwd']))
+		{
+			return $phpgw_info['user']['passwd'];
+		}
+		else
+		{
+			return $this->decrypt_email_passwd($tmp_prefs['email']['passwd']);
+		}
+	}
+
+	// ----  High-Level Function To Get The Subject String  -----
+	function get_subject($msg, $desired_prefix='Re: ')
+	{
+		if ( (! $msg->Subject) || ($msg->Subject == '') )
+		{
+			$subject = lang('no subject');
+		}
+		else
+		{
+			$subject = decode_header_string($msg->Subject);
+		}
+		// do we add a prefix like Re: or Fw:
+		if ($desired_prefix != '')
+		{
+			if (strtoupper(substr($subject, 0, 3)) != strtoupper(trim($desired_prefix)))
+			{
+				$subject = $desired_prefix . $subject;
+			}
+		}
+		$subject = $this->htmlspecialchars_encode($subject);
+		return $subject;
+	}
+
+	// ----  High-Level Function To Get The "so-and-so" wrote String   -----
+	function get_who_wrote($msg)
+	{
+		if ( (!isset($msg->from)) && (!isset($msg->reply_to)) )
+		{
+			$lang_somebody = 'somebody';
+			return $lang_somebody;
+		}
+		elseif ($msg->from[0])
+		{
+			$from = $msg->from[0];
+		}
+		else
+		{
+			$from = $msg->reply_to[0];
+		}
+		if ((!isset($from->personal)) || ($from->personal == ''))
+		{
+			$personal = $from->mailbox.'@'.$from->host;
+			//$personal = 'not set or blank';
+		}
+		else
+		{
+			$personal = $from->personal." ($from->mailbox@$from->host)";
+		}
+		return $personal;
+	}
+
+	// ----  HTML - Related Utility Functions   -----
+	function qprint($string)
+	{
+		$string = str_replace("_", " ", $string);
+		$string = str_replace("=\r\n","",$string);
+		$string = quoted_printable_decode($string);
+		return $string;
+	} 
+
+	function htmlspecialchars_encode($str)
+	{
+		/*// replace  '  and  "  with htmlspecialchars */
+		$str = ereg_replace('&', '&amp;', $str);
+		// any ampersand & that ia already in a "&amp;" should NOT be encoded
+		//$str = preg_replace("/&(?![:alnum:]*;)/", "&amp;", $str);
+		$str = ereg_replace('"', '&quot;', $str);
+		$str = ereg_replace('\'', '&#039;', $str);
+		$str = ereg_replace('<', '&lt;', $str);
+		$str = ereg_replace('>', '&gt;', $str);
+		return $str;
+	}
+
+	function htmlspecialchars_decode($str)
+	{
+		/*// reverse of htmlspecialchars */
+		$str = ereg_replace('&gt;', '>', $str);
+		$str = ereg_replace('&lt;', '<', $str);
+		$str = ereg_replace('&#039;', '\'', $str);
+		$str = ereg_replace('&quot;', '"', $str);
+		$str = ereg_replace('&amp;', '&', $str);
+		return $str;
+	}
+
+	function html_quotes_encode($str)
+	{
+		/*// replace  '  and  "  with htmlspecialchars */
+		$str = ereg_replace('"', '&quot;', $str);
+		$str = ereg_replace('\'', '&#039;', $str);
+		return $str;
+	}
+
+	function html_quotes_decode($str)
+	{
+		/*// reverse of htmlspecialchars */
+		$str = ereg_replace('&#039;', '\'', $str);
+		$str = ereg_replace('&quot;', '"', $str);
+		return $str;
+	}
+
+	// magic_quotes_gpc  PHP MANUAL:
+	/* Sets the magic_quotes state for GPC (Get/Post/Cookie) operations. 
+	  When magic_quotes are on, all ' (single-quote), " (double quote), \ (backslash) and NUL's 
+	  are escaped with a backslash automatically.
+	  GPC means GET/POST/COOKIE which is actually EGPCS these days (Environment, GET, POST, Cookie, Server).
+	  This cannot be turned off in your script because it operates on the data before your script is called. 
+	  You can check if it is on using that function and treat the data accordingly." (by Rasmus Lerdorf) */
+	function stripslashes_gpc($data)
+	{	/* get rid of the escape \ that magic_quotes HTTP POST will add, " becomes \" and  '  becomes  \'  
+		  but ONLY if magic_quotes is on, less likely to strip user intended slashes this way */
+		if (get_magic_quotes_gpc()==1)
+		{
+			return stripslashes($data);
+		}
+		else
+		{
+			return $data;
+		}
+	}
+
+	/*!
+	@function is_serialized
+	@abstract find out if something is already serialized
+	@param $data could be almost anything
+	*/
+	function is_serialized($data)
+	{
+		global $phpgw_info, $phpgw;
+		
+		/* not totally complete: currently works with strings, arrays, and booleans (update this if more is added) */
+		
+		 /* FUTURE: detect a serialized data that had addslashes appplied AFTER it was serialized
+		 you can NOT unserialize that data until those post-serialization slashes are REMOVED */
+
+		//echo 'is_serialized initial input [' .$data .']<br>';
+		//echo 'is_serialized unserialized input [' .unserialize($data) .']<br>';
+
+		if (is_array($data))
+		{
+			// arrays types are of course not serialized (at least not at the top level)
+			// BUT there  may be serialization INSIDE in a sub part
+			return False;
+		}
+		elseif (is_bool($data))
+		{
+			// a boolean type is of course not serialized
+			return False;
+		}
+		elseif ((is_string($data))
+		&& (($data == 'b:0;') || ($data == 'b:1;')) )
+		{
+			// check for easily identifiable serialized boolean values
+			return True;
+		}
+		elseif ((is_string($data))
+		&& (unserialize($data) == False))
+		{
+			// when you unserialize a normal (not-serialized) string, you get False
+			return False;
+		}
+		elseif ((is_string($data))
+		&& (ereg('^s:[0-9]+:"',$data) == True))
+		{
+			// identify pattern of a serialized string (that did NOT have slashes added AFTER serialization )
+			return True;
+		}
+		elseif ((is_string($data))
+		&& (is_array(unserialize($data))))
+		{
+			// if unserialization produces an array out of a string, it was serialized
+			//(ereg('^a:[0-9]+:\{',$data) == True))  also could work
+			return True;
+		}
+		//Best Guess - UNKNOWN / ERROR / NOY YET SUPPORTED TYPE
+		elseif (is_string($data))
+		{
+			return True;
+		}
+		else
+		{
+			return False;
+		}
+	}
+
   } // end of class msg_common
 ?>

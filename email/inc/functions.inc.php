@@ -26,10 +26,18 @@
 		global $phpgw, $phpgw_info, $PHP_SELF;  // This was a problem for me.
 	}
 
+// ----  Turn Off Magic Quotes Runtime    -----
+	// magic_quotes_runtime (handles slashes when communicating with databases). PHP MANUAL:
+	/*  If magic_quotes_runtime is enabled, most functions that return data from any sort of 
+	  external source including databases and text files will have quotes escaped with a backslash. */
+	set_magic_quotes_runtime(0);
+
 // ----  Load "Preferences" from db (currently "phpgw_preferences")    -----
 	// NOTE: Preferences *MAY* have the "custom email password" which is different than other passwords
 	// because it is stored in the "Preferences" table, and may require special treatment
 	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
+	
+	// NOTE: WORKAROUND FOR CUST EMAIL PASSWD BUG REQ'D msg->get_email_passwd() during LOGIN
 
 // ----  Create the base email Class    -----
 	$phpgw->msg = CreateObject("email.msg");

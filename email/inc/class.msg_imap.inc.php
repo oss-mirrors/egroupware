@@ -247,7 +247,9 @@
 		$folder = $this->construct_folder_str($folder);
 	}
 
-	$pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
+	//$pass = $phpgw_info["user"]["preferences"]["email"]["passwd"];
+	// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS
+	$pass = $this->get_email_passwd();
 	$user = $phpgw_info["user"]["preferences"]["email"]["userid"];
 	if ($phpgw_info['user']['preferences']['email']['mail_server_type']=='imaps')
 	{

@@ -1103,6 +1103,7 @@
 				$dsp = ereg_replace("\n", "\r\n", $dsp);
 				if (strtoupper(lang("charset")) <> "BIG5")
 				{
+					$dsp = $phpgw->msg->htmlspecialchars_decode($dsp);
 					$dsp = $phpgw->msg->htmlspecialchars_encode($dsp);
 				}
 				$dsp = make_clickable($dsp);
@@ -1141,7 +1142,6 @@
 				$t->set_var('title_text',$title_text);
 				$display_str = 'keywords: '.$part_nice[$i]['m_keywords']
 					.' - '.format_byte_size(strlen($dsp));
-					//.$crlf_report;
 				$t->set_var('display_str',$display_str);
 
 				$t->set_var('message_body',$dsp);

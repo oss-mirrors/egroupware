@@ -76,7 +76,7 @@
 		// ----  Begin The Message Body  (of Fw or Re Body) -----
 		$who_wrote = $phpgw->msg->get_who_wrote($msg);
 		$lang_wrote = 'wrote';
-		$body = "\n\n\n" .$who_wrote .' '. $lang_wrote .": \n&gt\n";
+		$body = "\n\n\n" .$who_wrote .' '. $lang_wrote .": \n>\n";
 
 		
 		// ----  Quoted Bodystring of Fw: or Re: Message is "First Presentable" from message.php  -----
@@ -94,12 +94,21 @@
 			{
 				if ($body_array[$bodyidx] != "\r")
 				{
-					$body .= "&gt;" . $body_array[$bodyidx];
+					//$body .= "&gt;" . $body_array[$bodyidx];
+					// I think the email needs to be sent out as if it were PLAIN text
+					// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; 
+					// it's up to the endusers MUA to handle any htmlspecialchars
+					$body .= '>' . $body_array[$bodyidx];
 					$body = chop ($body);
 					$body .= "\n";
 				}
 			}
 			trim ($body);
+			// new - testing this
+			// I think the email needs to be sent out as if it were PLAIN text
+			// NO ENCODED HTML ENTITIES should be sent over the wire
+			// it's up to the endusers MUA to handle any htmlspecialchars
+			$body = $phpgw->msg->htmlspecialchars_decode($body);
 		}
 		// ----  Process Multiple Body Parts (if necessary)  of Fw or Re Body  "the OLD WAY" -----
 		elseif (!$struct->parts)
@@ -132,12 +141,20 @@
 					{
 						if ($body_array[$bodyidx] != "\r")
 						{
-							$body .= "&gt;" . $body_array[$bodyidx];
+							//$body .= "&gt;" . $body_array[$bodyidx];
+							// I think the email needs to be sent out as if it were PLAIN text
+							// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; 
+							// it's up to the endusers MUA to handle any htmlspecialchars
+							$body .= '>' . $body_array[$bodyidx];
 							$body = chop ($body);
 							$body .= "\n";
 						}
 					}
 					trim ($body);
+					// I think the email needs to be sent out as if it were PLAIN text
+					// NO ENCODED HTML ENTITIES should be sent over the wire
+					// it's up to the endusers MUA to handle any htmlspecialchars
+					$body = $phpgw->msg->htmlspecialchars_decode($body);
 				}
 			}
 		}

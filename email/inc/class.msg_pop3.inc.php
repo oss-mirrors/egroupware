@@ -262,24 +262,28 @@
       return false;
     }
 
-    function login( $folder = "INBOX") {
-      global $phpgw, $phpgw_info;
+    function login( $folder = "INBOX")
+    {
+	global $phpgw, $phpgw_info;
 
-      error_reporting(error_reporting() - 2);
+	error_reporting(error_reporting() - 2);
 
-      if ($folder != "INBOX") {
-        $folder = $this->construct_folder_str($folder);
-      }
+	if ($folder != "INBOX")
+	{
+		$folder = $this->construct_folder_str($folder);
+	}
 
-		$pass = $phpgw_info['user']['preferences']['email']['passwd'];
-      $user = $phpgw_info["user"]["preferences"]["email"]["userid"];
+	//$pass = $phpgw_info['user']['preferences']['email']['passwd'];
+	// WORKAROUND FOR BUG IN EMAIL CUSTOM PASSWORDS
+	$pass = $this->get_email_passwd();
+	$user = $phpgw_info["user"]["preferences"]["email"]["userid"];
 
-      $mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
-			     .":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}"
-			     .$folder, $user , $pass);
+	$mbox = $this->open("{".$phpgw_info["user"]["preferences"]["email"]["mail_server"]
+			.":".$phpgw_info["user"]["preferences"]["email"]["mail_port"]."}"
+			.$folder, $user , $pass);
 
-      error_reporting(error_reporting() + 2);
-      return $mbox;
+	error_reporting(error_reporting() + 2);
+	return $mbox;
     }
 
 

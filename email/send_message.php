@@ -24,16 +24,25 @@
 	$phpgw_info['flags'] = $phpgw_flags;
 	include('../header.inc.php');
 
+	/* get rid of the escape \ that magic_quotes (if enabled) HTTP POST will add, " becomes \" and  '  becomes  \'  */
+	$body = $phpgw->msg->stripslashes_gpc($body);
+
+// ----  DE-code HTML SpecialChars in the body   -----
+	// THIS NEEDS TO BE CHANGED WHEN MULTIPLE PART FORWARDS ARE ENABLED
+	// BECAUSE WE CAN ONLY ALTER THE 1ST PART, I.E. THE PART THE USER JUST TYPED IN
+	/*  // I think the email needs to be sent out as if it were PLAIN text (at least the part we are handling here)
+	// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; and " instead of &quot; . etc...
+	// it's up to the endusers MUA to handle any htmlspecialchars, whether to encode them or leave as it, the MUA should decide  */
+	$body = $phpgw->msg->htmlspecialchars_decode($body);
+
 // ----  Add Email Sig to Body   -----
 	if (($phpgw_info['user']['preferences']['email']['email_sig'])
 	&& ($attach_sig))
 	{
-		//$body .= "\n-----\n".$phpgw_info['user']['preferences']['email']['email_sig'];
 		$user_sig = $phpgw_info['user']['preferences']['email']['email_sig'];
-		// obsoleted: ereg_replace should not be needed after pgpgw ver 0.9.13
-		$user_sig = ereg_replace('&quot;', '"', $user_sig);
-		$user_sig = ereg_replace('&#039;', '\'', $user_sig);
-		$body .= "\n-----\n" .$user_sig;
+		// may be obsoleted someday:  workaround for a preferences database issue (<=pgpgw ver 0.9.13)
+		$user_sig = $phpgw->msg->html_quotes_decode($user_sig);
+		$body = $body ."\n-----\n" .$user_sig;
 	}
 
 // ----  Prepare Body for RFC821 Compliance  -----
@@ -48,8 +57,9 @@
 	$body = ereg_replace("\n", "\r\n", $body);
 
 // ----  Attachment Handling   -----
-	$sep = $phpgw->common->filesystem_separator();
-	$upload_dir = $phpgw_info['server']['temp_dir'].$sep.$phpgw_info['user']['sessionid'];
+	//$sep = $phpgw->common->filesystem_separator();
+	// SEP has been adopted as a global always available variable
+	$upload_dir = $phpgw_info['server']['temp_dir'].SEP.$phpgw_info['user']['sessionid'];
 
 	if (file_exists($upload_dir))
 	{
@@ -79,9 +89,9 @@
 				if (! ereg("\.info",$file))
 				{
 					$total_files++;
-					$size = filesize($upload_dir.$sep.$file);
+					$size = filesize($upload_dir.SEP.$file);
 
-					$info_file = $upload_dir.$sep.$file.'.info';
+					$info_file = $upload_dir.SEP.$file.'.info';
 					$file_info = file($info_file);
 					$content_type = trim($file_info[0]);
 					$content_name = trim($file_info[1]);
@@ -89,34 +99,37 @@
 					// what boundry do we use?
 					if ($total_files >= $num_expected)
 					{
-						// the "final" boundry (IS THIS TRUE?)
+						// the "final" boundry
 						$mess_boundary = '--Message-Boundary--';
 					}
 					else
 					{
 						/* // attachments have their own boundry preceeding them (see below)
 						// do not add another one between attachments
-						// or else (some/all) MUAs will not see the later attachments
-						// (IS THIS TRUE?) */
+						// ( i.e. this particular code loop should not put 2 boundry strings, like it was doing, inbetween each part )
+						// or else MUAs will not see the later attachments 
+						// all boundry strings are have 2 dashes "--" added to their begining
+						// and the FINAL boundry string (after all other parts) ALSO has 
+						// 2 dashes "--" tacked on tho the end of it, very important !! */
 						$mess_boundary = '';
 					}
 					//echo 'tot: '.$total_files .' expext: '.$num_expected; // for debugging
 
-					set_magic_quotes_runtime(0); 
-					$fh = fopen($upload_dir.$sep.$file,'rb');
+					//set_magic_quotes_runtime(0);   MOVED to email/inc/functions.inc.php
+					$fh = fopen($upload_dir.SEP.$file,'rb');
 					// $rawfile = fread($fh,$size);
 					$encoded_attach = chunk_split(base64_encode(fread($fh,$size)));
 					fclose($fh);
-					set_magic_quotes_runtime(get_magic_quotes_gpc());
+					//set_magic_quotes_runtime(get_magic_quotes_gpc()); // LEAVE IT OFF
 
 					$body .= "\n\n".'--Message-Boundary'."\n"
 						. 'Content-type: '.$content_type.'; name="'.$content_name.'"'."\n"
 						. 'Content-Transfer-Encoding: BASE64'."\n"
 						. 'Content-disposition: attachment; filename="'.$content_name.'"'."\n\n"
 						. $encoded_attach .$mess_boundary ."\n";
-					unlink($upload_dir.$sep.$file);
+					unlink($upload_dir.SEP.$file);
 
-					unlink($upload_dir.$sep.$file.'.info');
+					unlink($upload_dir.SEP.$file.'.info');
 				}
 			}
 		}
@@ -124,7 +137,10 @@
 	}
 
 // ----  Send The Email  -----
-	$rc = $phpgw->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
+	//$rc = $phpgw->send->msg('email', $to, $subject, stripslashes($body), '', $cc, $bcc);
+	// should not need stripslashes because we stripped it above
+	$rc = $phpgw->send->msg('email', $to, $subject, $body, '', $cc, $bcc);
+	// BUT I am NOT SURE!
 	if ($rc)
 	{
 		//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
