@@ -38,7 +38,7 @@
 			
 		}
 		
-		function list_methods($_type='xmlrpc')
+		function DONTlist_methods($_type='xmlrpc')
 		{
 			/*
 			  This handles introspection or discovery by the logged in client,
@@ -104,7 +104,7 @@
 
 
 			$folder_info = array();
-			$folder_info = $GLOBALS['phpgw']->msg->folder_status_info();
+			$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
 			$totalmessages = $folder_info['number_all'];
 			
 			// ---- MOVE Messages from folder to folder   -----

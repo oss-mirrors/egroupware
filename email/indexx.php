@@ -159,7 +159,7 @@
 // ---- Folder Status Infomation   -----
 	// NEW: use API-like high level function for this:
 	$xi['folder_info'] = array();
-	$xi['folder_info'] = $GLOBALS['phpgw']->msg->folder_status_info();
+	$xi['folder_info'] = $GLOBALS['phpgw']->msg->get_folder_status_info();
 	/* returns this array:
 	folder_info['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
 	folder_info['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name

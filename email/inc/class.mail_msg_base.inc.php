@@ -33,8 +33,15 @@
 	var $args = Array();
 	// data from $GLOBALS['phpgw_info']['user']['preferences']['email'] goes here
 	var $prefs = Array();
+	
+	var $session_enabled=True;
+	var $session_data;
+	
 	var $not_set = '-1';
 	var $att_files_dir;
+	
+	// holding data in a class var for very temporary caching (L1 cache)
+	var $folder_status_info = array();
 	var $folder_list = array();
 	var $mailsvr_callstr = '';
 	var $mailsvr_namespace = '';
@@ -56,18 +63,21 @@
 	var $order = '';
 	var $start = '';
 	var $msgnum = '';
+	var $msgnum_idx = '-1';
 	var $browser = 0;
 	
 	var $force_msg_uids = True;
 	//var $force_msg_uids = False;
+	var $reuse_existing_obj = True;
 	
 	// default, will be overridden by prefs "cache_data"
 	// currently caches "mailsvr_namespace" and "get_folder_list" responses to the prefs DB
 	var $cache_mailsvr_data = False;
 	var $cachable_server_items = Array(
-		0	=> 'match_cached_account',
-		1	=> 'get_mailsvr_namespace',
-		2	=> 'get_folder_list'
+		0	=> 'get_mailsvr_namespace',
+		1	=> 'get_folder_list',
+		// match_cached_account is vestigal - depreciated
+		2	=> 'match_cached_account'
 	);
 	// DEBUG FLAGS generally take int 0, 1, 2, or 3
 	var $debug_logins = 0;
@@ -153,22 +163,22 @@
 	function begin_request($args_array)
 	{
 		// whether or not to attempt to reuse an existing mail_msg object's existing login/mailsvr_stream
-		$attempt_reuse = True;	
-		//$attempt_reuse = False;
+		$this->reuse_existing_obj = True;
+		//$this->reuse_existing_obj = False;
 		
 		if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: ENTERING'.'<br>';}
-		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: local var attempt_reuse=['.serialize($attempt_reuse).']<br>'; }
+		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: local var $this->reuse_existing_obj=['.serialize($this->reuse_existing_obj).']<br>'; }
 		if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: feed var args_array[] dump:<pre>'; print_r($args_array); echo '</pre>'; }
 		
 		// ====  Already Logged In / Reuse Existing ?  =====
-		if (($attempt_reuse == True)
+		if (($this->reuse_existing_obj == True)
 		&& (isset($this->prefs['userid']))
 		&& ($this->is_logged_in($this->prefs['userid']) == True))
 		{
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: attempt to reuse existing login'.'<br>'; }
 			// we're already logged in, now...
 			if ($this->debug_logins > 2) { echo 'mail_msg: begin_request: class->args[] (dump BEFORE coming into this function)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
-			// clear what is leftr over in the class->args[] array from last request
+			// (1) clear what is left over in the class->args[] array from last request
 			$this->args = array();
 			// can not re-grab because original GPC values are still in POST and GET GLOBALS
 			//$this->grab_class_args_gpc();
@@ -247,30 +257,14 @@
 			$this->cache_mailsvr_data = False;
 		}
 		
-		// Get Email Password
-		if (!isset($this->prefs['passwd']))
-		{
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: this->prefs[passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
-			// DO NOT alter the password and put that altered password BACK into the preferences array
-			// why not? used to have a reason, but that was obviated, no reason at the moment
-			//$this->prefs['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
-			$pass = $GLOBALS['phpgw_info']['user']['passwd'];
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'; }
-		}
-		else
-		{
-			// DO NOT alter the password and put that altered password BACK into the preferences array
-			// keep the one in GLOBALS in encrypted form if possible
-			//$this->prefs['passwd'] = $this->decrypt_email_passwd($this->prefs['passwd']);
-			$pass = $this->decrypt_email_passwd($this->prefs['passwd']);
-			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass decoded from prefs: '.htmlspecialchars(serialize($pass)).'<br>'; }
-		}
 		// initalize some important class variables
 		$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
 		$this->get_mailsvr_callstr();
 		
-		// make sure all the necessary args_array items are present, else set missing ones to a default value
-		// ----  What "folder" arg was passed to the script  -----
+		// ----  make sure all the necessary args_array items are present, else set missing ones to a default value
+		// What "folder" arg was passed to the script
+		// (a) if not set, at least set it to a blank string, 
+		// (b) if it is already set, later this $args_array['folder'] will override the POST/GET folder args (if any)
 		if (!isset($args_array['folder']))
 		{
 			$args_array['folder'] = '';
@@ -305,7 +299,25 @@
 		// $args_array['folder'] gets prep_folder_in and then is stored in class var $this->folder
 		if ($args_array['do_login'] == True)
 		{
-			// === ISSET CHECK for userid and passwd to avoid garbage logins ==
+			//  ----  Get Email Password
+			if (!isset($this->prefs['passwd']))
+			{
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: this->prefs[passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
+				// DO NOT alter the password and put that altered password BACK into the preferences array
+				// why not? used to have a reason, but that was obviated, no reason at the moment
+				//$this->prefs['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
+				$pass = $GLOBALS['phpgw_info']['user']['passwd'];
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'; }
+			}
+			else
+			{
+				// DO NOT alter the password and do NOT put that altered password BACK into the preferences array
+				// keep the one in GLOBALS in encrypted form if possible
+				//$this->prefs['passwd'] = $this->decrypt_email_passwd($this->prefs['passwd']);
+				$pass = $this->decrypt_email_passwd($this->prefs['passwd']);
+				if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: pass decoded from prefs: '.htmlspecialchars(serialize($pass)).'<br>'; }
+			}
+			// ----  ISSET CHECK for userid and passwd to avoid garbage logins  ----
 			if ( (isset($this->prefs['userid']))
 			&& ($this->prefs['userid'] != '')
 			&& (isset($pass))
@@ -325,29 +337,33 @@
 						.' * * if the userid is filled, then it must be the password that is missing'."<br>\r\n"
 						.' * * tell your admin if a) you have a custom email password or not when reporting this error'."<br>\r\n";
 				//}
+				if ($this->debug_logins > 0) { echo 'mail_msg: begin_request: LEAVING with ERROR: userid or passwd empty<br>';}
 				return False;
 			}
-		
 			// Create email server Data Communication Class
+			// 1st arg to the constructor is the "mail_server_type"
+			// we feed from here because when there are multiple mail_msg objects
+			// we need to make sure we load the appropriate type dcom class
+			// which that class may not know which accounts prefs to use, so tell it here
 			$this->dcom = CreateObject("email.mail_dcom",$this->prefs['mail_server_type']);
 			// initialize the dcom class variables
 			$this->dcom->mail_dcom_base();
-			// ----  Do We Use UTF7 encoding/decoding of folder names  -----
+			// ----  2 settings from this object we need to set in the child dcom object:  ----
+			// (1)  Do We Use UTF7 encoding/decoding of folder names
 			if (isset($this->prefs['enable_utf7'])
 			&& ($this->prefs['enable_utf7']))
 			{
 				$this->dcom->enable_utf7 = True;
 			}
-			// ----  Do We Force use of msg UID's  -----
+			// (2)  Do We Force use of msg UID's
 			if ($this->force_msg_uids == True)
 			{
 				$this->dcom->force_msg_uids = True;
 			}
 			
 			set_time_limit(60);
-			// login to INBOX because we know that always(?) should exist on an imap server
+			// login to INBOX because we know that always(?) should exist on an imap server and pop server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			//$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
 			$server_str = $this->get_mailsvr_callstr();
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: about to call dcom->open'.'<br>'; }
 			$this->mailsvr_stream = $this->dcom->open($server_str."INBOX", $user, $pass, '');
@@ -377,6 +393,7 @@
 			$this->get_mailsvr_delimiter();
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
 			// make sure we have a useful folder name to log into
+			// if folder was specified in feed args, it should override what's in the POST or GET args
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: args_array[folder] before prep: '.$args_array['folder'].'<br>';}
 			$this->folder = $this->prep_folder_in($args_array['folder']);
 			if ($this->debug_logins > 1) { echo 'mail_msg: begin_request: this->folder after prep: '.$this->folder.'<br>';}
@@ -422,12 +439,15 @@
 	function end_request($args_array='')
 	{
 		// args array currently not used
+		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: ENTERING'.'<br>';}
 		if ((isset($this->mailsvr_stream))
 		&& ($this->mailsvr_stream != ''))
 		{
+			if ($this->debug_logins > 0) { echo 'mail_msg: end_request: stream exists, logging out'.'<br>';}
 			$this->dcom->close($this->mailsvr_stream);
 			$this->mailsvr_stream = '';
 		}
+		if ($this->debug_logins > 0) { echo 'mail_msg: end_request: LEAVING'.'<br>';}
 	}
 
 	/*
@@ -508,6 +528,7 @@
 	}
 	*/
 	
+	/*
 	function match_cached_account()
 	{
 		if ($this->debug_caching > 0) { echo 'mail_msg: match_cached_account: ENTERING<br>'; }
@@ -559,6 +580,7 @@
 			return False;
 		}
 	}
+	*/
 	
 	function get_cached_data($calling_function_name='',$data_type='string')
 	{
@@ -566,14 +588,13 @@
 		
 		$got_data = False;
 		
-		// preliminary compare userid and mailsvr callstr to that assicoated with cached data (if any)
-		$account_match = $this->match_cached_account();
+		//// preliminary compare userid and mailsvr callstr to that assicoated with cached data (if any)
+		//$account_match = $this->match_cached_account();
 		
 		if (($calling_function_name == '')
-		|| ($this->cache_mailsvr_data == False)
-		|| ($account_match == False))
+		|| ($this->cache_mailsvr_data == False))
 		{
-			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled, or $calling_function_name was blank, or "match_cached_account" returned false<br>';}
+			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: caching not enabled, or $calling_function_name was blank<br>';}
 			// we may not use cached data
 			// if data IS cached, it should be considered STALE and deleted
 			if ((isset($this->prefs[$calling_function_name]))
@@ -592,31 +613,26 @@
 		
 		// so we may use cached data, do we have any?
 		if ((isset($this->prefs[$calling_function_name]))
-		&& ($data_type == 'string')
 		&& ($this->prefs[$calling_function_name] != ''))
 		{
-			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: retrieving string data from cache<br>';}
-			$got_data = $this->prefs[$calling_function_name];
-		}
-		elseif ((isset($this->prefs[$calling_function_name]))
-		&& ($data_type == 'array')
-		&& (count($this->prefs[$calling_function_name]) > 0))
-		{
-			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: retrieving array data from cache<br>';}
-			$got_data = Array();
-			$got_data = $this->prefs[$calling_function_name];
-		}
-		elseif (isset($this->prefs[$calling_function_name]))
-		{
-			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: no data type given, retrieve data anyway, from cache<br>';}
-			$got_data = $this->prefs[$calling_function_name];
+			$server = $this->get_mailsvr_callstr();
+			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: data IS cached, need to compare owner: $this->mailsvr_account_username.$server: '.$this->mailsvr_account_username.$server.' to value in $this->prefs[$calling_function_name."_owner"]<br>';}
+			if ((isset($this->prefs[$calling_function_name.'_owner']))
+			&& ($this->prefs[$calling_function_name.'_owner'] != '')
+			&& ($this->prefs[$calling_function_name.'_owner'] == $this->mailsvr_account_username.$server) )
+			{
+				if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: *match* on compare owner: '.$this->prefs[$calling_function_name.'_owner'].'=='.$this->mailsvr_account_username.$server.'<br>'; }
+				$got_data = $this->prefs[$calling_function_name];
+			}
+			else
+			{
+				if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: owner not ser OR failed match on cached owner: '.$this->prefs[$calling_function_name.'_owner'].' to user '.$this->mailsvr_account_username.$server.'<br>'; }
+			}
 		}
 		else
 		{
 			if ($this->debug_caching > 1) { echo 'mail_msg: get_cached_data: cached data NOT SET for $this->prefs['.$calling_function_name.'] <br>';}
-			// return a boolean False
-			//if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False<br>';}
-			//return False;
+			// this boolean False tells the code below that no data was retrieved
 			$got_data = False;
 		}
 		
@@ -629,7 +645,7 @@
 		}
 		else
 		{
-			if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False, cached data was not set or was empty<br>';}
+			if ($this->debug_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False, cached data was not set, or was empty, or failed owner match<br>';}
 			return False;
 		}
 	}
@@ -670,21 +686,17 @@
 			$GLOBALS['phpgw']->preferences->add('email',$calling_function_name,$data);
 			// also write comparative data so we can later match this cached data to the correct mailserver account
 			$server = $this->get_mailsvr_callstr();
-			$match_cached_account = Array(
-				'mailsvr_account_username'	=> $this->mailsvr_account_username,
-				'mailsvr_callstr'		=> $server
-			);
-			if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: writting comparitive data for "match_cached_account"<br>';}
-			if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: "match_cached_account" dump:<pre>'; print_r($match_cached_account); echo '</pre>'; }
-			$GLOBALS['phpgw']->preferences->delete('email','match_cached_account');
-			$GLOBALS['phpgw']->preferences->add('email','match_cached_account',$match_cached_account);
+			$data_owner = $this->mailsvr_account_username .$server;
+			if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: writting owner data $data_owner: ['.$data_owner.'] in $calling_function_name."_owner"<br>'; }
+			$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name.'_owner');
+			$GLOBALS['phpgw']->preferences->add('email',$calling_function_name.'_owner',$data_owner);
 			// write do DB
 			$GLOBALS['phpgw']->preferences->save_repository();
 			// save repository *should* not alter our carefully constructed prefs array in $this->prefs[]
 			// so we need to put the data there, next session start, when the prefs are initially read, then this data will automatically end up there
 			if ($this->debug_caching > 1) { echo 'mail_msg: set_cached_data: until next prefs read (on next session start), we need to manually put the data in our prefs array that is already in memory<br>';}
 			$this->prefs[$calling_function_name] = $data;
-			$this->prefs['match_cached_account'] = $match_cached_account;
+			$this->prefs[$calling_function_name.'_owner'] = $data_owner;
 			
 			if ($this->debug_caching > 2) { echo 'mail_msg: set_cached_data: POST data write to $this->prefs['.$calling_function_name.']  data dump:<pre>'; print_r($this->prefs[$calling_function_name]); echo '</pre>'; }
 			if ($this->debug_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning True<br>';}
@@ -698,14 +710,25 @@
 	
 	function remove_cached_data($calling_function_name='')
 	{
-		if ($this->debug_caching > 0) { echo 'mail_msg: remove_cached_data: ENTERING, data set: ['.$calling_function_name.'], if blank will remove all cachable_server_items<br>';}
+		if ($this->debug_caching > 0) { echo 'mail_msg: remove_cached_data: ENTERING, data set: ['.$calling_function_name.'], if blank will remove all cachable_server_items and *_owner items<br>';}
 		if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: about to remove .... <br>'; }
 		if ($calling_function_name == '')
 		{
 			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: no calling_function_name was provided, deleting ALL cachable_server_items<br>';}
+			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: add *_owner to each item in $this->cachable_server_items array<br>';}
+			$cachables_with_owner = Array();
 			for ($i=0; $i<count($this->cachable_server_items);$i++)
 			{
-				$this_cachable_item_name = $this->cachable_server_items[$i];
+				$next_idx = count($cachables_with_owner);
+				$cachables_with_owner[$next_idx] = $this->cachable_server_items[$i];
+				$next_idx = count($cachables_with_owner);
+				$cachables_with_owner[$next_idx] = $this->cachable_server_items[$i].'_owner';
+			}
+			if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: $cachables_with_owner data dump:<pre>'; print_r($cachables_with_owner); echo '</pre>'; }
+			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: remove any existing cache elements in the $cachables_with_owner array<br>'; }
+			for ($i=0; $i<count($cachables_with_owner);$i++)
+			{
+				$this_cachable_item_name = $cachables_with_owner[$i];
 				$deleting_needed = isset($GLOBALS['phpgw']->preferences->data['email'][$this_cachable_item_name]);
 				if ($deleting_needed)
 				{
@@ -732,15 +755,21 @@
 		}
 		else
 		{
-			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: removeing item based on "calling_function_name" arg<br>';}
+			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name" arg<br>';}
 			$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name);
+			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: removing item based on "calling_function_name"+"_owner" arg<br>'; }
+			$GLOBALS['phpgw']->preferences->delete('email',$calling_function_name.'_owner');
 			$GLOBALS['phpgw']->preferences->save_repository();
 			if ($this->debug_caching > 1) { echo 'mail_msg: remove_cached_data: until next prefs read (on next session start), we need to manually remove the data in our prefs array that is already in memory<br>';}
-			$clearing_needed = isset($this->prefs[$calling_function_name]);
+			$clearing_needed = ( isset($this->prefs[$calling_function_name]) || isset($this->prefs[$calling_function_name.'_owner']) );
 			if ($clearing_needed)
 			{
+				if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->prefs['.$calling_function_name.'] from memory<br>';}
 				$this->prefs[$calling_function_name] = nil;
 				unset($this->prefs[$calling_function_name]);
+				if ($this->debug_caching > 2) { echo 'mail_msg: remove_cached_data: manually remove $this->prefs['.$calling_function_name.'_owner'.'] from memory<br>';}
+				$this->prefs[$calling_function_name.'_owner'] = nil;
+				unset($this->prefs[$calling_function_name.'_owner']);
 			}
 			else
 			{
@@ -1266,6 +1295,14 @@
 				if ($debug_get_folder_list > 1) { echo 'mail_msg: get_folder_list: setting object var $this->folder_list to hold list data<br>';}
 				// cache the result in a class object var
 				$this->folder_list = $cached_data;
+				// add FOLDER SHORT element to folder_list array structure
+				// that cuts cached data in 1/2, no need to cache something this easy to deduce
+				if ($debug_get_folder_list > 1) { echo 'mail_msg: get_folder_list: adding [folder_short] element to $this->folder_list array<br>';}
+				for ($i=0; $i<count($this->folder_list);$i++)
+				{
+					$this->folder_list[$i]['folder_short'] = $this->get_folder_short($this->folder_list[$i]['folder_long']);
+					if ($debug_get_folder_list > 2) { echo ' * * $this->folder_list['.$i.'][folder_long]='.$this->folder_list[$i]['folder_long'].' ; $this->folder_list['.$i.'][folder_short]='.$this->folder_list[$i]['folder_short'].'<br>';}
+				}
 				if ($debug_get_folder_list > 0) { echo 'mail_msg: get_folder_list: LEAVING, got data from cache<br>'; }
 				return $this->folder_list;
 			}
@@ -1366,7 +1403,7 @@
 			}
 
 			// sort folder names
-			// note: do not use is_array() because php3 does not have it
+			// note: php3 DOES have is_array(), ok to use it here
 			if (is_array($mailboxes))
 			{
 				sort($mailboxes);
@@ -1375,7 +1412,8 @@
 			// normalize the folder_list property
 			$this->folder_list = Array();
 
-			// make the folder_list array structure
+			// make the folder_list array structure -FOLDER LONG ONLY
+			// that cuts cached data in 1/2, cache this THEN fill the folder short element
 			for ($i=0; $i<count($mailboxes);$i++)
 			{
 				// "is_imap_folder" really just a check on what UWASH imap returns, may be files that are not MBOX's
@@ -1387,15 +1425,20 @@
 					// WITHOUT the {serverName:port} part, if that part is included we (Angles) call this "fully qualified"
 					$next_idx = count($this->folder_list);
 					$this->folder_list[$next_idx]['folder_long'] = $this->ensure_no_brackets($mailboxes[$i]);
-					$this->folder_list[$next_idx]['folder_short'] = $this->get_folder_short($mailboxes[$i]);
 				}
 			}
-
 			// -----------
-			// SAVE DATA TO PREFS DB CACHE
+			// SAVE DATA TO PREFS DB CACHE (without the [folder_short] data)
 			// -----------
 			$my_function_name = 'get_folder_list';
 			$this->set_cached_data($my_function_name,'array',$this->folder_list);
+			
+			// add FOLDER SHORT element to folder_list array structure
+			// that cuts cached data in 1/2, no need to cache something this easy to deduce
+			for ($i=0; $i<count($this->folder_list);$i++)
+			{
+				$this->folder_list[$i]['folder_short'] = $this->get_folder_short($this->folder_list[$i]['folder_long']);
+			}
 			
 			// finished, return the folder_list array atructure
 			if ($debug_get_folder_list > 0) { echo 'mail_msg: get_folder_list: LEAVING, got folder data from server<br>'; }
@@ -2722,6 +2765,37 @@
 			return is_bool($bool);
 		}
 	}
+	
+	// PHP3 and PHP<4.0.6 SAFE Version of "array_search"
+	function array_search_ex($needle='', $haystack=array(), $strict=False)
+	{
+		// error check
+		if ((trim($needle) == '')
+		|| (!$haystack)
+		|| (count($haystack) == 0))
+		{
+			return False;
+		}
+		
+		$finding = False;
+		@reset($haystack);
+		$i = 0;
+		while(list($key,$value) = each($haystack))
+		{
+			//if ((string)$value == (string)$needle)
+			if ((string)$haystack[$key] == (string)$needle)
+			{
+				$finding = $i;
+				break;
+			}
+			else
+			{
+				$i++;
+			}
+		}
+		return $finding;
+	}
+
 
 	/**************************************************************************\
 	* USEFUL  AND   SIMPLE  HTML  FUNCTIONS	*

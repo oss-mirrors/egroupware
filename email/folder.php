@@ -184,7 +184,7 @@
 		// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
 		$mailbox_status = $GLOBALS['phpgw']->msg->dcom->status($GLOBALS['phpgw']->msg->mailsvr_stream,"$server_str"."$folder_long",SA_ALL);
 		//$folder_info = array();
-		//$folder_info = $GLOBALS['phpgw']->msg->folder_status_info();
+		//$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
 		
 		//debug
 		//$real_long_name = $GLOBALS['phpgw']->msg->folder_lookup('',$folder_list[$i]['folder_short']);

@@ -41,14 +41,14 @@
 	$svr_image_dir = PHPGW_IMAGES_DIR;
 	$image_dir = PHPGW_IMAGES;
 	$sm_envelope_img = $GLOBALS['phpgw']->msg->img_maketag($image_dir.'/sm_envelope.gif','Add to address book','8','10','0');
-	$default_sorting = $GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'];
+	//$default_sorting = $GLOBALS['phpgw_info']['user']['preferences']['email']['default_sorting'];
 	$not_set = $GLOBALS['phpgw']->msg->not_set;
 
 // ----  General Information about The Message  -----
 	$msg_headers = $GLOBALS['phpgw']->msg->phpgw_header('');
 	$msg_struct = $GLOBALS['phpgw']->msg->phpgw_fetchstructure('');
 	$folder_info = array();
-	$folder_info = $GLOBALS['phpgw']->msg->folder_status_info();
+	$folder_info = $GLOBALS['phpgw']->msg->get_folder_status_info();
 	$totalmessages = $folder_info['number_all'];
 
 	$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
@@ -75,7 +75,7 @@
 
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
-		$GLOBALS['phpgw']->link('/index.php','menuaction=email.uiindex.index'
+		$GLOBALS['phpgw']->link('/index.php',$GLOBALS['phpgw']->msg->index_menuaction		
 			.'&folder='.$GLOBALS['phpgw']->msg->prep_folder_out('')
 			.'&sort='.$GLOBALS['phpgw']->msg->sort
 			.'&order='.$GLOBALS['phpgw']->msg->order
@@ -84,20 +84,56 @@
 
 // ----  Go To Previous Message Handling  -----
 	// NOTE: THIS NEEDS FIXING
-	if ($GLOBALS['phpgw']->msg->msgnum != 1 
-	|| ($default_sorting == 'new_old' && $GLOBALS['phpgw']->msg->msgnum != $totalmeesages))
+	// TRY TO FIX with "active_msgnum_idx" and "lowest_left" "highest_right"
+	// we need the array index of this message, not the actual message num
+	// this will *try* to restore "msg_array" from saved session data store
+	$msg_array = $GLOBALS['phpgw']->msg->get_message_list();
+	$msgnum_idx = $GLOBALS['phpgw']->msg->array_search_ex($GLOBALS['phpgw']->msg->msgnum, $msg_array);
+	if ($msgnum_idx)
 	{
+		$active_msgnum_idx = $msgnum_idx;
+		$lowest_left = 0;
+		$highest_right = (count($msg_array) -2);
+		$next_msg = $msg_array[$msgnum_idx + 1];
+		$prev_msg = $msg_array[$msgnum_idx - 1];
+	}
+	else
+	{
+		// fall back to old broken way
+		$active_msgnum_idx = $GLOBALS['phpgw']->msg->msgnum;
+		$lowest_left = 1;
+		$highest_right = $totalmessages;
+		$next_msg = $active_msgnum_idx + 1;
+		$prev_msg = $active_msgnum_idx - 1;
+	}
+	
+	if ($active_msgnum_idx != $lowest_left
+	//|| ($default_sorting == 'new_old' && $active_msgnum_idx != $highest_right))
+	|| ($GLOBALS['phpgw']->msg->order == 1 && $active_msgnum_idx != $highest_right))
+	{
+		/*
 		if ($default_sorting == 'new_old')
 		{
-			$pm = $GLOBALS['phpgw']->msg->msgnum + 1;
+			$pm = $next_msg;
 		}
 		else
 		{
-			$pm = $GLOBALS['phpgw']->msg->msgnum - 1;
+			$pm = $prev_msg;
+		}
+		*/
+		//if ($default_sorting == 'new_old')
+		if ($GLOBALS['phpgw']->msg->order == 1)
+		{
+			$pm = $prev_msg;
+		}
+		else
+		{
+			$pm = $next_msg;
 		}
 
-		if ($default_sorting == 'new_old' 
-		&& ($GLOBALS['phpgw']->msg->msgnum == $totalmessages && $GLOBALS['phpgw']->msg->msgnum != 1 || $totalmessages == 1))
+		//if ($default_sorting == 'new_old' 
+		if ($GLOBALS['phpgw']->msg->order == 1
+		&& ($active_msgnum_idx == $highest_right && $active_msgnum_idx != $lowest_left || $highest_right == 1))
 		{
 			$ilnk_prev_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/left-grey.gif',lang('No Previous Message'),'','','0');
 		}
@@ -119,21 +155,34 @@
 	}
 
 // ----  Go To Next Message Handling  -----
-	if ($GLOBALS['phpgw']->msg->msgnum < $totalmessages
-	|| ($default_sorting == 'new_old' && $GLOBALS['phpgw']->msg->msgnum != 1))
+	if ($active_msgnum_idx < $highest_right
+	//|| ($default_sorting == 'new_old' && $active_msgnum_idx != $lowest_left))
+	|| ($GLOBALS['phpgw']->msg->order == 1 && $active_msgnum_idx != $lowest_left))
 	{
+		/*
 		if ($default_sorting == 'new_old')
 		{
-			$nm = $GLOBALS['phpgw']->msg->msgnum - 1;
+			$nm = $prev_msg;
 		}
 		else
 		{
-			$nm = $GLOBALS['phpgw']->msg->msgnum + 1;
+			$nm = $next_msg;
+		}
+		*/
+		//if ($default_sorting == 'new_old')
+		if ($GLOBALS['phpgw']->msg->order == 1)
+		{
+			$nm = $next_msg;
+		}
+		else
+		{
+			$nm = $prev_msg;
 		}
 
-		if (($default_sorting == 'new_old')
-		&& ($GLOBALS['phpgw']->msg->msgnum == 1)
-		&& ($totalmessages != $GLOBALS['phpgw']->msg->msgnum))
+		//if (($default_sorting == 'new_old')
+		if (($GLOBALS['phpgw']->msg->order == 1)
+		&& ($active_msgnum_idx == $lowest_left)
+		&& ($highest_right != $active_msgnum_idx))
 		{
 			$ilnk_next_msg = $GLOBALS['phpgw']->msg->img_maketag($svr_image_dir.'/right-grey.gif',lang('No Next Message'),'','','0');
 		}

@@ -46,7 +46,7 @@
 			
 		}
 		
-		function list_methods($_type='xmlrpc')
+		function DONTlist_methods($_type='xmlrpc')
 		{
 			/*
 			  This handles introspection or discovery by the logged in client,
@@ -337,7 +337,7 @@
 			
 			// get statistics an the current folder
 			$this->xi['folder_info'] = array();
-			$this->xi['folder_info'] = $GLOBALS['phpgw']->msg->folder_status_info();
+			$this->xi['folder_info'] = $GLOBALS['phpgw']->msg->get_folder_status_info();
 			// first, previous, next, last  page navagation arrows
 			$this->xi['arrows_form_action'] = $this->index_base_link;
 			$this->xi['arrows_form_name'] = 'arrownav';
@@ -623,7 +623,7 @@
 			
 			// get statistics an the current folder
 			$this->xi['folder_info'] = array();
-			//$this->xi['folder_info'] = $GLOBALS['phpgw']->msg->folder_status_info();
+			//$this->xi['folder_info'] = $GLOBALS['phpgw']->msg->get_folder_status_info();
 			// make a  FAKE  folder_info array to make things simple for get_msg_list_display
 			$this->xi['folder_info']['is_imap'] = True;
 			$this->xi['folder_info']['folder_checked'] = $GLOBALS['phpgw']->msg->folder;

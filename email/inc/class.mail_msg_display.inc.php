@@ -1437,7 +1437,7 @@ class mail_msg extends mail_msg_wrappers
 		{
 			// get the data using a "high level" function call for this purpose
 			$folder_info = array();
-			$folder_info = $this->folder_status_info();
+			$folder_info = $this->get_folder_status_info();
 			$report_args_array['number_all'] = $folder_info['number_all'];
 		}
 		
@@ -1476,7 +1476,7 @@ class mail_msg extends mail_msg_wrappers
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
 	@param $folder_info : array : (OPTIONAL) array elements as defined in return from function 
-	  $this->folder_status_info() . This is primarily a time saver, if you already have the data, then pass it, 
+	  $this->get_folder_status_info() . This is primarily a time saver, if you already have the data, then pass it, 
 	  else this function will obtain the data for itself.
 	@param $folder_info : array of integers (OPTIONAL) integers representing a list of message numbers we 
 	  should display, pass this data if you have search results to show, for example. If this is not present,
@@ -1533,7 +1533,7 @@ class mail_msg extends mail_msg_wrappers
 		{
 			// use API-like high level function for this:
 			$folder_info = array();
-			$folder_info = $this->folder_status_info();
+			$folder_info = $this->get_folder_status_info();
 			/* returns this array:
 			folder_info['is_imap'] boolean - pop3 server do not know what is "new" or not, IMAP servers do
 			folder_info['folder_checked'] string - the folder checked, as processed by the msg class, which may have done a lookup on the folder name

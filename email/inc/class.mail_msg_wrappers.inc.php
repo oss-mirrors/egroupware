@@ -133,9 +133,20 @@ class mail_msg_wrappers extends mail_msg_base
 	*/
 	function get_message_list()
 	{
-		$msg_array = array();
-		$msg_array = $this->dcom->sort($this->mailsvr_stream, $this->sort, $this->order);
-		return $msg_array;
+		// try to restore "msg_array" from saved session data store
+		$cached_msg_array = $this->read_sessiondata(0,'msg_array');
+		if ($cached_msg_array)
+		{
+			return $cached_msg_array['msg_array'];
+		}
+		else
+		{
+			$msg_array = array();
+			$msg_array = $this->dcom->sort($this->mailsvr_stream, $this->sort, $this->order);
+			// save "msg_array" to session data store
+			$this->save_sessiondata(0,'msg_array', $msg_array);
+			return $msg_array;
+		}
 	}
 
 	/*!
@@ -145,7 +156,7 @@ class mail_msg_wrappers extends mail_msg_base
 	@result integer : returns the SIZE element of the php IMAP_MAILBOXMSGINFO data
 	@discussion used only if the total size of a folder is desired, which takes time for the server to return
 	The other data IMAP_MAILBOXMSGINFO returns (if size is NOT needed) is obtainable
-	from "folder_status_info" more quickly and wth less load to the IMAP server
+	from "get_folder_status_info" more quickly and wth less load to the IMAP server
 	The data communications object (class mail_dcom) and mailsvr_stream are supplied by the class
 	*/
 	function get_folder_size()
@@ -154,14 +165,14 @@ class mail_msg_wrappers extends mail_msg_base
 		return $mailbox_detail->Size;
 	}
 
-	// ALIAS for folder_status_info() , for backward compatibility
+	// ALIAS for get_folder_status_info() , for backward compatibility
 	function new_message_check()
 	{
-		return $this->folder_status_info();
+		return $this->get_folder_status_info();
 	}
 
 	/*!
-	@function folder_status_info
+	@function get_folder_status_info
 	@abstract wrapper for IMAP_STATUS, get status info for the current folder, with emphesis on reporting to user about new messages
 	@param none
 	@result returns an associative array  with 5 named elements:
@@ -174,8 +185,23 @@ class mail_msg_wrappers extends mail_msg_base
 		class is currently logged into, you may want to apply PHP function "number_format()" to
 		the integers after you have done any math code and befor eyou display them to the user, it adds the thousands comma
 	*/
-	function folder_status_info()
+	function get_folder_status_info()
 	{
+		//$debug_folder_status_info = True;
+		$debug_folder_status_info = False;
+
+		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: ENTERING<br>'; }
+
+		// do we have cached data in L1 cache / class object var
+		if (($this->folder_status_info)
+		&& (count($this->folder_status_info) > 0)
+		&& ($this->folder_status_info['folder_checked'] == $this->folder))
+		{
+			// this data is cached, L1 cache, temp cache, so it should still be "fresh"
+			if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: LEAVING returning L1/class var cached data<br>'; }
+			return $this->folder_status_info;
+		}
+		
 		// initialize return structure
 		$return_data = Array();
 		$return_data['is_imap'] = False;
@@ -183,9 +209,16 @@ class mail_msg_wrappers extends mail_msg_base
 		$return_data['alert_string'] = '';
 		$return_data['number_new'] = 0;
 		$return_data['number_all'] = 0;
-
+		// these are used to verify cached msg_list_array data, i.e. is it still any good, or is it stale
+		$return_data['uidnext'] = 0;
+		$return_data['uidvalidity'] = 0;
+		
 		$server_str = $this->get_mailsvr_callstr();
 		$mailbox_status = $this->dcom->status($this->mailsvr_stream,$server_str.$this->folder,SA_ALL);
+		
+		// cache validity data - will be used to cache msg_list_array data, which is good until UID_NEXT changes
+		$return_data['uidnext'] = $mailbox_status->uidnext;
+		$return_data['uidvalidity'] = $mailbox_status->uidvalidity;
 
 		if (($this->prefs['mail_server_type'] == 'imap')
 		|| ($this->prefs['mail_server_type'] == 'imaps'))
@@ -225,6 +258,9 @@ class mail_msg_wrappers extends mail_msg_base
 				$return_data['alert_string'] .= lang('error');
 			}
 		}
+		// cache data in a class var (L1 Cache)
+		$this->folder_status_info = $return_data;
+		if ($debug_folder_status_info) { echo 'class_msg: append: get_folder_status_info: LEAVING returning data obtained from server<br>'; }
 		return $return_data;
 	}
 
@@ -307,9 +343,9 @@ class mail_msg_wrappers extends mail_msg_base
 		}
 	}
 
-	function phpgw_mail_move($msg_list,$mailbox)
+	function phpgw_mail_move($msg_list,$mailbox,$flags)
 	{
-		return $this->dcom->mail_move($this->mailsvr_stream,$msg_list,$mailbox);
+		return $this->dcom->mail_move($this->mailsvr_stream,$msg_list,$mailbox,$flags);
 	}
 
 	function phpgw_expunge()
@@ -318,7 +354,7 @@ class mail_msg_wrappers extends mail_msg_base
 	}
 
 
-	function phpgw_delete($msg_num,$flags="", $currentfolder="") 
+	function phpgw_delete($msg_num,$flags, $currentfolder="") 
 	{
 		//$this->dcom->delete($this->mailsvr_stream, $this->args['msglist'][$i],"",$this->folder);
 
@@ -881,6 +917,84 @@ class mail_msg_wrappers extends mail_msg_base
 	{
 		// STUB, for future use
 		echo 'call to un-implemented function grab_class_args_xmlrpc';
+	}
+
+	// attempt to use appsession
+	function save_sessiondata($acct_num=0,$data_name='misc',$data)
+	{
+		//$debug_session_data = True;
+		$debug_session_data = False;
+		
+		if ($debug_session_data) { echo 'mail_msg: save_sessiondata: ENTERED, $this->session_enabled='.serialize($this->session_enabled).'<br>'; }
+		if ($this->session_enabled)
+		{
+			$folder_info = $this->get_folder_status_info();
+			
+			$meta_data = Array();
+			$meta_data[$data_name] = $data;
+			$meta_data['validity'] = Array();
+			if ($data_name == 'msg_array')
+			{
+				$meta_data['validity']['folder_long'] = $this->folder;
+				$meta_data['validity']['sort'] = $this->sort;
+				$meta_data['validity']['order'] = $this->order;
+				$meta_data['validity']['uidnext'] = $folder_info['uidnext'];
+				$meta_data['validity']['uidvalidity'] = $folder_info['uidvalidity'];
+				$meta_data['validity']['get_mailsvr_callstr'] = $this->get_mailsvr_callstr();
+				$meta_data['validity']['mailsvr_account_username'] = $this->mailsvr_account_username;
+			}
+			$location = 'acct='.(string)$acct_num.';dataname='.$data_name;
+			$app = 'email';
+			if ($debug_session_data) { echo 'mail_msg: save_sessiondata: location: ['.$location.'] $app='.$app.'; $meta_data dump:<pre>'; print_r($meta_data); echo '</pre>'; }
+			$GLOBALS['phpgw']->session->appsession($location,$app,$meta_data);
+		}
+		if ($debug_session_data) { echo 'mail_msg: save_sessiondata: LEAVING<br>'; }
+	}
+	function read_sessiondata($acct_num=0,$data_name='misc')
+	{
+		//$debug_session_data = True;
+		$debug_session_data = False;
+		
+		if ($debug_session_data) { echo 'mail_msg: read_sessiondata: ENTERED, $this->session_enabled='.serialize($this->session_enabled).'<br>'; }
+		if ($this->session_enabled)
+		{
+			$folder_info = $this->get_folder_status_info();
+			
+			$location = 'acct='.(string)$acct_num.';dataname='.$data_name;
+			$app = 'email';
+			// get session data
+			$got_data = $GLOBALS['phpgw']->session->appsession($location,$app);
+			
+			if ($debug_session_data) { echo 'mail_msg: read_sessiondata: location: ['.$location.'] $app='.$app.'; $got_data dump:<pre>'; print_r($got_data); echo '</pre>'; }
+			
+			// VERIFY this cached data is still valid
+			if (($got_data)
+			&& ($data_name == 'msg_array'))
+			{
+				if ($debug_session_data) { echo 'mail_msg: read_sessiondata: handling $data_name='.$data_name.' session validity and/or relevance<br>'; }
+				if (($got_data['validity']['folder_long'] == $this->folder)
+				&& ($got_data['validity']['sort'] == $this->sort)
+				&& ($got_data['validity']['order'] == $this->order)
+				&& ($got_data['validity']['uidnext'] == $folder_info['uidnext'])
+				&& ($got_data['validity']['uidvalidity'] == $folder_info['uidvalidity'])
+				&& ($got_data['validity']['get_mailsvr_callstr'] == $this->get_mailsvr_callstr())
+				&& ($got_data['validity']['mailsvr_account_username'] == $this->mailsvr_account_username))
+				{
+					if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, successfully restored valid $data_name='.$data_name.' session data<br>'; }
+					return $got_data;
+				}
+				else
+				{
+					if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, returning False, $data_name='.$data_name.' session was stale<br>'; }
+					return False;
+				}
+			}
+			else
+			{
+				if ($debug_session_data) { echo 'mail_msg: read_sessiondata: LEAVING, no handler for $data_name='.$data_name.', so return session data unchecked<br>'; }
+				return $got_data;
+			}
+		}
 	}
 
 
