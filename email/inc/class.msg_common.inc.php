@@ -696,13 +696,13 @@
 		//}
 		if (count($data) == 1)
 		{
-			if (($include_personal == False) || ($data[0]['personal'] == ''))
+			if (($include_personal == False) || (strlen(trim($data[0]['personal'])) < 1))
 			{
-				$addy_string = $data[0]['plain'];
+				$addy_string = trim($data[0]['plain']);
 			}
 			else
 			{
-				$addy_string = '"'.$data[0]['personal'].'" <'.$data[0]['plain'].'>';
+				$addy_string = '"'.trim($data[0]['personal']).'" <'.trim($data[0]['plain']).'>';
 			}
 		}
 		elseif ($include_personal == False)
@@ -716,6 +716,8 @@
 			}
 			// catch any situations where a blank string was included, resulting in two commas with nothing inbetween
 			$addy_string = ereg_replace("[,]{2}", ',', $addy_string);
+			// trim again, strlen needs to be accurate without trailing spaces included
+			$addy_string = trim($addy_string);
 			// eliminate that final comma
 			$grab_to = strlen($addy_string) - 1;
 			$addy_string = substr($addy_string, 0, $grab_to);
@@ -734,13 +736,13 @@
 			for ($z=0;$z<count($data);$z++)
 			{
 				// make a string for this individual address
-				if ($data[$z]['personal'] != '')
+				if (trim($data[$z]['personal']) != '')
 				{
-					$this_address = '"'.$data[$z]['personal'].'" <'.$data[$z]['plain'].'>';
+					$this_address = '"'.trim($data[$z]['personal']).'" <'.trim($data[$z]['plain']).'>';
 				}
 				else
 				{
-					$this_address = $data[$z]['plain'];
+					$this_address = trim($data[$z]['plain']);
 				}
 				// see how long this line would be if this address were added
 				//if ($z == 0)

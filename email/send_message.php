@@ -28,6 +28,13 @@
 	include('../header.inc.php');
 
 	$struct_not_set = '-1';
+//  -------  This will be called just before leaving this page, to clear / unset variables / objects -----------
+	function send_message_cleanup()
+	{
+		// -----  Cleanup  -------
+		unset($mail_out);
+		unset($phpgw->send_2822);
+	}
 
 //  -------  Init Array Structure For Outgoing Mail  -----------
 	$mail_out = Array();
@@ -35,28 +42,34 @@
 	$mail_out['cc'] = Array();
 	$mail_out['bcc'] = Array();
 	$mail_out['mta_to'] = Array();
+	$mail_out['mta_from'] = '<'.trim($phpgw_info['user']['preferences']['email']['address']).'>';
+	$mail_out['mta_elho_domain'] = '';
 	$mail_out['message_id'] = $phpgw->msg->make_message_id();
+	$mail_out['boundary'] = $phpgw->msg->make_boundary();
+	$mail_out['date'] = '';
 	$mail_out['main_headers'] = Array();
 	$mail_out['body'] = Array();
 	$mail_out['is_multipart'] = False;
 	$mail_out['num_attachments'] = 0;
-	$mail_out['boundary'] = $phpgw->msg->make_boundary();
 	$mail_out['whitespace'] = chr(9);
 	$mail_out['is_forward'] = False;
 	$mail_out['fwd_proc'] = '';
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['from'][0]
+	// note that sending it through make_rfc_addy_array will ensure correct formatting of non us-ascii chars (if any) in the use's fullname
 	$mail_out['from'] = Array();
+	$mail_out['from'] = $phpgw->msg->make_rfc_addy_array('"'.$phpgw_info['user']['fullname'].'" <'.$phpgw_info['user']['preferences']['email']['address'].'>');
 	// this array gets filled with functiuon "make_rfc_addy_array", but it will have only 1 numbered array, $mail_out['sender'][0]
 	$mail_out['sender'] = Array();
-	$mail_out['mymachine'] = $phpgw_info['server']['hostname'];
 	$mail_out['charset'] = '';
 
 //  -------  Start Filling Array Structure For Outgoing Mail  -----------
-	$mail_out['from'] = $phpgw->msg->make_rfc_addy_array('"'.$phpgw_info['user']['fullname'].'" <'.$phpgw_info['user']['preferences']['email']['address'].'>');
+	// -----  SENDER  -----
+	// rfc2822 - sender is only used if some one NOT the author (ex. the author's secretary) is sending the authors email
 	if (isset($sender) && ($sender))
 	{
 		$mail_out['sender'] = $phpgw->msg->make_rfc_addy_array($sender);
 	}
+	// -----  CHARSET  -----
 	if (lang('charset') != '')
 	{
 		$mail_out['charset'] = lang('charset');
@@ -65,7 +78,15 @@
 	{
 		$mail_out['charset'] = 'US-ASCII';
 	}
-	
+	// -----  DATE  -----
+	// RFC2822: date *should* be local time with the correct offset, but this is problematic on many Linux boxen
+	// FUTURE: figure out a host independant way of getting the correct rfc time and TZ offset
+	$mail_out['date'] = gmdate('D, d M Y H:i:s').' +0000';
+	// -----  MYMACHINE - The MTA HELO/ELHO DOMAIN ARG  -----
+	// rfc2821 sect 4.1.1.1 - almost always the Fully Qualified Domain Name of the SMTP client maching
+	// rarely, when the maching has dynamic FQD or no reverse mapping is available, *should* be "address leteral" (see sect 4.1.3)
+	$mail_out['mta_elho_mymachine'] = trim($phpgw_info['server']['hostname']);
+
 // ----  Forwarding Detection  -----
 	if ((isset($action))
 	&& ($action == 'forward'))
@@ -136,7 +157,7 @@
 	{
 		// mail_out[to] is an array of addresses, each has properties [plain] and [personal]
 		$mail_out['to'] = $phpgw->msg->make_rfc_addy_array($to);
-		// this will make a simple comma seperated string of the plain addresses
+		// this will make a simple comma seperated string of the plain addresses (False sets the "include_personal" arg)
 		$mta_to = $phpgw->msg->addy_array_to_str($mail_out['to'], False);
 	}
 	if ($cc)
@@ -146,6 +167,16 @@
 	}
 	// now make mta_to an array because we will loop through it in class send_2822
 	$mail_out['mta_to'] = explode(',', $mta_to);
+	
+	// RFC2821 - RCPT TO: args (email addresses) should be enclosed in brackets
+	// when we constructed the $mail_out['mta_to'] var, we set "include_personal" to False, so this array has only "plain" email addys
+	for ($i=0; $i<count($mail_out['mta_to']); $i++)
+	{
+		if (!preg_match('/^<.*>$/', $mail_out['mta_to'][$i]))
+		{
+			$mail_out['mta_to'][$i] = '<'.$mail_out['mta_to'][$i].'>';
+		}
+	}
 
 	/*
 	// ===== DEBUG =====	
@@ -344,7 +375,7 @@
 		$body = '';
 
 		// -----  FORWARD HANDLING  ------
-		// we can not "pushdown" a multipart/mixed original mail, it must be encaposulated
+		// Sanity Check - we can not "pushdown" a multipart/mixed original mail, it must be encaposulated
 		if (($mail_out['is_forward'] == True)
 		&& ($mail_out['fwd_proc'] == 'pushdown'))
 		{
@@ -363,6 +394,7 @@
 		if (($mail_out['is_forward'] == True)
 		&& ($mail_out['fwd_proc'] == 'pushdown'))
 		{
+			// -----   INCOMPLETE CODE HERE  --------
 			$body_part_num++;
 			$mail_out['body'][$body_part_num]['mime_headers'] = Array();
 			$mail_out['body'][$body_part_num]['mime_body'] = Array();
@@ -620,8 +652,7 @@
 		}
 		$mail_out['main_headers'][$hdr_line] = 		'Subject: '.$subject;
 		$hdr_line++;
-		// RFC2822: date *should* be local time with the correct offset, but this is problematic on many machines
-		$mail_out['main_headers'][$hdr_line] = 		'Date: '.gmdate('D, d M Y H:i:s').' +0000';
+		$mail_out['main_headers'][$hdr_line] = 		'Date: '.$mail_out['date'];
 		$hdr_line++;
 		$mail_out['main_headers'][$hdr_line] = 		'Message-ID: '.$mail_out['message_id'];
 		$hdr_line++;
@@ -681,8 +712,8 @@
 		
 		// ----  Send It   -----
 		$returnccode = $phpgw->send_2822->smail_2822($mail_out);
-
 		
+	
 		//  -------  Put in "Sent" Folder, if Applicable  -------
 		$skip_this = False;
 		//$skip_this = True;
@@ -753,25 +784,39 @@
 			$phpgw->msg->append($stream, 'Sent', $sent_folder_header, $sent_folder_body, "\\Seen");
 			$phpgw->msg->close($stream);
 		}
-		
-		// -----  Cleanup  -------
-		unset($mail_out);
 
 		// ----  Error Report and Redirect   -----
 		if ($returnccode)
 		{
-			//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
-			$return = ereg_replace ("^\r\n", '', $return);
-			header('Location: '.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
+			if ($phpgw->send_2822->get_svr_response)
+			{
+				$return = trim($return);
+				echo '<strong>Here is the communication from the MTA</strong><br><br>'."\r\n";
+				echo '<pre>';
+				echo $phpgw->msg->htmlspecialchars_encode($phpgw->send_2822->svr_response);
+				echo '</pre>';
+				echo 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a><br>';
+				send_message_cleanup();
+			}
+			else
+			{
+				//header('Location: '.$phpgw->link('index.php','cd=13&folder='.urlencode($return)));
+				//$return = ereg_replace ("^\r\n", '', $return);
+				send_message_cleanup();
+				$return = trim($return);
+				header('Location: '.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','folder='.urlencode($return)));
+			}
 		}
 		else
 		{
+			$return = trim($return);
 			echo 'Your message could <B>not</B> be sent!<BR>'."\r\n"
 			. 'The mail server returned:<BR>'
 				. "err_code: '".$phpgw->send_2822->err['code']."';<BR>"
 				. "err_msg: '".htmlspecialchars($phpgw->send_2822->err['msg'])."';<BR>\r\n"
 				. "err_desc: '".$phpgw->err['desc']."'.<P>\r\n"
 				. 'To go back to the msg list, click <a href="'.$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/index.php','cd=13&folder='.urlencode($return)).'">here</a>';
+			send_message_cleanup();	
 		}
 	}
 

@@ -29,9 +29,13 @@
 
   class send_2822
   {
-	var $err    = array("code","msg","desc");
+	var $err = array("code","msg","desc");
 	var $to_res = array();
-
+	var $debug_send = False;
+	var $get_svr_response = False;
+	var $svr_response = '';
+	
+	
 	function send()
 	{
 	    $this->err["code"] = " ";
@@ -43,9 +47,7 @@
 
 	function socket2msg($socket)
 	{
-		//$debug_send = True;
-		$debug_send = False;
-		if ($debug_send)
+		if ($this->debug_send)
 		{
 			return True;
 		}
@@ -64,12 +66,24 @@
 				$rc  = fclose($socket);
 				return false;
 			}
+			// debug stuff
+			if ($this->get_svr_response)
+			{
+				$this->svr_response .= trim($rmsg);
+			}
+			
 			if ($followme = " ")
 			{
 				break;
 			}
 		}
 		while ($followme = "-");
+		// debug stuff
+		if ($this->get_svr_response)
+		{
+			$this->svr_response .= "\r\n";
+		}
+		
 		return true;
 	}
 
@@ -77,9 +91,7 @@
 	{
 		global $phpgw;
 		
-		//$debug_send = True;
-		$debug_send = False;
-		if ($debug_send)
+		if ($this->debug_send)
 		{
 			// send single line\n
 			echo 'raw ' .$phpgw->msg->htmlspecialchars_encode($message);
@@ -104,9 +116,9 @@
 	function smail_2822($mail_out)
 	{
 		global $phpgw, $phpgw_info;
-		
-		//$debug_send = True;
-		$debug_send = False;
+
+		//$this->debug_send = True;
+		//$this->get_svr_response = True;
 
 		// error code and message of failed connection
 		$errcode = "";
@@ -114,13 +126,13 @@
 		// timeout in secs
 		$timeout = 5;
 
-		if ($debug_send)
+		if ($this->debug_send)
 		{
 			$socket = 41; // arbitrary number, no significance
 		}
 		else
 		{
-			// now we try to open the socket and check, if any smtp server responds
+			// OPEN SOCKET - now we try to open the socket and check, if any smtp server responds
 			$socket = fsockopen($phpgw_info["server"]["smtp_server"],$phpgw_info["server"]["smtp_port"],$errcode,$errmsg,$timeout);
 		}
 		if (!$socket)
@@ -135,16 +147,16 @@
 			$rrc = $this->socket2msg($socket);
 		}
 		
-		$mymachine = $mail_out['mymachine'];
-		$fromuser = $phpgw->msg->addy_array_to_str($mail_out['from']);
-		// now we can send our message. 1st we identify ourselves and the sender
+		$mymachine = $mail_out['mta_elho_mymachine'];
+		$fromuser = $mail_out['mta_from'];
+		// START SMTP SESSION - now we can send our message. 1st we identify ourselves and the sender
 		$cmds = array (
-			"\$src = \$this->msg2socket(\$socket,\"HELO \$mymachine\r\n\");",
+			"\$src = \$this->msg2socket(\$socket,\"EHLO \$mymachine\r\n\");",
 			"\$rrc = \$this->socket2msg(\$socket);",
 			"\$src = \$this->msg2socket(\$socket,\"MAIL FROM:\$fromuser\r\n\");",
 			"\$rrc = \$this->socket2msg(\$socket);"
 		);
-		if ($debug_send)
+		if ($this->debug_send)
 		{
 			echo '<pre>';
 		}
@@ -157,19 +169,19 @@
 			}
 		}
 
-		// now we've got to feed the to's and cc's
+		// RCPT TO - now we've got to feed the to's and cc's
 		for ($i=0; $i<count($mail_out['mta_to']); $i++)
 		{
-			$src = $this->msg2socket($socket,'RCPT TO: '.$mail_out['mta_to'][$i]."\r\n");
+			$src = $this->msg2socket($socket,'RCPT TO:'.$mail_out['mta_to'][$i]."\r\n");
 			$rrc = $this->socket2msg($socket);
 			// for lateron validation
-			$this->to_res[$i][addr] = $mail_out['mta_to'][$i]['plain'];
+			$this->to_res[$i][addr] = $mail_out['mta_to'][$i];
 			$this->to_res[$i][code] = $this->err["code"];
 			$this->to_res[$i][msg]  = $this->err["msg"];
 			$this->to_res[$i][desc] = $this->err["desc"];
 		}
 
-		if (!$debug_send)
+		if (!$this->debug_send)
 		{
 			//now we have to make sure that at least one $to-address was accepted
 			$stop = 1;
@@ -189,7 +201,7 @@
 			}
 		}
 
-		// now we can go to deliver the headers!
+		// HEADERS - now we can go to deliver the headers!
 		if (!$this->msg2socket($socket,"DATA\r\n"))
 		{
 			return false;
@@ -205,12 +217,12 @@
 				return false;
 			}
 		}
-		// this CRLF terminates the header, signals the body will follow next (ONE CRLF ONLY)
+		// HEADERS TERMINATION - this CRLF terminates the header, signals the body will follow next (ONE CRLF ONLY)
 		if (!$this->msg2socket($socket,"\r\n"))
 		{
 			return false;
 		}
-		// now we can go to deliver the body!
+		// BODY - now we can go to deliver the body!
 		for ($part_num=0; $part_num<count($mail_out['body']); $part_num++)
 		{
 			// mime headers for this mime part (if any)
@@ -235,9 +247,11 @@
 			for ($i=0; $i<count($mail_out['body'][$part_num]['mime_body']); $i++)
 			{
 				$this_line = rtrim($mail_out['body'][$part_num]['mime_body'][$i])."\r\n";
-				if (trim($this_line) == ".")
+				// TRANSPARENCY - rfc2821 sect 4.5.2 - any line beginning with a dot, add another dot
+				if ((strlen($this_line) > 0)
+				&& ($this_line[0] == "."))
 				{
-					// rfc2822 escape the "special" single dot line into a double dot line
+					// rfc2821 add another dot to the begining of this line
 					$this_line = "." .$this_line;
 				}
 				if (!$this->msg2socket($socket,$this_line))
@@ -251,7 +265,7 @@
 				return false;
 			}
 		}
-		// at the end of a multipart email, we need to add the "final" boundary
+		// FINAL BOUNDARY - at the end of a multipart email, we need to add the "final" boundary
 		if (($mail_out['is_multipart'] == True)
 		|| ($mail_out['is_forward'] == True))
 		{
@@ -273,7 +287,7 @@
 			}
 		}
 
-		// special string "DOTCRLF" signals the end of the body
+		// DATA END - special string "DOTCRLF" signals the end of the body
 		if (!$this->msg2socket($socket,".\r\n"))
 		{
 			return false;
@@ -282,17 +296,18 @@
 		{
 			return false;
 		}
+		// QUIT
 		if (!$this->msg2socket($socket,"QUIT\r\n"))
 		{
 			return false;
 		}
 		
-		if ($debug_send)
+		if ($this->debug_send)
 		{
 			echo '</pre>';
 		}
 		
-		if (!$debug_send)
+		if (!$this->debug_send)
 		{
 			do
 			{
