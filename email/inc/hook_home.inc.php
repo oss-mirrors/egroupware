@@ -33,10 +33,11 @@
     include($phpgw_info["server"]["api_inc"].'/phpgw_utilities_portalbox.inc.php');
     $title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail'.($str ? ' - '.$str : '').'</a>';
     $portalbox = new linkbox($title,$phpgw_info["theme"]["navbar_bg"],$phpgw_info["theme"]["bg_color"],$phpgw_info["theme"]["bg_color"]);
-    if($nummsg > 5) { $check_msgs = 4; } else { $check_msgs = $nummsg; }
+    $portalbox->setvar('width',600);
+    if($nummsg >= 5) { $check_msgs = 4; } else { $check_msgs = $nummsg; }
     for($i=$nummsg - $check_msgs,$j=0;$i<=$nummsg;$i++,$j++) {
       $msg = $phpgw->msg->header($mailbox,$i);
-      $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,35).' ...';
+      $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,65).' ...';
       $portalbox->data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
     }
     echo $portalbox->draw();
