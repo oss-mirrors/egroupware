@@ -1,5 +1,5 @@
-﻿projects	common	zh	工程管理
-project administration	admin	zh	工程管理
+projects	common	zh	项目管理
+project administration	admin	zh	项目管理
 Account	projects	zh	账户
 Active	projects	zh	启用
 Activities	projects	zh	动作
@@ -10,8 +10,8 @@ Activity %1 has been added !	projects	zh	活动%1已添加!
 Activity %1 has been updated !	projects	zh	活动%1已添加更新!
 Add Activity	projects	zh	添加活动
 Add hours	projects	zh	添加时数
-Add project	projects	zh	添加工程
-Add project hours	projects	zh	添加工程时数
+Add project	projects	zh	添加项目
+Add project hours	projects	zh	添加项目时数
 Administrator	projects	zh	管理者
 All invoices	projects	zh	所有发票
 All	projects	zh	所有的
@@ -26,7 +26,7 @@ Bill per workunit	projects	zh	每一个工作单位的费用
 Budget	projects	zh	预算
 Calculate	projects	zh	计算
 closed	projects	zh	关闭
-Coordinator	projects	zh	工程协调者
+Coordinator	projects	zh	项目协调者
 Create delivery	projects	zh	创建delivery
 Create invoice	projects	zh	建立发票
 Customer	projects	zh	客户
@@ -42,13 +42,13 @@ Delivery %1 has been created !	projects	zh	Delivery %1已创建!
 Delivery %1 has been updated !	projects	zh	Delivery %1已更新!
 Edit Activity	projects	zh	编辑动作
 Edit hours	projects	zh	编辑时数
-Edit project administrator list	projects	zh	编辑工程管理人员
-Edit project	projects	zh	编辑工程管理人员
-Edit project hours	projects	zh	编辑工程时数
+Edit project administrator list	projects	zh	编辑项目管理人员
+Edit project	projects	zh	编辑项目管理人员
+Edit project hours	projects	zh	编辑项目时数
 Employee	projects	zh	员工
 Generate Activity ID ?	projects	zh	自动产生动作代码？
 Generate Delivery ID ?	projects	zh	自动产生运送代码？
-Generate Project ID ?	projects	zh	自动产生工程代码？
+Generate Project ID ?	projects	zh	自动产生项目代码？
 Generate Invoice ID ?	projects	zh	自动产生发票号码？
 Hours	projects	zh	时数
 Invoice	projects	zh	发票
@@ -67,10 +67,10 @@ Job ID	projects	zh	工作代码
 Job list	projects	zh	工作列表
 Jobs	projects	zh	工作
 List hours	projects	zh	列出小时数
-Main project	projects	zh	主要工程
+Main project	projects	zh	主要项目
 Minutes per workunit	projects	zh	每一个工作单位的分钟数
 net	projects	zh	净
-New project	projects	zh	添加工程
+New project	projects	zh	添加项目
 Nonactive	projects	zh	停用
 Number	projects	zh	序号
 open	projects	zh	打开
@@ -78,30 +78,30 @@ Overall	projects	zh	总览
 per	projects	zh	每一
 per workunit	projects	zh	每一工作单位
 Please enter an ID !	projects	zh	请输入代号！
-Please choose activities for that project first !	projects	zh	请选择这个工程可使用的动作选项！
+Please choose activities for that project first !	projects	zh	请选择这个项目可使用的动作选项！
 Please enter a remark !	projects	zh	Please enter a remark !
 Please enter the bill per workunit !	projects	zh	请选择每一工作单位的费用！
 Please enter the minutes per workunit !	projects	zh	请选择每一工作单位的分钟数！
 Position	projects	zh	位置
 Print delivery	projects	zh	Print delivery
 Print invoice	projects	zh	打印发票
-Project	projects	zh	工程
-Project administration	projects	zh	工程管理
-Project archive	projects	zh	工程档案
-Project billing	projects	zh	工程计费
-Project delivery	projects	zh	工程运送
-Project ID	projects	zh	工程代号
-Project list	projects	zh	工程列表
-Project name	projects	zh	工程名称
-Project preferences	projects	zh	工程喜好设定
-Project statistic	projects	zh	工程统计
-project statistics	projects	zh	工程统计
+Project	projects	zh	项目
+Project administration	projects	zh	项目管理
+Project archive	projects	zh	项目档案
+Project billing	projects	zh	项目计费
+Project delivery	projects	zh	项目运送
+Project ID	projects	zh	项目代号
+Project list	projects	zh	项目列表
+Project name	projects	zh	项目名称
+Project preferences	projects	zh	项目喜好设定
+Project statistic	projects	zh	项目统计
+project statistics	projects	zh	项目统计
 Remark	projects	zh	注释
 Remark required	projects	zh	必须输入注释
 select	projects	zh	选择
-Select main project	projects	zh	选择主要工程
+Select main project	projects	zh	选择主要项目
 Select per button !	projects	zh	使用按钮选择！
-Select project	projects	zh	选择工程
+Select project	projects	zh	选择项目
 Select tax for workhours	projects	zh	选择工作时数的税率
 Select users	projects	zh	选择用户
 Select groups	projects	zh	选择组
@@ -119,7 +119,7 @@ Username / Group	projects	zh	用户／组
 User statistic	projects	zh	用户统计
 user statistics	projects	zh	用户统计
 View job	projects	zh	查看工作
-View project	projects	zh	查看工程
+View project	projects	zh	查看项目
 Work date	projects	zh	工作日期
 Work hours	projects	zh	时数
 Work time	projects	zh	工作时间

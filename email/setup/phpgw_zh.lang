@@ -1,4 +1,4 @@
-﻿%1 messages have been deleted	email	zh	已删除%1封邮件
+%1 messages have been deleted	email	zh	已删除%1封邮件
 1 message has been deleted	email	zh	已删除1封邮件
 1 message has been moved to	email	zh	已将1封邮件移至
 <b>*apply*</b> this filter	email	zh	应用该过滤器
@@ -41,8 +41,8 @@ cc	email	zh	抄送
 cc address	email	zh	抄送地址
 change font size in your e-mail pages	email	zh	改变E-Mail页面的字体大小
 check flags for type of mails	email	zh	检查邮件类型标记
-choose for rename	email	zh	改名
-choose to rename	email	zh	改名
+choose for rename	email	zh	重命名
+choose to rename	email	zh	重命名
 click here for more info in a new window	email	zh	点击此处，在新窗口中显示更多提示
 click here to continue	email	zh	点击此处继续
 click here to edit the settings for this email account.	email	zh	请点击此处编辑该邮件帐户配置。
@@ -66,10 +66,10 @@ delete (expert)	email	zh	删除(专家模式)
 delete a folder	email	zh	删除邮件夹
 delete account	common	zh	删除帐户
 deleted	email	zh	已删除
-deleted messages (trash) folder	email	zh	已删邮件(回收站)
+deleted messages (trash) folder	email	zh	已删除邮件(回收站)
 deleted messages folder name	email	zh	回收站名称
-deleted messages go to trash	email	zh	已删邮件放入回收站
-deleted messages saved to folder:	email	zh	已删邮件放入邮件夹:
+deleted messages go to trash	email	zh	已删除邮件放入回收站
+deleted messages saved to folder:	email	zh	已删除邮件放入邮件夹:
 discard	email	zh	丢弃
 does not contain	email	zh	不包含
 draft	email	zh	草稿
@@ -97,7 +97,7 @@ enter your default mail domain ( from: user@domain )	admin	zh	输入默认邮件
 enter your pop	admin	zh	输入POP服务器
 enter your smtp server hostname or ip address	admin	zh	输入SMTP服务器的主机名或IP地址
 enter your smtp server port	admin	zh	输入SMTP服务器的端口号
-error moving messages to	email	zh	移邮件至该邮件夹时出错:
+error moving messages to	email	zh	移动邮件至该邮件夹时出错:
 error text not provided	email	zh	该错误无详细信息
 error: unknown message data	email	zh	错误: 未知的邮件数据
 evolution style	email	zh	演化风格
@@ -128,8 +128,8 @@ folders	email	zh	邮件夹
 for the file to actually upload	email	zh	for the file to actually upload
 for these items, fill only what is different from you default e-mail preferences	common	zh	For these items, fill only what is different from you default E-Mail preferences
 forward	email	zh	转发
-from	email	zh	来自
-from address	email	zh	来自地址
+from	email	zh	发件人
+from address	email	zh	发件人地址
 get size	email	zh	获取邮件大小
 go	email	zh	go
 go back	email	zh	返回
@@ -248,7 +248,7 @@ required	email	zh	required
 reset	email	zh	复位
 result	email	zh	result
 return mails during this time period	email	zh	Return mails during this time period
-save deleted messages in folder named below	email	zh	在以下邮件夹中保存已删邮件
+save deleted messages in folder named below	email	zh	在以下邮件夹中保存已删除邮件
 save sent messages in folder named below	email	zh	在以下邮件夹中保存已发邮件
 search for mails in these folders	email	zh	在以下邮件夹中查找邮件
 search this folder	email	zh	在该邮件夹中查找
@@ -322,8 +322,8 @@ this pref currently does nothing users may have more than one email account. in 
 this specifies whether or not to show the number of new message in the folders combo box on the index screen.	email	zh	This specifies whether or not to show the number of new message in the folders combo box on the index screen.
 this specifies whether or not to show the total size of folders by default. if this is not checked, you will be presented with a button allowing you to display folder size..	email	zh	This specifies whether or not to show the total size of folders by default. If this is not checked, you will be presented with a button allowing you to display folder size..
 this text will be appended to the bottom of the users emails for this email account. currently, html tags are not supported. also, forwarded email will not get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.	email	zh	This text will be appended to the bottom of the users emails for this email account. Currently, html tags are not supported. Also, forwarded email will NOT get this email sig appended to it for reasons such as it clutters the email, the forwarded part probably has its own email sig from the original author, which is really the information that matters the most.
-to	email	zh	发送至
-to address	email	zh	发送至
+to	email	zh	收件人
+to address	email	zh	收件人地址
 total messages	email	zh	所有邮件
 trash	email	zh	回收站
 trash folder	email	zh	回收站
@@ -355,6 +355,6 @@ you have messages!	common	zh	您有新邮件!
 you have no new messages	common	zh	没有新邮件!
 you must click	email	zh	You must click
 you must click %1 for the file to actually upload	email	zh	You must click %1 for the file to actually upload
-your full name	common	zh	您的全名
+your full name	common	zh	您的姓名
 your message has been sent	common	zh	邮件已发送!
 your server administrator will set the default values for the following options. you may never need to change any of them. if you do need to use settings that are different from the defaults for the options below here, then check this box. default is disabled, not checked. if you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. all of the following options start out with the default value, so you may see some settings below even if you have never filled them in. this checkbox only shows up for the default email account. if you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.	email	zh	Your server administrator will set the default values for the following options. You may never need to change any of them. If you do need to use settings that are different from the defaults for the options below here, then check this box. Default is disabled, not checked. If you fill in some of the options, but later decide to go back to the default values, unchecking this box will erase your custom values and put back the default values. All of the following options start out with the default value, so you may see some settings below even if you have never filled them in. This checkbox only shows up for the default email account. If you are setting up additional email accounts, you will be required to fill in the following options and this checkbox will not be displayed, it will be checked for all extra email accounts.
