@@ -152,18 +152,17 @@
 
 	if ($cat_id && $cat_id != 0)
 	{
-		$owner = $phpgw->categories->id2name($cat_id,'owner');
-		$appname = $phpgw->categories->id2name($cat_id,'app');
+		$cat = $phpgw->categories->return_single($cat_id);
 	}
 
-	if ($appname == 'phpgw' || !$cat_id)
+	if ($cat[0]['app_name'] == 'phpgw' || !$cat_id)
 	{
         $t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort                                                                
                         . '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
 	}
 	else
 	{
-		if ($projects->check_perms($grants[$owner],PHPGW_ACL_ADD) || $owner == $phpgw_info['user']['account_id'])
+		if ($projects->check_perms($grants[$cat[0]['owner']],PHPGW_ACL_ADD) || $cat[0]['owner'] == $phpgw_info['user']['account_id'])
 		{
 			$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
 					. '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');

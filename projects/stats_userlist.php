@@ -46,7 +46,7 @@
 
 	$db2->query($sql,__LINE__,__FILE__);
 	$total_records = $db2->num_rows();
-	$phpgw->db->query($sql . $ordermethod . ' ' . $phpgw->db->limit($start),__LINE__,__FILE__);
+	$phpgw->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
 
 	while ($phpgw->db->next_record())
 	{

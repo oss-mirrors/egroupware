@@ -103,12 +103,19 @@
 
 			$sql = "SELECT p.id,p.num,p.access,p.category,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
 				. "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
-				. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $statussort $querymethod AND $filtermethod "
-				. "$ordermethod";
+				. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $statussort $querymethod AND $filtermethod";
 
 			$this->db2->query($sql,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
-			$this->db->query($sql. " " . $this->db->limit($start),__LINE__,__FILE__);
+
+			if ($limit)
+			{
+				$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
+			}
+			else
+			{
+				$this->db->query($sql . $ordermethod,__LINE__,__FILE__);
+			}
 
 			$i = 0;
 			while ($this->db->next_record())
@@ -220,7 +227,7 @@
 
 			$this->db2->query($sql,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
-			$this->db->query($sql . $ordermethod . " " . $this->db->limit($start),__LINE__,__FILE__);
+			$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
 
 			$i = 0;
 			while ($this->db->next_record())
