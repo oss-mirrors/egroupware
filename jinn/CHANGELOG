@@ -6,6 +6,17 @@ $Id$
 Mayor updates and when database changes the versionnumber increases.
 Minor updates only get a new alphabet character. 
 
+Version 0.8.210e
+===========================
+Tue Feb 15 17:53:34 CET 2005
+- fixed db fields plugins display in setup (about jinn)
+- display object events plugins in about jinn
+- changed author in ob.ev.plugin: email to lex vogelaar
+- implemented special field prefix for foreign value
+- implemented the ability to use the substituted foreign value of a field in the email ob.ev.plugin
+- isolated the one2many input renderering to a separate function
+- cleanup the edit_record form generator a little
+
 Version 0.8.210d
 ===========================
 Tue Feb 15 17:43:49 CET 2005

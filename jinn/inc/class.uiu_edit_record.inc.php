@@ -55,6 +55,8 @@
 	  
 	  var $db_ftypes;
 
+	  var $relation1_array; # one-2-many info array
+
 	  /**
 	  @function uiu_edit_record
 	  @abstract class contructor that set header and inits bo
@@ -425,22 +427,14 @@
 			$object_arr=$this->bo->site_object;
 		 }
 
+		 /* get and set one to many relations */
+		 $this->relation1_array = $this->bo->extract_O2M_relations($object_arr[relations]);
+
 		 if($this->bo->where_string && !$alt_object_arr)
 		 {
 			$this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$object_arr[table_name],'','','','','name','','*',$this->bo->where_string);
-
 		 }
-
-		 /* get one to many relations */
-		 $relation1_array=$this->bo->extract_O2M_relations($object_arr[relations]);
-		 if (count($relation1_array)>0)
-		 {
-			foreach($relation1_array as $relation1)
-			{
-			   $fields_with_relation1[]=$relation1[org_field];
-			}
-		 }
-
+		 
 		 /* get all fieldproperties (name, type, etc...) */
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$object_arr[table_name]);
 
@@ -496,24 +490,14 @@
 			   $this->record_id_val=$value;
 			   $record_identifier[value]=$value;
 			}
+
 			/* string */
 			elseif($this->db_ftypes->complete_resolve($fprops)=='string')
 			{
 			   /* If this field has a relation, get that options */
-			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
+			   if (is_array($this->relation1_array) && is_array($this->relation1_array[$fprops[name]]))
 			   {
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-
-				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  if($value!='')
-				  {
-					$input.= $this->ui->select_options($related_fields,$value,true);
-				  }
-				  else
-				  {
-					$input.= $this->ui->select_options($related_fields,$relation1_array[$fprops[name]][default_value],true);
-				  }
-				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+				  $input=$this->render_one2many_input($fprops,$input_name,$value);
 			   }
 			   else
 			   {
@@ -529,20 +513,9 @@
 			elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
 			{
 			   /* If this integer has a relation get that options */
-			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
+			   if (is_array($this->relation1_array) && is_array($this->relation1_array[$fprops[name]]))
 			   {
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-				
-				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  if($value!='')
-				  {
-					$input.= $this->ui->select_options($related_fields,$value,true);
-				  }
-				  else
-				  {
-					$input.= $this->ui->select_options($related_fields,$relation1_array[$fprops[name]][default_value],true);
-				  }
-				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+				  $input=$this->render_one2many_input($fprops,$input_name,$value);
 			   }
 			}
 
@@ -650,6 +623,33 @@
 		 $this->template->set_block('frm_edit_record','form_footer','form_footer');
 		 $this->template->parse('form_footer','form_footer');
 	  }
+
+	  function render_one2many_input($fprops,$input_name,$value)
+	  {
+		 $related_fields=$this->bo->get_related_field($this->relation1_array[$fprops[name]]);
+		 foreach ($related_fields as $rel_field)
+		 {
+			$related_fields_keyed[$rel_field[value]]=$rel_field[name];
+		 }
+
+		 $input.= '<sel'.'ect name="'.$input_name.'" onchange="document.frm.O2MXXX'.$fprops[name].'.value=document.frm.'.$input_name.'.options[document.frm.'.$input_name.'.selectedIndex].text">';
+		 if($value!='')
+		 {
+			$input.= $this->ui->select_options($related_fields,$value,true);
+			$input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+			$input.= '<input type="hidden" name="O2MXXX'.$fprops[name].'" value="'.$related_fields_keyed[$value].'" />';
+		 }
+		 else
+		 {
+			$input.= $this->ui->select_options($related_fields,$this->relation1_array[$fprops[name]][default_value],true);
+			$input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
+			$input.= '<input type="hidden" name="O2MXXX'.$fprops[name].'" value="'.$this->relation1_array[$fprops[name]][default_value].'" />';
+		 }
+		 
+		 return $input;
+
+	  }
+
 
 	  function render_many_to_many_ro($template_block)
 	  {
@@ -922,30 +922,6 @@
 					   $this->record_id_val=$value;
 					   $input='<b>'.$value.'</b>';
 					}
-					// string
-					elseif($this->db_ftypes->complete_resolve($fprops)=='string')
-					{
-					   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
-					   {
-						  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-						  $input= '<sel'.'ect name="'.$input_name.'">';
-						  $input.= $this->ui->select_options($related_fields,$value,true);
-						  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
-					   }
-					}
-					// int
-					elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
-					{
-					   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
-					   {
-						  //get related field vals en displays
-						  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-		
-						  $input= '<sel'.'ect name="'.$input_name.'">';
-						  $input.= $this->ui->select_options($related_fields,$value,true);
-						  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
-					   }
-					}
 		
 					if(!$input)
 					{
@@ -1047,9 +1023,6 @@
 		 $this->template->set_block('view_record','footer','footer');
 
 		 $where_string=$this->bo->where_string;
-		 //		 if(!$where_string) $where_string='';
-		 //		 _debug_array($this->bo);
-		 //		 die();
 
 		 $this->values_object= $this->bo->so->get_record_values($this->bo->site_id,$this->bo->site_object[table_name],'','','','','name','','*',$where_string);
 		 $fields = $this->bo->so->site_table_metadata($this->bo->site_id,$this->bo->site_object[table_name]);
@@ -1088,30 +1061,6 @@
 			{
 			   $this->record_id_val=$value;
 			   $input='<b>'.$value.'</b>';
-			}
-			// string
-			elseif($this->db_ftypes->complete_resolve($fprops)=='string')
-			{
-			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
-			   {
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  $input.= $this->ui->select_options($related_fields,$value,true);
-				  $input.= '</sel'.'ect> ('.lang('real value').': '.$value.')';
-			   }
-			}
-			// int
-			elseif ($this->db_ftypes->complete_resolve($fprops)=='int')
-			{
-			   if (is_array($fields_with_relation1) && in_array($fprops[name],$fields_with_relation1))
-			   {
-				  //get related field vals en displays
-				  $related_fields=$this->bo->get_related_field($relation1_array[$fprops[name]]);
-
-				  $input= '<sel'.'ect name="'.$input_name.'">';
-				  $input.= $this->ui->select_options($related_fields,$value,true);
-				  $input.= '</se'.'lect> ('.lang('real value').': '.$value.')';
-			   }
 			}
 
 			if(!$input)

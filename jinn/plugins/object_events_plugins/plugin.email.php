@@ -26,8 +26,8 @@
 
    $this->object_events_plugins['email']['name'] 			= 'email';
    $this->object_events_plugins['email']['title']			= 'email';
-   $this->object_events_plugins['email']['author']			= 'Pim Snel';
-   $this->object_events_plugins['email']['version']			= '0.1';
+   $this->object_events_plugins['email']['author']			= 'Lex Vogelaar';
+   $this->object_events_plugins['email']['version']			= '0.2';
    $this->object_events_plugins['email']['enable']			= 1;
    $this->object_events_plugins['email']['description']		= 'send an email triggered by an event';
    $this->object_events_plugins['email']['event_hooks']		= array
@@ -35,7 +35,7 @@
 	  'on_update'
    );
    
-   $this->object_events_plugins['email']['help']			=  'some help here...';
+   $this->object_events_plugins['email']['help']		=  'Substitute table fields with $$field$$, substitute foreign values with %%field%%.';
    $this->object_events_plugins['email']['config']		= array
    (
 	  'fieldname_with_emailaddress'=>array('','text',''),
@@ -48,7 +48,7 @@
 
    $this->object_events_plugins['email']['config_help']		= array
    (
-	  'fieldname_with_emailaddress'=>'specify the field in the object that stores an email adress',
+	  'fieldname_with_emailaddress'=>'specify the field in the object that stores an email adress. If a value from a related table is needed enclose the field %% like this %%fieldname%%',
 	  'CC'=>'optionally specify one or more valid email addresses',
 	  'BCC'=>'optionally specify one or more valid email addresses',
 	  'from_address'=>'specify the from address',
@@ -59,12 +59,21 @@
    function event_action_email($post, $config)
    {
 		$m = array();
-		$m[to] = $post[FLDXXX.$config[conf][fieldname_with_emailaddress]];
-	
+
+		if(substr($config[conf][fieldname_with_emailaddress],0,2)=='%%' && substr($config[conf][fieldname_with_emailaddress],-2,2)=='%%')
+		{
+		
+		   $m[to] = $post[O2MXXX.str_replace('%','',$config[conf][fieldname_with_emailaddress])];
+		}
+		else
+		{
+		   $m[to] = $post[FLDXXX.$config[conf][fieldname_with_emailaddress]];
+		}
+
 		$m[subject] = $config[conf][subject];
 		$m[message] = $config[conf][messagebody];
 		
-			//replace occurences of '$$fieldname$$' with the value of that field
+		//replace occurences of '$$fieldname$$' with the value of that field
 		foreach($post as $key => $value)
 		{
 			$prefix = substr($key, 0, 6);
@@ -76,6 +85,19 @@
 			}
 		}
 	
+		//replace occurences of '$$fieldname$$' with the value of that field
+		foreach($post as $key => $value)
+		{
+		   $prefix = substr($key, 0, 6);
+		   if($prefix == 'O2MXXX')
+		   {
+			  $field = substr($key, 6);
+			  $m[subject] = str_replace('%%'.$field.'%%', $value, $m[subject]);
+			  $m[message] = str_replace('%%'.$field.'%%', $value, $m[message]);
+		   }
+		}
+
+		
 		$m[headers] = '';
 		$m[headers] .= 'From: '.$config[conf][from_address]."\r\n";
 		$m[headers] .= 'Cc: '.$config[conf][CC]."\r\n";

@@ -83,6 +83,8 @@
 
 	  function bouser()
 	  {
+		
+		
 		 $this->common = CreateObject('jinn.bocommon');
 		 $this->current_config=$this->common->get_config();		
 
@@ -548,31 +550,31 @@
 
 	  function run_event_plugins($event, $post)
 	  {
-			//get all events plugins configured to this object
-		$object_arr=$this->so->get_object_values($this->site_object[object_id]);
-		$stored_configs = unserialize(base64_decode($object_arr[events_config]));
-//_debug_array($stored_configs);
-		if(is_array($stored_configs))
-		{
+		 //get all events plugins configured to this object
+		 $object_arr=$this->so->get_object_values($this->site_object[object_id]);
+		 $stored_configs = unserialize(base64_decode($object_arr[events_config]));
+		 //_debug_array($stored_configs);
+		 if(is_array($stored_configs))
+		 {
 			foreach($stored_configs as $config)
 			{
-				if($event == $config[conf][event])
-				{
-//_debug_array("valid configuration found");
-					/*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
-					met als argumenten de _POST array en de plugin configuratie. 
-					Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
-					De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
-					
-					$status = $this->object_events_plugin_manager->call_event_action($post, $config);
-				}
+			   if($event == $config[conf][event])
+			   {
+				  //_debug_array("valid configuration found");
+				  /*run_event_plugins roept uit de event_plugin de functie event_action_[plg_naam]() aan 
+				  met als argumenten de _POST array en de plugin configuratie. 
+				  Deze functie geeft alleen een status terug dus geen waarde om weer verder te gebruiken. 
+				  De functie gebruikt de config_data en de post_data om iets speciaals te doen.*/
+
+				  $status = $this->object_events_plugin_manager->call_event_action($post, $config);
+			   }
 			}
-		}
+		 }
 	  }
-	  
+
 	  function record_update()
 	  {
-		 /* exit and go to del function */
+
 		 if($_POST['delete'])
 		 {
 			$this->del_record();
@@ -1354,28 +1356,6 @@
 		   $this->save_sessiondata();
 		   $this->common->exit_and_open_screen('jinn.uiu_list_records.display');
 		}
-	  
-	  /**
-	  * include ALL plugins
-	  */
-	  /*			function include_plugins()
-	  {
-		 global $local_bo;
-		 $local_bo=$this;
-		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
-
-			while (false !== ($file = readdir($handle))) 
-			{ 
-			   if (substr($file,0,7)=='plugin.')
-			   {
-
-				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
-			   }
-			}
-			closedir($handle); 
-		 }
-	  }
-	  */
 
    }
 ?>
