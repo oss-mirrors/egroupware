@@ -43,14 +43,10 @@
  <tr>
   <td valign="top"    align="left"><strong><big class=hdr>{TITLE}</big></strong></td>
   <td valign="bottom" align="right">
-<!--    <a class=hdr href="{START_URL}"><img width=24 height=24 src="images/home.gif" border=0 alt="Home"></a> -->
-    <a class=hdr href="javascript:pop_tree()"><img width=24 height=24 src="images/tree.gif" border=0 alt="Tree View"></a>
-    <a class=hdr href="{LIST_URL}"><img width=24 height=24 src="images/list.gif" border=0 alt="List View"></a>
-    <a class=hdr href="{CREATE_URL}"><img width=24 height=24 src="images/create.gif" border=0 alt="New"></a>
-    <a class=hdr href="{SEARCH_URL}"><img width=24 height=24 src="images/search.gif" border=0 alt="Search"></a>
-<!--    <a class=hdr href="{FAQ_URL}"><img width=24 height=24 src="images/help.gif" border=0 alt="Help"></a> -->
-    <a class=hdr href="{USER_URL}"><img width=24 height=24 src="images/user.gif" border=0 alt="User Preferences"></a>
-    {LOGOUT_HTML}
+   <a class=hdr href="javascript:pop_tree()"><img width=24 height=24 src="images/tree.gif" border=0 alt="Tree View"></a>
+   <a class=hdr href="{LIST_URL}"><img width=24 height=24 src="images/list.gif" border=0 alt="List View"></a>
+   <a class=hdr href="{CREATE_URL}"><img width=24 height=24 src="images/create.gif" border=0 alt="New"></a>
+   <a class=hdr href="{SEARCH_URL}"><img width=24 height=24 src="images/search.gif" border=0 alt="Search"></a>
   </td>
  </tr>
 </table>
@@ -63,11 +59,6 @@
 {BODY}
 
   </td>
- </tr>
- <tr>
-   <td align=right valign=bottom>
-   <!-- <small><a href="http://renaghan.com/pcr/bookmarker.html">bookmarker</a> {VERSION} at {SERVER_NAME} {NAME_HTML}</small> -->
-   </td>
  </tr>
 </table>
 </body>

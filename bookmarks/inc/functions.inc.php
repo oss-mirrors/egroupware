@@ -439,14 +439,6 @@ class bookmarker_class  {
 # respond.
   var $url_responds_check = true;
 
-# how many URLs to show per page on the plain list page
-# NOTE: If your database doesn't support the "LIMIT offset, rows"
-# statement, set this to zero. In that case the LIMIT clause
-# won't be added to the SQL. You will get all bookmarks on a
-# single plain list page.
-//  var $urls_per_page  = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
-  var $urls_per_page  = 2;
-
 # how many characters after the scheme(http://) and hostname
 # (www.mydomain.com) to match when checking for possible
 # duplicates on the create page.
@@ -465,10 +457,6 @@ class bookmarker_class  {
 # are displayed in the tree view. NOTE: these links are only displayed
 # if 'group by category/subcategory' is also selected.
   var $show_bk_in_tree = 0; # set to 0 for 'off' 1 for 'on'
-
-# for how many seconds is the "permanent" login cookie good
-# for. Defaulted here to 100 days.
-  var $perm_cookie_lifetime=8640000;
 
 # class constructor for bookmarker_class
 # setup a few more variables that are based on variables.

@@ -102,11 +102,11 @@ $total_public = 0;
   $phpgw->template->set_var(TOTAL_PAGES, $last_page);
 
 
-  # store the last page this user looked at in
-  # a PHPLIB user var.
+  // store the last page this user looked at in
+  // a PHPLIB user var.
   $user_last_page = $page;
 
-  print_list ($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
+  print_list($where_clause,$start,sprintf("list.php----page=%s",$page),&$bookmark_list,&$error_msg);
 
   $phpgw->template->set_var(BOOKMARK_LIST, $bookmark_list);
 
