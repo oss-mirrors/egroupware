@@ -63,42 +63,41 @@
 	}
 
 	$allusers = $phpgw->accounts->get_list('accounts');
-	while (list($null,$account) = each($allusers))
+	while (list($null,$ad_account) = each($allusers))
 	{
-		$users_list .= '<option value="' . $account['account_id'] . '"';
+		$users_list .= '<option value="' . $ad_account['account_id'] . '"';
 		for ($i=0;$i<count($is_admin);$i++)
 		{
-			if($is_admin[$i]['account_id'] == $account['account_id'])
+			if($is_admin[$i]['account_id'] == $ad_account['account_id'])
 			{
 				$users_list .= ' selected';
 			}
-			$users_list .= '>'
-			. $account['account_firstname'] . ' ' . $account['account_lastname'] . ' [ ' . $account['account_lid'] . ' ]' . '</option>';
 		}
+		$users_list .= '>'
+		. $ad_account['account_firstname'] . ' ' . $ad_account['account_lastname'] . ' [ ' . $ad_account['account_lid'] . ' ]' . '</option>';
 	}
 
 	$t->set_var('users_list',$users_list);
 
 	$db2->query("SELECT account_id from phpgw_p_projectmembers WHERE type='ag'",__LINE__,__FILE__);
-	$i = 0;
 	while ($db2->next_record())
 	{
 		$is_group[] = array('account_id' => $db2->f('account_id'));
 	}
 
 	$allgroups = $phpgw->accounts->get_list('groups');
-	while (list($null,$account) = each($allgroups))
+	while (list($null,$ad_group) = each($allgroups))
 	{
-		$groups_list .= '<option value="' . $account['account_id'] . '"';
+		$groups_list .= '<option value="' . $ad_group['account_id'] . '"';
 		for ($i=0;$i<count($is_group);$i++)
 		{
-			if($is_group[$i]['account_id'] == $account['account_id'])
+			if($is_group[$i]['account_id'] == $ad_group['account_id'])
 			{
 				$groups_list .= ' selected';
 			}
-			$groups_list .= '>'
-			. $account['account_lid'] . '</option>';
 		}
+		$groups_list .= '>'
+		. $ad_group['account_lid'] . '</option>';
 	}
 
 	$t->set_var('groups_list',$groups_list);
