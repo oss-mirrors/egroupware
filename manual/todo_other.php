@@ -1,0 +1,22 @@
+<table cellpadding="10">
+<?php include("side.php"); ?>
+<td valign="top">
+<img src="images/title_todo.gif" border=0>
+<font face="Arial, Helvetica, san-serif" size="2">
+<p>
+A searchable todo list for keeping a quick note of things todo.
+<p>
+<ul>
+<li><b>Search:</b>
+<br>Enter a keyword for the task you are looking for, click on the search button.
+<p>
+<li><b>Filter:</b>
+<br>Todo items can be listed in two ways:
+<dd>Show all = all todo /tasks for all groups you are a member of.
+<dd>Only yours = only your own tasks.
+</ul>
+</td>
+</table>
+</body>
+</html>
+

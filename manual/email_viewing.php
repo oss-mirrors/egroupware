@@ -1,0 +1,29 @@
+<table cellpadding="10">
+<?php include("side.php"); ?>
+<td valign="top">
+<img src="images/title_email.gif" border=0>
+<font face="Arial, Helvetica, san-serif" size="2">
+<p>
+At present there are many new improvements being built into the 
+email application function of this suite. As a result these documents are based on the functionality of the current stable
+demo version, available for testing <a href="http://www.phpgroupware.org">&nbsp here. </a> with a few insites into the
+ new development versions as well :)
+<p>
+<ul>
+<li><b>Collecting and viewing:</b>
+Clicking on the email icon in the navigation bar at the top of the screen, will make a connection
+to your mailserver (as set by the systems admin). All your mail should then be displayed on screen.
+<br>To read a particular mail, click on the subject line of the mail.
+</ul>
+<p>The following icons will be displayed at the top right of the screen and the email will then be displayed.
+<br><img src="images/sm_reply.gif">  Reply to sender
+<br><img src="images/sm_reply_all.gif">  Reply to all (sender and other cc recipients)
+<br><img src="images/sm_forward.gif">  Forward to another address
+<br><img src="images/sm_delete.gif">  Delete 
+<p>Make a choice ! :)
+<ul>
+</td>
+</table>
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<table cellpadding="10">
+<?php include("side.php"); ?>
+<td valign="top">
+<img src="images/title_home.gif" border=0>
+<font face="Arial, Helvetica, san-serif" size="2">
+<p>
+When you first log onto the system, this page will be presented to you. 
+<p>The navigation bar at the top will show you the system applications you have. 
+These applications are represented in two formats
+<dd>Icons (small pictures, representing the function)
+<dd>Icons and text (same as icons, but with added text below each icon)
+<p>
+Alerts linked to the calendar or to the trouble ticket/todo list, such as birthday or
+priority tasks, will be listed on this page.
+<p>
+When you first login to this system, you may have an alert on this page, stating you need
+to change your password. This can be done in preferences.
+<p>
+If you would like other features that are not in your navigation bar, 
+but are discussed in these howto pages, please contact the systems admin.
+</td>
+</table>
+</body>
+</html>
