@@ -76,7 +76,7 @@
 	  $stdoffset = 2;
       } else {
 	$filter = "mail/";
-        $stdoffset = 2;
+        $stdoffset = 1;
       }
 
       $mailboxes = $phpgw->msg->listmailbox($mailbox,"{".$phpgw_info["user"]["preferences"]["email"]["mail_server"].":".$phpgw_info["server"]["mail_port"]."}",$filter."*");  
