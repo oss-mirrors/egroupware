@@ -8,7 +8,6 @@ DELETE from lang WHERE message_id='Project administration' and app_name='admin' 
 
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select tax for work hours','projects','de','Mehrwertsteuer f&uuml Arbeitsstunden');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects','projects','de','Projekte');
-INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects list','projects','de','Projekte Liste');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project billing','projects','de','Projektabrechnung');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Project delivery','projects','de','Projektlieferung');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Select project','projects','de','Projekt ausw&auml;hlen');
