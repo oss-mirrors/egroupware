@@ -17,6 +17,7 @@ All invoices	projects	en	All invoices
 All	projects	en	All
 All delivery notes	projects	en	ALL delivery notes
 archive	projects	en	Archive
+arial	projects	en	Arial
 billed	projects	en	Billed
 Billed only	projects	en	Billed only
 Billing	projects	en	Billing
@@ -31,12 +32,14 @@ closed	projects	en	Closed
 Coordinator	projects	en	Coordinator
 Create delivery	projects	en	Create delivery
 Create invoice	projects	en	Create invoice
+courier new	projects	en	Courier New
 Customer	projects	en	Customer
 Delete hours	projects	en	Delete hours
 Deliveries	projects	en	Deliveries
 Delivery	projects	en	Delivery
 Delivery date	projects	en	Delivery date
 Delivery note	projects	en	Delivery note
+delivery note for project	projects	en	Delivery note for project
 Delivery ID	projects	en	Delivery ID
 Delivery list	projects	en	Delivery list
 Delivery notes	projects	en	Delivery notes
@@ -54,10 +57,14 @@ Generate Delivery ID ?	projects	en	Generate Delivery ID ?
 Generate Project ID ?	projects	en	Generate Project ID ?
 Generate Invoice ID ?	projects	en	Generate Invoice ID ?
 Generate Job ID ?	projects	en	Generate Job ID ?
+georgia	projects	en	Georgia
+helvetica	projects	en	Helvetica
 Hours	projects	en	Hours
 Invoice	projects	en	Invoice
 Invoice date	projects	en	Invoice date
+invoice for project	projects	en	Invoice for project
 Invoice ID	projects	en	Invoice ID
+Invoice layout	projects	en	Invoice layout
 Invoice list	projects	en	Invoice list
 Invoices	projects	en	Invoices
 Invoice x has been created !	projects	en	Invoice %1 has been created !
@@ -72,6 +79,7 @@ Job has been updated !	projects	en	Job has been updated !
 Job ID	projects	en	Job ID
 Job list	projects	en	Job list
 Jobs	projects	en	Jobs
+large	projects	en	Large
 Main project:	projects	en	Main project:
 Minutes per workunit	projects	en	Minutes per workunit
 net	projects	en	net
@@ -105,6 +113,9 @@ Project statistic	projects	en	Project statistic
 project statistics	projects	en	Project statistics
 Remark	projects	en	Remark
 Remark required	projects	en	Remark required
+select font	projects	en	Select font
+Select font size for own address	projects	en	Select font size for own address
+Select font size for customer address	projects	en	Select font size for customer address
 select	projects	en	Select
 Select main project	projects	en	Select main project
 Select per button !	projects	en	Select per button !
@@ -113,6 +124,7 @@ Select tax for workhours	projects	en	Select tax for workhours
 Select users	projects	en	Select users
 Select groups	projects	en	Select groups
 Select your address	projects	en	Select your address
+small	projects	en	Small
 Statistic	projects	en	Statistic
 Statistics	projects	en	Statistics
 Short description	projects	en	Short description
@@ -120,13 +132,18 @@ Sorry, no preferences to set for you :)	projects	en	Sorry, no preferences to set
 sum net	projects	en	Sum net
 Sum	projects	en	Sum
 Sum workunits	projects	en	Sum workunits
+tahoma	projects	en	Tahoma
 tax	projects	en	tax
 That ID has been used already !	projects	en	That ID has been used already !
+times new roman	projects	en	Times New Roman
 Update invoice	projects	en	Update invoice
 Update delivery	projects	en	Update delivery
 Username / Group	projects	en	Username / Group
 User statistic	projects	en	User statistic
 user statistics	projects	en	User statistics
+verdana	projects	en	Verdana
+very large	projects	en	Very Large
+very small	projects	en	Very Small
 View work hours	projects	en	View work hours
 View job	projects	en	View job
 View project	projects	en	View project

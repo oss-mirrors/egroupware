@@ -184,6 +184,9 @@
 				$prefs['tax'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
 				$prefs['abid'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
 				$prefs['bill'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
+				$prefs['ifont'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
+				$prefs['mysize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
+				$prefs['allsize'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
 			}
 			return $prefs;
 		}
@@ -197,18 +200,23 @@
 				$GLOBALS['phpgw']->preferences->change('projects','tax',$prefs['tax']);
 				$GLOBALS['phpgw']->preferences->change('projects','abid',$prefs['abid']);
 				$GLOBALS['phpgw']->preferences->change('projects','bill',$prefs['bill']);
+				$GLOBALS['phpgw']->preferences->change('projects','ifont',$prefs['ifont']);
+				$GLOBALS['phpgw']->preferences->change('projects','mysize',$prefs['mysize']);
+				$GLOBALS['phpgw']->preferences->change('projects','allsize',$prefs['allsize']);
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 			}
 		}
 
 		function check_prefs()
 		{
-			if (! isset($GLOBALS['phpgw_info']['user']['preferences']['common']['country']) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['common']['currency'])))
+			$prefs = $this->get_prefs();
+
+			if (! isset($prefs['country']) || (! isset($prefs['currency'])))
 			{
 				$error[] = lang('Please set your global preferences !');
 			}
 
-			if (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['abid']) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'])) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'])))
+			if (! isset($prefs['abid']) || (! isset($prefs['tax'])) || (! isset($prefs['bill'])) || (! isset($prefs['ifont'])) || (! isset($prefs['mysize'])) || (! isset($prefs['allsize'])))
 			{
 				$error[] = lang('Please set your preferences for this application !');
 			}
@@ -229,6 +237,9 @@
 				$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
 				$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
 				$prefs['bill']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
+				$prefs['ifont']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['ifont'];
+				$prefs['mysize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['mysize'];
+				$prefs['allsize']	= $GLOBALS['phpgw_info']['user']['preferences']['projects']['allsize'];
 			}
 			return $prefs;
 		}

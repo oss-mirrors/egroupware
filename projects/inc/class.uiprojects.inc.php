@@ -1527,6 +1527,11 @@
 
 				$this->t->set_var('lang_action',lang('Project preferences'));
 
+				$this->t->set_var('lang_layout',lang('Invoice layout'));
+				$this->t->set_var('lang_select_font',lang('Select font'));
+				$this->t->set_var('lang_select_mysize',lang('Select font size for own address'));
+				$this->t->set_var('lang_select_allsize',lang('Select font size for customer address'));
+
 				$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'));
 				$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
 
@@ -1544,6 +1549,61 @@
 							. lang('per hour');
 
 				$this->t->set_var('bill',$bill);
+
+				switch($prefs['ifont'])
+				{
+					case'Arial,Helvetica,sans-serif': $font_sel[0]=' selected'; break;
+					case'Times New Roman,Times,serif': $font_sel[1]=' selected'; break;
+					case'Verdana,Arial,Helvetica,sans-serif': $font_sel[2]=' selected'; break; 
+					case'Georgia,Times New Roman,Times,serif': $font_sel[3]=' selected'; break;
+					case'Courier New,Courier,mono': $font_sel[4]=' selected'; break;
+					case'Helvetica,Arial,sans-serif': $font_sel[5]=' selected'; break; 
+					case'Tahoma,Verdana,Arial,Helvetica,sans-serif': $font_sel[6]=' selected'; break;
+				}
+
+				$ifont = '<option value="Arial,Helvetica,sans-serif"' . $font_sel[0] . '>' . lang('Arial') . '</option>' . "\n"
+					. '<option value="Times New Roman,Times,serif"' . $font_sel[1] . '>' . lang('Times New Roman') . '</option>' . "\n"
+					. '<option value="Verdana,Arial,Helvetica,sans-serif"' . $font_sel[2] . '>' . lang('Verdana') . '</option>' . "\n"
+					. '<option value="Georgia,Times New Roman,Times,serif"' . $font_sel[3] . '>' . lang('Georgia') . '</option>' . "\n"
+					. '<option value="Courier New,Courier,mono"' . $font_sel[4] . '>' . lang('Courier New') . '</option>' . "\n"
+					. '<option value="Helvetica,Arial,sans-serif"' . $font_sel[5] . '>' . lang('Helvetica') . '</option>' . "\n"
+					. '<option value="Tahoma,Verdana,Arial,Helvetica,sans-serif"' . $font_sel[6] . '>' . lang('Tahoma') . '</option>' . "\n";
+
+				$this->t->set_var('ifont',$ifont);
+
+				switch($prefs['mysize'])
+				{
+					case 1: $my_sel[0]=' selected'; break;
+					case 2: $my_sel[1]=' selected'; break;
+					case 3: $my_sel[2]=' selected'; break;
+					case 4: $my_sel[3]=' selected'; break;
+					case 5: $my_sel[4]=' selected'; break;
+				}
+
+				$mysize = '<option value="1"' . $my_sel[0] . '>' . lang('Very Small') . '</option>' . "\n"
+						. '<option value="2"' . $my_sel[1] . '>' . lang('Small') . '</option>' . "\n"
+						. '<option value="3"' . $my_sel[2] . '>' . lang('Medium') . '</option>' . "\n"
+						. '<option value="4"' . $my_sel[3] . '>' . lang('Large') . '</option>' . "\n"
+						. '<option value="5"' . $my_sel[4] . '>' . lang('Very Large') . '</option>' . "\n";
+
+				$this->t->set_var('mysize',$mysize);
+
+				switch($prefs['allsize'])
+				{
+					case 1: $all_sel[0]=' selected'; break;
+					case 2: $all_sel[1]=' selected'; break;
+					case 3: $all_sel[2]=' selected'; break;
+					case 4: $all_sel[3]=' selected'; break;
+					case 5: $all_sel[4]=' selected'; break;
+				}
+
+				$allsize = '<option value="1"' . $all_sel[0] . '>' . lang('Very Small') . '</option>' . "\n"
+						. '<option value="2"' . $all_sel[1] . '>' . lang('Small') . '</option>' . "\n"
+						. '<option value="3"' . $all_sel[2] . '>' . lang('Medium') . '</option>' . "\n"
+						. '<option value="4"' . $all_sel[3] . '>' . lang('Large') . '</option>' . "\n"
+						. '<option value="5"' . $all_sel[4] . '>' . lang('Very Large') . '</option>' . "\n";
+
+				$this->t->set_var('allsize',$allsize);
 
 				if (isset($prefs['abid']))
 				{

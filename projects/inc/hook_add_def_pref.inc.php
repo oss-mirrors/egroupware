@@ -1,8 +1,7 @@
 <?php
     /**************************************************************************\
-    * phpGroupWare - Projects                                                  *
+    * phpGroupWare                                                             *
     * http://www.phpgroupware.org                                              *
-    * Written by Bettina Gille [ceb@phpgroupware.org]                          *
     * -----------------------------------------------                          *
     * This program is free software; you can redistribute it and/or modify it  *
     * under the terms of the GNU General Public License as published by the    *
@@ -13,4 +12,8 @@
 
 	global $pref;
 	$pref->change('projects','tax','16');
+	$pref->change('projects','bill','h');
+	$pref->change('projects','ifont','Tahoma,Verdana,Arial,Helvetica,sans-serif');
+	$pref->change('projects','mysize','1');
+	$pref->change('projects','allsize','3');
 ?>

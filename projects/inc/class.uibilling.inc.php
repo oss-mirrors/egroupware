@@ -106,6 +106,7 @@
 			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
 			$this->t->set_var('lang_invoices',lang('Invoices'));
 			$this->t->set_var('lang_invoice_num',lang('Invoice ID'));
+			$this->t->set_var('lang_project_num',lang('Project ID'));
 			$this->t->set_var('lang_invoice_date',lang('Invoice date'));
 			$this->t->set_var('lang_stats',lang('Statistics'));
 			$this->t->set_var('lang_activity',lang('Activity'));
@@ -812,24 +813,31 @@
 			{
 				$prefs = $this->boprojects->get_prefs();
 				$this->t->set_var('currency',$prefs['currency']);
-				$this->t->set_var('myaddress',$this->bodeliveries->get_address_data($prefs['abid']));
+				$this->t->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
+				$this->t->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
 			}
 
 			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
 			$this->t->set_var('charset',$charset);
-			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+			$this->t->set_var('font',$prefs['ifont']);
+			$this->t->set_var('fontsize',$prefs['allsize']);
 			$this->t->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
+			$this->t->set_var('lang_invoice_for_project',lang('Invoice for project'));
 
 			$bill = $this->bobilling->read_single_invoice($invoice_id);
 
-			$this->t->set_var('customer',$this->bodeliveries->get_address_data($bill['customer']));
+			if ($prefs)
+			{
+				$this->t->set_var('customer',$this->bodeliveries->get_address_data('address',$bill['customer'],$prefs['ifont'],$prefs['allsize']));
+			}
 
 			$bill['date'] = $bill['date'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			$invoice_dateout = $GLOBALS['phpgw']->common->show_date($bill['date'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 			$this->t->set_var('invoice_date',$invoice_dateout);
 
 			$this->t->set_var('invoice_num',$GLOBALS['phpgw']->strip_html($bill['invoice_num']));
+			$this->t->set_var('project_num',$GLOBALS['phpgw']->strip_html($bill['project_num']));
 			$title = $GLOBALS['phpgw']->strip_html($bill['title']);
 			if (! $title) { $title  = '&nbsp;'; }
 			$this->t->set_var('title',$title);

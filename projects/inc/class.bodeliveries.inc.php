@@ -77,19 +77,19 @@
 			return $del;
 		}
 
-		function get_address_data($format, $abid)
+		function get_address_data($format, $abid, $afont, $asize)
 		{
 			if ($format == 'address')
 			{
-				$address = $this->contacts->formatted_address($abid,True);
+				$address = $this->contacts->formatted_address($abid,True,$afont,$asize);
 			}
 			elseif ($format == 'line')
 			{
-				$address = $this->contacts->formatted_address_line($abid,True,'1');
+				$address = $this->contacts->formatted_address_line($abid,True,$afont,$asize);
 			}
 			else
 			{
-				$address = $this->contacts->formatted_address_full($abid,True,'1');
+				$address = $this->contacts->formatted_address_full($abid,True,$afont,$asize);
 			}
 			return $address;
 		}

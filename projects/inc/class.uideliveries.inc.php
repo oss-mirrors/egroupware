@@ -766,20 +766,24 @@
 			else
 			{
 				$prefs = $this->boprojects->read_prefs();
-        		$this->t->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid']));
-        		$this->t->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid']));
+				$this->t->set_var('myaddress',$this->bodeliveries->get_address_data('line',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
+				$this->t->set_var('fulladdress',$this->bodeliveries->get_address_data('full',$prefs['abid'],$prefs['ifont'],$prefs['mysize']));
 			}
 
 			$this->t->set_var('site_title',$GLOBALS['phpgw_info']['site_title']);
 			$charset = $GLOBALS['phpgw']->translation->translate('charset');
 			$this->t->set_var('charset',$charset);
-			$this->t->set_var('font',$GLOBALS['phpgw_info']['theme']['font']);
+			$this->t->set_var('font',$prefs['ifont']);
+			$this->t->set_var('fontsize',$prefs['allsize']);
 			$this->t->set_var('img_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . '/projects/doc/logo.jpg');
 			$this->t->set_var('lang_delivery_note_for_project',lang('Delivery note for project'));
 
 			$del = $this->bodeliveries->read_single_delivery($delivery_id);
 
-			$this->t->set_var('customer',$this->bodeliveries->get_address_data('address',$del['customer']));
+			if ($prefs)
+			{
+				$this->t->set_var('customer',$this->bodeliveries->get_address_data('address',$del['customer'],$prefs['ifont'],$prefs['allsize']));
+			}
 
 			$del['date'] = $del['date'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 			$delivery_dateout = $GLOBALS['phpgw']->common->show_date($del['date'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);

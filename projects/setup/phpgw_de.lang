@@ -35,6 +35,7 @@ Deliveries	projects	de	Lieferungen
 Delivery	projects	de	Lieferung
 Delivery date	projects	de	Lieferungs Datum
 Delivery note	projects	de	Lieferschein
+delivery note fpr project	projects	de	Lieferschein für Projekt
 Delivery ID	projects	de	Lieferungs ID
 Delivery list	projects	de	Lieferungs Liste
 Delivery notes	projects	de	Lieferscheine
@@ -54,7 +55,9 @@ Generate Invoice ID ?	projects	de	Rechnungs ID generieren ?
 Hours	projects	de	Stunden
 Invoice	projects	de	Rechnung
 Invoice date	projects	de	Rechnungs Datum
+invoice for project	projects	de	Rechnung für Projekt
 Invoice ID	projects	de	Rechnungs ID
+invoice layout	projects	de	Rechnungs Layout
 Invoice list	projects	de	Rechnungs Liste
 Invoices	projects	de	Rechnungen
 Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
@@ -102,6 +105,8 @@ project statistics	projects	de	Projekt Statistiken
 Remark	projects	de	Betreff
 Remark required	projects	de	Betreff notwendig
 select	projects	de	Auswählen
+select font size for customer address	projects	de	Schriftgröße für Kundenadresse auswählen
+Select font size for own address	projects	de	Schriftgröße für eigene Adresse auswählen
 Select main project	projects	de	Hauptprojekt auswählen
 Select per button !	projects	de	Auswählen per Button !
 Select project	projects	de	Projekt auswählen

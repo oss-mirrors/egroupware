@@ -16,16 +16,39 @@
 
 <!-- BEGIN book -->
 
+		<td><input type="button" value="{lang_address}" onClick="abook();"></td>
+		<td><input type="hidden" name="abid" value="{abid}">
+			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
 		<td>{lang_select_tax}:</td>
 		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
 	</tr>
+	<tr>
 		<td>{lang_bill}:</td>
 		<td>{bill}</td>
 	</tr>
 	<tr>
-		<td><input type="button" value="{lang_address}" onClick="abook();"></td>
-		<td><input type="hidden" name="abid" value="{abid}">
-			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>{lang_layout}</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>{lang_select_font}:</td>
+		<td><select name="prefs[ifont]">{ifont}</select></td>
+	</tr>
+	<tr>
+		<td>{lang_select_mysize}:</td>
+		<td><select name="prefs[mysize]">{mysize}</select></td>
+	</tr>
+	<tr>
+		<td>{lang_select_allsize}:</td>
+		<td><select name="prefs[allsize]">{allsize}</select></td>
 	</tr>
 </table>
 <table width="39%" border="0" cellspacing="2" cellpadding="2">

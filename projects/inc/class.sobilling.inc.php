@@ -273,7 +273,7 @@
 		function read_single_invoice($invoice_id)
 		{
 			$this->db->query("SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,"
-							. "phpgw_p_invoice.sum,phpgw_p_projects.title FROM phpgw_p_invoice,phpgw_p_projects WHERE "
+							. "phpgw_p_invoice.sum,phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_invoice,phpgw_p_projects WHERE "
 							. "phpgw_p_invoice.id='" . $invoice_id . "' AND phpgw_p_invoice.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
 
 			if ($this->db->next_record())
@@ -283,6 +283,7 @@
 				$bill['title']			= $this->db->f('title');
 				$bill['customer']		= $this->db->f('customer');
 				$bill['project_id']		= $this->db->f('project_id');
+				$bill['project_num']	= $this->db->f('pnum');
 				$bill['sum']			= $this->db->f('sum');
 			}
 			return $bill;
