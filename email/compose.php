@@ -17,66 +17,68 @@
 
   $phpgw_info["flags"] = array("currentapp" => "email", "enable_network_class" => True);
   include("../header.inc.php");
+
   if ($msgnum) {
-     $msg = $phpgw->msg->header($mailbox, $msgnum);
-     $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
-     if ($action == "reply") {
-        $from = $msg->from[0];
-        $to = $from->mailbox."@".$from->host;
-        $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-        $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
-        $subject = $begin . $subject;
-     }
-     if ($action == "replyall") {
-        if ($msg->to) {
-           for ($i = 0; $i < count($msg->to); $i++) {
-              $topeople = $msg->to[$i];
-              $tolist[$i] = "$topeople->mailbox@$topeople->host";
-           }
-           $from = $msg->from[0];
-           $to = "$from->mailbox@$from->host, " . implode(", ", $tolist);
-        }
+    $msg = $phpgw->msg->header($mailbox, $msgnum);
+    $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
+    if ($action == "reply") {
+	    $from = $msg->from[0];
+	    $to = $from->mailbox."@".$from->host;
+	    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
+	    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
+	    $subject = $begin . $subject;
+    }
+    if ($action == "replyall") {
+	    if ($msg->to) {
+	      for ($i = 0; $i < count($msg->to); $i++) {
+	        $topeople = $msg->to[$i];
+	        $tolist[$i] = "$topeople->mailbox@$topeople->host";
+	      }
+	    $from = $msg->from[0];
+	    $to = "$from->mailbox@$from->host, " . implode(", ", $tolist);
+    }
 
-        if ($msg->cc) {
-           for ($i = 0; $i < count($msg->cc); $i++)	{
-           $ccpeople = $msg->cc[$i];
-           $cclist[$i] = "$ccpeople->mailbox@$ccpeople->host";	
-        }
-        $cc = implode(", ", $cclist);
-     }
+    if ($msg->cc) {
+	    for ($i = 0; $i < count($msg->cc); $i++)	{
+        $ccpeople = $msg->cc[$i];
+        $cclist[$i] = "$ccpeople->mailbox@$ccpeople->host";	
+      }
+	    $cc = implode(", ", $cclist);
+    }
 
-     $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-     $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
-     $subject = $begin . $subject;
+    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
+    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
+    $subject = $begin . $subject;
   }
+
 
   if ($action == "forward") {
-     $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
-     $begin = strtoupper(substr($subject, 0, 3)) != "FW:" ? "Fw: " : "";
-     $subject = $begin . $subject;
+    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
+    $begin = strtoupper(substr($subject, 0, 3)) != "FW:" ? "Fw: " : "";
+    $subject = $begin . $subject;
   }
 
-  // This may be needed for multi-language support
-  //  $body = "\n\n\n$L_ORIG_MSG\n&gt\n";
+// This may be needed for multi-language support
+//  $body = "\n\n\n$L_ORIG_MSG\n&gt\n";
   $body = "\n\n\n$to wrote:\n&gt\n";
   $numparts = !$struct->parts ? "1" : count($struct->parts);
   for ($i = 0; $i < $numparts; $i++) {
-     $part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
-     if (get_att_name($part) == "Unknown") {
-        if (strtoupper($part->subtype) == "PLAIN") {
-           $bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $i+1);
-           $body_array = array();
-           $body_array = explode("\n", $bodystring);
-           $bodycount = count ($body_array);
-           for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx) {
-              if ($body_array[$bodyidx] != "\r") {
-                 $body .= "&gt;" . $body_array[$bodyidx];
-                 $body = chop ($body);
-                 $body .= "\n";
-              }
-           }    
-           trim ($body);
-        }
+    $part = !$struct->parts[$i] ? $part = $struct : $part = $struct->parts[$i];
+    if (get_att_name($part) == "Unknown") {
+	    if (strtoupper($part->subtype) == "PLAIN") {
+	      $bodystring = $phpgw->msg->fetchbody($mailbox, $msgnum, $i+1);
+        $body_array = array();
+	      $body_array = explode("\n", $bodystring);
+        $bodycount = count ($body_array);
+        for ($bodyidx = 0; $bodyidx < ($bodycount -1); ++$bodyidx) {
+          if ($body_array[$bodyidx] != "\r") {
+            $body .= "&gt;" . $body_array[$bodyidx];
+            $body = chop ($body);
+            $body .= "\n";
+          }
+        }    
+        trim ($body);
+      }
     }
   }
 }
@@ -127,18 +129,6 @@
        }
 
 ?>"></td></tr>
-
-  <?php if ($phpgw_info["user"]["preferences"]["common"]["email_seperate_from"]){ ?>
-   <tr><td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>"><b>&nbsp;<?php echo lang("from"); ?>:</b></td>
-     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
-       <input type=text name=from size=80 value="<?php echo $phpgw_info["user"]["fullname"]." <".$phpgw_info["user"]["preferences"]["email"]["address"].">"?>">
-     </td>
-   </tr>
-  <?php 
-    }else{
-      echo "<input type=hidden name=from size=80 value=\"".$phpgw_info["user"]["fullname"]." <".$phpgw_info["user"]["preferences"]["email"]["address"]."\">";
-    }  
-  ?>
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"] ?>">

@@ -20,13 +20,9 @@
   if ($submit) {
      if ($mainscreen_showmail) {
         $phpgw->preferences->change("email","mainscreen_showmail");
-     } else {
-       $phpgw->preferences->delete("email","mainscreen_showmail");
      }
      if ($use_trash_folder) {
         $phpgw->preferences->change("email","use_trash_folder");
-     } else {
-       $phpgw->preferences->delete("email","use_trash_folder");
      }
      $phpgw->preferences->change("email","default_sorting");
      $phpgw->preferences->change("email","email_sig"); 

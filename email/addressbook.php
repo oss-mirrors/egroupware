@@ -9,7 +9,6 @@
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-  /* $Id$ */ 
 
   $phpgw_info["flags"] = array("noheader" => True, 
                                "nonavbar" => True, 
@@ -114,7 +113,8 @@
 
 <?php
  
-    $limit = $phpgw_info["user"]["preferences"]["common"]["maxmatchs"];
+  $limit = $phpgw->nextmatchs->sql_limit($start);  
+
 
 if ($query) {
      $phpgw->db->query("SELECT ab_id,ab_owner,ab_firstname,ab_lastname,ab_email "

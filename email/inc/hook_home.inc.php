@@ -20,60 +20,45 @@
   $tmp_app_inc = $phpgw_info["server"]["app_inc"];
   $phpgw_info["server"]["app_inc"] = $phpgw_info["server"]["server_root"]."/email/inc";
 
-  if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"] &&
-     (isset($phpgw_info["user"]["apps"]["email"]) && $phpgw_info["user"]["apps"]["email"])) {
+  if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]) {
     include($phpgw_info["server"]["app_inc"] . "/functions.inc.php");
     echo "\n".'<tr><td align="left"><!-- Mailbox info -->'."\n";
+//    if (! $mbox) {
+//      echo "Mail error: can not open connection to mail server";
+//      $phpgw->common->phpgw_exit();
+//    }
 
   	$mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["user"]["preferences"]["email"]["mail_port"] . "}INBOX",SA_UNSEEN);
-
-    $nummsg = intval($phpgw->msg->num_msg($mailbox));
-
   	$str = '';
-  	if ($phpgw_info["user"]["preferences"]["email"]["mail_server_type"] == "imap") {
-      if ($mailbox_status->unseen == 1) {
-        $str .= lang("You have 1 new message!");
-      }
-      if ($mailbox_status->unseen > 1) {
-        $str .= lang("You have x new messages!",$mailbox_status->unseen);
-      }
-      if ($mailbox_status->unseen == 0) {
-        $str .= lang("You have no new messages");
-      }
-      for($i=$nummsg,$j=5;$j>=0;$i--) {
-        if($i==0) break;
-        $msg = $phpgw->msg->header($mailbox,$i);
-        if (($msg->Unseen == "U") || ($msg->Recent == "N")) {
-          $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,65).' ...';
-          $data[$j--] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
-        }
-      }
-    } else {
-      if ($nummsg > 0) {
-        $str .= lang("You have messages!");
-      } elseif ($nummsg == 0) {
-        $str .= lang("You have no new messages");
-      }
-      if($nummsg >= 5) { $check_msgs = 5; } else { $check_msgs = $nummsg; }
-      for($i=$nummsg - $check_msgs + 1,$j=0;$i<=$nummsg;$i++,$j++) {
-        $msg = $phpgw->msg->header($mailbox,$i);
-        $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,65).' ...';
-        $data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
-      }
+    if ($mailbox_status->unseen == 1) {
+//      echo "<tr><td><A href=\"" . $phpgw->link("email/index.php") . "\"> "
+//	 . lang("You have 1 new message!") . "</A></td></tr>\n";
+	  $str .= lang("You have 1 new message!");
     }
-    
+    if ($mailbox_status->unseen > 1) {
+//      echo "<tr><td><A href=\"" . $phpgw->link("email/index.php") . "\"> "
+//	 . lang("You have x new messages!",$mailbox_status->unseen) . "</A></td></tr>";
+	  $str .= lang("You have x new messages!",$mailbox_status->unseen);
+    }
+    if ($mailbox_status->unseen == 0) {
+       $str .= lang("You have no new messages");
+    }
+    $nummsg = $phpgw->msg->num_msg($mailbox);
+    include($phpgw_info["server"]["api_inc"].'/phpgw_utilities_portalbox.inc.php');
     //$title = '<a href="'.$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/index.php").'">EMail'.($str ? ' - '.$str : '').'</a>';
     $title = '<font color="FFFFFF">EMail' . ($str ? ' - ' . $str : '') . '</font>';
-    $linkbox_params [0] = $title;
-    $linkbox_params [1] = $phpgw_info["theme"]["navbar_bg"];
-    $linkbox_params [2] = $phpgw_info["theme"]["bg_color"];
-    $linkbox_params [3] = $phpgw_info["theme"]["bg_color"];
-    $portalbox = CreateObject("phpgwapi.linkbox", $linkbox_params);
+
+    $portalbox = new linkbox($title,$phpgw_info["theme"]["navbar_bg"],$phpgw_info["theme"]["bg_color"],$phpgw_info["theme"]["bg_color"]);
     $portalbox->setvar('width',600);
     $portalbox->outerborderwidth = 0;
     $portalbox->header_background_image = $phpgw_info["server"]["webserver_url"]
                                         . "/phpgwapi/templates/verdilak/images/bg_filler.gif";
-    $portalbox->data = $data;
+    if($nummsg >= 5) { $check_msgs = 5; } else { $check_msgs = $nummsg; }
+    for($i=$nummsg - $check_msgs + 1,$j=0;$i<=$nummsg;$i++,$j++) {
+      $msg = $phpgw->msg->header($mailbox,$i);
+      $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,65).' ...';
+      $portalbox->data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
+    }
     echo $portalbox->draw();
     echo "\n".'<!-- Mailox info --></td></tr>'."\n";
   }
