@@ -30,8 +30,8 @@
 
      $phpgw->db->query("SELECT con,display FROM news_site ORDER BY display asc",__LINE__,__FILE__);
      while ($phpgw->db->next_record()) {
-     	$html_select .= "<option value=\"" . $phpgw->db->f("con") . "\""
-           . $users_headlines[$phpgw->db->f("con")];
+     	$html_select .= "<option value=\"" . $phpgw->db->f("con") . "\"";
+//           . $users_headlines[$phpgw->db->f("con")];
 
        if ($phpgw_info["user"]["preferences"]["headlines"][$phpgw->db->f("con")]) {
           $html_select .= " selected";
@@ -47,12 +47,19 @@
 
      $phpgw->template->pparse("out","form");
   } else {
+
+  $i = 0;
+  while ($preference = each($phpgw_info["user"]["preferences"]["headlines"])) {
+     $phpgw->preferences->delete("headlines",$preference[0]);
+  }
+
    if (count($headlines)) {
       while ($value = each($headlines)) {
          $phpgw->preferences->change("headlines",$value[1],"True");
       }
-      $phpgw->preferences->commit();
    }
+
+   $phpgw->preferences->commit();
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]."/preferences/index.php"));
   }

@@ -13,8 +13,15 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"] = array("currentapp" => "headlines", "enable_network_class" => True);
+  $phpgw_info["flags"] = array("currentapp" => "headlines", "enable_network_class" => True, "noheader" => True, "nonavbar" => True );
   include("../header.inc.php");
+
+  if(!count($phpgw_info["user"]["preferences"]["headlines"])) {
+    Header("Location: ".$phpgw->link("preferences.php"));
+  } else {
+    $phpgw->common->phpgw_header();
+    $phpgw->common->navbar();
+  }
 
   $i = 0;
   while ($preference = each($phpgw_info["user"]["preferences"]["headlines"])) {
