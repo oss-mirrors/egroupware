@@ -13,7 +13,8 @@
 	/* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp' => 'ftp'
+		'currentapp'              => 'ftp',
+		'enable_nextmatchs_class' => True
 	);
 
 	if ($action == 'get' || $action == 'view')
@@ -22,6 +23,11 @@
 		$phpgw_info['flags']['noheader'] = True;
 	}
 	include('../header.inc.php');
+
+	if (! $start)
+	{
+		$start = 0;
+	}
 
    $default_login  = $phpgw_info['user']['account_lid'];
    $default_pass   = $phpgw->session->appsession('password','phpgwapi');
@@ -230,7 +236,11 @@
             "crdir_submit" => $crdir_submit
             ));
 
-			$contents = phpftp_getList($ftp,'.');
+			$total = count(ftp_rawlist($ftp,''));
+			$t->set_var('nextmatchs_left',$phpgw->nextmatchs->left('/ftp/index.php',$start,$total));
+			$t->set_var('nextmatchs_right',$phpgw->nextmatchs->right('/ftp/index.php',$start,$total));
+
+			$contents = phpftp_getList($ftp,'.',$start);
 
 			$t->set_var('lang_name',lang('Name'));
 			$t->set_var('lang_owner',lang('Owner'));

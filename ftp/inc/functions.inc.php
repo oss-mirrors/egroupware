@@ -289,16 +289,16 @@
 		return $fileinfo;
 	}
 
-	function phpftp_getList($ftp,$dir)
+	function phpftp_getList($ftp,$dir,$start)
 	{
-		global $real_systyp;
+		global $real_systyp, $phpgw_info;
 		$real_systyp = ftp_systype($ftp);
 
 		ftp_chdir($ftp,$dir);
 		$dirlist = ftp_rawlist($ftp,'');
-		while (list(,$line) = each($dirlist))
+		for ($i=$start; $i<($start+$phpgw_info['user']['preferences']['common']['maxmatchs']); $i++)
 		{
-			$dirinfo[] = analysedir($line);
+			$dirinfo[] = analysedir($dirlist[$i]);
 		}
 		return $dirinfo;
    }

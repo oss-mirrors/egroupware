@@ -6,6 +6,9 @@
    <td align="left"><b>FTP</b> - {ftp_location}</td>
    <td align="right">{relogin_link}</td>
   </tr>
+  <tr>
+   <td colspan="2" align="right">{nextmatchs_left}&nbsp;{nextmatchs_right}</td>
+  </tr>
  </table>
 
 <table border=0 width="95%" align=center>
