@@ -12,7 +12,6 @@ Add Activity	projects	en	Add activity
 Add hours	projects	en	Add hours
 Add project	projects	en	Add project
 Add project hours	projects	en	Add project hours
-Admin	projects	en	Admin
 All invoices	projects	en	All invoices
 All	projects	en	All
 All delivery notes	projects	en	ALL delivery notes
@@ -29,7 +28,6 @@ Coordinator	projects	en	Coordinator
 Create delivery	projects	en	Create delivery
 Create invoice	projects	en	Create invoice
 Customer	projects	en	Customer
-Date due	projects	en	Date due
 Delete hours	projects	en	Delete hours
 Deliveries	projects	en	Deliveries
 Delivery	projects	en	Delivery
@@ -97,6 +95,7 @@ Project x x has been updated !	projects	en	Project %1 %2 has been updated !
 Project x x has been added !	projects	en	Project %1 %2 has been added !
 Remark	projects	en	Remark
 Remark required	projects	en	Remark required
+select	projects	en	Select
 Select per button !	projects	en	Select per button !
 Select project	projects	en	Select project
 Select tax for workhours	projects	en	Select tax for workhours

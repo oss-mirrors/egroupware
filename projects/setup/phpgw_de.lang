@@ -1,3 +1,126 @@
 projects	common	de	Projekte
 project administration	admin	de	Projekt Administration
-written by:	projects	de	Geschrieben von:
+Account	projects	de	Account
+Active	projects	de	Activ
+Activities	projects	de	Aktivit&auml;ten
+Activities list	projects	de	Aktivit&auml;ten Liste
+Activity	projects	de	Aktivit&auml;t
+Activity ID	projects	de	Aktivit&auml;ts ID
+Activity x has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;gt !
+Activity x has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet !
+Add Activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
+Add hours	projects	de	Studen hinzuf&uuml;gen
+Add project	projects	de	Projekt hinzuf&uuml;gen
+Add project hours	projects	de	Projektstuden hinzuf&uuml;gen
+All invoices	projects	de	Alle Rechnungen
+All delivery notes	projects	de	Alle Lieferscheine
+archive	projects	de	Archiv
+billed	projects	de	Bezahlt
+Billed only	projects	de	nur bezahlte
+Billing	projects	de	Abrechnung
+Bookable activities	projects	de	Buchbare Aktivit&auml;ten
+Billable activities	projects	de	Abrechenbare Aktivit&auml;ten
+Bill per workunit	projects	de	Preis der Arbeitseinheit
+Budget	projects	de	Budget
+Calculate	projects	de	Berechnen
+Coordinator	projects	de	Koordinator
+Create delivery	projects	de	Lieferung erstellen
+Create invoice	projects	de	Rechnung erstellen
+Customer	projects	de	Kunde
+Delete hours	projects	de	Stunden l&ouml;schen
+Deliveries	projects	de	Lieferungen
+Delivery	projects	de	Lieferung
+Delivery date	projects	de	Lieferungs Datum
+Delivery note	projects	de	Lieferschein
+Delivery ID	projects	de	Lieferungs ID
+Delivery list	projects	de	Lieferungs Liste
+Delivery notes	projects	de	Lieferscheine
+Delivery x has been created !	projects	de	Lieferung %1 wurde erstellt !
+Delivery x has been updated !	projects	de	Lieferung %1 wurde &uuml;berarbeitet !
+Edit Activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
+Edit hours	projects	de	Stunden &uuml;berarbeiten
+Edit project administrator list	projects	de	Projekt Administrator Liste &uuml;berarbeiten
+Edit project	projects	de	Projekt &uuml;berarbeiten
+Edit project hours	projects	de	Projektstunden &uuml;berarbeiten
+Employee	projects	de	Mitarbeiter
+Generate Activity ID ?	projects	de	Activit&auml;s ID generieren ?
+Generate Delivery ID ?	projects	de	Lieferungs ID generieren ?
+Generate Project ID ?	projects	de	Projekt ID generieren ?
+Generate Invoice ID ?	projects	de	Rechnungs ID generieren ?
+Hours	projects	de	Stunden
+Invoice	projects	de	Rechnung
+Invoice date	projects	de	Rechnungs Datum
+Invoice ID	projects	de	Rechnungs ID
+Invoice list	projects	de	Rechnungs Liste
+Invoices	projects	de	Rechnungen
+Invoice x has been created !	projects	de	Rechnung %1 wurde erstellt !
+Invoice x has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet !
+Job	projects	de	Job
+Job date	projects	de	Job Datum
+Job description	projects	de	Job Beschreibung
+Job has been added !	projects	de	Job wurde hinzugef&uuml;gt !
+Job has been updated !	projects	de	Job wurde &uuml;berarbeitet !
+Job list	projects	de	Job Liste
+Jobs	projects	de	Jobs
+List hours	projects	de	Stunden Liste
+Minutes per workunit	projects	de	Minuten pro Arbeitseinheit
+net	projects	de	netto
+New project	projects	de	Neues Projekt
+Nonactive	projects	de	Nicht aktiv
+Number	projects	de	Nummer
+open	projects	de	Offen
+Overall	projects	de	Gesamt
+per	projects	de	pro
+per workunit	projects	de	pro Arbeitseinheit
+Please enter an ID !	projects	de	Bitte geben Sie eine ID ein !
+Please choose activities for that project first !	projects	de	Bitte w&auml;hlen Sie erst Aktivit&auml;ten f&uuml;r das Projekt !
+Please enter a remark !	projects	de	Bitte geben Sie einen Betreff ein !
+Please enter the bill per workunit !	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit ein !
+Please enter the minutes per workunit !	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit ein !
+Position	projects	de	Position
+Print delivery	projects	de	Lieferung drucken
+Print invoice	projects	de	Rechnung drucken
+Project	projects	de	Projekt
+Project administration	projects	de	Projekt Administration
+Project archive	projects	de	Projekt Archiv
+Project billing	projects	de	Projekt Abrechnung
+Project delivery	projects	de	Projekt Lieferung
+Project ID	projects	de	Projekt ID
+Project list	projects	de	Projekt Liste
+Project name	projects	de	Projekt Name
+Project preferences	projects	de	Projekt Einstellungen
+Project statistic	projects	de	Projekt Statistik
+Project x x has been updated !	projects	de	Projekt %1 %2 wurde &uuml;berarbeitet !
+Project x x has been added !	projects	de	Projekt %1 %2 wurde hinzugef&uuml;gt !
+Remark	projects	de	Betreff
+Remark required	projects	de	Betreff notwendig
+select	projects	de	Ausw&auml;hlen
+Select per button !	projects	de	Ausw&auml;hlen per Button !
+Select project	projects	de	Projekt ausw&auml;hlen
+Select tax for workhours	projects	de	Mehrwertsteuer f&uuml;r Arbeitsstunden
+Select users	projects	de	Benutzer ausw&auml;hlen
+Select groups	projects	de	Gruppen ausw&auml;hlen
+Select your address	projects	de	Eigene Adresse ausw&auml;hlen
+Statistic	projects	de	Statistik
+Statistics	projects	de	Statistiken
+Status	projects	de	Status
+Short description	projects	de	Kurzbeschreibung
+Sum	projects	de	Summe
+Sum workunits	projects	de	Summe Arbeitseinheiten
+tax	projects	de	Mwst.
+That ID has been used already !	projects	de	Diese ID ist bereits in Benutzung !
+Update invoice	projects	de	Rechnung &uuml;berarbeiten
+Update delivery	projects	de	Lieferung &uuml;berarbeiten
+Username / Group	projects	de	Benutzername / Gruppe
+User statistic	projects	de	Benutzer Statistik
+View job	projects	de	Job anzeigen
+View project	projects	de	Projekt anzeigen
+Work date	projects	de	Arbeitsdatum
+Work time	projects	de	Arbeitszeit
+Workunit	projects	de	Arbeitseinheit
+Workunits	projects	de	Arbeitseinheiten
+You have entered an invalid start date !	projects	de	Sie haben ein ung&uuml;ltiges Startdatum ausgew&auml;hlt !
+You have entered an invalid end date !	projects	de	Sie haben ein ung&uuml;ltiges Enddatum ausgew&auml;hlt !
+You have selected an invalid activity !	projects	de	Sie haben eine falsche Aktivit&auml;t ausgew&auml;hlt !
+You have no customer selected !	projects	de	Sie haben keinen Kunden ausgew&auml;hlt !
+You have to CREATE a delivery or invoice first !	projects	de	Sie m&uuml;ssen zuerst eine Rechnung/Lieferung ERSTELLEN !
