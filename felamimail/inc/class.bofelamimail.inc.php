@@ -810,7 +810,12 @@
 						$mimeType	= $value['mimeType'];
 						$charSet	= $value['charset'];
 					}
-
+					
+					// MS-Outlookbug workaround (don't break links)
+					$newPart = preg_replace("!((http(s?)://)|((www|ftp)\.))(([^\n\t\r]+)([=](\r)?\n))+!i", 
+							"$1$7", 
+							$newPart);
+					
 					// decode the file ...
 					switch ($encoding) 
 					{
