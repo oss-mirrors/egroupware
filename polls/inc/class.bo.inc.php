@@ -211,6 +211,11 @@
 			}
 		}
 
+		function get_latest_poll()
+		{
+			return $this->so->get_latest_poll();
+		}
+
 		function makelink($action,$args)
 		{
 			$menuaction = 'polls.uiadmin.'.$action;
@@ -269,133 +274,6 @@
 			} 	
 			$this->total = $this->so->total;
 			return $ret;
-		}
-
-		function Xview_results($poll_id,$showtitle=true,$showtotal=true,$returnstring=false)
-		{
-			$output = '';
-			$poll_id = (int)$poll_id;
-
-            $title = $this->so->get_poll_title($poll_id);
-			$sum = $this->so->get_poll_total($poll_id);
-			$results = $this->so->get_poll_data($poll_id);
-
-			$output .= '<p><table border="0" align="center" width="400">';
-			if($showtitle)
-			{
-			$output .= ' <tr>' . "\n"
-				. '  <td colspan="3" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">'
-				. $title . '</td>' . "\n"
-				. '</tr>' . "\n";
-			}
-
-			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			foreach($results as $result)
-			{
-				$poll_optionText  = $result['text']; 
-				$poll_optionCount = $result['votes'];
-
-				$tr_color = $this->nextmatchs->alternate_row_color($tr_color);
-				$output .= ' <tr bgcolor="' . $tr_color . '">' . "\n";
-
-				if ($poll_optionText != '')
-				{
-					$output .= "  <td>$poll_optionText</td>\n";
-
-					if ($sum)
-					{
-						$poll_percent = 100 * $poll_optionCount / $sum;
-					}
-					else
-					{
-						$poll_percent = 0;
-					}
-
-					if ($poll_percent > 0)
-					{
-						$poll_percentScale = (int)($poll_percent * 1);
-						$output .= '  <td><img src="' . $GLOBALS['phpgw_info']['server']['webserver_url']
-							. '/polls/images/pollbar.gif" height="12" width="' . $poll_percentScale
-							. '"></td>' . "\n";
-					}
-					else
-					{
-						$output .= '  <td>&nbsp;</td>' . "\n";
-					}
-
-					$output .= sprintf('  <td> %.2f %% (%d)</td>' . "\n" . ' </tr>' . "\n", $poll_percent, $poll_optionCount);
-
-					$output .= ' </tr>' . "\n";
-				}
-			}
-
-			if($showtotal)
-			{
-				$output .= ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
-					. '  <td>' . lang('Total votes') . ': ' . $sum . '</td>' . "\n"
-					. ' </tr>' . "\n";
-			}
-
-			$output .= '</table>' . "\n";
-
-			if($returnstring)
-			{
-				return $output;
-			}
-			print $output;
-			return 0;
-		}
-
-		function Xgenerate_ui($poll_id = '')
-		{   
-			if(empty($poll_id))
-			{   
-				$poll_id = $this->so->get_latest_poll();
-			}
-			$poll_id = (int)$poll_id;
-			
-			if(!$this->user_can_vote($poll_id))
-			{   
-				return False;
-			}
-
-            $poll_title = $this->so->get_poll_title($poll_id);
-			$poll_sum = $this->so->get_poll_total($poll_id);
-			$results = $this->so->get_poll_data($poll_id);
-
-			echo "\n";
-			echo '<form action="' . $GLOBALS['phpgw']->link('/index.php',array('menuaction'=>'polls.ui.vote')) . '" method="post">' . "\n";
-			echo '<input type="hidden" name="poll_id" value="' . $poll_id . '">' . "\n";
-	//      echo '<input type="hidden" name="poll_forwarder" value="' . $poll_forwarder . '">';
-			echo '<table border="0" align="center" width="50%">' . "\n"
-				. ' <tr>' . "\n"
-				. '  <td colspan="2" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">&nbsp;'
-				. $poll_title . '&nbsp;</td>' . "\n"
-				. ' </tr>' . "\n";
-			
-			print_r($results);
-			foreach($results as $result)
-			{
-				$vote_id = $result['vote_id'];
-				$poll_optionText  = $result['text']; 
-				$poll_optionCount = $result['votes'];
-
-				$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-				echo ' <tr bgcolor="' . $tr_color . '">' . "\n" 
-					. '  <td align="center"><input type="radio" name="poll_voteNr" value="'
-					. $vote_id . '"></td>' . "\n"
-					. '  <td>&nbsp;' . $poll_optionText . '</td>' . "\n"
-					. ' </tr>' . "\n";
-			}
-
-			echo ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
-				. '  <td colspan="2">&nbsp;</td>' . "\n"
-				. ' </tr>' . "\n"
-				. ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
-				. '  <td colspan="2" align="center">'
-				. '   <input name="submit" type="submit" value="' . lang('Vote') . '"></td>' . "\n"
-				. ' </tr>' . "\n"
-				. '</table>' . "\n" . '</form>' . "\n";
 		}
 
 	}

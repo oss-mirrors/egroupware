@@ -110,15 +110,14 @@
 			{
 				$action = 'delete';
 			}
-
 			$func = $action.$type;
-			if(method_exists($this,$action))
-			{
-				call_user_method($action,$this);
-			}
-			elseif(method_exists($this,$func))
+			if(method_exists($this,$func))
 			{
 				call_user_method($func,$this);
+			}
+			elseif(method_exists($this,$action))
+			{
+				call_user_method($action,$this);
 			}
 		}
 
@@ -535,7 +534,7 @@
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('Polls').' - '.lang('View poll');
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
-
+			
 			$this->t->set_file(array('admin' => 'admin_form.tpl'));
 			$this->t->set_block('admin','form','form');
 			$this->t->set_block('admin','row','row');
@@ -556,7 +555,7 @@
 					'delete' => lang('Delete'),
 					'cancel' => lang('Cancel')
 				));
-			
+
 			$this->t->set_var('rows', '<tr><td colspan="2" width="100%">'
 					. $this->view_results($poll_id,false,true,true) . '</td></tr>');
 
