@@ -1,4 +1,3 @@
-<title>File attachment</title>
 <?php
   /**************************************************************************\
   * phpGroupWare - E-Mail                                                    *
@@ -24,6 +23,19 @@
 
 	include('../header.inc.php');
 
+	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
+	$t->set_file(array(		
+		'T_attach_file' => 'attach_file.tpl',
+		'T_attach_file_blocks' => 'attach_file_blocks.tpl'
+	));
+	$t->set_block('T_attach_file_blocks','B_alert_msg','V_alert_msg');
+	$t->set_block('T_attach_file_blocks','B_attached_list','V_attached_list');
+	$t->set_block('T_attach_file_blocks','B_attached_none','V_attached_none');
+	$t->set_block('T_attach_file_blocks','B_delete_btn','V_delete_btn');
+
+	// initialize some variables
+	$alert_msg = '';
+	$totalfiles = 0;
 
 	if (!file_exists($phpgw_info['server']['temp_dir']))
 	{
@@ -34,8 +46,6 @@
 	{
 		mkdir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'],0700);
 	}
-
-	echo '<body bgcolor="' . $phpgw_info['theme']['bg_color'] . '">';
 
 	// Some on the methods were borrowed from
 	// Squirrelmail <Luke Ehresman> http://www.squirrelmail.org
@@ -51,7 +61,10 @@
 		}
 	}
 
-	if ($action == 'Attach File')
+	//if ($action == 'Attach File')
+	if (($action == 'Attach File')
+	&& ($uploadedfile != '')
+	&& ($uploadedfile != 'none'))
 	{
 		srand((double)microtime()*1000000);
 		$random_number = rand(100000000,999999999);
@@ -72,41 +85,96 @@
 		fputs($ftp,$uploadedfile_type."\n".$uploadedfile_name."\n");
 		fclose($ftp);
 	}
-?>
-    <form ENCTYPE="multipart/form-data" method="POST" action="<?php echo $phpgw->link('/email/attach_file.php')?>">
-      <table border=0>
-      <tr> <td>Attach file:</td> </tr>
-      <tr> <td>Current attachments:</td> </tr>
-      <?php
+	elseif (($action == 'Attach File')
+	&& (($uploadedfile == '') || ($uploadedfile == 'none')))
+	{
+		$alert_msg = 'Please submit a filename to attach';
+	}
+
 	$dh = opendir($phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid']);
 	while ($file = readdir($dh))
 	{
-		if ($file != '.' && $file != '..' && ereg("\.info",$file))
+		if (($file != '.')
+		&& ($file != '..')
+		&& (ereg("\.info",$file)))
 		{
 			$file_info = file($uploaddir . $file);
-			echo '<tr><td><input type="checkbox" name="delete[]" value="'.substr($file,0,-5).'">'.$file_info[1].'</tr></td>'."\n";
+			// for every file, fill the file list template with it
+			$t->set_var('ckbox_delete_name','delete[]');
+			$t->set_var('ckbox_delete_value',substr($file,0,-5));
+			$t->set_var('ckbox_delete_filename',$file_info[1]);
+			$t->parse('V_attached_list','B_attached_list',True);
 			$totalfiles++;
 		}
 	}
 	closedir($dh);
 	if ($totalfiles == 0)
 	{
-		echo '<tr></td>'.lang('None').'</td></tr>'."\n";
+		// there is no list of files, clear that block
+		$t->set_var('V_attached_list','');
+		// there is no delete button because there are no files to delete, clear that block
+		$t->set_var('V_delete_btn','');
+		// show the none block
+		$t->set_var('text_none',lang('None'));
+		$t->parse('V_attached_none','B_attached_none');
 	}
 	else
 	{
-		echo '<tr><td><input type="submit" name="action" value="Delete"></td></tr>'."\n";
+		// we have files, clear the "no files" block
+		$t->set_var('V_attached_none','');
+		// fill the delete sublit form
+		$t->set_var('btn_delete_name','action');
+		$t->set_var('btn_delete_value','Delete');
+		$t->parse('V_delete_btn','B_delete_btn');
 	}
-      ?>
-      <tr>
-       <td>File: <input type="file" name="uploadedfile"></td>
-       <td><input type="submit" name="action" value="Attach File"></td>
-      </tr>
-      <tr>
-        <td align="center" colspan="2"><input type="submit" value="Done" onClick="window.close()"></td>
-      </tr>
-      </table>
-     </form>
-<?php
+
+	$body_tags = 'bgcolor="'.$phpgw_info['theme']['bg_color'].'" alink="'.$phpgw_info['theme']['alink'].'" link="'.$phpgw_info['theme']['link'].'" vlink="'.$phpgw_info['theme']['vlink'].'"';
+	if (!$phpgw_info['server']['htmlcompliant'])
+	{
+		$body_tags .= ' topmargin="0" marginheight="0" marginwidth="0" leftmargin="0"';
+	}
+
+	/*$debuginfo = $phpgw_info['server']['temp_dir'] . SEP . $phpgw_info['user']['sessionid'];
+	if (count($file_info) > 0)
+	{
+	}
+	$debuginfo .= '<br> uploadedfile: ' .$uploadedfile .'   totalfiles: ' .$totalfiles 
+		.'<br>file_info_count: '.count($file_info);
+	if (count($file_info) > 0)
+	{
+		$debuginfo .= ' file_info[0]='.$file_info[0] .' file_info[1]='.$file_info[1];
+	}
+	$t->set_var('debuginfo',$debuginfo);
+	*/
+
+	$charset = lang('charset');
+	$t->set_var('charset',$charset);
+	$t->set_var('page_title',$phpgw_flags['currentapp'] . ' - ' .'File attachment');
+	$t->set_var('font_family',$phpgw_info["theme"]["font"]);
+	$t->set_var('body_tags',$body_tags);
+	if ($alert_msg != '')
+	{
+		$t->set_var('alert_msg',$alert_msg);
+		$t->parse('V_alert_msg','B_alert_msg');
+	}
+	else
+	{
+		$t->set_var('V_alert_msg','');
+	}
+	$t->set_var('form_method','POST');
+	$t->set_var('form_action',$phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/attach_file.php'));
+	$t->set_var('text_attachfile','Attach file');
+	$t->set_var('text_currattached','Current attachments');
+	$t->set_var('txtbox_upload_desc','File');
+	$t->set_var('txtbox_upload_name','uploadedfile');
+	$t->set_var('btn_attach_name','action');
+	$t->set_var('btn_attach_value','Attach File');
+	$t->set_var('btn_done_name','done');
+	$t->set_var('btn_done_value','Done');
+	$t->set_var('btn_done_js','window.close()');
+
+
+	$t->pparse('out','T_attach_file');
+
 	$phpgw->common->phpgw_exit();
 ?>
