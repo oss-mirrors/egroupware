@@ -104,8 +104,8 @@
 		{
 			$app_name    = $GLOBALS['HTTP_POST_VARS']['app_name'] ? $GLOBALS['HTTP_POST_VARS']['app_name'] : $GLOBALS['HTTP_GET_VARS']['app_name'];
 			$newlang     = $GLOBALS['HTTP_POST_VARS']['newlang'];
-			$sourcelang  = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
-			$targetlang  = $GLOBALS['HTTP_POST_VARS']['targetlang'];
+			$sourcelang  = $GLOBALS['HTTP_POST_VARS']['sourcelang'] ? $GLOBALS['HTTP_POST_VARS']['sourcelang'] : $GLOBALS['HTTP_GET_VARS']['sourcelang'];
+			$targetlang  = $GLOBALS['HTTP_POST_VARS']['targetlang'] ? $GLOBALS['HTTP_POST_VARS']['targetlang'] : $GLOBALS['HTTP_GET_VARS']['targetlang'];
 			$dlsource    = $GLOBALS['HTTP_POST_VARS']['dlsource'];
 			$writesource = $GLOBALS['HTTP_POST_VARS']['writesource'];
 			$dltarget    = $GLOBALS['HTTP_POST_VARS']['dltarget'];
@@ -352,6 +352,8 @@
 		function save($which,$userlang)
 		{
 			$app_name = $GLOBALS['HTTP_POST_VARS']['app_name'];
+			$sourcelang = $GLOBALS['HTTP_POST_VARS']['sourcelang'];
+			$targetlang = $GLOBALS['HTTP_POST_VARS']['targetlang'];
 
 			$this->bo->write_file($which,$app_name,$userlang);
 			Header('Location: ' . $GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.uilangfile.edit&app_name='.$app_name
