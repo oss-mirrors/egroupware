@@ -107,10 +107,10 @@
 		
 		function adminMenu()
 		{
-			if ($GLOBALS['phpgw_info']['server']['account_repository'] == "ldap")
+ 			if ($GLOBALS['phpgw_info']['server']['account_repository'] == "ldap")
 			{
-				$data = Array
-				(
+    		        	$data = Array
+		        	(
 					'description'   => 'email settings',
 					'url'           => '/index.php',
 					'extradata'     => 'menuaction=emailadmin.uiuserdata.editUserData'
@@ -493,9 +493,8 @@
 					is_array(imap_list($this->mbox,$mailboxString,'INBOX')))
 				{
 					$folders['INBOX'] = 'INBOX';
-					return $folders;
 				}
-				return false;
+				return $folders;
 			}
 		}
 		
