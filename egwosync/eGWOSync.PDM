@@ -1,0 +1,99 @@
+[Root]
+Most Recent Package=eGWOSync Installation Test Package
+
+
+[Package|eGWOSync Installation Test Package|Root]
+SubWizProgID=PDWizard.SetupPkgSubWiz
+BuildFolder=C:\eGWOSync\Deploy
+
+[Package|eGWOSync Installation Test Package|Configure DAO ISAMs]
+Applicable=No
+
+[Package|eGWOSync Installation Test Package|Configure DAO ODBC]
+JetWorkspace=
+ODBCDirect=
+
+[Package|eGWOSync Installation Test Package|Files Found]
+
+[Package|eGWOSync Installation Test Package|Files Released]
+
+[Package|eGWOSync Installation Test Package|Missing Dependency Information]
+C:\Documents and Settings\esben\Skrivebord\eGWOSync\CVS-version\egwosync\PropertyPage.ocx=
+C:\WINNT\system32\FM20.DLL=
+C:\Programmer\Microsoft Office\Office10\MSOUTL.OLB=
+C:\WINNT\system32\vbXMLRPC.dll=
+C:\WINNT\system32\vbXML.dll=
+C:\Programmer\Fælles filer\Microsoft Shared\Office10\MSO.DLL=
+C:\eGWOSync\CVS-version\egwosync\PropertyPage.ocx=
+
+[Package|eGWOSync Installation Test Package|Out-of-Date Dependency Information]
+
+[Package|eGWOSync Installation Test Package|Files Added]
+
+[Package|eGWOSync Installation Test Package|Files Removed]
+
+[Package|eGWOSync Installation Test Package|Files In Project]
+C:\WINNT\system32\msvbvm60.dll=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=Yes
+C:\Programmer\Fælles filer\Microsoft Shared\Office10\MSO.DLL=Yes
+C:\WINNT\system32\vbXML.dll=Yes
+C:\WINNT\system32\vbXMLRPC.dll=Yes
+C:\Programmer\Microsoft Office\Office10\MSOUTL.OLB=Yes
+C:\WINNT\system32\FM20.DLL=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=Yes
+C:\WINNT\system32\VB6STKIT.DLL=Yes
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=Yes
+C:\eGWOSync\CVS-version\egwosync\eGWOSync.dll=Yes
+C:\eGWOSync\CVS-version\egwosync\PropertyPage.ocx=Yes
+
+[Package|eGWOSync Installation Test Package|Configure Registry Files]
+Applicable=No
+
+[Package|eGWOSync Installation Test Package|Configure Remote Servers]
+Applicable=No
+
+[Package|eGWOSync Installation Test Package|Install Locations]
+C:\Documents and Settings\esben\Skrivebord\eGWOSync\CVS-version\egwosync\eGWOSync.dll=$(AppPath)
+C:\WINNT\system32\msvbvm60.dll=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEAUT32.DLL=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\OLEPRO32.DLL=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\ASYCFILT.DLL=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\STDOLE2.TLB=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\Redist\COMCAT.DLL=$(WinSysPathSysFile)
+C:\Programmer\Fælles filer\Microsoft Shared\Office10\MSO.DLL=$(WinSysPath)
+C:\WINNT\system32\vbXML.dll=$(WinSysPath)
+C:\WINNT\system32\vbXMLRPC.dll=$(WinSysPath)
+C:\Programmer\Microsoft Office\Office10\MSOUTL.OLB=$(WinSysPath)
+C:\WINNT\system32\FM20.DLL=$(WinSysPath)
+C:\Documents and Settings\esben\Skrivebord\eGWOSync\CVS-version\egwosync\PropertyPage.ocx=$(WinSysPath)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP.EXE=$(AppPath)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\SETUP1.EXE=$(WinPath)
+C:\WINNT\system32\VB6STKIT.DLL=$(WinSysPathSysFile)
+C:\Programmer\Microsoft Visual Studio\VB98\Wizards\PDWizard\ST6UNST.EXE=$(WinPath)
+C:\eGWOSync\CVS-version\egwosync\eGWOSync.dll=$(AppPath)
+C:\eGWOSync\CVS-version\egwosync\PropertyPage.ocx=$(WinSysPath)
+
+[Package|eGWOSync Installation Test Package|Configure Shared Files]
+Applicable=Yes
+C:\Documents and Settings\esben\Skrivebord\eGWOSync\CVS-version\egwosync\eGWOSync.dll=No
+C:\eGWOSync\CVS-version\egwosync\eGWOSync.dll=No
+
+[Package|eGWOSync Installation Test Package|Distribution]
+Type=single
+Size=
+Title=eGWOSync
+
+[Package|eGWOSync Installation Test Package|Package]
+PackageFolder=C:\eGWOSync\Deploy
+ProjectFolder=C:\eGWOSync\CVS-version\egwosync
+ServerSideCab=
+File1=C:\eGWOSync\Deploy\setup.exe
+File2=C:\eGWOSync\Deploy\Setup.Lst
+File3=C:\eGWOSync\Deploy\eGWOSync.CAB
+Handler1=PDWizard.FolderDplySubWiz
+Handler2=PDWizard.WebPostDplySubWiz

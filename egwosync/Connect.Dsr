@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin {AC0714F6-3D04-11D1-AE7D-00A0C90F26F4} Connect 
-   ClientHeight    =   10005
+   ClientHeight    =   10320
    ClientLeft      =   1740
    ClientTop       =   1545
-   ClientWidth     =   12405
-   _ExtentX        =   21881
-   _ExtentY        =   17648
+   ClientWidth     =   12840
+   _ExtentX        =   22648
+   _ExtentY        =   18203
    _Version        =   393216
    Description     =   "Add-In Project Template"
    DisplayName     =   "eGWOSync"
@@ -35,10 +35,12 @@ Option Explicit
 
 Implements IDTExtensibility2
 Private AddinInstance As COMAddIn
-Private oXL As Object 'Outlook.Application is not compatible with Outlook 2000
+'Private oXL As Object 'Outlook.Application is not compatible with Outlook 2000
+Private WithEvents oXL As Outlook.Application
 Attribute oXL.VB_VarHelpID = -1
 Private WithEvents cbb As Office.CommandBarButton
 Attribute cbb.VB_VarHelpID = -1
+
 
 Private Sub IDTExtensibility2_OnConnection(ByVal Application As Object, _
     ByVal ConnectMode As AddInDesignerObjects.ext_ConnectMode, _
@@ -126,10 +128,10 @@ End Sub
 ' Add a new Prop Page to the Tools/Options prop page
 ' and set caption to "eGWOSync Settings"
 ' it uses the User Control page ctlMainOptions
-Private Sub oXL_OptionsPagesAdd( _
-    ByVal Pages As Outlook.PropertyPages)
 
-    Pages.Add "PropertyPage.ctlMainOptions", "eGWOSync Settings"
+Private Sub oXL_OptionsPagesAdd(ByVal pages As Outlook.PropertyPages)
+        
+    pages.Add "PropertyPage.ctlMainOptions", "eGWOSync Settings"
 End Sub
 
 Private Sub ConnectError(Description As String)
@@ -142,4 +144,5 @@ Private Sub ConnectError(Description As String)
                 & Err.Source & Chr(13) & Err.Description, vbOKOnly, "Error"
     End If
 End Sub
+
 
