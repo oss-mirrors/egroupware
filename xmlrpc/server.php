@@ -2,7 +2,8 @@
   /**************************************************************************\
   * eGroupWare xmlrpc server                                                 *
   * http://www.egroupware.org                                                *
-  * Written by Dan Kuykendall <dan@kuykendall.org>                           *
+  * Borrowed from the xml-rpc for php project on SourceForge                 *
+  *  Copyright (c) 1999,2000,2001 Edd Dumbill.                               *
   * --------------------------------------------                             *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
