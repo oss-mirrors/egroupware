@@ -170,7 +170,7 @@
 	}
 
 	if($sum==$sum_netto) { $t->set_var('error_hint',''); }
-	else { $t->set_var('error_hint',lang('Error in calculation sum doesn't match')); } 
+	else { $t->set_var('error_hint',lang('Error in calculation sum does not match')); } 
 
 	$t->parse('out','invoice_list_t',True);
 	$t->p('out');

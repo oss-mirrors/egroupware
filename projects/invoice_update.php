@@ -291,7 +291,7 @@
 								'sum' => sprintf ("%01.2f", (float)$phpgw->db->f('billperae')*$aes)));
 
 			$t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f('id') . '&invoice_id=' . $invoice_id . '&sort=' . $sort
-                                         . '&order=' . $order . '&query=' $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
+                                         . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&status=' . $status));
 			$t->set_var('lang_edit_entry',lang('Edit hours'));
 
 			$t->parse('list','projecthours_list',True);
