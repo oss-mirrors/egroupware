@@ -694,7 +694,9 @@
 			{
 				case 'psale':		$header_info = lang('edit seller list'); break;
 				case 'pmanager':	$header_info = lang('edit manager list'); break;
-				default:			lang('edit administrator list'); break;
+				default:
+					$header_info = lang('edit administrator list'); 
+					break;
 			}
 
 			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . $header_info;
