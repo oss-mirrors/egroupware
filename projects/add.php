@@ -121,7 +121,7 @@
     $t->set_var("lang_status",lang("Status"));
     $status_list = "<option value=\"active\" selected>" . lang('Active') . "</option>\n"
 		. "<option value=\"nonactive\">" . lang('Nonactive') . "</option>\n"
-		. "<option value=\"archiv\">" . lang('Archiv') . "</option>\n";
+		. "<option value=\"archive\">" . lang('Archive') . "</option>\n";
 
     $t->set_var('status_list',$status_list);
     $t->set_var('lang_budget',lang('Budget'));

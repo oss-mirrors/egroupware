@@ -11,7 +11,7 @@
         end_date        int(11) DEFAULT '0' NOT NULL,
 	coordinator	int(11) DEFAULT '0' NOT NULL,
 	customer	int(11) DEFAULT '0' NOT NULL,
-        status		enum('active','nonactive','archiv') NOT NULL,
+        status		enum('active','nonactive','archive') NOT NULL,
 	descr		text,
 	title		varchar(255) NOT NULL,
 	budget		decimal(20,2) DEFAULT '0' NOT NULL

@@ -31,7 +31,7 @@
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-    $t->set_var('lang_action',lang('Projects'));
+    $t->set_var('lang_action',lang('Projects list'));
     $t->set_var('addurl',$phpgw->link('/projects/add.php'));
     $t->set_var('lang_activities',lang('Activities list'));
     $t->set_var('activitiesurl',$phpgw->link('/projects/activities.php'));
@@ -45,7 +45,7 @@
     }
     else { $limit = 15; }
 
-    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order);
+    $pro = $projects->read_projects($start,$limit,$query,$filter,$sort,$order,'active');
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 

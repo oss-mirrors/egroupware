@@ -120,18 +120,18 @@
     if (! $descrval)  $descrval  = "&nbsp;";                                                                                                                                                  
     $t->set_var("descrval",$descrval);
 
-    $t->set_var("lang_status",lang("Status"));
+    $t->set_var('lang_status',lang('Status'));
     if ($phpgw->db->f("status")=="active"):
          $stat_sel[0]=" selected";
      elseif ($phpgw->db->f("status")=="nonactive"):
          $stat_sel[1]=" selected";
-     elseif ($phpgw->db->f("status")=="archiv"):
+     elseif ($phpgw->db->f("status")=="archive"):
          $stat_sel[2]=" selected";
      endif;
 
      $status_list = "<option value=\"active\"".$stat_sel[0].">" . lang('Active') . "</option>\n"
                   . "<option value=\"nonactive\"".$stat_sel[1].">" . lang('Nonactive') . "</option>\n"
-                  . "<option value=\"archiv\"".$stat_sel[2].">" . lang('Archiv') . "</option>\n";
+                  . "<option value=\"archive\"".$stat_sel[2].">" . lang('Archive') . "</option>\n";
      $t->set_var("status_list",$status_list);
 
     $t->set_var('lang_budget',lang('Budget'));

@@ -30,11 +30,14 @@
 	    return (!!($has & $needed) == True);
 	}
 
-	function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '') {
+	function read_projects( $start, $limit, $query = '', $filter = '', $sort = '', $order = '', $status = 'active') {
 
 	    global $phpgw, $phpgw_info, $total_records, $grants;
 
 	    $this->db2 = $this->db;
+
+	    if ($status == 'archive') { $statussort = " AND status = 'archive' "; }
+            else { $statussort = " AND status != 'archive' "; }
 
 	    if (!$sort) { $sort = "ASC";  }
 
@@ -68,7 +71,7 @@
 
     	    $sql = "SELECT p.id,p.num,p.access,p.category,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
                             . "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
-                            . "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $querymethod AND $filtermethod "
+                            . "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $statussort $querymethod AND $filtermethod "
                             . "$ordermethod";
 
 	    $this->db2->query($sql,__LINE__,__FILE__);

@@ -29,7 +29,7 @@
 			. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 			. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n";
 
-    $t->set_var('lang_action',lang('Project delivery'));   
+    $t->set_var('lang_action',lang('Delivery notes'));   
     $t->set_var('hidden_vars',$hidden_vars);   
     $t->set_var('searchurl',$phpgw->link('/projects/del_index.php'));  
     $t->set_var('lang_search',lang('Search'));  

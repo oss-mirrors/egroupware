@@ -151,8 +151,13 @@ INSERT INTO lang (message_id, app_name, lang, content) VALUES('Entry date','proj
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('tax','projects','en','tax');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery note','projects','en','Delivery note');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('All delivery notes','projects','en','ALL delivery notes');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Deliveries','projects','en','Deliveries');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Invoices','projects','en','Invoices');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery ID','projects','en','Delivery ID');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery list','projects','en','Delivery list');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery notes','projects','en','Delivery notes');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects list','projects','en','Projects list');
+INSERT INTO lang (message_id, app_name, lang, content) VALUES('Projects archive','projects','en','Projects archive');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('All deliverys','projects','en','All deliverys');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Delivery date','projects','en','Delivery date');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Create delivery','projects','en','Create delivery');
