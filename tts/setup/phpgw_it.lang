@@ -1,0 +1,167 @@
+a new ticket has been reported.	tts	it	Un nuovo ticket è stato segnalato.
+accept	tts	it	ACCETTA
+accept the ticket into verification process.	tts	it	Accetta il ticket nel processo di verifica.
+accepted	tts	it	ACCETTATO
+action	tts	it	Azione
+add new ticket	tts	it	Aggiungi nuovo ticket
+add ticket	tts	it	Aggiungi ticket
+additional notes	tts	it	Note aggiuntive
+admin options	common	it	Opzioni di amministrazione
+assign to	tts	it	Assegna a
+assigned from	tts	it	Assegnato da
+assigned to	tts	it	Assegnato a
+billable hours	tts	it	Ore fatturabili
+billable hours changed	tts	it	Ore fatturabili cambiate
+billable hours rate	tts	it	Tariffa oraria fatturabile
+billable rate	tts	it	Tariffa fatturabile
+billable rate changed	tts	it	Tariffa oraria cambiata
+category changed	tts	it	Categoria cambiata
+check here to generate the state's id automatically or enter a particular id below.	tts	it	Spunta qui per generare automaticamente l'ID dello Stato o inserisci un ID particolare sotto.
+clear form	tts	it	Cancella Modulo
+close the invalid ticket.	tts	it	Chiudi il ticket non valido
+closed	tts	it	Chiuso
+completed	tts	it	COMPLETATO
+configure the states	common	it	Configura gli stati
+configure the transitions	common	it	Configura le transizioni
+create new state	tts	it	Crea nuovo stato
+create new ticket	tts	it	Crea nuovo ticket
+create new transition	tts	it	Crea nuova transizione
+creates a new ticket, returns ticket_id	tts	it	Creata un nuovo, restituisce il ticket_id
+creates a struct of tickets	tts	it	Crea una struct di ticket
+date opened	tts	it	Data apertura
+default assign to	tts	it	Assegna A predefinito
+default group	tts	it	Gruppo predefinito
+default priority	tts	it	Priorità predefinita
+delete the listed tickets.	tts	it	Cancella i ticket elencati.
+deleting the state	tts	it	Sto cancellando lo stato
+deleting the transition	tts	it	Sto cancellando la transizione
+detail	tts	it	Dettagli
+details	tts	it	Dettagli
+duplicate	tts	it	DUPLICATO
+edit the state	tts	it	Modifica lo stato
+edit the transition	tts	it	Modifica la transizione
+error: the subject of the ticket is not specified.	tts	it	ERRORE: L'oggetto del ticket non è specificato.
+force	tts	it	Forza
+global categories	tts	it	Categorie Globali
+group ownership changed	tts	it	Cambiata proprietà del gruppo
+history	tts	it	Cronologia
+i worked on the ticket and the work requires validation.	tts	it	Ho lavorato sul ticket e il lavoro richiede validazione.
+i worked on the ticket, but did not finish.	tts	it	Ho lavorato sul ticket, ma non ho finito.
+in progress	tts	it	In corso
+initial state	tts	it	Stato iniziale
+invalid	tts	it	NON VALIDO
+invalidate	tts	it	INVALIDA
+keep the present state [%1].	tts	it	Mantieni lo stato attuale [%1].
+latest note added	tts	it	Ultima Nota aggiunta
+list of available tickets' states.	tts	it	Elenco degli stati ticket disponibili
+list of available tickets' transitions.	tts	it	Elenco delle transizioni ticket disponibili
+missing description	tts	it	Descrizione mancante
+morework	tts	it	ALTRO LAVORO
+needswork	tts	it	NECESSITA LAVORO
+new	tts	it	NUOVO
+new ticket	tts	it	Nuovo Ticket
+new tickets can be put into this state.	tts	it	I nuovi ticket possono essere messi in questo stato.
+new value	tts	it	Nuovo Valore
+no additional notes	tts	it	Nessuna nota Aggiuntiva
+no duplicate	tts	it	NO DUPLICATO
+no notes for this ticket	tts	it	Nessuna nota per questo ticket
+no states found	tts	it	Nessuno stato trovato
+no tickets found	tts	it	Nessun ticket trovato.
+no transitions found	tts	it	Nessuna transizione trovata
+not assigned	tts	it	Non assegnato
+not completed	tts	it	NON COMPLETATO
+notify changes to ticket assignee by e-mail	tts	it	Notifica variazioni all'assegnatario del ticket via e-mail
+notify changes to ticket group by e-mail	tts	it	Notifica variazioni al gruppo del ticket via e-mail
+notify changes to ticket owner by e-mail	tts	it	Notifica variazioni al proprietario del ticket via e-mail
+old value	tts	it	Vecchio Valore
+open	tts	it	Aperto
+open / closed	tts	it	Aperto / Chiuso
+open date	tts	it	Data apertura
+opened	tts	it	Aperto
+opened by	tts	it	Aperto da
+original ticket details	tts	it	Dettagli ticket originali
+perform irregular transition into the following state	tts	it	Esegui transizione irregolare nel seguente stato
+please enter the subject of the ticket, otherwise the ticket cannot be stored.	tts	it	Prego inserire l'oggetto del ticket, altrimenti il ticket non può essere memorizzato.
+prio	tts	it	Prio
+priority	tts	it	Priorità
+priority changed	tts	it	Priorità cambiata
+put the preexistent ticket into the state %1.	tts	it	Metti il ticket preesistente nello stato %1.
+re-assigned	tts	it	Ri-assegnato
+re-opened	tts	it	Ri-aperto
+refresh every (seconds)	tts	it	Aggiorna ogni (secondi)
+reopen	tts	it	RIAPRI
+reopened	tts	it	RIAPERTO
+resolve	tts	it	RISOLVI
+resolved	tts	it	RISOLTO
+returns a struct of a tickets history	tts	it	Restituisce una struttura della cronologia di un ticket
+returns a struct of values of a single ticket	tts	it	Restituisce una struttura di valori di un singolo ticket
+returns the additional notes attached to a ticket	tts	it	Restituisce le note aggiuntive allegate a un ticket
+selected	tts	it	selezionato
+show new/updated tickets on main screen	tts	it	mostra ticket nuovi/aggiornati nella schermata principale
+source state	tts	it	Stato sorgente
+state	tts	it	Stato
+state changed	tts	it	Stato cambiato
+state id	tts	it	ID Stato
+state name	tts	it	Nome Stato
+status	tts	it	Status
+status/date closed	tts	it	Status/Data chiusura
+subject changed	tts	it	Oggetto cambiato
+target state	tts	it	Stato destinazione
+test	tts	it	Test
+the closed ticket requires more work. reopen it.	tts	it	Il ticket chiuso richiede più lavoro. Riaprilo.
+the owner of the ticket was not able to confirm the issue.	tts	it	Il proprietario del ticket non è stato in grado di confermare il problema.
+the ticket has been accepted by the owner, who is about to work on it.	tts	it	Il ticket è stato accettato dal proprietario, che sta per lavorarci.
+the ticket has been closed without resolution.	tts	it	Il ticket è stato chiuso senza soluzione.
+the ticket has been reopened for further work.	tts	it	Il ticket è stato riaperto per ulteriore lavoro.
+the ticket has been successfully resolved.	tts	it	Il ticket è stato risolto con successo.
+the ticket has been verified and has to be worked on.	tts	it	Il ticket è stato verificato e deve essere lavorato.
+the ticket has been worked on and the work requires validation.	tts	it	Il ticket è stato lavorato e il lavoro richiede validazione.
+the ticket has been worked on, but requires more work.	tts	it	Il ticket è stato lavorato, ma richiede altro lavoro.
+the ticket is a duplicate of another ticket and should be closed.	tts	it	Il ticket è un duplicato di un altro ticket e dovrebbe essere chiuso.
+the ticket is essentially not a duplicate of another ticket. reopen it.	tts	it	Il ticket è essenzialmente un non-duplicato di un altro ticket. Riaprilo.
+the ticket is invalid and cannot be worked on.	tts	it	Il ticket non è valido e non può essere lavorato.
+the ticket resolution was successfully validated. close the ticket.	tts	it	La soluzione del ticket è stata validata con successo. Chiudi il ticket.
+the ticket was existent before the petri net infrastructure was defined and should be assigned a state.	tts	it	Il ticket era esistente prima dell'infrastruttura Petri Net e dovrebbe avere uno stato assegnato.
+the ticket was found a duplicate of another ticket.	tts	it	Il ticket è stato trovato duplicato di un altro ticket.
+the tickets in the following list are in the state %1. please, decide what should be done with them.	tts	it	I ticket nel seguente elenco sono nello stato %1. Prego, decidi cosa si deve farne.
+the validation of the ticket was unsuccessfull. the ticket requires more work.	tts	it	La validazione del ticket è stata negativa. Il ticket richiede altro lavoro.
+ticket	tts	it	Ticket
+ticket has been updated	tts	it	Il ticket è stato aggiornato
+tickets found %1	tts	it	Ticket trovati %1
+tickets open %1	tts	it	Ticket aperti %1
+tickets total %1	tts	it	Ticket totali %1
+to go back to the tts index, click <a href= %1 >here</a>	tts	it	Per tornare all'indice S.G.P., clica <a href="%1">qui</a>
+toaccept	tts	it	A_ACCETTA
+toclosed	tts	it	A_CHIUSO
+toduplicate	tts	it	A_DUPLICATO
+toinvalid	tts	it	A_NONVALIDO
+toneedswork	tts	it	A_NECESSITALAVORO
+tonew	tts	it	A_NUOVO
+toreopened	tts	it	A_RIAPERTO
+toresolved	tts	it	A_RISOLTO
+total billable	tts	it	Totale Fatturabile
+totovalidate	tts	it	A_DAVALIDARE
+tovalidate	tts	it	A_VALIDA
+toverified	tts	it	A_VERIFICATO
+transition	tts	it	Transizione
+transition name	tts	it	Nome Transizione
+trouble ticket system	common	it	Sistema gestione problemi
+tts	common	it	Sistema gestione problemi
+tts preferences	tts	it	Sistema gestione problemi - preferenze
+undefined	tts	it	INDEFINITO
+update	tts	it	Aggiornamento
+update ticket state	tts	it	Aggiorna stato ticket
+updates ticket	tts	it	Aggiorna ticket
+use email notification	tts	it	Usa notifica via email
+user	tts	it	Utente
+verified	tts	it	VERIFICATO
+verify	tts	it	VERIFICA
+verify the ticket to work on it.	tts	it	Verifica il ticket per lavorarci.
+view all tickets	tts	it	Visualizza tutti i ticket
+view job detail	tts	it	Visualizza dettagli lavoro
+view only my open tickets	tts	it	Visualizza solo i MIEI ticket aperti
+view only open tickets	tts	it	Visualizza solo i ticket aperti
+you can only close a ticket if it is assigned to you.	tts	it	Tu puoi chiudere un ticket solo se è assegnato a te.
+you want to delete the state %1 and associated transitions. are you sure?	tts	it	Vuoi cancellare lo stato %1 e le transizioni associate. Sei sicuro?
+you want to delete the state %1. are you sure?	tts	it	Vuoi cancellare lo stato %1. Sei sicuro?
+you want to delete the transition %1. are you sure?	tts	it	Vuoi cancellare la transizione %1. Sei sicuro?
