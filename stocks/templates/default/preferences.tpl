@@ -39,15 +39,15 @@
     <tr bgcolor="{th_bg}">
 		<td colspan="2" align="center">{lang_add_stock}</td>
 	</tr>
-    <tr bgcolor="{tr_color}">
+    <tr bgcolor="{tr_color1}">
 		<td>{lang_symbol}:</td>
 		<td align="center"><input type="text" name="symbol" value="{symbol}"></td>
 	</tr>
-    <tr bgcolor="{tr_color}">
+    <tr bgcolor="{tr_color2}">
 		<td>{lang_company}:</td>
 		<td align="center"><input type="text" name="name" value="{name}"></td>
 	</tr>
-	<tr bgcolor="{tr_color}" height="50">
+	<tr bgcolor="{tr_color1}" valign="bottom">
 		<td colspan="2" align="center"><input type="submit" name="submit" value="{lang_add}"></form></td>
 	</tr>
 </table>

@@ -130,10 +130,9 @@
 	$t->set_var('lang_newstatus',lang($newstatus));
 
 	$t->set_var('add_action',$phpgw->link('/stocks/preferences.php','action=add&name=' . $name . '&symbol=' . $symbol));
-	$tr_color = '';
 	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	$t->set_var('tr_color',$tr_color);
-
+	$t->set_var('tr_color1',$phpgw_info['theme']['row_on']);
+	$t->set_var('tr_color2',$phpgw_info['theme']['row_off']);
 	$t->set_var('lang_add_stock',lang('Add new stock'));
 	$t->set_var('lang_add',lang('Add'));
 

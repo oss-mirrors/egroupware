@@ -46,8 +46,8 @@
 	{
 		if (rawurldecode($stock[0]) == $sym)
 		{
-			$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-			$t->set_var('tr_color',$tr_color);
+			$t->set_var('tr_color1',$phpgw_info['theme']['row_on']);
+			$t->set_var('tr_color2',$phpgw_info['theme']['row_off']);
 			$t->set_var('symbol',rawurldecode($stock[0]));
 			$t->set_var('name',rawurldecode($stock[1]));
 		}
