@@ -22,6 +22,7 @@
 	var $tempfile;
 	var $folder_list_changed = False;
 	var $enable_utf7 = False;
+	var $imap_builtin = True;
 	//var $att_files_dir;
 	var $force_check;
 

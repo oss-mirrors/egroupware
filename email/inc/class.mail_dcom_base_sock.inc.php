@@ -58,6 +58,8 @@
   define ('FT_INTERNAL',2); // server will not attempt to standardize CRLFs
   define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
   define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
+  
+  define ('SE_NOPREFETCH',1); // used with IMAP_SORT , don't really understand it though
 
   class mailbox_status
   {
@@ -80,7 +82,7 @@
 	*/
   }
 
-  class msg_mb_info
+  class mailbox_msg_info
   {
 	var $Date = '';
 	var $Driver ='';
@@ -109,7 +111,7 @@
 	note 2)	imap_mailboxmsginfo returns size data, imap_status does NOT
 	*/
 
-  class msg_struct
+  class msg_structure
   {
 	var $type = '';
 	var $encoding = '';
@@ -128,6 +130,8 @@
 	var $ifparameters = False;
 	var $parameters = array();
 	var $parts = array();
+	// custom phpgw data to aid in building this structure
+	var $custom = array();
 	/*
 	see PHP function: imap_fetchstructure --  Read the structure of a particular message
 	type		Primary body type
@@ -176,14 +180,42 @@
 	var $adl;
   }
 
-  class envelope
+  class msg_overview
   {
-	// see PHP function:  imap_headerinfo -- Read the header of the message
-	// which is the same as PHP function imap_header
+	/*
+	*  see PHP function:  imap_fetch_overview -- Read an overview of the information in the 
+	*				headers of the given message
+	*  NOT CURRENTY IMPLEMENTED
+	*/
+	var $subject;	// the messages subject
+	var $from;	// who sent it
+	var $date;	// when was it sent
+	var $message_id;	// Message-ID
+	var $references;	// is a reference to this message id
+	var $size;		// size in bytes
+	var $uid;		// UID the message has in the mailbox
+	var $msgno;	// message sequence number in the maibox
+	var $recent;	// this message is flagged as recent
+	var $flagged;	// this message is flagged
+	var $answered;	// this message is flagged as answered
+	var $deleted;	// this message is flagged for deletion
+	var $seen;	// this message is flagged as already read
+	var $draft;	// this message is flagged as being a draft
+  }
+
+
+
+  class hdr_info_envelope
+  {
+	/*
+	*  see PHP function:  imap_headerinfo -- Read the header of the message
+	*  see PHP function:   imap_header  which is simply an alias to imap_headerinfo
+	*/
 	// --- Various Header Data ---
 	var $remail = '';
 	var $date = '';
 	var $subject = '';
+	var $Subject = ''; // is this needed?
 	var $in_reply_to = '';
 	var $message_id = '';
 	var $newsgroups = '';
@@ -218,23 +250,37 @@
 	var $fetchfrom = '';	// from line formatted to fit arg "fromlength" characters
 	var $fetchsubject = '';	// subject line formatted to fit arg "subjectlength" characters
 	var $lines = '';
+	var $size = '';
 	var $Size = '';
   }
 
   class mail_dcom_base extends network
   {
-	var $header=array();
-	var $msg;
-	var $msg_struct;
-	var $body;
+	// Cached Data
+	// raw message data from the server, some raw data, some exploded into a string list
+	var $header_glob = '';
+	var $header_glob_msgnum = '';
+	var $header_array = array();
+	var $header_array_msgnum = '';
+	//var $body_glob = '';
+	//var $body_glob_msgnum = '';
+	var $body_array = array();
+	var $body_array_msgnum = '';	
+	// structural information from our processing functions
+	//var $mailbox_msg_info = '';  // caching this with POP3 is OK but will cause HAVOC with IMAP or NNTP
+	//var $mailbox_status;
+	var $msg_structure = '';
+	var $msg_structure_msgnum = '';
+	var $hdr_info_envelope;
+	
+	// future use
 	var $mailbox;
 	var $numparts;
-
 	var $sparts;
 	var $hsub=array();
 	var $bsub=array();
 
-	var $php_builtin=False;
+	var $imap_builtin=False;
 	// DEBUG FLAG
 	//var $debug_dcom=True;
 	var $debug_dcom=False;
@@ -264,6 +310,7 @@
 		global $phpgw;
 		
 		echo 'Error: '.$this->error['code'].' : '.$this->error['msg'].' - '.$this->error['desc']."<br>\n";
+		$this->close();
 		$phpgw->common->phpgw_exit();
 	}
 
@@ -370,7 +417,7 @@
 		return $glob_response;
 	}
 
-	function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='',$keep_received_lines=False)
+	function glob_to_array($data,$keep_blank_lines=True,$cut_from_here='',$keep_received_lines=True)
 	{
 		
 		$data_array = explode("\r\n",$data);
@@ -474,7 +521,10 @@
 		$new_list = Array();
 		while(list($key,$value) = each($field_list))
 		{
-			$new_list[$key] = $this->convert_date($value);
+			//$new_list[$key] = $this->convert_date($value);
+			$new_list[$key] = $this->make_udate($value);
+			if ($this->debug_dcom_extra) { echo 'base_sock: convert_date_array: field_list: "'.$new_list[$key].'" was "'.$value.'"<br>'; }
+
 		}
 		return $new_list;
 	}

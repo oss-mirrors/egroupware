@@ -508,19 +508,30 @@
 			$bg = $phpgw->nextmatchs->alternate_row_color($bg);
 
 			// SHOW ATTACHMENT CLIP ?
-			// need Message Information: STRUCTURAL for this
-			$msg_struct = $phpgw->msg->phpgw_fetchstructure($msg_nums_array[$i]);
-			// now examine that msg_struct for signs of an attachment
-			$show_attach = $phpgw->msg->has_real_attachment($msg_struct);
+			// SKIP this for POP3 - fetchstructure for POP3 requires download the WHOLE msg
+			// so PHP can build the fetchstructure data (IMAP server does this internally)
+			if ((isset($phpgw->msg->dcom->imap_builtin))
+			&& ($phpgw->msg->dcom->imap_builtin == False)
+			&& (stristr($phpgw_info['user']['preferences']['email']['mail_server_type'], 'pop3')))
+			{
+				// do Nothing - socket class pop3 not ready for this yet
+			}
+			else
+			{
+				// need Message Information: STRUCTURAL for this
+				$msg_structure = $phpgw->msg->phpgw_fetchstructure($msg_nums_array[$i]);
+				// now examine that msg_struct for signs of an attachment
+				$show_attach = $phpgw->msg->has_real_attachment($msg_structure);
+			}
 
-			// Message Information: THE MESSAGE'S HEADERS
-			$msg_headers = $phpgw->msg->phpgw_header($msg_nums_array[$i]);
+			// Message Information: THE MESSAGE'S HEADERS ENVELOPE DATA
+			$hdr_envelope = $phpgw->msg->phpgw_header($msg_nums_array[$i]);
 			
 			// MESSAGE REFERENCE NUMBER
 			$mlist_msg_num = $msg_nums_array[$i];
 
 			// SUBJECT
-			$subject = $phpgw->msg->get_subject($msg_headers,'');
+			$subject = $phpgw->msg->get_subject($hdr_envelope,'');
 			$subject_link = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/message.php',
 				'folder='.$phpgw->msg->prep_folder_out('')
 				.'&msgnum='.$mlist_msg_num
@@ -532,15 +543,15 @@
 			if ($phpgw->msg->newsmode)
 			{
 				// nntp apparently gives size in number of lines ?
-				$size = $msg_headers->Size;
+				$size = $hdr_envelope->Size;
 			}
 			else
 			{
-				$size = $phpgw->msg->format_byte_size($msg_headers->Size);
+				$size = $phpgw->msg->format_byte_size($hdr_envelope->Size);
 			}
 
 			// SEEN OR UNSEEN/NEW
-			if (($msg_headers->Unseen == "U") || ($msg_headers->Recent == "N"))
+			if (($hdr_envelope->Unseen == "U") || ($hdr_envelope->Recent == "N"))
 			{
 				$show_newmsg = True;
 			}
@@ -550,19 +561,19 @@
 			}
 
 			// FROM and REPLY TO  HANDLING
-			if ($msg_headers->reply_to[0])
+			if ($hdr_envelope->reply_to[0])
 			{
-				$reply = $msg_headers->reply_to[0];
+				$reply = $hdr_envelope->reply_to[0];
 			}
 			else
 			{
-				$reply = $msg_headers->from[0];
+				$reply = $hdr_envelope->from[0];
 			}
 
 			//$replyto = $phpgw->msg->make_rfc2822_address($reply);
 			$replyto = $reply->mailbox.'@'.$reply->host;
 
-			$from = $msg_headers->from[0];
+			$from = $hdr_envelope->from[0];
 			if (!$from->personal)
 			{
 				// no "personal" info available, only can show plain address
@@ -619,7 +630,7 @@
 
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
-			$msg_date_time = $phpgw->common->show_date($msg_headers->udate);
+			$msg_date_time = $phpgw->common->show_date($hdr_envelope->udate);
 			// this stripps the time part, leaving only the date, better for single line TD cells
 			$msg_date_only = ereg_replace(" - .*$", '', $msg_date_time);
 

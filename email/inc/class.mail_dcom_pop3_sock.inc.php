@@ -74,6 +74,16 @@
 		if ($this->debug_dcom) { echo 'pop3: call to unused function in POP3: append<br>'; }
 		return False;
 	}
+	// = = = = = = = = = = = =
+	//   Functions Not Yet Implemented  in POP3
+	// = = = = = = = = = = = =
+	function fetch_overview($stream,$sequence,$flags)
+	{
+		// not yet implemented
+		if ($this->debug_dcom) { echo 'pop3: call to not-yet-implemented function in POP3: fetch_overview<br>'; }
+		return False;
+	}
+
 
 	// = = = = = = = = = = = =
 	//  OPEN and CLOSE Server Connection
@@ -135,8 +145,16 @@
 	function mailboxmsginfo($stream_notused='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering mailboxmsginfo<br>'; }
+		// caching this with POP3 is OK but will cause HAVOC with IMAP or NNTP
+		// do we have a cached header_array  ?
+		//if ($this->mailbox_msg_info != '')
+		//{
+		//	if ($this->debug_dcom) { echo 'pop3: Leaving mailboxmsginfo returning cached data<br>'; }
+		//	return $this->mailbox_msg_info;
+		//}
+		// NO cached data, so go get it
 		// initialize the structure
-		$info = new msg_mb_info;
+		$info = new mailbox_msg_info;
 		$info->Date = '';
 		$info->Driver ='';
 		$info->Mailbox = '';
@@ -165,6 +183,8 @@
 				echo 'pop3: mailboxmsginfo: info->Size: '.$info->Size.'<br>';
 			}
 			if ($this->debug_dcom) { echo 'pop3: Leaving mailboxmsginfo<br>'; }
+			// save this data for future use
+			//$this->mailbox_msg_info = $info;
 			return $info;
 		}
 		else
@@ -195,9 +215,9 @@
 		//	returned by imap_ mailboxmsginfo as ->Size		
 		// Most Efficient Method:
 		//	call mailboxmsginfo and fill THIS structurte from that
-		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
+		$mailbox_msg_info = $this->mailboxmsginfo($stream_notused);
 		// all POP3 can return from imap_status is messages
-		$info->messages = $mb_msg_info->Nmsgs;
+		$info->messages = $mailbox_msg_info->Nmsgs;
 		if ($this->debug_dcom) { echo 'pop3: status: info->messages: '.$info->messages.'<br>'; }
 		if ($this->debug_dcom) { echo 'pop3: Leaving status<br>'; }
 		return $info;
@@ -209,8 +229,8 @@
 		if ($this->debug_dcom) { echo 'pop3: Entering num_msg<br>'; }
 		// Most Efficient Method:
 		//	call mailboxmsginfo and fill THIS size data from that
-		$mb_msg_info = $this->mailboxmsginfo($stream_notused);
-		$return_num_msg = $mb_msg_info->Nmsgs;
+		$mailbox_msg_info = $this->mailboxmsginfo($stream_notused);
+		$return_num_msg = $mailbox_msg_info->Nmsgs;
 		if ($this->debug_dcom) { echo 'pop3: num_msg: '.$return_num_msg.'<br>'; }
 		if ($this->debug_dcom) { echo 'pop3: Leaving num_msg<br>'; }
 		return $return_num_msg;
@@ -239,6 +259,7 @@
 				if ($this->debug_dcom) { echo 'pop3: sort: case SORTDATE<br>'; }
 				$old_list = $this->fetch_header_element(1,$msg_num,'Date');
 				$field_list = $this->convert_date_array($old_list);
+				if ($this->debug_dcom_extra) { echo 'pop3: sort: field_list: '.serialize($field_list).'<br><br>'; }
 				break;
 			case SORTARRIVAL:
 				if ($this->debug_dcom) { echo 'pop3: sort: case SORTARRIVAL<br>'; }
@@ -249,7 +270,15 @@
 				}
 				$response = $this->read_port_glob('.');
 				$field_list = $this->glob_to_array($response, False, ' ');
-				//if ($this->debug_dcom) { echo 'pop3: sort: field_list: '.serialize($field_list).'<br><br><br>'; }
+				// force to integers, advance 1 position in array
+				for($i=count($field_list);$i > 0; $i--)
+				{
+					$field_list[$i] = (int)$field_list[$i-1];
+				}
+				// now unset element 0
+				$field_list[0] = NIL;
+				unset($field_list[0]);
+				if ($this->debug_dcom_extra) { echo 'pop3: sort: field_list: '.serialize($field_list).'<br><br><br>'; }
 				break;
 			case SORTFROM:
 				if ($this->debug_dcom) { echo 'pop3: sort: case SORTFROM<br>'; }
@@ -302,6 +331,7 @@
 			$i++;
 		}
 		@reset($return_array);
+		if ($this->debug_dcom_extra) { echo 'pop3: sort: return_array: '.serialize($return_array).'<br><br>'; }
 		if ($this->debug_dcom) { echo 'pop3: Leaving sort<br>'; }
 		return $return_array;
 	}
@@ -342,15 +372,33 @@
 	function fetchstructure($stream_notused,$msg_num,$flags="")
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering fetchstructure<br>'; }
-		// first get the raw glob header
-		$headers_raw = $this->get_header_raw($stream_notused,$msg_num);
-		// unwrap any wrapped headers - using CR_LF_TAB as rfc822 "whitespace"
-		$headers_raw = str_replace("\r\n\t"," ",$headers_raw);
-		// unwrap any wrapped headers - using CR_LF_SPACE as rfc822 "whitespace"
-		$headers_raw = str_replace("\r\n "," ",$headers_raw);
-		// make raw headers into an array, throw away blank lines and "Received:" lines
-		$header_array = Array();
-		$header_array = $this->glob_to_array($headers_raw, False, '', False);
+		// --- Header Array  ---
+		$header_array = $this->get_header_array($stream_notused,$msg_num,$flags);
+		// --- Body Array  ---
+		// do we have a cached body_array ?
+		if ((count($this->body_array) > 0)
+		&& ((int)$this->body_array_msgnum == (int)($msg_num)))
+		{
+			if ($this->debug_dcom) { echo 'pop3: fetchstructure: using cached body_array data<br>'; }
+			$body_array = $this->body_array;
+		}
+		else
+		{
+			// NO cached data, get it
+			// calling get_body automatically fills $this->body_array
+			$this->get_body($stream_notused,$msg_num,$flags='',False);
+			$body_array = $this->body_array;
+		}
+		if ($this->debug_dcom_extra)
+		{
+			echo 'pop3: fetchstructure: this->body_array DUMP<pre>';
+			for ($i=0; $i < count($this->body_array) ;$i++)
+			{
+				echo '+['.$i.'] '.htmlspecialchars($this->body_array[$i])."\r\n";
+			}
+			echo '</pre><br><br>';
+		}
+
 		if ($this->debug_dcom_extra)
 		{
 			echo 'pop3: fetchstructure iteration:<br>';
@@ -394,6 +442,9 @@
 			var_dump($info);
 			echo '<br><br><br>';
 		}
+		// cache this data for future use
+		//$this->msg_structure = $info;
+		//$this->msg_structure_msgnum = (int)($msg_num);
 		if ($this->debug_dcom) { echo 'pop3: Leaving fetchstructure<br>'; }
 		return $info;
 	}
@@ -406,7 +457,7 @@
 		
 		if ($this->debug_dcom) { echo 'pop3: Entering sub_get_structure<br>'; }
 		// initialize the structure
-		$info = new msg_struct;
+		$info = new msg_structure;
 		$info->type = '';
 		$info->encoding = '';
 		$info->ifsubtype = False;
@@ -703,25 +754,26 @@
 	}
 
 	// = = = = = = = = = = = =
-	//  Message Envelope Data
+	//  Message Envelope (Header Info) Data
 	// = = = = = = = = = = = =
 	function header($stream_notused,$msg_num,$fromlength="",$tolength="",$defaulthost="")
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering header<br>'; }
-		$info = new envelope;
+		$info = new hdr_info_envelope;
 		$info->Size = $this->size_msg($stream_notused,$msg_num);
-		$header_array = $this->get_header($stream_notused,$msg_num);
+		$info->size = $info->Size;
+		$header_array = $this->get_header_array($stream_notused,$msg_num);
 		if (!$header_array)
 		{
 			if ($this->debug_dcom) { echo 'pop3: Leaving header with error<br>'; }
-			return false;
+			return False;
 		}
 		for ($i=0; $i < count($header_array); $i++)
 		{
 			// POP3 ONLY !!! - POP3 considers ALL messages as "unseen" and/or "recent"
 			// because POP3 does not retain such info as seen or unseen
-			//$info->Unseen = 'U';
 			// I *may* comment that out because I find this annoying
+			//$info->Unseen = 'U';
 			$pos = strpos($header_array[$i]," ");
 			if (is_int($pos) && !$pos)
 			{
@@ -731,14 +783,43 @@
 			$content = trim(substr($header_array[$i],$pos+1));
 			switch ($keyword)
 			{
-				case "from"	:
-				case "from:"	:
-				  $info->from = $this->get_addr_details("from",$content,&$header_array,&$i);
+				case "date:"	:
+				  $info->date  = $content;
+				  $info->udate = $this->make_udate($content);
+				  break;
+				case "subject"	:
+				case "subject:"	:
+				  $pos = strpos($header_array[$i+1]," "); if (is_int($pos) && !$pos)
+				  {
+					$i++; $content .= chop($header_array[$i]);
+				  }
+				  $info->subject = htmlspecialchars($content);
+				  $info->Subject = htmlspecialchars($content);
+				  break;
+				case "in-reply-to:" :
+				  $info->in_reply_to = htmlspecialchars($content);
+				  break;
+				case "message-id"  :
+				case "message-id:" :
+				  $info->message_id = htmlspecialchars($content);
+				  break;
+				case "newsgroups:" :
+				  $info->newsgroups = htmlspecialchars($content);
+				  break;
+				case "followup-to:" :
+				  $info->follow_up_to = htmlspecialchars($content);
+				  break;
+				case "references:" :
+				  $info->references = htmlspecialchars($content);
 				  break;
 				case "to"	:
 				case "to:"	: 
 				  // following two lines need to be put into a loop!
 				  $info->to   = $this->get_addr_details("to",$content,&$header_array,&$i);
+				  break;
+				case "from"	:
+				case "from:"	:
+				  $info->from = $this->get_addr_details("from",$content,&$header_array,&$i);
 				  break;
 				case "cc"	:
 				case "cc:"	:
@@ -759,38 +840,6 @@
 				case "return-path"	:
 				case "return-path:"	:
 				  $info->return_path = $this->get_addr_details("return_path",$content,&$header_array,&$i);
-				  break;
-				case "subject"	:
-				case "subject:"	:
-				case "Subject:"	:
-				  $pos = strpos($header_array[$i+1]," "); if (is_int($pos) && !$pos)
-				  {
-					$i++; $content .= chop($header_array[$i]);
-				  }
-				  $info->subject = htmlspecialchars($content);
-				  $info->Subject = htmlspecialchars($content);
-				  break;
-	
-				// only temp
-				case "message-id"  :
-				case "message-id:" :
-				  $info->message_id = htmlspecialchars($content);
-				  break;
-				case "newsgroups:" :
-				  $info->newsgroups = htmlspecialchars($content);
-				  break;
-				case "references:" :
-				  $info->references = htmlspecialchars($content);
-				  break;
-				case "in-reply-to:" :
-				  $info->in_reply_to = htmlspecialchars($content);
-				  break;
-				case "followup-to:" :
-				  $info->follow_up_to = htmlspecialchars($content);
-				  break;
-				case "date:"	:
-				  $info->date  = $content;
-				  $info->udate = $this->make_udate($content);
 				  break;
 				default	:
 				  break;
@@ -982,6 +1031,16 @@
 	// = = = = = = = = = = = =
 	//  Get Message Headers From Server
 	// = = = = = = = = = = = =
+	/*!
+	@function fetchheader
+	@abstract implements IMAP_FETCHHEADER
+	@param $stream_notused : socket class handles stream reference internally
+	@param $msg_num : integer
+	@param $flags : integer - FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
+	@result returns string which is complete, unfiltered RFC2822  format header of the specified message
+	@discussion  This function implements the  FT_PREFETCHTEXT text option
+	This function uses the helper function "get_header_raw"
+	*/
 	function fetchheader($stream_notused,$msg_num,$flags='')
 	{
 		// NEEDED: code for flags: FT_UID; FT_INTERNAL; FT_PREFETCHTEXT
@@ -1002,22 +1061,71 @@
 		return $header_glob;
 	}
 
-	// returns headers exploded into a string list
-	function get_header($stream_notused,$msg_num,$flags='')
+	/*!
+	@function get_header_array
+	@abstract Custom Function - Similar to IMAP_FETCHHEADER - EXCEPT returns a string list array
+	@param $stream_notused : socket class handles stream reference internally
+	@param $msg_num : integer
+	@param $flags : integer - FT_UID; (FT_INTERNAL; FT_PREFETCHTEXT) none implemented
+	@result returns headers exploded into a string list array, one array element per Un-Folded header line 
+	@discussion  This function UN-FOLDS the headers as per RFC2822 "folding, so each element is 
+	in fact the intended complete header line, eliminates partial "folded" lines
+	*/
+	function get_header_array($stream_notused,$msg_num,$flags='')
 	{
-		if ($this->debug_dcom) { echo 'pop3: Entering get_header<br>'; }
-		// get header glob
+		if ($this->debug_dcom) { echo 'pop3: Entering get_header_array<br>'; }
+		// do we have a cached header_array  ?
+		if ((count($this->header_array) > 0)
+		&& ((int)$this->header_array_msgnum == (int)($msg_num)))
+		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_array returning cached data<br>'; }
+			return $this->header_array;
+		}
+		// NO cached data, get it
+		// first get the raw glob header
 		$header_glob = $this->get_header_raw($stream_notused,$msg_num,$flags);
-		// make the header blob into an array of strings, one array element per header line
+		// unwrap any wrapped headers - using CR_LF_TAB as rfc822 "whitespace"
+		$header_glob = str_replace("\r\n\t"," ",$header_glob);
+		// unwrap any wrapped headers - using CR_LF_SPACE as rfc822 "whitespace"
+		$header_glob = str_replace("\r\n "," ",$header_glob);
+		// make the header blob into an array of strings, one array element per header line, throw away blank lines
+		$header_array = Array();
 		$header_array = $this->glob_to_array($header_glob, False, '', True);
-		if ($this->debug_dcom) { echo 'pop3: Leaving get_header<br>'; }
+		// cache this data for future use
+		$this->header_array = $header_array;
+		$this->header_array_msgnum = (int)($msg_num);
+		if ($this->debug_dcom) { echo 'pop3: Leaving get_header_array<br>'; }
 		return $header_array;
 	}
 
-	// returns unprocessed glob header string
+	/*!
+	@function get_header_raw
+	@abstract HELPER function for "fetchheader" / IMAP_FETCHHEADER
+	@param $stream_notused : socket class handles stream reference internally
+	@param $msg_num : integer
+	@param $flags : Not Used in helper function
+	@result returns returns unprocessed glob header string of the specified message
+	@discussion  This function causes a fetch of the complete, unfiltered RFC2822  format 
+	header of the specified message as a text string and returns that text string (i.e. glob)
+	*/
 	function get_header_raw($stream_notused,$msg_num,$flags='')
 	{
 		if ($this->debug_dcom) { echo 'pop3: Entering get_header_raw<br>'; }
+		if ((!isset($msg_num))
+		|| (trim((string)$msg_num) == ''))
+		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw with error: Invalid msg_num<br>'; }
+			return False;
+		}
+		// do we have a cached header_glob ?
+		if (($this->header_glob != '')
+		&& ((int)$this->header_glob_msgnum == (int)($msg_num)))
+		{
+			if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw returning cached data<br>'; }
+			return $this->header_glob;
+		}
+		// NO cached data, get it
+		if ($this->debug_dcom) { echo 'pop3: get_header_raw: issuing: TOP '.$msg_num.' 0 <br>'; }
 		if (!$this->msg2socket('TOP '.$msg_num.' 0',"^\+ok",&$response))
 		{
 			$this->error();
@@ -1025,6 +1133,9 @@
 			return False;
 		}
 		$glob = $this->read_port_glob('.');
+		// save this info for future ues
+		$this->header_glob = $glob;
+		$this->header_glob_msgnum = (int)$msg_num;
 		if ($this->debug_dcom) { echo 'pop3: Leaving get_header_raw<br>'; }
 		return $glob;
 	}
@@ -1103,53 +1214,86 @@
 		return $body;
 	}
 
+	/*!
+	@function get_body
+	@abstract implements IMAP_BODY
+	@param $stream_notused : socket class handles stream reference internally
+	@param $msg_num : integer
+	@param $flags : integer - FT_UID; FT_INTERNAL; FT_PEEK; FT_NOT
+	@param$phpgw_include_header : boolean (for custom use - not a PHP option)
+	@result returns string which is a verbatim copy of the message body (i.e. glob)
+	@discussion  This function implements the  IMAP_BODY and also includes a custom
+	boolean param "phpgw_include_header" which also includes unfiltered headers in the return string
+	*/
 	function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 	{
-		// implements IMAP_BODY
 		// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
 		if ($this->debug_dcom) { echo 'pop3: Entering get_body<br>'; }
-		if (!$this->msg2socket('RETR '.$msg_num,"^\+ok",&$response))
+
+		// do we have a cached body_array ?
+		if ((count($this->body_array) > 0)
+		&& ((int)$this->body_array_msgnum == (int)($msg_num))
+		// do we have a cached header_array  ?
+		&& (count($this->header_array) > 0)
+		&& ((int)$this->header_array_msgnum == (int)($msg_num)))
 		{
-			$this->error();
-			if ($this->debug_dcom) { echo 'pop3: Leaving get_body with error<br>'; }
-			return False;
-		}
-		// grab header seperately
-		// (will include if flag FT_NOT is present, means to also get the header)
-		$glob_header = '';
-		while ($line = $this->read_port())
-		{
-			if ((chop($line) == '.')
-			|| (chop($line) == ''))
-			{
-				break;
-			}
-			$glob_header .= $line;
-		}
-		// should we include the headers in the return
-		if (($flags == FT_NOT)
-		|| ($phpgw_include_header == True))
-		{
-			// we need to include the header here
-			$glob_body = $glob_header ."\r\n";
+			if ($this->debug_dcom) { echo 'pop3: get_body: using cached body_array and header_array data imploded into a glob<br>'; }
+			// implode the header_array into a glob
+			$header_glob = implode("\r\n",$this->header_array);
+			// implode the body_array into a glob
+			$body_glob = implode("\r\n",$this->body_array);
 		}
 		else
 		{
-			$glob_body = '';
+			if ($this->debug_dcom) { echo 'pop3: get_body: NO Cached Data<br>'; }
+			// NO cached data we can use
+			// issue command to retrieve body
+			if (!$this->msg2socket('RETR '.$msg_num,"^\+ok",&$response))
+			{
+				$this->error();
+				if ($this->debug_dcom) { echo 'pop3: Leaving get_body with error<br>'; }
+				return False;
+			}
+			// ---  Get Header  ---
+			// we can NOT cache the header in THIS function because we may need to BYPASS them
+			// to do that we need to grab it from the stream,  then start filling body_glob
+			// AFTER we have passed the header in the stream
+			$header_glob = '';
+			while ($line = $this->read_port())
+			{
+				if ((chop($line) == '.')
+				|| (chop($line) == ''))
+				{
+					break;
+				}
+				$header_glob .= $line;
+			}
+			// ---  Get Body  ---
+			// we know we have passed the headers because we did that above
+			$body_glob = '';
+			$body_glob = $this->read_port_glob('.');
+			// --- Explode Into an Array and Save for Future use with Fetchstructure
+			$this->body_array = explode("\r\n",$body_glob);
+			$this->body_array_msgnum = (int)$msg_num;
 		}
-		// now get the body
-		$glob_body = $this->read_port_glob('.');
+		// ---  Include Headers With Body Or Not  ---
+		if (($flags == FT_NOT) || ($phpgw_include_header == True))
+		{
+			// we need to include the header here
+			$body_glob = $header_glob ."\r\n" .$body_glob;
+		}
+		/*
 		if ($this->debug_dcom_extra)
 		{
-			echo 'pop3: get_body DUMP<br>= = = First DUMP: glob_header<br>';
-			echo htmlspecialchars($glob_header).'<br>';
-			echo 'pop3: get_body DUMP<br>= = = Second DUMP: glob_body<br>';
-			echo htmlspecialchars($glob_body).'<br><br>';
+			echo 'pop3: get_body DUMP<br>= = = First DUMP: header_glob<br>';
+			echo '<pre>'.htmlspecialchars($header_glob).'</pre><br><br>';
+			echo 'pop3: get_body DUMP<br>= = = Second DUMP: body_glob<br>';
+			echo '<pre>'.htmlspecialchars($body_glob).'</pre><br><br>';
 		}
+		*/
 		if ($this->debug_dcom) { echo 'pop3: Leaving get_body<br>'; }
-		return $glob_body;
+		return $body_glob;
 	}
-
 
 
 }
