@@ -40,6 +40,16 @@
 			$xsessionid = $x;
 		}
 	}
+	elseif($logout)
+	{
+		$is->send(
+			'system.logout', array(
+				'sessionid' => $xsessionid,
+				'kp3'       => $xkp3
+			),
+			$is->server['server_url']
+		);
+	}
 	elseif($methods)
 	{
 		$is->sessionid = $xsessionid;
@@ -75,6 +85,7 @@
 	echo '<form action="' . $phpgw->link('/xmlrpc/interserv.php') . '">' . "\n";
 	echo $is->formatted_list($server_id) . "\n";
 	echo '<input type="submit" name="login" value="Login">' . "\n";
+	echo '<input type="submit" name="logout" value="Logout">' . "\n";
 	echo '<input type="submit" name="methods" value="List Methods">' . "\n";
 	echo '<input type="submit" name="apps" value="List Apps">' . "\n";
 	echo '<input type="submit" name="users" value="List Users">' . "\n";
