@@ -28,9 +28,8 @@
 
   if (! $submit) {
      ?>
-      <form method="post" action="add.php">
+      <form method="post" action="<?php echo $phpgw->link("add.php"); ?>">
        <table border=0>
-       <?php echo $phpgw->session->hidden_var(); ?>
        <tr>
         <td>Title:</td>
         <td><input name="title"></td>

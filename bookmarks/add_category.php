@@ -27,9 +27,8 @@
   if (! $submit) {
      ?>
       <p>
-      <form action="add_category.php" method="post">
+      <form action="<?php echo $phpgw->link("add_category.php"); ?>" method="post">
        <table border=0>
-       <?php echo $phpgw->session->hidden_var(); ?>
        <tr>
          <td>Main category</td>
          <td><input type="radio" name="cat_type" value="main"></td>
