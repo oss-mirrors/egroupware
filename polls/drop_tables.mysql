@@ -1,6 +1,0 @@
-# $Id$
-
-drop table phpgw_polls_data;
-drop table phpgw_polls_desc;
-drop table phpgw_polls_user;
-drop table phpgw_polls_settings;
