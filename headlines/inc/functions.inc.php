@@ -205,27 +205,33 @@ class headlines {
 	$j++;
       }
     }
-    for ($i=0;$i<count($title);$i++) {
-      
-      $server = str_replace("http://","",$links[$i]);
-      $file = strstr($server,"/");
-      $server = "http://" . str_replace("$file","",$server);
 
-      $phpgw->db->query("SELECT con,display,base_url,newsfile,newstype "
-                    . "FROM news_site WHERE display='".$title[$i]."' AND "
-		    . "base_url='$server' AND newsfile='$file'");
-      if ($phpgw->db->num_rows() == 0) {
-	$phpgw->db->query("INSERT INTO news_site(display,base_url,newsfile,"
-		         ."newstype,lastread,cachetime,listings) VALUES("
-			 ."'".$title[$i]."','$server','$file','".$type[$i]."',0,60,20)");
-	continue;
-      }
-      $phpgw->db->next_record();
-      if ($phpgw->db->f("newstype") <> $type[$i]) 
-	$phpgw->db->query("UPDATE news_site SET newstype='".$type[$i]."' "
-			 ."WHERE con=".$this->db->f("con"));
-    }
-  }
+		$phpgw->db->transaction_begin();
+		for ($i=0;$i<count($title);$i++)
+		{
+			$server = str_replace('http://','',$links[$i]);
+			$file = strstr($server,'/');
+			$server = 'http://' . str_replace($file,'',$server);
+
+			$phpgw->db->query("SELECT con,display,base_url,newsfile,newstype "
+								. "FROM news_site WHERE display='".$title[$i]."' AND "
+								. "base_url='$server' AND newsfile='$file'",__LINE__,__FILE__);
+			if ($phpgw->db->num_rows() == 0)
+			{
+				$phpgw->db->query("INSERT INTO news_site(display,base_url,newsfile,"
+						."newstype,lastread,cachetime,listings) VALUES("
+						."'".$title[$i]."','$server','$file','".$type[$i]."',0,60,20)",__LINE__,__FILE__);
+				continue;
+			}
+			$phpgw->db->next_record();
+
+			if ($phpgw->db->f('newstype') <> $type[$i])
+			{
+				$phpgw->db->query("UPDATE news_site SET newstype='".$type[$i]."' WHERE con=".$this->db->f('con'),__LINE__,__FILE__);
+			}
+		}
+		$phpgw->db->transaction_commit();
+	}
 
   // save the new set of links and update the cache time
   function saveToDB($links) {
