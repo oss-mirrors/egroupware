@@ -15,7 +15,7 @@
   include("../header.inc.php");
 
   if ($submit) {
-     $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["userid"]);
+     $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["userid"],"email");
   
      if ($mainscreen_showmail) {
         $phpgw->common->preferences_add($phpgw_info["user"]["userid"],"mainscreen_showmail","email");
