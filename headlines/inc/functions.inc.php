@@ -181,14 +181,68 @@ class headlines extends network {
     }
   }
 	
-// This will need some work still
-	// get a list of the sites
+// get a list of the sites
   function getList()
   {
-    while (list($name,$value) = each($this->sites)) {
-      $links[$value[0]] = $name;
+    set_time_limit(0);
+//    $this->base_url = "http://www.phpgroupware.org";
+//    $this->newsfile = "/headlines.rdf";
+    $this->base_url = "http://blinkylight.com";
+    $this->newsfile = "/headlines.rdf";
+
+    // determine the options to properly extract the links
+    $startat = "</image>";
+    $linkstr = "link";
+    $exclude = "";
+		
+    // get the file that contains the links
+    $lines = $this->getSocketFile();
+    if (!$lines) return false;
+	
+    $startnum = 0;
+
+    // determine which line to begin grabbing the links
+    for ($i=0;$i<count($lines);$i++) {
+      if (ereg($startat,$lines[$i],$regs)) {
+        $startnum = $i;
+        break;
+      }
     }
-    return $links;
+
+    // extract the links and assemble into array $links
+    $links = array();
+    for ($i=$startnum,$j=0;$i<count($lines);$i++) {
+//      if (count($links)>=$this->listings) break;
+      if (ereg("<title>(.*)</title>",$lines[$i],$regs)) {
+        if ($regs[1] == $exclude) {$i+=1; break;}
+        $title[$j] = $regs[1];
+        $title[$j] = ereg_replace("&amp;apos;","'",$title[$j]);
+      } elseif (ereg("<$linkstr>(.*)</$linkstr>",$lines[$i],$regs)) {
+        $links[$j] = $regs[1];
+      } elseif (ereg("<description>(.*)</description>",$lines[$i],$regs)) {
+	$type[$j] = $regs[1];
+	$j++;
+      }
+    }
+    for ($i=0;$i<count($title);$i++) {
+      
+      $server = str_replace("http://","",$links[$i]);
+      $file = strstr($server,"/");
+      $server = "http://" . str_replace("$file","",$server);
+
+      $this->db->query("SELECT con,display,base_url,newsfile,newstype "
+                    . "FROM news_site WHERE display='".$title[$i]."' AND "
+		    . "base_url='$server' AND newsfile='$file'");
+      if ($this->db->num_rows() == 0) {
+	$this->db->query("INSERT INTO news_site(display,base_url,newsfile,newstype) VALUES("
+			."'".$title[$i]."','$server','$file','".$type[$i]."')");
+	continue;
+      }
+      $this->db->next_record();
+      if ($this->db->f("newstype") <> $type[$i]) 
+	$this->db->query("UPDATE news_site SET newstype='".$type[$i]."' "
+			."WHERE con=".$this->db->f("con"));
+    }
   }
 
   // save the new set of links and update the cache time
