@@ -19,6 +19,6 @@
 		closedir($d);
 	}
 
-	$path = dirname($_SERVER["SCRIPT_NAME"]) . "/" . sprintf("%u", crc32($dom)) . "/index.php?" . $_SERVER["QUERY_STRING"];
+	$path = dirname($_SERVER["REQUEST_URI"]) . "/" . sprintf("%u", crc32($dom)) . "/index.php?" . $_SERVER["QUERY_STRING"];
 	header("Location: ".$path);
 ?>
