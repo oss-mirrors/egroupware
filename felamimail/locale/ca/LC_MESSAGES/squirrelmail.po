@@ -1,0 +1,1074 @@
+#
+# SquirrelMail Spanish Translation
+# Copyright (C) 2000 Free Software Foundation, Inc.
+#
+# Traducció al català per:
+# Josep Sanz <jsanz@fa.upc.es>, 2000.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-09-14 13:00+0100\n"
+"PO-Revision-Date: 2000-09-14 HO:MI+ZONE\n"
+"Last-Translator: Josep Sanz <jsanz@fa.upc.es>\n"
+"Language-Team: Catalán\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: felamimail/src/addrbook_popup.php:30
+msgid "Address Book"
+msgstr "Llibreta de Direccions"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:307
+msgid "Name"
+msgstr "Nom"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:308
+msgid "E-mail"
+msgstr "Correu Electrònic"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:309
+msgid "Info"
+msgstr "Informació"
+
+#: felamimail/src/addrbook_search.php:99
+#: felamimail/src/addrbook_search_html.php:74
+msgid "Source"
+msgstr "Origen"
+
+#: felamimail/functions/auth.php:14 felamimail/src/addrbook_search.php:130
+#: felamimail/src/index.php:17 felamimail/src/search.php:5
+msgid "You must login first."
+msgstr "Vostè ha d'entrar primer"
+
+#: felamimail/src/addrbook_search.php:134 felamimail/src/index.php:21
+#: felamimail/src/search.php:9 felamimail/src/webmail.php:27
+msgid "You need a valid user and password to access this page!"
+msgstr "Necessita un nom i una clau d'accés valida per poder accedir!."
+
+#: felamimail/src/addrbook_search.php:169
+#: felamimail/src/addrbook_search.php:253
+#: felamimail/src/addrbook_search_html.php:204
+msgid "No persons matching your search was found"
+msgstr "No s'ha trobat cap persona amb aquestes dades."
+
+#: felamimail/src/addrbook_search.php:182
+#: felamimail/src/addrbook_search_html.php:129
+msgid "Search for"
+msgstr "Cercar per"
+
+#: felamimail/src/addrbook_search.php:189
+#: felamimail/src/addrbook_search_html.php:136
+msgid "in"
+msgstr "a"
+
+#: felamimail/src/addrbook_search.php:191
+#: felamimail/src/addrbook_search_html.php:139
+msgid "All address books"
+msgstr "Tots els llibres de direccions"
+
+#: felamimail/functions/page_header.php:101
+#: felamimail/src/addrbook_search.php:201
+#: felamimail/src/addrbook_search_html.php:151
+#: felamimail/src/search.php:35 felamimail/src/search.php:89
+msgid "Search"
+msgstr "Cercar"
+
+#: felamimail/src/addrbook_search.php:203
+#: felamimail/src/addrbook_search_html.php:153
+msgid "List all"
+msgstr "Llistar tots"
+
+#: felamimail/src/addrbook_search.php:206
+msgid "Close window"
+msgstr "Tancar finestra"
+
+#: felamimail/src/addrbook_search.php:224
+#: felamimail/src/addrbook_search_html.php:175
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr "Impossible llistar direccions des de %s"
+
+#: felamimail/src/addrbook_search.php:246
+#: felamimail/src/addrbook_search_html.php:197
+msgid "Your search failed with the following error(s)"
+msgstr "La recerca ha fallat amb els següents errors"
+
+#: felamimail/src/addrbook_search_html.php:97
+msgid "Use Addresses"
+msgstr "Utilitzar Direccions"
+
+#: felamimail/src/addrbook_search_html.php:120
+msgid "Address Book Search"
+msgstr "Cercar al llibre de direccions"
+
+#: felamimail/src/addressbook.php:46 felamimail/src/addressbook.php:306
+msgid "Nickname"
+msgstr "Àlias"
+
+#: felamimail/src/addressbook.php:51
+msgid "Must be unique"
+msgstr "Ha de ser únic"
+
+#: felamimail/src/addressbook.php:53
+msgid "E-mail address"
+msgstr "Direcció de correu"
+
+#: felamimail/src/addressbook.php:58
+msgid "First name"
+msgstr "Nom"
+
+#: felamimail/src/addressbook.php:63
+msgid "Last name"
+msgstr "Cognom"
+
+#: felamimail/src/addressbook.php:68
+msgid "Additional info"
+msgstr "Informació Addicional"
+
+#: felamimail/src/addressbook.php:87
+msgid "No personal address book is defined. Contact administrator."
+msgstr "No s'ha definit un llibre de direccions. Posis en contacte amb l'administrador."
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr "Només pot editar una direcció cada vegada."
+
+#: felamimail/src/addressbook.php:196 felamimail/src/addressbook.php:199
+#: felamimail/src/addressbook.php:228 felamimail/src/addressbook.php:231
+msgid "Update address"
+msgstr "Actualitzar direcció"
+
+#: felamimail/functions/display_messages.php:63
+#: felamimail/functions/display_messages.php:79
+#: felamimail/functions/imap_general.php:136
+#: felamimail/src/addressbook.php:219 felamimail/src/addressbook.php:269
+msgid "ERROR"
+msgstr "ERROR"
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr "Error desconegut"
+
+#: felamimail/src/addressbook.php:344
+msgid "Edit selected"
+msgstr "Editar Seleccionats"
+
+#: felamimail/src/addressbook.php:346
+msgid "Delete selected"
+msgstr "Esborrar Seleccionats"
+
+#: felamimail/src/addressbook.php:356
+#, c-format
+msgid "Add to %s"
+msgstr "Afegir a %s"
+
+#: felamimail/src/addressbook.php:359
+msgid "Add address"
+msgstr "Afegir Direcció"
+
+#: felamimail/src/compose.php:78
+msgid "Original Message"
+msgstr "Missatge original"
+
+#: felamimail/functions/imap_search.php:170
+#: felamimail/functions/mailbox_display.php:284
+#: felamimail/src/compose.php:79 felamimail/src/download.php:112
+#: felamimail/src/search.php:74 felamimail/src/search.php:75
+msgid "Subject"
+msgstr "Assumpte"
+
+#: felamimail/functions/imap_search.php:165
+#: felamimail/functions/mailbox_display.php:266
+#: felamimail/src/compose.php:80 felamimail/src/download.php:113
+#: felamimail/src/search.php:77 felamimail/src/search.php:78
+msgid "From"
+msgstr "De"
+
+#: felamimail/functions/imap_search.php:163
+#: felamimail/functions/mailbox_display.php:264
+#: felamimail/src/compose.php:81 felamimail/src/download.php:114
+#: felamimail/src/search.php:83 felamimail/src/search.php:84
+msgid "To"
+msgstr "A"
+
+#: felamimail/src/compose.php:164 felamimail/src/read_body.php:314
+msgid "To:"
+msgstr "A:"
+
+#: felamimail/src/compose.php:172
+msgid "CC:"
+msgstr "CC:"
+
+#: felamimail/src/compose.php:180
+msgid "BCC:"
+msgstr "BCC:"
+
+#: felamimail/src/compose.php:188 felamimail/src/read_body.php:284
+msgid "Subject:"
+msgstr "Assumpte:"
+
+#: felamimail/functions/page_header.php:95 felamimail/src/compose.php:217
+#: felamimail/src/compose.php:219 felamimail/src/compose.php:222
+msgid "Addresses"
+msgstr "Direccions"
+
+#: felamimail/src/compose.php:224 felamimail/src/compose.php:244
+msgid "Send"
+msgstr "Enviar"
+
+#: felamimail/src/compose.php:250
+msgid "Attach:"
+msgstr "Adjunt:"
+
+#: felamimail/src/compose.php:256
+msgid "Add"
+msgstr "Afegir"
+
+#: felamimail/src/compose.php:268
+msgid "Delete selected attachments"
+msgstr "Esborrar Adjunts Seleccionats"
+
+#: felamimail/src/compose.php:293
+msgid "You have not filled in the \"To:\" field."
+msgstr "No ha completat el camp \"A:\""
+
+#: felamimail/src/compose.php:354
+msgid "Could not move/copy file. File not attached"
+msgstr "No es pot moure/copiar el fitxer. Fitxer no adjuntat."
+
+#: felamimail/src/download.php:34
+msgid "Viewing a text attachment"
+msgstr "Veure un text adossat"
+
+#: felamimail/src/download.php:37 felamimail/src/download.php:39
+#: felamimail/src/read_body.php:45
+msgid "View message"
+msgstr "Veure missatge"
+
+#: felamimail/functions/mime.php:449 felamimail/src/download.php:44
+msgid "Download this as a file"
+msgstr "Descarregar aquest missatge com un fitxer"
+
+#: felamimail/functions/imap_search.php:167
+#: felamimail/functions/mailbox_display.php:275
+#: felamimail/src/download.php:115
+msgid "Date"
+msgstr "Data"
+
+#: felamimail/functions/page_header.php:97 felamimail/src/folders.php:35
+#: felamimail/src/left_main.php:123
+msgid "Folders"
+msgstr "Carpetes"
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr "S'ha donat d'alta correctament!"
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr "S'ha donat de baixa correctament!"
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr "La carpeta s'ha esborrat!"
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr "Carpeta creada!"
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr "S'ha canviat el nom correctament!"
+
+#: felamimail/src/folders.php:53 felamimail/src/left_main.php:126
+msgid "refresh folder list"
+msgstr "actualitzar llista de carpetes"
+
+#: felamimail/src/folders.php:70
+msgid "Mailboxes Created Successfully!"
+msgstr "Carpetes creades amb èxit!"
+
+#: felamimail/src/folders.php:72
+msgid "Click here"
+msgstr "Clic Aquí"
+
+#: felamimail/src/folders.php:74
+msgid "to continue."
+msgstr "per continuar"
+
+#: felamimail/src/folders.php:87
+msgid "Special Folder Options"
+msgstr "Opcions especials de carpetes"
+
+#: felamimail/src/folders.php:90
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr ""
+"Per que SquirrelMail suministri la totalitat d'opcions que vostè necessita"
+"per crear les carpetes especials llistades a continuació, faci clic a la"
+"tilde y premi el botó de creació."
+
+#: felamimail/src/folders.php:93
+msgid "Create Sent"
+msgstr "Crear Elements Enviats"
+
+#: felamimail/src/folders.php:96
+msgid "Create Trash"
+msgstr "Crear Paperera de Reciclatge"
+
+#: felamimail/src/folders.php:106
+msgid "Delete Folder"
+msgstr "Suprimir Carpeta"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+#: felamimail/src/folders.php:142 felamimail/src/options_highlight.php:73
+#: felamimail/src/read_body.php:240
+msgid "Delete"
+msgstr "Suprimir"
+
+#: felamimail/src/folders.php:146 felamimail/src/folders.php:235
+msgid "No mailboxes found"
+msgstr "No s'han trobat carpetes"
+
+#: felamimail/src/folders.php:153
+msgid "Create Folder"
+msgstr "Crear carpeta"
+
+#: felamimail/src/folders.php:158
+msgid "as a subfolder of"
+msgstr "com subcarpeta de"
+
+#: felamimail/src/folders.php:201
+msgid "Let this folder contain subfolders"
+msgstr "Permetre a aquesta carpeta que contingui altres carpetes"
+
+#: felamimail/src/folders.php:204
+msgid "Create"
+msgstr "Crear"
+
+#: felamimail/src/folders.php:211
+msgid "Rename a Folder"
+msgstr "Canviar nom d'una carpeta"
+
+#: felamimail/src/folders.php:231
+msgid "Rename"
+msgstr "Canviar nom"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:263
+msgid "Unsubscribe"
+msgstr "Donar-se de baixa"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:306
+msgid "Subscribe"
+msgstr "Donar-se d'alta"
+
+#: felamimail/src/folders.php:267
+msgid "No folders were found to unsubscribe from!"
+msgstr "No s'han trobat carpetes per donar-se de baixa!"
+
+#: felamimail/src/folders.php:309
+msgid "No folders were found to subscribe to!"
+msgstr "No s'han trobat carpetes per donar-se d'alta!"
+
+#: felamimail/src/folders_create.php:32
+msgid "Illegal folder name.  Please select a different name."
+msgstr "Nombre de carpeta il·legal - Per favor seleccioni un nom diferent."
+
+#: felamimail/src/folders_create.php:32
+msgid "Click here to go back"
+msgstr "Faci clic aquí per tornar"
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr "Canviar nom d'una carpeta"
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr "Nova Carpeta"
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr "Enviar"
+
+#: felamimail/functions/page_header.php:103 felamimail/src/help.php:92
+msgid "Help"
+msgstr "Ajut"
+
+#: felamimail/src/help.php:123
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr ""
+"L'ajut no ha pogut traduir-se a %s. Aquesta es mostrara en Anglès "
+
+#: felamimail/src/help.php:129
+msgid "Some or all of the help documents are not present!"
+msgstr "Alguns o tots els documents d'ajut no s'han trobat!"
+
+#: felamimail/src/help.php:153
+msgid "Table of Contents"
+msgstr "Taula de Continguts"
+
+#: felamimail/src/help.php:193
+msgid "Top"
+msgstr "Dalt"
+
+#: felamimail/src/left_main.php:103
+msgid "purge"
+msgstr "Netejar"
+
+#: felamimail/src/login.php:60
+msgid "SquirrelMail Login"
+msgstr "Entrada a SquirrelMail"
+
+#: felamimail/src/login.php:67
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail versió %s"
+
+#: felamimail/src/login.php:69
+msgid "By the SquirrelMail Development Team"
+msgstr "Per l'equip de desenvolupament de SquirrelMail"
+
+#: felamimail/src/login.php:75
+#, c-format
+msgid "%s Login"
+msgstr "Entrar a %s"
+
+#: felamimail/src/login.php:83
+msgid "Name:"
+msgstr "Usuari:"
+
+#: felamimail/src/login.php:89
+msgid "Password:"
+msgstr "Contrasenya:"
+
+#: felamimail/src/login.php:98
+msgid "Login"
+msgstr "Entrar"
+
+#: felamimail/src/move_messages.php:78
+#: felamimail/src/move_messages.php:107
+msgid "No messages were selected."
+msgstr "No hi ha missatges seleccionats."
+
+#: felamimail/functions/page_header.php:99 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr "Opcions"
+
+#: felamimail/src/options.php:57
+msgid "Successfully saved personal information!"
+msgstr "La seva informació personal s'ha actualitzat!"
+
+#: felamimail/src/options.php:69
+msgid "Successfully saved display preferences!"
+msgstr "Les sever preferències de pantalla s'han actualitzat!"
+
+#: felamimail/src/options.php:70
+msgid "Refresh Page"
+msgstr "Actualitzar Plana"
+
+#: felamimail/src/options.php:90
+msgid "Successfully saved folder preferences!"
+msgstr "Les seves preferències de carpetes s'han actualitzat!"
+
+#: felamimail/src/options.php:91
+msgid "Refresh Folders"
+msgstr "Actualitzar Carpetes"
+
+#: felamimail/src/options.php:105 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr "Informació Personal"
+
+#: felamimail/src/options.php:110
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "Això conté informació personal com el seu nom d'usuari, direcció "
+"de correu, etc. Tambè permet crear la signatura que volem que apareguin "
+"En els nostres e-mail's"
+
+#: felamimail/src/options.php:117 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr "Ressaltat de Missatges"
+
+#: felamimail/src/options.php:122
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Basat en els criteris predefinits, els missatges entrants poden ser mostrats "
+"amb diferents colors de fons a la llista de missatges. Per ajudar-lo a "
+"distingir fàcilment de qui ve (especialment per les llistes de correu)"
+
+#: felamimail/src/options.php:131 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr "Preferències de Pantalla"
+
+#: felamimail/src/options.php:136
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"Vostè por canviar la forma de veure SquirrelMail y la forma en que la "
+"informació serà mostrada, com l'idioma, colors, etc. ..."
+
+#: felamimail/src/options.php:143 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr "Preferències de Carpetes"
+
+#: felamimail/src/options.php:148
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"Opcions de com les seves carpetes seran mostrades i utilitzades. "
+"Totes aquestes opcions serviran per la paperera, la carpeta Send i com "
+"volem que es notifiquin els missatges no llegits."
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr "Tema"
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr "Idioma"
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr "Usar JavaScript o HTML a la llista de contactes?"
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: felamimail/src/options_display.php:79
+#: felamimail/src/options_display.php:82
+msgid "HTML"
+msgstr "HTML"
+
+#: felamimail/src/options_display.php:88
+msgid "Number of Messages to Index"
+msgstr "Numero de missatges a indexar"
+
+#: felamimail/src/options_display.php:99
+msgid "Wrap incoming text at"
+msgstr "Acomodar texts entrants a"
+
+#: felamimail/src/options_display.php:110
+msgid "Size of editor window"
+msgstr "Mida de la finestra de l'editor"
+
+#: felamimail/src/options_display.php:121
+msgid "Width of left folder list"
+msgstr "Ample de la columna de la llista de carpetes"
+
+#: felamimail/src/options_display.php:175
+msgid "Auto refresh folder list"
+msgstr "Actualitzar automàtica de la llista de carpetes"
+
+#: felamimail/src/options_folder.php:48
+msgid "Folder Path"
+msgstr "Ubicació de Carpetes"
+
+#: felamimail/src/options_folder.php:61
+msgid "Trash Folder:"
+msgstr "Paperera"
+
+#: felamimail/src/options_folder.php:65
+msgid "Don't use Trash"
+msgstr "No utilitzar paperera"
+
+#: felamimail/src/options_folder.php:67
+msgid "Do not use Trash"
+msgstr "No utilitzar paperera"
+
+#: felamimail/src/options_folder.php:89
+msgid "Sent Folder:"
+msgstr "Elements enviats:"
+
+#: felamimail/src/options_folder.php:93
+msgid "Don't use Sent"
+msgstr "No utilitzar Elements enviats"
+
+#: felamimail/src/options_folder.php:95
+msgid "Do not use Sent"
+msgstr "No utilitzar Elements enviats"
+
+#: felamimail/src/options_folder.php:117
+msgid "Unseen message notification"
+msgstr "Notificació de missatges no llegits"
+
+#: felamimail/src/options_folder.php:120
+msgid "No notification"
+msgstr "No advertir"
+
+#: felamimail/src/options_folder.php:121
+msgid "Only INBOX"
+msgstr "Només Bandeja d'entrada"
+
+#: felamimail/src/options_folder.php:122
+msgid "All Folders"
+msgstr "Totes les carpetes"
+
+#: felamimail/src/options_folder.php:129
+msgid "Unseen message notification type"
+msgstr "Tipus de Notificació de missatges no llegits"
+
+#: felamimail/src/options_folder.php:132
+msgid "Only unseen"
+msgstr "Només no llegits"
+
+#: felamimail/src/options_folder.php:133
+msgid "Unseen and Total"
+msgstr "No llegits y total"
+
+#: felamimail/src/options_highlight.php:66
+msgid "New"
+msgstr "Nou"
+
+#: felamimail/src/options_highlight.php:67
+msgid "Done"
+msgstr "Fet"
+
+#: felamimail/src/options_highlight.php:73
+msgid "Edit"
+msgstr "Editar"
+
+#: felamimail/src/options_highlight.php:86
+msgid "No highlighting is defined"
+msgstr "No hi ha definit res per ressaltar"
+
+#: felamimail/src/options_highlight.php:124
+msgid "Identifying name"
+msgstr "Nom per identificar-lo"
+
+#: felamimail/src/options_highlight.php:137
+msgid "Color"
+msgstr "Color"
+
+#: felamimail/src/options_highlight.php:141
+msgid "Dark Blue"
+msgstr "Blau Fosc"
+
+#: felamimail/src/options_highlight.php:142
+msgid "Dark Green"
+msgstr "Verd Fosc"
+
+#: felamimail/src/options_highlight.php:143
+msgid "Dark Yellow"
+msgstr "Groc Fosc"
+
+#: felamimail/src/options_highlight.php:144
+msgid "Dark Cyan"
+msgstr "Cyan Fosc"
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr "Magenta Fosc"
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr "Blau brillant"
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr "Verd brillant"
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr "Groc brillant"
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr "Cyan brillant"
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr "Magenta brillant"
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr "Gris Fosc"
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr "Gris Mig"
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr "Gris brillant"
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr "Blanc"
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr "Un altra:"
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr "Ex.: 63aa7f"
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr "Coincidència"
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr "Nom complet"
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr "Direcció de correu"
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr "Respondre a"
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr "Signatura"
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr "Utilitzar signatura"
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr "Utilitzar signatura?"
+
+#: felamimail/src/read_body.php:38
+msgid "Viewing full header"
+msgstr "Veure capçalera completa"
+
+#: felamimail/src/read_body.php:144
+msgid "more"
+msgstr "més"
+
+#: felamimail/src/read_body.php:145
+msgid "less"
+msgstr "menys"
+
+#: felamimail/src/read_body.php:233
+msgid "Message List"
+msgstr "Llista de Missatges"
+
+#: felamimail/functions/mailbox_display.php:215
+#: felamimail/functions/mailbox_display.php:219
+#: felamimail/functions/mailbox_display.php:223
+#: felamimail/functions/mailbox_display.php:332
+#: felamimail/functions/mailbox_display.php:336
+#: felamimail/functions/mailbox_display.php:340
+#: felamimail/src/read_body.php:253 felamimail/src/read_body.php:255
+msgid "Previous"
+msgstr "Anterior"
+
+#: felamimail/functions/mailbox_display.php:216
+#: felamimail/functions/mailbox_display.php:220
+#: felamimail/functions/mailbox_display.php:224
+#: felamimail/functions/mailbox_display.php:333
+#: felamimail/functions/mailbox_display.php:337
+#: felamimail/functions/mailbox_display.php:341
+#: felamimail/src/read_body.php:257 felamimail/src/read_body.php:259
+msgid "Next"
+msgstr "Següent"
+
+#: felamimail/src/read_body.php:266
+msgid "Forward"
+msgstr "Tornar a enviar"
+
+#: felamimail/src/read_body.php:269
+msgid "Reply"
+msgstr "Respondre"
+
+#: felamimail/src/read_body.php:272
+msgid "Reply All"
+msgstr "Respondre a tots"
+
+#: felamimail/src/read_body.php:290 felamimail/src/read_body.php:292
+msgid "View full header"
+msgstr "Veure capçalera completa"
+
+#: felamimail/src/read_body.php:298
+msgid "From:"
+msgstr "De:"
+
+#: felamimail/src/read_body.php:306
+msgid "Date:"
+msgstr "Data:"
+
+#: felamimail/src/search.php:68 felamimail/src/search.php:69
+msgid "Body"
+msgstr "Cos"
+
+#: felamimail/src/search.php:71 felamimail/src/search.php:72
+msgid "Everywhere"
+msgstr "Tots"
+
+#: felamimail/src/search.php:80 felamimail/src/search.php:81
+msgid "Cc"
+msgstr "Cc"
+
+#: felamimail/functions/page_header.php:83 felamimail/src/signout.php:69
+msgid "Sign Out"
+msgstr "Desconnectar-se"
+
+#: felamimail/src/signout.php:76
+msgid "You have been successfully signed out."
+msgstr "Vostè s'ha desconnectat correctament."
+
+#: felamimail/src/signout.php:79
+msgid "Click here to log back in."
+msgstr "Faci clic aquí per tornar a entrar"
+
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:72
+msgid "Personal address book"
+msgstr "Llista de contactes personals"
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "No es un nom de fitxer"
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "No s'ha trobat el fitxer o el directori"
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "Fallida al obrir"
+
+#: felamimail/functions/abook_local_file.php:226
+#: felamimail/functions/abook_local_file.php:246
+#: felamimail/functions/abook_local_file.php:269
+#: felamimail/functions/abook_local_file.php:299
+#: felamimail/functions/addressbook.php:268
+#: felamimail/functions/addressbook.php:299
+msgid "Addressbook is read-only"
+msgstr "Llista de contactes es sols de lectura"
+
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "Usuari '%s' ja existeix"
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "No se pot bloquejar el fitxer de dades"
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "Error al escriure la llista de contactes"
+
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Usuari '%s' no existeix"
+
+#: felamimail/functions/addressbook.php:29
+#, c-format
+msgid "Error opening file %s"
+msgstr "Error obrint el fitxer %s"
+
+#: felamimail/functions/addressbook.php:43
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Error al posar en marxa el servei LDAP %s:"
+
+#: felamimail/functions/addressbook.php:245
+#: felamimail/functions/addressbook.php:326
+msgid "Invalid input data"
+msgstr "Dades entrades invalides"
+
+#: felamimail/functions/addressbook.php:250
+#: felamimail/functions/addressbook.php:331
+msgid "Name is missing"
+msgstr "Ha d'especificar el nom"
+
+#: felamimail/functions/addressbook.php:254
+#: felamimail/functions/addressbook.php:335
+msgid "E-mail address is missing"
+msgstr "Ha d'especificar una direcció de correu"
+
+#: felamimail/functions/addressbook.php:262
+msgid "Nickname contain illegal characters"
+msgstr "L'alies conté caràcters no vàlids"
+
+#: felamimail/functions/addressbook.php:344
+msgid "Addressbook $bnum is read-only"
+msgstr "La llista de contactes $bnum només es de lectura"
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:144
+msgid "Unknown user or password incorrect."
+msgstr "Usuari desconegut o contrasenya incorrecte."
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:145
+msgid "Click here to try again"
+msgstr "Faci clic aquí per tornar a intentar"
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s's WebMail system"
+msgstr "Benvingut a %s - Sistema de Webmail"
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr "Executant SquirrelMail versió %s (c) 1999-2000."
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr "Faci clic aquí per tornar a %s"
+
+#: felamimail/functions/imap_general.php:44
+msgid "ERROR : Could not complete request."
+msgstr "ERROR: No s'ha pogut completar la comanda."
+
+#: felamimail/functions/imap_general.php:46
+msgid "Reason Given: "
+msgstr "Motiu donat: "
+
+#: felamimail/functions/imap_general.php:51
+msgid "ERROR : Bad or malformed request."
+msgstr "ERROR: Comanda mal feta."
+
+#: felamimail/functions/imap_general.php:53
+msgid "Server responded: "
+msgstr "El servidor ha respost: "
+
+#: felamimail/functions/imap_general.php:86
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Error connectant al servidor d'IMAP: %s."
+
+#: felamimail/functions/imap_general.php:99
+#, c-format
+msgid "Bad request: %s"
+msgstr "Mala comanda: %s"
+
+#: felamimail/functions/imap_general.php:157
+#, c-format
+msgid "Unknown error: %s"
+msgstr "Error desconegut: %s"
+
+#: felamimail/functions/imap_messages.php:52
+#: felamimail/functions/imap_messages.php:76
+#: felamimail/functions/imap_messages.php:277
+#: felamimail/functions/imap_messages.php:316
+msgid "(no subject)"
+msgstr "(sense assumpte)"
+
+#: felamimail/functions/imap_messages.php:53
+msgid "Unknown Sender"
+msgstr "Remitent desconegut"
+
+#: felamimail/functions/imap_messages.php:319
+msgid "(unknown sender)"
+msgstr "(remitent desconegut)"
+
+#: felamimail/functions/imap_search.php:126
+msgid "Found"
+msgstr "Trobat"
+
+#: felamimail/functions/imap_search.php:126
+msgid "messages"
+msgstr "missatges"
+
+#: felamimail/functions/imap_search.php:135
+#: felamimail/functions/mailbox_display.php:235
+msgid "Move selected to:"
+msgstr "Moure seleccionats a:"
+
+#: felamimail/functions/imap_search.php:147
+#: felamimail/functions/mailbox_display.php:247
+msgid "Move"
+msgstr "Moure"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+msgid "checked messages"
+msgstr "missatges seleccionats"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "Viewing messages"
+msgstr "Mirant missatges"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "to"
+msgstr "a"
+
+#: felamimail/functions/mailbox_display.php:205
+#: felamimail/functions/mailbox_display.php:209
+msgid "total"
+msgstr "total"
+
+#: felamimail/functions/mailbox_display.php:209
+msgid "Viewing message"
+msgstr "Mirant missatge"
+
+#: felamimail/functions/mailbox_display.php:298
+msgid "THIS FOLDER IS EMPTY"
+msgstr "AQUESTA CARPETA ES BUIDA"
+
+#: felamimail/functions/Pmime.php:495
+msgid "download"
+msgstr "descarregar"
+
+#: felamimail/functions/page_header.php:85
+msgid "Current Folder"
+msgstr "Carpeta actual"
+
+#: felamimail/functions/page_header.php:93
+msgid "Compose"
+msgstr "Redactar"
+
+#: felamimail/functions/prefs.php:14
+msgid "Preference file "
+msgstr "Fitxer de preferència"
+
+#: felamimail/functions/prefs.php:14
+msgid " not found.  Exiting abnormally"
+msgstr " no trobat. Sortint ANORMALMENT"
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:74
+msgid "Preference file, "
+msgstr "Fitxer de preferències, "
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:74
+msgid ""
+", does not exist.  Log out, and log back in to create a default preference "
+"file. "
+msgstr ""
+", no existeix, desconecti i torni a connectar-se per crear novament el "
+"fitxer de preferències"
+
+#: felamimail/functions/prefs.php:117
+msgid "Error opening "
+msgstr "Error obrint "

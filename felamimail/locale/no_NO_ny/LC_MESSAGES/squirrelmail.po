@@ -1,0 +1,1041 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-08-17 13:27+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Magni Onsøien <magnio-squirrel@initio.no>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: felamimail/src/addrbook_popup.php:30
+msgid "Address Book"
+msgstr "Adressebok"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:72
+#: felamimail/src/addressbook.php:307
+msgid "Name"
+msgstr "Namn"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:72
+#: felamimail/src/addressbook.php:308
+msgid "E-mail"
+msgstr "E-postadresse"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:72
+#: felamimail/src/addressbook.php:309
+msgid "Info"
+msgstr "Informasjon"
+
+#: felamimail/src/addrbook_search.php:99
+#: felamimail/src/addrbook_search_html.php:75
+msgid "Source"
+msgstr "Kjelde"
+
+#: felamimail/functions/auth.php:14 felamimail/src/addrbook_search.php:130
+#: felamimail/src/index.php:17 felamimail/src/search.php:5
+msgid "You must login first."
+msgstr "Du må logge inn fyrst."
+
+#: felamimail/src/addrbook_search.php:134 felamimail/src/index.php:21
+#: felamimail/src/search.php:9 felamimail/src/webmail.php:27
+msgid "You need a valid user and password to access this page!"
+msgstr "Du må ha eit gyldig brukarnamn og passord for å få tilgang til denne sida!"
+
+#: felamimail/src/addrbook_search.php:169
+#: felamimail/src/addrbook_search.php:253
+#: felamimail/src/addrbook_search_html.php:207
+msgid "No persons matching your search was found"
+msgstr "Ingen personar som samsvarer med søket ditt vart funne"
+
+#: felamimail/src/addrbook_search.php:182
+#: felamimail/src/addrbook_search_html.php:132
+msgid "Search for"
+msgstr "Søk etter"
+
+#: felamimail/src/addrbook_search.php:189
+#: felamimail/src/addrbook_search_html.php:140
+msgid "in"
+msgstr "i"
+
+#: felamimail/src/addrbook_search.php:191
+#: felamimail/src/addrbook_search_html.php:143
+msgid "All address books"
+msgstr "Alle adressebøker"
+
+#: felamimail/functions/page_header.php:101
+#: felamimail/src/addrbook_search.php:201
+#: felamimail/src/addrbook_search_html.php:155
+#: felamimail/src/search.php:35 felamimail/src/search.php:89
+msgid "Search"
+msgstr "Søk"
+
+#: felamimail/src/addrbook_search.php:203
+#: felamimail/src/addrbook_search_html.php:157
+msgid "List all"
+msgstr "List alle"
+
+#: felamimail/src/addrbook_search.php:206
+msgid "Close window"
+msgstr "Lukk vindauge"
+
+#: felamimail/src/addrbook_search.php:224
+#: felamimail/src/addrbook_search_html.php:180
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr "Klarte ikkje å liste adresser frå %s"
+
+#: felamimail/src/addrbook_search.php:246
+#: felamimail/src/addrbook_search_html.php:203
+msgid "Your search failed with the following error(s)"
+msgstr "Søket ditt feila med fylgjande feilmelding(ar)"
+
+#: felamimail/src/addrbook_search_html.php:98
+msgid "Use Addresses"
+msgstr "Bruk adresser"
+
+#: felamimail/src/addrbook_search_html.php:122
+msgid "Address Book Search"
+msgstr "Søk i adressebok"
+
+#: felamimail/src/addrbook_search_html.php:216
+msgid "Return"
+msgstr "Tilbake"
+
+#: felamimail/src/addressbook.php:46 felamimail/src/addressbook.php:306
+msgid "Nickname"
+msgstr "Kortnamn"
+
+#: felamimail/src/addressbook.php:51
+msgid "Must be unique"
+msgstr "Må vere unikt"
+
+#: felamimail/src/addressbook.php:53
+msgid "E-mail address"
+msgstr "E-postadresse"
+
+#: felamimail/src/addressbook.php:58
+msgid "First name"
+msgstr "Fornamn"
+
+#: felamimail/src/addressbook.php:63
+msgid "Last name"
+msgstr "Etternamn"
+
+#: felamimail/src/addressbook.php:68
+msgid "Additional info"
+msgstr "Tilleggsinformasjon"
+
+#: felamimail/src/addressbook.php:87
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Inga personleg adressebok er definert. Ta kontakt med administrator."
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr "Du kan berre editere ei adresse om gongen."
+
+#: felamimail/src/addressbook.php:196 felamimail/src/addressbook.php:199
+#: felamimail/src/addressbook.php:228 felamimail/src/addressbook.php:231
+msgid "Update address"
+msgstr "Oppdater adresse"
+
+#: felamimail/functions/display_messages.php:63
+#: felamimail/functions/display_messages.php:79
+#: felamimail/functions/imap_general.php:139
+#: felamimail/src/addressbook.php:219 felamimail/src/addressbook.php:269
+msgid "ERROR"
+msgstr "FEIL"
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr "Ukjend feil"
+
+#: felamimail/src/addressbook.php:344
+msgid "Edit selected"
+msgstr "Endre valde"
+
+#: felamimail/src/addressbook.php:346
+msgid "Delete selected"
+msgstr "Slett valde"
+
+#: felamimail/src/addressbook.php:356
+#, c-format
+msgid "Add to %s"
+msgstr "Legg til %s"
+
+#: felamimail/src/addressbook.php:359
+msgid "Add address"
+msgstr "Legg til adresse"
+
+#: felamimail/src/compose.php:79
+msgid "Original Message"
+msgstr "Opphavleg melding"
+
+#: felamimail/functions/imap_search.php:170
+#: felamimail/functions/mailbox_display.php:284
+#: felamimail/src/compose.php:80 felamimail/src/download.php:112
+#: felamimail/src/search.php:74 felamimail/src/search.php:75
+msgid "Subject"
+msgstr "Emne"
+
+#: felamimail/functions/imap_search.php:165
+#: felamimail/functions/mailbox_display.php:266
+#: felamimail/src/compose.php:81 felamimail/src/download.php:113
+#: felamimail/src/search.php:77 felamimail/src/search.php:78
+msgid "From"
+msgstr "Frå"
+
+#: felamimail/functions/imap_search.php:163
+#: felamimail/functions/mailbox_display.php:264
+#: felamimail/src/compose.php:82 felamimail/src/download.php:114
+#: felamimail/src/search.php:83 felamimail/src/search.php:84
+msgid "To"
+msgstr "Til"
+
+#: felamimail/src/compose.php:164 felamimail/src/read_body.php:315
+msgid "To:"
+msgstr "Til:"
+
+#: felamimail/src/compose.php:172
+msgid "CC:"
+msgstr "Kopi til:"
+
+#: felamimail/src/compose.php:180
+msgid "BCC:"
+msgstr "Blindkopi til:"
+
+#: felamimail/src/compose.php:188 felamimail/src/read_body.php:285
+msgid "Subject:"
+msgstr "Emne:"
+
+#: felamimail/functions/page_header.php:95 felamimail/src/compose.php:217
+#: felamimail/src/compose.php:219 felamimail/src/compose.php:222
+msgid "Addresses"
+msgstr "Adresser"
+
+#: felamimail/src/compose.php:224 felamimail/src/compose.php:244
+msgid "Send"
+msgstr "Send"
+
+#: felamimail/src/compose.php:250
+msgid "Attach:"
+msgstr "Legg ved:"
+
+#: felamimail/src/compose.php:256
+msgid "Add"
+msgstr "Legg til:"
+
+#: felamimail/src/compose.php:268
+msgid "Delete selected attachments"
+msgstr "Slett valde vedlegg"
+
+#: felamimail/src/compose.php:293
+msgid "You have not filled in the \"To:\" field."
+msgstr "Du har ikkje fylt ut \"Til:\"-feltet"
+
+#: felamimail/src/compose.php:356
+msgid "Could not move/copy file. File not attached"
+msgstr "Kunne ikkje flytte/kopiere fila. Fila er ikkje lagt ved"
+
+#: felamimail/src/download.php:34
+msgid "Viewing a text attachment"
+msgstr "Viser eit tekstvedlegg"
+
+#: felamimail/src/download.php:37 felamimail/src/download.php:39
+#: felamimail/src/read_body.php:45
+msgid "View message"
+msgstr "Vis melding"
+
+#: felamimail/functions/mime.php:449 felamimail/src/download.php:44
+msgid "Download this as a file"
+msgstr "Last ned dette som ei fil"
+
+#: felamimail/functions/imap_search.php:167
+#: felamimail/functions/mailbox_display.php:275
+#: felamimail/src/download.php:115
+msgid "Date"
+msgstr "Dato"
+
+#: felamimail/functions/page_header.php:97 felamimail/src/folders.php:35
+#: felamimail/src/left_main.php:123
+msgid "Folders"
+msgstr "Mapper"
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr "La til mappa til lista over aktive mapper."
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr "Fjerna mappa frå lista over aktive mapper."
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr "Mappa er sletta."
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr "Mappa er oppretta."
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr "Mappa er omnamna."
+
+#: felamimail/src/folders.php:59
+msgid "Folders created successfully!"
+msgstr "Mappa er oppretta."
+
+#: felamimail/src/folders.php:62 felamimail/src/left_main.php:126
+msgid "refresh folder list"
+msgstr "oppdater mappeliste"
+
+#: felamimail/src/folders.php:74
+msgid "Special Folder Options"
+msgstr "Val for spesielle mapper"
+
+#: felamimail/src/folders.php:77
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr "For at SquirrelMail skal tilby alle val, må du opprette dei spesielle mappene som er lista opp under. Berre kryss av og trykk på opprett-knappen."
+
+#: felamimail/src/folders.php:80
+msgid "Create Sent"
+msgstr "Lag mappe"
+
+#: felamimail/src/folders.php:83
+msgid "Create Trash"
+msgstr "Lag mappe"
+
+#: felamimail/src/folders.php:93
+msgid "Delete Folder"
+msgstr "Slett mappe"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+#: felamimail/src/folders.php:134 felamimail/src/options_highlight.php:73
+#: felamimail/src/read_body.php:241
+msgid "Delete"
+msgstr "Slett"
+
+#: felamimail/src/folders.php:138 felamimail/src/folders.php:234
+msgid "No folders found"
+msgstr "Fann ingen mapper"
+
+#: felamimail/src/folders.php:145
+msgid "Create Folder"
+msgstr "Lag mappe"
+
+#: felamimail/src/folders.php:150
+msgid "as a subfolder of"
+msgstr "som undermappe til"
+
+#: felamimail/src/folders.php:199
+msgid "Let this folder contain subfolders"
+msgstr "La denne mappa innehalde undermapper"
+
+#: felamimail/src/folders.php:202
+msgid "Create"
+msgstr "Lag mappe"
+
+#: felamimail/src/folders.php:209
+msgid "Rename a Folder"
+msgstr "Bytt namn på mappa"
+
+#: felamimail/src/folders.php:230
+msgid "Rename"
+msgstr "Bytt namn"
+
+#: felamimail/src/folders.php:243 felamimail/src/folders.php:262
+msgid "Unsubscribe"
+msgstr "Fjern"
+
+#: felamimail/src/folders.php:243 felamimail/src/folders.php:305
+msgid "Subscribe"
+msgstr "Legg til"
+
+#: felamimail/src/folders.php:266
+msgid "No folders were found to unsubscribe from!"
+msgstr "Fann ingen mapper å fjerne!"
+
+#: felamimail/src/folders.php:308
+msgid "No folders were found to subscribe to!"
+msgstr "Fann ingen mappe å legge til!"
+
+#: felamimail/src/folders_create.php:32
+msgid "Illegal folder name.  Please select a different name."
+msgstr "Ulovleg mappenamn. Ver venleg og velj eit anna namn."
+
+#: felamimail/src/folders_create.php:32
+msgid "Click here to go back"
+msgstr "Klikk her for å gå tilbake"
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr "Bytt namn på ei mappe"
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr "Nytt namn:"
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr "OK"
+
+#: felamimail/functions/page_header.php:103 felamimail/src/help.php:92
+msgid "Help"
+msgstr "Hjelp"
+
+#: felamimail/src/help.php:123
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr "Hjelpa er enno ikkje omsett til %s. Den vil difor bli vist på engelsk."
+
+#: felamimail/src/help.php:129
+msgid "Some or all of the help documents are not present!"
+msgstr "Nokre eller alle hjelpefilene mangler."
+
+#: felamimail/src/help.php:153
+msgid "Table of Contents"
+msgstr "Innhaldsliste"
+
+#: felamimail/src/help.php:193
+msgid "Top"
+msgstr "Topp"
+
+#: felamimail/src/left_main.php:103
+msgid "purge"
+msgstr "Tøm"
+
+#: felamimail/src/login.php:60 felamimail/src/login.php:98
+msgid "Login"
+msgstr "Logg inn"
+
+#: felamimail/src/login.php:67
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail versjon %s"
+
+#: felamimail/src/login.php:69
+msgid "By the SquirrelMail Development Team"
+msgstr "Av SquirrelMail-utviklingsgruppa"
+
+#: felamimail/src/login.php:75
+#, c-format
+msgid "%s Login"
+msgstr "%s innlogging"
+
+#: felamimail/src/login.php:83
+msgid "Name:"
+msgstr "Namn:"
+
+#: felamimail/src/login.php:89
+msgid "Password:"
+msgstr "Passord:"
+
+#: felamimail/src/move_messages.php:78
+#: felamimail/src/move_messages.php:107
+msgid "No messages were selected."
+msgstr "Ingen valde meldingar."
+
+#: felamimail/functions/page_header.php:99 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr "Alternativ"
+
+#: felamimail/src/options.php:59
+msgid "Successfully saved personal information!"
+msgstr "Lagra personleg informasjon!"
+
+#: felamimail/src/options.php:73
+msgid "Successfully saved display preferences!"
+msgstr "Lagra val for framsyning!"
+
+#: felamimail/src/options.php:74
+msgid "Refresh Page"
+msgstr "Last sida på nytt"
+
+#: felamimail/src/options.php:95
+msgid "Successfully saved folder preferences!"
+msgstr "Lagra val for mapper"
+
+#: felamimail/src/options.php:96
+msgid "Refresh Folders"
+msgstr "Oppdater mappelista"
+
+#: felamimail/src/options.php:110 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr "Personleg informasjon"
+
+#: felamimail/src/options.php:115
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "Dette inneheld personleg informasjon om deg sjølv, slik som namn, e-postadresse og liknande."
+
+#: felamimail/src/options.php:122 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr "Utheving av meldingar"
+
+#: felamimail/src/options.php:127
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr "Basert på gjevne kriterium kan innkomande meldingar ha ulik bakgrunnsfagre i meldingslista. Dette er til hjelp for å sjå kven meldinga er frå, særleg i samband med mailinglister."
+
+#: felamimail/src/options.php:136 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr "Framsyningsval"
+
+#: felamimail/src/options.php:141
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "Du kan endre måten SquirrelMail ser ut og viser informasjon på, slik som fargar, språk og andre val."
+
+#: felamimail/src/options.php:148 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr "Val for mapper"
+
+#: felamimail/src/options.php:153
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "Dette er val for korleis mapper vert viste og kan endrast."
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr "Fargeval"
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr "Språk"
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr "Bruk Javascript eller HTML i adresseboka?"
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr "Javascript"
+
+#: felamimail/src/options_display.php:79
+#: felamimail/src/options_display.php:82
+msgid "HTML"
+msgstr ""
+
+#: felamimail/src/options_display.php:88
+msgid "Number of Messages to Index"
+msgstr "Talet meldingar som skal indekserast"
+
+#: felamimail/src/options_display.php:99
+msgid "Wrap incoming text at"
+msgstr "Bryt innkomande tekst ved"
+
+#: felamimail/src/options_display.php:110
+msgid "Size of editor window"
+msgstr "Storleik på editorvindauget"
+
+#: felamimail/src/options_display.php:121
+msgid "Width of left folder list"
+msgstr "Breidde på mappelista til venstre"
+
+#: felamimail/src/options_display.php:175
+msgid "Auto refresh folder list"
+msgstr "Automatisk oppdatering av mappelista"
+
+#: felamimail/src/options_folder.php:48
+msgid "Folder Path"
+msgstr "Sti til mapper (folder path)"
+
+#: felamimail/src/options_folder.php:61
+msgid "Trash Folder:"
+msgstr "Søppelbøtte:"
+
+#: felamimail/src/options_folder.php:65
+msgid "Don't use Trash"
+msgstr "Ikkje bruk søppelbøtta"
+
+#: felamimail/src/options_folder.php:67
+msgid "Do not use Trash"
+msgstr "Bruk søppelbøtta"
+
+#: felamimail/src/options_folder.php:89
+msgid "Sent Folder:"
+msgstr "Mappe for sendte meldingar:"
+
+#: felamimail/src/options_folder.php:93
+msgid "Don't use Sent"
+msgstr "Ikkje bruk mappe for sendte meldingar"
+
+#: felamimail/src/options_folder.php:95
+msgid "Do not use Sent"
+msgstr "Ikkje bruk mappe for sendte meldingar"
+
+#: felamimail/src/options_folder.php:117
+msgid "Unseen message notification"
+msgstr "Gje melding om ulesne meldingar"
+
+#: felamimail/src/options_folder.php:120
+msgid "No notification"
+msgstr "Inga varsling"
+
+#: felamimail/src/options_folder.php:121
+msgid "Only INBOX"
+msgstr "Berre INBOX"
+
+#: felamimail/src/options_folder.php:122
+msgid "All Folders"
+msgstr "Alle mapper"
+
+#: felamimail/src/options_folder.php:129
+msgid "Unseen message notification type"
+msgstr "Meldingstype for ulesne meldingar"
+
+#: felamimail/src/options_folder.php:132
+msgid "Only unseen"
+msgstr "Berre ulesne"
+
+#: felamimail/src/options_folder.php:133
+msgid "Unseen and Total"
+msgstr "Ulesne og totalt tal"
+
+#: felamimail/src/options_highlight.php:66
+msgid "New"
+msgstr "Ny"
+
+#: felamimail/src/options_highlight.php:67
+msgid "Done"
+msgstr "Ferdig"
+
+#: felamimail/src/options_highlight.php:73
+msgid "Edit"
+msgstr "Editer"
+
+#: felamimail/src/options_highlight.php:86
+msgid "No highlighting is defined"
+msgstr "Inga utheving er definert"
+
+#: felamimail/src/options_highlight.php:124
+msgid "Identifying name"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:137
+msgid "Color"
+msgstr "Farge"
+
+#: felamimail/src/options_highlight.php:141
+msgid "Dark Blue"
+msgstr "Mørk blå"
+
+#: felamimail/src/options_highlight.php:142
+msgid "Dark Green"
+msgstr "Mørk grøn"
+
+#: felamimail/src/options_highlight.php:143
+msgid "Dark Yellow"
+msgstr "Mørk gul"
+
+#: felamimail/src/options_highlight.php:144
+msgid "Dark Cyan"
+msgstr "Mørk cyan"
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr "Mørk lilla"
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr "Lys blå"
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr "Lys grøn"
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr "Lys gul"
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr "Lys cyan"
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr "Lys magenta"
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr "Lys grå"
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr "Medium grå"
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr "Lys grå"
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr "Kvit"
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr "Annan:"
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr "Døme: 63aa7f"
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr ""
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr "Fullt namn"
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr "E-postadresse"
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr "Svar-til-adresse"
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr "Signatur"
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr "Bruk ein signatur"
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr "Bruk ein signatur?"
+
+#: felamimail/src/read_body.php:38
+msgid "Viewing full header"
+msgstr "Viser fulle meldingshovud"
+
+#: felamimail/src/read_body.php:145
+msgid "more"
+msgstr "meir"
+
+#: felamimail/src/read_body.php:146
+msgid "less"
+msgstr "mindre"
+
+#: felamimail/src/read_body.php:234
+msgid "Message List"
+msgstr "Meldingsliste"
+
+#: felamimail/functions/mailbox_display.php:215
+#: felamimail/functions/mailbox_display.php:219
+#: felamimail/functions/mailbox_display.php:223
+#: felamimail/functions/mailbox_display.php:332
+#: felamimail/functions/mailbox_display.php:336
+#: felamimail/functions/mailbox_display.php:340
+#: felamimail/src/read_body.php:254 felamimail/src/read_body.php:256
+msgid "Previous"
+msgstr "Forrige"
+
+#: felamimail/functions/mailbox_display.php:216
+#: felamimail/functions/mailbox_display.php:220
+#: felamimail/functions/mailbox_display.php:224
+#: felamimail/functions/mailbox_display.php:333
+#: felamimail/functions/mailbox_display.php:337
+#: felamimail/functions/mailbox_display.php:341
+#: felamimail/src/read_body.php:258 felamimail/src/read_body.php:260
+msgid "Next"
+msgstr "Neste"
+
+#: felamimail/src/read_body.php:267
+msgid "Forward"
+msgstr "Vidaresend"
+
+#: felamimail/src/read_body.php:270
+msgid "Reply"
+msgstr "Svar"
+
+#: felamimail/src/read_body.php:273
+msgid "Reply All"
+msgstr "Svar til alle"
+
+#: felamimail/src/read_body.php:291 felamimail/src/read_body.php:293
+msgid "View full header"
+msgstr "Vis fulle meldingshovud"
+
+#: felamimail/src/read_body.php:299
+msgid "From:"
+msgstr "Frå:"
+
+#: felamimail/src/read_body.php:307
+msgid "Date:"
+msgstr "Dato:"
+
+#: felamimail/src/search.php:68 felamimail/src/search.php:69
+msgid "Body"
+msgstr "Meldingskropp"
+
+#: felamimail/src/search.php:71 felamimail/src/search.php:72
+msgid "Everywhere"
+msgstr "Overalt"
+
+#: felamimail/src/search.php:80 felamimail/src/search.php:81
+msgid "Cc"
+msgstr "Kopi til"
+
+#: felamimail/functions/page_header.php:83 felamimail/src/signout.php:69
+msgid "Sign Out"
+msgstr "Logg ut"
+
+#: felamimail/src/signout.php:76
+msgid "You have been successfully signed out."
+msgstr "Du er no logga ut"
+
+#: felamimail/src/signout.php:79
+msgid "Click here to log back in."
+msgstr "Klikk her for å prøve på nytt."
+
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:72
+msgid "Personal address book"
+msgstr "Personleg adressebok"
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "Ikkje eit filnamn"
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "Fila eller katalogen finst ikkje"
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "Feila ved opning av fil"
+
+#: felamimail/functions/abook_local_file.php:226
+#: felamimail/functions/abook_local_file.php:246
+#: felamimail/functions/abook_local_file.php:269
+#: felamimail/functions/abook_local_file.php:299
+#: felamimail/functions/addressbook.php:268
+#: felamimail/functions/addressbook.php:299
+msgid "Addressbook is read-only"
+msgstr "Adresseboka er ikkje skrivbar"
+
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "Brukaren '%s' finst alt"
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "Kunne ikkje låse datafila"
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "Feila ved skriving til adressebok"
+
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Brukaren '%s' finst ikkje"
+
+#: felamimail/functions/addressbook.php:29
+#, c-format
+msgid "Error opening file %s"
+msgstr "Feila ved opning av %s"
+
+#: felamimail/functions/addressbook.php:43
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Feil ved tilkobling til LDAP-serveren %s"
+
+#: felamimail/functions/addressbook.php:245
+#: felamimail/functions/addressbook.php:326
+msgid "Invalid input data"
+msgstr "Ugyldige inndata"
+
+#: felamimail/functions/addressbook.php:250
+#: felamimail/functions/addressbook.php:331
+msgid "Name is missing"
+msgstr "Namnet manglar"
+
+#: felamimail/functions/addressbook.php:254
+#: felamimail/functions/addressbook.php:335
+msgid "E-mail address is missing"
+msgstr "E-postadressa manglar"
+
+#: felamimail/functions/addressbook.php:262
+msgid "Nickname contain illegal characters"
+msgstr "Kortnamnet inneheld ugyldige teikn"
+
+#: felamimail/functions/addressbook.php:344
+#, c-format
+msgid "Addressbook %s is read-only"
+msgstr "Adresseboka %s er ikkje skrivbar"
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:147
+msgid "Unknown user or password incorrect."
+msgstr "Ukjend brukar eller feil passord."
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:148
+msgid "Click here to try again"
+msgstr "Klikk her for å prøve på nytt"
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s's WebMail system"
+msgstr "Velkomen til %s sitt WebMailsystem"
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr "Køyrer SquirrelMail versjon %s &#160; 1999-2000."
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr "Klikk her for å gå tilbake til %s"
+
+#: felamimail/functions/imap_general.php:44
+msgid "ERROR : Could not complete request."
+msgstr "FEIL: Kunne ikkje fullføre førespurnaden."
+
+#: felamimail/functions/imap_general.php:46
+msgid "Reason Given: "
+msgstr "Oppgjeven grunn: "
+
+#: felamimail/functions/imap_general.php:51
+msgid "ERROR : Bad or malformed request."
+msgstr "FEIL: Feil eller misforma førespurnad."
+
+#: felamimail/functions/imap_general.php:53
+msgid "Server responded: "
+msgstr "Serveren svarte: "
+
+#: felamimail/functions/imap_general.php:89
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Kunne ikkje koble til IMAP-serveren: %s"
+
+#: felamimail/functions/imap_general.php:102
+#, c-format
+msgid "Bad request: %s"
+msgstr "Feil i førespurnaden: %s"
+
+#: felamimail/functions/imap_general.php:160
+#, c-format
+msgid "Unknown error: %s"
+msgstr "Ukjend feil: %s"
+
+#: felamimail/functions/imap_messages.php:52
+#: felamimail/functions/imap_messages.php:76
+#: felamimail/functions/imap_messages.php:277
+#: felamimail/functions/imap_messages.php:316
+msgid "(no subject)"
+msgstr "(utan emne)"
+
+#: felamimail/functions/imap_messages.php:53
+msgid "Unknown Sender"
+msgstr "Ukjend avsendar"
+
+#: felamimail/functions/imap_messages.php:319
+msgid "(unknown sender)"
+msgstr "(ukjend avsendar)"
+
+#: felamimail/functions/imap_search.php:126
+msgid "Found"
+msgstr "Funne"
+
+#: felamimail/functions/imap_search.php:126
+msgid "messages"
+msgstr "meldingar"
+
+#: felamimail/functions/imap_search.php:135
+#: felamimail/functions/mailbox_display.php:235
+msgid "Move selected to:"
+msgstr "Flytt valde til:"
+
+#: felamimail/functions/imap_search.php:147
+#: felamimail/functions/mailbox_display.php:247
+msgid "Move"
+msgstr "Flytt"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+msgid "checked messages"
+msgstr "valde meldingar"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "Viewing messages"
+msgstr "Ser på melding"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "to"
+msgstr "til"
+
+#: felamimail/functions/mailbox_display.php:205
+#: felamimail/functions/mailbox_display.php:209
+msgid "total"
+msgstr "totalt"
+
+#: felamimail/functions/mailbox_display.php:209
+msgid "Viewing message"
+msgstr "Viser melding"
+
+#: felamimail/functions/mailbox_display.php:298
+msgid "THIS FOLDER IS EMPTY"
+msgstr "DENNE MAPPA ER TOM"
+
+#: felamimail/functions/mime.php:495
+msgid "download"
+msgstr "last ned"
+
+#: felamimail/functions/page_header.php:85
+msgid "Current Folder"
+msgstr "Vald mappe"
+
+#: felamimail/functions/page_header.php:93
+msgid "Compose"
+msgstr "Ny melding"
+
+#: felamimail/functions/prefs.php:14
+#, c-format
+msgid "Preference file %s not found. Exiting abnormally"
+msgstr "Fil for lagring av valet (%s) vart ikkje funne. Avsluttar med feil."
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:75
+#, c-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr "Fil for lagring av val (%s) vart ikkje funne. Logg ut og innatt for å opprette fila."
+
+#: felamimail/functions/prefs.php:119
+msgid "Error opening "
+msgstr "Feil ved opning"

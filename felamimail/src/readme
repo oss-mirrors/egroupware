@@ -1,0 +1,94 @@
+=================================================
+		Mime_email_class 0.5
+
+(c) Marc Logemann (loge) 2001
+
+=================================================
+
+Author: Marc Logemann
+
+Homepage: www.marc-logemann.de/phpmimeclass/
+Email: loge@moregroupware.org
+
+About:
+------
+This class is some kind of spin-of from my main open source
+project moregroupware.org, i tried several webmailers which
+were written in PHP, but there were two categories, one
+group of webmailers achieved the MIME compliance by using
+the IMAP module of PHP, the other group (one mailer to be
+exactly :)) also tried to program MIME compliance into his
+software, but this wasnt abstracted for reuse, and it wasnt
+GNU. So, basically i dont want to use something different then
+GNU, because my moregroupware package is GNU and i dont want
+to force the users to upgrade their PHP with IMAP in order to
+use my software. So here it is, a class for parsing raw emails.
+
+This class is far away from being complete, but its a start,
+things like RFC compliance can be better achieved if some more
+people start using it.
+
+
+Installation:
+-------------
+I love to write this paragraph, because this time, it will
+be easy to explain.
+
+Just copy the mime_email.class.php somewhere in your include
+path or in the same path where you have your application which
+uses this class. Then just do an include('mime_email.class.php');
+in your main PHP script
+
+
+Usage:
+------
+See "example.php" in the distribution package for detailed
+instructions on source code level.
+
+Here is a quick overview:
+
+  // creating a new object of my class
+  $md = new mime_email();
+  
+  // submit the email to the object, this is
+  // a raw email, how you will fetch it through
+  // POP3 or IMAP (must be an array, each line of
+  // the email must be an array entry)
+  $md->set_emaildata($msg_array);
+
+  // optionally you can set on entity conversion, in this case
+  // you dont need to do it in your application
+  // attributes like from, subject, emailtextplain
+  // will be converted
+  $md->set_htmlentities(true);
+  
+  // return the object to $myEmail, now you can
+  // do a lot of things in your application with
+  // your object $myEmail
+  $myEmail = $md->go_decode();
+  
+  // if you want to see if your email will be parsed
+  // correctly, use this method, true as parameter means
+  // that you also want to see the raw email which you
+  // submit with set_emaildata(); false only prints out
+  // the content of the object after parsing
+  $md->dump(true);
+
+
+License:
+--------
+GNU License, see file "license" in the distribution package
+
+
+Credits:
+--------
+So far to all my collegues at morelogs gmbh, for sending me enough
+different emails from different clients to be some kind of RFC aware
+
+Thanx to Marc Morley (author of phpost) whose source code was some kind 
+of help for me, even i rewrote nearly everything, his code was a nice start,
+it gave me the feeling not to reinvent the wheel.
+
+contributors:
+- Christoph Luehr
+- Michael Schlenger

@@ -1,0 +1,985 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-01-21 21:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: ching <ching@kiwa.com.tw>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=BIG5\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+msgid "Address Book"
+msgstr "通訊錄"
+
+msgid "Name"
+msgstr "姓名"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Info"
+msgstr "訊息"
+
+msgid "Source"
+msgstr "原始"
+
+msgid "You must login first."
+msgstr "請先登錄本系統"
+
+msgid "You need a valid user and password to access this page!"
+msgstr "請取得帳號及密碼"
+
+msgid "No persons matching your search was found"
+msgstr "沒找到"
+
+msgid "Search for"
+msgstr "尋找"
+
+msgid "in"
+msgstr "於"
+
+msgid "All address books"
+msgstr "全部通訊錄"
+
+msgid "Search"
+msgstr "搜尋"
+
+msgid "List all"
+msgstr "列出全部"
+
+msgid "Close window"
+msgstr "關閉視窗"
+
+msgid "Unable to list addresses from %s"
+msgstr "無法由 %s 列出郵寄地址"
+
+msgid "Your search failed with the following error(s)"
+msgstr "搜尋失敗, 傳回錯誤訊息如下: "
+
+msgid "Use Addresses"
+msgstr "使用通訊錄"
+
+msgid "Address Book Search"
+msgstr "通訊錄搜尋"
+
+msgid "Nickname"
+msgstr "匿稱"
+
+msgid "Must be unique"
+msgstr "不可重覆"
+
+msgid "E-mail address"
+msgstr "E-mail"
+
+msgid "First name"
+msgstr "姓"
+
+msgid "Last name"
+msgstr "名"
+
+msgid "Additional info"
+msgstr "其它資訊"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "未定義個人通訊錄, 請連絡管理人員"
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr ""
+
+msgid "Update address"
+msgstr "更新通訊錄"
+
+msgid "ERROR"
+msgstr "錯誤"
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr "不可預期的錯誤"
+
+#: felamimail/src/addressbook.php:344
+msgid "Edit selected"
+msgstr "編輯已選擇的記錄"
+
+#: felamimail/src/addressbook.php:346
+msgid "Delete selected"
+msgstr "刪除已選擇的記錄"
+
+#: felamimail/src/addressbook.php:356
+#, c-format
+msgid "Add to %s"
+msgstr "新增到 %s"
+
+#: felamimail/src/addressbook.php:359
+msgid "Add address"
+msgstr "新增"
+
+#: felamimail/src/compose.php:78
+msgid "Original Message"
+msgstr "原始郵件"
+
+#: felamimail/functions/imap_search.php:170
+#: felamimail/functions/mailbox_display.php:284
+#: felamimail/src/compose.php:79 felamimail/src/download.php:112
+#: felamimail/src/search.php:74 felamimail/src/search.php:75
+msgid "Subject"
+msgstr "主旨"
+
+msgid "From"
+msgstr "寄信人"
+
+msgid "To"
+msgstr "收信人"
+
+msgid "To:"
+msgstr "收信人:"
+
+msgid "CC:"
+msgstr "附本:"
+
+msgid "BCC:"
+msgstr "密件副本:"
+
+#: felamimail/src/compose.php:188 felamimail/src/read_body.php:284
+msgid "Subject:"
+msgstr "主旨:"
+
+#: felamimail/functions/page_header.php:95 felamimail/src/compose.php:217
+#: felamimail/src/compose.php:219 felamimail/src/compose.php:222
+msgid "Addresses"
+msgstr "通訊錄"
+
+#: felamimail/src/compose.php:224 felamimail/src/compose.php:244
+msgid "Send"
+msgstr "送出"
+
+#: felamimail/src/compose.php:250
+msgid "Attach:"
+msgstr "夾檔:"
+
+#: felamimail/src/compose.php:256
+msgid "Add"
+msgstr "新增"
+
+#: felamimail/src/compose.php:268
+msgid "Delete selected attachments"
+msgstr "刪除已選擇的附帶資料"
+
+#: felamimail/src/compose.php:293
+msgid "You have not filled in the \"To:\" field."
+msgstr "未指定收件人"
+
+#: felamimail/src/compose.php:354
+msgid "Could not move/copy file. File not attached"
+msgstr "無法複覆或搬移檔. 附加檔案失敗"
+
+#: felamimail/src/download.php:34
+msgid "Viewing a text attachment"
+msgstr "檢視附件文字檔"
+
+#: felamimail/src/download.php:37 felamimail/src/download.php:39
+#: felamimail/src/read_body.php:45
+msgid "View message"
+msgstr "看信"
+
+#: felamimail/functions/mime.php:449 felamimail/src/download.php:44
+msgid "Download this as a file"
+msgstr "下載檔案"
+
+msgid "Date"
+msgstr "日期"
+
+#: felamimail/src/left_main.php:123
+msgid "Folders"
+msgstr "信件夾"
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr "OK"
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr "OK"
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr "已刪除信件夾"
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr "已建立信件夾"
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr "已更改信件夾名稱"
+
+#: felamimail/src/folders.php:53 felamimail/src/left_main.php:126
+msgid "refresh folder list"
+msgstr "重新整理"
+
+#: felamimail/src/folders.php:70
+msgid "Mailboxes Created Successfully!"
+msgstr "信箱建立好了"
+
+#: felamimail/src/folders.php:72
+msgid "Click here"
+msgstr "按這裡"
+
+#: felamimail/src/folders.php:74
+msgid "to continue."
+msgstr "繼續"
+
+#: felamimail/src/folders.php:87
+msgid "Special Folder Options"
+msgstr "特殊信件夾選項"
+
+#: felamimail/src/folders.php:90
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr ""
+
+#: felamimail/src/folders.php:93
+msgid "Create Sent"
+msgstr "建立寄件備份夾"
+
+#: felamimail/src/folders.php:96
+msgid "Create Trash"
+msgstr "建立資源回收郵件夾"
+
+#: felamimail/src/folders.php:106
+msgid "Delete Folder"
+msgstr "建立刪除的郵件夾"
+
+msgid "Delete"
+msgstr "刪除"
+
+#: felamimail/src/folders.php:146 felamimail/src/folders.php:235
+msgid "No mailboxes found"
+msgstr "無新進的信件"
+
+#: felamimail/src/folders.php:153
+msgid "Create Folder"
+msgstr "建立郵件夾"
+
+#: felamimail/src/folders.php:158
+msgid "as a subfolder of"
+msgstr "設定為子信件夾"
+
+#: felamimail/src/folders.php:201
+msgid "Let this folder contain subfolders"
+msgstr "設定此信件夾包含子信件夾"
+
+#: felamimail/src/folders.php:204
+msgid "Create"
+msgstr "建立"
+
+#: felamimail/src/folders.php:211
+msgid "Rename a Folder"
+msgstr "更名"
+
+#: felamimail/src/folders.php:231
+msgid "Rename"
+msgstr "更名"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:263
+msgid "Unsubscribe"
+msgstr "取消"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:306
+msgid "Subscribe"
+msgstr ""
+
+#: felamimail/src/folders.php:267
+msgid "No folders were found to unsubscribe from!"
+msgstr ""
+
+#: felamimail/src/folders.php:309
+msgid "No folders were found to subscribe to!"
+msgstr ""
+
+#: felamimail/src/folders_create.php:32
+msgid "Illegal folder name.  Please select a different name."
+msgstr "不正確的信件夾名稱"
+
+#: felamimail/src/folders_create.php:32
+msgid "Click here to go back"
+msgstr "返回"
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr "更名"
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr "新名稱:"
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr "確認"
+
+#: felamimail/functions/page_header.php:103 felamimail/src/help.php:92
+msgid "Help"
+msgstr "輔助說明"
+
+#: felamimail/src/help.php:123
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr ""
+
+#: felamimail/src/help.php:129
+msgid "Some or all of the help documents are not present!"
+msgstr "輔助說明不完整"
+
+#: felamimail/src/help.php:153
+msgid "Table of Contents"
+msgstr "目錄"
+
+#: felamimail/src/help.php:193
+msgid "Top"
+msgstr "最前"
+
+#: felamimail/src/left_main.php:103
+msgid "purge"
+msgstr "清除"
+
+#: felamimail/src/login.php:60
+msgid "SquirrelMail Login"
+msgstr "登錄電子郵件收發管理系統"
+
+#: felamimail/src/login.php:67
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr "松鼠電子郵件管理系統 %s"
+
+#: felamimail/src/login.php:69
+msgid "By the SquirrelMail Development Team"
+msgstr "由松鼠電子郵件管理系統研發小組設計"
+
+#: felamimail/src/login.php:75
+#, c-format
+msgid "%s Login"
+msgstr "%s 登錄"
+
+#: felamimail/src/login.php:83
+msgid "Name:"
+msgstr "姓名:"
+
+#: felamimail/src/login.php:89
+msgid "Password:"
+msgstr "密碼:"
+
+#: felamimail/src/login.php:98
+msgid "Login"
+msgstr "登入"
+
+#: felamimail/src/move_messages.php:78
+#: felamimail/src/move_messages.php:107
+msgid "No messages were selected."
+msgstr "無選擇任何信件"
+
+#: felamimail/functions/page_header.php:99 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr "選項"
+
+#: felamimail/src/options.php:57
+msgid "Successfully saved personal information!"
+msgstr "個人資料已存檔"
+
+#: felamimail/src/options.php:69
+msgid "Successfully saved display preferences!"
+msgstr "顯示設定已存檔!"
+
+#: felamimail/src/options.php:70
+msgid "Refresh Page"
+msgstr "更新畫面"
+
+#: felamimail/src/options.php:90
+msgid "Successfully saved folder preferences!"
+msgstr "信件夾設定已存檔"
+
+#: felamimail/src/options.php:91
+msgid "Refresh Folders"
+msgstr "重新整理"
+
+#: felamimail/src/options.php:105 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr "個人資訊"
+
+#: felamimail/src/options.php:110
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "-"
+
+#: felamimail/src/options.php:117 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr "郵件規則"
+
+#: felamimail/src/options.php:122
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr "-"
+
+#: felamimail/src/options.php:131 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr "顯示設定"
+
+#: felamimail/src/options.php:136
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "-"
+
+#: felamimail/src/options.php:143 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr "信件夾設定"
+
+#: felamimail/src/options.php:148
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "-"
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr "佈景主題"
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr "語系"
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr "使用 Javascript 或 HTML 格式的通訊錄?"
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr ""
+
+msgid "HTML"
+msgstr ""
+
+msgid "Number of Messages to Index"
+msgstr "每頁顯示信件數"
+
+msgid "Wrap incoming text at"
+msgstr "信件顯示寬度之右邊界"
+
+msgid "Size of editor window"
+msgstr "編輯信件的視窗大小"
+
+msgid "Location of folder list"
+msgstr "信件夾的位置"
+
+msgid "Width of folder list"
+msgstr "信件夾框架的寬度"
+
+msgid "Location of buttons when composing"
+msgstr "寫信時按鍵的位置"
+
+msgid "Auto refresh folder list"
+msgstr "自動更新信件夾清單"
+
+msgid "Folder Path"
+msgstr ""
+
+msgid "Trash Folder:"
+msgstr "資源回收夾"
+
+msgid "Don't use Trash"
+msgstr "不使用資源回收夾"
+
+msgid "Do not use Trash"
+msgstr "不使用資源回收夾"
+
+msgid "Sent Folder:"
+msgstr "寄件匣"
+
+msgid "Don't use Sent"
+msgstr "不使用寄件匣"
+
+msgid "Do not use Sent"
+msgstr "不使用寄件匣"
+
+msgid "Unseen message notification"
+msgstr "未讀信件警示"
+
+msgid "No notification"
+msgstr "不警示"
+
+msgid "Only INBOX"
+msgstr "只有收信匣"
+
+msgid "All Folders"
+msgstr "全部信件匣"
+
+msgid "Unseen message notification type"
+msgstr "未讀信件警示型式"
+
+msgid "Only unseen"
+msgstr "只計算未讀"
+
+msgid "Unseen and Total"
+msgstr "未讀及全部"
+
+msgid "New"
+msgstr "新建"
+
+msgid "Done"
+msgstr "完成"
+
+msgid "Edit"
+msgstr "編輯"
+
+msgid "No highlighting is defined"
+msgstr "無"
+
+msgid "Identifying name"
+msgstr "規則名稱"
+
+msgid "Color"
+msgstr "顏色"
+
+msgid "Dark Blue"
+msgstr "暗藍"
+
+msgid "Dark Green"
+msgstr "暗綠"
+
+msgid "Dark Yellow"
+msgstr "暗黃"
+
+msgid "Dark Cyan"
+msgstr "暗紅"
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr "深紫"
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr "淡藍"
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr "淡綠"
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr "淡黃"
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr "淡紅"
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr "深灰"
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr "白色"
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr "其它:"
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr "符合"
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr "全名"
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr "e-mail"
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr "回信給"
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr "簽名"
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr "選擇簽名"
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr "是否使用簽名"
+
+#: felamimail/src/read_body.php:38
+msgid "Viewing full header"
+msgstr "檢視完整信件表頭內容"
+
+#: felamimail/src/read_body.php:144
+msgid "more"
+msgstr "更多..."
+
+#: felamimail/src/read_body.php:145
+msgid "less"
+msgstr "較少"
+
+msgid "Message List"
+msgstr "郵件清單"
+
+msgid "The order of the message index can be rearanged and changed to contain the headers in any order you want."
+msgstr "-"
+
+msgid "Previous"
+msgstr "往前"
+
+msgid "Next"
+msgstr "向後"
+
+#: felamimail/src/read_body.php:266
+msgid "Forward"
+msgstr "轉寄"
+
+#: felamimail/src/read_body.php:269
+msgid "Reply"
+msgstr "回覆"
+
+#: felamimail/src/read_body.php:272
+msgid "Reply All"
+msgstr "全部回覆"
+
+#: felamimail/src/read_body.php:290 felamimail/src/read_body.php:292
+msgid "View full header"
+msgstr "檢視完整信件表頭"
+
+#: felamimail/src/read_body.php:298
+msgid "From:"
+msgstr "寄信人:"
+
+#: felamimail/src/read_body.php:306
+msgid "Date:"
+msgstr "日期:"
+
+#: felamimail/src/search.php:68 felamimail/src/search.php:69
+msgid "Body"
+msgstr "本文"
+
+#: felamimail/src/search.php:71 felamimail/src/search.php:72
+msgid "Everywhere"
+msgstr ""
+
+#: felamimail/src/search.php:80 felamimail/src/search.php:81
+msgid "Cc"
+msgstr "副本"
+
+#: felamimail/functions/page_header.php:83 felamimail/src/signout.php:69
+msgid "Sign Out"
+msgstr "登出"
+
+#: felamimail/src/signout.php:76
+msgid "You have been successfully signed out."
+msgstr "您已經完成登出作業."
+
+#: felamimail/src/signout.php:79
+msgid "Click here to log back in."
+msgstr "重新登錄"
+
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:72
+msgid "Personal address book"
+msgstr "個人電話簿"
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "不正確檔名"
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "查無此檔案或檔案夾"
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "開啟失敗"
+
+msgid "Addressbook is read-only"
+msgstr "通訊錄目前為唯讀狀態"
+
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "用戶 '%s' 已存在"
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "無法鎖定資料檔"
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "寫入通錄錄失敗"
+
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "無此帳號: %s "
+
+#: felamimail/functions/addressbook.php:29
+#, c-format
+msgid "Error opening file %s"
+msgstr "開檔錯誤 %s"
+
+#: felamimail/functions/addressbook.php:43
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "無法啟始 LDAP 伺服器 %s:"
+
+#: felamimail/functions/addressbook.php:245
+#: felamimail/functions/addressbook.php:326
+msgid "Invalid input data"
+msgstr "輸入資料不正確"
+
+#: felamimail/functions/addressbook.php:250
+#: felamimail/functions/addressbook.php:331
+msgid "Name is missing"
+msgstr "無姓名"
+
+#: felamimail/functions/addressbook.php:254
+#: felamimail/functions/addressbook.php:335
+msgid "E-mail address is missing"
+msgstr "無 E-mail "
+
+#: felamimail/functions/addressbook.php:262
+msgid "Nickname contain illegal characters"
+msgstr "匿稱包括不合法字元"
+
+#: felamimail/functions/addressbook.php:344
+msgid "Addressbook $bnum is read-only"
+msgstr ""
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:144
+msgid "Unknown user or password incorrect."
+msgstr "帳號或密碼錯誤"
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:145
+msgid "Click here to try again"
+msgstr "再試一次"
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s 's WebMail system"
+msgstr "歡迎進入 %s 電子郵件收發管理系統"
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr "執行松鼠電子郵件糸統 %s (c) 1999-2001"
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr "點這裡回到 %s"
+
+#: felamimail/functions/imap_general.php:44
+msgid "ERROR : Could not complete request."
+msgstr "錯誤 : 無法完成指定作業"
+
+#: felamimail/functions/imap_general.php:46
+msgid "Reason Given: "
+msgstr ""
+
+#: felamimail/functions/imap_general.php:51
+msgid "ERROR : Bad or malformed request."
+msgstr ""
+
+#: felamimail/functions/imap_general.php:53
+msgid "Server responded: "
+msgstr "伺服器回應: "
+
+#: felamimail/functions/imap_general.php:86
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "無法連接 IMAP 主機: %s."
+
+#: felamimail/functions/imap_general.php:99
+#, c-format
+msgid "Bad request: %s"
+msgstr "錯誤的要求: %s"
+
+#: felamimail/functions/imap_general.php:157
+#, c-format
+msgid "Unknown error: %s"
+msgstr "不明錯誤: %s"
+
+#: felamimail/functions/imap_messages.php:52
+#: felamimail/functions/imap_messages.php:76
+#: felamimail/functions/imap_messages.php:277
+#: felamimail/functions/imap_messages.php:316
+msgid "(no subject)"
+msgstr "(無主旨)"
+
+#: felamimail/functions/imap_messages.php:53
+msgid "Unknown Sender"
+msgstr "匿名信"
+
+#: felamimail/functions/imap_messages.php:319
+msgid "(unknown sender)"
+msgstr "匿名信"
+
+#: felamimail/functions/imap_search.php:126
+msgid "Found"
+msgstr "找到"
+
+#: felamimail/functions/imap_search.php:126
+msgid "messages"
+msgstr "訊息"
+
+#: felamimail/functions/imap_search.php:135
+#: felamimail/functions/mailbox_display.php:235
+msgid "Move selected to:"
+msgstr "搬移到:"
+
+#: felamimail/functions/imap_search.php:147
+#: felamimail/functions/mailbox_display.php:247
+msgid "Move"
+msgstr "搬移"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+msgid "checked messages"
+msgstr "檢查新信"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "Viewing messages"
+msgstr "信件編號:"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "to"
+msgstr " - "
+
+#: felamimail/functions/mailbox_display.php:205
+#: felamimail/functions/mailbox_display.php:209
+msgid "total"
+msgstr "合計"
+
+#: felamimail/functions/mailbox_display.php:209
+msgid "Viewing message"
+msgstr "看信"
+
+#: felamimail/functions/mailbox_display.php:298
+msgid "THIS FOLDER IS EMPTY"
+msgstr "本信件夾是空的"
+
+#: felamimail/functions/mime.php:495
+msgid "download"
+msgstr "下載"
+
+#: felamimail/functions/page_header.php:85
+msgid "Current Folder"
+msgstr "目前的信件夾"
+
+#: felamimail/functions/page_header.php:93
+msgid "Compose"
+msgstr "寫信"
+
+#: felamimail/functions/prefs.php:14
+msgid "Preference file "
+msgstr "設定檔"
+
+msgid " not found.  Exiting abnormally"
+msgstr " 沒找到(發生一些不可預期的問題). "
+
+msgid "Preference file, "
+msgstr "設定檔, "
+
+msgid "Error opening "
+msgstr "無法開啟"
+
+msgid "Select All"
+msgstr "全選"
+
+msgid "Unselect All"
+msgstr "取消全選"
+
+msgid "Move selected to:"
+msgstr "信件搬移："
+
+msgid "Index Order"
+msgstr "郵件清單設定"
+
+msgid "No folders found"
+msgstr "無"
+
+msgid "Return to options page"
+msgstr "上頁"
+
+msgid "up"
+msgstr "向上移"
+
+msgid "down"
+msgstr "向下移"
+
+msgid "remove"
+msgstr "移除"
+
+msgid "Checkbox"
+msgstr "選取欄"
+
+msgid "Flags"
+msgstr "旗標"
+
+msgid "Default"
+msgstr "預設值"
+
+msgid "Before headers"
+msgstr "信件表頭上方"
+
+msgid "Between headers and message body"
+msgstr "信件表頭及信件本文間"
+
+msgid "After message body"
+msgstr "本文下方"
+
+msgid "Left"
+msgstr "左方"
+
+msgid "Right"
+msgstr "右方"
+
+)

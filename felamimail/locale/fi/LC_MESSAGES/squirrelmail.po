@@ -1,0 +1,1174 @@
+# Finnish Localisation for SquirrelMail
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# Teemu Junnila <teejun@vallcom.com>, 2001.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-01-20 02:15-0500\n"
+"PO-Revision-Date: 2001-01-29 23:15+2\n"
+"Last-Translator: Teemu Junnila <teejun@vallcom.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: felamimail/src/addrbook_popup.php:37
+msgid "Address Book"
+msgstr "Osoitekirja"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:311
+msgid "Name"
+msgstr "Nimi"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:312
+msgid "E-mail"
+msgstr "Eposti"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:313
+msgid "Info"
+msgstr "Tietoja"
+
+#: felamimail/src/addrbook_search.php:99
+#: felamimail/src/addrbook_search_html.php:78
+msgid "Source"
+msgstr "Lähde"
+
+#: felamimail/src/addrbook_search.php:137 felamimail/src/index.php:23
+#: felamimail/src/search.php:14 felamimail/src/webmail.php:26
+msgid "You need a valid user and password to access this page!"
+msgstr "Tarvitset voimassaolevan käyttäjätunnuksen ja salasanan!"
+
+#: felamimail/src/addrbook_search.php:139 felamimail/src/index.php:25
+#: felamimail/src/search.php:16 felamimail/src/signout.php:58
+#: felamimail/src/webmail.php:28
+msgid "Click here to log back in."
+msgstr "Klikkaa tästä kirjautuaksesi uudestaan sisään."
+
+#: felamimail/src/addrbook_search.php:174
+#: felamimail/src/addrbook_search.php:258
+#: felamimail/src/addrbook_search_html.php:210
+msgid "No persons matching your search was found"
+msgstr "Ketään hakemaasi ei löytynyt"
+
+#: felamimail/src/addrbook_search.php:187
+#: felamimail/src/addrbook_search_html.php:135
+msgid "Search for"
+msgstr "Etsi"
+
+#: felamimail/src/addrbook_search.php:194
+#: felamimail/src/addrbook_search_html.php:143
+msgid "in"
+msgstr "seuraavista:"
+
+#: felamimail/src/addrbook_search.php:196
+#: felamimail/src/addrbook_search_html.php:146
+msgid "All address books"
+msgstr "Kaikista osoitekirjoista"
+
+#: felamimail/functions/page_header.php:87
+#: felamimail/src/addrbook_search.php:206
+#: felamimail/src/addrbook_search_html.php:158
+#: felamimail/src/search.php:45 felamimail/src/search.php:99
+msgid "Search"
+msgstr "Etsi"
+
+#: felamimail/src/addrbook_search.php:208
+#: felamimail/src/addrbook_search_html.php:160
+msgid "List all"
+msgstr "Näytä kaikki"
+
+#: felamimail/src/addrbook_search.php:211
+msgid "Close window"
+msgstr "Sulje ikkuna"
+
+#: felamimail/src/addrbook_search.php:229
+#: felamimail/src/addrbook_search_html.php:183
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr "Osoitteita ei löytynyt: %s"
+
+#: felamimail/src/addrbook_search.php:251
+#: felamimail/src/addrbook_search_html.php:206
+msgid "Your search failed with the following error(s)"
+msgstr "Hakusi epäonnistui seuraavin virheilmoituksin"
+
+#: felamimail/src/addrbook_search_html.php:101
+msgid "Use Addresses"
+msgstr "Käytä Osoitteita"
+
+#: felamimail/src/addrbook_search_html.php:125
+msgid "Address Book Search"
+msgstr "Haku Osoitekirjasta"
+
+#: felamimail/src/addrbook_search_html.php:219
+msgid "Return"
+msgstr "Paluu"
+
+#: felamimail/src/addressbook.php:46 felamimail/src/addressbook.php:310
+msgid "Nickname"
+msgstr "Lempinimi"
+
+#: felamimail/src/addressbook.php:51
+msgid "Must be unique"
+msgstr "Täytyy olla ainutlaatuinen"
+
+#: felamimail/src/addressbook.php:53
+msgid "E-mail address"
+msgstr "Epostiosoite"
+
+#: felamimail/src/addressbook.php:58
+msgid "First name"
+msgstr "Etunimi"
+
+#: felamimail/src/addressbook.php:63
+msgid "Last name"
+msgstr "Sukunimi"
+
+#: felamimail/src/addressbook.php:68
+msgid "Additional info"
+msgstr "Lisätietoja"
+
+#: felamimail/src/addressbook.php:87
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Osoitekirjaa ei löydy. Ota yhteys Administraattoriin."
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr "Osoitteita voi muokata vain yksi kerrallaan"
+
+#: felamimail/src/addressbook.php:196 felamimail/src/addressbook.php:199
+#: felamimail/src/addressbook.php:228 felamimail/src/addressbook.php:231
+msgid "Update address"
+msgstr "Päivitä osoite"
+
+#: felamimail/functions/display_messages.php:63
+#: felamimail/functions/display_messages.php:79
+#: felamimail/functions/imap_general.php:158
+#: felamimail/src/addressbook.php:219 felamimail/src/addressbook.php:269
+msgid "ERROR"
+msgstr "VIRHE"
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr "Tuntematon virhe"
+
+#: felamimail/src/addressbook.php:348
+msgid "Edit selected"
+msgstr "Muokkaa valittuja"
+
+#: felamimail/src/addressbook.php:350
+msgid "Delete selected"
+msgstr "Poista valitut"
+
+#: felamimail/src/addressbook.php:360
+#, c-format
+msgid "Add to %s"
+msgstr "Lisää (%s)"
+
+#: felamimail/src/addressbook.php:363
+msgid "Add address"
+msgstr "Lisää osoite"
+
+#: felamimail/src/compose.php:101
+msgid "Original Message"
+msgstr "Alkuperäinen viesti"
+
+#: felamimail/functions/mailbox_display.php:528
+#: felamimail/src/compose.php:102 felamimail/src/download.php:120
+#: felamimail/src/options_order.php:50 felamimail/src/search.php:84
+#: felamimail/src/search.php:85
+msgid "Subject"
+msgstr "Aihe"
+
+#: felamimail/functions/mailbox_display.php:503
+#: felamimail/src/compose.php:103 felamimail/src/download.php:121
+#: felamimail/src/options_order.php:48 felamimail/src/search.php:87
+#: felamimail/src/search.php:88
+msgid "From"
+msgstr "Lähettäjä"
+
+#: felamimail/functions/mailbox_display.php:501
+#: felamimail/src/compose.php:104 felamimail/src/download.php:122
+#: felamimail/src/search.php:93 felamimail/src/search.php:94
+msgid "To"
+msgstr "Vastaanottaja"
+
+#: felamimail/src/compose.php:231 felamimail/src/read_body.php:369
+msgid "To:"
+msgstr "Vastaanottaja:"
+
+#: felamimail/src/compose.php:239
+msgid "CC:"
+msgstr "Kopio (CC):"
+
+#: felamimail/src/compose.php:247
+msgid "BCC:"
+msgstr "Piilokopio (BCC):"
+
+#: felamimail/src/compose.php:255 felamimail/src/read_body.php:339
+msgid "Subject:"
+msgstr "Aihe:"
+
+#: felamimail/src/compose.php:297 felamimail/src/compose.php:343
+msgid "Send"
+msgstr "Lähetä"
+
+#: felamimail/src/compose.php:303
+msgid "Attach:"
+msgstr "Liitä:"
+
+#: felamimail/src/compose.php:309 felamimail/src/options_order.php:133
+msgid "Add"
+msgstr "Lisää"
+
+#: felamimail/src/compose.php:321
+msgid "Delete selected attachments"
+msgstr "Poista valitut liitteet"
+
+#: felamimail/functions/page_header.php:81 felamimail/src/compose.php:336
+#: felamimail/src/compose.php:338 felamimail/src/compose.php:341
+msgid "Addresses"
+msgstr "Osoitteet"
+
+#: felamimail/src/compose.php:366
+msgid "You have not filled in the \"To:\" field."
+msgstr "Et ole valinnut Vastaanottajaa."
+
+#: felamimail/src/compose.php:412 felamimail/src/compose.php:446
+msgid "Could not move/copy file. File not attached"
+msgstr "Tiedoston siirto/kopiointi epäonnistu. Tiedostoa ei liittetty viestiin"
+
+#: felamimail/src/download.php:39
+msgid "Viewing a text attachment"
+msgstr "Näytössä tekstiliite"
+
+#: felamimail/src/download.php:42 felamimail/src/download.php:44
+#: felamimail/src/read_body.php:48
+msgid "View message"
+msgstr "Näytä viesti"
+
+#: felamimail/functions/mime.php:506 felamimail/src/download.php:49
+msgid "Download this as a file"
+msgstr "Lataa tämä tiedostona"
+
+#: felamimail/functions/mailbox_display.php:515
+#: felamimail/src/download.php:123 felamimail/src/options_order.php:49
+msgid "Date"
+msgstr "Päiväys"
+
+#: felamimail/functions/page_header.php:83 felamimail/src/folders.php:35
+#: felamimail/src/left_main.php:129
+msgid "Folders"
+msgstr "Kansiot"
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr "Tilaus onnistui!"
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr "Peruutus onnistui!"
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr "Kansio poistettu!"
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr "Kansio luotu!"
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr "Nimi vaihdettu!"
+
+#: felamimail/src/folders.php:61
+msgid "Folders created successfully!"
+msgstr "Kansiot luotu!"
+
+#: felamimail/src/folders.php:64 felamimail/src/left_main.php:132
+msgid "refresh folder list"
+msgstr "päivitä lista"
+
+#: felamimail/src/folders.php:77
+msgid "Special Folder Options"
+msgstr "Erikoiskansio-ominaisuudet"
+
+#: felamimail/src/folders.php:80
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr ""
+"Tarvitset erikoiskansion. Klikkaa valintaruutua ja senjälkeen Luo-nappia "
+"ja SquirrelMail antaa sinulle mahdollisuuden käyttää kaikkia mahdollisia "
+"ominaisuuksia."
+
+#: felamimail/src/folders.php:83
+msgid "Create Sent"
+msgstr "Luo Lähetetyt"
+
+#: felamimail/src/folders.php:86
+msgid "Create Trash"
+msgstr "Luo Paperikori"
+
+#: felamimail/src/folders.php:88 felamimail/src/folders.php:205
+msgid "Create"
+msgstr "Luo"
+
+#: felamimail/src/folders.php:96
+msgid "Delete Folder"
+msgstr "Poista Kansio"
+
+#: felamimail/functions/mailbox_display.php:477
+#: felamimail/src/folders.php:137 felamimail/src/options_highlight.php:73
+#: felamimail/src/read_body.php:295
+msgid "Delete"
+msgstr "Poista"
+
+#: felamimail/src/folders.php:141 felamimail/src/folders.php:237
+msgid "No folders found"
+msgstr "Kansioita ei löydy"
+
+#: felamimail/src/folders.php:148
+msgid "Create Folder"
+msgstr "Luo Kansio"
+
+#: felamimail/src/folders.php:153
+msgid "as a subfolder of"
+msgstr "alikansiona seuraavalle: "
+
+#: felamimail/src/folders.php:202
+msgid "Let this folder contain subfolders"
+msgstr "Tämä kansio voi sisältää alikansioita"
+
+#: felamimail/src/folders.php:212
+msgid "Rename a Folder"
+msgstr "Muuta Kansion nimeä"
+
+#: felamimail/src/folders.php:233
+msgid "Rename"
+msgstr "Muuta nimeä"
+
+#: felamimail/src/folders.php:246 felamimail/src/folders.php:265
+msgid "Unsubscribe"
+msgstr "Peruuta"
+
+#: felamimail/src/folders.php:246 felamimail/src/folders.php:308
+msgid "Subscribe"
+msgstr "Tilaa"
+
+#: felamimail/src/folders.php:269
+msgid "No folders were found to unsubscribe from!"
+msgstr "Ei löydy kansioita joissa on tilauksia!"
+
+#: felamimail/src/folders.php:311
+msgid "No folders were found to subscribe to!"
+msgstr "Ei löydy kansioita joihin pystyy tilaamaan!"
+
+#: felamimail/src/folders_create.php:33
+msgid "Illegal folder name.  Please select a different name."
+msgstr "Epäkelpo nimi kansiolle. Ole hyvä ja valitse joku toinen nimi."
+
+#: felamimail/src/folders_create.php:33
+msgid "Click here to go back"
+msgstr "Klikkaa tästä päästäksesi takaisin"
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr "Muuta kansion nimi"
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr "Uusi nimi:"
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr "Aktivoi"
+
+#: felamimail/functions/page_header.php:89 felamimail/src/help.php:92
+msgid "Help"
+msgstr "Apua"
+
+#: felamimail/src/help.php:126
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr ""
+"Apua ei valitettavasti ole käännetty suomeksi. Apu näytetään englanniksi "
+
+#: felamimail/src/help.php:132
+msgid "Some or all of the help documents are not present!"
+msgstr "Joku tai kaikki dokumentit puuttuvat!"
+
+#: felamimail/src/help.php:156 felamimail/src/help.php:175
+msgid "Table of Contents"
+msgstr "Sisältö"
+
+#: felamimail/functions/mailbox_display.php:329
+#: felamimail/functions/mailbox_display.php:333
+#: felamimail/functions/mailbox_display.php:337
+#: felamimail/src/help.php:173 felamimail/src/help.php:174
+#: felamimail/src/read_body.php:308 felamimail/src/read_body.php:310
+msgid "Previous"
+msgstr "Edellinen"
+
+#: felamimail/functions/mailbox_display.php:330
+#: felamimail/functions/mailbox_display.php:334
+#: felamimail/functions/mailbox_display.php:338
+#: felamimail/src/help.php:176 felamimail/src/help.php:177
+#: felamimail/src/read_body.php:312 felamimail/src/read_body.php:314
+msgid "Next"
+msgstr "Seuraava"
+
+#: felamimail/src/help.php:196
+msgid "Top"
+msgstr "Alkuun"
+
+#: felamimail/src/left_main.php:109
+msgid "purge"
+msgstr "tyhjennä"
+
+#: felamimail/src/login.php:41 felamimail/src/login.php:83
+msgid "Login"
+msgstr "Kirjaudu sisään"
+
+#: felamimail/src/login.php:52
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail versio %s"
+
+#: felamimail/src/login.php:54
+msgid "By the SquirrelMail Development Team"
+msgstr "SquirrelMailin kehitystiimiltä"
+
+#: felamimail/src/login.php:60
+#, c-format
+msgid "%s Login"
+msgstr "Kirjaudu sisään"
+
+#: felamimail/src/login.php:68
+msgid "Name:"
+msgstr "Nimi:"
+
+#: felamimail/src/login.php:74
+msgid "Password:"
+msgstr "Tunnussana:"
+
+#: felamimail/src/move_messages.php:85
+#: felamimail/src/move_messages.php:114
+#: felamimail/src/move_messages.php:143
+msgid "No messages were selected."
+msgstr "Ei valittuja viestejä."
+
+#: felamimail/functions/page_header.php:85 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_order.php:41
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr "Asetukset"
+
+#: felamimail/src/options.php:59
+msgid "Successfully saved personal information!"
+msgstr "Henkilötiedot talletettu!"
+
+#: felamimail/src/options.php:75
+msgid "Successfully saved display preferences!"
+msgstr "Näyttöasetukset talletettu!"
+
+#: felamimail/src/options.php:76
+msgid "Refresh Page"
+msgstr "Päivitä Sivu"
+
+#: felamimail/src/options.php:97
+msgid "Successfully saved folder preferences!"
+msgstr "Kansioasetukset talletettu!"
+
+#: felamimail/src/options.php:98
+msgid "Refresh Folder List"
+msgstr "Päivitä Kansiolista"
+
+#: felamimail/src/options.php:112 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr "Henkilötiedot"
+
+#: felamimail/src/options.php:117
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"Sisältää henkilötietoja, nimesi, epostiosoitteesi jne."
+
+#: felamimail/src/options.php:124 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr "Viestien Merkintä"
+
+#: felamimail/src/options.php:129
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Listatut viestit voidaan määritellä näytettäväksi erilaisin taustavärein. "
+"Tämä helpottaa erottamaan esimerkiksi sen keneltä viesti on tullut. "
+"Erityisen sopiva viestilistojen yhteydessä"
+
+#: felamimail/src/options.php:136 felamimail/src/options_order.php:41
+msgid "Index Order"
+msgstr "Indeksijärjestys"
+
+#: felamimail/src/options.php:141
+msgid ""
+"The order of the message index can be rearanged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Viestilista voidaan määritellä näyttämään otsikkotiedot halutussa "
+"järjestyksessä."
+
+#: felamimail/src/options.php:150 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr "Näyttöasetukset"
+
+#: felamimail/src/options.php:155
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"Voit vaihtaa SquirrelMailin näytön värejä sekä kielen jne."
+
+#: felamimail/src/options.php:162 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr "Kansioasetukset"
+
+#: felamimail/src/options.php:167
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"Nämä asetukset määrittävät sen miten kansiot näytetään ja miten niitä "
+"käsitellään."
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr "Teema"
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr "Kieli"
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr "Käytetäänko Javascipt- vai HTML-osoitekirjaa?"
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr ""
+
+#: felamimail/src/options_display.php:79
+#: felamimail/src/options_display.php:82
+msgid "HTML"
+msgstr ""
+
+#: felamimail/src/options_display.php:88
+msgid "Number of Messages to Index"
+msgstr "Viestien lukumäärä indeksissä"
+
+#: felamimail/src/options_display.php:99
+msgid "Wrap incoming text at"
+msgstr "Näytettävien kirjaimien määrä riviä kohti"
+
+#: felamimail/src/options_display.php:110
+msgid "Size of editor window"
+msgstr "Editori-ikkunan koko"
+
+#: felamimail/src/options_display.php:121
+msgid "Location of folder list"
+msgstr "Kansiolistan paikka"
+
+#: felamimail/src/options_display.php:125
+msgid "Left"
+msgstr "Vasemmalla"
+
+#: felamimail/src/options_display.php:128
+msgid "Right"
+msgstr "Oikealla"
+
+#: felamimail/src/options_display.php:133
+msgid "Location of buttons when composing"
+msgstr "Nappien paikka viestiä kirjoitettaessa"
+
+#: felamimail/src/options_display.php:137
+msgid "Before headers"
+msgstr "Ennen otsikkoja"
+
+#: felamimail/src/options_display.php:140
+msgid "Between headers and message body"
+msgstr "Otsikoiden ja viestin välissä"
+
+#: felamimail/src/options_display.php:143
+msgid "After message body"
+msgstr "Viestin jälkeen"
+
+#: felamimail/src/options_display.php:148
+msgid "Width of folder list"
+msgstr "Kansiolistan leveys"
+
+#: felamimail/src/options_display.php:202
+msgid "Auto refresh folder list"
+msgstr "Kansiolistan automaattipäivitysaika"
+
+#: felamimail/src/options_display.php:205
+msgid "Seconds"
+msgstr "Sekuntia"
+
+#: felamimail/src/options_display.php:206
+msgid "None"
+msgstr "Ei päivitetä"
+
+#: felamimail/src/options_display.php:207
+msgid "Minute"
+msgstr "Minuutti"
+
+#: felamimail/src/options_display.php:208
+msgid "Minutes"
+msgstr "Minuuttia"
+
+#: felamimail/src/options_folder.php:48
+msgid "Folder Path"
+msgstr "Kansion hakemistopolku"
+
+#: felamimail/src/options_folder.php:61
+msgid "Trash Folder:"
+msgstr "Paperikori:"
+
+#: felamimail/src/options_folder.php:65
+msgid "Don't use Trash"
+msgstr "Älä käytä Paperikoria"
+
+#: felamimail/src/options_folder.php:67
+msgid "Do not use Trash"
+msgstr "Älä käytä Paperikoria"
+
+#: felamimail/src/options_folder.php:89
+msgid "Sent Folder:"
+msgstr "Lähetettyjen Kansio:"
+
+#: felamimail/src/options_folder.php:93
+msgid "Don't use Sent"
+msgstr "Älä käytä Lähetettyjä"
+
+#: felamimail/src/options_folder.php:95
+msgid "Do not use Sent"
+msgstr "Älä käytä Lähetettyjä"
+
+#: felamimail/src/options_folder.php:117
+msgid "Unseen message notification"
+msgstr "Ei-luettujen viestien esitys"
+
+#: felamimail/src/options_folder.php:120
+msgid "No notification"
+msgstr "Ei esitetä"
+
+#: felamimail/src/options_folder.php:121
+msgid "Only INBOX"
+msgstr "Vain Saapuneet"
+
+#: felamimail/src/options_folder.php:122
+msgid "All Folders"
+msgstr "Kaikki Kansiot"
+
+#: felamimail/src/options_folder.php:129
+msgid "Unseen message notification type"
+msgstr "Ei-luettujen vistien esityksen tyyppi"
+
+#: felamimail/src/options_folder.php:132
+msgid "Only unseen"
+msgstr "Vain ei-luetut"
+
+#: felamimail/src/options_folder.php:133
+msgid "Unseen and Total"
+msgstr "Ei-luetut ja Kaikkiaan"
+
+#: felamimail/src/options_highlight.php:66
+msgid "New"
+msgstr "Uusi"
+
+#: felamimail/src/options_highlight.php:67
+msgid "Done"
+msgstr "Valmis"
+
+#: felamimail/src/options_highlight.php:73
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: felamimail/src/options_highlight.php:86
+msgid "No highlighting is defined"
+msgstr "Merkintäesitystä ei ole määritelty"
+
+#: felamimail/src/options_highlight.php:124
+msgid "Identifying name"
+msgstr "Tunnistukseen käytettävä nimi"
+
+#: felamimail/src/options_highlight.php:137
+msgid "Color"
+msgstr "Väri"
+
+#: felamimail/src/options_highlight.php:141
+msgid "Dark Blue"
+msgstr "Tummansininen"
+
+#: felamimail/src/options_highlight.php:142
+msgid "Dark Green"
+msgstr "Tummanvihreä"
+
+#: felamimail/src/options_highlight.php:143
+msgid "Dark Yellow"
+msgstr "Tummankeltainen"
+
+#: felamimail/src/options_highlight.php:144
+msgid "Dark Cyan"
+msgstr "Tumma Cyan"
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr "Tumma Magenta"
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr "Vaaleansininen"
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr "Vaaleanvihreä"
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr "Vaaleankeltainen"
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr "Vaalea Cyan"
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr "Vaalea Magenta"
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr "Tummanharmaa"
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr "Harmaa"
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr "Vaaleanharmaa"
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr "Valkoinen"
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr "Muu:"
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr "Esim. 63qq7f"
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr "Täsmää"
+
+#: felamimail/src/options_order.php:47
+msgid "Checkbox"
+msgstr "Kontrolliruutu"
+
+#: felamimail/src/options_order.php:51
+msgid "Flags"
+msgstr "Liput"
+
+#: felamimail/functions/mailbox_display.php:539
+#: felamimail/src/options_order.php:52
+msgid "Size"
+msgstr "Koko"
+
+#: felamimail/src/options_order.php:90
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index.  You can add, remove, and move columns around to customize them to "
+"fit your needs."
+msgstr ""
+"Indeksijärjestys on sarakkeiden esittämisjärjestys. Voit lisätä, poistaa "
+"ja siirtää sarakkeita tarpeen mukaan."
+
+#: felamimail/src/options_order.php:100
+msgid "up"
+msgstr "ylös"
+
+#: felamimail/src/options_order.php:102
+msgid "down"
+msgstr "alas"
+
+#: felamimail/src/options_order.php:107
+msgid "remove"
+msgstr "poista"
+
+#: felamimail/src/options_order.php:137
+msgid "Return to options page"
+msgstr "Paluu asetussivulle"
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr "Koko Nimi"
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr "Epostiosoite"
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr "Vastaus Osoitteeseen"
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr "Allekirjoitus"
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr "Käytä allekirjoitusta"
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr "Käytetäänkö allekirjoitusta?"
+
+#: felamimail/src/read_body.php:41
+msgid "Viewing full header"
+msgstr "Näytössä kaikki otsaketiedot"
+
+#: felamimail/src/read_body.php:198
+msgid "more"
+msgstr "lisää"
+
+#: felamimail/src/read_body.php:199
+msgid "less"
+msgstr "vähemmän"
+
+#: felamimail/src/read_body.php:288
+msgid "Message List"
+msgstr "Viestilista"
+
+#: felamimail/src/read_body.php:321
+msgid "Forward"
+msgstr "Edelleenlähetys"
+
+#: felamimail/src/read_body.php:324
+msgid "Reply"
+msgstr "Vastaus"
+
+#: felamimail/src/read_body.php:327
+msgid "Reply All"
+msgstr "Vastaus kaikille"
+
+#: felamimail/src/read_body.php:345 felamimail/src/read_body.php:347
+msgid "View full header"
+msgstr "Näytä kaikki otsaketiedot"
+
+#: felamimail/src/read_body.php:353
+msgid "From:"
+msgstr "Lähettäjä:"
+
+#: felamimail/src/read_body.php:361
+msgid "Date:"
+msgstr "Päiväys:"
+
+#: felamimail/functions/auth.php:14 felamimail/src/search.php:6
+msgid "You must login first."
+msgstr "Sinun pitää kirjoittautua sisää ensin."
+
+#: felamimail/src/search.php:78 felamimail/src/search.php:79
+msgid "Body"
+msgstr "Viesti"
+
+#: felamimail/src/search.php:81 felamimail/src/search.php:82
+msgid "Everywhere"
+msgstr "Kaikki kentät"
+
+#: felamimail/src/search.php:90 felamimail/src/search.php:91
+msgid "Cc"
+msgstr ""
+
+#: felamimail/functions/page_header.php:69 felamimail/src/signout.php:48
+msgid "Sign Out"
+msgstr "Poistu"
+
+#: felamimail/src/signout.php:55
+msgid "You have been successfully signed out."
+msgstr "Olet poistunut systeemistä."
+
+#: felamimail/functions/abook_database.php:45
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:84
+msgid "Personal address book"
+msgstr "Henkilökohtainen osoitekirja"
+
+#: felamimail/functions/abook_database.php:84
+#: felamimail/functions/abook_database.php:120
+#: felamimail/functions/abook_database.php:152
+#: felamimail/functions/abook_database.php:181
+#: felamimail/functions/abook_database.php:227
+#: felamimail/functions/abook_database.php:256
+#: felamimail/functions/abook_database.php:292
+#, c-format
+msgid "Database error: %s"
+msgstr "Tietokantavirhe: %s"
+
+#: felamimail/functions/abook_database.php:200
+#: felamimail/functions/abook_database.php:234
+#: felamimail/functions/abook_database.php:263
+#: felamimail/functions/abook_local_file.php:226
+#: felamimail/functions/abook_local_file.php:246
+#: felamimail/functions/abook_local_file.php:269
+#: felamimail/functions/abook_local_file.php:299
+#: felamimail/functions/addressbook.php:269
+#: felamimail/functions/addressbook.php:300
+#: felamimail/functions/addressbook.php:351
+msgid "Addressbook is read-only"
+msgstr "Osoitekirja on kirjoitussuojattu"
+
+#: felamimail/functions/abook_database.php:208
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "Käyttäjä '%s' on jo olemassa"
+
+#: felamimail/functions/abook_database.php:271
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Käyttäjää '%s' ei ole olemassa"
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "Virheellinen tiedostonimi"
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "Tiedostoa tai hakemistoa ei ole olemassa"
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "Avaus epäonnistui"
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "Tietokantatiedoston lukistus epäonnistui"
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "Osoitekirjaan kirjoittaminen epäonnistui"
+
+#: felamimail/functions/addressbook.php:30
+#, c-format
+msgid "Error opening file %s"
+msgstr "Virhe tiedoston %s avauksessa"
+
+#: felamimail/functions/addressbook.php:44
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Virhe LDAP serverin initialisoinnissa:"
+
+#: felamimail/functions/addressbook.php:246
+#: felamimail/functions/addressbook.php:327
+msgid "Invalid input data"
+msgstr "Virhe syöttötiedossa"
+
+#: felamimail/functions/addressbook.php:251
+#: felamimail/functions/addressbook.php:332
+msgid "Name is missing"
+msgstr "Nimi puuttuu"
+
+#: felamimail/functions/addressbook.php:255
+#: felamimail/functions/addressbook.php:336
+msgid "E-mail address is missing"
+msgstr "Epostiosoite puuttuu"
+
+#: felamimail/functions/addressbook.php:263
+#: felamimail/functions/addressbook.php:341
+msgid "Nickname contain illegal characters"
+msgstr "Lempinimessä kiellettyjä merkkejä"
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:166
+msgid "Unknown user or password incorrect."
+msgstr "Tuntematon käyttäjä tai väärä tunnussana."
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:167
+msgid "Click here to try again"
+msgstr "Klikaa tästä ja yritä uudestaan"
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s's WebMail system"
+msgstr "Tervetuloa %s WebMailiin"
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr "Käytössä SquirrelMail versio %s (c) 1999-2000."
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr "Klikkaa tästä palaataksesi (%s)"
+
+#: felamimail/functions/imap_general.php:69
+msgid "ERROR : Could not complete request."
+msgstr "VIRHE : Pyyntöä ei voida täyttää."
+
+#: felamimail/functions/imap_general.php:71
+msgid "Reason Given: "
+msgstr "Syyksi Annettu: "
+
+#: felamimail/functions/imap_general.php:78
+msgid "ERROR : Bad or malformed request."
+msgstr "VIRHE : Huono tai väärinmuotoiltu pyyntö."
+
+#: felamimail/functions/imap_general.php:80
+msgid "Server responded: "
+msgstr "Serveri vastasi: "
+
+#: felamimail/functions/imap_general.php:106
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Virhe yhteydenotossa IMAP serveriin: %s."
+
+#: felamimail/functions/imap_general.php:123
+#, c-format
+msgid "Bad request: %s"
+msgstr "Huono pyyntö: %s"
+
+#: felamimail/functions/imap_general.php:125
+#, c-format
+msgid "Unknown error: %s"
+msgstr "Tuntematon virhe: %s"
+
+#: felamimail/functions/imap_general.php:127
+msgid "Read data:"
+msgstr "Lue tietoja:"
+
+#: felamimail/functions/imap_messages.php:62
+#: felamimail/functions/imap_messages.php:86
+#: felamimail/functions/imap_messages.php:311
+#: felamimail/functions/imap_messages.php:350
+#: felamimail/functions/mailbox_display.php:26
+msgid "(no subject)"
+msgstr "(tyhjä)"
+
+#: felamimail/functions/imap_messages.php:63
+msgid "Unknown Sender"
+msgstr "Tuntematon Lähettäjä"
+
+#: felamimail/functions/imap_messages.php:353
+msgid "(unknown sender)"
+msgstr "(tuntematon lähettäjä)"
+
+#: felamimail/functions/imap_search.php:136
+msgid "Found"
+msgstr "Löytyi"
+
+#: felamimail/functions/imap_search.php:136
+msgid "messages"
+msgstr "viesteissä"
+
+#: felamimail/functions/mailbox_display.php:317
+msgid "Viewing messages"
+msgstr "Näytössä viestit"
+
+#: felamimail/functions/mailbox_display.php:317
+msgid "to"
+msgstr "-"
+
+#: felamimail/functions/mailbox_display.php:317
+#: felamimail/functions/mailbox_display.php:319
+msgid "total"
+msgstr "Kaikkiaan"
+
+#: felamimail/functions/mailbox_display.php:319
+msgid "Viewing message"
+msgstr "Näytössä viesti"
+
+#: felamimail/functions/mailbox_display.php:363
+msgid "THIS FOLDER IS EMPTY"
+msgstr "TÄMÄ KANSIO ON TYHJÄ"
+
+#: felamimail/functions/mailbox_display.php:403
+#: felamimail/functions/mailbox_display.php:441
+msgid "Unselect All"
+msgstr "Peruuta Kaikki Valinnat"
+
+#: felamimail/functions/mailbox_display.php:405
+#: felamimail/functions/mailbox_display.php:443
+msgid "Select All"
+msgstr "Valitse Kaikki"
+
+#: felamimail/functions/mailbox_display.php:457
+msgid "Move selected to:"
+msgstr "Siirrä valitut:"
+
+#: felamimail/functions/mailbox_display.php:471
+msgid "Move"
+msgstr "Siirrä"
+
+#: felamimail/functions/mailbox_display.php:475
+msgid "Expunge"
+msgstr "Poista"
+
+#: felamimail/functions/mailbox_display.php:475
+msgid "mailbox"
+msgstr "postilaatikko"
+
+#: felamimail/functions/mailbox_display.php:477
+msgid "checked messages"
+msgstr "merkityt viestit"
+
+#: felamimail/functions/page_header.php:71
+msgid "Current Folder"
+msgstr "Tämänhetkinen Kansio"
+
+#: felamimail/functions/page_header.php:79
+msgid "Compose"
+msgstr "Uusi Viesti"
+
+#: felamimail/functions/prefs.php:14
+#, c-format
+msgid "Preference file %s not found. Exiting abnormally"
+msgstr "Asteustiedosto %s ei löytynyt. Ohjelma lopetataan"
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:75
+#, c-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"Asetustiedostoa, %s, ei löydy. Poistu ja kirjaudu uudestaan sisään "
+"luodaksesi uuden asetustiedoston."
+
+#: felamimail/functions/prefs.php:119
+msgid "Error opening "
+msgstr "Virhe avatessa "

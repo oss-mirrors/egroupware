@@ -1,0 +1,109 @@
+<chapter>
+   <title>
+      Questions Fréquemment Pos&eacute;es (FAQ)
+   </title>   
+   <summary>
+Les gens se posent souvent des questions qui ont &eacute;t&eacute; d&eacute;j&agrave;
+pos&eacute;es de nombreuses fois.C'est une liste des questions les plus
+commun&eacute;ments pos&eacute;es et de leurs r&eacute;ponses.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+    Est-ce que je peux utiliser plusieurs noms du carnet d'adressses ?
+   </title>
+   <description>
+      <p>
+      Oui. Une recherche dans le carnet d'adresse affichera tous les r&eacute;sultats
+      correspondant au cri&egrave;re donn&eacute; entr&eacute; dans la boite de recherche.
+      Si 10 noms sont affich&eacute;s, n'importe quelle&nbsp; combinaison peut &ecirc;tre 
+      faite aussi bien pour le champ <b>To: </b>que pour le champ <b>CC:</b>
+      Toutes les adresses s&eacute;lectionn&eacute;es seront ins&eacute;r&eacute;es
+      dans le champ correspondant du message lorsque vous appuyerez sur le bouton
+      <b>Use adress</b> [ Utiliser les adresses ].
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Est-ce que je peux ajouter directement des noms du courrier dans le carnet d'adresses ?
+   </title>
+   <description>
+      <p>
+      Non.A ce stade du d&eacute;veloppement vous ne pouvez pas ajouter directement 
+      une adresse re&ccedil;ue dans le carnet d'adresses.Vous pouvez n&eacute;anmoins 
+      copier une adresse, la sauver dans le presse-papier et la coller ensuite dans le carnet 
+      d'adresses.Ne soyez pas trop d&eacute;&ccedil;u.SquirrelMail est en d&eacute;veloppement
+      constant et il se pourrait que cette possibilit&eacute; vous sois offerte dans le futur 
+      sous une forme ou une autre.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Qui fait SquirrelMail ? 
+   </title>
+   <description>
+      <p>
+      Beaucoup de personnes participent &agrave; son d&eacute;veloppement.Pour avoir une liste 
+      de ces personnes; vous pouvez visiter notre site web  <a href="http://www.felamimail.org" target=_top>www.felamimail.org</a>
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Qu'est ce qu'une interface web au courrier &eacute;lectronique?
+   </title>
+   <description>
+      <p>
+      Dans le cas de SquirrelMail, cela vous donne un acc&eacute;s par le protocole IMAP &agrave; votre compte de messagerie.
+      Cela signifie que vous n'avez pas besoin de savoir configurer la mat&eacute;riel de quelqu'un d'autre pour consulter votre boite aux lettres.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   O&ugrave; puis je utilisser l'interface web ?
+   </title>
+   <description>
+      <p>
+      L'acc&eacute;s sans c&acirc;ble (WAP/WML) n'est pas &agrave; l'ordre du jour actuellement.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+     Pourquoi utiliser l'interface web plut&ocirc;t qu'application native ?
+   </title>
+   <description>
+      <p>
+      Il est peu probable que l'interface web devienne &agrave; terme un substitut complet 
+      &agrave; un client de messagerie ordinaire.Mais bon; qui sait ?. De toutes mani&egrave;res,
+      si vous avez d&eacute;j&agrave  &eacute;t&eacute; chez un ami, en voyage, au travail ou &agrave; la maison;
+      loin de votre ordinateur&nbsp; tout en&nbsp; ayant la possibilit&eacute;de v&eacute;rifier votre courrier 
+      vous savez d&eacute;j&agrave; de quoi il retourne.Parce que c'est une grosse perte de temps que de configurer
+      l'ordinateur d'un ami pour v&eacute;rifier son courrier pour ensuite tout d&eacute;configurer une fois la consultation 
+      termin&eacute;e , SquirrelMail est un bon compl&eacute;ment &agrave; votre client de messagerie normal.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Comment &ccedil;a marche ?
+   </title>
+   <description>
+      <p>
+      Squirrel Mail utilise le protocol IMAP , des informations &agrave; ce propos sont disponibles <a href="http://imap.org"/>ici</a>.
+      Le programme utilise &eacute;galemment ses propres fonctions IMAP, et non pas celles int&eacute;gr&eacute;es dans PHP4.
+      Cela n'a d'importance pour personne sauf pour les responsables de l'installation; et croyez nous lorsqu'on 
+      vous dit qu'ils appr&eacute;cient cela.
+      </p>
+   </description>
+</section>

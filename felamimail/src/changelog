@@ -1,0 +1,37 @@
+=================================================
+		Mime_email_class Changes
+
+(c) Marc Logemann (loge) 2001
+
+email: loge@mail.com
+=================================================
+
+27/08/2001 (v.035)
+- in-reply-to header added as new attribute (thx to c.luehr)
+- messageid header added as new attribute (thx to c.luehr)
+
+23/08/2001 (v0.31)
+- major Bug for plain/text messages removed (due to performance hacks)
+  this bug caused the email headers to be included in emailtextplain attribute
+
+23/08/2001 (v0.30)
+- removed 2 arrays holding body and header for email
+- removed method for seperating into these 2 arrays
+- performance gain of up to 100% with large mails
+- new method for performance measuring
+
+20/08/2001 (v0.25)
+- new method for globally turn on entity conversion
+- new method "go_decode_headeronly" for header parsing only
+- 2 new attributes (from_name and from_email)
+
+08/08/2001 (v0.2)
+- "Importance" Header now supported
+- "Sensitivity" Header supported
+- started to implement "Disposition Notification" (MDN / RFC2298)
+- added X-Priority Header
+
+05/08/2001 (v0.1)
+- initial release
+- RFC support roughly included
+- MIME Support roughly included

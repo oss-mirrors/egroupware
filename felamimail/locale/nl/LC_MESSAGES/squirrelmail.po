@@ -1,0 +1,762 @@
+# DUTCH TRANSLATION.
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Arjen Halma <arjen@halma.nl>, 2000.
+# Halma Automatisering
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2000-07-21 00:00+0100\n"
+"PO-Revision-Date: 2000-07-22 00:00+0100\n"
+"Last-Translator: Arjen Halma <arjen@halma.nl>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: ../src/addrbook_popup.php:12 ../src/addrbook_search.php:12
+#: ../src/addressbook.php:12 ../src/index.php:14
+msgid "You must login first."
+msgstr "U moet eerst inloggen."
+
+#: ../src/addrbook_popup.php:16 ../src/addrbook_search.php:16
+#: ../src/addressbook.php:16 ../src/index.php:18 ../src/webmail.php:12
+msgid "You need a valid user and password to access this page!"
+msgstr "U heeft eerst een geldige gebruikersnaam en wachtwoord nodig om uw e-mail te bekijken!"
+
+#: ../src/addrbook_popup.php:32 ../src/addrbook_search.php:45
+#: ../src/addressbook.php:103
+msgid "Address Book"
+msgstr "Adressenboek"
+
+#: ../src/addrbook_search.php:63
+msgid "Search results will display here"
+msgstr "Zoek resultaten zullen hier geplaats worden"
+
+#: ../src/addrbook_search.php:74
+msgid "Search for"
+msgstr "Zoeken naar"
+
+#: ../src/addrbook_search.php:79
+msgid "Search"
+msgstr "Zoek"
+
+#: ../src/addrbook_search.php:82
+msgid "Close window"
+msgstr "Sluit venster"
+
+#: ../src/addrbook_search.php:160
+msgid "Your search failed with the following error(s)"
+msgstr "Uw zoektocht is mislukt met de volgende fouten"
+
+#: ../src/addrbook_search.php:167
+msgid "No persons matching your search was found"
+msgstr "Geen personen gevonden"
+
+#: ../src/addrbook_search.php:178 ../src/addressbook.php:323
+msgid "Name"
+msgstr "Naam"
+
+#: ../src/addrbook_search.php:178 ../src/addressbook.php:323
+msgid "E-mail"
+msgstr "E-mail"
+
+#: ../src/addrbook_search.php:178 ../src/addressbook.php:323
+msgid "Info"
+msgstr "Informatie"
+
+#: ../src/addrbook_search.php:178
+msgid "Source"
+msgstr "Bron"
+
+#: ../src/addressbook.php:51 ../src/addressbook.php:323
+msgid "Nickname"
+msgstr "Bijnaam"
+
+#: ../src/addressbook.php:56
+msgid "Must be unique"
+msgstr "Moet uniek zijn"
+
+#: ../src/addressbook.php:58
+msgid "E-mail address"
+msgstr "E-mail adres"
+
+#: ../src/addressbook.php:63
+msgid "First name"
+msgstr "Voornaam"
+
+#: ../src/addressbook.php:68
+msgid "Last name"
+msgstr "Achternaam"
+
+#: ../src/addressbook.php:73
+msgid "Additional info"
+msgstr "Meer informatie"
+
+#: ../src/addressbook.php:97
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Geen persoonlijke adressenboek is aangemaakt. Neem contact op met uw systeembeheerder."
+
+#: ../src/addressbook.php:201
+msgid "You can only edit one address at the time"
+msgstr "U mag maar 1 adres tegelijk bewerken"
+
+#: ../src/addressbook.php:213 ../src/addressbook.php:216
+#: ../src/addressbook.php:245 ../src/addressbook.php:248
+msgid "Update address"
+msgstr "Werk gegevens bij"
+
+#: ../functions/display_messages.php:95 ../functions/display_messages.php:111
+#: ../functions/imap_general.php:102 ../src/addressbook.php:236
+#: ../src/addressbook.php:286
+msgid "ERROR"
+msgstr "FOUT"
+
+#: ../src/addressbook.php:262
+msgid "Unknown error"
+msgstr "Onbekende fout"
+
+#: ../src/addressbook.php:353
+msgid "Edit selected"
+msgstr "Bewerk geselcteerde"
+
+#: ../src/addressbook.php:355
+msgid "Delete selected"
+msgstr "Verwijder geselecteerde"
+
+#: ../src/addressbook.php:365
+#, c-format
+msgid "Add to %s"
+msgstr "Toevoegen naar %s"
+
+#: ../src/addressbook.php:368
+msgid "Add address"
+msgstr "Voeg adres toe"
+
+#: ../src/compose.php:56 ../src/compose.php:92
+msgid "No Message"
+msgstr "Geen berichten"
+
+#: ../src/compose.php:62
+msgid "-------- Original Message ---------\n"
+msgstr "-------- Originele bericht --------\n"
+
+#: ../src/compose.php:167 ../src/read_body.php:222
+msgid "To:"
+msgstr "Aan:"
+
+#: ../src/compose.php:177
+msgid "CC:"
+msgstr "CC:"
+
+#: ../src/compose.php:187
+msgid "BCC:"
+msgstr "Bcc:"
+
+#: ../src/compose.php:200
+msgid "Lookup recipients in addressbook."
+msgstr "Zoeken in adressenboek"
+
+#: ../src/compose.php:206 ../src/read_body.php:198
+msgid "Subject:"
+msgstr "Onderwerp:"
+
+#: ../src/compose.php:227 ../src/compose.php:240
+msgid "Send"
+msgstr "Versturen"
+
+#: ../src/compose.php:246
+msgid "Attach:"
+msgstr "Bijlage:"
+
+#: ../src/compose.php:252
+msgid "Add"
+msgstr "Toevoegen"
+
+#: ../src/compose.php:265
+msgid "Delete selected attachments"
+msgstr "Verwijder geselecteerde bijlage(s)"
+
+#: ../src/compose.php:289
+msgid "You have not entered a message body."
+msgstr "U heeft geen bericht ingevuld"
+
+#: ../src/compose.php:293
+msgid "You have not filled in the \"To:\" field."
+msgstr "U heeft \"Aan:\" veld niet ingevuld."
+
+#: ../src/compose.php:297
+msgid "You have not entered a subject."
+msgstr "U heeft geen onderwerp ingevuld."
+
+#: ../src/compose.php:327
+msgid "Could not move/copy file. File not attached"
+msgstr "Kon bestand niet verplaatsen/kopieren. Bijlage niet toegevoegd."
+
+#: ../src/download.php:25
+msgid "Viewing a plain text attachment"
+msgstr "U ziet een platte tekst bijlage"
+
+#: ../functions/mime.php:163 ../src/download.php:30
+msgid "Download this as a file"
+msgstr "Download dit als een bestand"
+
+#: ../functions/page_header.php:61 ../src/folders.php:23
+#: ../src/left_main.php:95
+msgid "Folders"
+msgstr "Mappen"
+
+#: ../src/folders.php:40
+msgid "Mailboxes Created Successfully!"
+msgstr "Postvakken succesvol toegevoegd!"
+
+#: ../src/folders.php:42 ../src/folders_create.php:55
+#: ../src/folders_delete.php:86 ../src/folders_rename_do.php:54
+#: ../src/folders_subscribe.php:40 ../src/options_submit.php:62
+msgid "Click here"
+msgstr "Klik hier"
+
+#: ../src/folders.php:44 ../src/folders_create.php:57
+#: ../src/folders_delete.php:88 ../src/folders_rename_do.php:56
+#: ../src/folders_subscribe.php:42 ../src/options_submit.php:64
+msgid "to continue."
+msgstr "om verder te gaan."
+
+#: ../src/folders.php:56
+msgid "Special Folder Options"
+msgstr "Speciale mappen opties"
+
+#: ../src/folders.php:59
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr "Om Squirrel volledig te laten werken moet u speciale mappen aanmaken, klik "
+"op aanmaken om verder te gaan."
+
+#: ../src/folders.php:62
+msgid "Create Sent"
+msgstr "Voeg Verstuurd toe"
+
+#: ../src/folders.php:65
+msgid "Create Trash"
+msgstr "Maak Verwijderde Items aan"
+
+#: ../src/folders.php:75
+msgid "Delete Folder"
+msgstr "Verwijder map"
+
+#: ../functions/mailbox_display.php:205 ../src/folders.php:105
+#: ../src/read_body.php:157
+msgid "Delete"
+msgstr "Verwijder"
+
+#: ../src/folders.php:109 ../src/folders.php:190 ../src/folders.php:219
+#: ../src/folders.php:254
+msgid "No mailboxes found"
+msgstr "Geen postvakken gevonden"
+
+#: ../src/folders.php:115
+msgid "Create Folder"
+msgstr "Maak map aan"
+
+#: ../src/folders.php:120
+msgid "as a subfolder of"
+msgstr "als een sub-map van"
+
+#: ../src/folders.php:158
+msgid "Let this folder contain subfolders"
+msgstr "Deze map mag sub-map hebben"
+
+#: ../src/folders.php:166
+msgid "Rename a Folder"
+msgstr "Hernoem map"
+
+#: ../src/folders.php:186
+msgid "Rename"
+msgstr "Hernoem"
+
+#: ../src/folders.php:196
+msgid "Unsubscribe/Subscribe"
+msgstr "Aanmelden/Afmelden"
+
+#: ../src/folders.php:215
+msgid "Unsubscribe"
+msgstr "Afmelden"
+
+#: ../src/folders.php:250
+msgid "Subscribe"
+msgstr "Aanmelden"
+
+#: ../src/folders_create.php:23
+msgid "Illegal folder name.  Please select a different name."
+msgstr "Deze naam is niet toegestaan, hernoem hem a.u.b. naar een andere naam."
+
+#: ../src/folders_create.php:23
+msgid "Click here to go back"
+msgstr "Klik hier om terug te gaan"
+
+#: ../src/folders_create.php:51
+msgid "Folder Created!"
+msgstr "Map aangemaakt!"
+
+#: ../src/folders_create.php:53
+msgid "The folder has been successfully created."
+msgstr "Uw map is succesvol aangemaakt."
+
+#: ../src/folders_delete.php:82
+msgid "Folder Deleted!"
+msgstr "Map verwijdert!"
+
+#: ../src/folders_delete.php:84
+msgid "The folder has been successfully deleted."
+msgstr "Uw map is succesvol verwijdert."
+
+#: ../src/folders_rename_do.php:50
+msgid "Folder Renamed!"
+msgstr "Folder hernoemt!"
+
+#: ../src/folders_rename_do.php:52
+msgid "The folder has been successfully renamed."
+msgstr "Uw map is succesvol hernoemt."
+
+#: ../src/folders_rename_getname.php:37
+msgid "Rename a folder"
+msgstr "Hernoem een map"
+
+#: ../src/folders_rename_getname.php:41
+msgid "New name:"
+msgstr "Nieuwe naam:"
+
+#: ../src/folders_rename_getname.php:47 ../src/options.php:393
+msgid "Submit"
+msgstr "Verstuur"
+
+#: ../src/folders_subscribe.php:31
+msgid "Subscribed Successfully!"
+msgstr "Succesvol aangemeld!"
+
+#: ../src/folders_subscribe.php:33
+msgid "You have been successfully subscribed."
+msgstr "U bent succesvol aangemeld."
+
+#: ../src/folders_subscribe.php:35
+msgid "Unsubscribed Successfully!"
+msgstr "Succesvol afgemeld!"
+
+#: ../src/folders_subscribe.php:37
+msgid "You have been successfully unsubscribed."
+msgstr "U bent succesvol afgemeld."
+
+#: ../src/left_main.php:71
+msgid "purge"
+msgstr "voeg toe"
+
+#: ../src/left_main.php:98
+msgid "refresh folder list"
+msgstr "vernieuw map lijst"
+
+#: ../src/load_prefs.php:18
+msgid "Theme: "
+msgstr "Thema:"
+
+#: ../src/load_prefs.php:20
+msgid " was not found."
+msgstr " was niet gevonden."
+
+#: ../src/load_prefs.php:22
+msgid "Exiting abnormally"
+msgstr "Niet normal afgesloten"
+
+#: ../src/login.php:37
+msgid "SquirrelMail Login"
+msgstr "SquirrelMail Inloggen"
+
+#: ../src/login.php:44
+msgid "SquirrelMail version $version<BR>By the SquirrelMail Development Team"
+msgstr "SquirrelMail versie $version<BR>Gemaakt door de ontwikkelteam SquirrelMail"
+
+#: ../src/login.php:56
+msgid "Name:"
+msgstr "Naam:"
+
+#: ../src/login.php:62
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+#: ../src/login.php:71
+msgid "Login"
+msgstr "Login"
+
+#: ../src/move_messages.php:74 ../src/move_messages.php:106
+msgid "No messages were selected."
+msgstr "Geen berichten zijn geselcteerd."
+
+#: ../functions/page_header.php:62 ../src/options.php:37
+msgid "Options"
+msgstr "Opties"
+
+#: ../src/options.php:46
+msgid "Full Name:"
+msgstr "Volledige naam:"
+
+#: ../src/options.php:55
+msgid "E-mail address:"
+msgstr "E-mail adres:"
+
+#: ../src/options.php:64
+msgid "Reply-to:"
+msgstr "Beantwoorden:"
+
+#: ../src/options.php:74
+msgid "Folder path:"
+msgstr "Map pad:"
+
+#: ../src/options.php:87
+msgid "Theme:"
+msgstr "Thema:"
+
+#: ../src/options.php:104
+msgid "Language:"
+msgstr "Taal:"
+
+#: ../src/options.php:126
+msgid "Trash Folder:"
+msgstr "Verwijderde Items:"
+
+#: ../src/options.php:130
+msgid "Don't use Trash"
+msgstr "Verwijderde Items niet gebruiken"
+
+#: ../src/options.php:132
+msgid "Do not use Trash"
+msgstr "Verwijderde Items niet gebruiken"
+
+#: ../src/options.php:154
+msgid "Sent Folder:"
+msgstr "Postvak In:"
+
+#: ../src/options.php:158
+msgid "Don't use Sent"
+msgstr "Postvak In niet gebruiken"
+
+#: ../src/options.php:160
+msgid "Do not use Sent"
+msgstr "Postvak In niet gebruiken"
+
+#: ../src/options.php:187
+msgid "Number of Messages to Index:"
+msgstr "Aantal berichten te indexeren:"
+
+#: ../src/options.php:200
+msgid "Wrap incoming text at:"
+msgstr "Voeg inkomende tekst in:"
+
+#: ../src/options.php:213
+msgid "Size of editor window (in characters):"
+msgstr "Breedte van bewerken venster (in karakters)"
+
+#: ../src/options.php:226
+msgid "Width of left folder list:"
+msgstr "Breedte van mappen lijst:"
+
+#: ../src/options.php:283
+msgid "Time between auto refresh of folder list:"
+msgstr "Tijd tussen auto vernieuwen van mappen lijst:"
+
+#: ../src/options.php:378
+msgid "Use a signature?"
+msgstr "Gebruik handtekening?"
+
+#: ../src/options_submit.php:58
+msgid "Options Saved!"
+msgstr "Opties bewaard!"
+
+#: ../src/options_submit.php:60
+msgid "Your options have been saved."
+msgstr "Uw optie's zijn bewaard."
+
+#: ../src/read_body.php:90
+msgid "more"
+msgstr "meer"
+
+#: ../src/read_body.php:91
+msgid "less"
+msgstr "minder"
+
+#: ../src/read_body.php:154
+msgid "Message List"
+msgstr "Berichten lijst"
+
+#: ../functions/mailbox_display.php:171 ../functions/mailbox_display.php:175
+#: ../functions/mailbox_display.php:286 ../functions/mailbox_display.php:290
+#: ../src/read_body.php:168 ../src/read_body.php:170
+msgid "Previous"
+msgstr "Vorige"
+
+#: ../functions/mailbox_display.php:172 ../functions/mailbox_display.php:180
+#: ../functions/mailbox_display.php:287 ../functions/mailbox_display.php:291
+#: ../functions/mailbox_display.php:295 ../src/read_body.php:172
+#: ../src/read_body.php:174
+msgid "Next"
+msgstr "Volgende"
+
+#: ../src/read_body.php:180
+msgid "Forward"
+msgstr "Doorsturen"
+
+#: ../src/read_body.php:183
+msgid "Reply"
+msgstr "Beantwoorden"
+
+#: ../src/read_body.php:186
+msgid "Reply All"
+msgstr "Beantwoord allemaal"
+
+#: ../src/read_body.php:206
+msgid "From:"
+msgstr "Van:"
+
+#: ../src/read_body.php:214
+msgid "Date:"
+msgstr "Datum:"
+
+#: ../functions/page_header.php:52 ../src/signout.php:42
+msgid "Sign Out"
+msgstr "Log uit"
+
+#: ../src/signout.php:49
+msgid "You have been successfully signed out."
+msgstr "U bent succesvol uitgelogd."
+
+#: ../src/signout.php:51
+msgid "Click here to "
+msgstr "Klik hier om "
+
+#: ../src/signout.php:53
+msgid "log back in."
+msgstr "weer in te loggen."
+
+#: ../functions/abook_local_file.php:32 ../functions/addressbook.php:72
+msgid "Personal address book"
+msgstr "Persoonlijke addressenboek"
+
+#: ../functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "Geen bestandsnaam"
+
+#: ../functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "Geen bestand of map bestaat onder deze naam"
+
+#: ../functions/abook_local_file.php:94 ../functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "Openen mislukt"
+
+#: ../functions/abook_local_file.php:226 ../functions/abook_local_file.php:246
+#: ../functions/abook_local_file.php:269 ../functions/abook_local_file.php:299
+#: ../functions/addressbook.php:251 ../functions/addressbook.php:282
+msgid "Addressbook is read-only"
+msgstr "Adressenboek is alleen lezen"
+
+#: ../functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "Gebruiker '%s' bestaat al"
+
+#: ../functions/abook_local_file.php:250 ../functions/abook_local_file.php:274
+#: ../functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "Kon databestand niet sluiten"
+
+#: ../functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "Schrijven naar addresenboek mislukt"
+
+#: ../functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "User '%s' bestaat niet"
+
+#: ../functions/addressbook.php:29
+#, c-format
+msgid "Error opening file %s"
+msgstr "Fout: Kan bestand %s niet openen"
+
+#: ../functions/addressbook.php:43
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Fout: kan LDAP server %s niet initailiseren:"
+
+#: ../functions/addressbook.php:228 ../functions/addressbook.php:309
+msgid "Invalid input data"
+msgstr "Invoerde date is niet toegestaan"
+
+#: ../functions/addressbook.php:233 ../functions/addressbook.php:314
+msgid "Name is missing"
+msgstr "Naam mist"
+
+#: ../functions/addressbook.php:237 ../functions/addressbook.php:318
+msgid "E-mail address is missing"
+msgstr "E-mail adres mist"
+
+#: ../functions/addressbook.php:245
+msgid "Nickname contain illegal characters"
+msgstr "Bijnaam bestaat uit illigale karakters"
+
+#: ../functions/addressbook.php:327
+msgid "Addressbook $bnum is read-only"
+msgstr "Adressenboek $bnum is alleen lezen"
+
+#: ../functions/display_messages.php:19 ../functions/imap_general.php:110
+msgid "Unknown user or password incorrect."
+msgstr "Onbekende gebruiker of wachtwoord is fout"
+
+#: ../functions/display_messages.php:19 ../functions/imap_general.php:111
+msgid "Click here to try again"
+msgstr "Klik hier om weer te proberen"
+
+#: ../functions/display_messages.php:31
+msgid "Welcome to $org_name's WebMail system"
+msgstr "Welkom op $org_name Webmail systeem"
+
+#: ../functions/display_messages.php:40
+msgid "Running SquirrelMail version $version (c) 1999-2000."
+msgstr "SquirrelMail versie $version (c) 1999-2000"
+
+#: ../functions/display_messages.php:59
+msgid "Messages Deleted"
+msgstr "Bericht verwijdert"
+
+#: ../functions/display_messages.php:61
+msgid "The selected messages were deleted successfully."
+msgstr "Geselecteerde berichten zijn succesvol verwijdert."
+
+#: ../functions/display_messages.php:64 ../functions/display_messages.php:82
+#: ../functions/display_messages.php:100
+msgid "Click here to return to "
+msgstr "Klik hier om terug te gaan naar "
+
+#: ../functions/display_messages.php:77
+msgid "Messages Moved"
+msgstr "Berichten verplaatst"
+
+#: ../functions/display_messages.php:79
+msgid "The selected messages were moved successfully."
+msgstr "Geselecteerde berichten zijn succesvol verplaatst."
+
+#: ../functions/imap_general.php:43
+msgid "ERROR : Could not complete request."
+msgstr "FOUT: Kon opdracht niet verwerken."
+
+#: ../functions/imap_general.php:45
+msgid "Reason Given: "
+msgstr "Reden opgegeven:"
+
+#: ../functions/imap_general.php:50
+msgid "ERROR : Bad or malformed request."
+msgstr "Fout: Foute of corrupte aanvraag."
+
+#: ../functions/imap_general.php:52
+msgid "Server responded: "
+msgstr "Server reageerde: "
+
+#: ../functions/imap_messages.php:47 ../functions/imap_messages.php:66
+#: ../functions/imap_messages.php:245 ../functions/imap_messages.php:280
+msgid "(no subject)"
+msgstr "(geen onderwerp)"
+
+#: ../functions/imap_messages.php:48
+msgid "Unknown Sender"
+msgstr "Onbekende afzender"
+
+#: ../functions/imap_messages.php:283
+msgid "(unknown sender)"
+msgstr "(onbekende afzender)"
+
+#: ../functions/mailbox_display.php:161
+msgid "Viewing messages "
+msgstr "Bekijk berichten"
+
+#: ../functions/mailbox_display.php:161
+msgid " to "
+msgstr " aan "
+
+#: ../functions/mailbox_display.php:165
+msgid "Viewing message "
+msgstr "Bekijk berichten "
+
+#: ../functions/mailbox_display.php:165
+msgid "total"
+msgstr "totaal"
+
+#: ../functions/mailbox_display.php:191
+msgid "Move selected to:"
+msgstr "Verplaatst geselcteerde naar:"
+
+#: ../functions/mailbox_display.php:201
+msgid "Move"
+msgstr "Verplaats"
+
+#: ../functions/mailbox_display.php:205
+msgid "checked messages"
+msgstr "geselecteerde berichten"
+
+#: ../functions/mailbox_display.php:218
+msgid "To"
+msgstr "Aan"
+
+#: ../functions/mailbox_display.php:220
+msgid "From"
+msgstr "Van"
+
+#: ../functions/mailbox_display.php:229
+msgid "Date"
+msgstr "Datum"
+
+#: ../functions/mailbox_display.php:238
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: ../functions/mailbox_display.php:252
+msgid "THIS FOLDER IS EMPTY"
+msgstr "DEZE MAP IS LEEG"
+
+#: ../functions/page_header.php:54
+msgid "Current Folder: "
+msgstr "Huidige map:"
+
+#: ../functions/page_header.php:59
+msgid "Compose"
+msgstr "Aanmaken"
+
+#: ../functions/page_header.php:60
+msgid "Addresses"
+msgstr "Adressen"
+
+#: ../functions/prefs.php:14
+msgid "Preference file "
+msgstr "Voorkeur bestand"
+
+#: ../functions/prefs.php:14
+msgid " not found.  Exiting abnormally"
+msgstr " niet gevonden. Sluit ongewoon af."
+
+#: ../functions/prefs.php:37
+msgid "Preference file, "
+msgstr "Voorkeur bestand, "
+
+#: ../functions/prefs.php:37
+msgid ""
+", does not exist.  Log out, and log back in to create a default preference "
+"file. "
+msgstr ", bestaat niet. Log uit, en log weer in om een standaard voorkeur bestaand aan te maken."
+
+#: ../functions/prefs.php:80
+msgid "Error opening "
+msgstr "Fout met openenen "
+
+#: ../functions/prefs.php:108
+msgid "Signature file not found."
+msgstr "Handtekening bestand niet gevonden."
+

@@ -1,0 +1,1063 @@
+# KTranslator Generated File
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Squirel Mail\n"
+"POT-Creation-Date: 2000-08-09 17:19+0100\n"
+"PO-Revision-Date: 2000-10-30 15:38-0500\n"
+"Last-Translator: Manojlovic Boris <steki@verat.net>\n"
+"Language-Team: Awl Group <steki@verat.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: felamimail/src/addrbook_popup.php:30
+msgid "Address Book"
+msgstr "Adresar"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:307
+msgid "Name"
+msgstr "Ime"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:308
+msgid "E-mail"
+msgstr "E-mail"
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:71
+#: felamimail/src/addressbook.php:309
+msgid "Info"
+msgstr "Info"
+
+#: felamimail/src/addrbook_search.php:99
+#: felamimail/src/addrbook_search_html.php:74
+msgid "Source"
+msgstr "Izvor"
+
+#: felamimail/functions/auth.php:14 felamimail/src/addrbook_search.php:130
+#: felamimail/src/index.php:17 felamimail/src/search.php:5
+msgid "You must login first."
+msgstr "Moras prvo da se uloguje¹"
+
+#: felamimail/src/addrbook_search.php:134 felamimail/src/index.php:21
+#: felamimail/src/search.php:9 felamimail/src/webmail.php:27
+msgid "You need a valid user and password to access this page!"
+msgstr "Moras da imas korisnièko ime i ¹ifru da bi mogao da pristupis ovoj strani "
+
+#: felamimail/src/addrbook_search.php:169
+#: felamimail/src/addrbook_search.php:253
+#: felamimail/src/addrbook_search_html.php:204
+msgid "No persons matching your search was found"
+msgstr "Ni jedna osoba ne odgovara pretrazi"
+
+#: felamimail/src/addrbook_search.php:182
+#: felamimail/src/addrbook_search_html.php:129
+msgid "Search for"
+msgstr "Potraga za"
+
+#: felamimail/src/addrbook_search.php:189
+#: felamimail/src/addrbook_search_html.php:136
+msgid "in"
+msgstr "u"
+
+#: felamimail/src/addrbook_search.php:191
+#: felamimail/src/addrbook_search_html.php:139
+msgid "All address books"
+msgstr "U svim adresarima"
+
+#: felamimail/functions/page_header.php:101
+#: felamimail/src/addrbook_search.php:201
+#: felamimail/src/addrbook_search_html.php:151
+#: felamimail/src/search.php:35 felamimail/src/search.php:89
+msgid "Search"
+msgstr "Pretraga"
+
+#: felamimail/src/addrbook_search.php:203
+#: felamimail/src/addrbook_search_html.php:153
+msgid "List all"
+msgstr "Prika¾i sve"
+
+#: felamimail/src/addrbook_search.php:206
+msgid "Close window"
+msgstr "Zatvori prozor"
+
+#: felamimail/src/addrbook_search.php:224
+#: felamimail/src/addrbook_search_html.php:175
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr "Ne mogu da izlistam adrese od %s"
+
+#: felamimail/src/addrbook_search.php:246
+#: felamimail/src/addrbook_search_html.php:197
+msgid "Your search failed with the following error(s)"
+msgstr "Pretra¾ivanje je propalo iz sledeæih razloga"
+
+#: felamimail/src/addrbook_search_html.php:97
+msgid "Use Addresses"
+msgstr "Iskoristi adrese"
+
+#: felamimail/src/addrbook_search_html.php:120
+msgid "Address Book Search"
+msgstr "Ptretra¾ivanje Adresara"
+
+#: felamimail/src/addressbook.php:46 felamimail/src/addressbook.php:306
+msgid "Nickname"
+msgstr "Nadimak"
+
+#: felamimail/src/addressbook.php:51
+msgid "Must be unique"
+msgstr "Mora biti specifièno (unikatno)"
+
+#: felamimail/src/addressbook.php:53
+msgid "E-mail address"
+msgstr "E-mail adresa"
+
+#: felamimail/src/addressbook.php:58
+msgid "First name"
+msgstr "Ime"
+
+#: felamimail/src/addressbook.php:63
+msgid "Last name"
+msgstr "Prezime"
+
+#: felamimail/src/addressbook.php:68
+msgid "Additional info"
+msgstr "Dodatni podaci"
+
+#: felamimail/src/addressbook.php:87
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Ne postoji lièni adresar za isti obratite se administratoru"
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr "Mo¾e¹ da edituje¹ samo jednu adresu simultano"
+
+#: felamimail/src/addressbook.php:196 felamimail/src/addressbook.php:199
+#: felamimail/src/addressbook.php:228 felamimail/src/addressbook.php:231
+msgid "Update address"
+msgstr "Osve¾i adresu"
+
+#: felamimail/functions/display_messages.php:63
+#: felamimail/functions/display_messages.php:79
+#: felamimail/functions/imap_general.php:136
+#: felamimail/src/addressbook.php:219 felamimail/src/addressbook.php:269
+msgid "ERROR"
+msgstr "GRE©KA"
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr "Nepoznata gre¹ka"
+
+#: felamimail/src/addressbook.php:344
+msgid "Edit selected"
+msgstr "Editovanje"
+
+#: felamimail/src/addressbook.php:346
+msgid "Delete selected"
+msgstr "Obri¹i"
+
+#: felamimail/src/addressbook.php:356
+#, c-format
+msgid "Add to %s"
+msgstr "Dodaj u %s"
+
+#: felamimail/src/addressbook.php:359
+msgid "Add address"
+msgstr "Dodaj adresu"
+
+#: felamimail/src/compose.php:78
+msgid "Original Message"
+msgstr "Originalna Poruka"
+
+#: felamimail/functions/imap_search.php:170
+#: felamimail/functions/mailbox_display.php:284
+#: felamimail/src/compose.php:79 felamimail/src/download.php:112
+#: felamimail/src/search.php:74 felamimail/src/search.php:75
+msgid "Subject"
+msgstr "Subjekt"
+
+#: felamimail/functions/imap_search.php:165
+#: felamimail/functions/mailbox_display.php:266
+#: felamimail/src/compose.php:80 felamimail/src/download.php:113
+#: felamimail/src/search.php:77 felamimail/src/search.php:78
+msgid "From"
+msgstr "From"
+
+#: felamimail/functions/imap_search.php:163
+#: felamimail/functions/mailbox_display.php:264
+#: felamimail/src/compose.php:81 felamimail/src/download.php:114
+#: felamimail/src/search.php:83 felamimail/src/search.php:84
+msgid "To"
+msgstr "To"
+
+#: felamimail/src/compose.php:164 felamimail/src/read_body.php:314
+msgid "To:"
+msgstr "To:"
+
+#: felamimail/src/compose.php:172
+msgid "CC:"
+msgstr "CC:"
+
+#: felamimail/src/compose.php:180
+msgid "BCC:"
+msgstr "BCC:"
+
+#: felamimail/src/compose.php:188 felamimail/src/read_body.php:284
+msgid "Subject:"
+msgstr "Subjekt:"
+
+#: felamimail/functions/page_header.php:95 felamimail/src/compose.php:217
+#: felamimail/src/compose.php:219 felamimail/src/compose.php:222
+msgid "Addresses"
+msgstr "Adrese"
+
+#: felamimail/src/compose.php:224 felamimail/src/compose.php:244
+msgid "Send"
+msgstr "Po¹alji"
+
+#: felamimail/src/compose.php:250
+msgid "Attach:"
+msgstr "Prikaèi fajl:"
+
+#: felamimail/src/compose.php:256
+msgid "Add"
+msgstr "Dodaj"
+
+#: felamimail/src/compose.php:268
+msgid "Delete selected attachments"
+msgstr "Obri¹i odabrane zakaèene fajlove"
+
+#: felamimail/src/compose.php:293
+msgid "You have not filled in the \"To:\" field."
+msgstr "Nisi popunio \"To:\" polje."
+
+#: felamimail/src/compose.php:354
+msgid "Could not move/copy file. File not attached"
+msgstr "Neuspe¹no prebacivanje/brisanje fajla. Fajl nije zakaèen"
+
+#: felamimail/src/download.php:34
+msgid "Viewing a text attachment"
+msgstr "Pregled zakaèenog tekstualnog fajla"
+
+#: felamimail/src/download.php:37 felamimail/src/download.php:39
+#: felamimail/src/read_body.php:45
+msgid "View message"
+msgstr "Pogledaj poruku"
+
+#: felamimail/functions/mime.php:449 felamimail/src/download.php:44
+msgid "Download this as a file"
+msgstr "Dovuci kao fajl"
+
+#: felamimail/functions/imap_search.php:167
+#: felamimail/functions/mailbox_display.php:275
+#: felamimail/src/download.php:115
+msgid "Date"
+msgstr "Datum"
+
+#: felamimail/functions/page_header.php:97 felamimail/src/folders.php:35
+#: felamimail/src/left_main.php:123
+msgid "Folders"
+msgstr "Direktorijumi"
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr "Uspe¹no prijavljen!"
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr "Uspe¹no odjavljen!"
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr "Uspe¹no obrisan direktorijum"
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr "Direktorijum kreiran uspe¹no!"
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr "Ime promenjeno"
+
+#: felamimail/src/folders.php:53 felamimail/src/left_main.php:126
+msgid "refresh folder list"
+msgstr "Osve¾i listu direktorijuma"
+
+#: felamimail/src/folders.php:70
+msgid "Mailboxes Created Successfully!"
+msgstr "Po¹tansko sanduèe uspe¹no kreirano"
+
+#: felamimail/src/folders.php:72
+msgid "Click here"
+msgstr "Klikni ovde"
+
+#: felamimail/src/folders.php:74
+msgid "to continue."
+msgstr "za nastavak"
+
+#: felamimail/src/folders.php:87
+msgid "Special Folder Options"
+msgstr "Specijalne opcije za direktorijume"
+
+#: felamimail/src/folders.php:90
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr "Da bi WebMail mogao da prika¾e sve opcije moraæete napraviti specijalne direktorijume dole naznaèene. Samo kliknite na \" Kreiraj \" dugme"
+
+#: felamimail/src/folders.php:93
+msgid "Create Sent"
+msgstr "Kreiraj Poslano"
+
+#: felamimail/src/folders.php:96
+msgid "Create Trash"
+msgstr "Kreiraj Djubre"
+
+#: felamimail/src/folders.php:106
+msgid "Delete Folder"
+msgstr "Brisanje Direktorijuma"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+#: felamimail/src/folders.php:142 felamimail/src/options_highlight.php:73
+#: felamimail/src/read_body.php:240
+msgid "Delete"
+msgstr "Obrisi"
+
+#: felamimail/src/folders.php:146 felamimail/src/folders.php:235
+msgid "No mailboxes found"
+msgstr "Nema Po¹tanskih sanduèiæa"
+
+#: felamimail/src/folders.php:153
+msgid "Create Folder"
+msgstr "Kreiraj Direktorijum"
+
+#: felamimail/src/folders.php:158
+msgid "as a subfolder of"
+msgstr "Kao poddirektorijum od"
+
+#: felamimail/src/folders.php:201
+msgid "Let this folder contain subfolders"
+msgstr "Neka ovaj direktorijum ima poddirektorijume"
+
+#: felamimail/src/folders.php:204
+msgid "Create"
+msgstr "Kreiraj"
+
+#: felamimail/src/folders.php:211
+msgid "Rename a Folder"
+msgstr "Izmeni ime direktorijumu"
+
+#: felamimail/src/folders.php:231
+msgid "Rename"
+msgstr "Promeni ime"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:263
+msgid "Unsubscribe"
+msgstr "Izbri¹i is liste"
+
+#: felamimail/src/folders.php:244 felamimail/src/folders.php:306
+msgid "Subscribe"
+msgstr "Prijavi na listu"
+
+#: felamimail/src/folders.php:267
+msgid "No folders were found to unsubscribe from!"
+msgstr "Nema direktorijuma za uklanjenje sa liste"
+
+#: felamimail/src/folders.php:309
+msgid "No folders were found to subscribe to!"
+msgstr "Nema direktorijuma za prijaviti se!"
+
+#: felamimail/src/folders_create.php:32
+msgid "Illegal folder name.  Please select a different name."
+msgstr "Nedozvoljeno ime za direktorijum. Molim odaberite drugo ime."
+
+#: felamimail/src/folders_create.php:32
+msgid "Click here to go back"
+msgstr "Klikni ovde da bi se vratio nazad"
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr "Promeni ime direktorijuma"
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr "Novo ime:"
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr "Promeni"
+
+#: felamimail/functions/page_header.php:103 felamimail/src/help.php:92
+msgid "Help"
+msgstr "Pomoæ"
+
+#: felamimail/src/help.php:123
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr "Pomoæ jo¹ uvek nije prevedena na %s. Pomoæ æe biti prikazana na Engleskom jeziku"
+
+#: felamimail/src/help.php:129
+msgid "Some or all of the help documents are not present!"
+msgstr "Neki ili svi delovi pomoæi ne postoje!"
+
+#: felamimail/src/help.php:153
+msgid "Table of Contents"
+msgstr "Tabela sadr¾aja"
+
+#: felamimail/src/help.php:193
+msgid "Top"
+msgstr "Vrh"
+
+#: felamimail/src/left_main.php:103
+msgid "purge"
+msgstr "Obrisi"
+
+#: felamimail/src/login.php:60
+msgid "SquirrelMail Login"
+msgstr "SquirrelMail Login"
+
+#: felamimail/src/login.php:67
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr "Verzija SquirrelMail-a %s"
+
+#: felamimail/src/login.php:69
+msgid "By the SquirrelMail Development Team"
+msgstr "Napravio SquirrelMail Razvojni tim"
+
+#: felamimail/src/login.php:75
+#, c-format
+msgid "%s Login"
+msgstr "%s Login"
+
+#: felamimail/src/login.php:83
+msgid "Name:"
+msgstr "Ime:"
+
+#: felamimail/src/login.php:89
+msgid "Password:"
+msgstr "©ifra:"
+
+#: felamimail/src/login.php:98
+msgid "Login"
+msgstr "Login"
+
+#: felamimail/src/move_messages.php:78
+#: felamimail/src/move_messages.php:107
+msgid "No messages were selected."
+msgstr "Ni jedna poruka nije odabrana"
+
+#: felamimail/functions/page_header.php:99 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr "Opcije"
+
+#: felamimail/src/options.php:57
+msgid "Successfully saved personal information!"
+msgstr "Uspe¹no snimljena pode¹avanja"
+
+#: felamimail/src/options.php:69
+msgid "Successfully saved display preferences!"
+msgstr "Uspe¹no snimljena pode¹avanja izgleda"
+
+#: felamimail/src/options.php:70
+msgid "Refresh Page"
+msgstr "Osve¾i stranu"
+
+#: felamimail/src/options.php:90
+msgid "Successfully saved folder preferences!"
+msgstr "Uspe¹no snimljena pode¹avanja direktorijuma"
+
+#: felamimail/src/options.php:91
+msgid "Refresh Folders"
+msgstr "Osve¾i direktorijume"
+
+#: felamimail/src/options.php:105 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr "Pode¹avanje liènih informacija"
+
+#: felamimail/src/options.php:110
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "Ovo sadr¾i va¹e liène informacije kao ¹to su va¹e ime, e-mail adresa i sl."
+
+#: felamimail/src/options.php:117 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr "Pode¹avanje dodatnog oznaèavanja poruka"
+
+#: felamimail/src/options.php:122
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr "Zasnovano na odreðenom kriterijumu, dolazeæe poruke mogu da imaju razlièitu obojenost u listi poruka."
+"ovo poma¾e da se lak¹e odredi od koga su poruke dolazile"
+"a naroèito poruke sa mailing lista."
+
+#: felamimail/src/options.php:131 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr "Pode¹avanja izgleda"
+
+#: felamimail/src/options.php:136
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "Pomoæu ovih pode¹avanja mo¾e¹ da promenis naèin na "
+"koji æe WebMail prikazivati informacije i sam njegov izgled"
+"kao i jezik i slièna setovanja."
+
+#: felamimail/src/options.php:143 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr "Pode¹avanja direktorijuma"
+
+#: felamimail/src/options.php:148
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "Ova pode¹avanja  menjaju naèin  na koji se prikazuju i "
+"manipuli¹u direktorijumi"
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr "Teme"
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr "Jezik"
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr "Javascript ili HTML oblik Adresara?"
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr "JavaScript"
+
+#: felamimail/src/options_display.php:79
+#: felamimail/src/options_display.php:82
+msgid "HTML"
+msgstr "HTML"
+
+#: felamimail/src/options_display.php:88
+msgid "Number of Messages to Index"
+msgstr "Broj poruka za indeksiranje"
+
+#: felamimail/src/options_display.php:99
+msgid "Wrap incoming text at"
+msgstr "Iseci tekst na "
+
+#: felamimail/src/options_display.php:110
+msgid "Size of editor window"
+msgstr "Velièina prozora za editovanje"
+
+#: felamimail/src/options_display.php:121
+msgid "Width of left folder list"
+msgstr "©irina leve liste direktorijuma"
+
+#: felamimail/src/options_display.php:175
+msgid "Auto refresh folder list"
+msgstr "Automatsko osve¾avanje liste direktorijuma"
+
+#: felamimail/src/options_folder.php:48
+msgid "Folder Path"
+msgstr "Putanja direktorijuma"
+
+#: felamimail/src/options_folder.php:61
+msgid "Trash Folder:"
+msgstr "Kanta za ðubre:"
+
+#: felamimail/src/options_folder.php:65
+msgid "Don't use Trash"
+msgstr "Ne koristi kantu za ðubre"
+
+#: felamimail/src/options_folder.php:67
+msgid "Do not use Trash"
+msgstr "Ne koristi kantu za ðubre"
+
+#: felamimail/src/options_folder.php:89
+msgid "Sent Folder:"
+msgstr "Poslano direktorijum:"
+
+#: felamimail/src/options_folder.php:93
+msgid "Don't use Sent"
+msgstr "Ne koristi \"Poslano\""
+
+#: felamimail/src/options_folder.php:95
+msgid "Do not use Sent"
+msgstr "Ne koristi \"Poslano\""
+
+#: felamimail/src/options_folder.php:117
+msgid "Unseen message notification"
+msgstr "Signalizacija neproèitanih poruka"
+
+#: felamimail/src/options_folder.php:120
+msgid "No notification"
+msgstr "Nema signalizacije"
+
+#: felamimail/src/options_folder.php:121
+msgid "Only INBOX"
+msgstr "Samo INBOX"
+
+#: felamimail/src/options_folder.php:122
+msgid "All Folders"
+msgstr "Svi direktorijumi"
+
+#: felamimail/src/options_folder.php:129
+msgid "Unseen message notification type"
+msgstr "Tip signalizacije neproèitanih poruka"
+
+#: felamimail/src/options_folder.php:132
+msgid "Only unseen"
+msgstr "Samo neproèitane"
+
+#: felamimail/src/options_folder.php:133
+msgid "Unseen and Total"
+msgstr "Neproèitane i ukupno"
+
+#: felamimail/src/options_highlight.php:66
+msgid "New"
+msgstr "Novo"
+
+#: felamimail/src/options_highlight.php:67
+msgid "Done"
+msgstr "Zavr¹eno"
+
+#: felamimail/src/options_highlight.php:73
+msgid "Edit"
+msgstr "Edituj"
+
+#: felamimail/src/options_highlight.php:86
+msgid "No highlighting is defined"
+msgstr "Dodatno obele¾avanje nije omoguæeno"
+
+#: felamimail/src/options_highlight.php:124
+msgid "Identifying name"
+msgstr "Identifikacija imena"
+
+#: felamimail/src/options_highlight.php:137
+msgid "Color"
+msgstr "Boja"
+
+#: felamimail/src/options_highlight.php:141
+msgid "Dark Blue"
+msgstr "Tamno Plava"
+
+#: felamimail/src/options_highlight.php:142
+msgid "Dark Green"
+msgstr "Tamno Zelena"
+
+#: felamimail/src/options_highlight.php:143
+msgid "Dark Yellow"
+msgstr "Tamno ®uta"
+
+#: felamimail/src/options_highlight.php:144
+msgid "Dark Cyan"
+msgstr "Tamno Cijan"
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr "Tamno Mad¾enta"
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr "Svetlo Plava"
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr "Svetlo Zelena"
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr "Svetlo ®uta"
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr "Svetlo Cijan"
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr "Svetlo Mad¾enta"
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr "Tamno siva"
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr "Srednje siva"
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr "Svetlo Siva"
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr "Bela"
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr "Druga:"
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr "primer: 63aa7f"
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr "Match"
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr "Puno ime i prezime"
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr "E-Mail Adresa"
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr "Odgovori Na "
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr "Potpis"
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr "Koristi potpis"
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr "Koristi potpis"
+
+#: felamimail/src/read_body.php:38
+msgid "Viewing full header"
+msgstr "Pregled celog hedera"
+
+#: felamimail/src/read_body.php:144
+msgid "more"
+msgstr "jos"
+
+#: felamimail/src/read_body.php:145
+msgid "less"
+msgstr "manje"
+
+#: felamimail/src/read_body.php:233
+msgid "Message List"
+msgstr "Lista poruka"
+
+#: felamimail/functions/mailbox_display.php:215
+#: felamimail/functions/mailbox_display.php:219
+#: felamimail/functions/mailbox_display.php:223
+#: felamimail/functions/mailbox_display.php:332
+#: felamimail/functions/mailbox_display.php:336
+#: felamimail/functions/mailbox_display.php:340
+#: felamimail/src/read_body.php:253 felamimail/src/read_body.php:255
+msgid "Previous"
+msgstr "Prethodna"
+
+#: felamimail/functions/mailbox_display.php:216
+#: felamimail/functions/mailbox_display.php:220
+#: felamimail/functions/mailbox_display.php:224
+#: felamimail/functions/mailbox_display.php:333
+#: felamimail/functions/mailbox_display.php:337
+#: felamimail/functions/mailbox_display.php:341
+#: felamimail/src/read_body.php:257 felamimail/src/read_body.php:259
+msgid "Next"
+msgstr "Sledeca"
+
+#: felamimail/src/read_body.php:266
+msgid "Forward"
+msgstr "Napred"
+
+#: felamimail/src/read_body.php:269
+msgid "Reply"
+msgstr "Odgovori"
+
+#: felamimail/src/read_body.php:272
+msgid "Reply All"
+msgstr "Odgovori Svima"
+
+#: felamimail/src/read_body.php:290 felamimail/src/read_body.php:292
+msgid "View full header"
+msgstr "Pregled celog hedera"
+
+#: felamimail/src/read_body.php:298
+msgid "From:"
+msgstr "From:"
+
+#: felamimail/src/read_body.php:306
+msgid "Date:"
+msgstr "Datum:"
+
+#: felamimail/src/search.php:68 felamimail/src/search.php:69
+msgid "Body"
+msgstr "Telo poruke"
+
+#: felamimail/src/search.php:71 felamimail/src/search.php:72
+msgid "Everywhere"
+msgstr "Svuda"
+
+#: felamimail/src/search.php:80 felamimail/src/search.php:81
+msgid "Cc"
+msgstr "Cc"
+
+#: felamimail/functions/page_header.php:83 felamimail/src/signout.php:69
+msgid "Sign Out"
+msgstr "Kraj rada"
+
+#: felamimail/src/signout.php:76
+msgid "You have been successfully signed out."
+msgstr "Uspe¹no ste zavr¹ili sa radom"
+
+#: felamimail/src/signout.php:79
+msgid "Click here to log back in."
+msgstr "Klikni ovde da bi se ponovo ulogovao"
+
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:72
+msgid "Personal address book"
+msgstr "Licni adresar"
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr "Nije ime fajla"
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr "nema takvog fajla direktorijuma"
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr "Otvaranje neospelo"
+
+#: felamimail/functions/abook_local_file.php:226
+#: felamimail/functions/abook_local_file.php:246
+#: felamimail/functions/abook_local_file.php:269
+#: felamimail/functions/abook_local_file.php:299
+#: felamimail/functions/addressbook.php:268
+#: felamimail/functions/addressbook.php:299
+msgid "Addressbook is read-only"
+msgstr "Adresar je samo za èitanje"
+
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr "Korisnik '%s' veæ postoji"
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr "Ne mogu da zakljuèam datafajl"
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr "Neuspelo upisivanje u adresar"
+
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr "Korisnik '%s'  ne postoji"
+
+#: felamimail/functions/addressbook.php:29
+#, c-format
+msgid "Error opening file %s"
+msgstr "Gre¹ka pri otvaranju fajla %s"
+
+#: felamimail/functions/addressbook.php:43
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Greska pri inicijalizaciji LDAP servera %s:"
+
+#: felamimail/functions/addressbook.php:245
+#: felamimail/functions/addressbook.php:326
+msgid "Invalid input data"
+msgstr "Neispravni ulazni podaci"
+
+#: felamimail/functions/addressbook.php:250
+#: felamimail/functions/addressbook.php:331
+msgid "Name is missing"
+msgstr "Ime nedostaje"
+
+#: felamimail/functions/addressbook.php:254
+#: felamimail/functions/addressbook.php:335
+msgid "E-mail address is missing"
+msgstr "E-mail adresa nedostaje"
+
+#: felamimail/functions/addressbook.php:262
+msgid "Nickname contain illegal characters"
+msgstr "Nadimak sadr¾i nedozvoljenje karaktere"
+
+#: felamimail/functions/addressbook.php:344
+msgid "Addressbook $bnum is read-only"
+msgstr "Adresar $bnum je samo za èitanje"
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:144
+msgid "Unknown user or password incorrect."
+msgstr "Neispravni korisnik ili ¹ifra."
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:145
+msgid "Click here to try again"
+msgstr "Klikni ovde da poku¹a¹ jo¹ jednom"
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s's WebMail system"
+msgstr "Dobrodo¹li na %s WebMail sistem"
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr "Pod SquirrelMail sistemom verzija %s (c) 1999-2000."
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr "Klikni ovde da bi se vratio ka %s"
+
+#: felamimail/functions/imap_general.php:44
+msgid "ERROR : Could not complete request."
+msgstr "GRE©KA : Neuspe¹an zavr¹etak zahteva"
+
+#: felamimail/functions/imap_general.php:46
+msgid "Reason Given: "
+msgstr "Razlog:"
+
+#: felamimail/functions/imap_general.php:51
+msgid "ERROR : Bad or malformed request."
+msgstr "GRESKA : Los ili neispravan zahtev."
+
+#: felamimail/functions/imap_general.php:53
+msgid "Server responded: "
+msgstr "Odgovor servera:"
+
+#: felamimail/functions/imap_general.php:86
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Greska pri konektovanju na IMAP server: %s."
+
+#: felamimail/functions/imap_general.php:99
+#, c-format
+msgid "Bad request: %s"
+msgstr "Lo¹ zahtev: %s"
+
+#: felamimail/functions/imap_general.php:157
+#, c-format
+msgid "Unknown error: %s"
+msgstr "Nepoznata gre¹ka: %s"
+
+#: felamimail/functions/imap_messages.php:52
+#: felamimail/functions/imap_messages.php:76
+#: felamimail/functions/imap_messages.php:277
+#: felamimail/functions/imap_messages.php:316
+msgid "(no subject)"
+msgstr "(bez subjekta)"
+
+#: felamimail/functions/imap_messages.php:53
+msgid "Unknown Sender"
+msgstr "Nepoznat po¹iljaoc"
+
+#: felamimail/functions/imap_messages.php:319
+msgid "(unknown sender)"
+msgstr "(nepoznat po¹iljaoc)"
+
+#: felamimail/functions/imap_search.php:126
+msgid "Found"
+msgstr "Naðeno"
+
+#: felamimail/functions/imap_search.php:126
+msgid "messages"
+msgstr "poruka"
+
+#: felamimail/functions/imap_search.php:135
+#: felamimail/functions/mailbox_display.php:235
+msgid "Move selected to:"
+msgstr "Pomeri odabrano u:"
+
+#: felamimail/functions/imap_search.php:147
+#: felamimail/functions/mailbox_display.php:247
+msgid "Move"
+msgstr "Pomeri"
+
+#: felamimail/functions/imap_search.php:151
+#: felamimail/functions/mailbox_display.php:251
+msgid "checked messages"
+msgstr "Proèitane poruke"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "Viewing messages"
+msgstr "Pregledanje poruka od"
+
+#: felamimail/functions/mailbox_display.php:205
+msgid "to"
+msgstr "do"
+
+#: felamimail/functions/mailbox_display.php:205
+#: felamimail/functions/mailbox_display.php:209
+msgid "total"
+msgstr "ukupno"
+
+#: felamimail/functions/mailbox_display.php:209
+msgid "Viewing message"
+msgstr "Pregled poruke"
+
+#: felamimail/functions/mailbox_display.php:298
+msgid "THIS FOLDER IS EMPTY"
+msgstr "OVAJ DIREKTORIJUM JE PRAZAN"
+
+#: felamimail/functions/mime.php:495
+msgid "download"
+msgstr "dovuci"
+
+#: felamimail/functions/page_header.php:85
+msgid "Current Folder"
+msgstr "Trenutni direktorijum"
+
+#: felamimail/functions/page_header.php:93
+msgid "Compose"
+msgstr "Napi¹i"
+
+#: felamimail/functions/prefs.php:14
+msgid "Preference file "
+msgstr "Fajl pode¹avanja"
+
+#: felamimail/functions/prefs.php:14
+msgid " not found.  Exiting abnormally"
+msgstr "nije naðen.  nenormalan izlazak"
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:74
+msgid "Preference file, "
+msgstr "Fajl pode¹aanja,"
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:74
+msgid ""
+", does not exist.  Log out, and log back in to create a default preference "
+"file. "
+msgstr ", ne postoji. Izlogujte se , pa se ponovo ulogujte da bi se kreirao "
+"standardan fajl pode¹avanja"
+
+#: felamimail/functions/prefs.php:117
+msgid "Error opening "
+msgstr "Gre¹ka pri otvaranju"

@@ -1,0 +1,1158 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2001-01-20 02:15-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: felamimail/src/addrbook_popup.php:37
+msgid "Address Book"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:311
+msgid "Name"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:312
+msgid "E-mail"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:96
+#: felamimail/src/addrbook_search_html.php:75
+#: felamimail/src/addressbook.php:313
+msgid "Info"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:99
+#: felamimail/src/addrbook_search_html.php:78
+msgid "Source"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:137 felamimail/src/index.php:23
+#: felamimail/src/search.php:14 felamimail/src/webmail.php:26
+msgid "You need a valid user and password to access this page!"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:139 felamimail/src/index.php:25
+#: felamimail/src/search.php:16 felamimail/src/signout.php:58
+#: felamimail/src/webmail.php:28
+msgid "Click here to log back in."
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:174
+#: felamimail/src/addrbook_search.php:258
+#: felamimail/src/addrbook_search_html.php:210
+msgid "No persons matching your search was found"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:187
+#: felamimail/src/addrbook_search_html.php:135
+msgid "Search for"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:194
+#: felamimail/src/addrbook_search_html.php:143
+msgid "in"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:196
+#: felamimail/src/addrbook_search_html.php:146
+msgid "All address books"
+msgstr ""
+
+#: felamimail/functions/page_header.php:87
+#: felamimail/src/addrbook_search.php:206
+#: felamimail/src/addrbook_search_html.php:158
+#: felamimail/src/search.php:45 felamimail/src/search.php:99
+msgid "Search"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:208
+#: felamimail/src/addrbook_search_html.php:160
+msgid "List all"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:211
+msgid "Close window"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:229
+#: felamimail/src/addrbook_search_html.php:183
+#, c-format
+msgid "Unable to list addresses from %s"
+msgstr ""
+
+#: felamimail/src/addrbook_search.php:251
+#: felamimail/src/addrbook_search_html.php:206
+msgid "Your search failed with the following error(s)"
+msgstr ""
+
+#: felamimail/src/addrbook_search_html.php:101
+msgid "Use Addresses"
+msgstr ""
+
+#: felamimail/src/addrbook_search_html.php:125
+msgid "Address Book Search"
+msgstr ""
+
+#: felamimail/src/addrbook_search_html.php:219
+msgid "Return"
+msgstr ""
+
+#: felamimail/src/addressbook.php:46 felamimail/src/addressbook.php:310
+msgid "Nickname"
+msgstr ""
+
+#: felamimail/src/addressbook.php:51
+msgid "Must be unique"
+msgstr ""
+
+#: felamimail/src/addressbook.php:53
+msgid "E-mail address"
+msgstr ""
+
+#: felamimail/src/addressbook.php:58
+msgid "First name"
+msgstr ""
+
+#: felamimail/src/addressbook.php:63
+msgid "Last name"
+msgstr ""
+
+#: felamimail/src/addressbook.php:68
+msgid "Additional info"
+msgstr ""
+
+#: felamimail/src/addressbook.php:87
+msgid "No personal address book is defined. Contact administrator."
+msgstr ""
+
+#: felamimail/src/addressbook.php:184
+msgid "You can only edit one address at the time"
+msgstr ""
+
+#: felamimail/src/addressbook.php:196 felamimail/src/addressbook.php:199
+#: felamimail/src/addressbook.php:228 felamimail/src/addressbook.php:231
+msgid "Update address"
+msgstr ""
+
+#: felamimail/functions/display_messages.php:63
+#: felamimail/functions/display_messages.php:79
+#: felamimail/functions/imap_general.php:158
+#: felamimail/src/addressbook.php:219 felamimail/src/addressbook.php:269
+msgid "ERROR"
+msgstr ""
+
+#: felamimail/src/addressbook.php:245
+msgid "Unknown error"
+msgstr ""
+
+#: felamimail/src/addressbook.php:348
+msgid "Edit selected"
+msgstr ""
+
+#: felamimail/src/addressbook.php:350
+msgid "Delete selected"
+msgstr ""
+
+#: felamimail/src/addressbook.php:360
+#, c-format
+msgid "Add to %s"
+msgstr ""
+
+#: felamimail/src/addressbook.php:363
+msgid "Add address"
+msgstr ""
+
+#: felamimail/src/compose.php:101
+msgid "Original Message"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:528
+#: felamimail/src/compose.php:102 felamimail/src/download.php:120
+#: felamimail/src/options_order.php:50 felamimail/src/search.php:84
+#: felamimail/src/search.php:85
+msgid "Subject"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:503
+#: felamimail/src/compose.php:103 felamimail/src/download.php:121
+#: felamimail/src/options_order.php:48 felamimail/src/search.php:87
+#: felamimail/src/search.php:88
+msgid "From"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:501
+#: felamimail/src/compose.php:104 felamimail/src/download.php:122
+#: felamimail/src/search.php:93 felamimail/src/search.php:94
+msgid "To"
+msgstr ""
+
+#: felamimail/src/compose.php:231 felamimail/src/read_body.php:369
+msgid "To:"
+msgstr ""
+
+#: felamimail/src/compose.php:239
+msgid "CC:"
+msgstr ""
+
+#: felamimail/src/compose.php:247
+msgid "BCC:"
+msgstr ""
+
+#: felamimail/src/compose.php:255 felamimail/src/read_body.php:339
+msgid "Subject:"
+msgstr ""
+
+#: felamimail/src/compose.php:297 felamimail/src/compose.php:343
+msgid "Send"
+msgstr ""
+
+#: felamimail/src/compose.php:303
+msgid "Attach:"
+msgstr ""
+
+#: felamimail/src/compose.php:309 felamimail/src/options_order.php:133
+msgid "Add"
+msgstr ""
+
+#: felamimail/src/compose.php:321
+msgid "Delete selected attachments"
+msgstr ""
+
+#: felamimail/functions/page_header.php:81 felamimail/src/compose.php:336
+#: felamimail/src/compose.php:338 felamimail/src/compose.php:341
+msgid "Addresses"
+msgstr ""
+
+#: felamimail/src/compose.php:366
+msgid "You have not filled in the \"To:\" field."
+msgstr ""
+
+#: felamimail/src/compose.php:412 felamimail/src/compose.php:446
+msgid "Could not move/copy file. File not attached"
+msgstr ""
+
+#: felamimail/src/download.php:39
+msgid "Viewing a text attachment"
+msgstr ""
+
+#: felamimail/src/download.php:42 felamimail/src/download.php:44
+#: felamimail/src/read_body.php:48
+msgid "View message"
+msgstr ""
+
+#: felamimail/functions/mime.php:506 felamimail/src/download.php:49
+msgid "Download this as a file"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:515
+#: felamimail/src/download.php:123 felamimail/src/options_order.php:49
+msgid "Date"
+msgstr ""
+
+#: felamimail/functions/page_header.php:83 felamimail/src/folders.php:35
+#: felamimail/src/left_main.php:129
+msgid "Folders"
+msgstr ""
+
+#: felamimail/src/folders.php:43
+msgid "Subscribed successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:45
+msgid "Unsubscribed successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:47
+msgid "Deleted folder successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:49
+msgid "Created folder successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:51
+msgid "Renamed successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:61
+msgid "Folders created successfully!"
+msgstr ""
+
+#: felamimail/src/folders.php:64 felamimail/src/left_main.php:132
+msgid "refresh folder list"
+msgstr ""
+
+#: felamimail/src/folders.php:77
+msgid "Special Folder Options"
+msgstr ""
+
+#: felamimail/src/folders.php:80
+msgid ""
+"In order for SquirrelMail to provide the full set of options you need to "
+"create the special folders listed below.  Just click the check box and hit "
+"the create button."
+msgstr ""
+
+#: felamimail/src/folders.php:83
+msgid "Create Sent"
+msgstr ""
+
+#: felamimail/src/folders.php:86
+msgid "Create Trash"
+msgstr ""
+
+#: felamimail/src/folders.php:88 felamimail/src/folders.php:205
+msgid "Create"
+msgstr ""
+
+#: felamimail/src/folders.php:96
+msgid "Delete Folder"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:477
+#: felamimail/src/folders.php:137 felamimail/src/options_highlight.php:73
+#: felamimail/src/read_body.php:295
+msgid "Delete"
+msgstr ""
+
+#: felamimail/src/folders.php:141 felamimail/src/folders.php:237
+msgid "No folders found"
+msgstr ""
+
+#: felamimail/src/folders.php:148
+msgid "Create Folder"
+msgstr ""
+
+#: felamimail/src/folders.php:153
+msgid "as a subfolder of"
+msgstr ""
+
+#: felamimail/src/folders.php:202
+msgid "Let this folder contain subfolders"
+msgstr ""
+
+#: felamimail/src/folders.php:212
+msgid "Rename a Folder"
+msgstr ""
+
+#: felamimail/src/folders.php:233
+msgid "Rename"
+msgstr ""
+
+#: felamimail/src/folders.php:246 felamimail/src/folders.php:265
+msgid "Unsubscribe"
+msgstr ""
+
+#: felamimail/src/folders.php:246 felamimail/src/folders.php:308
+msgid "Subscribe"
+msgstr ""
+
+#: felamimail/src/folders.php:269
+msgid "No folders were found to unsubscribe from!"
+msgstr ""
+
+#: felamimail/src/folders.php:311
+msgid "No folders were found to subscribe to!"
+msgstr ""
+
+#: felamimail/src/folders_create.php:33
+msgid "Illegal folder name.  Please select a different name."
+msgstr ""
+
+#: felamimail/src/folders_create.php:33
+msgid "Click here to go back"
+msgstr ""
+
+#: felamimail/src/folders_rename_getname.php:46
+msgid "Rename a folder"
+msgstr ""
+
+#: felamimail/src/folders_rename_getname.php:50
+msgid "New name:"
+msgstr ""
+
+#: felamimail/src/folders_rename_getname.php:56
+#: felamimail/src/options_highlight.php:187
+msgid "Submit"
+msgstr ""
+
+#: felamimail/functions/page_header.php:89 felamimail/src/help.php:92
+msgid "Help"
+msgstr ""
+
+#: felamimail/src/help.php:126
+#, c-format
+msgid ""
+"The help has not been translated to %s.  It will be displayed in English "
+"instead."
+msgstr ""
+
+#: felamimail/src/help.php:132
+msgid "Some or all of the help documents are not present!"
+msgstr ""
+
+#: felamimail/src/help.php:156 felamimail/src/help.php:175
+msgid "Table of Contents"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:329
+#: felamimail/functions/mailbox_display.php:333
+#: felamimail/functions/mailbox_display.php:337
+#: felamimail/src/help.php:173 felamimail/src/help.php:174
+#: felamimail/src/read_body.php:308 felamimail/src/read_body.php:310
+msgid "Previous"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:330
+#: felamimail/functions/mailbox_display.php:334
+#: felamimail/functions/mailbox_display.php:338
+#: felamimail/src/help.php:176 felamimail/src/help.php:177
+#: felamimail/src/read_body.php:312 felamimail/src/read_body.php:314
+msgid "Next"
+msgstr ""
+
+#: felamimail/src/help.php:196
+msgid "Top"
+msgstr ""
+
+#: felamimail/src/left_main.php:109
+msgid "purge"
+msgstr ""
+
+#: felamimail/src/login.php:41 felamimail/src/login.php:83
+msgid "Login"
+msgstr ""
+
+#: felamimail/src/login.php:52
+#, c-format
+msgid "SquirrelMail version %s"
+msgstr ""
+
+#: felamimail/src/login.php:54
+msgid "By the SquirrelMail Development Team"
+msgstr ""
+
+#: felamimail/src/login.php:60
+#, c-format
+msgid "%s Login"
+msgstr ""
+
+#: felamimail/src/login.php:68
+msgid "Name:"
+msgstr ""
+
+#: felamimail/src/login.php:74
+msgid "Password:"
+msgstr ""
+
+#: felamimail/src/move_messages.php:85
+#: felamimail/src/move_messages.php:114
+#: felamimail/src/move_messages.php:143
+msgid "No messages were selected."
+msgstr ""
+
+#: felamimail/functions/page_header.php:85 felamimail/src/options.php:45
+#: felamimail/src/options_display.php:37
+#: felamimail/src/options_folder.php:40
+#: felamimail/src/options_highlight.php:62
+#: felamimail/src/options_order.php:41
+#: felamimail/src/options_personal.php:41
+msgid "Options"
+msgstr ""
+
+#: felamimail/src/options.php:59
+msgid "Successfully saved personal information!"
+msgstr ""
+
+#: felamimail/src/options.php:75
+msgid "Successfully saved display preferences!"
+msgstr ""
+
+#: felamimail/src/options.php:76
+msgid "Refresh Page"
+msgstr ""
+
+#: felamimail/src/options.php:97
+msgid "Successfully saved folder preferences!"
+msgstr ""
+
+#: felamimail/src/options.php:98
+msgid "Refresh Folder List"
+msgstr ""
+
+#: felamimail/src/options.php:112 felamimail/src/options_personal.php:41
+msgid "Personal Information"
+msgstr ""
+
+#: felamimail/src/options.php:117
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+
+#: felamimail/src/options.php:124 felamimail/src/options_highlight.php:62
+msgid "Message Highlighting"
+msgstr ""
+
+#: felamimail/src/options.php:129
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list.  This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+
+#: felamimail/src/options.php:136 felamimail/src/options_order.php:41
+msgid "Index Order"
+msgstr ""
+
+#: felamimail/src/options.php:141
+msgid ""
+"The order of the message index can be rearanged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+
+#: felamimail/src/options.php:150 felamimail/src/options_display.php:37
+msgid "Display Preferences"
+msgstr ""
+
+#: felamimail/src/options.php:155
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+
+#: felamimail/src/options.php:162 felamimail/src/options_folder.php:40
+msgid "Folder Preferences"
+msgstr ""
+
+#: felamimail/src/options.php:167
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+
+#: felamimail/src/options_display.php:43
+msgid "Theme"
+msgstr ""
+
+#: felamimail/src/options_display.php:58
+msgid "Language"
+msgstr ""
+
+#: felamimail/src/options_display.php:76
+msgid "Use Javascript or HTML addressbook?"
+msgstr ""
+
+#: felamimail/src/options_display.php:78
+#: felamimail/src/options_display.php:81
+msgid "JavaScript"
+msgstr ""
+
+#: felamimail/src/options_display.php:79
+#: felamimail/src/options_display.php:82
+msgid "HTML"
+msgstr ""
+
+#: felamimail/src/options_display.php:88
+msgid "Number of Messages to Index"
+msgstr ""
+
+#: felamimail/src/options_display.php:99
+msgid "Wrap incoming text at"
+msgstr ""
+
+#: felamimail/src/options_display.php:110
+msgid "Size of editor window"
+msgstr ""
+
+#: felamimail/src/options_display.php:121
+msgid "Location of folder list"
+msgstr ""
+
+#: felamimail/src/options_display.php:125
+msgid "Left"
+msgstr ""
+
+#: felamimail/src/options_display.php:128
+msgid "Right"
+msgstr ""
+
+#: felamimail/src/options_display.php:133
+msgid "Location of buttons when composing"
+msgstr ""
+
+#: felamimail/src/options_display.php:137
+msgid "Before headers"
+msgstr ""
+
+#: felamimail/src/options_display.php:140
+msgid "Between headers and message body"
+msgstr ""
+
+#: felamimail/src/options_display.php:143
+msgid "After message body"
+msgstr ""
+
+#: felamimail/src/options_display.php:148
+msgid "Width of folder list"
+msgstr ""
+
+#: felamimail/src/options_display.php:202
+msgid "Auto refresh folder list"
+msgstr ""
+
+#: felamimail/src/options_display.php:205
+msgid "Seconds"
+msgstr ""
+
+#: felamimail/src/options_display.php:206
+msgid "None"
+msgstr ""
+
+#: felamimail/src/options_display.php:207
+msgid "Minute"
+msgstr ""
+
+#: felamimail/src/options_display.php:208
+msgid "Minutes"
+msgstr ""
+
+#: felamimail/src/options_folder.php:48
+msgid "Folder Path"
+msgstr ""
+
+#: felamimail/src/options_folder.php:61
+msgid "Trash Folder:"
+msgstr ""
+
+#: felamimail/src/options_folder.php:65
+msgid "Don't use Trash"
+msgstr ""
+
+#: felamimail/src/options_folder.php:67
+msgid "Do not use Trash"
+msgstr ""
+
+#: felamimail/src/options_folder.php:89
+msgid "Sent Folder:"
+msgstr ""
+
+#: felamimail/src/options_folder.php:93
+msgid "Don't use Sent"
+msgstr ""
+
+#: felamimail/src/options_folder.php:95
+msgid "Do not use Sent"
+msgstr ""
+
+#: felamimail/src/options_folder.php:117
+msgid "Unseen message notification"
+msgstr ""
+
+#: felamimail/src/options_folder.php:120
+msgid "No notification"
+msgstr ""
+
+#: felamimail/src/options_folder.php:121
+msgid "Only INBOX"
+msgstr ""
+
+#: felamimail/src/options_folder.php:122
+msgid "All Folders"
+msgstr ""
+
+#: felamimail/src/options_folder.php:129
+msgid "Unseen message notification type"
+msgstr ""
+
+#: felamimail/src/options_folder.php:132
+msgid "Only unseen"
+msgstr ""
+
+#: felamimail/src/options_folder.php:133
+msgid "Unseen and Total"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:66
+msgid "New"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:67
+msgid "Done"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:73
+msgid "Edit"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:86
+msgid "No highlighting is defined"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:124
+msgid "Identifying name"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:137
+msgid "Color"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:141
+msgid "Dark Blue"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:142
+msgid "Dark Green"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:143
+msgid "Dark Yellow"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:144
+msgid "Dark Cyan"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:145
+msgid "Dark Magenta"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:146
+msgid "Light Blue"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:147
+msgid "Light Green"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:148
+msgid "Light Yellow"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:149
+msgid "Light Cyan"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:150
+msgid "Light Magenta"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:151
+msgid "Dark Gray"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:152
+msgid "Medium Gray"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:153
+msgid "Light Gray"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:154
+msgid "White"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:156
+msgid "Other:"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:158
+msgid "Ex: 63aa7f"
+msgstr ""
+
+#: felamimail/src/options_highlight.php:164
+msgid "Match"
+msgstr ""
+
+#: felamimail/src/options_order.php:47
+msgid "Checkbox"
+msgstr ""
+
+#: felamimail/src/options_order.php:51
+msgid "Flags"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:539
+#: felamimail/src/options_order.php:52
+msgid "Size"
+msgstr ""
+
+#: felamimail/src/options_order.php:90
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index.  You can add, remove, and move columns around to customize them to "
+"fit your needs."
+msgstr ""
+
+#: felamimail/src/options_order.php:100
+msgid "up"
+msgstr ""
+
+#: felamimail/src/options_order.php:102
+msgid "down"
+msgstr ""
+
+#: felamimail/src/options_order.php:107
+msgid "remove"
+msgstr ""
+
+#: felamimail/src/options_order.php:137
+msgid "Return to options page"
+msgstr ""
+
+#: felamimail/src/options_personal.php:47
+msgid "Full Name"
+msgstr ""
+
+#: felamimail/src/options_personal.php:53
+msgid "E-Mail Address"
+msgstr ""
+
+#: felamimail/src/options_personal.php:59
+msgid "Reply To"
+msgstr ""
+
+#: felamimail/src/options_personal.php:65
+msgid "Signature"
+msgstr ""
+
+#: felamimail/src/options_personal.php:69
+msgid "Use a signature"
+msgstr ""
+
+#: felamimail/src/options_personal.php:72
+msgid "Use a signature?"
+msgstr ""
+
+#: felamimail/src/read_body.php:41
+msgid "Viewing full header"
+msgstr ""
+
+#: felamimail/src/read_body.php:198
+msgid "more"
+msgstr ""
+
+#: felamimail/src/read_body.php:199
+msgid "less"
+msgstr ""
+
+#: felamimail/src/read_body.php:288
+msgid "Message List"
+msgstr ""
+
+#: felamimail/src/read_body.php:321
+msgid "Forward"
+msgstr ""
+
+#: felamimail/src/read_body.php:324
+msgid "Reply"
+msgstr ""
+
+#: felamimail/src/read_body.php:327
+msgid "Reply All"
+msgstr ""
+
+#: felamimail/src/read_body.php:345 felamimail/src/read_body.php:347
+msgid "View full header"
+msgstr ""
+
+#: felamimail/src/read_body.php:353
+msgid "From:"
+msgstr ""
+
+#: felamimail/src/read_body.php:361
+msgid "Date:"
+msgstr ""
+
+#: felamimail/functions/auth.php:14 felamimail/src/search.php:6
+msgid "You must login first."
+msgstr ""
+
+#: felamimail/src/search.php:78 felamimail/src/search.php:79
+msgid "Body"
+msgstr ""
+
+#: felamimail/src/search.php:81 felamimail/src/search.php:82
+msgid "Everywhere"
+msgstr ""
+
+#: felamimail/src/search.php:90 felamimail/src/search.php:91
+msgid "Cc"
+msgstr ""
+
+#: felamimail/functions/page_header.php:69 felamimail/src/signout.php:48
+msgid "Sign Out"
+msgstr ""
+
+#: felamimail/src/signout.php:55
+msgid "You have been successfully signed out."
+msgstr ""
+
+#: felamimail/functions/abook_database.php:45
+#: felamimail/functions/abook_local_file.php:32
+#: felamimail/functions/addressbook.php:84
+msgid "Personal address book"
+msgstr ""
+
+#: felamimail/functions/abook_database.php:84
+#: felamimail/functions/abook_database.php:120
+#: felamimail/functions/abook_database.php:152
+#: felamimail/functions/abook_database.php:181
+#: felamimail/functions/abook_database.php:227
+#: felamimail/functions/abook_database.php:256
+#: felamimail/functions/abook_database.php:292
+#, c-format
+msgid "Database error: %s"
+msgstr ""
+
+#: felamimail/functions/abook_database.php:200
+#: felamimail/functions/abook_database.php:234
+#: felamimail/functions/abook_database.php:263
+#: felamimail/functions/abook_local_file.php:226
+#: felamimail/functions/abook_local_file.php:246
+#: felamimail/functions/abook_local_file.php:269
+#: felamimail/functions/abook_local_file.php:299
+#: felamimail/functions/addressbook.php:269
+#: felamimail/functions/addressbook.php:300
+#: felamimail/functions/addressbook.php:351
+msgid "Addressbook is read-only"
+msgstr ""
+
+#: felamimail/functions/abook_database.php:208
+#: felamimail/functions/abook_local_file.php:231
+#, c-format
+msgid "User '%s' already exist"
+msgstr ""
+
+#: felamimail/functions/abook_database.php:271
+#: felamimail/functions/abook_local_file.php:304
+#, c-format
+msgid "User '%s' does not exist"
+msgstr ""
+
+#: felamimail/functions/abook_local_file.php:40
+msgid "Not a file name"
+msgstr ""
+
+#: felamimail/functions/abook_local_file.php:74
+msgid "No such file or directory"
+msgstr ""
+
+#: felamimail/functions/abook_local_file.php:94
+#: felamimail/functions/abook_local_file.php:130
+msgid "Open failed"
+msgstr ""
+
+#: felamimail/functions/abook_local_file.php:250
+#: felamimail/functions/abook_local_file.php:274
+#: felamimail/functions/abook_local_file.php:310
+msgid "Could not lock datafile"
+msgstr ""
+
+#: felamimail/functions/abook_local_file.php:262
+msgid "Write to addressbook failed"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:30
+#, c-format
+msgid "Error opening file %s"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:44
+#, c-format
+msgid "Error initializing LDAP server %s:"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:246
+#: felamimail/functions/addressbook.php:327
+msgid "Invalid input data"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:251
+#: felamimail/functions/addressbook.php:332
+msgid "Name is missing"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:255
+#: felamimail/functions/addressbook.php:336
+msgid "E-mail address is missing"
+msgstr ""
+
+#: felamimail/functions/addressbook.php:263
+#: felamimail/functions/addressbook.php:341
+msgid "Nickname contain illegal characters"
+msgstr ""
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:166
+msgid "Unknown user or password incorrect."
+msgstr ""
+
+#: felamimail/functions/display_messages.php:19
+#: felamimail/functions/imap_general.php:167
+msgid "Click here to try again"
+msgstr ""
+
+#: felamimail/functions/display_messages.php:32
+#, c-format
+msgid "Welcome to %s's WebMail system"
+msgstr ""
+
+#: felamimail/functions/display_messages.php:43
+#, c-format
+msgid "Running SquirrelMail version %s (c) 1999-2000."
+msgstr ""
+
+#: felamimail/functions/display_messages.php:68
+#, c-format
+msgid "Click here to return to %s"
+msgstr ""
+
+#: felamimail/functions/imap_general.php:69
+msgid "ERROR : Could not complete request."
+msgstr ""
+
+#: felamimail/functions/imap_general.php:71
+msgid "Reason Given: "
+msgstr ""
+
+#: felamimail/functions/imap_general.php:78
+msgid "ERROR : Bad or malformed request."
+msgstr ""
+
+#: felamimail/functions/imap_general.php:80
+msgid "Server responded: "
+msgstr ""
+
+#: felamimail/functions/imap_general.php:106
+#, c-format
+msgid "Error connecting to IMAP server: %s."
+msgstr ""
+
+#: felamimail/functions/imap_general.php:123
+#, c-format
+msgid "Bad request: %s"
+msgstr ""
+
+#: felamimail/functions/imap_general.php:125
+#, c-format
+msgid "Unknown error: %s"
+msgstr ""
+
+#: felamimail/functions/imap_general.php:127
+msgid "Read data:"
+msgstr ""
+
+#: felamimail/functions/imap_messages.php:62
+#: felamimail/functions/imap_messages.php:86
+#: felamimail/functions/imap_messages.php:311
+#: felamimail/functions/imap_messages.php:350
+#: felamimail/functions/mailbox_display.php:26
+msgid "(no subject)"
+msgstr ""
+
+#: felamimail/functions/imap_messages.php:63
+msgid "Unknown Sender"
+msgstr ""
+
+#: felamimail/functions/imap_messages.php:353
+msgid "(unknown sender)"
+msgstr ""
+
+#: felamimail/functions/imap_search.php:136
+msgid "Found"
+msgstr ""
+
+#: felamimail/functions/imap_search.php:136
+msgid "messages"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:317
+msgid "Viewing messages"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:317
+msgid "to"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:317
+#: felamimail/functions/mailbox_display.php:319
+msgid "total"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:319
+msgid "Viewing message"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:363
+msgid "THIS FOLDER IS EMPTY"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:403
+#: felamimail/functions/mailbox_display.php:441
+msgid "Unselect All"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:405
+#: felamimail/functions/mailbox_display.php:443
+msgid "Select All"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:457
+msgid "Move selected to:"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:471
+msgid "Move"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:475
+msgid "Expunge"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:475
+msgid "mailbox"
+msgstr ""
+
+#: felamimail/functions/mailbox_display.php:477
+msgid "checked messages"
+msgstr ""
+
+#: felamimail/functions/page_header.php:71
+msgid "Current Folder"
+msgstr ""
+
+#: felamimail/functions/page_header.php:79
+msgid "Compose"
+msgstr ""
+
+#: felamimail/functions/prefs.php:14
+#, c-format
+msgid "Preference file %s not found. Exiting abnormally"
+msgstr ""
+
+#: felamimail/functions/prefs.php:36 felamimail/functions/prefs.php:75
+#, c-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+
+#: felamimail/functions/prefs.php:119
+msgid "Error opening "
+msgstr ""
