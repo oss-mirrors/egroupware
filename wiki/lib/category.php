@@ -1,8 +1,10 @@
 <?php
 // $Id$
 
-require('parse/main.php');
-
+if (!function_exists('parseText'))
+{
+	include('parse/main.php');
+}
 // Add a page to a list of categories.
 function add_to_category($page, $catlist)
 {
