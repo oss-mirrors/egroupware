@@ -551,19 +551,36 @@
     echo "\n<img src=\"".$view_link."\">\n<p>\n";
   }
 
-  // function make_clickable ripped off from PHPWizard.net
-  // http://www.phpwizard.net/phpMisc/
-  // modified to make mailto: addresses compose in AeroMail
-  function make_clickable($text)
+  // function make_clickable taken from text_to_links() in the SourceForge Snipplet Library
+  // http://sourceforge.net/snippet/detail.php?type=snippet&id=100004
+  // modified to make mailto: addresses compose in phpGW
+  function make_clickable($data)
   {
     global $phpgw;
-    $ret = eregi_replace("([[:alnum:]]+)://([^[:space:]]*)([[:alnum:]#?/&=])",
-	    "<a href=\"\\1://\\2\\3\" target=\"_new\">\\1://\\2\\3</a>", $text);
-    if($ret == $text) {
-      $ret = eregi_replace("(([a-z0-9_]|\\-|\\.)+@([^[:space:]]*)([[:alnum:]-]))",
-	      "<a href=\"".$phpgw->link("compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
-	      ."&to=\\1\">\\1</a>", $ret);
+
+    if(empty($data))
+    {
+      return $data;
     }
-    return($ret);
+
+    $lines = split("\n",$data);
+
+    while ( list ($key,$line) = each ($lines))
+    {
+
+      $line = eregi_replace("([ \t]|^)www\."," http://www.",$line);
+      $line = eregi_replace("([ \t]|^)ftp\."," ftp://ftp.",$line);
+      $line = eregi_replace("(http://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+      $line = eregi_replace("(https://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+      $line = eregi_replace("(ftp://[^ )\r\n]+)","<A href=\"\\1\" target=\"_new\">\\1</A>",$line);
+      $line = eregi_replace("([-a-z0-9_]+(\.[_a-z0-9-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)+))",
+               "<a href=\"".$phpgw->link("compose.php","folder=".urlencode($phpgw_info["user"]["preferences"]["email"]["folder"]))
+               ."&to=\\1\">\\1</a>", $line);
+
+      $newText .= $line . "\n";
+
+    }
+
+    return $newText;
   }
 ?>
