@@ -15,8 +15,8 @@
 	{
 		var $so;
 		var $public_functions = array(
-				'preferences'     => True
-			);
+			'preferences' => True
+		);
 
 		function display_tracker()
 		{
@@ -38,7 +38,7 @@
 			}
 			else
 			{
-				$last_cache = 1;
+				$last_cache = 601;
 			}
 
 			// This is hard coded for 10 minutes cache, it will be a config option in the future

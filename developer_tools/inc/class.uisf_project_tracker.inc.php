@@ -16,9 +16,9 @@
 		var $bo;
 		var $template;
 		var $public_functions = array(
-				'display_tracker' => True,
-				'preferences'     => True
-			);
+			'display_tracker' => True,
+			'preferences'     => True
+		);
 
 		function uisf_project_tracker()
 		{
@@ -31,14 +31,16 @@
 			));
 			$this->template->set_block('sf_project','display');
 			$this->template->set_block('sf_project','preferences');
-
-			$phpgw->common->phpgw_header();
-			echo parse_navbar();
-			include(PHPGW_APP_INC . '/header.inc.php');
 		}
 
 		function display_tracker()
 		{
+			global $phpgw;
+
+			$phpgw->common->phpgw_header();
+			echo parse_navbar();
+			include(PHPGW_APP_INC . '/header.inc.php');
+
 			$this->template->set_var('lang_header',lang('Sourceforge project tracker'));
 			$this->template->set_var('project_html',$this->bo->display_tracker());
 			$this->template->pfp('out','display');
@@ -47,6 +49,10 @@
 		function preferences($message = '')
 		{
 			global $phpgw, $phpgw_info;
+
+			$phpgw->common->phpgw_header();
+			echo parse_navbar();
+			include(PHPGW_APP_INC . '/header.inc.php');
 
 			$pref        = createobject('phpgwapi.preferences');
 			$pref->read_repository();
