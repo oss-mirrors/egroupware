@@ -19,7 +19,6 @@
 	$setup_info['comic']['enable']    = 1;
 
 	$setup_info['comic']['author'] = 'Sam Wynn';
-	$setup_info['comic']['note'] = 'Originally ported from phpComic by Ryan Phillips.';
 	$setup_info['comic']['license']  = 'GPL';
 	$setup_info['comic']['description'] = 'Displays comic strips.';
 	$setup_info['comic']['maintainer'] = 'eGroupWare developers';
