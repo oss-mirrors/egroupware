@@ -32,10 +32,9 @@ function mail_ticket($ticket_id) {
 	    . "t_timestamp_opened, t_timestamp_closed, t_subject from ticket where t_id='$ticket_id'");
   $phpgw->db->next_record();
 
-  $subject = "[TTS #".$ticket_id." ".$group."] ".(!$phpgw->db->f("t_timestamp_closed")?"Updated":"Closed").": ".$phpgw->db->f("t_subject");
-
-
   $group = $phpgw->db->f("t_category");
+
+  $subject = "[TTS #".$ticket_id." ".$group."] ".(!$phpgw->db->f("t_timestamp_closed")?"Updated":"Closed").": ".$phpgw->db->f("t_subject");
 
   $body = "";
   $body .= "TTS #".$ticket_id."\n\n";
