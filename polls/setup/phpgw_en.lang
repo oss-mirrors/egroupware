@@ -15,12 +15,14 @@ enter poll question	polls	en	Enter poll question
 new poll has been added.  you should now add some answers for this poll	polls	en	New poll has been added.  You should now add some answers for this poll
 poll question	polls	en	Poll question
 poll settings	polls	en	Poll settings
+poll settings	common	en	Poll settings
 polls	common	en	Polls
 question has been updated	polls	en	Question has been updated
 select current poll	polls	en	Select current poll
 settings updated	polls	en	Settings updated
 show answers	polls	en	Show answers
 show questions	polls	en	Show questions
+show questions	common	en	Show questions
 total votes	polls	en	Total
 View poll	polls	en	View poll
 vote	polls	en	Vote
