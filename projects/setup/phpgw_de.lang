@@ -1,150 +1,179 @@
-projects	common	de	Projekte
-Account	projects	de	Account
+account	projects	de	Account
 accountancy	common	de	Rechnungswesen
-Active	projects	de	Activ
-Activities	projects	de	Aktivit&auml;ten
-Activities list	projects	de	Aktivit&auml;ten Liste
-Activity	projects	de	Aktivit&auml;t
-Activity ID	projects	de	Aktivit&auml;ts ID
-Add Activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
-Add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
-Add project	projects	de	Projekt hinzuf&uuml;gen
-Add project hours	projects	de	Projektstuden hinzuf&uuml;gen
-Administrator	projects	de	Administrator
-All invoices	projects	de	Alle Rechnungen
-All delivery notes	projects	de	Alle Lieferscheine
-arial	projects	de	Arial
+active	projects	de	Activ
+activities	projects	de	Aktivit&auml;ten
+activity	projects	de	Aktivit&auml;t
+activity %1 has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;gt.
+activity %1 has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet.
+activity id	projects	de	Aktivit&auml;ts ID
+add activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
+add project	projects	de	Projekt hinzuf&uuml;gen
+add project hours	projects	de	Projektstuden hinzuf&uuml;gen
+add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
+administrator	projects	de	Administrator
+all delivery notes	projects	de	Alle Lieferscheine
+all invoices	projects	de	Alle Rechnungen
 archive	projects	de	Archiv
+are you sure you want to delete this activity	projects	de	Sind Sie sicher, dass Sie diese Aktivit&auml;t l&ouml;schen wollen ?
+are you sure you want to delete this project	projects	de	Sind Sie sicher, dass Sie dieses Projekt l&ouml;schen wollen ?
+arial	projects	de	Arial
+bill per hour	projects	de	Preis pro Stunde
+bill per hour/workunit	projects	de	Preis pro Stunde/Arbeitseinheit
+bill per workunit	projects	de	Preis pro Arbeitseinheit
+billable activities	projects	de	Abrechenbare Aktivit&auml;ten
 billed	projects	de	Bezahlt
-Billed only	projects	de	nur bezahlte
-Billing	projects	de	Abrechnung
-Bookable activities	projects	de	Buchbare Aktivit&auml;ten
+billed only	projects	de	nur bezahlte
+billing	projects	de	Abrechnung
+bookable activities	projects	de	Buchbare Aktivit&auml;ten
 bookkeeper	projects	de	Buchhalter
-Billable activities	projects	de	Abrechenbare Aktivit&auml;ten
-bill per hour	projects	de	Preis pro Stunde	
-Bill per workunit	projects	de	Preis pro Arbeitseinheit
-Budget	projects	de	Budget
-Calculate	projects	de	Berechnen
+budget	projects	de	Budget
+budget main project	projects	de	Budget Hauptprojekt
+calculate	projects	de	Berechnen
 closed	projects	de	Abgeschlossen
-Coordinator	projects	de	Koordinator
+coordinator	projects	de	Koordinator
 courier new	projects	de	Courier New
-Create delivery	projects	de	Lieferung erstellen
-Create invoice	projects	de	Rechnung erstellen
-Customer	projects	de	Kunde
-Delete hours	projects	de	Stunden löschen
-Deliveries	projects	de	Lieferungen
-Delivery	projects	de	Lieferung
-Delivery date	projects	de	Lieferungs Datum
-Delivery note	projects	de	Lieferschein
-delivery note fpr project	projects	de	Lieferschein für Projekt
-Delivery ID	projects	de	Lieferungs ID
-Delivery list	projects	de	Lieferungs Liste
-Delivery notes	projects	de	Lieferscheine
-Edit Activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
-Edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
-Edit project administrator list	projects	de	Projekt Administrator Liste überarbeiten
-edit project bookkeeper list	projects	de	Projekt Buchhalter Liste überarbeiten
-Edit project	projects	de	Projekt überarbeiten
-Edit project hours	projects	de	Projektstunden überarbeiten
-Employee	projects	de	Mitarbeiter
+create delivery	projects	de	Lieferung erstellen
+create invoice	projects	de	Rechnung erstellen
+creator	projects	de	Ersteller
+customer	projects	de	Kunde
+date created	projects	de	Erstellungs-Datum
+delete hours	projects	de	Stunden l&ouml;schen
+deliveries	projects	de	Lieferungen
+delivery	projects	de	Lieferung
+delivery %1 has been created !	projects	de	Lieferung %1 wurde erstellt.
+delivery %1 has been updated !	projects	de	Lieferung %1 wurde &uuml;berarbeitet.
+delivery date	projects	de	Lieferungs Datum
+delivery id	projects	de	Lieferungs ID
+delivery list	projects	de	Lieferungs Liste
+delivery note	projects	de	Lieferschein
+delivery note for project	projects	de	Lieferschein f&uuml;r Projekt
+delivery notes	projects	de	Lieferscheine
+edit activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
+edit bookkeeper list	projects	de	Projekt-Buchhalter Liste &uuml;berarbeiten
+edit project	projects	de	Projekt &uuml;berarbeiten
+edit administrator list	projects	de	Projekt-Administrator Liste &uuml;berarbeiten
+edit project hours	projects	de	Projektstunden &uuml;berarbeiten
+edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
+employee	projects	de	Mitarbeiter
 exactly accounting	projects	de	exakte Abrechnung
-Generate Activity ID ?	projects	de	Activit&auml;s ID generieren ?
-Generate Delivery ID ?	projects	de	Lieferungs ID generieren ?
-Generate Project ID ?	projects	de	Projekt ID generieren ?
-Generate Invoice ID ?	projects	de	Rechnungs ID generieren ?
+generate activity id ?	projects	de	Activit&auml;ts ID generieren ?
+generate delivery id ?	projects	de	Lieferungs ID generieren ?
+generate invoice id ?	projects	de	Rechnungs ID generieren ?
+generate project id ?	projects	de	Projekt ID generieren ?
 georgia	projects	de	Georgia
 helvetica	projects	de	Helvetica
-Hours	projects	de	Stunden
-Invoice	projects	de	Rechnung
-Invoice date	projects	de	Rechnungs Datum
-invoice for project	projects	de	Rechnung für Projekt
-Invoice ID	projects	de	Rechnungs ID
+hours	projects	de	Stunden
+investment nr	projects	de	Investitions-Nummer
+invoice	projects	de	Rechnung
+invoice %1 has been created !	projects	de	Rechnung %1 wurde erstellt.
+invoice %1 has been updated !	projects	de	Rechnung %1 wurde &uuml;berarbeitet.
+invoice date	projects	de	Rechnungs Datum
+invoice for project	projects	de	Rechnung f&uuml;r Projekt
+invoice id	projects	de	Rechnungs ID
 invoice layout	projects	de	Rechnungs Layout
-Invoice list	projects	de	Rechnungs Liste
-Invoices	projects	de	Rechnungen
+invoice list	projects	de	Rechnungs Liste
+invoices	projects	de	Rechnungen
 invoicing of work time	projects	de	in Rechnung stellen der Arbeitszeit
-Job	projects	de	Job
+job	projects	de	Job
 job archive	projects	de	Job Archiv
-Job date	projects	de	Job Datum
-Job description	projects	de	Job Beschreibung
-Job ID	projects	de	Job ID
-Job list	projects	de	Job Liste
-Jobs	projects	de	Jobs
-large	projects	de	Groß
-Main project	projects	de	Hauptprojekt
-Minutes per workunit	projects	de	Minuten pro Arbeitseinheit
+job date	projects	de	Job Datum
+job description	projects	de	Job Beschreibung
+job has been added !	projects	de	Job wurde hinzugef&uuml;gt.
+job has been updated !	projects	de	Job wurde &uuml;berarbeitet.
+job id	projects	de	Job ID
+job list	projects	de	Job Liste
+jobs	projects	de	Jobs
+large	projects	de	Gro&szlig;
+last update	projects	de	letzte Aktualisierung
+list activities	projects	de	Aktivit&auml;tenliste
+list budget	projects	de	Budgetliste
+list pcosts	projects	de	Plankostenliste
+list projects	projects	de	Projektliste
+main project	projects	de	Hauptprojekt
+minutes per workunit	projects	de	Minuten pro Arbeitseinheit
+month	projects	de	Monat
 net	projects	de	netto
-New project	projects	de	Neues Projekt
-Nonactive	projects	de	Nicht aktiv
-Number	projects	de	Nummer
+new project	projects	de	Neues Projekt
+nonactive	projects	de	Nicht aktiv
+number	projects	de	Nummer
 open	projects	de	Offen
-Overall	projects	de	Gesammt
+overall	projects	de	Gesammt
+pcosts can not be bigger than the budget	projects	de	Die Plankosten k&ouml;nnen nicht h&ouml;her als das Budget sein !
 per hour	projects	de	pro Stunde
-per workunit	projects	de	pro Arbeitseinheit
 per hour/workunit	projects	de	pro Stunde/Arbeitseinheit
-Please enter an ID !	projects	de	Bitte eine ID eingeben !
-Please choose activities for that project first !	projects	de	Bitte erst Aktivitäten für das Projekt wählen !
-Please enter a remark !	projects	de	Bitte einen Betreff eingeben !
-Please enter the bill per workunit !	projects	de	Bitte den Preis pro Arbeitseinheit eingeben !
-Please enter the minutes per workunit !	projects	de	Bitte die Minuten pro Arbeitseinheit eingeben !
-Please set the minutes per workunit for each activity now !	projects	de	Bitte jetzt die Minuten pro Arbeitseinheit für jede Aktivität eintragen !
-Position	projects	de	Position
-Print delivery	projects	de	Lieferung drucken
-Print invoice	projects	de	Rechnung drucken
-Project	projects	de	Projekt
-Project archive	projects	de	Projekt Archiv
-Project billing	projects	de	Projekt Abrechnung
-Project delivery	projects	de	Projekt Lieferung
-Project ID	projects	de	Projekt ID
-Project list	projects	de	Projekt Liste
-Project name	projects	de	Projekt Name
+per workunit	projects	de	pro Arbeitseinheit
+planned costs	projects	de	Plankosten
+planned time sum of all sub projects is bigger than the planned time of the main project	projects	de	Die Summe der geplanten Zeit aller Unterprojekte ist gr&ouml;&szlig;er als die des Hauptprojektes !
+please choose a project coordinator	projects	de	Bitte w&auml;hlen Sie einen Projekt Koordinator !
+please choose activities for the project	projects	de	Bitte w&auml;hlen Sie Aktivit&auml;ten f&uuml;r das Projekt!
+please enter a remark !	projects	de	Bitte geben Sie einen Betreff an !
+please enter an id !	projects	de	Bitte geben Sie eine ID an !
+please enter the bill per workunit !	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit an !
+please enter the minutes per workunit !	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit an !
+please set the minutes per workunit for each activity now !	projects	de	Bitte tragen Sie jetzt die Minuten pro Arbeitseinheit f&uuml;r jede Aktivit&auml;t ein !
+please specify the budget	projects	de	Bitte geben Sie das Budget an !
+position	projects	de	Position
 preferences for accountancy	projects	de	Einstellungen zum Rechnungswesen
-Project statistic	projects	de	Projekt Statistik
+print delivery	projects	de	Lieferung drucken
+print invoice	projects	de	Rechnung drucken
+processor	projects	de	Bearbeiter
+project	projects	de	Projekt
+project archive	projects	de	Projekt Archiv
+project billing	projects	de	Projekt Abrechnung
+project delivery	projects	de	Projekt Lieferung
+project id	projects	de	Projekt ID
+project list	projects	de	Projekt Liste
+project name	projects	de	Projekt Name
+project statistic	projects	de	Projekt Statistik
 project statistics	projects	de	Projekt Statistiken
-Remark	projects	de	Betreff
-Remark required	projects	de	Betreff notwendig
-select	projects	de	Auswählen
+projects	common	de	Projekte
+remark	projects	de	Betreff
+remark required	projects	de	Betreff notwendig
 select font	projects	de	Schrift ausw&auml;hlen
-select font size for customer address	projects	de	Schriftgröße für Kundenadresse auswählen
-Select font size for own address	projects	de	Schriftgröße für eigene Adresse auswählen
-Select main project	projects	de	Hauptprojekt auswählen
-Select per button !	projects	de	Auswählen per Button !
-Select project	projects	de	Projekt auswählen
-Select tax for work time	projects	de	Mehrwertsteuer für Arbeitszeit
-Select users	projects	de	Benutzer auswählen
-Select groups	projects	de	Gruppen auswählen
-Select own address	projects	de	Eigene Adresse ausw&auml;hlen
+select font size for customer address	projects	de	Schriftgr&ouml;&szlig;e f&uuml;r Kundenadresse ausw&auml;hlen
+select font size for own address	projects	de	Schriftgr&ouml;&szlig;e f&uuml;r eigene Adresse ausw&auml;hlen
+select groups	projects	de	Gruppen ausw&auml;hlen
+select main project	projects	de	Hauptprojekt ausw&auml;hlen
+select own address	projects	de	Eigene Adresse ausw&auml;hlen
+select project	projects	de	Projekt ausw&auml;hlen
+select tax for work time	projects	de	Mehrwertsteuer f&uuml;r Arbeitszeit
+select users	projects	de	Benutzer ausw&auml;hlen
+short description	projects	de	Kurzbeschreibung
 small	projects	de	Klein
-Statistic	projects	de	Statistik
-Statistics	projects	de	Statistiken
-Short description	projects	de	Kurzbeschreibung
-Sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen für Sie zu tätigen :)
+sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen f|r Sie zu t&auml;tigen :)
+statistic	projects	de	Statistik
+statistics	projects	de	Statistiken
+sum budget	projects	de	Summe Budget
 sum hours	projects	de	Summe Stunden
 sum net	projects	de	Summe netto
-Sum workunits	projects	de	Summe Arbeitseinheiten
+sum pcosts	projects	de	Summe Plankosten
+sum workunits	projects	de	Summe Arbeitseinheiten
 tahoma	projects	de	Tahoma
 tax	projects	de	Mwst.
-That ID has been used already !	projects	de	Diese ID ist bereits in Benutzung !
-Update invoice	projects	de	Rechnung &uuml;berarbeiten
-Update delivery	projects	de	Lieferung &uuml;berarbeiten
-Username / Group	projects	de	Benutzername / Gruppe
-User statistic	projects	de	Benutzer Statistik
-User statistics	projects	de	Benutzer Statistiken
+that id has been used already !	projects	de	Diese ID ist bereits in Benutzung !
+time planned	projects	de	geplante Zeit
+time planned main project	projects	de	geplante Zeit Hauptprojekt
+time used	projects	de	verbrauchte Zeit
+update delivery	projects	de	Lieferung &uuml;berarbeiten
+update invoice	projects	de	Rechnung &uuml;berarbeiten
+user statistic	projects	de	Benutzer Statistik
+user statistics	projects	de	Benutzer Statistiken
+username / group	projects	de	Benutzername / Gruppe
 verdana	projects	de	Verdana
-very large	projects	de	Sehr groß
+very large	projects	de	Sehr gro&szlig;
 very small	projects	de	Sehr klein
-View work hours	projects	de	Arbeitsstunden anzeigen
-View job	projects	de	Job anzeigen
-View project	projects	de	Projekt anzeigen
-Work date	projects	de	Arbeitsdatum
-Work hours	projects	de	Arbeitsstunden
-Work hours archive	projects	de	Arbeitsstunden Archiv
-Work hours list	projects	de	Arbeitsstunden Liste
-Work time	projects	de	Arbeitszeit
-Workunit	projects	de	Arbeitseinheit
-Workunits	projects	de	Arbeitseinheiten
-You have entered an invalid start date !	projects	de	Sie haben ein ung&uuml;ltiges Startdatum ausgew&auml;hlt !
-You have entered an invalid end date !	projects	de	Sie haben ein ung&uuml;ltiges Enddatum ausgew&auml;hlt !
-You have selected an invalid activity !	projects	de	Sie haben eine falsche Aktivit&auml;t ausgew&auml;hlt !
-You have no customer selected !	projects	de	Sie haben keinen Kunden ausgew&auml;hlt !
-You have to CREATE a delivery or invoice first !	projects	de	Sie m&uuml;ssen zuerst eine Rechnung/Lieferung ERSTELLEN !
+view job	projects	de	Job anzeigen
+view project	projects	de	Projekt anzeigen
+view work hours	projects	de	Arbeitsstunden anzeigen
+work date	projects	de	Arbeitsdatum
+work hours	projects	de	Arbeitsstunden
+work hours archive	projects	de	Arbeitsstunden Archiv
+work hours list	projects	de	Arbeitsstunden Liste
+work time	projects	de	Arbeitszeit
+workunit	projects	de	Arbeitseinheit
+workunits	projects	de	Arbeitseinheiten
+you have entered an invalid end date !	projects	de	Sie haben ein ung&uuml;ltiges Enddatum ausgew&auml;hlt !
+you have entered an invalid start date !	projects	de	Sie haben ein ung&uuml;ltiges Startdatum ausgew&auml;hlt !
+you have no customer selected !	projects	de	Sie haben keinen Kunden ausgew&auml;hlt !
+you have selected an invalid activity !	projects	de	Sie haben eine falsche Aktivit&auml;t ausgew&auml;hlt !
+you have to create a delivery or invoice first !	projects	de	Sie m&uuml;ssen zuerst eine Rechnung/Lieferung ERSTELLEN !

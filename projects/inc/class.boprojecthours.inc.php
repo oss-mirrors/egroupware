@@ -53,7 +53,14 @@
 				$this->use_session = True;
 			}
 
-			global $start, $query, $filter, $order, $sort, $state;
+			$start	= get_var('start',array('POST','GET'));
+			$query	= get_var('query',array('POST','GET'));
+			$sort	= get_var('sort',array('POST','GET'));
+			$order	= get_var('order',array('POST','GET'));
+			$state	= get_var('state',array('POST','GET'));
+			$filter	= get_var('filter',array('POST','GET'));
+			$project_id	= get_var('project_id',array('POST','GET'));
+
 
 			if(isset($start)) { $this->start = $start; }
 			if(isset($query)) { $this->query = $query; }
@@ -61,6 +68,7 @@
 			if(isset($sort)) { $this->sort = $sort; }
 			if(isset($order)) { $this->order = $order; }
 			if(isset($state)) { $this->state = $state; }
+			if(isset($project_id)) { $this->project_id = $project_id; }
 		}
 
 		function save_sessiondata($data)
@@ -81,6 +89,7 @@
 			$this->order	= $data['order'];
 			$this->sort		= $data['sort'];
 			$this->state	= $data['state'];
+			$this->project_id	= $data['project_id'];
 		}
 
 		function list_hours($start, $limit, $query, $filter, $sort, $order, $state, $project_id)
@@ -224,12 +233,9 @@
 				$values['edate'] = mktime($values['ehour'],$values['emin'],0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
-			if ($values['hours_id'])
+			if ($values['hours_id'] && $values['hours_id'] != 0)
 			{
-				if ($values['hours_id'] != 0)
-				{
-					$this->soprojecthours->edit_hours($values);
-				}
+				$this->soprojecthours->edit_hours($values);
 			}
 			else
 			{

@@ -4,7 +4,7 @@
 
 <center>
 <table border="0" with="65%">
-<form method="POST" action="{actionurl}">
+<form method="POST" action="{action_url}">
 	<tr colspan="2">
 		<td align="center">{deleteheader}</td>
 	</tr>
@@ -13,12 +13,9 @@
 		<td align="center">{subs}</td>
 	</tr>
 	<tr>
-		<td>
-			<input type="submit" name="confirm" value="{lang_yes}"></form>
-		</td>
-		<td>
-			<a href="{nolink}">{lang_no}</a>
-		</td>
+		<td><input type="submit" name="yes" value="{lang_yes}"></td>
+		<td><input type="submit" name="no" value="{lang_no}"></td>
 	</tr>
+</form>
 </table>
 </center>

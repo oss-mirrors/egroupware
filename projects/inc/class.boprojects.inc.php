@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
+	* Copyright (C) 2000 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -69,8 +69,9 @@
 
 		function boprojects($session=False, $action = '')
 		{
-			$this->soprojects	= CreateObject('projects.soprojects');
-			$this->contacts		= CreateObject('phpgwapi.contacts');
+			$this->so		= CreateObject('projects.soprojects');
+			$this->sohours	= CreateObject('projects.soprojecthours');
+			$this->contacts	= CreateObject('phpgwapi.contacts');
 
 			if ($session)
 			{
@@ -86,19 +87,25 @@
 			$filter	= get_var('filter',array('POST','GET'));
 			$status	= get_var('status',array('POST','GET'));
 
-			if(isset($start)) { $this->start = $start; }
+			if(!empty($start) || ($start == '0') || ($start == 0))
+			{
+				if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $start . '"'; }
+				$this->start = $start;
+			}
+
 			if(isset($query)) { $this->query = $query; }
 			if(!empty($filter)) { $this->filter = $filter; }
 			if(isset($sort)) { $this->sort = $sort; }
 			if(isset($order)) { $this->order = $order; }
-			if(isset($cat_id)) { $this->cat_id = $cat_id; }
-
-			if ($cat_id == 'none')
-			{
-				$this->cat_id = '';
-			}
-
 			if(isset($status)) { $this->status = $status; }
+			if(isset($cat_id) && !empty($cat_id))
+			{
+				$this->cat_id = $cat_id;
+			}
+			if($cat_id == '0' || $cat_id == 0 || $cat_id == 'none' || $cat_id == '')
+			{
+				unset($this->cat_id);
+			}
 		}
 
 		function type($action)
@@ -161,6 +168,21 @@
 			return $cached_data;
 		}
 
+		function return_date()
+		{
+			$date = array
+			(
+				'month'		=> $GLOBALS['phpgw']->common->show_date(time(),'n'),
+				'day'		=> $GLOBALS['phpgw']->common->show_date(time(),'d'),
+				'year'		=> $GLOBALS['phpgw']->common->show_date(time(),'Y')
+			);
+
+			$date['daydate']		= mktime(2,0,0,$date['month'],$date['day'],$date['year']);
+			$date['monthdate']		= mktime(2,0,0,$date['month']+2,0,$date['year']);
+			$date['monthformatted'] = $GLOBALS['phpgw']->common->show_date($date['monthdate'],'n/Y');
+			return $date;
+		}
+
 		function read_abook($start, $query, $qfilter, $sort, $order)
 		{
 			$account_id = $GLOBALS['phpgw_info']['user']['account_id'];
@@ -180,14 +202,17 @@
 						'n_family' => 'n_family',
 						'org_name' => 'org_name');
 
-			$entry = $this->contacts->read_single_entry($abid,$cols);
-			return $entry;
+			return $this->contacts->read_single_entry($abid,$cols);
 		}
 
 		function return_value($action,$item)
 		{
-			$thing = $this->soprojects->return_value($action,$item);
-			return $thing;
+			return $this->so->return_value($action,$item);
+		}
+
+		function list_pcosts($project_id)
+		{
+			return $this->so->list_pcosts($project_id);
 		}
 
 		function read_prefs()
@@ -241,14 +266,15 @@
 
 			if (! isset($prefs['country']) || (! isset($prefs['currency'])))
 			{
-				$error[] = lang('Please set your global preferences');
+				$error[] = lang('please specify country and currency in the global preferences section');
 			}
 
 			if ($this->isprojectadmin('pad') || $this->isprojectadmin('pbo'))
 			{
 				if (! isset($prefs['abid']) || (! isset($prefs['tax'])) || (! isset($prefs['bill'])) || (! isset($prefs['ifont'])) || (! isset($prefs['mysize'])) || (! isset($prefs['allsize'])))
 				{
-					$error[] = lang('Please set your preferences for this application');
+					$error[] = lang('if you are an administrator, please set the preferences for this application');
+					$error[] = lang('if you are not an administrator, please inform the administrator to set the preferences for this application');
 				}
 			}
 			return $error;
@@ -287,31 +313,29 @@
 
 		function read_admins($action, $type)
 		{ 
-			$admins = $this->soprojects->return_admins($action, $type);
-			$this->total_records = $this->soprojects->total_records;
+			$admins = $this->so->return_admins($action, $type);
+			$this->total_records = $this->so->total_records;
 			return $admins;
 		}
 
 		function list_admins($action, $type, $start, $query, $sort, $order)
 		{
 			$admins = $this->read_admins($action, 'all');
-
 			$allaccounts = $GLOBALS['phpgw']->accounts->get_list($type, $start, $sort, $order, $query);
 
-			if (is_array($allaccounts))
+			$j = 0;
+			while (is_array($allaccounts) && list($null,$account) = each($allaccounts))
 			{
-				while (list($null,$account) = each($allaccounts))
+				for ($i=0;$i<count($admins);$i++)
 				{
-					for ($i=0;$i<count($admins);$i++)
+					if ($account['account_id'] == $admins[$i]['account_id'])
 					{
-						if ($account['account_id'] == $admins[$i]['account_id'])
-						{
-							$admin_data[$i]['account_id']	= $account['account_id'];
-							$admin_data[$i]['lid']			= $account['account_lid'];
-							$admin_data[$i]['firstname']	= $account['account_firstname'];
-							$admin_data[$i]['lastname']		= $account['account_lastname'];
-							$admin_data[$i]['type']			= $account['account_type'];
-						}
+						$admin_data[$j]['account_id']	= $account['account_id'];
+						$admin_data[$j]['lid']			= $account['account_lid'];
+						$admin_data[$j]['firstname']	= $account['account_firstname'];
+						$admin_data[$j]['lastname']		= $account['account_lastname'];
+						$admin_data[$j]['type']			= $account['account_type'];
+						$j++;
 					}
 				}
 			}
@@ -349,44 +373,135 @@
 
 		function edit_admins($action, $users, $groups)
 		{
-			$this->soprojects->edit_admins($action, $users, $groups);
+			$this->so->edit_admins($action, $users, $groups);
 		}
 
 		function isprojectadmin($action)
 		{
 			if ($action == 'pad')
 			{
-				$admin = $this->soprojects->isprojectadmin($action);
+				$admin = $this->so->isprojectadmin($action);
 			}
 			else
 			{
-				$admin = $this->soprojects->isbookkeeper($action);
+				$admin = $this->so->isbookkeeper($action);
 			}
 			return $admin;
 		}
 
 		function list_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent)
 		{
-			$pro_list = $this->soprojects->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent);
-			$this->total_records = $this->soprojects->total_records;
-			return $pro_list;
+			$pro_list = $this->so->read_projects($start, $limit, $query, $filter, $sort, $order, $status, $cat_id, $type, $pro_parent);
+
+			while (is_array($pro_list) && list(,$pro)=each($pro_list))
+			{
+				$cached_data = $this->cached_accounts($pro['coordinator']);
+				$coordinatorout = $GLOBALS['phpgw']->strip_html($cached_data[$pro['coordinator']]['account_lid']
+                                        . ' [' . $cached_data[$pro['coordinator']]['firstname'] . ' '
+                                        . $cached_data[$pro['coordinator']]['lastname'] . ' ]');
+				if ($pro['customer'])
+				{
+					$customer = $this->read_single_contact($pro['customer']);
+            		if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
+            		else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+				}
+
+				$pro['sdate'] = $pro['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+				$sdateout = $GLOBALS['phpgw']->common->show_date($pro['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+
+				$projects[] = array
+				(
+					'project_id'		=> $pro['project_id'],
+					'parent'			=> $pro['parent'],
+					'coordinator'		=> $pro['coordinator'], 
+					'coordinatorout'	=> $coordinatorout,
+					'customerout'		=> $customerout,
+					'title'				=> $GLOBALS['phpgw']->strip_html($pro['title']),
+					'number'			=> $GLOBALS['phpgw']->strip_html($pro['number']),
+					'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
+					'descr'				=> $GLOBALS['phpgw']->strip_html($pro['descr']),
+					'sdateout'			=> $sdateout,
+					'budget'			=> $pro['budget'],
+					'pcosts'			=> $pro['pcosts'],
+					'edate'				=> $pro['edate'],
+					'status'			=> $pro['status']
+				);
+			}
+
+			$this->total_records = $this->so->total_records;
+			return $projects;
 		}
 
 		function read_single_project($project_id)
 		{
-			$single_pro = $this->soprojects->read_single_project($project_id);
-			return $single_pro;
+			$pro = $this->so->read_single_project($project_id);
+
+			$project = array
+			(
+				'utime'				=> $this->sohours->get_time_used($project_id),
+				'phours'			=> ($pro['ptime']/60),
+				'title'				=> $GLOBALS['phpgw']->strip_html($pro['title']),
+				'number'			=> $GLOBALS['phpgw']->strip_html($pro['number']),
+				'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
+				'descr'				=> $GLOBALS['phpgw']->strip_html($pro['descr']),
+				'budget'			=> $pro['budget'],
+				'pcosts'			=> $pro['pcosts'],
+				'project_id'		=> $pro['project_id'],
+				'parent'			=> $pro['parent'],
+				'cat'				=> $pro['cat'],
+				'access'			=> $pro['access'],
+				'coordinator'		=> $pro['coordinator'],
+				'customer'			=> $pro['customer'],
+				'status'			=> $pro['status'],
+				'owner'				=> $pro['owner'],
+				'processor'			=> $pro['processor']
+			);
+
+			if ($project['utime'] > 0)
+			{
+				$project['uhours'] = ($project['utime']/60);
+			}
+			else
+			{
+				$project['uhours'] = 0;
+			}
+
+			if ($pro['edate'] == 0)
+			{
+				$project['edate_formatted'] = '&nbsp;';
+			}
+			else
+			{
+				$project['edate'] = $pro['edate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+				$project['edate_formatted'] = $GLOBALS['phpgw']->common->show_date($pro['edate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+			}
+
+			$project['sdate'] = $pro['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+			$project['sdate_formatted'] = $GLOBALS['phpgw']->common->show_date($pro['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+
+			$project['udate'] = $pro['udate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+			$project['udate_formatted'] = $GLOBALS['phpgw']->common->show_date($pro['udate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+
+			$project['cdate'] = $pro['cdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
+			$project['cdate_formatted'] = $GLOBALS['phpgw']->common->show_date($pro['cdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+
+			return $project;
+		}
+
+		function sum_budget($action = 'budget')
+		{
+			return $this->so->sum_budget($action);
 		}
 
 		function read_single_activity($activity_id)
 		{
-			$single_act = $this->soprojects->read_single_activity($activity_id);
+			$single_act = $this->so->read_single_activity($activity_id);
 			return $single_act;
 		}
 
 		function exists($action, $check, $num, $pa_id)
 		{
-			$exists = $this->soprojects->exists($action, $check , $num, $pa_id);
+			$exists = $this->so->exists($action, $check , $num, $pa_id);
 			if ($exists)
 			{
 				return True;
@@ -399,32 +514,32 @@
 
 		function list_activities($start, $limit, $query, $sort, $order, $cat_id)
 		{
-			$act_list = $this->soprojects->read_activities($start, $limit, $query, $sort, $order, $cat_id);
-			$this->total_records = $this->soprojects->total_records;
+			$act_list = $this->so->read_activities($start, $limit, $query, $sort, $order, $cat_id);
+			$this->total_records = $this->so->total_records;
 			return $act_list;
 		}
 
 		function activities_list($project_id, $billable)
 		{
-			$activities_list = $this->soprojects->activities_list($project_id, $billable);
+			$activities_list = $this->so->activities_list($project_id, $billable);
 			return $activities_list;
 		}
 
 		function select_activities_list($project_id, $billable)
 		{
-			$activities_list = $this->soprojects->select_activities_list($project_id, $billable);
+			$activities_list = $this->so->select_activities_list($project_id, $billable);
 			return $activities_list;
 		}
 
 		function select_pro_activities($project_id, $pro_parent, $billable)
 		{
-			$activities_list = $this->soprojects->select_pro_activities($project_id, $pro_parent, $billable);
+			$activities_list = $this->so->select_pro_activities($project_id, $pro_parent, $billable);
 			return $activities_list;
 		}
 
 		function select_hours_activities($project_id, $act)
 		{
-			$activities_list = $this->soprojects->select_hours_activities($project_id, $act);
+			$activities_list = $this->so->select_hours_activities($project_id, $act);
 			return $activities_list;
 		}
 
@@ -435,12 +550,17 @@
 				$error[] = lang('Description can not exceed 8000 characters in length !');
 			}
 
-			if (strlen($values['title']) >= 255)
+			if (!$values['coordinator'])
 			{
-				$error[] = lang('Title can not exceed 255 characters in length !');
+				$error[] = lang('please choose a project coordinator');
 			}
 
-			if (! $values['choose'])
+			if (strlen($values['title']) >= 255)
+			{
+				$error[] = lang('title can not exceed 255 characters in length');
+			}
+
+			if (!$values['choose'])
 			{
 				if (! $values['number'])
 				{
@@ -457,14 +577,14 @@
 
 					if (strlen($values['number']) > 25)
 					{
-						$error[] = lang('ID can not exceed 25 characters in length !');
+						$error[] = lang('id can not exceed 25 characters in length');
 					}
 				}
 			}
 
 			if ((! $book_activities) && (! $bill_activities))
 			{
-				$error[] = lang('Please choose activities for that project first !');
+				$error[] = lang('please choose activities for the project');
 			}
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
@@ -483,10 +603,21 @@
 				}
 			}
 
-/*			if ($values['edate'] < $values['sdate'] && $values['edate'] && $values['sdate'])
+			if ($action == 'mains')
 			{
-				$error[] = lang('Ending date can not be before start date');
-			} */
+				if ((!$values['budget'] || $values['budget'] == 0) && $values['pcosts'])
+				{
+					$error[] = lang('please specify the budget');
+				}
+
+				if (($values['budget'] && $values['budget'] > 0) && ($values['pcosts'] && $values['pcosts'] > 0))
+				{
+					if ($values['pcosts'] > $values['budget'])
+					{
+						$error[] = lang('pcosts can not be higher than the budget');
+					}
+				}
+			}
 
 			if ($action == 'subs')
 			{
@@ -498,7 +629,7 @@
 
 					if ($checkdate > $main_edate)
 					{
-						$error[] = lang('Ending date can not be after main projects ending date !');
+						$error[] = lang('ending date can not be after main projects ending date');
 					}
 				}
 
@@ -510,8 +641,26 @@
 
 					if ($checkdate < $main_sdate)
 					{
-						$error[] = lang('Start date can not be before main projects start date !');
+						$error[] = lang('start date can not be before main projects start date');
 					}
+				}
+
+				$ptime_parent	= $this->so->return_value('ptime',$values['parent']);
+				$sum_ptime		= $this->so->get_planned_value(array('action' => 'tparent','parent_id' => $values['parent']
+																	,'project_id' => $values['project_id']));
+				$pminutes = intval($values['ptime'])*60;
+
+				if (($pminutes+$sum_ptime) > $ptime_parent)
+				{
+					$error[] = lang('planned time sum of all sub projects is bigger than the planned time of the main project');
+				}
+
+				$budget_parent	= $this->so->return_value('budget',$values['parent']);
+				$sum_budget		= $this->so->get_planned_value(array('action' => 'bparent','parent_id' => $values['parent']
+																	,'project_id' => $values['project_id']));
+				if (($values['budget']+$sum_budget) > $budget_parent)
+				{
+					$error[] = lang('budget sum of all sub projects is bigger than the budget of the main project');
 				}
 			}
 
@@ -545,21 +694,21 @@
 
 					if (strlen($values['number']) >= 20)
 					{
-						$error[] = lang('ID can not exceed 19 characters in length !');
+						$error[] = lang('id can not exceed 19 characters in length');
 					}
 				}
 			}
 
 			if ((! $values['billperae']) || ($values['billperae'] == 0))
 			{
-				$error[] = lang('Please enter the bill !');
+				$error[] = lang('please enter the bill');
 			}
 
 			if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
 			{
 				if ((! $values['minperae']) || ($values['minperae'] == 0))
 				{
-					$error[] = lang('Please enter the minutes per workunit !');
+					$error[] = lang('please enter the minutes per workunit');
 				}
 			}
 
@@ -575,11 +724,11 @@
 			{
 				if ($action == 'mains')
 				{
-					$values['number'] = $this->soprojects->create_projectid();
+					$values['number'] = $this->so->create_projectid();
 				}
 				else
 				{
-					$values['number'] = $this->soprojects->create_jobid($values['parent']);
+					$values['number'] = $this->so->create_jobid($values['parent']);
 				}
 			}
 
@@ -592,10 +741,10 @@
 				$values['access'] = 'public';
 			}
 
-			if (!$values['budget'])
-			{
-				$values['budget'] = 0;
-			}
+			$month = $this->return_date();
+			$values['monthdate'] = $month['monthdate'];
+
+			$values['ptime'] = intval($values['ptime'])*60;
 
 			if ($values['smonth'] || $values['sday'] || $values['syear'])
 			{
@@ -612,16 +761,19 @@
 				$values['edate'] = mktime(0,0,0,$values['emonth'],$values['eday'],$values['eyear']);
 			}
 
+			//_debug_array($values);
+
 			if ($values['project_id'])
 			{
 				if ($values['project_id'] != 0)
 				{
-					$this->soprojects->edit_project($values, $book_activities, $bill_activities);
+					$this->so->edit_project($values, $book_activities, $bill_activities);
+					return $values['project_id'];
 				}
 			}
 			else
 			{
-				$this->soprojects->add_project($values, $book_activities, $bill_activities);
+				return $this->so->add_project($values, $book_activities, $bill_activities);
 			}
 		}
 
@@ -629,14 +781,14 @@
 		{
 			if ($values['choose'])
 			{
-				$values['number'] = $this->soprojects->create_activityid();
+				$values['number'] = $this->so->create_activityid();
 			}
 
 			if ($values['activity_id'])
 			{
-				if ($values['activity_id'] != 0)
+				if ($values['activity_id'] && intval($values['activity_id']) > 0)
 				{
-					$this->soprojects->edit_activity($values);
+					$this->so->edit_activity($values);
 
 					if ($values['minperae'])
 					{
@@ -647,13 +799,13 @@
 			}
 			else
 			{
-				$this->soprojects->add_activity($values);
+				$this->so->add_activity($values);
 			}
 		}
 
 		function select_project_list($type, $status, $project_id)
 		{
-			$list = $this->soprojects->select_project_list($type, $status, $project_id);
+			$list = $this->so->select_project_list($type, $status, $project_id);
 			return $list;
 		}
 
@@ -661,17 +813,17 @@
 		{
 			if ($action == 'account')
 			{
-				$this->soprojects->delete_account_project_data($pa_id);
+				$this->so->delete_account_project_data($pa_id);
 			}
 			else
 			{
-				$this->soprojects->delete_pa($action, $pa_id, $subs);
+				$this->so->delete_pa($action, $pa_id, $subs);
 			}
 		}
 
 		function change_owner($old, $new)
 		{
-			$this->soprojects->change_owner($old, $new);
+			$this->so->change_owner($old, $new);
 		}
 	}
 ?>

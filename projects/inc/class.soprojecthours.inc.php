@@ -44,10 +44,10 @@
 			}
 			else
 			{
-				$ordermethod = " order by start_date asc";
+				$ordermethod = ' order by start_date asc';
 			}
 
-			$filtermethod = " project_id = '$project_id'";
+			$filtermethod = ' project_id =' . intval($project_id);
 
 			if ($state != 'all')
 			{
@@ -56,7 +56,7 @@
 
 			if ($filter == 'yours')
 			{
-				$filtermethod .= " AND employee='" . $this->account . "'";
+				$filtermethod .= ' AND employee=' . $this->account;
 			}
 
 			if ($query)
@@ -70,25 +70,26 @@
 			$this->total_records = $this->db2->num_rows();
 			$this->db->limit_query($sql . $ordermethod,$start,__LINE__,__FILE__);
 
-			$i = 0;
 			while ($this->db->next_record())
 			{
-				$hours[$i]['hours_id']		= $this->db->f('id');
-				$hours[$i]['project_id']	= $this->db->f('project_id');
-				$hours[$i]['hours_descr']	= $this->db->f('hours_descr');
-				$hours[$i]['status']		= $this->db->f('status');
-				$hours[$i]['sdate']			= $this->db->f('start_date');
-				$hours[$i]['edate']			= $this->db->f('end_date');
-				$hours[$i]['minutes']		= $this->db->f('minutes');
-				$hours[$i]['employee']		= $this->db->f('employee');
-				$i++;
+				$hours[] = array
+				(
+					'hours_id'		=> $this->db->f('id'),
+					'project_id'	=> $this->db->f('project_id'),
+					'hours_descr'	=> $this->db->f('hours_descr'),
+					'status'		=> $this->db->f('status'),
+					'sdate'			=> $this->db->f('start_date'),
+					'edate'			=> $this->db->f('end_date'),
+					'minutes'		=> $this->db->f('minutes'),
+					'employee'		=> $this->db->f('employee')
+				);
 			}
 			return $hours;
 		}
 
 		function read_single_hours($hours_id)
 		{
-			$this->db->query("SELECT * from phpgw_p_hours WHERE id='$hours_id'",__LINE__,__FILE__);
+			$this->db->query('SELECT * from phpgw_p_hours WHERE id=' . $hours_id,__LINE__,__FILE__);
 	
 			while($this->db->next_record())
 			{
@@ -115,11 +116,11 @@
 			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
 			$values['remark']		= $this->db->db_addslashes($values['remark']);
 
-			$this->db->query("INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,"
-							. "status,minperae,billperae,employee,pro_parent) VALUES ('" . $values['project_id'] . "','" . $values['activity_id'] . "','"
-							. time() . "','" . $values['sdate'] . "','" . $values['edate'] . "','" . $values['hours_descr'] . "','"
-							. $values['remark'] . "','" . $values['ae_minutes'] . "','" . $values['status'] . "','" . $values['minperae']
-							. "','" . $values['billperae'] . "','" . $values['employee'] . "','" . $values['pro_parent'] . "')",__LINE__,__FILE__); 
+			$this->db->query('INSERT into phpgw_p_hours (project_id,activity_id,entry_date,start_date,end_date,hours_descr,remark,minutes,'
+							. 'status,minperae,billperae,employee,pro_parent) VALUES (' . intval($values['project_id']) . ',' . intval($values['activity_id']) . ','
+							. time() . ',' . intval($values['sdate']) . ',' . intval($values['edate']) . ",'" . $values['hours_descr'] . "','"
+							. $values['remark'] . "'," . intval($values['ae_minutes']) . ",'" . $values['status'] . "'," . intval($values['minperae'])
+							. ',' . $values['billperae'] . ',' . intval($values['employee']) . ',' . intval($values['pro_parent']) . ')',__LINE__,__FILE__); 
 		}
 
 		function edit_hours($values)
@@ -128,21 +129,21 @@
 			$values['hours_descr']	= $this->db->db_addslashes($values['hours_descr']);
 			$values['remark']		= $this->db->db_addslashes($values['remark']);
 
-			$this->db->query("UPDATE phpgw_p_hours SET activity_id='" . $values['activity_id'] . "',entry_date='" . time() . "',start_date='"
-							. $values['sdate'] . "',end_date='" . $values['edate'] . "',hours_descr='" . $values['hours_descr'] . "',remark='"
-							. $values['remark'] . "',minutes='" . $values['ae_minutes'] . "',status='" . $values['status'] . "',minperae='"
-							. $values['minperae'] . "',billperae='" . $values['billperae'] . "',employee='" . $values['employee']
-							. "' where id='" . $values['hours_id'] . "'",__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_hours SET activity_id=' . intval($values['activity_id']) . ',entry_date=' . time() . ',start_date='
+							. intval($values['sdate']) . ',end_date=' . intval($values['edate']) . ",hours_descr='" . $values['hours_descr'] . "',remark='"
+							. $values['remark'] . "',minutes=" . intval($values['ae_minutes']) . ",status='" . $values['status'] . "',minperae="
+							. intval($values['minperae']) . ',billperae=' . $values['billperae'] . ',employee=' . intval($values['employee'])
+							. ' where id=' . intval($values['hours_id']),__LINE__,__FILE__);
 		}
 
 		function delete_hours($hours_id)
 		{
-			$this->db->query("Delete from phpgw_p_hours where id = '$hours_id'",__LINE__,__FILE__);
+			$this->db->query('Delete from phpgw_p_hours where id=' . intval($hours_id),__LINE__,__FILE__);
 		}
 
 		function update_hours_act($activity_id, $minperae)
 		{
-			$this->db->query("SELECT id,minperae from phpgw_p_hours where activity_id='" . $activity_id . "'",__LINE__,__FILE__); 
+			$this->db->query('SELECT id,minperae from phpgw_p_hours where activity_id=' . intval($activity_id),__LINE__,__FILE__); 
 
 			while ($this->db->next_record())
 			{
@@ -156,8 +157,18 @@
 			{
 				for ($i=0;$i<=count($hours);$i++)
 				{
-					$this->db->query("UPDATE phpgw_p_hours set minperae='" . $minperae . "' WHERE id='" . $hours[$i] . "'",__LINE__,__FILE__);
+					$this->db->query('UPDATE phpgw_p_hours set minperae=' . intval($minperae) . ' WHERE id=' . intval($hours[$i]),__LINE__,__FILE__);
 				}
+			}
+		}
+
+		function get_time_used($project_id)
+		{
+			$this->db->query('SELECT SUM(minutes) as utime from phpgw_p_hours where (project_id=' . intval($project_id) . ' OR pro_parent='
+							. intval($project_id) . ')',__LINE__,__FILE__);
+			if ($this->db->next_record())
+			{
+				return $this->db->f('utime');
 			}
 		}
 	}

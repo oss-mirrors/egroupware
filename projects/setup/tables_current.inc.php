@@ -31,7 +31,12 @@
 				'title' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'budget' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
 				'category' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+				'parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'time_planned' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'date_created' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'processor' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'investment_nr' => array('type' => 'varchar','precision' => 50,'nullable' => False),
+				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
@@ -145,6 +150,18 @@
 				'hours_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		),
+		'phpgw_p_pcosts' => array(
+			'fd' => array(
+				'c_id' => array('type' => 'auto','nullable' => False),
+				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'month' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
+			),
+			'pk' => array('c_id'),
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()

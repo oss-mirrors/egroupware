@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
+	* Copyright (C) 2000 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -40,8 +40,8 @@
 
 			switch ($dbtype)
 			{
-				case 'pgsql':	$join = " JOIN "; break;
-				case 'mysql':	$join = " LEFT JOIN "; break;
+				case 'pgsql':	$join = ' JOIN '; break;
+				case 'mysql':	$join = ' LEFT JOIN '; break;
 			}
 			return $join;
 		}
@@ -49,54 +49,59 @@
 		function delivery($values,$select)
 		{
 			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
-			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "','"
-							. $values['project_id'] . "','" . time() . "','" . $values['customer'] . "')",__LINE__,__FILE__);
+			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "',"
+							. intval($values['project_id']) . ',' . time() . ',' . intval($values['customer']) . ')',__LINE__,__FILE__);
 
 			$this->db2->query("SELECT id from phpgw_p_delivery WHERE num='" . $values['delivery_num'] . "'",__LINE__,__FILE__);
 			$this->db2->next_record();
 			$delivery_id = $this->db2->f('id');
+			$delivery_id = intval($delivery_id);
 
-			while($select && $entry=each($select))
+			while(is_array($select) && $entry=each($select))
 			{
-				$this->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('$delivery_id','" . $entry[0]
-								. "')",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id='" . $entry[0] . "'",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+				$this->db->query('INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES (' . $delivery_id . ',' . intval($entry[0])
+								. ')',__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id=" . intval($entry[0]),__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id=" . intval($entry[0]),__LINE__,__FILE__);
 			}
 			return $delivery_id;
 		}
 
 		function update_delivery($values,$select)
 		{
+			$values['delivery_id'] = intval($values['delivery_id']);
+
 			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
-			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date='" . $values['date'] . "',customer='"
-								. $values['customer'] . "' where id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
+			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date=" . intval($values['date']) . ',customer='
+								. intval($values['customer']) . ' where id=' . $values['delivery_id'],__LINE__,__FILE__);
 
-			$this->db2->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
+			$this->db2->query('DELETE FROM phpgw_p_deliverypos WHERE delivery_id=' . $values['delivery_id'],__LINE__,__FILE__);
 
-			while($select && $entry=each($select))
+			while(is_array($select) && $entry=each($select))
 			{
-				$this->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('" . $values['delivery_id'] . "','"
-								. $entry[0] . "')",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id='" . $entry[0] . "'",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+				$this->db->query('INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES (' . $values['delivery_id'] . ','
+								. intval($entry[0]) . ')',__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id=" . intval($entry[0]),__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id=" . intval($entry[0]),__LINE__,__FILE__);
 			}
 		}
 
 		function read_hours($project_id, $action)
 		{
-			$ordermethod = "order by end_date asc";
+			$project_id = intval($project_id);
+
+			$ordermethod = ' order by end_date asc';
 
 			if ($action == 'mains')
 			{
-				$parent_hours	= " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+				$parent_hours	= ' OR phpgw_p_hours.pro_parent=' . $project_id;
 			}
 
-			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
-							. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours " . $this->return_join()
+			$this->db->query('SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,'
+							. 'phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours' . $this->return_join()
 							. "phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id WHERE (phpgw_p_hours.dstatus='o' "
-							. "AND phpgw_p_hours.status != 'open') AND (phpgw_p_hours.project_id='" . $project_id . "'" . $parent_hours
-							. ") " . $ordermethod,__LINE__,__FILE__);
+							. "AND phpgw_p_hours.status != 'open') AND (phpgw_p_hours.project_id=" . $project_id . $parent_hours
+							. ')' . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -117,18 +122,21 @@
 
 		function read_delivery_hours($project_id, $delivery_id, $action)
 		{
-			$ordermethod = "order by end_date asc";
+			$project_id		= intval($project_id);
+			$delivery_id	= intval($delivery_id);
+
+			$ordermethod = ' order by end_date asc';
 
 			if ($action == 'mains' || $action == 'amains')
 			{
-				$parent_search = " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+				$parent_search = ' OR phpgw_p_hours.pro_parent=' . $project_id;
 			}
 
-			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,"
-							. "phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours " . $this->return_join()
-							."phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id " . $this->return_join() . "phpgw_p_deliverypos "
-							. "ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id WHERE (phpgw_p_hours.project_id='" . $project_id
-							. "'" . $parent_search  . ") AND phpgw_p_deliverypos.delivery_id='" . $delivery_id . "' " . $ordermethod,__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,'
+							. 'phpgw_p_hours.start_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae FROM phpgw_p_hours' . $this->return_join()
+							. 'phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id' . $this->return_join() . 'phpgw_p_deliverypos '
+							. 'ON phpgw_p_hours.id=phpgw_p_deliverypos.hours_id WHERE (phpgw_p_hours.project_id=' . $project_id
+							. $parent_search  . ') AND phpgw_p_deliverypos.delivery_id=' . $delivery_id . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -150,13 +158,15 @@
 
 		function read_deliveries($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')
 		{
+			$project_id = intval($project_id);
+
 			if ($order)
 			{
 				$ordermethod = " order by $order $sort";
 			}
 			else
 			{
-				$ordermethod = " order by date asc";
+				$ordermethod = ' order by date asc';
 			}
 
 			if ($query)
@@ -166,15 +176,15 @@
 
 			if ($project_id)
 			{
-				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
-					. "phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
-					. "phpgw_p_delivery.project_id='$project_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id";
+				$sql = 'SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,'
+					. 'phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE '
+					. 'phpgw_p_delivery.project_id=' . $project_id . ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id';
 			}
     		else
 			{
-				$sql = "SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,"
-					. "phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE "
-					. "phpgw_p_delivery.project_id=phpgw_p_projects.id";
+				$sql = 'SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,'
+					. 'phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE '
+					. 'phpgw_p_delivery.project_id=phpgw_p_projects.id';
 			}
 
 			$this->db2->query($sql,__LINE__,__FILE__);
@@ -206,9 +216,9 @@
 
 		function read_single_delivery($delivery_id)
 		{
-			$this->db->query("SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date, "
-					. "phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_delivery,phpgw_p_projects WHERE "
-					. "phpgw_p_delivery.id='$delivery_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date,'
+							. 'phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_delivery,phpgw_p_projects WHERE '
+							. 'phpgw_p_delivery.id=' . intval($delivery_id) . ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
 
 			if ($this->db->next_record())
 			{
@@ -224,9 +234,11 @@
 
 		function exists($values)
 		{
+			$values['delivery_id'] = intval($values['delivery_id']);
+
 			if ($values['delivery_id'] && ($values['delivery_id'] != 0))
 			{
-				$editexists = " and id != '" . $values['delivery_id'] . "'";
+				$editexists = ' and id !=' . $values['delivery_id'];
 			}
 			$this->db->query("select count(*) from phpgw_p_delivery where num='" . $values['delivery_num'] . "'" . $editexists,__LINE__,__FILE__);
 
@@ -244,10 +256,10 @@
 
 		function read_delivery_pos($delivery_id)
 		{
-			$this->db->query("SELECT phpgw_p_hours.hours_descr,phpgw_p_hours.minperae,phpgw_p_hours.minutes,"
-							. "phpgw_p_activities.descr,phpgw_p_hours.start_date, phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,"
-							. "phpgw_p_deliverypos WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='"
-							. $delivery_id .  "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id",__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_hours.hours_descr,phpgw_p_hours.minperae,phpgw_p_hours.minutes,'
+							. 'phpgw_p_activities.descr,phpgw_p_hours.start_date, phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,'
+							. 'phpgw_p_deliverypos WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='
+							. intval($delivery_id) . ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

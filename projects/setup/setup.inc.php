@@ -11,7 +11,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '0.8.7.001';
+	$setup_info['projects']['version']   = '0.8.7.005';
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
@@ -36,7 +36,8 @@
 		'phpgw_p_invoice',
 		'phpgw_p_invoicepos',
 		'phpgw_p_delivery',
-		'phpgw_p_deliverypos'
+		'phpgw_p_deliverypos',
+		'phpgw_p_pcosts'
 	);
 
 /* The hooks this app includes, needed for hooks registration */

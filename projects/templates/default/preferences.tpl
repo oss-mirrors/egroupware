@@ -9,7 +9,7 @@
 
 <center>
 {bill_message}
-<form method="POST" name="projects_form" action="{actionurl}">
+<form method="POST" name="app_form" action="{actionurl}">
 <table width="97%" border="0" cellspacing="2" cellpadding="2">
 	<tr bgcolor="{row_on}">
 
@@ -53,7 +53,7 @@
 <table width="80%" border="0" cellspacing="2" cellpadding="2">
 	<tr valign="bottom">
 		<td height="50" align="left">
-			<input type="submit" name="submit" value="{lang_save}">
+			<input type="submit" name="save" value="{lang_save}">
 			</form>
 		</td>
 		<td height="50" align="left">

@@ -26,14 +26,14 @@
 <table border="0" width="98%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_number}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_title}</td>
-		<td width="20%" bgcolor="{th_bg}">{sort_coordinator}</td>
-		<td width="8%" bgcolor="{th_bg}" align="center">{sort_status}</td>
+		<td width="18%" bgcolor="{th_bg}">{sort_title}</td>
+		<td width="18%" bgcolor="{th_bg}">{sort_coordinator}</td>
+		<td width="5%" bgcolor="{th_bg}" align="center">{sort_status}</td>
         <td width="20%" bgcolor="{th_bg}">{sort_action}</td>
-		<td width="8%" bgcolor="{th_bg}" align="center">{sort_end_date}</td>
+		<td width="5%" bgcolor="{th_bg}" align="center">{sort_end_date}</td>
 		{lang_action}
-		<td width="8%" align="center">{h_lang_part}</td>
-		<td width="8%" align="center">{h_lang_partlist}</td>
+		<td width="10%" align="center">{h_lang_part}</td>
+		<td width="14%" align="center">{h_lang_partlist}</td>
 	</tr>
   
 <!-- BEGIN projects_list -->

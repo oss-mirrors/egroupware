@@ -20,11 +20,11 @@
 		<td><select name="values[activity_id]">{activity_list}</select></td>
 	</tr>
 	<tr>
-		<td>{lang_descr}:</td>
+		<td valign="top">{lang_descr}:</td>
 		<td><input type="text" name="values[hours_descr]" size="50" value="{hours_descr}"></td>
 	</tr>
 	<tr>
-		<td>{lang_remark}:</td>
+		<td valign="top">{lang_remark}:</td>
 		<td colspan="2"><textarea name="values[remark]" rows="5" cols="50" wrap="VIRTUAL">{remark}</textarea></td>
 	</tr>
 	<tr>
@@ -79,11 +79,11 @@
 <!-- BEGIN add -->
          
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
-	<tr valign="bottom">
-		<td height="50"><input type="submit" name="values[submit]" value="{lang_save}"></td>
-		<td height="50"><input type="reset" name="reset" value="{lang_reset}"></form></td>
-		<td height="50"><form method="POST" action="{doneurl}"> 
-			<input type="submit" name="done" value="{lang_done}"></form></td>
+	<tr valign="bottom" height="50">
+		<td><input type="submit" name="values[submit]" value="{lang_save}"></td>
+		<td>&nbsp;</form></td>
+		<td align="right"><form method="POST" action="{cancel_url}">
+			<input type="submit" name="cancel" value="{lang_cancel}"></form></td>
 	</tr>
 </table>
 </center>
@@ -93,13 +93,13 @@
 <!-- BEGIN edit -->
 
 <table width="75%" border="0" cellspacing="2" cellpadding="2">
-	<tr valign="bottom">
-		<td height="50"><input type="submit" name="values[submit]" value="{lang_save}">
+	<tr valign="bottom" height="50">
+		<td><input type="submit" name="values[submit]" value="{lang_save}">
 			</form></td>
-		<td height="50">{delete}</td>
-		<td height="50">
-			<form method="POST" action="{doneurl}">
-			<input type="submit" name="done" value="{lang_done}"></form></td>
+		<td>{delete}</td>
+		<td align="right">
+			<form method="POST" action="{cancel_url}">
+			<input type="submit" name="cancel" value="{lang_cancel}"></form></td>
 	</tr>
 </table>
 </center>

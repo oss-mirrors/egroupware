@@ -6,7 +6,7 @@
 	* Project Manager                                                   *
 	* Written by Bettina Gille [ceb@phpgroupware.org]                   *
 	* -----------------------------------------------                   *
-	* Copyright (C) 2000,2001,2002 Bettina Gille                        *
+	* Copyright (C) 2000 - 2003 Bettina Gille                           *
 	*                                                                   *
 	* This program is free software; you can redistribute it and/or     *
 	* modify it under the terms of the GNU General Public License as    *
@@ -31,8 +31,8 @@
 
 		function sobilling()
 		{
-			$this->db			= $GLOBALS['phpgw']->db;
-			$this->db2			= $this->db;
+			$this->db	= $GLOBALS['phpgw']->db;
+			$this->db2	= $this->db;
 		}
 
 		function return_join()
@@ -41,39 +41,40 @@
 
 			switch ($dbtype)
 			{
-				case 'pgsql':	$join = " JOIN "; break;
-				case 'mysql':	$join = " LEFT JOIN "; break;
+				case 'pgsql':	$join = ' JOIN '; break;
+				case 'mysql':	$join = ' LEFT JOIN '; break;
 			}
 			return $join;
 		}
 
 		function read_invoices($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')
 		{
+			$project_id = intval($project_id);
+
 			if ($order)
 			{
 				$ordermethod = " order by $order $sort";
 			}
 			else
 			{
-				$ordermethod = " order by date asc";
+				$ordermethod = ' order by date asc';
 			}
 
 			if ($query)
 			{
-				$querymethod = " AND (phpgw_p_invoice.num like '%$query%' OR title like '%$query%' "
-								. "OR sum like '%$query%') ";
+				$querymethod = " AND (phpgw_p_invoice.num like '%$query%' OR title like '%$query%' " . "OR sum like '%$query%') ";
 			}
 
 			if ($project_id)
 			{
-				$sql = "SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,"
-				. "phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id "
-				. "AND phpgw_p_projects.id='$project_id' AND phpgw_p_invoice.project_id='$project_id'";
+				$sql = 'SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,'
+				. 'phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id '
+				. 'AND phpgw_p_projects.id=' . $project_id . ' AND phpgw_p_invoice.project_id=' . $project_id;
 			}
 			else
 			{
-				$sql = "SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,"
-				. "phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id";
+				$sql = 'SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,'
+				. 'phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id';
 			}
 
 			$this->db2->query($sql,__LINE__,__FILE__);
@@ -106,9 +107,11 @@
 
 		function exists($values)
 		{
+			$values['invoice_id'] = intval($values['invoice_id']);
+
 			if ($values['invoice_id'] && ($values['invoice_id'] != 0))
 			{
-				$editexists = " and id != '" . $values['invoice_id'] . "'";
+				$editexists = ' and id !=' . $values['invoice_id'];
 			}
 
 			$this->db->query("select count(*) from phpgw_p_invoice where num='" . $values['invoice_num'] . "'" . $editexists,__LINE__,__FILE__);
@@ -128,20 +131,22 @@
 		function invoice($values,$select)
 		{
 			$values['invoice_num'] = $this->db->db_addslashes($values['invoice_num']);
-			$this->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('" . $values['invoice_num'] . "',0,'"
-							. $values['project_id'] . "','" . $values['customer'] . "','" . $values['date'] . "')",__LINE__,__FILE__);
+			$this->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('" . $values['invoice_num'] . "',0,"
+							. intval($values['project_id']) . ',' . intval($values['customer']) . ',' . intval($values['date']) . ')',__LINE__,__FILE__);
+
 			$this->db2->query("SELECT id from phpgw_p_invoice WHERE num='" . $values['invoice_num'] . "'",__LINE__,__FILE__);
 			$this->db2->next_record();
 			$invoice_id = $this->db2->f('id');
+			$invoice_id = intval($invoice_id);
 
-			while($select && $entry=each($select))
+			while(is_array($select) && $entry=each($select))
 			{
-				$this->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('" . $invoice_id . "','" . $entry[0] . "')",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+				$this->db->query('INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES (' . $invoice_id . ',' . intval($entry[0]) . ')',__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id=" . intval($entry[0]),__LINE__,__FILE__);
 			}
 
-			$this->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
-							."WHERE phpgw_p_invoicepos.invoice_id='" . $invoice_id . "' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id",__LINE__,__FILE__);
+			$this->db->query('SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos '
+							.'WHERE phpgw_p_invoicepos.invoice_id=' . $invoice_id . ' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id',__LINE__,__FILE__);
 			while ($this->db->next_record())
 			{
 				if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
@@ -157,28 +162,30 @@
 					$sum_sum += $sum;
 				}
 			}
-			$this->db->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $invoice_id . "'",__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_invoice SET sum=round(' . $sum_sum . ',2) WHERE id=' . $invoice_id,__LINE__,__FILE__);
 			return $invoice_id;
 		}
 
 		function update_invoice($values,$select)
 		{
-			$values['invoice_num'] = $this->db->db_addslashes($values['invoice_num']);
-			$this->db->query("UPDATE phpgw_p_invoice set num='" . $values['invoice_num'] . "',date='" . $values['date'] . "',customer='"
-							. $values['customer'] . "' WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
+			$values['invoice_num']	= $this->db->db_addslashes($values['invoice_num']);
+			$values['invoice_id']	= intval($values['invoice_id']);
 
-			$this->db2->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
+			$this->db->query("UPDATE phpgw_p_invoice set num='" . $values['invoice_num'] . "',date=" . intval($values['date']) . ',customer='
+							. intval($values['customer']) . ' WHERE id=' . $values['invoice_id'],__LINE__,__FILE__);
 
-			while($select && $entry=each($select))
+			$this->db2->query('DELETE FROM phpgw_p_invoicepos WHERE invoice_id=' . $values['invoice_id'],__LINE__,__FILE__);
+
+			while(is_array($select) && $entry=each($select))
 			{
-				$this->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('" . $values['invoice_id'] . "','"
-								. $entry[0] . "')",__LINE__,__FILE__);
-				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+				$this->db->query('INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES (' . $values['invoice_id'] . ','
+								. intval($entry[0]) . ')',__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours SET status='billed' WHERE id=" . intval($entry[0]),__LINE__,__FILE__);
 			}
 
-			$this->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
-							."WHERE phpgw_p_invoicepos.invoice_id='" . $values['invoice_id'] . "' AND phpgw_p_hours.id="
-							. "phpgw_p_invoicepos.hours_id",__LINE__,__FILE__);
+			$this->db->query('SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos '
+							.'WHERE phpgw_p_invoicepos.invoice_id=' . $values['invoice_id'] . ' AND phpgw_p_hours.id='
+							. 'phpgw_p_invoicepos.hours_id',__LINE__,__FILE__);
 
 			while($this->db->next_record())
 			{
@@ -196,26 +203,28 @@
 				}
 			}
 
-			$this->db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='" . $values['invoice_id'] . "'",__LINE__,__FILE__);
+			$this->db2->query('UPDATE phpgw_p_invoice SET sum=round(' . $sum_sum . ',2) WHERE id=' . $values['invoice_id'],__LINE__,__FILE__);
 		}
 
 		function read_hours($project_id, $action)
 		{
-			$ordermethod = " order by end_date asc";
+			$project_id = intval($project_id);
+
+			$ordermethod = ' order by end_date asc';
 
 			if ($action == 'mains')
 			{
-				$parent_hours	= " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+				$parent_hours	= ' OR phpgw_p_hours.pro_parent=' . $project_id;
 			}
 
-			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
-						. "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae,"
-						. "phpgw_p_hours.employee FROM phpgw_p_hours " . $this->return_join() . " phpgw_p_activities ON "
-						. "phpgw_p_hours.activity_id=phpgw_p_activities.id " . $this->return_join() . " phpgw_p_projectactivities ON "
+			$this->db->query('SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,'
+						. 'phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae,'
+						. 'phpgw_p_hours.employee FROM phpgw_p_hours ' . $this->return_join() . ' phpgw_p_activities ON '
+						. 'phpgw_p_hours.activity_id=phpgw_p_activities.id ' . $this->return_join() . ' phpgw_p_projectactivities ON '
 						. "phpgw_p_hours.activity_id=phpgw_p_projectactivities.activity_id WHERE (phpgw_p_hours.status='done' OR "
-						. "phpgw_p_hours.status='closed') AND (phpgw_p_hours.project_id='" . $project_id . "'" . $parent_hours . ") AND "
-						. "phpgw_p_projectactivities.project_id='" . $project_id . "' AND phpgw_p_projectactivities.billable='Y' "
-						. "AND phpgw_p_projectactivities.activity_id=phpgw_p_hours.activity_id " . $ordermethod,__LINE__,__FILE__);
+						. "phpgw_p_hours.status='closed') AND (phpgw_p_hours.project_id=" . $project_id . $parent_hours . ') AND '
+						. 'phpgw_p_projectactivities.project_id=' . $project_id . " AND phpgw_p_projectactivities.billable='Y' "
+						. 'AND phpgw_p_projectactivities.activity_id=phpgw_p_hours.activity_id' . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -238,19 +247,21 @@
 
 		function read_invoice_hours($project_id, $invoice_id, $action)
 		{
-			$ordermethod = " order by end_date asc";
+			$project_id = intval($project_id);
+
+			$ordermethod = ' order by end_date asc';
 
 			if ($action == 'mains' || $action == 'amains')
 			{
-				$parent_search = " OR phpgw_p_hours.pro_parent='" . $project_id . "'";
+				$parent_search = ' OR phpgw_p_hours.pro_parent=' . $project_id;
 			}
 
-			$this->db->query("SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status, "
-						. "phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM "
-						. "phpgw_p_hours " . $this->return_join() . " phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id "
-						. $this->return_join() . " phpgw_p_invoicepos ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE "
-						. "(phpgw_p_hours.project_id='" . $project_id . "'" . $parent_search . ") AND phpgw_p_invoicepos.invoice_id='"
-						. $invoice_id . "'" . $ordermethod,__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_hours.id as id,phpgw_p_hours.hours_descr,phpgw_p_activities.descr,phpgw_p_hours.status,'
+						. 'phpgw_p_hours.start_date,phpgw_p_hours.end_date,phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.billperae FROM '
+						. 'phpgw_p_hours ' . $this->return_join() . ' phpgw_p_activities ON phpgw_p_hours.activity_id=phpgw_p_activities.id '
+						. $this->return_join() . ' phpgw_p_invoicepos ON phpgw_p_invoicepos.hours_id=phpgw_p_hours.id WHERE '
+						. '(phpgw_p_hours.project_id=' . $project_id . $parent_search . ') AND phpgw_p_invoicepos.invoice_id='
+						. intval($invoice_id) . $ordermethod,__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -273,9 +284,9 @@
 
 		function read_single_invoice($invoice_id)
 		{
-			$this->db->query("SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,"
-							. "phpgw_p_invoice.sum,phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_invoice,phpgw_p_projects WHERE "
-							. "phpgw_p_invoice.id='" . $invoice_id . "' AND phpgw_p_invoice.project_id=phpgw_p_projects.id",__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,'
+							. 'phpgw_p_invoice.sum,phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_invoice,phpgw_p_projects WHERE '
+							. 'phpgw_p_invoice.id=' . intval($invoice_id) . ' AND phpgw_p_invoice.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
 
 			if ($this->db->next_record())
 			{
@@ -292,10 +303,10 @@
 
 		function read_invoice_pos($invoice_id)
 		{
-			$this->db->query("SELECT phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,"
-					. "phpgw_p_activities.descr,phpgw_p_hours.start_date,phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,"
-					. "phpgw_p_invoicepos WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='"
-					. $invoice_id . "' AND phpgw_p_hours.activity_id=phpgw_p_activities.id",__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,'
+					. 'phpgw_p_activities.descr,phpgw_p_hours.start_date,phpgw_p_hours.end_date FROM phpgw_p_hours,phpgw_p_activities,'
+					. 'phpgw_p_invoicepos WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='
+					. $invoice_id . ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{

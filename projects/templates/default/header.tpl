@@ -17,12 +17,14 @@
 			&nbsp;|&nbsp;
 			<a href="{link_hours}"><b>{lang_hours}</b></a>
 			&nbsp;|&nbsp;
-			<a href="{link_statistics}"><b>{lang_statistics}</b></a>
-			&nbsp;|&nbsp;
 			<a href="{link_archiv}"><b>{lang_archiv}</b></a>
 			&nbsp;|&nbsp;
+			<a href="{link_statistics}"><b>{lang_statistics}</b></a>
+			&nbsp;|&nbsp;
+			<a href="{link_budget}"><b>{lang_budget}</b></a>
+			{break1}
 			<a href="{link_delivery}"><b>{lang_delivery}</b></a>
-			{break}
+			{break2}
 			<a href="{link_billing}"><b>{lang_billing}</b></a>
 		</td>
 	</tr>

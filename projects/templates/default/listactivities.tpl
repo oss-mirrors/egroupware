@@ -17,13 +17,13 @@
 	</tr>
 	<tr colspan="6">
 		<td width="33%" align="left">
-				<form method="POST" name="cat" action="{cat_action}">
-				{lang_category}&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();">
-				<option value="">{lang_none}</option>
+			<form method="POST" name="cat" action="{cat_action}">
+				<select name="cat_id" onChange="this.form.submit();">
+				<option value="">{lang_select_category}</option>
 				{categories_list}
 				</select>
 				<noscript><input type="submit" name="cats" value="{lang_select}"></noscript>
-				</form>
+			</form>
 		</td>
 		<td width="33%" align="center">&nbsp;</td>
 		<td width="33%" align="right"><form method="POST" name="query" action="{search_action}">{search_list}</form></td>
