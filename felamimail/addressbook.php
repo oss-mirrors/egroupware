@@ -87,11 +87,11 @@
 
 	if ($d->total_records > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"])
 	{
-		$t->set_var('lang_showing',lang("showing x - x of x",($start + 1),($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),$d->total_records));
+		$t->set_var('lang_showing',lang("showing %1 - %2 of %3",($start + 1),($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),$d->total_records));
 	}
 	else
 	{
-		$t->set_var('lang_showing',lang("showing x",$d->total_records));
+		$t->set_var('lang_showing',lang("showing %1",$d->total_records));
 	}
 	// --------------------------------------- end nextmatch ------------------------------------------
 

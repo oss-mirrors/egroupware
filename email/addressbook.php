@@ -115,11 +115,11 @@
 
 	if ($d->total_records > $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs'])
 	{
-		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing x - x of x',($start + 1),($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$d->total_records));
+		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing %1 - %2 of %3',($start + 1),($start + $GLOBALS['phpgw_info']['user']['preferences']['common']['maxmatchs']),$d->total_records));
 	}
 	else
 	{
-		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing x',$d->total_records));
+		$GLOBALS['phpgw']->template->set_var('lang_showing',lang('showing %1',$d->total_records));
 	}
 	// --------------------------------------- end nextmatch ------------------------------------------
 
