@@ -260,7 +260,7 @@
 	
 	$t->set_var("lang_which_groups",lang("Which groups"));
 
-        $user_groups = $phpgw->accounts->read_group_names($phpgw_info["user"]["userid"]);
+        $user_groups = $phpgw->accounts->memberships($phpgw_info["user"]["account_id"]);
         for ($i=0;$i<count($user_groups);$i++) {
             $group_list .= "<option value=\"" . $user_groups[$i][0] . "\">" . $user_groups[$i][1]
             			. "</option>\n";
