@@ -373,6 +373,7 @@
 
 			$this->t->pfp('out','projects_list_t',True);
 			$this->save_sessiondata($action);
+			$phpgw->common->phpgw_footer();
 		}
 
 		function add_project()

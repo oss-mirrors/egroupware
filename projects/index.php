@@ -32,7 +32,6 @@
 	);
 	include('../header.inc.php');
 
-	$obj = CreateObject('projects.uiprojects');
-	$obj->list_projects();
-	$GLOBALS['phpgw']->common->phpgw_footer();
+	Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+	$GLOBALS['phpgw']->common->phpgw_exit();
 ?>

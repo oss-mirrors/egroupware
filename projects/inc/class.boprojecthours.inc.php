@@ -71,7 +71,7 @@
 
 			if ($this->use_session)
 			{
-				$phpgw->session->appsession('session_data','project_hours',$data);
+				$phpgw->session->appsession('session_data','projects_hours',$data);
 			}
 		}
 
@@ -79,7 +79,7 @@
 		{
 			global $phpgw;
 
-			$data = $phpgw->session->appsession('session_data','project_hours');
+			$data = $phpgw->session->appsession('session_data','projects_hours');
 
 			$this->start	= $data['start'];
 			$this->query	= $data['query'];

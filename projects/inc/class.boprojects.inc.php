@@ -80,7 +80,8 @@
 		{
 			switch ($action)
 			{
-				case 'mains'	: $column = 'projects_pro'; break;
+				case 'mains'	: $column = 'projects_mains'; break;
+				case 'subs'		: $column = 'projects_subs'; break;
 				case 'act'		: $column = 'projects_act'; break;
 			}
 			return $column;
