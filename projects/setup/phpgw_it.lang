@@ -77,6 +77,7 @@ columns to show in the projects list	projects	it	Colonne da mostrare nella lista
 comment	projects	it	commento
 continue	projects	it	Continua
 coordinator	common	it	Coordinatore
+costs	projects	it	Costi
 costs list	projects	it	Elenco Costi
 costtype	projects	it	Tipo Costi
 courier new	projects	it	Courier new
@@ -180,6 +181,7 @@ id can not exceed 19 characters in length !	projects	it	L'ID non può essere più 
 id can not exceed 20 characters in length	projects	it	L'ID non può eccedere 20 caratteri di lunghezza
 id can not exceed 25 characters in length !	projects	it	L'ID non può essere più lungo di 25 caratteri!
 id can not exceed 250 characters in length	projects	it	L'ID non può eccedere 250 caratteri di lunghezza
+id is already taken, choose an other one	projects	it	L'ID è già stato preso, scegline un altro.
 if using activities	admin	it	Se si utilizzano le attività
 if you are an administrator, please edit the site configuration for projects in the admin section	projects	it	Se sei un amministratore, per favore modifica la configurazione del sito per i progetti nella sezione amministrazione.
 if you are not an administrator, please inform the administrator to configure projects	projects	it	Se non sei un amministratore, per favore informa l'amministratore di configurare i progetti.
@@ -219,7 +221,7 @@ main project	projects	it	Progetto Principale
 main project:	projects	it	Progetto Principale
 manager	projects	it	Manager
 manager list	projects	it	Lista Manager
-managing committee	admin	it	Gruppo dirigente
+managing committee	projects	it	Gruppo dirigente
 manuell entries	projects	it	inserimenti manuali
 milestone	projects	it	Traguardo
 milestone date due	projects	it	Data prevista traguardo
@@ -288,10 +290,11 @@ project	projects	it	Progetto
 project %1 has been saved	projects	it	Il progetto %1 è stato salvato
 project %1 has been updated	projects	it	Il progetto %1 è stato aggiornato.
 project accounting	admin	it	Contabilità progetto
-project administrators	admin	it	Amministratori progetto
+project administrators	projects	it	Amministratori progetto
 project archive	projects	it	Archivio Progetti
 project billing	projects	it	Fatturazione Progetto
 project data due	projects	it	Data prevista progetto
+project date due	projects	it	Data obbligata termine
 project delivery	projects	it	Consegne Progetto
 project dependencies	common	it	Dipendenze progetto
 project id	common	it	ID Progetto
@@ -318,7 +321,7 @@ role %1 has been updated	projects	it	Il ruolo %1 è stato aggiornato
 role has been deleted	projects	it	Il ruolo è stato eliminato
 roles	projects	it	Ruoli
 roles list	projects	it	Elenco Ruoli
-sales department	admin	it	Dipartimento Vendite
+sales department	projects	it	Dipartimento Vendite
 save factor	projects	it	Fattore Vendite
 save milestone	projects	it	Traguardo Vendite
 select	projects	it	Selezione

@@ -10,6 +10,7 @@ answer has been updated	polls	it	La risposta è stata aggiornata
 answers	polls	it	Risposte
 are you sure want to delete this answer ?	polls	it	Sei sicuro di voler cancellare questa risposta?
 are you sure want to delete this question ?	polls	it	Sei sicuro di voler cancellare questa domanda?
+current poll	polls	it	Sondaggio corrente
 edit answer	polls	it	Modifica risposta
 edit poll question	polls	it	Modifica domanda Sondaggio
 enter poll question	polls	it	Inserisci domanda Sondaggio
@@ -25,6 +26,7 @@ show answers	polls	it	Mostra risposte
 show questions	common	it	Mostra domande
 total votes	polls	it	Totale
 view poll	polls	it	Vedi Sondaggio
+view results	polls	it	Vedi Risultati
 vote	polls	it	Vota
 voting booth admin	admin	it	Cabina votazioni
 voting booth administration	polls	it	Amministrazione Cabina votazioni
