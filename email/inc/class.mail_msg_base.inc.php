@@ -1512,7 +1512,7 @@
 			// BUT there  may be serialization INSIDE in a sub part
 			return False;
 		}
-		elseif (is_bool_ex($data))
+		elseif ($this->is_bool_ex($data))
 		{
 			// a boolean type is of course not serialized
 			return False;
