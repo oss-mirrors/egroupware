@@ -199,7 +199,7 @@ $lstCategory=$phpgw->db->f(1);
     } else {
       if ($optUpdateclose == "reopen") {
         # reopen the ticket
-        $phpgw->db->query("UPDATE ticket set t_timestamp_closed=NULL WHERE t_id=$t_id");
+        $phpgw->db->query("UPDATE ticket set t_timestamp_closed='0' WHERE t_id=$t_id");
         $txtDetail .= "<b>".lang("Ticket reopened")."</b><br>\n";
       }
 
@@ -215,6 +215,12 @@ $lstCategory=$phpgw->db->f(1);
       }
 
       # update the database if ticket content changed
+      $phpgw->db->query("select t_assignedto from ticket where t_id='$t_id'");
+      $phpgw->db->next_record();
+      if ($phpgw->db->f("t_assignedto") != $lstAssignedto) {
+         // I would like to add something like !*!<epoch>!*! then that could be replaced with the users date/time preferences
+         $txtDetail .= "<br>" . $phpgw_info["user"]["loginid"] . date("m/d/Y h:m:s a") . " - " . addslashes(lang("Ticket assigned to x",$lstAssignedto));
+      }
       $phpgw->db->query("UPDATE ticket set t_category='$lstCategory',t_detail='$txtDetail',t_priority='$optPriority',t_user='$lstAssignedfrom',t_assignedto='$lstAssignedto' WHERE t_id=$t_id");
 
       if ( $optUpdateclose == "close" ) {
