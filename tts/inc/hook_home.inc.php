@@ -100,36 +100,13 @@
 
 			$p->fp('rows','tts_row',true);
 		}
-		
+
 		$extra_data = '<td>'."\n".$p->fp('out','tts_list').'</td>'."\n";
-		
-		$portalbox = CreateObject('phpgwapi.listbox',
-			array(
-				'title'     => '<font color="#FFFFFF">' . lang('Trouble Ticket System') . '</font>',
-				'primary'   => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'secondary' => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'tertiary'  => $GLOBALS['phpgw_info']['theme']['navbar_bg'],
-				'width'     => '100%',
-				'outerborderwidth' => '0',
-				'header_background_image' => $GLOBALS['phpgw']->common->image('phpgwapi/templates/phpgw_website','bg_filler')
-			)
-		);
 
 		$app_id = $GLOBALS['phpgw']->applications->name2id('tts');
 		$GLOBALS['portal_order'][] = $app_id;
-		$var = array(
-			'up'       => array('url' => '/set_box.php', 'app' => $app_id),
-			'down'     => array('url' => '/set_box.php', 'app' => $app_id),
-			'close'    => array('url' => '/set_box.php', 'app' => $app_id),
-			'question' => array('url' => '/set_box.php', 'app' => $app_id),
-			'edit'     => array('url' => '/set_box.php', 'app' => $app_id)
-		);
-
-		while(list($key,$value) = each($var))
-		{
-			$portalbox->set_controls($key,$value);
-		}
-		$portalbox->data = array();
-		$GLOBALS['phpgw']->template->set_var('phpgw_body', "\n".'<!-- Begin TTS New/Updated -->'."\n".$portalbox->draw($extra_data)."\n".'<!-- End TTS New/Updated -->'."\n",True);
+		$GLOBALS['phpgw']->portalbox->set_params(array('app_id'	=> $app_id,
+														'title'	=> lang('tts')));
+		$GLOBALS['phpgw']->portalbox->draw($extra_data);
 	}
 ?>
