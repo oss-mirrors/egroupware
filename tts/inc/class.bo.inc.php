@@ -428,9 +428,9 @@
 				$body .= 'TTS #'.$ticket_id."\n\n";
 				$body .= 'Subject: '.$this->db->f('t_subject')."\n\n";
 				$body .= 'Assigned To: '.$this->db->f('t_assignedto')."\n\n";
-				$body .= 'Priority: ".$this->db->f('t_priority')."\n\n";
-				$body .= 'Group: ".$group."\n\n";
-				$body .= 'Opened By: ".$this->db->f('t_user')."\n";
+				$body .= 'Priority: '.$this->db->f('t_priority')."\n\n";
+				$body .= 'Group: '.$group."\n\n";
+				$body .= 'Opened By: '.$this->db->f('t_user')."\n";
 				$body .= 'Date Opened: '.$GLOBALS['phpgw']->common->show_date($this->db->f('t_timestamp_opened'))."\n\n";
 				if($this->db->f('t_timestamp_closed'))
 				{
