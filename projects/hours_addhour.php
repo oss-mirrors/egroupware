@@ -97,6 +97,7 @@
     $t->set_var('lang_work_time',lang('Work time'));
     $t->set_var('lang_start_time',lang('Start time'));
     $t->set_var('lang_end_time',lang('End time'));
+    $t->set_var('lang_select_project',lang('Select project'));
 
     if ($submit) {
     $t->set_var('lang_minperae',lang('Minutes per workunit'));

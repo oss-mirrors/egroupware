@@ -15,8 +15,8 @@
     $phpgw_info["flags"]["currentapp"] = "projects";
     include("../header.inc.php");
   
-    $db2 = $phpgw->db;
-  
+    if (!$submit) { $referer = $HTTP_REFERER; }
+
     if (!$id) { Header('Location: ' . $HTTP_REFERER); }
 
     $hidden_vars = "<input type=\"hidden\" name=\"sort\" value=\"$sort\">\n"
@@ -24,6 +24,7 @@
 		. "<input type=\"hidden\" name=\"query\" value=\"$query\">\n"
 		. "<input type=\"hidden\" name=\"start\" value=\"$start\">\n"
 		. "<input type=\"hidden\" name=\"filter\" value=\"$filter\">\n"
+		. "<input type=\"hidden\" name=\"referer\" value=\"$referer\">\n"
 		. "<input type=\"hidden\" name=\"id\" value=\"$id\">\n"
 		. "<input type=\"hidden\" name=\"delivery_id\" value=\"$delivery_id\">\n"
 		. "<input type=\"hidden\" name=\"invoice_id\" value=\"$invoice_id\">\n";
@@ -67,7 +68,7 @@
     $remark = addslashes($remark);
     $hours_descr = addslashes($hours_descr);
 
-    $phpgw->db->query("update phpgw_p_hours set project_id='$project',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',"
+    $phpgw->db->query("update phpgw_p_hours set project_id='$filter',activity_id='$activity',entry_date='" . time() . "',start_date='$sdate',end_date='$edate',"
 		    . "hours_descr='$hours_descr',remark='$remark',"
 		    . "minutes='$ae_minutes',status='$status',minperae='$minperae',billperae='$billperae',employee='$employee' where id='$id'");
       }
@@ -88,7 +89,7 @@
 
     $t->set_var('actionurl',$phpgw->link('/projects/hours_edithour.php'));
     $t->set_var('deleteurl',$phpgw->link('/projects/hours_deletehour.php',"id=$id"));
-    $t->set_var('doneurl',$HTTP_REFERER);
+    $t->set_var('doneurl',$referer);
     $t->set_var('lang_action',lang('Edit project hours'));
     $t->set_var('hidden_vars',$hidden_vars);
     $t->set_var('lang_project',lang('Project'));
@@ -109,11 +110,12 @@
     $t->set_var('lang_edit',lang('Edit'));
     $t->set_var('lang_delete',lang('Delete'));
     $t->set_var('lang_status',lang('Status'));
+    $t->set_var('lang_select_project',lang('Select project'));
 
     $phpgw->db->query("select * from phpgw_p_hours where id='$id'");
     $phpgw->db->next_record();     
 
-    $project = $phpgw->db->f("project_id");
+    $filter = $phpgw->db->f("project_id");
 
     if ($phpgw->db->f("status")=="open"): 
          $stat_sel[0]=" selected";
@@ -226,12 +228,13 @@
 
     $t->set_var('employee_list',$employee_list);
 
-    $t->set_var('project_list',select_project_list($project));
+    $t->set_var('project_list',select_project_list($filter));
 
-    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$project' "
+    $db2 = $phpgw->db;
+    $db2->query("SELECT activity_id,descr FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='$filter' "
                 . "AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id");
         while ($db2->next_record()) {
-        $activity_list .= "<option value=\"" . $phpgw->db->f("activity_id") . "\"";
+        $activity_list .= "<option value=\"" . $db2->f("activity_id") . "\"";
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
             $activity_list .= " selected";
         $activity_list .= ">"
