@@ -91,6 +91,12 @@
 	{
 		$folder = 'INBOX';
 	}
+	else
+	{
+		// url decode this back to normal
+		// anytime you put this var in a form or URI, you must use "urlencode(folder)"
+		$folder = urldecode($folder);
+	}
 
 // ----  What Folder To Return To  -----
         $lnk_goback_folder = $phpgw->msg->href_maketag($phpgw->link('/email/index.php','folder='.urlencode($folder)),$folder);
@@ -1286,8 +1292,16 @@
 				{
 					// in this case, we need only refer to the part number in an href, then redirect
 					// make a submit button with this html part as a hidden var
+					if ($part_nice[$i]['encoding'] != $struct_not_set)
+					{
+						$part_encoding = $part_nice[$i]['encoding'];
+					}
+					else
+					{
+						$part_encoding = '';
+					}
 					$part_href = $phpgw->link('/'.$phpgw_info['flags']['currentapp'].'/get_attach.php',
-						 'folder='.$folder .'&msgnum=' .$msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime']);
+						 'folder='.urlencode($folder) .'&msgnum=' .$msgnum .'&part_no=' .$part_nice[$i]['m_part_num_mime'] .'&encoding=' .$part_encoding);
 					$dsp =
 					//'<pre>'.$msg_headers .'</pre>'
 					'<p>'

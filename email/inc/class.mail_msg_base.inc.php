@@ -576,7 +576,8 @@
 			// we have no way of knowing if it's necessary, but you do, you who call this function
 			//$encrypted_passwd = $this->stripslashes_gpc($encrypted_passwd);
 			$encrypted_passwd = $data;
-			if ($this->is_serialized($encrypted_passwd))
+			//if ($this->is_serialized($encrypted_passwd))
+			if ($this->is_serialized_str($encrypted_passwd))
 			{
 				$encrypted_passwd = unserialize($encrypted_passwd);
 			}
@@ -605,7 +606,8 @@
 		{
 			// ASSUMING set_magic_quotes_runtime(0) is in functions.inc.php (it is) then
 			// there should be NO escape slashes coming from the database
-			if ($this->is_serialized($passwd))
+			//if ($this->is_serialized($passwd))
+			if ($this->is_serialized_str($passwd))
 			{
 				$passwd = unserialize($passwd);
 			}
@@ -615,7 +617,8 @@
 			/* // these version *may* have double ot tripple serialized passwd stored in their preferences table
 			// (1) check for this (2) unserialize to the real string (3) feed the unserialized / fixed passwd in the prefs class */
 			// (1) check for this 
-			$multi_serialized = $this->is_serialized($passwd);
+			//$multi_serialized = $this->is_serialized($passwd);
+			$multi_serialized = $this->is_serialized_str($passwd);
 			if ($multi_serialized)
 			{
 				$pre_upgrade_passwd = $passwd;
@@ -631,7 +634,8 @@
 					}
 					$passwd = unserialize($passwd);
 				}
-				while ($this->is_serialized($passwd));
+				//while ($this->is_serialized($passwd));
+				while ($this->is_serialized_str($passwd));
 				
 				// 10 loops is too much, something is wrong
 				if ($loop_num == $failure)
@@ -1566,6 +1570,25 @@
 		else
 		{
 			return False;
+		}
+	}
+
+	/*!
+	@function is_serialized_str
+	@abstract find out if a string is already serialized, speed increases since string is known type
+	@param $string_data SHOULD be a string, or else call "is_serialized()" instead
+	*/
+	function is_serialized_str($string_data)
+	{
+		if ((is_string($string_data))
+		&& (unserialize($string_data) == False))
+		{
+			// when you unserialize a normal (not-serialized) string, you get False
+			return False;
+		}
+		else
+		{
+			return True;
 		}
 	}
 
