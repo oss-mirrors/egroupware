@@ -40,4 +40,29 @@
 		return $setup_info['emailadmin']['currentver'];
 	}
 	
+
+
+	$test[] = '0.0.6';
+	function emailadmin_upgrade0_0_6()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_emailadmin','oldimapcclient',array(
+			'type' => 'varchar',
+			'precision' => '3'
+		));
+
+
+		$GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.007';
+		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+	}
+
+
+	$test[] = '0.0.007';
+	function emailadmin_upgrade0_0_007()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_emailadmin','oldimapcclient','imapoldcclient');
+
+
+		$GLOBALS['setup_info']['emailadmin']['currentver'] = '0.0.008';
+		return $GLOBALS['setup_info']['emailadmin']['currentver'];
+	}
 ?>

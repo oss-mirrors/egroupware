@@ -83,3 +83,4 @@ virtual domains	emailadmin	de	virtuelle Domänen
 virtual mail manager	emailadmin	de	Virtual MAIL ManaGeR
 we don't accept any email!	emailadmin	de	Es werden keine EMail's aktzeptiert!
 we don't deliver any email local!	emailadmin	de	Es werden keine EMail's lokal ausgeliefert!
+IMAP C-Client Version < 2001	emailadmin	de	IMAP C-Client Version < 2001

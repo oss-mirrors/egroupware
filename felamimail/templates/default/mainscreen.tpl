@@ -110,8 +110,8 @@ doLoad();
 //-->
 </script>
 
-<TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
 <form name=searchForm method=post action="{url_search_settings}">
+<TABLE BORDER="0" WIDTH="100%" CELLSPACING="0" CELLPADDING="2">
 <!--	<TR bgcolor="#ffffcc"> -->
 	<TR bgcolor="{th_bg}">
 		<td align="left" width="70%" style="border-color:silver; border-style:solid; border-width:0px 0px 1px 0px; font-size:10px;">

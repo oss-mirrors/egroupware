@@ -219,9 +219,16 @@ function setActiveTabs()
 			</tr>
 
 			<tr class="row_off">
-				<td class="td_left">{lang_use_tls_authentication}:</td>
+				<td class="td_left">{lang_use_tls_encryption}:</td>
 				<td class="td_right">
-					<input type="checkbox" name="imapsettings[1][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+					<input type="checkbox" name="imapsettings[1][imapTLSEncryption]" {selected_imapTLSEncryption} value="yes">
+				</td>
+			</tr>
+
+			<tr class="row_on">
+				<td class="td_left">{lang_pre_2001_c_client}:</td>
+				<td class="td_right">
+					<input type="checkbox" name="imapsettings[1][imapoldcclient]" {selected_imapoldcclient} value="yes">
 				</td>
 			</tr>
 		</table>
@@ -266,6 +273,13 @@ function setActiveTabs()
 					<input type="checkbox" name="imapsettings[2][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
 				</td>
 			</tr>
+
+			<tr class="row_on">
+				<td class="td_left">{lang_pre_2001_c_client}:</td>
+				<td class="td_right">
+					<input type="checkbox" name="imapsettings[2][imapoldcclient]" {selected_imapoldcclient} value="yes">
+				</td>
+			</tr>
 		</table>
 	</div>
 	
@@ -306,6 +320,13 @@ function setActiveTabs()
 				<td class="td_left">{lang_use_tls_authentication}:</td>
 				<td class="td_right">
 					<input type="checkbox" name="imapsettings[3][imapTLSAuthentication]" {selected_imapTLSAuthentication} value="yes">
+				</td>
+			</tr>
+
+			<tr class="row_on">
+				<td class="td_left">{lang_pre_2001_c_client}:</td>
+				<td class="td_right">
+					<input type="checkbox" name="imapsettings[3][imapoldcclient]" {selected_imapoldcclient} value="yes">
 				</td>
 			</tr>
 		</table>

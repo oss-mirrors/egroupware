@@ -36,7 +36,7 @@
 			);
 			
 			// create the mailbox
-			if($mbox = imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
+			if($mbox = @imap_open ($this->getMailboxString(), $imapAdminUsername, $imapAdminPW))
 			{
 				// create the users folders
 				foreach($folderNames as $mailBoxName)
@@ -53,6 +53,7 @@
 			}
 			else
 			{
+				_debug_array(imap_errors());
 				return false;
 			}
 			

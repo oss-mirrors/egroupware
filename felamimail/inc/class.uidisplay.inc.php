@@ -433,6 +433,15 @@
 			$this->kses->AddHTML("li");
 			$this->kses->AddHTML("h1");
 			$this->kses->AddHTML("h2");
+			$this->kses->AddHTML("style");
+			$this->kses->AddHTML("select");
+			$this->kses->AddHTML(
+				"option",array(
+					"value" => array('maxlen' => 45),
+					"selected" => array()
+				)
+			);
+
 			$this->kses->AddHTML(
 				"a", array(
 					"href" => array('maxlen' => 45, 'minlen' => 10),

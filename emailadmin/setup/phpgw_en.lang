@@ -66,3 +66,4 @@ use tls authentication	emailadmin	en	Use TLS authentication
 use tls encryption	emailadmin	en	Use TLS encryption
 users can define their own emailaccounts	emailadmin	en	Users can define their own email accounts
 virtual mail manager	emailadmin	en	Virtual MAIL ManaGeR
+IMAP C-Client Version < 2001	emailadmin	en	IMAP C-Client Version < 2001

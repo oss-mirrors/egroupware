@@ -11,6 +11,9 @@
 	\**************************************************************************/
 	/* $Id$ */
 
+	$_GET['menuaction']     = 'emailadmin.ui.listProfiles';
+
+	$phpgw_info = array();
 	$phpgw_info['flags'] = array
 	(
 		'currentapp' => 'emailadmin',
@@ -19,6 +22,5 @@
 	);
 	include('../header.inc.php');
 
-	$obj = CreateObject('emailadmin.ui');
-	$obj->listProfiles();
+	execmethod('emailadmin.ui.listProfiles');
 ?>

@@ -182,6 +182,7 @@
 					case 'smtpAuth':
 					case 'smtpLDAPUseDefault':
 					case 'userDefinedAccounts':
+					case 'imapoldcclient':
 						if($value == 'yes')
 							$this->t->set_var('selected_'.$key,'checked');
 						break;
@@ -461,6 +462,7 @@
 			$this->t->set_var('lang_imap_server_logintyp',lang('imap server logintyp'));
 			$this->t->set_var('lang_standard',lang('standard'));
 			$this->t->set_var('lang_vmailmgr',lang('Virtual MAIL ManaGeR'));
+			$this->t->set_var('lang_pre_2001_c_client',lang('IMAP C-Client Version < 2001'));
 			# $this->t->set_var('',lang(''));
 			
 		}

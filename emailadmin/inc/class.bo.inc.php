@@ -33,7 +33,7 @@
 			'getSMTPServerTypes'	=> True
 		);
 
-		function bo()
+		function bo($_profileID=-1)
 		{
 			$this->soemailadmin = CreateObject('emailadmin.so');
 			
@@ -73,7 +73,8 @@
 						'imapType',
 						'imapLoginType',
 						'imapTLSEncryption',
-						'imapTLSAuthentication'
+						'imapTLSAuthentication',
+						'imapoldcclient'
 					),
 					'description'	=> lang('standard POP3 server'),
 					'protocol'	=> 'pop3',
@@ -86,7 +87,8 @@
 						'imapType',
 						'imapLoginType',
 						'imapTLSEncryption',
-						'imapTLSAuthentication'
+						'imapTLSAuthentication',
+						'imapoldcclient'
 					),
 					'description'	=> lang('standard IMAP server'),
 					'protocol'	=> 'imap',
@@ -100,6 +102,7 @@
 						'imapLoginType',
 						'imapTLSEncryption',
 						'imapTLSAuthentication',
+						'imapoldcclient',
 						'imapEnableCyrusAdmin',
 						'imapAdminUsername',
 						'imapAdminPW',
@@ -114,31 +117,41 @@
 			); 
 			
 			$this->restoreSessionData();
-		}
-		
-		function addAccount($_hookData)
-		{
-			$profileData	= $this->getProfile($_hookData['profileID']);
 			
-			$imapClass	= $this->IMAPServerType[$profileData['imapType']]['classname'];
-			$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
-			ExecMethod("emailadmin.$imapClass.addAccount",$_hookData['hookValues'],3,$profileData);
-			ExecMethod("emailadmin.$smtpClass.addAccount",$_hookData['hookValues'],3,$profileData);
-		}
-		
-		function deleteAccount($_hookData)
-		{
-			$profileData	= $this->getProfile($_hookData['profileID']);
-			
-			$imapClass = $this->IMAPServerType[$profileData['imapType']]['classname'];
-			if (!empty($imapClass))
+			if($_profileID >= 0)
 			{
-				ExecMethod("emailadmin.$imapClass.deleteAccount",$_hookData['hookValues'],3,$profileData);
+				$this->profileID	= $_profileID;
+			
+				$this->profileData	= $this->getProfile($_profileID);
+			
+				$this->imapClass	= $this->IMAPServerType[$this->profileData['imapType']]['classname'];
+				$this->smtpClass	= $this->SMTPServerType[$this->profileData['smtpType']]['classname'];
 			}
-			$smtpClass = $this->SMTPServerType[$profileData['smtpType']]['classname'];
-			if (!empty($smtpClass))
+		}
+		
+		function addAccount($_hookValues)
+		{
+			if (!empty($this->imapClass))
 			{
-				ExecMethod("emailadmin.$smtpClass.deleteAccount",$_hookData['hookValues'],3,$profileData);
+				ExecMethod("emailadmin.".$this->imapClass.".addAccount",$_hookValues,3,$this->profileData);
+			}
+			
+			if (!empty($this->smtpClass))
+			{
+				ExecMethod("emailadmin.".$this->smtpClass.".addAccount",$_hookValues,3,$this->profileData);
+			}
+		}
+		
+		function deleteAccount($_hookValues)
+		{
+			if (!empty($this->imapClass))
+			{
+				ExecMethod("emailadmin.".$this->imapClass.".deleteAccount",$_hookValues,3,$this->profileData);
+			}
+
+			if (!empty($this->smtpClass))
+			{
+				ExecMethod("emailadmin.".$this->smtpClass.".deleteAccount",$_hookValues,3,$this->profileData);
 			}
 		}
 		
@@ -197,6 +210,18 @@
 			return $storageData;
 		}
 		
+		function getMailboxString($_folderName)
+		{
+			if (!empty($this->imapClass))
+			{
+				return ExecMethod("emailadmin.".$this->imapClass.".getMailboxString",$_folderName,3,$this->profileData);
+			}
+			else
+			{
+				return false;
+			}
+		}
+
 		function getProfile($_profileID)
 		{
 			$profileData = $this->soemailadmin->getProfileList($_profileID);
@@ -396,19 +421,16 @@
 			}
 		}
 
-		function updateAccount($_hookData)
+		function updateAccount($_hookValues)
 		{
-			$profileData	= $this->getProfile($_hookData['profileID']);
-			
-			$imapClass = $this->IMAPServerType[$profileData['imapType']]['classname'];
-			if (!empty($imapClass))
+			if (!empty($this->imapClass))
 			{
-				ExecMethod("emailadmin.$imapClass.updateAccount",$_hookData['hookValues'],3,$profileData);
+				ExecMethod("emailadmin.".$this->imapClass.".updateAccount",$_hookValues,3,$this->profileData);
 			}
-			$smtpClass = $this->SMTPServerType[$profileData['smtpType']]['classname'];
-			if (!empty($smtpClass))
+
+			if (!empty($this->smtpClass))
 			{
-				ExecMethod("emailadmin.$smtpClass.updateAccount",$_hookData['hookValues'],3,$profileData);
+				ExecMethod("emailadmin.".$this->smtpClass.".updateAccount",$_hookValues,3,$this->profileData);
 			}
 		}
 		

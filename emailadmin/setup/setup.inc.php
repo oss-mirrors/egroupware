@@ -14,7 +14,7 @@
 
 	$setup_info['emailadmin']['name']      = 'emailadmin';
 	$setup_info['emailadmin']['title']     = 'EMailAdmin';
-	$setup_info['emailadmin']['version']   = '0.0.6';
+	$setup_info['emailadmin']['version']   = '0.0.008';
 	$setup_info['emailadmin']['app_order'] = 10;
 	$setup_info['emailadmin']['enable']    = 2;
 
@@ -43,4 +43,5 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14','0.9.16')
 	);
-?>
+
+

@@ -83,10 +83,7 @@
 		{
 			if($this->profileID > 0 && is_numeric($this->profileID))
 			{
-				$hookData = array(
-					'profileID'	=> $this->profileID,
-					'hookValues'	=> $_hookValues);
-				ExecMethod('emailadmin.bo.addAccount',$hookData);
+				ExecMethod('emailadmin.bo.addAccount',$_hookValues,3,$this->profileID);
 			}
 		}
 		
@@ -105,13 +102,12 @@
 			$menuData[] = $data;
 		}
 		
-		function appendMessage($_folder, $_header, $_body)
+		function appendMessage($_folderName, $_header, $_body)
 		{
 			#print "<pre>$_header.$_body</pre>";
-			$mailboxString = $this->createMailboxString($_folder);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			$header = str_replace("\n","\r\n",$_header);
 			$body   = str_replace("\n","\r\n",$_body);
-			#$result = @imap_append($this->mbox, $mailboxString, "$header"."$_body");
 			$result = @imap_append($this->mbox, $mailboxString, "$header"."$body");
 			#print imap_last_error();
 			return $result;
@@ -126,16 +122,16 @@
 		}
 		
 		// creates the mailbox string needed for the various imap functions
-		function createMailboxString($_folderName='')
+/*		function createMailboxString($_folderName='')
 		{
-			$mailboxString = sprintf("{%s:%s%s}%s",
+			$mailboxString = sprintf("{%s:%s%s/notls}%s",
 				$this->mailPreferences['imapServerAddress'],
 				$this->mailPreferences['imapPort'],
 				$this->mailPreferences['imapOptions'],
 				$_folderName);
 
 			return $this->encodeFolderName($mailboxString);
-		}
+		}*/
 		
 		function compressFolder()
 		{
@@ -147,7 +143,7 @@
 			if($this->sessionData['mailbox'] == $trashFolder && $deleteOptions == "move_to_trash")
 			{
 				// delete all messages in the trash folder
-				$mailboxString = $this->createMailboxString($this->sessionData['mailbox']);
+				$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
 				$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 				$numberOfMessages = $status->messages;
 				$msgList = "1:$numberOfMessages";
@@ -193,10 +189,7 @@
 		{
 			if($this->profileID > 0 && is_numeric($this->profileID))
 			{
-				$hookData = array(
-					'profileID'	=> $this->profileID,
-					'hookValues'	=> $_hookValues);
-				ExecMethod('emailadmin.bo.deleteAccount',$hookData);
+				ExecMethod('emailadmin.bo.deleteAccount',$_hookValues,3,$this->profileID);
 			}
 		}
 		
@@ -421,7 +414,8 @@
 				return $folders;
 			}
 
-			$mailboxString = $this->createMailboxString($this->imapBaseDir);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->imapBaseDir,3,$this->profileID);
+			
 		
 			if($_subscribedOnly == 'true')
 			{
@@ -487,7 +481,7 @@
 			$bofilter = CreateObject('felamimail.bofilter');
 			$transformdate = CreateObject('felamimail.transformdate');
 
-			$mailboxString = $this->createMailboxString($this->sessionData['mailbox']);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$this->sessionData['mailbox'],3,$this->profileID);
 			$status = imap_status ($this->mbox, $mailboxString, SA_ALL);
 			$cachedStatus = $caching->getImapStatus();
 
@@ -905,7 +899,7 @@
 		
 		function imap_createmailbox($_folderName, $_subscribe = False)
 		{
-			$mailboxString = $this->createMailboxString($_folderName);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			
 			$result = @imap_createmailbox($this->mbox,$mailboxString);
 			
@@ -919,7 +913,7 @@
 		
 		function imap_deletemailbox($_folderName)
 		{
-			$mailboxString = $this->createMailboxString($_folderName);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 			
 			$result = imap_deletemailbox($this->mbox, $mailboxString);
 			
@@ -954,8 +948,9 @@
 				return False;
 			}
 			
-			$oldMailboxName = $this->createMailboxString($_oldMailboxName);
-			$newMailboxName = $this->createMailboxString($_newMailboxName);
+			$oldMailboxName = ExecMethod('emailadmin.bo.getMailboxString',$_oldMailboxName,3,$this->profileID);
+			
+			$newMailboxName = ExecMethod('emailadmin.bo.getMailboxString',$_newMailboxName,3,$this->profileID);
 			
 			$result =  @imap_renamemailbox($this->mbox,$oldMailboxName, $newMailboxName);
 			
@@ -1048,9 +1043,9 @@
 				$options	= $_options;
 			}
 			
-			$mailboxString = $this->createMailboxString($_folderName);
+			$mailboxString = ExecMethod('emailadmin.bo.getMailboxString',$_folderName,3,$this->profileID);
 
-			if(!$this->mbox = imap_open ($mailboxString, $username, $password, $options))
+			if(!$this->mbox = @imap_open ($mailboxString, $username, $password, $options))
 			{
 				return imap_last_error();
 			}
@@ -1441,10 +1436,7 @@
 		{
 			if($this->profileID > 0 && is_numeric($this->profileID))
 			{
-				$hookData = array(
-					'profileID'	=> $this->profileID,
-					'hookValues'	=> $_hookValues);
-				ExecMethod('emailadmin.bo.updateAccount',$hookData);
+				ExecMethod('emailadmin.bo.updateAccount',$_hookValues,3,$this->profileID);
 			}
 		}
 		

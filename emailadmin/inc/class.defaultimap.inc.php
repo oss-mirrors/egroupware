@@ -51,7 +51,7 @@
 				else
 					$port = $this->profileData['imapPort'];
 					
-				$mailboxString = sprintf("{%s:%s/ssl}%s",
+				$mailboxString = sprintf("{%s:%s/imap/ssl}%s",
 					$this->profileData['imapServer'],
 					$port,
 					$_folderName);
@@ -64,7 +64,7 @@
 				else
 					$port = $this->profileData['imapPort'];
 					
-				$mailboxString = sprintf("{%s:%s/ssl/novalidate-cert}%s",
+				$mailboxString = sprintf("{%s:%s/imap/ssl/novalidate-cert}%s",
 					$this->profileData['imapServer'],
 					$port,
 					$_folderName);
@@ -77,10 +77,20 @@
 				else
 					$port = $this->profileData['imapPort'];
 					
-				$mailboxString = sprintf("{%s:%s}%s",
-					$this->profileData['imapServer'],
-					$port,
-					$_folderName);
+				if($this->profileData['imapoldcclient'] == 'yes')
+				{
+					$mailboxString = sprintf("{%s:%s/imap}%s",
+						$this->profileData['imapServer'],
+						$port,
+						$_folderName);
+				}
+				else
+				{
+					$mailboxString = sprintf("{%s:%s/imap/notls}%s",
+						$this->profileData['imapServer'],
+						$port,
+						$_folderName);
+				}
 			}
 
 			return $this->encodeFolderName($mailboxString);
