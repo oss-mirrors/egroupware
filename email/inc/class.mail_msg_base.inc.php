@@ -33,6 +33,9 @@
 
 	var $att_files_dir;
 	var $folder_list = array();
+	var $mailsvr_callstr = '';
+	var $mailsvr_namespace = '';
+	var $mailsvr_delimiter = '';
 	var $known_subtypes = array();
 
 	function mail_msg_init()
@@ -260,7 +263,14 @@
 	function get_mailsvr_callstr()
 	{
 		global $phpgw, $phpgw_info;
-
+		
+		// do we have cached data that we can use?
+		if ($this->mailsvr_callstr != '')
+		{
+			// return the cached data
+			return $this->mailsvr_callstr;
+		}
+		// determine the Mail Server Call String
 		// construct the email server call string from the opening bracket "{"  to the closing bracket  "}"
 		if ($phpgw_info['user']['preferences']['email']['mail_server_type'] == 'imap')
 		{
@@ -290,6 +300,8 @@
 			// probably should raise some kind of error here
 			$server_call = '{' .$phpgw_info['user']['preferences']['email']['mail_server'].':'.$this->get_mailsvr_port().'}';
 		}
+		// cache the result
+		$this->mailsvr_callstr = $server_call;
 		return $server_call;
 	}
 
@@ -305,6 +317,13 @@
 		// UWash patched for Maildir style: $Maildir.Junque ?????
 		// Cyrus and Courier style =" INBOX"
 		// UWash style: "mail"
+
+		// do we have cached data that we can use?
+		if ($this->mailsvr_namespace != '')
+		{
+			// return the cached data
+			return $this->mailsvr_namespace;
+		}
 
 		if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UW-Maildir')
 		|| ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash'))
@@ -339,6 +358,8 @@
 			$name_space = 'INBOX';
 		}
 		//echo 'name_space='.$name_space.'<br>';
+		// cache the result
+		$this->mailsvr_namespace = $name_space;
 		return $name_space;
 	}
 
@@ -354,6 +375,13 @@
 		// UWash style: "/"
 		// all other imap servers *should* be "."
 
+		// do we have cached data that we can use?
+		if ($this->mailsvr_delimiter != '')
+		{
+			// return the cached data
+			return $this->mailsvr_delimiter;
+		}
+
 		if ($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 		{
 			$delimiter = '/';
@@ -367,6 +395,8 @@
 			// however as of PHP 4.0 this is not implemented
 			$delimiter = '.';
 		}
+		// cache the result
+		$this->mailsvr_delimiter = $delimiter;
 		return $delimiter;
 	}
 
@@ -589,6 +619,43 @@
 			return $this->folder_list;
 		}
 	}
+
+
+	/* * * * * * * * * * *
+	  *  folder_exists
+	  *  searches thru the list of available folders to determine if a given folder already exists
+	  *  uses "folder_list[folder_long]" as the "haystack" because it is the most unaltered folder
+	  *  information returned from the server that we have
+	  *  if TRUE, then the "official" folder_long name is returned - the one supplied by the server itself
+	  *  during the get_folder_list routine - "folder_list[folder_long]"
+	  *  if False, an empty string is returned
+	  * * * * * * *  * * * */
+	function folder_exists($mailbox, $folder_needle='INBOX')
+	{
+		global $phpgw, $phpgw_info;
+	
+		$folder_list = $this->get_folder_list($mailbox);
+
+		//$debug_folder_exists = True;
+		$debug_folder_exists = False;
+		
+		//$found = False;
+		$needle_official_long = '';
+		for ($i=0; $i<count($folder_list);$i++)
+		{
+			$folder_haystack = $folder_list[$i]['folder_long'];
+			if ($debug_folder_exists) { echo '['.$i.'] [folder_needle] '.$folder_needle.' [folder_haystack] '.$folder_haystack.'<br>' ;}
+			if (preg_match('/.*'.$folder_needle.'$/', $folder_haystack))
+			{
+				//$found = True;
+				$needle_official_long = $folder_list[$i]['folder_long'];
+				if ($debug_folder_exists) { echo 'folder exists, official long name: '.$needle_official_long.'<br>'; }
+				break;
+			}
+		}
+		return $needle_official_long;
+	}
+
 
 	function is_imap_folder($folder)
 	{

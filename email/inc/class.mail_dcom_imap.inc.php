@@ -37,14 +37,14 @@
 
     function createmailbox($stream,$mailbox) 
     {
-	return imap_createmailbox($stream,$mailbox);
 	$this->folder_list_changed = True;
+	return imap_createmailbox($stream,$mailbox);
     }
 
     function deletemailbox($stream,$mailbox)
     {
-	return imap_deletemailbox($stream,$mailbox);
 	$this->folder_list_changed = True;
+	return imap_deletemailbox($stream,$mailbox);
     } 
 
     function delete($stream,$msg_num,$flags="", $currentfolder="") 
@@ -58,35 +58,54 @@
 		$trash_folder_short = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['trash_folder_name']);
 		if ($currentfolder != '')
 		{
-			$currentfolder = $phpgw->msg->get_folder_short($currentfolder);
+			$currentfolder_short = $phpgw->msg->get_folder_short($currentfolder);
 		}
-		// if we are deleting FROM the trash folder, we doa straight delete
-		if ($currentfolder == $trash_folder_short)
+		// if we are deleting FROM the trash folder, we do a straight delete
+		if ($currentfolder_short == $trash_folder_short)
 		{
 			return imap_delete($stream,$msg_num);
 		}
 		else
 		{
-			// get a list of all available folders
-			$folder_list = $phpgw->msg->get_folder_list($stream);
 			// does the trash folder actually exist ?
-			$havefolder = False;
-			for ($i=0; $i<count($folder_list);$i++)
+			$official_trash_folder_long = $phpgw->msg->folder_exists($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+			if ($official_trash_folder_long != '')
 			{
-				if ($folder_list[$i]['folder_short'] == $trash_folder_short)
-				{
-					$havefolder = True;
-					break;
-				}
+				$havefolder = True;
 			}
-			// if not, create the trash folder (similar to Netscape's behavior here)
-			if (! $havefolder)
+			else
 			{
+				$havefolder = False;
+			}
+
+			if (!$havefolder)
+			{
+				// create the Trash folder so it will exist (Netscape does this too)
 				$server_str = $phpgw->msg->get_mailsvr_callstr();
 				$this->createmailbox($stream,$server_str .$trash_folder_long);
+				// try again to get the real long folder name of the just created trash folder
+				$official_trash_folder_long = $phpgw->msg->folder_exists($stream, $phpgw_info['user']['preferences']['email']['trash_folder_name']);
+				// did the folder get created and do we now have the official full name of that folder?
+				if ($official_trash_folder_long != '')
+				{
+					$havefolder = True;
+				}
 			}
-			// do the move to the trash folder
-			return imap_mail_move($stream,$msg_num,$trash_folder_long);
+
+			// at this point we've tries 2 time to obtain the "server approved" long name for the trash folder
+			// even tries creating it if necessary
+			// if we have the name, do the move to the trash folder
+			if ($havefolder)
+			{
+				return imap_mail_move($stream,$msg_num,$official_trash_folder_long);
+			}
+			else
+			{
+				// we do not have the trash official folder name, but we have to do something
+				// can't just leave the mail sitting there
+				// so just straight delete the message
+				return imap_delete($stream,$msg_num);
+			}
 		}
 	}
 	else
@@ -192,33 +211,49 @@
     {
 	global $phpgw_info, $phpgw;
 
-	//$filter = $this->construct_folder_str("");
-	//$mailboxes = $this->listmailbox($stream, $server_str, "$filter*");
-
 	$server_str = $phpgw->msg->get_mailsvr_callstr();
-	$name_space = $phpgw->msg->get_mailsvr_namespace();
-	$dot_or_slash = $phpgw->msg->get_mailsvr_delimiter();
 	$folder_short = $phpgw->msg->get_folder_short($folder);
 	$folder_long = $phpgw->msg->get_folder_long($folder);
 
-	// get a list of all available folders
-	$folder_list = $phpgw->msg->get_folder_list($stream);
-	// does the target folder of the append actually exist
-	$havefolder = False;
-	for ($i=0; $i<count($folder_list);$i++)
+	// does the target folder actually exist ?
+	$official_folder_long = $phpgw->msg->folder_exists($stream, $folder_long);
+	if ($official_folder_long != '')
 	{
-		if ($folder_list[$i]['folder_short'] == $folder_short)
+		$havefolder = True;
+	}
+	else
+	{
+		$havefolder = False;
+	}
+
+	if (!$havefolder)
+	{
+		// create the specified target folder so it will exist
+		$this->createmailbox($stream,$server_str .$folder_long);
+		// try again to get the real long folder name of the just created trash folder
+		$official_folder_long = $phpgw->msg->folder_exists($stream, $folder_long);
+		// did the folder get created and do we now have the official full name of that folder?
+		if ($official_folder_long != '')
 		{
 			$havefolder = True;
-			break;
 		}
 	}
-	if (! $havefolder)
+
+	// at this point we've tries 2 time to obtain the "server approved" long name for the target folder
+	// even tries creating it if necessary
+	// if we have the name, append the message to that folder
+	if ($havefolder)
 	{
-		$this->createmailbox($stream,$server_str .$folder_long);
+		return imap_append($stream, "$server_str" ."$official_folder_long", $message, $flags);
 	}
-	
-	return imap_append($stream, $server_str.$folder_long, $message, $flags);
+	else
+	{
+		// we do not have the official long folder name for the target folder
+		// we can NOT append the message to a folder name we are not SURE is corrent
+		// it will either fail or hand the browser for a while
+		// so just SKIP IT
+		return False;
+	}
     }
 
     function login( $folder = "INBOX")

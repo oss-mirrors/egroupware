@@ -115,6 +115,7 @@
 	{
 		$folder_long = $folder_list[$i]['folder_long'];
 		$folder_short = $folder_list[$i]['folder_short'];
+		/*
 		// open this particular folder
 		if (((count($folder_list)) == 1)
 		&& ($folder_short == 'INBOX'))
@@ -129,12 +130,20 @@
 			// TEST: elimnate reopen, see if it was really needed
 			//$phpgw->dcom->reopen($mailbox, "$server_str"."$folder_long");
 		}
+		*/
 		// get the stats ONLY for the number of new (unseen) messages
 		//$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_UNSEEN);
 		// $total_msgs = $phpgw->dcom->num_msg($mailbox)
 
 		// SA_ALL gets the stats for the number of:  messages, recent, unseen, uidnext, uidvalidity
 		$mailbox_status = $phpgw->dcom->status($mailbox,$server_str .$folder_long,SA_ALL);
+		
+		//debug
+		//$real_long_name = $phpgw->msg->folder_exists($mailbox,$folder_list[$i]['folder_short']);
+		//if ($real_long_name != '')
+		//{
+		//	echo 'folder exists, official long name: '.$real_long_name.'<br>';
+		//}
 
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
 		$t->set_var('list_backcolor',$tr_color);

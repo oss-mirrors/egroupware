@@ -650,26 +650,28 @@
 	&& ($phpgw_info['user']['preferences']['email']['use_sent_folder']))
 	{
 		//echo 'ENTERING SENT FOLDER CODE';
+
 		// note: what format should these folder name options (sent and trash) be held in
 		// i.e. long or short name form, in the prefs database
-		$sent_folder_name = $phpgw->msg->get_folder_long($phpgw_info['user']['preferences']['email']['sent_folder_name']);	
-		// --- Put This in the User's Sent Folder  -----
-		// NOTE: as of not there is NO CHECKING to make sure this folder exists
-		// NEEDED:  "folder_exists()" function for this and the "Trash" folder option as well
-		
+		$sent_folder_name = $phpgw->msg->get_folder_short($phpgw_info['user']['preferences']['email']['sent_folder_name']);	
+
 		// NOTE: should we use the existing mailbox stream or initiate a new one just for the append?
-		// NEW stream *seems* faster - TEST for now
-		//if (!$mailbox)
-		//{
-			$stream = $phpgw->dcom->login($sent_folder_name);
-			$phpgw->dcom->append($stream, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
+		// using a NEW stream *seems* faster, but not sure ???
+		if (!$mailbox)
+		{
+			$stream = $phpgw->dcom->login('INBOX');
+			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
+			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
+			$phpgw->dcom->append($stream, $sent_folder_name, $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
 			$phpgw->dcom->close($stream);
-		//}
-		//else
-		//{
-		//	$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy, "\\Seen");
+		}
+		else
+		{
+			// note: "append" will CHECK  to make sure this folder exists, and try to create it if it does not
+			// also note, make sure there is a \r\n CRLF empty last line sequence so Cyrus will be happy
+			$phpgw->dcom->append($mailbox, $sent_folder_name,  $phpgw->mail_send->assembled_copy."\r\n", "\\Seen");
 			//echo 'used existing stream for trash folder';
-		//}
+		}
 	}
 
 	// ----  Redirect on Success, else show Error Report   -----
