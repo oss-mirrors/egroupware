@@ -90,7 +90,7 @@
 			{
 				$msg = $phpgw->msg->header($mailbox,$msg_array_hook[$i]);
 				$subject = !$msg->Subject ? '['.lang('no subject').']' : substr($msg->Subject,0,65).' ...';
-				$portalbox->data[$i] = array(decode_header_string($subject),$phpgw->link($phpgw_info['server']['webserver_url'].'/email/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array_hook[$i]));
+				$portalbox->data[$i] = array(decode_header_string($subject),$phpgw->link('/email/message.php','folder='.urlencode($folder).'&msgnum='.$msg_array_hook[$i]));
 			}
 			echo $portalbox->draw();
 		}
