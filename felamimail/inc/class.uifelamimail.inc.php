@@ -321,21 +321,24 @@
 			
 			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/admin/index.php'));
 			
-			foreach($profileList as $key => $value)
+			if(isset($profileList) && is_array($profileList))
 			{
-				#print "$key => $value<br>";
-				#_debug_array($value);
-				$this->t->set_var('profileID',$value['profileID']);
-				$this->t->set_var('description',$value['description']);
-				if(is_int($profileID) && $profileID == $value['profileID'])
+				foreach($profileList as $key => $value)
 				{
-					$this->t->set_var('selected','selected');
+					#print "$key => $value<br>";
+					#_debug_array($value);
+					$this->t->set_var('profileID',$value['profileID']);
+					$this->t->set_var('description',$value['description']);
+					if(is_int($profileID) && $profileID == $value['profileID'])
+					{
+						$this->t->set_var('selected','selected');
+					}
+					else
+					{
+						$this->t->set_var('selected','');
+					}
+					$this->t->parse('select_options','select_option',True);
 				}
-				else
-				{
-					$this->t->set_var('selected','');
-				}
-				$this->t->parse('select_options','select_option',True);
 			}
 			
 			$this->t->parse("out","main");
