@@ -132,6 +132,7 @@
 	{
 		for ($i=0; $i<count($mailboxes);$i++)
 		{
+			/*
 			if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 			&& (strstr($mailboxes[$i],"/.")) )
 			{
@@ -141,6 +142,8 @@
 				// DO NOTHING - this is not an MBOX file
 			}
 			else
+			*/
+			if (is_imap_folder($mailboxes[$i]))
 			{
 				$folder_long = get_folder_long($mailboxes[$i]);
 				$folder_short = get_folder_short($mailboxes[$i]);

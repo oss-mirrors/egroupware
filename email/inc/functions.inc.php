@@ -493,8 +493,97 @@
 	return $folder_short;
   }
 
+  function is_imap_folder($folder)
+  {
+	global $phpgw, $phpgw_info;
 
- function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
+	// UWash is the only (?) imap server where there is any question whether a folder is legit or not
+	if ($phpgw_info['user']['preferences']['email']['imap_server_type'] != 'UWash')
+	{
+		//echo 'is_imap_folder TRUE 1<br>';
+		return True;
+	}
+
+	$folder_long = get_folder_long($folder);	
+
+	// INBOX ia ALWAYS a valid folder, and is ALWAYS called INBOX because it's a special reserved word
+	if ($folder_long == 'INBOX')
+	{
+		//echo 'is_imap_folder TRUE 2<br>';
+		return True;
+	}
+
+	// UWash IMAP server looks for MBOX files, which it considers to be email "folders"
+	// and will return any file, whether it's an actual IMAP folder or not
+	if (strstr($folder_long,"/."))
+	{
+		// any pattern matching "/." for UWash is NOT an MBOX
+		// because the delimiter for UWash is "/" and the immediately following "." indicates a hidden file
+		// not an MBOX file, at least on Linux type system
+		//echo 'is_imap_folder FALSE 3<br>';
+		return False;
+	}
+
+	// if user specifies namespace like "mail" then MBOX files are in $HOME/mail
+	// so this server knows to put MBOX files in a special place
+	// BUT if the namespace used is associated with $HOME, such as ~
+	// then how many folders deep do you want to go? UWash is recursive, it will go as deep as possible into $HOME
+	
+	// is this a $HOME type of namespace
+	$the_namespace = get_mailsvr_namespace();
+	if ($the_namespace == '~')
+	{
+		$home_type_namespace = True;
+	}
+	else
+	{
+		$home_type_namespace = False;
+	}
+	
+	// DECISION: no more than 3 DIRECTORIES DEEP of recursion
+	$num_slashes = $phpgw->msg->substr_count_ex($folder_long, "/");
+	if (($home_type_namespace)
+	&& ($num_slashes >= 3))
+	{
+		//echo 'is_imap_folder FALSE 4<br>';
+		return False;
+	}
+
+	// if you get all the way to here then this must be a valid folder name
+	//echo 'is_imap_folder TRUE 5<br>';
+	return True;
+  }
+
+
+  function care_about_unseen($folder)
+  {
+	$folder = get_folder_short($folder);
+	// we ALWAYS care about new messages in the INBOX
+	if ($folder == 'INBOX')
+	{
+		return True;
+	}
+
+	$we_care = True; // initialize
+	$ignore_these_folders = Array();
+	// DO NOT CHECK UNSEEN for these folders
+	$ignore_these_folders[0] = "sent";
+	$ignore_these_folders[1] = "trash";
+	$ignore_these_folders[2] = "templates";
+	for ($i=0; $i<count($ignore_these_folders); $i++)
+	{
+		$match_this = $ignore_these_folders[$i];
+		if (eregi("^.*$match_this$",$folder))
+		{
+			$we_care = False;
+			break;
+		}
+	}
+	return $we_care;
+  }
+
+
+  function all_folders_listbox($mailbox,$pre_select="",$skip="",$indicate_new=false)
   {
 	global $phpgw, $phpgw_info;
 
@@ -556,7 +645,7 @@
 			$num_boxes = count($mailboxes);
 			if ($name_space != 'INBOX')
 			{
-				//$outstr = $outstr .'<option value="INBOX">INBOX</option>'; 
+				// UWash for example, we must FORCE it to look at the INBOX 
 				$outstr = $outstr .'<option value="INBOX">INBOX';
 				if ($indicate_new)
 				{
@@ -570,6 +659,7 @@
         		}
 			for ($i=0; $i<$num_boxes;$i++)
 			{
+				/*
 				if (($phpgw_info['user']['preferences']['email']['imap_server_type'] == 'UWash')
 				&& (strstr($mailboxes[$i],"/.")) )
 				{
@@ -579,6 +669,8 @@
 					// DO NOTHING - this is not an MBOX file
 				}
 				else
+				*/
+				if (is_imap_folder($mailboxes[$i]))
 				{
 					$folder_short = get_folder_short($mailboxes[$i]);
 					if ($folder_short == $pre_select)
@@ -591,10 +683,10 @@
 					}
 					if ($folder_short != $skip)
 					{
-						//$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short .'</option>';
-						//$outstr = $outstr ."\n";
 						$outstr = $outstr .'<option value="' .urlencode($folder_short) .'"'.$sel.'>' .$folder_short;
-						if ($indicate_new)
+						// do we show the number of new (unseen) messages for this folder
+						if (($indicate_new)
+						&& (care_about_unseen($folder_short)))
 						{
 							$mailbox_status = $phpgw->msg->status($mailbox,$mailboxes[$i],SA_UNSEEN);
 							if ($mailbox_status->unseen > 0)

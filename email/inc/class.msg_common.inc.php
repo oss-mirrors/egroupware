@@ -770,17 +770,19 @@
 
 	function html_quotes_encode($str)
 	{
-		/*// replace  '  and  "  with htmlspecialchars */
+		// replace  '  and  "  with htmlspecialchars
 		$str = ereg_replace('"', '&quot;', $str);
 		$str = ereg_replace('\'', '&#039;', $str);
+		// NEEDED: add  /  and  \  to this
 		return $str;
 	}
 
 	function html_quotes_decode($str)
 	{
-		/*// reverse of htmlspecialchars */
+		// reverse of htmlspecialchars
 		$str = ereg_replace('&#039;', '\'', $str);
 		$str = ereg_replace('&quot;', '"', $str);
+		// NEEDED: add  /  and  \  to this
 		return $str;
 	}
 
@@ -875,6 +877,7 @@
 		}
 	}
 
+// ----  Functions PHP Should Have OR Functions From PHP4+ Backported to PHP3  ---------
 	/*!
 	@function is_serialized
 	@abstract find out if something is already serialized
@@ -937,6 +940,41 @@
 		{
 			return False;
 		}
+	}
+
+	// PHP3 SAFE Version of "substr_count"
+	/*!
+	@function substr_count_ex
+	@abstract returns the number of times the "needle" substring occurs in the "haystack" string
+	@param $haystack  string
+	@param $needle  string
+	*/
+	function substr_count_ex($haystack='', $needle='')
+	{
+		if (($haystack == '') || ($needle == ''))
+		{
+			return 0;
+		}
+
+		$crtl_struct = Array();
+		// how long is needle
+		$crtl_struct['needle_len'] = strlen($needle);
+		// how long is haystack before the replacement
+		$crtl_struct['haystack_orig_len'] = strlen($haystack);
+		
+		// we will replace needle with a BLANK STRING
+		$crtl_struct['haystack_new'] = str_replace("$needle",'',$haystack);
+		// how long is the new haystack string
+		$crtl_struct['haystack_new_len'] = strlen($crtl_struct['haystack_new']);
+		// the diff in length between orig haystack and haystack_new diveded by len of needle = the number of occurances of needle
+		$crtl_struct['substr_count'] = ($crtl_struct['haystack_orig_len'] - $crtl_struct['haystack_new_len']) / $crtl_struct['needle_len'];
+		
+		//echo '<br>';
+		//var_dump($crtl_struct);
+		//echo '<br>';
+		
+		// return the finding
+		return $crtl_struct['substr_count'];
 	}
 
   } // end of class msg_common

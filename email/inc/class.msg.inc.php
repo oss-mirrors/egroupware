@@ -1,8 +1,8 @@
 <?php
 
 // -----  is IMAP compiled into PHP
-	//if (extension_loaded("imap"))
-	if (defined("TYPEVIDEO"))
+	if (extension_loaded("imap"))
+	//if (defined("TYPEVIDEO"))
 	{
 		$imap_builtin = True;
 		$sock_fname = '';
