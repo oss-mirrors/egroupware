@@ -7,7 +7,7 @@
 
 <table border="0" cellpadding="1" cellspacing="1" width="95%" align="center">
 <tr>
-	<td colspan="2" bgcolor="{title_backcolor}">
+	<td colspan="3" bgcolor="{title_backcolor}">
 		&nbsp;<font size="3" face="{the_font}" color="{title_textcolor}"><strong>{title_text}<strong></font>
 
 	</td>
@@ -18,8 +18,11 @@
 		&nbsp;&nbsp;&nbsp;<a href="{view_long_lnk}">({view_long_txt})</a>
 		&nbsp;&nbsp;&nbsp;<a href="{view_short_lnk}">({view_short_txt})</a>
 	</td>
-	<td bgcolor="{th_backcolor}">
-		<font size="2" face="{the_font}"><strong>{label_messages_text}</strong></font>
+	<td bgcolor="{th_backcolor}" width="7%" align="right">
+		<font size="2" face="{the_font}">{label_new_text}</font>
+	</td>
+	<td bgcolor="{th_backcolor}" width="7%" align="right">
+		<font size="2" face="{the_font}">{label_total_text}</font>
 	</td>
 </tr>
 
@@ -30,16 +33,17 @@
 		<a href="{folder_link}">{folder_name}</a>
 		</font>
 	</td>
-	<td bgcolor="{list_backcolor}" width="20%">
-		<font size="2" face="{the_font}">
-			{msgs_unseen}/{msgs_total}
-		</font>
+	<td bgcolor="{list_backcolor}" align="right">
+		<font size="2" face="{the_font}">{msgs_unseen}</font>
+	</td>
+	<td bgcolor="{list_backcolor}" align="right">
+		<font size="2" face="{the_font}">{msgs_total}</font>
 	</td>
 </tr>
 <!-- END B_folder_list -->
 
 <tr>
-	<td colspan="2" align="right" bgcolor="{th_backcolor}">
+	<td colspan="3" align="right" bgcolor="{th_backcolor}">
 		<select name="source_folder">
 			<option value="">{select_txt_rename}</option>
 			{all_folders_listbox}
