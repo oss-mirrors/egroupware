@@ -200,6 +200,7 @@ view as html	email	de	Als HTML formatiert anzeigen
 view formatted	email	de	formatiert anzeigen
 view headers	email	de	Kopfzeilen (Header) anzeigen
 view unformatted	email	de	unformatiert anzeigen
+wrote	email	de	schrieb
 x messages have been deleted	email	de	%1 Nachrichten wurden gelöscht
 you have 1 new message!	common	de	Sie haben 1 neue Nachricht
 you have messages!	common	de	Sie haben neue Nachrichten

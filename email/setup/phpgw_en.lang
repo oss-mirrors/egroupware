@@ -172,6 +172,7 @@ view as html	email	en	View as HTML
 view formatted	email	en	View formatted
 view headers	email	en	View headers
 view unformatted	email	en	View unformatted
+wrote	email	en	wrote
 x messages have been deleted	email	en	%1 messages have been deleted
 you have 1 new message!	common	en	You have 1 new message!
 you have messages!	common	en	You have messages!
