@@ -34,7 +34,8 @@
     $t->set_var(lang_userlist,lang("User statistics"));
     $t->set_var(userlisturl,$phpgw->link("stats_userlist.php"));  
     $t->set_var(common_hidden_vars,$common_hidden_vars);   
-  
+    $t->set_var('searchurl',$phpgw->link("index.php"));  
+
     if (! $start) { $start = 0; }
 
     if($phpgw_info["user"]["preferences"]["common"]["maxmatchs"] && $phpgw_info["user"]["preferences"]["common"]["maxmatchs"] > 0) {
@@ -51,8 +52,8 @@
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
-    if ($total_records > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
-        $lang_showing=lang("showing x - x of x",($start + 1),($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),$total_records);
+    if ($total_records > $limit) {
+        $lang_showing=lang("showing x - x of x",($start + 1),($start + $limit),$total_records);
     }
     else { $lang_showing=lang("showing x",$total_records); }
     $t->set_var('lang_showing',$lang_showing);
@@ -62,14 +63,15 @@
 // ------------------list header variable template-declarations ------------------------------- 
 
 
-  $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
-  $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("Project ID")));
-  $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("Customer")));
-  $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"stats_projectlist.php",lang("Status")));
-  $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"stats_projectlist.php",lang("Title")));
-  $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"stats_projectlist.php",lang("Date due")));
-  $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"stats_projectlist.php",lang("Coordinator")));
-  $t->set_var(h_lang_stat,lang("Statistic"));
+    $t->set_var(th_bg,$phpgw_info["theme"][th_bg]);
+    $t->set_var(sort_num,$phpgw->nextmatchs->show_sort_order($sort,"num",$order,"stats_projectlist.php",lang("Project ID")));
+    $t->set_var(sort_customer,$phpgw->nextmatchs->show_sort_order($sort,"customer",$order,"stats_projectlist.php",lang("Customer")));
+    $t->set_var(sort_status,$phpgw->nextmatchs->show_sort_order($sort,"status",$order,"stats_projectlist.php",lang("Status")));
+    $t->set_var(sort_title,$phpgw->nextmatchs->show_sort_order($sort,"title",$order,"stats_projectlist.php",lang("Title")));
+    $t->set_var(sort_end_date,$phpgw->nextmatchs->show_sort_order($sort,"end_date",$order,"stats_projectlist.php",lang("Date due")));
+    $t->set_var(sort_coordinator,$phpgw->nextmatchs->show_sort_order($sort,"coordinator",$order,"stats_projectlist.php",lang("Coordinator")));
+    $t->set_var(h_lang_stat,lang("Statistic"));
+    $t->set_var('lang_search',lang('Search'));
 
   // -------------- end header declaration -----------------
 

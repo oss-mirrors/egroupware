@@ -16,6 +16,8 @@
 
     global $phpgw, $phpgw_info, $total_records;
 
+    $db2 = $phpgw->db;
+
     if (!$account_id) { $account_id = $phpgw_info['user']['account_id']; }
 
     if (!$sort) { $sort = "ASC";  }
@@ -28,17 +30,21 @@
     }
 
     if ($query) {
-		$phpgw->db->query("SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
-				. "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
-				. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $filtermethod AND "
-				. "(title like '%$query%' OR descr like '%$query%') $ordermethod limit $limit");
-		}
+	$sql = "SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
+		. "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
+		. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $filtermethod AND "
+		. "(title like '%$query%' OR descr like '%$query%') $ordermethod";
+    }
     else {
-	    $phpgw->db->query("SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
+	$sql = "SELECT p.id,p.owner,p.num,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
 			    . "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
 			    . "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $filtermethod "
-			    . "$ordermethod limit $limit");
-	}
+			    . "$ordermethod";
+    }
+
+    $db2->query($sql,__LINE__,__FILE__);
+    $total_records = $db2->num_rows();
+    $phpgw->db->query($sql. " " . $phpgw->db->limit($start,$limit),__LINE__,__FILE__);
 
     $i = 0;
     while ($phpgw->db->next_record()) {	

@@ -50,8 +50,8 @@
     $t->set_var('left',$left);
     $t->set_var('right',$right);
 
-    if ($total_records > $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]) {
-        $lang_showing=lang("showing x - x of x",($start + 1),($start + $phpgw_info["user"]["preferences"]["common"]["maxmatchs"]),$total_records);
+    if ($total_records > $limit) {
+        $lang_showing=lang("showing x - x of x",($start + 1),($start + $limit),$total_records);
     }
     else { $lang_showing=lang("showing x",$total_records); }
     $t->set_var('lang_showing',$lang_showing);
