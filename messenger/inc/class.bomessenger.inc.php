@@ -42,9 +42,9 @@
 			}
 			else
 			{
-				$message = $GLOBALS['HTTP_POST_VARS']['message'];
-				$send    = $GLOBALS['HTTP_POST_VARS']['send'];
-				$cancel  = $GLOBALS['HTTP_POST_VARS']['cancel'];
+				$message = get_var('message',Array('POST'));
+				$send    = get_var('send',Array('POST'));
+				$cancel  = get_var('cancel',Array('POST'));
 			}
 
 			if (! $GLOBALS['phpgw']->acl->check('run',1,'admin') || $cancel)
@@ -129,9 +129,9 @@
 			}
 			else
 			{
-				$message = $GLOBALS['HTTP_POST_VARS']['message'];
-				$send    = $GLOBALS['HTTP_POST_VARS']['send'];
-				$cancel  = $GLOBALS['HTTP_POST_VARS']['cancel'];
+				$message = get_var('message',Array('POST'));
+				$send    = get_var('send',Array('POST'));
+				$cancel  = get_var('cancel',Array('POST'));
 			}
 
 			if ($cancel)
@@ -235,7 +235,7 @@
 		{
 			if(!$n_message)
 			{
-				$n_message = $GLOBALS['HTTP_POST_VARS']['n_message'];
+				$n_message = get_var('n_message',Array('POST'));
 			}
 
 			$message = $this->so->read_message($message_id);
@@ -267,7 +267,7 @@
 		{
 			if(!$messages)
 			{
-				$messages = $GLOBALS['HTTP_POST_VARS']['messages'] ? $GLOBALS['HTTP_POST_VARS']['messages'] : $GLOBALS['HTTP_GET_VARS']['messages'];
+				$messages = get_var('messages',Array('GET','POST'));
 			}
 
 			if (! is_array($messages))
@@ -288,8 +288,8 @@
 		{
 			if(!$message_id)
 			{
-				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
-				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
+				$message_id = get_var('message_id',Array('POST'));
+				$n_message  = get_var('n_message',Array('POST'));
 			}
 
 			$errors = $this->check_for_missing_fields($n_message);
@@ -310,8 +310,8 @@
 		{
 			if(!$message_id)
 			{
-				$message_id = $GLOBALS['HTTP_POST_VARS']['message_id'];
-				$n_message  = $GLOBALS['HTTP_POST_VARS']['n_message'];
+				$message_id = get_var('message_id',Array('POST'));
+				$n_message  = get_var('n_message',Array('POST'));
 			}
 
 			$errors = $this->check_for_missing_fields($n_message);

@@ -72,9 +72,9 @@
 
 		function inbox()
 		{
-			$start = $GLOBALS['HTTP_GET_VARS']['start'] ? $GLOBALS['HTTP_GET_VARS']['start'] : $GLOBALS['HTTP_POST_VARS']['start'];
-			$order = $GLOBALS['HTTP_GET_VARS']['order'] ? $GLOBALS['HTTP_GET_VARS']['order'] : $GLOBALS['HTTP_POST_VARS']['order'];
-			$sort  = $GLOBALS['HTTP_GET_VARS']['sort']  ? $GLOBALS['HTTP_GET_VARS']['sort']  : $GLOBALS['HTTP_POST_VARS']['sort'];
+			$start = get_var('start',Array('POST','GET'));
+			$order = get_var('order',Array('POST','GET'));
+			$sort  = get_var('sort',Array('POST','GET'));
 			$total = $this->bo->total_messages();
 
 			$extra_menuaction = '&menuaction=messenger.uimessenger.inbox';
@@ -168,7 +168,7 @@
 
 		function compose($errors = '')
 		{
-			$message = $GLOBALS['HTTP_POST_VARS']['message'];
+			$message = get_var('message',Array('POST'));
 
 			$this->display_headers();
 			$this->set_compose_read_blocks();
@@ -196,7 +196,7 @@
 
 		function read_message()
 		{
-			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
+			$message_id = get_var('message_id',Array('POST','GET'));
 			$message = $this->bo->read_message($message_id);
 
 			$this->display_headers();
@@ -245,7 +245,7 @@
 
 		function reply($errors = '', $message = '')
 		{
-			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
+			$message_id = get_var('message_id',Array('POST','GET'));
 
 			if(is_array($errors))
 			{
@@ -284,7 +284,7 @@
 
 		function forward($errors = '', $message = '')
 		{
-			$message_id = $GLOBALS['HTTP_GET_VARS']['message_id'] ? $GLOBALS['HTTP_GET_VARS']['message_id'] : $GLOBALS['HTTP_POST_VARS']['message_id'];
+			$message_id = get_var('message_id',Array('POST','GET'));
 
 			if(is_array($errors))
 			{
