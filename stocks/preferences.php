@@ -52,8 +52,8 @@
 
   // If they don't have any stocks in there, give them something to look at
   if (count($phpgw_info["user"]["preferences"]["stocks"]) == 1) {
-     $phpgw->preferences->change("stocks","LNUX");
-     $phpgw->preferences->change("stocks","RHAT");
+     $phpgw->preferences->change("stocks","LNUX","VA%20Linux");
+     $phpgw->preferences->change("stocks","RHAT","RedHat");
      $phpgw->preferences->commit();
      $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
      $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";

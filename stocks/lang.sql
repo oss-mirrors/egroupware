@@ -1,6 +1,6 @@
 # $Id$ 
 # First we will delete all entries for stocks, to prevent dups when updating.                                                                        
-DELETE from lang WHERE app_name='stocks';
+DELETE from lang WHERE app_name='stocks' and lang='en';
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Stock Quote preferences','stocks','en','Stock Quote preferences');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Symbol','stocks','en','Symbol');
 INSERT INTO lang (message_id, app_name, lang, content) VALUES('Company name','stocks','en','Company name');
