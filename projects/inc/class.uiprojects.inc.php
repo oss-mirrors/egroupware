@@ -367,7 +367,7 @@
 					$cat = $this->cats->return_single($this->cat_id);
 				}
 
-				if ($cat[0]['app_name'] == 'phpgw' || !$this->cat_id)
+				if ($cat[0]['app_name'] == 'phpgw' || $cat[0]['owner'] == '-1' || !$this->cat_id)
 				{
 					$showadd = True;
 				}
@@ -1087,7 +1087,6 @@
 
 // -------------------------------- end Add form declaration ------------------------------
 
-//			$GLOBALS['phpgw']->common->phpgw_footer();
 		}
 
 		function add_activity()
