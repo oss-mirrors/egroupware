@@ -1,27 +1,60 @@
+action	tts	de	Aktion
 add new ticket	tts	de	Neues Ticket hinzufügen
-add ticket 	tts	de	Ticket hinzufügen
+add ticket	tts	de	Ticket hinzufügen
 additional notes	tts	de	Zusätzliche Anmerkungen
 admin options	admin	de	Admin Optionen
 assign to	tts	de	zuweisen an
 assigned from	tts	de	Zugewiesen von
 assigned to	tts	de	Zugewiesen an
+billable hours	tts	de	Abrechenbare Stunden
+billable hours changed	tts	de	Abrechenbare Stunden geändert
+billable hours rate	tts	de	Preis für abrechenbare Stunden
+billable rate	tts	de	abrechenbarer Preis
+billable rate changed	tts	de	abrechenbarer Preis geändert
+category changed	tts	de	Kategorie geändert
+clear form	tts	de	Formular löschen
 close	tts	de	Schließen
 close date	tts	de	Geschlossen am
+closed	tts	de	Geschlossen
+create new ticket	tts	de	Neues Ticket erzeugen
+creates a new ticket, returns ticket_id	tts	de	Erzeugt ein neues Ticket, liefert die Ticket Id
+creates a struct of tickets	tts	de	Erzeugt eine Strucktur von Tickets
 date opened	tts	de	Angelegt am
 detail	tts	de	Detail
 details	tts	de	Details
+force	tts	de	Erzwingen
+group ownership changed	tts	de	Gruppen Besitzrecht geändert
 in progress	tts	de	in Bearbeitung
+latest note added	tts	de	Letzte Notiz zugefügt
 new ticket	tts	de	Neues Ticket
+new value	tts	de	Neuer Wert
+no additional notes	tts	de	Keine zusätzlichen Notizen
+no notes for this ticket	tts	de	Keine Notizen für dieses Ticket
 no tickets found	tts	de	Keine Tickets gefunden
+not assigned	tts	de	Nicht zugewiesen
+old value	tts	de	Alter Wert
+open	tts	de	Offen
 open date	tts	de	Angelegt am
+opened	tts	de	Geöffnet
 opened by	tts	de	Angelegt von
+original ticket details	tts	de	Orginal Ticket-Details
 prio	tts	de	Prio
+priority	tts	de	Priorität
+priority changed	tts	de	Priorität geändert
+re-assigned	tts	de	Wieder zugewiesen
+re-opened	tts	de	Wieder geöffnet
+status/date closed	tts	de	Status/Datum geschlossen
+subject changed	tts	de	Bezeichnung geändert
 ticket	tts	de	Ticket
+ticket has been updated	tts	de	Ticket wurde aktualisiert
 tickets open x	tts	de	offene tickets: %1
 tickets total x	tts	de	Tickets insgesamt: %1
+to go back to the tts index, click <a href= x >here</a>	tts	de	Um zum tts-Index zurück zu kommen <a href="%1">hier clicken</a>
+total billable	tts	de	Gesammt abrechenbar
 trouble ticket system	common	de	Trouble Ticket System
 tts	common	de	Trouble Ticket System
 tts preferences	tts	de	Trouble Ticket System - Einstellungen
+use email notification	tts	de	Email Benachrichtigung verwenden
 view all tickets	tts	de	Alle Tickets anzeigen
 view job detail	tts	de	Detailansicht
 view only open tickets	tts	de	Nur offene Tickets anzeigen
