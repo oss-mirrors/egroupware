@@ -39,6 +39,8 @@
 	$p->set_block('admin','form','form');
 	$p->set_block('admin','row','row');
 
+	$p->set_unknowns('remove');
+
 	$p->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$p->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'poll_title',$order,'admin.php',lang('Title'),'&show=' . $show));
 	if ($show == 'answers')
@@ -62,6 +64,7 @@
 		$phpgw->db->query("select phpgw_polls_data.*, phpgw_polls_desc.poll_title from phpgw_polls_data,"
 			. "phpgw_polls_desc where phpgw_polls_desc.poll_id = phpgw_polls_data.poll_id $ordermethod",__LINE__,__FILE__);
 	}
+	$p->set_var('rows','');
 	while ($phpgw->db->next_record())
 	{
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
