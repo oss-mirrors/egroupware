@@ -23,11 +23,12 @@
 	htmlArea is a WYSIWYG editor replacement for any textarea field. Instead
 	of teaching your software users how to code basic HTML to format their
 	content.<P>
-	Known issues: doesn\'t work with IE yet, bugfixes are very welcome';
+	Known issues: Only works with one rich textbox at a time in IE, bugfixes
+	are very welcome';
 
 	$this->plugins['htmlAreaV3']['name']			= 'htmlAreaV3';
 	$this->plugins['htmlAreaV3']['title']			= 'htmlArea v3';
-	$this->plugins['htmlAreaV3']['version']			= '0.8.1';
+	$this->plugins['htmlAreaV3']['version']			= '0.8.2';
 	$this->plugins['htmlAreaV3']['enable']			= 1;
 	$this->plugins['htmlAreaV3']['description']		= $description;
 	$this->plugins['htmlAreaV3']['db_field_hooks']	= array
