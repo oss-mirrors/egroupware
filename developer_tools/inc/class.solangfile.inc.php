@@ -204,21 +204,23 @@
 			if (file_exists($fn))
 			{
 				$this->tgt_file = $fn;
-				$fp = fopen($fn,'rb');
-				while ($data = fgets($fp,8000))
+				if ($fp = @fopen($fn,'rb'))
 				{
-					list($message_id,$app_name,$null,$content) = explode("\t",$data);
-					if(!$message_id)
-					{
-						continue;
-					}
-					//echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
-					$_mess_id = strtolower(trim($message_id));
-					$langarray[$_mess_id]['message_id'] = $_mess_id;
-					$langarray[$_mess_id]['app_name']   = trim($app_name);
-					$langarray[$_mess_id]['content']    = trim($content);
+				   while ($data = fgets($fp,8000))
+				   {
+					   list($message_id,$app_name,$null,$content) = explode("\t",$data);
+					   if(!$message_id)
+					   {
+						   continue;
+					   }
+					   //echo '<br>add_app(): adding phrase: $this->langarray["'.$message_id.'"]=' . trim($content);
+					   $_mess_id = strtolower(trim($message_id));
+					   $langarray[$_mess_id]['message_id'] = $_mess_id;
+					   $langarray[$_mess_id]['app_name']   = trim($app_name);
+					   $langarray[$_mess_id]['content']    = trim($content);
+				   }
+				   fclose($fp);
 				}
-				fclose($fp);
 			}
 			else
 			{
