@@ -11,7 +11,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '0.8.7.008';
+	$setup_info['projects']['version']   = '0.8.7.009';
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 

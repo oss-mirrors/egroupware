@@ -54,6 +54,9 @@
 		<td><b>{lang_status}:</b></td>
 		<td>{status}</td>
 	</tr>
+
+<!-- BEGIN nonanonym -->
+
 	<tr bgcolor="{row_on}">
 		<td valign="top"><b>{lang_bookable_activities}:</b></td>
 		<td>{book_activities_list}&nbsp;</td>
@@ -84,6 +87,9 @@
 		<td><b>{lang_utime}:&nbsp;{lang_hours}</b></td>
 		<td>{uhours}</td>
 	</tr>
+
+<!-- END nonanonym -->
+
 	<tr height="15">
 		<td>&nbsp;</td>
 	</tr>

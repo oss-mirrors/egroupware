@@ -14,6 +14,7 @@ add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
 administrator	projects	de	Administrator
 all delivery notes	projects	de	Alle Lieferscheine
 all invoices	projects	de	Alle Rechnungen
+anonymous public	projects	de	Anonym &ouml;ffentlich
 archive	projects	de	Archiv
 are you sure you want to delete this activity	projects	de	Sind Sie sicher, dass Sie diese Aktivit&auml;t l&ouml;schen wollen ?
 are you sure you want to delete this project	projects	de	Sind Sie sicher, dass Sie dieses Projekt l&ouml;schen wollen ?
@@ -39,7 +40,7 @@ create invoice	projects	de	Rechnung erstellen
 creator	projects	de	Ersteller
 customer	projects	de	Kunde
 date created	projects	de	Erstellungs-Datum
-date due of milestone %1 of project %2 has been updated	projects	de	FÃ¤lligkeit des Meilensteines %1 von Projekt %2 wurde geÃ¤ndert.
+date due of milestone %1 of project %2 has been updated	projects	de	Fälligkeit des Meilensteines %1 von Projekt %2 wurde geändert.
 delete hours	projects	de	Stunden l&ouml;schen
 deliveries	projects	de	Lieferungen
 delivery	projects	de	Lieferung
@@ -63,6 +64,8 @@ email notifications projects de E-Mail Benachrichtigungen
 employee	projects	de	Mitarbeiter
 employees	projects	de	Mitarbeiter
 exactly accounting	projects	de	exakte Abrechnung
+gantt chart for project %1	projects	de	Gantt chart f&uuml;r Projekt %1
+gantt chart from %1 to %2	projects	de	Gantt chart von %1 bis %2
 generate activity id ?	projects	de	Activit&auml;ts ID generieren ?
 generate delivery id ?	projects	de	Lieferungs ID generieren ?
 generate invoice id ?	projects	de	Rechnungs ID generieren ?
@@ -103,7 +106,7 @@ milestones	common	de	Meilensteine
 minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
 net	projects	de	netto
-new date due of milestone %1: %2	projects	de	Neuer FÃ¤lligkeitstermin des Meilensteines %1: %2.
+new date due of milestone %1: %2	projects	de	Neuer Fälligkeitstermin des Meilensteines %1: %2.
 new project	projects	de	Neues Projekt
 nonactive	common	de	Nicht aktiv
 number	projects	de	Nummer
@@ -135,7 +138,7 @@ project archive	projects	de	Projekt Archiv
 project billing	projects	de	Projekt Abrechnung
 project delivery	projects	de	Projekt Lieferung
 project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
-project %1 has been updated	projects	de	Projekt %1 wurde Ã¼berarbeitet.
+project %1 has been updated	projects	de	Projekt %1 wurde überarbeitet.
 project id	common	de	Projekt ID
 project list	projects	de	Projekt Liste
 project name	projects	de	Projekt Name

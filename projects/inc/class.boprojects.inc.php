@@ -109,6 +109,7 @@
 			{
 				unset($this->cat_id);
 			}
+			$this->limit = True;
 		}
 
 		function type($action)
@@ -123,6 +124,7 @@
 				case 'amains'	: $column = 'projects_amains'; break;
 				case 'asubs'	: $column = 'projects_asubs'; break;
 				case 'ustat'	: $column = 'projects_ustat'; break;
+				case 'pstat'	: $column = 'projects_pstat'; break;
 				case 'bill'		: $column = 'projects_bill'; break;
 				case 'del'		: $column = 'projects_del'; break;
 			}
@@ -429,20 +431,21 @@
 			return $admin;
 		}
 
-		function list_projects($type, $parent)
+		function list_projects($params)
 		{
 			$pro_list = $this->so->read_projects(array
 									(
 										'start'		=> $this->start,
-										'limit'		=> True,
+										'limit'		=> $this->limit,
 										'query'		=> $this->query,
 										'filter'	=> $this->filter,
 										'sort'		=> $this->sort,
 										'order'		=> $this->order,
 										'status'	=> $this->status,
 										'cat_id'	=> $this->cat_id,
-										'type'		=> $type,
-										'parent'	=> $parent
+										'type'		=> $params['type'],
+										'parent'	=> $params['parent'],
+										'main'		=> $params['main']
 									));
 
 			while (is_array($pro_list) && list(,$pro)=each($pro_list))
@@ -461,16 +464,20 @@
 				$pro['sdate'] = $pro['sdate'] + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
 				$sdateout = $GLOBALS['phpgw']->common->show_date($pro['sdate'],$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);*/
 
-				$mlist = '';
 				$mstones = $this->get_mstones($pro['project_id']);
-				if (is_array($mstones))
+
+				if (!isset($params['mstones_stat']))
 				{
-					$mlist = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' . "\n";
-					for ($i=0;$i<count($mstones);$i++)
+					$mlist = '';
+					if (is_array($mstones))
 					{
-						$mlist .= '<tr><td width="50%">' . $mstones[$i]['title'] . '</td><td width="50%" align="right">' . $this->formatted_edate($mstones[$i]['edate']) . '</td></tr>' . "\n";
+						$mlist = '<table width="100%" border="0" cellpadding="0" cellspacing="0">' . "\n";
+						for ($i=0;$i<count($mstones);$i++)
+						{
+							$mlist .= '<tr><td width="50%">' . $mstones[$i]['title'] . '</td><td width="50%" align="right">' . $this->formatted_edate($mstones[$i]['edate']) . '</td></tr>' . "\n";
+						}
+						$mlist .= '</table>';
 					}
-					$mlist .= '</table>';
 				}
 
 				$projects[] = array
@@ -484,13 +491,13 @@
 					'number'			=> $GLOBALS['phpgw']->strip_html($pro['number']),
 					'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
 					'descr'				=> $GLOBALS['phpgw']->strip_html($pro['descr']),
-					'sdateout'			=> $sdateout,
+					'sdate'				=> $pro['sdate'],
 					'budget'			=> $pro['budget'],
 					'pcosts'			=> $pro['pcosts'],
 					'edate'				=> $pro['edate'],
 					'status'			=> $pro['status'],
 					'level'				=> $pro['level'],
-					'mstones'			=> $mlist
+					'mstones'			=> (isset($mlist)?$mlist:$mstones)
 				);
 			}
 
@@ -810,14 +817,14 @@
 				}
 			}
 
-			if ($values['access'])
+			/*if ($values['access'])
 			{
 				$values['access'] = 'private';
 			}
 			else
 			{
 				$values['access'] = 'public';
-			}
+			}*/
 
 			$month = $this->return_date();
 			$values['monthdate'] = $month['monthdate'];

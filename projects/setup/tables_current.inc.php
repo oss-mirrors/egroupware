@@ -35,7 +35,7 @@
 				'time_planned' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'date_created' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'processor' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'investment_nr' => array('type' => 'varchar','precision' => 50,'nullable' => False),
+				'investment_nr' => array('type' => 'varchar','precision' => 50,'nullable' => True),
 				'pcosts' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
 				'main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'level' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),

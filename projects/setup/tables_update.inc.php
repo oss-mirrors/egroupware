@@ -470,4 +470,13 @@
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.008';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
+
+	$test[] = '0.8.7.008';
+	function projects_upgrade0_8_7_008()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_p_projects','investment_nr',array('type' => 'varchar','precision' => 50,'nullable' => True));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.009';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
 ?>

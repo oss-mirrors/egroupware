@@ -115,7 +115,7 @@
 			$GLOBALS['phpgw']->template->set_var('lang_last_update',lang('last update'));
 
 			$GLOBALS['phpgw']->template->set_var('lang_date_due',lang('Date due'));
-			$GLOBALS['phpgw']->template->set_var('lang_access',lang('Private'));
+			$GLOBALS['phpgw']->template->set_var('lang_access',lang('access'));
 			$GLOBALS['phpgw']->template->set_var('lang_projects',lang('Projects'));
 			$GLOBALS['phpgw']->template->set_var('lang_jobs',lang('Jobs'));
 			$GLOBALS['phpgw']->template->set_var('lang_act_number',lang('Activity ID'));
@@ -313,7 +313,7 @@
 				$this->status = 'active';
 			}
 
-			$pro = $this->bo->list_projects($action,$pro_main);
+			$pro = $this->bo->list_projects(array('type' => $action,'parent' => $pro_main));
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
@@ -910,7 +910,11 @@
 
 			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($values['status'],(($action == 'mains' || $action == 'amains')?True:False)));
 
-			$GLOBALS['phpgw']->template->set_var('access','<input type="checkbox" name="values[access]" value="True"' . ($values['access'] == 'private'?' checked':'') . '>');
+			$aradio = '<input type="radio" name="values[access]" value="private"' . ($values['access'] == 'private'?' checked':'') . '>' . lang('private');
+			$aradio .= '<input type="radio" name="values[access]" value="public"' . ($values['access'] == 'public'?' checked':'') . '>' . lang('public');
+			$aradio .= '<input type="radio" name="values[access]" value="anonym"' . ($values['access'] == 'anonym'?' checked':'') . '>' . lang('anonymous public');
+
+			$GLOBALS['phpgw']->template->set_var('access',$aradio);
 
 			$GLOBALS['phpgw']->template->set_var('previous_select',$this->bo->select_project_list(array('type' => 'all',
 																										'status' => $values['status'],
@@ -1058,8 +1062,17 @@
 				$this->display_app_header();
 			}
 
+			$link_data = array
+			(
+				'menuaction'	=> $menuaction,
+				'pro_main'		=> $pro_main,
+				'action'		=> $action,
+				'project_id'	=> $project_id
+			);
+
 			$GLOBALS['phpgw']->template->set_file(array('view' => 'view.tpl'));
 			$GLOBALS['phpgw']->template->set_block('view','sub','subhandle');
+			$GLOBALS['phpgw']->template->set_block('view','nonanonym','nonanonymhandle');
 			$GLOBALS['phpgw']->template->set_block('view','mslist','mslisthandle');
 
 			$nopref = $this->bo->check_prefs();
@@ -1174,11 +1187,16 @@
 				$GLOBALS['phpgw']->template->fp('mslisthandle','mslist',True);
 			}
 
+			if (!isset($public_view))
+			{
+				$GLOBALS['phpgw']->template->fp('nonanonymhandle','nonanonym',True);
+				$GLOBALS['phpgw']->hooks->process(array
+				(
+					'location'   => 'projects_view',
+					'project_id' => $project_id
+				));
+			}
 			$GLOBALS['phpgw']->template->pfp('out','view');
-			$GLOBALS['phpgw']->hooks->process(array(
-				'location'   => 'projects_view',
-				'project_id' => $project_id
-			));
 		}
 
 		function delete_pa()

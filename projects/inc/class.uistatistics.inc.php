@@ -41,14 +41,15 @@
 			'list_projects'	=> True,
 			'list_users'	=> True,
 			'user_stat'		=> True,
-			'project_stat'	=> True
+			'project_stat'	=> True,
+			'show_stat'		=> True
 		);
 
 		function uistatistics()
 		{
 			$action = get_var('action',array('POST','GET'));
 
-			$this->boprojects				= CreateObject('projects.boprojects',True,$action);
+			$this->boprojects				= CreateObject('projects.boprojects',True,'pstat');
 			$this->bostatistics				= CreateObject('projects.bostatistics');
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
 			$this->sbox						= CreateObject('phpgwapi.sbox');
@@ -63,6 +64,7 @@
 			$this->order					= $this->boprojects->order;
 			$this->sort						= $this->boprojects->sort;
 			$this->cat_id					= $this->boprojects->cat_id;
+			$this->status					= $this->boprojects->status;
 		}
 
 		function save_sessiondata($action)
@@ -74,7 +76,8 @@
 				'filter'	=> $this->filter,
 				'order'		=> $this->order,
 				'sort'		=> $this->sort,
-				'cat_id'	=> $this->cat_id
+				'cat_id'	=> $this->cat_id,
+				'status'	=> $this->status
 			);
 			$this->boprojects->save_sessiondata($data, $action);
 		}
@@ -159,12 +162,37 @@
 			echo parse_navbar();
 		}
 
+		function status_format($status = '', $showarchive = False)
+		{
+			if (!$status)
+			{
+				$status = $this->status = 'active';
+			}
+
+			switch ($status)
+			{
+				case 'active':		$stat_sel[0]=' selected'; break;
+				case 'nonactive':	$stat_sel[1]=' selected'; break;
+				case 'archive':		$stat_sel[2]=' selected'; break;
+			}
+
+			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
+						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n";
+
+			if ($showarchive)
+			{
+				$status_list .= '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
+			}
+			return $status_list;
+		}
+
+
 		function list_projects()
 		{
 			$action		= get_var('action',array('POST','GET'));
-			$pro_parent	= get_var('pro_parent',array('POST','GET'));
+			$pro_main	= get_var('pro_main',array('POST','GET'));
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list jobs'):lang('list projects'));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_main?lang('list jobs'):lang('list projects'));
 			$this->display_app_header();
 
 			$GLOBALS['phpgw']->template->set_file(array('projects_list_t' => 'stats_projectlist.tpl'));
@@ -178,7 +206,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uistatistics.list_projects',
-				'pro_parent'	=> $pro_parent,
+				'pro_main'		=> $pro_main,
 				'action'		=> $action,
 				'cat_id'		=> $this->cat_id
 			);
@@ -188,12 +216,7 @@
 				$this->start = 0;
 			}
 
-			if (!$pro_parent)
-			{
-				$pro_parent = 0;
-			}
-
-			$pro = $this->boprojects->list_projects($this->start,True,$this->query,$this->filter,$this->sort,$this->order,'active',$this->cat_id,$action,$pro_parent);
+			$pro = $this->boprojects->list_projects(array('type' => $action,'parent' => $pro_main));
 
 // --------------------- nextmatch variable template-declarations ------------------------
 
@@ -209,43 +232,32 @@
 			if ($action == 'mains')
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) . '" name="form">' . "\n"
-							. '<select name="cat_id" onChange="this.form.submit();"><option value="">' . lang('Select category') . '</option>' . "\n"
-							. $this->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
-				$GLOBALS['phpgw']->template->set_var(lang_header,lang('Project list'));
+							. '<select name="cat_id" onChange="this.form.submit();"><option value="none">' . lang('Select category') . '</option>' . "\n"
+							. $this->boprojects->cats->formatted_list('select','all',$this->cat_id,True) . '</select>';
+				$GLOBALS['phpgw']->template->set_var('lang_action',lang('Jobs'));
 			}
 			else
 			{
 				$action_list= '<form method="POST" action="' . $GLOBALS['phpgw']->link('/index.php',$link_data) .'" name="form">' . "\n"
-							. '<select name="pro_parent" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
-							. $this->boprojects->select_project_list('mains', $status, $pro_parent) . '</select>';
-				$GLOBALS['phpgw']->template->set_var('lang_header',lang('Job list'));
+							. '<select name="pro_main" onChange="this.form.submit();"><option value="">' . lang('Select main project') . '</option>' . "\n"
+							. $this->boprojects->select_project_list(array('status' => $status, 'selected' => $pro_main)) . '</select>';
+				$GLOBALS['phpgw']->template->set_var('lang_action',lang('Work hours'));
 			}
 
 			$GLOBALS['phpgw']->template->set_var('action_list',$action_list);
-			$GLOBALS['phpgw']->template->set_var('filter_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('filter_list',$this->nextmatchs->new_filter($this->filter));
-			$GLOBALS['phpgw']->template->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
 			$GLOBALS['phpgw']->template->set_var('search_list',$this->nextmatchs->search(array('query' => $this->query)));
+			$GLOBALS['phpgw']->template->set_var('status_list',$this->status_format($this->status));
+
+			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
 
 // ---------------- list header variable template-declarations --------------------------
 
-			$GLOBALS['phpgw']->template->set_var(sort_number,$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
-
-			if ($action == 'mains')
-			{
-				$GLOBALS['phpgw']->template->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
-				$lang_action = '<td width="5%" align="center">' . lang('Jobs') . '</td>' . "\n";
-				$GLOBALS['phpgw']->template->set_var('lang_action',$lang_action);
-			}
-			else
-			{
-				$GLOBALS['phpgw']->template->set_var(sort_action,$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
-				$GLOBALS['phpgw']->template->set_var('lang_action','');
-			}
-
-			$GLOBALS['phpgw']->template->set_var('sort_status',$this->nextmatchs->show_sort_order($this->sort,'status',$this->order,'/index.php',lang('Status'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_number',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Project ID'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_action',$this->nextmatchs->show_sort_order($this->sort,'customer',$this->order,'/index.php',lang('Customer'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_title',$this->nextmatchs->show_sort_order($this->sort,'title',$this->order,'/index.php',lang('Title'),$link_data));
-			$GLOBALS['phpgw']->template->set_var('sort_end_date',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_sdate',$this->nextmatchs->show_sort_order($this->sort,'start_date',$this->order,'/index.php',lang('Start date'),$link_data));
+			$GLOBALS['phpgw']->template->set_var('sort_edate',$this->nextmatchs->show_sort_order($this->sort,'end_date',$this->order,'/index.php',lang('Date due'),$link_data));
 			$GLOBALS['phpgw']->template->set_var('sort_coordinator',$this->nextmatchs->show_sort_order($this->sort,'coordinator',$this->order,'/index.php',lang('Coordinator'),$link_data));
 
 // -------------- end header declaration ---------------------------------------
@@ -253,30 +265,13 @@
             for ($i=0;$i<count($pro);$i++)
             {
 				$this->nextmatchs->template_alternate_row_color(&$GLOBALS['phpgw']->template);
-				$edate = $pro[$i]['edate'];
-				if ($edate == 0)
-				{
-					$edateout = '&nbsp;';
-				}
-				else
-				{
-					$month  = $GLOBALS['phpgw']->common->show_date(time(),'n');
-					$day    = $GLOBALS['phpgw']->common->show_date(time(),'d');
-					$year   = $GLOBALS['phpgw']->common->show_date(time(),'Y');
 
-					$edate = $edate + (60*60) * $GLOBALS['phpgw_info']['user']['preferences']['common']['tz_offset'];
-					$edateout = $GLOBALS['phpgw']->common->show_date($edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
-					if (mktime(2,0,0,$month,$day,$year) == $edate) { $edateout = '<b>' . $edateout . '</b>'; }
-					if (mktime(2,0,0,$month,$day,$year) >= $edate) { $edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>'; }
-				}
+				$edateout = $this->boprojects->formatted_edate($pro[$i]['edate']);
+				$sdateout = $this->boprojects->formatted_edate($pro[$i]['sdate'],False);
 
 				if ($action == 'mains')
 				{
 					$td_action = ($pro[$i]['customerout']?$pro[$i]['customerout']:'&nbsp;');
-				}
-				else
-				{
-					$td_action = ($pro[$i]['sdateout']?$pro[$i]['sdateout']:'&nbsp;');
 				}
 
 // --------------- template declaration for list records -------------------------------------
@@ -285,9 +280,9 @@
 				(
 					'number'		=> $pro[$i]['number'],
 					'td_action'		=> $td_action,
-					'status'		=> lang($pro[$i]['status']),
 					'title'			=> ($pro[$i]['title']?$pro[$i]['title']:'&nbsp;'),
-					'end_date'		=> $edateout,
+					'sdate'			=> (isset($pro[$i]['sdate'])?$sdateout:'&nbsp;'),
+					'edate'			=> (isset($pro[$i]['edate'])?$edateout:'&nbsp;'),
 					'coordinator'	=> $pro[$i]['coordinatorout']
 				));
 
@@ -298,7 +293,7 @@
 
 				if ($action == 'mains')
 				{
-					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&pro_parent='
+					$action_entry = '<td align="center"><a href="' . $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&pro_main='
 																. $pro[$i]['project_id'] . '&action=subs') . '">' . lang('Jobs')
 																. '</a></td>' . "\n";
 					$GLOBALS['phpgw']->template->set_var('action_entry',$action_entry);
@@ -315,8 +310,8 @@
 
 			$GLOBALS['phpgw']->template->set_var('userstats_action',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_users&action=ustat'));
 
+			$this->save_sessiondata('pstat');
 			$GLOBALS['phpgw']->template->pfp('out','projects_list_t',True);
-			$this->save_sessiondata($action);
 		}
 
 		function coordinator_format($employee = '')
@@ -570,7 +565,57 @@
 			$GLOBALS['phpgw']->template->pfp('out','user_stat_t',True);
 		}
 
+		function show_stat($project_id)
+		{
+			$this->bostatistics->show_graph($project_id);
+		}
+
 		function project_stat()
+		{
+			$project_id	= get_var('project_id',array('GET','POST'));
+			$smonth		= get_var('smonth',array('GET','POST'));
+			$syear		= get_var('syear',array('GET','POST'));
+
+			if (! $project_id)
+			{
+				$GLOBALS['phpgw']->redirect_link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains');
+			}
+
+			$link_data = array
+			(
+				'menuaction'	=> 'projects.uistatistics.project_stat',
+				'action'		=> $action,
+				'project_id'	=> $project_id
+			);
+
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('gantt chart for project %1', $this->boprojects->return_value('pro',$project_id));
+			$this->display_app_header();
+
+			$GLOBALS['phpgw']->template->set_file(array('project_stat' => 'stats_gant.tpl'));
+
+			if (!$smonth)
+			{
+				$smonth = date('m',time());
+			}
+
+			if (!$syear)
+			{
+				$syear = date('Y',time());
+			}
+
+			$GLOBALS['phpgw']->template->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('syear',$syear),
+																										$this->sbox->getMonthText('smonth',$smonth),''));
+			$GLOBALS['phpgw']->template->set_var('project_id',$project_id);
+			$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$link_data));
+
+			$this->bostatistics->show_graph(array('project_id' => $project_id,'syear' => $syear, 'smonth' => $smonth));
+
+			$GLOBALS['phpgw']->template->set_var('pix_src',$GLOBALS['phpgw_info']['server']['webserver_url'] . SEP . 'phpgwapi' . SEP . 'images' . SEP . 'draw_tmp.png');
+
+			$GLOBALS['phpgw']->template->pfp('out','project_stat');
+		}
+
+		/*function project_stat()
 		{
 			$submit		= get_var('submit',array('POST'));
 			$values		= get_var('values',array('POST','GET'));
@@ -775,6 +820,6 @@
 
 			$GLOBALS['phpgw']->template->fp('list','stat_list',True);
 			$GLOBALS['phpgw']->template->pfp('out','project_stat');
-		}
+		}*/
 	}
 ?>

@@ -150,12 +150,12 @@
 							$public_user_list[] = $user;
 						}
 						reset($public_user_list);
-						$filtermethod .= " OR (access='public' AND coordinator in(" . implode(',',$public_user_list) . '))';
+						$filtermethod .= " OR (access != 'private' AND coordinator in(" . implode(',',$public_user_list) . '))';
 					}
 
 					if (is_array($this->member))
 					{
-						$filtermethod .= " OR (access='public' AND id in(" . implode(',',$this->member) . '))';
+						$filtermethod .= " OR (access != 'private' AND id in(" . implode(',',$this->member) . '))';
 					}
 					$filtermethod .= ' )';
 				}
@@ -166,7 +166,7 @@
 			}
 			elseif ($filter == 'public')
 			{
-				$filtermethod = " access != 'private' ";
+				$filtermethod = " access = 'anonym' ";
 			}
 			else
 			{
@@ -324,7 +324,7 @@
 
 			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
 							. 'descr,title,budget,num,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level,previous) VALUES (' . $this->account
-							. ",'" . $values['access'] . "'," . intval($values['cat']) . ',' . time() . ',' . intval($values['sdate']) . ','
+							. ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ',' . intval($values['sdate']) . ','
 							. intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'" . $values['status']
 							. "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
 							. intval($values['parent']) . ',' . intval($values['ptime']) . ',' . time() . ',' . $this->account . ",'" . $values['investment_nr']
@@ -481,7 +481,7 @@
 				}
 			}
 
-			$this->db->query("UPDATE phpgw_p_projects set access='" . $values['access'] . "', category=" . intval($values['cat']) . ", entry_date="
+			$this->db->query("UPDATE phpgw_p_projects set access='" . (isset($values['access'])?$values['access']:'public') . "', category=" . intval($values['cat']) . ", entry_date="
 							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . intval($values['edate']) . ", coordinator="
 							. intval($values['coordinator']) . ", customer=" . intval($values['customer']) . ", status='" . $values['status'] . "', descr='"
 							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", num='"

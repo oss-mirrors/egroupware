@@ -28,6 +28,7 @@
 
 	class bostatistics
 	{
+		var $debug;
 		var $start;
 		var $query;
 		var $order;
@@ -45,7 +46,11 @@
 
 		function bostatistics()
 		{
+			$this->debug		= False;
 			$this->sostatistics	= CreateObject('projects.sostatistics');
+			$this->boprojects	= CreateObject('projects.boprojects');
+
+			$this->date_diff	= 0;
 		}
 
 		function get_users($type, $start, $sort, $order, $query)
@@ -68,6 +73,94 @@
 		function get_employees($project_id, $values)
 		{
 			return $this->sostatistics->pro_stat_employees($project_id, $values);
+		}
+
+		function set_x_text($smonth,$syear)
+		{
+			$graph_sdate = mktime(0,0,0,$smonth,1,$syear);
+			$graph_edate = mktime(0,0,0,$smonth,date('t',$graph_sdate),$syear);
+
+
+			$graph_sdateout	= $GLOBALS['phpgw']->common->show_date($graph_sdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+			$graph_edateout	= $GLOBALS['phpgw']->common->show_date($graph_edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
+
+			$diff				= date('t',$smonth);
+			$this->date_diff	= $diff;
+
+			$this->graph->line_captions_x[0]['date_formatted']	= $GLOBALS['phpgw']->common->show_date($graph_sdate,'m/d');
+			$this->graph->line_captions_x[0]['date']			= $graph_sdate;
+
+			for ($i=1;$i<($diff-1);$i++)
+			{
+				$temp_date = '';
+				$temp_date = mktime(0,0,0,date('m',$graph_sdate),date('d',$graph_sdate)+$i,date('Y',$graph_sdate));
+
+				$this->graph->line_captions_x[$i]['date_formatted']	= $GLOBALS['phpgw']->common->show_date($temp_date,'d');
+				$this->graph->line_captions_x[$i]['date']			= $temp_date;
+			}
+
+			$this->graph->line_captions_x[$diff]['date_formatted']	= $GLOBALS['phpgw']->common->show_date($graph_edate,'m/d');
+			$this->graph->line_captions_x[$diff]['date']			= $graph_edate;
+
+			$this->graph->title = lang('Gantt chart from %1 to %2', $graph_sdateout,$graph_edateout);
+		}
+
+		function set_y_text($pro = 0)
+		{
+			for($i=0;$i<count($pro);$i++)
+			{
+				$this->graph->line_captions_y[$i] = $pro[$i]['title'];
+			}
+		}
+
+		function show_graph($params)
+		{
+			$project_id	= $params['project_id'];
+			$syear		= (isset($params['syear'])?$params['syear']:date('Y'));
+			$smonth		= (isset($params['smonth'])?$params['smonth']:date('m'));
+
+			$this->graph = CreateObject('phpgwapi.gdgraph',$this->debug);
+
+			$this->boprojects->order = 'level';
+			$this->boprojects->sort = 'DESC';
+			$pro = $this->boprojects->list_projects(array('type' => 'mainandsubs','main' => $project_id,'mstones_stat' => True));
+
+			while(is_array($pro) && list(,$p) = each($pro))
+			{
+				while(is_array($p['mstones']) && list(,$s) = each($p['mstones']))
+				{
+					$spro[] = array
+					(
+						'title'			=> $s['title'],
+						'extracolor'	=> 'yellow',
+						'sdate'			=> $p['sdate'],
+						'edate'			=> $s['edate'],
+						'pro_id'		=> $p['project_id']
+					);
+				}
+
+				$spro[] = array
+				(
+					'title'		=> $p['title'],
+					'sdate'		=> $p['sdate'],
+					'edate'		=> $p['edate']?$p['edate']:mktime(0,0,0,date('m'),date('d'),date('Y')),
+					'color'		=> $p['level'],
+					'pro_id'	=> $p['project_id']
+				);
+			}
+
+			if(is_array($spro))
+			{
+				$this->graph->data = $spro;
+			}
+
+			$this->set_x_text($smonth,$syear);
+
+			$this->set_y_text($spro);
+
+			$this->graph->num_lines_y = count($spro)+2;
+			$this->graph->num_lines_x = $this->date_diff;
+			$this->graph->render();
 		}
 	}
 ?>
