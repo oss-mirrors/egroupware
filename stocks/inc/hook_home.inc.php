@@ -10,7 +10,7 @@
 	\**************************************************************************/
 	/* $Id$ */
 
-	$d1 = strtolower(substr($phpgw_info['server']['app_inc'],0,3));
+	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
@@ -18,16 +18,16 @@
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw_info['server']['app_inc'];
-	$phpgw_info['server']['app_inc'] = $phpgw->common->get_inc_dir('stocks');
+	$tmp_app_inc = PHPGW_APP_INC;
+	define('PHPGW_APP_INC',$phpgw->common->get_inc_dir('stocks'));
 
 	if ($phpgw_info['user']['apps']['stocks'] && $phpgw_info['user']['preferences']['stocks']['enabled'])
 	{
 		echo "\n" . '<!-- Stock Quotes -->' . "\n";
-		include(PHPGW_INCLUDE_ROOT . '/stocks/inc/functions.inc.php');
+		include(PHPGW_APP_INC . '/stocks/inc/functions.inc.php');
 		echo '<tr><td align="center">' . return_quotes($quotes) . '</td></tr>';
 		echo "\n" . '<!-- Stock Quotes -->' . "\n";
 	}
 
-	$phpgw_info['server']['app_inc'] = $tmp_app_inc;
+	define('PHPGW_APP_INC',$tmp_app_inc);
 ?>
