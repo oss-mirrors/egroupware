@@ -136,6 +136,7 @@
       {
         $att_name = $param->value;
 	      $url_att_name = urlencode($att_name);
+	      $att_name = decode_header_string($att_name);
       }
     }
 

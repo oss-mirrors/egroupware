@@ -125,7 +125,7 @@ if ($msg->from) {
       . $phpgw->link("compose.php","folder="
         . urlencode($folder) . "&to=" . urlencode($from->mailbox . "@"
         . $from->host)) 
-      . "\">". htmlentities(decode_header_string($personal))
+      . "\">". decode_header_string($personal)
       . "</a></font>";
    echo "<font size=\"2\" face=\"" . $phpgw_info["theme"]["font"]."\">"
       . " <a href=\""
