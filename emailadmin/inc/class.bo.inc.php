@@ -160,6 +160,36 @@
 			$this->soemailadmin->deleteProfile($_profileID);
 		}
 		
+		function encodeHeader($_string, $_encoding='q')
+		{
+			switch($_encoding)
+			{
+				case "q":
+					if(!preg_match("/[\x80-\xFF]/",$_string))
+					{
+						// nothing to quote, only 7 bit ascii
+						return $_string;
+					}
+					
+					$string = imap_8bit($_string);
+					$stringParts = explode("=\r\n",$string);
+					while(list($key,$value) = each($stringParts))
+					{
+						if(!empty($retString)) $retString .= " ";
+						$value = str_replace(" ","_",$value);
+						// imap_8bit does not convert "?"
+						// it does not need, but it should
+						$value = str_replace("?","=3F",$value);
+						$retString .= "=?".strtoupper($this->displayCharset)."?Q?".$value."?=";
+					}
+					#exit;
+					return $retString;
+					break;
+				default:
+					return $_string;
+			}
+		}
+
 		function getAccountEmailAddress($_accountName, $_profileID)
 		{
 			$profileData	= $this->getProfile($_profileID);
