@@ -1,5 +1,6 @@
 are you sure you want to delete this news site ?	admin	hu	Biztosan törölni akarja ezt a híroldalt?
 base url	admin	hu	Fõ URL
+headlines	common	hu	Fejlécek
 headline sites	admin	hu	Fõcím oldalak
 listings displayed	admin	hu	Listázások megjelnítve
 minutes between reloads	admin	hu	Percek újratöltés elõtt
