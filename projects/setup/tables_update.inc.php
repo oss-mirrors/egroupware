@@ -643,9 +643,44 @@
 		// I put an if around it, to fix other db's errors -- RalfBecker 2004/07/07
 		if ($GLOBALS['phpgw_setup']->oProc->sType == 'mysql')
 		{
-			$GLOBALS['phpgw_setup']->oProc->query('alter table phpgw_p_projects drop INDEX p_number');
+			// as the name of the index depends on the column-name at the time it was created,
+			// it can be either num or p_number, therefor we need to query the db for it -- RalfBecker 2004/08/27
+			$GLOBALS['phpgw_setup']->oProc->query('show index from phpgw_p_projects');
+			while ($GLOBALS['phpgw_setup']->oProc->next_record)
+			{
+				$column = $GLOBALS['phpgw_setup']->oProc->f('Column_name');
+				if ($column == 'num' || $column == 'p_number')
+				{
+					$GLOBALS['phpgw_setup']->oProc->query("alter table phpgw_p_projects drop INDEX $column");
+					break;
+				}
+			}
 		}
+		// some DB's need the table-definition to be able to rename the column, but somehow it's not availible, so we add it again
+		$GLOBALS['phpgw_setup']->oProc->m_aTables['phpgw_p_projects'] = array(
+			'fd' => array(
+				'id' => array('type' => 'auto','nullable' => False),
+				'employee' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'activity_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'start_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'end_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'remark' => array('type' => 'text','nullable' => True),
+				'minutes' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'status' => array('type' => 'varchar','precision' => 6,'default' => 'done','nullable' => False),
+				'hours_descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
+				'dstatus' => array('type' => 'char','precision' => 1,'default' => 'o','nullable' => True),
+				'pro_parent' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'pro_main' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+			),
+			'pk' => array('id'),
+			'fk' => array(),
+			'ix' => array(),
+			'uc' => array()
+		);
 		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_projects','id','project_id');
+
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.020';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
