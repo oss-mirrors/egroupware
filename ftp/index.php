@@ -30,7 +30,7 @@
    $bgcolor[1]=$phpgw_info["theme"]["row_off"];
    $tempdir=$phpgw_info["server"]["temp_dir"];
 
-   $target=$PHP_SELF;
+   $target='/'.$phpgw_info['flags']['currentapp'].'/'.basename($SCRIPT_FILENAME);
 
    $t = $phpgw->template;
    $t->set_file(array(
