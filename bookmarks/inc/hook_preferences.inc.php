@@ -12,6 +12,7 @@
 
 	$file = array(
 		'Import Bookmarks' => $GLOBALS['phpgw']->link('/bookmarks/import.php'),
+                'Export Bookmarks' => $GLOBALS['phpgw']->link('/bookmarks/export.php'),
 		'Grant Access'  => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uiaclprefs.index&acl_app='.$appname),
 		'Edit Categories' => $GLOBALS['phpgw']->link('/index.php','menuaction=preferences.uicategories.index&cats_app=' . $appname . '&global_cats=True')
 	);
