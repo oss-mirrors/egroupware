@@ -1,7 +1,7 @@
 cancel	ftp	nl	annuleren
 cd	ftp	nl	cd
 connect	ftp	nl	Verbinden
-delete	ftp	nl	verwijder %1
+delete	ftp	nl	verwijder
 empty dirname	ftp	nl	Poging om een folder zonder naam te maken
 failed to connect to %1 with user %2 and password %3	ftp	nl	Verbinden met server %1 als gebruiker %2 met wachtwoord %3 is mislukt
 failed to create directory %1	ftp	nl	Maken van folder %1 is mislukt

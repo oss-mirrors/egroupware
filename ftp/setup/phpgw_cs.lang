@@ -1,9 +1,9 @@
 cd	ftp	cs	cd
 delete	ftp	cs	vymazat
 empty dirname	ftp	cs	Pokus o vytvoøení adresáøe bez jména
-failed to create drectory %1	ftp	cs	Nepodaøilo se vytvoøit adresáø 
+failed to create drectory %1	ftp	cs	Nepodaøilo se vytvoøit adresáø %1
 failed to delete %1	ftp	cs	Nepodaøilo se vymazat %1
-failed to upload %1	ftp	cs	Nepodaøilo se nahrát 
+failed to upload %1	ftp	cs	Nepodaøilo se nahrát %1
 home	ftp	cs	Domù
 module name	ftp	cs	Ftp Klient
 relogin	ftp	cs	odhlásit/pøihlásit

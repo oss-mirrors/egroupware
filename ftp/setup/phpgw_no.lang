@@ -1,7 +1,7 @@
 cancel	ftp	no	avbryt
 cd	ftp	no	cd
 connect	ftp	no	Connect
-delete	ftp	no	slette %
+delete	ftp	no	slette
 empty dirname	ftp	no	Forsøk å lage et directory uten navn
 failed to connect to %1 with user %2 and password %3	ftp	no	Kunne ikke connecte til %1 med bruker %2 og passord %3
 failed to create directory %1	ftp	no	Kunne ikke lage nytt direcotory %1

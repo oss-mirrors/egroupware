@@ -1,7 +1,7 @@
 cancel	ftp	sp	cancelar
 cd	ftp	sp	cd
 connect	ftp	sp	Conectar
-delete	ftp	sp	borrar %1
+delete	ftp	sp	borrar
 empty dirname	ftp	sp	Intento de crear un directorio sin nombre
 failed to connect to %1 with user %2 and password %3	ftp	sp	Fallo al conectar a %1 con el usuario %2 y contraseña %3
 failed to create directory %1	ftp	sp	Fallo al crear directorio %1

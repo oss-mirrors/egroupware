@@ -1,7 +1,7 @@
 cancel	ftp	fr	Annuler
 cd	ftp	fr	cd
 connect	ftp	fr	Se connecter
-delete	ftp	fr	Supprimer %1
+delete	ftp	fr	Supprimer
 empty dirname	ftp	fr	Tentative de création d'un répertoire avec un nom vide
 failed to connect to %1 with user %2 and password %3	ftp	fr	Echec de connexion à %1 avec l'utilisateur %2 et le mot de passe %3
 failed to create directory %1	ftp	fr	Echec de création du répertoire %1
@@ -25,7 +25,7 @@ save	ftp	fr	Sauvegarder
 save to filemanager	ftp	fr	Sauvegarder vers le gestionnaire de fichiers
 size	ftp	fr	Taille
 successfully created directory %1	ftp	fr	Répertoire %1 crée avec succès
-sucessfully deleted %1	ftp	fr	%1 supprimé avec succès
+successfully deleted %1	ftp	fr	%1 supprimé avec succès
 successfully uploaded %1	ftp	fr	Uploadé %1 avec succès
 upload	ftp	fr	Uploader
 username	ftp	fr	Nom d'utilisateur

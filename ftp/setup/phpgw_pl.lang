@@ -1,7 +1,7 @@
 cancel	ftp	pl	Anuluj
 cd	ftp	pl	cd
 connect	ftp	pl	Po³±cz
-delete	ftp	pl	usuñ %1
+delete	ftp	pl	usuñ
 empty dirname	ftp	pl	Próba utworzenia katalogu bez nazwy
 failed to connect to %1 with user %2 and password %3	ftp	pl	Nieudane po³±czenie do %1 z nazw± u¿ytkownika %2 i has³em %3
 failed to create directory %1	ftp	pl	Nie uda³o siê utworzyæ katalogu %1

@@ -1,7 +1,7 @@
 cancel	ftp	kr	취소
 cd	ftp	kr	cd
 connect	ftp	kr	접속
-delete	ftp	kr	삭제 %1
+delete	ftp	kr	삭제
 empty dirname	ftp	kr	이름 없는 디렉토리를 만듭니다.
 failed to connect to %1 with user %2 and password %3	ftp	kr	%1로 사용자 ID %2 와 비밀번호 %3로 접속하는 실패했습니다.
 failed to create directory %1	ftp	kr	디렉토리 %1 생성필패
