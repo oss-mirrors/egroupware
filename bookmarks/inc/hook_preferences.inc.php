@@ -14,10 +14,10 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Preferences'		=> $phpgw->link('/bookmarks/preferences.php'),
-		'Import Bookmarks'	=> $phpgw->link('/bookmarks/import.php'),
-		'Grant access'		=> $phpgw->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
-		'Categories'		=> $phpgw->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True')
+		'Preferences'      => $GLOBALS['phpgw']->link('/bookmarks/preferences.php'),
+		'Import Bookmarks' => $GLOBALS['phpgw']->link('/bookmarks/import.php'),
+		'Grant access'     => $GLOBALS['phpgw']->link('/preferences/acl_preferences.php','acl_app=bookmarks'),
+		'Categories'       => $GLOBALS['phpgw']->link('/preferences/categories.php','cats_app=bookmarks&global_cats=True')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

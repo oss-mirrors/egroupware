@@ -10,9 +10,9 @@
 	\**************************************************************************/
 
 	/* $Id$ */
-
+{
 	display_section('forum','Forum',array(
-		'Preferences' => $phpgw->link('/preferences/preferences.php','appname=forum')
+		'Preferences' => $GLOBALS['phpgw']->link('/preferences/preferences.php','appname=forum')
 	));
-
+}
 ?>

@@ -8,13 +8,14 @@
 	* Free Software Foundation; either version 2 of the License, or (at your   *
 	* option) any later version.                                               *
 	\**************************************************************************/
+
 	/* $Id$ */
 
 {
 // Only Modify the $file and $title variables.....
 	$title = 'Stock Quotes';
 	$file = Array(
-		'Select displayed stocks'	=> $phpgw->link('/stocks/preferences.php')
+		'Select displayed stocks' => $GLOBALS['phpgw']->link('/stocks/preferences.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

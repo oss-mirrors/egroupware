@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = 'Daily Comic';
 	$file = Array(
-		'Preferences'	=> $phpgw->link('/comic/preferences.php')
+		'Preferences' => $GLOBALS['phpgw']->link('/comic/preferences.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
