@@ -15,22 +15,22 @@
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	}
 	unset($d1);
 
-	$tmp_app_inc = $phpgw->common->get_inc_dir('felamimail');
+	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('felamimail');
 
 	if ($phpgw_info['user']['preferences']['felamimail']['mainscreen_showmail'] == True)
 	{
 		// ----  Create the base email Msg Class    -----
-		$phpgw->msg = CreateObject("email.mail_msg");
+		$GLOBALS['phpgw']->msg = CreateObject("email.mail_msg");
 		$args_array = Array();
 		$args_array['folder'] = 'INBOX';
 		$args_array['do_login'] = True;
-		$phpgw->msg->begin_request($args_array);
+		$GLOBALS['phpgw']->msg->begin_request($args_array);
 
-		if (!$phpgw->msg->mailsvr_stream)
+		if (!$GLOBALS['phpgw']->msg->mailsvr_stream)
 		{
 			$error_msg = '<b>Mail error:</b> Can not open connection to mail server';
 			echo "\r\n"
@@ -41,19 +41,19 @@
 					.'<!-- ends Mailox info -->'."\r\n"
 				.'</td>'."\r\n"
 			.'</tr>'."\r\n";
-			//$phpgw->common->phpgw_exit(True);
+			//$GLOBALS['phpgw']->common->phpgw_exit(True);
 		}
 		else
 		{
 			/*  // this is the structure you will get
 			  $inbox_data['is_imap'] boolean - pop3 server do not know what is "new" or not
-		  	  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
+			  $inbox_data['folder_checked'] string - the folder checked, as processed by the msg class
 			  $inbox_data['alert_string'] string - what to show the user about this inbox check
 			  $inbox_data['number_new'] integer - for IMAP is number "unseen"; for pop3 is number messages
 			  $inbox_data['number_all'] integer - for IMAP and pop3 is total number messages in that inbox
 			*/
 			$inbox_data = Array();
-			$inbox_data = $phpgw->msg->new_message_check();
+			$inbox_data = $GLOBALS['phpgw']->msg->new_message_check();
 
 			$title = '<font color="FFFFFF">'.lang('EMail').' '.$inbox_data['alert_string'].'</font>';
 
@@ -74,28 +74,28 @@
 			if ($inbox_data['number_all'] > 0)
 			{
 				$msg_array = array();
-				$msg_array = $phpgw->msg->get_message_list();
+				$msg_array = $GLOBALS['phpgw']->msg->get_message_list();
 			}
 			for($i=0; $i<$check_msgs; $i++)
 			{
-				$msg = $phpgw->dcom->header($phpgw->msg->mailsvr_stream,$msg_array[$i]);
-				$subject = $phpgw->msg->get_subject($msg,'');
+				$msg = $GLOBALS['phpgw']->dcom->header($GLOBALS['phpgw']->msg->mailsvr_stream,$msg_array[$i]);
+				$subject = $GLOBALS['phpgw']->msg->get_subject($msg,'');
 				if (strlen($subject) > 65)
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
 				$linkData = array
 				(
-					'mailbox'	=> $phpgw->msg->prep_folder_out(''),
+					'mailbox'	=> $GLOBALS['phpgw']->msg->prep_folder_out(''),
 					'passed_id'	=> $msg_array[$i],
 					'startMessage'	=> 1,
 					'show_more'	=> 0
 				);
-				$portalbox->data[$i] = array($subject,$phpgw->link('/felamimail/read_body.php',$linkData));
+				$portalbox->data[$i] = array($subject,$GLOBALS['phpgw']->link('/felamimail/read_body.php',$linkData));
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
-			if ($phpgw->msg->get_mailsvr_supports_folders() == False)
+			if ($GLOBALS['phpgw']->msg->get_mailsvr_supports_folders() == False)
 			{
 				$switchbox_tablerow = '';
 			}
@@ -106,10 +106,10 @@
 				$listbox_show_unseen = False;
 				$switchbox_listbox = '<select name="mailbox" onChange="document.switchbox.submit()">'
 						. '<option>' . lang('switch current folder to') . ':'
-						. $phpgw->msg->all_folders_listbox('','','',$listbox_show_unseen)
+						. $GLOBALS['phpgw']->msg->all_folders_listbox('','','',$listbox_show_unseen)
 						. '</select>';
 				// make it another TR we can insert
-				$switchbox_action = $phpgw->link('/felamimail/index.php');
+				$switchbox_action = $GLOBALS['phpgw']->link('/felamimail/index.php');
 				$switchbox_tablerow = 
 					'<tr>'."\r\n"
 					.'<form name="switchbox" action="'.$switchbox_action.'" method="post">'."\r\n"
@@ -120,7 +120,7 @@
 					.'</form>'."\r\n"
 					.'</tr>'."\r\n";
 			}
-			$phpgw->msg->end_request();
+			$GLOBALS['phpgw']->msg->end_request();
 			// output the portalbox and (if applicable) the folders listbox below it
 			echo '<!-- start Mailbox info -->'."\r\n"
 			.'<tr>'."\r\n"
