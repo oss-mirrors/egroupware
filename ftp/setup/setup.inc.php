@@ -18,6 +18,13 @@
 	$setup_info['ftp']['app_order'] = 25;
 	$setup_info['ftp']['enable']    = 1;
 
+	$setup_info['ftp']['author'] = 'Joseph Engo';
+	$setup_info['ftp']['license']  = 'GPL';
+	$setup_info['ftp']['description'] =
+		'FTP client.';
+	$setup_info['ftp']['maintainer'] = 'phpGW Core';
+	$setup_info['ftp']['maintainer_email'] = 'ceb@phpgwroupware.org<br>jengo@phpgroupware.org<br>milosch@phpgroupware.org<br>seek3r@phpgroupware.org<br>skeeter@phpgroupware.org';
+
 	/* Dependencies for this app to work */
 	$setup_info['ftp']['depends'][] = array(
 		'appname'  => 'phpgwapi',

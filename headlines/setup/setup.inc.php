@@ -18,6 +18,13 @@
 	$setup_info['headlines']['app_order'] = 19;
 	$setup_info['headlines']['enable']    = 1;
 
+	$setup_info['headlines']['author'] = 'Mark Peters';
+	$setup_info['headlines']['license']  = 'GPL';
+	$setup_info['headlines']['description'] =
+		'Read news site headlines.';
+	$setup_info['headlines']['maintainer'] = 'Mark Peters<br>Joseph Engo';
+	$setup_info['headlines']['maintainer_email'] = 'skeeter@phpgroupware.org<br>jengo@phpgroupware.org';
+
 	/* The tables this app creates */
 	$setup_info['headlines']['tables']    = array(
 		'phpgw_headlines_sites',
