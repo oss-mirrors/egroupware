@@ -49,8 +49,8 @@
 	<tr>
 		<td>{lang_start_time}:</td>
 		<td>
-			<input type="text" name="shour" value="{shour}" size=3 maxlength=2>
-			<input type="text" name="smin" value="{smin}" size=3 maxlength=2>
+			<input type="text" name="shour" value="{shour}" size="3" maxlength="2">
+			<input type="text" name="smin" value="{smin}" size="3" maxlength="2">
 			&nbsp;{sradio}
 		</td>
 	</tr>

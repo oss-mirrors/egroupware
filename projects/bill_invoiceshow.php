@@ -29,7 +29,7 @@
 	if (isset($phpgw_info['user']['preferences']['projects']['tax']) && (isset($phpgw_info['user']['preferences']['common']['currency']) && (isset($phpgw_info['user']['preferences']['projects']['abid']) && (isset($phpgw_info['user']['preferences']['common']['country'])))))
 	{
 		$tax = $phpgw_info['user']['preferences']['projects']['tax'];
-		$tax = ((float)$tax);
+		$tax = format_tax($tax);
 		$taxpercent = ($tax/100);
 		$currency = $phpgw_info['user']['preferences']['common']['currency'];
 		$t->set_var('error','');
@@ -67,12 +67,12 @@
 	$t->set_var('lang_descr',lang('Job description'));
 	$t->set_var('currency',$currency);
 	$t->set_var('lang_sum',lang('Sum'));
-	$t->set_var('lang_per',lang('per'));
+	$t->set_var('lang_per',lang('per workunit'));
 	$t->set_var('lang_mwst',lang('tax'));
-	$t->set_var('lang_netto',lang('net'));
+	$t->set_var('lang_netto',lang('Sum net'));
+	$t->set_var('lang_percent',lang('%'));
 
-	$phpgw->db->query("SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,phpgw_p_invoice.sum as sum_netto, "
-					. "round(sum*$taxpercent,2) as sum_tax,round(sum*(1+$taxpercent),2) as sum_sum,"
+	$phpgw->db->query("SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,phpgw_p_invoice.sum, "
 					. "phpgw_p_projects.title FROM phpgw_p_invoice,phpgw_p_projects WHERE "
 					. "phpgw_p_invoice.id='$invoice_id' AND phpgw_p_invoice.project_id=phpgw_p_projects.id");
 	$phpgw->db->next_record();
@@ -113,18 +113,13 @@
 	$title = $phpgw->strip_html($phpgw->db->f('title'));
 	if (! $title) { $title  = '&nbsp;'; }
 	$t->set_var('title',$title);
-	$t->set_var('sum_netto',$phpgw->db->f('sum_netto'));
-	$t->set_var('tax_percent',$taxpercent);
-	$t->set_var('sum_tax',$phpgw->db->f('sum_tax'));
-	$t->set_var('sum_sum',$phpgw->db->f('sum_sum'));
-
-	$sum_netto = $phpgw->db->f('sum_netto');
+	$sum = $phpgw->db->f('sum');
+	$t->set_var('tax_percent',$taxpercent*100);
 
 	$pos = 0;
 	$sum = 0;
-	$phpgw->db->query("SELECT ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae) as aes,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,"
-					. "phpgw_p_hours.billperae*(ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae)) as sumpos,"
-					. "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_invoicepos "
+	$phpgw->db->query("SELECT phpgw_p_hours.minutes,phpgw_p_hours.minperae,phpgw_p_hours.hours_descr,phpgw_p_hours.billperae,"
+					. "phpgw_p_hours.billperae,phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_invoicepos "
 					. "WHERE phpgw_p_invoicepos.hours_id=phpgw_p_hours.id AND phpgw_p_invoicepos.invoice_id='$invoice_id' "
 					. "AND phpgw_p_hours.activity_id=phpgw_p_activities.id");
 
@@ -147,22 +142,36 @@
 			$hours_dateout = $phpgw->common->show_date($hours_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 		}
 
+		if ($phpgw->db->f('minperae') != 0)
+		{
+			$aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae'));
+		}
+
+		$sumpos = $phpgw->db->f('billperae')*$aes;
+
 		$t->set_var('hours_date',$hours_dateout);
-		$t->set_var('aes',$phpgw->db->f('aes'));
+		$t->set_var('aes',$aes);
 		$act_descr = $phpgw->strip_html($phpgw->db->f('descr'));                                                                                                                               
 		if (! $act_descr)  $act_descr  = '&nbsp;';
 		$t->set_var('act_descr',$act_descr);
 		$t->set_var('billperae',$phpgw->db->f('billperae'));
-		$t->set_var('sumperpos',$phpgw->db->f('sumpos'));
-		$sum += $phpgw->db->f('sumpos');
+		$t->set_var('sumperpos',$sumpos);
+
 		$hours_descr = $phpgw->strip_html($phpgw->db->f('hours_descr'));
 		if (! $hours_descr) { $hours_descr  = '&nbsp;'; }
 		$t->set_var('hours_descr',$hours_descr);
 
+        $sum_netto += $sumpos;
 		$t->parse('list','invoicepos_list',True);
 	}
 
-	if($sum==$sum_netto) { $t->set_var('error_hint',''); }
+	$sum_tax = round($sum_netto*$taxpercent,2);
+	$t->set_var('sum_netto',sprintf("%01.2f",$sum_netto));
+	$t->set_var('sum_tax',$sum_tax);
+	$sum_sum = $sum_tax + $sum_netto;
+	$t->set_var('sum_sum',sprintf("%01.2f",$sum_sum));
+
+	if($sum != $sum_netto) { $t->set_var('error_hint',''); }
 	else { $t->set_var('error_hint',lang('Error in calculation sum does not match')); } 
 
 	$t->parse('out','invoice_list_t',True);

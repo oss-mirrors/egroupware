@@ -67,12 +67,6 @@
 		{ 
 			$phpgw->db->query("UPDATE phpgw_p_invoice set num='$invoice_num',date='$date',customer='$customer' WHERE id='$invoice_id'");
 
-/*	$db2->query("SELECT hours_id FROM phpgw_p_invoicepos WHERE invoice_id=$invoice_id");
-		while ($db2->next_record())
-		{
-			$phpgw->db->query("UPDATE phpgw_p_hours SET status='done' WHERE id=".$db2->f('hours_id'));
-		} */
-
 			$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'");
 			while($select && $entry=each($select))
 			{
@@ -232,7 +226,7 @@
 	}
 	$t->set_var('sum_sum',sprintf("%01.2f",$summe));
 	$t->set_var('sum_aes',$sumaes);
-	$t->set_var('title_netto',lang('net'));
+	$t->set_var('title_netto',lang('Sum net'));
 
 // ----------------------------- na_list ------------------------------------
 

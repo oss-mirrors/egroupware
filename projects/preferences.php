@@ -46,6 +46,7 @@
 	$t->set_var('lang_action',lang('Project preferences'));
 	$t->set_var('lang_select_tax',lang('Select tax for workhours'));
 	$t->set_var('lang_select',lang('Select per button !'));
+	$t->set_var('lang_procent',lang('%'));
 
 	$tax = $phpgw_info['user']['preferences']['projects']['tax'];
 	$t->set_var('tax',$tax);
@@ -66,12 +67,12 @@
 	}
 	else
 	{
-		$t->set_var('abid',$abid);
 		$t->set_var('name',$name);
 	}
 
-	$t->set_var('lang_editsubmitb',lang('Edit'));
+	$t->set_var('abid',$abid);
+
+	$t->set_var('lang_edit',lang('Edit'));
 	$t->pparse('out','prefs');
 	$phpgw->common->phpgw_footer();
 ?>
-

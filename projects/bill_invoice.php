@@ -71,22 +71,21 @@
 			$phpgw->db->next_record();
 			$invoice_id = $phpgw->db->f('id');
 
-/*	$db2->query("SELECT hours_id FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'");
-	while ($db2->next_record()) {
-	$phpgw->db->query("UPDATE phpgw_p_hours SET status='done' WHERE id='" . $db2->f("hours_id") . "'");
-	} 
-	$phpgw->db->query("DELETE FROM phpgw_p_invoicepos WHERE invoice_id='$invoice_id'"); */
-
 			while($select && $entry=each($select))
 			{
 				$phpgw->db->query("INSERT INTO phpgw_p_invoicepos (invoice_id,hours_id) VALUES ('$invoice_id','$entry[0]')");
 				$phpgw->db->query("UPDATE phpgw_p_hours SET status='billed' WHERE id='$entry[0]'");
 			}
 
-			$phpgw->db->query("SELECT sum(billperae*(minutes/minperae)) as sum FROM phpgw_p_hours,phpgw_p_invoicepos "
+			$phpgw->db->query("SELECT billperae,minutes,minperae FROM phpgw_p_hours,phpgw_p_invoicepos "
 							."WHERE phpgw_p_invoicepos.invoice_id='$invoice_id' AND phpgw_p_hours.id=phpgw_p_invoicepos.hours_id");
-			$phpgw->db->next_record();
-			$db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $phpgw->db->f('sum') . ",2) WHERE id='$invoice_id'");
+			while ($phpgw->db->next_record())
+			{
+				$aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae'));
+				$sum = $phpgw->db->f('billperae')*$aes;
+				$sum_sum += $sum;
+			}
+			$db2->query("UPDATE phpgw_p_invoice SET sum=round(" . $sum_sum . ",2) WHERE id='$invoice_id'");
 		}
 	}
 	if ($errorcount) { $t->set_var('message',$phpgw->common->error_list($error)); }
@@ -241,7 +240,7 @@
 			$aes = ceil($phpgw->db->f('minutes')/$phpgw->db->f('minperae'));
 		}
 		$sumaes += $aes;
-		$summe += (float)($phpgw->db->f('billperae')*$aes);
+		$summe += $phpgw->db->f('billperae')*$aes;
 
 // -------------------- declaration for list records ---------------------------
 
@@ -252,7 +251,7 @@
 					'start_date' => $start_dateout,
 							'aes' => $aes,
 						'billperae' => $phpgw->db->f('billperae'),
-							'sum' => sprintf ("%01.2f",(float)$phpgw->db->f('billperae')*$aes)));
+							'sum' => sprintf ("%01.2f",$phpgw->db->f('billperae')*$aes)));
 
 		if ($phpgw->db->f('status') == 'billed')
 		{
@@ -271,7 +270,7 @@
 	}
 	$t->set_var('sum_sum',sprintf("%01.2f",$summe));
 	$t->set_var('sum_aes',$sumaes);
-	$t->set_var('title_netto',lang('net'));
+	$t->set_var('title_netto',lang('Sum net'));
 
 	$t->set_var('invoice','<input type="submit" name="Invoice" value="' . lang('Create invoice') . '">');
 

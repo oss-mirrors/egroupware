@@ -128,4 +128,18 @@
 
 		return $prefix . $max;
 	}
+
+	function format_tax($tax = '')
+	{
+		$comma = strrpos($tax,',');
+		if (is_string($comma) && !$comma)
+		{
+			$newtax = $tax;
+		}
+		else
+		{
+			$newtax = str_replace(',','.',$tax);
+		}
+		return $newtax;
+	}
 ?>

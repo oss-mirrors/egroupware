@@ -33,11 +33,11 @@
 		<td width="3%" bgcolor="{th_bg}" align="center">{h_lang_select}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_activity}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_hours_descr}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{sort_status}</td>
-		<td width="10%" bgcolor="{th_bg}" align="center">{sort_start_date}</td>
+		<td width="9%" bgcolor="{th_bg}" align="center">{sort_status}</td>
+		<td width="9%" bgcolor="{th_bg}" align="center">{sort_start_date}</td>
 		<td width="10%" bgcolor="{th_bg}" align="right">{sort_aes}</td>
-		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_billperae}</td>
-		<td width="7%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_sum}</td>
+		<td width="9%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_billperae}</td>
+		<td width="10%" bgcolor="{th_bg}" align="right">{currency}&nbsp;{sort_sum}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{h_lang_edithour}</td>
 	</tr>
 

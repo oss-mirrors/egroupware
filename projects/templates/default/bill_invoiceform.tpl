@@ -19,7 +19,7 @@
 </STYLE>
 </head>
 <body bgcolor="#FFFFFF">
-	<table width=70% border="0" cellpadding="3" cellspacing="3">
+	<table width=90% border="0" cellpadding="3" cellspacing="3">
 		<tr>
 			<td valign="bottom">{myaddress}</td>
 			<td align="right"><img src="doc/logo.jpg"></td>
@@ -48,13 +48,13 @@
 			<td>&nbsp;</td>
 		</tr>
 	</table><br><br><br>  
-	<table width="70%" border="0" cellspacing="3" cellpadding="3">
+	<table width="90%" border="0" cellspacing="3" cellpadding="3">
 		<tr>
       		<td width="8%" align="right"><font face="{font}">{lang_pos}</font></td>
-			<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
 			<td width="10%" align="center"><font face="{font}">{lang_hours_date}</font></td>
 			<td width="30%"><font face="{font}">{lang_descr}</font></td>
-			<td width="10%" align="right"><font face="{font}">{currency}&nbsp;{lang_per}</font></td>
+			<td width="10%" align="right"><font face="{font}">{lang_workunits}</font></td>
+			<td width="15%" align="right"><font face="{font}">{currency}&nbsp;{lang_per}</font></td>
 			<td width="10%" align="right"><font face="{font}">{currency}&nbsp;{lang_sum}</font></td>
 		</tr>
 
@@ -62,17 +62,17 @@
 
 		<tr>
 			<td align="right"><font face="{font}">{pos}</font></td>
-			<td align="right"><font face="{font}">{aes}</font></td>
 			<td align="center"><font face="{font}">{hours_date}</font></td>
 			<td><font face="{font}">{act_descr}</font></td>
+			<td align="right"><font face="{font}">{aes}</font></td>
 			<td align="right"><font face="{font}">{billperae}</font></td>
 			<td align="right"><font face="{font}">{sumperpos}</font></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td>&nbsp;</td>
 			<td><font face="{font}">{hours_descr}</font></td>
+			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 		</tr>
@@ -80,7 +80,7 @@
 <!-- END invoicepos_list -->
 
 	</table><br><br>
-	<table width="70%" border="0" cellspacing="3" cellpadding="3">
+	<table width="90%" border="0" cellspacing="3" cellpadding="3">
 		<tr>
 			<td width="8%">&nbsp;</td>
 			<td width="10%">&nbsp;</td>
@@ -94,7 +94,7 @@
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><font face="{font}">{currency}&nbsp;{lang_mwst}&nbsp;%&nbsp;{tax_percent}:</font></td>
+			<td><font face="{font}">{currency}&nbsp;{tax_percent}&nbsp;{lang_percent}&nbsp;{lang_mwst}:</font></td>
 			<td align="right"><font face="{font}">{sum_tax}</font></td>
 		</tr>
 		<tr>
@@ -113,7 +113,7 @@
 			<td><font face="{font}">{error_hint}</font></td>
 			<td>&nbsp;</td>
 		</tr>
-		<hr noshade width="70%" align="left" size="1"> 
+		<hr noshade width="90%" align="left" size="1"> 
 	</table>
 </body>
 </html>
