@@ -200,8 +200,8 @@
 	$GLOBALS['phpgw']->template->set_var('xpassword',$xpassword);
 	$GLOBALS['phpgw']->template->set_var('xserver_name',$xserver_name);
 	$GLOBALS['phpgw']->template->set_var('server_list',$is->formatted_list($server_id));
-	$GLOBALS['phpgw']->template->set_var('method_type',$xsessionid != lang('none') ? lang('App') . ' ' : lang('System') . ' ');
-	$GLOBALS['phpgw']->template->set_var('applist',$xsessionid != lang('none') ? 'for&nbsp;' . applist() : '');
+	$GLOBALS['phpgw']->template->set_var('method_type',(($xsessionid == lang('none')) || !$xsessionid) ? lang('System') . ' ' : lang('App') . ' ');
+	$GLOBALS['phpgw']->template->set_var('applist',(($xsessionid == lang('none')) || !$xsessionid) ? '' : 'for&nbsp;' . applist());
 
 	$GLOBALS['phpgw']->template->pfp('out','interserv');
 
