@@ -25,8 +25,8 @@
 		var $nextmatchs;
 		var $theme;
 		var $prefs;
-		//var $debug = True;
-		var $debug = False;
+		var $debug = 0;
+		//var $debug = 3;
 
 
 		function uipreferences()
@@ -64,6 +64,7 @@
 		*/
 		function create_prefs_block($feed_prefs='')
 		{
+			if ($this->debug > 0 ) { echo 'email.uipreferences.create_prefs_block: ENTERING, $this->bo->account_group: ['.$this->bo->account_group.']; $this->bo->acctnum: ['.$this->bo->acctnum.']<br>'; }
 			$return_block = '';
 			if(!$feed_prefs)
 			{
@@ -71,6 +72,7 @@
 			}
 			if (count($feed_prefs) == 0)
 			{
+				if ($this->debug > 0 ) { echo 'email.uipreferences.create_prefs_block: LEAVING early, $feed_prefs param was empty<br>'; }
 				return $return_block;
 			}
 			
@@ -82,22 +84,26 @@
 			&& (isset($this->bo->acctnum)))
 			{
 				// the existing prefs are for en ectra email account
-				//$actual_user_prefs = $this->prefs['ex_accounts'][$this->bo->acctnum];
+				if ($this->debug > 1) { echo 'email.uipreferences.create_prefs_block: ('.$this->bo->account_group.') get user prefs from DB by calling $GLOBALS[phpgw]->preferences->create_email_preferences(\'\', '.$this->bo->acctnum.')<br>'; }
+				//by calling this function with a specific acctnum, we get back fully procecessed prefs data from the DB
+				// for the that acctnum
 				$temp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences('', $this->bo->acctnum);
 				$actual_user_prefs = $temp_prefs['email'];
 			}
 			else
 			{
 				// default email account, top level data
+				if ($this->debug > 1) { echo 'email.uipreferences.create_prefs_block: ('.$this->bo->account_group.') for default account, top level prefs already processed<br>'; }
 				$actual_user_prefs = $this->prefs;
 			}
-			if ($this->debug) { echo 'email.bopreferences.create_prefs_block: $this->bo->account_group: ['.$this->bo->account_group.'] ; $this->bo->acctnum: ['.$this->bo->acctnum.'] ; $actual_user_prefs dump:<pre>'; print_r($actual_user_prefs); echo '</pre>'; }
+			if ($this->debug > 2) { echo 'email.uipreferences.create_prefs_block: $this->bo->account_group: ['.$this->bo->account_group.'] ; $this->bo->acctnum: ['.$this->bo->acctnum.'] ; $actual_user_prefs dump:<pre>'; print_r($actual_user_prefs); echo '</pre>'; }
 			
 			$c_prefs = count($feed_prefs);
 			// ---  Prefs Loops  ---
 			for($i=0;$i<$c_prefs;$i++)
 			{
 				$this_item = $feed_prefs[$i];
+				if ($this->debug > 2) { echo '** loop ['.$i.'] **: email.uipreferences.create_prefs_block: $this_item = $feed_prefs['.$i.'] = [<code>'.serialize($this_item).'</code>] ; $this_item DUMP <pre>'; print_r($this_item); echo '</pre>'; }
 				
 				// ---- do not show logic  ----
 				// do we show this for "default" account and/or "extra_accounts"
@@ -107,22 +113,26 @@
 					// we are not supposed to show this item for the default account, skip this pref item
 					// continue is used within looping structures to skip the rest of the current loop 
 					// iteration and continue execution at the beginning of the next iteration
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: skip showing this item because it is not applicable to the default account<br>'; }
 					continue;
 				}
 				elseif (($this->bo->account_group == 'extra_accounts')
 				&& (!stristr($this_item['accts_usage'] , 'extra_accounts')))
 				{
 					// we are not supposed to show this item for extra accounts, skip this pref item
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: skip showing this item because it is not applicable to the extra accounts<br>'; }
 					continue;
 				}
 				elseif (strstr($this_item['type'] , 'INACTIVE'))
 				{
 					// this item has been depreciated or otherwise no longer is being used
 					// we are not supposed to show this item, skip this pref item
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: skip showing this item because "INACTIVE" is in $this_item[type] : ['.$this_item['type'].']<br>'; }
 					continue;
 				}
 				
 				// ----  ok to show this, continue...  ----
+				if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block:  ... this item passed skip test, so it should be displayed ...<br>'; }
 				$back_color = $this->nextmatchs->alternate_row_color($back_color);
 				
 				$var = Array(
@@ -135,33 +145,47 @@
 				// this will be the HTTP_POST_VARS[*key*] key value, the "id" for the submitted pref item
 				if ($this->bo->account_group == 'default')
 				{
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: html post array $key for this item is $this_item[id]: '.$this_item['id'].'<br>'; }
 					$GLOBALS['phpgw']->template->set_var('pref_id', $this_item['id']);
 				}
 				else
 				{
-					// modify the items id in the html form so it contains info about thich acctnum it applies to
-					//$html_pref_id = '1['.$this_item['id'].']';
-					//$html_pref_id = '1['.$this_item['id'].']';
+					// modify the HTTP_POST_VARS[*key*] key in the html form so it contains info about thich acctnum it applies to
+					// we do this only for Extra Accounts, prefix the ""id" with the acctnum
+					// so the submitted prefs are then array based, wit the acctnum being the top level array item
+					// and the pref item "id"'s being child elements of that acctnum
 					$html_pref_id = $this->bo->acctnum.'['.$this_item['id'].']';
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: html post array $key for this item is $html_pref_id: '.$html_pref_id.'<br>'; }
 					$GLOBALS['phpgw']->template->set_var('pref_id', $html_pref_id);
 				}
-				
-				// DEBUG
-				// echo 'pref item loop ['.$i.']:  &nbsp; '; var_dump($this_item); echo '<br><br>';
 				
 				// we don't want to show a hidden value
 				if (!stristr($this_item['write_props'], 'hidden'))
 				{
-					$this_item_value = $actual_user_prefs[$this_item['id']];
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: obtain $this_item_value, because "hidden" is not in $this_item[write_props]<br>'; }
+					// "user strings" may have quotes and stuff that need to be encoded b4 we display it
+					if ($this_item['type'] == 'user_string')
+					{
+						if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: $this_item[type] == "user string" , before htmlspecialchars_encode: [<code>'.$actual_user_prefs[$this_item['id']].'</code>]<br>'; }
+						$this_item_value = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($actual_user_prefs[$this_item['id']]);
+						if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: $this_item[type] == "user string" , after htmlspecialchars_encode: [<code>'.$this_item_value.'</code>]<br>'; }
+					}
+					else
+					{
+						$this_item_value = $actual_user_prefs[$this_item['id']];
+						if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: $this_item[type] NOT a "user string" , so NO htmlspecialchars_encode required: $this_item_value: [<code>'.$this_item_value.'</code>]<br>'; }
+					}
 				}
 				else
 				{
 					// if the data is hidden (ex. a password), we do not show the value (obviously)
+					if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: HIDDEN $this_item_value should be empty string, this "hidden" is in $this_item[write_props]<br>'; }
 					$this_item_value = '';
 					// tell user we are hiding the value (that's whay the box is empty)
 					$prev_lang_blurb = $GLOBALS['phpgw']->template->get_var('lang_blurb');
 					$GLOBALS['phpgw']->template->set_var('lang_blurb', $prev_lang_blurb.'&nbsp('.lang('hidden').')');
 				}
+				if ($this->debug > 1) { echo ' * email.uipreferences.create_prefs_block: after processing, $this_item_value: [<code>'.serialize($this_item_value).'</code>] ; $this_item DUMP <pre>'; print_r($this_item); echo '</pre>'; }
 				
 				// ** possible widget are: **
 				// textarea
@@ -171,7 +195,7 @@
 				// checkbox
 				if ($this_item['widget'] == 'textarea')
 				{
-					$this_item_value = $actual_user_prefs[$this_item['id']];
+					//$this_item_value = $actual_user_prefs[$this_item['id']];
 					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
 					$GLOBALS['phpgw']->template->parse('V_tr_textarea','B_tr_textarea');
 					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_textarea');	
@@ -243,6 +267,7 @@
 				// for each loop, add the finished widget row to the return_block variable
 				$return_block .= $done_widget;
 			}
+			if ($this->debug > 0 ) { echo 'email.uipreferences.create_prefs_block: LEAVING, returning $return_block if widgets<br>'; }
 			return $return_block;
 		}
 		
@@ -255,7 +280,10 @@
 		function preferences()
 		{
 			// this tells "create_prefs_block" that we are dealing with the default email account
+			if ($this->debug > 0) { echo 'email.uipreferences.preferences: ENTERING, this function *should* only be called for the default email account prefs submission<br>'; }
+			if ($this->debug > 1) { echo 'email.uipreferences.preferences: about to set $this->bo->account_group<br>'; }
 			$this->bo->account_group = 'default';
+			if ($this->debug > 1) { echo 'email.uipreferences.preferences: just set $this->bo->account_group to ['.$this->bo->account_group.']<br>'; }
 			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -296,14 +324,10 @@
 			$GLOBALS['phpgw']->template->set_var($var);
 			
 			// this will fill the $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays
+			if ($this->debug > 1) { echo 'email.uipreferences.preferences: calling $this->bo->init_available_prefs() to init $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays<br>'; }
 			$this->bo->init_available_prefs();			
 			
-			// DEBUG
-			if ($this->debug)
-			{
-				$this->bo->debug_dump_prefs();
-				//return;
-			}
+			if ($this->debug > 3) { echo 'email.uipreferences.preferences: initiated schema dump:'; $this->bo->debug_dump_prefs(); }
 			
 			// initialize a local var to hold the cumulative main block data
 			$prefs_ui_rows = '';
@@ -318,6 +342,7 @@
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
 			// generate Std Prefs HTML Block
+			if ($this->debug > 1) { echo 'email.uipreferences.preferences: about to generate the html for standard email prefs block<br>'; }
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->std_prefs);
 			
 			// blank row
@@ -332,6 +357,7 @@
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
 			// generate Custom Prefs HTML Block
+			if ($this->debug > 1) { echo 'email.uipreferences.preferences: about to generate the html for custom email prefs block<br>'; }
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->cust_prefs);
 			
 			// blank row
@@ -350,6 +376,7 @@
 			$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
 			
 			// output the template
+			if ($this->debug > 0) { echo 'email.uipreferences.preferences: LEAVING, about to output the template<br>'; }
 			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ui_out');
 		}
 		
@@ -362,10 +389,16 @@
 		function ex_accounts_edit()
 		{
 			// this tells "create_prefs_block" that we are dealing with the extra email accounts
+			if ($this->debug > 0) { echo 'email.uipreferences.ex_accounts_edit: ENTERING, this function *should* only be called for the EXTRA email account prefs submission<br>'; }
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: about to set $this->bo->account_group<br>'; }
 			$this->bo->account_group = 'extra_accounts';
-			// FIXME: need a real way to determine this
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: just set $this->bo->account_group to ['.$this->bo->account_group.']<br>'; }
+			
+			// obtain the acctnum for the extra email account we are dealing with here
 			$acctnum = $this->bo->obtain_ex_acctnum();
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: $this->bo->obtain_ex_acctnum() returns ['.serialize($acctnum).']<br>'; }
 			$this->bo->acctnum = $acctnum;
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: we just set $this->bo->acctnum to ['.serialize($this->bo->acctnum).']<br>'; }
 			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
@@ -417,14 +450,10 @@
 			$GLOBALS['phpgw']->template->set_var($var);
 			
 			// this will fill the $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: calling $this->bo->init_available_prefs() to init $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays<br>'; }
 			$this->bo->init_available_prefs();			
 			
-			// DEBUG
-			if ($this->debug)
-			{
-				$this->bo->debug_dump_prefs();
-				//return;
-			}
+			if ($this->debug > 3) { echo 'email.uipreferences.ex_accounts_edit: initiated schema dump:'; $this->bo->debug_dump_prefs(); }
 			
 			// initialize a local var to hold the cumulative main block data
 			$prefs_ui_rows = '';
@@ -444,6 +473,7 @@
 			// parse the block,
 			$GLOBALS['phpgw']->template->parse('V_tr_sec_title','B_tr_sec_title');
 			// get the parsed data and put into a local variable
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: about to generate the html for standard email prefs block<br>'; }
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			// add the finished widget row to the main block variable
 			$prefs_ui_rows .= $done_widget;
@@ -462,6 +492,7 @@
 			$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_sec_title');	
 			$prefs_ui_rows .= $done_widget;
 			// generate Custom Prefs HTML Block
+			if ($this->debug > 1) { echo 'email.uipreferences.ex_accounts_edit: about to generate the html for custom email prefs block<br>'; }
 			$prefs_ui_rows .= $this->create_prefs_block($this->bo->cust_prefs);
 			
 			// blank row
@@ -480,6 +511,7 @@
 			$GLOBALS['phpgw']->template->set_var('submit_btn_row', $submit_btn_row);
 			
 			// output the template
+			if ($this->debug > 0) { echo 'email.uipreferences.ex_accounts_edit: LEAVING, about to output the template<br>'; }
 			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ui_out');
 		}
 		

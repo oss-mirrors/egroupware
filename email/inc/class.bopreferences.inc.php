@@ -107,7 +107,7 @@
 		*/
 		function init_available_prefs()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences: call to init_available_prefs<br>'; }
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.init_available_prefs: ENTERING, use debug level 4 for a data dump on leaving<br>'; }
 			
 			$this->std_prefs = Array();
 			$i = 0;
@@ -406,6 +406,8 @@
 				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_folder"];',
 				'values'	=> array()
 			);
+			if ($this->debug_set_prefs > 3) { echo 'email.bopreferences.init_available_prefs: data dump: calling debug_dump_prefs<pre>';  $this->debug_dump_prefs(); }
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.init_available_prefs: LEAVING<br>'; }
 		}
 		
 		
@@ -762,14 +764,14 @@
 		*/
 		function preferences()
 		{
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences: entering preferences()<br>'; }
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences(): ENTERING<br>'; }
 			// establish all available prefs for email
+			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): about to call $this->init_available_prefs()<br>'; }
 			$this->init_available_prefs();
 			
 			// this will fill $this->args[] array with any submitted prefs args
+			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): about to call $this->grab_set_prefs()<br>'; }
 			$this->grab_set_prefs();
-			
-			if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: preferences(): just passed this->grab_set_prefs<br>'; }
 			
 			// ----  HANDLE SETING PREFERENCE   -------
 			if (isset($this->args[$this->submit_token]))
@@ -780,24 +782,25 @@
 				// constructor will initialize $GLOBALS['phpgw']->msg
 				
 				// ---  Process Standard Prefs  ---
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: preferences(): about to process Standard Prefs<br>'; }
+				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: about to process Standard Prefs<br>'; }
 				$this->process_submitted_prefs($this->std_prefs);
 				
 				// ---  Process Custom Prefs  ---
-				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: preferences(): about to process Custom Prefs<br>'; }
+				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: about to process Custom Prefs<br>'; }
 				if (isset($this->args['use_custom_settings']))
 				{
 					// custom settings are in use, process them
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: preferences(): custom prefs are in use<br>'; }
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: custom prefs are in use, calling $this->process_submitted_prefs($this->cust_prefs)<br>'; }
 					$this->process_submitted_prefs($this->cust_prefs);
 				}
 				else
 				{
 					// custom settings are NOT being used, DELETE them from the repository
 					$c_prefs = count($this->cust_prefs);			
-					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences: preferences(): custom prefs NOT in use, deleting them<br>'; }
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences: custom prefs NOT in use, deleting them<br>'; }
 					for($i=0;$i<$c_prefs;$i++)
 					{
+						if ($this->debug_set_prefs > 2) { echo ' *(loop)* email.bopreferences: preferences: deleting custom pref $this->cust_prefs['.$i.'][id] : ['.$this->cust_prefs[$i]['id'].']<br>'; }
 						$GLOBALS['phpgw']->preferences->delete('email',$this->cust_prefs[$i]['id']);
 					}
 				}
@@ -805,25 +808,42 @@
 				// DONE processing prefs, SAVE to the Repository
 				if ($this->debug_set_prefs > 1) 
 				{
-					echo 'email.bopreferences: *debug* skipping save_repository<br>';
+					echo 'email.bopreferences.preferences(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
 				}
 				else
 				{
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.preferences(): SAVING REPOSITORY<br>'; }
 					$GLOBALS['phpgw']->preferences->save_repository();
 				}
 				// end the email session
 				$GLOBALS['phpgw']->msg->end_request();
+				
 				// redirect user back to main preferences page
+				//if ($this->debug_set_prefs > 1) 
+				//{
+				//	echo 'email.bopreferences.preferences(): *debug* skipping Header redirection<br>';
+				//}
+				//else
+				//{
+				//	Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
+				//}
+				
+				// redirect user back to main preferences page
+				$take_me_to_url = $GLOBALS['phpgw']->link(
+											'/preferences/index.php');
+			
+				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
 				if ($this->debug_set_prefs > 1) 
 				{
-					echo 'email.bopreferences: *debug* skipping Header redirection<br>';
+					echo 'email.bopreferences.preferences(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
 				}
 				else
 				{
-					Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
+					if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.preferences: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
+					Header('Location: ' . $take_me_to_url);
 				}
 			}
-			
+				
 				// DEPRECIATED CODE follows, but do not delete yet, it has useful comments.
 				/*
 				// these are the standard (non-custom) email options
@@ -996,7 +1016,7 @@
 			$c_prefs = count($prefs_set);
 			if ($c_prefs == 0)
 			{
-				if ($this->debug_set_prefs > 0) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: empty array, no prefs set supplied, LEAVING<br>'; }
+				if ($this->debug_set_prefs > 0) { echo 'email: bopreferences: process_ex_accounts_submitted_prefs: LEAVING, empty array, no prefs set supplied<br>'; }
 				return False;
 			}
 			
@@ -1302,36 +1322,39 @@
 			if (!$actually_did_something)
 			{
 				// nothing happened above that requires saving the repository
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'; }
+				if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_edit(): nothing happened that requires save_repository, $actually_did_something='.serialize($actually_did_something).'<br>'; }
 			}
-			elseif ($this->debug_set_prefs > 0) 
+			elseif ($this->debug_set_prefs > 1) 
 			{
 				// we actually did something that requires saving repository, but are we in debug mode
-				echo 'email.bopreferences.ex_accounts_edit(): *debug* skipping save_repository<br>';
-				
+				echo 'email.bopreferences.ex_accounts_edit(): *debug* at ['.$this->debug_set_prefs.'] so skipping save_repository<br>';
 			}
 			else
 			{
 				// we actually did something that requires saving repository, and we have the go-ahead
+				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): SAVING REPOSITORY<br>'; }
 				$GLOBALS['phpgw']->preferences->save_repository();
 			}
+			
 			// end the email session
 			if (is_object($GLOBALS['phpgw']->msg))
 			{
 				$GLOBALS['phpgw']->msg->end_request();
 			}
+			
 			// redirect user back to main preferences page
-			if ($this->debug_set_prefs > 0) 
+			$take_me_to_url = $GLOBALS['phpgw']->link(
+										'/index.php',
+										'menuaction=email.uipreferences.ex_accounts_list');
+			
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit(): almost LEAVING, about to issue a redirect to:<br>'.$take_me_to_url.'<br>'; }
+			if ($this->debug_set_prefs > 1) 
 			{
-				echo 'email.bopreferences.ex_accounts_edit(): *debug* skipping Header redirection<br>';
+				echo 'email.bopreferences.ex_accounts_edit(): LEAVING, *debug* at ['.$this->debug_set_prefs.'] so skipping Header redirection to: ['.$take_me_to_url.']<br>';
 			}
 			else
 			{
-				$take_me_to_url = $GLOBALS['phpgw']->link(
-											'/index.php',
-											'menuaction=email.uipreferences.ex_accounts_list');
-				
-				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit: LEAVING with redirect to: ['.$take_me_to_url.']<br>'; }
+				if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_edit: LEAVING with redirect to: <br>'.$take_me_to_url.'<br>'; }
 				Header('Location: ' . $take_me_to_url);
 			}
 		}
@@ -1344,8 +1367,7 @@
 		*/
 		function ex_accounts_list()
 		{
-			
-			// ---- BEGIN EX_ACCOUNTS_LIST ----
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_list: ENTERING<br>'; }
 			
 			// list accounts, except "empty" ones (show "enabled" and "disabled"
 			$return_list = array();
@@ -1386,7 +1408,13 @@
 						$return_list[$next_pos]['go_there_href'] = '<a href="'.$return_list[$next_pos]['go_there_url'].'">'.lang('go').'</a>';
 					}
 					// html encode entities on the fullname so it's safe to display in the browser, and prefix with the acctnum
-					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname raw: <code>'.serialize($fullname).'</code><br>'; }
+					$fullname = $GLOBALS['phpgw']->msg->htmlspecialchars_decode($fullname);
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname B: <code>'.serialize($fullname).'</code><br>'; }
+					$fullname = $GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
+					if ($this->debug_set_prefs > 1) { echo 'email.bopreferences.ex_accounts_list: fullname C: <code>'.serialize($fullname).'</code><br>'; }
+					//$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$GLOBALS['phpgw']->msg->htmlspecialchars_encode($fullname);
+					$return_list[$next_pos]['display_string'] = '['.$this_acctnum.'] '.$fullname;
 					// control action links
 					$return_list[$next_pos]['edit_url'] = $GLOBALS['phpgw']->link(
 														'/index.php',
@@ -1402,7 +1430,7 @@
 				}
 			}
 			if ($this->debug_set_prefs > 2) { echo 'email.bopreferences.ex_accounts_list: returning $return_list[] : <pre>'; print_r($return_list); echo '</pre>'; }
-			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_list: LEAVING <br>'; }
+			if ($this->debug_set_prefs > 0) { echo 'email.bopreferences.ex_accounts_list: LEAVING, returning $return_list <br>'; }
 			return $return_list;
 		}
 		
