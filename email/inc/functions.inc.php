@@ -7,7 +7,12 @@
      $folder = (!$folder ? "INBOX" : $folder);
   }
 
-  $mailbox = $phpgw->msg->login($folder);
+  // Its better then them using a ton of PHP errors.
+  if (! $mailbox = $phpgw->msg->login($folder)) {
+     echo "<p><center><b>" . lang("There was an error tring to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
+        . "</b></center>";
+     exit;
+  }
   
   function decode_header_string($hed_str)
   {
