@@ -79,7 +79,8 @@
 		}
 
 		$GLOBALS['phpgw']->template->set_var('tts_lang_assignto', lang('assign to'));
-		$accounts = CreateObject('phpgwapi.accounts',$group_id);
+		$accounts = $groups;
+		$accounts->account_id = $group_id;
 		$account_list = $accounts->get_list('accounts');
 
 		$GLOBALS['phpgw']->template->set_var('tts_account_lid', 'none' );
