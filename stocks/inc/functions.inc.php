@@ -73,6 +73,7 @@
 		while (list($symbol,$name) = each($stocklist))
 		{
 			$symbollist[] = $symbol;
+			$symbollist_no_coding[] = str_replace('^', '\^', urldecode($symbol));
 		//	$symbol = rawurlencode($symbol);
 			$symbolstr .= $symbol;
 
@@ -83,7 +84,7 @@
 		}
 
 //		$regexp_stocks = '/(' . implode('|',$symbollist) . ')/';
-		$regexp_stocks = '/^\"(' . implode('|',$symbollist) . ')/';
+		$regexp_stocks = '/^\"(' . implode('|',$symbollist_no_coding) . ')/';
 
 		$url = 'http://finance.yahoo.com/d/quotes.csv?f=sl1d1t1c1ohgv&e=.csv&s=' . $symbolstr;
 		$lines = http_fetch($url,false,80,'');
@@ -116,7 +117,7 @@
 						$pchange = '+' . $pchange;
 					}
 
-					$name = $stocklist[$symbol];
+					$name = $stocklist[urlencode($symbol)];
 
 					if (! $name)
 					{

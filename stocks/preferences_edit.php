@@ -26,7 +26,7 @@
 	if($edit)
 	{
 		$GLOBALS['phpgw']->preferences->read_repository();
-		$GLOBALS['phpgw']->preferences->delete('stocks',urlencode(strtoupper($sym)));
+		$GLOBALS['phpgw']->preferences->delete('stocks',$sym);
 		$GLOBALS['phpgw']->preferences->change('stocks',urlencode(strtoupper($symbol)),urlencode($name));
 		$GLOBALS['phpgw']->preferences->save_repository(True);
 		$GLOBALS['phpgw']->redirect_link('/stocks/preferences.php');
