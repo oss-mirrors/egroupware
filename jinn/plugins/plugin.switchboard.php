@@ -27,7 +27,7 @@
    $this->plugins['switchboard']['name'] 			= 'switchboard';
    $this->plugins['switchboard']['title']			= 'Switchboard';
    $this->plugins['switchboard']['author']			= 'Pim Snel';
-   $this->plugins['switchboard']['version']			= '0.1';
+   $this->plugins['switchboard']['version']			= '0.2';
    $this->plugins['switchboard']['enable']			= 1;
    $this->plugins['switchboard']['screenshot']		= 'switchboard.png'; 
    $this->plugins['switchboard']['description']		= 'Switchboard with radio buttons.';
@@ -69,8 +69,10 @@
 			   $switch_tmp_arr=explode(':',$switch);
 			   list($option_name,$options_tmp) = $switch_tmp_arr;
 			   $option_arr=explode('/',$options_tmp);
+				
+			   $option_name=trim($option_name);
 
-			   if(trim($option_name))
+			   if($option_name)
 			   {
 				  $input.= '<tr><td>'.$option_name.':<input type="hidden" name="SWINAM'.$field_name.$option_name.'" value="'.$option_name.'"></td><td>';
 
@@ -78,7 +80,7 @@
 						foreach($option_arr as $option)
 						{ 
 						   unset($checked);
-						   if($val_arr[trim($option_name)]==$option)
+						   if($val_arr[$option_name]==$option)
 						   {
 							  $checked='checked="checked"'; 
 						   }
