@@ -94,9 +94,9 @@
         <td>&nbsp;</td>                                                                                                                                         
         <td>&nbsp;</td>                                                                                                                                         
         <td>&nbsp;</td>                                                                                                                                         
-        <td>{aerror}</td>                                                                                                                                         
+        <td>{error}</td>                                                                                                                                         
         <td>{error_hint}</td>                                                                                                
-        <td>{cerror}</td>                                                                                             
+        <td>&nbsp;</td>                                                                                             
       </tr>
    </table>
 </body>

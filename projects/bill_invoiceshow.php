@@ -24,25 +24,17 @@
 //  $taxpercent = 0.16;
 //  $eurtodm = 1.95583;
 
-  if (isset($phpgw_info["user"]["preferences"]["projects"]["tax"])) {                                                                                
-  $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];                                                                                 
-   $t->set_var("terror","");                                                                                                                                    
-   $taxpercent = ((int)$tax/100);
-   }                                                                                                                                                            
+  if (isset($phpgw_info["user"]["preferences"]["projects"]["tax"]) && (isset($phpgw_info["user"]["preferences"]["common"]["currency"]))) {                                                                                
+    $tax = $phpgw_info["user"]["preferences"]["projects"]["tax"];                                                                                 
+    $taxpercent = ((int)$tax/100);
+    $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
+    $t->set_var("error","");     
+     }
    else {                                                                                                                                                       
-  $t->set_var("terror",lang("please enter the tax in preferences"));                                                                                      
-  }
+    $t->set_var("error",lang("please select currency and tax in preferences"));
+    $taxpercent = ((int)0); 
+    }
 
-
-
-  if (isset($phpgw_info["user"]["preferences"]["common"]["currency"])) {
-  $currency = $phpgw_info["user"]["preferences"]["common"]["currency"];
-   $t->set_var("cerror","");
-   }
-   else {
-  $t->set_var("cerror",lang("please enter your currency in preferences"));
-  }
-   
 /*  if (isset($phpgw_info["user"]["preferences"]["projectbilling"]["address_id"])) {                                                                                                                  
   $address_id = $phpgw_info["user"]["preferences"]["projectbilling"]["address_id"];                                                                                                                   
    $t->set_var("aerror","");                                                                                                                                                                       
