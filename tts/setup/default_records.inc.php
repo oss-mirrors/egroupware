@@ -28,7 +28,7 @@
 	);
 	foreach($states as $state => $desc)
 	{
-		$oProc->query("insert into phpgw_tts_states(state_name,state_description) values('$state','$desc')");
+		$oProc->query("insert into phpgw_tts_states(state_name,state_description,state_initial) values('$state','$desc',".(int)($state=='NEW').')');
 		$states[$state] = $oProc->m_odb->get_last_insert_id('phpgw_tts_states','state_id');
 	}
 
