@@ -8,11 +8,11 @@
    
   <form method="POST" action="{action_url}">
    <table border="0" align="center" cellspacing="1" cellpadding="1">
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_show_new_updated}</td>
      <td><input type="checkbox" name="mainscreen_show_new_updated" {show_new_updated}></td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_defaultgroup}</td>
      <td>
       <select size="1" name="groupdefault">
@@ -20,7 +20,7 @@
       </select>
     </td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_defaultassignto}</td>
      <td>
        <select size="1" name="assigntodefault">
@@ -28,7 +28,7 @@
        </select>
     </td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_defaultpriority}</td>
      <td>
        <select size="1" name="prioritydefault">
@@ -36,7 +36,7 @@
        </select>
      </td>
     </tr>
-    <tr bgcolor="EEEEEE">
+    <tr bgcolor="#EEEEEE">
      <td>{lang_refreshinterval}</td>
      <td>
         <input name="refreshinterval" value="{refreshinterval}" size="60"></input>
