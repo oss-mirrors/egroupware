@@ -172,7 +172,9 @@
 				// I think the email needs to be sent out as if it were PLAIN text
 				// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $gt; 
 				// it's up to the endusers MUA to handle any htmlspecialchars
-				$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+				//$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+				// NOTE: I see NO reason to trim the LEFT part of the string, use RTRIM instead
+				$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
 				$body .= $this_line;
 			}
 			
@@ -244,6 +246,7 @@
 			
 		}
 		// ----  "the OLD WAY": Process Multiple Body Parts (if necessary)  of Fw or Re Body   -----
+		// IS THIS STILL USED ?????
 		elseif (!$msg_struct->parts)
 		{
 			$numparts = '1';
@@ -279,7 +282,9 @@
 							// I think the email needs to be sent out as if it were PLAIN text
 							// i.e. with NO ENCODED HTML ENTITIES, so use > instead of $rt; 
 							// it's up to the endusers MUA to handle any htmlspecialchars
-							$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+							//$this_line = '>' . trim($body_array[$bodyidx]) ."\r\n";
+							// NOTE: I see NO reason to trim the LEFT part of the string, use RTRIM instead
+							$this_line = '>' . rtrim($body_array[$bodyidx]) ."\r\n";
 							$body .= $this_line;
 						}
 					}
@@ -298,8 +303,9 @@
 	else
 	{
 		// no var $phpgw->msg->msgnum  means we were not called by the reply, replyall, or forward
-		// i do NOT what page calls this page with the var mailto in the url
 		// this typically is only called when the user clicks on a mailto: link in an html document
+		// this behavior defines what your "default mail app" is, i.e. what mail app is called when
+		// the user clicks a "mailto:" link
 		if ($GLOBALS['phpgw']->msg->args['mailto'])
 		{
 			$to_box_value = substr($GLOBALS['phpgw']->msg->args['mailto'], 7, strlen($GLOBALS['phpgw']->msg->args['mailto']));
@@ -343,36 +349,39 @@
 		$send_btn_action = $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/send_message.php');
 	}
 	
-	$t->set_var('js_addylink',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'));
-	$t->set_var('form1_name','doit');
-	$t->set_var('form1_action',$send_btn_action);
-	$t->set_var('form1_method','POST');
-	$t->set_var('hidden1_name','return');
-	$t->set_var('hidden1_value',$GLOBALS['phpgw']->msg->prep_folder_out(''));
+	$tpl_vars = Array(
+		'js_addylink'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/addressbook.php'),
+		'form1_name'	=> 'doit',
+		'form1_action'	=> $send_btn_action,
+		'form1_method'	=> 'POST',
+		'hidden1_name'	=> 'return',
+		'hidden1_value'	=> $GLOBALS['phpgw']->msg->prep_folder_out(''),
 
-	$t->set_var('buttons_bgcolor',$GLOBALS['phpgw_info']['theme']['em_folder']);
-	$t->set_var('btn_addybook_type','button');
-	$t->set_var('btn_addybook_value',lang('addressbook'));
-	$t->set_var('btn_addybook_onclick','addybook();');
-	$t->set_var('btn_send_type','submit');
-	$t->set_var('btn_send_value',lang('send'));
+		'buttons_bgcolor'	=> $GLOBALS['phpgw_info']['theme']['em_folder'],
+		'btn_addybook_type'	=> 'button',
+		'btn_addybook_value'	=> lang('addressbook'),
+		'btn_addybook_onclick'	=> 'addybook();',
+		'btn_send_type'		=> 'submit',
+		'btn_send_value'	=> lang('send'),
 
-	$t->set_var('to_boxs_bgcolor',$GLOBALS['phpgw_info']['theme']['th_bg']);
-	$t->set_var('to_boxs_font',$GLOBALS['phpgw_info']['theme']['font']);
-	$t->set_var('to_box_desc',lang('to'));
-	$t->set_var('to_box_name','to');
-	// to_box_value set above
-	$t->set_var('to_box_value',$to_box_value);
-	$t->set_var('cc_box_desc',lang('cc'));
-	$t->set_var('cc_box_name','cc');
-	//$t->set_var('cc_box_value',$cc);
-	$t->set_var('cc_box_value',$cc_box_value);
-	$t->set_var('subj_box_desc',lang('subject'));
-	$t->set_var('subj_box_name','subject');
-	$t->set_var('subj_box_value',$subject);
-	$t->set_var('checkbox_sig_desc',lang('Attach signature'));
-	$t->set_var('checkbox_sig_name','attach_sig');
-	$t->set_var('checkbox_sig_value','true');
+		'to_boxs_bgcolor'	=> $GLOBALS['phpgw_info']['theme']['th_bg'],
+		'to_boxs_font'		=> $GLOBALS['phpgw_info']['theme']['font'],
+		'to_box_desc'		=> lang('to'),
+		'to_box_name'		=> 'to',
+		// to_box_value set above
+		'to_box_value'		=> $to_box_value,
+		'cc_box_desc'		=> lang('cc'),
+		'cc_box_name'		=> 'cc',
+		//'cc_box_value'		=> $cc,
+		'cc_box_value'		=> $cc_box_value,
+		'subj_box_desc'		=> lang('subject'),
+		'subj_box_name'		=> 'subject',
+		'subj_box_value'	=> $subject,
+		'checkbox_sig_desc'	=> lang('Attach signature'),
+		'checkbox_sig_name'	=> 'attach_sig',
+		'checkbox_sig_value'	=> 'true'
+	);
+	$t->set_var($tpl_vars);
 	if (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'])
 	&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['email_sig'] != ''))
 	{
@@ -382,11 +391,13 @@
 	{
 		$t->set_var('V_checkbox_sig','');
 	}
-	$t->set_var('attachfile_js_link',$GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'));
-	$t->set_var('attachfile_js_text',lang('Attach file'));
-	$t->set_var('body_box_name','body');
-	$t->set_var('body_box_value',$body);
-
+	$tpl_vars = Array(
+		'attachfile_js_link'	=> $GLOBALS['phpgw']->link('/'.$GLOBALS['phpgw_info']['flags']['currentapp'].'/attach_file.php'),
+		'attachfile_js_text'	=> lang('Attach file'),
+		'body_box_name'		=> 'body',
+		'body_box_value'	=> $body
+	);
+	$t->set_var($tpl_vars);
 	$t->pparse('out','T_compose_out');
 
 	$GLOBALS['phpgw']->msg->end_request();

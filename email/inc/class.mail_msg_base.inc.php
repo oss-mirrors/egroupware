@@ -1860,7 +1860,9 @@
 		$temparray = explode("\r\n",$out);
 		for ($i = 0; $i < count($temparray); $i++)
 		{
-			$temparray[$i] = trim($temparray[$i]);
+			//$temparray[$i] = trim($temparray[$i]);
+			// NOTE: I see NO reason to trim the LEFT part of the string, use RTRIM instead
+			$temparray[$i] = rtrim($temparray[$i]);
 		}
 		$out = implode("\r\n",$temparray);
 		
