@@ -24,7 +24,7 @@
 	$GLOBALS['phpgw_info']['flags']['enable_nextmatchs_class'] = True;
 	include('../header.inc.php');
 
-	$phpgw->historylog = createobject('phpgwapi.historylog','tts');
+	$GLOBALS['phpgw']->historylog = createobject('phpgwapi.historylog','tts');
 
 	$GLOBALS['phpgw']->template->set_file('index','index.tpl');
 	$GLOBALS['phpgw']->template->set_block('index', 'tts_title', 'tts_title');
@@ -177,8 +177,8 @@
 				$tr_color = $GLOBALS['phpgw_info']['theme']['th_bg']; /*"#CCCCCC";*/
 			}
 
-			$db2->query("select count(*) from phpgw_tts_views where view_id='" . $phpgw->db->f('ticket_id')
-				. "' and view_account_id='" . $phpgw_info['user']['account_id'] . "'",__LINE__,__FILE__);
+			$db2->query("select count(*) from phpgw_tts_views where view_id='" . $GLOBALS['phpgw']->db->f('ticket_id')
+				. "' and view_account_id='" . $GLOBALS['phpgw_info']['user']['account_id'] . "'",__LINE__,__FILE__);
 			$db2->next_record();
 
 			if ($db2->f(0))
@@ -211,11 +211,11 @@
 			$cat_name = $phpgw->categories->id2name($GLOBALS['phpgw']->db->f('ticket_category'));
 			$GLOBALS['phpgw']->template->set_var('row_category',$cat_name);
 
-			$GLOBALS['phpgw']->template->set_var('tts_t_assignedto', $GLOBALS['phpgw']->db->f('ticket_assignedto')?$phpgw->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')):lang('None'));
-			$GLOBALS['phpgw']->template->set_var('tts_t_user',$phpgw->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
+			$GLOBALS['phpgw']->template->set_var('tts_t_assignedto', $GLOBALS['phpgw']->db->f('ticket_assignedto')?$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto')):lang('None'));
+			$GLOBALS['phpgw']->template->set_var('tts_t_user',$GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_owner')));
 
-			$history_values = $phpgw->historylog->return_array(array(),array('O'),'','',$phpgw->db->f('ticket_id'));
-			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$phpgw->common->show_date($history_values[0]['datetime']));
+			$history_values = $GLOBALS['phpgw']->historylog->return_array(array(),array('O'),'','',$GLOBALS['phpgw']->db->f('ticket_id'));
+			$GLOBALS['phpgw']->template->set_var('tts_t_timestampopened',$GLOBALS['phpgw']->common->show_date($history_values[0]['datetime']));
 
 			if ($GLOBALS['phpgw']->db->f('ticket_status') == 'C')
 			{
