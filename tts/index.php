@@ -142,7 +142,7 @@
 //	$GLOBALS['phpgw']->template->set_var('tts_head_dateopened', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'',$order,'/tts/index.php',lang('Date opened')));
 	if ($filter != 'viewopen')
 	{
-		$GLOBALS['phpgw']->template->set_var('tts_head_dateclosed', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'t_timestamp_closed',$order,'/tts/index.php',lang('Status/Date closed')));
+		$GLOBALS['phpgw']->template->set_var('tts_head_dateclosed', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_status',$order,'/tts/index.php',lang('Status/Date closed')));
 		$GLOBALS['phpgw']->template->parse('tts_head_status','tts_head_ifviewall',false);
 	}
 	$GLOBALS['phpgw']->template->set_var('tts_head_subject', $GLOBALS['phpgw']->nextmatchs->show_sort_order($sort,'ticket_subject',$order,'/tts/index.php',lang('Subject')));
@@ -234,7 +234,7 @@
 //					$assigned_to = $GLOBALS['phpgw']->accounts->id2name($GLOBALS['phpgw']->db->f('ticket_assignedto'));
 //				}
 //				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',$assigned_to);
-				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed','Open');
+				$GLOBALS['phpgw']->template->set_var('tts_t_timestampclosed',lang('Open'));
 				$GLOBALS['phpgw']->template->parse('tts_col_status','tts_col_ifviewall',False);
 			}
 			$GLOBALS['phpgw']->template->set_var('tts_t_subject', $GLOBALS['phpgw']->db->f('ticket_subject'));
