@@ -3225,6 +3225,7 @@ Array
 		added item will have its real "key=value" pair in the real place it should be AND also tacked on to 
 		one of the POSTed array items, where these items are strings. There were a few places in this function 
 		that required cleaning the POSTed data of these 2 types of bugs. 
+		FURTHER UPDATE these 2 bugs in php have been fixed so we commented out those bug workarounds.
 		@author Angles
 		@access Public
 		*/
@@ -3292,6 +3293,10 @@ Array
 					*/
 					if (strstr($key, '_fake_uri'))
 					{
+						// right now these are possible "_fake_uri" items:
+						// fldball_fake_uri
+						// to_fldball_fake_uri
+						// source_fldball_fake_uri
 						if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: grab_class_args_gpc('.__LINE__.'): FOUND "_fake_uri" token in HTTP_POST_VARS['.$key.'] = ['.$this->ref_POST[$key].'] <br>'); }
 						$embedded_data = array();
 						$embedded_data = $this->decode_fake_uri($this->ref_POST[$key]);
@@ -3705,7 +3710,7 @@ Array
 		Note these are NOT the "internal args". 
 		@param $acctnum INTEGER used to querey various already-set args
 		@result string, most legitimate folder value that was obtained 
-		@discussion The return folder string MUST *NOT* BE URLENCODED. 
+		@discussion The return folder string MUST *NOT* BE URLENCODED.  
 		It is an artifact of this apps development that this arg exists and is not urlencoded. 
 		Once upon a time, any one page view could be associated with ONLY one folder at a time. 
 		This is no longer a limitation, but a VAST majority of the time it is true that 
@@ -3738,6 +3743,18 @@ Array
 		Usually we make the transformation into an array for ease of use inside a function, 
 		but the string URI syntax takes up less memory when dealing with huge message lists, and 
 		takes up less space cached in a database as compared to a serialized array with the same data.
+		AND NOW we also do the VERY IMPORTANT job of VERIFYING the folder name against 
+		the known folder list HENCE this function must be called either (i) after a login at least to INBOX, or 
+		(ii) after obtaining from cache all data you would get from a login, such as said folder list.
+		THE VERIFICATION is to (a) urldecode the folder item, so no encoded js commands slip in, 
+		then (b) do the lookup so we only use actual folder names, THESE 2 things are done by a 
+		call to "prep_folder_in" , then  (c) re-urlencode the result and put back into the fldball or msgball it came from, 
+		because fldball and msgball folder elements must be verified too, and the want the folder name element 
+		to be urlencoded so we put it back there urlencoded, then (d) urldecode it because the legacy 
+		quirk requires a urldecoded return from this function, eventhough the ball data folder 
+		element needs to stay urlencoded. Currently the ball data verified is fldball and msgball, 
+		the other possible areas of ball data, such as folder naming, message moving, need to be 
+		verified too, but not here, you must do that later.
 		@author Angles
 		@access Private
 		*/
@@ -3746,6 +3763,8 @@ Array
 			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: get_best_folder_arg: ENTERING <br>'); }
 			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: get_best_folder_arg: param $acctnum ['.$acctnum.'] ; parm $args_array[] DUMP:', $args_array); }
 			if ($this->debug_args_input_flow > 2) { $this->dbug->out('mail_msg: get_best_folder_arg: param $acctnum ['.$acctnum.'] ; parm $got_args[] DUMP:', $got_args); }
+			// initialize
+			$processed_folder_arg = '';
 			// we SHOULD have already obtained a valid acctnum before calling this function
 			if (!(isset($acctnum))
 			|| ((string)$acctnum == ''))
@@ -3755,8 +3774,6 @@ Array
 			//  ----  Get Folder Value  ----
 			// ORDER OF PREFERENCE for pre-processed "folder" input arg
 			// (1) $args_array, IF FILLED, overrides any previous data or any other data source, look for these:
-			//	$args_array['msgball']['folder']
-			//	$args_array['fldball']['folder']
 			//	$args_array['folder']
 			// (2) GPC ['msgball']['folder']
 			// (3) GPC ['fldball']['folder']
@@ -3775,11 +3792,37 @@ Array
 			{
 				$input_folder_arg = $this->get_arg_value('["msgball"]["folder"]');
 				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: $input_folder_arg chooses $this->get_arg_value(["msgball"]["folder"]): ['.$input_folder_arg.']<br>'); }
+				//VERIFY
+				$processed_folder_arg = $this->prep_folder_in($input_folder_arg, $this->get_arg_value('["msgball"]["acctnum"]'));
+				// when putting back into the ball data we need to urlencode it because folder element in ball data stays urlencoded until the last monent
+				$processed_folder_arg = urlencode($processed_folder_arg);
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg('.__LINE__.'): after "prep_folder_in", $processed_folder_arg : ['.$processed_folder_arg.']<br>'); }
+				// both these should be urlencoded so this is apples to apples comparison
+				if ($processed_folder_arg != $input_folder_arg)
+				{
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg('.__LINE__.'): $processed_folder_arg != $input_folder_arg so about to call $this->set_arg_value(["msgball"]["folder"], $processed_folder_arg) <br>'); }
+					$this->set_arg_value('["msgball"]["folder"]', $processed_folder_arg);
+				}
+				// now that is done, urldecode because a legacy quirk requires a urldecded return from this function
+				$processed_folder_arg = urldecode($processed_folder_arg);
 			}
 			elseif ($this->get_isset_arg('["fldball"]["folder"]'))
 			{
 				$input_folder_arg = $this->get_arg_value('["fldball"]["folder"]');
 				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: $input_folder_arg chooses $this->get_arg_value(["fldball"]["folder"]): ['.$input_folder_arg.']<br>'); }
+				//VERIFY
+				$processed_folder_arg = $this->prep_folder_in($input_folder_arg, $this->get_arg_value('["fldball"]["acctnum"]'));
+				// when putting back into the ball data we need to urlencode it because folder element in ball data stays urlencoded until the last monent
+				$processed_folder_arg = urlencode($processed_folder_arg);
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg('.__LINE__.'): after "prep_folder_in", $processed_folder_arg : ['.$processed_folder_arg.']<br>'); }
+				// both these should be urlencoded so this is apples to apples comparison
+				if ($processed_folder_arg != $input_folder_arg)
+				{
+					if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg('.__LINE__.'): $processed_folder_arg != $input_folder_arg so about to call $this->set_arg_value(["fldball"]["folder"], $processed_folder_arg) <br>'); }
+					$this->set_arg_value('["fldball"]["folder"]', $processed_folder_arg);
+				}
+				// now that is done, urldecode because a legacy quirk requires a urldecded return from this function
+				$processed_folder_arg = urldecode($processed_folder_arg);
 			}
 			elseif ($this->get_isset_arg('delmov_list'))
 			{
@@ -3812,9 +3855,17 @@ Array
 			}
 			// ---- Prep the Folder Name (remove encodings, verify it's long name (with namespace)
 			// folder prepping does a lookup which requires a folder list which *usually* (unless caching) requires a login
-			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'); }
-			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: get_best_folder_arg: LEAVING, returning $processed_folder_arg value: ['.$processed_folder_arg.']<br>'); }
+			if ($processed_folder_arg != '')
+			{
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: we already obtained above a $processed_folder_arg ['.$processed_folder_arg.']<br>'); }
+			}
+			else
+			{
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: about to issue $processed_folder_arg = $this->prep_folder_in('.$input_folder_arg.')<br>'); }
+				$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
+			}
+			if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: get_best_folder_arg: remember legacy quirk says return value from here should be urdecoded, eventhough msgball and fldball keep folder element urlencoded usually<br>'); }
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: get_best_folder_arg: LEAVING, returning $processed_folder_arg value: ['.$processed_folder_arg.'] remember legacy quirk says return value from here should be urdecoded, eventhough msgball and fldball keep folder element urlencoded usually<br>'); }
 			return $processed_folder_arg;
 		}	
 		

@@ -1447,6 +1447,7 @@
 					$decision_to_login = False;
 					
 					// get a few more things that we would otherwise get during the login code (which we'll be skiping)
+					// "get_best_folder_arg" should also verify the folder name and fix any fldball or msgball if unverified.
 					$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
 					if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): session extreme caching IS in use, Login may NOT occur, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 					$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
@@ -1471,6 +1472,7 @@
 				$decision_to_login = False;
 				
 				// get a few more things that we would otherwise get during the login code (which we'll be skiping)
+				// "get_best_folder_arg" should also verify the folder name and fix any fldball or msgball if unverified.
 				$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): we are NOT allowed to log in (see code this line) but we still need to get this info, so about to issue: $this->set_arg_value("folder", '.$processed_folder_arg.', '.serialize($acctnum).')<br>'); }
 				$this->set_arg_value('folder', $processed_folder_arg, $acctnum);
@@ -1640,6 +1642,7 @@
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): <b> *** FIND FOLDER VALUE *** </b><br>'); }
 				// get best available, most legit, folder value that we can find, and prep it in
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): about to call: "get_best_folder_arg($args_array, $got_args, $acctnum(='.$acctnum.'))"<br>'); }
+				// "get_best_folder_arg" should also verify the folder name and fix any fldball or msgball if unverified.
 				$processed_folder_arg = $this->get_best_folder_arg($args_array, $got_args, $acctnum);
 				if ($this->debug_logins > 1) { $this->dbug->out('mail_msg.begin_request('.__LINE__.'): "get_best_folder_arg" returns $processed_folder_arg ['.htmlspecialchars(serialize($processed_folder_arg)).']<br>'); }
 				
@@ -2421,7 +2424,8 @@
 		delimiter can differ from server to server, although most typically the name space is "INBOX" and the 
 		delimiter is a period. NOTE this DOES A LOOKUP and returns what was found there that 
 		reasonable matches param $feed_folder, the return is in FOLDER LONG form as directly supplied 
-		by the server itself to the lookup list. 
+		by the server itself to the lookup list. IF NO MATCH is found from the lookup, we default 
+		to returning INBOX.
 		*/
 		function prep_folder_in($feed_folder, $acctnum='')
 		{
@@ -2460,7 +2464,17 @@
 			// particularly if the folder has spaces and is included in the URI, then a + will be where the speces are
 			$feed_folder = urldecode($feed_folder);
 			$prepped_folder_in = $this->folder_lookup('', $feed_folder, $acctnum);
-			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: prep_folder_in: LEAVING , returning $prepped_folder_in: ['.$prepped_folder_in.'] again with htmlspecialchars(): ['.htmlspecialchars($prepped_folder_in).']<br>'); }
+			// $prepped_folder_in will be EMPTY if the folder failed to match a known folder
+			if (trim($prepped_folder_in) != '')
+			{
+				if ($this->debug_args_input_flow > 1) { $this->dbug->out('mail_msg: prep_folder_in('.__LINE__.'): folder_lookup obtained a match and returned $prepped_folder_in ['.htmlspecialchars($prepped_folder_in).'] <br>'); }
+			}
+			else
+			{
+				if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: prep_folder_in('.__LINE__.'): folder_lookup failed to find a match, force $prepped_folder_in = "INBOX" <br>'); }
+				$prepped_folder_in = 'INBOX';
+			}
+			if ($this->debug_args_input_flow > 0) { $this->dbug->out('mail_msg: prep_folder_in('.__LINE__.'): LEAVING , returning $prepped_folder_in: ['.$prepped_folder_in.'] again with htmlspecialchars(): ['.htmlspecialchars($prepped_folder_in).']<br>'); }
 			return $prepped_folder_in;
 		}
 		

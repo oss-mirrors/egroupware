@@ -1793,7 +1793,9 @@ $msg_headers->udate = $new_time;
 					}
 					
 					// warn for typically BAD attachments bat, inf, pif, con, reg, vbs, scr
-					if (preg_match('/^.*\.(bat|inf|pif|com|exe|reg|vbs|scr)$/', $this->part_nice[$i]['ex_part_name']))
+					//if (preg_match('/^.*\.(bat|inf|pif|com|exe|reg|vbs|scr)$/', $this->part_nice[$i]['ex_part_name']))
+					// ADD hta and cmd extensions to this list
+					if (preg_match('/^.*\.(bat|inf|pif|com|exe|reg|vbs|scr|hta|cmd)$/', $this->part_nice[$i]['ex_part_name']))
 					{
 						if ($this->debug > 2) { $this->msg->dbug->out('email.bomessage.message_data('.__LINE__.'): d_loop: * WARN attachment has NEFARIOUS filename extension, ex_part_name: '.$this->part_nice[$i]['ex_part_name'].'<br>'); }
 						//$this->part_nice[$i]['d_threat_level'] .= 'warn_attachment_name_DANGEROUS ';
