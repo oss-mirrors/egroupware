@@ -40,6 +40,6 @@
 	$soapclient = CreateObject('phpgwapi.soapclient',"http://services.xmethods.net:80/soap");
 	echo $soapclient->call("getQuote",array("symbol"=>$symbol),"urn:xmethods-delayed-quotes","urn:xmethods-delayed-quotes#getQuote");
 
-//	$soapclient = CreateObject('phpgwapi.soapclient',"http://milosch.dyndns.org/phpgroupware/soap/index.php");
+//	$soapclient = CreateObject('phpgwapi.soapclient','http://' . $HTTP_HOST . '/phpgroupware/soap.php');
+//	echo 'response: ' . $soapclient->call("hello",array($phpgw_info['server']['site_title']),"http://soapinterop.org/ilab","http://soapinterop.org/ilab#hello");
 //	echo $soapclient->call('echoString','hello',False,'echoString');
-//	echo $soapclient->call("addressbook_read_entry",array(1),"http://soapinterop.org/ilab","http://soapinterop.org/ilab#echoString");

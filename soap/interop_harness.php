@@ -119,10 +119,10 @@ function quickjump(dropdown) {
 <select onChange='quickjump(this)'>
 <option>Choose Server...
 	<?php
-	print isset($nserver) ? "<option value='$PHP_SELF?nserver=$nserver'>$nserver" : "";
+	print isset($nserver) ? '<option value="' . $phpgw->link('/soap/interop_harness.php','nserver=' . $nserver) . '">' . $nserver : "";
 	foreach($servers as $k => $v)
 	{
-		print "<option value='$PHP_SELF?nserver=$k'>$k\n";
+		echo '<option value="' . $phpgw->link('/soap/interop_harness.php','nserver=' . $k) . '">' . $k . "\n";
 	}
 	?>
 </select>

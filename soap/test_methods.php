@@ -13,16 +13,15 @@
 /* $Id$ */
 
 	$phpgw_info['flags'] = array(
-		'currentapp' => 'soap',
-		'noheader' => True,
+		'currentapp'  => 'soap',
+		'noheader'    => True,
 		'noappheader' => True,
-		'nonavbar'  => True
+		'nonavbar'    => True
 	);
 
 	include('../header.inc.php');
-	include('./vars.php');
 ?>
-	<script language="JavaScript">
+	<script language='JavaScript'>
 	<!--
 	function quickjump(dropdown) {
 		var i = dropdown.selectedIndex
@@ -32,44 +31,48 @@
 	</script>
 <?php
 	// get list of all endpoints from xmethods
-	$soapmsg = CreateObject('phpgwapi.soapmsg',"getAllEndpoints","","http://soapinterop.org/ilab");
+	$soapmsg = CreateObject('phpgwapi.soapmsg','getAllEndpoints','','http://soapinterop.org/ilab');
 	// invoke the client
-	$client = CreateObject('phpgwapi.soap_client',"http://www.xmethods.net/perl/soaplite.cgi");
+	$client = CreateObject('phpgwapi.soap_client','http://www.xmethods.net/perl/soaplite.cgi');
 	// send message and get response
-	if($return = $client->send($soapmsg,"","http://soapinterop.org/ilab#getAllEndpoints")){
-		//print "REQUEST:<br><xmp>".$client->outgoing_payload."</xmp><br>";
-		//print "<strong>RESPONSE:</strong><br><xmp>".$client->incoming_payload."</xmp><br>";
-		//print "<b>CLIENT DEBUG:</b><br><xmp>$client->debug_str</xmp>";
-		if($return->name != "fault")
+	if($return = $client->send($soapmsg,'','http://soapinterop.org/ilab#getAllEndpoints'))
+	{
+		//print 'REQUEST:<br><xmp>'.$client->outgoing_payload.'</xmp><br>';
+		//print '<strong>RESPONSE:</strong><br><xmp>'.$client->incoming_payload.'</xmp><br>';
+		//print '<b>CLIENT DEBUG:</b><br><xmp>$client->debug_str</xmp>';
+		if($return->name != 'fault')
 		{
-			//print "<xmp>";
+			//print '<xmp>';
 			//print_r($return);
-			//print "</xmp>";
+			//print '</xmp>';
 			if($endpointArray = @array_shift($return->decode()))
 			{
-				foreach($endpointArray as $k => $v)
+				@reset($endpointArray);
+				while(list($k,$v) = @each($endpointArray))
+				/*foreach($endpointArray as $k => $v) */
 				{
-					$servers[str_replace("+","",$v["name"])] = $v;
+					$servers[str_replace('+','',$v['name'])] = $v;
 				}
 			}
 			else
 			{
-				print "request:<br><xmp>".$client->request."</xmp><br>";
+				print 'request:<br><xmp>'.$client->request.'</xmp><br>';
 			}
 		}
 		else
 		{
-			print "got fault<br>";
-			print "<b>Client Debug:</b><br><xmp>$client->debug_str</xmp>";
+			print 'got fault<br>';
+			print '<b>Client Debug:</b><br><xmp>' . $client->debug_str . '</xmp>';
 			die();
 		}
 	}
 	else
 	{
-		print "send failed - could not get list of servers from xmethods<br>";
+		print 'send failed - could not get list of servers from xmethods<br>';
 	}
 
-// method test params
+	// method test params
+	/*
 	$fields = array(
 		'n_given'  => 'n_given',
 		'n_family' => 'n_family',
@@ -77,94 +80,114 @@
 		'email'    => 'email'
 	);
 
-$method_params["fetchaddr"]["id"] = 106;
-$method_params["fetchaddr"]["fields"] = $fields;
-$method_params["echoString"]["inputString"] = "test string";
-$method_params["echoStringArray"]["inputStringArray"] = array("good","bad");
-$method_params["echoInteger"]["inputInteger"] = 34345;
-//$method_params["echoIntegerArray"]["inputIntegerArray"] = array(-1,342,325325);
-$method_params["echoIntegerArray"]["inputIntegerArray"] = array(1,234324324,2);
-$method_params["echoFloat"]["inputFloat"] = 342.23;
-//$method_params["echoFloatArray"]["inputFloatArray"] = array(1.3223,34.2,325.325);
-	$method_params["echoFloatArray"]["inputFloatArray"] = array(
-		CreateObject('phpgwapi.soapval',"nan","float",32432.234),
-		CreateObject('phpgwapi.soapval',"inf","float",-23423.23),
-		CreateObject('phpgwapi.soapval',"neginf","float",-INF)
+	$method_params['addressbook.boaddressbook.read_entries']['start']  = 0;
+	$method_params['addressbook.boaddressbook.read_entries']['limit']  = 0;
+	$method_params['addressbook.boaddressbook.read_entries']['qcols']  = $fields;
+	$method_params['addressbook.boaddressbook.read_entries']['filter'] = 'tid=n,access=private';
+	$method_params['addressbook.boaddressbook.read_entries']['userid'] = intval($phpgw_info['user']['account_id']);
+
+	$method_params['addressbook.boaddressbook.read_entry']['id'] = 10;
+	$method_params['addressbook.boaddressbook.read_entry']['fields'] = $fields;
+	*/
+
+	$method_params['echoString']['inputString'] = 'test string';
+	$method_params['echoStringArray']['inputStringArray'] = array('good','bad');
+	$method_params['echoInteger']['inputInteger'] = 34345;
+	//$method_params['echoIntegerArray']['inputIntegerArray'] = array(-1,342,325325);
+	$method_params['echoIntegerArray']['inputIntegerArray'] = array(1,234324324,2);
+	$method_params['echoFloat']['inputFloat'] = 342.23;
+	//$method_params['echoFloatArray']['inputFloatArray'] = array(1.3223,34.2,325.325);
+	$method_params['echoFloatArray']['inputFloatArray'] = array(
+		CreateObject('phpgwapi.soapval','nan','float',32432.234),
+		CreateObject('phpgwapi.soapval','inf','float',-23423.23),
+		CreateObject('phpgwapi.soapval','neginf','float',-INF)
 	);
-	$method_params["echoStruct"]["inputStruct"] = CreateObject('phpgwapi.soapval',
-		"inputStruct",
-		"SOAPStruct",
-		array("varString"=>"arg","varInt"=>34,"varFloat"=>325.325)
+	$method_params['echoStruct']['inputStruct'] = CreateObject('phpgwapi.soapval',
+		'inputStruct',
+		'SOAPStruct',
+		array('varString'=>'arg','varInt'=>34,'varFloat'=>325.325)
 	);
-	$method_params["echoStructArray"]["inputStructArray"] = array(
+	$method_params['echoStructArray']['inputStructArray'] = array(
 		CreateObject('phpgwapi.soapval',
-			"item",
-			"SOAPStruct",array(
-				"varString"=>"arg",
-				"varInt"=>34,
-				"varFloat"=>325.325
+			'item',
+			'SOAPStruct',array(
+				'varString'=>'arg',
+				'varInt'=>34,
+				'varFloat'=>325.325
 			)
 		),
 		CreateObject('phpgwapi.soapval',
-			"item",
-			"SOAPStruct",array(
-				"varString"=>"arg",
-				"varInt"=>34,
-				"varFloat"=>325.325
+			'item',
+			'SOAPStruct',array(
+				'varString'=>'arg',
+				'varInt'=>34,
+				'varFloat'=>325.325
 			)
 		),
 		CreateObject('phpgwapi.soapval',
-			"item",
-			"SOAPStruct",array(
-				"varString"=>"arg",
-				"varInt"=>34,
-				"varFloat"=>325.325
+			'item',
+			'SOAPStruct',array(
+				'varString'=>'arg',
+				'varInt'=>34,
+				'varFloat'=>325.325
 			)
 		)
 	);
-	$method_params["echoVoid"] = "";
-	$method_params["echoBase64"]["inputBase64"] = CreateObject('phpgwapi.soapval',
-		"inputBase64",
-		"base64",
-		"TmVicmFza2E="
+	$method_params['echoVoid'] = '';
+	$method_params['echoBase64']['inputBase64'] = CreateObject('phpgwapi.soapval',
+		'inputBase64',
+		'base64',
+		'TmVicmFza2E='
 	);
-	$method_params["echoDate"]["inputDate"] = CreateObject('phpgwapi.soapval',
-		"inputDate",
-		"timeInstant",
-		"2001-04-25T09:31:41-07:00"
+	$method_params['echoDate']['inputDate'] = CreateObject('phpgwapi.soapval',
+		'inputDate',
+		'timeInstant',
+		'2001-04-25T09:31:41-07:00'
 	);
 
-$servers["SOAPx4 - Milosch"] = array(
-	"soapaction" => "urn:soapinterop",
-	"endpoint" => "http://milosch.dyndns.org/phpgroupware/soap/index.php",
-	"methodNamespace" => "http://soapinterop.org",
-	"soapactionNeedsMethod" => 0,
-	"name" => "SOAPx4  - interop test suite (dev)");
-$servers["SOAPx4 - interop test suite"] = array(
-	"soapaction" =>"urn:soapinterop",
-	"endpoint" =>"http://dietrich.ganx4.com/soapx4/phpgwapi.php",
-	"path" =>"",
-	"methodNamespace" => "http://soapinterop.org",
-	"soapactionNeedsMethod" => 0,
-	"name" => "SOAPx4 - interop test suite");
+	reset($method_params);
+	while(list($a,$b) = each($method_params))
+	{
+		$method_keys[$a] = $b;
+	}
+	reset($method_keys);
 
+	$servers['phpgw - Localhost'] = array(
+		'soapaction' => 'urn:soapinterop',
+		'endpoint'   => 'http://' . $HTTP_HOST . '/phpgroupware/soap.php',
+		'methodNamespace' => 'http://soapinterop.org',
+		'soapactionNeedsMethod' => 0,
+		'name'       => 'SOAPx4  - interop test suite (dev)'
+	);
+
+	$servers['SOAPx4 - interop test suite'] = array(
+		'soapaction' => 'urn:soapinterop',
+		'endpoint'   =>   'http://dietrich.ganx4.com/soapx4/phpgwapi.php',
+		'path'       => '',
+		'methodNamespace' => 'http://soapinterop.org',
+		'soapactionNeedsMethod' => 0,
+		'name'       => 'SOAPx4 - interop test suite'
+	);
 ?>
 
-<form action="<?php echo $phpgw->link('/soap/test_methods.php'); ?>" method='post'>
-<select name='nserver'>
+<form action="<?php echo $phpgw->link('/soap/test_methods.php'); ?>" method="post">
+<select name="nserver">
 <option>Choose Server...
 	<?php
-	print isset($nserver) ? "<option value='$PHP_SELF?nserver=$nserver'>$nserver" : "";
-	foreach($servers as $k => $v){
-		print "<option value='$k'>$k\n";
+	echo isset($nserver) ? "<option value=\"$PHP_SELF?nserver=$nserver\">$nserver" : '';
+	@reset($servers);
+	while(list($k,$v) = @each($servers))
+	{
+		echo '<option value="' . $k . '">' . $k . "\n";
 	}
 	?>
 </select>
-<select name='method' onChange='submit(this.form)'>
+<select name="method" onChange="submit(this.form)">
 	<option>method:
 	<?php
-	foreach(array_keys($method_params) as $func){
-		print "<option value='$func'>$func\n ";
+	while(list($func,$x) = each($method_keys))
+	{
+		print '<option value="' . $func . '">' . $func . "\n";
 	}
 	?>
 </select>
@@ -178,25 +201,25 @@ $servers["SOAPx4 - interop test suite"] = array(
 		$soap_message = CreateObject('phpgwapi.soapmsg',
 			$method,
 			$method_params[$method],
-			$server["methodNamespace"]
+			$server['methodNamespace']
 		);
 		/* print_r($soap_message);exit; */
-		$soap = CreateObject('phpgwapi.soap_client',$server["endpoint"]);
+		$soap = CreateObject('phpgwapi.soap_client',$server['endpoint']);
 		/* print_r($soap);exit; */
-		if($return = $soap->send($soap_message,$server["soapaction"]))
+		if($return = $soap->send($soap_message,$server['soapaction']))
 		{
 			// check for valid response
-			if(get_class($return) == "soapval")
+			if(get_class($return) == 'soapval')
 			{
 				print "Correctly decoded server's response<br>";
 				// fault?
-				if(eregi("fault",$return->name))
+				if(eregi('fault',$return->name))
 				{
-					$status = "failed";
+					$status = 'failed';
 				}
 				else
 				{
-					$status = "passed";
+					$status = 'passed';
 				}
 			}
 			else
@@ -206,7 +229,7 @@ $servers["SOAPx4 - interop test suite"] = array(
 		}
 		else
 		{
-			print "Was unable to send or receive.";
+			print 'Was unable to send or receive.';
 		}
 
 		//$soap->incoming_payload .= "\n\n<!-- SOAPx4 CLIENT DEBUG\n$client->debug_str\n\nRETURN VAL DEBUG: $return->debug_str-->";

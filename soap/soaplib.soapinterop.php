@@ -1,5 +1,16 @@
 <?php
 	$server->add_to_map(
+		'hello',
+		array('string'),
+		array('string')
+	);
+	function hello($serverid)
+	{
+		global $phpgw_info;
+		return CreateObject('soap.soapval','return','string',$phpgw_info['server']['site_title']);
+	}
+
+	$server->add_to_map(
 		"fetchaddr",
 		array("int","struct"),
 		array("array")
