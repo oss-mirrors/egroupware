@@ -54,7 +54,7 @@
 
 		function uiprojects()
 		{
-			$action = get_var('action',array('GET'));
+			$action = get_var('action',array('GET','POST'));
 
 			$this->boprojects				= CreateObject('projects.boprojects',True, $action);
 			$this->nextmatchs				= CreateObject('phpgwapi.nextmatchs');
