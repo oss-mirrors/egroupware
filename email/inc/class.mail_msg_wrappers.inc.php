@@ -1,36 +1,34 @@
 <?php
-	/**************************************************************************\
-	* phpGroupWare - E-Mail Message Processing Functions				*
-	* http://www.phpgroupware.org							*
-	*/
-	/**************************************************************************\
-	* phpGroupWare API - E-Mail Message Processing Functions			*
-	* This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org>	*
-	* Handles specific operations in manipulating email messages			*
-	* Copyright (C) 2001 Angelo Tony Puglisi (Angles)					*
-	* -------------------------------------------------------------------------			*
-	* This library is part of the phpGroupWare API					*
-	* http://www.phpgroupware.org/api							* 
-	* ------------------------------------------------------------------------ 			*
-	* This library is free software; you can redistribute it and/or modify it		*
-	* under the terms of the GNU Lesser General Public License as published by 	*
-	* the Free Software Foundation; either version 2.1 of the License,			*
-	* or any later version.								*
-	* This library is distributed in the hope that it will be useful, but			*
-	* WITHOUT ANY WARRANTY; without even the implied warranty of		*
-	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
-	* See the GNU Lesser General Public License for more details.			*
-	* You should have received a copy of the GNU Lesser General Public License 	*
-	* along with this library; if not, write to the Free Software Foundation, 		*
-	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
-	\**************************************************************************/
-	
+	/*****************************************************************************\
+	* phpGroupWare - E-Mail Message Processing Functions                          *
+	* http://www.phpgroupware.org                                                 *
+	*                                                                             *
+	* phpGroupWare API - E-Mail Message Processing Functions                      *
+	* This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
+	* Handles specific operations in manipulating email messages.                 *
+	* Copyright (C) 2001 Angelo Tony Puglisi (Angles)                             *
+	* --------------------------------------------------------------------------- *
+	* This library is part of the phpGroupWare API                                *
+	* http://www.phpgroupware.org/api                                             *
+	* --------------------------------------------------------------------------- *
+	* This library is free software; you can redistribute it and/or modify it     *
+	* under the terms of the GNU Lesser General Public License as published by    *
+	* the Free Software Foundation; either version 2.1 of the License,            *
+	* or any later version.                                                       *
+	* This library is distributed in the hope that it will be useful, but         *
+	* WITHOUT ANY WARRANTY; without even the implied warranty of                  *
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                        *
+	* See the GNU Lesser General Public License for more details.                 *
+	* You should have received a copy of the GNU Lesser General Public License    *
+	* along with this library; if not, write to the Free Software Foundation,     *
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA               *
+	\*****************************************************************************/
+
 	/* $Id$ */
-	
+
 	class mail_msg_wrappers extends mail_msg_base
 	{
-	
-	// =====  INTERFACE FUNCTIONS AND/OR  WRAPPER FUNCTIONS =====
+		// =====  INTERFACE FUNCTIONS AND/OR  WRAPPER FUNCTIONS =====
 		/*!
 		@class mail_msg_wrappers
 		@abstract  Wrapper functions to be called as "public" functions
@@ -43,9 +41,8 @@
 		Also, same for the "msgnum", unless you are looping thru a message list, you are 
 		most likely concerned with only ONE message, and the variable would be the MIME part therein
 		*/
-	
-	
-	// ====  Functions For Getting Information About A Message  ====
+
+		// ====  Functions For Getting Information About A Message  ====
 		/*!
 		@function phpgw_fetchstructure
 		@abstract wrapper for IMAP_FETSCSTRUCTURE, phpgw supplies the nedessary stream arg
@@ -71,7 +68,7 @@
 			
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchstructure($mailsvr_stream, $msgball['msgnum']);
 		}
-		
+
 		/*!
 		@function phpgw_header
 		@abstract wrapper for IMAP_HEADER, phpgw supplies the nedessary stream arg and mail_dcom reference
@@ -98,7 +95,7 @@
 			// Message Information: THE MESSAGE'S HEADERS RETURNED AS A STRUCTURE
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->header($mailsvr_stream, $msgball['msgnum']);
 		}
-		
+
 		function phpgw_fetchheader($msgball='')
 		{
 			if (!(isset($msgball))
@@ -113,11 +110,11 @@
 				$acctnum = $this->get_acctnum();
 			}
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-		
+
 			// Message Information: THE MESSAGE'S HEADERS RETURNED RAW (no processing)
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchheader($mailsvr_stream, $msgball['msgnum']);
 		}
-	
+
 		/*!
 		@function all_headers_in_folder
 		@abstract wrapper for IMAP_HEADERS, phpgw supplies the nedessary stream arg and mail_dcom reference
@@ -148,7 +145,7 @@
 			
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->headers($mailsvr_stream);
 		}
-		
+
 		function phpgw_get_flag($flag='')
 		{
 			// sanity check
@@ -162,7 +159,7 @@
 			}
 		}
 		
-	// ====  Functions For Getting A Message Or A Part (MIME Part) Of A Message  ====
+		// ====  Functions For Getting A Message Or A Part (MIME Part) Of A Message  ====
 		function phpgw_body($msgball='')
 		{
 			if (!(isset($msgball))
@@ -179,7 +176,7 @@
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->get_body($mailsvr_stream, $msgball['msgnum']);
 		}
-		
+
 		function phpgw_fetchbody($msgball='', $flags='')
 		{
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: ENTERING, $msgball dump<pre>'; print_r($msgball); echo '</pre>';
@@ -200,9 +197,8 @@
 			//echo 'mail_msg(_wrappers): phpgw_fetchbody: processed: $acctnum: '.$acctnum.'; $mailsvr_stream: '.serialize($mailsvr_stream).'; $msgnum: '.$msgnum.'; $part_no: '.$part_no.'<br> * $msgball dump<pre>'; print_r($msgball); echo '</pre>';
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->fetchbody($mailsvr_stream, $msgnum, $part_no, $flags);
 		}
-		
-		
-	// =====  Functions For Getting Information About A Folder  =====
+
+		// =====  Functions For Getting Information About A Folder  =====
 		// returns an array of integers which are refer to all the messages in a folder ("INBOX") sorted and ordered
 		// any integer in this array can be used to request that specific message from the server
 		/*!
@@ -240,7 +236,7 @@
 				$acctnum = $this->get_acctnum();
 			}
 			// as I said above, rare to specify folder, if it wasn;t handled above, forget about it
-			
+
 			// try to restore "msgball_list" from saved session data store
 			$cached_msgball_list = $this->read_session_cache_item('msgball_list', $acctnum);
 			if ($cached_msgball_list)
@@ -278,7 +274,7 @@
 				return $msgball_list;
 			}
 		}
-		
+
 		/*!
 		@function get_folder_size
 		@abstract uses IMAP_MAILBOXMSGINFO but returns only the size element
@@ -294,13 +290,13 @@
 			$mailbox_detail = $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->mailboxmsginfo($this->get_arg_value('mailsvr_stream'));
 			return $mailbox_detail->Size;
 		}
-		
+
 		// ALIAS for get_folder_status_info() , for backward compatibility
 		function new_message_check($fldball='')
 		{
 			return $this->get_folder_status_info($fldball='');
 		}
-		
+
 		/*!
 		@function get_folder_status_info
 		@abstract wrapper for IMAP_STATUS, get status info for the current folder, with emphesis on reporting to user about new messages
@@ -353,7 +349,7 @@
 				if ($this->debug_session_caching > 0) { echo 'class_msg: get_folder_status_info: LEAVING returning L1/class var cached data<br>'; }
 				return $folder_status_info;
 			}
-			
+
 			// initialize return structure
 			$return_data = Array();
 			$return_data['is_imap'] = False;
@@ -364,13 +360,13 @@
 			// these are used to verify cached msg_list_array data, i.e. is it still any good, or is it stale
 			$return_data['uidnext'] = 0;
 			$return_data['uidvalidity'] = 0;
-			
+
 			$mailbox_status = $GLOBALS['phpgw_dcom_'.$fldball['acctnum']]->dcom->status($mailsvr_stream,$server_str.$fldball['folder'],SA_ALL);
-			
+
 			// cache validity data - will be used to cache msg_list_array data, which is good until UID_NEXT changes
 			$return_data['uidnext'] = $mailbox_status->uidnext;
 			$return_data['uidvalidity'] = $mailbox_status->uidvalidity;
-			
+
 			$mail_server_type = $this->get_pref_value('mail_server_type', $fldball['acctnum']);
 			if (($mail_server_type == 'imap')
 			|| ($mail_server_type == 'imaps'))
@@ -416,7 +412,7 @@
 			if ($this->debug_session_caching > 0) { echo 'class_msg: get_folder_status_info: LEAVING returning data obtained from server<br>'; }
 			return $return_data;
 		}
-		
+
 		// FIXME: change arg to fldball
 		function phpgw_status($feed_folder_long='')
 		{
@@ -434,7 +430,7 @@
 			}
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->server_last_error();
 		}
-		
+
 		function phpgw_ping($acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -445,7 +441,7 @@
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->noop_ping_test($mailsvr_stream);
 		}
-		
+
 		function phpgw_search($fldball='', $criteria='', $flags='')
 		{
 			$acctnum = (int)$fldball['acctnum'];
@@ -469,11 +465,11 @@
 			$fake_fldball['folder'] = $folder;
 			$this->ensure_stream_and_folder($fake_fldball, 'phpgw_search');
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			
+
 			// now we have the stream and the desired folder open
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->i_search($mailsvr_stream,$criteria,$flags);
 		}
-		
+
 		function phpgw_createmailbox($target_fldball)
 		{
 			$acctnum = (int)$target_fldball['acctnum'];
@@ -481,7 +477,7 @@
 			$folder = $target_fldball['folder'];
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->createmailbox($mailsvr_stream, $folder);
 		}
-		
+
 		function phpgw_deletemailbox($target_fldball)
 		{
 			$acctnum = $target_fldball['acctnum'];
@@ -489,7 +485,7 @@
 			$folder = $target_fldball['folder'];
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->deletemailbox($mailsvr_stream, $folder);
 		}
-		
+
 		function phpgw_renamemailbox($source_fldball,$target_fldball)
 		{
 			$acctnum = (int)$source_fldball['acctnum'];
@@ -515,27 +511,27 @@
 			$fake_fldball['folder'] = '';
 			$this->ensure_stream_and_folder($fake_fldball, 'phpgw_listmailbox');
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
-			
+
 			// ... so stream exists, do the transaction ...
 			//echo '<b>phpgw_listmailbox</b>: about to call $GLOBALS[phpgw_dcom_'.$acctnum.']->dcom->listmailbox($mailsvr_stream['.$mailsvr_stream.'],$ref['.$ref.'], $pattern['.$pattern.']); <br>';
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->listmailbox($mailsvr_stream,$ref,$pattern);
 		}
-		
+
 		function phpgw_append($folder="Sent", $message, $flags=0)
 		{
 			//$debug_append = True;
 			$debug_append = False;
-			
+
 			if ($debug_append) { echo 'append: folder: '.$folder.'<br>'; }
-			
+
 			$server_str = $this->get_arg_value('mailsvr_callstr');
-			
+
 			// ---  does the target folder actually exist ?  ---
 			// strip {server_str} string if it's there
 			$folder = $this->ensure_no_brackets($folder);
 			// attempt to find a folder match in the lookup list
 			$official_folder_long = $this->folder_lookup('', $folder);
-			  if ($debug_append) { echo 'append: official_folder_long: '.$official_folder_long.'<br>'; }
+			if ($debug_append) { echo 'append: official_folder_long: '.$official_folder_long.'<br>'; }
 			if ($official_folder_long != '')
 			{
 				$havefolder = True;
@@ -544,7 +540,7 @@
 			{
 				$havefolder = False;
 			}
-			
+
 			if ($havefolder == False)
 			{
 				// add whatever namespace we believe should exist
@@ -561,7 +557,7 @@
 					$havefolder = True;
 				}
 			}
-			
+
 			// at this point we've tries 2 time to obtain the "server approved" long name for the target folder
 			// even tries creating it if necessary
 			// if we have the name, append the message to that folder
@@ -583,7 +579,7 @@
 				return False;
 			}
 		}
-		
+
 		function phpgw_mail_move($msg_list,$mailbox)
 		{
 			// delete session msg array data thAt is now stale
@@ -591,14 +587,14 @@
 			
 			return $GLOBALS['phpgw_dcom_'.$this->acctnum]->dcom->mail_move($this->get_arg_value('mailsvr_stream'), $msg_list, $mailbox);
 		}
-		
+
 		function interacct_mail_move($mov_msgball='', $to_fldball='')
 		{
 			// this needs A LOT of work!!! do not rely on this yet
-			
+
 			// delete session msg array data thAt is now stale
 			$this->expire_session_cache_item('msgball_list');
-			
+
 			// Note: Only call this function with ONE msgball at a time, i.e. NOT a list of msgballs
 			$acctnum = (int)$mov_msgball['acctnum'];
 			if (!(isset($acctnum))
@@ -613,7 +609,7 @@
 			//echo 'mail_msg(_wrappers): interacct_mail_move: $acctnum: '.$acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>';
 			// the acctnum we are moving FROM *may* be different from the acctnum we are moving TO
 			// that requires a fetch then an append - FIXME!!!
-			
+
 			$retval = $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->mail_move($mailsvr_stream ,$msgnum, $mailbox);
 			return $retval;
 		}
@@ -638,7 +634,7 @@
 			{
 				$to_fldball['acctnum'] = $this->get_acctnum();
 			}
-			
+
 			// Are the acctnums the same?
 			if ((string)$mov_msgball['acctnum'] == (string)$to_fldball['acctnum'])
 			{
@@ -667,7 +663,7 @@
 			else
 			{
 				// DIFFERENT ACCOUNT MAIL MOVE
-				
+
 				if ($debug_move > 1) { echo 'mail_msg(_wrappers): industrial_interacct_mail_move: Different ACCOUNT MOVE $common_acctnum: '.$common_acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msgnum: '.$msgnum.' $mailsvr_callstr: '.$mailsvr_callstr.' $mailbox: '.$mailbox.'<br>'; }
 				$good_to_go = False;
 				// delete session msg array data thAt is now stale
@@ -694,7 +690,7 @@
 				{
 					return False;
 				}
-				
+
 				// APPEND TO TARGET FOLDER
 				// delete session msg array data thAt is now stale
 				$this->expire_session_cache_item('msgball_list', $to_fldball['acctnum']);
@@ -727,7 +723,7 @@
 				return True;
 			}
 		}
-	
+
 		function phpgw_expunge($acctnum='')
 		{
 			if (!(isset($acctnum))
@@ -739,7 +735,7 @@
 			//echo 'mail_msg(_wrappers): phpgw_expunge: $acctnum: '.serialize($acctnum).' $mailsvr_stream: '.serialize($mailsvr_stream).'<br>';
 			return $GLOBALS['phpgw_dcom_'.$acctnum]->dcom->expunge($mailsvr_stream);
 		}
-		
+
 		function phpgw_delete($msg_num,$flags=0, $currentfolder="", $acctnum='') 
 		{
 			if (!(isset($acctnum))
@@ -748,11 +744,11 @@
 				$acctnum = $this->get_acctnum();
 			}
 			// everything from now on MUST specify this $acctnum
-			
+
 			// now get the stream that applies to that acctnum
 			$mailsvr_stream = $this->get_arg_value('mailsvr_stream', $acctnum);
 			//echo 'mail_msg(_wrappers): phpgw_delete: $acctnum: '.$acctnum.' $mailsvr_stream: '.$mailsvr_stream.' $msg_num: '.$msg_num.'<br>';
-			
+
 			if (($this->get_isset_pref('use_trash_folder', $acctnum))
 			&& ($this->get_pref_value('use_trash_folder', $acctnum)))
 			{
@@ -784,7 +780,7 @@
 					{
 						$havefolder = False;
 					}
-				
+
 					if (!$havefolder)
 					{
 						// create the Trash folder so it will exist (Netscape does this too)
@@ -799,7 +795,7 @@
 							$havefolder = True;
 						}
 					}
-					
+
 					// at this point we've tries 2 time to obtain the "server approved" long name for the trash folder
 					// even tries creating it if necessary
 					// if we have the name, do the move to the trash folder
@@ -836,13 +832,13 @@
 				return $retval;
 			}
 		}
-		
-		/**************************************************************************\
-		* END DCOM WRAPERS								*
-		* - - - - - - - - - - - - - - - - - - - - - - - - -					*
-		* BEGIN INPUT ARG/PARAM HANDLERS			*
-		\**************************************************************************/
-		
+
+		/***************************************************\
+		* END DCOM WRAPERS                                  *
+		* - - - - - - - - - - - - - - - - - - - - - - - - - *
+		* BEGIN INPUT ARG/PARAM HANDLERS                    *
+		\***************************************************/
+
 		/*!
 		@function decode_fake_uri
 		@abstract decodes a URI type "query string" into an associative array
@@ -882,12 +878,12 @@
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: $fake_url_b_2 (sub parts exploded and made into an associative array) dump:<pre>'; print_r($fake_url_b_2); echo '</pre>'; }
 			return $fake_url_b_2;
 			*/
-			
+
 			$embeded_data = array();
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: ENTERED $uri_type_string ['.$uri_type_string.'] <br>'; }
 			parse_str($uri_type_string, $embeded_data);
 			if ($this->debug_args_input_flow > 2) { echo 'mail_msg: decode_fake_uri: parse_str('.$uri_type_string.', into $embeded_data dump:<pre>'; print_r($embeded_data); echo '</pre>'; }
-			
+
 			// some embeded uri-faked data needs to be raised up one level from sub-elements to top level
 			if ($raise_up)
 			{
@@ -962,7 +958,7 @@
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: decode_fake_uri: LEAVING <br>'; }
 			return $embeded_data;
 		}
-		
+
 		/*!
 		@function grab_class_args_gpc
 		@abstract grab data from $GLOBALS['HTTP_POST_VARS'] and $GLOBALS['HTTP_GET_VARS']
@@ -993,7 +989,7 @@
 					if ($key == 'delmov_list')
 					{
 						if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: FOUND "delmov_list_fake_uri" needs decoding HTTP_POST_VARS['.$key.'] = ['.$GLOBALS['HTTP_POST_VARS'][$key].'] <br>'; }
-						$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);				
+						$sub_loops = count($GLOBALS['HTTP_POST_VARS'][$key]);
 						for($i=0;$i<$sub_loops;$i++)
 						{
 							$sub_embedded_data = array();
@@ -1033,7 +1029,7 @@
 					*/
 				}
 			}
-			
+
 			$got_args = array();
 			// insert *known* external args we find into $got_args[], then return that data
 			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: grab_class_args_gpc: about to loop thru $this->known_external_args<br>'; }
@@ -1079,7 +1075,7 @@
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING, returning $got_args<br>'; }
 			return $got_args;
 		}
-		
+
 		/*!
 		@function grab_class_args_xmlrpc
 		@abstract grab data an XML-RPC call and fill various class arg variables with the available data
@@ -1096,8 +1092,7 @@
 			// STUB, for future use
 			echo 'call to un-implemented function grab_class_args_xmlrpc';
 		}
-		
-		
+
 		/*!
 		@function get_best_acctnum
 		@abstract search a variety of vars to find a legitimate account number, fallsback to $this->get_acctnum
@@ -1166,9 +1161,9 @@
 				if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: LEAVING early, $args_array had the data, returning $acctnum ['.serialize($acctnum).']<br>'; }
 				return $acctnum;
 			}
-			
+
 			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: get_best_acctnum: "what acctnum to use": continue searching...: <br>'; }
-			
+
 			// ok, now we need to broaden the search for a legit account number
 			if ((isset($force_feed_acctnum))
 			&& ((string)$force_feed_acctnum != ''))
@@ -1243,7 +1238,7 @@
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_acctnum: LEAVING, returning $acctnum ['.serialize($acctnum).']<br>'; }
 			return $acctnum;
 		}
-		
+
 		/*!
 		@function init_internal_args_and_set_them
 		@abstract initialize Internally controlled params / args. MUST already have an acctnum
@@ -1262,7 +1257,7 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			// INTERNALLY CONTROLLED ARGS
 			// preserve pre-existing value, for which "acctnum" must be already obtained, so we
 			// know what account to check for existing arg values when we use "get_isset_arg" or "get_arg_value"
@@ -1328,10 +1323,10 @@
 			//{
 			//	$this->set_arg_value($key, $internal_args[$key]);
 			//}
-			
+
 			// use this one call to do it all
 			//$this->set_arg_array($internal_args);
-			
+
 			// add these items to the args array for the appropriate account
 			if ($this->debug_args_input_flow > 1) { echo 'mail_msg: init_internal_args: about to add $internal_args to acounts class args array<br>'; }
 			while(list($key,$value) = each($internal_args))
@@ -1344,7 +1339,7 @@
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: grab_class_args_gpc: LEAVING, returning $internal_args<br>'; }
 			return $internal_args;
 		}
-		
+
 		/*!
 		@function get_best_folder_arg
 		@abstract search a variety of vars to find a legitimate folder value to open on the mail server number, 
@@ -1378,7 +1373,7 @@
 			// (4) GPC ['delmov_list'][0]['folder']
 			// (5) if "folder" arg it is already set, (probably during the reuse attempt, probably obtained from $args_array alreadt) then use that
 			// (6) default to blank string, which "prep_folder_in()" changes to defaultg value INBOX
-			
+
 			// note: it's OK to send blank string to "prep_folder_in", because it will return a default value of "INBOX"
 			if ((isset($args_array['folder']))
 			&& ($args_array['folder'] != ''))
@@ -1431,15 +1426,14 @@
 			$processed_folder_arg = $this->prep_folder_in($input_folder_arg);
 			if ($this->debug_args_input_flow > 0) { echo 'mail_msg: get_best_folder_arg: LEAVING, returning $processed_folder_arg value: ['.$processed_folder_arg.']<br>'; }
 			return $processed_folder_arg;
-		}	
-		
-		
-		/**************************************************************************\
-		* END INPUT ARG/PARAM HANDLERS								*
-		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
-		* BEGIN APPSESSION TEMPORARY CACHING HANDLERS		*
-		\**************************************************************************/
-		
+		}
+
+		/***************************************************\
+		* END INPUT ARG/PARAM HANDLERS                      *
+		* - - - - - - - - - - - - - - - - - - - - - - - - - *
+		* BEGIN APPSESSION TEMPORARY CACHING HANDLERS       *
+		\***************************************************/
+
 		/*!
 		@cabability appsession TEMPORARY DATA CACHING
 		@abstract server-side caching of limited, ephermal data, such as a list of messages from an imap search
@@ -1448,15 +1442,15 @@
 		*/
 		// ---- session-only data cached to appsession  ----
 		function expire_session_cache_item($data_name='misc',$acctnum='')
-		{		
+		{
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ($this->debug_session_caching > 0) { echo 'mail_msg: expire_session_cache_item: ENTERED, $this->session_cache_enabled='.serialize($this->session_cache_enabled).', $data_name to expire=['.$data_name.']<br>'; }
-			
+
 			// ---  get rid of any L1 cache folder status info  ---
 			if ($this->debug_session_caching > 1) { echo 'mail_msg: expire_session_cache_item: Mandatory clearing of L1 cache/class data "folder_status_info" <br>'; }
 			// ALWAYS expire "folder_status_info" because many time this expire function is called because of a message move or delete
@@ -1487,11 +1481,11 @@
 			$this->save_session_cache_item($data_name, $empty_data, $acctnum);
 			if ($this->debug_session_caching > 0) { echo 'mail_msg: expire_session_cache_item: LEAVING<br>'; }
 		}
-		
+
 		function save_session_cache_item($data_name='misc',$data,$acctnum='')
 		{
 			$has_handler = False;
-			
+
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
@@ -1528,7 +1522,7 @@
 					if ($this->debug_session_caching > 1) { echo 'mail_msg: save_session_cache_item: session_cache_enabled and data exists AND has a handler<br>'; }
 					// we know what to do here, so this data "has a handler"
 					$has_handler = True;
-					
+
 					// ----  set the data in appsession  ----
 					// we use folder_info for validity testing of data "stale" or not when we retrieve the cached data later
 					$fldball = array();
@@ -1565,7 +1559,7 @@
 					// make an empty $meta_data Array as a sign there's no data to save
 					$meta_data = Array();
 				}
-				
+
 				// save data, assuming we've "handled" it
 				if ((isset($meta_data))
 				&& (count($meta_data) > 0))
@@ -1589,7 +1583,7 @@
 				}
 			}
 		}
-		
+
 		function read_session_cache_item($data_name='misc', $acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -1597,19 +1591,19 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ($this->debug_session_caching > 0) { echo 'mail_msg: read_session_cache_item: ENTERED, $this->session_cache_enabled='.serialize($this->session_cache_enabled).'<br>'; }
 			
 			if ($this->session_cache_enabled)
 			{
 				if ($this->debug_session_caching > 1) { echo 'mail_msg: read_session_cache_item: begin get data<br>'; }
-				
+
 				$location = 'acctnum='.(string)$acctnum.';data_name='.$data_name;
 				$app = 'email';
 				// get session data
 				$got_data = $GLOBALS['phpgw']->session->appsession($location,$app);
 				if ($this->debug_session_caching > 1) { echo 'mail_msg: read_session_cache_item: location: ['.$location.'] $app='.$app.'; $got_data dump:<pre>'; print_r($got_data); echo '</pre>'; }
-				
+
 				// use a specific handler for the data
 				if ($data_name == 'msgball_list')
 				{
@@ -1619,7 +1613,7 @@
 					$fldball['acctnum'] = $acctnum;
 					$fldball['folder'] = $this->get_arg_value('folder', $acctnum);
 					$folder_info = $this->get_folder_status_info($fldball);
-					
+
 					// VERIFY this cached data is still valid
 					if ($got_data)
 					{
@@ -1678,14 +1672,14 @@
 				}
 			}
 		}
-		
-		/**************************************************************************\
-		* END APPSESSION TEMPORARY CACHING HANDLERS		*
-		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
-		* BEGIN **DEPRECIATED *** UNUSED *** 						*
-		* 		SEMI-PERMENANT CACHING HANDLERS					*
-		\**************************************************************************/
-		
+
+		/***************************************************\
+		* END APPSESSION TEMPORARY CACHING HANDLERS         *
+		* - - - - - - - - - - - - - - - - - - - - - - - - - *
+		* BEGIN **DEPRECIATED *** UNUSED ***                *
+		*  SEMI-PERMENANT CACHING HANDLERS                  *
+		\***************************************************/
+
 		/*!
 		@cabability Pref-Based SEMI-PERMENANT DATA CACHING
 		@abstract Folder List server-side caching, for data intended to survive and span individual sessions.
@@ -1710,12 +1704,12 @@
 		function get_cached_data($calling_function_name='',$data_type='string')
 		{
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
-			
+
 			$got_data = False;
-			
+
 			//// preliminary compare userid and mailsvr callstr to that assicoated with cached data (if any)
 			//$account_match = $this->match_cached_account();
-			
+
 			if (($calling_function_name == '')
 			|| ($this->cache_mailsvr_data == False))
 			{
@@ -1735,7 +1729,7 @@
 				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: get_cached_data: LEAVING, returning False<br>';}
 				return False;
 			}
-			
+
 			// so we may use cached data, do we have any?
 			if (($this->get_isset_pref($calling_function_name))
 			&& ($this->get_pref_value($calling_function_name) != ''))
@@ -1760,7 +1754,7 @@
 				// this boolean False tells the code below that no data was retrieved
 				$got_data = False;
 			}
-			
+
 			if ((isset($got_data))
 			&& ($got_data))
 			{
@@ -1774,11 +1768,11 @@
 				return False;
 			}
 		}
-		
+
 		function set_cached_data($calling_function_name='',$data_type='string',$data='')
 		{
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: ENTERING, called by "'.$calling_function_name.'"<br>';}
-			
+
 			if (($this->cache_mailsvr_data == False)
 			|| ($calling_function_name == '')
 			|| (!isset($data))
@@ -1827,12 +1821,12 @@
 				if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning True<br>';}
 				return True;
 			}
-			
+
 			if ($this->debug_longterm_caching > 1) { echo 'mail_msg: set_cached_data: unexpectedly got past caching logic, nothing saved<br>';}
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: set_cached_data: LEAVING, returning False, unexpected, no action taken<br>'; }
 			return False;
 		}
-		
+
 		function remove_cached_data($calling_function_name='')
 		{
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: remove_cached_data: ENTERING, data set: ['.$calling_function_name.'], if blank will remove all cachable_server_items and *_owner items<br>';}
@@ -1901,14 +1895,14 @@
 			if ($this->debug_longterm_caching > 0) { echo 'mail_msg: remove_cached_data: LEAVING, returning true<br>';}
 			return True;
 		}
-		
-		/**************************************************************************\
-		* END **DEPRECIATED *** UNUSED *** 							*
-		* 		SEMI-PERMENANT CACHING HANDLERS					*
-		* - - - - - - - - - - - - - - - - - - - - - - - - -									*
-		* BEGIN PARAM / ARGS / PREFS  ACCESS FUNCTIONS 			*
-		\**************************************************************************/
-		
+
+		/***************************************************\
+		* END **DEPRECIATED *** UNUSED ***                  *
+		*  SEMI-PERMENANT CACHING HANDLERS                  *
+		* - - - - - - - - - - - - - - - - - - - - - - - - - *
+		* BEGIN PARAM / ARGS / PREFS  ACCESS FUNCTIONS      *
+		\***************************************************/
+
 		/*!
 		@capability OOP-Style Access Methods to Private Object Properties
 		@abstract: simple access methods to read and set data, with transparent account number handling
@@ -1924,7 +1918,7 @@
 		access object params, arguments, and preferences.
 		@author Angles
 		*/
-		
+
 		/*!
 		@function get_acctnum
 		@abstract: read which account number the object is currently activated on
@@ -1969,7 +1963,7 @@
 				return False;
 			}
 		}
-		
+
 		/*!
 		@function set_acctnum
 		@abstract: instruct the object which email account is the desired active account for all params,
@@ -1996,8 +1990,7 @@
 				return False;
 			}
 		}
-		
-		
+
 		/* * * * * * * * * * * * * * * * * *
 		* OOP-Style Access Methods for Preference Values
 		* * * * * * * * * * * * * * * * * */
@@ -2025,7 +2018,7 @@
 				return;
 			}
 		}
-		
+
 		function set_pref_value($pref_name='', $this_value='', $acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2047,7 +2040,7 @@
 				return False;
 			}
 		}
-		
+
 		function get_isset_pref($pref_name='',$acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2068,7 +2061,7 @@
 				return False;
 			}
 		}
-		
+
 		function unset_pref($pref_name='', $acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2076,7 +2069,7 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ((isset($pref_name))
 			&& ((string)$pref_name != ''))
 			{
@@ -2091,7 +2084,7 @@
 				return False;
 			}
 		}
-		
+
 		function get_all_prefs($acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2099,7 +2092,7 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if (isset($this->a[$acctnum]['prefs']))
 			{
 				return $this->a[$acctnum]['prefs'];
@@ -2110,7 +2103,7 @@
 				return;
 			}
 		}
-		
+
 		function set_pref_array($pref_array_data='', $acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2118,9 +2111,9 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			$this->a[$acctnum]['prefs'] = array();
-			
+
 			if ((isset($pref_array_data))
 			&& (count($pref_array_data > 0)))
 			{
@@ -2134,8 +2127,7 @@
 				return False;
 			}
 		}
-		
-		
+
 		/* * * * * * * * * * * * * * * * * *
 		* OOP-Style Access Methods for Class Params/Args Values
 		* * * * * * * * * * * * * * * * * */
@@ -2146,7 +2138,7 @@
 			{
 				return False;
 			}
-			
+
 			if ($arg_name == '')
 			{
 				return False;
@@ -2196,7 +2188,7 @@
 				$acctnum = $this->get_acctnum();
 				if ($this->debug_args_oop_access > 1) { echo 'mail_msg(_wrappers): get_isset_arg: obtained $acctnum from $this->get_acctnum(): ['.$acctnum.']'.'<br>'; }
 			}
-			
+
 			/*
 			// OOP VERSION if PROBLEMATIC
 			// but it may not give intended answer because
@@ -2208,10 +2200,10 @@
 				return True;
 			}
 			*/
-			
+
 			// Best Version at this time, if something is not set, DO NOT handoff to a support function to fill it
 			// that way we can return false if something is indeed NOT set
-			
+
 			// $arg_name has sub-levels
 			if ((isset($arg_name))
 			&& ((string)$arg_name != '')
@@ -2241,17 +2233,17 @@
 			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_isset_arg: LEAVING returning False<br>'; }
 			return False;
 		}
-		
+
 		function unset_arg($arg_name='', $acctnum='')
 		{
 			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'unset_arg'); }
-			
+
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ((isset($arg_name))
 			&& ((string)$arg_name != ''))
 			{
@@ -2266,18 +2258,18 @@
 				return False;
 			}
 		}
-		
+
 		function get_arg_value($arg_name='',$acctnum='')
 		{
 			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: ENTERING ($arg_name: ['.$arg_name.'], $acctnum: ['.$acctnum.'] )<br>'; }
 			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'get_arg_value'); }
-			
+
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ((isset($arg_name))
 			&& ((string)$arg_name != ''))
 			{
@@ -2353,25 +2345,25 @@
 					return $this->a[$acctnum]['args'][$arg_name];
 				}
 			}
-			
+
 			// we ONLY get here if there's no data to return,
 			// arg not set, or invalid input $arg_name
 			// otherwise, anything that is sucessful returns and exist at that point, never gets to here
 			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): get_arg_value: LEAVING, returning *nothing*, arg not set of input arg invalid, using naked "return" call<br>'; }
 			return;
 		}
-		
+
 		function _direct_access_arg_value($arg_name='',$acctnum='')
 		{
 			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, '_direct_access_arg_value'); }
-			
+
 			// PRIVATE - for use by internal functions
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if (isset($this->a[$acctnum]['args'][$arg_name]))
 			{
 				return $this->a[$acctnum]['args'][$arg_name];
@@ -2382,18 +2374,18 @@
 				return;
 			}
 		}
-		
+
 		function set_arg_value($arg_name='', $this_value='', $acctnum='')
 		{
 			if ($this->debug_args_oop_access > 1) { $this->_get_arg_is_known($arg_name, 'set_arg_value'); }
 			if ($this->debug_args_oop_access > 0) { echo 'mail_msg(_wrappers): set_arg_value: ENTERING, $arg_name: ['.$arg_name.'] ; $this_value: ['.$this_value.'] ; $acctnum: ['.$acctnum.']<br>'; }
-			
+
 			if ((!isset($acctnum))
 			|| ((string)$acctnum == ''))
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if ((isset($arg_name))
 			&& ((string)$arg_name != ''))
 			{
@@ -2419,7 +2411,7 @@
 				return False;
 			}
 		}
-		
+
 		function set_arg_array($arg_array_data='', $acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2427,9 +2419,9 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			$this->a[$acctnum]['args'] = array();
-			
+
 			if ((isset($arg_array_data))
 			&& (count($arg_array_data > 0)))
 			{
@@ -2449,7 +2441,7 @@
 				return False;
 			}
 		}
-		
+
 		function get_all_args($acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2457,7 +2449,7 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			if (isset($this->a[$acctnum]['args']))
 			{
 				return $this->a[$acctnum]['args'];
@@ -2468,7 +2460,7 @@
 				return;
 			}
 		}
-		
+
 		function unset_all_args($acctnum='')
 		{
 			if ((!isset($acctnum))
@@ -2476,28 +2468,25 @@
 			{
 				$acctnum = $this->get_acctnum();
 			}
-			
+
 			$this->a[$acctnum]['args'] = array();
 		}
-		
-		
+
 		// depreciated
 		//function get_folder($acctnum='')
 		//{
 		//	return $this->get_arg_value('folder');
 		//}
-		
+
 		// depreciated
 		//function get_msgnum($acctnum='')
 		//{
 		//	return $this->get_arg_value('["msgball"]["msgnum"]');
 		//}
-		
+
 		//function get_pref_layout($acctnum='')
 		//{
 		//	return $this->get_pref_value('layout', $acctnum);
 		//}
-		
-		
 	}  // end class mail_msg_wrappers
 ?>
