@@ -28,9 +28,11 @@
 		{
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			#$this->t 		= CreateObject('phpgwapi.Template_Smarty',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['system_charset']);
 			$this->bofilter 	= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
+			$this->kses		= CreateObject('phpgwapi.kses');
+			
 			$this->mailPreferences	= $this->bopreferences->getPreferences();
 			
 			$this->bofelamimail->openConnection();
@@ -377,135 +379,83 @@
                                                                                                                                                                                                                                                                                                                 
 			$this->t->set_var("date_data",
 				htmlentities($GLOBALS['phpgw']->common->show_date($transformdate->getTimeStamp($tmpdate)),
-				ENT_QUOTES,lang('charset')));
+				ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 			$this->t->set_var("subject_data",
 				htmlentities($this->bofelamimail->decode_header($headers->subject),
-				ENT_QUOTES,lang('charset')));
+				ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 			//if(isset($organization)) exit;
 			$this->t->parse("header","message_header",True);
 
-			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,lang('charset')));
+			$this->t->set_var("rawheader",htmlentities($rawheaders,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 
-#$tag_list = Array(
-#                  false,
-#                  'blink',
-#                  'object',
-#                  'meta',
-#                  'font',
-#                  'html',
-#                  'link',
-#                  'frame',
-#                  'iframe',
-#                  'layer',
-#                  'ilayer'
-#                 );
-
-$tag_list = Array(true, "b", "a", "i", "img", "strong", "em", "p");
-$tag_list = Array(true, "b", "a", "i", "strong", 'pre', 'ul', 'li', 
-			"em", "p", 'td', 'tr', 'table', 
-			'font', 'hr', 'br', 'div');
-
-$rm_tags_with_content = Array(
-                              'script',
-                              'style',
-                              'applet',
-                              'embed',
-                              'head',
-                              'frameset',
-                              'xml'
-                              );
-
-$self_closing_tags =  Array(
-                            'img',
-                            'br',
-                            'hr',
-                            'input'
-                            );
-
-$force_tag_closing = false;
-
-$rm_attnames = Array(
-    '/.*/' =>
-        Array(
-              '/target/i',
-              '/^on.*/i',
-              '/^dynsrc/i',
-              '/^datasrc/i',
-              '/^data.*/i',
-              '/^lowsrc/i'
-              )
-    );
-
-/**
- * Yeah-yeah, so this looks horrible. Check out htmlfilter.inc for
- * some idea of what's going on here. :)
- */
-
-$bad_attvals = Array(
-    '/.*/' =>
-        Array(
-	      '/.*/' =>
-	          Array(
-	                Array(
-                          '/^([\'\"])\s*\S+\s*script\s*:*(.*)([\'\"])/i',
-#                          '/^([\'\"])\s*https*\s*:(.*)([\'\"])/i',
-                          '/^([\'\"])\s*mocha\s*:*(.*)([\'\"])/i',
-                          '/^([\'\"])\s*about\s*:(.*)([\'\"])/i'
-			     ),
-		        Array(
-                      '\\1oddjob:\\2\\3',
-#                      '\\1uucp:\\2\\3',
-                      '\\1amaretto:\\2\\3',
-                      '\\1round:\\2\\3'
-		             )
-			),     
-						
-              '/^style/i' =>
-                  Array(
-                        Array(
-                              '/expression/i',
-                              '/behaviou*r/i',
-                              '/binding/i',
-                              '/url\(([\'\"]*)\s*https*:.*([\'\"]*)\)/i',
-                              '/url\(([\'\"]*)\s*\S+script:.*([\'\"]*)\)/i'
-                             ),
-                        Array(
-                              'idiocy',
-                              'idiocy',
-                              'idiocy',
-                              'url(\\1http://securityfocus.com/\\2)',
-                              'url(\\1http://securityfocus.com/\\2)'
-                             )
-                        )
-              )
-    );
-
-$add_attr_to_tag = Array(
-                         '/^a$/i' => Array('target' => '"_new"')
-                         );
-                         $add_attr_to_tag = Array();
-
+			#$this->kses->AddProtocol("http");
+			$this->kses->AddHTML(
+				"p",array(
+					'align'	=> array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+			$this->kses->AddHTML("tbody");
+			$this->kses->AddHTML("br");
+			$this->kses->AddHTML("strike");
+			$this->kses->AddHTML(
+				"a", array(
+					"href" => array('maxlen' => 45, 'minlen' => 10),
+					"name" => array('minlen' => 2)
+				)
+			);
 			
-			
-			for($i=0; $i<count($bodyParts); $i++ )
+			//      Allows 'td' tag with colspan|rowspan|class|style|width|nowrap attributes,
+			//              colspan has minval of   2       and maxval of 5
+			//              rowspan has minval of   3       and maxval of 6
+			//              class   has minlen of   1 char  and maxlen of   10 chars
+			//              style   has minlen of  10 chars and maxlen of 100 chars
+			//              width   has maxval of 100
+			//              nowrap  is valueless
+			$this->kses->AddHTML(
+				"table",array(
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"border"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"cellpadding"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"cellspacing"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"width"   => array("maxval" => 100),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					"bordercolor"   => array('maxlen' =>  10)
+				)
+			);
+			$this->kses->AddHTML(
+				"tr",array(
+					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"width"   => array("maxval" => 100),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					"nowrap"  => array('valueless' => 'y')
+				)
+			);
+			$this->kses->AddHTML(
+				"td",array(
+					"colspan" => array('minval' =>   2, 'maxval' =>   5),
+					"rowspan" => array('minval' =>   3, 'maxval' =>   6),
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10),
+					"width"   => array("maxval" => 100),
+					"style"   => array('minlen' =>  10, 'maxlen' => 100),
+					"align"   => array('maxlen' =>  10),
+					"nowrap"  => array('valueless' => 'y')
+				)
+			);
+			$this->kses->AddHTML(
+				"span",array(
+					"class"   => array("minlen" =>   1, 'maxlen' =>  10)
+				)
+			);
+
+
+			for($i=0; $i<count($bodyParts); $i++)
 			{
-				// if($i > 0) $body .= "<br><br>Atachment -------------------<br><br>";
-			
-				// add line breaks to $bodyParts
-				#$newBody	= explode("\n",$bodyParts[$i]);
-				#$bodyAppend	= '';
-				// create it new, with good line breaks
-				#reset($newBody);
-				#while(list($key,$value) = @each($newBody))
-				#{
-				#	$bodyAppend .= wordwrap($value,90,"\n",1);
-				#}
-				
-				#$body .= htmlspecialchars($bodyAppend,ENT_QUOTES);
-
-				// add line breaks to $bodyParts
-				#$newBody	= wordwrap($bodyParts[$i],90,"\n",1);
-				#$newBody	= wordwrap($bodyParts[$i],90,"<br>",1);
+				$bodyParts[$i]['body']= 
+					ExecMethod('phpgwapi.translation.convert',$bodyParts[$i]['body']);
 				if($bodyParts[$i]['mimeType'] == 'text/plain')
 				{
 					#$newBody	= ereg_replace("\n","<br>",$bodyParts[$i]['body']);
@@ -518,10 +468,7 @@ $add_attr_to_tag = Array(
 				else
 				{
 					$newBody	= $bodyParts[$i]['body'];
-					$newBody	= $htmlFilter->sanitize($newBody,
-								$tag_list, $rm_tags_with_content,
-								$self_closing_tags, $force_tag_closing,
-								$rm_attnames, $bad_attvals, $add_attr_to_tag);
+					$newBody 	= $this->kses->Parse($newBody);
 				}
 				$body .= $newBody;
 				#print "<hr><pre>$body</pre><hr>";
@@ -536,8 +483,8 @@ $add_attr_to_tag = Array(
 			
 			
 			// create links for websites
-			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
-				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,lang('charset')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
+#			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
+#				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5'),ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
 			// create links for ftp sites
 			$body = preg_replace("/((ftp:\/\/)|(ftp\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/i", 
@@ -552,13 +499,13 @@ $add_attr_to_tag = Array(
 			#$body = preg_replace("/(--)/im","<font color=\"grey\">$1</font>", $body);
 			
 			// create links for email addresses
-			$linkData = array
-			(
-				'menuaction'    => 'felamimail.uicompose.compose'
-			);
-			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
-			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
-				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
+#			$linkData = array
+#			(
+#				'menuaction'    => 'felamimail.uicompose.compose'
+#			);
+#			$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
+#			$body = preg_replace("/([\w\.,-.,_.,0-9.]+)(@)([\w\.,-.,_.,0-9.]+)/i", 
+#				"<a href=\"$link&send_to=$0\"><font color=\"blue\">$0</font></a>", $body);
 				
 			$this->t->set_var("body",$body);
 			$this->t->set_var("signature",$sessionData['signature']);
@@ -579,7 +526,7 @@ $add_attr_to_tag = Array(
 				foreach ($attachments as $key => $value)
 				{
 					$this->t->set_var('row_color',$this->rowColor[($key+1)%2]);
-					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,lang('charset')));
+					$this->t->set_var('filename',htmlentities($this->bofelamimail->decode_header($value['name']),ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 					$this->t->set_var('mimetype',$value['mimeType']);
 					$this->t->set_var('size',$value['size']);
 					$this->t->set_var('attachment_number',$key);
@@ -686,8 +633,8 @@ $add_attr_to_tag = Array(
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
 									$link,
-									htmlentities($newSenderAddress,ENT_QUOTES,lang('charset')),
-									htmlentities($val->personal,ENT_QUOTES,lang('charset')));
+									htmlentities($newSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']),
+									htmlentities($val->personal,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',
@@ -716,7 +663,7 @@ $add_attr_to_tag = Array(
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',
-									$link,htmlentities($tempSenderAddress,ENT_QUOTES,lang('charset')));
+									$link,htmlentities($tempSenderAddress,ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 						$linkData = array
 						(
 							'menuaction'	=> 'addressbook.uiaddressbook.add_email',

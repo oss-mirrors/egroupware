@@ -30,7 +30,7 @@
 			if (!isset($GLOBALS['HTTP_POST_VARS']['composeid']) && !isset($GLOBALS['HTTP_GET_VARS']['composeid']))
 			{
 				// create new compose session
-				$this->bocompose   = CreateObject('felamimail.bocompose','',lang('charset'));
+				$this->bocompose   = CreateObject('felamimail.bocompose','',$GLOBALS['phpgw_info']['system_charset']);
 				$this->composeID = $this->bocompose->getComposeID();
 			}
 			else
@@ -40,10 +40,10 @@
 					$this->composeID = $GLOBALS['HTTP_POST_VARS']['composeid'];
 				else
 					$this->composeID = $GLOBALS['HTTP_GET_VARS']['composeid'];
-				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,lang('charset'));
+				$this->bocompose   = CreateObject('felamimail.bocompose',$this->composeID,$GLOBALS['phpgw_info']['system_charset']);
 			}			
 			$this->t 		= CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['system_charset']);
 
 			$this->t->set_unknowns('remove');
 			
@@ -174,13 +174,13 @@
 			}
 			
 			// header
-			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,lang('charset'));
+			$displayFrom = htmlentities($preferences['emailAddress'][0][name].' <'.$preferences['emailAddress'][0][address].'>',ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']);
 			$this->t->set_var("from",$displayFrom);
-			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES,lang('charset')));
-			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES,lang('charset')));
-			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES,lang('charset')));
-			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES,lang('charset')));
-			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES,lang('charset')));
+			$this->t->set_var("to",htmlentities($sessionData['to'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+			$this->t->set_var("cc",htmlentities($sessionData['cc'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+			$this->t->set_var("bcc",htmlentities($sessionData['bcc'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+			$this->t->set_var("reply_to",htmlentities($sessionData['reply_to'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
+			$this->t->set_var("subject",htmlentities($sessionData['subject'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 			$this->t->pparse("out","header");
 
 			// body

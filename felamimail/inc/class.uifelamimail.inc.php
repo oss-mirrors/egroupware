@@ -47,7 +47,7 @@
 			if(isset($GLOBALS['HTTP_POST_VARS']["mark_deleted_x"])) 
 				$GLOBALS['HTTP_POST_VARS']["mark_deleted"] = "true";
 
-			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',lang('charset'));
+			$this->bofelamimail	= CreateObject('felamimail.bofelamimail',$GLOBALS['phpgw_info']['system_charset']);
 			$this->bofilter		= CreateObject('felamimail.bofilter');
 			$this->bopreferences	= CreateObject('felamimail.bopreferences');
 			$this->preferences	= $this->bopreferences->getPreferences();
@@ -782,7 +782,7 @@
 							$this->t->set_var('row_text',$flags);
 							break;
 					}
-					
+					#_debug_array($GLOBALS[phpgw_info]);
 					if (!empty($headers['header'][$i]['subject']))
 					{
 						// make the subject shorter if it is to long
@@ -791,18 +791,18 @@
 						{
 							$headers['header'][$i]['subject'] = substr($headers['header'][$i]['subject'],0,$maxSubjectLength)."...";
 						}
-						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject'],ENT_QUOTES,lang('charset'));
+						$headers['header'][$i]['subject'] = htmlentities($headers['header'][$i]['subject'],ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']);
 						if($headers['header'][$i]['attachments'] == "true")
 						{
 							$image = '<img src="'.$GLOBALS['phpgw']->common->image('felamimail','attach').'" border="0">';
 							$headers['header'][$i]['subject'] = "$image&nbsp;".$headers['header'][$i]['subject'];
 						}
-						$this->t->set_var('header_subject', $headers['header'][$i]['subject']);
-						$this->t->set_var('full_subject', $fullSubject);
+						$this->t->set_var('header_subject', ExecMethod('phpgwapi.translation.convert',$headers['header'][$i]['subject']));
+						$this->t->set_var('full_subject', ExecMethod('phpgwapi.translation.convert',$fullSubject));
 					}
 					else
 					{
-						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,lang('charset')));
+						$this->t->set_var('header_subject',htmlentities("(".lang('no subject').")",ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']));
 					}
 				
 					if ($mailPreferences['sent_folder'] == $this->mailbox)
@@ -832,7 +832,7 @@
 								$headers['header'][$i]['sender_name'].
 								" <".
 								$headers['header'][$i]['sender_address'].
-								">",ENT_QUOTES,lang('charset'));
+								">",ENT_QUOTES,$GLOBALS['phpgw_info']['system_charset']);
 						}
 						else
 						{
@@ -845,8 +845,7 @@
 					{
 						$sender_name = substr($sender_name,0,$maxAddressLength)."...";
 					}
-					$this->t->set_var('sender_name',$sender_name);
-					# $this->t->set_var('sender_name', htmlentities($sender_name,ENT_QUOTES,lang('charset')));
+					$this->t->set_var('sender_name',ExecMethod('phpgwapi.translation.convert',$sender_name));
 					$this->t->set_var('full_address',$full_address);
 				
 					if($GLOBALS['HTTP_GET_VARS']["select_all"] == "select_all")

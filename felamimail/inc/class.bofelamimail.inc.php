@@ -838,33 +838,9 @@
 							break;
 					}
 					
-					// ... and convert to the right charset
-					// utf8_en/decode can en/code from/to iso-8859-1
-					// iso-8859-1 and iso-8859-15 are mostly identical
-					if(strtolower($this->displayCharset) != strtolower($charSet))
-					{
-						if($this->mbAvailable)
-						{
-							$newPart = mb_convert_encoding($newPart,
-									$this->displayCharset,
-									$charSet);
-						}
-						elseif(strtolower($charSet) == 'utf-8' &&
-							(strtolower($this->displayCharset) == 'iso-8859-1' ||
-							strtolower($this->displayCharset) == 'iso-8859-15'))
-						{
-							$newPart = utf8_decode($newPart);
-						}
-						elseif((strtolower($charSet) == 'iso-8859-1' ||
-							strtolower($charSet) == 'iso-8859-15')&&
-							strtolower($this->displayCharset) == 'utf-8')
-						{
-							$newPart = utf8_encode($newPart);
-						}
-					}
-					
-					$bodyPart[] = array('body' => $newPart,
-								    'mimeType' => $mimeType);
+					$bodyPart[] = array('body'	=> $newPart,
+							    'mimeType'	=> $mimeType,
+							    'charSet'	=> $charSet);
 				}
 			}
 			
