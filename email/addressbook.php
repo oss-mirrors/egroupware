@@ -32,7 +32,7 @@
 
    if ($phpgw->db->f(0) == 0) {
       echo "<body bgcolor=\"" . $phpgw_info["theme"]["bg_color"] . "\">"
-	 . "<center>" . lang_email("There are no email address's in your addressbook")
+	 . "<center>" . lang("There are no email address's in your addressbook")
 	 . "</center>";
       exit;
    }

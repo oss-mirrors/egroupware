@@ -22,7 +22,7 @@
   $struct = $phpgw->msg->fetchstructure($mailbox, $msgnum);
   $totalmessages = $phpgw->msg->num_msg($mailbox);
 
-  $subject = !$msg->Subject ? lang_email("no subject") : $msg->Subject;
+  $subject = !$msg->Subject ? lang("no subject") : $msg->Subject;
   $subject = decode_header_string($subject);
   $from = $msg->from[0];
 
@@ -48,13 +48,13 @@ In the future, this will process a specially formated email msg, intended to acc
 
         <td align=right><font size="3" face="<?php echo $phpgw_info["theme"]["font"] . "\" color=\"" . $phpgw_info["theme"]["em_folder_text"]; ?>">
          <a href="<?php echo $phpgw->link("compose.php","action=reply&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply.gif" height=19 width=26 alt="<?php echo lang_email("reply"); ?>"></a>
+          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply.gif" height=19 width=26 alt="<?php echo lang("reply"); ?>"></a>
          <a href="<?php echo $phpgw->link("compose.php","action=replyall&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply_all.gif" height=19 width=26 alt="<?php echo lang_email("reply all"); ?>"></a>
+          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_reply_all.gif" height=19 width=26 alt="<?php echo lang("reply all"); ?>"></a>
          <a href="<?php echo $phpgw->link("compose.php","action=forward&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-         <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_forward.gif" height=19 width=26 alt="<?php echo lang_email("forward"); ?>"></a>
+         <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_forward.gif" height=19 width=26 alt="<?php echo lang("forward"); ?>"></a>
          <a href="<?php echo $phpgw->link("action.php","what=delete&folder=".urlencode($folder)."&msgnum=$msgnum"); ?>">
-          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_delete.gif" height=19 width=26 alt="<?php echo lang_email("delete"); ?>"></a></font>
+          <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/sm_delete.gif" height=19 width=26 alt="<?php echo lang("delete"); ?>"></a></font>
 	</td>
         <td align="right">
          <?php
@@ -111,7 +111,7 @@ In the future, this will process a specially formated email msg, intended to acc
 <tr>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo lang_email("from"); ?>:</b>
+   <b><?php echo lang("from"); ?>:</b>
   </font> 
  </td> 
  <td bgcolor="<?php echo $phpgw_info["theme"]["row_on"]; ?>" width="570">
@@ -136,7 +136,7 @@ if ($msg->from) {
         . "<img src=\""
         . $phpgw_info["server"]["app_images"]."/sm_envelope.gif\" width=10 height=8 alt=\"Add to address book\" border=\"0\" align=ABSMIDDLE></a></font>";
 } else {
-   echo lang_email("Undisclosed Sender");
+   echo lang("Undisclosed Sender");
    echo "\n";
 }
 
@@ -148,7 +148,7 @@ if ($msg->from) {
 <tr>
  <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
   <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-   <b><?php echo lang_email("to"); ?>:</b>
+   <b><?php echo lang("to"); ?>:</b>
   </font> 
  </td> 
  <td bgcolor="<?php echo $phpgw_info["theme"]["row_on"]; ?>" width="570">
@@ -179,7 +179,7 @@ if ($msg->to) {
 //      echo "</td></tr>\n";
    }
 } else {
-  echo lang_email("Undisclosed Recipients");
+  echo lang("Undisclosed Recipients");
   echo "\n";
 }
 
@@ -190,7 +190,7 @@ if ($msg->cc) {
    <tr>
     <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
      <font size=2 face=<?php echo $phpgw_info["theme"]["font"]; ?>>
-      <b><?php echo lang_email("cc"); ?>:</b>
+      <b><?php echo lang("cc"); ?>:</b>
     </td>
     <td bgcolor="<?php echo $phpgw_info["theme"]["row_on"]; ?>" width="570">
      <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
@@ -226,7 +226,7 @@ if ($msg->cc) {
 <tr>
   <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" valign="top">
     <font size=2 face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      <b><?php echo lang_email("date"); ?>:</b>
+      <b><?php echo lang("date"); ?>:</b>
     </font>
     </td>
     <td bgcolor="<?php echo $phpgw_info["theme"]["row_on"]; ?>" width="570">
@@ -250,7 +250,7 @@ if ($msg->cc) {
   if ($flag != 0) {
      echo "<tr><td bgcolor=".$phpgw_info["theme"]["th_bg"]." valign=top>";
      echo "<font size=2 face=\"".$phpgw_info["theme"]["font"]."\"><b>";
-     echo lang_email("files") . ":</b></td><td bgcolor=\"".$phpgw_info["theme"]["row_on"]."\" width=570>";
+     echo lang("files") . ":</b></td><td bgcolor=\"".$phpgw_info["theme"]["row_on"]."\" width=570>";
      echo "<font size=2 face=\"".$phpgw_info["theme"]["font"]."\">";
      echo implode(", ", $f_name);
      echo "</td></tr>";
@@ -260,7 +260,7 @@ if ($msg->cc) {
  <tr>
   <td bgcolor=<?php echo $phpgw_info["theme"]["th_bg"] ?> valign=top>
    <font size=2 face=<?php echo $phpgw_info["theme"]["font"] ?>>
-    <b><?php echo lang_email("subject") ?>:</b>   </font>
+    <b><?php echo lang("subject") ?>:</b>   </font>
   </td>  <td bgcolor=<?php echo $phpgw_info["theme"]["row_on"]; ?> width=570>
    <font size=2 face=<?php echo $phpgw_info["theme"]["font"]; ?>>
     <?php echo $subject; ?>

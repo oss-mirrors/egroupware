@@ -115,7 +115,7 @@
 <option value="delete">Delete the folder</option>
 </select> <font size=2 face=<?php echo $phpgw_info["theme"]["font"] ?>><b><?php echo $L_NAMED ?></b></font>
 <input type=text name="name"><input type=hidden name=folder value="<?php echo $folder ?>">
-<input type=submit value="<?php echo lang_common("submit"); ?>"></td></tr></form>
+<input type=submit value="<?php echo lang("submit"); ?>"></td></tr></form>
 </table>
 
 <p>

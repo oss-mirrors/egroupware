@@ -24,7 +24,7 @@
     if ($action == "reply") {
 	    $from = $msg->from[0];
 	    $to = $from->mailbox."@".$from->host;
-	    $subject = !$msg->Subject ? lang_email("no subject") : decode_header_string($msg->Subject);
+	    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
 	    $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
 	    $subject = $begin . $subject;
     }
@@ -46,14 +46,14 @@
 	    $cc = implode(", ", $cclist);
     }
 
-    $subject = !$msg->Subject ? lang_email("no subject") : decode_header_string($msg->Subject);
+    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
     $begin = strtoupper(substr($subject, 0, 3)) != "RE:" ? "Re: " : "";
     $subject = $begin . $subject;
   }
 
 
   if ($action == "forward") {
-    $subject = !$msg->Subject ? lang_email("no subject") : decode_header_string($msg->Subject);
+    $subject = !$msg->Subject ? lang("no subject") : decode_header_string($msg->Subject);
     $begin = strtoupper(substr($subject, 0, 3)) != "FW:" ? "Fw: " : "";
     $subject = $begin . $subject;
   }
@@ -108,16 +108,16 @@
      <table border=0 cellpadding=4 cellspacing=1 width=100%>
       <tr>
        <td align="left" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
-	<input type="button" value="<?php echo lang_common("addressbook"); ?>" onclick="addressbook();">
+	<input type="button" value="<?php echo lang("addressbook"); ?>" onclick="addressbook();">
        </td>
        <td align="right" bgcolor="<?php echo $phpgw_info["theme"]["em_folder"] ?>">
-	<input type="submit" value="<?php echo lang_email("send"); ?>">
+	<input type="submit" value="<?php echo lang("send"); ?>">
        </td>
       </tr>
      </table>
    </td>
 
-   <tr><td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>"><b>&nbsp;<?php echo lang_email("to"); ?>:</b></td>
+   <tr><td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>"><b>&nbsp;<?php echo lang("to"); ?>:</b></td>
      <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
       <input type=text name=to size=80 value="<?php
 
@@ -131,7 +131,7 @@
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"] ?>">
-     <b>&nbsp;<?php echo lang_email("cc"); ?>:</b>
+     <b>&nbsp;<?php echo lang("cc"); ?>:</b>
     </font>
    </td>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
@@ -142,7 +142,7 @@
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-     <b>&nbsp;<?php echo lang_email("subject"); ?>:&nbsp;</b>
+     <b>&nbsp;<?php echo lang("subject"); ?>:&nbsp;</b>
     </font>
    </td>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" width="570">
