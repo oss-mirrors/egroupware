@@ -234,8 +234,7 @@
 
 		function preferences()
 		{
-			$mainscreen = $GLOBALS['HTTP_GET_VARS']['mainscreen'];
-			$prefs		= $GLOBALS['HTTP_GET_VARS']['prefs'];
+			$prefs = $GLOBALS['HTTP_POST_VARS']['prefs'];
 
 			$link_data = array
 			(
@@ -244,17 +243,7 @@
 
 			if ($prefs['submit'])
 			{
-				$GLOBALS['phpgw']->preferences->read_repository();
-				if ($prefs['mainscreen'])
-				{
-					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','enabled');
-				}
-				else
-				{
-					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','disabled');
-				}
-				$GLOBALS['phpgw']->preferences->change('stocks','country',$prefs['country']);
-				$GLOBALS['phpgw']->preferences->save_repository(True);
+				$this->bo->save_prefs($prefs);
 				Header('Location: ' . $GLOBALS['phpgw']->link('/index.php',$link_data));
 				$GLOBALS['phpgw']->common->phpgw_exit();
 			}

@@ -198,6 +198,25 @@
 			return $def;
 		}
 
+		function save_prefs($prefs)
+		{
+			$GLOBALS['phpgw']->preferences->read_repository();
+
+			if (is_array($prefs))
+			{
+				if ($prefs['mainscreen'])
+				{
+					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','enabled');
+				}
+				else
+				{
+					$GLOBALS['phpgw']->preferences->change('stocks','mainscreen','disabled');
+				}
+				$GLOBALS['phpgw']->preferences->change('stocks','country',$prefs['country']);
+				$GLOBALS['phpgw']->preferences->save_repository(True);
+			}
+		}
+
 		function read_stocks()
 		{
 			return $this->so->read_stocks($this->country);

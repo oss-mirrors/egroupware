@@ -10,7 +10,7 @@
 		<td align="center">{mainscreen}</td>
 	</tr>
 	<tr bgcolor="{tr_color2}">
-		<td>{lang_select_def_country}:</td>
+		<td>{lang_def_country}:</td>
 		<td align="center"><select name="prefs[country]">{country_list}</select></td>
 	</tr>
 	<tr valign="bottom">
