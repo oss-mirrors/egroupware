@@ -5,21 +5,20 @@ Address Book	felamimail	fi	Osoitekirja
 add	felamimail	fi	lisää
 Add	felamimail	fi	Lisää
 Add to address book	felamimail	fi	Lisää osoitekirjaan
-Add to %s	felamimail	fi	Lisää kohteeseen %s
+Add to %1	felamimail	fi	Lisää kohteeseen %1
 After message body	felamimail	fi	Viestin jälkeen
 All address books	felamimail	fi	Kaikki osoitekirjat
 All Folders	felamimail	fi	Kaikki kansiot
 as a subfolder of	felamimail	fi	alikansiona kohteelle
 Attachments	felamimail	fi	Liitteet
 Auto refresh folder list	felamimail	fi	Päivitä kansiolista automaattisesti
-Bad reque	felamimail	fi	Bad reque
 Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	fi	Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.
 Before headers	felamimail	fi	Ennen otsikkotietoja
 Between headers and message body	felamimail	fi	Otsikkotietojen ja viestin välissä
 cc	felamimail	fi	cc
 Checkbox	felamimail	fi	Valintaruutu
 Click here to log back in.	felamimail	fi	Napsauta palataksesi.
-Click here to return to %s	felamimail	fi	Takaisin %s
+Click here to return to %1	felamimail	fi	Takaisin %1
 Close window	felamimail	fi	Sulje ikkuna
 Color	felamimail	fi	Väri
 Compose	felamimail	fi	Kirjoita
@@ -55,7 +54,7 @@ E-mail address	felamimail	fi	E-mail osoite
 E-Mail Address	felamimail	fi	E-Mail Osoite
 E-mail	felamimail	fi	E-mail
 empty trash	felamimail	fi	tyhjennä roskakori
-Error connecting to IMAP serv	felamimail	fi	Virhe yhdistettäessä IMAP palvelimeen
+Error connecting to IMAP server: %1.	felamimail	fi	Virhe yhdistettäessä IMAP palvelimeen: %1.
 Error opening 	felamimail	fi	Virhe avattaessa
 ERROR	felamimail	fi	VIRHE
 ERRO	felamimail	fi	VIRH
@@ -142,8 +141,8 @@ Only unseen	felamimail	fi	Vain avaamattomat
 Options	felamimail	fi	Asetukset
 Oth	felamimail	fi	Muu
 Personal Information	felamimail	fi	Omat tiedot
-Preference file, %s, does not exist. Log out, and log back in to create a default preference file.	felamimail	fi	Asetustiedostoa, %s, ei löydy. Poistu ja kirjaudu takaisin luodaksesi uuden asetustiedoston.
-Preference file %s not found. Exiting abnormally	felamimail	fi	Asetustiedostoa %s ei löydy. Istunto päättyi virheeseen
+Preference file, %1, does not exist. Log out, and log back in to create a default preference file.	felamimail	fi	Asetustiedostoa, %1, ei löydy. Poistu ja kirjaudu takaisin luodaksesi uuden asetustiedoston.
+Preference file %1 not found. Exiting abnormally	felamimail	fi	Asetustiedostoa %1 ei löydy. Istunto päättyi virheeseen
 Previous	felamimail	fi	Edellinen
 purge	felamimail	fi	tuhoa
 Read da	felamimail	fi	Lue da
@@ -162,7 +161,7 @@ ReplyTo	felamimail	fi	ReplyTo
 Return	felamimail	fi	Palaa
 Return to options page	felamimail	fi	Takaisin asetukset -sivulle
 Right	felamimail	fi	Oikea
-Running SquirrelMail version %s (c) 1999-2000.	felamimail	fi	SquirrelMail versio %s (c) 1999-2000.
+Running SquirrelMail version %1 (c) 1999-2000.	felamimail	fi	SquirrelMail versio %1 (c) 1999-2000.
 Same Window - not functional yet	felamimail	fi	Sama ikkuna - ei vielä toiminnassa
 save	felamimail	fi	tallenna
 Search for	felamimail	fi	Etsi
@@ -189,7 +188,7 @@ Successfully saved display preferences!	felamimail	fi	Näyttöasetukset tallennett
 Successfully saved folder preferences!	felamimail	fi	Kansioasetukset tallennettu!
 Successfully saved personal information!	felamimail	fi	Omat tiedot tallennettu!
 Table of Contents	felamimail	fi	Sisältö
-The help has not been translated to %s.  It will be displayed in English instead.	felamimail	fi	Ohjetta ei ole käännetty kielelle %s. Avaan englanninkielisen version.
+The help has not been translated to %1.  It will be displayed in English instead.	felamimail	fi	Ohjetta ei ole käännetty kielelle %1. Avaan englanninkielisen version.
 The index order is the order that the columns are arranged in the message index.  You can add, remove, and move columns around to customize them to fit your needs.	felamimail	fi	The index order is the order that the columns are arranged in the message index.  You can add, remove, and move columns around to customize them to fit your needs.
 Theme	felamimail	fi	Teema
 The order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	fi	The order of the message index can be rearanged and changed to contain the headers in any order you want.
@@ -206,9 +205,8 @@ Translation location	felamimail	fi	Translation location
 Translation Preferences	felamimail	fi	Käännösten asetukset
 Translation server	felamimail	fi	Käännöspalvelin
 Trash Fold	felamimail	fi	Roskakori
-Unable to list addresses from %s	felamimail	fi	Osoitteiden listaus kohteesta %s epäonnistui
+Unable to list addresses from %1	felamimail	fi	Osoitteiden listaus kohteesta %1 epäonnistui
 Unknown error	felamimail	fi	Tuntematon virhe
-Unknown err	felamimail	fi	Tunt. virh.
 (unknown sender)	felamimail	fi	(tuntematon lähettäjä)
 Unknown Sender	felamimail	fi	Tuntematon Lähettäjä
 Unknown user or password incorrect.	felamimail	fi	Tuntematon käyttäjä tai salasana väärin.
@@ -229,7 +227,7 @@ Viewing full header	felamimail	fi	Näytetään kaikki otsikkotiedot
 Viewing message	felamimail	fi	Näytän viestin
 Viewing messages	felamimail	fi	Viestien katselu
 View message	felamimail	fi	Näytä viesti
-Welcome to %s's WebMail system	felamimail	fi	Tervetuloa %s:n WebMail -järjestelmään
+Welcome to %1's WebMail system	felamimail	fi	Tervetuloa %1:n WebMail -järjestelmään
 White	felamimail	fi	Valkoinen
 Width of folder list	felamimail	fi	Kansiolistan leveys
 Wrap incoming text at	felamimail	fi	Aseta rivinleveydeksi

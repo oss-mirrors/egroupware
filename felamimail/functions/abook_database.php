@@ -83,7 +83,7 @@
          $dbh = DB::connect($this->dsn, true);
          
          if(DB::isError($dbh) || DB::isWarning($dbh)) 
-            return $this->set_error(sprintf(lang("Database error: %s"),
+            return $this->set_error(sprintf(lang("Database error: %1"),
                                             DB::errorMessage($dbh)));
          
          $this->dbh = $dbh;
@@ -119,7 +119,7 @@
          $res = $this->dbh->query($query);
 
          if(DB::isError($res)) 
-            return $this->set_error(sprintf(lang("Database error: %s"),
+            return $this->set_error(sprintf(lang("Database error: %1"),
                                             DB::errorMessage($res)));
 
          while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
@@ -151,7 +151,7 @@
          $res = $this->dbh->query($query);
 
          if(DB::isError($res)) 
-            return $this->set_error(sprintf(lang("Database error: %s"),
+            return $this->set_error(sprintf(lang("Database error: %1"),
                                             DB::errorMessage($res)));
 
          if ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
@@ -180,7 +180,7 @@
          $res = $this->dbh->query($query);
 
          if(DB::isError($res)) 
-            return $this->set_error(sprintf(lang("Database error: %s"),
+            return $this->set_error(sprintf(lang("Database error: %1"),
                                             DB::errorMessage($res)));
 
          while ($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
@@ -207,7 +207,7 @@
          // See if user exist already
          $ret = $this->lookup($userdata['nickname']);
          if(!empty($ret))
-            return $this->set_error(sprintf(lang("User '%s' already exist"),
+            return $this->set_error(sprintf(lang("User '%1' already exist"),
                                             $ret['nickname']));
 
          // Create query
@@ -226,7 +226,7 @@
          if($r == DB_OK) return true;
 
          // Fail
-         return $this->set_error(sprintf(lang("Database error: %s"),
+         return $this->set_error(sprintf(lang("Database error: %1"),
                                          DB::errorMessage($r)));
       }
 
@@ -255,7 +255,7 @@
          if($r == DB_OK) return true;
 
          // Fail
-         return $this->set_error(sprintf(lang("Database error: %s"),
+         return $this->set_error(sprintf(lang("Database error: %1"),
                                          DB::errorMessage($r)));
       }
 
@@ -270,7 +270,7 @@
          // See if user exist
          $ret = $this->lookup($alias);
          if(empty($ret))
-            return $this->set_error(sprintf(lang("User '%s' does not exist"),
+            return $this->set_error(sprintf(lang("User '%1' does not exist"),
                                             $alias));
 
          // Create query
@@ -291,7 +291,7 @@
          if($r == DB_OK) return true;
 
          // Fail
-         return $this->set_error(sprintf(lang("Database error: %s"),
+         return $this->set_error(sprintf(lang("Database error: %1"),
                                          DB::errorMessage($r)));
       }
    } // End of class abook_database

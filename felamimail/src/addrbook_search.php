@@ -228,7 +228,7 @@ function bcc_address($addr) {
 	 if(is_array($res)) {
 	    display_result($res, false);
 	 } else {
-	    printf("<P ALIGN=center><STRONG>".lang("Unable to list addresses from %s").
+	    printf("<P ALIGN=center><STRONG>".lang("Unable to list addresses from %1").
 		   "</STRONG></P>\n", $abook->backends[$backend]->sname);
 	 }
 

@@ -229,7 +229,7 @@
        // See if user exist already
        $ret = $this->lookup($userdata['nickname']);
        if(!empty($ret))
-	 return $this->set_error(sprintf(lang("User '%s' already exist"),
+	 return $this->set_error(sprintf(lang("User '%1' already exist"),
 					 $ret['nickname']));
 
        // Here is the data to write
@@ -302,7 +302,7 @@
        // See if user exist
        $ret = $this->lookup($alias);
        if(empty($ret))
-	 return $this->set_error(sprintf(lang("User '%s' does not exist"),
+	 return $this->set_error(sprintf(lang("User '%1' does not exist"),
 					 $alias));
 
        // Lock the file to make sure we're the only process working

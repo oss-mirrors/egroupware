@@ -126,7 +126,7 @@
    } else if (file_exists("../help/en")) {
       $help_exists = true;
       echo "<center><font color=\"$color[2]\">";
-      printf (lang("The help has not been translated to %s.  It will be displayed in English instead."), $languages[$felamimail_language]["NAME"]);
+      printf (lang("The help has not been translated to %1.  It will be displayed in English instead."), $languages[$felamimail_language]["NAME"]);
       echo "</font></center><br>";
       $user_language = "en";
    } else {

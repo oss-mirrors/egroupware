@@ -390,7 +390,7 @@
    printf("<FORM ACTION=\"%s\" NAME=f_add METHOD=\"POST\">\n", $PHP_SELF);
    print "<TABLE WIDTH=100% COLS=1 ALIGN=CENTER>\n";
    print "<TR><TD BGCOLOR=\"$color[0]\" ALIGN=CENTER>\n<STRONG>";
-   printf(lang("Add to %s"), $abook->localbackendname);
+   printf(lang("Add to %1"), $abook->localbackendname);
    print "<STRONG>\n</TD></TR>\n";
    print "</TABLE>\n";
    address_form('addaddr', lang("Add address"), $defdata);

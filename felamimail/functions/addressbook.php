@@ -28,7 +28,7 @@
       $r = $abook->add_backend('local_file', Array('filename' => $filename,
 						   'create'   => true));
       if(!$r && $showerr) {
-	 printf(lang("Error opening file %s"), $filename);
+	 printf(lang("Error opening file %1"), $filename);
 	 exit;
       }
 
@@ -42,7 +42,7 @@
 	    if(is_array($param)) {
 	       $r = $abook->add_backend('ldap_server', $param);
 	       if(!$r && $showerr) {
-		  printf('&nbsp;' . lang("Error initializing LDAP server %s:") .
+		  printf('&nbsp;' . lang("Error initializing LDAP server %1:") .
 		       "<BR>\n", $param['host']);
 		  print('&nbsp;' . $abook->error);
 		  exit;

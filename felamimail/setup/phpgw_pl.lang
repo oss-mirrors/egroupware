@@ -3,7 +3,7 @@
 (unknown sender)	felamimail	pl	(nieznany nadawca)
 add	felamimail	pl	Dodaj
 add address	felamimail	pl	Dodaj adres
-add to %s	felamimail	pl	Dodaj do %s
+add to %1	felamimail	pl	Dodaj do %1
 add to address book	felamimail	pl	Dodaj do ksi±¿ki adresowej
 additional info	felamimail	pl	
 address book	felamimail	pl	Ksi±¿ka adresowa
@@ -14,14 +14,13 @@ all folders	felamimail	pl
 as a subfolder of	felamimail	pl	jako podfolder w
 attachments	felamimail	pl	Za³±czniki
 auto refresh folder list	felamimail	pl	
-bad reque	felamimail	pl	
 based upon given criteria, incoming messages can have different background colors in the message list.  this helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pl	
 before headers	felamimail	pl	Przed nag³ówkiem
 between headers and message body	felamimail	pl	Pomiêdzy nag³ówkiem a tre¶ci±
 cc	felamimail	pl	DW
 checkbox	felamimail	pl	
 click here to log back in.	felamimail	pl	
-click here to return to %s	felamimail	pl	
+click here to return to %1	felamimail	pl	
 close window	felamimail	pl	Zamknij okno
 color	felamimail	pl	Kolor
 compose	felamimail	pl	Utwórz
@@ -64,7 +63,6 @@ email signature	felamimail	pl	Sygnaturka
 empty trash	felamimail	pl	
 erro	felamimail	pl	
 error	felamimail	pl	
-error connecting to imap serv	felamimail	pl	
 error opening	felamimail	pl	
 expunge	felamimail	pl	
 felamimail	common	pl	FelaMiMail
@@ -154,8 +152,8 @@ options	felamimail	pl	Opcje
 oth	felamimail	pl	
 other:	felamimail	pl	Inne
 personal information	felamimail	pl	
-preference file %s not found. exiting abnormally	felamimail	pl	
-preference file, %s, does not exist. log out, and log back in to create a default preference file.	felamimail	pl	
+preference file %1 not found. exiting abnormally	felamimail	pl	
+preference file, %1, does not exist. log out, and log back in to create a default preference file.	felamimail	pl	
 previous	felamimail	pl	Poprzedni
 purge	felamimail	pl	
 read da	felamimail	pl	
@@ -174,7 +172,7 @@ replyto	felamimail	pl	Odpowiedz
 return	felamimail	pl	Powrót
 return to options page	felamimail	pl	Powrót do strony konfiguracji
 right	felamimail	pl	
-running squirrelmail version %s (c) 1999-2000.	felamimail	pl	Uruchomiona wersja SquirrelMail %s (c) 1999-2000.
+running squirrelmail version %1 (c) 1999-2000.	felamimail	pl	Uruchomiona wersja SquirrelMail %1 (c) 1999-2000.
 same window - not functional yet	felamimail	pl	
 save	felamimail	pl	
 search	felamimail	pl	Szukaj
@@ -200,7 +198,7 @@ successfully saved display preferences!	felamimail	pl
 successfully saved folder preferences!	felamimail	pl	
 successfully saved personal information!	felamimail	pl	
 table of contents	felamimail	pl	
-the help has not been translated to %s.  it will be displayed in english instead.	felamimail	pl	
+the help has not been translated to %1.  it will be displayed in english instead.	felamimail	pl	
 the index order is the order that the columns are arranged in the message index.  you can add, remove, and move columns around to customize them to fit your needs.	felamimail	pl	
 the order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	pl	
 theme	felamimail	pl	
@@ -216,7 +214,7 @@ translation location	felamimail	pl	Po³o¿enie t³umaczenia
 translation preferences	felamimail	pl	
 translation server	felamimail	pl	Serwer t³umaczeñ
 trash fold	felamimail	pl	
-unable to list addresses from %s	felamimail	pl	
+unable to list addresses from %1	felamimail	pl	
 unknown err	felamimail	pl	
 unknown error	felamimail	pl	
 unknown sender	felamimail	pl	
@@ -239,7 +237,7 @@ view message	felamimail	pl
 viewing full header	felamimail	pl	
 viewing message	felamimail	pl	
 viewing messages	felamimail	pl	
-welcome to %s's webmail system	felamimail	pl	
+welcome to %1's webmail system	felamimail	pl	
 when deleting messages	felamimail	pl	Gdy usuwasz wiadomo¶æ
 white	felamimail	pl	Bia³y
 width of folder list	felamimail	pl	

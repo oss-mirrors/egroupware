@@ -17,7 +17,7 @@
 
       $filename = "$data_dir$username.pref";
       if (!file_exists($filename)) {
-	 printf (lang("Preference file %s not found. Exiting abnormally"), $filename);
+	 printf (lang("Preference file %1 not found. Exiting abnormally"), $filename);
          $phpgw->common->phpgw_exit(True);
       }
 
@@ -40,7 +40,7 @@
       $filename = "$data_dir$username.pref";
       $found = false;
       if (!file_exists($filename)) {
-	 printf (lang("Preference file, %s, does not exist. Log out, and log back in to create a default preference file."), $filename);
+	 printf (lang("Preference file, %1, does not exist. Log out, and log back in to create a default preference file."), $filename);
 	 echo "<br>\n";
          exit;
       }
@@ -81,7 +81,7 @@
       $filename = "$data_dir$username.pref";
       $found = false;
       if (!file_exists($filename)) {
-	 printf (lang("Preference file, %s, does not exist. Log out, and log back in to create a default preference file."), $filename);
+	 printf (lang("Preference file, %1, does not exist. Log out, and log back in to create a default preference file."), $filename);
 	 echo "\n<br>\n";
          exit;
       }

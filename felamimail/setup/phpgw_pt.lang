@@ -5,21 +5,21 @@ Address Book	felamimail	pt	Contatos
 add	felamimail	pt	adicionar
 Add	felamimail	pt	Adicionar
 Add to address book	felamimail	pt	Adicionar aos contatos
-Add to %s	felamimail	pt	Adicionar a %s
+Add to %1	felamimail	pt	Adicionar a %1
 After message body	felamimail	pt	Após o corpo da mensagem
 All address books	felamimail	pt	Todos os contatos
 All Folders	felamimail	pt	Todas as pastas
 as a subfolder of	felamimail	pt	como subpasta de
 Attachments	felamimail	pt	Anexos
 Auto refresh folder list	felamimail	pt	Autoatualizar lista de pastas
-Bad request	felamimail	pt	Pedido inválido
+Bad request: %1	felamimail	pt	Pedido inválido: %1
 Based upon given criteria, incoming messages can have different background colors in the message list.  This helps to easily distinguish who the messages are from, especially for mailing lists.	felamimail	pt	Baseado em criterias dadas, mensagens de entrada podem ter cores de fundo diferentes na lista de mensagens.  Isso ajuda facilmente distinguir de quem são as mensagens, particularmente no caso de listas de mensagens.
 Before headers	felamimail	pt	Antes dos headers
 Between headers and message body	felamimail	pt	Entre cabeçalho e corpo da mensagem
 cc	felamimail	pt	cc
 Checkbox	felamimail	pt	Caixa de seleção
 Click here to log back in.	felamimail	pt	Clique aqui para (re-)login.
-Click here to return to %s	felamimail	pt	Clique aqui para voltar a %s
+Click here to return to %1	felamimail	pt	Clique aqui para voltar a %1
 Close window	felamimail	pt	Fecha janela
 Color	felamimail	pt	Cor
 Compose	felamimail	pt	Compor
@@ -55,7 +55,7 @@ E-mail address	felamimail	pt	Endereço de email
 E-Mail Address	felamimail	pt	Endereço de email
 E-mail	felamimail	pt	EMail
 empty trash	felamimail	pt	Lixo (trash) vazil
-Error connecting to IMAP server	felamimail	pt	Erro na conexão ao servidor IMAP
+Error connecting to IMAP server: %1.	felamimail	pt	Erro na conexão ao servidor IMAP: %1.
 Error opening 	felamimail	pt	Erro abrindo 
 ERROR	felamimail	pt	ERRO
 ERRO	felamimail	pt	ERRO
@@ -142,8 +142,8 @@ Only unseen	felamimail	pt	Somente não vistas
 Options	felamimail	pt	Opções
 Other	felamimail	pt	Outro
 Personal Information	felamimail	pt	Informação pessoal
-Preference file, %s, does not exist. Log out, and log back in to create a default preference file.	felamimail	pt	Arquivo de preferência, %s, não existe. Faça logout e alogin para criar um arquivo de preferência padrão.
-Preference file %s not found. Exiting abnormally	felamimail	pt	Arquivo de preferência %s não encontrado. Terminando emergencialmente
+Preference file, %1, does not exist. Log out, and log back in to create a default preference file.	felamimail	pt	Arquivo de preferência, %1, não existe. Faça logout e alogin para criar um arquivo de preferência padrão.
+Preference file %1 not found. Exiting abnormally	felamimail	pt	Arquivo de preferência %1 não encontrado. Terminando emergencialmente
 Previous	felamimail	pt	Anteriores
 purge	felamimail	pt	apagar
 Read da	felamimail	pt	Ler da
@@ -162,7 +162,7 @@ ReplyTo	felamimail	pt	Responde a
 Return	felamimail	pt	Voltar
 Return to options page	felamimail	pt	Voltar à página de opções
 Right	felamimail	pt	Direita
-Running SquirrelMail version %s (c) 1999-2000.	felamimail	pt	Usando SquirrelMail versão %s (c) 1999-2000.
+Running SquirrelMail version %1 (c) 1999-2000.	felamimail	pt	Usando SquirrelMail versão %1 (c) 1999-2000.
 Same Window - not functional yet	felamimail	pt	Mesma Janela - não funcionando ainda
 save	felamimail	pt	salvar
 Search for	felamimail	pt	Procurar para
@@ -188,7 +188,7 @@ Successfully saved display preferences!	felamimail	pt	Preferências de aparência 
 Successfully saved folder preferences!	felamimail	pt	Preferências de pastas salvo com sucesso! 
 Successfully saved personal information!	felamimail	pt	Preferências de informações pessoais salvo com sucesso! 
 Table of Contents	felamimail	pt	Tabela de conteúdo
-The help has not been translated to %s.  It will be displayed in English instead.	felamimail	pt	A ajuda não foi traduzido a %s.  Vai ser mostrado em Inglês.
+The help has not been translated to %1.  It will be displayed in English instead.	felamimail	pt	A ajuda não foi traduzido a %1.  Vai ser mostrado em Inglês.
 The index order is the order that the columns are arranged in the message index.  You can add, remove, and move columns around to customize them to fit your needs.	felamimail	pt	A ordem dos indices é a ordem em que as colunas são montados no index das mensagens.  Você pode adicionar, apagar, e mover colunas para customizâ-los conforme suas necessidades.
 Theme	felamimail	pt	Tema
 The order of the message index can be rearanged and changed to contain the headers in any order you want.	felamimail	pt	A ordem do index das mensagens pode ser alterada para conter as cabeçadas em qualquer ordem desejada.
@@ -205,7 +205,7 @@ Translation location	felamimail	pt	Lugar da tradução
 Translation Preferences	felamimail	pt	Preferências de tradução
 Translation server	felamimail	pt	Servidor de tradução
 Trash Folder	felamimail	pt	Pasta de lixo (trash)
-Unable to list addresses from %s	felamimail	pt	Impossível listar endereços de %s
+Unable to list addresses from %1	felamimail	pt	Impossível listar endereços de %1
 Unknown error	felamimail	pt	Erro desconhecido
 (unknown sender)	felamimail	pt	(remetente desconhecido)
 Unknown Sender	felamimail	pt	Remetente desconhecido
@@ -227,7 +227,7 @@ Viewing full header	felamimail	pt	Ver cabeçada completa
 Viewing message	felamimail	pt	Ver mensagem 
 Viewing messages	felamimail	pt	Ver mensagens
 View message	felamimail	pt	Ver mensagem
-Welcome to %s's WebMail system	felamimail	pt	Bemvindo a sistema de webmail %s
+Welcome to %1's WebMail system	felamimail	pt	Bemvindo a sistema de webmail %1
 White	felamimail	pt	Branco
 Width of folder list	felamimail	pt	Larguara da lista de pastas
 Wrap incoming text at	felamimail	pt	Quebrar a linha do texto de entrada em 

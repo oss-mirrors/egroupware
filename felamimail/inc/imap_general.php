@@ -120,7 +120,7 @@
 			if (!$hide)
 			{
 				set_up_language($felamimail_language, true);
-				printf (lang("Error connecting to IMAP server: %s.")."<br>\r\n", $imap_server_address);
+				printf (lang("Error connecting to IMAP server: %1.")."<br>\r\n", $imap_server_address);
 				echo "$error_number : $error_string<br>\r\n";
 			}
 			$phpgw->common->phpgw_exit(True);
@@ -142,11 +142,11 @@
 					set_up_language($felamimail_language, true);
 					if ($response == 'BAD')
 					{
-						printf (lang("Bad request: %s")."<br>\r\n", $message);
+						printf (lang("Bad request: %1")."<br>\r\n", $message);
 					}
 					else
 					{
-						printf (lang("Unknown error: %s") . "<br>\n", $message);
+						printf (lang("Unknown error: %1") . "<br>\n", $message);
 						echo '<br>';
 					}
 					echo lang("Read data:") . "<br>\n";
@@ -161,7 +161,7 @@
 					$phpgw->common->phpgw_exit(True);
 
 		      } else {
-		      	echo '<b>' . lang('Invaild user name or password') . '</b>';
+		      	echo '<b>' . lang('Invalid user name or password') . '</b>';
 					$phpgw->common->phpgw_exit(True);
             }
          } else {

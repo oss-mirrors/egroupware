@@ -30,7 +30,7 @@
       echo '   <TR>';
       echo "      <TD BGCOLOR=\"$color[0]\">";
       echo '         <B><CENTER>';
-      printf (lang("Welcome to %s's WebMail system"), $org_name);
+      printf (lang("Welcome to %1's WebMail system"), $org_name);
       echo '         </CENTER></B>';
       echo '   <TR><TD BGCOLOR="#FFFFFF">';
       echo '      <TABLE COLS=2 WIDTH=90% CELLSPACING=0 CELLPADDING=3 NOBORDER align="center">';
@@ -41,7 +41,7 @@
       else
          echo "               <B>$org_name</B>";
       echo '         <BR><CENTER>';
-      printf (lang("Running SquirrelMail version %s (c) 1999-2000."), $version);
+      printf (lang("Running SquirrelMail version %1 (c) 1999-2000."), $version);
       echo '            </CENTER><BR>';
       echo '            </CENTER></TD></TR><TR>';
       echo '            <TD BGCOLOR="#FFFFFF">';
@@ -67,7 +67,7 @@
       echo "      <CENTER><BR>$message<BR>\n";
       echo '      <BR>';
       echo "         <A HREF=\"". $phpgw->link("/felamimail/index.php","sort=$sort&startMessage=$startMessage&mailbox=$urlMailbox")."\">";
-      printf (lang("Click here to return to %s"), $mailbox);
+      printf (lang("Click here to return to %1"), $mailbox);
       echo '</A>.';
       echo '   </TD></TR>';
       echo '</TABLE>';

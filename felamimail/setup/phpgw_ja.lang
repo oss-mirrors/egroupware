@@ -1,5 +1,5 @@
 add address	felamimail	ja	追加
-add to x 	felamimail	ja	%1 追加
+add to %1 	felamimail	ja	%1 追加
 additional info	felamimail	ja	追加情報
 as a subfolder of	felamimail	ja	親フォルダ
 attach:	felamimail	ja	添付ファイル
