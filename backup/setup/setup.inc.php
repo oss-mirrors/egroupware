@@ -13,7 +13,7 @@
 	$setup_info['backup']['name']		= 'backup';
 	$setup_info['backup']['title']		= 'Backup';
 	$setup_info['backup']['version']	= '0.0.1.001';
-	$setup_info['backup']['app_order']	= 72;
+	$setup_info['backup']['app_order']	= 31;
 	$setup_info['backup']['enable'] = 1;
 
 	$setup_info['backup']['author'] = 'João Martins';
@@ -36,6 +36,6 @@
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'admin',
-		'versions' => Array('0.9.13','0.9.14')
+		'versions' => Array('0.9.14','1.0.0')
 	);
 ?>

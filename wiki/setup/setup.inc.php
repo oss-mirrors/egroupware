@@ -13,7 +13,7 @@
 	$setup_info['wiki']['name']      = 'wiki';
 	$setup_info['wiki']['title']     = 'Wiki';
 	$setup_info['wiki']['version']   = '0.9.15.001';
-	$setup_info['wiki']['app_order'] = 100;
+	$setup_info['wiki']['app_order'] = 11;
 	$setup_info['wiki']['enable']    = 1;
 
 	$setup_info['wiki']['author']    = 'Tavi Team';
@@ -41,6 +41,6 @@
 	$setup_info['wiki']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13', '0.9.14', '0.9.15')
+		'versions' => Array('0.9.14', '0.9.15','1.0.0')
 	);
 ?>

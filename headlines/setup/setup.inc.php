@@ -15,7 +15,7 @@
 	$setup_info['headlines']['name']      = 'headlines';
 	$setup_info['headlines']['title']     = 'Headlines';
 	$setup_info['headlines']['version']   = '0.8.1.001';
-	$setup_info['headlines']['app_order'] = 19;
+	$setup_info['headlines']['app_order'] = 14;
 	$setup_info['headlines']['enable']    = 1;
 
 	$setup_info['headlines']['author'] = 'Mark Peters';
@@ -42,6 +42,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['headlines']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13','0.9.14','0.9.15','0.9.16')
+		'versions' => Array('0.9.14','0.9.15','0.9.16','1.0.0')
 	);
 ?>

@@ -18,7 +18,7 @@
 	$setup_info['messenger']['name']      = 'messenger';
 	$setup_info['messenger']['title']     = 'Messenger';
 	$setup_info['messenger']['version']   = '0.8.1';
-	$setup_info['messenger']['app_order'] = '10';
+	$setup_info['messenger']['app_order'] = '17';
 	$setup_info['messenger']['enable']    = 1;
 
 	/* The tables this app creates */
@@ -36,6 +36,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['messenger']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.13', '0.9.14')
+		'versions' => Array('0.9.14','1.0.0')
 	);
 ?>

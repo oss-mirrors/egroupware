@@ -15,7 +15,7 @@
 	$setup_info['fudforum']['name'] = 'fudforum';
 	$setup_info['fudforum']['title'] = 'FUDforum 2.6.0 equivalent';
 	$setup_info['fudforum']['version'] = '0.0.1';
-	$setup_info['fudforum']['app_order'] = 6;
+	$setup_info['fudforum']['app_order'] = 7;
 	$setup_info['fudforum']['enable'] = 1;
 
 	$setup_info['fudforum']['author'] = 'Ilia Alshanetsky';

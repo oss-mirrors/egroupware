@@ -15,7 +15,7 @@
 	$setup_info['ftp']['name']      = 'ftp';
 	$setup_info['ftp']['title']     = 'FTP';
 	$setup_info['ftp']['version']   = '0.8.1';
-	$setup_info['ftp']['app_order'] = 25;
+	$setup_info['ftp']['app_order'] = 19;
 	$setup_info['ftp']['enable']    = 1;
 
 	$setup_info['ftp']['author'] = 'Joseph Engo';
@@ -28,6 +28,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['ftp']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.10','0.9.11','0.9.12','0.9.13', '0.9.14')
+		'versions' => Array('0.9.14','1.0.0')
 	);
 ?>

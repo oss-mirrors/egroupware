@@ -17,7 +17,7 @@
 	$setup_info['polls']['name']      = 'polls';
 	$setup_info['polls']['title']     = 'Polls';
 	$setup_info['polls']['version']   = '0.9.1';
-	$setup_info['polls']['app_order'] = 15;
+	$setup_info['polls']['app_order'] = 16;
 	$setup_info['polls']['enable']    = 1;
 
 	/* The tables this app creates */
@@ -33,6 +33,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['polls']['depends'][] = array(
 		 'appname' => 'phpgwapi',
-		 'versions' => Array('0.9.10','0.9.11','0.9.12','0.9.13','0.9.14')
+		 'versions' => Array('0.9.14','1.0.0')
 	);
 

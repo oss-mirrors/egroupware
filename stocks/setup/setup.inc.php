@@ -13,7 +13,7 @@
 	$setup_info['stocks']['name']      = 'stocks';
 	$setup_info['stocks']['title']     = 'Stock Quotes';
 	$setup_info['stocks']['version']   = '0.8.1';
-	$setup_info['stocks']['app_order'] = 24;
+	$setup_info['stocks']['app_order'] = 18;
 	$setup_info['stocks']['enable']    = 1;
 
 	$setup_info['stocks']['tables'] = '';
@@ -26,6 +26,6 @@
 	/* Dependencies for this app to work */
 	$setup_info['stocks']['depends'][] = array(
 		'appname' => 'phpgwapi',
-		'versions' => Array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+		'versions' => Array('0.9.14','1.0.0')
 	);
 ?>

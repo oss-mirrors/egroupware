@@ -15,7 +15,7 @@
 	$setup_info['skel']['name']      = 'skel';
 	$setup_info['skel']['title']     = 'Skeleton';
 	$setup_info['skel']['version']   = '0.0.1.001';
-	$setup_info['skel']['app_order'] = 8;
+	$setup_info['skel']['app_order'] = 62;
 	$setup_info['skel']['enable']    = 1;
 	
 	/* some info's for about.php and apps.phpgroupware.org */
@@ -41,10 +41,10 @@
 	/* Dependacies for this app to work */
 	$setup_info['skel']['depends'][] = array(
 			 'appname' => 'phpgwapi',
-			 'versions' => array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+			 'versions' => array('0.9.14','1.0.0')
 		);
 	$setup_info['skel']['depends'][] = array(
 			 'appname' => 'email',
-			 'versions' => array('0.9.10', '0.9.11' , '0.9.12', '0.9.13', '0.9.14')
+			 'versions' => array('0.9.13', '0.9.14','1.0.0')
 		);
 ?>
