@@ -1,48 +1,39 @@
-<?php
-  /**************************************************************************\
-  * phpGroupWare - Forums                                                    *
-  * http://www.phpgroupware.org                                              *
-  * Written by Jani Hirvinen <jpkh@shadownet.com>                            *
-  * --------------------------------------------                             *
-  *  This program is free software; you can redistribute it and/or modify it *
-  *  under the terms of the GNU General Public License as published by the   *
-  *  Free Software Foundation; either version 2 of the License, or (at your  *
-  *  option) any later version.                                              *
-  \**************************************************************************/
+<?
 
-  $phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
-  include("../header.inc.php");
+$phpgw_info["flags"] = array("currentapp" => "forum", "enable_nextmatchs_class" => True);
+include("../header.inc.php");
 
-?>
+$phpgw->template->set_file('FORUM' ,'forums.body.tpl');
 
-<p>
-<table border="0" width="100%">
- <tr>
-<?php
- $phpgw->db->query("select * from f_categories where id = $cat");
- $phpgw->db->next_record();
- $category = $phpgw->db->f("name");
+$phpgw->template->set_block('FORUM','ForumList','ForumL');
 
- echo '<td bgcolor="' . $phpgw_info["theme"]["th_bg"] . '" align="left"><a href=' . $phpgw->link("/forum/index.php") .'>' . lang("Forums") .'</a> : ' . $category . '</td>' . '</tr>';
- echo "<tr>";
- echo '<td align="left" width="50%" valign="top">';
- echo "<center>";
- echo ' <table border="0" width="80%">';
+$phpgw->db->query("select * from f_categories where id = $cat");
+$phpgw->db->next_record();
 
+$phpgw->template->set_var(array(
+	BGROUND		 => $phpgw_info["theme"]["th_bg"],
+	CATEGORY	 => $phpgw->db->f("name"),
+	LANG_MAIN	 => lang("Forum"),
+	MAIN_LINK	 => $phpgw->link("/forum/index.php")
+				));
+			
+$phpgw->db->query("select * from f_forums where cat_id = $cat");
 
-   $phpgw->db->query("select * from f_forums where cat_id = $cat");
-   while($phpgw->db->next_record()) {
-     $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-     echo "<tr bgcolor=".$tr_color."><td><a href=" . $phpgw->link("/forum/threads.php","cat=" . $cat . "&for=" . $phpgw->db->f("id")) .">". $phpgw->db->f("name") . "</a></td><td align=left valign=top>" . $phpgw->db->f("descr") . "</td></tr>\n";
-   }
+while($phpgw->db->next_record()) {
+$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
+$phpgw->template->set_var(array(
+	COLOR	 	=> $tr_color,
+	NAME 		=> $phpgw->db->f("name"),
+	DESC		=> $phpgw->db->f("descr"),
+	THREADS_LINK 	=> $phpgw->link("/forum/threads.php" , "cat=" . $cat . "&for=" . $phpgw->db->f("id"))
+				));
+				
+$phpgw->template->parse('ForumL','ForumList',true);		
+				
+}
 
- echo "</table>";
- echo "</center>";
-   ?>
-  </td>
-</table>
+$phpgw->template->parse('Out','FORUM');
+$phpgw->template->p('Out');
 
-
-<?php
-  $phpgw->common->phpgw_footer();
+$phpgw->common->phpgw_footer();
 ?>
