@@ -59,7 +59,7 @@
 	$alert_msg = '';
 	$totalfiles = 0;
 
-	// ensure existance of PHPGROUPWARE temp dir
+	// ensure existance of eGroupWare temp dir
 	// note: this is different from apache temp dir, and different from any other temp file location set in php.ini
 	if (!file_exists($GLOBALS['phpgw_info']['server']['temp_dir']))
 	{
