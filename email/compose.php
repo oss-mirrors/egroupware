@@ -88,8 +88,8 @@
     self.name="first_Window";
     function addressbook()
     {
-<!--   Window1=window.open('<?php echo $phpgw->link("addressbook.php","query="); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
-       Window1=window.open('<?php echo $phpgw->link("addressbook.php"); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
+<!--   Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php","query="); ?>+document.doit.to.value',"Search","width=800,height=600","toolbar=yes,resizable=yes");  -->
+       Window1=window.open('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/addressbook.php"); ?>',"Search","width=800,height=600,toolbar=yes,scrollbars=yes,resizable=yes");
     }
 
     function attach_window(url)
@@ -100,7 +100,7 @@
 
 <table border=0 cellpadding="1" cellspacing="1" width="95%" align="center">
 
-<form enctype="multipart/form-data" name="doit" action="<?php echo $phpgw->link("send_message.php")?>" method=POST>
+<form enctype="multipart/form-data" name="doit" action="<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/send_message.php")?>" method=POST>
   <input type="hidden" name="return" value="<?php echo $folder ?>">
 
   <tr>
@@ -167,7 +167,7 @@
   <tr>
    <td bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>" colspan="2">
     <font size="2" face="<?php echo $phpgw_info["theme"]["font"]; ?>">
-      <a href="javascript:attach_window('<?php echo $phpgw->link("attach_file.php"); ?>')">Attach file</a>
+      <a href="javascript:attach_window('<?php echo $phpgw->link("/".$phpgw_info['flags']['currentapp']."/attach_file.php"); ?>')">Attach file</a>
     </font>
    </td>
   </tr>
