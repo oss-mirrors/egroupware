@@ -10,7 +10,7 @@ changes by last author	wiki	fr	Changements par auteur
 choose your current time here, so the server may figure out what time zone you are in	wiki	fr	Choisissez votre fuseau horaire pour que le serveur sache ou vous vous trouvez
 columns	wiki	fr	Colonnes
 compute difference	wiki	fr	Voir la différence
-current version		fr	
+current version	wiki	fr	Version courante
 difference between versions	wiki	fr	Différences entre les versions
 differences in	wiki	fr	Différences
 document last modified	wiki	fr	Dernier document modifié
@@ -37,13 +37,13 @@ name wiki home link	admin	fr	Nom du Wiki
 newer	wiki	fr	Plus récents
 older	wiki	fr	Plus ancients
 please contact the <a href="mailto:%1">administrator</a> for assistence.	wiki	fr	SVP contactez l'<a href="mailto:%1">administrateur</a> pour de l'assistance.
-preferences		fr	
+preferences	wiki	fr	Préférences
 preview	wiki	fr	Aperçu
 previewing	wiki	fr	Aperçu
 readonly	admin	fr	lecture seule
 rows	wiki	fr	Lignes
 save & continue	wiki	fr	Enregistrer et continuer
-search		fr	wiki
+search	wiki	fr	Rechercher
 site configuration	wiki	fr	Configuration du site
 summary of change	wiki	fr	Résumé des changements
 this document cannot be edited	wiki	fr	Ce document ne peut pas être modifié
