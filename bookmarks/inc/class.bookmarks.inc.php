@@ -84,22 +84,22 @@
 
      $p_tpl->set_var(array(
        TITLE            => $title,
-       START_URL        => $phpgw->link("index.php"),
-       TREE_URL         => $phpgw->link("tree.php"),
+       START_URL        => $phpgw->link("/bookmarks/index.php"),
+       TREE_URL         => $phpgw->link("/bookmarks/tree.php"),
 //       LIST_URL         => $phpgw->link("list.php"),
 //       CREATE_URL       => $phpgw->link("create.php"),
-       MAINTAIN_URL     => $phpgw->link("maintain.php"),
-       MAILLINK_URL     => $phpgw->link("maillink.php"),
+       MAINTAIN_URL     => $phpgw->link("/bookmarks/maintain.php"),
+       MAILLINK_URL     => $phpgw->link("/bookmarks/maillink.php"),
 //       SEARCH_URL       => $phpgw->link("search.php"),
-       FAQ_URL          => $phpgw->link("faq.php"),
+       FAQ_URL          => $phpgw->link("/bookmarks/faq.php"),
 //       CATEGORY_URL     => $phpgw->link("codes.php","codetable=bookmarks_category"),
 //       SUBCATEGORY_URL  => $phpgw->link("codes.php","codetable=bookmarks_subcategory"),
-       USER_URL         => $phpgw->link("useropt.php"),
-       USER_SETTINGS_URL=> $phpgw->link("user.php"),
-       IMPORT_URL       => $phpgw->link("import.php"),
-       DOWNLOAD_URL     => $phpgw->link("download.php"),
-       BUGS_URL         => $phpgw->link("bugs.php"),
-       MAILLIST_URL     => $phpgw->link("maillist.php"),
+       USER_URL         => $phpgw->link("/bookmarks/useropt.php"),
+       USER_SETTINGS_URL=> $phpgw->link("/bookmarks/user.php"),
+       IMPORT_URL       => $phpgw->link("/bookmarks/import.php"),
+       DOWNLOAD_URL     => $phpgw->link("/bookmarks/download.php"),
+       BUGS_URL         => $phpgw->link("/bookmarks/bugs.php"),
+       MAILLIST_URL     => $phpgw->link("/bookmarks/maillist.php"),
        VERSION          => $bookmarker->version,
        IMAGE_URL_PREFIX => $bookmarker->image_url_prefix,
        IMAGE_EXT        => $bookmarker->image_ext,
@@ -180,7 +180,14 @@
 
 			if (! $phpgw->categories->exists('appandmains','No category'))
 			{
-				$phpgw->categories->add('No category',0,'','','',0);
+				$newcat = array(
+					'name'	 => 'No category',
+					'descr'	 => '',
+					'parent' => 0,
+					'access' => '',
+					'data'   => ''
+				);
+				$phpgw->categories->add($newcat);
 			}
 		}
 
@@ -375,7 +382,7 @@
 
 			if (! $values['name'])
 			{
-				$error_msg .= '<br>Name is required.';
+				$error_msg .= '<br>' . lang('Name is required');
 			}   
 
 			// does the admin want us to check URL format

@@ -61,7 +61,13 @@
 			}
 			else
 			{
-				$phpgw->categories->add($name,0,'','','',0);
+				$phpgw->categories->add(array(
+					'name'   => $name,
+					'descr'  => '',
+					'parent' => 0,
+					'access' => '',
+					'data'   => ''
+				));
 				$cat_cache[$name] = $phpgw->categories->name2id($name);
 				_debug(' - ' . $name . ' does not exist - new id: ' . $cat_cache[$name]);
 			}
