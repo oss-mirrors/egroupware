@@ -126,14 +126,23 @@
         $t->set_var("end_date_formatorder",$end_date_formatorder);
 
         $t->set_var("lang_coordinator",lang("Coordinator"));
+   
         $phpgw->db->query("SELECT account_id,account_firstname,account_lastname FROM accounts where "
                         . "account_status != 'L' ORDER BY account_lastname,account_firstname,account_id asc");
         while ($phpgw->db->next_record()) {
-           $coordinator_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\""
-                    . $selected_users[$phpgw->db->f("account_id")] . ">"
+           $coordinator_list .= "<option value=\"" . $phpgw->db->f("account_id") . "\"";
+
+        if($phpgw->db->f("account_id")==$phpgw_info["user"]["account_id"])                                                                                                                             
+            $coordinator_list .= " selected";                                                                                                                                               
+        $coordinator_list .= ">"                                                                                                                                                            
+                    . $phpgw->common->display_fullname($phpgw->db->f("account_id"),                                                                                                               
+                      $phpgw->db->f("account_firstname"),                                                                                                                                         
+                      $phpgw->db->f("account_lastname")) . "</option>";
+
+/*                    . $selected_users[$phpgw->db->f("account_id")] . ">"
 	            . $phpgw->common->display_fullname($phpgw->db->f("account_lid"),
                       $phpgw->db->f("account_firstname"),
-                      $phpgw->db->f("account_lastname")) . "</option>";
+                      $phpgw->db->f("account_lastname")) . "</option>"; */
         }
         $t->set_var("coordinator_list",$coordinator_list);
 
