@@ -25,6 +25,7 @@ descending	bookmarks	fr	Descendant
 edit bookmark	bookmarks	fr	Editer le signet
 edit this bookmark	bookmarks	fr	Editer ce signet
 enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	fr	Entrez le nom du fichier des favoris Netscape<br>que vous voulez importer dans le gestionnaire de favoris ci-dessous.
+export bookmarks	common	fr	Exporter les Signets
 fewer	bookmarks	fr	Moins
 filter by	bookmarks	fr	Filtrer par
 found a link you might like	bookmarks	fr	J'ai trouvé un lien que vous pourriez aimer
@@ -32,8 +33,7 @@ from	bookmarks	fr	Depuis
 from category %1	bookmarks	fr	depuis la catégorie %1
 highest	bookmarks	fr	Le plus haut
 i thought you would be interested in the following link(s):	bookmarks	fr	J'ai pensé que vous pourriez être intéressé par le(s) lien(s) suivant(s):
-import bookmarks	preferences	fr	Importer les signets
-import bookmarks	bookmarks	fr	Importer les signets
+import bookmarks	common	fr	Importer les signets
 like	bookmarks	fr	comme
 list	bookmarks	fr	Liste
 lowest	bookmarks	fr	Le plus bas
@@ -47,10 +47,13 @@ name is required	bookmarks	fr	Le nom est requis
 netscape bookmark file	bookmarks	fr	Fichier de favoris Netscape
 netscape bookmark filename is required!	bookmarks	fr	Le nom du fichier de favoris Netscape est requis!
 new	bookmarks	fr	Nouveau
+or	bookmarks	fr	ou
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	fr	SVP remplissez <B>l'adresse EMail destinataire</B>, <B>le sujet</B>, et <B>le message</B>!
+please select the categories to export	bookmarks	fr	Merci de sélectionner les catégories à exporter
 query condition	bookmarks	fr	Condition de requête
 rating	bookmarks	fr	Note
 search for:	bookmarks	fr	Rechercher:
+select the format you would like to export to	bookmarks	fr	Selectionner le format d'exportation
 send bookmark	bookmarks	fr	Envoyer le favori
 sub category	bookmarks	fr	Sous-catégorie
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	fr	L'adresse destinataire %1 est invalide. Le format doit être <strong>utilisateur@domaine</strong> et le domaine doit exister!
@@ -63,5 +66,5 @@ url is required.	bookmarks	fr	L'URL est requise.
 view bookmark	bookmarks	fr	Voir le favori
 view this bookmark	bookmarks	fr	Voir ce signet
 warning	bookmarks	fr	Attention
-you are viewing this site outside ofv egroupware	bookmarks	fr	Vous visualisez ce site en dehors de eGroupWare
+you are viewing this site outside of egroupware	bookmarks	fr	Vous visualisez ce site en dehors de eGroupWare
 you must select a category	bookmarks	fr	Vous devez choisir une catégorie
