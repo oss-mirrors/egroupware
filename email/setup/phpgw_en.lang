@@ -81,7 +81,7 @@ manage folders	email	en	Manage Folders
 message list layout	common	en	Message List Layout
 messages	email	en	Messages
 messages have been moved to	email	en	messages have been moved to
-more actions	email	es	More Actions
+more actions	email	en	More Actions
 more choices	email	en	More Choices
 move selected messages into	email	en	Move Selected Messages into
 move this message into	email	en	Move this message into
@@ -94,10 +94,10 @@ non-standard	email	en	Non-Standard
 no previous message	email	en	no previous message
 number	common	en	Number
 oldest	common	en	oldest
-or	common	es	or
+or	common	en	or
 or enter text	email	en	or enter text
 please fill in everything you need	email	en	Please Fill in everything you need
-please select a folder to rename	email	es	Please select a folder to rename
+please select a folder to rename	email	en	Please select a folder to rename
 please select a message first	email	en	Please select a message first
 please type a folder name in the text box	email	en	Please type a folder name in the text box
 previous	email	en	Previous
