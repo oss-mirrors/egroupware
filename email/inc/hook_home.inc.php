@@ -52,10 +52,24 @@
        $portalbox->header_background_image = $phpgw_info["server"]["webserver_url"]
                                            . "/phpgwapi/templates/verdilak/images/bg_filler.gif";
        if($nummsg >= 5) { $check_msgs = 5; } else { $check_msgs = $nummsg; }
-       for($i=$nummsg - $check_msgs + 1,$j=0;$i<=$nummsg;$i++,$j++) {
-         $msg = $phpgw->msg->header($mailbox,$i);
+
+       $order_hook = 0;
+       if ($phpgw_info["user"]["preferences"]["email"]["default_sorting"] == "new_old") {
+         $sort_hook = 1;
+       } else {
+         $sort_hook = 0;
+       }
+
+       if ($nummsg > 0) {
+         $msg_array_hook = array();
+         $msg_array_hook = $phpgw->msg->sort($mailbox, $order_hook, $sort_hook);
+       }
+   
+
+       for($i=0;$i<=$check_msgs;$i++,$j++) {
+         $msg = $phpgw->msg->header($mailbox,$msg_array_hook[$i]);
          $subject = !$msg->Subject ? '['.lang("no subject").']' : substr($msg->Subject,0,65).' ...';
-         $portalbox->data[$j] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$i));
+         $portalbox->data[$i] = array(decode_header_string($subject),$phpgw->link($phpgw_info["server"]["webserver_url"]."/email/message.php","folder=".urlencode($folder)."&msgnum=".$msg_array_hook[$i]));
        }
        echo $portalbox->draw();
 		}
