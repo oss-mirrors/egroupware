@@ -1,9 +1,9 @@
 
 insert into applications (app_name, app_title, app_enabled) values ('projects', 'Projects', 1);
-insert into applications (app_name, app_title, app_enabled) values ('projecthours', 'Project Hours', 1);
-insert into applications (app_name, app_title, app_enabled) values ('projectstatistics', 'Project Statistics', 1);
-insert into applications (app_name, app_title, app_enabled) values ('projectbilling', 'Project Billing', 1);
-insert into applications (app_name, app_title, app_enabled) values ('projectdelivery', 'Project Delivery', 1);
+insert into applications (app_name, app_title, app_enabled) values ('projecthours', 'Project Hours', 2);
+insert into applications (app_name, app_title, app_enabled) values ('projectstatistics', 'Project Statistics', 2);
+insert into applications (app_name, app_title, app_enabled) values ('projectbilling', 'Project Billing', 2);
+insert into applications (app_name, app_title, app_enabled) values ('projectdelivery', 'Project Delivery', 2);
 
  CREATE TABLE p_projects (
 	id		int(11) NOT NULL auto_increment,

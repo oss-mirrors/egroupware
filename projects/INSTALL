@@ -6,31 +6,34 @@
 +                              projectdelivery            +          
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                install the datebase                      +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++            install the database tables                  +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 create_tables.mysql [ can be found in projects-directory ]
 
-lang.sql [ can be found in each project*-directory ]
+lang.sql & de_translation.sql 
+[ can be found in each project*-directory ]
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                    project Admin                        +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-+                    project Admin                         +
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+create a group 'projectAdmin'
+each member of this group is able to edit or delete all 
+created projects
 
-create a group projectAdmin
-each member of this group is able to edit or delete all created 
-projects
+also the chosen coordinator of a project is able to manage 
+his project 
 
-also the chosen coordinator of a project is able to manage his
-project 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++                    management                           +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-the projects-app is required for running the other apps.
-it needs at least projects and projecthours to manage jobs.
-projectbilling is needed to create invoices.
-projectstatistics creates user- and projectstats.
-projectdelivery manages delivery notes. 
+the projects-app is required for running the other apps
+projecthours is needed to manage job
+projectbilling is needed to create invoices
+projectstatistics creates user- and projectstats
+projectdelivery manages delivery notes 
 
   
