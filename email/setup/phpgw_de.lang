@@ -43,3 +43,11 @@ you have messages!  common	de	Sie haben Nachrichten!
 you have no new messages	common	de	Keine neuen Nachrichten
 you have x new messages!	common	de	Sie haben %1 neue Nachrichten!
 your message has been sent	common	de	Ihre Nachricht wurde versandt
+Select your mail server type	admin	de	EMail-Servertyp
+IMAP server type	admin	de	IMAP-Servertyp
+Enter your default mail domain ( From: user@domain )	admin	de	Standard EMail-Domain (Von: benutzer@domain)
+Mail server login type	admin	de	EMail-Server Logintyp
+Enter your SMTP server hostname or IP address	admin	de	SMTP-Server Hostname oder IP-Adresse
+Enter your SMTP server port	admin	de	SMTP-Server Port
+Mail Settings	admin	de	EMail Einstellungen
+
