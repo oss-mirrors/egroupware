@@ -397,9 +397,7 @@ $msg_headers->udate = $new_time;
 # end GMT handling by "acros"
 			*/
 
-			//$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
-			// testing new hacked show_date2
-			$message_date = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
+			$message_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 			
 			// addressbook needs to know what to return to, give it ALL VARS we can possibly want preserved
 			// so addybook can send us back to this exact place when done

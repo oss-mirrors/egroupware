@@ -2696,55 +2696,6 @@ class mail_msg extends mail_msg_wrappers
 	}
 	
 	/*!
-	@function show_date2
-	@abstract show current date HACKED for tzoffset changes
-	@param $t time - optional can be pulled from user preferences
-	@param $format - optional can be pulled from user prefernces
-	@discussion Copied from API files with minr changes, Skeeter original author.
-	*/
-	function show_date2($t = '', $format = '')
-	{
-		if(!is_object($GLOBALS['phpgw']->datetime))
-		{
-			$GLOBALS['phpgw']->datetime = createobject('phpgwapi.datetime');
-		}
-
-		if (!$t || (int)$t <= 0)
-		{
-			$t = $GLOBALS['phpgw']->datetime->gmtnow;
-		}
-		
-		// HACK FOLLOWS here
-		// SOCKETS needs this tzoffset, php-imap buildin gets B0RKED by this line of code here
-		// because sockets makes the udate based off of the date header in the message, tzoffset is handled differently there ????
-		if ($this->using_phpimap_builtin() == False)
-		{
-			//  + (date('I') == 1?3600:0)
-			// darn this STILL really is not working right
-			$t += $GLOBALS['phpgw']->datetime->tz_offset;
-		}
-		
-		if (! $format)
-		{
-			$format = $GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat'] . ' - ';
-			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['timeformat'] == '12')
-			{
-				$format .= 'h:i a';
-			}
-			else
-			{
-				$format .= 'H:i';
-			}
-		}
-		if((PHP_OS == 'Windows' || PHP_OS == 'WINNT') && (int)$t < 21600)
-		/*if(PHP_OS == 'Windows' && (int)$t < 21600)*/
-		{
-			$t = 21600;
-		}
-		return date($format,$t);
-	}
-	
-	/*!
 	@function get_msg_list_display
 	@abstract make an array containing all necessary data to display an "index.php" type list of mesasages
 	@param $folder_info (array) OPTIONAL. Array elements as defined in return from 
@@ -3203,9 +3154,7 @@ $hdr_envelope->udate = $new_time;
 
 			// DATE
 			// date_time has both date and time, which probably is long enough to make a TD cell wrap text to 2 lines
-			/*
 			$msg_date_time = $GLOBALS['phpgw']->common->show_date($hdr_envelope->udate);
-//echo"$msg_date_time";
 			if($GLOBALS['phpgw']->common->show_date($hdr_envelope->udate,'Ymd') != date('Ymd'))
 			{
 				// this strips the time part, leaving only the date, better for single line TD cells
@@ -3213,25 +3162,13 @@ $hdr_envelope->udate = $new_time;
 			}
 			else
 			{
-				// this strips the time part, leaving only the date, better for single line TD cells
+				// this strips the date part, leaving only the time, better for single line TD cells
 				$msg_list_display[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
 			}
-			*/
-			// testing new hacked show_date2
-			$msg_date_time = $this->show_date2($hdr_envelope->udate);
-			if($this->show_date2($hdr_envelope->udate,'Ymd') != date('Ymd'))
-			{
-				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_list_display[$x]['msg_date'] = ereg_replace(" - .*$", '', $msg_date_time);
-			}
-			else
-			{
-				// this strips the time part, leaving only the date, better for single line TD cells
-				$msg_list_display[$x]['msg_date'] = ereg_replace("^.* -", '', $msg_date_time);
-			}
+			
 			// *raw* date for utility purposes, such as appending and specifying a date
 			// php built in append does not let you specify the data during an append
-			//$msg_list_display[$x]['msg_date_raw'] = $hdr_envelope->udate;
+			// $msg_list_display[$x]['msg_date_raw'] = $hdr_envelope->udate;
 			
 			// TO info for the "Sent" folder
 			// ----  To:  Message Data  -----

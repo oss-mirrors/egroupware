@@ -672,9 +672,7 @@
 					// get information from the orig email
 					$subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'Fw: ');
 					$fwd_info_from = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
-					//$fwd_info_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
-					// testing new hacked show_date2
-					$fwd_info_date = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
+					$fwd_info_date = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 					$fwd_info_subject = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'');
 					
 					$body = "\r\n"."\r\n"

@@ -981,9 +981,7 @@
 				$this->mail_out['fwd_info'] = $GLOBALS['phpgw']->msg->pgw_msg_struct($msg_struct, $not_set, '1', 1, 1, 1);
 				// add some more info
 				$this->mail_out['fwd_info']['from'] = $GLOBALS['phpgw']->msg->make_rfc2822_address($msg_headers->from[0]);
-				//$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
-				// testing new hacked show_date2
-				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->msg->show_date2($msg_headers->udate);
+				$this->mail_out['fwd_info']['date'] = $GLOBALS['phpgw']->common->show_date($msg_headers->udate);
 				// the third empty param says no html encoding of return data
 				$this->mail_out['fwd_info']['subject'] = $GLOBALS['phpgw']->msg->get_subject($msg_headers,'','');
 
