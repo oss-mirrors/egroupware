@@ -22,7 +22,7 @@
 	$setup_info['skel']['tables']    = Array('phpgw_skel');
 
 	/* The hooks this app includes, needed for hooks registration */
-	$setup_info['skel']['hooks'][] = Array(
+	$setup_info['skel']['hooks'] = Array(
 		'preferences',
 		'manual',
 		'add_def_prefs'
