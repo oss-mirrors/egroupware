@@ -30,6 +30,7 @@
 	$this->plugins['def_blob']['enable']		= 1;
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
+		'longtext',
 		'text',
 		'blob',
 	);

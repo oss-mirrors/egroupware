@@ -457,6 +457,7 @@
 								{
 
 									// remove
+
 									$plugin_hooks=$this->bo->plugin_hooks($field['type']);
 									$options=$this->ui->select_options($plugin_hooks,$plg_name,true);
 
@@ -494,7 +495,6 @@
 								$input.='</tr>';
 							}
 							$input.='</table>';
-
 						}
 					}
 					elseif(!$where_key && !$where_value)

@@ -820,6 +820,7 @@
 			if($metadata[$field['name']]['auto_increment'] || eregi('nextval',$metadata[$field['name']]['default']) || eregi("auto_increment", $metadata[$field['name']]['flags'])) 
 			{
 			   $autokey=$field['name'];
+			   $value[idfield]=$field['name'];
 			   continue;
 			}
 			

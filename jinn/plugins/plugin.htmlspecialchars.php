@@ -39,6 +39,7 @@
 		'varchar',
 	   'string',
 		'blob',
+		'longtext',
 		'text'
 	);
 	$this->plugins['htmlspecialchars']['config']		= array

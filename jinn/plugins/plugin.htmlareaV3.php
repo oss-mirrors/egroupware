@@ -40,6 +40,7 @@
    $this->plugins['htmlAreaV3']['db_field_hooks']	= array
    (
 	  'blob',
+	  'longtext',
 	  'text'
    );
 

@@ -34,6 +34,7 @@
    $this->plugins['attachpath']['db_field_hooks']= array
    (
 	  'text',
+	  'longtext',
 	  'varchar',
 	  'bpchar',
 	  'string',

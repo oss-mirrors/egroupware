@@ -43,6 +43,7 @@
 	$this->plugins['nl2br']['db_field_hooks']	= array
 	(
 		'blob',
+		'longtext',
 		'text'
 	);
 	$this->plugins['nl2br']['config']		= array

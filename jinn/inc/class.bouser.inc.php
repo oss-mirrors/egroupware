@@ -167,8 +167,6 @@
 
 	  }
 
-
-
 	  //remove this one
 	  function get_records($table,$where_key,$where_value,$offset,$limit,$value_reference,$order_by='',$field_list='*',$where_condition='')
 	  {
@@ -229,19 +227,14 @@
 		 $where_string=$this->where_string;
 		 $table=$this->site_object[table_name];
 
-//		echo $where_string;
 		 $many_data=$this->http_vars_pairs_many($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 
 		 $status=$this->so->update_object_many_data($this->site_id, $many_data);
 
 		 $data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 
-// 		_debug_array($data);
-//		 die('hallo');
-
 		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
-
-
+		 
 		 if ($status[status]==1)	$this->message[info]='Record succesfully saved';
 		 else $this->message[error]='Record NOT succesfully saved';
 
@@ -249,16 +242,11 @@
 
 		 if($_POST['continue'])
 		 {
-			//   die($this->where_string);
-			//			   die($status[where_string]);
-
 			$this->common->exit_and_open_screen('jinn.uiu_edit_record.display_form&where_string='.base64_encode($status[where_string]));
-
 		 }
 		 else
 		 {
 			$this->common->exit_and_open_screen('jinn.uiuser.index');
-
 		 }
 	  }
 
@@ -314,7 +302,6 @@
 		 }
 		 return $relation_arr;
 	  }
-
 
 	  function extract_1wX_relations($string)
 	  {
@@ -385,16 +372,8 @@
 		 foreach ($allrecords as $record)
 		 {
 			if($record[$related_field]==$value) return $record[$display_field];
-			//			   $related_fields[]=array
-			//			   (
-			   //				  'value'=>$record[$related_field],
-			   //				  'name'=>$record[$display_field]
-			   //			   );
 			}
-			//			return $related_fields;
 		 }
-
-
 
 		 function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
 		 {
@@ -453,9 +432,7 @@
 		 {
 			global $local_bo;
 			$local_bo=$this;
-			//			die(var_dump($this));
 			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-		//	$plugins=explode('|',$this->site_object['plugins']);
 
 			foreach($plugins as $plugin)
 			{
@@ -508,7 +485,6 @@
 			   {
 				  if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
 				  {
-					 //die('plg_bv_'.$sets[1].$value.$conf_arr);
 				  }
 			   }
 			}
@@ -575,8 +551,6 @@
 			$action_plugin_name=$_GET[plg];
 
 			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-//			_debug_array($plugins);
-//			die();
 			foreach($plugins as $plugin)
 			{	
 			   $sets=explode(':',$plugin);
@@ -666,11 +640,8 @@
 		 {
 			$GLOBALS['phpgw']->preferences->read_repository();
 
-			//if ($prefs)
-			//{
 			   $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
 			   $GLOBALS['phpgw']->preferences->save_repository(True);
-			   //}
 			}
 
 			/****************************************************************************\
@@ -699,7 +670,6 @@
 				  {
 
 					 $pref_array=explode(',',$pref_s_h);
-					 //echo $this->site_object[object_id];
 					 if($pref_array[0]!=$this->site_object[object_id])
 					 {
 						$prefs_show_hide_new.=implode(',',$pref_array);
@@ -714,17 +684,11 @@
 				  $prefs_show_hide_new=$show_fields_entry;
 			   }
 
-
-
-
-
 			   $this->save_preferences('show_fields',$prefs_show_hide_new);
 			   $this->save_preferences('default_order',$prefs_order_new);
 
 			   $this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
 			}
-
-
 
 		 }
 	  ?>

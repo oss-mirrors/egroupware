@@ -40,6 +40,7 @@
    $this->plugins['imagepath']['db_field_hooks']	= array
    (
 	  'text',
+	  'longtext',
 	  'varchar',
 	  'bpchar',
 	  'string',

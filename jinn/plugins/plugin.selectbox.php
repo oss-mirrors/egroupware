@@ -37,6 +37,7 @@
 	   'tinyint',
 	   'smallint',
 	   'varchar',
+	   'longtext',
 		'text'
 	);
 	$this->plugins['selectbox']['config']		= array

@@ -211,11 +211,11 @@
 				   }
 				}
 
-				elseif ($fieldproperties[type]=='text' && ereg('binary',$fieldproperties[flags]))
+				elseif (ereg('text',$fieldproperties[type]) && ereg('binary',$fieldproperties[flags]))
 				{
 					$input = lang('binary');
 				 }
-				elseif ($fieldproperties[type]=='blob' || $fieldproperties[type]=='text') //then it is a textblob
+				 elseif ($fieldproperties[type]=='blob' || ereg('text',$fieldproperties[type])) //then it is a textblob
 				{
 				   $input=$this->bo->get_plugin_fi($input_name,$value,'blob',$attr_arr);
 				}
