@@ -125,6 +125,11 @@
 
 		function save_items($values)
 		{
+			if ($values['versions'])
+			{
+				$values['versions'] = intval($values['versions']);
+			}
+
 			if ($values['b_create'])
 			{
 				$values['b_create'] = 'yes';
@@ -136,11 +141,7 @@
 
 			if ($values['b_sql'])
 			{
-				$values['b_sql'] = 'yes';
-			}
-			else
-			{
-				$values['b_sql'] = 'no';
+				$values['b_sql'] = $GLOBALS['phpgw_info']['server']['db_type'];
 			}
 
 			if ($values['b_ldap'])
@@ -269,16 +270,13 @@
 
 				$config .= $GLOBALS['phpgw']->template->set_var('basedir',$co['basedir']);
 				$config .= $GLOBALS['phpgw']->template->set_var('server_root',$co['server_root']);
-
+				$config .= $GLOBALS['phpgw']->template->set_var('versions',$co['versions']);
+				$config .= $GLOBALS['phpgw']->template->set_var('bintval',$co['b_intval']);
 				$config .= $GLOBALS['phpgw']->template->set_var('bcomp',$co['b_type']);
 
-				if ($co['b_sql'] == 'yes')
+				if ($co['b_sql'])
 				{
-					if ($co['db_type'] == 'mysql')
-					{
-						$config .= $GLOBALS['phpgw']->template->set_var('bmysql','yes');
-					}
-					$config .= $GLOBALS['phpgw']->template->set_var('db_type',$co['db_type']);
+					$config .= $GLOBALS['phpgw']->template->set_var('bsql',$co['b_sql']);
 					$config .= $GLOBALS['phpgw']->template->set_var('db_name',$co['db_name']);
 				}
 

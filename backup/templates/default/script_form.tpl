@@ -25,16 +25,90 @@
 	\*******************************************************************/
 	/* $Id$ */
 
-	$bdate		= time();
-	$month		= date('n',$bdate);
-	$day		= date('d',$bdate);
-	$year		= date('Y',$bdate);
-	$bdateout	=  $day . '_' . $month . '_' . $year;
+	function get_archives()
+	{
+		$basedir = '{server_root}/backup/archives';
+		if (is_dir($basedir))
+		{
+			$basedir = opendir($basedir);
 
-	$basedir	= '{basedir}' . '/';
+			while (false !== ($files = readdir($basedir)))
+			{
+				if (($files != '.') && ($files != '..'))
+				{
+					for ($i=0;$i<=count($files);$i++)
+					{
+						$archives = array
+						(
+							'file'	=> $files[$i],
+							'bdate'	=> filemtime($files[$i])
+						);
+					}
+				}
+			}
+			return $archives;
+		}
+		else
+		{
+			return False;
+		}
+	}
 
-	$bmysql		= '{bmysql}';
-//	$bpsql		= '{bpsql}';
+	function get_date($type)
+	{
+		$bdate		= time();
+		$month		= date('m',$bdate);
+		$day		= date('d',$bdate);
+		$year		= date('Y',$bdate);
+
+		if ($type == 'bdate')
+		{
+			$bdateout	=  $month . '_' . $day . '_' . $year;
+			return $bdateout;
+		}
+	}
+
+	function check_datedue($dir)
+	{
+		$versions = {versions};
+
+		if (is_integer($versions) && $versions != 0)
+		{
+			$archives = get_archives();
+
+			if (count($archives) >= $versions)
+			{
+				$bintval	= '{bintval}';
+				$versions	= $versions-1;
+
+				switch($bintval)
+				{
+					case 'daily':	$datedue = $versions; break;
+					case 'weekly':	$datedue = $versions*4; break;
+					case 'monthly':	$datedue = $versions*16; break;
+				}
+			//	exec("find " . $dir . '-mtime +' . $datedue . ' -exec rm -- {} ; 2>&1 > /dev/null');
+
+				exec("find " . $dir . ' -mtime +' . $datedue,$rarchives);
+		
+				if ($rarchives)
+				{
+					chdir($dir);
+
+					for ($i=0;$i<=count($rarchives);$i++)
+					{
+						system("rm " . substr($rarchives[$i],strlen($dir)+1) . ' 2>&1 > /dev/null');
+					}
+				}
+			}
+		}
+	}
+
+	$basedir	= '{basedir}';
+
+	check_datedue($basedir);
+
+	$bsql		= '{bsql}';
 	$bldap		= '{bldap}';
 	$bemail		= '{bemail}';
 
@@ -56,10 +130,16 @@
 		case 'zip':		$command = '/usr/bin/zip -rq9 '; break;
 	}
 
-	if ($bmysql == 'yes')
+	if ($bsql)
 	{
-		chdir('/var/lib/mysql');
-		$out	= $basedir . $bdateout . '_phpGWBackup_{db_type}.' . $end;
+		switch($bsql)
+		{
+			case 'mysql':	$database = '/var/lib/mysql'; break;
+			case 'pgsql':	$database = '/var/lib/pgsql/data/base'; break;
+		}
+
+		chdir($database);
+		$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_{bsql}.' . $end;
 		$in		= ' {db_name}';
 
 		system("$command" . $out . $in);
@@ -71,13 +151,13 @@
 			$out = $out . $end;
 		}
 		$output[]	= $out;
-		$input[]	= substr($out,strlen($basedir));
+		$input[]	= substr($out,strlen($basedir)+1);
 	}
 
 	if ($bldap == 'yes')
 	{
 		chdir('/var/lib');
-		$out	= $basedir . $bdateout . '_phpGWBackup_ldap.' . $end;
+		$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_ldap.' . $end;
 		$in		= ' ldap';
 
 		system("$command" . $out . $in);
@@ -89,7 +169,7 @@
 			$out = $out . $end;
 		}
 		$output[]	= $out;
-		$input[]	= substr($out,strlen($basedir));
+		$input[]	= substr($out,strlen($basedir)+1);
 	}
 
 	if ($bemail == 'yes')
@@ -98,7 +178,7 @@
 		if (is_dir('/home/{lid}') == True)
 		{
 			chdir('/home/{lid}');
-			$out	= $basedir . $bdateout . '_phpGWBackup_email_{lid}.' . $end;
+			$out	= $basedir . '/' . get_date('bdate') . '_phpGWBackup_email_{lid}.' . $end;
 			$in		= ' Maildir';
 			system("$command" . $out . $in . ' 2>&1 > /dev/null');
 
@@ -109,7 +189,7 @@
 				$out = $out . $end;
 			}
 			$output[]	= $out;
-			$input[]	= substr($out,strlen($basedir));
+			$input[]	= substr($out,strlen($basedir)+1);
 		}
 <!-- END script_ba -->
 	}
@@ -192,6 +272,8 @@
 
 			system("mount.smbfs $rip$rpath $smbdir -o username=$ruser,password=$rpwd,rw 2>&1 > /dev/null");
 
+			check_datedue($smbdir);
+
 			for ($i=0;$i<count($output);$i++)
 			{
 				system("cp " . $output[$i] . ' ' . $smbdir . '/ 2>&1 > /dev/null');
@@ -215,6 +297,8 @@
 		if ($lpath != '')
 		{
 			chdir($lpath);
+
+			check_datedue($lpath);
 
 			for ($i=0;$i<count($output);$i++)
 			{

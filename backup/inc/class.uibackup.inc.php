@@ -67,6 +67,7 @@
 			$this->t->set_var('lang_app',lang('Transport application'));
 			$this->t->set_var('lang_select_app',lang('Select transport application'));
 			$this->t->set_var('lang_save',lang('Save'));
+			$this->t->set_var('lang_versions',lang('Number of stored backup versions'));
 		}
 
 		function backup_admin()
@@ -164,6 +165,7 @@
 
 			$this->t->set_var('script_path',$values['script_path']);
 			$this->t->set_var('l_path',$values['l_path']);
+			$this->t->set_var('versions',$values['versions']);
 
 			$this->t->pfp('out','admin_form');
 

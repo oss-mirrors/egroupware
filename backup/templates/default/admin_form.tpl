@@ -21,6 +21,10 @@
 		<td>{lang_config_path}:</td>
 		<td><input type="text" name="values[script_path]" value="{script_path}"></td>
 	</tr>
+	<tr bgcolor="{row_off}">
+		<td>{lang_versions}:</td>
+		<td><input type="text" name="values[versions]" value="{versions}" size="3" maxlenght="3"></td>
+	</tr>
 	<tr>
 		<td bgcolor="{row_off}" colspan="2"><b>{lang_b_data}</b></td>
 	</tr>
