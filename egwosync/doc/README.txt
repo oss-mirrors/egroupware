@@ -8,9 +8,9 @@
 The current eGWOSync version is just functional and not by any means meant to
 be complete or bug free. Email the egroupware-developers list if you are having
 trouble using it, have found a bug, want a new feature, want to help develop
-it, or just have a question.
+it, or just have a question. Or email me: heisters[at]0x09.com
 
-All files in the eGWOSync module are distributed under the LGPL unless 
+All files in the eGWOSync module are distributed under the GPL unless 
 otherwise stated.
 
 INSTALLATION:
@@ -34,17 +34,30 @@ INSTALLATION:
 5. Import the project files. In the Outlook VBA Editor go to File->Import File
    and import the project files. These will need to be done one at a time. For
    the current release these files are:
+       BasDebugUtils.bas
+       BasEGWOSync.bas
+       BasUtilities.bas
+       CContactTranslator.cls
        CeGW.cls
+       CeGWContacts.cls
        COutlookContacts.cls
        CRegistry.cls
        frmMain.frm
        frmMain.frx
-       modEGWOSync.bas
-       modEGWUtilities.bas
 
 6. Save the project.
 
-7. Go back to Outlook and go to Tools->Macro->Macros, select eGWSynchronize,
+7. There is a conflict with the date format that needs to be fixed, but the
+   current fix may break other XMLRPC clients trying to access your eGW
+   server. The way I'm doing it at the moment is to copy 
+	   egwosync/auxillary/class.xmlrpc_server.inc.php
+	   egwosync/auxillary/class.xmlrpc_server.php.inc.php
+   to egroupware/phpgwapi/inc/. Be sure to back up the originals in 
+   phpgwapi/inc/ first. This will make the KDE pim client unable to access
+   the XMLRPC server, and possibly other clients as well, but will make
+   Outlook able. There will be a more satisfactory fix soon.
+
+8. Go back to Outlook and go to Tools->Macro->Macros, select eGWSynchronize,
    and click run.
 
 USING EGWOSYNC:
