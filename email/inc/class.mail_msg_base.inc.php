@@ -419,6 +419,8 @@
 			// trying this new thing for template porting issues
 			if ($this->phpgw_0914_orless == '-1')
 			{
+				$this->phpgw_0914_orless = !isset($GLOBALS['phpgw']->xslttpl); 
+			/*
 				$this_ver = $GLOBALS['phpgw_info']['server']['versions']['phpgwapi'];
 				$pre_xslt_ver = '0.9.14.0.1.1';
 				if (!$this_ver)
@@ -452,7 +454,7 @@
 						// this phpgw version is NOT in the xslt era
 						$this->phpgw_0914_orless = True;
 					}
-				}
+				}*/
 			}
 			
 			$this->known_external_args = array(
