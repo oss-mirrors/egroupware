@@ -27,13 +27,15 @@
 	}
 
 	/* this is needed for installations where REQUEST_URI is not avaliable */
-	if (!isset($_SERVER['REQUEST_URI'])) {
-		if (isset($_SERVER['SCRIPT_NAME'])) {
+	if (empty($_SERVER['REQUEST_URI'])) {
+		if (!empty($_SERVER['SCRIPT_NAME'])) {
 			$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-		} else if (isset($_SERVER['PHP_SELF'])) {
+		} else if (!empty($_SERVER['PHP_SELF'])) {
 			$_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'];
-		} else if (isset($_ENV['PATH_INFO'])) {
+		} else if (!empty($_ENV['PATH_INFO'])) {
 			$_SERVER['REQUEST_URI'] = $_SERVER['PATH_INFO'];
+		} else {
+			exit("Fatal Error cannot determine forum path");
 		}
 	}
 
