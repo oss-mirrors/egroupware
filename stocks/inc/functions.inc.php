@@ -1,7 +1,7 @@
 <?php
 	/**************************************************************************\
-	* phpGroupWare - Stock Quotes                                              *
-	* http://www.phpgroupware.org                                              *
+	* eGroupWare - Stock Quotes                                                *
+	* http://www.egroupware.org                                                *
 	* This file is based on PStocks v.0.1                                      *
 	* http://www.dansteinman.com/php/pstocks/                                  *
 	* Copyright (C) 1999 Dan Steinman (dan@dansteinman.com)                    *
