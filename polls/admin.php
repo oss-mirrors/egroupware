@@ -31,9 +31,9 @@
      $phpgw->template->set_var("tr_color",$tr_color);
 
      $phpgw->template->set_var("row_title",$phpgw->db->f("poll_title"));
-     $phpgw->template->set_var("row_edit",lang("edit"));
-     $phpgw->template->set_var("row_delete",lang("delete"));
-     $phpgw->template->set_var("row_view",lang("view"));
+     $phpgw->template->set_var("row_edit",'<a href="' . $phpgw->link("admin_editquestion.php") . '">' . lang("Edit") . '</a>');
+     $phpgw->template->set_var("row_delete",'<a href="' . $phpgw->link("admin_deletequestion.php") . '">' . lang("Delete") . '</a>');
+     $phpgw->template->set_var("row_view",'<a href="' . $phpgw->link("admin_viewquestion.php") . '">' . lang("View") . '</a>');
 
      $phpgw->template->parse("rows","row",True);
   }
