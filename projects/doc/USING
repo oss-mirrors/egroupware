@@ -22,8 +22,10 @@ want different numbers. If you want autocreated numbers set the firstone to
 
 If you want to create invoices or deliveries you have to select a customer
 before. 
-Change the logo.gif in p*billing dir with yours or remove it if you don't
-want a logo in your invoices or deliveries.
+You must create an invoice or a delivery first (button 'CREATE INVOICE' or
+'CREATE DELIVERY' before you can print them.
+A logo.gif can be found in doc directory. Exchange it for yours or remove it 
+if you don't want a logo in your invoices or deliveries.
 
 You have to create a group 'projectAdmin'. Each member of this group is
 able to modify or delete all projects data.
