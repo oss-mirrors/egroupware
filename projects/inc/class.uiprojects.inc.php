@@ -387,14 +387,14 @@
 					case 'phours':			$cname = lang('time planned'); $db = 'time_planned';  $col_align= 'right';break;
 					case 'budget':			$cname = $prefs['currency'] . ' ' . lang('budget'); $col_align= 'right'; break;
 					case 'e_budget':		$cname = $prefs['currency'] . ' ' . lang('extra budget'); $col_align= 'right'; break;
-					case 'coordinatorout':	$cname = ($action=='mains'?lang('coordinator'):lang('job manager')); $db = 'coordinator'; break;
+					case 'coordinatorout':		$cname = ($action=='mains'?lang('coordinator'):lang('job manager')); $db = 'coordinator'; break;
 					case 'customerout':		$cname = lang('customer'); break; $db = 'customer'; break;
-					case 'investment_nr':	$cname = lang('investment nr'); break;
+					case 'investment_nr':		$cname = lang('investment nr'); break;
 					case 'previousout':		$cname = lang('previous'); $db = 'previous'; break;
 					case 'customer_nr':		$cname = lang('customer nr'); break;
-					case 'url':				$cname = lang('url'); break;
+					case 'url':			$cname = lang('url'); break;
 					case 'reference':		$cname = lang('reference'); break;
-					case 'accountingout':	$cname = lang('accounting'); $db = 'accounting'; break;
+					case 'accountingout':		$cname = lang('accounting'); $db = 'accounting'; break;
 					case 'project_accounting_factor':		$cname = $prefs['currency'] . ' ' . lang('project') . ' ' . lang('accounting factor') . ' '
 															. lang('per hour'); $db = 'acc_factor'; $col_align = 'right'; break;
 					case 'project_accounting_factor_d':		$cname = $prefs['currency'] . ' ' . lang('project') . ' ' . lang('accounting factor') . ' '
@@ -451,13 +451,19 @@
 							case 'budget':
 							case 'project_accounting_factor':
 							case 'project_accounting_factor_d':
-							case 'phours': $col_align = 'right'; break;
+							case 'phours': 
+								$col_align = 'right'; 
+								break;
 							case 'sdateout':
 							case 'edateout':
 							case 'psdateout':
 							case 'pedateout':
-							case 'billableout': $col_align = 'center'; break;
-							default:			$col_align = 'left';
+							case 'billableout': 
+								$col_align = 'center'; 
+								break;
+							default:			
+								$col_align = 'left';
+								break;
 						}
 
 						$GLOBALS['phpgw']->template->set_var('col_align',$col_align);

@@ -846,7 +846,7 @@
 			if($this->html_output && ($used > $used_percent))
 			{
 			//echo 'used > $used_percent: ' . $used . '>' . $used_percent . '<br><br>';
-				return '<font color="CC0000"><b>' . sprintf("%01.2f",$value) . '</b></font>';
+				return '<font color="#CC0000"><b>' . sprintf("%01.2f",$value) . '</b></font>';
 			}
 			return sprintf("%01.2f",$value);
 		}
@@ -859,7 +859,7 @@
 
 			$color = ($green?'38BB00':($yel?'ECC200':'CC0000'));
 
-			return '<font color="' . $color . '">' . $pri . '</font>';
+			return '<font color="#' . $color . '">' . $pri . '</font>';
 		}
 
 		function list_projects($params)
@@ -931,7 +931,7 @@
 						$acc = $this->get_budget($params);
 					}
 
-					$uhours_pro		= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
+					$uhours_pro	= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
 					$uhours_jobs	= $this->colored($acc['uhours_jobs'],$pro['ptime'],$acc['uhours_jobs_wminutes'],'hours');
 
 					$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budget'],$acc['u_budget']);
@@ -1029,11 +1029,11 @@
 
 				/*if (mktime(2,0,0,$month,$day+($event_extra*2),$year) >= $edate)
 				{
-					$edateout = '<font color="ECC200"><b>' . $edateout . '</b></font>';
+					$edateout = '<font color="#ECC200"><b>' . $edateout . '</b></font>';
 				}*/
 				if (mktime(12,0,0,$month,$day+$event_extra,$year) >= $edate)
 				{
-					$edateout = '<font color="CC0000"><b>' . $edateout . '</b></font>';
+					$edateout = '<font color="#CC0000"><b>' . $edateout . '</b></font>';
 				}
 			}
 			return $edateout;
@@ -1050,7 +1050,7 @@
 				$atime = $this->sohours->format_wh($pro['ptime']-$acc['ptime_jobs_min']);
 			}
 
-			$uhours_pro		= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
+			$uhours_pro	= $this->colored($acc['uhours_pro'],$pro['ptime'],$acc['uhours_pro_wminutes'],'hours');
 			$uhours_jobs	= $this->colored($acc['uhours_jobs'],$pro['ptime'],$acc['uhours_jobs_wminutes'],'hours');
 
 			$ubudget_pro	= $this->colored($acc['u_budget'],$pro['budget'],$acc['u_budget']);
