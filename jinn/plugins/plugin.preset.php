@@ -51,17 +51,18 @@
 
 	function plg_fi_pre_string($field_name, $value, $config,$attr_arr)
 	{
-	   $input='<input type="hidden" name="'.$field_name.'" value="'.strip_tags($config['Preset_Value']).'">';
+	   $input[html]='<input type="hidden" name="'.$field_name.'" value="'.strip_tags($config['Preset_Value']).'"/>';
+	   $input[__hidden__]=true;
 		return $input;
 	}	
 
 	function plg_ro_pre_string($field_name,$value)
 	{
-	   return '__hide__';
+	   return '__disabled__';
 	}
 
 	function plg_bv_pre_string($field_name,$value, $config,$attr_arr)
 	{
-	   return '__hide__';
+	   return '__disabled__';
 	}
 ?>
