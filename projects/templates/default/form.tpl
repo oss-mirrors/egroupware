@@ -27,10 +27,10 @@
 	</tr>
 	<tr>
 		<td>{lang_descr}:</td>
-		<td colspan="2"><textarea name="descr" rows=4 cols=50 wrap="VIRTUAL">{descrval}</textarea></td>
+		<td colspan="2"><textarea name="descr" rows="4" cols="50" wrap="VIRTUAL">{descrval}</textarea></td>
 	</tr>
 	<tr>
-		<td>{lang_category}:</td>   
+		<td>{lang_category}:</td>
 		<td><select name="new_cat"><option value="">{lang_select_cat}</option>{category_list}</select></font></td>
 	</tr>
 	<tr>

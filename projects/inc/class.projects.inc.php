@@ -100,6 +100,10 @@
 			{
 				$filtermethod .= " AND parent = '$pro_parent' ";
 			}
+			else
+			{
+				$filtermethod .= " AND parent = '0' ";				
+			}
 
 			if ($query)
 			{

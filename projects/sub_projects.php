@@ -45,6 +45,10 @@
 	{
 		$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id,$pro_parent);
 	}
+	else
+	{
+		$projects->total_records = 0;
+	}
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 
@@ -60,10 +64,10 @@
 // ------------------list header variable template-declarations -------------------------------
 
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/sub_projects.php',lang('Project ID')));
-	$t->set_var('sort_customer',$phpgw->nextmatchs->show_sort_order($sort,'customer',$order,'/projects/sub_projects.php',lang('Customer')));
+	$t->set_var('sort_number',$phpgw->nextmatchs->show_sort_order($sort,'num',$order,'/projects/sub_projects.php',lang('Job ID')));
 	$t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'status',$order,'/projects/sub_projects.php',lang('Status')));
 	$t->set_var('sort_title',$phpgw->nextmatchs->show_sort_order($sort,'title',$order,'/projects/sub_projects.php',lang('Title')));
+	$t->set_var('sort_start_date',$phpgw->nextmatchs->show_sort_order($sort,'start_date',$order,'/projects/sub_projects.php',lang('Start date')));
 	$t->set_var('sort_end_date',$phpgw->nextmatchs->show_sort_order($sort,'end_date',$order,'/projects/sub_projects.php',lang('Date due')));
 	$t->set_var('sort_coordinator',$phpgw->nextmatchs->show_sort_order($sort,'coordinator',$order,'/projects/sub_projects.php',lang('Coordinator')));
 	$t->set_var('lang_h_hours',lang('Work hours'));
@@ -102,27 +106,26 @@
 			if (mktime(2,0,0,$month,$day,$year) >= $end_date) { $end_dateout = '<font color="CC0000"><b>' . $end_dateout . '</b></font>'; }
 		}
 
-		$ab_customer = $pro[$i]['customer'];
-		if (!$ab_customer) { $customerout = '&nbsp;'; }
+		$start_date = $pro[$i]['start_date'];
+		if ($start_date == 0) { $start_dateout = '&nbsp;'; }
 		else
 		{
-			$cols = array('n_given' => 'n_given',
-						'n_family' => 'n_family',
-						'org_name' => 'org_name');
-			$customer = $d->read_single_entry($ab_customer,$cols);    
-			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
-			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
+			$month = $phpgw->common->show_date(time(),'n');
+			$day = $phpgw->common->show_date(time(),'d');
+			$year = $phpgw->common->show_date(time(),'Y');
+
+			$start_date = $start_date + (60*60) * $phpgw_info['user']['preferences']['common']['tz_offset'];
+			$start_dateout = $phpgw->common->show_date($start_date,$phpgw_info['user']['preferences']['common']['dateformat']);
 		}
 
 		$coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
 
 		$id = $pro[$i]['id'];
-	//	$cat_id = $pro[$i]['category'];
 
 // ------------------ template declaration for list records -----------------------------------
 
 		$t->set_var(array('number' => $number,
-						'customer' => $customerout,
+						'start_date' => $start_dateout,
 							'status' => $status,
 							'title' => $title,
 						'end_date' => $end_dateout,
@@ -135,7 +138,7 @@
 
 		if ($projects->check_perms($grants[$pro[$i]['coordinator']],PHPGW_ACL_EDIT) || $pro[$i]['coordinator'] == $phpgw_info['user']['account_id'])
 		{
-			$t->set_var('edit',$phpgw->link('/projects/edit.php','pro_parent=' . $pro_parent . '&id=' . $id . '&cat_id=' . $cat_id . '&sort=' . $sort . '&order=' . $order
+			$t->set_var('edit',$phpgw->link('/projects/edit_sub.php','pro_parent=' . $pro_parent . '&id=' . $id . '&cat_id=' . $cat_id . '&sort=' . $sort . '&order=' . $order
 											. '&query=' . $query . '&start=' . $start . '&filter=' . $filter));
 			$t->set_var('lang_edit_entry',lang('Edit'));
 		}
@@ -161,7 +164,7 @@
 
 	if ($projects->check_perms($grants[$parent[0]['coordinator']],PHPGW_ACL_ADD) || $parent[0]['coordinator'] == $phpgw_info['user']['account_id'])
 	{
-		$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add.php','pro_parent=' . $pro_parent . '&cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
+		$t->set_var('add','<form method="POST" action="' . $phpgw->link('/projects/add_sub.php','pro_parent=' . $pro_parent . '&cat_id=' . $cat_id . '&start=' . $start . '&sort=' . $sort
 					. '&order=' . $order . '&query=' . $query . '&filter=' . $filter) . '"><input type="submit" name="Add" value="' . lang('Add') .'"></form>');
 	}
 	else

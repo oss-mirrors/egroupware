@@ -93,6 +93,21 @@
 		return $prefix . $max;
 	}
 
+	function create_jobid($pro_parent)
+	{
+		global $phpgw;
+
+		$phpgw->db->query("select num from phpgw_p_projects where id='$pro_parent'");
+		$phpgw->db->next_record();
+		$prefix = $phpgw->db->f('num') . '/';
+
+		$phpgw->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
+		$phpgw->db->next_record();
+		$max = add_leading_zero(substr($phpgw->db->f(0),8));
+
+		return $prefix . $max;
+	}
+
 	function create_activityid($year)
 	{
 		global $phpgw, $year;

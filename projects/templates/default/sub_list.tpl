@@ -29,10 +29,10 @@
 <table border="0" width="100%" cellpadding="2" cellspacing="2">
 	<tr bgcolor="{th_bg}">
 		<td width="8%" bgcolor="{th_bg}">{sort_number}</td>
-		<td width="18%" bgcolor="{th_bg}">{sort_customer}</td>
 		<td width="20%" bgcolor="{th_bg}">{sort_title}</td>
 		<td width="18%" bgcolor="{th_bg}">{sort_coordinator}</td>
 		<td width="8%" bgcolor="{th_bg}" align="center">{sort_status}</td>
+		<td width="8%" bgcolor="{th_bg}" align="center">{sort_start_date}</td>
 		<td width="8%" bgcolor="{th_bg}" align="center">{sort_end_date}</td>
 		<td width="10%" bgcolor="{th_bg}" align="center">{lang_h_hours}</td>
 		<td width="5%" bgcolor="{th_bg}" align="center">{lang_view}</td>
@@ -43,10 +43,10 @@
 
 	<tr bgcolor="{tr_color}">
 		<td>{number}</td>
-		<td>{customer}</td>
 		<td>{title}</td>
 		<td>{coordinator}</td>
 		<td align="center">{status}</td>
+		<td align="center">{start_date}</td>
 		<td align="center">{end_date}</td>
 		<td align="center"><a href="{hours}">{lang_hours}</a></td>
 		<td align="center"><a href="{view}">{lang_view_entry}</a></td>

@@ -325,7 +325,7 @@
 	{
 		global $setup_info,$phpgw_setup;
 
-		$phpgw_setup->oProc->AddColumn('phpgw_p_projects','parent',array('type' => 'int','precision' => 4,'nullable' => False));
+		$phpgw_setup->oProc->AddColumn('phpgw_p_projects','parent',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
 
 		$setup_info['projects']['currentver'] = '0.8.5.004';
 		return $setup_info['projects']['currentver'];

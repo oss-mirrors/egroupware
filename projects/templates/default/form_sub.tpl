@@ -35,12 +35,7 @@
 	</tr>
 	<tr>
 		<td>{lang_category}:</td>   
-		<td>{category_list}</td>
-	</tr>
-	<tr>
-		<td><input type="button" value="{lang_customer}" onClick="abook();"></td>
-		<td><input type="hidden" name="abid" value="{abid}">
-			<input type="text" name="name" size="50" value="{name}" readonly>&nbsp;&nbsp;&nbsp;{lang_select}</td>
+		<td>{category}</td>
 	</tr>
 	<tr>
 		<td>{lang_coordinator}:</td>
@@ -61,14 +56,6 @@
 	<tr>
 		<td>{lang_end_date}:</td>
 		<td>{end_date_select}</td>
-	</tr>
-	<tr>
-		<td>{lang_bookable_activities}:</td>
-		<td><select name="ba_activities[]" multiple>{ba_activities_list}</select></td>
-	</tr>
-	<tr>
-		<td>{lang_billable_activities}:</td>
-		<td><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
 	</tr>
 	<tr>
 		<td>{lang_access}:</td>
