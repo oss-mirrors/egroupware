@@ -134,13 +134,13 @@
 
 			$this->t->set_var('link_billing',$phpgw->link('/projects/bill_index.php'));
 			$this->t->set_var('lang_billing',lang('Billing'));
-			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_sub_projects'));
+			$this->t->set_var('link_jobs',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
 			$this->t->set_var('link_hours',$phpgw->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
 			$this->t->set_var('link_statistics',$phpgw->link('/projects/stats_projectlist.php'));
 			$this->t->set_var('lang_statistics',lang("Statistics"));
 			$this->t->set_var('link_delivery',$phpgw->link('/projects/del_index.php'));
 			$this->t->set_var('lang_delivery',lang('Delivery'));
-			$this->t->set_var('link_projects',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects'));
+			$this->t->set_var('link_projects',$phpgw->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 			$this->t->set_var('lang_projects',lang('Projects'));
 			$this->t->set_var('link_archiv',$phpgw->link('/projects/archive.php'));
 			$this->t->set_var('lang_archiv',lang('archive'));

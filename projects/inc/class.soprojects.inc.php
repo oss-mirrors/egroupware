@@ -363,14 +363,21 @@
 			return $thing;
 		}
 
-		function exists($num, $project_id = '')
+		function exists($check = 'number', $num = '', $project_id = '')
 		{
-			if ($project_id && ($project_id != 0))
+			if ($check == 'number')
 			{
-				$editexists = " and id != '$project_id'";
-			}
+				if ($project_id && ($project_id != 0))
+				{
+					$editexists = " and id != '$project_id'";
+				}
 
-			$this->db->query("select count(*) from phpgw_p_projects where num = '$num' $editexists",__LINE__,__FILE__);
+				$this->db->query("select count(*) from phpgw_p_projects where num = '$num' $editexists",__LINE__,__FILE__);
+			}
+			else
+			{
+				$this->db->query("select count(*) from phpgw_p_projects where pro_parent = '$project_id'",__LINE__,__FILE__);
+			}
 			$this->db->next_record();
 
 			if ($this->db->f(0))

@@ -206,7 +206,7 @@
 				}
 				else
 				{
-					$exists = $this->soprojects->exists($values['number'], $values['project_id']);
+					$exists = $this->soprojects->exists('number', $values['number'], $values['project_id']);
 
 					if ($exists)
 					{
