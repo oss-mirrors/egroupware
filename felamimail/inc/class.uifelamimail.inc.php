@@ -313,6 +313,12 @@
 			);
 			$this->t->set_var('action_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
 			
+			$linkData = array
+			(
+				'menuaction'	=> 'emailadmin.ui.listProfiles'
+			);
+			$this->t->set_var('emailadmin_url',$GLOBALS['phpgw']->link('/index.php',$linkData));
+			
 			$this->t->set_var('back_url',$GLOBALS['phpgw']->link('/admin/index.php'));
 			
 			foreach($profileList as $key => $value)

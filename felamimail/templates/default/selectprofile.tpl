@@ -5,22 +5,23 @@
 
 <table width="90%" border="0" cellspacing="0" cellpading="1">
 <tr class="th"> 
-	<th width="50%" align="left" class="td_left">
+	<th width="40%" align="left" class="td_left">
 		{lang_site_configuration}
 	</th>
-	<th width="50%" align="right" class="td_right">
+	<th width="60%" align="right" class="td_right">
 		&nbsp;
 	</th>
 </tr>
 <tr>
-	<td width="50%" class="td_left">
+	<td width="40%" class="td_left">
 		{lang_select_email_profile}:
 	</td>
-	<td width="50%" class="td_right">
+	<td width="60%" class="td_right">
 		<select name="profileID">
 			<option value="-1"></option>
 			{select_options}
 		</select>
+		use <a href="{emailadmin_url}">EmailAdmin</a> to create profiles
 	</td>
 </tr>
 </table>
