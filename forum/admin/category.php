@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	$GLOBALS['phpgw_info']['flags'] = Array
+	$GLOBALS['phpgw_info']['flags'] = Array(
 		'currentapp' => 'forum'
 	);
 	if($GLOBALS['HTTP_POST_VARS']['action'])
