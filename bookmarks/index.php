@@ -13,34 +13,34 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp' => 'bookmarks',
 		'nonavbar'   => True,
 		'noheader' => True
 	);
-
 	include('../header.inc.php');
-	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
-	$location_info    = $phpgw->bookmarks->read_session_data();
+
+	$GLOBALS['phpgw']->bookmarks = createobject('bookmarks.bookmarks');
+	$location_info    = $GLOBALS['phpgw']->bookmarks->read_session_data();
 
 	if (is_array($location_info))
 	{
-		$extravars     = 'bm_cat=' . $location_info['bm_cat'];
+		$extravars = 'bm_cat=' . $location_info['bm_cat'];
 	}
 
 	if (is_array($location_info) && $location_info['returnto'])
 	{
-		$phpgw->redirect($phpgw->link('/bookmarks/' . $location_info['returnto'],$extravars));
+		$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/' . $location_info['returnto'],$extravars));
 	}
 	else
 	{
-		if ($phpgw_info['user']['preferences']['bookmarks']['defaultview'] == 'tree')
+		if ($GLOBALS['phpgw_info']['user']['preferences']['bookmarks']['defaultview'] == 'tree')
 		{
-			$phpgw->redirect($phpgw->link('/bookmarks/tree.php',$extravars));
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/tree.php',$extravars));
 		}
 		else
 		{
-			$phpgw->redirect($phpgw->link('/bookmarks/list.php',$extravars));
+			$GLOBALS['phpgw']->redirect($GLOBALS['phpgw']->link('/bookmarks/list.php',$extravars));
 		}
 	}
 ?>
