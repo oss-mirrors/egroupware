@@ -22,10 +22,8 @@
 
 		function uisf_project_tracker()
 		{
-			global $phpgw, $phpgw_info;
-
 			$this->bo       = createobject('developer_tools.bosf_project_tracker');
-			$this->template = $phpgw->template;
+			$this->template = $GLOBALS['phpgw']->template;
 			$this->template->set_file(array(
 				'sf_project' => 'sf_project.tpl'
 			));
@@ -35,9 +33,7 @@
 
 		function display_tracker()
 		{
-			global $phpgw;
-
-			$phpgw->common->phpgw_header();
+			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			include(PHPGW_APP_INC . '/header.inc.php');
 
@@ -48,9 +44,7 @@
 
 		function preferences($message = '')
 		{
-			global $phpgw, $phpgw_info;
-
-			$phpgw->common->phpgw_header();
+			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 			include(PHPGW_APP_INC . '/header.inc.php');
 
@@ -63,11 +57,11 @@
 				$this->template->set_var('message',$message);
 			}
 
-			$this->template->set_var('form_action',$phpgw->link('/index.php','menuaction=developer_tools.bosf_project_tracker.preferences'));
+			$this->template->set_var('form_action',$GLOBALS['phpgw']->link('/index.php','menuaction=developer_tools.bosf_project_tracker.preferences'));
 
-			$this->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-			$this->template->set_var('row_on',$phpgw_info['theme']['row_on']);
-			$this->template->set_var('row_off',$phpgw_info['theme']['row_off']);
+			$this->template->set_var('th_bg',  $GLOBALS['phpgw_info']['theme']['th_bg']);
+			$this->template->set_var('row_on', $GLOBALS['phpgw_info']['theme']['row_on']);
+			$this->template->set_var('row_off',$GLOBALS['phpgw_info']['theme']['row_off']);
 
 			$this->template->set_var('header_message',lang('Developer tools - preferences'));
 			$this->template->set_var('lang_header',lang('Sourceforge project tracker preferences'));
@@ -78,5 +72,4 @@
 
 			$this->template->pfp('content','preferences');
 		}
-
 	}

@@ -20,9 +20,7 @@
 
 		function display_tracker()
 		{
-			global $phpgw_info;
-
-			$group_id = $phpgw_info['user']['preferences']['developer_tools']['sf_project_id'];
+			$group_id = $GLOBALS['phpgw_info']['user']['preferences']['developer_tools']['sf_project_id'];
 
 			if (! $group_id)
 			{
@@ -56,16 +54,15 @@
 
 		function preferences()
 		{
-			global $phpgw, $preferences;
+			$preferences = $GLOBALS['HTTP_POST_VARS']['preferences'];
 
 			$ui =	createobject('developer_tools.uisf_project_tracker');
 			while (is_array($preferences) && list($preference) = each($preferences))
 			{
-				$phpgw->preferences->add('developer_tools',$preference,$preferences[$preference]);
+				$GLOBALS['phpgw']->preferences->add('developer_tools',$preference,$preferences[$preference]);
 			}
-			$phpgw->preferences->save_repository();
+			$GLOBALS['phpgw']->preferences->save_repository();
 
 			$ui->preferences(lang('Preferences have been updated'));
 		}
-
 	}

@@ -18,10 +18,8 @@
 
 		function sosf_project_tracker($group_id)
 		{
-			global $phpgw;
-
 			$this->group_id = $group_id;
-			$this->db       = $phpgw->db;
+			$this->db       = $GLOBALS['phpgw']->db;
 		}
 
 		function insert_cache($data)
@@ -50,8 +48,6 @@
 
 		function grab_tracker_from_http()
 		{
-			global $HTTP_SERVER_VARS, $phpgw_info;
-
 			$network = createobject('phpgwapi.network');
 			$lines   = $network->gethttpsocketfile('http://sourceforge.net/export/projhtml.php?group_id=' . $this->group_id . '&mode=compat&no_table=0');
 
@@ -71,12 +67,12 @@
 			// If there running in SSL mode, replace the icons with local ones
 			// This might not work with the CGI binary or webservers other then apache.
 			// I might move this part over to bo or ui, I am not sure yet. (jengo)
-			if ($HTTP_SERVER_VARS['HTTPS'])
+			if ($GLOBALS['HTTP_SERVER_VARS']['HTTPS'])
 			{
 				$data = ereg_replace('http://a248.e.akamai.net/7/248/1710/949111342/sourceforge.net/images/ic',PHPGW_IMAGES,$data);
 			}
 			$data = preg_replace('/(<a href=")(.*?)(>)/i','\\1\\2 target="_blank"\\3',$data);
-			$data = ereg_replace('#EAECEF',$phpgw_info['theme']['row_off'],$data);
+			$data = ereg_replace('#EAECEF',$GLOBALS['phpgw_info']['theme']['row_off'],$data);
 
 			$this->insert_cache($data);
 
