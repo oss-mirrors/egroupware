@@ -153,14 +153,17 @@
 		function translate_template($template_name)
 		{
 			$undef = $this->t->get_undefined($template_name);
-			foreach ($undef as $value)
+			if ($undef != False)
 			{
-				$valarray = explode('_', $value);
-				$type = array_shift($valarray);
-				$newval = implode(' ', $valarray);
-				if ($type == 'lang')
+				foreach ($undef as $value)
 				{
-					$this->t->set_var($value, lang($newval));
+					$valarray = explode('_', $value);
+					$type = array_shift($valarray);
+					$newval = implode(' ', $valarray);
+					if ($type == 'lang')
+					{
+						$this->t->set_var($value, lang($newval));
+					}
 				}
 			}
 		}
