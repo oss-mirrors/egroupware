@@ -17,9 +17,9 @@
 	$setup_info['backup']['enable'] = 1;
 
 	/* The hooks this app includes, needed for hooks registration */
-    $setup_info['backup']['hooks'][] = 'admin';
+	$setup_info['backup']['hooks'][] = 'admin';
 
-	/* Dependacies for this app to work */
+	/* Dependencies for this app to work */
 	$setup_info['backup']['depends'][] = array
 	(
 		'appname'  => 'phpgwapi',
