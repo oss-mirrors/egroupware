@@ -65,10 +65,10 @@
 			if (!isset($_GET['page']))
 			{
 				// use the referer
-				$referer = isset($_GET['referer']) ? $_GET['referer'] : $_SERVER['HTTP_REFERER'];
+				$referer = !isset($_SERVER['HTTP_REFERER']) ? $_GET['referer'] : $_SERVER['HTTP_REFERER'];
 				list($referer,$query) = explode('?',$referer);
 				parse_str($query,$query);
-				//echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
+				// echo "<p>_GET[referer]='$_GET[referer]', referer='$referer', query=".print_r($query,True)."</p>\n";
 				
 				if (isset($query['menuaction']) && $query['menuaction'])
 				{
@@ -76,11 +76,15 @@
 					// for acl-preferences use the app-name from the query and acl as function
 					if ($app == 'preferences' && $class == 'uiaclprefs')
 					{
-						$app = $query['acl_app'];
+						$app = $query['acl_app'] ? $query['acl_app'] : $_GET['acl_app'];
 						$function = 'acl';
 					}
-					$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
+					elseif ($app == 'admin' && $class == 'uiconfig')
+					{
+						$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
+					}
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($class).ucfirst($function);
+					$pages[] = 'Manual'.ucfirst($app).ucfirst($function);
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($class);
 				}
 				else
@@ -102,7 +106,7 @@
 					// for preferences use the app-name from the query
 					if ($app == 'preferences' && $file == 'preferences')
 					{
-						$app = $query['appname'];
+						$app = $query['appname'] ? $query['appname'] : $_GET['appname'];
 					}
 					$pages[] = 'Manual'.ucfirst($app).ucfirst($file);
 				}
