@@ -98,7 +98,7 @@ function fetch_search_cache($qry, $start, $count, $logic, $srch_type, $order, $f
 		WHERE
 			sc.query_type='.$qt.' AND sc.srch_query='.$qry_lck.$qry_lmt.'
 			'.($logic == 'AND' ? ' AND sc.n_match>='.$i : '').'
-			'.($GLOBALS['usr']->users_opt & 1048576 ? '' : ' AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 262144) > 0)'));
+			'.($GLOBALS['usr']->users_opt & 1048576 ? '' : ' AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 262146) >= 262146)'));
 	if (!$total) {
 		return;
 	}
@@ -117,7 +117,7 @@ function fetch_search_cache($qry, $start, $count, $logic, $srch_type, $order, $f
 		WHERE
 			sc.query_type='.$qt.' AND sc.srch_query='.$qry_lck.$qry_lmt.'
 			'.($logic == 'AND' ? ' AND sc.n_match>='.$i : '').'
-			'.($GLOBALS['usr']->users_opt & 1048576 ? '' : ' AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 262144) > 0)').'
+			'.($GLOBALS['usr']->users_opt & 1048576 ? '' : ' AND (mm.id IS NOT NULL OR ((CASE WHEN g2.id IS NOT NULL THEN g2.group_cache_opt ELSE g1.group_cache_opt END) & 262146) >= 262146)').'
 		ORDER BY sc.n_match DESC, m.post_stamp '.$order.' LIMIT '.qry_limit($count, $start));
 }
 
