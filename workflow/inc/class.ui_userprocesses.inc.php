@@ -40,9 +40,9 @@
 					'item_wf_procname'		=> $process_data['wf_procname'],
 					'item_version'		=> $process_data['verion'],
 					'link_activities'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_useractivities.form&filter_process='. $process_data['wf_p_id']),
-					'item_activities'	=> $process_data['activities'],
+					'item_activities'	=> $process_data['wf_activities'],
 					'link_instances'	=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_userinstances.form&filter_process='. $process_data['wf_p_id']),
-					'item_instances'	=> $process_data['instances'],
+					'item_instances'	=> $process_data['wf_instances'],
 					'color_line'		=> $this->nextmatchs->alternate_row_color($tr_color),
 				));
 				$this->t->parse('table', 'block_table', true);
