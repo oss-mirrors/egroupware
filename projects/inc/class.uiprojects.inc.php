@@ -912,7 +912,7 @@
 			$this->t->set_var('customer',$customerout);
 
 			$this->t->pfp('out','view');
-//			$GLOBALS['phpgw']->common->hook('projects_view');
+			$GLOBALS['phpgw']->hooks->process('projects_view');
 		}
 
 		function delete_pa()
