@@ -28,6 +28,7 @@
 	-------------------------------------------------------------------*/
 	$this->plugins['boolian']['name'] 			= 'boolian';
 	$this->plugins['boolian']['title']			= 'Boolian';
+   $this->plugins['boolian']['author']			= 'Pim Snel';
 	$this->plugins['boolian']['version']		= '1.1';
 	$this->plugins['boolian']['enable']			= 1;
 	$this->plugins['boolian']['description']	= 'Input for on/off, yes/no, true/false etc....';

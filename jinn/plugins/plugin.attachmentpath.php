@@ -29,7 +29,8 @@
 
    $this->plugins['attachpath']['name']			= 'attachpath';
    $this->plugins['attachpath']['title']		= 'AttachmentPath plugin';
-   $this->plugins['attachpath']['version']		= '0.8.3';
+   $this->plugins['attachpath']['version']		= '0.8.5';
+   $this->plugins['attachpath']['author']			= 'Pim Snel';
    $this->plugins['attachpath']['enable']		= 1;
    $this->plugins['attachpath']['db_field_hooks']= array
    (
@@ -206,7 +207,7 @@
 		 $upload_path=$local_bo->site[$field_prefix.'upload_path'];
 	  }
 
-	  $atts_to_delete=$local_bo->common->filter_array_with_prefix($HTTP_POST_VARS,'ATT_DEL');
+	  $atts_to_delete=$local_bo->common->filter_array_with_prefix($_POST,'ATT_DEL');
 
 	  if (count($atts_to_delete)>0){
 
@@ -218,27 +219,28 @@
 		 }
 
 		 $atts_org=explode(';',$HTTP_POST_VARS['ATT_ORG'.substr($field_name,3)]);
-
 		 foreach($atts_org as $att_org)
 		 {
 			if (!in_array($att_org,$atts_to_delete))
 			{
-			   if ($atts_path_new) $atts_path_new.=';';
+				 if ($atts_path_new) $atts_path_new.=';';
 			   $atts_path_new.=$att_org;
 			}
 		 }
 	  }
 	  else
 	  {
-		 $atts_path_new.=$HTTP_POST_VARS['ATT_ORG'.substr($field_name,3)];
+		 $atts_path_new.=$_POST['ATT_ORG'.substr($field_name,3)];
 	  }
 
+	  
 	  /* make array again of the original attachment */
 	  $atts_array=explode(';',$atts_path_new);
 	  unset($atts_path_new);
 
 	  /* finally adding new attachments */
 	  $atts_to_add=$local_bo->common->filter_array_with_prefix($HTTP_POST_FILES,'ATT_SRC');
+	
 
 	  // quick check for new attchments
 	  if(is_array($atts_to_add))
@@ -249,8 +251,7 @@
 
 	  if ($num_atts_to_add)
 	  {
-
-		 $att_position=0;
+		$att_position=0;
 		 foreach($atts_to_add as $add_att)
 		 {
 			if($add_att['name'])
@@ -284,19 +285,22 @@
 		 }						
 	  }
 
-	  // make return array for storage
-	  if($atts_path_new || $atts_path_changed)
+	  if($atts_path_new)
 	  {
 		 return $atts_path_new;
 	  }
-
-	  return '-1'; /* return -1 when there no value to give but the function finished succesfully */
+	  elseif($atts_path_changed || !$_POST['ATT_ORG'.substr($field_name,3)])
+	  {
+		 return '-1';
+	  }
+	  else
+	  {
+		 return null; /* return -1 when there no value to give but the function finished succesfully */
+	  }
    }
-
 
    function plg_ro_attachpath($value,$config,$where_val_enc)
    {
-
 	  global $local_bo;
 
 	  if($local_bo->common->so->config[server_type]=='dev')

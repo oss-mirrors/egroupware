@@ -10,12 +10,12 @@
 <!-- END rows -->
 
 <!-- BEGIN plugins_header -->
-<tr><td bgcolor={prow_color} valign="top">{lang_field_plugins}</td><td bgcolor={prow_color}>
+<tr><td bgcolor={prow_color} valign="top">{lang_field_configuration}</td><td bgcolor={prow_color}>
 <div id="divPlugins">
 <table style="background-color:#ffffff;border:solid 1px #cccccc;">
 		<tr>
 			<td>{lang_fields}</td><td>			
-			{lang_field_plugin}</td><td>&nbsp;</td>
+			{lang_field_plugin}</td><td>{lang_plugin_conf}</td><td>{lang_afc}</td>
 		</tr>
 <!-- END plugins_header -->
 
@@ -28,8 +28,11 @@
 		</select>
 	</td>
 	<td>
-		<input type="hidden" name="CFG_PLG{field_name}" value="{plg_conf}">
-		<input type="button" onClick="{popup_onclick}" value="{lang_configure}">
+	<input type="hidden" name="CFG_PLG{field_name}" value="{plg_conf}">
+	<input type="button" onClick="{popup_onclick}" value="{lang_plugin_conf}">
+</td>
+<td>
+		<input type="button" onClick="{popup_onclick_afc}" value="{lang_afc}">
 	</td>
 </tr>
 <!-- END plugins_row -->

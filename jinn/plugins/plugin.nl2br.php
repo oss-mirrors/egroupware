@@ -39,6 +39,7 @@
 	$this->plugins['nl2br']['title']			= 'Newline2Break Filter';
 	$this->plugins['nl2br']['version']			= '1.0';
 	$this->plugins['nl2br']['enable']			= 1;
+	$this->plugins['nl2br']['author']			= 'Pim Snel';
 	$this->plugins['nl2br']['description']		= $description;
 	$this->plugins['nl2br']['db_field_hooks']	= array
 	(

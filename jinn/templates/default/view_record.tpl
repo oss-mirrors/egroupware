@@ -7,9 +7,9 @@ function img_popup(img,pop_width,pop_height,attr)
 }
 </script>
 
-<form method="post" name="frm" action="{form_action}" enctype="multipart/form-data" {form_attributes}>
-{where_string_form}
-<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;">
+<!--<form method="post" name="frm" action="{form_action}" enctype="multipart/form-data" {form_attributes}>
+{where_string_form}-->
+<table align="" cellspacing="2" cellpadding="2" style="background-color:#ffffff;border:solid 1px #cccccc;width:570px">
 <!-- END header -->
 
 
@@ -28,8 +28,6 @@ function img_popup(img,pop_width,pop_height,attr)
 	<td colspan="2" bgcolor="{row_color}">
 	<input type="button" onClick="{edit_onclick}" value="{lang_edit}">
 	{extra_back_button}
-	<!--<input type="submit" name="delete" value="{delete}">-->
-
 	</td></tr>
 	<tr><td colspan="2" >
 	<table align="right" style="background-color:#ffffff">
@@ -42,6 +40,6 @@ function img_popup(img,pop_width,pop_height,attr)
 	</td></tr>
 
 </table>
-</form>
+<!--</form>-->
 <!-- END footer -->
 

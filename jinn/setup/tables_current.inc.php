@@ -101,6 +101,20 @@
 			'fk' => array(),
 			'ix' => array(),
 			'uc' => array()
+		),
+		'phpgw_jinn_adv_field_conf' => array(
+			'fd' => array(
+				'parent_object' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'field_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'field_type' => array('type' => 'varchar','precision' => '20','nullable' => False),
+				'field_alt_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'field_help_info' => array('type' => 'text','nullable' => False),
+				'field_read_protection' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0')
+			),
+			'pk' => array('parent_object','field_name'),
+			'fk' => array(),
+			'ix' => array('parent_object','field_name'),
+			'uc' => array()
 		)
 	);
 ?>

@@ -30,6 +30,7 @@
 
 	$this->plugins['htmlspecialchars']['name']			= 'htmlspecialchars';
 	$this->plugins['htmlspecialchars']['title']			= 'HTML Special Character Filter';
+   $this->plugins['htmlspecialchars']['author']			= 'Pim Snel';
 	$this->plugins['htmlspecialchars']['version']		= '1.0';
 	$this->plugins['htmlspecialchars']['enable']		= 1;
 	$this->plugins['htmlspecialchars']['description']	= $description;

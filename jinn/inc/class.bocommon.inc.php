@@ -23,11 +23,26 @@
 
 	class bocommon
 	{
-		var $so;
+	   var $so;
+	   var $prefs;
 
 		function bocommon()
 		{
 			$this->so = CreateObject('jinn.sojinn');
+			$this->prefs = $this->read_preferences_all();
+		}
+  
+		function read_preferences_all()
+		{
+		   $GLOBALS['phpgw']->preferences->read_repository();
+
+		   $prefs = array();
+
+		   if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
+		   {
+			  $prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'];
+		   }
+		   return $prefs;
 		}
 
 		/**
@@ -55,8 +70,6 @@
 			$minuten = substr($input,10,2);
 			return("$dag-$maand-$jaar $uren:$minuten");
 		}
-
-
 
 
 		/**
@@ -94,6 +107,7 @@
 		/*
 		Function to retrieve a global get or post var where get overrules post
 		*/
+		// FIXME remove this
 		function get_global_var($name,$priority='get')
 		{
 		   if($priority=='post')
@@ -115,6 +129,7 @@
 		   }
 		}
 
+		// FIXME remove this
 		function get_global_vars($name_arr,$priority='get')
 		{
 		   if(is_array($name_arr))

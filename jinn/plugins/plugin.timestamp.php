@@ -24,6 +24,7 @@
 
    $this->plugins['timestamp']['name']				= 'timestamp';
    $this->plugins['timestamp']['title']				= 'Timestamp plugin';
+   $this->plugins['timestamp']['author']			= 'Pim Snel';
    $this->plugins['timestamp']['version']			= '0.2.1';
    $this->plugins['timestamp']['description']		= 'Make the user choose for a new stamp of saving the exiting stamp';
    $this->plugins['timestamp']['enable']			= 1;

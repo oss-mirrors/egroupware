@@ -31,6 +31,7 @@
 	$this->plugins['date']['name']				= 'date';
 	$this->plugins['date']['title']				= 'Date plugin';
 	$this->plugins['date']['version']			= '0.1.1';
+	$this->plugins['date']['author']			= 'Pim Snel';
 	$this->plugins['date']['description']		= 'create date input box and date storage method, (At this time Dutch only)';
 	$this->plugins['date']['enable']			= 1;
 	$this->plugins['date']['db_field_hooks']	= array('date');

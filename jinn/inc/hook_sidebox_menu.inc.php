@@ -12,8 +12,6 @@
 
   /* $Id$ */
 {
-
-
 	
 	$menu_title = lang('JiNN Editors Menu');
 	$file = Array(
@@ -115,23 +113,21 @@
 		);
 		display_sidebox($appname,$menu_title,$file);
 
-		$menu_title = lang('Developer Links');
-		$file = Array(
-		   'Site Media and Documents' => array
-		   (
-			  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
-			  'text'=>'Site Media and Documents',
-			  'icon'=>'thumbnail'
-		   ),
-		   'Mailinglists' => array
-		   (
-			  'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiu_mailing.index'),
-			  'text'=>'Mailinglists',
-			  'icon'=>'thumbnail'
-		   )
-	);
-		display_sidebox($appname,$menu_title,$file);
+		if($GLOBALS[local_bo]->common->prefs['experimental']=='yes')
+		{
+		   $menu_title = lang('Developer Links');
+		   $file = Array(
+			  'Site Media and Documents' => array
+			  (
+				 'link'=>$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiumedia.index'),
+				 'text'=>'Site Media and Documents',
+				 'icon'=>'thumbnail'
+			  ),
+		   );
+		   display_sidebox($appname,$menu_title,$file);
+		}
 
+		
 	}
 
 }

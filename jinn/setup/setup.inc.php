@@ -23,17 +23,33 @@
 
 	$setup_info['jinn']['name']		= 'jinn';
 	$setup_info['jinn']['title']	= 'JiNN Data Manager';
-	$setup_info['jinn']['version']	= '0.7.001';
+	$setup_info['jinn']['version']	= '0.7.003';
 	$setup_info['jinn']['app_order']= 15;
-	$setup_info['jinn']['author'] = 'Pim Snel';
+	$setup_info['jinn']['author'] 	= 'Pim Snel';
 	$setup_info['jinn']['license']  = 'GPL';
-	$setup_info['jinn']['note'] =
-		'<p>JiNN is currently only tested with MySQL but because it only uses the phpGW-API database calls.</p>';
-	$setup_info['jinn']['description'] =
-		'<p>JiNN is a multi-site, multi-database, multi-user/-group, database driven contentmanager written in and for the eGroupWare Framework. JiNN makes it possible to have a lot of site-databases moderated by a lot of people all in one system. Access Rights are assigned at table-level and every site can have one or more site-administrators.</p>
-		<p>JiNN is a very useful tool for webdevelopers who need to setup a contentmanager for their frondend product. You\'re able to setup a nice idiot-proof interface for your complex database design within minutes. Even one with many, and many with many relations are a peace of cake.</p>';
+	$setup_info['jinn']['note'] 	= 'PostgreSQL support is not stable. Wanna help?';
 
-	/* retrieve all plugin information here */
+	$setup_info['jinn']['description'] =
+	"JiNN is a recursive acronime meaning 'JiNN is Not Nuke' because the main author doesn't like the Nuke-method to create a Content Management System. With JiNN you can build your own CMS's completely adapted to your database-structure and webdesign. For configuring user input forms we make use of plugins to show/process the field data. For more information please visit: <a href='http://www.egroupware.org/jinn-webpage'>www.egroupware.org/jinn-webpage</a>.";
+	
+	
+	$this->fp = CreateObject('jinn.bofieldplugins');
+
+	if(@count($this->fp->plugins))
+	{
+	   $setup_info['jinn']['extra_untranslated'].= '<table border="0" style="width:550px" cellspacing="2"><tr><td valign="top" colspan="5" style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold;font-size:14px;">'.lang('Registered field plugins').'</td></tr>';
+		  $setup_info['jinn']['extra_untranslated'].= '<tr><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Name').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Version').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Author').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Descrition').'</td><td style="border:solid 1px #6f6f6f;padding:3px;font-weight:bold">'.lang('Available for field types').'</td></tr>';
+
+		  foreach($this->fp->plugins as $plugin)
+		  {
+
+			 if(@count($plugin[db_field_hooks])) $fieldtypes=implode('<br/>',$plugin[db_field_hooks]);
+			 
+			 $setup_info['jinn']['extra_untranslated'].= '<tr><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[title].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[version].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$plugin[author].'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.($plugin[description]?lang($plugin[description]):'').'</td><td valign="top" style="border:solid 1px #6f6f6f;padding:3px;">'.$fieldtypes.'</td></tr>';
+		  }
+
+		  $setup_info['jinn']['extra_untranslated'].= '</table>';
+	}
 
 	$setup_info['jinn']['maintainer'] = array(
 		'name'  => 'Pim Snel',
@@ -43,8 +59,7 @@
 		'phpgw_jinn_acl',
 		'phpgw_jinn_sites',
 		'phpgw_jinn_site_objects',
-		'egw_jinn_mail_list',
-		'egw_jinn_mail_data'
+		'phpgw_jinn_adv_field_conf'
 	);
 
 	$setup_info['jinn']['enable']		= 1;
@@ -64,6 +79,7 @@
 		'appname'  => 'phpgwapi',
 		'versions' => Array('0.9.14','0.9.15','1.0.0')
 	);
+
 
 
 

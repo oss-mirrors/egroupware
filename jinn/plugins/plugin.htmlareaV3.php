@@ -34,6 +34,7 @@
 
    $this->plugins['htmlAreaV3']['name']			= 'htmlAreaV3';
    $this->plugins['htmlAreaV3']['title']			= 'htmlArea v3';
+   $this->plugins['htmlAreaV3']['author']			= 'Pim Snel';
    $this->plugins['htmlAreaV3']['version']			= '0.8.5';
    $this->plugins['htmlAreaV3']['enable']			= 1;
    $this->plugins['htmlAreaV3']['description']		= $description;

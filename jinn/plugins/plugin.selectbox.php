@@ -26,8 +26,9 @@
 
    $this->plugins['selectbox']['name'] 		= 'selectbox';
    $this->plugins['selectbox']['title']		= 'Select Box';
-   $this->plugins['selectbox']['version']		= '0.4';
-   $this->plugins['selectbox']['enable']		= 1;
+   $this->plugins['selectbox']['author']	= 'Pim Snel';
+   $this->plugins['selectbox']['version']	= '0.4';
+   $this->plugins['selectbox']['enable']	= 1;
    $this->plugins['selectbox']['description']	= 'List a couple of values in a listbox....';
    $this->plugins['selectbox']['db_field_hooks']	= array
    (

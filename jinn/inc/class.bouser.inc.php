@@ -9,8 +9,7 @@
 
    JiNN is free software; you can redistribute it and/or modify it under
    the terms of the GNU General Public License as published by the Free
-   Software Foundation; either version 2 of the License, or (at your 
-   option) any later version.
+   Software Foundation; Version 2 of the License.
 
    JiNN is distributed in the hope that it will be useful,but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or 
@@ -91,6 +90,8 @@
 
 		 if ($this->site_id) $this->site = $this->so->get_site_values($this->site_id);
 		 if ($this->site_object_id) $this->site_object = $this->so->get_object_values($this->site_object_id);
+
+
 	  }
 
 
@@ -234,7 +235,7 @@
 		 $data=$this->http_vars_pairs($GLOBALS[HTTP_POST_VARS], $GLOBALS[HTTP_POST_FILES]);
 
 		 $status=$this->so->update_object_data($this->site_id, $table, $data, $where_key,$where_value,$where_string);
-		 
+
 		 if ($status[status]==1)	$this->message[info]='Record succesfully saved';
 		 else $this->message[error]='Record NOT succesfully saved';
 
@@ -372,364 +373,367 @@
 		 foreach ($allrecords as $record)
 		 {
 			if($record[$related_field]==$value) return $record[$display_field];
-			}
 		 }
+	  }
 
-		 function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
+	  function http_vars_pairs($HTTP_POST_VARS,$HTTP_POST_FILES) 
+	  {
+
+		 while(list($key, $val) = each($HTTP_POST_VARS)) 
 		 {
-
-			while(list($key, $val) = each($HTTP_POST_VARS)) 
+			if(substr($key,0,3)=='FLD')
 			{
-			   if(substr($key,0,3)=='FLD')
+			   /* Check for plugin need and plugin availability */
+			   if ($filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
 			   {
-				  /* Check for plugin need and plugin availability */
-				  if ($filtered_data=$this->get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES))				
-				  {
-					 if ($filtered_data==-1) $filtered_data='';
-					 $data[] = array
-					 (
-						'name' => substr($key,3),
-						'value' =>  $filtered_data  //addslashes($val)
-					 );
-				  }
-				  else // if there's no plugin, just save the vals
-				  {
-					 $data[] = array
-					 (
-						'name' => substr($key,3),
-
-						'value' => addslashes($val) 
-					 );
-				  }
-			   }
-			}
-
-			return $data;
-		 }
-
-
-		 function http_vars_pairs_many($HTTP_POST_VARS) {
-
-			while(list($key, $val) = each($HTTP_POST_VARS)) {
-
-
-			   if(substr($key,0,3)=='MAN'||substr($key,0,5)=='FLDid')
-			   {
-
-				  $data = array_merge($data,array
+				  if ($filtered_data==-1) $filtered_data='';
+				  $data[] = array
 				  (
-					 $key=> $val
-				  ));
+					 'name' => substr($key,3),
+					 'value' =>  $filtered_data  //addslashes($val)
+				  );
+			   }
+			   else // if there's no plugin, just save the vals
+			   {
+				  $data[] = array
+				  (
+					 'name' => substr($key,3),
+
+					 'value' => addslashes($val) 
+				  );
 			   }
 			}
-			return $data;
-		 }		
+		 }
 
-		 /**
-		 * get storage filter from plugin 
-		 */
-		 function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
-		 {
-			global $local_bo;
-			$local_bo=$this;
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+		 return $data;
 
-			foreach($plugins as $plugin)
+	  }
+
+
+	  function http_vars_pairs_many($HTTP_POST_VARS) {
+
+		 while(list($key, $val) = each($HTTP_POST_VARS)) {
+
+
+			if(substr($key,0,3)=='MAN'||substr($key,0,5)=='FLDid')
 			{
-			   $sets=explode(':',$plugin);
 
-			   /* make plug config array for this field */
-			   if($sets[3]) $conf_str = explode(';',$sets[3]);
-
-			   if(is_array($conf_str))
-			   {
-				  foreach($conf_str as $conf_entry)
-				  {
-					 list($conf_key,$val)=explode('=',$conf_entry);	
-					 $conf_arr[$conf_key]=$val;
-				  }
-			   }
-
-			   if (substr($key,3)==$sets[0])
-			   {
-				  if(!$data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr)) return;
-			   }
+			   $data = array_merge($data,array
+			   (
+				  $key=> $val
+			   ));
 			}
-			return $data;
+		 }
+		 return $data;
+	  }		
+
+
+
+	  function read_preferences($key)
+	  {
+		 $GLOBALS['phpgw']->preferences->read_repository();
+
+		 $prefs = array();
+
+		 if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
+		 {
+			$prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
+		 }
+		 return $prefs;
+	  }
+
+	  function save_preferences($key,$prefs)
+	  {
+		 $GLOBALS['phpgw']->preferences->read_repository();
+
+		 $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
+		 $GLOBALS['phpgw']->preferences->save_repository(True);
+	  }
+
+	  /****************************************************************************\
+	  * 	Config site_objects                                              *
+	  \****************************************************************************/
+
+	  function save_object_config()
+	  {
+
+		 $prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
+		 $prefs_show_hide_read=$this->read_preferences('show_fields');
+
+		 $show_fields_entry=$this->site_object[object_id];
+
+		 while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+		 {
+			if(substr($key,0,4)=='SHOW')
+			$show_fields_entry.=','.substr($key,4);
 		 }
 
-
-		 /**
-		 * get readonly view function from plugin 
-		 */
-		 function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
+		 if($prefs_show_hide_read) 
 		 {
-//			die($fieldname);
-			global $local_bo;
-			$local_bo=$this;
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-			foreach($plugins as $plugin)
-			{	
-			   $sets=explode(':',$plugin);
+			$prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
 
-			   /* make plug config array for this field */
-			   if($sets[3]) $conf_str = explode(';',$sets[3]);
-			   if(is_array($conf_str))
-			   {
-				  foreach($conf_str as $conf_entry)
-				  {
-					 list($key,$val)=explode('=',$conf_entry);	
-					 $conf_arr[$key]=$val;		
-				  }
-			   }
-
-			   if ($fieldname==$sets[0])
-			   {
-				  if(!$new_value=@call_user_func('plg_ro_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
-				  {
-				  }
-			   }
-			}
-			if (!$new_value)
+			foreach($prefs_show_hide_arr as $pref_s_h)
 			{
-			   $new_value=$value;
+
+			   $pref_array=explode(',',$pref_s_h);
+			   if($pref_array[0]!=$this->site_object[object_id])
+			   {
+				  $prefs_show_hide_new.=implode(',',$pref_array);
+			   }
 			}
-			
-			return $new_value;
+
+			if($prefs_show_hide_new) $prefs_show_hide_new.='|';
+			$prefs_show_hide_new.=$show_fields_entry;
 		 }
-		 
-		 
-		 /**
-		 * get browse view function from plugin 
-		 */
-		 function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
+		 else
 		 {
-			global $local_bo;
-			$local_bo=$this;
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-			foreach($plugins as $plugin)
-			{	
-			   $sets=explode(':',$plugin);
+			$prefs_show_hide_new=$show_fields_entry;
+		 }
 
-			   /* make plug config array for this field */
-			   if($sets[3]) $conf_str = explode(';',$sets[3]);
-			   if(is_array($conf_str))
-			   {
-				  foreach($conf_str as $conf_entry)
-				  {
-					 list($key,$val)=explode('=',$conf_entry);	
-					 $conf_arr[$key]=$val;		
-				  }
-			   }
+		 $this->save_preferences('show_fields',$prefs_show_hide_new);
+		 $this->save_preferences('default_order',$prefs_order_new);
 
-			   if ($fieldname==$sets[0])
-			   {
-				  if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
-				  {
-				  }
-			   }
-			}
-			if (!$new_value)
+		 $this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
+	  }
+
+
+	  /*--------------------------------------------------
+	  FIXME all field related plugins must move to dedicated class
+	  -------------------------------------------*
+	  
+	  /**
+	  * get storage filter from plugin 
+	  */
+	  function get_plugin_sf($key,$HTTP_POST_VARS,$HTTP_POST_FILES)
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
+		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+
+		 foreach($plugins as $plugin)
+		 {
+			$sets=explode(':',$plugin);
+
+			/* make plug config array for this field */
+			if($sets[3]) $conf_str = explode(';',$sets[3]);
+
+			if(is_array($conf_str))
 			{
-			   $new_value=$value;
-			   if(strlen($new_value)>15)
+			   foreach($conf_str as $conf_entry)
 			   {
-				  $new_value=strip_tags($new_value);
-				  $new_value = substr($new_value,0,15). ' ...';
+				  list($conf_key,$val)=explode('=',$conf_entry);	
+				  $conf_arr[$conf_key]=$val;
 			   }
 			}
-			return $new_value;
 
+			if (substr($key,3)==$sets[0])
+			{
+			   if(!$data=@call_user_func('plg_sf_'.$sets[1],$key,$HTTP_POST_VARS,$HTTP_POST_FILES,$conf_arr)) return;
+			}
+		 }
+		 return $data;
+	  }
+
+
+	  /**
+	  * get readonly view function from plugin 
+	  */
+	  function get_plugin_ro($fieldname,$value,$where_val_encoded,$attr)
+	  {
+		 //			die($fieldname);
+		 global $local_bo;
+		 $local_bo=$this;
+		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+		 foreach($plugins as $plugin)
+		 {	
+			$sets=explode(':',$plugin);
+
+			/* make plug config array for this field */
+			if($sets[3]) $conf_str = explode(';',$sets[3]);
+			if(is_array($conf_str))
+			{
+			   foreach($conf_str as $conf_entry)
+			   {
+				  list($key,$val)=explode('=',$conf_entry);	
+				  $conf_arr[$key]=$val;		
+			   }
+			}
+
+			if ($fieldname==$sets[0])
+			{
+			   if(!$new_value=@call_user_func('plg_ro_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
+			   {
+			   }
+			}
+		 }
+		 if (!$new_value)
+		 {
+			$new_value=$value;
 		 }
 
-		 /**
-		 * get input function from plugin 
-		 */
-		 function get_plugin_fi($input_name,$value,$type,$attr_arr)
-		 {
-			global $local_bo;
-			$local_bo=$this;
+		 return $new_value;
+	  }
 
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-			foreach($plugins as $plugin)
-			{	
-			   $sets=explode(':',$plugin);
 
-			   /* make plug config array for this field */
-			   if($sets[3]) $conf_str = explode(';',$sets[3]);
-			   if(is_array($conf_str))
+	  /**
+	  * get browse view function from plugin 
+	  */
+	  function get_plugin_bv($fieldname,$value,$where_val_encoded,$fieldname)
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
+		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+		 foreach($plugins as $plugin)
+		 {	
+			$sets=explode(':',$plugin);
+
+			/* make plug config array for this field */
+			if($sets[3]) $conf_str = explode(';',$sets[3]);
+			if(is_array($conf_str))
+			{
+			   foreach($conf_str as $conf_entry)
 			   {
-				  foreach($conf_str as $conf_entry)
-				  {
-					 list($key,$val)=explode('=',$conf_entry);	
-					 $conf_arr[$key]=$val;		
-				  }
-			   }
-
-			   if (substr($input_name,3)==$sets[0])
-			   {
-					//FIXME all plugins must get an extra argument in the sf_func
-				  if(!$input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr)) 
-				  {
-				  }
+				  list($key,$val)=explode('=',$conf_entry);	
+				  $conf_arr[$key]=$val;		
 			   }
 			}
 
-			if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
-
-			return $input;
-
+			if ($fieldname==$sets[0])
+			{
+			   if(!$new_value=@call_user_func('plg_bv_'.$sets[1],$value,$conf_arr,$where_val_encoded,$fieldname)) 
+			   {
+			   }
+			}
 		 }
-
-		 /**
-		 * get autonome form action function from plugin 
-		 */
-		 function get_plugin_afa()
+		 if (!$new_value)
 		 {
-			global $local_bo;
-			$local_bo=$this;
+			$new_value=$value;
+			if(strlen($new_value)>15)
+			{
+			   $new_value=strip_tags($new_value);
+			   $new_value = substr($new_value,0,15). ' ...';
+			}
+		 }
+		 return $new_value;
 
-			$action_plugin_name=$_GET[plg];
+	  }
 
-			$plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
-			foreach($plugins as $plugin)
-			{	
-			   $sets=explode(':',$plugin);
+	  /**
+	  * get input function from plugin 
+	  */
+	  function get_plugin_fi($input_name,$value,$type,$attr_arr)
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
 
-			   if($sets[3]) $conf_str = explode(';',$sets[3]);
-			   if(is_array($conf_str))
+		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+		 foreach($plugins as $plugin)
+		 {	
+			$sets=explode(':',$plugin);
+
+			/* make plug config array for this field */
+			if($sets[3]) $conf_str = explode(';',$sets[3]);
+			if(is_array($conf_str))
+			{
+			   foreach($conf_str as $conf_entry)
 			   {
-				  unset($conf_arr);
-				  foreach($conf_str as $conf_entry)
-				  {
-					 list($key,$val)=explode('=',$conf_entry);	
-					 $conf_arr[$key]=$val;		
-				  }
-			   }
-			   
-			   if ($action_plugin_name==$sets[1])
-			   {
-				  $call_plugin=$sets[1];
-				  break;
+				  list($key,$val)=explode('=',$conf_entry);	
+				  $conf_arr[$key]=$val;		
 			   }
 			}
 
-			if($call_plugin)
+			if (substr($input_name,3)==$sets[0])
 			{
 			   //FIXME all plugins must get an extra argument in the sf_func
-			   $success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
-			}
-	  
-			if ($succes)
-			{
-			   $this->message[info]=lang('Action was succesful.');
-
-			   $this->save_sessiondata();
-			   $this->common->exit_and_open_screen('jinn.uiuser.index');
-			}
-			else
-			{
-			   $this->message[error]=lang('Action was not succesful. Unknown error');
-
-			   $this->save_sessiondata();
-			   $this->common->exit_and_open_screen('jinn.uiuser.index');
-			}
-		 }
-		 
-		 
-		 
-		 
-		 
-		 
-		 /**
-		 * include ALL plugins
-		 */
-		 function include_plugins()
-		 {
-			global $local_bo;
-			$local_bo=$this;
-			if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
-
-			   /* This is the correct way to loop over the directory. */
-
-			   while (false !== ($file = readdir($handle))) 
-			   { 
-				  if (substr($file,0,7)=='plugin.')
-				  {
-
-					 include(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
-				  }
-			   }
-			   closedir($handle); 
-			}
-		 }
-
-		 function read_preferences($key)
-		 {
-			$GLOBALS['phpgw']->preferences->read_repository();
-
-			$prefs = array();
-
-			if ($GLOBALS['phpgw_info']['user']['preferences']['jinn'])
-			{
-			   $prefs = $GLOBALS['phpgw_info']['user']['preferences']['jinn'][$key];
-			}
-			return $prefs;
-		 }
-
-		 function save_preferences($key,$prefs)
-		 {
-			$GLOBALS['phpgw']->preferences->read_repository();
-
-			   $GLOBALS['phpgw']->preferences->change('jinn',$key,$prefs);
-			   $GLOBALS['phpgw']->preferences->save_repository(True);
-			}
-
-			/****************************************************************************\
-			* 	Config site_objects                                              *
-			\****************************************************************************/
-
-			function save_object_config()
-			{
-
-			   $prefs_order_new=$GLOBALS[HTTP_POST_VARS][ORDER];
-			   $prefs_show_hide_read=$this->read_preferences('show_fields');
-
-			   $show_fields_entry=$this->site_object[object_id];
-
-			   while(list($key, $x) = each($GLOBALS[HTTP_POST_VARS]))
+			   if(!$input=@call_user_func('plg_fi_'.$sets[1],$input_name,$value,$conf_arr,$attr_arr)) 
 			   {
-				  if(substr($key,0,4)=='SHOW')
-				  $show_fields_entry.=','.substr($key,4);
 			   }
+			}
+		 }
 
-			   if($prefs_show_hide_read) 
+		 if (!$input) $input=call_user_func('plg_fi_def_'.$type,$input_name,$value,'',$attr_arr);
+
+		 return $input;
+
+	  }
+
+	  /**
+	  * get autonome form action function from plugin 
+	  */
+	  function get_plugin_afa()
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
+
+		 $action_plugin_name=$_GET[plg];
+
+		 $plugins=explode('|',str_replace('~','=',$this->site_object['plugins']));
+		 foreach($plugins as $plugin)
+		 {	
+			$sets=explode(':',$plugin);
+
+			if($sets[3]) $conf_str = explode(';',$sets[3]);
+			if(is_array($conf_str))
+			{
+			   unset($conf_arr);
+			   foreach($conf_str as $conf_entry)
 			   {
-				  $prefs_show_hide_arr=explode('|',$prefs_show_hide_read);
-
-				  foreach($prefs_show_hide_arr as $pref_s_h)
-				  {
-
-					 $pref_array=explode(',',$pref_s_h);
-					 if($pref_array[0]!=$this->site_object[object_id])
-					 {
-						$prefs_show_hide_new.=implode(',',$pref_array);
-					 }
-				  }
-
-				  if($prefs_show_hide_new) $prefs_show_hide_new.='|';
-				  $prefs_show_hide_new.=$show_fields_entry;
+				  list($key,$val)=explode('=',$conf_entry);	
+				  $conf_arr[$key]=$val;		
 			   }
-			   else
-			   {
-				  $prefs_show_hide_new=$show_fields_entry;
-			   }
-
-			   $this->save_preferences('show_fields',$prefs_show_hide_new);
-			   $this->save_preferences('default_order',$prefs_order_new);
-
-			   $this->common->exit_and_open_screen('jinn.uiuser.browse_objects');
 			}
 
+			if ($action_plugin_name==$sets[1])
+			{
+			   $call_plugin=$sets[1];
+			   break;
+			}
 		 }
-	  ?>
+
+		 if($call_plugin)
+		 {
+			//FIXME all plugins must get an extra argument in the sf_func
+			$success=@call_user_func('plg_afa_'.$sets[1],$_GET[where],$_GET[attributes],$conf_arr);
+		 }
+
+		 if ($succes)
+		 {
+			$this->message[info]=lang('Action was succesful.');
+
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+		 else
+		 {
+			$this->message[error]=lang('Action was not succesful. Unknown error');
+
+			$this->save_sessiondata();
+			$this->common->exit_and_open_screen('jinn.uiuser.index');
+		 }
+	  }
+
+	  /**
+	  * include ALL plugins
+	  */
+	  function include_plugins()
+	  {
+		 global $local_bo;
+		 $local_bo=$this;
+		 if ($handle = opendir(PHPGW_SERVER_ROOT.'/jinn/plugins')) {
+
+			/* This is the correct way to loop over the directory. */
+
+			while (false !== ($file = readdir($handle))) 
+			{ 
+			   if (substr($file,0,7)=='plugin.')
+			   {
+
+				  include_once(PHPGW_SERVER_ROOT.'/jinn/plugins/'.$file);
+			   }
+			}
+			closedir($handle); 
+		 }
+	  }
+
+   }
+?>

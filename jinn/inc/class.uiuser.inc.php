@@ -59,8 +59,6 @@
 	  */
 	  function index()
 	  {
-		 //var_dump($this->bo);
-
 
 		 if ($this->bo->site_object_id && $this->bo->site_object['parent_site_id']==$this->bo->site_id )
 		 {
@@ -74,7 +72,7 @@
 			{
 			   $this->bo->message['info']=lang('Select site to moderate');
 			}
-			else //if(!$this->bo->site_object_id)
+			else 
 			{
 			   $this->bo->message['info']=lang('Select site-object to moderate');
 			}

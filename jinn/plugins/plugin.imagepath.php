@@ -29,7 +29,8 @@
    */
 
    $this->plugins['imagepath']['name']				= 'imagepath';
-   $this->plugins['imagepath']['title']			= 'ImagePath plugin';
+   $this->plugins['imagepath']['title']				= 'ImagePath plugin';
+   $this->plugins['imagepath']['author']			= 'Pim Snel';
    $this->plugins['imagepath']['version']			= '0.9.3';
    $this->plugins['imagepath']['enable']			= 1;
 

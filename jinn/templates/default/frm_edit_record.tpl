@@ -37,10 +37,45 @@ return true;
 <td bgcolor="{row_color}">{input}</td></tr>
 <!-- END rows -->
 
+<!-- BEGIN many_to_many -->
+<tr><td bgcolor="{m2mrow_color}" valign="top">{m2mfieldname}</td>
+<td bgcolor="{m2mrow_color}">
+	<table cellspacing="0" cellpadding="3" border="1">
+		<tr>
+		   <td valign=top>{sel1_all_from}<br/>
+	  			<select onDblClick="{on_dbl_click1}" multiple size="5" name="{sel1_name}">
+				{sel1_options}	
+				</select>
+			</td>
+			
+			<td align="center" valign="top">{lang_add_remove}<br/><br/>
+				<input onClick="{on_dbl_click1}" type="button" value=" &gt;&gt; " name="add">
+				<br/>
+				<input onClick="{on_dbl_click2}" type="button" value=" &lt;&lt; " name="remove">
+			</td>
+			
+			<td valign="top">{lang_related}<br/>
+				<select onDblClick="{on_dbl_click2}" multiple size="5" name="{sel2_name}">
+				<!-- does this br belong here --><br/>
+				{sel2_options}
+				</select>
+
+				<input type="hidden" name="{m2m_rel_string_name}" value="{m2m_rel_string_val}">
+				<input type="hidden" name="{m2m_opt_string_name}">
+			</td>
+		</tr>
+	</table>
+
+
+		<!--{m2minput}-->
+	</td>
+</tr>
+<!-- END many_to_many -->
+
 
 <!-- BEGIN form_footer -->
 	</tr>
-	<tr><td colspan="2" bgcolor="{row_color}">&nbsp;</td></tr>
+	<tr><td colspan="2" bgcolor="{row_color}" align="center">{repeat_buttons}&nbsp;</td></tr>
 	<tr><td colspan="2" >
 	<table align="right" style="background-color:#ffffff">
 	<tr>
@@ -51,11 +86,8 @@ return true;
 	<td>{cancel}</td>
 	</tr>
 	</table>
-	
 	</td></tr>
-
 </table>
-<table align="center" ><tr><td>{extra_buttons}</td></tr></table>
 </form>
 <!-- END form_footer -->
 

@@ -27,6 +27,7 @@
 	$this->plugins['def_blob']['name'] 			= 'def_blob';
 	$this->plugins['def_blob']['title']			= 'default area';
 	$this->plugins['def_blob']['version']		= '1.0';
+	$this->plugins['def_blob']['author']		= 'Pim Snel';
 	$this->plugins['def_blob']['enable']		= 1;
 	$this->plugins['def_blob']['db_field_hooks']	= array
 	(
@@ -45,6 +46,7 @@
 	/* DEFAULT/FALLBACK VARCHAR PLUGIN */
 	$this->plugins['def_string']['name'] 			= 'def_string';
 	$this->plugins['def_string']['title']			= 'default varchar';
+	$this->plugins['def_string']['author']		= 'Pim Snel';
 	$this->plugins['def_string']['version']		= '1.0';
 	$this->plugins['def_string']['enable']			= 1;
 	$this->plugins['def_string']['db_field_hooks']	= array
@@ -74,6 +76,7 @@
 	$this->plugins['def_int']['name'] 			= 'def_int';
 	$this->plugins['def_int']['title']			= 'default int plugin';
 	$this->plugins['def_int']['version']		= '1.0';
+	$this->plugins['def_int']['author']		= 'Pim Snel';
 	$this->plugins['def_int']['enable']			= 1;
 	$this->plugins['def_int']['db_field_hooks']	= array
 	(
@@ -92,6 +95,7 @@
 	$this->plugins['def_timestamp']['name'] 			= 'def_timestamp';
 	$this->plugins['def_timestamp']['title']			= 'default timestamp plugin';
 	$this->plugins['def_timestamp']['version']		= '1.0';
+	$this->plugins['def_timestamp']['author']		= 'Pim Snel';
 	$this->plugins['def_timestamp']['enable']			= 1;
 	$this->plugins['def_timestamp']['db_field_hooks']	= array
 	(

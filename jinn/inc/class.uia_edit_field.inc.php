@@ -23,9 +23,12 @@
    */
 
    // FIXME do we need to extend?
-   class uia_edit_object extends uiadmin
+   class uia_edit_field 
    {
 
+	  var $public_functions = Array(
+		 'display'=> True
+	  );
 	  var $where_key;
 	  var $where_value;
 	  var $parent_site_id;
@@ -36,14 +39,27 @@
 	  var $available_tables;
 
 	  // FIXME Can't we get the bo from somewhere else?
-	  function uia_edit_object($bo)
+	  function uia_edit_field()
 	  {
-		 $this->bo = $bo;
+		 if(!$GLOBALS['phpgw_info']['user']['apps']['admin'])
+		 {
+			Header('Location: '.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uiuser.index'));
+			$GLOBALS['phpgw']->common->phpgw_exit();
+		 }
+
+		 $this->bo = CreateObject('jinn.boadmin');
 		 $this->template = $GLOBALS['phpgw']->template;
+
 		 $this->ui = CreateObject('jinn.uicommon');
+
+		 if($this->bo->so->config[server_type]=='dev')
+		 {
+			$dev_title_string='<font color="red">'.lang('Development Server').'</font> ';
+		 }
+
 	  }
 
-	  function render_form($where_key, $where_value)
+	  function display()
 	  {
 		 $this->where_key=$where_key;
 		 $this->where_value=$where_value;
@@ -341,9 +357,6 @@
 					 $popup_onclick='parent.window.open(\''.$GLOBALS['phpgw']->link('/jinn/plgconfwrapper.php','foo=bar').'&plug_orig='.$plg_name.'&plug_name=\'+document.frm.PLG'.$field['name'].'.value+\'&hidden_name=CFG_PLG'.$field['name'].'&hidden_val='.rawurlencode($plg_conf).'\', \'pop'.$field['name'].'\', \'width=400,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
 
 					 $popup_onclick_afc='parent.window.open(\''.$GLOBALS['phpgw']->link('/index.php','menuaction=jinn.uia_edit_field.display&object_id='.$this->$this->where_value.'&field_key='.$field['name']).'\', \'pop'.$field['name'].'\', \'width=400,height=400,location=no,menubar=no,directories=no,toolbar=no,scrollbars=yes,resizable=yes,status=no\')';
-
-					 // FIXME experimental
-					 if($this->bo->common->prefs[experimental]=='no') $popup_onclick_afc = 'alert(\''.lang('not yet implemented').'\')';
 
 					 $this->template->set_var('plg_options',$options);
 					 

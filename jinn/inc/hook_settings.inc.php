@@ -43,7 +43,7 @@
 
    create_select_box('Disable the WYSIWYG/HTMLArea Plugin','disable_htmlarea',$disable_htmlarea,"The WYSIWYG plugin makes you edit text like you do in a program like OpenOffice Writer or Word. Some people don't like this feature though, so you can force JiNN not to use it.");
 
-   create_section('Developers Settings');
+   create_section('JiNN Developer Settings');
 
    $show_extra_table_info = Array(
 	  'no' => lang('No'),
@@ -51,3 +51,10 @@
    );
 
    create_select_box('Show extra table debugging information','table_debugging_info',$show_extra_table_info,"When this is enables information like field length and field type is shown when editing record");
+
+   $activate_alpha_features = Array(
+	  'no' => lang('No'),
+	  'yes' => lang('Yes')
+   );
+
+   create_select_box('Activate experimental features which are in development','experimental',$activate_alpha_features,'Only activate this if you know what your doing. You can destroy your data using experimental features.');

@@ -334,4 +334,40 @@
 		$GLOBALS['setup_info']['jinn']['currentver'] = '0.7.001';
 		return $GLOBALS['setup_info']['jinn']['currentver'];
 	}
+
+	$test[] = '0.7.001';
+	function jinn_upgrade0_7_001()
+	{
+		$GLOBALS['phpgw_setup']->oProc->CreateTable('phpgw_jinn_adv_field_conf',array(
+			'fd' => array(
+				'parent_object' => array('type' => 'int','precision' => '4','nullable' => False,'default' => '0'),
+				'field_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'field_type' => array('type' => 'varchar','precision' => '20','nullable' => False),
+				'field_alt_name' => array('type' => 'varchar','precision' => '50','nullable' => False),
+				'field_help_info' => array('type' => 'text','nullable' => False),
+				'field_read_protection' => array('type' => 'int','precision' => '2','nullable' => False,'default' => '0')
+			),
+			'pk' => array('parent_object','field_name'),
+			'fk' => array(),
+			'ix' => array('parent_object','field_name'),
+			'uc' => array()
+		));
+
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.7.002';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	 }
+
+	 $test[] = '0.7.002';
+	 function jinn_upgrade0_7_002()
+	 {
+		$GLOBALS['phpgw_setup']->oProc->DropTable('egw_jinn_mail_data');
+		$GLOBALS['phpgw_setup']->oProc->DropTable('egw_jinn_mail_list');
+		
+		$GLOBALS['setup_info']['jinn']['currentver'] = '0.7.003';
+		return $GLOBALS['setup_info']['jinn']['currentver'];
+	 }
+
+
+
+	 
 ?>

@@ -25,6 +25,8 @@
    $this->plugins['unserialize']['name']				= 'unserialize';
    $this->plugins['unserialize']['title']				= 'unserialize plugin';
    $this->plugins['unserialize']['version']			= '0.1.1';
+   $this->plugins['unserialize']['author']			= 'Pim Snel';
+	$this->plugins['unserialize']['author']		= 'Pim Snel';
    $this->plugins['unserialize']['description']		= 'De-serialize a value';
    $this->plugins['unserialize']['enable']			= 1;
    $this->plugins['unserialize']['db_field_hooks']	= array('longtext','text','blob','varchar','string');

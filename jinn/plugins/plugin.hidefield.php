@@ -28,6 +28,7 @@
 	-------------------------------------------------------------------*/
 	$this->plugins['hidefield']['name'] 			= 'hidefield';
 	$this->plugins['hidefield']['title']			= 'Hide This Field';
+	$this->plugins['hidefield']['author']		= 'Pim Snel';
 	$this->plugins['hidefield']['version']			= '1.0';
 	$this->plugins['hidefield']['enable']			= 1;
 	$this->plugins['hidefield']['description']		= 'This just hides the input field for users';
