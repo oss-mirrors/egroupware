@@ -355,10 +355,12 @@
 
 			// Update bookmark information.
 			$query = sprintf("update phpgw_bookmarks set bm_url='%s', bm_name='%s', bm_desc='%s', "
-				. "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
+//				. "bm_keywords='%s', bm_category='%s', bm_subcategory='%s', bm_rating='%s',"
+				. "bm_keywords='%s', bm_category=%s, bm_subcategory=%s, bm_rating='%s',"
 				. "bm_info='%s', bm_access='%s' where bm_id='%s'", 
-				$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
-				$category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
+					$values['url'], addslashes($values['name']), addslashes($values['desc']), addslashes($values['keywords']), 
+//					$category, $subcategory, $values['rating'], $timestamps, $values['access'], $id);
+					($category=='')?"NULL":$category, ($subcategory=='')?"NULL":$subcategory, $values['rating'], $timestamps, $values['access'], $id);
 
 			$GLOBALS['phpgw']->db->query($query,__LINE__,__FILE__);
 
