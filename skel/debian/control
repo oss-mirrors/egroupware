@@ -1,0 +1,16 @@
+Source: phpgroupware-skel
+Section: web
+Priority: optional
+Maintainer: Luca - De Whiskey's - De Vitis <luca@debian.org>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: phpgroupware-skel
+Architecture: all
+Depends: phpgroupware-core
+Description: A phpGroupWare skel application
+ This package provides a phpGroupWare compliant example application.
+ It also provides some documentation including:
+ .
+ * HOWTO build a phpGroupWare compliant application
+ * HOWTO build a Debian package for that application

@@ -1,0 +1,9 @@
+phpgroupware-skel (0.0.1-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Luca - De Whiskey's - De Vitis <luca@debian.org>  Mon, 21 May 2001 15:00:56 +0200
+
+Local variables:
+mode: debian-changelog
+End:
