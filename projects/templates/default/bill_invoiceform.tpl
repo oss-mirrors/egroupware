@@ -23,7 +23,12 @@
 <td>{ad_zip}&nbsp;{ad_city}</td>
 <td>&nbsp;</td>
 </tr>
-<td>{ad_state}<br><br><br></td>
+<tr>
+<td>{ad_state}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{ad_country}<br><br><br></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -43,7 +48,11 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{state}<br><br><br></td>
+<td>{state}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{country}<br><br><br></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -51,7 +60,7 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{lang_date}:&nbsp;{invoice_day}.{invoice_month}.{invoice_year}</td>
+<td>{lang_invoice_date}:&nbsp;{invoice_date}</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -63,7 +72,7 @@
     <tr>
       <td width="8%" align=right>{lang_pos}</td>
       <td width="10%" align=right>{lang_workunits}</td>
-      <td width="10%" align=center>{lang_date}</td>
+      <td width="10%" align=center>{lang_hours_date}</td>
       <td width="30%">{lang_descr}</td>
       <td width="10%" align=right>{currency}&nbsp;a</td>
       <td width="10%" align=right>{currency}&nbsp;Sum</td>
@@ -73,7 +82,7 @@
       <tr>
         <td align=right>{pos}</td>
         <td align=right>{aes}</td>
-        <td align=center>{day}.{month}.{year}</td>
+        <td align=center>{hours_date}</td>
         <td><b>{act_descr}</b></td>
         <td align=right>{billperae}</td>
         <td align=right>{sumperpos}</td>
@@ -82,7 +91,7 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>{act_remark}</td>
+        <td>{hours_remark}</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>

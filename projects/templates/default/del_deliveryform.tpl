@@ -24,7 +24,11 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{ad_state}<br><br><br></td>
+<td>{ad_state}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{ad_country}<br><br><br></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -44,7 +48,11 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{state}<br><br><br></td>
+<td>{state}</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>{country}<br><br><br></td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -52,7 +60,7 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td>{lang_date}:&nbsp;{delivery_day}.{delivery_month}.{delivery_year}</td>
+<td>{lang_delivery_date}:&nbsp;{delivery_date}</td>
 <td>&nbsp;</td>
 </tr>
 <tr>
@@ -64,7 +72,7 @@
     <tr>
       <td width="8%" align=right>{lang_pos}</td>
       <td width="10%" align=right>{lang_workunits}</td>
-      <td width="10%" align=center>{lang_date}</td>
+      <td width="10%" align=center>{lang_hours_date}</td>
       <td width="30%">{lang_descr}</td>
     </tr>
 
@@ -72,14 +80,14 @@
       <tr>
         <td align=right>{pos}</td>
         <td align=right>{aes}</td>
-        <td align=center>{day}.{month}.{year}</td>
+        <td align=center>{hours_date}</td>
         <td><b>{act_descr}</b></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
-        <td>{act_remark}</td>
+        <td>{hours_remark}</td>
       </tr>
 <!-- END deliverypos_list -->
       <tr>

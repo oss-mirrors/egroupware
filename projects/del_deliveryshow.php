@@ -2,145 +2,142 @@
   /**************************************************************************\
   * phpGroupWare - projects/projectdelivery                                  *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
-  * --------------------------------------------------------                 *
+  * ------------------------------------------------                         *
   *  This program is free software; you can redistribute it and/or modify it *
   *  under the terms of the GNU General Public License as published by the   *
   *  Free Software Foundation; either version 2 of the License, or (at your  *
   *  option) any later version.                                              *
   \**************************************************************************/
-/* $Id$ */
+  /* $Id$ */
   
-  $phpgw_info["flags"] = array("currentapp" => "projects",
+    $phpgw_info["flags"] = array("currentapp" => "projects",
                                "noheader" => True, 
                                "nonavbar" => True);         
-  include("../header.inc.php");
+    include("../header.inc.php");
 
-  $t = new Template($phpgw_info["server"]["app_tpl"]);
-  $t->set_file(array( "delivery_list_t" => "del_deliveryform.tpl",
-                      "deliverypos_list"   => "del_deliveryform.tpl"));
-  $t->set_block("delivery_list_t", "deliverypos_list", "list");
+    $t = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('projects'));
+    $t->set_file(array('delivery_list_t' => 'del_deliveryform.tpl',
+			'deliverypos_list' => 'del_deliveryform.tpl'));
+    $t->set_block('delivery_list_t','deliverypos_list','list');
 
-  if (isset($phpgw_info["user"]["preferences"]["projects"]["address"])) {
-    $t->set_var("error","");     
-     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                                        
-     $phpgw->db->query("SELECT ab_firstname,ab_lastname,ab_street,ab_zip,ab_city,ab_state,ab_company_id,company_name FROM "                                                    
-                     . "addressbook,customers where "                                                                                                                          
-                     . "ab_company_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."' and "
-                     . "customers.company_id=addressbook.ab_company_id");                                                                      
-        }
-      else {                                                                                                                                                                   
-    $phpgw->db->query("select ab_id,ab_lastname,ab_firstname,ab_street,ab_zip,ab_city,ab_state,ab_company from addressbook where "                                             
-                        . "ab_id='" .$phpgw_info["user"]["preferences"]["projects"]["address"]."'");                                                                           
-       }
-      if ($phpgw->db->next_record()) {                                                                                                                                         
-     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-         $company = $phpgw->db->f("company_name");
-         }
-      else {
-         $company = $phpgw->db->f("ab_company");
-          }
-      $t->set_var("ad_company",$company);                                                                                                                   
-      $t->set_var("ad_firstname",$phpgw->db->f("ab_firstname"));                                                                                                               
-      $t->set_var("ad_lastname",$phpgw->db->f("ab_lastname"));                                                                                                                 
-      $t->set_var("ad_street",$phpgw->db->f("ab_street"));                                                                                                                     
-      $t->set_var("ad_zip",$phpgw->db->f("ab_zip"));                                                                                                                           
-      $t->set_var("ad_city",$phpgw->db->f("ab_city"));                                                                                                                         
-      $t->set_var("ad_state",$phpgw->db->f("ab_state"));                                                                                                                       
-        }                                                                                                                                                                  
-      else {                                                                                                                                                                      
-      $t->set_var("ad_company","");                                                                                                                                            
-      $t->set_var("ad_firstname","");                                                                                                                                          
-      $t->set_var("ad_lastname","");                                                                                                                                           
-      $t->set_var("ad_street","");                                                                                                                                             
-      $t->set_var("ad_zip","");                                                                                                                                                
-      $t->set_var("ad_city","");                                                                                                                                               
-      $t->set_var("ad_state","");                                                                                                                                              
-       }                                                                                                                                                                        
-      }
-   else {                                                                                                                                                                      
-    $t->set_var("error",lang("Please select your address in preferences!"));                                                                                  
-    }   
-   
-   $t->set_var("site_title",$phpgw_info["site_title"]);   
-   $charset = $phpgw->translation->translate("charset");                                                                                                                                         
-   $t->set_var("charset",$charset);   
-   $t->set_var("to","");        
-   $t->set_var(lang_delivery,lang("Delivery ID"));      
-   $t->set_var(lang_project,lang("Project"));      
-   $t->set_var(lang_pos,lang("Position"));       
-   $t->set_var(lang_workunits,lang("Workunits"));     
-   $t->set_var(lang_date,lang("Date"));      
-   $t->set_var(lang_descr,lang("Description"));
+    $d = CreateObject('phpgwapi.contacts');
+
+    if (isset($phpgw_info["user"]["preferences"]["projects"]["abid"])) {
+    $t->set_var('error','');
+    $myaddress = $phpgw_info["user"]["preferences"]["projects"]["abid"];
+
+    $cols = array('n_given' => 'n_given',
+                'n_family' => 'n_family',
+                'org_name' => 'org_name',
+                'adr_street' => 'adr_street',
+                'adr_locality' => 'adr_locality',
+                'adr_postalcode' => 'adr_postalcode',
+                'adr_region' => 'adr_region',
+                'adr_countryname' => 'adr_countryname');
+
+    $address = $d->read($myaddress,$cols);
+
+    $t->set_var('ad_company',$address[0]['org_name']);
+    $t->set_var('ad_firstname',$address[0]['n_given']);
+    $t->set_var('ad_lastname',$address[0]['n_family']);
+    $t->set_var('ad_street',$address[0]['adr_street']);
+    $t->set_var('ad_zip',$address[0]['adr_postalcode']);
+    $t->set_var('ad_city',$address[0]['adr_locality']);
+    $t->set_var('ad_state',$address[0]['adr_region']);
+    $t->set_var('ad_country',$address[0]['adr_countryname']);
+    }
+    else {                                                                                                                                                                      
+    $t->set_var('error',lang('Please select your address in preferences !'));                                                                                  
+    }
+
+    $t->set_var('site_title',$phpgw_info["site_title"]);
+    $charset = $phpgw->translation->translate("charset");
+    $t->set_var('charset',$charset);
+    $t->set_var('lang_delivery',lang('Delivery ID'));
+    $t->set_var('lang_project',lang('Project'));
+    $t->set_var('lang_pos',lang('Position'));
+    $t->set_var('lang_workunits',lang('Workunits'));
+    $t->set_var('lang_delivery_date',lang('Delivery date'));
+    $t->set_var('lang_hours_date',lang('Job date'));      
+    $t->set_var('lang_descr',lang('Job description'));
   
-   if ($phpgw_info["apps"]["timetrack"]["enabled"]) {
-   $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "
-                 . "ab_company_id,company_name,ab_firstname,ab_lastname,ab_street,ab_zip, "
-                 . "ab_city,p_projects.title FROM addressbook,customers,p_delivery,p_projects WHERE "
-                 . "p_delivery.id=$delivery_id AND p_delivery.project_id=p_projects.id AND "
-                 . "p_delivery.customer=ab_company_id AND customers.company_id=addressbook.ab_company_id");
-           }
-        else {    
-    $phpgw->db->query("SELECT p_delivery.customer,p_delivery.num,p_delivery.project_id,p_delivery.date, "
-                 . "ab_id,ab_company,ab_firstname,ab_lastname,ab_street,ab_zip, "
-                 . "ab_city,p_projects.title FROM addressbook,p_delivery,p_projects WHERE "
-                 . "p_delivery.id=$delivery_id AND p_delivery.customer=ab_id AND p_delivery.project_id=p_projects.id");
-          }
-   if ($phpgw->db->next_record()) {
-     if ($phpgw_info["apps"]["timetrack"]["enabled"]) {                                                                                                     
-         $company = $phpgw->db->f("company_name");                                                                                                          
-         }                                                                                                                                                  
-      else {                                                                                                                                                
-         $company = $phpgw->db->f("ab_company");                                                                                                            
-          }
-   $t->set_var("company",$company);                                                                                                                                           
-   $t->set_var("firstname",$phpgw->db->f("ab_firstname"));                                                                                                                                       
-   $t->set_var("lastname",$phpgw->db->f("ab_lastname"));                                                                                                                                         
-   $t->set_var("street",$phpgw->db->f("ab_street"));                                                                                                                                             
-   $t->set_var("zip",$phpgw->db->f("ab_zip"));                                                                                                                                                   
-   $t->set_var("city",$phpgw->db->f("ab_city"));
-   $t->set_var("delivery_day",date("j",$phpgw->db->f("date")));                                                                                                                                  
-   $t->set_var("delivery_month",date("n",$phpgw->db->f("date")));
-   $t->set_var("delivery_year",date("Y",$phpgw->db->f("date")));
-   $t->set_var("delivery_num",$phpgw->strip_html($phpgw->db->f("num")));                                                                                                                         
-   $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                          
-    if (! $title)  $title  = "&nbsp;";                                                                                                                                                           
-   $t->set_var("title",$title);
-     }
+    $phpgw->db->query("SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date, "
+		    . "phpgw_p_projects.title FROM phpgw_p_delivery,phpgw_p_projects WHERE "
+		    . "phpgw_p_delivery.id='$delivery_id' AND phpgw_p_delivery.project_id=phpgw_p_projects.id");
+    $phpgw->db->next_record();
 
-  $pos = 0;
+    $custadr = $phpgw->db->f("customer");
 
-  $phpgw->db->query("SELECT ceiling(p_hours.minutes/p_hours.minperae) as aes,p_hours.remark, "                                                                                                        
-                . "p_activities.descr,p_hours.date FROM p_hours,p_activities,p_deliverypos "                                                                                          
-                . "WHERE p_deliverypos.hours_id=p_hours.id AND p_deliverypos.delivery_id=$delivery_id "                                                                               
-                . "AND p_hours.activity_id=p_activities.id");
-   while ($phpgw->db->next_record()) {
-	$pos++;
-	$t->set_var("pos",$pos);
-	if ($phpgw->db->f("date") == 0) {
-		$t->set_var("day","");
-		$t->set_var("month","");
-		$t->set_var("year","");
-	}
-	else {
-		$t->set_var("day",date("j",$phpgw->db->f("date")));
-		$t->set_var("month",date("n",$phpgw->db->f("date")));
-		$t->set_var("year",date("Y",$phpgw->db->f("date")));
-	}
-	$t->set_var("aes",$phpgw->db->f("aes"));
-        $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
-        if (! $act_descr)  $act_descr  = "&nbsp;";                                                                                                                                       
-        $t->set_var("act_descr",$act_descr);
-	$t->set_var("billperae",$phpgw->db->f("billperae"));
-        $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
-        if (! $remark)  $remark  = "&nbsp;";                                                                                                                                             
-        $t->set_var("remark",$remark);
-        $t->parse("list", "deliverypos_list", true);
-      }
+    $cols = array('n_given' => 'n_given',
+                 'n_family' => 'n_family',
+                 'org_name' => 'org_name',
+               'adr_street' => 'adr_street',
+             'adr_locality' => 'adr_locality',
+           'adr_postalcode' => 'adr_postalcode',
+               'adr_region' => 'adr_region',
+          'adr_countryname' => 'adr_countryname',
+                    'title' => 'title');
+
+    $customer = $d->read($custadr,$cols);
+
+    $t->set_var('title',$customer[0]['title']);
+    $t->set_var('firstname',$customer[0]['n_given']);
+    $t->set_var('lastname',$customer[0]['n_family']);
+    $t->set_var('company',$customer[0]['org_name']);
+    $t->set_var('street',$customer[0]['adr_street']);
+    $t->set_var('zip',$customer[0]['adr_postalcode']);
+    $t->set_var('city',$customer[0]['adr_locality']);
+    $t->set_var('state',$customer[0]['adr_region']);
+    $t->set_var('country',$customer[0]['adr_countryname']);
+
+    $delivery_date = $phpgw->db->f("date");
+    $month = $phpgw->common->show_date(time(),"n");
+    $day   = $phpgw->common->show_date(time(),"d");
+    $year  = $phpgw->common->show_date(time(),"Y");
+    $delivery_date = $delivery_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+    $delivery_dateout =  $phpgw->common->show_date($delivery_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+    $t->set_var('delivery_date',$delivery_dateout);
+
+    $t->set_var('delivery_num',$phpgw->strip_html($phpgw->db->f("num")));                                                                                                                         
+
+    $title = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                                          
+    if (! $title) { $title  = "&nbsp;"; }                                                                                                                                                           
+    $t->set_var('title',$title);
+
+    $pos = 0;
+
+    $phpgw->db->query("SELECT ceiling(phpgw_p_hours.minutes/phpgw_p_hours.minperae) as aes,phpgw_p_hours.remark, "                                                                                                        
+		    . "phpgw_p_activities.descr,phpgw_p_hours.start_date FROM phpgw_p_hours,phpgw_p_activities,phpgw_p_deliverypos "                                                                                          
+		    . "WHERE phpgw_p_deliverypos.hours_id=phpgw_p_hours.id AND phpgw_p_deliverypos.delivery_id='$delivery_id' "                                                                               
+		    . "AND phpgw_p_hours.activity_id=phpgw_p_activities.id");
+    while ($phpgw->db->next_record()) {
+    $pos++;
+    $t->set_var('pos',$pos);
+    if ($phpgw->db->f("start_date") == 0) {
+        $hours_dateout = '&nbsp;';
+    }
+    else {
+        $month = $phpgw->common->show_date(time(),"n");
+        $day   = $phpgw->common->show_date(time(),"d");
+        $year  = $phpgw->common->show_date(time(),"Y");
+        $hours_date = $hours_date + (60*60) * $phpgw_info["user"]["preferences"]["common"]["tz_offset"];
+        $hours_dateout = $phpgw->common->show_date($hours_date,$phpgw_info["user"]["preferences"]["common"]["dateformat"]);
+    }
+	
+    $t->set_var('hours_date',$hours_dateout);
+    $t->set_var('aes',$phpgw->db->f("aes"));
+    $act_descr = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                         
+    if (! $act_descr) { $act_descr  = '&nbsp;'; }                                                                                                                                       
+    $t->set_var('act_descr',$act_descr);
+    $t->set_var('billperae',$phpgw->db->f("billperae"));
+    $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                           
+    if (! $remark) { $remark  = '&nbsp;'; }                                                                                                                                             
+    $t->set_var('hours_remark',$remark);
+    $t->parse('list','deliverypos_list',True);
+    }
    
-
-   $t->parse("out", "delivery_list_t", true);
-   $t->p("out");
-  
+    $t->parse('out','delivery_list_t',True);
+    $t->p('out');
 ?>

@@ -77,7 +77,8 @@
     $title = $phpgw->strip_html($projects[$i]['title']);
     if (! $title)  $title  = "&nbsp;";                                                                                                                                               
     $number = $phpgw->strip_html($projects[$i]['number']);
-    $status = lang($projects[$i]['status']);
+    $status = $projects[$i]['status'];
+    $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $projects[$i]['end_date'];
@@ -107,7 +108,7 @@
 
     $t->set_var(array('number' => $number,
                       'customer' => $customerout,
-                      'status' => $status,
+                      'status' => $statusout,
     		      'title' => $title,
       		      'end_date' => $end_dateout,
       		      'coordinator' => $coordinatorout));

@@ -185,7 +185,7 @@
 
     $t->set_var('lang_done',lang('Done'));
 
-    $t->set_var('doneurl',$phpgw->link($HTTP_REFERER));
+    $t->set_var('doneurl',$HTTP_REFERER);
 
 /*    print "Referrer".$HTTP_REFERER."<br>";
     $t->set_var('doneurl',$phpgw->link($HTTP_REFERER . 'project_id=' . $phpgw->db->f("id") . "&delivery_id=$delivery_id&invoice_id=$invoice_id&sort=$sort&order=$order&"

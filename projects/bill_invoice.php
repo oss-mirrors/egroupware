@@ -199,7 +199,8 @@
     $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                                   
     if (! $remark)  $remark  = "&nbsp;";    
 
-    $status = lang($phpgw->db->f("status"));
+    $status = $phpgw->db->f("status");
+    $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $phpgw->db->f("end_date");
@@ -227,16 +228,21 @@
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
                       "remark" => $remark,
-                      "status" => $status,
+                      "status" => $statusout,
     		      "end_date" => $end_dateout,
       		      "aes" => $aes,
       		      "billperae" => $phpgw->db->f("billperae"),
       		      "sum" => sprintf ("%01.2f", (float)$phpgw->db->f("billperae")*$aes)));
 
+    if ($phpgw->db->f("status") == 'billed') {
+    $t->set_var('edithour','');
+    $t->set_var('lang_edit_entry','&nbsp;');
+    }
+    else {
     $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id") . "&invoice_id=$invoice_id&sort=$sort&order=$order&"
 					. "query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
-
+    }
     $t->parse('list','projecthours_list',True);
 
 // ------------------------ end record declaration ------------------------

@@ -178,7 +178,8 @@
     $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
 
-    $status = lang($phpgw->db->f("status"));
+    $status = $phpgw->db->f("status");
+    $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $phpgw->db->f("end_date");
@@ -204,7 +205,7 @@
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
                       "remark" => $remark,
-                      "status" => $status,
+                      "status" => $statusout,
     		      "end_date" => $end_dateout,
       		      "aes" => $aes));
 

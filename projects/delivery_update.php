@@ -157,7 +157,8 @@
     $remark = $phpgw->strip_html($phpgw->db->f("remark"));                                                                                                                               
     if (! $remark)  $remark  = "&nbsp;";
 
-    $status = lang($phpgw->db->f("status"));
+    $status = $phpgw->db->f("status");
+    $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $phpgw->db->f("end_date");
@@ -183,7 +184,7 @@
     $t->set_var(array("select" => $select,
 		      "activity" => $activity,
                       "remark" => $remark,
-                      "status" => $status,
+                      "status" => $statusout,
     		      "end_date" => $end_dateout,
       		      "aes" => $aes));
 
@@ -193,7 +194,7 @@
     }
     else {
     $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
-                                         . "&delivery_id=$delivery_id&delivery_num=$delivery_num&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
+                                         . "&delivery_id=$delivery_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
     }
     $t->parse('list','projecthours_list',True);
@@ -221,7 +222,8 @@
     $remark = $phpgw->strip_html($phpgw->db->f("remark"));
     if (! $remark)  $remark  = "&nbsp;";
   
-    $status = lang($phpgw->db->f("status"));
+    $status = $phpgw->db->f("status");
+    $statusout = lang($status);
     $t->set_var(tr_color,$tr_color);
 
     $end_date = $phpgw->db->f("end_date");
@@ -247,7 +249,7 @@
     $t->set_var(array("select" => $select,
   		        "activity" => $activity,
                         "remark" => $remark,
-                        "status" => $status,
+                        "status" => $statusout,
       		        "end_date" => $end_dateout,
         		"aes" => $aes));
     if ($phpgw->db->f("status") == 'billed') {
@@ -256,7 +258,7 @@
     }
     else {
     $t->set_var('edithour',$phpgw->link('/projects/hours_edithour.php','id=' . $phpgw->db->f("id")
-                                         . "&delivery_id=$delivery_id&delivery_num=$delivery_num&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
+                                         . "&delivery_id=$delivery_id&sort=$sort&order=$order&query=$query&start=$start&filter=$filter&status=$status"));
     $t->set_var('lang_edit_entry',lang('Edit hours'));
     }
     $t->parse('list','projecthours_list',True);

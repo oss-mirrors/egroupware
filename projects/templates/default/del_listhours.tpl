@@ -34,8 +34,8 @@
    <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
       <td width="3%" bgcolor="{th_bg}" align=center>{h_lang_select}</td>
-      <td width="20%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
-      <td width="20%" bgcolor="{th_bg}" align=center>{sort_remark}</td>
+      <td width="25%" bgcolor="{th_bg}" align=center>{sort_activity}</td>
+      <td width="25%" bgcolor="{th_bg}" align=center>{sort_remark}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_status}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_end_date}</td>
       <td width="10%" bgcolor="{th_bg}" align=center>{sort_aes}</td>
@@ -59,13 +59,13 @@
 
 <table width=100% border=0 cellspacing=0 cellpadding=0>
       <tr bgcolor="{tr_color}">
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td align="center"><font size="4"><b>{lang_aes}</b></font></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td align="right"><font size="4"><b>{sum_aes}</b></font></td>
-        <td>&nbsp;</td>
+        <td width="3%">&nbsp;</td>
+        <td width="25%">&nbsp;</td>
+        <td width="25%" align="center"><font size="4"><b>{lang_aes}</b></font></td>
+        <td width="10%">&nbsp;</td>
+        <td width="10%">&nbsp;</td>
+        <td width="10%" align="right"><font size="4"><b>{sum_aes}</b></font></td>
+        <td width="10%">&nbsp;</td>
       </tr>
 </table>
 <table width="50%" border=0 cellpadding="2" cellspacing="2">
