@@ -453,14 +453,14 @@ $msg_headers->udate = $new_time;
 			
 			// ----  What Folder To Return To  -----
 			$lnk_goback_folder = $GLOBALS['phpgw']->msg->href_maketag(
-				$GLOBALS['phpgw']->link(
-					 '/index.php',
-					'menuaction=email.uiindex.index'	
-					.'&fldball[folder]='.$msgball['folder']
-					.'&fldball[acctnum]='.$msgball['acctnum']
-					.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-					.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-					.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
+				$GLOBALS['phpgw']->link('/index.php',array(
+					'menuaction'       => 'email.uiindex.index',
+					'fldball[folder]'  => $msgball['folder'],
+					'fldball[acctnum]' => $msgball['acctnum'],
+					'sort'             => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+					'order'            => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+					'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start')
+				)),
 				//$GLOBALS['phpgw']->msg->get_folder_short($msgball['folder']));
 				$nice_folder_name);
 			
@@ -538,17 +538,16 @@ $msg_headers->udate = $new_time;
 			else
 			{
 				// folder is probably empty, probably no more messages to show, so goto uiindex page *for this same folder*
-				$this->xi['move_postmove_goto_value'] = $GLOBALS['phpgw']->link(
-						'/index.php',
-						 'menuaction=email.uiindex.index'
-						.'&fldball[folder]='.$GLOBALS['phpgw']->msg->prep_folder_out()
-						.'&fldball[acctnum]='.$GLOBALS['phpgw']->msg->get_acctnum()
-						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')
+				$this->xi['move_postmove_goto_value'] = $GLOBALS['phpgw']->link('/index.php',array(
+					'menuaction'       => 'email.uiindex.index',
+					'fldball[folder]'  => $GLOBALS['phpgw']->msg->prep_folder_out(),
+					'fldball[acctnum]' => $GLOBALS['phpgw']->msg->get_acctnum(),
+					'sort'             => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+					'order'            => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+					'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start')
 						// This "no_fmt" does not apply of we are going back to the index page, it only applies to viewing messages.
 						//.$this->no_fmt
-						);
+				));
 			}
 			
 			// ----  Labels and Colors for From, To, CC, Files, and Subject  -----
@@ -602,18 +601,17 @@ $msg_headers->udate = $new_time;
 				
 				// first text in the "from" table data, AND click on it to compose a new, blank email to this email address
 				$from_and_compose_link = 
-					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
-						'/index.php',
-						 'menuaction=email.uicompose.compose'
+					$GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link('/index.php',array(
+						'menuaction'      => 'email.uicompose.compose',
 						 // DO NOT USE msgball[] - bosend will interpret this incorrectly as a reply or forward
-						.'&fldball[folder]='.$msgball['folder']
-						.'&fldball[acctnum]='.$msgball['acctnum']
-						.'&to='.urlencode($from_plain)
-						.'&personal='.urlencode($from_personal)
+						'fldball[folder]'  => $msgball['folder'],
+						'fldball[acctnum]' => $msgball['acctnum'],
+						'to'               => $from_plain,
+						'personal'         => $from_personal,
 						// preserve these things for when we return to the message list after the send
-						.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-						.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-						.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
+						'sort'             => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+						'order'            => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+						'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start'))),
 					$from_personal);
 				
 				// click on the little envelope image to add this person/address to your address book
@@ -625,9 +623,9 @@ $msg_headers->udate = $new_time;
 								array
 								(
 									'menuaction' => 'addressbook.uiaddressbook.add_email',
-									'add_email' => urlencode($from_plain),
-									'name' => urlencode($from_personal),
-									'referer' => urlencode($get_back_here_url)
+									'add_email' => $from_plain,
+									'name' => $from_personal,
+									'referer' => $get_back_here_url
 								)
 							),
 					$sm_envelope_img);
@@ -680,18 +678,17 @@ $msg_headers->udate = $new_time;
 					}
 
 					$to_real_name = $GLOBALS['phpgw']->msg->href_maketag(
-						$GLOBALS['phpgw']->link(
-							'/index.php',
-							 'menuaction=email.uicompose.compose'
+						$GLOBALS['phpgw']->link('/index.php',array(
+							'menuaction'       => 'email.uicompose.compose',
 							// DO NOT USE msgball[] - bosend will interpret this incorrectly as a reply or forward
-							.'&fldball[folder]='.$msgball['folder']
-							.'&fldball[acctnum]='.$msgball['acctnum']
-							.'&to='.urlencode($to_plain)
-							.'&personal='.urlencode($to_personal)
+							'fldball[folder]'  => $msgball['folder'],
+							'fldball[acctnum]' => $msgball['acctnum'],
+							'to'               => $to_plain,
+							'personal'         => $to_personal,
 							// preserve these things for when we return to the message list after the send
-							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
+							'sort'             => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+							'order'            => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+							'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start'))),
 						$to_personal);
 					
 					// I honestly think this needs some attention here.. I feel this isn't used anymore like this..
@@ -699,12 +696,12 @@ $msg_headers->udate = $new_time;
 					// Skeeter
 					
 					$to_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-						$GLOBALS['phpgw']->link(
-							 '/index.php',
-							 'menuaction=addressbook.uiaddressbook.add_email'
-							.'&add_email='.urlencode($to_plain)
-							.'&name='.urlencode($to_personal)
-							.'&referer='.urlencode($get_back_here_url)),
+						$GLOBALS['phpgw']->link('/index.php',array(
+							'menuaction' => 'addressbook.uiaddressbook.add_email',
+							'add_email'  => $to_plain,
+							'name'       => $to_personal,
+							'referer'    => $get_back_here_url
+						)),
 						$sm_envelope_img);
 					// assemble the string and store for later use (note to_extra_info also handles the spacing)
 					$to_data_array[$i] = $to_real_name .$to_extra_info .$to_addybook_add;
@@ -753,29 +750,28 @@ $msg_headers->udate = $new_time;
 						$cc_extra_info = ' ';
 					}
 					$cc_real_name = $GLOBALS['phpgw']->msg->href_maketag($GLOBALS['phpgw']->link(
-							'/index.php',
-							 'menuaction=email.uicompose.compose'
-							// DO NOT USE msgball - bosend will interpret this the wrong way
-							//.'&'.$msgball['uri']
-							.'&fldball[folder]='.$msgball['folder']
-							.'&fldball[acctnum]='.$msgball['acctnum']
-							.'&to='.urlencode($cc_plain)
-							.'&personal='.urlencode($cc_personal)
-							// preserve these things for when we return to the message list after the send
-							.'&sort='.$GLOBALS['phpgw']->msg->get_arg_value('sort')
-							.'&order='.$GLOBALS['phpgw']->msg->get_arg_value('order')
-							.'&start='.$GLOBALS['phpgw']->msg->get_arg_value('start')),
-						$cc_personal);
-					
+						'/index.php',array(
+							'menuaction' => 'email.uicompose.compose',
+						// DO NOT USE msgball - bosend will interpret this the wrong way
+						//.'&'.$msgball['uri']
+							'fldball[folder]'  => $msgball['folder'],
+							'fldball[acctnum]' => $msgball['acctnum'],
+							'to'               => $cc_plain,
+							'personal'         => $cc_personal,
+						// preserve these things for when we return to the message list after the send
+							'sort'             => $GLOBALS['phpgw']->msg->get_arg_value('sort'),
+							'order'            => $GLOBALS['phpgw']->msg->get_arg_value('order'),
+							'start'            => $GLOBALS['phpgw']->msg->get_arg_value('start')
+						)),$cc_personal);
+
 					$cc_addybook_add = $GLOBALS['phpgw']->msg->href_maketag(
-						$GLOBALS['phpgw']->link(
-							 '/index.php',
-							 'menuaction=addressbook.uiaddressbook.add_email'
-							.'&add_email='.urlencode($cc_plain)
-							.'&name='.urlencode($cc_personal)
-							.'&referer='.urlencode($get_back_here_url)),
-						$sm_envelope_img);
-					
+						$GLOBALS['phpgw']->link('/index.php',array(
+							'menuaction' => 'addressbook.uiaddressbook.add_email',
+							'add_email'  => $cc_plain,
+							'name'       => $cc_personal,
+							'referer'    => $get_back_here_url
+						)),$sm_envelope_img);
+
 					// assemble the string and store for later use
 					$cc_data_array[$i] = $cc_real_name .$cc_extra_info .$cc_addybook_add;
 				}
