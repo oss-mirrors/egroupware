@@ -316,8 +316,15 @@
       //echo "<b>TEST:</b> ".$phpgw_info["user"]["preferences"]["email"]["folder"];
 
   // Its better then them using a ton of PHP errors.
-  $mailbox = $phpgw->msg->login($folder);
-  if (!$mailbox && ! (ereg("preferences",$PHP_SELF) || ! ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF))) {
+  // Changed by Milosch on 3-26-2001 - This check was not working, and the code progressed to giving stream pointer errors
+  // From the msg_imap class.  I tried to clean it up here so I could see what was happening.
+  if (!$PHP_SELF) global $PHP_SELF;  // This was a problem for me.
+  $attop   = ereg($phpgw_info['server']['webserver_url'] . '/index.php',$PHP_SELF);
+  $inprefs = ereg("preferences",$PHP_SELF);
+
+  if (!$inprefs) $mailbox = $phpgw->msg->login($folder); // Changed this to not try connection in prefs
+
+  if (!$mailbox && !$attop) {
      echo "<p><center><b>" . lang("There was an error trying to connect to your mail server.<br>Please, check your username and password, or contact your admin.")
         . "</b></center>";
      $phpgw->common->phpgw_exit(True);
