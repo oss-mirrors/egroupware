@@ -141,6 +141,15 @@
 			$this->soemailadmin->deleteProfile($_profileID);
 		}
 		
+		function getAccountEmailAddress($_accountName, $_profileID)
+		{
+			$profileData	= $this->getProfile($_profileID);
+			
+			$smtpClass	= $this->SMTPServerType[$profileData['smtpType']]['classname'];
+			
+			return ExecMethod("emailadmin.$smtpClass.getAccountEmailAddress",$_accountName,3,$profileData);
+		}
+		
 		function getFieldNames($_serverTypeID, $_class)
 		{
 			switch($_class)

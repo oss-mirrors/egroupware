@@ -15,21 +15,36 @@
 	{
 		var $profileData;
 	
+		// the constructor
 		function defaultsmtp($_profileData)
 		{
 			$this->profileData = $_profileData;
 		}
 		
+		// add a account
 		function addAccount($_hookValues)
 		{
 			return true;
 		}
 		
+		// delete a account
 		function deleteAccount($_hookValues)
 		{
 			return true;
 		}
+		
+		function getAccountEmailAddress($_accountName)
+		{
+			return array(
+				array(
+					'name'		=> $GLOBALS['phpgw_info']['user']['fullname'], 
+					'address'	=> $_accountName.'@'.$this->profileData['defaultDomain'], 
+					'type'		=> 'default'
+				)
+			);
+		}
 
+		// update a account
 		function updateAccount($_hookValues)
 		{
 			return true;

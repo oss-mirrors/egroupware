@@ -54,5 +54,43 @@
 			ldap_mod_replace ($ds, $accountDN, $newData);
 			#print ldap_error($ds);
 		}
+
+		function getAccountEmailAddress($_accountName)
+		{
+			$emailAddresses	= array();
+			$ds = $GLOBALS['phpgw']->common->ldapConnect();
+			$filter 	= sprintf("(&(uid=%s)(objectclass=posixAccount))",$_accountName);
+			$attributes	= array('dn','mail','mailAlternateAddress');
+			$sri = @ldap_search($ds, $GLOBALS['phpgw_info']['server']['ldap_context'], $filter, $attributes);
+			
+			if ($sri)
+			{
+				$allValues = ldap_get_entries($ds, $sri);
+				if(isset($allValues[0]['mail'][0]))
+				{
+					$emailAddresses[] = array
+					(
+						'name'		=> $GLOBALS['phpgw_info']['user']['fullname'],
+						'address'	=> $allValues[0]['mail'][0],
+						'type'		=> 'default'
+					);
+				}
+				if($allValues[0]['mailalternateaddress']['count'] > 0)
+				{
+					$count = $allValues[0]['mailalternateaddress']['count'];
+					for($i=0; $i < $count; $i++)
+					{
+						$emailAddresses[] = array
+						(
+							'name'		=> $GLOBALS['phpgw_info']['user']['fullname'],
+							'address'	=> $allValues[0]['mailalternateaddress'][$i],
+							'type'		=> 'alternate'
+						);
+					}
+				}
+			}
+			
+			return $emailAddresses;
+		}
 	}
 ?>
