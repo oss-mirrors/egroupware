@@ -17,3 +17,15 @@ you must enter a display	admin	de	Sie m&uuml;ssen einen Namen f.r die Site einge
 you must enter a news url	admin	de	Sie m&uuml;ssen eine News URL angeben
 you must enter the number of listings display	admin	de	Sie m&uuml;ssen die Anzahl der anzuzeigenden Zeilen angeben
 you must enter the number of minutes between reload	admin	de	Sie m&uuml;ssen eine Anzahl von Minuten zwischen Reloads angeben
+Select layout	preferences	de	Layout auswählen
+select headline news sites	headlines	de	Welche Schlagzeilen sollen angezeigt werden?
+Headline Sites	headlines	de	Seiten mit Schlagzeilen
+Site	headlines	de	Seite
+Create new headline	headlines	de	neue Schlagzeilen hinzufügen
+Display	headlines	de	Anzeige
+Base URL	headlines	de	Basis URL
+News File	headlines	de	Datei mit Schlagzeilen
+Minutes between refresh	headlines	de	Aktualisierungsinterval in Minuten
+Listings Displayed	headlines	de	Anzahl der Schlagzeilen
+News Type	headlines	de	Nachrichtentyp
+Headlines Administration	headlines	de	Verwaltung der Schlagzeilen
