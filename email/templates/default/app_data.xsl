@@ -13,14 +13,12 @@
 	</xsl:template>
 
 	<xsl:template match="email_list">
-		<xsl:call-template name="app_header"/>
 		<p>
 		Dude I am Clueless
 		</p>
 	</xsl:template>
 	
 	<xsl:template match="generic_out">
-		<xsl:call-template name="app_header"/>
 		<xsl:value-of disable-output-escaping="yes" select="email_page" />
 		<!-- optional debug data -->
 		<xsl:if test="debugdata != ''">
@@ -29,7 +27,6 @@
 	</xsl:template>
 	
 	<xsl:template match="index">
-		<xsl:call-template name="app_header"/>
 		<!-- javascript that we inject into here via a variable -->
 		<xsl:value-of disable-output-escaping="yes" select="index_js"/>
 		<!-- toolbar comes pre made as an html widget -->

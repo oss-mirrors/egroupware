@@ -411,9 +411,10 @@
 		*/
 		function index_xslt_tpl()
 		{
-			$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
-										$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
-										);
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail').' - '.lang('list messages');
+
+			$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
+			$GLOBALS['phpgw']->xslttpl->add_file(array('app_data'));
 			
 			$this->bo->xi['my_layout'] = $GLOBALS['phpgw']->msg->get_pref_value('layout');
 			$this->bo->xi['my_browser'] = $GLOBALS['phpgw']->msg->browser;
@@ -427,8 +428,6 @@
 			$widget_toolbar = $this->widgets->get_toolbar();
 			
 			$data = array(
-				'appname' => lang('E-Mail'),
-				'function_msg' => lang('list messages'),
 				'index_js' => $this->index_xslt_javascript(),
 				'widget_toolbar' => $widget_toolbar,
 				'stats_data_display' => $this->bo->get_index_stats_block((string)$GLOBALS['phpgw']->msg->get_pref_value('layout')),

@@ -54,6 +54,7 @@
 				$this->tpl = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
 			}
 			
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('E-Mail');
 			if ($GLOBALS['phpgw']->msg->phpgw_0914_orless)
 			{
 				// NOW we can out the header, because "index_data()" filled this global
@@ -70,9 +71,8 @@
 			}
 			else
 			{
-				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data',
-											$GLOBALS['phpgw']->common->get_tpl_dir('phpgwapi','default') . SEP . 'app_header')
-											);
+				$GLOBALS['phpgw_info']['flags']['xslt_app'] = True;
+				$GLOBALS['phpgw']->xslttpl->add_file(array('app_data');
 			}
 			
 			// ---- BEGIN UIMESSAGE
