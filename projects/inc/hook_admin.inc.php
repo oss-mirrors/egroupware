@@ -11,14 +11,14 @@
 	/* $Id$ */
 
 	{
-// Only Modify the $file and $title variables.....
+// Only Modify the $file variable.....
 		$file = Array
 		(
 			'Administration'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pad'),
 			'Accountancy'		=> $GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_admins&action=pbo'),
-			'Global Categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname)
+			'Global Categories'	=> $GLOBALS['phpgw']->link('/index.php','menuaction=admin.uicategories.index&appname=' . $appname . '&global_cats=True')
 		);
 //Do not modify below this line
-		display_section($appname,$appname,$file);
+		$GLOBALS['phpgw']->common->display_mainscreen($appname,$file);
 	}
 ?>
