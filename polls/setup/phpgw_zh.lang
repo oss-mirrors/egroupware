@@ -1,25 +1,25 @@
-﻿add answer to poll	polls	zh	将候选项加入表决
+add answer to poll	polls	zh	将候选项添加至表决
 add answers	polls	zh	添加候选项
 add new poll question	polls	zh	添加新的表决主题
 add questions	polls	zh	添加主题
 allow users to vote more then once	polls	zh	允许用户多次投票
 answer	polls	zh	候选项
-answer has been added to poll	polls	zh	已将候选项加入表决
-answer has been updated	polls	zh	已更新候选项
+answer has been added to poll	polls	zh	候选项已加入表决
+answer has been updated	polls	zh	候选项已更新
 Answers	polls	zh	候选项
-are you sure want to delete this answer ?	polls	zh	您确定要删除该候选项吗？
-are you sure want to delete this question ?	polls	zh	您确定要删除该主题吗？
+are you sure want to delete this answer ?	polls	zh	确定要删除该候选项吗？
+are you sure want to delete this question ?	polls	zh	确定要删除该主题吗？
 edit answer	polls	zh	编辑候选项
 edit poll question	polls	zh	编辑表决主题
-enter poll question	polls	zh	填入表决主题
-new poll has been added.  you should now add some answers for this poll	polls	zh	新表决已加入  请您为该表决添加候选项
+enter poll question	polls	zh	输入表决主题
+new poll has been added.  you should now add some answers for this poll	polls	zh	新表决已添加, 请为该表决添加候选项
 poll question	polls	zh	 表决主题
-poll settings	polls	zh	表决设置
+poll settings	polls	zh	表决配置
 polls	common	zh	表决
-question has been updated	polls	zh	已更新主题
+question has been updated	polls	zh	主题已更新
 select current poll	polls	zh	选择当前表决
-settings updated	polls	zh	已更新设置
-show answers	polls	zh	显示表决的被选答案
+settings updated	polls	zh	配置已更新
+show answers	polls	zh	显示表决的候选项
 show questions	polls	zh	显示表决主题
 total votes	polls	zh	总票数
 View poll	polls	zh	查看表决
