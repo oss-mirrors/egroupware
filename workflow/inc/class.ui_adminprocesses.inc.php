@@ -34,7 +34,7 @@
 			$name					= get_var('name', 'POST', '');
 			$description			= get_var('description', 'POST', '');
 			$version				= get_var('version', 'POST', '');
-			$isActive				= get_var('version', 'POST', '');
+			$isActive				= get_var('isActive', 'POST', '');
 			$filter					= get_var('filter', 'any', '');
 			$this->filter_active	= get_var('filter_active', 'any', '');
 			$where					= get_var('where', 'any', '');
@@ -113,11 +113,11 @@
 				'message'			=> implode('<br>', $this->message),
 				'errors'			=> $error_str,
 				'link_new'			=> $GLOBALS['phpgw']->link('/index.php', 'menuaction=workflow.ui_adminprocesses.form&where='. $where .'&start='. $this->start .'&sort_mode='. $this->sort_mode .'&pid=0'),
-				'pid'				=> $proc_info['pId'],
+				'pId'				=> $proc_info['pId'],
 				'name'				=> $proc_info['name'],
 				'version'			=> $proc_info['version'],
 				'description'		=> $proc_info['description'],
-				'isActive'			=> ($proc_info['isActive'] == 'y')? 'checked="checked"' : '',
+				'is_active'			=> ($proc_info['isActive'] == 'y')? 'checked="checked"' : '',
 				'where'				=> $where,
 				'find'				=> $find,
 				'sort_mode'			=> $this->sort_mode,
