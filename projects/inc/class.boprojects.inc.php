@@ -67,8 +67,8 @@
 			$this->debug		= False;
 			$this->siteconfig	= $this->soprojects->siteconfig;
 
-			$this->account					= $GLOBALS['phpgw_info']['user']['account_id'];
-			$this->grants					= $GLOBALS['phpgw']->acl->get_grants('projects');
+			$this->account			= $GLOBALS['phpgw_info']['user']['account_id'];
+			$this->grants			= $GLOBALS['phpgw']->acl->get_grants('projects');
 			$this->grants[$this->account]	= PHPGW_ACL_READ + PHPGW_ACL_ADD + PHPGW_ACL_EDIT + PHPGW_ACL_DELETE;
 
 			$this->html_output	= True;
@@ -78,43 +78,59 @@
 				$this->read_sessiondata($action);
 				$this->use_session = True;
 
-				$_start			= get_var('start',array('POST','GET'));
-				$_query			= get_var('query',array('POST','GET'));
-				$_sort			= get_var('sort',array('POST','GET'));
-				$_order			= get_var('order',array('POST','GET'));
-				$_cat_id		= get_var('cat_id',array('POST','GET'));
-				$_filter		= get_var('filter',array('POST','GET'));
-				$_status		= get_var('status',array('POST','GET'));
-				$_state			= get_var('state',array('POST','GET'));
+				$_start		= get_var('start',array('POST','GET'));
+				$_query		= get_var('query',array('POST','GET'));
+				$_sort		= get_var('sort',array('POST','GET'));
+				$_order		= get_var('order',array('POST','GET'));
+				$_cat_id	= get_var('cat_id',array('POST','GET'));
+				$_filter	= get_var('filter',array('POST','GET'));
+				$_status	= get_var('status',array('POST','GET'));
+				$_state		= get_var('state',array('POST','GET'));
 				$_project_id	= get_var('project_id',array('POST','GET'));
 
-				if(!empty($_start) || ($_start == '0') || ($_start == 0))
+				if((!empty($_start) && is_numeric($_start)) || ($_start == '0') || ($_start == 0))
 				{
 					if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $_start . '"'; }
 					$this->start = $_start;
 				}
 
-				if((empty($_query) && !empty($this->query)) || !empty($_query))
+				if((empty($_query) && !empty($this->query)) || (!empty($_query) && eregi('^[a-z_0-9]+$',$_query)))
 				{
 					$this->query  = $_query;
 				}
 
 				if(isset($_status) && !empty($_status))
 				{
-					$this->status = $_status;
-				}
-
-				if(isset($_status) && !empty($_status))
-				{
-					$this->status = $_status;
+					switch($_status)
+					{
+						case 'nonactive':
+						case 'active':
+						case 'archive':
+							$this->status = $_status;
+							break;
+						default:
+							$this->status = 'active';
+							break;
+					}
 				}
 
 				if(isset($_state) && !empty($_state))
 				{
-					$this->state = $_state;
+					switch($_state)
+					{
+						case 'all':
+						case 'open':
+						case 'done':
+						case 'billed':
+							$this->state = $_state;
+							break;
+						default:
+							$this->state = 'all';
+							break;
+					}
 				}
 
-				if(isset($_cat_id) && !empty($_cat_id))
+				if(isset($_cat_id) && !empty($_cat_id) && is_numeric($_cat_id))
 				{
 					$this->cat_id = $_cat_id;
 				}
@@ -124,7 +140,7 @@
 					$this->project_id = $_project_id;
 				}*/
 
-				if($_project_id)
+				if(is_numeric($_project_id))
 				{
 					$this->project_id = $_project_id;
 				}
@@ -135,10 +151,21 @@
 					{
 						echo '<br>overriding $sort: "' . $this->sort . '" now "' . $_sort . '"';
 					}
-					$this->sort   = $_sort;
+					switch(strtolower($_sort))
+					{
+						case 'asc':
+							$this->sort	= 'ASC';
+							break;
+						case 'desc':
+							$this->sort	= 'DESC';
+							break;
+						default:
+							$this->sort	= 'ASC';
+							break;
+					}
 				}
 
-				if(isset($_order) && !empty($_order))
+				if(isset($_order) && !empty($_order) && eregi('^[a-z_0-9]+$',$_order)) 
 				{
 					if($this->debug)
 					{
@@ -150,7 +177,18 @@
 				if(isset($_filter) && !empty($_filter))
 				{
 					if($this->debug) { echo '<br>overriding $filter: "' . $this->filter . '" now "' . $_filter . '"'; }
-					$this->filter = $_filter;
+					switch($_filter)
+					{
+						case 'yours':
+						case 'private':
+						case 'none':
+							$this->filter = $_filter;
+							break;
+						default:
+							$this->filter = 'none';
+							break;
+							
+					}
 				}
 				$this->limit = True;
 			}
@@ -161,15 +199,15 @@
 			switch ($action)
 			{
 				case 'mains'		: $column = 'projects_mains'; break;
-				case 'subs'			: $column = 'projects_subs'; break;
-				case 'pad'			: $column = 'projects_pad'; break;
+				case 'subs'		: $column = 'projects_subs'; break;
+				case 'pad'		: $column = 'projects_pad'; break;
 				case 'amains'		: $column = 'projects_amains'; break;
 				case 'asubs'		: $column = 'projects_asubs'; break;
 				case 'ustat'		: $column = 'projects_ustat'; break;
 				case 'pstat'		: $column = 'projects_pstat'; break;
-				case 'act'			: $column = 'projects_act'; break;
-				case 'pad'			: $column = 'projects_pad'; break;
-				case 'role'			: $column = 'projects_role'; break;
+				case 'act'		: $column = 'projects_act'; break;
+				case 'pad'		: $column = 'projects_pad'; break;
+				case 'role'		: $column = 'projects_role'; break;
 				case 'accounting'	: $column = 'projects_accounting'; break;
 				case 'hours'		: $column = 'projects_hours'; break;
 			}
