@@ -255,7 +255,7 @@
 		vvertical-align : middle;
 	}
 	
-	.header_row_AS, A.header_row_AS
+	.header_row_AS, A.header_row_AS, .header_row_RAS, A.header_row_RAS
 	{
 		FONT-SIZE: 11px;
 		height : 14px;
@@ -682,6 +682,7 @@
 							$this->t->set_var('row_text','*'.lang('recent').'*');
 							$maxAddressLength = $maxAddressLengthBold;
 							break;
+						case "RAS":
 						case "AS":
 							$this->t->set_var('imageName','read_answered_small.png');
 							$this->t->set_var('row_text',lang('replied'));
@@ -784,11 +785,26 @@
 					);
 					$this->t->set_var('url_read_message',$GLOBALS['phpgw']->link('/index.php',$linkData));
 				
-					$linkData = array
-					(
-						'menuaction'    => 'felamimail.uicompose.compose',
-						'send_to'	=> urlencode($headers['header'][$i]['sender_address'])
-					);
+					if(!empty($headers['header'][$i]['sender_name']))
+					{
+						list($mailbox, $host) = explode('@',$headers['header'][$i]['sender_address']);
+						$senderAddress  = imap_rfc822_write_address($mailbox,
+									$host,
+									$headers['header'][$i]['sender_name']);
+						$linkData = array
+						(
+							'menuaction'    => 'felamimail.uicompose.compose',
+							'send_to'	=> base64_encode($senderAddress)
+						);
+					}
+					else
+					{
+						$linkData = array
+						(
+							'menuaction'    => 'felamimail.uicompose.compose',
+							'send_to'	=> base64_encode($headers['header'][$i]['sender_address'])
+						);
+					}
 					$this->t->set_var('url_compose',$GLOBALS['phpgw']->link('/index.php',$linkData));
 					
 					$linkData = array

@@ -730,7 +730,7 @@
 					// no mime message, only body available
 					if($key == 0)
 					{
-						$newPart	= stripslashes(trim(imap_body($this->mbox, $_uid, FT_UID)));
+						$newPart	= trim(imap_body($this->mbox, $_uid, FT_UID));
 						$encoding	= $structure->encoding;
 						
 						// find mimetype

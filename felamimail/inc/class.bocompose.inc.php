@@ -256,14 +256,14 @@
 			
 			
 			// check for Re: in subject header
-			if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
-			{
-				$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
-			}
-			else
-			{
+			#if(strtolower(substr(trim($headers->Subject), 0, 3)) == "re:")
+			#{
+			#	$this->sessionData['subject'] = $bofelamimail->decode_header($headers->Subject);
+			#}
+			#else
+			#{
 				$this->sessionData['subject'] = "Re: " . $bofelamimail->decode_header($headers->Subject);
-			}
+			#}
 
 			#$structure = $bofelamimail->getMessageStructure($_uid);
 			#if(sizeof($structure->parts) > 1)
@@ -391,8 +391,8 @@
 			$mail->FromName = $bofelamimail->encodeHeader($this->preferences['realname']);
 			$mail->Host 	= $this->preferences['smtpServerAddress'];
 			$mail->Priority = $this->sessionData['priority'];
-			$mail->Encoding = '8bit';
-			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.4");
+			$mail->Encoding = 'quoted-printable';
+			$mail->AddCustomHeader("X-Mailer: FeLaMiMail version 0.9.5");
 			if(isset($this->preferences['organizationName']))
 				$mail->AddCustomHeader("Organization: ".$this->preferences['organizationName']);
 

@@ -548,8 +548,6 @@ $add_attr_to_tag = Array(
 			
 			
 			// create links for websites
-			#$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w\.,-.,\/.,\?.,\=.,&amp;]+)/ie", 
-			#	"'<a href=\"/phpgroupware/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			$body = preg_replace("/((http(s?):\/\/)|(www\.))([\w,\-,\/,\?,\=,\.,&amp;,!\n,\%,@,\*,#,:,~,\+]+)/ie", 
 				"'<a href=\"$webserverURL/redirect.php?go='.htmlentities(urlencode('http$3://$4$5')).'\" target=\"_blank\"><font color=\"blue\">$2$4$5</font></a>'", $body);
 			
@@ -695,7 +693,7 @@ $add_attr_to_tag = Array(
 						$linkData = array
 						(
 							'menuaction'	=> 'felamimail.uicompose.compose',
-							'send_to'	=> htmlentities($newSenderAddress)
+							'send_to'	=> base64_encode($newSenderAddress)
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s" title="%s">%s</a>',
@@ -726,7 +724,7 @@ $add_attr_to_tag = Array(
 						$linkData = array
 						(
 							'menuaction'	=> 'felamimail.uicompose.compose',
-							'send_to'	=> $tempSenderAddress
+							'send_to'	=> base64_encode($tempSenderAddress)
 						);
 						$link = $GLOBALS['phpgw']->link('/index.php',$linkData);
 						$senderAddress .= sprintf('<a href="%s">%s</a>',

@@ -131,7 +131,7 @@
 			// is the to address set already?
 			if (!empty($GLOBALS['HTTP_GET_VARS']['send_to']))
 			{
-				$sessionData['to'] = stripslashes(urldecode($GLOBALS['HTTP_GET_VARS']['send_to']));
+				$sessionData['to'] = base64_decode($_GET['send_to']);
 			}
 			
 			$this->display_app_header();
