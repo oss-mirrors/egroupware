@@ -1,7 +1,7 @@
 <?php
   /**************************************************************************\
-  * phpGroupWare - Polls                                                     *
-  * http://www.phpgroupware.org                                              *
+  * eGroupWare - Polls                                                       *
+  * http://www.egroupware.org                                                *
   *  The file is based on phpPolls                                           *
   *  Copyright (c) 1999 Till Gerken (tig@skv.org)                            *
   * --------------------------------------------                             *
