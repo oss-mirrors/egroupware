@@ -108,7 +108,7 @@
 
 <!-- BEGIN elist -->
 
-		<select name="employees[]" size="5" multiple>{employee_list}</select>
+		<select name="employees[]" multiple>{employee_list}</select>
 
 <!-- END elist -->
 
@@ -160,7 +160,7 @@
 	</tr>
 	<tr>
 		<td colspan"2">{lang_ptime}:&nbsp;{lang_hours}</td>
-		<td colspan"2"><input type="text" name="values[ptime]" value="{phours}"></td>
+		<td colspan"2"><input type="text" name="values[ptime]" value="{ptime}"></td>
 	</tr>
 	<tr height="15">
 		<td>&nbsp;</td>
@@ -178,11 +178,11 @@
 	</tr>
 	<tr>
 		<td colspan"2">{lang_bookable_activities}:</td>
-		<td colspan"2"><select name="book_activities[]" size="5" multiple>{book_activities_list}</select></td>
+		<td colspan"2"><select name="book_activities[]" multiple>{book_activities_list}</select></td>
 	</tr>
 	<tr>
 		<td colspan"2">{lang_billable_activities}:</td>
-		<td colspan"2"><select name="bill_activities[]" size="5" multiple>{bill_activities_list}</select></td>
+		<td colspan"2"><select name="bill_activities[]" multiple>{bill_activities_list}</select></td>
 	</tr>
 	<tr height="15">
 		<td>&nbsp;</td>

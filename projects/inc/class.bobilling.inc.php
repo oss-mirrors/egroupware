@@ -45,11 +45,20 @@
 			$this->sobilling	= CreateObject('projects.sobilling');
 			$this->soprojects	= CreateObject('projects.soprojects');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
+			$this->boprojects	= CreateObject('projects.boprojects');
+		}
+
+		function get_site_config()
+		{
+			return $this->boprojects->get_site_config();
 		}
 
 		function read_invoices($start, $query, $sort, $order, $limit, $project_id)
 		{
-			$bill = $this->sobilling->read_invoices($start, $query, $sort, $order, $limit, $project_id);
+			$co = $this->get_site_config();
+
+			$bill = $this->sobilling->read_invoices(array('start' => $start,'query' => $query, 'sort' => $sort,'order' => $order,'limit' => $limit,
+														'project_id' => $project_id,'owner' => $co['invoice_acl']));
 			$this->total_records = $this->sobilling->total_records;
 			return $bill;
 		}

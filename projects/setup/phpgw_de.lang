@@ -7,14 +7,11 @@ activity %1 has been added !	projects	de	Aktivit&auml;t %1 wurde hinzugef&uuml;g
 activity %1 has been updated !	projects	de	Aktivit&auml;t %1 wurde &uuml;berarbeitet.
 activity id	projects	de	Aktivit&auml;ts ID
 add activity	projects	de	Aktivit&auml;t hinzuf&uuml;gen
-add job	projects	de	Teilprojekt hinzufügen
 add milestone	projects	de	Meilenstein hinzuf&uuml;gen
 add project	projects	de	Projekt hinzuf&uuml;gen
 add project hours	projects	de	Projektstuden hinzuf&uuml;gen
 add work hours	projects	de	Arbeitsstunden hinzuf&uuml;gen
-address book	projects	de	Adressbuch
 administrator	projects	de	Administrator
-all	projects	de	Alle
 all delivery notes	projects	de	Alle Lieferscheine
 all invoices	projects	de	Alle Rechnungen
 anonymous public	projects	de	Anonym &ouml;ffentlich
@@ -32,12 +29,9 @@ billed only	projects	de	nur bezahlte
 billing	projects	de	Abrechnung
 bookable activities	projects	de	Buchbare Aktivit&auml;ten
 bookkeeper	projects	de	Buchhalter
-bookkeeping	common	de	Buchhaltung
 budget	projects	de	Budget
 budget main project	projects	de	Budget Hauptprojekt
-budget sum of all sub projects is bigger than the budget of the main project	projects	de	Das Budget alle unter Projekte ist größer als das gesamt Budget!
 calculate	projects	de	Berechnen
-click %1here%2 to return to projects.	projects	de	Klicken Sie %1 hier %2 um zu Projekte zurückzugelangen
 closed	projects	de	Abgeschlossen
 coordinator	common	de	Koordinator
 courier new	projects	de	Courier New
@@ -58,26 +52,18 @@ delivery list	projects	de	Lieferungs Liste
 delivery note	projects	de	Lieferschein
 delivery note for project	projects	de	Lieferschein f&uuml;r Projekt
 delivery notes	projects	de	Lieferscheine
-description can not exceed 255 characters in length !	projects	de	Die Beschreibung darf nicht mehr als 255 umfassen.
-description can not exceed 8000 characters in length !	projects	de	Die Beschreibung darf nicht mehr als 8000 Zeichen umfassen.
-do you also want to delete all sub projects ?	projects	de	Möchten Sie auch alle Teilprojekte löschen ?
 edit activity	projects	de	Aktivit&auml;t &uuml;berarbeiten
-edit administrator list	projects	de	Projekt-Administrator Liste &uuml;berarbeiten
 edit bookkeeper list	projects	de	Projekt-Buchhalter Liste &uuml;berarbeiten
 edit job	projects	de	Job &uuml;berarbeiten
 edit milestone	projects	de	Meilenstein &uuml;berarbeiten
 edit project	projects	de	Projekt &uuml;berarbeiten
+edit administrator list	projects	de	Projekt-Administrator Liste &uuml;berarbeiten
 edit project hours	projects	de	Projektstunden &uuml;berarbeiten
 edit work hours	projects	de	Arbeitsstunden &uuml;berarbeiten
-email notifications	projects	de	E-Mail Benachrichtigung
-email notifications projects de e-mail benachrichtigungen		de	
+email notifications projects de E-Mail Benachrichtigungen
 employee	projects	de	Mitarbeiter
 employees	projects	de	Mitarbeiter
-ending date can not be after main projects ending date	projects	de	Das Enddatum kann nicht später sein als das Projekt Ende!
-ending date can not be before start date	projects	de	Das Enddatum kann nicht vor dem Startdatum liegen
-error in calculation sum does not match !	projects	de	Fehler in der Kalkulation. Die berechnete Summe stimmt nicht.
 exactly accounting	projects	de	exakte Abrechnung
-failed sending message to '%1' #%2 subject='%3', sender='%4' !!!	projects	de	Das senden der Nachricht an '%1' #%2, Betreff='%3', Absender='%4', ist fehlgeschlagen!.
 gantt chart for project %1	projects	de	Gantt chart f&uuml;r Projekt %1
 gantt chart from %1 to %2	projects	de	Gantt chart von %1 bis %2
 generate activity id ?	projects	de	Activit&auml;ts ID generieren ?
@@ -88,10 +74,6 @@ generate project id ?	projects	de	Projekt ID generieren ?
 georgia	projects	de	Georgia
 helvetica	projects	de	Helvetica
 hours	projects	de	Stunden
-id can not exceed 19 characters in length	projects	de	Die ID darf nicht mehr als 19 Zeichen umfassen !
-id can not exceed 25 characters in length	projects	de	Die ID darf nicht mehr als 25 Zeichen umfassen !
-if you are an administrator, please set the preferences for this application	projects	de	Falls Sie Administrator sind, konfigurieren Sie bitte die Einstellungen für diese Applikation
-if you are not an administrator, please inform the administrator to set the preferences for this application	projects	de	Wenn Sie keine Administrationsrechte in dieser Applikation haben, informieren Sie bitte einen Administrator, damit dieser die Einstellungen für diese Applikation setzt. 
 investment nr	projects	de	Investitions-Nummer
 invoice	projects	de	Rechnung
 invoice %1 has been created !	projects	de	Rechnung %1 wurde erstellt.
@@ -103,27 +85,23 @@ invoice layout	projects	de	Rechnungs Layout
 invoice list	projects	de	Rechnungs Liste
 invoices	projects	de	Rechnungen
 invoicing of work time	projects	de	in Rechnung stellen der Arbeitszeit
-job	projects	de	Teilprojekt
-job archive	projects	de	Teilprojekt Archiv
-job date	projects	de	Datum Teilprojekt
-job description	projects	de	Teilprojekt  Beschreibung
-job has been added !	projects	de	Teilprojekt  wurde hinzugef&uuml;gt.
-job has been updated !	projects	de	Teilprojekt  wurde &uuml;berarbeitet.
-job id	projects	de	Teilprojekt  ID
-job list	projects	de	Teilprojekt  Liste
-jobs	common	de	Teilprojekt e
+job	projects	de	Job
+job archive	projects	de	Job Archiv
+job date	projects	de	Job Datum
+job description	projects	de	Job Beschreibung
+job has been added !	projects	de	Job wurde hinzugef&uuml;gt.
+job has been updated !	projects	de	Job wurde &uuml;berarbeitet.
+job id	projects	de	Job ID
+jobs	common	de	Jobs
 large	projects	de	Gro&szlig;
 last update	projects	de	letzte Aktualisierung
 list activities	projects	de	Aktivit&auml;tenliste
 list budget	projects	de	Budgetliste
-list deliveries	projects	de	Liste der Lieferscheine
-list invoices	projects	de	Liste der Rechnungen
 list jobs	projects	de	Jobliste
 list pcosts	projects	de	Plankostenliste
 list projects	projects	de	Projektliste
 list work hours	projects	de	Arbeitsstundenliste
 main project	projects	de	Hauptprojekt
-main project:	projects	de	Haupt Projekt
 milestones	common	de	Meilensteine
 minutes per workunit	projects	de	Minuten pro Arbeitseinheit
 month	projects	de	Monat
@@ -133,29 +111,21 @@ new project	projects	de	Neues Projekt
 nonactive	common	de	Nicht aktiv
 number	projects	de	Nummer
 open	projects	de	Offen
-open popup window	projects	de	Pop Uo Fenster öffnen
 overall	projects	de	Gesammt
 parent project	projects	de	&Uuml;bergeordnetes Projekt
-parent project:	projects	de	Übergeordnetes Projekt
 pcosts can not be bigger than the budget	projects	de	Die Plankosten k&ouml;nnen nicht h&ouml;her als das Budget sein !
-pcosts can not be higher than the budget	projects	de	Die geplanten Kosten können nicht höher als das Budget sein !
 per hour	projects	de	pro Stunde
 per hour/workunit	projects	de	pro Stunde/Arbeitseinheit
 per workunit	projects	de	pro Arbeitseinheit
 planned costs	projects	de	Plankosten
-planned time	projects	de	Geplante Zeit
 planned time sum of all sub projects is bigger than the planned time of the main project	projects	de	Die Summe der geplanten Zeit aller Unterprojekte ist gr&ouml;&szlig;er als die des Hauptprojektes !
 please choose a project coordinator	projects	de	Bitte w&auml;hlen Sie einen Projekt Koordinator !
 please choose activities for the project	projects	de	Bitte w&auml;hlen Sie Aktivit&auml;ten f&uuml;r das Projekt!
 please enter a remark !	projects	de	Bitte geben Sie einen Betreff an !
 please enter an id !	projects	de	Bitte geben Sie eine ID an !
-please enter the bill	projects	de	Geben Sie bitte eine Rechnung an !
 please enter the bill per workunit !	projects	de	Bitte geben Sie den Preis pro Arbeitseinheit an !
-please enter the minutes per workunit	projects	de	Bitte geben Sie die Minuten pro Arbeiteinheit ein!
 please enter the minutes per workunit !	projects	de	Bitte geben Sie die Minuten pro Arbeitseinheit an !
 please set the minutes per workunit for each activity now !	projects	de	Bitte tragen Sie jetzt die Minuten pro Arbeitseinheit f&uuml;r jede Aktivit&auml;t ein !
-please set your preferences for this application !	projects	de	Sie müssen zuerst Ihre Einstellungen für diese Applikation setzen.
-please specify country and currency in the global preferences section	projects	de	Sie müssen das Land und die Währung in den Einstellungen angeben!
 please specify the budget	projects	de	Bitte geben Sie das Budget an !
 position	projects	de	Position
 preferences for accountancy	projects	de	Einstellungen zum Rechnungswesen
@@ -164,21 +134,18 @@ print delivery	projects	de	Lieferung drucken
 print invoice	projects	de	Rechnung drucken
 processor	projects	de	Bearbeiter
 project	projects	de	Projekt
-project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
-project %1 has been updated	projects	de	Projekt %1 wurde überarbeitet.
 project archive	projects	de	Projekt Archiv
 project billing	projects	de	Projekt Abrechnung
 project delivery	projects	de	Projekt Lieferung
+project %1 has been saved	projects	de	Projekt %1 wurde gespeichert.
+project %1 has been updated	projects	de	Projekt %1 wurde überarbeitet.
 project id	common	de	Projekt ID
 project list	projects	de	Projekt Liste
 project name	projects	de	Projekt Name
-project preferences	projects	de	Projekt Einstellungen
 project statistic	projects	de	Projekt Statistik
 project statistics	projects	de	Projekt Statistiken
 projects	common	de	Projekte
-projects preferences	preferences	de	Einstellungen Projekte
 remark	projects	de	Betreff
-remark can not exceed 8000 characters in length !	projects	de	Die Beschreibung darf nicht mehr als 8000 Zeichen umfassen. 
 remark required	projects	de	Betreff notwendig
 select font	projects	de	Schrift ausw&auml;hlen
 select font size for customer address	projects	de	Schriftgr&ouml;&szlig;e f&uuml;r Kundenadresse ausw&auml;hlen
@@ -191,11 +158,9 @@ select tax for work time	projects	de	Mehrwertsteuer f&uuml;r Arbeitszeit
 select users	projects	de	Benutzer ausw&auml;hlen
 short description	projects	de	Kurzbeschreibung
 small	projects	de	Klein
-sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen f|r Sie zu t&auml;tigen.
-start date can not be before main projects start date	projects	de	Das Startdatum kann nicht vor dem Gesamtstart des Projektes liegen!
+sorry, no preferences to set for you :)	projects	de	Sorry, keine Einstellungen f|r Sie zu t&auml;tigen :)
 statistic	projects	de	Statistik
 statistics	projects	de	Statistiken
-sum	projects	de	Summe
 sum budget	projects	de	Summe Budget
 sum hours	projects	de	Summe Stunden
 sum net	projects	de	Summe netto
@@ -205,14 +170,9 @@ tahoma	projects	de	Tahoma
 tax	projects	de	Mwst.
 that id has been used already !	projects	de	Diese ID ist bereits in Benutzung !
 the choosen previous project does not have an end date specified	projects	de	F&uuml;r das gew&auml;hlte Vorprojekt wurde kein Enddatum angegeben !
-the delivery note contains no items !	projects	de	Für den Lieferschein sind keine Werte vorhanden!
-the invoice contains no items !	projects	de	Für die Rechnung sind keine Werte vorhanden!
-this is mostly caused by a not or wrongly configured smtp server. notify your administrator.	projects	de	Dieser Fehler tritt meist auf, wenn der Mailserver falsch konfiguriert wurde. Bitte kontaktieren Sie einen Administrator.
 time planned	projects	de	geplante Zeit
 time planned main project	projects	de	geplante Zeit Hauptprojekt
 time used	projects	de	verbrauchte Zeit
-times new roman	projects	de	Times New Roman
-title can not exceed 255 characters in length	projects	de	Der Titel darf nicht mehr als 255 Zeichen umfassen !
 update delivery	projects	de	Lieferung &uuml;berarbeiten
 update invoice	projects	de	Rechnung &uuml;berarbeiten
 user statistic	projects	de	Benutzer Statistik
@@ -234,8 +194,6 @@ workunits	projects	de	Arbeitseinheiten
 would you like to get notified if milestones date due change	projects	de	M&ouml;chten Sie informiert werden, wenn sich F&auml;lligkeiten von Milestones &auml;ndern ?
 would you like to get notified if projects data get updated	projects	de	M&ouml;chten Sie informiert werden, wenn sich Projektdaten &auml;ndern ?
 would you like to get notified if you get assigned to a project	projects	de	M&ouml;chten Sie informiert werden, wenn Sie einem Projekt zugeordnet werden ?
-written by:	projects	de	Erstellt von:
-you have entered an invalid date !	projects	de	Sie haben ein ungültiges Datum eingegeben !
 you have entered an invalid end date !	projects	de	Sie haben ein ung&uuml;ltiges Enddatum ausgew&auml;hlt !
 you have entered an invalid start date !	projects	de	Sie haben ein ung&uuml;ltiges Startdatum ausgew&auml;hlt !
 you have no customer selected !	projects	de	Sie haben keinen Kunden ausgew&auml;hlt !

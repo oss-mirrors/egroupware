@@ -81,7 +81,7 @@
 	</tr>
 	<tr bgcolor="{row_on}">
 		<td><b>{lang_ptime}:&nbsp;{lang_hours}</b></td>
-		<td>{phours}</td>
+		<td>{ptime}</td>
 	</tr>
 	<tr bgcolor="{row_off}">
 		<td><b>{lang_utime}:&nbsp;{lang_hours}</b></td>

@@ -11,9 +11,6 @@
 
   /* $Id$ */
 
-	$oProc->query("DELETE FROM phpgw_p_projectmembers");
-	$oProc->query("DELETE FROM phpgw_p_activities");
-
-	$oProc->query("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'ag')");
-	$oProc->query("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'bg')");
-	$oProc->query("INSERT INTO phpgw_p_activities (num,descr,remarkreq,minperae,billperae,category) VALUES ('0815','Exampleactivity','Y',0,'10.0',0)");
+	$oProc->query ("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'ag')");
+	$oProc->query ("INSERT INTO phpgw_p_projectmembers (project_id,account_id,type) VALUES (0,2,'bg')");
+	$oProc->query ("INSERT INTO phpgw_p_activities (num,descr,remarkreq,minperae,billperae,category) VALUES ('0815','Exampleactivity','Y',0,'10.0',0)");

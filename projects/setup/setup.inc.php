@@ -11,7 +11,7 @@
   /* $Id$ */
 
 	$setup_info['projects']['name']      = 'projects';
-	$setup_info['projects']['version']   = '0.8.7.009';
+	$setup_info['projects']['version']   = '0.8.7.012';
 	$setup_info['projects']['app_order'] = 13;
 	$setup_info['projects']['enable']    = 1;
 
@@ -45,13 +45,13 @@
 
 	$setup_info['projects']['hooks'] = array
 	(
-		'sidebox_menu' => 'projects.uiprojects.hook_sidebox_menu',
 		'preferences',
 		'admin',
 		'manual',
 		'add_def_pref',
 		'deleteaccount',
-		'home'
+		'home',
+		'sidebox_menu'
 	);
 
 /* Dependencies for this app to work */
@@ -77,6 +77,6 @@
 	$setup_info['projects']['depends'][] = array
 	(
 		 'appname' => 'addressbook',
-		 'versions' => Array('0.9.13','0.9.14')
+		 'versions' => Array('0.9.13','0.9.14','0.9.16')
 	);
 ?>

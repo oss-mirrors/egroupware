@@ -62,8 +62,8 @@
 	<tr>
 		<td>{lang_hours}:</td>
 		<td>
-			<input type="text" name="values[hours]" value="{hours}" size=3 maxlength=3>
-			<input type="text" name="values[minutes]" value="{minutes}" size=3 maxlength=3>
+			<input type="text" name="values[hours]" value="{hours}" size=3 maxlength=2>
+			<input type="text" name="values[minutes]" value="{minutes}" size=3 maxlength=2>
 		</td>
 	</tr>
 	<tr>

@@ -20,8 +20,8 @@
 <script LANGUAGE="JavaScript">
 	function ExchangeCustomer(thisform)
 	{
-		opener.document.app_form.abid.value = thisform.abid.value;
-		opener.document.app_form.name.value = thisform.name.value;
+		opener.document.app_form.abid.value = thisform.elements[0].value;
+		opener.document.app_form.name.value = thisform.elements[1].value;
 	}
 </script>
 </head>
@@ -68,8 +68,8 @@
 		<td><font face="{font}">{firstname}</font></td>
 		<td><font face="{font}">{lastname}</font></td>
 		<form>
-		<input type="hidden" size="25" name="abid" value="{abid}">
-		<input type="hidden" size="25" name="name" value="{company} {firstname} {lastname}">
+		<input type="hidden" size="25" name="hidden" value="{abid}">
+		<input type="hidden" size="25" name="hidden" value="{company} {firstname} {lastname}">
 		<td align="center"><font face="{font}"><input type="button" value="{lang_select}" onClick="ExchangeCustomer(this.form);" name="button"></td>
 		</font></form>    
 	</tr>

@@ -75,6 +75,7 @@
 			$this->sohours	= CreateObject('projects.soprojecthours');
 			$this->contacts	= CreateObject('phpgwapi.contacts');
 			$this->cats		= CreateObject('phpgwapi.categories');
+			$this->debug	= False;
 
 			if ($session)
 			{
@@ -82,32 +83,57 @@
 				$this->use_session = True;
 			}
 
-			$start	= get_var('start',array('POST','GET'));
-			$query	= get_var('query',array('POST','GET'));
-			$sort	= get_var('sort',array('POST','GET'));
-			$order	= get_var('order',array('POST','GET'));
-			$cat_id	= get_var('cat_id',array('POST','GET'));
-			$filter	= get_var('filter',array('POST','GET'));
-			$status	= get_var('status',array('POST','GET'));
+			$_start		= get_var('start',array('POST','GET'));
+			$_query		= get_var('query',array('POST','GET'));
+			$_sort		= get_var('sort',array('POST','GET'));
+			$_order		= get_var('order',array('POST','GET'));
+			$_cat_id	= get_var('cat_id',array('POST','GET'));
+			$_filter	= get_var('filter',array('POST','GET'));
+			$_status	= get_var('status',array('POST','GET'));
 
-			if(!empty($start) || ($start == '0') || ($start == 0))
+			if(!empty($_start) || ($_start == '0') || ($_start == 0))
 			{
-				if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $start . '"'; }
-				$this->start = $start;
+				if($this->debug) { echo '<br>overriding $start: "' . $this->start . '" now "' . $_start . '"'; }
+				$this->start = $_start;
 			}
 
-			if(isset($query)) { $this->query = $query; }
-			if(!empty($filter)) { $this->filter = $filter; }
-			if(isset($sort)) { $this->sort = $sort; }
-			if(isset($order)) { $this->order = $order; }
-			if(isset($status)) { $this->status = $status; }
-			if(isset($cat_id) && !empty($cat_id))
+			if((empty($_query) && !empty($this->query)) || !empty($_query))
 			{
-				$this->cat_id = $cat_id;
+				$this->query  = $_query;
 			}
-			if($cat_id == '0' || $cat_id == 0 || $cat_id == 'none' || $cat_id == '')
+
+			if(isset($_status) && !empty($_status))
 			{
-				unset($this->cat_id);
+				$this->status = $_status;
+			}
+
+			if(isset($_cat_id) && !empty($_cat_id))
+			{
+				$this->cat_id = $_cat_id;
+			}
+
+			if(isset($_sort) && !empty($_sort))
+			{
+				if($this->debug)
+				{
+					echo '<br>overriding $sort: "' . $this->sort . '" now "' . $_sort . '"';
+				}
+				$this->sort   = $_sort;
+			}
+
+			if(isset($_order) && !empty($_order))
+			{
+				if($this->debug)
+				{
+					echo '<br>overriding $order: "' . $this->order . '" now "' . $_order . '"';
+				}
+				$this->order  = $_order;
+			}
+
+			if(isset($_filter) && !empty($_filter))
+			{
+				if($this->debug) { echo '<br>overriding $filter: "' . $this->filter . '" now "' . $_filter . '"'; }
+				$this->filter = $_filter;
 			}
 			$this->limit = True;
 		}
@@ -237,7 +263,6 @@
 				$prefs['notify_mstone'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_mstone'];
 				$prefs['notify_pro'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_pro'];
 				$prefs['notify_assign'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['notify_assign'];
-				$prefs['mainscreen_showevents'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['mainscreen_showevents'];
 			}
 			return $prefs;
 		}
@@ -257,7 +282,6 @@
 				$GLOBALS['phpgw']->preferences->change('projects','notify_mstone',(isset($prefs['notify_mstone'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_pro',(isset($prefs['notify_pro'])?'yes':''));
 				$GLOBALS['phpgw']->preferences->change('projects','notify_assign',(isset($prefs['notify_assign'])?'yes':''));
-				$GLOBALS['phpgw']->preferences->change('projects','mainscreen_showevents',intval($prefs['mainscreen_showevents']));
 
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 		//	_debug_array($prefs);
@@ -514,7 +538,7 @@
 			$project = array
 			(
 				'utime'				=> $this->sohours->get_time_used($project_id),
-				'phours'			=> ($pro['ptime']/60),
+				'ptime'				=> ($pro['ptime']/60),
 				'title'				=> $GLOBALS['phpgw']->strip_html($pro['title']),
 				'number'			=> $GLOBALS['phpgw']->strip_html($pro['number']),
 				'investment_nr'		=> $GLOBALS['phpgw']->strip_html($pro['investment_nr']),
@@ -1111,6 +1135,18 @@
 				//unset($prefs);
 			}
 			return $returncode;
+		}
+
+		function get_site_config()
+		{
+			$this->config = CreateObject('phpgwapi.config','projects');
+			$this->config->read_repository();
+
+			if ($this->config->config_data)
+			{
+				$items = $this->config->config_data;
+			}
+			return $items;
 		}
 	}
 ?>

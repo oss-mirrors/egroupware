@@ -68,10 +68,6 @@
 		<td>{lang_notify_assign}:</td>
 		<td><input type="checkbox" name="prefs[notify_assign]" value="True" {notify_assign_selected}></td>
 	</tr>
-	<tr bgcolor="{row_on}">
-		<td>{lang_mainscreen_show}:</td>
-		<td><select name="prefs[mainscreen_showevents]">{mainscreen_options}</select></td>
-	</tr>
 	<tr valign="bottom" height="50">
 		<td align="left">
 			<input type="submit" name="save" value="{lang_save}">

@@ -76,15 +76,15 @@
 				$join = ' LEFT JOIN ';
 			}
 
-			$this->db->query('SELECT title,num,phpgw_p_projects.id as id FROM phpgw_p_projects' . $join . 'phpgw_p_hours ON '
-							. 'phpgw_p_hours.employee=' . $account_id . ' GROUP BY title,num,phpgw_p_projects.id',__LINE__,__FILE__);
+			$this->db->query('SELECT title,p_number,phpgw_p_projects.id as id FROM phpgw_p_projects' . $join . 'phpgw_p_hours ON '
+							. 'phpgw_p_hours.employee=' . $account_id . ' GROUP BY title,p_number,phpgw_p_projects.id',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
 				$pro[] = array
 				(
 					'project_id'	=> $this->db->f('id'),
-					'num'			=> $this->db->f('num'),
+					'num'			=> $this->db->f('p_number'),
 					'title'			=> $this->db->f('title')
 				);
 			}
@@ -102,9 +102,9 @@
 				case 'both':	$idfilter = 'WHERE employee=' . $account_id . ' AND  project_id=' . $project_id; break;
 			}
 
-			$this->db->query('SELECT SUM(minutes) as min,num,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter
+			$this->db->query('SELECT SUM(minutes) as min,a_number,descr FROM phpgw_p_hours,phpgw_p_activities ' . $idfilter
 							. ' AND phpgw_p_hours.activity_id=phpgw_p_activities.id' . $this->stat_filter($values)
-							. ' GROUP BY phpgw_p_activities.descr,phpgw_p_activities.num',__LINE__,__FILE__);
+							. ' GROUP BY phpgw_p_activities.descr,phpgw_p_activities.a_number',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
 			{
@@ -112,7 +112,7 @@
 				(
 					'min'	=> $this->db->f('min'),
 					'descr'	=> $this->db->f('descr'),
-					'num'	=> $this->db->f('num')
+					'num'	=> $this->db->f('a_number')
 				);
 			}
 			return $hours;

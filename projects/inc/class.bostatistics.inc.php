@@ -84,7 +84,7 @@
 			$graph_sdateout	= $GLOBALS['phpgw']->common->show_date($graph_sdate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 			$graph_edateout	= $GLOBALS['phpgw']->common->show_date($graph_edate,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 
-			$diff				= date('t',$smonth);
+			$diff				= date('t',$graph_sdate);
 			$this->date_diff	= $diff;
 
 			$this->graph->line_captions_x[0]['date_formatted']	= $GLOBALS['phpgw']->common->show_date($graph_sdate,'m/d');

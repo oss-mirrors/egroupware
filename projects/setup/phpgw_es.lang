@@ -1,235 +1,164 @@
-account	projects	es	Cuenta
-accountancy	common	es	Contabilidad
-active	projects	es	Activa
-activities	projects	es	Actividades
-activities list	projects	es	Listado de Actividades
-activity	projects	es	Actividad
-activity %1 has been added !	projects	es	La Actividad %1 ha sido agregada !
-activity %1 has been updated !	projects	es	La Actividad %1 ha sido actualizada !
-activity id	projects	es	Codigo Actividad
-add activity	projects	es	Agregar Actividad
-add job	projects	es	Agregar Trabajo
-add milestone	projects	es	Añadir hito
-add project	projects	es	Agregar Proyecto
-add project hours	projects	es	Agregar horas de proyecto
-add work hours	projects	es	Agregar Horas de Trabajo
-administrator	projects	es	Administrador
-all	projects	es	Todos
-all delivery notes	projects	es	Todas las notas de envio
-all invoices	projects	es	Todos los recibos
-archive	projects	es	Archivo
-are you sure you want to delete this activity	projects	es	¿Está seguro de querer eliminar esta actividad?
-are you sure you want to delete this project	projects	es	¿Está seguro de querer eliminar este proyecto?
-arial	projects	es	Arial
-bill per hour	projects	es	Factura por hora
-bill per hour/workunit	projects	es	Factura por hora/unidad de trabajo
-bill per workunit	projects	es	Suma por unidad de trabajo
-billable activities	projects	es	Actividades Facturables
-billed	projects	es	Facturado
-billed only	projects	es	Solo Facturados
-billing	projects	es	Facturacion
-bookable activities	projects	es	Actividades Registrables
-bookkeeper	projects	es	Contador
-bookkeeping	common	es	
-budget	projects	es	Presupuesto
-budget main project	projects	es	Presupuesto del proyecto principal
-budget sum of all sub projects is bigger than the budget of the main project	projects	es	¡La suma presupuestaria de todos los subproyectos es mayor que el presupuesto del proyecto principal!
-calculate	projects	es	Calcular
-closed	projects	es	Cerrado
-coordinator	projects	es	Coordinador
-courier new	projects	es	Courier New
-create delivery	projects	es	Crear envio
-create invoice	projects	es	Crear factura
-creator	projects	es	Creador
-customer	projects	es	Cliente
-date created	projects	es	Fecha de creación
-delete hours	projects	es	Eliminar horas
-deliveries	projects	es	Envios
-delivery	projects	es	Envio
-delivery %1 has been created !	projects	es	El envio %1 ha sido creado !
-delivery %1 has been updated !	projects	es	El envio %1 ha sido actualizdo !
-delivery date	projects	es	Fecha de Envio
-delivery id	projects	es	ID de Envio
-delivery list	projects	es	Lista de Envios
-delivery note	projects	es	Nota de Envio
-delivery note for project	projects	es	Nota de Envío para el proyecto
-delivery notes	projects	es	Notas de Envios
-description can not exceed 255 characters in length !	projects	es	¡La descripción no puede exceder 255 caracteres de longitud!
-description can not exceed 8000 characters in length !	projects	es	¡La descripción no puede exceder 8000 caracteres de longitud!
-do you also want to delete all sub projects ?	projects	es	¿Desea eliminar todos los subproyectos?
-edit activity	projects	es	Editar Actividad
-edit administrator list	projects	es	Editar la lista de administradores del proyecto
-edit bookkeeper list	projects	es	Editar la lista de contables del proyecto
-edit hours	projects	es	Editar Horas
-edit job	projects	es	Editar trabajo
-edit project	projects	es	Editar proyecto
-edit project administrator list	projects	es	Editar lista de administradores de proyecto
-edit project bookkeeper list	projects	es	Editar lista de contadores del proyecto
-edit project hours	projects	es	Editar horas de proyecto
-edit work hours	projects	es	Editar horas de trabajo
-employee	projects	es	Empleado
-ending date can not be after main projects ending date	projects	es	¡La fecha de finalización no puede ser posterior a la fecha de finalización del proyecto!
-ending date can not be after main projects ending date !	projects	es	La fecha de finalizaciòn no puede ser posterior a la del proyecto principal!
-ending date can not be before start date	projects	es	¡La fecha de finalización no puede ser anterior a la fecha de inicio!
-error in calculation sum does not match !	projects	es	¡Error al calcular el total! No coincide
-exactly accounting	projects	es	
-generate activity id ?	projects	es	Generar ID de Actividad ?
-generate delivery id ?	projects	es	Generar ID de Envio ?
-generate invoice id ?	projects	es	Generar ID de Factura ?
-generate job id ?	projects	es	Generar ID de Trabajo ?
-generate project id ?	projects	es	Generar ID de Proyecto ?
-georgia	projects	es	Georgia
-helvetica	projects	es	Helvetica
-helvetiva	projects	es	Helvetica
-hours	projects	es	Horas
-id can not exceed 19 characters in length	projects	es	¡El ID no puede exceder los 19 caracteres de longitud!
-id can not exceed 25 characters in length	projects	es	¡El ID no puede exceder los 25 caracteres de longitud!
-if you are an administrator, please set the preferences for this application	projects	es	¡Si usted es administrador, por favor establezca las preferencias para esta aplicación!
-if you are not an administrator, please inform the administrator to set the preferences for this application	projects	es	¡Si usted no es administrador, por favor indíquele que establezca las preferencias para esta aplicación!
-investment nr	projects	es	Número de inversión
-invoice	projects	es	Factura
-invoice %1 has been created !	projects	es	La Factura %1 ha sido creada !
-invoice %1 has been updated !	projects	es	La factura %1 ha sido actualizada !
-invoice date	projects	es	Fecha de Factura
-invoice for project	projects	es	Factura para el Proyecto
-invoice id	projects	es	ID de Factura
-invoice layout	projects	es	Dise&ntilde;o de Factura
-invoice list	projects	es	Listado de Facturas
-invoices	projects	es	Facturas
-invoicing	projects	es	Facturando
-invoicing of work time	projects	es	Facturación de tiempo de trabajo
-job	projects	es	Trabajo
-job archive	projects	es	Archivo de Trabajos
-job date	projects	es	Fecha del Trabajo
-job description	projects	es	Descripcion del Trabajo
-job has been added !	projects	es	El trabajo ha sido a&ntilde;adido !
-job has been updated !	projects	es	El trabajo ha sido actualizado !
-job id	projects	es	ID del Trabajo
-job list	projects	es	Listado de Trabajos
-jobs	projects	es	Trabajos
-large	projects	es	Grande
-last update	projects	es	Última actualización
-list activities	projects	es	Listar actividades
-list budget	projects	es	Listar presupuesto
-list jobs	projects	es	Listar trabajos
-list pcosts	projects	es	Listar costes previstos
-list projects	projects	es	Listar proyectos
-list work hours	projects	es	Listar horas de trabajo
-main project	projects	es	Proyecto principal
-main project:	projects	es	Proyecto Principal:
-milestones	projects	es	hitos
-minutes per workunit	projects	es	Minutos por Unidad de Trabajo
-month	projects	es	Mes
-net	projects	es	total
-new project	projects	es	Nuevo Proyecto
-nonactive	projects	es	Inactivo
-number	projects	es	Numero
-open	projects	es	Abrir
-open popup window	projects	es	abrir ventana emergente
-overall	projects	es	Resumen
-parent project	projects	es	Proyecto padre
-parent project:	projects	es	Proyecto padre:
-pcosts can not be higher than the budget	projects	es	¡El coste previsto no puede ser superior al presupuesto!
-per	projects	es	por
-per hour	projects	es	por hora
-per hour/workunit	projects	es	por hora/unidad de trabajo
-per workunit	projects	es	por unidad de trabajo
-planned costs	projects	es	Costes previstos
-planned time	projects	es	Tiempo previsto
-planned time sum of all sub projects is bigger than the planned time of the main project	projects	es	¡La suma de duraciones previstas de todos los subproyectos es mayor que la duración prevista del proyecto principal!
-please choose a project coordinator	projects	es	¡Por favor, seleccione un coordinador para el proyecto!
-please choose activities for that project first !	projects	es	Por favor seleccione actividades para ese proyecto primero !
-please choose activities for the project	projects	es	¡Por favor, seleccione actividades para el proyecto!
-please enter a remark !	projects	es	Por favor ingrese una nota !
-please enter an id !	projects	es	Por favor ingrese un ID !
-please enter the bill	projects	es	¡Por favor, ingrese la factura!
-please enter the bill !	projects	es	Por favor ingrese la factura !
-please enter the bill per workunit !	projects	es	Por favor ingrese el costo por unidad de trabajo !
-please enter the minutes per workunit	projects	es	¡Por favor, introduzca el tiempo [minutos] por unidad de trabajo!
-please enter the minutes per workunit !	projects	es	Por favor ingrese los minutos por unidad de trabajo !
-please set the minutes per workunit for each activity now !	projects	es	¡Por favor, establezca el tiempo [minutos] por unidad de trabajo para cada actividad!
-please set your preferences for this application !	projects	es	¡Por favor, especifique sus preferencias para esta aplicación!
-please specify country and currency in the global preferences section	projects	es	¡Por favor, especifique el país y la moneda en la sección de preferencias globales!
-please specify the budget	projects	es	¡Por favor, especifique el presupuesto!
-position	projects	es	Posicion
-preferences for accountancy	projects	es	Preferencias para contabilidad
-print delivery	projects	es	Imprimir nota de envio
-print invoice	projects	es	Imprimir factura
-processor	projects	es	
-project	projects	es	Proyecto
-project %1 has been saved	projects	es	se ha guardado el proyecto %1 
-project administration	projects	es	Administracion de Proyectos
-project archive	projects	es	Archivo de Proyectos
-project billing	projects	es	Facturacion de Proyectos
-project delivery	projects	es	Envio de Proyectos
-project id	projects	es	ID de Proyectos
-project list	projects	es	Listado de Proyectos
-project name	projects	es	Nombre de Proyectos
-project preferences	projects	es	Preferencias de Proyecto
-project statistic	projects	es	Estadisticas de Proyecto
-project statistics	projects	es	Estadisticas de Proyecto
 projects	common	es	Proyectos
-projects preferences	preferences	es	Preferencias de Proyectos
-remark	projects	es	Nota
-remark can not exceed 8000 characters in length !	projects	es	¡La nota no puede exceder los 8000 carácteres de longitud!
-remark required	projects	es	Nota requerida
+project administration	admin	es	Administracion de Proyectos
+Account	projects	es	Cuenta
+Active	projects	es	Activa
+Activities	projects	es	Actividades
+Activities list	projects	es	Listado de Actividades
+Activity	projects	es	Actividad
+Activity ID	projects	es	Codigo Actividad
+Activity %1 has been added !	projects	es	La Actividad %1 ha sido agregada !
+Activity %1 has been updated !	projects	es	La Actividad %1 ha sido actualizada !
+Add Activity	projects	es	Agregar Actividad
+Add work hours	projects	es	Agregar Horas de Trabajo
+Add job	projects	es	Agregar Trabajo
+Add project	projects	es	Agregar Proyecto
+Add project hours	projects	es	Agregar horas de proyecto
+Administrator	projects	es	Administrador
+All invoices	projects	es	Todos los recibos
+All	projects	es	Todos
+All delivery notes	projects	es	Todas las notas de envio
+archive	projects	es	Archivo
+arial	projects	es	Arial
+billed	projects	es	Facturado
+Billed only	projects	es	Solo Facturados
+Billing	projects	es	Facturacion
+Bookable activities	projects	es	Actividades Registrables
+Billable activities	projects	es	Actividades Facturables
+bill per hour	projects	es	Suma por hora
+Bill per workunit	projects	es	Suma por unidad de trabajo
+bookkeeper	projects	es	Contador
+Budget	projects	es	Presupuesto
+Calculate	projects	es	Calcular
+closed	projects	es	Cerrado
+Coordinator	projects	es	Coordinador
+Create delivery	projects	es	Crear envio
+Create invoice	projects	es	Crear factura
+courier new	projects	es	Courier New
+Customer	projects	es	Cliente
+Delete hours	projects	es	Eliminar horas
+Deliveries	projects	es	Envios
+Delivery	projects	es	Envio
+Delivery date	projects	es	Fecha de Envio
+Delivery note	projects	es	Nota de Envio
+delivery note for project	projects	es	Nota de Envío para el proyecto
+Delivery ID	projects	es	ID de Envio
+Delivery list	projects	es	Lista de Envios
+Delivery notes	projects	es	Notas de Envios
+Delivery %1 has been created !	projects	es	El envio %1 ha sido creado !
+Delivery %1 has been updated !	projects	es	El envio %1 ha sido actualizdo !
+Edit Activity	projects	es	Editar Actividad
+Edit hours	projects	es	Editar Horas
+Edit project administrator list	projects	es	Editar lista de administradores de proyecto
+edit project bookkeeper list	projects	es	Editar lista de contadores del proyecto
+Edit project	projects	es	Editar proyecto
+Edit project hours	projects	es	Editar horas de proyecto
+Employee	projects	es	Empleado
+Ending date can not be after main projects ending date !	projects	es	La fecha de finalizaciòn no puede ser posterior a la del proyecto principal!
+Generate Activity ID ?	projects	es	Generar ID de Actividad ?
+Generate Delivery ID ?	projects	es	Generar ID de Envio ?
+Generate Project ID ?	projects	es	Generar ID de Proyecto ?
+Generate Invoice ID ?	projects	es	Generar ID de Factura ?
+Generate Job ID ?	projects	es	Generar ID de Trabajo ?
+georgia	projects	es	Georgia
+helvetiva	projects	es	Helvetica
+Hours	projects	es	Horas
+Invoice	projects	es	Factura
+Invoice date	projects	es	Fecha de Factura
+Invoice for project	projects	es	Factura para el Proyecto
+Invoice ID	projects	es	ID de Factura
+Invoice layout	projects	es	Dise&ntilde;o de Factura
+Invoice list	projects	es	Listado de Facturas
+Invoices	projects	es	Facturas
+Invoice %1 has been created !	projects	es	La Factura %1 ha sido creada !
+Invoice %1 has been updated !	projects	es	La factura %1 ha sido actualizada !
+invoicing	projects	es	Facturando
+Job	projects	es	Trabajo
+job archive	projects	es	Archivo de Trabajos
+Job date	projects	es	Fecha del Trabajo
+Job description	projects	es	Descripcion del Trabajo
+Job has been added !	projects	es	El trabajo ha sido a&ntilde;adido !
+Job has been updated !	projects	es	El trabajo ha sido actualizado !
+Job ID	projects	es	ID del Trabajo
+Job list	projects	es	Listado de Trabajos
+Jobs	projects	es	Trabajos
+large	projects	es	Grande
+Main project:	projects	es	Proyecto Principal:
+Minutes per workunit	projects	es	Minutos por Unidad de Trabajo
+net	projects	es	total
+New project	projects	es	Nuevo Proyecto
+Nonactive	projects	es	Inactivo
+Number	projects	es	Numero
+open	projects	es	Abrir
+Overall	projects	es	Resumen
+per	projects	es	por
+per workunit	projects	es	por unidad de trabajo
+Please enter an ID !	projects	es	Por favor ingrese un ID !
+Please choose activities for that project first !	projects	es	Por favor seleccione actividades para ese proyecto primero !
+Please enter a remark !	projects	es	Por favor ingrese una nota !
+Please enter the bill !	projects	es	Por favor ingrese la factura !
+Please enter the bill per workunit !	projects	es	Por favor ingrese el costo por unidad de trabajo !
+Please enter the minutes per workunit !	projects	es	Por favor ingrese los minutos por unidad de trabajo !
+Position	projects	es	Posicion
+Print delivery	projects	es	Imprimir nota de envio
+Print invoice	projects	es	Imprimir factura
+Project	projects	es	Proyecto
+Project administration	projects	es	Administracion de Proyectos
+Project archive	projects	es	Archivo de Proyectos
+Project billing	projects	es	Facturacion de Proyectos
+Project delivery	projects	es	Envio de Proyectos
+Project ID	projects	es	ID de Proyectos
+Project list	projects	es	Listado de Proyectos
+Project name	projects	es	Nombre de Proyectos
+Project preferences	projects	es	Preferencias de Proyecto
+Projects preferences	preferences	es	Preferencias de Proyectos
+Project statistic	projects	es	Estadisticas de Proyecto
+project statistics	projects	es	Estadisticas de Proyecto
+Remark	projects	es	Nota
+Remark required	projects	es	Nota requerida
 select font	projects	es	Seleccion de Tipografía
-select font size for customer address	projects	es	Seleccione tamaño de tipografía para la dirección del cliente
-select font size for own address	projects	es	Seleccione tamaño de tipografía para la dirección propia
-select groups	projects	es	Seleccione grupos
-select main project	projects	es	Seleccione proyecto principal
-select own address	projects	es	Seleccione su propia dirección
-select project	projects	es	Seleccione proyecto
-select tax for work time	projects	es	Seleccione impuesto para el tiempo de trabajo
-select tax for workhours	projects	es	Seleccione impuestos por hora de trabajo
-select users	projects	es	Seleccione Usuarios
-select your address	projects	es	Seleccione su direccion
-short description	projects	es	Descripcion Corta
+Select font size for own address	projects	es	Seleccione tamaño de tipografía para la dirección propia
+Select font size for customer address	projects	es	Seleccione tamaño de tipografía para la dirección del cliente
+Select main project	projects	es	Seleccione proyecto principal
+Select project	projects	es	Seleccione proyecto
+Select tax for workhours	projects	es	Seleccione impuestos por hora de trabajo
+Select users	projects	es	Seleccione Usuarios
+Select groups	projects	es	Seleccione grupos
+Select your address	projects	es	Seleccione su direccion
 small	projects	es	Pequeño
-sorry, no preferences to set for you :)	projects	es	Lo siento, no hay preferencias que configurar
-start date can not be before main projects start date	projects	es	¡La fecha de inicio no puede ser anterior a la fecha de inicio del proyecto!
-start date can not be before main projects start date !	projects	es	La fecha de inicio no puede ser previa a la del proyecto principal
-statistic	projects	es	Estadisticas
-statistics	projects	es	Estadisticas
-sum	projects	es	Sumatoria
-sum budget	projects	es	Suma presupuesto
-sum hours	projects	es	Suma de Horas
+Start date can not be before main projects start date !	projects	es	La fecha de inicio no puede ser previa a la del proyecto principal
+Statistic	projects	es	Estadisticas
+Statistics	projects	es	Estadisticas
+Short description	projects	es	Descripcion Corta
+Sorry, no preferences to set for you :)	projects	es	Lo siento, no hay preferencias que configurar
 sum net	projects	es	Suma Total
-sum pcosts	projects	es	Suma de costes previstos
-sum workunits	projects	es	Sumatoria de Unidades de Trabajo
+sum hours	projects	es	Suma de Horas
+Sum	projects	es	Sumatoria
+Sum workunits	projects	es	Sumatoria de Unidades de Trabajo
 tahoma	projects	es	Tahoma
 tax	projects	es	impuesto
-that id has been used already !	projects	es	Este ID ya ha sido usado !
-the delivery note contains no items !	projects	es	¡La nota de entrega no contiene elemento alguno!
-the invoice contains no items !	projects	es	¡La factura no contiene elemento alguno!
-time planned	projects	es	Duración prevista
-time planned main project	projects	es	Duración prevista del proyecto principal
-time used	projects	es	Tiempo consumido
+That ID has been used already !	projects	es	Este ID ya ha sido usado !
 times new roman	projects	es	Times New Roman
-title can not exceed 255 characters in length	projects	es	¡El título no puede exceder los 255 caracteres de longitud!
-update delivery	projects	es	Actualizar envio
-update invoice	projects	es	Actualizar factura
-user statistic	projects	es	Estadisticas del Usuario
+Update invoice	projects	es	Actualizar factura
+Update delivery	projects	es	Actualizar envio
+Username / Group	projects	es	Usuario /Grupo
+User statistic	projects	es	Estadisticas del Usuario
 user statistics	projects	es	Estadisticas del Usuario
-username / group	projects	es	Usuario /Grupo
 verdana	projects	es	Verdana
 very large	projects	es	Muy Grande
 very small	projects	es	Muy Pequeño
-view job	projects	es	Ver Trabajo
-view project	projects	es	Ver Proyecto
-view work hours	projects	es	Ver horas de Trabajo
-work date	projects	es	Fecha del Trabajo
-work hours	projects	es	Horas de Trabajo
-work hours archive	projects	es	Archivo de Horas de Trabajo
-work hours list	projects	es	Listado de Horas del TRabajo
-work time	projects	es	Tiempo de Trabajo
-workunit	projects	es	Unidad de Trabajo
-workunits	projects	es	Unidades de Trabajo
-would you like to get notified via email about dates due	projects	es	
+View work hours	projects	es	Ver horas de Trabajo
+View job	projects	es	Ver Trabajo
+View project	projects	es	Ver Proyecto
+Work date	projects	es	Fecha del Trabajo
+Work hours	projects	es	Horas de Trabajo
+Work hours archive	projects	es	Archivo de Horas de Trabajo
+Work hours list	projects	es	Listado de Horas del TRabajo
+Work time	projects	es	Tiempo de Trabajo
+Workunit	projects	es	Unidad de Trabajo
+Workunits	projects	es	Unidades de Trabajo
 written by:	projects	es	Escrito por:
-you have entered an invalid date !	projects	es	¡Ha introducido una fecha incorrecta!
-you have entered an invalid end date !	projects	es	Usted ha ingresado una fecha de finalizacion invalida !
-you have entered an invalid start date !	projects	es	Usted ha ingresado una fecha de inicio invalida !
-you have no customer selected !	projects	es	No ha seleccionado ningun cliente!
-you have selected an invalid activity !	projects	es	Usted ha seleccionado una actividad invalida !
-you have to create a delivery or invoice first !	projects	es	Usted debe CREAR un envio o factura primero !
+You have entered an invalid start date !	projects	es	Usted ha ingresado una fecha de inicio invalida !
+You have entered an invalid end date !	projects	es	Usted ha ingresado una fecha de finalizacion invalida !
+You have selected an invalid activity !	projects	es	Usted ha seleccionado una actividad invalida !
+You have no customer selected !	projects	es	No ha seleccionado ningun cliente!
+You have to CREATE a delivery or invoice first !	projects	es	Usted debe CREAR un envio o factura primero !

@@ -122,44 +122,46 @@
 
 		function display_app_header()
 		{
-			$GLOBALS['phpgw']->template->set_file(array('header' => 'header.tpl'));
-			$GLOBALS['phpgw']->template->set_block('header','projects_header');
+			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['template_set'] != 'idots')
+			if ($GLOBALS['phpgw_info']['user']['preferences']['common']['template_set'] != 'idots')
+			{
+				$GLOBALS['phpgw']->template->set_file(array('header' => 'header.tpl'));
+				$GLOBALS['phpgw']->template->set_block('header','projects_header');
 
+				if ($this->boprojects->isprojectadmin('pad'))
+				{
+					$GLOBALS['phpgw']->template->set_var('admin_info',lang('Administrator'));
+					$GLOBALS['phpgw']->template->set_var('break1','&nbsp;|&nbsp;');
+					$GLOBALS['phpgw']->template->set_var('space1','&nbsp;&nbsp;&nbsp;');
+					$GLOBALS['phpgw']->template->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
+					$GLOBALS['phpgw']->template->set_var('lang_activities',lang('Activities'));                                                                                                                               
+					$GLOBALS['phpgw']->template->set_var('link_budget',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_budget&action=mains'));
+					$GLOBALS['phpgw']->template->set_var('lang_budget',lang('budget'));
+				}
+
+				if ($this->boprojects->isprojectadmin('pbo'))
+				{
+					$GLOBALS['phpgw']->template->set_var('book_info',lang('Bookkeeper'));
+					$GLOBALS['phpgw']->template->set_var('break2','&nbsp;|&nbsp;');
+					$GLOBALS['phpgw']->template->set_var('space2','&nbsp;&nbsp;&nbsp;');
+					$GLOBALS['phpgw']->template->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
+					$GLOBALS['phpgw']->template->set_var('lang_billing',lang('Billing'));
+					$GLOBALS['phpgw']->template->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
+					$GLOBALS['phpgw']->template->set_var('lang_delivery',lang('Deliveries'));
+				}
+
+				$GLOBALS['phpgw']->template->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
+				$GLOBALS['phpgw']->template->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
+				$GLOBALS['phpgw']->template->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
+				$GLOBALS['phpgw']->template->set_var('lang_statistics',lang('Statistics'));
+				$GLOBALS['phpgw']->template->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
+				$GLOBALS['phpgw']->template->set_var('lang_projects',lang('Projects'));
+				$GLOBALS['phpgw']->template->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
+				$GLOBALS['phpgw']->template->set_var('lang_archiv',lang('archive'));
+
+				$GLOBALS['phpgw']->template->fp('app_header','projects_header');
+			}
 			$this->set_app_langs();
-
-			if ($this->boprojects->isprojectadmin('pad'))
-			{
-				$GLOBALS['phpgw']->template->set_var('admin_info',lang('Administrator'));
-				$GLOBALS['phpgw']->template->set_var('break1','&nbsp;|&nbsp;');
-				$GLOBALS['phpgw']->template->set_var('space1','&nbsp;&nbsp;&nbsp;');
-				$GLOBALS['phpgw']->template->set_var('link_activities',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_activities&action=act'));                                                                                                         
-				$GLOBALS['phpgw']->template->set_var('lang_activities',lang('Activities'));                                                                                                                               
-				$GLOBALS['phpgw']->template->set_var('link_budget',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_budget&action=mains'));
-				$GLOBALS['phpgw']->template->set_var('lang_budget',lang('budget'));
-			}
-
-			if ($this->boprojects->isprojectadmin('pbo'))
-			{
-				$GLOBALS['phpgw']->template->set_var('book_info',lang('Bookkeeper'));
-				$GLOBALS['phpgw']->template->set_var('break2','&nbsp;|&nbsp;');
-				$GLOBALS['phpgw']->template->set_var('space2','&nbsp;&nbsp;&nbsp;');
-				$GLOBALS['phpgw']->template->set_var('link_billing',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uibilling.list_projects&action=mains'));
-				$GLOBALS['phpgw']->template->set_var('lang_billing',lang('Billing'));
-				$GLOBALS['phpgw']->template->set_var('link_delivery',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uideliveries.list_projects&action=mains'));
-				$GLOBALS['phpgw']->template->set_var('lang_delivery',lang('Deliveries'));
-			}
-
-			$GLOBALS['phpgw']->template->set_var('link_jobs',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=subs'));
-			$GLOBALS['phpgw']->template->set_var('link_hours',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojecthours.list_hours'));
-			$GLOBALS['phpgw']->template->set_var('link_statistics',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uistatistics.list_projects&action=mains'));
-			$GLOBALS['phpgw']->template->set_var('lang_statistics',lang("Statistics"));
-			$GLOBALS['phpgw']->template->set_var('link_projects',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
-			$GLOBALS['phpgw']->template->set_var('lang_projects',lang('Projects'));
-			$GLOBALS['phpgw']->template->set_var('link_archiv',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.archive&action=amains'));
-			$GLOBALS['phpgw']->template->set_var('lang_archiv',lang('archive'));
-
-			$GLOBALS['phpgw']->template->fp('app_header','projects_header');
-
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 		}
@@ -401,7 +403,7 @@
 				$project_id = '';
 			}
 
-			$bill = $this->bobilling->read_invoices($this->start, $this->query, $this->sort, $this->order, True, $project_id);
+			$bill = $this->bobilling->read_invoices($this->start,$this->query,$this->sort,$this->order,True,$project_id);
 
 // -------------------- nextmatch variable template-declarations -----------------------------
 

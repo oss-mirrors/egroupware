@@ -46,6 +46,7 @@
 			$this->sodeliveries	= CreateObject('projects.sodeliveries');
 			$this->soprojects	= CreateObject('projects.soprojects');
 			$this->contacts		= CreateObject('phpgwapi.contacts');
+			$this->boprojects	= CreateObject('projects.boprojects');
 		}
 
 		function read_hours($project_id, $action)
@@ -66,9 +67,16 @@
 			return $hours;
 		}
 
+		function get_site_config()
+		{
+			return $this->boprojects->get_site_config();
+		}
+
 		function read_deliveries($start, $query, $sort, $order, $limit, $project_id)
 		{
-			$del = $this->sodeliveries->read_deliveries($start, $query, $sort, $order, $limit, $project_id);
+			$co = $this->get_site_config();
+			$del = $this->sodeliveries->read_deliveries(array('start' => $start,'query' => $query,'sort' => $sort,'order' => $order,'limit' => $limit,
+															'project_id' => $project_id,'owner' => $co['invoice_acl']));
 			$this->total_records = $this->sodeliveries->total_records;
 			return $del;
 		}

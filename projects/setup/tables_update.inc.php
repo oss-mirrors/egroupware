@@ -379,6 +379,13 @@
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 
+	$test[] = '0.8.6.009';
+	function projects_upgrade0_8_6_009()
+	{
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.010';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
 	$test[] = '0.8.7.001';
 	function projects_upgrade0_8_7_001()
 	{
@@ -477,6 +484,40 @@
 		$GLOBALS['phpgw_setup']->oProc->AlterColumn('phpgw_p_projects','investment_nr',array('type' => 'varchar','precision' => 50,'nullable' => True));
 
 		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.009';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.7.009';
+	function projects_upgrade0_8_7_009()
+	{
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_invoice','owner',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+		$GLOBALS['phpgw_setup']->oProc->AddColumn('phpgw_p_delivery','owner',array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False));
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.010';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.7.010';
+	function projects_upgrade0_8_7_010()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_projects','num','p_number');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_activities','num','a_number');
+
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_invoice','num','i_number');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_invoice','date','i_date');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_delivery','num','d_number');
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_delivery','date','d_date');
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.011';
+		return $GLOBALS['setup_info']['projects']['currentver'];
+	}
+
+	$test[] = '0.8.7.011';
+	function projects_upgrade0_8_7_011()
+	{
+		$GLOBALS['phpgw_setup']->oProc->RenameColumn('phpgw_p_invoice','sum','i_sum');
+
+		$GLOBALS['setup_info']['projects']['currentver'] = '0.8.7.012';
 		return $GLOBALS['setup_info']['projects']['currentver'];
 	}
 ?>

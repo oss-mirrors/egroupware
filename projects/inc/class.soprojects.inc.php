@@ -72,7 +72,7 @@
 				(
 					'project_id'	=> $this->db->f('id'),
 					'parent'		=> $this->db->f('parent'),
-					'number'		=> $this->db->f('num'),
+					'number'		=> $this->db->f('p_number'),
 					'access'		=> $this->db->f('access'),
 					'cat'			=> $this->db->f('category'),
 					'sdate'			=> $this->db->f('start_date'),
@@ -190,7 +190,7 @@
 
 			if ($query)
 			{
-				$querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') ";
+				$querymethod = " AND (title like '%$query%' OR p_number like '%$query%' OR descr like '%$query%') ";
 			}
 
 			$sql = "SELECT * from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
@@ -323,7 +323,7 @@
 			$this->db->lock($table);
 
 			$this->db->query('INSERT into phpgw_p_projects (owner,access,category,entry_date,start_date,end_date,coordinator,customer,status,'
-							. 'descr,title,budget,num,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level,previous) VALUES (' . $this->account
+							. 'descr,title,budget,p_number,parent,time_planned,date_created,processor,investment_nr,pcosts,main,level,previous) VALUES (' . $this->account
 							. ",'" . (isset($values['access'])?$values['access']:'public') . "'," . intval($values['cat']) . ',' . time() . ',' . intval($values['sdate']) . ','
 							. intval($values['edate']) . ',' . intval($values['coordinator']) . ',' . intval($values['customer']) . ",'" . $values['status']
 							. "','" . $values['descr'] . "','" . $values['title'] . "'," . $values['budget'] . ",'" . $values['number'] . "',"
@@ -484,7 +484,7 @@
 			$this->db->query("UPDATE phpgw_p_projects set access='" . (isset($values['access'])?$values['access']:'public') . "', category=" . intval($values['cat']) . ", entry_date="
 							. time() . ", start_date=" . intval($values['sdate']) . ", end_date=" . intval($values['edate']) . ", coordinator="
 							. intval($values['coordinator']) . ", customer=" . intval($values['customer']) . ", status='" . $values['status'] . "', descr='"
-							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", num='"
+							. $values['descr'] . "', title='" . $values['title'] . "', budget=" . $values['budget'] . ", p_number='"
 							. $values['number'] . "', time_planned=" . intval($values['ptime']) . ', processor=' . $this->account . ", investment_nr='"
 							. $values['investment_nr'] . "', pcosts=" . $values['pcosts'] . ', parent=' . $values['parent']
 							. ', level=' . intval($values['level']) . ', previous=' . intval($values['previous']) . ' where id=' . $values['project_id'],__LINE__,__FILE__);
@@ -599,7 +599,7 @@
 				$bill_filter = " AND billable='N'";
 			}
 
-			$this->db->query('SELECT phpgw_p_activities.id,num,descr,billperae,activity_id from phpgw_p_activities,phpgw_p_projectactivities '
+			$this->db->query('SELECT phpgw_p_activities.id,a_number,descr,billperae,activity_id from phpgw_p_activities,phpgw_p_projectactivities '
 							. 'WHERE phpgw_p_projectactivities.project_id=' . $project_id . ' AND phpgw_p_activities.id='
 							. 'phpgw_p_projectactivities.activity_id' . $bill_filter,__LINE__,__FILE__);
 
@@ -607,7 +607,7 @@
 			{
 				$act[] = array
 				(
-					'num'		=> $this->db->f('num'),
+					'num'		=> $this->db->f('a_number'),
 					'descr'		=> $this->db->f('descr'),
 					'billperae'	=> $this->db->f('billperae')
 				);
@@ -632,7 +632,7 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query('SELECT id,num,descr,billperae FROM phpgw_p_activities ORDER BY descr asc');
+			$this->db->query('SELECT id,a_number,descr,billperae FROM phpgw_p_activities ORDER BY descr asc');
 			while ($this->db->next_record())
 			{
 				$activities_list .= '<option value="' . $this->db->f('id') . '"';
@@ -644,7 +644,7 @@
 					}
 				}
 				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 				if($billable)
 				{
 					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
@@ -672,7 +672,7 @@
 				$selected[] = array('activity_id' => $this->db2->f('activity_id'));
 			}
 
-			$this->db->query('SELECT a.id, a.num, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa'
+			$this->db->query('SELECT a.id, a.a_number, a.descr, a.billperae, pa.activity_id FROM phpgw_p_activities as a, phpgw_p_projectactivities as pa'
 							. ' WHERE pa.project_id=' . intval($pro_parent) . $bill_filter . ' AND pa.activity_id=a.id ORDER BY a.descr asc');
 			while ($this->db->next_record())
 			{
@@ -691,7 +691,7 @@
 				}
 
 				$activities_list .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-										. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+										. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 
 				if($billable)
 				{
@@ -705,7 +705,7 @@
 
 		function select_hours_activities($project_id, $activity = '')
 		{
-			$this->db->query('SELECT activity_id,num, descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
+			$this->db->query('SELECT activity_id,a_number,descr,billperae,billable FROM phpgw_p_projectactivities,phpgw_p_activities WHERE project_id ='
 							. intval($project_id) . ' AND phpgw_p_projectactivities.activity_id=phpgw_p_activities.id order by descr asc',__LINE__,__FILE__);
 
 			while ($this->db->next_record())
@@ -716,7 +716,7 @@
 					$hours_act .= ' selected';
 				}
 				$hours_act .= '>' . $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' ['
-									. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+									. $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 
 				if($this->db->f('billable') == 'Y')
 				{
@@ -732,10 +732,10 @@
 			$pro_id = intval($pro_id);
 			if ($action == 'act')
 			{			
-				$this->db->query('SELECT num,descr from phpgw_p_activities where id=' . $pro_id,__LINE__,__FILE__);
+				$this->db->query('SELECT a_number,descr from phpgw_p_activities where id=' . $pro_id,__LINE__,__FILE__);
 				if ($this->db->next_record())
 				{
-					$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+					$bla = $GLOBALS['phpgw']->strip_html($this->db->f('descr')) . ' [' . $GLOBALS['phpgw']->strip_html($this->db->f('a_number')) . ']';
 				}
 			}
 			elseif ($action == 'co')
@@ -750,7 +750,7 @@
 			{
 				switch ($action)
 				{
-					case 'pro':			$column = 'num,title'; break;
+					case 'pro':			$column = 'p_number,title'; break;
 					case 'edate':		$column = 'end_date'; break;
 					case 'sdate':		$column = 'start_date'; break;
 					case 'ptime':		$column = 'time_planned'; break;
@@ -765,7 +765,7 @@
 					if ($action == 'pro')
 					{
 						$bla = $GLOBALS['phpgw']->strip_html($this->db->f('title')) . ' ['
-								. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
+								. $GLOBALS['phpgw']->strip_html($this->db->f('p_number')) . ']';
 					}
 					else
 					{
@@ -780,8 +780,8 @@
 		{
 			switch ($action)
 			{
-				case 'act'	: $p_table = ' phpgw_p_activities '; break;
-				default		: $p_table = ' phpgw_p_projects'; break;
+				case 'act'	: $p_table = ' phpgw_p_activities '; $column = ' a_number';break;
+				default		: $p_table = ' phpgw_p_projects'; $column = ' p_number'; break;
 			}
 
 			if ($check == 'number')
@@ -791,7 +791,7 @@
 					$editexists = ' and id !=' . $pa_id;
 				}
 
-				$this->db->query("select count(*) from $p_table where num='$num'" .  $editexists,__LINE__,__FILE__);
+				$this->db->query("select count(*) from $p_table where $column='$num'" .  $editexists,__LINE__,__FILE__);
 			}
 
 			if ($check == 'par')
@@ -971,7 +971,7 @@
 		{
 			$prefix = 'P-' . $this->year . '-';
 
-			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%') and parent=0");
+			$this->db->query("select max(p_number) from phpgw_p_projects where p_number like ('$prefix%') and parent=0");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
@@ -980,11 +980,11 @@
 
 		function create_jobid($pro_parent)
 		{
-			$this->db->query('select num from phpgw_p_projects where id=' . $pro_parent);
+			$this->db->query('select p_number from phpgw_p_projects where id=' . $pro_parent);
 			$this->db->next_record();
 			$prefix = $this->db->f('num') . '/';
 
-			$this->db->query("select max(num) from phpgw_p_projects where num like ('$prefix%')");
+			$this->db->query("select max(p_number) from phpgw_p_projects where p_number like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
@@ -995,7 +995,7 @@
 		{
 			$prefix = 'A-' . $this->year . '-';
 
-			$this->db->query("select max(num) from phpgw_p_activities where num like ('$prefix%')");
+			$this->db->query("select max(a_number) from phpgw_p_activities where a_number like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
@@ -1005,7 +1005,7 @@
 		function create_deliveryid()
 		{
 			$prefix = 'D-' . $this->year . '-';
-			$this->db->query("select max(num) from phpgw_p_delivery where num like ('$prefix%')");
+			$this->db->query("select max(d_number) from phpgw_p_delivery where d_number like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
@@ -1015,7 +1015,7 @@
 		function create_invoiceid()
 		{
 			$prefix = 'I-' . $this->year . '-';
-			$this->db->query("select max(num) from phpgw_p_invoice where num like ('$prefix%')");
+			$this->db->query("select max(i_number) from phpgw_p_invoice where i_number like ('$prefix%')");
 			$this->db->next_record();
 			$max = $this->add_leading_zero(substr($this->db->f(0),-4));
 
@@ -1030,12 +1030,12 @@
 			}
 			else
 			{
-				$ordermethod = " order by num asc";
+				$ordermethod = " order by a_number asc";
 			}
 
 			if ($query)
 			{
-				$filtermethod = " where (descr like '%$query%' or num like '%$query%' or minperae like '%$query%' or billperae like '%$query%')";
+				$filtermethod = " where (descr like '%$query%' or a_number like '%$query%' or minperae like '%$query%' or billperae like '%$query%')";
 
 				if ($cat_id)
 				{
@@ -1068,7 +1068,7 @@
 			{
 				$act[$i]['activity_id']	= $this->db->f('id');
 				$act[$i]['cat']			= $this->db->f('category');
-				$act[$i]['number']		= $this->db->f('num');
+				$act[$i]['number']		= $this->db->f('a_number');
 				$act[$i]['descr']		= $this->db->f('descr');
 				$act[$i]['remarkreq']	= $this->db->f('remarkreq');
 				$act[$i]['billperae']	= $this->db->f('billperae');
@@ -1086,7 +1086,7 @@
 			{
 				$act['activity_id']	= $this->db->f('id');
 				$act['cat']			= $this->db->f('category');
-				$act['number']		= $this->db->f('num');
+				$act['number']		= $this->db->f('a_number');
 				$act['descr']		= $this->db->f('descr');
 				$act['remarkreq']	= $this->db->f('remarkreq');
 				$act['billperae']	= $this->db->f('billperae');
@@ -1101,7 +1101,7 @@
 			$values['descr'] 		= $this->db->db_addslashes($values['descr']);
 			$values['billperae']	= $values['billperae'] + 0.0;
 
-			$this->db->query("insert into phpgw_p_activities (num,category,descr,remarkreq,billperae,minperae) values ('"
+			$this->db->query("insert into phpgw_p_activities (a_number,category,descr,remarkreq,billperae,minperae) values ('"
 							. $values['number'] . "'," . intval($values['cat']) . ",'" . $values['descr'] . "','" . $values['remarkreq'] . "',"
 							. $values['billperae'] . ','  . intval($values['minperae']) . ')',__LINE__,__FILE__);
 		}
@@ -1112,7 +1112,7 @@
 			$values['descr']		= $this->db->db_addslashes($values['descr']);
 			$values['billperae']	= $values['billperae'] + 0.0;
 
-			$this->db->query("update phpgw_p_activities set num='" . $values['number'] . "', category=" . intval($values['cat'])
+			$this->db->query("update phpgw_p_activities set a_number='" . $values['number'] . "', category=" . intval($values['cat'])
 							. ",remarkreq='" . $values['remarkreq'] . "',descr='" . $values['descr'] . "',billperae="
 							. $values['billperae'] . ',minperae=' . intval($values['minperae']) . ' where id=' . intval($values['activity_id']),__LINE__,__FILE__);
 		}
@@ -1191,10 +1191,12 @@
 
 		function delete_account_project_data($account_id)
 		{
-			if ($account_id && $account_id > 0)
+			$account_id = intval($account_id);
+			if ($account_id > 0)
 			{
-				$this->db->query('delete from phpgw_p_hours where employee=' . intval($account_id),__LINE__,__FILE__);
-				$this->db->query('select id from phpgw_p_projects where coordinator=' . intval($account_id),__LINE__,__FILE__);
+				$this->db->query('delete from phpgw_categories where owner=' . $account_id . " AND cat_appname='projects'",__LINE__,__FILE__);
+				$this->db->query('delete from phpgw_p_hours where employee=' . $account_id,__LINE__,__FILE__);
+				$this->db->query('select id from phpgw_p_projects where coordinator=' . $account_id,__LINE__,__FILE__);
 
 				while ($this->db->next_record())
 				{
@@ -1263,8 +1265,10 @@
 
 			$this->db->query('UPDATE phpgw_p_projects set coordinator=' . $new . ' where coordinator=' . $old,__LINE__,__FILE__);
 			$this->db->query('UPDATE phpgw_p_hours set employee=' . $new . ' where employee=' . $old,__LINE__,__FILE__);
-			$this->db->query('UPDATE phpgw_p_projectmembers set account_id=' . $new . ' where (account_id=' . $old
-							. " AND type='aa')",__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_projectmembers set account_id=' . $new . ' where (account_id=' . $old . " AND type='aa')",__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_invoice set owner=' . $new . ' where owner=' . $old,__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_delivery set owner=' . $new . ' where owner=' . $old,__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_categories set cat_owner=' . $new . ' where cat_owner=' . $old . " AND cat_appname='projects'",__LINE__,__FILE__);
 		}
 
 		function sum_budget($action = 'budget')

@@ -1,133 +1,134 @@
-ï»¿projects	common	zh	å·¥ç¨‹ç®¡ç†
-project administration	admin	zh	å·¥ç¨‹ç®¡ç†
-Account	projects	zh	è´¦æˆ·
-Active	projects	zh	å¯ç”¨
-Activities	projects	zh	åŠ¨ä½œ
-Activities list	projects	zh	åŠ¨ä½œåˆ—è¡¨
-Activity	projects	zh	åŠ¨ä½œ
-Activity ID	projects	zh	åŠ¨ä½œä»£ç 
-Activity %1 has been added !	projects	zh	æ´»åŠ¨%1å·²æ·»åŠ !
-Activity %1 has been updated !	projects	zh	æ´»åŠ¨%1å·²æ·»åŠ æ›´æ–°!
-Add Activity	projects	zh	æ·»åŠ æ´»åŠ¨
-Add hours	projects	zh	æ·»åŠ æ—¶æ•°
-Add project	projects	zh	æ·»åŠ å·¥ç¨‹
-Add project hours	projects	zh	æ·»åŠ å·¥ç¨‹æ—¶æ•°
-Administrator	projects	zh	ç®¡ç†è€…
-All invoices	projects	zh	æ‰€æœ‰å‘ç¥¨
-All	projects	zh	æ‰€æœ‰çš„
+projects	common	zh	×¨°¸¹ÜÀí
+project administration	admin	zh	×¨°¸¹ÜÀí
+Account	projects	zh	ÕÊºÅ
+Active	projects	zh	ÆôÓÃ
+Activities	projects	zh	¶¯×÷
+Activities list	projects	zh	¶¯×÷ÁĞ±í
+Activity	projects	zh	¶¯×÷
+Activity ID	projects	zh	¶¯×÷´úÂë
+Activity %1 has been added !	projects	zh	ÒÑ¾­³É¹¦ĞÂÔö»î¶¯ %1 £¡
+Activity %1 has been updated !	projects	zh	ÒÑ¾­³É¹¦¸üĞÂ»î¶¯ %1 £¡
+Add Activity	projects	zh	ĞÂÔö»î¶¯
+Add hours	projects	zh	ĞÂÔöÊ±Êı
+Add project	projects	zh	ĞÂÔö×¨°¸
+Add project hours	projects	zh	ĞÂÔö×¨°¸Ê±Êı
+Administrator	projects	zh	¹ÜÀíÕß
+All invoices	projects	zh	ËùÓĞµÄ·¢Æ±
+All	projects	zh	ËùÓĞµÄ
 All delivery notes	projects	zh	ALL delivery notes
-archive	projects	zh	æ¡£æ¡ˆ
-billed	projects	zh	å·²è®¡è´¹
-Billed only	projects	zh	è®¡è´¹ä¸“ç”¨
-Billing	projects	zh	è®¡è´¹
-Bookable activities	projects	zh	å¯ä½¿ç”¨çš„åŠ¨ä½œ
-Billable activities	projects	zh	å¯è®¡è´¹çš„åŠ¨ä½œ
-Bill per workunit	projects	zh	æ¯ä¸€ä¸ªå·¥ä½œå•ä½çš„è´¹ç”¨
-Budget	projects	zh	é¢„ç®—
-Calculate	projects	zh	è®¡ç®—
-closed	projects	zh	å…³é—­
-Coordinator	projects	zh	å·¥ç¨‹åè°ƒè€…
-Create delivery	projects	zh	åˆ›å»ºdelivery
-Create invoice	projects	zh	å»ºç«‹å‘ç¥¨
-Customer	projects	zh	å®¢æˆ·
-Delete hours	projects	zh	åˆ é™¤å°æ—¶æ•°
+archive	projects	zh	·â´æ
+billed	projects	zh	ÒÑ¼Æ·Ñ
+Billed only	projects	zh	¼Æ·Ñ×¨ÓÃ
+Billing	projects	zh	¼Æ·Ñ
+Bookable activities	projects	zh	¿ÉÊ¹ÓÃµÄ¶¯×÷
+Billable activities	projects	zh	¿É¼Æ·ÑµÄ¶¯×÷
+Bill per workunit	projects	zh	Ã¿Ò»¸ö¹¤×÷µ¥Î»µÄ·ÑÓÃ
+Budget	projects	zh	Ô¤Ëã
+Calculate	projects	zh	¼ÆËã
+closed	projects	zh	¹Ø±Õ
+Coordinator	projects	zh	×¨°¸Ğ­µ÷ÈË
+Create delivery	projects	zh	Create delivery
+Create invoice	projects	zh	½¨Á¢·¢Æ±
+Customer	projects	zh	¿Í»§
+Delete hours	projects	zh	ÒÆ³ıÊ±Êı
 Deliveries	projects	zh	Deliveries
 Delivery	projects	zh	Delivery
-Delivery date	projects	zh	Delivery æ—¥æœŸ
-Delivery note	projects	zh	Delivery å¤‡æ³¨
-Delivery ID	projects	zh	Delivery ä»£å·
-Delivery list	projects	zh	Delivery åˆ—è¡¨
-Delivery notes	projects	zh	Delivery å¤‡æ³¨
-Delivery %1 has been created !	projects	zh	Delivery %1å·²åˆ›å»º!
-Delivery %1 has been updated !	projects	zh	Delivery %1å·²æ›´æ–°!
-Edit Activity	projects	zh	ç¼–è¾‘åŠ¨ä½œ
-Edit hours	projects	zh	ç¼–è¾‘æ—¶æ•°
-Edit project administrator list	projects	zh	ç¼–è¾‘å·¥ç¨‹ç®¡ç†äººå‘˜
-Edit project	projects	zh	ç¼–è¾‘å·¥ç¨‹ç®¡ç†äººå‘˜
-Edit project hours	projects	zh	ç¼–è¾‘å·¥ç¨‹æ—¶æ•°
-Employee	projects	zh	å‘˜å·¥
-Generate Activity ID ?	projects	zh	è‡ªåŠ¨äº§ç”ŸåŠ¨ä½œä»£ç ï¼Ÿ
-Generate Delivery ID ?	projects	zh	è‡ªåŠ¨äº§ç”Ÿè¿é€ä»£ç ï¼Ÿ
-Generate Project ID ?	projects	zh	è‡ªåŠ¨äº§ç”Ÿå·¥ç¨‹ä»£ç ï¼Ÿ
-Generate Invoice ID ?	projects	zh	è‡ªåŠ¨äº§ç”Ÿå‘ç¥¨å·ç ï¼Ÿ
-Hours	projects	zh	æ—¶æ•°
-Invoice	projects	zh	å‘ç¥¨
-Invoice date	projects	zh	å‘ç¥¨æ—¥æœŸ
-Invoice ID	projects	zh	å‘ç¥¨å·ç 
-Invoice list	projects	zh	å‘ç¥¨åˆ—è¡¨
-Invoices	projects	zh	å‘ç¥¨
-Invoice %1 has been created !	projects	zh	å·²æˆåŠŸå»ºç«‹å‘ç¥¨ %1 ï¼
-Invoice %1 has been updated !	projects	zh	å·²æˆåŠŸæ›´æ–°å‘ç¥¨ %1 ï¼
-Job	projects	zh	å·¥ä½œ
-Job date	projects	zh	å·¥ä½œæ—¥æœŸ
-Job description	projects	zh	å·¥ä½œå™è¿°
-Job has been added !	projects	zh	å·²æˆåŠŸæ·»åŠ å·¥ä½œï¼
-Job has been updated !	projects	zh	å·²æˆåŠŸæ›´æ–°å·¥ä½œï¼
-Job ID	projects	zh	å·¥ä½œä»£ç 
-Job list	projects	zh	å·¥ä½œåˆ—è¡¨
-Jobs	projects	zh	å·¥ä½œ
-List hours	projects	zh	åˆ—å‡ºå°æ—¶æ•°
-Main project	projects	zh	ä¸»è¦å·¥ç¨‹
-Minutes per workunit	projects	zh	æ¯ä¸€ä¸ªå·¥ä½œå•ä½çš„åˆ†é’Ÿæ•°
-net	projects	zh	å‡€
-New project	projects	zh	æ·»åŠ å·¥ç¨‹
-Nonactive	projects	zh	åœç”¨
-Number	projects	zh	åºå·
-open	projects	zh	æ‰“å¼€
-Overall	projects	zh	æ€»è§ˆ
-per	projects	zh	æ¯ä¸€
-per workunit	projects	zh	æ¯ä¸€å·¥ä½œå•ä½
-Please enter an ID !	projects	zh	è¯·è¾“å…¥ä»£å·ï¼
-Please choose activities for that project first !	projects	zh	è¯·é€‰æ‹©è¿™ä¸ªå·¥ç¨‹å¯ä½¿ç”¨çš„åŠ¨ä½œé€‰é¡¹ï¼
+Delivery date	projects	zh	Delivery date
+Delivery note	projects	zh	Delivery note
+Delivery ID	projects	zh	Delivery ID
+Delivery list	projects	zh	Delivery list
+Delivery notes	projects	zh	Delivery notes
+Delivery %1 has been created !	projects	zh	Delivery %1 has been created !
+Delivery %1 has been updated !	projects	zh	Delivery %1 has been updated !
+Edit Activity	projects	zh	±à¼­¶¯×÷
+Edit hours	projects	zh	±à¼­Ê±Êı
+Edit project administrator list	projects	zh	±à¼­×¨°¸¹ÜÀíÈËÔ±
+Edit project	projects	zh	±à¼­×¨°¸¹ÜÀíÈËÔ±
+Edit project hours	projects	zh	±à¼­×¨°¸Ê±Êı
+Employee	projects	zh	Ô±¹¤
+Generate Activity ID ?	projects	zh	×Ô¶¯²úÉú¶¯×÷´úÂë£¿
+Generate Delivery ID ?	projects	zh	×Ô¶¯²úÉúÔËËÍ´úÂë£¿
+Generate Project ID ?	projects	zh	×Ô¶¯²úÉú×¨°¸´úÂë£¿
+Generate Invoice ID ?	projects	zh	×Ô¶¯²úÉú·¢Æ±ºÅÂë£¿
+Hours	projects	zh	Ê±Êı
+Invoice	projects	zh	·¢Æ±
+Invoice date	projects	zh	·¢Æ±ÈÕÆÚ
+Invoice ID	projects	zh	·¢Æ±ºÅÂë
+Invoice list	projects	zh	·¢Æ±ÁĞ±í
+Invoices	projects	zh	·¢Æ±
+Invoice %1 has been created !	projects	zh	ÒÑ³É¹¦½¨Á¢·¢Æ± %1 £¡
+Invoice %1 has been updated !	projects	zh	ÒÑ³É¹¦¸üĞÂ·¢Æ± %1 £¡
+Job	projects	zh	¹¤×÷
+Job date	projects	zh	¹¤×÷ÈÕÆÚ
+Job description	projects	zh	¹¤×÷ĞğÊö
+Job has been added !	projects	zh	ÒÑ³É¹¦ĞÂÔö¹¤×÷£¡
+Job has been updated !	projects	zh	ÒÑ³É¹¦¸üĞÂ¹¤×÷£¡
+Job ID	projects	zh	¹¤×÷´úÂë
+Job list	projects	zh	¹¤×÷ÁĞ±í
+Jobs	projects	zh	¹¤×÷
+List hours	projects	zh	List hours
+Main project	projects	zh	Ö÷Òª×¨°¸
+Minutes per workunit	projects	zh	Ã¿Ò»¸ö¹¤×÷µ¥Î»µÄ·ÖÖÓÊı
+net	projects	zh	¾»
+New project	projects	zh	ĞÂÔö×¨°¸
+Nonactive	projects	zh	Í£ÓÃ
+Number	projects	zh	Number
+open	projects	zh	¿ª·Å
+Overall	projects	zh	×ÜÀÀ
+per	projects	zh	Ã¿Ò»
+per workunit	projects	zh	Ã¿Ò»¹¤×÷µ¥Î»
+Please enter an ID !	projects	zh	ÇëÊäÈë´úÂë£¡
+Please choose activities for that project first !	projects	zh	ÇëÑ¡ÔñÕâ¸ö×¨°¸¿ÉÊ¹ÓÃµÄ¶¯×÷Ñ¡Ïî£¡
 Please enter a remark !	projects	zh	Please enter a remark !
-Please enter the bill per workunit !	projects	zh	è¯·é€‰æ‹©æ¯ä¸€å·¥ä½œå•ä½çš„è´¹ç”¨ï¼
-Please enter the minutes per workunit !	projects	zh	è¯·é€‰æ‹©æ¯ä¸€å·¥ä½œå•ä½çš„åˆ†é’Ÿæ•°ï¼
-Position	projects	zh	ä½ç½®
+Please enter the bill per workunit !	projects	zh	ÇëÑ¡ÔñÃ¿Ò»¹¤×÷µ¥Î»µÄ·ÑÓÃ£¡
+Please enter the minutes per workunit !	projects	zh	ÇëÑ¡ÔñÃ¿Ò»¹¤×÷µ¥Î»µÄ·ÖÖÓÊı£¡
+Position	projects	zh	Î»ÖÃ
 Print delivery	projects	zh	Print delivery
-Print invoice	projects	zh	æ‰“å°å‘ç¥¨
-Project	projects	zh	å·¥ç¨‹
-Project administration	projects	zh	å·¥ç¨‹ç®¡ç†
-Project archive	projects	zh	å·¥ç¨‹æ¡£æ¡ˆ
-Project billing	projects	zh	å·¥ç¨‹è®¡è´¹
-Project delivery	projects	zh	å·¥ç¨‹è¿é€
-Project ID	projects	zh	å·¥ç¨‹ä»£å·
-Project list	projects	zh	å·¥ç¨‹åˆ—è¡¨
-Project name	projects	zh	å·¥ç¨‹åç§°
-Project preferences	projects	zh	å·¥ç¨‹å–œå¥½è®¾å®š
-Project statistic	projects	zh	å·¥ç¨‹ç»Ÿè®¡
-project statistics	projects	zh	å·¥ç¨‹ç»Ÿè®¡
-Remark	projects	zh	æ³¨é‡Š
-Remark required	projects	zh	å¿…é¡»è¾“å…¥æ³¨é‡Š
-select	projects	zh	é€‰æ‹©
-Select main project	projects	zh	é€‰æ‹©ä¸»è¦å·¥ç¨‹
-Select per button !	projects	zh	ä½¿ç”¨æŒ‰é’®é€‰æ‹©ï¼
-Select project	projects	zh	é€‰æ‹©å·¥ç¨‹
-Select tax for workhours	projects	zh	é€‰æ‹©å·¥ä½œæ—¶æ•°çš„ç¨ç‡
-Select users	projects	zh	é€‰æ‹©ç”¨æˆ·
-Select groups	projects	zh	é€‰æ‹©ç»„
-Select your address	projects	zh	é€‰æ‹©åœ°å€
-Statistic	projects	zh	ç»Ÿè®¡
-Statistics	projects	zh	ç»Ÿè®¡
-Short description	projects	zh	ç®€çŸ­è¯´æ˜
-Sum	projects	zh	æ€»è®¡
-Sum workunits	projects	zh	å·¥ä½œå•ä½æ€»è®¡
-tax	projects	zh	ç¨ç‡
-That ID has been used already !	projects	zh	è¯¥ä»£å·å·²è¢«å ç”¨!
-Update invoice	projects	zh	æ›´æ–°å‘ç¥¨
+Print invoice	projects	zh	ÁĞÓ¡·¢Æ±
+Project	projects	zh	×¨°¸
+Project administration	projects	zh	×¨°¸¹ÜÀí
+Project archive	projects	zh	×¨°¸·â´æ
+Project billing	projects	zh	×¨°¸¼Æ·Ñ
+Project delivery	projects	zh	×¨°¸ÔËËÍ
+Project ID	projects	zh	×¨°¸´úÂë
+Project list	projects	zh	×¨°¸ÁĞ±í
+Project name	projects	zh	×¨°¸Ãû³Æ
+Project preferences	projects	zh	×¨°¸Ï²ºÃÉè¶¨
+Project statistic	projects	zh	×¨°¸Í³¼Æ
+project statistics	projects	zh	×¨°¸Í³¼Æ
+Remark	projects	zh	×¢¼Ç
+Remark required	projects	zh	±ØĞëÊäÈë×¢¼Ç
+select	projects	zh	ÇëÑ¡Ôñ
+Select main project	projects	zh	Ñ¡ÔñÖ÷Òª×¨°¸
+Select per button !	projects	zh	Ê¹ÓÃ°´Å¥Ñ¡Ôñ£¡
+Select project	projects	zh	Ñ¡Ôñ×¨°¸
+Select tax for workhours	projects	zh	Ñ¡Ôñ¹¤×÷Ê±ÊıµÄË°ÂÊ
+Select users	projects	zh	Ñ¡ÔñÊ¹ÓÃÕß
+Select groups	projects	zh	Ñ¡ÔñÈº×é
+Select your address	projects	zh	Ñ¡ÔñÄúµÄµØÖ·
+Statistic	projects	zh	Í³¼Æ
+Statistics	projects	zh	Í³¼Æ
+Short description	projects	zh	¼ò¶ÌËµÃ÷
+Sum	projects	zh	×Ü¼Æ
+Sum workunits	projects	zh	¹¤×÷µ¥Î»×Ü¼Æ
+tax	projects	zh	Ë°ÂÊ
+That ID has been used already !	projects	zh	Õâ¸ö´úÂëÒÑ¾­±»Ê¹ÓÃÁË£¡
+Update invoice	projects	zh	¸üĞÂ·¢Æ±
 Update delivery	projects	zh	Update delivery
-Username / Group	projects	zh	ç”¨æˆ·ï¼ç»„
-User statistic	projects	zh	ç”¨æˆ·ç»Ÿè®¡
-user statistics	projects	zh	ç”¨æˆ·ç»Ÿè®¡
-View job	projects	zh	æŸ¥çœ‹å·¥ä½œ
-View project	projects	zh	æŸ¥çœ‹å·¥ç¨‹
-Work date	projects	zh	å·¥ä½œæ—¥æœŸ
-Work hours	projects	zh	æ—¶æ•°
-Work time	projects	zh	å·¥ä½œæ—¶é—´
-Workunit	projects	zh	å·¥ä½œå•ä½
-Workunits	projects	zh	å·¥ä½œå•ä½
-written by:	projects	zh	ä½œè€…ï¼š
-You have entered an invalid start date !	projects	zh	èµ·å§‹æ—¥æœŸæ— æ•ˆï¼
-You have entered an invalid end date !	projects	zh	ç»ˆæ­¢æ—¥æœŸæ— æ•ˆï¼
-You have selected an invalid activity !	projects	zh	é€‰æ‹©çš„æ“ä½œæ— æ•ˆï¼
-You have no customer selected !	projects	zh	å¿…é¡»é€‰æ‹©é¡¾å®¢ï¼
-You have to CREATE a delivery or invoice first !	projects	zh	å¿…é¡»å…ˆã€Œåˆ›å»ºã€é€è´§å•æˆ–å‘ç¥¨ï¼
+Username / Group	projects	zh	Ê¹ÓÃÕß£¯Èº×é
+User statistic	projects	zh	Ê¹ÓÃÕßÍ³¼Æ
+user statistics	projects	zh	Ê¹ÓÃÕßÍ³¼Æ
+View job	projects	zh	¼ìÊÓ¹¤×÷
+View project	projects	zh	¼ìÊÓ×¨°¸
+Work date	projects	zh	¹¤×÷ÈÕÆÚ
+Work hours	projects	zh	Ê±Êı
+Work time	projects	zh	¹¤×÷Ê±¼ä
+Workunit	projects	zh	¹¤×÷µ¥Î»
+Workunits	projects	zh	¹¤×÷µ¥Î»
+written by:	projects	zh	×÷Õß£º
+You have entered an invalid start date !	projects	zh	ÄúÊäÈëÁË²»ºÏ·¨µÄ¿ªÊ¼ÈÕÆÚ£¡
+You have entered an invalid end date !	projects	zh	ÄúÊäÈëÁË²»ºÏ·¨µÄ½áÊøÈÕÆÚ£¡
+You have selected an invalid activity !	projects	zh	ÄúÑ¡ÔñÁË²»ºÏ·¨µÄ¶¯×÷£¡
+You have no customer selected !	projects	zh	ÄúÃ»ÓĞÑ¡ÔñÈÎºÎµÄ¹Ë¿Í£¡
+You have to CREATE a delivery or invoice first !	projects	zh	Äú±ØĞëÏÈ¡¸½¨Á¢¡¹ËÍ»õµ¥»ò·¢Æ±£¡
+

@@ -33,8 +33,9 @@
 
 		function sobilling()
 		{
-			$this->db	= $GLOBALS['phpgw']->db;
-			$this->db2	= $this->db;
+			$this->db		= $GLOBALS['phpgw']->db;
+			$this->db2		= $this->db;
+			$this->account	= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
 		function return_join()
@@ -49,9 +50,15 @@
 			return $join;
 		}
 
-		function read_invoices($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')
+		function read_invoices($values)
 		{
-			$project_id = intval($project_id);
+			$project_id = intval($values['project_id']);
+			$sort		= (isset($values['sort'])?$values['sort']:'ASC');
+			$order		= $values['order'];
+			$query		= $values['query'];
+			$owner		= ($values['owner'] == 'yes'?True:False);
+			$limit		= (isset($values['limit'])?$values['limit']:True);
+			$start		= intval($values['start']);
 
 			if ($order)
 			{
@@ -59,36 +66,41 @@
 			}
 			else
 			{
-				$ordermethod = ' order by date asc';
+				$ordermethod = ' order by i_date asc';
 			}
 
 			if ($query)
 			{
-				$querymethod = " AND (phpgw_p_invoice.num like '%$query%' OR title like '%$query%' " . "OR sum like '%$query%') ";
+				$querymethod = " AND (i_number like '%$query%' OR title like '%$query%' " . "OR i_sum like '%$query%') ";
+			}
+
+			if ($owner)
+			{
+				$acl_select = ' AND phpgw_p_invoice.owner=' . $this->account;
 			}
 
 			if ($project_id)
 			{
-				$sql = 'SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,'
-				. 'phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id '
-				. 'AND phpgw_p_projects.id=' . $project_id . ' AND phpgw_p_invoice.project_id=' . $project_id;
+				$sql = 'SELECT phpgw_p_invoice.id as id,i_number,i_date,phpgw_p_invoice.project_id,phpgw_p_invoice.customer,i_sum,title '
+					. 'FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id '
+					. 'AND phpgw_p_projects.id=' . $project_id . ' AND phpgw_p_invoice.project_id=' . $project_id;
 			}
 			else
 			{
-				$sql = 'SELECT phpgw_p_invoice.id as id,phpgw_p_invoice.num,title,phpgw_p_invoice.date,sum,phpgw_p_invoice.project_id,'
-				. 'phpgw_p_invoice.customer FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id';
+				$sql = 'SELECT phpgw_p_invoice.id as id,i_number,title,i_date,i_sum,phpgw_p_invoice.project_id,phpgw_p_invoice.customer '
+					. 'FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.project_id=phpgw_p_projects.id';
 			}
 
-			$this->db2->query($sql,__LINE__,__FILE__);
+			$this->db2->query($sql . $acl_select,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
 
 			if ($limit)
 			{
-				$this->db->limit_query($sql . $querymethod,$start,__LINE__,__FILE__);
+				$this->db->limit_query($sql  . $acl_select. $querymethod,$start,__LINE__,__FILE__);
 			}
 			else
 			{
-				$this->db->query($sql . $querymethod,__LINE__,__FILE__);
+				$this->db->query($sql  . $acl_select. $querymethod,__LINE__,__FILE__);
 			}
 
 			while ($this->db->next_record())
@@ -96,10 +108,10 @@
 				$bill[] = array
 				(
 					'invoice_id'	=> $this->db->f('id'),
-					'invoice_num'	=> $this->db->f('num'),
+					'invoice_num'	=> $this->db->f('i_number'),
 					'title'			=> $this->db->f('title'),
-					'date'			=> $this->db->f('date'),
-					'sum'			=> $this->db->f('sum'),
+					'date'			=> $this->db->f('i_date'),
+					'sum'			=> $this->db->f('i_sum'),
 					'project_id'	=> $this->db->f('project_id'),
 					'customer'		=> $this->db->f('customer')
 				);
@@ -116,7 +128,7 @@
 				$editexists = ' and id !=' . $values['invoice_id'];
 			}
 
-			$this->db->query("select count(*) from phpgw_p_invoice where num='" . $values['invoice_num'] . "'" . $editexists,__LINE__,__FILE__);
+			$this->db->query("select count(*) from phpgw_p_invoice where i_number='" . $values['invoice_num'] . "'" . $editexists,__LINE__,__FILE__);
 
 			$this->db->next_record();
 
@@ -133,10 +145,10 @@
 		function invoice($values,$select)
 		{
 			$values['invoice_num'] = $this->db->db_addslashes($values['invoice_num']);
-			$this->db->query("INSERT INTO phpgw_p_invoice (num,sum,project_id,customer,date) VALUES ('" . $values['invoice_num'] . "',0,"
-							. intval($values['project_id']) . ',' . intval($values['customer']) . ',' . intval($values['date']) . ')',__LINE__,__FILE__);
+			$this->db->query("INSERT INTO phpgw_p_invoice (i_number,i_sum,project_id,customer,i_date,owner) VALUES ('" . $values['invoice_num'] . "',0,"
+							. intval($values['project_id']) . ',' . intval($values['customer']) . ',' . intval($values['date']) . ',' . $this->account . ')',__LINE__,__FILE__);
 
-			$this->db2->query("SELECT id from phpgw_p_invoice WHERE num='" . $values['invoice_num'] . "'",__LINE__,__FILE__);
+			$this->db2->query("SELECT id from phpgw_p_invoice WHERE i_number='" . $values['invoice_num'] . "'",__LINE__,__FILE__);
 			$this->db2->next_record();
 			$invoice_id = $this->db2->f('id');
 			$invoice_id = intval($invoice_id);
@@ -164,7 +176,7 @@
 					$sum_sum += $sum;
 				}
 			}
-			$this->db->query('UPDATE phpgw_p_invoice SET sum=round(' . $sum_sum . ',2) WHERE id=' . $invoice_id,__LINE__,__FILE__);
+			$this->db->query('UPDATE phpgw_p_invoice SET i_sum=round(' . $sum_sum . ',2) WHERE id=' . $invoice_id,__LINE__,__FILE__);
 			return $invoice_id;
 		}
 
@@ -173,7 +185,7 @@
 			$values['invoice_num']	= $this->db->db_addslashes($values['invoice_num']);
 			$values['invoice_id']	= intval($values['invoice_id']);
 
-			$this->db->query("UPDATE phpgw_p_invoice set num='" . $values['invoice_num'] . "',date=" . intval($values['date']) . ',customer='
+			$this->db->query("UPDATE phpgw_p_invoice set i_number='" . $values['invoice_num'] . "',i_date=" . intval($values['date']) . ',customer='
 							. intval($values['customer']) . ' WHERE id=' . $values['invoice_id'],__LINE__,__FILE__);
 
 			$this->db2->query('DELETE FROM phpgw_p_invoicepos WHERE invoice_id=' . $values['invoice_id'],__LINE__,__FILE__);
@@ -205,7 +217,7 @@
 				}
 			}
 
-			$this->db2->query('UPDATE phpgw_p_invoice SET sum=round(' . $sum_sum . ',2) WHERE id=' . $values['invoice_id'],__LINE__,__FILE__);
+			$this->db2->query('UPDATE phpgw_p_invoice SET i_sum=round(' . $sum_sum . ',2) WHERE id=' . $values['invoice_id'],__LINE__,__FILE__);
 		}
 
 		function read_hours($project_id, $action)
@@ -286,19 +298,19 @@
 
 		function read_single_invoice($invoice_id)
 		{
-			$this->db->query('SELECT phpgw_p_invoice.customer,phpgw_p_invoice.num,phpgw_p_invoice.project_id,phpgw_p_invoice.date,'
-							. 'phpgw_p_invoice.sum,phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_invoice,phpgw_p_projects WHERE '
-							. 'phpgw_p_invoice.id=' . intval($invoice_id) . ' AND phpgw_p_invoice.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_invoice.customer,i_number,phpgw_p_invoice.project_id,i_date,i_sum,title,p_number '
+							. 'FROM phpgw_p_invoice,phpgw_p_projects WHERE phpgw_p_invoice.id=' . intval($invoice_id)
+							. ' AND phpgw_p_invoice.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
 
 			if ($this->db->next_record())
 			{
-				$bill['date']			= $this->db->f('date');
-				$bill['invoice_num']	= $this->db->f('num');
+				$bill['date']			= $this->db->f('i_date');
+				$bill['invoice_num']	= $this->db->f('i_number');
 				$bill['title']			= $this->db->f('title');
 				$bill['customer']		= $this->db->f('customer');
 				$bill['project_id']		= $this->db->f('project_id');
-				$bill['project_num']	= $this->db->f('pnum');
-				$bill['sum']			= $this->db->f('sum');
+				$bill['project_num']	= $this->db->f('p_number');
+				$bill['sum']			= $this->db->f('i_sum');
 			}
 			return $bill;
 		}

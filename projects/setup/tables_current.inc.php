@@ -18,7 +18,7 @@
 		'phpgw_p_projects' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 25,'nullable' => False),
+				'p_number' => array('type' => 'varchar','precision' => 25,'nullable' => False),
 				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'access' => array('type' => 'varchar','precision' => 7,'nullable' => True),
 				'entry_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -43,13 +43,13 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','num'),
-			'uc' => array('num')
+			'ix' => array('id','p_number'),
+			'uc' => array('p_number')
 		),
 		'phpgw_p_activities' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 20,'nullable' => False),
+				'a_number' => array('type' => 'varchar','precision' => 20,'nullable' => False),
 				'descr' => array('type' => 'varchar','precision' => 255,'nullable' => False),
 				'remarkreq' => array('type' => 'char','precision' => 1,'default' => 'N','nullable' => False),
 				'minperae' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
@@ -58,7 +58,7 @@
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','num'),
+			'ix' => array('id','a_number'),
 			'uc' => array()
 		),
 		'phpgw_p_projectactivities' => array(
@@ -111,16 +111,17 @@
 		'phpgw_p_invoice' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 20,'nullable' => False),
-				'date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'i_number' => array('type' => 'varchar','precision' => 20,'nullable' => False),
+				'i_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'customer' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'sum' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False)
+				'i_sum' => array('type' => 'decimal','precision' => 20,'scale' => 2,'default' => 0,'nullable' => False),
+				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','num'),
-			'uc' => array('num')
+			'ix' => array('id','i_number'),
+			'uc' => array('i_number')
 		),
 		'phpgw_p_invoicepos' => array(
 			'fd' => array(
@@ -136,15 +137,16 @@
 		'phpgw_p_delivery' => array(
 			'fd' => array(
 				'id' => array('type' => 'auto','nullable' => False),
-				'num' => array('type' => 'varchar','precision' => 20,'nullable' => False),
-				'date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'd_number' => array('type' => 'varchar','precision' => 20,'nullable' => False),
+				'd_date' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
 				'project_id' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
-				'customer' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
+				'customer' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False),
+				'owner' => array('type' => 'int','precision' => 4,'default' => 0,'nullable' => False)
 			),
 			'pk' => array('id'),
 			'fk' => array(),
-			'ix' => array('id','num'),
-			'uc' => array('num')
+			'ix' => array('id','d_number'),
+			'uc' => array('d_number')
 		),
 		'phpgw_p_deliverypos' => array(
 			'fd' => array(

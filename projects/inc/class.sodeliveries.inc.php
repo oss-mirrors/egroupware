@@ -34,6 +34,7 @@
 		{
 			$this->db			= $GLOBALS['phpgw']->db;
 			$this->db2			= $this->db;
+			$this->account		= $GLOBALS['phpgw_info']['user']['account_id'];
 		}
 
 		function return_join()
@@ -51,10 +52,10 @@
 		function delivery($values,$select)
 		{
 			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
-			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "',"
-							. intval($values['project_id']) . ',' . time() . ',' . intval($values['customer']) . ')',__LINE__,__FILE__);
+			$this->db->query("INSERT INTO phpgw_p_delivery (d_number,project_id,d_date,customer,owner) VALUES ('" . $values['delivery_num'] . "',"
+							. intval($values['project_id']) . ',' . time() . ',' . intval($values['customer']) . ',' . $this->account . ')',__LINE__,__FILE__);
 
-			$this->db2->query("SELECT id from phpgw_p_delivery WHERE num='" . $values['delivery_num'] . "'",__LINE__,__FILE__);
+			$this->db2->query("SELECT id from phpgw_p_delivery WHERE d_number='" . $values['delivery_num'] . "'",__LINE__,__FILE__);
 			$this->db2->next_record();
 			$delivery_id = $this->db2->f('id');
 			$delivery_id = intval($delivery_id);
@@ -74,7 +75,7 @@
 			$values['delivery_id'] = intval($values['delivery_id']);
 
 			$values['delivery_num'] = $this->db->db_addslashes($values['delivery_num']);
-			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date=" . intval($values['date']) . ',customer='
+			$this->db->query("UPDATE phpgw_p_delivery set d_number='" . $values['delivery_num'] . "',d_date=" . intval($values['date']) . ',customer='
 								. intval($values['customer']) . ' where id=' . $values['delivery_id'],__LINE__,__FILE__);
 
 			$this->db2->query('DELETE FROM phpgw_p_deliverypos WHERE delivery_id=' . $values['delivery_id'],__LINE__,__FILE__);
@@ -158,9 +159,15 @@
 		}
 
 
-		function read_deliveries($start, $query = '', $sort = '', $order = '', $limit = True, $project_id = '')
+		function read_deliveries($values)
 		{
-			$project_id = intval($project_id);
+			$project_id = intval($values['project_id']);
+			$sort		= (isset($values['sort'])?$values['sort']:'ASC');
+			$order		= $values['order'];
+			$query		= $values['query'];
+			$owner		= ($values['owner'] == 'yes'?True:False);
+			$limit		= (isset($values['limit'])?$values['limit']:True);
+			$start		= intval($values['start']);
 
 			if ($order)
 			{
@@ -168,37 +175,41 @@
 			}
 			else
 			{
-				$ordermethod = ' order by date asc';
+				$ordermethod = ' order by d_date asc';
 			}
 
 			if ($query)
 			{
-				$querymethod = " AND (phpgw_p_delivery.num like '%$query%' OR phpgw_p_projects.title like '%$query%')";
+				$querymethod = " AND (d_number like '%$query%' OR title like '%$query%')";
+			}
+
+			if ($owner)
+			{
+				$acl_select = ' AND phpgw_p_delivery.owner=' . $this->account;
 			}
 
 			if ($project_id)
 			{
-				$sql = 'SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,'
-					. 'phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE '
-					. 'phpgw_p_delivery.project_id=' . $project_id . ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id';
+				$sql = 'SELECT phpgw_p_delivery.id as id,d_number,title,d_date,phpgw_p_delivery.project_id,phpgw_p_delivery.customer '
+					. 'FROM phpgw_p_delivery,phpgw_p_projects WHERE phpgw_p_delivery.project_id=' . $project_id
+					. ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id';
 			}
     		else
 			{
-				$sql = 'SELECT phpgw_p_delivery.id as id,phpgw_p_delivery.num,title,phpgw_p_delivery.date,'
-					. 'phpgw_p_delivery.project_id,phpgw_p_delivery.customer FROM phpgw_p_delivery,phpgw_p_projects WHERE '
-					. 'phpgw_p_delivery.project_id=phpgw_p_projects.id';
+				$sql = 'SELECT phpgw_p_delivery.id as id,d_number,title,d_date,phpgw_p_delivery.project_id,phpgw_p_delivery.customer '
+					. 'FROM phpgw_p_delivery,phpgw_p_projects WHERE phpgw_p_delivery.project_id=phpgw_p_projects.id';
 			}
 
-			$this->db2->query($sql,__LINE__,__FILE__);
+			$this->db2->query($sql . $acl_select,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
 
 			if ($limit)
 			{
-				$this->db->limit_query($sql . $querymethod,$start,__LINE__,__FILE__);
+				$this->db->limit_query($sql  . $acl_select . $querymethod,$start,__LINE__,__FILE__);
 			}
 			else
 			{
-				$this->db->query($sql . $querymethod,__LINE__,__FILE__);
+				$this->db->query($sql  . $acl_select . $querymethod,__LINE__,__FILE__);
 			}
 
 			while ($this->db->next_record())
@@ -207,9 +218,9 @@
 				(
 					'delivery_id'	=> $this->db->f('id'),
 					'project_id'	=> $this->db->f('project_id'),
-					'delivery_num'	=> $this->db->f('num'),
+					'delivery_num'	=> $this->db->f('d_number'),
 					'title'			=> $this->db->f('title'),
-					'date'			=> $this->db->f('date'),
+					'date'			=> $this->db->f('d_date'),
 					'customer'		=> $this->db->f('customer')
 				);
 			}
@@ -218,18 +229,18 @@
 
 		function read_single_delivery($delivery_id)
 		{
-			$this->db->query('SELECT phpgw_p_delivery.customer,phpgw_p_delivery.num,phpgw_p_delivery.project_id,phpgw_p_delivery.date,'
-							. 'phpgw_p_projects.title,phpgw_p_projects.num as pnum FROM phpgw_p_delivery,phpgw_p_projects WHERE '
-							. 'phpgw_p_delivery.id=' . intval($delivery_id) . ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
+			$this->db->query('SELECT phpgw_p_delivery.customer,d_number,phpgw_p_delivery.project_id,d_date,title,p_number '
+							. 'FROM phpgw_p_delivery,phpgw_p_projects WHERE phpgw_p_delivery.id=' . intval($delivery_id)
+							. ' AND phpgw_p_delivery.project_id=phpgw_p_projects.id',__LINE__,__FILE__);
 
 			if ($this->db->next_record())
 			{
 				$del['date']			= $this->db->f('date');
-				$del['delivery_num']	= $this->db->f('num');
+				$del['delivery_num']	= $this->db->f('d_number');
 				$del['title']			= $this->db->f('title');
 				$del['customer']		= $this->db->f('customer');
 				$del['project_id']		= $this->db->f('project_id');
-				$del['project_num']		= $this->db->f('pnum');
+				$del['project_num']		= $this->db->f('p_number');
 			}
 			return $del;
 		}
@@ -242,7 +253,7 @@
 			{
 				$editexists = ' and id !=' . $values['delivery_id'];
 			}
-			$this->db->query("select count(*) from phpgw_p_delivery where num='" . $values['delivery_num'] . "'" . $editexists,__LINE__,__FILE__);
+			$this->db->query("select count(*) from phpgw_p_delivery where d_number='" . $values['delivery_num'] . "'" . $editexists,__LINE__,__FILE__);
 
 			$this->db->next_record();
 
