@@ -120,21 +120,16 @@
      $bmark = new bmark;
 
      print ("<p><b>DEBUG OUTPUT:</b>\n");
-     print ("<br>bkfile: " . $bkfile . "\n");
-     print ("<br>bkfile_name: " . $bkfile_name . "\n");
-     print ("<br>bkfile_size: " . $bkfile_size . "\n");
-     print ("<br>bkfile_type: " . $bkfile_type . "\n<p><b>URLs:</b>\n");
+     print ("<br>file: " . $bkfile . "\n");
+     print ("<br>file_name: " . $bkfile_name . "\n");
+     print ("<br>file_size: " . $bkfile_size . "\n");
+     print ("<br>file_type: " . $bkfile_type . "\n<p><b>URLs:</b>\n");
 
      if (empty($bkfile) || $bkfile == "none") {
         $error_msg .= "<br>Netscape bookmark filename is required!";
         break;
      }
-
-     // Find out what the default settings should be
-     $phpgw->db->query("select id from bookmarks_rating where name='--' and username='"
-                     . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
-     $phpgw->db->next_record();
-     $default_rating = $phpgw->db->f("id");
+     $default_rating = 0;
 
      $phpgw->db->query("select id from bookmarks_category where name='--' and username='"
                      . $phpgw_info["user"]["account_id"] . "'",__LINE__,__FILE__);
@@ -202,7 +197,7 @@
                   $scid = getSubCategory($folder_name_stack[$i]);
                }
                $keyw .= ' ' . $folder_name_stack[$i];
-               $i ++;
+               $i++;
              }
    
           $bid = -1;
@@ -213,8 +208,9 @@
           }
 
           printf("<br>%s,%s,%s,%s,<i>%s</i>\n",$cid,$scid,$match[2],$match[1],$bid);
-          if ($bid > 0) 
-            $inserts ++;
+          if (! $error_msg) {
+             $inserts++;
+          }
         }
       }
 

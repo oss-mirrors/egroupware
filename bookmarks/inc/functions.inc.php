@@ -308,10 +308,12 @@
           $error_msg .= "<br>Subcategory is required.";
        }
    
+/*
        if (isset($rating) && $rating >= 0 ) {
        } else {
           $error_msg .= "<br>Rating is required.";
        }
+*/
 
        // does the admin want us to check URL format
        if ($bookmarker->url_format_check > 0) {
