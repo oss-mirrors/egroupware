@@ -12,7 +12,7 @@
   /* $Id$ */
 
   $phpgw_info["flags"] = array("currentapp" => "manual", "enable_utilities_class" => True);
-  include("../header.inc.php");
+	include('../../../header.inc.php');
 ?>
 <img src="<?php echo $phpgw_info["server"]["app_images"]; ?>/title_home.gif" border=0>
 <font face="Arial, Helvetica, san-serif" size="2">
