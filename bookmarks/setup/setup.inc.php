@@ -20,6 +20,12 @@
 	$setup_info['bookmarks']['app_order'] = '20';
 	$setup_info['bookmarks']['enable']    = 1;
 
+	$setup_info['bookmarks']['author'] = 'Joseph Engo';
+	$setup_info['bookmarks']['description'] =
+		'Manage your bookmarks with phpGW.  Has Netscape plugin.';
+	$setup_info['bookmarks']['maintainer'] = 'Joseph Engo';
+	$setup_info['bookmarks']['maintainer_email'] = 'jengo@phpgroupware.org';
+
 	/* The tables this app creates */
 	$setup_info['bookmarks']['tables']	= Array(
 		'phpgw_bookmarks'
