@@ -34,9 +34,7 @@
 
 		function headlines()
 		{
-			global $phpgw;
-
-			$phpgw->network = CreateObject('phpgwapi.network',False);
+			$GLOBALS['phpgw']->network = CreateObject('phpgwapi.network',False);
 		}
 
 		// try to get the links for the site
@@ -71,24 +69,22 @@
 		// do a quick read of the table
 		function readtable($site)
 		{
-			global $phpgw;
-
-			$phpgw->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
+			$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,lastread,newstype,"
                     . "cachetime,listings FROM phpgw_headlines_sites WHERE con = $site",__LINE__,__FILE__);
-			if (! $phpgw->db->num_rows())
+			if (! $GLOBALS['phpgw']->db->num_rows())
 			{
 				return False;
 			}
-			$phpgw->db->next_record();
+			$GLOBALS['phpgw']->db->next_record();
 
-			$this->con       = $phpgw->db->f(0);
-			$this->display   = $phpgw->db->f(1);
-			$this->base_url  = $phpgw->db->f(2);
-			$this->newsfile  = $phpgw->db->f(3);
-			$this->lastread  = $phpgw->db->f(4);
-			$this->newstype  = $phpgw->db->f(5);
-			$this->cachetime = $phpgw->db->f(6);
-			$this->listings  = $phpgw->db->f(7);
+			$this->con       = $GLOBALS['phpgw']->db->f(0);
+			$this->display   = $GLOBALS['phpgw']->db->f(1);
+			$this->base_url  = $GLOBALS['phpgw']->db->f(2);
+			$this->newsfile  = $GLOBALS['phpgw']->db->f(3);
+			$this->lastread  = $GLOBALS['phpgw']->db->f(4);
+			$this->newstype  = $GLOBALS['phpgw']->db->f(5);
+			$this->cachetime = $GLOBALS['phpgw']->db->f(6);
+			$this->listings  = $GLOBALS['phpgw']->db->f(7);
 
 			return True;
 		}
@@ -103,11 +99,9 @@
 		// get the links from the database
 		function getLinksDB()
 		{
-			global $phpgw;
-
-			$phpgw->db->query("SELECT title, link FROM phpgw_headlines_cached WHERE site = ".$this->con);
+			$GLOBALS['phpgw']->db->query("SELECT title, link FROM phpgw_headlines_cached WHERE site = ".$this->con);
 		
-			if (! $phpgw->db->num_rows())
+			if (! $GLOBALS['phpgw']->db->num_rows())
 			{
 				$links = $this->getLinksSite();  // try from site again
 				if (!$links)
@@ -119,9 +113,9 @@
 				}
 			}
 
-			while ($phpgw->db->next_record())
+			while ($GLOBALS['phpgw']->db->next_record())
 			{
-				$links[$phpgw->db->f('title')] = $phpgw->db->f('link');
+				$links[$GLOBALS['phpgw']->db->f('title')] = $GLOBALS['phpgw']->db->f('link');
 			}
 			return $links;
 		}
@@ -129,8 +123,6 @@
 		// get a new set of links from the site
 		function getLinksSite()
 		{
-			global $phpgw;
-
 			// determine the options to properly extract the links
 			$startat = '</image>';
 			$linkstr = 'link';
@@ -147,7 +139,7 @@
 			}
 
 			// get the file that contains the links
-			$lines = $phpgw->network->gethttpsocketfile($this->base_url.$this->newsfile);
+			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile($this->base_url.$this->newsfile);
 			if (!$lines)
 			{
 				return False;
@@ -196,8 +188,6 @@
 		// get a list of the sites
 		function getList()
 		{
-			global $phpgw;
-
 			@set_time_limit(0);
 
 			// determine the options to properly extract the links
@@ -207,7 +197,7 @@
 
 			// get the file that contains the links
 			// "http://www.phpgroupware.org/headlines.rdf";
-			$lines = $phpgw->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
+			$lines = $GLOBALS['phpgw']->network->gethttpsocketfile("http://blinkylight.com/headlines.rdf");
 			if (!$lines)
 			{
 				return False;
@@ -250,51 +240,49 @@
 				}
 			}
 
-			$phpgw->db->transaction_begin();
+			$GLOBALS['phpgw']->db->transaction_begin();
 			for ($i=0;$i<count($title);$i++)
 			{
 				$server = str_replace('http://','',$links[$i]);
 				$file   = strstr($server,'/');
 				$server = 'http://' . str_replace($file,'',$server);
 
-				$phpgw->db->query("SELECT con,display,base_url,newsfile,newstype "
+				$GLOBALS['phpgw']->db->query("SELECT con,display,base_url,newsfile,newstype "
 					. "FROM phpgw_headlines_sites WHERE display='".$title[$i]."' AND "
 					. "base_url='$server' AND newsfile='$file'",__LINE__,__FILE__);
-				if ($phpgw->db->num_rows() == 0)
+				if ($GLOBALS['phpgw']->db->num_rows() == 0)
 				{
-					$phpgw->db->query("INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
+					$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_sites (display,base_url,newsfile,"
 						."newstype,lastread,cachetime,listings) VALUES("
 						."'".$title[$i]."','$server','$file','".$type[$i]."',0,60,20)",__LINE__,__FILE__);
 					continue;
 				}
-				$phpgw->db->next_record();
+				$GLOBALS['phpgw']->db->next_record();
 
-				if ($phpgw->db->f('newstype') <> $type[$i])
+				if ($GLOBALS['phpgw']->db->f('newstype') <> $type[$i])
 				{
-					$phpgw->db->query("UPDATE phpgw_headlines_sites SET newstype='".$type[$i]."' WHERE con=".$this->db->f('con'),__LINE__,__FILE__);
+					$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET newstype='".$type[$i]."' WHERE con=".$this->db->f('con'),__LINE__,__FILE__);
 				}
 			}
-			$phpgw->db->transaction_commit();
+			$GLOBALS['phpgw']->db->transaction_commit();
 		}
 
 		// save the new set of links and update the cache time
 		function saveToDB($links)
 		{
-			global $phpgw;
-
-			$phpgw->db->query("DELETE FROM phpgw_headlines_cached WHERE site='" . $this->con . "'",__LINE__,__FILE__);
+			$GLOBALS['phpgw']->db->query("DELETE FROM phpgw_headlines_cached WHERE site='" . $this->con . "'",__LINE__,__FILE__);
 
 			// save links
 			while (list($title,$link) = each($links))
 			{
 				$link  = addslashes($link);
 				$title = addslashes($title);
-				$phpgw->db->query("INSERT INTO phpgw_headlines_cached VALUES("
+				$GLOBALS['phpgw']->db->query("INSERT INTO phpgw_headlines_cached VALUES("
 					.$this->con.",'$title','$link')",__LINE__,__FILE__);
 			}		
 		
 			// save cache time
-			$phpgw->db->query("UPDATE phpgw_headlines_sites SET lastread = '" . $this->current_time
+			$GLOBALS['phpgw']->db->query("UPDATE phpgw_headlines_sites SET lastread = '" . $this->current_time
 				. "' WHERE con='" . $this->con . "'",__LINE__,__FILE__);
 		}
 	}

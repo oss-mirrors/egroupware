@@ -13,7 +13,7 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'           => 'headlines',
 		'enable_network_class' => True,
 		'noheader'             => True,
@@ -21,24 +21,24 @@
 	);
 	include('../header.inc.php');
 
-	if (! count($phpgw_info['user']['preferences']['headlines']))
+	if (! count($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
-		Header('Location: ' . $phpgw->link('/headlines/preferences.php'));
+		Header('Location: ' . $GLOBALS['phpgw']->link('/headlines/preferences.php'));
 	}
 	else
 	{
-		$phpgw->common->phpgw_header();
+		$GLOBALS['phpgw']->common->phpgw_header();
 		echo parse_navbar();
 	}
 
-	if (! $phpgw_info['user']['preferences']['headlines']['headlines_layout'])
+	if (! $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'])
 	{
-		$phpgw->preferences->change('headlines','headlines_layout','basic');
-		$phpgw->preferences->commit(True);
-		$phpgw_info['user']['preferences']['headlines']['headlines_layout'] = 'basic';
+		$GLOBALS['phpgw']->preferences->change('headlines','headlines_layout','basic');
+		$GLOBALS['phpgw']->preferences->commit(True);
+		$GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] = 'basic';
 	}
 
-	while ($preference = each($phpgw_info['user']['preferences']['headlines']))
+	while ($preference = each($GLOBALS['phpgw_info']['user']['preferences']['headlines']))
 	{
 		if ($preference[0] != 'headlines_layout')
 		{
@@ -47,12 +47,12 @@
 	}
 
 	$headlines = new headlines;
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_file(array(
 		'layout_row' => 'layout_row.tpl',
-		'form'       => $phpgw_info['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
+		'form'       => $GLOBALS['phpgw_info']['user']['preferences']['headlines']['headlines_layout'] . '.tpl'
 	));
-	$phpgw->template->set_block('form','channel');
-	$phpgw->template->set_block('form','row');
+	$GLOBALS['phpgw']->template->set_block('form','channel');
+	$GLOBALS['phpgw']->template->set_block('form','row');
 
 	$j = 0;
 	$i = count($sites);
@@ -65,16 +65,16 @@
 		$j++;
 		$headlines->readtable($site);
 
-		$phpgw->template->set_var('channel_url',$headlines->base_url);
-		$phpgw->template->set_var('channel_title',$headlines->display);
+		$GLOBALS['phpgw']->template->set_var('channel_url',$headlines->base_url);
+		$GLOBALS['phpgw']->template->set_var('channel_title',$headlines->display);
 
 		$links = $headlines->getLinks($site);
 		if($links == False)
 		{
 			$var = Array(
-				'item_link'	=> '',
-				'item_label'	=> '',
-				'error'	=> lang('Unable to retrieve links').'.'
+				'item_link'  => '',
+				'item_label' => '',
+				'error'      => lang('Unable to retrieve links').'.'
 			);
 			$GLOBALS['phpgw']->template->set_var($var);
 			$s .= $GLOBALS['phpgw']->template->parse('o_','row');
@@ -85,28 +85,28 @@
 			{
 
 				$var = Array(
-					'item_link'	=> stripslashes($link),
-					'item_label'	=> stripslashes($title)
+					'item_link'  => stripslashes($link),
+					'item_label' => stripslashes($title)
 				);
 				$GLOBALS['phpgw']->template->set_var($var);
 				$s .= $GLOBALS['phpgw']->template->parse('o_','row');
 			}
 		}
-		$phpgw->template->set_var('rows',$s);
+		$GLOBALS['phpgw']->template->set_var('rows',$s);
 		unset($s);
 
-		$phpgw->template->set_var('section_' . $j,$phpgw->template->parse('o','channel'));
+		$GLOBALS['phpgw']->template->set_var('section_' . $j,$GLOBALS['phpgw']->template->parse('o','channel'));
 
 		if ($j == 3 || $i == 1)
 		{
-			$phpgw->template->pfp('out','layout_row');
-			$phpgw->template->set_var('section_1', '');
-			$phpgw->template->set_var('section_2', '');
-			$phpgw->template->set_var('section_3', '');
+			$GLOBALS['phpgw']->template->pfp('out','layout_row');
+			$GLOBALS['phpgw']->template->set_var('section_1', '');
+			$GLOBALS['phpgw']->template->set_var('section_2', '');
+			$GLOBALS['phpgw']->template->set_var('section_3', '');
 			$j = 0;
 		}
 		$i--;
 	}
 
-	$phpgw->common->phpgw_footer();
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

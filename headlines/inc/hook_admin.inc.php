@@ -15,7 +15,7 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Headline Site Management'	=> $phpgw->link('/headlines/admin.php')
+		'Headline Site Management' => $GLOBALS['phpgw']->link('/headlines/admin.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);

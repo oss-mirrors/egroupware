@@ -12,7 +12,7 @@
 
 	/* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'admin_only'              => True,
 		'currentapp'              => 'headlines',
 		'enable_nextmatchs_class' => True
@@ -20,51 +20,50 @@
 	include('../header.inc.php');
 
 	// This is done for a reason (jengo)
-	$phpgw->template->set_root($phpgw->common->get_tpl_dir('headlines'));
-	$phpgw->template->set_file(array(
+	$GLOBALS['phpgw']->template->set_root($GLOBALS['phpgw']->common->get_tpl_dir('headlines'));
+	$GLOBALS['phpgw']->template->set_file(array(
 		'admin' => 'admin.tpl'
 	));
-	$phpgw->template->set_block('admin','list');
-	$phpgw->template->set_block('admin','row');
-	$phpgw->template->set_block('admin','row_empty');
+	$GLOBALS['phpgw']->template->set_block('admin','list');
+	$GLOBALS['phpgw']->template->set_block('admin','row');
+	$GLOBALS['phpgw']->template->set_block('admin','row_empty');
 
-	$phpgw->template->set_var('th_bg',$phpgw_info['theme']['th_bg']);
-	$phpgw->template->set_var('title',lang('Headline Sites'));
-	$phpgw->template->set_var('lang_site',lang('Site'));
-	$phpgw->template->set_var('lang_edit',lang('Edit'));
-	$phpgw->template->set_var('lang_delete',lang('Delete'));
-	$phpgw->template->set_var('lang_view',lang('View'));
-	$phpgw->template->set_var('lang_add',lang('Add'));
+	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
+	$GLOBALS['phpgw']->template->set_var('title',lang('Headline Sites'));
+	$GLOBALS['phpgw']->template->set_var('lang_site',lang('Site'));
+	$GLOBALS['phpgw']->template->set_var('lang_edit',lang('Edit'));
+	$GLOBALS['phpgw']->template->set_var('lang_delete',lang('Delete'));
+	$GLOBALS['phpgw']->template->set_var('lang_view',lang('View'));
+	$GLOBALS['phpgw']->template->set_var('lang_add',lang('Add'));
 
-	$phpgw->db->query('select count(*) from phpgw_headlines_sites',__LINE__,__FILE__);
-	$phpgw->db->next_record();
+	$GLOBALS['phpgw']->db->query('select count(*) from phpgw_headlines_sites',__LINE__,__FILE__);
+	$GLOBALS['phpgw']->db->next_record();
 
-	if (! $phpgw->db->f(0))
+	if (! $GLOBALS['phpgw']->db->f(0))
 	{
-		$phpgw->template->set_var('lang_row_empty',lang('No headlines found'));
-		$phpgw->nextmatchs->template_alternate_row_color($phpgw->template);
-		$phpgw->template->parse('rows','row_empty');
+		$GLOBALS['phpgw']->template->set_var('lang_row_empty',lang('No headlines found'));
+		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
+		$GLOBALS['phpgw']->template->parse('rows','row_empty');
 	}
 
-	$phpgw->db->query('select con,display from phpgw_headlines_sites order by display',__LINE__,__FILE__);
-	while ($phpgw->db->next_record())
+	$GLOBALS['phpgw']->db->query('select con,display from phpgw_headlines_sites order by display',__LINE__,__FILE__);
+	while ($GLOBALS['phpgw']->db->next_record())
 	{
-		$phpgw->nextmatchs->template_alternate_row_color($phpgw->template);
+		$GLOBALS['phpgw']->nextmatchs->template_alternate_row_color($GLOBALS['phpgw']->template);
 
-		$phpgw->template->set_var('row_display',$phpgw->db->f('display'));
-		$phpgw->template->set_var('row_edit',$phpgw->link('/headlines/editheadline.php','con='.$phpgw->db->f('con')));
-		$phpgw->template->set_var('row_delete',$phpgw->link('/headlines/deleteheadline.php','con='.$phpgw->db->f('con')));
-		$phpgw->template->set_var('row_view',$phpgw->link('/headlines/viewheadline.php','con='.$phpgw->db->f('con')));
+		$GLOBALS['phpgw']->template->set_var('row_display',$GLOBALS['phpgw']->db->f('display'));
+		$GLOBALS['phpgw']->template->set_var('row_edit',$GLOBALS['phpgw']->link('/headlines/editheadline.php','con='.$GLOBALS['phpgw']->db->f('con')));
+		$GLOBALS['phpgw']->template->set_var('row_delete',$GLOBALS['phpgw']->link('/headlines/deleteheadline.php','con='.$GLOBALS['phpgw']->db->f('con')));
+		$GLOBALS['phpgw']->template->set_var('row_view',$GLOBALS['phpgw']->link('/headlines/viewheadline.php','con='.$GLOBALS['phpgw']->db->f('con')));
 
-		$phpgw->template->parse('rows','row',True);
+		$GLOBALS['phpgw']->template->parse('rows','row',True);
 	}
 
-	$phpgw->template->set_var('add_url',$phpgw->link('/headlines/newheadline.php'));
-	$phpgw->template->set_var('grab_more_url',$phpgw->link('/headlines/grabnewssites.php'));
-	$phpgw->template->set_var('lang_grab_more',lang('Grab New News Sites'));
+	$GLOBALS['phpgw']->template->set_var('add_url',$GLOBALS['phpgw']->link('/headlines/newheadline.php'));
+	$GLOBALS['phpgw']->template->set_var('grab_more_url',$GLOBALS['phpgw']->link('/headlines/grabnewssites.php'));
+	$GLOBALS['phpgw']->template->set_var('lang_grab_more',lang('Grab New News Sites'));
 
-	$phpgw->template->pfp('out','list');
+	$GLOBALS['phpgw']->template->pfp('out','list');
 
-	$phpgw->common->phpgw_footer();
-
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

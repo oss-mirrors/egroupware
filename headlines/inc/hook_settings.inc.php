@@ -18,5 +18,4 @@
 	}
 
 	create_select_box('Select Headline News sites','headlines',$_headlines,(count($_headlines)>10?10:count($_headlines)));
-
 ?>

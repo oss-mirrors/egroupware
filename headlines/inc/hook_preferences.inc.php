@@ -14,8 +14,8 @@
 // Only Modify the $file and $title variables.....
 	$title = $appname;
 	$file = Array(
-		'Select Headlines to Display'	=> $phpgw->link('/headlines/preferences.php'),
-		'Select layout'		=> $phpgw->link('/headlines/preferences_layout.php')
+		'Select Headlines to Display' => $GLOBALS['phpgw']->link('/headlines/preferences.php'),
+		'Select layout' => $GLOBALS['phpgw']->link('/headlines/preferences_layout.php')
 	);
 //Do not modify below this line
 	display_section($appname,$title,$file);
