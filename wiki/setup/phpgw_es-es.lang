@@ -1,5 +1,5 @@
 (don't offer the possibility)	admin	es-es	No ofrecer la posibilidad
-<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	es-es	<em>Pero</em> mostrar al menos estas entradas en RecentChanges y otras listas de suscripción:
+<em>but</em> display at least this many entries in recentchanges and other subscription lists:	wiki	es-es	<em>Pero</em> mostrar al menos estas entradas en Cambios recientes y otras listas de suscripción:
 add document to category	wiki	es-es	Añadir documento a la categoría
 added	wiki	es-es	Añadido
 administration features are disabled for this wiki.	wiki	es-es	Las características de administración estás desactivadas para este wiki
@@ -53,11 +53,11 @@ history	wiki	es-es	historial
 history display should show <em>all</em> changes made by the latest author.  otherwise, show only the last change made.	wiki	es-es	El historial debe mostrar <em>todos</em> los cambios realizados por el último autor. De lo contrario, mostrar sólo el último cambio.
 history display should show all changes made by the latest author.  otherwise, show only the last change made	wiki	es-es	El historial debe mostrar todos los cambios hecho por el último autor. De lo contrario, muestra sólo el último cambio realizado
 history lists	wiki	es-es	Listas de historial
-history of	wiki	es-es	Historia de
+history of	wiki	es-es	Historial de
 interwikiprefix	admin	es-es	Prefijo InterWiki
 invalid page name.	wiki	es-es	El nombre de la página no es válido
 load	wiki	es-es	Cargar
-loads the named page in the given language, all change so far get lost !!!	wiki	es-es	Carga la página nombrada en el lenguaje indicado, por lo que ¡¡todos los cambios se pierden!!
+loads the named page in the given language, all change so far get lost !!!	wiki	es-es	Carga la página nombrada en el idioma indicado, por lo que ¡¡todos los cambios se pierden!!
 lock / unlock pages	common	es-es	Bloquear / desbloquear páginas
 lock and unlock pages	admin	es-es	Cerrar y abrir páginas
 lock/unlock pages	wiki	es-es	Cerrar/Abrir páginas
@@ -66,8 +66,8 @@ metadescription	admin	es-es	Descripción Meta
 metakeywords	admin	es-es	Palabras clave Meta
 name wiki home link	admin	es-es	nombre del enlace de la página de inicio del wiki
 newer	wiki	es-es	Más reciente
-no never	admin	es-es	No nunca
-no only on request	admin	es-es	No sólo al pedirlo
+no never	admin	es-es	No, nunca
+no only on request	admin	es-es	No, sólo si se pide
 not set	wiki	es-es	no especificado
 older	wiki	es-es	Anterior
 only if browser supports a richtext-editor	admin	es-es	Sólo si el navegador soporta un editor de texto enriquecido
@@ -77,7 +77,7 @@ preferences	wiki	es-es	in
 preview	wiki	es-es	Vista previa
 preview of current version	wiki	es-es	Vista previa de la versión actual
 previewing	wiki	es-es	Previsualización
-rate control / ip blocking disabled	wiki	es-es	Desactivar el control de transferencia o bloqueo de IP
+rate control / ip blocking disabled	wiki	es-es	El control de transferencia o bloqueo de IP está desactivado
 readable by	wiki	es-es	De lectura para
 readonly	admin	es-es	sólo lectura
 recent changes	wiki	es-es	Cambios recientes
@@ -86,7 +86,7 @@ richtext	wiki	es-es	Texto enriquecido
 rows	wiki	es-es	Filas
 save & continue	wiki	es-es	Guardar y seguir
 save the changes and exit	wiki	es-es	Guardar los cambios y salir
-saves and continues editing	wiki	es-es	Guardar y continuar editando
+saves and continues editing	wiki	es-es	Guarda y continúa editando
 search	wiki	es-es	wiki
 see complete list (%1 entries)	wiki	es-es	Ver la lista completa (%1 entradas)
 site configuration	wiki	es-es	Configuración del sitio
@@ -113,7 +113,7 @@ yes always	admin	es-es	Sí, siempre
 you have been denied access to this site.	wiki	es-es	Le ha sido denegado el acceso a este sitio
 you have entered an invalid user name.	wiki	es-es	Ha introducido un nombre de usuario que no es válido
 you have exeeded the number of pages you are allowed to visit in a given period of time.  please return later.	wiki	es-es	Ha excedido el número de páginas que le está permitido visitar en un período de tiempo determinado. Por favor, vuelva más tarde.
-you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	es-es	Ha excedido el número de páginas permitido para visitar durante un periodo de tiempo. Por favor, vuelva más tarde.
+you have exeeded the number of pages you are allowed to visit in a given period of time. please return later.	wiki	es-es	Ha excedido el número de páginas que se permite visitar durante un período de tiempo. Por favor, vuelva más tarde.
 your changes	wiki	es-es	Sus modificaciones
 your user name is "%1".	wiki	es-es	Su nombre de usuario es "%1"
 your user name is %1	wiki	es-es	Su nombre de usuario es %1
