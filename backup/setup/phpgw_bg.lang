@@ -1,4 +1,6 @@
-absolute path of the backup directory	backup	bg	Пълен път до директорията за архивите
+absolute path of the backup directory	backup	bg	Пълен път до директорията за архивите (напр. /usr/local/www/egroupware/backup/archive)
+absolute path of the backup directory (eg.: /usr/local/www/egroupware/backup/archive	backup	bg	Пълен път до директорията за архивите (напр. /usr/local/www/egroupware/backup/archive)
+absolute path of the directory of egw backup application	backup	bg	Пълен път до директорията на приложението "Архивиране"
 absolute path of the directory to store the backup script	backup	bg	Пълен път до диркторията за съхранение на архивиращия скрипт
 archive type	backup	bg	Вид на архива
 backup	common	bg	Архивиране
@@ -13,11 +15,13 @@ data	backup	bg	Данни
 directory locations	admin	bg	местоположения на директориите
 directory names	admin	bg	имена на директориите
 e-mail	backup	bg	ЕПоща
+e-mail notification?	backup	bg	Уведомяване по електронната поща
 homedirs	admin	bg	Домашни директории
 interval	backup	bg	Интервал
 ip or hostname	backup	bg	IP адрес или име на хост
 ldap	common	bg	LDAP
 ldap database	admin	bg	LDAP база данни
+list backup archives	backup	bg	списък на архивите
 maildir	admin	bg	Пощенска директория
 monthly	backup	bg	всеки месец
 mysql	admin	bg	MySQL
@@ -28,8 +32,20 @@ operating system	backup	bg	Операционна система
 password	backup	bg	Парола
 pgsql	admin	bg	PostgreSQL
 php cgi	admin	bg	php cgi
+please enter the path of the needed applications in *site configuration* !	backup	bg	Моля задайте пътя до нужните приложения в "Общи настройки"!
+please enter the path to the backup dir and/or enable showing archives in phpgroupware !	backup	bg	Моля задайте пътя до директорията за архиви и/или включете показването на архивите в phpGroupWare!
+please enter username and password for remote connection !	backup	bg	Моля въведете име и парола за отдалечено свързнаве!
+please select an application for transport to the remote host !	backup	bg	Моля изберете приложение за пренос до отдалечената система!
+please set the path to a local dir to store the backup script !	backup	bg	Моля задайте пътя до локална директория за запазване на архивиращия скрипт!
+please set the path to the ldap database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на LDAP базата в "Общи настройки"!
+please set the path to the mysql database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на MySQL базата в "Общи настройки"!
+please set the path to the postgresql database dir in *site configuration* !	backup	bg	Моля задайте пътя до директорията на PostgreSQL базата в "Общи настройки"!
+please set the values in *site configuration* !	backup	bg	Моля задайте стойностите в "Общи настройки"
 please specify the ip of the remote host !	backup	bg	Моля задайте IР адреса на отдалечената машина!
+please specify the name of the maildir in *site configuration* !	backup	bg	Моля укажете вида на Maildir в "общи настройки"!
 please specify the path to the backup directory !	backup	bg	Моля, задайте пътя до директорията за архивите!
+please specify the path to the user-homedirectories in *site configuration* !	backup	bg	Моля задайте пътя до потребителските директории в "Общи настройки"!
+please write down you e-mail for beeing notified	backup	bg	Моля въведете арес на електронната поща за уведомяване
 program locations	admin	bg	местоположения на програмите
 save backup locally ?	backup	bg	Да се запазват ли архивите локално?
 save backup to a remote host ?	backup	bg	Да се запазват ли архивите на отдалечен хост?

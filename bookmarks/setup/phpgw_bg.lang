@@ -24,17 +24,21 @@ date last visited	bookmarks	bg	Дата на последно посещение
 descending	bookmarks	bg	Низходящо
 edit bookmark	bookmarks	bg	Редактиране на отметка
 edit this bookmark	bookmarks	bg	Редактиране на тази отметка
+enter the name of the netscape bookmark file<br>that you want imported into bookmarker below.	bookmarks	bg	Въведете името на файла с отметки на Netscape, който искате да въде внесен.
 export bookmarks	common	bg	Изнасяне на отметки
 fewer	bookmarks	bg	по-малко
+filter by	bookmarks	bg	Филтриране по
 found a link you might like	bookmarks	bg	Препратка, която може да ти е интересна
 from	bookmarks	bg	От
 from category %1	bookmarks	bg	от категория %1
 highest	bookmarks	bg	Най-висока
 i thought you would be interested in the following link(s):	bookmarks	bg	Реших, че следните препратки може да са ти интересни:
 import bookmarks	common	bg	Внасяне на отметки
+like	bookmarks	bg	подобно на
 list	bookmarks	bg	Списък
 lowest	bookmarks	bg	Най-ниска
 mail this bookmark	bookmarks	bg	Изпращане та отметката по пощата
+mail-this-link message sent to %1.	bookmarks	bg	съобщение "изпращане на отметката" изпратено на %1.
 mass update:	bookmarks	bg	Групово обновяване:
 message from	bookmarks	bg	Съобщение от
 more	bookmarks	bg	повече
@@ -45,12 +49,16 @@ netscape bookmark filename is required!	bookmarks	bg	Нужно е името на файл с отм
 new	bookmarks	bg	Нова
 or	bookmarks	bg	или
 please fill out <b>to e-mail address</b>, <b>subject</b>, and <b>message</b>!	bookmarks	bg	Моля, попълнете <B>адрес на получателя</B>, <B>относно</B>, и <B>съдържанието на писмото</B>!
+please select the categories to export	bookmarks	bg	Моля изберете категориите за експортиране
 query condition	bookmarks	bg	Условие на търсенето
 rating	bookmarks	bg	Оценка
 search for:	bookmarks	bg	Търсене за:
+select the format you would like to export to	bookmarks	bg	Изберете формата, в който искате да експортирате
 send bookmark	bookmarks	bg	Изпращане на отметка
 sub category	bookmarks	bg	Подкатегория
 to address %1 invalid. format must be <strong>user@domain</strong> and domain must exist!	bookmarks	bg	Адресът на получателя, %1, не е валиден. Форматът трябва да е <strong>user@domain</strong> и domain-ът трябва да съществува!
+to e-mail addresses	bookmarks	bg	До адрес на епоща
+to which category should the imported folder hierarchy be attached	bookmarks	bg	Към коя категория да прикачат внасяните директории?
 total visits	bookmarks	bg	общо посещения
 tree view	bookmarks	bg	Дървовиден изглед
 unable to open temp file %1 for import.	bookmarks	bg	Не може да се отвори временният файл %1 за внасяне.

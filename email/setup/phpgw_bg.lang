@@ -2,24 +2,51 @@
 (required)	email	bg	(задължително)
 1 message has been deleted	email	bg	1 писмо беше изтрито
 1 message has been moved to	email	bg	1 писмо беше преместено в
+add to address book	email	bg	Добавяне към адресника
+add to addressbook	email	bg	Добавяне към адресника
 address book	email	bg	Адресник
 after	email	bg	След
 all messages	email	bg	Всички писма
+and	email	bg	и
+answered	email	bg	отговорено
+apply	email	bg	прилагане
 apr	email	bg	Април
 arrival date	email	bg	Дата на пристигане
+attach file	email	bg	Прикрепяне на файл
 attachment	email	bg	Прикрепен файл
 aug	email	bg	Август
 before	email	bg	Преди
+click here to continue	email	bg	Натиснете тук за продължаване
 company	email	bg	Фирма
+compose	common	bg	Съчиняване
+compose message	email	bg	съчиняване на писмо
+compose new	common	bg	Съчиняване на ново писмо
+contains	email	bg	Съдържа
+create a folder	email	bg	Създаване на папка
 dec	email	bg	Декември
 default sorting order	email	bg	Сортиране по подразбиране
+default:	common	bg	по подразбиране:
+delete a folder	email	bg	Изтриване на папка
+deleted	email	bg	изтрито
+does not contain	email	bg	Не съдържа
+draft	email	bg	чернова
 feb	email	bg	Февруари
 file	email	bg	Файл
+folder	common	bg	Папка
+folder maintenance	email	bg	Управление на папка
+folder name	email	bg	Име на папка
+folder size	email	bg	Големина на папка
 folders	email	bg	Папки
 forward	email	bg	Препращане
 from	email	bg	От
+from address	email	bg	Адрес на изпращача
+go back	email	bg	Назад
+go back to	email	bg	Назад към
+hidden	email	bg	скрито
 image	email	bg	Изображение
+inbox	email	bg	Входящи
 jan	email	bg	Януари
+javascript	email	bg	Javascript
 jul	email	bg	Юли
 jun	email	bg	Юни
 keyword	email	bg	ключова дума
@@ -27,13 +54,19 @@ keywords	email	bg	Ключови думи
 mail server	email	bg	Пощенски сървър
 mar	email	bg	Март
 messages	email	bg	Писма
+move down	email	bg	Преместване надолу
+move up	email	bg	Преместване нагоре
+new message	email	bg	Ново писмо
+new messages	email	bg	Нови писма
 next message	email	bg	Следващо писмо
 nov	email	bg	Ноември
 oct	email	bg	Октомври
 or	common	bg	или
 organization	email	bg	Организация
 phone	email	bg	Телефон
+previous	email	bg	Предишно
 previous message	email	bg	Предишно писмо
+printable	email	bg	изглед за печат
 recipient	email	bg	Получател
 rename a folder	email	bg	Преименуване на папка
 reply	email	bg	Отговор
@@ -45,9 +78,15 @@ sent	common	bg	изпратени
 sent folder	email	bg	папка за изпратени
 sep	email	bg	Септември
 settings	common	bg	Настройки
+size	email	bg	Големина
+sort by	email	bg	Подреждане по
+spell check	email	bg	Проверка на правописа
 to	email	bg	До
+to address	email	bg	Адрес на получателя
 total messages	email	bg	Общо писма
 trash	email	bg	кошче
 trash folder	email	bg	папка за кошче
 unanswered	email	bg	Неотговорени
+unknown action	email	bg	Неизвестно действие
 unknown error	email	bg	Неизвестна грешка
+wrote	email	bg	написа

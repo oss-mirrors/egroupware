@@ -1,11 +1,18 @@
 add forum	forum	bg	Добавяне на дискусия
+all forums, user posts, and topics in this category will be lost!	forum	bg	Ще бъдат изтрити всички дискусии, теми и съобщения в тази категория!
+all user posts and topics will be lost!	forum	bg	Ще бъдат изтрити всички теми и съобщения на потребителя!
+all user posts, and topics in this forum will be lost!	forum	bg	Ще бъдат изтрити всички теми и съобщения на потребителя в тази дискусия!
+are you sure you want to delete this category?	forum	bg	Наистина ли искате да изтриете тази категория?
+are you sure you want to delete this forum?	forum	bg	Наистина ли искате да изтриете тази дискусия?
 belongs to category	forum	bg	Принадлежи към категория
 category description	forum	bg	Описание на категорията
 category name	forum	bg	Име на категория
 collapse threads	forum	bg	Свиване на отговорите
 collapsed	forum	bg	свити
 create new category	forum	bg	Създаване на нова категория
+current categories and sub forums	forum	bg	Текущи категории и под-дискусии
 edit forum	forum	bg	Редактиране на дискусиите
+email replies to this thread, to the address above	forum	bg	Отговаряне на тази тема до горепосочения адрес
 forum	common	bg	Дискусия
 forum administration	admin	bg	Управление на дискусиите
 forum description	forum	bg	Описание на дискусията
