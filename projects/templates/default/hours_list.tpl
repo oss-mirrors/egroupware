@@ -1,5 +1,5 @@
 <center>
-{lang_projecthours_action}
+{lang_projects_action}
 
  {total_matchs}
  {next_matchs}

@@ -25,10 +25,12 @@
   $t->set_var(title,$phpgw_info["site_title"]);
   $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
   $t->set_var(lang_addressbook_action,lang("Address book"));
-  
-   if (! $start) {
+  $charset = $phpgw->translation->translate("charset");                                                                                                                           
+  $t->set_var("charset",$charset);  
+   
+  if (! $start) {
      $start = 0;
-     $query = "";
+//     $query = "";
     }
   
   if ($order)
@@ -206,5 +208,5 @@ if ($query) {
  $t->p("out");
 
 // ----------- end Done form declaration ------------
-
+  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
 ?>

@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>{title}</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="content-type" content="text/html"; charset="{charset}">
 <link rel="stylesheet" href="css/style.css">
 <script LANGUAGE="JavaScript">
    function ExchangeCustomer(thisform)

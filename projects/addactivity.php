@@ -90,3 +90,4 @@
            "cd=14&sort=$sort&order=$order&query=$query&start="
          . "$start&filter=$filter"));
   }
+  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
