@@ -59,7 +59,7 @@
 
 		$treemenu = Array();
 
-		$phpgw->common->hook('',array('manual','preferences'));
+		$phpgw->common->hook('manual',array('manual','preferences'));
 
 		reset($treemenu);
 		

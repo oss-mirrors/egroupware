@@ -10,17 +10,15 @@
     \**************************************************************************/
     /* $Id$ */
 
-    $phpgw_flags = Array('currentapp' => 'manual');
+	$phpgw_flags = Array('currentapp' => 'manual');
 	
-    $phpgw_info['flags'] = $phpgw_flags;
-    include('../../header.inc.php');
-    $appname = 'notes';
-    include(PHPGW_SERVER_ROOT.'/'.$appname.'/version.inc.php');
+	$phpgw_info['flags'] = $phpgw_flags;
+	include('../../header.inc.php');
+	$appname = 'stocks';
+	include(PHPGW_SERVER_ROOT.'/'.$appname.'/setup/setup.inc.php');
 ?>
-
-    <img src="<?php echo $phpgw->common->image($appname,'navbar.gif'); ?>" border="0"><p/>
-    <font face="<?php echo $phpgw_info['theme']['font']; ?>" size="2">
-    Version: <b><?php echo $phpgw_info['server']['versions'][$appname]; ?></b>
-    </font>
-
-    <?php $phpgw->common->phpgw_footer(); ?>
+<img src="<?php echo $phpgw->common->image($appname,'navbar.gif'); ?>" border="0"><p/>
+<font face="<?php echo $phpgw_info['theme']['font']; ?>" size="2">
+Version: <b><?php echo $setup_info[$appname]['version']; ?></b>
+</font>
+<?php $phpgw->common->phpgw_footer(); ?>
