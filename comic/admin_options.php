@@ -34,6 +34,9 @@
     {
         $message = lang("Global Options Updated");
         
+        $remote_enabled = intval($remote_enabled);
+        $override_enabled = intval($override_enabled);
+        
         $phpgw->db->lock("phpgw_comic_admin");
         $phpgw->db->query("update phpgw_comic_admin set "
                           ."admin_imgsrc='".$image_source."', "
