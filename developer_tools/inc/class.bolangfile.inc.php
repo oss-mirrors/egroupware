@@ -107,10 +107,10 @@
 			/* _debug_array($this->source_langarray);exit; */
 			if (empty($entry['content'])) $entry['content'] = $entry['message_id'];
 
-			$mess_id = stripslashes(strtolower(trim($entry['message_id'])));
+			$mess_id = strtolower(trim($entry['message_id']));
 			$this->source_langarray[$mess_id] = array(
 				'message_id' => $mess_id,
-				'content'    => stripslashes($entry['content']),
+				'content'    => $entry['content'],
 				'app_name'   => $entry['app_name'] == 'phpgwapi' ? 'common' : $entry['app_name'],
 				'lang'       => 'en'
 			);
@@ -120,7 +120,7 @@
 			{
 				$this->target_langarray[$mess_id] = array(
 					'message_id' => $mess_id,
-					'content'    => stripslashes($entry['target']),
+					'content'    => $entry['target'],
 					'app_name'   => $entry['app_name'] == 'phpgwapi' ? 'common' : $entry['app_name'],
 					'lang'       => $this->tgt_lang
 				);

@@ -35,7 +35,11 @@
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
 			$GLOBALS['phpgw']->translation->add_app('developer_tools');
 			$GLOBALS['phpgw']->translation->add_app('common');
-			//$GLOBALS['phpgw']->translation->add_app('transy');
+			if (!is_object($GLOBALS['phpgw']->html))
+			{
+				$GLOBALS['phpgw']->html = CreateObject('phpgwapi.html');
+			}
+			$this->html = $GLOBALS['phpgw']->html;
 		}
 
 		function addphrase()
@@ -50,6 +54,13 @@
 			{
 				if($_POST['add'] || $_POST['more'])
 				{
+					if (get_magic_quotes_gpc())
+					{
+						foreach(array('message_id','content','target') as $name)
+						{
+							$entry[$name] = stripslashes($entry[$name]);
+						}
+					}
 					$this->bo->addphrase($entry);
 					if ($sourcelang == $targetlang)
 					{
@@ -202,7 +213,7 @@
 				{
 					$mess_id  = $this->encode_id($key);
 					$this->template->set_var('mess_id',$mess_id);
-					$this->template->set_var('source_content',htmlspecialchars($data['content']));
+					$this->template->set_var('source_content',$this->html->htmlspecialchars($data['content']));
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],$mess_id));
 					$this->template->set_var('tr_color',$this->nextmatchs->alternate_row_color());
 					$this->template->pfp('out','detail');
@@ -379,12 +390,16 @@
 						$_mess = strtolower(trim($this->recode_id($_mess)));
 						//Known issue: if a message containing a ] is used as index of array, when the array is posted the index gets truncated;
 						$this->bo->target_langarray[$_mess]['message_id'] = $_mess;
-						//POST method adds slashes
-						$this->bo->target_langarray[$_mess]['content'] = stripslashes($_cont);
+						//POST method adds slashes if magic_quotes_gpc is set !!!
+						if (get_magic_quotes_gpc())
+						{
+							$_cont = stripslashes($_cont);
+						}
+						$this->bo->target_langarray[$_mess]['content'] = $_cont;
 						if($sourcelang == $targetlang)
 						{
 							//POST method adds slashes
-							$this->bo->source_langarray[$_mess]['content'] = stripslashes($_cont);
+							$this->bo->source_langarray[$_mess]['content'] = $_cont;
 						}
 					}
 				}
@@ -449,11 +464,11 @@
 				while(list($key,$data) = @each($langarray))
 				{
 					$mess_id  = $this->encode_id($key);
-					$content  = $mess_id == 'charset' ? $mess_id : $data['content'];
-					$transy   = $translation[$key]['content'];
+					$content  = $this->html->htmlspecialchars($mess_id == 'charset' ? $mess_id : $data['content']);
+					$transy   = $this->html->htmlspecialchars($translation[$key]['content']);
 					$this->template->set_var('mess_id',$mess_id);
-					$this->template->set_var('source_content',htmlspecialchars($content));
-					$this->template->set_var('content',htmlspecialchars($transy));
+					$this->template->set_var('source_content',$content);
+					$this->template->set_var('content',$transy);
 					$this->template->set_var('transapp',$this->lang_option($app_name,$data['app_name'],$mess_id));
 					$this->template->set_var('tr_color',empty($transy) ? $GLOBALS['phpgw_info']['theme']['bg06'] : $this->nextmatchs->alternate_row_color());
 					if (($len = max(strlen($key),strlen($content))) > 50)
@@ -493,7 +508,13 @@
 
 		function encode_id($id)
 		{
-			return str_replace(array('[',']','&','"'),array('%5B','%5D','&amp;','&quot;'),$id);
+			$id = str_replace(array('[',']','&','"'),array('%5B','%5D','&amp;','&quot;'),$id);
+
+			if(get_magic_quotes_gpc())
+			{
+				$id = addslashes($id);
+			}
+			return $id;
 		}
 
 		function recode_id($id)
