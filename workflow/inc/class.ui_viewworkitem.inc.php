@@ -46,7 +46,7 @@
 				));
 				$this->t->parse('properties', 'block_properties', true);
 			}
-			if (!count($wi['properties'])) $this->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
+			if (!count($wi['properties'])) $this->t->set_var('properties', '<tr><td colspan="2" align="center">'. lang('No properties defined') .'</td></tr>');
 
 
 
