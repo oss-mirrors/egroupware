@@ -67,7 +67,7 @@
 
   echo "<p><b>" . lang("E-Mail preferences") . ":" . "</b><hr><p>";
 ?>
-  <form method="POST" action="<?php echo $phpgw->link(); ?>">
+  <form method="POST" action="<?php echo $phpgw->link('/email/preferences.php'); ?>">
    <table border="0" align="center" cellspacing="1" cellpadding="1" width="60%">
     <tr bgcolor="<?php echo $phpgw_info["theme"]["th_bg"]; ?>">
      <td colspan="2">&nbsp;</td>
@@ -126,7 +126,7 @@
     <tr bgcolor="<?php echo $tr_color; ?>">
      <td align="left"><?php echo lang("Email Password"); ?></td>
      <td align="center">
-      <input type="password" name="passwd" value="<?php echo $phpgw->common->decrypt($phpgw_info["user"]["preferences"]["email"]["passwd"]); ?>">
+      <input type="password" name="passwd" value="<?php echo $phpgw_info["user"]["preferences"]["email"]["passwd"]; ?>">
      </td>
     </tr>
     <?php $tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color); ?>
