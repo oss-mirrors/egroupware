@@ -93,7 +93,7 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
     <form method="POST" action="<?php echo $phpgw->link("category.php"); ?>">
     <?php echo $extrahidden; ?> 
     <input type="hidden" name="action" value="<?echo $actiontype?>">
-    <td><? echo lang("Category Name") ?>:</td>
+    <td><?php echo lang("Category Name") ?>:</td>
     <td><input type="text" name="catname" size=40 maxlength=49 value="<? echo $catname ?>"></td>
    </tr>  
    <tr>
@@ -121,7 +121,6 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 </table>
 
 
-<?
-
-  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+<?php
+  $phpgw->common->phpgw_footer();
 ?>

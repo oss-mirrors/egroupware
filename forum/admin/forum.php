@@ -150,7 +150,6 @@ echo "<a href=\"" . $phpgw->link("../") . "\">" . lang("Return to Forums") ."</a
 </table>
 
 
-<?
-
-  include($phpgw_info["server"]["api_inc"] . "/footer.inc.php");
+<?php
+  $phpgw->common->phpgw_footer();
 ?>
