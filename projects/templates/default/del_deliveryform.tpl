@@ -83,7 +83,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><font face="{font}">{message}</font></td>
+		<td>{message}</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>

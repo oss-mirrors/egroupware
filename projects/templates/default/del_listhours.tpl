@@ -6,6 +6,7 @@
 <hr noshade width="98%" align="center" size="1">
 <center>
 {message}
+{pref_message}
 <form method="POST" action="{actionurl}">
 {hidden_vars}
 <table border="0" cellspacing="2" cellpadding="2">

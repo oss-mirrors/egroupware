@@ -183,6 +183,7 @@
 			{
 				$prefs['tax'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
 				$prefs['abid'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
+				$prefs['bill'] = $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
 			}
 			return $prefs;
 		}
@@ -195,6 +196,7 @@
 			{
 				$GLOBALS['phpgw']->preferences->change('projects','tax',$prefs['tax']);
 				$GLOBALS['phpgw']->preferences->change('projects','abid',$prefs['abid']);
+				$GLOBALS['phpgw']->preferences->change('projects','bill',$prefs['bill']);
 				$GLOBALS['phpgw']->preferences->save_repository(True);
 			}
 		}
@@ -206,7 +208,7 @@
 				$error[] = lang('Please set your global preferences !');
 			}
 
-			if (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['abid']) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'])))
+			if (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['abid']) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'])) || (! isset($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'])))
 			{
 				$error[] = lang('Please set your preferences for this application !');
 			}
@@ -221,8 +223,13 @@
 
 			$prefs['currency']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['currency'];
 			$prefs['country']	= $GLOBALS['phpgw_info']['user']['preferences']['common']['country'];
-			$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
-			$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
+
+			if ($GLOBALS['phpgw_info']['user']['preferences']['projects'])
+			{
+				$prefs['abid']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['abid'];
+				$prefs['tax']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['tax'];
+				$prefs['bill']		= $GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'];
+			}
 			return $prefs;
 		}
 
@@ -472,9 +479,12 @@
 				$error[] = lang('Please enter the bill per workunit !');
 			}
 
-			if ((! $values['minperae']) || ($values['minperae'] == 0))
+			if ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'] == 'wu')
 			{
-				$error[] = lang('Please enter the minutes per workunit !');
+				if ((! $values['minperae']) || ($values['minperae'] == 0))
+				{
+					$error[] = lang('Please enter the minutes per workunit !');
+				}
 			}
 
 			if (is_array($error))

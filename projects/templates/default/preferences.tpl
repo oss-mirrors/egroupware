@@ -13,8 +13,14 @@
 <form method="POST" name="projects_form" action="{actionurl}">
 <table width="80%" border="0" cellspacing="2" cellpadding="2">
 	<tr>
+
+<!-- BEGIN book -->
+
 		<td>{lang_select_tax}:</td>
 		<td><input type="text" name="prefs[tax]" value="{tax}" size="6" maxlength="6">&nbsp;%</td>
+	</tr>
+		<td>{lang_bill}:</td>
+		<td>{bill}</td>
 	</tr>
 	<tr>
 		<td><input type="button" value="{lang_address}" onClick="abook();"></td>
@@ -31,3 +37,20 @@
 	</tr>
 </table>
 </center>
+
+<!-- END book -->
+
+<!-- BEGIN no -->
+
+		<td>{lang_no_prefs}</td>
+	</tr>
+	<tr valign="bottom">
+		<td height="50" align="left">
+			<input type="submit" name="done" value="{lang_done}">
+			</form>
+		</td>
+	</tr>
+</table>
+</center>
+
+<!-- END no -->

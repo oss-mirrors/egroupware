@@ -106,7 +106,6 @@
 			$this->t->set_var('lang_delivery_num',lang('Delivery ID'));
 			$this->t->set_var('lang_delivery_date',lang('Delivery date'));
 			$this->t->set_var('lang_activity',lang('Activity'));
-			$this->t->set_var('lang_aes',lang('Workunits'));
 			$this->t->set_var('lang_select',lang('Select'));
 			$this->t->set_var('lang_print_delivery',lang('Print delivery'));
 			$this->t->set_var('lang_sumaes',lang('Sum workunits'));
@@ -366,6 +365,16 @@
 				Header('Location: ' . $referer);
 			}
 
+			$nopref = $this->boprojects->check_prefs();
+			if (is_array($nopref))
+			{
+				$this->t->set_var('pref_message',$GLOBALS['phpgw']->common->error_list($nopref));
+			}
+			else
+			{
+				$prefs = $this->boprojects->get_prefs();
+			}
+
 			if ($Delivery)
 			{
 				$values['project_id']	= $project_id;
@@ -463,7 +472,18 @@
 
 			$this->t->set_var('date_select',$GLOBALS['phpgw']->common->dateformatorder($this->sbox->getYears('values[year]',$values['year']),
 																				$this->sbox->getMonthText('values[month]',$values['month']),
-																				$this->sbox->getDays('values[day]',$values['day'])));    
+																				$this->sbox->getDays('values[day]',$values['day'])));
+
+			if ($prefs['bill'] == 'wu')
+			{
+				$this->t->set_var('lang_sumaes',lang('Sum workunits'));
+				$this->t->set_var('lang_workunits',lang('Workunits'));
+			}
+			else
+			{
+				$this->t->set_var('lang_sumaes',lang('Sum hours'));
+				$this->t->set_var('lang_workunits',lang('Hours'));
+			}
 
 			$sumaes=0;
 			if (is_array($hours))
@@ -488,12 +508,23 @@
 						$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 					}
 
-					if ($note['minperae'] != 0)
+					if ($prefs['bill'] == 'wu')
 					{
-						$aes = ceil($note['minutes']/$note['minperae']);
+						if ($note['minperae'] != 0)
+						{
+							$aes = ceil($note['minutes']/$note['minperae']);
+						}
+						$sumaes += $aes;
 					}
-					$sumaes += $aes;
+					else
+					{
+						$aes = floor($note['minutes']/60) . ':'
+								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
 
+						$sumhours += $note['minutes'];
+						$sumaes = floor($sumhours/60) . ':'
+								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
+					}
 // --------------------- template declaration for list records ---------------------------
 
 					$this->t->set_var(array('select' => $select,
@@ -546,11 +577,23 @@
 							$start_dateout = $GLOBALS['phpgw']->common->show_date($start_date,$GLOBALS['phpgw_info']['user']['preferences']['common']['dateformat']);
 						}
 
+					if ($prefs['bill'] == 'wu')
+					{
 						if ($note['minperae'] != 0)
 						{
 							$aes = ceil($note['minutes']/$note['minperae']);
 						}
 					//	$sumaes += $aes;
+					}
+					else
+					{
+						$aes = floor($note['minutes']/60) . ':'
+								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
+
+					/*	$sumhours += $note['minutes'];
+						$sumaes = floor($sumhours/60) . ':'
+								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60)); */
+					}
 
 // --------------------- template declaration for list records ---------------------------
 
@@ -741,6 +784,17 @@
 			if (! $title) { $title  = '&nbsp;'; }
 			$this->t->set_var('title',$title);
 
+			if ($prefs['bill'] == 'wu')
+			{
+				$this->t->set_var('lang_sumaes',lang('Sum workunits'));
+				$this->t->set_var('lang_workunits',lang('Workunits'));
+			}
+			else
+			{
+				$this->t->set_var('lang_sumaes',lang('Sum hours'));
+				$this->t->set_var('lang_workunits',lang('Hours'));
+			}
+
 			$pos = 0;
 			$hours = $this->bodeliveries->read_delivery_pos($delivery_id);
 
@@ -763,11 +817,23 @@
 
 					$this->t->set_var('hours_date',$hours_dateout);
 
-					if ($note['minperae'] != 0)
+					if ($prefs['bill'] == 'wu')
 					{
-						$aes = ceil($note['minutes']/$note['minperae']);
+						if ($note['minperae'] != 0)
+						{
+							$aes = ceil($note['minutes']/$note['minperae']);
+						}
+						$sumaes += $aes;
 					}
-					$sumaes += $aes;
+					else
+					{
+						$aes = floor($note['minutes']/60) . ':'
+								. sprintf ("%02d",(int)($note['minutes']-floor($note['minutes']/60)*60));
+
+						$sumhours += $note['minutes'];
+						$sumaes = floor($sumhours/60) . ':'
+								. sprintf ("%02d",(int)($sumhours-floor($sumhours/60)*60));
+					}
 
 					$this->t->set_var('aes',$aes);
 					$act_descr = $GLOBALS['phpgw']->strip_html($note['descr']);

@@ -117,8 +117,6 @@
 			$this->t->set_var('lang_edit',lang('Edit'));
 			$this->t->set_var('lang_view',lang('View'));
 			$this->t->set_var('lang_hours',lang('Work hours'));
-			$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
-    		$this->t->set_var('lang_billperae',lang('Bill per workunit'));
 			$this->t->set_var('lang_remarkreq',lang('Remark required'));
 			$this->t->set_var('lang_select',lang('Select per button !'));
 			$this->t->set_var('lang_invoices',lang('Invoices'));
@@ -980,7 +978,6 @@
 			);
 
 			$this->t->set_var('lang_header',lang('Activities list'));
-			$this->t->set_var('project_url',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.list_projects&action=mains'));
 
 			if (!$this->start)
 			{
@@ -1005,13 +1002,25 @@
             $this->t->set_var('search_action',$GLOBALS['phpgw']->link('/index.php',$link_data));
             $this->t->set_var('search_list',$this->nextmatchs->search(1));
 
+			switch($prefs['bill'])
+			{
+				case 'wu':	$bill = lang('Bill per workunit'); break;
+				case 'h':	$bill = lang('Bill per hour'); break;
+				default :	$bill = lang('Bill per hour'); break;
+			}
+
 // ----------------- list header variable template-declarations ---------------------------
   
 			$this->t->set_var('currency',$prefs['currency']);
 			$this->t->set_var('sort_num',$this->nextmatchs->show_sort_order($this->sort,'num',$this->order,'/index.php',lang('Activity ID')));
 			$this->t->set_var('sort_descr',$this->nextmatchs->show_sort_order($this->sort,'descr',$this->order,'/index.php',lang('Description')));
-			$this->t->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',lang('Bill per workunit')));
-			$this->t->set_var('sort_minperae',$this->nextmatchs->show_sort_order($this->sort,'minperae',$this->order,'/index.php',lang('Minutes per workunit')));
+			$this->t->set_var('sort_billperae',$this->nextmatchs->show_sort_order($this->sort,'billperae',$this->order,'/index.php',$bill));
+
+			if ($prefs['bill'] == 'wu')
+			{
+				$this->t->set_var('sort_minperae','<td width="10%" align="right">' . $this->nextmatchs->show_sort_order($this->sort,'minperae',
+									$this->order,'/index.php',lang('Minutes per workunit') . '</td>'));
+			}
 
 // ---------------------------- end header declaration -------------------------------------
 
@@ -1028,8 +1037,12 @@
       
 				$this->t->set_var(array('num'	=> $GLOBALS['phpgw']->strip_html($act[$i]['number']),
 										'descr' => $descr,
-									'billperae' => $act[$i]['billperae'],
-									'minperae'	=> $act[$i]['minperae']));
+									'billperae' => $act[$i]['billperae']));
+
+				if ($prefs['bill'] == 'wu')
+				{
+					$this->t->set_var('minperae','<td align="right">' . $act[$i]['minperae'] . '</td>');
+				}
 
 				$link_data['menuaction']	= 'projects.uiprojects.edit_activity';
 				$link_data['activity_id']	= $act[$i]['activity_id'];
@@ -1078,8 +1091,7 @@
 
 			if ($submit)
 			{
-				$values['cat'] = $cat_id;
-
+				$values['cat']	= $cat_id;
 				$error = $this->boprojects->check_pa_values($values);
 				if (is_array($error))
 				{
@@ -1123,9 +1135,21 @@
 			$this->t->set_var('lang_num',lang('Activity ID'));
 			$this->t->set_var('num',$values['number']);
 			$this->t->set_var('descr',$values['descr']);
-			$this->t->set_var('minperae',$values['minperae']);
 			$this->t->set_var('currency',$prefs['currency']);
     		$this->t->set_var('billperae',$billperae);
+
+			if ($prefs['bill'] == 'wu')
+			{
+    			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+				$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+				$this->t->set_var('minperae','<input type="text" name="values[minperae]" value="' . $values['minperae'] . '">');
+			}
+			else
+			{
+    			$this->t->set_var('lang_billperae',lang('Bill per hour'));
+			}
+
+			$this->t->set_var('billperae',$values['billperae']);
 
 			if ($values['remarkreq'] == 'N'):
 				$stat_sel[0]=' selected';
@@ -1220,8 +1244,19 @@
 					. '<option value="Y"' . $stat_sel[1] . '>' . lang('Yes') . '</option>' . "\n";
 
 			$this->t->set_var('remarkreq_list',$remarkreq_list);
+
+			if ($prefs['bill'] == 'wu')
+			{
+    			$this->t->set_var('lang_billperae',lang('Bill per workunit'));
+				$this->t->set_var('lang_minperae',lang('Minutes per workunit'));
+				$this->t->set_var('minperae','<input type="text" name="values[minperae]" value="' . $values['minperae'] . '">');
+			}
+			else
+			{
+    			$this->t->set_var('lang_billperae',lang('Bill per hour'));
+			}
+
 			$this->t->set_var('billperae',$values['billperae']);
-			$this->t->set_var('minperae',$values['minperae']);
 
 			$link_data['menuaction']	= 'projects.uiprojects.delete_pa';
 			$link_data['pa_id']	= $values[$i]['activity_id'];
@@ -1482,39 +1517,70 @@
 			$GLOBALS['phpgw']->common->phpgw_header();
 			echo parse_navbar();
 
-			$this->t->set_file(array('prefs' => 'preferences.tpl'));
-
-			$this->set_app_langs();
-
-			$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'));
-			$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
-
-			$this->t->set_var('lang_action',lang('Project preferences'));
-			$this->t->set_var('lang_select_tax',lang('Select tax for workhours'));
-			$this->t->set_var('lang_select',lang('Select per button !'));
-			$this->t->set_var('lang_address',lang('Select your address'));
-
-			$prefs = $this->boprojects->read_prefs();
-
-			$this->t->set_var('tax',$prefs['tax']);
-
-			if (isset($prefs['abid']))
+			if ($this->boprojects->isprojectadmin('pbo') || $this->boprojects->isprojectadmin('pad'))
 			{
-				$abid = $prefs['abid'];
+				$this->t->set_file(array('book_prefs' => 'preferences.tpl'));
+				$this->t->set_block('book_prefs','book','bookhandle');
+				$this->t->set_block('book_prefs','no','nohandle');
 
-				$entry = $this->boprojects->read_single_contact($abid);
+				$this->set_app_langs();
 
-				if ($entry[0]['org_name'] == '') { $this->t->set_var('name',$entry[0]['n_given'] . ' ' . $entry[0]['n_family']); }
-				else { $this->t->set_var('name',$entry[0]['org_name'] . ' [ ' . $entry[0]['n_given'] . ' ' . $entry[0]['n_family'] . ' ]'); }
+				$this->t->set_var('lang_action',lang('Project preferences'));
+
+				$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.preferences'));
+				$this->t->set_var('addressbook_link',$GLOBALS['phpgw']->link('/index.php','menuaction=projects.uiprojects.abook'));
+
+				$this->t->set_var('lang_select_tax',lang('Select tax for workhours'));
+				$this->t->set_var('lang_address',lang('Select your address'));
+				$this->t->set_var('lang_bill',lang('Invoicing'));
+
+				$prefs = $this->boprojects->read_prefs();
+
+				$this->t->set_var('tax',$prefs['tax']);
+
+				$bill = '<input type="radio" name="prefs[bill]" value="wu"' . ($prefs['bill'] == 'wu'?' checked':'') . '>'
+							. lang('per workunit') . "\n";
+				$bill .= '<input type="radio" name="prefs[bill]" value="h"' . ($prefs['bill'] == 'h'?' checked':'') . '>'
+							. lang('per hour');
+
+				$this->t->set_var('bill',$bill);
+
+				if (isset($prefs['abid']))
+				{
+					$abid = $prefs['abid'];
+
+					$entry = $this->boprojects->read_single_contact($abid);
+
+					if ($entry[0]['org_name'] == '') { $this->t->set_var('name',$entry[0]['n_given'] . ' ' . $entry[0]['n_family']); }
+					else { $this->t->set_var('name',$entry[0]['org_name'] . ' [ ' . $entry[0]['n_given'] . ' ' . $entry[0]['n_family'] . ' ]'); }
+				}
+				else
+				{
+					$this->t->set_var('name',$name);
+				}
+
+				$this->t->set_var('abid',$abid);
+
+				$this->t->set_var('bookhandle','');
+				$this->t->set_var('nohandle','');
+				$this->t->pfp('out','book_prefs');
+				$this->t->pfp('bookhandle','book');
 			}
 			else
 			{
-				$this->t->set_var('name',$name);
+				$this->t->set_file(array('no_prefs' => 'preferences.tpl'));
+				$this->t->set_block('no_prefs','book','bookhandle');
+				$this->t->set_block('no_prefs','no','nohandle');
+
+				$this->t->set_var('actionurl',$GLOBALS['phpgw']->link('/preferences/index.php'));
+				$this->t->set_var('lang_action',lang('Project preferences'));
+				$this->t->set_var('lang_no_prefs',lang('Sorry, no preferences to set for you :)'));
+				$this->t->set_var('lang_done',lang('Done'));
+				$this->t->set_var('bookhandle','');
+				$this->t->set_var('nohandle','');
+				$this->t->pfp('out','no_prefs');
+				$this->t->pfp('nohandle','no');
 			}
-
-			$this->t->set_var('abid',$abid);
-
-			$this->t->pfp('out','prefs');
 		}
 
 		function archive()

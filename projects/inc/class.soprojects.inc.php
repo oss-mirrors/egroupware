@@ -50,6 +50,18 @@
 			return $s;
 		}
 
+		function bill_lang()
+		{
+			switch ($GLOBALS['phpgw_info']['user']['preferences']['projects']['bill'])
+			{
+				case 'wu':	$l = lang('per workunit'); break;
+				case 'h':	$l = lang('per hour'); break;
+				default	:	$l = lang('per hour');
+            }
+			return $l;
+		}
+
+
 		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = '', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
 			if ($status)
@@ -344,7 +356,7 @@
 										. $GLOBALS['phpgw']->strip_html($this->db->f('num')) . ']';
 				if($billable)
 				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -392,7 +404,7 @@
 
 				if($billable)
 				{
-					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+					$activities_list .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
 				}
 
 				$activities_list .= '</option>' . "\n";
@@ -417,7 +429,7 @@
 
 				if($this->db->f('billable') == 'Y')
 				{
-					$hours_act .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . lang('per workunit');
+					$hours_act .= ' ' . $this->currency . ' ' . $this->db->f('billperae') . ' ' . $this->bill_lang();
 				}
 				$hours_act .= '</option>' . "\n";
 			}

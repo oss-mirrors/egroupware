@@ -30,11 +30,11 @@
 		<td><input type="text" name="values[billperae]" value="{billperae}"></td>
 	</tr>
 	<tr>
-		<td>{lang_minperae}:</td>
-		<td><input type="text" name="values[minperae]" value="{minperae}"></td>
+		<td>{lang_minperae}</td>
+		<td>{minperae}</td>
 	</tr>
 </table>
-         
+
 <!-- BEGIN add -->
          
 <table width="50%" border="0" cellspacing="2" cellpadding="2">
