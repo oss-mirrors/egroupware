@@ -90,7 +90,7 @@
   else {
     $num = addslashes($num);
     $descr = addslashes($descr);
-    $phpgw->db->query("update p_activities set num='$num',remarkreq='$remarkreq',descr='$descr',billperae='$billperae', "
+    $phpgw->db->query("update p_activities set num='$num',remarkreq='$remarkreq',descr='$descr',billperae='$billperae',"
                     . "minperae='$minperae' where id='$id'");
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/projects/activities.php",

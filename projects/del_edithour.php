@@ -74,7 +74,7 @@
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
             $activity_list .= " selected";
         $activity_list .= ">"
-          . $db2->f("descr") . "</option>";
+          . $phpgw->strip_html($db2->f("descr")) . "</option>";
      }
      $t->set_var("activity_list",$activity_list);
 
@@ -212,7 +212,7 @@
     $ae_minutes=$hours*60+$minutes;
     $remark = addslashes($remark);
     $phpgw->db->query("update p_hours set activity_id='$activity',entry_date='" . time()
-		. "',date='$date',end_date='$end_date',remark='$remark)',"
+		. "',date='$date',end_date='$end_date',remark='$remark',"
 		. "minutes='$ae_minutes',status='$status',minperae='$minperae',"
 		. "billperae='$billperae',employee='$employee' where id='$id'");
 

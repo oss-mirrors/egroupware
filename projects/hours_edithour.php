@@ -2,7 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects/projecthours                                     *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              * 
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         * 
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -74,7 +74,7 @@
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
             $activity_list .= " selected";
         $activity_list .= ">"
-          . $db2->f("descr") . "</option>";
+          . $phpgw->strip_html($db2->f("descr")) . "</option>";
      }
      $t->set_var("activity_list",$activity_list);
 

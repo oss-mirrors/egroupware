@@ -72,7 +72,7 @@
         if($db2->f("activitiy_id")==$phpgw->db->f("activity_id"))
             $activity_list .= " selected";
         $activity_list .= ">"
-          . $db2->f("descr") . "</option>";
+          . $phpgw->strip_html($db2->f("descr")) . "</option>";
      }
      $t->set_var("activity_list",$activity_list);
 

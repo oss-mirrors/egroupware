@@ -2,7 +2,7 @@
   /**************************************************************************\
   * phpGroupWare - projects                                                  *
   * (http://www.phpgroupware.org)                                            *
-  * Written by Bettina Gille  [aeb@hansenet.de]                              *
+  * Written by Bettina Gille  [ceb@phpgroupware.org]                         *
   *          & Jens Lentfoehr <sw@lf.shlink.de>                              *
   * --------------------------------------------------------                 *
   *  This program is free software; you can redistribute it and/or modify it *
@@ -69,14 +69,14 @@
      $t->set_var("lang_action",lang("Edit project"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      $t->set_var("lang_num",lang("Project ID"));
-     $t->set_var("num",stripslashes($phpgw->db->f("num")));
+     $t->set_var("num",$phpgw->strip_html($phpgw->db->f("num")));
      $t->set_var("lang_choose","");                                                                                                                    
      $t->set_var("choose","");
      $t->set_var("lang_title",lang("Title"));
-     $title  = stripslashes($phpgw->db->f("title"));                                                                                                                               
+     $title  = $phpgw->strip_html($phpgw->db->f("title"));                                                                                                                               
      if (! $title)  $title  = "&nbsp;";                                                                                                                                                  
      $t->set_var("title",$title);
-     $descrval  = stripslashes($phpgw->db->f("descr"));                                                                                                                               
+     $descrval  = $phpgw->strip_html($phpgw->db->f("descr"));                                                                                                                               
      if (! $descrval)  $descrval  = "&nbsp;";                                                                                                                                                  
      $t->set_var("descrval",$descrval);
 
@@ -215,7 +215,7 @@
         if($db2->f("project_id"))
             $ba_activities_list .= " selected";
         $ba_activities_list .= ">"        
-                    . $db2->f("descr")
+                    . $phpgw->strip_html($db2->f("descr"))
                     . "</option>";
      }
      $t->set_var("lang_descr",lang("Description"));
@@ -229,13 +229,12 @@
                      . "(p_activities.id=p_projectactivities.activity_id) and  "
                      . "((project_id='$id') or (project_id IS NULL)) "
                      . " WHERE billable IS NULL OR billable='Y' ORDER BY descr asc");
-//                     . " ORDER BY descr asc");
      while ($db2->next_record()) {
         $bill_activities_list .= "<option value=\"" . $db2->f("id") . "\"";
         if($db2->f("billable")=="Y")
             $bill_activities_list .= " selected";
         $bill_activities_list .= ">"        
-                    . $db2->f("descr") . " " . $currency . " " . $db2->f("billperae")
+                    . $phpgw->strip_html($db2->f("descr")) . " " . $currency . " " . $db2->f("billperae")
                     . " " . lang("per workunit") . " " . "</option>";
      }
      $t->set_var("bill_activities_list",$bill_activities_list);  
@@ -313,10 +312,11 @@
        }
     }
     if($submit) {
+      $title = addslashes($title);
+      $descr = addslashes($descr);
       $phpgw->db->query("update p_projects set entry_date='" . time() . "', date='" 
                    . "$date',end_date='$end_date',coordinator='$coordinator',"
-                   . "customer='$customer',status='$status',descr='"
-                   . addslashes($descr) . "',title='".addslashes($title)."',"
+                   . "customer='$customer',status='$status',descr='$descr',title='$title',"
                    . "budget='$budget',access='$access' where id='$id'");
 
 
