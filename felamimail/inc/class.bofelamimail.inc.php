@@ -119,7 +119,10 @@
 		
 		function closeConnection()
 		{
-			imap_close($this->mbox);
+			if(is_resource($this->mbox))
+			{
+				imap_close($this->mbox);
+			}
 		}
 		
 		// creates the mailbox string needed for the various imap functions
@@ -412,6 +415,12 @@
 		
 		function getFolderList($_subscribedOnly=false)
 		{
+			$folders = array();
+			if(!is_resource($this->mbox))
+			{ 
+				return $folders;
+			}
+
 			$mailboxString = $this->createMailboxString($this->imapBaseDir);
 		
 			if($_subscribedOnly == 'true')
