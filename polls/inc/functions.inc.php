@@ -50,8 +50,9 @@
 //		return ($db->f(0)?True:False);
 	}
 
-	function poll_viewResults($poll_id)
+	function poll_getResultsTable($poll_id,$showtitle=true,$showtotal=true)
 	{
+		$output = '';
 		$poll_id = intval($poll_id);
 		$GLOBALS['phpgw']->db->query("SELECT SUM(option_count) AS sum FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
@@ -60,11 +61,14 @@
 		$GLOBALS['phpgw']->db->query("select poll_title from phpgw_polls_desc where poll_id='$poll_id'",__LINE__,__FILE__);
 		$GLOBALS['phpgw']->db->next_record();
 
-		echo '<p><table border="0" align="center" width="50%">';
-		echo ' <tr>' . "\n"
+		$output .= '<p><table border="0" align="center" width="400">';
+		if($showtitle)
+		{
+		$output .= ' <tr>' . "\n"
 			. '  <td colspan="3" bgcolor="' . $GLOBALS['phpgw_info']['theme']['th_bg'] . '" align="center">'
 			. $GLOBALS['phpgw']->db->f('poll_title') . '</td>' . "\n"
 			. '</tr>' . "\n";
+		}
 
 		$GLOBALS['phpgw']->db->query("SELECT * FROM phpgw_polls_data WHERE poll_id='$poll_id'",__LINE__,__FILE__);
 		while ($GLOBALS['phpgw']->db->next_record())
@@ -73,11 +77,11 @@
 			$poll_optionCount = $GLOBALS['phpgw']->db->f('option_count');
 
 			$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
-			echo ' <tr bgcolor="' . $tr_color . '">' . "\n";
+			$output .= ' <tr bgcolor="' . $tr_color . '">' . "\n";
 
 			if ($poll_optionText != '')
 			{
-				echo "  <td>$poll_optionText</td>\n";
+				$output .= "  <td>$poll_optionText</td>\n";
 
 				if ($poll_sum)
 				{
@@ -91,25 +95,36 @@
 				if ($poll_percent > 0)
 				{
 					$poll_percentScale = (int)($poll_percent * 1);
-					echo '  <td><img src="' . $GLOBALS['phpgw_info']['server']['webserver_url']
+					$output .= '  <td><img src="' . $GLOBALS['phpgw_info']['server']['webserver_url']
 						. '/polls/images/pollbar.gif" height="12" width="' . $poll_percentScale
 						. '"></td>' . "\n";
 				}
 				else
 				{
-					echo '  <td>&nbsp;</td>' . "\n";
+					$output .= '  <td>&nbsp;</td>' . "\n";
 				}
 
-				printf('  <td> %.2f %% (%d)</td>' . "\n" . ' </tr>' . "\n", $poll_percent, $poll_optionCount);
+				$output .= sprintf('  <td> %.2f %% (%d)</td>' . "\n" . ' </tr>' . "\n", $poll_percent, $poll_optionCount);
 
-				echo ' </tr>' . "\n";
+				$output .= ' </tr>' . "\n";
 			}
 		}
 
-		echo ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
-			. '  <td>' . lang('Total votes') . ': ' . $poll_sum . '</td>' . "\n"
-			. ' </tr>' . "\n"
-			. '</table>' . "\n";
+		if($showtotal)
+		{
+			$output .= ' <tr bgcolor="' . $GLOBALS['phpgw_info']['theme']['bgcolor'] . '">' . "\n"
+				. '  <td>' . lang('Total votes') . ': ' . $poll_sum . '</td>' . "\n"
+				. ' </tr>' . "\n";
+		}
+		
+		$output .= '</table>' . "\n";
+
+		return $output;
+	}
+
+	function poll_viewResults($poll_id)
+	{
+		echo poll_getResultsTable($poll_id);
 	}
 
 	function poll_getResults($poll_id)

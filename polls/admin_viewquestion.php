@@ -32,7 +32,7 @@
 
 	$GLOBALS['phpgw']->template->set_var('message','');
 	$GLOBALS['phpgw']->template->set_var('header_message',lang('View poll'));
-	$GLOBALS['phpgw']->template->set_var('td_message','&nbsp;');
+	$GLOBALS['phpgw']->template->set_var('td_message',$GLOBALS['phpgw']->strip_html($poll_title));
 	$GLOBALS['phpgw']->template->set_var('th_bg',$GLOBALS['phpgw_info']['theme']['th_bg']);
 	$GLOBALS['phpgw']->template->set_var('form_action',$GLOBALS['phpgw']->link('/polls/admin_editquestion.php'));
 	$GLOBALS['phpgw']->template->set_var('poll_id',$poll_id);
@@ -40,20 +40,9 @@
 	$GLOBALS['phpgw']->template->set_var('form_button_2','</form><form method="POST" action="'
 		. $GLOBALS['phpgw']->link("/polls/admin_deletequestion.php","poll_id=$poll_id") . '"><input type="submit" name="submit" value="' . lang('Delete') . '">');
 
-	add_template_row($GLOBALS['phpgw']->template,lang('Poll question'),$GLOBALS['phpgw']->strip_html($poll_title));
-
-	$GLOBALS['phpgw']->db->query("select * from phpgw_polls_data where poll_id='$poll_id'");
-	while ($GLOBALS['phpgw']->db->next_record())
-	{
-		if (! $title_shown)
-		{
-			$title = lang('Answers');
-			$title_shown = True;
-		}
-		add_template_row($GLOBALS['phpgw']->template,$title,$GLOBALS['phpgw']->strip_html($GLOBALS['phpgw']->db->f('option_text')));
-		$title = '&nbsp;';
-	}
+	$GLOBALS['phpgw']->template->set_var('rows', '<tr><td colspan="2" width="100%">'. poll_getResultsTable($poll_id,false,true) . '</td></tr>');
 
 	$GLOBALS['phpgw']->template->pparse('out','form');
+
 	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>

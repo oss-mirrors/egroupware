@@ -27,6 +27,7 @@
 	);
 
 	$setup_info['polls']['hooks'][]   = 'admin';
+	$setup_info['polls']['hooks'][]   = 'sidebox_menu';
 	/* Dependencies for this app to work */
 	$setup_info['polls']['depends'][] = array(
 		 'appname' => 'phpgwapi',
