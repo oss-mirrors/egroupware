@@ -16,10 +16,13 @@
 	$setup_info['felamimail']['app_order'] = 2;
 	$setup_info['felamimail']['enable']    = 1;
 
-	$setup_info['felamimail']['author'] = 'Lars Kneschke';
-	$setup_info['felamimail']['license']  = 'GPL';
+	$setup_info['felamimail']['author']    = 'Lars Kneschke';
+	$setup_info['felamimail']['license']   = 'GPL';
 	$setup_info['felamimail']['description'] =
-		'Email reader originally based from Squirrelmail.';
+		'Email reader originally based on Squirrelmail, ported to phpGroupWare by Lars Kneschke.';
+	$setup_info['felamimail']['based_on'] = 
+		'This port is based on Squirrelmail, which is a standalone IMAP client.';
+	$setup_info['felamimail']['based_on_url'] = 'http://www.squirrelmail.org';
 	$setup_info['felamimail']['maintainer'] = 'Lars Kneschke';
 	$setup_info['felamimail']['maintainer_email'] = 'lars@kneschke.de';
 
@@ -34,6 +37,6 @@
 	/* Dependacies for this app to work */
 	$setup_info['felamimail']['depends'][] = array(
 		'appname'  => 'phpgwapi',
-		'versions' => Array('0.9.11','0.9.12','0.9.13','0.9.14')
+		'versions' => Array('0.9.11','0.9.12','0.9.13','0.9.14','0.9.15')
 	);
 ?>
