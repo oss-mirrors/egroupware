@@ -149,6 +149,13 @@
   function get_savedstocks()
   {
      global $phpgw_info, $phpgw;
+
+     // If they don't have any stocks in there, give them something to look at
+     if (! count($phpgw_info["user"]["preferences"]["stocks"])) {
+        $phpgw_info["user"]["preferences"]["stocks"]["LNUX"] = "VA%20Linux";
+        $phpgw_info["user"]["preferences"]["stocks"]["RHAT"] = "RedHat";
+     }
+     
      while ($stock = each($phpgw_info["user"]["preferences"]["stocks"])) {
         if (rawurldecode($stock[0]) != "enabled") {
            $symbol = rawurldecode($stock[0]);

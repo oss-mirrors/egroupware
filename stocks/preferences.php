@@ -26,7 +26,6 @@
      $phpgw->common->preferences_delete("byappvar_single",$phpgw_info["user"]["account_id"],"stocks",$value);
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/stocks/preferences.php"));
      exit;  
-
   }
 
   $phpgw->common->phpgw_header();
@@ -39,7 +38,8 @@
       echo '<tr bgcolor="' . $phpgw_info["theme"]["th_bg"] . '">'
          . '<td>' . lang("Symbol") . '</td>'
          . '<td>' . lang("Company Name") . '</td>'
-         . '<td width="5%" align="center">' . lang("Edit") . '</td>'
+// For right now, editing is disabled, feel free to add it :)         
+//         . '<td width="5%" align="center">' . lang("Edit") . '</td>'
          . '<td width="5%" align="center">' . lang("Delete") . '</td>'
          . '</tr>';
       echo "\n";
@@ -51,7 +51,7 @@
 
             echo '<td>' . rawurldecode($stock[0]) . '</td>';
             echo '<td>' . rawurldecode($stock[1]) . '</td>';
-            echo '<td width="5%" align="center">Edit</td>';
+//            echo '<td width="5%" align="center">Edit</td>';
             echo '<td width="5%" align="center"><a href="'
                . $phpgw->link("preferences.php","action=delete&value=" . $stock[0]) . '">Delete</a></td>';
 
