@@ -168,13 +168,13 @@ from %1 to %2	projects	es-es	de %1 para %2
 gantt chart	projects	es-es	Diagrama Gantt
 gantt chart for project %1	projects	es-es	Diagrama de Gantt para el proyecto %1
 gantt chart from %1 to %2	projects	es-es	Diagrama de Gantt de %1 a %2
-generate activity id	projects	es-es	Generar ID de actividad
+generate activity id	projects	es-es	¿Generar ID de actividad?
 generate activity id ?	projects	es-es	¿Generar ID de actividad?
 generate delivery id ?	projects	es-es	¿Generar ID de envío?
 generate invoice id ?	projects	es-es	¿Generar ID de dactura?
-generate job id	projects	es-es	Generar ID del trabajo
+generate job id	projects	es-es	¿Generar ID del trabajo?
 generate job id ?	projects	es-es	¿Generar ID de trabajo?
-generate project id	projects	es-es	Generar ID del proyecto
+generate project id	projects	es-es	¿Generar ID del proyecto?
 generate project id ?	projects	es-es	¿Generar ID de proyecto?
 georgia	projects	es-es	Georgia
 global categories	projects	es-es	Categorías globales
@@ -309,7 +309,7 @@ project %1 has been saved	projects	es-es	El proyecto %1 ha sido guardado
 project %1 has been updated	projects	es-es	El proyecto %1 ha sido actualizado
 project accounting	admin	es-es	Contabildad del proyecto
 project administration	projects	es-es	Administracion de Proyectos
-project administrators	projects	es-es	Administradores del proyecto
+project administrators	common	es-es	Administradores del proyecto
 project archive	projects	es-es	Archivo de proyectos
 project billing	projects	es-es	Facturación de proyectos
 project data due	projects	es-es	Fecha de expiración del proyecto

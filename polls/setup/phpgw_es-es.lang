@@ -10,6 +10,7 @@ answer has been updated	polls	es-es	La respuesta ha sido actualizada
 answers	polls	es-es	Respuestas
 are you sure want to delete this answer ?	polls	es-es	¿Seguro que quiere borrar esta respuesta?
 are you sure want to delete this question ?	polls	es-es	¿Seguro que quiere borrar esta pregunta?
+current poll	polls	es-es	Sondeo actual
 edit answer	polls	es-es	Editar respuesta
 edit poll question	polls	es-es	Editar respuesta del sondeo
 enter poll question	polls	es-es	Introducir pregunta para el sondeo
@@ -25,6 +26,7 @@ show answers	polls	es-es	Mostrar respuestas
 show questions	common	es-es	Mostrar preguntas
 total votes	polls	es-es	Total
 view poll	polls	es-es	Ver sondeo
+view results	polls	es-es	Ver resultados
 vote	polls	es-es	Votar
 voting booth admin	admin	es-es	Puesto del voto
 voting booth administration	polls	es-es	Administración de puestos de voto

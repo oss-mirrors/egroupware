@@ -67,6 +67,7 @@ metakeywords	admin	es-es	Palabras clave Meta
 name wiki home link	admin	es-es	nombre del enlace de la página de inicio del wiki
 newer	wiki	es-es	Más reciente
 no never	admin	es-es	No nunca
+no only on request	admin	es-es	No sólo al pedirlo
 not set	wiki	es-es	no especificado
 older	wiki	es-es	Anterior
 only if browser supports a richtext-editor	admin	es-es	Sólo si el navegador soporta un editor de texto enriquecido
