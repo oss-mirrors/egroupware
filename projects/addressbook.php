@@ -35,7 +35,8 @@
     $t->set_var('font',$phpgw_info['theme']['font']);
     $t->set_var('lang_search',lang('Search'));
     $t->set_var('searchurl',$phpgw->link('/projects/addressbook.php'));
-    $t->set_var('lang_select_cats',lang('Select category'));
+    $t->set_var('lang_category',lang('Category'));
+    $t->set_var('lang_all',lang('All'));
 
     if (! $start) { $start = 0; }
 

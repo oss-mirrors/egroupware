@@ -33,7 +33,7 @@
     <tr>
     <td width="33%" align="left">
     <form action="{cats_action}" name="form" method="POST">
-    <select name="cat_id" onChange="this.form.submit();"><option value="">{lang_select_cats}</option>{cats_list}</select>
+    {lang_category}&nbsp;&nbsp;&nbsp;<select name="cat_id" onChange="this.form.submit();"><option value="">{lang_all}</option>{cats_list}</select>
     <noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
     <td width="33%" align="center">{lang_showing}</td>
     <td width="33%" align="right">
