@@ -189,7 +189,10 @@ $lstCategory=$phpgw->db->f(1);
     $txtDetail = $prevtxtdetail;
 
     if (! empty($txtAdditional)) {
-      $txtDetail .= "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - " . $phpgw->common->show_date(time()) . "</i><BR>\n";
+      $txtDetail .= "<BR><i>\n" . $phpgw_info["user"]["userid"] . " - "
+      			. $phpgw->common->show_date(time()) . "</i><BR>\n";
+    } else {
+      $textDetail = $prevtextdetail;
     }
 
     if ($optUpdateclose == "letclosed" ) {
