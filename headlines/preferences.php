@@ -48,12 +48,11 @@
      $phpgw->template->pparse("out","form");
   } else {
    if (count($headlines)) {
-      $phpgw->common->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"headlines");
       while ($value = each($headlines)) {
-         $phpgw->common->preferences_add($phpgw_info["user"]["account_id"],$value[1],"headlines","True");
+         $phpgw->preferences->change($phpgw_info["user"]["account_id"],$value[1],"headlines","True");
       }
+      $phpgw->preferences->commit();
    }
-
 
     Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"]."/preferences/index.php"));
   }

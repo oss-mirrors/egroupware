@@ -18,42 +18,41 @@
   include("../header.inc.php");
 
   if ($submit) {
-     $phpgw->preferences->preferences_delete("byapp",$phpgw_info["user"]["account_id"],"email");
-  
      if ($mainscreen_showmail) {
-        $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mainscreen_showmail","email");
+        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mainscreen_showmail","email");
      }
      if ($use_trash_folder) {
-        $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"use_trash_folder","email");
+        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"use_trash_folder","email");
      }
-     $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"default_sorting","email");
-     $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"email_sig","email"); 
+     $phpgw->preferences->change($phpgw_info["user"]["account_id"],"default_sorting","email");
+     $phpgw->preferences->change($phpgw_info["user"]["account_id"],"email_sig","email"); 
 
      if ($use_custom_settings) {
-        $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"use_custom_settings","email");
+        $phpgw->preferences->change($phpgw_info["user"]["account_id"],"use_custom_settings","email");
        if ($userid) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"userid","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"userid","email");
        }
        if ($passwd) {
           $encrypted_passwd = $phpgw->common->encrypt($passwd);
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"passwd","email", $encrypted_passwd);
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"passwd","email", $encrypted_passwd);
        }
        if ($address) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"address","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"address","email");
        }
        if ($mail_server) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_server","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_server","email");
        }
        if ($mail_folder) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_folder","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_folder","email");
        }
        if ($mail_server_type) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"mail_server_type","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"mail_server_type","email");
        }
        if ($imap_server_type) {
-          $phpgw->preferences->preferences_add($phpgw_info["user"]["account_id"],"imap_server_type","email");
+          $phpgw->preferences->change($phpgw_info["user"]["account_id"],"imap_server_type","email");
        }
      }
+     $phpgw->preferences->commit();
 
      Header("Location: " . $phpgw->link($phpgw_info["server"]["webserver_url"] . "/preferences/index.php"));
   }
