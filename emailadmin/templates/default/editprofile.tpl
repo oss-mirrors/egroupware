@@ -1,11 +1,4 @@
 <!-- BEGIN main -->
-<script type="text/javascript">
-function setActiveTabs()
-{
-	smtp.display({smtpActiveTab});
-	imap.display({imapActiveTab});
-}
-</script>
 <center>
 <form action="{action_url}" name="mailsettings" method="post">
 <br>
@@ -70,8 +63,8 @@ function setActiveTabs()
 			</td>
 			<td width="50%" align="left" class="td_right">
 				<select name="smtpsettings[smtpType]" id="smtpselector" size="1" onchange="javascript:smtp.display(this.value);">
-					<option value="1">{lang_smtp_option_1}</option>
-					<option value="2">{lang_smtp_option_2}</option>
+					<option value="1" {selected_smtpType_1}>{lang_smtp_option_1}</option>
+					<option value="2" {selected_smtpType_2}>{lang_smtp_option_2}</option>
 				</select>
 			</td>
 		</tr>
@@ -177,9 +170,9 @@ function setActiveTabs()
 			</td>
 			<td width="50%" align="left" class="td_right">
 				<select name="imapsettings[imapType]" id="imapselector" size="1" onchange="javascript:imap.display(this.value);">
-					<option value="1">{lang_imap_option_1}</option>
-					<option value="2">{lang_imap_option_2}</option>
-					<option value="3">{lang_imap_option_3}</option>
+					<option value="1" {selected_imapType_1}>{lang_imap_option_1}</option>
+					<option value="2" {selected_imapType_2}>{lang_imap_option_2}</option>
+					<option value="3" {selected_imapType_3}>{lang_imap_option_3}</option>
 				</select>
 			</td>
 		</tr>

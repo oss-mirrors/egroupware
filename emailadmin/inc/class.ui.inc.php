@@ -166,10 +166,6 @@
 			
 			$this->translate();
 			
-			#$this->t->set_var('profile_name',$profileList[0]['description']);
-			$this->t->set_var('smtpActiveTab',$profileData['smtpType']);
-			$this->t->set_var('imapActiveTab',$profileData['imapType']);
-			
 			foreach($profileData as $key => $value)
 			{
 				#print "$key $value<br>";
@@ -184,11 +180,11 @@
 					case 'userDefinedAccounts':
 					case 'imapoldcclient':
 						if($value == 'yes')
-							$this->t->set_var('selected_'.$key,'checked');
+							$this->t->set_var('selected_'.$key,'checked="1"');
 						break;
-					case 'imapLoginType':
-					case 'smtpLoginType':
-						$this->t->set_var('selected_'.$key.'_'.$value,'selected');
+					case 'imapType':
+					case 'smtpType':
+						$this->t->set_var('selected_'.$key.'_'.$value,'selected="1"');
 						break;
 					default:
 						$this->t->set_var('value_'.$key,$value);
@@ -243,7 +239,7 @@
 					(
 						'menuaction'	=> 'emailadmin.ui.editProfile',
 						'nocache'	=> '1',
-						'pagenumber'	=> '0',
+						'tabpage'	=> '3',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$imapServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['imapServer'].'</a>';
@@ -252,7 +248,7 @@
 					(
 						'menuaction'	=> 'emailadmin.ui.editProfile',
 						'nocache'	=> '1',
-						'pagenumber'	=> '0',
+						'tabpage'	=> '1',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$descriptionLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['description'].'</a>';
@@ -261,7 +257,7 @@
 					(
 						'menuaction'	=> 'emailadmin.ui.editProfile',
 						'nocache'	=> '1',
-						'pagenumber'	=> '0',
+						'tabpage'	=> '2',
 						'profileid'	=> $profileList[$i]['profileID']
 					);
 					$smtpServerLink = '<a href="'.$GLOBALS['phpgw']->link('/index.php',$linkData).'">'.$profileList[$i]['smtpServer'].'</a>';
