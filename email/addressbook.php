@@ -28,10 +28,10 @@
   $t->set_var(title,$phpgw_info["site_title"]);
   $t->set_var(bg_color,$phpgw_info["theme"]["bg_color"]);
   $t->set_var(lang_addressbook_action,lang("Address book"));
-  
+  $t->set_var("font",$phpgw_info["theme"]["font"]);  
+
   if (! $start) {
      $start = 0;
-     $query = "";
        }
   
   if ($order)

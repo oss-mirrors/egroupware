@@ -2,7 +2,7 @@
 <HTML LANG="en">
 <head>
 <title>{title}</title>
-<meta http-equiv="content-type" content="text/html; charset="{charset}">
+<meta http-equiv="content-type" content="text/html; charset={charset}">
 <STYLE type="text/css">                                                                                                                                                                                         
    A {text-decoration:none;}                                                                                                                                                    
    <!--
@@ -46,20 +46,20 @@ function ExchangeCc(thisform)
 	
   <table width=100% border=0 cellspacing=1 cellpadding=3>
     <tr bgcolor="{th_bg}">
-      <td width="30%" bgcolor="{th_bg}" align=center>{sort_firstname}</td>
-      <td width="30%" bgcolor="{th_bg}" align=center>{sort_lastname}</td>
-      <td width="35%" bgcolor="{th_bg}" align=center>{lang_email}</td>
+      <td width="30%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_firstname}</font></td>
+      <td width="30%" bgcolor="{th_bg}" align=center><font face="{font}">{sort_lastname}</font></td>
+      <td width="35%" bgcolor="{th_bg}" align=center><font face="{font}">{lang_email}</font></td>
     </tr>
   </form>
   
 <!-- BEGIN addressbook_list -->
       <tr bgcolor="{tr_color}">
-	<td width=30%>{firstname}</td>
-        <td width=30%>{lastname}</td>
+	<td width=30%><font face="{font}">{firstname}</font></td>
+        <td width=30%><font face="{font}">{lastname}</font></td>
 	<form>
-        <td align=center width="35%"><input type="text" size="25" name="email" value="{email}">
+        <td align=center width="35%"><font face="{font}"><input type="text" size="25" name="email" value="{email}">
 	<input type="button" size="25" name="button" value="To" onClick="ExchangeTo(this.form);">
-        <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></td>
+        <input type="button" size="25" name="button" value="Cc" onClick="ExchangeCc(this.form);"></font></td>
       </form>    
       </tr>
 <!-- END addressbook_list -->
@@ -68,7 +68,7 @@ function ExchangeCc(thisform)
   <table cellpadding=3 cellspacing=1>
       <tr> 
     <form>  
-    <td><input type="button" name="Done" value="{lang_done}" onClick="window.close()">
+    <td><font face="{font}"><input type="button" name="Done" value="{lang_done}" onClick="window.close()"></font>
       </form>
       </td>
     </tr>
