@@ -64,7 +64,7 @@
 
 			if (file_exists($fn))
 			{
-				$fp = fopen($fn,'r');
+				$fp = fopen($fn,'rb');
 				while ($data = fgets($fp,8000))
 				{
 					list($message_id,$app_name,$null,$content) = explode("\t",$data);
@@ -106,7 +106,7 @@
 
 			if (file_exists($fn))
 			{
-				$fp = fopen($fn,'r');
+				$fp = fopen($fn,'rb');
 				while ($data = fgets($fp,8000))
 				{
 					list($message_id,$app_name,$null,$content) = explode("\t",$data);
