@@ -47,7 +47,7 @@ class headlines {
   function headlines() {
     global $phpgw;
 
-    $phpgw->network->network(False);
+		$phpgw->network = CreateObject('phpgwapi.network',False);
   }
 
   // try to get the links for the site
