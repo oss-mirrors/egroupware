@@ -31,8 +31,9 @@
 			'check_values'			=> True,
 			'read_hours'			=> True,
 			'read_delivery_hours'	=> True,
-			'get_date'				=> True,
+			'read_single_delivery'	=> True,
 			'delivery'				=> True,
+			'update_delivery'		=> True,
 			'read_deliveries'		=> True
 		);
 
@@ -60,10 +61,10 @@
 			return $del;
 		}
 
-		function get_date($delivery_id)
+		function read_single_delivery($delivery_id)
 		{
-			$date = $this->bodeliveries->get_date($delivery_id);
-			return $date;
+			$del = $this->bodeliveries->read_single_delivery($delivery_id);
+			return $del;
 		}
 
 		function check_values($values)
@@ -111,6 +112,13 @@
 
 			$delivery_id = $this->sodeliveries->delivery($values);
 			return $delivery_id;
+		}
+
+		function update_delivery($values)
+		{
+			$values['date'] = mktime(2,0,0,$values['month'],$values['day'],$values['year']);
+
+			$this->sodeliveries->update_delivery($values);
 		}
 	}
 ?>

@@ -48,14 +48,13 @@
 
 		function delivery($values)
 		{
+			$values['delivery_num'] = addslashes($values['delivery_num']);
 			$this->db->query("INSERT INTO phpgw_p_delivery (num,project_id,date,customer) VALUES ('" . $values['delivery_num'] . "','"
 							. $values['project_id'] . "','" . time() . "','" . $values['customer'] . "')",__LINE__,__FILE__);
 
 			$this->db2->query("SELECT id from phpgw_p_delivery WHERE num='" . $values['delivery_num'] . "'",__LINE__,__FILE__);
 			$this->db2->next_record();
 			$delivery_id = $this->db2->f('id');
-
-		//	$phpgw->db->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='$delivery_id'");
 
 			while($values['select'] && $entry=each($values['select']))
 			{
@@ -65,6 +64,22 @@
 				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
 			}
 			return $delivery_id;
+		}
+
+		function update_delivery($values)
+		{
+			$values['delivery_num'] = addslashes($values['delivery_num']);
+			$this->db->query("UPDATE phpgw_p_delivery set num='" . $values['delivery_num'] . "',date='" . $values['date'] . "',customer='"
+								. $values['customer'] . "' where id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
+
+			$this->db2->query("DELETE FROM phpgw_p_deliverypos WHERE delivery_id='" . $values['delivery_id'] . "'",__LINE__,__FILE__);
+			while($values['select'] && $entry=each($values['select']))
+			{
+				$this->db->query("INSERT INTO phpgw_p_deliverypos (delivery_id,hours_id) VALUES ('" . $values['delivery_id'] . "','"
+								. $entry[0] . "')",__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set status='closed' WHERE status='done' AND id='" . $entry[0] . "'",__LINE__,__FILE__);
+				$this->db2->query("UPDATE phpgw_p_hours set dstatus='d' WHERE id='" . $entry[0] . "'",__LINE__,__FILE__);
+			}
 		}
 
 		function read_hours($project_id)
@@ -176,14 +191,15 @@
 			return $del;
 		}
 
-		function get_date($delivery_id)
+		function read_single_delivery($delivery_id)
 		{
-			$this->db->query("SELECT date FROM phpgw_p_delivery WHERE id='$delivery_id'",__LINE__,__FILE__);
+			$this->db->query("SELECT * FROM phpgw_p_delivery WHERE id='$delivery_id'",__LINE__,__FILE__);
 			if ($phpgw->db->next_record())
 			{
-				$date = $this->db->f('date');
-			}    
-			return $date;
+				$del['date']			= $this->db->f('date');
+				$del['delivery_num']	= $this->db->f('num');
+			}
+			return $del;
 		}
 
 		function exists($num)

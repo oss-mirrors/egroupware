@@ -348,44 +348,9 @@
 			$this->save_sessiondata($action);
 		}
 
-		function coordinator_format($employee = '')
-		{
-			if (! $employee)
-			{
-				$employee = $this->account;
-			}
-
-			$employees = $this->boprojects->employee_list();
-
-			while (list($null,$account) = each($employees))
-			{
-				$coordinator_list .= '<option value="' . $account['account_id'] . '"';
-				if($account['account_id'] == $employee)
-				$coordinator_list .= ' selected';
-				$coordinator_list .= '>' . $account['account_firstname'] . ' ' . $account['account_lastname']
-										. ' [ ' . $account['account_lid'] . ' ]' . '</option>' . "\n";
-			}
-			return $coordinator_list;
-		}
-
-		function status_format($status = '')
-		{
-			switch ($status)
-			{
-				case 'active':		$stat_sel[0]=' selected'; break;
-				case 'nonactive':	$stat_sel[1]=' selected'; break;
-				case 'archive':		$stat_sel[2]=' selected'; break;
-			}
-
-			$status_list = '<option value="active"' . $stat_sel[0] . '>' . lang('Active') . '</option>' . "\n"
-						. '<option value="nonactive"' . $stat_sel[1] . '>' . lang('Nonactive') . '</option>' . "\n"
-						. '<option value="archive"' . $stat_sel[2] . '>' . lang('Archive') . '</option>' . "\n";
-			return $status_list;
-		}
-
 		function delivery()
 		{
-			global $action, $delivery, $project_id, $delivery_id;
+			global $action, $Delivery, $project_id, $delivery_id;
 
 			$this->display_app_header();
 
@@ -401,7 +366,7 @@
 				'delivery_id'	=> $delivery_id
 			);
 
-			if ($delivery)
+			if ($Delivery)
 			{
 				$values['project_id']	= $project_id;
 
@@ -412,8 +377,16 @@
 				}
 				else
 				{
-					$delivery_id = $this->bodeliveries->delivery($values);
-					$link_data['delivery_id'] = $delivery_id;
+					if ($action == 'udel')
+					{
+						$values['delivery_id'] = $delivery_id;
+						$this->bodeliveries->update_delivery($values);
+					}
+					else
+					{
+						$delivery_id = $this->bodeliveries->delivery($values);
+						$link_data['delivery_id'] = $delivery_id;
+					}
 				}
 			}
 
@@ -448,9 +421,7 @@
 				$this->t->set_var('customer',$customername);
 			}
 
-			$this->t->set_var('delivery_num',$values['delivery_num']);
-
-			if(!$delivery)
+			if(!$Delivery)
 			{
 				$this->t->set_var('lang_choose',lang('Generate Delivery ID ?'));
 				$this->t->set_var('choose','<input type="checkbox" name="values[choose]" value="True">');
@@ -463,19 +434,21 @@
 
 			if(!$delivery_id)
 			{
+				$this->t->set_var('delivery_num',$values['delivery_num']);
 				$hours = $this->bodeliveries->read_hours($project_id);
 			}
 			else
 			{
-				$date = $this->bodeliveries->get_date($delivery_id);
+				$del = $this->bodeliveries->read_single_delivery($delivery_id);
+				$this->t->set_var('delivery_num',$del['delivery_num']);
 				$hours = $this->bodeliveries->read_delivery_hours($project_id,$delivery_id);
 			}
 
-			if ($date)
+			if ($del['date'])
 			{
-				$values['month'] = date('m',$date);
-				$values['day'] = date('d',$date);
-				$values['year'] = date('Y',$date);
+				$values['month'] = date('m',$del['date']);
+				$values['day'] = date('d',$del['date']);
+				$values['year'] = date('Y',$del['date']);
 			}
 			else
 			{
@@ -552,10 +525,17 @@
 			{
 				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
 				{
-					$this->t->set_var('delivery','<input type="submit" name="delivery" value="' . lang('Create delivery') . '">');
+					$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Create delivery') . '">');
 				}
-			}   
- 			else
+			}
+ 			else if ($action = 'udel')
+			{
+				if ($this->boprojects->check_perms($this->grants[$pro['coordinator']],PHPGW_ACL_ADD) || $pro['coordinator'] == $this->account)
+				{
+					$this->t->set_var('delivery','<input type="submit" name="Delivery" value="' . lang('Update delivery') . '">');
+				}
+			}
+			else
 			{
 				$this->t->set_var('delivery','');
 			}
@@ -565,7 +545,7 @@
 
 		function list_deliveries()
 		{
-			global $action, $project_id;
+			global $project_id;
 
 			$this->display_app_header();
 
@@ -575,7 +555,7 @@
 			$link_data = array
 			(
 				'menuaction'	=> 'projects.uideliveries.list_deliveries',
-				'action'		=> $action,
+				'action'		=> 'del',
 				'project_id'	=> $project_id
 			);
 
@@ -653,9 +633,11 @@
 
 				if ($del[$i]['delivery_id'])
 				{
-					$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/projects/delivery_update.php','delivery_id=' . $del[$i]['delivery_id']
-									. '&sort=' . $sort . '&order=' . $order . '&query=' . $query . '&start=' . $start . '&filter=' . $filter . '&project_id='
-									. $del[$i]['project_id'] . '&delivery_num=' . $del[$i]['number']));
+					$link_data['delivery_id']	= $del[$i]['delivery_id'];
+					$link_data['project_id']	= $del[$i]['project_id'];
+					$link_data['menuaction']	= 'projects.uideliveries.delivery';
+					$link_data['action']		= 'udel';
+					$this->t->set_var('delivery',$GLOBALS['phpgw']->link('/index.php',$link_data));
 					$this->t->set_var('lang_delivery',lang('Delivery'));
 				}
 				$this->t->fp('list','projects_list',True);
