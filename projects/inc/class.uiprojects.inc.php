@@ -1906,7 +1906,7 @@
 			$action		= get_var('action',array('POST','GET'));
 			$pro_main	= get_var('pro_main',array('POST','GET'));
 
-			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . ($pro_parent?lang('list budget'):lang('list budget'));
+			$GLOBALS['phpgw_info']['flags']['app_header'] = lang('projects') . ': ' . lang('list budget');
 
 			$this->display_app_header();
 
@@ -2017,8 +2017,8 @@
 					'sub_url'	=> $projects_url,
 					'title'		=> $pro[$i]['title']?$pro[$i]['title']:lang('browse'),
 					'p_budget'	=> ($pro[$i]['budget']?$pro[$i]['budgetSum']:'&nbsp;'),
-					'u_budget'	=> $pro[$i]['u_budget'],
-					'u_budget_jobs'	=> $pro[$i]['u_budget_jobs'],
+					'u_budget'	=> $pro[$i]['u_budget_colored'],
+					'u_budget_jobs'	=> $pro[$i]['u_budget_jobs_colored'],
 					'b_budget'	=> sprintf("%01.2f",$pro[$i]['b_budget']),
 					'b_budget_jobs'	=> sprintf("%01.2f",$pro[$i]['b_budget_jobs']),
 					'a_budget'	=> sprintf("%01.2f",$pro[$i]['a_budget']),
