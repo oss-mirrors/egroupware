@@ -68,7 +68,7 @@ function setActiveTabs()
 			<td width="50%" class="td_left">
 				<b>{lang_Select_type_of_SMTP_Server}<b>
 			</td>
-			<td width="50%" align="right" class="td_right">
+			<td width="50%" align="left" class="td_right">
 				<select name="smtpsettings[smtpType]" id="smtpselector" size="1" onchange="javascript:smtp.display(this.value);">
 					<option value="1">{lang_smtp_option_1}</option>
 					<option value="2">{lang_smtp_option_2}</option>
@@ -175,7 +175,7 @@ function setActiveTabs()
 			<td width="50%" class="td_left">
 				<b>{lang_select_type_of_imap/pop3_server}</b>
 			</td>
-			<td width="50%" align="right" class="td_right">
+			<td width="50%" align="left" class="td_right">
 				<select name="imapsettings[imapType]" id="imapselector" size="1" onchange="javascript:imap.display(this.value);">
 					<option value="1">{lang_imap_option_1}</option>
 					<option value="2">{lang_imap_option_2}</option>
