@@ -215,6 +215,6 @@
     $t->set_var("group_list",$group_list); */
 
 	$t->pparse('out','view');
-
+	$phpgw->common->hook('projects_view');
 	$phpgw->common->phpgw_footer();
 ?>

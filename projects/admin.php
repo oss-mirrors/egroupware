@@ -22,6 +22,8 @@
 						'admin_list' => 'list_admin.tpl'));
 	$t->set_block('admin_list_t','admin_list','list');
 
+	$projects = CreateObject('projects.projects');
+
 	$t->set_var('lang_action',lang('Project administration'));
 	$t->set_var('addurl',$phpgw->link('/projects/add_admin.php'));
 	$t->set_var('lang_edit',lang('Edit'));

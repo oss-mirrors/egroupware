@@ -30,7 +30,6 @@
 			{
 				case 'subs':			$s = " and parent != '0'"; break;
 				case 'mains':			$s = " and parent = '0'"; break;
-				case 'mainsandsubs':	$s = " and cat_appname='" . $this->app_name . "' and cat_parent ='0'"; break;
 				default: return False;
             }
 			return $s;
@@ -40,6 +39,20 @@
 		{
 			return (!!($has & $needed) == True);
 		}
+
+		function cached_accounts($account_id)
+		{
+			global $phpgw;
+
+			$this->accounts = CreateObject('phpgwapi.accounts',$account_id);
+			$this->accounts->read_repository();
+
+			$cached_data[$this->accounts->data['account_id']]['account_lid'] = $this->accounts->data['account_lid'];
+			$cached_data[$this->accounts->data['account_id']]['firstname']   = $this->accounts->data['firstname'];
+			$cached_data[$this->accounts->data['account_id']]['lastname']    = $this->accounts->data['lastname'];
+
+			return $cached_data;                                                                                                                                                              
+        }
 
 		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
@@ -119,9 +132,7 @@
 				$querymethod = " AND (title like '%$query%' OR num like '%$query%' OR descr like '%$query%') ";
 			}
 
-			$sql = "SELECT p.id,p.num,p.access,p.category,p.entry_date,p.start_date,p.end_date,p.coordinator,p.customer,p.status, "
-				. "p.descr,p.title,p.budget,a.account_lid,a.account_firstname,a.account_lastname FROM "
-				. "phpgw_p_projects AS p,phpgw_accounts AS a WHERE a.account_id=p.coordinator $statussort $querymethod AND $filtermethod";
+			$sql = "SELECT * from phpgw_p_projects WHERE $filtermethod $statussort $querymethod";
 
 			$this->db2->query($sql,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
@@ -152,9 +163,6 @@
 				$projects[$i]['description']	= $this->db->f('descr');
 				$projects[$i]['title']			= $this->db->f('title');
 				$projects[$i]['budget']			= $this->db->f('budget');
-				$projects[$i]['lid']			= $this->db->f('account_lid');
-				$projects[$i]['firstname']		= $this->db->f('account_firstname');
-				$projects[$i]['lastname']		= $this->db->f('account_lastname');
 				$i++;
 			}
 			return $projects;

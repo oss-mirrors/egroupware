@@ -108,7 +108,11 @@
 			if ($customer[0]['org_name'] == '') { $customerout = $customer[0]['n_given'] . ' ' . $customer[0]['n_family']; }
 			else { $customerout = $customer[0]['org_name'] . ' [ ' . $customer[0]['n_given'] . ' ' . $customer[0]['n_family'] . ' ]'; }
 		}
-		$coordinatorout = $pro[$i]['lid'] . ' [ ' . $pro[$i]['firstname'] . ' ' . $pro[$i]['lastname'] . ' ]';
+
+		$cached_data = $projects->cached_accounts($pro[$i]['coordinator']);
+		$coordinatorout = $phpgw->strip_html($cached_data[$pro[$i]['coordinator']]['account_lid']
+						. ' [' . $cached_data[$pro[$i]['coordinator']]['firstname'] . ' '
+						. $cached_data[$pro[$i]['coordinator']]['lastname'] . ']');
 
 		$id = $pro[$i]['id'];
 
