@@ -718,6 +718,10 @@
 		}
 		for ($i=0; $i < count($header_array); $i++)
 		{
+			// POP3 ONLY !!! - POP3 considers ALL messages as "unseen" and/or "recent"
+			// because POP3 does not retain such info as seen or unseen
+			//$info->Unseen = 'U';
+			// I *may* comment that out because I find this annoying
 			$pos = strpos($header_array[$i]," ");
 			if (is_int($pos) && !$pos)
 			{
@@ -900,6 +904,82 @@
 	// ----  DataCommunications With POP3 Server  ------
 
 	// = = = = = = = = = = = =
+	//  DELETE a Message From the Server
+	// = = = = = = = = = = = =
+	function delete($stream_notused,$msg_num,$flags="")
+	{
+		if ($this->debug_dcom) { echo 'pop3: Entering delete<br>'; }
+		// in PHP 4 msg_num can be
+		// a) an integer referencing a single message
+		// b1) a comma seperated list of message numbers "1,2,6"
+		// b2) and/or a range of messages format [STARTRANGE][COLON][ENDRANGE] "1:5"  "6:*"
+		// make an array of message numbers to delete
+		$tmp_array = Array();
+		$tmp_array = explode(",",(string)$msg_num);
+		// process the array, and clean any empty elements (explode can suck like that sometimes)
+		$msg_num_array = Array();
+		for($i=0;$i < count($tmp_array);$i++)
+		{
+			$this_element = (string)$tmp_array[$i];
+			if ($this->debug_dcom_extra) { echo 'pop3: delete prep: this_element: '.$this_element.'<br>'; }
+			$this_element = trim($this_element);
+			// do nothing if this is an empty array element
+			if ($this_element != '')
+			{
+				// not empty - process it
+				// do we have a range
+				$cookie = strpos($this_element,':');
+				if ($cookie > 0)
+				{
+					$start_num = substr($this_element,0,$cookie);
+					$end_num = substr($this_element,$cookie+1);
+					// wildcard * used?
+					if ($end_num == '*')
+					{
+						$end_num = $this->num_msg($stream_notused);
+					}
+					// make sure we are dealing with integers now
+					$start_num = (int)$start_num;
+					$end_num = (int)$end_num;
+					// add each number in this range to the msg_num_array
+					for($z=$start_num; $z >= $end_num; $z++)
+					{
+						// add to the msg_num_array
+						$new_idx = count($msg_num_array);
+						$msg_num_array[$new_idx] = (int)$z;
+						if ($this->debug_dcom_extra) { echo 'pop3: delete prep: range: msg_num_array['.$new_idx.'] = '.$z.'<br>'; }
+					}
+				}
+				else
+				{
+					// not a range, should be a single msg_num
+					// add to the msg_num_array
+					$new_idx = count($msg_num_array);
+					$msg_num_array[$new_idx] = (int)$this_element;
+					if ($this->debug_dcom_extra) { echo 'pop3: delete prep: msg_num_array['.$new_idx.'] = '.$this_element.'<br>'; }
+				}
+			}
+		}
+		// we should now have a reliable array of msg_nums we need to delete from the server
+		for($i=0;$i < count($msg_num_array);$i++)
+		{
+			$this_msg_num = $msg_num_array[$i];
+			if ($this->debug_dcom_extra) { echo 'pop3: delete: deleting this_msg_num '.$this_msg_num.'<br>'; }
+			if (!$this->msg2socket('DELE '.$this_msg_num,"^\+ok",&$response))
+			{
+				$this->error();
+				if ($this->debug_dcom) { echo 'pop3: Leaving delete with error deleting msgnum '.$this_msg_num.'<br>'; }
+				return False;
+			}
+		}
+		// these messages are now marked for deletion by the POP3 server
+		// they will be expunged when user sucessfully explicitly logs out
+		// if we make it here I have to assume no errors
+		if ($this->debug_dcom) { echo 'pop3: Leaving delete<br>'; }
+		return True;
+	}
+
+	// = = = = = = = = = = = =
 	//  Get Message Headers From Server
 	// = = = = = = = = = = = =
 	function fetchheader($stream_notused,$msg_num,$flags='')
@@ -1017,14 +1097,16 @@
 		if ($this->debug_dcom) { echo 'pop3: Entering fetchbody (pass thru)<br>'; }
 
 		// totally under construction
+		$body = $this->get_body($stream_notused,$msg_num,$flags,False);
+		// the false above is a temporary, custom option, says to NOT include the headers in the retuen
 		if ($this->debug_dcom) { echo 'pop3: Leaving fetchbody (pass thru)<br>'; }
-		return $this->get_body($stream_notused,$msg_num,$flags);
+		return $body;
 	}
 
-	function get_body($stream_notused,$msg_num,$flags='')
+	function get_body($stream_notused,$msg_num,$flags='',$phpgw_include_header=True)
 	{
 		// implements IMAP_BODY
-		// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; flag FT_PEEK has no effect on POP3
+		// NEEDED: code for flags: FT_UID; maybe FT_INTERNAL; FT_NOT; flag FT_PEEK has no effect on POP3
 		if ($this->debug_dcom) { echo 'pop3: Entering get_body<br>'; }
 		if (!$this->msg2socket('RETR '.$msg_num,"^\+ok",&$response))
 		{
@@ -1032,7 +1114,8 @@
 			if ($this->debug_dcom) { echo 'pop3: Leaving get_body with error<br>'; }
 			return False;
 		}
-		// skip header
+		// grab header seperately
+		// (will include if flag FT_NOT is present, means to also get the header)
 		$glob_header = '';
 		while ($line = $this->read_port())
 		{
@@ -1043,8 +1126,18 @@
 			}
 			$glob_header .= $line;
 		}
+		// should we include the headers in the return
+		if (($flags == FT_NOT)
+		|| ($phpgw_include_header == True))
+		{
+			// we need to include the header here
+			$glob_body = $glob_header ."\r\n";
+		}
+		else
+		{
+			$glob_body = '';
+		}
 		// now get the body
-		$glob_body = '';
 		$glob_body = $this->read_port_glob('.');
 		if ($this->debug_dcom_extra)
 		{

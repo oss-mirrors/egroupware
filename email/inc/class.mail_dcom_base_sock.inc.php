@@ -53,10 +53,11 @@
   define ('ENCOTHER',5);
   define ('ENCUU',6);
   
-  define ('FT_UID',0);
-  define ('FT_PEEK',1);
-  define ('FT_INTERNAL',2);
-  define ('FT_PREFETCHTEXT',3);
+  define ('FT_UID',0);	// the msgnum is a UID
+  define ('FT_PEEK',1);	// do not set the \Seen flag if not already set
+  define ('FT_INTERNAL',2); // server will not attempt to standardize CRLFs
+  define ('FT_NOT',3);	// do not fetch header lines (with IMAP_BODY)
+  define ('FT_PREFETCHTEXT',4); // grab the header AND its associated RFC822.TEXT
 
   class mailbox_status
   {
