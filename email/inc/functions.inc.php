@@ -41,7 +41,7 @@
 	$decoded = $phpgw->msg->qprint(str_replace("_"," ",$encoded_text));
       }
       if (strtoupper($encoding) == "B") {
-        $decoded = base64_decode($encoded_text);
+        $decoded = urldecode(base64_decode($encoded_text));
       }
       return $preceding . $decoded . decode_header_string($rest);
     } else return $string;
