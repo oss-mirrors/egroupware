@@ -34,7 +34,8 @@
 	// data from $GLOBALS['phpgw_info']['user']['preferences']['email'] goes here
 	var $prefs = Array();
 	
-	var $session_enabled=True;
+	//var $session_enabled=True;
+	var $session_enabled=False;
 	var $session_data;
 	
 	var $not_set = '-1';
