@@ -21,8 +21,8 @@
 	include('../header.inc.php');
 
 	$phpgw->bookmarks = createobject('bookmarks.bookmarks');
-//	$phpgw->treemenu  = createobject('bookmarks.treemenu');
-	$phpgw->treemenu  = createobject('phpgwapi.menutree','F');
+	$phpgw->treemenu  = createobject('bookmarks.treemenu');
+//	$phpgw->treemenu  = createobject('phpgwapi.menutree','F');
 	$phpgw->treemenu->last_column_size = 500;
 
 	$phpgw->template->set_file(array(
@@ -97,7 +97,7 @@
 
 	$_categorys = $phpgw->categories->return_array('appandmains',0,$phpgw->categories->total(),'','cat_name','');
 
-	while ($cat = each($_categorys))
+	while (is_array($_categorys) && $cat = each($_categorys))
 	{
 		$categorys[] = $cat[1];
 	}
@@ -142,8 +142,8 @@
 		}
 	}
 
-//	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showmenu($tree,$p));
-	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showtree($tree,$p));
+	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showmenu($tree,$p));
+//	$phpgw->template->set_var('BOOKMARK_LIST',$phpgw->treemenu->showtree($tree,$p));
 
 	$phpgw->common->phpgw_footer();
 ?>
