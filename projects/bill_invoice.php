@@ -67,7 +67,7 @@
    if($Invoice) {
     $phpgw->db->query("SELECT num FROM p_invoice WHERE num='$invoice_num' AND id!=$invoice_id");
     if($phpgw->db->next_record()) {
-    $t->set_var(invoice_hint,lang("duplicate invoicenum"));
+    $t->set_var(invoice_hint,lang("Duplicate Invoice ID !"));
     } else {
     $phpgw->db->query("SELECT customer FROM p_projects WHERE id=$project_id");
     $phpgw->db->next_record();

@@ -14,6 +14,8 @@ REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Project','projec
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All open hours','projects','en','All open hours');           
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('All done hours','projects','en','All done hours');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Activity','projects','en','Activity');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Delivery ID !','projects','en','Duplicate Delivery ID !');
+REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Duplicate Invoice ID !','projects','en','Duplicate Invoice ID !');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Active','projects','en','Active');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('New project','projects','en','New project');
 REPLACE INTO lang (message_id, app_name, lang, content) VALUES('Add hours','projects','en','Add hours');

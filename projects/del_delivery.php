@@ -53,7 +53,7 @@
   if($Delivery) {
   $phpgw->db->query("SELECT num FROM p_delivery WHERE num='$delivery_num' AND id!=$delivery_id");
   if($phpgw->db->next_record()) {
-    $t->set_var(delivery_hint,lang("duplicate deliverynum"));
+    $t->set_var(delivery_hint,lang("Duplicate Delivery ID !"));
   } else {
     $phpgw->db->query("SELECT customer FROM p_projects WHERE id=$project_id");
     $phpgw->db->next_record();
