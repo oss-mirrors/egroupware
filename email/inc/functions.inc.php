@@ -105,7 +105,7 @@
       for ($i = 0; $i < count($de_part->parameters); $i++) 
       {
         $param = $de_part->parameters[$i];
-        if ($param->attribute == "NAME") {
+        if (strtoupper($param->attribute) == "NAME") {
           $att_name = $param->value;
         }
       }
@@ -124,7 +124,7 @@
     for ($i = 0; $i < count($de_part->parameters); $i++)
     {
       $param = $de_part->parameters[$i];
-      if ($param->attribute == "NAME")
+      if (strtoupper($param->attribute) == "NAME")
       {
         $att_name = $param->value;
 	      $url_att_name = urlencode($att_name);
