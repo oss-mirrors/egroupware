@@ -293,7 +293,7 @@
   } // end of class msg_common
 
 
-	$phpgw->common->create_emailpreferences();
+	$phpgw_info['user']['preferences'] = $phpgw->common->create_emailpreferences($phpgw_info['user']['preferences']);
 
   $phpgw->msg = CreateObject("email.msg");
   $phpgw->msg->msg_common_();
