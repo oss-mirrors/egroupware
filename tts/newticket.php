@@ -1,9 +1,9 @@
 <?php
   if ($submit) {
-     $phpgw_flags = array("noheader" => True, "nonavbar" => True);
+     $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
 
-  $phpgw_flags["currentapp"] = "tts";
+  $phpgw_info["flags"]["currentapp"] = "tts";
   include("../header.inc.php");
   if (! $submit) {
      ?>

@@ -1,9 +1,9 @@
 <?php
 
-  $phpgw_flags["currentapp"] = "tts";
+  $phpgw_info["flags"]["currentapp"] = "tts";
   include("../header.inc.php");
 // INCLUDE CONFIGURATION FILES
-include("config/html.conf.php3");
+//include("config/html.conf.php3");
 
 ?>
  <center><?php echo lang_tts("Trouble Ticket System"); ?>
