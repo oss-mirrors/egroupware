@@ -11,7 +11,7 @@
 
   /* $Id$ */
 
-	$phpgw_info['flags'] = array(
+	$GLOBALS['phpgw_info']['flags'] = array(
 		'currentapp'  => 'tts', 
 		'noheader'    => True, 
 		'nonavbar'    => True, 
@@ -28,113 +28,131 @@
 	$group_selected = array ();
 	$assigned_selected = array ();
 
-	$phpgw->config->read_repository();
+	$GLOBALS['phpgw']->config->read_repository();
 
-	if ($submit)
+	if ($HTTP_POST_VARS['submit'])
 	{
-		if ($usemailnotification)
+		if ($HTTP_POST_VARS['usemailnotification'])
 		{
-			$phpgw->config->config_data['mailnotification'] = True;
-		} else {
-			unset($phpgw->config->config_data['mailnotification']);
+			$GLOBALS['phpgw']->config->config_data['mailnotification'] = True;
+		}
+		else
+		{
+			unset($GLOBALS['phpgw']->config->config_data['mailnotification']);
 		}
 
-		if ($ownernotification)
+		if ($HTTP_POST_VARS['ownernotification'])
 		{
-			$phpgw->config->config_data['ownernotification'] = $ownernotification;
-		} else {
-			unset($phpgw->config->config_data['ownernotification']);
+			$GLOBALS['phpgw']->config->config_data['ownernotification'] = $HTTP_POST_VARS['ownernotification'];
+		}
+		else
+		{
+			unset($GLOBALS['phpgw']->config->config_data['ownernotification']);
 		}
 
-		if ($groupnotification)
+		if ($HTTP_POST_VARS['groupnotification'])
 		{
-			$phpgw->config->config_data['groupnotification'] = $groupnotification;
-		} else	{
-			unset($phpgw->config->config_data['groupnotification']);
+			$GLOBALS['phpgw']->config->config_data['groupnotification'] = $HTTP_POST_VARS['groupnotification'];
+		}
+		else
+		{
+			unset($GLOBALS['phpgw']->config->config_data['groupnotification']);
 		}
 
-		if ($assignednotification)
+		if ($HTTP_POST_VARS['assignednotification'])
 		{
-			$phpgw->config->config_data['assignednotification'] = $assignednotification;
-		} else {
-			unset($phpgw->config->config_data['assignednotification']);
+			$GLOBALS['phpgw']->config->config_data['assignednotification'] = $HTTP_POST_VARS['assignednotification'];
+		}
+		else
+		{
+			unset($GLOBALS['phpgw']->config->config_data['assignednotification']);
 		}
 
-		$phpgw->config->save_repository(True);
-		Header('Location: ' . $phpgw->link('/admin/index.php'));
+		$GLOBALS['phpgw']->config->save_repository(True);
+		Header('Location: ' . $GLOBALS['phpgw']->link('/admin/index.php'));
 	}
 
-	$phpgw->common->phpgw_header();
+	$GLOBALS['phpgw']->common->phpgw_header();
 	echo parse_navbar();
 
-	$t = CreateObject('phpgwapi.Template',PHPGW_APP_TPL);
-	$t->set_file(array('admin' => 'admin.tpl'));
-	$t->set_block('admin', 'tts_select_options','tts_select_options');
+	$GLOBALS['phpgw']->template->set_file(array('admin' => 'admin.tpl'));
+	$GLOBALS['phpgw']->template->set_block('admin', 'tts_select_options','tts_select_options');
 
-	$t->set_var('action_url',$phpgw->link('/tts/admin.php'));
+	$GLOBALS['phpgw']->template->set_var('action_url',$GLOBALS['phpgw']->link('/tts/admin.php'));
 
-	$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-	$t->set_var('tr_color',$tr_color);
+	$tr_color = $GLOBALS['phpgw']->nextmatchs->alternate_row_color($tr_color);
+	$GLOBALS['phpgw']->template->set_var('tr_color',$tr_color);
 
-	$t->set_var('lang_mailnotification',lang('Use email notification'));
-	if ($phpgw->config->config_data['mailnotification'])
+	$GLOBALS['phpgw']->template->set_var('lang_mailnotification',lang('Use email notification'));
+	if ($GLOBALS['phpgw']->config->config_data['mailnotification'])
 	{
-		$t->set_var('mailnotification',' checked');
-	} else {
-		$t->set_var('mailnotification','');
+		$GLOBALS['phpgw']->template->set_var('mailnotification',' checked');
 	}
-
-	$t->set_var('lang_ownernotification',lang('Owner'));
-	if ($phpgw->config->config_data['ownernotification'])
+	else
 	{
-		$owner_selected[$phpgw->config->config_data['ownernotification']]=' selected';
-	//	$t->set_var('ownernotification',' checked');
-	} else {
-	//	$t->set_var('ownernotification','');
+		$GLOBALS['phpgw']->template->set_var('mailnotification','');
 	}
 
-	$t->set_var('lang_groupnotification',lang('Group'));
-	if ($phpgw->config->config_data['groupnotification'])
+	$GLOBALS['phpgw']->template->set_var('lang_ownernotification',lang('Owner'));
+	if ($GLOBALS['phpgw']->config->config_data['ownernotification'])
 	{
-		$group_selected[$phpgw->config->config_data['groupnotification']]=' selected';
-	//	$t->set_var('groupnotification',' checked');
-	} else {
-	//	$t->set_var('groupnotification','');
+		$owner_selected[$GLOBALS['phpgw']->config->config_data['ownernotification']]=' selected';
+	//	$GLOBALS['phpgw']->template->set_var('ownernotification',' checked');
 	}
-	$t->set_var('lang_assignednotification',lang('Assigned to'));
-	if ($phpgw->config->config_data['assignednotification'])
+	else
 	{
-		$assigned_selected[$phpgw->config->config_data['assignednotification']]=' selected';
-	//	$t->set_var('assignednotification',' checked');
-	} else {
-	//	$t->set_var('assignednotification','');
+	//	$GLOBALS['phpgw']->template->set_var('ownernotification','');
 	}
 
-        for ($i=0; $i<3; $i++) {
-	    $t->set_var('tts_optionname', $option_names[$i]);
-	    $t->set_var('tts_optionvalue', $i);
-	    $t->set_var('tts_optionselected', $owner_selected[$i]);
-	    $t->parse('tts_owneroptions','tts_select_options',true);
+	$GLOBALS['phpgw']->template->set_var('lang_groupnotification',lang('Group'));
+	if ($GLOBALS['phpgw']->config->config_data['groupnotification'])
+	{
+		$group_selected[$GLOBALS['phpgw']->config->config_data['groupnotification']]=' selected';
+	//	$GLOBALS['phpgw']->template->set_var('groupnotification',' checked');
 	}
-	
-        for ($i=0; $i<3; $i++) {
-	    $t->set_var('tts_optionname', $option_names[$i]);
-	    $t->set_var('tts_optionvalue', $i);
-	    $t->set_var('tts_optionselected', $group_selected[$i]);
-	    $t->parse('tts_groupoptions','tts_select_options',true);
+	else
+	{
+		//	$GLOBALS['phpgw']->template->set_var('groupnotification','');
 	}
-	
-        for ($i=0; $i<3; $i++) {
-	    $t->set_var('tts_optionname', $option_names[$i]);
-	    $t->set_var('tts_optionvalue', $i);
-	    $t->set_var('tts_optionselected', $assigned_selected[$i]);
-	    $t->parse('tts_assignedoptions','tts_select_options',true);
+	$GLOBALS['phpgw']->template->set_var('lang_assignednotification',lang('Assigned to'));
+	if ($GLOBALS['phpgw']->config->config_data['assignednotification'])
+	{
+		$assigned_selected[$GLOBALS['phpgw']->config->config_data['assignednotification']]=' selected';
+	//	$GLOBALS['phpgw']->template->set_var('assignednotification',' checked');
+	}
+	else
+	{
+		//	$GLOBALS['phpgw']->template->set_var('assignednotification','');
 	}
 
-	$t->set_var('lang_admin',lang('TTS').' '.lang('Admin'));
-	$t->set_var('lang_submit',lang('submit'));
-	$t->set_var('tts_select_options','');
-	
-	$t->pparse('out','admin');
-	$phpgw->common->phpgw_footer();
+	for ($i=0; $i<3; $i++)
+	{
+		$GLOBALS['phpgw']->template->set_var('tts_optionname', $option_names[$i]);
+		$GLOBALS['phpgw']->template->set_var('tts_optionvalue', $i);
+		$GLOBALS['phpgw']->template->set_var('tts_optionselected', $owner_selected[$i]);
+		$GLOBALS['phpgw']->template->parse('tts_owneroptions','tts_select_options',true);
+	}
+
+	for ($i=0; $i<3; $i++)
+	{
+		$GLOBALS['phpgw']->template->set_var('tts_optionname', $option_names[$i]);
+		$GLOBALS['phpgw']->template->set_var('tts_optionvalue', $i);
+		$GLOBALS['phpgw']->template->set_var('tts_optionselected', $group_selected[$i]);
+		$GLOBALS['phpgw']->template->parse('tts_groupoptions','tts_select_options',true);
+	}
+
+	for ($i=0; $i<3; $i++)
+	{
+		$GLOBALS['phpgw']->template->set_var('tts_optionname', $option_names[$i]);
+		$GLOBALS['phpgw']->template->set_var('tts_optionvalue', $i);
+		$GLOBALS['phpgw']->template->set_var('tts_optionselected', $assigned_selected[$i]);
+		$GLOBALS['phpgw']->template->parse('tts_assignedoptions','tts_select_options',true);
+	}
+
+	$GLOBALS['phpgw']->template->set_var('lang_admin',lang('TTS').' '.lang('Admin'));
+	$GLOBALS['phpgw']->template->set_var('lang_submit',lang('submit'));
+	$GLOBALS['phpgw']->template->set_var('tts_select_options','');
+
+	$GLOBALS['phpgw']->template->pparse('out','admin');
+	$GLOBALS['phpgw']->common->phpgw_footer();
 ?>
