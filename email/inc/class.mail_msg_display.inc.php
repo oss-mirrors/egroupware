@@ -67,32 +67,40 @@ class mail_msg extends mail_msg_wrappers
 			'first_line_txt'	=> lang('switch current folder to')
 		);		
 		// loop thru $local_args[], replacing defaults with any args specified in $feed_args[]
-		reset($local_args);
-		reset($feed_args);		
-		while(list($key,$value) = each($local_args))
+		if ($debug_widget) { echo 'all_folders_listbox $feed_args data dump<pre>'; print_r($feed_args); echo '</pre>'; }
+		if (count($feed_args) == 0)
 		{
-			// DEBUG
-			if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
-			if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
-			if ((isset($feed_args[$key]))
-			&& ($feed_args[$key] != $value))
+			if ($debug_widget) { echo 'all_folders_listbox $feed_args is EMPTY<br>'.serialize($feed_args).'<br>'; }
+		}
+		else
+		{
+			reset($local_args);
+			@reset($feed_args);		
+			while(list($key,$value) = each($local_args))
 			{
-				if (($key == 'mailsvr_stream')
-				&& ($feed_args[$key] == ''))
+				// DEBUG
+				if ($debug_widget) { echo 'a: local_args: key=['.$key.'] value=['.(string)$value.']<br>'; }
+				if ($debug_widget) { echo 'b: feed_args: key=['.$key.'] value=['.(string)$feed_args[$key].']<br>'; }
+				if ((isset($feed_args[$key]))
+				&& ($feed_args[$key] != $value))
 				{
-					// do nothing, keep the default value, can not over write a good default stream with an empty value
-					if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
-				}
-				else
-				{
-					// we have a specified arg that should replace the default value
-					if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
-					$local_args[$key] = $feed_args[$key];
+					if (($key == 'mailsvr_stream')
+					&& ($feed_args[$key] == ''))
+					{
+						// do nothing, keep the default value, can not over write a good default stream with an empty value
+						if ($debug_widget) { echo '* keeping default [mailsvr_stream] value, can not override with a blank string<br>'; }
+					}
+					else
+					{
+						// we have a specified arg that should replace the default value
+						if ($debug_widget) { echo '*** override default value of ['.$local_args[$key] .'] with feed_args['.$key.'] of ['.(string)$feed_args[$key].']<br>'; }
+						$local_args[$key] = $feed_args[$key];
+					}
 				}
 			}
+			reset($local_args);
+			@reset($feed_args);
 		}
-		reset($local_args);
-		reset($feed_args);		
 		if ($debug_widget) { echo 'FINAL Listbox Local Args:<br>'.serialize($local_args).'<br>'; }
 		
 		// init some important variables

@@ -72,7 +72,10 @@
 				{
 					$subject = substr($subject,0,65).' ...';
 				}
-				$data[] = array('text'=>$subject,'link'=>$GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i]));
+				$data[] = array(
+					'text'	=> $subject,
+					'link'	=> $GLOBALS['phpgw']->link('/email/message.php','folder='.$GLOBALS['phpgw']->msg->prep_folder_out('').'&msgnum='.$msg_nums_array[$i])
+				);
 			}
 			// ADD FOLDER LISTBOX TO HOME PAGE (Needs to be TEMPLATED)
 			// Does This Mailbox Support Folders (i.e. more than just INBOX)?
@@ -89,7 +92,7 @@
 				// anything not specified will be replace with a default value if the function has one for that param
 				$feed_args = Array(
 					'mailsvr_stream'	=> '',
-					'pre_select_folder'	=> $listbox_pre_select,
+					'pre_select_folder'	=> '',
 					'skip_folder'		=> '',
 					'show_num_new'		=> $listbox_show_unseen,
 					'widget_name'		=> 'folder',

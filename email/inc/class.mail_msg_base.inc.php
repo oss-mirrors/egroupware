@@ -1,31 +1,31 @@
 <?php
-  /**************************************************************************\
-  * phpGroupWare - E-Mail Message Processing Functions		*
-  * http://www.phpgroupware.org				*
-  */
-  /**************************************************************************\
-  * phpGroupWare API - E-Mail Message Processing Functions		*
-  * This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
-  * Handles specific operations in manipulating email messages			*
-  * Copyright (C) 2001 Angelo Tony Puglisi (Angles)				*
-  * -------------------------------------------------------------------------			*
-  * This library is part of the phpGroupWare API					*
-  * http://www.phpgroupware.org/api						* 
-  * ------------------------------------------------------------------------ 			*
-  * This library is free software; you can redistribute it and/or modify it		*
-  * under the terms of the GNU Lesser General Public License as published by	*
-  * the Free Software Foundation; either version 2.1 of the License,		*
-  * or any later version.								*
-  * This library is distributed in the hope that it will be useful, but		*
-  * WITHOUT ANY WARRANTY; without even the implied warranty of		*
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
-  * See the GNU Lesser General Public License for more details.			*
-  * You should have received a copy of the GNU Lesser General Public License	*
-  * along with this library; if not, write to the Free Software Foundation,		*
-  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA		*
-  \**************************************************************************/
+	/**************************************************************************\
+	* phpGroupWare - E-Mail Message Processing Functions				*
+	* http://www.phpgroupware.org							*
+	*/
+	/**************************************************************************\
+	* phpGroupWare API - E-Mail Message Processing Functions			*
+	* This file written by Angelo Tony Puglisi (Angles) <angles@phpgroupware.org> *
+	* Handles specific operations in manipulating email messages			*
+	* Copyright (C) 2001 Angelo Tony Puglisi (Angles)					*
+	* -------------------------------------------------------------------------			*
+	* This library is part of the phpGroupWare API					*
+	* http://www.phpgroupware.org/api							* 
+	* ------------------------------------------------------------------------ 			*
+	* This library is free software; you can redistribute it and/or modify it		*
+	* under the terms of the GNU Lesser General Public License as published by	*
+	* the Free Software Foundation; either version 2.1 of the License,			*
+	* or any later version.								*
+	* This library is distributed in the hope that it will be useful, but			*
+	* WITHOUT ANY WARRANTY; without even the implied warranty of		*
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	*
+	* See the GNU Lesser General Public License for more details.			*
+	* You should have received a copy of the GNU Lesser General Public License	*
+	* along with this library; if not, write to the Free Software Foundation,		*
+	* Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA			*
+	\**************************************************************************/
 
-  /* $Id$ */
+	/* $Id$ */
 
   class mail_msg_base
   {
@@ -125,32 +125,33 @@
 	// ----  BEGIN request from Mailserver / Initialize This Mail Session  -----
 	function begin_request($args_array)
 	{
-		//$debug_logins = True;
-		$debug_logins = False;
+		$debug_logins = 0;
+		//$debug_logins = 1;
 		
 		// whether or not to attempt to reuse an existing mail_msg object's existing login/mailsvr_stream
 		$attempt_reuse = True;	
 		//$attempt_reuse = False;
 		
-		if ($debug_logins) { echo 'ENTERING mail_msg: begin_request ; local var attempt_reuse=['.serialize($attempt_reuse).']<br>'; }
-		if ($debug_logins) { echo ' mail_msg: begin_request feed var args_array[] dump:<pre>'; print_r($args_array); echo '</pre>'; }
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: ENTERING'.'<br>';}
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: local var attempt_reuse=['.serialize($attempt_reuse).']<br>'; }
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: feed var args_array[] dump:<pre>'; print_r($args_array); echo '</pre>'; }
 		
 		// ====  Already Logged In / Reuse Existing ?  =====
 		if (($attempt_reuse == True)
 		&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
 		&& ($this->is_logged_in($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']) == True))
 		{
-			if ($debug_logins) { echo 'mail_msg: begin_request: attempt to reuse existing login'.'<br>'; }
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: attempt to reuse existing login'.'<br>'; }
 			// we're already logged in, now...
-			if ($debug_logins) { echo 'mail_msg: begin_request: class->args[] (dump BEFORE coming into this function)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: class->args[] (dump BEFORE coming into this function)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
 			// clear what is leftr over in the class->args[] array from last request
 			$this->args = array();
 			// can not re-grab because original GPC values are still in POST and GET GLOBALS
 			//$this->grab_class_args_gpc();
-			if ($debug_logins) { echo 'mail_msg: begin_request: CLEARED (can not re-grab because original GPC values are still in GLOBALS)'.'<br>'; }
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: CLEARED (can not re-grab because original GPC values are still in GLOBALS)'.'<br>'; }
 			// (2) we need to will fill class->args[] with data from feed var args_array
 			// SECURITY CHECK ???? is it needed here, "bad" args_array could be passed ?
-			if ($debug_logins) { echo 'mail_msg: begin_request: re-fill class->args with feed var args_array'.'<br>'; }
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: re-fill class->args with feed var args_array'.'<br>'; }
 			while(list($key,$value) = each($args_array))
 			{
 				// "do_login" is never included as a class arg, it should only be specified here
@@ -160,23 +161,23 @@
 					// put the raw data (value) for this particular arg into a local var
 					$new_arg_value = $args_array[$key];
 					// replace the previously existing class arg with this
-					if ($debug_logins) { echo 'mail_msg: begin_request: fill class->rgs['.$key.'] with feed value ['.$new_arg_value.']'.'<br>'; }
+					if ($debug_logins > 0) { echo 'mail_msg: begin_request: fill class->rgs['.$key.'] with feed value ['.$new_arg_value.']'.'<br>'; }
 					$this->args[$key] = $new_arg_value;
 				}
 			}
-			if ($debug_logins) { echo 'mail_msg: begin_request: class->args[] dump (AFTER re-filling with feed data)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: class->args[] dump (AFTER re-filling with feed data)<pre>';  print_r($GLOBALS['phpgw']->msg->args); echo '</pre>'; }
 			// do we need to switch to a different folder ?
 			if ($this->folder != $this->prep_folder_in($args_array['folder']))
 			{
-				if ($debug_logins) { echo 'mail_msg: begin_request: already loggedin but need to change (reopen) folder from ['.$this->folder.'] to this ['.$args_array['folder'].'] (name will be preped in)<br>';}
+				if ($debug_logins > 0) { echo 'mail_msg: begin_request: already loggedin but need to change (reopen) folder from ['.$this->folder.'] to this ['.$args_array['folder'].'] (name will be preped in)<br>';}
 				$this->folder = $this->prep_folder_in($args_array['folder']);
 				// switch to the desired folder now that we are sure we have it's official name
 				$did_reopen = $this->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
-				  if ($debug_logins) { echo 'mail_msg: begin_request: already loggedin bvut reopening, reopen returns: '.serialize($did_reopen).'<br>';}
+				  if ($debug_logins > 0) { echo 'mail_msg: begin_request: already loggedin but reopening, reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
 				{
-					if ($debug_logins) { echo 'mail_msg: begin_request: reusing: reopen FAILED for mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+					if ($debug_logins > 0) { echo 'mail_msg: begin_request: reusing: reopen FAILED for mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
 					return False;
 				}
 			}
@@ -184,27 +185,77 @@
 			return $this->mailsvr_stream;
 		}
 		
-		// we are here ONLY if creating a new mail_msg object
-		if ($debug_logins) { echo 'mail_msg: begin_request: NOT reusing an established stream-object'.'<br>'; }
+		// we are here ONLY if creating NO OBJECT mail_msg exists
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: NOT reusing an established logged-in stream-object, will create new'.'<br>'; }
 		
-		// ===== Not Already Logged In  =====
+		// ===== Not Already Logged In?  =====
 		// ----  Things To Be Done Whether You Login Or Not  -----
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: PRE create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
 		// obtain the preferences from the database
 		$GLOBALS['phpgw_info']['user']['preferences'] = $GLOBALS['phpgw']->preferences->create_email_preferences();
-		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
-		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
-		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
-		//if ($debug_logins) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';}
+		if ($debug_logins > 0) { echo 'mail_msg: begin_request: POST create_email_preferences GLOBALS[phpgw_info][user][preferences][email] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']['email']) ; echo '</pre>';}
+		//if ($debug_logins > 0) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user][preferences] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']['preferences']) ; echo '</pre>';}
+		//if ($debug_logins > 0) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info][user] dump:<pre>'; print_r($GLOBALS['phpgw_info']['user']) ; echo '</pre>';}
+		//if ($debug_logins > 0) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw_info] dump:<pre>'; print_r($GLOBALS['phpgw_info']) ; echo '</pre>';}
+		//if ($debug_logins > 0) { echo 'mail_msg: begin_request: preferences->create_email_preferences called, GLOBALS[phpgw] dump:<pre>'; print_r($GLOBALS['phpgw']) ; echo '</pre>';}
+		
+		
+		/*
+		// ======  TRY PERSISTENT DATA RE_CONNECT  ======
+		if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['p_persistent']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['p_persistent'] != '')
+		
+		&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_stream']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_stream'] != '')
+		
+		&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_callstr']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_callstr'] != '')
+		
+		&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_account_username']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_account_username'] != ''))
+		{
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: ** persistent data exists ** TRY to re-establish stream: '.$GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_stream'].'<br>';}
+			// do a ping test
+			$this->dcom = CreateObject("email.mail_dcom");
+			$this->dcom->mail_dcom_base();
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: ** persistent data exists ** TRY to open socket / stream<br>';}
+			$socket = pfsockopen($GLOBALS['phpgw_info']['user']['preferences']['email']['mail_server'],(int)$GLOBALS['phpgw_info']['user']['preferences']['email']['mail_port'],$errcode,$errmsg,5);
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: pfsockopen returns: '.serialize($socket).'<br>';}
+			
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: ** persistent data exists ** TRY to re-establish stream, do a ping test<br>';}
+			//$re_established = False;
+			$re_established = $this->dcom->noop_ping_test((int)$GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_stream']);
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: PING test returns: '.serialize($re_established).'<br>';}
+			//$persistent['p_mailsvr_stream'] = (string)$this->mailsvr_stream;
+			//$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_stream',$persistent['p_mailsvr_stream']);
+			//$persistent['p_mailsvr_callstr'] = $this->get_mailsvr_callstr();
+			//$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_callstr',$persistent['p_mailsvr_callstr']);
+			//$persistent['p_mailsvr_account_username'] = $this->mailsvr_account_username;
+			
+			//if ($debug_logins > 0) { echo 'mail_msg: begin_request: ** do a ping test on the<br>';}
+			//$re_established = $this->dcom->noop_ping_test((int)$GLOBALS['phpgw_info']['user']['preferences']['email']['p_mailsvr_stream']);
+			//if ($debug_logins > 0) { echo 'mail_msg: begin_request: PING test returns: '.serialize($re_established).'<br>';}
+			
+		}		
+		*/
+		
 		// Get Email Password
 		if (!isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
 		{
-			if ($debug_logins) { echo 'mail_msg: begin_request: GLOBALS[phpgw_info][user][preferences][email][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
-			//if ($debug_logins) { echo 'mail_msg: begin_request: GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($GLOBALS['phpgw_info']['user']['passwd'])).'<br>'; }
-			$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: GLOBALS[phpgw_info][user][preferences][email][passwd] NOT set, fallback to $GLOBALS[phpgw_info][user][passwd]'.'<br>'; }
+			// DO NOT alter the password and put that altered password BACK into the preferences array
+			// why not? used to have a reason, but that was obviated, no reason at the moment
+			//$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $GLOBALS['phpgw_info']['user']['passwd'];
+			$pass = $GLOBALS['phpgw_info']['user']['passwd'];
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: pass grabbed from GLOBALS[phpgw_info][user][passwd] = '.htmlspecialchars(serialize($pass)).'<br>'; }
 		}
 		else
 		{
-			$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']);
+			// DO NOT alter the password and put that altered password BACK into the preferences array
+			// keep the one in GLOBALS in encrypted form if possible
+			//$GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] = $this->decrypt_email_passwd($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']);
+			$pass = $this->decrypt_email_passwd($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']);
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: pass decoded from prefs: '.htmlspecialchars(serialize($pass)).'<br>'; }
 		}
 		// initalize some important class variables
 		$this->att_files_dir = $GLOBALS['phpgw_info']['server']['temp_dir'].SEP.$GLOBALS['phpgw_info']['user']['sessionid'];
@@ -249,16 +300,19 @@
 			// === ISSET CHECK for userid and passwd to avoid garbage logins ==
 			if ( (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['userid']))
 			&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['userid'] != '')
-			&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
-			&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] != '') )
+			//&& (isset($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd']))
+			//&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'] != '') )
+			&& (isset($pass))
+			&& ($pass != '') )
 			{
 				$user = $GLOBALS['phpgw_info']['user']['preferences']['email']['userid'];
-				$pass = $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
+				// we set pass up above, we no longer alter the pass and put it back intoi the prefs array
+				//$pass = $GLOBALS['phpgw_info']['user']['preferences']['email']['passwd'];
 			}
 			else
 			{
 				// problem - invalid or nonexistant info for userid and/or passwd
-				//if ($debug_logins) {
+				//if ($debug_logins > 0) {
 					echo 'mail_msg: begin_request: ERROR: userid or passwd empty'."<br>\r\n"
 						.' * * GLOBALS[phpgw_info][user][preferences][email][userid] = '
 							.$GLOBALS['phpgw_info']['user']['preferences']['email']['userid']."<br>\r\n"
@@ -282,9 +336,11 @@
 			set_time_limit(60);
 			// login to INBOX because we know that always(?) should exist on an imap server
 			// after we are logged in we can get additional info that will lead us to the desired folder (if not INBOX)
-			$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
+			//$server_str = $GLOBALS['phpgw']->msg->get_mailsvr_callstr();
+			$server_str = $this->get_mailsvr_callstr();
 			$this->mailsvr_stream = $this->dcom->open($server_str."INBOX", $user, $pass, '');
-			if ($debug_logins)
+			$pass = '';
+			if ($debug_logins > 0)
 			{
 				echo 'this->mailsvr_stream: '.serialize($this->mailsvr_stream).'<br>';
 				//echo 'user = ' . $user . '; pass = ' . $pass . '<br>';
@@ -294,33 +350,34 @@
 			// error check
 			if (!$this->mailsvr_stream)
 			{
-				if ($debug_logins) { echo 'ERROR: this->mailsvr_stream failed <br>';}
+				if ($debug_logins > 0) { echo 'ERROR: this->mailsvr_stream failed <br>';}
 				return False;
 			}
 			
 			// SUCCESS - we are logged in
+			// BUT we may still fail to "reopen" if we need to go to a folder oither than INBOX
 			$this->mailsvr_account_username = $user;
 			
 			// get some more info now that we are logged in
 			// namespace is often obtained by directly querying the mailsvr
 			$this->get_mailsvr_namespace();
-			  if ($debug_logins) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
+			  if ($debug_logins > 0) { echo 'this->mailsvr_namespace: '.$this->mailsvr_namespace.'<br>';}
 			$this->get_mailsvr_delimiter();
-			  if ($debug_logins) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
+			  if ($debug_logins > 0) { echo 'this->mailsvr_delimiter: '.$this->mailsvr_delimiter.'<br>';}
 			// make sure we have a useful folder name to log into
-			  if ($debug_logins) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
+			  if ($debug_logins > 0) { echo 'args_array[folder] before prep: '.$args_array['folder'].'<br>';}
 			$this->folder = $this->prep_folder_in($args_array['folder']);
-			  if ($debug_logins) { echo 'this->folder after prep: '.$this->folder.'<br>';}
+			  if ($debug_logins > 0) { echo 'this->folder after prep: '.$this->folder.'<br>';}
 			if ($this->folder != 'INBOX')
 			{
 				// switch to the desired folder now that we are sure we have it's official name
-				  if ($debug_logins) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
+				  if ($debug_logins > 0) { echo 'reopen mailsvr_stream to this->folder: (callstr)'.$this->folder.'<br>';}
 				$did_reopen = $this->dcom->reopen($this->mailsvr_stream, $this->mailsvr_callstr.$this->folder, '');
-				  if ($debug_logins) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
+				  if ($debug_logins > 0) { echo 'reopen returns: '.serialize($did_reopen).'<br>';}
 				// error check
 				if ($did_reopen == False)
 				{
-					  if ($debug_logins) { echo 'FAILED: reopen mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
+					  if ($debug_logins > 0) { echo 'FAILED: reopen mailsvr_stream to (mailsvr_callstr): '.$this->folder.'<br>';}
 					return False;
 				}
 			}
@@ -343,24 +400,110 @@
 		// ----  Things Again Specific To Loging In  -----
 		if ($args_array['do_login'] == True)
 		{
+			//$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_stream');
+			//$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_callstr');
+			//$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_account_username');
+			//$GLOBALS['phpgw']->preferences->save_repository();
+			
+			//$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_stream');
+			//$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_stream',(string)$this->mailsvr_stream);
+			//$GLOBALS['phpgw']->preferences->save_repository();
+			
+			if ($debug_logins > 0) { echo 'mail_msg: begin_request: LEAVING'.'<br>';}
 			// returning this is vestigal, not really necessary, but do it anyway
 			// it's importance is that it returns something other then "False" on success
-			  if ($debug_logins) { echo 'LEAVING: begin_request'.'<br>';}
 			return $this->mailsvr_stream;
 		}
 	}
  
-
 	function end_request($args_array='')
 	{
 		// args array currently not used
 		if ((isset($this->mailsvr_stream))
 		&& ($this->mailsvr_stream != ''))
 		{
-			$this->dcom->close($GLOBALS['phpgw']->msg->mailsvr_stream);
-			$GLOBALS['phpgw']->msg->mailsvr_stream = '';
+			$this->dcom->close($this->mailsvr_stream);
+			$this->mailsvr_stream = '';
 		}
 	}
+
+	/*
+	// EXPERIMENTAL code
+	function end_request($args_array='')
+	{
+		// args array recognized params:
+		//	logging_out == True
+		if ((isset($GLOBALS['phpgw_info']['user']['preferences']['email']['p_persistent']))
+		&& ($GLOBALS['phpgw_info']['user']['preferences']['email']['p_persistent'] != ''))
+		{
+			$handle_persistent_prefs_data = True;
+			if ((isset($args_array['logging_out']))
+			&& ($args_array['logging_out'] == True))
+			{
+				$really_close_stream = True;
+			}	
+			else
+			{
+				$really_close_stream = False;
+			}
+		}
+		else
+		{
+			$handle_persistent_prefs_data = False;
+			$really_close_stream = True;
+		}
+		
+		if (($really_close_stream == True)
+		&& (isset($this->mailsvr_stream))
+		&& ($this->mailsvr_stream != ''))
+		{
+			if ($handle_persistent_prefs_data == True)
+			{
+				// prefs are already open and available, were read on page view
+				// DELETE persistent data to preferences DB
+				// (a) integer representing the stream
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_stream');
+				// (b) Fully Qualified Server Name, from Bracket to Bracket {mail.some.com/imap:143 }
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_callstr');
+				// (c) username on that server we logged in as
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_account_username');
+				// SAVE the repository
+				$GLOBALS['phpgw']->preferences->save_repository();
+			}
+			$this->dcom->close($this->mailsvr_stream);
+			$this->mailsvr_stream = '';
+		}
+		elseif (($really_close_stream == False)
+		&& (isset($this->mailsvr_stream))
+		&& ($this->mailsvr_stream != ''))
+		{
+			if ($handle_persistent_prefs_data == True)
+			{
+				// prefs are already open and available, were read on page view
+				// we always first delete them from the prefs, then add them back with new values
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_stream');
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_callstr');
+				$GLOBALS['phpgw']->preferences->delete('email','p_mailsvr_account_username');
+				// SAVE persistent data to preferences DB
+				// (a) integer representing the stream
+				$persistent['p_mailsvr_stream'] = (string)$this->mailsvr_stream;
+				$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_stream',$persistent['p_mailsvr_stream']);
+				// (b) Fully Qualified Server Name, from Bracket to Bracket {mail.some.com/imap:143 }
+				$persistent['p_mailsvr_callstr'] = $this->get_mailsvr_callstr();
+				$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_callstr',$persistent['p_mailsvr_callstr']);
+				// (c) username on that server we logged in as
+				$persistent['p_mailsvr_account_username'] = $this->mailsvr_account_username;
+				$GLOBALS['phpgw']->preferences->add('email','p_mailsvr_account_username',$persistent['p_mailsvr_account_username']);
+				// SAVE the repository
+				$GLOBALS['phpgw']->preferences->save_repository();
+			}
+		}
+		else
+		{
+			// if we get here we were probably not asked to actually login during "begin_request"
+		}
+	}
+	*/
 
 	function login_error($called_from='')
 	{

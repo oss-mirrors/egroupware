@@ -21,16 +21,13 @@
 
 		var $bo;
 		var $nextmatchs;
-		//var $template;
 		var $theme;
 		var $prefs;
 
 		function uipreferences()
 		{
 			$this->nextmatchs = CreateObject('phpgwapi.nextmatchs');
-			//$this->template = $GLOBALS['phpgw']->template;
 			$this->theme = $GLOBALS['phpgw_info']['theme'];
-			// enabled BO object for additional prefs capabilities
 			$this->bo = CreateObject('email.bopreferences');
 			$temp_prefs = $GLOBALS['phpgw']->preferences->create_email_preferences();
 			$this->prefs = $temp_prefs['email'];
@@ -88,7 +85,7 @@
 				// echo 'pref item loop ['.$i.']:  &nbsp; '; var_dump($this_item); echo '<br><br>';
 				
 				// we don't want to show a hidden value
-				if (!stristr($this_item['other_props'], 'hidden'))
+				if (!stristr($this_item['write_props'], 'hidden'))
 				{
 					$this_item_value = $this->prefs[$this_item['id']];
 				}
@@ -123,7 +120,7 @@
 				elseif ($this_item['widget'] == 'passwordbox')
 				{
 					// this_item_value should have been set to blank above
-					// if $this_item['other_props'] contains the word "hidden"
+					// if $this_item['write_props'] contains the word "hidden"
 					$GLOBALS['phpgw']->template->set_var('pref_value', $this_item_value);
 					$GLOBALS['phpgw']->template->parse('V_tr_passwordbox','B_tr_passwordbox');
 					$done_widget = $GLOBALS['phpgw']->template->get_var('V_tr_passwordbox');	
@@ -192,6 +189,9 @@
 		*/
 		function preferences()
 		{
+			//$debug_prefs = True;
+			$debug_prefs = False;
+			
 			unset($GLOBALS['phpgw_info']['flags']['noheader']);
 			unset($GLOBALS['phpgw_info']['flags']['nonavbar']);
 			$GLOBALS['phpgw_info']['flags']['noappheader'] = True;
@@ -231,9 +231,13 @@
 			
 			// this will fill the $this->bo->std_prefs[] and cust_prefs[]  "schema" arrays
 			$this->bo->init_available_prefs();			
+			
 			// DEBUG
-			//$this->bo->debug_dump_prefs();
-			//return;
+			if ($debug_prefs)
+			{
+				$this->bo->debug_dump_prefs();
+				//return;
+			}
 			
 			// initialize a local var to hold the cumulative main block data
 			$prefs_ui_rows = '';
@@ -274,7 +278,6 @@
 			// put all widget rows data into the template var
 			$GLOBALS['phpgw']->template->set_var('prefs_ui_rows', $prefs_ui_rows);
 			// output the template
-			//$GLOBALS['phpgw']->template->pparse('out','T_prefs_ui_out');
 			$GLOBALS['phpgw']->template->pfp('out','T_prefs_ui_out');
 		}
 	}

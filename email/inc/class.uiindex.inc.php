@@ -98,35 +98,43 @@
 			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');	
 
 			// font size options
-			$this->bo->xi['font_size_offset'] = 0;
-			// FIXME:  font_size_offset  needs to be put into the prefs db, bo, and ui
-			
+			//  === BAD - does NOT work - ignore
+			// -in progress-   font_size_offset  needs to be put into the prefs db, bo, and ui
+			//$this->bo->xi['font_size_offset'] = 0;
 			$font_size = Array (
-				0 => (string)(-5 + $this->bo->xi['font_size_offset']),
-				1 => (string)(-4 + $this->bo->xi['font_size_offset']),
-				2 => (string)(-3 + $this->bo->xi['font_size_offset']),
-				3 => (string)(-2 + $this->bo->xi['font_size_offset']),
-				4 => (string)(-1 + $this->bo->xi['font_size_offset']),
-				5 => (string)(0 + $this->bo->xi['font_size_offset']),
-				6 => (string)(1 + $this->bo->xi['font_size_offset']),
-				7 => (string)(2 + $this->bo->xi['font_size_offset']),
-				8 => (string)(3 + $this->bo->xi['font_size_offset']),
-				9 => (string)(4 + $this->bo->xi['font_size_offset']),
-				10 => (string)(5 + $this->bo->xi['font_size_offset'])
+				0 => (string)((-5) + ($this->bo->xi['font_size_offset'])),
+				1 => (string)((-4) + ($this->bo->xi['font_size_offset'])),
+				2 => (string)((-3) + ($this->bo->xi['font_size_offset'])),
+				3 => (string)((-2) + ($this->bo->xi['font_size_offset'])),
+				4 => (string)((-1) + ($this->bo->xi['font_size_offset'])),
+				5 => (string)(0 + ($this->bo->xi['font_size_offset'])),
+				6 => (string)(1 + ($this->bo->xi['font_size_offset'])),
+				7 => (string)(2 + ($this->bo->xi['font_size_offset'])),
+				8 => (string)(3 + ($this->bo->xi['font_size_offset'])),
+				9 => (string)(4 + ($this->bo->xi['font_size_offset'])),
+				10 => (string)(5 + ($this->bo->xi['font_size_offset']))
 			);
+			
 			// some fonts and font sizes, simply add to bo->xi[] array
 			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['ctrl_bar_font_size'] = $font_size[4];
+			//$this->bo->xi['ctrl_bar_font_size'] = $font_size[4];
+			$this->bo->xi['ctrl_bar_font_size'] = '-1';
 			$this->bo->xi['stats_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['stats_font_size'] = $font_size[7];
-			$this->bo->xi['stats_foldername_size'] = $font_size[8];
+			//$this->bo->xi['stats_font_size'] = $font_size[7];
+			//$this->bo->xi['stats_foldername_size'] = $font_size[8];
+			$this->bo->xi['stats_font_size'] = '2';
+			$this->bo->xi['stats_foldername_size'] = '3';
 			$this->bo->xi['mlist_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['mlist_font_size'] = $font_size[7];
-			$this->bo->xi['mlist_font_size_sm'] = $font_size[6];
+			//$this->bo->xi['mlist_font_size'] = $font_size[7];
+			//$this->bo->xi['mlist_font_size_sm'] = $font_size[6];
+			$this->bo->xi['mlist_font_size'] = '2';
+			$this->bo->xi['mlist_font_size_sm'] = '1';
 			$this->bo->xi['hdr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
-			$this->bo->xi['hdr_font_size'] = $font_size[7];
-			$this->bo->xi['hdr_font_size_sm'] = $font_size[6];
-			$this->bo->xi['ftr_font']	= $GLOBALS['phpgw_info']['theme']['font'];
+			//$this->bo->xi['hdr_font_size'] = $font_size[7];
+			//$this->bo->xi['hdr_font_size_sm'] = $font_size[6];
+			$this->bo->xi['hdr_font_size'] = '2';
+			$this->bo->xi['hdr_font_size_sm'] = '1';
+			$this->bo->xi['ftr_font'] = $GLOBALS['phpgw_info']['theme']['font'];
 
 
 			$tpl_vars = Array(
@@ -403,22 +411,22 @@
 			$this->bo->xi['V_mlist_form_init'] = $GLOBALS['phpgw']->template->get_var('V_mlist_form_init');
 			
 			// font size options
-			$this->bo->xi['font_size_offset'] = 0;
+			$this->bo->xi['font_size_offset'] = 1;
 			//$this->bo->xi['font_size_offset'] = 2;
 			// FIXME:  font_size_offset  needs to be put into the prefs db, bo, and ui
 			
 			$font_size = Array (
-				0 => (string)(-5 + $this->bo->xi['font_size_offset']),
-				1 => (string)(-4 + $this->bo->xi['font_size_offset']),
-				2 => (string)(-3 + $this->bo->xi['font_size_offset']),
-				3 => (string)(-2 + $this->bo->xi['font_size_offset']),
-				4 => (string)(-1 + $this->bo->xi['font_size_offset']),
-				5 => (string)(0 + $this->bo->xi['font_size_offset']),
-				6 => (string)(1 + $this->bo->xi['font_size_offset']),
-				7 => (string)(2 + $this->bo->xi['font_size_offset']),
-				8 => (string)(3 + $this->bo->xi['font_size_offset']),
-				9 => (string)(4 + $this->bo->xi['font_size_offset']),
-				10 => (string)(5 + $this->bo->xi['font_size_offset'])
+				0 => ((-5) + $this->bo->xi['font_size_offset']),
+				1 => ((-4) + $this->bo->xi['font_size_offset']),
+				2 => ((-3) + $this->bo->xi['font_size_offset']),
+				3 => ((-2) + $this->bo->xi['font_size_offset']),
+				4 => ((-1) + $this->bo->xi['font_size_offset']),
+				5 => (0 + $this->bo->xi['font_size_offset']),
+				6 => (1 + $this->bo->xi['font_size_offset']),
+				7 => (2 + $this->bo->xi['font_size_offset']),
+				8 => (3 + $this->bo->xi['font_size_offset']),
+				9 => (4 + $this->bo->xi['font_size_offset']),
+				10 => (5 + $this->bo->xi['font_size_offset'])
 			);
 			// some fonts and font sizes
 			$this->bo->xi['ctrl_bar_font'] = $GLOBALS['phpgw_info']['theme']['font'];

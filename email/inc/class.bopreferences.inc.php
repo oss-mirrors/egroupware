@@ -50,12 +50,19 @@
 		 Also, $this->std_prefs[] and $this->cust_prefs[] arrays can be used to build a UI for managing and 
 		 showing these prefs, and <br>
 		 those arrays can be looped through for the setting and storing of these preferences.
+		[init_default] comma seperated, first word is an instructional token
+			--possible tokens are--
+			string		[any_string]  ex. 'string,new_old'
+			set_or_not	[set|not_set]  ex.  'set_or_not,not_set'
+			function	[string_will_be_eval'd] ex. 'function,$this->sub_default_userid($accountid)'
+			init_no_fill	we will not fill this item during initialization (ex. a password)
+			varEVAL	[string_to_eval] ex. "$GLOBALS['phpgw_info']['server']['mail_server']"
 		@author	Angles
 		@access	Public
 		*/
 		function init_available_prefs()
 		{
-			if ($this->debug_set_prefs == True) { echo 'email.bopreferences: call to init_available_prefs<br>'; }
+			if ($this->debug_set_prefs) { echo 'email.bopreferences: call to init_available_prefs<br>'; }
 			
 			$this->std_prefs = Array();
 			$i = 0;
@@ -63,8 +70,9 @@
 				'id' 		=> 'email_sig',
 				'type'		=> 'user_string',
 				'widget'	=> 'textarea',
-				'other_props'	=> 'empty_string_ok',
+				'write_props'	=> 'empty_string_ok',
 				'lang_blurb'	=> lang('email signature'),
+				'init_default'	=> 'string, ',
 				'values'	=> array()
 			);
 			$lang_oldest = lang('oldest');
@@ -74,8 +82,9 @@
 				'id' 		=> 'default_sorting',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('Default sorting order'),
+				'init_default'	=> 'string,new_old',
 				'values'	=> array(
 					'old_new' => $lang_oldest.' -> '.$lang_newest,
 					'new_old' => $lang_newest.' -> '.$lang_oldest
@@ -86,8 +95,9 @@
 				'id' 		=> 'layout',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('Message List Layout'),
+				'init_default'	=> 'string,1',
 				'values'	=> array(
 					'1' => lang('Layout 1'),
 					'2' => lang('Layout 2')
@@ -98,8 +108,9 @@
 				'id' 		=> 'show_addresses',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('Show sender\'s email address with name'),
+				'init_default'	=> 'string,none',
 				'values'	=> array(
 					'none' => lang('none'),
 					'From' => lang('From'),
@@ -111,8 +122,9 @@
 				'id' 		=> 'mainscreen_showmail',
 				'type'		=> 'exists',
 				'widget'	=> 'checkbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('show new messages on main screen'),
+				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array()
 			);
 			$i++;
@@ -120,10 +132,11 @@
 				'id' 		=> 'use_trash_folder',
 				'type'		=> 'exists',
 				'widget'	=> 'checkbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				//'lang_blurb'	=> lang('Deleted messages saved to folder:'),
 				//'lang_blurb'	=> lang('save Deleted messages in folder named below'),
 				'lang_blurb'	=> lang('Deleted messages go to Trash'),
+				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array()
 			);
 			$i++;
@@ -131,10 +144,10 @@
 				'id' 		=> 'trash_folder_name',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				//'lang_blurb'	=> lang('Deleted messages folder name'),
 				'lang_blurb'	=> lang('Deleted messages (Trash) folder'),
-				'default'	=> 'Trash',
+				'init_default'	=> 'string,Trash',
 				'values'	=> array()
 			);
 			$i++;
@@ -142,10 +155,11 @@
 				'id' 		=> 'use_sent_folder',
 				'type'		=> 'exists',
 				'widget'	=> 'checkbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				//'lang_blurb'	=> lang('Sent messages saved to folder:'),
 				//'lang_blurb'	=> lang('save Sent messages in folder named below'),
 				'lang_blurb'	=> lang('Sent messages saved in &quot;Sent&quot; folder'),
+				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array()
 			);
 			$i++;
@@ -153,10 +167,10 @@
 				'id' 		=> 'sent_folder_name',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				//'lang_blurb'	=> lang('Sent messages folder name'),
 				'lang_blurb'	=> lang('Sent messages folder'),
-				'default'	=> 'Sent',
+				'init_default'	=> 'string,Sent',
 				'values'	=> array()
 			);
 			/*
@@ -165,13 +179,15 @@
 				'id' 		=> 'font_size_offset',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('Change Font Size in your E-Mail Pages'),
-				'default'	=> '0',
+				'init_default'	=> 'string,-1',
 				'values'	=> array(
+					'-2' => lang('Smallest'),
 					'-1' => lang('Smaller'),
 					'0' => lang('Normal'),
-					'1' => lang('Bigger')
+					'1' => lang('Bigger'),
+					'2' => lang('Biggest')
 				)
 			);
 			*/
@@ -180,10 +196,23 @@
 				'id' 		=> 'enable_utf7',
 				'type'		=> 'exists',
 				'widget'	=> 'checkbox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('enable UTF-7 encoded folder names'),
+				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array()
 			);
+			/*
+			$i++;
+			$this->std_prefs[$i] = Array(
+				'id' 		=> 'p_persistent',
+				'type'		=> 'exists',
+				'widget'	=> 'checkbox',
+				'write_props'	=> '',
+				'lang_blurb'	=> lang('persistent email server session'),
+				'init_default'	=> 'set_or_not,not_set',
+				'values'	=> array()
+			);
+			*/
 			
 			// Custom Settings
 			$this->cust_prefs = Array();
@@ -192,8 +221,9 @@
 				'id' 		=> 'use_custom_settings',
 				'type'		=> 'exists',
 				'widget'	=> 'checkbox',
-				'other_props'	=> 'group_master',
+				'write_props'	=> 'group_master',
 				'lang_blurb'	=> lang('Use custom settings'),
+				'init_default'	=> 'set_or_not,not_set',
 				'values'	=> array()
 			);
 			$i++;
@@ -201,8 +231,10 @@
 				'id' 		=> 'userid',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> 'no_pre_process',
+				'write_props'	=> 'no_db_defang',
 				'lang_blurb'	=> lang('Email Account Name'),
+			//	'init_default'	=> 'function,$this->sub_default_userid($account_id);',
+				'init_default'	=> 'function,sub_default_userid',
 				'values'	=> array()
 			);
 			$i++;
@@ -210,8 +242,9 @@
 				'id' 		=> 'passwd',
 				'type'		=> 'user_string',
 				'widget'	=> 'passwordbox',
-				'other_props'	=> 'password, hidden, encrypted, empty_no_delete',
+				'write_props'	=> 'password, hidden, encrypted, empty_no_delete',
 				'lang_blurb'	=> lang('Email Password'),
+				'init_default'	=> 'init_no_fill',
 				'values'	=> array()
 			);
 			$i++;
@@ -219,8 +252,10 @@
 				'id' 		=> 'address',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> 'no_pre_process',
+				'write_props'	=> 'no_db_defang',
 				'lang_blurb'	=> lang('Email address'),
+			//	'init_default'	=> 'function,$this->sub_default_address($account_id);',
+				'init_default'	=> 'function,sub_default_address',
 				'values'	=> array()
 			);
 			$i++;
@@ -228,8 +263,9 @@
 				'id' 		=> 'mail_server',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> 'no_pre_process',
+				'write_props'	=> 'no_db_defang',
 				'lang_blurb'	=> lang('Mail Server'),
+				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_server"];',
 				'values'	=> array()
 			);
 			$i++;
@@ -237,8 +273,9 @@
 				'id' 		=> 'mail_server_type',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> 'no_db_defang',
 				'lang_blurb'	=> lang('Mail Server type'),
+				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_server_type"];',
 				'values'	=> array(
 					'imap'		=> 'IMAP',
 					'pop3'		=> 'POP-3',
@@ -251,8 +288,9 @@
 				'id' 		=> 'imap_server_type',
 				'type'		=> 'known_string',
 				'widget'	=> 'combobox',
-				'other_props'	=> '',
+				'write_props'	=> '',
 				'lang_blurb'	=> lang('IMAP Server Type') .' - ' .lang('If Applicable'),
+				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["imap_server_type"];',
 				'values'	=> array(
 					'Cyrus'		=> 'Cyrus '.lang('or').' Courier',
 					'UWash'		=> 'UWash',
@@ -264,8 +302,9 @@
 				'id' 		=> 'mail_folder',
 				'type'		=> 'user_string',
 				'widget'	=> 'textbox',
-				'other_props'	=> 'empty_string_ok, no_pre_process',
+				'write_props'	=> 'empty_string_ok, no_db_defang',
 				'lang_blurb'	=> lang('U-Wash Mail Folder').' - ' .lang('If Applicable'),
+				'init_default'	=> 'varEVAL,$GLOBALS["phpgw_info"]["server"]["mail_folder"];',
 				'values'	=> array()
 			);
 		}
@@ -276,22 +315,8 @@
 		{
 			// DEBUG begin
 			echo '<br><br>';
-			echo '<b>std_prefs var dump:</b><br>';
-			for ($i=0; $i < count($this->std_prefs); $i++)
-			{
-				echo 'std_prefs Item #'.$i.'<br>';
-				var_dump($this->std_prefs[$i]);
-				echo '<br>';
-			}
-			echo '<br><br>';
-			echo '<b>cust_prefs var dump:</b><br>';
-			for ($i=0; $i < count($this->cust_prefs); $i++)
-			{
-				echo 'cust_prefs Item #'.$i.'<br>';
-				var_dump($this->cust_prefs[$i]);
-				echo '<br>';
-			}
-			echo '<br><br>';
+			echo '<b>std_prefs var dump:</b><pre>'; print_r($this->std_prefs); echo '</pre>';
+			echo '<b>cust_prefs var dump:</b><pre>'; print_r($this->cust_prefs); echo '</pre>';
 			//Header('Location: ' . $GLOBALS['phpgw']->link('/preferences/index.php'));
 			//return;
 			// DEBUG end
@@ -309,7 +334,10 @@
 		*/
 		function grab_set_prefs()
 		{
-			if ($this->debug_set_prefs == True) { echo 'email.bopreferences: call to grab_set_prefs<br>'; }
+			if ($this->debug_set_prefs) { echo 'email.bopreferences: call to grab_set_prefs<br>'; }
+			// better make sure we have created the available prefs schema
+			$this->init_available_prefs();
+
 			if ($this->caller == 'phpgw')
 			{
 				$this->grab_set_prefs_args_gpc();
@@ -320,7 +348,7 @@
 			}
 			else
 			{
-				if ($this->debug_set_prefs == True) { echo 'email.bopreferences: call to grab_set_prefs CALLER UNKNOWN<br>'; }
+				if ($this->debug_set_prefs) { echo 'email.bopreferences: call to grab_set_prefs CALLER UNKNOWN<br>'; }
 				$this->pref_errors .= 'email: bopreferences: grab_set_prefs: unsupported "caller" variable<br>';
 			}
 		}
@@ -346,7 +374,7 @@
 		*/
 		function grab_set_prefs_args_gpc()
 		{
-			if ($this->debug_set_prefs == True) { echo 'email.bopreferences: call to grab_set_prefs_args_gpc<br>'; }
+			if ($this->debug_set_prefs) { echo 'email.bopreferences: call to grab_set_prefs_args_gpc<br>'; }
 			// ----  HANDLE GRABBING PREFERENCE GPC HTTP_POST_VARS ARGS  -------
 			// for abstraction from phpgw UI and from PHP's GPC data, put the submitted GPC data
 			// into a class var $this->args[] array. This array is then used to represent the submitted
@@ -354,30 +382,38 @@
 			// HOWEVER, do not attempt to grab data if the "submit_prefs" GPC submit_token variable is not present
 			if (isset($GLOBALS['HTTP_POST_VARS'][$this->submit_token]))
 			{
-				if ($this->debug_set_prefs == True) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc<br>'; }
+				if ($this->debug_set_prefs) { echo 'email.bopreferences: INSIDE grab_set_prefs_args_gpc<br>'; }
 				
 				//$this->args['submit_prefs'] = $GLOBALS['HTTP_POST_VARS']['submit_prefs'];
 				$this->args[$this->submit_token] = $GLOBALS['HTTP_POST_VARS'][$this->submit_token];
-				/*
+				// standard prefs
 				$loops = count($this->std_prefs);				
-				for($i=0;$i<count($loops);$i++)
+				for($i=0;$i<$loops;$i++)
 				{
-					$this_pref = $this->std_prefs[$i];
-					if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref['id']]))
+					$this_pref_name = $this->std_prefs[$i]['id'];
+					if ($this->debug_set_prefs) { echo ' * * (std pref) $this_pref_name: '.$this_pref_name.'<br>'; }
+					if ($this->debug_set_prefs) { echo ' * * (std pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['HTTP_POST_VARS'][$this_pref_name].'<br>'; }
+					if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref_name]))
 					{
-						$this->args[$this_pref['id']] = $GLOBALS['HTTP_POST_VARS'][$this_pref['id']];
+						$this->args[$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this_pref_name];
 					}
 				}
+				// custom prefs
 				$loops = count($this->cust_prefs);				
-				for($i=0;$i<count($loops);$i++)
+				for($i=0;$i<$loops;$i++)
 				{
-					$this_pref = $this->cust_prefs[$i];
-					if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref['id']]))
+					$this_pref_name = $this->cust_prefs[$i]['id'];
+					if ($this->debug_set_prefs) { echo ' * * (cust pref) $this_pref_name: '.$this_pref_name.'<br>'; }
+					if ($this->debug_set_prefs) { echo ' * * (cust pref) $GLOBALS[HTTP_POST_VARS][$this_pref_name]: '.$GLOBALS['HTTP_POST_VARS'][$this_pref_name].'<br>'; }
+					if (isset($GLOBALS['HTTP_POST_VARS'][$this_pref_name]))
 					{
-						$this->args[$this_pref['id']] = $GLOBALS['HTTP_POST_VARS'][$this_pref['id']];
+						$this->args[$this_pref_name] = $GLOBALS['HTTP_POST_VARS'][$this_pref_name];
 					}
 				}
-				*/
+				
+				
+				/*
+				// DEPRECIATED CODE - THE ABOVE LOOPS REPLACE THE BELOW "MANUAL" CODE
 				if (isset($GLOBALS['HTTP_POST_VARS']['email_sig']))
 				{
 					$this->args['email_sig'] = $GLOBALS['HTTP_POST_VARS']['email_sig'];
@@ -449,6 +485,7 @@
 				{
 					$this->args['mail_folder'] = $GLOBALS['HTTP_POST_VARS']['mail_folder'];
 				}
+				*/
 			}
 		}
 			
@@ -486,13 +523,13 @@
 			$c_prefs = count($prefs_set);
 			if ($c_prefs == 0)
 			{
-				if ($this->debug_set_prefs == True) { echo 'email: bopreferences: process_submitted_prefs: empty array, no prefs set supplied, exiting<br>'; }
+				if ($this->debug_set_prefs) { echo 'email: bopreferences: process_submitted_prefs: empty array, no prefs set supplied, exiting<br>'; }
 				return False;
 			}
 			
 			for($i=0;$i<$c_prefs;$i++)
 			{
-				if ($this->debug_set_prefs == True) { echo 'email: bopreferences: process_submitted_prefs: inside preferences loop ['.$i.']<br>'; }
+				if ($this->debug_set_prefs) { echo 'email: bopreferences: process_submitted_prefs: inside preferences loop ['.$i.']<br>'; }
 				
 				$this_pref = $prefs_set[$i];
 				if ((!isset($this->args[$this_pref['id']]))
@@ -500,21 +537,23 @@
 				{
 					// nothing submitted for this preference item
 					// OR an empty string was submitted for this pref item
-					if ($this->debug_set_prefs == True) { echo 'email: bopreferences: process_submitted_prefs: submitted_pref for ['.$this_pref['id'].'] not set or empty string<br>'; }
-					if (stristr($this_pref['other_props'], 'empty_no_delete'))
+					if ($this->debug_set_prefs) { echo 'email: bopreferences: process_submitted_prefs: submitted_pref for ['.$this_pref['id'].'] not set or empty string<br>'; }
+					if (stristr($this_pref['write_props'], 'empty_no_delete'))
 					{
 						// DO NOT DELETE
 						// "empty_no_delete" means keep the existing pref un-molested, as-is, no change
+						// note there may or may not actually be an existing value in the prefs table
+						// but it does not matter here, because we do not touch this items value at all.
 						// Typical Usage: passwords
-						if ($this->debug_set_prefs == True) { echo 'email: bopreferences: no change to repository for empty or blank ['.$this_pref['id'].'] because of "empty_no_delete"<br>'; }
+						if ($this->debug_set_prefs) { echo 'email: bopreferences: no change to repository for empty or blank ['.$this_pref['id'].'] because of "empty_no_delete"<br>'; }
 					}
-					elseif (stristr($this_pref['other_props'], 'empty_string_ok'))
+					elseif (stristr($this_pref['write_props'], 'empty_string_ok'))
 					{
 						// "empty_string_ok" means a blank string "" IS a VALID pref value
 						// i.e. this pref can take an empty string as a valid value
 						// whereas most other prefs are simply deleted from the repository if value is empty
 						// Typical Usage: email sig, UWash Mail Folder
-						if ($this->debug_set_prefs == True) { echo 'email: bopreferences: save empty string to repository for ['.$this_pref['id'].'] because of "empty_string_ok"<br>'; }
+						if ($this->debug_set_prefs) { echo 'email: bopreferences: save empty string to repository for ['.$this_pref['id'].'] because of "empty_string_ok"<br>'; }
 						// a) as always, delete the pref before we assign a value
 						$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
 						// b) now assign a blank string value
@@ -523,7 +562,7 @@
 					else
 					{
 						// just delete it from the preferences repository
-						if ($this->debug_set_prefs == True) { echo 'email: bopreferences: deleting empty or blank pref ['.$this_pref['id'].'] from the repository<br>'; }
+						if ($this->debug_set_prefs) { echo 'email: bopreferences: deleting empty or blank pref ['.$this_pref['id'].'] from the repository<br>'; }
 						$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
 					}
 				}
@@ -533,19 +572,24 @@
 					$submitted_pref = $this->args[$this_pref['id']];
 					// init a var to hold the processed submitted_pref
 					$processed_pref = '';
-					if ($this->debug_set_prefs == True) { echo '* * ** email: bopreferences: process_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'; }
+					if ($this->debug_set_prefs) { echo '* * ** email: bopreferences: process_submitted_prefs:  submitted_pref: ['.$submitted_pref.']<br>'; }
 					
 					// most "user_string"s need special processing before they can go into the repository
 					if ($this_pref['type'] == 'user_string')
 					{
-						if (stristr($this_pref['other_props'], 'no_pre_process'))
+						if (stristr($this_pref['write_props'], 'no_db_defang'))
 						{
+							// typical "user_string" needs to strip any slashes 
+							// that PHP "magic_quotes_gpc"may have added
+							$processed_pref = $this->email_base->stripslashes_gpc($submitted_pref);
 							// most "user_string" items require pre-processing before going into
 							// the repository (strip slashes, html encode, encrypt, etc...)
-							// EXCEPT when "no_pre_process" is in "other_props"
+							// we call this database "de-fanging", remove database unfriendly chars
+							// currenty defanging is handled by "mail_msg_obj->html_quotes_encode"
+							// EXCEPT when "no_db_defang" is in "write_props"
 							$processed_pref = $submitted_pref;
 						}
-						elseif (stristr($this_pref['other_props'], 'encrypted'))
+						elseif (stristr($this_pref['write_props'], 'encrypted'))
 						{
 							// certain data (passwords) should be encrypted before going into the repository
 							// "user_string"s to be "encrypted" do NOT get "html_quotes_encode"
@@ -568,7 +612,7 @@
 						// all other data needs no special processing before going into the repository
 						$processed_pref = $submitted_pref;
 					}
-					if ($this->debug_set_prefs == True) { echo 'email: bopreferences: process_submitted_prefs: about to assign pref ['.$this_pref['id'].'] this value, post processing (if any): <pre>'.$GLOBALS['phpgw']->strip_html($processed_pref).'</pre><br>'."\r\n"; }
+					if ($this->debug_set_prefs) { echo 'email: bopreferences: process_submitted_prefs: about to assign pref ['.$this_pref['id'].'] this value, post processing (if any): <pre>'.$GLOBALS['phpgw']->strip_html($processed_pref).'</pre><br>'."\r\n"; }
 					
 					// a) as always, delete the pref before we assign a value
 					$GLOBALS['phpgw']->preferences->delete('email',$this_pref['id']);
@@ -589,14 +633,14 @@
 		*/
 		function preferences()
 		{
-			if ($this->debug_set_prefs == True) { echo 'email.bopreferences: inside preferences<br>'; }
+			if ($this->debug_set_prefs) { echo 'email.bopreferences: inside preferences<br>'; }
 			// establish all available prefs for email
 			$this->init_available_prefs();
 			
 			// this will fill $this->args[] array with any submitted prefs args
 			$this->grab_set_prefs();
 			
-			if ($this->debug_set_prefs == True) { echo 'email.bopreferences: preferences(): just passed this->grab_set_prefs<br>'; }
+			if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): just passed this->grab_set_prefs<br>'; }
 			
 			// ----  HANDLE SETING PREFERENCE   -------
 			if (isset($this->args[$this->submit_token]))
@@ -623,22 +667,22 @@
 				$this->email_base->begin_request($request_args);
 				
 				// ---  Process Standard Prefs  ---
-				if ($this->debug_set_prefs == True) { echo 'email.bopreferences: preferences(): about to process Standard Prefs<br>'; }
+				if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): about to process Standard Prefs<br>'; }
 				$this->process_submitted_prefs($this->std_prefs);
 				
 				// ---  Process Custom Prefs  ---
-				if ($this->debug_set_prefs == True) { echo 'email.bopreferences: preferences(): about to process Custom Prefs<br>'; }
+				if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): about to process Custom Prefs<br>'; }
 				if (isset($this->args['use_custom_settings']))
 				{
 					// custom settings are in use, process them
-					if ($this->debug_set_prefs == True) { echo 'email.bopreferences: preferences(): custom prefs are in use<br>'; }
+					if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): custom prefs are in use<br>'; }
 					$this->process_submitted_prefs($this->cust_prefs);
 				}
 				else
 				{
 					// custom settings are NOT being used, DELETE them from the repository
 					$c_prefs = count($this->cust_prefs);			
-					if ($this->debug_set_prefs == True) { echo 'email.bopreferences: preferences(): custom prefs NOT in use, deleting them<br>'; }
+					if ($this->debug_set_prefs) { echo 'email.bopreferences: preferences(): custom prefs NOT in use, deleting them<br>'; }
 					for($i=0;$i<$c_prefs;$i++)
 					{
 						$GLOBALS['phpgw']->preferences->delete('email',$this->cust_prefs[$i]['id']);
@@ -646,7 +690,7 @@
 				}
 				
 				// DONE processing prefs, SAVE to the Repository
-				if ($this->debug_set_prefs == True) 
+				if ($this->debug_set_prefs) 
 				{
 					echo 'email.bopreferences: *debug* skipping save_repository<br>';
 				}
@@ -657,7 +701,7 @@
 				// end the email session
 				$this->email_base->end_request();
 				// redirect user back to main preferences page
-				if ($this->debug_set_prefs == True) 
+				if ($this->debug_set_prefs) 
 				{
 					echo 'email.bopreferences: *debug* skipping Header redirection<br>';
 				}
@@ -800,7 +844,7 @@
 						$GLOBALS['phpgw']->preferences->add('email','passwd',$email_base->encrypt_email_passwd($email_base->stripslashes_gpc($this->args['passwd'])));
 					}
 				}
-				if ($this->debug_set_prefs == True) 
+				if ($this->debug_set_prefs) 
 				{
 					echo 'email.bopreferences: *debug* skipping save_repository<br>';
 				}
@@ -810,7 +854,7 @@
 				}
 				$email_base->end_request();
 			}
-			if ($this->debug_set_prefs == True) 
+			if ($this->debug_set_prefs) 
 			{
 				echo 'email.bopreferences: *debug* skipping Header redirection<br>';
 			}
