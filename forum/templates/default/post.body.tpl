@@ -1,11 +1,11 @@
 
 <p>&nbsp;</p>
 <table width="90%" border="0" cellspacing="2" cellpadding="1" align="center">
-  <tr bgcolor="#{BGROUND}"> 
+  <tr bgcolor="{BGROUND}"> 
     <td colspan="2"><a href="{MAIN_LINK}">{LANG_MAIN}</a> : <a href="{FORUM_LINK}">{LANG_CATEGORY}</a>: 
       {LANG_FORUM}</td>
   </tr>
-  <tr bgcolor="#{BGROUND}"> 
+  <tr bgcolor="{BGROUND}"> 
     <td colspan="2">[ <a href="{POST_LINK}">{LANG_NEWTOPIC}</a> | <a href="{THREADS_LINK}">{LANG_THREADS}</a> 
       | {LANG_SEARCH}]</td>
   </tr>
