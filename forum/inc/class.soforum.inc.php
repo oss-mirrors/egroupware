@@ -54,7 +54,7 @@
 			}
 			else
 			{
-				$query = "INSERT INTO phpgw_forum_categories(name,descr) VALUES('".$forum['name']."','".$forum['descr']."')";
+				$query = "INSERT INTO phpgw_forum_categories(name,descr) VALUES('".$cat['name']."','".$cat['descr']."')";
 			}
 			$this->db->query($query,__LINE__,__FILE__);
 		}
