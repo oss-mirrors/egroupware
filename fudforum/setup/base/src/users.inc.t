@@ -96,8 +96,8 @@ function init_user()
 	@define('fud_theme', 'theme/' . ($u->theme_name ? $u->theme_name : 'default') . '/');
 
 	/* define _uid, which, will tell us if this is a 'real' user or not */
-	define('_uid', !($u->users_opt & 2097152) ? $u->id : 0);
 	define('__fud_real_user__', ($u->id != 1 ? $u->id : 0));
+	define('_uid', __fud_real_user__);
 
 	if (__fud_real_user__) {
 		q('UPDATE {SQL_TABLE_PREFIX}users SET last_visit='.__request_timestamp__.' WHERE id='.$u->id);
