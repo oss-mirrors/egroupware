@@ -284,7 +284,7 @@ send	email	de	Senden
 send deleted messages to the trash	email	de	gelöschte Nachrichten in die Mülltonne befördern
 send forwarded mail as quoted attachment	email	de	Nachrichten als Zitierten Anhang (quoted attachment) weiterleiten
 sender	email	de	Absender
-sent	email	de	Gesendet
+sent	common	de	Gesendet
 sent folder	email	de	Ordner für gesendete Nachrcihten
 sent messages folder	common	de	Ordner für versandte Nachrichten
 sent messages folder name	email	de	Ordner Name für versandte Nachrichten
