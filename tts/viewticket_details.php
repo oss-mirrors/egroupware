@@ -424,7 +424,7 @@
 		if($oldpriority != $ticket['priority'])
 		{
 			$fields_updated = True;
-			$ticket['priority']=int_val($ticket['priority']);
+			$ticket['priority']=intval($ticket['priority']);
 			$GLOBALS['phpgw']->db->query("update phpgw_tts_tickets set ticket_priority='" . $ticket['priority']
 				. "' where ticket_id='$ticket_id'",__LINE__,__FILE__);
 			$GLOBALS['phpgw']->historylog->add('P',$ticket_id,$ticket['priority'],$oldpriority);
