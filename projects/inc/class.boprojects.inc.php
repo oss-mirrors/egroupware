@@ -1974,9 +1974,9 @@
 				$acc['ahours_pro']			= $formatted_ahours_pro['whwm'];
 
 				$uhours_jobs			= $this->sohours->get_time_used(array('project_array' => $sub_pro));
-				$uhours_jobs_bill		= $this->sohours->get_time_used(array('project_array' => $sub_pro_bill,'is_billable' => True));
+				$uhours_jobs_bill		= ($sub_pro_bill)? $this->sohours->get_time_used(array('project_array' => $sub_pro_bill,'is_billable' => True)) : 0;
 
-				$jobs_nobill_billpro	= $this->sohours->get_time_used(array('project_array' => $sub_pro_bill,'no_billable' => True));
+				$jobs_nobill_billpro	= ($sub_pro_bill)? $this->sohours->get_time_used(array('project_array' => $sub_pro_bill,'no_billable' => True)) : 0;
 				$jobs_nobill			= $this->sohours->get_time_used(array('project_array' => $sub_pro_nobill));
 
 				$uhours_jobs_nobill		= $jobs_nobill_billpro + $jobs_nobill;
