@@ -19,7 +19,7 @@
 		{
 			$all_tables[] = $val['table_name'];
 		}
-		if($phpgw_setup->isinarray($table,$all_tables))
+		if(in_array($table,$all_tables))
 		{
 			if ($DEBUG) { echo '<br>' . $table . ' exists.'; }
 			return True;
