@@ -7,7 +7,7 @@ back	common	en	Back
 domain names	qmailldap	en	Domain Names
 domainname	qmailldap	en	Domainname
 edit email settings	qmailldap	en	edit email settings
-email account active	qmailldap	em	Email account active
+email account active	qmailldap	en	Email account active
 email address	qmailldap	en	Email Address
 email settings	admin	en	Email Settings
 forward email's to	qmailldap	en	forward email's to
