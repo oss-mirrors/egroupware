@@ -76,7 +76,8 @@
 	   . "\">INBOX</a></font></td>";
 	echo "<td width=20%><font size=2 face="
 	   . $phpgw_info["theme"]["font"] . ">";
-	echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      }
 
      for ($i = 0; $i < count($mailboxes); $i++) {
@@ -86,6 +87,7 @@
 	echo "<tr bgcolor=$tr_color><td><font size=2 face="
 	   . $phpgw_info["theme"]["font"] . ">";
 
+        $t_folder_s = $nm;
         if ($nm != "INBOX") {
            $nm = $phpgw->msg->deconstruct_folder_str($nm);
 	} else {
@@ -97,13 +99,20 @@
 	echo "<a href=\"" . $phpgw->link("index.php","folder=$url_nm")
 	   . "\">$nm</a></font></td>";
 	echo "<td width=20%><font size=2 face=$theme[font]>";
-	echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+
+        $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}$t_folder_s",SA_UNSEEN);
+
+
+	echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      }
   } else {
      echo "<tr><td bgcolor=$COLOR_ROW_ON><font size=2 face=$theme[font]>";
      echo "<a href=\"" . $phpgw->link("index.php","folder=INBOX")
         . "\">INBOX</a></font></td>";
      echo "<td bgcolor=$COLOR_ROW_ON width=20%><font size=2 face=$theme[font]>";
+     $mailbox_status = $phpgw->msg->status($mailbox,"{" . $phpgw_info["user"]["preferences"]["email"]["mail_server"] . ":" . $phpgw_info["server"]["mail_port"] . "}INBOX",SA_UNSEEN);
+     echo $mailbox_status->unseen."/".$phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
+     echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
      echo $phpgw->msg->num_msg($mailbox) . "</font></td></tr>\n";
   }
   $phpgw->msg->close($mailbox);
