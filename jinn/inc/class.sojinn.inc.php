@@ -46,7 +46,7 @@
 
 			$this->phpgw_db->next_record();
 
-			$this->site_db 			= CreateObject('phpgwapi.db');
+			$this->site_db 				= CreateObject('phpgwapi.db');
 			$this->site_db->Host		= $this->phpgw_db->f('site_db_host');
 			$this->site_db->Type		= $this->phpgw_db->f('site_db_type');
 			$this->site_db->Database	= $this->phpgw_db->f('site_db_name');
@@ -62,7 +62,6 @@
 
 		function test_db_conn($data)
 		{
-				
 			$this->site_db = CreateObject('phpgwapi.db');
 			$this->site_db->Host		= $data['db_host'];
 			$this->site_db->Type		= $data['db_type'];
@@ -73,17 +72,16 @@
 			if($this->site_db->query("CREATE TABLE `JiNN_TEMP_TEST_TABLE` (`test` TINYINT NOT NULL)",__LINE__,__FILE__))
 			{
 				$x=1;
-
 			}
 
 			if($this->site_db->query("DROP TABLE `JiNN_TEMP_TEST_TABLE`",__LINE__,__FILE__)) 
 			{
-			$this->site_close_db_connection();
-
-			return true;
-	
-			}
 				$this->site_close_db_connection();
+
+				return true;
+			}
+			
+			$this->site_close_db_connection();
 	
 			return false;
 		}
@@ -94,20 +92,20 @@
 
 		function get_site_values($site_id)
 		{
+			$site_metadata=$this->phpgw_db->metadata('phpgw_jinn_sites');
+			$this->phpgw_db->free();	
+
 			$SQL="SELECT * FROM phpgw_jinn_sites WHERE site_id='$site_id'";
 			$this->phpgw_db->query($SQL,__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
 
-			$site_values=array(
-			        'site_name'=>$this->phpgw_db->f('site_name'),
-			        'site_db_name'=>$this->phpgw_db->f('site_db_name'),
-			        'site_db_host'=>$this->phpgw_db->f('site_db_host'),
-			        'site_db_user'=>$this->phpgw_db->f('site_db_user'),
-			        'site_db_password'=>$this->phpgw_db->f('site_db_password'));
-
+			foreach($site_metadata as $fieldmeta)
+			{
+					$site_values[$fieldmeta['name']]=$this->phpgw_db->f($fieldmeta['name']);
+			}
+			
 			return $site_values;
-
 		}
 
 		function get_table_names($site_id)
@@ -118,51 +116,27 @@
 			return $tables;
 		}
 
-
 		/****************************************************************************\
 		* get objectvalues for object id                                             *
 		\****************************************************************************/
 
 		function get_object_values($object_id)
 		{
+			$object_metadata=$this->phpgw_db->metadata('phpgw_jinn_site_objects');
+			$this->phpgw_db->free();	
+
 			$this->phpgw_db->query("SELECT * FROM phpgw_jinn_site_objects
 			WHERE object_id='$object_id'",__LINE__,__FILE__);
 
 			$this->phpgw_db->next_record();
-			$object_values=array(
-			        'parent_site_id'=>$this->phpgw_db->f('parent_site_id'),
-			        'name'=>$this->phpgw_db->f('name'),
-			        'table_name'=>$this->phpgw_db->f('table_name'),
-			        'upload_path'=>$this->phpgw_db->f('upload_path'),
-                    'upload_url'=>$this->phpgw_db->f('upload_url'),
-					'relations'=>$this->phpgw_db->f('relations'),
-					'plugins'=>$this->phpgw_db->f('plugins')
-				);
-
+			foreach($object_metadata as $fieldmeta)
+			{
+					$object_values[$fieldmeta['name']]=$this->phpgw_db->f($fieldmeta['name']);
+			}
 			return $object_values;
 
 		}
 
-		
-
-
-
-
-		/****************************************************************************\
-		* ADMIN insert site data in phpgw_jinn_sites                       *
-		\****************************************************************************/
-/*
-		function insert_site_data($data)
-		{
-
-			$this->phpgw_db->query("insert into phpgw_jinn_sites (site_name, site_title, site_description, "
-			. "site_db_host, site_db_name, site_db_user, site_db_password) values ('"
-			. $data['name'] . "','" . $data['title'] . "','".$data['description']."','"
-			. $data['db_host'] . "','" . $data['db_name']. "','". $data['db_user'] ."','". $data['db_password']
-			. "')",__LINE__,__FILE__);
-
-		}
-*/
 		/****************************************************************************\
 		* get all tablefield in array for table                                      *
 		\****************************************************************************/
@@ -207,7 +181,6 @@
 		{
 		
 			$this->site_db_connection($site_id);
-	//	echo 'x';
 			$fieldproperties = $this->site_db->metadata($table);
 
 			$this->site_close_db_connection();
@@ -236,7 +209,6 @@
 
 			return $sites;
 		}
-
 
 
 		/****************************************************************************\
@@ -566,7 +538,6 @@
 			$SQL='SELECT * FROM '. $table . $WHERE;
 			if (!$limit) $limit=1000000;
 
-			//if($table=='prodcat') die ($SQL);
 			$this->site_db->limit_query($SQL, $offset,__LINE__,__FILE__,$limit); // returns a limited result from start to limit
 
 			while ($this->site_db->next_record())
@@ -604,8 +575,6 @@
 
 		function get_record_values_2($site_id,$table,$where_condition,$offset,$limit,$value_reference,$order_by)
 		{
-
-			//echo "hallo";
 			$this->site_db_connection($site_id);
 
 			if ($where_condition)
