@@ -54,7 +54,7 @@
      $t->set_block("projects_edit", "add", "addhandle");
      $t->set_block("projects_edit", "edit", "edithandle");
      
-     $t->set_var("actionurl",$phpgw->link("edithour.php"));
+     $t->set_var("actionurl",$phpgw->link("bill_edithour.php"));
      $t->set_var("lang_action",lang("Edit project hours"));
      $t->set_var("common_hidden_vars",$common_hidden_vars);
      
