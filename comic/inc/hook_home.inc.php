@@ -10,7 +10,8 @@
     } unset($d1);
 
     $tmp_app_inc = $phpgw_info["server"]["app_inc"];
-    $phpgw_info["server"]["app_inc"] = $phpgw_info["server"]["server_root"]."/comic/inc";
+
+    $phpgw_info["server"]["app_inc"] = $phpgw->common->get_inc_dir('comic');
 
     $phpgw->db->query("select * from phpgw_comic "
                       ."WHERE comic_owner='"

@@ -18,7 +18,7 @@
   } unset($d1);
 
   $tmp_app_inc = $phpgw_info["server"]["app_inc"];
-  $phpgw_info["server"]["app_inc"] = $phpgw_info["server"]["server_root"]."/email/inc";
+  $phpgw_info["server"]["app_inc"] = $phpgw->common->get_inc_dir('email');
 
   if ($phpgw_info["user"]["preferences"]["email"]["mainscreen_showmail"]) {
     include($phpgw_info["server"]["app_inc"] . "/functions.inc.php");
