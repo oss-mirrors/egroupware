@@ -28,14 +28,11 @@ proxy server, then it sucks being you.
 
 TODO:
 
-01) admin
-02) preferences
-03) finish core functions
-04) map all phpcomic functions to 
-    my database and work with resolves
-05) about hook
-06) template images
-07) front page hook
-08) consider a mixed mode of static and
+01) admin hook
+02) tweak out parsing functions
+03) generate data from phpcomic and netcomics
+04) about hook
+05) front page hook
+06) consider a mixed mode of static and
     snarfed (or a by image basis)
 

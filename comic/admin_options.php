@@ -1,0 +1,155 @@
+<?php
+    /**************************************************************************\
+    * phpGroupWare - Daily Comics Global Options                               *
+    * http://www.phpgroupware.org                                              *
+    * This file written by Sam Wynn <neotexan@wynnsite.com>                    *
+    * --------------------------------------------                             *
+    *  This program is free software; you can redistribute it and/or modify it *
+    *  under the terms of the GNU General Public License as published by the   *
+    *  Free Software Foundation; either version 2 of the License, or (at your  *
+    *  option) any later version.                                              *
+    \**************************************************************************/
+
+    /* $Id$ */
+{
+    $phpgw_info["flags"] = array("currentapp" => "comic",
+                                 "admin_header" => TRUE);
+
+    include("../header.inc.php");
+
+    $title             = lang("Daily Comics Global Options");
+    $imgsrc_label      = lang("Image Source");
+    $remote_label      = lang("Remote (Parse/Snarf) Enabled");
+    $censor_label      = lang("Censorship Level");
+    $override_label    = lang("Censorship Override Enabled");
+    $action_label      = lang("Submit");
+    $reset_label       = lang("Reset");
+    $done_label        = lang("Done");
+    $actionurl         = $phpgw->link($phpgw_info["server"]["webserver_url"]
+        ."/comic/admin_options.php");
+    $doneurl           = $phpgw->link($phpgw_info["server"]["webserver_url"]
+        ."/admin/index.php");
+    $message           = "";
+    
+    if ($submit)
+    {
+        $message = lang("Global Options Updated");
+        
+        $phpgw->db->lock("phpgw_comic_admin");
+        $phpgw->db->query("update phpgw_comic_admin set "
+                          ."admin_imgsrc='".$image_source."', "
+                          ."admin_rmtenabled='".$remote_enabled."', "
+                          ."admin_censorlvl='".$censor_level."', "
+                          ."admin_coverride='".$override_enabled."'");
+        $phpgw->db->unlock();
+    }
+
+    $phpgw->db->query("select * from phpgw_comic_admin");
+
+    $count = $phpgw->db->num_rows();
+
+    if ($count == 0)
+    {
+        comic_initialize_admin();
+        
+        $phpgw->db->query("select * from phpgw_comic_admin");
+    }
+
+    $phpgw->db->next_record();
+
+    $image_source      = $phpgw->db->f("admin_imgsrc");
+    $remote_enabled    = $phpgw->db->f("admin_rmtenabled");
+    $censor_level      = $phpgw->db->f("admin_censorlvl");
+    $override_enabled  = $phpgw->db->f("admin_coverride");
+
+    $remote_checked = "";
+    if ($remote_enabled == 1)
+    {
+       $remote_checked = "checked";
+    }
+    
+    $override_checked = "";
+    if ($override_enabled == 1)
+    {
+        $override_checked = "checked";
+    }
+
+    $options_tpl = CreateObject('phpgwapi.Template',$phpgw->common->get_tpl_dir('comic'));
+    $options_tpl->set_unknowns("remove");
+    $options_tpl->set_file(
+        array(message   => "message.common.tpl",
+              options   => "admin.options.tpl",
+              coptions  => "option.common.tpl"));
+    
+    for ($loop = 0; $loop < count($g_censor_level); $loop++)
+    {
+        $selected = "";
+        
+        if ($censor_level == $loop)
+        {
+            $selected = "selected";
+        }
+        
+        $options_tpl->set_var(array(OPTION_VALUE    => $loop,
+                                    OPTION_SELECTED => $selected,
+                                    OPTION_NAME     => $g_censor_level[$loop]));
+        $options_tpl->parse(option_list, "coptions", TRUE);
+    }
+    $censor_level_c = $options_tpl->get("option_list");
+
+    for ($loop = 0; $loop < count($g_image_source); $loop++)
+    {
+        $selected = "";
+
+        if ($image_source == $loop)
+        {
+            $selected = "selected";
+        }
+
+        $options_tpl->set_var(array(OPTION_VALUE    => $loop,
+                                    OPTION_SELECTED => $selected,
+                                    OPTION_NAME     => $g_image_source[$loop]));
+        $options_tpl->parse(option_list2, "coptions", TRUE);
+    }
+    $image_source_c = $options_tpl->get("option_list2");
+            
+    $options_tpl->
+        set_var(array
+                (messagename      => $message,
+                 title            => $title,
+                 action_url       => $actionurl,
+		 action_label     => $action_label,
+                 done_url         => $doneurl,
+		 done_label       => $done_label,
+		 reset_label      => $reset_label,
+
+                 override_label   => $override_label,
+                 override_checked => $override_checked,
+                 remote_label     => $remote_label,
+                 remote_checked   => $remote_checked,
+                 censor_label     => $censor_label,
+                 censor_options   => $censor_level_c,
+                 imgsrc_label     => $imgsrc_label,
+                 image_options    => $image_source_c));
+
+    $options_tpl->parse(message_part, "message");
+    $message_c = $options_tpl->get("message_part");
+
+    $options_tpl->parse(body_part, "options");
+    $body_c = $options_tpl->get("body_part");
+    
+    /**************************************************************************
+     * pull it all together
+     *************************************************************************/
+    $body_tpl = $phpgw->template;
+    $body_tpl->set_unknowns("remove");
+    $body_tpl->set_file(body, "admin.common.tpl");
+    $body_tpl->set_var(array(admin_message => $message_c,
+                             admin_body    => $body_c));
+    $body_tpl->parse(BODY, "body");
+    $body_tpl->p("BODY");
+
+    $phpgw->common->phpgw_footer();
+}
+
+?>

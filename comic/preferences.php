@@ -123,7 +123,7 @@
     for ($loop = 0; $loop < count($g_censor_level); $loop++)
     {
         $selected = "";
-        if ($censor_level == $g_censor_level[$loop])
+        if ($censor_level == $loop)
         {
             $selected = "selected";
         }
