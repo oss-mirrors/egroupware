@@ -950,7 +950,7 @@
 			(
 				'menuaction'	=> 'projects.uiprojects.editMilestone',
 				'project_id'	=> $projectID,
-				'refresh_url'	=> urlencode($_SERVER["HTTP_REFERER"])
+				'refresh_url'	=> urlencode($_SERVER["HTTP_REFERER"]."&tabpage=2")
 			);			
 			if($msID > 0)
 			{
@@ -1558,9 +1558,10 @@
 
 			unset($uiwidgets);
 
-			// the file manager part
+// the file manager part
 			$uiwidgets	= CreateObject('projects.uiwidgets');
 			$bolink		= CreateObject('infolog.bolink');
+			$link_data['tabpage'] = 3;
 			
 			$headValues = array(lang('name'),lang('size'),'');
 			if ($project_id)
