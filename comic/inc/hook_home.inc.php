@@ -11,27 +11,26 @@
 
 	/* $Id$ */
 {
-
 	$d1 = strtolower(substr(PHPGW_APP_INC,0,3));
 	if($d1 == 'htt' || $d1 == 'ftp' )
 	{
 		echo "Failed attempt to break in via an old Security Hole!<br>\n";
-		$phpgw->common->phpgw_exit();
+		$GLOBALS['phpgw']->common->phpgw_exit();
 	} unset($d1);
 
-	$tmp_app_inc = $phpgw->common->get_inc_dir('comic');
+	$tmp_app_inc = $GLOBALS['phpgw']->common->get_inc_dir('comic');
 
-	$phpgw->db->query("select * from phpgw_comic "
+	$GLOBALS['phpgw']->db->query("select * from phpgw_comic "
 		."WHERE comic_owner='"
-		.$phpgw_info["user"]["account_id"]."'");
+		.$GLOBALS['phpgw_info']["user"]["account_id"]."'");
 
-	if ($phpgw->db->num_rows())
+	if ($GLOBALS['phpgw']->db->num_rows())
 	{
-		$phpgw->db->next_record();
+		$GLOBALS['phpgw']->db->next_record();
 
-		$data_id      = $phpgw->db->f('comic_frontpage');
-		$scale        = $phpgw->db->f('comic_fpscale');
-		$censor_level = $phpgw->db->f('comic_censorlvl');
+		$data_id      = $GLOBALS['phpgw']->db->f('comic_frontpage');
+		$scale        = $GLOBALS['phpgw']->db->f('comic_fpscale');
+		$censor_level = $GLOBALS['phpgw']->db->f('comic_censorlvl');
 
 		if ($data_id != -1)
 		{
