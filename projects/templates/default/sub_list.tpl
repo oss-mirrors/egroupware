@@ -6,7 +6,7 @@
 	<tr>
 		<td width="33%" align="left">
 			<form action="{project_action}" name="form" method="POST">
-			{lang_main}&nbsp;&nbsp;<select name="pro_parent" onChange="this.form.submit();"><option value="">{lang_select_project}</option>{project_list}</select>
+			<select name="pro_parent" onChange="this.form.submit();"><option value="">{lang_select_project}</option>{project_list}</select>
 			<noscript>&nbsp;<input type="submit" name="submit" value="{lang_submit}"></noscript></form></td>
 		<td width="33%" align="center">{lang_showing}</td>
 		<td width="33%" align="right">

@@ -43,7 +43,7 @@
 
 	if ($pro_parent)
 	{
-		$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id,$pro_parent);
+		$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id,'subs',$pro_parent);
 	}
 	else
 	{
@@ -74,9 +74,8 @@
 	$t->set_var('lang_edit',lang('Edit'));
 	$t->set_var('lang_view',lang('View'));
 	$t->set_var('lang_search',lang('Search'));
-	$t->set_var('lang_main',lang('Main project'));
-    $t->set_var('project_list',$projects->select_project_list($pro_parent));
-    $t->set_var('lang_select_project',lang('Select project'));
+    $t->set_var('project_list',$projects->select_project_list('mains',$pro_parent));
+    $t->set_var('lang_select_project',lang('Select main project'));
 
 // -------------- end header declaration -----------------
 

@@ -24,12 +24,24 @@
 			$this->grants			= $phpgw->acl->get_grants('projects');
 		}
 
+		function project_filter($type)
+		{
+			switch ($type)
+			{
+				case 'subs':			$s = " and parent != '0'"; break;
+				case 'mains':			$s = " and parent = '0'"; break;
+				case 'mainsandsubs':	$s = " and cat_appname='" . $this->app_name . "' and cat_parent ='0'"; break;
+				default: return False;
+            }
+			return $s;
+		}
+
 		function check_perms($has, $needed)
 		{
 			return (!!($has & $needed) == True);
 		}
 
-		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $pro_parent = '')
+		function read_projects($start, $limit = True, $query = '', $filter = '', $sort = '', $order = '', $status = 'active', $cat_id = '', $type = 'mains', $pro_parent = '')
 		{
 			global $phpgw, $phpgw_info;
 
@@ -96,13 +108,10 @@
 				$filtermethod .= " AND category='$cat_id' ";
 			}
 
-			if ($pro_parent)
+			switch($type)
 			{
-				$filtermethod .= " AND parent = '$pro_parent' ";
-			}
-			else
-			{
-				$filtermethod .= " AND parent = '0' ";				
+				case 'mains':	$filtermethod .= " AND parent = '0' "; break;
+				case 'subs' :	$filtermethod .= " AND parent = '$pro_parent' "; break;
 			}
 
 			if ($query)
@@ -176,11 +185,11 @@
 			return $project;
 		}
 
-		function select_project_list($selected = '')
+		function select_project_list($type,$selected = '')
 		{
 			global $phpgw;
 
-			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id, $pro_parent);
+			$projects = $this->read_projects($start, False, $query, $filter, $sort, $order, $status, $cat_id, $type);
 
 			for ($i=0;$i<count($projects);$i++)
 			{

@@ -45,7 +45,7 @@
 
 	if (! $start) { $start = 0; }
 
-	$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id);
+	$pro = $projects->read_projects($start,True,$query,$filter,$sort,$order,'active',$cat_id,'mains');
 
 //---------------------- nextmatch variable template-declarations ---------------------------
 

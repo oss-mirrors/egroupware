@@ -88,7 +88,7 @@
 	$t->set_var('th_bg',$phpgw_info['theme']['th_bg']);
 	$t->set_var('hidden_vars',$hidden_vars);
 	$t->set_var('sort_activity',$phpgw->nextmatchs->show_sort_order($sort,'a.descr',$order,'/projects/hours_listhours.php',lang('Activity')));
-	$t->set_var('sort_hours_descr',$phpgw->nextmatchs->show_sort_order($sort,'h.hours_descr',$order,'/projects/hours_listhours.php',lang('Job')));
+	$t->set_var('sort_hours_descr',$phpgw->nextmatchs->show_sort_order($sort,'h.hours_descr',$order,'/projects/hours_listhours.php',lang('Description')));
 	$t->set_var('sort_status',$phpgw->nextmatchs->show_sort_order($sort,'h.status',$order,'/projects/hours_listhours.php',lang("Status")));
 	$t->set_var('sort_start_date',$phpgw->nextmatchs->show_sort_order($sort,'h.start_date',$order,'/projects/hours_listhours.php',lang('Work date')));
 	$t->set_var('sort_start_time',$phpgw->nextmatchs->show_sort_order($sort,'h.start_date',$order,'/projects/hours_listhours.php',lang('Start time')));
@@ -96,12 +96,12 @@
 	$t->set_var('sort_hours',$phpgw->nextmatchs->show_sort_order($sort,'h.minutes',$order,'/projects/hours_listhours.php',lang('Hours')));
 	$t->set_var('h_lang_edit',lang('Edit'));
 	$t->set_var('h_lang_view',lang('View'));
-	$t->set_var('lang_action',lang('Job list'));
+	$t->set_var('lang_action',lang('Work hours list'));
 	$t->set_var('lang_search',lang('Search'));
 	$t->set_var('search_action',$phpgw->link('/projects/hours_listhours.php'));
 	$t->set_var('project_action',$phpgw->link('/projects/hours_listhours.php'));
 	$t->set_var('lang_submit',lang('Submit'));
-	$t->set_var('project_list',$projects->select_project_list($filter));
+	$t->set_var('project_list',$projects->select_project_list('all',$filter));
 	$t->set_var('lang_select_project',lang('Select project'));
 
 // -------------- end header declaration -----------------
@@ -109,11 +109,11 @@
 	for ($i=0;$i<count($hours);$i++)
 	{
 		$tr_color = $phpgw->nextmatchs->alternate_row_color($tr_color);
-		$activity  = $phpgw->strip_html($hours[$i]['descr']);                                                                                                                             
-		if (! $activity) $activity = '&nbsp;';                                                                                                                                                
+		$activity  = $phpgw->strip_html($hours[$i]['descr']);
+		if (! $activity) $activity = '&nbsp;';
 
-		$hours_descr = $phpgw->strip_html($hours[$i]['hours_descr']);                                                                                                                             
-		if (! $hours_descr) $hours_descr = '&nbsp;';                                                                                                                                                
+		$hours_descr = $phpgw->strip_html($hours[$i]['hours_descr']);
+		if (! $hours_descr) $hours_descr = '&nbsp;';
 
 		$status = $hours[$i]['status'];
 		$statusout = lang($status);
