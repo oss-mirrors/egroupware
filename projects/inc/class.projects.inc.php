@@ -197,41 +197,39 @@
 
 			if ($order)
 			{
-				$ordermethod = "order by $order $sort";
+				$ordermethod = " order by $order $sort";
 			}
 			else
 			{
-				$ordermethod = "order by h.start_date asc";
+				$ordermethod = " order by h.start_date asc";
 			}
 
 			if (!$status)
 			{
-				$filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed') ";
+				$filtermethod = " AND (h.status='open' OR h.status='done' OR h.status='billed')";
 			}
 			else
 			{
-				$filtermethod = " AND h.status='$status' ";
+				$filtermethod = " AND h.status='$status'";
 			}
 
 			if ($access == 'private')
 			{
-				$filtermethod .= "AND h.employee='" . $phpgw_info['user']['account_id'] . "' ";
+				$filtermethod .= " AND h.employee='" . $phpgw_info['user']['account_id'] . "'";
 			}
 
 			if ($query)
 			{
 				$querymethod = " AND (h.remark like '%$query%' OR h.start_date like '%$query%' OR h.end_date like '%$query%' OR h.minutes like '%$query%' "
-							. "OR h.hours_descr like '%$query%') "; 
+							. "OR h.hours_descr like '%$query%')";
 			}
 
-			$sql = "SELECT h.id as id,h.hours_descr,a.descr,h.status,"
-				. "h.start_date,h.end_date,h.minutes,h.employee FROM phpgw_p_hours AS h"
-				. "$join phpgw_p_activities AS a ON h.activity_id=a.id WHERE h.project_id='$filter' "
-				. "$filtermethod $querymethod $ordermethod";
+			$sql = "SELECT h.id as id,h.hours_descr,a.descr,h.status,h.start_date,h.end_date,h.minutes,h.employee FROM phpgw_p_hours AS h"
+				. "$join phpgw_p_activities AS a ON h.activity_id=a.id WHERE h.project_id='$filter' $filtermethod $querymethod";
 
 			$this->db2->query($sql,__LINE__,__FILE__);
 			$this->total_records = $this->db2->num_rows();
-			$this->db->query($sql . " " . $this->db->limit($start),__LINE__,__FILE__);
+			$this->db->query($sql . $ordermethod . " " . $this->db->limit($start),__LINE__,__FILE__);
 
 			$i = 0;
 			while ($this->db->next_record())
