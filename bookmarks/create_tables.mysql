@@ -16,10 +16,3 @@ CREATE TABLE phpgw_bookmarks (
   primary key (bm_id)
 );
 
-CREATE TABLE phpgw_bookmarks_search (
-  id             int NOT NULL auto_increment,
-  name           varchar(30) DEFAULT '' NOT NULL,
-  query          varchar(255) DEFAULT '' NOT NULL,
-  username       varchar(32) DEFAULT '' NOT NULL,
-  primary key (id)
-);
