@@ -12,7 +12,8 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "admin";
+  $phpgw_info["flags"] = Array("currentapp" => "admin", "enable_nextmatchs_class" => True, "enable_network_class" => True);
+
   include("../header.inc.php");
   echo "<p><center>" . lang("Headline Sites") . "<br><table border=0 width=65%>"
      . "<tr bgcolor=" . $theme["th_bg"] . "><td>" . lang("Site") . "</td>"

@@ -12,11 +12,7 @@
 
   /* $Id$ */
 
-  $phpgw_info["flags"]["currentapp"] = "admin";
-  $phpgw_info["flags"]["disable_message_class"] = True;
-  $phpgw_info["flags"]["disable_send_class"] = True;
-  $phpgw_info["flags"]["noheader"] = True;
-  $phpgw_info["flags"]["nonavbar"] = True;
+  $phpgw_info["flags"] = array("currentapp" => "admin", "enable_network_class" => True, "noheader" => True, "nonavbar" => True);
   include("../header.inc.php");
   include($phpgw_info["server"]["server_root"]."/headlines/inc/functions.inc.php");
 

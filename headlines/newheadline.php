@@ -11,12 +11,62 @@
 
   /* $Id$ */
 
-  if ($submit) {
+  if (isset($submit) && $submit) {
      $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
   }
+  $phpgw_info["flags"]["enable_network_class"] = True;
   $phpgw_info["flags"]["currentapp"] = "admin";
   include("../header.inc.php");
-  if (! $submit) {
+  if (isset($submit) && $submit) {
+    if (! $n_display)
+      $error = "<br>" . lang("You must enter a display");
+
+    if (! $n_base_url)
+      $error = "<br>" . lang("You must enter a base url");
+
+    if (! $n_newsfile)
+      $error = "<br>" . lang("You must enter a news url");
+
+    if (! $n_cachetime)
+      $error = "<br>" . lang("You must enter the number of minutes between reload");
+
+    if (! $n_listings)
+      $error = "<br>" . lang("You must enter the number of listings display");
+
+    if (! $n_newstype)
+      $error = "<br>" . lang("You must select a file type");
+
+    if (!$error) {
+      $phpgw->db->query("select display from news_site where base_url='"
+		 . addslashes(strtolower($n_base_url)) . "' and newsfile='"
+		 . addslashes(strtolower($n_newsfile)) . "'");
+      $phpgw->db->next_record();
+      if ($phpgw->db->f("display")) {
+        $phpgw->common->phpgw_header();
+        $phpgw->common->navbar();
+        echo "<center>" . lang("That site has already been entered") . "</center>";
+        exit;
+      }
+
+      $phpgw->db->lock("news_site");
+
+      $sql = "insert into news_site (display,base_url,newsfile,"
+	   . "lastread,newstype,cachetime,listings) "
+	   . "values ('" . addslashes($n_display) . "','"
+	   . addslashes(strtolower($n_base_url)) . "','" 
+	   . addslashes(strtolower($n_newsfile)) . "',0,'"
+	   . $n_newstype . "',$n_cachetime,$n_listings)";
+
+      $phpgw->db->query($sql);
+
+      $phpgw->db->unlock();
+
+      Header("Location: " . $phpgw->link("admin.php", "cd=28"));
+    }
+  } else {
+
+    if($error)
+      echo $error;
      ?>
        <form method="POST" action="<?php echo $phpgw->link("newheadline.php"); ?>">
         <center>
@@ -62,53 +112,6 @@
         </center>
        </form>
      <?php
-  include($phpgw_info["server"]["api_dir"] . "/footer.inc.php");
-
-  } else {
-     if (! $n_display)
-        $error = "<br>" . lang("You must enter a display");
-
-     if (! $n_base_url)
-        $error = "<br>" . lang("You must enter a base url");
-
-     if (! $n_newsfile)
-        $error = "<br>" . lang("You must enter a news url");
-
-     if (! $n_cachetime)
-        $error = "<br>" . lang("You must enter the number of minutes between reload");
-
-     if (! $n_listings)
-        $error = "<br>" . lang("You must enter the number of listings display");
-
-     if (! $n_newstype)
-        $error = "<br>" . lang("You must select a file type");
-
-     if ($error) 
-        exit;
-
-     $phpgw->db->query("select display from news_site where base_url='"
-		 . addslashes(strtolower($n_base_url)) . "' and newsfile='"
-		 . addslashes(strtolower($n_newsfile)) . "'");
-     $phpgw->db->next_record();
-     if ($phpgw->db->f("display")) {
-        $phpgw->common->navbar();
-        echo "<center>" . lang("That site has already been entered") . "</center>";
-        exit;
-     }
-
-     $phpgw->db->lock("news_site");
-
-     $sql = "insert into news_site (display,base_url,newsfile,"
-	  . "lastread,newstype,cachetime,listings) "
-	  . "values ('" . addslashes($n_display) . "','"
-	  . addslashes(strtolower($n_base_url)) . "','" 
-	  . addslashes(strtolower($n_newsfile)) . "',0,'"
-	  . $n_newstype . "',$n_cachetime,$n_listings)";
-
-     $phpgw->db->query($sql);
-
-     $phpgw->db->unlock();
-
-     Header("Location: " . $phpgw->link("admin.php", "cd=28"));
+    $phpgw->common->phpgw_footer();
   }
 ?>

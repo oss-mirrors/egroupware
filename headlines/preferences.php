@@ -10,9 +10,8 @@
   *  option) any later version.                                              *
   \**************************************************************************/
 
-  $phpgw_info["flags"] = array("noheader" => True, "nonavbar" => True);
+  $phpgw_info["flags"] = array("currentapp" => "preferences", "noheader" => True, "nonavbar" => True, "enable_network_class" => True);
 
-  $phpgw_info["flags"]["currentapp"] = "preferences";
   include("../header.inc.php");
 
   if (! $submit) {
