@@ -172,12 +172,14 @@
 		/* TODO - Adjust the values below as desired */
 		$is->send(
 			'calendar.bocalendar.store_to_cache', array(
-				'syear' => '2001', 
-				'smonth' => '08',
-				'sday' => '03',
-				'eyear' => '2001',
-				'emonth' => '08',
-				'eday' => '06'
+				'syear'  => date('Y'),
+				'smonth' => date('m'),
+				'sday'   => date('d'),
+				'eyear'  => date('Y'),
+				'emonth' => date('m'),
+				'eday'   => date('d'),
+				'owner'  => -1,
+				'no_doubles' => True,
 			),
 			$is->server['server_url']
 		);
